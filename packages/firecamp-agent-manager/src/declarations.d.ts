@@ -5,7 +5,7 @@ declare global {
     fc: {
       restExecutor: {
         send(request: IRest): Promise<IRestResponse>;
-        cancel(requestID: string): void;
+        cancel(requestId: string): void;
       };
     };
   }

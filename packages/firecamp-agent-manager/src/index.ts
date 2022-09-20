@@ -63,28 +63,28 @@ export const send = async (
 
 /**
  *
- * @param requestID request ID use to tell the executor to which request's execution want to cancel
+ * @param requestId request ID use to tell the executor to which request's execution want to cancel
  * @param firecampAgent firecamp agent use to execute API according to it
  * @returns void
  */
 export const cancel = async (
-  requestID: TId,
+  requestId: TId,
   firecampAgent: EFirecampAgent
 ): Promise<void> => {
   switch (firecampAgent) {
     case EFirecampAgent.desktop:
-      return window.fc.restExecutor.cancel(requestID);
+      return window.fc.restExecutor.cancel(requestId);
     case EFirecampAgent.extension:
-      return extension.cancel(requestID);
+      return extension.cancel(requestId);
     case EFirecampAgent.web:
-      restExecutors[requestID].cancel();
+      restExecutors[requestId].cancel();
 
-      delete restExecutors[requestID];
+      delete restExecutors[requestId];
 
       return;
     case EFirecampAgent.proxy:
       const response = await axios.get(
-        `${process.env.FIRECAMP_PROXY_API_HOST}/api/cancel/${requestID}`
+        `${process.env.FIRECAMP_PROXY_API_HOST}/api/cancel/${requestId}`
       );
 
       return response.data;

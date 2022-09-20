@@ -27,7 +27,7 @@ export const send = (request: IRest): Promise<IRestResponse> => {
       {
         requestOperation: ERequestOperation.Send,
         request,
-        requestID: request._meta.id,
+        requestId: request._meta.id,
       },
       (response) => {
         // Reject if found any error in message passing
@@ -47,11 +47,11 @@ if (_misc.firecampAgent() === EFirecampAgent.web) {
     {
       requestOperation,
       request,
-      requestID,
+      requestId,
     }: {
       requestOperation: ERequestOperation;
       request: IRest;
-      requestID: TId;
+      requestId: TId;
     },
     sender,
     sendResponse
@@ -63,14 +63,14 @@ if (_misc.firecampAgent() === EFirecampAgent.web) {
 
           const response = await restExecutors[request._meta.id].send(request);
 
-          delete restExecutors[requestID];
+          delete restExecutors[requestId];
 
           sendResponse(response);
 
           break;
 
         case ERequestOperation.Cancel:
-          restExecutors[requestID].cancel();
+          restExecutors[requestId].cancel();
 
           break;
       }
@@ -86,19 +86,19 @@ if (_misc.firecampAgent() === EFirecampAgent.web) {
  * @param requestId
  * @returns request running status
  */
-export const cancel = async (requestID: string): Promise<void> => {
+export const cancel = async (requestId: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(
       process.env.CHROME_APP_ID,
       {
         requestOperation: ERequestOperation.Cancel,
-        requestID,
+        requestId,
       },
       (response) => {
         // Reject if found any error in message passing
         if (chrome.runtime.lastError) reject(chrome.runtime.lastError.message);
 
-        delete restExecutors[requestID];
+        delete restExecutors[requestId];
 
         resolve(response);
       }
