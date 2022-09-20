@@ -1,0 +1,63 @@
+.fc-testscript-box
+  border: 1px solid var(--appBorder)
+  padding: 10px
+  margin: 10px
+  padding-left: 32px
+
+.fc-testscript-box .fc-testscript-box
+  border: none
+  margin: 0px
+
+.fc-testscript-box .fc-testscript-box:last-child
+  padding-bottom: 0px
+
+.fc-testscript-box-content__title
+  font-size: 16px
+  font-weight: 800
+  margin-bottom: 10px
+  position: relative
+
+.fc-testscript-box-content__title.invalid:after,
+.fc-testscript-box-content__title.invalid:before
+  background: #F44336
+
+.fc-testscript-box-content__title:after
+  position: absolute
+  left: 18px
+  bottom: -5px
+  width: 32px
+  height: 6px
+  background: #43A047
+  border-radius: 10px
+  content: ' '
+
+.fc-testscript-box-content__title:before
+  position: absolute
+  left: 0px
+  bottom: -5px
+  width: 16px
+  height: 6px
+  background: #43A047
+  border-radius: 10px
+  content: ' '
+  opacity: 0.7
+
+.fc-testscript-box-content-list
+  margin-top: 16px
+
+.fc-testscript-box-content-list-item
+  font-size: 15px
+  background-image: url("/icon/png/check-green.png")
+  background-position: left center
+  background-repeat: no-repeat
+  background-size: 16px
+  padding-left: 20px
+  margin-left: 20px
+
+.fc-testscript-box-content-list-item.invalid
+  font-size: 15px
+  background-image: url("/icon/png/cross-red.png")
+
+.fc-testscript-box-content-list-item-error
+  margin-left: 40px
+  font-size: 13px

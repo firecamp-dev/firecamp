@@ -1,0 +1,386 @@
+.fc-modal.setting-modal
+  max-width: 767px !important
+  width: 767px !important
+  min-width: 767px !important
+  height: 640px !important
+  max-height: 90vh !important
+
+.fc-modal.setting-modal .form-group
+  margin-bottom: 24px !important
+
+.fc-modal.setting-modal+button.styles_closeButton__20ID4
+  top: 12px
+  right: 32px
+
+.fc-info-title
+  width: 100%
+  height: fit-content
+  display: flex
+  align-items: center
+  padding: 16px
+  padding-bottom: 12px
+  font-weight: 600
+
+.fc-info-title-sh
+  height: 24px
+  width: 24px
+  margin-right: 16px
+  background: var(--app-background)
+  font-size: 12px
+  text-transform: uppercase
+  text-align: center
+  line-height: 24px
+  border-radius: 2px
+  font-weight: 600
+  flex: none
+
+.fc-info-title-content
+  font-size: 12px
+  flex: 1
+  overflow: hidden
+
+.user-invitation-status 
+    font-size: 11px
+    line-height: 19px
+    color: var(--app-foreground-inactive)
+    font-weight: 400
+    margin-left: 4px
+    font-style: italic  
+
+.fc-title
+  text-transform: uppercase
+  white-space: pre
+  overflow: hidden
+  text-overflow: ellipsis
+  font-weight: 500
+
+.fc-sub-title
+  color: var(--app-foreground-inactive)
+  white-space: pre
+  overflow: hidden
+  text-overflow: ellipsis
+
+.fc-title+.fc-sub-title
+  font-weight: 500
+
+.fc-setting-menu
+  font-size: 14px
+  display: flex
+  align-items: center
+  padding: 7px 0px
+  position: relative
+  padding-left: 4px
+
+.fc-setting-menu-icon
+  font-size: 14px
+  margin-right: 12px
+  height: 16px
+  width: 16px
+  display: flex
+  align-items: center
+  justify-content: center
+  opacity: 1 !important
+
+.tree-node--selected > .fc-setting-menu:before
+  background: var(--appPrimary)
+  width: 2px
+  position: absolute
+  left: -16px
+  top: 0px
+  bottom: 0px
+  content: " "
+
+.tree-node--selected > .fc-setting-menu
+  color: var(--appPrimary)
+
+.fc-setting-content .padding-wrapper
+  padding: 0px 32px
+
+.fc-setting-content
+  height: 100%
+  padding: 16px 0px
+  width: 100%
+  padding-top: 0px !important
+
+
+.fc-setting-title
+  font-size: 16px
+  line-height: 20px
+  padding: 16px 32px
+  font-weight: 500
+  display: flex
+  align-items: center
+
+.fc-setting-title-v2
+  display: flex
+  align-items: end
+  justify-content: space-between
+  padding-top: 8px
+  padding-bottom: 8px
+  padding-left: 14px
+  padding-right: 14px
+
+.fc-setting-title-v2>div:first-child
+  display: flex
+  flex-direction: column
+  font-size: 12px
+  font-weight: 600
+  margin-right: 8px
+
+.fc-setting-title-v2>div>span
+  color: var(--app-foreground-inactive)
+  font-size: 12px
+  font-weight: 100
+
+.fc-col-resizer  .fc-setting-title
+  padding-left: 16px
+
+.fc-setting-title-count
+  font-size: 10px
+  font-weight: bold
+  background: var(--focus-level-4)
+  height: 18px
+  width: 18px
+  display: inline-block
+  text-align: center
+  line-height: 18px
+  margin-left: 8px
+  border-radius: 20px
+  margin-top: 2px
+
+.fc-setting-title>span
+  margin-right: 8px
+  opacity: 1 !important
+
+.fc-setting-sub-title
+  font-size: 12px
+  font-weight: 600
+  line-height: 12px
+  color: var(--app-foreground-inactive)
+  text-transform: uppercase
+  margin-top: 24px
+  margin-bottom: 16px
+  width: 100%
+  position: relative
+
+.fc-setting-sub-title>.fc-steps
+  position: absolute
+  right: 0px
+  top: 0px
+
+.fc-setting-content hr
+  margin-bottom: 0px
+  margin-top: 24px
+
+.fc-setting-flexed
+  display: flex
+  flex-wrap: wrap
+  align-items: baseline
+
+.fc-setting-flexed>label
+  flex: 1
+  margin-right: 16px
+
+
+.fc-member-list
+  display: table
+  width: 100%
+  margin-top: 24px
+
+.fc-member-list-wrapper
+  overflow-y: auto
+
+.fc-member-list-row
+  display: table-row
+
+
+.fc-member-list-row.header:hover
+  background-color: transparent !important
+
+.fc-member-list-row.header.fc-member-list-cell
+  padding-bottom: 4px
+
+.fc-member-list-cell
+  display: table-cell
+
+.fc-member-list-row.header
+  font-size: 12px
+  color: var(--app-foreground-inactive)
+
+.fc-member-list-row>.fc-member-list-cell
+  padding-left: 32px
+  padding-right: 32px
+
+.fc-member-list-cell>.fc-info-title
+  padding-left: 0px
+  padding-right: 0px
+  padding-top: 12px
+  padding-bottom: 12px
+
+.fc-member-list-row:hover
+  background-color: var(--focus-level-1)
+
+.fc-member-list-cell .fc-info-title-sh
+  background: transparent
+  border: 1px solid
+  border-radius: 15px
+  cursor: pointer
+  margin-right: 8px
+
+.fc-member-list-cell .fc-title
+  text-transform: none
+
+.fc-member-list-cell .fc-sub-title
+  font-size: 10px
+
+.fc-info-title.selected .fc-info-title-sh
+  background: var(--appPrimary)
+  color: var(--appPrimary)
+  position: relative
+
+.fc-info-title.selected .fc-info-title-sh:before
+  content: ' '
+  border: 2px solid var(--appPrimaryForeground)
+  padding: 2.3px 5px
+  position: absolute
+  border-radius: 2px
+  border-top: 0px
+  border-right: 0px
+  transform: rotate(-45deg)
+  top: calc(50% - 5px)
+
+.fc-member-action .fc-dropdown-toggle>span
+  font-size: 12px
+  margin-right: 4px
+
+.fc-member-action
+  display: flex
+  align-items: center
+  font-size: 10px
+  font-weight: 400
+  color: var(--app-foreground-inactive)
+
+.fc-member-action-more
+  display: flex
+  font-size: 12px
+  margin-left: 8px
+  background: var(--focus-level-2)
+  border-radius: 2px
+  visibility: hidden
+
+.fc-member-action-more>div
+  padding: 4px
+  display: flex
+  cursor: pointer
+
+.fc-member-list-row:hover .fc-member-action-more
+  visibility: visible
+
+.fc-member-list-row > .fc-member-list-cell:last-child
+  padding-left: 0px
+  width: 140px
+
+.fc-invite-list
+  display: table
+  width: 100%
+
+.fc-invite-list-row
+  display: table-row
+
+.fc-invite-list-cell
+  display: table-cell
+
+.fc-invite-list-row .css-11z5z3h
+  background: var(--popoverBackground)
+  border-color: var(--popoverBorder)
+  z-index: 99
+  color: var(--popoverForeground)
+  text-align: left
+
+.fc-invite-list-row .css-11z5z3h>li
+  font-size: 12px
+  padding: 4px 8px
+  color: var(--app-foreground)
+  border-radius: 0px !important
+  border-left: 1px solid var(--app-border)
+  border-right: 1px solid var(--app-border)
+
+.fc-invite-list-row .css-11z5z3h>li:last-child
+  border-bottom: 1px solid var(--app-border)
+
+.fc-invite-list-cell .css-wsirpr
+  width: 100%
+
+.fc-invite-list-cell > .css-ynim6
+  margin-top: 0px
+
+.fc-invite-list-row.header
+  font-size: 12px
+
+.fc-invite-list-row.header>.fc-invite-list-cell
+  padding: 0px
+  padding-bottom: 8px !important
+
+.fc-invite-list-row>.fc-invite-list-cell
+  padding: 0px 12px 12px 0px
+
+.fc-invite-list-row>.fc-invite-list-cell:nth-child(2)
+  padding-left: 8px !important
+
+.fc-invite-list-remove
+  font-size: 12px
+  cursor: pointer
+  display: flex
+  justify-content: center
+
+.fc-invite-list-row > .fc-invite-list-cell:last-child
+  padding-right: 0px
+
+.fc-invite-buttons
+  display: flex
+  margin-top: 12px
+  margin-bottom: 12px
+
+.fc-invite-buttons .fc-button-icon
+  font-size: 16px !important
+
+.fc-invite-buttons>.fc-button:last-child .fc-button-icon
+  font-size: 18px !important
+
+.fc-invite-buttons>span
+  margin-left: 8px
+  margin-right: 8px
+  font-size: 12px
+
+.fc-invite-card
+    padding: 24px
+    border: 1px solid var(--app-border)
+    border-radius: 2px
+    margin-top: 24px
+    margin-bottom: 24px
+
+.fc-invite-card>label
+  font-size: 12px
+  margin-bottom: 8px
+
+
+.fc-error
+  font-size: 10px
+  margin-bottom: 4px
+  color: var(--error) !important
+
+.fc-success
+  font-size: 10px
+  margin-bottom: 4px
+  color: var(--success)
+
+.form-group+.fc-error,.form-group+.fc-success
+  margin-top: -16px
+
+.fc-error.with-padding-large
+  padding-left: 32px
+
+.fc-error.fc-organization-error
+  position: absolute
+  top: 4px
+  z-index: 9

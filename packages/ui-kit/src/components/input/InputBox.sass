@@ -1,0 +1,168 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus
+  -webkit-text-fill-color: var(--inputForeground)
+  -webkit-box-shadow: 0 0 0px 1000px var(--app-background) inset
+  transition: background-color 5000s ease-in-out 0s
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active
+  -webkit-box-shadow: 0 0 0 30px transparent inset
+
+.form-group
+  margin-bottom: 16px
+
+.fc-input.fc-input-invalid,.fc-input.fc-input-invalid:focus,.fc-input.fc-input-invalid:hover
+  border-color: var(--error) !important
+
+.fc-input-wrapper
+  width: 100%
+
+.fc-input-wrapper.with-icon > span.icon-add-circle
+  position: absolute
+  top: calc(50% - 8px)
+  right: 4px
+  cursor: pointer
+
+.fc-input-wrapper.with-icon .fc-input
+  padding-right: 24px !important
+
+.fc-input-wrapper.flexed
+  display: flex
+
+.fc-input-wrapper.flexed>*:first-child
+  border-top-right-radius: 0px
+  border-bottom-right-radius: 0px
+  margin-right: 0px !important
+
+.fc-input-wrapper.flexed>*:last-child
+  border-top-left-radius: 0px
+  border-bottom-left-radius: 0px
+  padding-right: 8px
+
+.fc-input-wrapper.flexed-reversed
+  display: flex
+  flex-direction: column-reverse
+
+.fc-input-wrapper.flexed-reversed>*:last-child
+  border-top-right-radius: 0px
+  border-bottom-right-radius: 0px
+
+.fc-input-wrapper.flexed-reversed>*:first-child
+  border-top-left-radius: 0px
+  border-bottom-left-radius: 0px
+
+.fc-input.without-radius
+  border-radius: 0px !important
+
+.fc-input.create-form-input
+  font-size: 14px
+  resize: none
+  padding-top: 3px
+  background-color: var(--inputBackground) !important
+
+.fc-input.border-light
+  border-color: var(--app-border) !important
+
+.form-control:disabled, .form-control[readonly]
+  background-color: inherit !important
+
+.fc-control-inline
+  display: flex
+
+.fc-control-inline>*:first-child
+  flex: 1
+
+.fc-control-inline>*:last-child
+  margin-right: 0px
+
+.fc-control-inline>*
+  margin-right: 8px
+
+.form-group .form-group
+  margin-bottom: 0px
+
+.fc-control-inline.align-left
+  justify-content: left
+
+.fc-control-inline.align-left>*
+  width: fit-content !important
+  flex: none
+
+.fc-input-edit
+  background-repeat: no-repeat
+  background-size: 16px
+  position: absolute
+  right: 0px
+  height: 20px
+  width: 20px
+  top: 10px
+  cursor: pointer
+
+.form-group:hover .fc-input-edit
+  display: block
+
+.fc-input-edit
+  display: none
+
+.fc-input-label
+  font-size: 12px
+  margin-bottom: 8px !important
+  display: block
+
+.form-group.flexed .fc-input-label
+  margin-bottom: 0px !important
+
+.fc-input-link
+  position: absolute
+  font-size: 10px
+  margin-bottom: 8px !important
+  color: var(--appPrimary)
+  cursor: pointer
+  line-height: 23px
+  right: 0px
+  top: 8px
+
+.fc-input-link.v2
+  bottom: 3px
+  margin-bottom: 0px !important
+  right: 10px
+  z-index: 9
+  top: auto
+
+.fc-input-note
+  font-size: 10px
+  display: flex
+  align-items: baseline
+
+.fc-input-note>span
+  margin-right: 4px
+  opacity: 1 !important
+
+.fc-input-wrapper.with-icon-left>span.input-icon.iconv2-search-icon
+  font-size: 18px
+  top: 6px
+
+.fc-input-wrapper.with-icon-left>span.input-icon
+  position: absolute
+  top: 7px
+  left: 8px
+  font-size: 12px
+  line-height: 18px
+
+.fc-input-wrapper.with-icon-left>.fc-input
+  padding-left: 32px
+
+.fc-input.fc-custom-input
+  padding: 4px 10px
+
+
+

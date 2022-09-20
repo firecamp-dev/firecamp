@@ -1,0 +1,27 @@
+/*-----Modal css Start------------*/
+.fc-modal-v2>div{
+    box-shadow: 0px 0px 85px 0px var(--modal-boxshadow);
+    max-width: 380px;
+    z-index: 1101;
+    padding: 32px;
+  }
+  .fc-modal-v2 > div>.close{
+    top: 8px !important;
+  }
+  .react-responsive-modal-modal {
+    padding: 0px;
+  }
+  
+  .react-responsive-modal-closeButton {
+    z-index: 99999;
+  }
+  
+  a.border {
+    border-color: inherit !important;
+  }
+
+  .fc-modal-wrapper{
+    max-height: 96vh;
+    min-height: 400px;
+  }
+  /*-----Modal css End------------*/

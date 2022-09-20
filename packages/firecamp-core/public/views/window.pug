@@ -1,0 +1,12 @@
+- const publicPath = process.env.NODE_ENV === 'development' ?  '/' : 'js/'
+  
+doctype html
+
+html
+  head
+    meta(charset='UTF-8')
+    title Firecamp (Window)
+  body
+    #root
+      script(src= publicPath + 'app.bundle.js')
+      script(src= publicPath + 'vendor.bundle.js')

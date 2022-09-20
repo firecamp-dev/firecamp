@@ -1,0 +1,45 @@
+.fc-col-resizer.left>div:last-child:hover>div:after ,.fc-col-resizer.left>div:last-child:focus>div:after,.fc-col-resizer.left>div:last-child:active>div:after ,
+.fc-col-resizer.right>div:last-child:hover>div:after ,.fc-col-resizer.right>div:last-child:focus>div:after,.fc-col-resizer.right>:last-child:active>div:after {
+  content: ' ';
+  position: absolute;
+  left: 4px;
+  right: 5px;
+  top: 0px;
+  bottom: 0px;
+  background: var(--app-focus);
+}
+
+.fc-col-resizer.top>div:last-child:hover>div:after ,.fc-col-resizer.top>div:last-child:focus>div:after,.fc-col-resizer.top>div:last-child:active>div:after ,
+.fc-col-resizer.bottom>div:last-child:hover>div:after ,.fc-col-resizer.bottom>div:last-child:focus>div:after,.fc-col-resizer.bottom>:last-child:active>div:after {
+  content: ' ';
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 4px;
+  bottom: 5px;
+  background: var(--app-focus);
+}
+.fc-col-resizer.top.left.right.bottom>div:last-child:hover>div:after ,.fc-col-resizer.top.left.right.bottom>div:last-child:focus>div:after,.fc-col-resizer.top.left.right.bottom>div:last-child:active>div:after {
+  background: transparent !important
+}
+
+.fc-col-resizer > div:last-child{
+    min-width: auto !important;
+}
+
+.fc-col-resizer.scrollbar-right{
+    overflow: visible;
+}
+
+.fc-col-resizer.scrollbar-right>span>div{
+    z-index: 9;
+    width: 5px !important;
+}
+
+.fc-col-resizer.scrollbar-left>span>div{
+    width: 5px !important;
+    left: 0px !important;
+}
+.fc-col-resizer>.col{
+  height: 100% !important;
+}

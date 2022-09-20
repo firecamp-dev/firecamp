@@ -1,0 +1,327 @@
+.fc-blackhole:hover
+  border-radius: 4px 4px 0px 0px
+
+.fc-blackhole
+  background: var(--app-background-secondary)
+  border-radius: 4px
+  margin-top: 40px
+  margin-bottom: 100px
+  min-height: 280px
+  max-height: 280px
+  display: flex
+  flex-direction: column
+  width: 100%
+  min-width: 320px
+  position: relative
+
+.fc-blackhole-body
+  border: 1px dashed var(--app-border)
+  padding: 10px
+  margin: 10px
+  font-size: 13px
+  flex: 1
+  display: flex
+  flex-direction: column
+  position: relative
+  cursor: pointer
+
+.fc-blackhole-body .file-drop-target
+  height: 100%
+  display: flex
+  flex: auto
+  flex-direction: column
+
+.fc-blackhole-body .file-drop
+  left: 10px
+  right: 10px
+  top: 10px
+  bottom: 10px
+  position: absolute
+  height: calc(100% - 20px)
+  width: calc(100% - 20px)
+
+.fc-blackhole-body-title
+  color: var(--appPrimary)
+  text-transform: uppercase
+  margin-bottom: 10px
+
+.fc-blackhole-body-title>span
+  text-transform: capitalize
+  color: var(--app-foreground)
+
+.fc-blackhole-body-content
+  font-size: 11px
+  text-align: center
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  flex: 1
+
+.fc-blackhole-footer-content > span
+  text-decoration: underline
+
+.fc-blackhole-footer-content > span:hover
+  cursor: pointer
+  color: var(--appPrimary)
+
+.fc-blackhole-footer-content
+  background-color: var(--app-background)
+  color: var(--app-foregroundHighlighted)
+  font-size: 14px
+  text-align: center
+  padding: 10px
+
+.fc-blackhole:hover .fc-blackhole-footer
+  height: fit-content
+
+.fc-blackhole-footer
+  height: 0px
+  overflow: hidden
+  border-radius: 0px 0px 4px 4px
+  transition: all .4s
+
+//.fc-blackhole:hover .fc-blackhole-body-content-import > span
+//  font-size: 11px
+
+.fc-blackhole-body-content-import > span
+  font-size: 14px
+  transition: all .4s
+
+.fc-blackhole:hover .fc-blackhole-body-content-icons
+  height: 75px
+
+.fc-blackhole-body-content-icons
+  margin-top: 16px
+  display: flex
+  flex-wrap: wrap
+  transition: all .4s
+  height: 0px
+  overflow: hidden
+  justify-content: center
+
+.fc-blackhole-body-content-icon>img
+  max-height: 32px
+  margin-bottom: auto
+  flex: 1
+  width: auto
+
+.fc-blackhole-body-content-icon:first-child
+  padding-left: 0px
+
+.fc-blackhole-body-content-icon:last-child
+  padding-right: 0px
+
+
+.fc-blackhole-body-content-icon
+  padding: 0px 4px
+  display: flex
+  flex-direction: column
+  font-size: 10px
+
+.fc-blackhole-body-content-icon>span
+  white-space: nowrap
+
+.fc-blackhole:hover .fc-blackhole-body-content-import
+  height: 0px
+
+.fc-blackhole-body-content-import
+  display: flex
+  flex-direction: column
+  margin: 0 auto
+  font-size: 12px
+  height: 63px
+  overflow: hidden
+  transition: all .4s
+
+.fc-blackhole-body-content-import-icon
+  width: 32px
+  height: 32px
+  margin: 0 auto
+  margin-bottom: 10px
+  background-position: center
+  background-size: 30px
+  background-repeat: no-repeat
+  opacity: 0.3
+
+.fc-blackhole-body-content-icons-title
+  flex: none
+  margin-bottom: 12px
+  width: 100%
+
+.fc-blackhole-loader
+  background-image: -webkit-radial-gradient(circle, rgba(0,0,5,1), rgba(0,0,0,1))
+  overflow: hidden
+  position: absolute
+  left: 0px
+  right: 0px
+  top: 0px
+  bottom: 0px
+  z-index: 9
+
+.fc-blackhole-loader .space
+  position: absolute
+  top: 0
+  left: 0
+  background-image: radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 10px), radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 10px), radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 10px), radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 10px)
+  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px
+  background-position: 0 0, 40px 30px, 130px 270px, 70px 100px
+  animation: spin 25s linear infinite
+  width: 200%
+  height: 400%
+  margin: -100% 0 0 -50%
+  opacity: .6
+  border-radius: 4px
+
+.fc-blackhole-loader .container
+  display: inline-block
+  width: 100%
+  height: 100%
+  vertical-align: middle
+  text-align: center
+
+.fc-blackhole-loader .container:before
+  content: ''
+  display: inline-block
+  height: 100%
+  vertical-align: middle
+  margin-right: -0.25em
+
+.fc-blackhole-loader .wrapper
+  position: relative
+  display: inline-block
+  height: auto
+  vertical-align: middle
+  margin: 0 auto
+  text-align: center
+
+.fc-blackhole-loader .blackhole
+  position: relative
+  display: inline-block
+  width: 100px
+  height: 100px
+  margin: 0 auto
+  border: 4px solid rgba(0,0,0,1)
+  border-radius: 50%
+  animation: spin 3s infinite linear
+  background: #000
+  box-shadow: 0 0 50px 50px rgba(0,0,0,1)
+
+.fc-blackhole-loader .debris
+  position: absolute
+  top: 160%
+  left: 100%
+  width: 10px
+  height: 10px
+  margin: -5px 0 0 -5px
+  background: rgba(255,255,255,1)
+  border-radius: 50%
+  animation: drain 5s infinite ease-in
+
+.fc-blackhole-loader .debris + .debris
+  left: 100%
+  animation-delay: 1200ms
+  transform: scale(.7)
+  animation-speed: 7s
+
+.fc-blackhole-loader .debris + .debris + .debris
+  top: 0%
+  left: 185%
+  animation-delay: 500ms
+  transform: scale(.8)
+  animation-speed: 4s
+
+.fc-blackhole-loader .debris + .debris + .debris + .debris
+  top: 200%
+  left: 250%
+  animation-delay: 700ms
+  transform: scale(.4)
+  animation-speed: 2s
+
+.fc-blackhole-loader .debris + .debris + .debris + .debris + .debris
+  top: 150%
+  left: 330%
+  animation-delay: 200ms
+  transform: scale(.5)
+
+.fc-blackhole-loader .debris + .debris + .debris + .debris + .debris + .debris
+  top: -380%
+  left: -300%
+  animation-delay: 2000ms
+  transform: scale(.7)
+  animation-speed: 6s
+
+
+.fc-blackhole-loader .debris + .debris + .debris + .debris + .debris + .debris + .debris
+  top: 400%
+  left: 200%
+  animation-delay: 3000ms
+  transform: scale(.3)
+
+.fc-blackhole-loader .debris + .debris + .debris + .debris + .debris + .debris + .debris + .debris
+  top: 500%
+  left: 180%
+  animation-delay: 400ms
+  transform: scale(1.2)
+//
+//@keyframes drain
+//  from
+//    95% opacity: 1
+//  to
+//    top: 50%
+//    left: 50%
+//    opacity: 0
+//
+//@keyframes spin
+//  to transform: rotate(360deg)
+
+.fc-blackhole-body-content-icons.fc-blackhole-small
+  height: auto !important
+  padding: 0px
+  margin: 0px
+  font-size: 12px
+  justify-content: left
+
+.fc-blackhole-body-content-icons.fc-blackhole-small .fc-blackhole-body-content-icon > img
+  max-height: 18px
+
+.fc-blackhole-body-content-icons.fc-blackhole-small .fc-blackhole-body-content-icon
+  padding: 0px 2px
+
+.fc-blackhole-body-content-icons.fc-blackhole-small>.fc-blackhole-body-content-icons-title
+  margin-bottom: 4px
+  font-size: 18px
+
+.fc-blackhole-body-content-icons-subtitle
+  margin-right: 8px
+
+.import-wrapper.fc-blackhole-popup
+  min-height: auto
+
+.import-body-input-with-button
+  display: flex
+  margin: 16px
+  border-bottom: 1px solid var(--app-border)
+  align-items: center
+  padding-bottom: 2px
+
+.import-body .fc-button
+  padding: 6px !important
+  height: auto
+  border-radius: 4px !important
+  line-height: 16px
+  max-width: fit-content
+  margin: 0 auto !important
+
+.import-body-input-with-button-input
+  border: none
+  flex: 1
+  padding-left: 2px
+
+.import-body-editor .fc-button
+  margin: 12px
+
+.import-body-editor
+  display: flex
+  flex-direction: column
+  flex: 1

@@ -1,0 +1,172 @@
+.fc-table
+  display: inline-block
+  border-spacing: 0
+  border: 1px solid var(--app-border)
+  font-size: 12px
+  color: var(--app-foreground)
+  border-top: 0px
+  border-left: 0px
+  width: 100%
+
+  .visible-scrollbar>.invisible-scrollbar
+    height: 100% !important
+
+  .visible-scrollbar
+    height: calc(100% - 33px)
+
+  .td
+    font-size: 12px
+    line-height: 22px !important
+    margin-top: -3px !important
+    overflow: hidden
+    cursor: pointer
+
+  .tr:hover .td
+    background: var(--focus-level-1)
+  
+  .tr:focus
+    //background: lightGreen
+  
+  .tr.active
+    background: #ea8b0f5e
+
+  .tr:last-child.td
+    border-bottom: 0
+
+  //.tr.open
+  //  color: var(--appPrimary)
+  //
+  //.tr.connected
+  //  color: var(--appPrimary)
+  //
+  //.tr.connect
+  //  color: var(--appPrimary)
+  //
+  //.tr.connecting
+  //  color: var(--appPrimary)
+
+  .tr.danger
+    color: var(--error)
+
+  .tr.success
+    color: var(--success)
+
+  .tr.warning
+    color: var(--appPrimary)
+
+  //.tr.open .td-icon.icon-disk:before
+  //  background: var(--appPrimary)
+  //
+  //.tr.connected .td-icon.icon-disk:before
+  //  background: var(--appPrimary)
+  //
+  //.tr.connecting .td-icon.icon-disk:before
+  //  background: var(--appPrimary)
+
+
+  .th
+    font-weight: 700
+    color: var(--app-foregroundHighlighted)
+
+  .th,.td
+    margin: 0
+    border-bottom: 1px solid var(--app-border)
+    border-right: 1px solid var(--app-border)
+    position: relative
+    padding: 8px
+    padding-top: 7px
+    padding-bottom: 4px
+    line-height: 16px
+
+  .td>span
+    white-space: pre
+    overflow: hidden
+    max-width: 100%
+    text-overflow: ellipsis
+    display: inherit
+
+  .td.Message
+      overflow: hidden
+      white-space: inherit
+      word-break: break-all
+      line-height: 19px
+
+  .th:last-child,.td:last-child
+    border-right: 0
+
+  .resizer
+    display: inline-block
+    background: transparent
+    width: 10px
+    height: 100%
+    position: absolute
+    right: 0
+    top: 0
+    transform: translateX(50%)
+    z-index: 1
+    //touch-action:none
+
+.td-icon.icon-disk:before
+  content: ' '
+  width: 8px
+  height: 8px
+  border-radius: 10px
+
+.td-icon
+    width: 100%
+    display: flex !important
+    align-items: center
+    justify-content: center
+    height: 100%
+    font-size: 12px
+    color: inherit
+    opacity: 1 !important
+
+.td-icon.iconv2-from-server-icon
+    color: var(--appPrimary)
+    transform: rotate(90deg)
+    width: 16px
+    margin: 0 auto
+
+.td-icon.iconv2-to-server-icon
+    color: var(--appPrimary)
+    transform: rotate(90deg)
+    width: 16px
+    margin: 0 auto
+
+.connect .td-icon.icon-disk:before
+  background: var(--appPrimary)
+
+.danger .td-icon.icon-disk:before
+    background: var(--error)
+
+.success .td-icon.icon-disk:before
+    background: var(--success)
+
+.warning .td-icon.icon-disk:before
+    background: var(--appPrimary)
+
+.fc-table.no-border
+  border: 0px none !important
+
+.th.fc-react-table-header
+  display: flex
+  flex-direction: column
+
+.fc-react-table-filter
+  margin-top: 4px
+  width: calc(100% + 16px)
+  overflow: hidden
+  height: 16px
+  margin-left: -8px
+  margin-right: -8px
+  display: flex
+  align-items: center
+  justify-content: center
+
+
+
+.fc-react-table-filter>select
+  background: var(--focus-level-2)
+  color: var(--app-foreground)
+  max-width: 100%

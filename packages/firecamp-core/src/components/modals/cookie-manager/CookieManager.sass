@@ -1,0 +1,105 @@
+.fc-cookie-list
+  padding: 24px
+
+.fc-cookie-list-item
+  border: 1px solid var(--app-border)
+  margin-bottom: 16px
+  padding: 16px
+  font-size: 12px
+  position: relative
+  padding-bottom: 24px
+
+.fc-cookie-params
+  display: inline-block
+  margin-right: 16px
+  margin-bottom: 8px
+
+.fc-cookie-params>label
+  color: var(--app-foreground-inactive)
+  margin-right: 8px
+  margin-bottom: 0px
+
+.fc-cookie-params>span
+  word-break: break-all
+
+.fc-cookie-string
+  background: var(--app-background)
+  position: absolute
+  left: 0px
+  right: 0px
+  display: flex
+  align-items: center
+  padding: 3px 16px
+
+.fc-cookie
+  white-space: pre
+  text-overflow: ellipsis
+  overflow: hidden
+  display: flex
+  align-items: center
+
+.fc-cookie>i
+  font-size: 12px
+  margin-left: 4px
+
+.fc-cookie-string>span
+  margin-left: 8px
+  cursor: pointer
+
+.fc-cookie-list-item:hover .fc-cookie-list-item-action
+  visibility: visible
+
+.fc-cookie-list-item-action
+  position: absolute
+  right: 4px
+  top: 4px
+  display: flex
+  visibility: hidden
+
+.fc-cookie-list-item-action>*
+  padding: 4px
+
+.add-cookie-button
+  margin: 0 auto
+
+.fc-add-cookie
+  min-width: 260px
+  padding: 16px
+
+.fc-clear-all-cookies
+  min-width: 260px
+
+.fc-clear-all-cookies>.popover-title
+  margin-bottom: 16px
+
+.fc-clear-all-cookies > .form-group
+  margin-bottom: 16px !important
+
+.fc-add-cookie .form-group.flexed
+  width: 49%
+  display: inline-block
+
+.fc-add-cookie .form-group.flexed>*
+  display: inline-block
+  vertical-align: bottom
+
+.fc-add-cookie .form-group.flexed>.toggleWrapper
+  margin-top: 3px
+  margin-bottom: -3px
+
+.add-cookie-empty
+  display: flex
+  width: 100%
+  align-items: center
+  justify-content: center
+  flex-direction: column
+
+.popover.fc-popover-v2.fc-popover-cookies
+  width: 480px !important
+  max-width: initial
+  left: calc(50% - 240px) !important
+  transform: none !important
+  top: 20vh !important
+
+.popover.fc-popover-v2.fc-popover-cookies>span.arrow
+  display: none

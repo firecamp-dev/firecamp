@@ -1,0 +1,342 @@
+{
+  "100": {
+    "status": "100",
+    "color": "gray",
+    "text": "Continue"
+  },
+  "101": {
+    "status": "101",
+    "color": "gray",
+    "text": "Switching Protocols"
+  },
+  "102": {
+    "status": "102",
+    "color": "gray",
+    "text": "Processing"
+  },
+  "200": {
+    "status": "200",
+    "color": "#508c3a",
+    "text": "OK"
+  },
+  "201": {
+    "status": "201",
+    "color": "#508c3a",
+    "text": "Created"
+  },
+  "202": {
+    "status": "202",
+    "color": "gray",
+    "text": "Accepted"
+  },
+  "203": {
+    "status": "203",
+    "color": "gray",
+    "text": "Non-authoritative Information"
+  },
+  "204": {
+    "status": "204",
+    "color": "gray",
+    "text": "No Content"
+  },
+  "205": {
+    "status": "205",
+    "color": "gray",
+    "text": "Reset Content"
+  },
+  "206": {
+    "status": "206",
+    "color": "gray",
+    "text": "Partial Content"
+  },
+  "207": {
+    "status": "207",
+    "color": "gray",
+    "text": "Multi-Status"
+  },
+  "208": {
+    "status": "208",
+    "color": "gray",
+    "text": "Already Reported"
+  },
+  "226": {
+    "status": "226",
+    "color": "gray",
+    "text": "IM Used"
+  },
+  "300": {
+    "status": "300",
+    "color": "gray",
+    "text": "Multiple Choices"
+  },
+  "301": {
+    "status": "301",
+    "color": "gray",
+    "text": "Moved Permanently"
+  },
+  "302": {
+    "status": "302",
+    "color": "gray",
+    "text": "Found"
+  },
+  "303": {
+    "status": "303",
+    "color": "gray",
+    "text": "See Other"
+  },
+  "304": {
+    "status": "304",
+    "color": "gray",
+    "text": "Not Modified"
+  },
+  "305": {
+    "status": "305",
+    "color": "gray",
+    "text": "Use Proxy"
+  },
+  "307": {
+    "status": "307",
+    "color": "gray",
+    "text": "Temporary Redirect"
+  },
+  "308": {
+    "status": "308",
+    "color": "gray",
+    "text": "Permanent Redirect"
+  },
+  "400": {
+    "status": "400",
+    "color": "gray",
+    "text": "Bad Request"
+  },
+  "401": {
+    "status": "401",
+    "color": "red",
+    "text": "Unauthorized"
+  },
+  "402": {
+    "status": "402",
+    "color": "red",
+    "text": "Payment Required"
+  },
+  "403": {
+    "status": "403",
+    "color": "red",
+    "text": "Forbidden"
+  },
+  "404": {
+    "status": "404",
+    "color": "red",
+    "text": "Not Found"
+  },
+  "405": {
+    "status": "405",
+    "color": "red",
+    "text": "Method Not Allowed"
+  },
+  "406": {
+    "status": "406",
+    "color": "gray",
+    "text": "Not Acceptable"
+  },
+  "407": {
+    "status": "407",
+    "color": "gray",
+    "text": "Proxy Authentication Required"
+  },
+  "408": {
+    "status": "408",
+    "color": "gray",
+    "text": "Request Timeout"
+  },
+  "409": {
+    "status": "409",
+    "color": "gray",
+    "text": "Conflict"
+  },
+  "410": {
+    "status": "410",
+    "color": "gray",
+    "text": "Gone"
+  },
+  "411": {
+    "status": "411",
+    "color": "gray",
+    "text": "Length Required"
+  },
+  "412": {
+    "status": "412",
+    "color": "gray",
+    "text": "Precondition Failed"
+  },
+  "413": {
+    "status": "413",
+    "color": "gray",
+    "text": "Payload Too Large"
+  },
+  "414": {
+    "status": "414",
+    "color": "gray",
+    "text": "Request-URI Too Long"
+  },
+  "415": {
+    "status": "415",
+    "color": "gray",
+    "text": "Unsupported Media Type"
+  },
+  "416": {
+    "status": "416",
+    "color": "gray",
+    "text": "Requested Range Not Satisfiable"
+  },
+  "417": {
+    "status": "417",
+    "color": "gray",
+    "text": "Expectation Failed"
+  },
+  "418": {
+    "status": "418",
+    "color": "gray",
+    "text": "I'm a teapot"
+  },
+  "421": {
+    "status": "421",
+    "color": "gray",
+    "text": "Misdirected Request"
+  },
+  "422": {
+    "status": "422",
+    "color": "gray",
+    "text": "Unprocessable Entity"
+  },
+  "423": {
+    "status": "423",
+    "color": "gray",
+    "text": "Locked"
+  },
+  "424": {
+    "status": "424",
+    "color": "gray",
+    "text": "Failed Dependency"
+  },
+  "426": {
+    "status": "426",
+    "color": "gray",
+    "text": "Upgrade Required"
+  },
+  "428": {
+    "status": "428",
+    "color": "gray",
+    "text": "Precondition Required"
+  },
+  "429": {
+    "status": "429",
+    "color": "gray",
+    "text": "Too Many Requests"
+  },
+  "431": {
+    "status": "431",
+    "color": "gray",
+    "text": "Request Header Fields Too Large"
+  },
+  "444": {
+    "status": "444",
+    "color": "gray",
+    "text": "Connection Closed Without Response"
+  },
+  "451": {
+    "status": "451",
+    "color": "gray",
+    "text": "Unavailable For Legal Reasons"
+  },
+  "499": {
+    "status": "499",
+    "color": "gray",
+    "text": "Client Closed Request"
+  },
+  "500": {
+    "status": "500",
+    "color": "red",
+    "text": "Internal Server Error"
+  },
+  "501": {
+    "status": "501",
+    "color": "gray",
+    "text": "Not Implemented"
+  },
+  "502": {
+    "status": "502",
+    "color": "gray",
+    "text": "Bad Gateway"
+  },
+  "503": {
+    "status": "503",
+    "color": "gray",
+    "text": "Service Unavailable"
+  },
+  "504": {
+    "status": "504",
+    "color": "gray",
+    "text": "Gateway Timeout"
+  },
+  "505": {
+    "status": "505",
+    "color": "gray",
+    "text": "HTTP Version Not Supported"
+  },
+  "506": {
+    "status": "506",
+    "color": "gray",
+    "text": "Variant Also Negotiates"
+  },
+  "507": {
+    "status": "507",
+    "color": "gray",
+    "text": "Insufficient Storage"
+  },
+  "508": {
+    "status": "508",
+    "color": "gray",
+    "text": "Loop Detected"
+  },
+  "510": {
+    "status": "510",
+    "color": "gray",
+    "text": "Not Extended"
+  },
+  "511": {
+    "status": "511",
+    "color": "gray",
+    "text": "Network Authentication Required"
+  },
+  "599": {
+    "status": "599",
+    "color": "gray",
+    "text": "Network Connect Timeout Error"
+  },
+  "1××": {
+    "status": "1××",
+    "color": "gray",
+    "text": "Informational"
+  },
+  "2××": {
+    "status": "2××",
+    "color": "gray",
+    "text": "Success"
+  },
+  "3××": {
+    "status": "3××",
+    "color": "gray",
+    "text": "Redirection"
+  },
+  "4××": {
+    "status": "4××",
+    "color": "gray",
+    "text": "Client Error"
+  },
+  "5××": {
+    "status": "5××",
+    "color": "gray",
+    "text": "Server Error"
+  }
+}

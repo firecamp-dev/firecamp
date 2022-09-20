@@ -1,0 +1,117 @@
+{
+  "name": "@firecamp/ui-kit",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Firecamp component library",
+  "keywords": [
+    "Firecamp",
+    "UIKit"
+  ],
+  "author": "Nishchit Dhanani <dnishchit@gmail.com>",
+  "homepage": "http://./dev/packages/ui-kit",
+  "license": "Apache-2.0",
+  "main": "src/ui-kit.ts",
+  "module": "src/ui-kit.ts",
+  "directories": {
+    "lib": "dist",
+    "test": "__tests__"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/firecamp-io/firecamp.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "build:tailwind": "postcss src/scss/base.scss -o src/scss/tailwind.scss",
+    "chromatic": "npx chromatic --project-token=4db217014cde004",
+    "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && yarn copy-files",
+    "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.scss\" \"src/**/*.css\" dist/"
+  },
+  "bugs": {
+    "url": "https://github.com/firecamp-io/firecamp/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.14.8",
+    "@storybook/addon-actions": "^6.5.10",
+    "@storybook/addon-essentials": "^6.5.10",
+    "@storybook/addon-interactions": "^6.5.10",
+    "@storybook/addon-links": "^6.5.10",
+    "@storybook/builder-webpack5": "^6.5.10",
+    "@storybook/manager-webpack5": "^6.5.10",
+    "@storybook/react": "^6.5.10",
+    "@storybook/testing-library": "^0.0.13",
+    "@tailwindcss/postcss7-compat": "^2.2.17",
+    "@types/codemirror": "^5.60.5",
+    "@types/deep-equal": "^1.0.1",
+    "@types/markdown-it": "^12.2.3",
+    "@types/react": "^17.0.14",
+    "@types/react-table": "^7.7.10",
+    "babel-loader": "^8.2.2",
+    "babel-preset-react-app": "^10.0.0",
+    "chromatic": "^6.7.0",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.1",
+    "graphql": "^16.5.0",
+    "postcss": "^8.4.16",
+    "postcss-cli": "^8.3.1",
+    "react-dom": "17.0.2",
+    "sass": "^1.54.4",
+    "sass-loader": "^13.0.2",
+    "style-loader": "^3.3.1",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@firecamp/types": "^0.0.11",
+    "@szhsin/react-menu": "^2.3.2",
+    "autoprefixer": "^10",
+    "classnames": "^2.3.1",
+    "deep-equal": "^2.0.5",
+    "firecamp-treeview": "^0.0.1-0",
+    "fuzzysort": "^2.0.1",
+    "markdown-it": "^13.0.1",
+    "monaco-editor": "0.28.1",
+    "nanoid": "3.3.4",
+    "postcss-loader": "^6.2.1",
+    "prettify-xml": "^1.2.0",
+    "re-resizable": "^6.9.9",
+    "react-codemirror2": "^7.2.1",
+    "react-complex-tree": "^1.1.11",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dnd": "^16.0.1",
+    "react-dnd-html5-backend": "^16.0.1",
+    "react-full-screen": "^0.3.1-0",
+    "react-hook-form": "^6.8.1",
+    "react-monaco-editor": "^0.43.0",
+    "react-reflex": "^4.0.3",
+    "react-responsive-modal": "^6.2.0",
+    "react-table": "7.8.0",
+    "react-tiny-popover": "^7.0.1",
+    "react-tooltip": "^4.2.21",
+    "react-window": "^1.8.5",
+    "vscode": "^1.1.37"
+  },
+  "peerDependencies": {
+    "react": "17.0.2",
+    "react-dnd": "^16.0.0",
+    "react-dnd-html5-backend": "^16.0.0",
+    "react-dom": "17.0.2"
+  },
+  "babel": {
+    "presets": [
+      [
+        "react-app",
+        {
+          "absoluteRuntime": false
+        }
+      ]
+    ]
+  }
+}

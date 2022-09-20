@@ -1,0 +1,80 @@
+.rct-tree-root{
+    background-color: #ffffff00 !important;
+    color: var(--app-foreground) !important;
+  }
+  .rct-tree-item-title-container:hover {
+    background: var(--focus-level-2);
+  }
+  .save-modal-collection .rct-tree-root{
+    max-height: 200px;
+  }
+  .save-modal-collection .rct-tree-root::-webkit-scrollbar{
+    background: transparent;
+    width: 4px;
+    display: block;
+  }
+  .save-modal-collection .rct-tree-root::-webkit-scrollbar-thumb{
+    background: var(--focus-level-4);
+  }
+  .rct-tree-root{
+    margin: 1px !important;
+  }
+  .rct-tree-root:not(.rct-tree-root-focus) .rct-tree-item-title-container-focused,.rct-tree-root.rct-tree-root-focus .rct-tree-item-title-container-selected,.rct-tree-root.rct-tree-root-focus .rct-tree-item-title-container-focused{
+    background-color: var(--focus-level-3) !important;
+    color: var(--app-foreground-active) !important;
+  }
+  .rct-tree-root:not(.rct-tree-root-focus) .rct-tree-item-title-container-selected{
+    background-color: var(--focus-level-4) !important;
+    color: var(--app-foreground-active) !important;
+  }
+  .rct-tree-root:not(.rct-tree-root-focus) .rct-tree-item-title-container-focused{
+    border-color: #ffffff00 !important;
+    background-color: #ffffff00 !important;
+  }
+  .rct-tree-line{
+    display: none;
+  }
+  .rct-tree-item-li:hover .rct-tree-line:not(.horizontal){
+    display: block;
+  }
+  .rct-tree-item-li .rct-tree-item-li:not(.rct-tree-item-li-expanded):hover>div>.rct-tree-line.horizontal{
+    display: block;
+  }
+  .rct-tree-line.horizontal{
+    width: 6px;
+  }
+  
+  .collection_leaf-node-type{
+    font-size: 12px;
+    font-weight: 700;
+    width: 2.5rem/* 40px */;
+    flex: none;
+    height: 1rem/* 16px */;
+    height: 1rem/* 16px */;
+  }
+  .rct-tree-item-title-container{ 
+    align-items: center;
+    padding-top: 0.125rem/* 2px */;
+    padding-bottom: 0.125rem/* 2px */;
+  }
+  .rct-tree-item-li{
+    font-size: 14px !important;
+  }
+  .rct-tree-item-li{
+    font-family: 'Lato' !important;
+  }
+  .rct-tree-item-li>div>div:last-child{
+    visibility: hidden;
+  }
+  .rct-tree-item-li:hover>div>div:last-child,.rct-tree-item-li-slected>div>div:last-child,.rct-tree-item-li-focused>div>div:last-child{
+    visibility: visible;
+  }
+  .rct-tree-item-li-action{
+    display: none;
+  }
+  .rct-tree-item-li:hover .rct-tree-item-li-action,.rct-tree-item-li-slected .rct-tree-item-li-action,.rct-tree-item-li-focused .rct-tree-item-li-action{
+    display: flex;
+  }
+  .rct-tree-item-button:focus{
+    box-shadow: none !important;
+  }

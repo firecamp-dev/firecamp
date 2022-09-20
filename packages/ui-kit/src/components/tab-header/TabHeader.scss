@@ -1,0 +1,178 @@
+/*-----tab panel header css start-----------*/
+.fc-tab-panel-header {
+	display: flex;
+	align-items: center;
+	padding: 0px 10px;
+	height: 34px;
+  width: 100%;
+}
+
+.fc-tab-panel-header.-mb-2 {
+	margin-bottom: -8px;
+}
+
+.fc-tab-panel-header.small {
+	height: 33px;
+	padding: 0px 8px;
+	width: 100% !important;
+}
+
+.fc-tab-panel-header.with-border-bottom {
+	border-bottom: 1px solid var(--app-border);
+	height: 45px !important;
+}
+
+.fc-tab-panel-header.height-small.with-border-bottom {
+	border-bottom: 1px solid var(--app-border);
+	height: 32px !important;
+}
+
+.fc-tab-panel-header.padding-small {
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+.fc-tab-panel-header.padding-left-extra {
+	padding-left: 32px !important;
+}
+
+.fc-tab-panel-header.padding-small.height-small {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+.fc-tab-panel-header.height-small {
+	height: 31px;
+}
+
+.fc-tab-panel-header.height-ex-small {
+	height: 32px;
+}
+
+.fc-tab-panel-header.padding-small .fc-tab-panel-header-left>*,
+.fc-tab-panel-header.padding-small .fc-tab-panel-header-right>* {
+	margin-right: 7px !important;
+}
+
+.fc-tab-panel-header.padding-small.height-small .fc-tab-panel-header-left>*,
+.fc-tab-panel-header.padding-small.height-small .fc-tab-panel-header-right>* {
+	margin-right: 4px !important;
+}
+
+.fc-tab-panel-header.padding-small .fc-tab-panel-header-right>*:last-child,
+.fc-tab-panel-header.padding-small.height-small .fc-tab-panel-header-right>*:last-child {
+	margin-right: 0px !important;
+}
+
+.fc-tab-panel-header-left>*:first-child {
+	margin-left: 0px !important;
+}
+
+.fc-tab-panel-header-left>* {
+	margin-right: 8px !important;
+}
+
+.fc-tab-panel-header-center {
+	margin-left: auto;
+	margin-right: auto;
+	overflow: auto;
+}
+
+.fc-tab-panel-header-center>* {
+	margin-right: 8px !important;
+}
+
+.fc-tab-panel-header-center>*:last-child {
+	margin-right: 0px !important;
+}
+
+.fc-tab-panel-header-right>*:last-child {
+	margin-right: 0px !important;
+}
+
+.fc-tab-panel-header-right>* {
+	margin-right: 8px !important;
+}
+
+.fc-tab-panel-header-right {
+	margin-left: auto !important;
+	display: flex;
+	align-items: center;
+}
+
+.fc-tab-panel-header-left {
+	margin-right: 20 !important;
+	display: flex;
+	align-items: center;
+}
+
+.fc-tab-panel-header-close {
+	margin-left: auto;
+	font-size: 24px;
+	color: var(--app-foreground);
+	cursor: pointer;
+}
+
+.fc-tab-panel-header.align-right {
+	flex-direction: row-reverse;
+}
+
+.fc-tab-panel-header-title {
+	margin: 8px 14px;
+	font-size: 16px;
+	text-transform: uppercase;
+	color: var(--app-foreground);
+	opacity: .8;
+	line-height: 28px;
+}
+
+.tab-panel-header-button-wrapper {
+	display: flex;
+	align-items: baseline;
+	background-color: transparent;
+}
+
+.tab-panel-header-button-wrapper.align-right {
+	justify-content: flex-end;
+}
+
+.tab-panel-header-button-wrapper.align-right>* {
+	margin-right: 8px;
+}
+
+.tab-panel-header-button-wrapper.align-right>.align-left {
+	margin-right: auto !important;
+}
+
+.fc-tab-panel-header-title-small {
+	white-space: pre;
+}
+
+.fc-tab-panel-info {
+	display: flex;
+	align-items: center;
+	font-size: 12px;
+}
+
+.fc-tab-panel-info>* {
+	margin-right: 4px;
+	color: var(--app-foreground-inactive);
+}
+
+.fc-tab-panel-info>label {
+	font-weight: 600;
+	margin-bottom: 0px;
+}
+
+.fc-tab-panel-info>.fc-tab-panel-info-icon {
+	opacity: 1 !important;
+	margin-right: 8px !important;
+	cursor: pointer;
+}
+.tabs-with-bottom-border.with-left-margin {
+  margin-left: 20px;
+}
+.tab-with-collapse-btn{
+  margin-left: 19px;
+}
+/*-----tab panel heder css end -------------*/

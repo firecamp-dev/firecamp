@@ -1,0 +1,200 @@
+[
+    {
+        "target": "c",
+        "clients": [
+            {
+                "libcurl": "CURL *hnd = curl_easy_init();\n\ncurl_easy_setopt(hnd, CURLOPT_CUSTOMREQUEST, \"POST\");\ncurl_easy_setopt(hnd, CURLOPT_URL, \"https://example.com/\");\n\nstruct curl_slist *headers = NULL;\nheaders = curl_slist_append(headers, \"content-type: text/plain\");\ncurl_easy_setopt(hnd, CURLOPT_HTTPHEADER, headers);\n\ncurl_easy_setopt(hnd, CURLOPT_POSTFIELDS, \"Hi, there\");\n\nCURLcode ret = curl_easy_perform(hnd);"
+            }
+        ]
+    },
+    {
+        "target": "clojure",
+        "clients": [
+            {
+                "clj_http": "(require '[clj-http.client :as client])\n\n(client/post \"https://example.com/\" {:body \"Hi, there\"})"
+            }
+        ]
+    },
+    {
+        "target": "csharp",
+        "clients": [
+            {
+                "httpclient": "var client = new HttpClient();\nvar request = new HttpRequestMessage\n{\n    Method = HttpMethod.Post,\n    RequestUri = new Uri(\"https://example.com/\"),\n    Content = new StringContent(\"Hi, there\")\n    {\n        Headers =\n        {\n            ContentType = new MediaTypeHeaderValue(\"text/plain\")\n        }\n    }\n};\nusing (var response = await client.SendAsync(request))\n{\n    response.EnsureSuccessStatusCode();\n    var body = await response.Content.ReadAsStringAsync();\n    Console.WriteLine(body);\n}"
+            },
+            {
+                "restsharp": "var client = new RestClient(\"https://example.com/\");\nvar request = new RestRequest(Method.POST);\nrequest.AddHeader(\"content-type\", \"text/plain\");\nrequest.AddParameter(\"text/plain\", \"Hi, there\", ParameterType.RequestBody);\nIRestResponse response = client.Execute(request);"
+            }
+        ]
+    },
+    {
+        "target": "go",
+        "clients": [
+            {
+                "native": "package main\n\nimport (\n\t\"fmt\"\n\t\"strings\"\n\t\"net/http\"\n\t\"io/ioutil\"\n)\n\nfunc main() {\n\n\turl := \"https://example.com/\"\n\n\tpayload := strings.NewReader(\"Hi, there\")\n\n\treq, _ := http.NewRequest(\"POST\", url, payload)\n\n\treq.Header.Add(\"content-type\", \"text/plain\")\n\n\tres, _ := http.DefaultClient.Do(req)\n\n\tdefer res.Body.Close()\n\tbody, _ := ioutil.ReadAll(res.Body)\n\n\tfmt.Println(res)\n\tfmt.Println(string(body))\n\n}"
+            }
+        ]
+    },
+    {
+        "target": "http",
+        "clients": [
+            {
+                "http1.1": "POST / V2Tls\r\nContent-Type: text/plain\r\nHost: example.com\r\nContent-Length: 9\r\n\r\nHi, there"
+            }
+        ]
+    },
+    {
+        "target": "java",
+        "clients": [
+            {
+                "asynchttp": "AsyncHttpClient client = new DefaultAsyncHttpClient();\nclient.prepare(\"POST\", \"https://example.com/\")\n  .setHeader(\"content-type\", \"text/plain\")\n  .setBody(\"Hi, there\")\n  .execute()\n  .toCompletableFuture()\n  .thenAccept(System.out::println)\n  .join();\n\nclient.close();"
+            },
+            {
+                "nethttp": "HttpRequest request = HttpRequest.newBuilder()\n    .uri(URI.create(\"https://example.com/\"))\n    .header(\"content-type\", \"text/plain\")\n    .method(\"POST\", HttpRequest.BodyPublishers.ofString(\"Hi, there\"))\n    .build();\nHttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());\nSystem.out.println(response.body());"
+            },
+            {
+                "okhttp": "OkHttpClient client = new OkHttpClient();\n\nMediaType mediaType = MediaType.parse(\"text/plain\");\nRequestBody body = RequestBody.create(mediaType, \"Hi, there\");\nRequest request = new Request.Builder()\n  .url(\"https://example.com/\")\n  .post(body)\n  .addHeader(\"content-type\", \"text/plain\")\n  .build();\n\nResponse response = client.newCall(request).execute();"
+            },
+            {
+                "unirest": "HttpResponse<String> response = Unirest.post(\"https://example.com/\")\n  .header(\"content-type\", \"text/plain\")\n  .body(\"Hi, there\")\n  .asString();"
+            }
+        ]
+    },
+    {
+        "target": "javascript",
+        "clients": [
+            {
+                "xhr": "const data = \"Hi, there\";\n\nconst xhr = new XMLHttpRequest();\nxhr.withCredentials = true;\n\nxhr.addEventListener(\"readystatechange\", function () {\n  if (this.readyState === this.DONE) {\n    console.log(this.responseText);\n  }\n});\n\nxhr.open(\"POST\", \"https://example.com/\");\nxhr.setRequestHeader(\"content-type\", \"text/plain\");\n\nxhr.send(data);"
+            },
+            {
+                "axios": "import axios from \"axios\";\n\nconst options = {\n  method: 'POST',\n  url: 'https://example.com/',\n  headers: {'content-type': 'text/plain'},\n  data: 'Hi, there'\n};\n\naxios.request(options).then(function (response) {\n  console.log(response.data);\n}).catch(function (error) {\n  console.error(error);\n});"
+            },
+            {
+                "fetch": "const options = {method: 'POST', headers: {'content-type': 'text/plain'}, body: 'Hi, there'};\n\nfetch('https://example.com/', options)\n  .then(response => response.json())\n  .then(response => console.log(response))\n  .catch(err => console.error(err));"
+            },
+            {
+                "jquery": "const settings = {\n  \"async\": true,\n  \"crossDomain\": true,\n  \"url\": \"https://example.com/\",\n  \"method\": \"POST\",\n  \"headers\": {\n    \"content-type\": \"text/plain\"\n  },\n  \"data\": \"Hi, there\"\n};\n\n$.ajax(settings).done(function (response) {\n  console.log(response);\n});"
+            }
+        ]
+    },
+    {
+        "target": "kotlin",
+        "clients": [
+            {
+                "okhttp": "val client = OkHttpClient()\n\nval mediaType = MediaType.parse(\"text/plain\")\nval body = RequestBody.create(mediaType, \"Hi, there\")\nval request = Request.Builder()\n  .url(\"https://example.com/\")\n  .post(body)\n  .addHeader(\"content-type\", \"text/plain\")\n  .build()\n\nval response = client.newCall(request).execute()"
+            }
+        ]
+    },
+    {
+        "target": "node",
+        "clients": [
+            {
+                "native": "const http = require(\"https\");\n\nconst options = {\n  \"method\": \"POST\",\n  \"hostname\": \"example.com\",\n  \"port\": null,\n  \"path\": \"/\",\n  \"headers\": {\n    \"content-type\": \"text/plain\"\n  }\n};\n\nconst req = http.request(options, function (res) {\n  const chunks = [];\n\n  res.on(\"data\", function (chunk) {\n    chunks.push(chunk);\n  });\n\n  res.on(\"end\", function () {\n    const body = Buffer.concat(chunks);\n    console.log(body.toString());\n  });\n});\n\nreq.write(\"Hi, there\");\nreq.end();"
+            },
+            {
+                "request": "const request = require('request');\n\nconst options = {\n  method: 'POST',\n  url: 'https://example.com/',\n  headers: {'content-type': 'text/plain'},\n  body: 'Hi, there'\n};\n\nrequest(options, function (error, response, body) {\n  if (error) throw new Error(error);\n\n  console.log(body);\n});\n"
+            },
+            {
+                "unirest": "const unirest = require(\"unirest\");\n\nconst req = unirest(\"POST\", \"https://example.com/\");\n\nreq.headers({\n  \"content-type\": \"text/plain\"\n});\n\nreq.send(\"Hi, there\");\n\nreq.end(function (res) {\n  if (res.error) throw new Error(res.error);\n\n  console.log(res.body);\n});\n"
+            },
+            {
+                "axios": "var axios = require(\"axios\").default;\n\nvar options = {\n  method: 'POST',\n  url: 'https://example.com/',\n  headers: {'content-type': 'text/plain'},\n  data: 'Hi, there'\n};\n\naxios.request(options).then(function (response) {\n  console.log(response.data);\n}).catch(function (error) {\n  console.error(error);\n});"
+            },
+            {
+                "fetch": "const fetch = require('node-fetch');\n\nlet url = 'https://example.com/';\n\nlet options = {method: 'POST', headers: {'content-type': 'text/plain'}, body: 'Hi, there'};\n\nfetch(url, options)\n  .then(res => res.json())\n  .then(json => console.log(json))\n  .catch(err => console.error('error:' + err));"
+            }
+        ]
+    },
+    {
+        "target": "objc",
+        "clients": [
+            {
+                "nsurlsession": "#import <Foundation/Foundation.h>\n\nNSDictionary *headers = @{ @\"content-type\": @\"text/plain\" };\n\nNSData *postData = [[NSData alloc] initWithData:[@\"Hi, there\" dataUsingEncoding:NSUTF8StringEncoding]];\n\nNSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@\"https://example.com/\"]\n                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy\n                                                   timeoutInterval:10.0];\n[request setHTTPMethod:@\"POST\"];\n[request setAllHTTPHeaderFields:headers];\n[request setHTTPBody:postData];\n\nNSURLSession *session = [NSURLSession sharedSession];\nNSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request\n                                            completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {\n                                                if (error) {\n                                                    NSLog(@\"%@\", error);\n                                                } else {\n                                                    NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *) response;\n                                                    NSLog(@\"%@\", httpResponse);\n                                                }\n                                            }];\n[dataTask resume];"
+            }
+        ]
+    },
+    {
+        "target": "ocaml",
+        "clients": [
+            {
+                "cohttp": "open Cohttp_lwt_unix\nopen Cohttp\nopen Lwt\n\nlet uri = Uri.of_string \"https://example.com/\" in\nlet headers = Header.add (Header.init ()) \"content-type\" \"text/plain\" in\nlet body = Cohttp_lwt_body.of_string \"Hi, there\" in\n\nClient.call ~headers ~body `POST uri\n>>= fun (res, body_stream) ->\n  (* Do stuff with the result *)"
+            }
+        ]
+    },
+    {
+        "target": "php",
+        "clients": [
+            {
+                "curl": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://example.com/\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => \"Hi, there\",\n  CURLOPT_HTTPHEADER => [\n    \"content-type: text/plain\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            },
+            {
+                "guzzle": "<?php\n\n$curl = curl_init();\n\ncurl_setopt_array($curl, [\n  CURLOPT_URL => \"https://example.com/\",\n  CURLOPT_RETURNTRANSFER => true,\n  CURLOPT_ENCODING => \"\",\n  CURLOPT_MAXREDIRS => 10,\n  CURLOPT_TIMEOUT => 30,\n  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,\n  CURLOPT_CUSTOMREQUEST => \"POST\",\n  CURLOPT_POSTFIELDS => \"Hi, there\",\n  CURLOPT_HTTPHEADER => [\n    \"content-type: text/plain\"\n  ],\n]);\n\n$response = curl_exec($curl);\n$err = curl_error($curl);\n\ncurl_close($curl);\n\nif ($err) {\n  echo \"cURL Error #:\" . $err;\n} else {\n  echo $response;\n}"
+            },
+            {
+                "http1": "<?php\n\n$request = new HttpRequest();\n$request->setUrl('https://example.com/');\n$request->setMethod(HTTP_METH_POST);\n\n$request->setHeaders([\n  'content-type' => 'text/plain'\n]);\n\n$request->setBody('Hi, there');\n\ntry {\n  $response = $request->send();\n\n  echo $response->getBody();\n} catch (HttpException $ex) {\n  echo $ex;\n}"
+            },
+            {
+                "http2": "<?php\n\n$client = new http\\Client;\n$request = new http\\Client\\Request;\n\n$body = new http\\Message\\Body;\n$body->append('Hi, there');\n\n$request->setRequestUrl('https://example.com/');\n$request->setRequestMethod('POST');\n$request->setBody($body);\n\n$request->setHeaders([\n  'content-type' => 'text/plain'\n]);\n\n$client->enqueue($request)->send();\n$response = $client->getResponse();\n\necho $response->getBody();"
+            }
+        ]
+    },
+    {
+        "target": "powershell",
+        "clients": [
+            {
+                "webrequest": "$headers=@{}\n$headers.Add(\"content-type\", \"text/plain\")\n$response = Invoke-WebRequest -Uri 'https://example.com/' -Method POST -Headers $headers -ContentType 'text/plain' -Body 'Hi, there'"
+            },
+            {
+                "restmethod": "$headers=@{}\n$headers.Add(\"content-type\", \"text/plain\")\n$response = Invoke-RestMethod -Uri 'https://example.com/' -Method POST -Headers $headers -ContentType 'text/plain' -Body 'Hi, there'"
+            }
+        ]
+    },
+    {
+        "target": "python",
+        "clients": [
+            {
+                "python3": "import http.client\n\nconn = http.client.HTTPSConnection(\"example.com\")\n\npayload = \"Hi, there\"\n\nheaders = { 'content-type': \"text/plain\" }\n\nconn.request(\"POST\", \"/\", payload, headers)\n\nres = conn.getresponse()\ndata = res.read()\n\nprint(data.decode(\"utf-8\"))"
+            },
+            {
+                "requests": "import requests\n\nurl = \"https://example.com/\"\n\npayload = \"Hi, there\"\nheaders = {\"content-type\": \"text/plain\"}\n\nresponse = requests.request(\"POST\", url, data=payload, headers=headers)\n\nprint(response.text)"
+            }
+        ]
+    },
+    {
+        "target": "r",
+        "clients": [
+            {
+                "httr": "library(httr)\n\nurl <- \"https://example.com/\"\n\npayload <- \"Hi, there\"\n\nencode <- \"raw\"\n\nresponse <- VERB(\"POST\", url, body = payload, content_type(\"text/plain\"), encode = encode)\n\ncontent(response, \"text\")"
+            }
+        ]
+    },
+    {
+        "target": "ruby",
+        "clients": [
+            {
+                "native": "require 'uri'\nrequire 'net/http'\nrequire 'openssl'\n\nurl = URI(\"https://example.com/\")\n\nhttp = Net::HTTP.new(url.host, url.port)\nhttp.use_ssl = true\nhttp.verify_mode = OpenSSL::SSL::VERIFY_NONE\n\nrequest = Net::HTTP::Post.new(url)\nrequest[\"content-type\"] = 'text/plain'\nrequest.body = \"Hi, there\"\n\nresponse = http.request(request)\nputs response.read_body"
+            }
+        ]
+    },
+    {
+        "target": "shell",
+        "clients": [
+            {
+                "curl": "curl --request POST \\\n  --url https://example.com/ \\\n  --header 'content-type: text/plain' \\\n  --data 'Hi, there'"
+            },
+            {
+                "httpie": "echo 'Hi, there' |  \\\n  http POST https://example.com/ \\\n  content-type:text/plain"
+            },
+            {
+                "wget": "wget --quiet \\\n  --method POST \\\n  --header 'content-type: text/plain' \\\n  --body-data 'Hi, there' \\\n  --output-document \\\n  - https://example.com/"
+            }
+        ]
+    },
+    {
+        "target": "swift",
+        "clients": [
+            {
+                "nsurlsession": "import Foundation\n\nlet headers = [\"content-type\": \"text/plain\"]\n\nlet postData = NSData(data: \"Hi, there\".data(using: String.Encoding.utf8)!)\n\nlet request = NSMutableURLRequest(url: NSURL(string: \"https://example.com/\")! as URL,\n                                        cachePolicy: .useProtocolCachePolicy,\n                                    timeoutInterval: 10.0)\nrequest.httpMethod = \"POST\"\nrequest.allHTTPHeaderFields = headers\nrequest.httpBody = postData as Data\n\nlet session = URLSession.shared\nlet dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in\n  if (error != nil) {\n    print(error)\n  } else {\n    let httpResponse = response as? HTTPURLResponse\n    print(httpResponse)\n  }\n})\n\ndataTask.resume()"
+            }
+        ]
+    }
+]

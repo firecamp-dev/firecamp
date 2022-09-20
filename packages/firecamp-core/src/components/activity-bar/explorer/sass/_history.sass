@@ -1,0 +1,223 @@
+.fc-history
+  display: flex
+  flex-direction: column
+  width: inherit
+  background: var(--app-background-secondary)
+  height: 100%
+  position: absolute
+  top: 0px
+  left: 0px
+  bottom: 0px
+  right: 0px
+  border-right: 1px solid var(--sidebarBorder)
+  color: var(--sidebarForeground)
+  z-index: 99
+  width: calc(100% - 2px)
+
+.fc-history-body
+  flex: 1
+  overflow-y: auto
+  border-top: 1px solid var(--sidebarBorder)
+
+.fc-history-body-empty
+    text-align: left
+    font-size: 12px
+    padding: 12px 12px  
+
+.fc-history-header
+  background: var(--leftbar-header-bg-color)
+  padding: 10px 10px
+  display: flex
+  position: relative
+  align-items: center
+
+.fc-history-header-close.icon-close
+  font-size: 20px
+  margin-left: auto
+  cursor: pointer
+
+.fc-history-search
+  display: flex
+  position: relative
+  align-items: center
+  padding: 10px
+  border-top: 1px solid var(--app-border)
+
+.fc-history-list-item
+  background-color: var(--app-background-secondary)
+  position: relative
+  border-bottom: 1px solid var(--app-border)
+
+.fc-history-list-item-body
+  display: none
+  font-size: 13px
+  margin-bottom: 6px
+
+.fc-history-list-item.active
+  > .fc-history-list-item-body
+    display: block
+
+  background: var(--app-background)
+
+.fc-history-req-list-item-type
+  color: var(--cm-property)
+  padding-right: 4px
+  width: 60px
+  min-width: 60px
+  max-width: 60px
+
+.fc-history-query-list-item
+  display: flex
+  align-items: center
+  padding-bottom: 4px
+  padding-top: 4px
+  cursor: pointer
+
+.fc-history-req-list-item.collapsed  .fc-history-query-list
+  display: none
+
+.fc-history-query-list
+  font-size: 12px
+
+.fc-history-list-item-head
+  display: flex
+  align-items: center
+  padding: 8px 8px
+  cursor: pointer
+
+.fc-history-list-item.active>.fc-history-list-item-head
+    background: var(--app-background-secondary)
+
+.fc-history-list-item-caret
+  &:before
+    width: 0
+    height: 0
+    display: inline-block
+    border: 6px solid transparent
+    content: ' '
+    border-left-color: var(--app-foreground)
+    opacity: 0.6
+
+  width: 16px
+  height: 22px
+  position: relative
+  margin-left: 4px
+
+.fc-history-list-item.active .fc-history-list-item-caret
+  &:before
+    transform: rotate(90deg)
+
+  margin-left: 0px
+  margin-right: 4px
+  height: 18px
+
+.fc-history-req-list
+  display: table
+  table-layout: fixed
+  width: 100%
+  padding: 4px 8px 0px 8px
+
+  .fc-history-req-list-item
+    display: flex
+    position: relative
+
+.fc-history-req-list-item:hover,.fc-history-req-list-item.active
+  >.fc-history-list-item-action
+    visibility: visible
+
+.fc-history-query-list-item:hover,.fc-history-query-list-item.active
+  >.fc-history-list-item-action
+    visibility: visible
+
+.fc-history-query-list-item>.btn
+  font-size: 11px
+  margin-right: 4px
+  padding: 0px 0px
+  height: 20px
+  width: 20px
+
+.fc-history-req-list-item:hover .fc-history-list-item-action
+  opacity: 1
+
+.fc-history-list-item-action
+  margin-left: auto
+  display: flex
+  font-size: 18px
+  visibility: hidden
+  position: absolute
+  right: 0px
+  background-color: var(--app-background)
+  padding-left: 8px
+  z-index: 2
+  opacity: 0
+
+  .icon-more
+    transform: rotate(90deg)
+
+  >div
+    cursor: pointer
+    height: 20px
+    width: 20px
+    margin-left: 2px
+
+.fc-history-req-list-item-action
+  width: 52px
+
+  >.fc-history-list-item-action
+    font-size: 16px
+
+    >div
+      height: 17px
+      width: 16px
+
+.fc-history-req-list-item-url
+  position: relative
+  flex: 1
+  cursor: pointer
+
+.fc-history-req-list-item-url>.fc-history-req-list-item-url-text
+  overflow: hidden
+  word-break: break-all
+  opacity: 0.6
+
+.fc-history-list-item-timestamp
+    font-size: 10px
+    line-height: 12px
+    white-space: nowrap
+    color: var(--app-foreground)    
+    background: var(--app-background)
+    position: absolute
+    right: 0px
+    padding: 2px 3px
+    z-index: 1
+    bottom: 2px
+
+.fc-history-icon>img 
+    opacity: 0.3
+    margin-top: -4px
+    margin-right: 4px
+    cursor: pointer
+
+.fc-history-req-list-item
+  padding-top: 3px
+  padding-bottom: 3px    
+
+.fc-history-query-list-item-type 
+    font-weight: 600
+    margin-right: 4px  
+    cursor: pointer
+
+.fc-history-list-item-preview
+  min-width: 240px
+  height: 100px
+
+.fc-history-list-item-preview>.ace_editor
+  background: transparent !important
+
+.fc-history-req-list-item-url>.fc-history-req-list-item-url-text:hover+.fc-history-list-item-action,.fc-history-list-item-action:hover,
+.fc-history-req-list-item-url.active>.fc-history-req-list-item-url-text+.fc-history-list-item-action,
+.fc-history-req-list-item:hover .fc-history-list-item-action
+    visibility: visible !important
+
+.fc-history-req-list-item-url>.fc-history-req-list-item-url-text+.fc-history-list-item-action
+    top: 0px  

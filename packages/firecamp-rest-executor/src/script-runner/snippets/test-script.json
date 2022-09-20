@@ -1,0 +1,192 @@
+[
+  {
+    "id": "request",
+    "name": "Request",
+    "helps": [
+      {
+        "id": "url",
+        "name": "URL",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_same_url",
+            "title": "should have the same URL",
+            "snippet": "// API: https://jsonplaceholder.typicode.com/posts\n\nit(\"should have the same URL\", function () {\n  expect(request.getURL()).equal(\"https://jsonplaceholder.typicode.com/posts\");\n});"
+          }
+        ]
+      },
+      {
+        "id": "query_params",
+        "name": "Query Params",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_query_param_set",
+            "title": "should have the query param set",
+            "snippet": "it(\"should have the query param set\", function () {\n  let id = request.getParam(\"id\");\n  \n  assert.exists(id);\n});"
+          },
+          {
+            "id": "should_have_the_same_query_param",
+            "title": "should have the same query param",
+            "snippet": "it(\"should have the same query param\", function () {\n  let id = request.getParam(\"id\");\n  \n  expect(id).equal(\"1\");\n});"
+          }
+        ]
+      },
+      {
+        "id": "method",
+        "name": "Method",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_method_set",
+            "title": "should have the method set",
+            "snippet": "it(\"should have the method set\", function () {\n  assert.exists(request.getMethod())\n});"
+          },
+          {
+            "id": "should_have_the_same_method",
+            "title": "should have the same",
+            "snippet": "it(\"should have the same\", function () {\n  expect(request.getMethod()).equal(\"GET\")\n});"
+          }
+        ]
+      },
+      {
+        "id": "headers",
+        "name": "Headers",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_request_header_set",
+            "title": "should have the request header set",
+            "snippet": "it(\"should have the request header set\", function () {\n  let bodyType = request.getHeader(\"content-type\");\n  \n  assert.exists(bodyType);\n});"
+          },
+          {
+            "id": "should_have_request_header_should_same",
+            "title": "Request header should same",
+            "snippet": "it(\"Request header should same\", function () {\n  let bodyType = request.getHeader(\"content-type\");\n  \n  expect(bodyType).equal(\"application/json\");\n});"
+          }
+        ]
+      },
+      {
+        "id": "authorization",
+        "name": "Authorization",
+        "helpPayloads": [
+          {
+            "id": "token_should_set",
+            "title": "Token should set",
+            "snippet": "it(\"Token should set\", function () {\n  let token = request.getHeader(\"Authorization\");\n  \n  assert.exists(token);\n});"
+          }
+        ]
+      },
+      {
+        "id": "request_body",
+        "name": "Request body",
+        "helpPayloads": [
+          {
+            "id": "should_contains_content_type",
+            "title": "Should contains 'content-type/Content-Type'",
+            "snippet": "describe(\"Should contains 'content-type'\", () => {\n  \n  let contentType = request.getHeader(\"content-type\");\n  \n  it(\"Is 'content-type' set\", () => {\n    assert.exists(contentType)\n  })\n  \n  it(\"Is 'content-type' equals to 'application/json\", () => {\n    expect(contentType).equal(\"application/json\")\n  })\n})\n\ndescribe(\"Is contains 'Content-Type'\", () => {\n  \n  let contentType = request.getHeader(\"Content-Type\");\n  \n  it(\"Is 'Content-Type' set\", () => {\n    assert.exists(contentType)  \n  })\n  \n  it(\"Is 'Content-Type' equals to 'application/json\", () => {\n    expect(contentType).equal(\"application/json\")\n  })\n})"
+          },
+          {
+            "id": "should_have_the_request_body_set",
+            "title": "should have the request body set",
+            "snippet": "it(\"should have the request body set\", function () {\n  assert.exists(request.getRequestBody())\n});"
+          },
+          {
+            "id": "should_have_the_same_body_type",
+            "title": "should have the same body type",
+            "snippet": "it(\"should have the same body type\", function() {\n  expect(request.getBodyType()).equal(\"application/json\")\n});"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "response",
+    "name": "Response",
+    "helps": [
+      {
+        "id": "success",
+        "name": "Success",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_response_200_OK",
+            "title": "should have the response 200 OK",
+            "snippet": "it(\"should have the response 200 OK\", () => {\n  expect(response.getStatus()).equal(200)\n})"
+          }
+        ]
+      },
+      {
+        "id": "status_code",
+        "name": "Status code",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_status_code_from_one_of",
+            "title": "should have the status code from one of",
+            "snippet": "it(\"should have the status code from one of\", function() {\n  assert.oneOf(response.getStatus(), [200, 201])\n});"
+          },
+          {
+            "id": "should_have_the_same_status_code",
+            "title": "should have the same status code",
+            "snippet": "it(\"should have the same status code\", function() {\n  expect(response.getStatus()).equal(200)\n});"
+          }
+        ]
+      },
+      {
+        "id": "duration",
+        "name": "Duration",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_duration_less_than_150",
+            "title": "should have the duration less than 150",
+            "snippet": "it(\"should have the duration less than 150\", function() {\n  assert.isBelow(response.getDuration(), 150)\n});"
+          }
+        ]
+      },
+      {
+        "id": "headers",
+        "name": "Headers",
+        "helpPayloads": [
+          {
+            "id": "should_contain_a_response_header",
+            "title": "should contain a response header",
+            "snippet": "it(\"should contain a response header\", function () {\n  let bodyType = response.getHeader(\"content-type\");\n  \n  assert.exists(bodyType);\n});"
+          },
+          {
+            "id": "should_contain_the_content_type",
+            "title": "should contain the content-type",
+            "snippet": "it(\"should contain the content-type\", function () {\n  let bodyType = response.getHeader(\"content-type\");\n  \n  expect(bodyType).include(\"application/json\");\n});"
+          }
+        ]
+      },
+      {
+        "id": "response_body",
+        "name": "Response body",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_required_data_in_the_response_body",
+            "title": "should have the required data in the response body",
+            "snippet": "// API: https://jsonplaceholder.typicode.com/posts\n\nit(\"should have the required data in the response body\", function () {\n  \n  let data = response.getResponseBody();\n  \n  try {\n    if (typeof data === \"string\")\n      data = JSON.parse(data)[0];\n  } catch (e) {\n  \n  }\n  \n  assert.property(data, \"userId\")\n});"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "environment",
+    "name": "Environment",
+    "helps": [
+      {
+        "id": "variables",
+        "name": "Variables",
+        "helpPayloads": [
+          {
+            "id": "should_have_the_variable_set",
+            "title": "should have the variable set",
+            "snippet": "it(\"should have the variable set\", function () {\n  let host = env.getVariable(\"host\");\n  \n  assert.exists(host);\n});"
+          },
+          {
+            "id": "should_have_the_same_variable",
+            "title": "should have the same variable",
+            "snippet": "it(\"should have the same variable\", function () {\n  let host = env.getVariable(\"host\");\n  \n  expect(host).equal(\"gmail.com\");\n});"
+          }
+        ]
+      }
+    ]
+  }
+]

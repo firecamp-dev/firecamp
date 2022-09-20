@@ -1,0 +1,19 @@
+
+.progress-bar:not(.progressbar-small){
+    animation: loader 4s ease infinite;
+    width: 0px;
+}
+.progress-bar.progressbar-small{
+    animation: loaderShort 4s ease infinite;
+    width: 20px;
+    left: 0px;
+}
+@keyframes loaderShort {
+    from {left: 0px;}
+    to {left: 100%;}
+}
+
+@keyframes loader {
+    from {width: 0px;}
+    to {width: 100%;}
+}
