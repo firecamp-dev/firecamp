@@ -127,8 +127,10 @@ dist
 # TernJS port file
 .tern-port
 
-.yarn/
+.yarn/**
 .yarnrc
+!.yarn/releases
+!.yarn/releases/*
 
 # Declaration files
 *.d.ts
