@@ -48,7 +48,7 @@ export interface IPlatformStore {
   updateAppInfo: (appInfo: any) => void;
   changeFirecampAgent: (agent: EFirecampAgent) => void;
   getFirecampAgent: () => EFirecampAgent;
-  checkExtAgentIntalled: ()=> void;
+  checkExtAgentInstalled: ()=> void;
 
   updateTheme: (theme: any) => void;
 
@@ -97,7 +97,7 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
   getFirecampAgent: (): EFirecampAgent =>
     get().meta.agent || EFirecampAgent.proxy,
 
-  checkExtAgentIntalled: async()=> {
+  checkExtAgentInstalled: async()=> {
     executor
       .pingExtension()
       .then(res=> {

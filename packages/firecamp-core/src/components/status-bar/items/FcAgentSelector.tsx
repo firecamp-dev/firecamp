@@ -22,12 +22,12 @@ const agentNamesMap = {
 
 const FcAgentSelector: FC<any> = () => {
   
-  const { agent, isExtAgentInstalled, changeFirecampAgent, checkExtAgentIntalled } = usePlatformStore(
+  const { agent, isExtAgentInstalled, changeFirecampAgent, checkExtAgentInstalled } = usePlatformStore(
     (s: IPlatformStore) => ({
       agent: s.meta.agent,
       isExtAgentInstalled: s.meta.isExtAgentInstalled,
       changeFirecampAgent: s.changeFirecampAgent,
-      checkExtAgentIntalled: s.checkExtAgentIntalled
+      checkExtAgentInstalled: s.checkExtAgentInstalled
     }),
     shallow
   );
@@ -94,7 +94,7 @@ const FcAgentSelector: FC<any> = () => {
       }
     >
       <Popover.Handler>
-        <div className="flex items-center" onClick={()=> checkExtAgentIntalled()}>
+        <div className="flex items-center" onClick={()=> checkExtAgentInstalled()}>
           <VscInfo size={14} className="mr-1 text-primaryColor" />
           {agentNamesMap[agent]}
         </div>
