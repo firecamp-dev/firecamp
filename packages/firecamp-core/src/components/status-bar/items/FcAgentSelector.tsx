@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import cx from 'classnames';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import { EFirecampAgent } from '@firecamp/types';
@@ -16,12 +16,13 @@ import { IPlatformStore, usePlatformStore } from '../../../store/platform';
 
 const agentNamesMap = {
   [EFirecampAgent.proxy]: 'Cloud Agent',
-  [EFirecampAgent.extension]: 'Extension',
+  [EFirecampAgent.extension]: 'Extension Agent',
   [EFirecampAgent.web]: 'Browser Agent',
 };
 
 const FcAgentSelector: FC<any> = () => {
-  let { agent, isExtAgentInstalled, changeFirecampAgent, checkExtAgentIntalled } = usePlatformStore(
+  
+  const { agent, isExtAgentInstalled, changeFirecampAgent, checkExtAgentIntalled } = usePlatformStore(
     (s: IPlatformStore) => ({
       agent: s.meta.agent,
       isExtAgentInstalled: s.meta.isExtAgentInstalled,
@@ -31,11 +32,7 @@ const FcAgentSelector: FC<any> = () => {
     shallow
   );
 
-  useEffect(()=> {
-    checkExtAgentIntalled();
-  }, []);
-
-  let _onSelectAgent = (firecampAgent: EFirecampAgent) => {
+  const _onSelectAgent = (firecampAgent: EFirecampAgent) => {
     changeFirecampAgent(firecampAgent);
   };
 
@@ -70,6 +67,7 @@ const FcAgentSelector: FC<any> = () => {
             name={agentNamesMap[EFirecampAgent.extension]}
             className={`mb-2`}
             isSelected={agent == EFirecampAgent.extension}
+            disabled={!isExtAgentInstalled}
             description={`Send rest requests via Firecamp's browser extension.`}
             onSelect={() => _onSelectAgent(EFirecampAgent.extension)}
           >
@@ -96,7 +94,7 @@ const FcAgentSelector: FC<any> = () => {
       }
     >
       <Popover.Handler>
-        <div className="flex items-center">
+        <div className="flex items-center" onClick={()=> checkExtAgentIntalled()}>
           <VscInfo size={14} className="mr-1 text-primaryColor" />
           {agentNamesMap[agent]}
         </div>
@@ -113,6 +111,7 @@ const AgentItem: FC<IAgentItem> = ({
   className,
   description,
   isSelected,
+  disabled= false,
   onSelect = () => {},
 }) => {
   return (
@@ -120,7 +119,7 @@ const AgentItem: FC<IAgentItem> = ({
       className={cx(className, 'text-base text-appForeground flex items-start')}
     >
       <div className="pt-half" onClick={onSelect}>
-        <Checkbox isChecked={isSelected} id={name} />
+        <Checkbox isChecked={isSelected} id={name} disabled={disabled}/>
       </div>
       <div className="font-semibold ml-2">
         <label className="cursor-pointer" htmlFor={name}>
@@ -141,6 +140,7 @@ interface IAgentItem {
   name: string;
   className?: string;
   isSelected: boolean;
+  disabled?: boolean,
   description?: string;
   onSelect: () => void;
 }

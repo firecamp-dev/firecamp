@@ -84,6 +84,9 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
   changeFirecampAgent: (agent: EFirecampAgent) => {
     if (!agent) return;
 
+    const meta= get().meta;
+    if(agent == EFirecampAgent.extension && !meta.isExtAgentInstalled) agent= meta.agent;
+
     // set agent in local storage
     localStorage.setItem('firecampAgent', agent);
 
@@ -101,7 +104,12 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
           set(s=> ({ meta: { ...s.meta, isExtAgentInstalled: res=="pong"? true: false }}))
       })
       .catch(e=> {
-        set(s=> ({ meta: { ...s.meta, isExtAgentInstalled: false }}))
+        const agent= get().meta.agent;
+        set(s=> ({ meta: { 
+          ...s.meta, 
+          isExtAgentInstalled: false,
+          agent: agent == EFirecampAgent.extension? EFirecampAgent.proxy: agent
+        }}))
       });
   },
 
