@@ -1,5 +1,4 @@
 import { IRest, IRestResponse } from '@firecamp/types';
-import { AxiosRequestConfig } from 'axios';
 
 export interface IRestExecutor {
   /**
