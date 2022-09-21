@@ -4,8 +4,8 @@ import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import {
   MultiLineIFE,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Popover,
   EPopoverPosition,
 } from '@firecamp/ui-kit';
@@ -204,7 +204,7 @@ const HelpPopUp: FC<IHelpPopup> = ({
                                                                 EButtonColor.Primary
                                                               }
                                                               size={
-                                                                EButtonSize.ExSmall
+                                                                .ExSmall
                                                               }
                                                               onClick={() => {
                                                                 onAddScript(

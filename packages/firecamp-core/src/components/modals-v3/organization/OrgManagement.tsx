@@ -5,8 +5,8 @@ import {
   Container,
   TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Modal,
   IModal,
   Alert,

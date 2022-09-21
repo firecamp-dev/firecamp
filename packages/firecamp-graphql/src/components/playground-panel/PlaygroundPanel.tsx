@@ -1,9 +1,9 @@
 import {
   Button,
   Container,
-  EButtonColor,
+ 
   EButtonIconPosition,
-  EButtonSize,
+  
   Tabs,
 } from '@firecamp/ui-kit';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Pane, ToolBar, Empty, EButtonSize } from '@firecamp/ui-kit';
+import { Pane, ToolBar, Empty,  } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';

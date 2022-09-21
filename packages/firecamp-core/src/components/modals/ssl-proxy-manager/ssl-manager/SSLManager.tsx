@@ -3,8 +3,8 @@ import equal from 'deep-equal';
 import { nanoid as id } from 'nanoid';
 import {
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Popover,
   EPopoverPosition,
 } from '@firecamp/ui-kit';

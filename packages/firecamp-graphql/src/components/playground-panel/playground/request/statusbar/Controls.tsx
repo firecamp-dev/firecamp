@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   ConfirmationPopover,
 } from '@firecamp/ui-kit';
 

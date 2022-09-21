@@ -3,8 +3,8 @@ import {
   Modal,
   IModal,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Container,
   TabHeader,
   CopyButton,

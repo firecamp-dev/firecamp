@@ -6,8 +6,8 @@ import {
   Container,
   TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   MultiLineIFE,
 } from '@firecamp/ui-kit';
 

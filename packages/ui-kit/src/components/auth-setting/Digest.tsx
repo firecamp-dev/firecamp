@@ -2,8 +2,8 @@ import { FC, useReducer } from 'react';
 import {
   Button,
   Dropdown,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Input,
 } from '@firecamp/ui-kit';
 import { IAuthDigest, EAuthTypes } from '@firecamp/types';

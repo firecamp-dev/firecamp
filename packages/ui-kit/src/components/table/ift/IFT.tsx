@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { useState, useEffect, useRef } from 'react';
 
 import classnames from 'classnames';
-import { Button, EButtonColor, EButtonSize, Resizable } from '@firecamp/ui-kit';
+import { Button, Resizable } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { _array, _string } from '@firecamp/utils'

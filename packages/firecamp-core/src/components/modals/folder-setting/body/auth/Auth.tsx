@@ -4,8 +4,8 @@ import {
   Container,
   TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
 } from '@firecamp/ui-kit';
 import { EAuthTypes } from '@firecamp/types';
 import equal from 'deep-equal';

@@ -4,7 +4,7 @@ import {
   IModal,
   Button,
   EButtonIconPosition,
-  EButtonSize,
+  
 } from '@firecamp/ui-kit';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 
@@ -29,7 +29,7 @@ const SignIn: FC<IModal> = () => {
             text="Continue with Email"
             icon={<VscAccount size={18} />}
             iconLeft
-            size={EButtonSize.Medium}
+            md
             className="!w-full mb-5"
             onClick={() => AppService.modals.openSignInWithEmail()}
             transparent={true}

@@ -2,8 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import {
   Modal,
   Button,
-  EButtonSize,
-  EButtonColor,
+  
+ 
   ProgressBar,
   IModal,
 } from '@firecamp/ui-kit';

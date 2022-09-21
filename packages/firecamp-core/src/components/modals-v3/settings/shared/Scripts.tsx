@@ -2,8 +2,8 @@ import { FC, useMemo } from 'react';
 import {
   Container,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   TabHeader,
   ScriptsTabs,
 } from '@firecamp/ui-kit';

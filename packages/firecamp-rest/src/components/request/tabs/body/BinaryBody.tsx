@@ -6,8 +6,8 @@ import { FileDrop } from 'react-file-drop';
 import {
   Container,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   EButtonIconPosition,
 } from '@firecamp/ui-kit';
 

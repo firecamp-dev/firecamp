@@ -4,8 +4,8 @@ import { useContext } from 'react';
 import { APP_TYPES } from '../../constants/constants';
 import {
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   EButtonIconPosition,
 } from '@firecamp/ui-kit';
 

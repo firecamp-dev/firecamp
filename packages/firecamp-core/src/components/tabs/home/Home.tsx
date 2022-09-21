@@ -5,8 +5,8 @@ import {
   Container,
   Dropdown,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
 } from '@firecamp/ui-kit';
 import * as monaco from 'monaco-editor';
 import { IFEThemes } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
@@ -192,7 +192,7 @@ const Home: FC<any> = () => {
               />
               <Button
                 text="Create a request"
-                size={EButtonSize.Medium}
+                md
                 secondary
                 withCaret={true}
                 transparent={true}

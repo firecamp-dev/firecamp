@@ -2,9 +2,9 @@ import { FC, useState, useEffect } from 'react';
 import {
   Dropdown,
   Button,
-  EButtonSize,
+  
   IDropdownOptions,
-  EButtonColor,
+ 
 } from '@firecamp/ui-kit';
 
 const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({

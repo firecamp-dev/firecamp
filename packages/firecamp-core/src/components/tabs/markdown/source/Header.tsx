@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { FC } from 'react';
-import { Button, EButtonColor, EButtonSize, TabHeader } from '@firecamp/ui-kit';
+import { Button, TabHeader } from '@firecamp/ui-kit';
 import { ITabMeta } from '../../types/tab';
 import { ISourceState } from './Source';
 

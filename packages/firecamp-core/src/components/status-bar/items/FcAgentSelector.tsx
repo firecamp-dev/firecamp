@@ -7,8 +7,8 @@ import shallow from 'zustand/shallow';
 import {
   Popover,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Checkbox,
   // SwitchButton,
 } from '@firecamp/ui-kit';
@@ -76,7 +76,7 @@ const FcAgentSelector: FC<any> = () => {
                 ? (
                   <Button
                     text="Download Firecamp Extension"
-                    size={EButtonSize.Medium}
+                    md
                     primary
                     className="!w-full !min-w-full mt-2 mb-4"
                   />

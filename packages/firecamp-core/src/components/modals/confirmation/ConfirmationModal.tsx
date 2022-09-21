@@ -2,8 +2,8 @@ import { FC, useState } from 'react';
 import {
   Container,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Modal,
 } from '@firecamp/ui-kit';
 
