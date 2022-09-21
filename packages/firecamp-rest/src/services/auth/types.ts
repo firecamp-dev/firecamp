@@ -1,5 +1,4 @@
 import {
-  EAuthTypes,
   EHttpMethod,
   IAuthAws4,
   IAuthBasic,
@@ -21,7 +20,6 @@ export interface IExtra {
   body?: any;
   agent?: EFirecampAgent;
   headers?: object;
-  authType: EAuthTypes;
 }
 
 export type TAuth =
