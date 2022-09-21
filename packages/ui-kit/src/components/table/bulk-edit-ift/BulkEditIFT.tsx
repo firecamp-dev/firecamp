@@ -85,8 +85,8 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
             text={mode === modes.TABLE ? 'Bulk Edit' : 'Key-Value Edit'}
             // color="secondary"
             className="mt-1"
-            color={EButtonColor.Secondary}
-            size={EButtonSize.Small}
+            secondary
+            sm
             onClick={() => {
               setMode(mode === modes.TABLE ? modes.RAW : modes.TABLE);
             }}

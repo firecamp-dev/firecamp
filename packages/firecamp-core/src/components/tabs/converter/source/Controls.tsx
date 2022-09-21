@@ -27,11 +27,11 @@ const Control: FC<IControl> = ({
         !source.body && (
           <Button
             // TODO: add color="default"
-            color={EButtonColor.Primary}
+            primary
             onClick={onDemoJsonRequest}
             text="sample"
             style={{ float: 'left' }}
-            size={EButtonSize.Small}
+            sm
           />
         )
       }
@@ -39,9 +39,9 @@ const Control: FC<IControl> = ({
         <Button
           text="Prettify"
           // TODO: add color="default"
-          color={EButtonColor.Primary}
+          primary
           onClick={onPrettify}
-          size={EButtonSize.Small}
+          sm
         />
       ) : (
         <span />
@@ -59,8 +59,8 @@ const Control: FC<IControl> = ({
         isDisabled={source.hasError || !source.hasTypeDetected}
       />
       <Button
-        color={EButtonColor.Secondary}
-        size={EButtonSize.Small}
+        secondary
+        sm
         text="Clear"
         onClick={onClearPanel}
       />

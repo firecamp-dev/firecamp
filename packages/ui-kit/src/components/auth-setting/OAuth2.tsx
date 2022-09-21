@@ -95,8 +95,8 @@ const OAuth2: FC<IOAuth2Comp> = ({
               text={
                 grantTypes.find((t) => t.id === active_grant_type)?.name || ''
               }
-              size={EButtonSize.Small}
-              color={EButtonColor.Secondary}
+              sm
+              secondary
               withCaret={true}
             />
           </Dropdown.Handler>
@@ -168,7 +168,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
       <div className="form-group">
         <Button
           text="Fetch Token"
-          color={EButtonColor.Primary}
+          primary
           onClick={() => _fetchTokenOnChangeOAuth2()}
         />
       </div>

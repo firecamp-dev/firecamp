@@ -153,9 +153,9 @@ const UrlBarContainer = ({
       </UrlBar.Body>
       <UrlBar.Suffix>
         <Button
-          size={EButtonSize.Small}
-          iconPosition={EButtonIconPosition.Center}
-          color={EButtonColor.Secondary}
+          sm
+          iconCenter
+          secondary
           onClick={_toggleGraphqlDoc}
           icon={<FaFile fontSize={16} />}
           id={`open-schema-doc-${tab.id}`}
@@ -163,9 +163,9 @@ const UrlBarContainer = ({
         />
 
         <Button
-          size={EButtonSize.Small}
-          iconPosition={EButtonIconPosition.Left}
-          color={EButtonColor.Primary}
+          sm
+          iconLeft
+          primary
           icon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
           onClick={fetchIntrospectionSchema}
           id={`refresh-schema-${tab.id}`}
@@ -173,8 +173,8 @@ const UrlBarContainer = ({
         />
         <Button
           id={`save-request-${tab.id}`}
-          color={EButtonColor.Secondary}
-          size={EButtonSize.Small}
+          secondary
+          sm
           text="Save"
           disabled={false}
           onClick={_onSave}

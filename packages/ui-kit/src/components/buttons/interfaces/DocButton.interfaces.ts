@@ -14,7 +14,7 @@ export interface IDocButton {
     /**
     * Add class name to show custom styling
     */
-    classname : string
+    className : string
     /**
      * Boolean value whether you want to show icon or not
      */
@@ -22,9 +22,9 @@ export interface IDocButton {
     /**
      * Button icon class name
      */
-    iconClassname: string
+    iconClassName: string
     /**
-     * Customise css style
+     * Customize css style
      */
     style : object
 }

@@ -68,8 +68,8 @@ const ImportRaw: FC<IImportRaw> = ({
         <TabHeader className="mt-16">
           <TabHeader.Right>
             <Button
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               // TODO: className="font-light"
               text="Import"
               disabled={isImporting}

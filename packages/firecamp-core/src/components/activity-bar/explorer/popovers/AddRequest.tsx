@@ -97,9 +97,9 @@ const AddRequest: FC<IAddRequest> = ({
                 <Dropdown.Handler>
                   <Button
                     text={requestType.name}
-                    size={EButtonSize.ExSmall}
+                    xs
                     withCaret={true}
-                    color={EButtonColor.Secondary}
+                    secondary
                   />
                 </Dropdown.Handler>
                 <Dropdown.Options

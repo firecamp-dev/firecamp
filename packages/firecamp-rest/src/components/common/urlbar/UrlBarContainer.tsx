@@ -203,15 +203,15 @@ const UrlBarContainer = ({
       </UrlBar.Body>
       <UrlBar.Suffix>
         <Button
-          color={EButtonColor.Primary}
-          size={EButtonSize.Small}
+          primary
+          sm
           onClick={_onExecute}
           text={isRequestRunning === true ? `Stop` : `Send`}
         />
         <Button
           id={`save-request-${tab.id}`}
-          color={EButtonColor.Secondary}
-          size={EButtonSize.Small}
+          secondary
+          sm
           text="Save"
           disabled={false}
           onClick={_onSave}

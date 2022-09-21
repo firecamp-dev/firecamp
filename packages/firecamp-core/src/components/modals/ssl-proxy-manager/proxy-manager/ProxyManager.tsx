@@ -330,8 +330,8 @@ const AddProxy: FC<IAddProxy> = ({ proxyList = [], onAdd = () => {} }) => {
           <div className="flex justify-end">
             <Button
               text="Add"
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               className="ml-auto"
               onClick={_onAddNewProxy}
             />
@@ -342,8 +342,8 @@ const AddProxy: FC<IAddProxy> = ({ proxyList = [], onAdd = () => {} }) => {
       <Popover.Handler id={'add-proxy-manager-popover'}>
         <Button
           text="Add Proxy"
-          color={EButtonColor.Primary}
-          size={EButtonSize.Small}
+          primary
+          sm
           // TODO: add className="font-light"
         />
       </Popover.Handler>

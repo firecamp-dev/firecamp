@@ -121,8 +121,8 @@ const NoOrgFoundMessage = () => {
       </div>
       <Button
         text="Create Organization"
-        size={EButtonSize.Small}
-        color={EButtonColor.Primary}
+        sm
+        primary
         onClick={() => AppService.modals.openCreateOrg()}
       />
     </div>

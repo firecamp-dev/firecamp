@@ -90,8 +90,8 @@ const SavePopover: FC<ISavePopover> = ({
         <Popover.Handler id={`save-modal-${tabId}`}>
           <Button
             id={`save-request-${tabId}`}
-            color={EButtonColor.Secondary}
-            size={EButtonSize.Small}
+            secondary
+            sm
             text="Save"
             disabled={isDisabled}
           />
@@ -244,8 +244,8 @@ const SaveForm: FC<ISaveForm> = ({
         </div>
         <Button
           // TODO: add color="primary-alt"
-          color={EButtonColor.Primary}
-          size={EButtonSize.Small}
+          primary
+          sm
           onClick={_onSave}
           text="Save"
         />

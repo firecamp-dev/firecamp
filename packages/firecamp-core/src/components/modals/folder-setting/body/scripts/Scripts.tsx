@@ -159,8 +159,8 @@ const Scripts = ({ module = {}, folderId = '' }) => {
           <TabHeader.Right>
             <Button
               text="Update"
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               disabled={
                 equal(cloneDeep(module?.scripts), scripts) &&
                 equal(cloneDeep(module?.meta?.inherit_scripts), inheritScript)

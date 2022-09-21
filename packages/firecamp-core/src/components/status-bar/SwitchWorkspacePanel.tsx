@@ -64,8 +64,8 @@ const WorkspaceCard: FC<any> = () => {
         <div className="ml-auto workpsace-card-action">
           <Button
             text="Switch"
-            color={EButtonColor.Primary}
-            size={EButtonSize.ExSmall}
+            primary
+            xs
             transparent={true}
             ghost={true}
           />

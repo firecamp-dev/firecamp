@@ -338,23 +338,23 @@ const Edit: FC<IEdit> = ({
           <TabHeader.Right>
             <Button
               text="Cancel"
-              color={EButtonColor.Secondary}
+              secondary
               transparent={true}
               onClick={onClose}
-              size={EButtonSize.Small}
+              sm
             />
             <Button
               text={isUpdating ? 'Updating...' : 'Update'}
               width="100px"
               transparent={true}
-              color={EButtonColor.Primary}
+              primary
               onClick={_commonFns.onUpdateWorkspace}
               disabled={
                 isUpdating ||
                 (propWorkspace.name === workspace.name &&
                   propWorkspace.description === workspace.description)
               }
-              size={EButtonSize.Small}
+              sm
             />
           </TabHeader.Right>
         </TabHeader>
@@ -442,16 +442,16 @@ const RemoveWorkspace: FC<IRemoveWorkspace> = ({
             <div className="flex pt-16">
               <div className="right-aligned flex">
                 <Button
-                  color={EButtonColor.Secondary}
-                  size={EButtonSize.Small}
+                  secondary
+                  sm
                   // TODO: className="font-light"
                   text={isAdmin === true ? 'Delete' : 'Leave'}
                   onClick={_onClickDestroy}
                 />
                 <Button
                   text="Cancel"
-                  color={EButtonColor.Primary}
-                  size={EButtonSize.Small}
+                  primary
+                  sm
                   onClick={(_) => toggleOpen(false)}
                 />
               </div>
@@ -463,10 +463,10 @@ const RemoveWorkspace: FC<IRemoveWorkspace> = ({
           <Button
             text={isAdmin ? 'Delete Workspace' : 'Leave Workspace'}
             // className="transparent small font-sm"
-            transparent={true}
-            ghost={true}
-            color={EButtonColor.Danger}
-            size={EButtonSize.Small}
+            transparent
+            ghost
+            danger
+            sm
             // TODO: add color="danger"
           />
         </Popover.Handler>

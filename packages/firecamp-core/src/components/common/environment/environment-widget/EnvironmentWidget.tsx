@@ -131,9 +131,9 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
             <Button
               key={`add-environment-button-${previewId}`}
               text={'Create New Environment'}
-              color={EButtonColor.Primary}
+              primary
               transparent={true}
-              size={EButtonSize.ExSmall}
+              xs
               onClick={_openWrsModal}
               className="ml-2 leading-4"
             />,

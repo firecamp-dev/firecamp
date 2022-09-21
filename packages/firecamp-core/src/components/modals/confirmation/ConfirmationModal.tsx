@@ -65,8 +65,8 @@ const ConfirmationModal: FC<IConfirmationModal> = ({
             <Button
               // color={'primary-alt'}
               // className="fc-button small"
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               //@ts-ignore
               text={_meta.buttons?.confirm?.text || 'Confirm'}
               onClick={_onConfirm}
@@ -74,8 +74,8 @@ const ConfirmationModal: FC<IConfirmationModal> = ({
             <Button
               // color={'secondary'}
               // className="fc-button small"
-              color={EButtonColor.Secondary}
-              size={EButtonSize.Small}
+              secondary
+              sm
               //@ts-ignore
               text={_meta.buttons?.cancel?.text || 'Cancel'}
               onClick={_onCancel}

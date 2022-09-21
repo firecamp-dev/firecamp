@@ -46,17 +46,17 @@ const HeaderTab: FC<{headers: any}> = ({ headers= {} }) => {
           Value
           <div className="response-headers-action1 flex float-right h-5">
             <Button
-              color={EButtonColor.Secondary}
+              secondary
               transparent={true}
-              size={EButtonSize.Small}
+              sm
               ghost={true}
               text="copy text"
               onClick={e => _copyAsText(headers)}
             />
             <Button
-              color={EButtonColor.Secondary}
+              secondary
               transparent={true}
-              size={EButtonSize.Small}
+              sm
               ghost={true}
               text="copy json"
               onClick={e => _copyAsJson(headers)}

@@ -83,8 +83,8 @@ const ReqStatusBar = ({}) => {
             <Dropdown.Handler>
               <Button
                 text={currentOps?.name || ''}
-                size={EButtonSize.ExSmall}
-                color={EButtonColor.Secondary}
+                xs
+                secondary
                 withCaret={true}
                 className="!rounded-br-none !rounded-tr-none"
               />
@@ -99,8 +99,8 @@ const ReqStatusBar = ({}) => {
           </Dropdown>
           <Button
             text=""
-            color={EButtonColor.Primary}
-            size={EButtonSize.Small}
+            primary
+            sm
             // TODO: add class opacity and square
             icon={<IoSendSharp />}
             iconPosition="left"
@@ -118,8 +118,8 @@ const ReqStatusBar = ({}) => {
             <>
               <Button
                 text="Undo changes"
-                color={EButtonColor.Secondary}
-                size={EButtonSize.ExSmall}
+                secondary
+                xs
                 ghost={true}
                 transparent={true}
                 className="!border-0 hover:!bg-focus2"
@@ -129,8 +129,8 @@ const ReqStatusBar = ({}) => {
               />
               <Button
                 text="Save changes"
-                color={EButtonColor.Secondary}
-                size={EButtonSize.ExSmall}
+                secondary
+                xs
                 ghost={true}
                 transparent={true}
                 className="!border-0 hover:!bg-focus2"

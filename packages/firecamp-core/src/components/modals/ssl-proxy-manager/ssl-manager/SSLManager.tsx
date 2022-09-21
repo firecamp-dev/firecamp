@@ -231,8 +231,8 @@ const AddSSLPopover: FC<any> = ({ sslList = [], onAdd = () => {} }) => {
             <div className="flex justify-end">
               <Button
                 text="Add"
-                color={EButtonColor.Primary}
-                size={EButtonSize.Small}
+                primary
+                sm
                 className="w-full"
                 onClick={_onAddNewSSL}
               />
@@ -246,8 +246,8 @@ const AddSSLPopover: FC<any> = ({ sslList = [], onAdd = () => {} }) => {
       <Popover.Handler id={'sslmanager'}>
         <Button
           text="Add Domain"
-          color={EButtonColor.Primary}
-          size={EButtonSize.Small}
+          primary
+          sm
           // TODO: add className="btn-fullwidth small font-light"
         />
       </Popover.Handler>

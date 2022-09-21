@@ -18,60 +18,62 @@ const Template = (args) => <Button {...args} />;
 
 export const ButtonDemo = Template.bind({});
 ButtonDemo.args = {
-  text: 'Sample Button', color: 'primary', size: 'md', icon: <VscMenu
-    title="Account"
-    size={16}
-    className="z-20"
-  />, iconPosition: 'left'
+  text: 'Sample Button',
+  primary:true, md: true,
+  icon: <VscMenu title="Account" size={16} className="z-20"/>, 
+  iconLeft: true
 };
 
 export const PrimaryButton = Template.bind({});
-PrimaryButton.args = { text: 'Primary Button', color: 'primary', size: 'md' };
+PrimaryButton.args = { text: 'Primary Button', primary: true, md: true };
 
 export const SecondaryButton = Template.bind({});
-SecondaryButton.args = { text: 'Secondary Button', color: 'secondary', size: 'md' };
+SecondaryButton.args = { text: 'Secondary Button', secondary: true, md: true };
 
 export const SmallButton = Template.bind({});
-SmallButton.args = { text: 'Small Button', color: 'primary', size: 'sm' };
+SmallButton.args = { text: 'Small Button', primary: true, size: 'sm' };
 
 export const MediumButton = Template.bind({});
-MediumButton.args = { text: 'Medium Button', color: 'primary', size: 'md' };
+MediumButton.args = { text: 'Medium Button', primary: true, md: true };
 
 export const LargeButton = Template.bind({});
-LargeButton.args = { text: 'Large Button', color: 'primary', size: 'lg' };
+LargeButton.args = { text: 'Large Button', primary: true, size: 'lg' };
 
 export const FullWidthButton = Template.bind({});
-FullWidthButton.args = { text: 'FullWidth Button', color: 'primary', size: 'md', fullWidth: true };
+FullWidthButton.args = { text: 'FullWidth Button', primary: true, md: true, fullWidth: true };
 
 export const TransparentButton = Template.bind({});
-TransparentButton.args = { text: 'Transparent Button', color: 'primary', size: 'md', transparent: true };
+TransparentButton.args = { text: 'Transparent Button', primary: true, md: true, transparent: true };
 
 export const GhostButton = Template.bind({});
-GhostButton.args = { text: 'Transparent Button', color: 'primary', size: 'md', ghost: true };
+GhostButton.args = { text: 'Transparent Button', primary: true, md: true, ghost: true };
 
 export const ButtonWithIconLeft = Template.bind({});
 ButtonWithIconLeft.args = {
-  text: 'Sample Button', color: 'primary', size: 'md', icon: <VscMenu
+  text: 'Sample Button', primary: true, md: true, icon: <VscMenu
     title="Account"
     size={16}
     className="z-20"
-  />, iconPosition: 'left'
+  />, 
+  iconLeft: true
 };
 
 export const ButtonWithIconRight = Template.bind({});
 ButtonWithIconRight.args = {
-  text: 'Sample Button', color: 'primary', size: 'md', icon: <VscMenu
+  text: 'Sample Button', primary: true, md: true, icon: <VscMenu
     title="Account"
     size={16}
     className="z-20"
-  />, iconPosition: 'right'
+  />, 
+  iconRight: true
 };
 
 export const ButtonIcon = Template.bind({});
 ButtonIcon.args = {
-  text: 'Sample Button...', color: 'primary', size: 'md', icon: <VscMenu
+  text: 'Sample Button...', primary: true, md: true, icon: <VscMenu
     title="Account"
     size={16}
     className="z-20"
-  />, iconPosition: 'icononly'
+  />, 
+  iconLeft: true
 };

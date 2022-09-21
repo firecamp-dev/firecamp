@@ -302,9 +302,9 @@ const BodyTypeDropDown: FC<any> = ({
       <Dropdown.Handler>
         <Button
           text={selectedOption || ''}
-          size={EButtonSize.ExSmall}
+          xs
           className="font-bold"
-          color={EButtonColor.Primary}
+          primary
           withCaret={true}
           transparent={true}
           ghost={true}

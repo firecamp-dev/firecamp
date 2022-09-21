@@ -108,8 +108,8 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
           <Dropdown.Handler>
             <Button
               text={auth['algorithm'] || 'MD5'}
-              size={EButtonSize.Small}
-              color={EButtonColor.Secondary}
+              sm
+              secondary
               withCaret={true}
             />
           </Dropdown.Handler>

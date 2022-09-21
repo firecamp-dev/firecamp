@@ -225,10 +225,10 @@ const InviteNewMembers = () => {
           <div className="flex items-center">
             <Button
               text="Add Single"
-              color={EButtonColor.Secondary}
-              size={EButtonSize.Small}
+              secondary
+              sm
               icon={<VscAdd size={16} />}
-              iconPosition={EButtonIconPosition.Left}
+              iconLeft
               className="mr-2"
               onClick={(e) => {
                 console.log(tableApi);
@@ -239,8 +239,8 @@ const InviteNewMembers = () => {
             {/* TODO: implement bulk add later */}
             {/* <Button
                             text='Add in Bulk'
-                            color={EButtonColor.Secondary}
-                            size={EButtonSize.Small}
+                            secondary
+                            sm
                             icon={<VscOrganization size={16} />}
                             iconPosition = {EButtonIconPosition.Left}
                         /> */}
@@ -249,8 +249,8 @@ const InviteNewMembers = () => {
         <TabHeader.Right>
           <Button
             text="Send Invitation"
-            color={EButtonColor.Primary}
-            size={EButtonSize.Small}
+            primary
+            sm
             onClick={() => onInviteMembers()}
           />
         </TabHeader.Right>
@@ -282,7 +282,7 @@ const RoleDD: FC<{
       <Dropdown.Handler>
         <Button
           text={role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator'}
-          size={EButtonSize.Small}
+          sm
           ghost={true}
           transparent={true}
           withCaret={true}

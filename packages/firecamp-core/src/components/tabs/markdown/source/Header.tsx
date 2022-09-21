@@ -32,11 +32,11 @@ const Header: FC<IHeader> = ({
             !body && (
               <Button
                 // TODO: add color="default"
-                color={EButtonColor.Primary}
+                primary
                 text="sample"
                 onClick={onDemoMDRequest}
                 style={{ float: 'left' }}
-                size={EButtonSize.Small}
+                sm
                 className="mr-2"
               />
             )
@@ -54,11 +54,11 @@ const Header: FC<IHeader> = ({
             isDisabled={body ? false : true}
           />
           <Button
-            color={EButtonColor.Secondary}
+            secondary
             // TODO: add className="bordered"
             text="Clear"
             onClick={onClearPanel}
-            size={EButtonSize.Small}
+            sm
             className="ml-2"
           />
         </div>

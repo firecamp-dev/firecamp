@@ -94,9 +94,9 @@ const BinaryTab = ({ body, onChange }) => {
             <Button
               onClick={_onButtonClick}
               icon={<AiOutlineUpload className="mr-2" size={16} />}
-              color={EButtonColor.Secondary}
-              iconPosition={EButtonIconPosition.Left}
-              size={EButtonSize.Small}
+              secondary
+              iconLeft
+              sm
               text="Drop File Here"
               disabled={isButtonDisabled}
             />

@@ -186,8 +186,8 @@ const Explorer: FC<any> = () => {
                   />
                   <Button
                     text="Create Collection"
-                    size={EButtonSize.Small}
-                    color={EButtonColor.Primary}
+                    sm
+                    primary
                     className="mx-auto mb-6"
                     onClick={() => AppService.modals.openCreateCollection()}
                   />

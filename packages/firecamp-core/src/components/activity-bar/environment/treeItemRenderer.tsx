@@ -188,11 +188,11 @@ export default {
                   ? 'Add Env'
                   : 'Open'
               }
-              size={EButtonSize.ExSmall}
+              sm
               className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
-              ghost={true}
-              transparent={true}
-              color={EButtonColor.Secondary}
+              ghost
+              transparent
+              secondary
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

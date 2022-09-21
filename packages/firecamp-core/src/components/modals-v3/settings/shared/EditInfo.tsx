@@ -131,16 +131,16 @@ const EditInfo: FC<IEditInfoUi> = ({
           <TabHeader.Right>
             <Button
               text="Cancel"
-              color={EButtonColor.Secondary}
+              secondary
               transparent={true}
-              size={EButtonSize.Small}
+              sm
               onClick={() => close()}
               ghost={true}
             />
             <Button
               text={isRequesting ? 'Updating Info...' : 'Update Info'}
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               onClick={_onUpdate}
               disabled={
                 equal(

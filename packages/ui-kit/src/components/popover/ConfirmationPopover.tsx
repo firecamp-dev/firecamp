@@ -69,8 +69,8 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
                         <div className="ml-auto flex">
                             <Button
                                 text={cancelButtonText || 'Cancel'}
-                                color={EButtonColor.Secondary}
-                                size={EButtonSize.Small}
+                                secondary
+                                sm
                                 // className="small fc-button"
                                 onClick={() => {
                                     _toggleOpen(!isOpen);
@@ -82,8 +82,8 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
                                 text={confirmButtonText || 'Delete'}
                                 // color="primary-alt"
                                 // className="small fc-button"
-                                color={EButtonColor.Primary}
-                                size={EButtonSize.Small}
+                                primary
+                                sm
                                 onClick={() => {
                                     onConfirm();
                                     _toggleOpen(!isOpen);
@@ -122,8 +122,8 @@ const DefaultHandler = ({ text = '' }) => {
         <Button
             // color="secondary"
             // className="btn-secondary btn btn-small"
-            color={EButtonColor.Secondary}
-            size={EButtonSize.Small}
+            secondary
+            sm
             text={text || 'Delete'}
         />
     );
