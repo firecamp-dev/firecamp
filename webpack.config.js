@@ -68,7 +68,7 @@ exports.env = {
   NODE_ENV: JSON.stringify(process.env.NODE_ENV),
   FIRECAMP_API_HOST: JSON.stringify(process.env.FIRECAMP_API_HOST),
   FIRECAMP_PROXY_API_HOST: JSON.stringify(process.env.FIRECAMP_PROXY_API_HOST),
-  CHROME_APP_ID: JSON.stringify(process.env.CHROME_APP_ID),
+  FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(process.env.FIRECAMP_EXTENSION_AGENT_ID),
   APP_VERSION: JSON.stringify(metadata.version),
   APP_FORMAT: JSON.stringify(process.env.APP_FORMAT),
   SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),

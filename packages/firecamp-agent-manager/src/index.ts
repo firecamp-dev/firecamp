@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {
   EFirecampAgent,
   ERestBodyTypes,
@@ -6,9 +7,8 @@ import {
   TId,
 } from '@firecamp/types';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
-import axios from 'axios';
-import { _object } from '@firecamp/utils';
 import parseBody from '@firecamp/rest-executor/dist/esm/helpers/body';
+import { _object } from '@firecamp/utils';
 import * as extension from './chrome';
 
 const restExecutors: { [key: TId]: RestExecutor } = {};
@@ -89,4 +89,9 @@ export const cancel = async (
 
       return response.data;
   }
+};
+
+
+export const pingExtension = (): Promise<string> => {
+  return extension.ping();
 };

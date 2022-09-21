@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import { EFirecampAgent } from '@firecamp/types';
@@ -21,13 +21,19 @@ const agentNamesMap = {
 };
 
 const FcAgentSelector: FC<any> = () => {
-  let { agent, changeFirecampAgent } = usePlatformStore(
+  let { agent, isExtAgentInstalled, changeFirecampAgent, checkExtAgentIntalled } = usePlatformStore(
     (s: IPlatformStore) => ({
       agent: s.meta.agent,
+      isExtAgentInstalled: s.meta.isExtAgentInstalled,
       changeFirecampAgent: s.changeFirecampAgent,
+      checkExtAgentIntalled: s.checkExtAgentIntalled
     }),
     shallow
   );
+
+  useEffect(()=> {
+    checkExtAgentIntalled();
+  }, []);
 
   let _onSelectAgent = (firecampAgent: EFirecampAgent) => {
     changeFirecampAgent(firecampAgent);
@@ -56,22 +62,28 @@ const FcAgentSelector: FC<any> = () => {
             name={agentNamesMap[EFirecampAgent.proxy]}
             isSelected={agent == EFirecampAgent.proxy}
             className={`mt-4 mb-2`}
-            description={`Send Rest requests via Firecamp's <a href="">secure cloud servers</a>.`}
+            description={`Send rest requests via Firecamp's <a href="">secure cloud servers</a>.`}
             onSelect={() => _onSelectAgent(EFirecampAgent.proxy)}
           />
 
           <AgentItem
             name={agentNamesMap[EFirecampAgent.extension]}
+            className={`mb-2`}
             isSelected={agent == EFirecampAgent.extension}
-            description={`Send Rest requests via Firecamp's browser extension.`}
+            description={`Send rest requests via Firecamp's browser extension.`}
             onSelect={() => _onSelectAgent(EFirecampAgent.extension)}
           >
-            <Button
-              text="Download Firecamp Extension"
-              size={EButtonSize.Medium}
-              color={EButtonColor.Primary}
-              className="!w-full !min-w-full mt-2 mb-4"
-            />
+            {
+              !isExtAgentInstalled
+                ? (
+                  <Button
+                    text="Download Firecamp Extension"
+                    size={EButtonSize.Medium}
+                    color={EButtonColor.Primary}
+                    className="!w-full !min-w-full mt-2 mb-4"
+                  />
+                ) : <></>
+            }
           </AgentItem>
 
           <AgentItem

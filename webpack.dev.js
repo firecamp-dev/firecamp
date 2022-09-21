@@ -36,7 +36,7 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         ...env,
-        CHROME_APP_ID: JSON.stringify(process.env.CHROME_APP_ID),
+        FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(process.env.FIRECAMP_EXTENSION_AGENT_ID),
       },
     }),
     // new BundleAnalyzerPlugin(),
