@@ -6,8 +6,8 @@ import {
   MultiLineIFE,
   TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import shallow from 'zustand/shallow';

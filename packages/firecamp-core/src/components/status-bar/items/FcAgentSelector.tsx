@@ -7,8 +7,8 @@ import shallow from 'zustand/shallow';
 import {
   Popover,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Checkbox,
   // SwitchButton,
 } from '@firecamp/ui-kit';

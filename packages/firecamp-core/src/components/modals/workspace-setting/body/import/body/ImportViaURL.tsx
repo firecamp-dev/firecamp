@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, EButtonColor, EButtonSize } from '@firecamp/ui-kit';
+import { Button, EButtonSize } from '@firecamp/ui-kit';
 import { useForm } from 'react-hook-form';
 import { _object } from '@firecamp/utils';
 

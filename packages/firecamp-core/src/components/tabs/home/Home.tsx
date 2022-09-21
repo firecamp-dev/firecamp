@@ -5,8 +5,8 @@ import {
   Container,
   Dropdown,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
 } from '@firecamp/ui-kit';
 import * as monaco from 'monaco-editor';
 import { IFEThemes } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';

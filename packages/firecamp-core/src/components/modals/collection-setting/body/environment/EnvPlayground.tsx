@@ -3,7 +3,7 @@ import {
   Container,
   TabHeader,
   Button,
-  EButtonColor,
+ 
   MultiLineIFE,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';

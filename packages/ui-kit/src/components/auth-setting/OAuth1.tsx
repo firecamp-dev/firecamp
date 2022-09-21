@@ -1,6 +1,6 @@
 import { FC, useState, useReducer } from 'react';
 
-import { Button, Dropdown ,EButtonColor,EButtonSize,Input,CheckboxInGrid} from '@firecamp/ui-kit';
+import { Button, Dropdown ,EButtonColor,Input,CheckboxInGrid} from '@firecamp/ui-kit';
 import { typePayload } from './constants';
 import { IOAuth1, EAuthTypes } from '@firecamp/types'
 

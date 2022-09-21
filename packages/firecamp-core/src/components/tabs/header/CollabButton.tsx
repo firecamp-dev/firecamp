@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import {
   Button,
-  EButtonColor,
+ 
   EButtonIconPosition,
-  EButtonSize,
+  
   Column,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';

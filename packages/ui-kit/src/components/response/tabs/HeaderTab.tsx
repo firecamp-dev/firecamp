@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Button, EButtonColor, EButtonSize } from '@firecamp/ui-kit';
+import { Button, EButtonSize } from '@firecamp/ui-kit';
 import _toPairs from 'lodash/toPairs';
 import { Resizable } from 're-resizable';
 

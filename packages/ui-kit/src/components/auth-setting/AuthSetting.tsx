@@ -23,8 +23,8 @@ import {
   Notes,
   Dropdown,
   Button,
-  EButtonSize,
-  EButtonColor,
+  
+ 
   Container,
 } from '@firecamp/ui-kit';
 

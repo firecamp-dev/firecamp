@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, useRef } from 'react';
 import equal from 'deep-equal';
 import { nanoid as id } from 'nanoid';
-import { Button, EButtonColor, EButtonSize, Popover } from '@firecamp/ui-kit';
+import { Button, Popover } from '@firecamp/ui-kit';
 
 import DomainList, { DomainBody } from './DomainList';
 

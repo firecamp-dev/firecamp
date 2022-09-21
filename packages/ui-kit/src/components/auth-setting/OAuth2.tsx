@@ -2,9 +2,9 @@ import { FC, useState, useReducer, useEffect, Key } from 'react';
 import {
   Dropdown,
   Button,
-  EButtonColor,
+ 
   Input,
-  EButtonSize,
+  
 } from '@firecamp/ui-kit';
 import { EAuthTypes, IUiOAuth2 } from '@firecamp/types';
 import { typePayload } from './constants';

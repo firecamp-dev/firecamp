@@ -100,7 +100,7 @@ export { default as Response } from './components/response/Response';
 
 //----------------------------------------------------enums---------------------------------------------------------------------------
 
-export { EColor as EButtonColor, EIconPosition as EButtonIconPosition, ESize as EButtonSize }
+export { EColor as EIconPosition as EButtonIconPosition, ESize as EButtonSize }
     from './components/buttons/interfaces/Button.interfaces';
 
 export { EPlacementForActive as ETabsPlacementForActive } from './components/tabs/interfaces/Tabs.interfaces';

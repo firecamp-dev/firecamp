@@ -1,4 +1,4 @@
-import { Button, EButtonColor, Container, ProgressBar } from '@firecamp/ui-kit';
+import { Button, Container, ProgressBar } from '@firecamp/ui-kit';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import QueryExplorer from '../../common/explorer/QueryExplorer';
 import { QUERY_TYPES } from '../../../constants/constants';

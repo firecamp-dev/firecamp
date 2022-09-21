@@ -3,8 +3,8 @@ import {
   UrlBar,
   HttpMethodDropDown,
   Button,
-  EButtonSize,
-  EButtonColor,
+  
+ 
 } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
 

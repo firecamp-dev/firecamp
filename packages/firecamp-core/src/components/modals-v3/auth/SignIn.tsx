@@ -4,7 +4,7 @@ import {
   IModal,
   Button,
   EButtonIconPosition,
-  EButtonSize,
+  
 } from '@firecamp/ui-kit';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 

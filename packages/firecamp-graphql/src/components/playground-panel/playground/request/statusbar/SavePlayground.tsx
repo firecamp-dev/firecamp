@@ -2,8 +2,8 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Popover,
   Input,
 } from '@firecamp/ui-kit';

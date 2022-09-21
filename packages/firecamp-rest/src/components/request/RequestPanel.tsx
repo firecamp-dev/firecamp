@@ -13,8 +13,8 @@ import {
   AvailableOnElectron,
   Container,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   EButtonIconPosition,
   Tabs,
   ScriptsTabs,

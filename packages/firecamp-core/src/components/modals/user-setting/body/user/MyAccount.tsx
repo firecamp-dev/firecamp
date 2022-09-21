@@ -3,8 +3,8 @@ import { FC, useState } from 'react';
 import {
   Container,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Input,
 } from '@firecamp/ui-kit';
 import '../../UserSetting.sass';

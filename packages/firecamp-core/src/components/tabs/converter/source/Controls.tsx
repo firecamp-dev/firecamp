@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, EButtonColor, EButtonSize, Column } from '@firecamp/ui-kit';
+import { Button, Column } from '@firecamp/ui-kit';
 
 import SaveButton from '../../../common/save/SavePopover';
 import { EConverterLang, ISourceState } from '../types';

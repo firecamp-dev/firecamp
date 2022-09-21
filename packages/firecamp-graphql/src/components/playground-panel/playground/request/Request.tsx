@@ -3,8 +3,8 @@ import {
   Container,
   Button,
   Column,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Resizable,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';

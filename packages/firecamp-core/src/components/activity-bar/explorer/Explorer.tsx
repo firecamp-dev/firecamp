@@ -17,8 +17,6 @@ import {
   ToolBar,
   Empty,
   Button,
-  EButtonSize,
-  EButtonColor,
 } from '@firecamp/ui-kit';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';

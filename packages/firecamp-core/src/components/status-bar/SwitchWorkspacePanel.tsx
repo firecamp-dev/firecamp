@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { VscSearch } from '@react-icons/all-files/vsc/VscSearch';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 
-import { Button, EButtonColor, EButtonSize, Input } from '@firecamp/ui-kit';
+import { Button, Input } from '@firecamp/ui-kit';
 
 import ReactTooltip from 'react-tooltip';
 import './SwitchWorkspacePanel.scss';

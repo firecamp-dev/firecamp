@@ -4,8 +4,8 @@ import {
   TextArea,
   TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   Modal,
   IModal,
   ProgressBar,

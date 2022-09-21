@@ -15,8 +15,8 @@ import {
   PrimaryIFT,
   MultipartIFT,
   Button,
-  EButtonColor,
-  EButtonSize,
+ 
+  
   StatusBar,
   /* ToolBar, */
 } from '@firecamp/ui-kit'; /* 
