@@ -8,14 +8,15 @@ export enum EPlatformScope {
   Organization = 'organization',
 }
 
-const dbFirecampAgent: EFirecampAgent = localStorage.getItem(
+let firecampAgent: EFirecampAgent = localStorage.getItem(
   'firecampAgent'
 ) as EFirecampAgent;
 
-const firecampAgent: EFirecampAgent =
-  dbFirecampAgent || _misc.firecampAgent() === EFirecampAgent.web
-    ? EFirecampAgent.proxy
-    : _misc.firecampAgent();
+console.log(firecampAgent, "firecampAgent...")
+if(!firecampAgent) {
+  const agent = _misc.firecampAgent();
+  firecampAgent= agent === EFirecampAgent.web ? EFirecampAgent.proxy : agent;
+}
 
 const initialState = {
   theme: DefaultTheme,

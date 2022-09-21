@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import shallow from 'zustand/shallow';
-import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import cx from 'classnames';
+import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import { EFirecampAgent } from '@firecamp/types';
+import shallow from 'zustand/shallow';
 
 import {
   Popover,
@@ -111,7 +111,7 @@ const AgentItem: FC<IAgentItem> = ({
         <Checkbox isChecked={isSelected} id={name} />
       </div>
       <div className="font-semibold ml-2">
-        <label className="cursor-pointer" for={name}>
+        <label className="cursor-pointer" htmlFor={name}>
           {name}
         </label>
         <span
