@@ -204,7 +204,7 @@ const HelpPopUp: FC<IHelpPopup> = ({
                                                                 EButtonColor.Primary
                                                               }
                                                               size={
-                                                                EButtonSize.ExSmall
+                                                                .ExSmall
                                                               }
                                                               onClick={() => {
                                                                 onAddScript(

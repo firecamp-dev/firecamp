@@ -76,7 +76,7 @@ const FcAgentSelector: FC<any> = () => {
                 ? (
                   <Button
                     text="Download Firecamp Extension"
-                    size={EButtonSize.Medium}
+                    md
                     primary
                     className="!w-full !min-w-full mt-2 mb-4"
                   />

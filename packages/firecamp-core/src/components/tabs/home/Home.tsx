@@ -192,7 +192,7 @@ const Home: FC<any> = () => {
               />
               <Button
                 text="Create a request"
-                size={EButtonSize.Medium}
+                md
                 secondary
                 withCaret={true}
                 transparent={true}

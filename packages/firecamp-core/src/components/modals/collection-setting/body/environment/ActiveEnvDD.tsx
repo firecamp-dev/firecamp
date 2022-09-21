@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { FC, useState, useEffect } from 'react';
 
-import { Dropdown, Button, EButtonSize } from '@firecamp/ui-kit';
+import { Dropdown, Button,  } from '@firecamp/ui-kit';
 const ActiveEnvDD: FC<IActiveEnvDD> = ({
   environments = [],
   activeEnv = '',

@@ -1,5 +1,5 @@
 import { FC, useState, useMemo } from 'react';
-import { Dropdown, Button, EButtonSize } from '@firecamp/ui-kit';
+import { Dropdown, Button,  } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import { EEnvironmentScope, TId } from '@firecamp/types';
 

@@ -3,7 +3,7 @@ import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
 import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
 
 import _auth from '../../../services/auth';
-import { Button, EButtonIconPosition, EButtonSize } from '@firecamp/ui-kit';
+import { Button, EButtonIconPosition,  } from '@firecamp/ui-kit';
 import { EProvider } from '../../../services/auth/types';
 // import { PROVIDER } from '../../constants';
 
@@ -121,7 +121,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
         text="Continue with Google"
         icon={<GrGoogle size={18} />}
         iconLeft
-        size={EButtonSize.Medium}
+        md
         className="!w-full mb-5"
         onClick={_googleOAuth}
         transparent={true}
@@ -130,7 +130,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
         text="Continue with Github"
         icon={<VscGithub size={18} />}
         iconLeft
-        size={EButtonSize.Medium}
+        md
         className="!w-full mb-5"
         onClick={_githubOAuth}
       />

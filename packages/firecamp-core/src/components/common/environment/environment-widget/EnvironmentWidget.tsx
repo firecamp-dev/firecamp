@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from 'react';
-import { Button, EButtonSize } from '@firecamp/ui-kit';
+import { Button,  } from '@firecamp/ui-kit';
 // import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import shallow from 'zustand/shallow';
 import { EEnvironmentScope, TId } from '@firecamp/types';
