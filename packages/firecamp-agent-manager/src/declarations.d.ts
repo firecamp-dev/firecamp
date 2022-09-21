@@ -11,7 +11,7 @@ declare global {
   }
   namespace NodeJS {
     interface ProcessEnv {
-      CHROME_APP_ID: string;
+      FIRECAMP_EXTENSION_AGENT_ID: string;
     }
   }
 }

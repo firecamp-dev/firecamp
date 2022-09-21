@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import shallow from 'zustand/shallow';
-import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import cx from 'classnames';
+import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import { EFirecampAgent } from '@firecamp/types';
+import shallow from 'zustand/shallow';
 
 import {
   Popover,
@@ -16,20 +16,23 @@ import { IPlatformStore, usePlatformStore } from '../../../store/platform';
 
 const agentNamesMap = {
   [EFirecampAgent.proxy]: 'Cloud Agent',
-  [EFirecampAgent.extension]: 'Extension',
+  [EFirecampAgent.extension]: 'Extension Agent',
   [EFirecampAgent.web]: 'Browser Agent',
 };
 
 const FcAgentSelector: FC<any> = () => {
-  let { agent, changeFirecampAgent } = usePlatformStore(
+  
+  const { agent, isExtAgentInstalled, changeFirecampAgent, checkExtAgentIntalled } = usePlatformStore(
     (s: IPlatformStore) => ({
       agent: s.meta.agent,
+      isExtAgentInstalled: s.meta.isExtAgentInstalled,
       changeFirecampAgent: s.changeFirecampAgent,
+      checkExtAgentIntalled: s.checkExtAgentIntalled
     }),
     shallow
   );
 
-  let _onSelectAgent = (firecampAgent: EFirecampAgent) => {
+  const _onSelectAgent = (firecampAgent: EFirecampAgent) => {
     changeFirecampAgent(firecampAgent);
   };
 
@@ -56,22 +59,29 @@ const FcAgentSelector: FC<any> = () => {
             name={agentNamesMap[EFirecampAgent.proxy]}
             isSelected={agent == EFirecampAgent.proxy}
             className={`mt-4 mb-2`}
-            description={`Send Rest requests via Firecamp's <a href="">secure cloud servers</a>.`}
+            description={`Send rest requests via Firecamp's <a href="">secure cloud servers</a>.`}
             onSelect={() => _onSelectAgent(EFirecampAgent.proxy)}
           />
 
           <AgentItem
             name={agentNamesMap[EFirecampAgent.extension]}
+            className={`mb-2`}
             isSelected={agent == EFirecampAgent.extension}
-            description={`Send Rest requests via Firecamp's browser extension.`}
+            disabled={!isExtAgentInstalled}
+            description={`Send rest requests via Firecamp's browser extension.`}
             onSelect={() => _onSelectAgent(EFirecampAgent.extension)}
           >
-            <Button
-              text="Download Firecamp Extension"
-              size={EButtonSize.Medium}
-              color={EButtonColor.Primary}
-              className="!w-full !min-w-full mt-2 mb-4"
-            />
+            {
+              !isExtAgentInstalled
+                ? (
+                  <Button
+                    text="Download Firecamp Extension"
+                    size={EButtonSize.Medium}
+                    color={EButtonColor.Primary}
+                    className="!w-full !min-w-full mt-2 mb-4"
+                  />
+                ) : <></>
+            }
           </AgentItem>
 
           <AgentItem
@@ -84,7 +94,7 @@ const FcAgentSelector: FC<any> = () => {
       }
     >
       <Popover.Handler>
-        <div className="flex items-center">
+        <div className="flex items-center" onClick={()=> checkExtAgentIntalled()}>
           <VscInfo size={14} className="mr-1 text-primaryColor" />
           {agentNamesMap[agent]}
         </div>
@@ -101,6 +111,7 @@ const AgentItem: FC<IAgentItem> = ({
   className,
   description,
   isSelected,
+  disabled= false,
   onSelect = () => {},
 }) => {
   return (
@@ -108,10 +119,10 @@ const AgentItem: FC<IAgentItem> = ({
       className={cx(className, 'text-base text-appForeground flex items-start')}
     >
       <div className="pt-half" onClick={onSelect}>
-        <Checkbox isChecked={isSelected} id={name} />
+        <Checkbox isChecked={isSelected} id={name} disabled={disabled}/>
       </div>
       <div className="font-semibold ml-2">
-        <label className="cursor-pointer" for={name}>
+        <label className="cursor-pointer" htmlFor={name}>
           {name}
         </label>
         <span
@@ -129,6 +140,7 @@ interface IAgentItem {
   name: string;
   className?: string;
   isSelected: boolean;
+  disabled?: boolean,
   description?: string;
   onSelect: () => void;
 }

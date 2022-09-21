@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { EFirecampAgent, IOrganization } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
+import * as executor from "@firecamp/agent-manager";
 import { DefaultTheme } from '../types';
 
 export enum EPlatformScope {
@@ -8,14 +9,15 @@ export enum EPlatformScope {
   Organization = 'organization',
 }
 
-const dbFirecampAgent: EFirecampAgent = localStorage.getItem(
+let firecampAgent: EFirecampAgent = localStorage.getItem(
   'firecampAgent'
 ) as EFirecampAgent;
 
-const firecampAgent: EFirecampAgent =
-  dbFirecampAgent || _misc.firecampAgent() === EFirecampAgent.web
-    ? EFirecampAgent.proxy
-    : _misc.firecampAgent();
+console.log(firecampAgent, "firecampAgent...")
+if(!firecampAgent) {
+  const agent = _misc.firecampAgent();
+  firecampAgent= agent === EFirecampAgent.web ? EFirecampAgent.proxy : agent;
+}
 
 const initialState = {
   theme: DefaultTheme,
@@ -26,6 +28,7 @@ const initialState = {
   appInfo: {},
   meta: {
     agent: firecampAgent,
+    isExtAgentInstalled: false
   },
 };
 
@@ -36,7 +39,7 @@ export interface IPlatformStore {
   organization?: Partial<IOrganization> | null;
   switchingOrg: Partial<IOrganization> | null;
   appInfo: { [k: string]: any };
-  meta: { agent: EFirecampAgent; [K: string]: any };
+  meta: { agent: EFirecampAgent; isExtAgentInstalled:boolean, [k: string]: any };
 
   setClientId: (id: string) => void;
   setOrg: (org: IOrganization) => void;
@@ -45,6 +48,7 @@ export interface IPlatformStore {
   updateAppInfo: (appInfo: any) => void;
   changeFirecampAgent: (agent: EFirecampAgent) => void;
   getFirecampAgent: () => EFirecampAgent;
+  checkExtAgentIntalled: ()=> void;
 
   updateTheme: (theme: any) => void;
 
@@ -80,6 +84,9 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
   changeFirecampAgent: (agent: EFirecampAgent) => {
     if (!agent) return;
 
+    const meta= get().meta;
+    if(agent == EFirecampAgent.extension && !meta.isExtAgentInstalled) agent= meta.agent;
+
     // set agent in local storage
     localStorage.setItem('firecampAgent', agent);
 
@@ -89,6 +96,22 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
 
   getFirecampAgent: (): EFirecampAgent =>
     get().meta.agent || EFirecampAgent.proxy,
+
+  checkExtAgentIntalled: async()=> {
+    executor
+      .pingExtension()
+      .then(res=> {
+          set(s=> ({ meta: { ...s.meta, isExtAgentInstalled: res=="pong"? true: false }}))
+      })
+      .catch(e=> {
+        const agent= get().meta.agent;
+        set(s=> ({ meta: { 
+          ...s.meta, 
+          isExtAgentInstalled: false,
+          agent: agent == EFirecampAgent.extension? EFirecampAgent.proxy: agent
+        }}))
+      });
+  },
 
   // Theme
   updateTheme: async (theme = DefaultTheme) => {

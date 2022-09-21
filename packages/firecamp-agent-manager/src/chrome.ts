@@ -8,9 +8,14 @@ import RestExecutor from '@firecamp/rest-executor/dist/esm';
 const restExecutors: { [key: TId]: RestExecutor } = {};
 
 // Request operations to handle
-enum ERequestOperation {
+enum EReqEvent {
   Send = 'send',
   Cancel = 'cancel',
+}
+
+type ExtResponse = {
+  error: any,
+  response: IRestResponse
 }
 
 /**
@@ -23,62 +28,40 @@ enum ERequestOperation {
 export const send = (request: IRest): Promise<IRestResponse> => {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(
-      process.env.CHROME_APP_ID,
+      process.env.FIRECAMP_EXTENSION_AGENT_ID,
       {
-        requestOperation: ERequestOperation.Send,
+        requestOperation: EReqEvent.Send,
         request,
         requestId: request._meta.id,
       },
-      (response) => {
-        // Reject if found any error in message passing
-        if (chrome.runtime.lastError) reject(chrome.runtime.lastError.message);
+      (result: ExtResponse) => {
 
-        resolve(response);
+        if(result?.response) return resolve(result.response);
+        if(result?.error) return reject(result.error);
+
+        // reject if found any error in message passing
+        // console.log(chrome.runtime.lastError) // { message: ""}
+        if (chrome.runtime.lastError) return reject(chrome.runtime.lastError.message);
+        return;
       }
     );
   });
 };
 
-/**
- * Register the chrome message listener, which handles REST request send and cancel operation
- */
-if (_misc.firecampAgent() === EFirecampAgent.web) {
-  chrome?.runtime?.onMessageExternal?.addListener(async function (
-    {
-      requestOperation,
-      request,
-      requestId,
-    }: {
-      requestOperation: ERequestOperation;
-      request: IRest;
-      requestId: TId;
-    },
-    sender,
-    sendResponse
-  ) {
-    try {
-      switch (requestOperation) {
-        case ERequestOperation.Send:
-          restExecutors[request._meta.id] = new RestExecutor();
-
-          const response = await restExecutors[request._meta.id].send(request);
-
-          delete restExecutors[requestId];
-
-          sendResponse(response);
-
-          break;
-
-        case ERequestOperation.Cancel:
-          restExecutors[requestId].cancel();
-
-          break;
+export const ping = (ping: string= "ping"): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage(
+      process.env.FIRECAMP_EXTENSION_AGENT_ID,
+      ping,
+      (pong: string) => {
+        if(pong === "pong") return resolve(pong);
+        // reject if found any error in message passing
+        if (chrome.runtime.lastError) return reject(chrome.runtime.lastError.message);
+        return reject("pong not received");
       }
-    } catch (error) {
-      sendResponse(error);
-    }
+    );
   });
-}
+};
 
 /**
  * Stop running Rest request
@@ -89,18 +72,16 @@ if (_misc.firecampAgent() === EFirecampAgent.web) {
 export const cancel = async (requestId: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(
-      process.env.CHROME_APP_ID,
+      process.env.FIRECAMP_EXTENSION_AGENT_ID,
       {
-        requestOperation: ERequestOperation.Cancel,
+        requestOperation: EReqEvent.Cancel,
         requestId,
       },
-      (response) => {
+      (result) => {
         // Reject if found any error in message passing
         if (chrome.runtime.lastError) reject(chrome.runtime.lastError.message);
-
         delete restExecutors[requestId];
-
-        resolve(response);
+        resolve(result);
       }
     );
   });
