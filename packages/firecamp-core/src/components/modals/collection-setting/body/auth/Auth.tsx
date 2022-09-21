@@ -16,7 +16,7 @@ import { EAuthTypes } from '@firecamp/types';
 import { _env, _object } from '@firecamp/utils';
 
 const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
-  const _getAuthHeaders = new AuthService();
+  // const _getAuthHeaders = new AuthService();
 
   let [initialAuthDetails, setInitialAuthDetails] = useState({
     auth: project?.auth || {},

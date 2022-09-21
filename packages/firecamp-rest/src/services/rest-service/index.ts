@@ -551,21 +551,19 @@ export const getAuthHeaders = async (
           _misc.firecampAgent() === EFirecampAgent.desktop
             ? EFirecampAgent.desktop
             : EFirecampAgent.extension;
-        let extraParams = {
+        const extraParams = {
           url,
           method,
           body,
           agent,
           headers,
-          authType: authType || meta.active_auth_type,
         };
 
         // console.log({ extraParams, requestAuth });
 
-        let authServicePayload = requestAuth?.[authType];
+        let authServicePayload = requestAuth[authType];
         // console.log({ authServicePayload });
 
-        // debugger;u
         // manage OAuth2 payload
         if (meta?.active_auth_type === EAuthTypes.OAuth2) {
           let oAuth2 = requestAuth[EAuthTypes.OAuth2];
@@ -574,7 +572,7 @@ export const getAuthHeaders = async (
           authServicePayload = activeGrantTypePayload;
         }
 
-        const authService = new Auth(authServicePayload, extraParams);
+        const authService = new Auth(authType || meta.active_auth_type, authServicePayload, extraParams);
         await authService.authorize();
         let authHeaders = await authService.getHeader();
 

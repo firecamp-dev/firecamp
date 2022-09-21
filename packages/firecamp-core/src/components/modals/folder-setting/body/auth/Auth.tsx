@@ -16,7 +16,7 @@ import { cloneDeep } from 'lodash';
 import { _env, _object } from '@firecamp/utils';
 
 const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
-  const _getAuthHeaders = new AuthService();
+  // const _getAuthHeaders = new AuthService();
 
   let [initialAuthDetails, setInitialAuthDetails] = useState(
     cloneDeep({

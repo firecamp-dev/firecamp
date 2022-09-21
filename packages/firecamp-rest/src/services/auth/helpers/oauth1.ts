@@ -1,6 +1,6 @@
-import { IOAuth1, EOAuth1Signature } from '@firecamp/types';
 import crypto from 'crypto';
 import OAuth from 'oauth-1.0a';
+import { IOAuth1, EOAuth1Signature } from '@firecamp/types';
 import { IExtra } from '../types';
 
 export default (credentials: IOAuth1, extra: IExtra): string => {
@@ -51,37 +51,19 @@ export default (credentials: IOAuth1, extra: IExtra): string => {
 
   const requestData = {
     url: url.raw,
-    method: method,
+    method,
     data: {
-      oauth_callback: '',
-      oauth_timestamp: '',
-      oauth_nonce: '',
-      oauth_verifier: '',
+      oauth_callback: callback_url || '',
+      oauth_timestamp: timestamp || '',
+      oauth_nonce: nonce || '',
+      oauth_verifier: verifier || '',
     },
   };
 
-  if (callback_url) requestData.data.oauth_callback = callback_url;
-
-  if (timestamp) requestData.data.oauth_timestamp = timestamp;
-
-  if (nonce) requestData.data.oauth_nonce = nonce;
-
-  if (verifier) requestData.data.oauth_verifier = verifier;
-
-  let token = null;
-
-  if (token_key && token_secret) {
-    token = {
-      key: token_key,
-      secret: token_secret,
-    };
-  } else if (token_key) {
-    token = { key: token_key };
-  }
+  let token: { key: string, secret: string } = { key: token_key, secret: token_secret };
 
   const data = oauth.authorize(requestData, token);
-
-  let authInfo = oauth.toHeader(data).Authorization;
+  const authInfo = oauth.toHeader(data).Authorization;
 
   // TODO: Review before remove
   // authInfo = authInfo.replace(/%7B%7B/g, '{{')
