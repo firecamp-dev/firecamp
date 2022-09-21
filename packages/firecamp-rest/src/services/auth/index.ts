@@ -1,36 +1,39 @@
-import { EAuthTypes } from '@firecamp/types';
+import { EAuthTypes, EHttpMethod, IAuthAws4, IAuthBasic, IAuthBearer, IAuthDigest, IOAuth1, IOAuth2, IUrl } from '@firecamp/types';
 import { IAuthHeader, IExtra, TAuth } from './types';
 import { aws4, basic, bearer, digest, oauth1, oauth2 } from './helpers';
 
 export default class Auth {
+  authType: EAuthTypes;
   credentials: TAuth;
   extra: IExtra;
-  authDetails: string | any;
+  authHeader: string;
+  aws4AuthHeaders: { [k: string]: any };
 
-  constructor(credentials: TAuth, extra: IExtra) {
+  constructor(authType: EAuthTypes, credentials: TAuth, extra: IExtra) {
+    this.authType = authType;
     this.credentials = credentials;
     this.extra = extra;
   }
 
   async authorize(): Promise<void> {
-    switch (this.extra.authType) {
+    switch (this.authType) {
       case EAuthTypes.Aws4:
-        this.authDetails = aws4(this.credentials, this.extra);
+        this.aws4AuthHeaders = aws4(this.credentials as IAuthAws4, this.extra);
         break;
       case EAuthTypes.Basic:
-        this.authDetails = basic(this.credentials);
+        this.authHeader = basic(this.credentials as IAuthBasic);
         break;
       case EAuthTypes.Bearer:
-        this.authDetails = bearer(this.credentials);
+        this.authHeader = bearer(this.credentials as IAuthBearer);
         break;
       case EAuthTypes.Digest:
-        this.authDetails = digest(this.credentials);
+        this.authHeader = digest(this.credentials as IAuthDigest, this.extra as { url: IUrl, method: EHttpMethod });
         break;
       case EAuthTypes.OAuth1:
-        this.authDetails = oauth1(this.credentials, this.extra);
+        this.authHeader = oauth1(this.credentials as IOAuth1, this.extra);
         break;
       case EAuthTypes.OAuth2:
-        this.authDetails = await oauth2(this.credentials, this.extra);
+        this.authHeader = await oauth2(this.credentials as IOAuth2, this.extra);
         break;
 
       default:
@@ -39,11 +42,9 @@ export default class Auth {
   }
 
   getHeader(): IAuthHeader | object {
-    if (this.extra.authType === EAuthTypes.Aws4) {
-      return { ...this.authDetails };
+    if (this.authType === EAuthTypes.Aws4) {
+      return { ...this.aws4AuthHeaders };
     } else
-      return {
-        Authorization: this.authDetails,
-      };
+      return { "Authorization": this.authHeader };
   }
 }

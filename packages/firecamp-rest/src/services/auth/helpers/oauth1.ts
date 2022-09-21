@@ -65,9 +65,6 @@ export default (credentials: IOAuth1, extra: IExtra): string => {
   const data = oauth.authorize(requestData, token);
   const authInfo = oauth.toHeader(data).Authorization;
 
-  console.log(data, 11111);
-  console.log(authInfo, 22222)
-
   // TODO: Review before remove
   // authInfo = authInfo.replace(/%7B%7B/g, '{{')
   // authInfo = authInfo.replace(/%7D%7D/g, '}}')
