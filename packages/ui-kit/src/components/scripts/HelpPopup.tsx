@@ -274,8 +274,8 @@ const HelpPopUp: FC<IHelpPopup> = ({
           text="Snippet"
           transparent={true}
           ghost={true}
-          size={EButtonSize.Small}
-          color={EButtonColor.Secondary}
+          sm
+          secondary
         />
       </Popover.Handler>
     </Popover>

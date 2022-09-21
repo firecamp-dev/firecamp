@@ -193,7 +193,7 @@ const Home: FC<any> = () => {
               <Button
                 text="Create a request"
                 size={EButtonSize.Medium}
-                color={EButtonColor.Secondary}
+                secondary
                 withCaret={true}
                 transparent={true}
                 className="!border-0 !border-transparent !px-6"

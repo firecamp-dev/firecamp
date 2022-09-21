@@ -104,16 +104,16 @@ const CreateFolder: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             <TabHeader.Right>
               <Button
                 text="Cancel"
-                color={EButtonColor.Secondary}
+                secondary
                 transparent={true}
-                size={EButtonSize.Small}
+                sm
                 onClick={(e) => onClose()}
                 ghost={true}
               />
               <Button
                 text={isRequesting ? 'Creating...' : 'Create'}
-                color={EButtonColor.Primary}
-                size={EButtonSize.Small}
+                primary
+                sm
                 onClick={onCreate}
                 disabled={isRequesting}
               />

@@ -326,8 +326,8 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
           <TabHeader.Right>
             <Button
               text="Update"
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               disabled={equal(initialAuthDetails, authDetails)}
               onClick={_onUpdate}
             />

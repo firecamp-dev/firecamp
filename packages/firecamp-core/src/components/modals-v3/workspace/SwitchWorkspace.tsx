@@ -160,8 +160,8 @@ const NoWrsFoundMessage = ({ close = () => {} }) => {
       </div>
       <Button
         text="Close"
-        size={EButtonSize.Small}
-        color={EButtonColor.Primary}
+        sm
+        primary
         onClick={close}
       />
     </div>

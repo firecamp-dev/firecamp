@@ -231,15 +231,15 @@ const AddCookie: FC<IAddCookie> = ({
                     <TabHeader.Right>
                       <Button
                         text="Cancel"
-                        color={EButtonColor.Secondary}
+                        secondary
                         transparent={true}
-                        size={EButtonSize.Small}
+                        sm
                         onClick={_onClickCancel}
                       />
                       <Button
                         text={mutation === true ? 'Update' : 'Add'}
-                        color={EButtonColor.Primary}
-                        size={EButtonSize.Small}
+                        primary
+                        sm
                         onClick={_onClickSubmit}
                       />
                     </TabHeader.Right>
@@ -257,9 +257,9 @@ const AddCookie: FC<IAddCookie> = ({
         ) : (
           <Button
             // TODO: add color="primary-alt"
-            color={EButtonColor.Primary}
-            size={EButtonSize.Small}
-            iconPosition={EButtonIconPosition.Left}
+            primary
+            sm
+            iconLeft
             text="Add Cookie"
             icon={<VscAdd className="ml-2 toggle-arrow" size={12} />}
           />

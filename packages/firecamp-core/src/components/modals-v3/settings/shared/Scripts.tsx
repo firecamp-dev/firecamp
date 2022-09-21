@@ -67,17 +67,17 @@ const Scripts: FC<IScriptsSettingUi> = ({
           <TabHeader.Right>
             <Button
               text="Cancel"
-              color={EButtonColor.Secondary}
+              secondary
               transparent={true}
-              size={EButtonSize.Small}
+              sm
               onClick={(e) => close()}
               ghost={true}
             />
 
             <Button
               text={isRequesting ? 'Updating Scripts...' : 'Update Scripts'}
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               disabled={
                 equal(propScripts, initialPayload.scripts) || isRequesting
               }

@@ -368,12 +368,12 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
             <Dropdown.Handler>
               <Button
                 text={activeAuthType?.name || ''}
-                size={EButtonSize.ExSmall}
+                xs
                 className="font-bold"
                 ghost={true}
                 transparent={true}
                 withCaret={true}
-                color={EButtonColor.Primary}
+                primary
               />
             </Dropdown.Handler>
             <Dropdown.Options

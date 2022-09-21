@@ -174,8 +174,8 @@ const ClearAllCookie: FC<IClearAllCookie> = ({
               <div className="flex ml-auto">
                 <Button
                   text={'Cancel'}
-                  color={EButtonColor.Secondary}
-                  size={EButtonSize.Small}
+                  secondary
+                  sm
                   // TODO: add font-light
                   onClick={_onCancel}
                 />
@@ -183,7 +183,7 @@ const ClearAllCookie: FC<IClearAllCookie> = ({
                 <Button
                   text={'Delete'}
                   color="primary-alt"
-                  size={EButtonSize.Small}
+                  sm
                   // TODO: add font-light
                   onClick={_onSubmit}
                 />
@@ -195,10 +195,10 @@ const ClearAllCookie: FC<IClearAllCookie> = ({
     >
       <Popover.Handler id="clearallcookies">
         <Button
-          color={EButtonColor.Primary}
+          primary
           transparent={true}
           ghost={true}
-          size={EButtonSize.Small}
+          sm
           text="Clear All Cookie"
         />
       </Popover.Handler>

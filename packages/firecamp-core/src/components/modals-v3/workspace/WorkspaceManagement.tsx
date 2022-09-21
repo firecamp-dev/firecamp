@@ -171,16 +171,16 @@ const EditInfoTab: FC<any> = ({
         <TabHeader.Right>
           <Button
             text="Cancel"
-            color={EButtonColor.Secondary}
+            secondary
             transparent={true}
-            size={EButtonSize.Small}
+            sm
             onClick={(e) => close(e)}
             ghost={true}
           />
           <Button
             text={isRequesting ? 'Updating...' : 'Update'}
-            color={EButtonColor.Primary}
-            size={EButtonSize.Small}
+            primary
+            sm
             onClick={onSubmit}
             disabled={isRequesting}
           />
@@ -300,8 +300,8 @@ const MembersTab = () => {
         <TabHeader.Left>
           <Button
             text={'Invite Members'}
-            color={EButtonColor.Primary}
-            size={EButtonSize.Small}
+            primary
+            sm
             onClick={() => AppService.modals.openInviteMembers()}
           />
         </TabHeader.Left>
@@ -333,7 +333,7 @@ const RoleDD: FC<{
       <Dropdown.Handler>
         <Button
           text={role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator'}
-          size={EButtonSize.Small}
+          sm
           ghost={true}
           transparent={true}
           withCaret={true}

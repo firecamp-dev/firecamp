@@ -13,10 +13,10 @@ const URLSampleButton = ({ buttonText = 'Sample' }) => {
   // if (ctx_propAppType == APP_TYPES.GRAPHQL && !ctx_request.raw_url.length) {
   return (
     <Button
-      color={EButtonColor.Secondary}
+      secondary
       text={buttonText || 'Sample'}
       disabled={false}
-      size={EButtonSize.Small}
+      sm
       transparent={true}
       ghost={true}
       // TODO: add underline class

@@ -63,8 +63,8 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
           handler={
             <Button
               id={`confirm-popover-handler-reset-playground-${tabId}`}
-              color={EButtonColor.Secondary}
-              size={EButtonSize.Small} // TODO: add class for exsmall
+              secondary
+              sm // TODO: add class for exsmall
               onClick={() =>
                 isQueryDirty ? _toggleResetConfirmPopover(true) : _onReset()
               }
@@ -85,8 +85,8 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
       {!!body ? (
         <Button
           id={`prettify-${tabId}`}
-          color={EButtonColor.Secondary}
-          size={EButtonSize.Small} // TODO: add class for exsmall
+          secondary
+          sm // TODO: add class for exsmall
           onClick={(_) => prettifyQuery(body)}
           disabled={!body ? true : false}
           text="Prettify"
@@ -98,8 +98,8 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
       {!!body && isQueryDirty ? (
         <Button
           id={`save-to-collection-${tabId}`}
-          color={EButtonColor.Secondary}
-          size={EButtonSize.Small} // TODO: add class for exsmall
+          secondary
+          sm // TODO: add class for exsmall
           onClick={(_) => _onSaveToCollection()}
           text="Save to collection"
           disabled={!body ? true : false}

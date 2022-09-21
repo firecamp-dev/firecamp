@@ -99,8 +99,8 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
         <Dropdown.Handler>
         <Button 
           text={auth['signature_method'] || 'HMAC-SHA1'}
-          size={EButtonSize.Small}
-          color={EButtonColor.Secondary}
+          sm
+          secondary
           withCaret={true}
           />
         </Dropdown.Handler>

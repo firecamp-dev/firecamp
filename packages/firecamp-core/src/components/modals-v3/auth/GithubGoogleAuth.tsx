@@ -120,7 +120,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
       <Button
         text="Continue with Google"
         icon={<GrGoogle size={18} />}
-        iconPosition={EButtonIconPosition.Left}
+        iconLeft
         size={EButtonSize.Medium}
         className="!w-full mb-5"
         onClick={_googleOAuth}
@@ -129,7 +129,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
       <Button
         text="Continue with Github"
         icon={<VscGithub size={18} />}
-        iconPosition={EButtonIconPosition.Left}
+        iconLeft
         size={EButtonSize.Medium}
         className="!w-full mb-5"
         onClick={_githubOAuth}

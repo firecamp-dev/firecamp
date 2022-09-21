@@ -257,16 +257,16 @@ const CreateWorkspace: FC<IModal> = ({
           <TabHeader.Right>
             <Button
               text="Cancel"
-              color={EButtonColor.Secondary}
+              secondary
               transparent={true}
-              size={EButtonSize.Small}
+              sm
               onClick={(e) => onClose(e)}
               ghost={true}
             />
             <Button
               text={flag_isRequesting ? 'Creating...' : 'Create'}
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               onClick={_onCreateWorkspace}
               disabled={flag_isRequesting}
             />

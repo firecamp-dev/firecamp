@@ -170,15 +170,15 @@ const Setting: FC<ISetting> = ({
             <TabHeader.Right>
               <Button
                 text="Cancel"
-                color={EButtonColor.Secondary}
+                secondary
                 transparent={true}
-                size={EButtonSize.Small}
+                sm
                 onClick={_handleCancel}
               />
               <Button
                 text="Update"
-                size={EButtonSize.Small}
-                color={EButtonColor.Primary}
+                sm
+                primary
                 onClick={_handleSubmit}
               />
             </TabHeader.Right>

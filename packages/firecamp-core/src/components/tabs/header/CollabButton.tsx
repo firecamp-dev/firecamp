@@ -27,10 +27,10 @@ const CollabButton: FC<any> = () => {
         <Button
           text="save my workspace"
           icon={<AiOutlineUpload className="mr-2 toggle-arrow" size={16} />}
-          color={EButtonColor.Secondary}
-          iconPosition={EButtonIconPosition.Left}
+          secondary
+          iconLeft
           onClick={(e) => AppService.modals.openSignIn()}
-          size={EButtonSize.Small}
+          sm
           transparent={true}
         />
       );
@@ -39,9 +39,9 @@ const CollabButton: FC<any> = () => {
         <Button
           text="create organization"
           icon={<VscAdd className="mr-2 toggle-arrow" size={12} />}
-          color={EButtonColor.Secondary}
-          iconPosition={EButtonIconPosition.Left}
-          size={EButtonSize.Small}
+          secondary
+          iconLeft
+          sm
           transparent={true}
           onClick={(e) => AppService.modals.openCreateOrg()}
         />
@@ -56,9 +56,9 @@ const CollabButton: FC<any> = () => {
           icon={
             <AiOutlineUsergroupAdd className="ml-2 toggle-arrow" size={12} />
           }
-          color={EButtonColor.Secondary}
-          iconPosition={EButtonIconPosition.Left}
-          size={EButtonSize.Small}
+          secondary
+          iconLeft
+          sm
           onClick={(e) => AppService.modals.openInviteMembers()}
           transparent={true}
         />

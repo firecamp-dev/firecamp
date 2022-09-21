@@ -30,7 +30,7 @@ const ActiveEnvDD: FC<IActiveEnvDD> = ({
       >
         <Button
           text={selected?.['name'] || ''}
-          size={EButtonSize.Small}
+          sm
           withCaret={true}
         />
       </Dropdown.Handler>

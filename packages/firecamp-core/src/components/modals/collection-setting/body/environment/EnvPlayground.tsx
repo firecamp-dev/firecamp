@@ -137,7 +137,7 @@ const EnvPlayground: FC<IEnvPlayground> = ({
               <Button
                 key={`Project-Env-Cancel`}
                 text={'Undo Changes'}
-                color={EButtonColor.Secondary}
+                secondary
                 transparent={true}
                 // TODO: add className="font-sm"
                 disabled={isUndoButtonDisabled}
@@ -146,7 +146,7 @@ const EnvPlayground: FC<IEnvPlayground> = ({
               <Button
                 key={`Project-Env-Update`}
                 text="Update"
-                color={EButtonColor.Primary}
+                primary
                 //TODO: color="primary-alt"
                 // TODO: className="font-sm"
                 disabled={

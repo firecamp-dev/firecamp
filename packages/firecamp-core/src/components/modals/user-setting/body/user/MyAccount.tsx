@@ -302,7 +302,7 @@ const MyAccount: FC<any> = ({ user = {}, onClose = () => {} }) => {
                 })
               : ''}
             <Button
-              color={EButtonColor.Secondary}
+              secondary
               // TODO: className="font-sm"
               text={button.text || ''}
               onClick={_onClickUpdateProfile}
@@ -312,7 +312,7 @@ const MyAccount: FC<any> = ({ user = {}, onClose = () => {} }) => {
                   user.username === username.value &&
                   user.email === email.value)
               }
-              size={EButtonSize.Small}
+              sm
               transparent={true}
             />
             {user?.provider === 'local'
@@ -425,8 +425,8 @@ const UpdatePassword: FC<any> = ({ onClose = () => {} }) => {
     <Button
       key={`password-save-button`}
       text={button.text || ''}
-      color={EButtonColor.Secondary}
-      size={EButtonSize.Small}
+      secondary
+      sm
       transparent={true}
       onClick={_onClickChangePassword}
       disabled={button.isDisabled}

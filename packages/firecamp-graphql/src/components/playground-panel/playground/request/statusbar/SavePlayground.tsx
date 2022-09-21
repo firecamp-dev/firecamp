@@ -137,8 +137,8 @@ const SavePlayground: FC<ISavePlayground> = ({
       >
         <Button
           text="Save playground"
-          color={EButtonColor.Secondary}
-          size={EButtonSize.ExSmall}
+          secondary
+          xs
           ghost={true}
           transparent={true}
           className="!border-0 hover:!bg-focus2"

@@ -42,9 +42,9 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
         <Button
           text={selectedOption}
           withCaret={true}
-          size={EButtonSize.Small}
+          sm
           tooltip={!isDropDownOpen && toolTip ? toolTip : ''}
-          color={EButtonColor.Secondary}
+          secondary
         />
       </Dropdown.Handler>
       <Dropdown.Options

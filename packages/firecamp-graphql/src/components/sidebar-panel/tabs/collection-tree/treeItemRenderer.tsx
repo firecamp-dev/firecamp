@@ -142,11 +142,11 @@ export default {
 
             <Button
               text={'Open'}
-              size={EButtonSize.ExSmall}
+              xs
               className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
               ghost={true}
               transparent={true}
-              color={EButtonColor.Secondary}
+              secondary
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();

@@ -223,8 +223,8 @@ const IFT: FC<IIFT> = ({
             <Button
               onClick={_addRow}
               text="Add Row"
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               transparent={true}
               ghost={true}
               // color="primary-alt"

@@ -291,16 +291,16 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
             <TabHeader.Right>
               <Button
                 text={'Undo Changes'}
-                color={EButtonColor.Primary}
+                primary
                 transparent={true}
-                size={EButtonSize.Small}
+                sm
                 disabled={!isVarUpdated}
                 onClick={onUndoChanges}
               />
               <Button
                 text={'Update'}
-                color={EButtonColor.Primary}
-                size={EButtonSize.Small}
+                primary
+                sm
                 disabled={!isVarUpdated}
                 onClick={onUpdate}
               />

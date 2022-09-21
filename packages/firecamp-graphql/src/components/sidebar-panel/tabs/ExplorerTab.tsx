@@ -56,7 +56,7 @@ const ExplorerTab = () => {
             return (
               <Button
                 key={i}
-                color={EButtonColor.Secondary}
+                secondary
                 transparent={true}
                 className="underline pl-1 pr-1 pt-0 pb-0"
                 text={query.name || ''}

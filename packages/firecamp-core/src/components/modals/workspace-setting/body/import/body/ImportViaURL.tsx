@@ -43,8 +43,8 @@ const ImportViaURL: FC<IImportViaURL> = ({
         </form>
         <Button
           // TODO: className="font-light"
-          color={EButtonColor.Primary}
-          size={EButtonSize.Small}
+          primary
+          sm
           text="Import"
           disabled={isImporting}
           onClick={handleSubmit(_submitURL)}

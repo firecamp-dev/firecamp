@@ -277,8 +277,8 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
           <TabHeader.Right>
             <Button
               text="Update"
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               disabled={equal(cloneDeep(initialAuthDetails), authDetails)}
               onClick={_onUpdate}
             />

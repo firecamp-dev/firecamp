@@ -66,8 +66,8 @@ const Scripts = ({ project = {}, collectionId = '' }) => {
           <TabHeader.Right>
             <Button
               text="Update"
-              color={EButtonColor.Primary}
-              size={EButtonSize.Small}
+              primary
+              sm
               disabled={equal(cloneDeep(project?.scripts), scripts)}
               onClick={_onUpdate}
             />

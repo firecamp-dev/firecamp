@@ -51,9 +51,9 @@ const PlaygroundPanel = () => {
               <Button
                 text="add playground"
                 icon={<VscAdd className="mr-2" size={12} />}
-                color={EButtonColor.Secondary}
-                iconPosition={EButtonIconPosition.Left}
-                size={EButtonSize.Small}
+                secondary
+                iconLeft
+                sm
                 transparent={true}
                 onClick={() => addPlayground('Hello Tab')}
                 ghost={true}

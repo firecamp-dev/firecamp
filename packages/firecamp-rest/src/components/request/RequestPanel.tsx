@@ -174,12 +174,12 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
           } */
           postComp={() => (
             <Button
-              color={EButtonColor.Secondary}
+              secondary
               text="Code"
               transparent={true}
               ghost={true}
-              iconPosition={EButtonIconPosition.Left}
-              size={EButtonSize.Small}
+              iconLeft
+              sm
               icon={<VscCode className="mr-2" size={12} />}
               // TODO: Add class for tabs-with-bottom-border-right-section
               onClick={_toggleCodeSnippet}

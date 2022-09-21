@@ -28,7 +28,7 @@ const SignIn: FC<IModal> = () => {
           <Button
             text="Continue with Email"
             icon={<VscAccount size={18} />}
-            iconPosition={EButtonIconPosition.Left}
+            iconLeft
             size={EButtonSize.Medium}
             className="!w-full mb-5"
             onClick={() => AppService.modals.openSignInWithEmail()}

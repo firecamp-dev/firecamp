@@ -82,7 +82,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
       <Dropdown.Handler>
         <Button
           text={menu?.selected?.name || ''}
-          size={EButtonSize.ExSmall}
+          xs
           transparent={true}
           ghost={true}
           className={classnames(
