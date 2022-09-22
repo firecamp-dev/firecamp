@@ -12,7 +12,6 @@ import { ERequestTypes } from '@firecamp/types';
 import {
   Container,
   ProgressBar,
-  TabHeader,
   Pane,
   ToolBar,
   Empty,
@@ -20,7 +19,7 @@ import {
 } from '@firecamp/ui-kit';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
-import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
+// import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 
 import { RE } from '../../../constants';
@@ -136,7 +135,38 @@ const Explorer: FC<any> = () => {
     }
   };
 
-  const collapseExplorer = () => {};
+  const canDropAt = (item, target) => {
+    const itemPayload= item.data;
+    const isCollection = itemPayload._meta.is_collection;
+    const isFolder = itemPayload._meta.is_folder;
+    const isRequest = itemPayload._meta.is_request;
+    const { targetType, depth, parentItem } = target;
+
+    console.clear();
+    console.log(itemPayload, isCollection, target, "can drop at ...");
+
+    /** collection can only reorder at depth 0 */
+    if(isCollection &&
+        targetType == "between-items" &&
+        depth==0 &&
+        parentItem== "root"
+    ) {
+      return true;
+    }
+
+    /** folder and request can be dropped on collection */
+    if( (isFolder || isRequest) && 
+        targetType == "item" && 
+        depth == 0 &&
+        parentItem== "root"
+    ) {
+      return true;
+    }
+
+    console.log(false, "you can not drag")
+    return false
+    // return target.targetType === 'between-items' ? target.parentItem.startsWith('A') : target.targetItem.startsWith('A')       
+  };
 
   return (
     <div className="w-full h-full flex flex-row explorer-wrapper">
@@ -196,12 +226,7 @@ const Explorer: FC<any> = () => {
             return (
               <>
                 <UncontrolledTreeEnvironment
-                  onDrop={console.log}
                   onRegisterTree={(...a) => console.log(a, 'on register tree')}
-                  canRename={true}
-                  canReorderItems={true}
-                  canDragAndDrop={true}
-                  canDropOnItemWithChildren={true}
                   ref={environmentRef}
                   keyboardBindings={{
                     // primaryAction: ['f3'],
@@ -225,6 +250,19 @@ const Explorer: FC<any> = () => {
                   }
                   // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
                   // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
+                  
+                  canRename={true}
+                  canReorderItems={true}
+                  canDragAndDrop={true}
+                  canDropOnItemWithChildren={true}
+                  canDropOnItemWithoutChildren={true}
+                  canDrag={(items)=> {
+                    return true
+                  }}
+                  canDropAt={(items, target) => canDropAt(items[0], target)}
+                  onDrop={(items, target )=> console.log(items, target, "onDrop")}
+                  onMissingItems={(itemIds )=> console.log(itemIds, "onMissingItems")}
+                  onMissingChildren={(itemIds )=> console.log(itemIds, "onMissingChildren")}
                 >
                   <Tree
                     treeId="collections-explorer"

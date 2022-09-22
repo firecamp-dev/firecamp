@@ -25,7 +25,7 @@ type TTreeItemData = {
 //@ts-ignore
 const _uniq = (arr: string[]) => [...new Set(arr)];
 export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
-  private items: any; //ExplicitDataSource;
+  private items: any[]; //ExplicitDataSource;
   private rootOrders: TreeItemIndex[];
   // private onDidChangeTreeDataEmitter = new EventEmitter<TreeItemIndex[]>();
   private emitter = mitt();
@@ -67,10 +67,10 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     }
 
     let item = this.items.find((i) => i._meta?.id == itemId);
-    if (!item)
-      return Promise.reject(
-        "The item id is existing in parent's meta orders array but can't find the item in data provider's items array"
-      );
+    if (!item) return Promise.resolve({ index: null, data: null });
+    // return Promise.reject(
+    //   "The item id is existing in parent's meta orders array but can't find the item in data provider's items array"
+    // );
 
     let treeItem: TTreeItemData = {
       name: item.name || item.meta.name, // in request, the `name` key will be in `meta`
@@ -85,16 +85,15 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     if (item._meta?.is_folder == true) treeItem._meta.is_folder = true;
     if (item._meta?.is_request == true) treeItem._meta.is_request = true;
 
-    const children = _uniq([
-      ...(item?.meta?.f_orders || []),
-      ...(item.meta?.r_orders || []),
-    ]);
+    const children =
+      item.children || // if folder/request/item will be dropped to other place then children will already be set to the item
+      _uniq([...(item?.meta?.f_orders || []), ...(item.meta?.r_orders || [])]);
     return Promise.resolve({
       index: item._meta.id,
       canMove: true,
       data: treeItem,
       canRename: true,
-      hasChildren: true, //!!children?.length, //note: if it's false then folder clickhas no effect, we need to open it even it's empty
+      hasChildren: !treeItem._meta.is_request, //!!children?.length, //note: if it's false then folder click has no effect, we need to open it even it's empty
       children,
     });
   }
@@ -107,22 +106,32 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
 
     if (itemId == 'root') this.rootOrders = newChildren;
     else {
-      console.log(itemId, newChildren, 'onChangeItemChildren...');
+      // console.log(itemId, newChildren, 'onChangeItemChildren...');
       this.items = this.items.map((i) => {
         return i._meta.id == itemId ? { ...i, children: newChildren } : i;
       });
     }
-    this.emitter.emit(ETreeEventTypes.itemChanged, [itemId]);
+    setTimeout(() => {
+      this.emitter.emit(ETreeEventTypes.itemChanged, [itemId]);
+    });
+    return Promise.resolve();
   }
 
   public onDidChangeTreeData(
     listener: (changedItemIds: TreeItemIndex[]) => void
   ): Disposable {
-    // console.log(listener, "listener.....onDidChangeTreeData")
-    this.emitter.on(ETreeEventTypes.itemChanged, (itemIDs: TreeItemIndex[]) =>
-      listener(itemIDs)
+    // console.log(listener, 'listener.....onDidChangeTreeData');
+    this.emitter.on(
+      ETreeEventTypes.itemChanged,
+      (changedItemIds: TreeItemIndex[]) => {
+        return listener(changedItemIds);
+      }
     );
-    return { dispose: () => this.emitter.off(ETreeEventTypes.itemChanged) };
+    return {
+      dispose: () => {
+        this.emitter.off(ETreeEventTypes.itemChanged);
+      },
+    };
   }
 
   public async onRenameItem(item: TreeItem<any>, name: string): Promise<void> {
