@@ -13,7 +13,8 @@ const Table: FC<ITable> = ({
     tableResizable = false,
     columnRenderer = () => { },
     cellRenderer = () => { },
-    tableWidth = 200
+    tableWidth = 200,
+    options = {}
 }) => {
 
     const [tableData, setTableData] = useState(() => [])
@@ -27,7 +28,11 @@ const Table: FC<ITable> = ({
             {
                 id: (typeof column.displayName !== "undefined" ? column.displayName : column.name),
                 ...(typeof column.width !== "undefined" ? { size: column.width } : {}),
-                enableResizing: (typeof column.enableResizing !== "undefined") ? column.enableResizing: false,
+                ...(typeof column.maxSize !== "undefined" ? { maxSize: column.maxSize } : {}),
+                minSize: (
+                    typeof column.minSize !== "undefined" ? column.minSize :
+                        (typeof options.minColumnSize !== "undefined" ? options.minColumnSize : 50)),
+                enableResizing: (typeof column.enableResizing !== "undefined") ? column.enableResizing : false,
                 header: (col) => {
                     return columnRenderer(col.header.id)
                 },
@@ -59,16 +64,14 @@ const Table: FC<ITable> = ({
     }
 
     return (
-        <div className={`w-full`} 
-        // style={{ width: tableWidth + "px", overflowX: "auto" }} //to only keep the table container div within the provided width
-    >
-
+        <div className={cx(`w-full`, options.containerClassName)}>
             <DndProvider backend={HTML5Backend}>
                 <table className="primary-table border border-appBorder mb-4"
                     id={name}
                     ref={tableRef}
                     style={{
                         minWidth: table.getTotalSize() + (tableWidth - table.getTotalSize()), //adding additional width to table to match the whole div width
+                        // width: "100%"
                         width: table.getTotalSize()
                     }}>
                     <thead>
@@ -78,8 +81,12 @@ const Table: FC<ITable> = ({
                                 {
                                     headerGroup.headers.map(header => {
                                         return <Th key={header.id}
-                                            // className={`relative h-30 border overflow-ellipsis overflow-hidden ${!header.column.getCanResize() ? " w-auto" : ""}`}
-                                            style={{ width: header.getSize() }}>
+                                            className={"overflow-hidden overflow-ellipsis whitespace-nowrap"}
+                                            style={{
+                                                // minWidth: `${options.minColumnSize}px`, 
+                                                width: header.getSize()
+                                            }}
+                                        >
                                             {
                                                 header.isPlaceholder
                                                     ? null
@@ -93,8 +100,7 @@ const Table: FC<ITable> = ({
                                                     <div
                                                         onMouseDown={header.getResizeHandler()}
                                                         onTouchStart={header.getResizeHandler()}
-                                                        className={`pt-resizer h-full ${header.column.getIsResizing() ? 'pt-resizing': ''}`}
-                                                        // className={`absolute h-full w-2 block right-0 top-0 pt-resizer ${header.column.getIsResizing() ? 'pt-resizing' : ''}`}
+                                                        className={`pt-resizer h-full ${header.column.getIsResizing() ? 'pt-resizing' : ''}`}
                                                     ></div>)
                                             }
                                         </Th>
@@ -125,9 +131,9 @@ const Th: FC<ITh> = ({ children = <></>, className = "", style = {} }) => {
     )
 }
 
-export const Td: FC<ITd> = ({ children, className="", style={} })=> {
+export const Td: FC<ITd> = ({ children, className = "", style = {} }) => {
     return (
-        <td className={cx("border-b border-l first:border-l-0 border-appBorder", className)}>
+        <td className={cx("border-b border-l first:border-l-0 border-appBorder", className)} style={style}>
             {children}
         </td>
     )
@@ -141,7 +147,8 @@ type ITable = {
     columns: Array<IColumn>,
     columnRenderer: (column: object | string) => string | JSX.Element,
     cellRenderer: (cell: object) => string | JSX.Element,
-    tableWidth: number
+    tableWidth: number,
+    options: TPlainObject
 }
 type IColumn = {
     name: string,
@@ -150,9 +157,9 @@ type IColumn = {
     enableResizing?: boolean
 }
 type ITableRow = {
-    reorderRow : Function
+    reorderRow: Function
     row: TPlainObject,
     index?: number
 }
-type ITh = { children: ReactNode, className?: string, style?: TPlainObject}
-type ITd = { children: ReactNode, className?: string, style?: TPlainObject}
+type ITh = { children: ReactNode, className?: string, style?: TPlainObject }
+type ITd = { children: ReactNode, className?: string, style?: TPlainObject }

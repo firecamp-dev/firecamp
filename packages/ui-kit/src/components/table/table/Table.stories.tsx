@@ -1,5 +1,5 @@
 //@ts-nocheck
-import Table, {Td} from './Table';
+import Table, { Td } from './Table';
 import { getData } from "./TableData";
 
 export default {
@@ -11,7 +11,7 @@ export default {
   }
 };
 
-const Template = (args) => <Table {...args}  />;
+const Template = (args) => <Table {...args} />;
 
 export const SimpleTable = Template.bind({});
 SimpleTable.args = {
@@ -19,6 +19,10 @@ SimpleTable.args = {
   tableWidth: 800,
   tableResizable: true,
   data: getData(),
+  options: {
+    containerClassName: "max-w-[calc(100%-24px)] m-auto overflow-x-auto ",
+    minColumnSize: 65,
+  },
   columns: [
     {
       name: "action",
@@ -56,18 +60,16 @@ SimpleTable.args = {
 
     if (typeof cell.getValue() !== "undefined") {
       return <Td style={{ width: cell.column.getSize() }}>
-           {["2-city"].includes(cell.row.original.id) ?
-           <div className='fc-input-wrapper'>
-            <input key={cell.id}
-                            type="text"
-                            placeholder={`Search...`}
-                            className="without-border h-[30] fc-input-IFE -fc-input-IFE-focused !p-1"
-                            // className="shadow rounded bg-cyan-300 w-full"
-                        />
-           </div>
-             :
-           cell.getValue()}
-          </Td>
+        {["2-city"].includes(cell.row.original.id) ?
+
+          <input key={cell.id}
+            type="text"
+            placeholder={``}
+            className="text-appForeground bg-appBackground h-[29px]  w-full absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
+          />
+          :
+          cell.getValue()}
+      </Td>
     }
     else {
       return <></>;
