@@ -1,8 +1,9 @@
 import create from 'zustand';
-import { EFirecampAgent, IOrganization } from '@firecamp/types';
+import { EFirecampAgent, IOrganization, TId } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
-import * as executor from "@firecamp/agent-manager";
+import * as executor from '@firecamp/agent-manager';
 import { DefaultTheme } from '../types';
+import { Rest } from '@firecamp/cloud-apis';
 
 export enum EPlatformScope {
   Person = 'person',
@@ -13,10 +14,10 @@ let firecampAgent: EFirecampAgent = localStorage.getItem(
   'firecampAgent'
 ) as EFirecampAgent;
 
-console.log(firecampAgent, "firecampAgent...")
-if(!firecampAgent) {
+console.log(firecampAgent, 'firecampAgent...');
+if (!firecampAgent) {
   const agent = _misc.firecampAgent();
-  firecampAgent= agent === EFirecampAgent.web ? EFirecampAgent.proxy : agent;
+  firecampAgent = agent === EFirecampAgent.web ? EFirecampAgent.proxy : agent;
 }
 
 const initialState = {
@@ -28,7 +29,7 @@ const initialState = {
   appInfo: {},
   meta: {
     agent: firecampAgent,
-    isExtAgentInstalled: false
+    isExtAgentInstalled: false,
   },
 };
 
@@ -39,7 +40,11 @@ export interface IPlatformStore {
   organization?: Partial<IOrganization> | null;
   switchingOrg: Partial<IOrganization> | null;
   appInfo: { [k: string]: any };
-  meta: { agent: EFirecampAgent; isExtAgentInstalled:boolean, [k: string]: any };
+  meta: {
+    agent: EFirecampAgent;
+    isExtAgentInstalled: boolean;
+    [k: string]: any;
+  };
 
   setClientId: (id: string) => void;
   setOrg: (org: IOrganization) => void;
@@ -48,7 +53,7 @@ export interface IPlatformStore {
   updateAppInfo: (appInfo: any) => void;
   changeFirecampAgent: (agent: EFirecampAgent) => void;
   getFirecampAgent: () => EFirecampAgent;
-  checkExtAgentInstalled: ()=> void;
+  checkExtAgentInstalled: () => void;
 
   updateTheme: (theme: any) => void;
 
@@ -84,8 +89,9 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
   changeFirecampAgent: (agent: EFirecampAgent) => {
     if (!agent) return;
 
-    const meta= get().meta;
-    if(agent == EFirecampAgent.extension && !meta.isExtAgentInstalled) agent= meta.agent;
+    const meta = get().meta;
+    if (agent == EFirecampAgent.extension && !meta.isExtAgentInstalled)
+      agent = meta.agent;
 
     // set agent in local storage
     localStorage.setItem('firecampAgent', agent);
@@ -97,19 +103,29 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
   getFirecampAgent: (): EFirecampAgent =>
     get().meta.agent || EFirecampAgent.proxy,
 
-  checkExtAgentInstalled: async()=> {
+  checkExtAgentInstalled: async () => {
     executor
       .pingExtension()
-      .then(res=> {
-          set(s=> ({ meta: { ...s.meta, isExtAgentInstalled: res=="pong"? true: false }}))
+      .then((res) => {
+        set((s) => ({
+          meta: {
+            ...s.meta,
+            isExtAgentInstalled: res == 'pong' ? true : false,
+          },
+        }));
       })
-      .catch(e=> {
-        const agent= get().meta.agent;
-        set(s=> ({ meta: { 
-          ...s.meta, 
-          isExtAgentInstalled: false,
-          agent: agent == EFirecampAgent.extension? EFirecampAgent.proxy: agent
-        }}))
+      .catch((e) => {
+        const agent = get().meta.agent;
+        set((s) => ({
+          meta: {
+            ...s.meta,
+            ...s.meta,
+            ...s.meta,
+            isExtAgentInstalled: false,
+            agent:
+              agent == EFirecampAgent.extension ? EFirecampAgent.proxy : agent,
+          },
+        }));
       });
   },
 
@@ -118,7 +134,6 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
     set((s) => ({ theme }));
   },
 
-  // dispose whole store and reset to initial state
   // dispose whole store and reset to initial state
   dispose: () => set({ ...initialState }),
 }));

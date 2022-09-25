@@ -5,7 +5,12 @@ import _reject from 'lodash/reject';
 
 import { _object, _string } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
-import { TId, IWorkspace, IOrganization } from '@firecamp/types';
+import {
+  TId,
+  IWorkspace,
+  IOrganization,
+  EWorkspaceType,
+} from '@firecamp/types';
 
 import { useEnvStore } from './environment';
 import AppService from '../services/app';
@@ -13,6 +18,7 @@ import AppService from '../services/app';
 const initialState = {
   workspace: {
     name: 'My Workspace',
+    meta: { c_orders: [], type: EWorkspaceType.Personal },
     _meta: {
       id: nanoid(), // only when user is guest
     },
@@ -70,6 +76,17 @@ export interface IWorkspaceStore {
   updateRequest: (rId: string, payload: { [k: string]: any }) => void;
   deleteRequest: (rId: string) => void;
 
+  // change orders
+  changeWorkspaceMetaOrders: (orders: TId[]) => Promise<any>;
+  changeCollectionMetaOrders: (
+    id: TId,
+    payload: { f_orders?: TId[]; r_orders?: TId[] }
+  ) => Promise<any>;
+  changeFolderMetaOrders: (
+    id: TId,
+    payload: { f_orders?: TId[]; r_orders?: TId[] }
+  ) => Promise<any>;
+
   // common
   dispose: () => void;
 }
@@ -81,8 +98,14 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
 
     // register TreeDatProvider instance
     registerTDP: (instance: any) => {
-      const { collections, folders, requests } = get().explorer;
-      instance.init(collections, folders, requests);
+      const state = get();
+      const { collections, folders, requests } = state.explorer;
+      instance.init(
+        collections,
+        folders,
+        requests,
+        state.workspace.meta.c_orders
+      );
       set((s) => {
         return { explorer: { ...s.explorer, tdpInstance: instance } };
       });
@@ -127,7 +150,12 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             // console.log(res.data, "res.data wCollection...");
 
             set((s) => {
-              s.explorer?.tdpInstance?.init(collections, folders, requests);
+              s.explorer?.tdpInstance?.init(
+                collections,
+                folders,
+                requests,
+                workspace.meta.c_orders
+              );
               return {
                 workspace,
                 explorer: { ...s.explorer, collections, folders, requests },
@@ -423,10 +451,75 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       return Rest.organization.availability({ name });
     },
 
+    /** change collection orders in workspace */
+    changeWorkspaceMetaOrders: async (orders) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.workspace
+        .changeMetaOrders(state.workspace._meta.id, orders)
+        .then(() => {
+          set((s) => ({
+            workspace: {
+              ...s.workspace,
+              meta: { ...s.workspace.meta, c_orders: orders },
+            },
+          }));
+        })
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
+    /** change folder and requests orders in collection */
+    changeCollectionMetaOrders: async (id, { f_orders, r_orders }) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.collection
+        .changeMetaOrders(id, f_orders, r_orders)
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
+    /** change folder and requests orders in folder */
+    changeFolderMetaOrders: async (id, { f_orders, r_orders }) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.folder
+        .changeMetaOrders(id, f_orders, r_orders)
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
     // dispose whole store and reset to initial state
     dispose: () =>
       set((s) => {
-        s.explorer?.tdpInstance?.init([], [], []);
+        s.explorer?.tdpInstance?.init([], [], [], []);
         return {
           ...initialState,
           explorer: {

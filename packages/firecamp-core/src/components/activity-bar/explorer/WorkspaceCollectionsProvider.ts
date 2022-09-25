@@ -5,6 +5,7 @@ import {
   TreeItem,
   TreeItemIndex,
 } from '@firecamp/ui-kit/src/tree';
+import { useWorkspaceStore } from '../../../store/workspace';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',
@@ -33,7 +34,8 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   constructor(
     collections: any[] = [],
     folders: any[] = [],
-    requests: any[] = []
+    requests: any[] = [],
+    rootOrders: string[] = []
     // items: Record<TreeItemIndex, TreeItem<T>>,
     // private implicitItemOrdering?: (itemA: TreeItem<T>, itemB: TreeItem<T>) => number,
   ) {
@@ -48,14 +50,14 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
         _meta: { ...i._meta, is_request: true },
       })),
     ];
-    this.rootOrders = _uniq(collections.map((i) => i._meta.id));
+    console.log(rootOrders, 'rootOrders...');
+    this.rootOrders = rootOrders;
   }
 
   public async getTreeItem(
     itemId: TreeItemIndex
   ): Promise<TreeItem<TTreeItemData>> {
     if (itemId == 'root') {
-      // console.log(this.rootOrders, "this.rootOrders...")
       return Promise.resolve({
         index: 'root',
         canMove: true,
@@ -85,9 +87,10 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     if (item._meta?.is_folder == true) treeItem._meta.is_folder = true;
     if (item._meta?.is_request == true) treeItem._meta.is_request = true;
 
-    const children =
-      item.children || // if folder/request/item will be dropped to other place then children will already be set to the item
-      _uniq([...(item?.meta?.f_orders || []), ...(item.meta?.r_orders || [])]);
+    const children = _uniq([
+      ...(item.meta.f_orders || []),
+      ...(item.meta.r_orders || []),
+    ]);
     return Promise.resolve({
       index: item._meta.id,
       canMove: true,
@@ -104,11 +107,41 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   ): Promise<void> {
     // this.items[itemId].children = newChildren;
 
-    if (itemId == 'root') this.rootOrders = newChildren;
-    else {
-      // console.log(itemId, newChildren, 'onChangeItemChildren...');
+    const {
+      changeWorkspaceMetaOrders,
+      changeCollectionMetaOrders,
+      changeFolderMetaOrders,
+    } = useWorkspaceStore.getState();
+
+    if (itemId == 'root') {
+      this.rootOrders = newChildren;
+      changeWorkspaceMetaOrders(newChildren as string[]);
+    } else {
+      // split new children into f_orders and r_orders
+      const { f_orders, r_orders } = newChildren.reduce(
+        (p, n) => {
+          const item = this.items.find((i) => i._meta.id == n);
+          if (item && item._meta.is_folder)
+            return { f_orders: [...p.f_orders, n], r_orders: p.r_orders };
+          else if (item && item._meta.is_request)
+            return { f_orders: p.f_orders, r_orders: [...p.r_orders, n] };
+          else return p;
+        },
+        { f_orders: [], r_orders: [] }
+      );
+
       this.items = this.items.map((i) => {
-        return i._meta.id == itemId ? { ...i, children: newChildren } : i;
+        if (i._meta.id == itemId) {
+          if (i._meta.is_collection)
+            changeCollectionMetaOrders(itemId as string, {
+              f_orders,
+              r_orders,
+            });
+          if (i._meta.is_folder)
+            changeFolderMetaOrders(itemId as string, { f_orders, r_orders });
+          return { ...i, meta: { ...i.meta, f_orders, r_orders } };
+        }
+        return i;
       });
     }
     setTimeout(() => {
@@ -149,7 +182,12 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   }
 
   // extra methods of provider
-  init(collections: any[] = [], folders: any[] = [], requests: any[] = []) {
+  init(
+    collections: any[] = [],
+    folders: any[] = [],
+    requests: any[] = [],
+    rootOrders: string[] = []
+  ) {
     this.items = [
       ...collections.map((i) => ({
         ...i,
@@ -161,7 +199,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
         _meta: { ...i._meta, is_request: true },
       })),
     ];
-    this.rootOrders = collections.map((i) => i._meta.id);
+    this.rootOrders = rootOrders;
     setTimeout(() => {
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     });

@@ -77,7 +77,7 @@ const Explorer: FC<any> = () => {
 
   // console.log(folders, "folders....")
   const dataProvider = useRef(
-    new WorkspaceCollectionsProvider(collections, folders, requests)
+    new WorkspaceCollectionsProvider(collections, folders, requests, workspace.meta?.c_orders || [])
   );
 
   //effect: register and unregister treeDataProvider instance
