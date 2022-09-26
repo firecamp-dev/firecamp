@@ -484,6 +484,19 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       state.toggleProgressBar(true);
       const res = await Rest.collection
         .changeMetaOrders(id, f_orders, r_orders)
+        .then(() => {
+          set((s) => {
+            const { collections } = s.explorer;
+            collections.map((c) => {
+              if (c._meta.id == id) {
+                if (Array.isArray(f_orders)) c.meta.f_orders = f_orders;
+                if (Array.isArray(r_orders)) c.meta.r_orders = r_orders;
+              }
+              return c;
+            });
+            return { explorer: { ...s.explorer, collections } };
+          });
+        })
         .catch((e) => {
           if (e.message == 'Network Error') {
             //TODO: show error notification
@@ -503,6 +516,19 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       state.toggleProgressBar(true);
       const res = await Rest.folder
         .changeMetaOrders(id, f_orders, r_orders)
+        .then(() => {
+          set((s) => {
+            const { folders } = s.explorer;
+            folders.map((f) => {
+              if (f._meta.id == id) {
+                if (Array.isArray(f_orders)) f.meta.f_orders = f_orders;
+                if (Array.isArray(r_orders)) f.meta.r_orders = r_orders;
+              }
+              return f;
+            });
+            return { explorer: { ...s.explorer, folders } };
+          });
+        })
         .catch((e) => {
           if (e.message == 'Network Error') {
             //TODO: show error notification
