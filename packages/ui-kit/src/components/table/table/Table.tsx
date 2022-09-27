@@ -26,15 +26,16 @@ const Table: FC<ITable> = ({
     const columnDisplay = [
         ...columns.map(column => columnHelper.accessor(column.name,
             {
-                id: (typeof column.displayName !== "undefined" ? column.displayName : column.name),
+                id:  column.name,
                 ...(typeof column.width !== "undefined" ? { size: column.width } : {}),
                 ...(typeof column.maxSize !== "undefined" ? { maxSize: column.maxSize } : {}),
                 minSize: (
-                    typeof column.minSize !== "undefined" ? column.minSize :
-                        (typeof options.minColumnSize !== "undefined" ? options.minColumnSize : 50)),
+                    typeof column.minSize !== "undefined" ? column.minSize : 
+                            (typeof options.minColumnSize !== "undefined" ? options.minColumnSize :  50 )
+                        ),
                 enableResizing: (typeof column.enableResizing !== "undefined") ? column.enableResizing : false,
                 header: (col) => {
-                    return columnRenderer(col.header.id)
+                    return columnRenderer((typeof column.displayName !== "undefined" ? column.displayName : column.name))
                 },
                 cell: (props) => {
                     return cellRenderer(props)
@@ -70,8 +71,7 @@ const Table: FC<ITable> = ({
                     id={name}
                     ref={tableRef}
                     style={{
-                        minWidth: table.getTotalSize() + (tableWidth - table.getTotalSize()), //adding additional width to table to match the whole div width
-                        // width: "100%"
+                        minWidth: "100%",
                         width: table.getTotalSize()
                     }}>
                     <thead>
@@ -83,8 +83,9 @@ const Table: FC<ITable> = ({
                                         return <Th key={header.id}
                                             className={"overflow-hidden overflow-ellipsis whitespace-nowrap"}
                                             style={{
-                                                // minWidth: `${options.minColumnSize}px`, 
-                                                width: header.getSize()
+                                                minWidth: `${header.column.columnDef.minSize}px`, 
+                                                width: header.getSize(),
+                                                maxWidth: `${header.column.columnDef.maxSize}px`, 
                                             }}
                                         >
                                             {
@@ -154,6 +155,8 @@ type IColumn = {
     name: string,
     displayName?: string,
     width?: number,
+    minSize?:number,
+    maxSize?:number,
     enableResizing?: boolean
 }
 type ITableRow = {

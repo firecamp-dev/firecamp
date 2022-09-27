@@ -27,7 +27,9 @@ const TableDraggableRow : FC<ITableRow> = (props) => {
             row.getVisibleCells().map((cell: TPlainObject) => {
                 return <Fragment key={cell.id}>
                     {(cell.column.columnDef.accessorKey === "action") ?
-                        <td className={`border-b border-l first:border-l-0 border-appBorder`} ref={dropRef}>
+                        <td className={`border-b border-l first:border-l-0 border-appBorder`} ref={dropRef}
+                        style={{ maxWidth: cell.column.getSize() }}
+                        >
                             <button ref={dragRef}>🟰</button>
                         </td>
                         : flexRender(cell.column.columnDef.cell, cell.getContext())}

@@ -13,6 +13,11 @@ import equal from 'deep-equal';
 import { IBulkEditIFT } from '../interfaces/BulkEditIFT.interfaces';
 import { _table } from '@firecamp/utils';
 
+
+import Table, { Td } from '../table/Table';
+import { defaultData } from '../table/TableData';
+import { columnDataForDisplay, TableInput } from '../table/Table.stories';
+
 const modes = {
   TABLE: 'table',
   RAW: 'raw',
@@ -32,6 +37,9 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
 }) => {
   let [mode, setMode] = useState(modes.TABLE);
   let [raw, setRaw] = useState('');
+
+
+  let [tableValue, setTableValue] = useState(defaultData);
 
   useEffect(() => {
     try {
@@ -70,6 +78,24 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
       onChange(newRows);
     }
   };
+
+  let updateTableData = (value, table) => {
+    let Index = tableValue.findIndex(data => data.id === table.row.original.id)
+
+    if (Index !== -1 && table.getValue() !== value) {
+
+      let updatedValues = tableValue;
+      let updatedCell = updatedValues[Index];
+      updatedCell[table.column.id] = value;
+      updatedValues = [
+        ...updatedValues.slice(0, Index),
+        updatedCell,
+        ...updatedValues.slice(Index + 1),
+      ]
+
+      setTableValue(updatedValues)
+    }
+  }
 
   return (
     <div>
@@ -117,6 +143,41 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           />
         </div>
       )}
+
+
+
+      <Table name='test-table'
+        tableWidth={500}
+        tableResizable={true}
+        data={tableValue}
+        options={{
+          containerClassName: "max-w-[calc(100%-24px)] m-auto overflow-x-auto custom-scrollbar ",
+          minColumnSize: 100,
+        }}
+        columns={columnDataForDisplay}
+        columnRenderer={(row) => <>{row}</>}
+        cellRenderer={(cell) => {
+          if (typeof cell.getValue() !== "undefined") {
+
+            return <Td style={{ maxWidth: cell.column.getSize() }}
+              className={" h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline"}>
+              {["2-city"].includes(cell.row.original.id) ?
+                  <TableInput key={cell.id}
+                    value={cell?.getValue() ?? ""}
+                    onChange={(value) => updateTableData(value, cell)} />
+                :
+                cell.getValue()
+              }
+            </Td>
+          }
+          else {
+            return <></>;
+          }
+        }}
+      />
+
+
+
     </div>
   );
 };
