@@ -19,7 +19,7 @@ type TTreeItemData = {
     is_folder?: boolean;
     is_request?: boolean;
     collection_id?: string; // exist in folder and request
-    folder_id?: string; //exist in request and v3 fodler (old folder has parent_id)
+    folder_id?: string;
   };
 };
 
@@ -50,7 +50,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
         _meta: { ...i._meta, is_request: true },
       })),
     ];
-    console.log(rootOrders, 'rootOrders...');
+    // console.log(rootOrders, 'rootOrders...');
     this.rootOrders = rootOrders;
   }
 
@@ -80,7 +80,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       _meta: {
         id: item._meta.id,
         collection_id: item._meta?.collection_id,
-        folder_id: item._meta?.folder_id || item._meta?.parent_id,
+        folder_id: item._meta?.folder_id,
       },
     };
     if (item._meta?.is_collection == true) treeItem._meta.is_collection = true;

@@ -53,7 +53,7 @@ export interface IWorkspaceStore {
   // workspace
   workspace: Partial<IWorkspace>;
   setWorkspace: (workspace: IWorkspace) => void;
-  fetchExplorer: (wId: string) => void;
+  fetchExplorer: (wId?: string) => void;
   create: (payload: TCreateWrsPayload) => Promise<any>;
   checkNameAvailability: (name: string, org_id?: string) => Promise<any>;
   switch: (workspace_id: string, activeWorkspace: string) => void;
@@ -85,6 +85,15 @@ export interface IWorkspaceStore {
   changeFolderMetaOrders: (
     id: TId,
     payload: { f_orders?: TId[]; r_orders?: TId[] }
+  ) => Promise<any>;
+
+  moveFolder: (
+    folderId: TId,
+    to: { collection_id: string; folder_id?: string }
+  ) => Promise<any>;
+  moveRequest: (
+    requestId: TId,
+    to: { collection_id: string; folder_id?: string }
   ) => Promise<any>;
 
   // common
@@ -131,12 +140,13 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     // fetch remote collections of workspace... replacement of fetchAndSetAll
-    fetchExplorer: async (workspaceId: string) => {
+    fetchExplorer: async (workspaceId?: string) => {
       const state = get();
 
       state.toggleProgressBar(true);
+      const wId = workspaceId || state.workspace._meta.id;
       await Rest.workspace
-        .fetchWorkspaceArtifacts(workspaceId)
+        .fetchWorkspaceArtifacts(wId)
         .then((res: any) => {
           if (Array.isArray(res.data?.collections)) {
             let {
@@ -542,8 +552,58 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       return res;
     },
 
+    /** move folder */
+    moveFolder: async (
+      folderId: TId,
+      to: { collection_id: string; folder_id?: string }
+    ) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.folder
+        .move(folderId, to)
+        .then(() => {
+          state.fetchExplorer();
+        })
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
+    /** move request */
+    moveRequest: async (
+      requestId: TId,
+      to: { collection_id: string; folder_id?: string }
+    ) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.request
+        .move(requestId, to)
+        .then(() => {
+          state.fetchExplorer();
+        })
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
     // dispose whole store and reset to initial state
-    dispose: () =>
+    dispose: () => {
       set((s) => {
         s.explorer?.tdpInstance?.init([], [], [], []);
         return {
@@ -553,7 +613,8 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             tdpInstance: s.explorer.tdpInstance,
           },
         };
-      }),
+      });
+    },
   }))
 );
 

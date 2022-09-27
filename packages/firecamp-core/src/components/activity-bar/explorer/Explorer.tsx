@@ -44,6 +44,8 @@ const Explorer: FC<any> = () => {
     updateCollection,
     updateFolder,
     updateRequest,
+    moveRequest,
+    moveFolder,
 
     deleteCollection,
     deleteFolder,
@@ -57,6 +59,10 @@ const Explorer: FC<any> = () => {
       updateCollection: s.updateCollection,
       updateFolder: s.updateFolder,
       updateRequest: s.updateRequest,
+
+      moveRequest: s.moveRequest,
+      moveFolder: s.moveFolder,
+
 
       deleteCollection: s.deleteCollection,
       deleteFolder: s.deleteFolder,
@@ -147,7 +153,7 @@ const Explorer: FC<any> = () => {
     // return true
 
     // console.clear();
-    console.log(itemPayload, isItemCollection, target, "can drop at ...");
+    // console.log(itemPayload, isItemCollection, target, "can drop at ...");
 
     /** collection can only reorder at depth 0 */
     if(isItemCollection &&
@@ -167,18 +173,50 @@ const Explorer: FC<any> = () => {
       return true;
     }
 
-    const targetCollection = collections.find(i=> i._meta.id == parentItem);
-    const targetFolder = folders.find(i=> i._meta.id == parentItem);
+    const parentCollection = collections.find(i=> i._meta.id == parentItem);
+    const parentFolder = folders.find(i=> i._meta.id == parentItem);
 
-    /** request and folders can be drop on collection and folder or reorder within the same depth */
-    if((targetCollection || targetFolder) && (isItemFolder || isItemRequest)) {
+    /** request and folders can be drop on collection and folder or reorder within the same depth/level */
+    if((parentCollection || parentFolder) && (isItemFolder || isItemRequest)) {
       return true;
     }
 
-    console.log(false, "you can not drag")
+    // console.log(false, "you can not drag")
     return false
     // return target.targetType === 'between-items' ? target.parentItem.startsWith('A') : target.targetItem.startsWith('A')       
-  }, [ collections, folders ])
+  }, [ collections, folders ]);
+
+  const onDrop = ((items, target )=> {
+    console.log(items, target, "onDrop")
+    const item = items[0].data;
+    const { childIndex=0, parentItem, targetItem } = target;
+
+    if(item._meta.is_collection) return;
+
+    // if both exists then item is moving to collection/folder or just reordering
+    if(parentItem && targetItem) {
+      const payload: { collection_id: string, folder_id?: string} = { collection_id: "" }
+      const tCollection = collections.find(i=> i._meta.id == targetItem);
+      if(tCollection){
+        payload.collection_id = tCollection._meta.id;
+      }
+      else {
+        const tFolder = folders.find(i=> i._meta.id == targetItem);
+        if(tFolder) {
+          payload.collection_id = tFolder._meta.collection_id;
+          payload.folder_id = tFolder._meta.id;
+        }
+      }
+
+      if(item._meta.is_folder) {
+        moveFolder(item._meta.id, payload);
+      }
+      else if(item._meta.is_request) {
+        moveRequest(item._meta.id, payload);
+      }
+      else {}
+    }
+  });
 
   return (
     <div className="w-full h-full flex flex-row explorer-wrapper">
@@ -293,7 +331,7 @@ const Explorer: FC<any> = () => {
                   onRenameItem={_onRenameItem}
                   onSelectItems={_onNodeSelect}
                   onRegisterTree={(...a) => console.log(a, 'on register tree')}
-                  onDrop={(items, target )=> console.log(items, target, "onDrop")}
+                  onDrop={onDrop}
                   // onMissingItems={(itemIds )=> console.log(itemIds, "onMissingItems")}
                   // onMissingChildren={(itemIds )=> console.log(itemIds, "onMissingChildren")}
                 >
