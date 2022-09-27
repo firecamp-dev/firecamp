@@ -8,18 +8,23 @@ import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import AppService from '../../../../services/app';
+import { useWorkspaceStore } from '../../../../store/workspace'
 
 enum EMenuType {
   Collection = 'collection',
   Folder = 'folder',
+  Request = 'request'
 }
 
 const CollectionMenu = ({
   collectionId,
   folderId,
+  requestId,
   startRenaming,
   menuType,
 }) => {
+
+  const { deleteCollection, deleteFolder, deleteRequest } = useWorkspaceStore.getState();
   let [isMenuOpened, toggleMenu] = useState(false);
 
   let menus = [
@@ -81,7 +86,14 @@ const CollectionMenu = ({
         AppService.notify.confirm(
           'Are you sure to delete the collection?',
           (s) => {
-            console.log(s, 'sucess');
+            if (menuType == EMenuType.Collection) {
+              deleteCollection(collectionId);
+            } else if (menuType == EMenuType.Folder) {
+              deleteFolder(folderId);
+            }
+            else if (menuType == EMenuType.Request) {
+              deleteRequest(requestId);
+            }
           },
           console.log,
           {

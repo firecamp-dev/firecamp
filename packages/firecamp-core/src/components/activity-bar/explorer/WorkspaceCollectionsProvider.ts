@@ -246,4 +246,30 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       item._meta.folder_id || item._meta.collection_id,
     ]);
   }
+
+  public deleteCollectionItem(itemId: string) {
+    this.items = this.items.filter((i) => i._meta.id != itemId);
+    this.rootOrders = this.rootOrders.filter((i) => i != itemId);
+    this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
+  }
+
+  public deleteFolderItem(itemId: string) {
+    const item = this.items.find((i) => i._meta.id == itemId);
+    if (!item) return item;
+    this.items = this.items.filter((i) => i._meta.id != itemId);
+    // TODO: remove from parent children
+    this.emitter.emit(ETreeEventTypes.itemChanged, [
+      item._meta.folder_id || item._meta.collection_id,
+    ]);
+  }
+
+  public deleteRequestItem(itemId: string) {
+    const item = this.items.find((i) => i._meta.id == itemId);
+    if (!item) return item;
+    this.items = this.items.filter((i) => i._meta.id != itemId);
+    // TODO: remove from parent children
+    this.emitter.emit(ETreeEventTypes.itemChanged, [
+      item._meta.folder_id || item._meta.collection_id,
+    ]);
+  }
 }

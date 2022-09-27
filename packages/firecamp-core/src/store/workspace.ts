@@ -271,7 +271,6 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
     deleteCollection: async (cId: string) => {
       const state = get();
-
       state.toggleProgressBar(true);
       const res = await Rest.collection
         .delete(cId)
@@ -285,7 +284,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
           });
           return r;
         })
-        .catch((e) => {})
+        .catch((e) => {
+          console.log(e);
+        })
         .finally(() => {
           state.toggleProgressBar(false);
         });
