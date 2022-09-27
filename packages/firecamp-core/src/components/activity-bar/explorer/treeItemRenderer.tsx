@@ -118,9 +118,10 @@ export default {
     treeRef,
   }) => {
     let _startRenaming = () => {
+      // context.startRenamingItem(item.index);
       treeRef?.current.startRenamingItem(item.index);
       // console.log(item, treeRef, context, "... _startRenaming")
-      // context.startRenamingItem() //this api is not working here: https://github.com/lukasbach/@firecamp/ui-kit/src/tree/issues/83
+      // context.startRenamingItem() //this api is not working here: https://github.com/lukasbach/react-complex-tree/issues/83
     };
 
     const renderDepthOffset = 8;
@@ -205,6 +206,7 @@ export default {
                 ? item.data._meta?.id
                 : item.data._meta?.folder_id
             }
+            requestId= {item.data._meta.is_request? item.data._meta?.id: null}
             menuType={
               item.data._meta.is_folder
                 ? 'folder'

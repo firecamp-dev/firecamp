@@ -57,7 +57,7 @@
     "@types/react-dom": "^17.0.13"
   },
   "dependencies": {
-    "@firecamp/cloud-apis": "^0.0.13",
+    "@firecamp/cloud-apis": "^0.0.16",
     "@firecamp/cookie-manager": "^0.0.0",
     "@firecamp/graphql": "^0.0.0",
     "@firecamp/rest": "^0.0.0",

@@ -38,9 +38,7 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
     return <span />;
   }
 
-  let { getFirecampAgent } = usePlatformStore((s: IPlatformStore) => ({
-    getFirecampAgent: s.getFirecampAgent,
-  }));
+  const { getFirecampAgent } = usePlatformStore.getState();
 
   if (
     [
@@ -56,7 +54,7 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
     });
   }
 
-  let tabProps: ITabProps = useMemo(() => {
+  const tabProps: ITabProps = useMemo(() => {
     return {
       index: index,
       tab: tabObj,
@@ -73,7 +71,7 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
     };
   }, [activeTab, tabObj]);
 
-  let _renderRequestTab = (type) => {
+  const _renderRequestTab = (type) => {
     switch (type) {
       case ERequestTypes.Rest:
         return (
@@ -89,24 +87,26 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
           </Suspense>
         );
         break;
-      case ERequestTypes.SocketIO:
-        return (
-          <Suspense fallback={<div>Loading... </div>}>
-            {/* <SocketIOClient {...tabProps} /> */}
-          </Suspense>
-        );
-        break;
-      case ERequestTypes.WebSocket:
-        return (
-          <Suspense fallback={<div>Loading... </div>}>
-            {/* <WSClient {...tabProps} /> */}
-          </Suspense>
-        );
-        break;
+      // case ERequestTypes.SocketIO:
+      //   return (
+      //     <Suspense fallback={<div>Loading... </div>}>
+      //       {/* <SocketIOClient {...tabProps} /> */}
+      //     </Suspense>
+      //   );
+      //   break;
+      // case ERequestTypes.WebSocket:
+      //   return (
+      //     <Suspense fallback={<div>Loading... </div>}>
+      //       {/* <WSClient {...tabProps} /> */}
+      //     </Suspense>
+      //   );
+      //   break;
       default:
         return <span>Default Request Tab</span>;
     }
   };
+
+  // return _renderRequestTab(tabObj.type);
 
   return (
     <ErrorBoundary

@@ -5,7 +5,12 @@ import _reject from 'lodash/reject';
 
 import { _object, _string } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
-import { TId, IWorkspace, IOrganization } from '@firecamp/types';
+import {
+  TId,
+  IWorkspace,
+  IOrganization,
+  EWorkspaceType,
+} from '@firecamp/types';
 
 import { useEnvStore } from './environment';
 import AppService from '../services/app';
@@ -13,6 +18,7 @@ import AppService from '../services/app';
 const initialState = {
   workspace: {
     name: 'My Workspace',
+    meta: { c_orders: [], type: EWorkspaceType.Personal },
     _meta: {
       id: nanoid(), // only when user is guest
     },
@@ -47,7 +53,7 @@ export interface IWorkspaceStore {
   // workspace
   workspace: Partial<IWorkspace>;
   setWorkspace: (workspace: IWorkspace) => void;
-  fetchExplorer: (wId: string) => void;
+  fetchExplorer: (wId?: string) => void;
   create: (payload: TCreateWrsPayload) => Promise<any>;
   checkNameAvailability: (name: string, org_id?: string) => Promise<any>;
   switch: (workspace_id: string, activeWorkspace: string) => void;
@@ -70,6 +76,26 @@ export interface IWorkspaceStore {
   updateRequest: (rId: string, payload: { [k: string]: any }) => void;
   deleteRequest: (rId: string) => void;
 
+  // change orders
+  changeWorkspaceMetaOrders: (orders: TId[]) => Promise<any>;
+  changeCollectionMetaOrders: (
+    id: TId,
+    payload: { f_orders?: TId[]; r_orders?: TId[] }
+  ) => Promise<any>;
+  changeFolderMetaOrders: (
+    id: TId,
+    payload: { f_orders?: TId[]; r_orders?: TId[] }
+  ) => Promise<any>;
+
+  moveFolder: (
+    folderId: TId,
+    to: { collection_id: string; folder_id?: string }
+  ) => Promise<any>;
+  moveRequest: (
+    requestId: TId,
+    to: { collection_id: string; folder_id?: string }
+  ) => Promise<any>;
+
   // common
   dispose: () => void;
 }
@@ -81,8 +107,14 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
 
     // register TreeDatProvider instance
     registerTDP: (instance: any) => {
-      const { collections, folders, requests } = get().explorer;
-      instance.init(collections, folders, requests);
+      const state = get();
+      const { collections, folders, requests } = state.explorer;
+      instance.init(
+        collections,
+        folders,
+        requests,
+        state.workspace.meta.c_orders
+      );
       set((s) => {
         return { explorer: { ...s.explorer, tdpInstance: instance } };
       });
@@ -108,12 +140,13 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     // fetch remote collections of workspace... replacement of fetchAndSetAll
-    fetchExplorer: async (workspaceId: string) => {
+    fetchExplorer: async (workspaceId?: string) => {
       const state = get();
 
       state.toggleProgressBar(true);
+      const wId = workspaceId || state.workspace._meta.id;
       await Rest.workspace
-        .fetchWorkspaceArtifacts(workspaceId)
+        .fetchWorkspaceArtifacts(wId)
         .then((res: any) => {
           if (Array.isArray(res.data?.collections)) {
             let {
@@ -127,7 +160,12 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             // console.log(res.data, "res.data wCollection...");
 
             set((s) => {
-              s.explorer?.tdpInstance?.init(collections, folders, requests);
+              s.explorer?.tdpInstance?.init(
+                collections,
+                folders,
+                requests,
+                workspace.meta.c_orders
+              );
               return {
                 workspace,
                 explorer: { ...s.explorer, collections, folders, requests },
@@ -233,7 +271,6 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
     deleteCollection: async (cId: string) => {
       const state = get();
-
       state.toggleProgressBar(true);
       const res = await Rest.collection
         .delete(cId)
@@ -247,7 +284,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
           });
           return r;
         })
-        .catch((e) => {})
+        .catch((e) => {
+          console.log(e);
+        })
         .finally(() => {
           state.toggleProgressBar(false);
         });
@@ -423,10 +462,151 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       return Rest.organization.availability({ name });
     },
 
+    /** change collection orders in workspace */
+    changeWorkspaceMetaOrders: async (orders) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.workspace
+        .changeMetaOrders(state.workspace._meta.id, orders)
+        .then(() => {
+          set((s) => ({
+            workspace: {
+              ...s.workspace,
+              meta: { ...s.workspace.meta, c_orders: orders },
+            },
+          }));
+        })
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
+    /** change folder and requests orders in collection */
+    changeCollectionMetaOrders: async (id, { f_orders, r_orders }) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.collection
+        .changeMetaOrders(id, f_orders, r_orders)
+        .then(() => {
+          set((s) => {
+            const { collections } = s.explorer;
+            collections.map((c) => {
+              if (c._meta.id == id) {
+                if (Array.isArray(f_orders)) c.meta.f_orders = f_orders;
+                if (Array.isArray(r_orders)) c.meta.r_orders = r_orders;
+              }
+              return c;
+            });
+            return { explorer: { ...s.explorer, collections } };
+          });
+        })
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
+    /** change folder and requests orders in folder */
+    changeFolderMetaOrders: async (id, { f_orders, r_orders }) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.folder
+        .changeMetaOrders(id, f_orders, r_orders)
+        .then(() => {
+          set((s) => {
+            const { folders } = s.explorer;
+            folders.map((f) => {
+              if (f._meta.id == id) {
+                if (Array.isArray(f_orders)) f.meta.f_orders = f_orders;
+                if (Array.isArray(r_orders)) f.meta.r_orders = r_orders;
+              }
+              return f;
+            });
+            return { explorer: { ...s.explorer, folders } };
+          });
+        })
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
+    /** move folder */
+    moveFolder: async (
+      folderId: TId,
+      to: { collection_id: string; folder_id?: string }
+    ) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.folder
+        .move(folderId, to)
+        .then(() => {
+          state.fetchExplorer();
+        })
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
+    /** move request */
+    moveRequest: async (
+      requestId: TId,
+      to: { collection_id: string; folder_id?: string }
+    ) => {
+      const state = get();
+      state.toggleProgressBar(true);
+      const res = await Rest.request
+        .move(requestId, to)
+        .then(() => {
+          state.fetchExplorer();
+        })
+        .catch((e) => {
+          if (e.message == 'Network Error') {
+            //TODO: show error notification
+          } else {
+            // TODO show error
+          }
+        })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
+      return res;
+    },
+
     // dispose whole store and reset to initial state
-    dispose: () =>
+    dispose: () => {
       set((s) => {
-        s.explorer?.tdpInstance?.init([], [], []);
+        s.explorer?.tdpInstance?.init([], [], [], []);
         return {
           ...initialState,
           explorer: {
@@ -434,7 +614,8 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             tdpInstance: s.explorer.tdpInstance,
           },
         };
-      }),
+      });
+    },
   }))
 );
 
