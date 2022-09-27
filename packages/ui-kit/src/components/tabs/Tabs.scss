@@ -45,8 +45,8 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar{
-    width: 4px;
-    height: 4px;
+    width: 4px !important;
+    height: 4px !important;
 }
  
 .custom-scrollbar:hover::-webkit-scrollbar-thumb,.doc-explorer-contents:hover::-webkit-scrollbar-thumb

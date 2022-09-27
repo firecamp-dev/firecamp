@@ -1,12 +1,14 @@
 .fc-col-resizer.left>div:last-child:hover>div:after ,.fc-col-resizer.left>div:last-child:focus>div:after,.fc-col-resizer.left>div:last-child:active>div:after ,
 .fc-col-resizer.right>div:last-child:hover>div:after ,.fc-col-resizer.right>div:last-child:focus>div:after,.fc-col-resizer.right>:last-child:active>div:after {
   content: ' ';
+  content: " ";
   position: absolute;
-  left: 4px;
-  right: 5px;
+  left: 2px;
   top: 0px;
   bottom: 0px;
   background: var(--app-focus);
+  z-index: 99;
+  width: 1px;
 }
 
 .fc-col-resizer.top>div:last-child:hover>div:after ,.fc-col-resizer.top>div:last-child:focus>div:after,.fc-col-resizer.top>div:last-child:active>div:after ,
@@ -42,4 +44,8 @@
 }
 .fc-col-resizer>.col{
   height: 100% !important;
+}
+.fc-col-resizer.right > div:last-child>div,.fc-col-resizer.left > div:last-child>div {
+  width: 6px !important;
+  right: -3px !important;
 }

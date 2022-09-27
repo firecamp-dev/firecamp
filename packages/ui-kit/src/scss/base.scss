@@ -580,12 +580,24 @@ textarea:focus,textarea:focus-visible{
 /*---------scrollbar css start----------*/
 .doc-explorer-contents::-webkit-scrollbar
 {
+  width: 0px;
+  height: 0px;
+  transition: width 1s
+}
+.doc-explorer-contents:hover::-webkit-scrollbar
+{
   width: 8px;
   height: 8px;
 }
+.doc-explorer-contents:hover::-webkit-scrollbar:hover
+{
+  width: 12px;
+  height: 8px;
+  
+}
 .visible-scrollbar::-webkit-scrollbar-thumb
 {
-background-color: var(--focus-level-4) !important;
+  background-color: var(--focus-level-4) !important;
 }
 ::-webkit-scrollbar-track{
   background: transparent;
@@ -612,8 +624,13 @@ background-color: var(--focus-level-4) !important;
 }
 .visible-scrollbar::-webkit-scrollbar, .visible-scrollbar > div::-webkit-scrollbar{
   display: block;
-  width: 4px;
-  height: 4px;
+  width: 0px;
+  height: 0px;
+}
+.visible-scrollbar:hover::-webkit-scrollbar, .visible-scrollbar > div:hover::-webkit-scrollbar{
+  display: block;
+  width: 8px;
+  height: 8px;
 }
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
