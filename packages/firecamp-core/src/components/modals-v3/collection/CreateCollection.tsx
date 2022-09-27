@@ -35,7 +35,7 @@ const CreateCollection: FC<IModal> = ({
     if (isRequesting) return;
     const name = collection.name.trim();
     if (!name || name.length < 3) {
-      setError({ name: 'The collection name must have minimun 3 characters' });
+      setError({ name: 'The collection name must have minimum 3 characters' });
       return;
     }
 

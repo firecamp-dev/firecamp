@@ -5,6 +5,7 @@ import {
   TreeItem,
   TreeItemIndex,
 } from '@firecamp/ui-kit/src/tree';
+import { useWorkspaceStore } from '../../../store/workspace';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',
@@ -18,14 +19,14 @@ type TTreeItemData = {
     is_folder?: boolean;
     is_request?: boolean;
     collection_id?: string; // exist in folder and request
-    folder_id?: string; //exist in request and v3 fodler (old folder has parent_id)
+    folder_id?: string;
   };
 };
 
 //@ts-ignore
 const _uniq = (arr: string[]) => [...new Set(arr)];
 export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
-  private items: any; //ExplicitDataSource;
+  private items: any[]; //ExplicitDataSource;
   private rootOrders: TreeItemIndex[];
   // private onDidChangeTreeDataEmitter = new EventEmitter<TreeItemIndex[]>();
   private emitter = mitt();
@@ -33,7 +34,8 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   constructor(
     collections: any[] = [],
     folders: any[] = [],
-    requests: any[] = []
+    requests: any[] = [],
+    rootOrders: string[] = []
     // items: Record<TreeItemIndex, TreeItem<T>>,
     // private implicitItemOrdering?: (itemA: TreeItem<T>, itemB: TreeItem<T>) => number,
   ) {
@@ -48,14 +50,14 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
         _meta: { ...i._meta, is_request: true },
       })),
     ];
-    this.rootOrders = _uniq(collections.map((i) => i._meta.id));
+    // console.log(rootOrders, 'rootOrders...');
+    this.rootOrders = rootOrders;
   }
 
   public async getTreeItem(
     itemId: TreeItemIndex
   ): Promise<TreeItem<TTreeItemData>> {
     if (itemId == 'root') {
-      // console.log(this.rootOrders, "this.rootOrders...")
       return Promise.resolve({
         index: 'root',
         canMove: true,
@@ -67,10 +69,10 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     }
 
     let item = this.items.find((i) => i._meta?.id == itemId);
-    if (!item)
-      return Promise.reject(
-        "The item id is existing in parent's meta orders array but can't find the item in data provider's items array"
-      );
+    if (!item) return Promise.resolve({ index: null, data: null });
+    // return Promise.reject(
+    //   "The item id is existing in parent's meta orders array but can't find the item in data provider's items array"
+    // );
 
     let treeItem: TTreeItemData = {
       name: item.name || item.meta.name, // in request, the `name` key will be in `meta`
@@ -78,7 +80,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       _meta: {
         id: item._meta.id,
         collection_id: item._meta?.collection_id,
-        folder_id: item._meta?.folder_id || item._meta?.parent_id,
+        folder_id: item._meta?.folder_id,
       },
     };
     if (item._meta?.is_collection == true) treeItem._meta.is_collection = true;
@@ -86,15 +88,15 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     if (item._meta?.is_request == true) treeItem._meta.is_request = true;
 
     const children = _uniq([
-      ...(item?.meta?.f_orders || []),
-      ...(item.meta?.r_orders || []),
+      ...(item.meta.f_orders || []),
+      ...(item.meta.r_orders || []),
     ]);
     return Promise.resolve({
       index: item._meta.id,
       canMove: true,
       data: treeItem,
       canRename: true,
-      hasChildren: true, //!!children?.length, //note: if it's false then folder clickhas no effect, we need to open it even it's empty
+      hasChildren: !treeItem._meta.is_request, //!!children?.length, //note: if it's false then folder click has no effect, we need to open it even it's empty
       children,
     });
   }
@@ -105,24 +107,64 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   ): Promise<void> {
     // this.items[itemId].children = newChildren;
 
-    if (itemId == 'root') this.rootOrders = newChildren;
-    else {
-      console.log(itemId, newChildren, 'onChangeItemChildren...');
+    const {
+      changeWorkspaceMetaOrders,
+      changeCollectionMetaOrders,
+      changeFolderMetaOrders,
+    } = useWorkspaceStore.getState();
+
+    if (itemId == 'root') {
+      this.rootOrders = newChildren;
+      changeWorkspaceMetaOrders(newChildren as string[]);
+    } else {
+      // split new children into f_orders and r_orders
+      const { f_orders, r_orders } = newChildren.reduce(
+        (p, n) => {
+          const item = this.items.find((i) => i._meta.id == n);
+          if (item && item._meta.is_folder)
+            return { f_orders: [...p.f_orders, n], r_orders: p.r_orders };
+          else if (item && item._meta.is_request)
+            return { f_orders: p.f_orders, r_orders: [...p.r_orders, n] };
+          else return p;
+        },
+        { f_orders: [], r_orders: [] }
+      );
+
       this.items = this.items.map((i) => {
-        return i._meta.id == itemId ? { ...i, children: newChildren } : i;
+        if (i._meta.id == itemId) {
+          if (i._meta.is_collection)
+            changeCollectionMetaOrders(itemId as string, {
+              f_orders,
+              r_orders,
+            });
+          if (i._meta.is_folder)
+            changeFolderMetaOrders(itemId as string, { f_orders, r_orders });
+          return { ...i, meta: { ...i.meta, f_orders, r_orders } };
+        }
+        return i;
       });
     }
-    this.emitter.emit(ETreeEventTypes.itemChanged, [itemId]);
+    setTimeout(() => {
+      this.emitter.emit(ETreeEventTypes.itemChanged, [itemId]);
+    });
+    return Promise.resolve();
   }
 
   public onDidChangeTreeData(
     listener: (changedItemIds: TreeItemIndex[]) => void
   ): Disposable {
-    // console.log(listener, "listener.....onDidChangeTreeData")
-    this.emitter.on(ETreeEventTypes.itemChanged, (itemIDs: TreeItemIndex[]) =>
-      listener(itemIDs)
+    // console.log(listener, 'listener.....onDidChangeTreeData');
+    this.emitter.on(
+      ETreeEventTypes.itemChanged,
+      (changedItemIds: TreeItemIndex[]) => {
+        return listener(changedItemIds);
+      }
     );
-    return { dispose: () => this.emitter.off(ETreeEventTypes.itemChanged) };
+    return {
+      dispose: () => {
+        this.emitter.off(ETreeEventTypes.itemChanged);
+      },
+    };
   }
 
   public async onRenameItem(item: TreeItem<any>, name: string): Promise<void> {
@@ -140,7 +182,12 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   }
 
   // extra methods of provider
-  init(collections: any[] = [], folders: any[] = [], requests: any[] = []) {
+  init(
+    collections: any[] = [],
+    folders: any[] = [],
+    requests: any[] = [],
+    rootOrders: string[] = []
+  ) {
     this.items = [
       ...collections.map((i) => ({
         ...i,
@@ -152,7 +199,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
         _meta: { ...i._meta, is_request: true },
       })),
     ];
-    this.rootOrders = collections.map((i) => i._meta.id);
+    this.rootOrders = rootOrders;
     setTimeout(() => {
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     });
@@ -195,6 +242,32 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       }
       return i;
     });
+    this.emitter.emit(ETreeEventTypes.itemChanged, [
+      item._meta.folder_id || item._meta.collection_id,
+    ]);
+  }
+
+  public deleteCollectionItem(itemId: string) {
+    this.items = this.items.filter((i) => i._meta.id != itemId);
+    this.rootOrders = this.rootOrders.filter((i) => i != itemId);
+    this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
+  }
+
+  public deleteFolderItem(itemId: string) {
+    const item = this.items.find((i) => i._meta.id == itemId);
+    if (!item) return item;
+    this.items = this.items.filter((i) => i._meta.id != itemId);
+    // TODO: remove from parent children
+    this.emitter.emit(ETreeEventTypes.itemChanged, [
+      item._meta.folder_id || item._meta.collection_id,
+    ]);
+  }
+
+  public deleteRequestItem(itemId: string) {
+    const item = this.items.find((i) => i._meta.id == itemId);
+    if (!item) return item;
+    this.items = this.items.filter((i) => i._meta.id != itemId);
+    // TODO: remove from parent children
     this.emitter.emit(ETreeEventTypes.itemChanged, [
       item._meta.folder_id || item._meta.collection_id,
     ]);

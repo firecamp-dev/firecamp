@@ -270,7 +270,7 @@ const HelpPopUp: FC<IHelpPopup> = ({
       <Popover.Handler>
         <Button
           icon={<VscInfo size={16} className="mr-1" />}
-          iconPosition="left"
+          iconLeft
           text="Snippet"
           transparent={true}
           ghost={true}
