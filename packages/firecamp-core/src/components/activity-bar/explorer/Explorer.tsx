@@ -332,8 +332,12 @@ const Explorer: FC<any> = () => {
                   onSelectItems={_onNodeSelect}
                   onRegisterTree={(...a) => console.log(a, 'on register tree')}
                   onDrop={onDrop}
-                  // onMissingItems={(itemIds )=> console.log(itemIds, "onMissingItems")}
-                  // onMissingChildren={(itemIds )=> console.log(itemIds, "onMissingChildren")}
+                  onMissingItems={(itemIds )=> {
+                    // console.log(itemIds, "onMissingItems")
+                  }}
+                  onMissingChildren={(itemIds )=> {
+                    // console.log(itemIds, "onMissingChildren")
+                  }}
                 >
                   <Tree
                     treeId="collections-explorer"
