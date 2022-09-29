@@ -303,20 +303,28 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       };
 
       state.toggleProgressBar(true);
-      const res = await Rest.folder.create(_folder);
-      state.toggleProgressBar(false);
+      const res = await Rest.folder
+        .create(_folder)
+        .then((res) => {
+          //@ts-ignore
+          if (_folder.meta?.type) _folder.meta.type = 'F';
+          set((s) => {
+            s.explorer?.tdpInstance.addFolderItem(_folder);
+            return {
+              explorer: {
+                ...s.explorer,
+                folders: [...s.explorer.folders, _folder],
+              },
+            };
+          });
+        })
+        // .catch((e) => {
+        //   console.log(e);
+        // })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
 
-      //@ts-ignore
-      _folder.meta = { type: 'F' };
-      set((s) => {
-        s.explorer?.tdpInstance.addFolderItem(_folder);
-        return {
-          explorer: {
-            ...s.explorer,
-            folders: [...s.explorer.folders, _folder],
-          },
-        };
-      });
       return res;
     },
     updateFolder: async (fId: string, payload: { [k: string]: any }) => {
