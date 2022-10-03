@@ -14,7 +14,7 @@ const Button: FC<IButton> = ({
 
     primary, secondary, danger,
     xs, sm, md, lg,
-    iconLeft, iconRight,
+    iconLeft, iconRight, iconCenter,
 
     fullWidth = false,
     uppercase = false,

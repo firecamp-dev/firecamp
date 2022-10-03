@@ -103,7 +103,7 @@ const ReqStatusBar = ({}) => {
             sm
             // TODO: add class opacity and square
             icon={<IoSendSharp />}
-            iconPosition="left"
+            iconLeft
             onClick={_execute}
             className="!rounded-bl-none !rounded-tl-none"
             // disabled={_object.isEmpty(getPlaygroundQueries())}

@@ -242,7 +242,7 @@ const InviteNewMembers = () => {
                             secondary
                             sm
                             icon={<VscOrganization size={16} />}
-                            iconPosition = {EButtonIconPosition.Left}
+                            iconLeft
                         /> */}
           </div>
         </TabHeader.Left>

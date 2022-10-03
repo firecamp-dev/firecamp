@@ -1,7 +1,8 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 
 import {
+  InteractionMode,
   Tree,
   TreeItem,
   TreeItemIndex,
@@ -12,7 +13,6 @@ import { ERequestTypes } from '@firecamp/types';
 import {
   Container,
   ProgressBar,
-  TabHeader,
   Pane,
   ToolBar,
   Empty,
@@ -20,7 +20,7 @@ import {
 } from '@firecamp/ui-kit';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
-import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
+// import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 
 import { RE } from '../../../constants';
@@ -34,7 +34,7 @@ const Explorer: FC<any> = () => {
   const environmentRef = useRef();
   const treeRef = useRef();
 
-  let { openSavedTab } = useTabStore((s) => ({ openSavedTab: s.open.saved }));
+  const { openSavedTab } = useTabStore((s) => ({ openSavedTab: s.open.saved }), shallow);
 
   let {
     workspace,
@@ -44,6 +44,8 @@ const Explorer: FC<any> = () => {
     updateCollection,
     updateFolder,
     updateRequest,
+    moveRequest,
+    moveFolder,
 
     deleteCollection,
     deleteFolder,
@@ -57,6 +59,10 @@ const Explorer: FC<any> = () => {
       updateCollection: s.updateCollection,
       updateFolder: s.updateFolder,
       updateRequest: s.updateRequest,
+
+      moveRequest: s.moveRequest,
+      moveFolder: s.moveFolder,
+
 
       deleteCollection: s.deleteCollection,
       deleteFolder: s.deleteFolder,
@@ -77,7 +83,7 @@ const Explorer: FC<any> = () => {
 
   // console.log(folders, "folders....")
   const dataProvider = useRef(
-    new WorkspaceCollectionsProvider(collections, folders, requests)
+    new WorkspaceCollectionsProvider(collections, folders, requests, workspace.meta?.c_orders || [])
   );
 
   //effect: register and unregister treeDataProvider instance
@@ -115,6 +121,7 @@ const Explorer: FC<any> = () => {
 
   const _onNodeSelect = (nodeIdxs: TreeItemIndex[]) => {
     // console.log({ nodeIdxs });
+    // return
 
     let nodeIndex = nodeIdxs[0];
     let colItem = [...collections, ...folders, ...requests].find(
@@ -136,7 +143,80 @@ const Explorer: FC<any> = () => {
     }
   };
 
-  const collapseExplorer = () => {};
+  const canDropAt = useCallback((item, target) => {
+    const itemPayload= item.data;
+    const isItemCollection = itemPayload._meta.is_collection;
+    const isItemFolder = itemPayload._meta.is_folder;
+    const isItemRequest = itemPayload._meta.is_request;
+    const { targetType, depth, parentItem } = target;
+
+    // return true
+
+    // console.clear();
+    // console.log(itemPayload, isItemCollection, target, "can drop at ...");
+
+    /** collection can only reorder at depth 0 */
+    if(isItemCollection &&
+        targetType == "between-items" &&
+        depth==0 &&
+        parentItem== "root"
+    ) {
+      return true;
+    }
+
+    /** folder and request can be dropped on collection */
+    if( (isItemFolder || isItemRequest) && 
+        targetType == "item" && 
+        depth == 0 &&
+        parentItem== "root"
+    ) {
+      return true;
+    }
+
+    const parentCollection = collections.find(i=> i._meta.id == parentItem);
+    const parentFolder = folders.find(i=> i._meta.id == parentItem);
+
+    /** request and folders can be drop on collection and folder or reorder within the same depth/level */
+    if((parentCollection || parentFolder) && (isItemFolder || isItemRequest)) {
+      return true;
+    }
+
+    // console.log(false, "you can not drag")
+    return false
+    // return target.targetType === 'between-items' ? target.parentItem.startsWith('A') : target.targetItem.startsWith('A')       
+  }, [ collections, folders ]);
+
+  const onDrop = ((items, target )=> {
+    console.log(items, target, "onDrop")
+    const item = items[0].data;
+    const { childIndex=0, parentItem, targetItem } = target;
+
+    if(item._meta.is_collection) return;
+
+    // if both exists then item is moving to collection/folder or just reordering
+    if(parentItem && targetItem) {
+      const payload: { collection_id: string, folder_id?: string} = { collection_id: "" }
+      const tCollection = collections.find(i=> i._meta.id == targetItem);
+      if(tCollection){
+        payload.collection_id = tCollection._meta.id;
+      }
+      else {
+        const tFolder = folders.find(i=> i._meta.id == targetItem);
+        if(tFolder) {
+          payload.collection_id = tFolder._meta.collection_id;
+          payload.folder_id = tFolder._meta.id;
+        }
+      }
+
+      if(item._meta.is_folder) {
+        moveFolder(item._meta.id, payload);
+      }
+      else if(item._meta.is_request) {
+        moveRequest(item._meta.id, payload);
+      }
+      else {}
+    }
+  });
 
   return (
     <div className="w-full h-full flex flex-row explorer-wrapper">
@@ -196,12 +276,6 @@ const Explorer: FC<any> = () => {
             return (
               <>
                 <UncontrolledTreeEnvironment
-                  onDrop={console.log}
-                  onRegisterTree={(...a) => console.log(a, 'on register tree')}
-                  canRename={true}
-                  canReorderItems={true}
-                  canDragAndDrop={true}
-                  canDropOnItemWithChildren={true}
                   ref={environmentRef}
                   keyboardBindings={{
                     // primaryAction: ['f3'],
@@ -210,11 +284,27 @@ const Explorer: FC<any> = () => {
                   }}
                   // dataProvider={new StaticTreeDataProvider(items, (item, data) => ({ ...item, data }))}
                   dataProvider={dataProvider.current}
-                  onStartRenamingItem={(a) => {
-                    console.log(a, 'onStartRenamingItem');
+                  defaultInteractionMode={{
+                    mode: 'custom',
+                    extends: InteractionMode.ClickItemToExpand,
+                    createInteractiveElementProps: (item, treeId, actions, renderFlags) => ({
+                      /**
+                       * 1. avoid multi select
+                       * 2. (will not work as isFocused is always true, ignore for now) focus on first click and select item if it's focused (second click)
+                       * 3. if has children then toggle expand/collapse
+                       */
+                      onClick: e => { //avoid multi select
+                        // console.log(item, actions, renderFlags)
+                        if (item.hasChildren) actions.toggleExpandedState();
+                        if(!renderFlags.isFocused)  actions.focusItem();
+                        else actions.selectItem();
+                      },
+                      onFocus: (e) => {
+                        actions.focusItem();
+                      },
+                    }),
                   }}
-                  onRenameItem={_onRenameItem}
-                  onSelectItems={_onNodeSelect}
+
                   getItemTitle={(item) => item.data.name}
                   viewState={{}}
                   // renderItemTitle={({ title }) => <span>{title}</span>}
@@ -225,6 +315,29 @@ const Explorer: FC<any> = () => {
                   }
                   // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
                   // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
+                  
+                  canRename={true}
+                  canReorderItems={true}
+                  canDragAndDrop={true}
+                  canDropOnItemWithChildren={true}
+                  canDropOnItemWithoutChildren={true}
+                  canDrag={(items)=> {
+                    return true;
+                  }}
+                  canDropAt={(items, target) => canDropAt(items[0], target)}
+                  onStartRenamingItem={(a) => {
+                    console.log(a, 'onStartRenamingItem');
+                  }}
+                  onRenameItem={_onRenameItem}
+                  onSelectItems={_onNodeSelect}
+                  onRegisterTree={(...a) => console.log(a, 'on register tree')}
+                  onDrop={onDrop}
+                  onMissingItems={(itemIds )=> {
+                    // console.log(itemIds, "onMissingItems")
+                  }}
+                  onMissingChildren={(itemIds )=> {
+                    // console.log(itemIds, "onMissingChildren")
+                  }}
                 >
                   <Tree
                     treeId="collections-explorer"
