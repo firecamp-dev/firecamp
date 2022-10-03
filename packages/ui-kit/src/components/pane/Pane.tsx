@@ -76,7 +76,7 @@ const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, actions, className
 
 const Body: FC<IBody> = ({ children, className }) => {
     return (
-        <div className={cx("pane-body p-2 focus-outer overflow-auto visible-scrollbar", className)} tabIndex={1}>
+        <div className={cx("pane-body p-2 focus-outer", className)} tabIndex={1}>
             {children}
         </div>
     );

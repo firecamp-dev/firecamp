@@ -2,15 +2,10 @@ import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { nanoid } from 'nanoid';
 import _reject from 'lodash/reject';
-
+import { ICollection } from '@firecamp/types';
 import { _object, _string } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
-import {
-  TId,
-  IWorkspace,
-  IOrganization,
-  EWorkspaceType,
-} from '@firecamp/types';
+import { TId, IWorkspace, EWorkspaceType } from '@firecamp/types';
 
 import { useEnvStore } from './environment';
 import AppService from '../services/app';
@@ -232,12 +227,13 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const res = await Rest.collection
         .create(_collection)
         .then((r) => {
+          const col: ICollection = r.data;
           set((s) => {
-            s.explorer?.tdpInstance.addCollectionItem(_collection);
+            s.explorer?.tdpInstance.addCollectionItem(col);
             return {
               explorer: {
                 ...s.explorer,
-                collections: [...s.explorer.collections, _collection],
+                collections: [...s.explorer.collections, col],
               },
             };
           });
@@ -277,7 +273,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         .then((r) => {
           set((s) => {
             const collections = s.explorer.collections.filter(
-              (c) => c._meta.id == cId
+              (c) => c._meta.id != cId
             );
             s.explorer.tdpInstance.deleteCollectionItem(cId);
             return { explorer: { ...s.explorer, collections } };
@@ -307,20 +303,28 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       };
 
       state.toggleProgressBar(true);
-      const res = await Rest.folder.create(_folder);
-      state.toggleProgressBar(false);
+      const res = await Rest.folder
+        .create(_folder)
+        .then((res) => {
+          //@ts-ignore
+          if (_folder.meta?.type) _folder.meta.type = 'F';
+          set((s) => {
+            s.explorer?.tdpInstance.addFolderItem(_folder);
+            return {
+              explorer: {
+                ...s.explorer,
+                folders: [...s.explorer.folders, _folder],
+              },
+            };
+          });
+        })
+        // .catch((e) => {
+        //   console.log(e);
+        // })
+        .finally(() => {
+          state.toggleProgressBar(false);
+        });
 
-      //@ts-ignore
-      _folder.meta = { type: 'F' };
-      set((s) => {
-        s.explorer?.tdpInstance.addFolderItem(_folder);
-        return {
-          explorer: {
-            ...s.explorer,
-            folders: [...s.explorer.folders, _folder],
-          },
-        };
-      });
       return res;
     },
     updateFolder: async (fId: string, payload: { [k: string]: any }) => {
@@ -355,7 +359,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         .delete(fId)
         .then((r) => {
           set((s) => {
-            const folders = s.explorer.folders.filter((f) => f._meta.id == fId);
+            const folders = s.explorer.folders.filter((f) => f._meta.id != fId);
             s.explorer.tdpInstance.deleteFolderItem(fId);
             return { explorer: { ...s.explorer, folders } };
           });

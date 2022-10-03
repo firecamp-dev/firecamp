@@ -212,6 +212,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   }
 
   public addFolderItem(item: any) {
+    if (!item.meta) item.meta = { f_orders: [], r_orders: [] };
     this.items.push({ ...item, _meta: { ...item._meta, is_folder: true } });
     this.items.map((i) => {
       if (item._meta.folder_id && i._meta.id == item._meta.folder_id) {
@@ -255,9 +256,20 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
 
   public deleteFolderItem(itemId: string) {
     const item = this.items.find((i) => i._meta.id == itemId);
-    if (!item) return item;
-    this.items = this.items.filter((i) => i._meta.id != itemId);
-    // TODO: remove from parent children
+    if (!item) return;
+    this.items = this.items
+      .filter((i) => i._meta.id != itemId)
+      .map((i) => {
+        // remove folder from parent's f_orders
+        if (
+          i._meta.id == item._meta.folder_id ||
+          i._meta.id == item._meta.collection_id
+        ) {
+          const newFldOrders = i.meta.f_orders.filter((f) => f != itemId);
+          return { ...i, meta: { ...i.meta, f_orders: newFldOrders } };
+        }
+        return i;
+      });
     this.emitter.emit(ETreeEventTypes.itemChanged, [
       item._meta.folder_id || item._meta.collection_id,
     ]);
@@ -265,9 +277,21 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
 
   public deleteRequestItem(itemId: string) {
     const item = this.items.find((i) => i._meta.id == itemId);
-    if (!item) return item;
-    this.items = this.items.filter((i) => i._meta.id != itemId);
-    // TODO: remove from parent children
+    if (!item) return;
+    this.items = this.items
+      .filter((i) => i._meta.id != itemId)
+      .map((i) => {
+        // remove folder from parent's f_orders
+        if (
+          i._meta.id == item._meta.folder_id ||
+          i._meta.id == item._meta.collection_id
+        ) {
+          const newReqOrders = i.meta.f_orders.filter((r) => r != itemId);
+          return { ...i, meta: { ...i.meta, r_orders: newReqOrders } };
+        }
+        return i;
+      });
+
     this.emitter.emit(ETreeEventTypes.itemChanged, [
       item._meta.folder_id || item._meta.collection_id,
     ]);
