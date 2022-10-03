@@ -1,5 +1,7 @@
+import { Td } from "./Table";
+import { useEffect, useState } from 'react';
+
 export type Person = {
-  id: string,
   key: string,
   value: string,
   description: string,
@@ -9,24 +11,21 @@ export type Person = {
 
 export const defaultData: Person[] = [
   {
-    id: "1-city",
-    key: "City",
+    key: "City 1",
     value: "Ahmedabad",
     description: "Ahmedabad, in western India, is the largest city in the state of Gujarat. ",
     popularPlace: "Kankaria Lake",
     pincode: 380001
   },
   {
-    id: "2-city",
-    key: "City",
+    key: "City 2",
     value: "Surat",
     description: "Surat is a large city beside the Tapi River in the west Indian state of Gujarat",
     popularPlace: "Dumas Beach",
     pincode: 395003
   },
   {
-    id: "3-city",
-    key: "City",
+    key: "City 3",
     value: "Mahemdavad",
     description: "Mahemdavad is a town with municipality in the Kheda district in the Indian state of Gujarat",
     popularPlace: "Siddhivinayak Temple",
@@ -37,3 +36,112 @@ export const defaultData: Person[] = [
 export function getData() {
   return defaultData
 };
+
+export const columnDataForDisplay = [
+  {
+    name: "action",
+    displayName: " ",
+    minSize: 64,
+    width: 64
+  },
+  {
+    name: "value",
+    displayName: "City",
+    width: 145,
+    minSize: 145,
+    enableResizing: true,
+  },
+  {
+    name: "description",
+    displayName: "Description",
+    width: 145,
+    enableResizing: true,
+  },
+  {
+    name: "popularPlace",
+    displayName: "Location",
+    enableResizing: true,
+  },
+  {
+    name: "pincode",
+    minSize: 60,
+    width: 60,
+    displayName: "Area Code",
+  },
+]
+
+
+export const headerRow = {
+  description: "Description",
+  disable: false,
+  key: "test",
+  type: "text",
+  value: "Value here"
+}
+export const headerColumnDataForDisplay = [
+  {
+    name: "action",
+    displayName: " ",
+    minSize: 64,
+    width: 64
+  },
+  {
+    name: "key",
+    displayName: "Key",
+    width: 145,
+    minSize: 145,
+    enableResizing: true,
+  },
+  {
+    name: "value",
+    displayName: "Value",
+    width: 145,
+    enableResizing: true,
+  },
+  {
+    name: "description",
+    displayName: "Description",
+    width: 145
+  }
+]
+
+
+export const TableInput = (props: any) => {
+  let { onChange, autoFocus, cell, rows } = props
+  const [inputValue, setInputValue] = useState("");
+  
+  const cellValue = [cell.row.index][cell.column.id];
+    
+    useEffect(() => {
+      if(inputValue !== cell.getValue()){
+        setInputValue(cell.getValue() ?? "");
+      }
+    },[cellValue])
+
+    
+
+  if (typeof cell.getValue() !== "undefined") {
+    return <Td style={{ maxWidth: cell.column.getSize() }}
+    key={cellValue}
+      className={" h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline"}>
+
+      <input
+        type="text"
+        placeholder={``}
+        value={inputValue}
+        autoFocus={autoFocus}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          let updatedRow = rows;
+          updatedRow[cell.row.index] = {...updatedRow[cell.row.index], [cell.column.id]: e.target.value}
+          onChange(updatedRow)
+        }}
+        className="text-appForeground bg-appBackground h-[29px]  w-full
+                            absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
+      />
+
+    </Td>
+  } else {
+    return <></>;
+  }
+}

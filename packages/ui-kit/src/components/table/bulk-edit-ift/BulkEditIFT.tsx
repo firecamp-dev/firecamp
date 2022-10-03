@@ -14,9 +14,8 @@ import { IBulkEditIFT } from '../interfaces/BulkEditIFT.interfaces';
 import { _table } from '@firecamp/utils';
 
 
-import Table, { Td } from '../table/Table';
-import { defaultData } from '../table/TableData';
-import { columnDataForDisplay, TableInput } from '../table/Table.stories';
+import Table from '../table/Table';
+import { defaultData , columnDataForDisplay, headerRow, headerColumnDataForDisplay, TableInput} from '../table/TableData';
 
 const modes = {
   TABLE: 'table',
@@ -40,6 +39,9 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
 
 
   let [tableValue, setTableValue] = useState(defaultData);
+  useEffect(() => {
+    onChange([headerRow])
+  },[])
 
   useEffect(() => {
     try {
@@ -79,21 +81,9 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
     }
   };
 
-  let updateTableData = (value, table) => {
-    let Index = tableValue.findIndex(data => data.id === table.row.original.id)
-
-    if (Index !== -1 && table.getValue() !== value) {
-
-      let updatedValues = tableValue;
-      let updatedCell = updatedValues[Index];
-      updatedCell[table.column.id] = value;
-      updatedValues = [
-        ...updatedValues.slice(0, Index),
-        updatedCell,
-        ...updatedValues.slice(Index + 1),
-      ]
-
-      setTableValue(updatedValues)
+  let updateTableData = (newRows: any [] = []) => {
+    if (!equal(newRows, tableValue)) {
+      setTableValue(newRows);
     }
   }
 
@@ -126,6 +116,8 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           name={title}
           meta={meta}
           disabled={disabled}
+          custom={true}
+          columnDetails={headerColumnDataForDisplay}
         />
       ) : (
         <div className="h-28">
@@ -144,8 +136,6 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
         </div>
       )}
 
-
-
       <Table name='test-table'
         tableWidth={500}
         tableResizable={true}
@@ -156,24 +146,10 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
         }}
         columns={columnDataForDisplay}
         columnRenderer={(row) => <>{row}</>}
-        cellRenderer={(cell) => {
-          if (typeof cell.getValue() !== "undefined") {
-
-            return <Td style={{ maxWidth: cell.column.getSize() }}
-              className={" h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline"}>
-              {["2-city"].includes(cell.row.original.id) ?
-                  <TableInput key={cell.id}
-                    value={cell?.getValue() ?? ""}
-                    onChange={(value) => updateTableData(value, cell)} />
-                :
-                cell.getValue()
-              }
-            </Td>
-          }
-          else {
-            return <></>;
-          }
-        }}
+        cellRenderer={({cell}) => <TableInput cell={cell} 
+        rows={tableValue}
+        onChange={updateTableData}
+        />}
       />
 
 

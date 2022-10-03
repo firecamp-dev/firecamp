@@ -111,7 +111,7 @@ const Table: FC<ITable> = ({
                     </thead>
                     <tbody>
                         {table.getRowModel().rows.map(row => {
-                            return <TableDraggableRow key={row.original.id} row={row} reorderRow={reorderRow} />
+                            return <TableDraggableRow key={row.original.key} row={row} reorderRow={reorderRow} />
                         })}
 
                     </tbody>
