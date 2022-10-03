@@ -16,6 +16,9 @@ interface IPlatformEnvironmentService {
   // subscribe to environment changes
   subscribeChanges: (tabId: TId, getPlatformVariables) => void;
 
+  // unsubscribe to environment changes
+  unsubscribeChanges: (tabId: TId) => void;
+
   // get active workspace and collection envs
   getActiveEnvsByTabId: (tabId: TId) => Promise<{
     workspace: TId;
@@ -28,10 +31,7 @@ interface IPlatformEnvironmentService {
   // set variables to IFE provider
   setVariablesToProvider: (variables: { [key: string]: any }) => void;
 
-  // subscribe to environment changes
-  unsubscribeChanges: (tabId: TId) => void;
-
-  getAndEmitPlatformVariables: (tabId?: TId) => void;
+  setVarsToProvidersAndEmitEnvsToTab: (tabId?: TId) => void;
 
   setActiveEnvironments: (requestEnvMeta: {
     activeEnvironments: {
@@ -41,7 +41,7 @@ interface IPlatformEnvironmentService {
     collectionId?: TId;
   }) => void;
 
-  setVariables?: (
+  setVariables: (
     workspace: {
       environmentId: TId;
       variables: { [key: string]: any };
@@ -66,7 +66,7 @@ const environment: IPlatformEnvironmentService = {
       // subscribe/ listen environment update event
       platformEmitter.on(`env/t/${tabId}`, getPlatformVariables);
 
-      environment.getAndEmitPlatformVariables(tabId);
+      environment.setVarsToProvidersAndEmitEnvsToTab(tabId);
 
       // TODO: check emit on update activeTab, activeTabWrsEnv, active_tab_collection_env, environments
     } catch (error) {
@@ -83,23 +83,23 @@ const environment: IPlatformEnvironmentService = {
   },
 
   // get variables and emit updates
-  getAndEmitPlatformVariables: async (tabId?: TId) => {
+  setVarsToProvidersAndEmitEnvsToTab: async (tabId?: TId) => {
     if (!tabId) tabId = useTabStore.getState().activeTab;
 
-    // get platform variables by tab id
-    let platformEnvironments: IPlatformVariables =
+    /**
+     * 1.1  get platform variables by tab id
+     * 1.2  set variables to monaco providers
+     */
+    const platformVariables: IPlatformVariables =
       await environment.getVariablesByTabId(tabId);
+    environment.setVariablesToProvider(platformVariables.merged);
 
-    // set to variable provider
-    environment.setVariablesToProvider(platformEnvironments?.merged || {});
-
-    // get platform active envs
-    let platformActiveEnv = await environment.getActiveEnvsByTabId(tabId);
-
-    // console.log({ platformActiveEnv });
-
-    // emit event: platform environment updates
-    platformEmitter.emit(`env/t/${tabId}`, platformActiveEnv);
+    /**
+     * 2.1  get platform active envs
+     * 2.2  emit event: platform environment updates
+     */
+    let activeEnvsOfTan = await environment.getActiveEnvsByTabId(tabId);
+    platformEmitter.emit(`env/t/${tabId}`, activeEnvsOfTan);
   },
 
   getActiveEnvsByTabId: (tabId: TId) => {
@@ -170,8 +170,6 @@ const environment: IPlatformEnvironmentService = {
 
     SetCompletionProvider('ife-header-value', variables);
     SetHoverProvider('ife-header-value', variables);
-    // let activeTab_Ref = useRef(activeTab || '');
-    // let tabs_Ref = useRef(zustandTabs || []);
 
     SetCompletionProvider('json', variables);
     SetHoverProvider('json', variables);

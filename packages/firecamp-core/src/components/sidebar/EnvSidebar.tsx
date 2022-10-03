@@ -233,7 +233,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
 
   const emitUpdates = () => {
     // get environment changes and emit to request tab
-    platformContext.environment.getAndEmitPlatformVariables();
+    platformContext.environment.setVarsToProvidersAndEmitEnvsToTab();
   };
 
   return (

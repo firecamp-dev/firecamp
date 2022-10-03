@@ -26,7 +26,7 @@ export interface ITab {
   name: string;
 
   /**
-   * Reqeust type
+   * Request type
    */
   type: string;
 
