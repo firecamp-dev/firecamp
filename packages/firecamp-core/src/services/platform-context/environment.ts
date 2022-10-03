@@ -68,7 +68,7 @@ const environment: IPlatformEnvironmentService = {
 
       environment.getAndEmitPlatformVariables(tabId);
 
-      // TODO: check emit on update activeTab, active_tab_wrs_env, active_tab_collection_env, environments
+      // TODO: check emit on update activeTab, activeTabWrsEnv, active_tab_collection_env, environments
     } catch (error) {
       console.error({
         API: 'platformContext.environment.subscribeChanges',
@@ -113,13 +113,13 @@ const environment: IPlatformEnvironmentService = {
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
     //workspace active environment
-    let workspaceActiveEnv = envStore.active_tab_wrs_env,
+    let workspaceActiveEnv = envStore.activeTabWrsEnv,
       collectionId = '',
       collectionActiveEnv = '';
     // get collectionId and collectionActiveEnv from tab data
     if (tab && tab?.meta.isSaved && tab?.request?._meta?.collection_id) {
       collectionId = tab.request._meta.collection_id;
-      collectionActiveEnv = envStore.active_tab_collection_envs?.[collectionId];
+      collectionActiveEnv = envStore.activeTabCollectionEnvs?.[collectionId];
     }
 
     return Promise.resolve({
@@ -142,7 +142,7 @@ const environment: IPlatformEnvironmentService = {
       collectionId = tab?.request?._meta?.collection_id || '';
 
     //workspace active environment
-    let workspaceActiveEnv = envStore.active_tab_wrs_env;
+    let workspaceActiveEnv = envStore.activeTabWrsEnv;
 
     // console.log({ ENV: useEnvStore.getState(), collectionId });
 
@@ -208,7 +208,7 @@ const environment: IPlatformEnvironmentService = {
       if (requestEnvMeta.activeEnvironments) {
         if (requestEnvMeta.activeEnvironments['workspace']) {
           // Change workspace selected environment
-          let currentWrsSelectedEnv = envStore.active_tab_wrs_env,
+          let currentWrsSelectedEnv = envStore.activeTabWrsEnv,
             updatedActiveWrsEnv =
               requestEnvMeta.activeEnvironments['workspace'];
 
@@ -229,7 +229,7 @@ const environment: IPlatformEnvironmentService = {
           let collection_id = requestEnvMeta.collectionId;
 
           let currentCollectionSelectedEnv =
-              envStore.active_tab_collection_envs?.[collection_id],
+              envStore.activeTabCollectionEnvs[collection_id],
             updatedActiveCollectionEnv =
               requestEnvMeta.activeEnvironments['collection'];
 

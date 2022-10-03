@@ -3,9 +3,9 @@ import { IEnvironment, TId, EEnvironmentScope } from '@firecamp/types';
 import { Rest } from '@firecamp/cloud-apis';
 
 const initialState = {
-  is_env_sidebar_open: false,
-  active_tab_wrs_env: '',
-  active_tab_collection_envs: {},
+  isEnvSidebarOpen: false,
+  activeTabWrsEnv: '',
+  activeTabCollectionEnvs: {},
   colEnvTdpInstance: null,
   wrsEnvTdpInstance: null,
   envs: [],
@@ -19,10 +19,10 @@ type TCreateEnvPayload = {
 };
 
 export interface IEnvironmentStore {
-  is_env_sidebar_open: boolean;
+  isEnvSidebarOpen: boolean;
 
-  active_tab_wrs_env: string | TId; // TODO: rename to active_tab_workspace_environment
-  active_tab_collection_envs: { [key: string | TId]: string | TId }; // TODO: rename to active_tab_collection_environment
+  activeTabWrsEnv: string | TId; // TODO: rename to active_tab_workspace_environment
+  activeTabCollectionEnvs: { [key: string | TId]: string | TId }; // TODO: rename to active_tab_collection_environment
   is_progressing?: boolean;
   // environments: {
   //   [key: string | TId]: { [key: string | TId]: IEnvironment }; // TODO: remove key type string
@@ -64,12 +64,12 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   ...initialState,
 
   initialize: (envs: IEnvironment[] = []) => {
-    let active_tab_wrs_env = '';
-    let active_tab_collection_envs = {};
+    let activeTabWrsEnv = '';
+    let activeTabCollectionEnvs = {};
     const firstWrsEnv = envs.filter(
       (e) => e.meta.type == EEnvironmentScope.Workspace
     )[0];
-    if (firstWrsEnv) active_tab_wrs_env = firstWrsEnv._meta.id;
+    if (firstWrsEnv) activeTabWrsEnv = firstWrsEnv._meta.id;
 
     let cEnvs = envs
       .filter((e) => ['C', 'P'].includes(e.meta.type))
@@ -91,18 +91,18 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     );
 
     // set active environment for workspace and collection
-    // let active_tab_wrs_env = Object.keys(wEnvs)[0] || '';
+    // let activeTabWrsEnv = Object.keys(wEnvs)[0] || '';
     for (let key in _cEnvs) {
-      active_tab_collection_envs[key] = Object.keys(_cEnvs[key])[0] || '';
+      activeTabCollectionEnvs[key] = Object.keys(_cEnvs[key])[0] || '';
     }
 
-    // console.log({ active_tab_wrs_env, active_tab_collection_envs });
+    // console.log({ activeTabWrsEnv, activeTabCollectionEnvs });
     // console.log({ _wEnvs, _cEnvs });
 
     set((s) => ({
       envs: envs,
-      active_tab_wrs_env,
-      active_tab_collection_envs,
+      activeTabWrsEnv,
+      activeTabCollectionEnvs,
     }));
   },
 
@@ -119,7 +119,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   toggleEnvSidebar: () => {
-    set((s) => ({ is_env_sidebar_open: !s.is_env_sidebar_open }));
+    set((s) => ({ isEnvSidebarOpen: !s.isEnvSidebarOpen }));
   },
 
   toggleProgressBar: (flag: boolean) => {
@@ -127,7 +127,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setWorkspaceActiveEnv: (envId: TId) => {
-    set(() => ({ active_tab_wrs_env: envId }));
+    set(() => ({ activeTabWrsEnv: envId }));
   },
 
   setWorkspaceEnvVariable: (envId: TId, variables: object) => {
@@ -165,15 +165,15 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   setCollectionActiveEnv: (collectionId: TId, envId: TId) => {
     set((s) => ({
-      active_tab_collection_envs: {
-        ...s.active_tab_collection_envs,
+      activeTabCollectionEnvs: {
+        ...s.activeTabCollectionEnvs,
         [collectionId]: envId,
       },
     }));
   },
 
   getCollectionActiveEnv: (collectionId: TId) => {
-    return get().active_tab_collection_envs?.[collectionId];
+    return get().activeTabCollectionEnvs[collectionId];
   },
 
   getCollectionEnvs: (collectionId: TId) => {

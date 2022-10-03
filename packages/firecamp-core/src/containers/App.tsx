@@ -35,9 +35,9 @@ import AppService from '../services/app';
 MonacoFirecampLangInit();
 
 const App: FC<any> = () => {
-  let { is_env_sidebar_open } = useEnvStore(
+  let { isEnvSidebarOpen } = useEnvStore(
     (s: IEnvironmentStore) => ({
-      is_env_sidebar_open: s.is_env_sidebar_open,
+      isEnvSidebarOpen: s.isEnvSidebarOpen,
     }),
     shallow
   );
@@ -83,7 +83,7 @@ const App: FC<any> = () => {
           </Row>
 
           <ModalContainer />
-          {is_env_sidebar_open && <EnvSidebar />}
+          {isEnvSidebarOpen && <EnvSidebar />}
           <StatusBarContainer className="border-t focus-outer2" />
         </RootContainer>
       </DndProvider>

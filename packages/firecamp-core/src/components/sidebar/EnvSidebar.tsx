@@ -5,9 +5,7 @@ import {
   Container,
   MultiLineIFE,
   TabHeader,
-  Button,
- 
-  
+  Button, 
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
@@ -20,21 +18,27 @@ import * as platformContext from '../../services/platform-context';
 
 const EnvSidebar: FC<any> = () => {
   let {
-    is_env_sidebar_open,
-    active_tab_wrs_env,
-    active_tab_collection_envs,
+    isEnvSidebarOpen,
+    activeTabWrsEnv,
+    activeTabCollectionEnvs,
 
     toggleEnvSidebar,
   } = useEnvStore(
     (s: IEnvironmentStore) => ({
-      is_env_sidebar_open: s.is_env_sidebar_open,
+      isEnvSidebarOpen: s.isEnvSidebarOpen,
 
-      active_tab_wrs_env: s.active_tab_wrs_env,
-      active_tab_collection_envs: s.active_tab_collection_envs,
+      activeTabWrsEnv: s.activeTabWrsEnv,
+      activeTabCollectionEnvs: s.activeTabCollectionEnvs,
       toggleEnvSidebar: s.toggleEnvSidebar,
     }),
     shallow
   );
+
+  console.log({
+    isEnvSidebarOpen,
+    activeTabWrsEnv,
+    activeTabCollectionEnvs,
+  })
 
   let { tab, activeTab } = useTabStore(
     (s: any) => ({
@@ -51,14 +55,14 @@ const EnvSidebar: FC<any> = () => {
     // console.log({ collection_id });
 
     if (tab && tab?.meta?.isSaved && collection_id) {
-      setActiveCollectionEnv(active_tab_collection_envs[collection_id] || '');
+      setActiveCollectionEnv(activeTabCollectionEnvs[collection_id] || '');
     } else {
       setActiveCollectionEnv('');
     }
-  }, [tab, activeTab, active_tab_collection_envs]);
+  }, [tab, activeTab, activeTabCollectionEnvs]);
 
   // console.log({ activeCollectionEnv });
-  if (!is_env_sidebar_open) return <></>;
+  if (!isEnvSidebarOpen) return <></>;
 
   return (
     <Resizable
@@ -83,7 +87,7 @@ const EnvSidebar: FC<any> = () => {
           <EnvVarPreview
             key={`env-preview-${EEnvironmentScope.Workspace}`}
             scope={EEnvironmentScope.Workspace}
-            activeEnvId={active_tab_wrs_env}
+            activeEnvId={activeTabWrsEnv}
             activeTab={activeTab}
           />
           {!!activeCollectionEnv ? (
