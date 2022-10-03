@@ -5,6 +5,7 @@ import AppService from '../services/app';
 
 import * as platformContext from '../services/platform-context';
 import { useTabStore } from './tab';
+import { useWorkspaceStore } from './workspace';
 
 export interface IRequestStore {
   requestBeingSaved: any;
@@ -35,8 +36,10 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
     try {
       //   console.log({ requestToSave: request });
 
-      let requestTabId = get().requestTabId,
-        requestBeingSaved = get().requestBeingSaved;
+      const state = get();
+
+      let requestTabId = state.requestTabId,
+        requestBeingSaved = state.requestBeingSaved;
 
       /**
        * Check if request is inserted or not
@@ -69,15 +72,14 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
         };
       }
 
-      //   console.log({ requestBeingSaved });
-
-      let resultantPushPayload =
+      const requestPushPayload =
         await platformContext.request.normalizePushPayload(requestBeingSaved);
 
-      // console.log({ resultantPushPayload });
-
+      const { onNewRequestCreate } = useWorkspaceStore.getState();
       // TODO: handle error here
-      let response = await Rest.request.push([resultantPushPayload]);
+      const response = await Rest.request.push([requestPushPayload]);
+      // reflect in explorer
+      onNewRequestCreate(requestBeingSaved);
 
       // console.log({ requestBeingSaved });
 
@@ -87,7 +89,7 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
         requestBeingSaved._action.type === EPushActionType.Insert
       ) {
         tabState.update.rootKeys(requestTabId, {
-          name: requestBeingSaved?.meta?.name || 'Untitiled request',
+          name: requestBeingSaved?.meta?.name || 'Untitled request',
           type: requestBeingSaved?.meta?.type || '',
           // subType: requestBeingSaved?.meta?.data_type || '',
           request: {
