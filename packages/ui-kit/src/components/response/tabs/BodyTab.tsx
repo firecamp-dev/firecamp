@@ -233,7 +233,7 @@ const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
           </StatusBar.PrimaryRegion>
         </StatusBar>
       </Container.Header>
-      <Container.Body overflow={'visible'}>
+      <Container.Body overflow={'hidden'}>
         {_renderTabBody(activeTab)}
       </Container.Body>
     </Container>

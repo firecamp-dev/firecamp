@@ -188,7 +188,7 @@ const MultiLineIFE: FC<IMultiLineIFE> = ({
   }
 
   return (
-    <div className={classnames("relative h-full mt-4",className)}>
+    <div className={classnames("relative h-full",className)}>
       <div className="fc-input-IFE-multiline-placeholder">
         <div>{!value ? placeholder || '' : ''}</div>
       </div>

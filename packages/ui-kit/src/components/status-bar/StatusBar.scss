@@ -70,6 +70,10 @@
 .fc-statusbar .fc-urlbar-path {
 	margin-top: 0px;
 	overflow: visible;
+	line-height: 22px;
+	height: 20px;
+}
+.fc-urlbar-path>span{
 	line-height: 18px;
 }
 /*---statusbar old css end---------------*/

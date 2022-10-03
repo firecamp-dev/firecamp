@@ -28,7 +28,23 @@
 .pane-body>.rct-tree-root::-webkit-scrollbar-thumb{
     background: var(--focus-level-4);
 }
-
+.pane-body .rct-tree-root
+{
+    height: calc( 100% - 2px);
+    overflow: auto;
+    scrollbar-color: rebeccapurple green;
+    scrollbar-width: thin;
+}
+.pane-body .rct-tree-root::-webkit-scrollbar{
+    width: 0px;
+    height: 8px;
+}
+.pane-body:hover .rct-tree-root::-webkit-scrollbar{
+    width: 8px;
+}
+.pane-body .rct-tree-root::-webkit-scrollbar-thumb{
+    background: var(--focus-level-4);
+}
 
 /*------pane header css starts ---------*/
 .pane-header{

@@ -603,7 +603,7 @@ textarea:focus,textarea:focus-visible{
   background: transparent;
 }
 ::-webkit-scrollbar-thumb{
-  background: #000 !important;
+  background: var(--focus-level-4) !important;
   border-radius: 10px;
 }
 

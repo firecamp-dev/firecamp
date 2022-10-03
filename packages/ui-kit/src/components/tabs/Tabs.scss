@@ -64,3 +64,8 @@
     overflow-x: scroll;
     overflow-y: hidden;
 }
+@-moz-document url-prefix() {
+    .custom-scrollbar {
+        padding-bottom: 4px;
+    }
+  }
