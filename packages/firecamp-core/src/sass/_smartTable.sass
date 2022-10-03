@@ -84,8 +84,26 @@
 .smart-table-row
   display: table-row
 
+.response-headers-table  
+  display: block !important
+  height: 100% 
+  overflow: auto !important
+
 .response-headers-table .smart-table-row:nth-child(2n) 
     background: var(--focus-level-1)
+
+.response-headers-table::-webkit-scrollbar-thumb
+    background: var(--focus-level-4)
+
+.response-headers-table::-webkit-scrollbar
+    width: 0px
+    height: 0px
+    background: transparent
+    display: block !important
+
+.response-headers-table:hover::-webkit-scrollbar
+    width: 8px
+    height: 8px
 
 .smart-table-row-cell>*
   margin-bottom: 0px !important
