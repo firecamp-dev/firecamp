@@ -21,15 +21,12 @@ type TCreateEnvPayload = {
 export interface IEnvironmentStore {
   isEnvSidebarOpen: boolean;
 
-  activeTabWrsEnv: string | TId; // TODO: rename to active_tab_workspace_environment
-  activeTabCollectionEnvs: { [key: string | TId]: string | TId }; // TODO: rename to active_tab_collection_environment
+  activeTabWrsEnv: string | TId;
+  activeTabCollectionEnvs: { [key: TId]: TId };
   is_progressing?: boolean;
-  // environments: {
-  //   [key: string | TId]: { [key: string | TId]: IEnvironment }; // TODO: remove key type string
-  // };
   colEnvTdpInstance: any;
   wrsEnvTdpInstance: any;
-  envs: IEnvironment[]; // TODO: choose either envs or environments later
+  envs: IEnvironment[];
 
   registerTDP: (wrsEnvTdpInstance: any, colEnvTdpInstance: any) => void;
   unRegisterTDP: () => void;
@@ -54,7 +51,7 @@ export interface IEnvironmentStore {
   fetchEnvironment: (envId: string) => Promise<any>;
   createEnvironment: (payload: TCreateEnvPayload) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
-  deleteEnvironment: (envId: string) => Promise<any>;
+  deleteEnvironment: (envId: TId) => Promise<any>;
 
   // common
   dispose: () => void;
@@ -141,26 +138,10 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       return { envs };
     });
     return;
-
-    // set((s: IEnvironmentStore) => ({
-    //   environments: {
-    //     ...s.environments,
-    //     workspace: {
-    //       ...s.environments.workspace,
-    //       [envId]: {
-    //         ...s.environments.workspace[envId],
-    //         variables,
-    //       },
-    //     },
-    //   },
-    // }));
-
-    // console.log({ 222: get().environments.workspace[envId] });
   },
 
   getWorkspaceEnvs: () => {
     return get().envs.filter((e) => e.meta.type == EEnvironmentScope.Workspace);
-    // return Object.values(get().environments?.[`workspace`] || {});
   },
 
   setCollectionActiveEnv: (collectionId: TId, envId: TId) => {
@@ -178,9 +159,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   getCollectionEnvs: (collectionId: TId) => {
     // console.log({ 1: get().envs, collectionId });
-
     return get().envs.filter((e) => e._meta.collection_id == collectionId);
-    // return Object.values(get().environments?.[collectionId] || {});
   },
 
   setCollectionEnvVariable: (
@@ -197,19 +176,6 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       });
       return { envs };
     });
-
-    // set((s) => ({
-    //   environments: {
-    //     ...s.environments,
-    //     [collectionId]: {
-    //       ...s.environments?.[collectionId],
-    //       [envId]: {
-    //         ...s.environments?.[collectionId][envId],
-    //         variables,
-    //       },
-    //     },
-    //   },
-    // }));
   },
 
   // Environment

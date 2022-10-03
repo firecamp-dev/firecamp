@@ -84,12 +84,9 @@ const environment: IPlatformEnvironmentService = {
 
   // get variables and emit updates
   getAndEmitPlatformVariables: async (tabId?: TId) => {
-    if (!tabId) {
-      tabId = useTabStore.getState().activeTab;
-    }
-    // console.log({ tabId });
+    if (!tabId) tabId = useTabStore.getState().activeTab;
 
-    // get platfrom variables by tab id
+    // get platform variables by tab id
     let platformEnvironments: IPlatformVariables =
       await environment.getVariablesByTabId(tabId);
 

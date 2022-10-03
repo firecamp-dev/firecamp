@@ -24,7 +24,7 @@ import SidebarContainer from '../components/containers/SidebarContainer';
 import TabsContainer from '../components/containers/TabsContainer';
 import StatusBarContainer from '../components/status-bar/StatusBarContainer';
 import { ModalContainer } from '../components/modals-v3/ModalContainer';
-import { EnvSidebar } from '../components/sidebar';
+import { EnvSidebar, EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 
 import { IEnvironmentStore, useEnvStore } from '../store/environment';
@@ -35,12 +35,12 @@ import AppService from '../services/app';
 MonacoFirecampLangInit();
 
 const App: FC<any> = () => {
-  let { isEnvSidebarOpen } = useEnvStore(
-    (s: IEnvironmentStore) => ({
-      isEnvSidebarOpen: s.isEnvSidebarOpen,
-    }),
-    shallow
-  );
+  // let { isEnvSidebarOpen } = useEnvStore(
+  //   (s: IEnvironmentStore) => ({
+  //     isEnvSidebarOpen: s.isEnvSidebarOpen,
+  //   }),
+  //   shallow
+  // );
 
   useMonacoWorkers();
 
@@ -83,7 +83,8 @@ const App: FC<any> = () => {
           </Row>
 
           <ModalContainer />
-          {isEnvSidebarOpen && <EnvSidebar />}
+          {/* {isEnvSidebarOpen && <EnvSidebar />} */}
+          <EnvSidebarContainer />
           <StatusBarContainer className="border-t focus-outer2" />
         </RootContainer>
       </DndProvider>
