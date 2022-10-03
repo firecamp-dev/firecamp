@@ -48,7 +48,7 @@ interface IPlatformRequestService {
 
   // get executor
   execute: (request: IRest) => Promise<IRestResponse>;
-  cancleExecution: (reqId: TId) => Promise<any>;
+  cancelExecution: (reqId: TId) => Promise<any>;
 }
 
 const request: IPlatformRequestService = {
@@ -83,7 +83,6 @@ const request: IPlatformRequestService = {
    * if request is already saved then update request with chanes/payload
    */
   onSave: async (pushPayload: any, tabId: TId) => {
-
     const requestState = useRequestStore.getState();
     try {
       // set request payload to store to be saved for next step
@@ -183,7 +182,7 @@ const request: IPlatformRequestService = {
     return executor.send(request, agent);
   },
 
-  cancleExecution: (reqId: TId) => {
+  cancelExecution: (reqId: TId) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
     return executor.cancel(reqId, agent);
   },

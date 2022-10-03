@@ -1,4 +1,4 @@
-import { TId } from '@firecamp/types';
+import { IEnvironment, TId } from '@firecamp/types';
 import {
   SetCompletionProvider,
   SetHoverProvider,
@@ -105,22 +105,20 @@ const environment: IPlatformEnvironmentService = {
   getActiveEnvsByTabId: (tabId: TId) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
     let tab: ITab = useTabStore.getState().list.find((t) => t.id === tabId);
-    // console.log({ tab });
-
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
     //workspace active environment
-    let workspaceActiveEnv = envStore.activeTabWrsEnv,
-      collectionId = '',
-      collectionActiveEnv = '';
-    // get collectionId and collectionActiveEnv from tab data
-    if (tab && tab?.meta.isSaved && tab?.request?._meta?.collection_id) {
-      collectionId = tab.request._meta.collection_id;
-      collectionActiveEnv = envStore.activeTabCollectionEnvs?.[collectionId];
+    const wrsActiveEnv = envStore.activeTabWrsEnv;
+    let collectionActiveEnv = '';
+
+    // get collectionId and collectionActiveEnv from tab's request's meta
+    if (tab.meta.isSaved && tab.request?._meta.collection_id) {
+      collectionActiveEnv =
+        envStore.activeTabCollectionEnvs[tab.request._meta.collection_id];
     }
 
     return Promise.resolve({
-      workspace: workspaceActiveEnv,
+      workspace: wrsActiveEnv,
       collection: collectionActiveEnv,
     });
   },
@@ -128,48 +126,37 @@ const environment: IPlatformEnvironmentService = {
   // get variables by tab id
   getVariablesByTabId: async (tabId: TId) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
-
-    let tab: ITab = useTabStore.getState().list.find((t) => t.id === tabId);
-
-    // console.log({ tab });
-
+    const tab: ITab = useTabStore.getState().list.find((t) => t.id === tabId);
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
-    let activeEnvironments = await environment.getActiveEnvsByTabId(tabId),
-      collectionId = tab?.request?._meta?.collection_id || '';
+    const activeEnvsOfTab = await environment.getActiveEnvsByTabId(tabId);
+    const collectionId = tab.request?._meta.collection_id || '';
 
     //workspace active environment
-    let workspaceActiveEnv = envStore.activeTabWrsEnv;
+    const wrsActiveEnv = envStore.envs.find(
+      (e) => e._meta.id == envStore.activeTabWrsEnv
+    );
+    const wrsEnvVars = wrsActiveEnv.variables || {};
 
-    // console.log({ ENV: useEnvStore.getState(), collectionId });
-
-    // Workspace environment variables
-    let workspaceEnvVariables =
-      envStore.envs?.find((e) => e._meta.id == workspaceActiveEnv)?.variables ||
-      {};
-
-    // Collection environment variables
-    let collectionEnvVariables =
-      collectionId && activeEnvironments['collection']
-        ? envStore.envs?.find(
-            (e) => e._meta.id == activeEnvironments['collection']
-          )?.variables || {}
-        : {};
+    let collectionEnv: Partial<IEnvironment> = { name: '', variables: {} };
+    if (collectionId && activeEnvsOfTab.collection) {
+      collectionEnv = envStore.envs.find(
+        (e) => e._meta.id == activeEnvsOfTab.collection
+      );
+    }
+    const colEnvVars = collectionEnv.variables || {};
 
     // Merged workspace and collection variables
-    let mergedVars =
-      _object.mergeDeep(
-        _cloneDeep(workspaceEnvVariables),
-        _cloneDeep(collectionEnvVariables)
-      ) || {};
+    const mergedVars =
+      _object.mergeDeep(_cloneDeep(wrsEnvVars), _cloneDeep(colEnvVars)) || {};
 
     // console.log({ workspaceEnvVariables, collectionEnvVariables, mergedVars });
 
     // Platform environment resultant payload
     return Promise.resolve({
       merged: mergedVars,
-      workspace: workspaceEnvVariables,
-      collection: collectionEnvVariables,
+      workspace: wrsEnvVars,
+      collection: colEnvVars,
     });
   },
 
