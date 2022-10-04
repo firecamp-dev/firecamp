@@ -4,7 +4,7 @@ import notification from './notification';
 import modalService from './modals';
 import { useUserStore } from '../store/user';
 import { useWorkspaceStore } from '../store/workspace';
-import { ECloudApiHeaders } from '../types';
+import { ECloudApiHeaders, prepareEventNameForRequestPull } from '../types';
 import { IOrganization, IWorkspace } from '@firecamp/types';
 import { usePlatformStore } from '../store/platform';
 import { useTabStore } from '../store/tab';
@@ -103,7 +103,7 @@ const initApp = async () => {
             Realtime.socket.onRequestChanges((payload) => {
               console.log({ onRequestChanges: payload });
               platformEmitter.emit(
-                `pull/r/${payload.request_id}`,
+                prepareEventNameForRequestPull(payload.request_id),
                 payload.actions
               );
             });

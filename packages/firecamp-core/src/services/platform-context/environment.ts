@@ -10,6 +10,7 @@ import { useTabStore } from '../../store/tab';
 import { IEnvironmentStore, useEnvStore } from '../../store/environment';
 import { ITab } from '../../components/tabs/types/tab';
 import { platformEmitter } from '../platform-emitter';
+import { prepareEventNameForEnvToTab } from '../../types';
 // import {ITab}
 
 interface IPlatformEnvironmentService {
@@ -64,7 +65,10 @@ const environment: IPlatformEnvironmentService = {
   subscribeChanges: async (tabId: TId, onPlatformVariablesChange) => {
     try {
       // subscribe/ listen environment update event
-      platformEmitter.on(`env/t/${tabId}`, onPlatformVariablesChange);
+      platformEmitter.on(
+        prepareEventNameForEnvToTab(tabId),
+        onPlatformVariablesChange
+      );
       environment.setVarsToProvidersAndEmitEnvsToTab(tabId);
 
       // TODO: check emit on update activeTab, activeTabWrsEnv, active_tab_collection_env, environments
@@ -78,7 +82,7 @@ const environment: IPlatformEnvironmentService = {
 
   // subscribe to environment changes
   unsubscribeChanges: (tabId: TId) => {
-    platformEmitter.off(`env/t/${tabId}`);
+    platformEmitter.off(prepareEventNameForEnvToTab(tabId));
   },
 
   // get variables and emit updates
@@ -99,7 +103,7 @@ const environment: IPlatformEnvironmentService = {
      * 2.2  emit event: platform environment updates
      */
     let activeEnvsOfTan = await environment.getActiveEnvsByTabId(tabId);
-    platformEmitter.emit(`env/t/${tabId}`, activeEnvsOfTan);
+    platformEmitter.emit(prepareEventNameForEnvToTab(tabId), activeEnvsOfTan);
   },
 
   getActiveEnvsByTabId: (tabId: TId) => {

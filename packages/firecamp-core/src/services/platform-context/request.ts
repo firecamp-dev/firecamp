@@ -21,6 +21,7 @@ import { ITabMeta } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 
 import AppService from '../app';
+import { prepareEventNameForRequestPull } from '../../types';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -63,7 +64,7 @@ const request: IPlatformRequestService = {
     Realtime.socket.subscribeRequest(request_id);
 
     // listen/ subscribe updates
-    platformEmitter.on(`pull/r/${request_id}`, handlePull);
+    platformEmitter.on(prepareEventNameForRequestPull(request_id), handlePull);
   },
 
   // unsubscribe real-time request changes (pull-actions from server)
@@ -75,7 +76,7 @@ const request: IPlatformRequestService = {
 
     // unsubscribe request changes
     // Realtime.socket.unsubscribeRequest(request_id); // TODO: add socket API
-    platformEmitter.off(`pull/r/${request_id}`);
+    platformEmitter.off(prepareEventNameForRequestPull(request_id));
   },
 
   /**
