@@ -21,6 +21,7 @@ import { ITabMeta } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 
 import AppService from '../app';
+import { prepareEventNameForRequestPull } from '../../types';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -48,7 +49,7 @@ interface IPlatformRequestService {
 
   // get executor
   execute: (request: IRest) => Promise<IRestResponse>;
-  cancleExecution: (reqId: TId) => Promise<any>;
+  cancelExecution: (reqId: TId) => Promise<any>;
 }
 
 const request: IPlatformRequestService = {
@@ -63,7 +64,7 @@ const request: IPlatformRequestService = {
     Realtime.socket.subscribeRequest(request_id);
 
     // listen/ subscribe updates
-    platformEmitter.on(`pull/r/${request_id}`, handlePull);
+    platformEmitter.on(prepareEventNameForRequestPull(request_id), handlePull);
   },
 
   // unsubscribe real-time request changes (pull-actions from server)
@@ -75,7 +76,7 @@ const request: IPlatformRequestService = {
 
     // unsubscribe request changes
     // Realtime.socket.unsubscribeRequest(request_id); // TODO: add socket API
-    platformEmitter.off(`pull/r/${request_id}`);
+    platformEmitter.off(prepareEventNameForRequestPull(request_id));
   },
 
   /**
@@ -83,7 +84,6 @@ const request: IPlatformRequestService = {
    * if request is already saved then update request with chanes/payload
    */
   onSave: async (pushPayload: any, tabId: TId) => {
-
     const requestState = useRequestStore.getState();
     try {
       // set request payload to store to be saved for next step
@@ -183,7 +183,7 @@ const request: IPlatformRequestService = {
     return executor.send(request, agent);
   },
 
-  cancleExecution: (reqId: TId) => {
+  cancelExecution: (reqId: TId) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
     return executor.cancel(reqId, agent);
   },

@@ -24,7 +24,7 @@ import {
   createUiSlice,
   IUi,
   IUiSlice,
-  IPullslice,
+  IPullSlice,
   createPullActionSlice,
 } from './index';
 import { EFirecampAgent } from '@firecamp/types';
@@ -51,7 +51,7 @@ interface IRestStore
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IPullslice {
+    IPullSlice {
   last: any;
 
   setLast: (initialState: IRestStoreState) => void;

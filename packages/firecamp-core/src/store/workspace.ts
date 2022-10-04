@@ -67,6 +67,7 @@ export interface IWorkspaceStore {
   deleteFolder: (fId: string) => void;
 
   // request
+  onNewRequestCreate: (request: any) => void;
   createRequest: (payload: { [k: string]: any }) => void;
   updateRequest: (rId: string, payload: { [k: string]: any }) => void;
   deleteRequest: (rId: string) => void;
@@ -377,6 +378,42 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     // request
+
+    // when request is being created from request store then reflect it in explorer
+    onNewRequestCreate: (request: any) => {
+      set((s) => {
+        s.explorer?.tdpInstance?.addRequestItem(request);
+
+        let { collections, folders, requests } = s.explorer;
+        const { url, method, meta, _meta } = request;
+        if (request._meta.folder_id) {
+          folders = s.explorer.folders.map((f) => {
+            if (f._meta.id == request._meta.folder_id) {
+              f.meta.r_orders.push(request._meta.id);
+            }
+            return f;
+          });
+        } else if (request._meta?.collection_id) {
+          collections = s.explorer.collections.map((c) => {
+            if (c._meta.id == request._meta.collection_id) {
+              c.meta.r_orders.push(request._meta.id);
+            }
+            return c;
+          });
+        }
+
+        return {
+          explorer: {
+            ...s.explorer,
+            folders,
+            collections,
+            requests: [...requests, { url, method, meta, _meta }],
+          },
+        };
+      });
+    },
+
+    // TODO: This is not in use for now, request is being saved from request store
     createRequest: async (payload: { [k: string]: any }) => {
       const state = get();
       const _request = {
@@ -388,7 +425,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         .create(_request)
         .then((r) => {
           set((s) => {
-            s.explorer?.tdpInstance.addRequestItem(_request);
+            s.explorer?.tdpInstance?.addRequestItem(_request);
             return {
               explorer: {
                 ...s.explorer,
@@ -438,7 +475,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         .then((r) => {
           set((s) => {
             const requests = s.explorer.requests.filter(
-              (r) => r._meta.id == rId
+              (r) => r._meta.id != rId
             );
             s.explorer.tdpInstance.deleteRequestItem(rId);
             return { explorer: { ...s.explorer, requests } };

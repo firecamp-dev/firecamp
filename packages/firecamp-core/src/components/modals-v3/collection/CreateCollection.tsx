@@ -13,7 +13,7 @@ import { _misc } from '@firecamp/utils';
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import AppService from '../../../services/app';
-import { RE } from '../../../constants';
+import { RE } from '../../../types'
 
 const CreateCollection: FC<IModal> = ({
   isOpen = false,

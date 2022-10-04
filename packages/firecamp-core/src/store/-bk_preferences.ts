@@ -8,7 +8,7 @@ const initialState = {
   proxies: [],
   schemas: [],
   certificates: [],
-  active_tab_wrs_env: '', // active workspace's active environment
+  activeTabWrsEnv: '', // active workspace's active environment
   project_active_environment: {}, // active workspace's projects list with active environment
 };
 
@@ -282,7 +282,7 @@ export const Preferences = {
     try {
       if (env_id) {
         // preferenceStore.getState()["UPDATE"]({
-        //   active_tab_wrs_env: env_id,
+        //   activeTabWrsEnv: env_id,
         // });
       }
     } catch (error) {

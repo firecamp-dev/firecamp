@@ -189,7 +189,7 @@ export default {
                   : 'Open'
               }
               sm
-              className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
+              className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
               ghost
               transparent
               secondary

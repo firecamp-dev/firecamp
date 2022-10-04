@@ -3,9 +3,9 @@ import { IEnvironment, TId, EEnvironmentScope } from '@firecamp/types';
 import { Rest } from '@firecamp/cloud-apis';
 
 const initialState = {
-  is_env_sidebar_open: false,
-  active_tab_wrs_env: '',
-  active_tab_collection_envs: {},
+  isEnvSidebarOpen: false,
+  activeTabWrsEnv: '',
+  activeTabCollectionEnvs: {},
   colEnvTdpInstance: null,
   wrsEnvTdpInstance: null,
   envs: [],
@@ -19,17 +19,14 @@ type TCreateEnvPayload = {
 };
 
 export interface IEnvironmentStore {
-  is_env_sidebar_open: boolean;
+  isEnvSidebarOpen: boolean;
 
-  active_tab_wrs_env: string | TId; // TODO: rename to active_tab_workspace_environment
-  active_tab_collection_envs: { [key: string | TId]: string | TId }; // TODO: rename to active_tab_collection_environment
+  activeTabWrsEnv: string | TId;
+  activeTabCollectionEnvs: { [key: TId]: TId };
   is_progressing?: boolean;
-  // environments: {
-  //   [key: string | TId]: { [key: string | TId]: IEnvironment }; // TODO: remove key type string
-  // };
   colEnvTdpInstance: any;
   wrsEnvTdpInstance: any;
-  envs: IEnvironment[]; // TODO: choose either envs or environments later
+  envs: IEnvironment[];
 
   registerTDP: (wrsEnvTdpInstance: any, colEnvTdpInstance: any) => void;
   unRegisterTDP: () => void;
@@ -44,17 +41,12 @@ export interface IEnvironmentStore {
 
   setWorkspaceActiveEnv: (envId: TId) => void;
   setCollectionActiveEnv: (collectionId: TId, envId: TId) => void;
-  setWorkspaceEnvVariable: (envId: TId, variables: object) => void;
-  setCollectionEnvVariable: (
-    collectionId: TId,
-    envId: TId,
-    variables: object
-  ) => void;
+  setEnvVariables: (envId: TId, variables: object) => void;
 
   fetchEnvironment: (envId: string) => Promise<any>;
   createEnvironment: (payload: TCreateEnvPayload) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
-  deleteEnvironment: (envId: string) => Promise<any>;
+  deleteEnvironment: (envId: TId) => Promise<any>;
 
   // common
   dispose: () => void;
@@ -64,12 +56,12 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   ...initialState,
 
   initialize: (envs: IEnvironment[] = []) => {
-    let active_tab_wrs_env = '';
-    let active_tab_collection_envs = {};
+    let activeTabWrsEnv = '';
+    let activeTabCollectionEnvs = {};
     const firstWrsEnv = envs.filter(
       (e) => e.meta.type == EEnvironmentScope.Workspace
     )[0];
-    if (firstWrsEnv) active_tab_wrs_env = firstWrsEnv._meta.id;
+    if (firstWrsEnv) activeTabWrsEnv = firstWrsEnv._meta.id;
 
     let cEnvs = envs
       .filter((e) => ['C', 'P'].includes(e.meta.type))
@@ -91,18 +83,18 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     );
 
     // set active environment for workspace and collection
-    // let active_tab_wrs_env = Object.keys(wEnvs)[0] || '';
+    // let activeTabWrsEnv = Object.keys(wEnvs)[0] || '';
     for (let key in _cEnvs) {
-      active_tab_collection_envs[key] = Object.keys(_cEnvs[key])[0] || '';
+      activeTabCollectionEnvs[key] = Object.keys(_cEnvs[key])[0] || '';
     }
 
-    // console.log({ active_tab_wrs_env, active_tab_collection_envs });
+    // console.log({ activeTabWrsEnv, activeTabCollectionEnvs });
     // console.log({ _wEnvs, _cEnvs });
 
     set((s) => ({
       envs: envs,
-      active_tab_wrs_env,
-      active_tab_collection_envs,
+      activeTabWrsEnv,
+      activeTabCollectionEnvs,
     }));
   },
 
@@ -119,7 +111,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   toggleEnvSidebar: () => {
-    set((s) => ({ is_env_sidebar_open: !s.is_env_sidebar_open }));
+    set((s) => ({ isEnvSidebarOpen: !s.isEnvSidebarOpen }));
   },
 
   toggleProgressBar: (flag: boolean) => {
@@ -127,10 +119,10 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setWorkspaceActiveEnv: (envId: TId) => {
-    set(() => ({ active_tab_wrs_env: envId }));
+    set(() => ({ activeTabWrsEnv: envId }));
   },
 
-  setWorkspaceEnvVariable: (envId: TId, variables: object) => {
+  setEnvVariables: (envId: TId, variables: object) => {
     set((s) => {
       const envs = s.envs.map((e) => {
         if (e._meta.id == envId) {
@@ -141,75 +133,28 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       return { envs };
     });
     return;
-
-    // set((s: IEnvironmentStore) => ({
-    //   environments: {
-    //     ...s.environments,
-    //     workspace: {
-    //       ...s.environments.workspace,
-    //       [envId]: {
-    //         ...s.environments.workspace[envId],
-    //         variables,
-    //       },
-    //     },
-    //   },
-    // }));
-
-    // console.log({ 222: get().environments.workspace[envId] });
   },
 
   getWorkspaceEnvs: () => {
     return get().envs.filter((e) => e.meta.type == EEnvironmentScope.Workspace);
-    // return Object.values(get().environments?.[`workspace`] || {});
   },
 
   setCollectionActiveEnv: (collectionId: TId, envId: TId) => {
     set((s) => ({
-      active_tab_collection_envs: {
-        ...s.active_tab_collection_envs,
+      activeTabCollectionEnvs: {
+        ...s.activeTabCollectionEnvs,
         [collectionId]: envId,
       },
     }));
   },
 
   getCollectionActiveEnv: (collectionId: TId) => {
-    return get().active_tab_collection_envs?.[collectionId];
+    return get().activeTabCollectionEnvs[collectionId];
   },
 
   getCollectionEnvs: (collectionId: TId) => {
     // console.log({ 1: get().envs, collectionId });
-
     return get().envs.filter((e) => e._meta.collection_id == collectionId);
-    // return Object.values(get().environments?.[collectionId] || {});
-  },
-
-  setCollectionEnvVariable: (
-    collectionId: TId,
-    envId: TId,
-    variables: object
-  ) => {
-    set((s) => {
-      const envs = s.envs.map((e) => {
-        if (e._meta.id == envId) {
-          return { ...e, variables };
-        }
-        return e;
-      });
-      return { envs };
-    });
-
-    // set((s) => ({
-    //   environments: {
-    //     ...s.environments,
-    //     [collectionId]: {
-    //       ...s.environments?.[collectionId],
-    //       [envId]: {
-    //         ...s.environments?.[collectionId][envId],
-    //         variables,
-    //       },
-    //     },
-    //   },
-    // }));
   },
 
   // Environment
@@ -249,7 +194,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     return res;
   },
 
-  updateEnvironment: async (envId: string, body: any) => {
+  updateEnvironment: async (envId: TId, body: Partial<IEnvironment>) => {
     const state = get();
     state.toggleProgressBar(true);
     const res = await Rest.environment

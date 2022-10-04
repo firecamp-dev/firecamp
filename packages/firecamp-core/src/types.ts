@@ -1,3 +1,5 @@
+import { TId } from '@firecamp/types';
+
 export enum EWorkspaceTypes {
   Personal = 1,
   Organizational = 2,
@@ -124,6 +126,7 @@ export enum ECloudApiHeaders {
   Authorization = 'Authorization',
   SocketId = 'X-Socket-Id',
   ClientId = 'X-Client-Id',
+  WorkspaceId = 'X-Workspace-Id',
   AppVersion = 'X-App-Version',
 }
 
@@ -131,6 +134,18 @@ export enum ERegex {
   //@ref= https://stackabuse.com/validate-email-addresses-with-regular-expressions-in-javascript/
   Email = "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
 }
+
+export const RE = {
+  /**
+   * don't allow any special character
+   * @ref:  https://stackoverflow.com/a/23127284
+   * allows: colName, colName_, _colNmae, col_name
+   * not allow" colName. , colName?, colName/@ or any special character in the name
+   */
+  CollectionName: /^(?![\s\S]*[^\w -]+)[\s\S]*?$/im,
+  // TODO: later merged both regex in one CollectionName & NoSpecialCharacters
+  NoSpecialCharacters: /^(?![\s\S]*[^\w -]+)[\s\S]*?$/im,
+};
 
 export enum EThemeMode {
   Light = 'light',
@@ -148,3 +163,37 @@ export const DefaultTheme = {
   mode: EThemeMode.Light,
   color: EThemeColor.Orange,
 };
+
+export enum PlatformEvents {
+  WorkspaceEvents = 'platform/workspace.events',
+  ExplorerEvents = 'platform/explorer.events',
+  EnvironmentEvents = 'platform/environment.events',
+}
+export enum PlatformWorkspaceEvents {
+  WorkspaceCreated = 'platform/workspace.created',
+  WorkspaceUpdated = 'platform/workspace.updated',
+  WorkspaceDeleted = 'platform/workspace.deleted',
+}
+
+export enum PlatformExplorerEvents {
+  CollectionCreated = 'platform/collection.created',
+  CollectionUpdated = 'platform/collection.updated',
+  CollectionDeleted = 'platform/collection.deleted',
+
+  FolderCreated = 'platform/folder.created',
+  FolderUpdated = 'platform/folder.updated',
+  FolderDeleted = 'platform/folder.deleted',
+
+  RequestCreated = 'platform/request.created',
+  RequestUpdated = 'platform/request.updated',
+  RequestDeleted = 'platform/request.deleted',
+}
+
+export enum PlatformEnvironmentEvents {
+  EnvironmentCreated = 'platform/environment.created',
+  EnvironmentUpdated = 'platform/environment.updated',
+  EnvironmentDeleted = 'platform/environment.deleted',
+}
+
+export const prepareEventNameForRequestPull = (reqId: TId) => `pull/r/${reqId}`;
+export const prepareEventNameForEnvToTab = (tabId: TId) => `env/t/${tabId}`;
