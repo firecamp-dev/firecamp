@@ -3,24 +3,20 @@ import {
   Input,
   TabHeader,
   Button,
- 
-  
   Modal,
   IModal,
-  Dropdown,
   ProgressBar,
   MultiLineIFE,
   CheckboxGroup,
-  Notes,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-import { IEnvironment, EEnvironmentScope } from '@firecamp/types';
+import { EEnvironmentScope } from '@firecamp/types';
 
 import { useEnvStore } from '../../../store/environment';
 import { useWorkspaceStore } from '../../../store/workspace';
 import AppService from '../../../services/app';
-import { RE } from '../../../constants';
 import { useModalStore } from '../../../store/modal';
+import { RE } from '../../../types'
 
 type TModalMeta = {
   scope: EEnvironmentScope;
@@ -56,7 +52,7 @@ const CreateEnvironment: FC<IModal> = ({
     setEnv((c) => ({ ...c, [name]: value }));
   };
 
-  const onVaribaleEditorChange = (e: { target: { value: any } }) => {
+  const onVariableEditorChange = (e: { target: { value: any } }) => {
     const { value } = e.target;
     if (error.name || error.variables) setError({ name: '', variables: '' });
     setEnv((c) => ({ ...c, variables: value }));
@@ -74,7 +70,7 @@ const CreateEnvironment: FC<IModal> = ({
     const name = env.name.trim();
     if (!name || name.length < 3) {
       setError({
-        name: 'The environment name must have minimun 3 characters',
+        name: 'The environment name must have minimum 3 characters',
         variables: '',
       });
       return;
@@ -175,7 +171,7 @@ const CreateEnvironment: FC<IModal> = ({
               >
                 <Dropdown.Handler>
                   <Button
-                    text="Environemnt"
+                    text="Environment"
                     xs
                     className="font-bold"
                     withCaret={true}
@@ -234,7 +230,7 @@ const CreateEnvironment: FC<IModal> = ({
             <MultiLineIFE
               language="json"
               value={env.variables}
-              onChange={onVaribaleEditorChange}
+              onChange={onVariableEditorChange}
               monacoOptions={{
                 extraEditorClassName: `border border-inputBorder rounded-sm p-2 leading-5 
                   outline-none placeholder-inputPlaceholder 

@@ -3,15 +3,13 @@ import {
   Dropdown,
   Popover,
   Button,
- 
-  
 } from '@firecamp/ui-kit';
 import { useForm } from 'react-hook-form';
 import { ERequestTypes } from '@firecamp/types';
 import { nanoid } from 'nanoid';
 
-import { RE } from '../../../../constants';
 import { useWorkspaceStore } from '../../../../store/workspace';
+import { RE } from '../../../../types'
 
 const requestTypeOptions = [
   {

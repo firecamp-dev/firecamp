@@ -262,7 +262,7 @@ const SidebarContainer: FC<any> = () => {
       case EActivityBarItems.Environment:
         return <Environment />;
       case EActivityBarItems.History:
-        return <>Comming soon.</>;
+        return <>Coming soon.</>;
       default:
         return <span />;
     }

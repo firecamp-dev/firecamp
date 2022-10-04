@@ -3,11 +3,8 @@ import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
 import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
 
 import _auth from '../../../services/auth';
-import { Button, EButtonIconPosition,  } from '@firecamp/ui-kit';
+import { Button  } from '@firecamp/ui-kit';
 import { EProvider } from '../../../services/auth/types';
-// import { PROVIDER } from '../../constants';
-
-// const { GITHUB, GOOGLE } = PROVIDER;
 
 const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
   let [disableSignInWithGoogleButton, setDisableSignInWithGoogleButton] =

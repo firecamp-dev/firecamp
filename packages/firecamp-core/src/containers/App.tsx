@@ -8,7 +8,6 @@ import '../sass/_index.sass';
 
 import { FC, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import shallow from 'zustand/shallow';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
@@ -24,10 +23,9 @@ import SidebarContainer from '../components/containers/SidebarContainer';
 import TabsContainer from '../components/containers/TabsContainer';
 import StatusBarContainer from '../components/status-bar/StatusBarContainer';
 import { ModalContainer } from '../components/modals-v3/ModalContainer';
-import { EnvSidebar, EnvSidebarContainer } from '../components/sidebar';
+import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 
-import { IEnvironmentStore, useEnvStore } from '../store/environment';
 import useMonacoWorkers from '../components/hooks/useMonacoWorkers';
 import AppService from '../services/app';
 

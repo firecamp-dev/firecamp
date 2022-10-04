@@ -13,8 +13,8 @@ import { _misc } from '@firecamp/utils';
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import AppService from '../../../services/app';
-import { RE } from '../../../constants';
 import { useModalStore } from '../../../store/modal';
+import { RE } from '../../../types'
 
 type TModalMeta = {
   collectionId: string;
