@@ -41,12 +41,7 @@ export interface IEnvironmentStore {
 
   setWorkspaceActiveEnv: (envId: TId) => void;
   setCollectionActiveEnv: (collectionId: TId, envId: TId) => void;
-  setWorkspaceEnvVariable: (envId: TId, variables: object) => void;
-  setCollectionEnvVariable: (
-    collectionId: TId,
-    envId: TId,
-    variables: object
-  ) => void;
+  setEnvVariables: (envId: TId, variables: object) => void;
 
   fetchEnvironment: (envId: string) => Promise<any>;
   createEnvironment: (payload: TCreateEnvPayload) => Promise<any>;
@@ -127,7 +122,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     set(() => ({ activeTabWrsEnv: envId }));
   },
 
-  setWorkspaceEnvVariable: (envId: TId, variables: object) => {
+  setEnvVariables: (envId: TId, variables: object) => {
     set((s) => {
       const envs = s.envs.map((e) => {
         if (e._meta.id == envId) {
@@ -160,22 +155,6 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   getCollectionEnvs: (collectionId: TId) => {
     // console.log({ 1: get().envs, collectionId });
     return get().envs.filter((e) => e._meta.collection_id == collectionId);
-  },
-
-  setCollectionEnvVariable: (
-    collectionId: TId,
-    envId: TId,
-    variables: object
-  ) => {
-    set((s) => {
-      const envs = s.envs.map((e) => {
-        if (e._meta.id == envId) {
-          return { ...e, variables };
-        }
-        return e;
-      });
-      return { envs };
-    });
   },
 
   // Environment
@@ -215,7 +194,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     return res;
   },
 
-  updateEnvironment: async (envId: string, body: any) => {
+  updateEnvironment: async (envId: TId, body: Partial<IEnvironment>) => {
     const state = get();
     state.toggleProgressBar(true);
     const res = await Rest.environment

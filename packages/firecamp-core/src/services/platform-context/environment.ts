@@ -28,7 +28,7 @@ interface IPlatformEnvironmentService {
   // get variables by tab id
   getVariablesByTabId: (tabId: TId) => Promise<IPlatformVariables>;
 
-  // set variables to IFE provider
+  // set variables to monaco provider
   setVariablesToProvider: (variables: { [key: string]: any }) => void;
 
   setVarsToProvidersAndEmitEnvsToTab: (tabId?: TId) => void;
@@ -61,11 +61,10 @@ interface IPlatformVariables {
 
 const environment: IPlatformEnvironmentService = {
   // subscribe to environment changes
-  subscribeChanges: async (tabId: TId, getPlatformVariables) => {
+  subscribeChanges: async (tabId: TId, onPlatformVariablesChange) => {
     try {
       // subscribe/ listen environment update event
-      platformEmitter.on(`env/t/${tabId}`, getPlatformVariables);
-
+      platformEmitter.on(`env/t/${tabId}`, onPlatformVariablesChange);
       environment.setVarsToProvidersAndEmitEnvsToTab(tabId);
 
       // TODO: check emit on update activeTab, activeTabWrsEnv, active_tab_collection_env, environments
@@ -92,6 +91,7 @@ const environment: IPlatformEnvironmentService = {
      */
     const platformVariables: IPlatformVariables =
       await environment.getVariablesByTabId(tabId);
+    console.log(platformVariables, 'platformVariables');
     environment.setVariablesToProvider(platformVariables.merged);
 
     /**
@@ -136,7 +136,7 @@ const environment: IPlatformEnvironmentService = {
     const wrsActiveEnv = envStore.envs.find(
       (e) => e._meta.id == envStore.activeTabWrsEnv
     );
-    const wrsEnvVars = wrsActiveEnv.variables || {};
+    const wrsEnvVars = wrsActiveEnv ? wrsActiveEnv.variables : {};
 
     let collectionEnv: Partial<IEnvironment> = { name: '', variables: {} };
     if (collectionId && activeEnvsOfTab.collection) {
@@ -150,7 +150,7 @@ const environment: IPlatformEnvironmentService = {
     const mergedVars =
       _object.mergeDeep(_cloneDeep(wrsEnvVars), _cloneDeep(colEnvVars)) || {};
 
-    // console.log({ workspaceEnvVariables, collectionEnvVariables, mergedVars });
+    // console.log({ wrsEnvVars, colEnvVars, mergedVars });
 
     // Platform environment resultant payload
     return Promise.resolve({
@@ -247,19 +247,12 @@ const environment: IPlatformEnvironmentService = {
 
     // set workspace environment
     if (workspace?.environmentId) {
-      envStore.setWorkspaceEnvVariable(
-        workspace.environmentId,
-        workspace.variables
-      );
+      envStore.setEnvVariables(workspace.environmentId, workspace.variables);
     }
 
     // set collection environment
     if (collection?.id && collection?.environmentId) {
-      envStore.setCollectionEnvVariable(
-        collection.id,
-        collection.environmentId,
-        collection.variables
-      );
+      envStore.setEnvVariables(collection.environmentId, collection.variables);
     }
   },
 };

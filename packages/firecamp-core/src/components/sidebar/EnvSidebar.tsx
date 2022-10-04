@@ -131,18 +131,18 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   activeTab = '',
 }) => {
   const {
+    updateEnvironment,
     getWorkspaceEnvs,
     getCollectionEnvs,
-    setWorkspaceEnvVariable,
-    setCollectionEnvVariable,
+    setEnvVariables,
     setWorkspaceActiveEnv,
     setCollectionActiveEnv,
   } = useEnvStore(
     (s) => ({
+      updateEnvironment: s.updateEnvironment,
       getWorkspaceEnvs: s.getWorkspaceEnvs,
       getCollectionEnvs: s.getCollectionEnvs,
-      setWorkspaceEnvVariable: s.setWorkspaceEnvVariable,
-      setCollectionEnvVariable: s.setCollectionEnvVariable,
+      setEnvVariables: s.setEnvVariables,
       setWorkspaceActiveEnv: s.setWorkspaceActiveEnv,
       setCollectionActiveEnv: s.setCollectionActiveEnv,
     }),
@@ -195,14 +195,11 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   };
 
   const onUndoChanges = () => {
-    let envVariables = envs?.find(
-      (env) => env?._meta?.id === activeEnvId
-    )?.variables;
-    let variablesString = JSON.stringify(envVariables || {}, null, 2);
+    let variablesString = JSON.stringify(activeEnv.current.variables || {}, null, 2);
     setVariables(variablesString);
   };
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
     let vars ={};
     try {
       vars = JSON.parse(variables);
@@ -211,15 +208,12 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
       AppService.notify.alert("The variables are not valid JSON.")
     }
 
-    if (scope == EEnvironmentScope.Workspace) {
-      setWorkspaceEnvVariable(activeEnvId, vars);
-    } else {
-      setCollectionEnvVariable(collectionId, activeEnvId, vars);
-    }
-
-    //todo: fetch server response here and show loader and success notification
+    /** update env vars */
+    await updateEnvironment(activeEnvId, { variables: vars });
     setIsVarUpdated(false);
-    emitUpdates();
+    
+    // get environment changes and emit to request tab
+    platformContext.environment.setVarsToProvidersAndEmitEnvsToTab();
   };
 
   const _setActiveEnv = (envId) => {
@@ -228,10 +222,6 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
     } else {
       setCollectionActiveEnv(collectionId, envId);
     }
-    emitUpdates();
-  };
-
-  const emitUpdates = () => {
     // get environment changes and emit to request tab
     platformContext.environment.setVarsToProvidersAndEmitEnvsToTab();
   };
