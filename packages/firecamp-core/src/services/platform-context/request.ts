@@ -55,7 +55,7 @@ interface IPlatformRequestService {
 const request: IPlatformRequestService = {
   // subscribe real-time request changes (pull-actions from server)
   subscribeChanges: (request_id: TId, handlePull: () => any) => {
-    // TODO: manage user is loggedin from store
+    // TODO: manage user is logged in from store
     // if (!F.userMeta.isLoggedIn) return;
 
     // console.log({ subscribeChanges: request_id });

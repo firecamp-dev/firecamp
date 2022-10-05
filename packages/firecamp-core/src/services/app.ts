@@ -100,13 +100,14 @@ const initApp = async () => {
               [ECloudApiHeaders.SocketId]: socketId,
             });
 
-            Realtime.socket.onRequestChanges((payload) => {
-              console.log({ onRequestChanges: payload });
-              platformEmitter.emit(
-                prepareEventNameForRequestPull(payload.request_id),
-                payload.actions
-              );
-            });
+            platformEmitter.emit('socket.connected');
+            // Realtime.socket.onRequestChanges((payload) => {
+            //   console.log({ onRequestChanges: payload });
+            //   platformEmitter.emit(
+            //     prepareEventNameForRequestPull(payload.request_id),
+            //     payload.actions
+            //   );
+            // });
           });
       } catch (e) {
         console.log(e, 'error while connecting the socket');
