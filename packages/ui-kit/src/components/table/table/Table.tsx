@@ -2,9 +2,8 @@ import { ColumnResizeMode, getCoreRowModel, useReactTable, flexRender, createCol
 import React, { FC, useEffect, useState, ReactNode, useRef } from 'react';
 import TableDraggableRow from "./TableDraggableRow";
 import cx from "classnames";
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from "react-dnd-html5-backend"
 import "../../table-v3/primary-table/table.sass";
+import classNames from 'classnames';
 
 const Table: FC<ITable> = ({
     name = "",
@@ -18,6 +17,8 @@ const Table: FC<ITable> = ({
 }) => {
 
     const [tableData, setTableData] = useState(() => [])
+    const [dragId, setDragId] = useState(0);
+
 
     const [columnResizeMode, setColumnResizeMode] = React.useState<ColumnResizeMode>('onChange')
 
@@ -37,8 +38,16 @@ const Table: FC<ITable> = ({
                 header: (col) => {
                     return columnRenderer((typeof column.displayName !== "undefined" ? column.displayName : column.name))
                 },
-                cell: (props) => {
-                    return cellRenderer(props)
+                cell: ({cell}) => {
+                    let cellValue = cell.getValue();
+                    if(cell.getValue() !== "undefined"){
+                        return cellRenderer({cellValue, rowIndex : cell.row.index, columnId: cell.column.id,
+                             columnSize: cell.column.getSize()
+                            })
+                    }else{
+                        return<></>
+                    }
+                    
                 },
             }
         ))
@@ -48,6 +57,7 @@ const Table: FC<ITable> = ({
 
     useEffect(() => {
         setTableData(data)
+        // console.log(`table-data-updated`, data);
     }, [data]);
 
     const table = useReactTable({
@@ -58,15 +68,19 @@ const Table: FC<ITable> = ({
         getCoreRowModel: getCoreRowModel(),
     });
 
+
+    function drag(rowIndex: number) {
+        setDragId(rowIndex);
+    }
+
     //reorder the index value for the table rows
-    const reorderRow = (draggedRowIndex: number, targetRowIndex: number) => {
-        tableData.splice(targetRowIndex, 0, tableData.splice(draggedRowIndex, 1)[0])
+    function drop(rowIndex: number) {
+        tableData.splice(rowIndex, 0, tableData.splice(dragId, 1)[0])
         setTableData([...tableData])
     }
 
     return (
         <div className={cx(`w-full`, options.containerClassName)}>
-            <DndProvider backend={HTML5Backend}>
                 <table className="primary-table border border-appBorder mb-4"
                     id={name}
                     ref={tableRef}
@@ -81,11 +95,13 @@ const Table: FC<ITable> = ({
                                 {
                                     headerGroup.headers.map(header => {
                                         return <Th key={header.id}
-                                            className={"overflow-hidden overflow-ellipsis whitespace-nowrap"}
+                                            className={classNames("overflow-hidden overflow-ellipsis whitespace-nowrap", 
+                                            {"!w-[5%]": (header.id === "action")})}
                                             style={{
-                                                minWidth: `${header.column.columnDef.minSize}px`, 
+                                                minWidth: (header.id === "action") ?`${header.column.columnDef.minSize}px`: null, 
                                                 width: header.getSize(),
-                                                maxWidth: `${header.column.columnDef.maxSize}px`, 
+                                                // minWidth: `${header.column.columnDef.minSize}px`, 
+                                                // maxWidth: `${header.column.columnDef.maxSize}px`, 
                                             }}
                                         >
                                             {
@@ -111,12 +127,16 @@ const Table: FC<ITable> = ({
                     </thead>
                     <tbody>
                         {table.getRowModel().rows.map(row => {
-                            return <TableDraggableRow key={row.original.key} row={row} reorderRow={reorderRow} />
+                            return <TableDraggableRow
+                             key={row.original.key}
+                             row={row} 
+                            handleDrag={drag}
+                            handleDrop={drop}
+                            />
                         })}
 
                     </tbody>
                 </table>
-            </DndProvider>
         </div>)
 };
 
@@ -160,9 +180,10 @@ type IColumn = {
     enableResizing?: boolean
 }
 type ITableRow = {
-    reorderRow: Function
     row: TPlainObject,
-    index?: number
+    index?: number,
+    handleDrop: Function,
+    handleDrag: Function
 }
 type ITh = { children: ReactNode, className?: string, style?: TPlainObject }
 type ITd = { children: ReactNode, className?: string, style?: TPlainObject }

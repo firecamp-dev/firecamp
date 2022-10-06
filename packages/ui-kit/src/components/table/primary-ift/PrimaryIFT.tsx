@@ -41,7 +41,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
         }}
         columns={columnDetails}
         columnRenderer={(row) => <>{row}</>}
-        cellRenderer={({ cell }) => <TableInput cell={cell}
+        cellRenderer={( cell ) => <TableInput cell={cell}
           rows={rows}
           onChange={onChange}
         />}

@@ -146,10 +146,10 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
         }}
         columns={columnDataForDisplay}
         columnRenderer={(row) => <>{row}</>}
-        cellRenderer={({cell}) => <TableInput cell={cell} 
+        cellRenderer={( cell ) => <TableInput cell={cell}
         rows={tableValue}
         onChange={updateTableData}
-        />}
+      />}
       />
 
 

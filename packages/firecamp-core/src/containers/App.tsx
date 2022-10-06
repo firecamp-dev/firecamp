@@ -9,8 +9,8 @@ import '../sass/_index.sass';
 import { FC, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import shallow from 'zustand/shallow';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DndProvider } from 'react-dnd';
+// import { HTML5Backend } from 'react-dnd-html5-backend';
+// import { DndProvider } from 'react-dnd';
 
 import { Row, RootContainer } from '@firecamp/ui-kit';
 import MonacoFirecampLangInit from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
@@ -71,7 +71,7 @@ const App: FC<any> = () => {
         console.log({ error });
       }}
     >
-      <DndProvider backend={HTML5Backend}>
+      {/* <DndProvider backend={HTML5Backend}> */}
         <RootContainer
           flex={1}
           overflow="auto"
@@ -86,7 +86,7 @@ const App: FC<any> = () => {
           {is_env_sidebar_open && <EnvSidebar />}
           <StatusBarContainer className="border-t focus-outer2" />
         </RootContainer>
-      </DndProvider>
+      {/* </DndProvider> */}
 
       <Crisp />
       <Analytics />

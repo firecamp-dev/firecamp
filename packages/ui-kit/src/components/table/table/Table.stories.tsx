@@ -32,7 +32,7 @@ let updateTableData = (newRows: any [] = []) => {
   }}
   columns={columnDataForDisplay}
   columnRenderer={(row) => <>{row}</>}
-  cellRenderer={({cell}) => <TableInput cell={cell} 
+  cellRenderer={(cell) => <TableInput cell={cell} 
   currentData={tableValue[cell.row.index]}
   onChange={updateTableData}
   />}

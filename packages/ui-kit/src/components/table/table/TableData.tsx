@@ -83,7 +83,7 @@ export const headerColumnDataForDisplay = [
     name: "action",
     displayName: " ",
     minSize: 64,
-    width: 64
+    maxSize: 64
   },
   {
     name: "key",
@@ -108,21 +108,10 @@ export const headerColumnDataForDisplay = [
 
 export const TableInput = (props: any) => {
   let { onChange, autoFocus, cell, rows } = props
-  const [inputValue, setInputValue] = useState("");
-  
-  const cellValue = [cell.row.index][cell.column.id];
-    
-    useEffect(() => {
-      if(inputValue !== cell.getValue()){
-        setInputValue(cell.getValue() ?? "");
-      }
-    },[cellValue])
+  const [inputValue, setInputValue] = useState(cell.cellValue);
 
-    
-
-  if (typeof cell.getValue() !== "undefined") {
-    return <Td style={{ maxWidth: cell.column.getSize() }}
-    key={cellValue}
+    return <Td 
+      style={{ width: cell.columnSize + "px" }}
       className={" h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline"}>
 
       <input
@@ -131,17 +120,14 @@ export const TableInput = (props: any) => {
         value={inputValue}
         autoFocus={autoFocus}
         onChange={(e) => {
-          setInputValue(e.target.value);
-          let updatedRow = rows;
-          updatedRow[cell.row.index] = {...updatedRow[cell.row.index], [cell.column.id]: e.target.value}
+          setInputValue(e.target.value);}}
+          onBlur={(e) => {
+          let updatedRow = Object.assign([],rows);
+          updatedRow[cell.rowIndex] = {...updatedRow[cell.rowIndex], [cell.columnId]: e.target.value}
           onChange(updatedRow)
         }}
         className="text-appForeground bg-appBackground h-[29px]  w-full
                             absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
       />
-
     </Td>
-  } else {
-    return <></>;
-  }
 }
