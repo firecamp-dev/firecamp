@@ -2,7 +2,7 @@ import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { nanoid } from 'nanoid';
 import _reject from 'lodash/reject';
-import { ICollection } from '@firecamp/types';
+import { ICollection, IFolder } from '@firecamp/types';
 import { _object, _string } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import { TId, IWorkspace, EWorkspaceType } from '@firecamp/types';
@@ -60,17 +60,27 @@ export interface IWorkspaceStore {
   createCollection: (payload: { [k: string]: any }) => Promise<any>;
   updateCollection: (cId: string, payload: { [k: string]: any }) => void;
   deleteCollection: (cId: string) => void;
+  onCreateCollection: (collection: ICollection) => void;
+  onUpdateCollection: (collection: Partial<ICollection>) => void;
+  onDeleteCollection: (collection: TId | ICollection) => void;
 
   // folder
   createFolder: (payload: { [k: string]: any }) => Promise<any>;
   updateFolder: (fId: string, payload: { [k: string]: any }) => void;
   deleteFolder: (fId: string) => void;
+  onCreateFolder: (folder: IFolder) => void;
+  onUpdateFolder: (folder: Partial<IFolder>) => void;
+  onDeleteFolder: (folder: TId | IFolder) => void;
+
+  onCreateRequest: (request: any) => void;
+  onUpdateRequest: (request: any) => void;
+  onDeleteRequest: (request: TId | any) => void;
 
   // request
   onNewRequestCreate: (request: any) => void;
   createRequest: (payload: { [k: string]: any }) => void;
   updateRequest: (rId: string, payload: { [k: string]: any }) => void;
-  deleteRequest: (rId: string) => void;
+  deleteRequest: (rId: TId) => void;
 
   // change orders
   changeWorkspaceMetaOrders: (orders: TId[]) => Promise<any>;
@@ -228,16 +238,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const res = await Rest.collection
         .create(_collection)
         .then((r) => {
-          const col: ICollection = r.data;
-          set((s) => {
-            s.explorer?.tdpInstance.addCollectionItem(col);
-            return {
-              explorer: {
-                ...s.explorer,
-                collections: [...s.explorer.collections, col],
-              },
-            };
-          });
+          state.onCreateCollection(r.data);
           return r;
         })
         .finally(() => {
@@ -245,19 +246,13 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         });
       return res;
     },
-    updateCollection: async (cId: string, payload: { [k: string]: any }) => {
+    updateCollection: async (cId: string, payload: Partial<ICollection>) => {
       const state = get();
       state.toggleProgressBar(true);
       const res = await Rest.collection
         .update(cId, payload)
         .then((r) => {
-          set((s) => {
-            const collections = s.explorer.collections.map((c) => {
-              if (c._meta.id == cId) c = { ...c, ...payload }; //note: this condition is used considering only renaming usecase
-              return c;
-            });
-            return { explorer: { ...s.explorer, collections } };
-          });
+          state.onUpdateCollection(payload);
           return r;
         })
         .catch((e) => {})
@@ -272,13 +267,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const res = await Rest.collection
         .delete(cId)
         .then((r) => {
-          set((s) => {
-            const collections = s.explorer.collections.filter(
-              (c) => c._meta.id != cId
-            );
-            s.explorer.tdpInstance.deleteCollectionItem(cId);
-            return { explorer: { ...s.explorer, collections } };
-          });
+          state.onDeleteCollection(cId);
           return r;
         })
         .catch((e) => {
@@ -289,13 +278,56 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         });
       return res;
     },
+    onCreateCollection: (collection: ICollection) => {
+      set((s) => {
+        s.explorer?.tdpInstance.addCollectionItem(collection);
+        return {
+          explorer: {
+            ...s.explorer,
+            workspace: {
+              ...s.workspace,
+              meta: {
+                ...s.workspace.meta,
+                c_orders: [...s.workspace.meta.c_orders, collection._meta.id],
+              },
+            },
+            collections: [...s.explorer.collections, collection],
+          },
+        };
+      });
+    },
+
+    onUpdateCollection: (collection) => {
+      set((s) => {
+        s.explorer?.tdpInstance.updateCollectionItem(collection);
+        const collections = s.explorer.collections.map((c) => {
+          if (c._meta.id == collection._meta.id)
+            c = { ...c, name: collection.name }; //note: this condition is used considering only renaming usecase
+          return c;
+        });
+        return { explorer: { ...s.explorer, collections } };
+      });
+    },
+    onDeleteCollection: (collection) => {
+      const cId =
+        typeof collection == 'string' ? collection : collection._meta.id;
+      set((s) => {
+        const collections = s.explorer.collections.filter(
+          (c) => c._meta.id != cId
+        );
+        // TODO: manage workspace c_orders and remove envs of deleted collection
+        s.explorer.tdpInstance.deleteCollectionItem(cId);
+        return { explorer: { ...s.explorer, collections } };
+      });
+    },
 
     // folder
-    createFolder: async (payload: { [k: string]: any }) => {
+    createFolder: async (payload: IFolder) => {
       const state = get();
-      const _folder = {
+      const _folder: IFolder = {
         name: payload?.name,
         description: payload?.description,
+        meta: { f_orders: [], r_orders: [] },
         _meta: {
           id: nanoid(),
           collection_id: payload?._meta?.collection_id,
@@ -307,17 +339,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const res = await Rest.folder
         .create(_folder)
         .then((res) => {
-          //@ts-ignore
-          if (_folder.meta?.type) _folder.meta.type = 'F';
-          set((s) => {
-            s.explorer?.tdpInstance.addFolderItem(_folder);
-            return {
-              explorer: {
-                ...s.explorer,
-                folders: [...s.explorer.folders, _folder],
-              },
-            };
-          });
+          state.onCreateFolder(_folder);
         })
         // .catch((e) => {
         //   console.log(e);
@@ -328,19 +350,13 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
 
       return res;
     },
-    updateFolder: async (fId: string, payload: { [k: string]: any }) => {
+    updateFolder: async (fId: string, payload: Partial<IFolder>) => {
       const state = get();
       state.toggleProgressBar(true);
       const res = await Rest.folder
         .update(fId, payload)
         .then((r) => {
-          set((s) => {
-            const folders = s.explorer.folders.map((f) => {
-              if (f._meta.id == fId) f = { ...f, ...payload }; //note: this condition is used considering only renaming usecase
-              return f;
-            });
-            return { explorer: { ...s.explorer, folders } };
-          });
+          state.onUpdateFolder(payload);
           return r;
         })
         .catch((e) => {
@@ -359,11 +375,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const res = await Rest.folder
         .delete(fId)
         .then((r) => {
-          set((s) => {
-            const folders = s.explorer.folders.filter((f) => f._meta.id != fId);
-            s.explorer.tdpInstance.deleteFolderItem(fId);
-            return { explorer: { ...s.explorer, folders } };
-          });
+          state.onDeleteFolder(fId);
           return r;
         })
         .catch((e) => {
@@ -375,6 +387,37 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
           state.toggleProgressBar(false);
         });
       return res;
+    },
+    onCreateFolder: (folder) => {
+      //@ts-ignore
+      if (folder.meta?.type) folder.meta.type = 'F'; // TODO: remove it later after migration M=>F
+      set((s) => {
+        s.explorer?.tdpInstance.addFolderItem(folder);
+        return {
+          explorer: {
+            ...s.explorer,
+            folders: [...s.explorer.folders, folder],
+          },
+        };
+      });
+    },
+    onUpdateFolder: (folder) => {
+      set((s) => {
+        s.explorer?.tdpInstance.updateFolderItem(folder);
+        const folders = s.explorer.folders.map((f) => {
+          if (f._meta.id == folder._meta.id) f = { ...f, name: folder.name }; //note: this condition is used considering only renaming usecase
+          return f;
+        });
+        return { explorer: { ...s.explorer, folders } };
+      });
+    },
+    onDeleteFolder: (folder) => {
+      const fId = typeof folder == 'string' ? folder : folder._meta.id;
+      set((s) => {
+        const folders = s.explorer.folders.filter((f) => f._meta.id != fId);
+        s.explorer.tdpInstance.deleteFolderItem(fId);
+        return { explorer: { ...s.explorer, folders } };
+      });
     },
 
     // request
@@ -424,15 +467,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const res = await Rest.request
         .create(_request)
         .then((r) => {
-          set((s) => {
-            s.explorer?.tdpInstance?.addRequestItem(_request);
-            return {
-              explorer: {
-                ...s.explorer,
-                requests: [...s.explorer.requests, _request],
-              },
-            };
-          });
+          state.onCreateRequest(_request);
           return r;
         })
         .catch((e) => {})
@@ -447,14 +482,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const res = await Rest.request
         .update(rId, payload)
         .then((r) => {
-          set((s) => {
-            const requests = s.explorer.requests.map((r) => {
-              if (r._meta.id == rId)
-                r = { ...r, meta: { ...r.meta, ...payload.meta } }; //note: this condition is used considering only renaming usecase
-              return r;
-            });
-            return { explorer: { ...s.explorer, requests } };
-          });
+          state.onUpdateRequest(payload);
           return r;
         })
         .catch((e) => {
@@ -473,13 +501,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const res = await Rest.request
         .delete(rId)
         .then((r) => {
-          set((s) => {
-            const requests = s.explorer.requests.filter(
-              (r) => r._meta.id != rId
-            );
-            s.explorer.tdpInstance.deleteRequestItem(rId);
-            return { explorer: { ...s.explorer, requests } };
-          });
+          state.onDeleteRequest(rId);
           return r;
         })
         .catch((e) => {
@@ -491,6 +513,53 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
           state.toggleProgressBar(false);
         });
       return res;
+    },
+
+    onCreateRequest: (request: any) => {
+      set((s) => {
+        s.explorer?.tdpInstance?.addRequestItem(request);
+        const { collections, folders } = s.explorer;
+        if (request._meta.folder_id) {
+          folders.map((f) => {
+            if (f._meta.id == request._meta.folder_id) {
+              f.meta.r_orders.push(request._meta.id);
+            }
+          });
+        } else if (request._meta.collection_id) {
+          collections.map((c) => {
+            if (c._meta.id == request._meta.collection_id) {
+              c.meta.r_orders.push(request._meta.id);
+            }
+          });
+        }
+        return {
+          explorer: {
+            ...s.explorer,
+            collections,
+            folders,
+            requests: [...s.explorer.requests, request],
+          },
+        };
+      });
+    },
+    onUpdateRequest: (request: any) => {
+      set((s) => {
+        s.explorer?.tdpInstance.updateRequestItem(request);
+        const requests = s.explorer.requests.map((r) => {
+          if (r._meta.id == request._meta.id)
+            r = { ...r, meta: { ...r.meta, name: request.meta.name } }; //note: this condition is used considering only renaming usecase
+          return r;
+        });
+        return { explorer: { ...s.explorer, requests } };
+      });
+    },
+    onDeleteRequest: (request: TId | any) => {
+      const rId = typeof request == 'string' ? request : request._meta.id;
+      set((s) => {
+        const requests = s.explorer.requests.filter((r) => r._meta.id != rId);
+        s.explorer.tdpInstance.deleteRequestItem(rId);
+        return { explorer: { ...s.explorer, requests } };
+      });
     },
 
     //organization
