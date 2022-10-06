@@ -83,7 +83,8 @@ const App: FC<any> = () => {
           </Row>
 
           <ModalContainer />
-          {is_env_sidebar_open && <EnvSidebar />}
+          {/* {is_env_sidebar_open && <EnvSidebar expanded={is_env_sidebar_open} />} */}
+          <EnvSidebar expanded={is_env_sidebar_open} />
           <StatusBarContainer className="border-t focus-outer2" />
         </RootContainer>
       </DndProvider>

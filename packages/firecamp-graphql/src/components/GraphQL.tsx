@@ -36,7 +36,7 @@ import { normalizeRequest, prepareUiState } from '../services/graphql-service';
 import { ESidebarTabs } from '../types';
 import { collection } from '@firecamp/cloud-apis/dist/rest';
 
-const Loading = ({ ...props }) => <span>loading...</span>;
+const Loading = ({ ...props }) => <div className="flex w-16 items-center text-appForegroundInActive loader">Loading<span className="wave-loader overflow-hidden">...</span></div>;
 
 const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
   let graphqlStoreApi: any = useGraphQLStoreApi();

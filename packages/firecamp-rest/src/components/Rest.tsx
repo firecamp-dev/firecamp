@@ -47,7 +47,7 @@ import {
   prepareUIRequestPanelState,
 } from '../services/rest-service';
 
-const Loading = ({ ...props }) => <span>loading...</span>;
+const Loading = ({ ...props }) => <div className="flex w-16 items-center text-appForegroundInActive loader">Loading<span className="wave-loader overflow-hidden">...</span></div>;
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   let restStoreApi: any = useRestStoreApi();

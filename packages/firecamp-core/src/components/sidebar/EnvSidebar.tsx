@@ -17,8 +17,9 @@ import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import EnvironmentDD from '../common/environment/environment-widget/EnvironmentDD';
 import { useTabStore } from '../../store/tab';
 import * as platformContext from '../../services/platform-context';
+import classnames from 'classnames';
 
-const EnvSidebar: FC<any> = () => {
+const EnvSidebar: FC<any> = (expanded) => {
   let {
     is_env_sidebar_open,
     active_tab_wrs_env,
@@ -67,7 +68,7 @@ const EnvSidebar: FC<any> = () => {
       left={true}
       minWidth={'250'}
       maxWidth={'600'}
-      className="!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30"
+      className={classnames("!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30 expandable-right-pane", {'expanded': expanded})}
     >
       <Container>
         <Container.Header className="flex !p-2 bg-focus1">
