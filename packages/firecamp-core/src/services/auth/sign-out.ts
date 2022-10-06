@@ -35,7 +35,7 @@ export default async (logoutForcefully = true, manuallyLogout = false) => {
     //         message: 'Failed to Sign Out'
     //       })
     //     // Disconnect socket client
-    //     Realtime.socket.disconnect()
+    //     Realtime.disconnect()
     //     // De-authorize if sign-in via OAuth2
     //     switch (user?.provider) {
     //       case EProvider.GOOGLE: await googleAuth.deAuthorize()

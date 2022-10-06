@@ -61,7 +61,7 @@ const request: IPlatformRequestService = {
     // console.log({ subscribeChanges: request_id });
 
     // Subscribe request changes
-    Realtime.socket.subscribeRequest(request_id);
+    Realtime.subscribeRequest(request_id);
 
     // listen/ subscribe updates
     platformEmitter.on(prepareEventNameForRequestPull(request_id), handlePull);
@@ -75,7 +75,7 @@ const request: IPlatformRequestService = {
     // console.log({ unsubscribeChanges: request_id });
 
     // unsubscribe request changes
-    // Realtime.socket.unsubscribeRequest(request_id); // TODO: add socket API
+    // Realtime.unsubscribeRequest(request_id); // TODO: add socket API
     platformEmitter.off(prepareEventNameForRequestPull(request_id));
   },
 

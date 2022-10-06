@@ -87,12 +87,11 @@ const initApp = async () => {
     .then(({ user }) => {
       // subscribe request changes (pull actions)
       try {
-        Realtime.socket
-          .connect({
-            endpoint: process.env.FIRECAMP_API_HOST,
-            token: t,
-            userID: user._meta.id,
-          })
+        Realtime.connect({
+          endpoint: process.env.FIRECAMP_API_HOST,
+          token: t,
+          userId: user._meta.id,
+        })
           // Receives the data on socket connection open
           .onConnect(async (socketId) => {
             // Set the socket id in the cloud-api headers [Reference: @firecamp/cloud-api]
@@ -101,7 +100,7 @@ const initApp = async () => {
             });
 
             platformEmitter.emit('socket.connected');
-            // Realtime.socket.onRequestChanges((payload) => {
+            // Realtime.onRequestChanges((payload) => {
             //   console.log({ onRequestChanges: payload });
             //   platformEmitter.emit(
             //     prepareEventNameForRequestPull(payload.request_id),
