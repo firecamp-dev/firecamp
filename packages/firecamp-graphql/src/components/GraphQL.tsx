@@ -11,7 +11,7 @@ import {
 import shallow from 'zustand/shallow';
 import _cleanDeep from 'clean-deep';
 
-import { Container, Row, Column } from '@firecamp/ui-kit';
+import { Container, Row, Column,Loader } from '@firecamp/ui-kit';
 
 import _cloneDeep from 'lodash/cloneDeep';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
@@ -35,7 +35,6 @@ import {
 import { normalizeRequest, prepareUiState } from '../services/graphql-service';
 import { ESidebarTabs } from '../types';
 
-const Loading = ({ ...props }) => <div className="flex w-16 items-center text-appForegroundInActive loader">Loading<span className="wave-loader overflow-hidden">...</span></div>;
 
 const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
   let graphqlStoreApi: any = useGraphQLStoreApi();
@@ -305,7 +304,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     });
   };
 
-  if(isFetchingRequest === true) return <Loading />;
+  if(isFetchingRequest === true) return <Loader />;
   return (
     <Container className="h-full w-full with-divider" overflow="visible">
       <Container.Header>

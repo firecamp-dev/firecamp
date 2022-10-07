@@ -83,7 +83,7 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
         break;
       case ERequestTypes.GraphQL:
         return (
-          <Suspense fallback={<div className="flex w-16 items-center text-appForegroundInActive loader">Loading<span className="wave-loader overflow-hidden">...</span></div>}>
+          <Suspense fallback={<Loader />}>
             <GraphQL {...tabProps} />
           </Suspense>
         );
