@@ -1,4 +1,4 @@
-import { Realtime, Rest } from '@firecamp/cloud-apis';
+import { Rest } from '@firecamp/cloud-apis';
 import { EHttpMethod, EPushActionType, TId } from '@firecamp/types';
 import create from 'zustand';
 import AppService from '../services/app';

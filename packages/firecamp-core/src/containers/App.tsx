@@ -28,6 +28,7 @@ import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 
 import useMonacoWorkers from '../components/hooks/useMonacoWorkers';
 import AppService from '../services/app';
+import RealtimeEventManager from '../components/common/realtime/Realtime'
 
 // Initialise Firecamp languages settings
 MonacoFirecampLangInit();
@@ -80,6 +81,7 @@ const App: FC<any> = () => {
             <TabsContainer />
           </Row>
 
+          <RealtimeEventManager />
           <ModalContainer />
           {/* {isEnvSidebarOpen && <EnvSidebar />} */}
           <EnvSidebarContainer />

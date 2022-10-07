@@ -55,13 +55,13 @@ interface IPlatformRequestService {
 const request: IPlatformRequestService = {
   // subscribe real-time request changes (pull-actions from server)
   subscribeChanges: (request_id: TId, handlePull: () => any) => {
-    // TODO: manage user is loggedin from store
+    // TODO: manage user is logged in from store
     // if (!F.userMeta.isLoggedIn) return;
 
     // console.log({ subscribeChanges: request_id });
 
     // Subscribe request changes
-    Realtime.socket.subscribeRequest(request_id);
+    Realtime.subscribeRequest(request_id);
 
     // listen/ subscribe updates
     platformEmitter.on(prepareEventNameForRequestPull(request_id), handlePull);
@@ -75,7 +75,7 @@ const request: IPlatformRequestService = {
     // console.log({ unsubscribeChanges: request_id });
 
     // unsubscribe request changes
-    // Realtime.socket.unsubscribeRequest(request_id); // TODO: add socket API
+    // Realtime.unsubscribeRequest(request_id); // TODO: add socket API
     platformEmitter.off(prepareEventNameForRequestPull(request_id));
   },
 

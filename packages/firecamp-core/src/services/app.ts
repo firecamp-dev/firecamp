@@ -87,26 +87,30 @@ const initApp = async () => {
     .then(({ user }) => {
       // subscribe request changes (pull actions)
       try {
-        Realtime.socket
-          .connect({
-            endpoint: process.env.FIRECAMP_API_HOST,
-            token: t,
-            userID: user._meta.id,
-          })
-          // Receives the data on socket connection open
+        Realtime.connect({
+          endpoint: process.env.FIRECAMP_API_HOST,
+          token: t,
+          userId: user._meta.id,
+        })
           .onConnect(async (socketId) => {
+            // receives the data on socket connection open
+
             // Set the socket id in the cloud-api headers [Reference: @firecamp/cloud-api]
             await CloudApiGlobal.setGlobalHeaders({
               [ECloudApiHeaders.SocketId]: socketId,
             });
 
-            Realtime.socket.onRequestChanges((payload) => {
-              console.log({ onRequestChanges: payload });
-              platformEmitter.emit(
-                prepareEventNameForRequestPull(payload.request_id),
-                payload.actions
-              );
-            });
+            platformEmitter.emit('socket.connected');
+            // Realtime.onRequestChanges((payload) => {
+            //   console.log({ onRequestChanges: payload });
+            //   platformEmitter.emit(
+            //     prepareEventNameForRequestPull(payload.request_id),
+            //     payload.actions
+            //   );
+            // });
+          })
+          .onDisconnect(() => {
+            platformEmitter.emit('socket.disconnected');
           });
       } catch (e) {
         console.log(e, 'error while connecting the socket');
