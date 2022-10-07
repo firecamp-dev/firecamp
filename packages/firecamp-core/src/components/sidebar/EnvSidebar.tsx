@@ -13,12 +13,13 @@ import { EEnvironmentScope, IEnvironment } from '@firecamp/types';
 
 import EnvironmentDD from '../common/environment/environment-widget/EnvironmentDD';
 import * as platformContext from '../../services/platform-context';
+import classnames from 'classnames';
 
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
 import AppService from '../../services/app'
 
-const EnvSidebar: FC<any> = () => {
+const EnvSidebar: FC<any> = ({ expanded }) => {
   const {
     activeTabWrsEnv,
     activeTabCollectionEnvs,
@@ -67,7 +68,7 @@ const EnvSidebar: FC<any> = () => {
       left={true}
       minWidth={'250'}
       maxWidth={'600'}
-      className="!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30"
+      className={classnames("!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30 expandable-right-pane", {'expanded': expanded})}
     >
       <Container>
         <Container.Header className="flex !p-2 bg-focus1">
@@ -120,7 +121,7 @@ const EnvSidebarContainer = ()=> {
     shallow
   );
   if(!isEnvSidebarOpen) return <></>;
-  return <EnvSidebar/>
+  return <EnvSidebar expanded={isEnvSidebarOpen}/>
 }
 export { EnvSidebar, EnvSidebarContainer };
 

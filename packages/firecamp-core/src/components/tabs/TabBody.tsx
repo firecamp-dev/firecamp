@@ -3,6 +3,7 @@ import { ERequestTypes } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import { ErrorBoundary } from 'react-error-boundary';
 import _cloneDeep from 'lodash/cloneDeep';
+import {Loader} from '@firecamp/ui-kit';
 
 // import { Rest } from '@firecamp/rest';
 // import { GraphQL } from '@firecamp/graphql';
@@ -75,14 +76,14 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
     switch (type) {
       case ERequestTypes.Rest:
         return (
-          <Suspense fallback={<div>Loading... </div>}>
+          <Suspense fallback={<Loader />}>
             <Rest {...tabProps} />
           </Suspense>
         );
         break;
       case ERequestTypes.GraphQL:
         return (
-          <Suspense fallback={<div>Loading... </div>}>
+          <Suspense fallback={<Loader />}>
             <GraphQL {...tabProps} />
           </Suspense>
         );

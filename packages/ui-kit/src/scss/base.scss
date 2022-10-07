@@ -789,3 +789,13 @@ body .ace_editor .ace_scrollbar{
 }
 
 /*---code mirror css ends----------*/
+
+.expandable-right-pane{
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 2s;
+}
+
+.expandable-right-pane.expanded{
+  transform: scaleX(1); 
+}

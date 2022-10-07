@@ -16,6 +16,7 @@
 }
 .pane.expanded:not(.custom-height){
     height: 100% !important;
+    flex: 1;
 }
 .pane>.pane-body{
     min-height: 160px;

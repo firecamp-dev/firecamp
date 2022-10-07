@@ -11,7 +11,7 @@ import {
 import shallow from 'zustand/shallow';
 import _cleanDeep from 'clean-deep';
 
-import { Container, Row, Column } from '@firecamp/ui-kit';
+import { Container, Row, Column,Loader } from '@firecamp/ui-kit';
 
 import _cloneDeep from 'lodash/cloneDeep';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
@@ -34,9 +34,7 @@ import {
 
 import { normalizeRequest, prepareUiState } from '../services/graphql-service';
 import { ESidebarTabs } from '../types';
-import { collection } from '@firecamp/cloud-apis/dist/rest';
 
-const Loading = ({ ...props }) => <span>loading...</span>;
 
 const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
   let graphqlStoreApi: any = useGraphQLStoreApi();
@@ -306,6 +304,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     });
   };
 
+  if(isFetchingRequest === true) return <Loader />;
   return (
     <Container className="h-full w-full with-divider" overflow="visible">
       <Container.Header>
@@ -317,24 +316,13 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
         />
       </Container.Header>
       <Container.Body>
-        {isFetchingRequest === true ? (
-          <Loading />
-        ) : (
-          <Row flex={1} overflow="auto" className="with-divider h-full">
-            <SidebarPanel />
-            <Column>
-              {/* <Container>
-              <Container.Body className="flex"> */}
-              <PlaygroundPanel />
-              {/* </Container.Body>
-            </Container> */}
-            </Column>
-            <DocWrapper />
-          </Row>
-        )}
-        {/* <Row className='border-botom'>
-          <HeadersTab />
-        </Row> */}
+        <Row flex={1} overflow="auto" className="with-divider h-full">
+          <SidebarPanel />
+          <Column>
+            <PlaygroundPanel />
+          </Column>
+          <DocWrapper />
+        </Row>
       </Container.Body>
       {tab.meta.isSaved && (
         <TabChangesDetector
