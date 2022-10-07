@@ -1,6 +1,5 @@
 import { Rest } from '@firecamp/cloud-apis';
 import { EProvider, IAuthResponse } from './types';
-import { validateAuthResponse } from './helper';
 
 /**
  * credentials require for sign-up using Firecamp domain
@@ -24,15 +23,10 @@ export default async ({
     const response = await Rest.auth.signUp(username, email, password);
 
     // validate auth response
-    if (validateAuthResponse(response?.data)) {
-      return Promise.resolve({
-        response: response.data,
-        provider: EProvider.LOCAL,
-      });
-    } else
-      return Promise.reject({
-        message: 'Failed to sign-up for your account',
-      });
+    return Promise.resolve({
+      response: response.data,
+      provider: EProvider.LOCAL,
+    });
   } catch (error) {
     return Promise.reject({
       message: error?.data?.message

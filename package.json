@@ -9,7 +9,7 @@
   "scripts": {
     "build:monorepo": "lerna run build --scope=@firecamp/js-executor --scope=@firecamp/rest-executor",
     "start": "npx webpack serve --config ./webpack.dev.js",
-    "dev": "APP_VERSION=$npm_package_version RELEASE_SERVER=dev APP_FORMAT=extension && node scripts/build && npm run build:monorepo && yarn start",
+    "dev": "APP_VERSION=$npm_package_version APP_FORMAT=web && node scripts/build && npm run build:monorepo && yarn start",
     "electron": "npx electron .",
     "release:web-app": "APP_FORMAT=webapp && node scripts/release production",
     "release:web-app:staging": "APP_FORMAT=webapp && node scripts/release staging",

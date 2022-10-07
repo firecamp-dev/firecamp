@@ -3,7 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const colors = require('colors');
-const Environment = require('./environment');
+const { Environment, AppFormat } = require('./environment');
 const build = require('../webpack.prod');
 require('shelljs/global');
 
@@ -45,7 +45,7 @@ module.exports = async () => {
 
     // Hold the build path as per the environment mode
     const buildPath =
-      process.env.NODE_ENV === 'development'
+      process.env.NODE_ENV === Environment.Development
         ? directoryPaths[1]
         : directoryPaths[2];
 
@@ -74,7 +74,7 @@ module.exports = async () => {
     );
 
     // generate package.json and manifest based on app environment
-    if (process.env.NODE_ENV === 'development')
+    if (process.env.NODE_ENV === Environment.Development)
       exec(`node ${buildPath}/build-scripts/init-package.js`);
     else exec(`node ${buildPath}/build-scripts/init-package.js`);
 
@@ -96,8 +96,8 @@ module.exports = async () => {
 
     // Copy electron agent assets, config and services
     if (
-      process.env.NODE_ENV === 'production' &&
-      process.env.APP_FORMAT !== 'extension'
+      process.env.NODE_ENV === Environment.Production &&
+      process.env.APP_FORMAT !== AppFormat.WebApp
     ) {
       // Copy electron agent services
       cp(
@@ -116,7 +116,7 @@ module.exports = async () => {
       );
 
       // Copy dmg app assets
-      if (process.env.APP_FORMAT === 'dmg') {
+      if (process.env.APP_FORMAT === AppFormat.Dmg) {
         mkdir(`${buildPath}/build`);
 
         cp(

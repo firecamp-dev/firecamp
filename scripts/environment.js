@@ -5,4 +5,12 @@ const Environment = {
   Canary: 'canary', // Canary is production but for early adopter
 };
 
-module.exports = Environment;
+const AppFormat = {
+  WebApp: 'webapp',
+  Dmg: 'dmg',
+  AppImage: 'appImage',
+  Snap: 'snap',
+  NSIS: 'nsis',
+};
+
+module.exports = { Environment, AppFormat };
