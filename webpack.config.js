@@ -1,12 +1,14 @@
+/* eslint-disable no-console */
 // import environments
 require('dotenv').config();
 
 const webpack = require('webpack');
 const path = require('path');
-const metadata = require('./package.json');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const metadata = require('./package.json');
 
 exports.common = {
   entry: {
@@ -58,19 +60,21 @@ exports.output = {
 };
 
 if (process.env.NODE_ENV === 'development') {
-  exports.output['path'] = path.join(__dirname, './build/dev/js');
-  exports.output['clean'] = true;
+  exports.output.path = path.join(__dirname, './build/development/js');
+  exports.output.clean = true;
 } else {
-  exports.output['path'] = path.join(__dirname, './build/production/js');
+  exports.output.path = path.join(__dirname, './build/production/js');
 }
 
 exports.env = {
   NODE_ENV: JSON.stringify(process.env.NODE_ENV),
   FIRECAMP_API_HOST: JSON.stringify(process.env.FIRECAMP_API_HOST),
   FIRECAMP_PROXY_API_HOST: JSON.stringify(process.env.FIRECAMP_PROXY_API_HOST),
-  FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(process.env.FIRECAMP_EXTENSION_AGENT_ID),
+  FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(
+    process.env.FIRECAMP_EXTENSION_AGENT_ID
+  ),
   APP_VERSION: JSON.stringify(metadata.version),
-  APP_FORMAT: JSON.stringify(process.env.APP_FORMAT),
+  AppFormat: JSON.stringify(process.env.AppFormat),
   SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
   CRISP_WEBSITE_ID: JSON.stringify(process.env.CRISP_WEBSITE_ID),
   GOOGLE_OAUTH2_CLIENT_ID: JSON.stringify(process.env.GOOGLE_OAUTH2_CLIENT_ID),
@@ -92,7 +96,7 @@ exports.env = {
 exports.plugins = [
   new HtmlWebpackPlugin({
     inject: false,
-    template: path.join(__dirname, './build/dev/app.html'),
+    template: path.join(__dirname, './build/development/index.html'),
   }),
   new NodePolyfillPlugin(),
   new webpack.ProgressPlugin({
@@ -102,7 +106,7 @@ exports.plugins = [
     profile: true,
     handler: (percentage, message, ...args) => {
       console.clear();
-      console.log((percentage * 100).toFixed() + '%', message, ...args);
+      console.log(`${(percentage * 100).toFixed()}%`, message, ...args);
     },
   }),
   new MonacoWebpackPlugin({

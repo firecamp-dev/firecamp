@@ -1,9 +1,12 @@
+/* eslint-disable no-console */
 require('dotenv').config();
 const colors = require('colors');
 const semver = require('semver');
 require('shelljs/global');
 const build = require('./build');
 const { version } = require('../package.json');
+
+const { Environment, AppFormat } = require('./constants');
 
 const variables = [
   // 'FIRECAMP_API_HOST',
@@ -24,9 +27,6 @@ if (!semver.valid(version)) {
 // Set app version in the environment
 process.env.APP_VERSION = version;
 
-// Set release server production/staging/canary
-process.env.RELEASE_SERVER = process.argv[2];
-
 // Check if environment variables set
 variables.forEach((variable) => {
   if (
@@ -43,7 +43,7 @@ variables.forEach((variable) => {
 
 // Check FIRECAMP_API_HOST env. variable value does not contains invalid value
 if (
-  process.env.RELEASE_SERVER !== 'staging' &&
+  process.env.NODE_ENV !== Environment.Staging &&
   (process.env.FIRECAMP_API_HOST.includes('localhost') ||
     process.env.FIRECAMP_API_HOST.includes('testing') ||
     process.env.FIRECAMP_API_HOST.includes('127.0.0.1'))
@@ -87,22 +87,27 @@ ${colors.red('Error: ')}Failed to execute command: ${command}`
 
 const preBuildCliCommands = async () => {
   // Prevent check git tag while staging build
-  if (process.env.RELEASE_SERVER === 'staging') return Promise.resolve();
+  if (process.env.NODE_ENV === Environment.Staging) return Promise.resolve();
 
   // Check is tag was checked out or not
-  const result = await _exec('git describe --tags', { async: true });
-  if (result.replace(/\n/g, '') !== `v${version}`) {
-    console.log(
-      `
-  ${colors.red('Error:')} Please checkout tag '${colors.yellow(
-        `v${version}`
-      )}' for release`
-    );
-    process.exit();
-  } else return Promise.resolve();
+  // await _exec('git describe --tags', { async: true })
+  //   .then((result) => {
+  //     console.log(result);
+  //     if (result.replace(/\n/g, '') !== `v${version}`) {
+  //       console.log(
+  //         `${colors.red('Error:')} Please checkout tag '${colors.yellow(
+  //           `v${version}`
+  //         )}' for release`
+  //       );
+  //       process.exit();
+  //     } else return Promise.resolve();
+  //   })
+  //   .catch((e) => {
+  //     console.log(e, 'this is the error');
+  //   });
 };
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === Environment.Production) {
   try {
     preBuildCliCommands().then(async () => {
       /**
@@ -113,13 +118,13 @@ if (process.env.NODE_ENV === 'production') {
       await build();
 
       // Finished the process if build=chrome
-      if (['extension', 'webapp'].includes(process.env.APP_FORMAT)) {
+      if (['extension', AppFormat.WebApp].includes(process.env.AppFormat)) {
         // Remove unused packages
         rm('-rf', 'build/production/build-scripts');
         rm('-rf', 'build/production/packages-executors');
         rm('-rf', 'build/production/services');
 
-        if (process.env.APP_FORMAT === 'webapp') {
+        if (process.env.AppFormat === AppFormat.WebApp) {
           // Remove chrome extension app files
           rm('-rf', 'build/production/splashscreen.html');
           rm('-rf', 'build/production/manifest.json');
@@ -134,9 +139,9 @@ if (process.env.NODE_ENV === 'production') {
       }
 
       // Set bundle id for electron app
-      if (process.env.RELEASE_SERVER === 'production')
+      if (process.env.NODE_ENV === Environment.Production)
         process.env.appBundleId = 'com.firecamp.app';
-      else if (process.env.RELEASE_SERVER === 'canary')
+      else if (process.env.NODE_ENV === Environment.Canary)
         process.env.appBundleId = 'com.firecamp.canary';
 
       // Copy release note and post build checks
@@ -161,7 +166,7 @@ if (process.env.NODE_ENV === 'production') {
       exec('yarn add ../../../firecamp-forks/electron-oauth-helper -W');
 
       // Prepare linux os 'AppImage' build
-      if (process.env.APP_FORMAT === 'appImage') {
+      if (process.env.AppFormat === AppFormat.AppImage) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --linux AppImage');
 
@@ -181,7 +186,7 @@ if (process.env.NODE_ENV === 'production') {
       }
 
       // Prepare linux os 'Snap' build
-      if (process.env.APP_FORMAT === 'snap') {
+      if (process.env.AppFormat === AppFormat.Snap) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --linux Snap');
 
@@ -191,7 +196,7 @@ if (process.env.NODE_ENV === 'production') {
       }
 
       // Prepare windows os 'nsis' build
-      if (process.env.APP_FORMAT === 'nsis') {
+      if (process.env.AppFormat === AppFormat.NSIS) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --win');
 
@@ -211,7 +216,7 @@ if (process.env.NODE_ENV === 'production') {
       }
 
       // Prepare mac os 'dmg' build
-      if (process.env.APP_FORMAT === 'dmg') {
+      if (process.env.AppFormat === AppFormat.Dmg) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --mac');
 

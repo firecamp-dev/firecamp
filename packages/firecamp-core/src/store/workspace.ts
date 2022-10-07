@@ -79,7 +79,7 @@ export interface IWorkspaceStore {
   // request
   onNewRequestCreate: (request: any) => void;
   createRequest: (payload: { [k: string]: any }) => void;
-  updateRequest: (rId: string, payload: { [k: string]: any }) => void;
+  updateRequest: (rId: string, payload: { [k: string]: any }) => Promise<any>;
   deleteRequest: (rId: TId) => void;
 
   // change orders
@@ -568,7 +568,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         s.explorer.tdpInstance?.updateRequestItem(request);
         const requests = s.explorer.requests.map((r) => {
           if (r._meta.id == request._meta.id)
-            r = { ...r, meta: { ...r.meta, name: request.meta.name } }; //note: this condition is used considering only renaming usecase
+            r = { ...r, meta: { ...r.meta, name: request.meta.name } }; //note: this condition is used considering only renaming use case
           return r;
         });
         return { explorer: { ...s.explorer, requests } };

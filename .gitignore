@@ -2,10 +2,7 @@ node_modules
 npm-debug.log
 .DS_Store
 
-packages/indexed-db/build
 build/
-stageBuild/
-dev/
 cypress/screenshots
 cypress/videos
 
@@ -91,11 +88,6 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
-.env.test
-.env*
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
@@ -134,3 +126,12 @@ dist
 
 # Declaration files
 *.d.ts
+
+# dotenv environment variables file
+.env
+.env.test
+.env.production
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
