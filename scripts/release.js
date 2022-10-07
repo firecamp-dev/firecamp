@@ -1,9 +1,12 @@
+/* eslint-disable no-console */
 require('dotenv').config();
 const colors = require('colors');
 const semver = require('semver');
 require('shelljs/global');
 const build = require('./build');
 const { version } = require('../package.json');
+
+const Environment = require('./environment');
 
 const variables = [
   // 'FIRECAMP_API_HOST',
@@ -25,6 +28,7 @@ if (!semver.valid(version)) {
 process.env.APP_VERSION = version;
 
 // Set release server production/staging/canary
+// eslint-disable-next-line prefer-destructuring
 process.env.RELEASE_SERVER = process.argv[2];
 
 // Check if environment variables set
@@ -43,7 +47,7 @@ variables.forEach((variable) => {
 
 // Check FIRECAMP_API_HOST env. variable value does not contains invalid value
 if (
-  process.env.RELEASE_SERVER !== 'staging' &&
+  process.env.NODE_ENV !== Environment.Staging &&
   (process.env.FIRECAMP_API_HOST.includes('localhost') ||
     process.env.FIRECAMP_API_HOST.includes('testing') ||
     process.env.FIRECAMP_API_HOST.includes('127.0.0.1'))
@@ -87,22 +91,27 @@ ${colors.red('Error: ')}Failed to execute command: ${command}`
 
 const preBuildCliCommands = async () => {
   // Prevent check git tag while staging build
-  if (process.env.RELEASE_SERVER === 'staging') return Promise.resolve();
+  if (process.env.NODE_ENV === Environment.Staging) return Promise.resolve();
 
   // Check is tag was checked out or not
-  const result = await _exec('git describe --tags', { async: true });
-  if (result.replace(/\n/g, '') !== `v${version}`) {
-    console.log(
-      `
-  ${colors.red('Error:')} Please checkout tag '${colors.yellow(
-        `v${version}`
-      )}' for release`
-    );
-    process.exit();
-  } else return Promise.resolve();
+  // await _exec('git describe --tags', { async: true })
+  //   .then((result) => {
+  //     console.log(result);
+  //     if (result.replace(/\n/g, '') !== `v${version}`) {
+  //       console.log(
+  //         `${colors.red('Error:')} Please checkout tag '${colors.yellow(
+  //           `v${version}`
+  //         )}' for release`
+  //       );
+  //       process.exit();
+  //     } else return Promise.resolve();
+  //   })
+  //   .catch((e) => {
+  //     console.log(e, 'this is the error');
+  //   });
 };
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === Environment.Production) {
   try {
     preBuildCliCommands().then(async () => {
       /**
@@ -134,9 +143,9 @@ if (process.env.NODE_ENV === 'production') {
       }
 
       // Set bundle id for electron app
-      if (process.env.RELEASE_SERVER === 'production')
+      if (process.env.NODE_ENV === Environment.Production)
         process.env.appBundleId = 'com.firecamp.app';
-      else if (process.env.RELEASE_SERVER === 'canary')
+      else if (process.env.NODE_ENV === Environment.Canary)
         process.env.appBundleId = 'com.firecamp.canary';
 
       // Copy release note and post build checks

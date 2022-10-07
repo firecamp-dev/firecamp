@@ -2,10 +2,7 @@ node_modules
 npm-debug.log
 .DS_Store
 
-packages/indexed-db/build
 build/
-stageBuild/
-dev/
 cypress/screenshots
 cypress/videos
 

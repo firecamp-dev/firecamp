@@ -1,7 +1,9 @@
+/* eslint-disable no-console */
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const colors = require('colors');
+const Environment = require('./environment');
 const build = require('../webpack.prod');
 require('shelljs/global');
 
@@ -33,9 +35,9 @@ module.exports = async () => {
     // Copy project assets and generate config.
     const directoryPaths = [
       path.join(`${__dirname}/../build`),
-      path.join(`${__dirname}/../build/dev`),
+      path.join(`${__dirname}/../build/development`),
       path.join(`${__dirname}/../build/production`),
-      path.join(`${__dirname}/../build/dev/build-scripts`),
+      path.join(`${__dirname}/../build/development/build-scripts`),
       path.join(`${__dirname}/../build/production/build-scripts`),
       path.join(`${__dirname}/../build/production/services`),
       path.join(`${__dirname}/../build/production/packages-executors`),
@@ -56,13 +58,13 @@ module.exports = async () => {
     });
 
     // Copy build-scripts to generate build
-    cp(
-      '-R',
-      path.join(
-        `${__dirname}/../packages/firecamp-desktop-app/src/build-scripts/*`
-      ),
-      `${buildPath}/build-scripts`
-    );
+    // cp(
+    //   '-R',
+    //   path.join(
+    //     `${__dirname}/../packages/firecamp-desktop-app/src/build-scripts/*`
+    //   ),
+    //   `${buildPath}/build-scripts`
+    // );
 
     // Copy react app assets
     cp(
@@ -120,7 +122,7 @@ module.exports = async () => {
         cp(
           '-R',
           path.join(
-            `${__dirname}/../packages/firecamp-desktop-app/public/assets/${process.env.RELEASE_SERVER}/mac/*`
+            `${__dirname}/../packages/firecamp-desktop-app/public/assets/${process.env.NODE_ENV}/mac/*`
           ),
           `${buildPath}/build`
         );
@@ -131,9 +133,7 @@ module.exports = async () => {
         '-R',
         path.join(
           `${__dirname}/../packages/firecamp-desktop-app/public/assets/${
-            ['production', 'staging', 'dev'].includes(
-              process.env.RELEASE_SERVER
-            )
+            [...Object.values(Environment)].includes(process.env.NODE_ENV)
               ? 'production'
               : 'canary'
           }`
@@ -153,7 +153,7 @@ module.exports = async () => {
 };
 
 if (process.env.NODE_ENV === 'development') {
-  if (process.env.RELEASE_SERVER === 'production') {
+  if (process.env.NODE_ENV === Environment.Production) {
     console.log(
       `${colors.red(
         'Error:'
@@ -164,11 +164,11 @@ if (process.env.NODE_ENV === 'development') {
     process.exit();
   }
 
-  if (process.env.RELEASE_SERVER === 'dev') module.exports();
+  if (process.env.NODE_ENV === Environment.Development) module.exports();
 }
 
 if (process.env.NODE_ENV === 'production') {
-  if (process.env.RELEASE_SERVER === 'dev') {
+  if (process.env.NODE_ENV === Environment.Development) {
     console.log(
       `${colors.red(
         'Error:'
