@@ -3,7 +3,6 @@ import { EFirecampAgent, IOrganization, TId } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import * as executor from '@firecamp/agent-manager';
 import { DefaultTheme } from '../types';
-import { Rest } from '@firecamp/cloud-apis';
 
 export enum EPlatformScope {
   Person = 'person',

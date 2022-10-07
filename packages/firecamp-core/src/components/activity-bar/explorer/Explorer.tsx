@@ -23,12 +23,12 @@ import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 // import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 
-import { RE } from '../../../constants';
 import { useTabStore } from '../../../store/tab';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { WorkspaceCollectionsProvider } from './WorkspaceCollectionsProvider';
 import treeRenderer from './treeItemRenderer';
 import AppService from '../../../services/app';
+import { RE } from '../../../types'
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();

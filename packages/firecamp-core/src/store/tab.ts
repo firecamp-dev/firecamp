@@ -1,10 +1,10 @@
 import create from 'zustand';
 import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
+import { TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 
 import { ITab, ITabMeta } from '../components/tabs/types';
-import { TId } from '@firecamp/types';
 
 const initialState = {
   list: [],

@@ -115,6 +115,7 @@ const createRuntimeSlice = (
         },
       },
     }));
+    get().context.environment.setVarsToProvidersAndEmitEnvsToTab();
   },
   setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
     // console.log({updates});

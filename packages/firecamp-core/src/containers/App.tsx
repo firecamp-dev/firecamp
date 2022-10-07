@@ -8,7 +8,6 @@ import '../sass/_index.sass';
 
 import { FC, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import shallow from 'zustand/shallow';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
 
@@ -24,23 +23,23 @@ import SidebarContainer from '../components/containers/SidebarContainer';
 import TabsContainer from '../components/containers/TabsContainer';
 import StatusBarContainer from '../components/status-bar/StatusBarContainer';
 import { ModalContainer } from '../components/modals-v3/ModalContainer';
-import { EnvSidebar } from '../components/sidebar';
+import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 
-import { IEnvironmentStore, useEnvStore } from '../store/environment';
 import useMonacoWorkers from '../components/hooks/useMonacoWorkers';
 import AppService from '../services/app';
+import RealtimeEventManager from '../components/common/realtime/Realtime'
 
 // Initialise Firecamp languages settings
 MonacoFirecampLangInit();
 
 const App: FC<any> = () => {
-  let { is_env_sidebar_open } = useEnvStore(
-    (s: IEnvironmentStore) => ({
-      is_env_sidebar_open: s.is_env_sidebar_open,
-    }),
-    shallow
-  );
+  // let { isEnvSidebarOpen } = useEnvStore(
+  //   (s: IEnvironmentStore) => ({
+  //     isEnvSidebarOpen: s.isEnvSidebarOpen,
+  //   }),
+  //   shallow
+  // );
 
   useMonacoWorkers();
 
@@ -82,9 +81,10 @@ const App: FC<any> = () => {
             <TabsContainer />
           </Row>
 
+          <RealtimeEventManager />
           <ModalContainer />
-          {/* {is_env_sidebar_open && <EnvSidebar expanded={is_env_sidebar_open} />} */}
-          <EnvSidebar expanded={is_env_sidebar_open} />
+          {/* {isEnvSidebarOpen && <EnvSidebar />} */}
+          <EnvSidebarContainer />
           <StatusBarContainer className="border-t focus-outer2" />
         </RootContainer>
       </DndProvider>

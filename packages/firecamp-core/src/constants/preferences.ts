@@ -6,7 +6,7 @@ export const Scopes = {
 export const Name = {
   ACTIVE_ORG: 'active_org',
   ORG_ACTIVE_WORKSPACE: 'org_active_workspace',
-  WORKSPACE_ACTIVE_ENVIRONMENT: 'active_tab_wrs_env',
+  WORKSPACE_ACTIVE_ENVIRONMENT: 'activeTabWrsEnv',
   PROJECT_ACTIVE_ENVIRONMENT: 'project_active_environment',
   PROXIES: 'proxies',
   SCHEMAS: 'schemas',
