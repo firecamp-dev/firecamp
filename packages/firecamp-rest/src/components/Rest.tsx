@@ -10,7 +10,6 @@ import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
 import {
   EAuthTypes,
   ERestBodyTypes,
-  EFirecampAgent,
   EHttpMethod,
   EPushActionType,
   ERequestTypes,
@@ -19,7 +18,6 @@ import {
 
 import shallow from 'zustand/shallow';
 
-import { Auth } from '../services';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
@@ -435,6 +433,8 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
+  if(isFetchingRequest === true) return <Loading />;
+
   return (
     <RestContext.Provider
       value={{
@@ -456,17 +456,13 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           />
         </Container.Header>
         <Container.Body>
-          {isFetchingRequest === true ? (
-            <Loading />
-          ) : (
-            <Row flex={1} className="with-divider h-full" overflow="auto">
-              <Request
-                tab={tab}
-                getFirecampAgent={platformContext.getFirecampAgent}
-              />
-              <Response />
-            </Row>
-          )}
+          <Row flex={1} className="with-divider h-full" overflow="auto">
+            <Request
+              tab={tab}
+              getFirecampAgent={platformContext.getFirecampAgent}
+            />
+            <Response />
+          </Row>
           <CodeSnippets
             tabId={tab.id}
             getPlatformEnvironments={
