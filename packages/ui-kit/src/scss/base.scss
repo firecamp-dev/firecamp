@@ -790,27 +790,6 @@ body .ace_editor .ace_scrollbar{
 
 /*---code mirror css ends----------*/
 
-.loader{
-  margin-top: calc(50vh - 80px);
-  margin-left: calc(50vw - 80px);
-}
-
-.wave-loader {
-  animation: wave-loader 2s linear infinite;
-}
-
-@keyframes wave-loader {
-  0% {
-    width: 0px;
-  }
-  50% {
-    width: 14px;
-  }
-  100% {
-    width: 0px;
-  }
-}
-
 .expandable-right-pane{
   transform: scaleX(0);
   transform-origin: right;

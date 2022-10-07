@@ -113,3 +113,5 @@ export { default as ToolBar } from './components/ToolBar/ToolBar';
 export { default as Alert } from './components/alert/Alert';
 export type { EAlertType } from './components/alert/Alert.interface';
 export { default as Empty } from './components/empty/Empty';
+
+export {default as Loader} from './components/loader/Loader';
