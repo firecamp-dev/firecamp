@@ -74,7 +74,7 @@ exports.env = {
     process.env.FIRECAMP_EXTENSION_AGENT_ID
   ),
   APP_VERSION: JSON.stringify(metadata.version),
-  APP_FORMAT: JSON.stringify(process.env.APP_FORMAT),
+  AppFormat: JSON.stringify(process.env.AppFormat),
   SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
   CRISP_WEBSITE_ID: JSON.stringify(process.env.CRISP_WEBSITE_ID),
   GOOGLE_OAUTH2_CLIENT_ID: JSON.stringify(process.env.GOOGLE_OAUTH2_CLIENT_ID),

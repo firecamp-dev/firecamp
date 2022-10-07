@@ -6,7 +6,7 @@ require('shelljs/global');
 const build = require('./build');
 const { version } = require('../package.json');
 
-const { Environment, AppFormat } = require('./environment');
+const { Environment, AppFormat } = require('./constants');
 
 const variables = [
   // 'FIRECAMP_API_HOST',
@@ -118,13 +118,13 @@ if (process.env.NODE_ENV === Environment.Production) {
       await build();
 
       // Finished the process if build=chrome
-      if (['extension', AppFormat.WebApp].includes(process.env.APP_FORMAT)) {
+      if (['extension', AppFormat.WebApp].includes(process.env.AppFormat)) {
         // Remove unused packages
         rm('-rf', 'build/production/build-scripts');
         rm('-rf', 'build/production/packages-executors');
         rm('-rf', 'build/production/services');
 
-        if (process.env.APP_FORMAT === AppFormat.WebApp) {
+        if (process.env.AppFormat === AppFormat.WebApp) {
           // Remove chrome extension app files
           rm('-rf', 'build/production/splashscreen.html');
           rm('-rf', 'build/production/manifest.json');
@@ -166,7 +166,7 @@ if (process.env.NODE_ENV === Environment.Production) {
       exec('yarn add ../../../firecamp-forks/electron-oauth-helper -W');
 
       // Prepare linux os 'AppImage' build
-      if (process.env.APP_FORMAT === AppFormat.AppImage) {
+      if (process.env.AppFormat === AppFormat.AppImage) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --linux AppImage');
 
@@ -186,7 +186,7 @@ if (process.env.NODE_ENV === Environment.Production) {
       }
 
       // Prepare linux os 'Snap' build
-      if (process.env.APP_FORMAT === AppFormat.Snap) {
+      if (process.env.AppFormat === AppFormat.Snap) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --linux Snap');
 
@@ -196,7 +196,7 @@ if (process.env.NODE_ENV === Environment.Production) {
       }
 
       // Prepare windows os 'nsis' build
-      if (process.env.APP_FORMAT === AppFormat.NSIS) {
+      if (process.env.AppFormat === AppFormat.NSIS) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --win');
 
@@ -216,7 +216,7 @@ if (process.env.NODE_ENV === Environment.Production) {
       }
 
       // Prepare mac os 'dmg' build
-      if (process.env.APP_FORMAT === AppFormat.Dmg) {
+      if (process.env.AppFormat === AppFormat.Dmg) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --mac');
 

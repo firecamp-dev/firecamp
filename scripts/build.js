@@ -3,7 +3,7 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 const colors = require('colors');
-const { Environment, AppFormat } = require('./environment');
+const { Environment, AppFormat } = require('./constants');
 const build = require('../webpack.prod');
 require('shelljs/global');
 
@@ -97,7 +97,7 @@ module.exports = async () => {
     // Copy electron agent assets, config and services
     if (
       process.env.NODE_ENV === Environment.Production &&
-      process.env.APP_FORMAT !== AppFormat.WebApp
+      process.env.AppFormat !== AppFormat.WebApp
     ) {
       // Copy electron agent services
       cp(
@@ -116,7 +116,7 @@ module.exports = async () => {
       );
 
       // Copy dmg app assets
-      if (process.env.APP_FORMAT === AppFormat.Dmg) {
+      if (process.env.AppFormat === AppFormat.Dmg) {
         mkdir(`${buildPath}/build`);
 
         cp(
