@@ -280,17 +280,17 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
     onCreateCollection: (collection: ICollection) => {
       set((s) => {
-        s.explorer?.tdpInstance.addCollectionItem(collection);
+        s.explorer.tdpInstance?.addCollectionItem(collection);
         return {
+          workspace: {
+            ...s.workspace,
+            meta: {
+              ...s.workspace.meta,
+              c_orders: [...s.workspace.meta.c_orders, collection._meta.id],
+            },
+          },
           explorer: {
             ...s.explorer,
-            workspace: {
-              ...s.workspace,
-              meta: {
-                ...s.workspace.meta,
-                c_orders: [...s.workspace.meta.c_orders, collection._meta.id],
-              },
-            },
             collections: [...s.explorer.collections, collection],
           },
         };
@@ -299,10 +299,10 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
 
     onUpdateCollection: (collection) => {
       set((s) => {
-        s.explorer?.tdpInstance.updateCollectionItem(collection);
+        s.explorer.tdpInstance?.updateCollectionItem(collection);
         const collections = s.explorer.collections.map((c) => {
           if (c._meta.id == collection._meta.id)
-            c = { ...c, name: collection.name }; //note: this condition is used considering only renaming usecase
+            c = { ...c, name: collection.name }; //note: this condition is used considering only renaming use case
           return c;
         });
         return { explorer: { ...s.explorer, collections } };
@@ -315,9 +315,15 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         const collections = s.explorer.collections.filter(
           (c) => c._meta.id != cId
         );
-        // TODO: manage workspace c_orders and remove envs of deleted collection
-        s.explorer.tdpInstance.deleteCollectionItem(cId);
-        return { explorer: { ...s.explorer, collections } };
+        const workspace = {
+          ...s.workspace,
+          meta: {
+            ...s.workspace.meta,
+            c_orders: s.workspace.meta.c_orders.filter((id) => id != cId),
+          },
+        };
+        s.explorer.tdpInstance?.deleteCollectionItem(cId);
+        return { workspace, explorer: { ...s.explorer, collections } };
       });
     },
 
@@ -392,18 +398,33 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       //@ts-ignore
       if (folder.meta?.type) folder.meta.type = 'F'; // TODO: remove it later after migration M=>F
       set((s) => {
-        s.explorer?.tdpInstance.addFolderItem(folder);
+        s.explorer.tdpInstance?.addFolderItem(folder);
+        const { collections, folders } = s.explorer;
+        if (folder._meta.folder_id) {
+          folders.map((f) => {
+            if (f._meta.id == folder._meta.folder_id) {
+              f.meta.f_orders.push(folder._meta.id);
+            }
+          });
+        } else if (folder._meta.collection_id) {
+          collections.map((c) => {
+            if (c._meta.id == folder._meta.collection_id) {
+              c.meta.f_orders.push(folder._meta.id);
+            }
+          });
+        }
         return {
           explorer: {
             ...s.explorer,
-            folders: [...s.explorer.folders, folder],
+            collections,
+            folders: [...folders, folder],
           },
         };
       });
     },
     onUpdateFolder: (folder) => {
       set((s) => {
-        s.explorer?.tdpInstance.updateFolderItem(folder);
+        s.explorer.tdpInstance?.updateFolderItem(folder);
         const folders = s.explorer.folders.map((f) => {
           if (f._meta.id == folder._meta.id) f = { ...f, name: folder.name }; //note: this condition is used considering only renaming usecase
           return f;
@@ -414,8 +435,8 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     onDeleteFolder: (folder) => {
       const fId = typeof folder == 'string' ? folder : folder._meta.id;
       set((s) => {
+        s.explorer.tdpInstance?.deleteFolderItem(fId);
         const folders = s.explorer.folders.filter((f) => f._meta.id != fId);
-        s.explorer.tdpInstance.deleteFolderItem(fId);
         return { explorer: { ...s.explorer, folders } };
       });
     },
@@ -544,7 +565,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
     onUpdateRequest: (request: any) => {
       set((s) => {
-        s.explorer?.tdpInstance.updateRequestItem(request);
+        s.explorer.tdpInstance?.updateRequestItem(request);
         const requests = s.explorer.requests.map((r) => {
           if (r._meta.id == request._meta.id)
             r = { ...r, meta: { ...r.meta, name: request.meta.name } }; //note: this condition is used considering only renaming usecase
@@ -557,7 +578,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const rId = typeof request == 'string' ? request : request._meta.id;
       set((s) => {
         const requests = s.explorer.requests.filter((r) => r._meta.id != rId);
-        s.explorer.tdpInstance.deleteRequestItem(rId);
+        s.explorer.tdpInstance?.deleteRequestItem(rId);
         return { explorer: { ...s.explorer, requests } };
       });
     },

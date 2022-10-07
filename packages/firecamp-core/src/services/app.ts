@@ -92,8 +92,9 @@ const initApp = async () => {
           token: t,
           userId: user._meta.id,
         })
-          // Receives the data on socket connection open
           .onConnect(async (socketId) => {
+            // receives the data on socket connection open
+
             // Set the socket id in the cloud-api headers [Reference: @firecamp/cloud-api]
             await CloudApiGlobal.setGlobalHeaders({
               [ECloudApiHeaders.SocketId]: socketId,
@@ -107,6 +108,9 @@ const initApp = async () => {
             //     payload.actions
             //   );
             // });
+          })
+          .onDisconnect(() => {
+            platformEmitter.emit('socket.disconnected');
           });
       } catch (e) {
         console.log(e, 'error while connecting the socket');

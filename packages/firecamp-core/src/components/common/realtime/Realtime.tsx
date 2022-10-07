@@ -2,7 +2,7 @@ import { FC, useEffect } from 'react';
 import { Realtime } from '@firecamp/cloud-apis';
 import { prepareEventNameForRequestPull } from '../../../types';
 import { platformEmitter } from '../../../services/platform-emitter';
-import { IWorkspaceStore, useWorkspaceStore } from '../../../store/workspace'
+import {  useWorkspaceStore } from '../../../store/workspace'
 
 const RealtimeEventManager: FC<any> = () => {
 
@@ -13,6 +13,9 @@ const RealtimeEventManager: FC<any> = () => {
 		onCreateFolder,
 		onUpdateFolder,
 		onDeleteFolder,
+		onCreateRequest,
+		onUpdateRequest,
+		onDeleteRequest
 	} = useWorkspaceStore.getState();
 
   /** handle realtime request changes */
@@ -44,7 +47,7 @@ const RealtimeEventManager: FC<any> = () => {
 			onCreateFolder(payload);
 		break;
 		case "request": 
-			// onCreateRequest(payload);
+			onCreateRequest(payload);
 		break;
 	  }
     };
@@ -58,7 +61,7 @@ const RealtimeEventManager: FC<any> = () => {
 			onUpdateFolder(payload);
 		break;
 		case "request": 
-			// onUpdateRequest(payload);
+			onUpdateRequest(payload);
 		break;
 	  }
     };
@@ -72,22 +75,30 @@ const RealtimeEventManager: FC<any> = () => {
 			onDeleteFolder(payload);
 		break;
 		case "request": 
-			// onDeleteRequest(payload);
+			onDeleteRequest(payload);
 		break;
 	  }
     };
 
-    const onExplorerChanges = () => {
-      console.log('socket.connected - 2');
-      Realtime.onExplorerItemInsert(onExplorerItemInsert);
-      Realtime.onExplorerItemUpdate(onExplorerItemUpdate);
-      Realtime.onExplorerItemDelete(onExplorerItemDelete);
+    const listenExplorerChanges = () => {
+		console.log('socket:connected');
+      Realtime.listenExplorerItemInsert(onExplorerItemInsert);
+      Realtime.listenExplorerItemUpdate(onExplorerItemUpdate);
+      Realtime.listenExplorerItemDelete(onExplorerItemDelete);
     };
 
-    platformEmitter.on('socket.connected', onExplorerChanges);
+	const listenOffExplorerChanges = () => {
+		console.log('socket:disconnected');
+		Realtime.listenOffExplorerItemInsert();
+		Realtime.listenOffExplorerItemUpdate();
+		Realtime.listenOffExplorerItemDelete();
+	  };
+
+    platformEmitter.on('socket.connected', listenExplorerChanges);
+	platformEmitter.on('socket.disconnected', listenOffExplorerChanges);
 
     return () => {
-      platformEmitter.off('socket.connected', onExplorerChanges);
+      platformEmitter.off('socket.connected');
       // TODO: unsubscribe explorer changes on unmount server socket
     };
   }, []);

@@ -231,20 +231,14 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   public addFolderItem(item: any) {
     if (!item.meta) item.meta = { f_orders: [], r_orders: [] };
     this.items.push({ ...item, _meta: { ...item._meta, is_folder: true } });
+    const parentId = item._meta.folder_id || item._meta.collection_id;
     this.items.map((i) => {
-      if (item._meta.folder_id && i._meta.id == item._meta.folder_id) {
-        i.meta.f_orders.push(item._meta.id);
-      } else if (
-        item._meta.collection_id &&
-        i._meta.id == item._meta.collection_id
-      ) {
+      if (i._meta.id == parentId) {
         i.meta.f_orders.push(item._meta.id);
       }
       return i;
     });
-    this.emitter.emit(ETreeEventTypes.itemChanged, [
-      item._meta.folder_id || item._meta.collection_id,
-    ]);
+    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId]);
   }
 
   public updateFolderItem(item: any) {
@@ -261,40 +255,32 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   public deleteFolderItem(itemId: string) {
     const item = this.items.find((i) => i._meta.id == itemId);
     if (!item) return;
+
+    const parentId = item._meta.folder_id || item._meta.collection_id;
     this.items = this.items
       .filter((i) => i._meta.id != itemId)
       .map((i) => {
         // remove folder from parent's f_orders
-        if (
-          i._meta.id == item._meta.folder_id ||
-          i._meta.id == item._meta.collection_id
-        ) {
+        if (i._meta.id == parentId) {
           const newFldOrders = i.meta.f_orders.filter((f) => f != itemId);
           return { ...i, meta: { ...i.meta, f_orders: newFldOrders } };
         }
         return i;
       });
-    this.emitter.emit(ETreeEventTypes.itemChanged, [
-      item._meta.folder_id || item._meta.collection_id,
-    ]);
+
+    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId]);
   }
 
   public addRequestItem(item: any) {
     this.items.push({ ...item, _meta: { ...item._meta, is_request: true } });
+    const parentId = item._meta.folder_id || item._meta.collection_id;
     this.items.map((i) => {
-      if (item._meta.folder_id && i._meta.id == item._meta.folder_id) {
-        i.meta.r_orders.push(item._meta.id);
-      } else if (
-        item._meta.collection_id &&
-        i._meta.id == item._meta.collection_id
-      ) {
+      if (item._meta.folder_id && i._meta.id == parentId) {
         i.meta.r_orders.push(item._meta.id);
       }
       return i;
     });
-    this.emitter.emit(ETreeEventTypes.itemChanged, [
-      item._meta.folder_id || item._meta.collection_id,
-    ]);
+    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId]);
   }
 
   public updateRequestItem(item: any) {
@@ -306,7 +292,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       return i;
     });
     const parentId = item._meta.folder_id || item._meta.collection_id;
-    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId]);
+    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId, item._meta.id]);
   }
 
   public deleteRequestItem(itemId: string) {
@@ -326,8 +312,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
         return i;
       });
 
-    this.emitter.emit(ETreeEventTypes.itemChanged, [
-      item._meta.folder_id || item._meta.collection_id,
-    ]);
+    const parentId = item._meta.folder_id || item._meta.collection_id;
+    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId]);
   }
 }
