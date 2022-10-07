@@ -83,7 +83,6 @@ const App: FC<any> = () => {
 
           <RealtimeEventManager />
           <ModalContainer />
-          {/* {isEnvSidebarOpen && <EnvSidebar />} */}
           <EnvSidebarContainer />
           <StatusBarContainer className="border-t focus-outer2" />
         </RootContainer>

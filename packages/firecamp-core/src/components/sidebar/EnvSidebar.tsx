@@ -19,7 +19,7 @@ import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
 import AppService from '../../services/app'
 
-const EnvSidebar: FC<any> = () => {
+const EnvSidebar: FC<any> = ({ expanded }) => {
   const {
     activeTabWrsEnv,
     activeTabCollectionEnvs,
@@ -121,7 +121,7 @@ const EnvSidebarContainer = ()=> {
     shallow
   );
   if(!isEnvSidebarOpen) return <></>;
-  return <EnvSidebar/>
+  return <EnvSidebar expanded={isEnvSidebarOpen}/>
 }
 export { EnvSidebar, EnvSidebarContainer };
 
