@@ -1,2 +1,2 @@
 [context.deploy-preview]
-command = "npm_config_yes=true npx dotenv-vault@latest pull --dotenvMe $STAGING_DOTENV_IT && npm run build"
+command = "npm_config_yes=true npx dotenv-vault@latest pull --dotenvMe $STAGING_DOTENV_IT && yarn release:web-app:staging"
