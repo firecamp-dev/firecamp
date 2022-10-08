@@ -1,2 +1,0 @@
-[context.deploy-preview]
-command = "yarn dlx dotenv-vault@latest pull --dotenvMe $STAGING_DOTENV_IT -y"
