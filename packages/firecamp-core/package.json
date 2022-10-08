@@ -75,7 +75,6 @@
     "fuzzysort": "^2.0.1",
     "javascript-stringify": "^2.0.0",
     "js-yaml": "^4.1.0",
-    "json-as-form": "^0.0.22",
     "json-templates": "^3.0.0",
     "markdown-it": "^13.0.1",
     "marked": "^0.7.0",

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import JSONForm from 'json-as-form';
+// import JSONForm from 'json-as-form';
 
 const Files: FC<any> = ({}) => {
   return <span>coming soon</span>;

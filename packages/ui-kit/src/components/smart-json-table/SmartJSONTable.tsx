@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { memo, useState } from 'react';
-import JSONForm from 'json-as-form';
+// import JSONForm from 'json-as-form';
 import './SmartJSONTable.sass';
 import { 
   Dropdown,
@@ -141,15 +141,15 @@ const SmartJSONTable = ({
         // console.log(title, SMART_JSON_TABLE_TYPES.FORM, `jsonState`, jsonState);
         // console.log(title, `FORM`, meta[SMART_JSON_TABLE_TYPES.FORM]);
         return (
-          <JSONForm
-            json={jsonState}
-            onChange={(row) => {
-              _onChange(row);
-            }}
-            debug={false}
-            autoAddRow={true}
-            {...(meta[SMART_JSON_TABLE_TYPES.FORM] || {})}
-          />
+          // <JSONForm
+          //   json={jsonState}
+          //   onChange={(row) => {
+          //     _onChange(row);
+          //   }}
+          //   debug={false}
+          //   autoAddRow={true}
+          //   {...(meta[SMART_JSON_TABLE_TYPES.FORM] || {})}
+          // />
         );
         break;
 
