@@ -141,7 +141,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
         tableResizable={true}
         data={tableValue}
         options={{
-          containerClassName: "max-w-[calc(100%-24px)] m-auto overflow-x-auto custom-scrollbar ",
+          containerClassName: "",
           minColumnSize: 100,
         }}
         columns={columnDataForDisplay}

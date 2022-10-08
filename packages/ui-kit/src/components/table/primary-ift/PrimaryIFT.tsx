@@ -36,7 +36,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
         tableResizable={true}
         data={rows}
         options={{
-          containerClassName: "max-w-[calc(100%-24px)] m-auto overflow-x-auto custom-scrollbar ",
+          containerClassName: "",
           minColumnSize: 100,
         }}
         columns={columnDetails}

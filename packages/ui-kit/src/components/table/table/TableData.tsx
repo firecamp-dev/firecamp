@@ -37,6 +37,7 @@ export function getData() {
   return defaultData
 };
 
+//For keeping column as static - provide minSize & width without resizing param
 export const columnDataForDisplay = [
   {
     name: "action",
@@ -47,14 +48,13 @@ export const columnDataForDisplay = [
   {
     name: "value",
     displayName: "City",
-    width: 145,
     minSize: 145,
     enableResizing: true,
   },
   {
     name: "description",
     displayName: "Description",
-    width: 145,
+    minSize: 145,
     enableResizing: true,
   },
   {
@@ -65,7 +65,6 @@ export const columnDataForDisplay = [
   {
     name: "pincode",
     minSize: 60,
-    width: 60,
     displayName: "Area Code",
   },
 ]
@@ -83,25 +82,24 @@ export const headerColumnDataForDisplay = [
     name: "action",
     displayName: " ",
     minSize: 64,
-    maxSize: 64
+    width: 64
   },
   {
     name: "key",
     displayName: "Key",
-    width: 145,
     minSize: 145,
     enableResizing: true,
   },
   {
     name: "value",
     displayName: "Value",
-    width: 145,
+    minSize: 145,
     enableResizing: true,
   },
   {
     name: "description",
     displayName: "Description",
-    width: 145
+    minSize: 145
   }
 ]
 
@@ -111,7 +109,7 @@ export const TableInput = (props: any) => {
   const [inputValue, setInputValue] = useState(cell.cellValue);
 
     return <Td 
-      style={{ width: cell.columnSize + "px" }}
+      style={{ width: cell.column.getSize() }}
       className={" h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline"}>
 
       <input

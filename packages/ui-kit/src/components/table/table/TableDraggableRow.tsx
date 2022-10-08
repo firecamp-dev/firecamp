@@ -15,8 +15,7 @@ const TableDraggableRow : FC<ITableRow> = (props) => {
                 return <Fragment key={cell.id}>
                     {(cell.column.columnDef.accessorKey === "action") ?
                         <td className={`border-b border-l first:border-l-0 border-appBorder`}
-                        style={{ 
-                            maxWidth: cell.column.getSize() }}  
+                        style={{ width: cell.column.getSize() }}  
 
                         onDrop={(e) => (e.preventDefault(),handleDrop(row.index))}
                         onDragOver={(e) => e.preventDefault()}>

@@ -18,6 +18,11 @@ const Table: FC<ITable> = ({
 
     const [tableData, setTableData] = useState(() => [])
     const [dragId, setDragId] = useState(0);
+    const [containerWidth, setContainerWidth] = useState(tableWidth);
+
+
+    const tableRef = useRef<HTMLTableElement>(null);
+    const containerDivRef = useRef<HTMLTableElement>(null);
 
 
     const [columnResizeMode, setColumnResizeMode] = React.useState<ColumnResizeMode>('onChange')
@@ -29,7 +34,6 @@ const Table: FC<ITable> = ({
             {
                 id:  column.name,
                 ...(typeof column.width !== "undefined" ? { size: column.width } : {}),
-                ...(typeof column.maxSize !== "undefined" ? { maxSize: column.maxSize } : {}),
                 minSize: (
                     typeof column.minSize !== "undefined" ? column.minSize : 
                             (typeof options.minColumnSize !== "undefined" ? options.minColumnSize :  50 )
@@ -41,8 +45,10 @@ const Table: FC<ITable> = ({
                 cell: ({cell}) => {
                     let cellValue = cell.getValue();
                     if(cell.getValue() !== "undefined"){
-                        return cellRenderer({cellValue, rowIndex : cell.row.index, columnId: cell.column.id,
-                             columnSize: cell.column.getSize()
+                        return cellRenderer({cellValue,
+                             rowIndex : cell.row.index, 
+                            columnId: cell.column.id,
+                             column: cell.column
                             })
                     }else{
                         return<></>
@@ -53,12 +59,19 @@ const Table: FC<ITable> = ({
         ))
     ];
 
-    const tableRef = useRef<HTMLTableElement>(null);
-
     useEffect(() => {
         setTableData(data)
-        // console.log(`table-data-updated`, data);
     }, [data]);
+
+    //get the width of container div in pixels
+    useEffect(() => {
+        if (!containerDivRef.current) return;
+        const resizeObserver = new ResizeObserver(() => {
+            setContainerWidth(containerDivRef.current.clientWidth)
+        });
+        resizeObserver.observe(containerDivRef.current);
+        return () => resizeObserver.disconnect();
+      }, [containerDivRef.current]);
 
     const table = useReactTable({
         data: tableData,
@@ -80,12 +93,12 @@ const Table: FC<ITable> = ({
     }
 
     return (
-        <div className={cx(`w-full`, options.containerClassName)}>
+        <div className={cx(`w-full custom-scrollbar m-auto max-w-[calc(100%-24px)]`, options.containerClassName)}
+        ref={containerDivRef}>
                 <table className="primary-table border border-appBorder mb-4"
                     id={name}
                     ref={tableRef}
                     style={{
-                        minWidth: "100%",
                         width: table.getTotalSize()
                     }}>
                     <thead>
@@ -94,14 +107,10 @@ const Table: FC<ITable> = ({
                             <tr className="border text-base text-left font-semibold bg-focus2" key={headerGroup.id}>
                                 {
                                     headerGroup.headers.map(header => {
-                                        return <Th key={header.id}
-                                            className={classNames("overflow-hidden overflow-ellipsis whitespace-nowrap", 
-                                            {"!w-[5%]": (header.id === "action")})}
+                                          return <Th key={header.id}
+                                            className={classNames("overflow-hidden overflow-ellipsis whitespace-nowrap")}
                                             style={{
-                                                minWidth: (header.id === "action") ?`${header.column.columnDef.minSize}px`: null, 
-                                                width: header.getSize(),
-                                                // minWidth: `${header.column.columnDef.minSize}px`, 
-                                                // maxWidth: `${header.column.columnDef.maxSize}px`, 
+                                                minWidth: (header.index === (columnDisplay.length -1) && containerWidth > table.getTotalSize()) ? header.getSize() + (containerWidth - table.getTotalSize() - 4) : header.getSize()
                                             }}
                                         >
                                             {
