@@ -1,7 +1,9 @@
+/* eslint-disable no-console */
 const path = require('path');
 const webpack = require('webpack');
 const { common, env, plugins, rules } = require('./webpack.config');
 
+const nodeEnv = process.env.NODE_ENV;
 const config = {
   ...common,
   mode: 'production',
@@ -9,7 +11,7 @@ const config = {
     globalObject: 'this',
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
-    path: path.join(__dirname, './build/production/js'),
+    path: path.join(__dirname, `./build/${nodeEnv}/js`),
   },
   plugins: [
     ...plugins,
@@ -56,8 +58,8 @@ const config = {
   },
 };
 
-module.exports = () => {
-  return new Promise((resolve, reject) => {
+module.exports = () =>
+  new Promise((resolve, reject) => {
     console.log('[Webpack Build]');
     console.log('-'.repeat(80));
 
@@ -88,4 +90,3 @@ module.exports = () => {
       resolve();
     });
   });
-};

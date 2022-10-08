@@ -1,5 +1,4 @@
 /* eslint-disable no-console */
-// import environments
 require('dotenv').config();
 
 const webpack = require('webpack');
@@ -7,6 +6,9 @@ const path = require('path');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { Environment } = require('./scripts/constants');
+
+const env = process.env.NODE_ENV;
 
 const metadata = require('./package.json');
 
@@ -59,12 +61,8 @@ exports.output = {
   chunkFilename: '[name].bundle.js',
 };
 
-if (process.env.NODE_ENV === 'development') {
-  exports.output.path = path.join(__dirname, './build/development/js');
-  exports.output.clean = true;
-} else {
-  exports.output.path = path.join(__dirname, './build/production/js');
-}
+exports.output.path = path.join(__dirname, `./build/${env}/js`);
+if (env === Environment.Development) exports.output.clean = true;
 
 exports.env = {
   NODE_ENV: JSON.stringify(process.env.NODE_ENV),
@@ -96,7 +94,7 @@ exports.env = {
 exports.plugins = [
   new HtmlWebpackPlugin({
     inject: false,
-    template: path.join(__dirname, './build/development/index.html'),
+    template: path.join(__dirname, `./build/${env}/index.html`),
   }),
   new NodePolyfillPlugin(),
   new webpack.ProgressPlugin({

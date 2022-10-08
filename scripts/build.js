@@ -2,54 +2,33 @@
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
-const colors = require('colors');
+// const colors = require('colors');
 const { Environment, AppFormat } = require('./constants');
 const build = require('../webpack.prod');
 require('shelljs/global');
 
+const env = process.env.NODE_ENV;
+
 module.exports = async () => {
   try {
-    // const replaceTasks = [
-    //   {
-    //     from: path.join(
-    //       __dirname,
-    //       '../webpack/replace/JsonpMainTemplate.runtime.js'
-    //     ),
-    //     to: path.join(
-    //       __dirname,
-    //       '../node_modules/webpack/lib/JsonpMainTemplate.runtime.js'
-    //     ),
-    //   },
-    //   {
-    //     from: path.join(__dirname, '../webpack/replace/process-update.js'),
-    //     to: path.join(
-    //       __dirname,
-    //       '../node_modules/webpack-hot-middleware/process-update.js'
-    //     ),
-    //   },
-    // ];
+    // hold the build path as per the environment mode
+    const buildPath = path.join(`${__dirname}/../build/${env}`);
+    // copy project assets and generate config.
+    const directoryPaths = [path.join(`${__dirname}/../build`), buildPath];
+    if (env === Environment.Development) {
+      directoryPaths.push(
+        path.join(`${__dirname}/../build/${env}/build-scripts`)
+      );
+    }
+    if (env === Environment.Production) {
+      directoryPaths.push(
+        path.join(`${__dirname}/../build/${env}/build-scripts`),
+        path.join(`${__dirname}/../build/${env}/services`),
+        path.join(`${__dirname}/../build/${env}/packages-executors`)
+      );
+    }
 
-    // // Replace webpack config path
-    // replaceTasks.forEach((task) => cp(task.from, task.to));
-
-    // Copy project assets and generate config.
-    const directoryPaths = [
-      path.join(`${__dirname}/../build`),
-      path.join(`${__dirname}/../build/development`),
-      path.join(`${__dirname}/../build/production`),
-      path.join(`${__dirname}/../build/development/build-scripts`),
-      path.join(`${__dirname}/../build/production/build-scripts`),
-      path.join(`${__dirname}/../build/production/services`),
-      path.join(`${__dirname}/../build/production/packages-executors`),
-    ];
-
-    // Hold the build path as per the environment mode
-    const buildPath =
-      process.env.NODE_ENV === Environment.Development
-        ? directoryPaths[1]
-        : directoryPaths[2];
-
-    // Remove all builds before start bundle
+    // Remove build before start bundle
     rm('-rf', buildPath);
 
     // Create build directories
@@ -74,29 +53,27 @@ module.exports = async () => {
     );
 
     // generate package.json and manifest based on app environment
-    if (process.env.NODE_ENV === Environment.Development)
-      exec(`node ${buildPath}/build-scripts/init-package.js`);
-    else exec(`node ${buildPath}/build-scripts/init-package.js`);
+    // exec(`node ${buildPath}/build-scripts/init-package.js`);
 
     // Generate .html
     exec(
-      `pug -O "{ env: '${process.env.NODE_ENV}' }" -o ${buildPath} ${path.join(
+      `pug -O "{ env: '${env}' }" -o ${buildPath} ${path.join(
         __dirname,
         '../packages/firecamp-core/public/views/'
       )}`
     );
 
-    cp(
-      '-R',
-      path.join(
-        `${__dirname}/../packages/firecamp-desktop-app/public/splashscreen.html`
-      ),
-      `${buildPath}`
-    );
+    // cp(
+    //   '-R',
+    //   path.join(
+    //     `${__dirname}/../packages/firecamp-desktop-app/public/splashscreen.html`
+    //   ),
+    //   `${buildPath}`
+    // );
 
     // Copy electron agent assets, config and services
     if (
-      process.env.NODE_ENV === Environment.Production &&
+      env === Environment.Production &&
       process.env.AppFormat !== AppFormat.WebApp
     ) {
       // Copy electron agent services
@@ -122,7 +99,7 @@ module.exports = async () => {
         cp(
           '-R',
           path.join(
-            `${__dirname}/../packages/firecamp-desktop-app/public/assets/${process.env.NODE_ENV}/mac/*`
+            `${__dirname}/../packages/firecamp-desktop-app/public/assets/${env}/mac/*`
           ),
           `${buildPath}/build`
         );
@@ -133,7 +110,7 @@ module.exports = async () => {
         '-R',
         path.join(
           `${__dirname}/../packages/firecamp-desktop-app/public/assets/${
-            [...Object.values(Environment)].includes(process.env.NODE_ENV)
+            [...Object.values(Environment)].includes(env)
               ? 'production'
               : 'canary'
           }`
@@ -142,7 +119,7 @@ module.exports = async () => {
       );
     }
 
-    if (process.env.NODE_ENV === 'production') {
+    if (env === Environment.Production || env === Environment.Staging) {
       await build();
     }
 
@@ -152,30 +129,4 @@ module.exports = async () => {
   }
 };
 
-if (process.env.NODE_ENV === 'development') {
-  if (process.env.NODE_ENV === Environment.Production) {
-    console.log(
-      `${colors.red(
-        'Error:'
-      )} Invalid value set for env. variable (NODE_ENV: ${colors.yellow(
-        process.env.NODE_ENV
-      )})`
-    );
-    process.exit();
-  }
-
-  if (process.env.NODE_ENV === Environment.Development) module.exports();
-}
-
-if (process.env.NODE_ENV === 'production') {
-  if (process.env.NODE_ENV === Environment.Development) {
-    console.log(
-      `${colors.red(
-        'Error:'
-      )} Invalid value set for env. variable (NODE_ENV: ${colors.yellow(
-        process.env.NODE_ENV
-      )})`
-    );
-    process.exit();
-  }
-}
+if (env === Environment.Development) module.exports();
