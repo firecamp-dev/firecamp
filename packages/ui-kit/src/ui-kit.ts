@@ -92,10 +92,13 @@ export { default as UrlBar } from './components/url/components/UrlBar';
 export { default as Popover } from './components/popover/Popover';
 export { default as ConfirmationPopover } from './components/popover/ConfirmationPopover';
 
+// Toast
+export { default as Toast } from './components/toast/Toast';
+
 // scripts
 export { default as ScriptsTabs } from './components/scripts/ScriptsTabs';
 
-//response
+// response
 export { default as Response } from './components/response/Response';
 
 //----------------------------------------------------enums---------------------------------------------------------------------------
@@ -114,4 +117,4 @@ export { default as Alert } from './components/alert/Alert';
 export type { EAlertType } from './components/alert/Alert.interface';
 export { default as Empty } from './components/empty/Empty';
 
-export {default as Loader} from './components/loader/Loader';
+export { default as Loader } from './components/loader/Loader';
