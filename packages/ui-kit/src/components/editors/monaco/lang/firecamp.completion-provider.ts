@@ -1,4 +1,4 @@
-import { _env } from '@firecamp/utils'
+import { _env } from '@firecamp/utils';
 import * as monaco from 'monaco-editor';
 import { headers, contentTypes, charsets, encodings } from './headerList';
 
@@ -124,7 +124,7 @@ function createDependencyProposals(
 export default (variables = vars) => ({
   triggerCharacters: ['.', '{'],
   provideCompletionItems: (model, position, token) => {
-    // // find out if we are completing a property in the 'dependencies' object.
+    // find out if we are completing a property in the 'dependencies' object.
     // var textUntilPosition = model.getValueInRange({startLineNumber: 1, startColumn: 1, endLineNumber: position.lineNumber, endColumn: position.column});
     // var match = textUntilPosition.match(/"dependencies"\s*:\s*\{\s*("[^"]*"\s*:\s*"[^"]*"\s*,\s*)*([^"]*)?$/);
     // if (!match) {
@@ -156,7 +156,7 @@ export default (variables = vars) => ({
     } else if (
       prev2CharsBeforeTrigger.substr(prev2CharsBeforeTrigger.length - 1) == '{'
     ) {
-      // if l ast character is "{" then trigger characrer will be single.
+      // if l ast character is "{" then trigger character will be single.
       // ex prev2CharsBeforeTrigger = "/{" then triggerCharacter = "{"
       triggerCharacter = '{';
     } else {
@@ -165,7 +165,7 @@ export default (variables = vars) => ({
 
     return {
       suggestions: createDependencyProposals(range, variables, {
-        modeId: model?.getLanguageIdentifier()?.language,
+        modeId: model.getLanguageId(),
         triggerCharacter: triggerCharacter,
       }),
     };

@@ -1,5 +1,6 @@
 // @ts-nocheck
-import * as monaco from 'monaco-editor';
+import { loader } from '@monaco-editor/react';
+// import * as monaco from 'monaco-editor';
 import IFELangText from './IFE.lang-text';
 import FirecampDarkTheme from './themes/firecamp.dark.theme';
 import FirecampLiteTheme from './themes/firecamp.lite.theme';
@@ -9,25 +10,31 @@ import { IFELanguages, IFEThemes } from './IFE.constants';
 
 let { TEXT, HEADER_KEY, HEADER_VALUE } = IFELanguages;
 
+let monaco;
 export default () => {
-  _registerLanguage(TEXT, IFELangText);
-  _registerLanguage(HEADER_KEY, IFELangText);
-  _registerLanguage(HEADER_VALUE, IFELangText);
+  loader.init().then((_monaco) => {
+    monaco = _monaco;
+    _registerLanguage(TEXT, IFELangText);
+    _registerLanguage(HEADER_KEY, IFELangText);
+    _registerLanguage(HEADER_VALUE, IFELangText);
 
-  /**
-   * @bug Temporary fix the setTheme issue by setTimeout
-   * TODO: Need to update the flow to call this function after
-   * TODO: DOM initialization
-   */
-  setTimeout(() => {
-    monaco.editor.defineTheme(IFEThemes.DARK, FirecampDarkTheme);
-    monaco.editor.defineTheme(IFEThemes.LITE, FirecampLiteTheme);
+    /**
+     * @bug Temporary fix the setTheme issue by setTimeout
+     * TODO: Need to update the flow to call this function after
+     * TODO: DOM initialization
+     */
+    setTimeout(() => {
+      monaco.editor.defineTheme(IFEThemes.DARK, FirecampDarkTheme);
+      monaco.editor.defineTheme(IFEThemes.LITE, FirecampLiteTheme);
+    });
   });
 };
 const _registerLanguage = (langId, langMonarch, cb = () => {}) => {
   monaco.languages.register({ id: langId });
+  console.log(langId, 'lang before register');
   monaco.languages.onLanguage(langId, () => {
     monaco.languages.setMonarchTokensProvider(langId, langMonarch);
+    console.log(langId, langMonarch, 'lang after registering');
     cb();
   });
 };
