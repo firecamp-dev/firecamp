@@ -1,4 +1,4 @@
-import { MultiLineIFE } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 
 import { useGraphQLStore } from '../../../../../store';
@@ -12,7 +12,7 @@ const TimelineTab = () => {
   );
 
   return (
-    <MultiLineIFE
+    <Editor
       disabled={true}
       value={response?.timeline || ``}
       language="text"

@@ -3,7 +3,7 @@ import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import {
   Resizable,
   Container,
-  MultiLineIFE,
+  Editor,
   TabHeader,
   Button, 
 } from '@firecamp/ui-kit';
@@ -247,7 +247,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
         </TabHeader>
       </div>
       <div style={{ height: 'calc(50vh - 100px)' }}>
-        <MultiLineIFE
+        <Editor
           autoFocus={true}
           language="json"
           value={variables}

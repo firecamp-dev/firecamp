@@ -6,7 +6,7 @@ import {
   Modal,
   IModal,
   ProgressBar,
-  MultiLineIFE,
+  Editor,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { IEnvironment, EEnvironmentScope } from '@firecamp/types';
@@ -215,7 +215,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               Variables will be valid JSON in key-value pair. ex.{' '}
               {`{ "host": "https://myapi.com" }`}
             </span>
-            <MultiLineIFE
+            <Editor
               language="json"
               value={env.variables}
               onChange={onVariableEditorChange}

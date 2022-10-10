@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow';
 import {
   SecondaryTab,
   Container,
-  MultiLineIFE,
+  Editor,
   StatusBar,
 } from '@firecamp/ui-kit';
 import { useGraphQLStore } from '../../../../../store';
@@ -124,7 +124,7 @@ const BodyTab = () => {
         let cursorStart = 1;
 
         return (
-          <MultiLineIFE
+          <Editor
             language={tab}
             value={data}
             onLoad={(editor) => {
@@ -147,7 +147,7 @@ const BodyTab = () => {
          * Allow to show HTML response without checking data HTML valid or not
          */
         return (
-          <MultiLineIFE
+          <Editor
             disabled={true}
             language={tab}
             value={data}
@@ -175,7 +175,7 @@ const BodyTab = () => {
         break;
       default:
         return (
-          <MultiLineIFE
+          <Editor
             disabled={true}
             language={tab}
             value={data}

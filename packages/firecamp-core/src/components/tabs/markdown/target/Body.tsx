@@ -2,13 +2,13 @@
 
 import { FC, Fragment } from 'react';
 
-import { MultiLineIFE } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui-kit';
 import { ITabFns } from '../../types/tab';
 
 const Body: FC<IBody> = ({ body = {}, tabFns = {} }) => {
   return (
     <Fragment>
-      <MultiLineIFE
+      <Editor
         language={'html'}
         value={body}
         disabled={true}

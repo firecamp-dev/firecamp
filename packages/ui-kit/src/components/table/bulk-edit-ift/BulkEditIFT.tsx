@@ -3,10 +3,8 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  
   PrimaryIFT,
-  MultiLineIFE,
+  Editor,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 
@@ -103,10 +101,10 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
         />
       ) : (
         <div className="h-28">
-          <MultiLineIFE
+          <Editor
             value={raw}
             language="text"
-            options={{
+            monacoOptions={{
               style: { display: 'table-caption' },
               height: '100px',
             }}

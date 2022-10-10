@@ -109,16 +109,16 @@ exports.plugins = [
       console.log(`${(percentage * 100).toFixed()}%`, message, ...args);
     },
   }),
-  new MonacoWebpackPlugin({
-    /**
-     * available options are documented at
-     * https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options
-     **/
-    globalAPI: true,
-    publicPath: '/js',
-    filename: '[name].worker.bundle.js',
-    languages: ['javascript', 'html', 'typescript', 'json'],
-  }),
+  // new MonacoWebpackPlugin({
+  //   /**
+  //    * available options are documented at
+  //    * https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options
+  //    **/
+  //   globalAPI: true,
+  //   publicPath: '/js',
+  //   filename: '[name].worker.bundle.js',
+  //   languages: ['javascript', 'html', 'typescript', 'json'],
+  // }),
 ];
 
 exports.rules = [

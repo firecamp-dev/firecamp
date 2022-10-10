@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { MultiLineIFE } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui-kit';
 
 const TimelineTab: FC<{timeline: string}> = ({
   timeline
 }) => {
 
   return (
-    <MultiLineIFE
+    <Editor
       disabled={true}
       value={timeline || ``}
       language="text"

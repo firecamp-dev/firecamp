@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow';
-import { MultiLineIFE } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui-kit';
 // import equal from 'deep-equal';
 
 import { useGraphQLStore } from '../../../../../store';
@@ -14,7 +14,7 @@ const Variables = () => {
   );
 
   return (
-    <MultiLineIFE
+    <Editor
       language={`json`}
       value={playground?.request?.meta?.variables || `{ }`}
       onChange={(e) => {

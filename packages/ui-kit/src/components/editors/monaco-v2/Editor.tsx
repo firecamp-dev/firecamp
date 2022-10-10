@@ -1,12 +1,12 @@
 import { FC, useEffect } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
-import { IMultiLineIFE } from '../monaco/components/MultiLineIFE.interfaces';
+import { IEditor } from './Editor.interface';
 import MonacoFirecampLangInit, {
   SetCompletionProvider,
 } from '../monaco/lang/init';
 
-const Editor: FC<IMultiLineIFE> = ({
+const Editor: FC<IEditor> = ({
   value,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
   onBlur,
@@ -137,10 +137,6 @@ const Editor: FC<IMultiLineIFE> = ({
     //   }
     // }
 
-    // @ts-ignore
-    window.ife.set(edt._id, edt);
-    onLoad(edt);
-
     // set focus to Editor if autoFocus is given true to Input
     if (autoFocus === true) {
       try {
@@ -154,6 +150,7 @@ const Editor: FC<IMultiLineIFE> = ({
   };
 
   const options: EditorProps['options'] = {
+    readOnly: false,
     fontFamily: "'Open Sans', sans-serif",
     fontSize: 14,
     links: false,
@@ -170,14 +167,15 @@ const Editor: FC<IMultiLineIFE> = ({
       // vertical: "hidden",
       // horizontal: "hidden",
       handleMouseWheel: true,
-      useShadows: false,
+      useShadows: true,
 
-      verticalScrollbarSize: 5,
+      verticalScrollbarSize: 10,
       horizontalScrollbarSize: 5,
     },
-    ...monacoOptions,
+    // ...monacoOptions,
   };
 
+  /** if 'readOnly' is not provided then consider 'disabled' */
   if (!monacoOptions?.hasOwnProperty('readOnly')) {
     options.readOnly = disabled;
   }
@@ -200,8 +198,7 @@ const Editor: FC<IMultiLineIFE> = ({
         }
         options={options}
         // height="90vh"
-        onMount={(edt,monaco) => {
-          onMount(edt, monaco);
+        onMount={(edt, monaco) => {
           /**
            * Allow comments for JSON language
            * Reference: https://github.com/microsoft/monaco-editor/issues/2426
@@ -216,6 +213,7 @@ const Editor: FC<IMultiLineIFE> = ({
           onFocus && edt.onDidFocusEditorText(() => onFocus(edt));
           onPaste && edt.onDidPaste(() => onPaste(edt));
 
+          // https://www.anycodings.com/1questions/1773746/how-do-i-insert-text-into-a-monaco-editor
           // edt.insertTextAtCurrentCursor = (text: any) => {
           //   let p = edt.getPosition();
           //   edt.executeEdits('', [
@@ -230,10 +228,12 @@ const Editor: FC<IMultiLineIFE> = ({
           //     },
           //   ]);
           // };
+          onMount(edt, monaco);
+          onLoad(edt);
           editorDidMount && editorDidMount(edt, monaco);
+          // @ts-ignore
+          window.ife.set(edt._id, edt);
         }}
-        // onBlur={onBlur}
-        // onFocus={(e) => onFocus(e)}
       />
     </div>
   );
