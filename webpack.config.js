@@ -59,6 +59,7 @@ exports.output = {
   globalObject: 'this',
   filename: '[name].bundle.js',
   chunkFilename: '[name].bundle.js',
+  publicPath: '/js',
 };
 
 exports.output.path = path.join(__dirname, `./build/${env}/js`);
