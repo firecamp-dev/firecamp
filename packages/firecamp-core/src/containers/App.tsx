@@ -41,7 +41,7 @@ const App: FC<any> = () => {
   //   shallow
   // );
 
-  useMonacoWorkers();
+  // useMonacoWorkers();
 
   useEffect(() => {
     const init = async () => {

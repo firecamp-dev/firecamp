@@ -3,6 +3,7 @@ require('dotenv').config();
 
 const webpack = require('webpack');
 const path = require('path');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -109,9 +110,12 @@ exports.plugins = [
     },
   }),
   new MonacoWebpackPlugin({
-    // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+    /**
+     * available options are documented at
+     * https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options
+     **/
     globalAPI: true,
-    publicPath: '/js/',
+    publicPath: '/js',
     filename: '[name].worker.bundle.js',
     languages: ['javascript', 'html', 'typescript', 'json'],
   }),

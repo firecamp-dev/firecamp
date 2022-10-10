@@ -68,6 +68,8 @@ export { default as SingleLineIFE } from './components/editors/monaco/components
 export { default as MultiLineIFE } from './components/editors/monaco/components/MultiLineIFE';
 export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CMGQueryEditor';
 
+export { default as Editor } from './components/editors/monaco-v2/Editor';
+
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';
 export { default as PrimaryIFT } from './components/table/primary-ift/PrimaryIFT';

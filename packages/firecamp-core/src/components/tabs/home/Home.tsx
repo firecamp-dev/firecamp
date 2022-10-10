@@ -5,8 +5,6 @@ import {
   Container,
   Dropdown,
   Button,
- 
-  
 } from '@firecamp/ui-kit';
 import * as monaco from 'monaco-editor';
 import { IFEThemes } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
@@ -318,10 +316,10 @@ let Theme: FC<any> = () => {
         theme?.color || 'orange'
       }`;
 
+      const monacoTheme = theme?.mode == EThemeMode.Dark ? IFEThemes.DARK : IFEThemes.LITE;
+      console.log(monacoTheme, "monacoTheme")
       // Set monaco editor theme
-      monaco.editor.setTheme(
-        theme?.mode == EThemeMode.Dark ? IFEThemes.DARK : IFEThemes.LITE
-      );
+      monaco.editor.setTheme(monacoTheme);
     } catch (error) {
       console.log({ error });
     }

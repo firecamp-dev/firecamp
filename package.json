@@ -90,7 +90,6 @@
     "jest-css-modules-transform": "^4.4.2",
     "lerna": "^5.4.3",
     "lint-staged": "^12.3.7",
-    "monaco-editor-webpack-plugin": "4.2.0",
     "node-polyfill-webpack-plugin": "^2.0.0",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.6.2",

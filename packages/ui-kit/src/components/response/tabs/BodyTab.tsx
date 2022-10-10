@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import {
   SecondaryTab,
   Container,
-  MultiLineIFE,
+  Editor,
   StatusBar,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
@@ -57,7 +57,7 @@ const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
   );
   let [editorDOM, setEditorDOM] = useState<any>(null);
 
-  // Set response type by updated response heraders. (by content type)
+  // Set response type by updated response headers. (by content type)
   useEffect(() => {
     _setResponseType(headers);
   }, [headers]);
@@ -110,6 +110,7 @@ const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
         try {
           if (tab === 'json') {
             // data = DataConverter.prettify.json(data);
+            data = JSON.stringify(JSON.parse(data), null, 4)
           }
           if (tab === 'xml') {
             // data = DataConverter.prettify.xml(data);
@@ -121,7 +122,7 @@ const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
         let cursorStart = 1;
 
         return (
-          <MultiLineIFE
+          <Editor
             language={tab}
             value={data}
             onLoad={(editor) => {
@@ -144,7 +145,7 @@ const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
          * Allow to show HTML response without checking data HTML valid or not
          */
         return (
-          <MultiLineIFE
+          <Editor
             disabled={true}
             language={tab}
             value={data}
@@ -172,7 +173,7 @@ const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
         break;
       default:
         return (
-          <MultiLineIFE
+          <Editor
             disabled={true}
             language={tab}
             value={data}
