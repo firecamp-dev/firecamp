@@ -7,6 +7,7 @@ const TableDraggableRow : FC<ITableRow> = (props) => {
     let { row, handleDrag, handleDrop } = props
 
     return (<tr 
+        className="test-class"
         onDragStart={() => handleDrag(row.index)}
         draggable={true}>
 
@@ -16,7 +17,7 @@ const TableDraggableRow : FC<ITableRow> = (props) => {
                     {(cell.column.columnDef.accessorKey === "action") ?
                         <td className={`border-b border-l first:border-l-0 border-appBorder`}
                         style={{ width: cell.column.getSize() }}  
-
+                        data-testid="row-sorter"
                         onDrop={(e) => (e.preventDefault(),handleDrop(row.index))}
                         onDragOver={(e) => e.preventDefault()}>
                             <button >🟰</button>

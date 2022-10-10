@@ -26,6 +26,7 @@
   "scripts": {
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
     "test": "jest",
+    "test-storybook": "test-storybook",
     "start:storybook": "npm run test:generate-output && yarn storybook",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
@@ -46,8 +47,10 @@
     "@storybook/addon-jest": "^6.5.10",
     "@storybook/addon-links": "^6.5.10",
     "@storybook/builder-webpack5": "^6.5.10",
+    "@storybook/jest": "^0.0.10",
     "@storybook/manager-webpack5": "^6.5.10",
     "@storybook/react": "^6.5.10",
+    "@storybook/test-runner": "^0.8.0",
     "@storybook/testing-library": "^0.0.13",
     "@tailwindcss/postcss7-compat": "^2.2.17",
     "@testing-library/jest-dom": "^5.16.5",

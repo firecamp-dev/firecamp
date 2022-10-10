@@ -123,7 +123,7 @@ const Table: FC<ITable> = ({
                                             }
                                             {
                                                 header.column.getCanResize() && (
-                                                    <div
+                                                    <div data-testid="col-resizer"
                                                         onMouseDown={header.getResizeHandler()}
                                                         onTouchStart={header.getResizeHandler()}
                                                         className={`pt-resizer h-full ${header.column.getIsResizing() ? 'pt-resizing' : ''}`}
