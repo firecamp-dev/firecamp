@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, memo } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
 import { IEditor } from './Editor.interface';
@@ -11,17 +11,18 @@ import "../monaco/sass/SingleLineIFE.sass";
 const SingleLineEditor: FC<IEditor> = ({
   type = 'text',
   value,
-  onChange = () => {}, // similar DOM event, e = { preventDefault, target }
-  onBlur,
-  onFocus,
-  onPaste,
-  onLoad = (editor) => {},
   disabled = false,
   autoFocus = false,
   language = 'json',
   monacoOptions = {},
   placeholder = '',
   className = '',
+  height,
+  onChange = () => {}, // similar DOM event, e = { preventDefault, target }
+  onBlur,
+  onFocus,
+  onPaste,
+  onLoad = (editor) => {},
   editorDidMount = null,
   onEnter = () => {},
   onCtrlS = () => {},
@@ -147,7 +148,7 @@ const SingleLineEditor: FC<IEditor> = ({
       } catch (e) {}
     }
   };
-  let options: EditorProps['options'] = {
+  const options: EditorProps['options'] = {
     readOnly: false,
     fontFamily: "'Open Sans', sans-serif",
     fontSize: 14,
@@ -215,12 +216,12 @@ const SingleLineEditor: FC<IEditor> = ({
   }
 
   console.log(value, language, 'language...');
-  let _value = type === 'number' ? '' + value : value;
+  value = type === 'number' ? '' + value : value;
   /**
    * 1. Check if number or not, if number then convert to string and show
    * 2. Convert multiline string in to single line
    */
-  _value = _value.replace(/\n/g, ' ');
+  //  value = value.replace(/[\n\r]/g, '');
 
   return (
     <div className="fc-input-wrapper">
@@ -239,57 +240,63 @@ const SingleLineEditor: FC<IEditor> = ({
         <MonacoEditor
           language={language}
           defaultValue={value}
-          value={_value}
-          onChange={(value, e) =>
+          value={value}
+          options={options}
+          height={height}
+          path="url"
+          key="url"
+          onChange={(value, e) =>{
+            value = value.replace(/[\n\r]/g, '');
+            console.log(value)
             onChange({
               preventDefault: () => {},
               target: { value },
             })
-          }
-          options={options}
-          // height="90vh"
+          }}
           onMount={(editor, monaco) => {
+
+            console.log(editor, monaco, 9999)
             /**
              * disable `Find` widget
              * @ref: https://github.com/microsoft/monaco-editor/issues/287#issuecomment-328371787
              */
             // eslint-disable-next-line no-bitwise
-            editor.addCommand(
-              monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF,
-              () => {}
-            );
+            // editor.addCommand(
+            //   monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF,
+            //   () => {}
+            // );
 
             // disable press `Enter` in case of producing line breaks
-            editor.addCommand(monaco.KeyCode.Enter, (e) => {
-              // State: https://github.com/microsoft/vscode/blob/1.56.0/src/vs/editor/contrib/suggest/suggestWidget.ts#L50
-              // const StateOpen = 3;
-              // if (
-              //   editor._contentWidgets['editor.widget.suggestWidget'].widget
-              //     .state !== StateOpen
-              // ) {
-              //   onEnter(editor.getValue());
-              // } else {
-              /**
-               * Origin purpose: disable line breaks
-               * Side Effect: If defining completions, will prevent `Enter` confirm selection
-               * Side Effect Solution: always accept selected suggestion when `Enter`
-               *
-               * But it is hard to find out the name `acceptSelectedSuggestion` to trigger.
-               *
-               * Where to find the `acceptSelectedSuggestion` at monaco official documents ?
-               * Below is some refs:
-               * - https://stackoverflow.com/questions/64430041/get-a-list-of-monaco-commands-actions-ids
-               * - command from: https://github.com/microsoft/vscode/blob/e216a598d3e02401f26459fb63a4f1b6365ec4ec/src/vs/editor/contrib/suggest/suggestController.ts#L632-L638
-               * - https://github.com/microsoft/vscode/search?q=registerEditorCommand
-               * - real list: https://github.com/microsoft/vscode/blob/e216a598d3e02401f26459fb63a4f1b6365ec4ec/src/vs/editor/browser/editorExtensions.ts#L611
-               *
-               *
-               * Finally, `acceptSelectedSuggestion` appears here:
-               * - `editorExtensions.js` Line 288
-               */
-              editor.trigger('', 'acceptSelectedSuggestion', {});
-              // }
-            });
+            // editor.addCommand(monaco.KeyCode.Enter, (e) => {
+            //   // State: https://github.com/microsoft/vscode/blob/1.56.0/src/vs/editor/contrib/suggest/suggestWidget.ts#L50
+            //   // const StateOpen = 3;
+            //   // if (
+            //   //   editor._contentWidgets['editor.widget.suggestWidget'].widget
+            //   //     .state !== StateOpen
+            //   // ) {
+            //   //   onEnter(editor.getValue());
+            //   // } else {
+            //   /**
+            //    * Origin purpose: disable line breaks
+            //    * Side Effect: If defining completions, will prevent `Enter` confirm selection
+            //    * Side Effect Solution: always accept selected suggestion when `Enter`
+            //    *
+            //    * But it is hard to find out the name `acceptSelectedSuggestion` to trigger.
+            //    *
+            //    * Where to find the `acceptSelectedSuggestion` at monaco official documents ?
+            //    * Below is some refs:
+            //    * - https://stackoverflow.com/questions/64430041/get-a-list-of-monaco-commands-actions-ids
+            //    * - command from: https://github.com/microsoft/vscode/blob/e216a598d3e02401f26459fb63a4f1b6365ec4ec/src/vs/editor/contrib/suggest/suggestController.ts#L632-L638
+            //    * - https://github.com/microsoft/vscode/search?q=registerEditorCommand
+            //    * - real list: https://github.com/microsoft/vscode/blob/e216a598d3e02401f26459fb63a4f1b6365ec4ec/src/vs/editor/browser/editorExtensions.ts#L611
+            //    *
+            //    *
+            //    * Finally, `acceptSelectedSuggestion` appears here:
+            //    * - `editorExtensions.js` Line 288
+            //    */
+            //   editor.trigger('', 'acceptSelectedSuggestion', {});
+            //   // }
+            // });
 
             // disable `F1` command palette
             editor.addCommand(monaco.KeyCode.F1, () => {});
@@ -336,4 +343,4 @@ const SingleLineEditor: FC<IEditor> = ({
   );
 };
 
-export default SingleLineEditor;
+export default memo(SingleLineEditor);

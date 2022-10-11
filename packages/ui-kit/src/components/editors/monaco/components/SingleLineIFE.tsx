@@ -239,8 +239,6 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
       useShadows: false,
     },
 
-    ...monacoOptions,
-
     lineNumbers: 'off',
     glyphMargin: false,
     folding: false,
@@ -248,6 +246,8 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
     lineDecorationsWidth: 0,
     lineNumbersMinChars: 0,
     // wrappingColumn: 1,
+
+    ...monacoOptions,
   };
 
   return (

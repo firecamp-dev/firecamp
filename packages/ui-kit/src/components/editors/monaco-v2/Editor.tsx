@@ -8,15 +8,16 @@ import MonacoFirecampLangInit, {
 
 const Editor: FC<IEditor> = ({
   value,
+  disabled = false,
+  autoFocus = false,
+  language = 'json',
+  monacoOptions = {},
+  height,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
   onBlur,
   onFocus,
   onPaste,
   onLoad = (editor) => {},
-  disabled = false,
-  autoFocus = false,
-  language = 'json',
-  monacoOptions = {},
   // controlsConfig = {
   //   show: false,
   //   position: 'vertical',
@@ -192,18 +193,20 @@ const Editor: FC<IEditor> = ({
         language={language}
         defaultValue={value}
         value={value}
+        options={options}
+        height={height}
+        path="editor"
+        key="editor"
         onChange={(value, e) =>
           onChange({
             preventDefault: () => {},
             target: { value },
           })
         }
-        options={options}
-        // height="90vh"
         onMount={(editor, monaco) => {
 
           // disable `F1` command palette
-          editor.addCommand(monaco.KeyCode.F1, () => {});
+          // editor.addCommand(monaco.KeyCode.F1, () => {});
 
           /**
            * allow comments for JSON language
