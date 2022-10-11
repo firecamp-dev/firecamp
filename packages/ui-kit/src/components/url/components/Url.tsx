@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Column, Row, SingleLineEditor, SingleLineIFE } from '@firecamp/ui-kit';
+import { Column, Row, SingleLineEditor } from '@firecamp/ui-kit';
 
 import { IFELanguages } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
 import '../sass/URLbar-v2.sass';
@@ -21,7 +21,6 @@ const Url: FC<IUrl> = ({
       <Column flex={1} className="fc-urlbar-input" style={{ marginTop: 50 }}>
         <Row className="flex-col">
           <Column overflow="visible">
-            {/* <SingleLineIFE */}
             <SingleLineEditor
               value={url}
               language={IFELanguages.TEXT}

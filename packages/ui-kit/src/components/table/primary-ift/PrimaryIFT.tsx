@@ -2,7 +2,7 @@
 import { FC } from "react";
 import {
   IFT,
-  SingleLineIFE,
+  SingleLineEditor,
   Checkbox
 } from '@firecamp/ui-kit';
 
@@ -39,7 +39,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
           //   />
           // );
           return (
-            <SingleLineIFE
+            <SingleLineEditor
               value={value}
               disabled={disabled || disable}
               language={meta?.mode?.[key] || 'ife-text'}

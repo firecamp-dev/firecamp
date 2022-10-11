@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, { FC } from "react";
 import cx from 'classnames';
-import { SingleLineIFE } from '@firecamp/ui-kit';
+import { SingleLineEditor } from '@firecamp/ui-kit';
 import { VscInfo } from "@react-icons/all-files/vsc/VscInfo";
 
 import { IInput } from "./interfaces/input.interfaces"
@@ -102,7 +102,7 @@ const Input: FC<IInput> = React.forwardRef(({
             {note && <Note note={note} />}
                 </div> :
                 <div>
-                <SingleLineIFE
+                <SingleLineEditor
                     autoFocus={autoFocus}
                     type={type}
                     value={value}

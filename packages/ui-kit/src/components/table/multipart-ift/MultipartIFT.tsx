@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { FC, useEffect, useState, useRef } from 'react';
-import { IFT, SingleLineIFE, Checkbox } from '@firecamp/ui-kit';
+import { IFT, SingleLineEditor, Checkbox } from '@firecamp/ui-kit';
 
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { TiSortAlphabetically } from '@react-icons/all-files/ti/TiSortAlphabetically';
@@ -44,7 +44,7 @@ const MultipartIFT: FC<IMultipartIFT> = ({
           );
         } else if (type == 'text') {
           return (
-            <SingleLineIFE
+            <SingleLineEditor
               value={value}
               className="without-border"
               onChange={(e) => onChange(e.target.value)}
@@ -141,7 +141,7 @@ const MultiPartInput: FC<IMultiPartInput> = ({
   return (
     <div className="smart-table-cell-multipart">
       {type == 'text' ? (
-        <SingleLineIFE
+        <SingleLineEditor
           className="without-border"
           value={typeof value === 'string' ? value : ''}
           onChange={(e) => _onChange(e)}

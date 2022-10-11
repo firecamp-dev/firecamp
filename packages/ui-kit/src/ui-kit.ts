@@ -63,9 +63,9 @@ export { CheckboxInGrid } from './components/checkbox/Checkbox';
 // export { default as CollectionDirNode } from './components/collection/sample/DirectoryNode';
 
 // Editors
-export { default as FirecampEditor } from './components/editors/monaco/components/FirecampEditor';
-export { default as SingleLineIFE } from './components/editors/monaco/components/SingleLineIFE';
-export { default as MultiLineIFE } from './components/editors/monaco/components/MultiLineIFE';
+// export { default as FirecampEditor } from './components/editors/monaco/components/FirecampEditor';
+// export { default as SingleLineIFE } from './components/editors/monaco/components/SingleLineIFE';
+// export { default as MultiLineIFE } from './components/editors/monaco/components/MultiLineIFE';
 export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CMGQueryEditor';
 
 export { default as Editor } from './components/editors/monaco-v2/Editor';
