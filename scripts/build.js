@@ -56,12 +56,12 @@ module.exports = async () => {
     // exec(`node ${buildPath}/build-scripts/init-package.js`);
 
     // Generate .html
-    exec(
-      `pug -O "{ env: '${env}' }" -o ${buildPath} ${path.join(
-        __dirname,
-        '../packages/firecamp-core/public/views/'
-      )}`
-    );
+    // exec(
+    //   `pug -O "{ env: '${env}' }" -o ${buildPath} ${path.join(
+    //     __dirname,
+    //     '../packages/firecamp-core/public/views/'
+    //   )}`
+    // );
 
     // cp(
     //   '-R',

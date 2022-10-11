@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const path = require('path');
 const webpack = require('webpack');
+const CompressionPlugin = require('compression-webpack-plugin');
 const { common, env, plugins, rules } = require('./webpack.config');
 
 const nodeEnv = process.env.NODE_ENV;
@@ -11,7 +12,7 @@ const config = {
     globalObject: 'this',
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
-    path: path.join(__dirname, `./build/${nodeEnv}/js`),
+    path: path.join(__dirname, `./build/${nodeEnv}`),
   },
   plugins: [
     ...plugins,
@@ -22,6 +23,7 @@ const config = {
     new webpack.DefinePlugin({
       'process.env': env,
     }),
+    new CompressionPlugin(),
   ],
   module: {
     rules: [
