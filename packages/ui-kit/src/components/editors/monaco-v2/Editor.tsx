@@ -6,6 +6,8 @@ import MonacoFirecampLangInit, {
   SetCompletionProvider,
 } from '../monaco/lang/init';
 
+import '../monaco/sass/MultiLineIFE.sass';
+
 const Editor: FC<IEditor> = ({
   value,
   disabled = false,
@@ -13,6 +15,7 @@ const Editor: FC<IEditor> = ({
   language = 'json',
   monacoOptions = {},
   height,
+  path,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
   onBlur,
   onFocus,
@@ -34,7 +37,6 @@ const Editor: FC<IEditor> = ({
   onCtrlEnter = () => {},
   onCtrlShiftEnter = () => {},
 }) => {
-
   const editorIdRef = useRef('');
   useEffect(() => {
     MonacoFirecampLangInit();
@@ -46,7 +48,7 @@ const Editor: FC<IEditor> = ({
     if (!window.ife) window.ife = new Map();
     return () => {
       //@ts-ignore
-      if (window.ife) window.ife.delete(editorIdRed.current);
+      if (window.ife) window.ife.delete(editorIdRef.current);
     };
   }, []);
 
@@ -195,8 +197,8 @@ const Editor: FC<IEditor> = ({
         value={value}
         options={options}
         height={height}
-        path="editor"
-        key="editor"
+        path={path}
+        key={path}
         onChange={(value, e) =>
           onChange({
             preventDefault: () => {},
@@ -204,7 +206,6 @@ const Editor: FC<IEditor> = ({
           })
         }
         onMount={(editor, monaco) => {
-
           // disable `F1` command palette
           // editor.addCommand(monaco.KeyCode.F1, () => {});
 

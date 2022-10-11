@@ -6,8 +6,9 @@ import {
   StatusBar,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
+import { TId } from '@firecamp/types'
 
-const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
+const BodyTab: FC<IBodyTab> = ({ id, data, headers }) => {
   let initialTabs = [
     { name: 'JSON', id: 'json' },
     /* { name: "XML", id: "xml" },
@@ -125,6 +126,7 @@ const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
           <Editor
             language={tab}
             value={data}
+            path={`${id}/response/timeline`}
             onLoad={(editor) => {
               setEditorDOM(editor);
               // editor.resize(true);
@@ -244,6 +246,7 @@ const BodyTab: FC<IBodyTab> = ({ data, headers }) => {
 export default BodyTab;
 
 interface IBodyTab {
+  id: TId,
   data?: string;
   headers: any;
 }

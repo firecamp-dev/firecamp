@@ -19,6 +19,12 @@ export interface IEditor {
   /** editor language */
   language?: string;
 
+  /** editor height */
+  height?: string | number;
+
+  /** monaco path */
+  path?: string;
+
   /** monaco editor options */
   monacoOptions?: any;
 

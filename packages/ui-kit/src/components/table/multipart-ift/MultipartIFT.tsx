@@ -45,6 +45,7 @@ const MultipartIFT: FC<IMultipartIFT> = ({
         } else if (type == 'text') {
           return (
             <SingleLineEditor
+              path={key}
               value={value}
               className="without-border"
               onChange={(e) => onChange(e.target.value)}
@@ -168,7 +169,6 @@ const MultiPartInput: FC<IMultiPartInput> = ({
               {row.value.name || ''}
             </div>
           ) : (
-            
             ''
           ),
         ]

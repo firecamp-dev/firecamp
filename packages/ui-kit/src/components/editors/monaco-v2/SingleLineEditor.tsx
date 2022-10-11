@@ -6,9 +6,13 @@ import MonacoFirecampLangInit, {
   SetCompletionProvider,
 } from '../monaco/lang/init';
 
-import "../monaco/sass/SingleLineIFE.sass";
+import '../monaco/sass/SingleLineIFE.sass';
 
-const SingleLineEditor: FC<IEditor> = ({
+type TSLEditor = {
+  type: 'text' | 'number';
+};
+
+const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   type = 'text',
   value,
   disabled = false,
@@ -18,6 +22,7 @@ const SingleLineEditor: FC<IEditor> = ({
   placeholder = '',
   className = '',
   height,
+  path,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
   onBlur,
   onFocus,
@@ -43,7 +48,7 @@ const SingleLineEditor: FC<IEditor> = ({
     if (!window.ife) window.ife = new Map();
     return () => {
       //@ts-ignore
-      if (window.ife) window.ife.delete(editorIdRed.current);
+      if (window.ife) window.ife.delete(editorIdRef.current);
     };
   }, []);
 
@@ -229,33 +234,28 @@ const SingleLineEditor: FC<IEditor> = ({
         <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
         </div>
-      ) : <></>}
-      <div
-        className={cx(
-          'fc-input-IFE',
-          '-fc-input-IFE-focused',
-          className
-        )}
-      >
+      ) : (
+        <></>
+      )}
+      <div className={cx('fc-input-IFE', '-fc-input-IFE-focused', className)}>
         <MonacoEditor
           language={language}
           defaultValue={value}
           value={value}
           options={options}
           height={height}
-          path="url"
-          key="url"
-          onChange={(value, e) =>{
+          path={path}
+          key={path}
+          onChange={(value, e) => {
             value = value.replace(/[\n\r]/g, '');
-            console.log(value)
+            console.log(value);
             onChange({
               preventDefault: () => {},
               target: { value },
-            })
+            });
           }}
           onMount={(editor, monaco) => {
-
-            console.log(editor, monaco, 9999)
+            console.log(editor, monaco, 9999);
             /**
              * disable `Find` widget
              * @ref: https://github.com/microsoft/monaco-editor/issues/287#issuecomment-328371787

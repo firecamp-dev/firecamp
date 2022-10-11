@@ -1,6 +1,4 @@
 import { FC, useState } from 'react';
-
-import equal from 'deep-equal';
 import { CustomMessage, Container, Tabs as TabsUI } from '@firecamp/ui-kit';
 
 import BodyTab from './BodyTab';
@@ -10,9 +8,10 @@ import TimelineTab from './TimelineTab';
 import TestScriptResult from './TestScriptResult';
 import ResponseMetaData from '../common/ResponseMetaData';
 import { _misc } from '@firecamp/utils';
-import { EFirecampAgent } from '@firecamp/types';
+import { TId } from '@firecamp/types';
 
 interface IResTabs {
+  id: TId,
   response: any;
   activeBodyTab: string;
   isRequestRunning: boolean;
@@ -20,6 +19,7 @@ interface IResTabs {
 }
 
 const Tabs: FC<IResTabs> = ({
+  id,
   response,
   activeBodyTab = 'body',
   isRequestRunning,
@@ -48,26 +48,6 @@ const Tabs: FC<IResTabs> = ({
   ]);
   let [activeTab, setActiveTab] = useState<string>(activeBodyTab || 'body');
 
-  //update header and cookie number badge in tabs. //todo: need to improve the logic
-  // useEffect(() => {
-  //   let newTabs = [
-  //     { name: 'Body', id: 'body', count: 0 },
-  //     { name: 'Headers', id: 'headers', count: headers?.length || 0 },
-  //     { name: 'Cookies', id: 'cookies', count: cookies?.length || 0 },
-  //     { name: 'Timeline', id: 'timeline', count: 0 }
-  //   ];
-  //   if (!equal(newTabs, tabs)) {
-  //     setTabs(newTabs);
-  //   }
-  // }, [headers, cookies]);
-
-  /* if (_misc.firecampAgent() !== EFirecampAgent.desktop) {
-    let newTabs = tabs.filter((e) => e.id !== 'timeline');
-    if (!equal(newTabs, tabs)) {
-      setTabs(newTabs);
-    }
-  } */
-
   // console.log({ response });
 
   let _renderTab = (tab: string) => {
@@ -78,7 +58,7 @@ const Tabs: FC<IResTabs> = ({
           return (
             <Container>
               <Container.Body>
-                <BodyTab data={data} headers={headers} />
+                <BodyTab id={id} data={data} headers={headers} />
               </Container.Body>
               <Container.Footer>
                 <CustomMessage message={response.error || ''} />
@@ -88,7 +68,7 @@ const Tabs: FC<IResTabs> = ({
         } else if (!response.data && !!response.error) {
           return <CustomMessage message={response.error || ''} />;
         } else {
-          return <BodyTab data={data} headers={headers} />;
+          return <BodyTab id={id} data={data} headers={headers} />;
         }
         break;
       case 'headers':
@@ -98,7 +78,7 @@ const Tabs: FC<IResTabs> = ({
         return <CookieTab cookies={cookies} />;
         break;
       case 'timeline':
-        return <TimelineTab timeline={timeline} />;
+        return <TimelineTab id={id} timeline={timeline} />;
         break;
       case 'test_result':
         return <TestScriptResult result={testScriptResult} />;
