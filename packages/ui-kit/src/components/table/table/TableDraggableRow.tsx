@@ -7,7 +7,7 @@ const TableDraggableRow : FC<ITableRow> = (props) => {
     let { row, handleDrag, handleDrop } = props
 
     return (<tr 
-        className="test-class"
+        id={row.original.key}
         onDragStart={() => handleDrag(row.index)}
         draggable={true}>
 

@@ -6,7 +6,7 @@ import { within, fireEvent } from '@testing-library/react';
 import {expect} from "@storybook/jest";
 
 import Table from './Table';
-import { defaultData, columnDataForDisplay, TableInput } from "./TableData";
+import { defaultData, columnDataForDisplay, TableInput, dragAndDrop } from "./TableData";
 
 export default {
   title: "UI-Kit/Table",
@@ -85,17 +85,15 @@ SimpleTable.play = async ({canvasElement}) => {
 
   expect(resizerElementColumnWidth.offsetWidth).toBeGreaterThan(intialColumnWidth);
 
-  //Todo In progress
-  //table row sorting logic : third row location should be shifted to first using the drag button's offsetTop value
-  const rowSorter1 = await canvas.getAllByTestId('row-sorter')[0];
-  const rowSorter = await canvas.getAllByTestId('row-sorter')[2], initialRowIndex = rowSorter.parentNode.rowIndex;
-  const rowMouseMoveOffset = [{ clientX: 0, clientY: 90 },{ clientX: 0, clientY: 30 }] 
+  //table row sorting logic : first row location should be shifted to last using the drag button's row key
+  const dragIndex = 0, dropIndex = 2;
+  const rowSorter = await within(tableBody).findAllByTestId('row-sorter');
+  const initialRowId = rowSorter[dragIndex].parentNode.id;
 
-  await fireEvent.mouseEnter(rowSorter, rowMouseMoveOffset[1]);
-  await fireEvent.mouseMove(rowSorter, rowMouseMoveOffset[1]);
-  await fireEvent.mouseUp(rowSorter, rowMouseMoveOffset[1])
-
-  expect(initialRowIndex).toBeGreaterThan(rowSorter.parentNode.rowIndex)
-
-
+  dragAndDrop(rowSorter[dragIndex], rowSorter[dropIndex]);
+  const rowSorted = await within(tableBody).findAllByTestId('row-sorter');
+  const updatedRowId = rowSorted[dropIndex].parentNode.id;
+  
+  expect(initialRowId).toBe(updatedRowId)
 };
+
