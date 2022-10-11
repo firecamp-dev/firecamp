@@ -171,14 +171,44 @@ export const Td: FC<ITd> = ({ children, className = "", style = {} }) => {
 
 type TPlainObject = { [K: string]: any }
 type ITable = {
+    /**
+     * Provide a unique id for the table
+     */
     name: string,
+    /**
+     * Array of data to be rendered in table
+     */
     data: Array<TPlainObject>,
+    /**
+     * Allow table columns to resize
+     */
     tableResizable: boolean,
+    /**
+     * Array of columns to be rendered, column should follow IColumn type
+     */
     columns: Array<IColumn>,
+    /**
+     * Component to format the column headings
+     */
     columnRenderer: (column: object | string) => string | JSX.Element,
+    /**
+     * Component to format the table cell 
+     */
     cellRenderer: (cell: object) => string | JSX.Element,
+    /**
+     * Minimum width for the table component
+     */
     tableWidth: number,
-    options: TPlainObject
+    /**
+     * Optional functionality for table <br/>
+     * containerClassName : classname for table wrapper div
+     * minColumnSize :  minimum column width (if not defined in columns object)
+     */
+    options: ITableOptions
+}
+type ITableOptions = {
+    containerClassName?: string,
+    minColumnSize?: number
 }
 type IColumn = {
     name: string,

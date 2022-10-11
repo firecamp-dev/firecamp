@@ -1,4 +1,4 @@
-import { Td } from "./Table";
+import { Td, TPlainObject } from "./Table";
 import { useEffect, useState } from 'react';
 
 export type Person = {
@@ -103,7 +103,9 @@ export const headerColumnDataForDisplay = [
   }
 ]
 
-
+export const TableColumnHeading = ({heading}: TPlainObject) => {
+  return <>{heading}</>
+}
 export const TableInput = (props: any) => {
   let { onChange, autoFocus, cell, rows } = props
   const [inputValue, setInputValue] = useState(cell.cellValue);
