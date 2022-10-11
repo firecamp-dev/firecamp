@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
 import { IEditor } from './Editor.interface';
@@ -12,16 +12,16 @@ const Editor: FC<IEditor> = ({
   onBlur,
   onFocus,
   onPaste,
-  onLoad = (edt) => {},
+  onLoad = (editor) => {},
   disabled = false,
   autoFocus = false,
   language = 'json',
   monacoOptions = {},
-  controlsConfig = {
-    show: false,
-    position: 'vertical',
-    collapsed: true,
-  },
+  // controlsConfig = {
+  //   show: false,
+  //   position: 'vertical',
+  //   collapsed: true,
+  // },
   placeholder = '',
   className = '',
   editorDidMount = null,
@@ -33,6 +33,8 @@ const Editor: FC<IEditor> = ({
   onCtrlEnter = () => {},
   onCtrlShiftEnter = () => {},
 }) => {
+
+  const editorIdRef = useRef('');
   useEffect(() => {
     MonacoFirecampLangInit();
     SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
@@ -43,66 +45,66 @@ const Editor: FC<IEditor> = ({
     if (!window.ife) window.ife = new Map();
     return () => {
       //@ts-ignore
-      if (window.ife) window.ife.delete(EditorIdRef);
+      if (window.ife) window.ife.delete(editorIdRed.current);
     };
   }, []);
 
-  const onMount: OnMount = (edt, monaco) => {
+  const onMount: OnMount = (editor, monaco) => {
     // Add shortcuts on keydown event
 
     const KM = monaco.KeyMod;
     const KC = monaco.KeyCode;
 
-    // edt.addCommand(KC.Enter, (e: any) => {
+    // editor.addCommand(KC.Enter, (e: any) => {
     //   console.log('ENTER...');
     //   onEnter(e);
     // });
 
-    // edt.addCommand(KM.CtrlCmd | KC.KeyS, (e: any) => {
+    // editor.addCommand(KM.CtrlCmd | KC.KeyS, (e: any) => {
     //   console.log('CMD+S...');
     //   onCtrlS(e);
     // });
 
-    // edt.addCommand(KM.CtrlCmd | KM.Shift | KC.KeyS, (e: any) => {
+    // editor.addCommand(KM.CtrlCmd | KM.Shift | KC.KeyS, (e: any) => {
     //   console.log('CMD+Shift+S...');
     //   onCtrlShiftS(e);
     // });
 
-    // edt.addCommand(KM.CtrlCmd | KC.Enter, (e: any) => {
+    // editor.addCommand(KM.CtrlCmd | KC.Enter, (e: any) => {
     //   console.log('CMD+ENTER...');
     //   onCtrlEnter(e);
     // });
 
-    // edt.addCommand(KM.CtrlCmd | KM.Shift | KC.Enter, (e: any) => {
+    // editor.addCommand(KM.CtrlCmd | KM.Shift | KC.Enter, (e: any) => {
     //   console.log('CMD+Shift+ENTER...');
     //   onCtrlShiftEnter(e);
     // });
 
-    // edt.addCommand(KM.CtrlCmd | KC.KeyO, (e: any) => {
+    // editor.addCommand(KM.CtrlCmd | KC.KeyO, (e: any) => {
     //   console.log('CtrlCmd + KEY_O...');
     //   onCtrlO(e);
     // });
 
-    // edt.addCommand(KM.CtrlCmd | KC.KeyK, (e: any) => {
+    // editor.addCommand(KM.CtrlCmd | KC.KeyK, (e: any) => {
     //   console.log('CtrlCmd + KEY_K...');
     //   onCtrlK(e);
     // });
 
-    // edt.addCommand((KC.Ctrl | KC.KeyS), (e)=> {
+    // editor.addCommand((KC.Ctrl | KC.KeyS), (e)=> {
     //   console.log("CTRL+S...");
     //   onCtrlS();
     // });
 
-    // edt.addCommand(KM.chord(KC.Ctrl | KC.Shift | KM.KeyS), (e)=> {
+    // editor.addCommand(KM.chord(KC.Ctrl | KC.Shift | KM.KeyS), (e)=> {
     //   console.log("CTRL+S...");
     //   onCtrlS();
     // });
 
-    // edt.addCommand(KM.chord(KM.CtrlCmd | KC.KeyK, KM.CtrlCmd | KC.KeyM), (e)=> {
+    // editor.addCommand(KM.chord(KM.CtrlCmd | KC.KeyK, KM.CtrlCmd | KC.KeyM), (e)=> {
     //   console.log("I am in the Editor...")
     // });
 
-    // edt.onKeyDown = (evt) => {
+    // editor.onKeyDown = (evt) => {
     // console.log(evt);
     // ctrl+s or cmd+s shortcut
     // if (evt.keyCode === monaco.KeyCode.KeyS) {
@@ -141,14 +143,13 @@ const Editor: FC<IEditor> = ({
     if (autoFocus === true) {
       try {
         setTimeout(() => {
-          edt.focus();
-          let range = edt.getModel().getFullModelRange();
-          edt.setPosition({ lineNumber: 1, column: range.endColumn });
+          editor.focus();
+          let range = editor.getModel().getFullModelRange();
+          editor.setPosition({ lineNumber: 1, column: range.endColumn });
         }, 200);
       } catch (e) {}
     }
   };
-
   const options: EditorProps['options'] = {
     readOnly: false,
     fontFamily: "'Open Sans', sans-serif",
@@ -172,7 +173,7 @@ const Editor: FC<IEditor> = ({
       verticalScrollbarSize: 10,
       horizontalScrollbarSize: 5,
     },
-    // ...monacoOptions,
+    ...monacoOptions,
   };
 
   /** if 'readOnly' is not provided then consider 'disabled' */
@@ -184,12 +185,13 @@ const Editor: FC<IEditor> = ({
 
   return (
     <div className={cx('relative h-full', className)}>
-      <div className="fc-input-IFE-multiline-placeholder">
+      <div className="firecamp-editor__placeholder">
         <div>{!value ? placeholder || '' : ''}</div>
       </div>
       <MonacoEditor
         language={language}
         defaultValue={value}
+        value={value}
         onChange={(value, e) =>
           onChange({
             preventDefault: () => {},
@@ -198,10 +200,14 @@ const Editor: FC<IEditor> = ({
         }
         options={options}
         // height="90vh"
-        onMount={(edt, monaco) => {
+        onMount={(editor, monaco) => {
+
+          // disable `F1` command palette
+          editor.addCommand(monaco.KeyCode.F1, () => {});
+
           /**
-           * Allow comments for JSON language
-           * Reference: https://github.com/microsoft/monaco-editor/issues/2426
+           * allow comments for JSON language
+           * @ref: https://github.com/microsoft/monaco-editor/issues/2426
            */
           monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
             validate: true,
@@ -209,14 +215,14 @@ const Editor: FC<IEditor> = ({
             schemaValidation: 'error',
           });
 
-          onBlur && edt.onDidBlurEditorText(() => onBlur(edt));
-          onFocus && edt.onDidFocusEditorText(() => onFocus(edt));
-          onPaste && edt.onDidPaste(() => onPaste(edt));
+          onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
+          onFocus && editor.onDidFocusEditorText(() => onFocus(editor));
+          onPaste && editor.onDidPaste(() => onPaste(editor));
 
           // https://www.anycodings.com/1questions/1773746/how-do-i-insert-text-into-a-monaco-editor
-          // edt.insertTextAtCurrentCursor = (text: any) => {
-          //   let p = edt.getPosition();
-          //   edt.executeEdits('', [
+          // editor.insertTextAtCurrentCursor = (text: any) => {
+          //   let p = editor.getPosition();
+          //   editor.executeEdits('', [
           //     {
           //       range: new monaco.Range(
           //         p.lineNumber,
@@ -228,11 +234,12 @@ const Editor: FC<IEditor> = ({
           //     },
           //   ]);
           // };
-          onMount(edt, monaco);
-          onLoad(edt);
-          editorDidMount && editorDidMount(edt, monaco);
+          onMount(editor, monaco);
+          onLoad(editor);
+          editorDidMount && editorDidMount(editor, monaco);
+          editorIdRef.current = editor.getId();
           // @ts-ignore
-          window.ife.set(edt._id, edt);
+          window.ife.set(editorIdRef.current, editor);
         }}
       />
     </div>

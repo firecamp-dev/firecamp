@@ -69,6 +69,7 @@ export { default as MultiLineIFE } from './components/editors/monaco/components/
 export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CMGQueryEditor';
 
 export { default as Editor } from './components/editors/monaco-v2/Editor';
+export { default as SingleLineEditor } from './components/editors/monaco-v2/SingleLineEditor';
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';

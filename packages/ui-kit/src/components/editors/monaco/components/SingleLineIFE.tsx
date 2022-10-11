@@ -256,9 +256,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
         <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
         </div>
-      ) : (
-        ''
-      )}
+      ) :  <></>}
 
       <div
         className={classnames(
