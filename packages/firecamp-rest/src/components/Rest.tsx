@@ -2,7 +2,7 @@ import { memo, useEffect } from 'react';
 
 import { nanoid as id } from 'nanoid';
 import _url from '@firecamp/url';
-import { Container, Row } from '@firecamp/ui-kit';
+import { Container, Row, Loader } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
@@ -10,7 +10,6 @@ import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
 import {
   EAuthTypes,
   ERestBodyTypes,
-  EFirecampAgent,
   EHttpMethod,
   EPushActionType,
   ERequestTypes,
@@ -19,7 +18,6 @@ import {
 
 import shallow from 'zustand/shallow';
 
-import { Auth } from '../services';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
@@ -47,7 +45,6 @@ import {
   prepareUIRequestPanelState,
 } from '../services/rest-service';
 
-const Loading = ({ ...props }) => <span>loading...</span>;
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   let restStoreApi: any = useRestStoreApi();
@@ -435,6 +432,8 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
+  if(isFetchingRequest === true) return <Loader />;
+
   return (
     <RestContext.Provider
       value={{
@@ -456,17 +455,13 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           />
         </Container.Header>
         <Container.Body>
-          {isFetchingRequest === true ? (
-            <Loading />
-          ) : (
-            <Row flex={1} className="with-divider h-full" overflow="auto">
-              <Request
-                tab={tab}
-                getFirecampAgent={platformContext.getFirecampAgent}
-              />
-              <Response />
-            </Row>
-          )}
+          <Row flex={1} className="with-divider h-full" overflow="auto">
+            <Request
+              tab={tab}
+              getFirecampAgent={platformContext.getFirecampAgent}
+            />
+            <Response />
+          </Row>
           <CodeSnippets
             tabId={tab.id}
             getPlatformEnvironments={

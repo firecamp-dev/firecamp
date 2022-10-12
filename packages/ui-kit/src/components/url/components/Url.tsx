@@ -1,6 +1,5 @@
-// @ts-nocheck
-import { FC } from "react";
-import { Column, Row, SingleLineIFE } from '@firecamp/ui-kit';
+import { FC } from 'react';
+import { Column, Row, SingleLineEditor } from '@firecamp/ui-kit';
 
 import { IFELanguages } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
 import '../sass/URLbar-v2.sass';
@@ -9,7 +8,6 @@ const Url: FC<IUrl> = ({
   id = '',
   placeholder = '',
   url,
-
   onChangeURL,
   onEnter,
   onPaste,
@@ -17,12 +15,10 @@ const Url: FC<IUrl> = ({
 }) => {
   return (
     <Row className="fc-urlbar">
-      {/*  <Column width="fit-content" className="fc-urlbar-methods">
-      </Column> */}
       <Column flex={1} className="fc-urlbar-input" style={{ marginTop: 50 }}>
         <Row className="flex-col">
           <Column overflow="visible">
-            <SingleLineIFE
+            <SingleLineEditor
               value={url}
               language={IFELanguages.TEXT}
               onChange={onChangeURL}
@@ -34,6 +30,8 @@ const Url: FC<IUrl> = ({
               }}
               className="without-border without-padding"
               height={26}
+              path={id}
+              type="text"
               onEnter={onEnter}
               onPaste={onPaste}
             />
@@ -47,41 +45,27 @@ const Url: FC<IUrl> = ({
 export default Url;
 
 interface IUrl {
-  /**
-   * Url unique identity
-   */
+  /** identifier */
   id: string;
 
-  /**
-   * Url input placeholder
-   */
+  /** placeholder value */
   placeholder: string;
 
-  /**
-   * Url input value
-   */
+  /** url as string */
   url: string;
 
-  /**
-   * Update Url passes updated url string as argument
-   */
+  /** callback on url change */
   onChangeURL: (e: {
     preventDefault: () => void;
     target: { value: any };
   }) => void;
 
-  /**
-   * Funciton call on press enter key
-   */
+  /** on enter */
   onEnter?: () => void;
 
-  /**
-   * Fucniton call on paste event in inputbox
-   */
+  /** on paste */
   onPaste?: (edt: any) => void;
 
-  /**
-   * A boolean value whether you want to set input auto focus or not
-   */
+  /** auto focus url input*/
   autoFocus?: boolean;
 }

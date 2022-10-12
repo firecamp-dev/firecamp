@@ -3,6 +3,7 @@ import { ERequestTypes } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import { ErrorBoundary } from 'react-error-boundary';
 import _cloneDeep from 'lodash/cloneDeep';
+import {Loader} from '@firecamp/ui-kit';
 
 // import { Rest } from '@firecamp/rest';
 // import { GraphQL } from '@firecamp/graphql';
@@ -38,9 +39,7 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
     return <span />;
   }
 
-  let { getFirecampAgent } = usePlatformStore((s: IPlatformStore) => ({
-    getFirecampAgent: s.getFirecampAgent,
-  }));
+  const { getFirecampAgent } = usePlatformStore.getState();
 
   if (
     [
@@ -56,7 +55,7 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
     });
   }
 
-  let tabProps: ITabProps = useMemo(() => {
+  const tabProps: ITabProps = useMemo(() => {
     return {
       index: index,
       tab: tabObj,
@@ -73,40 +72,42 @@ const TabBody = ({ tabObj, index, tabFns, activeTab }) => {
     };
   }, [activeTab, tabObj]);
 
-  let _renderRequestTab = (type) => {
+  const _renderRequestTab = (type) => {
     switch (type) {
       case ERequestTypes.Rest:
         return (
-          <Suspense fallback={<div>Loading... </div>}>
+          <Suspense fallback={<Loader />}>
             <Rest {...tabProps} />
           </Suspense>
         );
         break;
       case ERequestTypes.GraphQL:
         return (
-          <Suspense fallback={<div>Loading... </div>}>
+          <Suspense fallback={<Loader />}>
             <GraphQL {...tabProps} />
           </Suspense>
         );
         break;
-      case ERequestTypes.SocketIO:
-        return (
-          <Suspense fallback={<div>Loading... </div>}>
-            {/* <SocketIOClient {...tabProps} /> */}
-          </Suspense>
-        );
-        break;
-      case ERequestTypes.WebSocket:
-        return (
-          <Suspense fallback={<div>Loading... </div>}>
-            {/* <WSClient {...tabProps} /> */}
-          </Suspense>
-        );
-        break;
+      // case ERequestTypes.SocketIO:
+      //   return (
+      //     <Suspense fallback={<div>Loading... </div>}>
+      //       {/* <SocketIOClient {...tabProps} /> */}
+      //     </Suspense>
+      //   );
+      //   break;
+      // case ERequestTypes.WebSocket:
+      //   return (
+      //     <Suspense fallback={<div>Loading... </div>}>
+      //       {/* <WSClient {...tabProps} /> */}
+      //     </Suspense>
+      //   );
+      //   break;
       default:
         return <span>Default Request Tab</span>;
     }
   };
+
+  // return _renderRequestTab(tabObj.type);
 
   return (
     <ErrorBoundary

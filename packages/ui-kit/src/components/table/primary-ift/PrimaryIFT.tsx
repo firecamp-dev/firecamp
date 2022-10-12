@@ -1,12 +1,8 @@
 //@ts-nocheck
-import { FC } from "react";
-import {
-  IFT,
-  SingleLineIFE,
-  Checkbox
-} from '@firecamp/ui-kit';
+import { FC } from 'react';
+import { IFT, SingleLineEditor, Checkbox } from '@firecamp/ui-kit';
 
-import { IPrimaryIFT } from "../interfaces/PrimaryIFT.interfaces"
+import { IPrimaryIFT } from '../interfaces/PrimaryIFT.interfaces';
 
 import Table from '../table/Table';
 import { TableInput} from '../table/TableData';
@@ -16,7 +12,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
   rows,
   disabled = false,
   title = '',
-  onChange = () => { },
+  onChange = () => {},
   meta = { mode: {} },
   custom = false,
   columnDetails
@@ -60,7 +56,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
       title={title || ''}
       disabled={disabled}
       cellRenderer={(
-        { key, value, type, disable, onChange = () => { } },
+        { key, value, type, disable, onChange = () => {} },
         { connectDropTarget, connectDragSource }
       ) => {
         // console.log(`type`, type, value, key);
@@ -74,7 +70,8 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
           //   />
           // );
           return (
-            <SingleLineIFE
+            <SingleLineEditor
+              path={key}
               value={value}
               disabled={disabled || disable}
               language={meta?.mode?.[key] || 'ife-text'}

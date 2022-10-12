@@ -6,9 +6,7 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  
-  MultiLineIFE,
+  Editor,
 } from '@firecamp/ui-kit';
 
 const ImportRaw: FC<IImportRaw> = ({
@@ -37,7 +35,7 @@ const ImportRaw: FC<IImportRaw> = ({
   return (
     <Container className="fc-import-editor" overflow="auto">
       <Container.Body>
-        <MultiLineIFE
+        <Editor
           disabled={false}
           name={'jsonbody'}
           language={'json'}

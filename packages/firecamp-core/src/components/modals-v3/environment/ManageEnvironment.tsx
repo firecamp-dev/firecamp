@@ -3,15 +3,10 @@ import {
   Input,
   TabHeader,
   Button,
- 
-  
   Modal,
   IModal,
-  Dropdown,
   ProgressBar,
-  MultiLineIFE,
-  CheckboxGroup,
-  Notes,
+  Editor,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { IEnvironment, EEnvironmentScope } from '@firecamp/types';
@@ -19,9 +14,9 @@ import { Rest } from '@firecamp/cloud-apis';
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import AppService from '../../../services/app';
-import { RE } from '../../../constants';
 import { useModalStore } from '../../../store/modal';
 import { useEnvStore } from '../../../store/environment';
+import { RE } from '../../../types'
 
 type TModalMeta = {
   scope: EEnvironmentScope;
@@ -81,7 +76,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
     setEnv((c) => ({ ...c, [name]: value }));
   };
 
-  const onVaribaleEditorChange = (e) => {
+  const onVariableEditorChange = (e) => {
     const { value } = e.target;
     if (error.name || error.variables) setError({ name: '', variables: '' });
     setEnv((c) => ({ ...c, variables: value }));
@@ -92,7 +87,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
     const name = env.name.trim();
     if (!name || name.length < 3) {
       setError({
-        name: 'The environment name must have minimun 3 characters',
+        name: 'The environment name must have minimum 3 characters',
         variables: '',
       });
       return;
@@ -220,10 +215,10 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               Variables will be valid JSON in key-value pair. ex.{' '}
               {`{ "host": "https://myapi.com" }`}
             </span>
-            <MultiLineIFE
+            <Editor
               language="json"
               value={env.variables}
-              onChange={onVaribaleEditorChange}
+              onChange={onVariableEditorChange}
               monacoOptions={{
                 extraEditorClassName: `border border-inputBorder rounded-sm p-2 leading-5 
                   outline-none placeholder-inputPlaceholder 

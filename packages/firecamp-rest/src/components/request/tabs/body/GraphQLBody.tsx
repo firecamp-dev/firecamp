@@ -3,7 +3,7 @@ import { ERestBodyTypes } from '@firecamp/types';
 import {
   Container,
   Column,
-  MultiLineIFE,
+  Editor,
   CMGQueryEditor,
 } from '@firecamp/ui-kit';
 
@@ -34,7 +34,7 @@ const GraphQLBody = ({ body, onChange }) => {
         </Column>
         <Column flex={1}>
           <div className="text-base px-1 py-2 bg-focus1">Query variables</div>
-          <MultiLineIFE
+          <Editor
             value={variables}
             language={'json'}
             monacoOptions={{

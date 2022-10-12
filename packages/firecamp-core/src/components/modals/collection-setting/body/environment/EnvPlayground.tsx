@@ -3,8 +3,7 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  MultiLineIFE,
+  Editor
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import { _object } from '@firecamp/utils';
@@ -167,7 +166,7 @@ const EnvPlayground: FC<IEnvPlayground> = ({
   return (
     <Container>
       <Container.Body>
-        <MultiLineIFE
+        <Editor
           autoFocus={!isAddEnvPopoverOpen}
           language={'json'}
           value={

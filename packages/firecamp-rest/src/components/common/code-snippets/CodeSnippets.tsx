@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import classnames from 'classnames';
-import { MultiLineIFE, Container, Tabs, Modal } from '@firecamp/ui-kit';
+import { Editor, Container, Tabs, Modal } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 
 import codeSnippet, {
@@ -160,7 +160,7 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
                     ''
                   )}
 
-                  <MultiLineIFE
+                  <Editor
                     value={snippetCode || ''}
                     language={
                       activeClientTargetMap[activeTarget] || 'typescript'

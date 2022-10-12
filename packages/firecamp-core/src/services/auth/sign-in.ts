@@ -1,11 +1,8 @@
 import { Rest } from '@firecamp/cloud-apis';
 import { EProvider, IAuthResponse } from './types';
-import { validateAuthResponse } from './helper';
 import { githubAuth, googleAuth } from './oauth2';
 
-/**
- * credentials require while sign-in using Firecamp domain
- */
+/** credentials require while sign-in using Firecamp domain */
 export interface ICredentials {
   username: string;
   password: string;
@@ -22,25 +19,16 @@ export default async (
   try {
     const { username = '', password = '' } = credentials;
 
-    // TODO:
-    // if (F.userMeta.isLoggedIn) return Promise.resolve();
-
     switch (provider) {
       case EProvider.LOCAL: {
         // Request to sign-in via Firecamp domain
         try {
           const response = await Rest.auth.signIn(username, password);
-
           // validate auth response
-          if (validateAuthResponse(response?.data)) {
-            return Promise.resolve({
-              response: response.data,
-              provider: EProvider.LOCAL,
-            });
-          } else
-            return Promise.reject({
-              message: 'failed to sign in into your account',
-            });
+          return Promise.resolve({
+            response: response.data,
+            provider: EProvider.LOCAL,
+          });
         } catch (e) {
           console.log(e, 'e...');
           if (e.message == 'Network Error')
@@ -55,17 +43,11 @@ export default async (
 
         // Send token to authenticate
         const response = await Rest.auth.viaGoogle(token);
-        debugger;
 
-        if (validateAuthResponse(response?.data)) {
-          return Promise.resolve({
-            response: response.data,
-            provider: EProvider.GOOGLE,
-          });
-        } else
-          return Promise.reject({
-            message: 'Failed to sign-in into your account',
-          });
+        return Promise.resolve({
+          response: response.data,
+          provider: EProvider.GOOGLE,
+        });
       }
       case EProvider.GITHUB:
         // Fetch auth code

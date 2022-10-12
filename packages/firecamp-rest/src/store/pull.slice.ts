@@ -5,10 +5,10 @@ import { IPushAction, IPushPayload } from './pushAction.slice';
 import { IRestClientRequest } from '../types';
 
 /**
- * Referance: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
+ * Reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
  */
 
-interface IPullslice {
+interface IPullSlice {
   pull?: IPushPayload;
 
   /**
@@ -19,7 +19,7 @@ interface IPullslice {
   ) => Promise<IRestClientRequest> | PromiseRejectedResult; //define type for pullPayload here
 }
 
-const createPullActionSlice = (set, get): IPullslice => ({
+const createPullActionSlice = (set, get): IPullSlice => ({
   pull: {
     _action: {
       type: EPushActionType.Update,
@@ -41,15 +41,15 @@ const createPullActionSlice = (set, get): IPullslice => ({
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);
       let existingRequest: IRestClientRequest = get().request;
-      let updatedReqeust: IRestClientRequest = existingRequest;
+      let updatedRequest: IRestClientRequest = existingRequest;
       let pullAction: IPushAction = pullActionPayload._action.keys;
 
       for (let key in pullAction) {
         switch (key) {
           // manage _root keys
           case '_root':
-            updatedReqeust = Object.assign(
-              updatedReqeust,
+            updatedRequest = Object.assign(
+              updatedRequest,
               _object.pick(pullPayload, pullAction[key])
             );
             break;
@@ -64,8 +64,8 @@ const createPullActionSlice = (set, get): IPullslice => ({
               pullAction[key]
             ) as IRestClientRequest;
             if (key in pullPayload) {
-              updatedReqeust[key] = _object.mergeDeep(
-                updatedReqeust[key],
+              updatedRequest[key] = _object.mergeDeep(
+                updatedRequest[key],
                 updates
               ) as IRestClientRequest;
             }
@@ -78,8 +78,8 @@ const createPullActionSlice = (set, get): IPullslice => ({
               );
 
               // merge existing auth with normalized auth
-              updatedReqeust[key] = _object.mergeDeep(
-                updatedReqeust[key],
+              updatedRequest[key] = _object.mergeDeep(
+                updatedRequest[key],
                 normalizedAuth
               ) as IUiAuth;
             }
@@ -88,15 +88,15 @@ const createPullActionSlice = (set, get): IPullslice => ({
           // manage removed body and auth payload
           case '_removed':
             for (let removedKey in pullAction[key]) {
-              if (removedKey === 'body' && updatedReqeust['body']) {
+              if (removedKey === 'body' && updatedRequest['body']) {
                 for (let removedBody of pullAction[key][removedKey]) {
-                  if (updatedReqeust['body'][removedBody]) {
-                    updatedReqeust['body'][removedBody]['value'] = '';
+                  if (updatedRequest['body'][removedBody]) {
+                    updatedRequest['body'][removedBody]['value'] = '';
                   }
                 }
-              } else if (removedKey === 'auth' && updatedReqeust['auth']) {
+              } else if (removedKey === 'auth' && updatedRequest['auth']) {
                 for (let removedAuth of pullAction[key][removedKey]) {
-                  updatedReqeust['auth'][removedAuth] =
+                  updatedRequest['auth'][removedAuth] =
                     _auth.defaultAuthState[removedAuth];
                 }
               }
@@ -106,12 +106,12 @@ const createPullActionSlice = (set, get): IPullslice => ({
           // do noting
         }
       }
-      console.log('getMergedRequestByPullAction:', { updatedReqeust });
+      console.log('getMergedRequestByPullAction:', { updatedRequest });
 
-      return Promise.resolve(updatedReqeust);
+      return Promise.resolve(updatedRequest);
     }
     return Promise.reject('Invalid pull payload');
   },
 });
 
-export { IPullslice, createPullActionSlice };
+export { IPullSlice, createPullActionSlice };

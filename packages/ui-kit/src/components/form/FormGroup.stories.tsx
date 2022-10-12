@@ -1,4 +1,3 @@
-//@ts-nocheck
 import Input from '../input/Input';
 import FormGroup from './FormGroup';
 

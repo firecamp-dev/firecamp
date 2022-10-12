@@ -16,19 +16,31 @@
 }
 .pane.expanded:not(.custom-height){
     height: 100% !important;
+    flex: 1;
 }
 .pane>.pane-body{
     min-height: 160px;
 }
-.pane-body>.rct-tree-root::-webkit-scrollbar{
+.rct-tree-root::-webkit-scrollbar{
     background: transparent;
     width: 0px;
     display: block;
 }
-.pane-body>.rct-tree-root::-webkit-scrollbar-thumb{
-    background: var(--focus-level-4);
+.rct-tree-root::-webkit-scrollbar-thumb{
+    background: var(--focus-level-4) !important;
 }
-
+.pane-body .rct-tree-root
+{
+    height: calc( 100% - 2px);
+    overflow: auto;
+}
+.rct-tree-root::-webkit-scrollbar{
+    width: 0px;
+    height: 8px;
+}
+.pane-body:hover .rct-tree-root::-webkit-scrollbar,.rct-tree-root:hover::-webkit-scrollbar{
+    width: 8px;
+}
 
 /*------pane header css starts ---------*/
 .pane-header{

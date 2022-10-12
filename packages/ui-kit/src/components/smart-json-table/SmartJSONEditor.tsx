@@ -1,6 +1,6 @@
 import { useState, useEffect, Fragment } from 'react';
 import equal from 'deep-equal';
-import { MultiLineIFE } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui-kit';
 import { _table } from '@firecamp/utils'
 
 const SmartJSONEditor = ({ JSONState, detach = false, onChange }) => {
@@ -72,7 +72,7 @@ const SmartJSONEditor = ({ JSONState, detach = false, onChange }) => {
   // console.log(`detach`, detach)
 
   return (
-    <MultiLineIFE
+    <Editor
       value={JSONEditorString}
       language="json"
       options={{

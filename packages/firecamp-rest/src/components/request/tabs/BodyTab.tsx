@@ -11,7 +11,7 @@ import { isRestBodyEmpty } from '../../../services/rest-service';
 import {
   Container,
   Dropdown,
-  MultiLineIFE,
+  Editor,
   PrimaryIFT,
   MultipartIFT,
   Button,
@@ -182,7 +182,7 @@ const BodyTab: FC<any> = () => {
         case 'application/text':
         case ERestBodyTypes.Text:
           return (
-            <MultiLineIFE
+            <Editor
               autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
               value={body?.[active_body_type]?.value}
               language={

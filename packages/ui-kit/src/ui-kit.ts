@@ -63,10 +63,13 @@ export { CheckboxInGrid } from './components/checkbox/Checkbox';
 // export { default as CollectionDirNode } from './components/collection/sample/DirectoryNode';
 
 // Editors
-export { default as FirecampEditor } from './components/editors/monaco/components/FirecampEditor';
-export { default as SingleLineIFE } from './components/editors/monaco/components/SingleLineIFE';
-export { default as MultiLineIFE } from './components/editors/monaco/components/MultiLineIFE';
+// export { default as FirecampEditor } from './components/editors/monaco/components/FirecampEditor';
+// export { default as SingleLineIFE } from './components/editors/monaco/components/SingleLineIFE';
+// export { default as MultiLineIFE } from './components/editors/monaco/components/MultiLineIFE';
 export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CMGQueryEditor';
+
+export { default as Editor } from './components/editors/monaco-v2/Editor';
+export { default as SingleLineEditor } from './components/editors/monaco-v2/SingleLineEditor';
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';
@@ -92,10 +95,13 @@ export { default as UrlBar } from './components/url/components/UrlBar';
 export { default as Popover } from './components/popover/Popover';
 export { default as ConfirmationPopover } from './components/popover/ConfirmationPopover';
 
+// Toast
+export { default as Toast } from './components/toast/Toast';
+
 // scripts
 export { default as ScriptsTabs } from './components/scripts/ScriptsTabs';
 
-//response
+// response
 export { default as Response } from './components/response/Response';
 
 //----------------------------------------------------enums---------------------------------------------------------------------------
@@ -113,3 +119,5 @@ export { default as ToolBar } from './components/ToolBar/ToolBar';
 export { default as Alert } from './components/alert/Alert';
 export type { EAlertType } from './components/alert/Alert.interface';
 export { default as Empty } from './components/empty/Empty';
+
+export { default as Loader } from './components/loader/Loader';

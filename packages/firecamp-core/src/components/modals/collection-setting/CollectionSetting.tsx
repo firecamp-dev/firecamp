@@ -7,7 +7,6 @@ import equal from 'deep-equal';
 
 import SettingBody from './body/SettingBody';
 import './CollectionSetting.sass';
-import { Project as _Project } from '../../../constants';
 import { ECollectionSettingTabs } from '../../../constants';
 import Header from './Header';
 

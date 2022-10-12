@@ -4,20 +4,18 @@ import {
   TextArea,
   TabHeader,
   Button,
- 
-  
   Modal,
   IModal,
   ProgressBar,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-
-import { useWorkspaceStore } from '../../../../store/workspace';
-import { useRequestStore } from '../../../../store/request';
-import { useModalStore } from '../../../../store/modal';
 import { TId } from '@firecamp/types';
 
-type TModalMeta = { name: string, description: string, request_id: TId, collection_id: TId };
+import { useModalStore } from '../../../../store/modal';
+import { useWorkspaceStore } from '../../../../store/workspace'
+import AppService from '../../../../services/app'
+
+type TModalMeta = { name: string, description: string, request_id: TId, collection_id: TId, folder_id?: TId };
 
 const EditRequest: FC<IModal> = ({
   isOpen = false,
@@ -26,7 +24,7 @@ const EditRequest: FC<IModal> = ({
   width = '500px',
 }) => {
 
-  const { name, description, request_id, collection_id  } = useModalStore.getState().meta as TModalMeta;
+  const { name, description, request_id, collection_id, folder_id  } = useModalStore.getState().meta as TModalMeta;
   const [request, setRequest] = useState({
     name,
     description
@@ -40,37 +38,34 @@ const EditRequest: FC<IModal> = ({
     setRequest((r) => ({ ...r, [name]: value }));
   };
 
-  const onCreate = () => {
+  const onUpdate = () => {
     if (isRequesting) return;
     const name = request.name.trim();
     if (!name || name.length < 3) {
-      setError({ name: 'The request name must have minimun 3 characters' });
+      setError({ name: 'The request name must have minimum 3 characters' });
       return;
     }
     const _request = {
-      ...request,
-      name,
-      description: request?.description?.trim(),
+      meta: {
+        name,
+        description: request?.description?.trim(),
+      },
+      _meta: {
+        id: request_id,
+        collection_id,
+        folder_id
+      }
     };
 
     setIsRequesting(true);
-    // console.log({ _request });
-
-    useRequestStore.getState().onEditRequest(_request);
-
-    // createRequest(_request)
-    //   .then((r)=> {
-
-    //     console.log(r, "r......")
-    //     AppService.modals.close();
-    //   })
-    //   .catch((e)=> {
-    //     console.log(e.response, e.response?.data)
-    //     AppService.notify.alert(e?.response?.data?.message || e.message )
-    //   })
-    //   .finally(()=> {
-    //     setIsRequesting(false);
-    //   });
+    const {  updateRequest } = useWorkspaceStore.getState()
+    updateRequest(request_id, _request)
+      .then((res)=> {
+        AppService.modals.close();
+      })
+      .finally(()=> {
+        setIsRequesting(false);
+      });
   };
 
   return (
@@ -134,7 +129,7 @@ const EditRequest: FC<IModal> = ({
               text={isRequesting ? 'Updating...' : 'Update'}
               primary
               sm
-              onClick={onCreate}
+              onClick={onUpdate}
               disabled={isRequesting}
             />
           </TabHeader.Right>

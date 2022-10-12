@@ -345,20 +345,6 @@ const FirecampEditor: FC<IFirecampEditor> = ({
   };
 
   return (
-    // <ReactResizeDetector
-    //   handleWidth
-    //   handleHeight
-    //   // onResize={_resize}
-    //   refreshMode="debounce"
-    //   refreshRate={100}
-    // >
-
-    // {/* {resizeListener} */}
-
-    // {({ width, height }) => {
-
-    //   console.log(width, height, 1111);
-    // return (
     <>
       {controlsConfig?.show ? (
         <div className="absolute top-2 right-2 z-10">
@@ -448,9 +434,6 @@ const FirecampEditor: FC<IFirecampEditor> = ({
       />
     </>
   );
-  //   }}
-  // </ReactResizeDetector>
-  // );
 };
 
 export default FirecampEditor;

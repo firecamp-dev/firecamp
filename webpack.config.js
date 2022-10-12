@@ -1,33 +1,59 @@
-// import environments
+/* eslint-disable no-console */
 require('dotenv').config();
 
 const webpack = require('webpack');
 const path = require('path');
-const metadata = require('./package.json');
-const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+// eslint-disable-next-line import/no-extraneous-dependencies
+// const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { Environment } = require('./scripts/constants');
+
+const env = process.env.NODE_ENV;
+
+const metadata = require('./package.json');
 
 exports.common = {
   entry: {
-    app: path.join(
+    index: path.join(
       __dirname,
       './packages/firecamp-core/src/containers/index.tsx'
     ),
-    identity: path.join(
-      __dirname,
-      './packages/firecamp-core/src/containers/identity.tsx'
-    ),
+    // identity: path.join(
+    //   __dirname,
+    //   './packages/firecamp-core/src/containers/identity.tsx'
+    // ),
   },
   optimization: {
     nodeEnv: process.env.NODE_ENV,
-    minimize: false,
+    minimize: true,
+    runtimeChunk: 'single',
     splitChunks: {
-      name: 'vendor',
-      chunks(chunk) {
-        // To prevent generate separate chunk for background script
-        // Because all node_modules not needed in background script
-        return !chunk?.name?.includes('background');
+      // name: 'vendor',
+      // chunks(chunk) {
+      //   // To prevent generate separate chunk for background script
+      //   // Because all node_modules not needed in background script
+      //   return !chunk?.name?.includes('background');
+      // },
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            return 'vender';
+
+            // get the name. E.g. node_modules/packageName/not/this/part.js
+            // or node_modules/packageName
+            // const packageName = module.context.match(
+            //   /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+            // )[1];
+
+            // // npm package names are URL-safe, but some servers don't like @ symbols
+            // return `npm.${packageName.replace('@', '')}`;
+          },
+        },
       },
     },
   },
@@ -51,26 +77,28 @@ exports.common = {
   },
 };
 
+const outputPath = `${__dirname}/build/${env}`;
+const publicPath = '';
 exports.output = {
   globalObject: 'this',
   filename: '[name].bundle.js',
   chunkFilename: '[name].bundle.js',
+  path: outputPath,
+  publicPath,
 };
 
-if (process.env.NODE_ENV === 'development') {
-  exports.output['path'] = path.join(__dirname, './build/dev/js');
-  exports.output['clean'] = true;
-} else {
-  exports.output['path'] = path.join(__dirname, './build/production/js');
-}
+// exports.output.path = path.join(__dirname, `./build/${env}`);
+if (env === Environment.Development) exports.output.clean = true;
 
 exports.env = {
   NODE_ENV: JSON.stringify(process.env.NODE_ENV),
   FIRECAMP_API_HOST: JSON.stringify(process.env.FIRECAMP_API_HOST),
   FIRECAMP_PROXY_API_HOST: JSON.stringify(process.env.FIRECAMP_PROXY_API_HOST),
-  FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(process.env.FIRECAMP_EXTENSION_AGENT_ID),
+  FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(
+    process.env.FIRECAMP_EXTENSION_AGENT_ID
+  ),
   APP_VERSION: JSON.stringify(metadata.version),
-  APP_FORMAT: JSON.stringify(process.env.APP_FORMAT),
+  AppFormat: JSON.stringify(process.env.AppFormat),
   SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
   CRISP_WEBSITE_ID: JSON.stringify(process.env.CRISP_WEBSITE_ID),
   GOOGLE_OAUTH2_CLIENT_ID: JSON.stringify(process.env.GOOGLE_OAUTH2_CLIENT_ID),
@@ -91,8 +119,9 @@ exports.env = {
 
 exports.plugins = [
   new HtmlWebpackPlugin({
-    inject: false,
-    template: path.join(__dirname, './build/dev/app.html'),
+    inject: true,
+    filename: '[name].html',
+    template: 'templates/index.html',
   }),
   new NodePolyfillPlugin(),
   new webpack.ProgressPlugin({
@@ -102,16 +131,19 @@ exports.plugins = [
     profile: true,
     handler: (percentage, message, ...args) => {
       console.clear();
-      console.log((percentage * 100).toFixed() + '%', message, ...args);
+      console.log(`${(percentage * 100).toFixed()}%`, message, ...args);
     },
   }),
-  new MonacoWebpackPlugin({
-    // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-    globalAPI: true,
-    publicPath: '/js/',
-    filename: '[name].worker.bundle.js',
-    languages: ['javascript', 'html', 'typescript', 'json'],
-  }),
+  // new MonacoWebpackPlugin({
+  //   /**
+  //    * available options are documented at
+  //    * https://github.com/microsoft/monaco-editor/tree/main/webpack-plugin#options
+  //    **/
+  //   globalAPI: true,
+  //   publicPath: '/js',
+  //   filename: '[name].worker.bundle.js',
+  //   languages: ['javascript', 'html', 'typescript', 'json'],
+  // }),
 ];
 
 exports.rules = [

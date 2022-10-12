@@ -1,42 +1,45 @@
-import { FC, useState, useEffect, useMemo } from 'react';
+import { FC, useState, useEffect, useMemo, useRef } from 'react';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import {
   Resizable,
   Container,
-  MultiLineIFE,
+  Editor,
   TabHeader,
-  Button,
- 
-  
+  Button, 
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
-import { EEnvironmentScope } from '@firecamp/types';
+import { EEnvironmentScope, IEnvironment } from '@firecamp/types';
+
+import EnvironmentDD from '../common/environment/environment-widget/EnvironmentDD';
+import * as platformContext from '../../services/platform-context';
+import classnames from 'classnames';
 
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
-import EnvironmentDD from '../common/environment/environment-widget/EnvironmentDD';
 import { useTabStore } from '../../store/tab';
-import * as platformContext from '../../services/platform-context';
+import AppService from '../../services/app'
 
-const EnvSidebar: FC<any> = () => {
-  let {
-    is_env_sidebar_open,
-    active_tab_wrs_env,
-    active_tab_collection_envs,
+const EnvSidebar: FC<any> = ({ expanded }) => {
+  const {
+    activeTabWrsEnv,
+    activeTabCollectionEnvs,
 
     toggleEnvSidebar,
   } = useEnvStore(
     (s: IEnvironmentStore) => ({
-      is_env_sidebar_open: s.is_env_sidebar_open,
-
-      active_tab_wrs_env: s.active_tab_wrs_env,
-      active_tab_collection_envs: s.active_tab_collection_envs,
+      activeTabWrsEnv: s.activeTabWrsEnv,
+      activeTabCollectionEnvs: s.activeTabCollectionEnvs,
       toggleEnvSidebar: s.toggleEnvSidebar,
     }),
     shallow
   );
 
-  let { tab, activeTab } = useTabStore(
+  console.log({
+    activeTabWrsEnv,
+    activeTabCollectionEnvs,
+  })
+
+  const { tab, activeTab } = useTabStore(
     (s: any) => ({
       tab: s.list?.find((t) => t.id === s.activeTab) || {},
       activeTab: s.activeTab,
@@ -44,22 +47,20 @@ const EnvSidebar: FC<any> = () => {
     shallow
   );
 
-  let [activeCollectionEnv, setActiveCollectionEnv] = useState('');
+  const [activeCollectionEnv, setActiveCollectionEnv] = useState('');
 
+  /** if active tab change then set current active tab's envs in sidebar*/
   useEffect(() => {
     let collection_id = tab?.request?._meta?.collection_id;
     // console.log({ collection_id });
-
-    if (tab && tab?.meta?.isSaved && collection_id) {
-      setActiveCollectionEnv(active_tab_collection_envs[collection_id] || '');
+    if (tab?.meta?.isSaved && collection_id) {
+      setActiveCollectionEnv(activeTabCollectionEnvs[collection_id] || '');
     } else {
+      /** is request is not saved then don't set collection scoped env */
       setActiveCollectionEnv('');
     }
-  }, [tab, activeTab, active_tab_collection_envs]);
-
-  // console.log({ activeCollectionEnv });
-  if (!is_env_sidebar_open) return <></>;
-
+  }, [tab, activeTab, activeTabCollectionEnvs]);
+  
   return (
     <Resizable
       width={'400'}
@@ -67,11 +68,11 @@ const EnvSidebar: FC<any> = () => {
       left={true}
       minWidth={'250'}
       maxWidth={'600'}
-      className="!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30"
+      className={classnames("!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30 expandable-right-pane", {'expanded': expanded})}
     >
       <Container>
         <Container.Header className="flex !p-2 bg-focus1">
-          <div className="flex-1 mr-2 text-base p-2">Active Environments</div>
+          <div className="flex-1 mr-2 text-base p-2 font-bold">Active Environments</div>
           <div
             className="ml-auto flex-none text-base flex justify-center items-center cursor-pointer"
             onClick={toggleEnvSidebar}
@@ -83,7 +84,7 @@ const EnvSidebar: FC<any> = () => {
           <EnvVarPreview
             key={`env-preview-${EEnvironmentScope.Workspace}`}
             scope={EEnvironmentScope.Workspace}
-            activeEnvId={active_tab_wrs_env}
+            activeEnvId={activeTabWrsEnv}
             activeTab={activeTab}
           />
           {!!activeCollectionEnv ? (
@@ -94,9 +95,7 @@ const EnvSidebar: FC<any> = () => {
               activeTab={activeTab}
               collectionId={tab?.request?._meta?.collection_id}
             />
-          ) : (
-            ''
-          )}
+          ) :  <></>}
         </Container.Body>
         <Container.Footer className="text-sm !p-1 bg-focus3">
           <ol>
@@ -112,34 +111,46 @@ const EnvSidebar: FC<any> = () => {
   );
 };
 
-export { EnvSidebar };
+const EnvSidebarContainer = ()=> {
+  const {
+    isEnvSidebarOpen
+  } = useEnvStore(
+    (s: IEnvironmentStore) => ({
+      isEnvSidebarOpen: s.isEnvSidebarOpen
+    }),
+    shallow
+  );
+  if(!isEnvSidebarOpen) return <></>;
+  return <EnvSidebar expanded={isEnvSidebarOpen}/>
+}
+export { EnvSidebar, EnvSidebarContainer };
 
 const EnvVarPreview: FC<IEnvVarPreview> = ({
+  scope = EEnvironmentScope.Workspace,
   activeEnvId = '',
   collectionId = '',
-  scope = EEnvironmentScope.Workspace,
   activeTab = '',
 }) => {
-  let {
+  const {
+    updateEnvironment,
     getWorkspaceEnvs,
     getCollectionEnvs,
-    setWorkspaceEnvVariable,
-    setCollectionEnvVariable,
+    setEnvVariables,
     setWorkspaceActiveEnv,
     setCollectionActiveEnv,
   } = useEnvStore(
     (s) => ({
+      updateEnvironment: s.updateEnvironment,
       getWorkspaceEnvs: s.getWorkspaceEnvs,
       getCollectionEnvs: s.getCollectionEnvs,
-      setWorkspaceEnvVariable: s.setWorkspaceEnvVariable,
-      setCollectionEnvVariable: s.setCollectionEnvVariable,
+      setEnvVariables: s.setEnvVariables,
       setWorkspaceActiveEnv: s.setWorkspaceActiveEnv,
       setCollectionActiveEnv: s.setCollectionActiveEnv,
     }),
     shallow
   );
 
-  let envs = useMemo(
+  const envs = useMemo(
     () =>
       scope == EEnvironmentScope.Workspace
         ? getWorkspaceEnvs()
@@ -149,20 +160,16 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
 
   // console.log({ activeEnvId, collectionId, activeTab, scope, envs });
 
-  let [variables, setVariables] = useState<string>('');
-  let [isVarUpdated, setIsVarUpdated] = useState(false);
+  const activeEnv = useRef<IEnvironment>(envs.find((env) => env._meta.id === activeEnvId));
+  const [ variables, setVariables ] = useState<string>('');
+  const [ isVarUpdated, setIsVarUpdated ] = useState<boolean>(false);
 
-  const onChangeVariable = (variables: string) => {
-    setVariables(variables); // even if the payload is not a JSON, still it needs to be render in Editor
-  };
-
+  // if env/variables change from outer side then update them into the currently opened sidebar
   useEffect(() => {
+    activeEnv.current = envs.find((env) => env._meta.id === activeEnvId);
     try {
-      let envVariables = envs?.find(
-        (env) => env?._meta?.id === activeEnvId
-      )?.variables;
-
-      let variablesString = JSON.stringify(envVariables || {}, null, 2);
+      if(!activeEnv.current) return;
+      const variablesString = JSON.stringify(activeEnv.current.variables || {}, null, 2);
 
       if (variablesString !== variables) {
         // console.log({ variablesString })
@@ -173,59 +180,41 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
     }
   }, [envs, activeEnvId, collectionId, activeTab]);
 
+  /** if variables changed then show save/undo buttons */
   useEffect(() => {
-    let previousVariables =
-      envs?.find((env) => env?._meta?.id === activeEnvId)?.variables || {};
     try {
-      let vars = JSON.parse(variables || '{}');
-      let isNotSamevariables = !equal(vars, previousVariables);
-
-      if (isNotSamevariables !== isVarUpdated) {
-        setIsVarUpdated(isNotSamevariables);
-      }
+      const vars = JSON.parse(variables || '{}');
+      const isEqual = equal(vars, activeEnv.current.variables);
+      setIsVarUpdated(!isEqual);
     } catch (e) {
       console.log({ e });
-      if (!isVarUpdated) {
-        setIsVarUpdated(false);
-      }
     }
   }, [variables, envs]);
 
+  const onChangeVariable = (variables: string) => {
+    setVariables(variables); // even if the payload is not a JSON, still it needs to be render in Editor
+  };
+
   const onUndoChanges = () => {
-    let envVariables = envs?.find(
-      (env) => env?._meta?.id === activeEnvId
-    )?.variables;
-    let variablesString = JSON.stringify(envVariables || {}, null, 2);
+    let variablesString = JSON.stringify(activeEnv.current.variables || {}, null, 2);
     setVariables(variablesString);
   };
 
-  const onUpdate = () => {
+  const onUpdate = async () => {
+    let vars ={};
     try {
-      let variablesObject = JSON.parse(variables);
-
-      // console.log({ scope, variablesObject });
-
-      if (scope == EEnvironmentScope.Workspace) {
-        // console.log({ variables, variablesObject });
-
-        setWorkspaceEnvVariable(activeEnvId, variablesObject);
-      } else {
-        setCollectionEnvVariable(collectionId, activeEnvId, variablesObject);
-      }
-
-      //todo: fetch server response here and show loader and success notification
-      setIsVarUpdated(false);
-
-      emitUpdates();
-    } catch (error) {
-      console.log({ error });
+      vars = JSON.parse(variables);
     }
-  };
+    catch (e) {
+      AppService.notify.alert("The variables are not valid JSON.")
+    }
 
-  const capitalize = (scope: string) => {
-    let text =
-      scope === EEnvironmentScope.Workspace ? 'Workspace' : 'Collection';
-    return text.charAt(0).toUpperCase() + text.slice(1);
+    /** update env vars */
+    await updateEnvironment(activeEnvId, { variables: vars });
+    setIsVarUpdated(false);
+    
+    // get environment changes and emit to request tab
+    platformContext.environment.setVarsToProvidersAndEmitEnvsToTab();
   };
 
   const _setActiveEnv = (envId) => {
@@ -234,20 +223,16 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
     } else {
       setCollectionActiveEnv(collectionId, envId);
     }
-    emitUpdates();
-  };
-
-  const emitUpdates = () => {
     // get environment changes and emit to request tab
-    platformContext.environment.getAndEmitPlatformVariables();
+    platformContext.environment.setVarsToProvidersAndEmitEnvsToTab();
   };
 
   return (
     <div className="flex-1">
       <div className="border-b border-t border-appBorder flex">
         <TabHeader className="height-ex-small">
-          <TabHeader.Left className="font-base font-bold">
-            {`${capitalize(scope)} Environments`}
+          <TabHeader.Left className="text-base font-normal">
+            Scope: {scope == EEnvironmentScope.Workspace? "Workspace": "Collection"}
           </TabHeader.Left>
           <TabHeader.Right className="env-popover-nested">
             <EnvironmentDD
@@ -260,11 +245,9 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
             />
           </TabHeader.Right>
         </TabHeader>
-        {/* <div className="flex-1 mr-2 text-base"> {`${scope} Environments`}</div> */}
-        {/* <div className="ml-auto flex-none text-base"> Dropdown </div> */}
       </div>
       <div style={{ height: 'calc(50vh - 100px)' }}>
-        <MultiLineIFE
+        <Editor
           autoFocus={true}
           language="json"
           value={variables}
@@ -272,10 +255,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
           onChange={(e) => {
             onChangeVariable(e.target.value);
           }}
-          onCtrlS={
-            () => {}
-            /* _onUpdate */
-          }
+          onCtrlS={onUpdate}
           controlsConfig={{
             show: true,
           }}
@@ -291,24 +271,22 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
             <TabHeader.Right>
               <Button
                 text={'Undo Changes'}
-                primary
-                transparent={true}
-                sm
-                disabled={!isVarUpdated}
                 onClick={onUndoChanges}
+                disabled={!isVarUpdated}
+                primary
+                transparent
+                sm
               />
               <Button
                 text={'Update'}
+                onClick={onUpdate}
+                disabled={!isVarUpdated}
                 primary
                 sm
-                disabled={!isVarUpdated}
-                onClick={onUpdate}
               />
             </TabHeader.Right>
           </TabHeader>
-        ) : (
-          <></>
-        )}
+        ) : <></>}
       </div>
     </div>
   );

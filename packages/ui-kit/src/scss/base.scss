@@ -580,18 +580,30 @@ textarea:focus,textarea:focus-visible{
 /*---------scrollbar css start----------*/
 .doc-explorer-contents::-webkit-scrollbar
 {
+  width: 0px;
+  height: 0px;
+  transition: width 1s
+}
+.doc-explorer-contents:hover::-webkit-scrollbar
+{
   width: 8px;
   height: 8px;
 }
+.doc-explorer-contents:hover::-webkit-scrollbar:hover
+{
+  width: 12px;
+  height: 8px;
+  
+}
 .visible-scrollbar::-webkit-scrollbar-thumb
 {
-background-color: var(--focus-level-4) !important;
+  background-color: var(--focus-level-4) !important;
 }
 ::-webkit-scrollbar-track{
   background: transparent;
 }
 ::-webkit-scrollbar-thumb{
-  background: #000 !important;
+  background: var(--focus-level-4) !important;
   border-radius: 10px;
 }
 
@@ -612,8 +624,13 @@ background-color: var(--focus-level-4) !important;
 }
 .visible-scrollbar::-webkit-scrollbar, .visible-scrollbar > div::-webkit-scrollbar{
   display: block;
-  width: 4px;
-  height: 4px;
+  width: 0px;
+  height: 0px;
+}
+.visible-scrollbar:hover::-webkit-scrollbar, .visible-scrollbar > div:hover::-webkit-scrollbar{
+  display: block;
+  width: 8px;
+  height: 8px;
 }
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
@@ -714,9 +731,9 @@ body .ace_editor .ace_scrollbar{
     user-select: text;
   }
   
-  .json-as-form input.json_row--key, .json-as-form input.json_row--value{
-    background: transparent;
-  }
+  // .json-as-form input.json_row--key, .json-as-form input.json_row--value{
+  //   background: transparent;
+  // }
 /*----------other css  end--------*/ 
 
 /*---code mirror css starts -------*/
@@ -772,3 +789,13 @@ body .ace_editor .ace_scrollbar{
 }
 
 /*---code mirror css ends----------*/
+
+.expandable-right-pane{
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 2s;
+}
+
+.expandable-right-pane.expanded{
+  transform: scaleX(1); 
+}

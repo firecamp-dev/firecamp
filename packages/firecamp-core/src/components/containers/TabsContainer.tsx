@@ -42,7 +42,7 @@ const TabsContainer: FC<any> = () => {
    */
   useEffect(() => {
     if (!tabs.length) {
-      let isEnvSidebarOpen = useEnvStore.getState().is_env_sidebar_open;
+      const { isEnvSidebarOpen } = useEnvStore.getState();
 
       // check if open env side bar
       if (isEnvSidebarOpen) {

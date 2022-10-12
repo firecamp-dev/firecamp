@@ -2,11 +2,12 @@ import { FC } from 'react';
 import { Response as ResponsePanel } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 
-import { useRestStore } from '../../store';
+import { useRestStore, IRestStore } from '../../store';
 
 const Response: FC<any> = () => {
-  let { response, isRequestRunning } = useRestStore(
-    (s: any) => ({
+  let { requestId, response, isRequestRunning } = useRestStore(
+    (s: IRestStore) => ({
+      requestId: s.request._meta.id,
       response: s.response,
       isRequestRunning: s.runtime.isRequestRunning,
     }),
@@ -15,6 +16,7 @@ const Response: FC<any> = () => {
 
   return (
     <ResponsePanel
+      id={requestId}
       response={response}
       isRequestRunning={isRequestRunning}
       docLink={'https://doc.firecamp.io/http/a/sending-your-first-request/'}

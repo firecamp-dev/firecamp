@@ -1,57 +1,93 @@
+/* eslint-disable no-console */
 require('dotenv').config();
-const colors = require('colors');
+const { red, yellow } = require('colors');
 const semver = require('semver');
 require('shelljs/global');
 const build = require('./build');
 const { version } = require('../package.json');
+const { Environment, AppFormat } = require('./constants');
 
-const variables = [
-  // 'FIRECAMP_API_HOST',
-  // 'CSC_KEY_PASSWORD',
-  // 'CSC_LINK',
-  // 'DO_KEY_ID',
-  // 'DO_SECRET_KEY',
-];
+const env = process.env.NODE_ENV;
 
-// Validate project version
-if (!semver.valid(version)) {
-  console.log(
-    `${colors.red('Error:')} Invalid project version(${colors.yellow(version)})`
-  );
-  process.exit();
-}
+/**
+ * 1. test variables
+ */
 
-// Set app version in the environment
+const validator = {
+  /** validate project version  */
+  version: () => {
+    if (!semver.valid(version)) {
+      console.log(
+        `${red('Error:')} invalid project version(${yellow(version)})`
+      );
+      process.exit();
+    }
+  },
+
+  /** validate env variables  */
+  variables: () => {
+    const variables = [
+      'FIRECAMP_API_HOST',
+      'CSC_KEY_PASSWORD',
+      'CSC_LINK',
+      'DO_KEY_ID',
+      'DO_SECRET_KEY',
+    ];
+
+    // Check if environment variables set
+    variables.forEach((variable) => {
+      if (
+        !process.env.variable ||
+        typeof process.env[variable] === 'undefined' ||
+        process.env[variable].length < 5
+      ) {
+        console.log(
+          `${red('Error:')} Env. variable ${yellow(variable)} not set`
+        );
+        process.exit();
+      }
+    });
+  },
+};
+
+const helper = {
+  buildWebApp: async () => {
+    process.env.NODE_OPTIONS = '--max-old-space-size=4096';
+
+    await build();
+
+    // Finished the process if build=chrome
+    if (process.env.AppFormat === AppFormat.WebApp) {
+      // remove unused packages
+      rm('-rf', `build/${env}/build-scripts`);
+      rm('-rf', `build/${env}/packages-executors`);
+      rm('-rf', `build/${env}/services`);
+
+      // remove chrome extension app files // TODO: remove it later
+      rm('-rf', `build/${env}/splashscreen.html`);
+      rm('-rf', `build/${env}/manifest.json`);
+      rm('-rf', `build/${env}/background.html`);
+      rm('-rf', `build/${env}/window.html`);
+
+      process.exit();
+    }
+  },
+};
+
+// set app version in the environment
 process.env.APP_VERSION = version;
 
-// Set release server production/staging/canary
-process.env.RELEASE_SERVER = process.argv[2];
-
-// Check if environment variables set
-variables.forEach((variable) => {
-  if (
-    !(variable in process.env) ||
-    typeof process.env[variable] === 'undefined' ||
-    process.env[variable].length < 5
-  ) {
-    console.log(
-      `${colors.red('Error:')} Env. variable ${colors.yellow(variable)} not set`
-    );
-    process.exit();
-  }
-});
-
-// Check FIRECAMP_API_HOST env. variable value does not contains invalid value
+// check FIRECAMP_API_HOST env. variable value does not contains invalid value
 if (
-  process.env.RELEASE_SERVER !== 'staging' &&
+  env !== Environment.Staging &&
   (process.env.FIRECAMP_API_HOST.includes('localhost') ||
     process.env.FIRECAMP_API_HOST.includes('testing') ||
     process.env.FIRECAMP_API_HOST.includes('127.0.0.1'))
 ) {
   console.log(
-    `${colors.red(
+    `${red(
       'Error:'
-    )} Invalid value set for env. variable (FIRECAMP_API_HOST ${colors.yellow(
+    )} invalid value set for env. variable (FIRECAMP_API_HOST ${yellow(
       process.env.FIRECAMP_API_HOST
     )})`
   );
@@ -72,7 +108,7 @@ const _exec = (command) =>
       if (code !== 0) {
         console.error(
           `
-${colors.red('Error: ')}Failed to execute command: ${command}`
+${red('Error: ')}Failed to execute command: ${command}`
         );
 
         process.exit();
@@ -87,56 +123,38 @@ ${colors.red('Error: ')}Failed to execute command: ${command}`
 
 const preBuildCliCommands = async () => {
   // Prevent check git tag while staging build
-  if (process.env.RELEASE_SERVER === 'staging') return Promise.resolve();
+  if (env === Environment.Staging) return Promise.resolve();
 
   // Check is tag was checked out or not
-  const result = await _exec('git describe --tags', { async: true });
-  if (result.replace(/\n/g, '') !== `v${version}`) {
-    console.log(
-      `
-  ${colors.red('Error:')} Please checkout tag '${colors.yellow(
-        `v${version}`
-      )}' for release`
-    );
-    process.exit();
-  } else return Promise.resolve();
+  // await _exec('git describe --tags', { async: true })
+  //   .then((result) => {
+  //     console.log(result);
+  //     if (result.replace(/\n/g, '') !== `v${version}`) {
+  //       console.log(
+  //         `${red('Error:')} Please checkout tag '${yellow(
+  //           `v${version}`
+  //         )}' for release`
+  //       );
+  //       process.exit();
+  //     } else return Promise.resolve();
+  //   })
+  //   .catch((e) => {
+  //     console.log(e, 'this is the error');
+  //   });
 };
 
-if (process.env.NODE_ENV === 'production') {
+if (env === Environment.Staging) {
+  helper.buildWebApp();
+}
+if (env === Environment.Production) {
   try {
     preBuildCliCommands().then(async () => {
-      /**
-       * Setting environments
-       */
-      process.env.NODE_OPTIONS = '--max-old-space-size=4096';
-
-      await build();
-
-      // Finished the process if build=chrome
-      if (['extension', 'webapp'].includes(process.env.APP_FORMAT)) {
-        // Remove unused packages
-        rm('-rf', 'build/production/build-scripts');
-        rm('-rf', 'build/production/packages-executors');
-        rm('-rf', 'build/production/services');
-
-        if (process.env.APP_FORMAT === 'webapp') {
-          // Remove chrome extension app files
-          rm('-rf', 'build/production/splashscreen.html');
-          rm('-rf', 'build/production/manifest.json');
-          rm('-rf', 'build/production/background.html');
-          rm('-rf', 'build/production/window.html');
-          // TODO: Why it's created
-          rm('-rf', 'build/production/js/index.html');
-          rm('-rf', 'build/production/js/background.bundle.js');
-        }
-
-        process.exit();
-      }
+      await helper.buildWebApp();
 
       // Set bundle id for electron app
-      if (process.env.RELEASE_SERVER === 'production')
+      if (env === Environment.Production)
         process.env.appBundleId = 'com.firecamp.app';
-      else if (process.env.RELEASE_SERVER === 'canary')
+      else if (env === Environment.Canary)
         process.env.appBundleId = 'com.firecamp.canary';
 
       // Copy release note and post build checks
@@ -161,7 +179,7 @@ if (process.env.NODE_ENV === 'production') {
       exec('yarn add ../../../firecamp-forks/electron-oauth-helper -W');
 
       // Prepare linux os 'AppImage' build
-      if (process.env.APP_FORMAT === 'appImage') {
+      if (process.env.AppFormat === AppFormat.AppImage) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --linux AppImage');
 
@@ -176,12 +194,12 @@ if (process.env.NODE_ENV === 'production') {
             `shasum -a 256 ./dist/Firecamp-${process.env.APP_VERSION}.AppImage`
           );
 
-          console.log(`${colors.yellow('shasum:')} ${shasum}`);
+          console.log(`${yellow('shasum:')} ${shasum}`);
         }
       }
 
       // Prepare linux os 'Snap' build
-      if (process.env.APP_FORMAT === 'snap') {
+      if (process.env.AppFormat === AppFormat.Snap) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --linux Snap');
 
@@ -191,7 +209,7 @@ if (process.env.NODE_ENV === 'production') {
       }
 
       // Prepare windows os 'nsis' build
-      if (process.env.APP_FORMAT === 'nsis') {
+      if (process.env.AppFormat === AppFormat.NSIS) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --win');
 
@@ -206,12 +224,12 @@ if (process.env.NODE_ENV === 'production') {
             `shasum -a 256 ./dist/Firecamp-${process.env.APP_VERSION}.exe`
           );
 
-          console.log(`${colors.yellow('shasum:')} ${shasum}`);
+          console.log(`${yellow('shasum:')} ${shasum}`);
         }
       }
 
       // Prepare mac os 'dmg' build
-      if (process.env.APP_FORMAT === 'dmg') {
+      if (process.env.AppFormat === AppFormat.Dmg) {
         // do not publish the app
         if (process.argv[3] === 'l') exec('electron-builder --mac');
 
@@ -226,7 +244,7 @@ if (process.env.NODE_ENV === 'production') {
             `shasum -a 256 ./dist/Firecamp-${process.env.APP_VERSION}.dmg`
           );
 
-          console.log(`${colors.yellow('shasum:')} ${shasum}`);
+          console.log(`${yellow('shasum:')} ${shasum}`);
         }
       }
     });

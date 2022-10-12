@@ -15,7 +15,7 @@ module.exports = {
   devtool: 'eval-cheap-module-source-map',
   devServer: {
     //server: 'https',
-    static: path.join(__dirname, './build/dev'),
+    static: path.join(__dirname, './build/development'),
     compress: true,
     port: 3000,
     open: true,
@@ -36,7 +36,9 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env': {
         ...env,
-        FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(process.env.FIRECAMP_EXTENSION_AGENT_ID),
+        FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(
+          process.env.FIRECAMP_EXTENSION_AGENT_ID
+        ),
       },
     }),
     // new BundleAnalyzerPlugin(),

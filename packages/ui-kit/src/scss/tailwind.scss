@@ -1207,7 +1207,6 @@ video {
 	width: 100%;
 }
 .w-max {
-	width: -webkit-max-content;
 	width: -moz-max-content;
 	width: max-content;
 }
@@ -1710,6 +1709,10 @@ video {
 .\!px-0 {
 	padding-left: 0px !important;
 	padding-right: 0px !important;
+}
+.\!py-0 {
+	padding-top: 0px !important;
+	padding-bottom: 0px !important;
 }
 .px-0 {
 	padding-left: 0px;
@@ -2305,12 +2308,10 @@ hr{
   height: 100%;
 }
 .h-fit{
-  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
 .\!h-fit{
-  height: -webkit-fit-content !important;
   height: -moz-fit-content !important;
   height: fit-content !important;
 }
@@ -2353,7 +2354,6 @@ textarea:focus,textarea:focus-visible{
 	color: var(--error);
 }
 .w-fit {
-  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
@@ -2636,7 +2636,6 @@ textarea:focus,textarea:focus-visible{
 }
 
 .collapsed {
-  height: -webkit-fit-content !important;
   height: -moz-fit-content !important;
   height: fit-content !important;
   min-height: 0px !important
@@ -2651,18 +2650,31 @@ textarea:focus,textarea:focus-visible{
 /*---------scrollbar css start----------*/
 .doc-explorer-contents::-webkit-scrollbar
 {
+  width: 0px;
+  height: 0px;
+  -webkit-transition: width 1s;
+  transition: width 1s
+}
+.doc-explorer-contents:hover::-webkit-scrollbar
+{
   width: 8px;
   height: 8px;
 }
+.doc-explorer-contents:hover::-webkit-scrollbar:hover
+{
+  width: 12px;
+  height: 8px;
+  
+}
 .visible-scrollbar::-webkit-scrollbar-thumb
 {
-background-color: var(--focus-level-4) !important;
+  background-color: var(--focus-level-4) !important;
 }
 ::-webkit-scrollbar-track{
   background: transparent;
 }
 ::-webkit-scrollbar-thumb{
-  background: #000 !important;
+  background: var(--focus-level-4) !important;
   border-radius: 10px;
 }
 
@@ -2683,8 +2695,13 @@ background-color: var(--focus-level-4) !important;
 }
 .visible-scrollbar::-webkit-scrollbar, .visible-scrollbar > div::-webkit-scrollbar{
   display: block;
-  width: 4px;
-  height: 4px;
+  width: 0px;
+  height: 0px;
+}
+.visible-scrollbar:hover::-webkit-scrollbar, .visible-scrollbar > div:hover::-webkit-scrollbar{
+  display: block;
+  width: 8px;
+  height: 8px;
 }
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
@@ -2845,3 +2862,34 @@ body .ace_editor .ace_scrollbar{
 }
 
 /*---code mirror css ends----------*/
+
+.loader{
+  margin-top: calc(50vh - 44px);
+  margin-left: calc(50vw - 80px);
+}
+
+.wave-loader {
+  animation: wave-loader 2s linear infinite;
+}
+
+@keyframes wave-loader {
+  0% {
+    width: 0px;
+  }
+  50% {
+    width: 14px;
+  }
+  100% {
+    width: 0px;
+  }
+}
+
+.expandable-right-pane{
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 2s;
+}
+
+.expandable-right-pane.expanded{
+  transform: scaleX(1); 
+}

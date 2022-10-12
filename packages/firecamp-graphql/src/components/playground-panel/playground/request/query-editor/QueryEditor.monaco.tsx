@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { print } from 'graphql/language/printer';
-import { Container, Column, MultiLineIFE } from '@firecamp/ui-kit';
+import { Container, Column, Editor } from '@firecamp/ui-kit';
 
 import getQueryFacts, {
   getCurrentOperation,
@@ -112,7 +112,7 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
     <Column flex={1} height="100%" overflow="auto">
       <Container className="with-divider">
         <Container.Body>
-          <MultiLineIFE
+          <Editor
             value={editorValue || ''}
             language="graphqlDev"
             // formatOnPaste={true}
