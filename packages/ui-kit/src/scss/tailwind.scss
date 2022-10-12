@@ -918,6 +918,9 @@ video {
 .m-0 {
 	margin: 0px;
 }
+.m-auto {
+	margin: auto;
+}
 .my-1 {
 	margin-top: 0.25rem;
 	margin-bottom: 0.25rem;
@@ -1152,6 +1155,12 @@ video {
 .h-3 {
 	height: 0.75rem;
 }
+.h-\[30px\] {
+	height: 30px;
+}
+.h-\[29px\] {
+	height: 29px;
+}
 .h-28 {
 	height: 7rem;
 }
@@ -1249,6 +1258,9 @@ video {
 .max-w-screen-md {
 	max-width: 768px;
 }
+.max-w-\[calc\(100\%-24px\)\] {
+	max-width: calc(100% - 24px);
+}
 .flex-none {
 	flex: none;
 }
@@ -1319,8 +1331,14 @@ video {
 .overflow-visible {
 	overflow: visible;
 }
+.overflow-x-auto {
+	overflow-x: auto;
+}
 .overflow-ellipsis {
 	text-overflow: ellipsis;
+}
+.whitespace-nowrap {
+	white-space: nowrap;
 }
 .whitespace-pre {
 	white-space: pre;
@@ -1814,6 +1832,9 @@ video {
 .text-right {
 	text-align: right;
 }
+.align-baseline {
+	vertical-align: baseline;
+}
 .font-sans {
 	font-family: sans-serif;
 }
@@ -2241,6 +2262,9 @@ video {
 .hover\:after\:bg-focusBorder:hover::after {
 	content: "";
 	background-color: var(--focus-border);
+}
+.focus\:\!border-0:focus {
+	border-width: 0px !important;
 }
 .focus\:bg-inputFocusBackground:focus {
 	background-color: var(--inputFocus-background);

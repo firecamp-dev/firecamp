@@ -4,13 +4,48 @@ import { IFT, SingleLineEditor, Checkbox } from '@firecamp/ui-kit';
 
 import { IPrimaryIFT } from '../interfaces/PrimaryIFT.interfaces';
 
+import Table from '../table/Table';
+import { TableInput} from '../table/TableData';
+
+
 const PrimaryIFT: FC<IPrimaryIFT> = ({
   rows,
   disabled = false,
   title = '',
   onChange = () => {},
   meta = { mode: {} },
+  custom = false,
+  columnDetails
 }) => {
+
+  if(custom)
+  return (
+    <div>
+
+      <div className="smart-table-header-wrapper">
+        {title ? <div className="smart-table-header">{title}</div> : ''}
+      </div>
+
+
+      <Table name='test-table-1'
+        tableWidth={500}
+        tableResizable={true}
+        data={rows}
+        options={{
+          containerClassName: "",
+          minColumnSize: 100,
+        }}
+        columns={columnDetails}
+        columnRenderer={(row) => <>{row}</>}
+        cellRenderer={( cell ) => <TableInput cell={cell}
+          rows={rows}
+          onChange={onChange}
+        />}
+      />
+        
+    </div>
+  )
+
   return (
     <IFT
       onChange={(v) => {

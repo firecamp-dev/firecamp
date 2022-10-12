@@ -11,6 +11,10 @@ import equal from 'deep-equal';
 import { IBulkEditIFT } from '../interfaces/BulkEditIFT.interfaces';
 import { _table } from '@firecamp/utils';
 
+
+import Table from '../table/Table';
+import { defaultData , columnDataForDisplay, headerRow, headerColumnDataForDisplay, TableInput} from '../table/TableData';
+
 const modes = {
   TABLE: 'table',
   RAW: 'raw',
@@ -30,6 +34,12 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
 }) => {
   let [mode, setMode] = useState(modes.TABLE);
   let [raw, setRaw] = useState('');
+
+
+  let [tableValue, setTableValue] = useState(defaultData);
+  useEffect(() => {
+    onChange([headerRow])
+  },[])
 
   useEffect(() => {
     try {
@@ -69,6 +79,12 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
     }
   };
 
+  let updateTableData = (newRows: any [] = []) => {
+    if (!equal(newRows, tableValue)) {
+      setTableValue(newRows);
+    }
+  }
+
   return (
     <div>
       <TabHeader className="-mb-2">
@@ -98,6 +114,8 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           name={title}
           meta={meta}
           disabled={disabled}
+          custom={true}
+          columnDetails={headerColumnDataForDisplay}
         />
       ) : (
         <div className="h-28">
@@ -115,6 +133,25 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           />
         </div>
       )}
+
+      <Table name='test-table'
+        tableWidth={500}
+        tableResizable={true}
+        data={tableValue}
+        options={{
+          containerClassName: "",
+          minColumnSize: 100,
+        }}
+        columns={columnDataForDisplay}
+        columnRenderer={(row) => <>{row}</>}
+        cellRenderer={( cell ) => <TableInput cell={cell}
+        rows={tableValue}
+        onChange={updateTableData}
+      />}
+      />
+
+
+
     </div>
   );
 };
