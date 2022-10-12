@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
-        "Auths"
+        "Auths",
+        "testid"
     ],
     "[javascript]": {
         "editor.formatOnSave": true,
