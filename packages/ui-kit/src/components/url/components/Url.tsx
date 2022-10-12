@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { Column, Row, SingleLineEditor } from '@firecamp/ui-kit';
 
 import { IFELanguages } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
-import '../sass/URLbar-v2.sass';
 
 const Url: FC<IUrl> = ({
   id = '',
