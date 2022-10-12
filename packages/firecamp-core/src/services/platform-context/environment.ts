@@ -108,7 +108,7 @@ const environment: IPlatformEnvironmentService = {
 
   getActiveEnvsByTabId: (tabId: TId) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
-    let tab: ITab = useTabStore.getState().list.find((t) => t.id === tabId);
+    let tab: ITab = useTabStore.getState().list[tabId];
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
     //workspace active environment
@@ -130,7 +130,7 @@ const environment: IPlatformEnvironmentService = {
   // get variables by tab id
   getVariablesByTabId: async (tabId: TId) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
-    const tab: ITab = useTabStore.getState().list.find((t) => t.id === tabId);
+    const tab: ITab = useTabStore.getState().list[tabId];
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
     const activeEnvsOfTab = await environment.getActiveEnvsByTabId(tabId);

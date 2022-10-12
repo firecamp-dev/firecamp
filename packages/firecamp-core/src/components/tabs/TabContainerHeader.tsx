@@ -1,8 +1,7 @@
-import { FC, useMemo } from 'react';
+import { FC, useEffect, useMemo, useRef } from 'react';
 import classnames from 'classnames';
 import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-import { indexBy, prop } from 'ramda';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
 import shallow from 'zustand/shallow';
@@ -14,29 +13,37 @@ import CollabButton from './header/CollabButton';
 import { useTabStore } from '../../store/tab';
 
 const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
-  let { tabs, activeTab } = useTabStore(
+
+  const tabApi = useRef();
+  const { tabs, orders, activeTab } = useTabStore(
     (s: any) => ({
       tabs: s.list,
+      orders: s.orders,
       activeTab: s.activeTab,
     }),
     shallow
   );
 
-  tabs = useMemo(
-    () =>
-      tabs.map((t) => ({
-        ...t,
+  useEffect(()=> {
+    console.log(tabApi, "tabApi..")
+  }, [])
+
+  const tabList = useMemo(() => {
+    orders.map((tId) => {
+      const t = tabs[tId];
+      tabs[tId] = {
+        ...tabs[tId],
         name: t.name || t.request.meta.name,
         preComp: () => (
           <PreComp method={t?.request?.method || ''} type={t.type} />
         ),
         dotIndicator: t.meta?.hasChange === true,
-      })),
-    [tabs]
-  );
+      };
+    });
+    return tabs;
+  }, [tabs, orders]);
 
-  const tabList = indexBy(prop('id'), tabs);
-  console.log(tabList, 'tabList....');
+  console.log(tabList, orders, 'tabList....');
   return (
     <Column
       overflow="visible"
@@ -61,7 +68,9 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
             </div>
             <Tabs
               list={tabList}
+              orders={orders}
               activeTab={activeTab}
+              ref={tabApi}
               onSelect={tabFns.setActive}
               withDivider={true}
               canReorder={true}

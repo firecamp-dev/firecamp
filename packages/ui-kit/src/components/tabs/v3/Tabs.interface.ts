@@ -12,6 +12,9 @@ export interface ITabs {
   /** tabs */
   list: Record<TId, ITab>;
 
+  /** tab orders */
+  orders: TId[];
+
   /** tabs pre component, render before tab title */
   preComp?: ReactNode;
 

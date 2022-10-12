@@ -60,6 +60,7 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/register": "^7.0.0",
+    "@types/ramda": "^0.28.15",
     "babel-eslint": "^7.1.0",
     "babel-loader": "^8.2.4",
     "babel-plugin-add-module-exports": "^1.0.4",
