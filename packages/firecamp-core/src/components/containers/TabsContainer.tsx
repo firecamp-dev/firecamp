@@ -121,8 +121,6 @@ const TabsContainer: FC<any> = () => {
       <RootContainer className="fc-tabs">
         <Row className="flex-col fc-h-screen" overflow="auto">
           <TabContainerHeader
-            tabs={tabs}
-            activeTab={activeTab}
             tabFns={_tabFns}
           />
           <TabContainerBody

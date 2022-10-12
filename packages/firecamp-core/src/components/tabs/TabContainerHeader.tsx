@@ -1,20 +1,27 @@
 import { FC, useMemo } from 'react';
 import classnames from 'classnames';
-import { Column, Row, Tabs } from '@firecamp/ui-kit';
+import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
+import { indexBy, prop } from 'ramda';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
+import shallow from 'zustand/shallow';
 
 import PreComp from './header/PreComp';
 import { ITab, ITabFns } from './types/tab';
 import Menu from './header/Menu';
 import CollabButton from './header/CollabButton';
+import { useTabStore } from '../../store/tab';
 
-const TabHeaderContainer: FC<ITabHeaderContainer> = ({
-  tabs = [],
-  activeTab = 'home',
-  tabFns,
-}) => {
+const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
+  let { tabs, activeTab } = useTabStore(
+    (s: any) => ({
+      tabs: s.list,
+      activeTab: s.activeTab,
+    }),
+    shallow
+  );
+
   tabs = useMemo(
     () =>
       tabs.map((t) => ({
@@ -28,6 +35,8 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({
     [tabs]
   );
 
+  const tabList = indexBy(prop('id'), tabs);
+  console.log(tabList, 'tabList....');
   return (
     <Column
       overflow="visible"
@@ -50,9 +59,8 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({
             >
               <VscHome size={20} />
             </div>
-            {/* {sortedTabs.length > 0 ? ( */}
             <Tabs
-              list={tabs}
+              list={tabList}
               activeTab={activeTab}
               onSelect={tabFns.setActive}
               withDivider={true}
@@ -66,26 +74,21 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({
               tabIndex={-1}
               focus={false}
               className="flex-1 overflow-x-auto overflow-y-visible visible-scrollbar request-tab-wrapper"
-              suffixComp={() => {
-                return (
-                  <div className="flex -ml-1 h-full">
-                    <div
-                      tabIndex={1}
-                      className="w-9 flex items-center justify-center cursor-pointer bg-tabBackground2 text-tabForegroundInactive border-r  border-tabBorder relative"
-                      onClick={(e) => tabFns.open()}
-                    >
-                      <a>
-                        <VscAdd size={16} />
-                      </a>
-                    </div>
-                    <Menu tabFns={tabFns} />
+              suffixComp={
+                <div className="flex -ml-1 h-full">
+                  <div
+                    tabIndex={1}
+                    className="w-9 flex items-center justify-center cursor-pointer bg-tabBackground2 text-tabForegroundInactive border-r  border-tabBorder relative"
+                    onClick={(e) => tabFns.open()}
+                  >
+                    <a>
+                      <VscAdd size={16} />
+                    </a>
                   </div>
-                );
-              }}
+                  <Menu tabFns={tabFns} />
+                </div>
+              }
             />
-            {/* ) : (
-                ''
-              )} */}
           </div>
         </Column>
         <CollabButton />
@@ -97,12 +100,5 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({
 export default TabHeaderContainer;
 
 interface ITabHeaderContainer {
-  tabs: Array<ITab>;
-
-  /**
-   * Current active tab
-   */
-  activeTab?: string;
-
   tabFns: ITabFns;
 }

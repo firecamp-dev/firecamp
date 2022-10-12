@@ -29,6 +29,7 @@ export type { IModal } from './components/modal/interfaces/Modal.interface';
 export { default as SplitView } from './components/split-view/SplitView';
 
 export { default as Tabs } from './components/tabs/Tabs';
+export { default as TabsV3 } from './components/tabs/v3/Tabs';
 export { default as Count } from './components/tabs/Count';
 export { default as SecondaryTab } from './components/tabs/SecondaryTab';
 

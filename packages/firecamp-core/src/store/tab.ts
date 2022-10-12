@@ -13,7 +13,7 @@ const initialState = {
 };
 
 interface ITabStore {
-  list: any[];
+  list: ITab[];
   activeTab: string;
   orders: string[];
 

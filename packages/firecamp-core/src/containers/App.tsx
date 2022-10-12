@@ -28,7 +28,6 @@ import { ModalContainer } from '../components/modals-v3/ModalContainer';
 import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 
-import useMonacoWorkers from '../components/hooks/useMonacoWorkers';
 import AppService from '../services/app';
 import RealtimeEventManager from '../components/common/realtime/Realtime'
 
