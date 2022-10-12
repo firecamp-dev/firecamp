@@ -5,8 +5,7 @@ import { IEditor } from './Editor.interface';
 import MonacoFirecampLangInit, {
   SetCompletionProvider,
 } from '../monaco/lang/init';
-
-import '../monaco/sass/MultiLineIFE.sass';
+import './sass/Editor.sass';
 
 const Editor: FC<IEditor> = ({
   value,

@@ -29,7 +29,7 @@ const Url: FC<IUrl> = ({
                 fontWeight: 600,
               }}
               className="without-border without-padding"
-              height={26}
+              height={21}
               path={id}
               type="text"
               onEnter={onEnter}

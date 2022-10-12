@@ -6,8 +6,6 @@ import MonacoFirecampLangInit, {
   SetCompletionProvider,
 } from '../monaco/lang/init';
 
-import '../monaco/sass/SingleLineIFE.sass';
-
 type TSLEditor = {
   type: 'text' | 'number';
 };
