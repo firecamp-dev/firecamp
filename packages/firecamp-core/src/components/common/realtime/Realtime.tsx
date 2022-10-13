@@ -1,8 +1,8 @@
 import { FC, useEffect } from 'react';
 import { Realtime } from '@firecamp/cloud-apis';
-import { prepareEventNameForRequestPull } from '../../../types';
 import { platformEmitter } from '../../../services/platform-emitter';
 import {  useWorkspaceStore } from '../../../store/workspace'
+import { prepareEventNameForRequestPull } from '../../../services/platform-emitter/events'
 
 const RealtimeEventManager: FC<any> = () => {
 

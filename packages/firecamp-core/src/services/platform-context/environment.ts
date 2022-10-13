@@ -9,9 +9,8 @@ import { _object } from '@firecamp/utils';
 import { useTabStore } from '../../store/tab';
 import { IEnvironmentStore, useEnvStore } from '../../store/environment';
 import { ITab } from '../../components/tabs/types/tab';
-import { platformEmitter } from '../platform-emitter';
-import { prepareEventNameForEnvToTab } from '../../types';
-// import {ITab}
+import { prepareEventNameForEnvToTab } from '../platform-emitter/events'
+import { platformEmitter } from '../platform-emitter'
 
 interface IPlatformEnvironmentService {
   // subscribe to environment changes

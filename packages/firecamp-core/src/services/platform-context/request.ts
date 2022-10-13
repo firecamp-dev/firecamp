@@ -21,7 +21,7 @@ import { ITabMeta } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 
 import AppService from '../app';
-import { prepareEventNameForRequestPull } from '../../types';
+import { prepareEventNameForRequestPull } from '../platform-emitter/events'
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
