@@ -61,6 +61,7 @@
     "@types/markdown-it": "^12.2.3",
     "@types/react": "^17.0.14",
     "@types/react-table": "^7.7.10",
+    "babel-jest": "^29.1.2",
     "babel-loader": "^8.2.2",
     "babel-preset-react-app": "^10.0.0",
     "chromatic": "^6.7.0",
@@ -101,8 +102,6 @@
     "react-codemirror2": "^7.2.1",
     "react-complex-tree": "^1.1.11",
     "react-custom-scrollbars": "^4.2.1",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-full-screen": "^0.3.1-0",
     "react-hook-form": "^6.8.1",
     "react-reflex": "^4.0.3",
@@ -115,21 +114,11 @@
   },
   "peerDependencies": {
     "react": "17.0.2",
-    "react-dnd": "^16.0.0",
-    "react-dnd-html5-backend": "^16.0.0",
     "react-dom": "17.0.2"
   },
   "babel": {
     "presets": [
-      [
-        "react-app",
-        {
-          "absoluteRuntime": false
-        }
-      ],
-      [
         "@babel/preset-env"
-      ]
     ]
   }
 }
