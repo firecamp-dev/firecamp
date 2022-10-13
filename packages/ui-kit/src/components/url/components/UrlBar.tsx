@@ -46,8 +46,10 @@ const Prefix: FC<IPrefix> = ({ children, className }) => {
 
 const Body: FC<IBody> = ({ children, className }) => {
   return (
-    <Column className={className} flex={1} overflow="hidden">
+    <Column className={cx(className, `flex items-center`)} flex={1} overflow="hidden">
+      <div className="flex-1">
       {children}
+      </div>
     </Column>
   );
 };
