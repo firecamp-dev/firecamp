@@ -1,6 +1,7 @@
 import {
   FC,
   forwardRef,
+  Fragment,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -9,7 +10,6 @@ import {
 import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { TId } from '@firecamp/types';
-import { map, propEq, when, assoc } from 'ramda';
 
 import Tab from '../Tab';
 import { ITabs } from './Tabs.interface';
@@ -70,7 +70,11 @@ const Tabs: FC<ITabs> = forwardRef(
           });
         },
         reorder: () => {},
-        add: () => {},
+        add: (tab: ITab) => {
+          setTabs((tabs) => {
+            return { ...tabs, [tab.id]: tab };
+          });
+        },
         remove: () => {},
       };
     });
@@ -98,7 +102,7 @@ const Tabs: FC<ITabs> = forwardRef(
               {orders.map((tabId, i) => {
                 const tab = tabs[tabId];
                 console.log(tabs, tabId, 555);
-                if (!tab) return <></>;
+                if (!tab) return <Fragment key={tabId}/>;
                 return (
                   <Tab
                     key={tabId}

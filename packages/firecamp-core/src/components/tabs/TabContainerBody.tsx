@@ -7,7 +7,7 @@ import TabBody from './TabBody';
 
 const TabContainerBody = ({ tabFns = {} }) => {
 
-  const { tabs, orders, activeTab } = useTabStore(
+  const { tabs, activeTab } = useTabStore(
     (s: ITabStore) => ({
       tabs: s.list,
       orders: s.orders,

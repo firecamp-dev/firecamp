@@ -1,5 +1,3 @@
-import { TId } from '@firecamp/types';
-
 export enum EWorkspaceTypes {
   Personal = 1,
   Organizational = 2,

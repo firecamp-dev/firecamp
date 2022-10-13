@@ -12,6 +12,10 @@ import Menu from './header/Menu';
 import CollabButton from './header/CollabButton';
 import { useTabStore } from '../../store/tab';
 
+import { platformEmitter as emitter } from '../../services/platform-emitter';
+import { EPlatformTabs } from '../../services/platform-emitter/events';
+
+
 const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
 
   const tabApi = useRef();
@@ -24,9 +28,15 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
     shallow
   );
 
-  useEffect(()=> {
+  useEffect(() => {
     console.log(tabApi, "tabApi..")
-  }, [])
+    emitter.on(EPlatformTabs.opened, (tab) => {
+      tabApi.current.add(tab)
+    });
+    return () => {
+      emitter.off(EPlatformTabs.opened);
+    };
+  }, []);
 
   const tabList = useMemo(() => {
     orders.map((tId) => {

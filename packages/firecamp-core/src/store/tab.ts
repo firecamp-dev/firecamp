@@ -1,7 +1,7 @@
 import create from 'zustand';
 import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
-import { TId } from '@firecamp/types';
+import { ERequestTypes, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import R, { map, when, filter, dissoc } from 'ramda';
 
@@ -26,7 +26,7 @@ interface ITabStore {
     rootKeys: (tabId: TId, updatedTab: Partial<ITab>) => void;
   };
   open: {
-    new: (type: string, isActive: boolean, subType: string) => void;
+    new: (type?: string, isActive?: boolean) => void;
     request: (
       request: any,
       options: {
@@ -144,12 +144,12 @@ const useTabStore = create<ITabStore>((set, get) => {
     },
 
     open: {
-      new: (type: string, isActive: boolean, subType: string = '') => {
+      new: (type, isActive) => {
         const tId = nanoid();
         const tab: ITab = {
           id: tId,
           name: 'New Tab',
-          type,
+          type: type || ERequestTypes.Rest,
           meta: {
             isSaved: false,
             hasChange: false,
@@ -170,6 +170,7 @@ const useTabStore = create<ITabStore>((set, get) => {
           activeTab: isActive == true ? tab.id : s.activeTab,
           orders: [...s.orders, tId],
         }));
+        return tab;
       },
 
       request: (

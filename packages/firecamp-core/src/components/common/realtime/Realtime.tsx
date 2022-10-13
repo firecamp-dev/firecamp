@@ -1,37 +1,42 @@
 import { FC, useEffect } from 'react';
 import { Realtime } from '@firecamp/cloud-apis';
-import { platformEmitter } from '../../../services/platform-emitter';
-import {  useWorkspaceStore } from '../../../store/workspace'
-import { prepareEventNameForRequestPull } from '../../../services/platform-emitter/events'
+import { platformEmitter as emitter } from '../../../services/platform-emitter';
+import { useWorkspaceStore } from '../../../store/workspace';
+import {
+  EPlatformTabs,
+  prepareEventNameForRequestPull,
+} from '../../../services/platform-emitter/events';
+import { useTabStore } from '../../../store/tab';
 
 const RealtimeEventManager: FC<any> = () => {
+  const { open, close } = useTabStore.getState();
 
-	const { 
-		onCreateCollection,
-		onUpdateCollection,
-		onDeleteCollection,
-		onCreateFolder,
-		onUpdateFolder,
-		onDeleteFolder,
-		onCreateRequest,
-		onUpdateRequest,
-		onDeleteRequest
-	} = useWorkspaceStore.getState();
+  const {
+    onCreateCollection,
+    onUpdateCollection,
+    onDeleteCollection,
+    onCreateFolder,
+    onUpdateFolder,
+    onDeleteFolder,
+    onCreateRequest,
+    onUpdateRequest,
+    onDeleteRequest,
+  } = useWorkspaceStore.getState();
 
   /** handle realtime request changes */
   useEffect(() => {
     const onRequestChange = () => {
       Realtime.onRequestChanges((payload) => {
         console.log({ onRequestChanges: payload });
-        platformEmitter.emit(
+        emitter.emit(
           prepareEventNameForRequestPull(payload.request_id),
           payload.actions
         );
       });
     };
-    platformEmitter.on('socket.connected', onRequestChange);
+    emitter.on('socket.connected', onRequestChange);
     return () => {
-      platformEmitter.off('socket.connected', onRequestChange);
+      emitter.off('socket.connected', onRequestChange);
     };
   }, []);
 
@@ -39,67 +44,79 @@ const RealtimeEventManager: FC<any> = () => {
   useEffect(() => {
     const onExplorerItemInsert = ({ type, payload }) => {
       console.log(type, payload);
-	  switch(type) {
-		case "collection": 
-			onCreateCollection(payload);
-		break;
-		case "folder": 
-			onCreateFolder(payload);
-		break;
-		case "request": 
-			onCreateRequest(payload);
-		break;
-	  }
+      switch (type) {
+        case 'collection':
+          onCreateCollection(payload);
+          break;
+        case 'folder':
+          onCreateFolder(payload);
+          break;
+        case 'request':
+          onCreateRequest(payload);
+          break;
+      }
     };
     const onExplorerItemUpdate = ({ type, payload }) => {
       console.log(type, payload);
-	  switch(type) {
-		case "collection": 
-			onUpdateCollection(payload);
-		break;
-		case "folder": 
-			onUpdateFolder(payload);
-		break;
-		case "request": 
-			onUpdateRequest(payload);
-		break;
-	  }
+      switch (type) {
+        case 'collection':
+          onUpdateCollection(payload);
+          break;
+        case 'folder':
+          onUpdateFolder(payload);
+          break;
+        case 'request':
+          onUpdateRequest(payload);
+          break;
+      }
     };
     const onExplorerItemDelete = ({ type, payload }) => {
       console.log(type, payload);
-	  switch(type) {
-		case "collection": 
-			onDeleteCollection(payload);
-		break;
-		case "folder": 
-			onDeleteFolder(payload);
-		break;
-		case "request": 
-			onDeleteRequest(payload);
-		break;
-	  }
+      switch (type) {
+        case 'collection':
+          onDeleteCollection(payload);
+          break;
+        case 'folder':
+          onDeleteFolder(payload);
+          break;
+        case 'request':
+          onDeleteRequest(payload);
+          break;
+      }
     };
 
     const listenExplorerChanges = () => {
-		console.log('socket:connected');
+      console.log('socket:connected');
       Realtime.listenExplorerItemInsert(onExplorerItemInsert);
       Realtime.listenExplorerItemUpdate(onExplorerItemUpdate);
       Realtime.listenExplorerItemDelete(onExplorerItemDelete);
     };
 
-	const listenOffExplorerChanges = () => {
-		console.log('socket:disconnected');
-		Realtime.listenOffExplorerItemInsert();
-		Realtime.listenOffExplorerItemUpdate();
-		Realtime.listenOffExplorerItemDelete();
-	  };
+    const listenOffExplorerChanges = () => {
+      console.log('socket:disconnected');
+      Realtime.listenOffExplorerItemInsert();
+      Realtime.listenOffExplorerItemUpdate();
+      Realtime.listenOffExplorerItemDelete();
+    };
 
-    platformEmitter.on('socket.connected', listenExplorerChanges);
-	platformEmitter.on('socket.disconnected', listenOffExplorerChanges);
+    emitter.on('socket.connected', listenExplorerChanges);
+    emitter.on('socket.disconnected', listenOffExplorerChanges);
 
     return () => {
-      platformEmitter.off('socket.connected');
+      emitter.off('socket.connected');
       // TODO: unsubscribe explorer changes on unmount server socket
+    };
+  }, []);
+
+  // handle platform events
+  useEffect(() => {
+    emitter.on(EPlatformTabs.openNew, (type: string) => {
+      const tab = open.new(type, true);
+	  console.log(tab, "open new....")
+      emitter.emit(EPlatformTabs.opened, tab);
+    });
+    return () => {
+      emitter.off(EPlatformTabs.openNew);
     };
   }, []);
 

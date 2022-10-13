@@ -17,32 +17,28 @@ import {
   FcWebSocket,
 } from '../../common/icons';
 
-import { useTabStore } from '../../../store/tab';
 import { usePlatformStore } from '../../../store/platform';
 import { EThemeColor, EThemeMode } from '../../../types';
+import { platformEmitter as emitter } from '../../../services/platform-emitter'
+import { EPlatformTabs } from '../../../services/platform-emitter/events'
 
 const Home: FC<any> = () => {
-  const tabsStore = useTabStore.getState();
 
   useEffect(() => {
     // F?.reactGA?.pageview?.('home');
   }, []);
 
   const _openTab = (
-    type?: ERequestTypes,
-    subType?: string,
-    early_access?: boolean
+    type?: ERequestTypes
   ) => {
-    let allowed_app = [
+    const allowed_app = [
       ERequestTypes.SocketIO,
       ERequestTypes.WebSocket,
       ERequestTypes.Rest,
       ERequestTypes.GraphQL,
     ];
-    if (!allowed_app.includes(type) && !subType) return; //todo: release hack here for SocketIO beta release, only open socket tab
-
-    // console.log('type', type);
-    tabsStore.open.new(type, true, subType);
+    // if (!allowed_app.includes(type)) 
+    emitter.emit(EPlatformTabs.openNew, type);
   };
 
   const apiCategories = [
