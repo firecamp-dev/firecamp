@@ -1,6 +1,7 @@
 //to access tailwind.scss styles everywhere in project
 import '../src/scss/tailwind.scss';
 import { withTests } from '@storybook/addon-jest';
+import { addDecorator } from "@storybook/react";
 import results from '../.jest-test-results.json';
 
 
@@ -18,3 +19,9 @@ export const decorators = [
     results,
   }),
 ];
+
+//adding globally theme-light by default
+addDecorator((story) => {
+  document.body.classList.add("theme-light", "primary-orange");
+  return story() //<div className='text-appForeground'>{story()}</div>
+})

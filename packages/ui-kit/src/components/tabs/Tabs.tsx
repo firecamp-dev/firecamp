@@ -104,9 +104,8 @@ const Tabs: FC<ITabs> = ({
                 <Tab
                   key={tab.id}
                   index={i}
-                  id={tab.id}
-                  // canReorder={canReorder}
-                  canReorder={false}
+                  id={tab?.id || ''}
+                  canReorder={canReorder}
                   tabsVersion = {tabsVersion}
                   focus={focus}
                   className={cx(
