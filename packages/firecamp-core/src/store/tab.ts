@@ -26,7 +26,7 @@ interface ITabStore {
     rootKeys: (tabId: TId, updatedTab: Partial<ITab>) => void;
   };
   open: {
-    new: (type?: string, isActive?: boolean) => void;
+    new: (type?: string, isActive?: boolean) => ITab;
     request: (
       request: any,
       options: {

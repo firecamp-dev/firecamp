@@ -124,8 +124,6 @@ const TabsContainer: FC<any> = () => {
             tabFns={_tabFns}
           />
           <TabContainerBody
-            tabs={tabs}
-            activeTab={activeTab}
             tabFns={_tabFns}
           />
         </Row>

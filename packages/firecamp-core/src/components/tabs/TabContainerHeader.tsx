@@ -44,9 +44,7 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
       tabs[tId] = {
         ...tabs[tId],
         name: t.name || t.request.meta.name,
-        preComp: () => (
-          <PreComp method={t?.request?.method || ''} type={t.type} />
-        ),
+        preComp: <PreComp method={t?.request?.method || ''} type={t.type} />,
         dotIndicator: t.meta?.hasChange === true,
       };
     });

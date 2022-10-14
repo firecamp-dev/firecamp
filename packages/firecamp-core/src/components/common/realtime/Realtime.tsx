@@ -7,6 +7,7 @@ import {
   prepareEventNameForRequestPull,
 } from '../../../services/platform-emitter/events';
 import { useTabStore } from '../../../store/tab';
+import PreComp from '../../tabs/header/PreComp'
 
 const RealtimeEventManager: FC<any> = () => {
   const { open, close } = useTabStore.getState();
@@ -112,8 +113,13 @@ const RealtimeEventManager: FC<any> = () => {
   useEffect(() => {
     emitter.on(EPlatformTabs.openNew, (type: string) => {
       const tab = open.new(type, true);
-	  console.log(tab, "open new....")
-      emitter.emit(EPlatformTabs.opened, tab);
+	  
+      emitter.emit(EPlatformTabs.opened, {
+        ...tab,
+        name: tab.name || tab.request.meta.name,
+        preComp: <PreComp method={tab?.request?.method || ''} type={tab.type} />,
+        dotIndicator: tab.meta?.hasChange === true,
+      });
     });
     return () => {
       emitter.off(EPlatformTabs.openNew);
