@@ -115,7 +115,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
       FallbackComponent={ErrorPopup}
       onError={(error) => {
         console.log({ error });
-        close(tabObj.id)
+        close.byIds([tabObj.id])
         update.activeTab('home');
       }}
     >
