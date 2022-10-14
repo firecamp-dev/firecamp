@@ -11,7 +11,7 @@ import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { TId } from '@firecamp/types';
 
-import Tab from '../Tab';
+import Tab from './Tab';
 import { ITabs } from './Tabs.interface';
 import { EActiveBorderPosition, ITab } from './Tab.interface';
 
