@@ -3,9 +3,9 @@ import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
 import { ERequestTypes, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-import R, { map, when, filter, dissoc } from 'ramda';
+import { dissoc } from 'ramda';
 
-import { ITab, ITabMeta } from '../components/tabs/types';
+import { IRequestTab } from '../components/tabs/types';
 
 const initialState = {
   list: {},
@@ -14,7 +14,7 @@ const initialState = {
 };
 
 interface ITabStore {
-  list: Record<TId, ITab>;
+  list: Record<TId, IRequestTab>;
   activeTab: TId;
   orders: TId[];
 
@@ -23,10 +23,10 @@ interface ITabStore {
   update: {
     meta: (tab, meta, request?: any) => void; //todo: define types...
     activeTab: (tabId: string) => void;
-    rootKeys: (tabId: TId, updatedTab: Partial<ITab>) => void;
+    rootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => void;
   };
   open: {
-    new: (type?: string, isActive?: boolean) => ITab;
+    new: (type?: string, isActive?: boolean) => IRequestTab;
     request: (
       request: any,
       options: {
@@ -35,8 +35,8 @@ interface ITabStore {
         isHistoryTab?: boolean;
         _meta?: any;
       }
-    ) => ITab;
-    saved: (request: any) => ITab;
+    ) => IRequestTab;
+    saved: (request: any) => IRequestTab;
   };
   close: {
     all: () => void;
@@ -107,7 +107,7 @@ const useTabStore = create<ITabStore>((set, get) => {
     },
 
     update: {
-      meta: (tabId: TId, meta: ITabMeta) => {
+      meta: (tabId: TId, meta: IRequestTab['meta']) => {
         set((s) => {
           const tab = s.list[tabId];
           const list = {
@@ -129,7 +129,7 @@ const useTabStore = create<ITabStore>((set, get) => {
         // tab.storeCacheTabsInDBWithDebounce();
       },
 
-      rootKeys: (tabId: TId, updatedTab: Partial<ITab>) => {
+      rootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => {
         set((s) => {
           const list = {
             ...s.list,
@@ -159,7 +159,7 @@ const useTabStore = create<ITabStore>((set, get) => {
             type = tab?.type;
           }
         }
-        const tab: ITab = {
+        const tab: IRequestTab = {
           id: tId,
           name: 'New Tab',
           type: type || ERequestTypes.Rest,

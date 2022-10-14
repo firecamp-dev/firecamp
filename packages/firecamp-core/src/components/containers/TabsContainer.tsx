@@ -11,10 +11,9 @@ import TabContainerHeader from '../tabs/TabContainerHeader';
 import TabContainerBody from '../tabs/TabContainerBody';
 
 const TabsContainer: FC<any> = () => {
-  let { tabs, orders, activeTab, tabFns } = useTabStore(
+  let { tabs, activeTab, tabFns } = useTabStore(
     (s: any) => ({
       tabs: s.list,
-      orders: s.orders,
       activeTab: s.activeTab,
 
       tabFns: {

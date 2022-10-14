@@ -6,40 +6,22 @@ import {
   I_Meta,
   TId,
 } from '@firecamp/types';
+import { ITab } from '@firecamp/ui-kit';
+import { ReactNode } from 'react';
 import {
   IPlatformRequestService,
   IPlatformEnvironmentService,
 } from '../../../services/platform-context';
 
-/**
- *  Firecamp request tab
- */
-export interface ITab {
-  /**
-   * Unique identification for tab
-   */
-  id: string;
-
-  /**
-   *  Request tab name
-   */
-  name: string;
-
-  /**
-   * Request type
-   */
+/** Firecamp request tab */
+export interface IRequestTab extends ITab {
+  /** request type */
   type: string;
 
-  /**
-   * Request sub-type
-   */
-  subType?: string;
+  /** request meta */
+  meta?: IRequestTabMeta;
 
-  /**
-   * Request tab meta
-   */
-  meta?: ITabMeta;
-
+  /** minimal request */
   request?: {
     url?: IUrl;
     method?: EHttpMethod;
@@ -51,7 +33,7 @@ export interface ITab {
 /**
  * Tab meta
  */
-export interface ITabMeta {
+export interface IRequestTabMeta {
   /**
    * Whether request tab is saved or not
    */
@@ -87,15 +69,15 @@ export interface ITabMeta {
  * Tab functions to perform actions
  */
 
-export interface ITabProps {
+export interface IRequestTabProps {
   index: number;
-  tab: ITab;
+  tab: IRequestTab;
   activeTab?: TId;
 
   //v3 props
   platformComponents: {
-    SavePopover?: JSX.Element;
-    EnvironmentWidget: JSX.Element;
+    SavePopover?: ReactNode;
+    EnvironmentWidget: ReactNode;
   };
   envVariables?: {
     mergedEnvVariables: object;
