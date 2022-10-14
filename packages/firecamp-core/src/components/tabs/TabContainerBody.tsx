@@ -1,12 +1,11 @@
 import { Column } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
-import { ITabStore, useTabStore } from '../../store/tab'
+import { ITabStore, useTabStore } from '../../store/tab';
 import Home from './home/Home';
 import TabBody from './TabBody';
 
-const TabContainerBody = ({ tabFns = {} }) => {
-
+const TabContainerBody = () => {
   const { tabs, activeTab } = useTabStore(
     (s: ITabStore) => ({
       tabs: s.list,
@@ -37,13 +36,7 @@ const TabContainerBody = ({ tabFns = {} }) => {
             })}
             key={t.id}
           >
-            <TabBody
-              tabObj={t}
-              index={i}
-              key={t.id}
-              tabFns={tabFns}
-              activeTab={activeTab}
-            />
+            <TabBody tabObj={t} index={i} key={t.id} activeTab={activeTab} />
           </div>
         ))}
       </div>

@@ -145,7 +145,20 @@ const useTabStore = create<ITabStore>((set, get) => {
 
     open: {
       new: (type, isActive) => {
+        const { list, orders, activeTab } = get();
         const tId = nanoid();
+        if (!type) {
+          if (orders.length === 0) type = ERequestTypes.Rest;
+          else {
+            let tab;
+            if (activeTab === 'home') {
+              tab = list[orders[orders.length - 1]];
+            } else {
+              tab = list[activeTab];
+            }
+            type = tab?.type;
+          }
+        }
         const tab: ITab = {
           id: tId,
           name: 'New Tab',
@@ -161,12 +174,11 @@ const useTabStore = create<ITabStore>((set, get) => {
 
         /*To add tab in cacheTabs*/
         // cacheTabsFactoryFns.setTab(tab.id, cacheTabPayload)
-        const state = get();
-        const list = { ...state.list, [tId]: tab };
+        const _list = { ...list, [tId]: tab };
 
         console.log(tId, 'tId......');
         set((s) => ({
-          list,
+          list: _list,
           activeTab: isActive == true ? tab.id : s.activeTab,
           orders: [...s.orders, tId],
         }));

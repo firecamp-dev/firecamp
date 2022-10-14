@@ -7,31 +7,30 @@ import { VscHome } from '@react-icons/all-files/vsc/VscHome';
 import shallow from 'zustand/shallow';
 
 import PreComp from './header/PreComp';
-import { ITab, ITabFns } from './types/tab';
 import Menu from './header/Menu';
 import CollabButton from './header/CollabButton';
-import { useTabStore } from '../../store/tab';
+import { ITabStore, useTabStore } from '../../store/tab';
 
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
 
-
-const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
-
+const TabHeaderContainer: FC = () => {
   const tabApi = useRef();
-  const { tabs, orders, activeTab } = useTabStore(
-    (s: any) => ({
+  const { tabs, orders, activeTab, update, close } = useTabStore(
+    (s: ITabStore) => ({
       tabs: s.list,
       orders: s.orders,
       activeTab: s.activeTab,
+      update: s.update,
+      close: s.close,
     }),
     shallow
   );
 
   useEffect(() => {
-    console.log(tabApi, "tabApi..")
+    console.log(tabApi, 'tabApi..');
     emitter.on(EPlatformTabs.opened, (tab) => {
-      tabApi.current.add(tab)
+      tabApi.current.add(tab);
     });
     return () => {
       emitter.off(EPlatformTabs.opened);
@@ -51,7 +50,11 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
     return tabs;
   }, [tabs, orders]);
 
-  console.log(tabList, orders, 'tabList....');
+  const openNewTab = () => {
+    emitter.emit(EPlatformTabs.openNew);
+  };
+
+  // console.log(tabList, orders, 'tabList....');
   return (
     <Column
       overflow="visible"
@@ -70,7 +73,7 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
                 },
                 'w-10 h-9 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
               )}
-              onClick={() => tabFns.setActive('home')}
+              onClick={() => update.activeTab('home')}
             >
               <VscHome size={20} />
             </div>
@@ -79,14 +82,14 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
               orders={orders}
               activeTab={activeTab}
               ref={tabApi}
-              onSelect={tabFns.setActive}
+              onSelect={update.activeTab}
               withDivider={true}
               canReorder={true}
               height={36}
               tabsVersion={2}
               closeTabIconMeta={{
                 show: true,
-                onClick: (i, id) => tabFns.close(null, id),
+                onClick: (i, id) => close.active(id),
               }}
               tabIndex={-1}
               focus={false}
@@ -96,13 +99,13 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
                   <div
                     tabIndex={1}
                     className="w-9 flex items-center justify-center cursor-pointer bg-tabBackground2 text-tabForegroundInactive border-r  border-tabBorder relative"
-                    onClick={(e) => tabFns.open()}
+                    onClick={(e) => openNewTab()}
                   >
                     <a>
                       <VscAdd size={16} />
                     </a>
                   </div>
-                  <Menu tabFns={tabFns} />
+                  <Menu />
                 </div>
               }
             />
@@ -115,7 +118,3 @@ const TabHeaderContainer: FC<ITabHeaderContainer> = ({ tabFns }) => {
 };
 
 export default TabHeaderContainer;
-
-interface ITabHeaderContainer {
-  tabFns: ITabFns;
-}

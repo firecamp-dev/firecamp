@@ -106,24 +106,10 @@ export interface ITabFns {
   // close all saved tabs
   closeAllSaved: (e?: Event) => void;
 
-  // close all fresh tabs
-  closeAllFresh: (e?: any) => void;
-
-  // close all tabs except active one
-  closeAllExceptActive: (e?: any) => void;
-
   // save active tab
   save: (e?: any) => void;
 
   fetchRequest?: (reqId: string) => any;
-
-  mount?: (clientTabData: object) => void;
-
-  // update tab meta
-  updateMeta?: (tabId: TId, meta: ITabMeta) => void;
-
-  // update tab root keys
-  updateRootKeys: (tabId: TId, updatedTab: Partial<ITab>) => void;
 }
 
 export interface ITabProps {

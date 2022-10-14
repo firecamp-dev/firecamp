@@ -10,12 +10,16 @@ import {
   FcSocketIoSquare,
   FcWebSocket,
 } from '../../common/icons';
-import { ITabFns } from '../types/tab';
+
 import getOs from '../../../services/get-os';
+import { platformEmitter as emitter } from '../../../services/platform-emitter';
+import { EPlatformTabs } from '../../../services/platform-emitter/events';
+import { useTabStore } from '../../../store/tab';
 
 let osName = getOs();
 
-const Menu: FC<ITabMenu> = ({ tabFns }) => {
+const Menu: FC = () => {
+  const { close } = useTabStore.getState();
   const tabMenus = [
     {
       header: 'Create A Request',
@@ -29,7 +33,7 @@ const Menu: FC<ITabMenu> = ({ tabFns }) => {
             </div>
           ),
           onClick: () => {
-            tabFns.open(ERequestTypes.Rest);
+            openNewTab(ERequestTypes.Rest);
           },
         },
         {
@@ -41,7 +45,7 @@ const Menu: FC<ITabMenu> = ({ tabFns }) => {
             </div>
           ),
           onClick: () => {
-            tabFns.open(ERequestTypes.GraphQL);
+            openNewTab(ERequestTypes.GraphQL);
           },
         },
         {
@@ -53,7 +57,7 @@ const Menu: FC<ITabMenu> = ({ tabFns }) => {
             </div>
           ),
           onClick: () => {
-            tabFns.open(ERequestTypes.WebSocket);
+            openNewTab(ERequestTypes.WebSocket);
           },
         },
         {
@@ -65,7 +69,7 @@ const Menu: FC<ITabMenu> = ({ tabFns }) => {
             </div>
           ),
           onClick: () => {
-            tabFns.open(ERequestTypes.SocketIO);
+            openNewTab(ERequestTypes.SocketIO);
           },
         },
       ],
@@ -89,7 +93,7 @@ const Menu: FC<ITabMenu> = ({ tabFns }) => {
             </div>
           ),
           onClick: (option, e) => {
-            tabFns.closeAll(e);
+            close.all();
           },
         },
         {
@@ -108,8 +112,7 @@ const Menu: FC<ITabMenu> = ({ tabFns }) => {
             </div>
           ),
           onClick: (option, e) => {
-            // console.log({ option, e });
-            tabFns.closeAllSaved(e);
+            close.allSaved();
           },
         },
         /* {   
@@ -136,6 +139,10 @@ const Menu: FC<ITabMenu> = ({ tabFns }) => {
     },
   ];
 
+  const openNewTab = (type) => {
+    emitter.emit(EPlatformTabs.openNew, type);
+  };
+
   return (
     <Dropdown>
       <Dropdown.Handler className="w-9 h-full border-r border-tabBorder bg-tabBackground2 flex items-center justify-center cursor-pointer">
@@ -150,7 +157,3 @@ const Menu: FC<ITabMenu> = ({ tabFns }) => {
 };
 
 export default Menu;
-
-interface ITabMenu {
-  tabFns: ITabFns;
-}
