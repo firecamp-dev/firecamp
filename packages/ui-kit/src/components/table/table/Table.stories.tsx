@@ -66,24 +66,10 @@ SimpleTable.play = async ({canvasElement}) => {
 
   //table is rendered
   const renderedTable = await canvas.getByRole('table');
-  expect(renderedTable).toBeInTheDocument();
 
-  //table columns should be same as provided in columns
-  const columnHeading = within(renderedTable).getAllByRole('columnheader')
-  expect(columnHeading).toHaveLength(columnDataForDisplay.length)
-
-  //column heading value should be same as provided in displayName
-  const columnHeadingDifferFromDisplayName = columnHeading.filter((data, index) => columnDataForDisplay[index].displayName !== data.textContent)
-  expect(columnHeadingDifferFromDisplayName).toHaveLength(0);
-  
   //validate the rows rendered into the table
   const tableBody = await within(renderedTable).getAllByRole("rowgroup")[1]
-  const tableRows = await within(tableBody).findAllByRole("row")
-  expect(tableRows).toHaveLength(defaultData.length);
  
-  //validate all rows are sortable
-  tableRows.map(row => expect(row.draggable).toBeTruthy());
-
   //on mousedown/touch start on column header resizer div should update the styles of the element
   const columnResizer = await canvas.queryAllByTestId('col-resizer');
   if(!_array.isEmpty(columnResizer)){
