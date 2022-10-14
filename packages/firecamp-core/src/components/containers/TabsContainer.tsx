@@ -3,16 +3,12 @@ import { Row, RootContainer, Column } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { _object } from '@firecamp/utils';
-import { ERequestTypes, TId } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
 import { useTabStore } from '../../store/tab';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
-import { ITabFns } from '../tabs/types/tab';
 import TabContainerHeader from '../tabs/TabContainerHeader';
 import TabContainerBody from '../tabs/TabContainerBody';
-import { platformEmitter as emitter } from '../../services/platform-emitter';
-import { EPlatformTabs } from '../../services/platform-emitter/events';
 
 const TabsContainer: FC<any> = () => {
   let { tabs, orders, activeTab, tabFns } = useTabStore(
@@ -54,7 +50,7 @@ const TabsContainer: FC<any> = () => {
     }
   }, [tabs]);
 
-  const _tabFns: ITabFns = {
+  const _tabFns = {
     close: (e: any, tabId: string, doSave: boolean) => {
       if (e) e.stopPropagation();
       // console.log(tabId, doSave)

@@ -1,15 +1,10 @@
 import { FC, useState } from 'react';
+import { FallbackProps } from 'react-error-boundary';
 import { Modal } from '@firecamp/ui-kit';
 
 import './ErrorPopup.sass';
 
-const ErrorPopup: FC<IErrorPopup> = ({
-  message = `An unexpected error occurs. 
-We'll surely fix it out for you soon. We appreciate your patience.`,
-  onClose = () => {},
-}) => {
-  // console.log(`in error popup`, message, isOpen)
-
+const ErrorPopup: FC<FallbackProps> = ({ error }) => {
   const bg = {
     modal: {
       background: '#c84a1782',
@@ -21,7 +16,7 @@ We'll surely fix it out for you soon. We appreciate your patience.`,
 
   let _onClose = async () => {
     // on close, refresh app
-    onClose();
+    // onClose();
     // await initApp();
     toggleOpen(false);
   };
@@ -40,24 +35,10 @@ We'll surely fix it out for you soon. We appreciate your patience.`,
           paddingRight: '60px',
         }}
       >
-        {message || ''}
+        {error.message || ''}
       </div>
     </Modal>
   );
 };
 
 export default ErrorPopup;
-
-/**
- * Handle firecamp errors and show popup menu to instruct users about the same
- */
-interface IErrorPopup {
-  /**
-   * Error message
-   */
-  message?: string;
-  /**
-   * Close error popup
-   */
-  onClose?: () => void;
-}

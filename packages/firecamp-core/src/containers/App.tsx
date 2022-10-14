@@ -64,9 +64,7 @@ const App: FC<any> = () => {
 
   return (
     <ErrorBoundary
-      FallbackComponent={() => {
-        return <ErrorPopup />;
-      }}
+      FallbackComponent={ErrorPopup}
       onError={(error) => {
         console.log({ error });
       }}

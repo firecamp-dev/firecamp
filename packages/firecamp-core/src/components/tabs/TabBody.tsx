@@ -113,11 +113,11 @@ const TabBody = ({ tabObj, index, activeTab }) => {
   return (
     <ErrorBoundary
       FallbackComponent={ErrorPopup}
-      onError={(error) => {
-        console.log({ error });
-        close.byIds([tabObj.id])
-        update.activeTab('home');
-      }}
+      // onError={(error, info) => {
+      //   console.log({ error, info });
+      //   close.byIds([tabObj.id]);
+      //   update.activeTab('home');
+      // }}
     >
       {_renderRequestTab(tabObj.type)}
     </ErrorBoundary>

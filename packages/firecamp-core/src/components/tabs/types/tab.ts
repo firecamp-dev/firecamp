@@ -87,31 +87,6 @@ export interface ITabMeta {
  * Tab functions to perform actions
  */
 
-export interface ITabFns {
-  //set active tab
-  setActive: (tabId: string) => void;
-
-  // open a new tab
-  open: (tabType?: string, subType?: string) => void;
-
-  // close tab
-  close: (e: any, tabId: string, doSave?: boolean) => void;
-
-  // reorder tabs on drag and drop sequence
-  reorder: (dragIndex: number, hoverIndex: number) => void;
-
-  // close all tabs
-  closeAll: (e?: any) => void;
-
-  // close all saved tabs
-  closeAllSaved: (e?: Event) => void;
-
-  // save active tab
-  save: (e?: any) => void;
-
-  fetchRequest?: (reqId: string) => any;
-}
-
 export interface ITabProps {
   index: number;
   tab: ITab;
