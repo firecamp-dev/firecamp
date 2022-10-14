@@ -11,11 +11,14 @@ import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { ITab, ITabFns, ITabMeta } from '../tabs/types/tab';
 import TabContainerHeader from '../tabs/TabContainerHeader';
 import TabContainerBody from '../tabs/TabContainerBody';
+import { platformEmitter as emitter } from '../../services/platform-emitter'
+import { EPlatformTabs } from '../../services/platform-emitter/events'
 
 const TabsContainer: FC<any> = () => {
-  let { tabs, activeTab, tabFns } = useTabStore(
+  let { tabs, orders, activeTab, tabFns } = useTabStore(
     (s: any) => ({
       tabs: s.list,
+      orders: s.orders,
       activeTab: s.activeTab,
 
       tabFns: {
@@ -56,28 +59,27 @@ const TabsContainer: FC<any> = () => {
       tabFns.update.activeTab(tabId);
     },
 
-    open: (tabType: string, subType: string) => {
+    open: (tabType: string) => {
       if (!tabType) {
-        if (tabs?.length === 0) tabType = ERequestTypes.Rest;
+        if (orders.length === 0) tabType = ERequestTypes.Rest;
         else {
           let tab;
-          if ((activeTab || activeTab) === 'home') {
-            tab = tabs?.[tabs?.length - 1];
+          if (activeTab === 'home') {
+            tab = tabs[orders[orders.length - 1]];
           } else {
-            tab = (tabs || []).find((tab) => tab.id === activeTab || activeTab);
+            tab = tabs[activeTab];
           }
           tabType = tab?.type;
-          subType = tab?.subType;
         }
       }
-      if (tabType) tabFns.open.new(tabType, true, subType);
+      emitter.emit(EPlatformTabs.openNew, tabType);
     },
 
     close: (e: any, tabId: string, doSave: boolean) => {
-      if (e) e?.stopPropagation();
+      if (e) e.stopPropagation();
       // console.log(tabId, doSave)
       if (doSave) {
-        //Todo: this is hack for now, we should close it by redux or calling func
+        //Todo: this is hack for now, we should close it by action or calling func
         document.getElementById(`save-request-${tabId}`).click(); //click on Save button programmatically
       }
 

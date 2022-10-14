@@ -35,8 +35,8 @@ interface ITabStore {
         isHistoryTab?: boolean;
         _meta?: any;
       }
-    ) => void;
-    saved: (request: any) => void;
+    ) => ITab;
+    saved: (request: any) => ITab;
   };
   close: {
     all: () => void;
@@ -183,7 +183,6 @@ const useTabStore = create<ITabStore>((set, get) => {
           id: tId,
           name: request?.meta?.name || 'untitled request',
           type: request.meta.type,
-          subType: request.meta ? request.meta.data_type : '',
           request,
           meta: {
             isSaved: isSaved,
@@ -206,9 +205,11 @@ const useTabStore = create<ITabStore>((set, get) => {
             orders: [...s.orders, tId],
           };
         });
+
+        return tab;
       },
 
-      saved: async ({ name, url, method, meta, _meta }) => {
+      saved: ({ name, url, method, meta, _meta }) => {
         // Todo: need to improve this old structure
         // note: above request is coming from explorer/tree item
 
@@ -228,7 +229,7 @@ const useTabStore = create<ITabStore>((set, get) => {
 
         if (tabAlreadyExists) {
           update.activeTab(tabAlreadyExists.id);
-          return;
+          return null;
         }
 
         // console.log('in store...', request);

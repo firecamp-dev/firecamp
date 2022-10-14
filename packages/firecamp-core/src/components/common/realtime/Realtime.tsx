@@ -7,7 +7,7 @@ import {
   prepareEventNameForRequestPull,
 } from '../../../services/platform-emitter/events';
 import { useTabStore } from '../../../store/tab';
-import PreComp from '../../tabs/header/PreComp'
+import PreComp from '../../tabs/header/PreComp';
 
 const RealtimeEventManager: FC<any> = () => {
   const { open, close } = useTabStore.getState();
@@ -113,16 +113,32 @@ const RealtimeEventManager: FC<any> = () => {
   useEffect(() => {
     emitter.on(EPlatformTabs.openNew, (type: string) => {
       const tab = open.new(type, true);
-	  
       emitter.emit(EPlatformTabs.opened, {
         ...tab,
         name: tab.name || tab.request.meta.name,
-        preComp: <PreComp method={tab?.request?.method || ''} type={tab.type} />,
+        preComp: (
+          <PreComp method={tab?.request?.method || ''} type={tab.type} />
+        ),
         dotIndicator: tab.meta?.hasChange === true,
       });
     });
+
+    emitter.on(EPlatformTabs.openSaved, (request: any) => {
+      const tab = open.saved(request);
+      if (!tab) return;
+      emitter.emit(EPlatformTabs.opened, {
+        ...tab,
+        name: tab.name || tab.request.meta.name,
+        preComp: (
+          <PreComp method={tab?.request?.method || ''} type={tab.type} />
+        ),
+        dotIndicator: tab.meta?.hasChange === true,
+      });
+    });
+
     return () => {
       emitter.off(EPlatformTabs.openNew);
+      emitter.off(EPlatformTabs.openSaved);
     };
   }, []);
 
