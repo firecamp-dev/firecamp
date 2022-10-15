@@ -1,3 +1,4 @@
+import { TId } from '@firecamp/types';
 import { ReactNode } from 'react';
 
 export interface ITab {
@@ -5,7 +6,7 @@ export interface ITab {
   id: string;
 
   /** tab index */
-  index?: string;
+  index?: number;
 
   /** add class name to show custom styling */
   className?: string;
@@ -58,8 +59,8 @@ export interface ICloseTabIconMeta {
   /** set true if need top show close icon */
   show?: boolean;
 
-  /** a callback function to call upon close icon click */
-  onClick?: (e?: any) => void;
+  /** a function to call upon close icon click */
+  onClick?: (tabId: TId, index: number) => void;
 
   /** prevent click event for close icon if true*/
   disabled?: boolean;

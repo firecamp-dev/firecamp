@@ -56,8 +56,8 @@ const CloseIconPlacement = ({
 const ReorderType = 'tab';
 
 const Tab: FC<ITab> = ({
-  id = '',
-  index = '',
+  id,
+  index,
   className = '',
   name = '',
   state = 'default',
@@ -197,7 +197,7 @@ const Tab: FC<ITab> = ({
             //when user click on the close icon the tab should not call onSelect fn
             e.preventDefault();
             e.stopPropagation();
-            closeTabIconMeta?.onClick(index, id, e);
+            closeTabIconMeta?.onClick(id, index);
           }}
           show={closeTabIconMeta?.show}
         />
@@ -213,7 +213,6 @@ export default Tab;
 
 Tab.defaultProps = {
   id: '',
-  index: '',
   name: '',
   state: 'default',
   isPreview: false,

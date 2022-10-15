@@ -26,7 +26,10 @@ interface ITabStore {
     rootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => void;
   };
   open: {
-    new: (type?: string, isActive?: boolean) => IRequestTab;
+    new: (
+      type?: string,
+      isActive?: boolean
+    ) => [tab: IRequestTab, orders: TId[]];
     request: (
       request: any,
       options: {
@@ -35,8 +38,8 @@ interface ITabStore {
         isHistoryTab?: boolean;
         _meta?: any;
       }
-    ) => IRequestTab;
-    saved: (request: any) => IRequestTab;
+    ) => [tab: IRequestTab, orders: TId[]];
+    saved: (request: any) => [tab: IRequestTab, orders: TId[]];
   };
   close: {
     all: () => void;
@@ -176,20 +179,20 @@ const useTabStore = create<ITabStore>((set, get) => {
         // cacheTabsFactoryFns.setTab(tab.id, cacheTabPayload)
         const _list = { ...list, [tId]: tab };
 
-        console.log(tId, 'tId......');
+        const _orders = [...orders, tId];
         set((s) => ({
           list: _list,
           activeTab: isActive == true ? tab.id : s.activeTab,
-          orders: [...s.orders, tId],
+          orders: _orders,
         }));
-        return tab;
+        return [tab, _orders];
       },
 
       request: (
         request,
         { setActive = false, isSaved = true, isHistoryTab = false, _meta = {} }
       ) => {
-        let { list, activeTab } = get();
+        let { list, orders, activeTab } = get();
         const tId = nanoid();
         let tab = {
           id: tId,
@@ -210,15 +213,16 @@ const useTabStore = create<ITabStore>((set, get) => {
         /*To add tab in cacheTabs*/
         // cacheTabsFactoryFns.setTab(tab.id, cacheTabPayload)
 
+        const _orders = [...orders, tId];
         set((s: any) => {
           return {
             list: { ...list, [tId]: tab },
             activeTab: setActive == true ? tab.id : activeTab,
-            orders: [...s.orders, tId],
+            orders: _orders,
           };
         });
 
-        return tab;
+        return [tab, _orders];
       },
 
       saved: ({ name, url, method, meta, _meta }) => {

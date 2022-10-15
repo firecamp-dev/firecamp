@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef } from 'react';
+import { FC, useEffect, memo, useRef } from 'react';
 import classnames from 'classnames';
 import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
@@ -13,48 +13,39 @@ import { ITabStore, useTabStore } from '../../store/tab';
 
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
+import { TId } from '@firecamp/types';
 
 const TabHeaderContainer: FC = () => {
   const tabApi = useRef();
-  const { tabs, orders, activeTab, update, close } = useTabStore(
+  const { activeTab } = useTabStore(
     (s: ITabStore) => ({
-      tabs: s.list,
-      orders: s.orders,
       activeTab: s.activeTab,
-      update: s.update,
-      close: s.close,
+      // orders: s.orders
     }),
     shallow
   );
+  const { list: tabs, orders, update } = useTabStore.getState();
 
   useEffect(() => {
     console.log(tabApi, 'tabApi..');
-    emitter.on(EPlatformTabs.opened, (tab) => {
+    emitter.on(EPlatformTabs.opened, ([tab, orders]) => {
       tabApi.current.add(tab);
+    });
+    emitter.on(EPlatformTabs.closed, (tabId_s: TId | TId[]) => {
+      tabApi.current.close(tabId_s);
     });
     return () => {
       emitter.off(EPlatformTabs.opened);
+      emitter.off(EPlatformTabs.closed);
     };
   }, []);
-
-  const tabList = useMemo(() => {
-    orders.map((tId) => {
-      const t = tabs[tId];
-      tabs[tId] = {
-        ...tabs[tId],
-        name: t.name || t.request.meta.name,
-        preComp: <PreComp method={t?.request?.method || ''} type={t.type} />,
-        dotIndicator: t.meta?.hasChange === true,
-      };
-    });
-    return tabs;
-  }, [tabs, orders]);
 
   const openNewTab = () => {
     emitter.emit(EPlatformTabs.openNew);
   };
 
-  // console.log(tabList, orders, 'tabList....');
+  console.log(tabs, orders, 'orders... 12');
+
   return (
     <Column
       overflow="visible"
@@ -78,7 +69,7 @@ const TabHeaderContainer: FC = () => {
               <VscHome size={20} />
             </div>
             <Tabs
-              list={tabList}
+              list={tabs}
               orders={orders}
               activeTab={activeTab}
               ref={tabApi}
@@ -89,7 +80,7 @@ const TabHeaderContainer: FC = () => {
               tabsVersion={2}
               closeTabIconMeta={{
                 show: true,
-                onClick: (i, id) => close.active(id),
+                onClick: (id) => emitter.emit(EPlatformTabs.close, id),
               }}
               tabIndex={-1}
               focus={false}
@@ -117,4 +108,4 @@ const TabHeaderContainer: FC = () => {
   );
 };
 
-export default TabHeaderContainer;
+export default memo(TabHeaderContainer);

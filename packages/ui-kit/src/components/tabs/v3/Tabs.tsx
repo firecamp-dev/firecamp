@@ -21,12 +21,12 @@ const Tabs: FC<ITabs> = forwardRef(
       id,
       className,
       list,
-      orders,
+      orders: _orders,
       preComp,
       postComp,
       suffixComp,
       withDivider,
-      activeTab,
+      activeTab: _activeTab,
       equalWidth,
       canReorder,
       height,
@@ -42,7 +42,14 @@ const Tabs: FC<ITabs> = forwardRef(
     },
     ref
   ) => {
+    const [state, setState] = useState({
+      tabs: list,
+      activeTab: _activeTab,
+      orders: _orders,
+    });
     const [tabs, setTabs] = useState(list);
+    const [activeTab, setActiveTab] = useState(_activeTab);
+    const [orders, setOrders] = useState(_orders);
 
     // const onReorder = async (dragIndex, hoverIndex) => {
     //   // console.log({ dragIndex, hoverIndex });
@@ -64,18 +71,44 @@ const Tabs: FC<ITabs> = forwardRef(
     useImperativeHandle(ref, () => {
       return {
         changeName: (tabId: TId, name: string) => {
-          setTabs((tabs) => {
-            tabs[tabId].name = name;
-            return tabs;
-          });
+          setState((s) => ({
+            ...s,
+            tabs: {
+              ...s.tabs,
+              [tabId]: { ...tabs[tabId], name },
+            },
+          }));
         },
         reorder: () => {},
         add: (tab: ITab) => {
-          setTabs((tabs) => {
-            return { ...tabs, [tab.id]: tab };
+          setState((s) => ({
+            ...s,
+            tabs: {
+              ...s.tabs,
+              [tab.id]: tab,
+            },
+            activeTab: tab.id,
+            orders: [...s.orders, tab.id],
+          }));
+        },
+        close: (tabId_s: TId | TId[]) => {
+          setState((s) => {
+            let orders = s.orders;
+            if (typeof tabId_s == 'string') {
+              delete s.tabs[tabId_s];
+              orders = orders.filter((i) => i != tabId_s);
+            } else {
+              tabId_s.forEach((id) => {
+                delete s.tabs[id];
+              });
+              orders = orders.filter((i) => !tabId_s.includes(i));
+            }
+            const activeTab = orders.includes(s.activeTab)
+              ? s.activeTab
+              : orders[orders.length - 1];
+            return { tabs: s.tabs, orders, activeTab};
           });
         },
-        remove: () => {},
       };
     });
 
@@ -102,7 +135,7 @@ const Tabs: FC<ITabs> = forwardRef(
               {orders.map((tabId, i) => {
                 const tab = tabs[tabId];
                 console.log(tabs, tabId, 555);
-                if (!tab) return <Fragment key={tabId}/>;
+                if (!tab) return <Fragment key={tabId} />;
                 return (
                   <Tab
                     key={tabId}
