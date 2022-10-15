@@ -1,7 +1,8 @@
-import {render, screen, fireEvent, waitFor} from "@testing-library/react";
+import {render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {SimpleTable} from "./Table.stories";
 import  ResizeObserver  from "../../../../__mocks__/ResizeObserver";
+import  {dragAndDrop, dropAndMove, mouseDrop, mouseUp}  from "../../../../__mocks__/eventMock";
 import { _array } from '@firecamp/utils';
 
 window.ResizeObserver = ResizeObserver;
@@ -60,19 +61,17 @@ describe("Table : " , () => {
       const moveElementWidthIndex = 2;
       
       //table column resizer element : updating the classname on hover over the element
-      await fireEvent.mouseDown(columnResizer[moveElementWidthIndex]);
+      mouseDrop(columnResizer[moveElementWidthIndex]);
       await waitFor(() => getAllColumnHeadingResizableElement());
       expect(columnResizer[moveElementWidthIndex].className).toBe("pt-resizer h-full pt-resizing");
-      await fireEvent.mouseUp(columnResizer[moveElementWidthIndex]);  
+      mouseUp(columnResizer[moveElementWidthIndex]);  
       
     //table column resize logic : column width is updating along with resizer div's offsetLeft value
     const resizerElement = columnResizer[moveElementWidthIndex];
     const intialColumnWidth = parseInt(resizerElement.parentElement.style.minWidth);
     const columnMouseMoveOffset = [{ clientX: 144, clientY: 0 },{ clientX: 200, clientY: 0 }] 
 
-    await fireEvent.mouseDown(resizerElement, columnMouseMoveOffset[0]);
-    await fireEvent.mouseMove(resizerElement, columnMouseMoveOffset[1]);
-    await fireEvent.mouseUp(resizerElement, columnMouseMoveOffset[1])
+    dropAndMove(resizerElement, columnMouseMoveOffset);
     await waitFor(() => getAllColumnHeadingResizableElement());
     let updatedColumnWidth = parseInt(resizerElement.parentElement.style.minWidth);
 
@@ -97,45 +96,3 @@ describe("Table : " , () => {
     });
 
 })
-
-
-/* Drag & drop event for testing */
-const dragAndDrop = async (elemDrag: HTMLElement, elemDrop: HTMLElement) => {
-      // calculate positions
-      let pos = elemDrag.getBoundingClientRect();
-      const center1X = Math.floor((pos.left + pos.right) / 2);
-      const center1Y = Math.floor((pos.top + pos.bottom) / 2);
-
-      pos = elemDrop.getBoundingClientRect();
-      const center2X = Math.floor((pos.left + pos.right) / 2);
-      const center2Y = Math.floor((pos.top + pos.bottom) / 2);
-
-      // mouse over dragged element and mousedown
-      await fireEvent.mouseMove(elemDrag, {clientX: center1X, clientY: center1Y});
-      await fireEvent.mouseEnter(elemDrag, {clientX: center1X, clientY: center1Y});
-      await fireEvent.mouseOver(elemDrag, {clientX: center1X, clientY: center1Y});
-      await fireEvent.mouseDown(elemDrag, {clientX: center1X, clientY: center1Y});
-      
-      // start dragging process over to drop target
-      const dragStarted =  await fireEvent.dragStart(elemDrag, {clientX: center1X, clientY: center1Y});
-      if (!dragStarted) {
-          return;
-      }
-
-      await fireEvent.drag(elemDrag, {clientX: center1X, clientY: center1Y});
-      await fireEvent.mouseMove(elemDrag, {clientX: center1X, clientY: center1Y});
-      await fireEvent.drag(elemDrag, {clientX: center2X, clientY: center2Y});
-      await fireEvent.mouseMove(elemDrop, {clientX: center2X, clientY: center2Y});
-
-      // trigger dragging process on top of drop target
-      await fireEvent.mouseEnter(elemDrop, {clientX: center2X, clientY: center2Y});
-      await fireEvent.dragEnter(elemDrop, {clientX: center2X, clientY: center2Y});
-      await fireEvent.mouseOver(elemDrop, {clientX: center2X, clientY: center2Y});
-      await fireEvent.dragOver(elemDrop, {clientX: center2X, clientY: center2Y});
-      
-      // release dragged element on top of drop target
-      await fireEvent.drop(elemDrop, {clientX: center2X, clientY: center2Y});
-      await fireEvent.dragEnd(elemDrag, {clientX: center2X, clientY: center2Y});
-      await fireEvent.mouseUp(elemDrag, {clientX: center2X, clientY: center2Y});
-  
-};

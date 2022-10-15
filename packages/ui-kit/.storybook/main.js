@@ -41,6 +41,7 @@ module.exports = {
 
     // config.resolve.alias = {
     //   ...config.resolve.alias,
+    //   "https": path.join(__dirname, "../../../node_modules/@types/node/https")
     //   "react/jsx-dev-runtime": path.join(__dirname, "../../../node_modules/react/jsx-dev-runtime.js"),
     //   "react/jsx-runtime": path.join(__dirname, "../../../node_modules/react/jsx-runtime.js")
     // }
