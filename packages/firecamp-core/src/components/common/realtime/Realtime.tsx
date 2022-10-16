@@ -128,16 +128,17 @@ const RealtimeEventManager: FC<any> = () => {
     });
 
     emitter.on(EPlatformTabs.openSaved, (request: any) => {
-      const tab = open.saved(request);
+      const [ tab, orders ] = open.saved(request);
+      console.log(tab, "opened tab")
       if (!tab) return;
-      emitter.emit(EPlatformTabs.opened, {
+      emitter.emit(EPlatformTabs.opened, [{
         ...tab,
-        name: tab.name || tab.request.meta.name,
+        name: tab.name || request.meta.name,
         preComp: (
           <PreComp method={tab?.request?.method || ''} type={tab.type} />
         ),
         dotIndicator: tab.meta?.hasChange === true,
-      });
+      }, orders]);
     });
 
     emitter.on(EPlatformTabs.close, (tabId_s: TId | TId[]) => {

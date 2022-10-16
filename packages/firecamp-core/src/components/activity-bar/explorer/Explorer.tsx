@@ -114,31 +114,30 @@ const Explorer: FC<any> = () => {
   };
 
   const _openReqInTab = (request: any) => {
-    // console.log(`node`, request);
+    console.log(`node`, request);
     emitter.emit(EPlatformTabs.openSaved, request);
   };
 
-  const _onNodeSelect = (nodeIdxs: TreeItemIndex[]) => {
-    // console.log({ nodeIdxs });
+  const _onNodeSelect = (nodeIndexes: TreeItemIndex[]) => {
+    // console.log({ nodeIndexes });
     // return
 
-    let nodeIndex = nodeIdxs[0];
-    let colItem = [...collections, ...folders, ...requests].find(
+    let nodeIndex = nodeIndexes[0];
+    let nodeItem = [...collections, ...folders, ...requests].find(
       (c) => c._meta.id == nodeIndex
     );
-    // console.log({ colItem });
+    // console.log({ nodeItem });
     if (
-      colItem &&
+      nodeItem &&
       [
         ERequestTypes.Rest,
         ERequestTypes.GraphQL,
         ERequestTypes.SocketIO,
         ERequestTypes.WebSocket,
-      ].includes(colItem.meta.type)
+      ].includes(nodeItem.meta.type)
     ) {
-      // console.log({ colItem });
-
-      _openReqInTab(colItem);
+      // console.log({ nodeItem });
+      _openReqInTab(nodeItem);
     }
   };
 

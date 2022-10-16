@@ -47,9 +47,6 @@ const Tabs: FC<ITabs> = forwardRef(
       activeTab: _activeTab,
       orders: _orders,
     });
-    const [tabs, setTabs] = useState(list);
-    const [activeTab, setActiveTab] = useState(_activeTab);
-    const [orders, setOrders] = useState(_orders);
 
     // const onReorder = async (dragIndex, hoverIndex) => {
     //   // console.log({ dragIndex, hoverIndex });
@@ -110,7 +107,7 @@ const Tabs: FC<ITabs> = forwardRef(
           });
         },
       };
-    });
+    }, []);
 
     return (
       <div
@@ -132,9 +129,9 @@ const Tabs: FC<ITabs> = forwardRef(
               className="flex border-b border-tabBorder items-start"
               style={{ height: height }}
             >
-              {orders.map((tabId, i) => {
-                const tab = tabs[tabId];
-                console.log(tabs, tabId, 555);
+              {state.orders.map((tabId, i) => {
+                const tab = state.tabs[tabId];
+                console.log(state.tabs, tabId, 555);
                 if (!tab) return <Fragment key={tabId} />;
                 return (
                   <Tab
@@ -148,11 +145,11 @@ const Tabs: FC<ITabs> = forwardRef(
                       'border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
                       {
                         "active text-tabForeground before:block before:content-[''] before:absolute before:bg-primaryColor before:h-0.5 before:-top-px before:-inset-x-px after:block after:content-[''] after:absolute after:bg-statusBarBackground2 after:h-px after:-bottom-px after:inset-x-0 border-r-tabBorder border-l-tabBorder":
-                          tabId == activeTab,
+                          tabId == state.activeTab,
                       },
                       {
                         " after:block text-tabForegroundInactive after:content-[''] after:absolute after:h-px after:w-0.5 after:-left-0.5 after:-bottom-px after:border-t after:border-tabBorder":
-                          tabId != activeTab,
+                          tabId != state.activeTab,
                       },
                       {
                         'border-r-tabBorder !border-l-transparent': withDivider,
@@ -160,18 +157,18 @@ const Tabs: FC<ITabs> = forwardRef(
                       {
                         ' after:!bg-statusBarBackground2':
                           // i == 0 &&
-                          tabId == activeTab,
+                          tabId == state.activeTab,
                       },
                       {
                         'flex-1 text-center': equalWidth,
                       },
                       {
                         'after:!bg-tabActiveBackground':
-                          tabsVersion == 1 && tabId == activeTab,
+                          tabsVersion == 1 && tabId == state.activeTab,
                       },
                       {
                         'after:!bg-statusBarBackground2':
-                          tabsVersion == 2 && tabId == activeTab,
+                          tabsVersion == 2 && tabId == state.activeTab,
                       },
                       { 'bg-transparent text-base': tabsVersion == 1 },
                       { 'bg-tabBackground2 text-sm': tabsVersion == 2 }
@@ -180,7 +177,7 @@ const Tabs: FC<ITabs> = forwardRef(
                     name={tab.name}
                     closeTabIconMeta={closeTabIconMeta}
                     borderMeta={tabBorderMeta}
-                    isActive={tabId == activeTab}
+                    isActive={tabId == state.activeTab}
                     onSelect={onSelect}
                     height={height}
                     {...tab}
