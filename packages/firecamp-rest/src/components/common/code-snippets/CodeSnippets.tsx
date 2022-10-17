@@ -122,7 +122,7 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
           <Container.Body>
             <div className="tab-content h-full">
               <div className="tab-pane h-full active" id={activeTarget}>
-                <div className="p-2">
+                <div className="h-full">
                   {activeSnippetTab?.clients ? (
                     <div className="keywords-wrapper">
                       <div className="flex text-base items-center flex-1">

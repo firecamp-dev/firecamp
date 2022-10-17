@@ -13,7 +13,7 @@ const UrlBar: FC<IUrlBar> & {
     <>
       <div className="fc-statusbar">
         {!!nodePath ? (
-          <div className="fc-urlbar-path">
+          <div className="fc-urlbar-path flex">
             <span>{nodePath || ''}</span>
             <ToolBar className="ml-4 visible">
               { showEditIcon? <VscEdit size={16} onClick={onEditClick}/>: <></> }
