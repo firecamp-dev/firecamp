@@ -18,7 +18,6 @@ const config: Config = {
   moduleNameMapper: {
      "\\.(css|sass)$": "<rootDir>/__mocks__/styleMock.ts",
      "^uuid$": "uuid",
-     "https": "https",
      "^nanoid(/(.*)|$)": "nanoid$1",
   },
 };
