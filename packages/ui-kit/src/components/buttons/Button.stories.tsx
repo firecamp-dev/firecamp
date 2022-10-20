@@ -8,7 +8,7 @@ import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
 // Not able to define the control : icon (review in storybook)
 
 export default {
-  title: "UI-Kit/Button",
+  title: "UI-Kit/Button/main",
   component: Button,
   argTypes: {
     id: {control: 'text' },

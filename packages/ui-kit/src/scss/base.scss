@@ -235,6 +235,12 @@ body{
 .icon{
   font-family: 'icomoon' !important;
 }
+/** styling added to preview copy button in storybook
+.iconv2-copy-icon{
+  border: 10px solid var(--app-foreground);
+}
+/** */
+
 a,a:hover{
   color: inherit !important
 }
