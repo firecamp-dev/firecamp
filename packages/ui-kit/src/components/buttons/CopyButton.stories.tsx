@@ -1,6 +1,6 @@
 //@ts-nocheck
 import Button from './CopyButton';
-import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
+import { ICopyButton } from "./interfaces/CopyButton.interfaces"
 
 // Todo : Discuss Button props
 // Unused props : id
@@ -17,7 +17,7 @@ export default {
   }
 };
 
-const Template = (args) => <Button {...args} />;
+const Template = (args: ICopyButton) => <Button {...args} />;
 
 export const CopyButtonWithTextPreview = Template.bind({});
 CopyButtonWithTextPreview.args = { 
