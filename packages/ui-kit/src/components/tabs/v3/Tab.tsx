@@ -59,7 +59,7 @@ const Tab: FC<ITab> = ({
   name = '',
   state = 'default',
   isPreview = false,
-  reOrderable = false,
+  draggable = false,
   borderMeta = {
     placementForActive: 'top',
     right: true,
@@ -112,7 +112,7 @@ const Tab: FC<ITab> = ({
       onDragOver={(ev) => ev.preventDefault()}
       onDragStart={onTabDragStart}
       onDrop={onTabDrop}
-      draggable={true}
+      draggable={draggable}
     >
       <div
         className={cx(
@@ -183,7 +183,7 @@ Tab.defaultProps = {
   name: '',
   state: 'default',
   isPreview: false,
-  reOrderable: false,
+  draggable: false,
   borderMeta: {
     placementForActive: EActiveBorderPosition.Top,
     right: true,

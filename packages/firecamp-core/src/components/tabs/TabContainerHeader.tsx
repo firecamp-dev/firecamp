@@ -63,7 +63,7 @@ const TabHeaderContainer: FC = () => {
                 },
                 'w-10 h-9 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
               )}
-              onClick={() => update.activeTab('home')}
+              onClick={() => changeActiveTab('home')}
             >
               <VscHome size={20} />
             </div>
@@ -74,7 +74,6 @@ const TabHeaderContainer: FC = () => {
               ref={tabApi}
               onSelect={changeActiveTab}
               withDivider={true}
-              canReorder={true}
               height={36}
               tabsVersion={2}
               closeTabIconMeta={{
@@ -98,6 +97,7 @@ const TabHeaderContainer: FC = () => {
                   <Menu />
                 </div>
               }
+              reOrderable={true}
               onReorder={changeOrders}
             />
           </div>

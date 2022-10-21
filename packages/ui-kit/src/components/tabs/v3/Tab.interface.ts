@@ -44,8 +44,8 @@ export interface ITab {
   /** a boolean value to show dot indication */
   dotIndicator?: boolean;
 
-  /** allow to re order or not*/
-  reOrderable?: boolean;
+  /** allow to drag or not*/
+  draggable?: boolean;
 
   /** callback on dragstart */
   onTabDragStart?: DragEventHandler<HTMLDivElement>;

@@ -64,7 +64,7 @@ const Tab: FC<ITab> = ({
   name = '',
   state = 'default',
   isPreview = false,
-  canReorder = false,
+  draggable = false,
   borderMeta = {
     placementForActive: 'top',
     right: true,

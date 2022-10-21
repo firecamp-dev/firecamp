@@ -28,13 +28,13 @@ const Tabs: FC<ITabs> = forwardRef(
       withDivider,
       activeTab: _activeTab,
       equalWidth,
-      canReorder,
       height,
       tabsVersion,
       tabIndex,
       closeTabIconMeta,
       addTabIconMeta,
       tabBorderMeta,
+      reOrderable,
 
       onSelect = () => {},
       onReorder,
@@ -159,7 +159,7 @@ const Tabs: FC<ITabs> = forwardRef(
                     key={tabId}
                     index={i}
                     id={tabId}
-                    // canReorder={canReorder}
+                    draggable={reOrderable}
                     tabVersion={tabsVersion}
                     className={cx(
                       'border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
@@ -193,7 +193,6 @@ const Tabs: FC<ITabs> = forwardRef(
                       { 'bg-transparent text-base': tabsVersion == 1 },
                       { 'bg-tabBackground2 text-sm': tabsVersion == 2 }
                     )}
-                    // onReorder={onReorder}
                     name={tab.name}
                     closeTabIconMeta={closeTabIconMeta}
                     borderMeta={tabBorderMeta}
@@ -280,7 +279,7 @@ Tabs.defaultProps = {
   orders: [],
   withDivider: false,
   equalWidth: false,
-  canReorder: false,
+  reOrderable: false,
   height: 32,
   tabsVersion: 1,
   tabIndex: 1,
