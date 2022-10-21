@@ -174,7 +174,7 @@ const request: IPlatformRequestService = {
     // Here, request and pushActions are used for future purpose
     // console.log({ tabMeta });
 
-    useTabStore.getState().update.meta(tabId, tabMeta);
+    useTabStore.getState().changeMeta(tabId, tabMeta);
   },
 
   // execute request

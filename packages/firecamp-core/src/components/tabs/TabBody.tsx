@@ -40,7 +40,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
   }
 
   const { getFirecampAgent } = usePlatformStore.getState();
-  const { update, close } = useTabStore.getState();
+  const { changeActiveTab, close } = useTabStore.getState();
 
   if (
     [
@@ -116,7 +116,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
       // onError={(error, info) => {
       //   console.log({ error, info });
       //   close.byIds([tabObj.id]);
-      //   update.activeTab('home');
+      //   changeActiveTab('home');
       // }}
     >
       {_renderRequestTab(tabObj.type)}

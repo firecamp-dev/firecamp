@@ -85,7 +85,7 @@ const useTabStore = create<ITabStore>((set, get) => {
 
     remove: (tabId) => {
       set((s) => {
-        // s.update.meta(tabId, { isClosed: true });
+        // s.changeMeta(tabId, { isClosed: true });
         const index = s.orders.findIndex((t) => t == tabId);
         if (index == -1) return s;
 
@@ -210,7 +210,7 @@ const useTabStore = create<ITabStore>((set, get) => {
             isDeleted: false,
             isHistoryTab,
             // _meta,
-          }
+          },
         };
 
         /*To add tab in cacheTabs*/
@@ -239,7 +239,7 @@ const useTabStore = create<ITabStore>((set, get) => {
           _meta,
         };
 
-        let { list, update, open } = get();
+        let { list, changeActiveTab, open } = get();
         let tabAlreadyExists = Object.values(list).find(
           (l) => l?.request?._meta?.id == request?._meta?.id
         );
@@ -247,7 +247,7 @@ const useTabStore = create<ITabStore>((set, get) => {
         // console.log(tabAlreadyExists);
 
         if (tabAlreadyExists) {
-          update.activeTab(tabAlreadyExists.id);
+          changeActiveTab(tabAlreadyExists.id);
           return null;
         }
 
