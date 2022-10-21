@@ -36,14 +36,14 @@ export interface ITabs {
   /** tab border meta to configure tab border **/
   tabBorderMeta?: ITabBorderMeta;
 
-  /** a boolean value states whether you can to allow re-ordering list or not, default false */
-  canReorder?: boolean;
-
   /** a callback function to call when tab is being clicked/selected*/
   onSelect?: (id: string | number, index: number, event: any) => void;
 
-  /** callback function to call on tab re-ordered */
-  // onReorder?: () => { orderedList: Array<ITab> };
+  /** allow reorder */
+  reOrderable: boolean;
+
+  /** callback on tabs' reorder */
+  onReorder?: (tabIds: TId[]) => void;
 
   withDivider?: boolean;
 

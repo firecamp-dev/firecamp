@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import classnames from 'classnames';
 import { Editor, Container, Tabs, Modal } from '@firecamp/ui-kit';
+import { _env } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
 
 import codeSnippet, {
@@ -9,15 +10,14 @@ import codeSnippet, {
 } from '../../../services/code-snippet';
 import targetsInfo from '../../../services/code-snippet/targets-info';
 import { useRestStoreApi, useRestStore, IRestStore } from '../../../store';
-// import Modal from 'react-responsive-modal';
-import { _env } from '@firecamp/utils';
 
 const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
-  let restStoreApi: any = useRestStoreApi();
-  let { isCodeSnippetOpen, toggleOpenCodeSnippet } = useRestStore(
+  let { request, toggleOpenCodeSnippet } =
+    useRestStoreApi().getState() as IRestStore;
+  const envVariables = getPlatformEnvironments(tabId);
+  const { isCodeSnippetOpen } = useRestStore(
     (s: IRestStore) => ({
       isCodeSnippetOpen: s.ui.isCodeSnippetOpen,
-      toggleOpenCodeSnippet: s.toggleOpenCodeSnippet,
     }),
     shallow
   );
@@ -27,39 +27,35 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
    * Reason: To have an active client (persist) for individual target
    * Example: {'javascript': 'axios', 'java': 'okhttp', 'c': 'libcurl', ...}
    */
-  let [activeClientTargetMap, setActiveClientTargetMap] = useState({});
-  let [activeTarget, setActiveTarget] = useState('');
+  const [activeClientTargetMap, setActiveClientTargetMap] = useState({});
+  const [activeTarget, setActiveTarget] = useState('');
 
   // Snippets and generated tabs
-  let [tabs] = useMemo(() => {
-    tabs = targetsInfo.map((t) => {
+  let tabs = useMemo(() => {
+    return targetsInfo.map((t) => {
       return {
         id: t.target,
         name: t.target,
       };
     });
-    return [tabs];
   }, [isCodeSnippetOpen]);
 
   // active snippet target payload
-  let activeSnippetTab = useMemo(() => {
+  const activeSnippetTab = useMemo(() => {
     return targetsInfo.find((s) => s.target === activeTarget);
   }, [activeTarget]);
 
   useEffect(() => {
-    let initTarget: ESnippetTargets = targetsInfo[0].target as ESnippetTargets,
+    const initTarget: ESnippetTargets = targetsInfo[0]
+        .target as ESnippetTargets,
       initClient: TTargetClients = targetsInfo[0].clients[0] as TTargetClients;
     _onSelectTab(initTarget, initClient);
   }, []);
 
-  let [snippetCode, setSnippetCode] = useState('');
+  const [snippetCode, setSnippetCode] = useState('');
 
-  /**
-   * Set active tab/ target and client
-   * @param tab : active tab/ target
-   * @param client : active client
-   */
-  let _onSelectTab = async (tab: ESnippetTargets, client?: TTargetClients) => {
+  /** set active tab/ target and client*/
+  const _onSelectTab = async (tab: ESnippetTargets, client?: TTargetClients) => {
     // set active tab
     if (tab !== activeTarget) {
       setActiveTarget(tab);
@@ -80,9 +76,6 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
         });
       }
     }
-
-    let request = restStoreApi?.getState().request;
-    let envVariables = await getPlatformEnvironments(tabId);
 
     // Parse variables
     request = _env.applyVariables(request, envVariables.mergedEnvVariables);

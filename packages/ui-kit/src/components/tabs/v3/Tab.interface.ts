@@ -1,11 +1,12 @@
-import { ReactNode } from 'react';
+import { DragEventHandler, ReactNode } from 'react';
+import { TId } from '@firecamp/types';
 
 export interface ITab {
-  /** unique identifier */
+  /** tab id */
   id: string;
 
   /** tab index */
-  index?: string;
+  index?: number;
 
   /** add class name to show custom styling */
   className?: string;
@@ -43,11 +44,15 @@ export interface ITab {
   /** a boolean value to show dot indication */
   dotIndicator?: boolean;
 
-  /** indicates to allow re-ordering list*/
-  canReorder?: boolean;
+  /** allow to drag or not*/
+  draggable?: boolean;
 
-  /** callback function to call on re-ordered */
-  onReorder?: () => { orderedList: Array<ITab> };
+  /** callback on dragstart */
+  onTabDragStart?: DragEventHandler<HTMLDivElement>;
+
+  /** callback on drop */
+  onTabDrop?: DragEventHandler<HTMLDivElement>;
+
   height?: number;
   tabVersion?: number;
   tabIndex?: number;
@@ -58,8 +63,8 @@ export interface ICloseTabIconMeta {
   /** set true if need top show close icon */
   show?: boolean;
 
-  /** a callback function to call upon close icon click */
-  onClick?: (e?: any) => void;
+  /** a function to call upon close icon click */
+  onClick?: (tabId: TId, index: number) => void;
 
   /** prevent click event for close icon if true*/
   disabled?: boolean;

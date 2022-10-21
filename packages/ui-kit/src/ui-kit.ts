@@ -108,6 +108,10 @@ export { default as Response } from './components/response/Response';
 //----------------------------------------------------enums---------------------------------------------------------------------------
 
 export { EPlacementForActive as ETabsPlacementForActive } from './components/tabs/interfaces/Tabs.interfaces';
+export type {
+  ITab,
+  EActiveBorderPosition,
+} from './components/tabs/v3/Tab.interface';
 
 export { EPopoverPosition } from './components/popover/interfaces/Popover.interfaces';
 

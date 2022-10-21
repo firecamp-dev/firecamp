@@ -27,7 +27,7 @@ const GraphQL = lazy(() =>
 import EnvironmentWidget from '../common/environment/environment-widget/EnvironmentWidget';
 import ErrorPopup from '../common/error-boundary/ErrorPopup';
 // import SavePopover from '../common/save/SavePopover';
-import { ITabProps } from './types';
+import { IRequestTabProps } from './types';
 
 import * as platformContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
@@ -40,7 +40,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
   }
 
   const { getFirecampAgent } = usePlatformStore.getState();
-  const { update, close } = useTabStore.getState();
+  const { changeActiveTab, close } = useTabStore.getState();
 
   if (
     [
@@ -56,7 +56,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
     });
   }
 
-  const tabProps: ITabProps = useMemo(() => {
+  const tabProps: IRequestTabProps = useMemo(() => {
     return {
       index: index,
       tab: tabObj,
@@ -116,7 +116,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
       // onError={(error, info) => {
       //   console.log({ error, info });
       //   close.byIds([tabObj.id]);
-      //   update.activeTab('home');
+      //   changeActiveTab('home');
       // }}
     >
       {_renderRequestTab(tabObj.type)}

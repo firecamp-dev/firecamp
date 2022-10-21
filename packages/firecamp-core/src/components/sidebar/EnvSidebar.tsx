@@ -41,7 +41,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
 
   const { tab, activeTab } = useTabStore(
     (s: any) => ({
-      tab: s.list?.find((t) => t.id === s.activeTab) || {},
+      tab: s.list[s.activeTab] || {},
       activeTab: s.activeTab,
     }),
     shallow

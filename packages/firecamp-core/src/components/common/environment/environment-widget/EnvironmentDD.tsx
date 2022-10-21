@@ -52,20 +52,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
           ? 'Manage Workspace Environment'
           : 'Manage Collection Environment',
       onClick: () => {
-        // if (scope === EEnvironmentScope.Workspace) {
-        //   F.appStore.environment.update.activeProject('global');
-        //   F.ModalService.open(
-        //     EModals.WORKSPACE_SETTING,
-        //     EWorkspaceSettingTabs.ENVIRONMENT
-        //   );
-        // } else {
-        //   F.appStore.environment.update.activeProject(collectionId);
-        //   F.ModalService.open(
-        //     EModals.PROJECT_SETTING,
-        //     ECollectionSettingTabs.ENVIRONMENT,
-        //     { collectionId }
-        //   );
-        // }
+        
       },
     },
   ];
