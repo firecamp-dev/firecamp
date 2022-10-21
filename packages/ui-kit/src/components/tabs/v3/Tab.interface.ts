@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { TId } from '@firecamp/types';
 
 export interface ITab {
-  /** unique identifier */
+  /** tab id */
   id: string;
 
   /** tab index */
@@ -47,8 +47,12 @@ export interface ITab {
   /** allow to re order or not*/
   reOrderable?: boolean;
 
-  /** callback function to call on re-ordered */
-  onReorder?: () => { orderedList: Array<ITab> };
+  /** callback on dragstart */
+  onDragStart: (e: DragEvent) => void;
+
+  /** callback on drop */
+  onDrop: (e: DragEvent) => void;
+
   height?: number;
   tabVersion?: number;
   tabIndex?: number;

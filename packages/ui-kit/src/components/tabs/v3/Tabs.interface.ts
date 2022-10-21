@@ -42,8 +42,8 @@ export interface ITabs {
   /** a callback function to call when tab is being clicked/selected*/
   onSelect?: (id: string | number, index: number, event: any) => void;
 
-  /** callback function to call on tab re-ordered */
-  // onReorder?: () => { orderedList: Array<ITab> };
+  /** callback on tabs' reorder */
+  onReorder?: (tabIds: TId[]) => void;
 
   withDivider?: boolean;
 

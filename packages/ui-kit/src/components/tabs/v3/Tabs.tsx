@@ -31,7 +31,6 @@ const Tabs: FC<ITabs> = forwardRef(
       height,
       tabsVersion,
       tabIndex,
-      focus,
       closeTabIconMeta,
       addTabIconMeta,
       tabBorderMeta,
@@ -139,7 +138,6 @@ const Tabs: FC<ITabs> = forwardRef(
           'text-base',
           '!border-tabBorder',
           '!border-t-transparent'
-          // {'focus-outer-tab' : focus == true }
         )}
         id={id}
         tabIndex={tabIndex}
@@ -161,8 +159,7 @@ const Tabs: FC<ITabs> = forwardRef(
                     index={i}
                     id={tabId}
                     // canReorder={canReorder}
-                    tabsVersion={tabsVersion}
-                    focus={focus}
+                    tabVersion={tabsVersion}
                     className={cx(
                       'border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
                       {
@@ -286,7 +283,6 @@ Tabs.defaultProps = {
   height: 32,
   tabsVersion: 1,
   tabIndex: 1,
-  focus: true,
 
   closeTabIconMeta: {
     show: false,

@@ -73,7 +73,6 @@ const Tab: FC<ITab> = ({
   onSelect = () => {},
   preComp,
   postComp,
-  onReorder = (draggedItem, index) => {},
   count,
   height,
   dotIndicator,
@@ -83,7 +82,6 @@ const Tab: FC<ITab> = ({
   onDrop,
   ...tabProps
 }) => {
-
   return (
     <div
       tabIndex={1}
@@ -121,6 +119,7 @@ const Tab: FC<ITab> = ({
           { 'active !bg-tabActiveBackground': isActive },
           { 'bg-tabBackground2': tabVersion == 2 },
           { 'bg-statusBarBackground2': tabVersion == 2 && isActive },
+          { 'bg-tabBackground': tabVersion == 1 },
           'fc-tab',
           'hover:bg-tabHoverBackground',
           'flex',
@@ -130,8 +129,7 @@ const Tab: FC<ITab> = ({
           'relative',
           'w-full',
           'whitespace-pre',
-          'relative',
-          { 'bg-tabBackground': tabVersion == 1 }
+          'relative'
         )}
       >
         <TopBorderPlacement
@@ -150,12 +148,12 @@ const Tab: FC<ITab> = ({
               <VscCircleFilled size={10} />
             </div>
           ) : (
-            ''
+            <></>
           )}
           {postComp ? (
-            <div className="flex items-center pr-1 pl-1">{postComp()}</div>
+            <div className="flex items-center pr-1 pl-1">{postComp}</div>
           ) : (
-            ''
+            <></>
           )}
         </div>
         <CloseIconPlacement
