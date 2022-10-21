@@ -3,6 +3,7 @@ import {
   forwardRef,
   Fragment,
   useImperativeHandle,
+  useRef,
   useState,
 } from 'react';
 import cx from 'classnames';
@@ -36,84 +37,99 @@ const Tabs: FC<ITabs> = forwardRef(
       tabBorderMeta,
 
       onSelect = () => {},
-      // onReorder: prop_onReorder = () => {},
+      onReorder,
     },
     ref
   ) => {
+    const dndIds = useRef({ dragId: null, dropId: null });
     const [state, setState] = useState({
       tabs: list,
       activeTab: _activeTab,
       orders: _orders,
     });
 
-    // const onReorder = async (dragIndex, hoverIndex) => {
-    //   // console.log({ dragIndex, hoverIndex });
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          changeName: (tabId: TId, name: string) => {
+            setState((s) => ({
+              ...s,
+              tabs: {
+                ...s.tabs,
+                [tabId]: { ...s.tabs[tabId], name },
+              },
+            }));
+          },
+          reorder: () => {},
+          add: (tab: ITab) => {
+            setState((s) => ({
+              ...s,
+              tabs: {
+                ...s.tabs,
+                [tab.id]: tab,
+              },
+              activeTab: tab.id,
+              orders: [...s.orders, tab.id],
+            }));
+          },
+          close: (tabId_s: TId | TId[]) => {
+            setState((s) => {
+              let orders = s.orders;
+              if (typeof tabId_s == 'string') {
+                delete s.tabs[tabId_s];
+                orders = orders.filter((i) => i != tabId_s);
+              } else {
+                tabId_s.forEach((id) => {
+                  delete s.tabs[id];
+                });
+                orders = orders.filter((i) => !tabId_s.includes(i));
+              }
+              const activeTab = orders.includes(s.activeTab)
+                ? s.activeTab
+                : orders[orders.length - 1];
+              return { tabs: s.tabs, orders, activeTab };
+            });
+          },
+        };
+      },
+      []
+    );
 
-    //   let reorderedList = [...sortedList];
-
-    //   let dragTab = reorderedList[dragIndex];
-    //   if (dragIndex === undefined || hoverIndex === undefined || !dragTab)
-    //     return s;
-    //   // console.log({ reorderedList });
-
-    //   //Get sorted Tabs
-    //   reorderedList.splice(dragIndex, 1);
-    //   reorderedList.splice(hoverIndex, 0, dragTab);
-    //   setSortedList(reorderedList);
-    //   prop_onReorder(reorderedList);
-    // };
-
-    useImperativeHandle(ref, () => {
-      return {
-        changeName: (tabId: TId, name: string) => {
-          setState((s) => ({
-            ...s,
-            tabs: {
-              ...s.tabs,
-              [tabId]: { ...s.tabs[tabId], name },
-            },
-          }));
-        },
-        reorder: () => {},
-        add: (tab: ITab) => {
-          setState((s) => ({
-            ...s,
-            tabs: {
-              ...s.tabs,
-              [tab.id]: tab,
-            },
-            activeTab: tab.id,
-            orders: [...s.orders, tab.id],
-          }));
-        },
-        close: (tabId_s: TId | TId[]) => {
-          setState((s) => {
-            let orders = s.orders;
-            if (typeof tabId_s == 'string') {
-              delete s.tabs[tabId_s];
-              orders = orders.filter((i) => i != tabId_s);
-            } else {
-              tabId_s.forEach((id) => {
-                delete s.tabs[id];
-              });
-              orders = orders.filter((i) => !tabId_s.includes(i));
-            }
-            const activeTab = orders.includes(s.activeTab)
-              ? s.activeTab
-              : orders[orders.length - 1];
-            return { tabs: s.tabs, orders, activeTab};
-          });
-        },
-      };
-    }, []);
-
-    const _onSelect = (tabId: TId, index: TId)=> {
-      setState((s)=> ({
+    const _onSelect = (tabId: TId, index: number, e: any) => {
+      setState((s) => ({
         ...s,
-        activeTab: tabId
+        activeTab: tabId,
       }));
-      onSelect(tabId, index);
-    }
+      onSelect(tabId, index, e);
+    };
+
+    /** set dragId on drag start at Tabs */
+    const onDragStart = (e: any) => {
+      dndIds.current.dragId = e.currentTarget.id;
+    };
+
+    /** set dropId on drop at Tabs and reorder ids/tabs */
+    const onDrop = (e: any) => {
+      dndIds.current.dropId = e.currentTarget.id;
+      reorder();
+    };
+
+    const reorder = async () => {
+      const { dragId, dropId } = dndIds.current;
+      const dragIndex = state.orders.findIndex((i) => i == dragId);
+      const dropIndex = state.orders.findIndex((i) => i == dropId);
+
+      const { orders } = state;
+      orders.splice(dropIndex, 0, orders.splice(dragIndex, 1)[0]);
+
+      setState((s) => ({
+        ...s,
+        orders,
+      }));
+      dndIds.current = { dragId: null, dropId: null };
+      if (typeof onReorder == 'function') onReorder(orders);
+    };
 
     return (
       <div
@@ -186,6 +202,8 @@ const Tabs: FC<ITabs> = forwardRef(
                     isActive={tabId == state.activeTab}
                     onSelect={_onSelect}
                     height={height}
+                    onDragStart={onDragStart}
+                    onDrop={onDrop}
                     {...tab}
                   />
                 );

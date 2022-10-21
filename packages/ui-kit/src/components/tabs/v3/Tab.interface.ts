@@ -1,5 +1,5 @@
-import { TId } from '@firecamp/types';
 import { ReactNode } from 'react';
+import { TId } from '@firecamp/types';
 
 export interface ITab {
   /** unique identifier */
@@ -44,8 +44,8 @@ export interface ITab {
   /** a boolean value to show dot indication */
   dotIndicator?: boolean;
 
-  /** indicates to allow re-ordering list*/
-  canReorder?: boolean;
+  /** allow to re order or not*/
+  reOrderable?: boolean;
 
   /** callback function to call on re-ordered */
   onReorder?: () => { orderedList: Array<ITab> };

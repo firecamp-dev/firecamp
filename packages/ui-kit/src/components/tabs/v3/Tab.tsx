@@ -2,7 +2,6 @@ import { FC } from 'react';
 import cx from 'classnames';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
-import { useDrag, useDrop } from 'react-dnd';
 
 import { EActiveBorderPosition, ITab } from './Tab.interface';
 import Count from '../Count';
@@ -53,8 +52,6 @@ const CloseIconPlacement = ({
     </div>
   );
 
-const ReorderType = 'tab';
-
 const Tab: FC<ITab> = ({
   id,
   index,
@@ -62,7 +59,7 @@ const Tab: FC<ITab> = ({
   name = '',
   state = 'default',
   isPreview = false,
-  canReorder = false,
+  reOrderable = false,
   borderMeta = {
     placementForActive: 'top',
     right: true,
@@ -81,46 +78,15 @@ const Tab: FC<ITab> = ({
   height,
   dotIndicator,
   tabVersion,
+
+  onDragStart,
+  onDrop,
   ...tabProps
 }) => {
-  const [tabDragProps, tabDrag] = canReorder
-    ? useDrag({
-        item: {
-          id: id,
-          index: index,
-          name: name,
-        },
-        type: ReorderType,
-        collect: (monitor: any) => monitor,
-      })
-    : [];
-
-  const [tabDropProps, tabDrop] = canReorder
-    ? useDrop({
-        accept: ReorderType,
-        drop: (draggedItem: { id: number; index: number; name: string }) =>
-          onReorder(draggedItem.index, index),
-        collect: (monitor: { isOver: () => any; canDrop: () => any }) => ({
-          monitor,
-          isOver: monitor.isOver(),
-          canDrop: monitor.canDrop(),
-        }),
-      })
-    : [];
-
-  let setTabRef = (ref: any) => {
-    // console.log({ ref });
-
-    if (canReorder) {
-      tabDrag && tabDrag(ref);
-      tabDrop && tabDrop(ref);
-    }
-  };
 
   return (
     <div
       tabIndex={1}
-      draggable="true"
       role="tab"
       title={name}
       aria-label={name}
@@ -144,8 +110,11 @@ const Tab: FC<ITab> = ({
         { tabVersion },
         className
       )}
-      ref={setTabRef}
       onClick={(e) => onSelect(id, index, e)}
+      onDragOver={(ev) => ev.preventDefault()}
+      onDragStart={onDragStart}
+      onDrop={onDrop}
+      draggable={true}
     >
       <div
         className={cx(
@@ -216,7 +185,7 @@ Tab.defaultProps = {
   name: '',
   state: 'default',
   isPreview: false,
-  canReorder: false,
+  reOrderable: false,
   borderMeta: {
     placementForActive: EActiveBorderPosition.Top,
     right: true,
