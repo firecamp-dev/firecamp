@@ -2,9 +2,7 @@ import {
   FC,
   forwardRef,
   Fragment,
-  useEffect,
   useImperativeHandle,
-  useRef,
   useState,
 } from 'react';
 import cx from 'classnames';
@@ -72,7 +70,7 @@ const Tabs: FC<ITabs> = forwardRef(
             ...s,
             tabs: {
               ...s.tabs,
-              [tabId]: { ...tabs[tabId], name },
+              [tabId]: { ...s.tabs[tabId], name },
             },
           }));
         },
@@ -109,6 +107,14 @@ const Tabs: FC<ITabs> = forwardRef(
       };
     }, []);
 
+    const _onSelect = (tabId: TId, index: TId)=> {
+      setState((s)=> ({
+        ...s,
+        activeTab: tabId
+      }));
+      onSelect(tabId, index);
+    }
+
     return (
       <div
         className={cx(
@@ -131,7 +137,7 @@ const Tabs: FC<ITabs> = forwardRef(
             >
               {state.orders.map((tabId, i) => {
                 const tab = state.tabs[tabId];
-                console.log(state.tabs, tabId, 555);
+                // console.log(state.tabs, tabId, 555);
                 if (!tab) return <Fragment key={tabId} />;
                 return (
                   <Tab
@@ -178,7 +184,7 @@ const Tabs: FC<ITabs> = forwardRef(
                     closeTabIconMeta={closeTabIconMeta}
                     borderMeta={tabBorderMeta}
                     isActive={tabId == state.activeTab}
-                    onSelect={onSelect}
+                    onSelect={_onSelect}
                     height={height}
                     {...tab}
                   />

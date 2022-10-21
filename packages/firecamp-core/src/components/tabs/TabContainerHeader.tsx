@@ -6,7 +6,6 @@ import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
 import shallow from 'zustand/shallow';
 
-import PreComp from './header/PreComp';
 import Menu from './header/Menu';
 import CollabButton from './header/CollabButton';
 import { ITabStore, useTabStore } from '../../store/tab';
