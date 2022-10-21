@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
   EFirecampAgent,
   EHttpMethod,
@@ -7,7 +8,6 @@ import {
   TId,
 } from '@firecamp/types';
 import { ITab } from '@firecamp/ui-kit';
-import { ReactNode } from 'react';
 import {
   IPlatformRequestService,
   IPlatformEnvironmentService,

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { DragEventHandler, ReactNode } from 'react';
 import { TId } from '@firecamp/types';
 
 export interface ITab {
@@ -48,10 +48,10 @@ export interface ITab {
   reOrderable?: boolean;
 
   /** callback on dragstart */
-  onDragStart: (e: DragEvent) => void;
+  onTabDragStart?: DragEventHandler<HTMLDivElement>;
 
   /** callback on drop */
-  onDrop: (e: DragEvent) => void;
+  onTabDrop?: DragEventHandler<HTMLDivElement>;
 
   height?: number;
   tabVersion?: number;

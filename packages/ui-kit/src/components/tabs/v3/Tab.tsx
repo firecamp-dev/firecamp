@@ -30,7 +30,7 @@ const TitlePlacement = ({
 const CloseIconPlacement = ({
   id = '',
   state = 'default',
-  onClick = () => {},
+  onClick = (e: any) => {},
   show = false,
 }: {
   id: string;
@@ -78,8 +78,8 @@ const Tab: FC<ITab> = ({
   dotIndicator,
   tabVersion,
 
-  onDragStart,
-  onDrop,
+  onTabDragStart,
+  onTabDrop,
   ...tabProps
 }) => {
   return (
@@ -110,8 +110,8 @@ const Tab: FC<ITab> = ({
       )}
       onClick={(e) => onSelect(id, index, e)}
       onDragOver={(ev) => ev.preventDefault()}
-      onDragStart={onDragStart}
-      onDrop={onDrop}
+      onDragStart={onTabDragStart}
+      onDrop={onTabDrop}
       draggable={true}
     >
       <div

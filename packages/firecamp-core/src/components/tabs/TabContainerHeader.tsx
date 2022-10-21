@@ -23,7 +23,7 @@ const TabHeaderContainer: FC = () => {
     }),
     shallow
   );
-  const { list: tabs, orders, update } = useTabStore.getState();
+  const { list: tabs, orders, changeActiveTab, changeOrders } = useTabStore.getState() as ITabStore;
 
   useEffect(() => {
     console.log(tabApi, 'tabApi..');
@@ -72,7 +72,7 @@ const TabHeaderContainer: FC = () => {
               orders={orders}
               activeTab={activeTab}
               ref={tabApi}
-              onSelect={update.activeTab}
+              onSelect={changeActiveTab}
               withDivider={true}
               canReorder={true}
               height={36}
@@ -98,6 +98,7 @@ const TabHeaderContainer: FC = () => {
                   <Menu />
                 </div>
               }
+              onReorder={changeOrders}
             />
           </div>
         </Column>

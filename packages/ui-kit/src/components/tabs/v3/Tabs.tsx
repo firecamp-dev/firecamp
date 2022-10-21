@@ -1,4 +1,5 @@
 import {
+  DragEventHandler,
   FC,
   forwardRef,
   Fragment,
@@ -104,12 +105,12 @@ const Tabs: FC<ITabs> = forwardRef(
     };
 
     /** set dragId on drag start at Tabs */
-    const onDragStart = (e: any) => {
+    const onDragStart: DragEventHandler<HTMLDivElement> = (e) => {
       dndIds.current.dragId = e.currentTarget.id;
     };
 
     /** set dropId on drop at Tabs and reorder ids/tabs */
-    const onDrop = (e: any) => {
+    const onDrop: DragEventHandler<HTMLDivElement> = (e) => {
       dndIds.current.dropId = e.currentTarget.id;
       reorder();
     };
@@ -119,7 +120,7 @@ const Tabs: FC<ITabs> = forwardRef(
       const dragIndex = state.orders.findIndex((i) => i == dragId);
       const dropIndex = state.orders.findIndex((i) => i == dropId);
 
-      const { orders } = state;
+      const orders = [...state.orders];
       orders.splice(dropIndex, 0, orders.splice(dragIndex, 1)[0]);
 
       setState((s) => ({
@@ -199,8 +200,8 @@ const Tabs: FC<ITabs> = forwardRef(
                     isActive={tabId == state.activeTab}
                     onSelect={_onSelect}
                     height={height}
-                    onDragStart={onDragStart}
-                    onDrop={onDrop}
+                    onTabDragStart={onDragStart}
+                    onTabDrop={onDrop}
                     {...tab}
                   />
                 );

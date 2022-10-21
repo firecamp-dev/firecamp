@@ -20,11 +20,10 @@ interface ITabStore {
 
   reorder: (dragIndex: number, hoverIndex: number) => void;
   remove: (tbId: string) => void;
-  update: {
-    meta: (tab, meta, request?: any) => void; //todo: define types...
-    activeTab: (tabId: string) => void;
-    rootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => void;
-  };
+  changeMeta: (tab, meta, request?: any) => void; //todo: define types...
+  changeActiveTab: (tabId: string) => void;
+  changeRootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => void;
+  changeOrders: (orders: TId[]) => void;
   open: {
     new: (
       type?: string,
@@ -109,41 +108,45 @@ const useTabStore = create<ITabStore>((set, get) => {
       });
     },
 
-    update: {
-      meta: (tabId: TId, meta: IRequestTab['meta']) => {
-        set((s) => {
-          const tab = s.list[tabId];
-          const list = {
-            ...s.list,
-            [tabId]: {
-              ...tab,
-              meta: {
-                ...tab.meta,
-                ...meta,
-              },
+    changeMeta: (tabId: TId, meta: IRequestTab['meta']) => {
+      set((s) => {
+        const tab = s.list[tabId];
+        const list = {
+          ...s.list,
+          [tabId]: {
+            ...tab,
+            meta: {
+              ...tab.meta,
+              ...meta,
             },
-          };
-          return { list };
-        });
-      },
+          },
+        };
+        return { list };
+      });
+    },
 
-      activeTab: (tabId) => {
-        set((s) => ({ activeTab: tabId }));
-        // tab.storeCacheTabsInDBWithDebounce();
-      },
+    changeActiveTab: (tabId) => {
+      set((s) => ({ activeTab: tabId }));
+      // tab.storeCacheTabsInDBWithDebounce();
+    },
 
-      rootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => {
-        set((s) => {
-          const list = {
-            ...s.list,
-            [tabId]: {
-              ...s.list[tabId],
-              ...updatedTab,
-            },
-          };
-          return { list };
-        });
-      },
+    changeRootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => {
+      set((s) => {
+        const list = {
+          ...s.list,
+          [tabId]: {
+            ...s.list[tabId],
+            ...updatedTab,
+          },
+        };
+        return { list };
+      });
+    },
+
+    changeOrders: (orders) => {
+      set((s) => ({
+        orders,
+      }));
     },
 
     open: {
@@ -192,9 +195,9 @@ const useTabStore = create<ITabStore>((set, get) => {
         request,
         { setActive = false, isSaved = true, isHistoryTab = false, _meta = {} }
       ) => {
-        let { list, orders, activeTab } = get();
+        const { list, orders, activeTab } = get();
         const tId = nanoid();
-        let tab = {
+        const tab: IRequestTab = {
           id: tId,
           name: request?.meta?.name || 'untitled request',
           type: request.meta.type,
@@ -206,15 +209,15 @@ const useTabStore = create<ITabStore>((set, get) => {
             revision: 1,
             isDeleted: false,
             isHistoryTab,
-            _meta,
-          },
+            // _meta,
+          }
         };
 
         /*To add tab in cacheTabs*/
         // cacheTabsFactoryFns.setTab(tab.id, cacheTabPayload)
 
         const _orders = [...orders, tId];
-        set((s: any) => {
+        set((s: ITabStore) => {
           return {
             list: { ...list, [tId]: tab },
             activeTab: setActive == true ? tab.id : activeTab,
