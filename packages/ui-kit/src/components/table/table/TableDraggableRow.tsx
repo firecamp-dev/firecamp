@@ -1,6 +1,6 @@
 import { flexRender, Row } from '@tanstack/react-table';
 import { FC, Fragment } from 'react';
-import { GrDrag } from "@react-icons/all-files/gr/GrDrag"
+import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { ITableRow, TPlainObject } from './Table';
 
 const TableDraggableRow: FC<ITableRow> = (props) => {
@@ -23,7 +23,7 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
                 onDrop={(e) => (e.preventDefault(), handleDrop(row.index))}
                 onDragOver={(e) => e.preventDefault()}
               >
-                <GrDrag/>
+                <GrDrag />
               </td>
             ) : (
               flexRender(cell.column.columnDef.cell, cell.getContext())
