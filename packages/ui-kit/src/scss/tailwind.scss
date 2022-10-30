@@ -1155,14 +1155,14 @@ video {
 .h-3 {
 	height: 0.75rem;
 }
+.h-28 {
+	height: 7rem;
+}
 .h-\[30px\] {
 	height: 30px;
 }
 .h-\[29px\] {
 	height: 29px;
-}
-.h-28 {
-	height: 7rem;
 }
 .h-7 {
 	height: 1.75rem;
@@ -1207,6 +1207,7 @@ video {
 	width: 100%;
 }
 .w-max {
+	width: -webkit-max-content;
 	width: -moz-max-content;
 	width: max-content;
 }
@@ -1221,6 +1222,9 @@ video {
 }
 .\!w-full {
 	width: 100% !important;
+}
+.w-16 {
+	width: 4rem;
 }
 .w-screen {
 	width: 100vw;
@@ -1322,17 +1326,14 @@ video {
 .overflow-auto {
 	overflow: auto;
 }
-.\!overflow-hidden {
-	overflow: hidden !important;
-}
 .overflow-hidden {
 	overflow: hidden;
 }
+.\!overflow-hidden {
+	overflow: hidden !important;
+}
 .overflow-visible {
 	overflow: visible;
-}
-.overflow-x-auto {
-	overflow-x: auto;
 }
 .overflow-ellipsis {
 	text-overflow: ellipsis;
@@ -1351,6 +1352,9 @@ video {
 }
 .rounded-full {
 	border-radius: 9999px;
+}
+.rounded {
+	border-radius: 0.25rem;
 }
 .rounded-3xl {
 	border-radius: 1.5rem;
@@ -2272,7 +2276,8 @@ video {
 
 @import url(../components/split-view/SplitView.scss);
 @import url(collection.scss);
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap');
 
@@ -2308,10 +2313,12 @@ hr{
   height: 100%;
 }
 .h-fit{
+  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
 .\!h-fit{
+  height: -webkit-fit-content !important;
   height: -moz-fit-content !important;
   height: fit-content !important;
 }
@@ -2354,6 +2361,7 @@ textarea:focus,textarea:focus-visible{
 	color: var(--error);
 }
 .w-fit {
+  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
@@ -2636,6 +2644,7 @@ textarea:focus,textarea:focus-visible{
 }
 
 .collapsed {
+  height: -webkit-fit-content !important;
   height: -moz-fit-content !important;
   height: fit-content !important;
   min-height: 0px !important
@@ -2803,10 +2812,11 @@ body .ace_editor .ace_scrollbar{
        -moz-user-select: text;
             user-select: text;
   }
-  
-  .json-as-form input.json_row--key, .json-as-form input.json_row--value{
-    background: transparent;
-  }
+  /*
+  * // .json-as-form input.json_row--key, .json-as-form input.json_row--value{
+  * //   background: transparent;
+  * // }
+  */
 /*----------other css  end--------*/ 
 
 /*---code mirror css starts -------*/
@@ -2862,27 +2872,6 @@ body .ace_editor .ace_scrollbar{
 }
 
 /*---code mirror css ends----------*/
-
-.loader{
-  margin-top: calc(50vh - 44px);
-  margin-left: calc(50vw - 80px);
-}
-
-.wave-loader {
-  animation: wave-loader 2s linear infinite;
-}
-
-@keyframes wave-loader {
-  0% {
-    width: 0px;
-  }
-  50% {
-    width: 14px;
-  }
-  100% {
-    width: 0px;
-  }
-}
 
 .expandable-right-pane{
   transform: scaleX(0);

@@ -17,11 +17,11 @@ import { useRequestStore } from '../../store/request';
 import { useUserStore } from '../../store/user';
 import { usePlatformStore } from '../../store/platform';
 
-import { ITabMeta } from '../../components/tabs/types';
+import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 
 import AppService from '../app';
-import { prepareEventNameForRequestPull } from '../../types';
+import { prepareEventNameForRequestPull } from '../platform-emitter/events';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -36,7 +36,7 @@ interface IPlatformRequestService {
   // on change request, update tab meta
   onChangeRequestTab: (
     tabId: TId,
-    tabMeta: ITabMeta,
+    tabMeta: IRequestTab['meta'],
     request?: IRest | IGraphQL, // |ISocket | IWebsocket ,
     pushActions?: any[]
   ) => void;
@@ -167,14 +167,14 @@ const request: IPlatformRequestService = {
   // on change request
   onChangeRequestTab: (
     tabId: TId,
-    tabMeta: ITabMeta,
+    tabMeta: IRequestTab['meta'],
     request?: IRest | IGraphQL, // | ISocket | IWebsocket,
     pushActions?: any[]
   ) => {
     // Here, request and pushActions are used for future purpose
     // console.log({ tabMeta });
 
-    useTabStore.getState().update.meta(tabId, tabMeta);
+    useTabStore.getState().changeMeta(tabId, tabMeta);
   },
 
   // execute request

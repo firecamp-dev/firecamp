@@ -9,8 +9,8 @@ import '../sass/_index.sass';
 import { FC, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import shallow from 'zustand/shallow';
-// import { HTML5Backend } from 'react-dnd-html5-backend';
-// import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DndProvider } from 'react-dnd';
 
 
 import { Row, RootContainer } from '@firecamp/ui-kit';
@@ -28,7 +28,6 @@ import { ModalContainer } from '../components/modals-v3/ModalContainer';
 import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 
-import useMonacoWorkers from '../components/hooks/useMonacoWorkers';
 import AppService from '../services/app';
 import RealtimeEventManager from '../components/common/realtime/Realtime'
 
@@ -65,14 +64,12 @@ const App: FC<any> = () => {
 
   return (
     <ErrorBoundary
-      FallbackComponent={() => {
-        return <ErrorPopup />;
-      }}
+      FallbackComponent={ErrorPopup}
       onError={(error) => {
         console.log({ error });
       }}
     >
-      {/* <DndProvider backend={HTML5Backend}> */}
+       <DndProvider backend={HTML5Backend}>
         <RootContainer
           flex={1}
           overflow="auto"
@@ -88,7 +85,7 @@ const App: FC<any> = () => {
           <EnvSidebarContainer />
           <StatusBarContainer className="border-t focus-outer2" />
         </RootContainer>
-      {/* </DndProvider> */}
+       </DndProvider>
 
       <Crisp />
       <Analytics />

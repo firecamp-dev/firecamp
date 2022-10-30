@@ -27,7 +27,7 @@
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
     "test": "jest",
     "test-storybook": "test-storybook",
-    "start:storybook": "npm run test:generate-output && yarn storybook",
+    "start:storybook": "yarn test:generate-output && yarn storybook",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build:tailwind": "postcss src/scss/base.scss -o src/scss/tailwind.scss",
@@ -41,6 +41,7 @@
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.19.4",
     "@storybook/addon-actions": "^6.5.10",
     "@storybook/addon-essentials": "^6.5.10",
     "@storybook/addon-interactions": "^6.5.10",
@@ -60,6 +61,7 @@
     "@types/markdown-it": "^12.2.3",
     "@types/react": "^17.0.14",
     "@types/react-table": "^7.7.10",
+    "babel-jest": "^29.1.2",
     "babel-loader": "^8.2.2",
     "babel-preset-react-app": "^10.0.0",
     "chromatic": "^6.7.0",
@@ -76,6 +78,7 @@
     "sass-loader": "^13.0.2",
     "style-loader": "^3.3.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17",
+    "ts-jest": "^29.0.3",
     "typescript": "^4.3.5"
   },
   "dependencies": {
@@ -99,8 +102,6 @@
     "react-codemirror2": "^7.2.1",
     "react-complex-tree": "^1.1.11",
     "react-custom-scrollbars": "^4.2.1",
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
     "react-full-screen": "^0.3.1-0",
     "react-hook-form": "^6.8.1",
     "react-reflex": "^4.0.3",
@@ -113,24 +114,11 @@
   },
   "peerDependencies": {
     "react": "17.0.2",
-    "react-dnd": "^16.0.0",
-    "react-dnd-html5-backend": "^16.0.0",
     "react-dom": "17.0.2"
   },
   "babel": {
     "presets": [
-      [
-        "react-app",
-        {
-          "absoluteRuntime": false
-        }
-      ]
-    ]
-  },
-  "jest": {
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": [
-      "<rootDir>/config/jest.js"
+      "@babel/preset-env"
     ]
   }
 }

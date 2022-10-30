@@ -4,13 +4,14 @@ import notification from './notification';
 import modalService from './modals';
 import { useUserStore } from '../store/user';
 import { useWorkspaceStore } from '../store/workspace';
-import { ECloudApiHeaders, prepareEventNameForRequestPull } from '../types';
+import { ECloudApiHeaders } from '../types';
 import { IOrganization, IWorkspace } from '@firecamp/types';
 import { usePlatformStore } from '../store/platform';
 import { useTabStore } from '../store/tab';
 import { useEnvStore } from '../store/environment';
 import { useModalStore } from '../store/modal';
 import { platformEmitter } from './platform-emitter';
+import { prepareEventNameForRequestPull } from './platform-emitter/events';
 
 const userService = {
   isLoggedIn: () => {
