@@ -28,8 +28,8 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
 
 
       <Table name='test-table-1'
-        tableWidth={500}
-        tableResizable={true}
+        width={500}
+        resizable={true}
         data={rows}
         options={{
           containerClassName: "",

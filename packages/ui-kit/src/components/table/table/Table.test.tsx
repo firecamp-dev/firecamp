@@ -77,7 +77,7 @@ describe("Table : " , () => {
 
     expect(updatedColumnWidth).toBeGreaterThan(intialColumnWidth);
     }else{
-      expect(SimpleTable.args.tableResizable).toBeFalsy();
+      expect(SimpleTable.args.resizable).toBeFalsy();
     }
   });
 

@@ -1,7 +1,4 @@
-import { Td, TPlainObject } from './Table';
-import { useEffect, useState } from 'react';
-
-export type Person = {
+export type City = {
   key: string;
   value: string;
   description: string;
@@ -9,7 +6,7 @@ export type Person = {
   pincode: number;
 };
 
-export const defaultData: Person[] = [
+export const defaultData: City[] = [
   {
     key: 'City 1',
     value: 'Ahmedabad',
@@ -104,40 +101,3 @@ export const headerColumnDataForDisplay = [
     minSize: 145,
   },
 ];
-
-export const TableColumnHeading = ({ heading }: TPlainObject) => {
-  return <>{heading}</>;
-};
-export const TableInput = (props: any) => {
-  let { onChange, autoFocus, cell, rows } = props;
-  const [inputValue, setInputValue] = useState(cell.cellValue);
-
-  return (
-    <Td
-      style={{ width: cell.column.getSize() }}
-      className={
-        ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline'
-      }
-    >
-      <input
-        type="text"
-        placeholder={``}
-        value={inputValue}
-        autoFocus={autoFocus}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-        onBlur={(e) => {
-          let updatedRow = Object.assign([], rows);
-          updatedRow[cell.rowIndex] = {
-            ...updatedRow[cell.rowIndex],
-            [cell.columnId]: e.target.value,
-          };
-          onChange(updatedRow);
-        }}
-        className="text-appForeground bg-appBackground h-[29px]  w-full
-                            absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
-      />
-    </Td>
-  );
-};

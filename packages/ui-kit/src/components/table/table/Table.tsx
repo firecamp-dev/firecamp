@@ -55,10 +55,10 @@ const Table: FC<ITable> = ({
           );
         },
         cell: ({ cell }) => {
-          let cellValue = cell.getValue();
+          const value = cell.getValue();
           if (cell.getValue() !== 'undefined') {
             return cellRenderer({
-              cellValue,
+              value,
               rowIndex: cell.row.index,
               columnId: cell.column.id,
               column: cell.column,
@@ -93,15 +93,15 @@ const Table: FC<ITable> = ({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  function drag(rowIndex: number) {
+  const drag = (rowIndex: number) => {
     setDragId(rowIndex);
-  }
+  };
 
   //reorder the index value for the table rows
-  function drop(rowIndex: number) {
+  const drop = (rowIndex: number) => {
     tableData.splice(rowIndex, 0, tableData.splice(dragId, 1)[0]);
     setTableData([...tableData]);
-  }
+  };
 
   return (
     <div
@@ -254,3 +254,41 @@ type ITableRow = {
 };
 type ITh = { children: ReactNode; className?: string; style?: TPlainObject };
 type ITd = { children: ReactNode; className?: string; style?: TPlainObject };
+
+export const TableInput = (props: any) => {
+  let { autoFocus, cell, rows, onChange } = props;
+  const [inputValue, setInputValue] = useState(cell.value);
+
+  return (
+    <Td
+      style={{ width: cell.column.getSize() }}
+      className={
+        ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline'
+      }
+    >
+      <input
+        type="text"
+        placeholder={``}
+        value={inputValue}
+        autoFocus={autoFocus}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+        }}
+        onBlur={(e) => {
+          let updatedRow = Object.assign([], rows);
+          updatedRow[cell.rowIndex] = {
+            ...updatedRow[cell.rowIndex],
+            [cell.columnId]: e.target.value,
+          };
+          onChange(updatedRow);
+        }}
+        className="text-appForeground bg-appBackground h-[29px]  w-full
+                            absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
+      />
+    </Td>
+  );
+};
+
+export const TableColumnHeading = ({ heading }: TPlainObject) => {
+  return <>{heading}</>;
+};
