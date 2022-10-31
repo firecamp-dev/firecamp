@@ -1,11 +1,12 @@
-//@ts-nocheck
 import { useState } from 'react';
-import equal from 'deep-equal';
 import { _array } from '@firecamp/utils';
+import equal from 'deep-equal';
 import { within } from '@testing-library/react';
 
-import Table, { TableInput, TableColumnHeading } from './Table';
+import Table, { TableColumnHeading } from './Table';
 import { defaultData, columnDataForDisplay } from './TableData';
+import { SingleLineEditor, Editor, Button } from '../../../ui-kit';
+import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
 
 export default {
   title: 'UI-Kit/Table',
@@ -36,6 +37,7 @@ const SimpleTableTemplate = ({
       setData(newRows);
     }
   };
+
   return (
     <Table
       name={name}
@@ -46,9 +48,51 @@ const SimpleTableTemplate = ({
       columns={columns}
       columnRenderer={columnRenderer}
       cellRenderer={(cell) => {
+        if (cell.column.id == 'pincode') return <span>A</span>;
 
-        if(cell.column.id == 'pincode') return <span>A</span>;
-        return <TableInput cell={cell} onChange={updateTableData} />;
+        // return (
+        //   <Button
+        //     icon={<VscMenu className="z-20" size={16} title="Account" />}
+        //     iconLeft
+        //     md
+        //     onClick={() => {}}
+        //     primary
+        //     text="Sample Button"
+        //   />
+        // );
+
+        // return (
+        //   <SingleLineEditor
+        //     path={`key`}
+        //     value={''}
+        //     disabled={false}
+        //     type="text"
+        //     language={'ife-text'}
+        //     onChange={(e) => {}}
+        //     className="without-border"
+        //   />
+        // );
+        return (
+          <input
+            type="text"
+            placeholder={``}
+            value={cell.getValue()}
+            autoFocus={true}
+            onChange={(e) => {
+              // setInputValue(e.target.value);
+            }}
+            onBlur={(e) => {
+              // let updatedRows = Object.assign([], rows);
+              // updatedRows[cell.rowIndex] = {
+              //   ...updatedRows[cell.rowIndex],
+              //   [cell.columnId]: e.target.value,
+              // };
+              // onChange(updatedRows);
+            }}
+            className="text-appForeground bg-appBackground h-[29px]  w-full
+                            absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
+          />
+        );
       }}
     />
   );
@@ -67,8 +111,8 @@ SimpleTable.args = {
   columnRenderer: (value) => <TableColumnHeading heading={value} />,
 };
 
-SimpleTable.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  //table is rendered
-  const renderedTable = await canvas.getByRole('table');
-};
+// SimpleTable.play = async ({ canvasElement }) => {
+//   const canvas = within(canvasElement);
+//   //table is rendered
+//   const renderedTable = await canvas.getByRole('table');
+// };

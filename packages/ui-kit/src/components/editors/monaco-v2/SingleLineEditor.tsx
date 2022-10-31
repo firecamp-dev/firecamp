@@ -303,11 +303,11 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
              * allow comments for JSON language
              * @ref: https://github.com/microsoft/monaco-editor/issues/2426
              */
-            monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-              validate: true,
-              allowComments: true,
-              schemaValidation: 'error',
-            });
+            // monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+            //   validate: true,
+            //   allowComments: true,
+            //   schemaValidation: 'error',
+            // });
 
             onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
             onFocus && editor.onDidFocusEditorText(() => onFocus(editor));

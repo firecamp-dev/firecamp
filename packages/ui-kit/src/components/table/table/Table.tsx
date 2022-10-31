@@ -10,6 +10,7 @@ import cx from 'classnames';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 
 import '../../table-v3/primary-table/table.sass';
+import { TabsDemoRightComp } from '../../tabs/Tabs.stories'
 
 const Table: FC<ITable> = ({
   name = '',
@@ -266,46 +267,13 @@ type ITableRow = {
 type ITh = { children: ReactNode; className?: string; style?: TPlainObject };
 type ITd = { children: ReactNode; className?: string; style?: TPlainObject };
 
-export const TableInput = (props: any) => {
-  let { autoFocus, cell, onChange } = props;
-  const [inputValue, setInputValue] = useState(cell.getValue());
-
-  console.log(cell, 132788787);
-  return (
-    // <Td
-    //   style={{ width: cell.column.getSize() }}
-    //   className={
-    //     ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline'
-    //   }
-    // >
-    <input
-      type="text"
-      placeholder={``}
-      value={inputValue}
-      autoFocus={autoFocus}
-      onChange={(e) => {
-        setInputValue(e.target.value);
-      }}
-      onBlur={(e) => {
-        // let updatedRows = Object.assign([], rows);
-        // updatedRows[cell.rowIndex] = {
-        //   ...updatedRows[cell.rowIndex],
-        //   [cell.columnId]: e.target.value,
-        // };
-        // onChange(updatedRows);
-      }}
-      className="text-appForeground bg-appBackground h-[29px]  w-full
-                            absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
-    />
-    // </Td>
-  );
-};
-
 export const TableColumnHeading = ({ heading }: TPlainObject) => {
   return <>{heading}</>;
 };
 
 const TableDraggableRow: FC<ITableRow> = (props) => {
+
+  const trRef = useRef();
   let { row, handleDrag, handleDrop } = props;
 
   const renderCell = (cell: any) => {
@@ -319,7 +287,7 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
             onDrop={(e) => (e.preventDefault(), handleDrop(row.index))}
             onDragOver={(e) => e.preventDefault()}
           >
-            <GrDrag name={'dragHandler'} />
+            <GrDrag />
           </td>
         );
       default:
@@ -329,11 +297,15 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
 
   return (
     <tr
+      ref={trRef}
       id={row.original.key}
       onDragStart={(e) => {
-        // console.log(e);
-        // const handlers = document.getElementById("dragHandler");
-        // e.preventDefault();
+        // console.log(e, trRef);
+        // const td = trRef.current.firstChild;
+        // console.log(td, td.contains(e.target))
+        // if(!td.contains(e.target)) e.preventDefault();
+        // else handleDrag(row.index);
+
         handleDrag(row.index);
       }}
       draggable={true}

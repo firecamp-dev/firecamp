@@ -1,10 +1,9 @@
-//@ts-nocheck
 import { FC } from 'react';
 import { IFT, SingleLineEditor, Checkbox } from '@firecamp/ui-kit';
 
 import { IPrimaryIFT } from '../interfaces/PrimaryIFT.interfaces';
 
-import Table, { TableInput } from '../table/Table';
+import Table from '../table/Table';
 
 const PrimaryIFT: FC<IPrimaryIFT> = ({
   rows,
@@ -33,9 +32,9 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
           }}
           columns={columnDetails}
           columnRenderer={(row) => <>{row}</>}
-          cellRenderer={(cell) => (
-            <TableInput cell={cell} rows={rows} onChange={onChange} />
-          )}
+          cellRenderer={(cell) => {
+            return <input />;
+          }}
         />
       </div>
     );

@@ -1,4 +1,5 @@
 import Editor from './Editor';
+import SingleLineEditor from './SingleLineEditor'
 
 export default {
   title: "UI-Kit/Editor",
@@ -7,7 +8,7 @@ export default {
   }
 };
 
-const Template = (args: any) => <Editor {...args} />;
+const EditorTemplate = (args: any) => <Editor {...args} />;
 
-export const EditorComponent = Template.bind({});
+export const EditorComponent = EditorTemplate.bind({});
 EditorComponent.args = {};
