@@ -5,9 +5,9 @@ import { within } from '@testing-library/react';
 
 import Table, { TableColumnHeading } from './Table';
 import { defaultData, columnDataForDisplay } from './TableData';
-import { SingleLineEditor, Editor, Button } from '../../../ui-kit';
+import { Editor, Button } from '../../../ui-kit';
 import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
-
+import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 export default {
   title: 'UI-Kit/Table',
   component: Table,
@@ -61,17 +61,18 @@ const SimpleTableTemplate = ({
         //   />
         // );
 
-        // return (
-        //   <SingleLineEditor
-        //     path={`key`}
-        //     value={''}
-        //     disabled={false}
-        //     type="text"
-        //     language={'ife-text'}
-        //     onChange={(e) => {}}
-        //     className="without-border"
-        //   />
-        // );
+        return (
+          <SingleLineEditor
+            path={`key`}
+            value={''}
+            disabled={false}
+            type="text"
+            language={'ife-text'}
+            onChange={(e) => {}}
+            className="without-border"
+          />
+        );
+        
         return (
           <input
             type="text"
