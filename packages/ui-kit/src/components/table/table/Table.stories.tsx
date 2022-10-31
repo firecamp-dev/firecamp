@@ -25,15 +25,15 @@ const SimpleTableTemplate = ({
   resizable,
   width,
   columns,
-  data,
+  data: _data,
   options,
   columnRenderer,
 }) => {
-  let [tableValue, setTableValue] = useState(data);
+  let [data, setData] = useState(_data);
 
   let updateTableData = (newRows: any[] = []) => {
-    if (!equal(newRows, tableValue)) {
-      setTableValue(newRows);
+    if (!equal(newRows, data)) {
+      setData(newRows);
     }
   };
   return (
@@ -41,13 +41,15 @@ const SimpleTableTemplate = ({
       name={name}
       width={width}
       resizable={resizable}
-      data={tableValue}
+      data={data}
       options={options}
       columns={columns}
       columnRenderer={columnRenderer}
-      cellRenderer={(cell) => (
-        <TableInput cell={cell} rows={tableValue} onChange={updateTableData} />
-      )}
+      cellRenderer={(cell) => {
+
+        if(cell.column.id == 'pincode') return <span>A</span>;
+        return <TableInput cell={cell} onChange={updateTableData} />;
+      }}
     />
   );
 };

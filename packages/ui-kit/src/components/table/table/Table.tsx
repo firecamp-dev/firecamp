@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, ReactNode, useRef } from 'react';
+import { FC, useEffect, useState, ReactNode, useRef, Fragment } from 'react';
 import {
   ColumnResizeMode,
   getCoreRowModel,
@@ -7,7 +7,8 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import cx from 'classnames';
-import TableDraggableRow from './TableDraggableRow';
+import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
+
 import '../../table-v3/primary-table/table.sass';
 
 const Table: FC<ITable> = ({
@@ -57,12 +58,22 @@ const Table: FC<ITable> = ({
         cell: ({ cell }) => {
           const value = cell.getValue();
           if (cell.getValue() !== 'undefined') {
-            return cellRenderer({
-              value,
-              rowIndex: cell.row.index,
-              columnId: cell.column.id,
-              column: cell.column,
-            });
+            return (
+              <Td
+                style={{ width: cell.column.getSize() }}
+                className={
+                  ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline'
+                }
+              >
+                {cellRenderer(cell)}
+              </Td>
+            );
+            // return cellRenderer({
+            //   value,
+            //   rowIndex: cell.row.index,
+            //   columnId: cell.column.id,
+            //   column: cell.column,
+            // });
           } else {
             return <></>;
           }
@@ -155,7 +166,7 @@ const Table: FC<ITable> = ({
                         className={`pt-resizer h-full ${
                           header.column.getIsResizing() ? 'pt-resizing' : ''
                         }`}
-                      ></div>
+                      />
                     )}
                   </Th>
                 );
@@ -256,39 +267,80 @@ type ITh = { children: ReactNode; className?: string; style?: TPlainObject };
 type ITd = { children: ReactNode; className?: string; style?: TPlainObject };
 
 export const TableInput = (props: any) => {
-  let { autoFocus, cell, rows, onChange } = props;
-  const [inputValue, setInputValue] = useState(cell.value);
+  let { autoFocus, cell, onChange } = props;
+  const [inputValue, setInputValue] = useState(cell.getValue());
 
+  console.log(cell, 132788787);
   return (
-    <Td
-      style={{ width: cell.column.getSize() }}
-      className={
-        ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline'
-      }
-    >
-      <input
-        type="text"
-        placeholder={``}
-        value={inputValue}
-        autoFocus={autoFocus}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-        onBlur={(e) => {
-          let updatedRow = Object.assign([], rows);
-          updatedRow[cell.rowIndex] = {
-            ...updatedRow[cell.rowIndex],
-            [cell.columnId]: e.target.value,
-          };
-          onChange(updatedRow);
-        }}
-        className="text-appForeground bg-appBackground h-[29px]  w-full
+    // <Td
+    //   style={{ width: cell.column.getSize() }}
+    //   className={
+    //     ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline'
+    //   }
+    // >
+    <input
+      type="text"
+      placeholder={``}
+      value={inputValue}
+      autoFocus={autoFocus}
+      onChange={(e) => {
+        setInputValue(e.target.value);
+      }}
+      onBlur={(e) => {
+        // let updatedRows = Object.assign([], rows);
+        // updatedRows[cell.rowIndex] = {
+        //   ...updatedRows[cell.rowIndex],
+        //   [cell.columnId]: e.target.value,
+        // };
+        // onChange(updatedRows);
+      }}
+      className="text-appForeground bg-appBackground h-[29px]  w-full
                             absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
-      />
-    </Td>
+    />
+    // </Td>
   );
 };
 
 export const TableColumnHeading = ({ heading }: TPlainObject) => {
   return <>{heading}</>;
+};
+
+const TableDraggableRow: FC<ITableRow> = (props) => {
+  let { row, handleDrag, handleDrop } = props;
+
+  const renderCell = (cell: any) => {
+    switch (cell.column.columnDef.accessorKey) {
+      case 'action':
+        return (
+          <td
+            className={`border-b border-l first:border-l-0 border-appBorder`}
+            style={{ width: cell.column.getSize() }}
+            data-testid="row-sorter"
+            onDrop={(e) => (e.preventDefault(), handleDrop(row.index))}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            <GrDrag name={'dragHandler'} />
+          </td>
+        );
+      default:
+        return flexRender(cell.column.columnDef.cell, cell.getContext());
+    }
+  };
+
+  return (
+    <tr
+      id={row.original.key}
+      onDragStart={(e) => {
+        // console.log(e);
+        // const handlers = document.getElementById("dragHandler");
+        // e.preventDefault();
+        handleDrag(row.index);
+      }}
+      draggable={true}
+    >
+      {row.getVisibleCells().map((cell: TPlainObject) => {
+        return <Fragment key={cell.id}>{renderCell(cell)}</Fragment>;
+      })}
+    </tr>
+  );
 };
