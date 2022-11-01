@@ -47,42 +47,30 @@ const SimpleTableTemplate = ({
       columns={columns}
       columnRenderer={columnRenderer}
       cellRenderer={(cell) => {
-        if (cell.column.id == 'pincode') return <span>A</span>;
-        console.log(cell)
+        if (cell.column.id == 'action') return <span>A</span>;
+
+        console.log(cell, 7777)
         const value = cell.getValue();
         // if (cell.column.id == 'value')
-          return (
-            <SingleLineEditor
-              path={cell.id}
-              value={value}
-              disabled={false}
-              type="text"
-              language={'ife-text'}
-              onChange={(e) => {}}
-              height={21}
-              loading={<input placeholder={`input text`} value={value} className="bg-transparent w-full text-base text-appForeground font-sans" readOnly/>}
-            />
-          );
-        
         return (
-          <input
+          <SingleLineEditor
+            path={cell.id}
+            value={value}
+            disabled={false}
             type="text"
-            placeholder={`input text`}
-            value={cell.getValue()}
-            autoFocus={true}
+            language={'ife-text'}
             onChange={(e) => {
-              // setInputValue(e.target.value);
+              console.log(e)
             }}
-            onBlur={(e) => {
-              // let updatedRows = Object.assign([], rows);
-              // updatedRows[cell.rowIndex] = {
-              //   ...updatedRows[cell.rowIndex],
-              //   [cell.columnId]: e.target.value,
-              // };
-              // onChange(updatedRows);
-            }}
-            className="text-appForeground bg-appBackground h-[29px]  w-full
-                            absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
+            height={21}
+            loading={
+              <input
+                placeholder={`input text`}
+                value={value}
+                className="bg-transparent w-full text-base text-appForeground font-sans"
+                readOnly
+              />
+            }
           />
         );
       }}

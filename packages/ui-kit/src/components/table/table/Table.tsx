@@ -42,9 +42,7 @@ const Table: FC<ITable> = ({
             ? options.minColumnSize
             : 50,
         enableResizing:
-          typeof column.resizable !== 'undefined'
-            ? column.resizable
-            : false,
+          typeof column.resizable !== 'undefined' ? column.resizable : false,
         header: (col) => {
           return columnRenderer(
             typeof column.displayName !== 'undefined'
@@ -53,21 +51,16 @@ const Table: FC<ITable> = ({
           );
         },
         cell: ({ cell }) => {
-          const value = cell.getValue();
-          if (cell.getValue() !== 'undefined') {
-            return (
-              <Td
-                style={{ width: cell.column.getSize() }}
-                className={
-                  ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-bottom'
-                }
-              >
-                {cellRenderer(cell)}
-              </Td>
-            );
-          } else {
-            return <></>;
-          }
+          return (
+            <Td
+              style={{ width: cell.column.getSize() }}
+              className={
+                ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-bottom'
+              }
+            >
+              {cellRenderer(cell)}
+            </Td>
+          );
         },
       })
     ),
@@ -202,9 +195,7 @@ export const Td: FC<ITd> = ({ children, className = '', style = {} }) => {
       )}
       style={style}
     >
-      <div className="items-center w-full px-2">
-      {children}
-      </div>
+      <div className="items-center w-full px-2">{children}</div>
     </td>
   );
 };
@@ -264,7 +255,6 @@ export const TableColumnHeading = ({ heading }: TPlainObject) => {
 };
 
 const TableDraggableRow: FC<ITableRow> = (props) => {
-
   const trRef = useRef();
   let { row, handleDrag, handleDrop } = props;
 

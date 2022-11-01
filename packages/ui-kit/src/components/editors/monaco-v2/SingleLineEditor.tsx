@@ -255,7 +255,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             });
           }}
           onMount={(editor, monaco) => {
-            console.log(editor, monaco, 9999);
+            // console.log(editor, monaco, 9999);
             /**
              * disable `Find` widget
              * @ref: https://github.com/microsoft/monaco-editor/issues/287#issuecomment-328371787
