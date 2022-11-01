@@ -22,7 +22,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
         </div>
 
         <Table
-          name="test-table-1"
+          name="basic_table"
           width={500}
           resizable={true}
           data={rows}
