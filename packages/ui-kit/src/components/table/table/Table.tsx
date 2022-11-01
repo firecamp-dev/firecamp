@@ -10,7 +10,6 @@ import cx from 'classnames';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 
 import '../../table-v3/primary-table/table.sass';
-import { TabsDemoRightComp } from '../../tabs/Tabs.stories'
 
 const Table: FC<ITable> = ({
   name = '',
@@ -18,7 +17,7 @@ const Table: FC<ITable> = ({
   columns,
   resizable = false,
   columnRenderer = () => {},
-  cellRenderer = () => {},
+  cellRenderer = () => <></>,
   width = 200,
   options = {},
 }) => {
@@ -28,9 +27,6 @@ const Table: FC<ITable> = ({
 
   const tableRef = useRef<HTMLTableElement>(null);
   const containerDivRef = useRef<HTMLTableElement>(null);
-
-  const [columnResizeMode, setColumnResizeMode] =
-    useState<ColumnResizeMode>('onChange');
 
   const columnHelper = createColumnHelper<any>();
 
@@ -69,12 +65,6 @@ const Table: FC<ITable> = ({
                 {cellRenderer(cell)}
               </Td>
             );
-            // return cellRenderer({
-            //   value,
-            //   rowIndex: cell.row.index,
-            //   columnId: cell.column.id,
-            //   column: cell.column,
-            // });
           } else {
             return <></>;
           }
@@ -101,7 +91,7 @@ const Table: FC<ITable> = ({
     data: tableData,
     columns: columnDisplay,
     enableColumnResizing: resizable,
-    ...(resizable ? { columnResizeMode: columnResizeMode } : {}),
+    ...(resizable ? { columnResizeMode: 'onChange' } : {}),
     getCoreRowModel: getCoreRowModel(),
   });
 
