@@ -78,7 +78,6 @@ export { default as PrimaryIFT } from './components/table/primary-ift/PrimaryIFT
 export { default as MultipartIFT } from './components/table/multipart-ift/MultipartIFT';
 export { default as BulkEditIFT } from './components/table/bulk-edit-ift/BulkEditIFT';
 export { default as IFT } from './components/table/ift/IFT';
-export { default as SmartJSONTable } from './components/smart-json-table/SmartJSONTable';
 
 //table v3
 export { default as PrimaryTable } from './components/table-v3/primary-table/PrimaryTable';
