@@ -2,34 +2,25 @@ export type City = {
   key: string;
   value: string;
   description: string;
-  popularPlace: string;
-  pincode: number;
+  disable?: boolean;
 };
 
 export const defaultData: City[] = [
   {
-    key: 'City 1',
-    value: 'Ahmedabad',
-    description:
-      'Ahmedabad, in western India, is the largest city in the state of Gujarat. ',
-    popularPlace: 'Kankaria Lake',
-    pincode: 380001,
+    key: 'name',
+    value: 'Elon',
+    description: 'The name of user',
+    disable: true,
   },
   {
-    key: 'City 2',
-    value: 'Surat',
-    description:
-      'Surat is a large city beside the Tapi River in the west Indian state of Gujarat',
-    popularPlace: 'Dumas Beach',
-    pincode: 395003,
+    key: 'startup',
+    value: 'SpaceX',
+    description: 'The space company',
   },
   {
-    key: 'City 3',
-    value: 'Mahemdavad',
-    description:
-      'Mahemdavad is a town with municipality in the Kheda district in the Indian state of Gujarat',
-    popularPlace: 'Siddhivinayak Temple',
-    pincode: 387130,
+    key: 'founded',
+    value: '2004',
+    description: 'The year of founded',
   },
 ];
 
@@ -41,32 +32,28 @@ export function getData() {
 export const columnDataForDisplay = [
   {
     name: 'action',
-    displayName: ' ',
-    minSize: 64,
+    displayName: '',
+    minWidth: 64,
     width: 64,
   },
   {
+    name: 'key',
+    displayName: 'Key',
+    minWidth: 145,
+    resizable: true,
+  },
+  {
     name: 'value',
-    displayName: 'City',
-    minSize: 145,
-    enableResizing: true,
+    displayName: 'Value',
+    minWidth: 145,
+    resizable: true,
   },
   {
     name: 'description',
     displayName: 'Description',
-    minSize: 145,
-    enableResizing: true,
-  },
-  {
-    name: 'popularPlace',
-    displayName: 'Location',
-    enableResizing: true,
-  },
-  {
-    name: 'pincode',
-    minSize: 60,
-    displayName: 'Area Code',
-  },
+    minWidth: 145,
+    resizable: true,
+  }
 ];
 
 export const headerRow = {

@@ -36,14 +36,14 @@ const Table: FC<ITable> = ({
         id: column.name,
         ...(typeof column.width !== 'undefined' ? { size: column.width } : {}),
         minSize:
-          typeof column.minSize !== 'undefined'
-            ? column.minSize
+          typeof column.minWidth !== 'undefined'
+            ? column.minWidth
             : typeof options.minColumnSize !== 'undefined'
             ? options.minColumnSize
             : 50,
         enableResizing:
-          typeof column.enableResizing !== 'undefined'
-            ? column.enableResizing
+          typeof column.resizable !== 'undefined'
+            ? column.resizable
             : false,
         header: (col) => {
           return columnRenderer(
@@ -246,9 +246,9 @@ type IColumn = {
   name: string;
   displayName?: string;
   width?: number;
-  minSize?: number;
-  maxSize?: number;
-  enableResizing?: boolean;
+  minWidth?: number;
+  maxWidth?: number;
+  resizable?: boolean;
 };
 type ITableRow = {
   row: TPlainObject;

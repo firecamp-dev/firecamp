@@ -48,18 +48,19 @@ const SimpleTableTemplate = ({
       columnRenderer={columnRenderer}
       cellRenderer={(cell) => {
         if (cell.column.id == 'pincode') return <span>A</span>;
-
+        console.log(cell)
+        const value = cell.getValue();
         // if (cell.column.id == 'value')
           return (
             <SingleLineEditor
-              path={`key`}
-              value={'Authorization'}
+              path={cell.id}
+              value={value}
               disabled={false}
               type="text"
               language={'ife-text'}
               onChange={(e) => {}}
               height={21}
-              loading={<input placeholder={`input text`} value="Authorization" className="bg-transparent w-full text-base text-appForeground font-sans"/>}
+              loading={<input placeholder={`input text`} value={value} className="bg-transparent w-full text-base text-appForeground font-sans" readOnly/>}
             />
           );
         
