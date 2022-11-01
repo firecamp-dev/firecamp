@@ -58,8 +58,8 @@ const SimpleTableTemplate = ({
               type="text"
               language={'ife-text'}
               onChange={(e) => {}}
-              className="without-border"
-              // loading={<input placeholder={`input text`}/>}
+              height={21}
+              loading={<input placeholder={`input text`} value="Authorization" className="bg-transparent w-full text-base text-appForeground font-sans"/>}
             />
           );
         

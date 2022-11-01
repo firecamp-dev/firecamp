@@ -63,7 +63,7 @@ const Table: FC<ITable> = ({
               <Td
                 style={{ width: cell.column.getSize() }}
                 className={
-                  ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline'
+                  ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-bottom'
                 }
               >
                 {cellRenderer(cell)}
@@ -207,12 +207,14 @@ export const Td: FC<ITd> = ({ children, className = '', style = {} }) => {
   return (
     <td
       className={cx(
-        'border-b border-l first:border-l-0 border-appBorder',
+        'border-b border-l first:border-l-0 border-appBorder !p-0',
         className
       )}
       style={style}
     >
+      <div className="items-center w-full px-2">
       {children}
+      </div>
     </td>
   );
 };

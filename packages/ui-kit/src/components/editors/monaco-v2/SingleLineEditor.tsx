@@ -228,7 +228,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   //  value = value.replace(/[\n\r]/g, '');
 
   return (
-    <div className="fc-input-wrapper">
+    <div>
       {placeholder && !value ? (
         <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
