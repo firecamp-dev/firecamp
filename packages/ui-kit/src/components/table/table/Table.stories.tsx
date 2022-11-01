@@ -47,10 +47,20 @@ const SimpleTableTemplate = ({
       columns={columns}
       columnRenderer={columnRenderer}
       cellRenderer={(cell) => {
-        if (cell.column.id == 'action') return <span>A</span>;
-
-        console.log(cell, 7777)
+        console.log(cell, 7777);
         const value = cell.getValue();
+        if (cell.column.id == 'action') return <span>A</span>;
+        if (cell.column.id == 'description')
+          return (
+            <input
+              placeholder={`input text`}
+              value={value}
+              onChange={console.log}
+              className="bg-transparent w-full text-base text-appForeground font-sans"
+              readOnly
+            />
+          );
+
         // if (cell.column.id == 'value')
         return (
           <SingleLineEditor
@@ -60,7 +70,7 @@ const SimpleTableTemplate = ({
             type="text"
             language={'ife-text'}
             onChange={(e) => {
-              console.log(e)
+              console.log(e);
             }}
             height={21}
             loading={
