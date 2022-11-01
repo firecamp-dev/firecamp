@@ -39,6 +39,13 @@ module.exports = {
       include: path.resolve(__dirname, '../'),
     });
 
+    //todo resolve the alias issue
+    // config.resolve.alias = {
+    //   ...config.resolve.alias,
+    //   "@firecamp/ui-kit": path.resolve("../src/ui-kit")
+    // }
+    
+
     // config.resolve.alias = {
     //   ...config.resolve.alias,
     //   "https": path.join(__dirname, "../../../node_modules/@types/node/https")
