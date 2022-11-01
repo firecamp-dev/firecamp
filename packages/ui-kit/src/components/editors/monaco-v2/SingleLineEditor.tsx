@@ -43,6 +43,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   // }, []);
 
   useEffect(() => {
+    // console.log("this is re-rendering fully")
     //@ts-ignore
     if (!window.ife) window.ife = new Map();
     return () => {
@@ -219,7 +220,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     options.readOnly = disabled;
   }
 
-  console.log(value, language, 'language...');
+  // console.log(value, language, 'language...');
   value = type === 'number' ? '' + value : value;
   /**
    * 1. Check if number or not, if number then convert to string and show

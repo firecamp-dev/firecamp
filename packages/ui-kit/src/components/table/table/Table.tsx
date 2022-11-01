@@ -10,14 +10,14 @@ import cx from 'classnames';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 
 import '../../table-v3/primary-table/table.sass';
-import Checkbox from '../../checkbox/Checkbox'
+import Checkbox from '../../checkbox/Checkbox';
 
 const Table: FC<ITable> = ({
   name = '',
   data = [],
   columns,
   resizable = false,
-  columnRenderer = () => {},
+  columnRenderer = (value: string) => <>{value}</>,
   cellRenderer = () => <></>,
   width = 200,
   options = {},
@@ -251,10 +251,6 @@ type ITableRow = {
 type ITh = { children: ReactNode; className?: string; style?: TPlainObject };
 type ITd = { children: ReactNode; className?: string; style?: TPlainObject };
 
-export const TableColumnHeading = ({ heading }: TPlainObject) => {
-  return <>{heading}</>;
-};
-
 const TableDraggableRow: FC<ITableRow> = (props) => {
   const trRef = useRef();
   let { row, handleDrag, handleDrop } = props;
@@ -270,20 +266,23 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
             onDrop={(e) => (e.preventDefault(), handleDrop(row.index))}
             onDragOver={(e) => e.preventDefault()}
           >
-            
-            <span draggable={true}
-                  onDragStart={(e) => {
-              // console.log(e, trRef);
-              // const td = trRef.current.firstChild;
-              // console.log(td, td.contains(e.target))
-              // if(!td.contains(e.target)) e.preventDefault();
-              // else handleDrag(row.index);
-              handleDrag(row.index);
-            }}>
-              <GrDrag />
-             </span>
-            
-            <Checkbox/>
+            <div style={{ display: 'inline-flex'}}>
+              <span
+                draggable={true}
+                onDragStart={(e) => {
+                  // console.log(e, trRef);
+                  // const td = trRef.current.firstChild;
+                  // console.log(td, td.contains(e.target))
+                  // if(!td.contains(e.target)) e.preventDefault();
+                  // else handleDrag(row.index);
+                  handleDrag(row.index);
+                }}
+              >
+                <GrDrag />
+              </span>
+
+              <Checkbox isChecked={true} />
+            </div>
           </td>
         );
       default:
@@ -292,10 +291,7 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
   };
 
   return (
-    <tr
-      ref={trRef}
-      id={row.original.key}
-    >
+    <tr ref={trRef} id={row.original.key}>
       {row.getVisibleCells().map((cell: TPlainObject) => {
         return <Fragment key={cell.id}>{renderCell(cell)}</Fragment>;
       })}

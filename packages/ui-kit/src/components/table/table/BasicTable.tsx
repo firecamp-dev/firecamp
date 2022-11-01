@@ -1,38 +1,7 @@
 import { FC } from 'react';
-import { SingleLineEditor, Checkbox } from '@firecamp/ui-kit';
+import { SingleLineEditor } from '@firecamp/ui-kit';
 
 import Table from './Table';
-
-const columns = [
-    {
-      name: 'action',
-      displayName: ' ',
-      minSize: 64,
-      width: 64,
-    },
-    {
-      name: 'value',
-      displayName: 'City',
-      minSize: 145,
-      enableResizing: true,
-    },
-    {
-      name: 'description',
-      displayName: 'Description',
-      minSize: 145,
-      enableResizing: true,
-    },
-    {
-      name: 'popularPlace',
-      displayName: 'Location',
-      enableResizing: true,
-    },
-    {
-      name: 'pincode',
-      minSize: 60,
-      displayName: 'Area Code',
-    },
-  ];
 
 const BasicTable: FC<any> = ({
   rows,
@@ -48,18 +17,50 @@ const BasicTable: FC<any> = ({
       </div>
 
       <Table
-        name="basic_table"
-        width={500}
-        resizable={true}
-        data={rows}
-        options={{
-          containerClassName: '',
-          minColumnSize: 100,
-        }}
-        columns={columnDetails}
-        columnRenderer={(row) => <>{row}</>}
+        name={name}
+        width={width}
+        resizable={resizable}
+        data={data}
+        options={options}
+        columns={columns}
+        columnRenderer={columnRenderer}
         cellRenderer={(cell) => {
-          return <input />;
+          console.log(cell, 7777);
+          const value = cell.getValue();
+          if (cell.column.id == 'action') return <span>A</span>;
+          if (cell.column.id == 'description')
+            return (
+              <input
+                placeholder={`input text`}
+                value={value}
+                onChange={console.log}
+                className="bg-transparent w-full text-base text-appForeground font-sans"
+                readOnly
+              />
+            );
+
+          // if (cell.column.id == 'value')
+          return (
+            <SingleLineEditor
+              path={cell.id}
+              value={value}
+              disabled={false}
+              type="text"
+              language={'ife-text'}
+              onChange={(e) => {
+                console.log(e);
+              }}
+              height={21}
+              loading={
+                <input
+                  placeholder={`input text`}
+                  value={value}
+                  className="bg-transparent w-full text-base text-appForeground font-sans"
+                  readOnly
+                />
+              }
+            />
+          );
         }}
       />
     </>

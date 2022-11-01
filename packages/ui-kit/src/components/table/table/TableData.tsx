@@ -33,8 +33,8 @@ export const columnDataForDisplay = [
   {
     name: 'action',
     displayName: '',
-    minWidth: 64,
-    width: 64,
+    minWidth: 40,
+    width: 40,
   },
   {
     name: 'key',

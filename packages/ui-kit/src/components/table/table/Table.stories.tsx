@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { _array } from '@firecamp/utils';
 import equal from 'deep-equal';
 import { within } from '@testing-library/react';
 
-import Table, { TableColumnHeading } from './Table';
+import Table from './Table';
 import { defaultData, columnDataForDisplay } from './TableData';
 import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
@@ -31,6 +31,12 @@ const SimpleTableTemplate = ({
 }) => {
   let [data, setData] = useState(_data);
 
+  // useEffect(()=> {
+  //   setTimeout(()=> {
+  //     setData((s)=> [...s, { key: "auth", "value": "Token"}])
+  //   }, 5000)
+  // }, [])
+
   let updateTableData = (newRows: any[] = []) => {
     if (!equal(newRows, data)) {
       setData(newRows);
@@ -47,7 +53,7 @@ const SimpleTableTemplate = ({
       columns={columns}
       columnRenderer={columnRenderer}
       cellRenderer={(cell) => {
-        console.log(cell, 7777);
+        // console.log(cell, 7777);
         const value = cell.getValue();
         if (cell.column.id == 'action') return <span>A</span>;
         if (cell.column.id == 'description')
@@ -64,11 +70,12 @@ const SimpleTableTemplate = ({
         // if (cell.column.id == 'value')
         return (
           <SingleLineEditor
+            key={cell.id}  
             path={cell.id}
             value={value}
             disabled={false}
             type="text"
-            language={'ife-text'}
+            language={'ife-header-key'}
             onChange={(e) => {
               console.log(e);
             }}
@@ -98,7 +105,6 @@ SimpleTable.args = {
     containerClassName: 'container-wrapper',
     minColumnSize: 100,
   },
-  columnRenderer: (value) => <TableColumnHeading heading={value} />,
 };
 
 // SimpleTable.play = async ({ canvasElement }) => {
