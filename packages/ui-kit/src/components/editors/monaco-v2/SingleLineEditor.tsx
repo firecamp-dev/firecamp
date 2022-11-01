@@ -19,8 +19,9 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   monacoOptions = {},
   placeholder = '',
   className = '',
-  height,
+  height= 50,
   path,
+  loading,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
   onBlur,
   onFocus,
@@ -36,10 +37,10 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   onCtrlShiftEnter = () => {},
 }) => {
   const editorIdRef = useRef('');
-  useEffect(() => {
-    MonacoFirecampLangInit();
-    SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
-  }, []);
+  // useEffect(() => {
+  //   MonacoFirecampLangInit();
+  //   SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
+  // }, []);
 
   useEffect(() => {
     //@ts-ignore
@@ -235,7 +236,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
       ) : (
         <></>
       )}
-      <div className={cx('fc-input-IFE', '-fc-input-IFE-focused', className)}>
+      <div className={cx(className)}>
         <MonacoEditor
           language={language}
           defaultValue={value}
@@ -244,6 +245,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           height={height}
           path={path}
           key={path}
+          loading={loading}
           onChange={(value, e) => {
             value = value.replace(/[\n\r]/g, '');
             console.log(value);
@@ -303,11 +305,11 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
              * allow comments for JSON language
              * @ref: https://github.com/microsoft/monaco-editor/issues/2426
              */
-            // monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-            //   validate: true,
-            //   allowComments: true,
-            //   schemaValidation: 'error',
-            // });
+            monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+              validate: true,
+              allowComments: true,
+              schemaValidation: 'error',
+            });
 
             onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
             onFocus && editor.onDidFocusEditorText(() => onFocus(editor));

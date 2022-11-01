@@ -5,7 +5,6 @@ import { within } from '@testing-library/react';
 
 import Table, { TableColumnHeading } from './Table';
 import { defaultData, columnDataForDisplay } from './TableData';
-import { Editor, Button } from '../../../ui-kit';
 import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 export default {
@@ -50,33 +49,24 @@ const SimpleTableTemplate = ({
       cellRenderer={(cell) => {
         if (cell.column.id == 'pincode') return <span>A</span>;
 
-        // return (
-        //   <Button
-        //     icon={<VscMenu className="z-20" size={16} title="Account" />}
-        //     iconLeft
-        //     md
-        //     onClick={() => {}}
-        //     primary
-        //     text="Sample Button"
-        //   />
-        // );
-
-        return (
-          <SingleLineEditor
-            path={`key`}
-            value={''}
-            disabled={false}
-            type="text"
-            language={'ife-text'}
-            onChange={(e) => {}}
-            className="without-border"
-          />
-        );
+        // if (cell.column.id == 'value')
+          return (
+            <SingleLineEditor
+              path={`key`}
+              value={'Authorization'}
+              disabled={false}
+              type="text"
+              language={'ife-text'}
+              onChange={(e) => {}}
+              className="without-border"
+              // loading={<input placeholder={`input text`}/>}
+            />
+          );
         
         return (
           <input
             type="text"
-            placeholder={``}
+            placeholder={`input text`}
             value={cell.getValue()}
             autoFocus={true}
             onChange={(e) => {
