@@ -270,7 +270,19 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
             onDrop={(e) => (e.preventDefault(), handleDrop(row.index))}
             onDragOver={(e) => e.preventDefault()}
           >
-            <GrDrag />
+            
+            <span draggable={true}
+                  onDragStart={(e) => {
+              // console.log(e, trRef);
+              // const td = trRef.current.firstChild;
+              // console.log(td, td.contains(e.target))
+              // if(!td.contains(e.target)) e.preventDefault();
+              // else handleDrag(row.index);
+              handleDrag(row.index);
+            }}>
+              <GrDrag />
+             </span>
+            
             <Checkbox/>
           </td>
         );
@@ -283,16 +295,6 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
     <tr
       ref={trRef}
       id={row.original.key}
-      onDragStart={(e) => {
-        // console.log(e, trRef);
-        // const td = trRef.current.firstChild;
-        // console.log(td, td.contains(e.target))
-        // if(!td.contains(e.target)) e.preventDefault();
-        // else handleDrag(row.index);
-
-        handleDrag(row.index);
-      }}
-      draggable={true}
     >
       {row.getVisibleCells().map((cell: TPlainObject) => {
         return <Fragment key={cell.id}>{renderCell(cell)}</Fragment>;
