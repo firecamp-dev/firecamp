@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import equal from 'deep-equal';
 import { SingleLineEditor } from '@firecamp/ui-kit';
 
 import Table from './Table';
@@ -9,7 +10,29 @@ const BasicTable: FC<any> = ({
   title = '',
   onChange = () => {},
   meta = { mode: {} },
+
+  name,
+  resizable,
+  width,
+  columns = columnsForDisplay,
+  data: _data,
+  options,
+  columnRenderer,
 }) => {
+  const [data, setData] = useState(_data);
+
+  // useEffect(()=> {
+  //   setTimeout(()=> {
+  //     setData((s)=> [...s, { key: "auth", "value": "Token"}])
+  //   }, 5000)
+  // }, [])
+
+  const updateTableData = (newRows: any[] = []) => {
+    if (!equal(newRows, data)) {
+      setData(newRows);
+    }
+  };
+
   return (
     <>
       <div className="smart-table-header-wrapper">
@@ -25,7 +48,7 @@ const BasicTable: FC<any> = ({
         columns={columns}
         columnRenderer={columnRenderer}
         cellRenderer={(cell) => {
-          console.log(cell, 7777);
+          // console.log(cell, 7777);
           const value = cell.getValue();
           if (cell.column.id == 'action') return <span>A</span>;
           if (cell.column.id == 'description')
@@ -42,11 +65,12 @@ const BasicTable: FC<any> = ({
           // if (cell.column.id == 'value')
           return (
             <SingleLineEditor
+              key={cell.id}
               path={cell.id}
               value={value}
               disabled={false}
               type="text"
-              language={'ife-text'}
+              language={'ife-header-key'}
               onChange={(e) => {
                 console.log(e);
               }}
@@ -68,3 +92,31 @@ const BasicTable: FC<any> = ({
 };
 
 export default BasicTable;
+
+// for keeping column as static - provide minSize & width without resizing param
+const columnsForDisplay = [
+  {
+    name: 'action',
+    displayName: '',
+    minWidth: 40,
+    width: 40,
+  },
+  {
+    name: 'key',
+    displayName: 'Key',
+    minWidth: 145,
+    resizable: true,
+  },
+  {
+    name: 'value',
+    displayName: 'Value',
+    minWidth: 145,
+    resizable: true,
+  },
+  {
+    name: 'description',
+    displayName: 'Description',
+    minWidth: 145,
+    resizable: true,
+  },
+];

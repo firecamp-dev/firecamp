@@ -1,11 +1,11 @@
-export type City = {
+export type FormData = {
   key: string;
   value: string;
   description: string;
   disable?: boolean;
 };
 
-export const defaultData: City[] = [
+export const defaultData: FormData[] = [
   {
     key: 'name',
     value: 'Elon',
@@ -27,34 +27,6 @@ export const defaultData: City[] = [
 export function getData() {
   return defaultData;
 }
-
-//For keeping column as static - provide minSize & width without resizing param
-export const columnDataForDisplay = [
-  {
-    name: 'action',
-    displayName: '',
-    minWidth: 40,
-    width: 40,
-  },
-  {
-    name: 'key',
-    displayName: 'Key',
-    minWidth: 145,
-    resizable: true,
-  },
-  {
-    name: 'value',
-    displayName: 'Value',
-    minWidth: 145,
-    resizable: true,
-  },
-  {
-    name: 'description',
-    displayName: 'Description',
-    minWidth: 145,
-    resizable: true,
-  }
-];
 
 export const headerRow = {
   description: 'Description',
