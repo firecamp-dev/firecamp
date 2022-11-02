@@ -81,11 +81,9 @@ export { default as IFT } from './components/table/ift/IFT';
 export { default as BasicTable } from './components/table/table/BasicTable';
 
 //table v3
-export { default as PrimaryTable } from './components/table-v3/primary-table/PrimaryTable';
-export type {
-  ITable,
-  TTableApi,
-} from './components/table-v3/primary-table/PrimaryTable';
+export { default as PrimitiveTable } from './components/table-v3/primitive/Table';
+export { default as BasicTableV3 } from './components/table-v3/BasicTable';
+export type { ITable, TTableApi } from './components/table-v3/primitive/Table';
 
 // Url
 export { default as Url } from './components/url/components/Url';

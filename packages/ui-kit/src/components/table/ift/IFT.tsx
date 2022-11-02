@@ -6,12 +6,17 @@ import classnames from 'classnames';
 import { Button, Resizable } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { _array, _string } from '@firecamp/utils'
+import { _array, _string } from '@firecamp/utils';
 
 import useDidUpdateEffect from '../../hooks/useDidUpdateEffect';
 import Row from './Row';
 
-import { defaultColumns, defaultMeta, defaultRow, resizeOption } from './constants';
+import {
+  defaultColumns,
+  defaultMeta,
+  defaultRow,
+  resizeOption,
+} from './constants';
 import { IIFT, IColumnCell } from '../interfaces/IFT.interfaces';
 import { IColumnCellMeta } from '../interfaces';
 
@@ -201,6 +206,7 @@ const IFT: FC<IIFT> = ({
         </div>
 
         {rows.map((r, i) => {
+          console.log(r, 'r.....');
           return (
             <Row
               columns={columns}
@@ -223,19 +229,17 @@ const IFT: FC<IIFT> = ({
             <Button
               onClick={_addRow}
               text="Add Row"
-              primary
-              sm
-              transparent={true}
-              ghost={true}
               // color="primary-alt"
               className="small transparent font-light without-border with-padding with-icon-left"
               icon={<VscAdd size={16} />}
               // iconClass="iconv2-add-icon"
+              primary
+              sm
+              transparent
+              ghost
             />
           </div>
-        ) : (
-          ''
-        )}
+        ) : <></>}
       </div>
     </div>
   );

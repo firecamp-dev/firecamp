@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, memo } from 'react';
+import { FC, useState } from 'react';
 import equal from 'deep-equal';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
@@ -22,11 +22,6 @@ const BasicTable: FC<any> = ({
   columnRenderer,
 }) => {
   const [data, setData] = useState(_data);
-
-
-  useEffect(() => {
-    console.log('2. re-rendering the <BasicTable />');
-  });
 
   // useEffect(()=> {
   //   setTimeout(()=> {
@@ -71,12 +66,12 @@ const BasicTable: FC<any> = ({
               );
               break;
             case 'remove':
-              return (<VscTrash />);
+              return <VscTrash />;
             default:
               return (
                 <SingleLineEditor
-                  key={cell.id}
-                  path={cell.id}
+                  // key={cell.id}
+                  // path={cell.id}
                   value={value}
                   disabled={false}
                   type="text"
@@ -107,7 +102,7 @@ const BasicTable: FC<any> = ({
   );
 };
 
-export default memo(BasicTable);
+export default BasicTable;
 
 // for keeping column as static - provide minSize & width without resizing param
 const columnsForDisplay = [

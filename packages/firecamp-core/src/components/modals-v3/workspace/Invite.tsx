@@ -3,15 +3,13 @@ import {
   Modal,
   IModal,
   Button,
- 
-  
   Container,
   TabHeader,
   CopyButton,
   Input,
   EButtonIconPosition,
   Dropdown,
-  PrimaryTable,
+  PrimitiveTable,
   TTableApi,
   SecondaryTab,
 } from '@firecamp/ui-kit';
@@ -190,7 +188,7 @@ const InviteNewMembers = () => {
         Send invitation to your team members to join the workspace
       </div>
       <div className="flex-1 overflow-auto mb-2 visible-scrollbar">
-        <PrimaryTable
+        <PrimitiveTable
           apiRef={tableApi}
           columns={columns}
           renderColumn={(c) => c.name}

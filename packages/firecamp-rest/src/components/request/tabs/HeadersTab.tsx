@@ -3,6 +3,7 @@ import shallow from 'zustand/shallow';
 
 import {
   BasicTable,
+  BasicTableV3,
   SingleLineEditor,
   PrimaryIFT,
   BulkEditIFT,
@@ -52,6 +53,11 @@ const HeadersTab = () => {
         <SingleLineEditor type="text" path="f" value="bbbb" /> */}
 
         {/* <BasicTable resizable={true} /> */}
+        <BasicTableV3
+          initialRows={[{ key: 'name', value: 'Nishchit' }]}
+          onChange={console.log}
+          // onLoad={(tApi) => {}}
+        />
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
           auth_headers && auth_headers.length ? (
