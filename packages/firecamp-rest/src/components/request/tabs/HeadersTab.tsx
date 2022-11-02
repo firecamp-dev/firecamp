@@ -1,6 +1,13 @@
+import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 
-import { PrimaryIFT, BulkEditIFT, Container } from '@firecamp/ui-kit';
+import {
+  BasicTable,
+  SingleLineEditor,
+  PrimaryIFT,
+  BulkEditIFT,
+  Container,
+} from '@firecamp/ui-kit';
 
 import { useRestStore } from '../../../store';
 
@@ -13,6 +20,10 @@ const HeadersTab = () => {
     }),
     shallow
   );
+
+  useEffect(() => {
+    console.log('1. re-rendering the header tabs');
+  }, [headers]);
 
   let onHeaderChange = (headers) => {
     changeHeaders(headers);
@@ -33,6 +44,14 @@ const HeadersTab = () => {
             },
           }}
         />
+        {/* <SingleLineEditor type="text" path="a" value="123" />
+        <SingleLineEditor type="text" path="b" value="qwqe" />
+        <SingleLineEditor type="text" path="c" value="66666666" />
+        <SingleLineEditor type="text" path="d" value="fgfgfg" />
+        <SingleLineEditor type="text" path="e" value="tytytyty" />
+        <SingleLineEditor type="text" path="f" value="bbbb" /> */}
+
+        {/* <BasicTable resizable={true} /> */}
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
           auth_headers && auth_headers.length ? (

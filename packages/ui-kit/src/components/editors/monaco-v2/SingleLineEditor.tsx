@@ -19,8 +19,9 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   monacoOptions = {},
   placeholder = '',
   className = '',
-  height,
+  height= 50,
   path,
+  loading,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
   onBlur,
   onFocus,
@@ -36,12 +37,13 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   onCtrlShiftEnter = () => {},
 }) => {
   const editorIdRef = useRef('');
-  useEffect(() => {
-    MonacoFirecampLangInit();
-    SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
-  }, []);
+  // useEffect(() => {
+  //   MonacoFirecampLangInit();
+  //   SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
+  // }, []);
 
   useEffect(() => {
+    console.log("this is re-rendering <SingleLineEditor />")
     //@ts-ignore
     if (!window.ife) window.ife = new Map();
     return () => {
@@ -218,7 +220,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     options.readOnly = disabled;
   }
 
-  console.log(value, language, 'language...');
+  // console.log(value, language, 'language...');
   value = type === 'number' ? '' + value : value;
   /**
    * 1. Check if number or not, if number then convert to string and show
@@ -227,7 +229,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   //  value = value.replace(/[\n\r]/g, '');
 
   return (
-    <div className="fc-input-wrapper">
+    <div>
       {placeholder && !value ? (
         <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
@@ -235,7 +237,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
       ) : (
         <></>
       )}
-      <div className={cx('fc-input-IFE', '-fc-input-IFE-focused', className)}>
+      <div className={cx(className)}>
         <MonacoEditor
           language={language}
           defaultValue={value}
@@ -244,6 +246,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           height={height}
           path={path}
           key={path}
+          loading={loading || <></>}
           onChange={(value, e) => {
             value = value.replace(/[\n\r]/g, '');
             console.log(value);
@@ -253,7 +256,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             });
           }}
           onMount={(editor, monaco) => {
-            console.log(editor, monaco, 9999);
+            // console.log(editor, monaco, 9999);
             /**
              * disable `Find` widget
              * @ref: https://github.com/microsoft/monaco-editor/issues/287#issuecomment-328371787

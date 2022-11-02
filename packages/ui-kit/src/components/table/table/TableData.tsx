@@ -1,76 +1,32 @@
-import { Td, TPlainObject } from './Table';
-import { useEffect, useState } from 'react';
-
-export type Person = {
+export type FormData = {
   key: string;
   value: string;
   description: string;
-  popularPlace: string;
-  pincode: number;
+  disable?: boolean;
 };
 
-export const defaultData: Person[] = [
+export const defaultData: FormData[] = [
   {
-    key: 'City 1',
-    value: 'Ahmedabad',
-    description:
-      'Ahmedabad, in western India, is the largest city in the state of Gujarat. ',
-    popularPlace: 'Kankaria Lake',
-    pincode: 380001,
+    key: 'name',
+    value: 'Elon',
+    description: 'The name of user',
+    disable: true,
   },
   {
-    key: 'City 2',
-    value: 'Surat',
-    description:
-      'Surat is a large city beside the Tapi River in the west Indian state of Gujarat',
-    popularPlace: 'Dumas Beach',
-    pincode: 395003,
+    key: 'startup',
+    value: 'SpaceX',
+    description: 'The space company',
   },
   {
-    key: 'City 3',
-    value: 'Mahemdavad',
-    description:
-      'Mahemdavad is a town with municipality in the Kheda district in the Indian state of Gujarat',
-    popularPlace: 'Siddhivinayak Temple',
-    pincode: 387130,
+    key: 'founded',
+    value: '2004',
+    description: 'The year of founded',
   },
 ];
 
 export function getData() {
   return defaultData;
 }
-
-//For keeping column as static - provide minSize & width without resizing param
-export const columnDataForDisplay = [
-  {
-    name: 'action',
-    displayName: ' ',
-    minSize: 64,
-    width: 64,
-  },
-  {
-    name: 'value',
-    displayName: 'City',
-    minSize: 145,
-    enableResizing: true,
-  },
-  {
-    name: 'description',
-    displayName: 'Description',
-    minSize: 145,
-    enableResizing: true,
-  },
-  {
-    name: 'popularPlace',
-    displayName: 'Location',
-    enableResizing: true,
-  },
-  {
-    name: 'pincode',
-    minSize: 60,
-    displayName: 'Area Code',
-  },
-];
 
 export const headerRow = {
   description: 'Description',
@@ -104,40 +60,3 @@ export const headerColumnDataForDisplay = [
     minSize: 145,
   },
 ];
-
-export const TableColumnHeading = ({ heading }: TPlainObject) => {
-  return <>{heading}</>;
-};
-export const TableInput = (props: any) => {
-  let { onChange, autoFocus, cell, rows } = props;
-  const [inputValue, setInputValue] = useState(cell.cellValue);
-
-  return (
-    <Td
-      style={{ width: cell.column.getSize() }}
-      className={
-        ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-baseline'
-      }
-    >
-      <input
-        type="text"
-        placeholder={``}
-        value={inputValue}
-        autoFocus={autoFocus}
-        onChange={(e) => {
-          setInputValue(e.target.value);
-        }}
-        onBlur={(e) => {
-          let updatedRow = Object.assign([], rows);
-          updatedRow[cell.rowIndex] = {
-            ...updatedRow[cell.rowIndex],
-            [cell.columnId]: e.target.value,
-          };
-          onChange(updatedRow);
-        }}
-        className="text-appForeground bg-appBackground h-[29px]  w-full
-                            absolute top-0 left-0 !border-0 p-1 text-base overflow-ellipsis focus:!border-0"
-      />
-    </Td>
-  );
-};

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, ReactNode, useRef } from 'react';
+import { FC, useEffect, useState, ReactNode, useRef, Fragment, memo } from 'react';
 import {
   ColumnResizeMode,
   getCoreRowModel,
@@ -7,16 +7,18 @@ import {
   createColumnHelper,
 } from '@tanstack/react-table';
 import cx from 'classnames';
-import TableDraggableRow from './TableDraggableRow';
+import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
+
 import '../../table-v3/primary-table/table.sass';
+import Checkbox from '../../checkbox/Checkbox';
 
 const Table: FC<ITable> = ({
   name = '',
   data = [],
   columns,
   resizable = false,
-  columnRenderer = () => {},
-  cellRenderer = () => {},
+  columnRenderer = (value: string) => <>{value}</>,
+  cellRenderer = () => <></>,
   width = 200,
   options = {},
 }) => {
@@ -27,9 +29,6 @@ const Table: FC<ITable> = ({
   const tableRef = useRef<HTMLTableElement>(null);
   const containerDivRef = useRef<HTMLTableElement>(null);
 
-  const [columnResizeMode, setColumnResizeMode] =
-    useState<ColumnResizeMode>('onChange');
-
   const columnHelper = createColumnHelper<any>();
 
   const columnDisplay = [
@@ -38,15 +37,13 @@ const Table: FC<ITable> = ({
         id: column.name,
         ...(typeof column.width !== 'undefined' ? { size: column.width } : {}),
         minSize:
-          typeof column.minSize !== 'undefined'
-            ? column.minSize
+          typeof column.minWidth !== 'undefined'
+            ? column.minWidth
             : typeof options.minColumnSize !== 'undefined'
             ? options.minColumnSize
             : 50,
         enableResizing:
-          typeof column.enableResizing !== 'undefined'
-            ? column.enableResizing
-            : false,
+          typeof column.resizable !== 'undefined' ? column.resizable : false,
         header: (col) => {
           return columnRenderer(
             typeof column.displayName !== 'undefined'
@@ -55,17 +52,16 @@ const Table: FC<ITable> = ({
           );
         },
         cell: ({ cell }) => {
-          let cellValue = cell.getValue();
-          if (cell.getValue() !== 'undefined') {
-            return cellRenderer({
-              cellValue,
-              rowIndex: cell.row.index,
-              columnId: cell.column.id,
-              column: cell.column,
-            });
-          } else {
-            return <></>;
-          }
+          return (
+            <Td
+              style={{ width: cell.column.getSize() }}
+              className={
+                ' h-[30px] relative overflow-hidden overflow-ellipsis whitespace-nowrap align-bottom'
+              }
+            >
+              {cellRenderer(cell)}
+            </Td>
+          );
         },
       })
     ),
@@ -89,19 +85,19 @@ const Table: FC<ITable> = ({
     data: tableData,
     columns: columnDisplay,
     enableColumnResizing: resizable,
-    ...(resizable ? { columnResizeMode: columnResizeMode } : {}),
+    ...(resizable ? { columnResizeMode: 'onChange' } : {}),
     getCoreRowModel: getCoreRowModel(),
   });
 
-  function drag(rowIndex: number) {
+  const drag = (rowIndex: number) => {
     setDragId(rowIndex);
-  }
+  };
 
   //reorder the index value for the table rows
-  function drop(rowIndex: number) {
+  const drop = (rowIndex: number) => {
     tableData.splice(rowIndex, 0, tableData.splice(dragId, 1)[0]);
     setTableData([...tableData]);
-  }
+  };
 
   return (
     <div
@@ -155,7 +151,7 @@ const Table: FC<ITable> = ({
                         className={`pt-resizer h-full ${
                           header.column.getIsResizing() ? 'pt-resizing' : ''
                         }`}
-                      ></div>
+                      />
                     )}
                   </Th>
                 );
@@ -195,12 +191,12 @@ export const Td: FC<ITd> = ({ children, className = '', style = {} }) => {
   return (
     <td
       className={cx(
-        'border-b border-l first:border-l-0 border-appBorder',
+        'border-b border-l first:border-l-0 border-appBorder !p-0',
         className
       )}
       style={style}
     >
-      {children}
+      <div className="items-center w-full px-2">{children}</div>
     </td>
   );
 };
@@ -242,9 +238,9 @@ type IColumn = {
   name: string;
   displayName?: string;
   width?: number;
-  minSize?: number;
-  maxSize?: number;
-  enableResizing?: boolean;
+  minWidth?: number;
+  maxWidth?: number;
+  resizable?: boolean;
 };
 type ITableRow = {
   row: TPlainObject;
@@ -254,3 +250,63 @@ type ITableRow = {
 };
 type ITh = { children: ReactNode; className?: string; style?: TPlainObject };
 type ITd = { children: ReactNode; className?: string; style?: TPlainObject };
+
+const TableDraggableRow: FC<ITableRow> = memo((props) => {
+  const trRef = useRef();
+  let { row, handleDrag, handleDrop } = props;
+
+  const renderCell = (cell: any) => {
+    switch (cell.column.columnDef.accessorKey) {
+      case 'action':
+        return (
+          <td
+            className={`border-b border-l first:border-l-0 border-appBorder`}
+            style={{ width: cell.column.getSize() }}
+            data-testid="row-sorter"
+            onDrop={(e) => (e.preventDefault(), handleDrop(row.index))}
+            onDragOver={(e) => e.preventDefault()}
+          >
+            <div style={{ display: 'flex' }}>
+              <span
+                draggable={true}
+                onDragStart={(e) => {
+                  // console.log(e, trRef);
+                  // const td = trRef.current.firstChild;
+                  // console.log(td, td.contains(e.target))
+                  // if(!td.contains(e.target)) e.preventDefault();
+                  // else handleDrag(row.index);
+                  handleDrag(row.index);
+                }}
+                className="flex"
+              >
+                <GrDrag />
+              </span>
+
+              <Checkbox isChecked={true} />
+            </div>
+          </td>
+        );
+      // case 'remove':
+      //   return (
+      //     <td
+      //       className={`border-b border-l first:border-l-0 border-appBorder`}
+      //       style={{ width: cell.column.getSize() }}
+      //     >
+      //       <div style={{ display: 'inline-flex' }}>
+      //         <GrDrag />
+      //       </div>
+      //     </td>
+      //   );
+      default:
+        return flexRender(cell.column.columnDef.cell, cell.getContext());
+    }
+  };
+
+  return (
+    <tr ref={trRef} id={row.original.key}>
+      {row.getVisibleCells().map((cell: TPlainObject) => {
+        return <Fragment key={cell.id}>{renderCell(cell)}</Fragment>;
+      })}
+    </tr>
+  );
+});

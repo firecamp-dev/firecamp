@@ -18,6 +18,8 @@ const Url: FC<IUrl> = ({
         <Row className="flex-col">
           <Column overflow="visible">
             <SingleLineEditor
+              key={id}
+              path={id}
               value={url}
               language={IFELanguages.TEXT}
               onChange={onChangeURL}
@@ -29,7 +31,6 @@ const Url: FC<IUrl> = ({
               }}
               className="without-border without-padding"
               height={21}
-              path={id}
               type="text"
               onEnter={onEnter}
               onPaste={onPaste}

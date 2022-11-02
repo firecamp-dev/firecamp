@@ -1,12 +1,10 @@
-//@ts-nocheck
 import { FC } from 'react';
 import { IFT, SingleLineEditor, Checkbox } from '@firecamp/ui-kit';
+import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 
 import { IPrimaryIFT } from '../interfaces/PrimaryIFT.interfaces';
 
 import Table from '../table/Table';
-import { TableInput} from '../table/TableData';
-
 
 const PrimaryIFT: FC<IPrimaryIFT> = ({
   rows,
@@ -15,36 +13,32 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
   onChange = () => {},
   meta = { mode: {} },
   custom = false,
-  columnDetails
+  columnDetails,
 }) => {
+  if (custom)
+    return (
+      <div>
+        <div className="smart-table-header-wrapper">
+          {title ? <div className="smart-table-header">{title}</div> : ''}
+        </div>
 
-  if(custom)
-  return (
-    <div>
-
-      <div className="smart-table-header-wrapper">
-        {title ? <div className="smart-table-header">{title}</div> : ''}
+        <Table
+          name="basic_table"
+          width={500}
+          resizable={true}
+          data={rows}
+          options={{
+            containerClassName: '',
+            minColumnSize: 100,
+          }}
+          columns={columnDetails}
+          columnRenderer={(row) => <>{row}</>}
+          cellRenderer={(cell) => {
+            return <input />;
+          }}
+        />
       </div>
-
-
-      <Table name='test-table-1'
-        tableWidth={500}
-        tableResizable={true}
-        data={rows}
-        options={{
-          containerClassName: "",
-          minColumnSize: 100,
-        }}
-        columns={columnDetails}
-        columnRenderer={(row) => <>{row}</>}
-        cellRenderer={( cell ) => <TableInput cell={cell}
-          rows={rows}
-          onChange={onChange}
-        />}
-      />
-        
-    </div>
-  )
+    );
 
   return (
     <IFT
@@ -69,10 +63,12 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
           //     className="without-border"
           //   />
           // );
+          console.log(key, "key....")
           return (
             <SingleLineEditor
               path={key}
               value={value}
+              type="text"
               disabled={disabled || disable}
               language={meta?.mode?.[key] || 'ife-text'}
               onChange={(e) => onChange(e.target.value)}
@@ -99,7 +95,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
                   connectDragSource(ref);
                 }}
               >
-                <img src={'icon/png/drag.png'} />
+                <GrDrag />
               </div>
               <Checkbox
                 isChecked={!value} // disabled: false means checked
