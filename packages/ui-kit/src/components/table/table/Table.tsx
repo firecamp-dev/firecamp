@@ -266,7 +266,7 @@ const TableDraggableRow: FC<ITableRow> = memo((props) => {
             onDrop={(e) => (e.preventDefault(), handleDrop(row.index))}
             onDragOver={(e) => e.preventDefault()}
           >
-            <div style={{ display: 'inline-flex' }}>
+            <div style={{ display: 'flex' }}>
               <span
                 draggable={true}
                 onDragStart={(e) => {
@@ -277,6 +277,7 @@ const TableDraggableRow: FC<ITableRow> = memo((props) => {
                   // else handleDrag(row.index);
                   handleDrag(row.index);
                 }}
+                className="flex"
               >
                 <GrDrag />
               </span>
