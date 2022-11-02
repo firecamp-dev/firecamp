@@ -246,7 +246,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           height={height}
           path={path}
           key={path}
-          loading={loading}
+          loading={loading || <></>}
           onChange={(value, e) => {
             value = value.replace(/[\n\r]/g, '');
             console.log(value);
