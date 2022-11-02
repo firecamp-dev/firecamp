@@ -266,7 +266,7 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
             onDrop={(e) => (e.preventDefault(), handleDrop(row.index))}
             onDragOver={(e) => e.preventDefault()}
           >
-            <div style={{ display: 'inline-flex'}}>
+            <div style={{ display: 'inline-flex' }}>
               <span
                 draggable={true}
                 onDragStart={(e) => {
@@ -285,6 +285,17 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
             </div>
           </td>
         );
+      // case 'remove':
+      //   return (
+      //     <td
+      //       className={`border-b border-l first:border-l-0 border-appBorder`}
+      //       style={{ width: cell.column.getSize() }}
+      //     >
+      //       <div style={{ display: 'inline-flex' }}>
+      //         <GrDrag />
+      //       </div>
+      //     </td>
+      //   );
       default:
         return flexRender(cell.column.columnDef.cell, cell.getContext());
     }

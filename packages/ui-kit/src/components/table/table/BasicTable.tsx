@@ -1,8 +1,10 @@
 import { FC, useState } from 'react';
 import equal from 'deep-equal';
-import { SingleLineEditor } from '@firecamp/ui-kit';
+import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
+import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from './Table';
+import { defaultData } from './TableData'
 
 const BasicTable: FC<any> = ({
   rows,
@@ -15,7 +17,7 @@ const BasicTable: FC<any> = ({
   resizable,
   width,
   columns = columnsForDisplay,
-  data: _data,
+  data: _data = defaultData,
   options,
   columnRenderer,
 }) => {
@@ -50,41 +52,50 @@ const BasicTable: FC<any> = ({
         cellRenderer={(cell) => {
           // console.log(cell, 7777);
           const value = cell.getValue();
-          if (cell.column.id == 'action') return <span>A</span>;
-          if (cell.column.id == 'description')
-            return (
-              <input
-                placeholder={`input text`}
-                value={value}
-                onChange={console.log}
-                className="bg-transparent w-full text-base text-appForeground font-sans"
-                readOnly
-              />
-            );
 
-          // if (cell.column.id == 'value')
-          return (
-            <SingleLineEditor
-              key={cell.id}
-              path={cell.id}
-              value={value}
-              disabled={false}
-              type="text"
-              language={'ife-header-key'}
-              onChange={(e) => {
-                console.log(e);
-              }}
-              height={21}
-              loading={
+          switch (cell.column.id) {
+            case 'description':
+              return (
                 <input
                   placeholder={`input text`}
                   value={value}
+                  onChange={console.log}
                   className="bg-transparent w-full text-base text-appForeground font-sans"
                   readOnly
                 />
-              }
-            />
-          );
+              );
+              break;
+            case 'remove':
+              return <VscTrash />;
+            default:
+              return (
+                <SingleLineEditor
+                  key={cell.id}
+                  path={cell.id}
+                  value={value}
+                  disabled={false}
+                  type="text"
+                  language={'ife-header-key'}
+                  onChange={(e) => {
+                    console.log(e);
+                  }}
+                  height={21}
+                  loading={
+                    <input
+                      placeholder={`input text`}
+                      value={value}
+                      className="bg-transparent w-full text-base text-appForeground font-sans"
+                      readOnly
+                    />
+                  }
+                />
+              );
+          }
+          // return (
+          //   <div style={{ display: 'inline-flex' }}>
+          //     <VscRemove size={20} />
+          //   </div>
+          // );
         }}
       />
     </>
@@ -116,7 +127,12 @@ const columnsForDisplay = [
   {
     name: 'description',
     displayName: 'Description',
-    minWidth: 145,
     resizable: true,
+  },
+  {
+    name: 'remove',
+    displayName: '',
+    minWidth: 20,
+    width: 20,
   },
 ];

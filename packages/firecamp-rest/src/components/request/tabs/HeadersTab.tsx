@@ -1,6 +1,11 @@
 import shallow from 'zustand/shallow';
 
-import { PrimaryIFT, BulkEditIFT, Container } from '@firecamp/ui-kit';
+import {
+  BasicTable,
+  PrimaryIFT,
+  BulkEditIFT,
+  Container,
+} from '@firecamp/ui-kit';
 
 import { useRestStore } from '../../../store';
 
@@ -33,6 +38,7 @@ const HeadersTab = () => {
             },
           }}
         />
+        <BasicTable resizable={true} />
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
           auth_headers && auth_headers.length ? (
