@@ -18,7 +18,7 @@ const Table: FC<ITable<any>> = ({
   columns,
   renderCell,
   renderColumn,
-  initialRows,
+  initialRows = [],
   defaultRow = {},
   onChange,
   onLoad,
@@ -191,7 +191,7 @@ const Td: FC<TTd> = ({ children, className = '', style = {} }) => {
 };
 
 interface ITable<R> {
-  initialRows: R[];
+  initialRows?: R[];
   columns: Array<IColumn>;
   renderColumn: (column: IColumn) => string | JSX.Element;
   renderCell: TRenderCell<R>;
