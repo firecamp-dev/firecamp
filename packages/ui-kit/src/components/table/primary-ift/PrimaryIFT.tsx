@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { IFT, SingleLineEditor, Checkbox } from '@firecamp/ui-kit';
+import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 
 import { IPrimaryIFT } from '../interfaces/PrimaryIFT.interfaces';
 
@@ -94,7 +95,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
                   connectDragSource(ref);
                 }}
               >
-                <img src={'icon/png/drag.png'} />
+                <GrDrag />
               </div>
               <Checkbox
                 isChecked={!value} // disabled: false means checked
