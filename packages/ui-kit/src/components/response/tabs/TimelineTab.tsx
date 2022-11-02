@@ -1,24 +1,25 @@
-import { FC } from "react";
-import { MultiLineIFE } from '@firecamp/ui-kit';
+import { FC } from 'react';
+import { Editor } from '@firecamp/ui-kit';
 
-const TimelineTab: FC<{timeline: string}> = ({
-  timeline
+const TimelineTab: FC<{ id: string; timeline: string }> = ({
+  id,
+  timeline,
 }) => {
-
   return (
-    <MultiLineIFE
+    <Editor
       disabled={true}
       value={timeline || ``}
       language="text"
+      path={`${id}/response/timeline`}
       controlsConfig={{
-        show: true
+        show: true,
       }}
-      onLoad={editor => {
-        editor.revealLine(1, true, true, function() {});
+      onLoad={(editor) => {
+        editor.revealLine(1, true, true, function () {});
         editor.setPosition({ column: 1, lineNumber: 10 });
       }}
       monacoOptions={{
-        name: `timeline`
+        name: `timeline`,
       }}
     />
   );

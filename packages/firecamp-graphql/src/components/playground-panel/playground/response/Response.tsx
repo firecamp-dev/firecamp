@@ -1,13 +1,11 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import shallow from 'zustand/shallow';
 
-import ResponseMetaData from './common/ResponseMetaData';
 import Tabs from './tabs/Tabs';
 import {
   CustomMessage,
   Help,
   Container,
-  TabHeader,
   Resizable,
   Response as ResponsePanel,
 } from '@firecamp/ui-kit';
@@ -34,7 +32,7 @@ const Response = () => {
   // console.log("This is the GraphQL Response component");
 
   return (
-    <ResponsePanel response={response} isRequestRunning={isRequestRunning} />
+    <ResponsePanel id={activePlayground} response={response} isRequestRunning={isRequestRunning} />
   );
 
   return (

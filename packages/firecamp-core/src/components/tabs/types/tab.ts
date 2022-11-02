@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import {
   EFirecampAgent,
   EHttpMethod,
@@ -6,40 +7,21 @@ import {
   I_Meta,
   TId,
 } from '@firecamp/types';
+import { ITab } from '@firecamp/ui-kit';
 import {
   IPlatformRequestService,
   IPlatformEnvironmentService,
 } from '../../../services/platform-context';
 
-/**
- *  Firecamp request tab
- */
-export interface ITab {
-  /**
-   * Unique identification for tab
-   */
-  id: string;
-
-  /**
-   *  Request tab name
-   */
-  name: string;
-
-  /**
-   * Request type
-   */
+/** Firecamp request tab */
+export interface IRequestTab extends ITab {
+  /** request type */
   type: string;
 
-  /**
-   * Request sub-type
-   */
-  subType?: string;
+  /** request meta */
+  meta?: IRequestTabMeta;
 
-  /**
-   * Request tab meta
-   */
-  meta?: ITabMeta;
-
+  /** minimal request */
   request?: {
     url?: IUrl;
     method?: EHttpMethod;
@@ -51,7 +33,7 @@ export interface ITab {
 /**
  * Tab meta
  */
-export interface ITabMeta {
+export interface IRequestTabMeta {
   /**
    * Whether request tab is saved or not
    */
@@ -87,54 +69,15 @@ export interface ITabMeta {
  * Tab functions to perform actions
  */
 
-export interface ITabFns {
-  //set active tab
-  setActive: (tabId: string) => void;
-
-  // open a new tab
-  open: (tabType?: string, subType?: string) => void;
-
-  // close tab
-  close: (e: any, tabId: string, doSave?: boolean) => void;
-
-  // reorder tabs on drag and drop sequence
-  reorder: (dragIndex: number, hoverIndex: number) => void;
-
-  // close all tabs
-  closeAll: (e?: any) => void;
-
-  // close all saved tabs
-  closeAllSaved: (e?: Event) => void;
-
-  // close all fresh tabs
-  closeAllFresh: (e?: any) => void;
-
-  // close all tabs except active one
-  closeAllExceptActive: (e?: any) => void;
-
-  // save active tab
-  save: (e?: any) => void;
-
-  fetchRequest?: (reqId: string) => any;
-
-  mount?: (clientTabData: object) => void;
-
-  // update tab meta
-  updateMeta?: (tabId: TId, meta: ITabMeta) => void;
-
-  // update tab root keys
-  updateRootKeys: (tabId: TId, updatedTab: Partial<ITab>) => void;
-}
-
-export interface ITabProps {
+export interface IRequestTabProps {
   index: number;
-  tab: ITab;
+  tab: IRequestTab;
   activeTab?: TId;
 
   //v3 props
   platformComponents: {
-    SavePopover?: JSX.Element;
-    EnvironmentWidget: JSX.Element;
+    SavePopover?: ReactNode;
+    EnvironmentWidget: ReactNode;
   };
   envVariables?: {
     mergedEnvVariables: object;

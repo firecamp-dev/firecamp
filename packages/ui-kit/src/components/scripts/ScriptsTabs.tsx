@@ -4,7 +4,7 @@ import {
   Container,
   SecondaryTab,
   Checkbox,
-  MultiLineIFE,
+  Editor,
 } from '@firecamp/ui-kit';
 import {
   preScriptSnippets,
@@ -205,7 +205,7 @@ const ScriptsTabs: FC<IScriptsTab> = ({
           {
             // TODO: remove above parent div and height
           }
-          <MultiLineIFE
+          <Editor
             autoFocus={true}
             id={`scripts-tab-${activeTab}-${id}`}
             value={scripts[activeTab] || ''}

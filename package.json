@@ -60,6 +60,7 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/register": "^7.0.0",
+    "@types/ramda": "^0.28.15",
     "babel-eslint": "^7.1.0",
     "babel-loader": "^8.2.4",
     "babel-plugin-add-module-exports": "^1.0.4",
@@ -68,6 +69,7 @@
     "chai": "^3.5.0",
     "circular-dependency-plugin": "^5.2.0",
     "colors": "^1.4.0",
+    "compression-webpack-plugin": "^10.0.0",
     "copy-webpack-plugin": "^10.2.4",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
@@ -90,7 +92,6 @@
     "jest-css-modules-transform": "^4.4.2",
     "lerna": "^5.4.3",
     "lint-staged": "^12.3.7",
-    "monaco-editor-webpack-plugin": "4.2.0",
     "node-polyfill-webpack-plugin": "^2.0.0",
     "postcss-loader": "^6.2.1",
     "prettier": "^2.6.2",
@@ -126,6 +127,7 @@
     "prettify-xml": "^1.2.0",
     "pug-cli": "^1.0.0-alpha6",
     "querystring": "^0.2.1",
+    "ramda": "^0.28.0",
     "react-file-drop": "^3.1.5"
   },
   "workspaces": [

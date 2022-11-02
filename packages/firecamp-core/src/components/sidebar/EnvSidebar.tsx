@@ -3,7 +3,7 @@ import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import {
   Resizable,
   Container,
-  MultiLineIFE,
+  Editor,
   TabHeader,
   Button, 
 } from '@firecamp/ui-kit';
@@ -41,7 +41,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
 
   const { tab, activeTab } = useTabStore(
     (s: any) => ({
-      tab: s.list?.find((t) => t.id === s.activeTab) || {},
+      tab: s.list[s.activeTab] || {},
       activeTab: s.activeTab,
     }),
     shallow
@@ -247,7 +247,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
         </TabHeader>
       </div>
       <div style={{ height: 'calc(50vh - 100px)' }}>
-        <MultiLineIFE
+        <Editor
           autoFocus={true}
           language="json"
           value={variables}

@@ -324,26 +324,10 @@ const Environment: FC<IEnvironment> = ({
 
     update: async (payload = {}, envId, collectionId) => {
       if (!activeEnvCard || !activeEnvCard._meta.id) return;
-
-      // await F.appStore.environment.update.environment(
-      //   {
-      //     collectionId: collectionId || collectionId,
-      //     envId: envId || activeEnvCard._meta.id || '',
-      //     ...payload,
-      //   },
-      //   { sync: true, cloudSync: true }
-      // );
     },
 
     remove: async (environment = {}) => {
-      // await F.appStore.environment.remove.environment(
-      //   {
-      //     collectionId: collectionId,
-      //     envId: environment._meta.id || '',
-      //     updateDB: true,
-      //   },
-      //   { sync: true, cloudSync: true }
-      // );
+  
     },
   };
 

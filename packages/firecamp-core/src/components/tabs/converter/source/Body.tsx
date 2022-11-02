@@ -1,5 +1,5 @@
 import { FC, Fragment } from 'react';
-import { MultiLineIFE } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui-kit';
 import { EConverterLang } from '../types';
 
 import { ITabFns } from '../../types/tab';
@@ -42,7 +42,7 @@ const Body: FC<IBody> = ({
 
   return (
     <Fragment>
-      <MultiLineIFE
+      <Editor
         autoFocus={true}
         language={mode}
         value={body}

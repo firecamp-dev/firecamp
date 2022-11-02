@@ -2,10 +2,8 @@ import { FC, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import {
-  MultiLineIFE,
+  Editor,
   Button,
- 
-  
   Popover,
   EPopoverPosition,
 } from '@firecamp/ui-kit';
@@ -219,7 +217,7 @@ const HelpPopUp: FC<IHelpPopup> = ({
                                                                 height: '50px',
                                                               }}
                                                             >
-                                                              <MultiLineIFE
+                                                              <Editor
                                                                 value={
                                                                   help.snippet
                                                                 }

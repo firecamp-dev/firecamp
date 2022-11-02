@@ -102,7 +102,7 @@ const Tabs: FC<ITabs> = ({
             {sortedList.map((tab, i) => {
               return (
                 <Tab
-                  key={i}
+                  key={tab.id}
                   index={i}
                   id={tab?.id || ''}
                   canReorder={canReorder}

@@ -3,15 +3,14 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  
   PrimaryIFT,
-  MultiLineIFE,
+  Editor,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 
 import { IBulkEditIFT } from '../interfaces/BulkEditIFT.interfaces';
 import { _table } from '@firecamp/utils';
+
 
 const modes = {
   TABLE: 'table',
@@ -100,13 +99,15 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           name={title}
           meta={meta}
           disabled={disabled}
+          // custom={true}
+          // columnDetails={headerColumnDataForDisplay}
         />
       ) : (
         <div className="h-28">
-          <MultiLineIFE
+          <Editor
             value={raw}
             language="text"
-            options={{
+            monacoOptions={{
               style: { display: 'table-caption' },
               height: '100px',
             }}
@@ -117,6 +118,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           />
         </div>
       )}
+
     </div>
   );
 };

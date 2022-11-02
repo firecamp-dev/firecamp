@@ -8,10 +8,9 @@ import { _object } from '@firecamp/utils';
 
 import { useTabStore } from '../../store/tab';
 import { IEnvironmentStore, useEnvStore } from '../../store/environment';
-import { ITab } from '../../components/tabs/types/tab';
-import { platformEmitter } from '../platform-emitter';
-import { prepareEventNameForEnvToTab } from '../../types';
-// import {ITab}
+import { IRequestTab } from '../../components/tabs/types/tab';
+import { prepareEventNameForEnvToTab } from '../platform-emitter/events'
+import { platformEmitter } from '../platform-emitter'
 
 interface IPlatformEnvironmentService {
   // subscribe to environment changes
@@ -108,7 +107,7 @@ const environment: IPlatformEnvironmentService = {
 
   getActiveEnvsByTabId: (tabId: TId) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
-    let tab: ITab = useTabStore.getState().list.find((t) => t.id === tabId);
+    let tab: IRequestTab = useTabStore.getState().list[tabId];
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
     //workspace active environment
@@ -130,7 +129,7 @@ const environment: IPlatformEnvironmentService = {
   // get variables by tab id
   getVariablesByTabId: async (tabId: TId) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
-    const tab: ITab = useTabStore.getState().list.find((t) => t.id === tabId);
+    const tab: IRequestTab = useTabStore.getState().list[tabId];
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
     const activeEnvsOfTab = await environment.getActiveEnvsByTabId(tabId);

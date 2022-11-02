@@ -1,17 +1,20 @@
 import { FC, memo, useState } from 'react';
 import deepEqual from 'deep-equal';
-import Tabs from './tabs/Tabs';
 import { ProgressBar, Help, Container, Resizable } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
-import { IRestResponse } from '@firecamp/types';
+import { IRestResponse, TId } from '@firecamp/types';
+
+import Tabs from './tabs/Tabs';
 
 interface IResponsePanel {
+  id: TId,
   response: IRestResponse;
   isRequestRunning?: boolean;
   docLink?: string;
   client?: string;
 }
 const Response: FC<IResponsePanel> = ({
+  id,
   response,
   isRequestRunning = false,
   docLink = '',
@@ -40,6 +43,7 @@ const Response: FC<IResponsePanel> = ({
           isRequestRunning === true */ ? (
             <div className="h-full">
               <Tabs
+                id={id}
                 response={response}
                 isRequestRunning={isRequestRunning}
                 activeBodyTab={activeBodyTab}

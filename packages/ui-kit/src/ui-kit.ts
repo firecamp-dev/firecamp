@@ -29,6 +29,7 @@ export type { IModal } from './components/modal/interfaces/Modal.interface';
 export { default as SplitView } from './components/split-view/SplitView';
 
 export { default as Tabs } from './components/tabs/Tabs';
+export { default as TabsV3 } from './components/tabs/v3/Tabs';
 export { default as Count } from './components/tabs/Count';
 export { default as SecondaryTab } from './components/tabs/SecondaryTab';
 
@@ -63,10 +64,13 @@ export { CheckboxInGrid } from './components/checkbox/Checkbox';
 // export { default as CollectionDirNode } from './components/collection/sample/DirectoryNode';
 
 // Editors
-export { default as FirecampEditor } from './components/editors/monaco/components/FirecampEditor';
-export { default as SingleLineIFE } from './components/editors/monaco/components/SingleLineIFE';
-export { default as MultiLineIFE } from './components/editors/monaco/components/MultiLineIFE';
+// export { default as FirecampEditor } from './components/editors/monaco/components/FirecampEditor';
+// export { default as SingleLineIFE } from './components/editors/monaco/components/SingleLineIFE';
+// export { default as MultiLineIFE } from './components/editors/monaco/components/MultiLineIFE';
 export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CMGQueryEditor';
+
+export { default as Editor } from './components/editors/monaco-v2/Editor';
+export { default as SingleLineEditor } from './components/editors/monaco-v2/SingleLineEditor';
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';
@@ -104,6 +108,10 @@ export { default as Response } from './components/response/Response';
 //----------------------------------------------------enums---------------------------------------------------------------------------
 
 export { EPlacementForActive as ETabsPlacementForActive } from './components/tabs/interfaces/Tabs.interfaces';
+export type {
+  ITab,
+  EActiveBorderPosition,
+} from './components/tabs/v3/Tab.interface';
 
 export { EPopoverPosition } from './components/popover/interfaces/Popover.interfaces';
 

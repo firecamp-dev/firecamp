@@ -23,18 +23,17 @@ import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 // import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 
-import { useTabStore } from '../../../store/tab';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { WorkspaceCollectionsProvider } from './WorkspaceCollectionsProvider';
 import treeRenderer from './treeItemRenderer';
 import AppService from '../../../services/app';
 import { RE } from '../../../types'
+import { platformEmitter as emitter } from '../../../services/platform-emitter'
+import { EPlatformTabs } from '../../../services/platform-emitter/events'
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();
   const treeRef = useRef();
-
-  const { openSavedTab } = useTabStore((s) => ({ openSavedTab: s.open.saved }), shallow);
 
   let {
     workspace,
@@ -115,31 +114,30 @@ const Explorer: FC<any> = () => {
   };
 
   const _openReqInTab = (request: any) => {
-    // console.log(`node`, request);
-    openSavedTab(request);
+    console.log(`node`, request);
+    emitter.emit(EPlatformTabs.openSaved, request);
   };
 
-  const _onNodeSelect = (nodeIdxs: TreeItemIndex[]) => {
-    // console.log({ nodeIdxs });
+  const _onNodeSelect = (nodeIndexes: TreeItemIndex[]) => {
+    // console.log({ nodeIndexes });
     // return
 
-    let nodeIndex = nodeIdxs[0];
-    let colItem = [...collections, ...folders, ...requests].find(
+    let nodeIndex = nodeIndexes[0];
+    let nodeItem = [...collections, ...folders, ...requests].find(
       (c) => c._meta.id == nodeIndex
     );
-    // console.log({ colItem });
+    // console.log({ nodeItem });
     if (
-      colItem &&
+      nodeItem &&
       [
         ERequestTypes.Rest,
         ERequestTypes.GraphQL,
         ERequestTypes.SocketIO,
         ERequestTypes.WebSocket,
-      ].includes(colItem.meta.type)
+      ].includes(nodeItem.meta.type)
     ) {
-      // console.log({ colItem });
-
-      _openReqInTab(colItem);
+      // console.log({ nodeItem });
+      _openReqInTab(nodeItem);
     }
   };
 

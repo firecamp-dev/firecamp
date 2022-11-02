@@ -88,7 +88,7 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
         requestBeingSaved &&
         requestBeingSaved._action.type === EPushActionType.Insert
       ) {
-        tabState.update.rootKeys(requestTabId, {
+        tabState.changeRootKeys(requestTabId, {
           name: requestBeingSaved?.meta?.name || 'Untitled request',
           type: requestBeingSaved?.meta?.type || '',
           // subType: requestBeingSaved?.meta?.data_type || '',
@@ -108,7 +108,7 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
         });
       } else {
         // update tab meta on save request
-        tabState.update.meta(requestTabId, {
+        tabState.changeMeta(requestTabId, {
           isSaved: true,
           hasChange: false,
           isFresh: false,

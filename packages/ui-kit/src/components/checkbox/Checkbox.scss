@@ -24,9 +24,6 @@
 .fc-custom-checkbox>.secondary input:checked ~ span {
     border-color: var(--app-primary) !important;
 }
-.fc-checkbox-list>div{
-    margin-right: 0.5rem/* 8px */;
-}
 .fc-form.with-padding label.fc-custom-checkbox>span {
     min-width: 72px;
   }

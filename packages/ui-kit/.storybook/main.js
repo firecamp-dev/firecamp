@@ -9,6 +9,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    '@storybook/addon-jest'
   ],
   framework: '@storybook/react',
   core: {
@@ -40,6 +41,7 @@ module.exports = {
 
     // config.resolve.alias = {
     //   ...config.resolve.alias,
+    //   "https": path.join(__dirname, "../../../node_modules/@types/node/https")
     //   "react/jsx-dev-runtime": path.join(__dirname, "../../../node_modules/react/jsx-dev-runtime.js"),
     //   "react/jsx-runtime": path.join(__dirname, "../../../node_modules/react/jsx-runtime.js")
     // }

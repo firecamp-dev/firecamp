@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { FC, Fragment } from 'react';
-import { MultiLineIFE } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui-kit';
 
 import { ITabFns } from '../../types/tab';
 import { ISourceState } from './Source';
@@ -12,7 +12,7 @@ const Body: FC<IBody> = ({
 }) => {
   return (
     <Fragment>
-      <MultiLineIFE
+      <Editor
         autoFocus={true}
         language={'markdown'}
         value={body}
