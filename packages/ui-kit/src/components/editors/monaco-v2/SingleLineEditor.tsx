@@ -43,7 +43,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   // }, []);
 
   useEffect(() => {
-    // console.log("this is re-rendering fully")
+    console.log("this is re-rendering <SingleLineEditor />")
     //@ts-ignore
     if (!window.ife) window.ife = new Map();
     return () => {

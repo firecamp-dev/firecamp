@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 
 import {
@@ -18,6 +19,10 @@ const HeadersTab = () => {
     }),
     shallow
   );
+
+  useEffect(() => {
+    console.log('1. re-rendering the header tabs');
+  }, [headers]);
 
   let onHeaderChange = (headers) => {
     changeHeaders(headers);

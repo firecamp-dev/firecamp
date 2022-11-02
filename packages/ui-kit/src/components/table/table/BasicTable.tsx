@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState, memo } from 'react';
 import equal from 'deep-equal';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
@@ -22,6 +22,11 @@ const BasicTable: FC<any> = ({
   columnRenderer,
 }) => {
   const [data, setData] = useState(_data);
+
+
+  useEffect(() => {
+    console.log('2. re-rendering the <BasicTable />');
+  });
 
   // useEffect(()=> {
   //   setTimeout(()=> {
@@ -102,7 +107,7 @@ const BasicTable: FC<any> = ({
   );
 };
 
-export default BasicTable;
+export default memo(BasicTable);
 
 // for keeping column as static - provide minSize & width without resizing param
 const columnsForDisplay = [
