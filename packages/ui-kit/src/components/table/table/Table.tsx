@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, ReactNode, useRef, Fragment } from 'react';
+import { FC, useEffect, useState, ReactNode, useRef, Fragment, memo } from 'react';
 import {
   ColumnResizeMode,
   getCoreRowModel,
@@ -251,7 +251,7 @@ type ITableRow = {
 type ITh = { children: ReactNode; className?: string; style?: TPlainObject };
 type ITd = { children: ReactNode; className?: string; style?: TPlainObject };
 
-const TableDraggableRow: FC<ITableRow> = (props) => {
+const TableDraggableRow: FC<ITableRow> = memo((props) => {
   const trRef = useRef();
   let { row, handleDrag, handleDrop } = props;
 
@@ -308,4 +308,4 @@ const TableDraggableRow: FC<ITableRow> = (props) => {
       })}
     </tr>
   );
-};
+});

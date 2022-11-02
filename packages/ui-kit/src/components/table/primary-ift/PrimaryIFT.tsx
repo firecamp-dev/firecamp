@@ -62,10 +62,12 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
           //     className="without-border"
           //   />
           // );
+          console.log(key, "key....")
           return (
             <SingleLineEditor
               path={key}
               value={value}
+              type="text"
               disabled={disabled || disable}
               language={meta?.mode?.[key] || 'ife-text'}
               onChange={(e) => onChange(e.target.value)}
