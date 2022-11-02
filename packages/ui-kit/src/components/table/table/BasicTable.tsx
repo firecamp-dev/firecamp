@@ -71,7 +71,7 @@ const BasicTable: FC<any> = ({
               );
               break;
             case 'remove':
-              return <VscTrash />;
+              return (<VscTrash />);
             default:
               return (
                 <SingleLineEditor
