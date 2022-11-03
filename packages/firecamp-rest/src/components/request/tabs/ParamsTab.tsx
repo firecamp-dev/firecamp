@@ -7,22 +7,21 @@ import { useRestStore } from '../../../store';
 
 const ParamsTab = () => {
   const tableApi = useRef();
-  let { query_params, path_params, changeQueryParams, changePathParams } =
+  const { query_params, path_params, changeQueryParams, changePathParams } =
     useRestStore(
       (s: any) => ({
         query_params: s.request.url?.query_params || [],
         path_params: s.request.url?.path_params || [],
-
         changeQueryParams: s.changeQueryParams,
         changePathParams: s.changePathParams,
       }),
       shallow
     );
 
-  // useEffect(() => {
-  //   console.log(query_params, ' query_params...');
-  //   tableApi.current.initialize(query_params);
-  // }, [query_params]);
+  useEffect(() => {
+    console.log(query_params, ' query_params...');
+    tableApi.current.initialize(query_params);
+  }, [query_params]);
 
   return (
     <Container>
@@ -30,8 +29,7 @@ const ParamsTab = () => {
         <BulkEditIFT
           tableApiRef={tableApi}
           onChange={(data) => {
-            // console.log({ data });
-
+            console.log({ data });
             changeQueryParams(data);
           }}
           key={'queryParams'}

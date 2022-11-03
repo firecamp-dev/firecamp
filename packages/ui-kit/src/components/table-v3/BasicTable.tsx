@@ -8,7 +8,7 @@ import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from './primitive/Table';
 
-const BasicTable = ({ apiRef, initialRows, onChange = () => {} }) => {
+const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
   const tableApi = useRef<TTableApi>();
 
   const _columns = [
@@ -113,7 +113,10 @@ const BasicTable = ({ apiRef, initialRows, onChange = () => {} }) => {
           description: '',
         }}
         renderCell={renderCell}
-        onChange={onChange}
+        onChange={(rows)=> {
+          // console.log(rows)
+          onChange(rows);
+        }}
         onLoad={(tApi) => {}}
       />
       <div className="">

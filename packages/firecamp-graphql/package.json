@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@firecamp/types": "^0.0.11",
-    "@firecamp/url": "^0.0.14",
+    "@firecamp/url": "^0.0.15",
     "codemirror": "^5.63.0",
     "codemirror-graphql": "^1.0.2",
     "graphiql-explorer": "^0.9.0",

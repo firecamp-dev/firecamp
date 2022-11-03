@@ -50,6 +50,7 @@ const Table: FC<ITable<any>> = ({
   apiRef.current = {
     initialize: (rows: any[]) => {
       rows = rows.map((r) => {
+        console.log(r.id, 555555);
         if (!r.id) r.id = nanoid();
         return r;
       });
@@ -59,7 +60,7 @@ const Table: FC<ITable<any>> = ({
     getRows: () => _valueBy(_rows),
     addRow: () => {
       const id = nanoid();
-      _setRows((rws) => ({ ...rws, [id]: { id, ...defaultRow } }));
+      _setRows((rws) => ({ ...rws, [id]: { ...defaultRow, id } }));
     },
     setRow: (row: any) => {
       if (!row?.id) return;
