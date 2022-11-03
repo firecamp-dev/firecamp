@@ -47,8 +47,9 @@ const MultipartIFT: FC<IMultipartIFT> = ({
             <SingleLineEditor
               path={key}
               value={value}
-              className="without-border"
+              className="without-border px-2"
               onChange={(e) => onChange(e.target.value)}
+              height="21px"
             />
           );
         } else if (type == 'boolean') {
@@ -140,13 +141,17 @@ const MultiPartInput: FC<IMultiPartInput> = ({
   // console.log(`type`, type);
 
   return (
-    <div className="smart-table-cell-multipart">
-      {type == 'text' ? (
+    <div className="smart-table-cell-multipart w-full">
+      {
+      type == 'text' ? (
+        <div className="!w-32">
         <SingleLineEditor
-          className="without-border"
+          className="without-border px-2"
           value={typeof value === 'string' ? value : ''}
           onChange={(e) => _onChange(e)}
+          height="21px"
         />
+        </div>
       ) : (
         [
           <input
@@ -174,7 +179,7 @@ const MultiPartInput: FC<IMultiPartInput> = ({
         ]
       )}
       {type == 'text' ? (
-        <VscFile onClick={_changeType} />
+        <VscFile className="ml-auto mr-2" onClick={_changeType} />
       ) : (
         <TiSortAlphabetically onClick={_changeType} />
       )}

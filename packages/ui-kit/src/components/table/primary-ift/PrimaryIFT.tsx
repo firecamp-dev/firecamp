@@ -72,7 +72,8 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
               disabled={disabled || disable}
               language={meta?.mode?.[key] || 'ife-text'}
               onChange={(e) => onChange(e.target.value)}
-              className="without-border"
+              className="without-border px-2"
+              height="21px"
             />
           );
         } else if (type == 'boolean') {

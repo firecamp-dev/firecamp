@@ -54,7 +54,7 @@ const PlaygroundFooter = () => {
           /> */}
 
           <SecondaryTab
-            className="flex items-center pb-6 ml-2"
+            className="flex items-center ml-2"
             list={tabs}
             activeTab={activeTab}
             onSelect={_onSelectTab}
