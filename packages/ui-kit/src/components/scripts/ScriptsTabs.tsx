@@ -201,7 +201,7 @@ const ScriptsTabs: FC<IScriptsTab> = ({
             ''
           )}
         </div>
-        <div style={{ height: '250px' }}>
+        <div style={{ height: '100%' }}>
           {
             // TODO: remove above parent div and height
           }

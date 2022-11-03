@@ -36,7 +36,7 @@ const PlaygroundFooter = () => {
     <Resizable
       top={true}
       width="100%"
-      height="152px"
+      height="100%"
       minHeight={100}
       maxHeight={300}
       className={!showFooter ? 'collapsed' : ''}
