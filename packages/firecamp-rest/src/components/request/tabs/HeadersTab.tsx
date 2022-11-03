@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 
 import {
@@ -13,6 +13,8 @@ import {
 import { useRestStore } from '../../../store';
 
 const HeadersTab = () => {
+  const hTableApi = useRef();
+  const tableApi = useRef();
   let { headers, auth_headers, changeHeaders } = useRestStore(
     (s: any) => ({
       headers: s.request.headers,
@@ -34,6 +36,7 @@ const HeadersTab = () => {
     <Container>
       <Container.Body>
         <BulkEditIFT
+          tableApiRef={hTableApi}
           onChange={(data) => onHeaderChange(data)}
           key={'headers'}
           rows={headers}
@@ -54,6 +57,7 @@ const HeadersTab = () => {
 
         {/* <BasicTable resizable={true} /> */}
         <BasicTableV3
+          apiRef={tableApi}
           initialRows={[{ key: 'name', value: 'Nishchit' }]}
           onChange={console.log}
           // onLoad={(tApi) => {}}

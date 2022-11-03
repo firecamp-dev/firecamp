@@ -1,5 +1,9 @@
 import { FC } from 'react';
-import { IFT, SingleLineEditor, Checkbox } from '@firecamp/ui-kit';
+import {
+  IFT,
+  SingleLineEditor,
+  Checkbox,
+} from '@firecamp/ui-kit';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 
 import { IPrimaryIFT } from '../interfaces/PrimaryIFT.interfaces';
@@ -15,31 +19,6 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
   custom = false,
   columnDetails,
 }) => {
-  if (custom)
-    return (
-      <div>
-        <div className="smart-table-header-wrapper">
-          {title ? <div className="smart-table-header">{title}</div> : ''}
-        </div>
-
-        <Table
-          name="basic_table"
-          width={500}
-          resizable={true}
-          data={rows}
-          options={{
-            containerClassName: '',
-            minColumnSize: 100,
-          }}
-          columns={columnDetails}
-          columnRenderer={(row) => <>{row}</>}
-          cellRenderer={(cell) => {
-            return <input />;
-          }}
-        />
-      </div>
-    );
-
   return (
     <IFT
       onChange={(v) => {
@@ -63,7 +42,7 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
           //     className="without-border"
           //   />
           // );
-          console.log(key, "key....")
+          console.log(key, 'key....');
           return (
             <SingleLineEditor
               path={key}

@@ -1,10 +1,12 @@
-import { PrimaryIFT, BulkEditIFT } from '@firecamp/ui-kit';
-import { Container } from '@firecamp/ui-kit';
-import shallow from 'zustand/shallow';
-import { useRestStore } from '../../../store';
+import { useEffect, useRef } from 'react';
+import { Container, PrimaryIFT, BulkEditIFT } from '@firecamp/ui-kit';
 import { _array } from '@firecamp/utils';
+import shallow from 'zustand/shallow';
+
+import { useRestStore } from '../../../store';
 
 const ParamsTab = () => {
+  const tableApi = useRef();
   let { query_params, path_params, changeQueryParams, changePathParams } =
     useRestStore(
       (s: any) => ({
@@ -17,10 +19,16 @@ const ParamsTab = () => {
       shallow
     );
 
+  // useEffect(() => {
+  //   console.log(query_params, ' query_params...');
+  //   tableApi.current.initialize(query_params);
+  // }, [query_params]);
+
   return (
     <Container>
       <Container.Body className="flex flex-col">
         <BulkEditIFT
+          tableApiRef={tableApi}
           onChange={(data) => {
             // console.log({ data });
 
@@ -49,7 +57,7 @@ const ParamsTab = () => {
             />
           </div>
         ) : (
-          ''
+          <></>
         )}
       </Container.Body>
     </Container>

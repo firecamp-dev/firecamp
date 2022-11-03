@@ -1,16 +1,15 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import {
   Container,
   TabHeader,
   Button,
-  PrimaryIFT,
+  BasicTableV3,
   Editor,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 
 import { IBulkEditIFT } from '../interfaces/BulkEditIFT.interfaces';
 import { _table } from '@firecamp/utils';
-
 
 const modes = {
   TABLE: 'table',
@@ -28,6 +27,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
   title = '',
   onChange = () => {},
   meta = { mode: {} },
+  tableApiRef
 }) => {
   let [mode, setMode] = useState(modes.TABLE);
   let [raw, setRaw] = useState('');
@@ -49,7 +49,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
 
   let _setRaw = (editorString: string) => {
     setRaw(editorString);
-    
+
     try {
       if (editorString.length) {
         let tableArray = [..._table.textToTable(editorString)];
@@ -93,14 +93,13 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
         </TabHeader.Right>
       </TabHeader>
       {mode === modes.TABLE ? (
-        <PrimaryIFT
+        <BasicTableV3
+          apiRef={tableApiRef}
           onChange={_onChangeRows}
-          rows={rows}
+          initialRows={rows}
           name={title}
           meta={meta}
           disabled={disabled}
-          // custom={true}
-          // columnDetails={headerColumnDataForDisplay}
         />
       ) : (
         <div className="h-28">
@@ -118,7 +117,6 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           />
         </div>
       )}
-
     </div>
   );
 };

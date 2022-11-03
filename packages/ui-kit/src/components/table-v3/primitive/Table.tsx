@@ -2,14 +2,12 @@ import {
   FC,
   MutableRefObject,
   ReactNode,
-  createRef,
-  useCallback,
   useEffect,
   useRef,
   useState,
 } from 'react';
 import { nanoid } from 'nanoid';
-import { _array, _misc } from '@firecamp/utils';
+import { _array, _misc, _object } from '@firecamp/utils';
 import cx from 'classnames';
 
 import './table.sass';
@@ -28,31 +26,33 @@ const Table: FC<ITable<any>> = ({
   const tableRef = useRef<HTMLTableElement>(null);
   // const tableApi = useRef<TTableApi>(null);
   useTableResize(tableRef);
-  const row1Id = nanoid(),
-    row2Id = nanoid(); // show two empty row on load
-  const defaultRows = showDefaultEmptyRows
-    ? {
-        [row1Id]: { id: row1Id, ...defaultRow },
-        [row2Id]: { id: row2Id, ...defaultRow },
-      }
-    : {};
-  let [_rows, _setRows] = useState<TPlainObject>(defaultRows);
 
-  useEffect(() => {
-    // console.log(initialRows, 'initialRows...');
-    if (initialRows?.length) {
-      const _rows = initialRows.reduce((p, n) => {
-        const id = n.id || nanoid();
-        return { ...p, [id]: { id, ...n } };
-      }, {});
-      //   console.log(_rows, '_rows...');
-      _setRows(_rows);
-    }
-  }, []);
+  let _initRows = {};
+  if (initialRows?.length) {
+    _initRows = initialRows.reduce((p, n) => {
+      const id = n.id || nanoid();
+      return { ...p, [id]: { id, ...n } };
+    }, {});
+  }
+  if (_object.isEmpty(_initRows)) {
+    const row1Id = nanoid(),
+      row2Id = nanoid();
+    _initRows = showDefaultEmptyRows
+      ? {
+          [row1Id]: { id: row1Id, ...defaultRow },
+          [row2Id]: { id: row2Id, ...defaultRow },
+        }
+      : {};
+  }
+  const [_rows, _setRows] = useState<TPlainObject>(_initRows);
 
   // each render assign apis to parent ref
   apiRef.current = {
     initialize: (rows: any[]) => {
+      rows = rows.map((r) => {
+        if (!r.id) r.id = nanoid();
+        return r;
+      });
       console.log(_keyBy(rows, 'id'));
       _setRows(_keyBy(rows, 'id'));
     },
@@ -87,7 +87,6 @@ const Table: FC<ITable<any>> = ({
     e: any
   ) => {
     _setRows((rws) => {
-      console.log(rowId, rws[rowId]);
       const rows = {
         ...rws,
         [rowId]: { ...rws[rowId], [cellKey]: cellValue },

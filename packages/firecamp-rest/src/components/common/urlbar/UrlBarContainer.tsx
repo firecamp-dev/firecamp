@@ -1,9 +1,4 @@
-import {
-  Url,
-  UrlBar,
-  HttpMethodDropDown,
-  Button,
-} from '@firecamp/ui-kit';
+import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
 
 import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
@@ -79,6 +74,8 @@ const UrlBarContainer = ({
     let value = e.target.value;
 
     let urlObject = _url.updateByRaw({ ...url, raw: value });
+
+    console.log(urlObject, "urlObject...")
 
     changeUrl(urlObject);
   };
@@ -172,12 +169,12 @@ const UrlBarContainer = ({
       }
       nodePath={meta.name}
       showEditIcon={isRequestSaved}
-      onEditClick={()=> {
+      onEditClick={() => {
         context.appService.modals.openEditRequest({
           name: meta.name,
           description: meta.description,
           collection_id: _meta.collection_id,
-          request_id: _meta.id
+          request_id: _meta.id,
         });
       }}
     >
