@@ -72,11 +72,9 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
             style={{
               position: 'absolute',
               width: '100%',
-              height: '31px',
-              left: '0px',
-              bottom: '-6px',
-              padding: '2px',
+              top: '2px',
               overflow: 'hidden',
+              padding: '0px 4px'
             }}
             type="text"
             value={cellValue}
