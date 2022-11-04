@@ -102,7 +102,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           disabled={disabled}
         />
       ) : (
-        <div className="h-28">
+        <div className="h-28 pt-3">
           <Editor
             value={raw}
             language="text"
