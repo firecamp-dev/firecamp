@@ -24,8 +24,17 @@ const Table: FC<ITable<any>> = ({
   showDefaultEmptyRows = true,
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
-  // const tableApi = useRef<TTableApi>(null);
+  const rowBeingDragRef = useRef<HTMLTableElement>(null);
   useTableResize(tableRef);
+
+  const handleDrag = (row, index) => {
+    rowBeingDragRef.current = row;
+    console.log(row, index, 'row...');
+  };
+
+  const handleDrop = () => {
+    rowBeingDragRef.current = null;
+  };
 
   let _initRows = {};
   if (initialRows?.length) {
@@ -126,6 +135,8 @@ const Table: FC<ITable<any>> = ({
                 renderCell={renderCell}
                 onChangeCell={onChangeCell}
                 key={rId}
+                handleDrag={handleDrag}
+                handleDrop={handleDrop}
               />
             );
           })}
@@ -143,6 +154,8 @@ const TableRow: FC<ITableRow<any>> = ({
   tableApi,
   renderCell,
   onChangeCell,
+  handleDrag,
+  handleDrop,
 }) => {
   const onChange = (ck: string, cv: any, e: any) => {
     onChangeCell(ck, cv, row.id, e);
@@ -152,8 +165,21 @@ const TableRow: FC<ITableRow<any>> = ({
     <Tr className="">
       {columns.map((c: IColumn, i: number) => {
         return (
-          <Td key={i} style={{ width: c.width }}>
-            {renderCell(c, row[c.key], index, row, tableApi, onChange)}
+          <Td
+            key={i}
+            style={{ width: c.width }}
+            row={row}
+            handleDrop={handleDrop}
+          >
+            {renderCell(
+              c,
+              row[c.key],
+              index,
+              row,
+              tableApi,
+              onChange,
+              handleDrag
+            )}
           </Td>
         );
       })}
@@ -177,7 +203,13 @@ const Th: FC<TTh> = ({ children, className = '', style = {} }) => {
   );
 };
 
-const Td: FC<TTd> = ({ children, className = '', style = {} }) => {
+const Td: FC<TTd<any>> = ({
+  children,
+  className = '',
+  row,
+  handleDrop,
+  style = {},
+}) => {
   return (
     <td
       className={cx(
@@ -185,6 +217,12 @@ const Td: FC<TTd> = ({ children, className = '', style = {} }) => {
         className
       )}
       style={{ ...style, height: '27px' }}
+      data-testid="row-sorter"
+      onDrop={(e) => {
+        e.preventDefault();
+        handleDrop(row);
+      }}
+      onDragOver={(e) => e.preventDefault()}
     >
       {children}
     </td>
@@ -211,6 +249,8 @@ interface ITableRow<R> {
   tableApi: TTableApi;
   renderCell: TRenderCell<R>;
   onChangeCell: TOnChangeCell;
+  handleDrag: (row: R) => void;
+  handleDrop: (row: R) => void;
 }
 interface IColumn {
   id: string;
@@ -221,7 +261,13 @@ interface IColumn {
 
 type TTr = { children: ReactNode; className?: string; style?: TPlainObject };
 type TTh = { children: ReactNode; className?: string; style?: TPlainObject };
-type TTd = { children: ReactNode; className?: string; style?: TPlainObject };
+type TTd<R> = {
+  row: R;
+  handleDrop: (row: R) => void;
+  children: ReactNode;
+  className?: string;
+  style?: TPlainObject;
+};
 
 type TPlainObject = { [K: string]: any };
 type TsORn = string | number;
@@ -232,7 +278,8 @@ type TRenderCell<R> = (
   index: number,
   row: R,
   tableApi: TTableApi,
-  onChange: (ck: string, cv: any, e: any) => void
+  onChange: (ck: string, cv: any, e: any) => void,
+  handleDrag: (row: R) => void
 ) => ReactNode;
 type TOnChangeCell = (
   cellKey: string,

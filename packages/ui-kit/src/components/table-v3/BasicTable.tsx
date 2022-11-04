@@ -25,7 +25,22 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
     { id: 'remove', key: '', name: '', width: 20 },
   ];
 
-  const renderCell = (column, cellValue, rowIndex, row, tableApi, onChange) => {
+  const handleDrag = (a) => {
+    console.log(a);
+  };
+  const handleDrop = (a) => {
+    console.log(a);
+  };
+
+  const renderCell = (
+    column,
+    cellValue,
+    rowIndex,
+    row,
+    tableApi,
+    onChange,
+    handleDrag,
+  ) => {
     switch (column.id) {
       case 'select':
         return (
@@ -38,7 +53,7 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
                 // console.log(td, td.contains(e.target))
                 // if(!td.contains(e.target)) e.preventDefault();
                 // else handleDrag(row.index);
-                // handleDrag(row.index);
+                handleDrag(row, rowIndex);
               }}
               className="flex"
             >
@@ -74,7 +89,7 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
               width: '100%',
               top: '2px',
               overflow: 'hidden',
-              padding: '0px 4px'
+              padding: '0px 4px',
             }}
             type="text"
             value={cellValue}
@@ -134,6 +149,8 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
           onChange(rows);
         }}
         onLoad={(tApi) => {}}
+        handleDrag={handleDrag}
+        handleDrop={handleDrop}
       />
       <div className="">
         <Button
