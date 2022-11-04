@@ -55,23 +55,38 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
         break;
       case 'key':
       case 'value':
+        // return (
+        //   <input
+        //     value={cellValue}
+        //     className="bg-transparent text-base text-appForeground font-sans"
+        //     onChange={(e: any) => onChange(column.key, e.target.value, e)}
+        //   />
+        // );
         return (
           <SingleLineEditor
             // path={`${rowIndex}_${column.id}`}
             language={'ife-header-key'}
             className="without-border"
+            style={{
+              position: 'absolute',
+              height: '21px',
+              width: '100%',
+              left: '0px',
+              bottom: '0px',
+              overflow: 'hidden',
+            }}
             type="text"
             value={cellValue}
             height={25}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
             // loading={<>{cellValue}</>}
-            loading={
-              <input
-                value={cellValue}
-                className="bg-transparent text-base text-appForeground font-sans"
-                readOnly
-              />
-            }
+            // loading={
+            //   <input
+            //     value={cellValue}
+            //     className="bg-transparent text-base text-appForeground font-sans"
+            //     readOnly
+            //   />
+            // }
           />
         );
         break;
@@ -113,7 +128,7 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
           description: '',
         }}
         renderCell={renderCell}
-        onChange={(rows)=> {
+        onChange={(rows) => {
           // console.log(rows)
           onChange(rows);
         }}

@@ -19,7 +19,8 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   monacoOptions = {},
   placeholder = '',
   className = '',
-  height= 50,
+  style={},
+  height = 50,
   path,
   loading,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
@@ -43,7 +44,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   // }, []);
 
   useEffect(() => {
-    console.log("this is re-rendering <SingleLineEditor />")
+    console.log('this is re-rendering <SingleLineEditor />');
     //@ts-ignore
     if (!window.ife) window.ife = new Map();
     return () => {
@@ -229,7 +230,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   //  value = value.replace(/[\n\r]/g, '');
 
   return (
-    <div>
+    <>
       {placeholder && !value ? (
         <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
@@ -237,7 +238,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
       ) : (
         <></>
       )}
-      <div className={cx(className)}>
+      <div className={cx(className)} style={style}>
         <MonacoEditor
           language={language}
           defaultValue={value}
@@ -340,7 +341,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           }}
         />
       </div>
-    </div>
+    </>
   );
 };
 

@@ -152,7 +152,7 @@ const TableRow: FC<ITableRow<any>> = ({
     <Tr className="">
       {columns.map((c: IColumn, i: number) => {
         return (
-          <Td key={i}>
+          <Td key={i} style={{ width: c.width }}>
             {renderCell(c, row[c.key], index, row, tableApi, onChange)}
           </Td>
         );
@@ -181,9 +181,10 @@ const Td: FC<TTd> = ({ children, className = '', style = {} }) => {
   return (
     <td
       className={cx(
-        'border-b border-l first:border-l-0 border-appBorder',
+        'relative border-b border-l first:border-l-0 border-appBorder',
         className
       )}
+      style={style}
     >
       {children}
     </td>
