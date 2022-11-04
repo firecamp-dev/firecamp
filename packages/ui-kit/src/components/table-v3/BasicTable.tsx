@@ -55,6 +55,7 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
         break;
       case 'key':
       case 'value':
+      case 'description':
         // return (
         //   <input
         //     value={cellValue}
@@ -69,15 +70,16 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
             className="without-border"
             style={{
               position: 'absolute',
-              height: '21px',
               width: '100%',
+              height: '31px',
               left: '0px',
-              bottom: '0px',
+              bottom: '-6px',
+              padding: '2px',
               overflow: 'hidden',
             }}
             type="text"
             value={cellValue}
-            height={25}
+            height={30}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
             // loading={<>{cellValue}</>}
             // loading={
@@ -90,15 +92,15 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
           />
         );
         break;
-      case 'description':
-        return (
-          <input
-            value={cellValue}
-            className="bg-transparent text-base text-appForeground font-sans"
-            onChange={(e: any) => onChange(column.key, e.target.value, e)}
-          />
-        );
-        break;
+      // case 'description':
+      //   return (
+      //     <input
+      //       value={cellValue}
+      //       className="bg-transparent text-base text-appForeground font-sans"
+      //       onChange={(e: any) => onChange(column.key, e.target.value, e)}
+      //     />
+      //   );
+      //   break;
       case 'remove':
         return (
           <div className="px-2 flex">

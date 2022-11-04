@@ -184,7 +184,7 @@ const Td: FC<TTd> = ({ children, className = '', style = {} }) => {
         'relative border-b border-l first:border-l-0 border-appBorder',
         className
       )}
-      style={style}
+      style={{ ...style, height: '27px' }}
     >
       {children}
     </td>
