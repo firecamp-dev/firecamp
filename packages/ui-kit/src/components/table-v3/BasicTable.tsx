@@ -9,7 +9,7 @@ import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from './primitive/Table';
 import './BasicTable.scss';
 
-const BasicTable = ({ apiRef, initialRows, onChange = () => {} }) => {
+const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
   const tableApi = useRef<TTableApi>();
 
   const _columns = [
@@ -56,35 +56,52 @@ const BasicTable = ({ apiRef, initialRows, onChange = () => {} }) => {
         break;
       case 'key':
       case 'value':
+      case 'description':
+        // return (
+        //   <input
+        //     value={cellValue}
+        //     className="bg-transparent text-base text-appForeground font-sans"
+        //     onChange={(e: any) => onChange(column.key, e.target.value, e)}
+        //   />
+        // );
         return (
           <SingleLineEditor
             // path={`${rowIndex}_${column.id}`}
             language={'ife-header-key'}
             className="without-border px-2"
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '31px',
+              left: '0px',
+              bottom: '-6px',
+              padding: '2px',
+              overflow: 'hidden',
+            }}
             type="text"
             value={cellValue}
             height={21}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
             // loading={<>{cellValue}</>}
-            loading={
-              <input
-                value={cellValue}
-                className="bg-transparent text-base text-appForeground font-sans"
-                readOnly
-              />
-            }
+            // loading={
+            //   <input
+            //     value={cellValue}
+            //     className="bg-transparent text-base text-appForeground font-sans"
+            //     readOnly
+            //   />
+            // }
           />
         );
         break;
-      case 'description':
-        return (
-          <input
-            value={cellValue}
-            className="bg-transparent text-base text-appForeground font-sans"
-            onChange={(e: any) => onChange(column.key, e.target.value, e)}
-          />
-        );
-        break;
+      // case 'description':
+      //   return (
+      //     <input
+      //       value={cellValue}
+      //       className="bg-transparent text-base text-appForeground font-sans"
+      //       onChange={(e: any) => onChange(column.key, e.target.value, e)}
+      //     />
+      //   );
+      //   break;
       case 'remove':
         return (
           <div className="px-2 flex">
@@ -114,7 +131,10 @@ const BasicTable = ({ apiRef, initialRows, onChange = () => {} }) => {
           description: '',
         }}
         renderCell={renderCell}
-        onChange={onChange}
+        onChange={(rows) => {
+          // console.log(rows)
+          onChange(rows);
+        }}
         onLoad={(tApi) => {}}
       />
       <div className="">

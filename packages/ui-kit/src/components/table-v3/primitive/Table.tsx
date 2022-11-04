@@ -50,6 +50,7 @@ const Table: FC<ITable<any>> = ({
   apiRef.current = {
     initialize: (rows: any[]) => {
       rows = rows.map((r) => {
+        console.log(r.id, 555555);
         if (!r.id) r.id = nanoid();
         return r;
       });
@@ -59,7 +60,7 @@ const Table: FC<ITable<any>> = ({
     getRows: () => _valueBy(_rows),
     addRow: () => {
       const id = nanoid();
-      _setRows((rws) => ({ ...rws, [id]: { id, ...defaultRow } }));
+      _setRows((rws) => ({ ...rws, [id]: { ...defaultRow, id } }));
     },
     setRow: (row: any) => {
       if (!row?.id) return;
@@ -151,7 +152,7 @@ const TableRow: FC<ITableRow<any>> = ({
     <Tr className="">
       {columns.map((c: IColumn, i: number) => {
         return (
-          <Td key={i}>
+          <Td key={i} style={{ width: c.width }}>
             {renderCell(c, row[c.key], index, row, tableApi, onChange)}
           </Td>
         );
@@ -180,9 +181,10 @@ const Td: FC<TTd> = ({ children, className = '', style = {} }) => {
   return (
     <td
       className={cx(
-        'border-b border-l first:border-l-0 border-appBorder',
+        'relative border-b border-l first:border-l-0 border-appBorder',
         className
       )}
+      style={{ ...style, height: '27px' }}
     >
       {children}
     </td>

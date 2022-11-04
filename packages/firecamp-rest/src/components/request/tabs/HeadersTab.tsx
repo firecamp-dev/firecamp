@@ -14,7 +14,6 @@ import { useRestStore } from '../../../store';
 
 const HeadersTab = () => {
   const hTableApi = useRef();
-  const tableApi = useRef();
   let { headers, auth_headers, changeHeaders } = useRestStore(
     (s: any) => ({
       headers: s.request.headers,
@@ -56,12 +55,7 @@ const HeadersTab = () => {
         <SingleLineEditor type="text" path="f" value="bbbb" /> */}
 
         {/* <BasicTable resizable={true} /> */}
-        <BasicTableV3
-          apiRef={tableApi}
-          initialRows={[{ key: 'name', value: 'Nishchit' }]}
-          onChange={console.log}
-          // onLoad={(tApi) => {}}
-        />
+
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
           auth_headers && auth_headers.length ? (

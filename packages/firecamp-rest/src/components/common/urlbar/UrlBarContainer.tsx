@@ -74,9 +74,7 @@ const UrlBarContainer = ({
     let value = e.target.value;
 
     let urlObject = _url.updateByRaw({ ...url, raw: value });
-
-    console.log(urlObject, "urlObject...")
-
+    // console.log(urlObject, "urlObject... in url bar")
     changeUrl(urlObject);
   };
 
