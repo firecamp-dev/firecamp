@@ -7,6 +7,7 @@ import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from './primitive/Table';
+import './BasicTable.scss';
 
 const BasicTable = ({ apiRef, initialRows, onChange = () => {} }) => {
   const tableApi = useRef<TTableApi>();
@@ -59,10 +60,10 @@ const BasicTable = ({ apiRef, initialRows, onChange = () => {} }) => {
           <SingleLineEditor
             // path={`${rowIndex}_${column.id}`}
             language={'ife-header-key'}
-            className="without-border"
+            className="without-border px-2"
             type="text"
             value={cellValue}
-            height={25}
+            height={21}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
             // loading={<>{cellValue}</>}
             loading={
