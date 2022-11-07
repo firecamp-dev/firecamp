@@ -2,9 +2,6 @@ import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 
 import {
-  BasicTable,
-  BasicTableV3,
-  SingleLineEditor,
   PrimaryIFT,
   BulkEditIFT,
   Container,

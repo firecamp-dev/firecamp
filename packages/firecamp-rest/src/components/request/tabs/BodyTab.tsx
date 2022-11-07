@@ -12,7 +12,7 @@ import {
   Container,
   Dropdown,
   Editor,
-  PrimaryIFT,
+  BasicTableV3,
   MultipartIFT,
   Button,
   StatusBar,
@@ -164,14 +164,10 @@ const BodyTab: FC<any> = () => {
           break;
         case ERestBodyTypes.UrlEncoded:
           return (
-            <PrimaryIFT
+            <BasicTableV3
               title=""
               onChange={(value) => _changeBodyValue(active_body_type, value)}
-              rows={
-                body?.[active_body_type]?.value
-                  ? body[active_body_type].value
-                  : []
-              }
+              rows={body[active_body_type]?.value || []}
             />
           );
           break;

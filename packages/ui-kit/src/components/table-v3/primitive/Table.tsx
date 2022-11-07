@@ -19,13 +19,16 @@ const Table: FC<ITable<any>> = ({
   initialRows = [],
   defaultRow = {},
   onChange,
-  onLoad,
-  apiRef,
+  onMount = (api) => {},
   showDefaultEmptyRows = true,
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
   useTableResize(tableRef);
+
+  useEffect(() => {
+    onMount(tableApi);
+  }, []);
 
   const handleDrag = (row, index) => {
     rowBeingDragRef.current = row;
@@ -56,7 +59,7 @@ const Table: FC<ITable<any>> = ({
   const [_rows, _setRows] = useState<TPlainObject>(_initRows);
 
   // each render assign apis to parent ref
-  apiRef.current = {
+  const tableApi = {
     initialize: (rows: any[]) => {
       rows = rows.map((r) => {
         console.log(r.id, 555555);
@@ -131,7 +134,7 @@ const Table: FC<ITable<any>> = ({
                 columns={columns}
                 index={i}
                 row={_rows[rId]}
-                tableApi={apiRef.current}
+                tableApi={tableApi}
                 renderCell={renderCell}
                 onChangeCell={onChangeCell}
                 key={rId}
@@ -237,8 +240,7 @@ interface ITable<R> {
   onChange: (rows: R[]) => void;
   defaultRow?: R;
   //@deprecated
-  onLoad?: (tableApi: TTableApi) => void;
-  apiRef: any;
+  onMount?: (tableApi: TTableApi) => void;
   showDefaultEmptyRows?: boolean;
 }
 

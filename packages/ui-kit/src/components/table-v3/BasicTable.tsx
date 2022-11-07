@@ -9,8 +9,13 @@ import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from './primitive/Table';
 import './BasicTable.scss';
 
-const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
-  const tableApi = useRef<TTableApi>();
+const BasicTable = ({
+  name = '',
+  initialRows = [],
+  onChange = (rs) => {},
+  onMount = (api) => {},
+}) => {
+  const apiRef = useRef<TTableApi>();
 
   const _columns = [
     { id: 'select', key: 'disable', name: '', width: '40px' },
@@ -39,7 +44,7 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
     row,
     tableApi,
     onChange,
-    handleDrag,
+    handleDrag
   ) => {
     switch (column.id) {
       case 'select':
@@ -135,7 +140,6 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
     <>
       <Table
         initialRows={initialRows}
-        apiRef={apiRef}
         columns={_columns}
         renderColumn={(c) => c.name}
         defaultRow={{
@@ -148,7 +152,12 @@ const BasicTable = ({ apiRef, initialRows, onChange = (rs) => {} }) => {
           // console.log(rows)
           onChange(rows);
         }}
-        onLoad={(tApi) => {}}
+        onMount={(tApi) => {
+          if (typeof onMount == 'function') {
+            onMount(tApi);
+            apiRef.current = tApi;
+          }
+        }}
         handleDrag={handleDrag}
         handleDrop={handleDrop}
       />
