@@ -11,7 +11,7 @@ import './BasicTable.scss';
 
 const BasicTable = ({
   name = '',
-  initialRows = [],
+  rows = [],
   onChange = (rs) => {},
   onMount = (api) => {},
 }) => {
@@ -44,7 +44,8 @@ const BasicTable = ({
     row,
     tableApi,
     onChange,
-    handleDrag
+    handleDrag,
+    options
   ) => {
     switch (column.id) {
       case 'select':
@@ -70,6 +71,7 @@ const BasicTable = ({
               onToggleCheck={(label, val: boolean) => {
                 onChange(column.key, !val);
               }}
+              disabled={options.disabledColumns.includes(column.key)}
             />
           </div>
         );
@@ -77,6 +79,7 @@ const BasicTable = ({
       case 'key':
       case 'value':
       case 'description':
+        // return <></>
         // return (
         //   <input
         //     value={cellValue}
@@ -108,6 +111,7 @@ const BasicTable = ({
             //     readOnly
             //   />
             // }
+            disabled={options.disabledColumns.includes(column.key)}
           />
         );
         break;
@@ -121,6 +125,7 @@ const BasicTable = ({
       //   );
       //   break;
       case 'remove':
+        if (!options.allowRowRemove) return <></>;
         return (
           <div className="px-2 flex">
             <VscTrash
@@ -139,7 +144,7 @@ const BasicTable = ({
   return (
     <>
       <Table
-        initialRows={initialRows}
+        rows={rows}
         columns={_columns}
         renderColumn={(c) => c.name}
         defaultRow={{
@@ -161,6 +166,7 @@ const BasicTable = ({
         handleDrag={handleDrag}
         handleDrop={handleDrop}
       />
+
       <div className="">
         <Button
           onClick={() => apiRef.current.addRow()}

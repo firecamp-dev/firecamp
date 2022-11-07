@@ -277,6 +277,10 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             editor.addCommand(monaco.KeyCode.Tab, (e: any) => {
               console.log(editor.getId(), 'tab triggered');
 
+              document.activeElement.blur()
+              document.activeElement.blur()
+              document.activeElement.blur()
+
               // //@ts-ignore
               // if (!window.ife) return;
               // // @ts-ignore

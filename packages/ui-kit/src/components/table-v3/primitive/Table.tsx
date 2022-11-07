@@ -12,19 +12,26 @@ import cx from 'classnames';
 
 import './table.sass';
 
+const defaultOptions: TTableOptions = {
+  disabledColumns: [],
+  allowRowRemove: true,
+  allowRowAdd: true,
+  allowSort: true,
+};
+
 const Table: FC<ITable<any>> = ({
   columns,
   renderCell,
   renderColumn,
-  initialRows = [],
+  rows = [],
   defaultRow = {},
   onChange,
   onMount = (api) => {},
   showDefaultEmptyRows = true,
+  options = {},
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
-
   const [_state, _setState] = useState<TPlainObject>({
     orders: [],
     rows: {},
@@ -34,6 +41,35 @@ const Table: FC<ITable<any>> = ({
   useEffect(() => {
     onMount(tableApi);
   }, []);
+
+  useEffect(() => {
+    let _rows = {};
+    let _orders = [];
+    if (rows?.length) {
+      _rows = rows.reduce((p, n) => {
+        const id: string = n.id || nanoid();
+        _orders.push(id);
+        return { ...p, [id]: { id, ...n } };
+      }, {});
+    }
+    if (_object.isEmpty(_rows)) {
+      const row1Id = nanoid();
+      const row2Id = nanoid();
+      _orders.push(row1Id, row2Id);
+      _rows = showDefaultEmptyRows
+        ? {
+            [row1Id]: { id: row1Id, ...defaultRow },
+            [row2Id]: { id: row2Id, ...defaultRow },
+          }
+        : {};
+    }
+    _setState({
+      orders: _orders,
+      rows: _rows,
+    });
+  }, [rows]);
+
+  options = { ...defaultOptions, ...options };
 
   const handleDrag = (row: any, index: number) => {
     rowBeingDragRef.current = row;
@@ -51,94 +87,19 @@ const Table: FC<ITable<any>> = ({
       const { orders } = st;
       orders.splice(dropIndex, 0, st.orders.splice(dragIndex, 1)[0]);
 
-      return {
+      const state = {
         ...st,
         orders: [...orders],
       };
+      _onChangeTable(state);
+      return state;
     });
   };
 
-  useEffect(() => {
-    let _initRows = {};
-    let _orders = [];
-    if (initialRows?.length) {
-      _initRows = initialRows.reduce((p, n) => {
-        const id: string = n.id || nanoid();
-        _orders.push(id);
-        return { ...p, [id]: { id, ...n } };
-      }, {});
-    }
-    if (_object.isEmpty(_initRows)) {
-      const row1Id = nanoid();
-      const row2Id = nanoid();
-      _orders.push(row1Id, row2Id);
-      _initRows = showDefaultEmptyRows
-        ? {
-            [row1Id]: { id: row1Id, ...defaultRow },
-            [row2Id]: { id: row2Id, ...defaultRow },
-          }
-        : {};
-    }
-    _setState({
-      orders: _orders,
-      rows: _initRows,
-    });
-  }, []);
-
-  // each render assign apis to parent ref
-  const tableApi = {
-    initialize: (rows: any[]) => {
-      rows = rows.map((r) => {
-        // console.log(r.id, 555555);
-        if (!r.id) r.id = nanoid();
-        return r;
-      });
-      // console.log(_keyBy(rows, 'id'));
-      _setState({
-        orders: rows.map((r) => r.id),
-        rows: _keyBy(rows, 'id'),
-      });
-    },
-    getRows: () => {
-      return _state.orders.map((id: string) => _state.rows[id]);
-    },
-    addRow: () => {
-      const id = nanoid();
-      _setState((st) => ({
-        orders: [...st.orders, id],
-        rows: {
-          ...st.rows,
-          [id]: { ...defaultRow, id },
-        },
-      }));
-    },
-    setRow: (row: any) => {
-      if (!row?.id) return;
-      _setState((st) => ({
-        ...st,
-        rows: {
-          ...st.rows,
-          [row.id]: { ...defaultRow, id: row.id },
-        },
-      }));
-    },
-    removeRow: (rowId: string | number) => {
-      _setState((st) => {
-        if (!st.rows[rowId]) return st;
-        const { rows } = st;
-        delete rows[rowId];
-        return {
-          orders: st.orders.filter((id: string) => id != rowId),
-          rows,
-        };
-      });
-    },
+  const _onChangeTable = (state: TPlainObject) => {
+    const rs = state.orders.map((id: string) => state.rows[id]);
+    onChange(rs);
   };
-
-  const _onChangeTable = _misc.debounce(100, (rows: TPlainObject) => {
-    const rws = tableApi.getRows();
-    onChange(rws);
-  });
 
   const onChangeCell: TOnChangeCell = (
     cellKey: string,
@@ -147,13 +108,82 @@ const Table: FC<ITable<any>> = ({
     e: any
   ) => {
     _setState((st) => {
-      const rows = {
-        ...st.rows,
-        [rowId]: { ...st.rows[rowId], [cellKey]: cellValue },
+      const state = {
+        ...st,
+        rows: {
+          ...st.rows,
+          [rowId]: { ...st.rows[rowId], [cellKey]: cellValue },
+        },
       };
-      _onChangeTable(rows);
-      return { ...st, rows };
+      _onChangeTable(state);
+      return state;
     });
+  };
+
+  const getRows = () => {
+    return _state.orders;
+    return _state.orders.map((id: string) => _state.rows[id]);
+  };
+
+  // each render assign apis to parent ref
+  const tableApi = {
+    initialize: _misc.debounce(300, (rows: any[]) => {
+      rows = rows.map((r) => {
+        if (!r.id) r.id = nanoid();
+        return r;
+      });
+      _setState({
+        orders: rows.map((r) => r.id),
+        rows: _keyBy(rows, 'id'),
+      });
+    }),
+    // TODO: this is not working as of now, fix it later
+    getRows,
+    addRow: () => {
+      if (!options.allowRowAdd) return;
+      const id = nanoid();
+      _setState((st) => {
+        const state = {
+          orders: [...st.orders, id],
+          rows: {
+            ...st.rows,
+            [id]: { ...defaultRow, id },
+          },
+        };
+        // currently not firing on change event on new empty row insertion
+        _onChangeTable(state);
+        return state;
+      });
+    },
+    setRow: (row: any) => {
+      if (!row?.id) return;
+      _setState((st) => {
+        const state = {
+          ...st,
+          rows: {
+            ...st.rows,
+            [row.id]: { ...defaultRow, id: row.id },
+          },
+        };
+        _onChangeTable(state);
+        return state;
+      });
+    },
+    removeRow: (rowId: string | number) => {
+      if (!options.allowRowRemove) return;
+      _setState((st) => {
+        if (!st.rows[rowId]) return st;
+        const { rows } = st;
+        delete rows[rowId];
+
+        const state = {
+          orders: st.orders.filter((id: string) => id != rowId),
+          rows,
+        };
+        _onChangeTable(state);
+        return state;
+      });
+    },
   };
 
   return (
@@ -187,6 +217,7 @@ const Table: FC<ITable<any>> = ({
                 key={rId}
                 handleDrag={handleDrag}
                 handleDrop={handleDrop}
+                options={options}
               />
             );
           })}
@@ -206,6 +237,7 @@ const TableRow: FC<ITableRow<any>> = ({
   onChangeCell,
   handleDrag,
   handleDrop,
+  options,
 }) => {
   const onChange = (ck: string, cv: any, e: any) => {
     onChangeCell(ck, cv, row.id, e);
@@ -228,7 +260,8 @@ const TableRow: FC<ITableRow<any>> = ({
               row,
               tableApi,
               onChange,
-              handleDrag
+              handleDrag,
+              options
             )}
           </Td>
         );
@@ -279,8 +312,14 @@ const Td: FC<TTd<any>> = ({
   );
 };
 
+type TTableOptions = {
+  disabledColumns?: string[];
+  allowRowRemove?: boolean;
+  allowRowAdd?: boolean;
+  allowSort?: boolean;
+};
 interface ITable<R> {
-  initialRows?: R[];
+  rows?: R[];
   columns: Array<IColumn>;
   renderColumn: (column: IColumn) => string | JSX.Element;
   renderCell: TRenderCell<R>;
@@ -289,6 +328,7 @@ interface ITable<R> {
   //@deprecated
   onMount?: (tableApi: TTableApi) => void;
   showDefaultEmptyRows?: boolean;
+  options?: TTableOptions;
 }
 
 interface ITableRow<R> {
@@ -296,6 +336,7 @@ interface ITableRow<R> {
   columns: IColumn[];
   row: R;
   tableApi: TTableApi;
+  options?: TTableOptions;
   renderCell: TRenderCell<R>;
   onChangeCell: TOnChangeCell;
   handleDrag: (row: R) => void;
@@ -316,6 +357,7 @@ type TTd<R> = {
   children: ReactNode;
   className?: string;
   style?: TPlainObject;
+  options?: TTableOptions;
 };
 
 type TPlainObject = { [K: string]: any };
@@ -328,7 +370,8 @@ type TRenderCell<R> = (
   row: R,
   tableApi: TTableApi,
   onChange: (ck: string, cv: any, e: any) => void,
-  handleDrag: (row: R) => void
+  handleDrag: (row: R) => void,
+  options?: TTableOptions
 ) => ReactNode;
 type TOnChangeCell = (
   cellKey: string,

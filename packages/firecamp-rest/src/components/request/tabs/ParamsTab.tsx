@@ -4,6 +4,7 @@ import {
   PrimaryIFT,
   BulkEditIFT,
   TTableApi,
+  BasicTableV3,
 } from '@firecamp/ui-kit';
 import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
@@ -23,10 +24,11 @@ const ParamsTab = () => {
       shallow
     );
 
-  useEffect(() => {
-    console.log(query_params, ' query_params...');
-    tableApi.current.initialize(query_params);
-  }, [query_params]);
+  // useEffect(() => {
+  // const tRows = tableApi.current.getRows();
+  // console.log(tRows, query_params, tRows == query_params, ' query_params...');
+  // tableApi.current.initialize(query_params);
+  // }, [query_params]);
 
   return (
     <Container>
@@ -36,14 +38,29 @@ const ParamsTab = () => {
           title="Query params"
           rows={query_params || []}
           onChange={(data) => {
-            console.log({ data });
+            // console.log({ data });
             changeQueryParams(data);
           }}
           onMount={(tApi) => (tableApi.current = tApi)}
         />
         {!_array.isEmpty(path_params) ? (
           <div className="pt-14">
-            <PrimaryIFT
+            <BasicTableV3
+              initialRows={path_params || []}
+              key={'pathParams'}
+              title="Path params"
+              meta={{
+                disabledColumns: ['key', 'disable'],
+                allowRowRemove: false,
+                allowRowAdd: false,
+                allowSort: false,
+              }}
+              onChange={(data) => {
+                // _onChangeParamsValue(data, PATH_PARAMS);
+                changePathParams(data);
+              }}
+            />
+            {/* <PrimaryIFT
               onChange={(data) => {
                 // _onChangeParamsValue(data, PATH_PARAMS);
                 changePathParams(data);
@@ -57,7 +74,7 @@ const ParamsTab = () => {
                 allowRowAdd: false,
                 allowSort: false,
               }}
-            />
+            /> */}
           </div>
         ) : (
           <></>

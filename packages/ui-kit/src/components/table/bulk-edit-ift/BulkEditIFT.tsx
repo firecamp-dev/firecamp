@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useRef } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { TabHeader, Button, BasicTableV3, Editor } from '@firecamp/ui-kit';
 import { _table } from '@firecamp/utils';
 import equal from 'deep-equal';
@@ -89,7 +89,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
       {mode === modes.TABLE ? (
         <BasicTableV3
           onChange={_onChangeRows}
-          initialRows={rows}
+          rows={rows}
           name={title}
           meta={meta}
           disabled={disabled}
