@@ -12,6 +12,7 @@ import './BasicTable.scss';
 const BasicTable = ({
   name = '',
   rows = [],
+  options,
   onChange = (rs) => {},
   onMount = (api) => {},
 }) => {
@@ -165,6 +166,7 @@ const BasicTable = ({
         }}
         handleDrag={handleDrag}
         handleDrop={handleDrop}
+        options={options}
       />
 
       <div className="">

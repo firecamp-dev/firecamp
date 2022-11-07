@@ -46,10 +46,10 @@ const ParamsTab = () => {
         {!_array.isEmpty(path_params) ? (
           <div className="pt-14">
             <BasicTableV3
-              initialRows={path_params || []}
+              rows={path_params || []}
               key={'pathParams'}
               title="Path params"
-              meta={{
+              options={{
                 disabledColumns: ['key', 'disable'],
                 allowRowRemove: false,
                 allowRowAdd: false,
