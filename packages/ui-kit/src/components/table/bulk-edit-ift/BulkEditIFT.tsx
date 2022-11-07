@@ -93,9 +93,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           name={title}
           meta={meta}
           disabled={disabled}
-          onMount={(tApis) => {
-            if (typeof onMount == 'function') onMount(tApis);
-          }}
+          onMount={onMount}
         />
       ) : (
         <div className="h-28 pt-3">

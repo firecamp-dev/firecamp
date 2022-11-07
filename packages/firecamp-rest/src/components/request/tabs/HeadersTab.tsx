@@ -1,16 +1,11 @@
 import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 
-import {
-  PrimaryIFT,
-  BulkEditIFT,
-  Container,
-} from '@firecamp/ui-kit';
+import { PrimaryIFT, BulkEditIFT, Container } from '@firecamp/ui-kit';
 
 import { useRestStore } from '../../../store';
 
 const HeadersTab = () => {
-  const hTableApi = useRef();
   let { headers, auth_headers, changeHeaders } = useRestStore(
     (s: any) => ({
       headers: s.request.headers,
@@ -32,11 +27,11 @@ const HeadersTab = () => {
     <Container>
       <Container.Body>
         <BulkEditIFT
-          tableApiRef={hTableApi}
-          onChange={(data) => onHeaderChange(data)}
           key={'headers'}
           rows={headers}
           title="Headers"
+          onChange={(data) => onHeaderChange(data)}
+          onMount={() => {}}
           meta={{
             mode: {
               key: 'ife-header-key',

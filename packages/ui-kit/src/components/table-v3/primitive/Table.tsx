@@ -24,72 +24,119 @@ const Table: FC<ITable<any>> = ({
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
-  useTableResize(tableRef);
+
+  const [_state, _setState] = useState<TPlainObject>({
+    orders: [],
+    rows: {},
+  });
+  useTableResize(tableRef, _state.orders?.length);
 
   useEffect(() => {
     onMount(tableApi);
   }, []);
 
-  const handleDrag = (row, index) => {
+  const handleDrag = (row: any, index: number) => {
     rowBeingDragRef.current = row;
-    console.log(row, index, 'row...');
+    // console.log(row, index, 'handleDrag');
   };
 
-  const handleDrop = () => {
-    rowBeingDragRef.current = null;
+  const handleDrop = (row: any) => {
+    _setState((st) => {
+      const dragIndex = st.orders.findIndex(
+        (id: string) => id == rowBeingDragRef.current.id
+      );
+      const dropIndex = st.orders.findIndex((id: string) => id == row.id);
+      rowBeingDragRef.current = null;
+
+      const { orders } = st;
+      orders.splice(dropIndex, 0, st.orders.splice(dragIndex, 1)[0]);
+
+      return {
+        ...st,
+        orders: [...orders],
+      };
+    });
   };
 
-  let _initRows = {};
-  if (initialRows?.length) {
-    _initRows = initialRows.reduce((p, n) => {
-      const id = n.id || nanoid();
-      return { ...p, [id]: { id, ...n } };
-    }, {});
-  }
-  if (_object.isEmpty(_initRows)) {
-    const row1Id = nanoid(),
-      row2Id = nanoid();
-    _initRows = showDefaultEmptyRows
-      ? {
-          [row1Id]: { id: row1Id, ...defaultRow },
-          [row2Id]: { id: row2Id, ...defaultRow },
-        }
-      : {};
-  }
-  const [_rows, _setRows] = useState<TPlainObject>(_initRows);
+  useEffect(() => {
+    let _initRows = {};
+    let _orders = [];
+    if (initialRows?.length) {
+      _initRows = initialRows.reduce((p, n) => {
+        const id: string = n.id || nanoid();
+        _orders.push(id);
+        return { ...p, [id]: { id, ...n } };
+      }, {});
+    }
+    if (_object.isEmpty(_initRows)) {
+      const row1Id = nanoid();
+      const row2Id = nanoid();
+      _orders.push(row1Id, row2Id);
+      _initRows = showDefaultEmptyRows
+        ? {
+            [row1Id]: { id: row1Id, ...defaultRow },
+            [row2Id]: { id: row2Id, ...defaultRow },
+          }
+        : {};
+    }
+    _setState({
+      orders: _orders,
+      rows: _initRows,
+    });
+  }, []);
 
   // each render assign apis to parent ref
   const tableApi = {
     initialize: (rows: any[]) => {
       rows = rows.map((r) => {
-        console.log(r.id, 555555);
+        // console.log(r.id, 555555);
         if (!r.id) r.id = nanoid();
         return r;
       });
-      console.log(_keyBy(rows, 'id'));
-      _setRows(_keyBy(rows, 'id'));
+      // console.log(_keyBy(rows, 'id'));
+      _setState({
+        orders: rows.map((r) => r.id),
+        rows: _keyBy(rows, 'id'),
+      });
     },
-    getRows: () => _valueBy(_rows),
+    getRows: () => {
+      return _state.orders.map((id: string) => _state.rows[id]);
+    },
     addRow: () => {
       const id = nanoid();
-      _setRows((rws) => ({ ...rws, [id]: { ...defaultRow, id } }));
+      _setState((st) => ({
+        orders: [...st.orders, id],
+        rows: {
+          ...st.rows,
+          [id]: { ...defaultRow, id },
+        },
+      }));
     },
     setRow: (row: any) => {
       if (!row?.id) return;
-      _setRows((rws) => ({ ...rws, [row.id]: row }));
+      _setState((st) => ({
+        ...st,
+        rows: {
+          ...st.rows,
+          [row.id]: { ...defaultRow, id: row.id },
+        },
+      }));
     },
     removeRow: (rowId: string | number) => {
-      _setRows((rws) => {
-        if (!rws[rowId]) return rws;
-        delete rws[rowId];
-        console.log(rws);
-        return { ...rws };
+      _setState((st) => {
+        if (!st.rows[rowId]) return st;
+        const { rows } = st;
+        delete rows[rowId];
+        return {
+          orders: st.orders.filter((id: string) => id != rowId),
+          rows,
+        };
       });
     },
   };
 
   const _onChangeTable = _misc.debounce(100, (rows: TPlainObject) => {
-    const rws = _valueBy(rows);
+    const rws = tableApi.getRows();
     onChange(rws);
   });
 
@@ -99,13 +146,13 @@ const Table: FC<ITable<any>> = ({
     rowId: string,
     e: any
   ) => {
-    _setRows((rws) => {
+    _setState((st) => {
       const rows = {
-        ...rws,
-        [rowId]: { ...rws[rowId], [cellKey]: cellValue },
+        ...st.rows,
+        [rowId]: { ...st.rows[rowId], [cellKey]: cellValue },
       };
       _onChangeTable(rows);
-      return rows;
+      return { ...st, rows };
     });
   };
 
@@ -128,12 +175,12 @@ const Table: FC<ITable<any>> = ({
           </Tr>
         </thead>
         <tbody>
-          {Object.keys(_rows).map((rId, i) => {
+          {_state.orders.map((rId: string, i: number) => {
             return (
               <TableRow
                 columns={columns}
                 index={i}
-                row={_rows[rId]}
+                row={_state.rows[rId]}
                 tableApi={tableApi}
                 renderCell={renderCell}
                 onChangeCell={onChangeCell}
@@ -145,7 +192,7 @@ const Table: FC<ITable<any>> = ({
           })}
         </tbody>
       </table>
-      {JSON.stringify(_rows, () => {}, 2)}
+      {JSON.stringify(_state.rows, () => {}, 2)}
     </div>
   );
 };
@@ -327,7 +374,10 @@ const _valueBy = (obj: TPlainObject) => {
 export default Table;
 export type { ITable, TTableApi };
 
-const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
+const useTableResize = (
+  tableRef: MutableRefObject<HTMLTableElement>,
+  rowCount = 0 // just to reinitialize resize hook so new added rows will also get handler ui same with removed rows
+) => {
   useEffect(() => {
     const createResizableTable = (table: HTMLElement) => {
       const cols = table.querySelectorAll('th');
@@ -376,5 +426,5 @@ const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
     setTimeout(() => {
       if (tableRef.current) createResizableTable(tableRef.current);
     }, 500);
-  }, []);
+  }, [rowCount]);
 };
