@@ -9,10 +9,22 @@ import {
 import { nanoid } from 'nanoid';
 import { _array, _misc, _object } from '@firecamp/utils';
 import cx from 'classnames';
+import {
+  ITable,
+  ITableOptions,
+  IRow,
+  IColumn,
+  TOnChangeCell,
+  TTableApi,
+  TTd,
+  TTh,
+  TTr,
+  TPlainObject,
+} from './table.interfaces';
 
 import './table.sass';
 
-const defaultOptions: TTableOptions = {
+const defaultOptions: ITableOptions = {
   disabledColumns: [],
   allowRowRemove: true,
   allowRowAdd: true,
@@ -228,7 +240,7 @@ const Table: FC<ITable<any>> = ({
   );
 };
 
-const TableRow: FC<ITableRow<any>> = ({
+const TableRow: FC<IRow<any>> = ({
   index,
   columns,
   row,
@@ -310,81 +322,6 @@ const Td: FC<TTd<any>> = ({
       {children}
     </td>
   );
-};
-
-type TTableOptions = {
-  disabledColumns?: string[];
-  allowRowRemove?: boolean;
-  allowRowAdd?: boolean;
-  allowSort?: boolean;
-};
-interface ITable<R> {
-  rows?: R[];
-  columns: Array<IColumn>;
-  renderColumn: (column: IColumn) => string | JSX.Element;
-  renderCell: TRenderCell<R>;
-  onChange: (rows: R[]) => void;
-  defaultRow?: R;
-  //@deprecated
-  onMount?: (tableApi: TTableApi) => void;
-  showDefaultEmptyRows?: boolean;
-  options?: TTableOptions;
-}
-
-interface ITableRow<R> {
-  index: number;
-  columns: IColumn[];
-  row: R;
-  tableApi: TTableApi;
-  options?: TTableOptions;
-  renderCell: TRenderCell<R>;
-  onChangeCell: TOnChangeCell;
-  handleDrag: (row: R) => void;
-  handleDrop: (row: R) => void;
-}
-interface IColumn {
-  id: string;
-  name: string;
-  key: string;
-  width?: string;
-}
-
-type TTr = { children: ReactNode; className?: string; style?: TPlainObject };
-type TTh = { children: ReactNode; className?: string; style?: TPlainObject };
-type TTd<R> = {
-  row: R;
-  handleDrop: (row: R) => void;
-  children: ReactNode;
-  className?: string;
-  style?: TPlainObject;
-  options?: TTableOptions;
-};
-
-type TPlainObject = { [K: string]: any };
-type TsORn = string | number;
-
-type TRenderCell<R> = (
-  column: IColumn,
-  cellValue: any,
-  index: number,
-  row: R,
-  tableApi: TTableApi,
-  onChange: (ck: string, cv: any, e: any) => void,
-  handleDrag: (row: R) => void,
-  options?: TTableOptions
-) => ReactNode;
-type TOnChangeCell = (
-  cellKey: string,
-  cellValue: any,
-  rowId: string,
-  e: any
-) => void;
-type TTableApi<R = any> = {
-  initialize: (rows: R[]) => void;
-  getRows: () => R[];
-  addRow: () => void;
-  setRow: (row: R) => void;
-  removeRow: (rowId: TsORn) => void;
 };
 
 const _groupBy = (array: any[], key: string) => {

@@ -3,7 +3,7 @@ import {
   Container,
   BulkEditTable,
   TTableApi,
-  BasicTableV3,
+  BasicTable,
 } from '@firecamp/ui-kit';
 import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
@@ -44,7 +44,7 @@ const ParamsTab = () => {
         />
         {!_array.isEmpty(path_params) ? (
           <div className="pt-14">
-            <BasicTableV3
+            <BasicTable
               rows={path_params || []}
               key={'pathParams'}
               title="Path params"
@@ -59,7 +59,7 @@ const ParamsTab = () => {
                 changePathParams(data);
               }}
             />
-            {/* <BasicTableV3
+            {/* <BasicTable
               onChange={(data) => {
                 // _onChangeParamsValue(data, PATH_PARAMS);
                 changePathParams(data);

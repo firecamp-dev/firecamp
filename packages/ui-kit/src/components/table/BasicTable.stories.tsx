@@ -1,5 +1,5 @@
 import { _array } from '@firecamp/utils';
-import { defaultData } from '../table/table/TableData';
+import { defaultData } from '../table-old/rt8/TableData';
 
 import BasicTable from './BasicTable';
 

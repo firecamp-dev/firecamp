@@ -1,4 +1,4 @@
-import { IRowCellMeta, ITableMeta } from '../table/interfaces/index';
+import { ITableOptions } from './primitive/table.interfaces';
 
 export interface IBulkEditTable {
   /**
@@ -27,5 +27,5 @@ export interface IBulkEditTable {
   /**
    * Table meta data
    */
-  meta?: ITableMeta;
+  options?: ITableOptions;
 }

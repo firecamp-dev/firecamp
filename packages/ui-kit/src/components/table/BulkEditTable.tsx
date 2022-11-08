@@ -1,34 +1,32 @@
 import { FC, useState, useEffect } from 'react';
-import { TabHeader, Button, BasicTableV3, Editor } from '@firecamp/ui-kit';
+import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui-kit';
 import { _table } from '@firecamp/utils';
 import equal from 'deep-equal';
 
 import { IBulkEditTable } from './BulkEditTable.interfaces';
 
 const modes = {
-  TABLE: 'table',
-  RAW: 'raw',
+  Table: 'table',
+  Raw: 'raw',
 };
 
 /**
  * Bulk edit: user can add data in bulk by separating key value by ':' and new row in new line
- * @param {*} param0
- * @returns
  */
 const BulkEditTable: FC<IBulkEditTable> = ({
   rows,
   disabled = false,
   title = '',
   onChange = () => {},
-  meta = { mode: {} },
+  options = { mode: {} },
   onMount,
 }) => {
-  let [mode, setMode] = useState(modes.TABLE);
+  let [mode, setMode] = useState(modes.Table);
   let [raw, setRaw] = useState('');
 
   useEffect(() => {
     try {
-      if (mode === modes.RAW) {
+      if (mode === modes.Raw) {
         let tableToString = _table.toText([...rows]);
         // console.log({raw, tableToString});
 
@@ -75,23 +73,23 @@ const BulkEditTable: FC<IBulkEditTable> = ({
 
         <TabHeader.Right>
           <Button
-            text={mode === modes.TABLE ? 'Bulk Edit' : 'Key-Value Edit'}
+            text={mode === modes.Table ? 'Bulk Edit' : 'Key-Value Edit'}
             // color="secondary"
             className="mt-1"
             secondary
             sm
             onClick={() => {
-              setMode(mode === modes.TABLE ? modes.RAW : modes.TABLE);
+              setMode(mode === modes.Table ? modes.Raw : modes.Table);
             }}
           />
         </TabHeader.Right>
       </TabHeader>
-      {mode === modes.TABLE ? (
-        <BasicTableV3
+      {mode === modes.Table ? (
+        <BasicTable
           onChange={_onChangeRows}
           rows={rows}
           name={title}
-          meta={meta}
+          options={options}
           disabled={disabled}
           onMount={onMount}
         />

@@ -1,6 +1,6 @@
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
-import { TiSortAlphabetically } from '@react-icons/all-files/ti/TiSortAlphabetically';
+import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
@@ -9,10 +9,9 @@ import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from './primitive/Table';
+import equals from 'deep-equal';
 
-import {
-  IMultiPartInput,
-} from './MultipartTable.interfaces';
+import { IMultiPartInput, ERowType } from './MultipartTable.interfaces';
 
 const MultipartTable = ({
   name = '',
@@ -92,7 +91,6 @@ const MultipartTable = ({
                 onChange(column.key, e.target.value);
               }}
               onChangeFile={(e: any) => {
-                console.log(e, ' file input');
                 onChange('file', e.target.file);
               }}
               onChangeRowType={(type) => {
@@ -193,10 +191,6 @@ const MultipartTable = ({
 
 export default MultipartTable;
 
-enum ERowType {
-  Text = 'text',
-  File = 'file',
-}
 const MultiPartInput: FC<IMultiPartInput> = memo(
   ({
     row,
@@ -280,21 +274,24 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
 
             <div
               key={`${row.id}-file-type`}
-              className="text-center text-sm text-base text-ellipsis overflow-hidden px-4 whitespace-pre"
+              className="cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre"
               onClick={_onClick}
             >
-              {row?.file?.name || 'select file'}
+              {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}
             </div>
           </>
         )}
-        <div className="absolute" style={{ right: '5px' }}>
+        <div className="absolute cursor-pointer" style={{ right: '5px' }}>
           {type == 'text' ? (
-            <TiSortAlphabetically onClick={_changeType} />
+            <VscTextSize onClick={_changeType} />
           ) : (
             <VscFile onClick={_changeType} />
           )}
         </div>
       </div>
     );
+  },
+  (p, n) => {
+    return equals(p.row, n.row) && equals(p.value, n.value);
   }
 );

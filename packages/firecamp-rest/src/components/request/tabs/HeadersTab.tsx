@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 
-import {  BulkEditTable, Container, BasicTableV3 } from '@firecamp/ui-kit';
+import {  BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
 
 import { useRestStore } from '../../../store';
 
@@ -52,7 +52,7 @@ const HeadersTab = () => {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
           auth_headers && auth_headers.length ? (
             <div className="pt-14">
-              <BasicTableV3
+              <BasicTable
                 key={'auth_headers'}
                 rows={auth_headers}
                 title="Headers derived from auth"
