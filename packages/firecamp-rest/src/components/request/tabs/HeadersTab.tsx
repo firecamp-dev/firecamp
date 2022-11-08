@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 
-import { PrimaryIFT, BulkEditIFT, Container } from '@firecamp/ui-kit';
+import {  BulkEditTable, Container, BasicTableV3 } from '@firecamp/ui-kit';
 
 import { useRestStore } from '../../../store';
 
@@ -26,7 +26,7 @@ const HeadersTab = () => {
   return (
     <Container>
       <Container.Body>
-        <BulkEditIFT
+        <BulkEditTable
           key={'headers'}
           rows={headers}
           title="Headers"
@@ -52,12 +52,12 @@ const HeadersTab = () => {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
           auth_headers && auth_headers.length ? (
             <div className="pt-14">
-              <PrimaryIFT
+              <BasicTableV3
                 key={'auth_headers'}
                 rows={auth_headers}
                 title="Headers derived from auth"
                 disable={true}
-                meta={{
+                options={{
                   mode: {
                     key: 'ife-header-key',
                     value: 'ife-header-value',

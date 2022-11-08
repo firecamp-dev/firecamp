@@ -13,7 +13,6 @@ import {
   Dropdown,
   Editor,
   BasicTableV3,
-  MultipartIFT,
   Button,
   StatusBar,
   MultipartTable,
@@ -158,14 +157,6 @@ const BodyTab: FC<any> = () => {
             <MultipartTable
               onChange={(value) => _changeBodyValue(active_body_type, value)}
               rows={body[active_body_type] ? body[active_body_type].value : []}
-            />
-          );
-          return (
-            <MultipartIFT
-              onChange={(value) => _changeBodyValue(active_body_type, value)}
-              rows={
-                body?.[active_body_type] ? body[active_body_type].value : []
-              }
             />
           );
           break;

@@ -12,8 +12,7 @@ import Table, { TTableApi } from './primitive/Table';
 
 import {
   IMultiPartInput,
-  IMultipartIFT,
-} from '../table/interfaces/MultipartIFT.interfaces';
+} from './MultipartTable.interfaces';
 
 const MultipartTable = ({
   name = '',

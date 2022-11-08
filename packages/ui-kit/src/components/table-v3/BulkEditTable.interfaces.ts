@@ -1,6 +1,6 @@
-import { IRowCellMeta, ITableMeta } from './index'
+import { IRowCellMeta, ITableMeta } from '../table/interfaces/index';
 
-export interface IBulkEditIFT {
+export interface IBulkEditTable {
   /**
    * Bulk-edit row values
    */
@@ -20,9 +20,9 @@ export interface IBulkEditIFT {
    * Updated table values
    */
   onChange: (updatedRows: Array<IRowCellMeta>) => void;
-  
+
   /** on mount table callback to expose table api */
-  onMount: (tApi)=> void;
+  onMount: (tApi) => void;
 
   /**
    * Table meta data

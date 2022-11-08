@@ -1,8 +1,7 @@
 import { useEffect, useRef } from 'react';
 import {
   Container,
-  PrimaryIFT,
-  BulkEditIFT,
+  BulkEditTable,
   TTableApi,
   BasicTableV3,
 } from '@firecamp/ui-kit';
@@ -33,7 +32,7 @@ const ParamsTab = () => {
   return (
     <Container>
       <Container.Body className="flex flex-col">
-        <BulkEditIFT
+        <BulkEditTable
           key={'queryParams'}
           title="Query params"
           rows={query_params || []}
@@ -60,7 +59,7 @@ const ParamsTab = () => {
                 changePathParams(data);
               }}
             />
-            {/* <PrimaryIFT
+            {/* <BasicTableV3
               onChange={(data) => {
                 // _onChangeParamsValue(data, PATH_PARAMS);
                 changePathParams(data);
@@ -68,7 +67,7 @@ const ParamsTab = () => {
               key={'pathParams'}
               rows={path_params || []}
               title="Path params"
-              meta={{
+              options={{
                 disabledColumns: ['key', 'disable'],
                 allowRowRemove: false,
                 allowRowAdd: false,

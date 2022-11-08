@@ -3,7 +3,7 @@ import { TabHeader, Button, BasicTableV3, Editor } from '@firecamp/ui-kit';
 import { _table } from '@firecamp/utils';
 import equal from 'deep-equal';
 
-import { IBulkEditIFT } from '../interfaces/BulkEditIFT.interfaces';
+import { IBulkEditTable } from './BulkEditTable.interfaces';
 
 const modes = {
   TABLE: 'table',
@@ -15,7 +15,7 @@ const modes = {
  * @param {*} param0
  * @returns
  */
-const BulkEditIFT: FC<IBulkEditIFT> = ({
+const BulkEditTable: FC<IBulkEditTable> = ({
   rows,
   disabled = false,
   title = '',
@@ -115,4 +115,4 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
   );
 };
 
-export default BulkEditIFT;
+export default BulkEditTable;
