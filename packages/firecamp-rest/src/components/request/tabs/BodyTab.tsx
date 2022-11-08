@@ -16,6 +16,7 @@ import {
   MultipartIFT,
   Button,
   StatusBar,
+  MultipartTable,
   /* ToolBar, */
 } from '@firecamp/ui-kit'; /* 
 import { VscCode } from '@react-icons/all-files/vsc/VscCode';
@@ -153,6 +154,12 @@ const BodyTab: FC<any> = () => {
         case ERestBodyTypes.NoBody:
           return <NoBodyTab selectBodyType={_selectBodyType} />;
         case ERestBodyTypes.FormData:
+          return (
+            <MultipartTable
+              onChange={(value) => _changeBodyValue(active_body_type, value)}
+              rows={body[active_body_type] ? body[active_body_type].value : []}
+            />
+          );
           return (
             <MultipartIFT
               onChange={(value) => _changeBodyValue(active_body_type, value)}

@@ -62,13 +62,13 @@ const PrimaryIFT: FC<IPrimaryIFT> = ({
           // console.log(key, `!value`, !value)
           return (
             <div
-              className="smart-table-cell-option-wrapper"
+              className="-cell-option-wrapper"
               ref={(ref) => {
                 connectDropTarget(ref);
               }}
             >
               <div
-                className="smart-table-cell-drag"
+                className="-cell-drag"
                 ref={(ref) => {
                   // console.log(`let drag`, ref);
                   connectDragSource(ref);

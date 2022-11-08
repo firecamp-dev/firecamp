@@ -58,13 +58,13 @@ const MultipartIFT: FC<IMultipartIFT> = ({
           }
           return (
             <div
-              className="smart-table-cell-option-wrapper"
+              className=""
               ref={(ref) => {
                 connectDropTarget(ref);
               }}
             >
               <div
-                className="smart-table-cell-drag"
+                className=""
                 ref={(ref) => {
                   // console.log(`let drag`, ref);
                   connectDragSource(ref);
@@ -140,7 +140,7 @@ const MultiPartInput: FC<IMultiPartInput> = ({
   // console.log(`type`, type);
 
   return (
-    <div className="smart-table-cell-multipart">
+    <div className="-cell-multipart">
       {type == 'text' ? (
         <SingleLineEditor
           className="without-border"

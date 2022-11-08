@@ -37,8 +37,8 @@ const BasicTable: FC<any> = ({
 
   return (
     <>
-      <div className="smart-table-header-wrapper">
-        {title ? <div className="smart-table-header">{title}</div> : ''}
+      <div className="-header-wrapper">
+        {title ? <div className="-header">{title}</div> : ''}
       </div>
 
       <Table

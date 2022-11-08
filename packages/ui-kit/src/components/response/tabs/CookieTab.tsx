@@ -25,8 +25,8 @@ const CookieTab: FC<{cookies: any}> = ({ cookies }) => {
   console.log(Resizable, "Resizable...");
 
   return (
-    <div className="smart-table striped response-cookies-table">
-      <div className="smart-table-row smart-table-header">
+    <div className=" striped response-cookies-table">
+      <div className="">
         {/* @ts-ignore */}
         {/* <Resizable
           enable={{
@@ -41,10 +41,10 @@ const CookieTab: FC<{cookies: any}> = ({ cookies }) => {
           }}
           minWidth={120}
         > */}
-          <div className="smart-table-row-cell">Name</div>
+          <div className="">Name</div>
         {/* </Resizable> */}
 
-        <div className="smart-table-row-cell">
+        <div className="">
           Value
           <div className="response-headers-action1 flex float-right h-5">
             <CopyButton
@@ -67,9 +67,9 @@ const CookieTab: FC<{cookies: any}> = ({ cookies }) => {
 
       {cookies
         ? (Object.values(cookies) || []).map((c: any, i) => (
-            <div className="smart-table-row" key={c.name}>
-              <div className="smart-table-row-cell">{c.name}</div>
-              <div className="smart-table-row-cell">{c.value}</div>
+            <div className="" key={c.name}>
+              <div className="">{c.name}</div>
+              <div className="">{c.value}</div>
             </div>
           ))
         : ''}

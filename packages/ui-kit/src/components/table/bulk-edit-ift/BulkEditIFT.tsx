@@ -69,7 +69,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
       <TabHeader className="-mb-2">
         {title && (
           <TabHeader.Left>
-            <span className="smart-table-header-v2">{title}</span>
+            <span className="">{title}</span>
           </TabHeader.Left>
         )}
 

@@ -83,6 +83,7 @@ export { default as BasicTable } from './components/table/table/BasicTable';
 //table v3
 export { default as PrimitiveTable } from './components/table-v3/primitive/Table';
 export { default as BasicTableV3 } from './components/table-v3/BasicTable';
+export { default as MultipartTable } from './components/table-v3/MultipartTable';
 export type { ITable, TTableApi } from './components/table-v3/primitive/Table';
 
 // Url

@@ -188,11 +188,11 @@ const IFT: FC<IIFT> = ({
 
   return (
     <div>
-      <div className="smart-table-header-wrapper">
-        {title ? <div className="smart-table-header">{title}</div> : ''}
+      <div className="">
+        {title ? <div className="">{title}</div> : ''}
       </div>
-      <div className={`with-border invisible-scroll smart-table ${className}`}>
-        <div className="list-header smart-table-row smart-table-header">
+      <div className={`with-border invisible-scroll  ${className}`}>
+        <div className="list-header">
           {columns.map((c, i) => (
             <ColumnCell
               title={c.name}
@@ -225,7 +225,7 @@ const IFT: FC<IIFT> = ({
           );
         })}
         {!disabled && meta.allowRowAdd ? (
-          <div className="smart-table-footer">
+          <div className="">
             <Button
               onClick={_addRow}
               text="Add Row"
@@ -253,7 +253,7 @@ const ColumnCell: FC<IColumnCell> = ({
   className,
 }) => {
   const Title = ({ className, title }) => (
-    <div className={classnames('' + 'smart-table-row-cell', className)}>
+    <div className={classnames(className)}>
       {title}
     </div>
   );

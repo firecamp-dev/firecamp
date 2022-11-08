@@ -7,12 +7,11 @@ import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from './primitive/Table';
-import './BasicTable.scss';
 
 const BasicTable = ({
   name = '',
   rows = [],
-  options,
+  options= {},
   onChange = (rs) => {},
   onMount = (api) => {},
 }) => {

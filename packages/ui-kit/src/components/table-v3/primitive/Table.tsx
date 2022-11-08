@@ -36,7 +36,7 @@ const Table: FC<ITable<any>> = ({
     orders: [],
     rows: {},
   });
-  useTableResize(tableRef, _state.orders?.length);
+  useTableResize(tableRef);
 
   useEffect(() => {
     onMount(tableApi);
@@ -190,7 +190,7 @@ const Table: FC<ITable<any>> = ({
     <div className={'w-full'}>
       <table
         className="primary-table border border-appBorder mb-4"
-        style={{ minWidth: '500px' }}
+        style={{ minWidth: '450px' }}
         ref={tableRef}
       >
         <thead>
@@ -417,10 +417,7 @@ const _valueBy = (obj: TPlainObject) => {
 export default Table;
 export type { ITable, TTableApi };
 
-const useTableResize = (
-  tableRef: MutableRefObject<HTMLTableElement>,
-  rowCount = 0 // just to reinitialize resize hook so new added rows will also get handler ui same with removed rows
-) => {
+const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
   useEffect(() => {
     const createResizableTable = (table: HTMLElement) => {
       const cols = table.querySelectorAll('th');
@@ -469,5 +466,5 @@ const useTableResize = (
     setTimeout(() => {
       if (tableRef.current) createResizableTable(tableRef.current);
     }, 500);
-  }, [rowCount]);
+  }, []);
 };

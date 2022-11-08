@@ -73,7 +73,7 @@ const Row: FC<IRow> = ({
 
   return (
     <div
-      className="smart-table-row"
+      className=""
       style={{ opacity }}
       ref={(elm) => {
         if(meta?.allowSort && !isTableDisabled) {
@@ -96,7 +96,7 @@ const Row: FC<IRow> = ({
           <div
             key={cl.key}
             style={{ width: cl.width }}
-            className={classnames('smart-table-row-cell', {
+            className={classnames('', {
               // "w-10": c.type == "boolean"
             })}
           >
@@ -121,7 +121,7 @@ const Row: FC<IRow> = ({
       })}
       {
         !isTableDisabled && meta.allowRowRemove
-          ? (<div className="smart-table-row-remove" onClick={removeRow}>×</div>)
+          ? (<div className="" onClick={removeRow}>×</div>)
             : <></>
       }
     </div>
