@@ -216,7 +216,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     fixedOverflowWidgets: true,
 
     suggestOnTriggerCharacters: false,
-    tabCompletion: "off",
+    tabCompletion: 'off',
   };
 
   /** if 'readOnly' is not provided then consider 'disabled' */
@@ -235,7 +235,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   return (
     <>
       {placeholder && !value ? (
-        <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
+        <div className="absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
         </div>
       ) : (
@@ -261,53 +261,124 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           }}
           onMount={(editor, monaco) => {
             editor.onDidFocusEditorWidget(() => {
-              console.log(editor.getId(), 'Focus event triggerd ');
+              localStorage.setItem('currentEditor', editor.getId());
+              // console.log(editor.getId(), 'Focus event triggerd ');
             });
 
             editor.onDidBlurEditorWidget(() => {
-              console.log(editor.getId(), 'Blur event triggerd !');
+              // console.log(editor.getId(), 'Blur event triggerd !');
             });
 
             /**
              * this command is applied to all editors which is a bug, thus last Edt's command will be sonsidered for all
              * in this case the id of editor will be the same for all editor which is not correct
-             * 
+             *
              * issue: https://github.com/microsoft/monaco-editor/issues/2947
              */
             editor.addCommand(monaco.KeyCode.Tab, (e: any) => {
-              console.log(editor.getId(), 'tab triggered');
+              // console.log(editor.getId(), 'tab triggered');
+              const currentEditor = localStorage.getItem('currentEditor');
+              //@ts-ignore
+              if (!window.ife) return;
+              // @ts-ignore
+              let mapKeys = [...window.ife.keys()];
+              let currentIndex = mapKeys.findIndex((k) => k == currentEditor);
+              let nextIndex = currentIndex + 1;
+              // @ts-ignore
+              let et = window.ife.get(mapKeys[nextIndex]);
+              editor.setSelection(new monaco.Range(0, 0, 0, 0));
+              if (et) {
+                let range = et?.getModel()?.getFullModelRange();
+                et.setSelection(range);
+                et.focus();
+              } else {
+                //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
+                document.activeElement.blur();
+                // document.activeElement.blur();
+                // document.activeElement.blur();
+                // document.activeElement.blur();
+                // document.activeElement.blur();
+              }
+            });
 
-              document.activeElement.blur()
-              document.activeElement.blur()
-              document.activeElement.blur()
+            editor.onKeyDown((evt: any) => {
+              /**
+               * Shift command is not recognizable in Monaco atm. so used this keyDown event for SHIFT + TAB
+               */
+              if (evt.keyCode === monaco.KeyCode.Tab) {
+                if (evt.shiftKey) {
+                  // @ts-ignore
+                  if (!window.ife) return;
+                  // @ts-ignore
+                  let mapKeys = [...window.ife.keys()];
+                  const currentEditor = localStorage.getItem('currentEditor');
+                  let currentIndex = mapKeys.findIndex(
+                    (k) => k == currentEditor
+                  );
+                  let prevIndex = currentIndex - 1;
+                  // @ts-ignore
+                  let et = window.ife.get(mapKeys[prevIndex]);
+                  editor.setSelection(new monaco.Range(0, 0, 0, 0));
+                  if (et) {
+                    evt.preventDefault();
+                    evt.stopPropagation();
+                    let range = et?.getModel()?.getFullModelRange();
+                    et.setSelection(range);
+                    et.focus();
+                  } else {
+                    //todo:  this is experimental, if no Editor ref found then blur it naturaly with Browser DOM API
+                    document.activeElement.blur();
+                    document.activeElement.blur();
+                    document.activeElement.blur();
+                  }
+                }
+              } else if (evt.keyCode === monaco.KeyCode.Enter) {
+                /**
+                 * ctrl+enter or cmd+enter shortcut
+                 * It'll also prevent new line on (ctrl | cmd) + enter
+                 */
+                if (evt.ctrlKey || evt.metaKey) {
+                  evt.preventDefault();
+                  evt.stopPropagation();
+                  if (evt.shiftKey) {
+                    console.log('ctrl + shift + enter');
+                  } else {
+                    onCtrlEnter(evt);
+                  }
+                }
+              }
 
-              // //@ts-ignore
-              // if (!window.ife) return;
-              // // @ts-ignore
-              // let mapKeys = [...window.ife.keys()];
-              // let currentIndex = mapKeys.findIndex(
-              //   (k) => k == editor.getId()
-              // );
-              // let nextIndex = currentIndex + 1;
-              // // @ts-ignore
-              // let et = window.ife.get(mapKeys[nextIndex]);
-              // editor.setSelection(new monaco.Range(0, 0, 0, 0));
-              // // console.log(currentIndex, et, 'et....', mapKeys, editor.getId());
-              // if (et) {
-              //   let range = et?.getModel()?.getFullModelRange();
-              //   et.setSelection(range);
-              //   et.focus();
-              // } else {
-              //   //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
-              //   document.activeElement.blur();
-              //   setTimeout(() => {
-              //     document.activeElement.blur();
-              //   });
-              //   // document.activeElement.blur();
-              //   // document.activeElement.blur();
-              //   // document.activeElement.blur();
-              //   // document.activeElement.blur();
-              // }
+              // ctrl+s or cmd+s shortcut
+              else if (evt.keyCode === monaco.KeyCode.KeyS) {
+                if (evt.ctrlKey || evt.metaKey) {
+                  evt.preventDefault();
+                  evt.stopPropagation();
+
+                  if (evt.shiftKey) {
+                    onCtrlShiftS(evt);
+                  } else {
+                    onCtrlS(evt);
+                  }
+                }
+              }
+
+              // ctrl+O shortcut
+              else if (evt.keyCode === monaco.KeyCode.KeyO) {
+                if (evt.ctrlKey) {
+                  evt.preventDefault();
+                  evt.stopPropagation();
+                  onCtrlO(evt);
+                }
+              }
+
+              // ctrl+K shortcut
+              else if (evt.keyCode === monaco.KeyCode.KeyK) {
+                if (evt.ctrlKey) {
+                  evt.preventDefault();
+                  evt.stopPropagation();
+                  onCtrlK(evt);
+                }
+              }
             });
 
             // console.log(editor, monaco, 9999);
@@ -316,10 +387,10 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
              * @ref: https://github.com/microsoft/monaco-editor/issues/287#issuecomment-328371787
              */
             // eslint-disable-next-line no-bitwise
-            // editor.addCommand(
-            //   monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF,
-            //   () => {}
-            // );
+            editor.addCommand(
+              monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF,
+              () => {}
+            );
 
             // disable press `Enter` in case of producing line breaks
             // editor.addCommand(monaco.KeyCode.Enter, (e) => {
