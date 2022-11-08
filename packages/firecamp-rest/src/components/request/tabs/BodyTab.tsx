@@ -12,7 +12,7 @@ import {
   Container,
   Dropdown,
   Editor,
-  BasicTableV3,
+  BasicTable,
   Button,
   StatusBar,
   MultipartTable,
@@ -162,7 +162,7 @@ const BodyTab: FC<any> = () => {
           break;
         case ERestBodyTypes.UrlEncoded:
           return (
-            <BasicTableV3
+            <BasicTable
               title=""
               onChange={(value) => _changeBodyValue(active_body_type, value)}
               rows={body[active_body_type]?.value || []}
