@@ -36,7 +36,7 @@ const PlaygroundFooter = () => {
     <Resizable
       top={true}
       width="100%"
-      height="152px"
+      height="100%"
       minHeight={100}
       maxHeight={300}
       className={!showFooter ? 'collapsed' : ''}
@@ -54,7 +54,7 @@ const PlaygroundFooter = () => {
           /> */}
 
           <SecondaryTab
-            className="flex items-center pb-6 ml-2"
+            className="flex items-center ml-2"
             list={tabs}
             activeTab={activeTab}
             onSelect={_onSelectTab}
