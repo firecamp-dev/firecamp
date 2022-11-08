@@ -17,7 +17,7 @@ import classnames from 'classnames';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 
-import { IHeadLessTable, IReactTable } from "../interfaces/ReactTable.interfaces"
+import { IHeadLessTable, IReactTable } from "./ReactTable.interfaces"
 
 const headerProps = (props, { column }) => getStyles(props, column.align);
 

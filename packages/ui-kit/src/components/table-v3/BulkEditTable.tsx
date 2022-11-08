@@ -1,16 +1,9 @@
 import { FC, useState, useEffect } from 'react';
-import {
-  Container,
-  TabHeader,
-  Button,
-  PrimaryIFT,
-  Editor,
-} from '@firecamp/ui-kit';
+import { TabHeader, Button, BasicTableV3, Editor } from '@firecamp/ui-kit';
+import { _table } from '@firecamp/utils';
 import equal from 'deep-equal';
 
-import { IBulkEditIFT } from '../interfaces/BulkEditIFT.interfaces';
-import { _table } from '@firecamp/utils';
-
+import { IBulkEditTable } from './BulkEditTable.interfaces';
 
 const modes = {
   TABLE: 'table',
@@ -22,12 +15,13 @@ const modes = {
  * @param {*} param0
  * @returns
  */
-const BulkEditIFT: FC<IBulkEditIFT> = ({
+const BulkEditTable: FC<IBulkEditTable> = ({
   rows,
   disabled = false,
   title = '',
   onChange = () => {},
   meta = { mode: {} },
+  onMount,
 }) => {
   let [mode, setMode] = useState(modes.TABLE);
   let [raw, setRaw] = useState('');
@@ -49,7 +43,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
 
   let _setRaw = (editorString: string) => {
     setRaw(editorString);
-    
+
     try {
       if (editorString.length) {
         let tableArray = [..._table.textToTable(editorString)];
@@ -75,7 +69,7 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
       <TabHeader className="-mb-2">
         {title && (
           <TabHeader.Left>
-            <span className="smart-table-header-v2">{title}</span>
+            <span className="">{title}</span>
           </TabHeader.Left>
         )}
 
@@ -93,17 +87,16 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
         </TabHeader.Right>
       </TabHeader>
       {mode === modes.TABLE ? (
-        <PrimaryIFT
+        <BasicTableV3
           onChange={_onChangeRows}
           rows={rows}
           name={title}
           meta={meta}
           disabled={disabled}
-          // custom={true}
-          // columnDetails={headerColumnDataForDisplay}
+          onMount={onMount}
         />
       ) : (
-        <div className="h-28">
+        <div className="h-28 pt-3">
           <Editor
             value={raw}
             language="text"
@@ -118,9 +111,8 @@ const BulkEditIFT: FC<IBulkEditIFT> = ({
           />
         </div>
       )}
-
     </div>
   );
 };
 
-export default BulkEditIFT;
+export default BulkEditTable;

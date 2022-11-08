@@ -1,4 +1,4 @@
-import { BulkEditIFT } from '@firecamp/ui-kit';
+import { BulkEditTable } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { IGraphQLStore, useGraphQLStore } from '../../../store';
 
@@ -12,7 +12,7 @@ const HeadersTab = () => {
   );
 
   return (
-    <BulkEditIFT
+    <BulkEditTable
       onChange={changeHeaders}
       key={'headers'}
       rows={headers}

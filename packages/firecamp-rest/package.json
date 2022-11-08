@@ -44,7 +44,7 @@
     "@firecamp/curl-to-firecamp": "^0.0.10",
     "@firecamp/js-executor": "^0.0.0",
     "@firecamp/types": "^0.0.11",
-    "@firecamp/url": "^0.0.14",
+    "@firecamp/url": "^0.0.15",
     "@hapi/joi": "^17.1.1",
     "aws4": "^1.11.0",
     "chai-http": "^4.3.0",

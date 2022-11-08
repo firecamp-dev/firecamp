@@ -1,15 +1,12 @@
-//@ts-nocheck
 import { FC } from 'react';
 import cx from 'classnames';
-//import '../../scss/tailwind.scss';
 import { VscCheck } from '@react-icons/all-files/vsc/VscCheck';
-
 import { ICheckbox } from './interfaces/Checkbox.interfaces';
 import './Checkbox.scss';
 
 const Checkbox: FC<ICheckbox> = ({
   id = '',
-  onToggleCheck = () => {},
+  onToggleCheck = (l, v) => {},
   isChecked = false,
   label = '',
   tabIndex = 0,
@@ -23,7 +20,6 @@ const Checkbox: FC<ICheckbox> = ({
   return (
     <div className={cx(className, 'flex')} tabIndex={tabIndex}>
       <label
-        
         className={cx('fc-custom-checkbox !flex items-center mb-0 ', {
           'w-4': label == '',
         })}
@@ -92,7 +88,7 @@ export default Checkbox;
  */
 const CheckboxInGrid = ({
   id = '',
-  onToggleCheck = () => {},
+  onToggleCheck = (l, v) => {},
   isChecked = false,
   label = '',
   tabIndex = 0,
