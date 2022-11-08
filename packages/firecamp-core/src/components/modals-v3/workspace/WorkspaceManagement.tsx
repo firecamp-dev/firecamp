@@ -5,13 +5,11 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  
   Modal,
   IModal,
   Alert,
   SecondaryTab,
-  PrimaryTable,
+  PrimitiveTable,
   TTableApi,
   Dropdown,
   ProgressBar,
@@ -287,7 +285,7 @@ const MembersTab = () => {
   return (
     <div className="p-6  flex-1 flex flex-col">
       <ProgressBar active={isRequesting} />
-      <PrimaryTable
+      <PrimitiveTable
         columns={columns}
         apiRef={tableApi}
         renderColumn={(c) => c.name}

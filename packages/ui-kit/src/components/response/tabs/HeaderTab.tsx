@@ -24,8 +24,8 @@ const HeaderTab: FC<{headers: any}> = ({ headers= {} }) => {
   };
 
   return (
-    <div className="smart-table striped response-headers-table">
-      <div className="smart-table-row smart-table-header">
+    <div className=" striped response-headers-table">
+      <div className="">
         {/* @ts-ignore */}
         <Resizable
           enable={{
@@ -40,9 +40,9 @@ const HeaderTab: FC<{headers: any}> = ({ headers= {} }) => {
           }}
           minWidth={210}
         >
-          <div className="smart-table-row-cell">Name</div>
+          <div className="">Name</div>
         </Resizable>
-        <div className="smart-table-row-cell">
+        <div className="">
           Value
           <div className="response-headers-action1 flex float-right h-5">
             <Button
@@ -68,9 +68,9 @@ const HeaderTab: FC<{headers: any}> = ({ headers= {} }) => {
       {pairs
         ? pairs.map((p, i) => {
             return (
-              <div className="smart-table-row" key={i}>
-                <div className="smart-table-row-cell">{p[0]}</div>
-                <div className="smart-table-row-cell">{p[1]}</div>
+              <div className="" key={i}>
+                <div className="">{p[0]}</div>
+                <div className="">{p[1]}</div>
               </div>
             );
           })

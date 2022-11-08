@@ -9,7 +9,7 @@ import {
 import cx from 'classnames';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 
-import '../../table-v3/primary-table/table.sass';
+import '../../table-v3/primitive/table.sass';
 import Checkbox from '../../checkbox/Checkbox';
 
 const Table: FC<ITable> = ({

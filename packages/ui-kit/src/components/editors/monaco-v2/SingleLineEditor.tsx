@@ -19,7 +19,8 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   monacoOptions = {},
   placeholder = '',
   className = '',
-  height= 50,
+  style = {},
+  height = 50,
   path,
   loading,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
@@ -43,7 +44,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   // }, []);
 
   useEffect(() => {
-    console.log("this is re-rendering <SingleLineEditor />")
+    console.log('this is re-rendering <SingleLineEditor />');
     //@ts-ignore
     if (!window.ife) window.ife = new Map();
     return () => {
@@ -144,13 +145,13 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 
     // set focus to Editor if autoFocus is given true to Input
     if (autoFocus === true) {
-      try {
-        setTimeout(() => {
-          editor.focus();
-          let range = editor.getModel().getFullModelRange();
-          editor.setPosition({ lineNumber: 1, column: range.endColumn });
-        }, 200);
-      } catch (e) {}
+      // try {
+      //   setTimeout(() => {
+      //     editor.focus();
+      //     let range = editor.getModel().getFullModelRange();
+      //     editor.setPosition({ lineNumber: 1, column: range.endColumn });
+      //   }, 200);
+      // } catch (e) {}
     }
   };
   const options: EditorProps['options'] = {
@@ -211,8 +212,11 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     // auto adjust width and height to parent
     // see: https://github.com/Microsoft/monaco-editor/issues/543#issuecomment-321767059
     automaticLayout: true,
-    // if monaco is inside a table, hover tips or completion may casue table body scroll
+    // if monaco is inside a table, hover tips or completion may cause table body scroll
     fixedOverflowWidgets: true,
+
+    suggestOnTriggerCharacters: false,
+    tabCompletion: "off",
   };
 
   /** if 'readOnly' is not provided then consider 'disabled' */
@@ -229,7 +233,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   //  value = value.replace(/[\n\r]/g, '');
 
   return (
-    <div>
+    <>
       {placeholder && !value ? (
         <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
@@ -237,7 +241,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
       ) : (
         <></>
       )}
-      <div className={cx(className)}>
+      <div className={cx(className)} style={style}>
         <MonacoEditor
           language={language}
           defaultValue={value}
@@ -256,6 +260,56 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             });
           }}
           onMount={(editor, monaco) => {
+            editor.onDidFocusEditorWidget(() => {
+              console.log(editor.getId(), 'Focus event triggerd ');
+            });
+
+            editor.onDidBlurEditorWidget(() => {
+              console.log(editor.getId(), 'Blur event triggerd !');
+            });
+
+            /**
+             * this command is applied to all editors which is a bug, thus last Edt's command will be sonsidered for all
+             * in this case the id of editor will be the same for all editor which is not correct
+             * 
+             * issue: https://github.com/microsoft/monaco-editor/issues/2947
+             */
+            editor.addCommand(monaco.KeyCode.Tab, (e: any) => {
+              console.log(editor.getId(), 'tab triggered');
+
+              document.activeElement.blur()
+              document.activeElement.blur()
+              document.activeElement.blur()
+
+              // //@ts-ignore
+              // if (!window.ife) return;
+              // // @ts-ignore
+              // let mapKeys = [...window.ife.keys()];
+              // let currentIndex = mapKeys.findIndex(
+              //   (k) => k == editor.getId()
+              // );
+              // let nextIndex = currentIndex + 1;
+              // // @ts-ignore
+              // let et = window.ife.get(mapKeys[nextIndex]);
+              // editor.setSelection(new monaco.Range(0, 0, 0, 0));
+              // // console.log(currentIndex, et, 'et....', mapKeys, editor.getId());
+              // if (et) {
+              //   let range = et?.getModel()?.getFullModelRange();
+              //   et.setSelection(range);
+              //   et.focus();
+              // } else {
+              //   //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
+              //   document.activeElement.blur();
+              //   setTimeout(() => {
+              //     document.activeElement.blur();
+              //   });
+              //   // document.activeElement.blur();
+              //   // document.activeElement.blur();
+              //   // document.activeElement.blur();
+              //   // document.activeElement.blur();
+              // }
+            });
+
             // console.log(editor, monaco, 9999);
             /**
              * disable `Find` widget
@@ -331,16 +385,19 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             //     },
             //   ]);
             // };
-            onMount(editor, monaco);
+            // onMount(editor, monaco);
             onLoad(editor);
-            editorDidMount && editorDidMount(editor, monaco);
+            // editorDidMount && editorDidMount(editor, monaco);
             editorIdRef.current = editor.getId();
+
+            // @ts-ignore
+            if (!window.ife) window.ife = new Map();
             // @ts-ignore
             window.ife.set(editorIdRef.current, editor);
           }}
         />
       </div>
-    </div>
+    </>
   );
 };
 

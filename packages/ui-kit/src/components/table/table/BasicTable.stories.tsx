@@ -32,7 +32,6 @@ BasicTableComp.args = {
   name: 'test-table-2',
   resizable: true,
   width: 500,
-  data: defaultData,
   options: {
     containerClassName: 'container-wrapper',
     minColumnSize: 100,
