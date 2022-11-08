@@ -9,8 +9,9 @@ import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from './primitive/Table';
+import equals from 'deep-equal';
 
-import { IMultiPartInput } from './MultipartTable.interfaces';
+import { IMultiPartInput, ERowType } from './MultipartTable.interfaces';
 
 const MultipartTable = ({
   name = '',
@@ -90,7 +91,6 @@ const MultipartTable = ({
                 onChange(column.key, e.target.value);
               }}
               onChangeFile={(e: any) => {
-                console.log(e, ' file input');
                 onChange('file', e.target.file);
               }}
               onChangeRowType={(type) => {
@@ -191,10 +191,6 @@ const MultipartTable = ({
 
 export default MultipartTable;
 
-enum ERowType {
-  Text = 'text',
-  File = 'file',
-}
 const MultiPartInput: FC<IMultiPartInput> = memo(
   ({
     row,
@@ -278,7 +274,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
 
             <div
               key={`${row.id}-file-type`}
-              className="text-center text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre"
+              className="cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre"
               onClick={_onClick}
             >
               {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}
@@ -294,5 +290,8 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
         </div>
       </div>
     );
+  },
+  (p, n) => {
+    return equals(p.row, n.row) && equals(p.value, n.value);
   }
 );

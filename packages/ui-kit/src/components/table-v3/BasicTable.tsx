@@ -11,7 +11,7 @@ import Table, { TTableApi } from './primitive/Table';
 const BasicTable = ({
   name = '',
   rows = [],
-  options= {},
+  options = {},
   onChange = (rs) => {},
   onMount = (api) => {},
 }) => {
@@ -150,6 +150,8 @@ const BasicTable = ({
         defaultRow={{
           key: '',
           value: '',
+          disable: false,
+          type: 'text',
           description: '',
         }}
         renderCell={renderCell}

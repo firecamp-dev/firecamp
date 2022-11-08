@@ -1,40 +1,36 @@
-import { IRowCellMeta } from '../table/interfaces/index';
+import { IRowCellMeta } from './BasicTable.interfaces';
+
+export enum ERowType {
+  Text = 'text',
+  File = 'file',
+}
 
 export interface IMultipartIFT {
-  /**
-   * Table row data
-   */
+  /** table rows */
   rows: Array<IRowCellMeta>;
 
-  /**
-   * multipart table key to represent multipart value (Which key holds value). default key 'value'
-   */
+  /** multipart table key to represent multipart value (Which key holds value). default key 'value' */
   multipartKey?: string;
 
-  /**
-   * Update table data
-   */
+  /** update table data */
   onChange: (updates: Array<IRowCellMeta>) => void;
 }
 
 export interface IMultiPartInput {
   /**
-   * Row data
+   * row data
    */
   row: IRowCellMeta;
 
-  /**
-   * Row value
-   */
+  /** row value */
   value: string | number | boolean | object;
 
-  /**
-   * Update row value
-   */
-  onChange?: (updates: string | number | boolean | object) => void;
+  /** on change text input value*/
+  onChange?: (evt: object) => void;
 
-  /**
-   * Update row type one of ['text', 'file']
-   */
-  onChangeRowType?: (type: string) => void;
+  /** on select file from explorer */
+  onChangeFile?: (evt: object) => void;
+
+  /** on change row type one of ['text', 'file'] */
+  onChangeRowType?: (type: ERowType) => void;
 }
