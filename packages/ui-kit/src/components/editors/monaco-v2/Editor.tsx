@@ -15,11 +15,7 @@ const Editor: FC<IEditor> = ({
   monacoOptions = {},
   height,
   path,
-  onChange = () => {}, // similar DOM event, e = { preventDefault, target }
-  onBlur,
-  onFocus,
-  onPaste,
-  onLoad = (editor) => {},
+  addExtraLib,
   // controlsConfig = {
   //   show: false,
   //   position: 'vertical',
@@ -27,6 +23,11 @@ const Editor: FC<IEditor> = ({
   // },
   placeholder = '',
   className = '',
+  onChange = () => {}, // similar DOM event, e = { preventDefault, target }
+  onBlur,
+  onFocus,
+  onPaste,
+  onLoad = (editor) => {},
   editorDidMount = null,
   onCtrlS = () => {},
   onCtrlShiftS = () => {},
@@ -193,10 +194,16 @@ const Editor: FC<IEditor> = ({
       // horizontal: "hidden",
       handleMouseWheel: true,
       useShadows: true,
-
       verticalScrollbarSize: 10,
       horizontalScrollbarSize: 5,
     },
+    suggest: {
+      showKeywords: false,
+      showVariables: true, // disables `undefined`, but also disables user-defined variables suggestions.
+      showModules: false, // disables `globalThis`, but also disables user-defined modules suggestions.
+    },
+    suggestOnTriggerCharacters: false,
+    wordBasedSuggestions: false,
     ...monacoOptions,
   };
 
@@ -227,6 +234,17 @@ const Editor: FC<IEditor> = ({
           })
         }
         onMount={(editor, monaco) => {
+          if (language == 'typescript') {
+            monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+              noLib: true,
+              allowNonTsExtensions: true,
+            });
+            monaco.languages.typescript.typescriptDefaults.addExtraLib(
+              addExtraLib.typeDefinition,
+              addExtraLib.path
+            );
+          }
+
           // https://www.anycodings.com/1questions/1773746/how-do-i-insert-text-into-a-monaco-editor
           editor.insertTextAtCurrentCursor = (text: any) => {
             let p = editor.getPosition();

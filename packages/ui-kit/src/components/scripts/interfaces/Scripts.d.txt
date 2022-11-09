@@ -1,7 +1,4 @@
-import { EHttpMethod, IHeader, IRestBody, IUrl } from '@firecamp/types';
-
-/** request instance */
-export interface IScriptRequest {
+interface IScriptRequest {
   /**
    * request URL
    */
@@ -73,29 +70,4 @@ export interface IScriptRequest {
   getQueries: () => { [key: string]: string };
 }
 
-export interface IRequestAssertions {
-  /**
-   * should have request URL same
-   */
-  url: (url: IUrl) => void;
-
-  /**
-   * should have request method same
-   */
-  method: (method: string) => void;
-
-  /**
-   * should have query
-   */
-  query: (queryName: string) => void;
-
-  /**
-   * should have header
-   */
-  header: (headerName: string) => void;
-
-  /**
-   * should have body set/have body of content type
-   */
-  body: (contentType?: string) => void;
-}
+declare var request: IScriptRequest;
