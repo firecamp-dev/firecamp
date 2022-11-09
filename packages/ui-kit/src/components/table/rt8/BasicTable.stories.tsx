@@ -5,7 +5,7 @@ import BasicTable from './BasicTable';
 import { defaultData } from './TableData';
 
 export default {
-  title: 'UI-Kit/Table',
+  title: 'UI-Kit/ReactTable',
   component: BasicTable,
   argTypes: {
     name: { control: 'text' },

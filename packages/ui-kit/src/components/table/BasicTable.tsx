@@ -52,7 +52,7 @@ const BasicTable = ({
         return (
           <div style={{ display: 'flex' }}>
             <span
-              draggable={true}
+              draggable={options.allowSort}
               onDragStart={(e) => {
                 // console.log(e, trRef);
                 // const td = trRef.current.firstChild;
