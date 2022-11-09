@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, memo } from 'react';
+import { FC, useEffect, useRef, memo, ReactNode } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
 import { IEditor } from './Editor.interface';
@@ -7,7 +7,10 @@ import MonacoFirecampLangInit, {
 } from '../monaco/lang/init';
 
 type TSLEditor = {
+  name?: string;
   type: 'text' | 'number';
+  loading?: ReactNode;
+  style?: object;
 };
 
 const SingleLineEditor: FC<IEditor & TSLEditor> = ({

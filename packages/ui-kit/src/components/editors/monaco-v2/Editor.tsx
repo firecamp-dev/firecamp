@@ -28,7 +28,6 @@ const Editor: FC<IEditor> = ({
   placeholder = '',
   className = '',
   editorDidMount = null,
-  onEnter = () => {},
   onCtrlS = () => {},
   onCtrlShiftS = () => {},
   onCtrlO = () => {},
