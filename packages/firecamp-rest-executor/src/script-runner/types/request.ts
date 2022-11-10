@@ -1,101 +1,63 @@
 import { EHttpMethod, IHeader, IRestBody, IUrl } from '@firecamp/types';
 
-/** request instance */
+/** request instance for script*/
 export interface IScriptRequest {
-  /**
-   * request URL
-   */
+  /** request URL */
   url: IUrl;
 
-  /**
-   * request headers
-   */
+  /** request headers */
   headers: IHeader[];
 
-  /**
-   * HTTP method
-   */
+  /** HTTP method */
   method: EHttpMethod | string;
 
-  /**
-   * request body
-   */
+  /** request body */
   body: IRestBody;
 
-  /**
-   * add the new header or update the existing header
-   */
+  /** add the new header or update the existing header */
   addHeader: (headerName: string, headerValue: string) => void;
 
-  /**
-   * update the existing header
-   */
+  /** update the existing header */
   updateHeader: (headerName: string, headerValue: string) => void;
 
-  /**
-   * return the header value
-   */
+  /** return the header value */
   getHeader: (headerName: string) => string;
 
-  /**
-   * returns a js object, { [headerName]: headerValue,... }
-   */
+  /** returns a js object, { [headerName]: headerValue,... } */
   getHeaders: () => { [key: string]: string };
 
-  /**
-   * remove the header
-   */
+  /** remove the header */
   removeHeader: (...headerNames: string[]) => void;
 
-  /**
-   * set the new query or update the existing query
-   */
+  /** set the new query or update the existing query */
   addQueryParam: (queryName: string, queryValue: string) => void;
 
-  /**
-   * update the existing query
-   */
+  /** update the existing query */
   updateQueryParam: (queryName: string, queryValue: string) => void;
 
-  /**
-   * return the query value
-   */
+  /** return the query value */
   getQueryParam: (queryName: string) => string | undefined;
 
-  /**
-   * remove the query
-   */
+  /** remove the query */
   removeQueryParam: (...queryNames: string[]) => void;
 
-  /**
-   * returns a js object, { [queryName]: queryValue,... }
-   */
+  /** returns a js object, { [queryName]: queryValue,... } */
   getQueries: () => { [key: string]: string };
 }
 
 export interface IRequestAssertions {
-  /**
-   * should have request URL same
-   */
+  /** should have request URL same */
   url: (url: IUrl) => void;
 
-  /**
-   * should have request method same
-   */
+  /** should have request method same */
   method: (method: string) => void;
 
-  /**
-   * should have query
-   */
+  /** should have query */
   query: (queryName: string) => void;
 
-  /**
-   * should have header
-   */
+  /** should have header */
   header: (headerName: string) => void;
 
-  /**
-   * should have body set/have body of content type
-   */
+  /** should have body set/have body of content type */
   body: (contentType?: string) => void;
 }

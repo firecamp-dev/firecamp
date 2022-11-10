@@ -97,7 +97,7 @@
     "prettier": "^2.6.2",
     "react-addons-test-utils": "^15.0.2",
     "remote-redux-devtools": "^0.5.16",
-    "rimraf": "^2.6.3",
+    "rimraf": "^3.0.2",
     "sass": "^1.51.0",
     "sass-loader": "^12.6.0",
     "semver": "^7.3.5",
