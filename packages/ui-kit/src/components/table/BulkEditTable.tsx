@@ -15,7 +15,7 @@ const modes = {
  */
 const BulkEditTable: FC<IBulkEditTable> = ({
   rows,
-  disabled = false,
+  disabled = false, //unused prop
   title = '',
   onChange = () => {},
   options = { mode: {} },
@@ -90,7 +90,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
           rows={rows}
           name={title}
           options={options}
-          disabled={disabled}
+          // disabled={disabled}
           onMount={onMount}
         />
       ) : (

@@ -1,10 +1,34 @@
 import { _array } from '@firecamp/utils';
-import { defaultData } from './rt8/TableData';
-
 import BasicTable from './BasicTable';
 
+type FormData = {
+  key: string;
+  value: string;
+  description: string;
+  disable?: boolean;
+};
+
+export const defaultData: FormData[] = [
+  {
+    key: 'name',
+    value: 'Elon',
+    description: 'The name of user',
+    disable: true,
+  },
+  {
+    key: 'startup',
+    value: 'SpaceX',
+    description: 'The space company',
+  },
+  {
+    key: 'founded',
+    value: '2004',
+    description: 'The year of founded',
+  },
+];
+
 export default {
-  title: 'UI-Kit/Table',
+  title: 'UI-Kit/Table/BasicTable',
   component: BasicTable,
   argTypes: {},
 };
