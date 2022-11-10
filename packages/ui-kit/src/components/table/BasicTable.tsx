@@ -61,9 +61,9 @@ const BasicTable = ({
                 // else handleDrag(row.index);
                 handleDrag(row, rowIndex);
               }}
-              className="flex"
+              className="flex drag-icon"
             >
-              <GrDrag opacity={0.3} />
+              <GrDrag className="text-appForeground " opacity={0.3} />
             </span>
 
             <Checkbox
