@@ -811,6 +811,7 @@ body .ace_editor .ace_scrollbar{
 .response-headers-table,.response-cookies-table {
   display: table;
   border-collapse: collapse;
+  width: 100%;
 }
 
 .response-headers-table>div,.response-cookies-table>div {
@@ -825,6 +826,7 @@ body .ace_editor .ace_scrollbar{
   font-size: 14px;
   word-break: break-all;
   color: var(--app-foreground-inactive);
+  user-select: text;
 }
 
 .response-headers-table>div:first-child,.response-cookies-table>div:first-child {
