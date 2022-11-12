@@ -1,4 +1,4 @@
-import * as Utils from './mochaService'
+import * as Utils from './mochaService';
 
 /**
  * Modify the existing suite as per requirement
@@ -11,7 +11,7 @@ const editSuite = async (data) => {
     Utils.TraverseSuites(allSuites);
 
     const obj = {
-      reportTitle: 'VigoReport',
+      reportTitle: 'FirecampReport',
       stats: data.stats,
       suites: allSuites,
       //allTests: allTests.map(Utils.CleanTest),
