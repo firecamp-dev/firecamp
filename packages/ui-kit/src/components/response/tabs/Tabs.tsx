@@ -117,7 +117,7 @@ const Tabs: FC<IResTabs> = ({
           // activeTab={activeTab}
         >
           <div
-            className="tab-pane active h-full"
+            className="tab-pane active h-full visible-scrollbar overflow-auto"
             // tabId={activeTab}
           >
             {isRequestRunning === true &&
