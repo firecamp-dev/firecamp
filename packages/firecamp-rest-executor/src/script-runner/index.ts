@@ -12,8 +12,8 @@ import responseAssertionPlugin from './response/assertions';
 import { TEnvVariable, TPostScript, TPreScript, TTestScript } from './types';
 import editSuite from './lib/mocha/editSuite';
 // Used mocha lib v8.3.0 cdn: https://cdnjs.cloudflare.com/ajax/libs/mocha/8.3.0/mocha.min.js
-import './lib/mocha/mocha.min';
-// import 'mocha';
+// import './lib/mocha/mocha.min';
+import 'mocha';
 // import { describe, it } from 'mocha';
 export * from './types';
 
@@ -85,10 +85,10 @@ export const testScript: TTestScript = async (
         ${request.scripts?.test};
         (() => {
           return new Promise ((resolve, reject) => {
-            console.log('test runner started')
-            mocha
-              .setup('bdd')
-              .bail()
+            console.log('test runner started');
+
+              mocha
+              // .cleanReferencesAfterRun(false)
               .run()
               .on("error", function(test, error) {
                 console.error({
@@ -97,11 +97,12 @@ export const testScript: TTestScript = async (
                 });
                 reject(error);
               })
-              .on("end", function(suite) {
-                console.log(suite, 555555, this)
+              .on("end", function() {
+                console.log(555555, this);
                 editSuite(this)
                   .then(function(result) {
-                    console.log(result, 66666)
+                    console.log(result, 66666);
+                    // mocha.dispose()
                     resolve(result);
                   });
               });
@@ -121,9 +122,9 @@ export const testScript: TTestScript = async (
     });
 
     mocha.setup('bdd');
-    mocha.cleanReferencesAfterRun(false);
+    mocha.reporter('json');
+    // mocha.cleanReferencesAfterRun(false);
 
-    console.log(describe, it, 7777);
     // Creating a new context to execute test-script code using vm module
     const result = await jsExecutor(script, {
       mocha,
@@ -141,6 +142,7 @@ export const testScript: TTestScript = async (
       tv4,
       Joi,
       console,
+      window: null,
     });
 
     return Promise.resolve(result);
