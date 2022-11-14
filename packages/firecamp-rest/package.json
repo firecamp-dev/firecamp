@@ -42,7 +42,6 @@
   },
   "dependencies": {
     "@firecamp/curl-to-firecamp": "^0.0.10",
-    "@firecamp/js-executor": "^0.0.0",
     "@firecamp/types": "^0.0.11",
     "@firecamp/url": "^0.0.15",
     "@hapi/joi": "^17.1.1",
