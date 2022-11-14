@@ -50,6 +50,19 @@ const Table: FC<ITable<any>> = ({
   });
   useTableResize(tableRef);
 
+  // const containerDivRef = useRef<HTMLTableElement>(null);
+  // const [containerWidth, setContainerWidth] = useState(0);
+  
+  // //get the width of container div in pixels
+  // useEffect(() => {
+  //   if (!containerDivRef.current) return;
+  //   const resizeObserver = new ResizeObserver(() => {
+  //     setContainerWidth(containerDivRef.current.clientWidth);
+  //   });
+  //   resizeObserver.observe(containerDivRef.current);
+  //   return () => resizeObserver.disconnect();
+  // }, [containerDivRef.current]);
+
   useEffect(() => {
     onMount(tableApi);
   }, []);
@@ -199,7 +212,7 @@ const Table: FC<ITable<any>> = ({
   };
 
   return (
-    <div className={'w-full'}>
+    <div className={'w-full custom-scrollbar'} ref={containerDivRef}>
       <table
         className="primary-table border border-appBorder mb-4"
         style={{ minWidth: '450px' }}
@@ -209,7 +222,15 @@ const Table: FC<ITable<any>> = ({
           <Tr className="border text-base text-left font-semibold bg-focus2">
             {columns.map((c, i) => {
               return (
-                <Th style={{ width: c.width }} key={i}>
+                <Th style={{ 
+                  width: c.width,
+
+                  // minWidth: ( i === columns.length - 1 &&
+                  // containerWidth > tableRef.current?.clientWidth
+                  //   ? c.width +
+                  //     (containerWidth - tableRef.current.clientWidth - 4)
+                  //   : c.width)
+                   }} key={i}>
                   {renderColumn(c)}
                 </Th>
               );
@@ -389,6 +410,7 @@ const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
       const mouseMoveHandler = (e: MouseEvent) => {
         const dx = e.clientX - x;
         col.style.width = `${w + dx}px`;
+        // col.style.minWidth = `${w + dx}px`;
       };
 
       const mouseUpHandler = () => {

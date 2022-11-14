@@ -241,7 +241,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
       ) : (
         <></>
       )}
-      <div className={cx(className)} style={style}>
+      <div className={cx(className, {"opacity-50": disabled})} style={style}>
         <MonacoEditor
           language={language}
           defaultValue={value}
@@ -252,6 +252,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           key={path}
           loading={loading || <></>}
           onChange={(value, e) => {
+            if(disabled) return;
             value = value.replace(/[\n\r]/g, '');
             console.log(value);
             onChange({
@@ -260,6 +261,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             });
           }}
           onMount={(editor, monaco) => {
+            if(disabled) return;
             editor.onDidFocusEditorWidget(() => {
               console.log(editor.getId(), 'Focus event triggerd ');
             });

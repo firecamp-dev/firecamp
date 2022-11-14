@@ -42,7 +42,8 @@ const Checkbox: FC<ICheckbox> = ({
         <div
           className={cx(
             'flex justify-center items-center cursor-pointer relative',
-            color
+            color,
+            {'opacity-50 cursor-default': disabled}
           )}
           tabIndex={-1}
         >

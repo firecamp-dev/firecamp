@@ -281,7 +281,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
             </div>
           </>
         )}
-        <div className="absolute cursor-pointer" style={{ right: '5px' }}>
+        <div className="absolute cursor-pointer" style={{ right: '5px', bottom: '-10px' }}>
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} />
           ) : (

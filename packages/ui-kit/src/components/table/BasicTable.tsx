@@ -3,6 +3,7 @@ import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { useRef } from 'react';
+import cx from 'classnames';
 import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
@@ -50,7 +51,7 @@ const BasicTable = ({
     switch (column.id) {
       case 'select':
         return (
-          <div style={{ display: 'flex' }}>
+          <div className="flex">
             <span
               draggable={options.allowSort}
               onDragStart={(e) => {
@@ -61,7 +62,7 @@ const BasicTable = ({
                 // else handleDrag(row.index);
                 handleDrag(row, rowIndex);
               }}
-              className="flex"
+              className={cx("flex", {"opacity-50 cursor-default": !options.allowSort})}
             >
               <GrDrag opacity={0.3} />
             </span>
@@ -180,6 +181,7 @@ const BasicTable = ({
           sm
           transparent
           ghost
+          disabled={options.hasOwnProperty("allowRowAdd") && !options.allowRowAdd}
         />
       </div>
     </>
