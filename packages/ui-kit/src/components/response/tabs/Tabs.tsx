@@ -51,7 +51,7 @@ const Tabs: FC<IResTabs> = ({
   // console.log({ response });
 
   let _renderTab = (tab: string) => {
-    // console.log("tab", tab);
+    console.log("tab", tab);
     switch (tab) {
       case 'body':
         if (!!response.error && !!response.data) {
