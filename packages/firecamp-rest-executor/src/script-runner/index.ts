@@ -93,7 +93,6 @@ export const testScript: TTestScript = async (
     const runner = new Runner(request.scripts.test as string);
     const result = await runner.run({
       Promise,
-      editSuite,
       request,
       response,
       environment: new Environment(variables),
