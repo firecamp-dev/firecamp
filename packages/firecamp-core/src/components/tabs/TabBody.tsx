@@ -89,14 +89,14 @@ const TabBody = ({ tabObj, index, activeTab }) => {
           </Suspense>
         );
         break;
-        // case ERequestTypes.SocketIO:
-        //   return (
-        //     <Suspense fallback={<div>Loading... </div>}>
-        //       {/* <SocketIOClient {...tabProps} /> */}
-        //     </Suspense>
-        //   );
-        //   break;
-        // case ERequestTypes.WebSocket:
+      // case ERequestTypes.SocketIO:
+      //   return (
+      //     <Suspense fallback={<div>Loading... </div>}>
+      //       {/* <SocketIOClient {...tabProps} /> */}
+      //     </Suspense>
+      //   );
+      //   break;
+      case ERequestTypes.WebSocket:
         return (
           <Suspense fallback={<Loader />}>
             <WSClient {...tabProps} />
