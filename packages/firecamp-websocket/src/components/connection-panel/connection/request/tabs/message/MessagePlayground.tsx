@@ -699,7 +699,7 @@ const MessagePlayground = ({
               //activeType.id !== MESSAGE_PAYLOAD_TYPES.no_body &&
               // activeType.id !== MESSAGE_PAYLOAD_TYPES.file &&
               !(
-                !playgroundTab?.meta?.is_saved &&
+                !playgroundTab?.meta?.isSaved &&
                 !playgroundTab?.meta?.hasChange
               ) ? (
                 <SaveMessage
@@ -707,7 +707,7 @@ const MessagePlayground = ({
                   collection={collection || []}
                   id={`push-message-${tabData.id || ''}`}
                   hasChange={playgroundTab?.meta?.hasChange || false}
-                  isSaved={playgroundTab?.meta?.is_saved || false}
+                  isSaved={playgroundTab?.meta?.isSaved || false}
                   onSubmit={_onAddMesage}
                   onUpdate={_onUpdateMessage}
                   toggleOpenPopover={(val) => toggleSaveMessagePopover(val)}

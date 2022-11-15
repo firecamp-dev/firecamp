@@ -1,7 +1,6 @@
-import shallow from 'zustand/shallow';
-import _url from '@firecamp/url';
-
 import { Button, Url, UrlBar } from '@firecamp/ui-kit';
+import _url from '@firecamp/url';
+import shallow from 'zustand/shallow';
 
 import {
   IPushPayload,
@@ -15,13 +14,15 @@ const UrlBarContainer = ({
   collectionId = '',
   postComponents,
   onSaveRequest = (pushAction /* : IPushPayload */, tabId: string) => {},
+  platformContext,
+  onPasteCurl = (curl: string) => {},
 }) => {
-  let { SavePopover, EnvironmentWidget } = postComponents;
+  const { EnvironmentWidget } = postComponents;
 
-  let {
+  const {
     url,
-    active_environments,
-    is_request_saved,
+    activeEnvironments,
+    isRequestSaved,
 
     changeUrl,
     changeActiveEnvironment,
@@ -31,8 +32,8 @@ const UrlBarContainer = ({
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       url: s.request.url,
-      active_environments: s.runtime.active_environments,
-      is_request_saved: s.runtime.is_request_saved,
+      activeEnvironments: s.runtime.activeEnvironments,
+      isRequestSaved: s.runtime.isRequestSaved,
 
       changeUrl: s.changeUrl,
       changeActiveEnvironment: s.changeActiveEnvironment,
@@ -45,9 +46,9 @@ const UrlBarContainer = ({
 
   // console.log({ pushAction });
 
-  // let { SaveButton, EnvironmentVariCard } = ctx_additionalComponents;
+  // const { SaveButton, EnvironmentVariCard } = ctx_additionalComponents;
 
-  /*   let _onSave = async (savedRequestData: {
+  /*   const _onSave = async (savedRequestData: {
     name: string;
     description: string;
     collection_id: TId;
@@ -56,7 +57,7 @@ const UrlBarContainer = ({
     try {
       // console.log({ savedRequestData });
 
-      let pushPayload: IPushPayload = await prepareRequestInsertPushPayload({
+      const pushPayload: IPushPayload = await prepareRequestInsertPushPayload({
         name: savedRequestData.name,
         description: savedRequestData.description,
         collection_id: savedRequestData.collection_id,
@@ -73,9 +74,9 @@ const UrlBarContainer = ({
     }
   };
 
-  let _onUpdate = async () => {
+  const _onUpdate = async () => {
     try {
-      let pushPayload: IPushPayload = await prepareRequestUpdatePushPayload();
+      const pushPayload: IPushPayload = await prepareRequestUpdatePushPayload();
       // console.log({ pushPayload });
 
       await onSaveRequest(pushPayload, tab.id);
@@ -87,10 +88,10 @@ const UrlBarContainer = ({
     }
   }; */
 
-  let _onSave = async () => {
+  const _onSave = async () => {
     try {
       let pushPayload: IPushPayload;
-      if (!is_request_saved) {
+      if (!isRequestSaved) {
         pushPayload = await prepareRequestInsertPushPayload();
       } else {
         pushPayload = await prepareRequestUpdatePushPayload();
@@ -108,12 +109,10 @@ const UrlBarContainer = ({
     }
   };
 
-  let _onUpdateURL = (e) => {
+  const _onUpdateURL = (e) => {
     e.preventDefault();
-    let value = e.target.value;
-
-    let urlObject = _url.updateByRaw({ ...url, raw: value });
-
+    const value = e.target.value;
+    const urlObject = _url.updateByRaw({ ...url, raw: value });
     changeUrl(urlObject);
   };
 
@@ -124,8 +123,8 @@ const UrlBarContainer = ({
           key={tab.id}
           previewId={`websocket-env-variables-${tab.id}`}
           collectionId={collectionId}
-          collectionActiveEnv={active_environments.collection}
-          workspaceActiveEnv={active_environments.workspace}
+          collectionActiveEnv={activeEnvironments.collection}
+          workspaceActiveEnv={activeEnvironments.workspace}
           onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
             changeActiveEnvironment('collection', envId);
           }}
@@ -145,6 +144,8 @@ const UrlBarContainer = ({
           url={url.raw || _url.toString(url)}
           placeholder={'ws://'}
           onChangeURL={_onUpdateURL}
+          // onEnter={_onExecute}
+          // onPaste={_onPaste}
         />
       </UrlBar.Body>
       <UrlBar.Suffix>

@@ -178,7 +178,7 @@ const Websocket = ({
     if (activeTab === tab.id) {
       // existing active environments in to runtime
       let activeEnvironments =
-        websocketStoreApi?.getState()?.runtime?.active_environments;
+        websocketStoreApi?.getState()?.runtime?.activeEnvironments;
 
       // set active environments to platform
       if (activeEnvironments && !!activeEnvironments.workspace) {
@@ -386,7 +386,7 @@ const Websocket = ({
 
     if (!platformActiveEnvironments) return;
     let activeEnvironments =
-      websocketStoreApi.getState().runtime.active_environments;
+      websocketStoreApi.getState().runtime.activeEnvironments;
 
     if (
       platformActiveEnvironments.workspace &&
@@ -428,7 +428,7 @@ const Websocket = ({
 
       changePlaygroundTab(activePlayground, {
         meta: {
-          is_saved: true,
+          isSaved: true,
           hasChange: false,
         },
       });
@@ -858,7 +858,7 @@ const Websocket = ({
         id: newconnectionId,
         name: name,
         meta: {
-          is_saved: false,
+          isSaved: false,
           hasChange: false,
         },
       });
@@ -918,12 +918,12 @@ const Websocket = ({
     <WebsocketContext.Provider
       value={{
         //props
-        ctx_firecampFunctions: firecampFunctions,
-        ctx_constants: propConstants,
-        ctx_tabData: tab,
+        // ctx_firecampFunctions: firecampFunctions,
+        // ctx_constants: propConstants,
+        // ctx_tabData: tab,
 
         //prop components
-        ctx_additionalComponents: prop_additionalComponents,
+        // ctx_additionalComponents: prop_additionalComponents,
 
         //functions
         ctx_requestFns: _requestFns,
@@ -945,6 +945,8 @@ const Websocket = ({
               collectionId={tab?.request?._meta?.collection_id || ''}
               postComponents={platformComponents}
               onSaveRequest={onSave}
+              // platformContext={platformContext}
+              // onPasteCurl={onPasteCurl}
             />
           </Container.Header>
           <Container.Body>
@@ -1001,16 +1003,16 @@ const withStore = (WrappedComponent) => {
             id: defaultConnection.id,
             name: defaultConnection.name,
             meta: {
-              is_saved: false,
+              isSaved: false,
               hasChange: false,
             },
           },
         ],
-        active_environments: {
+        activeEnvironments: {
           workspace: '',
           collection: '',
         },
-        is_request_saved: false,
+        isRequestSaved: false,
       },
       playgrounds: {
         // Add logic for init playgrounds by connections

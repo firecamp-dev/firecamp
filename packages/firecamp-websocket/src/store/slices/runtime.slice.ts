@@ -4,7 +4,7 @@ interface IPlaygroundTab {
   id: string;
   name: string;
   meta?: {
-    is_saved?: boolean;
+    isSaved?: boolean;
     hasChange?: boolean;
   };
 }
@@ -12,11 +12,11 @@ interface IPlaygroundTab {
 interface IRuntime {
   playgroundTabs?: IPlaygroundTab[];
   activePlayground?: TId;
-  active_environments?: {
+  activeEnvironments?: {
     workspace: TId;
     collection: TId;
   };
-  is_request_saved?: boolean;
+  isRequestSaved?: boolean;
 }
 
 interface IRuntimeSlice {
@@ -110,8 +110,8 @@ const createRuntimeSlice = (
       ...s,
       runtime: {
         ...s.runtime,
-        active_environments: {
-          ...s.runtime.active_environments,
+        activeEnvironments: {
+          ...s.runtime.activeEnvironments,
           [scope]: environment_id,
         },
       },
@@ -124,7 +124,7 @@ const createRuntimeSlice = (
       ...s,
       runtime: {
         ...s.runtime,
-        active_environments: updates,
+        activeEnvironments: updates,
       },
     }));
   },
@@ -133,7 +133,7 @@ const createRuntimeSlice = (
       ...s,
       runtime: {
         ...s.runtime,
-        is_request_saved: flag,
+        isRequestSaved: flag,
       },
     }));
   },

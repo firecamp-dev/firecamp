@@ -17,9 +17,9 @@ const UrlBarContainer = ({
   platformContext,
   onPasteCurl = (curl: string) => {},
 }) => {
-  let { EnvironmentWidget } = postComponents;
+  const { EnvironmentWidget } = postComponents;
 
-  let {
+  const {
     url,
     method,
     meta,
@@ -66,27 +66,27 @@ const UrlBarContainer = ({
 },[url]) */
   // console.log({ pushAction })
 
-  let _handleUrlChange = (e: {
+  const _handleUrlChange = (e: {
     preventDefault: () => void;
     target: { value: any };
   }) => {
     e.preventDefault();
-    let value = e.target.value;
+    const value = e.target.value;
 
-    let urlObject = _url.updateByRaw({ ...url, raw: value });
+    const urlObject = _url.updateByRaw({ ...url, raw: value });
     // console.log(urlObject, "urlObject... in url bar")
     changeUrl(urlObject);
   };
 
-  let _onPaste = (edt: any) => {
+  const _onPaste = (edt: any) => {
     if (!edt) return;
-    let curl = edt.getValue();
+    const curl = edt.getValue();
     if (curl) {
       onPasteCurl(curl);
     }
   };
 
-  let _onSave = async () => {
+  const _onSave = async () => {
     try {
       let pushPayload: IPushPayload;
       if (!isRequestSaved) {
@@ -107,15 +107,15 @@ const UrlBarContainer = ({
     }
   };
 
-  let _onChangeVariables = (variables: { workspace: {}; collection: {} }) => {
+  const _onChangeVariables = (variables: { workspace: {}; collection: {} }) => {
     // console.log({ variables });
 
-    let workspaceUpdates = {
+    const workspaceUpdates = {
       environmentId: activeEnvironments.workspace,
       variables: variables.workspace,
     };
 
-    let collectionUpdates = {
+    const collectionUpdates = {
       id: collectionId || '',
       environmentId: activeEnvironments.collection,
       variables: variables.collection,
@@ -127,17 +127,17 @@ const UrlBarContainer = ({
     );
   };
 
-  let _onExecute = async () => {
+  const _onExecute = async () => {
     try {
       // Do not execute if url is empty
       if (!url.raw) return;
 
-      let envVariables = await platformContext.environment.getVariablesByTabId(
+      const envVariables = await platformContext.environment.getVariablesByTabId(
         tab.id
       );
       // console.log({ envVariables });
 
-      let agent: EFirecampAgent = platformContext.getFirecampAgent();
+      const agent: EFirecampAgent = platformContext.getFirecampAgent();
 
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
     } catch (error) {
