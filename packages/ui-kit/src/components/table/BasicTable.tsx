@@ -19,7 +19,7 @@ const BasicTable = ({
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
-    { id: 'select', key: 'disable', name: '', width: '40px' },
+    { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true},
     { id: 'key', key: 'key', name: 'Key', width: '100px' },
     { id: 'value', key: 'value', name: 'Value', width: '100px' },
     {
@@ -27,8 +27,9 @@ const BasicTable = ({
       key: 'description',
       name: 'Description',
       width: '150px',
+      overflowColumn: true
     },
-    { id: 'remove', key: '', name: '', width: 20 },
+    { id: 'remove', key: '', name: '', width: 20, fixedWidth: true },
   ];
 
   const handleDrag = (a) => {

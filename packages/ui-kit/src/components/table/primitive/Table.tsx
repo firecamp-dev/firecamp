@@ -50,18 +50,18 @@ const Table: FC<ITable<any>> = ({
   });
   useTableResize(tableRef);
 
-  // const containerDivRef = useRef<HTMLTableElement>(null);
-  // const [containerWidth, setContainerWidth] = useState(0);
+  const containerDivRef = useRef<HTMLTableElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
   
-  // //get the width of container div in pixels
-  // useEffect(() => {
-  //   if (!containerDivRef.current) return;
-  //   const resizeObserver = new ResizeObserver(() => {
-  //     setContainerWidth(containerDivRef.current.clientWidth);
-  //   });
-  //   resizeObserver.observe(containerDivRef.current);
-  //   return () => resizeObserver.disconnect();
-  // }, [containerDivRef.current]);
+  //get the width of container div in pixels
+  useEffect(() => {
+    if (!containerDivRef.current) return;
+    const resizeObserver = new ResizeObserver(() => {
+      setContainerWidth(containerDivRef.current.clientWidth);
+    });
+    resizeObserver.observe(containerDivRef.current);
+    return () => resizeObserver.disconnect();
+  }, [containerDivRef.current]);
 
   useEffect(() => {
     onMount(tableApi);
@@ -214,7 +214,7 @@ const Table: FC<ITable<any>> = ({
   return (
     <div className={'w-full custom-scrollbar'} ref={containerDivRef}>
       <table
-        className="primary-table border border-appBorder mb-4"
+        className="primary-table border border-appBorder mb-4 w-auto"
         style={{ minWidth: '450px' }}
         ref={tableRef}
       >
@@ -223,14 +223,19 @@ const Table: FC<ITable<any>> = ({
             {columns.map((c, i) => {
               return (
                 <Th style={{ 
-                  width: c.width,
-
-                  // minWidth: ( i === columns.length - 1 &&
-                  // containerWidth > tableRef.current?.clientWidth
-                  //   ? c.width +
-                  //     (containerWidth - tableRef.current.clientWidth - 4)
-                  //   : c.width)
-                   }} key={i}>
+                  width: c.overflowColumn ? '100%' : parseInt(c.width),
+                  minWidth: (
+                     (!c.fixedWidth && c.overflowColumn &&
+                  containerWidth > tableRef.current?.clientWidth) ? 
+                      parseInt(c.width) +
+                      (containerWidth - tableRef.current.clientWidth - 4) :
+                     c.width)
+                   }} key={i}
+                   additionalProp={{
+                    "data-allow_resize": !c.fixedWidth,
+                    "data-initial_width": c.width
+                   }}
+                   >
                   {renderColumn(c)}
                 </Th>
               );
@@ -311,9 +316,9 @@ const Tr: FC<TTr> = ({ className = '', children, style = {} }) => {
   );
 };
 
-const Th: FC<TTh> = ({ children, className = '', style = {} }) => {
+const Th: FC<TTh> = ({ children, className = '', style = {}, additionalProp = {} }) => {
   return (
-    <th className={cx('p-1 border border-appBorder', className)} style={style}>
+    <th className={cx('p-1 border border-appBorder', className)} style={style} {...additionalProp}>
       {children}
     </th>
   );
@@ -386,8 +391,13 @@ const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
 
         // Set the height
         resizer.style.height = `${table.offsetHeight}px`;
-        col.appendChild(resizer);
-        createResizableColumn(col, resizer);
+
+        //add resizer element to the cols whose width are not fixed
+        if(col.dataset.allow_resize === "true"){
+          col.appendChild(resizer);
+          createResizableColumn(col, resizer);
+        }
+        
       });
     };
 
@@ -409,8 +419,9 @@ const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
 
       const mouseMoveHandler = (e: MouseEvent) => {
         const dx = e.clientX - x;
-        col.style.width = `${w + dx}px`;
-        // col.style.minWidth = `${w + dx}px`;
+        //prevent resize when new width is less than the provided col width
+        if((w + dx) >= parseInt(col.dataset.initial_width))
+        col.style.minWidth = `${w + dx}px`;
       };
 
       const mouseUpHandler = () => {

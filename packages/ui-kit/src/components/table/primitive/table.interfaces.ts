@@ -49,6 +49,8 @@ export interface IColumn {
   name: string;
   key: string;
   width?: string;
+  fixedWidth?: boolean;
+  overflowColumn?: boolean;
 }
 
 export type TTr = {
@@ -60,6 +62,7 @@ export type TTh = {
   children: ReactNode;
   className?: string;
   style?: TPlainObject;
+  additionalProp?: TPlainObject
 };
 export type TTd<R> = {
   row: R;
