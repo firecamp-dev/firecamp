@@ -194,10 +194,10 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   };
 
   useEffect(() => {
-    let _fetchRequest = async () => {
+    const _fetchRequest = async () => {
       try {
-        let isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalise: IRest = {
+        const isRequestSaved = !!tab?.request?._meta?.id || false;
+        let requestToNormalize: IRest = {
           meta: {
             name: '',
             version: '2.0.0',
@@ -211,12 +211,12 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            let response = await platformContext.request.onFetch(
+            const response = await platformContext.request.onFetch(
               tab.request._meta.id
             );
             // console.log({response});
 
-            requestToNormalise = response.data;
+            requestToNormalize = response.data;
           } catch (error) {
             console.error({
               API: 'fetch rest request',
@@ -227,7 +227,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         }
 
         initialiseRequest(
-          requestToNormalise,
+          requestToNormalize,
           isRequestSaved,
           _cloneDeep(emptyPushAction),
           false,
@@ -246,17 +246,17 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   }, []);
 
   /**
-   * initialiseRequest: normalise request and initialise in store on tab load and manage pull
+   * initialiseRequest: normalize request and initialise in store on tab load and manage pull
    */
   const initialiseRequest = async (
-    requestToNormalise: IRest,
+    requestToNormalize: IRest,
     isRequestSaved: boolean,
     pushAction?: IPushAction,
     hasPull?: boolean,
     isFresh?: boolean
   ) => {
     let request: IRestClientRequest = await normalizeRequest(
-      requestToNormalise,
+      requestToNormalize,
       isRequestSaved
     );
 

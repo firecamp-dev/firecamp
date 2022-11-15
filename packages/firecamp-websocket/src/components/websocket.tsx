@@ -6,11 +6,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import { _object } from '@firecamp/utils';
 
-import {
-  EPushActionType,
-  ERequestTypes,
-  IWebSocket,
-} from '@firecamp/types';
+import { EPushActionType, ERequestTypes, IWebSocket } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 
 import {
@@ -279,10 +275,10 @@ const Websocket = ({
   };
 
   useEffect(() => {
-    let _fetchRequest = async () => {
+    const _fetchRequest = async () => {
       try {
-        let isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalise: IWebSocket = {
+        const isRequestSaved = !!tab?.request?._meta?.id || false;
+        let requestToNormalize: IWebSocket = {
           url: { raw: '' },
           meta: {
             name: '',
@@ -295,10 +291,10 @@ const Websocket = ({
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            let response = await platformContext.request.onFetch(
+            const response = await platformContext.request.onFetch(
               tab.request._meta.id
             );
-            requestToNormalise = response.data;
+            requestToNormalize = response.data;
           } catch (error) {
             console.error({
               API: 'fetch rest request',
@@ -309,7 +305,7 @@ const Websocket = ({
         }
 
         initialiseRequest(
-          requestToNormalise,
+          requestToNormalize,
           isRequestSaved,
           _cloneDeep({ request: emptyPushAction }),
           false,
@@ -328,17 +324,17 @@ const Websocket = ({
   }, []);
 
   /**
-   * initialiseRequest: normalise request and initialise in store on tab load and manage pull
+   * initialiseRequest: normalize request and initialise in store on tab load and manage pull
    */
-  let initialiseRequest = async (
-    requestToNormalise: IWebSocket,
+  const initialiseRequest = async (
+    requestToNormalize: IWebSocket,
     isRequestSaved: boolean,
     pushAction?: IPushAction,
     hasPull?: boolean,
     isFresh?: boolean
   ) => {
     let request: IWebSocket = await normalizeRequestPayload(
-      requestToNormalise,
+      requestToNormalize,
       isRequestSaved
     );
     let uiActiveTab = hasPull
@@ -385,7 +381,7 @@ const Websocket = ({
   };
 
   // handle updates for environments from platform
-  let handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
+  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
 
     if (!platformActiveEnvironments) return;
@@ -400,7 +396,7 @@ const Websocket = ({
     }
   };
 
-  let updateCollectionFns = {
+  const updateCollectionFns = {
     addMessage: async ({ name = '', parent_id = '' }) => {
       let msgId = id();
 
@@ -684,7 +680,7 @@ const Websocket = ({
     },
   };
 
-  let playgroundMessageFns = {
+  const playgroundMessageFns = {
     setToPlayground: (payload) => {
       if (!payload?._meta?.id) return;
 
@@ -803,7 +799,7 @@ const Websocket = ({
     },
   };
 
-  let connectionsFns = {
+  const connectionsFns = {
     addConnection: async (name = '', connectOnCreate = true) => {
       if (!name) return;
 
@@ -892,7 +888,7 @@ const Websocket = ({
     },
   };
 
-  let onSave = (pushPayload: IPushPayload, tabId) => {
+  const onSave = (pushPayload: IPushPayload, tabId) => {
     console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload._meta.id) return;
@@ -916,6 +912,8 @@ const Websocket = ({
     });
   };
 
+  // if(isFetchingRequest === true) return <Loader />;
+  console.log(tab, 'tab...');
   return (
     <WebsocketContext.Provider
       value={{
