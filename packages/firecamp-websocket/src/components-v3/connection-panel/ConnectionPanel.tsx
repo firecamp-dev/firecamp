@@ -4,8 +4,6 @@ import {
   Checkbox,
   Input,
   Button,
-  EButtonColor,
-  EButtonSize,
   Tabs,
   Popover,
 } from '@firecamp/ui-kit';
@@ -72,13 +70,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
             show: true,
             onClick: () => toggleConnPopover(true),
           }} */
-          preComp={() => (
-            <Button
-              color={EButtonColor.Secondary}
-              size={EButtonSize.ExSmall}
-              text={'Connections'}
-            />
-          )}
+          preComp={() => <Button text={'Connections'} secondary xs />}
           postComp={() => (
             <AddNewConnectionPopover
               isOpen={isAddConnPopoverOpen}

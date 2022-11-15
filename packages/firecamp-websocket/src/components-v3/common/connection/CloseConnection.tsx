@@ -1,13 +1,5 @@
-//@ts-nocheck
-import { useState, useEffect } from 'react';
-import {
-  Button,
-  EButtonColor,
-  EButtonSize,
-  EButtonIconPosition,
-  Input,
-  Popover,
-} from '@firecamp/ui-kit';
+import { useState } from 'react';
+import { Button, Input, Popover } from '@firecamp/ui-kit';
 
 import { IoWifi } from '@react-icons/all-files/io5/IoWifi';
 
@@ -137,13 +129,7 @@ const CloseConnection = ({
                   />
                 </div>
                 <div className="flex justify-end">
-                  <Button
-                    text="Close WS"
-                    // TODO: add color primary-alt
-                    color={EButtonColor.Primary}
-                    size={EButtonSize.Small}
-                    onClick={_onClose}
-                  />
+                  <Button text="Close WS" primary sm onClick={_onClose} />
                 </div>
               </form>
             </div>
@@ -157,15 +143,15 @@ const CloseConnection = ({
         id={closeManually === false ? popover_id : `${popover_id}-${buttonId}`}
       >
         <Button
-          color={EButtonColor.Primary}
-          size={EButtonSize.Small}
-          iconPosition={EButtonIconPosition.Left}
           // TODO: add class font-ligh
           text={'Connected'}
           // TODO: Add iconPathHover
           // iconPathHover={'/packages-platform/core/public/assets/icon/png/broken-connection.png'}
           icon={<IoWifi className="ml-2 toggle-arrow" size={12} />}
           onClick={closeManually === false ? onClose : () => {}}
+          primary
+          sm
+          iconLeft
         />
       </Popover.Handler>
     </Popover>

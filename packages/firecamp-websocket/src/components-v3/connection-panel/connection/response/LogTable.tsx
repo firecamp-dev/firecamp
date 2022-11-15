@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useContext } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import {
   Container,
   TabHeader,
@@ -7,9 +7,8 @@ import {
   Dropdown,
   Resizable,
   Button,
-  EButtonSize,
   ReactTable,
-  MultiLineIFE,
+  Editor,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import classnames from 'classnames';
@@ -198,10 +197,10 @@ const LogTable = () => {
                       transparent={true}
                       ghost={true}
                       withCaret={true}
-                      size={EButtonSize.Small}
                       tooltip={
                         typeFilter ? `Log type: ${typeFilter || ''}` : ''
                       }
+                      sm
                     />
                   </Dropdown.Handler>
                   <Dropdown.Options
@@ -328,11 +327,11 @@ const LogPreview = ({ activePlayground = '', row = {} }) => {
           </TabHeader>
         </Container.Header>
         <Container.Body>
-          <MultiLineIFE
+          <Editor
             language={language}
             value={'' + value}
             disabled={true}
-            controlsConfig={{ show: true, position: 'horizontal' }}
+            // controlsConfig={{ show: true, position: 'horizontal' }}
           />
         </Container.Body>
       </Container>

@@ -1,13 +1,7 @@
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
 
-import {
-  Button,
-  EButtonColor,
-  EButtonSize,
-  Url,
-  UrlBar,
-} from '@firecamp/ui-kit';
+import { Button, Url, UrlBar } from '@firecamp/ui-kit';
 
 import {
   IPushPayload,
@@ -143,11 +137,7 @@ const UrlBarContainer = ({
       nodePath={``}
     >
       <UrlBar.Prefix>
-        <Button
-          color={EButtonColor.Secondary}
-          size={EButtonSize.Small}
-          text={'Websocket'}
-        />
+        <Button text={'Websocket'} secondary sm />
       </UrlBar.Prefix>
       <UrlBar.Body>
         <Url
@@ -160,11 +150,11 @@ const UrlBarContainer = ({
       <UrlBar.Suffix>
         <Button
           id={`save-request-${tab.id}`}
-          color={EButtonColor.Secondary}
-          size={EButtonSize.Small}
           text="Save"
           disabled={false}
           onClick={_onSave}
+          secondary
+          sm
         />
         {/*   <SavePopover
           onFirstTimeSave={_onSave}

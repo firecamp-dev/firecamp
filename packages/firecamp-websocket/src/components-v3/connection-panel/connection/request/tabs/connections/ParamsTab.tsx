@@ -1,14 +1,12 @@
-//@ts-nocheck
-
-import { BulkEditIFT } from '@firecamp/ui-kit';
+import { BulkEditTable } from '@firecamp/ui-kit';
 const ParamsTab = ({
   params = [],
   activeconnectionId = '',
-  onUpdate = () => {}
+  onUpdate = () => {},
 }) => {
   return (
-    <BulkEditIFT
-      onChange={data => {
+    <BulkEditTable
+      onChange={(data) => {
         onUpdate(data);
       }}
       key={`params-${activeconnectionId}`}

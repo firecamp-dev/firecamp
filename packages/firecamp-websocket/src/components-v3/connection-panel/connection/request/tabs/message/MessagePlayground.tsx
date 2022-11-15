@@ -1,6 +1,5 @@
 import { useContext, useState, useEffect, useRef, useMemo } from 'react';
 import _compact from 'lodash/compact';
-
 import {
   FileInput,
   Container,
@@ -8,11 +7,8 @@ import {
   TabHeader,
   DocButton,
   Button,
-  EButtonColor,
-  EButtonSize,
-  EButtonIconPosition,
   Dropdown,
-  MultiLineIFE,
+  Editor,
   Input,
   ConfirmationPopover,
   Popover,
@@ -363,7 +359,7 @@ const MessagePlayground = ({
       case MESSAGE_PAYLOAD_TYPES.arraybuffer:
       case MESSAGE_PAYLOAD_TYPES.arraybufferview:
         return (
-          <MultiLineIFE // TODO: set completion/hover provider on WSTab mount
+          <Editor // TODO: set completion/hover provider on WSTab mount
             autoFocus={true}
             key={tabData.id}
             language={
@@ -650,9 +646,8 @@ const MessagePlayground = ({
                   text={activeType?.name || ''}
                   transparent={true}
                   ghost={true}
-                  withCaret={true}
-                  size={EButtonSize.Small}
-                  color={EButtonColor.Primary}
+                  primary
+                  sm
                 />
               </Dropdown.Handler>
               <Dropdown.Options
@@ -673,11 +668,11 @@ const MessagePlayground = ({
                 <Dropdown.Handler>
                   <Button
                     text={selectedEnvelope?.name || ''}
-                    transparent={true}
-                    ghost={true}
-                    withCaret={true}
-                    size={EButtonSize.Small}
-                    color={EButtonColor.Primary}
+                    transparent
+                    withCaret
+                    primary
+                    sm
+                    ghost
                   />
                 </Dropdown.Handler>
                 <Dropdown.Options
@@ -727,11 +722,10 @@ const MessagePlayground = ({
                 handler={
                   <Button
                     id={`confirm-popover-handler-${tabData.id}`}
-                    ghost={true}
                     key="new_msg_button"
                     text={'+ New Message'}
-                    size={EButtonSize.Small}
-                    // TODO: add className={'font-light fc-button ex-small font-light without-border'}
+                    sm
+                    ghost
                   />
                 }
                 title="Are you sure to reset playground and add new message?"
@@ -780,23 +774,22 @@ const MessagePlayground = ({
             playgroundTab?.meta?.hasChange === true ? (
               <Button
                 key="original_button"
-                color={EButtonColor.Secondary}
                 text={'Set original'}
-                size={EButtonSize.Small}
-                // TODO: add className={'small font-light'}
                 onClick={_setToOriginal}
+                secondary
+                sm
               />
             ) : (
               <DocButton
                 key="doc_button"
-                classname={
+                className={
                   'fc-button transparent without-border with-icon-left small'
                 }
                 text={'Help'}
                 link={
                   'https://firecamp.io/docs/clients/websocket/connecting-ws-endpoint'
                 }
-                iconClassname={'iconv2-info-icon font-base'}
+                iconClassName={'iconv2-info-icon font-base'}
               />
             )}
           </TabHeader.Left>
@@ -968,14 +961,7 @@ const SaveMessage = ({
                 onKeyDown={_onKeyDown}
               />
               <div className="fc-button-wrapper align-right">
-                <Button
-                  text={'Save'}
-                  // TODO: add color "primary-alt"
-                  color={EButtonColor.Primary}
-                  size={EButtonSize.Small}
-                  // TODO: add className="align-right font-light"
-                  onClick={_onSubmit}
-                />
+                <Button text={'Save'} onClick={_onSubmit} primary sm />
               </div>
             </div>
           </div>
@@ -986,15 +972,12 @@ const SaveMessage = ({
     >
       <Popover.Handler id={`SM-${id}`}>
         <Button
-          size={EButtonSize.Small}
-          transparent={true}
-          ghost={true}
-          size={EButtonSize.Small}
-          // TODO: add className="fc-button ex-small transparent transparent-ghost font-sm"
-          // TODO: add color "primary-alt"
-          color={EButtonColor.Primary}
           text="Save"
           onClick={_onClickSaveMessage}
+          primary
+          sm
+          ghost
+          transparent
         />
       </Popover.Handler>
     </Popover>
@@ -1004,12 +987,11 @@ const SaveMessage = ({
 const SendButton = ({ onSend = () => {} }) => {
   return (
     <Button
-      // TODO: add color "primary-alt"
-      color={EButtonColor.Primary}
       icon={<IoSendSharp size={12} />}
-      iconPosition={EButtonIconPosition.Center}
-      size={EButtonSize.Small}
       onClick={onSend}
+      primary
+      iconCenter
+      sm
     />
   );
 };
