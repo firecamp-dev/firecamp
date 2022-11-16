@@ -24,14 +24,14 @@ import {
 import {
   EConnectionState,
   KEYS_ON_SAVE_REQUEST,
-  MESSAGE_PAYLOAD_TYPES,
+  EMessagePayloadTypes,
   ON_CHANGE_ACTIONS,
   STRINGS,
   SYSTEM_MESSAGES,
   PANEL,
   CONFIG,
   ConnectionStatus,
-  LogTypes,
+  ELogTypes,
   LogColors,
 } from '../constants';
 import { _array, _env, _file, _misc, _object, _table } from '@firecamp/utils';
@@ -137,7 +137,7 @@ const Websocket = ({
         name: foundMessage.name || '',
         message: foundMessage.body || '',
         envelope: foundMessage.meta.envelope || '',
-        type: foundMessage.meta.type || MESSAGE_PAYLOAD_TYPES.no_body,
+        type: foundMessage.meta.type || EMessagePayloadTypes.no_body,
         path: '', //TODO: add original path
       };
     }
@@ -208,7 +208,7 @@ const Websocket = ({
           } */
         ],
         message: {
-          type: MESSAGE_PAYLOAD_TYPES.no_body,
+          type: EMessagePayloadTypes.no_body,
           message: '',
           envelope: '',
           path: '',
@@ -333,7 +333,7 @@ const Websocket = ({
             if (
               connToClose &&
               (connToClose.connected() ||
-                connToClose.readyState() === EConnectionState.CONNECTING)
+                connToClose.readyState() === EConnectionState.Connecting)
             ) {
               await connToClose.close(1000);
             }
@@ -985,7 +985,7 @@ const Websocket = ({
           });
 
           executor.subscribe(async (result) => {
-            if (result.meta.event === LogTypes.UPGRADE) {
+            if (result.meta.event === ELogTypes.UPGRADE) {
               if (_misc.firecampAgent() === EFirecampAgent.desktop) {
                 // Set cookie from response header `Set-Cookie`
                 await _commonFns._setCookie(url, result.message.payload);
@@ -1017,7 +1017,7 @@ const Websocket = ({
         if (!instance) return;
 
         await _responseConnectionFns.update(connectionId, {
-          state: EConnectionState.OPEN,
+          state: EConnectionState.Open,
         });
       }
 
@@ -1028,7 +1028,7 @@ const Websocket = ({
         payload.meta.event === ConnectionStatus[9].state
       ) {
         await _responseConnectionFns.update(connectionId, {
-          state: EConnectionState.CLOSED,
+          state: EConnectionState.Closed,
         });
 
         // Remove socket instance on socket closed manually
@@ -1046,7 +1046,7 @@ const Websocket = ({
         payload.meta.event === ConnectionStatus[7].state
       ) {
         await _responseConnectionFns.update(connectionId, {
-          state: EConnectionState.CONNECTING,
+          state: EConnectionState.Connecting,
         });
       }
     },
@@ -1108,20 +1108,20 @@ const Websocket = ({
         ws_message = msg_payload ? msg_payload.message || '' : '';
 
       if (
-        msg_payload.type === MESSAGE_PAYLOAD_TYPES.file &&
+        msg_payload.type === EMessagePayloadTypes.file &&
         typeof ws_message === 'string'
       ) {
         return;
       }
 
       if (
-        msg_payload.type === MESSAGE_PAYLOAD_TYPES.file &&
+        msg_payload.type === EMessagePayloadTypes.file &&
         ws_message instanceof File
       ) {
         ws_message = await _file.readAsArrayBuffer(ws_message);
       }
 
-      if (msg_payload.type === MESSAGE_PAYLOAD_TYPES.no_body) {
+      if (msg_payload.type === EMessagePayloadTypes.no_body) {
         await ws_instance.send();
       } else {
         await ws_instance.send({
@@ -1401,7 +1401,7 @@ const Websocket = ({
               resConnLogs.length &&
               lastLog &&
               equal(lastLog, logPayload) &&
-              log.meta.type !== LogTypes.SYSTEM
+              log.meta.type !== ELogTypes.SYSTEM
             ) {
               let newLog = Object.assign({}, logPayload, {
                 meta: Object.assign({}, logPayload.meta, {
@@ -1448,7 +1448,7 @@ const Websocket = ({
           title: title || '',
           message: message || '',
           meta: {
-            type: LogTypes.SYSTEM,
+            type: ELogTypes.SYSTEM,
             color: LogColors.DANGER,
             timestamp: new Date().getTime(),
           },
@@ -1465,7 +1465,7 @@ const Websocket = ({
 
         if (
           request.message.type === 'no_body' ||
-          request.message.type === MESSAGE_PAYLOAD_TYPES.file
+          request.message.type === EMessagePayloadTypes.file
         ) {
           return;
         }
@@ -1897,8 +1897,8 @@ const Websocket = ({
 
           if (
             message.meta &&
-            (message.meta.type === MESSAGE_PAYLOAD_TYPES.arraybufferview ||
-              message.meta.type === MESSAGE_PAYLOAD_TYPES.arraybuffer) &&
+            (message.meta.type === EMessagePayloadTypes.arraybufferview ||
+              message.meta.type === EMessagePayloadTypes.arraybuffer) &&
             (message.meta.envelope === '' || !message.meta.envelope)
           ) {
             message = Object.assign({}, message, {
@@ -1996,7 +1996,7 @@ const Websocket = ({
             if (
               msgToSave &&
               msgToSave.meta &&
-              msgToSave.meta.type !== MESSAGE_PAYLOAD_TYPES.file
+              msgToSave.meta.type !== EMessagePayloadTypes.file
             ) {
               msgInCollection = Object.assign({}, foundMsg, msgToSave);
               updateCollection = true;
@@ -2014,7 +2014,7 @@ const Websocket = ({
     addNewMessage: () => {
       let msg = {
         name: '',
-        type: MESSAGE_PAYLOAD_TYPES.no_body,
+        type: EMessagePayloadTypes.no_body,
         message: '',
         envelope: '',
         path: '',

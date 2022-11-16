@@ -35,7 +35,7 @@ import {
   createHandleConnectionExecutor,
 
   // pull
-  IPullslice,
+  IPullSlice,
   createPullActionSlice,
 
   // ui
@@ -69,7 +69,7 @@ interface IWebsocketStore
     IPlaygroundSlice,
     IConnectionsLogsSlice,
     IPushActionSlice,
-    IPullslice,
+    IPullSlice,
     IHandleConnectionExecutorSlice,
     IUiSlice {
   last: any;

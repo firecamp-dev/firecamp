@@ -20,7 +20,7 @@ import shallow from 'zustand/shallow';
 
 import { WebsocketContext } from '../../../../../WebSocket.context';
 
-import { MESSAGE_PAYLOAD_TYPES } from '../../../../../../constants';
+import { EMessagePayloadTypes } from '../../../../../../constants';
 
 import {
   useWebsocketStore,
@@ -179,7 +179,7 @@ const MessagePlayground = ({
 
   let [activeType, setActiveType] = useState(
     messageTypes.find((t) => t.id === message.meta.type) || {
-      id: MESSAGE_PAYLOAD_TYPES.no_body,
+      id: EMessagePayloadTypes.no_body,
       name: 'No body',
     }
   );
@@ -204,14 +204,14 @@ const MessagePlayground = ({
   let [selectedEnvelope, setSelectedEnvelope] = useState(envelopeDD[0]);
   let [isSelectedEnvelopeOpen, toggleSelectedEnvelopeOpen] = useState(false);
 
-  let prevType_ref = useRef(MESSAGE_PAYLOAD_TYPES.no_body);
+  let prevType_ref = useRef(EMessagePayloadTypes.no_body);
 
   let selectedMessageId_Ref = useRef(selectedMessageId);
 
   useEffect(() => {
     if (
-      activeType.id !== MESSAGE_PAYLOAD_TYPES.file &&
-      prevType_ref.current === MESSAGE_PAYLOAD_TYPES.file &&
+      activeType.id !== EMessagePayloadTypes.file &&
+      prevType_ref.current === EMessagePayloadTypes.file &&
       message.body !== ''
     ) {
       _updateMessage({ body: '' });
@@ -231,7 +231,7 @@ const MessagePlayground = ({
     if (!equal(messageBody, message.body)) {
       setMessageBody(message.body);
     } else if (
-      activeType.id === MESSAGE_PAYLOAD_TYPES.file &&
+      activeType.id === EMessagePayloadTypes.file &&
       messageBody !== message.body
     ) {
       setMessageBody(message.body);
@@ -250,7 +250,7 @@ const MessagePlayground = ({
       items: messageTypes
         ? _compact(
             messageTypes.map((item) => {
-              if (item.id !== MESSAGE_PAYLOAD_TYPES.no_body) {
+              if (item.id !== EMessagePayloadTypes.no_body) {
                 return Object.assign({}, item, {
                   onClick: () => {
                     // setActiveType(item || "");
@@ -272,11 +272,11 @@ const MessagePlayground = ({
       return type;
     });
     toggleSelectTypeDD(false);
-    if (type.id === MESSAGE_PAYLOAD_TYPES.no_body) {
+    if (type.id === EMessagePayloadTypes.no_body) {
       _updateMessage(
         Object.assign({}, initialPlaygroundMessage, {
           meta: Object.assign({}, initialPlaygroundMessage.meta, {
-            type: MESSAGE_PAYLOAD_TYPES.no_body,
+            type: EMessagePayloadTypes.no_body,
           }),
         })
       );
@@ -285,22 +285,22 @@ const MessagePlayground = ({
     }
 
     if (
-      type.id !== MESSAGE_PAYLOAD_TYPES.file &&
-      prevType_ref.current === MESSAGE_PAYLOAD_TYPES.file &&
+      type.id !== EMessagePayloadTypes.file &&
+      prevType_ref.current === EMessagePayloadTypes.file &&
       message.body !== ''
     ) {
       _updateMessage({
         body: '',
         meta: Object.assign({}, initialPlaygroundMessage.meta, {
-          type: MESSAGE_PAYLOAD_TYPES.file,
+          type: EMessagePayloadTypes.file,
         }),
       });
       setMessageBody('');
     } else if (
       message &&
       message.meta.envelope === '' &&
-      (type.id === MESSAGE_PAYLOAD_TYPES.arraybufferview ||
-        type.id === MESSAGE_PAYLOAD_TYPES.arraybuffer)
+      (type.id === EMessagePayloadTypes.arraybufferview ||
+        type.id === EMessagePayloadTypes.arraybuffer)
     ) {
       _updateMessage({
         meta: {
@@ -309,8 +309,8 @@ const MessagePlayground = ({
         },
       }); //TODO: check
     } else if (
-      type.id !== MESSAGE_PAYLOAD_TYPES.arraybufferview &&
-      type.id !== MESSAGE_PAYLOAD_TYPES.arraybuffer
+      type.id !== EMessagePayloadTypes.arraybufferview &&
+      type.id !== EMessagePayloadTypes.arraybuffer
     ) {
       _updateMessage({
         meta: {
@@ -354,22 +354,22 @@ const MessagePlayground = ({
 
     // console.log(message);
     switch (type.id) {
-      case MESSAGE_PAYLOAD_TYPES.text:
-      case MESSAGE_PAYLOAD_TYPES.json:
-      case MESSAGE_PAYLOAD_TYPES.arraybuffer:
-      case MESSAGE_PAYLOAD_TYPES.arraybufferview:
+      case EMessagePayloadTypes.text:
+      case EMessagePayloadTypes.json:
+      case EMessagePayloadTypes.arraybuffer:
+      case EMessagePayloadTypes.arraybufferview:
         return (
           <Editor // TODO: set completion/hover provider on WSTab mount
             autoFocus={true}
             key={tabData.id}
             language={
-              type.id === MESSAGE_PAYLOAD_TYPES.json ? 'json' : 'ife-text'
+              type.id === EMessagePayloadTypes.json ? 'json' : 'ife-text'
             }
             value={messageBody || ''}
             controlsConfig={{
               show:
-                activeType.id !== MESSAGE_PAYLOAD_TYPES.no_body &&
-                activeType.id !== MESSAGE_PAYLOAD_TYPES.file &&
+                activeType.id !== EMessagePayloadTypes.no_body &&
+                activeType.id !== EMessagePayloadTypes.file &&
                 typeof messageBody === 'string',
               posotion: 'down',
               collapsed: true,
@@ -396,7 +396,7 @@ const MessagePlayground = ({
           />
         );
         break;
-      case MESSAGE_PAYLOAD_TYPES.file:
+      case EMessagePayloadTypes.file:
         let file_name = '';
         if (messageBody && typeof messageBody !== 'string') {
           file_name = messageBody.name || '';
@@ -617,7 +617,7 @@ const MessagePlayground = ({
     if (e) {
       e.preventDefault();
     }
-    if (activeType.id === MESSAGE_PAYLOAD_TYPES.json) {
+    if (activeType.id === EMessagePayloadTypes.json) {
       try {
         let parsed = JSON.parse(messageBody);
         let strigified = JSON.stringify(parsed, null, 4);
@@ -656,8 +656,8 @@ const MessagePlayground = ({
               />
             </Dropdown>
             {activeType &&
-            (activeType.id === MESSAGE_PAYLOAD_TYPES.arraybuffer ||
-              activeType.id === MESSAGE_PAYLOAD_TYPES.arraybufferview) ? (
+            (activeType.id === EMessagePayloadTypes.arraybuffer ||
+              activeType.id === EMessagePayloadTypes.arraybufferview) ? (
               <Dropdown
                 isOpen={isSelectedEnvelopeOpen}
                 selected={selectedEnvelope?.name || ''}
@@ -696,8 +696,8 @@ const MessagePlayground = ({
           </TabHeader.Left>
           <TabHeader.Right>
             {
-              //activeType.id !== MESSAGE_PAYLOAD_TYPES.no_body &&
-              // activeType.id !== MESSAGE_PAYLOAD_TYPES.file &&
+              //activeType.id !== EMessagePayloadTypes.no_body &&
+              // activeType.id !== EMessagePayloadTypes.file &&
               !(
                 !playgroundTab?.meta?.isSaved &&
                 !playgroundTab?.meta?.hasChange
@@ -758,7 +758,7 @@ const MessagePlayground = ({
         </TabHeader>
       </Container.Header>
       <Container.Body className="with-divider">
-        {activeType.id === MESSAGE_PAYLOAD_TYPES.no_body ? (
+        {activeType.id === EMessagePayloadTypes.no_body ? (
           <Container.Empty>
             <QuickSelection menus={quickSelectionMenus} />
           </Container.Empty>

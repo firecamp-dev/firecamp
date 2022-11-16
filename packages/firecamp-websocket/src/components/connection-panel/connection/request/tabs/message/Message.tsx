@@ -3,7 +3,7 @@ import { RootContainer } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
 
-import { MESSAGE_PAYLOAD_TYPES } from '../../../../../../constants';
+import { EMessagePayloadTypes } from '../../../../../../constants';
 import MessagePlayground from './MessagePlayground';
 
 import {
@@ -13,23 +13,23 @@ import {
 
 const messageTypes = [
   {
-    id: MESSAGE_PAYLOAD_TYPES.text,
+    id: EMessagePayloadTypes.text,
     name: 'Text',
   },
   {
-    id: MESSAGE_PAYLOAD_TYPES.json,
+    id: EMessagePayloadTypes.json,
     name: 'JSON',
   },
   {
-    id: MESSAGE_PAYLOAD_TYPES.file,
+    id: EMessagePayloadTypes.file,
     name: 'File',
   },
   {
-    id: MESSAGE_PAYLOAD_TYPES.arraybuffer,
+    id: EMessagePayloadTypes.arraybuffer,
     name: 'Array buffer',
   },
   {
-    id: MESSAGE_PAYLOAD_TYPES.arraybufferview,
+    id: EMessagePayloadTypes.arraybufferview,
     name: 'Array buffer view',
   },
   {

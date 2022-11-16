@@ -130,19 +130,19 @@ export const createPushActionSlice = (
     // console.log({ state: get() });
 
     let request: IWebSocket = get().request;
-    let updatedReqeust: IPushPayload = {};
+    let updatedRequest: IPushPayload = {};
     if (pushAction.request) {
       // console.log({ pushAction, request });
       for (let key in pushAction.request) {
         // console.log({ key, 1: request[key], 2: pushAction.request[key] });
 
         if (key === '_root') {
-          updatedReqeust = {
-            ...updatedReqeust,
+          updatedRequest = {
+            ...updatedRequest,
             ..._object.pick(request, pushAction.request[key]),
           };
         } else if (key !== '_removed' && key in request) {
-          updatedReqeust[key] = _object.pick(
+          updatedRequest[key] = _object.pick(
             request[key],
             pushAction.request[key]
           );
@@ -150,7 +150,7 @@ export const createPushActionSlice = (
       }
     }
 
-    let pushPayload: IPushPayload = updatedReqeust;
+    let pushPayload: IPushPayload = updatedRequest;
 
     pushPayload._meta = {
       ...pushPayload._meta,
@@ -168,9 +168,9 @@ export const createPushActionSlice = (
       workspace_id: '',
       keys: pushAction,
     };
-    // console.log({ updatedReqeust });
+    // console.log({ updatedRequest });
 
-    return Promise.resolve(updatedReqeust);
+    return Promise.resolve(updatedRequest);
   },
 
   prepareRequestUpdatePushAction: (request: Partial<IWebSocket>) => {

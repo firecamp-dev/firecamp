@@ -20,14 +20,8 @@ import ConnectionPanel from './connection-panel/ConnectionPanel';
 import Emitter from './common/Emitter';
 // import MessageCollection from './collection/MessageCollection';
 import { WebsocketContext } from './WebSocket.context';
-import { REQUEST_CONNECTION, configState } from '../constants/StatePayloads';
-import {
-  EConnectionState,
-  KEYS_ON_SAVE_REQUEST,
-  MESSAGE_PAYLOAD_TYPES,
-  ON_CHANGE_ACTIONS,
-  STRINGS,
-} from '../constants';
+import { DefaultRequestConnection, DefaultConfigState } from '../constants/StatePayloads';
+import { EConnectionState, EMessagePayloadTypes } from '../constants';
 
 // store
 import {
@@ -51,11 +45,6 @@ export const CLIENT_ACTIONS = {
   OPEN_CODE_SNIPPET: 'OPEN_CODE_SNIPPET',
   OPEN_COLLECTION: 'OPEN_COLLECTION',
 };
-export const CONSTS = {
-  ON_CHANGE_ACTIONS,
-  EConnectionState,
-  KEYS_ON_SAVE_REQUEST,
-};
 
 const Websocket = ({
   firecampFunctions = {},
@@ -68,7 +57,7 @@ const Websocket = ({
   activeTab,
   platformComponents,
 }) => {
-  let { current: emitterRef } = useRef(new Emitter()); //TODO: remove later
+  let { current: emitterRef } = useRef(new Emitter({})); //TODO: remove later
   let { current: WSInstances_Ref } = useRef(new Map());
 
   let _noop = () => {};
@@ -243,15 +232,15 @@ const Websocket = ({
       );
 
       // merged request payload: merged existing request and pull payload request
-      let updatedReqeust = (await getMergedRequestByPullAction(
+      let updatedRequest = (await getMergedRequestByPullAction(
         pullPayload
       )) as IWebSocket;
 
-      // console.log({ 111: updatedReqeust });
+      // console.log({ 111: updatedRequest });
 
-      updatedReqeust = await normalizeRequestPayload(updatedReqeust, true);
+      updatedRequest = await normalizeRequestPayload(updatedRequest, true);
 
-      // console.log({ updatedReqeust, mergedPullAndLastRequest });
+      // console.log({ updatedRequest, mergedPullAndLastRequest });
 
       // set last value by pull action and request
       setLast({
@@ -261,11 +250,11 @@ const Websocket = ({
       });
 
       // get push action payload
-      let pushAction = await prepareRequestUpdatePushAction(updatedReqeust);
+      let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialiseRequest(updatedReqeust, true, pushAction, true, false);
+      initialiseRequest(updatedRequest, true, pushAction, true, false);
     } catch (error) {
       console.error({
         API: 'rest.handlePull',
@@ -359,7 +348,7 @@ const Websocket = ({
           // Add logic for init playgrounds by connections
           [defaultConnection.id]: {
             id: defaultConnection.id,
-            connectionState: EConnectionState.IDEAL,
+            connectionState: EConnectionState.Ideal,
             logFilters: {
               type: '',
             },
@@ -409,7 +398,7 @@ const Websocket = ({
 
       if (
         message.meta.type === 'no_body' ||
-        message.meta.type === MESSAGE_PAYLOAD_TYPES.file
+        message.meta.type === EMessagePayloadTypes.file
       ) {
         return;
       }
@@ -808,7 +797,7 @@ const Websocket = ({
       } = websocketStoreApi.getState();
 
       let newconnectionId = id();
-      let newReqConnection = Object.assign({}, REQUEST_CONNECTION);
+      let newReqConnection = Object.assign({}, DefaultRequestConnection);
 
       // Existing default connection
       let defaultConnection = req_connections.find((c) => c.is_default);
@@ -817,14 +806,14 @@ const Websocket = ({
         defaultConnection = req_connections[0];
       }
 
-      let queryParams = defaultConnection[STRINGS.URL.QUERY_PARAMS] || [];
+      let queryParams = defaultConnection['query_params'] || [];
       queryParams = queryParams.map((q) => Object.assign({}, q, { id: id() }));
 
       let headers = defaultConnection['headers'] || [];
       headers = headers.map((h) => Object.assign({}, h, { id: id() }));
 
       defaultConnection = Object.assign({}, defaultConnection, {
-        [STRINGS.URL.QUERY_PARAMS]: queryParams,
+        query_params: queryParams,
         headers,
       });
 
@@ -845,7 +834,7 @@ const Websocket = ({
 
       let connectionPlayground = {
         id: newconnectionId,
-        connectionState: EConnectionState.IDEAL,
+        connectionState: EConnectionState.Ideal,
         logFilters: {
           type: '',
         },
@@ -945,7 +934,7 @@ const Websocket = ({
               collectionId={tab?.request?._meta?.collection_id || ''}
               postComponents={platformComponents}
               onSaveRequest={onSave}
-              // platformContext={platformContext}
+              platformContext={platformContext}
               // onPasteCurl={onPasteCurl}
             />
           </Container.Header>
@@ -980,7 +969,7 @@ const withStore = (WrappedComponent) => {
     let initPayload = {
       request: {
         url: request.url || { raw: '' },
-        config: request.config || configState,
+        config: request.config || DefaultConfigState,
         connections: request.connections || [defaultConnection],
         meta: request.meta || {
           dir_orders: [],
@@ -1018,7 +1007,7 @@ const withStore = (WrappedComponent) => {
         // Add logic for init playgrounds by connections
         [defaultConnection.id]: {
           id: defaultConnection.id,
-          connectionState: EConnectionState.IDEAL,
+          connectionState: EConnectionState.Ideal,
           logFilters: {
             type: '',
           },

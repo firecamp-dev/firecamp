@@ -1,9 +1,9 @@
 import { IWebSocketConfig } from '@firecamp/types';
-import { EConnectionState, DEFAULT_HEADERS } from '.';
+import { EConnectionState, DefaultHeaders } from '.';
 
-export const REQUEST_CONNECTION = {
+export const DefaultRequestConnection = {
   id: '',
-  headers: DEFAULT_HEADERS || [],
+  headers: DefaultHeaders || [],
   query_params: [],
   is_default: false,
   name: '',
@@ -12,11 +12,11 @@ export const REQUEST_CONNECTION = {
     ping_interval: 0,
   },
 };
-export const RESPONSE_CONNECTION = {
+export const ResponseConnection = {
   id: '',
   name: '',
-  state: EConnectionState.IDEAL,
-  reconnect_attempt_left: 0,
+  state: EConnectionState.Ideal,
+  reconnectAttemptLeft: 0,
   logFilters: {
     type: '',
   },
@@ -25,7 +25,7 @@ export const RESPONSE_CONNECTION = {
    unread_messages_count: 0,
    */
 };
-export const INIT_LOG = {
+export const InitLog = {
   title: '',
   message: '',
   meta: {
@@ -38,7 +38,7 @@ export const INIT_LOG = {
   },
 };
 
-export const configState: IWebSocketConfig = {
+export const DefaultConfigState: IWebSocketConfig = {
   protocols: [],
   reconnect: false,
   reconnect_attempts: 3,

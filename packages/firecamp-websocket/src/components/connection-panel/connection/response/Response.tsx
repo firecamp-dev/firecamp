@@ -1,26 +1,20 @@
-//@ts-nocheck
 
-import { useState, useEffect, memo, useContext } from 'react';
-import { Container, Column, Tabs } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
+import { memo } from 'react';
+import { Container, Column } from '@firecamp/ui-kit';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
-import shallow from 'zustand/shallow';
 
-import { PANEL } from '../../../../constants';
 import LogTable from './LogTable';
+import { EPanel } from '../../../../constants';
 
-import { useWebsocketStore } from '../../../../store';
-
-const Response = ({ visiblePanel = '', setVisiblePanel = () => {}}) => {
-
-  let handleFS = useFullScreenHandle();
-  let _setVisiblePanel = (e) => {
+const Response = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
+  const handleFS = useFullScreenHandle();
+  const _setVisiblePanel = (e) => {
     if (e) e.preventDefault;
 
-    if (visiblePanel === PANEL.RESPONSE) {
-      setVisiblePanel(PANEL.ALL);
+    if (visiblePanel === EPanel.Response) {
+      setVisiblePanel(EPanel.All);
     } else {
-      setVisiblePanel(PANEL.RESPONSE);
+      setVisiblePanel(EPanel.Response);
     }
   };
 
@@ -29,10 +23,7 @@ const Response = ({ visiblePanel = '', setVisiblePanel = () => {}}) => {
       <FullScreen handle={handleFS}>
         <Container>
           <Container.Header>
-            <div
-              className="fc-btn-collapse v2"
-              onClick={_setVisiblePanel}
-            >
+            <div className="fc-btn-collapse v2" onClick={_setVisiblePanel}>
               <span className="icon-caret"></span>
             </div>
           </Container.Header>

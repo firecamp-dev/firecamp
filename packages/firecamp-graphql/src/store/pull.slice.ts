@@ -7,7 +7,7 @@ import { IPushAction, IPushPayload } from './pushAction.slice';
  * Referance:
  */
 
-interface IPullslice {
+interface IPullSlice {
   pull?: IPushPayload;
 
   /**
@@ -18,7 +18,7 @@ interface IPullslice {
   ) => Promise<IGraphQL> | PromiseRejectedResult; //define type for pullPayload here
 }
 
-const createPullActionSlice = (set, get): IPullslice => ({
+const createPullActionSlice = (set, get): IPullSlice => ({
   pull: {
     _action: {
       type: EPushActionType.Update,
@@ -40,15 +40,15 @@ const createPullActionSlice = (set, get): IPullslice => ({
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);
       let existingRequest: IGraphQL = get().request;
-      let updatedReqeust: IGraphQL = existingRequest;
+      let updatedRequest: IGraphQL = existingRequest;
       let pullAction: IPushAction = pullActionPayload._action.keys;
 
       for (let key in pullAction) {
         switch (key) {
           // manage _root keys
           case '_root':
-            updatedReqeust = Object.assign(
-              updatedReqeust,
+            updatedRequest = Object.assign(
+              updatedRequest,
               _object.pick(pullPayload, pullAction[key])
             );
             break;
@@ -57,8 +57,8 @@ const createPullActionSlice = (set, get): IPullslice => ({
           case 'meta':
           case 'url':
             if (key in pullPayload) {
-              updatedReqeust[key] = _object.mergeDeep(
-                updatedReqeust[key],
+              updatedRequest[key] = _object.mergeDeep(
+                updatedRequest[key],
                 _object.pick(pullPayload[key], pullAction[key])
               ) as IGraphQL;
             }
@@ -71,12 +71,12 @@ const createPullActionSlice = (set, get): IPullslice => ({
           // do noting
         }
       }
-      console.log('getMergedRequestByPullAction:', { updatedReqeust });
+      console.log('getMergedRequestByPullAction:', { updatedRequest });
 
-      return Promise.resolve(updatedReqeust);
+      return Promise.resolve(updatedRequest);
     }
     return Promise.reject('Invalid pull payload');
   },
 });
 
-export { IPullslice, createPullActionSlice };
+export { IPullSlice, createPullActionSlice };

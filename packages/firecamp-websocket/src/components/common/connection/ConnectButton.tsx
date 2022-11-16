@@ -1,18 +1,18 @@
 import { Button } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 
-import { EConnectionState } from '../../../constants';
 import CloseConnection from './CloseConnection';
+import { EConnectionState } from '../../../constants';
 
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
 
-const ConnectionButton = () => {
+const ConnectButton = () => {
   let { connectionState, activePlayground, connect, disconnect } =
     useWebsocketStore(
       (s: IWebsocketStore) => ({
         connectionState:
           s.playgrounds[s.runtime.activePlayground]?.connectionState ||
-          EConnectionState.IDEAL,
+          EConnectionState.Ideal,
         activePlayground: s.runtime.activePlayground,
         connect: s.connect,
         disconnect: s.disconnect,
@@ -22,7 +22,7 @@ const ConnectionButton = () => {
 
   let _renderConnectionButton = () => {
     switch (connectionState) {
-      case EConnectionState.OPEN:
+      case EConnectionState.Open:
         return (
           <CloseConnection
             buttonId={`close-connection-${activePlayground}`}
@@ -31,7 +31,7 @@ const ConnectionButton = () => {
           />
         );
         break;
-      case EConnectionState.CONNECTING:
+      case EConnectionState.Connecting:
         return (
           <Button
             text="Connecting"
@@ -47,7 +47,7 @@ const ConnectionButton = () => {
           />
         );
         break;
-      case EConnectionState.CLOSING:
+      case EConnectionState.Closing:
         return (
           <Button
             text="Connect"
@@ -62,7 +62,7 @@ const ConnectionButton = () => {
           />
         );
         break;
-      case EConnectionState.CLOSED:
+      case EConnectionState.Closed:
         return (
           <Button
             text="Disconnected"
@@ -96,4 +96,4 @@ const ConnectionButton = () => {
 
   return <div className="flex items-center">{_renderConnectionButton()}</div>;
 };
-export default ConnectionButton;
+export default ConnectButton;

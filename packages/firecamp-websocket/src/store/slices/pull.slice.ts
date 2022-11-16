@@ -3,11 +3,7 @@ import { _object } from '@firecamp/utils';
 
 import { IPushAction, IPushPayload } from './push-action/pushAction.slice';
 
-/**
- * Referance:
- */
-
-interface IPullslice {
+interface IPullSlice {
   pull?: IPushPayload;
 
   /**
@@ -18,7 +14,7 @@ interface IPullslice {
   ) => Promise<IWebSocket> | PromiseRejectedResult; //define type for pullPayload here
 }
 
-const createPullActionSlice = (set, get): IPullslice => ({
+const createPullActionSlice = (set, get): IPullSlice => ({
   pull: {
     _action: {
       type: EPushActionType.Update,
@@ -40,7 +36,7 @@ const createPullActionSlice = (set, get): IPullslice => ({
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);
       let existingRequest: IWebSocket = get().request;
-      let updatedReqeust: IWebSocket = existingRequest;
+      let updatedRequest: IWebSocket = existingRequest;
       let pullAction: IPushAction = pullActionPayload._action.keys;
       let requestPullAction = pullAction.request;
 
@@ -48,8 +44,8 @@ const createPullActionSlice = (set, get): IPullslice => ({
         switch (key) {
           // manage _root keys
           case '_root':
-            updatedReqeust = Object.assign(
-              updatedReqeust,
+            updatedRequest = Object.assign(
+              updatedRequest,
               _object.pick(pullPayload, requestPullAction[key])
             );
             break;
@@ -59,8 +55,8 @@ const createPullActionSlice = (set, get): IPullslice => ({
           case 'url':
           case 'config':
             if (key in pullPayload) {
-              updatedReqeust[key] = _object.mergeDeep(
-                updatedReqeust[key],
+              updatedRequest[key] = _object.mergeDeep(
+                updatedRequest[key],
                 _object.pick(pullPayload[key], requestPullAction[key])
               ) as IWebSocket;
             }
@@ -73,12 +69,12 @@ const createPullActionSlice = (set, get): IPullslice => ({
           // do noting
         }
       }
-      console.log('getMergedRequestByPullAction:', { updatedReqeust });
+      console.log('getMergedRequestByPullAction:', { updatedRequest });
 
-      return Promise.resolve(updatedReqeust);
+      return Promise.resolve(updatedRequest);
     }
     return Promise.reject('Invalid pull payload');
   },
 });
 
-export { IPullslice, createPullActionSlice };
+export { IPullSlice, createPullActionSlice };

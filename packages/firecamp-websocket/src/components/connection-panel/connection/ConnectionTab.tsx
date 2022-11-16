@@ -3,9 +3,7 @@ import {
   Container,
   Column,
   Resizable,
-  Tabs,
   Row,
-  TabHeader,
   SecondaryTab,
 } from '@firecamp/ui-kit';
 import classnames from 'classnames';
@@ -19,11 +17,11 @@ import ParamsTab from './request/tabs/connections/ParamsTab';
 
 import Message from './request/tabs/message/Message';
 import Response from './response/Response';
-import ConnectionButton from '../../common/connection/ConnectionButton';
-import { PANEL } from '../../../constants';
+import ConnectButton from '../../common/connection/ConnectButton';
+import { EPanel } from '../../../constants';
 import { useWebsocketStore } from '../../../store';
 
-let bodyTabs = [
+const bodyTabs = [
   {
     id: 'playground',
     name: 'Playground',
@@ -39,7 +37,7 @@ let bodyTabs = [
 ];
 
 const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
-  let { activePlayground, connection, updateConnection } = useWebsocketStore(
+  const { activePlayground, connection, updateConnection } = useWebsocketStore(
     (s) => ({
       activePlayground: s.runtime.activePlayground,
       connection: s.request.connections.find(
@@ -49,7 +47,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     }),
     shallow
   );
-  let [activeBodyTab, onSelectBodyTab] = useState('playground');
+  const [activeBodyTab, onSelectBodyTab] = useState('playground');
 
   useEffect(() => {
     if (_misc.firecampAgent() === EFirecampAgent.desktop) {
@@ -60,19 +58,19 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     }
   }, []);
 
-  let _onChangeConfig = (key, value) => {
+  const _onChangeConfig = (key, value) => {
     updateConnection(activePlayground, 'config', { [key]: value });
   };
 
-  let _onChangeHeaders = (headers = []) => {
+  const _onChangeHeaders = (headers = []) => {
     updateConnection(activePlayground, 'headers', headers);
   };
 
-  let _onChangeParams = (query_params = []) => {
+  const _onChangeParams = (query_params = []) => {
     updateConnection(activePlayground, 'query_params', query_params);
   };
 
-  let _renderBody = () => {
+  const _renderBody = () => {
     switch (activeBodyTab) {
       case 'playground':
         return <Playground key={activePlayground} />;
@@ -110,7 +108,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     }
   };
 
-  let Playground = () => {
+  const Playground = () => {
     return (
       <Row flex={1} overflow="auto" className=" with-divider h-full">
         <Column className="h-full">
@@ -126,13 +124,13 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         <Row flex={1} overflow="auto" className=" with-divider h-full">
           <Column className="h-full">
             <div className="z-20 relative">
-            <SecondaryTab
+              <SecondaryTab
                 className="flex items-center"
                 key="tabs"
                 list={bodyTabs || []}
                 activeTab={activeBodyTab || ''}
                 onSelect={onSelectBodyTab}
-                additionalComponent={<ConnectionButton />}
+                additionalComponent={<ConnectButton />}
               />
             </div>
             {_renderBody()}
@@ -144,7 +142,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
             minWidth="20%"
             left={true}
             className={classnames(
-              { 'fc-collapsed': visiblePanel === PANEL.RESPONSE },
+              { 'fc-collapsed': visiblePanel === EPanel.Response },
               'fc-collapsable'
             )}
           >
@@ -158,4 +156,3 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   );
 };
 export default memo(ConnectionTab);
-

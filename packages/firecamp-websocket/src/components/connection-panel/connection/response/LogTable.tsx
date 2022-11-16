@@ -14,12 +14,12 @@ import shallow from 'zustand/shallow';
 import classnames from 'classnames';
 
 import { useWebsocketStore } from '../../../../store';
-import { LogTypes } from '../../../../constants';
+import { ELogTypes } from '../../../../constants';
 
 const logTypes = {
-  System: LogTypes.SYSTEM,
-  Send: LogTypes.SEND,
-  Receive: LogTypes.RECEIVE,
+  System: ELogTypes.System,
+  Send: ELogTypes.Send,
+  Receive: ELogTypes.Receive,
 };
 
 const LogTable = () => {
@@ -89,11 +89,11 @@ const LogTable = () => {
         id={`ws-io-response-log-${activePlayground}-${id}`}
         className={classnames(
           'td-icon',
-          { 'iconv2-to-server-icon': type == LogTypes.SEND },
-          { 'iconv2-from-server-icon': type == LogTypes.RECEIVE },
-          { 'icon-disk': type == LogTypes.SYSTEM }
+          { 'iconv2-to-server-icon': type == ELogTypes.Send },
+          { 'iconv2-from-server-icon': type == ELogTypes.Receive },
+          { 'icon-disk': type == ELogTypes.System }
         )}
-        data-tip={type !== LogTypes.SYSTEM ? id || '' : ''}
+        data-tip={type !== ELogTypes.System ? id || '' : ''}
       ></span>
     );
   };
@@ -129,7 +129,7 @@ const LogTable = () => {
       accessor: 'message',
       Cell: ({ value, cell, ...rest }) => {
         let row = cell.row.original;
-        if (row.meta.type == LogTypes.SYSTEM) {
+        if (row.meta.type == ELogTypes.System) {
           return <span dangerouslySetInnerHTML={{ __html: row.title }} />;
         } else {
           return (
@@ -295,19 +295,19 @@ const LogPreview = ({ activePlayground = '', row = {} }) => {
                         'td-icon',
                         {
                           'iconv2-to-server-icon':
-                            row.meta.type == LogTypes.SEND,
+                            row.meta.type == ELogTypes.Send,
                         },
                         {
                           'iconv2-from-server-icon':
-                            row.meta.type == LogTypes.RECEIVE,
+                            row.meta.type == ELogTypes.Receive,
                         },
-                        { 'icon-disk': row.meta.type == LogTypes.SYSTEM }
+                        { 'icon-disk': row.meta.type == ELogTypes.System }
                       )}
                     ></span>,
                     <span className="font-sm" key="event-name">
                       {row.meta.event}
                     </span>,
-                    row.meta.type !== LogTypes.SYSTEM ? (
+                    row.meta.type !== ELogTypes.System ? (
                       <div
                         className="font-xs  text-appForegroundInActive "
                         key={'event-id'}

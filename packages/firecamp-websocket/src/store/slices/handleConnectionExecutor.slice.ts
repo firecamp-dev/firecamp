@@ -5,7 +5,7 @@ import Executor, {
 import { TId, IWebSocketMessage, EFirecampAgent } from '@firecamp/types';
 import { EConnectionState } from '../../constants';
 import { IPlayground } from './playgrounds.slice';
-import { _misc, _object } from '@firecamp/utils'
+import { _misc, _object } from '@firecamp/utils';
 
 interface IHandleConnectionExecutorSlice {
   connect: (connection_id: TId) => void;
@@ -44,15 +44,16 @@ const createHandleConnectionExecutor = (
         certificates: [], // TODO: add ssl certi
       };
 
-      const executor: IExecutor = _misc.firecampAgent() === EFirecampAgent.desktop
-        ? window.fc.websocket(options)
-        : new Executor(options);
+      const executor: IExecutor =
+        _misc.firecampAgent() === EFirecampAgent.desktop
+          ? window.fc.websocket(options)
+          : new Executor(options);
 
       // on open
       executor.onOpen(() => {
         get()?.changePlaygroundConnectionState(
           connection_id,
-          EConnectionState.OPEN
+          EConnectionState.Open
         );
       });
 
@@ -60,7 +61,7 @@ const createHandleConnectionExecutor = (
       executor.onClose(() => {
         get()?.changePlaygroundConnectionState(
           connection_id,
-          EConnectionState.CLOSED
+          EConnectionState.Closed
         );
       });
 
@@ -68,7 +69,7 @@ const createHandleConnectionExecutor = (
       executor.onConnecting(() => {
         get()?.changePlaygroundConnectionState(
           connection_id,
-          EConnectionState.CONNECTING
+          EConnectionState.Connecting
         );
       });
 
@@ -99,7 +100,7 @@ const createHandleConnectionExecutor = (
         existingPlayground &&
         existingPlayground?.id === connection_id &&
         existingPlayground.executor &&
-        existingPlayground.connectionState === EConnectionState.OPEN
+        existingPlayground.connectionState === EConnectionState.Open
       ) {
         // disconnect
         existingPlayground.executor?.disconnect(code, reason);
@@ -124,13 +125,12 @@ const createHandleConnectionExecutor = (
        * 2. history
        */
 
-      let existingPlayground: IPlayground =
-        get()?.playgrounds?.[connection_id];
+      let existingPlayground: IPlayground = get()?.playgrounds?.[connection_id];
       if (
         existingPlayground &&
         existingPlayground?.id === connection_id &&
         existingPlayground.executor &&
-        existingPlayground.connectionState === EConnectionState.OPEN
+        existingPlayground.connectionState === EConnectionState.Open
       ) {
         // TODO: check if connection open or not. if not then executor will send log with error message
 

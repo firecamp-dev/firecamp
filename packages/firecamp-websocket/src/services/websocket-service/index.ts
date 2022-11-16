@@ -1,4 +1,3 @@
-import _ from 'underscore';
 import {
   IWebSocket,
   ERequestTypes,
@@ -14,7 +13,7 @@ import { nanoid as id } from 'nanoid';
 
 import { IUiRequestPanel } from '../../store';
 import { defaultConnectionState } from '../../constants/connection';
-import { configState } from '../../constants/StatePayloads';
+import { DefaultConfigState } from '../../constants/StatePayloads';
 
 export const prepareUIRequestPanelState = (
   request: Partial<IWebSocket>
@@ -151,11 +150,11 @@ export const normalizeRequestPayload = (
   // Validate config
   if (config) {
     requestPayload['config'] = _object.mergeDeep(
-      configState,
+      DefaultConfigState,
       request['config']
     );
   } else {
-    requestPayload['config'] = configState;
+    requestPayload['config'] = DefaultConfigState;
   }
 
   // console.log({ requestPayload });

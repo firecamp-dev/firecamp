@@ -22,7 +22,7 @@ import DirectoryNode from './DirectoryNode';
 import MessageNode from './MessageNode';
 
 import { WebsocketContext } from '../WebSocket.context';
-import { MESSAGE_PAYLOAD_TYPES } from '../../constants';
+import { EMessagePayloadTypes } from '../../constants';
 
 import CollectionDNDfn from '@firecamp/ui-kit/src/components/collection/utils/dnd/Collection';
 
@@ -187,8 +187,8 @@ const MessageCollection = ({ tabData = {} }) => {
       if (
         playgroundMessage.meta &&
         (playgroundMessage.meta.type ===
-          MESSAGE_PAYLOAD_TYPES.arraybufferview ||
-          playgroundMessage.meta.type === MESSAGE_PAYLOAD_TYPES.arraybuffer) &&
+          EMessagePayloadTypes.arraybufferview ||
+          playgroundMessage.meta.type === EMessagePayloadTypes.arraybuffer) &&
         (playgroundMessage.meta.envelope === '' ||
           !playgroundMessage.meta.envelope)
       ) {
