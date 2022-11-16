@@ -53,7 +53,7 @@ const Button: FC<IButton> = ({
                     'flex-row': iconLeft,
                     'flex-row-reverse': iconRight,
                     'hover:!bg-focusColor': ghost,
-                    'cursor-default': (domProps.hasOwnProperty('disabled') && domProps.disabled)
+                    'cursor-default': !!domProps?.disabled
                 },
                 className
             )}

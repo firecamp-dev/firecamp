@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   FC,
   MutableRefObject,
@@ -223,9 +224,9 @@ const Table: FC<ITable<any>> = ({
             {columns.map((c, i) => {
               return (
                 <Th style={{ 
-                  width: c.overflowColumn ? '100%' : parseInt(c.width),
+                  width: c.resizeWithContainer ? '100%' : parseInt(c.width),
                   minWidth: (
-                     (!c.fixedWidth && c.overflowColumn &&
+                     (!c.fixedWidth && c.resizeWithContainer &&
                   containerWidth > tableRef.current?.clientWidth) ? 
                       parseInt(c.width) +
                       (containerWidth - tableRef.current.clientWidth - 4) :
@@ -388,6 +389,7 @@ const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
         // Add a resizer element to the column
         const resizer = document.createElement('div');
         resizer.classList.add('pt-resizer');
+        resizer.dataset.testid = "col-resizer";
 
         // Set the height
         resizer.style.height = `${table.offsetHeight}px`;

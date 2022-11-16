@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FC, useEffect, useRef, memo } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';

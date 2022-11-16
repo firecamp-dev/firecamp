@@ -1,31 +1,6 @@
 import { _array } from '@firecamp/utils';
 import BasicTable from './BasicTable';
-
-type FormData = {
-  key: string;
-  value: string;
-  description: string;
-  disable?: boolean;
-};
-
-export const defaultData: FormData[] = [
-  {
-    key: 'name',
-    value: 'Elon',
-    description: 'The name of user',
-    disable: true,
-  },
-  {
-    key: 'startup',
-    value: 'SpaceX',
-    description: 'The space company',
-  },
-  {
-    key: 'founded',
-    value: '2004',
-    description: 'The year of founded',
-  },
-];
+import { defaultData } from '../../../__mocks__/testData';
 
 export default {
   title: 'UI-Kit/Table/BasicTable',
@@ -44,8 +19,8 @@ const Template = ({...args}) => {
 export const EmptyRow = Template.bind({});
 EmptyRow.args = {};
 
-export const BasicData = Template.bind({});
-BasicData.args = {
+export const BasicTableData = Template.bind({});
+BasicTableData.args = {
   rows: defaultData,
   onChange: (value: any) => console.log(`change event`, value),
   onMount: (value: any) => console.log(`mount event`, value, value.getRows())

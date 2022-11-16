@@ -1,5 +1,5 @@
 import { _array } from '@firecamp/utils';
-import { defaultData } from './BasicTable.stories';
+import { defaultData } from '../../../__mocks__/testData';
 import MultipartTable from './MultipartTable';
 
 export default {

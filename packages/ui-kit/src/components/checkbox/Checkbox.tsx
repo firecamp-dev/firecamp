@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FC } from 'react';
 import cx from 'classnames';
 import { VscCheck } from '@react-icons/all-files/vsc/VscCheck';

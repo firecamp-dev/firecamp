@@ -1,6 +1,6 @@
 import { _array } from '@firecamp/utils';
 import { useState } from 'react';
-import { defaultData } from './BasicTable.stories';
+import { defaultData } from '../../../__mocks__/testData';
 import BulkEditTable from './BulkEditTable';
 
 export default {

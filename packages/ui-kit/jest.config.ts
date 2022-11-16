@@ -16,7 +16,7 @@ const config: Config = {
   },
   transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   moduleNameMapper: {
-     "\\.(css|sass)$": "<rootDir>/__mocks__/styleMock.ts",
+     "\\.(css|sass|scss)$": "<rootDir>/__mocks__/styleMock.ts",
      "^uuid$": "uuid",
      "^nanoid(/(.*)|$)": "nanoid$1",
   },

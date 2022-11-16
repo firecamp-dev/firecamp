@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
@@ -27,17 +28,10 @@ const BasicTable = ({
       key: 'description',
       name: 'Description',
       width: '150px',
-      overflowColumn: true
+      resizeWithContainer: true
     },
     { id: 'remove', key: '', name: '', width: 20, fixedWidth: true },
   ];
-
-  const handleDrag = (a) => {
-    console.log(a);
-  };
-  const handleDrop = (a) => {
-    console.log(a);
-  };
 
   const renderCell = (
     column,
@@ -52,9 +46,10 @@ const BasicTable = ({
     switch (column.id) {
       case 'select':
         return (
-          <div className="flex">
-            <span
-              draggable={options.allowSort}
+          <div className={cx("flex",{"justify-center":!options.allowSort})} >
+            {options.allowSort && (<span
+              className="flex"
+              draggable={true}
               onDragStart={(e) => {
                 // console.log(e, trRef);
                 // const td = trRef.current.firstChild;
@@ -63,10 +58,9 @@ const BasicTable = ({
                 // else handleDrag(row.index);
                 handleDrag(row, rowIndex);
               }}
-              className={cx("flex", {"opacity-50 cursor-default": !options.allowSort})}
             >
               <GrDrag opacity={0.3} />
-            </span>
+            </span>)}
 
             <Checkbox
               isChecked={!cellValue}
@@ -167,8 +161,6 @@ const BasicTable = ({
             apiRef.current = tApi;
           }
         }}
-        handleDrag={handleDrag}
-        handleDrop={handleDrop}
         options={options}
       />
 

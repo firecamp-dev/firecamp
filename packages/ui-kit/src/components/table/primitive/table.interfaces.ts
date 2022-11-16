@@ -50,7 +50,7 @@ export interface IColumn {
   key: string;
   width?: string;
   fixedWidth?: boolean;
-  overflowColumn?: boolean;
+  resizeWithContainer?: boolean;
 }
 
 export type TTr = {
