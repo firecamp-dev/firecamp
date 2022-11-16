@@ -141,10 +141,9 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
             maxWidth="60%"
             minWidth="20%"
             left={true}
-            className={classnames(
-              { 'fc-collapsed': visiblePanel === EPanel.Response },
-              'fc-collapsable'
-            )}
+            className={classnames({
+              'fc-collapsed': visiblePanel === EPanel.Response,
+            })}
           >
             <Column className="h-full">
               <Response key={activePlayground} />

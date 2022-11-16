@@ -1,25 +1,22 @@
-//@ts-nocheck
-
-import { Children, useState, useRef, useContext, useEffect, Fragment, useMemo } from 'react';
 import {
-  // Collection,
-  MultiLineIFE,
+  useState,
+  useRef,
+  useContext,
+  useEffect,
+  useMemo,
+} from 'react';
+import {
   Input,
   Container,
+  Column,
   TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
-  EButtonIconPosition,
-  Column,
-  Resizable,
+  Resizable
 } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import shallow from 'zustand/shallow';
 
-import DirectoryNode from './DirectoryNode';
-import MessageNode from './MessageNode';
 
 import { WebsocketContext } from '../WebSocket.context';
 import { EMessagePayloadTypes } from '../../constants';
@@ -30,10 +27,8 @@ import { useWebsocketStore } from '../../store';
 
 const MessageCollection = ({ tabData = {} }) => {
   let CollectionAPI = useRef({});
-  let {
-    ctx_playgroundMessageFns,
-    ctx_updateCollectionFns,
-  } = useContext(WebsocketContext);
+  let { ctx_playgroundMessageFns, ctx_updateCollectionFns } =
+    useContext(WebsocketContext);
 
   let { addNewMessage } = ctx_playgroundMessageFns;
 
@@ -69,24 +64,22 @@ const MessageCollection = ({ tabData = {} }) => {
     [playground, activePlayground]
   );
 
-  let [collection, setCollection] = useState(
-    // prepare(
-    //   prop_collection.directories || [],
-    //   prop_collection.messages || [],
-    //   meta
-    // ).collection
-  );
+  let [collection, setCollection] = useState();
+  // prepare(
+  //   prop_collection.directories || [],
+  //   prop_collection.messages || [],
+  //   meta
+  // ).collection
   let [activeDir, setActiveDir] = useState({ path: './', _meta: { id: '' } });
   let [selectedMessage, selectMessage] = useState(selectedMessageId);
   let [showCollection, toggleShowCollection] = useState(true);
 
   useEffect(() => {
     // console.log(`prop_collection.messages `, prop_collection.messages)
-    let { collection: newCollection } = prepare(
-      // prop_collection.directories || [],
-      // prop_collection.messages || [],
-      // meta
-    );
+    let { collection: newCollection } = prepare();
+    // prop_collection.directories || [],
+    // prop_collection.messages || [],
+    // meta
     setCollection(newCollection);
   }, [prop_collection.directories, prop_collection.messages, meta]);
 
@@ -97,13 +90,10 @@ const MessageCollection = ({ tabData = {} }) => {
     }
   }, [playground]);
 
-  useEffect(
-    () => {
-      CollectionAPI?.current?._clearSelections();
-      CollectionAPI?.current?._setSelection([selectedMessageId]);
-    },
-    [selectedMessageId]
-  );
+  useEffect(() => {
+    CollectionAPI?.current?._clearSelections();
+    CollectionAPI?.current?._setSelection([selectedMessageId]);
+  }, [selectedMessageId]);
 
   let _addDirectory = (dir) => {
     addDirectory(dir);
@@ -121,11 +111,7 @@ const MessageCollection = ({ tabData = {} }) => {
       });
       selectMessage(null);
 
-      if (
-        collectionNode &&
-        !collectionNode._meta.id &&
-        !collectionNode.meta
-      ) {
+      if (collectionNode && !collectionNode._meta.id && !collectionNode.meta) {
         _resetPlayground();
       }
     } else {
@@ -186,8 +172,7 @@ const MessageCollection = ({ tabData = {} }) => {
 
       if (
         playgroundMessage.meta &&
-        (playgroundMessage.meta.type ===
-          EMessagePayloadTypes.arraybufferview ||
+        (playgroundMessage.meta.type === EMessagePayloadTypes.arraybufferview ||
           playgroundMessage.meta.type === EMessagePayloadTypes.arraybuffer) &&
         (playgroundMessage.meta.envelope === '' ||
           !playgroundMessage.meta.envelope)
@@ -362,11 +347,7 @@ const MessageCollection = ({ tabData = {} }) => {
             key: 'meta',
             value: { ...from.meta, [orderType]: sourceOrders },
           });
-        } else if (
-          from.isRoot === true &&
-          to.isRoot !== true &&
-          to._meta.id
-        ) {
+        } else if (from.isRoot === true && to.isRoot !== true && to._meta.id) {
           changeMeta({ key: orderType, value: sourceOrders });
           updateDirectory(to._meta.id, {
             key: 'meta',
@@ -423,10 +404,7 @@ const MessageCollection = ({ tabData = {} }) => {
       height="100%"
       flex="none"
       right={true}
-      className={classnames(
-        { 'fc-collapsed': !showCollection },
-        'fc-collapsable'
-      )}
+      className={classnames({ 'fc-collapsed': !showCollection })}
     >
       <Column>
         <Container className="with-divider">
@@ -441,68 +419,7 @@ const MessageCollection = ({ tabData = {} }) => {
             />
           </Container.Header>
           <Container.Body>
-            {/* <Collection
-              overflow={'auto'}
-              data={collection}
-              primaryKey={'id'}
-              showTreeLine={true}
-              onNodeFocus={_onNodeFocus}
-              defaultSelectedIds={[]}
-              minHeight={'200px'}
-              onLoad={(col) => {
-                CollectionAPI.current = col;
-
-                setTimeout(() => {}, 5000);
-              }}
-              nodeRenderer={({
-                isDirectory,
-                item,
-                isExpanded,
-                classes,
-                getNodeProps,
-                toggleRenaming,
-                setRef,
-                isRenaming,
-                renameComp,
-              }) => {
-                if (isDirectory) {
-                  return (
-                    <DirectoryNode
-                      item={item}
-                      isOpen={isExpanded}
-                      className={classes}
-                      icon="folder"
-                      onDelete={_onRemoveDirectory}
-                      toggleRenaming={toggleRenaming}
-                      setRef={setRef}
-                      isRenaming={isRenaming}
-                      renameComp={renameComp}
-                      {...getNodeProps()}
-                    />
-                  );
-                  // return <div className={classes}> {item.name}</div>;
-                } else {
-                  return (
-                    <MessageNode
-                      item={item}
-                      className={classes}
-                      onSend={_onSendMessage}
-                      onDelete={_onRemoveMessage}
-                      toggleRenaming={toggleRenaming}
-                      setRef={setRef}
-                      isRenaming={isRenaming}
-                      renameComp={renameComp}
-                      {...getNodeProps()}
-                    />
-                  );
-                }
-              }}
-              onNodeRename={(node) => {
-                _onRenameCollectionNode(node);
-              }}
-              onSort={() => {}}
-              onDND={handleCollectionDND}
-            /> */}
+   
           </Container.Body>
         </Container>
       </Column>
@@ -528,21 +445,21 @@ const MessageCollectionHeader = ({
   resetPathOnCloseAddDir = () => {},
   id = '',
 }) => {
-  let [directoryName, setDirectoryName] = useState('');
-  let [showAddDirCmp, toggleAddDirCmp] = useState(false);
-  let [focusedNode, setFocusedNode] = useState({ _relative_path: './' });
+  const [directoryName, setDirectoryName] = useState('');
+  const [showAddDirCmp, toggleAddDirCmp] = useState(false);
+  const [focusedNode, setFocusedNode] = useState({ _relative_path: './' });
 
   /*useEffect(() => {
    toggleAddDirCmp(!!isCollectionEmpty);
    }, [isCollectionEmpty]);*/
 
-  let _handleChangeName = (e) => {
+   const _handleChangeName = (e) => {
     e.preventDefault();
     let { value } = e.target;
     setDirectoryName(value);
   };
 
-  let _onAdd = (e) => {
+  const _onAdd = (e) => {
     if (e) {
       e.preventDefault();
     }
@@ -553,7 +470,7 @@ const MessageCollectionHeader = ({
     setDirectoryName('');
   };
 
-  let _onKeyDown = (e) => {
+  const _onKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
       _onAdd(e);
@@ -563,7 +480,7 @@ const MessageCollectionHeader = ({
     }
   };
 
-  let _toggleAddDirCmp = (value = false) => {
+  const _toggleAddDirCmp = (value = false) => {
     toggleAddDirCmp(value);
     if (value === false) {
       setFocusedNode({ _relative_path: './' });
@@ -577,15 +494,15 @@ const MessageCollectionHeader = ({
         <div className="message-collection-header-title">Collection</div>
         <TabHeader.Right>
           <Button
-            size={EButtonSize.Small}
-            color={EButtonColor.Secondary}
-            transparent={true}
-            ghost={true}
-            iconPosition={EButtonIconPosition.Left}
             icon={<VscNewFolder className="toggle-arrow" size={12} />}
             id={`add_directory_icon-${id}`}
             onClick={() => _toggleAddDirCmp(!showAddDirCmp)}
             tooltip={'add directory'}
+            secondary
+            sm
+            transparent
+            ghost
+            iconLeft
           />
         </TabHeader.Right>
       </TabHeader>
@@ -608,17 +525,16 @@ const MessageCollectionHeader = ({
               <Button
                 key={'directory-add-button'}
                 text="Add"
-                color={EButtonColor.Secondary}
-                size={EButtonSize.Small}
-                // TODO: add className="ex-small font-ex-bold"
                 onClick={_onAdd}
+                secondary
+                sm
               />,
             ]}
           />
           <div className="text-xs text-appForeground ">{`> hit enter to add directory`}</div>
         </div>
       ) : (
-        ''
+        <></>
       )}
     </div>
   );
