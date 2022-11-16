@@ -12,8 +12,7 @@ import { isString } from 'lodash';
 import { nanoid as id } from 'nanoid';
 
 import { IUiRequestPanel } from '../../store';
-import { defaultConnectionState } from '../../constants/connection';
-import { DefaultConfigState } from '../../constants/StatePayloads';
+import { DefaultConnectionState, DefaultConfigState } from '../../constants';
 
 export const prepareUIRequestPanelState = (
   request: Partial<IWebSocket>
@@ -139,12 +138,12 @@ export const normalizeRequestPayload = (
     requestPayload['connections'] = connections.map(
       (connection: IWebSocketConnection) =>
         _object.mergeDeep(
-          defaultConnectionState,
+          DefaultConnectionState,
           connection
         ) as IWebSocketConnection
     );
   } else {
-    requestPayload['connections'] = [defaultConnectionState];
+    requestPayload['connections'] = [DefaultConnectionState];
   }
 
   // Validate config

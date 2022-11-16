@@ -4,7 +4,7 @@ import { Container, Column } from '@firecamp/ui-kit';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 import LogTable from './LogTable';
-import { EPanel } from '../../../../constants';
+import { EPanel } from '../../../../types';
 
 const Response = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
   const handleFS = useFullScreenHandle();

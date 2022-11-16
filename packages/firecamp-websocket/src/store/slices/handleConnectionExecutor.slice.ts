@@ -3,9 +3,9 @@ import Executor, {
   TExecutorOptions,
 } from '@firecamp/ws-executor/dist/esm';
 import { TId, IWebSocketMessage, EFirecampAgent } from '@firecamp/types';
-import { EConnectionState } from '../../constants';
 import { IPlayground } from './playgrounds.slice';
 import { _misc, _object } from '@firecamp/utils';
+import { EConnectionState } from '../../types';
 
 interface IHandleConnectionExecutorSlice {
   connect: (connection_id: TId) => void;

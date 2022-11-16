@@ -18,7 +18,7 @@ import ParamsTab from './request/tabs/connections/ParamsTab';
 import Message from './request/tabs/message/Message';
 import Response from './response/Response';
 import ConnectButton from '../../common/connection/ConnectButton';
-import { EPanel } from '../../../constants';
+import { EPanel } from '../../../types';
 import { useWebsocketStore } from '../../../store';
 
 const bodyTabs = [

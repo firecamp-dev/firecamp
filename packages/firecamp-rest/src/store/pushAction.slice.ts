@@ -25,7 +25,7 @@ import { _array, _object } from '@firecamp/utils';
 import { normalizePushPaylaod } from '../services/rest-service';
 
 /**
- * Referance: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
+ * @reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
  */
 
 const emptyPushAction = {

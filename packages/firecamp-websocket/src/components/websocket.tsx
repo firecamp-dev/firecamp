@@ -20,8 +20,8 @@ import ConnectionPanel from './connection-panel/ConnectionPanel';
 import Emitter from './common/Emitter';
 // import MessageCollection from './collection/MessageCollection';
 import { WebsocketContext } from './WebSocket.context';
-import { DefaultRequestConnection, DefaultConfigState } from '../constants/StatePayloads';
-import { EConnectionState, EMessagePayloadTypes } from '../constants';
+import { DefaultRequestConnection, DefaultConfigState } from '../constants';
+import { EConnectionState, EMessagePayloadTypes } from '../types';
 
 // store
 import {
@@ -38,7 +38,7 @@ import {
 } from '../store/index';
 import { _array } from '@firecamp/utils';
 import { ERequestPanelTabs } from '../types';
-import { defaultConnectionState } from '../constants/connection';
+import { DefaultConnectionState } from '../constants';
 
 export const CLIENT_ACTIONS = {
   CLIENT_ACTIONS: 'CLIENT_ACTIONS',
@@ -335,7 +335,7 @@ const Websocket = ({
 
     let defaultConnection =
       request.connections?.find((c) => c.is_default === true) ||
-      defaultConnectionState;
+      DefaultConnectionState;
 
     // console.log({request});
 
@@ -964,7 +964,7 @@ const withStore = (WrappedComponent) => {
     let { request = {} } = tab;
     let defaultConnection =
       request.connections?.find((c) => c.is_default === true) ||
-      defaultConnectionState;
+      DefaultConnectionState;
 
     let initPayload = {
       request: {

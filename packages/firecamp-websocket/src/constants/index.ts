@@ -1,89 +1,7 @@
 import { nanoid as id } from 'nanoid';
-import { EKeyValueTableRowType } from '@firecamp/types';
-import { readyState, closeEvents } from './connection';
+import { EKeyValueTableRowType, IWebSocketConfig } from '@firecamp/types';
+import { EConnectionState } from '../types';
 
-const { statusCodes: StatusCodes } = closeEvents;
-
-enum ELogTypes {
-  Send = 'S',
-  Receive = 'R',
-  Ack = 'ACK',
-  System = 'SYS',
-  Upgrade = 'upgrade',
-}
-
-enum ELogColors {
-  Success = 'success',
-  Danger = 'danger',
-}
-
-const ConnectionStatus = {
-  ...readyState,
-};
-
-enum EConnectionState {
-  Ideal = -1,
-  Connecting = 0,
-  Open = 1,
-  Closing = 2,
-  Closed = 3,
-}
-enum EMessageTypes {
-  System = 'SYS',
-  Send = 'S',
-  Receive = 'R',
-}
-enum ESystemMessages {
-  ClearAll = `clear all logs`,
-
-  OnConnecting = `Socket has been  created . The connection is not yet open.`,
-  OnConnect = `The connection is  open  and ready to communicate.`,
-  OnDisconnecting = `The connection is in the process of  closing .`,
-  Close = `The connection is  closed  or couldn't be opened.`,
-
-  OnReconnect = `ws connection  re-connecting `,
-  NotConnected = `The connection is not open yet.`,
-  Error = `Connection was  broken `,
-
-  Ping = `ping`,
-  Pong = `pong`,
-  Listen = `you're listening `,
-  ListenOff = `you have listen off `,
-}
-const CloseConnStatusCode = {
-  1001: 'Going, Away',
-  1002: 'Protocol, Error',
-  1003: 'Unsupported, Data',
-  1005: 'No, Status Received',
-  1006: 'Abnormal, Closure',
-  1007: 'Invalid, frame payload data',
-  1008: 'Policy, Violation',
-  1009: 'Message, too big',
-  1010: 'Missing, Extension',
-  1011: 'Internal, Error',
-  1012: 'Service, Restart',
-  1013: 'Try Again Later',
-  1014: 'Bad Gateway',
-  1015: 'TLS Handshake',
-};
-
-const KeysOnSaveRequest = {
-  REQUEST: ['url', 'config', 'scripts', 'connections', 'meta', '_dnp', '_meta'],
-  KEYS: ['message_collection'],
-};
-const EMessagePayloadTypes = {
-  text: 'text',
-  json: 'json',
-  file: 'file',
-  arraybuffer: 'arraybuffer',
-  arraybufferview: 'arraybufferview',
-  no_body: 'no_body',
-};
-enum EPanel {
-  Request = 'REQUEST',
-  Response = 'RESPONSE',
-  All = 'ALL',
-}
 const DefaultHeaders = [
   {
     id: id(),
@@ -107,17 +25,224 @@ const DefaultHeaders = [
     disable: false,
   },
 ];
+
+const DefaultConnectionState = {
+  id: id(),
+  name: 'Default',
+  is_default: true,
+  headers: DefaultHeaders,
+  query_params: [],
+  config: {
+    ping: false,
+    ping_interval: 3000,
+  },
+  // auth: {},
+  // active_auth_type: ""
+};
+
+const ConnectionStates = {
+  '0': {
+    state: 'connecting',
+    description: 'Socket has been created. The connection is not yet open.',
+  },
+  '1': {
+    state: 'open',
+    description: 'The connection is open and ready to communicate.',
+  },
+  '2': {
+    state: 'closing',
+    description: 'The connection is in the process of closing.',
+  },
+  '3': {
+    state: 'closed',
+    description: "The connection is closed or couldn't be opened.",
+  },
+  '4': {
+    state: 'normal_closed',
+    description:
+      'Normal closure; the connection successfully completed whatever purpose for which it was created.',
+  },
+  '5': {
+    state: 'error',
+    description: 'connection error',
+  },
+  '6': {
+    state: 'reconnect',
+    description: 'Reconnect',
+  },
+  '7': {
+    state: 'reconnecting',
+    description: 'Reconnecting',
+  },
+  '8': {
+    state: 'reconnect_attempt',
+    description: 'Reconnect attempts',
+  },
+  '9': {
+    state: 'reconnect_failed',
+    description: 'Reconnection failed',
+  },
+};
+
+const ConnectionCloseEventsWithReason = {
+  '1000': {
+    name: 'Normal Closure',
+    description:
+      'Normal closure; the connection successfully completed whatever purpose for which it was created.',
+  },
+  '1001': {
+    name: 'Going, Away',
+    description:
+      'The endpoint is going away, either because of a server failure or because the browser is navigating away from the page that opened the connection.',
+  },
+  '1002': {
+    name: 'Protocol, Error',
+    description:
+      'The endpoint is terminating the connection due to a protocol error.',
+  },
+  '1003': {
+    name: 'Unsupported, Data',
+    description:
+      'The connection is being terminated because the endpoint received data of a type it cannot accept (for example, a text-only endpoint received binary data).',
+  },
+  '1005': {
+    name: 'No, Status Received',
+    description: 'No status code was provided even though one was expected.',
+  },
+  '1006': {
+    name: 'Abnormal, Closure',
+    description:
+      'A connection was closed abnormally, when a status code is expected.',
+  },
+  '1007': {
+    name: 'Invalid, frame payload data',
+    description:
+      'The endpoint is terminating the connection because a message was received that contained inconsistent data (e.g., non-UTF-8 data within a text message).',
+  },
+  '1008': {
+    name: 'Policy, Violation',
+    description:
+      'The endpoint is terminating the connection because it received a message that violates its policy. This is a generic status code, used when codes 1003 and 1009 are not suitable.',
+  },
+  '1009': {
+    name: 'Message, too big',
+    description:
+      'The endpoint is terminating the connection because a data frame was received that is too large.',
+  },
+  '1010': {
+    name: 'Missing, Extension',
+    description:
+      "The client is terminating the connection because it expected the server to negotiate one or more extension, but the server didn't.",
+  },
+  '1011': {
+    name: 'Internal, Error',
+    description:
+      'The server is terminating the connection because it encountered an unexpected condition that prevented it from fulfilling the request.',
+  },
+  '1012': {
+    name: 'Service, Restart',
+    description:
+      'The server is terminating the connection because it is restarting.',
+  },
+  '1013': {
+    name: 'Try Again Later',
+    description:
+      'The server is terminating the connection due to a temporary condition, e.g. it is overloaded and is casting off some of its clients.',
+  },
+  '1014': {
+    name: 'Bad Gateway',
+    description:
+      'The server was acting as a gateway or proxy and received an invalid response from the upstream server. This is similar to 502 HTTP Status Code.',
+  },
+  '1015': {
+    name: 'TLS Handshake',
+    description:
+      "Reserved. Indicates that the connection was closed due to a failure to perform a TLS handshake (e.g., the server certificate can't be verified).",
+  },
+};
+
+const CloseConnStatusCode = {
+  1001: 'Going, Away',
+  1002: 'Protocol, Error',
+  1003: 'Unsupported, Data',
+  1005: 'No, Status Received',
+  1006: 'Abnormal, Closure',
+  1007: 'Invalid, frame payload data',
+  1008: 'Policy, Violation',
+  1009: 'Message, too big',
+  1010: 'Missing, Extension',
+  1011: 'Internal, Error',
+  1012: 'Service, Restart',
+  1013: 'Try Again Later',
+  1014: 'Bad Gateway',
+  1015: 'TLS Handshake',
+};
+
+const KeysOnSaveRequest = {
+  REQUEST: ['url', 'config', 'scripts', 'connections', 'meta', '_dnp', '_meta'],
+  KEYS: ['message_collection'],
+};
+
+const DefaultRequestConnection = {
+  id: '',
+  headers: DefaultHeaders || [],
+  query_params: [],
+  is_default: false,
+  name: '',
+  config: {
+    ping: false,
+    ping_interval: 0,
+  },
+};
+const ResponseConnection = {
+  id: '',
+  name: '',
+  state: EConnectionState.Ideal,
+  reconnectAttemptLeft: 0,
+  logFilters: {
+    type: '',
+  },
+  /* instance: null,
+   messages: [],
+   unread_messages_count: 0,
+   */
+};
+const InitLog = {
+  title: '',
+  message: '',
+  meta: {
+    id: '',
+    event: '',
+    timestamp: '',
+    type: '',
+    color: '',
+    ackRef: '',
+  },
+};
+
+const DefaultConfigState: IWebSocketConfig = {
+  protocols: [],
+  reconnect: false,
+  reconnect_attempts: 3,
+  reconnect_timeout: 3000,
+  reject_unauthorized: false,
+  follow_redirects: true,
+  handshake_timeout: 3000, //ms
+  max_redirects: 10,
+  protocol_version: 13,
+  origin: '',
+  max_payload: 0, //bytes
+};
+
 export {
-  EConnectionState,
-  EMessagePayloadTypes,
+  DefaultConnectionState,
   CloseConnStatusCode,
   DefaultHeaders,
   KeysOnSaveRequest,
-  EMessageTypes,
-  EPanel,
-  ESystemMessages,
-  ConnectionStatus,
-  ELogColors,
-  ELogTypes,
-  StatusCodes,
+  ConnectionStates,
+  ConnectionCloseEventsWithReason,
+  DefaultRequestConnection,
+  ResponseConnection,
+  InitLog,
+  DefaultConfigState,
 };

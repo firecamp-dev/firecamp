@@ -2,7 +2,7 @@ import { Button } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 
 import CloseConnection from './CloseConnection';
-import { EConnectionState } from '../../../constants';
+import { EConnectionState } from '../../../types';
 
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
 

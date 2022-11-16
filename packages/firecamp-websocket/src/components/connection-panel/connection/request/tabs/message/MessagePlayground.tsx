@@ -20,7 +20,7 @@ import shallow from 'zustand/shallow';
 
 import { WebsocketContext } from '../../../../../WebSocket.context';
 
-import { EMessagePayloadTypes } from '../../../../../../constants';
+import { EMessagePayloadTypes } from '../../../../../../types';
 
 import {
   useWebsocketStore,

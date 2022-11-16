@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import { RootContainer } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
 
-import { EMessagePayloadTypes } from '../../../../../../constants';
 import MessagePlayground from './MessagePlayground';
+import { EMessagePayloadTypes } from '../../../../../../types';
 
 import {
   useWebsocketStore,
@@ -53,23 +52,26 @@ const envelopeList = [
 ];
 
 const Message = ({ tabData = {} }) => {
-  let tabId= 123;
+  let tabId = 123;
 
-  let { meta } = useWebsocketStore((s: any) => ({
-    meta: s.request.meta,
-  }),shallow);
+  let { meta } = useWebsocketStore(
+    (s: any) => ({
+      meta: s.request.meta,
+    }),
+    shallow
+  );
 
   let [selectedMessageId, setSelectedMessageId] = useState('');
 
   return (
     <RootContainer className="h-full">
-     <MessagePlayground
-            messageTypes={messageTypes}
-            envelopeList={envelopeList}
-            meta={meta}
-            tabData={{id: tabId}}
-            selectedMessageId={selectedMessageId}
-          />
+      <MessagePlayground
+        messageTypes={messageTypes}
+        envelopeList={envelopeList}
+        meta={meta}
+        tabData={{ id: tabId }}
+        selectedMessageId={selectedMessageId}
+      />
     </RootContainer>
   );
 };

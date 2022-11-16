@@ -4,7 +4,7 @@ import { _object } from '@firecamp/utils';
 import { IPushAction, IPushPayload } from './pushAction.slice';
 
 /**
- * Referance:
+ * @reference:
  */
 
 interface IPullSlice {

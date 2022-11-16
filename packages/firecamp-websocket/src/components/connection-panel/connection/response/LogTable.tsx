@@ -14,7 +14,7 @@ import shallow from 'zustand/shallow';
 import classnames from 'classnames';
 
 import { useWebsocketStore } from '../../../../store';
-import { ELogTypes } from '../../../../constants';
+import { ELogTypes } from '../../../../types';
 
 const logTypes = {
   System: ELogTypes.System,
