@@ -80,6 +80,8 @@ export const normalizeRequest = (
   );
   if (!_nr.connections?.length) _nr.connections = [DefaultConnectionState];
 
+  console.log(connections, _nr.connections, 789789);
+
   // normalize config
   _nr.config = _object.mergeDeep(DefaultConfigState, config || {});
   return Promise.resolve(_nr);

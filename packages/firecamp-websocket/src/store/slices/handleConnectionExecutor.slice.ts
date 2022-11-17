@@ -30,7 +30,7 @@ const createHandleConnectionExecutor = (
 
     try {
       const state = get();
-      // console.log(state, '123456789');
+      console.log(state, '123456789');
       const url = state.request.url,
         config = state.request.config,
         connection = state.request.connections.find(

@@ -57,8 +57,8 @@ const Websocket = ({
   activeTab,
   platformComponents,
 }) => {
-  let { current: emitterRef } = useRef(new Emitter({})); //TODO: remove later
-  let { current: WSInstances_Ref } = useRef(new Map());
+  const { current: emitterRef } = useRef(new Emitter({})); //TODO: remove later
+  const { current: WSInstances_Ref } = useRef(new Map());
 
   let _noop = () => {};
 
@@ -67,7 +67,7 @@ const Websocket = ({
    * @type {{updateMessage: ((p1?:*, p2:*)), updateURL: ((p1?:*)), updateConnection: ((p1?:*, p2?:*, p3:*)),  }}
    * @private
    */
-  let _requestFns = {
+  const _requestFns = {
     updateRequest: _noop,
     updateMessage: _noop,
     setMessage: _noop,
@@ -79,7 +79,7 @@ const Websocket = ({
     updateDNP: _noop,
   };
 
-  let _commonFns = {
+  const _commonFns = {
     getMergedVariables: _noop,
     onChange: _noop,
     onSave: _noop,
@@ -94,9 +94,9 @@ const Websocket = ({
 
   //---------------------------------init store value--------------------------------
 
-  let websocketStoreApi: any = useWebsocketStoreApi();
+  const websocketStoreApi: any = useWebsocketStoreApi();
 
-  let {
+  const {
     addMessage,
     changeMessage,
     setMessage,
@@ -318,27 +318,25 @@ const Websocket = ({
     hasPull?: boolean,
     isFresh?: boolean
   ) => {
-    let request: IWebSocket = await normalizeRequest(
+    const state = websocketStoreApi.getState();
+    const request: IWebSocket = await normalizeRequest(
       requestToNormalize,
       isRequestSaved
     );
-    let uiActiveTab = hasPull
-      ? websocketStoreApi.getState().ui?.requestPanel?.activeTab ||
-        ERequestPanelTabs.Playgrounds
+    const uiActiveTab = hasPull
+      ? state.ui?.requestPanel?.activeTab || ERequestPanelTabs.Playgrounds
       : ERequestPanelTabs.Playgrounds;
 
-    let requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
+    const requestPanel = prepareUIRequestPanelState(request);
 
-    let defaultConnection =
+    const defaultConnection =
       request.connections?.find((c) => c.is_default === true) ||
       DefaultConnectionState;
 
-    // console.log({request});
-
-    // TODO: set hasQueries and queries in ui state
+    console.log({ request });
     initialise(
       {
-        request: _cloneDeep(request),
+        request,
         pushAction,
         playgrounds: {
           // Add logic for init playgrounds by connections
@@ -352,8 +350,21 @@ const Websocket = ({
             selectedCollectionMessage: '',
           },
         },
+        runtime: {
+          activePlayground: request.connections[0].id,
+          playgroundTabs: request.connections.map((c) => {
+            return {
+              id: c.id,
+              name: c.name,
+              meta: {
+                isSaved: true,
+                hasChange: false,
+              },
+            };
+          }),
+        },
         ui: {
-          ...websocketStoreApi.getState().ui,
+          ...state.ui,
           requestPanel: {
             ...requestPanel,
             activeTab: uiActiveTab,
@@ -747,16 +758,16 @@ const Websocket = ({
       } = websocketStoreApi.getState();
 
       if (collection?.messages && id) {
-        let oringinal = collection?.messages.find((msg) => msg._meta.id === id);
+        let original = collection?.messages.find((msg) => msg._meta.id === id);
         let message = playgrounds?.[activePlayground]?.message;
-        if (oringinal) {
+        if (original) {
           if (message) {
-            oringinal = Object.assign({}, oringinal, {
+            original = Object.assign({}, original, {
               path: message.path || '',
             });
           }
 
-          playgroundMessageFns.setToPlayground(oringinal);
+          playgroundMessageFns.setToPlayground(original);
         }
       }
     },
@@ -792,7 +803,7 @@ const Websocket = ({
         request: { connections: req_connections },
       } = websocketStoreApi.getState();
 
-      let newconnectionId = id();
+      let newConnectionId = id();
       let newReqConnection = Object.assign({}, DefaultRequestConnection);
 
       // Existing default connection
@@ -821,7 +832,7 @@ const Websocket = ({
         defaultConnection || {},
         {
           name,
-          id: newconnectionId,
+          id: newConnectionId,
         }
       );
 
@@ -829,7 +840,7 @@ const Websocket = ({
       addConnection(newReqConnection);
 
       let connectionPlayground = {
-        id: newconnectionId,
+        id: newConnectionId,
         connectionState: EConnectionState.Ideal,
         logFilters: {
           type: '',
@@ -838,9 +849,9 @@ const Websocket = ({
         selectedCollectionMessage: '',
       };
 
-      addPlayground(newconnectionId, connectionPlayground);
+      addPlayground(newConnectionId, connectionPlayground);
       addPlaygroundTab({
-        id: newconnectionId,
+        id: newConnectionId,
         name: name,
         meta: {
           isSaved: false,
@@ -849,10 +860,10 @@ const Websocket = ({
       });
 
       // update active connection
-      setActivePlayground(newconnectionId);
+      setActivePlayground(newConnectionId);
 
       if (connectOnCreate === true) {
-        await connect(newconnectionId);
+        await connect(newConnectionId);
       }
       // return Promise.resolve(newReqConnection);
     },
@@ -964,7 +975,7 @@ const withStore = (WrappedComponent) => {
         config: request.config || DefaultConfigState,
         connections: request.connections || [defaultConnection],
         meta: request.meta || {
-          dir_orders: [],
+          f_orders: [],
           leaf_orders: [],
           version: '2.0.0',
         },
