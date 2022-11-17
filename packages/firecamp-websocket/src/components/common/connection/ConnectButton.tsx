@@ -6,7 +6,7 @@ import { EConnectionState } from '../../../types';
 
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
 
-const ConnectButton = () => {
+const ConnectButton = (  ) => {
   let { connectionState, activePlayground, connect, disconnect } =
     useWebsocketStore(
       (s: IWebsocketStore) => ({

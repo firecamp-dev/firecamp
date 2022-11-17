@@ -935,12 +935,8 @@ const Websocket = ({
             />
           </Container.Header>
           <Container.Body>
-            <Row flex={1} overflow="auto" className="with-divider h-full">
-              {/* <MessageCollection tab={tab} /> */}
-              <Column className="h-full">
-                <ConnectionPanel />
-              </Column>
-            </Row>
+             {/* <MessageCollection tab={tab} /> */}
+             <ConnectionPanel />
           </Container.Body>
         </Container>
       </RootContainer>

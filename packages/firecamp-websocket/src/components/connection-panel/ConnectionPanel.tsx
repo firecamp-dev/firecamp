@@ -70,7 +70,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
             show: true,
             onClick: () => toggleConnPopover(true),
           }} */
-          preComp={() => <Button text={'Connections'} secondary xs />}
+          preComp={() => <Button className="ml-2" text={'Connections'} secondary xs />}
           postComp={() => (
             <AddNewConnectionPopover
               isOpen={isAddConnPopoverOpen}
@@ -80,7 +80,6 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
               onAddNewConnection={_onAddNewConnection}
             />
           )}
-          className="tab-with-collapse-btn"
         />
       </Container.Header>
       <Container.Body>
@@ -227,7 +226,7 @@ const AddNewConnectionPopover = ({
       <Popover.Handler>
         <div
           id={popover_id || ''}
-          className="items-center h-full px-1  mr-1"
+          className="items-center h-full px-1 "
           data-tip={'Add new connection'}
           onClick={toggleOpen}
         >

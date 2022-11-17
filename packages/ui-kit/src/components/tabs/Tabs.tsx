@@ -85,7 +85,7 @@ const Tabs: FC<ITabs> = ({
       {preComp && (
         <div
           className={cx(
-            'flex items-center pr-2 border-b border-tabBorder',
+            'flex items-center pr-2 border-b border-tabBorder border-r ',
             { 'bg-tabBackground': tabsVersion == 1 },
             { 'bg-tabBackground2': tabsVersion == 2 }
           )}

@@ -509,7 +509,7 @@ textarea:focus,textarea:focus-visible{
   margin-left: -3px;
 }
 .fc-btn-collapse {
-  max-height: 33px !important;
+  max-height: 32px !important;
   border: 1px solid var(--app-border);
   max-width: 20px !important;
   position: absolute;
@@ -525,7 +525,7 @@ textarea:focus,textarea:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: 0px;
-  min-height: 33px !important;
+  min-height: 32px !important;
 }
 .fc-collapsed{
   width: 0px !important;

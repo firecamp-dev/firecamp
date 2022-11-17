@@ -633,68 +633,21 @@ const MessagePlayground = ({
 
   return (
     <Container className="h-full">
-      <Container.Header className="message-playground-scrollable top invisible-scrollbar ">
-        <TabHeader className="padding-small height-small">
-          <TabHeader.Left className="invisible-scrollbar">
-            <Dropdown
-              isOpen={isSelectTypeDDOpen}
-              selected={activeType?.name || ''}
-              onToggle={() => toggleSelectTypeDD(!isSelectTypeDDOpen)}
-            >
-              <Dropdown.Handler>
-                <Button
-                  text={activeType?.name || ''}
-                  transparent={true}
-                  ghost={true}
-                  primary
-                  sm
-                />
-              </Dropdown.Handler>
-              <Dropdown.Options
-                options={messageTypes || []}
-                onSelect={_onSelectBodyType}
-              />
-            </Dropdown>
-            {activeType &&
-            (activeType.id === EMessagePayloadTypes.arraybuffer ||
-              activeType.id === EMessagePayloadTypes.arraybufferview) ? (
-              <Dropdown
-                isOpen={isSelectedEnvelopeOpen}
-                selected={selectedEnvelope?.name || ''}
-                onToggle={() =>
-                  toggleSelectedEnvelopeOpen(!isSelectedEnvelopeOpen)
-                }
-              >
-                <Dropdown.Handler>
-                  <Button
-                    text={selectedEnvelope?.name || ''}
-                    transparent
-                    withCaret
-                    primary
-                    sm
-                    ghost
-                  />
-                </Dropdown.Handler>
-                <Dropdown.Options
-                  options={envelopeDD || []}
-                  onSelect={_onSelectEnvelope}
-                />
-              </Dropdown>
-            ) : (
-              ''
-            )}
-          </TabHeader.Left>
-          <TabHeader.Right>
-            <SendButton onSend={_onSendMessage} />
-          </TabHeader.Right>
-        </TabHeader>
-      </Container.Header>
-      <Container.Header>
-        <TabHeader className="padding-small height-small collection-path-wrapper with-border-top">
+
+<Container.Header>
+        <TabHeader className="height-small collection-path-wrapper with-border-top !px-2">
           <TabHeader.Left>
             <div className="collection-path">{message.path || `./`}</div>
           </TabHeader.Left>
           <TabHeader.Right>
+          <Button
+                  text={'Save'}
+                  primary
+                  transparent
+                  ghost
+                  xs
+                  className="mr-1 hover:!bg-focus2"
+                />
             {
               //activeType.id !== EMessagePayloadTypes.no_body &&
               // activeType.id !== EMessagePayloadTypes.file &&
@@ -757,7 +710,67 @@ const MessagePlayground = ({
           </TabHeader.Right>
         </TabHeader>
       </Container.Header>
-      <Container.Body className="with-divider">
+      <Container.Header className="message-playground-scrollable top invisible-scrollbar ">
+        <TabHeader className="height-small">
+          <TabHeader.Left className="invisible-scrollbar">
+            <Dropdown
+              isOpen={isSelectTypeDDOpen}
+              selected={activeType?.name || ''}
+              onToggle={() => toggleSelectTypeDD(!isSelectTypeDDOpen)}
+            >
+              <Dropdown.Handler>
+                <div className="flex text-sm items-center"> Message as
+                <Button
+                  text={activeType?.name || ''}
+                  withCaret
+                  primary
+                  transparent
+                  ghost
+                  xs
+                  className="ml-1"
+                />
+                </div>
+              </Dropdown.Handler>
+              <Dropdown.Options
+                options={messageTypes || []}
+                onSelect={_onSelectBodyType}
+              />
+            </Dropdown>
+            {activeType &&
+            (activeType.id === EMessagePayloadTypes.arraybuffer ||
+              activeType.id === EMessagePayloadTypes.arraybufferview) ? (
+              <Dropdown
+                isOpen={isSelectedEnvelopeOpen}
+                selected={selectedEnvelope?.name || ''}
+                onToggle={() =>
+                  toggleSelectedEnvelopeOpen(!isSelectedEnvelopeOpen)
+                }
+              >
+                <Dropdown.Handler>
+                  <Button
+                    text={selectedEnvelope?.name || ''}
+                    transparent
+                    withCaret
+                    primary
+                    sm
+                    ghost
+                  />
+                </Dropdown.Handler>
+                <Dropdown.Options
+                  options={envelopeDD || []}
+                  onSelect={_onSelectEnvelope}
+                />
+              </Dropdown>
+            ) : (
+              ''
+            )}
+          </TabHeader.Left>
+          <TabHeader.Right>
+            <SendButton onSend={_onSendMessage} />
+          </TabHeader.Right>
+        </TabHeader>
+      </Container.Header>
+      <Container.Body className="with-divider !m-2 !mt-0 border border-appBorder">
         {activeType.id === EMessagePayloadTypes.no_body ? (
           <Container.Empty>
             <QuickSelection menus={quickSelectionMenus} />
@@ -766,7 +779,7 @@ const MessagePlayground = ({
           _renderActiveBody(activeType)
         )}
       </Container.Body>
-      <Container.Footer>
+      {/* <Container.Footer>
         <TabHeader className="padding-small height-small invisible-scrollbar">
           <TabHeader.Left>
             {selectedMessageId &&
@@ -797,7 +810,7 @@ const MessagePlayground = ({
             <SendButton onSend={_onSendMessage} />
           </TabHeader.Right>
         </TabHeader>
-      </Container.Footer>
+      </Container.Footer> */}
     </Container>
   );
 };
@@ -987,11 +1000,13 @@ const SaveMessage = ({
 const SendButton = ({ onSend = () => {} }) => {
   return (
     <Button
-      icon={<IoSendSharp size={12} />}
+      icon={<IoSendSharp size={12} className="ml-1" />}
       onClick={onSend}
       primary
       iconCenter
-      sm
+      xs
+      text="Send"
+      iconRight
     />
   );
 };

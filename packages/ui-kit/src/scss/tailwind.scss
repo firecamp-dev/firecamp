@@ -915,6 +915,9 @@ video {
 .m-4 {
 	margin: 1rem;
 }
+.\!m-2 {
+	margin: 0.5rem !important;
+}
 .m-0 {
 	margin: 0px;
 }
@@ -1034,6 +1037,9 @@ video {
 }
 .mb-14 {
 	margin-bottom: 3.5rem;
+}
+.\!mt-0 {
+	margin-top: 0px !important;
 }
 .mt-0 {
 	margin-top: 0px;
@@ -1710,6 +1716,10 @@ video {
 .\!py-0 {
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;
+}
+.\!px-2 {
+	padding-left: 0.5rem !important;
+	padding-right: 0.5rem !important;
 }
 .px-0 {
 	padding-left: 0px;
@@ -2575,7 +2585,7 @@ textarea:focus,textarea:focus-visible{
   margin-left: -3px;
 }
 .fc-btn-collapse {
-  max-height: 33px !important;
+  max-height: 32px !important;
   border: 1px solid var(--app-border);
   max-width: 20px !important;
   position: absolute;
@@ -2591,7 +2601,7 @@ textarea:focus,textarea:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: 0px;
-  min-height: 33px !important;
+  min-height: 32px !important;
 }
 .fc-collapsed{
   width: 0px !important;

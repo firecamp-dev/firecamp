@@ -5,6 +5,7 @@ import {
   Resizable,
   Row,
   SecondaryTab,
+  TabHeader,
 } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
@@ -119,21 +120,25 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   };
 
   return (
-    <Container>
-      <Container.Body>
-        <Row flex={1} overflow="auto" className=" with-divider h-full">
+    <Row flex={1} overflow="auto" className=" with-divider h-full">
           <Column className="h-full">
-            <div className="z-20 relative">
-              <SecondaryTab
-                className="flex items-center"
-                key="tabs"
-                list={bodyTabs || []}
-                activeTab={activeBodyTab || ''}
-                onSelect={onSelectBodyTab}
-                additionalComponent={<ConnectButton />}
-              />
-            </div>
-            {_renderBody()}
+            <Container className="with-divider">
+              <Container.Header>
+                <TabHeader className="height-small !px-0 z-20 relative w-full">
+                <SecondaryTab
+                    className="flex items-center"
+                    key="tabs"
+                    list={bodyTabs || []}
+                    activeTab={activeBodyTab || ''}
+                    onSelect={onSelectBodyTab}
+                  additionalComponent={<ConnectButton />}
+                  />
+                </TabHeader>
+              </Container.Header>
+              <Container.Body>
+                {_renderBody()}
+              </Container.Body>
+            </Container>
           </Column>
           <Resizable
             width={'100%'}
@@ -149,9 +154,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
               <Response key={activePlayground} />
             </Column>
           </Resizable>
-        </Row>{' '}
-      </Container.Body>
-    </Container>
+        </Row>
   );
 };
 export default memo(ConnectionTab);
