@@ -136,13 +136,13 @@ export const isRestBodyEmpty = (bodies: { [key: string]: any }) => {
 };
 
 /**
- * normalise the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
+ * normalize the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
  */
 export const normalizeRequest = (
   request: Partial<IRest>,
   isSaved: boolean = true
 ): Promise<IRestClientRequest> => {
-  // prepare normalised request aka _nr
+  // prepare normalized request aka _nr
   const _nr: IRestClientRequest = {
     meta: {
       name: '',
@@ -159,7 +159,7 @@ export const normalizeRequest = (
   const { url, method, auth, headers, config, body, scripts, meta, _meta } =
     request;
 
-  //normalise url
+  //normalize url
   _nr.url = !_object.isEmpty(url)
     ? url
     : { raw: '', query_params: [], path_params: [] };
@@ -185,15 +185,15 @@ export const normalizeRequest = (
     _nr.url.path_params = pathParams;
   }
 
-  //normalise method
+  //normalize method
   _nr.method = EHttpMethod[method.toUpperCase()] ? method : EHttpMethod.GET;
 
-  // normalise auth
+  // normalize auth
   _nr.auth = !_object.isEmpty(auth)
     ? (_auth.normalizeToUi(auth) as IUiAuth)
     : _cloneDeep(_auth.defaultAuthState);
 
-  // normalise headers
+  // normalize headers
   _nr.headers = !headers || _array.isEmpty(headers) ? [] : headers;
   _nr.headers = _nr.headers.filter((h) => {
     // add default key: `type: text`
@@ -202,7 +202,7 @@ export const normalizeRequest = (
     return isValidRow(h);
   });
 
-  // normalise config
+  // normalize config
   _nr.config = _object.isEmpty(config)
     ? _cloneDeep(configState)
     : _object.mergeDeep(_cloneDeep(configState), config);
@@ -217,19 +217,19 @@ export const normalizeRequest = (
     }
   });
 
-  // normalise body
+  // normalize body
   _nr.body = _object.isEmpty(body)
     ? _cloneDeep(bodyState)
     : _object.mergeDeep(_cloneDeep(bodyState), body || {});
 
-  // normalise scripts
+  // normalize scripts
   _nr.scripts = {
     pre: scripts?.pre || '',
     post: scripts?.post || '',
     test: scripts?.test || '',
   };
 
-  // normalise meta
+  // normalize meta
   _nr.meta.name = meta.name || 'Untitled Request';
   _nr.meta.description = meta.description || '';
   _nr.meta.active_body_type = meta.active_body_type || ERestBodyTypes.NoBody;
@@ -242,7 +242,7 @@ export const normalizeRequest = (
   };
   _nr.meta.inherited_auth = meta.inherited_auth;
 
-  // normalise _meta
+  // normalize _meta
   _nr._meta.id = _meta?.id || nanoid();
   _nr._meta.collection_id = _meta?.collection_id;
   _nr._meta.folder_id = _meta?.folder_id;
@@ -419,7 +419,7 @@ export const readFile = (file): Promise<string | ArrayBuffer> => {
 };
 
 /**
- * normalise rest client request 'IRestClientRequest' to rest request 'IRest'
+ * normalize rest client request 'IRestClientRequest' to rest request 'IRest'
  * Set empty string for file object
  *    - Binary body
  *    - Multipart FormData body
@@ -453,7 +453,7 @@ export const normalizePushPayload = async (
         }
 
         if (!_object.isEmpty(authToNormalise)) {
-          pushRequestPayload['auth'] = _auth.normalise(authToNormalise);
+          pushRequestPayload['auth'] = _auth.normalize(authToNormalise);
         }
       } else if (key === 'body') {
         let isBodyEmpty = isRestBodyEmpty(request.body);

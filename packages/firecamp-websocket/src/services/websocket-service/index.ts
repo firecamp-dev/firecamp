@@ -30,11 +30,12 @@ export const prepareUIRequestPanelState = (
   return updatedUiStore;
 };
 
+/** normalize the websocket request */
 export const normalizeRequest = (
   request: IWebSocket,
   isSaved: boolean = true
 ): Promise<IWebSocket> => {
-  let requestPayload: IWebSocket = {
+  const _nr: IWebSocket = {
     url: { raw: '' },
     meta: {
       name: '',
@@ -48,117 +49,40 @@ export const normalizeRequest = (
 
   // console.log({ request });
 
-  // Validate _meta
-  if (!_object.isEmpty(_meta)) {
-    if (!_string.isEmpty(_meta.collection_id) && isSaved) {
-      requestPayload['_meta'].collection_id = _meta.collection_id;
-    } else if (!isSaved) {
-      requestPayload['_meta'].collection_id = '';
-    } else {
-      return Promise.reject({ error: 'Invalid collection id' });
-    }
+  //normalize url
+  _nr.url = !_object.isEmpty(url) ? url : { raw: '' };
 
-    // Validate request id
-    if (!_string.isEmpty(_meta.id) && isSaved) {
-      requestPayload['_meta'].id = _meta.id;
-    } else if (!isSaved) {
-      requestPayload['_meta'].id = id();
-    } else {
-      return Promise.reject({ error: 'Invalid Request id' });
-    }
+  // normalize meta
+  _nr.meta.name = meta.name || 'Untitled Request';
+  _nr.meta.description = meta.description || '';
+  _nr.meta.f_orders = meta.f_orders || [];
+  _nr.meta.leaf_orders = meta.leaf_orders || [];
+  _nr.meta.type = ERequestTypes.WebSocket;
+  _nr.meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
 
-    // Validate folder id
-    if (!_string.isEmpty(_meta.folder_id))
-      requestPayload['_meta'].folder_id = _meta.folder_id;
-    else requestPayload['_meta'].folder_id = '';
+  // normalize _meta
+  _nr._meta.id = _meta?.id || id();
+  _nr._meta.collection_id = _meta?.collection_id;
+  _nr._meta.folder_id = _meta?.folder_id;
+  _nr._meta.created_at = _meta?.created_at || new Date().valueOf();
+  _nr._meta.updated_at = _meta?.updated_at || new Date().valueOf();
+  _nr._meta.created_by = _meta?.created_by || '';
+  _nr._meta.updated_by = _meta?.updated_by || '';
 
-    requestPayload['_meta'].created_at =
-      _meta.created_at; /* || new Date().valueOf(); */
-    requestPayload['_meta'].created_by = _meta.created_by || '';
+  // normalize _meta
+  _nr.connections = [];
+  _nr.connections = connections.map(
+    (connection: IWebSocketConnection) =>
+      _object.mergeDeep(
+        DefaultConnectionState,
+        connection
+      ) as IWebSocketConnection
+  );
+  if (!_nr.connections?.length) _nr.connections = [DefaultConnectionState];
 
-    requestPayload['_meta'].updated_at =
-      _meta.updated_at; /* || new Date().valueOf(); */
-    requestPayload['_meta'].updated_by = _meta.updated_by || '';
-  } else return Promise.reject({ error: 'Invalid request' });
-
-  // Validate meta
-  if (!_object.isEmpty(meta)) {
-    // Validate request name
-    if (!_string.isEmpty(meta.name)) requestPayload['meta'].name = meta.name;
-    else requestPayload['meta'].name = 'Untitled Request';
-
-    // Validate request description
-    if (isString(meta.description))
-      requestPayload['meta'].description = meta.description;
-    else requestPayload['meta'].description = '';
-
-    // Validate request type
-    if (!_string.isEmpty(meta.type)) requestPayload['meta'].type = meta.type;
-    else requestPayload['meta'].type = ERequestTypes.WebSocket;
-
-    // Validate request version
-    if (!_string.isEmpty(meta.version))
-      requestPayload['meta'].version = meta.version;
-    else requestPayload['meta'].version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
-
-    // Validate orders
-    if (meta.dir_orders) {
-      requestPayload['meta'].dir_orders = meta.dir_orders;
-    } else requestPayload['meta'].dir_orders = [];
-
-    if (meta.dir_orders) {
-      requestPayload['meta'].leaf_orders = meta.leaf_orders;
-    } else requestPayload['meta'].leaf_orders = [];
-  } else return Promise.reject({ error: 'Invalid request' });
-
-  // Validate URL or Convert to Object if receive string
-  if (url) {
-    if (!_object.isEmpty(url)) {
-      requestPayload['url'] = url;
-    } else requestPayload['url'] = { raw: '' };
-
-    // Validate and Add query params
-    if (!_array.isEmpty(url.query_params)) {
-      const queryParams = [];
-
-      url.query_params.map((queryParam) => {
-        // Add default key: `type: text`
-        queryParam.type = EKeyValueTableRowType.Text;
-        queryParam.value = queryParam.value ? queryParam.value : '';
-
-        if (isValidRow(queryParam)) queryParams.push(queryParam);
-      });
-
-      requestPayload['url'].query_params = queryParams;
-    }
-  } else requestPayload['url'] = { raw: '', query_params: [] };
-
-  // Validate connection payload
-  if (connections) {
-    requestPayload['connections'] = connections.map(
-      (connection: IWebSocketConnection) =>
-        _object.mergeDeep(
-          DefaultConnectionState,
-          connection
-        ) as IWebSocketConnection
-    );
-  } else {
-    requestPayload['connections'] = [DefaultConnectionState];
-  }
-
-  // Validate config
-  if (config) {
-    requestPayload['config'] = _object.mergeDeep(
-      DefaultConfigState,
-      request['config']
-    );
-  } else {
-    requestPayload['config'] = DefaultConfigState;
-  }
-
-  // console.log({ requestPayload });
-
-  return Promise.resolve(requestPayload);
+  // normalize config
+  _nr.config = _object.mergeDeep(DefaultConfigState, config || {});
+  return Promise.resolve(_nr);
 };
 
 /**
