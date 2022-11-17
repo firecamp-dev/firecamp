@@ -378,10 +378,10 @@ export const normalizeSendRequestPayload = async (
           request.auth[request.meta.active_auth_type],
       };
     } else if (request.meta.active_auth_type === EAuthTypes.Inherit) {
-      let inheritd_auth = request.meta.inherited_auth;
-      if (inheritd_auth) {
+      let inherited_auth = request.meta.inherited_auth;
+      if (inherited_auth) {
         sendRequestPayload.auth = {
-          [inheritd_auth.auth]: inheritd_auth.payload,
+          [inherited_auth.auth]: inherited_auth.payload,
         };
       }
     }
@@ -424,7 +424,7 @@ export const readFile = (file): Promise<string | ArrayBuffer> => {
  *    - Binary body
  *    - Multipart FormData body
  */
-export const normalizePushPaylaod = async (
+export const normalizePushPayload = async (
   request: Partial<IRestClientRequest>,
   _removed?: {
     body?: Array<ERestBodyTypes>;
@@ -535,14 +535,14 @@ export const getAuthHeaders = async (
     let requestAuth = auth;
 
     // @ts-ignore
-    let inheritd_auth = request.meta.inherited_auth;
+    let inherited_auth = request.meta.inherited_auth;
 
-    if (authType === EAuthTypes.Inherit && inheritd_auth) {
-      let normalizedAuth = _auth.normalizeToUi(inheritd_auth.payload);
+    if (authType === EAuthTypes.Inherit && inherited_auth) {
+      let normalizedAuth = _auth.normalizeToUi(inherited_auth.payload);
       requestAuth = {
-        [inheritd_auth.type]: normalizedAuth[inheritd_auth.type],
+        [inherited_auth.type]: normalizedAuth[inherited_auth.type],
       };
-      authType = inheritd_auth.type;
+      authType = inherited_auth.type;
     }
 
     if (meta?.active_auth_type !== EAuthTypes.NoAuth) {
@@ -572,7 +572,11 @@ export const getAuthHeaders = async (
           authServicePayload = activeGrantTypePayload;
         }
 
-        const authService = new Auth(authType || meta.active_auth_type, authServicePayload, extraParams);
+        const authService = new Auth(
+          authType || meta.active_auth_type,
+          authServicePayload,
+          extraParams
+        );
         await authService.authorize();
         let authHeaders = await authService.getHeader();
 

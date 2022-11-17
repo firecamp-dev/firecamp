@@ -24,14 +24,20 @@ const createHandleConnectionExecutor = (
      * 2. Manager ssl n proxy logic
      */
 
+    console.log(connection_id, 'connection_id...');
+
     if (!connection_id) return;
 
     try {
-      let url = get()?.request?.url,
-        config = get()?.request?.config,
-        connection = get()?.request?.connections.find(
+      const state = get();
+      // console.log(state, '123456789');
+      const url = state.request.url,
+        config = state.request.config,
+        connection = state.request.connections.find(
           (c) => c.id === connection_id
         );
+
+      // console.log(connection, url);
 
       if (!connection || !url.raw) return;
 
@@ -40,14 +46,16 @@ const createHandleConnectionExecutor = (
         config,
         connection,
         WebSocket,
-        agent: EFirecampAgent.extension,
-        certificates: [], // TODO: add ssl certi
+        // agent: EFirecampAgent.web,
+        certificates: [], // TODO: add ssl certs
       };
 
       const executor: IExecutor =
         _misc.firecampAgent() === EFirecampAgent.desktop
           ? window.fc.websocket(options)
           : new Executor(options);
+
+      console.log(_misc.firecampAgent(), executor);
 
       // on open
       executor.onOpen(() => {

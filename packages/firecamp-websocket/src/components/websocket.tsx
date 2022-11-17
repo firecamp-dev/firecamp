@@ -10,7 +10,7 @@ import { EPushActionType, ERequestTypes, IWebSocket } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 
 import {
-  normalizeRequestPayload,
+  normalizeRequest,
   prepareUIRequestPanelState,
 } from '../services/websocket-service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
@@ -160,13 +160,11 @@ const Websocket = ({
     shallow
   );
 
-  /**
-   * Environments on tab load
-   */
+  /** assign environments on tab load or when activeTab change**/
   useEffect(() => {
     if (activeTab === tab.id) {
       // existing active environments in to runtime
-      let activeEnvironments =
+      const activeEnvironments =
         websocketStoreApi?.getState()?.runtime?.activeEnvironments;
 
       // set active environments to platform
@@ -194,9 +192,7 @@ const Websocket = ({
     setRequestSavedFlag(tab?.meta?.isSaved);
   }, [tab?.meta?.isSaved]);
 
-  /**
-   * Subscribe/ unsubscribe request changes (pull-actions)
-   */
+  /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     // subscribe request updates
     if (tab.meta.isSaved && tab?.request?._meta?.id) {
@@ -219,7 +215,7 @@ const Websocket = ({
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  let handlePull = async (pullActions: IPushPayload[]) => {
+  const handlePull = async (pullActions: IPushPayload[]) => {
     try {
       let pullPayload = pullActions[0];
 
@@ -238,7 +234,7 @@ const Websocket = ({
 
       // console.log({ 111: updatedRequest });
 
-      updatedRequest = await normalizeRequestPayload(updatedRequest, true);
+      updatedRequest = await normalizeRequest(updatedRequest, true);
 
       // console.log({ updatedRequest, mergedPullAndLastRequest });
 
@@ -322,7 +318,7 @@ const Websocket = ({
     hasPull?: boolean,
     isFresh?: boolean
   ) => {
-    let request: IWebSocket = await normalizeRequestPayload(
+    let request: IWebSocket = await normalizeRequest(
       requestToNormalize,
       isRequestSaved
     );
@@ -961,12 +957,12 @@ const Websocket = ({
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    let { request = {} } = tab;
-    let defaultConnection =
+    const { request = {} } = tab;
+    const defaultConnection =
       request.connections?.find((c) => c.is_default === true) ||
       DefaultConnectionState;
 
-    let initPayload = {
+    const initPayload = {
       request: {
         url: request.url || { raw: '' },
         config: request.config || DefaultConfigState,

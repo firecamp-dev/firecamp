@@ -15,11 +15,11 @@ import { IWebsocketStore, useWebsocketStore } from '../../store';
 import { WebsocketContext } from '../WebSocket.context';
 
 const ConnectionPanel = ({ visiblePanel = '' }) => {
-  let {
+  const {
     ctx_connectionsFns: { addConnection },
   } = useContext(WebsocketContext);
 
-  let {
+  const {
     activePlayground,
     playgroundTabs,
 
@@ -35,9 +35,9 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     shallow
   );
 
-  let [isAddConnPopoverOpen, toggleConnPopover] = useState(false);
+  const [isAddConnPopoverOpen, toggleConnPopover] = useState(false);
 
-  let _onAddNewConnection = async (name = '') => {
+  const _onAddNewConnection = async (name = '') => {
     if (!name) return;
     try {
       await addConnection(name);
@@ -47,11 +47,11 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     }
   };
 
-  let _toggleDeleteConnection = (index, id) => {
-    // dom onClick event for close-icon-${id} wjere id is connection id
+  const _toggleDeleteConnection = (index, id) => {
+    // dom onClick event for close-icon-${id} where id is connection id
   };
 
-  let _onSelectConnectionTab = (id) => {
+  const _onSelectConnectionTab = (id) => {
     setActivePlayground(id);
   };
 
@@ -98,7 +98,7 @@ const AddNewConnectionPopover = ({
   existingConnectionNames = [],
   onAddNewConnection = (name = '') => {},
 }) => {
-  let [newConnectionData, setNewConnectionData] = useState({
+  const [newConnectionData, setNewConnectionData] = useState({
     isOpen: false,
     name: '',
     errorMsg: '',
@@ -107,7 +107,7 @@ const AddNewConnectionPopover = ({
     connectOnCreate: true,
   });
 
-  let _onAddConn = (e) => {
+  const _onAddConn = (e) => {
     if (e) e.preventDefault();
 
     newConnectionData.name = (newConnectionData.name || '').trim();
@@ -157,7 +157,7 @@ const AddNewConnectionPopover = ({
     );
   };
 
-  let _onUpdateAddNewConnData = (key, value) => {
+  const _onUpdateAddNewConnData = (key, value) => {
     if (!key) return;
 
     setNewConnectionData(
@@ -170,16 +170,16 @@ const AddNewConnectionPopover = ({
     );
   };
 
-  let _onKeyDown = (e) => {
+  const _onKeyDown = (e) => {
     if (e.key === 'Enter') {
       _onAddConn(e);
     }
   };
 
-  let _handleInputChange = (e) => {
+  const _handleInputChange = (e) => {
     if (e) e.preventDefault();
 
-    let { value } = e.target;
+    const { value } = e.target;
     _onUpdateAddNewConnData('name', value);
   };
 

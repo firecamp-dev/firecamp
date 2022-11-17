@@ -22,7 +22,7 @@ import {
   IRestClientRequest,
 } from '../types';
 import { _array, _object } from '@firecamp/utils';
-import { normalizePushPaylaod } from '../services/rest-service';
+import { normalizePushPayload } from '../services/rest-service';
 
 /**
  * @reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
@@ -245,7 +245,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
     // console.log({ request });
 
-    let requestToPush = await normalizePushPaylaod(request);
+    let requestToPush = await normalizePushPayload(request);
 
     pushPayload = { ...requestToPush };
     pushPayload._action = {
@@ -286,7 +286,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
     let pushPayload: IPushPayload = {};
     // console.log({ updatedRequest });
 
-    let requestToPush = await normalizePushPaylaod(
+    let requestToPush = await normalizePushPayload(
       updatedRequest,
       pushAction._removed
     );

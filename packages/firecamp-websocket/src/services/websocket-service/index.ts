@@ -30,7 +30,7 @@ export const prepareUIRequestPanelState = (
   return updatedUiStore;
 };
 
-export const normalizeRequestPayload = (
+export const normalizeRequest = (
   request: IWebSocket,
   isSaved: boolean = true
 ): Promise<IWebSocket> => {
@@ -160,6 +160,7 @@ export const normalizeRequestPayload = (
 
   return Promise.resolve(requestPayload);
 };
+
 /**
  * Normalize variables at runtime (on send request)
  * Set and unset variables from scripts response and update variables to platform
