@@ -9,13 +9,15 @@ import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from './primitive/Table';
+import { ITableRows } from './primitive/table.interfaces';
+
 
 const BasicTable = ({
   name = '',
   rows = [],
   options = {},
-  onChange = (rs) => {},
-  onMount = (api) => {},
+  onChange = (rs: ITableRows) => {},
+  onMount = (api: TTableApi) => {},
 }) => {
   const apiRef = useRef<TTableApi>();
 
@@ -58,6 +60,7 @@ const BasicTable = ({
                 // else handleDrag(row.index);
                 handleDrag(row, rowIndex);
               }}
+              data-testid="row-sorter"
             >
               <GrDrag opacity={0.3} />
             </span>)}

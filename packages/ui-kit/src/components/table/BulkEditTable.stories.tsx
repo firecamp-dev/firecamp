@@ -2,6 +2,7 @@ import { _array } from '@firecamp/utils';
 import { useState } from 'react';
 import { defaultData } from '../../../__mocks__/testData';
 import BulkEditTable from './BulkEditTable';
+import { ITableRows, TTableApi } from './primitive/table.interfaces';
 
 export default {
   title: 'UI-Kit/Table/BulkEditTable',
@@ -24,8 +25,8 @@ const TemplateWithState = () => {
       title={'Table Title With Row Change Value'}
       rows={rows}
       options={{}}
-      onChange={(value) => setRows(value)}
-      onMount={ (value: any) => console.log(`mount event`, value)}
+      onChange={(value: ITableRows) => setRows(value)}
+      onMount={ (value: TTableApi) => console.log(`mount event`, value)}
     />
   );
 };
@@ -43,6 +44,6 @@ WithTableOptions.args = {
     allowRowAdd: true,
     allowSort: true
   },
-  onChange: (value: any) => console.log(`change event`, value),
-  onMount: (value: any) => console.log(`mount event`, value)
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value)
 };

@@ -99,3 +99,11 @@ export type TTableApi<R = any> = {
   setRow: (row: R) => void;
   removeRow: (rowId: TsORn) => void;
 };
+
+type ITableRowValue = {
+    key: string;
+    value: string;
+    description: string;
+    disable?: boolean;
+};
+export type ITableRows = Array<ITableRowValue>;

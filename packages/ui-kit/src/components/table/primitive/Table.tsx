@@ -339,7 +339,6 @@ const Td: FC<TTd<any>> = ({
         className
       )}
       style={{ ...style, height: '27px' }}
-      data-testid="row-sorter"
       onDrop={(e) => {
         e.preventDefault();
         handleDrop(row);

@@ -59,4 +59,9 @@ const mouseDrop = async (element:HTMLElement) => {
 const mouseUp = async (element:HTMLElement) => {
     await fireEvent.mouseUp(element);
 }
-export { dragAndDrop, dropAndMove, mouseDrop, mouseUp };
+
+/* Click Event */
+const click = async (element: HTMLElement) => {
+    await fireEvent.click(element);
+}
+export { dragAndDrop, dropAndMove, mouseDrop, mouseUp, click };

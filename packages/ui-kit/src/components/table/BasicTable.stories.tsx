@@ -1,6 +1,7 @@
 import { _array } from '@firecamp/utils';
 import BasicTable from './BasicTable';
 import { defaultData } from '../../../__mocks__/testData';
+import { ITableRows, TTableApi } from './primitive/table.interfaces';
 
 export default {
   title: 'UI-Kit/Table/BasicTable',
@@ -22,15 +23,15 @@ EmptyRow.args = {};
 export const BasicTableData = Template.bind({});
 BasicTableData.args = {
   rows: defaultData,
-  onChange: (value: any) => console.log(`change event`, value),
-  onMount: (value: any) => console.log(`mount event`, value, value.getRows())
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value)
 };
 
 export const DisableColumns = Template.bind({});
 DisableColumns.args = {
   rows: defaultData,
-  onChange: (value: any) => console.log(`change event`, value),
-  onMount: (value: any) => console.log(`mount event`, value, value.getRows()),
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
   options: {
     disabledColumns: ["disable", "value"],
   }
@@ -39,8 +40,8 @@ DisableColumns.args = {
 export const DisableNewRow = Template.bind({});
 DisableNewRow.args = {
   rows: defaultData,
-  onChange: (value: any) => console.log(`change event`, value),
-  onMount: (value: any) => console.log(`mount event`, value, value.getRows()),
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
   options: {
     allowRowAdd: false,
   }
@@ -49,8 +50,8 @@ DisableNewRow.args = {
 export const DisableRemoveRow = Template.bind({});
 DisableRemoveRow.args = {
   rows: defaultData,
-  onChange: (value: any) => console.log(`change event`, value),
-  onMount: (value: any) => console.log(`mount event`, value, value.getRows()),
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
   options: {
     allowRowRemove: false,
   }
@@ -59,8 +60,8 @@ DisableRemoveRow.args = {
 export const DisableSortRow = Template.bind({});
 DisableSortRow.args = {
   rows: defaultData,
-  onChange: (value: any) => console.log(`change event`, value),
-  onMount: (value: any) => console.log(`mount event`, value, value.getRows()),
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
   options: {
     allowSort: false,
   }
