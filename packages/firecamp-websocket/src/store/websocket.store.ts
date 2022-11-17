@@ -85,8 +85,9 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
       last: initialState,
 
       initialise: (initialState, isFresh: boolean) => {
+        const state = get();
         // request
-        let initialRequest: IWebSocket = _object.pick(
+        const initialRequest: IWebSocket = _object.pick(
           initialState.request,
           requestSliceKeys
         ) as IWebSocket;
@@ -94,12 +95,15 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
         // console.log({ initialRequest, initialState });
 
         if (!_object.isEmpty(initialRequest))
-          get().initialiseRequest(initialRequest);
+          state.initialiseRequest(initialRequest);
 
-        if (initialState.ui) get().initializeUi(initialState.ui);
+        if (initialState.ui) state.initializeUi(initialState.ui);
 
         if (initialState.pushAction)
-          get().initializePushAction(initialState.pushAction);
+          state.initializePushAction(initialState.pushAction);
+
+        if (initialState.runtime)
+          set((s) => ({ runtime: { ...s.runtime, ...initialState.runtime } }));
 
         // console.log({ initialState });
 
