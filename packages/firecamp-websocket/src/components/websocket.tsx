@@ -113,9 +113,6 @@ const Websocket = ({
     setSelectedCollectionMessage,
     addPlaygroundTab,
     changePlaygroundTab,
-    addConnectionLog,
-    clearAllConnectionLogs,
-    changePlaygroundConnectionState,
     sendMessage,
     connect,
     setLast,
@@ -144,9 +141,6 @@ const Websocket = ({
       setSelectedCollectionMessage: s.setSelectedCollectionMessage,
       addPlaygroundTab: s.addPlaygroundTab,
       changePlaygroundTab: s.changePlaygroundTab,
-      addConnectionLog: s.addConnectionLog,
-      clearAllConnectionLogs: s.clearAllConnectionLogs,
-      changePlaygroundConnectionState: s.changePlaygroundConnectionState,
       sendMessage: s.sendMessage,
       connect: s.connect,
       setLast: s.setLast,
@@ -210,6 +204,53 @@ const Websocket = ({
     };
   }, []);
 
+  /** fetch request */
+  useEffect(() => {
+    const _fetchRequest = async () => {
+      try {
+        const isRequestSaved = !!tab?.request?._meta?.id || false;
+        let requestToNormalize: IWebSocket = {
+          url: { raw: '' },
+          meta: {
+            name: '',
+            version: '2.0.0',
+            type: ERequestTypes.WebSocket,
+          },
+          _meta: { id: id(), collection_id: '' },
+        };
+
+        if (isRequestSaved === true) {
+          setIsFetchingReqFlag(true);
+          try {
+            const response = await platformContext.request.onFetch(
+              tab.request._meta.id
+            );
+            requestToNormalize = response.data;
+          } catch (error) {
+            console.error({
+              api: 'fetch rest request',
+              error,
+            });
+            throw error;
+          }
+        }
+
+        /** normalize request and initialise in store on tab load */
+        initialise(requestToNormalize, true);
+        // _cloneDeep({ request: emptyPushAction }),
+        setIsFetchingReqFlag(false);
+      } catch (error) {
+        console.error({
+          API: 'fetch and normalize rest request',
+          error,
+        });
+
+        // TODO: close tab and show error popup
+      }
+    };
+    _fetchRequest();
+  }, []);
+
   /**
    * Handle pull payload
    * 1. initialise/ merge request
@@ -260,52 +301,6 @@ const Websocket = ({
       });
     }
   };
-
-  useEffect(() => {
-    const _fetchRequest = async () => {
-      try {
-        const isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalize: IWebSocket = {
-          url: { raw: '' },
-          meta: {
-            name: '',
-            version: '2.0.0',
-            type: ERequestTypes.WebSocket,
-          },
-          _meta: { id: id(), collection_id: '' },
-        };
-
-        if (isRequestSaved === true) {
-          setIsFetchingReqFlag(true);
-          try {
-            const response = await platformContext.request.onFetch(
-              tab.request._meta.id
-            );
-            requestToNormalize = response.data;
-          } catch (error) {
-            console.error({
-              API: 'fetch rest request',
-              error,
-            });
-            throw error;
-          }
-        }
-
-        /** normalize request and initialise in store on tab load */
-        initialise(requestToNormalize, true);
-        // _cloneDeep({ request: emptyPushAction }),
-        setIsFetchingReqFlag(false);
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
-
-        // TODO: close tab and show error popup
-      }
-    };
-    _fetchRequest();
-  }, []);
 
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {

@@ -23,17 +23,17 @@ import { EPanel } from '../../../types';
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
 
 const bodyTabs = [
-  {
-    id: 'playground',
-    name: 'Playground',
-  },
-  {
-    id: 'config',
-    name: 'Config',
-  },
+  // {
+  //   id: 'config',
+  //   name: 'Config',
+  // },
   {
     id: 'params',
     name: 'Params',
+  },
+  {
+    id: 'playground',
+    name: 'Playground',
   },
 ];
 
