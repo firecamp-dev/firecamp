@@ -13,7 +13,7 @@ import shallow from 'zustand/shallow';
 import ConnectionTab from './connection/ConnectionTab';
 import { IWebsocketStore, useWebsocketStore } from '../../store';
 
-const ConnectionPanel = ({ visiblePanel = '' }) => {
+const ConnectionPanel = () => {
   const {
     activePlayground,
     playgroundTabs,
@@ -58,14 +58,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
           list={playgroundTabs}
           activeTab={activePlayground}
           onSelect={_onSelectConnectionTab}
-          // isQueryDirty={isQueryDirty}
-          // toggleQueryDirty={_onToggleQueryDirty}
           closeTabIconMeta={{ show: true, onClick: _toggleDeleteConnection }}
-          /*  addTabIconMeta={{
-            id: `add-new-connection-${activeTab}`,
-            show: true,
-            onClick: () => toggleConnPopover(true),
-          }} */
           preComp={() => (
             <Button className="ml-2" text={'Connections'} secondary xs />
           )}

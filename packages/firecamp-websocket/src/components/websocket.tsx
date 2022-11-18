@@ -18,7 +18,6 @@ import '../sass/ws.sass';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 
 import Emitter from './common/Emitter';
-// import MessageCollection from './collection/MessageCollection';
 import { WebsocketContext } from './WebSocket.context';
 import { DefaultRequestConnection, DefaultConfigState } from '../constants';
 import { EConnectionState, EMessagePayloadTypes } from '../types';
@@ -39,6 +38,7 @@ import {
 import { _array } from '@firecamp/utils';
 import { ERequestPanelTabs } from '../types';
 import { DefaultConnectionState } from '../constants';
+import SidebarPanel from './sidebar-panel/SidebarPanel';
 
 export const CLIENT_ACTIONS = {
   CLIENT_ACTIONS: 'CLIENT_ACTIONS',
@@ -872,8 +872,12 @@ const Websocket = ({
             />
           </Container.Header>
           <Container.Body>
-            {/* <MessageCollection tab={tab} /> */}
-            <ConnectionPanel />
+            <Row flex={1} overflow="auto" className="with-divider h-full">
+              <SidebarPanel />
+              <Column>
+                <ConnectionPanel />
+              </Column>
+            </Row>
           </Container.Body>
         </Container>
       </RootContainer>
