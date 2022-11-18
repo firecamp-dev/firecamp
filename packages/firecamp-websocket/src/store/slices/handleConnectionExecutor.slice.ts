@@ -8,25 +8,25 @@ import { _misc, _object } from '@firecamp/utils';
 import { EConnectionState } from '../../types';
 
 interface IHandleConnectionExecutorSlice {
-  connect: (connection_id: TId) => void;
-  disconnect: (connection_id: TId, code: number, reason: string) => void;
-  sendMessage: (connection_id: TId, message: IWebSocketMessage) => void;
+  connect: (connectionId: TId) => void;
+  disconnect: (connectionId: TId, code?: number, reason?: string) => void;
+  sendMessage: (connectionId: TId, message: IWebSocketMessage) => void;
 }
 
 const createHandleConnectionExecutor = (
   set,
   get
 ): IHandleConnectionExecutorSlice => ({
-  connect: (connection_id: TId) => {
+  connect: (connectionId: TId) => {
     /**
      * TOODs:
      * 1. Manage and parse environment variables
      * 2. Manager ssl n proxy logic
      */
 
-    console.log(connection_id, 'connection_id...');
+    console.log(connectionId, 'connectionId...');
 
-    if (!connection_id) return;
+    if (!connectionId) return;
 
     try {
       const state = get();
@@ -34,7 +34,7 @@ const createHandleConnectionExecutor = (
       const url = state.request.url,
         config = state.request.config,
         connection = state.request.connections.find(
-          (c) => c.id === connection_id
+          (c) => c.id === connectionId
         );
 
       // console.log(connection, url);
@@ -59,24 +59,24 @@ const createHandleConnectionExecutor = (
 
       // on open
       executor.onOpen(() => {
-        get()?.changePlaygroundConnectionState(
-          connection_id,
+        state.changePlaygroundConnectionState(
+          connectionId,
           EConnectionState.Open
         );
       });
 
       // on close
       executor.onClose(() => {
-        get()?.changePlaygroundConnectionState(
-          connection_id,
+        state.changePlaygroundConnectionState(
+          connectionId,
           EConnectionState.Closed
         );
       });
 
       // on reconnect
       executor.onConnecting(() => {
-        get()?.changePlaygroundConnectionState(
-          connection_id,
+        state.changePlaygroundConnectionState(
+          connectionId,
           EConnectionState.Connecting
         );
       });
@@ -84,29 +84,30 @@ const createHandleConnectionExecutor = (
       // get logs
       executor.logs((log) => {
         if (!log) return;
-        get()?.addConnectionLog(connection_id, log);
+        state.addConnectionLog(connectionId, log);
       });
 
       // connect
       executor.connect();
 
-      // set executorin to playground
-      get()?.changePlayground(connection_id, { executor });
+      // set executor in to playground
+      state.changePlayground(connectionId, { executor });
     } catch (error) {
       console.info({
         API: 'websocket.connect',
-        connection_id,
+        connectionId,
         error,
       });
     }
   },
 
-  disconnect: (connection_id: TId, code: number, reason: string) => {
+  disconnect: (connectionId: TId, code: number, reason: string) => {
     try {
-      let existingPlayground = get()?.playgrounds?.[connection_id];
+      const state = get();
+      const existingPlayground = state.playgrounds?.[connectionId];
       if (
         existingPlayground &&
-        existingPlayground?.id === connection_id &&
+        existingPlayground?.id === connectionId &&
         existingPlayground.executor &&
         existingPlayground.connectionState === EConnectionState.Open
       ) {
@@ -114,36 +115,36 @@ const createHandleConnectionExecutor = (
         existingPlayground.executor?.disconnect(code, reason);
 
         // set empty executor
-        get()?.deleteExecutor(connection_id);
+        state.deleteExecutor(connectionId);
       }
     } catch (error) {
       console.info({
         API: 'websocket.disconnect',
-        connection_id,
+        connectionId,
         error,
       });
     }
   },
 
-  sendMessage: (connection_id: TId, message: IWebSocketMessage) => {
+  sendMessage: (connectionId: TId, message: IWebSocketMessage) => {
     try {
       /**
        * TODOs:
        * 1. Manage and parse environment variables
        * 2. history
        */
-
-      let existingPlayground: IPlayground = get()?.playgrounds?.[connection_id];
+      const state = get();
+      const existingPlayground: IPlayground = state.playgrounds?.[connectionId];
       if (
         existingPlayground &&
-        existingPlayground?.id === connection_id &&
+        existingPlayground?.id === connectionId &&
         existingPlayground.executor &&
         existingPlayground.connectionState === EConnectionState.Open
       ) {
         // TODO: check if connection open or not. if not then executor will send log with error message
 
         message = _object.omit(message, ['path']);
-        // console.log({ message });
+        console.log({ message }, 'send message');
 
         // send message
         existingPlayground.executor.send(message);
@@ -151,7 +152,7 @@ const createHandleConnectionExecutor = (
     } catch (error) {
       console.info({
         API: 'websocket.send',
-        connection_id,
+        connectionId,
         message,
         error,
       });

@@ -217,11 +217,11 @@ const Websocket = ({
    */
   const handlePull = async (pullActions: IPushPayload[]) => {
     try {
-      let pullPayload = pullActions[0];
+      const pullPayload = pullActions[0];
 
       // console.log({ pullPayload });
 
-      let last = websocketStoreApi.getState().last;
+      const last = websocketStoreApi.getState().last;
       let mergedPullAndLastRequest = _object.mergeDeep(
         _cloneDeep(last.request),
         _object.omit(pullPayload, ['_action'])
@@ -246,11 +246,13 @@ const Websocket = ({
       });
 
       // get push action payload
-      let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
+      const pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialiseRequest(updatedRequest, true, pushAction, true, false);
+      initialise(updatedRequest, false); //pushAction
+      // _cloneDeep({ request: emptyPushAction }),
+      setIsFetchingReqFlag(false);
     } catch (error) {
       console.error({
         API: 'rest.handlePull',
@@ -289,13 +291,10 @@ const Websocket = ({
           }
         }
 
-        initialiseRequest(
-          requestToNormalize,
-          isRequestSaved,
-          _cloneDeep({ request: emptyPushAction }),
-          false,
-          true
-        );
+        /** normalize request and initialise in store on tab load */
+        initialise(requestToNormalize, true);
+        // _cloneDeep({ request: emptyPushAction }),
+        setIsFetchingReqFlag(false);
       } catch (error) {
         console.error({
           API: 'fetch and normalize rest request',
@@ -307,74 +306,6 @@ const Websocket = ({
     };
     _fetchRequest();
   }, []);
-
-  /**
-   * initialiseRequest: normalize request and initialise in store on tab load and manage pull
-   */
-  const initialiseRequest = async (
-    requestToNormalize: IWebSocket,
-    isRequestSaved: boolean,
-    pushAction?: IPushAction,
-    hasPull?: boolean,
-    isFresh?: boolean
-  ) => {
-    const state = websocketStoreApi.getState();
-    const request: IWebSocket = await normalizeRequest(
-      requestToNormalize,
-      isRequestSaved
-    );
-    const uiActiveTab = hasPull
-      ? state.ui?.requestPanel?.activeTab || ERequestPanelTabs.Playgrounds
-      : ERequestPanelTabs.Playgrounds;
-
-    const requestPanel = prepareUIRequestPanelState(request);
-
-    const defaultConnection =
-      request.connections?.find((c) => c.is_default === true) ||
-      DefaultConnectionState;
-
-    console.log({ request });
-    initialise(
-      {
-        request,
-        pushAction,
-        playgrounds: {
-          // Add logic for init playgrounds by connections
-          [defaultConnection.id]: {
-            id: defaultConnection.id,
-            connectionState: EConnectionState.Ideal,
-            logFilters: {
-              type: '',
-            },
-            message: initialPlaygroundMessage,
-            selectedCollectionMessage: '',
-          },
-        },
-        runtime: {
-          activePlayground: request.connections[0].id,
-          playgroundTabs: request.connections.map((c) => {
-            return {
-              id: c.id,
-              name: c.name,
-              meta: {
-                isSaved: true,
-                hasChange: false,
-              },
-            };
-          }),
-        },
-        ui: {
-          ...state.ui,
-          requestPanel: {
-            ...requestPanel,
-            activeTab: uiActiveTab,
-          },
-        },
-      },
-      isFresh
-    );
-    setIsFetchingReqFlag(false);
-  };
 
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
@@ -946,8 +877,8 @@ const Websocket = ({
             />
           </Container.Header>
           <Container.Body>
-             {/* <MessageCollection tab={tab} /> */}
-             <ConnectionPanel />
+            {/* <MessageCollection tab={tab} /> */}
+            <ConnectionPanel />
           </Container.Body>
         </Container>
       </RootContainer>

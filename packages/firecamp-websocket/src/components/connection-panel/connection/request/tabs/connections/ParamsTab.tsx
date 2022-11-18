@@ -1,7 +1,7 @@
 import { BulkEditTable } from '@firecamp/ui-kit';
 const ParamsTab = ({
   params = [],
-  activeconnectionId = '',
+  activeConnectionId = '',
   onUpdate = () => {},
 }) => {
   return (
@@ -9,7 +9,7 @@ const ParamsTab = ({
       onChange={(data) => {
         onUpdate(data);
       }}
-      key={`params-${activeconnectionId}`}
+      key={`params-${activeConnectionId}`}
       rows={params || []}
       debounce={100}
       name={'params'}

@@ -20,7 +20,7 @@ import Message from './request/tabs/message/Message';
 import Response from './response/Response';
 import ConnectButton from '../../common/connection/ConnectButton';
 import { EPanel } from '../../../types';
-import { useWebsocketStore } from '../../../store';
+import { IWebsocketStore, useWebsocketStore } from '../../../store';
 
 const bodyTabs = [
   {
@@ -39,7 +39,7 @@ const bodyTabs = [
 
 const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   const { activePlayground, connection, updateConnection } = useWebsocketStore(
-    (s) => ({
+    (s: IWebsocketStore) => ({
       activePlayground: s.runtime.activePlayground,
       connection: s.request.connections.find(
         (c) => c.id === s.runtime.activePlayground
@@ -90,7 +90,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           <HeadersTab
             key={activePlayground}
             headers={connection?.headers || []}
-            activeconnectionId={activePlayground}
+            activeConnectionId={activePlayground}
             onUpdate={_onChangeHeaders}
           />
         );
@@ -99,7 +99,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         return (
           <ParamsTab
             params={connection?.query_params || []}
-            activeconnectionId={activePlayground}
+            activeConnectionId={activePlayground}
             onUpdate={_onChangeParams}
           />
         );
@@ -121,40 +121,38 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
 
   return (
     <Row flex={1} overflow="auto" className=" with-divider h-full">
-          <Column className="h-full">
-            <Container className="with-divider">
-              <Container.Header>
-                <TabHeader className="height-small !px-0 z-20 relative w-full">
-                <SecondaryTab
-                    className="flex items-center"
-                    key="tabs"
-                    list={bodyTabs || []}
-                    activeTab={activeBodyTab || ''}
-                    onSelect={onSelectBodyTab}
-                  additionalComponent={<ConnectButton />}
-                  />
-                </TabHeader>
-              </Container.Header>
-              <Container.Body>
-                {_renderBody()}
-              </Container.Body>
-            </Container>
-          </Column>
-          <Resizable
-            width={'100%'}
-            height="100%"
-            maxWidth="60%"
-            minWidth="20%"
-            left={true}
-            className={classnames({
-              'fc-collapsed': visiblePanel === EPanel.Response,
-            })}
-          >
-            <Column className="h-full">
-              <Response key={activePlayground} />
-            </Column>
-          </Resizable>
-        </Row>
+      <Column className="h-full">
+        <Container className="with-divider">
+          <Container.Header>
+            <TabHeader className="height-small !px-0 z-20 relative w-full">
+              <SecondaryTab
+                className="flex items-center"
+                key="tabs"
+                list={bodyTabs || []}
+                activeTab={activeBodyTab || ''}
+                onSelect={onSelectBodyTab}
+                additionalComponent={<ConnectButton />}
+              />
+            </TabHeader>
+          </Container.Header>
+          <Container.Body>{_renderBody()}</Container.Body>
+        </Container>
+      </Column>
+      <Resizable
+        width={'100%'}
+        height="100%"
+        maxWidth="60%"
+        minWidth="20%"
+        left={true}
+        className={classnames({
+          'fc-collapsed': visiblePanel === EPanel.Response,
+        })}
+      >
+        <Column className="h-full">
+          <Response key={activePlayground} />
+        </Column>
+      </Resizable>
+    </Row>
   );
 };
 export default memo(ConnectionTab);

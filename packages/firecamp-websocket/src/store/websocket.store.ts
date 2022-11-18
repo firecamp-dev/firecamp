@@ -42,9 +42,16 @@ import {
   IUi,
   createUiSlice,
   IUiSlice,
+  initialPlaygroundMessage,
 } from './index';
 import { _object } from '@firecamp/utils';
 import { IWebSocket } from '@firecamp/types';
+import {
+  normalizeRequest,
+  prepareUIRequestPanelState,
+} from '../services/websocket-service';
+import { EConnectionState, ERequestPanelTabs } from '../types';
+import { DefaultConnectionState } from '../constants';
 
 const {
   Provider: WebsocketStoreProvider,
@@ -74,7 +81,7 @@ interface IWebsocketStore
     IUiSlice {
   last: any;
 
-  initialise: (initialState: IWebsocketStoreState, isFresh: boolean) => void;
+  initialise: (request: IWebSocket, memoiseRequest: boolean) => void;
 
   setLast: (initialState: IWebsocketStoreState) => void;
 }
@@ -84,37 +91,65 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
     return {
       last: initialState,
 
-      initialise: (initialState, isFresh: boolean) => {
+      initialise: async (_request, memoiseRequest) => {
         const state = get();
-        // request
-        const initialRequest: IWebSocket = _object.pick(
-          initialState.request,
-          requestSliceKeys
-        ) as IWebSocket;
+        const request: IWebSocket = await normalizeRequest(_request);
+        // const uiActiveTab = hasPull
+        //   ? state.ui?.requestPanel?.activeTab || ERequestPanelTabs.Playgrounds
+        //   : ERequestPanelTabs.Playgrounds;
 
-        // console.log({ initialRequest, initialState });
+        const requestPanel = prepareUIRequestPanelState(request);
 
-        if (!_object.isEmpty(initialRequest))
-          state.initialiseRequest(initialRequest);
+        const defaultConnection =
+          request.connections?.find((c) => c.is_default === true) ||
+          DefaultConnectionState;
+        const playgroundId = defaultConnection.id;
 
-        if (initialState.ui) state.initializeUi(initialState.ui);
+        const playgrounds = {
+          // Add logic for init playgrounds by connections
+          [playgroundId]: {
+            id: playgroundId,
+            connectionState: EConnectionState.Ideal,
+            logFilters: {
+              type: '',
+            },
+            message: initialPlaygroundMessage,
+            selectedCollectionMessage: '',
+          },
+        };
 
-        if (initialState.pushAction)
-          state.initializePushAction(initialState.pushAction);
+        const runtime = {
+          ...state.runtime,
+          activePlayground: playgroundId,
+          playgroundTabs: request.connections.map((c) => {
+            return {
+              id: c.id,
+              name: c.name,
+              meta: {
+                isSaved: true,
+                hasChange: false,
+              },
+            };
+          }),
+        };
+        const ui = {
+          ...state.ui,
+          requestPanel: {
+            ...requestPanel,
+            activeTab: ERequestPanelTabs.Playgrounds, //uiActiveTab,
+          },
+        };
 
-        if (initialState.runtime)
-          set((s) => ({ runtime: { ...s.runtime, ...initialState.runtime } }));
-
-        // console.log({ initialState });
-
-        if (isFresh) {
-          set((s) => ({
-            ...s,
-            last: initialState,
-          }));
-        }
-
-        // runtime
+        const last = memoiseRequest ? { request } : {};
+        set((s) => {
+          return {
+            last: { ...s.last, ...last },
+            request,
+            playgrounds,
+            runtime,
+            ui,
+          };
+        });
       },
 
       setLast: (initialState: IWebsocketStoreState) => {

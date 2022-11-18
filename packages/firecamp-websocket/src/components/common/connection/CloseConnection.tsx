@@ -7,24 +7,24 @@ const CloseConnection = ({
   buttonId = 'close',
   activePlayground = '',
   closeManually = true,
-  onClose = () => {},
+  onClose,
 }) => {
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     status: '',
     reason: '',
     isStatusDirty: false,
     hasValidStatus: false,
   });
 
-  let [isOpen, toggleOpen] = useState(false);
+  const [isOpen, toggleOpen] = useState(false);
 
-  let { status, reason, isStatusDirty, hasValidStatus } = state;
+  const { status, reason, isStatusDirty, hasValidStatus } = state;
 
-  let _handleInputChange = (e) => {
+  const _handleInputChange = (e) => {
     e.stopPropagation();
-    let { name, value } = e.target;
+    const { name, value } = e.target;
 
-    let checkStaus = (value) => {
+    const checkStatus = (value) => {
       value = value.trim();
 
       value = Number(value);
@@ -51,17 +51,17 @@ const CloseConnection = ({
       ...state,
       [name]: value,
       hasValidStatus:
-        name === 'status' ? checkStaus(value) : state.hasValidStatus,
+        name === 'status' ? checkStatus(value) : state.hasValidStatus,
       isStatusDirty: true,
     });
   };
 
-  let _onClose = (e) => {
+  const _onClose = (e) => {
     e.preventDefault();
-    status = status.trim();
+    const _status = status.trim();
     if (status.length && !hasValidStatus) return;
 
-    onClose(activePlayground, Number(status), reason);
+    onClose(activePlayground, Number(_status), reason);
     // this._toggleCloseDD()
     setState({
       status: '',
@@ -73,11 +73,11 @@ const CloseConnection = ({
     toggleOpen(!isOpen);
   };
 
-  let _onSubmit = (e) => {
+  const _onSubmit = (e) => {
     if (e) e.preventDefault();
   };
 
-  let popover_id = `close-${activePlayground}`;
+  const popover_id = `close-${activePlayground}`;
   // console.log(`hasValidStatus`, hasValidStatus, isStatusDirty);
   return (
     <Popover
@@ -135,7 +135,7 @@ const CloseConnection = ({
             </div>
           </div>
         ) : (
-          ''
+          <></>
         )
       }
     >
@@ -143,14 +143,10 @@ const CloseConnection = ({
         id={closeManually === false ? popover_id : `${popover_id}-${buttonId}`}
       >
         <Button
-          // TODO: add class font-ligh
           text={'Connected'}
-          // TODO: Add iconPathHover
-          // iconPathHover={'/packages-platform/core/public/assets/icon/png/broken-connection.png'}
-          icon={<IoWifi className="ml-2 toggle-arrow" size={12} />}
           onClick={closeManually === false ? onClose : () => {}}
           primary
-          sm
+          xs
           iconLeft
         />
       </Popover.Handler>

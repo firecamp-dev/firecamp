@@ -9,7 +9,7 @@ import {
   EEnvelope,
 } from '@firecamp/types';
 
-import { EConnectionState } from '../../constants';
+import { EConnectionState } from '../../types';
 import { _object } from '@firecamp/utils';
 
 const initialPlaygroundMessage = {
@@ -52,31 +52,31 @@ interface IPlaygrounds {
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
-  getPlayground: (connection_id: TId) => void;
-  addPlayground: (connection_id: TId, playground: IPlayground) => void;
-  changePlayground: (connection_id: TId, updates: object) => void;
+  getPlayground: (connectionId: TId) => void;
+  addPlayground: (connectionId: TId, playground: IPlayground) => void;
+  changePlayground: (connectionId: TId, updates: object) => void;
 
   changePlaygroundConnectionState: (
-    connection_id: TId,
+    connectionId: TId,
     connectionState: EConnectionState
   ) => void;
   changePlaygroundLogFilters: (
-    connection_id: TId,
+    connectionId: TId,
     updates: { type: string }
   ) => void;
 
-  setPlaygroundMessage: (connection_id: TId, message: IMessage) => void;
-  changePlaygroundMessage: (connection_id: TId, updates: object) => void;
-  resetPlaygroundMessage: (connection_id: TId) => void;
+  setPlaygroundMessage: (connectionId: TId, message: IMessage) => void;
+  changePlaygroundMessage: (connectionId: TId, updates: object) => void;
+  resetPlaygroundMessage: (connectionId: TId) => void;
 
   setSelectedCollectionMessage: (
-    connection_id: TId,
+    connectionId: TId,
     message_id: TId | string
   ) => void;
 
-  deletePlayground: (connection_id: TId) => void;
+  deletePlayground: (connectionId: TId) => void;
 
-  deleteExecutor: (connection_id: TId) => void;
+  deleteExecutor: (connectionId: TId) => void;
 }
 
 const createPlaygroundsSlice = (
@@ -86,26 +86,26 @@ const createPlaygroundsSlice = (
 ): IPlaygroundSlice => ({
   playgrounds: initialPlaygrounds,
 
-  getPlayground: (connection_id: TId) => {
-    return get()?.playgrounds?.[connection_id];
+  getPlayground: (connectionId: TId) => {
+    return get()?.playgrounds?.[connectionId];
   },
-  addPlayground: (connection_id: TId, playground: IPlayground) => {
+  addPlayground: (connectionId: TId, playground: IPlayground) => {
     set((s) => ({
       ...s,
       playgrounds: {
         ...s.playgrounds,
-        [connection_id]: playground,
+        [connectionId]: playground,
       },
     }));
   },
 
-  changePlayground: (connection_id: TId, updates: object) => {
+  changePlayground: (connectionId: TId, updates: object) => {
     set((s) => ({
       ...s,
       playgrounds: {
         ...s.playgrounds,
-        [connection_id]: {
-          ...(s.playgrounds[connection_id] || {}),
+        [connectionId]: {
+          ...(s.playgrounds[connectionId] || {}),
           ...updates,
         },
       },
@@ -113,29 +113,29 @@ const createPlaygroundsSlice = (
   },
 
   changePlaygroundConnectionState: (
-    connection_id: TId,
+    connectionId: TId,
     connectionState: EConnectionState
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connection_id];
-    if (existingPlayground && existingPlayground?.id === connection_id) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.connectionState = connectionState;
-
+    const plg = get().playgrounds?.[connectionId];
+    if (plg?.id === connectionId) {
       set((s) => ({
         ...s,
         playgrounds: {
           ...s.playgrounds,
-          [connection_id]: updatedPlayground,
+          [connectionId]: {
+            ...s.playgrounds[connectionId],
+            connectionState,
+          },
         },
       }));
     }
   },
   changePlaygroundLogFilters: (
-    connection_id: TId,
+    connectionId: TId,
     updates: { type: string }
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connection_id];
-    if (existingPlayground && existingPlayground?.id === connection_id) {
+    let existingPlayground = get()?.playgrounds?.[connectionId];
+    if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.logFilters = { type: updates.type };
 
@@ -143,15 +143,15 @@ const createPlaygroundsSlice = (
         ...s,
         playgrounds: {
           ...s.playgrounds,
-          [connection_id]: updatedPlayground,
+          [connectionId]: updatedPlayground,
         },
       }));
     }
   },
 
-  setPlaygroundMessage: (connection_id: TId, message: IMessage) => {
-    let existingPlayground = get()?.playgrounds?.[connection_id];
-    if (existingPlayground && existingPlayground?.id === connection_id) {
+  setPlaygroundMessage: (connectionId: TId, message: IMessage) => {
+    let existingPlayground = get()?.playgrounds?.[connectionId];
+    if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.message = message;
 
@@ -159,15 +159,15 @@ const createPlaygroundsSlice = (
         ...s,
         playgrounds: {
           ...s.playgrounds,
-          [connection_id]: updatedPlayground,
+          [connectionId]: updatedPlayground,
         },
       }));
     }
   },
-  changePlaygroundMessage: async (connection_id: TId, updates: object) => {
-    let existingPlayground = await get()?.playgrounds?.[connection_id];
+  changePlaygroundMessage: async (connectionId: TId, updates: object) => {
+    let existingPlayground = await get()?.playgrounds?.[connectionId];
 
-    if (existingPlayground && existingPlayground?.id === connection_id) {
+    if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = Object.assign({}, existingPlayground);
       updatedPlayground.message = { ...updatedPlayground.message, ...updates };
 
@@ -181,17 +181,17 @@ const createPlaygroundsSlice = (
           ...s,
           playgrounds: {
             ...s.playgrounds,
-            [connection_id]: updatedPlayground,
+            [connectionId]: updatedPlayground,
           },
         }));
-        get()?.changePlaygroundTab(connection_id, {
+        get()?.changePlaygroundTab(connectionId, {
           meta: {
             isSaved: !!updatedPlayground.message?._meta?.id,
             hasChange: true,
           },
         });
       } else {
-        get()?.changePlaygroundTab(connection_id, {
+        get()?.changePlaygroundTab(connectionId, {
           meta: {
             isSaved: !!updatedPlayground.message?._meta?.id,
             hasChange: false,
@@ -200,9 +200,9 @@ const createPlaygroundsSlice = (
       }
     }
   },
-  resetPlaygroundMessage: (connection_id: TId) => {
-    let existingPlayground = get()?.playgrounds?.[connection_id];
-    if (existingPlayground && existingPlayground?.id === connection_id) {
+  resetPlaygroundMessage: (connectionId: TId) => {
+    let existingPlayground = get()?.playgrounds?.[connectionId];
+    if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.message = initialPlaygroundMessage;
 
@@ -210,18 +210,18 @@ const createPlaygroundsSlice = (
         ...s,
         playgrounds: {
           ...s.playgrounds,
-          [connection_id]: updatedPlayground,
+          [connectionId]: updatedPlayground,
         },
       }));
     }
   },
 
   setSelectedCollectionMessage: (
-    connection_id: TId,
+    connectionId: TId,
     message_id: TId | string
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connection_id];
-    if (existingPlayground && existingPlayground?.id === connection_id) {
+    let existingPlayground = get()?.playgrounds?.[connectionId];
+    if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.selectedCollectionMessage = message_id;
 
@@ -229,30 +229,30 @@ const createPlaygroundsSlice = (
         ...s,
         playgrounds: {
           ...s.playgrounds,
-          [connection_id]: updatedPlayground,
+          [connectionId]: updatedPlayground,
         },
       }));
     }
   },
 
-  deletePlayground: (connection_id: TId) => {
+  deletePlayground: (connectionId: TId) => {
     let playgroundsCount = Object.keys(get()?.playgrounds)?.length;
 
     // Do not allow to remove playground if only one exists
     if (playgroundsCount === 1) return;
 
-    let existingPlayground = get()?.playgrounds?.[connection_id];
-    if (existingPlayground && existingPlayground?.id === connection_id) {
+    let existingPlayground = get()?.playgrounds?.[connectionId];
+    if (existingPlayground && existingPlayground?.id === connectionId) {
       set((s) => ({
         ...s,
-        playgrounds: s.playgrounds?.filter((c) => c.id != connection_id),
+        playgrounds: s.playgrounds?.filter((c) => c.id != connectionId),
       }));
     }
   },
 
-  deleteExecutor: (connection_id: TId) => {
-    let existingPlayground = get()?.playgrounds?.[connection_id];
-    if (existingPlayground && existingPlayground?.id === connection_id) {
+  deleteExecutor: (connectionId: TId) => {
+    let existingPlayground = get()?.playgrounds?.[connectionId];
+    if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.executor = {};
 
@@ -260,7 +260,7 @@ const createPlaygroundsSlice = (
         ...s,
         playgrounds: {
           ...s.playgrounds,
-          [connection_id]: updatedPlayground,
+          [connectionId]: updatedPlayground,
         },
       }));
     }

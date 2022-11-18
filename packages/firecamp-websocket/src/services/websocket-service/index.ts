@@ -31,10 +31,7 @@ export const prepareUIRequestPanelState = (
 };
 
 /** normalize the websocket request */
-export const normalizeRequest = (
-  request: IWebSocket,
-  isSaved: boolean = true
-): Promise<IWebSocket> => {
+export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
   const _nr: IWebSocket = {
     url: { raw: '' },
     meta: {

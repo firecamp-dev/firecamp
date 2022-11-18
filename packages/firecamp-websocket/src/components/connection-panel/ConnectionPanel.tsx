@@ -1,4 +1,4 @@
-import { useState, useContext, memo } from 'react';
+import { useState, memo } from 'react';
 import {
   Container,
   Checkbox,
@@ -12,13 +12,8 @@ import shallow from 'zustand/shallow';
 
 import ConnectionTab from './connection/ConnectionTab';
 import { IWebsocketStore, useWebsocketStore } from '../../store';
-import { WebsocketContext } from '../WebSocket.context';
 
 const ConnectionPanel = ({ visiblePanel = '' }) => {
-  const {
-    ctx_connectionsFns: { addConnection },
-  } = useContext(WebsocketContext);
-
   const {
     activePlayground,
     playgroundTabs,
@@ -40,7 +35,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
   const _onAddNewConnection = async (name = '') => {
     if (!name) return;
     try {
-      await addConnection(name);
+      // await addConnection(name);
       toggleConnPopover(false);
     } catch (error) {
       console.log({ error });
@@ -59,6 +54,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     <Container>
       <Container.Header className="z-30">
         <Tabs
+          className="hidden"
           list={playgroundTabs}
           activeTab={activePlayground}
           onSelect={_onSelectConnectionTab}
@@ -70,7 +66,9 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
             show: true,
             onClick: () => toggleConnPopover(true),
           }} */
-          preComp={() => <Button className="ml-2" text={'Connections'} secondary xs />}
+          preComp={() => (
+            <Button className="ml-2" text={'Connections'} secondary xs />
+          )}
           postComp={() => (
             <AddNewConnectionPopover
               isOpen={isAddConnPopoverOpen}
