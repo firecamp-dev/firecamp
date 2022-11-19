@@ -51,7 +51,7 @@ export default class Executor implements IExecutor {
       reconnect: {
         enable: options?.config?.reconnect || false,
         timeout: options?.config?.reconnect || 3000,
-        attempts: options?.config?.reconnect_attempts || 3
+        attempts: options?.config?.reconnectAttempts || 3
       }
     }
   }

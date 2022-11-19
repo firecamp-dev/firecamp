@@ -10,7 +10,6 @@ import { _array, _string, _table } from '@firecamp/utils';
 import fetchCertificates from './ssl-manager';
 import { EClientOptions, EClientOptionsDefaultValues } from './constants';
 import { TExecutorOptions } from './executor.interface';
-import transformExtraOptions from './extra-options';
 
 export default class ConfigGenerator {
   address: string;
@@ -18,17 +17,11 @@ export default class ConfigGenerator {
   clientOptions: ws.ClientOptions & {
     ping?: boolean;
     pingInterval?: number;
-    /**
-     * default: false
-     */
+    /** default: false */
     reconnect?: boolean;
-    /**
-     * default: 3000
-     */
+    /** default: 3000 */
     reconnectTimeout?: number;
-    /**
-     * default: 3
-     */
+    /** default: 3 */
     reconnectAttempts?: number;
   };
   connection: IWebSocketConnection;
@@ -49,7 +42,7 @@ export default class ConfigGenerator {
       maxPayload: 0,
       maxRedirects: 10,
     };
-    this.config = transformExtraOptions(config) || {};
+    this.config = config || {};
     this.connection = connection;
     this.certificates = certificates;
   }
@@ -112,14 +105,12 @@ export default class ConfigGenerator {
 
   setHeaders() {
     if (this.connection.headers && !_array.isEmpty(this.connection.headers)) {
-      const headers = _table.toObject(this.connection.headers);
-
-      Object.assign(this.clientOptions.headers, headers);
+      this.clientOptions.headers = _table.toObject(this.connection.headers);
     }
   }
 
   setCACertificate() {
-    if (this.config.reject_unauthorized) {
+    if (this.config.rejectUnauthorized) {
       const certificate = fetchCertificates(this.certificates, this.address);
 
       if (certificate) {
@@ -133,9 +124,9 @@ export default class ConfigGenerator {
   }
 
   setPingInfo() {
-    this.clientOptions.ping = this.connection.config.ping || false;
+    this.clientOptions.ping = this.connection.config?.ping || false;
     this.clientOptions.pingInterval =
-      this.connection.config.ping_interval || 3000;
+      this.connection.config?.pingInterval || 3000;
   }
 
   prepare() {

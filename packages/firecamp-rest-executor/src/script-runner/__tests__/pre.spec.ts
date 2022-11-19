@@ -16,7 +16,7 @@ const request: IRest = {
   method: EHttpMethod.GET,
   _meta: {
     id: '',
-    collection_id: '',
+    collectionId: '',
   },
   scripts: {
     pre: `request.addHeader('content-type', 'application/json')
@@ -50,7 +50,7 @@ describe('pre script', () => {
   });
 
   it('should set new query param', () => {
-    expect(preScriptResponse.request.url.query_params).toMatchObject([
+    expect(preScriptResponse.request.url.queryParams).toMatchObject([
       { key: 'id', value: '1' },
     ]);
   });

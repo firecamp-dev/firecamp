@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 export default (certificates, requestURL) => {
   let certificatePath;
 

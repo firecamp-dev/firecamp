@@ -61,11 +61,12 @@ const initApp = async () => {
 
   //1/ check if user is logged in or not
   const t = localStorage.getItem('token');
+  const wrsId = localStorage.getItem('workspace');
   if (!t) return AppService.modals.openSignIn();
   CloudApiGlobal.setGlobalHeaders({
     [ECloudApiHeaders.Authorization]: `Bearer ${t}`,
+    [ECloudApiHeaders.WorkspaceId]: wrsId,
   });
-  const wrsId = localStorage.getItem('workspace');
   Rest.auth
     .me(wrsId)
     .then(async (res) => {
