@@ -66,7 +66,7 @@ const SidebarPanel = () => {
     >
       <Column>
         <Container className="w-full">
-          <Container.Header className="z-20">
+          {/* <Container.Header className="z-20">
             <Tabs
               list={tabs}
               activeTab={activeTab}
@@ -74,7 +74,7 @@ const SidebarPanel = () => {
               onSelect={_setActiveTab}
               equalWidth={true}
             />
-          </Container.Header>
+          </Container.Header> */}
           <Container.Body>
             <div
               id={activeTab}
