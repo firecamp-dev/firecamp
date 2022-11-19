@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { ERequestTypes, IWebSocket } from '@firecamp/types';
 
-export default {
+const WsRequest: IWebSocket = {
   url: {
     raw: 'ws://localhost:3001/api/ws',
   },
@@ -12,6 +12,10 @@ export default {
   meta: {
     name: '',
     type: ERequestTypes.WebSocket,
+    version: '2.0.0',
+  },
+  config: {
+    maxRedirects: 3,
   },
   connections: [
     {
@@ -23,4 +27,6 @@ export default {
       },
     },
   ],
-} as IWebSocket;
+};
+
+export default WsRequest;

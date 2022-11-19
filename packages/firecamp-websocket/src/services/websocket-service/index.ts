@@ -39,7 +39,7 @@ export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
       type: ERequestTypes.WebSocket,
       version: '2.0.0',
     },
-    _meta: { id: '', collection_id: '' },
+    _meta: { id: '', collectionId: '' },
   };
 
   const { meta, _meta, url, connections, config } = request;

@@ -7,7 +7,7 @@ import { IWebSocketResponseMessage } from './types'
  * message and return actual message which 
  * will sent over the socket
  * 
- * @param param0 
+ * @param param
  * @returns 
  */
 export const parseMessage = ({ body, meta }: IWebSocketMessage): any => {
