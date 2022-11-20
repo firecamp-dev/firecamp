@@ -11,8 +11,8 @@ import { isValidRow } from '@firecamp/utils/dist/table';
 import { isString } from 'lodash';
 import { nanoid as id } from 'nanoid';
 
-import { IUiRequestPanel } from '../../store';
-import { DefaultConnectionState, DefaultConfigState } from '../../constants';
+import { IUiRequestPanel } from '../store';
+import { DefaultConnectionState, DefaultConfigState } from '../constants';
 
 export const prepareUIRequestPanelState = (
   request: Partial<IWebSocket>
@@ -52,19 +52,19 @@ export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
   // normalize meta
   _nr.meta.name = meta.name || 'Untitled Request';
   _nr.meta.description = meta.description || '';
-  _nr.meta.f_orders = meta.f_orders || [];
-  _nr.meta.leaf_orders = meta.leaf_orders || [];
+  _nr.meta.fOrders = meta.fOrders || [];
+  _nr.meta.iOrders = meta.iOrders || [];
   _nr.meta.type = ERequestTypes.WebSocket;
   _nr.meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
 
   // normalize _meta
   _nr._meta.id = _meta?.id || id();
-  _nr._meta.collection_id = _meta?.collection_id;
-  _nr._meta.folder_id = _meta?.folder_id;
-  _nr._meta.created_at = _meta?.created_at || new Date().valueOf();
-  _nr._meta.updated_at = _meta?.updated_at || new Date().valueOf();
-  _nr._meta.created_by = _meta?.created_by || '';
-  _nr._meta.updated_by = _meta?.updated_by || '';
+  _nr._meta.collectionId = _meta?.collectionId;
+  _nr._meta.folderId = _meta?.folderId;
+  _nr._meta.createdAt = _meta?.createdAt || new Date().valueOf();
+  _nr._meta.updatedAt = _meta?.updatedAt || new Date().valueOf();
+  _nr._meta.createdBy = _meta?.createdBy || '';
+  _nr._meta.updatedBy = _meta?.updatedBy || '';
 
   // normalize _meta
   _nr.connections = [];

@@ -29,15 +29,13 @@ const DefaultHeaders = [
 const DefaultConnectionState = {
   id: id(),
   name: 'Default',
-  is_default: true,
+  isDefault: true,
   headers: DefaultHeaders,
-  query_params: [],
+  queryParams: [],
   config: {
     ping: false,
-    ping_interval: 3000,
+    pingInterval: 3000,
   },
-  // auth: {},
-  // active_auth_type: ""
 };
 
 const ConnectionStates = {

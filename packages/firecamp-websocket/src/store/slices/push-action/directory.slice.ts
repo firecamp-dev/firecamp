@@ -1,12 +1,12 @@
-import { TId, IDirectory, EPushActionType } from '@firecamp/types';
+import { TId, IRequestFolder, EPushActionType } from '@firecamp/types';
 import PushActionService from '../../../services/push-actions';
 
 interface IPushActionDirectorySlice {
   prepareCollectionDirectoriesPushAction: (
     id: TId,
     pushActionType: EPushActionType,
-    lastDirectory: IDirectory,
-    directory: IDirectory
+    lastDirectory: IRequestFolder,
+    directory: IRequestFolder
   ) => void;
 }
 
@@ -17,8 +17,8 @@ const createPushActionDirectorySlice = (
   prepareCollectionDirectoriesPushAction: (
     id: TId,
     pushActionType: EPushActionType,
-    lastDirectory: IDirectory,
-    directory: IDirectory
+    lastDirectory: IRequestFolder,
+    directory: IRequestFolder
   ) => {
     let directoriesPushAction =
       PushActionService.prepareCollectionDirectoriesPushAction(

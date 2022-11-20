@@ -49,7 +49,7 @@ import { IWebSocket } from '@firecamp/types';
 import {
   normalizeRequest,
   prepareUIRequestPanelState,
-} from '../services/websocket-service';
+} from '../services/reqeust.service';
 import { EConnectionState, ERequestPanelTabs } from '../types';
 import { DefaultConnectionState } from '../constants';
 

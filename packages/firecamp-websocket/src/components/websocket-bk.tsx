@@ -8,7 +8,7 @@ import Executor from '@firecamp/ws-executor/dist/esm';
 import create from 'zustand';
 import _url from '@firecamp/url';
 
-import { ConfigGenerator } from '../services/websocket-service';
+import { ConfigGenerator } from '../services/reqeust.service';
 import URLbar from './common/urlbar/URLbar';
 import '../sass/ws.sass';
 import Request from './request/Request';

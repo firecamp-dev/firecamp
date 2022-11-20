@@ -4,7 +4,7 @@ import {
   TId,
   IWebSocketConnection,
   IWebSocketMessage,
-  IDirectory,
+  IRequestFolder,
   EPushActionType,
 } from '@firecamp/types';
 import equal from 'deep-equal';
@@ -418,8 +418,8 @@ const PushActionService = {
   prepareCollectionDirectoriesPushAction: (
     directory_id: TId,
     pushActionType: EPushActionType,
-    lastDirectory: IDirectory,
-    directory: IDirectory,
+    lastDirectory: IRequestFolder,
+    directory: IRequestFolder,
     existingPushAction: IPushActionDirectory
   ) => {
     let pushAction: IPushActionDirectory = existingPushAction || {};

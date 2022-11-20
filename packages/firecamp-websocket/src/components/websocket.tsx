@@ -12,7 +12,7 @@ import shallow from 'zustand/shallow';
 import {
   normalizeRequest,
   prepareUIRequestPanelState,
-} from '../services/websocket-service';
+} from '../services/reqeust.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import '../sass/ws.sass';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
