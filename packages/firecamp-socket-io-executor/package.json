@@ -1,19 +1,18 @@
 {
-  "name": "@firecamp/socket.io",
+  "name": "@firecamp/socket.io-executor",
   "version": "0.0.0",
-  "description": "SocketIO GUI client for Firecamp",
-  "main": "src/index.ts",
+  "description": "Socket.io request executor for desktop and browser environment",
+  "repository": "https://github.com/firecamp-io/firecamp/packages/executors/http-executor",
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
-    "build": "yarn clean && run-p 'build:*' && yarn copy-files",
-    "build:main": "tsc -p tsconfig.json",
+    "build": "run-p 'build:*'",
+    "build:main": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "clean": "rimraf dist/",
-    "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.css\" dist/",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "yarn build && npx jest --bail --silent --verbose",
+    "test": "yarn clean && yarn build && npx jest --bail --verbose",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
@@ -41,24 +40,15 @@
   },
   "dependencies": {
     "@firecamp/types": "^0.0.15",
-    "@firecamp/url": "^0.0.14",
-    "classnames": "^2.1.3",
-    "deep-equal": "^1.1.0",
-    "lodash": "^4.17.21",
-    "nanoid": "3.3.4",
-    "prop-types": "^15.6.2",
-    "react-full-screen": "^0.3.1",
-    "react-ga": "^3.1.2",
-    "react-virtualized": "^9.21.2",
+    "comment-json": "^4.1.1",
+    "mitt": "3.0.0",
     "socket.io-client-v2": "npm:socket.io-client@2.4.0",
     "socket.io-client-v3": "npm:socket.io-client@3.1.0",
-    "socket.io-client-v4": "npm:socket.io-client@4.1.3",
-    "zustand": "3.7.2"
+    "socket.io-client-v4": "npm:socket.io-client@4.1.3"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/jest": "27.5.0",
-    "@types/lodash": "^4.14.175",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.29.0",
@@ -83,7 +73,8 @@
     "typescript": "^4.7.4"
   },
   "files": [
-    "dist/",
+    "build/main",
+    "build/module",
     "!**/*.spec.*",
     "!**/*.json",
     "CHANGELOG.md",
@@ -102,20 +93,6 @@
     "extends": "@istanbuljs/nyc-config-typescript",
     "exclude": [
       "**/*.spec.js"
-    ]
-  },
-  "peerDependencies": {
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
-  },
-  "babel": {
-    "presets": [
-      [
-        "react-app",
-        {
-          "absoluteRuntime": false
-        }
-      ]
     ]
   }
 }

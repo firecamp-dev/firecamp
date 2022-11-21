@@ -63,7 +63,7 @@ const createHandleConnectionExecutor = (
         url,
         config,
         connection,
-        certificates: [], // TODO: add ssl certi
+        certificates: [], // TODO: add ssl certs
       };
 
       const executor: IExecutorInterface =
@@ -106,7 +106,7 @@ const createHandleConnectionExecutor = (
       // connect
       executor.connect();
 
-      // set executorin to playground
+      // set executor in to playground
       get()?.changePlayground(connection_id, { executor });
 
       // listen to on connect listener
