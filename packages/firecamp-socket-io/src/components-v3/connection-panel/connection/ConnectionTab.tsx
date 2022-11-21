@@ -90,7 +90,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           <HeadersTab
             key={activePlayground}
             headers={connection?.headers || []}
-            activeconnectionId={activePlayground}
+            activeConnectionId={activePlayground}
             onUpdate={_onChangeHeaders}
           />
         );
@@ -99,7 +99,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         return (
           <ParamsTab
             params={connection?.query_params || []}
-            activeconnectionId={activePlayground}
+            activeConnectionId={activePlayground}
             onUpdate={_onChangeParams}
           />
         );
@@ -108,7 +108,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         return (
           <AuthTab
             auth={connection?.auth || []}
-            activeconnectionId={activePlayground}
+            activeConnectionId={activePlayground}
             onUpdate={_onChangeAuth}
           />
         );

@@ -9,14 +9,14 @@ import {
   Container,
   TabHeader,
   Column,
-  MultiLineIFE
+  Editor,
 } from '@firecamp/ui-kit';
 import AckIcon from './AckIcon';
 
 const LogPreview = ({
   selectedConnection = '',
   row = {},
-  setSelectedRow = _ => {}
+  setSelectedRow = (_) => {},
 }) => {
   let [selectedArgIndex, setSelectedArgIndex] = useState(0);
 
@@ -57,19 +57,19 @@ const LogPreview = ({
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
-      <Container className="bg-focus2" >
+      <Container className="bg-focus2">
         <Container.Header className="bg-focus2">
           <Header
             row={row || {}}
-            emitterArg={row?.message?.[selectedArgIndex]}
+          emitterArg={row?.message?.[selectedArgIndex]}
           />
         </Container.Header>
         <Container.Body>
-          <MultiLineIFE
+          <Editor
             language={language}
-            value={'' + value}
+            value={value}
             disabled={true}
-            controlsConfig={{ show: true, position: 'horizontal' }}
+            // controlsConfig={{ show: true, position: 'horizontal' }}
           />
         </Container.Body>
         {row.message && Array.isArray(row.message) ? (
@@ -128,7 +128,7 @@ const Header = ({ row = {}, emitterArg = {} }) => {
                 </div>
               ) : (
                 ''
-              )
+              ),
             ]
           : ''}
       </TabHeader.Left>
@@ -152,13 +152,13 @@ const Header = ({ row = {}, emitterArg = {} }) => {
 const Footer = ({
   args = [],
   selectedArgIndex = 0,
-  setSelectedArgIndex = () => {}
+  setSelectedArgIndex = () => {},
 }) => {
   let [tabs, setTabs] = useState(
     args.map((arg, index) => {
       return {
         id: index,
-        name: `Arg ${index + 1}`
+        name: `Arg ${index + 1}`,
       };
     })
   );
@@ -167,7 +167,7 @@ const Footer = ({
     let newTabs = args.map((arg, index) => {
       return {
         id: index,
-        name: `Arg ${index + 1}`
+        name: `Arg ${index + 1}`,
       };
     });
 

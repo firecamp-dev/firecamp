@@ -1,6 +1,4 @@
-//@ts-nocheck
-
-import { useEffect, useState, useContext, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Modal from 'react-responsive-modal';
 import {
   Container,
@@ -9,14 +7,11 @@ import {
   Row,
   Resizable,
   Tabs,
-  MultiLineIFE,
+  Editor,
   // Collection,
 } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
-import FCSnippet from '@firecamp/code-snippets';
-import EmitterNode from '../../request/emitter/EmitterNode';
-import DirectoryNode from '../../request/emitter/DirectoryNode';
-import { SocketContext } from '../../Socket.context';
+// import FCSnippet from '@firecamp/code-snippets';
 
 const SnippetModal = ({
   collection: prop_collection = {},
@@ -79,13 +74,13 @@ const SnippetModal = ({
     editorMode: 'javascript',
   });
 
-  let [collection, setCollection] = useState(
+  let [collection, setCollection] =
+    useState();
     // prepare(
     //   prop_collection.directories || [],
     //   prop_collection.emitters || [],
     //   meta
     // ).collection
-  );
 
   useEffect(() => {
     // console.log(`prop_collection.emitters `, prop_collection.emitters)
@@ -113,7 +108,7 @@ const SnippetModal = ({
 
   useEffect(() => {
     // console.log(`state.activeTab`, state.activeTab)
-    _getSnippet(state.activeMessage, state.activeTab);
+    // _getSnippet(state.activeMessage, state.activeTab);
   }, [state.activeTab, state.activeMessage]);
 
   useEffect(() => {
@@ -152,32 +147,32 @@ const SnippetModal = ({
     });
   };
 
-  let _getSnippet = (emitter, aTab) => {
-    if (!emitter || !aTab) return;
-    let snippetConfig = _cloneDeep(config);
+  // let _getSnippet = (emitter, aTab) => {
+  //   if (!emitter || !aTab) return;
+  //   let snippetConfig = _cloneDeep(config);
 
-    snippetConfig.options = snippetConfig.config;
-    delete snippetConfig.config;
+  //   snippetConfig.options = snippetConfig.config;
+  //   delete snippetConfig.config;
 
-    console.log(`config`, snippetConfig);
-    // console.log(`emitter`, emitter);
-    // console.log(`listeners`, listeners);
-    let fcs = new FCSnippet(
-      Object.assign({}, snippetConfig, { emitter, listeners }),
-      'socketiov2',
-      aTab.toLowerCase()
-    );
-    fcs
-      .res()
-      .then((r) => {
-        // console.log(r);
-        setState({
-          ...state,
-          snippet: r,
-        });
-      })
-      .catch((er) => console.log(er));
-  };
+  //   console.log(`config`, snippetConfig);
+  //   // console.log(`emitter`, emitter);
+  //   // console.log(`listeners`, listeners);
+  //   let fcs = new FCSnippet(
+  //     Object.assign({}, snippetConfig, { emitter, listeners }),
+  //     'socketiov2',
+  //     aTab.toLowerCase()
+  //   );
+  //   fcs
+  //     .res()
+  //     .then((r) => {
+  //       // console.log(r);
+  //       setState({
+  //         ...state,
+  //         snippet: r,
+  //       });
+  //     })
+  //     .catch((er) => console.log(er));
+  // };
 
   let { tabs, activeTab, snippet, editorMode } = state;
 
@@ -207,7 +202,7 @@ const SnippetModal = ({
                   <TabHeader className={'small'}>Message Collection</TabHeader>
                 </Container.Header>
                 <Container.Body>
-                 {/*  <Collection
+                  {/*  <Collection
                     overflow={'auto'}
                     data={collection}
                     primaryKey={'id'}
@@ -281,7 +276,7 @@ const SnippetModal = ({
             prop_collection.emitters &&
             prop_collection.emitters.length ? (
               <Container>
-                <Container.Header className="z-20" >
+                <Container.Header className="z-20">
                   <Tabs
                     key="tabs"
                     list={tabs || []}
@@ -291,14 +286,14 @@ const SnippetModal = ({
                   />
                 </Container.Header>
                 <Container.Body>
-                  <MultiLineIFE
+                  <Editor
                     language={editorMode || 'typescript'}
                     value={snippet}
                     disabled={true}
-                    controlsConfig={{
-                      show: true,
-                    }}
-                    options={{
+                    // controlsConfig={{
+                    //   show: true,
+                    // }}
+                    monacoOptions={{
                       name: 'emitter',
                       width: '100%',
                       fontSize: 13,

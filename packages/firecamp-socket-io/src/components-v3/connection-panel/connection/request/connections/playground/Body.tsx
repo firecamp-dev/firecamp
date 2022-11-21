@@ -1,5 +1,5 @@
 import {
-  MultiLineIFE,
+  Editor,
   Input,
   FileInput,
   Container,
@@ -41,7 +41,7 @@ const Body = ({
           : playgroundBody;
         if (typeof value === 'string') {
           return (
-            <MultiLineIFE
+            <Editor
               autoFocus={!!emitterName}
               /* key={`${tabId}-${
                 type.id
@@ -56,13 +56,13 @@ const Body = ({
                   updateEmitterBody(value);
                 }
               }}
-              controlsConfig={{
-                show:
-                  activeArgType.id !== EMITTER_PAYLOAD_TYPES.no_body &&
-                  typeof playgroundBody === 'string' &&
-                  activeArgType.id !== EMITTER_PAYLOAD_TYPES.file,
-                position: 'vertical'
-              }}
+              // controlsConfig={{
+              //   show:
+              //     activeArgType.id !== EMITTER_PAYLOAD_TYPES.no_body &&
+              //     typeof playgroundBody === 'string' &&
+              //     activeArgType.id !== EMITTER_PAYLOAD_TYPES.file,
+              //   position: 'vertical'
+              // }}
               monacoOptions={{
                 name: 'Emitter',
                 width: '100%',

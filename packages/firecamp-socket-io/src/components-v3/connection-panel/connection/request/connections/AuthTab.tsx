@@ -1,25 +1,23 @@
-//@ts-nocheck
-
-import { BulkEditIFT } from '@firecamp/ui-kit';
+import { BulkEditTable } from '@firecamp/ui-kit';
 
 const AuthTab = ({
   auth = [],
-  activeconnectionId = '',
+  activeConnectionId = '',
   onUpdate = () => {}
 }) => {
   return (
-    <BulkEditIFT
+    <BulkEditTable
       onChange={onUpdate}
-      key={`auth-${activeconnectionId}`}
-      id={`auth-${activeconnectionId}`}
+      key={`auth-${activeConnectionId}`}
+      id={`auth-${activeConnectionId}`}
       rows={auth || []}
-      name={'auth'}
-      meta={{
-        mode: {
-          key: 'ife-header-key',
-          value: 'ife-header-value'
-        }
-      }}
+      title={'auth'}
+      // meta={{
+      //   mode: {
+      //     key: 'ife-header-key',
+      //     value: 'ife-header-value'
+      //   }
+      // }}
     />
   );
 };

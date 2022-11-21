@@ -1,26 +1,24 @@
-//@ts-nocheck
-
-import { BulkEditIFT } from '@firecamp/ui-kit';
+import { BulkEditTable } from '@firecamp/ui-kit';
 const ParamsTab = ({
   params = [],
-  activeconnectionId = '',
-  onUpdate = () => {}
+  activeConnectionId = '',
+  onUpdate = (data) => {},
 }) => {
-  // console.log(activeconnectionId, "Outer side")
-  // console.log("params", params, activeconnectionId, "Inner side")
+  // console.log(activeConnectionId, "Outer side")
+  // console.log("params", params, activeConnectionId, "Inner side")
   // if(!params.length) return <span/>
   return (
-    <BulkEditIFT
-      onChange={data => {
-        // console.log(activeconnectionId, data, params, "Inner side", 22222222);
+    <BulkEditTable
+      onChange={(data) => {
+        // console.log(activeConnectionId, data, params, "Inner side", 22222222);
         // debugger;
         onUpdate(data);
         // debugger;
       }}
-      key={`params-${activeconnectionId}`}
+      key={`params-${activeConnectionId}`}
       rows={params || []}
       debounce={100}
-      name={'params'}
+      title={'params'}
     />
   );
 };
