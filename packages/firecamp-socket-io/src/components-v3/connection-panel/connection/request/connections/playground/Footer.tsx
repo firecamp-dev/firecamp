@@ -18,49 +18,48 @@ const Footer = ({
   activeEmitter = '',
   saveButtonHandler = {},
   setToOriginal = () => {},
-  onEmit = () => {}
+  onEmit = () => {},
 }) => {
   return (
     <Container.Footer>
       <StatusBar>
         <StatusBar.PrimaryRegion>
-        {activeEmitter &&
+          {activeEmitter &&
           activeEmitter.length &&
           saveButtonHandler.isMessageDirty === true ? (
             <Button
               key="original_button"
-              color={EButtonColor.Secondary}
               text={'Set original'}
-              size={EButtonSize.Small}
               onClick={setToOriginal}
+              secondary
+              sm
             />
           ) : (
             <DocButton
               key="doc_button"
-              classname={
+              className={
                 'transparent border-0 flex items-center btn text-secondaryBG px-3 py-1'
               }
               text={'Help'}
               link={
                 'https://firecamp.io/docs/clients/socketio/configuring-socket-setting'
               }
-              iconClassname={'iconv2-info-icon font-base mr-2'}
+              iconClassName={'iconv2-info-icon font-base mr-2'}
             />
           )}
         </StatusBar.PrimaryRegion>
         <StatusBar.SecondaryRegion>
-        {showEmitButton === true ? (
+          {showEmitButton === true ? (
             <Button
-              // TODO: add color "primary-alt"
-              color={EButtonColor.Primary}
               icon={<IoSendSharp className="toggle-arrow" size={12} />}
-              iconPosition={EButtonIconPosition.Left}
-              size={EButtonSize.Small}
               onClick={onEmit}
               disabled={!emitterName}
+              primary
+              iconLeft
+              sm
             />
           ) : (
-            ''
+            <></>
           )}
         </StatusBar.SecondaryRegion>
       </StatusBar>

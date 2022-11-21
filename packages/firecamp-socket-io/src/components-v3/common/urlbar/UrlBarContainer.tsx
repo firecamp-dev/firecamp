@@ -130,11 +130,11 @@ const UrlBarContainer = ({
       <UrlBar.Suffix>
       <Button
           id={`save-request-${tab.id}`}
-          color={EButtonColor.Secondary}
-          size={EButtonSize.Small}
           text="Save"
           disabled={false}
           onClick={_onSave}
+          secondary
+          sm
         />
       </UrlBar.Suffix>
     </UrlBar>

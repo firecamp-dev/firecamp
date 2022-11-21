@@ -20,7 +20,7 @@ import { SocketContext } from '../../Socket.context';
 import { useSocketStore } from '../../../../../store';
 
 import { ELogTypes } from '../../../../../constants';
-import { _object } from '@firecamp/utils'
+import { _object } from '@firecamp/utils';
 
 const logTypes = {
   system: ELogTypes.System,
@@ -237,15 +237,15 @@ const LogTable = ({
                 >
                   <Button
                     text={logFilters?.type || 'select log type'}
-                    transparent={true}
-                    ghost={true}
-                    withCaret={true}
-                    size={EButtonSize.Small}
                     tooltip={
                       logFilters?.type
                         ? `Log type: ${logFilters?.type || '-'}`
                         : ''
                     }
+                    sm
+                    withCaret
+                    ghost
+                    transparent
                   />
                 </Dropdown.Handler>
                 <Dropdown.Options
@@ -278,15 +278,15 @@ const LogTable = ({
                 >
                   <Button
                     text={logFilters?.event || 'select an event'}
-                    transparent={true}
-                    ghost={true}
-                    withCaret={true}
-                    size={EButtonSize.Small}
                     tooltip={
                       logFilters?.event
                         ? `Event: ${logFilters?.event || '-'}`
                         : ''
                     }
+                    sm
+                    withCaret
+                    ghost
+                    transparent
                   />
                 </Dropdown.Handler>
                 <Dropdown.Options

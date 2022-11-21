@@ -3,7 +3,7 @@ import Executor, {
   TExecutorOptions,
 } from '@firecamp/socket.io-executor/dist/esm';
 import { TId, ISocketIOEmitter, EFirecampAgent } from '@firecamp/types';
-import { _misc, _object } from '@firecamp/utils'
+import { _misc, _object } from '@firecamp/utils';
 import v2 from 'socket.io-client-v2';
 import v3 from 'socket.io-client-v3';
 import v4 from 'socket.io-client-v4';
@@ -11,7 +11,7 @@ import { EConnectionState } from '../../constants';
 
 interface IHandleConnectionExecutorSlice {
   connect: (connection_id: TId) => void;
-  disconnect: (connection_id: TId, code: number, reason: string) => void;
+  disconnect: (connection_id: TId, code?: number, reason?: string) => void;
   sendMessage: (connection_id: TId, emitter: ISocketIOEmitter) => void;
   togglePingConnection: (
     connection_id: TId,
@@ -23,10 +23,7 @@ interface IHandleConnectionExecutorSlice {
     connection_id: TId,
     eventNames: Array<string>
   ) => void;
-  removeListenerFromExecutor: (
-    connection_id: TId,
-    eventName: string
-  ) => void;
+  removeListenerFromExecutor: (connection_id: TId, eventName: string) => void;
   removeListenersFromExecutor: (
     connection_id: TId,
     eventNames?: Array<string>
@@ -69,9 +66,10 @@ const createHandleConnectionExecutor = (
         certificates: [], // TODO: add ssl certi
       };
 
-      const executor: IExecutorInterface = _misc.firecampAgent() === EFirecampAgent.desktop
-        ? window.fc.io(options)
-        : new Executor(options);
+      const executor: IExecutorInterface =
+        _misc.firecampAgent() === EFirecampAgent.desktop
+          ? window.fc.io(options)
+          : new Executor(options);
 
       // on open
       executor.onOpen(() => {
@@ -234,10 +232,7 @@ const createHandleConnectionExecutor = (
       });
     }
   },
-  addListenersToExecutor: (
-    connection_id: TId,
-    eventNames: Array<string>
-  ) => {
+  addListenersToExecutor: (connection_id: TId, eventNames: Array<string>) => {
     try {
       let existingPlayground = get().getPlayground(connection_id);
       if (

@@ -29,8 +29,8 @@ const EmitterArgMeta = ({
               transparent={true}
               ghost={true}
               withCaret={true}
-              size={EButtonSize.Small}
-              color={EButtonColor.Primary}
+              primary
+              sm
             />
           </Dropdown.Handler>
           <Dropdown.Options
@@ -52,8 +52,8 @@ const EmitterArgMeta = ({
                 transparent={true}
                 ghost={true}
                 withCaret={true}
-                size={EButtonSize.Small}
-                color={EButtonColor.Primary}
+                primary
+                sm
               />
             </Dropdown.Handler>
             <Dropdown.Options

@@ -18,16 +18,20 @@ import { useSocketStore } from '../../../../../store';
 import List from './List';
 
 const Body = ({ toggleCollapsed = () => {} }) => {
-  let { listeners, activePlayground, updatePlaygrondListenersValue,playgrounds } =
-    useSocketStore(
-      (s) => ({
-        updatePlaygrondListenersValue: s.updatePlaygrond,
-        playgrounds:s.playgrounds,
-        listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
-        activePlayground: s.runtime.activePlayground,
-      }),
-      shallow
-    );
+  let {
+    listeners,
+    activePlayground,
+    updatePlaygroundListenersValue,
+    playgrounds,
+  } = useSocketStore(
+    (s) => ({
+      updatePlaygroundListenersValue: s.updatePlayground,
+      playgrounds: s.playgrounds,
+      listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
+      activePlayground: s.runtime.activePlayground,
+    }),
+    shallow
+  );
 
   return (
     <Column>
@@ -60,22 +64,20 @@ const Body = ({ toggleCollapsed = () => {} }) => {
             <Button
               key={`listener-off-all-${activePlayground}`}
               text="Listen off all"
-              color={EButtonColor.Secondary}
-              // TODO: className="ex-small font-ex-bold"
-              size={EButtonSize.Small}
               onClick={() => {
-                updatePlaygrondListenersValue(activePlayground, false);
+                updatePlaygroundListenersValue(activePlayground, false);
               }}
+              secondary
+              sm
             />
             <Button
               key={`listener-on-all-${activePlayground}`}
               text="Listen all"
-              color={EButtonColor.Secondary}
-              // TODO: className="ex-small font-ex-bold"
-              size={EButtonSize.Small}
               onClick={() => {
-                updatePlaygrondListenersValue(activePlayground, true);
+                updatePlaygroundListenersValue(activePlayground, true);
               }}
+              secondary
+              sm
             />
           </div>
         </Container.Footer>
@@ -136,10 +138,10 @@ const AddListener = ({ activePlayground = '' }) => {
         <Button
           key={'listener-add-button'}
           text="Add"
-          color={EButtonColor.Secondary}
           className="!rounded-bl-none !rounded-tl-none"
-          size={EButtonSize.ExSmall}
           onClick={_onAddListener}
+          secondary
+          sm
         />,
       ]}
     />

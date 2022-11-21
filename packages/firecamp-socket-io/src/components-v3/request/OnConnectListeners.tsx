@@ -11,7 +11,7 @@ import deepEqual from 'deep-equal';
 import { SocketContext } from '../Socket.context';
 import { useSocketStore } from '../../store';
 import shallow from 'zustand/shallow';
-import { _array } from '@firecamp/utils'
+import { _array } from '@firecamp/utils';
 
 const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
   let {
@@ -100,11 +100,11 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
               postComponents={[
                 <Button
                   key={'listener-add-button'}
-                  color={EButtonColor.Secondary}
                   text="Add"
-                  size={EButtonSize.Small}
                   onClick={_onAddListeners}
                   disabled={!listenersNames}
+                  secondary
+                  sm
                 />,
               ]}
             />

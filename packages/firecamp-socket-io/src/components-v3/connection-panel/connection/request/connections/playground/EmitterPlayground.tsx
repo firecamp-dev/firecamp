@@ -1,4 +1,11 @@
-import { useContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import {
+  useContext,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import _compact from 'lodash/compact';
 import _cloneDeep from 'lodash/cloneDeep';
 import _merge from 'lodash/merge';
@@ -6,16 +13,12 @@ import {
   Container,
   Input,
   Button,
-  TabHeader,
-  EButtonColor,
-  EButtonSize,
-  EButtonIconPosition,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 
-import Header from './Header';
+// import Header from './Header';
 import Footer from './Footer';
 import BodyControls from './BodyControls';
 import EmitterArgMeta from './EmitterArgMeta';
@@ -32,24 +35,21 @@ import {
   envelopeTypes,
   INIT_PLAYGROUND,
 } from '../../../../../../constants/StatePayloads';
-import { useSocketStore } from '../../../../../../store';
-import { _object } from '@firecamp/utils'
+import { ISocketStore, useSocketStore } from '../../../../../../store';
+import { _object } from '@firecamp/utils';
 
 const EmitterPlayground = ({ tabData = {} }) => {
   let {
     activePlayground,
-    collection: prop_collection,
     playground,
     playgroundTabs,
-    meta,
-
     changePlaygroundEmitter,
     setSelectedCollectionEmitter,
     sendMessage,
   } = useSocketStore(
-    (s) => ({
+    (s: ISocketStore) => ({
       activePlayground: s.runtime.activePlayground,
-      collection: s.collection,
+      // collection: s.collection,
       playground: s.playgrounds[s.runtime.activePlayground],
       playgroundTabs: s.runtime.playgroundTabs,
       meta: s.request.meta,
@@ -168,11 +168,11 @@ const EmitterPlayground = ({ tabData = {} }) => {
   }
 
   let { collection } = [];
-    // prepare(
-    //   prop_collection.directories || [],
-    //   prop_collection.emitters || [],
-    //   meta
-    // ) || [];
+  // prepare(
+  //   propCollection.directories || [],
+  //   propCollection.emitters || [],
+  //   meta
+  // ) || [];
 
   let [activeArgType, setActiveArgType] = useState(
     () =>
@@ -667,18 +667,18 @@ const EmitterPlayground = ({ tabData = {} }) => {
         }}
         onEmit={_onEmit}
       />
-<div className="z-20 relative">
-      <EmitterArgTabs
-        ack={playgroundEmitter.meta ? playgroundEmitter.meta.ack : false}
-        args={playgroundEmitter.body}
-        activeArgIndex={arg_ref.current}
-        onAddArg={() => _playgroundEmitterFns.addArg()}
-        onSelectArgTab={(index) =>
-          _playgroundEmitterFns.setIndex(index, 'manually')
-        }
-        onRemoveArg={(index) => _playgroundEmitterFns.removeArg(index)}
-        toggleAck={(ack) => _playgroundEmitterFns.updateMeta({ ack })}
-      />
+      <div className="z-20 relative">
+        <EmitterArgTabs
+          ack={playgroundEmitter.meta ? playgroundEmitter.meta.ack : false}
+          args={playgroundEmitter.body}
+          activeArgIndex={arg_ref.current}
+          onAddArg={() => _playgroundEmitterFns.addArg()}
+          onSelectArgTab={(index) =>
+            _playgroundEmitterFns.setIndex(index, 'manually')
+          }
+          onRemoveArg={(index) => _playgroundEmitterFns.removeArg(index)}
+          toggleAck={(ack) => _playgroundEmitterFns.updateMeta({ ack })}
+        />
       </div>
       <EmitterArgMeta
         activeArgIndex={arg_ref.current}
@@ -734,26 +734,25 @@ const EmitterName = ({ name = '', onChange = () => {}, onEmit = () => {} }) => {
 
   return (
     <Container.Header className="with-divider">
-       <Input
-          autoFocus={true}
-          placeholder="Type emitter name"
-          className="border-0"
-          value={name}
-          onChange={_handleInputChange}
-          wrapperClassName="!mb-0"
-          postComponents={[
-            <Button
-            // TODO: add color "primary-alt"
-            color={EButtonColor.Primary}
+      <Input
+        autoFocus={true}
+        placeholder="Type emitter name"
+        className="border-0"
+        value={name}
+        onChange={_handleInputChange}
+        wrapperClassName="!mb-0"
+        postComponents={[
+          <Button
             icon={<IoSendSharp className="toggle-arrow" size={12} />}
-            iconPosition={EButtonIconPosition.Left}
-            size={EButtonSize.Small}
             onClick={onEmit}
             disabled={!name}
             className="!rounded-none"
-          />
-          ]}
-        />
+            primary
+            sm
+            iconLeft
+          />,
+        ]}
+      />
     </Container.Header>
   );
 };

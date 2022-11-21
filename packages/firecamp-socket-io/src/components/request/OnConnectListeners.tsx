@@ -1,15 +1,9 @@
 import { useContext, useState } from 'react';
-import {
-  Container,
-  Button,
-  EButtonColor,
-  EButtonSize,
-  Input
-} from '@firecamp/ui-kit';
+import { Container, Button, Input } from '@firecamp/ui-kit';
 import deepEqual from 'deep-equal';
 
 import { SocketContext } from '../Socket.context';
-import { _array } from '@firecamp/utils'
+import { _array } from '@firecamp/utils';
 const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
   let { ctx_requestFns } = useContext(SocketContext);
 
@@ -17,14 +11,14 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
 
   let [listenersNames, setListenersNames] = useState('');
 
-  let _handleChangeName = e => {
+  let _handleChangeName = (e) => {
     e.preventDefault();
 
     let { value } = e.target;
     setListenersNames(value);
   };
 
-  let _onKeyDown = e => {
+  let _onKeyDown = (e) => {
     if (e.key === 'Enter') {
       _onAddListeners();
     }
@@ -36,12 +30,12 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
    * Update on connect listeners list
    * @param {} e
    */
-  let _onAddListeners = e => {
+  let _onAddListeners = (e) => {
     if (e) e.preventDefault();
 
     let listenersAry = [];
 
-    listenersNames.split(',')?.forEach(l => {
+    listenersNames.split(',')?.forEach((l) => {
       let listener = l.trim();
 
       if (listener) {
@@ -59,7 +53,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
     // Uniq array from existing and updated on connect listeners list
     let updatedOnConnListeners = _array.uniq([
       ...onConnectListeners,
-      ...listenersAry
+      ...listenersAry,
     ]);
 
     // on add listeners, update on connect listeners if newly added and existing listeners are not same
@@ -94,12 +88,12 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
               postComponents={[
                 <Button
                   key={'listener-add-button'}
-                  color={EButtonColor.Secondary}
                   text="Add"
-                  size={EButtonSize.Small}
                   onClick={_onAddListeners}
                   disabled={!listenersNames}
-                />
+                  secondary
+                  sm
+                />,
               ]}
             />
           </div>
@@ -111,7 +105,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
                     {listener || ''}
                     <span
                       className="remove iconv2-close-icon"
-                      onClick={_ => _onDelete(listener)}
+                      onClick={(_) => _onDelete(listener)}
                     ></span>
                   </div>
                 );

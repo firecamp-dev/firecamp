@@ -1,6 +1,13 @@
 //@ts-nocheck
 
-import { Children, useState, useRef, useContext, useEffect, Fragment } from 'react';
+import {
+  Children,
+  useState,
+  useRef,
+  useContext,
+  useEffect,
+  Fragment,
+} from 'react';
 import {
   // Collection,
   Input,
@@ -62,13 +69,12 @@ const EmitterCollection = ({
     [playground, activePlayground]
   );
 
-  let [collection, setCollection] = useState(
-    // prepare(
-    //   prop_collection.directories || [],
-    //   prop_collection.messages || [],
-    //   meta
-    // ).collection
-  );
+  let [collection, setCollection] = useState();
+  // prepare(
+  //   prop_collection.directories || [],
+  //   prop_collection.messages || [],
+  //   meta
+  // ).collection
 
   let [activeDir, setActiveDir] = useState({ path: './', _meta: { id: '' } });
   let [selectedEmitter, selectEmitter] = useState();
@@ -114,11 +120,7 @@ const EmitterCollection = ({
       });
       selectEmitter(null);
 
-      if (
-        collectionNode &&
-        !collectionNode._meta.id &&
-        !collectionNode.meta
-      ) {
+      if (collectionNode && !collectionNode._meta.id && !collectionNode.meta) {
         _resetPlayground();
       }
     } else {
@@ -253,7 +255,7 @@ const EmitterCollection = ({
             />
           </Container.Header>
           <Container.Body>
-           {/*  <Collection
+            {/*  <Collection
               overflow={'auto'}
               data={collection}
               primaryKey={'id'}
@@ -382,15 +384,15 @@ const MessageCollectionHeader = ({
         <div className="message-collection-header-title">Collection</div>
         <TabHeader.Right>
           <Button
-            size={EButtonSize.Small}
-            color={EButtonColor.Secondary}
-            transparent={true}
-            ghost={true}
-            iconPosition={EButtonIconPosition.Left}
             icon={<VscNewFolder className="toggle-arrow" size={12} />}
             id={`add_directory_icon-${id}`}
             onClick={() => _toggleAddDirCmp(!showAddDirCmp)}
             tooltip={'add directory'}
+            secondary
+            sm
+            ghost
+            transparent
+            iconLeft
           />
         </TabHeader.Right>
       </TabHeader>
@@ -413,17 +415,16 @@ const MessageCollectionHeader = ({
               <Button
                 key={'directory-add-button'}
                 text="Add"
-                color={EButtonColor.Secondary}
-                size={EButtonSize.Small}
-                // TODO: add className="ex-small font-ex-bold"
                 onClick={_onAdd}
+                secondary
+                sm
               />,
             ]}
           />
           <div className="text-xs text-appForeground ">{`> hit enter to add directory`}</div>
         </div>
       ) : (
-        ''
+        <></>
       )}
     </div>
   );

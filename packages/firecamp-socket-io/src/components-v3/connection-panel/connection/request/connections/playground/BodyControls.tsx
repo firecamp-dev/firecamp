@@ -1,22 +1,13 @@
-//@ts-nocheck
-
 import { useState } from 'react';
 
 import {
   Container,
-  TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
-  EButtonIconPosition,
-  // Collection,
   Input,
-  CollectionMsgNode,
-  CollectionFcNode,
   ConfirmationPopover,
   Popover,
   EPopoverPosition,
-  StatusBar
+  StatusBar,
 } from '@firecamp/ui-kit';
 import { EMITTER_PAYLOAD_TYPES } from '../../../../../../constants';
 
@@ -107,12 +98,12 @@ const BodyControls = ({
     <Container.Header>
       <StatusBar>
         <StatusBar.PrimaryRegion>
-        <div data-tip={path} className="collection-path">
+          <div data-tip={path} className="collection-path">
             {path || `./`}
           </div>
         </StatusBar.PrimaryRegion>
         <StatusBar.SecondaryRegion>
-        {(!!(
+          {(!!(
             emitterName &&
             emitterName.trim() &&
             emitterName.trim().length
@@ -143,10 +134,9 @@ const BodyControls = ({
                   id={`confirm-popover-handler-${tabId}`}
                   key="new_msg_button"
                   text={'+ New Emitter'}
-                  ghost={true}
-                  transparent={true}
-                  size={EButtonSize.Small}
-                  // TODO: add className={'font-light fc-button ex-small font-light without-border transparent'}
+                  ghost
+                  transparent
+                  sm
                 />
               }
               title="Are you sure to reset playground and add new emitter?"
@@ -292,7 +282,7 @@ const SaveEmitter = ({
                     Select Folder{' '}
                     <span>({focusedNode._meta._relative_path})</span>
                   </label>
-                {/*   <Collection
+                  {/*   <Collection
                     className="with-border"
                     onlyDirectory={true}
                     onNodeFocus={setFocusedNode}
@@ -352,30 +342,22 @@ const SaveEmitter = ({
             </div>
 
             <div className="flex mt-1 align-right">
-              <Button
-                text={'Save'}
-                // TODO: add color "primary-alt"
-                color={EButtonColor.Primary}
-                iconPosition={EButtonIconPosition.Right}
-                onClick={_onSubmit}
-              />
+              <Button text={'Save'} onClick={_onSubmit} primary iconRight />
             </div>
           </div>
         ) : (
-          ''
+          <></>
         )
       }
     >
       <Popover.Handler id={`SM-${id}`}>
         <Button
-          size={EButtonSize.Small}
-          transparent={true}
-          ghost={true}
-          // TODO: add className="fc-button ex-small transparent transparent-ghost font-sm"
-          // TODO: add color "primary-alt"
-          color={EButtonColor.Primary}
           text={'Save'}
           onClick={_onClickSaveMessage}
+          sm
+          primary
+          ghost
+          transparent
         />
       </Popover.Handler>
     </Popover>

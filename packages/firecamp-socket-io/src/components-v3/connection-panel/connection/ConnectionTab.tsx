@@ -15,7 +15,7 @@ import ParamsTab from './request/connections/ParamsTab';
 import AuthTab from './request/connections/AuthTab';
 import EmitterPlayground from './request/connections/playground/EmitterPlayground';
 import Response from './response/Response';
-import ConnectionButton from '../../common/connection/ConnectionButton';
+import ConnectionButton from '../../common/connection/ConnectButton';
 import { PANEL } from '../../../constants';
 import { useSocketStore } from '../../../store';
 

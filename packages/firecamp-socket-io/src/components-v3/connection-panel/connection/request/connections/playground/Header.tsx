@@ -10,7 +10,7 @@ import {
 } from '@firecamp/ui-kit';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 
-import ConnectionButton from '../../../../../common/connection/ConnectionButton';
+import ConnectionButton from '../../../../../common/connection/ConnectButton';
 
 const Header = ({
   emitterName = '',
@@ -22,7 +22,7 @@ const Header = ({
     <Container.Header className="with-divider">
       <StatusBar>
         <StatusBar.SecondaryRegion>
-        <ConnectionButton
+          <ConnectionButton
             key="message-tab"
             runtimeActiveConnection={activeConnection}
             meta={{
@@ -35,19 +35,18 @@ const Header = ({
           />
           {showEmitButton === true ? (
             <Button
-              // TODO: add color "primary-alt"
-              color={EButtonColor.Primary}
               icon={<IoSendSharp className="toggle-arrow" size={12} />}
-              iconPosition={EButtonIconPosition.Left}
-              size={EButtonSize.Small}
               onClick={onEmit}
               disabled={!emitterName}
+              primary
+              sm
+              iconLeft
             />
           ) : (
-            ''
+            <></>
           )}
         </StatusBar.SecondaryRegion>
-        </StatusBar>
+      </StatusBar>
       {/* <TabHeader className="padding-small height-small padding-left-extra">
         <TabHeader.Right>
           
