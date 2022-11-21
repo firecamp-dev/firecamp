@@ -10,9 +10,7 @@ const modes = {
   Raw: 'raw',
 };
 
-/**
- * Bulk edit: user can add data in bulk by separating key value by ':' and new row in new line
- */
+/** type table payload like in Editor view by separating key value with ':' and new row in new line */
 const BulkEditTable: FC<IBulkEditTable> = ({
   rows,
   disabled = false,
@@ -21,13 +19,13 @@ const BulkEditTable: FC<IBulkEditTable> = ({
   options = { mode: {} },
   onMount,
 }) => {
-  let [mode, setMode] = useState(modes.Table);
-  let [raw, setRaw] = useState('');
+  const [mode, setMode] = useState(modes.Table);
+  const [raw, setRaw] = useState('');
 
   useEffect(() => {
     try {
       if (mode === modes.Raw) {
-        let tableToString = _table.toText([...rows]);
+        const tableToString = _table.toText([...rows]);
         // console.log({raw, tableToString});
 
         if (!equal(raw, tableToString)) {
@@ -39,12 +37,12 @@ const BulkEditTable: FC<IBulkEditTable> = ({
     }
   }, [rows, mode]);
 
-  let _setRaw = (editorString: string) => {
+  const _setRaw = (editorString: string) => {
     setRaw(editorString);
 
     try {
       if (editorString.length) {
-        let tableArray = [..._table.textToTable(editorString)];
+        const tableArray = [..._table.textToTable(editorString)];
         _onChangeRows(tableArray);
       } else {
         _onChangeRows([]);
@@ -54,7 +52,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
     }
   };
 
-  let _onChangeRows = (newRows: any[] = []) => {
+  const _onChangeRows = (newRows: any[] = []) => {
     if (!equal(newRows, rows)) {
       // console.log({ newRows, rows });
 

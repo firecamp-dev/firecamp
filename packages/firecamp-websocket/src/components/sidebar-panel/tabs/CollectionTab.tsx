@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+// @ts-nocheck
+import { useRef } from 'react';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
+// import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 

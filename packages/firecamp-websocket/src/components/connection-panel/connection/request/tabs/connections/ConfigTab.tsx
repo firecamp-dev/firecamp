@@ -1,42 +1,47 @@
 import { Input, Container, Notes, CheckboxInGrid } from '@firecamp/ui-kit';
-import { EFirecampAgent } from '@firecamp/types'
-import { _misc } from '@firecamp/utils'
+import { EFirecampAgent } from '@firecamp/types';
+import { _misc } from '@firecamp/utils';
 
 const INPUT_TYPES = {
+  text: 'text',
   boolean: 'boolean',
-  number: 'number'
+  number: 'number',
 };
 
-let config_inputs = [
+const configInputs = [
   {
     name: 'ping',
     type: INPUT_TYPES.boolean,
     labelFor: 'Ping',
-    label: 'Ping'
+    label: 'Ping',
   },
   {
     name: 'ping_interval',
     type: INPUT_TYPES.number,
     labelFor: 'Ping interval',
-    label: 'Ping interval'
-  }
+    label: 'Ping interval',
+  },
 ];
 
-const Config = ({ config = {}, onUpdate = {} }) => {
-  let isElectron = _misc.firecampAgent() === EFirecampAgent.desktop
+const Config = ({ config = {}, onUpdate }) => {
+  const isElectron = _misc.firecampAgent() === EFirecampAgent.desktop;
 
-  if (!config) {
-    return <span />;
-  }
+  if (!config) return <></>;
 
-  let _onChange = (name, value) => {
+  const _onChange = (name, value) => {
     if (!name) return;
 
     onUpdate(name, value);
   };
 
-  let _renderElement = (element, index = 1) => {
-    let { name, type, labelFor, label, placeholder } = element;
+  const _renderElement = (element, index = 1) => {
+    const {
+      name,
+      type,
+      // labelFor,
+      label,
+      placeholder,
+    } = element;
 
     if (!type) return <span />;
 
@@ -55,7 +60,7 @@ const Config = ({ config = {}, onUpdate = {} }) => {
             placeholder={placeholder || ''}
             disabled={!isElectron || config['ping'] === false}
             value={config[name]}
-            onChange={e => {
+            onChange={(e) => {
               if (e) {
                 e.preventDefault();
                 let { name, value } = e.target;
@@ -84,15 +89,15 @@ const Config = ({ config = {}, onUpdate = {} }) => {
     }
   };
 
-  let _handleSubmit = e => {
+  const _handleSubmit = (e) => {
     e && e.preventDefault();
   };
 
   return (
     <Container>
       <form className="fc-form grid p-2" onSubmit={_handleSubmit}>
-        {config_inputs
-          ? config_inputs.map((config, index) => _renderElement(config, index))
+        {configInputs
+          ? configInputs.map((config, index) => _renderElement(config, index))
           : ''}
       </form>
       {!isElectron ? (
@@ -103,7 +108,7 @@ const Config = ({ config = {}, onUpdate = {} }) => {
           withpadding={true}
         />
       ) : (
-        ''
+        <></>
       )}
     </Container>
   );

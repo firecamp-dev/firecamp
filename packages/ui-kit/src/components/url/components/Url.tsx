@@ -14,7 +14,7 @@ const Url: FC<IUrl> = ({
 }) => {
   return (
     <Row className="fc-urlbar">
-      <Column flex={1} className="fc-urlbar-input" style={{ marginTop: 50 }}>
+      <Column flex={1} className="fc-urlbar-input">
         <Row className="flex-col">
           <Column overflow="visible">
             <SingleLineEditor

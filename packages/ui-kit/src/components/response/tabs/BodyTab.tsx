@@ -133,9 +133,9 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers }) => {
               editor.revealLine(1);
               editor.setPosition({ column: 1, lineNumber: 10 });
             }}
-            controlsConfig={{
-              show: activeTab !== 'preview',
-            }}
+            // controlsConfig={{
+            //   show: activeTab !== 'preview',
+            // }}
             disabled={true}
             monacoOptions={{
               name: `response`,

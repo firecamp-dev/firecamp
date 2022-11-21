@@ -1,8 +1,10 @@
+// @ts-nocheck
 import { forwardRef } from 'react';
 import classnames from 'classnames';
 
 const MessageNode = forwardRef(
-  ({ item = { name: '' }, icon = '', className = '', ...restProps }, ref) => {
+  (props, ref) => {
+    const { item = { name: '' }, icon = '', className = '', ...restProps } = props;
     return (
       <div
         className={classnames('collection_message-node', className)}

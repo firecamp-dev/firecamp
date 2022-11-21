@@ -17,7 +17,7 @@ interface IRuntime {
     collection: TId;
   };
   isRequestSaved?: boolean;
-  _dnp: { [k: string]: any };
+  _dnp?: { [k: string]: any };
 }
 
 interface IRuntimeSlice {

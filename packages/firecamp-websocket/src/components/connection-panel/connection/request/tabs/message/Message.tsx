@@ -7,7 +7,7 @@ import { EMessagePayloadTypes } from '../../../../../../types';
 
 import {
   useWebsocketStore,
-  initialPlaygroundMessage,
+  // initialPlaygroundMessage,
 } from '../../../../../../store';
 
 const messageTypes = [
@@ -61,7 +61,7 @@ const Message = ({ tabData = {} }) => {
     shallow
   );
 
-  let [selectedMessageId, setSelectedMessageId] = useState('');
+  let [selectedMessageId] = useState('');
 
   return (
     <RootContainer className="h-full">

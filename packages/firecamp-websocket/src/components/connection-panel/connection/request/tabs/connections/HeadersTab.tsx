@@ -3,24 +3,24 @@ import { BulkEditTable } from '@firecamp/ui-kit';
 const HeadersTab = ({
   headers = [],
   activeConnectionId = '',
-  onUpdate = () => {}
+  onUpdate = (data) => {},
 }) => {
   return (
     <BulkEditTable
-      onChange={data => {
+      onChange={(data) => {
         // console.log(`headers updated`, data);
         onUpdate(data);
       }}
       key={`headers-${activeConnectionId}`}
       id={`headers-${activeConnectionId}`}
       rows={headers || []}
-      name={'headers'}
-      meta={{
-        mode: {
-          key: 'ife-header-key',
-          value: 'ife-header-value'
-        }
-      }}
+      title={'headers'}
+      // meta={{
+      //   mode: {
+      //     key: 'ife-header-key',
+      //     value: 'ife-header-value',
+      //   },
+      // }}
     />
   );
 };

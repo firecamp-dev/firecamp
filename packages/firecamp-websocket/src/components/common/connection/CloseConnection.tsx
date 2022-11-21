@@ -98,21 +98,22 @@ const CloseConnection = ({
                     value={status}
                     onChange={_handleInputChange}
                     error={
-                      isStatusDirty && hasValidStatus !== true
-                        ? [
-                            'Reserved or Invalid status code.',
-                            <a
-                              key={'link'}
-                              href={
-                                'https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent#Status_codes'
-                              }
-                              target={'_blank'}
-                            >
-                              {' '}
-                              Reference
-                            </a>,
-                          ]
-                        : ''
+                      isStatusDirty && hasValidStatus !== true ? (
+                        <>
+                          <span>Reserved or Invalid status code.</span>
+                          <a
+                            key={'link'}
+                            href={
+                              'https://developer.mozilla.org/en-US/docs/Web/API/CloseEvent#Status_codes'
+                            }
+                            target={'_blank'}
+                          >
+                            Reference
+                          </a>
+                        </>
+                      ) : (
+                        <></>
+                      )
                     }
                   />
                 </div>

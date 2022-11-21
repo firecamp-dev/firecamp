@@ -2,17 +2,17 @@ import { BulkEditTable } from '@firecamp/ui-kit';
 const ParamsTab = ({
   params = [],
   activeConnectionId = '',
-  onUpdate = () => {},
+  onUpdate = (data) => {},
 }) => {
   return (
     <BulkEditTable
-      onChange={(data) => {
-        onUpdate(data);
-      }}
       key={`params-${activeConnectionId}`}
       rows={params || []}
       debounce={100}
-      name={'params'}
+      title={'params'}
+      onChange={(data) => {
+        onUpdate(data);
+      }}
     />
   );
 };

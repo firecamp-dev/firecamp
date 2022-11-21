@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 
 const DirectoryNode = ({
-  item = {},
+  item = { name: ""},
   icon = '',
   className,
   nodemenu,

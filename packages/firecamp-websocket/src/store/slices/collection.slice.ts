@@ -6,8 +6,8 @@ import {
 } from '@firecamp/types';
 
 interface ICollection {
-  messages?: Array<IWebSocketMessage>;
-  directories?: Array<IRequestFolder>;
+  items?: Array<IWebSocketMessage>;
+  folders?: Array<IRequestFolder>;
 }
 
 interface ICollectionSlice {
@@ -43,8 +43,8 @@ const createCollectionSlice = (
   initialCollection: ICollection
 ): ICollectionSlice => ({
   collection: initialCollection || {
-    messages: [],
-    directories: [],
+    items: [],
+    folders: [],
   },
 
   // collection

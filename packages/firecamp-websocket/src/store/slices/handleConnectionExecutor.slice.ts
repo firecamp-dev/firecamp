@@ -52,7 +52,8 @@ const createHandleConnectionExecutor = (
 
       const executor: IExecutor =
         _misc.firecampAgent() === EFirecampAgent.desktop
-          ? window.fc.websocket(options)
+          ? // @ts-ignore
+            window.fc.websocket(options)
           : new Executor(options);
 
       console.log(_misc.firecampAgent(), executor);
@@ -143,7 +144,7 @@ const createHandleConnectionExecutor = (
       ) {
         // TODO: check if connection open or not. if not then executor will send log with error message
 
-        message = _object.omit(message, ['path']);
+        message = _object.omit(message, ['path']) as IWebSocketMessage;
         console.log({ message }, 'send message');
 
         // send message

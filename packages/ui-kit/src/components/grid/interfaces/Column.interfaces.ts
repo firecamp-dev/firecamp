@@ -1,17 +1,18 @@
 export interface IColumn {
   /**
-     * Unique identifier
-     */
-   id?: string
+   * Unique identifier
+   */
+  id?: string;
+  tabIndex?: number;
 
-   className?: string
-   children?: Function | JSX.Element | JSX.Element[]
-   flex?: string|number
-   overflow?: string|number
-   width?: string|number
-   maxWidth?: string|number
-   minWidth?: string|number
-   height?: string|number
-   maxHeight?: string|number
-   minHeight?: string|number
+  className?: string;
+  children?: Function | JSX.Element | JSX.Element[];
+  flex?: string | number;
+  overflow?: string;
+  width?: string | number;
+  maxWidth?: string | number;
+  minWidth?: string | number;
+  height?: string | number;
+  maxHeight?: string | number;
+  minHeight?: string | number;
 }

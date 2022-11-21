@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useContext, useState, useEffect, useRef, useMemo } from 'react';
 import _compact from 'lodash/compact';
 import {
@@ -5,7 +6,7 @@ import {
   Container,
   QuickSelection,
   TabHeader,
-  DocButton,
+  // DocButton,
   Button,
   Dropdown,
   Editor,
@@ -423,7 +424,7 @@ const MessagePlayground = ({
     }
   };
 
-  let _onSendMessage = (e) => {
+  let _onSendMessage = (e?: any) => {
     if (e) e.preventDefault();
 
     sendMessage(activePlayground, message);
@@ -634,27 +635,25 @@ const MessagePlayground = ({
 
   return (
     <Container className="h-full">
-
-<Container.Header>
+      <Container.Header>
         <TabHeader className="height-small collection-path-wrapper with-border-top !px-2">
           <TabHeader.Left>
             <div className="collection-path">{message.path || `./`}</div>
           </TabHeader.Left>
           <TabHeader.Right>
-          <Button
-                  text={'Save'}
-                  primary
-                  transparent
-                  ghost
-                  xs
-                  className="mr-1 hover:!bg-focus2"
-                />
+            <Button
+              text={'Save'}
+              primary
+              transparent
+              ghost
+              xs
+              className="mr-1 hover:!bg-focus2"
+            />
             {
               //activeType.id !== EMessagePayloadTypes.noBody &&
               // activeType.id !== EMessagePayloadTypes.file &&
               !(
-                !playgroundTab?.meta?.isSaved &&
-                !playgroundTab?.meta?.hasChange
+                !playgroundTab?.meta?.isSaved && !playgroundTab?.meta?.hasChange
               ) ? (
                 <SaveMessage
                   isPopoverOpen={isSaveMessagePopoverOpen}
@@ -720,16 +719,18 @@ const MessagePlayground = ({
               onToggle={() => toggleSelectTypeDD(!isSelectTypeDDOpen)}
             >
               <Dropdown.Handler>
-                <div className="flex text-sm items-center"> Message as
-                <Button
-                  text={activeType?.name || ''}
-                  withCaret
-                  primary
-                  transparent
-                  ghost
-                  xs
-                  className="ml-1"
-                />
+                <div className="flex text-sm items-center">
+                  {' '}
+                  Message as
+                  <Button
+                    text={activeType?.name || ''}
+                    withCaret
+                    primary
+                    transparent
+                    ghost
+                    xs
+                    className="ml-1"
+                  />
                 </div>
               </Dropdown.Handler>
               <Dropdown.Options

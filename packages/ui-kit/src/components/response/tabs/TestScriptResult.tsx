@@ -43,7 +43,11 @@ const TestScriptResult = ({ result }) => {
 export default TestScriptResult;
 
 const Suite = ({ suite }) => {
-  let { suites = [], tests = [], name } = suite;
+  const {
+    // suites = [],
+    tests = [],
+    name,
+  } = suite;
   return (
     <div className="fc-suite">
       <div className="">

@@ -162,7 +162,7 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
       ...createRequestSlice(
         set,
         get,
-        _object.pick(initialState.request, requestSliceKeys)
+        _object.pick(initialState.request, requestSliceKeys) as IWebSocket
       ),
 
       ...createRuntimeSlice(set, get, initialState.runtime),

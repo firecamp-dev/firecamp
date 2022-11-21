@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useRef, useState, useEffect } from 'react';
 import {
   Container,

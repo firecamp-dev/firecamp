@@ -1,5 +1,4 @@
-import { useMemo } from 'react';
-import { Container, Column, Resizable, Tabs } from '@firecamp/ui-kit';
+import { Container, Column, Resizable } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 
 import CollectionTab from './tabs/CollectionTab';
@@ -11,7 +10,7 @@ export enum ESidebarTabs {
 }
 
 const SidebarPanel = () => {
-  const { activeTab, changeUiActiveTab } = useWebsocketStore(
+  const { activeTab } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       activeTab: ESidebarTabs.Collection, //s.ui.sidebarActiveTab,
       // headers: s.ui.headers,
@@ -23,27 +22,27 @@ const SidebarPanel = () => {
 
   // console.log(playgrounds, 'playgrounds... counts');
 
-  const tabs = useMemo(
-    () => [
-      {
-        id: ESidebarTabs.Collection,
-        name: ESidebarTabs.Collection,
-        // count: playgrounds,
-      },
-      {
-        id: ESidebarTabs.Config,
-        name: ESidebarTabs.Config,
-      },
-    ],
-    []
-  );
+  // const tabs = useMemo(
+  //   () => [
+  //     {
+  //       id: ESidebarTabs.Collection,
+  //       name: ESidebarTabs.Collection,
+  //       // count: playgrounds,
+  //     },
+  //     {
+  //       id: ESidebarTabs.Config,
+  //       name: ESidebarTabs.Config,
+  //     },
+  //   ],
+  //   []
+  // );
 
-  const _setActiveTab = (tab) => {
-    if (tab) {
-      // console.log(`tab`, tab);
-      changeUiActiveTab(tab);
-    }
-  };
+  // const _setActiveTab = (tab) => {
+  //   if (tab) {
+  //     // console.log(`tab`, tab);
+  //     changeUiActiveTab(tab);
+  //   }
+  // };
 
   const _getRender = (tab) => {
     switch (tab) {

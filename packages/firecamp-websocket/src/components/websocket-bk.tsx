@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { Container, Row, RootContainer } from '@firecamp/ui-kit';
 import { nanoid as id } from 'nanoid';

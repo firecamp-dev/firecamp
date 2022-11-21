@@ -1,11 +1,5 @@
-import { FC, useState, useEffect } from 'react';
-import {
-  Dropdown,
-  Button,
-  
-  IDropdownOptions,
- 
-} from '@firecamp/ui-kit';
+import { FC, useState } from 'react';
+import { Dropdown, Button } from '@firecamp/ui-kit';
 
 const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
   id = '',
@@ -16,7 +10,7 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
   onSelectItem = () => {},
 }) => {
   let [isDropDownOpen, toggleDropDown] = useState(false);
-  let [options, setOptions] = useState(
+  let [options] = useState(
     dropdownOptions?.map((o) => {
       return { name: o };
     })
@@ -58,7 +52,6 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
 export default HttpMethodDropDown;
 
 interface IHttpMethodDropDown {
-
   /**
    * Dropdown unique identity
    */
@@ -72,7 +65,7 @@ interface IHttpMethodDropDown {
   /**
    * Dropdown options
    */
-  dropdownOptions: string[]
+  dropdownOptions: string[];
 
   /**
    * Selected dropdown option

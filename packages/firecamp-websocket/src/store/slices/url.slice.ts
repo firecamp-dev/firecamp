@@ -1,4 +1,4 @@
-import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
+import { IUrl, IQueryParam } from '@firecamp/types';
 
 // TODO: check for path params
 

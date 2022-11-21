@@ -184,12 +184,12 @@ const KeysOnSaveRequest = {
 const DefaultRequestConnection = {
   id: '',
   headers: DefaultHeaders || [],
-  query_params: [],
-  is_default: false,
+  queryParams: [],
+  isDefault: false,
   name: '',
   config: {
     ping: false,
-    ping_interval: 0,
+    pingInterval: 0,
   },
 };
 const ResponseConnection = {
@@ -221,15 +221,15 @@ const InitLog = {
 const DefaultConfigState: IWebSocketConfig = {
   protocols: [],
   reconnect: false,
-  reconnect_attempts: 3,
-  reconnect_timeout: 3000,
-  reject_unauthorized: false,
-  follow_redirects: true,
-  handshake_timeout: 3000, //ms
-  max_redirects: 10,
-  protocol_version: 13,
+  reconnectAttempts: 3,
+  reconnectTimeout: 3000,
+  rejectUnauthorized: false,
+  followRedirects: true,
+  handshakeTimeout: 3000, //ms
+  maxRedirects: 10,
+  protocolVersion: 13,
   origin: '',
-  max_payload: 0, //bytes
+  maxPayload: 0, //bytes
 };
 
 export {

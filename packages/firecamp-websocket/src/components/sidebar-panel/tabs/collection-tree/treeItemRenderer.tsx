@@ -1,8 +1,8 @@
 import cx from 'classnames';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
+// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
+// import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 // import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { Button, ToolBar,  } from '@firecamp/ui-kit';
+import { Button  } from '@firecamp/ui-kit';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {

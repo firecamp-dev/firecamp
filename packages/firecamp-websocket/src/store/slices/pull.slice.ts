@@ -55,6 +55,7 @@ const createPullActionSlice = (set, get): IPullSlice => ({
           case 'url':
           case 'config':
             if (key in pullPayload) {
+              // @ts-ignore
               updatedRequest[key] = _object.mergeDeep(
                 updatedRequest[key],
                 _object.pick(pullPayload[key], requestPullAction[key])

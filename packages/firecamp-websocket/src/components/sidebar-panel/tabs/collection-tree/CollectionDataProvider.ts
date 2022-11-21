@@ -82,8 +82,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       if (item._meta.isLeaf) return [];
       return this.items
         .filter((i) => {
-          if (item._meta.isFolder)
-            return i._meta.folderId == item._meta.id;
+          if (item._meta.isFolder) return i._meta.folderId == item._meta.id;
           return true;
         })
         .map((i) => i._meta.id);
@@ -117,10 +116,11 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     listener: (changedItemIds: TreeItemIndex[]) => void
   ): Disposable {
     // console.log(listener, "listener.....onDidChangeTreeData")
-    this.emitter.on(ETreeEventTypes.itemChanged, (itemIDs: TreeItemIndex[]) =>
-      listener(itemIDs)
-    );
-    return { dispose: () => this.emitter.off(ETreeEventTypes.itemChanged) };
+    const handler = (itemIDs: TreeItemIndex[]) => listener(itemIDs);
+    this.emitter.on(ETreeEventTypes.itemChanged, handler);
+    return {
+      dispose: () => this.emitter.off(ETreeEventTypes.itemChanged, handler),
+    };
   }
 
   public async onRenameItem(item: TreeItem<any>, name: string): Promise<void> {
@@ -149,10 +149,14 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   }
 
   public updateItem(item: TItem) {
-    this.items = this.items.map((itm: TItem)=> {
-      if(itm._meta.id == item._meta.id) {
+    this.items = this.items.map((itm: TItem) => {
+      if (itm._meta.id == item._meta.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
-        return { ...itm, ...item,  _meta: { ...itm._meta, ...item._meta, isItem: true } }
+        return {
+          ...itm,
+          ...item,
+          _meta: { ...itm._meta, ...item._meta, isItem: true },
+        };
       }
       return itm;
     });

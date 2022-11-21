@@ -6,12 +6,15 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import { _object } from '@firecamp/utils';
 
-import { EPushActionType, ERequestTypes, IWebSocket } from '@firecamp/types';
+import {
+  EPushActionType,
+  ERequestTypes,
+  IRequestFolder,
+  IWebSocket,
+} from '@firecamp/types';
 import shallow from 'zustand/shallow';
 
-import {
-  normalizeRequest,
-} from '../services/reqeust.service';
+import { normalizeRequest } from '../services/reqeust.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import '../sass/ws.sass';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
@@ -106,7 +109,7 @@ const Websocket = ({
     sendMessage,
     connect,
     setLast,
-    prepareRequestUpdatePushAction,
+    // prepareRequestUpdatePushAction,
     setRequestSavedFlag,
     getMergedRequestByPullAction,
     setIsFetchingReqFlag,
@@ -265,7 +268,7 @@ const Websocket = ({
 
       // console.log({ 111: updatedRequest });
 
-      updatedRequest = await normalizeRequest(updatedRequest, true);
+      updatedRequest = await normalizeRequest(updatedRequest);
 
       // console.log({ updatedRequest, mergedPullAndLastRequest });
 
@@ -277,7 +280,7 @@ const Websocket = ({
       });
 
       // get push action payload
-      const pushAction = await prepareRequestUpdatePushAction(updatedRequest);
+      // const pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
@@ -401,30 +404,35 @@ const Websocket = ({
       }
     },
 
-    addDirectory: (directoryDetails: { name: string; parentId: string }) => {
-      let { name = '', parentId = '' } = directoryDetails,
-        directoryID = id();
-
-      let directoryPayload = {
+    addDirectory: (folder: IRequestFolder) => {
+      const {
+        name,
+        _meta: { collectionId, requestId, folderId },
+      } = folder;
+      const _id = id();
+      const _folder: IRequestFolder = {
         name,
         _meta: {
-          id: directoryID,
-          parentId,
+          id: _id,
+          collectionId,
+          folderId,
+          requestId,
+          requestType: ERequestTypes.WebSocket,
         },
         meta: {
-          dir_orders: [],
-          leaf_orders: [],
+          fOrders: [],
+          iOrders: [],
         },
       };
 
-      addDirectory(directoryPayload);
+      addDirectory(_folder);
 
       //Update parent orders on add directory
       updateCollectionFns.updateOrders({
         action: 'add',
         key: 'dir_orders',
-        parentId,
-        id: directoryID,
+        parentId: folderId,
+        id: _id,
       });
     },
 
@@ -447,7 +455,7 @@ const Websocket = ({
         deleteDirectory(id);
 
         let parentId = foundDirectory._meta.parentId || '';
-        //update parent orders on remove dirctory
+        //update parent orders on remove directory
         updateCollectionFns.updateOrders({
           action: 'remove',
           key: 'dir_orders',
@@ -577,6 +585,7 @@ const Websocket = ({
       newOrders = _array.uniq(newOrders);
       //update state and parent component callback
       if (parentType === ERequestTypes.WebSocket) {
+        //@ts-ignore
         _requestFns.updateMeta(key, newOrders);
       } else if (parentType === 'DIR' && parentId.length) {
         // Update directory meta
@@ -905,8 +914,8 @@ const withStore = (WrappedComponent) => {
         },
       },
       collection: request.collection || {
-        messages: [],
-        directories: [],
+        items: [],
+        folders: [],
       },
       runtime: {
         activePlayground: defaultConnection?.id,
