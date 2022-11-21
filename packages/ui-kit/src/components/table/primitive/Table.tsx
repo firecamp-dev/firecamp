@@ -1,4 +1,3 @@
-//@ts-nocheck
 import {
   FC,
   MutableRefObject,
@@ -97,7 +96,7 @@ const Table: FC<ITable<any>> = ({
 
   options = { ...defaultOptions, ...options };
 
-  const handleDrag = (row: any, index: number) => {
+  const handleDrag = (row: any) => {
     rowBeingDragRef.current = row;
     // console.log(row, index, 'handleDrag');
   };
@@ -152,7 +151,7 @@ const Table: FC<ITable<any>> = ({
   };
 
   // each render assign apis to parent ref
-  const tableApi = {
+  const tableApi: TTableApi<any> = {
     initialize: _misc.debounce(300, (rows: any[]) => {
       rows = rows.map((r) => {
         if (!r.id) r.id = nanoid();

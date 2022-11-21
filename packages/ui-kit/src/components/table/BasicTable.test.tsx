@@ -165,6 +165,10 @@ describe("Table : ", () => {
           });
           expect(checkBoxDiv).toHaveClass("opacity-50 cursor-default");
         }
+        else if(col.key === "value"){
+          let editorElement = TableDataFirstElement;
+          expect(editorElement).toHaveClass("opacity-50");
+        }
       });
 
     });
@@ -172,9 +176,3 @@ describe("Table : ", () => {
   });
 
 })
-
-//Todo
-// should prevent the click event from button component itself
-// pending test cases for options disabled (SingleLineEditor)
-// Remove //@ts-nocheck by adding appropriate  types in Checkbox, SingleLineEditor, BasicTable, primitiveTable
-// remove rt8 table usage

@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FC } from 'react';
 import cx from 'classnames';
 import { VscCheck } from '@react-icons/all-files/vsc/VscCheck';
@@ -88,12 +87,12 @@ export default Checkbox;
 /**
  * Checkbox in table formate (grid)
  */
-const CheckboxInGrid = ({
+const CheckboxInGrid: FC<ICheckbox> = ({
   id = '',
   onToggleCheck = (l, v) => {},
   isChecked = false,
   label = '',
-  tabIndex = 0,
+  tabIndex = 0, //-1
   className = '',
   disabled = false,
   note = '',
@@ -114,7 +113,6 @@ const CheckboxInGrid = ({
         disabled={disabled}
         note={note}
         color={color}
-        tabIndex={-1}
       />
     </div>
   );

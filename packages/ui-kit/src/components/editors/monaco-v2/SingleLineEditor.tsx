@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FC, useEffect, useRef, memo } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
@@ -280,10 +279,11 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             editor.addCommand(monaco.KeyCode.Tab, (e: any) => {
               console.log(editor.getId(), 'tab triggered');
 
+            if (document.activeElement instanceof HTMLElement) {
               document.activeElement.blur()
               document.activeElement.blur()
               document.activeElement.blur()
-
+            }
               // //@ts-ignore
               // if (!window.ife) return;
               // // @ts-ignore

@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
@@ -8,17 +7,18 @@ import cx from 'classnames';
 import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
-import Table, { TTableApi } from './primitive/Table';
-import { ITableRows } from './primitive/table.interfaces';
+import Table from './primitive/Table';
+import { TRenderCell, TTableApi } from './primitive/table.interfaces';
+import { IBasicTable } from './BasicTable.interfaces';
 
 
 const BasicTable = ({
   name = '',
   rows = [],
   options = {},
-  onChange = (rs: ITableRows) => {},
-  onMount = (api: TTableApi) => {},
-}) => {
+  onChange = (rs) => {},
+  onMount = (api) => {},
+}: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
@@ -32,10 +32,10 @@ const BasicTable = ({
       width: '150px',
       resizeWithContainer: true
     },
-    { id: 'remove', key: '', name: '', width: 20, fixedWidth: true },
+    { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
   ];
 
-  const renderCell = (
+  const renderCell: TRenderCell<any> = (
     column,
     cellValue,
     rowIndex,
@@ -53,12 +53,7 @@ const BasicTable = ({
               className="flex"
               draggable={true}
               onDragStart={(e) => {
-                // console.log(e, trRef);
-                // const td = trRef.current.firstChild;
-                // console.log(td, td.contains(e.target))
-                // if(!td.contains(e.target)) e.preventDefault();
-                // else handleDrag(row.index);
-                handleDrag(row, rowIndex);
+                handleDrag(row);
               }}
               data-testid="row-sorter"
             >

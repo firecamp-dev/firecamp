@@ -2,6 +2,7 @@ import { _array } from '@firecamp/utils';
 import BasicTable from './BasicTable';
 import { defaultData } from '../../../__mocks__/testData';
 import { ITableRows, TTableApi } from './primitive/table.interfaces';
+import { IBasicTable } from './BasicTable.interfaces';
 
 export default {
   title: 'UI-Kit/Table/BasicTable',
@@ -9,7 +10,7 @@ export default {
   argTypes: {},
 };
 
-const Template = ({...args}) => {
+const Template = ({...args}: IBasicTable<any>) => {
   return (
     <BasicTable
     {...args}
@@ -18,7 +19,11 @@ const Template = ({...args}) => {
 };
 
 export const EmptyRow = Template.bind({});
-EmptyRow.args = {};
+EmptyRow.args = {
+  rows: [],
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value)
+};
 
 export const BasicTableData = Template.bind({});
 BasicTableData.args = {
