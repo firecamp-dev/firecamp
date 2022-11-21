@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import { forwardRef } from 'react';
 import classnames from 'classnames';
 

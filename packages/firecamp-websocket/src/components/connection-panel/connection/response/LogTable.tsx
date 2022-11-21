@@ -249,7 +249,7 @@ const LogTable = () => {
             <Column flex={1}>
               <ReactTable
                 key={activePlayground}
-                virtualListHeight={tableHeight - 40} //  40 is an estimated heoght of table header
+                virtualListHeight={tableHeight - 40} //  40 is an estimated height of table header
                 columns={columns}
                 onLoad={(tableAPI) => {
                   logTableAPIRef.current = tableAPI;

@@ -9,20 +9,22 @@ interface IUrlSlice {
 
 const createUrlSlice = (set, get): IUrlSlice => ({
   changeUrl: (urlObj: IUrl) => {
-    let lastUrl = get()?.last?.request.url;
-    let updatedUrl = { ...(get()?.request.url || {}), ...urlObj };
+    const state = get();
+    const lastUrl = state.last?.request.url;
+    let updatedUrl = { ...(state.request.url || {}), ...urlObj };
 
     set((s) => ({ ...s, request: { ...s.request, url: updatedUrl } }));
 
     // Prepare push action for url
-    get()?.prepareUrlPushAction(lastUrl, updatedUrl);
+    state.prepareUrlPushAction(lastUrl, updatedUrl);
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
+    const state = get();
     set((s) => ({
       ...s,
       request: {
         ...s.request,
-        url: { ...s.request.url, query_params: queryParams },
+        url: { ...s.request.url, queryParams },
       },
 
       // manage ui state
@@ -36,8 +38,8 @@ const createUrlSlice = (set, get): IUrlSlice => ({
     }));
 
     // Prepare push action for url
-    get()?.prepareUrlPushAction(get()?.last?.request.url, {
-      query_params: queryParams,
+    state.prepareUrlPushAction(state.last?.request.url, {
+      queryParams,
     });
   },
 });

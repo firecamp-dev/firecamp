@@ -1,6 +1,5 @@
 import { TId, EPushActionType } from '@firecamp/types';
 
-
 export enum ELogTypes {
   Send = 'S',
   Receive = 'R',
@@ -52,7 +51,7 @@ export const EMessagePayloadTypes = {
   file: 'file',
   arraybuffer: 'arraybuffer',
   arraybufferview: 'arraybufferview',
-  no_body: 'no_body',
+  noBody: 'noBody',
 };
 
 export enum EPanel {
@@ -69,39 +68,39 @@ export enum ERequestPanelTabs {
 export enum EWebsocketConfigKeys {
   Protocols = 'protocols',
   Reconnect = 'reconnect',
-  Reconnect_attempts = 'reconnect_attempts',
-  Reconnect_timeout = 'reconnect_timeout',
-  Reject_unauthorized = 'reject_unauthorized',
-  Follow_redirects = 'follow_redirects',
-  Handshake_timeout = 'handshake_timeout', //ms
-  Max_redirects = 'max_redirects',
-  Protocol_version = 'protocol_version',
+  ReconnectAttempts = 'reconnectAttempts',
+  ReconnectTimeout = 'reconnectTimeout',
+  RejectUnauthorized = 'rejectUnauthorized',
+  FollowRedirects = 'followRedirects',
+  HandshakeTimeout = 'handshakeTimeout', //ms
+  MaxRedirects = 'maxRedirects',
+  ProtocolVersion = 'protocolVersion',
   Origin = 'origin',
-  Max_payload = 'max_payload', //bytes
+  MaxPayload = 'maxPayload', //bytes
 }
 
 // Request push action
 
-export enum EPushAction_rootKeys {
+export enum EPushActionRootKeys {
   headers = 'headers',
 }
 
 export enum EPushAction_metaKeys {
-  collection_id = 'collection_id',
-  folder_id = 'folder_id',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  collectionId = 'collectionId',
+  folderId = 'folderId',
+  updatedAt = 'updatedAt',
+  updatedBy = 'updatedBy',
 }
 
 export enum EPushActionMetaKeys {
   name = 'name',
   description = 'description',
-  leaf_orders = 'leaf_orders',
-  dir_orders = 'dir_orders',
+  iOrders = 'iOrders',
+  fOrders = 'fOrders',
 }
 export enum EPushActionUrlKeys {
   raw = 'raw',
-  query_params = 'query_params',
+  queryParams = 'queryParams',
 }
 
 export enum EPushActionConfigKeys {
@@ -141,9 +140,9 @@ export enum EPushActionMessageMeta {
 }
 
 export enum EPushActionMessage_meta {
-  parent_id = 'parent_id',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  parentId = 'parentId',
+  updatedAt = 'updatedAt',
+  updatedBy = 'updatedBy',
 }
 
 export interface IPushActionMessage {
@@ -164,14 +163,14 @@ export enum EPushActionDirectory_Root {
 }
 
 export enum EPushActionDirectoryMeta {
-  dir_orders = 'dir_orders',
-  leaf_orders = 'leaf_orders',
+  fOrders = 'fOrders',
+  iOrders = 'iOrders',
 }
 
 export enum EPushActionDirectory_meta {
-  parent_id = 'parent_id',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  parentId = 'parentId',
+  updatedAt = 'updatedAt',
+  updatedBy = 'updatedBy',
 }
 
 export interface IPushActionDirectory {

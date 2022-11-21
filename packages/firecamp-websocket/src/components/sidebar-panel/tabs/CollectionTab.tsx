@@ -36,7 +36,7 @@ const CollectionTab = () => {
   // }, []);
 
   const openPlg = (plgId) => {
-    // get a freh copy of state
+    // get a fresh copy of state
     const item = items.find((i) => i._meta.id == plgId);
     console.log(item, 1100099);
     openPlayground(item);

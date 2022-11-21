@@ -1,4 +1,4 @@
-import { IRequestFolder, IGraphQLPlayground, TId } from '@firecamp/types';
+import { IRequestFolder, TId, IWebSocketMessage } from '@firecamp/types';
 import mitt from 'mitt';
 import {
   Disposable,
@@ -14,22 +14,22 @@ type TTreeItemData = {
   name: string;
   _meta: {
     id: string;
-    collection_id?: string;
-    is_folder?: boolean;
-    is_item?: boolean;
+    collectionId?: string;
+    isFolder?: boolean;
+    isItem?: boolean;
   };
 };
 type TItemExtra_meta = {
   //todo: ts improvement needed
   _meta?: {
-    is_folder?: boolean;
-    is_item?: boolean;
+    isFolder?: boolean;
+    isItem?: boolean;
   };
 };
 
-type TFodlerItem = Partial<IRequestFolder & TItemExtra_meta>;
-type TItem = Partial<IGraphQLPlayground & TItemExtra_meta>;
-type TCItem = TFodlerItem | TItem;
+type TFolderItem = Partial<IRequestFolder & TItemExtra_meta>;
+type TItem = Partial<IWebSocketMessage & TItemExtra_meta>;
+type TCItem = TFolderItem | TItem;
 
 export class CollectionTreeDataProvider<T = TTreeItemData>
   implements TreeDataProvider
@@ -38,16 +38,16 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
 
-  constructor(folders: Array<TFodlerItem>, items: Array<TItem>) {
+  constructor(folders: Array<TFolderItem>, items: Array<TItem>) {
     this.items = [
       ...folders.map((i) => ({
         ...i,
-        _meta: { ...i._meta, is_folder: true },
+        _meta: { ...i._meta, isFolder: true },
       })),
-      ...items.map((i) => ({ ...i, _meta: { ...i._meta, is_item: true } })),
+      ...items.map((i) => ({ ...i, _meta: { ...i._meta, isItem: true } })),
     ];
     this.rootOrders = this.items
-      .filter((i) => !i._meta.folder_id)
+      .filter((i) => !i._meta.folderId)
       .map((i) => i._meta.id);
   }
 
@@ -73,17 +73,17 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       name: item.name,
       _meta: {
         id: item._meta.id,
-        is_folder: item._meta.is_folder,
-        collection_id: item._meta?.collection_id,
+        isFolder: item._meta.isFolder,
+        collectionId: item._meta?.collectionId,
       },
     };
 
     let getChildren = (item) => {
-      if (item._meta.is_leaf) return [];
+      if (item._meta.isLeaf) return [];
       return this.items
         .filter((i) => {
-          if (item._meta.is_folder)
-            return i._meta.folder_id == item._meta.id;
+          if (item._meta.isFolder)
+            return i._meta.folderId == item._meta.id;
           return true;
         })
         .map((i) => i._meta.id);
@@ -95,7 +95,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       canMove: true,
       data: treeItem,
       canRename: true,
-      hasChildren: item._meta.is_folder,
+      hasChildren: item._meta.isFolder,
       children,
     });
   }
@@ -128,23 +128,23 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   }
 
   // extra methods of provider
-  public addFolder(item: TFodlerItem) {
-    this.items.push({ ...item, _meta: { ...item._meta, is_folder: true } });
-    if (!item._meta.folder_id) {
+  public addFolder(item: TFolderItem) {
+    this.items.push({ ...item, _meta: { ...item._meta, isFolder: true } });
+    if (!item._meta.folderId) {
       this.rootOrders.push(item._meta.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folderId]);
     }
   }
 
   public addItem(item: TItem) {
-    this.items.push({ ...item, _meta: { ...item._meta, is_item: true } });
-    if (!item._meta.folder_id) {
+    this.items.push({ ...item, _meta: { ...item._meta, isItem: true } });
+    if (!item._meta.folderId) {
       this.rootOrders.push(item._meta.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folderId]);
     }
   }
 
@@ -152,16 +152,16 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     this.items = this.items.map((itm: TItem)=> {
       if(itm._meta.id == item._meta.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
-        return { ...itm, ...item,  _meta: { ...itm._meta, ...item._meta, is_item: true } }
+        return { ...itm, ...item,  _meta: { ...itm._meta, ...item._meta, isItem: true } }
       }
       return itm;
     });
 
-    if (!item._meta.folder_id) {
+    if (!item._meta.folderId) {
       this.rootOrders.push(item._meta.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folderId]);
     }
   }
 
@@ -171,11 +171,11 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     console.log(id, item);
     if (!item) return;
     this.items = this.items.filter((i) => i._meta.id != id);
-    if (!item._meta.folder_id) {
+    if (!item._meta.folderId) {
       this.rootOrders = this.rootOrders.filter((i) => i != id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folderId]);
     }
   }
 }

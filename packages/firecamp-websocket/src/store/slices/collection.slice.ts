@@ -65,13 +65,14 @@ const createCollectionSlice = (
   // message
 
   getMessage: (id: TId, getLast = false) => {
+    const state = get();
     // existing messages
-    let messages = getLast
-      ? get()?.last?.collection?.messages
-      : get().collection?.messages;
+    const messages = getLast
+      ? state.last?.collection?.messages
+      : state.collection?.messages;
 
     // message index
-    let messageIndex = messages.findIndex(
+    const messageIndex = messages.findIndex(
       (message) => message?._meta?.id === id
     );
 
@@ -84,6 +85,7 @@ const createCollectionSlice = (
   },
   addMessage: (message: IWebSocketMessage) => {
     if (!message?._meta?.id) return;
+    const state = get();
 
     set((s) => ({
       ...s,
@@ -94,13 +96,14 @@ const createCollectionSlice = (
     }));
 
     // Prepare push action for insert message
-    get()?.prepareCollectionMessagesPushAction(
+    state.prepareCollectionMessagesPushAction(
       message?._meta?.id,
       EPushActionType.Insert
     );
   },
   changeMessage: (id: TId, updates: { key: string; value: any }) => {
-    let messageDetails = get().getMessage(id);
+    const state = get();
+    const messageDetails = state.getMessage(id);
 
     // If message found then update in store
     if (
@@ -126,18 +129,19 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastMessage = get().getMessage(id, true);
+      let lastMessage = state.getMessage(id, true);
       // Prepare push action for update message
-      get()?.prepareCollectionMessagesPushAction(
+      state.prepareCollectionMessagesPushAction(
         id,
-        EPushActionType.update,
+        EPushActionType.Update,
         lastMessage,
         updatedMessage
       );
     }
   },
   deleteMessage: (id: TId) => {
-    let messageDetails = get().getMessage(id);
+    const state = get();
+    const messageDetails = state.getMessage(id);
 
     // If message found then update in store
     if (messageDetails && messageDetails.messageIndex !== -1) {
@@ -152,11 +156,12 @@ const createCollectionSlice = (
         },
       }));
       // Prepare push action for delete message
-      get()?.prepareCollectionMessagesPushAction(id, EPushActionType.delete);
+      state.prepareCollectionMessagesPushAction(id, EPushActionType.Delete);
     }
   },
   setMessage: (id: TId, messageToSet: IWebSocketMessage) => {
-    let messageDetails = get().getMessage(id);
+    const state = get();
+    const messageDetails = state.getMessage(id);
 
     // If message found then update in store
     if (
@@ -164,8 +169,8 @@ const createCollectionSlice = (
       messageDetails.message &&
       messageDetails.messageIndex !== -1
     ) {
-      let { message, messageIndex } = messageDetails;
-      let updatedMessage = Object.assign({}, message, messageToSet);
+      const { message, messageIndex } = messageDetails;
+      const updatedMessage = Object.assign({}, message, messageToSet);
 
       set((s) => ({
         ...s,
@@ -179,11 +184,11 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastMessage = get().getMessage(id, true);
+      let lastMessage = state.getMessage(id, true);
       // Prepare push action for update message
-      get()?.prepareCollectionMessagesPushAction(
+      state.prepareCollectionMessagesPushAction(
         id,
-        EPushActionType.update,
+        EPushActionType.Update,
         lastMessage,
         updatedMessage
       );
@@ -192,10 +197,11 @@ const createCollectionSlice = (
 
   // directories
   getDirectory: (id: TId, getLast = false) => {
+    const state = get();
     // existing directories
-    let directories = getLast
-      ? get()?.last?.collection?.directories
-      : get().collection?.directories;
+    const directories = getLast
+      ? state.last?.collection?.directories
+      : state.collection?.directories;
 
     // directory index
     let directoryIndex = directories.findIndex(
@@ -211,6 +217,7 @@ const createCollectionSlice = (
   },
   addDirectory: (directory: IRequestFolder) => {
     if (!directory?._meta?.id) return;
+    const state = get();
 
     set((s) => ({
       ...s,
@@ -221,13 +228,14 @@ const createCollectionSlice = (
     }));
 
     // Prepare push action for insert message
-    get()?.prepareCollectionDirectoriesPushAction(
+    state.prepareCollectionDirectoriesPushAction(
       directory?._meta?.id,
       EPushActionType.Insert
     );
   },
   changeDirectory: (id: TId, updates: { key: string; value: any }) => {
-    let directoryDetails = get().getDirectory(id);
+    const state = get();
+    const directoryDetails = state.getDirectory(id);
 
     // If directory found then update in store
     if (
@@ -253,18 +261,19 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastDirectory = get().getDirectory(id, true);
+      let lastDirectory = state.getDirectory(id, true);
       // Prepare push action for update message
-      get()?.prepareCollectionDirectoriesPushAction(
+      state.prepareCollectionDirectoriesPushAction(
         id,
-        EPushActionType.update,
+        EPushActionType.Update,
         lastDirectory,
         updatedDirectory
       );
     }
   },
   deleteDirectory: (id: TId) => {
-    let directoryDetails = get().getDirectory(id);
+    const state = get();
+    const directoryDetails = state.getDirectory(id);
 
     // If directory found then update in store
     if (directoryDetails && directoryDetails.directoryIndex !== -1) {
@@ -285,7 +294,7 @@ const createCollectionSlice = (
       }));
 
       // Prepare push action for delete directory
-      get()?.prepareCollectionDirectoriesPushAction(id, EPushActionType.delete);
+      state.prepareCollectionDirectoriesPushAction(id, EPushActionType.Delete);
     }
   },
 });

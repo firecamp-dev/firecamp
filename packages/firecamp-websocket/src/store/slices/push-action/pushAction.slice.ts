@@ -6,7 +6,7 @@ import {
   EPushActionMetaKeys,
   EPushActionUrlKeys,
   EPushActionConfigKeys,
-  EPushAction_rootKeys,
+  EPushActionRootKeys,
   EPushAction_metaKeys,
   IPushActionConnections,
   IPushActionMessage,
@@ -40,7 +40,7 @@ export interface IPushActionRequest {
   meta?: Array<EPushActionMetaKeys>;
   config?: Array<EPushActionConfigKeys>;
   connections?: IPushActionConnections;
-  _root?: Array<EPushAction_rootKeys>;
+  _root?: Array<EPushActionRootKeys>;
   _meta?: Array<EPushAction_metaKeys>;
   _removed?: {};
 }
@@ -54,11 +54,11 @@ export interface IPushAction {
 export interface IPushPayload extends Partial<IWebSocket> {
   _action?: {
     type: EPushActionType;
-    item_id: TId;
-    item_type: 'R';
-    request_type: ERequestTypes.WebSocket;
-    collection_id: TId;
-    workspace_id: TId;
+    itemId: TId;
+    itemType: 'R';
+    requestType: ERequestTypes.WebSocket;
+    collectionId: TId;
+    workspaceId: TId;
     keys: IPushAction;
   };
 }
@@ -105,7 +105,8 @@ export const createPushActionSlice = (
   },
 
   prepareRequestInsertPushPayload: async (): Promise<IPushPayload> => {
-    let request: IWebSocket = get().request;
+    const state = get();
+    const request: IWebSocket = state.request;
     let pushPayload: IPushPayload = {};
 
     console.log({ request });
@@ -113,23 +114,24 @@ export const createPushActionSlice = (
     pushPayload = { ...request };
     pushPayload._action = {
       type: EPushActionType.Insert,
-      item_id: request._meta.id,
-      item_type: 'R', // TODO: add type here
-      request_type: ERequestTypes.WebSocket,
-      collection_id: '',
+      itemId: request._meta.id,
+      itemType: 'R', // TODO: add type here
+      requestType: ERequestTypes.WebSocket,
+      collectionId: '',
       keys: {},
-      workspace_id: '',
+      workspaceId: '',
     };
     return Promise.resolve(pushPayload);
   },
 
   prepareRequestUpdatePushPayload: (): Promise<IPushPayload> => {
-    let pushAction: Partial<IPushAction> = _cleanDeep(get().pushAction);
+    const state = get();
+    const pushAction: Partial<IPushAction> = _cleanDeep(state.pushAction);
 
     if (!_object.size(pushAction)) return Promise.reject('Empty push action');
     // console.log({ state: get() });
 
-    let request: IWebSocket = get().request;
+    const request: IWebSocket = state.request;
     let updatedRequest: IPushPayload = {};
     if (pushAction.request) {
       // console.log({ pushAction, request });
@@ -155,17 +157,17 @@ export const createPushActionSlice = (
     pushPayload._meta = {
       ...pushPayload._meta,
       id: request._meta.id,
-      collection_id: request._meta.collection_id,
-      folder_id: request._meta.folder_id || '',
+      collectionId: request._meta.collectionId,
+      folderId: request._meta.folderId || '',
     };
 
     pushPayload._action = {
       type: EPushActionType.Update,
-      item_id: request._meta.id,
-      item_type: 'R', // TODO: add type here
-      request_type: ERequestTypes.WebSocket,
-      collection_id: request._meta.collection_id,
-      workspace_id: '',
+      itemId: request._meta.id,
+      itemType: 'R', // TODO: add type here
+      requestType: ERequestTypes.WebSocket,
+      collectionId: request._meta.collectionId,
+      workspaceId: '',
       keys: pushAction,
     };
     // console.log({ updatedRequest });
@@ -174,15 +176,16 @@ export const createPushActionSlice = (
   },
 
   prepareRequestUpdatePushAction: (request: Partial<IWebSocket>) => {
+    const state = get();
     let pushAction: Partial<IPushAction> = {};
-    let lastRequest: IWebSocket = get()?.last.request;
+    let lastRequest: IWebSocket = state.last.request;
 
     console.log('prepareRequestUpdatePushAction: ', { lastRequest, request });
 
     for (let key in request) {
       switch (key) {
         // handle _root
-        case EPushAction_rootKeys.headers:
+        case EPushActionRootKeys.headers:
           pushAction['_root'] = PushActionService.prepareRootPushAction(
             { [key]: lastRequest[key] },
             { [key]: request[key] }

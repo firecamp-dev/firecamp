@@ -11,7 +11,6 @@ import shallow from 'zustand/shallow';
 
 import {
   normalizeRequest,
-  prepareUIRequestPanelState,
 } from '../services/reqeust.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import '../sass/ws.sass';
@@ -30,21 +29,12 @@ import {
   WebsocketStoreProvider,
   IWebsocketStore,
   initialPlaygroundMessage,
-  emptyLog,
   IPushPayload,
   emptyPushAction,
-  IPushAction,
 } from '../store/index';
 import { _array } from '@firecamp/utils';
-import { ERequestPanelTabs } from '../types';
 import { DefaultConnectionState } from '../constants';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
-
-export const CLIENT_ACTIONS = {
-  CLIENT_ACTIONS: 'CLIENT_ACTIONS',
-  OPEN_CODE_SNIPPET: 'OPEN_CODE_SNIPPET',
-  OPEN_COLLECTION: 'OPEN_COLLECTION',
-};
 
 const Websocket = ({
   firecampFunctions = {},
@@ -60,7 +50,7 @@ const Websocket = ({
   const { current: emitterRef } = useRef(new Emitter({})); //TODO: remove later
   const { current: WSInstances_Ref } = useRef(new Map());
 
-  let _noop = () => {};
+  const _noop = () => {};
 
   /**
    * _requestFns: Request functions
@@ -170,7 +160,7 @@ const Websocket = ({
             workspace: activeEnvironments.workspace,
             collection: activeEnvironments.collection || '',
           },
-          collectionId: tab?.request?._meta?.collection_id || '',
+          collectionId: tab?.request?._meta?.collectionId || '',
         });
       }
 
@@ -216,7 +206,7 @@ const Websocket = ({
             version: '2.0.0',
             type: ERequestTypes.WebSocket,
           },
-          _meta: { id: id(), collection_id: '' },
+          _meta: { id: id(), collectionId: '' },
         };
 
         if (isRequestSaved === true) {
@@ -319,7 +309,7 @@ const Websocket = ({
   };
 
   const updateCollectionFns = {
-    addMessage: async ({ name = '', parent_id = '' }) => {
+    addMessage: async ({ name = '', parentId = '' }) => {
       let msgId = id();
 
       let {
@@ -330,7 +320,7 @@ const Websocket = ({
       let message = playgrounds?.[activePlayground]?.message;
 
       if (
-        message.meta.type === 'no_body' ||
+        message.meta.type === 'noBody' ||
         message.meta.type === EMessagePayloadTypes.file
       ) {
         return;
@@ -342,7 +332,7 @@ const Websocket = ({
         _meta: {
           ...message._meta,
           id: msgId,
-          parent_id,
+          parentId,
         },
       };
 
@@ -366,7 +356,7 @@ const Websocket = ({
       await updateCollectionFns.updateOrders({
         action: 'add',
         key: 'leaf_orders',
-        parent_id,
+        parentId,
         id: msgId,
       });
 
@@ -397,13 +387,13 @@ const Websocket = ({
 
       if (messageDetails.message) {
         deleteMessage(id);
-        let parent_id = messageDetails.message?._meta?.parent_id || '';
+        let parentId = messageDetails.message?._meta?.parentId || '';
 
         //Update parent orders on remove message
         updateCollectionFns.updateOrders({
           action: 'remove',
           key: 'leaf_orders',
-          parent_id,
+          parentId,
           id,
         });
 
@@ -411,15 +401,15 @@ const Websocket = ({
       }
     },
 
-    addDirectory: (directoryDetails: { name: string; parent_id: string }) => {
-      let { name = '', parent_id = '' } = directoryDetails,
+    addDirectory: (directoryDetails: { name: string; parentId: string }) => {
+      let { name = '', parentId = '' } = directoryDetails,
         directoryID = id();
 
       let directoryPayload = {
         name,
         _meta: {
           id: directoryID,
-          parent_id,
+          parentId,
         },
         meta: {
           dir_orders: [],
@@ -433,7 +423,7 @@ const Websocket = ({
       updateCollectionFns.updateOrders({
         action: 'add',
         key: 'dir_orders',
-        parent_id,
+        parentId,
         id: directoryID,
       });
     },
@@ -456,12 +446,12 @@ const Websocket = ({
       if (foundDirectory) {
         deleteDirectory(id);
 
-        let parent_id = foundDirectory._meta.parent_id || '';
+        let parentId = foundDirectory._meta.parentId || '';
         //update parent orders on remove dirctory
         updateCollectionFns.updateOrders({
           action: 'remove',
           key: 'dir_orders',
-          parent_id,
+          parentId,
           id,
         });
       }
@@ -480,12 +470,12 @@ const Websocket = ({
           let getChildren = async (dirId = '') => {
             // Child directories ids
             let childDirIds = collection.directories
-              .filter((childDir) => childDir._meta.parent_id === dirId)
+              .filter((childDir) => childDir._meta.parentId === dirId)
               .map((childDir) => childDir._meta.id);
 
             // Child messages ids
             let childMessageIds = collection.messages
-              .filter((childMsg) => childMsg._meta.parent_id === dirId)
+              .filter((childMsg) => childMsg._meta.parentId === dirId)
               .map((childMsg) => childMsg._meta.id);
 
             if (!_array.isEmpty(childDirIds)) {
@@ -536,7 +526,7 @@ const Websocket = ({
     updateOrders: ({
       action = 'add',
       key = 'leaf_orders',
-      parent_id = '',
+      parentId = '',
       id = '',
     }) => {
       let {
@@ -548,15 +538,15 @@ const Websocket = ({
       let existingOrders = [],
         newOrders = [],
         parentType =
-          parent_id && parent_id.length ? 'DIR' : ERequestTypes.WebSocket;
+          parentId && parentId.length ? 'DIR' : ERequestTypes.WebSocket;
       let foundParentDirectoryIndex = collection.directories.findIndex(
-        (dir) => dir._meta.id === parent_id
+        (dir) => dir._meta.id === parentId
       );
 
       //Get existing orders from parent
       if (parentType === ERequestTypes.WebSocket) {
         existingOrders = meta[key] || [];
-      } else if (parentType === 'DIR' && parent_id.length) {
+      } else if (parentType === 'DIR' && parentId.length) {
         if (collection.directories) {
           if (
             foundParentDirectoryIndex !== -1 &&
@@ -588,9 +578,9 @@ const Websocket = ({
       //update state and parent component callback
       if (parentType === ERequestTypes.WebSocket) {
         _requestFns.updateMeta(key, newOrders);
-      } else if (parentType === 'DIR' && parent_id.length) {
+      } else if (parentType === 'DIR' && parentId.length) {
         // Update directory meta
-        changeDirectory(parent_id, {
+        changeDirectory(parentId, {
           key: 'meta',
           value: {
             ...collection.directories[foundParentDirectoryIndex].meta,
@@ -726,31 +716,31 @@ const Websocket = ({
       if (!name) return;
 
       let {
-        request: { connections: req_connections },
+        request: { connections: reqConnections },
       } = websocketStoreApi.getState();
 
       let newConnectionId = id();
       let newReqConnection = Object.assign({}, DefaultRequestConnection);
 
       // Existing default connection
-      let defaultConnection = req_connections.find((c) => c.is_default);
+      let defaultConnection = reqConnections.find((c) => c.is_default);
 
-      if (!defaultConnection && !_array.isEmpty(req_connections)) {
-        defaultConnection = req_connections[0];
+      if (!defaultConnection && !_array.isEmpty(reqConnections)) {
+        defaultConnection = reqConnections[0];
       }
 
-      let queryParams = defaultConnection['query_params'] || [];
+      let queryParams = defaultConnection['queryParams'] || [];
       queryParams = queryParams.map((q) => Object.assign({}, q, { id: id() }));
 
       let headers = defaultConnection['headers'] || [];
       headers = headers.map((h) => Object.assign({}, h, { id: id() }));
 
       defaultConnection = Object.assign({}, defaultConnection, {
-        query_params: queryParams,
+        queryParams: queryParams,
         headers,
       });
 
-      delete defaultConnection['is_default'];
+      delete defaultConnection['isDefault'];
 
       newReqConnection = Object.assign(
         {},
@@ -864,7 +854,7 @@ const Websocket = ({
           <Container.Header>
             <UrlBarContainer
               tab={tab}
-              collectionId={tab?.request?._meta?.collection_id || ''}
+              collectionId={tab?.request?._meta?.collectionId || ''}
               postComponents={platformComponents}
               onSaveRequest={onSave}
               platformContext={platformContext}
@@ -896,7 +886,7 @@ const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
     const { request = {} } = tab;
     const defaultConnection =
-      request.connections?.find((c) => c.is_default === true) ||
+      request.connections?.find((c) => c.isDefault === true) ||
       DefaultConnectionState;
 
     const initPayload = {
@@ -905,13 +895,13 @@ const withStore = (WrappedComponent) => {
         config: request.config || DefaultConfigState,
         connections: request.connections || [defaultConnection],
         meta: request.meta || {
-          f_orders: [],
-          leaf_orders: [],
+          fOrders: [],
+          iOrders: [],
           version: '2.0.0',
         },
         _meta: request?._meta || {
           id: id(),
-          collection_id: '',
+          collectionId: '',
         },
       },
       collection: request.collection || {

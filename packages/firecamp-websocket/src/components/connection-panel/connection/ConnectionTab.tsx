@@ -67,8 +67,8 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     updateConnection(activePlayground, 'headers', headers);
   };
 
-  const _onChangeParams = (query_params = []) => {
-    updateConnection(activePlayground, 'query_params', query_params);
+  const _onChangeParams = (queryParams = []) => {
+    updateConnection(activePlayground, 'queryParams', queryParams);
   };
 
   const _renderBody = () => {
@@ -98,7 +98,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
       case 'params':
         return (
           <ParamsTab
-            params={connection?.query_params || []}
+            params={connection?.queryParams || []}
             activeConnectionId={activePlayground}
             onUpdate={_onChangeParams}
           />

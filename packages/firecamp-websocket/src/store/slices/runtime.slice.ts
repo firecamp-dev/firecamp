@@ -17,6 +17,7 @@ interface IRuntime {
     collection: TId;
   };
   isRequestSaved?: boolean;
+  _dnp: { [k: string]: any };
 }
 
 interface IRuntimeSlice {
@@ -28,7 +29,7 @@ interface IRuntimeSlice {
   deletePlaygroundTab: (playgroundId: TId) => void;
   changeActiveEnvironment?: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => void;
   setActiveEnvironments?: (updates: {
     workspace: TId;
@@ -102,9 +103,9 @@ const createRuntimeSlice = (
   },
   changeActiveEnvironment: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => {
-    // console.log({ scope, environment_id });
+    // console.log({ scope, environmentId });
 
     set((s) => ({
       ...s,
@@ -112,7 +113,7 @@ const createRuntimeSlice = (
         ...s.runtime,
         activeEnvironments: {
           ...s.runtime.activeEnvironments,
-          [scope]: environment_id,
+          [scope]: environmentId,
         },
       },
     }));

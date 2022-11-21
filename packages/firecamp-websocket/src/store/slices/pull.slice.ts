@@ -18,11 +18,11 @@ const createPullActionSlice = (set, get): IPullSlice => ({
   pull: {
     _action: {
       type: EPushActionType.Update,
-      item_id: '',
-      item_type: 'R',
-      request_type: ERequestTypes.WebSocket,
-      collection_id: '',
-      workspace_id: '',
+      itemId: '',
+      itemType: 'R',
+      requestType: ERequestTypes.WebSocket,
+      collectionId: '',
+      workspaceId: '',
       keys: {},
     },
   },

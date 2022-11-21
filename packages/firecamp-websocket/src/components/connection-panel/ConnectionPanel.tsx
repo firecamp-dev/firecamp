@@ -66,7 +66,7 @@ const ConnectionPanel = () => {
             <AddNewConnectionPopover
               isOpen={isAddConnPopoverOpen}
               toggleOpen={() => toggleConnPopover(!isAddConnPopoverOpen)}
-              popover_id={`add-new-connection-${activePlayground}`}
+              popoverId={`add-new-connection-${activePlayground}`}
               existingConnectionNames={playgroundTabs.map((c) => c.name)}
               onAddNewConnection={_onAddNewConnection}
             />
@@ -84,7 +84,7 @@ export default memo(ConnectionPanel);
 const AddNewConnectionPopover = ({
   isOpen = false,
   toggleOpen = () => {},
-  popover_id = '',
+  popoverId = '',
   existingConnectionNames = [],
   onAddNewConnection = (name = '') => {},
 }) => {
@@ -178,7 +178,7 @@ const AddNewConnectionPopover = ({
   return (
     <Popover
       key="addNewConnection"
-      id={popover_id}
+      id={popoverId}
       detach={false}
       isOpen={isOpen}
       onToggleOpen={toggleOpen}
@@ -216,7 +216,7 @@ const AddNewConnectionPopover = ({
     >
       <Popover.Handler>
         <div
-          id={popover_id || ''}
+          id={popoverId || ''}
           className="items-center h-full px-1 "
           data-tip={'Add new connection'}
           onClick={toggleOpen}

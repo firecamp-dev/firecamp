@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Button, Input, Popover } from '@firecamp/ui-kit';
 
-import { IoWifi } from '@react-icons/all-files/io5/IoWifi';
-
 const CloseConnection = ({
   buttonId = 'close',
   activePlayground = '',
@@ -77,14 +75,14 @@ const CloseConnection = ({
     if (e) e.preventDefault();
   };
 
-  const popover_id = `close-${activePlayground}`;
+  const popoverId = `close-${activePlayground}`;
   // console.log(`hasValidStatus`, hasValidStatus, isStatusDirty);
   return (
     <Popover
       isOpen={isOpen}
       detach={false}
       onToggleOpen={() => toggleOpen(!isOpen)}
-      key="close_connection"
+      key="closeConnection"
       content={
         closeManually === true ? (
           <div className="p-2 w-60">
@@ -140,7 +138,7 @@ const CloseConnection = ({
       }
     >
       <Popover.Handler
-        id={closeManually === false ? popover_id : `${popover_id}-${buttonId}`}
+        id={closeManually === false ? popoverId : `${popoverId}-${buttonId}`}
       >
         <Button
           text={'Connected'}

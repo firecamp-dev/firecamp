@@ -25,27 +25,25 @@ interface IConnectionsLogs {
 }
 
 interface IConnectionsLogsSlice extends IConnectionsLogs {
-  addConnectionLog: (connection_id: TId, log: ILog) => void;
-
-  clearAllConnectionLogs: (connection_id: TId) => void;
+  addConnectionLog: (connectionId: TId, log: ILog) => void;
+  clearAllConnectionLogs: (connectionId: TId) => void;
 }
 
 const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
   connectionsLogs: {},
-
-  addConnectionLog: (connection_id: TId, log: ILog) => {
+  addConnectionLog: (connectionId: TId, log: ILog) => {
     // console.log({ log });
 
     let connectionsLogs = get()?.connectionsLogs;
-    if (connection_id in connectionsLogs) {
-      let logs = connectionsLogs[connection_id];
+    if (connectionId in connectionsLogs) {
+      let logs = connectionsLogs[connectionId];
       log = { ...emptyLog, ...log };
 
       set((s) => ({
         ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
-          [connection_id]: [...logs, log],
+          [connectionId]: [...logs, log],
         },
       }));
     } else {
@@ -53,19 +51,19 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
         ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
-          [connection_id]: [log],
+          [connectionId]: [log],
         },
       }));
     }
   },
-  clearAllConnectionLogs: (connection_id: TId) => {
+  clearAllConnectionLogs: (connectionId: TId) => {
     let connectionsLogs = get()?.connectionsLogs;
-    if (connection_id in connectionsLogs) {
+    if (connectionId in connectionsLogs) {
       set((s) => ({
         ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
-          [connection_id]: [],
+          [connectionId]: [],
         },
       }));
     }

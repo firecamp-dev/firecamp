@@ -24,14 +24,14 @@ let config_inputs = [
     label: 'Reconnect'
   },
   {
-    name: EWebsocketConfigKeys.Reconnect_attempts,
+    name: EWebsocketConfigKeys.ReconnectAttempts,
     type: INPUT_TYPES.number,
     labelFor: 'Reconnect attempt',
     label: 'Reconnect attempt',
     placeholder: ''
   },
   {
-    name: EWebsocketConfigKeys.Reconnect_timeout,
+    name: EWebsocketConfigKeys.ReconnectTimeout,
     type: INPUT_TYPES.number,
     labelFor: 'Reconnect timeout',
     label: 'Reconnect timeout',
@@ -48,34 +48,34 @@ let config_inputs = [
 
 let electron_side_config = [
   {
-    name: EWebsocketConfigKeys.Reject_unauthorized,
+    name: EWebsocketConfigKeys.RejectUnauthorized,
     type: INPUT_TYPES.boolean,
     labelFor: 'Reject Unauthorized',
     label: 'Reject Unauthorized',
     placeholder: ''
   },
   {
-    name: EWebsocketConfigKeys.Handshake_timeout,
+    name: EWebsocketConfigKeys.HandshakeTimeout,
     type: INPUT_TYPES.number,
     labelFor: 'Handshake timeout',
     label: 'Handshake timeout',
     placeholder: 'Timeout in milliseconds for the handshake request'
   },
   {
-    name: EWebsocketConfigKeys.Follow_redirects,
+    name: EWebsocketConfigKeys.FollowRedirects,
     type: INPUT_TYPES.boolean,
     labelFor: 'Follow redirects',
     label: 'Follow redirects'
   },
   {
-    name: EWebsocketConfigKeys.Max_redirects,
+    name: EWebsocketConfigKeys.MaxRedirects,
     type: INPUT_TYPES.number,
     labelFor: 'Max redirects',
     label: 'Max redirects',
     placeholder: 'Default 10,The maximum number of redirects allowed'
   },
   {
-    name: EWebsocketConfigKeys.Protocol_version,
+    name: EWebsocketConfigKeys.ProtocolVersion,
     type: INPUT_TYPES.number,
     labelFor: 'Protocol version',
     label: 'Protocol version',
@@ -89,7 +89,7 @@ let electron_side_config = [
     placeholder: 'Value of Sec-WebSocket-Origin header'
   },
   {
-    name: EWebsocketConfigKeys.Max_payload,
+    name: EWebsocketConfigKeys.MaxPayload,
     type: INPUT_TYPES.number,
     labelFor: 'Max payload',
     label: 'Max payload',
@@ -160,15 +160,15 @@ const Config = ({ connections = [], config = {} }) => {
       case INPUT_TYPES.number:
         let isDisabled = false;
         if (
-          name === EWebsocketConfigKeys.Max_redirects &&
-          config[EWebsocketConfigKeys.Follow_redirects] === false
+          name === EWebsocketConfigKeys.MaxRedirects &&
+          config[EWebsocketConfigKeys.FollowRedirects] === false
         ) {
           isDisabled = true;
         }
 
         if (
-          (name === EWebsocketConfigKeys.Reconnect_timeout ||
-            name === EWebsocketConfigKeys.Reconnect_attempts) &&
+          (name === EWebsocketConfigKeys.ReconnectTimeout ||
+            name === EWebsocketConfigKeys.ReconnectAttempts) &&
           config[EWebsocketConfigKeys.Reconnect] === false
         ) {
           isDisabled = true;

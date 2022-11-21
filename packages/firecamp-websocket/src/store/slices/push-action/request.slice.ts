@@ -18,8 +18,8 @@ interface IPushActionRequestSlice {
   prepareRequestConnectionsPushAction?: (
     id: TId,
     pushActionType: EPushActionType,
-    lastConnection: IWebSocketConnection,
-    connection: IWebSocketConnection
+    lastConnection?: IWebSocketConnection,
+    connection?: IWebSocketConnection
   ) => void;
 }
 

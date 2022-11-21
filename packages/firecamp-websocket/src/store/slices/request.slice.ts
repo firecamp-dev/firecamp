@@ -67,8 +67,9 @@ const createRequestSlice = (
     get()?.prepareMetaPushAction(lastMeta, updatedMeta);
   },
   changeConfig: (key: string, value: any) => {
-    let lastConfig = get()?.last?.request.config;
-    let updatedConfig = {
+    const state = get();
+    const lastConfig = state.last?.request.config;
+    const updatedConfig = {
       ...(get()?.request.config || {}),
       [key]: value,
     };
@@ -76,7 +77,7 @@ const createRequestSlice = (
     set((s) => ({ ...s, request: { ...s.request, config: updatedConfig } }));
 
     // Prepare push action for config in _root
-    get()?.prepareRootPushAction({ config: lastConfig }, updatedConfig);
+    state.prepareRootPushAction({ config: lastConfig }, updatedConfig);
   },
 });
 

@@ -101,7 +101,7 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
         const requestPanel = prepareUIRequestPanelState(request);
 
         const defaultConnection =
-          request.connections?.find((c) => c.is_default === true) ||
+          request.connections?.find((c) => c.isDefault === true) ||
           DefaultConnectionState;
         const playgroundId = defaultConnection.id;
 

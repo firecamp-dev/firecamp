@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import classnames from 'classnames';
 
 const DirectoryNode = ({

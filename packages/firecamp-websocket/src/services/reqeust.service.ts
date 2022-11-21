@@ -1,15 +1,12 @@
 import {
   IWebSocket,
   ERequestTypes,
-  EKeyValueTableRowType,
   IWebSocketConnection,
 } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
-import { _object, _array, _string } from '@firecamp/utils';
-import { isValidRow } from '@firecamp/utils/dist/table';
-import { isString } from 'lodash';
 import { nanoid as id } from 'nanoid';
+import { _object, _array, _string } from '@firecamp/utils';
 
 import { IUiRequestPanel } from '../store';
 import { DefaultConnectionState, DefaultConfigState } from '../constants';

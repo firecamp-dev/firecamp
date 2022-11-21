@@ -32,7 +32,7 @@ const messageTypes = [
     name: 'Array buffer view',
   },
   {
-    id: 'no_body',
+    id: 'noBody',
     name: 'No body',
   },
 ];

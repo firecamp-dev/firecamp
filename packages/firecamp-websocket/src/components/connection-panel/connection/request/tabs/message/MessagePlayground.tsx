@@ -25,6 +25,7 @@ import { EMessagePayloadTypes } from '../../../../../../types';
 import {
   useWebsocketStore,
   initialPlaygroundMessage,
+  IWebsocketStore,
 } from '../../../../../../store/index';
 import { _object } from '@firecamp/utils';
 
@@ -94,7 +95,7 @@ const EDITOR_COMMANDS = {
 const MessagePlayground = ({
   // message = {},
   // runtimeActiveConnection = '',
-  // collection: prop_collection = {},
+  // collection: propCollection = {},
   messageTypes = [],
   envelopeList = [],
   meta = {},
@@ -103,7 +104,7 @@ const MessagePlayground = ({
 }) => {
   let {
     activePlayground,
-    collection: prop_collection,
+    collection: propCollection,
     playground,
     playgroundTabs,
 
@@ -111,7 +112,7 @@ const MessagePlayground = ({
     setSelectedCollectionMessage,
     sendMessage,
   } = useWebsocketStore(
-    (s) => ({
+    (s: IWebsocketStore) => ({
       activePlayground: s.runtime.activePlayground,
       collection: s.collection,
       playground: s.playgrounds[s.runtime.activePlayground],
@@ -163,23 +164,23 @@ const MessagePlayground = ({
   const collection = []; /*  { collection } = useMemo(
     () =>
       prepare(
-        prop_collection.directories || [],
-        prop_collection.messages || [],
+        propCollection.directories || [],
+        propCollection.messages || [],
         meta
       ) || [],
-    [prop_collection.directories, prop_collection.messages, meta]
+    [propCollection.directories, propCollection.messages, meta]
   ); */
 
   /* let { collection } =
     prepare(
-      prop_collection.directories || [],
-      prop_collection.messages || [],
+      propCollection.directories || [],
+      propCollection.messages || [],
       meta
     ) || []; */
 
   let [activeType, setActiveType] = useState(
     messageTypes.find((t) => t.id === message.meta.type) || {
-      id: EMessagePayloadTypes.no_body,
+      id: EMessagePayloadTypes.noBody,
       name: 'No body',
     }
   );
@@ -204,7 +205,7 @@ const MessagePlayground = ({
   let [selectedEnvelope, setSelectedEnvelope] = useState(envelopeDD[0]);
   let [isSelectedEnvelopeOpen, toggleSelectedEnvelopeOpen] = useState(false);
 
-  let prevType_ref = useRef(EMessagePayloadTypes.no_body);
+  let prevType_ref = useRef(EMessagePayloadTypes.noBody);
 
   let selectedMessageId_Ref = useRef(selectedMessageId);
 
@@ -250,7 +251,7 @@ const MessagePlayground = ({
       items: messageTypes
         ? _compact(
             messageTypes.map((item) => {
-              if (item.id !== EMessagePayloadTypes.no_body) {
+              if (item.id !== EMessagePayloadTypes.noBody) {
                 return Object.assign({}, item, {
                   onClick: () => {
                     // setActiveType(item || "");
@@ -272,11 +273,11 @@ const MessagePlayground = ({
       return type;
     });
     toggleSelectTypeDD(false);
-    if (type.id === EMessagePayloadTypes.no_body) {
+    if (type.id === EMessagePayloadTypes.noBody) {
       _updateMessage(
         Object.assign({}, initialPlaygroundMessage, {
           meta: Object.assign({}, initialPlaygroundMessage.meta, {
-            type: EMessagePayloadTypes.no_body,
+            type: EMessagePayloadTypes.noBody,
           }),
         })
       );
@@ -368,10 +369,10 @@ const MessagePlayground = ({
             value={messageBody || ''}
             controlsConfig={{
               show:
-                activeType.id !== EMessagePayloadTypes.no_body &&
+                activeType.id !== EMessagePayloadTypes.noBody &&
                 activeType.id !== EMessagePayloadTypes.file &&
                 typeof messageBody === 'string',
-              posotion: 'down',
+              position: 'down',
               collapsed: true,
             }}
             onLoad={(editor) => {
@@ -649,7 +650,7 @@ const MessagePlayground = ({
                   className="mr-1 hover:!bg-focus2"
                 />
             {
-              //activeType.id !== EMessagePayloadTypes.no_body &&
+              //activeType.id !== EMessagePayloadTypes.noBody &&
               // activeType.id !== EMessagePayloadTypes.file &&
               !(
                 !playgroundTab?.meta?.isSaved &&
@@ -771,7 +772,7 @@ const MessagePlayground = ({
         </TabHeader>
       </Container.Header>
       <Container.Body className="with-divider !m-2 !mt-0 border border-appBorder">
-        {activeType.id === EMessagePayloadTypes.no_body ? (
+        {activeType.id === EMessagePayloadTypes.noBody ? (
           <Container.Empty>
             <QuickSelection menus={quickSelectionMenus} />
           </Container.Empty>
@@ -829,7 +830,7 @@ const SaveMessage = ({
   onAddDirectory = () => {},
   toggleOpenPopover = () => {},
 }) => {
-  let [messgae_name, set_message_name] = useState('');
+  let [messageName, set_message_name] = useState('');
   // let [is_popover_open, toggle_popover] = useState(false);
   let [focusedNode, setFocusedNode] = useState({
     _meta: { _relative_path: './' },
@@ -853,36 +854,36 @@ const SaveMessage = ({
   };
 
   let _onSubmit = (e) => {
-    // if (!messgae_name.length) return;
+    // if (!messageName.length) return;
     if (e) {
       e.preventDefault();
     }
 
     // console.log(`focusedNode`, focusedNode);
 
-    let msg_payload = { name: messgae_name };
+    let msgPayload = { name: messageName };
     let path = '';
 
     if (focusedNode && focusedNode._meta.id) {
       path =
         focusedNode._meta && focusedNode._meta._relative_path
-          ? focusedNode._meta._relative_path + `/${messgae_name}`
+          ? focusedNode._meta._relative_path + `/${messageName}`
           : '';
-      msg_payload = Object.assign({}, msg_payload, {
+      msgPayload = Object.assign({}, msgPayload, {
         parent_id: focusedNode._meta.id,
         path,
       });
     } else {
       path =
         focusedNode._meta && focusedNode._meta._relative_path
-          ? focusedNode._meta._relative_path + `${messgae_name}`
+          ? focusedNode._meta._relative_path + `${messageName}`
           : '';
-      msg_payload = Object.assign({}, msg_payload, {
+      msgPayload = Object.assign({}, msgPayload, {
         path,
       });
     }
 
-    onSubmit(msg_payload);
+    onSubmit(msgPayload);
     toggleOpenPopover(!isPopoverOpen);
     set_message_name('');
     setFocusedNode({
@@ -969,7 +970,7 @@ const SaveMessage = ({
                 className="fc-input border-alt small"
                 placeholder="Message name"
                 label="Message Title (Optional)"
-                value={messgae_name}
+                value={messageName}
                 onChange={_handleChangeName}
                 onKeyDown={_onKeyDown}
               />

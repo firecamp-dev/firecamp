@@ -1,15 +1,17 @@
 import { IWebSocketConnection, TId, EPushActionType } from '@firecamp/types';
 import equal from 'deep-equal';
+import { IWebsocketStore } from '../websocket.store'
 
 interface IConnectionsSlice {
   addConnection: (connection: IWebSocketConnection) => void;
-  updateConnection: (connection_id: TId, key: string, value: any) => void;
-  removeConnection: (connection_id: TId) => void;
+  updateConnection: (connectionId: TId, key: string, value: any) => void;
+  removeConnection: (connectionId: TId) => void;
 }
 
 const createConnectionSlice = (set, get): IConnectionsSlice => ({
   addConnection: (connection: IWebSocketConnection) => {
-    let updatedConnections = [...get().request.connections, connection];
+    const state = get();
+    const updatedConnections = [...state.request.connections, connection];
     set((s) => ({
       ...s,
       request: {
@@ -17,19 +19,20 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
         connections: updatedConnections,
       },
     }));
-    get()?.prepareRequestConnectionsPushAction(
+    state.prepareRequestConnectionsPushAction(
       connection.id,
       EPushActionType.Insert
     );
   },
-  updateConnection: (connection_id: TId, key: string, value: any) => {
+  updateConnection: (connectionId: TId, key: string, value: any) => {
     //If connection id not provided
-    if (!connection_id || !key) return;
+    if (!connectionId || !key) return;
 
-    let { connections } = get()?.request;
+    const state = get();
+    const { connections } = state.request;
 
     //If connection not found
-    let connectionIndex = connections.findIndex((c) => c.id === connection_id);
+    let connectionIndex = connections.findIndex((c) => c.id === connectionId);
     if (connectionIndex === -1) return;
 
     //Update connection
@@ -60,31 +63,32 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       },
     }));
 
-    get()?.prepareRequestConnectionsPushAction(
-      connection_id,
+    state.prepareRequestConnectionsPushAction(
+      connectionId,
       EPushActionType.Update,
-      get()?.last?.request?.connections[connectionIndex],
+      state.last?.request?.connections[connectionIndex],
       updatedConnection
     );
   },
-  removeConnection: (connection_id: TId) => {
-    let {
+  removeConnection: (connectionId: TId) => {
+    const state = get() as IWebsocketStore;
+    const {
       request: { connections },
       runtime: { _dnp },
-    } = get();
+    } = state;
 
-    let removeConnIndex = connections.findIndex(
-      (conn) => conn.id === connection_id
+    const removeConnIndex = connections.findIndex(
+      (conn) => conn.id === connectionId
     );
     if (removeConnIndex !== -1) {
       let resultConnections = [
           ...connections.slice(0, removeConnIndex),
           ...connections.slice(removeConnIndex + 1),
         ],
-        newActiveConnection = _dnp.runtime_active_connection;
+        newActiveConnection = _dnp.runtimeActiveConnection;
 
-      if (connection_id === _dnp.runtime_active_connection) {
-        newActiveConnection = connections.find((c) => c.is_default);
+      if (connectionId === _dnp.runtimeActiveConnection) {
+        newActiveConnection = connections.find((c) => c.isDefault);
       }
 
       set((s) => ({
@@ -97,12 +101,12 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
           ...s.runtime,
           _dnp: {
             ...s.runtime._dnp,
-            runtime_active_connection: newActiveConnection,
+            runtimeActiveConnection: newActiveConnection,
           },
         },
       }));
-      get()?.prepareRequestConnectionsPushAction(
-        connection_id,
+      state.prepareRequestConnectionsPushAction(
+        connectionId,
         EPushActionType.Delete
       );
     }

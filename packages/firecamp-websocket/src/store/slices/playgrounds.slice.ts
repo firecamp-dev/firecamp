@@ -21,9 +21,9 @@ const initialPlaygroundMessage = {
   },
   _meta: {
     id: '',
-    collection_id: '',
-    request_id: '',
-    request_type: ERequestTypes.WebSocket,
+    collectionId: '',
+    requestId: '',
+    requestType: ERequestTypes.WebSocket,
   },
   path: '',
 };
@@ -71,7 +71,7 @@ interface IPlaygroundSlice {
 
   setSelectedCollectionMessage: (
     connectionId: TId,
-    message_id: TId | string
+    messageId: TId | string
   ) => void;
 
   deletePlayground: (connectionId: TId) => void;
@@ -87,7 +87,7 @@ const createPlaygroundsSlice = (
   playgrounds: initialPlaygrounds,
 
   getPlayground: (connectionId: TId) => {
-    return get()?.playgrounds?.[connectionId];
+    return get().playgrounds?.[connectionId];
   },
   addPlayground: (connectionId: TId, playground: IPlayground) => {
     set((s) => ({
@@ -134,7 +134,7 @@ const createPlaygroundsSlice = (
     connectionId: TId,
     updates: { type: string }
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const existingPlayground = get().playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.logFilters = { type: updates.type };
@@ -150,7 +150,7 @@ const createPlaygroundsSlice = (
   },
 
   setPlaygroundMessage: (connectionId: TId, message: IMessage) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const existingPlayground = get().playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.message = message;
@@ -165,7 +165,8 @@ const createPlaygroundsSlice = (
     }
   },
   changePlaygroundMessage: async (connectionId: TId, updates: object) => {
-    let existingPlayground = await get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = await state.playgrounds?.[connectionId];
 
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = Object.assign({}, existingPlayground);
@@ -184,14 +185,14 @@ const createPlaygroundsSlice = (
             [connectionId]: updatedPlayground,
           },
         }));
-        get()?.changePlaygroundTab(connectionId, {
+        state.changePlaygroundTab(connectionId, {
           meta: {
             isSaved: !!updatedPlayground.message?._meta?.id,
             hasChange: true,
           },
         });
       } else {
-        get()?.changePlaygroundTab(connectionId, {
+        state.changePlaygroundTab(connectionId, {
           meta: {
             isSaved: !!updatedPlayground.message?._meta?.id,
             hasChange: false,
@@ -201,7 +202,7 @@ const createPlaygroundsSlice = (
     }
   },
   resetPlaygroundMessage: (connectionId: TId) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const existingPlayground = get().playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.message = initialPlaygroundMessage;
@@ -218,12 +219,12 @@ const createPlaygroundsSlice = (
 
   setSelectedCollectionMessage: (
     connectionId: TId,
-    message_id: TId | string
+    messageId: TId | string
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const existingPlayground = get().playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
-      updatedPlayground.selectedCollectionMessage = message_id;
+      updatedPlayground.selectedCollectionMessage = messageId;
 
       set((s) => ({
         ...s,
@@ -236,12 +237,12 @@ const createPlaygroundsSlice = (
   },
 
   deletePlayground: (connectionId: TId) => {
-    let playgroundsCount = Object.keys(get()?.playgrounds)?.length;
+    const state = get();
+    const playgroundsCount = Object.keys(state.playgrounds)?.length;
 
     // Do not allow to remove playground if only one exists
     if (playgroundsCount === 1) return;
-
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       set((s) => ({
         ...s,
@@ -251,7 +252,7 @@ const createPlaygroundsSlice = (
   },
 
   deleteExecutor: (connectionId: TId) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    let existingPlayground = get().playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.executor = {};
