@@ -18,7 +18,7 @@ import {
   createRuntimeSlice,
   IRuntime,
   IRuntimeSlice,
-  IPullslice,
+  IPullSlice,
   createPullActionSlice,
   createUiSlice,
   IUi,
@@ -40,7 +40,7 @@ interface IGraphQLStore
     IRuntimeSlice,
     IPushActionSlice,
     ICollectionSlice,
-    IPullslice,
+    IPullSlice,
     IUiSlice {
   last: any;
 
@@ -144,7 +144,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
         // const certificates = [],
         // proxies = [];
         const activePlayground = state.runtime.activePlayground;
-        if(!request?.url?.raw) return;
+        if (!request?.url?.raw) return;
 
         request.body = {
           [ERestBodyTypes.GraphQL]: {
@@ -173,8 +173,8 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
 
       fetchIntrospectionSchema: async () => {
         const state = get();
-        if(state.runtime.isFetchingIntrospection) return;
-        
+        if (state.runtime.isFetchingIntrospection) return;
+
         const query = getIntrospectionQuery();
         const request = state.getRequest();
         // let response;
@@ -201,7 +201,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
           .catch((e: any) => {
             console.log(e, 'e...');
           })
-          .finally(()=> {
+          .finally(() => {
             state.setFetchIntrospectionFlag(false);
           });
       },

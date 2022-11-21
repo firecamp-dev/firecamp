@@ -3,7 +3,7 @@ import { ERequestTypes } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import { ErrorBoundary } from 'react-error-boundary';
 import _cloneDeep from 'lodash/cloneDeep';
-import {Loader} from '@firecamp/ui-kit';
+import { Loader } from '@firecamp/ui-kit';
 
 // import { Rest } from '@firecamp/rest';
 // import { GraphQL } from '@firecamp/graphql';
@@ -15,9 +15,9 @@ const Rest = lazy(() =>
 const GraphQL = lazy(() =>
   import('@firecamp/graphql').then((module) => ({ default: module.GraphQL }))
 );
-// const WSClient = lazy(() =>
-//   import('@firecamp/websocket').then((module) => ({ default: module.WSClient }))
-// );
+const WSClient = lazy(() =>
+  import('@firecamp/websocket').then((module) => ({ default: module.WSClient }))
+);
 // const SocketIOClient = lazy(() =>
 //   import('@firecamp/socket.io').then((module) => ({
 //     default: module.SocketIOClient,
@@ -32,7 +32,7 @@ import { IRequestTabProps } from './types';
 import * as platformContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 import AppService from '../../services/app';
-import { useTabStore } from '../../store/tab'
+import { useTabStore } from '../../store/tab';
 
 const TabBody = ({ tabObj, index, activeTab }) => {
   if (!tabObj || index === -1) {
@@ -96,13 +96,13 @@ const TabBody = ({ tabObj, index, activeTab }) => {
       //     </Suspense>
       //   );
       //   break;
-      // case ERequestTypes.WebSocket:
-      //   return (
-      //     <Suspense fallback={<div>Loading... </div>}>
-      //       {/* <WSClient {...tabProps} /> */}
-      //     </Suspense>
-      //   );
-      //   break;
+      case ERequestTypes.WebSocket:
+        return (
+          <Suspense fallback={<Loader />}>
+            <WSClient {...tabProps} />
+          </Suspense>
+        );
+        break;
       default:
         return <span>Default Request Tab</span>;
     }

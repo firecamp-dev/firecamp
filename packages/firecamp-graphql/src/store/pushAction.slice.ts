@@ -158,21 +158,21 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
     if (!_object.size(pushAction)) return Promise.reject('Empty push action');
 
     let request: IGraphQL = get().request;
-    let updatedReqeust: IPushPayload = {};
+    let updatedRequest: IPushPayload = {};
 
     // console.log({ pushAction, request });
     for (let key in pushAction) {
       if (key === '_root') {
-        updatedReqeust = {
-          ...updatedReqeust,
+        updatedRequest = {
+          ...updatedRequest,
           ..._object.pick(request, pushAction[key]),
         };
       } else if (key !== '_removed' && key in request) {
-        updatedReqeust[key] = _object.pick(request[key], pushAction[key]);
+        updatedRequest[key] = _object.pick(request[key], pushAction[key]);
       }
     }
 
-    let pushPayload: IPushPayload = updatedReqeust;
+    let pushPayload: IPushPayload = updatedRequest;
 
     pushPayload._meta = {
       ...pushPayload._meta,
@@ -190,9 +190,9 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
       workspace_id: '',
       keys: pushAction,
     };
-    // console.log({ updatedReqeust });
+    // console.log({ updatedRequest });
 
-    return Promise.resolve(updatedReqeust);
+    return Promise.resolve(updatedRequest);
   },
 
   prepareRequestUpdatePushAction: (request: Partial<IGraphQL>) => {

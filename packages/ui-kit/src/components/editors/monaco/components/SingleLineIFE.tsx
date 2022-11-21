@@ -46,6 +46,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
   });
 
   let _onMount = (edt: any, monaco: any) => {
+    console.log(edt, 'editor...');
     EditorIdRef = edt._id;
     // @ts-ignore
     if (!window.ife) {
@@ -253,10 +254,12 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
   return (
     <div className="fc-input-wrapper">
       {placeholder && !value ? (
-        <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
+        <div className="absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
         </div>
-      ) :  <></>}
+      ) : (
+        <></>
+      )}
 
       <div
         className={classnames(

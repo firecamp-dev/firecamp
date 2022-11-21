@@ -11,9 +11,9 @@ const TimelineTab: FC<{ id: string; timeline: string }> = ({
       value={timeline || ``}
       language="text"
       path={`${id}/response/timeline`}
-      controlsConfig={{
-        show: true,
-      }}
+      // controlsConfig={{
+      //   show: true,
+      // }}
       onLoad={(editor) => {
         editor.revealLine(1, true, true, function () {});
         editor.setPosition({ column: 1, lineNumber: 10 });

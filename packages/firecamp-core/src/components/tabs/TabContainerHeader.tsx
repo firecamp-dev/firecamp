@@ -61,7 +61,7 @@ const TabHeaderContainer: FC = () => {
                   'active text-tabForeground bg-tabActiveBackground !border-b-transparent':
                     activeTab === 'home',
                 },
-                'w-10 h-9 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
+                'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
               )}
               onClick={() => changeActiveTab('home')}
             >
