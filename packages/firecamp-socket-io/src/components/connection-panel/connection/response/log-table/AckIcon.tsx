@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 const AckIcon = ({ selectedConnection = '', toolTip = '' }) => {
   return (
     <div

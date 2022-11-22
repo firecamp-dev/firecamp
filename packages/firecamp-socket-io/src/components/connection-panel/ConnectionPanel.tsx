@@ -5,12 +5,8 @@ import shallow from 'zustand/shallow';
 
 import ConnectionTab from './connection/ConnectionTab';
 import { ISocketStore, useSocketStore } from '../../store';
-import { SocketContext } from '../Socket.context';
 
 const ConnectionPanel = ({ visiblePanel = '' }) => {
-  let {
-    ctx_connectionsFns: { addConnection },
-  } = useContext(SocketContext);
 
   const {
     activePlayground,
@@ -33,7 +29,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
   const _onAddNewConnection = async (name = '') => {
     if (!name) return;
     try {
-      await addConnection(name);
+      // await addConnection(name);
       toggleConnPopover(false);
     } catch (error) {
       console.log({ error });

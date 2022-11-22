@@ -27,9 +27,9 @@ type TItemExtra_meta = {
   };
 };
 
-type TFodlerItem = Partial<IRequestFolder & TItemExtra_meta>;
+type TFolderItem = Partial<IRequestFolder & TItemExtra_meta>;
 type TItem = Partial<IGraphQLPlayground & TItemExtra_meta>;
-type TCItem = TFodlerItem | TItem;
+type TCItem = TFolderItem | TItem;
 
 export class CollectionTreeDataProvider<T = TTreeItemData>
   implements TreeDataProvider
@@ -38,7 +38,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
 
-  constructor(folders: Array<TFodlerItem>, items: Array<TItem>) {
+  constructor(folders: Array<TFolderItem>, items: Array<TItem>) {
     this.items = [
       ...folders.map((i) => ({
         ...i,
@@ -82,8 +82,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       if (item._meta.is_leaf) return [];
       return this.items
         .filter((i) => {
-          if (item._meta.is_folder)
-            return i._meta.folder_id == item._meta.id;
+          if (item._meta.is_folder) return i._meta.folder_id == item._meta.id;
           return true;
         })
         .map((i) => i._meta.id);
@@ -128,7 +127,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   }
 
   // extra methods of provider
-  public addFolder(item: TFodlerItem) {
+  public addFolder(item: TFolderItem) {
     this.items.push({ ...item, _meta: { ...item._meta, is_folder: true } });
     if (!item._meta.folder_id) {
       this.rootOrders.push(item._meta.id);
@@ -149,10 +148,14 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   }
 
   public updateItem(item: TItem) {
-    this.items = this.items.map((itm: TItem)=> {
-      if(itm._meta.id == item._meta.id) {
+    this.items = this.items.map((itm: TItem) => {
+      if (itm._meta.id == item._meta.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
-        return { ...itm, ...item,  _meta: { ...itm._meta, ...item._meta, is_item: true } }
+        return {
+          ...itm,
+          ...item,
+          _meta: { ...itm._meta, ...item._meta, is_item: true },
+        };
       }
       return itm;
     });

@@ -1,13 +1,13 @@
 import {
   ISocketIOEmitter,
-  IDirectory,
+  IRequestFolder,
   TId,
   EPushActionType,
 } from '@firecamp/types';
 
 interface ICollection {
   emitters?: Array<ISocketIOEmitter>;
-  directories?: Array<IDirectory>;
+  directories?: Array<IRequestFolder>;
 }
 
 interface ICollectionSlice {
@@ -16,7 +16,7 @@ interface ICollectionSlice {
   initialiseConnection: (collection: ICollection) => void; // TODO: rename API
   updateCollection: (
     key: string,
-    value: Array<ISocketIOEmitter> | Array<IDirectory>
+    value: Array<ISocketIOEmitter> | Array<IRequestFolder>
   ) => void;
 
   // emitter
@@ -31,8 +31,8 @@ interface ICollectionSlice {
   // directories
   getDirectory: (
     id: TId
-  ) => { directory: IDirectory; directoryIndex: number } | undefined;
-  addDirectory: (directory: IDirectory) => void;
+  ) => { directory: IRequestFolder; directoryIndex: number } | undefined;
+  addDirectory: (directory: IRequestFolder) => void;
   changeDirectory: (id: TId, updates: { key: string; value: any }) => void;
   deleteDirectory: (id: TId) => void;
 }
@@ -51,7 +51,7 @@ const createCollectionSlice = (
   initialiseConnection: (collection: ICollection) => {},
   updateCollection: (
     key: string,
-    value: Array<ISocketIOEmitter> | Array<IDirectory>
+    value: Array<ISocketIOEmitter> | Array<IRequestFolder>
   ) => {
     set((s) => ({
       ...s,
@@ -199,7 +199,7 @@ const createCollectionSlice = (
 
     // directory index
     let directoryIndex = directories.findIndex(
-      (directory: IDirectory) => directory?._meta?.id === id
+      (directory: IRequestFolder) => directory?._meta?.id === id
     );
 
     // If directory found then update in store
@@ -209,7 +209,7 @@ const createCollectionSlice = (
 
     return undefined;
   },
-  addDirectory: (directory: IDirectory) => {
+  addDirectory: (directory: IRequestFolder) => {
     if (!directory?._meta?.id) return;
 
     set((s) => ({
