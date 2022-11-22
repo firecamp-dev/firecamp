@@ -1,10 +1,42 @@
 import { TId, EPushActionType } from '@firecamp/types';
 
+export enum EEmitterPayloadTypes {
+  text= 'text',
+  json= 'json',
+  file= 'file',
+  arraybuffer= 'arraybuffer',
+  arraybufferview= 'arraybufferview',
+  number= 'number',
+  boolean= 'boolean',
+  noBody= 'noBody',
+};
+
+export enum EConnectionState {
+  Ideal = -1,
+  Connecting = 0,
+  Open = 1,
+  Closing = 2,
+  Closed = 3,
+}
+
+export enum ELogTypes {
+  Send = 'S',
+  Receive = 'R',
+  Ack = 'ACK',
+  System = 'SYS',
+}
+
+export enum ELogColors {
+  Success = 'success',
+  Danger = 'danger',
+  Warning = 'warning',
+}
+
 export enum EPushActionMetaKeys {
   name = 'name',
   description = 'description',
-  leaf_orders = 'leaf_orders',
-  dir_orders = 'dir_orders',
+  iOrders = 'iOrders',
+  fOrders = 'fOrders',
 }
 
 export enum EPushActionUrlKeys {
@@ -15,8 +47,8 @@ export enum EPushActionUrlKeys {
   password = 'password',
   host = 'host',
   hostname = 'hostname',
-  query_params = 'query_params',
-  path_params = 'path_params',
+  queryParams = 'queryParams',
+  pathParams = 'pathParams',
   port = 'port',
   pathname = 'pathname',
   hash = 'hash',
@@ -26,7 +58,7 @@ export enum EPushActionUrlKeys {
 
 export enum EPushActionConfigKeys {
   version = 'version',
-  default_connection = 'default_connection',
+  defaultConnection = 'defaultConnection',
   timeout = 'timeout',
   reconnectionAttempts = 'reconnectionAttempts',
   reconnectionDelay = 'reconnectionDelay',
@@ -41,10 +73,10 @@ export enum EPushAction_rootKeys {
 }
 
 export enum EPushAction_metaKeys {
-  collection_id = 'collection_id',
-  folder_id = 'folder_id',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  collectionId = 'collectionId',
+  folderId = 'folderId',
+  updatedAt = 'updatedAt',
+  updatedBy = 'updatedBy',
 }
 
 export enum ICommitActionConnectionUpdate_root {
@@ -52,10 +84,10 @@ export enum ICommitActionConnectionUpdate_root {
   path = 'path',
   ping = 'ping',
   forceNew = 'forceNew',
-  ping_interval = 'ping_interval',
+  pingInterval = 'pingInterval',
   transports = 'transports',
   headers = 'headers',
-  query_params = 'query_params',
+  queryParams = 'queryParams',
   auth = 'auth',
 }
 
@@ -81,9 +113,9 @@ export enum EPushActionMessageMetaKeys {
 }
 
 export enum EPushActionMessage_metaKeys {
-  parent_id = 'parent_id',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  parentId = 'parentId',
+  updatedAt = 'updatedAt',
+  updatedBy = 'updatedBy',
 }
 
 export interface IPushActionEmitter {
@@ -104,14 +136,14 @@ export enum EPushActionDirectory_RootKeys {
 }
 
 export enum EPushActionDirectoryMetaKeys {
-  dir_orders = 'dir_orders',
-  leaf_orders = 'leaf_orders',
+  fOrders = 'fOrders',
+  iOrders = 'iOrders',
 }
 
 export enum EPushActionDirectory_metaKeys {
-  parent_id = 'parent_id',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  parentId = 'parentId',
+  updatedAt = 'updatedAt',
+  updatedBy = 'updatedBy',
 }
 
 export interface IPushActionDirectory {

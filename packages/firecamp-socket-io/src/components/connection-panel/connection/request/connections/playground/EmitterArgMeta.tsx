@@ -1,10 +1,8 @@
-//@ts-nocheck
-
 import { useState } from 'react';
-import { Container, TabHeader, Dropdown, Button, EButtonColor, EButtonSize } from '@firecamp/ui-kit';
-import { EMITTER_PAYLOAD_TYPES } from '../../../../../../constants';
+import { Container, TabHeader, Dropdown, Button } from '@firecamp/ui-kit';
+import { EEmitterPayloadTypes } from '../../../../../../types';
 const EmitterArgMeta = ({
-  argTypes = [],
+  ArgTypes = [],
   activeArgType = {},
   envelopeList = [],
   selectedEnvelope = {},
@@ -34,13 +32,13 @@ const EmitterArgMeta = ({
             />
           </Dropdown.Handler>
           <Dropdown.Options
-            options={argTypes || []}
+            options={ArgTypes || []}
             onSelect={onSelectArgType}
           />
         </Dropdown>
         {activeArgType &&
-          (activeArgType.id === EMITTER_PAYLOAD_TYPES.arraybuffer ||
-            activeArgType.id === EMITTER_PAYLOAD_TYPES.arraybufferview) ? (
+          (activeArgType.id === EEmitterPayloadTypes.arraybuffer ||
+            activeArgType.id === EEmitterPayloadTypes.arraybufferview) ? (
           <Dropdown
             isOpen={isSelectedEnvelopeOpen}
             selected={selectedEnvelope.name || ''}

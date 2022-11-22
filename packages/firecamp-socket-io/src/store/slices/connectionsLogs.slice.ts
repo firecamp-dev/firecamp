@@ -1,17 +1,17 @@
 import { TId, ISocketIOEmitter, ERequestTypes } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
 
-import { INIT_PLAYGROUND } from '../../constants/StatePayloads';
-import { ELogColors, ELogTypes } from '../../constants/index';
+import { InitPayload } from '../../constants';
+import { ELogColors, ELogTypes } from '../../types';
 
 const emptyLog = {
   title: '',
   message: {
     name: '',
-    body: INIT_PLAYGROUND,
+    body: InitPayload,
     _meta: {
       id: '',
-      collection_id: '',
+      collectionId: '',
       request_id: '',
       request_type: ERequestTypes.SocketIO,
     },
@@ -31,28 +31,28 @@ interface IConnectionsLogs {
 }
 
 interface IConnectionsLogsSlice extends IConnectionsLogs {
-  addConnectionLog: (connection_id: TId, log: ILog) => void;
-  addErrorLog: (connection_id: TId, message: string) => void;
+  addConnectionLog: (connectionId: TId, log: ILog) => void;
+  addErrorLog: (connectionId: TId, message: string) => void;
 
-  clearAllConnectionLogs: (connection_id: TId) => void;
+  clearAllConnectionLogs: (connectionId: TId) => void;
 }
 
 const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
   connectionsLogs: {},
 
-  addConnectionLog: (connection_id: TId, log: ILog) => {
+  addConnectionLog: (connectionId: TId, log: ILog) => {
     // console.log({ log });
 
     let connectionsLogs = get()?.connectionsLogs;
-    if (connection_id in connectionsLogs) {
-      let logs = connectionsLogs[connection_id];
+    if (connectionId in connectionsLogs) {
+      let logs = connectionsLogs[connectionId];
       log = { ...emptyLog, ...log };
 
       set((s) => ({
         ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
-          [connection_id]: [...logs, log],
+          [connectionId]: [...logs, log],
         },
       }));
     } else {
@@ -60,12 +60,12 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
         ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
-          [connection_id]: [log],
+          [connectionId]: [log],
         },
       }));
     }
   },
-  addErrorLog: (connection_id: TId, message: string) => {
+  addErrorLog: (connectionId: TId, message: string) => {
     let log = {
       ...emptyLog,
       title: message || '',
@@ -75,16 +75,16 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
         color: ELogColors.Danger,
       },
     };
-    get()?.addConnectionLog(connection_id, log);
+    get()?.addConnectionLog(connectionId, log);
   },
-  clearAllConnectionLogs: (connection_id: TId) => {
+  clearAllConnectionLogs: (connectionId: TId) => {
     let connectionsLogs = get()?.connectionsLogs;
-    if (connection_id in connectionsLogs) {
+    if (connectionId in connectionsLogs) {
       set((s) => ({
         ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
-          [connection_id]: [],
+          [connectionId]: [],
         },
       }));
     }

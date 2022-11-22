@@ -343,7 +343,7 @@ const MessageCollectionHeader = ({
     }
     if (!directoryName.length) return;
 
-    onAddDirectory({ name: directoryName, parent_id: parentId });
+    onAddDirectory({ name: directoryName, parentId });
     // toggle_popover(!showAddDirCmp);
     setDirectoryName('');
   };

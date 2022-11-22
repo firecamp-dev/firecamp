@@ -1,4 +1,4 @@
-import { useRef, useState, useContext, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import './LogPreview.sass';
 import classnames from 'classnames';
 import {
@@ -9,18 +9,16 @@ import {
   Dropdown,
   Resizable,
   Button,
-  EButtonSize,
   ReactTable,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
+import { _object } from '@firecamp/utils';
 
 import LogPreview from './LogPreview';
 import AckIcon from './AckIcon';
-import { SocketContext } from '../../Socket.context';
 import { useSocketStore } from '../../../../../store';
 
-import { ELogTypes } from '../../../../../constants';
-import { _object } from '@firecamp/utils';
+import { ELogTypes } from '../../../../../types';
 
 const logTypes = {
   system: ELogTypes.System,
@@ -345,5 +343,3 @@ const LogTable = ({
 };
 
 export default LogTable;
-
-const Filters = () => {};

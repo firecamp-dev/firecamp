@@ -14,7 +14,7 @@ const INPUT_TYPES = {
  "namespace": "",
  "path": "",
  "ping": false,
- "ping_interval": 3000,
+ "pingInterval": 3000,
  "transports": {
           "websocket": false,
           "polling": true
@@ -50,7 +50,7 @@ let connectionInputs = [
     placeholder: ''
   },
   {
-    name: 'ping_interval',
+    name: 'pingInterval',
     type: INPUT_TYPES.number,
     labelFor: 'Ping interval',
     label: 'Ping interval',
@@ -100,7 +100,7 @@ const ConfigTab = ({
       case INPUT_TYPES.text:
       case INPUT_TYPES.number:
         let isDisabled = false;
-        if (name === 'ping_interval') {
+        if (name === 'pingInterval') {
           isDisabled = !connection['ping'];
         }
         // console.log(`name`, name, type);
@@ -135,7 +135,7 @@ const ConfigTab = ({
             label={label}
             className="fc-input-wrapper"
             onToggleCheck={_ => _onChange(name, !connection[name])}
-            disabled={name === 'ping_interval' && connection['ping'] !== true}
+            disabled={name === 'pingInterval' && connection['ping'] !== true}
           />
         );
         break;

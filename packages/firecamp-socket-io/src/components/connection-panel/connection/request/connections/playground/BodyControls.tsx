@@ -9,7 +9,7 @@ import {
   EPopoverPosition,
   StatusBar,
 } from '@firecamp/ui-kit';
-import { EMITTER_PAYLOAD_TYPES } from '../../../../../../constants';
+import { EEmitterPayloadTypes } from '../../../../../../types';
 
 const BodyControls = ({
   emitterName = '',
@@ -108,10 +108,10 @@ const BodyControls = ({
             emitterName.trim() &&
             emitterName.trim().length
           ) &&
-            activeType.id !== EMITTER_PAYLOAD_TYPES.file &&
+            activeType.id !== EEmitterPayloadTypes.file &&
             playgroundTabMeta.hasChange &&
-            !playgroundTabMeta.is_saved) ||
-          (playgroundTabMeta.hasChange && playgroundTabMeta.is_saved) ===
+            !playgroundTabMeta.isSaved) ||
+          (playgroundTabMeta.hasChange && playgroundTabMeta.isSaved) ===
             true ? (
             <SaveEmitter
               emitterName={emitterName}
@@ -232,7 +232,7 @@ const SaveEmitter = ({
           ? focusedNode._meta._relative_path + `/${emitterName}`
           : '';
       emitterPayload = Object.assign({}, emitterPayload, {
-        parent_id: focusedNode._meta.id,
+        parentId: focusedNode._meta.id,
         path,
       });
     } else {

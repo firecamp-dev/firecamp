@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Checkbox, Tabs } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
-import { EMITTER_PAYLOAD_TYPES } from '../../../../../../constants';
+import { EEmitterPayloadTypes } from '../../../../../../types';
 
 const EmitterArgTabs = ({
   ack = false,
@@ -48,7 +48,7 @@ const EmitterArgTabs = ({
         show:
           tabs &&
           tabs.length < 5 &&
-          args[activeArgIndex]?.meta?.type !== EMITTER_PAYLOAD_TYPES.no_body,
+          args[activeArgIndex]?.meta?.type !== EEmitterPayloadTypes.noBody,
         onClick: onAddArg,
       }}
       tabBorderMeta={{

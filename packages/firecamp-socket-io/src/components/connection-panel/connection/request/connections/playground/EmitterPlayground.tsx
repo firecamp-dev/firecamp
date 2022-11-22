@@ -28,14 +28,14 @@ import Body from './Body';
 
 import { SocketContext } from '../../../../../Socket.context';
 
-import { EMITTER_PAYLOAD_TYPES } from '../../../../../../constants';
+import { EEmitterPayloadTypes } from '../../../../../../types';
 import {
-  INIT_ARG,
-  EDITOR_COMMANDS,
-  argTypes,
-  envelopeTypes,
-  INIT_PLAYGROUND,
-} from '../../../../../../constants/StatePayloads';
+  InitArg,
+  EditorCommands,
+  ArgTypes,
+  EnvelopeTypes,
+  InitPayload,
+} from '../../../../../../constants';
 import { ISocketStore, useSocketStore } from '../../../../../../store';
 
 const EmitterPlayground = ({ tabData = {} }) => {
@@ -71,7 +71,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
   );
 
   let playgroundEmitter = useMemo(
-    () => playground?.emitter || INIT_PLAYGROUND,
+    () => playground?.emitter || InitPayload,
     [playground, activePlayground]
   );
 
@@ -160,7 +160,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
               ))))))
   ) {
     playgroundEmitter.body[arg_ref.current] = _merge(
-      _cloneDeep(INIT_ARG),
+      _cloneDeep(InitArg),
       _cloneDeep(playgroundEmitter.body[arg_ref.current])
     );
 
@@ -176,15 +176,15 @@ const EmitterPlayground = ({ tabData = {} }) => {
 
   let [activeArgType, setActiveArgType] = useState(
     () =>
-      argTypes.find(
+      ArgTypes.find(
         (t) => t.id === playgroundEmitter.body[arg_ref.current].meta.type
       ) || {
-        id: EMITTER_PAYLOAD_TYPES.no_body,
+        id: EEmitterPayloadTypes.noBody,
         name: 'No body',
       }
   );
 
-  let [prevType, setPrevType] = useState(EMITTER_PAYLOAD_TYPES.no_body);
+  let [prevType, setPrevType] = useState(EEmitterPayloadTypes.no_body);
   let [isSelectTypeDDOpen, toggleSelectArgTypeDD] = useState(false);
   let [emitterBody, setEmitterBody] = useState('');
   // let [isMessageDirty, toggleMessageDirty] = useState(false);
@@ -193,7 +193,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
     isOpenPopup: false,
     isMessageDirty: false,
   });
-  let envelopeList = envelopeTypes.map((e) => {
+  let envelopeList = EnvelopeTypes.map((e) => {
     return {
       id: e,
       name: e,
@@ -209,15 +209,15 @@ const EmitterPlayground = ({ tabData = {} }) => {
       playgroundEmitter.body[arg_ref.current].meta.type !== activeArgType.id
     ) {
       setActiveArgType(
-        argTypes.find(
+        ArgTypes.find(
           (t) => t.id === playgroundEmitter.body[arg_ref.current].meta.type
         )
       );
     }
 
     if (
-      activeArgType.id !== EMITTER_PAYLOAD_TYPES.file &&
-      prevType.id === EMITTER_PAYLOAD_TYPES.file &&
+      activeArgType.id !== EEmitterPayloadTypes.file &&
+      prevType.id === EEmitterPayloadTypes.file &&
       playgroundEmitter.body[arg_ref.current].payload !== ''
     ) {
       _playgroundEmitterFns.updateBody({ payload: '' });
@@ -238,7 +238,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
     if (!equal(emitterBody, playgroundEmitter.body[arg_ref.current].payload)) {
       setEmitterBody(playgroundEmitter.body[arg_ref.current].payload);
     } else if (
-      activeArgType.id === EMITTER_PAYLOAD_TYPES.file &&
+      activeArgType.id === EEmitterPayloadTypes.file &&
       emitterBody !== playgroundEmitter.body[arg_ref.current].payload
     ) {
       setEmitterBody(playgroundEmitter.body[arg_ref.current].payload);
@@ -251,7 +251,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
       activeArgType.id
     ) {
       setActiveArgType(
-        argTypes.find(
+        ArgTypes.find(
           (t) => t.id === playgroundEmitter.body[arg_ref.current].meta.type
         )
       );
@@ -273,10 +273,10 @@ const EmitterPlayground = ({ tabData = {} }) => {
     {},
     {
       title: 'Quick Payload',
-      items: argTypes
+      items: ArgTypes
         ? _compact(
-            argTypes.map((item) => {
-              if (item.id !== EMITTER_PAYLOAD_TYPES.no_body) {
+            ArgTypes.map((item) => {
+              if (item.id !== EEmitterPayloadTypes.no_body) {
                 return Object.assign({}, item, {
                   onClick: () => {
                     // setActiveArgType(item || "");
@@ -287,7 +287,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
             })
           )
         : [],
-      active_item: argTypes && activeArgType ? activeArgType.id : '',
+      active_item: ArgTypes && activeArgType ? activeArgType.id : '',
     }
   );
   /**
@@ -302,7 +302,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
      * on confirm, set argument type as no_body, close dropdown and update emitter
      */
     let _onConfirm = () => {
-      setActiveArgType(EMITTER_PAYLOAD_TYPES.no_body);
+      setActiveArgType(EEmitterPayloadTypes.no_body);
       toggleSelectArgTypeDD(false);
       _playgroundEmitterFns.updateBody(
         {
@@ -310,7 +310,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
           path: '',
           meta: {
             envelope: '',
-            type: EMITTER_PAYLOAD_TYPES.no_body,
+            type: EEmitterPayloadTypes.no_body,
           },
         },
         false,
@@ -366,7 +366,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
   let _onSelectArgType = (type) => {
     if (!type || !type.id || activeArgType.id === type.id) return;
 
-    if (type.id === EMITTER_PAYLOAD_TYPES.no_body) {
+    if (type.id === EEmitterPayloadTypes.noBody) {
       _onSelectTypeNoBody();
       return;
     } else {
@@ -375,8 +375,8 @@ const EmitterPlayground = ({ tabData = {} }) => {
       if (
         playgroundEmitter &&
         // playgroundEmitter.body[arg_ref.current].meta.envelope === "" &&
-        (type.id === EMITTER_PAYLOAD_TYPES.arraybufferview ||
-          type.id === EMITTER_PAYLOAD_TYPES.arraybuffer)
+        (type.id === EEmitterPayloadTypes.arraybufferview ||
+          type.id === EEmitterPayloadTypes.arraybuffer)
       ) {
         if (playgroundEmitter.body[arg_ref.current].meta.envelope !== '') {
           _playgroundEmitterFns.updateBody({
@@ -390,12 +390,12 @@ const EmitterPlayground = ({ tabData = {} }) => {
           });
         }
       } else if (
-        type.id !== EMITTER_PAYLOAD_TYPES.arraybufferview &&
-        type.id !== EMITTER_PAYLOAD_TYPES.arraybuffer
+        type.id !== EEmitterPayloadTypes.arraybufferview &&
+        type.id !== EEmitterPayloadTypes.arraybuffer
       ) {
         if (
-          type.id !== EMITTER_PAYLOAD_TYPES.file &&
-          activeArgType.id === EMITTER_PAYLOAD_TYPES.file &&
+          type.id !== EEmitterPayloadTypes.file &&
+          activeArgType.id === EEmitterPayloadTypes.file &&
           playgroundEmitter.body[arg_ref.current].payload !== ''
         ) {
           _playgroundEmitterFns.updateBody({
@@ -500,7 +500,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         playgroundEmitter.body &&
         playgroundEmitter.body.length === 5 &&
         playgroundEmitter.body[arg_ref.current]?.meta?.type ===
-          EMITTER_PAYLOAD_TYPES.no_body
+          EEmitterPayloadTypes.no_body
       ) {
         return;
       }
@@ -510,18 +510,18 @@ const EmitterPlayground = ({ tabData = {} }) => {
        * Set argument envelope type by default if type is arraybuffer or arraybufferview
        */
       let newArg = {
-        ...INIT_ARG,
+        ...InitArg,
         meta: {
-          ...INIT_ARG.meta,
+          ...InitArg.meta,
           type:
             playgroundEmitter.body[arg_ref.current]?.meta?.type ||
-            EMITTER_PAYLOAD_TYPES.no_body,
+            EEmitterPayloadTypes.no_body,
           envelope:
             playgroundEmitter.body[arg_ref.current]?.meta?.type ===
-              EMITTER_PAYLOAD_TYPES.arraybuffer ||
+              EEmitterPayloadTypes.arraybuffer ||
             playgroundEmitter.body[arg_ref.current]?.meta?.type ===
-              EMITTER_PAYLOAD_TYPES.arraybufferview
-              ? envelopeTypes[0]
+              EEmitterPayloadTypes.arraybufferview
+              ? EnvelopeTypes[0]
               : '',
         },
       };
@@ -595,7 +595,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
   let _addNewEmitter = async () => {
     await _playgroundEmitterFns.setIndex(0);
     addNewEmitter();
-    setActiveArgType(argTypes[0]);
+    setActiveArgType(ArgTypes[0]);
     setSelectedCollectionEmitter(activePlayground, '');
 
     activeEmitter_Ref.current = '';
@@ -658,7 +658,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
           )
         }
         addNewEmitter={_addNewEmitter}
-        editorCommands={EDITOR_COMMANDS}
+        editorCommands={EditorCommands}
       />
       <EmitterName
         name={playgroundEmitter.name || ''}
@@ -682,7 +682,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
       </div>
       <EmitterArgMeta
         activeArgIndex={arg_ref.current}
-        argTypes={argTypes}
+        ArgTypes={ArgTypes}
         activeArgType={activeArgType}
         envelopeList={envelopeList}
         selectedEnvelope={selectedEnvelope}
@@ -711,7 +711,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         activeEmitter={selectedCollectionEmitter}
         saveButtonHandler={saveButtonHandler}
         showEmitButton={
-          true /* activeArgType.id !== EMITTER_PAYLOAD_TYPES.no_body */
+          true /* activeArgType.id !== EEmitterPayloadTypes.no_body */
         }
         onEmit={_onEmit}
         setToOriginal={_setToOriginal}

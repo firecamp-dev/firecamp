@@ -6,7 +6,7 @@ import {
   QuickSelection,
   Checkbox
 } from '@firecamp/ui-kit';
-import { EMITTER_PAYLOAD_TYPES } from '../../../../../../constants';
+import { EEmitterPayloadTypes } from '../../../../../../types';
 
 const Body = ({
   emitterName = '',
@@ -25,17 +25,17 @@ const Body = ({
     if (!type || !type.id) return <span />;
 
     if (
-      type.id === EMITTER_PAYLOAD_TYPES.boolean &&
+      type.id === EEmitterPayloadTypes.boolean &&
       typeof playgroundBody !== 'boolean'
     ) {
       playgroundBody = true;
     }
 
     switch (type.id) {
-      case EMITTER_PAYLOAD_TYPES.text:
-      case EMITTER_PAYLOAD_TYPES.json:
-      case EMITTER_PAYLOAD_TYPES.arraybuffer:
-      case EMITTER_PAYLOAD_TYPES.arraybufferview:
+      case EEmitterPayloadTypes.text:
+      case EEmitterPayloadTypes.json:
+      case EEmitterPayloadTypes.arraybuffer:
+      case EEmitterPayloadTypes.arraybufferview:
         let value = !isNaN(playgroundBody)
           ? playgroundBody.toString()
           : playgroundBody;
@@ -47,7 +47,7 @@ const Body = ({
                 type.id
               }-${activeArgIndex}-${playgroundBody.length || 0}`}*/
               language={
-                type.id === EMITTER_PAYLOAD_TYPES.json ? 'json' : 'ife-text'
+                type.id === EEmitterPayloadTypes.json ? 'json' : 'ife-text'
               }
               value={value || ''}
               onChange={({ target: { value } }) => {
@@ -58,9 +58,9 @@ const Body = ({
               }}
               // controlsConfig={{
               //   show:
-              //     activeArgType.id !== EMITTER_PAYLOAD_TYPES.no_body &&
+              //     activeArgType.id !== EEmitterPayloadTypes.no_body &&
               //     typeof playgroundBody === 'string' &&
-              //     activeArgType.id !== EMITTER_PAYLOAD_TYPES.file,
+              //     activeArgType.id !== EEmitterPayloadTypes.file,
               //   position: 'vertical'
               // }}
               monacoOptions={{
@@ -80,7 +80,7 @@ const Body = ({
         }
 
         break;
-      case EMITTER_PAYLOAD_TYPES.file:
+      case EEmitterPayloadTypes.file:
         let file_name = '';
         // console.log(`emitterBody`, emitterBody);
         if (emitterBody && typeof emitterBody !== 'string') {
@@ -97,7 +97,7 @@ const Body = ({
           </div>
         );
         break;
-      case EMITTER_PAYLOAD_TYPES.boolean:
+      case EEmitterPayloadTypes.boolean:
         return (
           <div className="flex p-2">
             <Checkbox
@@ -113,7 +113,7 @@ const Body = ({
           </div>
         );
         break;
-      case EMITTER_PAYLOAD_TYPES.number:
+      case EEmitterPayloadTypes.number:
         return (
           <Input
             autoFocus={true}
@@ -141,7 +141,7 @@ const Body = ({
 
   return (
     <Container.Body className="with-divider">
-      {activeArgType.id === EMITTER_PAYLOAD_TYPES.no_body ? (
+      {activeArgType.id === EEmitterPayloadTypes.noBody ? (
         <Container.Empty>
           <QuickSelection menus={quickSelectionMenus} />
         </Container.Empty>

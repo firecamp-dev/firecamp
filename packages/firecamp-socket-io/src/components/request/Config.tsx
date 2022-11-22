@@ -13,7 +13,7 @@ const INPUT_TYPES = {
 
 let config_inputs = [
   /* {
-    name: "default_connection",
+    name: "defaultConnection",
     type: INPUT_TYPES.dropdown,
     labelFor: "Default connection",
     label: "Default connection"

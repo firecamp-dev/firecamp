@@ -1,4 +1,4 @@
-import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
+import { IUrl, IQueryParam } from '@firecamp/types';
 
 // TODO: check for path params
 
@@ -22,7 +22,7 @@ const createUrlSlice = (set, get): IUrlSlice => ({
       ...s,
       request: {
         ...s.request,
-        url: { ...s.request.url, query_params: queryParams },
+        url: { ...s.request.url, queryParams },
       },
 
       // manage ui state
@@ -37,7 +37,7 @@ const createUrlSlice = (set, get): IUrlSlice => ({
 
     // Prepare push action for url
     get()?.prepareUrlPushAction(get()?.last?.request.url, {
-      query_params: queryParams,
+      queryParams: queryParams,
     });
   },
 });

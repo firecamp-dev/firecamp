@@ -1,7 +1,7 @@
 import { Button } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 
-import { EConnectionState } from '../../../constants';
+import { EConnectionState } from '../../../types';
 import { ISocketStore, useSocketStore } from '../../../store';
 
 const ConnectionButton = () => {

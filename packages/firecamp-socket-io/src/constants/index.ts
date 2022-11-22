@@ -1,45 +1,12 @@
-export const STRINGS = {
-  RAW_URL: 'https://socketio-tweet-stream.herokuapp.com',
-  URL: {
-    AUTH: 'auth',
-    HASH: 'hash',
-    HOST: 'host',
-    HOSTNAME: 'hostname',
-    HREF: 'href',
-    ORIGIN: 'origin',
-    PASSWORD: 'password',
-    PATHNAME: 'pathname',
-    PATH: 'path', //considered pathname as path in new version of URL
-    PORT: 'port',
-    PROTOCOL: 'protocol',
-    QUERY_PARAMS: 'query_params', //URL object is having query as key but in FC there will be query_params key to maintain URL structure
-    SLASHES: 'slashes',
-    USERNAME: 'username',
-    VARIABLES: 'variables',
-  },
-};
-export enum EConnectionState {
-  Ideal = -1,
-  Connecting = 0,
-  Open = 1,
-  Closing = 2,
-  Closed = 3,
-}
-
-export enum ELogTypes {
-  Send = 'S',
-  Receive = 'R',
-  Ack = 'ACK',
-  System = 'SYS',
-}
-
-export enum ELogColors {
-  Success = 'success',
-  Danger = 'danger',
-  Warning = 'warning',
-}
-
-//--------------------------------CONSTS---------------------------------
+import {
+  EEnvelope,
+  EArgumentBodyType,
+  ERequestTypes,
+  ISocketIOConnection,
+  ISocketIOConfig,
+  ESocketIOClientVersion,
+} from '@firecamp/types';
+import { EConnectionState } from '../types'
 
 export const LOG_CUSTOM_EVENTS = {
   LISTEN_ON: 'L_ON',
@@ -60,102 +27,11 @@ export const SYSTEM_LOGS = {
   listenOff: `you have listen off `,
 };
 
-export const ACTIONS = {
-  UPDATE: {
-    REQUEST: 'REQUEST',
-    RAW_URL: 'RAW_URL',
-    URL: 'URL',
-    EMITTER: 'EMITTER',
-    REQUEST_CONNECTIONS: 'REQUEST_CONNECTIONS',
-    RESPONSE_CONNECTIONS: 'RESPONSE_CONNECTIONS',
-    ACTIVE_CONNECTION: 'ACTIVE_CONNECTION',
-    REQUEST_CONNECTION: 'UPDATE_REQUEST_CONNECTION',
-    RESPONSE_CONNECTION: 'UPDATE_RESPONSE_CONNECTION',
-    RESPONSE_MESSAGES_ALIGNMENT: 'RESPONSE_MESSAGES_ALIGNMENT',
-    CONFIG: 'CONFIG',
-    META: 'META',
-    DNS: 'DNS',
-    COLLECTION: 'COLLECTION',
-    COLLECTION_EMITTER: 'UPDATE_COLLECTION_EMITTER',
-    COLLECTION_DIRECTORY: 'UPDATE_COLLECTION_DIRECTORY',
-    ACTIVE_PRJ_ENV_SNIPT: 'ACTIVE_PRJ_ENV_SNIPT',
-    ACTIVE_GBL_ENV_SNIPT: 'ACTIVE_GBL_ENV_SNIPT',
-  },
-  ADD: {
-    NEW_CONNECTION: 'NEW_CONNECTION',
-    REQUEST_CONNECTION: 'ADD_REQUEST_CONNECTION',
-    RESPONSE_CONNECTION: 'ADD_RESPONSE_CONNECTION',
-    COLLECTION_EMITTER: 'ADD_COLLECTION_EMITTER',
-    COLLECTION_DIRECTORY: 'ADD_COLLECTION_DIRECTORY',
-  },
-  DELETE: {
-    REQUEST_CONNECTION: 'DELETE_REQUEST_CONNECTION',
-    COLLECTION_EMITTER: 'DELETE_COLLECTION_EMITTER',
-    COLLECTION_DIRECTORY: 'DELETE_COLLECTION_DIRECTORY',
-  },
-  SET: {
-    STATE: 'STATE',
-    EMITTER: 'SET_EMITTER',
-    COLLECTION_EMITTER: 'SET_COLLECTION_EMITTER',
-    GLOBAL_LISTENERS: 'GLOBAL_LISTENERS',
-    CONNECTION_LISTENERS: 'CONNECTION_LISTENERS',
-    ON_CONNECT_LISTENERS: 'ON_CONNECT_LISTENERS',
-  },
-};
-export const ON_CHANGE_ACTIONS = {
-  URL: 'URL',
-  RAW_URL: 'RAW_URL',
-  EMITTER: 'EMITTER',
-  REQUEST_CONNECTIONS: 'REQUEST_CONNECTIONS',
-  ACTIVE_CONNECTION: 'ACTIVE_CONNECTION',
-  REQUEST_CONNECTION: 'REQUEST_CONNECTION',
-  ADD_REQUEST_CONNECTION: 'ADD_REQUEST_CONNECTION',
-  REMOVE_REQUEST_CONNECTION: 'REMOVE_REQUEST_CONNECTION',
-  CONFIG: 'CONFIG',
-  META: 'META',
-  COLLECTION: 'COLLECTION',
-  DNS: 'DNS',
-  ADD_COLLECTION_EMITTER: 'ADD_COLLECTION_EMITTER',
-  UPDATE_COLLECTION_EMITTER: 'UPDATE_COLLECTION_EMITTER',
-  REMOVE_COLLECTION_EMITTER: 'REMOVE_COLLECTION_EMITTER',
-  SET_COLLECTION_EMITTER: 'SET_COLLECTION_EMITTER',
-  ADD_COLLECTION_DIRECTORY: 'ADD_COLLECTION_DIRECTORY',
-  UPDATE_COLLECTION_DIRECTORY: 'UPDATE_COLLECTION_DIRECTORY',
-  REMOVE_COLLECTION_DIRECTORY: 'REMOVE_COLLECTION_DIRECTORY',
-  GLOBAL_LISTENERS: 'GLOBAL_LISTENERS',
-  CONNECTION_LISTENERS: 'CONNECTION_LISTENERS',
-  ON_CONNECT_LISTENERS: 'ON_CONNECT_LISTENERS',
-};
-export const KEYS_ON_SAVE_REQUEST = {
-  REQUEST: [
-    'url',
-    'config',
-    'scripts',
-    'connections',
-    'active_connection',
-    'meta',
-    '_dnp',
-    'listeners',
-    '_meta',
-  ],
-  KEYS: ['emitter_collection'],
-};
-export const EMITTER_PAYLOAD_TYPES = {
-  text: 'text',
-  json: 'json',
-  file: 'file',
-  arraybuffer: 'arraybuffer',
-  arraybufferview: 'arraybufferview',
-  number: 'number',
-  boolean: 'boolean',
-  no_body: 'no_body',
-};
 export const PANEL = {
   REQUEST: 'REQUEST',
   RESPONSE: 'RESPONSE',
   ALL: 'ALL',
-};
-export const DEFAULT_HEADERS = [];
+}
 
 export const CustomLogTypes = {
   LISTEN_ON: 'L_ON',
@@ -182,4 +58,192 @@ export const RESERVED_EMITTER_EVENTS = [
   'disconnect',
   'newListener',
   'removeListener',
+];
+
+export const RequestConnection: ISocketIOConnection = {
+  id: '',
+  name: 'Connection 1',
+  forceNew: false,
+  namespace: '',
+  path: '',
+  ping: false,
+  pingInterval: 3000,
+  transports: {
+    websocket: false,
+    polling: true,
+  },
+  headers: [],
+  queryParams: [],
+  auth: [],
+  //@ts-ignore
+  listeners: {},
+};
+export const DefaultRequestConfig: ISocketIOConfig = {
+  version: ESocketIOClientVersion.v4,
+  onConnectListeners: [],
+};
+export const ResponseCollection = {
+  id: '',
+  name: '',
+  meta: {
+    state: EConnectionState.Ideal,
+    socketId: '',
+  },
+  listeners: {},
+  logFilters: {
+    type: '',
+    event: '',
+  },
+};
+export const InitPayload = {
+  name: '',
+  path: '',
+  body: [
+    {
+      meta: {
+        type: EArgumentBodyType.Text,
+        envelope: EEnvelope.Int8Array,
+      },
+      body: '',
+    },
+  ],
+  __meta: {
+    label: '',
+    interval: '',
+    ack: false,
+  },
+  __ref: {
+    id: '',
+    collectionId: '',
+    requestId: '',
+    requestType: ERequestTypes.SocketIO,
+  },
+};
+export const InitArg = {
+  meta: {
+    type: EArgumentBodyType.Text,
+    envelope: EEnvelope.Int8Array,
+  },
+  body: '',
+};
+export const InitLog = {
+  title: '',
+  message: '',
+  meta: {
+    id: '',
+    event: '',
+    timestamp: '',
+    type: '',
+    color: '',
+    ackRef: '',
+  },
+};
+export const EditorCommands = {
+  SAVE: {
+    command: 'SAVE',
+    name: 'Save',
+    key: {
+      win: 'Ctrl-S',
+      mac: 'Command-S',
+    },
+    view: {
+      win: `Ctrl + S`,
+      mac: `⌘ + S`,
+    },
+  },
+  SEND: {
+    command: 'SEND',
+    name: 'Send',
+    key: {
+      win: 'Ctrl-Enter',
+      mac: 'Command-Enter',
+    },
+    view: {
+      win: `Ctrl + Enter`,
+      mac: `⌘ + Enter`,
+    },
+  },
+  SEND_AND_SAVE: {
+    command: 'SEND_AND_SAVE',
+    name: 'Send and save',
+    key: {
+      win: 'Ctrl-Shift-Enter',
+      mac: 'Command-Shift-Enter',
+    },
+    view: {
+      win: `Ctrl + Shift + Enter`,
+      mac: `⌘ + Shift + Enter`,
+    },
+  },
+  SET_TO_ORIGINAL: {
+    command: 'SET_TO_ORIGINAL',
+    name: 'Set to original',
+    key: {
+      win: 'Ctrl-O',
+      mac: 'Command-O',
+    },
+    view: {
+      win: `Ctrl + O`,
+      mac: `⌘ + O`,
+    },
+  },
+  CLEAR_PLAYGROUND: {
+    command: 'CLEAR_PLAYGROUND',
+    name: 'Clear playground',
+    key: {
+      win: 'Ctrl-K',
+      mac: 'Command-K',
+    },
+    view: {
+      win: `Ctrl + K`,
+      mac: `⌘ + K`,
+    },
+  },
+};
+export const ArgTypes = [
+  {
+    id: EArgumentBodyType.Text,
+    name: 'Text',
+  },
+  {
+    id: EArgumentBodyType.Json,
+    name: 'JSON',
+  },
+  {
+    id: EArgumentBodyType.File,
+    name: 'File',
+  },
+  {
+    id: EArgumentBodyType.ArrayBuffer,
+    name: 'Array buffer',
+  },
+  {
+    id: EArgumentBodyType.ArrayBufferView,
+    name: 'Array buffer view',
+  },
+  {
+    id: EArgumentBodyType.Number,
+    name: 'Number',
+  },
+  {
+    id: EArgumentBodyType.Boolean,
+    name: 'Boolean',
+  },
+  {
+    id: EArgumentBodyType.NoBody,
+    name: 'No body',
+  },
+];
+export const EnvelopeTypes = [
+  'Int8Array',
+  'Uint8Array',
+  'Uint8ClampedArray',
+  'Int16Array',
+  'Uint16Array',
+  'Int32Array',
+  'Uint32Array',
+  'Float32Array',
+  'Float64Array',
+  'BigInt64Array',
+  'BigUint64Array',
 ];

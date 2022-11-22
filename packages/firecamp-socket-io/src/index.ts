@@ -1,5 +1,1 @@
-export {
-  default as SocketIOClient,
-  CLIENT_ACTIONS,
-  CONSTS,
-} from './components/Socket';
+export { default as SocketIOClient } from './components/Socket';

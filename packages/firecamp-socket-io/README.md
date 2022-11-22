@@ -130,17 +130,17 @@ const Websocket = require('@firecamp/websocket');
       ],
       "auto_reconnect": false,
       "font_size": "13",
-      "ping_interval": "3000"
+      "pingInterval": "3000"
     },
     "scripts": {
       "pre": "",
       "post": "",
       "test": ""
     },
-    "active_connection": "123",
-    "default_connection": {
+    "activeConnection": "123",
+    "defaultConnection": {
       "uuid": "123",
-      "is_default": true,
+      "isDefault": true,
       "name": "connection_name",
       "headers": [
         {
@@ -164,7 +164,7 @@ const Websocket = require('@firecamp/websocket');
     "connections": [
       {
         "uuid": "",
-        "is_default": false,
+        "isDefault": false,
         "name": "Vinaxi",
         "headers": [
           {

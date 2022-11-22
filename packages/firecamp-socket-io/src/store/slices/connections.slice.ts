@@ -4,8 +4,8 @@ import _url from '@firecamp/url';
 
 interface IConnectionsSlice {
   addConnection: (connection: ISocketIOConnection) => void;
-  updateConnection: (connection_id: TId, key: string, value: any) => void;
-  removeConnection: (connection_id: TId) => void;
+  updateConnection: (connectionId: TId, key: string, value: any) => void;
+  removeConnection: (connectionId: TId) => void;
 }
 
 const createConnectionSlice = (set, get): IConnectionsSlice => ({
@@ -23,16 +23,16 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       EPushActionType.Insert
     );
   },
-  updateConnection: (connection_id: TId, key: string, value: any) => {
+  updateConnection: (connectionId: TId, key: string, value: any) => {
     console.log({ key, value });
 
     //If connection id not provided
-    if (!connection_id || !key) return;
+    if (!connectionId || !key) return;
 
     let { connections } = get()?.request;
 
     //If connection not found
-    let connectionIndex = connections.findIndex((c) => c.id === connection_id);
+    let connectionIndex = connections.findIndex((c) => c.id === connectionId);
     if (connectionIndex === -1) return;
 
     //Update connection
@@ -44,12 +44,12 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
     if (key === 'ping') {
       if (value) {
         get().togglePingConnection(
-          connection_id,
+          connectionId,
           true,
           updatedConnection?.pingInterval
         );
       } else {
-        get().togglePingConnection(connection_id, false);
+        get().togglePingConnection(connectionId, false);
       }
     }
 
@@ -65,7 +65,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       updatedConnection = Object.assign({}, connections[connectionIndex], {
         [key]: Object.assign({}, connections[connectionIndex]?.config, value),
       });
-    } else if (key === 'query_params') {
+    } else if (key === 'queryParams') {
       get().changeUrl({
         raw: _url.toString({ ...(get()?.request?.url || {}), [key]: value }),
         [key]: value,
@@ -87,30 +87,30 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
     }));
 
     get()?.prepareRequestConnectionsPushAction(
-      connection_id,
+      connectionId,
       EPushActionType.Update,
       get()?.last?.request?.connections[connectionIndex],
       updatedConnection
     );
   },
-  removeConnection: (connection_id: TId) => {
+  removeConnection: (connectionId: TId) => {
     let {
       request: { connections },
       runtime: { _dnp },
     } = get();
 
     let removeConnIndex = connections.findIndex(
-      (conn) => conn.id === connection_id
+      (conn) => conn.id === connectionId
     );
     if (removeConnIndex !== -1) {
       let resultConnections = [
           ...connections.slice(0, removeConnIndex),
           ...connections.slice(removeConnIndex + 1),
         ],
-        newActiveConnection = _dnp.runtime_active_connection;
+        newActiveConnection = _dnp.runtime_activeConnection;
 
-      if (connection_id === _dnp.runtime_active_connection) {
-        newActiveConnection = connections.find((c) => c.is_default);
+      if (connectionId === _dnp.runtime_activeConnection) {
+        newActiveConnection = connections.find((c) => c.isDefault);
       }
 
       set((s) => ({
@@ -123,12 +123,12 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
           ...s.runtime,
           _dnp: {
             ...s.runtime._dnp,
-            runtime_active_connection: newActiveConnection,
+            runtime_activeConnection: newActiveConnection,
           },
         },
       }));
       get()?.prepareRequestConnectionsPushAction(
-        connection_id,
+        connectionId,
         EPushActionType.Delete
       );
     }

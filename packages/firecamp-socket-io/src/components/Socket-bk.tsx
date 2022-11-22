@@ -24,8 +24,8 @@ import { SocketContext } from './Socket.context';
 import {
   REQUEST_CONNECTION,
   RESPONSE_CONNECTION,
-  INIT_PLAYGROUND,
-  INIT_LOG,
+  InitPayload,
+  InitLog,
 } from '../constants/StatePayloads';
 import {
   EConnectionState,
@@ -117,7 +117,7 @@ const Socket = ({
             PATH: 'path', //considered pathname as path in new version of URL
             PORT: 'port',
             PROTOCOL: 'protocol',
-            QUERY_PARAMS: 'query_params', //URL object is having query as key but in FC there will be query_params key to maintain URL structure
+            QUERY_PARAMS: 'queryParams', //URL object is having query as key but in FC there will be queryParams key to maintain URL structure
             SLASHES: 'slashes',
             USERNAME: 'username',
             VARIABLES: 'variables',
@@ -127,8 +127,8 @@ const Socket = ({
   defaultConnectionId =
     prop_request &&
     prop_request._dnp &&
-    prop_request._dnp.runtime_active_connection
-      ? prop_request._dnp.runtime_active_connection
+    prop_request._dnp.runtime_activeConnection
+      ? prop_request._dnp.runtime_activeConnection
       : defaultConnectionId;
 
   let initResConnections =
@@ -152,7 +152,7 @@ const Socket = ({
       (emitter) => emitter._meta.id === prop_request._dnp.active_emitter
     );
     if (emitterFound) {
-      initPlayground = Object.assign({}, INIT_PLAYGROUND, emitterFound);
+      initPlayground = Object.assign({}, InitPayload, emitterFound);
     }
     // _cacheEmittersFns.add(emitterFound);
   }
@@ -174,15 +174,15 @@ const Socket = ({
           on_connect_listeners: [],
         },
         connections: [],
-        playground: INIT_PLAYGROUND,
+        playground: InitPayload,
         meta: {
-          dir_orders: [],
-          leaf_orders: [],
+          fOrders: [],
+          iOrders: [],
           version: '2.0',
         },
         _dnp: {
           active_emitter: '',
-          runtime_active_connection: '',
+          runtime_activeConnection: '',
         },
         listeners: [],
         _meta: {},
@@ -240,7 +240,7 @@ const Socket = ({
     config,
     meta,
     connections: req_connections,
-    _dnp: { runtime_active_connection },
+    _dnp: { runtime_activeConnection },
   } = request;
 
   useEffect(() => {
@@ -265,7 +265,7 @@ const Socket = ({
       }
     }
 
-    _storeClientFns.updateResActiveConn(runtime_active_connection);
+    _storeClientFns.updateResActiveConn(runtime_activeConnection);
 
     //TODO: remove code later
     /*_responseConnectionLogFns.addLog(
@@ -297,7 +297,7 @@ const Socket = ({
           time: new Date()
         }
       },
-      runtime_active_connection
+      runtime_activeConnection
     );*/
     return async () => {
       try {
@@ -340,11 +340,11 @@ const Socket = ({
   }, []);
 
   useEffect(() => {
-    let found = req_connections.find((c) => c.id === runtime_active_connection);
+    let found = req_connections.find((c) => c.id === runtime_activeConnection);
     if (!found) return;
 
     /**
-     * Update url on change active_connction as query_params updated
+     * Update url on change active_connction as queryParams updated
      * @type {*}
      */
     let found_params = found[prop_STRINGS.URL.QUERY_PARAMS];
@@ -358,7 +358,7 @@ const Socket = ({
     if (!equal(new_raw_url, raw_url)) {
       _requestFns.updateURL(new_raw_url);
     }
-  }, [runtime_active_connection]);
+  }, [runtime_activeConnection]);
 
   useEffect(() => {
     envSnippetsMeta_Ref.current = environments;
@@ -416,7 +416,7 @@ const Socket = ({
       ) {
         new_req.request = Object.assign({}, new_req.request, {
           url: _url.normalize(
-            { raw: new_req.request.url, query_params: [], path_params: [] } ||
+            { raw: new_req.request.url, queryParams: [], pathParams: [] } ||
               ''
           ),
           raw_url: new_req.request.url,
@@ -428,7 +428,7 @@ const Socket = ({
       ) {
         let url_query_params = [];
         if (new_req.request.connections) {
-          let found = new_req.request.connections.find((con) => con.is_default);
+          let found = new_req.request.connections.find((con) => con.isDefault);
           if (found) {
             url_query_params = found[STRINGS.URL.QUERY_PARAMS];
             new_req.request.url[STRINGS.URL.QUERY_PARAMS] = url_query_params;
@@ -559,7 +559,7 @@ const Socket = ({
       if (urlValue === raw_url) return;
       let urlObject = (urlObject = _url.toObject(
         urlValue,
-        url_obj?.query_params || url.query_params
+        url_obj?.queryParams || url.queryParams
       ));
 
       // console.log(`urlObject`, urlObject)
@@ -587,7 +587,7 @@ const Socket = ({
                 key === prop_STRINGS.URL.QUERY_PARAMS
               ) {
                 let activeConnPayload = req_connections.find(
-                  (conn) => conn.id === runtime_active_connection
+                  (conn) => conn.id === runtime_activeConnection
                 );
 
                 if (
@@ -595,7 +595,7 @@ const Socket = ({
                   !equal(activeConnPayload[key], urlObject[key])
                 ) {
                   await _requestFns.updateConnection(
-                    runtime_active_connection,
+                    runtime_activeConnection,
                     {
                       [key]: urlObject[key],
                     },
@@ -641,7 +641,7 @@ const Socket = ({
           auth: [],
         });
 
-      let defaultConnection = req_connections.find((c) => c.is_default);
+      let defaultConnection = req_connections.find((c) => c.isDefault);
 
       if (!defaultConnection && req_connections && req_connections.length) {
         defaultConnection = req_connections[0];
@@ -658,7 +658,7 @@ const Socket = ({
         headers,
       });
 
-      delete defaultConnection['is_default'];
+      delete defaultConnection['isDefault'];
 
       // console.log(`defaultConnection`,defaultConnection)
 
@@ -719,13 +719,13 @@ const Socket = ({
       });
 
       /**
-       * if query_params updated update URL
+       * if queryParams updated update URL
        */
 
       if (
         updateURL === true &&
         Object.keys(updatedPayload).includes(prop_STRINGS.URL.QUERY_PARAMS) &&
-        id === runtime_active_connection
+        id === runtime_activeConnection
       ) {
         let urlObject = {
           ...url,
@@ -749,47 +749,47 @@ const Socket = ({
       if (Object.prototype.hasOwnProperty.call(payload, 'ping')) {
         _socketFns.onPing(
           id,
-          payload['ping_interval'] || found_conn.ping_interval,
+          payload['pingInterval'] || found_conn.pingInterval,
           !payload['ping']
         );
       }
     },
 
-    removeConnection: (connection_id) => {
+    removeConnection: (connectionId) => {
       let remove_index = -1,
         conn_id =
-          connection_id && connection_id.length
-            ? connection_id
-            : runtime_active_connection || '';
+          connectionId && connectionId.length
+            ? connectionId
+            : runtime_activeConnection || '';
 
       remove_index = req_connections.findIndex((conn) => conn.id === conn_id);
       if (
         remove_index === -1 ||
         (remove_index !== -1 &&
-          req_connections[remove_index].is_default === true)
+          req_connections[remove_index].isDefault === true)
       ) {
         return;
       }
 
       setState({
         type: DELETE.REQUEST_CONNECTION,
-        value: runtime_active_connection,
+        value: runtime_activeConnection,
       });
 
       _commonFns.onChange({
         action: ON_CHANGE_ACTIONS.REMOVE_REQUEST_CONNECTION,
-        payload: runtime_active_connection,
+        payload: runtime_activeConnection,
       });
 
-      _responseConnectionFns.remove(runtime_active_connection);
+      _responseConnectionFns.remove(runtime_activeConnection);
     },
 
     /**
      * updateActiveConnection: To update active connection
-     * @param connection_id: String// updated active connection
+     * @param connectionId: String// updated active connection
      */
-    updateActiveConnection: (connection_id) => {
-      if (!connection_id || connection_id === runtime_active_connection) return;
+    updateActiveConnection: (connectionId) => {
+      if (!connectionId || connectionId === runtime_activeConnection) return;
 
       try {
         let found =
@@ -797,19 +797,19 @@ const Socket = ({
           state_Ref.current.request &&
           state_Ref.current.request.connections
             ? state_Ref.current.request.connections.findIndex(
-                (c) => c.id === connection_id
+                (c) => c.id === connectionId
               )
             : -1;
         if (found === -1) return;
 
         setState({
           type: UPDATE.ACTIVE_CONNECTION,
-          value: connection_id,
+          value: connectionId,
         });
 
         _commonFns.onChange({
           action: ON_CHANGE_ACTIONS.ACTIVE_CONNECTION,
-          payload: connection_id,
+          payload: connectionId,
         });
       } catch (e) {
         console.log(`e`, e);
@@ -902,14 +902,14 @@ const Socket = ({
   let _socketFns = {
     /**
      * generateRequestConfig: To get request configuration
-     * @param connection_id: <type: String>// connection id for which you want to generate config
+     * @param connectionId: <type: String>// connection id for which you want to generate config
      */
-    generateRequestConfig: (connection_id) => {
+    generateRequestConfig: (connectionId) => {
       let socketConfig = {},
         urlStr = raw_url || '';
 
-      if (!connection_id) {
-        connection_id = runtime_active_connection;
+      if (!connectionId) {
+        connectionId = runtime_activeConnection;
       }
       let foundConnection = {};
       try {
@@ -922,7 +922,7 @@ const Socket = ({
           state_Ref.current.request &&
           state_Ref.current.request.connections
             ? state_Ref.current.request.connections.find(
-                (conn) => conn.id === connection_id
+                (conn) => conn.id === connectionId
               )
             : undefined;
 
@@ -1022,12 +1022,12 @@ const Socket = ({
 
     /**
      * onConnect: To connect socket
-     * @param connection_id: String// connection id which you want to connect
+     * @param connectionId: String// connection id which you want to connect
      * @returns {Promise.<void>}
      */
     onConnect: async (connectionId = '') => {
       if (!connectionId && state_Ref?.current?.request?._dnp) {
-        connectionId = state_Ref.current.request._dnp.runtime_active_connection;
+        connectionId = state_Ref.current.request._dnp.runtime_activeConnection;
       }
 
       if (!connectionId) return;
@@ -1035,7 +1035,7 @@ const Socket = ({
       // Check if connection is exist
       const connectionInstance = SocketInstances_Ref.get(connectionId);
       const resConn =
-        store_client?.getState()?.connections?.get(runtime_active_connection) ||
+        store_client?.getState()?.connections?.get(runtime_activeConnection) ||
         {};
 
       if (
@@ -1085,8 +1085,8 @@ const Socket = ({
           raw_url: state_Ref?.current?.request?.raw_url || raw_url || '',
           config: state_Ref?.current?.request?.config || request.config || {},
 
-          // Omit query_params from connection as they will be sent through raw_url
-          connection: _object.omit(connection, ['query_params']) || {},
+          // Omit queryParams from connection as they will be sent through raw_url
+          connection: _object.omit(connection, ['queryParams']) || {},
 
           ssl_manager: sslManager || [],
           proxy_manager: proxyManager || [],
@@ -1136,14 +1136,14 @@ const Socket = ({
       }
     },
 
-    onEmit: async (connection_id = '', emitterToEmit = {}) => {
-      if (!connection_id || !connection_id.length) {
-        connection_id = runtime_active_connection;
+    onEmit: async (connectionId = '', emitterToEmit = {}) => {
+      if (!connectionId || !connectionId.length) {
+        connectionId = runtime_activeConnection;
       }
 
-      let instance = SocketInstances_Ref.get(connection_id);
+      let instance = SocketInstances_Ref.get(connectionId);
       let resConn =
-        store_client?.getState()?.connections?.get(runtime_active_connection) ||
+        store_client?.getState()?.connections?.get(runtime_activeConnection) ||
         {};
 
       if (
@@ -1153,7 +1153,7 @@ const Socket = ({
       ) {
         _responseConnectionLogFns.addErrorLog(
           SYSTEM_LOGS.notConnected,
-          runtime_active_connection
+          runtime_activeConnection
         );
         return;
       }
@@ -1190,46 +1190,46 @@ const Socket = ({
         instance.emit(emitter.name || '', args, emitter.meta.interval);
       }
 
-      _commonFns.setHistory(connection_id);
+      _commonFns.setHistory(connectionId);
     },
-    onAddListener: (connection_id = '', name = '') => {
-      let instance = SocketInstances_Ref.get(connection_id);
+    onAddListener: (connectionId = '', name = '') => {
+      let instance = SocketInstances_Ref.get(connectionId);
       if (!instance) return;
       // console.log(`onAddListener`, name, instance);
       instance.addListener(name);
     },
-    onAddListeners: (connection_id = '', listeners = []) => {
-      let instance = SocketInstances_Ref.get(connection_id);
+    onAddListeners: (connectionId = '', listeners = []) => {
+      let instance = SocketInstances_Ref.get(connectionId);
       if (!instance) return;
       instance.addListeners(listeners);
     },
-    onRemoveListener: (connection_id = '', name = '') => {
-      let instance = SocketInstances_Ref.get(connection_id);
+    onRemoveListener: (connectionId = '', name = '') => {
+      let instance = SocketInstances_Ref.get(connectionId);
       if (!instance) return;
       instance.removeListener(name);
     },
-    onRemoveListeners: (connection_id = '', listeners = []) => {
-      let instance = SocketInstances_Ref.get(connection_id);
+    onRemoveListeners: (connectionId = '', listeners = []) => {
+      let instance = SocketInstances_Ref.get(connectionId);
       if (!instance) return;
       instance.removeListeners(listeners);
     },
-    onRemoveAllListeners: (connection_id = '') => {
-      let instance = SocketInstances_Ref.get(connection_id);
+    onRemoveAllListeners: (connectionId = '') => {
+      let instance = SocketInstances_Ref.get(connectionId);
       if (!instance) return;
       instance.removeAllListeners();
     },
-    onStateChange: async (connection_id = '', payload = {}) => {
-      _responseConnectionLogFns.addLog(payload, connection_id);
+    onStateChange: async (connectionId = '', payload = {}) => {
+      _responseConnectionLogFns.addLog(payload, connectionId);
 
       if (
         payload.meta &&
         payload.meta.event === 'connect' &&
         payload.meta.color === 'success'
       ) {
-        let instance = SocketInstances_Ref.get(connection_id);
+        let instance = SocketInstances_Ref.get(connectionId);
         if (!instance) return;
 
-        _responseConnectionFns.update(connection_id, {
+        _responseConnectionFns.update(connectionId, {
           meta: {
             state: EConnectionState.Open,
             socketId: instance.socketID() || '',
@@ -1237,7 +1237,7 @@ const Socket = ({
         });
 
         let resConn =
-          store_client?.getState()?.connections?.get(connection_id) || {};
+          store_client?.getState()?.connections?.get(connectionId) || {};
 
         //listen all listeners who's value is true
         /*  if (
@@ -1252,11 +1252,11 @@ const Socket = ({
              }
            }
            if (listenersList && listenersList.length) {
-             _socketFns.onAddListeners(connection_id, listenersList);
+             _socketFns.onAddListeners(connectionId, listenersList);
            }
          } */
 
-        _resConnListenerFns.updateListenersOnConnect(connection_id);
+        _resConnListenerFns.updateListenersOnConnect(connectionId);
       }
 
       if (
@@ -1269,7 +1269,7 @@ const Socket = ({
           'reconnect_failed',
         ].includes(payload.meta.event)
       ) {
-        await _responseConnectionFns.update(connection_id, {
+        await _responseConnectionFns.update(connectionId, {
           meta: {
             state: EConnectionState.Closed,
             socketId: '',
@@ -1285,7 +1285,7 @@ const Socket = ({
           'reconnecting',
         ].includes(payload.meta.event)
       ) {
-        await _responseConnectionFns.update(connection_id, {
+        await _responseConnectionFns.update(connectionId, {
           meta: {
             state: EConnectionState.Connecting,
             socketId: '',
@@ -1294,27 +1294,27 @@ const Socket = ({
       }
     },
 
-    onSubscribe: async (connection_id = '', payload = {}) => {
-      _responseConnectionLogFns.addLog(payload, connection_id);
+    onSubscribe: async (connectionId = '', payload = {}) => {
+      _responseConnectionLogFns.addLog(payload, connectionId);
     },
-    onPing: (connection_id = '', interval, pingOff = false) => {
+    onPing: (connectionId = '', interval, pingOff = false) => {
       // console.log(`ping`, interval);
       let foundConnection =
         state_Ref.current &&
         state_Ref.current.request &&
         state_Ref.current.request.connections
           ? state_Ref.current.request.connections.find(
-              (conn) => conn.id === connection_id
+              (conn) => conn.id === connectionId
             )
           : undefined;
 
       let intervalValue = interval;
 
       if (foundConnection && intervalValue === undefined) {
-        intervalValue = foundConnection['ping_interval'];
+        intervalValue = foundConnection['pingInterval'];
       }
 
-      let instance = SocketInstances_Ref.get(connection_id);
+      let instance = SocketInstances_Ref.get(connectionId);
       // console.log(`instance`, instance);
       if (!instance) return;
       if (pingOff === false) {
@@ -1343,7 +1343,7 @@ const Socket = ({
   let _commonFns = {
     getMergedVariables: () => {
       let mergedVars = {};
-      const collectionId = tabData?.request?._meta?.collection_id || '';
+      const collectionId = tabData?.request?._meta?.collectionId || '';
 
       if (environments) {
         const defaultGlobalEnv =
@@ -1379,15 +1379,15 @@ const Socket = ({
      * onSave: To save request
      * @param name: String// request name
      * @param description: String// request description
-     * @param collection_id: String// parent project id
-     * @param folder_id: String// parent module id
+     * @param collectionId: String// parent project id
+     * @param folderId: String// parent module id
      * @private
      */
     onSave: async ({
       name,
       description,
-      project: collection_id,
-      module: folder_id,
+      project: collectionId,
+      module: folderId,
     }) => {
       await _commonFns.updateCacheEmitterOnSave();
 
@@ -1395,8 +1395,8 @@ const Socket = ({
         {
           name,
           description,
-          project: collection_id,
-          module: folder_id,
+          project: collectionId,
+          module: folderId,
         },
         state_Ref.current
       )
@@ -1419,20 +1419,20 @@ const Socket = ({
       propsOnUpdateRequest(state_Ref.current);
     },
 
-    setHistory: (connection_id = '') => {
-      if (!connection_id || !connection_id.length) {
-        connection_id = runtime_active_connection;
+    setHistory: (connectionId = '') => {
+      if (!connectionId || !connectionId.length) {
+        connectionId = runtime_activeConnection;
       }
 
       let history_payload = {},
         history_connections = [];
 
       let connectionPayload = req_connections.find(
-        (con) => con.id === connection_id
+        (con) => con.id === connectionId
       );
 
       if (connectionPayload) {
-        history_connections = [{ ...connectionPayload, is_default: true }];
+        history_connections = [{ ...connectionPayload, isDefault: true }];
       }
       let request = _object.pick(state_Ref?.current?.request || request, [
         'raw_url',
@@ -1462,7 +1462,7 @@ const Socket = ({
             meta: {
               version: '2.0',
               type: ERequestTypes.SocketIO,
-              ['leaf_orders']: [leafId],
+              ['iOrders']: [leafId],
             },
           },
           leaf: leafPayload,
@@ -1495,7 +1495,7 @@ const Socket = ({
     /**
      * addLog: To add log in socket response connection tab which is active
      * {title = "", message = "", meta:{type = "", color = ""}}
-     * connection_id: String// id for which connection you want to set message.
+     * connectionId: String// id for which connection you want to set message.
      */
     addLog: useCallback(
       async (
@@ -1508,14 +1508,14 @@ const Socket = ({
             timestamp: new Date().getTime(),
           },
         },
-        connection_id = ''
+        connectionId = ''
       ) => {
-        if (!connection_id) return;
+        if (!connectionId) return;
 
         store_client.setState((state) => {
           let connectionsLogs = state.connectionLogs || new Map();
-          let resConnLogs = connectionsLogs.get(connection_id);
-          let logPayload = Object.assign({}, INIT_LOG, log, {
+          let resConnLogs = connectionsLogs.get(connectionId);
+          let logPayload = Object.assign({}, InitLog, log, {
               meta: Object.assign({}, log.meta, { count: 0 }),
             }),
             newLogs = [];
@@ -1551,7 +1551,7 @@ const Socket = ({
           return {
             connectionLogs: new Map([
               ...connectionsLogs,
-              [connection_id, newLogs],
+              [connectionId, newLogs],
             ]),
           };
         });
@@ -1559,7 +1559,7 @@ const Socket = ({
       [store_client?.getState()?.connections?.values()]
     ),
 
-    addErrorLog: (message = '', connection_id = '') => {
+    addErrorLog: (message = '', connectionId = '') => {
       _responseConnectionLogFns.addLog(
         {
           title: message || '',
@@ -1570,7 +1570,7 @@ const Socket = ({
             color: 'danger',
           },
         },
-        connection_id
+        connectionId
       );
     },
 
@@ -1631,7 +1631,7 @@ const Socket = ({
         //Update parent orders on add emitter
         await _collectionFns.updateOrders({
           action: 'add',
-          key: 'leaf_orders',
+          key: 'iOrders',
           parent_id,
           id: emitterId,
         });
@@ -1672,7 +1672,7 @@ const Socket = ({
           //Update parent orders on remove emitter
           _collectionFns.updateOrders({
             action: 'remove',
-            key: 'leaf_orders',
+            key: 'iOrders',
             parent_id,
             id,
           });
@@ -1710,8 +1710,8 @@ const Socket = ({
             parent_id,
           },
           meta: {
-            dir_orders: [],
-            leaf_orders: [],
+            fOrders: [],
+            iOrders: [],
           },
         };
         console.log(`directoryPayload`, directoryPayload);
@@ -1723,7 +1723,7 @@ const Socket = ({
         //Update parent orders on add directory
         _collectionFns.updateOrders({
           action: 'add',
-          key: 'dir_orders',
+          key: 'fOrders',
           parent_id,
           id: directoryID,
         });
@@ -1764,7 +1764,7 @@ const Socket = ({
           //update parent orders on remove dirctory
           _collectionFns.updateOrders({
             action: 'remove',
-            key: 'dir_orders',
+            key: 'fOrders',
             parent_id,
             id,
           });
@@ -1843,7 +1843,7 @@ const Socket = ({
 
     updateOrders: ({
       action = 'add',
-      key = 'leaf_orders',
+      key = 'iOrders',
       parent_id = '',
       id = '',
     }) => {
@@ -1975,7 +1975,7 @@ const Socket = ({
       _cacheEmittersFns.setToPlayground(emitterToSetInPlayground);
 
       if (emit === true && emitterToSetInPlayground) {
-        _socketFns.onEmit(runtime_active_connection, emitterToSetInPlayground);
+        _socketFns.onEmit(runtime_activeConnection, emitterToSetInPlayground);
       }
     },
 
@@ -2105,7 +2105,7 @@ const Socket = ({
     },
 
     addNewEmitter: () => {
-      _requestFns.setPlayground(INIT_PLAYGROUND);
+      _requestFns.setPlayground(InitPayload);
       _requestFns.updateDNP({ active_emitter: '' });
     },
 
@@ -2239,19 +2239,19 @@ const Socket = ({
     },
 
     //Update single listener from single connection
-    updateConnListener: (connection_id = '', name = '', listen = false) => {
-      let instance = SocketInstances_Ref.get(connection_id);
+    updateConnListener: (connectionId = '', name = '', listen = false) => {
+      let instance = SocketInstances_Ref.get(connectionId);
 
       if (instance?.connected()) {
         store_client.setState((state) => {
           let resConnectionList = state.connections || new Map();
-          let connection = resConnectionList.get(connection_id);
+          let connection = resConnectionList.get(connectionId);
           if (!connection) return;
           let listeners = connection.listeners || {};
 
           listeners = Object.assign({}, listeners, { [name]: listen });
           resConnectionList.set(
-            connection_id,
+            connectionId,
             Object.assign({}, connection, { listeners })
           );
           return { connections: new Map([...resConnectionList]) };
@@ -2259,25 +2259,25 @@ const Socket = ({
       } else {
         _responseConnectionLogFns.addErrorLog(
           SYSTEM_LOGS.notConnected,
-          connection_id
+          connectionId
         );
       }
 
       if (listen === true) {
-        _socketFns.onAddListener(connection_id, name);
+        _socketFns.onAddListener(connectionId, name);
       } else {
-        _socketFns.onRemoveListener(connection_id, name);
+        _socketFns.onRemoveListener(connectionId, name);
       }
     },
 
     //Update all listeners for single connection
-    updateAllListenersByConnID: (connection_id = '', listen = true) => {
+    updateAllListenersByConnID: (connectionId = '', listen = true) => {
       let listenerNames = [];
       store_client.setState((state) => {
         let resConnectionList = state.connections || new Map();
-        let instance = SocketInstances_Ref.get(connection_id);
+        let instance = SocketInstances_Ref.get(connectionId);
         if (instance?.connected()) {
-          let connection = resConnectionList.get(connection_id);
+          let connection = resConnectionList.get(connectionId);
           if (!connection) return;
           let listeners = connection.listeners || {};
           if (!Array.isArray(listeners)) {
@@ -2286,7 +2286,7 @@ const Socket = ({
             }
           }
           resConnectionList.set(
-            connection_id,
+            connectionId,
             Object.assign({}, connection, { listeners })
           );
           listenerNames = Object.keys(listeners || {});
@@ -2296,23 +2296,23 @@ const Socket = ({
 
       if (listenerNames.length) {
         if (listen === true) {
-          _socketFns.onAddListeners(connection_id, listenerNames);
+          _socketFns.onAddListeners(connectionId, listenerNames);
         } else {
-          _socketFns.onRemoveAllListeners(connection_id, listenerNames);
+          _socketFns.onRemoveAllListeners(connectionId, listenerNames);
         }
       }
     },
 
     //Update listeners for single connection on connect, set listen true
-    updateListenersOnConnect: (connection_id = '') => {
+    updateListenersOnConnect: (connectionId = '') => {
       let onConnectListeners =
         state_Ref.current?.request?.config?.on_connect_listeners || [];
 
       store_client.setState((state) => {
         let resConnectionList = state.connections || new Map();
-        let instance = SocketInstances_Ref.get(connection_id);
+        let instance = SocketInstances_Ref.get(connectionId);
         if (instance.connected()) {
-          let connection = resConnectionList.get(connection_id);
+          let connection = resConnectionList.get(connectionId);
           if (!connection) return;
           let listeners = Object.assign({}, connection.listeners);
 
@@ -2325,14 +2325,14 @@ const Socket = ({
           }
 
           resConnectionList.set(
-            connection_id,
+            connectionId,
             Object.assign({}, connection, { listeners: listeners })
           );
         }
         return { connections: new Map([...resConnectionList]) };
       });
 
-      _socketFns.onAddListeners(connection_id, onConnectListeners);
+      _socketFns.onAddListeners(connectionId, onConnectListeners);
     },
 
     //Update all listeners for all connections
@@ -2417,7 +2417,7 @@ const Socket = ({
         <Container className="fc-h-full with-divider">
           <Container.Header>
             <URLbar
-              runtimeActiveConnection={runtime_active_connection || ''}
+              runtimeActiveConnection={runtime_activeConnection || ''}
               tabData={{
                 id: tabData.id,
                 meta: tabData.meta,
@@ -2434,7 +2434,7 @@ const Socket = ({
                 collection={collection || []}
                 meta={meta || {}}
                 tabData={tabData || {}}
-                runtimeActiveConnection={runtime_active_connection || ''}
+                runtimeActiveConnection={runtime_activeConnection || ''}
                 config={config}
                 connections={req_connections || []}
                 playground={request.playground || {}}
@@ -2443,7 +2443,7 @@ const Socket = ({
                 listeners={request.listeners}
               />
               <Response
-                runtimeActiveConnection={runtime_active_connection}
+                runtimeActiveConnection={runtime_activeConnection}
                 visiblePanel={visiblePanel}
                 setVisiblePanel={_commonFns.setVisiblePanel}
                 // Combination of listeners and emitters name to show filter event name

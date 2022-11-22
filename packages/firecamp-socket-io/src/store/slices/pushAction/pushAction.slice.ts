@@ -57,7 +57,7 @@ export interface IPushPayload extends Partial<ISocketIO> {
     item_id: TId;
     item_type: 'R';
     request_type: ERequestTypes.SocketIO;
-    collection_id: TId;
+    collectionId: TId;
     workspace_id: TId;
     keys: IPushAction;
   };
@@ -114,7 +114,7 @@ export const createPushActionSlice = (
       item_id: request._meta.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.SocketIO,
-      collection_id: '',
+      collectionId: '',
       keys: {},
       workspace_id: '',
     };
@@ -153,8 +153,8 @@ export const createPushActionSlice = (
     pushPayload._meta = {
       ...pushPayload._meta,
       id: request._meta.id,
-      collection_id: request._meta.collection_id,
-      folder_id: request._meta.folder_id || '',
+      collectionId: request._meta.collectionId,
+      folderId: request._meta.folderId || '',
     };
 
     pushPayload._action = {
@@ -162,7 +162,7 @@ export const createPushActionSlice = (
       item_id: request._meta.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.SocketIO,
-      collection_id: request._meta.collection_id,
+      collectionId: request._meta.collectionId,
       workspace_id: '',
       keys: pushAction,
     };

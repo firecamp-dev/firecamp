@@ -17,16 +17,7 @@ import {
   ISocketStore,
 } from '../store';
 import { IPushPayload } from '../store/slices';
-import {
-  REQUEST_CONNECTION,
-  INIT_PLAYGROUND,
-} from '../constants/StatePayloads';
-import {
-  EConnectionState,
-  KEYS_ON_SAVE_REQUEST,
-  ON_CHANGE_ACTIONS,
-  STRINGS,
-} from '../constants';
+import { RequestConnection, InitPayload  } from '../constants';
 import {
   EArgumentBodyType,
   EPushActionType,
@@ -35,23 +26,13 @@ import {
 } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import { useEffect } from 'react';
-
-export const CLIENT_ACTIONS = {
-  CLIENT_ACTIONS: 'CLIENT_ACTIONS',
-  OPEN_CODE_SNIPPET: 'OPEN_CODE_SNIPPET',
-  OPEN_COLLECTION: 'OPEN_COLLECTION',
-};
-export const CONSTS = {
-  ON_CHANGE_ACTIONS,
-  EConnectionState,
-  KEYS_ON_SAVE_REQUEST,
-};
+import { EConnectionState } from '../types'
 
 const Socket = ({
   firecampFunctions = {},
   constants: propConstants = {},
   environments = {},
-  additionalComponents: prop_additionalComponents = {},
+  additionalComponents: propAdditionalComponents = {},
   onUpdateEnvironment = () => {},
 
   tab,
@@ -62,10 +43,6 @@ const Socket = ({
   let socketStoreApi = useSocketStoreApi();
 
   let {
-    addConnection,
-    addPlayground,
-    addPlaygroundTab,
-    setActivePlayground,
     setSelectedCollectionEmitter,
     addEmitter,
     changePlaygroundTab,
@@ -84,9 +61,6 @@ const Socket = ({
     setRequestSavedFlag,
     setIsFetchingReqFlag,
   } = useSocketStore((s: ISocketStore) => ({
-    addConnection: s.addConnection,
-    addPlayground: s.addPlayground,
-    addPlaygroundTab: s.addPlaygroundTab,
     setActivePlayground: s.setActivePlayground,
     setSelectedCollectionEmitter: s.setSelectedCollectionEmitter,
     addEmitter: s.addEmitter,
@@ -114,7 +88,7 @@ const Socket = ({
     if (activeTab === tab.id) {
       // existing active environments in to runtime
       let activeEnvironments =
-        socketStoreApi?.getState()?.runtime?.active_environments;
+        socketStoreApi.getState()?.runtime?.active_environments;
 
       // set active environments to platform
       if (activeEnvironments && !!activeEnvironments.workspace) {
@@ -125,7 +99,7 @@ const Socket = ({
             workspace: activeEnvironments.workspace,
             collection: activeEnvironments.collection || '',
           },
-          collectionId: tab?.request?._meta?.collection_id || '',
+          collectionId: tab?.request?._meta?.collectionId || '',
         });
       }
 
@@ -162,16 +136,16 @@ const Socket = ({
   }, []);
 
   useEffect(() => {
-    let _fetchRequest = async () => {
+    const _fetchRequest = async () => {
       try {
-        let isRequestSaved = !!tab?.request?._meta?.id || false;
+        const isRequestSaved = !!tab?.request?._meta?.id || false;
         let requestToNormalise: ISocketIO = {
-          meta: {
+          __meta: {
             name: '',
             version: '2.0.0',
             type: ERequestTypes.SocketIO,
           },
-          _meta: { id: '', collection_id: '' },
+          __ref: { id: '', collectionId: '' },
         };
 
         if (isRequestSaved === true) {
@@ -189,14 +163,6 @@ const Socket = ({
             throw error;
           }
         }
-
-        /*  initialiseRequest(
-          requestToNormalise,
-          isRequestSaved,
-          _cloneDeep(emptyPushAction),
-          false,
-          true
-        ); */
       } catch (error) {
         console.error({
           API: 'fetch and normalize rest request',
@@ -209,151 +175,32 @@ const Socket = ({
     _fetchRequest();
   }, []);
 
-  /**
-   * initialiseRequest: normalise request and initialise in store on tab load and manage pull
-   */
-  /* let initialiseRequest = async (
-    requestToNormalise: IRest,
-    isRequestSaved: boolean,
-    pushAction?: IPushAction,
-    hasPull?: boolean,
-    isFresh?: boolean
-  ) => {
-    let request: IRestClientRequest = await normalizeRequestPayload(
-      requestToNormalise,
-      isRequestSaved
-    );
-
-    // Update auth type, generate auth headers
-    updateActiveAuth(request.meta.active_auth_type);
-
-    let requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
-    // console.log({ request });
-    let uiActiveTab = hasPull
-      ? restStoreApi.getState().ui?.requestPanel?.activeTab ||
-        ERequestPanelTabs.Body
-      : ERequestPanelTabs.Body;
-
-    initialise(
-      {
-        request,
-        ui: {
-          ...restStoreApi.getState().ui,
-          requestPanel: {
-            ...requestPanel,
-            activeTab: uiActiveTab,
-          },
-        },
-        pushAction: pushAction
-          ? pushAction
-          : restStoreApi.getState().pushAction,
-      },
-      isFresh
-    );
-    setIsFetchingReqFlag(false);
-  };
- */
-  let connectionsFns = {
-    addConnection: async (name = '', connectOnCreate = true) => {
-      if (!name) return;
-
-      let {
-        request: { connections: req_connections },
-      } = socketStoreApi.getState();
-
-      let newconnectionId = id();
-      let newReqConnection = Object.assign({}, REQUEST_CONNECTION);
-
-      // Existing default connection
-      let defaultConnection = req_connections.find((c) => c.is_default);
-
-      if (!defaultConnection && !_array.isEmpty(req_connections)) {
-        defaultConnection = req_connections[0];
-      }
-
-      let queryParams = defaultConnection[STRINGS.URL.QUERY_PARAMS] || [];
-      queryParams = queryParams.map((q) => Object.assign({}, q, { id: id() }));
-
-      let headers = defaultConnection['headers'] || [];
-      headers = headers.map((h) => Object.assign({}, h, { id: id() }));
-
-      defaultConnection = Object.assign({}, defaultConnection, {
-        [STRINGS.URL.QUERY_PARAMS]: queryParams,
-        headers,
-      });
-
-      delete defaultConnection['is_default'];
-
-      newReqConnection = Object.assign(
-        {},
-        newReqConnection,
-        defaultConnection || {},
-        {
-          name,
-          id: newconnectionId,
-        }
-      );
-
-      // Add connection in store
-      addConnection(newReqConnection);
-
-      let connectionPlayground = {
-        id: newconnectionId,
-        connectionState: EConnectionState.Ideal,
-        logFilters: {
-          type: '',
-          event: '',
-        },
-        emitter: INIT_PLAYGROUND,
-        selectedCollectionEmitter: '',
-      };
-
-      addPlayground(newconnectionId, connectionPlayground);
-      addPlaygroundTab({
-        id: newconnectionId,
-        name: name,
-        meta: {
-          is_saved: false,
-          hasChange: false,
-        },
-      });
-
-      // update active connection
-      setActivePlayground(newconnectionId);
-
-      if (connectOnCreate === true) {
-        // await connect(newconnectionId);
-      }
-      // return Promise.resolve(newReqConnection);
-    },
-  };
-
-  let updateCollectionFns = {
-    addEmitter: async ({ name = '', parent_id = '', label = '' }) => {
-      let emitterId = id();
-
-      let {
+  const updateCollectionFns = {
+    addEmitter: async ({ name = '', parentId = '', label = '' }) => {
+      const emitterId = id();
+      const {
         runtime: { activePlayground },
         playgrounds,
-      } = socketStoreApi.getState();
+      } = socketStoreApi.getState() as ISocketStore;
 
-      let emitter = playgrounds?.[activePlayground]?.emitter;
+      const emitter = playgrounds?.[activePlayground]?.emitter;
 
       if (
-        emitter.meta.type === EArgumentBodyType.NoBody ||
-        emitter.meta.type === EArgumentBodyType.File
+        [EArgumentBodyType.NoBody, EArgumentBodyType.File].includes(
+          emitter.__meta.type
+        )
       ) {
         return;
       }
 
-      let emitterPayload = {
+      const emitterPayload = {
         ...emitter,
         name,
-        meta: { ...emitter.meta, label },
-        _meta: {
-          ...emitter._meta,
+        __meta: { ...emitter.__meta, label },
+        __ref: {
+          ...emitter.__ref,
           id: emitterId,
-          parent_id,
+          folderId: parentId,
         },
       };
 
@@ -369,8 +216,8 @@ const Socket = ({
       // TODO: Update parent orders on add emitter
       await updateCollectionFns.updateOrders({
         action: 'add',
-        key: 'leaf_orders',
-        parent_id,
+        key: 'iOrders',
+        parentId,
         id: emitterId,
       });
 
@@ -400,13 +247,13 @@ const Socket = ({
 
       if (emitterDetails.emitter) {
         deleteEmitter(id);
-        let parent_id = emitterDetails.emitter?._meta?.parent_id || '';
+        let parentId = emitterDetails.emitter?._meta?.parentId || '';
 
         //Update parent orders on remove emitter
         updateCollectionFns.updateOrders({
           action: 'remove',
-          key: 'leaf_orders',
-          parent_id,
+          key: 'iOrders',
+          parentId,
           id,
         });
 
@@ -414,19 +261,19 @@ const Socket = ({
       }
     },
 
-    addDirectory: (directoryDetails: { name: string; parent_id: string }) => {
-      let { name = '', parent_id = '' } = directoryDetails,
+    addDirectory: (directoryDetails: { name: string; parentId: string }) => {
+      let { name = '', parentId = '' } = directoryDetails,
         directoryID = id();
 
       let directoryPayload = {
         name,
         _meta: {
           id: directoryID,
-          parent_id,
+          parentId,
         },
         meta: {
-          dir_orders: [],
-          leaf_orders: [],
+          fOrders: [],
+          iOrders: [],
         },
       };
 
@@ -435,8 +282,8 @@ const Socket = ({
       //Update parent orders on add directory
       updateCollectionFns.updateOrders({
         action: 'add',
-        key: 'dir_orders',
-        parent_id,
+        key: 'fOrders',
+        parentId,
         id: directoryID,
       });
     },
@@ -459,12 +306,12 @@ const Socket = ({
       if (foundDirectory) {
         deleteDirectory(id);
 
-        let parent_id = foundDirectory._meta.parent_id || '';
+        let parentId = foundDirectory._meta.parentId || '';
         //update parent orders on remove dirctory
         updateCollectionFns.updateOrders({
           action: 'remove',
-          key: 'dir_orders',
-          parent_id,
+          key: 'fOrders',
+          parentId,
           id,
         });
       }
@@ -478,17 +325,17 @@ const Socket = ({
 
           /**
            * getChildren: Get and set children of directory
-           * @param {*} dirId : Directory's id to get childern
+           * @param {*} dirId : Directory's id to get children
            */
           let getChildren = async (dirId = '') => {
             // Child directories ids
             let childDirIds = collection.directories
-              .filter((childDir) => childDir._meta.parent_id === dirId)
+              .filter((childDir) => childDir._meta.parentId === dirId)
               .map((childDir) => childDir._meta.id);
 
             // Child emitters ids
             let childemitterIds = collection.emitters
-              .filter((childEmitter) => childEmitter._meta.parent_id === dirId)
+              .filter((childEmitter) => childEmitter._meta.parentId === dirId)
               .map((childEmitter) => childEmitter._meta.id);
 
             if (!_array.isEmpty(childDirIds)) {
@@ -538,8 +385,8 @@ const Socket = ({
 
     updateOrders: ({
       action = 'add',
-      key = 'leaf_orders',
-      parent_id = '',
+      key = 'iOrders',
+      parentId = '',
       id = '',
     }) => {
       let {
@@ -551,15 +398,15 @@ const Socket = ({
       let existingOrders = [],
         newOrders = [],
         parentType =
-          parent_id && parent_id.length ? 'DIR' : ERequestTypes.SocketIO;
+          parentId && parentId.length ? 'DIR' : ERequestTypes.SocketIO;
       let foundParentDirectoryIndex = collection.directories.findIndex(
-        (dir) => dir._meta.id === parent_id
+        (dir) => dir._meta.id === parentId
       );
 
       //Get existing orders from parent
       if (parentType === ERequestTypes.SocketIO) {
         existingOrders = meta[key] || [];
-      } else if (parentType === 'DIR' && parent_id.length) {
+      } else if (parentType === 'DIR' && parentId.length) {
         if (collection.directories) {
           if (
             foundParentDirectoryIndex !== -1 &&
@@ -591,9 +438,9 @@ const Socket = ({
       //update state and parent component callback
       if (parentType === ERequestTypes.SocketIO) {
         changeMeta(key, newOrders);
-      } else if (parentType === 'DIR' && parent_id.length) {
+      } else if (parentType === 'DIR' && parentId.length) {
         // Update directory meta
-        changeDirectory(parent_id, {
+        changeDirectory(parentId, {
           key: 'meta',
           value: {
             ...collection.directories[foundParentDirectoryIndex].meta,
@@ -720,7 +567,7 @@ const Socket = ({
         runtime: { activePlayground },
       } = socketStoreApi.getState();
 
-      playgroundEmitterFns.setToPlayground(INIT_PLAYGROUND);
+      playgroundEmitterFns.setToPlayground(InitPayload);
       setSelectedCollectionEmitter(activePlayground, '');
     },
   };
@@ -814,14 +661,13 @@ const Socket = ({
         ctx_environments: environments,
 
         //prop components
-        ctx_additionalComponents: prop_additionalComponents,
+        ctx_additionalComponents: propAdditionalComponents,
 
         ctx_onUpdateEnvironment: onUpdateEnvironment,
 
         // new fns
         ctx_updateCollectionFns: updateCollectionFns,
         ctx_playgroundEmitterFns: playgroundEmitterFns,
-        ctx_connectionsFns: connectionsFns,
       }}
     >
       <RootContainer className="h-full w-full">
@@ -829,7 +675,7 @@ const Socket = ({
           <Container.Header>
             <UrlBarContainer
               tab={tab}
-              collectionId={tab?.request?._meta?.collection_id || ''}
+              collectionId={tab?.request?._meta?.collectionId || ''}
               postComponents={platformComponents}
               onSaveRequest={onSave}
               platformContext={platformContext}
@@ -857,14 +703,14 @@ const withStore = (WrappedComponent) => {
     let defaultConnId = id();
 
     let defaultConnection = tabRequest.connections?.find(
-      (c) => c.is_default === true
+      (c) => c.isDefault === true
     ) || {
-      ...REQUEST_CONNECTION,
+      ...RequestConnection,
       id: defaultConnId,
       name: 'Default',
-      is_default: true,
+      isDefault: true,
       headers: [],
-      query_params: [],
+      queryParams: [],
       // auth: {},
       // active_auth_type: ""
     };
@@ -873,7 +719,7 @@ const withStore = (WrappedComponent) => {
       raw: _url.toString(tabRequest.url) || '',
     };
 
-    let initPayload = {
+    const initPayload = {
       request: {
         url: urlObject,
         config: tabRequest.config || {
@@ -887,19 +733,19 @@ const withStore = (WrappedComponent) => {
           onConnectListeners: [],
         },
         connections: tabRequest.connections || [defaultConnection],
-        meta: tabRequest.meta || {
-          ['dir_orders']: [],
-          ['leaf_orders']: [],
-          version: '2.0',
+        __meta: tabRequest.__meta || {
+          fOrders: [],
+          iOrders: [],
+          version: '2.0.0',
         },
-        _meta: {
+        __ref: {
           id: id(),
-          collection_id: '',
+          collectionId: '',
         },
       },
       collection: tabRequest.collection || {
         emitters: [],
-        directories: [],
+        folders: [],
       },
       runtime: {
         activePlayground: defaultConnection?.id,
@@ -908,7 +754,7 @@ const withStore = (WrappedComponent) => {
             id: defaultConnection.id,
             name: defaultConnection.name,
             meta: {
-              is_saved: false,
+              isSaved: false,
               hasChange: false,
             },
           },
@@ -923,7 +769,7 @@ const withStore = (WrappedComponent) => {
             type: '',
             event: '',
           },
-          emitter: INIT_PLAYGROUND,
+          emitter: InitPayload,
           selectedCollectionEmitter: '',
           listeners: {},
         },
