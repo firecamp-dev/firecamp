@@ -1,11 +1,3 @@
-//@ts-nocheck
-
-import { useEffect, useState, useContext } from 'react';
-import { Tabs } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
-
-import { SocketContext } from '../../../Socket.context';
-
 const _getResConnTabs = (
   connections = {},
   connectionsMessages = {},
@@ -55,7 +47,7 @@ const _getResConnTabs = (
   return tabs;
 };
 
-const ResConnTabs = ({ isFS = false, setFS = () => {} }) => {
+const ResConnTabs = ({ isFS = false, setFS = (is) => {} }) => {
   
   return (
     <div className="chatboard-align">

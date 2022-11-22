@@ -1,13 +1,23 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Container, Button, Input } from '@firecamp/ui-kit';
-import deepEqual from 'deep-equal';
-
-import { SocketContext } from '../Socket.context';
+import shallow from 'zustand/shallow';
 import { _array } from '@firecamp/utils';
-const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
-  let { ctx_requestFns } = useContext(SocketContext);
 
-  let { addListener, setOnConnectListeners } = ctx_requestFns;
+import { useSocketStore } from '../../store';
+
+const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
+  let {
+    changeListeners,
+    addListenresToAllPlaygrounds,
+    deleteListenreFromAllPlaygrounds,
+  } = useSocketStore(
+    (s) => ({
+      changeListeners: s.changeListeners,
+      addListenresToAllPlaygrounds: s.addListenresToAllPlaygrounds,
+      deleteListenreFromAllPlaygrounds: s.deleteListenreFromAllPlaygrounds,
+    }),
+    shallow
+  );
 
   let [listenersNames, setListenersNames] = useState('');
 
@@ -46,27 +56,21 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
          * Prevent add listener into the common listeners list
          * if already exist
          */
-        if (!listeners.includes(listener)) addListener(listener);
+        if (!listeners.includes(listener))
+          addListenresToAllPlaygrounds(listener);
       }
     });
 
-    // Uniq array from existing and updated on connect listeners list
-    let updatedOnConnListeners = _array.uniq([
-      ...onConnectListeners,
-      ...listenersAry,
-    ]);
+    // update request slice
+    changeListeners([...listeners, listener]);
 
-    // on add listeners, update on connect listeners if newly added and existing listeners are not same
-    if (!deepEqual(updatedOnConnListeners, onConnectListeners)) {
-      // Update on connect listener list
-      setOnConnectListeners(updatedOnConnListeners);
-    }
     // Set listeners name empty
     setListenersNames('');
   };
 
   let _onDelete = (listener = '') => {
-    setOnConnectListeners(_array.without(onConnectListeners, listener));
+    changeListeners(_array.without(onConnectListeners, listener));
+    deleteListenreFromAllPlaygrounds(listener);
   };
 
   return (
@@ -105,7 +109,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
                     {listener || ''}
                     <span
                       className="remove iconv2-close-icon"
-                      onClick={(_) => _onDelete(listener)}
+                      onClick={() => _onDelete(listener)}
                     ></span>
                   </div>
                 );

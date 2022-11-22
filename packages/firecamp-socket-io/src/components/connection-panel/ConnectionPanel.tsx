@@ -1,17 +1,10 @@
 import { useState, useRef, useContext, memo, useEffect } from 'react';
-import {
-  Container,
-  Checkbox,
-  Input,
-  Resizable,
-  Tabs,
-  Popover,
-} from '@firecamp/ui-kit';
+import { Container, Checkbox, Input, Tabs, Popover } from '@firecamp/ui-kit';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
 
 import ConnectionTab from './connection/ConnectionTab';
-import { useSocketStore } from '../../store';
+import { ISocketStore, useSocketStore } from '../../store';
 import { SocketContext } from '../Socket.context';
 
 const ConnectionPanel = ({ visiblePanel = '' }) => {
@@ -19,14 +12,13 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     ctx_connectionsFns: { addConnection },
   } = useContext(SocketContext);
 
-
-  let {
+  const {
     activePlayground,
     playgroundTabs,
 
     setActivePlayground,
   } = useSocketStore(
-    (s) => ({
+    (s: ISocketStore) => ({
       config: s.request.config,
       activePlayground: s.runtime.activePlayground,
       playgroundTabs: s.runtime.playgroundTabs,
@@ -36,9 +28,9 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     shallow
   );
 
-  let [isAddConnPopoverOpen, toggleConnPopover] = useState(false);
+  const [isAddConnPopoverOpen, toggleConnPopover] = useState(false);
 
-  let _onAddNewConnection = async (name = '') => {
+  const _onAddNewConnection = async (name = '') => {
     if (!name) return;
     try {
       await addConnection(name);
@@ -48,17 +40,17 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     }
   };
 
-  let _toggleDeleteConnection = (index, id) => {
+  const _toggleDeleteConnection = (index, id) => {
     // dom onClick event for close-icon-${id} wjere id is connection id
   };
 
-  let _onSelectConnectionTab = (id) => {
+  const _onSelectConnectionTab = (id) => {
     setActivePlayground(id);
   };
 
   return (
     <Container>
-      <Container.Header className="z-20" >
+      <Container.Header className="z-20">
         <Tabs
           list={playgroundTabs}
           activeTab={activePlayground}

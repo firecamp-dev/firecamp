@@ -1,9 +1,8 @@
-import React from 'react';
 import { Container, TabHeader, CheckboxInGrid, Input } from '@firecamp/ui-kit';
+import { _misc } from '@firecamp/utils';
+import { EFirecampAgent } from '@firecamp/types';
 import OnConnectListeners from './OnConnectListeners';
 import { useSocketStore } from '../../store';
-import { _misc } from '@firecamp/utils'
-import { EFirecampAgent } from '@firecamp/types'
 
 const INPUT_TYPES = {
   text: 'text',
@@ -146,7 +145,8 @@ const Config = ({ config = {}, listeners = [] }) => {
             disabled={isDisabled}
             onToggleCheck={() => _onChange(name, !config[name])}
             note={
-              _misc.firecampAgent() !== EFirecampAgent.desktop && name === 'rejectUnauthorized'
+              _misc.firecampAgent() !== EFirecampAgent.desktop &&
+              name === 'rejectUnauthorized'
                 ? 'Desktop only feature'
                 : ''
             }

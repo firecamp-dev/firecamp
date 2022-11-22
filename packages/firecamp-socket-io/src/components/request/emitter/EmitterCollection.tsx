@@ -1,35 +1,22 @@
-//@ts-nocheck
-
-import {
-  Children,
-  useState,
-  useRef,
-  useContext,
-  useEffect,
-  Fragment,
-} from 'react';
+import { useState, useRef, useContext, useEffect, useMemo } from 'react';
 import {
   // Collection,
   Input,
   Container,
   TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
-  EButtonIconPosition,
   Column,
   Resizable,
 } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
+import shallow from 'zustand/shallow';
 
-import DirectoryNode from './DirectoryNode';
-import EmitterNode from './EmitterNode';
+// import DirectoryNode from './DirectoryNode';
+// import EmitterNode from './EmitterNode';
 
 import { SocketContext } from '../../Socket.context';
-
-import { useSocketStore } from '../../../store';
-import shallow from 'zustand/shallow';
+import { ISocketStore, useSocketStore } from '../../../store';
 
 const EmitterCollection = ({
   tabData = {},
@@ -47,15 +34,15 @@ const EmitterCollection = ({
 
   let {
     collection: prop_collection,
-    meta,
+    // meta,
     playground,
     activePlayground,
-    changeMeta,
-    setSelectedCollectionEmitter,
+    // changeMeta,
+    // setSelectedCollectionEmitter,
   } = useSocketStore(
-    (s) => ({
+    (s: ISocketStore) => ({
       collection: s.collection,
-      meta: s.request.meta,
+      // meta: s.request.meta,
       playground: s.playgrounds[s.runtime.activePlayground],
       activePlayground: s.runtime.activePlayground,
       changeMeta: s.changeMeta,
@@ -411,15 +398,15 @@ const MessageCollectionHeader = ({
             value={directoryName}
             onChange={_handleChangeName}
             onKeyDown={_onKeyDown}
-            postComponents={[
+            postComponents={
               <Button
                 key={'directory-add-button'}
                 text="Add"
                 onClick={_onAdd}
                 secondary
                 sm
-              />,
-            ]}
+              />
+            }
           />
           <div className="text-xs text-appForeground ">{`> hit enter to add directory`}</div>
         </div>
