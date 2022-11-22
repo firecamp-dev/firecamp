@@ -20,7 +20,7 @@ export default class ConfigGenerator {
     version: ESocketIOClientVersion;
   };
   connection: ISocketIOConnection;
-  certificates: ICertificate[];
+  certificates: ICertificate[] = [];
 
   constructor(options: TExecutorOptions) {
     this.address = options.url.raw;
@@ -94,7 +94,7 @@ export default class ConfigGenerator {
   }
 
   setQueryParams() {
-    this.clientOptions.query = _table.toObject(this.connection.query_params);
+    this.clientOptions.query = _table.toObject(this.connection.queryParams);
   }
 
   // Set auth if socket.io-client lib. version >= 3.0.0
@@ -125,10 +125,10 @@ export default class ConfigGenerator {
     } else this.connection.namespace = '';
 
     if (
-      this.connection.force_new &&
-      typeof this.connection.force_new === 'boolean'
+      this.connection.forceNew &&
+      typeof this.connection.forceNew === 'boolean'
     ) {
-      this.clientOptions.forceNew = this.connection.force_new;
+      this.clientOptions.forceNew = this.connection.forceNew;
     }
 
     if (this.connection.path && !_string.isEmpty(this.connection.path))
@@ -148,6 +148,7 @@ export default class ConfigGenerator {
 
       if (certificate) {
         try {
+          // @ts-ignore
           this.clientOptions.ca = window.fc.file.read(certificate);
         } catch (e) {
           console.error('Error while reading file: ', e);
@@ -158,7 +159,7 @@ export default class ConfigGenerator {
 
   setPingInfo() {
     this.clientOptions.ping = this.connection.ping || false;
-    this.clientOptions.pingInterval = this.connection.ping_interval || 3000;
+    this.clientOptions.pingInterval = this.connection.pingInterval || 3000;
   }
 
   prepare() {
