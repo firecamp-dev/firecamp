@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import classnames from 'classnames';
 import { ConfirmationPopover } from '@firecamp/ui-kit';
 
@@ -11,11 +9,11 @@ const DirectoryNode = ({
   allowControls = true,
   isOpen = false,
   onClick,
-  onDelete = () => { },
+  onDelete = () => {},
   toggleRenaming,
   tabIndex,
   isRenaming,
-  renameComp
+  renameComp,
 }) => {
   // console.log(item, "item directory")
   let _onDelete = () => {
@@ -30,7 +28,10 @@ const DirectoryNode = ({
       tabIndex={tabIndex}
     >
       <div className={'collection_node-head'}>
-        <div className={classnames('collection_node-head-clickable')} onClick={onClick}>
+        <div
+          className={classnames('collection_node-head-clickable')}
+          onClick={onClick}
+        >
           {icon !== '' ? (
             <div className={classnames('collection_node-caret')}>
               {icon === 'folder' ? (
@@ -58,14 +59,16 @@ const DirectoryNode = ({
           {isRenaming ? (
             renameComp()
           ) : (
-            <div className={classnames('collection_node-name')}>{item.name || ''}</div>
+            <div className={classnames('collection_node-name')}>
+              {item.name || ''}
+            </div>
           )}
         </div>
         {!!allowControls ? (
           <div className={classnames('collection_node-action')}>
             <div
               className="collection_node-action-rename icon-rename"
-              onClick={_ => toggleRenaming(true)}
+              onClick={(_) => toggleRenaming(true)}
             />
 
             <ConfirmationPopover
@@ -75,7 +78,7 @@ const DirectoryNode = ({
               _meta={{
                 showDeleteIcon: false,
                 confirmButtonText: 'Yes',
-                cancelButtonText: 'No'
+                cancelButtonText: 'No',
               }}
               position={'top'}
               onConfirm={_onDelete}
@@ -87,7 +90,7 @@ const DirectoryNode = ({
         {nodemenu !== '' ? (
           <div className={classnames('collection_node-menu')}>{nodemenu}</div>
         ) : (
-          ''
+          <></>
         )}
       </div>
     </div>

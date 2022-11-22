@@ -1,3 +1,1 @@
-//@ts-nocheck
-
-export * as services from './src/services';
+export * as services from './src/services/request.service';

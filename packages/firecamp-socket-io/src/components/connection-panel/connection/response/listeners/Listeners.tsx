@@ -1,16 +1,11 @@
-//@ts-nocheck
-
 import { useState } from 'react';
 import classnames from 'classnames';
 import { Resizable } from '@firecamp/ui-kit';
-
 
 import Head from './Head';
 import Body from './Body';
 
 const Listeners = () => {
-
-
   let [isCollapsed, toggleCollapsed] = useState(false);
 
   return (
@@ -27,9 +22,7 @@ const Listeners = () => {
       )}
     >
       <Head toggleCollapsed={toggleCollapsed} />
-      <Body
-        toggleCollapsed={toggleCollapsed}
-      />
+      <Body toggleCollapsed={toggleCollapsed} />
     </Resizable>
   );
 };

@@ -1,6 +1,3 @@
-//@ts-nocheck
-
-import { useState, useContext, useEffect } from 'react';
 import { Column, Row,RootContainer } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 
@@ -15,8 +12,6 @@ const Emitter = ({
   playground = {},
   runtimeActiveConnection = ''
 }) => {
-  let { add: addCacheEmitter } = ctx_playgroundEmitterFns;
-
   let _setSelectedEmitter = (
     emitter = {
       _meta: { id: '' }
@@ -30,13 +25,13 @@ const Emitter = ({
 
     if (
       emitter?._meta?.id &&
-      !equal(_dnp.active_emitter, emitter._meta.id)
+      !equal(_dnp.activeEmitter, emitter._meta.id)
     ) {
       // tTODO: add logic to set active playground emitter
     }
 
     // console.log(`setOriginal`,setOriginal)
-    addCacheEmitter(emitter, setOriginal, appendExistingPayload, sendMessage);
+    // addCacheEmitter(emitter, setOriginal, appendExistingPayload, sendMessage);
   };
 
   return (

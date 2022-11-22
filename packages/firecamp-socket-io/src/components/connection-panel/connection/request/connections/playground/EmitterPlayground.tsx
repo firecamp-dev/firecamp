@@ -34,7 +34,7 @@ import {
   EditorCommands,
   ArgTypes,
   EnvelopeTypes,
-  InitPayload,
+  InitPlayground,
 } from '../../../../../../constants';
 import { ISocketStore, useSocketStore } from '../../../../../../store';
 
@@ -71,7 +71,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
   );
 
   let playgroundEmitter = useMemo(
-    () => playground?.emitter || InitPayload,
+    () => playground?.emitter || InitPlayground,
     [playground, activePlayground]
   );
 
@@ -184,7 +184,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
       }
   );
 
-  let [prevType, setPrevType] = useState(EEmitterPayloadTypes.no_body);
+  let [prevType, setPrevType] = useState(EEmitterPayloadTypes.noBody);
   let [isSelectTypeDDOpen, toggleSelectArgTypeDD] = useState(false);
   let [emitterBody, setEmitterBody] = useState('');
   // let [isMessageDirty, toggleMessageDirty] = useState(false);
@@ -276,7 +276,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
       items: ArgTypes
         ? _compact(
             ArgTypes.map((item) => {
-              if (item.id !== EEmitterPayloadTypes.no_body) {
+              if (item.id !== EEmitterPayloadTypes.noBody) {
                 return Object.assign({}, item, {
                   onClick: () => {
                     // setActiveArgType(item || "");
@@ -291,18 +291,18 @@ const EmitterPlayground = ({ tabData = {} }) => {
     }
   );
   /**
-   * On select argument type no_body
-   * check if last argument or not. If last argument then ask confirmation. else set argument type no_body.
+   * On select argument type noBody
+   * check if last argument or not. If last argument then ask confirmation. else set argument type noBody.
    * Confirmation modal:
-   *    on click confirm, remove all next arguments and set current argument type as no_body.
+   *    on click confirm, remove all next arguments and set current argument type as noBody.
    *    on click cancel, do nothing.
    */
   let _onSelectTypeNoBody = async () => {
     /**
-     * on confirm, set argument type as no_body, close dropdown and update emitter
+     * on confirm, set argument type as noBody, close dropdown and update emitter
      */
     let _onConfirm = () => {
-      setActiveArgType(EEmitterPayloadTypes.no_body);
+      setActiveArgType(EEmitterPayloadTypes.noBody);
       toggleSelectArgTypeDD(false);
       _playgroundEmitterFns.updateBody(
         {
@@ -310,7 +310,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
           path: '',
           meta: {
             envelope: '',
-            type: EEmitterPayloadTypes.no_body,
+            type: EEmitterPayloadTypes.noBody,
           },
         },
         false,
@@ -321,7 +321,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
     };
 
     /**
-     * Check if current argument is last argument or not. If last then set argument type as no_body.
+     * Check if current argument is last argument or not. If last then set argument type as noBody.
      */
     if (playgroundEmitter.body?.length - 1 === arg_ref.current) {
       _onConfirm();
@@ -335,7 +335,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
       await ctx_firecampFunctions.confirmationPopup({
         isOpen: true,
         title: 'Confirmation Required',
-        message: `After switching to no_body, all subsequent arguments will be removed (Revert by clicking on the Set Original button)`,
+        message: `After switching to noBody, all subsequent arguments will be removed (Revert by clicking on the Set Original button)`,
         note: 'Please confirm before switch type',
         _meta: {
           buttons: {
@@ -441,7 +441,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
      * Update emitter argument body payload
      * @param {*} payload : Updated body payload
      * @param {*} fromFile : true if body is updated from file
-     * @param {*} isNoBody : true if argument type set to no_body
+     * @param {*} isNoBody : true if argument type set to noBody
      * @returns
      */
     updateBody: (payload = {}, fromFile = false, isNoBody = false) => {
@@ -500,7 +500,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         playgroundEmitter.body &&
         playgroundEmitter.body.length === 5 &&
         playgroundEmitter.body[arg_ref.current]?.meta?.type ===
-          EEmitterPayloadTypes.no_body
+          EEmitterPayloadTypes.noBody
       ) {
         return;
       }
@@ -515,7 +515,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
           ...InitArg.meta,
           type:
             playgroundEmitter.body[arg_ref.current]?.meta?.type ||
-            EEmitterPayloadTypes.no_body,
+            EEmitterPayloadTypes.noBody,
           envelope:
             playgroundEmitter.body[arg_ref.current]?.meta?.type ===
               EEmitterPayloadTypes.arraybuffer ||
@@ -711,7 +711,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         activeEmitter={selectedCollectionEmitter}
         saveButtonHandler={saveButtonHandler}
         showEmitButton={
-          true /* activeArgType.id !== EEmitterPayloadTypes.no_body */
+          true /* activeArgType.id !== EEmitterPayloadTypes.noBody */
         }
         onEmit={_onEmit}
         setToOriginal={_setToOriginal}

@@ -1,24 +1,20 @@
-//@ts-nocheck
-
-import { useState, useEffect, memo } from 'react';
+import { useState, memo } from 'react';
 import { Container, Column } from '@firecamp/ui-kit';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { PANEL } from '../../../../constants';
 
 import ResponseBody from './ResponseBody';
-import ResConnTabs from './ResConnTabs';
 
 const Response = ({
   visiblePanel = '',
-  setVisiblePanel = () => {},
+  setVisiblePanel = (type) => {},
   eventsList = [],
 }) => {
-  let [isFS, setFS] = useState(false);
-  let [messagesAlignment, setMessagesAlignment] = useState('center');
 
-  let _setVisiblePanel = (e) => {
+  const [messagesAlignment] = useState('center');
+
+  const _setVisiblePanel = (e) => {
     if (e) e.preventDefault;
-
     if (visiblePanel === PANEL.RESPONSE) {
       setVisiblePanel(PANEL.ALL);
     } else {

@@ -1,14 +1,14 @@
 import { TId, ISocketIOEmitter, ERequestTypes } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
 
-import { InitPayload } from '../../constants';
+import { InitPlayground } from '../../constants';
 import { ELogColors, ELogTypes } from '../../types';
 
 const emptyLog = {
   title: '',
   message: {
     name: '',
-    body: InitPayload,
+    body: InitPlayground,
     _meta: {
       id: '',
       collectionId: '',

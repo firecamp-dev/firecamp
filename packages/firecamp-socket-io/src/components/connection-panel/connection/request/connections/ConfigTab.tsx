@@ -1,12 +1,15 @@
-//@ts-nocheck
-
-import { Container, CheckboxGroup, CheckboxInGrid, Input } from '@firecamp/ui-kit';
+import {
+  Container,
+  CheckboxGroup,
+  CheckboxInGrid,
+  Input,
+} from '@firecamp/ui-kit';
 
 const INPUT_TYPES = {
   text: 'text',
   boolean: 'boolean',
   number: 'number',
-  dropdown: 'dropdown'
+  dropdown: 'dropdown',
 };
 
 /**
@@ -22,46 +25,46 @@ const INPUT_TYPES = {
  * @type {*[]}
  */
 
-let connectionInputs = [
+const connectionInputs = [
   {
     name: 'forceNew',
     type: INPUT_TYPES.boolean,
     labelFor: 'Force new',
-    label: 'Force new'
+    label: 'Force new',
   },
   {
     name: 'namespace',
     type: INPUT_TYPES.text,
     labelFor: 'Namespace',
-    label: 'Namespace'
+    label: 'Namespace',
   },
   {
     name: 'path',
     type: INPUT_TYPES.text,
     labelFor: 'Path',
     label: 'Path',
-    placeholder: ''
+    placeholder: '',
   },
   {
     name: 'ping',
     type: INPUT_TYPES.boolean,
     labelFor: 'Ping',
     label: 'Ping',
-    placeholder: ''
+    placeholder: '',
   },
   {
     name: 'pingInterval',
     type: INPUT_TYPES.number,
     labelFor: 'Ping interval',
     label: 'Ping interval',
-    placeholder: ''
-  }
+    placeholder: '',
+  },
 ];
 
 const ConfigTab = ({
   connection = {},
   requestConfig = {},
-  onUpdate = (key, value) => {}
+  onUpdate = (key, value) => {},
 }) => {
   const transportCheckBoxes = [
     {
@@ -71,7 +74,7 @@ const ConfigTab = ({
         : false,
       label: 'Websocket',
       showLabel: true,
-      disabled: false
+      disabled: false,
     },
     {
       id: 'polling',
@@ -80,19 +83,25 @@ const ConfigTab = ({
         : false,
       label: 'Polling',
       showLabel: true,
-      disabled: false
-    }
+      disabled: false,
+    },
   ];
 
-  let _onChange = (name, value) => {
+  const _onChange = (name, value) => {
     if (!name) return;
     // console.log(`name`, name, value);
 
     onUpdate(name, value);
   };
 
-  let _renderElement = (element, index = 1) => {
-    let { name, type, labelFor, label, placeholder } = element;
+  const _renderElement = (element, index = 1) => {
+    let {
+      name,
+      type,
+      // labelFor,
+      label,
+      placeholder,
+    } = element;
 
     if (!type) return <span />;
 
@@ -114,14 +123,14 @@ const ConfigTab = ({
             placeholder={placeholder || ''}
             disabled={isDisabled}
             value={connection[name] || ''}
-            onChange={e => {
+            onChange={(e) => {
               if (e) {
                 e.preventDefault();
                 let { name, value } = e.target;
                 _onChange(name, value);
               }
             }}
-            min={type === INPUT_TYPES.number ? 0 : ''}
+            // min={type === INPUT_TYPES.number ? 0 : ''}
             isEditor={true}
           />
         );
@@ -134,7 +143,7 @@ const ConfigTab = ({
             isChecked={connection[name] || false}
             label={label}
             className="fc-input-wrapper"
-            onToggleCheck={_ => _onChange(name, !connection[name])}
+            onToggleCheck={(_) => _onChange(name, !connection[name])}
             disabled={name === 'pingInterval' && connection['ping'] !== true}
           />
         );
@@ -145,11 +154,11 @@ const ConfigTab = ({
     }
   };
 
-  let _handleSubmit = e => {
+  const _handleSubmit = (e) => {
     e && e.preventDefault();
   };
 
-  let _handleTransportsCheckBox = (value = {}) => {
+  const _handleTransportsCheckBox = (value = {}) => {
     let transports = Object.assign({}, connection['transports'] || {}, value);
     _onChange('transports', transports);
   };

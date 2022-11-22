@@ -1178,7 +1178,7 @@ const Socket = ({
             arg.name = arg?.payload?.name;
             arg.payload = await _file.readAsArrayBuffer(arg.payload);
           }
-          if (arg.meta.type !== EMITTER_PAYLOAD_TYPES.no_body) {
+          if (arg.meta.type !== EMITTER_PAYLOAD_TYPES.noBody) {
             args.push(arg);
           }
         }
@@ -1598,7 +1598,7 @@ const Socket = ({
 
         //TODO: update code arg wise
         /*if (
-                request.playground.type === "no_body" ||
+                request.playground.type === "noBody" ||
                 request.playground.type === EMITTER_PAYLOAD_TYPES.file
             ) {
               return;

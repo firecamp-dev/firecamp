@@ -58,7 +58,7 @@ const Body = ({
               }}
               // controlsConfig={{
               //   show:
-              //     activeArgType.id !== EEmitterPayloadTypes.no_body &&
+              //     activeArgType.id !== EEmitterPayloadTypes.noBody &&
               //     typeof playgroundBody === 'string' &&
               //     activeArgType.id !== EEmitterPayloadTypes.file,
               //   position: 'vertical'

@@ -1,13 +1,7 @@
-//@ts-nocheck
-
 import {
   Container,
-  TabHeader,
   DocButton,
   Button,
-  EButtonColor,
-  EButtonSize,
-  EButtonIconPosition,
   StatusBar,
 } from '@firecamp/ui-kit';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';

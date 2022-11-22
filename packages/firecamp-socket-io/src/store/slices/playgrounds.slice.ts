@@ -4,7 +4,7 @@ import { IExecutor } from '@firecamp/ws-executor/dist/esm';
 import { ISocketIOEmitter, TId } from '@firecamp/types';
 import { EConnectionState } from '../../types';
 import { _object } from '@firecamp/utils';
-import { InitPayload } from '../../constants';
+import { InitPlayground } from '../../constants';
 
 interface IEmitter extends ISocketIOEmitter {
   path: string;
@@ -201,7 +201,7 @@ const createPlaygroundsSlice = (
     let existingPlayground = get()?.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
-      updatedPlayground.emitter = InitPayload;
+      updatedPlayground.emitter = InitPlayground;
 
       set((s) => ({
         ...s,

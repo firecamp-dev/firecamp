@@ -1,12 +1,10 @@
-//@ts-nocheck
-
 import { TabHeader } from '@firecamp/ui-kit';
 
-const Head = ({ toggleCollapsed = () => {} }) => {
+const Head = ({ toggleCollapsed = (bool) => {} }) => {
   return (
     <TabHeader
       className="fc-collapse-btn-v3"
-      onClick={_ => {
+      onClick={() => {
         toggleCollapsed(false);
       }}
     >

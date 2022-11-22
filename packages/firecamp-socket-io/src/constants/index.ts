@@ -95,7 +95,7 @@ export const ResponseCollection = {
     event: '',
   },
 };
-export const InitPayload = {
+export const InitPlayground = {
   name: '',
   path: '',
   body: [

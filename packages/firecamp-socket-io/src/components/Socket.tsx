@@ -17,7 +17,7 @@ import {
   ISocketStore,
 } from '../store';
 import { IPushPayload } from '../store/slices';
-import { RequestConnection, InitPayload  } from '../constants';
+import { RequestConnection, InitPlayground  } from '../constants';
 import {
   EArgumentBodyType,
   EPushActionType,
@@ -567,7 +567,7 @@ const Socket = ({
         runtime: { activePlayground },
       } = socketStoreApi.getState();
 
-      playgroundEmitterFns.setToPlayground(InitPayload);
+      playgroundEmitterFns.setToPlayground(InitPlayground);
       setSelectedCollectionEmitter(activePlayground, '');
     },
   };
@@ -769,7 +769,7 @@ const withStore = (WrappedComponent) => {
             type: '',
             event: '',
           },
-          emitter: InitPayload,
+          emitter: InitPlayground,
           selectedCollectionEmitter: '',
           listeners: {},
         },

@@ -1,32 +1,24 @@
-//@ts-nocheck
-
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import {
   Input,
   Container,
   TabHeader,
   Button,
-  EButtonColor,
-  EButtonSize,
   Column,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-
-import { SocketContext } from '../../../../Socket.context';
-import { useSocketStore } from '../../../../../store';
+import { ISocketStore, useSocketStore } from '../../../../../store';
 
 import List from './List';
 
-const Body = ({ toggleCollapsed = () => {} }) => {
+const Body = ({ toggleCollapsed = (bool) => {} }) => {
   let {
     listeners,
     activePlayground,
     updatePlaygroundListenersValue,
-    playgrounds,
   } = useSocketStore(
-    (s) => ({
+    (s: ISocketStore) => ({
       updatePlaygroundListenersValue: s.updatePlayground,
-      playgrounds: s.playgrounds,
       listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
       activePlayground: s.runtime.activePlayground,
     }),
@@ -89,33 +81,33 @@ const Body = ({ toggleCollapsed = () => {} }) => {
 export default Body;
 
 const AddListener = ({ activePlayground = '' }) => {
-  let { updatePlaygroundListener } = useSocketStore(
-    (s) => ({
+  const { updatePlaygroundListener } = useSocketStore(
+    (s: ISocketStore) => ({
       updatePlaygroundListener: s.updatePlaygroundListener,
     }),
     shallow
   );
 
-  let [listenerName, setListenerName] = useState('');
+  const [listenerName, setListenerName] = useState('');
 
-  let _handleInputChange = (e) => {
+  const _handleInputChange = (e) => {
     if (e) {
       e.preventDefault();
-      let { value } = e.target;
+      const { value } = e.target;
       setListenerName(value);
     }
   };
 
-  let _handleKeyDown = (e) => {
+  const _handleKeyDown = (e) => {
     if (e && e.key === 'Enter') {
       _onAddListener(e);
     }
   };
 
-  let _onAddListener = (e) => {
+  const _onAddListener = (e) => {
     if (e) e.preventDefault();
 
-    let listener = listenerName.trim();
+    const listener = listenerName.trim();
     if (!listener) return;
 
     updatePlaygroundListener(activePlayground, listener, false);

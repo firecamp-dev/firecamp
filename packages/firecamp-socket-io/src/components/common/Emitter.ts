@@ -1,5 +1,3 @@
-//@ts-nocheck
-
 import mitt from 'mitt';
 export default class Emitter {
   constructor(e) {

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Container, TabHeader, Dropdown, Button } from '@firecamp/ui-kit';
 import { EEmitterPayloadTypes } from '../../../../../../types';
 const EmitterArgMeta = ({
-  ArgTypes = [],
+  argTypes = [],
   activeArgType = {},
   envelopeList = [],
   selectedEnvelope = {},
@@ -32,7 +32,7 @@ const EmitterArgMeta = ({
             />
           </Dropdown.Handler>
           <Dropdown.Options
-            options={ArgTypes || []}
+            options={argTypes || []}
             onSelect={onSelectArgType}
           />
         </Dropdown>

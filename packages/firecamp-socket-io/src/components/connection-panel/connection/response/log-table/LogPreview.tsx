@@ -1,6 +1,4 @@
-//@ts-nocheck
-
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import equal from 'deep-equal';
 import classnames from 'classnames';
 
@@ -127,10 +125,10 @@ const Header = ({ row = {}, emitterArg = {} }) => {
                   {row.meta.id || ''}
                 </div>
               ) : (
-                ''
+                <></>
               ),
             ]
-          : ''}
+          : <></>}
       </TabHeader.Left>
       <TabHeader.Right className="font-xs text-appForegroundInActive whitespace-pre">
         <span className="font-sm">
@@ -179,7 +177,7 @@ const Footer = ({
   return (
     <SecondaryTab
       list={tabs}
-      activeTab={selectedArgIndex || 0}
+      activeTab={selectedArgIndex.toString() || "0"}
       isBgTransperant={true}
       onSelect={setSelectedArgIndex}
     />
