@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { render, screen, waitFor, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { BasicTableData, DisableSortRow, DisableNewRow, DisableRemoveRow, DisableColumns } from "./BasicTable.stories";
@@ -59,9 +58,9 @@ describe("Table : ", () => {
     const tableRows = await getRenderedTableRow();
     tableRows.map((row: HTMLElement) => {
 
-      let SortElementContainerDiv = row.firstChild.firstChild;
+      let SortElementContainerDiv= row.firstChild.firstChild as HTMLElement ;
       expect(SortElementContainerDiv.className).toBe("flex");
-      let SortElement = within(row.firstChild).queryByTestId('row-sorter');
+      let SortElement = within(row.firstChild as HTMLElement).queryByTestId('row-sorter');
       return expect(SortElement.draggable).toBeTruthy();
 
     });
@@ -115,9 +114,9 @@ describe("Table : ", () => {
     mountDisableSortRowTableComponent()
     const tableRows = await getRenderedTableRow();
     tableRows.map((row: HTMLElement) => {
-      let SortElementContainerDiv = row.firstChild.firstChild;
+      let SortElementContainerDiv = row.firstChild.firstChild as HTMLElement;
       expect(SortElementContainerDiv.className).toBe("flex justify-center");
-      let SortElement = within(row.firstChild).queryByTestId('row-sorter');
+      let SortElement = within(row.firstChild as HTMLElement).queryByTestId('row-sorter');
       return expect(SortElement).toBeNull()
     });
   })
@@ -159,7 +158,7 @@ describe("Table : ", () => {
 
         if (col.key === "disable") {
           // For checkbox - styles updated of last child
-          let checkBoxElement = TableDataFirstElement.lastChild, checkBoxDiv = "";
+          let checkBoxElement = TableDataFirstElement.lastChild, checkBoxDiv;
           checkBoxElement.childNodes[0].childNodes.forEach(childElement => {
             if (childElement.nodeName == "DIV") checkBoxDiv = childElement;
           });

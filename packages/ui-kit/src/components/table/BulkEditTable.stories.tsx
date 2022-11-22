@@ -2,6 +2,7 @@ import { _array } from '@firecamp/utils';
 import { useState } from 'react';
 import { defaultData } from '../../../__mocks__/testData';
 import BulkEditTable from './BulkEditTable';
+import { IBulkEditTable } from './BulkEditTable.interfaces';
 import { ITableRows, TTableApi } from './primitive/table.interfaces';
 
 export default {
@@ -10,7 +11,7 @@ export default {
   argTypes: {},
 };
 
-const Template = ({...args}) => {
+const Template = ({...args}: IBulkEditTable) => {
   return (
     <BulkEditTable
     {...args}
@@ -31,8 +32,7 @@ const TemplateWithState = () => {
   );
 };
 
-// not able to render with @firecamp/ui-kit
-const TemplateWithRowChange = TemplateWithState.bind({})
+export const TemplateWithRowChange = TemplateWithState.bind({})
 
 export const WithTableOptions = Template.bind({});
 WithTableOptions.args = {
