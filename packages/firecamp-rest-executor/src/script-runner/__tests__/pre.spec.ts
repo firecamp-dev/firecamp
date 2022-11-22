@@ -7,17 +7,7 @@ import {
 import { postScript, preScript } from '../';
 
 const request: IRest = {
-  meta: {
-    name: 'script',
-    type: ERequestTypes.Rest,
-    version: '2.0.0',
-    active_body_type: ERestBodyTypes.NoBody,
-  },
   method: EHttpMethod.GET,
-  _meta: {
-    id: '',
-    collectionId: '',
-  },
   scripts: {
     pre: `request.addHeader('content-type', 'application/json')
         request.addQueryParam('id', '1')
@@ -25,6 +15,16 @@ const request: IRest = {
         environment.workspace.set('id', 1)`,
     post: `environment.collection.set('token', 123)
         environment.workspace.set('id', 1)`,
+  },
+  __meta: {
+    name: 'script',
+    type: ERequestTypes.Rest,
+    version: '2.0.0',
+    activeBodyType: ERestBodyTypes.NoBody,
+  },
+  __ref: {
+    id: '',
+    collectionId: '',
   },
 };
 

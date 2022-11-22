@@ -53,13 +53,13 @@ describe.skip('Message passing', () => {
 
     executor1.send({
       name: '',
-      meta: { type: EMessageBodyType.Text },
       body: 'hi',
-      _meta: {
+      __meta: { type: EMessageBodyType.Text },
+      __ref: {
         id: nanoid(),
         collectionId: nanoid(),
         requestType: ERequestTypes.WebSocket,
-        requestId: localServerRequest._meta.id,
+        requestId: localServerRequest.__ref.id,
       },
     });
   }, 60000);

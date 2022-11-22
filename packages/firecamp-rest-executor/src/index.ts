@@ -80,7 +80,7 @@ export default class RestExecutor implements IRestExecutor {
    * @param request: IRest
    */
   private async _prepare(request: IRest): Promise<AxiosRequestConfig> {
-    const { meta, body, config, headers, url } = request;
+    const { __meta, body, config, headers, url } = request;
 
     const axiosRequest: AxiosRequestConfig = {
       url: _url.parse(url?.raw || '', ['http', 'https']),
@@ -113,7 +113,7 @@ export default class RestExecutor implements IRestExecutor {
     // parse body payload
     axiosRequest.data = await parseBody(
       body || {},
-      meta?.active_body_type || ERestBodyTypes.NoBody
+      __meta.activeBodyType || ERestBodyTypes.NoBody
     );
 
     return axiosRequest;
