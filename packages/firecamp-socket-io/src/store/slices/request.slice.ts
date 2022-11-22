@@ -5,7 +5,7 @@ import {
   createUrlSlice,
   IConnectionsSlice,
   createConnectionSlice,
-} from '../index';
+} from '.';
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
@@ -58,9 +58,9 @@ const createRequestSlice = (
     }));
 
     // update config
-    get()?.changeMeta('on_connect_listeners', listeners);
+    get()?.changeMeta('onConnectListeners', listeners);
 
-    // perpare _root push action
+    // prepare _root push action
     get()?.prepareRootPushAction({ listeners: lastListeners }, { listeners });
   },
 

@@ -39,7 +39,7 @@ import {
   IUiSlice,
   IUi,
   createUiSlice,
-} from './index';
+} from './slices';
 import { _object } from '@firecamp/utils';
 
 const {

@@ -6,9 +6,7 @@ import _url from '@firecamp/url';
 
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
-
 import { SocketContext } from './Socket.context';
-
 import '../sass/socket.sass';
 
 import {
@@ -17,9 +15,8 @@ import {
   useSocketStoreApi,
   useSocketStore,
   ISocketStore,
-  IPushPayload,
 } from '../store';
-
+import { IPushPayload } from '../store/slices';
 import {
   REQUEST_CONNECTION,
   INIT_PLAYGROUND,
@@ -887,7 +884,7 @@ const withStore = (WrappedComponent) => {
           reconnectionDelay: 1000,
           reconnectionDelayMax: 5000,
           version: 'v4',
-          on_connect_listeners: [],
+          onConnectListeners: [],
         },
         connections: tabRequest.connections || [defaultConnection],
         meta: tabRequest.meta || {

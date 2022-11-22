@@ -33,7 +33,7 @@ export enum EPushActionConfigKeys {
   reconnectionDelayMax = 'reconnectionDelayMax',
   reconnection = 'reconnection',
   rejectUnauthorized = 'rejectUnauthorized',
-  on_connect_listeners = 'on_connect_listeners',
+  onConnectListeners = 'onConnectListeners',
 }
 
 export enum EPushAction_rootKeys {

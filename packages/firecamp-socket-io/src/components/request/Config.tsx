@@ -168,7 +168,7 @@ const Config = ({ config = {}, listeners = [] }) => {
         <Container>
           <OnConnectListeners
             listeners={listeners}
-            onConnectListeners={config.on_connect_listeners || []}
+            onConnectListeners={config.onConnectListeners || []}
           />
         </Container>
       </Container.Header>
