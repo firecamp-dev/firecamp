@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FC, useReducer } from 'react';
 
 
@@ -39,7 +40,7 @@ const Bearer: FC<IBearer> = ({ auth = {}, onChange = () => {} }) => {
     <form className="fc-form grid" onSubmit={_handleSubmit}>
     {(inputList || []).map((input, i) => {
       let errorMsg = '';
-      if (isDirty[input.id] && !auth?.[input.id]?.length) {
+      if (isDirty[input.id] && !auth?.[input.id as keyof IAuthBearer]?.length) {
         errorMsg = `${input.name} can not be empty`;
       }
       return (
@@ -55,7 +56,7 @@ const Bearer: FC<IBearer> = ({ auth = {}, onChange = () => {} }) => {
               : 'text'
           }
           placeholder={input.name || ''}
-          value={auth?.[input.id] || ''}
+          value={auth?.[input.id as keyof IAuthBearer] || ''}
           error={isDirty[input.id] && errorMsg ? errorMsg : ''}
           /* style={{
             borderColor:

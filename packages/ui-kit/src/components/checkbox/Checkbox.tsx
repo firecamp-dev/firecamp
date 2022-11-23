@@ -42,7 +42,8 @@ const Checkbox: FC<ICheckbox> = ({
         <div
           className={cx(
             'flex justify-center items-center cursor-pointer relative',
-            color
+            color,
+            {'opacity-50 cursor-default': disabled}
           )}
           tabIndex={-1}
         >
@@ -86,12 +87,12 @@ export default Checkbox;
 /**
  * Checkbox in table formate (grid)
  */
-const CheckboxInGrid = ({
+const CheckboxInGrid: FC<ICheckbox> = ({
   id = '',
   onToggleCheck = (l, v) => {},
   isChecked = false,
   label = '',
-  tabIndex = 0,
+  tabIndex = 0, //-1
   className = '',
   disabled = false,
   note = '',
@@ -112,7 +113,6 @@ const CheckboxInGrid = ({
         disabled={disabled}
         note={note}
         color={color}
-        tabIndex={-1}
       />
     </div>
   );

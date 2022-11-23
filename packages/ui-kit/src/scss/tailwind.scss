@@ -1213,6 +1213,7 @@ video {
 	width: 100%;
 }
 .w-max {
+	width: -webkit-max-content;
 	width: -moz-max-content;
 	width: max-content;
 }
@@ -1282,6 +1283,9 @@ video {
 }
 .cursor-pointer {
 	cursor: pointer;
+}
+.cursor-default {
+	cursor: default;
 }
 .resize-none {
 	resize: none;
@@ -2321,10 +2325,12 @@ hr{
   height: 100%;
 }
 .h-fit{
+  height: -webkit-fit-content;
   height: -moz-fit-content;
   height: fit-content;
 }
 .\!h-fit{
+  height: -webkit-fit-content !important;
   height: -moz-fit-content !important;
   height: fit-content !important;
 }
@@ -2367,6 +2373,7 @@ textarea:focus,textarea:focus-visible{
 	color: var(--error);
 }
 .w-fit {
+  width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;
 }
@@ -2649,6 +2656,7 @@ textarea:focus,textarea:focus-visible{
 }
 
 .collapsed {
+  height: -webkit-fit-content !important;
   height: -moz-fit-content !important;
   height: fit-content !important;
   min-height: 0px !important

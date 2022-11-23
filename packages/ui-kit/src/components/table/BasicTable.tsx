@@ -3,22 +3,26 @@ import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { useRef } from 'react';
+import cx from 'classnames';
 import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
-import Table, { TTableApi } from './primitive/Table';
+import Table from './primitive/Table';
+import { ITableRows, TRenderCell, TTableApi } from './primitive/table.interfaces';
+import { IBasicTable } from './BasicTable.interfaces';
+
 
 const BasicTable = ({
   name = '',
   rows = [],
   options = {},
-  onChange = (rs) => {},
-  onMount = (api) => {},
-}) => {
+  onChange = (rs: ITableRows) => {},
+  onMount = (api: TTableApi) => {},
+}: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
-    { id: 'select', key: 'disable', name: '', width: '40px' },
+    { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true},
     { id: 'key', key: 'key', name: 'Key', width: '100px' },
     { id: 'value', key: 'value', name: 'Value', width: '100px' },
     {
@@ -26,18 +30,12 @@ const BasicTable = ({
       key: 'description',
       name: 'Description',
       width: '150px',
+      resizeWithContainer: true
     },
-    { id: 'remove', key: '', name: '', width: 20 },
+    { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
   ];
 
-  const handleDrag = (a) => {
-    console.log(a);
-  };
-  const handleDrop = (a) => {
-    console.log(a);
-  };
-
-  const renderCell = (
+  const renderCell: TRenderCell<any> = (
     column,
     cellValue,
     rowIndex,
@@ -50,21 +48,17 @@ const BasicTable = ({
     switch (column.id) {
       case 'select':
         return (
-          <div style={{ display: 'flex' }}>
-            <span
+          <div className={cx("flex",{"justify-center":!options.allowSort})} >
+            {options.allowSort && (<span
+              className="flex"
               draggable={true}
               onDragStart={(e) => {
-                // console.log(e, trRef);
-                // const td = trRef.current.firstChild;
-                // console.log(td, td.contains(e.target))
-                // if(!td.contains(e.target)) e.preventDefault();
-                // else handleDrag(row.index);
-                handleDrag(row, rowIndex);
+                handleDrag(row);
               }}
-              className="flex drag-icon"
+              data-testid="row-sorter"
             >
-              <GrDrag className="text-appForeground " opacity={0.3} />
-            </span>
+              <GrDrag opacity={0.3} />
+            </span>)}
 
             <Checkbox
               isChecked={!cellValue}
@@ -165,8 +159,6 @@ const BasicTable = ({
             apiRef.current = tApi;
           }
         }}
-        handleDrag={handleDrag}
-        handleDrop={handleDrop}
         options={options}
       />
 
@@ -180,6 +172,7 @@ const BasicTable = ({
           sm
           transparent
           ghost
+          disabled={options.hasOwnProperty("allowRowAdd") && !options.allowRowAdd}
         />
       </div>
     </>

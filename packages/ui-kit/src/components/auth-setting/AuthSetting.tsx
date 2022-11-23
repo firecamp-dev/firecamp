@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FC, useState, Fragment, useEffect, useReducer } from 'react';
 import _compact from 'lodash/compact';
 import equal from 'deep-equal';

@@ -117,7 +117,9 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
               et.focus();
             } else {
               //todo:  this is experimental, if no Editor ref found then blur it naturally with browser DOM API
-              document.activeElement.blur();
+              if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+              }
             }
           } else {
             /**
@@ -143,7 +145,9 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
               et.focus();
             } else {
               //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
-              document.activeElement.blur();
+              if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+              }
             }
           }
           break;
@@ -363,7 +367,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
       ) : (
         <></>
       )}
-      <div className={cx(className)} style={style}>
+      <div className={cx(className, { 'opacity-50': disabled })} style={style}>
         <MonacoEditor
           language={language}
           defaultValue={value}

@@ -49,6 +49,8 @@ export interface IColumn {
   name: string;
   key: string;
   width?: string;
+  fixedWidth?: boolean;
+  resizeWithContainer?: boolean;
 }
 
 export type TTr = {
@@ -60,6 +62,7 @@ export type TTh = {
   children: ReactNode;
   className?: string;
   style?: TPlainObject;
+  additionalProp?: TPlainObject
 };
 export type TTd<R> = {
   row: R;
@@ -79,7 +82,7 @@ export type TRenderCell<R> = (
   index: number,
   row: R,
   tableApi: TTableApi,
-  onChange: (ck: string, cv: any, e: any) => void,
+  onChange: (ck: string, cv: any, e?: any ) => void,
   handleDrag: (row: R) => void,
   options?: ITableOptions
 ) => ReactNode;
@@ -90,9 +93,17 @@ export type TOnChangeCell = (
   e: any
 ) => void;
 export type TTableApi<R = any> = {
-  initialize: (rows: R[]) => void;
+  initialize: Function, //(rows: R[]) => void;
   getRows: () => R[];
   addRow: () => void;
   setRow: (row: R) => void;
   removeRow: (rowId: TsORn) => void;
 };
+
+type ITableRowValue = {
+    key: string;
+    value: string;
+    description: string;
+    disable?: boolean;
+};
+export type ITableRows = Array<ITableRowValue>;

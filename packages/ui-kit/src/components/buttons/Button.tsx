@@ -52,7 +52,8 @@ const Button: FC<IButton> = ({
                     'bg-transparent': transparent == true,
                     'flex-row': iconLeft,
                     'flex-row-reverse': iconRight,
-                    'hover:!bg-focusColor': ghost
+                    'hover:!bg-focusColor': ghost,
+                    'cursor-default': !!domProps?.disabled
                 },
                 className
             )}

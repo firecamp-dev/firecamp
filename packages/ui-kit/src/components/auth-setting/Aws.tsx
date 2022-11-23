@@ -41,7 +41,7 @@ const Aws: FC<IAws> = ({ auth , onChange = () => { } }) => {
     <form className="fc-form grid" onSubmit={_handleSubmit}>
     {(inputList || []).map((input, i) => {
       let errorMsg = '';
-      if (isDirty[input.id] && !auth?.[input.id]?.length) {
+      if (isDirty[input.id] && !auth?.[input.id as keyof IAuthAws4]?.length) {
         errorMsg = `${input.name} can not be empty`;
       }
       return (
@@ -58,7 +58,7 @@ const Aws: FC<IAws> = ({ auth , onChange = () => { } }) => {
           }
           placeholder={input.name}
           name={input.id}
-          value={auth?.[input.id] || ''}
+          value={auth?.[input.id as keyof IAuthAws4] || ''}
           error={errorMsg}
           /* style={{
             borderColor:
@@ -89,7 +89,7 @@ const Aws: FC<IAws> = ({ auth , onChange = () => { } }) => {
           }
           placeholder={input.name}
           name={input.id}
-          value={auth?.[input.id] || ''}
+          value={auth?.[input.id as keyof IAuthAws4] || ''}
           onChange={(e) => _handleChange(e, input.id)}
           isEditor={true}
         />

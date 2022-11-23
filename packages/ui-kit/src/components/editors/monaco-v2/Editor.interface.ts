@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface IEditor {
   id?: string | number;
 
@@ -39,6 +41,12 @@ export interface IEditor {
 
   /** apply class to editor's container */
   className?: string;
+
+  /** apply styles to editor's container */
+  style?: { [key: string]: any };
+
+  /** editor's loading element */
+  loading?: ReactNode;
 
   /** on load editor */
   editorDidMount?: (edt: any, monaco: any) => {};
