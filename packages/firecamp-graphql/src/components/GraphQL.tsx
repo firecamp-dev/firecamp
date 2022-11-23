@@ -148,15 +148,15 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       );
 
       // merged request payload: merged existing request and pull payload request
-      let updatedReqeust = (await getMergedRequestByPullAction(
+      let updatedRequest = (await getMergedRequestByPullAction(
         pullPayload
       )) as IGraphQL;
 
-      // console.log({ 111: updatedReqeust });
+      // console.log({ 111: updatedRequest });
 
-      updatedReqeust = await normalizeRequest(updatedReqeust, true);
+      updatedRequest = await normalizeRequest(updatedRequest, true);
 
-      // console.log({ updatedReqeust, mergedPullAndLastRequest });
+      // console.log({ updatedRequest, mergedPullAndLastRequest });
 
       // set last value by pull action and request
       setLast({
@@ -166,11 +166,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       });
 
       // get push action payload
-      let pushAction = await prepareRequestUpdatePushAction(updatedReqeust);
+      let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialiseRequest(updatedReqeust, true, pushAction, true, false);
+      initialiseRequest(updatedRequest, true, pushAction, true, false);
     } catch (error) {
       console.error({
         API: 'rest.handlePull',

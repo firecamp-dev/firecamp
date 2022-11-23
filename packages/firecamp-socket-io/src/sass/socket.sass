@@ -1,0 +1,79 @@
+.fc-push-message
+  padding: 8px
+  
+.fc-push-message label
+  font-size: 12px
+  font-weight: 500
+
+.fc-push-message label>span
+  color: var(--app-foreground-inactive)
+  font-weight: 300
+
+.fc-push-message-collection
+  display: flex
+  flex-direction: column
+
+.fc-push-message-collection .fc-collection
+  overflow: auto
+  height: 140px
+  flex: none
+
+.message-Preview
+  position: absolute
+  right: calc(100% + 1px)
+  top: 0px
+  background: var(--app-background-secondary)
+  padding: 4px 6px
+  border: 1px solid rgba(0,0,0,.2)
+  border-radius: 2px
+  min-width: 200px
+
+.message-Preview label
+  font-weight: 600
+  font-size: 12px
+
+.message-Preview .ace_editor
+  margin-bottom: 2px !important
+  background: transparent !important
+  opacity: 0.6
+  margin-left: -4px
+
+.message-Preview-header
+    display: flex
+    align-items: center
+    padding-bottom: 0px
+    border-bottom: 1px solid var(--app-border)
+    margin-bottom: 8px
+    font-size: 12px
+    font-weight: 500
+
+.message-Preview-header>span
+  color: var(--app-foreground-inactive)
+  margin-left: 4px
+  font-weight: 300
+
+.message-collection-header
+  display: flex
+  align-items: center
+  padding-bottom: 0px
+  border-bottom: 1px solid var(--app-border)
+
+.message-collection-header-title
+  font-weight: 600
+  flex: 1
+  font-size: 12px
+  text-transform: uppercase
+  opacity: 0.5
+
+.message-collection-header-add
+  font-size: 16px
+
+.fc-inline-popup
+  background: var(--app-background)
+  padding: 8px
+
+.message-collection-header ~ .fc-collection
+  margin-top: 8px
+
+.fc-chatboard-body > .autoSizer-container
+  height: calc(100vh - 130px) !important

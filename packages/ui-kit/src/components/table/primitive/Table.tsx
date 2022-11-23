@@ -349,12 +349,12 @@ const Td: FC<TTd<any>> = ({
   );
 };
 
-const _groupBy = (array: any[], key: string) => {
-  return array.reduce((pv, x) => {
-    (pv[x[key]] = pv[x[key]] || []).push(x);
-    return pv;
-  }, {});
-};
+// const _groupBy = (array: any[], key: string) => {
+//   return array.reduce((pv, x) => {
+//     (pv[x[key]] = pv[x[key]] || []).push(x);
+//     return pv;
+//   }, {});
+// };
 
 /**
  * array to object by any key of given object
@@ -370,11 +370,11 @@ const _keyBy = (array: any[], key: string) => {
  * create an array of given object's values (ignore keys)
  * { a: 1, b: 2 } => [1, 2]
  */
-const _valueBy = (obj: TPlainObject) => {
-  return Object.keys(obj).reduce((pv: any[], k: string | number) => {
-    return [...pv, obj[k]];
-  }, []);
-};
+// const _valueBy = (obj: TPlainObject) => {
+//   return Object.keys(obj).reduce((pv: any[], k: string | number) => {
+//     return [...pv, obj[k]];
+//   }, []);
+// };
 
 export default Table;
 export type { ITable, TTableApi };

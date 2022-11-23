@@ -2,10 +2,15 @@ import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { nanoid } from 'nanoid';
 import _reject from 'lodash/reject';
-import { ICollection, IFolder } from '@firecamp/types';
 import { _object, _string } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
-import { TId, IWorkspace, EWorkspaceType } from '@firecamp/types';
+import {
+  ICollection,
+  IFolder,
+  IWorkspace,
+  EWorkspaceType,
+  TId,
+} from '@firecamp/types';
 
 import { useEnvStore } from './environment';
 import AppService from '../services/app';

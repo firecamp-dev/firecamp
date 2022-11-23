@@ -8,7 +8,7 @@ import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table from './primitive/Table';
-import { TRenderCell, TTableApi } from './primitive/table.interfaces';
+import { ITableRows, TRenderCell, TTableApi } from './primitive/table.interfaces';
 import { IBasicTable } from './BasicTable.interfaces';
 
 
@@ -16,8 +16,8 @@ const BasicTable = ({
   name = '',
   rows = [],
   options = {},
-  onChange = (rs) => {},
-  onMount = (api) => {},
+  onChange = (rs: ITableRows) => {},
+  onMount = (api: TTableApi) => {},
 }: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
 

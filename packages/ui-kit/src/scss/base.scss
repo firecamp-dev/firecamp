@@ -232,6 +232,11 @@ body{
   font-weight: 400;
   font-family: var(--font-family)
 }
+
+.theme-dark .drag-icon 
+{
+    filter: invert(1);
+}
 .icon{
   font-family: 'icomoon' !important;
 }
@@ -504,7 +509,7 @@ textarea:focus,textarea:focus-visible{
   margin-left: -3px;
 }
 .fc-btn-collapse {
-  max-height: 33px !important;
+  max-height: 32px !important;
   border: 1px solid var(--app-border);
   max-width: 20px !important;
   position: absolute;
@@ -520,7 +525,7 @@ textarea:focus,textarea:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: 0px;
-  min-height: 33px !important;
+  min-height: 32px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -801,3 +806,37 @@ body .ace_editor .ace_scrollbar{
 .expandable-right-pane.expanded{
   transform: scaleX(1); 
 }
+
+/*--------table temporary css starts ------------*/
+.response-headers-table,.response-cookies-table {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.response-headers-table>div,.response-cookies-table>div {
+  display: table-row;
+}
+
+.response-headers-table>div>div,.response-cookies-table>div>div {
+  display: table-cell;
+  border: 1px solid var(--app-border);
+  border-collapse: collapse;
+  padding: 4px 8px;
+  font-size: 14px;
+  word-break: break-all;
+  color: var(--app-foreground-inactive);
+  user-select: text;
+}
+
+.response-headers-table>div:first-child,.response-cookies-table>div:first-child {
+  background: var(--focus-level-2);
+  font-weight: 600;
+}
+.response-headers-table>div:first-child>div,.response-cookies-table>div:first-child>div {
+  border-top: 0px solid transparent;
+}
+.response-headers-table>div>div:first-child,.response-cookies-table>div>div:first-child {
+  border-left: 0px solid transparent;
+}
+/*--------table temporary css starts ------------*/

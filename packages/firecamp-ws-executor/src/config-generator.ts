@@ -1,0 +1,148 @@
+import {
+  ICertificate,
+  IWebSocketConfig,
+  IWebSocketConnection,
+} from '@firecamp/types';
+import _url from '@firecamp/url';
+import ws from 'ws';
+import { _array, _string, _table } from '@firecamp/utils';
+
+import fetchCertificates from './ssl-manager';
+import { EClientOptions, EClientOptionsDefaultValues } from './constants';
+import { TExecutorOptions } from './executor.interface';
+
+export default class ConfigGenerator {
+  address: string;
+  protocols?: string | string[];
+  clientOptions: ws.ClientOptions & {
+    ping?: boolean;
+    pingInterval?: number;
+    /** default: false */
+    reconnect?: boolean;
+    /** default: 3000 */
+    reconnectTimeout?: number;
+    /** default: 3 */
+    reconnectAttempts?: number;
+  };
+  connection: IWebSocketConnection;
+  certificates: ICertificate[];
+  config: IWebSocketConfig;
+  constructor({ url, config, connection, certificates }: TExecutorOptions) {
+    this.address = url.raw;
+    this.protocols = [];
+    this.clientOptions = {
+      headers: {},
+      perMessageDeflate: false,
+      rejectUnauthorized: false,
+      ca: '',
+      followRedirects: true,
+      handshakeTimeout: 3000,
+      protocolVersion: 13,
+      origin: '',
+      maxPayload: 0,
+      maxRedirects: 10,
+    };
+    this.config = config || {};
+    this.connection = connection;
+    this.certificates = certificates;
+  }
+
+  checkBooleanValues() {
+    const keys = [
+      EClientOptions.reconnect,
+      EClientOptions.perMessageDeflate,
+      EClientOptions.rejectUnauthorized,
+      EClientOptions.followRedirects,
+    ];
+
+    keys.map((key) => {
+      if (
+        this.config.hasOwnProperty(key) &&
+        typeof this.config[key] === 'boolean'
+      ) {
+        this.clientOptions[key] = this.config[key];
+      } else this.clientOptions[key] = EClientOptionsDefaultValues[key];
+    });
+  }
+
+  checkStringValues() {
+    const keys = [
+      EClientOptions.ca,
+      EClientOptions.origin,
+      EClientOptions.maxPayload,
+    ];
+
+    keys.map((key) => {
+      if (key in this.config && !_string.isEmpty(this.config[key])) {
+        this.clientOptions[key] = this.config[key];
+      } else this.clientOptions[key] = EClientOptionsDefaultValues[key];
+    });
+  }
+
+  checkNumberValues() {
+    const keys = [
+      EClientOptions.reconnectAttempts,
+      EClientOptions.reconnectTimeout,
+      EClientOptions.handshakeTimeout,
+      EClientOptions.maxRedirects,
+      EClientOptions.maxPayload,
+      EClientOptions.protocolVersion,
+    ];
+
+    keys.map((key) => {
+      if (key in this.config && !isNaN(this.config[key])) {
+        this.clientOptions[key] = Number(this.config[key]);
+      } else this.clientOptions[key] = EClientOptionsDefaultValues[key];
+    });
+  }
+
+  setClientConfig() {
+    this.protocols = this.config.protocols;
+    this.checkBooleanValues();
+    this.checkStringValues();
+    this.checkNumberValues();
+  }
+
+  setHeaders() {
+    if (this.connection.headers && !_array.isEmpty(this.connection.headers)) {
+      this.clientOptions.headers = _table.toObject(this.connection.headers);
+    }
+  }
+
+  setCACertificate() {
+    if (this.config.rejectUnauthorized) {
+      const certificate = fetchCertificates(this.certificates, this.address);
+
+      if (certificate) {
+        try {
+          this.clientOptions.ca = window.fc.file.read(certificate);
+        } catch (e) {
+          console.error('Error while reading file: ', e);
+        }
+      }
+    }
+  }
+
+  setPingInfo() {
+    this.clientOptions.ping = this.connection.config?.ping || false;
+    this.clientOptions.pingInterval =
+      this.connection.config?.pingInterval || 3000;
+  }
+
+  prepare() {
+    this.setClientConfig();
+
+    this.setHeaders();
+    this.setPingInfo();
+
+    const parsedURL = _url.parse(this.address, ['http', 'ws']);
+
+    this.setCACertificate();
+
+    return {
+      address: parsedURL,
+      protocols: this.config.protocols,
+      clientOptions: this.clientOptions,
+    };
+  }
+}

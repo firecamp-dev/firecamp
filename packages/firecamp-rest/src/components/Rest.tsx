@@ -47,9 +47,9 @@ import {
 
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
-  let restStoreApi: any = useRestStoreApi();
+  const restStoreApi: any = useRestStoreApi();
 
-  let {
+  const {
     isFetchingRequest,
     initialise,
     changeAuthHeaders,
@@ -161,9 +161,9 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       );
 
       // merged request payload: merged existing request and pull payload request
-      let updatedReqeust = await getMergedRequestByPullAction(pullPayload);
+      let updatedRequest = await getMergedRequestByPullAction(pullPayload);
 
-      updatedReqeust = await normalizeRequest(updatedReqeust, true);
+      updatedRequest = await normalizeRequest(updatedRequest, true);
 
       // set last value by pull action and request
       setLast({
@@ -175,16 +175,16 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       // console.log({ req: restStoreApi.getState().request });
 
       // console.log({
-      //   'updatedReqeust on pull': updatedReqeust,
+      //   'updatedRequest on pull': updatedRequest,
       //   mergedPullAndLastRequest,
       // });
 
       // get push action payload
-      let pushAction = await prepareRequestUpdatePushAction(updatedReqeust);
+      let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialiseRequest(updatedReqeust, true, pushAction, true, false);
+      initialiseRequest(updatedRequest, true, pushAction, true, false);
     } catch (error) {
       console.error({
         API: 'rest.handlePull',
@@ -194,10 +194,10 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   };
 
   useEffect(() => {
-    let _fetchRequest = async () => {
+    const _fetchRequest = async () => {
       try {
-        let isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalise: IRest = {
+        const isRequestSaved = !!tab?.request?._meta?.id || false;
+        let requestToNormalize: IRest = {
           meta: {
             name: '',
             version: '2.0.0',
@@ -211,12 +211,12 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            let response = await platformContext.request.onFetch(
+            const response = await platformContext.request.onFetch(
               tab.request._meta.id
             );
             // console.log({response});
 
-            requestToNormalise = response.data;
+            requestToNormalize = response.data;
           } catch (error) {
             console.error({
               API: 'fetch rest request',
@@ -227,7 +227,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         }
 
         initialiseRequest(
-          requestToNormalise,
+          requestToNormalize,
           isRequestSaved,
           _cloneDeep(emptyPushAction),
           false,
@@ -246,17 +246,17 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   }, []);
 
   /**
-   * initialiseRequest: normalise request and initialise in store on tab load and manage pull
+   * initialiseRequest: normalize request and initialise in store on tab load and manage pull
    */
   const initialiseRequest = async (
-    requestToNormalise: IRest,
+    requestToNormalize: IRest,
     isRequestSaved: boolean,
     pushAction?: IPushAction,
     hasPull?: boolean,
     isFresh?: boolean
   ) => {
     let request: IRestClientRequest = await normalizeRequest(
-      requestToNormalise,
+      requestToNormalize,
       isRequestSaved
     );
 

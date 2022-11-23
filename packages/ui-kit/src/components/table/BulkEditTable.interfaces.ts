@@ -1,31 +1,28 @@
-import { ITableOptions } from './primitive/table.interfaces';
+import { IRowCellMeta } from './BasicTable.interfaces';
+import { ITableOptions, TTableApi } from './primitive/table.interfaces';
 
 export interface IBulkEditTable {
-  /**
-   * Bulk-edit row values
-   */
+  /** id for table */
+  id?: string;
+
+  /** row values*/
   rows: Array<IRowCellMeta>;
 
-  /**
-   * Whether row is disable or not. If true then no one can modify data
-   */
+  /** whether row is disable or not. If true then no one can modify data */
   disabled?: boolean;
 
-  /**
-   * Table title
-   */
+  /** title of table */
   title: string;
 
-  /**
-   * Updated table values
-   */
+  /** updated table values */
   onChange: (updatedRows: Array<IRowCellMeta>) => void;
 
   /** on mount table callback to expose table api */
-  onMount: (tApi) => void;
+  onMount?: (tApi: TTableApi) => void;
 
-  /**
-   * Table meta data
-   */
+  /** table options */
   options?: ITableOptions;
+
+  /** debounce the changes */
+  debounce?: number;
 }

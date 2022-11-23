@@ -22,10 +22,10 @@ import {
   IRestClientRequest,
 } from '../types';
 import { _array, _object } from '@firecamp/utils';
-import { normalizePushPaylaod } from '../services/rest-service';
+import { normalizePushPayload } from '../services/rest-service';
 
 /**
- * Referance: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
+ * @reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
  */
 
 const emptyPushAction = {
@@ -245,7 +245,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
     // console.log({ request });
 
-    let requestToPush = await normalizePushPaylaod(request);
+    let requestToPush = await normalizePushPayload(request);
 
     pushPayload = { ...requestToPush };
     pushPayload._action = {
@@ -269,25 +269,25 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
     let request: IRestClientRequest = get().request;
 
-    let updatedReqeust = {};
+    let updatedRequest = {};
 
     // console.log({ pushAction, request });
     for (let key in pushAction) {
       if (key === '_root') {
-        updatedReqeust = {
-          ...updatedReqeust,
+        updatedRequest = {
+          ...updatedRequest,
           ..._object.pick(request, pushAction[key]),
         };
       } else if (key !== '_removed' && key in request) {
-        updatedReqeust[key] = _object.pick(request[key], pushAction[key]);
+        updatedRequest[key] = _object.pick(request[key], pushAction[key]);
       }
     }
 
     let pushPayload: IPushPayload = {};
-    // console.log({ updatedReqeust });
+    // console.log({ updatedRequest });
 
-    let requestToPush = await normalizePushPaylaod(
-      updatedReqeust,
+    let requestToPush = await normalizePushPayload(
+      updatedRequest,
       pushAction._removed
     );
 
@@ -309,7 +309,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
       workspace_id: '',
       keys: pushAction,
     };
-    // console.log({ updatedReqeust });
+    // console.log({ updatedRequest });
 
     return Promise.resolve(pushPayload);
   },

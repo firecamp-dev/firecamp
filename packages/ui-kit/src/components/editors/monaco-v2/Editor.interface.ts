@@ -27,6 +27,12 @@ export interface IEditor {
   /** monaco path */
   path?: string;
 
+  /** when lang is typescript then provide extra types for auto completion and preview comments */
+  addExtraLib?: {
+    typeDefinition: string;
+    path: string;
+  };
+
   /** monaco editor options */
   monacoOptions?: any;
 

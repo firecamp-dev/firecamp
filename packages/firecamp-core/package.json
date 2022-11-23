@@ -61,7 +61,7 @@
     "@firecamp/cookie-manager": "^0.0.0",
     "@firecamp/graphql": "^0.0.0",
     "@firecamp/rest": "^0.0.0",
-    "@firecamp/types": "^0.0.11",
+    "@firecamp/types": "^0.0.16",
     "@firecamp/ui-kit": "0.0.1",
     "@firecamp/url": "^0.0.15",
     "@sentry/browser": "7.17.2",

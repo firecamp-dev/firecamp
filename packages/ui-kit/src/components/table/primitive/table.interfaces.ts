@@ -37,12 +37,12 @@ export interface IRow<R> {
   index: number;
   columns: IColumn[];
   row: R;
-  tableApi: TTableApi;
+  tableApi?: TTableApi;
   options?: ITableOptions;
   renderCell: TRenderCell<R>;
   onChangeCell: TOnChangeCell;
-  handleDrag: (row: R) => void;
-  handleDrop: (row: R) => void;
+  handleDrag: (row: R, index?: number) => void;
+  handleDrop: (row: R) => any;
 }
 export interface IColumn {
   id: string;

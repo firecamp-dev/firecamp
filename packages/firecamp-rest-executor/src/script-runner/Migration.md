@@ -248,5 +248,5 @@ request.getQueries();
 // or
 
 // return queries list
-request.url.query_params;
+request.url.queryParams;
 ```

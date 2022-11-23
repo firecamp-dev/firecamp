@@ -1,6 +1,14 @@
-import { FC, useEffect, useState, ReactNode, useRef, Fragment, memo } from 'react';
 import {
-  ColumnResizeMode,
+  FC,
+  useEffect,
+  useState,
+  ReactNode,
+  useRef,
+  Fragment,
+  memo,
+} from 'react';
+import {
+  // ColumnResizeMode,
   getCoreRowModel,
   useReactTable,
   flexRender,
@@ -73,7 +81,7 @@ const Table: FC<ITable> = ({
 
   //get the width of container div in pixels
   useEffect(() => {
-    if (!containerDivRef.current) return;
+    if (!containerDivRef.current) return () => {};
     const resizeObserver = new ResizeObserver(() => {
       setContainerWidth(containerDivRef.current.clientWidth);
     });

@@ -34,7 +34,14 @@
     // "emitDecoratorMetadata": true /* Enables experimental support for emitting type metadata for decorators. */,
 
     // "lib": ["es2016", "dom", "es5"],
-    "types": ["node", "@types/jest", "jest", "@types/chrome", "chrome"],
+    "types": [
+      "node",
+      "@types/jest",
+      "jest",
+      "@types/chrome",
+      "chrome",
+      "mocha"
+    ],
     "typeRoots": ["node_modules/@types", "node_modules/@firecamp/types"]
   },
   "include": ["src/**/*.ts"],
