@@ -8,9 +8,12 @@ import Button from '../buttons/Button';
 import Checkbox from '../checkbox/Checkbox';
 import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
 import Table from './primitive/Table';
-import { ITableRows, TRenderCell, TTableApi } from './primitive/table.interfaces';
+import {
+  ITableRows,
+  TRenderCell,
+  TTableApi,
+} from './primitive/table.interfaces';
 import { IBasicTable } from './BasicTable.interfaces';
-
 
 const BasicTable = ({
   name = '',
@@ -22,7 +25,7 @@ const BasicTable = ({
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
-    { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true},
+    { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
     { id: 'key', key: 'key', name: 'Key', width: '100px' },
     { id: 'value', key: 'value', name: 'Value', width: '100px' },
     {
@@ -30,7 +33,7 @@ const BasicTable = ({
       key: 'description',
       name: 'Description',
       width: '150px',
-      resizeWithContainer: true
+      resizeWithContainer: true,
     },
     { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
   ];
@@ -48,17 +51,19 @@ const BasicTable = ({
     switch (column.id) {
       case 'select':
         return (
-          <div className={cx("flex",{"justify-center":!options.allowSort})} >
-            {options.allowSort && (<span
-              className="flex"
-              draggable={true}
-              onDragStart={(e) => {
-                handleDrag(row);
-              }}
-              data-testid="row-sorter"
-            >
-              <GrDrag opacity={0.3} />
-            </span>)}
+          <div className={cx('flex drag', { 'justify-center': !options.allowSort })}>
+            {options.allowSort && (
+              <span
+                className="flex drag-icon"
+                draggable={true}
+                onDragStart={(e) => {
+                  handleDrag(row);
+                }}
+                data-testid="row-sorter"
+              >
+                <GrDrag opacity={0.3} />
+              </span>
+            )}
 
             <Checkbox
               isChecked={!cellValue}
@@ -172,7 +177,9 @@ const BasicTable = ({
           sm
           transparent
           ghost
-          disabled={options.hasOwnProperty("allowRowAdd") && !options.allowRowAdd}
+          disabled={
+            options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
+          }
         />
       </div>
     </>
