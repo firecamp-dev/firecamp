@@ -1,6 +1,4 @@
-// @ts-nocheck
-
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from 'react-responsive-modal';
 import {
   Container,
@@ -10,13 +8,13 @@ import {
   Row,
   Resizable,
   Tabs,
-  MultiLineIFE
+  Editor
 } from '@firecamp/ui-kit';
-import FCSnippet from '@firecamp/code-snippets'
-import MessageNode from './MessageNode';
-import DirectoryNode from './DirectoryNode';
+// import FCSnippet from '@firecamp/code-snippets'
+// import MessageNode from './MessageNode';
+// import DirectoryNode from './DirectoryNode';
 
-let initConfig = {
+const initConfig = {
   url: 'ws://echo.websocket.org',
   protocols: ['echo', 'echo2'],
   options: {
@@ -36,7 +34,7 @@ let initConfig = {
 };
 
 const SnippetModal = ({
-  collection: prop_collection = {},
+  collection: prop_collection,
   meta,
   isOpen = false,
   activeMessage = '',
@@ -134,7 +132,7 @@ const SnippetModal = ({
 
   useEffect(() => {
     // console.log(`state.activeTab`, state.activeTab)
-    _getSnippet(state.activeMessage, state.activeTab);
+    // _getSnippet(state.activeMessage, state.activeTab);
   }, [state.activeTab, state.activeMessage]);
 
   useEffect(() => {
@@ -173,31 +171,31 @@ const SnippetModal = ({
     });
   };
 
-  let _getSnippet = async (message, aTab) => {
-    if (!message || !aTab) return;
+  // let _getSnippet = async (message, aTab) => {
+  //   if (!message || !aTab) return;
 
-    let config = (await generateRequestConfig()) || initConfig;
-    let fcs = new FCSnippet(
-      Object.assign({}, config, { message }),
-      'websocketv2',
-      aTab.toLowerCase()
-    );
-    fcs
-      .res()
-      .then(r => {
-        // console.log(r);
-        setState({
-          ...state,
-          snippet: r
-        });
-      })
-      .catch(er => console.log(er));
-  };
+  //   let config = (await generateRequestConfig()) || initConfig;
+  //   let fcs = new FCSnippet(
+  //     Object.assign({}, config, { message }),
+  //     'websocketv2',
+  //     aTab.toLowerCase()
+  //   );
+  //   fcs
+  //     .res()
+  //     .then(r => {
+  //       // console.log(r);
+  //       setState({
+  //         ...state,
+  //         snippet: r
+  //       });
+  //     })
+  //     .catch(er => console.log(er));
+  // };
 
   let { tabs, activeTab, snippet, editorMode } = state;
 
   return (
-    <Modal open={isOpen} onClose={_ => onClose(false)}>
+    <Modal open={isOpen} onClose={() => onClose(false)}>
       <Container className="fc-modal">
         <Container.Header className="fc-modal-head" key="head">
           Websocket Code Snippet
@@ -277,13 +275,13 @@ const SnippetModal = ({
                   />
                 </Container.Header>
                 <Container.Body>
-                  <MultiLineIFE
+                  <Editor
                     value={snippet}
                     language={editorMode || 'typescript'}
                     disabled={true}
-                    controlsConfig={{
-                      show: true
-                    }}
+                    // controlsConfig={{
+                    //   show: true
+                    // }}
                     monacoOptions={{
                       name: 'message',
                       width: '100%',
