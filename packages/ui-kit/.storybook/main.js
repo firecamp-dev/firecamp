@@ -39,6 +39,12 @@ module.exports = {
       include: path.resolve(__dirname, '../'),
     });
 
+    config.module.rules.push({
+        test: /\.txt$/,
+        use: ['raw-loader'],
+        include: path.resolve(__dirname, '../'),
+    })
+
     // config.resolve.alias = {
     //   ...config.resolve.alias,
     //   "https": path.join(__dirname, "../../../node_modules/@types/node/https")
