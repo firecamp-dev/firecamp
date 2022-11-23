@@ -7,7 +7,6 @@ import ConnectionTab from './connection/ConnectionTab';
 import { ISocketStore, useSocketStore } from '../../store';
 
 const ConnectionPanel = ({ visiblePanel = '' }) => {
-
   const {
     activePlayground,
     playgroundTabs,
@@ -48,6 +47,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     <Container>
       <Container.Header className="z-20">
         <Tabs
+          className="hidden"
           list={playgroundTabs}
           activeTab={activePlayground}
           onSelect={_onSelectConnectionTab}

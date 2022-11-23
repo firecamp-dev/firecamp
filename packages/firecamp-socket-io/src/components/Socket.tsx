@@ -27,6 +27,8 @@ import {
 import { _array } from '@firecamp/utils';
 import { useEffect } from 'react';
 import { EConnectionState } from '../types'
+import EmitterCollection from './request/emitter/EmitterCollection'
+import SidebarPanel from './sidebar-panel/SidebarPanel'
 
 const Socket = ({
   firecampFunctions = {},
@@ -683,9 +685,7 @@ const Socket = ({
           </Container.Header>
           <Container.Body>
             <Row flex={1} overflow="auto" className="with-divider h-full">
-              {/* <EmitterCollection
-                tab={tab}
-              /> */}
+              <SidebarPanel />
               <Column className="h-full">
                 <ConnectionPanel />
               </Column>

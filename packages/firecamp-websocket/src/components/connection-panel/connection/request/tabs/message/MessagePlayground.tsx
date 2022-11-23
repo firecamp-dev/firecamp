@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useContext, useState, useEffect, useRef, useMemo } from 'react';
 import _compact from 'lodash/compact';
 import {
@@ -127,7 +126,6 @@ const MessagePlayground = ({
   );
 
   let {
-    ctx_wsFns,
     ctx_playgroundMessageFns,
     ctx_commonFns,
 
@@ -826,10 +824,10 @@ const SaveMessage = ({
   isSaved = false,
   // fromCollection = false,
 
-  onSubmit = () => {},
+  onSubmit = (msg) => {},
   onUpdate = () => {},
-  onAddDirectory = () => {},
-  toggleOpenPopover = () => {},
+  onAddDirectory = (dir) => {},
+  toggleOpenPopover = (bool) => {},
 }) => {
   let [messageName, set_message_name] = useState('');
   // let [is_popover_open, toggle_popover] = useState(false);

@@ -8,16 +8,16 @@ import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
 import {
-  IWebsocketStore,
-  useWebsocketStore,
-  useWebsocketStoreApi,
+  ISocketStore,
+  useSocketStore,
+  useSocketStoreApi,
 } from '../../../store';
 
 const CollectionTab = () => {
   let treeRef = useRef();
 
-  const { folders = [], items = [] } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  const { folders = [], items = [] } = useSocketStore(
+    (s: ISocketStore) => ({
       folders: s.collection.folders,
       items: s.collection.items,
     }),
@@ -29,7 +29,7 @@ const CollectionTab = () => {
     // unRegisterTDP,
     openPlayground,
     deleteItem,
-  } = useWebsocketStoreApi().getState() as IWebsocketStore;
+  } = useSocketStoreApi().getState() as ISocketStore;
 
   // console.log(items, 'items...');
 
@@ -42,7 +42,7 @@ const CollectionTab = () => {
 
   const openPlg = (plgId) => {
     // get a fresh copy of state
-    const item = items.find((i) => i.__ref.id == plgId);
+    const item = items.find((i) => i._meta.id == plgId);
     console.log(item, 1100099);
     openPlayground(item);
   };
@@ -68,11 +68,11 @@ const CollectionTab = () => {
       expanded={true}
       bodyClassName={'!p-0'}
       headerTitleRenderer={() => {
-        return <span>Message Collection</span>;
+        return <span>Emitter Collection</span>;
       }}
       headerActionRenderer={() => {
         return (
-          <ToolBar>
+          <ToolBar> 
             <div className="action">
               <VscRefresh size={14} className="mr-2 cursor-pointer" />
             </div>
@@ -88,8 +88,8 @@ const CollectionTab = () => {
             <div className="items-center">
               <Empty
                 // icon={<VscFolder size="40" />}
-                title="No saved messages"
-                message="This WebSocket request does not have any saved messages.."
+                title="No saved emitters"
+                message="This Socket.io request does not have any saved emitters.."
               />
             </div>
           );

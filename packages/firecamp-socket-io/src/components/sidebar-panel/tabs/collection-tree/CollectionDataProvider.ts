@@ -1,4 +1,4 @@
-import { IRequestFolder, TId, IWebSocketMessage } from '@firecamp/types';
+import { IRequestFolder, TId, ISocketIOEmitter } from '@firecamp/types';
 import mitt from 'mitt';
 import {
   Disposable,
@@ -28,7 +28,7 @@ type TItemExtra_meta = {
 };
 
 type TFolderItem = Partial<IRequestFolder & TItemExtra_meta>;
-type TItem = Partial<IWebSocketMessage & TItemExtra_meta>;
+type TItem = Partial<ISocketIOEmitter & TItemExtra_meta>;
 type TCItem = TFolderItem | TItem;
 
 export class CollectionTreeDataProvider<T = TTreeItemData>

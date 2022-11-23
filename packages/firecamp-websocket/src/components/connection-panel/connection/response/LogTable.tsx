@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, FC } from 'react';
 import {
   Container,
   TabHeader,
@@ -14,7 +13,7 @@ import {
 import shallow from 'zustand/shallow';
 import classnames from 'classnames';
 
-import { useWebsocketStore } from '../../../../store';
+import { IWebsocketStore, useWebsocketStore } from '../../../../store';
 import { ELogTypes } from '../../../../types';
 
 const logTypes = {
@@ -28,11 +27,10 @@ const LogTable = () => {
     activePlayground,
     typeFilter,
     connectionLogs,
-
     changePlaygroundLogFilters,
     clearAllConnectionLogs,
   } = useWebsocketStore(
-    (s) => ({
+    (s: IWebsocketStore) => ({
       activePlayground: s.runtime.activePlayground,
       typeFilter:
         s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
@@ -44,7 +42,7 @@ const LogTable = () => {
     shallow
   );
 
-  let logTableAPIRef = useRef();
+  let logTableAPIRef = useRef({});
 
   let [tableHeight, setTableHeight] = useState(465);
   let [selectedRow, setSelectedRow] = useState();
@@ -269,7 +267,7 @@ const LogTable = () => {
 
 export default LogTable;
 
-const LogPreview = ({ activePlayground = '', row = {} }) => {
+const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
   const value =
     row?.message?.meta?.type !== 'file'
       ? row?.message?.payload || row?.title || ''

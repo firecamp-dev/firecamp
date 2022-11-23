@@ -1,5 +1,5 @@
 import { _array } from '@firecamp/utils';
-import { defaultData } from '../table-old/rt8/TableData';
+// import { defaultData } from '../table-old/rt8/TableData';
 
 import BasicTable from './BasicTable';
 
@@ -12,7 +12,7 @@ export default {
 const Template = ({}) => {
   return (
     <BasicTable
-      initialRows={defaultData}
+      // initialRows={defaultData}
       onChange={console.log}
       // onLoad={(tApi) => {}}
     />
