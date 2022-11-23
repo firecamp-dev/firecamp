@@ -180,7 +180,7 @@ const LogTable = () => {
   return (
     <Container>
       <Container.Header>
-        <TabHeader className="height-small tab-with-collapse-btn border-b border-appBorder">
+        <TabHeader className="height-small border-b border-appBorder">
           <TabHeader.Left>
             <label className="m-0 text-sm font-bold whitespace-pre">
               Filter Logs:{' '}
@@ -240,16 +240,16 @@ const LogTable = () => {
         </TabHeader>
       </Container.Header>
       <Container.Body overflow="hidden">
-        <Row className="with-divider flex flex-col h-full">
-          <Resizable
+      <Resizable
             bottom={true}
-            height={tableHeight}
+            height="100%"
             width="100%"
             maxHeight={500}
             minHeight={100}
             onResizeStop={_onResizeStop}
+            className="bg-focus-3"
           >
-            <Column flex={1}>
+            <Column flex={1} overflow="hidden">
               {/* <LTable
                 rows={[]}
                 onChange={(rows) => {
@@ -262,7 +262,7 @@ const LogTable = () => {
               /> */}
               <ReactTable
                 key={activePlayground}
-                virtualListHeight={tableHeight - 40} //  40 is an estimated height of table header
+                virtualListHeight={tableHeight} //  40 is an estimated height of table header
                 columns={columns}
                 onLoad={(tableAPI) => {
                   logTableAPIRef.current = tableAPI;
@@ -272,8 +272,7 @@ const LogTable = () => {
             </Column>
           </Resizable>
 
-          <LogPreview activePlayground={activePlayground} row={selectedRow} />
-        </Row>
+      <LogPreview activePlayground={activePlayground} row={selectedRow} />
       </Container.Body>
     </Container>
   );
@@ -295,7 +294,7 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
   const language = row?.message?.meta?.type === 'json' ? 'json' : 'text';
 
   return (
-    <Column flex={1} minHeight={100} className="bg-appBackground2">
+    <Column flex={1} minHeight={100} height="100%" className="bg-appBackground2">
       <Container className="bg-focus2">
         <Container.Header className="bg-focus2">
           <TabHeader

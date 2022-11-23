@@ -148,9 +148,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           'fc-collapsed': visiblePanel === EPanel.Response,
         })}
       >
-        <Column className="h-full">
-          <Response key={activePlayground} />
-        </Column>
+        <Response key={activePlayground} />
       </Resizable>
     </Row>
   );
