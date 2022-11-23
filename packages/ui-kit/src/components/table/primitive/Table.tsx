@@ -52,7 +52,7 @@ const Table: FC<ITable<any>> = ({
 
   const containerDivRef = useRef<HTMLTableElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
-  
+
   //get the width of container div in pixels
   useEffect(() => {
     if (!containerDivRef.current) return;
@@ -222,20 +222,23 @@ const Table: FC<ITable<any>> = ({
           <Tr className="border text-base text-left font-semibold bg-focus2">
             {columns.map((c, i) => {
               return (
-                <Th style={{ 
-                  width: c.resizeWithContainer ? '100%' : parseInt(c.width),
-                  minWidth: (
-                     (!c.fixedWidth && c.resizeWithContainer &&
-                  containerWidth > tableRef.current?.clientWidth) ? 
-                      parseInt(c.width) +
-                      (containerWidth - tableRef.current.clientWidth - 4) :
-                     c.width)
-                   }} key={i}
-                   additionalProp={{
-                    "data-allow_resize": !c.fixedWidth,
-                    "data-initial_width": c.width
-                   }}
-                   >
+                <Th
+                  style={{
+                    width: c.resizeWithContainer ? '100%' : parseInt(c.width),
+                    minWidth:
+                      !c.fixedWidth &&
+                      c.resizeWithContainer &&
+                      containerWidth > tableRef.current?.clientWidth
+                        ? parseInt(c.width) +
+                          (containerWidth - tableRef.current.clientWidth - 4)
+                        : c.width,
+                  }}
+                  key={i}
+                  additionalProp={{
+                    'data-allow_resize': !c.fixedWidth,
+                    'data-initial_width': c.width,
+                  }}
+                >
                   {renderColumn(c)}
                 </Th>
               );
@@ -316,9 +319,18 @@ const Tr: FC<TTr> = ({ className = '', children, style = {} }) => {
   );
 };
 
-const Th: FC<TTh> = ({ children, className = '', style = {}, additionalProp = {} }) => {
+const Th: FC<TTh> = ({
+  children,
+  className = '',
+  style = {},
+  additionalProp = {},
+}) => {
   return (
-    <th className={cx('p-1 border border-appBorder', className)} style={style} {...additionalProp}>
+    <th
+      className={cx('p-1 border border-appBorder', className)}
+      style={style}
+      {...additionalProp}
+    >
       {children}
     </th>
   );
@@ -387,17 +399,16 @@ const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
         // Add a resizer element to the column
         const resizer = document.createElement('div');
         resizer.classList.add('pt-resizer');
-        resizer.dataset.testid = "col-resizer";
+        resizer.dataset.testid = 'col-resizer';
 
         // Set the height
         resizer.style.height = `${table.offsetHeight}px`;
 
         //add resizer element to the cols whose width are not fixed
-        if(col.dataset.allow_resize === "true"){
+        if (col.dataset.allow_resize === 'true') {
           col.appendChild(resizer);
           createResizableColumn(col, resizer);
         }
-        
       });
     };
 
@@ -420,8 +431,8 @@ const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
       const mouseMoveHandler = (e: MouseEvent) => {
         const dx = e.clientX - x;
         //prevent resize when new width is less than the provided col width
-        if((w + dx) >= parseInt(col.dataset.initial_width))
-        col.style.minWidth = `${w + dx}px`;
+        if (w + dx >= parseInt(col.dataset.initial_width))
+          col.style.minWidth = `${w + dx}px`;
       };
 
       const mouseUpHandler = () => {

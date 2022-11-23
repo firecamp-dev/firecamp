@@ -8,6 +8,7 @@ import {
   Resizable,
   Button,
   ReactTable,
+  // LogTable as LTable,
   Editor,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
@@ -26,7 +27,7 @@ const LogTable = () => {
   let {
     activePlayground,
     typeFilter,
-    connectionLogs,
+    logs,
     changePlaygroundLogFilters,
     clearAllConnectionLogs,
   } = useWebsocketStore(
@@ -34,7 +35,7 @@ const LogTable = () => {
       activePlayground: s.runtime.activePlayground,
       typeFilter:
         s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
-      connectionLogs: s.connectionsLogs?.[s.runtime.activePlayground] || [],
+      logs: s.connectionsLogs?.[s.runtime.activePlayground] || [],
 
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
       clearAllConnectionLogs: s.clearAllConnectionLogs,
@@ -42,7 +43,8 @@ const LogTable = () => {
     shallow
   );
 
-  let logTableAPIRef = useRef({});
+  const logTableAPIRef = useRef({});
+  // const lLogTableApiRef = useRef({});
 
   let [tableHeight, setTableHeight] = useState(465);
   let [selectedRow, setSelectedRow] = useState();
@@ -59,17 +61,25 @@ const LogTable = () => {
       return filteredLogs;
     };
 
-    let filteredLogs = getFilteredLogsByMeta(connectionLogs, typeFilter);
-
+    const filteredLogs = getFilteredLogsByMeta(logs, typeFilter);
+    // const newLogs = filteredLogs.map((l) => {
+    //   const { meta, message, title } = l;
+    //   return {
+    //     message,
+    //     title,
+    //     ...meta,
+    //   };
+    // });
+    // lLogTableApiRef.current?.initialize(newLogs);
     logTableAPIRef?.current?.setRows(filteredLogs);
-  }, [connectionLogs, typeFilter, activePlayground]);
+  }, [logs, typeFilter, activePlayground]);
 
-  let _onClearAllMessages = () => {
+  const _onClearAllMessages = () => {
     clearAllConnectionLogs(activePlayground);
     setSelectedRow({});
   };
 
-  let _onRowClick = (rtRow) => {
+  const _onRowClick = (rtRow) => {
     let originalRowValue = rtRow.original;
     setSelectedRow((ps) => ({
       ...originalRowValue,
@@ -77,7 +87,7 @@ const LogTable = () => {
     }));
   };
 
-  let _onResizeStop = (e, a, b, delta) => {
+  const _onResizeStop = (e, a, b, delta) => {
     console.log(e, 'event', delta);
     setTableHeight((ps) => ps + delta.height);
   };
@@ -96,12 +106,8 @@ const LogTable = () => {
       ></span>
     );
   };
-  const TimeColumn = ({ value, cell, ...rest }) => {
-    // console.log(rest, 9888)
-    return <>{new Date(value).toLocaleTimeString()}</>;
-  };
 
-  let columns = [
+  const columns = [
     {
       id: 'iconcolumn',
       Header: 'Type',
@@ -163,11 +169,9 @@ const LogTable = () => {
   ];
 
   /**
-   * On Filter connection log, update dropdown value and zustand store for connection
-   * @param {*} filter : Filter value
-   * @returns
+   * On Filter connection log, update dropdown value and store for connection
    */
-  let _onFilter = (filter = '') => {
+   const _onFilter = (filter = '') => {
     if (typeFilter !== filter) {
       changePlaygroundLogFilters(activePlayground, { type: filter });
     }
@@ -246,6 +250,16 @@ const LogTable = () => {
             onResizeStop={_onResizeStop}
           >
             <Column flex={1}>
+              {/* <LTable
+                rows={[]}
+                onChange={(rows) => {
+                  console.log(rows, 'log table change');
+                }}
+                onMount={(tApi) => {
+                  lLogTableApiRef.current = tApi;
+                  console.log(tApi);
+                }}
+              /> */}
               <ReactTable
                 key={activePlayground}
                 virtualListHeight={tableHeight - 40} //  40 is an estimated height of table header
@@ -266,6 +280,11 @@ const LogTable = () => {
 };
 
 export default LogTable;
+
+const TimeColumn = ({ value, cell, ...rest }) => {
+  // console.log(rest, 9888)
+  return <>{new Date(value).toLocaleTimeString()}</>;
+};
 
 const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
   const value =

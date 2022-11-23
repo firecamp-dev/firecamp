@@ -81,6 +81,7 @@ export { default as BulkEditTable } from './components/table/BulkEditTable';
 export { default as PrimitiveTable } from './components/table/primitive/Table';
 export { default as BasicTable } from './components/table/BasicTable';
 export { default as MultipartTable } from './components/table/MultipartTable';
+export { default as LogTable } from './components/table/LogTable';
 export type { ITable, TTableApi } from './components/table/primitive/Table';
 
 // Url
