@@ -5,15 +5,6 @@ const WsRequest: IWebSocket = {
   url: {
     raw: 'wss://localhost:3002/api/ws',
   },
-  _meta: {
-    collectionId: nanoid(),
-    id: nanoid(),
-  },
-  meta: {
-    name: '',
-    type: ERequestTypes.WebSocket,
-    version: '2.0.0',
-  },
   config: {
     maxRedirects: 3,
   },
@@ -27,6 +18,15 @@ const WsRequest: IWebSocket = {
       },
     },
   ],
+  __meta: {
+    name: '',
+    type: ERequestTypes.WebSocket,
+    version: '2.0.0',
+  },
+  __ref: {
+    collectionId: nanoid(),
+    id: nanoid(),
+  },
 };
 
 export default WsRequest;

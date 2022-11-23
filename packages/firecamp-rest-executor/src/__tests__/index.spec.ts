@@ -16,17 +16,17 @@ describe('rest executor', () => {
         ],
         pathParams: [],
       },
-      _meta: {
-        id: '',
-        collectionId: '',
-      },
-      meta: {
-        active_body_type: ERestBodyTypes.NoBody,
+      method: EHttpMethod.GET,
+      __meta: {
         name: '',
+        activeBodyType: ERestBodyTypes.NoBody,
         type: ERequestTypes.Rest,
         version: '2.0.0',
       },
-      method: EHttpMethod.GET,
+      __ref: {
+        id: '',
+        collectionId: '',
+      },
     });
 
     expect(response.statusCode).toEqual(200);
@@ -39,16 +39,6 @@ describe('rest executor', () => {
       url: {
         raw: 'https://jsonplaceholder.typicode.com/posts',
       },
-      _meta: {
-        id: '',
-        collectionId: '',
-      },
-      meta: {
-        active_body_type: ERestBodyTypes.Json,
-        name: '',
-        type: ERequestTypes.Rest,
-        version: '2.0.0',
-      },
       headers: [
         {
           key: 'content-type',
@@ -60,6 +50,16 @@ describe('rest executor', () => {
         'application/json': {
           value: JSON.stringify({ msg: 'Hi' }),
         },
+      },
+      __meta: {
+        activeBodyType: ERestBodyTypes.Json,
+        name: '',
+        type: ERequestTypes.Rest,
+        version: '2.0.0',
+      },
+      __ref: {
+        id: '',
+        collectionId: '',
       },
     });
 
@@ -76,19 +76,19 @@ describe('rest executor', () => {
       url: {
         raw: 'https://localhost:3002/api/http/methods',
       },
-      _meta: {
-        id: '',
-        collectionId: '',
-      },
-      meta: {
-        active_body_type: ERestBodyTypes.NoBody,
-        name: '',
-        type: ERequestTypes.Rest,
-        version: '2.0.0',
-      },
       method: EHttpMethod.GET,
       config: {
         reject_unauthorized: false,
+      },
+      __meta: {
+        name: '',
+        activeBodyType: ERestBodyTypes.NoBody,
+        type: ERequestTypes.Rest,
+        version: '2.0.0',
+      },
+      __ref: {
+        id: '',
+        collectionId: '',
       },
     });
 
@@ -103,19 +103,19 @@ describe('rest executor', () => {
         url: {
           raw: 'https://localhost:3002/api/http/methods',
         },
-        _meta: {
-          id: '',
-          collectionId: '',
+        method: EHttpMethod.GET,
+        config: {
+          reject_unauthorized: true,
         },
-        meta: {
-          active_body_type: ERestBodyTypes.NoBody,
+        __meta: {
+          activeBodyType: ERestBodyTypes.NoBody,
           name: '',
           type: ERequestTypes.Rest,
           version: '2.0.0',
         },
-        method: EHttpMethod.GET,
-        config: {
-          reject_unauthorized: true,
+        __ref: {
+          id: '',
+          collectionId: '',
         },
       })
       .catch((error) => {

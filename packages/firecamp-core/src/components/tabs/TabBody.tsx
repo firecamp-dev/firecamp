@@ -18,11 +18,11 @@ const GraphQL = lazy(() =>
 const WSClient = lazy(() =>
   import('@firecamp/websocket').then((module) => ({ default: module.WSClient }))
 );
-// const SocketIOClient = lazy(() =>
-//   import('@firecamp/socket.io').then((module) => ({
-//     default: module.SocketIOClient,
-//   }))
-// );
+const SocketIOClient = lazy(() =>
+  import('@firecamp/socket.io').then((module) => ({
+    default: module.SocketIOClient,
+  }))
+);
 
 import EnvironmentWidget from '../common/environment/environment-widget/EnvironmentWidget';
 import ErrorPopup from '../common/error-boundary/ErrorPopup';
@@ -89,13 +89,13 @@ const TabBody = ({ tabObj, index, activeTab }) => {
           </Suspense>
         );
         break;
-      // case ERequestTypes.SocketIO:
-      //   return (
-      //     <Suspense fallback={<div>Loading... </div>}>
-      //       {/* <SocketIOClient {...tabProps} /> */}
-      //     </Suspense>
-      //   );
-      //   break;
+      case ERequestTypes.SocketIO:
+        return (
+          <Suspense fallback={<Loader />}>
+            <SocketIOClient {...tabProps} />
+          </Suspense>
+        );
+        break;
       case ERequestTypes.WebSocket:
         return (
           <Suspense fallback={<Loader />}>
