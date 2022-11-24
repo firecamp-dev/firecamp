@@ -59,7 +59,7 @@ describe("Table : ", () => {
     tableRows.map((row: HTMLElement) => {
 
       let SortElementContainerDiv= row.firstChild.firstChild as HTMLElement ;
-      expect(SortElementContainerDiv.className).toBe("flex");
+      expect(SortElementContainerDiv).toHaveClass("flex drag");
       let SortElement = within(row.firstChild as HTMLElement).queryByTestId('row-sorter');
       return expect(SortElement.draggable).toBeTruthy();
 
@@ -115,7 +115,7 @@ describe("Table : ", () => {
     const tableRows = await getRenderedTableRow();
     tableRows.map((row: HTMLElement) => {
       let SortElementContainerDiv = row.firstChild.firstChild as HTMLElement;
-      expect(SortElementContainerDiv.className).toBe("flex justify-center");
+      expect(SortElementContainerDiv).toHaveClass("flex drag justify-center");
       let SortElement = within(row.firstChild as HTMLElement).queryByTestId('row-sorter');
       return expect(SortElement).toBeNull()
     });

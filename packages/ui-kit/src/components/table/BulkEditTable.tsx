@@ -21,7 +21,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
   disabled = false, //unused prop
   title = '',
   onChange = () => {},
-  options = { mode: {} },
+  options,
   onMount,
 }) => {
   const [mode, setMode] = useState(modes.Table);

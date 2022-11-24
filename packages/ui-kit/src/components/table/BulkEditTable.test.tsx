@@ -2,13 +2,11 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { WithTableOptions, TemplateWithRowChange } from "./BulkEditTable.stories";
-import ResizeObserver from "../../../__mocks__/ResizeObserver";
-import { dragAndDrop, dropAndMove, mouseDrop, mouseUp, click } from "../../../__mocks__/eventMock";
 import { _array } from '@firecamp/utils';
-import { defaultData, _columns } from '../../../__mocks__/testData';
+import ResizeObserver from "../../../__mocks__/ResizeObserver";
+import { click } from "../../../__mocks__/eventMock";
 
 window.ResizeObserver = ResizeObserver;
-
 
 describe("Table : ", () => {
 
@@ -16,18 +14,40 @@ describe("Table : ", () => {
   
   const getRenderedTable = () => screen.getByRole('table');
 
-  const getAllColumnHeading = () => screen.getAllByRole('columnheader');
-  const getAllColumnHeadingResizableElement = () => screen.findAllByTestId('col-resizer');
+  test('Table should render with provided title along with header containing BulkEdit button ', () => {
+    let {container} = mountTableComponent();
+    
+    //validate the table title if not empty
+    let headerDiv = container.getElementsByClassName("fc-tab-panel-header")[0];
+    let titleElement = headerDiv.getElementsByTagName("span")[0];
+    if(WithTableOptions.args.title !== ""){
+      expect(titleElement.textContent).toBe(WithTableOptions.args.title);
+    }
+    
+    //At initial time buttonelement text should be "Bulk Edit";
+    let buttonElement = screen.getByText("Bulk Edit");
+    expect(buttonElement).toBeInTheDocument();
 
-  const getTableBody = () => screen.getAllByRole('rowgroup');
-  const getRenderedTableRow = async () => within(getTableBody()[1]).findAllByRole("row");
-  const getAllSortableRow = async () => (await screen.findAllByTestId('row-sorter')).map(ele => ele.parentElement.parentElement);
-  const getAllSortableRowElement = () => screen.findAllByTestId('row-sorter');
-
-  test('Table should render with provided title', () => {
-    mountTableComponent();
-    let titleElement = screen.getByText(WithTableOptions.args.title); 
-    console.log(`getElement byt tile`, titleElement)
     expect(getRenderedTable()).toBeInTheDocument();
   });
+
+  test('Table should switch to editor when BulkEdit button from header is clicked', async () => {
+    let {container} = mountTableComponent();
+    
+    //At initial time buttonelement text should be "Bulk Edit";
+    let SwitchButton = screen.getAllByRole('button');
+    await click(SwitchButton[0]);
+    
+    expect(SwitchButton[0].textContent).toBe("Key-Value Edit")
+    // console.log(`tableComponent`, SwitchButton[0].textContent);
+    // expect(tableComponent).not.toBeInTheDocument();
+    
+  });
 })
+
+//@ts-nocheck
+//SingleLineEditor
+//BulkEditTable
+//Editor
+//firecamp.completion-provider.ts
+//firecamp.hover-provider.ts
