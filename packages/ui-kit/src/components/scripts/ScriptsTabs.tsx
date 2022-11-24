@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FC, useState, useMemo } from 'react';
 import { Container, SecondaryTab, Checkbox, Editor } from '@firecamp/ui-kit';
 import {

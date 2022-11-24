@@ -31,14 +31,3 @@ describe("Table : ", () => {
     expect(getRenderedTable()).toBeInTheDocument();
   });
 })
-
-//@ts-nocheck
-// ActionItem, AuthSetting, OAuth2, Bearer, Digest,
-// CMGQueryEditor, monaco-v2/Editor, 
-// editors/monaco/lang/firecamp.completion-provider
-// editors/monaco/lang/firecamp.hover-provider
-// monaco-v2/Editor
-// monaco-v2/SingleLineEditor
-// ConfirmationPopover
-// ScriptsTabs
-// MultipartTable

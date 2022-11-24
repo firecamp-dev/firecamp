@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { useEffect, FC } from 'react';
 import cx from 'classnames';
 import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";

@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { _env } from '@firecamp/utils'
 
 const mockVariables = _env.mockVariablesList.reduce((c, d) => {

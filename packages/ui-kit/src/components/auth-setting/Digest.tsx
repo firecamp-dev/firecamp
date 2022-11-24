@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FC, useReducer } from 'react';
 import {
   Button,

@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FC, useState, useReducer, useEffect, Key } from 'react';
 import {
   Dropdown,

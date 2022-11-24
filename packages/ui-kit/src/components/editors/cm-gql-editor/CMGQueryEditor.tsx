@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FC } from "react";
 import MD from 'markdown-it';
 const md = new MD();

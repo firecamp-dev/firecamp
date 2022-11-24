@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';

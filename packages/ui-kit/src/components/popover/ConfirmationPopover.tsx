@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FC } from 'react';
 import { useState, useEffect } from 'react';
 import { Button, Popover } from '@firecamp/ui-kit';
