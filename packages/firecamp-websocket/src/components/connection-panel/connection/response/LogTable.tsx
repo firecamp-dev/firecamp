@@ -13,6 +13,7 @@ import {
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import classnames from 'classnames';
+import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 
 import { IWebsocketStore, useWebsocketStore } from '../../../../store';
 import { ELogTypes } from '../../../../types';
@@ -46,8 +47,8 @@ const LogTable = () => {
   const logTableAPIRef = useRef({});
   // const lLogTableApiRef = useRef({});
 
-  let [tableHeight, setTableHeight] = useState(465);
-  let [selectedRow, setSelectedRow] = useState();
+  const [tableHeight, setTableHeight] = useState(465);
+  const [selectedRow, setSelectedRow] = useState();
 
   useEffect(() => {
     const getFilteredLogsByMeta = (logs = [], filter) => {
@@ -76,7 +77,7 @@ const LogTable = () => {
 
   const _onClearAllMessages = () => {
     clearAllConnectionLogs(activePlayground);
-    setSelectedRow({});
+    setSelectedRow(null);
   };
 
   const _onRowClick = (rtRow) => {
@@ -171,7 +172,7 @@ const LogTable = () => {
   /**
    * On Filter connection log, update dropdown value and store for connection
    */
-   const _onFilter = (filter = '') => {
+  const _onFilter = (filter = '') => {
     if (typeFilter !== filter) {
       changePlaygroundLogFilters(activePlayground, { type: filter });
     }
@@ -183,7 +184,12 @@ const LogTable = () => {
         <TabHeader className="height-small border-b border-appBorder">
           <TabHeader.Left>
             <label className="m-0 text-sm font-bold whitespace-pre">
-              Filter Logs:{' '}
+              Event Logs
+            </label>
+          </TabHeader.Left>
+          <TabHeader.Right>
+            <label className="m-0 text-sm font-bold whitespace-pre">
+              Filter:
             </label>
             <div className="flex items-center">
               {/* <label className="m-0 text-base font-bold">Type</label> */}
@@ -224,33 +230,28 @@ const LogTable = () => {
                 ''
               )}
             </div>
-          </TabHeader.Left>
-          <TabHeader.Right>
             <div className="flex">
-              {/*<span className="iconv2-pause-icon"></span>
-              <span className="iconv2-filter-icon"></span>*/}
-              <span
-                id={`websocket-io-clear-response-log-${activePlayground}`}
-                className="iconv2-clear-icon"
+              <VscCircleSlash
+                className="cursor-pointer"
+                title="clear logs"
                 onClick={_onClearAllMessages}
-                data-tip={'Clear all logs'}
-              ></span>
+              />
             </div>
           </TabHeader.Right>
         </TabHeader>
       </Container.Header>
       <Container.Body overflow="hidden">
-      <Resizable
-            bottom={true}
-            height="100%"
-            width="100%"
-            maxHeight={500}
-            minHeight={100}
-            onResizeStop={_onResizeStop}
-            className="bg-focus-3"
-          >
-            <Column flex={1} overflow="hidden">
-              {/* <LTable
+        <Resizable
+          bottom={true}
+          height="100%"
+          width="100%"
+          maxHeight={500}
+          minHeight={100}
+          onResizeStop={_onResizeStop}
+          className="bg-focus-3"
+        >
+          <Column flex={1} overflow="hidden">
+            {/* <LTable
                 rows={[]}
                 onChange={(rows) => {
                   console.log(rows, 'log table change');
@@ -260,19 +261,19 @@ const LogTable = () => {
                   console.log(tApi);
                 }}
               /> */}
-              <ReactTable
-                key={activePlayground}
-                virtualListHeight={tableHeight} //  40 is an estimated height of table header
-                columns={columns}
-                onLoad={(tableAPI) => {
-                  logTableAPIRef.current = tableAPI;
-                }}
-                onRowClick={_onRowClick}
-              />
-            </Column>
-          </Resizable>
+            <ReactTable
+              key={activePlayground}
+              virtualListHeight={tableHeight} //  40 is an estimated height of table header
+              columns={columns}
+              onLoad={(tableAPI) => {
+                logTableAPIRef.current = tableAPI;
+              }}
+              onRowClick={_onRowClick}
+            />
+          </Column>
+        </Resizable>
 
-      <LogPreview activePlayground={activePlayground} row={selectedRow} />
+        <LogPreview activePlayground={activePlayground} row={selectedRow} />
       </Container.Body>
     </Container>
   );
@@ -294,7 +295,12 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
   const language = row?.message?.meta?.type === 'json' ? 'json' : 'text';
 
   return (
-    <Column flex={1} minHeight={100} height="100%" className="bg-appBackground2">
+    <Column
+      flex={1}
+      minHeight={100}
+      height="100%"
+      className="bg-appBackground2"
+    >
       <Container className="bg-focus2">
         <Container.Header className="bg-focus2">
           <TabHeader
