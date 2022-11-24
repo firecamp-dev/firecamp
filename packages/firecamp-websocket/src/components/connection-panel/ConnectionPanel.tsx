@@ -17,7 +17,6 @@ const ConnectionPanel = () => {
   const {
     activePlayground,
     playgroundTabs,
-
     setActivePlayground,
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({

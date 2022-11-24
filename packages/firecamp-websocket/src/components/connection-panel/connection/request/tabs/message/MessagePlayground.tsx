@@ -10,11 +10,13 @@ import {
   Dropdown,
   Editor,
   Input,
-  ConfirmationPopover,
+  // ConfirmationPopover,
   Popover,
-  EPopoverPosition,
+  // EPopoverPosition,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
+import { _object } from '@firecamp/utils';
+import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
 
@@ -27,7 +29,6 @@ import {
   initialPlaygroundMessage,
   IWebsocketStore,
 } from '../../../../../../store/index';
-import { _object } from '@firecamp/utils';
 
 const EDITOR_COMMANDS = {
   SAVE: {
@@ -633,7 +634,7 @@ const MessagePlayground = ({
 
   return (
     <Container className="h-full">
-      <Container.Header>
+      {/* <Container.Header>
         <TabHeader className="height-small collection-path-wrapper with-border-top !px-2">
           <TabHeader.Left>
             <div className="collection-path">{message.path || `./`}</div>
@@ -707,7 +708,7 @@ const MessagePlayground = ({
             </Popover>
           </TabHeader.Right>
         </TabHeader>
-      </Container.Header>
+      </Container.Header> */}
       <Container.Header className="message-playground-scrollable top invisible-scrollbar ">
         <TabHeader className="height-small">
           <TabHeader.Left className="invisible-scrollbar">
@@ -766,6 +767,15 @@ const MessagePlayground = ({
             )}
           </TabHeader.Left>
           <TabHeader.Right>
+            <Button
+              icon={<VscFile size={12} className="ml-1" />}
+              onClick={() => {}}
+              secondary
+              iconCenter
+              xs
+              text="Save"
+              iconRight
+            />
             <SendButton onSend={_onSendMessage} />
           </TabHeader.Right>
         </TabHeader>
