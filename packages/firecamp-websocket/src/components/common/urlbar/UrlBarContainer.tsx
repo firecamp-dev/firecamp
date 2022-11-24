@@ -8,6 +8,7 @@ import {
   IWebsocketStore,
   useWebsocketStore,
 } from '../../../store/index';
+import ConnectButton from '../connection/ConnectButton';
 
 const UrlBarContainer = ({
   tab,
@@ -149,6 +150,7 @@ const UrlBarContainer = ({
         />
       </UrlBar.Body>
       <UrlBar.Suffix>
+        <ConnectButton sm={true}/>
         <Button
           id={`save-request-${tab.id}`}
           text="Save"
