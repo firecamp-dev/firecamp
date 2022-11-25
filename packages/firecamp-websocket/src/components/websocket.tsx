@@ -204,12 +204,12 @@ const Websocket = ({
         const isRequestSaved = !!tab?.request?._meta?.id || false;
         let requestToNormalize: IWebSocket = {
           url: { raw: '' },
-          meta: {
+          __meta: {
             name: '',
             version: '2.0.0',
             type: ERequestTypes.WebSocket,
           },
-          _meta: { id: id(), collectionId: '' },
+        __ref: { id: id(), collectionId: '' },
         };
 
         if (isRequestSaved === true) {
@@ -407,19 +407,19 @@ const Websocket = ({
     addDirectory: (folder: IRequestFolder) => {
       const {
         name,
-        _meta: { collectionId, requestId, folderId },
+        __ref: { collectionId, requestId, folderId },
       } = folder;
       const _id = id();
       const _folder: IRequestFolder = {
         name,
-        _meta: {
+        __ref: {
           id: _id,
           collectionId,
           folderId,
           requestId,
           requestType: ERequestTypes.WebSocket,
         },
-        meta: {
+        __meta: {
           fOrders: [],
           iOrders: [],
         },
@@ -838,13 +838,6 @@ const Websocket = ({
   return (
     <WebsocketContext.Provider
       value={{
-        //props
-        // ctx_firecampFunctions: firecampFunctions,
-        // ctx_constants: propConstants,
-        // ctx_tabData: tab,
-
-        //prop components
-        // ctx_additionalComponents: prop_additionalComponents,
 
         //functions
         ctx_requestFns: _requestFns,
