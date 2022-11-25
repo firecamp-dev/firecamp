@@ -1,8 +1,16 @@
+import { useEffect } from 'react';
 import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
 import { nanoid as id } from 'nanoid';
 import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
+import {
+  EArgumentBodyType,
+  EPushActionType,
+  ERequestTypes,
+  ISocketIO,
+} from '@firecamp/types';
+import { _array } from '@firecamp/utils';
 
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
@@ -17,25 +25,15 @@ import {
   ISocketStore,
 } from '../store';
 import { IPushPayload } from '../store/slices';
-import { RequestConnection, InitPlayground } from '../constants';
-import {
-  EArgumentBodyType,
-  EPushActionType,
-  ERequestTypes,
-  ISocketIO,
-} from '@firecamp/types';
-import { _array } from '@firecamp/utils';
-import { useEffect } from 'react';
-import { EConnectionState } from '../types';
-import EmitterCollection from './request/emitter/EmitterCollection';
+import { InitPlayground } from '../constants';
+
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import { initialiseStoreFromRequest } from '../services/request.service';
 
 const Socket = ({
-  firecampFunctions = {},
-  constants: propConstants = {},
-  environments = {},
-  additionalComponents: propAdditionalComponents = {},
+  // firecampFunctions = {},
+  // environments = {},
+  // additionalComponents: propAdditionalComponents = {},
   onUpdateEnvironment = () => {},
 
   tab,
@@ -46,6 +44,7 @@ const Socket = ({
   let socketStoreApi = useSocketStoreApi();
 
   let {
+    initialise,
     setSelectedCollectionEmitter,
     addEmitter,
     changePlaygroundTab,
@@ -64,6 +63,7 @@ const Socket = ({
     setRequestSavedFlag,
     setIsFetchingReqFlag,
   } = useSocketStore((s: ISocketStore) => ({
+    initialise: s.initialise,
     setActivePlayground: s.setActivePlayground,
     setSelectedCollectionEmitter: s.setSelectedCollectionEmitter,
     addEmitter: s.addEmitter,
@@ -91,7 +91,7 @@ const Socket = ({
     if (activeTab === tab.id) {
       // existing active environments in to runtime
       let activeEnvironments =
-        socketStoreApi.getState()?.runtime?.active_environments;
+        socketStoreApi.getState().runtime?.activeEnvironments;
 
       // set active environments to platform
       if (activeEnvironments && !!activeEnvironments.workspace) {
@@ -160,13 +160,13 @@ const Socket = ({
             );
             requestToNormalize = response.data;
           } catch (error) {
-            console.error({
-              API: 'fetch rest request',
-              error,
-            });
+            console.error(error);
             throw error;
           }
         }
+        /** initialise socket.io store on tab load */
+        initialise(requestToNormalize);
+        setIsFetchingReqFlag(false);
       } catch (error) {
         console.error({
           API: 'fetch and normalize rest request',
@@ -212,7 +212,7 @@ const Socket = ({
 
       changePlaygroundTab(activePlayground, {
         meta: {
-          is_saved: true,
+          isSaved: true,
           hasChange: false,
         },
       });
@@ -456,7 +456,7 @@ const Socket = ({
     },
   };
 
-  let playgroundEmitterFns = {
+  const playgroundEmitterFns = {
     setToPlayground: (payload) => {
       if (!payload?._meta?.id) return;
 
@@ -625,9 +625,9 @@ const Socket = ({
     }
   }; */
 
-  let handlePull = () => {};
+  const handlePull = () => {};
 
-  let onSave = (pushPayload: IPushPayload, tabId) => {
+  const onSave = (pushPayload: IPushPayload, tabId) => {
     // console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload._action.item_id) return;
@@ -641,12 +641,12 @@ const Socket = ({
     platformContext.request.onSave(pushPayload, tabId);
   };
   // handle updates for environments from platform
-  let handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
+  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
 
     if (!platformActiveEnvironments) return;
     let activeEnvironments =
-      socketStoreApi.getState().runtime.active_environments;
+      socketStoreApi.getState().runtime.activeEnvironments;
 
     if (
       platformActiveEnvironments.workspace &&
@@ -660,12 +660,12 @@ const Socket = ({
     <SocketContext.Provider
       value={{
         //props
-        ctx_firecampFunctions: firecampFunctions,
+        // ctx_firecampFunctions: firecampFunctions,
         ctx_tabData: tab,
-        ctx_environments: environments,
+        // ctx_environments: environments,
 
         //prop components
-        ctx_additionalComponents: propAdditionalComponents,
+        // ctx_additionalComponents: propAdditionalComponents,
 
         ctx_onUpdateEnvironment: onUpdateEnvironment,
 
@@ -699,11 +699,13 @@ const Socket = ({
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request } = tab;
-    request.url = {
-      ...request.url,
-      raw: _url.toString(request.url),
-    };
+    const { request = {} } = tab;
+    if (request.url) {
+      request.url = {
+        ...request.url,
+        raw: _url.toString(request.url),
+      };
+    }
     const initState = initialiseStoreFromRequest(request);
     return (
       <SocketStoreProvider createStore={() => createSocketStore(initState)}>

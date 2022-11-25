@@ -50,7 +50,7 @@ interface IRuntimeSlice {
   toggleDoc: (flag: boolean) => void;
   changeActiveEnvironment?: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => void;
   setActiveEnvironments?: (updates: {
     workspace: TId;
@@ -121,9 +121,9 @@ const createRuntimeSlice = (set, get): IRuntimeSlice => ({
   },
   changeActiveEnvironment: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => {
-    // console.log({ scope, environment_id });
+    // console.log({ scope, environmentId });
 
     set((s) => ({
       ...s,
@@ -131,7 +131,7 @@ const createRuntimeSlice = (set, get): IRuntimeSlice => ({
         ...s.runtime,
         activeEnvironments: {
           ...s.runtime.activeEnvironments,
-          [scope]: environment_id,
+          [scope]: environmentId,
         },
       },
     }));

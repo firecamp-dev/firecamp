@@ -36,6 +36,7 @@ export const prepareUIRequestPanelState = (
 export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   const _nr: IWebSocket = {
     url: { raw: '' },
+    connections: [],
     __meta: {
       name: '',
       type: ERequestTypes.WebSocket,
@@ -45,11 +46,11 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   };
 
   const {
+    url,
+    connections = _nr.connections,
+    config = {},
     __meta = _nr.__meta,
     __ref = _nr.__ref,
-    url,
-    connections = [],
-    config = {},
   } = request;
 
   // console.log({ request });
@@ -84,8 +85,6 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
       ) as IWebSocketConnection
   );
   if (!_nr.connections?.length) _nr.connections = [DefaultConnectionState];
-
-  console.log(connections, _nr.connections, 789789);
 
   // normalize config
   _nr.config = _object.mergeDeep(DefaultConfigState, config || {});

@@ -4,7 +4,7 @@ interface IPlaygroundTab {
   id: string;
   name: string;
   meta?: {
-    is_saved?: boolean;
+    isSaved?: boolean;
     hasChange?: boolean;
   };
 }
@@ -12,13 +12,12 @@ interface IPlaygroundTab {
 interface IRuntime {
   playgroundTabs?: IPlaygroundTab[];
   activePlayground?: TId;
-  active_environments?: {
+  activeEnvironments?: {
     workspace: TId;
     collection: TId;
   };
-
-  is_request_running?: boolean;
-  is_request_saved?: boolean;
+  isRequestRunning?: boolean;
+  isRequestSaved?: boolean;
 }
 
 interface IRuntimeSlice {
@@ -30,7 +29,7 @@ interface IRuntimeSlice {
   deletePlaygroundTab: (playgroundId: TId) => void;
   changeActiveEnvironment?: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => void;
   setActiveEnvironments?: (updates: {
     workspace: TId;
@@ -48,9 +47,9 @@ const createRuntimeSlice = (
   runtime: {
     playgroundTabs: [],
     activePlayground: '',
-    active_environments: { collection: '', workspace: '' },
-    is_request_running: false,
-    is_request_saved: false,
+    activeEnvironments: { collection: '', workspace: '' },
+    isRequestRunning: false,
+    isRequestSaved: false,
     ...initialRuntime,
   },
 
@@ -112,29 +111,29 @@ const createRuntimeSlice = (
   },
   changeActiveEnvironment: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => {
-    // console.log({ scope, environment_id });
+    // console.log({ scope, environmentId });
 
     set((s) => ({
       ...s,
       runtime: {
         ...s.runtime,
-        active_environments: {
-          ...s.runtime.active_environments,
-          [scope]: environment_id,
+        activeEnvironments: {
+          ...s.runtime.activeEnvironments,
+          [scope]: environmentId,
         },
       },
     }));
   },
   setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
-    // console.log({updates});
+    console.log({ updates });
 
     set((s) => ({
       ...s,
       runtime: {
         ...s.runtime,
-        active_environments: updates,
+        activeEnvironments: updates,
       },
     }));
   },
@@ -143,7 +142,7 @@ const createRuntimeSlice = (
       ...s,
       runtime: {
         ...s.runtime,
-        is_request_running: flag,
+        isRequestRunning: flag,
       },
     }));
   },
@@ -152,7 +151,7 @@ const createRuntimeSlice = (
       ...s,
       runtime: {
         ...s.runtime,
-        is_request_saved: flag,
+        isRequestSaved: flag,
       },
     }));
   },

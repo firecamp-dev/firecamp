@@ -39,6 +39,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
       version: ESocketIOClientVersion.v4,
       onConnectListeners: [],
     },
+    connections: [],
     __meta: {
       name: '',
       type: ERequestTypes.SocketIO,
@@ -49,7 +50,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
 
   const {
     url,
-    connections,
+    connections = _nr.connections,
     config = _nr.config,
     __meta = _nr.__meta,
     __ref = _nr.__ref,
@@ -83,8 +84,6 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   );
   if (!_nr.connections?.length) _nr.connections = [RequestConnection];
 
-  console.log(connections, _nr.connections, 789789);
-
   // normalize config
   _nr.config = _object.mergeDeep(DefaultRequestConfig, config);
   return _nr;
@@ -109,6 +108,10 @@ export const initialiseStoreFromRequest = (
         },
       },
     ],
+    activeEnvironments: {
+      workspace: '',
+      collection: '',
+    },
   };
   const playgrounds = {
     // Add logic for init playgrounds by connections

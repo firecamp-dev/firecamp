@@ -137,7 +137,7 @@ const environment: IPlatformEnvironmentService = {
 
     //workspace active environment
     const wrsActiveEnv = envStore.envs.find(
-      (e) => e._meta.id == envStore.activeTabWrsEnv
+      (e) => e.__ref.id == envStore.activeTabWrsEnv
     );
     const wrsEnvVars = wrsActiveEnv ? wrsActiveEnv.variables : {};
 

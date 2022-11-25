@@ -4,8 +4,7 @@ import { nanoid as id } from 'nanoid';
 import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { _object } from '@firecamp/utils';
-
+import { _array, _object } from '@firecamp/utils';
 import {
   EPushActionType,
   ERequestTypes,
@@ -19,13 +18,13 @@ import {
   normalizeRequest,
 } from '../services/reqeust.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
-import '../sass/ws.sass';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 
 import Emitter from './common/Emitter';
 import { WebsocketContext } from './WebSocket.context';
-import { DefaultRequestConnection, DefaultConfigState } from '../constants';
+import { DefaultRequestConnection } from '../constants';
 import { EConnectionState, EMessagePayloadTypes } from '../types';
+import '../sass/ws.sass';
 
 // store
 import {
@@ -38,13 +37,9 @@ import {
   IPushPayload,
   emptyPushAction,
 } from '../store/index';
-import { _array } from '@firecamp/utils';
-import { DefaultConnectionState } from '../constants';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 
 const Websocket = ({
-  firecampFunctions = {},
-  constants: propConstants = {},
   additionalComponents: prop_additionalComponents = {},
   onUpdateEnvironment = () => {},
 
