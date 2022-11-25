@@ -284,7 +284,7 @@ const LogTable = () => {
                     <div role="cell" className="td success table-cell">-</div>
                     <div role="cell" className="td success table-cell">12:31:11</div>
               </div>
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -293,7 +293,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -302,7 +302,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -311,7 +311,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -320,7 +320,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -329,7 +329,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -338,7 +338,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -347,7 +347,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -356,7 +356,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -365,7 +365,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -374,7 +374,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -383,7 +383,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -392,7 +392,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -401,7 +401,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -410,7 +410,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -419,7 +419,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -428,7 +428,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -437,7 +437,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -446,7 +446,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -455,7 +455,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
@@ -464,7 +464,7 @@ const LogTable = () => {
                     <div role="cell" className="td table-cell">21</div>
                     <div role="cell" className="td table-cell">12:31:11</div>
               </div>  
-              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabindex="0">
+              <div role="row" className="tr Message Received table-row" as="tr" id="1" tabIndex="0">
                     <div role="cell" className="td table-cell" >
                       <span id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1" className="td-icon iconv2-from-server-icon table-cell" data-tip="R-1"></span>
                     </div>
