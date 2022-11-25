@@ -181,7 +181,7 @@ const LogTable = () => {
   return (
     <Container>
       <Container.Header>
-        <TabHeader className="height-small border-b border-appBorder">
+        <TabHeader className="height-small border-b border-appBorder padding-left-extra">
           <TabHeader.Left>
             <label className="m-0 text-sm font-bold whitespace-pre">
               Event Logs

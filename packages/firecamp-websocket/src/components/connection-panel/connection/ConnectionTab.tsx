@@ -123,11 +123,11 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   return (
     <Row flex={1} overflow="auto" className=" with-divider h-full">
       <Column className="h-full">
-        <Container className="with-divider">
+        <Container>
           <Container.Header>
             <TabHeader className="height-small !px-0 z-20 relative w-full">
               <Tabs
-                className="flex items-center"
+                className="flex items-center w-full"
                 key="tabs"
                 list={bodyTabs || []}
                 activeTab={activeBodyTab || ''}
