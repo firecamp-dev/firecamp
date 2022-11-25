@@ -444,8 +444,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       }}
     >
       <Container className="h-full with-divider" overflow="visible">
-        <Container.Header>
-          <UrlBarContainer
+        <UrlBarContainer
             tab={tab}
             collectionId={tab?.request?._meta?.collection_id || ''}
             postComponents={platformComponents}
@@ -453,7 +452,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
             platformContext={platformContext}
             onPasteCurl={onPasteCurl}
           />
-        </Container.Header>
         <Container.Body>
           <Row flex={1} className="with-divider h-full" overflow="auto">
             <Request

@@ -860,8 +860,7 @@ const Websocket = ({
     >
       <RootContainer className="h-full w-full">
         <Container className="h-full with-divider">
-          <Container.Header>
-            <UrlBarContainer
+        <UrlBarContainer
               tab={tab}
               collectionId={tab?.request?._meta?.collectionId || ''}
               postComponents={platformComponents}
@@ -869,7 +868,6 @@ const Websocket = ({
               platformContext={platformContext}
               // onPasteCurl={onPasteCurl}
             />
-          </Container.Header>
           <Container.Body>
             <Row flex={1} overflow="auto" className="with-divider h-full">
               <SidebarPanel />

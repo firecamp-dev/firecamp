@@ -307,14 +307,12 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
   if(isFetchingRequest === true) return <Loader />;
   return (
     <Container className="h-full w-full with-divider" overflow="visible">
-      <Container.Header>
-        <UrlBarContainer
+      <UrlBarContainer
           tab={tab}
           collectionId={tab?.request?._meta?.collection_id || ''}
           postComponents={platformComponents}
           onSaveRequest={onSave}
         />
-      </Container.Header>
       <Container.Body>
         <Row flex={1} overflow="auto" className="with-divider h-full">
           <SidebarPanel />
