@@ -10,7 +10,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { _object, _array, _string } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
 
-import { IUi } from '../../store';
+import { IUi } from '../store';
 
 /** prepare Ui state for the request tab from given partial request */
 export const prepareUiState = (request: Partial<IGraphQL>): Partial<IUi> => {
