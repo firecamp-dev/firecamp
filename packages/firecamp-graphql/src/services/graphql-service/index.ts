@@ -28,57 +28,54 @@ export const prepareUiState = (request: Partial<IGraphQL>): Partial<IUi> => {
 };
 
 /**
- * normalise the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
+ * normalize the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
  */
-export const normalizeRequest = (
-  request: IGraphQL,
-  isRequestSaved: boolean = true
-): Promise<IGraphQL> => {
-  // prepare normalised request aka _nr
+export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
+  // prepare normalized request aka _nr
   const _nr: IGraphQL = {
-    meta: {
+    method: EHttpMethod.POST,
+    __meta: {
       name: '',
       type: ERequestTypes.GraphQL,
       version: '2.0.0' /* ERestRequestVersion.V1; */, // TODO: check version
     },
-    method: EHttpMethod.POST,
-    _meta: { id: '', collection_id: '' },
+    __ref: { id: '', collectionId: '' },
   };
 
-  const { url, method, headers, meta, _meta } = request;
+  const { __meta, __ref, url, method, headers } = request;
 
   // console.log({ request });
 
-  //normalise url
+  //normalize url
   _nr.url = !_object.isEmpty(url)
     ? url
-    : { raw: '', query_params: [], path_params: [] };
-  if (!_array.isEmpty(_nr.url.query_params)) {
+    : { raw: '', queryParams: [], pathParams: [] };
+  if (!_array.isEmpty(_nr.url.queryParams)) {
     const queryParams = [];
     const pathParams = [];
-    if (!url?.query_params?.length) url.query_params = [];
-    if (!url?.path_params?.length) url.path_params = [];
-    url.query_params.map((qp) => {
+    if (!url?.queryParams?.length) url.queryParams = [];
+    if (!url?.pathParams?.length) url.pathParams = [];
+    url.queryParams.map((qp) => {
       // add default key: `type: text`
       qp.type = EKeyValueTableRowType.Text;
       qp.value = qp.value ? qp.value : '';
       if (isValidRow(qp)) queryParams.push(qp);
     });
-    _nr.url.query_params = queryParams;
+    _nr.url.queryParams = queryParams;
 
-    url.path_params.map((pp) => {
+    url.pathParams.map((pp) => {
       // add default key: `type: text`
       pp.type = EKeyValueTableRowType.Text;
       pp.value = pp.value ? pp.value : '';
       if (isValidRow(pp)) pathParams.push(pp);
     });
-    _nr.url.path_params = pathParams;
+    _nr.url.pathParams = pathParams;
   }
 
-  //normalise method
+  //normalize method
   _nr.method = EHttpMethod[method.toUpperCase()] ? method : EHttpMethod.POST;
 
-  // normalise headers
+  // normalize headers
   _nr.headers = !headers || _array.isEmpty(headers) ? [] : headers;
   _nr.headers = _nr.headers.filter((h) => {
     // add default key: `type: text`
@@ -87,23 +84,20 @@ export const normalizeRequest = (
     return isValidRow(h);
   });
 
-  // normalise meta
-  _nr.meta.name = meta.name || 'Untitled Request';
-  _nr.meta.description = meta.description || '';
+  // normalize meta
+  _nr.__meta.name = __meta.name || 'Untitled Request';
+  _nr.__meta.description = __meta.description || '';
 
-  // normalise _meta
-  _nr._meta.id = _meta?.id || nanoid();
-  _nr._meta.collection_id = _meta?.collection_id;
-  _nr._meta.folder_id = _meta?.folder_id;
-  _nr._meta.created_at = _meta?.created_at || new Date().valueOf();
-  _nr._meta.updated_at = _meta?.updated_at || new Date().valueOf();
-  _nr._meta.created_by = _meta?.created_by || '';
-  _nr._meta.updated_by = _meta?.updated_by || '';
+  // normalize __ref
+  _nr.__ref.id = __ref?.id || nanoid();
+  _nr.__ref.collectionId = __ref?.collectionId;
+  _nr.__ref.folderId = __ref?.folderId;
+  _nr.__ref.createdAt = __ref?.createdAt || new Date().valueOf();
+  _nr.__ref.updatedAt = __ref?.updatedAt || new Date().valueOf();
+  _nr.__ref.createdBy = __ref?.createdBy || '';
+  _nr.__ref.updatedBy = __ref?.updatedBy || '';
 
-  if (isRequestSaved === true && (!_nr._meta.id || !_nr._meta.collection_id))
-    return Promise.reject('The request payload is invalid');
-
-  return Promise.resolve(_nr);
+  return _nr;
 };
 
 /**
