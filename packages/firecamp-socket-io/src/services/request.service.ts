@@ -1,4 +1,9 @@
-import { ERequestTypes, ISocketIOConnection, ISocketIO } from '@firecamp/types';
+import {
+  ERequestTypes,
+  ISocketIOConnection,
+  ISocketIO,
+  ESocketIOClientVersion,
+} from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid as id } from 'nanoid';
@@ -6,7 +11,10 @@ import { _object, _array, _string } from '@firecamp/utils';
 import {
   RequestConnection,
   DefaultRequestConfig,
+  InitPlayground,
 } from '../constants';
+import { ISocket } from '../store';
+import { EConnectionState } from '../types';
 
 // import { IUiRequestPanel } from '../store/slices';
 
@@ -18,9 +26,19 @@ import {
 // };
 
 /** normalize the socket.io request */
-export const normalizeRequest = (request: ISocketIO): Promise<ISocketIO> => {
+export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   const _nr: ISocketIO = {
     url: { raw: '' },
+    config: {
+      rejectUnauthorized: false,
+      timeout: 20000,
+      reconnection: false,
+      reconnectionAttempts: 3,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      version: ESocketIOClientVersion.v4,
+      onConnectListeners: [],
+    },
     __meta: {
       name: '',
       type: ERequestTypes.SocketIO,
@@ -29,9 +47,13 @@ export const normalizeRequest = (request: ISocketIO): Promise<ISocketIO> => {
     __ref: { id: '', collectionId: '' },
   };
 
-  const { __meta, __ref, url, connections, config } = request;
-
-  // console.log({ request });
+  const {
+    url,
+    connections,
+    config = _nr.config,
+    __meta = _nr.__meta,
+    __ref = _nr.__ref,
+  } = request;
 
   //normalize url
   _nr.url = !_object.isEmpty(url) ? url : { raw: '' };
@@ -64,6 +86,56 @@ export const normalizeRequest = (request: ISocketIO): Promise<ISocketIO> => {
   console.log(connections, _nr.connections, 789789);
 
   // normalize config
-  _nr.config = _object.mergeDeep(DefaultRequestConfig, config || {});
-  return Promise.resolve(_nr);
+  _nr.config = _object.mergeDeep(DefaultRequestConfig, config);
+  return _nr;
+};
+
+export const initialiseStoreFromRequest = (
+  _request: Partial<ISocketIO>
+): ISocket => {
+  const request: ISocketIO = normalizeRequest(_request);
+  const defaultConnection =
+    request.connections?.find((c) => c.isDefault === true) || RequestConnection;
+  const playgroundId = defaultConnection.id;
+  const runtime = {
+    activePlayground: defaultConnection.id,
+    playgroundTabs: [
+      {
+        id: defaultConnection.id,
+        name: defaultConnection.name,
+        meta: {
+          isSaved: false,
+          hasChange: false,
+        },
+      },
+    ],
+  };
+  const playgrounds = {
+    // Add logic for init playgrounds by connections
+    [defaultConnection.id]: {
+      id: defaultConnection.id,
+      connectionState: EConnectionState.Ideal,
+      logFilters: {
+        type: '',
+        event: '',
+      },
+      emitter: InitPlayground,
+      selectedCollectionEmitter: '',
+      listeners: {},
+    },
+  };
+  const connectionsLogs = {
+    [playgroundId]: [],
+  };
+  const ui = {
+    isFetchingRequest: false,
+  };
+
+  return {
+    request,
+    playgrounds,
+    runtime,
+    ui,
+    connectionsLogs,
+  };
 };

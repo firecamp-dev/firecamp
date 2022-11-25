@@ -45,9 +45,7 @@ import {
 } from './index';
 import { _object } from '@firecamp/utils';
 import { IWebSocket } from '@firecamp/types';
-import {
-  initialiseStoreFromRequest,
-} from '../services/reqeust.service';
+import { initialiseStoreFromRequest } from '../services/reqeust.service';
 
 const {
   Provider: WebsocketStoreProvider,
@@ -77,7 +75,7 @@ interface IWebsocketStore
     IUiSlice {
   last: any;
 
-  initialise: (request: IWebSocket) => void;
+  initialise: (request: Partial<IWebSocket>) => void;
 
   setLast: (initialState: IWebsocketStoreState) => void;
 }
@@ -87,8 +85,8 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
     return {
       last: initialState,
 
-      initialise: async (_request: IWebSocket) => {
-        const initState = initialiseStoreFromRequest(_request);
+      initialise: async (request: Partial<IWebSocket>) => {
+        const initState = initialiseStoreFromRequest(request);
         set((s) => ({
           ...s,
           ...initState,

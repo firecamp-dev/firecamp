@@ -17,7 +17,7 @@ import {
   ISocketStore,
 } from '../store';
 import { IPushPayload } from '../store/slices';
-import { RequestConnection, InitPlayground  } from '../constants';
+import { RequestConnection, InitPlayground } from '../constants';
 import {
   EArgumentBodyType,
   EPushActionType,
@@ -26,9 +26,10 @@ import {
 } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import { useEffect } from 'react';
-import { EConnectionState } from '../types'
-import EmitterCollection from './request/emitter/EmitterCollection'
-import SidebarPanel from './sidebar-panel/SidebarPanel'
+import { EConnectionState } from '../types';
+import EmitterCollection from './request/emitter/EmitterCollection';
+import SidebarPanel from './sidebar-panel/SidebarPanel';
+import { initialiseStoreFromRequest } from '../services/request.service';
 
 const Socket = ({
   firecampFunctions = {},
@@ -141,7 +142,8 @@ const Socket = ({
     const _fetchRequest = async () => {
       try {
         const isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalise: ISocketIO = {
+        let requestToNormalize: ISocketIO = {
+          url: { raw: '' },
           __meta: {
             name: '',
             version: '2.0.0',
@@ -153,10 +155,10 @@ const Socket = ({
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            let response = await platformContext.request.onFetch(
+            const response = await platformContext.request.onFetch(
               tab.request._meta.id
             );
-            requestToNormalise = response.data;
+            requestToNormalize = response.data;
           } catch (error) {
             console.error({
               API: 'fetch rest request',
@@ -674,13 +676,13 @@ const Socket = ({
     >
       <RootContainer className="h-full w-full">
         <Container className="h-full with-divider">
-        <UrlBarContainer
-              tab={tab}
-              collectionId={tab?.request?._meta?.collectionId || ''}
-              postComponents={platformComponents}
-              onSaveRequest={onSave}
-              platformContext={platformContext}
-            />
+          <UrlBarContainer
+            tab={tab}
+            collectionId={tab?.request?._meta?.collectionId || ''}
+            postComponents={platformComponents}
+            onSaveRequest={onSave}
+            platformContext={platformContext}
+          />
           <Container.Body>
             <Row flex={1} overflow="auto" className="with-divider h-full">
               <SidebarPanel />
@@ -697,85 +699,14 @@ const Socket = ({
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    let { request: tabRequest = {} } = tab;
-    let defaultConnId = id();
-
-    let defaultConnection = tabRequest.connections?.find(
-      (c) => c.isDefault === true
-    ) || {
-      ...RequestConnection,
-      id: defaultConnId,
-      name: 'Default',
-      isDefault: true,
-      headers: [],
-      queryParams: [],
-      // auth: {},
-      // active_auth_type: ""
+    const { request } = tab;
+    request.url = {
+      ...request.url,
+      raw: _url.toString(request.url),
     };
-    let urlObject = {
-      ...tabRequest.url,
-      raw: _url.toString(tabRequest.url) || '',
-    };
-
-    const initPayload = {
-      request: {
-        url: urlObject,
-        config: tabRequest.config || {
-          rejectUnauthorized: false,
-          timeout: 20000,
-          reconnection: false,
-          reconnectionAttempts: 3,
-          reconnectionDelay: 1000,
-          reconnectionDelayMax: 5000,
-          version: 'v4',
-          onConnectListeners: [],
-        },
-        connections: tabRequest.connections || [defaultConnection],
-        __meta: tabRequest.__meta || {
-          fOrders: [],
-          iOrders: [],
-          version: '2.0.0',
-        },
-        __ref: {
-          id: id(),
-          collectionId: '',
-        },
-      },
-      collection: tabRequest.collection || {
-        emitters: [],
-        folders: [],
-      },
-      runtime: {
-        activePlayground: defaultConnection?.id,
-        playgroundTabs: [
-          {
-            id: defaultConnection.id,
-            name: defaultConnection.name,
-            meta: {
-              isSaved: false,
-              hasChange: false,
-            },
-          },
-        ],
-      },
-      playgrounds: {
-        // Add logic for init playgrounds by connections
-        [defaultConnection.id]: {
-          id: defaultConnection.id,
-          connectionState: EConnectionState.Ideal,
-          logFilters: {
-            type: '',
-            event: '',
-          },
-          emitter: InitPlayground,
-          selectedCollectionEmitter: '',
-          listeners: {},
-        },
-      },
-    };
-
+    const initState = initialiseStoreFromRequest(request);
     return (
-      <SocketStoreProvider createStore={() => createSocketStore(initPayload)}>
+      <SocketStoreProvider createStore={() => createSocketStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
       </SocketStoreProvider>
     );

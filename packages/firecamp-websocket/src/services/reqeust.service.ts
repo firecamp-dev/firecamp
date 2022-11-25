@@ -150,9 +150,8 @@ export const normalizeVariables = (
 };
 
 export const initialiseStoreFromRequest = (
-  _request: IWebSocket
+  _request: Partial<IWebSocket>
 ): IWebsocketStoreState => {
-  // const state = get();
   const request: IWebSocket = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(request);
 
@@ -173,7 +172,6 @@ export const initialiseStoreFromRequest = (
       selectedCollectionMessage: '',
     },
   };
-
   const runtime = {
     // ...state.runtime,
     displayUrl: '',
@@ -203,7 +201,6 @@ export const initialiseStoreFromRequest = (
     },
     isFetchingRequest: false,
   };
-
   const connectionsLogs = {
     [playgroundId]: [],
   };

@@ -906,11 +906,9 @@ const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
       // console.log({ pushAction });
 
       // Check if push action empty or not
-      let isTabDirty = !_object.isEmpty(
+      const isTabDirty = !_object.isEmpty(
         _cleanDeep(_cloneDeep(pushAction || {})) || {}
       );
-      // console.log({ pushAction });
-
       // Update tab meta if existing tab.meta.hasChange is not same as isTabDirty
       if (tabMeta.hasChange !== isTabDirty) {
         onChangeRequestTab(tabId, { hasChange: isTabDirty });
