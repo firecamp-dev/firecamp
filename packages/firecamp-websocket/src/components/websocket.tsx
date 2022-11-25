@@ -14,7 +14,10 @@ import {
 } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 
-import { normalizeRequest } from '../services/reqeust.service';
+import {
+  initialiseStoreFromRequest,
+  normalizeRequest,
+} from '../services/reqeust.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import '../sass/ws.sass';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
@@ -202,15 +205,8 @@ const Websocket = ({
     const _fetchRequest = async () => {
       try {
         const isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalize: IWebSocket = {
-          url: { raw: '' },
-          __meta: {
-            name: '',
-            version: '2.0.0',
-            type: ERequestTypes.WebSocket,
-          },
-        __ref: { id: id(), collectionId: '' },
-        };
+        // prepare a minimal request payload
+        let requestToNormalize: IWebSocket = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -218,7 +214,7 @@ const Websocket = ({
             const response = await platformContext.request.onFetch(
               tab.request._meta.id
             );
-            requestToNormalize = response.data;
+            requestToNormalize = { ...response.data };
           } catch (error) {
             console.error({
               api: 'fetch rest request',
@@ -227,10 +223,8 @@ const Websocket = ({
             throw error;
           }
         }
-
-        /** normalize request and initialise in store on tab load */
-        initialise(requestToNormalize, true);
-        // _cloneDeep({ request: emptyPushAction }),
+        /** initialise ws store on tab load */
+        initialise(requestToNormalize);
         setIsFetchingReqFlag(false);
       } catch (error) {
         console.error({
@@ -284,7 +278,7 @@ const Websocket = ({
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialise(updatedRequest, false); //pushAction
+      initialise(updatedRequest); //pushAction
       // _cloneDeep({ request: emptyPushAction }),
       setIsFetchingReqFlag(false);
     } catch (error) {
@@ -838,7 +832,6 @@ const Websocket = ({
   return (
     <WebsocketContext.Provider
       value={{
-
         //functions
         ctx_requestFns: _requestFns,
         ctx_wsFns: wsFns,
@@ -853,14 +846,14 @@ const Websocket = ({
     >
       <RootContainer className="h-full w-full">
         <Container className="h-full with-divider">
-        <UrlBarContainer
-              tab={tab}
-              collectionId={tab?.request?._meta?.collectionId || ''}
-              postComponents={platformComponents}
-              onSaveRequest={onSave}
-              platformContext={platformContext}
-              // onPasteCurl={onPasteCurl}
-            />
+          <UrlBarContainer
+            tab={tab}
+            collectionId={tab?.request?._meta?.collectionId || ''}
+            postComponents={platformComponents}
+            onSaveRequest={onSave}
+            platformContext={platformContext}
+            // onPasteCurl={onPasteCurl}
+          />
           <Container.Body>
             <Row flex={1} overflow="auto" className="with-divider h-full">
               <SidebarPanel />
@@ -885,64 +878,10 @@ const Websocket = ({
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
     const { request = {} } = tab;
-    const defaultConnection =
-      request.connections?.find((c) => c.isDefault === true) ||
-      DefaultConnectionState;
-
-    const initPayload = {
-      request: {
-        url: request.url || { raw: '' },
-        config: request.config || DefaultConfigState,
-        connections: request.connections || [defaultConnection],
-        meta: request.meta || {
-          fOrders: [],
-          iOrders: [],
-          version: '2.0.0',
-        },
-        _meta: request?._meta || {
-          id: id(),
-          collectionId: '',
-        },
-      },
-      collection: request.collection || {
-        items: [],
-        folders: [],
-      },
-      runtime: {
-        activePlayground: defaultConnection?.id,
-        playgroundTabs: [
-          {
-            id: defaultConnection.id,
-            name: defaultConnection.name,
-            meta: {
-              isSaved: false,
-              hasChange: false,
-            },
-          },
-        ],
-        activeEnvironments: {
-          workspace: '',
-          collection: '',
-        },
-        isRequestSaved: false,
-      },
-      playgrounds: {
-        // Add logic for init playgrounds by connections
-        [defaultConnection.id]: {
-          id: defaultConnection.id,
-          connectionState: EConnectionState.Ideal,
-          logFilters: {
-            type: '',
-          },
-          message: initialPlaygroundMessage,
-          selectedCollectionMessage: '',
-        },
-      },
-    };
-
+    const initState = initialiseStoreFromRequest(request);
     return (
       <WebsocketStoreProvider
-        createStore={() => createWebsocketStore(initPayload)}
+        createStore={() => createWebsocketStore(initState)}
       >
         <WrappedComponent tab={tab} {...props} />
       </WebsocketStoreProvider>

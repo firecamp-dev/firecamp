@@ -42,16 +42,12 @@ import {
   IUi,
   createUiSlice,
   IUiSlice,
-  initialPlaygroundMessage,
 } from './index';
 import { _object } from '@firecamp/utils';
 import { IWebSocket } from '@firecamp/types';
 import {
-  normalizeRequest,
-  prepareUIRequestPanelState,
+  initialiseStoreFromRequest,
 } from '../services/reqeust.service';
-import { EConnectionState, ERequestPanelTabs } from '../types';
-import { DefaultConnectionState } from '../constants';
 
 const {
   Provider: WebsocketStoreProvider,
@@ -81,7 +77,7 @@ interface IWebsocketStore
     IUiSlice {
   last: any;
 
-  initialise: (request: IWebSocket, memoiseRequest: boolean) => void;
+  initialise: (request: IWebSocket) => void;
 
   setLast: (initialState: IWebsocketStoreState) => void;
 }
@@ -91,65 +87,12 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
     return {
       last: initialState,
 
-      initialise: async (_request, memoiseRequest) => {
-        const state = get();
-        const request: IWebSocket = await normalizeRequest(_request);
-        // const uiActiveTab = hasPull
-        //   ? state.ui?.requestPanel?.activeTab || ERequestPanelTabs.Playgrounds
-        //   : ERequestPanelTabs.Playgrounds;
-
-        const requestPanel = prepareUIRequestPanelState(request);
-
-        const defaultConnection =
-          request.connections?.find((c) => c.isDefault === true) ||
-          DefaultConnectionState;
-        const playgroundId = defaultConnection.id;
-
-        const playgrounds = {
-          // Add logic for init playgrounds by connections
-          [playgroundId]: {
-            id: playgroundId,
-            connectionState: EConnectionState.Ideal,
-            logFilters: {
-              type: '',
-            },
-            message: initialPlaygroundMessage,
-            selectedCollectionMessage: '',
-          },
-        };
-
-        const runtime = {
-          ...state.runtime,
-          activePlayground: playgroundId,
-          playgroundTabs: request.connections.map((c) => {
-            return {
-              id: c.id,
-              name: c.name,
-              meta: {
-                isSaved: true,
-                hasChange: false,
-              },
-            };
-          }),
-        };
-        const ui = {
-          ...state.ui,
-          requestPanel: {
-            ...requestPanel,
-            activeTab: ERequestPanelTabs.Playgrounds, //uiActiveTab,
-          },
-        };
-
-        const last = memoiseRequest ? { request } : {};
-        set((s) => {
-          return {
-            last: { ...s.last, ...last },
-            request,
-            playgrounds,
-            runtime,
-            ui,
-          };
-        });
+      initialise: async (_request: IWebSocket) => {
+        const initState = initialiseStoreFromRequest(_request);
+        set((s) => ({
+          ...s,
+          ...initState,
+        }));
       },
 
       setLast: (initialState: IWebsocketStoreState) => {

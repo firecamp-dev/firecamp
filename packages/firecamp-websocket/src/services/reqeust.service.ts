@@ -8,9 +8,13 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid as id } from 'nanoid';
 import { _object, _array, _string } from '@firecamp/utils';
 
-import { IUiRequestPanel, IWebsocketStoreState } from '../store';
+import {
+  initialPlaygroundMessage,
+  IUiRequestPanel,
+  IWebsocketStoreState,
+} from '../store';
 import { DefaultConnectionState, DefaultConfigState } from '../constants';
-import { F } from 'ramda';
+import { EConnectionState, ERequestPanelTabs } from '../types';
 
 export const prepareUIRequestPanelState = (
   request: Partial<IWebSocket>
@@ -29,7 +33,7 @@ export const prepareUIRequestPanelState = (
 };
 
 /** normalize the websocket request */
-export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
+export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   const _nr: IWebSocket = {
     url: { raw: '' },
     __meta: {
@@ -40,7 +44,13 @@ export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
     __ref: { id: '', collectionId: '' },
   };
 
-  const { __meta, __ref, url, connections, config } = request;
+  const {
+    __meta = _nr.__meta,
+    __ref = _nr.__ref,
+    url,
+    connections = [],
+    config = {},
+  } = request;
 
   // console.log({ request });
 
@@ -56,8 +66,6 @@ export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
   _nr.__meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
 
   // normalize __ref
-  // @ts-ignore
-  if (__ref) __ref = {};
   _nr.__ref.id = __ref.id || id();
   _nr.__ref.collectionId = __ref.collectionId;
   _nr.__ref.folderId = __ref.folderId;
@@ -81,7 +89,7 @@ export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
 
   // normalize config
   _nr.config = _object.mergeDeep(DefaultConfigState, config || {});
-  return Promise.resolve(_nr);
+  return _nr;
 };
 
 /**
@@ -141,9 +149,70 @@ export const normalizeVariables = (
   return Promise.resolve(updatedVariables);
 };
 
+export const initialiseStoreFromRequest = (
+  _request: IWebSocket
+): IWebsocketStoreState => {
+  // const state = get();
+  const request: IWebSocket = normalizeRequest(_request);
+  const requestPanel = prepareUIRequestPanelState(request);
 
-export const initialiseStoreFromRequest = (request: IWebSocket): IWebsocketStoreState=> {
+  const defaultConnection =
+    request.connections?.find((c) => c.isDefault === true) ||
+    DefaultConnectionState;
+  const playgroundId = defaultConnection.id;
 
-  
-  return { request }
-}
+  const playgrounds = {
+    // Add logic for init playgrounds by connections
+    [playgroundId]: {
+      id: playgroundId,
+      connectionState: EConnectionState.Ideal,
+      logFilters: {
+        type: '',
+      },
+      message: initialPlaygroundMessage,
+      selectedCollectionMessage: '',
+    },
+  };
+
+  const runtime = {
+    // ...state.runtime,
+    displayUrl: '',
+    activePlayground: playgroundId,
+    playgroundTabs: request.connections.map((c) => {
+      return {
+        id: c.id,
+        name: c.name,
+        meta: {
+          isSaved: true,
+          hasChange: false,
+        },
+      };
+    }),
+    activeEnvironments: {
+      workspace: '',
+      collection: '',
+    },
+    isRequestSaved: false,
+    _dnp: {},
+  };
+  const ui = {
+    // ...state.ui,
+    requestPanel: {
+      ...requestPanel,
+      activeTab: ERequestPanelTabs.Playgrounds, //uiActiveTab,
+    },
+    isFetchingRequest: false,
+  };
+
+  const connectionsLogs = {
+    [playgroundId]: [],
+  };
+
+  return {
+    request,
+    playgrounds,
+    runtime,
+    ui,
+    connectionsLogs,
+  };
+};

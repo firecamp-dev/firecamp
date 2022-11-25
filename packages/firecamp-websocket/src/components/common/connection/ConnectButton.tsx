@@ -7,7 +7,6 @@ import { IWebsocketStore, useWebsocketStore } from '../../../store';
 import { FC } from 'react';
 
 const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
-  console.log(props, '78979');
   if (!props.hasOwnProperty('sm')) props.xs = true;
   const { sm, xs } = props;
   const { connectionState, activePlayground, connect, disconnect } =

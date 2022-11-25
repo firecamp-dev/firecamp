@@ -21,10 +21,11 @@ const emptyLog = {
 };
 
 interface IConnectionsLogs {
-  connectionsLogs: { [key: TId]: Array<ILog> };
+  [key: TId]: Array<ILog>;
 }
 
-interface IConnectionsLogsSlice extends IConnectionsLogs {
+interface IConnectionsLogsSlice {
+  connectionsLogs: IConnectionsLogs;
   addConnectionLog: (connectionId: TId, log: ILog) => void;
   clearAllConnectionLogs: (connectionId: TId) => void;
 }
