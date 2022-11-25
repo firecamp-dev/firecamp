@@ -9,9 +9,6 @@ import {
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: IWebSocket;
-
-  initialiseRequest: (request: IWebSocket) => void;
-  setRequestKey: (key: string, value: any) => void;
   changeMeta: (key: string, value: any) => void;
   changeConfig: (key: string, value: any) => void;
 }
@@ -20,8 +17,8 @@ const requestSliceKeys: string[] = [
   'url',
   'connections',
   'config',
-  'meta',
-  '_meta',
+  '__meta',
+  '__ref',
 ];
 
 const createRequestSlice = (
@@ -31,26 +28,9 @@ const createRequestSlice = (
 ): IRequestSlice => ({
   request: initialRequest,
 
-  //url
+  // url
   ...createUrlSlice(set, get),
   ...createConnectionSlice(set, get),
-
-  initialiseRequest: (request: IWebSocket) => {
-    set((s) => ({
-      ...s,
-      request,
-    }));
-  },
-
-  setRequestKey: (key: string, value: any) => {
-    set((s) => ({
-      ...s,
-      request: {
-        ...s.request,
-        [key]: value,
-      },
-    }));
-  },
 
   changeMeta: (key: string, value: any) => {
     let lastMeta = get()?.last?.request.meta;

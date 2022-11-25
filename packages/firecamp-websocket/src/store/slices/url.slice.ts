@@ -1,22 +1,28 @@
 import { IUrl, IQueryParam } from '@firecamp/types';
 
-// TODO: check for path params
-
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
   changeQueryParams: (queryParams: IQueryParam[]) => void;
 }
 
+const getPathFromUrl = (url: string) => {
+  return url.split(/[?#]/)[0];
+};
+
 const createUrlSlice = (set, get): IUrlSlice => ({
   changeUrl: (urlObj: IUrl) => {
-    const state = get();
-    const lastUrl = state.last?.request.url;
-    let updatedUrl = { ...(state.request.url || {}), ...urlObj };
+    console.log(urlObj, 'this is the url');
+    // const state = get();
+    // const lastUrl = state.last?.request.url;
 
-    set((s) => ({ ...s, request: { ...s.request, url: updatedUrl } }));
+    const url = { raw: getPathFromUrl(urlObj.raw) };
+    set((s) => ({
+      ...s,
+      request: { ...s.request, url },
+      runtime: { ...s.runtime, displayUrl: urlObj.raw },
+    }));
 
-    // Prepare push action for url
-    state.prepareUrlPushAction(lastUrl, updatedUrl);
+    // state.prepareUrlPushAction(lastUrl, updatedUrl);
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
     const state = get();

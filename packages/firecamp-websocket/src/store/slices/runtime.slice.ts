@@ -10,6 +10,7 @@ interface IPlaygroundTab {
 }
 
 interface IRuntime {
+  displayUrl: string;
   playgroundTabs?: IPlaygroundTab[];
   activePlayground?: TId;
   activeEnvironments?: {
