@@ -31,18 +31,18 @@ const TabItem = (tabData: {
       )}
       onClick={() => onSelect(tab.id)}
     >
-      {tab.name}{' '}
+      {tab.name}
       {_object.has(tab, 'count') && tab.count && tab.count > 0 ? (
         <Count number={tab.count} />
       ) : (
-        ''
+        <></>
       )}
       {tab?.dotIndicator === true ? (
         <div className={'flex items-center text-primaryColor opacity-100'}>
           <VscCircleFilled size={10} />
         </div>
       ) : (
-        ''
+        <></>
       )}
     </div>
   );
@@ -84,7 +84,7 @@ const SecondaryTab: FC<ISecondaryTab> = ({
         {controls ? controls : ''}
        <div className=" ml-auto mr-2">
 
-       {additionalComponent ? additionalComponent : ''}
+       {additionalComponent ? additionalComponent : <></>}
       </div>
     </div>
     </div>

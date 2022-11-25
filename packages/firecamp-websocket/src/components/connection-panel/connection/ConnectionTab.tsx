@@ -4,8 +4,9 @@ import {
   Column,
   Resizable,
   Row,
-  SecondaryTab,
+  // SecondaryTab,
   TabHeader,
+  Tabs,
 } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
@@ -125,7 +126,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         <Container className="with-divider">
           <Container.Header>
             <TabHeader className="height-small !px-0 z-20 relative w-full">
-              <SecondaryTab
+              <Tabs
                 className="flex items-center"
                 key="tabs"
                 list={bodyTabs || []}
