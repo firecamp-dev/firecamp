@@ -13,9 +13,6 @@ import {
   AvailableOnElectron,
   Container,
   Button,
- 
-  
-  EButtonIconPosition,
   Tabs,
   ScriptsTabs,
 } from '@firecamp/ui-kit';
@@ -25,10 +22,10 @@ import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
 const RequestPanel = ({ tab, getFirecampAgent }) => {
-  let {
+  const {
     // headers,
     scripts,
-    meta: { inherit_scripts },
+    __meta: { inheritScripts },
     requestPanel,
     changeScripts,
 
@@ -39,7 +36,7 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
     (s: IRestStore) => ({
       // headers: s.headers,
       scripts: s.request.scripts,
-      meta: s.request.meta,
+      __meta: s.request.__meta,
       requestPanel: s.ui.requestPanel,
 
       changeScripts: s.changeScripts,
@@ -50,9 +47,9 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
     shallow
   );
 
-  let { activeTab } = requestPanel;
+  const { activeTab } = requestPanel;
 
-  let tabs = useMemo(
+  const tabs = useMemo(
     () => [
       {
         id: ERequestPanelTabs.Body,
@@ -88,13 +85,13 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
     [requestPanel]
   );
 
-  let _onSelectInheritScript = (
+  const _onSelectInheritScript = (
     type: string,
     inherit: boolean
   ): Promise<any> => {
     changeMeta({
       inherit_scripts: {
-        ...inherit_scripts,
+        ...inheritScripts,
         [type]: inherit,
       },
     });
@@ -103,9 +100,9 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
     return Promise.resolve({});
   };
 
-  let openParentScriptsModal = (): void => {};
+  const openParentScriptsModal = (): void => {};
 
-  let _renderTab = () => {
+  const _renderTab = () => {
     switch (activeTab) {
       case ERequestPanelTabs.Body:
         return <BodyTab />;
@@ -131,7 +128,7 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
             inheritScriptMessage={
               tab?.meta?.isSaved ? '' : 'Please save request first'
             }
-            inheritScript={inherit_scripts || {}}
+            inheritScript={inheritScripts || {}}
           />
         );
         break;
@@ -152,7 +149,7 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
     }
   };
 
-  let _toggleCodeSnippet = () => {
+  const _toggleCodeSnippet = () => {
     toggleOpenCodeSnippet();
   };
 

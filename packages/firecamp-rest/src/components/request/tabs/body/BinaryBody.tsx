@@ -6,23 +6,20 @@ import { FileDrop } from 'react-file-drop';
 import {
   Container,
   Button,
- 
-  
-  EButtonIconPosition,
 } from '@firecamp/ui-kit';
 
 const BinaryTab = ({ body, onChange }) => {
   const inputEle = useRef(null);
   // console.log({ body });
 
-  let [fileName, setFileName] = useState('');
-  let [errorMsg, setErrorMsg] = useState('');
-  let [isButtonDisabled, setButtonDisabled] = useState(false);
+  const [fileName, setFileName] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+  const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
     // console.log("file body--> component did mount");
 
-    let _setFileName = async () => {
+    const _setFileName = async () => {
       // console.log({ body });
 
       let text: string = body?.value?.name || '';
@@ -41,14 +38,14 @@ const BinaryTab = ({ body, onChange }) => {
     inputEle.current.click();
   };
 
-  let _onDropFile = async (files, event) => {
+  const _onDropFile = async (files, event) => {
     console.log('files[0]', files[0]);
     if (!files || !files[0]) {
       setErrorMsg('File not found!');
       setFileName('');
       setButtonDisabled(true);
     } else {
-      let file = files[0];
+      const file = files[0];
       setFileName(file.name);
 
       // console.log("r", text);
@@ -59,7 +56,7 @@ const BinaryTab = ({ body, onChange }) => {
     }
   };
 
-  let _onSelectFile = async (e) => {
+  const _onSelectFile = async (e) => {
     let target = e.target;
     console.log(e, target.files[0]);
     if (!target || !target.files[0]) {
@@ -67,7 +64,7 @@ const BinaryTab = ({ body, onChange }) => {
       setFileName('');
       setButtonDisabled(true);
     } else {
-      let file = target.files[0];
+      const file = target.files[0];
       setFileName(file.name);
 
       // let text = await _readFile(file).then((r) => r);
@@ -78,7 +75,7 @@ const BinaryTab = ({ body, onChange }) => {
     }
   };
 
-  let _onChangeBinaryBodyValue = (text) => {
+  const _onChangeBinaryBodyValue = (text) => {
     onChange(ERestBodyTypes.Binary, text);
   };
 
@@ -110,7 +107,7 @@ const BinaryTab = ({ body, onChange }) => {
             type="file"
             onChange={_onSelectFile}
           />
-          {errorMsg ? <div className="fc-error">{errorMsg}</div> : ''}
+          {errorMsg ? <div className="fc-error">{errorMsg}</div> : <></>}
         </FileDrop>
       </Container.Body>
     </Container>
