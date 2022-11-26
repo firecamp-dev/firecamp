@@ -142,7 +142,7 @@ const UrlBarContainer = ({
       <UrlBar.Body>
         <Url
           id={`url-${tab.id}`}
-          url={url.raw || _url.toString(url)}
+          url={url.raw}
           placeholder={'ws://'}
           onChangeURL={_onUpdateURL}
           // onEnter={_onExecute}

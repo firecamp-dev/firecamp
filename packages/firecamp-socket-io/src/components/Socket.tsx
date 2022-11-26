@@ -700,12 +700,6 @@ const Socket = ({
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
     const { request = {} } = tab;
-    if (request.url) {
-      request.url = {
-        ...request.url,
-        raw: _url.toString(request.url),
-      };
-    }
     const initState = initialiseStoreFromRequest(request);
     return (
       <SocketStoreProvider createStore={() => createSocketStore(initState)}>

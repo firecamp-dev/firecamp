@@ -67,7 +67,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       });
     } else if (key === 'queryParams') {
       get().changeUrl({
-        raw: _url.toString({ ...(get()?.request?.url || {}), [key]: value }),
+        raw: get().request.url?.raw,
         [key]: value,
       });
     }
