@@ -12,15 +12,22 @@ const getPathFromUrl = (url: string) => {
 const createUrlSlice = (set, get): IUrlSlice => ({
   changeUrl: (urlObj: IUrl) => {
     console.log(urlObj, 'this is the url');
-    // const state = get();
-    // const lastUrl = state.last?.request.url;
-
     const url = { raw: getPathFromUrl(urlObj.raw) };
-    set((s) => ({
-      ...s,
-      request: { ...s.request, url },
-      runtime: { ...s.runtime, displayUrl: urlObj.raw },
-    }));
+
+    set((s) => {
+      const { activePlayground } = s.runtime;
+      const connections = s.request.connections.map((c) => {
+        if (c.id == activePlayground) {
+          c.queryParams = urlObj.queryParams;
+        }
+        return c;
+      });
+      return {
+        ...s,
+        request: { ...s.request, url, connections },
+        runtime: { ...s.runtime, displayUrl: urlObj.raw },
+      };
+    });
 
     // state.prepareUrlPushAction(lastUrl, updatedUrl);
   },

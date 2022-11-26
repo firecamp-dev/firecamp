@@ -39,16 +39,21 @@ const bodyTabs = [
 ];
 
 const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
-  const { activePlayground, connection, updateConnection } = useWebsocketStore(
+  const {
+    activePlayground,
+    connections,
+    updateConnection,
+    changeConQueryParams,
+  } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       activePlayground: s.runtime.activePlayground,
-      connection: s.request.connections.find(
-        (c) => c.id === s.runtime.activePlayground
-      ),
+      connections: s.request.connections,
       updateConnection: s.updateConnection,
+      changeConQueryParams: s.changeConQueryParams,
     }),
     shallow
   );
+  const connection = connections.find((c) => c.id === activePlayground);
   const [activeBodyTab, onSelectBodyTab] = useState('playground');
 
   useEffect(() => {
@@ -66,10 +71,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
 
   const _onChangeHeaders = (headers = []) => {
     updateConnection(activePlayground, 'headers', headers);
-  };
-
-  const _onChangeParams = (queryParams = []) => {
-    updateConnection(activePlayground, 'queryParams', queryParams);
   };
 
   const _renderBody = () => {
@@ -101,7 +102,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           <ParamsTab
             params={connection?.queryParams || []}
             activeConnectionId={activePlayground}
-            onUpdate={_onChangeParams}
+            onUpdate={(qps) => changeConQueryParams(activePlayground, qps)}
           />
         );
 

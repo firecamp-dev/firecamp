@@ -4,6 +4,7 @@ const ParamsTab = ({
   activeConnectionId = '',
   onUpdate = (data) => {},
 }) => {
+
   return (
     <BulkEditTable
       key={`params-${activeConnectionId}`}

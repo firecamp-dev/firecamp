@@ -2,13 +2,6 @@ import { useMemo } from 'react';
 import { VscCode } from '@react-icons/all-files/vsc/VscCode';
 import shallow from 'zustand/shallow';
 
-import { ERequestPanelTabs } from '../../types';
-import BodyTab from './tabs/BodyTab';
-import HeadersTab from './tabs/HeadersTab';
-import AuthTab from './tabs/AuthTab';
-import ParamsTab from './tabs/ParamsTab';
-import ConfigTab from './tabs/ConfigTab';
-
 import {
   AvailableOnElectron,
   Container,
@@ -16,6 +9,14 @@ import {
   Tabs,
   ScriptsTabs,
 } from '@firecamp/ui-kit';
+
+
+import { ERequestPanelTabs } from '../../types';
+import BodyTab from './tabs/BodyTab';
+import HeadersTab from './tabs/HeadersTab';
+import AuthTab from './tabs/AuthTab';
+import ParamsTab from './tabs/ParamsTab';
+import ConfigTab from './tabs/ConfigTab';
 
 import { IRestStore, useRestStore } from '../../store';
 import { EFirecampAgent } from '@firecamp/types';

@@ -63,7 +63,6 @@ const Websocket = ({
     updateMessage: _noop,
     setMessage: _noop,
     updateURL: _noop,
-    updateConnection: _noop,
     removeConnection: _noop,
     onChangeConfig: _noop,
     updateMeta: _noop,
