@@ -8,7 +8,6 @@ import ParamsTab from './request/connections/ParamsTab';
 import AuthTab from './request/connections/AuthTab';
 import EmitterPlayground from './request/connections/playground/EmitterPlayground';
 import Response from './response/Response';
-import ConnectionButton from '../../common/connection/ConnectButton';
 import { PANEL } from '../../../constants';
 import { ISocketStore, useSocketStore } from '../../../store';
 
@@ -133,7 +132,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
                 list={bodyTabs || []}
                 activeTab={activeBodyTab || ''}
                 onSelect={onSelectBodyTab}
-                postComp={() => <ConnectionButton />}
                 // tabsClassName="tabs-with-bottom-border-left-section"
               />
             </div>

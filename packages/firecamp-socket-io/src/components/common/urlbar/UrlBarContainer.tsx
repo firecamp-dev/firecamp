@@ -6,6 +6,7 @@ import { VERSIONS } from '../../../constants/index';
 
 import { IPushPayload, ISocketStore, useSocketStore } from '../../../store';
 import { TId } from '@firecamp/types';
+import ConnectionButton from '../connection/ConnectButton'
 
 const UrlBarContainer = ({
   tab,
@@ -128,6 +129,7 @@ const UrlBarContainer = ({
         />
       </UrlBar.Body>
       <UrlBar.Suffix>
+        <ConnectionButton />
         <Button
           id={`save-request-${tab.id}`}
           text="Save"
