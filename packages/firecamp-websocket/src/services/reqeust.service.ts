@@ -159,56 +159,51 @@ export const initialiseStoreFromRequest = (
     DefaultConnectionState;
   const playgroundId = defaultConnection.id;
 
-  const playgrounds = {
-    // Add logic for init playgrounds by connections
-    [playgroundId]: {
-      id: playgroundId,
-      connectionState: EConnectionState.Ideal,
-      logFilters: {
-        type: '',
-      },
-      message: initialPlaygroundMessage,
-      selectedCollectionMessage: '',
-    },
-  };
-  const runtime = {
-    // ...state.runtime,
-    displayUrl: '',
-    activePlayground: playgroundId,
-    playgroundTabs: request.connections.map((c) => {
-      return {
-        id: c.id,
-        name: c.name,
-        meta: {
-          isSaved: true,
-          hasChange: false,
-        },
-      };
-    }),
-    activeEnvironments: {
-      workspace: '',
-      collection: '',
-    },
-    isRequestSaved: false,
-    _dnp: {},
-  };
-  const ui = {
-    // ...state.ui,
-    requestPanel: {
-      ...requestPanel,
-      activeTab: ERequestPanelTabs.Playgrounds, //uiActiveTab,
-    },
-    isFetchingRequest: false,
-  };
-  const connectionsLogs = {
-    [playgroundId]: [],
-  };
-
   return {
     request,
-    playgrounds,
-    runtime,
-    ui,
-    connectionsLogs,
+    playgrounds: {
+      // add logic for init playgrounds by connections
+      [playgroundId]: {
+        id: playgroundId,
+        connectionState: EConnectionState.Ideal,
+        logFilters: {
+          type: '',
+        },
+        message: initialPlaygroundMessage,
+        selectedCollectionMessage: '',
+      },
+    },
+    runtime: {
+      // ...state.runtime,
+      displayUrl: '',
+      activePlayground: playgroundId,
+      playgroundTabs: request.connections.map((c) => {
+        return {
+          id: c.id,
+          name: c.name,
+          meta: {
+            isSaved: true,
+            hasChange: false,
+          },
+        };
+      }),
+      activeEnvironments: {
+        workspace: '',
+        collection: '',
+      },
+      _dnp: {},
+      isRequestSaved: !!request.__ref.collectionId,
+    },
+    ui: {
+      // ...state.ui,
+      requestPanel: {
+        ...requestPanel,
+        activeTab: ERequestPanelTabs.Playgrounds, //uiActiveTab,
+      },
+      isFetchingRequest: false,
+    },
+    connectionsLogs: {
+      [playgroundId]: [],
+    },
   };
 };

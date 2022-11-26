@@ -96,49 +96,47 @@ export const initialiseStoreFromRequest = (
   const defaultConnection =
     request.connections?.find((c) => c.isDefault === true) || RequestConnection;
   const playgroundId = defaultConnection.id;
-  const runtime = {
-    activePlayground: defaultConnection.id,
-    playgroundTabs: [
-      {
-        id: defaultConnection.id,
-        name: defaultConnection.name,
-        meta: {
-          isSaved: false,
-          hasChange: false,
-        },
-      },
-    ],
-    activeEnvironments: {
-      workspace: '',
-      collection: '',
-    },
-  };
-  const playgrounds = {
-    // Add logic for init playgrounds by connections
-    [defaultConnection.id]: {
-      id: defaultConnection.id,
-      connectionState: EConnectionState.Ideal,
-      logFilters: {
-        type: '',
-        event: '',
-      },
-      emitter: InitPlayground,
-      selectedCollectionEmitter: '',
-      listeners: {},
-    },
-  };
-  const connectionsLogs = {
-    [playgroundId]: [],
-  };
-  const ui = {
-    isFetchingRequest: false,
-  };
 
   return {
     request,
-    playgrounds,
-    runtime,
-    ui,
-    connectionsLogs,
+    runtime: {
+      activePlayground: defaultConnection.id,
+      playgroundTabs: [
+        {
+          id: defaultConnection.id,
+          name: defaultConnection.name,
+          meta: {
+            isSaved: false,
+            hasChange: false,
+          },
+        },
+      ],
+      activeEnvironments: {
+        workspace: '',
+        collection: '',
+      },
+      isRequestRunning: false,
+      isRequestSaved: !!request.__ref.collectionId,
+    },
+    playgrounds: {
+      // add logic for init playgrounds by connections
+      [defaultConnection.id]: {
+        id: defaultConnection.id,
+        connectionState: EConnectionState.Ideal,
+        logFilters: {
+          type: '',
+          event: '',
+        },
+        emitter: InitPlayground,
+        selectedCollectionEmitter: '',
+        listeners: {},
+      },
+    },
+    connectionsLogs: {
+      [playgroundId]: [],
+    },
+    ui: {
+      isFetchingRequest: false,
+    },
   };
 };
