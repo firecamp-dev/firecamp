@@ -83,7 +83,7 @@ export default class RestExecutor implements IRestExecutor {
     const { __meta, body, config, headers, url } = request;
 
     const axiosRequest: AxiosRequestConfig = {
-      url: _url.parse(url?.raw || '', ['http', 'https']),
+      url: _url.normalize(url?.raw || '', ['http', 'https']),
       params: QueryString.stringify(_table.toObject(url?.queryParams || [])),
       method: request.method,
       headers: _table.toObject(headers || []),

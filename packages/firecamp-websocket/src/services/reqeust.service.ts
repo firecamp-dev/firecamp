@@ -3,10 +3,11 @@ import {
   ERequestTypes,
   IWebSocketConnection,
 } from '@firecamp/types';
+import { _object, _array, _string } from '@firecamp/utils';
+import _url from '@firecamp/url';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid as id } from 'nanoid';
-import { _object, _array, _string } from '@firecamp/utils';
 
 import {
   initialPlaygroundMessage,
@@ -52,8 +53,6 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
     __meta = _nr.__meta,
     __ref = _nr.__ref,
   } = request;
-
-  // console.log({ request });
 
   //normalize url
   _nr.url = !_object.isEmpty(url) ? url : { raw: '' };
@@ -159,6 +158,10 @@ export const initialiseStoreFromRequest = (
     DefaultConnectionState;
   const playgroundId = defaultConnection.id;
 
+  const url = _url.fetchPathParams(request.url.raw);
+
+  console.log(url, 'url...');
+
   return {
     request,
     playgrounds: {
@@ -174,7 +177,6 @@ export const initialiseStoreFromRequest = (
       },
     },
     runtime: {
-      // ...state.runtime,
       displayUrl: '',
       activePlayground: playgroundId,
       playgroundTabs: request.connections.map((c) => {

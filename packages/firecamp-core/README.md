@@ -13,7 +13,7 @@ const urlObject = url.toObject(urlString)
 url.toString(urlString)
 
 // Parse url string, specifically use before sending request to execute
-url.parse('localhost:4000', 'http')
+url.normalize('localhost:4000', 'http')
 
 // Return 
 // http://localhost:4000

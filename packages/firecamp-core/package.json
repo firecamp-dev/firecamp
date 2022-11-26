@@ -63,7 +63,7 @@
     "@firecamp/rest": "^0.0.0",
     "@firecamp/types": "^0.0.17",
     "@firecamp/ui-kit": "0.0.1",
-    "@firecamp/url": "^0.0.16",
+    "@firecamp/url": "^0.0.17",
     "@sentry/browser": "7.17.2",
     "@sentry/tracing": "7.17.2",
     "awesome-notifications": "3.1.3",
