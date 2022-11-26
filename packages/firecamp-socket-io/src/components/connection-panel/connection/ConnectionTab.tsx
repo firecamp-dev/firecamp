@@ -1,12 +1,5 @@
-import { useState, useEffect, memo } from 'react';
-import {
-  Container,
-  Column,
-  Resizable,
-  Tabs,
-  Row,
-  TabHeader,
-} from '@firecamp/ui-kit';
+import { useState, memo } from 'react';
+import { Container, Column, Resizable, Tabs, Row } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
 import ConfigTab from './request/connections/ConfigTab';
@@ -17,9 +10,9 @@ import EmitterPlayground from './request/connections/playground/EmitterPlaygroun
 import Response from './response/Response';
 import ConnectionButton from '../../common/connection/ConnectButton';
 import { PANEL } from '../../../constants';
-import { useSocketStore } from '../../../store';
+import { ISocketStore, useSocketStore } from '../../../store';
 
-let bodyTabs = [
+const bodyTabs = [
   {
     id: 'playground',
     name: 'Playground',
@@ -43,35 +36,36 @@ let bodyTabs = [
 ];
 
 const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
-  let { activePlayground, connection, updateConnection } = useSocketStore(
-    (s) => ({
+  const {
+    activePlayground,
+    connections,
+    updateConnection,
+    changeConQueryParams,
+  } = useSocketStore(
+    (s: ISocketStore) => ({
       activePlayground: s.runtime.activePlayground,
-      connection: s.request.connections.find(
-        (c) => c.id === s.runtime.activePlayground
-      ),
+      connections: s.request.connections,
       updateConnection: s.updateConnection,
+      changeConQueryParams: s.changeConQueryParams,
     }),
     shallow
   );
-  let [activeBodyTab, onSelectBodyTab] = useState('config');
+  const [activeBodyTab, onSelectBodyTab] = useState('config');
+  const connection = connections.find((c) => c.id === activePlayground);
 
-  let _onChangeConfig = (key, value) => {
+  const _onChangeConfig = (key, value) => {
     updateConnection(activePlayground, key, value);
   };
 
-  let _onChangeHeaders = (headers = []) => {
+  const _onChangeHeaders = (headers = []) => {
     updateConnection(activePlayground, 'headers', headers);
   };
 
-  let _onChangeParams = (queryParams = []) => {
-    updateConnection(activePlayground, 'queryParams', queryParams);
-  };
-
-  let _onChangeAuth = (auth = []) => {
+  const _onChangeAuth = (auth = []) => {
     updateConnection(activePlayground, 'auth', auth);
   };
 
-  let _renderBody = () => {
+  const _renderBody = () => {
     switch (activeBodyTab) {
       case 'playground':
         return <Playground key={activePlayground} />;
@@ -100,7 +94,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           <ParamsTab
             params={connection?.queryParams || []}
             activeConnectionId={activePlayground}
-            onUpdate={_onChangeParams}
+            onUpdate={(qps) => changeConQueryParams(activePlayground, qps)}
           />
         );
 
@@ -118,7 +112,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     }
   };
 
-  let Playground = () => {
+  const Playground = () => {
     return (
       <Row flex={1} overflow="auto" className=" with-divider h-full">
         <Column className="h-full">
@@ -134,14 +128,14 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         <Row flex={1} overflow="auto" className=" with-divider h-full">
           <Column className="h-full flex flex-col z-20">
             <div className="z-20 relative">
-            <Tabs
-              key="tabs"
-              list={bodyTabs || []}
-              activeTab={activeBodyTab || ''}
-              onSelect={onSelectBodyTab}
-              postComp={() => <ConnectionButton />}
-              // tabsClassName="tabs-with-bottom-border-left-section"
-            />
+              <Tabs
+                key="tabs"
+                list={bodyTabs || []}
+                activeTab={activeBodyTab || ''}
+                onSelect={onSelectBodyTab}
+                postComp={() => <ConnectionButton />}
+                // tabsClassName="tabs-with-bottom-border-left-section"
+              />
             </div>
             {_renderBody()}
           </Column>

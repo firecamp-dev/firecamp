@@ -24,7 +24,7 @@ const UrlBarContainer = ({
     isRequestSaved,
 
     changeUrl,
-    changeConfig /* pushAction */,
+    changeConfig,
     changeActiveEnvironment,
     prepareRequestInsertPushPayload,
     prepareRequestUpdatePushPayload,
@@ -76,10 +76,10 @@ const UrlBarContainer = ({
     target: { value: any };
   }) => {
     e.preventDefault();
-    let value = e.target.value;
-
-    // let urlObject = _url.updateByRaw({ ...url, raw: value });
-    // changeUrl(urlObject);
+    const value = e.target.value;
+    const proxyUrl = { ...url, queryParams: [], pathParams: [] };
+    const urlObject = _url.updateByRaw({ ...proxyUrl, raw: value });
+    changeUrl(urlObject);
   };
 
   let versionToolTip = 'npm-socket.io-client@2.4.0';

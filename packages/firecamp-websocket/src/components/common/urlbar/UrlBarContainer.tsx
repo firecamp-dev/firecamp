@@ -117,7 +117,6 @@ const UrlBarContainer = ({
     const value = e.target.value;
     const proxyUrl = { ...url, queryParams: [], pathParams: [] };
     const urlObject = _url.updateByRaw({ ...proxyUrl, raw: value });
-    console.log(urlObject, 12346);
     changeUrl(urlObject);
   };
 

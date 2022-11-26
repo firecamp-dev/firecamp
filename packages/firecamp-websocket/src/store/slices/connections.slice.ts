@@ -108,7 +108,6 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       );
     }
   },
-
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {
     if (!connectionId) return;
     const state = get();

@@ -11,7 +11,6 @@ const getPathFromUrl = (url: string) => {
 
 const createUrlSlice = (set, get): IUrlSlice => ({
   changeUrl: (urlObj: IUrl) => {
-    console.log(urlObj, 'this is the url');
     const url = { raw: getPathFromUrl(urlObj.raw) };
 
     set((s) => {

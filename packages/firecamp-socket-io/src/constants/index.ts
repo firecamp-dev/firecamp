@@ -6,6 +6,7 @@ import {
   ISocketIOConfig,
   ESocketIOClientVersion,
 } from '@firecamp/types';
+import { nanoid } from 'nanoid'
 import { EConnectionState } from '../types';
 
 export const LOG_CUSTOM_EVENTS = {
@@ -61,7 +62,7 @@ export const RESERVED_EMITTER_EVENTS = [
 ];
 
 export const RequestConnection: ISocketIOConnection = {
-  id: '',
+  id: nanoid(),
   name: 'Connection 1',
   forceNew: false,
   namespace: '',
