@@ -18,6 +18,7 @@ const UrlBarContainer = ({
 
   const {
     url,
+    displayUrl,
     version,
     activeEnvironments,
     isRequestSaved,
@@ -31,6 +32,7 @@ const UrlBarContainer = ({
   } = useSocketStore(
     (s: ISocketStore) => ({
       url: s.request.url,
+      displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
@@ -76,9 +78,8 @@ const UrlBarContainer = ({
     e.preventDefault();
     let value = e.target.value;
 
-    let urlObject = _url.updateByRaw({ ...url, raw: value });
-
-    changeUrl(urlObject);
+    // let urlObject = _url.updateByRaw({ ...url, raw: value });
+    // changeUrl(urlObject);
   };
 
   let versionToolTip = 'npm-socket.io-client@2.4.0';
@@ -121,7 +122,7 @@ const UrlBarContainer = ({
       <UrlBar.Body>
         <Url
           id={`url-${tab.id}`}
-          url={url?.raw || ''}
+          url={displayUrl || ''}
           placeholder={'http://'}
           onChangeURL={_handleUrlChange}
         />

@@ -158,9 +158,9 @@ export const initialiseStoreFromRequest = (
     DefaultConnectionState;
   const playgroundId = defaultConnection.id;
 
-  const url = _url.fetchPathParams(request.url.raw);
-
-  console.log(url, 'url...');
+  const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
+  const displayUrl = url.raw;
+  // console.log(url, displayUrl, 'url...');
 
   return {
     request,
@@ -177,7 +177,7 @@ export const initialiseStoreFromRequest = (
       },
     },
     runtime: {
-      displayUrl: '',
+      displayUrl,
       activePlayground: playgroundId,
       playgroundTabs: request.connections.map((c) => {
         return {

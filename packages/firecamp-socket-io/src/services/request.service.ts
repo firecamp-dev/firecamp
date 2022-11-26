@@ -4,6 +4,7 @@ import {
   ISocketIO,
   ESocketIOClientVersion,
 } from '@firecamp/types';
+import _url from '@firecamp/url';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid as id } from 'nanoid';
@@ -97,9 +98,13 @@ export const initialiseStoreFromRequest = (
     request.connections?.find((c) => c.isDefault === true) || RequestConnection;
   const playgroundId = defaultConnection.id;
 
+  const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
+  const displayUrl = url.raw;
+
   return {
     request,
     runtime: {
+      displayUrl,
       activePlayground: defaultConnection.id,
       playgroundTabs: [
         {

@@ -21,7 +21,7 @@ const UrlBarContainer = ({
   const { EnvironmentWidget } = postComponents;
 
   const {
-    url,
+    displayUrl,
     activeEnvironments,
     isRequestSaved,
 
@@ -32,7 +32,7 @@ const UrlBarContainer = ({
     setPushActionEmpty,
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({
-      url: s.request.url,
+      displayUrl: s.runtime.displayUrl,
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
 
@@ -113,8 +113,8 @@ const UrlBarContainer = ({
   const _onUpdateURL = (e) => {
     e.preventDefault();
     const value = e.target.value;
-    const urlObject = _url.updateByRaw({ ...url, raw: value });
-    changeUrl(urlObject);
+    // const urlObject = _url.updateByRaw({ ...url, raw: value });
+    // changeUrl(urlObject);
   };
 
   return (
@@ -142,7 +142,7 @@ const UrlBarContainer = ({
       <UrlBar.Body>
         <Url
           id={`url-${tab.id}`}
-          url={url.raw}
+          url={displayUrl}
           placeholder={'ws://'}
           onChangeURL={_onUpdateURL}
           // onEnter={_onExecute}
