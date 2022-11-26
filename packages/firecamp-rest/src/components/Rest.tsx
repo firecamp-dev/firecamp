@@ -45,7 +45,6 @@ import {
   prepareUIRequestPanelState,
 } from '../services/rest-service';
 
-
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   const restStoreApi: any = useRestStoreApi();
 
@@ -163,7 +162,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = await getMergedRequestByPullAction(pullPayload);
 
-      updatedRequest = await normalizeRequest(updatedRequest, true);
+      updatedRequest = normalizeRequest(updatedRequest, true);
 
       // set last value by pull action and request
       setLast({
@@ -198,14 +197,14 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       try {
         const isRequestSaved = !!tab?.request?._meta?.id || false;
         let requestToNormalize: IRest = {
-          meta: {
+          method: EHttpMethod.GET,
+          __meta: {
             name: '',
             version: '2.0.0',
             type: ERequestTypes.Rest,
-            active_body_type: ERestBodyTypes.NoBody,
+            activeBodyType: ERestBodyTypes.NoBody,
           },
-          method: EHttpMethod.GET,
-          _meta: { id: '', collection_id: '' },
+          __ref: { id: '', collectionId: '' },
         };
 
         if (isRequestSaved === true) {
@@ -214,8 +213,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
             const response = await platformContext.request.onFetch(
               tab.request._meta.id
             );
-            // console.log({response});
-
             requestToNormalize = response.data;
           } catch (error) {
             console.error({
@@ -255,7 +252,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     hasPull?: boolean,
     isFresh?: boolean
   ) => {
-    let request: IRestClientRequest = await normalizeRequest(
+    let request: IRestClientRequest = normalizeRequest(
       requestToNormalize,
       isRequestSaved
     );
@@ -285,7 +282,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     );
     setIsFetchingReqFlag(false);
     // Update auth type, generate auth headers
-    updateActiveAuth(request.meta.active_auth_type);
+    updateActiveAuth(request.__meta.activeAuthType);
   };
 
   const resetAuthHeaders = async (authType: EAuthTypes) => {
@@ -319,7 +316,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   const updateActiveAuth = (authType: EAuthTypes) => {
     // console.log({authType});
 
-    changeMeta({ active_auth_type: authType });
+    changeMeta({ activeAuthType: authType });
     resetAuthHeaders(authType);
   };
 
@@ -421,8 +418,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     // console.log({ platformActiveEnvironments });
 
     if (!platformActiveEnvironments) return;
-    let activeEnvironments =
-      restStoreApi.getState().runtime.activeEnvironments;
+    let activeEnvironments = restStoreApi.getState().runtime.activeEnvironments;
 
     if (
       platformActiveEnvironments.workspace &&
@@ -432,7 +428,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  if(isFetchingRequest === true) return <Loader />;
+  if (isFetchingRequest === true) return <Loader />;
 
   return (
     <RestContext.Provider
@@ -445,13 +441,13 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     >
       <Container className="h-full with-divider" overflow="visible">
         <UrlBarContainer
-            tab={tab}
-            collectionId={tab?.request?._meta?.collection_id || ''}
-            postComponents={platformComponents}
-            onSaveRequest={onSave}
-            platformContext={platformContext}
-            onPasteCurl={onPasteCurl}
-          />
+          tab={tab}
+          collectionId={tab?.request?._meta?.collection_id || ''}
+          postComponents={platformComponents}
+          onSaveRequest={onSave}
+          platformContext={platformContext}
+          onPasteCurl={onPasteCurl}
+        />
         <Container.Body>
           <Row flex={1} className="with-divider h-full" overflow="auto">
             <Request
@@ -499,7 +495,7 @@ const withStore = (WrappedComponent) => {
         },
         meta: request.meta || {
           active_body_type: ERestBodyTypes.NoBody,
-          active_auth_type: EAuthTypes.Inherit,
+          activeAuthType: EAuthTypes.Inherit,
           inherit_scripts: {
             pre: true,
             post: true,

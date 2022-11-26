@@ -24,11 +24,11 @@ import { isValidRow } from '@firecamp/utils/dist/table';
 import { nanoid } from 'nanoid';
 import equal from 'deep-equal';
 
-import { configState, bodyState } from '../../constants';
-import { IUiRequestPanel } from '../../store';
-import { IRestClientRequest } from '../../types';
-import { Auth } from '..';
-import { IAuthHeader } from '../auth/types';
+import { configState, bodyState } from '../constants';
+import { IUiRequestPanel } from '../store';
+import { IRestClientRequest } from '../types';
+import { Auth } from '.';
+import { IAuthHeader } from './auth/types';
 
 export const prepareUIRequestPanelState = (
   request: Partial<IRestClientRequest>
@@ -79,9 +79,9 @@ export const prepareUIRequestPanelState = (
         };
         break;
       case 'url':
-        if (request['url']?.query_params || request['url']?.path_params) {
-          let queryParamsLength = request?.url?.query_params?.length || 0;
-          let pathParamsLength = request?.url?.path_params?.length || 0;
+        if (request['url']?.queryParams || request['url']?.pathParams) {
+          let queryParamsLength = request?.url?.queryParams?.length || 0;
+          let pathParamsLength = request?.url?.pathParams?.length || 0;
           updatedUiStore = {
             ...updatedUiStore,
             // activeTab: ERequestPanelTabs.Params,
@@ -141,48 +141,48 @@ export const isRestBodyEmpty = (bodies: { [key: string]: any }) => {
 export const normalizeRequest = (
   request: Partial<IRest>,
   isSaved: boolean = true
-): Promise<IRestClientRequest> => {
+): IRestClientRequest => {
   // prepare normalized request aka _nr
   const _nr: IRestClientRequest = {
-    meta: {
+    method: EHttpMethod.GET,
+    __meta: {
       name: '',
       description: '',
       type: ERequestTypes.Rest,
       version: '2.0.0' /* ERestRequestVersion.V1; */, // TODO: check version
-      active_body_type: ERestBodyTypes.NoBody,
-      active_auth_type: EAuthTypes.NoAuth,
+      activeBodyType: ERestBodyTypes.NoBody,
+      activeAuthType: EAuthTypes.NoAuth,
     },
-    method: EHttpMethod.GET,
-    _meta: { id: '', collection_id: '' },
+    __ref: { id: '', collectionId: '' },
   };
 
-  const { url, method, auth, headers, config, body, scripts, meta, _meta } =
+  const { url, method, auth, headers, config, body, scripts, __meta, __ref } =
     request;
 
   //normalize url
   _nr.url = !_object.isEmpty(url)
     ? url
-    : { raw: '', query_params: [], path_params: [] };
-  if (!_array.isEmpty(_nr.url.query_params)) {
+    : { raw: '', queryParams: [], pathParams: [] };
+  if (!_array.isEmpty(_nr.url.queryParams)) {
     const queryParams = [];
     const pathParams = [];
-    if (!url?.query_params?.length) url.query_params = [];
-    if (!url?.path_params?.length) url.path_params = [];
-    url.query_params.map((qp) => {
+    if (!url?.queryParams?.length) url.queryParams = [];
+    if (!url?.pathParams?.length) url.pathParams = [];
+    url.queryParams.map((qp) => {
       // add default key: `type: text`
       qp.type = EKeyValueTableRowType.Text;
       qp.value = qp.value ? qp.value : '';
       if (isValidRow(qp)) queryParams.push(qp);
     });
-    _nr.url.query_params = queryParams;
+    _nr.url.queryParams = queryParams;
 
-    url.path_params.map((pp) => {
+    url.pathParams.map((pp) => {
       // add default key: `type: text`
       pp.type = EKeyValueTableRowType.Text;
       pp.value = pp.value ? pp.value : '';
       if (isValidRow(pp)) pathParams.push(pp);
     });
-    _nr.url.path_params = pathParams;
+    _nr.url.pathParams = pathParams;
   }
 
   //normalize method
@@ -229,29 +229,29 @@ export const normalizeRequest = (
     test: scripts?.test || '',
   };
 
-  // normalize meta
-  _nr.meta.name = meta.name || 'Untitled Request';
-  _nr.meta.description = meta.description || '';
-  _nr.meta.active_body_type = meta.active_body_type || ERestBodyTypes.NoBody;
-  _nr.meta.active_auth_type = meta.active_auth_type || EAuthTypes.NoAuth;
-  _nr.meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
-  _nr.meta.inherit_scripts = {
-    pre: meta?.inherit_scripts?.pre || true,
-    post: meta?.inherit_scripts?.post || true,
-    test: meta?.inherit_scripts?.test || true,
+  // normalize __meta
+  _nr.__meta.name = __meta.name || 'Untitled Request';
+  _nr.__meta.description = __meta.description || '';
+  _nr.__meta.activeBodyType = __meta.activeBodyType || ERestBodyTypes.NoBody;
+  _nr.__meta.activeAuthType = __meta.activeAuthType || EAuthTypes.NoAuth;
+  _nr.__meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
+  _nr.__meta.inheritScripts = {
+    pre: __meta?.inheritScripts?.pre || true,
+    post: __meta?.inheritScripts?.post || true,
+    test: __meta?.inheritScripts?.test || true,
   };
-  _nr.meta.inherited_auth = meta.inherited_auth;
+  _nr.__meta.inheritedAuth = __meta.inheritedAuth;
 
-  // normalize _meta
-  _nr._meta.id = _meta?.id || nanoid();
-  _nr._meta.collection_id = _meta?.collection_id;
-  _nr._meta.folder_id = _meta?.folder_id;
-  _nr._meta.created_at = _meta?.created_at || new Date().valueOf();
-  _nr._meta.updated_at = _meta?.updated_at || new Date().valueOf();
-  _nr._meta.created_by = _meta?.created_by || '';
-  _nr._meta.updated_by = _meta?.updated_by || '';
+  // normalize __ref
+  _nr.__ref.id = __ref.id || nanoid();
+  _nr.__ref.collectionId = __ref?.collectionId;
+  _nr.__ref.folderId = __ref?.folderId;
+  _nr.__ref.createdAt = __ref?.createdAt || new Date().valueOf();
+  _nr.__ref.updatedAt = __ref?.updatedAt || new Date().valueOf();
+  _nr.__ref.createdBy = __ref?.createdBy || '';
+  _nr.__ref.updatedBy = __ref?.updatedBy || '';
 
-  return Promise.resolve(_nr);
+  return _nr;
 };
 
 /**
@@ -328,23 +328,23 @@ export const normalizeSendRequestPayload = async (
 
   try {
     // Send active body payload
-    if (request.meta.active_body_type !== ERestBodyTypes.NoBody) {
+    if (request.__meta.activeBodyType !== ERestBodyTypes.NoBody) {
       sendRequestPayload.body = {
-        [request.meta.active_body_type]:
-          request.body[request.meta.active_body_type],
+        [request.__meta.activeBodyType]:
+          request.body[request.__meta.activeBodyType],
       };
 
-      if (request.meta.active_body_type === ERestBodyTypes.FormData) {
+      if (request.__meta.activeBodyType === ERestBodyTypes.FormData) {
         // Add file entry value after parse env. variable in body
         if (
-          !_array.isEmpty(request.body?.[request.meta.active_body_type]?.value)
+          !_array.isEmpty(request.body?.[request.__meta.activeBodyType]?.value)
         ) {
-          sendRequestPayload.body[request.meta.active_body_type].value =
-            request.body[request.meta.active_body_type].value.map(
+          sendRequestPayload.body[request.__meta.activeBodyType].value =
+            request.body[request.__meta.activeBodyType].value.map(
               (item, index) => {
                 if (item.type === EKeyValueTableRowType.File) {
                   item.value =
-                    originalRequest.body[request.meta.active_body_type].value[
+                    originalRequest.body[request.__meta.activeBodyType].value[
                       index
                     ].value;
                 }
@@ -353,45 +353,45 @@ export const normalizeSendRequestPayload = async (
             );
         }
       } else if (
-        request.meta.active_body_type === ERestBodyTypes.Binary &&
-        originalRequest.body[request.meta.active_body_type].value
+        request.__meta.activeBodyType === ERestBodyTypes.Binary &&
+        originalRequest.body[request.__meta.activeBodyType].value
       ) {
-        // handle binary body paylaod
+        // handle binary body payload
         let text: string | ArrayBuffer = await readFile(
-          originalRequest.body[request.meta.active_body_type].value
+          originalRequest.body[request.__meta.activeBodyType].value
         )
           .then((r) => r)
           .catch((e) => {
             return '';
           });
-        sendRequestPayload.body[request.meta.active_body_type].value = text;
+        sendRequestPayload.body[request.__meta.activeBodyType].value = text;
       }
     }
 
     // Send active auth payload
     if (
-      request.meta.active_auth_type !== EAuthTypes.NoAuth &&
-      request.meta.active_auth_type !== EAuthTypes.Inherit
+      request.__meta.activeAuthType !== EAuthTypes.NoAuth &&
+      request.__meta.activeAuthType !== EAuthTypes.Inherit
     ) {
       sendRequestPayload.auth = {
-        [request.meta.active_auth_type]:
-          request.auth[request.meta.active_auth_type],
+        [request.__meta.activeAuthType]:
+          request.auth[request.__meta.activeAuthType],
       };
-    } else if (request.meta.active_auth_type === EAuthTypes.Inherit) {
-      let inherited_auth = request.meta.inherited_auth;
+    } else if (request.__meta.activeAuthType === EAuthTypes.Inherit) {
+      let inherited_auth = request.__meta.inheritedAuth;
       if (inherited_auth) {
         sendRequestPayload.auth = {
           [inherited_auth.auth]: inherited_auth.payload,
         };
       }
     }
-    sendRequestPayload._meta = { id: request._meta.id, collection_id: '' };
+    sendRequestPayload.__ref = { id: request.__ref.id, collectionId: '' };
     // console.log({ sendRequestPayload });
 
     //  Merge headers and auth headers
     let authHeaders = await getAuthHeaders(
       request,
-      request.meta.active_auth_type
+      request.__meta.activeAuthType
     );
     const headersAry = _table.objectToTable(authHeaders) || [];
     // console.log({ headersAry, request });
@@ -453,7 +453,7 @@ export const normalizePushPayload = async (
         }
 
         if (!_object.isEmpty(authToNormalise)) {
-          pushRequestPayload['auth'] = _auth.normalize(authToNormalise);
+          pushRequestPayload['auth'] = _auth.normalise(authToNormalise);
         }
       } else if (key === 'body') {
         let isBodyEmpty = isRestBodyEmpty(request.body);
@@ -519,7 +519,7 @@ export const getAuthHeaders = async (
   authType?: EAuthTypes
 ): Promise<{ [key: string]: any } | IAuthHeader> => {
   if (!authType) {
-    authType = request.meta?.active_auth_type;
+    authType = request.__meta?.activeAuthType;
   }
   // console.log({ authType });
 
@@ -530,7 +530,7 @@ export const getAuthHeaders = async (
     // set inherit auth to runtimeSlice.inherit
     // update auth headers by inherit auth
   } */ else {
-    let { url, method, body, headers, auth, meta } = request;
+    let { url, method, body, headers, auth, __meta } = request;
 
     let requestAuth = auth;
 
@@ -545,7 +545,7 @@ export const getAuthHeaders = async (
       authType = inherited_auth.type;
     }
 
-    if (meta?.active_auth_type !== EAuthTypes.NoAuth) {
+    if (__meta?.activeAuthType !== EAuthTypes.NoAuth) {
       try {
         let agent =
           _misc.firecampAgent() === EFirecampAgent.desktop
@@ -565,7 +565,7 @@ export const getAuthHeaders = async (
         // console.log({ authServicePayload });
 
         // manage OAuth2 payload
-        if (meta?.active_auth_type === EAuthTypes.OAuth2) {
+        if (__meta?.activeAuthType === EAuthTypes.OAuth2) {
           let oAuth2 = requestAuth[EAuthTypes.OAuth2];
           let activeGrantType = oAuth2.active_grant_type;
           let activeGrantTypePayload = oAuth2.grant_types[activeGrantType];
@@ -573,7 +573,7 @@ export const getAuthHeaders = async (
         }
 
         const authService = new Auth(
-          authType || meta.active_auth_type,
+          authType || __meta.activeAuthType,
           authServicePayload,
           extraParams
         );
