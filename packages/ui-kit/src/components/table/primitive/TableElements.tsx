@@ -1,7 +1,15 @@
 import { FC } from 'react';
 import cx from 'classnames';
 import { _array, _misc, _object } from '@firecamp/utils';
-import { IRow, IColumn, TTd, TTh, TTr } from './table.interfaces';
+import {
+  IRow,
+  IColumn,
+  TTd,
+  TTh,
+  TTr,
+  TTBody,
+  TTHead,
+} from './table.interfaces';
 
 const TableRow: FC<IRow<any>> = ({
   index,
@@ -42,6 +50,22 @@ const TableRow: FC<IRow<any>> = ({
         );
       })}
     </Tr>
+  );
+};
+
+const THead: FC<TTHead> = ({ className = '', children, style = {} }) => {
+  return (
+    <thead className={className} style={style}>
+      {children}
+    </thead>
+  );
+};
+
+const TBody: FC<TTBody> = ({ className = '', children, style = {} }) => {
+  return (
+    <tbody className={className} style={style}>
+      {children}
+    </tbody>
   );
 };
 
@@ -95,4 +119,4 @@ const Td: FC<TTd<any>> = ({
   );
 };
 
-export { Th, Tr, Td, TableRow };
+export { THead, TBody, Th, Tr, Td, TableRow };

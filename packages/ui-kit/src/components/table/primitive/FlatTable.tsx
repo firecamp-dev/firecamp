@@ -8,7 +8,7 @@ import {
   TTableApi,
   TPlainObject,
 } from './table.interfaces';
-import { TableRow, Th, Tr } from './TableElements';
+import { TableRow, TBody, Th, THead, Tr } from './TableElements';
 import useTableResize from './useTableResize';
 import './table.sass';
 
@@ -19,6 +19,29 @@ const defaultOptions: ITableOptions = {
   allowSort: true,
 };
 
+const prepareTableInitState = (
+  rows: any[],
+  showDefaultEmptyRows?: boolean,
+  defaultRow?: TPlainObject
+) => {
+  if (_array.isEmpty(rows)) {
+    const row1Id = nanoid();
+    const row2Id = nanoid();
+    rows = showDefaultEmptyRows
+      ? [
+          { id: row1Id, ...defaultRow },
+          { id: row2Id, ...defaultRow },
+        ]
+      : [];
+  }
+  return rows;
+};
+
+/**
+ * FltTable is very much similar to primitive table expect it's meant to built for LogTable with virtual scroll
+ * another difference is the state is managed with Row[] instead of { rows:{}, orders: []} in primitive table
+ * we can merge both tables after reviewing the performance
+ */
 const FlatTable: FC<ITable<any>> = ({
   columns,
   renderCell,
@@ -32,7 +55,9 @@ const FlatTable: FC<ITable<any>> = ({
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
-  const [rows, setRows] = useState<any[]>(propRows);
+  const [rows, setRows] = useState<any[]>(
+    prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow)
+  );
   useTableResize(tableRef);
 
   const containerDivRef = useRef<HTMLTableElement>(null);
@@ -53,18 +78,7 @@ const FlatTable: FC<ITable<any>> = ({
   }, []);
 
   useEffect(() => {
-    let _rows: any[] = rows;
-    if (_object.isEmpty(rows)) {
-      const row1Id = nanoid();
-      const row2Id = nanoid();
-      _rows = showDefaultEmptyRows
-        ? [
-            { id: row1Id, ...defaultRow },
-            { id: row2Id, ...defaultRow },
-          ]
-        : [];
-    }
-    setRows(rows);
+    setRows(prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow));
   }, [propRows]);
 
   options = { ...defaultOptions, ...options };
@@ -159,7 +173,7 @@ const FlatTable: FC<ITable<any>> = ({
         style={{ minWidth: '450px' }}
         ref={tableRef}
       >
-        <thead>
+        <THead>
           <Tr className="border text-base text-left font-semibold bg-focus2">
             {columns.map((c, i) => {
               return (
@@ -185,8 +199,8 @@ const FlatTable: FC<ITable<any>> = ({
               );
             })}
           </Tr>
-        </thead>
-        <tbody>
+        </THead>
+        <TBody>
           {rows.map((row: any, i: number) => {
             return (
               <TableRow
@@ -203,7 +217,7 @@ const FlatTable: FC<ITable<any>> = ({
               />
             );
           })}
-        </tbody>
+        </TBody>
       </table>
     </div>
   );

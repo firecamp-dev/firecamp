@@ -7,7 +7,7 @@ import {
   Resizable,
   Button,
   ReactTable,
-  // LogTable as LTable,
+  LogTable as LTable,
   Editor,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
@@ -44,7 +44,7 @@ const LogTable = () => {
   );
 
   const logTableAPIRef = useRef({});
-  // const lLogTableApiRef = useRef({});
+  const lLogTableApiRef = useRef({});
 
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
@@ -61,15 +61,15 @@ const LogTable = () => {
     };
 
     const filteredLogs = getFilteredLogsByMeta(logs, typeFilter);
-    // const newLogs = filteredLogs.map((l) => {
-    //   const { meta, message, title } = l;
-    //   return {
-    //     message,
-    //     title,
-    //     ...meta,
-    //   };
-    // });
-    // lLogTableApiRef.current?.initialize(newLogs);
+    const newLogs = filteredLogs.map((l) => {
+      const { meta, message, title } = l;
+      return {
+        message,
+        title,
+        ...meta,
+      };
+    });
+    lLogTableApiRef.current?.initialize(newLogs);
     logTableAPIRef?.current?.setRows(filteredLogs);
   }, [logs, typeFilter, activePlayground]);
 
@@ -249,631 +249,17 @@ const LogTable = () => {
           className="bg-focus-3"
         >
           <Column flex={1} overflow="hidden">
-            {/* <LTable
-                rows={[]}
-                onChange={(rows) => {
-                  console.log(rows, 'log table change');
-                }}
-                onMount={(tApi) => {
-                  lLogTableApiRef.current = tApi;
-                  console.log(tApi);
-                }}
-              /> */}
-            <div className="h-full overflow-auto">
-              <div role="table" className="fc-table-2 h-full !table">
-                <div className="table-header-group">
-                  <div role="row" className="tr table-row	">
-                    <div role="columnheader" className="th table-cell">
-                      Type{' '}
-                    </div>
-                    <div role="columnheader" className="th table-cell">
-                      Event
-                    </div>
-                    <div role="columnheader" className="th table-cell">
-                      Message
-                    </div>
-                    <div role="columnheader" className="th table-cell">
-                      Length
-                    </div>
-                    <div role="columnheader" className="th table-cell">
-                      Time
-                    </div>
-                  </div>
-                </div>
-                <div className="table-row-group" role="rowgroup">
-                  <div role="row" className="tr success open table-row">
-                    <div role="cell" className="td success table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-SYS-2"
-                        className="td-icon icon-disk"
-                        data-tip=""
-                      ></span>
-                    </div>
-                    <div role="cell" className="td success table-cell">
-                      open
-                    </div>
-                    <div role="cell" className="td success table-cell">
-                      <span>
-                        The connection is open and ready to communicate.
-                      </span>
-                    </div>
-                    <div role="cell" className="td success table-cell">
-                      -
-                    </div>
-                    <div role="cell" className="td success table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                  <div
-                    role="row"
-                    className="tr Message Received table-row"
-                    
-                    id="1"
-                    tabIndex={0}
-                  >
-                    <div role="cell" className="td table-cell">
-                      <span
-                        id="ws-io-response-log-41j5hnR5NkcV0IfATrA7s-R-1"
-                        className="td-icon iconv2-from-server-icon table-cell"
-                        data-tip="R-1"
-                      ></span>
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Message Received
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      Send new message: 889
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      21
-                    </div>
-                    <div role="cell" className="td table-cell">
-                      12:31:11
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <LTable
+              rows={[]}
+              onChange={(rows) => {
+                console.log(rows, 'log table change');
+              }}
+              onMount={(tApi) => {
+                lLogTableApiRef.current = tApi;
+                console.log(tApi);
+              }}
+            />
+
             <ReactTable
               key={activePlayground}
               virtualListHeight={tableHeight} //  40 is an estimated height of table header
@@ -923,38 +309,40 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
             )}
           >
             <TabHeader.Left className="font-bold font-regular">
-              {row && row.meta
-                ? [
-                    <span
-                      key={'event-icon'}
-                      className={classnames(
-                        'td-icon',
-                        {
-                          'iconv2-to-server-icon':
-                            row.meta.type == ELogTypes.Send,
-                        },
-                        {
-                          'iconv2-from-server-icon':
-                            row.meta.type == ELogTypes.Receive,
-                        },
-                        { 'icon-disk': row.meta.type == ELogTypes.System }
-                      )}
-                    ></span>,
-                    <span className="font-sm" key="event-name">
-                      {row.meta.event}
-                    </span>,
-                    row.meta.type !== ELogTypes.System ? (
-                      <div
-                        className="font-xs  text-appForegroundInActive "
-                        key={'event-id'}
-                      >
-                        {row.meta.id || ''}
-                      </div>
-                    ) : (
-                      <></>
-                    ),
-                  ]
-                : <></>}
+              {row && row.meta ? (
+                [
+                  <span
+                    key={'event-icon'}
+                    className={classnames(
+                      'td-icon',
+                      {
+                        'iconv2-to-server-icon':
+                          row.meta.type == ELogTypes.Send,
+                      },
+                      {
+                        'iconv2-from-server-icon':
+                          row.meta.type == ELogTypes.Receive,
+                      },
+                      { 'icon-disk': row.meta.type == ELogTypes.System }
+                    )}
+                  ></span>,
+                  <span className="font-sm" key="event-name">
+                    {row.meta.event}
+                  </span>,
+                  row.meta.type !== ELogTypes.System ? (
+                    <div
+                      className="font-xs  text-appForegroundInActive "
+                      key={'event-id'}
+                    >
+                      {row.meta.id || ''}
+                    </div>
+                  ) : (
+                    <></>
+                  ),
+                ]
+              ) : (
+                <></>
+              )}
             </TabHeader.Left>
             <TabHeader.Right className="font-bold font-regular">
               {row?.meta?.timestamp &&

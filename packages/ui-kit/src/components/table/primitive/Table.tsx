@@ -8,7 +8,7 @@ import {
   TTableApi,
   TPlainObject,
 } from './table.interfaces';
-import { TableRow, Th, Tr } from './TableElements';
+import { TableRow, TBody, Th, THead, Tr } from './TableElements';
 import useTableResize from './useTableResize';
 import './table.sass';
 
@@ -17,6 +17,33 @@ const defaultOptions: ITableOptions = {
   allowRowRemove: true,
   allowRowAdd: true,
   allowSort: true,
+};
+
+const prepareTableInitState = (
+  rows: any[],
+  showDefaultEmptyRows?: boolean,
+  defaultRow?: TPlainObject
+) => {
+  let _rows = {};
+  let _orders = [];
+  if (_array.isEmpty(rows)) {
+    const row1Id = nanoid();
+    const row2Id = nanoid();
+    _orders.push(row1Id, row2Id);
+    _rows = showDefaultEmptyRows
+      ? {
+          [row1Id]: { id: row1Id, ...defaultRow },
+          [row2Id]: { id: row2Id, ...defaultRow },
+        }
+      : {};
+  } else {
+    _rows = rows.reduce((p, n) => {
+      const id: string = n.id || nanoid();
+      _orders.push(id);
+      return { ...p, [id]: { id, ...n } };
+    }, {});
+  }
+  return { rows: _rows, orders: _orders };
 };
 
 const Table: FC<ITable<any>> = ({
@@ -32,10 +59,10 @@ const Table: FC<ITable<any>> = ({
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
-  const [_state, _setState] = useState<TPlainObject>({
-    orders: [],
-    rows: {},
-  });
+  const [_state, _setState] = useState<{
+    rows: TPlainObject;
+    orders: string[];
+  }>(prepareTableInitState(rows, showDefaultEmptyRows, defaultRow));
   useTableResize(tableRef);
 
   const containerDivRef = useRef<HTMLTableElement>(null);
@@ -56,30 +83,7 @@ const Table: FC<ITable<any>> = ({
   }, []);
 
   useEffect(() => {
-    let _rows = {};
-    let _orders = [];
-    if (rows?.length) {
-      _rows = rows.reduce((p, n) => {
-        const id: string = n.id || nanoid();
-        _orders.push(id);
-        return { ...p, [id]: { id, ...n } };
-      }, {});
-    }
-    if (_object.isEmpty(_rows)) {
-      const row1Id = nanoid();
-      const row2Id = nanoid();
-      _orders.push(row1Id, row2Id);
-      _rows = showDefaultEmptyRows
-        ? {
-            [row1Id]: { id: row1Id, ...defaultRow },
-            [row2Id]: { id: row2Id, ...defaultRow },
-          }
-        : {};
-    }
-    _setState({
-      orders: _orders,
-      rows: _rows,
-    });
+    _setState(prepareTableInitState(rows, showDefaultEmptyRows, defaultRow));
   }, [rows]);
 
   options = { ...defaultOptions, ...options };
@@ -205,7 +209,7 @@ const Table: FC<ITable<any>> = ({
         style={{ minWidth: '450px' }}
         ref={tableRef}
       >
-        <thead>
+        <THead>
           <Tr className="border text-base text-left font-semibold bg-focus2">
             {columns.map((c, i) => {
               return (
@@ -231,8 +235,8 @@ const Table: FC<ITable<any>> = ({
               );
             })}
           </Tr>
-        </thead>
-        <tbody>
+        </THead>
+        <TBody>
           {_state.orders.map((rId: string, i: number) => {
             return (
               <TableRow
@@ -249,7 +253,7 @@ const Table: FC<ITable<any>> = ({
               />
             );
           })}
-        </tbody>
+        </TBody>
       </table>
     </div>
   );
