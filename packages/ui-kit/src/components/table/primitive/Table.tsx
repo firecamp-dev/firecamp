@@ -1,9 +1,4 @@
-import {
-  FC,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { _array, _misc, _object } from '@firecamp/utils';
 import {
@@ -48,7 +43,7 @@ const Table: FC<ITable<any>> = ({
 
   //get the width of container div in pixels
   useEffect(() => {
-    if (!containerDivRef.current) return;
+    if (!containerDivRef.current) return () => {};
     const resizeObserver = new ResizeObserver(() => {
       setContainerWidth(containerDivRef.current?.clientWidth);
     });
@@ -256,7 +251,6 @@ const Table: FC<ITable<any>> = ({
           })}
         </tbody>
       </table>
-      {JSON.stringify(_state.rows, () => {}, 2)}
     </div>
   );
 };
