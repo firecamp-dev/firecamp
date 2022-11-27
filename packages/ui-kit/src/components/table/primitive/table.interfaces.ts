@@ -31,9 +31,20 @@ export interface ITable<R> {
   onMount?: (tableApi: TTableApi) => void;
   showDefaultEmptyRows?: boolean;
   options?: ITableOptions;
+  classes?: {
+    container?: string;
+    table?: string;
+    thead?: string;
+    theadTr?: string;
+    tbody?: string;
+    th?: string;
+    tr?: string;
+    td?: string;
+  };
 }
 
 export interface IRow<R> {
+  classes?: { tr?: string; td?: string };
   index: number;
   columns: IColumn[];
   row: R;

@@ -52,6 +52,16 @@ const FlatTable: FC<ITable<any>> = ({
   onMount = (api) => {},
   showDefaultEmptyRows = true,
   options = {},
+  classes = {
+    container: '',
+    table: '',
+    thead: '',
+    theadTr: '',
+    tbody: '',
+    th: '',
+    tr: '',
+    td: '',
+  },
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
@@ -167,14 +177,19 @@ const FlatTable: FC<ITable<any>> = ({
   };
 
   return (
-    <div className={'w-full custom-scrollbar'} ref={containerDivRef}>
+    <div
+      className={`w-full custom-scrollbar ${classes.container}`}
+      ref={containerDivRef}
+    >
       <table
-        className="primary-table border border-appBorder mb-4 w-auto"
+        className={`primary-table border border-appBorder mb-4 w-auto ${classes.table}`}
         style={{ minWidth: '450px' }}
         ref={tableRef}
       >
-        <THead>
-          <Tr className="border text-base text-left font-semibold bg-focus2">
+        <THead className={classes.thead}>
+          <Tr
+            className={`border text-base text-left font-semibold bg-focus2 ${classes.theadTr}`}
+          >
             {columns.map((c, i) => {
               return (
                 <Th
@@ -189,6 +204,7 @@ const FlatTable: FC<ITable<any>> = ({
                         : c.width,
                   }}
                   key={i}
+                  className={classes.th}
                   additionalProp={{
                     'data-allow_resize': !c.fixedWidth,
                     'data-initial_width': c.width,
@@ -200,10 +216,11 @@ const FlatTable: FC<ITable<any>> = ({
             })}
           </Tr>
         </THead>
-        <TBody>
+        <TBody className={classes.tbody}>
           {rows.map((row: any, i: number) => {
             return (
               <TableRow
+                classes={{ tr: classes.tr, td: classes.td }}
                 columns={columns}
                 index={i}
                 row={row}
