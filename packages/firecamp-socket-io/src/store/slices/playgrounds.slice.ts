@@ -183,14 +183,14 @@ const createPlaygroundsSlice = (
         }));
         get()?.changePlaygroundTab(connectionId, {
           meta: {
-            is_saved: !!updatedPlayground.emitter?._meta?.id,
+            isSaved: !!updatedPlayground.emitter?._meta?.id,
             hasChange: true,
           },
         });
       } else {
         get()?.changePlaygroundTab(connectionId, {
           meta: {
-            is_saved: !!updatedPlayground.emitter?._meta?.id,
+            isSaved: !!updatedPlayground.emitter?._meta?.id,
             hasChange: false,
           },
         });

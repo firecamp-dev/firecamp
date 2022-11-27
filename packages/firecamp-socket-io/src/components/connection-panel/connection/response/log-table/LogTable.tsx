@@ -219,9 +219,9 @@ const LogTable = ({
   return (
     <Container className="with-divider">
       <TabHeader className="height-small">
-        <TabHeader.Left className="flex flex-nowrap invisible-scrollbar overflow-auto">
+        <TabHeader.Right className="flex flex-nowrap invisible-scrollbar overflow-auto">
           <label className="m-0 text-sm font-bold whitespace-pre">
-            Filter Logs:{' '}
+            Filter:
           </label>
           <div className="flex items-center">
             {/* <label className="m-0 text-base font-bold">Type</label> */}
@@ -306,7 +306,7 @@ const LogTable = ({
               ''
             )}
           </div>
-        </TabHeader.Left>
+        </TabHeader.Right>
       </TabHeader>
       <Container.Body overflow="hidden">
         <Row className="with-divider flex flex-col h-full">
@@ -321,7 +321,7 @@ const LogTable = ({
             <Column flex={1}>
               <ReactTable
                 key={selectedConnection}
-                virtualListHeight={tableHeight - 40} //  40 is an estimated height of table header
+                virtualListHeight={tableHeight} //  40 is an estimated height of table header
                 columns={columns}
                 onLoad={(tableAPI) => {
                   logTableAPIRef.current = tableAPI;

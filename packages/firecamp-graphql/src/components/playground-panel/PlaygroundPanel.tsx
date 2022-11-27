@@ -1,9 +1,6 @@
 import {
   Button,
   Container,
- 
-  EButtonIconPosition,
-  
   Tabs,
 } from '@firecamp/ui-kit';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
@@ -55,7 +52,7 @@ const PlaygroundPanel = () => {
                 iconLeft
                 sm
                 transparent={true}
-                onClick={() => addPlayground('Hello Tab')}
+                onClick={() => addPlayground()}
                 ghost={true}
               />
             );

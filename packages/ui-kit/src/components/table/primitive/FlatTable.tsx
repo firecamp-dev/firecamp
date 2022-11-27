@@ -24,33 +24,29 @@ const prepareTableInitState = (
   showDefaultEmptyRows?: boolean,
   defaultRow?: TPlainObject
 ) => {
-  let _rows = {};
-  let _orders = [];
   if (_array.isEmpty(rows)) {
     const row1Id = nanoid();
     const row2Id = nanoid();
-    _orders.push(row1Id, row2Id);
-    _rows = showDefaultEmptyRows
-      ? {
-          [row1Id]: { id: row1Id, ...defaultRow },
-          [row2Id]: { id: row2Id, ...defaultRow },
-        }
-      : {};
-  } else {
-    _rows = rows.reduce((p, n) => {
-      const id: string = n.id || nanoid();
-      _orders.push(id);
-      return { ...p, [id]: { id, ...n } };
-    }, {});
+    rows = showDefaultEmptyRows
+      ? [
+          { id: row1Id, ...defaultRow },
+          { id: row2Id, ...defaultRow },
+        ]
+      : [];
   }
-  return { rows: _rows, orders: _orders };
+  return rows;
 };
 
-const Table: FC<ITable<any>> = ({
+/**
+ * FltTable is very much similar to primitive table expect it's meant to built for LogTable with virtual scroll
+ * another difference is the state is managed with Row[] instead of { rows:{}, orders: []} in primitive table
+ * we can merge both tables after reviewing the performance
+ */
+const FlatTable: FC<ITable<any>> = ({
   columns,
   renderCell,
   renderColumn,
-  rows = [],
+  rows: propRows = [],
   defaultRow = {},
   onChange,
   onMount = (api) => {},
@@ -59,10 +55,9 @@ const Table: FC<ITable<any>> = ({
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
-  const [_state, _setState] = useState<{
-    rows: TPlainObject;
-    orders: string[];
-  }>(prepareTableInitState(rows, showDefaultEmptyRows, defaultRow));
+  const [rows, setRows] = useState<any[]>(
+    prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow)
+  );
   useTableResize(tableRef);
 
   const containerDivRef = useRef<HTMLTableElement>(null);
@@ -83,8 +78,8 @@ const Table: FC<ITable<any>> = ({
   }, []);
 
   useEffect(() => {
-    _setState(prepareTableInitState(rows, showDefaultEmptyRows, defaultRow));
-  }, [rows]);
+    setRows(prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow));
+  }, [propRows]);
 
   options = { ...defaultOptions, ...options };
 
@@ -94,28 +89,20 @@ const Table: FC<ITable<any>> = ({
   };
 
   const handleDrop = (row: any) => {
-    _setState((st) => {
-      const dragIndex = st.orders.findIndex(
-        (id: string) => id == rowBeingDragRef.current.id
+    setRows((rs) => {
+      const dragIndex = rs.findIndex(
+        (r: any) => r.id == rowBeingDragRef.current.id
       );
-      const dropIndex = st.orders.findIndex((id: string) => id == row.id);
+      const dropIndex = rs.findIndex((r: any) => r.id == row.id);
       rowBeingDragRef.current = null;
-
-      const { orders } = st;
-      orders.splice(dropIndex, 0, st.orders.splice(dragIndex, 1)[0]);
-
-      const state = {
-        ...st,
-        orders: [...orders],
-      };
-      _onChangeTable(state);
-      return state;
+      rs.splice(dropIndex, 0, rs.splice(dragIndex, 1)[0]);
+      _onChangeTable(rs);
+      return rs;
     });
   };
 
-  const _onChangeTable = (state: TPlainObject) => {
-    const rs = state.orders.map((id: string) => state.rows[id]);
-    onChange(rs);
+  const _onChangeTable = (rows: any[]) => {
+    onChange(rows);
   };
 
   const onChangeCell: TOnChangeCell = (
@@ -124,16 +111,15 @@ const Table: FC<ITable<any>> = ({
     rowId: string,
     e: any
   ) => {
-    _setState((st) => {
-      const state = {
-        ...st,
-        rows: {
-          ...st.rows,
-          [rowId]: { ...st.rows[rowId], [cellKey]: cellValue },
-        },
-      };
-      _onChangeTable(state);
-      return state;
+    setRows((rs) => {
+      rs = rs.map((r) => {
+        if (r.id == rowId) {
+          return { ...r, [cellKey]: cellValue };
+        }
+        return r;
+      });
+      _onChangeTable(rs);
+      return rs;
     });
   };
 
@@ -144,60 +130,38 @@ const Table: FC<ITable<any>> = ({
   // each render assign apis to parent ref
   const tableApi: TTableApi<any> = {
     initialize: _misc.debounce(300, (rows: any[]) => {
-      rows = rows.map((r) => {
-        if (!r.id) r.id = nanoid();
-        return r;
-      });
-      _setState({
-        orders: rows.map((r) => r.id),
-        rows: _keyBy(rows, 'id'),
-      });
+      setRows(rows);
     }),
     // TODO: this is not working as of now, fix it later
     getRows,
     addRow: () => {
       if (!options.allowRowAdd) return;
       const id = nanoid();
-      _setState((st) => {
-        const state = {
-          orders: [...st.orders, id],
-          rows: {
-            ...st.rows,
-            [id]: { ...defaultRow, id },
-          },
-        };
-        // currently not firing on change event on new empty row insertion
-        _onChangeTable(state);
-        return state;
+      const row = { ...defaultRow, id };
+      setRows((s) => {
+        _onChangeTable(rows);
+        return [...s, row];
       });
     },
     setRow: (row: any) => {
       if (!row?.id) return;
-      _setState((st) => {
-        const state = {
-          ...st,
-          rows: {
-            ...st.rows,
-            [row.id]: { ...defaultRow, id: row.id },
-          },
-        };
-        _onChangeTable(state);
-        return state;
+      setRows((s) => {
+        rows.map((r) => {
+          if (r.id == row.id) {
+            return row;
+          }
+          return r;
+        });
+        _onChangeTable(rows);
+        return rows;
       });
     },
     removeRow: (rowId: string | number) => {
       if (!options.allowRowRemove) return;
-      _setState((st) => {
-        if (!st.rows[rowId]) return st;
-        const { rows } = st;
-        delete rows[rowId];
-
-        const state = {
-          orders: st.orders.filter((id: string) => id != rowId),
-          rows,
-        };
-        _onChangeTable(state);
-        return state;
+      setRows((s) => {
+        const _rs = rows.filter((r) => r.id !== rowId);
+        _onChangeTable(_rs);
+        return _rs;
       });
     },
   };
@@ -237,16 +201,16 @@ const Table: FC<ITable<any>> = ({
           </Tr>
         </THead>
         <TBody>
-          {_state.orders.map((rId: string, i: number) => {
+          {rows.map((row: any, i: number) => {
             return (
               <TableRow
                 columns={columns}
                 index={i}
-                row={_state.rows[rId]}
+                row={row}
                 tableApi={tableApi}
                 renderCell={renderCell}
                 onChangeCell={onChangeCell}
-                key={rId}
+                key={row.id}
                 handleDrag={handleDrag}
                 handleDrop={handleDrop}
                 options={options}
@@ -259,32 +223,5 @@ const Table: FC<ITable<any>> = ({
   );
 };
 
-// const _groupBy = (array: any[], key: string) => {
-//   return array.reduce((pv, x) => {
-//     (pv[x[key]] = pv[x[key]] || []).push(x);
-//     return pv;
-//   }, {});
-// };
-
-/**
- * array to object by any key of given object
- */
-const _keyBy = (array: any[], key: string) => {
-  return array.reduce((pv, x) => {
-    pv[x[key]] = x || {};
-    return pv;
-  }, {});
-};
-
-/**
- * create an array of given object's values (ignore keys)
- * { a: 1, b: 2 } => [1, 2]
- */
-// const _valueBy = (obj: TPlainObject) => {
-//   return Object.keys(obj).reduce((pv: any[], k: string | number) => {
-//     return [...pv, obj[k]];
-//   }, []);
-// };
-
-export default Table;
+export default FlatTable;
 export type { ITable, TTableApi };

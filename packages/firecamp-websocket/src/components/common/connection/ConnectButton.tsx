@@ -4,25 +4,23 @@ import shallow from 'zustand/shallow';
 import CloseConnection from './CloseConnection';
 import { EConnectionState } from '../../../types';
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
+import { FC } from 'react';
 
-const ConnectButton = () => {
-  const {
-    connectionState,
-    activePlayground,
-    connect,
-    disconnect,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
-      connectionState:
-        s.playgrounds[s.runtime.activePlayground]?.connectionState,
-      playgrounds: s.playgrounds,
-      activePlayground: s.runtime.activePlayground,
-      connect: s.connect,
-      disconnect: s.disconnect,
-    }),
-    shallow
-  );
-
+const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
+  if (!props.hasOwnProperty('sm')) props.xs = true;
+  const { sm, xs } = props;
+  const { connectionState, activePlayground, connect, disconnect } =
+    useWebsocketStore(
+      (s: IWebsocketStore) => ({
+        connectionState:
+          s.playgrounds[s.runtime.activePlayground]?.connectionState,
+        playgrounds: s.playgrounds,
+        activePlayground: s.runtime.activePlayground,
+        connect: s.connect,
+        disconnect: s.disconnect,
+      }),
+      shallow
+    );
 
   const _renderConnectionButton = () => {
     switch (connectionState) {
@@ -32,6 +30,8 @@ const ConnectButton = () => {
             buttonId={`close-connection-${activePlayground}`}
             activePlayground={activePlayground}
             onClose={disconnect}
+            sm={sm}
+            xs={xs}
           />
         );
         break;
@@ -43,7 +43,8 @@ const ConnectButton = () => {
               disconnect(activePlayground);
             }}
             primary
-            xs
+            sm={sm}
+            xs={xs}
             iconLeft
           />
         );
@@ -57,7 +58,8 @@ const ConnectButton = () => {
             text="Disconnected"
             onClick={(_) => connect(activePlayground)}
             primary
-            xs
+            sm={sm}
+            xs={xs}
             iconLeft
           />
         );
@@ -68,7 +70,8 @@ const ConnectButton = () => {
             text="Connect"
             onClick={(_) => connect(activePlayground)}
             primary
-            xs
+            sm={sm}
+            xs={xs}
             iconLeft
           />
         );

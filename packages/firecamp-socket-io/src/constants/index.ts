@@ -6,7 +6,8 @@ import {
   ISocketIOConfig,
   ESocketIOClientVersion,
 } from '@firecamp/types';
-import { EConnectionState } from '../types'
+import { nanoid } from 'nanoid'
+import { EConnectionState } from '../types';
 
 export const LOG_CUSTOM_EVENTS = {
   LISTEN_ON: 'L_ON',
@@ -31,7 +32,7 @@ export const PANEL = {
   REQUEST: 'REQUEST',
   RESPONSE: 'RESPONSE',
   ALL: 'ALL',
-}
+};
 
 export const CustomLogTypes = {
   LISTEN_ON: 'L_ON',
@@ -61,7 +62,7 @@ export const RESERVED_EMITTER_EVENTS = [
 ];
 
 export const RequestConnection: ISocketIOConnection = {
-  id: '',
+  id: nanoid(),
   name: 'Connection 1',
   forceNew: false,
   namespace: '',
@@ -100,11 +101,11 @@ export const InitPlayground = {
   path: '',
   body: [
     {
-      meta: {
+      body: '',
+      __meta: {
         type: EArgumentBodyType.Text,
         envelope: EEnvelope.Int8Array,
       },
-      body: '',
     },
   ],
   __meta: {

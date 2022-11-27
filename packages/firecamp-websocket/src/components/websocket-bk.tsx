@@ -357,7 +357,7 @@ const Websocket = ({
     if (!found) return;
 
     /**
-     * Update url on change active_connction as query_params updated
+     * Update url on change active_connection as query_params updated
      * @type {*}
      */
     let found_params = found[prop_STRINGS.URL.QUERY_PARAMS];

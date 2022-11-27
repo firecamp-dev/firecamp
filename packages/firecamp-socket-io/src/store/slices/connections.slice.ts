@@ -1,4 +1,9 @@
-import { ISocketIOConnection, TId, EPushActionType } from '@firecamp/types';
+import {
+  ISocketIOConnection,
+  TId,
+  EPushActionType,
+  IQueryParam,
+} from '@firecamp/types';
 import equal from 'deep-equal';
 import _url from '@firecamp/url';
 
@@ -6,6 +11,7 @@ interface IConnectionsSlice {
   addConnection: (connection: ISocketIOConnection) => void;
   updateConnection: (connectionId: TId, key: string, value: any) => void;
   removeConnection: (connectionId: TId) => void;
+  changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => void;
 }
 
 const createConnectionSlice = (set, get): IConnectionsSlice => ({
@@ -67,7 +73,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       });
     } else if (key === 'queryParams') {
       get().changeUrl({
-        raw: _url.toString({ ...(get()?.request?.url || {}), [key]: value }),
+        raw: get().request.url?.raw,
         [key]: value,
       });
     }
@@ -132,6 +138,25 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
         EPushActionType.Delete
       );
     }
+  },
+  changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {
+    if (!connectionId) return;
+    const state = get();
+    let { displayUrl } = state.runtime;
+    const { connections } = state.request;
+    const _connections = connections.map((c) => {
+      if (c.id == connectionId) {
+        c.queryParams = qps;
+        const newUrl = _url.updateByQuery(state.request.url, c.queryParams);
+        displayUrl = newUrl.raw;
+      }
+      return c;
+    });
+
+    set((s) => ({
+      request: { ...s.request, connections: _connections },
+      runtime: { ...s.runtime, displayUrl },
+    }));
   },
 });
 

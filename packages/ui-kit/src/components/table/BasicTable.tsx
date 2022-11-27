@@ -14,6 +14,19 @@ import {
   TTableApi,
 } from './primitive/table.interfaces';
 import { IBasicTable } from './BasicTable.interfaces';
+const _columns = [
+  { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
+  { id: 'key', key: 'key', name: 'Key', width: '100px' },
+  { id: 'value', key: 'value', name: 'Value', width: '100px' },
+  {
+    id: 'description',
+    key: 'description',
+    name: 'Description',
+    width: '150px',
+    resizeWithContainer: true,
+  },
+  { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
+];
 
 const BasicTable = ({
   name = '',
@@ -23,20 +36,6 @@ const BasicTable = ({
   onMount = (api: TTableApi) => {},
 }: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
-
-  const _columns = [
-    { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
-    { id: 'key', key: 'key', name: 'Key', width: '100px' },
-    { id: 'value', key: 'value', name: 'Value', width: '100px' },
-    {
-      id: 'description',
-      key: 'description',
-      name: 'Description',
-      width: '150px',
-      resizeWithContainer: true,
-    },
-    { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
-  ];
 
   const renderCell: TRenderCell<any> = (
     column,
@@ -51,7 +50,11 @@ const BasicTable = ({
     switch (column.id) {
       case 'select':
         return (
-          <div className={cx('flex drag', { 'justify-center': !options.allowSort })}>
+          <div
+            className={cx('flex drag', {
+              'justify-center': !options.allowSort,
+            })}
+          >
             {options.allowSort && (
               <span
                 className="flex drag-icon"

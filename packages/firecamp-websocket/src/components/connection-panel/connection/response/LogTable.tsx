@@ -3,15 +3,16 @@ import {
   Container,
   TabHeader,
   Column,
-  Row,
   Dropdown,
   Resizable,
   Button,
   ReactTable,
+  LogTable as LTable,
   Editor,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import classnames from 'classnames';
+import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 
 import { IWebsocketStore, useWebsocketStore } from '../../../../store';
 import { ELogTypes } from '../../../../types';
@@ -26,7 +27,7 @@ const LogTable = () => {
   let {
     activePlayground,
     typeFilter,
-    connectionLogs,
+    logs,
     changePlaygroundLogFilters,
     clearAllConnectionLogs,
   } = useWebsocketStore(
@@ -34,7 +35,7 @@ const LogTable = () => {
       activePlayground: s.runtime.activePlayground,
       typeFilter:
         s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
-      connectionLogs: s.connectionsLogs?.[s.runtime.activePlayground] || [],
+      logs: s.connectionsLogs?.[s.runtime.activePlayground] || [],
 
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
       clearAllConnectionLogs: s.clearAllConnectionLogs,
@@ -42,15 +43,15 @@ const LogTable = () => {
     shallow
   );
 
-  let logTableAPIRef = useRef({});
+  const logTableAPIRef = useRef({});
+  const lLogTableApiRef = useRef({});
 
-  let [tableHeight, setTableHeight] = useState(465);
-  let [selectedRow, setSelectedRow] = useState();
+  const [tableHeight, setTableHeight] = useState(465);
+  const [selectedRow, setSelectedRow] = useState();
 
   useEffect(() => {
     const getFilteredLogsByMeta = (logs = [], filter) => {
       let filteredLogs = logs;
-
       if (filter) {
         filteredLogs = logs.filter((log) => {
           return log?.meta?.type === logTypes[filter];
@@ -59,17 +60,25 @@ const LogTable = () => {
       return filteredLogs;
     };
 
-    let filteredLogs = getFilteredLogsByMeta(connectionLogs, typeFilter);
-
+    const filteredLogs = getFilteredLogsByMeta(logs, typeFilter);
+    const newLogs = filteredLogs.map((l) => {
+      const { meta, message, title } = l;
+      return {
+        message,
+        title,
+        ...meta,
+      };
+    });
+    lLogTableApiRef.current?.initialize(newLogs);
     logTableAPIRef?.current?.setRows(filteredLogs);
-  }, [connectionLogs, typeFilter, activePlayground]);
+  }, [logs, typeFilter, activePlayground]);
 
-  let _onClearAllMessages = () => {
+  const _onClearAllMessages = () => {
     clearAllConnectionLogs(activePlayground);
-    setSelectedRow({});
+    setSelectedRow(null);
   };
 
-  let _onRowClick = (rtRow) => {
+  const _onRowClick = (rtRow) => {
     let originalRowValue = rtRow.original;
     setSelectedRow((ps) => ({
       ...originalRowValue,
@@ -77,7 +86,7 @@ const LogTable = () => {
     }));
   };
 
-  let _onResizeStop = (e, a, b, delta) => {
+  const _onResizeStop = (e, a, b, delta) => {
     console.log(e, 'event', delta);
     setTableHeight((ps) => ps + delta.height);
   };
@@ -96,12 +105,8 @@ const LogTable = () => {
       ></span>
     );
   };
-  const TimeColumn = ({ value, cell, ...rest }) => {
-    // console.log(rest, 9888)
-    return <>{new Date(value).toLocaleTimeString()}</>;
-  };
 
-  let columns = [
+  const columns = [
     {
       id: 'iconcolumn',
       Header: 'Type',
@@ -163,11 +168,9 @@ const LogTable = () => {
   ];
 
   /**
-   * On Filter connection log, update dropdown value and zustand store for connection
-   * @param {*} filter : Filter value
-   * @returns
+   * On Filter connection log, update dropdown value and store for connection
    */
-  let _onFilter = (filter = '') => {
+  const _onFilter = (filter = '') => {
     if (typeFilter !== filter) {
       changePlaygroundLogFilters(activePlayground, { type: filter });
     }
@@ -176,10 +179,15 @@ const LogTable = () => {
   return (
     <Container>
       <Container.Header>
-        <TabHeader className="height-small tab-with-collapse-btn border-b border-appBorder">
+        <TabHeader className="height-small border-b border-appBorder padding-left-extra">
           <TabHeader.Left>
             <label className="m-0 text-sm font-bold whitespace-pre">
-              Filter Logs:{' '}
+              Event Logs
+            </label>
+          </TabHeader.Left>
+          <TabHeader.Right>
+            <label className="m-0 text-sm font-bold whitespace-pre">
+              Filter:
             </label>
             <div className="flex items-center">
               {/* <label className="m-0 text-base font-bold">Type</label> */}
@@ -217,55 +225,65 @@ const LogTable = () => {
                   />
                 </div>
               ) : (
-                ''
+                <></>
               )}
             </div>
-          </TabHeader.Left>
-          <TabHeader.Right>
             <div className="flex">
-              {/*<span className="iconv2-pause-icon"></span>
-              <span className="iconv2-filter-icon"></span>*/}
-              <span
-                id={`websocket-io-clear-response-log-${activePlayground}`}
-                className="iconv2-clear-icon"
+              <VscCircleSlash
+                className="cursor-pointer"
+                title="clear logs"
                 onClick={_onClearAllMessages}
-                data-tip={'Clear all logs'}
-              ></span>
+              />
             </div>
           </TabHeader.Right>
         </TabHeader>
       </Container.Header>
       <Container.Body overflow="hidden">
-        <Row className="with-divider flex flex-col h-full">
-          <Resizable
-            bottom={true}
-            height={tableHeight}
-            width="100%"
-            maxHeight={500}
-            minHeight={100}
-            onResizeStop={_onResizeStop}
-          >
-            <Column flex={1}>
-              <ReactTable
-                key={activePlayground}
-                virtualListHeight={tableHeight - 40} //  40 is an estimated height of table header
-                columns={columns}
-                onLoad={(tableAPI) => {
-                  logTableAPIRef.current = tableAPI;
-                }}
-                onRowClick={_onRowClick}
-              />
-            </Column>
-          </Resizable>
+        <Resizable
+          bottom={true}
+          height="100%"
+          width="100%"
+          maxHeight={500}
+          minHeight={100}
+          onResizeStop={_onResizeStop}
+          className="bg-focus-3"
+        >
+          <Column flex={1} overflow="hidden">
+            <LTable
+              rows={[]}
+              onChange={(rows) => {
+                console.log(rows, 'log table change');
+              }}
+              onMount={(tApi) => {
+                lLogTableApiRef.current = tApi;
+                console.log(tApi);
+              }}
+            />
 
-          <LogPreview activePlayground={activePlayground} row={selectedRow} />
-        </Row>
+            <ReactTable
+              key={activePlayground}
+              virtualListHeight={tableHeight} //  40 is an estimated height of table header
+              columns={columns}
+              onLoad={(tableAPI) => {
+                logTableAPIRef.current = tableAPI;
+              }}
+              onRowClick={_onRowClick}
+            />
+          </Column>
+        </Resizable>
+
+        <LogPreview activePlayground={activePlayground} row={selectedRow} />
       </Container.Body>
     </Container>
   );
 };
 
 export default LogTable;
+
+const TimeColumn = ({ value, cell, ...rest }) => {
+  // console.log(rest, 9888)
+  return <>{new Date(value).toLocaleTimeString()}</>;
+};
 
 const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
   const value =
@@ -276,7 +294,12 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
   const language = row?.message?.meta?.type === 'json' ? 'json' : 'text';
 
   return (
-    <Column flex={1} minHeight={100} className="bg-appBackground2">
+    <Column
+      flex={1}
+      minHeight={100}
+      height="100%"
+      className="bg-appBackground2"
+    >
       <Container className="bg-focus2">
         <Container.Header className="bg-focus2">
           <TabHeader
@@ -286,38 +309,40 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
             )}
           >
             <TabHeader.Left className="font-bold font-regular">
-              {row && row.meta
-                ? [
-                    <span
-                      key={'event-icon'}
-                      className={classnames(
-                        'td-icon',
-                        {
-                          'iconv2-to-server-icon':
-                            row.meta.type == ELogTypes.Send,
-                        },
-                        {
-                          'iconv2-from-server-icon':
-                            row.meta.type == ELogTypes.Receive,
-                        },
-                        { 'icon-disk': row.meta.type == ELogTypes.System }
-                      )}
-                    ></span>,
-                    <span className="font-sm" key="event-name">
-                      {row.meta.event}
-                    </span>,
-                    row.meta.type !== ELogTypes.System ? (
-                      <div
-                        className="font-xs  text-appForegroundInActive "
-                        key={'event-id'}
-                      >
-                        {row.meta.id || ''}
-                      </div>
-                    ) : (
-                      ''
-                    ),
-                  ]
-                : ''}
+              {row && row.meta ? (
+                [
+                  <span
+                    key={'event-icon'}
+                    className={classnames(
+                      'td-icon',
+                      {
+                        'iconv2-to-server-icon':
+                          row.meta.type == ELogTypes.Send,
+                      },
+                      {
+                        'iconv2-from-server-icon':
+                          row.meta.type == ELogTypes.Receive,
+                      },
+                      { 'icon-disk': row.meta.type == ELogTypes.System }
+                    )}
+                  ></span>,
+                  <span className="font-sm" key="event-name">
+                    {row.meta.event}
+                  </span>,
+                  row.meta.type !== ELogTypes.System ? (
+                    <div
+                      className="font-xs  text-appForegroundInActive "
+                      key={'event-id'}
+                    >
+                      {row.meta.id || ''}
+                    </div>
+                  ) : (
+                    <></>
+                  ),
+                ]
+              ) : (
+                <></>
+              )}
             </TabHeader.Left>
             <TabHeader.Right className="font-bold font-regular">
               {row?.meta?.timestamp &&

@@ -53,6 +53,16 @@ export interface IColumn {
   resizeWithContainer?: boolean;
 }
 
+export type TTHead = {
+  children: ReactNode;
+  className?: string;
+  style?: TPlainObject;
+};
+export type TTBody = {
+  children: ReactNode;
+  className?: string;
+  style?: TPlainObject;
+};
 export type TTr = {
   children: ReactNode;
   className?: string;
@@ -62,7 +72,7 @@ export type TTh = {
   children: ReactNode;
   className?: string;
   style?: TPlainObject;
-  additionalProp?: TPlainObject
+  additionalProp?: TPlainObject;
 };
 export type TTd<R> = {
   row: R;
@@ -82,7 +92,7 @@ export type TRenderCell<R> = (
   index: number,
   row: R,
   tableApi: TTableApi,
-  onChange: (ck: string, cv: any, e?: any ) => void,
+  onChange: (ck: string, cv: any, e?: any) => void,
   handleDrag: (row: R) => void,
   options?: ITableOptions
 ) => ReactNode;
@@ -93,7 +103,7 @@ export type TOnChangeCell = (
   e: any
 ) => void;
 export type TTableApi<R = any> = {
-  initialize: Function, //(rows: R[]) => void;
+  initialize: Function; //(rows: R[]) => void;
   getRows: () => R[];
   addRow: () => void;
   setRow: (row: R) => void;
@@ -101,9 +111,9 @@ export type TTableApi<R = any> = {
 };
 
 type ITableRowValue = {
-    key: string;
-    value: string;
-    description: string;
-    disable?: boolean;
+  key: string;
+  value: string;
+  description: string;
+  disable?: boolean;
 };
 export type ITableRows = Array<ITableRowValue>;

@@ -10,11 +10,13 @@ import {
   Dropdown,
   Editor,
   Input,
-  ConfirmationPopover,
+  // ConfirmationPopover,
   Popover,
-  EPopoverPosition,
+  // EPopoverPosition,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
+import { _object } from '@firecamp/utils';
+import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
 
@@ -27,7 +29,6 @@ import {
   initialPlaygroundMessage,
   IWebsocketStore,
 } from '../../../../../../store/index';
-import { _object } from '@firecamp/utils';
 
 const EDITOR_COMMANDS = {
   SAVE: {
@@ -102,7 +103,7 @@ const MessagePlayground = ({
   tabData = {},
   selectedMessageId = '',
 }) => {
-  let {
+  const {
     activePlayground,
     collection: propCollection,
     playground,
@@ -125,7 +126,7 @@ const MessagePlayground = ({
     shallow
   );
 
-  let {
+  const {
     ctx_playgroundMessageFns,
     ctx_commonFns,
 
@@ -133,13 +134,13 @@ const MessagePlayground = ({
     ctx_updateCollectionFns,
   } = useContext(WebsocketContext);
 
-  let {
+  const {
     onSave: saveUpdatedPlaygroundMessage,
     addNewMessage,
     setToOriginal: setPlaygroundMessageAsOriginal,
   } = ctx_playgroundMessageFns;
 
-  let { onUpdateRequest } = ctx_commonFns;
+  const { onUpdateRequest } = ctx_commonFns;
 
   let message = useMemo(
     () => playground?.message || initialPlaygroundMessage,
@@ -177,23 +178,23 @@ const MessagePlayground = ({
       meta
     ) || []; */
 
-  let [activeType, setActiveType] = useState(
+  const [activeType, setActiveType] = useState(
     messageTypes.find((t) => t.id === message.meta.type) || {
       id: EMessagePayloadTypes.noBody,
       name: 'No body',
     }
   );
-  let [isSelectTypeDDOpen, toggleSelectTypeDD] = useState(false);
-  let [messageBody, setMessageBody] = useState(message.body);
-  let [editorDOM, setEditorDOM] = useState({});
-  let [isSaveMessagePopoverOpen, toggleSaveMessagePopover] = useState(false);
-  let [saveButtonHandler, updateSaveButtonHandler] = useState({
+  const [isSelectTypeDDOpen, toggleSelectTypeDD] = useState(false);
+  const [messageBody, setMessageBody] = useState(message.body);
+  const [editorDOM, setEditorDOM] = useState({});
+  const [isSaveMessagePopoverOpen, toggleSaveMessagePopover] = useState(false);
+  const [saveButtonHandler, updateSaveButtonHandler] = useState({
     isOpenPopup: false,
     isMessageDirty: false,
     show: true,
   });
 
-  let envelopeDD = envelopeList.map((e) => {
+  const envelopeDD = envelopeList.map((e) => {
     return {
       id: e,
       name: e,
@@ -201,12 +202,12 @@ const MessagePlayground = ({
   });
 
   //arraybuffer
-  let [selectedEnvelope, setSelectedEnvelope] = useState(envelopeDD[0]);
-  let [isSelectedEnvelopeOpen, toggleSelectedEnvelopeOpen] = useState(false);
+  const [selectedEnvelope, setSelectedEnvelope] = useState(envelopeDD[0]);
+  const [isSelectedEnvelopeOpen, toggleSelectedEnvelopeOpen] = useState(false);
 
-  let prevType_ref = useRef(EMessagePayloadTypes.noBody);
+  const prevType_ref = useRef(EMessagePayloadTypes.noBody);
 
-  let selectedMessageId_Ref = useRef(selectedMessageId);
+  const selectedMessageId_Ref = useRef(selectedMessageId);
 
   useEffect(() => {
     if (
@@ -265,7 +266,7 @@ const MessagePlayground = ({
     }
   );
 
-  let _onSelectBodyType = (type) => {
+  const _onSelectBodyType = (type) => {
     if (!type || !type.id) return;
     setActiveType((ps) => {
       prevType_ref.current = ps.id;
@@ -321,7 +322,7 @@ const MessagePlayground = ({
     }
   };
 
-  let _onSelectEnvelope = (env) => {
+  const _onSelectEnvelope = (env) => {
     if (env && env.id) {
       setSelectedEnvelope(env);
       _updateMessage({
@@ -333,7 +334,7 @@ const MessagePlayground = ({
     }
   };
 
-  let _updateMessage = (payload) => {
+  const _updateMessage = (payload) => {
     if (!payload) return;
 
     // console.log({ payload });
@@ -341,7 +342,7 @@ const MessagePlayground = ({
     changePlaygroundMessage(activePlayground, payload);
   };
 
-  let _onSelectFile = (e) => {
+  const _onSelectFile = (e) => {
     let target = e.target;
 
     let file = target.files[0];
@@ -349,7 +350,7 @@ const MessagePlayground = ({
     _updateMessage({ body: file });
   };
 
-  let _renderActiveBody = (type) => {
+  const _renderActiveBody = (type) => {
     if (!type || !type.id) return <span />;
 
     // console.log(message);
@@ -422,20 +423,20 @@ const MessagePlayground = ({
     }
   };
 
-  let _onSendMessage = (e?: any) => {
+  const _onSendMessage = (e?: any) => {
     if (e) e.preventDefault();
 
     sendMessage(activePlayground, message);
   };
 
-  let _onUpdateMessage = () => {
+  const _onUpdateMessage = () => {
     saveUpdatedPlaygroundMessage(
       selectedMessageId_Ref?.current || selectedMessageId
     );
     onUpdateRequest();
   };
 
-  let _onAddMesage = (data) => {
+  const _onAddMesage = (data) => {
     // console.log(`data add message`, data);
     ctx_updateCollectionFns.addMessage(_object.omit(data, ['path']));
 
@@ -444,19 +445,19 @@ const MessagePlayground = ({
     }
   };
 
-  let _addNewMessage = () => {
+  const _addNewMessage = () => {
     addNewMessage();
     setSelectedCollectionMessage(activePlayground, '');
     selectedMessageId_Ref.current = '';
   };
 
-  let _setToOriginal = () => {
+  const _setToOriginal = () => {
     setPlaygroundMessageAsOriginal(
       selectedMessageId_Ref.current || selectedMessageId
     );
   };
 
-  let _onSaveMessgaeFromPlygnd = () => {
+  const _onSaveMessgaeFromPlygnd = () => {
     if (selectedMessageId_Ref.current || selectedMessageId) {
       _onUpdateMessage();
     } else {
@@ -464,7 +465,7 @@ const MessagePlayground = ({
     }
   };
 
-  let _editorShortcut_fns = async (command) => {
+  const _editorShortcut_fns = async (command) => {
     if (!command) return;
     // console.log(`command`, command)
 
@@ -530,7 +531,7 @@ const MessagePlayground = ({
     }
   }, [editorDOM, selectedMessageId]);
 
-  let _renderKeyboardShortcutInfo = () => {
+  const _renderKeyboardShortcutInfo = () => {
     try {
       let OSName = '';
       if (navigator.appVersion.indexOf('Win') != -1) OSName = 'Windows';
@@ -594,7 +595,7 @@ const MessagePlayground = ({
     }
   };
 
-  let shortcutFns = {
+  const shortcutFns = {
     onCtrlS: () => {
       _onSaveMessgaeFromPlygnd();
     },
@@ -613,7 +614,7 @@ const MessagePlayground = ({
     },
   };
 
-  /* let _onClickPrettify = e => {
+  /* const _onClickPrettify = e => {
     if (e) {
       e.preventDefault();
     }
@@ -633,7 +634,7 @@ const MessagePlayground = ({
 
   return (
     <Container className="h-full">
-      <Container.Header>
+      {/* <Container.Header>
         <TabHeader className="height-small collection-path-wrapper with-border-top !px-2">
           <TabHeader.Left>
             <div className="collection-path">{message.path || `./`}</div>
@@ -707,7 +708,7 @@ const MessagePlayground = ({
             </Popover>
           </TabHeader.Right>
         </TabHeader>
-      </Container.Header>
+      </Container.Header> */}
       <Container.Header className="message-playground-scrollable top invisible-scrollbar ">
         <TabHeader className="height-small">
           <TabHeader.Left className="invisible-scrollbar">
@@ -766,6 +767,15 @@ const MessagePlayground = ({
             )}
           </TabHeader.Left>
           <TabHeader.Right>
+            <Button
+              icon={<VscFile size={12} className="ml-1" />}
+              onClick={() => {}}
+              secondary
+              iconCenter
+              xs
+              text="Save"
+              iconRight
+            />
             <SendButton onSend={_onSendMessage} />
           </TabHeader.Right>
         </TabHeader>

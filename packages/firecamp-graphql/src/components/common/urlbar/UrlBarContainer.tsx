@@ -1,8 +1,5 @@
 import {
   Button,
- 
-  
-  EButtonIconPosition,
   Url,
   UrlBar,
   HttpMethodDropDown,
@@ -28,8 +25,8 @@ const UrlBarContainer = ({
   let {
     url,
     method,
-    meta,
-    _meta,
+    __meta,
+    __ref,
     activeEnvironments,
     isRequestSaved,
     context,
@@ -46,8 +43,8 @@ const UrlBarContainer = ({
     (s: IGraphQLStore) => ({
       url: s.request.url,
       method: s.request.method,
-      meta: s.request.meta,
-      _meta: s.request._meta,
+      __meta: s.request.__meta,
+      __ref: s.request.__ref,
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
@@ -122,14 +119,14 @@ const UrlBarContainer = ({
           }}
         />
       }
-      nodePath={meta.name}
+      nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={()=> {
         context.appService.modals.openEditRequest({
-          name: meta.name,
-          description: meta.description,
-          collection_id: _meta.collection_id,
-          request_id: _meta.id
+          name: __meta.name,
+          description: __meta.description,
+          collectionId: __ref.collectionId,
+          requestId: __ref.id
         });
       }}
     >

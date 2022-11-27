@@ -42,8 +42,8 @@
   },
   "dependencies": {
     "@firecamp/curl-to-firecamp": "^0.0.10",
-    "@firecamp/types": "^0.0.16",
-    "@firecamp/url": "^0.0.15",
+    "@firecamp/types": "^0.0.17",
+    "@firecamp/url": "^0.0.17",
     "@hapi/joi": "^17.1.1",
     "aws4": "^1.11.0",
     "chai-http": "^4.3.0",

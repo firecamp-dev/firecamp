@@ -4,8 +4,9 @@ import {
   Column,
   Resizable,
   Row,
-  SecondaryTab,
+  // SecondaryTab,
   TabHeader,
+  Tabs,
 } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
@@ -38,16 +39,21 @@ const bodyTabs = [
 ];
 
 const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
-  const { activePlayground, connection, updateConnection } = useWebsocketStore(
+  const {
+    activePlayground,
+    connections,
+    updateConnection,
+    changeConQueryParams,
+  } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       activePlayground: s.runtime.activePlayground,
-      connection: s.request.connections.find(
-        (c) => c.id === s.runtime.activePlayground
-      ),
+      connections: s.request.connections,
       updateConnection: s.updateConnection,
+      changeConQueryParams: s.changeConQueryParams,
     }),
     shallow
   );
+  const connection = connections.find((c) => c.id === activePlayground);
   const [activeBodyTab, onSelectBodyTab] = useState('playground');
 
   useEffect(() => {
@@ -65,10 +71,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
 
   const _onChangeHeaders = (headers = []) => {
     updateConnection(activePlayground, 'headers', headers);
-  };
-
-  const _onChangeParams = (queryParams = []) => {
-    updateConnection(activePlayground, 'queryParams', queryParams);
   };
 
   const _renderBody = () => {
@@ -100,7 +102,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           <ParamsTab
             params={connection?.queryParams || []}
             activeConnectionId={activePlayground}
-            onUpdate={_onChangeParams}
+            onUpdate={(qps) => changeConQueryParams(activePlayground, qps)}
           />
         );
 
@@ -122,11 +124,11 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   return (
     <Row flex={1} overflow="auto" className=" with-divider h-full">
       <Column className="h-full">
-        <Container className="with-divider">
+        <Container>
           <Container.Header>
             <TabHeader className="height-small !px-0 z-20 relative w-full">
-              <SecondaryTab
-                className="flex items-center"
+              <Tabs
+                className="flex items-center w-full"
                 key="tabs"
                 list={bodyTabs || []}
                 activeTab={activeBodyTab || ''}
@@ -148,9 +150,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           'fc-collapsed': visiblePanel === EPanel.Response,
         })}
       >
-        <Column className="h-full">
-          <Response key={activePlayground} />
-        </Column>
+        <Response key={activePlayground} />
       </Resizable>
     </Row>
   );

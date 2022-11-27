@@ -135,7 +135,7 @@ export default class ConfigGenerator {
     this.setHeaders();
     this.setPingInfo();
 
-    const parsedURL = _url.parse(this.address, ['http', 'ws']);
+    const parsedURL = _url.normalize(this.address, ['http', 'ws']);
 
     this.setCACertificate();
 

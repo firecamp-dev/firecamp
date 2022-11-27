@@ -172,7 +172,7 @@ export default class ConfigGenerator {
     this.setPingInfo();
 
     const parsedURL =
-      _url.parse(this.address, ['http', 'ws']) + this.connection.namespace;
+      _url.normalize(this.address, ['http', 'ws']) + this.connection.namespace;
 
     this.setCACertificate(parsedURL);
 

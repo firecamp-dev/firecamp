@@ -15,11 +15,11 @@ import { _object } from '@firecamp/utils';
 const initialPlaygroundMessage = {
   name: '',
   body: '',
-  meta: {
+  __meta: {
     type: EMessageBodyType.Text,
     envelope: EEnvelope.Int8Array,
   },
-  _meta: {
+  __ref: {
     id: '',
     collectionId: '',
     requestId: '',
