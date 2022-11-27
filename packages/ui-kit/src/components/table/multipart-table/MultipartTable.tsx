@@ -5,10 +5,10 @@ import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { FC, memo, useEffect, useRef, useState } from 'react';
-import Button from '../buttons/Button';
-import Checkbox from '../checkbox/Checkbox';
-import SingleLineEditor from '../editors/monaco-v2/SingleLineEditor';
-import Table, { TTableApi } from './primitive/Table';
+import Button from '../../buttons/Button';
+import Checkbox from '../../checkbox/Checkbox';
+import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
+import Table, { TTableApi } from '../primitive/Table';
 import equals from 'deep-equal';
 
 import { IMultiPartInput, ERowType } from './MultipartTable.interfaces';

@@ -1,10 +1,10 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
+import { _array } from '@firecamp/utils';
 import "@testing-library/jest-dom";
 import { BasicTableData, DisableSortRow, DisableNewRow, DisableRemoveRow, DisableColumns } from "./BasicTable.stories";
-import ResizeObserver from "../../../__mocks__/ResizeObserver";
-import { dragAndDrop, dropAndMove, mouseDrop, mouseUp, click } from "../../../__mocks__/eventMock";
-import { _array } from '@firecamp/utils';
-import { defaultData, _columns } from '../../../__mocks__/testData';
+import ResizeObserver from "../../../../__mocks__/ResizeObserver";
+import { dragAndDrop, dropAndMove, mouseDrop, mouseUp, click } from "../../../../__mocks__/eventMock";
+import { defaultData, _columns } from '../../../../__mocks__/testData';
 
 window.ResizeObserver = ResizeObserver;
 

@@ -1,5 +1,5 @@
-import { IRowCellMeta } from './BasicTable.interfaces';
-import { ITableOptions, TTableApi } from './primitive/table.interfaces';
+import { IRowCellMeta } from '../basic-table/BasicTable.interfaces';
+import { ITableOptions, TTableApi } from '../primitive/table.interfaces';
 
 export interface IBulkEditTable {
   /** id for table */

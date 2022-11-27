@@ -1,9 +1,9 @@
 import { _array } from '@firecamp/utils';
 import { useState } from 'react';
-import { defaultData } from '../../../__mocks__/testData';
+import { defaultData } from '../../../../__mocks__/testData';
 import BulkEditTable from './BulkEditTable';
 import { IBulkEditTable } from './BulkEditTable.interfaces';
-import { ITableRows, TTableApi } from './primitive/table.interfaces';
+import { ITableRows, TTableApi } from '../primitive/table.interfaces';
 
 export default {
   title: 'UI-Kit/Table/BulkEditTable',

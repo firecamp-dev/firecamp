@@ -1,8 +1,8 @@
 import { _array } from '@firecamp/utils';
 
 import BasicTable from './BasicTable';
-import { defaultData } from '../../../__mocks__/testData';
-import { ITableRows, TTableApi } from './primitive/table.interfaces';
+import { defaultData } from '../../../../__mocks__/testData';
+import { ITableRows, TTableApi } from '../primitive/table.interfaces';
 import { IBasicTable } from './BasicTable.interfaces';
 
 export default {

@@ -1,4 +1,4 @@
-import { IRowCellMeta } from './BasicTable.interfaces';
+import { IRowCellMeta } from '../basic-table/BasicTable.interfaces';
 
 export enum ERowType {
   Text = 'text',

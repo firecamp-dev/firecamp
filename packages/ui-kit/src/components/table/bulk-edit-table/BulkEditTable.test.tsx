@@ -1,10 +1,9 @@
-//@ts-nocheck
 import { render, screen, waitFor, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { WithTableOptions, TemplateWithRowChange } from "./BulkEditTable.stories";
 import { _array } from '@firecamp/utils';
-import ResizeObserver from "../../../__mocks__/ResizeObserver";
-import { click } from "../../../__mocks__/eventMock";
+import ResizeObserver from "../../../../__mocks__/ResizeObserver";
+import { click } from "../../../../__mocks__/eventMock";
 
 window.ResizeObserver = ResizeObserver;
 

@@ -1,5 +1,5 @@
 import { EKeyValueTableRowType } from '@firecamp/types';
-import { ITableOptions, ITableRows, TTableApi } from './primitive/table.interfaces';
+import { ITableOptions, ITableRows, TTableApi } from '../primitive/table.interfaces';
 
 /** Table row cell interface */
 export interface IRowCellMeta {

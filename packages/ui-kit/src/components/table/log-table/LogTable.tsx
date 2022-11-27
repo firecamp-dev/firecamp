@@ -9,7 +9,7 @@ import {
   TRenderCell,
   TTableApi,
 } from '../primitive/table.interfaces';
-import { IBasicTable } from '../BasicTable.interfaces';
+import { IBasicTable } from '../basic-table/BasicTable.interfaces';
 
 const _columns = [
   { id: 'type', key: 'type', name: 'Type', width: '40px', fixedWidth: true },
