@@ -1,27 +1,20 @@
 import {
   FC,
-  MutableRefObject,
-  ReactNode,
   useEffect,
   useRef,
   useState,
 } from 'react';
 import { nanoid } from 'nanoid';
 import { _array, _misc, _object } from '@firecamp/utils';
-import cx from 'classnames';
 import {
   ITable,
   ITableOptions,
-  IRow,
-  IColumn,
   TOnChangeCell,
   TTableApi,
-  TTd,
-  TTh,
-  TTr,
   TPlainObject,
 } from './table.interfaces';
-
+import { TableRow, Th, Tr } from './TableElements';
+import useTableResize from './useTableResize';
 import './table.sass';
 
 const defaultOptions: ITableOptions = {
@@ -146,7 +139,6 @@ const Table: FC<ITable<any>> = ({
   };
 
   const getRows = () => {
-    return _state.orders;
     return _state.orders.map((id: string) => _state.rows[id]);
   };
 
@@ -269,98 +261,6 @@ const Table: FC<ITable<any>> = ({
   );
 };
 
-const TableRow: FC<IRow<any>> = ({
-  index,
-  columns,
-  row,
-  tableApi,
-  renderCell,
-  onChangeCell,
-  handleDrag,
-  handleDrop,
-  options,
-}) => {
-  const onChange = (ck: string, cv: any, e: any) => {
-    onChangeCell(ck, cv, row.id, e);
-  };
-
-  return (
-    <Tr className="">
-      {columns.map((c: IColumn, i: number) => {
-        return (
-          <Td
-            key={i}
-            style={{ width: c.width }}
-            row={row}
-            handleDrop={handleDrop}
-          >
-            {renderCell(
-              c,
-              row[c.key],
-              index,
-              row,
-              tableApi,
-              onChange,
-              handleDrag,
-              options
-            )}
-          </Td>
-        );
-      })}
-    </Tr>
-  );
-};
-
-const Tr: FC<TTr> = ({ className = '', children, style = {} }) => {
-  return (
-    <tr className={className} style={style}>
-      {children}
-    </tr>
-  );
-};
-
-const Th: FC<TTh> = ({
-  children,
-  className = '',
-  style = {},
-  additionalProp = {},
-}) => {
-  return (
-    <th
-      className={cx('p-1 border border-appBorder', className)}
-      style={style}
-      {...additionalProp}
-    >
-      {children}
-    </th>
-  );
-};
-
-const Td: FC<TTd<any>> = ({
-  children,
-  className = '',
-  row,
-  handleDrop,
-  style = {},
-}) => {
-  return (
-    <td
-      className={cx(
-        'relative border-b border-l first:border-l-0 border-appBorder',
-        className
-      )}
-      style={{ ...style, height: '27px' }}
-      onDrop={(e) => {
-        e.preventDefault();
-        handleDrop(row);
-      }}
-      onDragOver={(e) => e.preventDefault()}
-    >
-      {children}
-    </td>
-  );
-};
-
 // const _groupBy = (array: any[], key: string) => {
 //   return array.reduce((pv, x) => {
 //     (pv[x[key]] = pv[x[key]] || []).push(x);
@@ -390,62 +290,3 @@ const _keyBy = (array: any[], key: string) => {
 
 export default Table;
 export type { ITable, TTableApi };
-
-const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
-  useEffect(() => {
-    const createResizableTable = (table: HTMLElement) => {
-      const cols = table.querySelectorAll('th');
-      [].forEach.call(cols, (col: HTMLElement) => {
-        // Add a resizer element to the column
-        const resizer = document.createElement('div');
-        resizer.classList.add('pt-resizer');
-        resizer.dataset.testid = 'col-resizer';
-
-        // Set the height
-        resizer.style.height = `${table.offsetHeight}px`;
-
-        //add resizer element to the cols whose width are not fixed
-        if (col.dataset.allow_resize === 'true') {
-          col.appendChild(resizer);
-          createResizableColumn(col, resizer);
-        }
-      });
-    };
-
-    const createResizableColumn = (col: HTMLElement, resizer: HTMLElement) => {
-      let x = 0;
-      let w = 0;
-
-      const mouseDownHandler = (e: MouseEvent) => {
-        x = e.clientX;
-
-        const styles = window.getComputedStyle(col);
-        w = parseInt(styles.width, 10);
-
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
-
-        resizer.classList.add('pt-resizing');
-      };
-
-      const mouseMoveHandler = (e: MouseEvent) => {
-        const dx = e.clientX - x;
-        //prevent resize when new width is less than the provided col width
-        if (w + dx >= parseInt(col.dataset.initial_width))
-          col.style.minWidth = `${w + dx}px`;
-      };
-
-      const mouseUpHandler = () => {
-        resizer.classList.remove('pt-resizing');
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-      };
-
-      resizer.addEventListener('mousedown', mouseDownHandler);
-    };
-
-    setTimeout(() => {
-      if (tableRef.current) createResizableTable(tableRef.current);
-    }, 500);
-  }, []);
-};
