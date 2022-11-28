@@ -223,10 +223,13 @@ const Table: FC<ITable<any>> = ({
         ref={tableRef}
       >
         <THead className={classes.thead}>
-          <Tr className="border text-base text-left font-semibold bg-focus2">
+          <Tr
+            className={`border text-base text-left font-semibold bg-focus2 ${classes.theadTr}`}
+          >
             {columns.map((c, i) => {
               return (
                 <Th
+                  className={classes.th}
                   style={{
                     width: c.resizeWithContainer ? '100%' : parseInt(c.width),
                     minWidth:

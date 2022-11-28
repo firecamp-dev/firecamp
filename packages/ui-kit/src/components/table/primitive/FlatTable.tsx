@@ -134,7 +134,7 @@ const FlatTable: FC<ITable<any>> = ({
   };
 
   const getRows = () => {
-    return _state.orders.map((id: string) => _state.rows[id]);
+    return rows;
   };
 
   // each render assign apis to parent ref
@@ -193,6 +193,7 @@ const FlatTable: FC<ITable<any>> = ({
             {columns.map((c, i) => {
               return (
                 <Th
+                  className={classes.th}
                   style={{
                     width: c.resizeWithContainer ? '100%' : parseInt(c.width),
                     minWidth:
@@ -204,7 +205,6 @@ const FlatTable: FC<ITable<any>> = ({
                         : c.width,
                   }}
                   key={i}
-                  className={classes.th}
                   additionalProp={{
                     'data-allow_resize': !c.fixedWidth,
                     'data-initial_width': c.width,
