@@ -38,11 +38,9 @@ const createHandleConnectionExecutor = (
         );
 
       // console.log(connection, url);
-
       if (!connection || !url.raw) return;
-
       const options: TExecutorOptions = {
-        url,
+        url: { ...url, queryParams: connection.queryParams },
         config,
         connection,
         WebSocket,

@@ -15,7 +15,12 @@ import { IWebSocketResponseMessage } from './types';
  * @param param
  * @returns
  */
-export const parseMessage = ({ body, __meta }: IWebSocketMessage): any => {
+export const parseMessage = ({
+  body,
+  payload,
+  __meta = { type: EMessageBodyType.Text, envelope: EEnvelope.Default },
+}: Partial<IWebSocketMessage>): any => {
+  if (!body) body = payload || '';
   switch (__meta.type) {
     case EMessageBodyType.Text:
       return body;
@@ -24,9 +29,9 @@ export const parseMessage = ({ body, __meta }: IWebSocketMessage): any => {
     case EMessageBodyType.File:
       return body;
     case EMessageBodyType.ArrayBuffer:
-      return _buffer.strToBuffer(body, __meta.envelope);
+      return _buffer.strToBuffer(body, __meta.envelope || EEnvelope.Default);
     case EMessageBodyType.ArrayBufferView:
-      return _buffer.strToBinary(body, __meta.envelope);
+      return _buffer.strToBinary(body, __meta.envelope || EEnvelope.Default);
     default:
       return '';
   }

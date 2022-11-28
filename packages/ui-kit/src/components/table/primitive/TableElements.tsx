@@ -28,7 +28,7 @@ const TableRow: FC<IRow<any>> = ({
   };
 
   return (
-    <Tr className={classes.tr}>
+    <Tr className={classes.tr} key={row.id}>
       {columns.map((c: IColumn, i: number) => {
         return (
           <Td

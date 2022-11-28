@@ -87,9 +87,9 @@ const FlatTable: FC<ITable<any>> = ({
     onMount(tableApi);
   }, []);
 
-  useEffect(() => {
-    setRows(prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow));
-  }, [propRows]);
+  // useEffect(() => {
+  //   setRows(prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow));
+  // }, [propRows]);
 
   options = { ...defaultOptions, ...options };
 
@@ -139,9 +139,12 @@ const FlatTable: FC<ITable<any>> = ({
 
   // each render assign apis to parent ref
   const tableApi: TTableApi<any> = {
-    initialize: _misc.debounce(300, (rows: any[]) => {
+    initialize: _misc.debounce(100, (rows: any[]) => {
       setRows(rows);
     }),
+    // initialize: (rows: any[]) => {
+    //   setRows(rows);
+    // },
     // TODO: this is not working as of now, fix it later
     getRows,
     addRow: () => {

@@ -1,10 +1,10 @@
 import { TId, EPushActionType } from '@firecamp/types';
 
 export enum ELogTypes {
-  Send = 'S',
-  Receive = 'R',
-  Ack = 'ACK',
-  System = 'SYS',
+  Send = 's',
+  Receive = 'r',
+  Ack = 'ack',
+  System = 'sys',
   Upgrade = 'upgrade',
 }
 
