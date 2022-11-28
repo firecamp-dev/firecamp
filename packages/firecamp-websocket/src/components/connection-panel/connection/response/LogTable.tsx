@@ -250,6 +250,9 @@ const LogTable = () => {
         >
           <Column flex={1} overflow="hidden">
             <LTable
+              classes={{
+                table: ''
+              }}
               rows={[]}
               onChange={(rows) => {
                 console.log(rows, 'log table change');

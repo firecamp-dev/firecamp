@@ -31,6 +31,7 @@ const LogTable = ({
   options = {},
   onChange = (rs: ITableRows) => {},
   onMount = (api: TTableApi) => {},
+  classes = {},
 }: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
 
@@ -82,6 +83,7 @@ const LogTable = ({
 
   return (
     <Table
+      classes={classes}
       rows={rows}
       columns={_columns}
       renderColumn={(c) => c.name}
