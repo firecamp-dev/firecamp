@@ -71,8 +71,17 @@ const Table: FC<ITable<any>> = ({
   //get the width of container div in pixels
   useEffect(() => {
     if (!containerDivRef.current) return () => {};
-    const resizeObserver = new ResizeObserver(() => {
-      setContainerWidth(containerDivRef.current?.clientWidth);
+    const resizeObserver = new ResizeObserver((entries) => {
+      
+      // We wrap it in requestAnimationFrame to avoid this error - ResizeObserver loop limit exceeded
+      window.requestAnimationFrame(() => {
+        if (!Array.isArray(entries) || !entries.length) {
+          return;
+        }
+        
+        setContainerWidth(containerDivRef.current?.clientWidth);
+      });
+      
     });
     resizeObserver.observe(containerDivRef.current);
     return () => resizeObserver.disconnect();

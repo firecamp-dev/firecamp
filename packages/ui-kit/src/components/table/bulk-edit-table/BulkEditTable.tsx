@@ -1,10 +1,5 @@
 import { FC, useState, useEffect } from 'react';
 import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui-kit';
-// import { default as TabHeader } from '../tab-header/TabHeader';
-// import { default as Button } from '../buttons/Button';
-// import { default as BasicTable } from './BasicTable';
-// import { default as Editor } from '../editors/monaco-v2/Editor';
-
 import { _table } from '@firecamp/utils';
 import equal from 'deep-equal';
 
