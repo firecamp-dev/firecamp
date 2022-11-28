@@ -248,11 +248,14 @@ const LogTable = () => {
           onResizeStop={_onResizeStop}
           className="bg-focus-3"
         >
-          <Column flex={1} overflow="hidden">
+          <Column flex={1} overflow="auto">
             <LTable
-              classes={{
-                table: ''
-              }}
+              classes={
+                {
+                  table: 'text-sm !m-0 !border-0 w-full',
+                  td: 'px-2 py-2 whitespace-nowrap first:border-t-0 ',
+                }
+              }
               rows={[]}
               onChange={(rows) => {
                 console.log(rows, 'log table change');
@@ -274,7 +277,6 @@ const LogTable = () => {
             />
           </Column>
         </Resizable>
-
         <LogPreview activePlayground={activePlayground} row={selectedRow} />
       </Container.Body>
     </Container>
