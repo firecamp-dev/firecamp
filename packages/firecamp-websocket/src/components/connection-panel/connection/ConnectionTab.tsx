@@ -18,7 +18,7 @@ import HeadersTab from './HeadersTab';
 import ParamsTab from './ParamsTab';
 
 import Message from './message/Message';
-import Logs from '../logs/Logs';
+import Logs from '../logs_/Logs';
 import ConnectButton from '../../common/connection/ConnectButton';
 import { EPanel } from '../../../types';
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
