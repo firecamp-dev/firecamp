@@ -13,12 +13,12 @@ import shallow from 'zustand/shallow';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 
-import Config from './request/tabs/connections/ConfigTab';
-import HeadersTab from './request/tabs/connections/HeadersTab';
-import ParamsTab from './request/tabs/connections/ParamsTab';
+import Config from './ConfigTab';
+import HeadersTab from './HeadersTab';
+import ParamsTab from './ParamsTab';
 
-import Message from './request/tabs/message/Message';
-import Response from './response/Response';
+import Message from './message/Message';
+import Logs from '../logs/Logs';
 import ConnectButton from '../../common/connection/ConnectButton';
 import { EPanel } from '../../../types';
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
@@ -150,7 +150,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           'fc-collapsed': visiblePanel === EPanel.Response,
         })}
       >
-        <Response key={activePlayground} />
+        <Logs key={activePlayground} />
       </Resizable>
     </Row>
   );

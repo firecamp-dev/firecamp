@@ -3,12 +3,11 @@ import { RootContainer } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 
 import MessagePlayground from './MessagePlayground';
-import { EMessagePayloadTypes } from '../../../../../../types';
-
+import { EMessagePayloadTypes } from '../../../../types';
 import {
   useWebsocketStore,
   // initialPlaygroundMessage,
-} from '../../../../../../store';
+} from '../../../../store';
 
 const messageTypes = [
   {

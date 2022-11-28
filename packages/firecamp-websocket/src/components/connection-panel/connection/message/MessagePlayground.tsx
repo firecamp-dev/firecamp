@@ -20,15 +20,15 @@ import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
 
-import { WebsocketContext } from '../../../../../WebSocket.context';
+import { WebsocketContext } from '../../../WebSocket.context';
 
-import { EMessagePayloadTypes } from '../../../../../../types';
+import { EMessagePayloadTypes } from '../../../../types';
 
 import {
   useWebsocketStore,
   initialPlaygroundMessage,
   IWebsocketStore,
-} from '../../../../../../store/index';
+} from '../../../../store';
 
 const EDITOR_COMMANDS = {
   SAVE: {
