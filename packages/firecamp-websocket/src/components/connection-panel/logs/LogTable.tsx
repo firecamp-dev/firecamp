@@ -250,15 +250,14 @@ const LogTable = () => {
         >
           <Column flex={1} overflow="auto">
             <LTable
-              classes={
-                {
-                  table: 'text-sm !m-0 !border-0 !w-full',
-                  td: 'px-2 py-2 whitespace-nowrap first:border-t-0 truncate',
-                  thead: 'sticky top-0 !bg-appBackground2 z-10',
-                  container: 'h-full !overflow-y-auto -mt-px visible-scrollbar',
-                  theadTr: '!bg-focus2'
-                }
-              }
+              classes={{
+                table: 'text-sm !m-0 !border-0 !w-full',
+                td: 'px-2 py-2 whitespace-nowrap first:border-t-0 truncate',
+                thead: 'sticky top-0 !bg-appBackground2 z-10',
+                container: 'h-full !overflow-y-auto -mt-px visible-scrollbar',
+                theadTr: '!bg-focus2',
+                tr: 'focus:bg-appForegroundInActive active:bg-appForegroundInActive',
+              }}
               rows={[]}
               onChange={(rows) => {
                 console.log(rows, 'log table change');

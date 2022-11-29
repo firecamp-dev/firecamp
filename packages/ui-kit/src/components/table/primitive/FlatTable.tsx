@@ -64,6 +64,7 @@ const FlatTable: FC<ITable<any>> = ({
   },
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
+  const tableRowRef = useRef<HTMLTableRowElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
   const [rows, setRows] = useState<any[]>(
     prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow)
@@ -188,6 +189,27 @@ const FlatTable: FC<ITable<any>> = ({
         className={`primary-table border border-appBorder mb-4 w-auto ${classes.table}`}
         style={{ minWidth: '450px' }}
         ref={tableRef}
+        onKeyDown={(e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          // console.log(tableRowRef.current?.nextElementSibling);
+          switch (e.key) {
+            case 'ArrowUp':
+              const previousTr = tableRowRef.current
+                ?.previousElementSibling as HTMLTableRowElement;
+              if (previousTr) previousTr.focus();
+
+              break;
+            case 'ArrowDown':
+              const nextTr = tableRowRef.current
+                ?.nextElementSibling as HTMLTableRowElement;
+              if (nextTr) nextTr.focus();
+
+              break;
+            default:
+              break;
+          }
+        }}
       >
         <THead className={classes.thead}>
           <Tr
@@ -229,11 +251,21 @@ const FlatTable: FC<ITable<any>> = ({
                 row={row}
                 tableApi={tableApi}
                 renderCell={renderCell}
-                onChangeCell={onChangeCell}
                 key={row.id}
                 handleDrag={handleDrag}
                 handleDrop={handleDrop}
                 options={options}
+                onChangeCell={onChangeCell}
+                onFocus={(rowDom) => {
+                  tableRowRef.current = rowDom;
+                }}
+                onClick={(rowDom) => {
+                  // console.log(rowDom);
+                  tableRowRef.current = rowDom;
+                  setTimeout(() => {
+                    tableRowRef.current.focus();
+                  });
+                }}
               />
             );
           })}
