@@ -1,6 +1,6 @@
 import { nanoid as id } from 'nanoid';
 import { EKeyValueTableRowType, IWebSocketConfig } from '@firecamp/types';
-import { EConnectionState } from '../types';
+import { EConnectionState, EMessagePayloadTypes } from '../types';
 
 const DefaultHeaders = [
   {
@@ -232,6 +232,33 @@ const DefaultConfigState: IWebSocketConfig = {
   maxPayload: 0, //bytes
 };
 
+const MessageTypeDropDownList = [
+  {
+    id: EMessagePayloadTypes.text,
+    name: 'Text',
+  },
+  {
+    id: EMessagePayloadTypes.json,
+    name: 'JSON',
+  },
+  {
+    id: EMessagePayloadTypes.file,
+    name: 'File',
+  },
+  {
+    id: EMessagePayloadTypes.arraybuffer,
+    name: 'Array buffer',
+  },
+  {
+    id: EMessagePayloadTypes.arraybufferview,
+    name: 'Array buffer view',
+  },
+  {
+    id: 'noBody',
+    name: 'No body',
+  },
+];
+
 export {
   DefaultConnectionState,
   CloseConnStatusCode,
@@ -243,4 +270,5 @@ export {
   ResponseConnection,
   InitLog,
   DefaultConfigState,
+  MessageTypeDropDownList,
 };

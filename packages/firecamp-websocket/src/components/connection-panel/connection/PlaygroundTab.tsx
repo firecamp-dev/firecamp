@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import _compact from 'lodash/compact';
 import {
   FileInput,
@@ -12,6 +12,7 @@ import {
   Input,
   // ConfirmationPopover,
   Popover,
+  EPopoverPosition,
   // EPopoverPosition,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
@@ -19,8 +20,7 @@ import { _object } from '@firecamp/utils';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
-
-import { WebsocketContext } from '../../WebSocket.context';
+import { EEnvelope } from '@firecamp/types';
 
 import { EMessagePayloadTypes } from '../../../types';
 
@@ -29,6 +29,9 @@ import {
   initialPlaygroundMessage,
   IWebsocketStore,
 } from '../../../store';
+import { MessageTypeDropDownList } from '../../../constants';
+import MessageTypeDropDown from './playground/MessageTypeDropDown';
+import TypedArrayViewDropDown from './playground/TypedArrayViewDropDown';
 
 const EDITOR_COMMANDS = {
   SAVE: {
@@ -93,53 +96,7 @@ const EDITOR_COMMANDS = {
   },
 };
 
-const messageTypes = [
-  {
-    id: EMessagePayloadTypes.text,
-    name: 'Text',
-  },
-  {
-    id: EMessagePayloadTypes.json,
-    name: 'JSON',
-  },
-  {
-    id: EMessagePayloadTypes.file,
-    name: 'File',
-  },
-  {
-    id: EMessagePayloadTypes.arraybuffer,
-    name: 'Array buffer',
-  },
-  {
-    id: EMessagePayloadTypes.arraybufferview,
-    name: 'Array buffer view',
-  },
-  {
-    id: 'noBody',
-    name: 'No body',
-  },
-];
-
-const envelopeList = [
-  'Int8Array',
-  'Uint8Array',
-  'Uint8ClampedArray',
-  'Int16Array',
-  'Uint16Array',
-  'Int32Array',
-  'Uint32Array',
-  'Float32Array',
-  'Float64Array',
-  'BigInt64Array',
-  'BigUint64Array',
-];
-
-const PlaygroundTab = (
-  {
-    // message = {},
-    // collection: propCollection = {},
-  }
-) => {
+const PlaygroundTab = () => {
   const {
     activePlayground,
     collection: propCollection,
@@ -165,25 +122,17 @@ const PlaygroundTab = (
     shallow
   );
 
+  console.log(playground, 'playground..')
+
   const [selectedMessageId] = useState('');
 
-  const {
-    ctx_playgroundMessageFns,
-    ctx_commonFns,
-
-    // store update fns
-    ctx_updateCollectionFns,
-  } = useContext(WebsocketContext);
-
-  const {
-    onSave: saveUpdatedPlaygroundMessage,
-    addNewMessage,
-    setToOriginal: setPlaygroundMessageAsOriginal,
-  } = ctx_playgroundMessageFns;
+  // const {
+  //   onSave: saveUpdatedPlaygroundMessage,
+  //   addNewMessage,
+  //   setToOriginal: setPlaygroundMessageAsOriginal,
+  // } = ctx_playgroundMessageFns;
 
   const tabData = { id: 123 };
-
-  const { onUpdateRequest } = ctx_commonFns;
 
   const message = useMemo(
     () => playground?.message || initialPlaygroundMessage,
@@ -219,7 +168,7 @@ const PlaygroundTab = (
     ) || []; */
 
   const [activeType, setActiveType] = useState(
-    messageTypes.find((t) => t.id === message.__meta.type) || {
+    MessageTypeDropDownList.find((t) => t.id === message.__meta.type) || {
       id: EMessagePayloadTypes.noBody,
       name: 'No body',
     }
@@ -234,7 +183,9 @@ const PlaygroundTab = (
     show: true,
   });
 
-  const envelopeDD = envelopeList.map((e) => {
+  const envelopeDD = (
+    Object.keys(EEnvelope) as Array<keyof typeof EEnvelope>
+  ).map((e) => {
     return {
       id: e,
       name: e,
@@ -279,7 +230,9 @@ const PlaygroundTab = (
     }
 
     if (message?.__meta.type && message?.__meta.type !== activeType.id) {
-      setActiveType(messageTypes.find((t) => t.id === message?.__meta.type));
+      setActiveType(
+        MessageTypeDropDownList.find((t) => t.id === message?.__meta.type)
+      );
     }
   }, [message, activePlayground]);
 
@@ -288,9 +241,9 @@ const PlaygroundTab = (
     {},
     {
       title: 'Quick Payload',
-      items: messageTypes
+      items: MessageTypeDropDownList
         ? _compact(
-            messageTypes.map((item) => {
+            MessageTypeDropDownList.map((item) => {
               if (item.id !== EMessagePayloadTypes.noBody) {
                 return Object.assign({}, item, {
                   onClick: () => {
@@ -302,12 +255,13 @@ const PlaygroundTab = (
             })
           )
         : [],
-      active_item: messageTypes && activeType ? activeType.id : '',
+      active_item: MessageTypeDropDownList && activeType ? activeType.id : '',
     }
   );
 
   const _onSelectBodyType = (type) => {
-    if (!type || !type.id) return;
+    console.log(type, 'type...');
+    if (!type?.id) return;
     setActiveType((ps) => {
       prevType_ref.current = ps.id;
       return type;
@@ -470,15 +424,15 @@ const PlaygroundTab = (
   };
 
   const _onUpdateMessage = () => {
-    saveUpdatedPlaygroundMessage(
-      selectedMessageId_Ref?.current || selectedMessageId
-    );
-    onUpdateRequest();
+    // saveUpdatedPlaygroundMessage(
+    //   selectedMessageId_Ref?.current || selectedMessageId
+    // );
+    // onUpdateRequest();
   };
 
   const _onAddMesage = (data) => {
     // console.log(`data add message`, data);
-    ctx_updateCollectionFns.addMessage(_object.omit(data, ['path']));
+    // ctx_updateCollectionFns.addMessage(_object.omit(data, ['path']));
 
     if (data.path) {
       _updateMessage({ meta: { ...message.__meta }, path: data.path || '' });
@@ -497,7 +451,7 @@ const PlaygroundTab = (
     );
   };
 
-  const _onSaveMessgaeFromPlygnd = () => {
+  const _onSaveMessageFromPlygnd = () => {
     if (selectedMessageId_Ref.current || selectedMessageId) {
       _onUpdateMessage();
     } else {
@@ -516,12 +470,12 @@ const PlaygroundTab = (
           break;
 
         case EDITOR_COMMANDS.SAVE.command:
-          _onSaveMessgaeFromPlygnd();
+          _onSaveMessageFromPlygnd();
           break;
 
         case EDITOR_COMMANDS.SEND_AND_SAVE.command:
           await _onSendMessage();
-          _onSaveMessgaeFromPlygnd();
+          _onSaveMessageFromPlygnd();
           break;
 
         case EDITOR_COMMANDS.SET_TO_ORIGINAL.command:
@@ -561,7 +515,7 @@ const PlaygroundTab = (
          name: "SaveMessage",
          bindKey: {win: "Ctrl-S", mac: "Command-S"},
          exec: editor => {
-         _onSaveMessgaeFromPlygnd();
+         _onSaveMessageFromPlygnd();
          },
          readOnly: true // false if this command should not apply in readOnly mode
          });*/
@@ -637,7 +591,7 @@ const PlaygroundTab = (
 
   const shortcutFns = {
     onCtrlS: () => {
-      _onSaveMessgaeFromPlygnd();
+      _onSaveMessageFromPlygnd();
     },
     onCtrlEnter: async () => {
       _onSendMessage();
@@ -650,7 +604,7 @@ const PlaygroundTab = (
     },
     onCtrlShiftEnter: async () => {
       await _onSendMessage();
-      _onSaveMessgaeFromPlygnd();
+      _onSaveMessageFromPlygnd();
     },
   };
 
@@ -751,58 +705,29 @@ const PlaygroundTab = (
       <Container.Header className="message-playground-scrollable top invisible-scrollbar ">
         <TabHeader className="height-small">
           <TabHeader.Left className="invisible-scrollbar">
-            <Dropdown
+            <MessageTypeDropDown
+              selectedOption={activeType}
+              options={MessageTypeDropDownList}
               isOpen={isSelectTypeDDOpen}
-              selected={activeType?.name || ''}
               onToggle={() => toggleSelectTypeDD(!isSelectTypeDDOpen)}
-            >
-              <Dropdown.Handler>
-                <div className="flex text-sm items-center">
-                  {' '}
-                  Message as
-                  <Button
-                    text={activeType?.name || ''}
-                    withCaret
-                    primary
-                    transparent
-                    ghost
-                    xs
-                    className="ml-1"
-                  />
-                </div>
-              </Dropdown.Handler>
-              <Dropdown.Options
-                options={messageTypes || []}
-                onSelect={_onSelectBodyType}
-              />
-            </Dropdown>
-            {activeType &&
-            (activeType.id === EMessagePayloadTypes.arraybuffer ||
-              activeType.id === EMessagePayloadTypes.arraybufferview) ? (
-              <Dropdown
+              onSelect={_onSelectBodyType}
+            />
+
+            {[
+              EMessagePayloadTypes.arraybuffer,
+              EMessagePayloadTypes.arraybufferview,
+            ].includes(activeType.id) ? (
+              <TypedArrayViewDropDown
                 isOpen={isSelectedEnvelopeOpen}
-                selected={selectedEnvelope?.name || ''}
+                options={envelopeDD}
+                selectedOption={selectedEnvelope}
+                onSelect={_onSelectEnvelope}
                 onToggle={() =>
                   toggleSelectedEnvelopeOpen(!isSelectedEnvelopeOpen)
                 }
-              >
-                <Dropdown.Handler>
-                  <Button
-                    text={selectedEnvelope?.name || ''}
-                    transparent
-                    withCaret
-                    primary
-                    sm
-                    ghost
-                  />
-                </Dropdown.Handler>
-                <Dropdown.Options
-                  options={envelopeDD || []}
-                  onSelect={_onSelectEnvelope}
-                />
-              </Dropdown>
+              />
             ) : (
-              ''
+              <></>
             )}
           </TabHeader.Left>
           <TabHeader.Right>
@@ -815,7 +740,15 @@ const PlaygroundTab = (
               text="Save"
               iconRight
             />
-            <SendButton onSend={_onSendMessage} />
+            <Button
+              icon={<IoSendSharp size={12} className="ml-1" />}
+              onClick={_onSendMessage}
+              primary
+              iconCenter
+              xs
+              text="Send"
+              iconRight
+            />
           </TabHeader.Right>
         </TabHeader>
       </Container.Header>
@@ -828,38 +761,6 @@ const PlaygroundTab = (
           _renderActiveBody(activeType)
         )}
       </Container.Body>
-      {/* <Container.Footer>
-        <TabHeader className="padding-small height-small invisible-scrollbar">
-          <TabHeader.Left>
-            {selectedMessageId &&
-            selectedMessageId.length &&
-            playgroundTab?.__meta?.hasChange === true ? (
-              <Button
-                key="original_button"
-                text={'Set original'}
-                onClick={_setToOriginal}
-                secondary
-                sm
-              />
-            ) : (
-              <DocButton
-                key="doc_button"
-                className={
-                  'fc-button transparent without-border with-icon-left small'
-                }
-                text={'Help'}
-                link={
-                  'https://firecamp.io/docs/clients/websocket/connecting-ws-endpoint'
-                }
-                iconClassName={'iconv2-info-icon font-base'}
-              />
-            )}
-          </TabHeader.Left>
-          <TabHeader.Right>
-            <SendButton onSend={_onSendMessage} />
-          </TabHeader.Right>
-        </TabHeader>
-      </Container.Footer> */}
     </Container>
   );
 };
@@ -878,20 +779,20 @@ const SaveMessage = ({
   onAddDirectory = (dir) => {},
   toggleOpenPopover = (bool) => {},
 }) => {
-  let [messageName, set_message_name] = useState('');
+  const [messageName, set_message_name] = useState('');
   // let [is_popover_open, toggle_popover] = useState(false);
-  let [focusedNode, setFocusedNode] = useState({
+  const [focusedNode, setFocusedNode] = useState({
     _meta: { _relative_path: './' },
   });
 
-  let _handleChangeName = (e) => {
+  const _handleChangeName = (e) => {
     e.preventDefault();
 
     let { value } = e.target;
     set_message_name(value);
   };
 
-  let _onKeyDown = (e) => {
+  const _onKeyDown = (e) => {
     if (e.key === 'Enter') {
       // e.preventDefault();
       _onSubmit(e);
@@ -901,7 +802,7 @@ const SaveMessage = ({
     }
   };
 
-  let _onSubmit = (e) => {
+  const _onSubmit = (e) => {
     // if (!messageName.length) return;
     if (e) {
       e.preventDefault();
@@ -1038,19 +939,5 @@ const SaveMessage = ({
         />
       </Popover.Handler>
     </Popover>
-  );
-};
-
-const SendButton = ({ onSend = () => {} }) => {
-  return (
-    <Button
-      icon={<IoSendSharp size={12} className="ml-1" />}
-      onClick={onSend}
-      primary
-      iconCenter
-      xs
-      text="Send"
-      iconRight
-    />
   );
 };
