@@ -1,27 +1,33 @@
-import { EEnvelope, EMessageBodyType, IWebSocketMessage } from '@firecamp/types'
+import {
+  ETypedArrayView,
+  EMessageBodyType,
+  IWebSocketMessage,
+} from '@firecamp/types';
+import { ELogColors, ELogTypes } from './constants';
 
 // WebSocket log
 export interface ILog {
-  title: string
-  message: IWebSocketMessage
-  meta: {
-    id: string
-    event: string
-    timestamp: number
-    type: "R" | "S" | "ACK" | "SYS"
-    color: "success" | "danger"
-    ackRef: any
+  title: string;
+  message: Omit<IWebSocketMessage, 'name' | '__ref'>;
+  __meta: {
+    event: string;
+    timestamp: number;
+    type: ELogTypes;
+    color: ELogColors;
+    ackRef: any;
     // Message length
-    length: string
-  }
+    length: string;
+  };
+  __ref: {
+    id: string;
+  };
 }
-
 
 // WebSocket received message
 export interface IWebSocketResponseMessage {
-  body: any
+  body: any;
   meta: {
-    type: EMessageBodyType
-    envelope?: EEnvelope
-  }
+    type: EMessageBodyType;
+    typedArrayView?: ETypedArrayView;
+  };
 }

@@ -7,7 +7,7 @@ import {
   Column,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-import { ISocketStore, useSocketStore } from '../../../../../store';
+import { ISocketStore, useSocketStore } from '../../../../store';
 
 import List from './List';
 

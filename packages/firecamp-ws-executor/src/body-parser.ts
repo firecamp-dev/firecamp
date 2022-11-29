@@ -1,7 +1,7 @@
 import {
   IWebSocketMessage,
   EMessageBodyType,
-  EEnvelope,
+  ETypedArrayView,
   EFirecampAgent,
 } from '@firecamp/types';
 import { _buffer, _misc } from '@firecamp/utils';
@@ -15,7 +15,15 @@ import { IWebSocketResponseMessage } from './types';
  * @param param
  * @returns
  */
-export const parseMessage = ({ body, __meta }: IWebSocketMessage): any => {
+export const parseMessage = ({
+  body,
+  payload,
+  __meta = {
+    type: EMessageBodyType.Text,
+    typedArrayView: ETypedArrayView.Default,
+  },
+}: Partial<IWebSocketMessage>): any => {
+  if (!body) body = payload || '';
   switch (__meta.type) {
     case EMessageBodyType.Text:
       return body;
@@ -24,9 +32,15 @@ export const parseMessage = ({ body, __meta }: IWebSocketMessage): any => {
     case EMessageBodyType.File:
       return body;
     case EMessageBodyType.ArrayBuffer:
-      return _buffer.strToBuffer(body, __meta.envelope);
+      return _buffer.strToBuffer(
+        body,
+        __meta.typedArrayView || ETypedArrayView.Default
+      );
     case EMessageBodyType.ArrayBufferView:
-      return _buffer.strToBinary(body, __meta.envelope);
+      return _buffer.strToBinary(
+        body,
+        __meta.typedArrayView || ETypedArrayView.Default
+      );
     default:
       return '';
   }
@@ -48,13 +62,13 @@ export const parseReceivedMessage = async (
         Buffer.isBuffer(arg) &&
         arg.length > 0
       ) {
-        body = _buffer.bufferToStr(arg, EEnvelope.Uint8Array, true);
+        body = _buffer.bufferToStr(arg, ETypedArrayView.Uint8Array, true);
 
         return {
           body,
           meta: {
             type: EMessageBodyType.ArrayBuffer,
-            envelope: EEnvelope.Uint8Array,
+            typedArrayView: ETypedArrayView.Uint8Array,
           },
         };
       } else if (typeof arg === 'string') {
@@ -74,13 +88,13 @@ export const parseReceivedMessage = async (
           };
         }
       } else if (arg instanceof ArrayBuffer && arg.byteLength > 0) {
-        body = _buffer.bufferToStr(arg, EEnvelope.Uint8Array);
+        body = _buffer.bufferToStr(arg, ETypedArrayView.Uint8Array);
 
         return {
           body,
           meta: {
             type: EMessageBodyType.ArrayBuffer,
-            envelope: EEnvelope.Uint8Array,
+            typedArrayView: ETypedArrayView.Uint8Array,
           },
         };
       } else if (arg instanceof Blob) {
@@ -90,7 +104,7 @@ export const parseReceivedMessage = async (
           body,
           meta: {
             type: EMessageBodyType.ArrayBuffer,
-            envelope: EEnvelope.Uint8Array,
+            typedArrayView: ETypedArrayView.Uint8Array,
           },
         };
       } else if (typeof arg === 'object') {

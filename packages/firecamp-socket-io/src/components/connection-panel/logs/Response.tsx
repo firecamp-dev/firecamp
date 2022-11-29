@@ -1,7 +1,7 @@
 import { useState, memo } from 'react';
 import { Container, Column } from '@firecamp/ui-kit';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
-import { PANEL } from '../../../../constants';
+import { PANEL } from '../../../constants';
 
 import ResponseBody from './ResponseBody';
 

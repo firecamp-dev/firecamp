@@ -18,6 +18,9 @@ export interface ITableOptions {
   mode?: string | { key: string; value: string };
 
   language?: string;
+
+  /** apply table element classes */
+  classes?: 
 }
 
 export interface ITable<R> {
@@ -31,9 +34,22 @@ export interface ITable<R> {
   onMount?: (tableApi: TTableApi) => void;
   showDefaultEmptyRows?: boolean;
   options?: ITableOptions;
+  classes?: ITableClasses
 }
 
+export interface ITableClasses {
+    container?: string;
+    table?: string;
+    thead?: string;
+    theadTr?: string;
+    tbody?: string;
+    th?: string;
+    tr?: string;
+    td?: string;
+  };
+
 export interface IRow<R> {
+  classes?: { tr?: string; td?: string };
   index: number;
   columns: IColumn[];
   row: R;

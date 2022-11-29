@@ -1,15 +1,15 @@
 import { TId, EPushActionType } from '@firecamp/types';
 
 export enum EEmitterPayloadTypes {
-  text= 'text',
-  json= 'json',
-  file= 'file',
-  arraybuffer= 'arraybuffer',
-  arraybufferview= 'arraybufferview',
-  number= 'number',
-  boolean= 'boolean',
-  noBody= 'noBody',
-};
+  text = 'text',
+  json = 'json',
+  file = 'file',
+  arraybuffer = 'arraybuffer',
+  arraybufferview = 'arraybufferview',
+  number = 'number',
+  boolean = 'boolean',
+  noBody = 'noBody',
+}
 
 export enum EConnectionState {
   Ideal = -1,
@@ -109,7 +109,7 @@ export enum EPushActionMessage_RootKeys {
 
 export enum EPushActionMessageMetaKeys {
   type = 'type',
-  envelope = 'envelope',
+  typedArrayView = 'typedArrayView',
 }
 
 export enum EPushActionMessage_metaKeys {

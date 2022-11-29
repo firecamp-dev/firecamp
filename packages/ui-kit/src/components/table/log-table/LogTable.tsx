@@ -31,6 +31,7 @@ const LogTable = ({
   options = {},
   onChange = (rs: ITableRows) => {},
   onMount = (api: TTableApi) => {},
+  classes = {},
 }: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
 
@@ -44,35 +45,36 @@ const LogTable = ({
     handleDrag,
     options
   ) => {
-    console.log(row, cellValue, column, 'cellValue');
+    // console.log(row, cellValue, column, 'cellValue');
+    const { title = '', message = {}, __meta = {}, __ref = {} } = row;
     switch (column.id) {
       case 'type':
-        if (row.type == 'R') {
+        if (__meta.type == 'r') {
           return <VscArrowDown size={18} />;
-        } else if (row.type == 'S') {
+        } else if (__meta.type == 's') {
           return <VscArrowUp size={18} />;
-        } else if (row.type == 'SYS') {
+        } else if (__meta.type == 'sys') {
           return <VscCircleFilled size={18} />;
         }
         return <></>;
       case 'event':
-        return row.event;
+        return __meta.event;
       case 'message':
-        if (row.type == 'SYS') {
-          return <span dangerouslySetInnerHTML={{ __html: row.title }} />;
+        if (__meta.type == 'sys') {
+          return <span dangerouslySetInnerHTML={{ __html: title }} />;
         } else {
           return (
             <>
-              {row.type !== 'file'
-                ? row.body || ''
-                : row.name || 'Sending File'}
+              {__meta.type !== 'file'
+                ? message.body || ''
+                : message.name || 'Sending File'}
             </>
           );
         }
       case 'length':
-        return row.meta?.length;
+        return __meta.length;
       case 'time':
-        return <>{new Date(row.timestamp).toLocaleTimeString()}</>;
+        return <>{new Date(__meta.timestamp).toLocaleTimeString()}</>;
         break;
       default:
         return JSON.stringify(cellValue);
@@ -81,6 +83,7 @@ const LogTable = ({
 
   return (
     <Table
+      classes={classes}
       rows={rows}
       columns={_columns}
       renderColumn={(c) => c.name}

@@ -52,6 +52,16 @@ const FlatTable: FC<ITable<any>> = ({
   onMount = (api) => {},
   showDefaultEmptyRows = true,
   options = {},
+  classes = {
+    container: '',
+    table: '',
+    thead: '',
+    theadTr: '',
+    tbody: '',
+    th: '',
+    tr: '',
+    td: '',
+  },
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
@@ -77,9 +87,9 @@ const FlatTable: FC<ITable<any>> = ({
     onMount(tableApi);
   }, []);
 
-  useEffect(() => {
-    setRows(prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow));
-  }, [propRows]);
+  // useEffect(() => {
+  //   setRows(prepareTableInitState(propRows, showDefaultEmptyRows, defaultRow));
+  // }, [propRows]);
 
   options = { ...defaultOptions, ...options };
 
@@ -124,14 +134,17 @@ const FlatTable: FC<ITable<any>> = ({
   };
 
   const getRows = () => {
-    return _state.orders.map((id: string) => _state.rows[id]);
+    return rows;
   };
 
   // each render assign apis to parent ref
   const tableApi: TTableApi<any> = {
-    initialize: _misc.debounce(300, (rows: any[]) => {
+    initialize: _misc.debounce(100, (rows: any[]) => {
       setRows(rows);
     }),
+    // initialize: (rows: any[]) => {
+    //   setRows(rows);
+    // },
     // TODO: this is not working as of now, fix it later
     getRows,
     addRow: () => {
@@ -167,17 +180,23 @@ const FlatTable: FC<ITable<any>> = ({
   };
 
   return (
-    <div className={'w-full custom-scrollbar'} ref={containerDivRef}>
+    <div
+      className={`w-full custom-scrollbar ${classes.container}`}
+      ref={containerDivRef}
+    >
       <table
-        className="primary-table border border-appBorder mb-4 w-auto"
+        className={`primary-table border border-appBorder mb-4 w-auto ${classes.table}`}
         style={{ minWidth: '450px' }}
         ref={tableRef}
       >
-        <THead>
-          <Tr className="border text-base text-left font-semibold bg-focus2">
+        <THead className={classes.thead}>
+          <Tr
+            className={`border text-base text-left font-semibold bg-focus2 ${classes.theadTr}`}
+          >
             {columns.map((c, i) => {
               return (
                 <Th
+                  className={classes.th}
                   style={{
                     width: c.resizeWithContainer ? '100%' : parseInt(c.width),
                     minWidth:
@@ -200,10 +219,11 @@ const FlatTable: FC<ITable<any>> = ({
             })}
           </Tr>
         </THead>
-        <TBody>
+        <TBody className={classes.tbody}>
           {rows.map((row: any, i: number) => {
             return (
               <TableRow
+                classes={{ tr: classes.tr, td: classes.td }}
                 columns={columns}
                 index={i}
                 row={row}

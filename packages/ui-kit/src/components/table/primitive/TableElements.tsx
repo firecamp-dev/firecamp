@@ -12,6 +12,7 @@ import {
 } from './table.interfaces';
 
 const TableRow: FC<IRow<any>> = ({
+  classes = { tr: '', td: '' },
   index,
   columns,
   row,
@@ -27,10 +28,11 @@ const TableRow: FC<IRow<any>> = ({
   };
 
   return (
-    <Tr className="">
+    <Tr className={classes.tr} key={row.id}>
       {columns.map((c: IColumn, i: number) => {
         return (
           <Td
+            className={classes.td}
             key={i}
             style={{ width: c.width }}
             row={row}

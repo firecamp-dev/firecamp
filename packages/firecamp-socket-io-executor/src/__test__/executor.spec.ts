@@ -95,7 +95,7 @@ describe('Connection', () => {
 
 //         connection.emit('message', [
 //             {
-//                 meta: { envelope: '', type: EArgumentType.TEXT },
+//                 meta: { typedArrayView: '', type: EArgumentType.TEXT },
 //                 payload: 'hi'
 //             }
 //         ])

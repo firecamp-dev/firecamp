@@ -14,8 +14,8 @@ import shallow from 'zustand/shallow';
 import classnames from 'classnames';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 
-import { IWebsocketStore, useWebsocketStore } from '../../../../store';
-import { ELogTypes } from '../../../../types';
+import { IWebsocketStore, useWebsocketStore } from '../../../store';
+import { ELogTypes } from '../../../types';
 
 const logTypes = {
   System: ELogTypes.System,
@@ -54,22 +54,22 @@ const LogTable = () => {
       let filteredLogs = logs;
       if (filter) {
         filteredLogs = logs.filter((log) => {
-          return log?.meta?.type === logTypes[filter];
+          return log.__meta?.type === logTypes[filter];
         });
       }
       return filteredLogs;
     };
 
     const filteredLogs = getFilteredLogsByMeta(logs, typeFilter);
-    const newLogs = filteredLogs.map((l) => {
-      const { meta, message, title } = l;
-      return {
-        message,
-        title,
-        ...meta,
-      };
-    });
-    lLogTableApiRef.current?.initialize(newLogs);
+    // const newLogs = filteredLogs.map((l) => {
+    //   const { meta, message, title } = l;
+    //   return {
+    //     message,
+    //     title,
+    //     ...meta,
+    //   };
+    // });
+    lLogTableApiRef.current?.initialize(filteredLogs);
     logTableAPIRef?.current?.setRows(filteredLogs);
   }, [logs, typeFilter, activePlayground]);
 
@@ -110,10 +110,10 @@ const LogTable = () => {
     {
       id: 'iconcolumn',
       Header: 'Type',
-      accessor: 'meta.type',
+      accessor: '__meta.type',
       Cell: (values) => {
-        let cellValue = values?.row?.original?.meta || {};
-        return <IconColumn {...cellValue} />;
+        let { __meta = {}, __ref = {} } = values?.row?.original || {};
+        return <IconColumn {...__meta} {...__ref} />;
       },
       minWidth: 35,
       width: 44,
@@ -122,7 +122,7 @@ const LogTable = () => {
     {
       id: 'eventname',
       Header: 'Event',
-      accessor: 'meta.event',
+      accessor: '__meta.event',
       disableResizing: true,
       minWidth: 100,
       width: 140,
@@ -133,7 +133,7 @@ const LogTable = () => {
       accessor: 'message',
       Cell: ({ value, cell, ...rest }) => {
         let row = cell.row.original;
-        if (row.meta.type == ELogTypes.System) {
+        if (row.__meta.type == ELogTypes.System) {
           return <span dangerouslySetInnerHTML={{ __html: row.title }} />;
         } else {
           return (
@@ -151,7 +151,7 @@ const LogTable = () => {
     {
       id: 'length',
       Header: 'Length',
-      accessor: 'meta.length',
+      accessor: '__meta.length',
       minWidth: 35,
       width: 35,
       maxWidth: 100,
@@ -159,7 +159,7 @@ const LogTable = () => {
     {
       id: 'timecolumn',
       Header: 'Time',
-      accessor: 'meta.timestamp',
+      accessor: '__meta.timestamp',
       Cell: TimeColumn,
       minWidth: 35,
       width: 35,
@@ -248,8 +248,14 @@ const LogTable = () => {
           onResizeStop={_onResizeStop}
           className="bg-focus-3"
         >
-          <Column flex={1} overflow="hidden">
+          <Column flex={1} overflow="auto">
             <LTable
+              classes={
+                {
+                  table: 'text-sm !m-0 !border-0 w-full',
+                  td: 'px-2 py-2 whitespace-nowrap first:border-t-0 ',
+                }
+              }
               rows={[]}
               onChange={(rows) => {
                 console.log(rows, 'log table change');
@@ -271,7 +277,6 @@ const LogTable = () => {
             />
           </Column>
         </Resizable>
-
         <LogPreview activePlayground={activePlayground} row={selectedRow} />
       </Container.Body>
     </Container>
@@ -287,7 +292,7 @@ const TimeColumn = ({ value, cell, ...rest }) => {
 
 const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
   const value =
-    row?.message?.meta?.type !== 'file'
+    row?.message?.__meta?.type !== 'file'
       ? row?.message?.payload || row?.title || ''
       : row?.message?.name || 'Sending File';
 
@@ -303,13 +308,10 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
       <Container className="bg-focus2">
         <Container.Header className="bg-focus2">
           <TabHeader
-            className={classnames(
-              row.meta ? row.meta.color || '' : '',
-              'height-ex-small'
-            )}
+            className={classnames(row?.__meta?.color || '', 'height-ex-small')}
           >
             <TabHeader.Left className="font-bold font-regular">
-              {row && row.meta ? (
+              {row?.__meta ? (
                 [
                   <span
                     key={'event-icon'}
@@ -317,24 +319,24 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
                       'td-icon',
                       {
                         'iconv2-to-server-icon':
-                          row.meta.type == ELogTypes.Send,
+                          row.__meta.type == ELogTypes.Send,
                       },
                       {
                         'iconv2-from-server-icon':
-                          row.meta.type == ELogTypes.Receive,
+                          row.__meta.type == ELogTypes.Receive,
                       },
-                      { 'icon-disk': row.meta.type == ELogTypes.System }
+                      { 'icon-disk': row.__meta.type == ELogTypes.System }
                     )}
                   ></span>,
                   <span className="font-sm" key="event-name">
-                    {row.meta.event}
+                    {row.__meta.event}
                   </span>,
-                  row.meta.type !== ELogTypes.System ? (
+                  row.__meta.type !== ELogTypes.System ? (
                     <div
                       className="font-xs  text-appForegroundInActive "
                       key={'event-id'}
                     >
-                      {row.meta.id || ''}
+                      {row.__meta.id || ''}
                     </div>
                   ) : (
                     <></>

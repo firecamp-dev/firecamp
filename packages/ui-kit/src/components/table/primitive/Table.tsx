@@ -56,6 +56,16 @@ const Table: FC<ITable<any>> = ({
   onMount = (api) => {},
   showDefaultEmptyRows = true,
   options = {},
+  classes = {
+    container: '',
+    table: '',
+    thead: '',
+    theadTr: '',
+    tbody: '',
+    th: '',
+    tr: '',
+    td: '',
+  },
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
@@ -203,17 +213,23 @@ const Table: FC<ITable<any>> = ({
   };
 
   return (
-    <div className={'w-full custom-scrollbar'} ref={containerDivRef}>
+    <div
+      className={`w-full custom-scrollbar ${classes.container}`}
+      ref={containerDivRef}
+    >
       <table
-        className="primary-table border border-appBorder mb-4 w-auto"
+        className={`primary-table border border-appBorder mb-4 w-auto ${classes.table}`}
         style={{ minWidth: '450px' }}
         ref={tableRef}
       >
-        <THead>
-          <Tr className="border text-base text-left font-semibold bg-focus2">
+        <THead className={classes.thead}>
+          <Tr
+            className={`border text-base text-left font-semibold bg-focus2 ${classes.theadTr}`}
+          >
             {columns.map((c, i) => {
               return (
                 <Th
+                  className={classes.th}
                   style={{
                     width: c.resizeWithContainer ? '100%' : parseInt(c.width),
                     minWidth:
@@ -236,10 +252,11 @@ const Table: FC<ITable<any>> = ({
             })}
           </Tr>
         </THead>
-        <TBody>
+        <TBody className={classes.tbody}>
           {_state.orders.map((rId: string, i: number) => {
             return (
               <TableRow
+                classes={{ tr: classes.tr, td: classes.td }}
                 columns={columns}
                 index={i}
                 row={_state.rows[rId]}

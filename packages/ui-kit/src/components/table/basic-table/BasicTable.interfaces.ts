@@ -1,5 +1,10 @@
 import { EKeyValueTableRowType } from '@firecamp/types';
-import { ITableOptions, ITableRows, TTableApi } from '../primitive/table.interfaces';
+import {
+  ITableClasses,
+  ITableOptions,
+  ITableRows,
+  TTableApi,
+} from '../primitive/table.interfaces';
 
 /** Table row cell interface */
 export interface IRowCellMeta {
@@ -46,13 +51,14 @@ export interface IColumnCellMeta {
 
 export interface IBasicTable<R> {
   /** Unused prop, can be used to provide a name to the table*/
-  name?: string,
+  name?: string;
   /** Rows to be rendered on table*/
-  rows? : R[],
+  rows?: R[];
   /** To provide additional functions to the primitive table */
-  options?: ITableOptions,
+  options?: ITableOptions;
   /** To provide the updated rows on ever changed value*/
-  onChange: (rows: ITableRows) => any,
+  onChange: (rows: ITableRows) => any;
   /** To provide the table reference */
   onMount: (tableApi: TTableApi) => any;
+  classes?: ITableClasses;
 }

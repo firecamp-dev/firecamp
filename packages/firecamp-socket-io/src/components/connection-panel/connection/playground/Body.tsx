@@ -6,7 +6,7 @@ import {
   QuickSelection,
   Checkbox
 } from '@firecamp/ui-kit';
-import { EEmitterPayloadTypes } from '../../../../../../types';
+import { EEmitterPayloadTypes } from '../../../../types';
 
 const Body = ({
   emitterName = '',

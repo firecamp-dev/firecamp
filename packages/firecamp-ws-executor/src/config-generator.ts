@@ -28,7 +28,7 @@ export default class ConfigGenerator {
   certificates: ICertificate[];
   config: IWebSocketConfig;
   constructor({ url, config, connection, certificates }: TExecutorOptions) {
-    this.address = url.raw;
+    this.address = _url.updateByQuery(url, connection.queryParams || []).raw;
     this.protocols = [];
     this.clientOptions = {
       headers: {},
@@ -131,16 +131,15 @@ export default class ConfigGenerator {
 
   prepare() {
     this.setClientConfig();
-
     this.setHeaders();
     this.setPingInfo();
-
-    const parsedURL = _url.normalize(this.address, ['http', 'ws']);
-
     this.setCACertificate();
+    const normalizedUrl = _url.normalize(this.address, ['http', 'ws']);
+
+    console.log(normalizedUrl);
 
     return {
-      address: parsedURL,
+      address: normalizedUrl,
       protocols: this.config.protocols,
       clientOptions: this.clientOptions,
     };

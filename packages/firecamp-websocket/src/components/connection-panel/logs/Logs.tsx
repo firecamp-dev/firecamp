@@ -4,9 +4,9 @@ import { Container, Column } from '@firecamp/ui-kit';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 
 import LogTable from './LogTable';
-import { EPanel } from '../../../../types';
+import { EPanel } from '../../../types';
 
-const Response = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
+const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
   const handleFS = useFullScreenHandle();
   const _setVisiblePanel = (e) => {
     if (e) e.preventDefault;
@@ -36,4 +36,4 @@ const Response = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
   );
 };
 
-export default memo(Response);
+export default memo(Logs);

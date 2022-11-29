@@ -9,7 +9,7 @@ import {
   EPopoverPosition,
   StatusBar,
 } from '@firecamp/ui-kit';
-import { EEmitterPayloadTypes } from '../../../../../../types';
+import { EEmitterPayloadTypes } from '../../../../types';
 
 const BodyControls = ({
   emitterName = '',

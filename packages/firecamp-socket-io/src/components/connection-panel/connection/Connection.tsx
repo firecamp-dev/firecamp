@@ -2,12 +2,12 @@ import { useState, memo } from 'react';
 import { Container, Column, Resizable, Tabs, Row } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
-import ConfigTab from './request/connections/ConfigTab';
-import HeadersTab from './request/connections/HeadersTab';
-import ParamsTab from './request/connections/ParamsTab';
-import AuthTab from './request/connections/AuthTab';
-import EmitterPlayground from './request/connections/playground/EmitterPlayground';
-import Response from './response/Response';
+import ConfigTab from './ConfigTab';
+import HeadersTab from './HeadersTab';
+import ParamsTab from './ParamsTab';
+import AuthTab from './AuthTab';
+import EmitterPlayground from './playground/EmitterPlayground';
+import Response from '../logs/Response';
 import { PANEL } from '../../../constants';
 import { ISocketStore, useSocketStore } from '../../../store';
 

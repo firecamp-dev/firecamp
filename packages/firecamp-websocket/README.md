@@ -186,7 +186,7 @@ const Websocket = require('@firecamp/websocket');
     ],
     "message": {
       "type": "arraybuffer",
-      "envelope": "Int8Array",
+      "typedArrayView": "Int8Array",
       "body": "",
       "name": "Message1"
     }
