@@ -51,17 +51,17 @@ const envelopeList = [
 ];
 
 const Message = ({ tabData = {} }) => {
-  let tabId = 123;
+  const tabId = 123;
 
-  let { meta } = useWebsocketStore(
+  const { meta } = useWebsocketStore(
     (s: any) => ({
-      meta: s.request.meta,
+      meta: s.request.__meta,
     }),
     shallow
   );
 
-  let [selectedMessageId] = useState('');
-
+  const [selectedMessageId] = useState('');
+  // return <>This is the Message.</>
   return (
     <RootContainer className="h-full">
       <MessagePlayground

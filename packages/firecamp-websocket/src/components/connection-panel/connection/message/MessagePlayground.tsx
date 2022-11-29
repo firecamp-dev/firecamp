@@ -142,25 +142,22 @@ const MessagePlayground = ({
 
   const { onUpdateRequest } = ctx_commonFns;
 
-  let message = useMemo(
+  const message = useMemo(
     () => playground?.message || initialPlaygroundMessage,
     [playground, activePlayground]
   );
-  let playgroundTab = useMemo(
+  const playgroundTab = useMemo(
     () => playgroundTabs.find((tab) => tab.id === activePlayground),
     [activePlayground, playgroundTabs]
   );
 
-  if (
-    !activePlayground ||
-    !message ||
-    !Object.keys(message).includes('body') ||
-    !Object.keys(message).includes('meta')
-  ) {
+  console.log(activePlayground, message, 4569564);
+
+  if (!activePlayground || !message.__meta) {
     return <span />;
   }
 
-  // Implement with useMemo insted create on every render
+  // Implement with useMemo instead create on every render
   const collection = []; /*  { collection } = useMemo(
     () =>
       prepare(
@@ -171,7 +168,7 @@ const MessagePlayground = ({
     [propCollection.directories, propCollection.messages, meta]
   ); */
 
-  /* let { collection } =
+  /* const { collection } =
     prepare(
       propCollection.directories || [],
       propCollection.messages || [],
@@ -179,7 +176,7 @@ const MessagePlayground = ({
     ) || []; */
 
   const [activeType, setActiveType] = useState(
-    messageTypes.find((t) => t.id === message.meta.type) || {
+    messageTypes.find((t) => t.id === message.__meta.type) || {
       id: EMessagePayloadTypes.noBody,
       name: 'No body',
     }
@@ -221,11 +218,11 @@ const MessagePlayground = ({
     }
 
     if (
-      message.meta.envelope &&
-      message.meta.envelope !== selectedEnvelope.id
+      message.__meta.envelope &&
+      message.__meta.envelope !== selectedEnvelope.id
     ) {
       setSelectedEnvelope(
-        envelopeDD.find((e) => e.id === message.meta.envelope)
+        envelopeDD.find((e) => e.id === message.__meta.envelope)
       );
     }
 
@@ -238,12 +235,12 @@ const MessagePlayground = ({
       setMessageBody(message.body);
     }
 
-    if (message?.meta.type && message?.meta.type !== activeType.id) {
-      setActiveType(messageTypes.find((t) => t.id === message?.meta.type));
+    if (message?.__meta.type && message?.__meta.type !== activeType.id) {
+      setActiveType(messageTypes.find((t) => t.id === message?.__meta.type));
     }
   }, [message, activePlayground]);
 
-  let quickSelectionMenus = [];
+  const quickSelectionMenus = [];
   quickSelectionMenus[0] = Object.assign(
     {},
     {
@@ -276,7 +273,7 @@ const MessagePlayground = ({
     if (type.id === EMessagePayloadTypes.noBody) {
       _updateMessage(
         Object.assign({}, initialPlaygroundMessage, {
-          meta: Object.assign({}, initialPlaygroundMessage.meta, {
+          meta: Object.assign({}, initialPlaygroundMessage.__meta, {
             type: EMessagePayloadTypes.noBody,
           }),
         })
@@ -292,14 +289,14 @@ const MessagePlayground = ({
     ) {
       _updateMessage({
         body: '',
-        meta: Object.assign({}, initialPlaygroundMessage.meta, {
+        meta: Object.assign({}, initialPlaygroundMessage.__meta, {
           type: EMessagePayloadTypes.file,
         }),
       });
       setMessageBody('');
     } else if (
       message &&
-      message.meta.envelope === '' &&
+      message.__meta.envelope === '' &&
       (type.id === EMessagePayloadTypes.arraybufferview ||
         type.id === EMessagePayloadTypes.arraybuffer)
     ) {
@@ -327,7 +324,7 @@ const MessagePlayground = ({
       setSelectedEnvelope(env);
       _updateMessage({
         meta: {
-          ...message.meta,
+          ...message.__meta,
           envelope: env.id,
         },
       });
@@ -441,7 +438,7 @@ const MessagePlayground = ({
     ctx_updateCollectionFns.addMessage(_object.omit(data, ['path']));
 
     if (data.path) {
-      _updateMessage({ meta: { ...message.meta }, path: data.path || '' });
+      _updateMessage({ meta: { ...message.__meta }, path: data.path || '' });
     }
   };
 
@@ -631,7 +628,6 @@ const MessagePlayground = ({
       }
     }
   }; */
-
   return (
     <Container className="h-full">
       {/* <Container.Header>
@@ -652,14 +648,14 @@ const MessagePlayground = ({
               //activeType.id !== EMessagePayloadTypes.noBody &&
               // activeType.id !== EMessagePayloadTypes.file &&
               !(
-                !playgroundTab?.meta?.isSaved && !playgroundTab?.meta?.hasChange
+                !playgroundTab?.__meta?.isSaved && !playgroundTab?.__meta?.hasChange
               ) ? (
                 <SaveMessage
                   isPopoverOpen={isSaveMessagePopoverOpen}
                   collection={collection || []}
                   id={`push-message-${tabData.id || ''}`}
-                  hasChange={playgroundTab?.meta?.hasChange || false}
-                  isSaved={playgroundTab?.meta?.isSaved || false}
+                  hasChange={playgroundTab?.__meta?.hasChange || false}
+                  isSaved={playgroundTab?.__meta?.isSaved || false}
                   onSubmit={_onAddMesage}
                   onUpdate={_onUpdateMessage}
                   toggleOpenPopover={(val) => toggleSaveMessagePopover(val)}
@@ -794,7 +790,7 @@ const MessagePlayground = ({
           <TabHeader.Left>
             {selectedMessageId &&
             selectedMessageId.length &&
-            playgroundTab?.meta?.hasChange === true ? (
+            playgroundTab?.__meta?.hasChange === true ? (
               <Button
                 key="original_button"
                 text={'Set original'}
@@ -900,15 +896,10 @@ const SaveMessage = ({
     });
   };
 
-  let _onClickSaveMessage = () => {
+  const _onClickSaveMessage = () => {
     if (hasChange) {
       onUpdate();
     }
-  };
-
-  let _addDirectory = (dir) => {
-    onAddDirectory(dir);
-    // setActiveDir({path: "./", id: ""});
   };
 
   return (
