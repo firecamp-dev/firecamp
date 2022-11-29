@@ -1,9 +1,9 @@
 export enum ELogTypes {
-  SEND = 'S',
-  RECEIVE = 'R',
-  ACK = 'ACK',
-  SYSTEM = 'SYS',
-  UPGRADE = 'upgrade'
+  Send = 's',
+  Receive = 'r',
+  Ack = 'ack',
+  System = 'sys',
+  Upgrade= 'upgrade'
 }
 
 export enum ELogEvents {
@@ -14,9 +14,9 @@ export enum ELogEvents {
 }
 
 export enum ELogColors {
-  SUCCESS = 'success',
-  DANGER = 'danger',
-  WARNING = 'warning'
+  Success = 'success',
+  Danger = 'danger',
+  Warning = 'warning'
 }
 
 export enum ConnectionStatus {
@@ -34,18 +34,18 @@ export enum ConnectionStatus {
 }
 
 export enum EArgumentType {
-  BOOLEAN = 'boolean',
-  NUMBER = 'number',
-  TEXT = 'text',
-  JSON = 'json',
-  FILE = 'file',
-  ARRAY_BUFFER = 'arraybuffer',
-  ARRAY_BUFFER_VIEW = 'arraybufferview'
+  Boolean = 'boolean',
+  Number = 'number',
+  Text = 'text',
+  Json = 'json',
+  File = 'file',
+  ArrayBuffer = 'arraybuffer',
+  ArrayBufferView = 'arraybufferview'
 }
 
 export enum CustomLogTypes {
-  LISTEN_ON = 'L_ON',
-  LISTEN_OFF = 'L_OFF'
+  ListenOn = 'L_ON',
+  ListenOff = 'L_OFF'
 }
 
 export enum EClientVersion {

@@ -241,10 +241,12 @@ const MessageTypeDropDownList = [
     id: EMessagePayloadTypes.json,
     name: 'JSON',
   },
-  {
-    id: EMessagePayloadTypes.file,
-    name: 'File',
-  },
+  // {
+  //   id: EMessagePayloadTypes.file,
+  //   name: 'File',
+  // },
+  /** temporarily disabling the array buffer option */
+  /**
   {
     id: EMessagePayloadTypes.arraybuffer,
     name: 'Array buffer',
@@ -252,11 +254,11 @@ const MessageTypeDropDownList = [
   {
     id: EMessagePayloadTypes.arraybufferview,
     name: 'Array buffer view',
-  },
-  {
-    id: 'noBody',
-    name: 'No body',
-  },
+  },*/
+  // {
+  //   id: 'noBody',
+  //   name: 'No body',
+  // },
 ];
 
 export {

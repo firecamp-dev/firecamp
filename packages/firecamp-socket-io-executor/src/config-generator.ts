@@ -9,7 +9,6 @@ import {
 import { _string, _table } from '@firecamp/utils';
 import SSLManager from './certificate-manager';
 import { TExecutorOptions } from './executor.interface';
-import transformExtraOptions from './extra-options';
 
 export default class ConfigGenerator {
   address: string;
@@ -24,7 +23,7 @@ export default class ConfigGenerator {
 
   constructor(options: TExecutorOptions) {
     this.address = options.url.raw;
-    this.config = transformExtraOptions(options.config as ISocketIOConfig);
+    this.config = options.config || {};
     this.connection = options.connection;
     this.clientOptions = {
       forceNew: false,
@@ -48,7 +47,7 @@ export default class ConfigGenerator {
       // library going to use at the time of connection
       version: ESocketIOClientVersion.v4,
     };
-    this.certificates = options.certificates;
+    this.certificates = options.certificates || [];
   }
 
   checkBooleanValues() {
