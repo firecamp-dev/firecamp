@@ -69,13 +69,11 @@ describe('Executor instance', () => {
 describe('Connection', () => {
   it('should connect to the server', (done) => {
     connection.onOpen(() => done());
-
     connection.connect();
   }, 60000);
 
   it('should connect to the secure server', (done) => {
     secureConnection.onOpen(() => done());
-
     secureConnection.connect();
   }, 60000);
 });
@@ -95,7 +93,7 @@ describe('Connection', () => {
 
 //         connection.emit('message', [
 //             {
-//                 meta: { envelope: '', type: EArgumentType.TEXT },
+//                 meta: { typedArrayView: '', type: EArgumentType.TEXT },
 //                 payload: 'hi'
 //             }
 //         ])
@@ -106,13 +104,11 @@ describe('Connection', () => {
 describe('should disconnect client', () => {
   it('should disconnect local client', (done) => {
     connection.logs(() => done());
-
     connection.close();
   });
 
   it('should disconnect secure server client', (done) => {
     secureConnection.logs(() => done());
-
     secureConnection.close();
   });
 });

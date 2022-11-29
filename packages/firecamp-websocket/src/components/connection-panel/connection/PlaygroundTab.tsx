@@ -18,7 +18,7 @@ import { _object } from '@firecamp/utils';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
-import { EEnvelope } from '@firecamp/types';
+import { ETypedArrayView } from '@firecamp/types';
 
 import { EMessagePayloadTypes } from '../../../types';
 
@@ -182,7 +182,7 @@ const PlaygroundTab = () => {
   });
 
   const envelopeDD = (
-    Object.keys(EEnvelope) as Array<keyof typeof EEnvelope>
+    Object.keys(ETypedArrayView) as Array<keyof typeof ETypedArrayView>
   ).map((e) => {
     return {
       id: e,
@@ -210,11 +210,11 @@ const PlaygroundTab = () => {
     }
 
     if (
-      message.__meta.envelope &&
-      message.__meta.envelope !== selectedEnvelope.id
+      message.__meta.typedArrayView &&
+      message.__meta.typedArrayView !== selectedEnvelope.id
     ) {
       setSelectedEnvelope(
-        envelopeDD.find((e) => e.id === message.__meta.envelope)
+        envelopeDD.find((e) => e.id === message.__meta.typedArrayView)
       );
     }
 
@@ -291,13 +291,13 @@ const PlaygroundTab = () => {
       setMessageBody('');
     } else if (
       message &&
-      message.__meta.envelope === '' &&
+      message.__meta.typedArrayView === '' &&
       (type.id === EMessagePayloadTypes.arraybufferview ||
         type.id === EMessagePayloadTypes.arraybuffer)
     ) {
       _updateMessage({
         meta: {
-          envelope: selectedEnvelope.id,
+          typedArrayView: selectedEnvelope.id,
           type: type.id,
         },
       }); //TODO: check
@@ -307,7 +307,7 @@ const PlaygroundTab = () => {
     ) {
       _updateMessage({
         meta: {
-          envelope: '',
+          typedArrayView: '',
           type: type.id,
         },
       });
@@ -320,7 +320,7 @@ const PlaygroundTab = () => {
       _updateMessage({
         meta: {
           ...message.__meta,
-          envelope: env.id,
+          typedArrayView: env.id,
         },
       });
     }

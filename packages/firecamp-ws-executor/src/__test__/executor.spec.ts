@@ -4,8 +4,7 @@ import Executor from '../';
 import { EMessageBodyType, ERequestTypes } from '@firecamp/types';
 import { localServerRequest, secureServerRequest } from './__mocks__';
 import { IExecutor } from '../executor.interface';
-import { ILog } from '../types';
-import { ELogTypes } from '../constants';
+import { ILog, ELogTypes } from '../types';
 
 let executor1: IExecutor;
 let executor2: IExecutor;

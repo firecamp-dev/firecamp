@@ -152,7 +152,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
             ) ||
               !Object.hasOwnProperty.call(
                 playgroundEmitter.body[arg_ref.current].meta,
-                'envelope'
+                'typedArrayView'
               ) ||
               !Object.hasOwnProperty.call(
                 playgroundEmitter.body[arg_ref.current].meta,
@@ -225,13 +225,13 @@ const EmitterPlayground = ({ tabData = {} }) => {
     }
 
     if (
-      playgroundEmitter.body[arg_ref.current].meta.envelope &&
-      playgroundEmitter.body[arg_ref.current].meta.envelope !==
+      playgroundEmitter.body[arg_ref.current].meta.typedArrayView &&
+      playgroundEmitter.body[arg_ref.current].meta.typedArrayView !==
         selectedEnvelope.id
     ) {
       setSelectedEnvelope(
         envelopeList.find(
-          (e) => e.id === playgroundEmitter.body[arg_ref.current].meta.envelope
+          (e) => e.id === playgroundEmitter.body[arg_ref.current].meta.typedArrayView
         ) || selectedEnvelope
       );
     }
@@ -257,12 +257,12 @@ const EmitterPlayground = ({ tabData = {} }) => {
       );
     }
     if (
-      playgroundEmitter?.body?.[arg_ref.current]?.meta?.envelope !==
+      playgroundEmitter?.body?.[arg_ref.current]?.meta?.typedArrayView !==
       selectedEnvelope.id
     ) {
       setSelectedEnvelope(
         envelopeList.find(
-          (e) => e.id === playgroundEmitter.body[arg_ref.current].meta.envelope
+          (e) => e.id === playgroundEmitter.body[arg_ref.current].meta.typedArrayView
         ) || selectedEnvelope
       );
     }
@@ -309,7 +309,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
           payload: '',
           path: '',
           meta: {
-            envelope: '',
+            typedArrayView: '',
             type: EEmitterPayloadTypes.noBody,
           },
         },
@@ -374,11 +374,11 @@ const EmitterPlayground = ({ tabData = {} }) => {
       toggleSelectArgTypeDD(false);
       if (
         playgroundEmitter &&
-        // playgroundEmitter.body[arg_ref.current].meta.envelope === "" &&
+        // playgroundEmitter.body[arg_ref.current].meta.typedArrayView === "" &&
         (type.id === EEmitterPayloadTypes.arraybufferview ||
           type.id === EEmitterPayloadTypes.arraybuffer)
       ) {
-        if (playgroundEmitter.body[arg_ref.current].meta.envelope !== '') {
+        if (playgroundEmitter.body[arg_ref.current].meta.typedArrayView !== '') {
           _playgroundEmitterFns.updateBody({
             meta: { type: type.id },
             payload: '',
@@ -386,7 +386,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         } else {
           _playgroundEmitterFns.updateBody({
             payload: '',
-            meta: { type: type.id, envelope: selectedEnvelope.id },
+            meta: { type: type.id, typedArrayView: selectedEnvelope.id },
           });
         }
       } else if (
@@ -401,14 +401,14 @@ const EmitterPlayground = ({ tabData = {} }) => {
           _playgroundEmitterFns.updateBody({
             payload: '',
             meta: { type: type.id },
-            envelope: '',
+            typedArrayView: '',
           });
           setEmitterBody('');
         } else if (
-          playgroundEmitter.body[arg_ref.current].meta.envelope !== ''
+          playgroundEmitter.body[arg_ref.current].meta.typedArrayView !== ''
         ) {
           _playgroundEmitterFns.updateBody({
-            meta: { type: type.id, envelope: '' },
+            meta: { type: type.id, typedArrayView: '' },
           });
         } else {
           _playgroundEmitterFns.updateBody({ meta: { type: type.id } });
@@ -422,7 +422,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
   let _onSelectEnvelope = (env) => {
     if (env && env.id) {
       setSelectedEnvelope(env);
-      _playgroundEmitterFns.updateBody({ meta: { envelope: env.id } });
+      _playgroundEmitterFns.updateBody({ meta: { typedArrayView: env.id } });
     }
   };
 
@@ -507,7 +507,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
 
       /**
        * Set new argument type as previous one
-       * Set argument envelope type by default if type is arraybuffer or arraybufferview
+       * Set argument typedArrayView type by default if type is arraybuffer or arraybufferview
        */
       let newArg = {
         ...InitArg,
@@ -516,7 +516,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
           type:
             playgroundEmitter.body[arg_ref.current]?.meta?.type ||
             EEmitterPayloadTypes.noBody,
-          envelope:
+          typedArrayView:
             playgroundEmitter.body[arg_ref.current]?.meta?.type ===
               EEmitterPayloadTypes.arraybuffer ||
             playgroundEmitter.body[arg_ref.current]?.meta?.type ===

@@ -275,14 +275,14 @@ const Socket = ({
           {
             meta: {
               type: "text",
-              envelope: ""
+              typedArrayView: ""
             },
             payload: "Hello from Vinaxi Khalasi"
           },
           {
             meta: {
               type: "json",
-              envelope: ""
+              typedArrayView: ""
             },
             payload: `
               {

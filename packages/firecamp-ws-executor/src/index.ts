@@ -5,15 +5,9 @@ import {
   IWebSocketMessage,
 } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
-import {
-  ConnectionStatus,
-  ELogEvents,
-  ELogTypes,
-  ELogColors,
-  StatusCodes,
-} from './constants';
+import { ConnectionStatus, StatusCodes } from './constants';
 import * as bodyParser from './body-parser';
-import { ILog } from './types';
+import { ILog, ELogEvents, ELogTypes, ELogColors } from './types';
 import { TExecutorOptions, IExecutor } from './executor.interface';
 import ConfigGenerator from './config-generator';
 
@@ -24,8 +18,8 @@ export default class Executor implements IExecutor {
   #WebSocket: any;
   #socket: any;
   #intervals: any;
-  #mitterLogCount: number;
-  #listenerLogCount: number;
+  #sentLogCount: number;
+  #receivedLogCount: number;
   #systemLogCount: number;
   #connectionId: string;
   #connection: any;
@@ -37,8 +31,8 @@ export default class Executor implements IExecutor {
     this.#WebSocket = options.WebSocket;
     this.#socket = null;
     this.#intervals = {};
-    this.#mitterLogCount = 0;
-    this.#listenerLogCount = 0;
+    this.#sentLogCount = 0;
+    this.#receivedLogCount = 0;
     this.#systemLogCount = 0;
     this.#connectionId = options.connection.id;
     this.#eventEmitter = mitt();
@@ -84,7 +78,10 @@ export default class Executor implements IExecutor {
         this.#socket.on('pong', async (arg) => {
           log = this.#log(
             'Pong',
-            { payload: arg.toString(), meta: { type: 'text', envelope: '' } },
+            {
+              payload: arg.toString(),
+              meta: { type: 'text', typedArrayView: '' },
+            },
             {
               type: ELogTypes.Receive,
             }
@@ -101,7 +98,7 @@ export default class Executor implements IExecutor {
                 null,
                 4
               )}`,
-              meta: { type: 'json', envelope: '' },
+              meta: { type: 'json', typedArrayView: '' },
             },
             {
               type: ELogTypes.Receive,
@@ -114,7 +111,7 @@ export default class Executor implements IExecutor {
             ELogTypes.Upgrade,
             {
               payload: response.headers,
-              meta: { type: 'json', envelope: '' },
+              meta: { type: 'json', typedArrayView: '' },
             },
             {
               type: ELogTypes.Upgrade,
@@ -382,7 +379,7 @@ export default class Executor implements IExecutor {
       this.#intervals.PING = setInterval(() => {
         log = this.#log(
           'Ping',
-          { meta: { type: 'text', envelope: '' }, payload: 'Pinging' },
+          { meta: { type: 'text', typedArrayView: '' }, payload: 'Pinging' },
           {
             type: ELogTypes.Send,
           }
@@ -395,7 +392,7 @@ export default class Executor implements IExecutor {
     } else {
       log = this.#log(
         'Ping',
-        { meta: { type: 'text', envelope: '' }, payload: 'Pinging' },
+        { meta: { type: 'text', typedArrayView: '' }, payload: 'Pinging' },
         {
           type: ELogTypes.Send,
         }
@@ -487,10 +484,10 @@ export default class Executor implements IExecutor {
     if (__meta.type) {
       switch (__meta.type) {
         case ELogTypes.Send:
-          __ref.id = `${ELogTypes.Send}-${++this.#mitterLogCount}`;
+          __ref.id = `${ELogTypes.Send}-${++this.#sentLogCount}`;
           break;
         case ELogTypes.Receive:
-          __ref.id = `${ELogTypes.Receive}-${++this.#listenerLogCount}`;
+          __ref.id = `${ELogTypes.Receive}-${++this.#receivedLogCount}`;
           break;
         default:
           __ref.id = `${ELogTypes.System}-${++this.#systemLogCount}`;

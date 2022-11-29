@@ -6,7 +6,7 @@ import {
   TId,
   EMessageBodyType,
   ERequestTypes,
-  EEnvelope,
+  ETypedArrayView,
 } from '@firecamp/types';
 
 import { EConnectionState } from '../../types';
@@ -17,7 +17,7 @@ const initialPlaygroundMessage = {
   body: '',
   __meta: {
     type: EMessageBodyType.Text,
-    envelope: EEnvelope.Int8Array,
+    typedArrayView: ETypedArrayView.Int8Array,
   },
   __ref: {
     id: '',

@@ -7,7 +7,7 @@ const emptyLog = {
     body: '',
     meta: {
       type: EMessageBodyType.Text,
-      envelope: '',
+      typedArrayView: '',
     },
   },
   meta: {

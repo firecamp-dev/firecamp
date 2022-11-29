@@ -62,7 +62,7 @@ try {
 **Options**
 
 - eventName: 'event_name'
-- args: [ { payload, meta: { type, envelope } } ]
+- args: [ { payload, meta: { type, typedArrayView } } ]
 - interval: Number // optional
 
 **Syntax**
@@ -87,7 +87,7 @@ io.emit('test', args, interval)
 **Options**
 
 - eventName: 'event_name'
-- args: [ { payload, meta: { type, envelope } } ]
+- args: [ { payload, meta: { type, typedArrayView } } ]
 - interval: number // optional
 
 **Syntax**

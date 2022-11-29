@@ -1,9 +1,29 @@
 import {
-  EEnvelope,
+  ETypedArrayView,
   EMessageBodyType,
   IWebSocketMessage,
+  TId,
 } from '@firecamp/types';
-import { ELogColors, ELogTypes } from './constants';
+
+export enum ELogColors {
+  Success = 'success',
+  Danger = 'danger',
+}
+
+export enum ELogTypes {
+  Send = 's',
+  Receive = 'r',
+  Ack = 'ack',
+  System = 'sys',
+  Upgrade = 'upgrade',
+}
+
+export enum ELogEvents {
+  onOpen = 'onOpen',
+  onClose = 'onClose',
+  onConnecting = 'onConnecting',
+  common = 'common',
+}
 
 // WebSocket log
 export interface ILog {
@@ -16,10 +36,10 @@ export interface ILog {
     color: ELogColors;
     ackRef: any;
     // Message length
-    length: string;
+    length?: string;
   };
   __ref: {
-    id: string;
+    id: TId;
   };
 }
 
@@ -28,6 +48,6 @@ export interface IWebSocketResponseMessage {
   body: any;
   meta: {
     type: EMessageBodyType;
-    envelope?: EEnvelope;
+    typedArrayView?: ETypedArrayView;
   };
 }

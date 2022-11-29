@@ -136,7 +136,7 @@ export enum EPushActionMessage_Root {
 
 export enum EPushActionMessageMeta {
   type = 'type',
-  envelope = 'envelope',
+  typedArrayView = 'typedArrayView',
 }
 
 export enum EPushActionMessage_meta {
