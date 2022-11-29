@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Container, TabHeader, Dropdown, Button } from '@firecamp/ui-kit';
-import { EEmitterPayloadTypes } from '../../../../../../types';
+import { EEmitterPayloadTypes } from '../../../../types';
 const EmitterArgMeta = ({
   argTypes = [],
   activeArgType = {},

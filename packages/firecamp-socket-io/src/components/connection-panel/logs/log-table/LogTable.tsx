@@ -16,9 +16,9 @@ import { _object } from '@firecamp/utils';
 
 import LogPreview from './LogPreview';
 import AckIcon from './AckIcon';
-import { useSocketStore } from '../../../../../store';
+import { useSocketStore } from '../../../../store';
 
-import { ELogTypes } from '../../../../../types';
+import { ELogTypes } from '../../../../types';
 
 const logTypes = {
   system: ELogTypes.System,

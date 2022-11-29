@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Checkbox, Tabs } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
-import { EEmitterPayloadTypes } from '../../../../../../types';
+import { EEmitterPayloadTypes } from '../../../../types';
 
 const EmitterArgTabs = ({
   ack = false,

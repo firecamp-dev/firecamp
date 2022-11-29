@@ -5,7 +5,7 @@ import {
 } from '@firecamp/ui-kit';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 
-import ConnectionButton from '../../../../../common/connection/ConnectButton';
+import ConnectionButton from '../../../common/connection/ConnectButton';
 
 const Header = ({
   emitterName = '',

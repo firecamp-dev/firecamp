@@ -26,17 +26,17 @@ import EmitterArgMeta from './EmitterArgMeta';
 import EmitterArgTabs from './EmitterArgTabs';
 import Body from './Body';
 
-import { SocketContext } from '../../../../../Socket.context';
+import { SocketContext } from '../../../Socket.context';
 
-import { EEmitterPayloadTypes } from '../../../../../../types';
+import { EEmitterPayloadTypes } from '../../../../types';
 import {
   InitArg,
   EditorCommands,
   ArgTypes,
   EnvelopeTypes,
   InitPlayground,
-} from '../../../../../../constants';
-import { ISocketStore, useSocketStore } from '../../../../../../store';
+} from '../../../../constants';
+import { ISocketStore, useSocketStore } from '../../../../store';
 
 const EmitterPlayground = ({ tabData = {} }) => {
   let {

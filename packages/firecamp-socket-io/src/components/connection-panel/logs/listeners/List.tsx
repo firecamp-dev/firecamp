@@ -1,6 +1,6 @@
 import shallow from 'zustand/shallow';
 
-import { useSocketStore } from '../../../../../store';
+import { useSocketStore } from '../../../../store';
 import './listners.scss';
 
 const List = ({ listeners = {}, activePlayground = '' }) => {
