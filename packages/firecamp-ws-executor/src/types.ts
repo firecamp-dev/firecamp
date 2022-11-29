@@ -1,5 +1,5 @@
 import {
-  EEnvelope,
+  ETypedArrayView,
   EMessageBodyType,
   IWebSocketMessage,
 } from '@firecamp/types';
@@ -28,6 +28,6 @@ export interface IWebSocketResponseMessage {
   body: any;
   meta: {
     type: EMessageBodyType;
-    envelope?: EEnvelope;
+    typedArrayView?: ETypedArrayView;
   };
 }

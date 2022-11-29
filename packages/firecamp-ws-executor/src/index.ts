@@ -84,7 +84,10 @@ export default class Executor implements IExecutor {
         this.#socket.on('pong', async (arg) => {
           log = this.#log(
             'Pong',
-            { payload: arg.toString(), meta: { type: 'text', envelope: '' } },
+            {
+              payload: arg.toString(),
+              meta: { type: 'text', typedArrayView: '' },
+            },
             {
               type: ELogTypes.Receive,
             }
@@ -101,7 +104,7 @@ export default class Executor implements IExecutor {
                 null,
                 4
               )}`,
-              meta: { type: 'json', envelope: '' },
+              meta: { type: 'json', typedArrayView: '' },
             },
             {
               type: ELogTypes.Receive,
@@ -114,7 +117,7 @@ export default class Executor implements IExecutor {
             ELogTypes.Upgrade,
             {
               payload: response.headers,
-              meta: { type: 'json', envelope: '' },
+              meta: { type: 'json', typedArrayView: '' },
             },
             {
               type: ELogTypes.Upgrade,
@@ -382,7 +385,7 @@ export default class Executor implements IExecutor {
       this.#intervals.PING = setInterval(() => {
         log = this.#log(
           'Ping',
-          { meta: { type: 'text', envelope: '' }, payload: 'Pinging' },
+          { meta: { type: 'text', typedArrayView: '' }, payload: 'Pinging' },
           {
             type: ELogTypes.Send,
           }
@@ -395,7 +398,7 @@ export default class Executor implements IExecutor {
     } else {
       log = this.#log(
         'Ping',
-        { meta: { type: 'text', envelope: '' }, payload: 'Pinging' },
+        { meta: { type: 'text', typedArrayView: '' }, payload: 'Pinging' },
         {
           type: ELogTypes.Send,
         }

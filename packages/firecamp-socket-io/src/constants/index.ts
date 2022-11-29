@@ -1,12 +1,12 @@
 import {
-  EEnvelope,
+  ETypedArrayView,
   EArgumentBodyType,
   ERequestTypes,
   ISocketIOConnection,
   ISocketIOConfig,
   ESocketIOClientVersion,
 } from '@firecamp/types';
-import { nanoid } from 'nanoid'
+import { nanoid } from 'nanoid';
 import { EConnectionState } from '../types';
 
 export const LOG_CUSTOM_EVENTS = {
@@ -104,7 +104,7 @@ export const InitPlayground = {
       body: '',
       __meta: {
         type: EArgumentBodyType.Text,
-        envelope: EEnvelope.Int8Array,
+        typedArrayView: ETypedArrayView.Int8Array,
       },
     },
   ],
@@ -123,7 +123,7 @@ export const InitPlayground = {
 export const InitArg = {
   meta: {
     type: EArgumentBodyType.Text,
-    envelope: EEnvelope.Int8Array,
+    typedArrayView: ETypedArrayView.Int8Array,
   },
   body: '',
 };
