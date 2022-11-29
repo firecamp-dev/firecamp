@@ -109,7 +109,7 @@ export enum EPushActionMessage_RootKeys {
 
 export enum EPushActionMessageMetaKeys {
   type = 'type',
-  typedArrayView = 'typedArrayViewayView',
+  typedArrayView = 'typedArrayView',
 }
 
 export enum EPushActionMessage_metaKeys {
