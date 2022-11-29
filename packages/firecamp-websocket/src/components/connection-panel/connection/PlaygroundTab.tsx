@@ -20,15 +20,15 @@ import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
 
-import { WebsocketContext } from '../../../WebSocket.context';
+import { WebsocketContext } from '../../WebSocket.context';
 
-import { EMessagePayloadTypes } from '../../../../types';
+import { EMessagePayloadTypes } from '../../../types';
 
 import {
   useWebsocketStore,
   initialPlaygroundMessage,
   IWebsocketStore,
-} from '../../../../store';
+} from '../../../store';
 
 const EDITOR_COMMANDS = {
   SAVE: {
@@ -93,21 +93,59 @@ const EDITOR_COMMANDS = {
   },
 };
 
-const MessagePlayground = ({
-  // message = {},
-  // runtimeActiveConnection = '',
-  // collection: propCollection = {},
-  messageTypes = [],
-  envelopeList = [],
-  meta = {},
-  tabData = {},
-  selectedMessageId = '',
-}) => {
+const messageTypes = [
+  {
+    id: EMessagePayloadTypes.text,
+    name: 'Text',
+  },
+  {
+    id: EMessagePayloadTypes.json,
+    name: 'JSON',
+  },
+  {
+    id: EMessagePayloadTypes.file,
+    name: 'File',
+  },
+  {
+    id: EMessagePayloadTypes.arraybuffer,
+    name: 'Array buffer',
+  },
+  {
+    id: EMessagePayloadTypes.arraybufferview,
+    name: 'Array buffer view',
+  },
+  {
+    id: 'noBody',
+    name: 'No body',
+  },
+];
+
+const envelopeList = [
+  'Int8Array',
+  'Uint8Array',
+  'Uint8ClampedArray',
+  'Int16Array',
+  'Uint16Array',
+  'Int32Array',
+  'Uint32Array',
+  'Float32Array',
+  'Float64Array',
+  'BigInt64Array',
+  'BigUint64Array',
+];
+
+const PlaygroundTab = (
+  {
+    // message = {},
+    // collection: propCollection = {},
+  }
+) => {
   const {
     activePlayground,
     collection: propCollection,
     playground,
     playgroundTabs,
+    meta,
 
     changePlaygroundMessage,
     setSelectedCollectionMessage,
@@ -118,6 +156,7 @@ const MessagePlayground = ({
       collection: s.collection,
       playground: s.playgrounds[s.runtime.activePlayground],
       playgroundTabs: s.runtime.playgroundTabs,
+      meta: s.request.__meta,
 
       changePlaygroundMessage: s.changePlaygroundMessage,
       setSelectedCollectionMessage: s.setSelectedCollectionMessage,
@@ -125,6 +164,8 @@ const MessagePlayground = ({
     }),
     shallow
   );
+
+  const [selectedMessageId] = useState('');
 
   const {
     ctx_playgroundMessageFns,
@@ -139,6 +180,8 @@ const MessagePlayground = ({
     addNewMessage,
     setToOriginal: setPlaygroundMessageAsOriginal,
   } = ctx_playgroundMessageFns;
+
+  const tabData = { id: 123 };
 
   const { onUpdateRequest } = ctx_commonFns;
 
@@ -820,7 +863,7 @@ const MessagePlayground = ({
     </Container>
   );
 };
-export default MessagePlayground;
+export default PlaygroundTab;
 
 const SaveMessage = ({
   isPopoverOpen = false,

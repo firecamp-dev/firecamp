@@ -17,7 +17,7 @@ import Config from './ConfigTab';
 import HeadersTab from './HeadersTab';
 import ParamsTab from './ParamsTab';
 
-import Message from './message/Message';
+import PlaygroundTab from './PlaygroundTab';
 import Logs from '../logs/Logs';
 import ConnectButton from '../../common/connection/ConnectButton';
 import { EPanel } from '../../../types';
@@ -76,7 +76,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   const _renderBody = () => {
     switch (activeBodyTab) {
       case 'playground':
-        return <Playground key={activePlayground} />;
+        return <PlaygroundTab key={activePlayground} />;
 
       case 'config':
         return (
@@ -107,19 +107,10 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         );
 
       default:
-        return <Playground />;
+        return <PlaygroundTab />;
     }
   };
 
-  const Playground = () => {
-    return (
-      <Row flex={1} overflow="auto" className=" with-divider h-full">
-        <Column className="h-full">
-          <Message tabData={{ id: '123' }} />
-        </Column>
-      </Row>
-    );
-  };
 
   return (
     <Row flex={1} overflow="auto" className=" with-divider h-full">
