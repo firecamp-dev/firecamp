@@ -1,8 +1,7 @@
 import { ETypedArrayView, EFirecampAgent } from '@firecamp/types';
 import { _buffer, _misc } from '@firecamp/utils';
 
-import { IEmitterArgument } from './types';
-import { EArgumentType } from './constants';
+import { IEmitterArgument, EArgumentType } from './types';
 
 /**
  * Function which accept Firecamp request

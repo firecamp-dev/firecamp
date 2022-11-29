@@ -4,13 +4,14 @@ import { _misc } from '@firecamp/utils';
 import * as bodyParser from './body-parser';
 import {
   CustomLogTypes,
-  ConnectionStatus,
+  EConnectionStatus,
   EArgumentType,
   ELogEvents,
   ELogTypes,
   ELogColors,
-} from './constants';
-import { IEmitterArgument, ILog } from './types';
+  IEmitterArgument,
+  ILog,
+} from './types';
 import { IExecutorInterface, TExecutorOptions } from './executor.interface';
 import ConfigGenerator from './config-generator';
 
@@ -21,25 +22,25 @@ import ConfigGenerator from './config-generator';
 const firecampAgent = _misc.firecampAgent();
 
 const {
-  CONNECTING,
-  CONNECT,
-  CONNECT_ERROR,
-  CONNECT_TIMEOUT,
-  ERROR,
-  DISCONNECT,
-  RECONNECT,
-  RECONNECT_ATTEMPT,
-  RECONNECTING,
-  RECONNECT_ERROR,
-  RECONNECT_FAILED,
-} = ConnectionStatus;
+  Connecting,
+  Connect,
+  ConnectError,
+  ConnectTimeout,
+  SocketError,
+  Disconnect,
+  Reconnect,
+  ReconnectAttempt,
+  Reconnecting,
+  ReconnectError,
+  ReconnectFailed,
+} = EConnectionStatus;
 
 export default class Executor implements IExecutorInterface {
   #io: any;
   socket: any;
   #intervals: any;
-  #emitterLogCount: number;
-  #listenerLogCount: number;
+  #sentLogCount: number;
+  #receivedLogCount: number;
   #systemLogCount: number;
   #connectionId: string;
   #connection: any;
@@ -56,8 +57,8 @@ export default class Executor implements IExecutorInterface {
     this.#io = options.io;
     this.socket = null;
     this.#intervals = {};
-    this.#emitterLogCount = 0;
-    this.#listenerLogCount = 0;
+    this.#sentLogCount = 0;
+    this.#receivedLogCount = 0;
     this.#systemLogCount = 0;
     this.#connectionId = options.connection.id;
     this.eventEmitter = mitt();
@@ -72,35 +73,41 @@ export default class Executor implements IExecutorInterface {
     this.#pinging = false;
   }
 
-  log(title: string, message: any, meta: any): ILog {
-    if (!meta.timestamp) meta.timestamp = Date.now();
+  log(title: string, message: any, __meta: any): ILog {
+    if (!__meta.timestamp) __meta.timestamp = Date.now();
 
     // In normal EMIT/LISTEN event name will be a title so assign that
     // same title as event in meta as standard usage at frontend if needed
-    if (!meta.event) meta.event = title;
-    if (meta.type) {
-      switch (meta.type) {
+    if (!__meta.event) __meta.event = title;
+    const __ref = { id: '' };
+    if (__meta.type) {
+      switch (__meta.type) {
         case ELogTypes.Send:
-          meta.id = `${ELogTypes.Send}-${meta.id}`;
-          title = `Emit on: ${title}, ID: ${meta.id}`;
+          const sCount = ++this.#sentLogCount;
+          __ref.id = `${ELogTypes.Send}-${sCount}`;
+          title = `Emit on: ${title}, ID: ${sCount}`;
           break;
         case ELogTypes.Receive:
-          meta.id = `${ELogTypes.Receive}-${meta.id}`;
-          title = `Listen on: ${title}, ID: ${meta.id}`;
+          const rCount = ++this.#receivedLogCount;
+          __ref.id = `${ELogTypes.Receive}-${rCount}`;
+          title = `Listen on: ${title}, ID: ${rCount}`;
           break;
         case ELogTypes.Ack:
-          meta.id = `${ELogTypes.Ack}-${meta.id}`;
-          title = `Ack on: ${title}, ID: ${meta.id}`;
+          const aCount = __meta.id;
+          __ref.id = `${ELogTypes.Ack}-${aCount}`;
+          title = `Ack on: ${title}, ID: ${aCount}`;
           break;
         default:
-          meta.id = `${ELogTypes.System}-${++this.#systemLogCount}`;
+          const sysCount = ++this.#systemLogCount;
+          __ref.id = `${ELogTypes.System}-${sysCount}`;
           break;
       }
     }
     return {
       title,
       message,
-      meta,
+      __meta,
+      __ref,
     };
   }
 
@@ -139,7 +146,6 @@ export default class Executor implements IExecutorInterface {
           ],
           {
             type: ELogTypes.Receive,
-            id: ++this.#listenerLogCount,
           }
         );
 
@@ -149,7 +155,6 @@ export default class Executor implements IExecutorInterface {
       this.socket.on(eventName, async (...args: Array<any>) => {
         log = this.log(eventName, [], {
           type: ELogTypes.Receive,
-          id: ++this.#listenerLogCount,
         });
 
         const body = await bodyParser.parseListenerData(args);
@@ -332,7 +337,6 @@ export default class Executor implements IExecutorInterface {
     if (args?.length > 0)
       log = this.log(eventName, args, {
         type: ELogTypes.Send,
-        id: this.#emitterLogCount++,
       });
     else
       log = this.log(
@@ -344,7 +348,6 @@ export default class Executor implements IExecutorInterface {
         ],
         {
           type: ELogTypes.Send,
-          id: this.#emitterLogCount++,
         }
       );
 
@@ -385,9 +388,10 @@ export default class Executor implements IExecutorInterface {
 
       return Promise.resolve();
     } catch (error) {
-      const title = typeof error === 'string' ? error : error.message || ERROR;
+      const title =
+        typeof error === 'string' ? error : error.message || SocketError;
       const log = this.log(title, '', {
-        event: ERROR,
+        event: SocketError,
         type: ELogTypes.System,
         color: ELogColors.Danger,
       });
@@ -476,9 +480,10 @@ export default class Executor implements IExecutorInterface {
         }
       }
     } catch (error) {
-      const title = typeof error === 'string' ? error : error.message || ERROR;
+      const title =
+        typeof error === 'string' ? error : error.message || SocketError;
       const log = this.log(title, '', {
-        event: ERROR,
+        event: SocketError,
         type: ELogTypes.System,
         color: ELogColors.Danger,
       });
@@ -513,7 +518,7 @@ export default class Executor implements IExecutorInterface {
           [
             {
               payload: 'Pinging',
-              meta: {
+              __meta: {
                 type: 'text',
                 typedArrayView: '',
               },
@@ -521,7 +526,6 @@ export default class Executor implements IExecutorInterface {
           ],
           {
             type: ELogTypes.Send,
-            id: ++this.#emitterLogCount,
           }
         );
 
@@ -544,7 +548,6 @@ export default class Executor implements IExecutorInterface {
               ],
               {
                 type: ELogTypes.Receive,
-                id: ++this.#listenerLogCount,
               }
             );
             this.emitLog(log);
@@ -597,7 +600,7 @@ export default class Executor implements IExecutorInterface {
 
       const title = 'Socket has been created. The connection is not yet open.';
       const log = this.log(title, '', {
-        event: CONNECTING,
+        event: Connecting,
         type: ELogTypes.System,
         color: ELogColors.Success,
       });
@@ -606,10 +609,10 @@ export default class Executor implements IExecutorInterface {
       this.emitLog(log);
 
       // Fired upon connection to the Namespace (including a successful reconnection).
-      this.socket.on(CONNECT, () => {
+      this.socket.on(Connect, () => {
         const title = 'Socket connected successfully';
         const log = this.log(title, '', {
-          event: CONNECT,
+          event: Connect,
           type: ELogTypes.System,
           color: ELogColors.Success,
         });
@@ -629,10 +632,10 @@ export default class Executor implements IExecutorInterface {
       });
 
       // Fired when an namespace middleware error occurs.
-      this.socket.on(CONNECT_ERROR, (error: Error) => {
+      this.socket.on(ConnectError, (error: Error) => {
         const title = error instanceof Error ? error.message : error;
         const log = this.log(title, '', {
-          event: CONNECT_ERROR,
+          event: ConnectError,
           type: ELogTypes.System,
           color: ELogColors.Danger,
         });
@@ -641,10 +644,10 @@ export default class Executor implements IExecutorInterface {
 
       // @deprecated in socket.io-client@2.4.0
       // Fired upon a connection timeout.
-      this.socket.io.on(CONNECT_TIMEOUT, (timeout: number) => {
+      this.socket.io.on(ConnectTimeout, (timeout: number) => {
         const title = `Connection timeout(${timeout})`;
         const log = this.log(title, '', {
-          event: CONNECT_TIMEOUT,
+          event: ConnectTimeout,
           type: ELogTypes.System,
           color: ELogColors.Danger,
         });
@@ -653,10 +656,10 @@ export default class Executor implements IExecutorInterface {
 
       // Previously listen using the socket instance directly
       // Fired upon a connection error.
-      this.socket.io.on(ERROR, (error: Error) => {
+      this.socket.io.on(SocketError, (error: Error) => {
         const title = error instanceof Error ? error.message : error;
         const log = this.log(title, '', {
-          event: ERROR,
+          event: SocketError,
           type: ELogTypes.System,
           color: ELogColors.Danger,
         });
@@ -664,10 +667,10 @@ export default class Executor implements IExecutorInterface {
       });
 
       // Fired upon disconnection.
-      this.socket.on(DISCONNECT, (reason: string) => {
+      this.socket.on(Disconnect, (reason: string) => {
         const title = reason;
         const log = this.log(title, '', {
-          event: DISCONNECT,
+          event: Disconnect,
           type: ELogTypes.System,
           color: ELogColors.Danger,
         });
@@ -682,10 +685,10 @@ export default class Executor implements IExecutorInterface {
 
       // Previously listen using the socket instance directly
       // Fired upon a successful reconnection.
-      this.socket.io.on(RECONNECT, (attemptNumber: number) => {
+      this.socket.io.on(Reconnect, (attemptNumber: number) => {
         const title = `Attempt number(${attemptNumber})`;
         const log = this.log(title, '', {
-          event: RECONNECT,
+          event: Reconnect,
           type: ELogTypes.System,
           color: ELogColors.Warning,
         });
@@ -695,10 +698,10 @@ export default class Executor implements IExecutorInterface {
 
       // Previously listen using the socket instance directly
       // Fired upon an attempt to reconnect.
-      this.socket.io.on(RECONNECT_ATTEMPT, (attemptNumber) => {
+      this.socket.io.on(ReconnectAttempt, (attemptNumber) => {
         const title = `Attempt number(${attemptNumber})`;
         const log = this.log(title, '', {
-          event: RECONNECT_ATTEMPT,
+          event: ReconnectAttempt,
           type: ELogTypes.System,
           color: ELogColors.Warning,
         });
@@ -707,10 +710,10 @@ export default class Executor implements IExecutorInterface {
 
       // @deprecated in socket.io-client@3.0.0
       // Fired upon an attempt to reconnect.
-      this.socket.io.on(RECONNECTING, (attemptNumber) => {
+      this.socket.io.on(Reconnecting, (attemptNumber) => {
         const title = `Attempt number(${attemptNumber})`;
         const log = this.log(title, '', {
-          event: RECONNECTING,
+          event: Reconnecting,
           type: ELogTypes.System,
           color: ELogColors.Warning,
         });
@@ -720,10 +723,10 @@ export default class Executor implements IExecutorInterface {
 
       // Previously listen using the socket instance directly
       // Fired upon a reconnection attempt error.
-      this.socket.io.on(RECONNECT_ERROR, (error) => {
+      this.socket.io.on(ReconnectError, (error) => {
         const title = error instanceof Error ? error.message : error;
         const log = this.log(title, '', {
-          event: RECONNECT_ERROR,
+          event: ReconnectError,
           type: ELogTypes.System,
           color: ELogColors.Danger,
         });
@@ -732,11 +735,11 @@ export default class Executor implements IExecutorInterface {
 
       // Previously listen using the socket instance directly
       // Fired when couldn’t reconnect within reconnectionAttempts.
-      this.socket.io.on(RECONNECT_FAILED, () => {
+      this.socket.io.on(ReconnectFailed, () => {
         const title =
           "The client couldn't reconnect within reconnection attempts";
         const log = this.log(title, '', {
-          event: RECONNECT_FAILED,
+          event: ReconnectFailed,
           type: ELogTypes.System,
           color: ELogColors.Danger,
         });
@@ -746,9 +749,10 @@ export default class Executor implements IExecutorInterface {
 
       return this;
     } catch (error) {
-      const title = error instanceof Error ? error.message : error || ERROR;
+      const title =
+        error instanceof Error ? error.message : error || SocketError;
       const log = this.log(title, '', {
-        event: ERROR,
+        event: SocketError,
         type: ELogTypes.System,
         color: ELogColors.Danger,
       });
@@ -762,9 +766,9 @@ export default class Executor implements IExecutorInterface {
     if (this.socket.connected) this.socket.disconnect();
 
     // send the log
-    const title = `${DISCONNECT}`;
+    const title = `${Disconnect}`;
     const log = this.log(title, '', {
-      event: DISCONNECT,
+      event: Disconnect,
       type: ELogTypes.System,
       color: ELogColors.Danger,
     });
@@ -787,7 +791,4 @@ export default class Executor implements IExecutorInterface {
 }
 
 export * from './executor.interface';
-
 export * from './types';
-
-export * from './constants';
