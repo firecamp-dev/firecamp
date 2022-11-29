@@ -39,8 +39,10 @@ const Editor: FC<IEditor> = ({
 }) => {
   const editorIdRef = useRef('');
   useEffect(() => {
-    MonacoFirecampLangInit();
-    SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
+    MonacoFirecampLangInit(() => {
+      SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
+    });
+    
   }, []);
 
   useEffect(() => {

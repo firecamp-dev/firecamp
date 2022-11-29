@@ -11,7 +11,7 @@ import { IFELanguages, IFEThemes } from './IFE.constants';
 let { TEXT, HEADER_KEY, HEADER_VALUE } = IFELanguages;
 
 let monaco;
-export default () => {
+export default (_callback) => {
   loader.init().then((_monaco) => {
     monaco = _monaco;
     _registerLanguage(TEXT, IFELangText);
@@ -27,6 +27,7 @@ export default () => {
       monaco.editor.defineTheme(IFEThemes.DARK, FirecampDarkTheme);
       monaco.editor.defineTheme(IFEThemes.LITE, FirecampLiteTheme);
     });
+    _callback?.()
   });
 };
 const _registerLanguage = (langId, langMonarch, cb = () => {}) => {
