@@ -262,7 +262,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
     ) {
       setSelectedEnvelope(
         envelopeList.find(
-          (e) => e.id === playgroundEmitter.body[arg_ref.current].meta.typedArrayViewayViewayView
+          (e) => e.id === playgroundEmitter.body[arg_ref.current].meta.typedArrayView
         ) || selectedEnvelope
       );
     }
