@@ -834,6 +834,9 @@ video {
 .relative {
 	position: relative;
 }
+.sticky {
+	position: sticky;
+}
 .-left-8 {
 	left: -2rem;
 }
@@ -1046,6 +1049,9 @@ video {
 }
 .\!mt-0 {
 	margin-top: 0px !important;
+}
+.-mt-px {
+	margin-top: -1px;
 }
 .mt-0 {
 	margin-top: 0px;
@@ -1261,6 +1267,9 @@ video {
 .w-80 {
 	width: 20rem;
 }
+.w-40 {
+	width: 10rem;
+}
 .w-auto {
 	width: auto;
 }
@@ -1360,6 +1369,14 @@ video {
 }
 .overflow-visible {
 	overflow: visible;
+}
+.\!overflow-y-auto {
+	overflow-y: auto !important;
+}
+.truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .overflow-ellipsis {
 	text-overflow: ellipsis;
@@ -1585,6 +1602,9 @@ video {
 }
 .\!bg-transparent {
 	background-color: #ffffff00 !important;
+}
+.\!bg-appBackground2 {
+	background-color: var(--app-background-secondary) !important;
 }
 .bg-inputBackground {
 	background-color: var(--input-background);
@@ -2231,6 +2251,9 @@ video {
 }
 .first\:mt-0:first-child {
 	margin-top: 0px;
+}
+.first\:border-t-0:first-child {
+	border-top-width: 0px;
 }
 .first\:border-l-0:first-child {
 	border-left-width: 0px;

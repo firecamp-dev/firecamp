@@ -70,7 +70,7 @@ const LogTable = () => {
     //   };
     // });
     lLogTableApiRef.current?.initialize(filteredLogs);
-    logTableAPIRef?.current?.setRows(filteredLogs);
+    //logTableAPIRef?.current?.setRows(filteredLogs);
   }, [logs, typeFilter, activePlayground]);
 
   const _onClearAllMessages = () => {
@@ -252,8 +252,11 @@ const LogTable = () => {
             <LTable
               classes={
                 {
-                  table: 'text-sm !m-0 !border-0 w-full',
-                  td: 'px-2 py-2 whitespace-nowrap first:border-t-0 ',
+                  table: 'text-sm !m-0 !border-0 !w-full',
+                  td: 'px-2 py-2 whitespace-nowrap first:border-t-0 truncate',
+                  thead: 'sticky top-0 !bg-appBackground2 z-10',
+                  container: 'h-full !overflow-y-auto -mt-px visible-scrollbar',
+                  theadTr: '!bg-focus2'
                 }
               }
               rows={[]}
@@ -266,7 +269,7 @@ const LogTable = () => {
               }}
             />
 
-            <ReactTable
+            {/* <ReactTable
               key={activePlayground}
               virtualListHeight={tableHeight} //  40 is an estimated height of table header
               columns={columns}
@@ -274,7 +277,7 @@ const LogTable = () => {
                 logTableAPIRef.current = tableAPI;
               }}
               onRowClick={_onRowClick}
-            />
+            /> */}
           </Column>
         </Resizable>
         <LogPreview activePlayground={activePlayground} row={selectedRow} />
