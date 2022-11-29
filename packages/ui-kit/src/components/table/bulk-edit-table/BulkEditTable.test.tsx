@@ -11,7 +11,7 @@ describe("Table : ", () => {
 
   const mountTableComponent = () => render(<WithTableOptions {...WithTableOptions.args} />);
   
-  const getRenderedTable = () => screen.getByRole('table');
+  const getRenderedTable = () => screen.queryByRole('table');
 
   test('Table should render with provided title along with header containing BulkEdit button ', () => {
     let {container} = mountTableComponent();
@@ -33,16 +33,24 @@ describe("Table : ", () => {
   test('Table should switch to editor when BulkEdit button from header is clicked', async () => {
     let {container} = mountTableComponent();
     
-    //At initial time buttonelement text should be "Bulk Edit";
+    //At initial time, validate button text & rendered component based on selected mode
     let SwitchButton = screen.getAllByRole('button');
+    expect(SwitchButton[0].textContent).toBe("Bulk Edit");
+    expect(getRenderedTable()).toBeInTheDocument();
     await click(SwitchButton[0]);
     
-    expect(SwitchButton[0].textContent).toBe("Key-Value Edit")
-    // console.log(`tableComponent`, SwitchButton[0].textContent);
-    // expect(tableComponent).not.toBeInTheDocument();
-    
+    let updatedButton = await waitFor(() => screen.getAllByRole('button'));
+    expect(updatedButton[0].textContent).toBe("Key-Value Edit");
+    expect(getRenderedTable()).toBeNull();
+
+    let editorWrapper = container.getElementsByClassName('firecamp-editor__placeholder')[0]?.parentElement;
+    expect(editorWrapper).toBeInTheDocument();
+    // let editor = await screen.findAllByTestId('monaco-editor');
+    // console.log(`editorWrapper`, editor)
+
+
   });
-})
+});
 
 //@ts-nocheck
 //SingleLineEditor

@@ -223,6 +223,7 @@ const Editor: FC<IEditor> = ({
         <div>{!value ? placeholder || '' : ''}</div>
       </div>
       <MonacoEditor
+        data-testid="monaco-editor"
         language={language}
         defaultValue={value}
         value={value}

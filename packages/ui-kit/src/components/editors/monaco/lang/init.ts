@@ -27,7 +27,7 @@ export default (_callback) => {
       monaco.editor.defineTheme(IFEThemes.DARK, FirecampDarkTheme);
       monaco.editor.defineTheme(IFEThemes.LITE, FirecampLiteTheme);
     });
-    _callback?.()
+    _callback?.();
   });
 };
 const _registerLanguage = (langId, langMonarch, cb = () => {}) => {
