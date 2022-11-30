@@ -2,8 +2,8 @@ import equal from 'deep-equal';
 import { IExecutor } from '@firecamp/ws-executor/dist/esm';
 
 import {
-  IWebSocketMessage,
   TId,
+  IWebSocketMessage,
   EMessageBodyType,
   ERequestTypes,
   ETypedArrayView,
@@ -14,7 +14,7 @@ import { _object } from '@firecamp/utils';
 
 const initialPlaygroundMessage = {
   name: '',
-  body: '',
+  payload: '',
   __meta: {
     type: EMessageBodyType.Text,
     typedArrayView: ETypedArrayView.Int8Array,
@@ -186,15 +186,15 @@ const createPlaygroundsSlice = (
           },
         }));
         state.changePlaygroundTab(connectionId, {
-          meta: {
-            isSaved: !!updatedPlayground.message?._meta?.id,
+          __meta: {
+            isSaved: !!updatedPlayground.message?.__ref?.id,
             hasChange: true,
           },
         });
       } else {
         state.changePlaygroundTab(connectionId, {
-          meta: {
-            isSaved: !!updatedPlayground.message?._meta?.id,
+          __meta: {
+            isSaved: !!updatedPlayground.message?.__ref?.id,
             hasChange: false,
           },
         });
