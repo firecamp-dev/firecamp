@@ -22,8 +22,8 @@ const TableRow: FC<IRow<any>> = ({
   handleDrop,
   options,
   onChangeCell,
-  onClick,
-  onFocus,
+  onClick = (rowDom) => {},
+  onFocus = (rowDom) => {},
 }) => {
   const tableRowRef = useRef<HTMLTableRowElement>(null);
   const onChange = (ck: string, cv: any, e: any) => {

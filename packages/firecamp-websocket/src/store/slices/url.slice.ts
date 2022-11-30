@@ -11,7 +11,8 @@ const getPathFromUrl = (url: string) => {
 
 const createUrlSlice = (set, get): IUrlSlice => ({
   changeUrl: (urlObj: IUrl) => {
-    const url = { raw: getPathFromUrl(urlObj.raw) };
+    const state = get();
+    const url = { ...state.request.url, raw: getPathFromUrl(urlObj.raw) };
 
     set((s) => {
       const { activePlayground } = s.runtime;
@@ -28,7 +29,7 @@ const createUrlSlice = (set, get): IUrlSlice => ({
       };
     });
 
-    // state.prepareUrlPushAction(lastUrl, updatedUrl);
+    console.log(state.equalityChecker(urlObj, 'url'));
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
     const state = get();
@@ -49,10 +50,6 @@ const createUrlSlice = (set, get): IUrlSlice => ({
       },
     }));
 
-    // Prepare push action for url
-    state.prepareUrlPushAction(state.last?.request.url, {
-      queryParams,
-    });
   },
 });
 
