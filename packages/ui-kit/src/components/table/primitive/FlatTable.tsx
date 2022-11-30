@@ -78,10 +78,14 @@ const FlatTable: FC<ITable<any>> = ({
   useEffect(() => {
     if (!containerDivRef.current) return () => {};
     const resizeObserver = new ResizeObserver(() => {
-      setContainerWidth(containerDivRef.current?.clientWidth);
+      if (containerDivRef?.current)
+        setContainerWidth(containerDivRef.current?.clientWidth);
     });
     resizeObserver.observe(containerDivRef.current);
-    return () => resizeObserver.disconnect();
+    return () => {
+      if (containerDivRef?.current) containerDivRef.current = null;
+      return resizeObserver.disconnect();
+    };
   }, [containerDivRef.current]);
 
   useEffect(() => {
@@ -248,10 +252,10 @@ const FlatTable: FC<ITable<any>> = ({
                 classes={{ tr: classes.tr, td: classes.td }}
                 columns={columns}
                 index={i}
+                key={i}
                 row={row}
                 tableApi={tableApi}
                 renderCell={renderCell}
-                key={row.id}
                 handleDrag={handleDrag}
                 handleDrop={handleDrop}
                 options={options}

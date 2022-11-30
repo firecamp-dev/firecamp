@@ -90,6 +90,7 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
 
       initialise: async (request: Partial<IWebSocket>) => {
         const initState = initialiseStoreFromRequest(request);
+        // console.log(initState.request, 'initState.request');
         set((s) => ({
           ...s,
           ...initState,

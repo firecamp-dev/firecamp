@@ -88,7 +88,7 @@ const TBody: FC<TTBody> = ({ className = '', children, style = {} }) => {
 
 const Tr: FC<TTr> = ({
   className = '',
-  onClick,
+  onClick = (rowDom) => {},
   onFocus,
   children,
   style = {},

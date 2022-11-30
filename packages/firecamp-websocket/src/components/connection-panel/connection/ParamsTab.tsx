@@ -11,9 +11,7 @@ const ParamsTab = ({
       rows={params || []}
       debounce={100}
       title={'params'}
-      onChange={(data) => {
-        onUpdate(data);
-      }}
+      onChange={onUpdate}
     />
   );
 };
