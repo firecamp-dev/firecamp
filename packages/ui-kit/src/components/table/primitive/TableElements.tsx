@@ -22,8 +22,8 @@ const TableRow: FC<IRow<any>> = ({
   handleDrop,
   options,
   onChangeCell,
-  onClick,
-  onFocus,
+  onClick = (rowDom) => {},
+  onFocus = (rowDom) => {},
 }) => {
   const tableRowRef = useRef<HTMLTableRowElement>(null);
   const onChange = (ck: string, cv: any, e: any) => {
@@ -88,7 +88,7 @@ const TBody: FC<TTBody> = ({ className = '', children, style = {} }) => {
 
 const Tr: FC<TTr> = ({
   className = '',
-  onClick,
+  onClick = (rowDom) => {},
   onFocus,
   children,
   style = {},

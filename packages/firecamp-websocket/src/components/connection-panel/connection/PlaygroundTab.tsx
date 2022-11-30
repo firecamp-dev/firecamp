@@ -120,7 +120,7 @@ const PlaygroundTab = () => {
     shallow
   );
 
-  console.log(playground, 'playground..')
+  // console.log(playground, 'playground..');
 
   const [selectedMessageId] = useState('');
 
@@ -141,7 +141,7 @@ const PlaygroundTab = () => {
     [activePlayground, playgroundTabs]
   );
 
-  console.log(activePlayground, message, 4569564);
+  // console.log(activePlayground, message, 4569564);
 
   if (!activePlayground || !message.__meta) {
     return <span />;

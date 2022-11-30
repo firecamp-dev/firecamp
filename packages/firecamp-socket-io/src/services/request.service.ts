@@ -19,6 +19,10 @@ import { EConnectionState } from '../types';
 
 // import { IUiRequestPanel } from '../store/slices';
 
+const getPathFromUrl = (url: string) => {
+  return url.split(/[?#]/)[0];
+};
+
 // export const prepareUIRequestPanelState = (
 //   request: Partial<IWebSocket>
 // ): IUiRequestPanel => {
@@ -29,7 +33,9 @@ import { EConnectionState } from '../types';
 /** normalize the socket.io request */
 export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   const _nr: ISocketIO = {
-    url: { raw: '' },
+    //ws url will only have { raw: ""} but in ui we need actual url object IUrl
+    //@ts-ignore
+    url: { raw: '', queryParams: [], pathParams: [] },
     config: {
       rejectUnauthorized: false,
       timeout: 20000,
@@ -58,7 +64,10 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   } = request;
 
   //normalize url
-  _nr.url = !_object.isEmpty(url) ? url : { raw: '' };
+  //normalize url
+  if (url?.raw) {
+    _nr.url.raw = getPathFromUrl(url.raw);
+  }
 
   // normalize __meta
   _nr.__meta.name = __meta.name || 'Untitled Request';

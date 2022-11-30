@@ -91,7 +91,7 @@ const BasicTable = ({
         // );
         return (
           <SingleLineEditor
-            // path={`${rowIndex}_${column.id}`}
+            path={`${row.id}_${column.id}`}
             language={'ife-header-key'}
             className="without-border px-2"
             style={{
