@@ -609,6 +609,7 @@ video {
     --app-foreground-active: #fff;
     --app-foreground-inactive: #777777;
     --app-primary: #D48332;
+    --app-primary-with-opacity: #d483328a;
     --app-secondary: #3c3c3c;
     --app-border: #414141;
     --app-focus: #5E8FED;
@@ -1267,8 +1268,8 @@ video {
 .w-80 {
 	width: 20rem;
 }
-.w-40 {
-	width: 10rem;
+.w-32 {
+	width: 8rem;
 }
 .w-auto {
 	width: auto;
@@ -1278,6 +1279,9 @@ video {
 }
 .\!min-w-full {
 	min-width: 100% !important;
+}
+.min-w-full {
+	min-width: 100%;
 }
 .max-w-sm {
 	max-width: 24rem;
@@ -2288,6 +2292,9 @@ video {
 .hover\:\!bg-focus2:hover {
 	background-color: var(--focus-level-2) !important;
 }
+.hover\:\!bg-focus1:hover {
+	background-color: var(--focus-level-1) !important;
+}
 .hover\:bg-inputFocusBackground:hover {
 	background-color: var(--inputFocus-background);
 }
@@ -2322,6 +2329,9 @@ video {
 .hover\:after\:bg-focusBorder:hover::after {
 	content: "";
 	background-color: var(--focus-border);
+}
+.focus\:\!bg-primaryColorOpacity:focus {
+	background-color: var(--app-primary-with-opacity) !important;
 }
 .focus\:bg-inputFocusBackground:focus {
 	background-color: var(--inputFocus-background);
@@ -2397,6 +2407,9 @@ input:focus,input:focus-visible
 textarea:focus,textarea:focus-visible{
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
+}
+tr:focus-visible{
+  box-shadow: none !important;
 }
 .focus-outer:focus{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
@@ -2650,7 +2663,7 @@ textarea:focus,textarea:focus-visible{
   transform: rotate(180deg);
 }
 .fc-btn-collapse.v2 {
-  left: 0px;
+  left: -1px;
   min-height: 32px !important;
 }
 .fc-collapsed{

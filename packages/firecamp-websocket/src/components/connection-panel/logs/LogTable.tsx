@@ -238,25 +238,16 @@ const LogTable = () => {
           </TabHeader.Right>
         </TabHeader>
       </Container.Header>
-      <Container.Body overflow="hidden">
-        <Resizable
-          bottom={true}
-          height="100%"
-          width="100%"
-          maxHeight={500}
-          minHeight={100}
-          onResizeStop={_onResizeStop}
-          className="bg-focus-3"
-        >
-          <Column flex={1} overflow="auto">
-            <LTable
+      <Container.Body overflow="hidden" className="flex flex-col">
+      <LTable
               classes={{
                 table: 'text-sm !m-0 !border-0 !w-full',
-                td: 'px-2 py-2 whitespace-nowrap first:border-t-0 truncate',
+                td: 'px-2 py-2 whitespace-nowrap first:border-t-0 truncate first:border-l-0 ',
+                th: 'first:border-l-0',
                 thead: 'sticky top-0 !bg-appBackground2 z-10',
                 container: 'h-full !overflow-y-auto -mt-px visible-scrollbar',
-                theadTr: '!bg-focus2',
-                tr: 'focus:bg-appForegroundInActive active:bg-appForegroundInActive',
+                theadTr: '!bg-focus2 !border-0',
+                tr: 'hover:!bg-focus1 focus:!bg-primaryColorOpacity  !border-0',
               }}
               rows={[]}
               onChange={(rows) => {
@@ -267,7 +258,6 @@ const LogTable = () => {
                 console.log(tApi);
               }}
             />
-
             {/* <ReactTable
               key={activePlayground}
               virtualListHeight={tableHeight} //  40 is an estimated height of table header
@@ -277,9 +267,19 @@ const LogTable = () => {
               }}
               onRowClick={_onRowClick}
             /> */}
-          </Column>
-        </Resizable>
+      <Resizable
+          top={true}
+          height="100px"
+          width="100%"
+          maxHeight={400}
+          minHeight={100}
+          onResizeStop={_onResizeStop}
+          className="bg-focus-3"
+        >
         <LogPreview activePlayground={activePlayground} row={selectedRow} />
+            </Resizable>
+     
+        
       </Container.Body>
     </Container>
   );
@@ -302,10 +302,9 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
 
   return (
     <Column
-      flex={1}
       minHeight={100}
-      height="100%"
       className="bg-appBackground2"
+      height={"100%"}
     >
       <Container className="bg-focus2">
         <Container.Header className="bg-focus2">

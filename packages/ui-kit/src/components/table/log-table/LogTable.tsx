@@ -61,10 +61,10 @@ const LogTable = ({
         return __meta.event;
       case 'message':
         if (__meta.type == 'sys') {
-          return <span className="w-40" dangerouslySetInnerHTML={{ __html: title }} />;
+          return <span className="w-32 min-w-full block truncate" dangerouslySetInnerHTML={{ __html: title }} />;
         } else {
           return (
-            <div className="w-40">
+            <div className="w-32 min-w-full block truncate">
               {__meta.type !== 'file'
                 ? message.body || ''
                 : message.name || 'Sending File'}
