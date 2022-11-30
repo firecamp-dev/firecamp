@@ -10,7 +10,6 @@ import {
   ScriptsTabs,
 } from '@firecamp/ui-kit';
 
-
 import { ERequestPanelTabs } from '../../types';
 import BodyTab from './tabs/BodyTab';
 import HeadersTab from './tabs/HeadersTab';
@@ -26,7 +25,7 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
   const {
     // headers,
     scripts,
-    __meta: { inheritScripts },
+    __meta: { inheritScripts } = { inheritScripts: {} },
     requestPanel,
     changeScripts,
 
@@ -91,7 +90,7 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
     inherit: boolean
   ): Promise<any> => {
     changeMeta({
-      inherit_scripts: {
+      inheritScripts: {
         ...inheritScripts,
         [type]: inherit,
       },
@@ -127,7 +126,7 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
             onClickInherit={_onSelectInheritScript}
             openParentScriptsModal={openParentScriptsModal}
             inheritScriptMessage={
-              tab?.meta?.isSaved ? '' : 'Please save request first'
+              tab?.__meta?.isSaved ? '' : 'Please save request first'
             }
             inheritScript={inheritScripts || {}}
           />

@@ -18,15 +18,15 @@ export default (credentials: IAuthAws4, extra: IExtra): object => {
     secretAccessKey: credentials.secret_key,
   });
 
-  const auth_headers = credentials['headers'];
+  const authHeaders = credentials['headers'];
 
-  if (!Array.isArray(auth_headers)) {
+  if (!Array.isArray(authHeaders)) {
     // Convert header value into string if type is not string
-    for (const header in auth_headers) {
-      if (typeof auth_headers[header] !== 'string')
-        auth_headers[header] = String(auth_headers[header]);
+    for (const header in authHeaders) {
+      if (typeof authHeaders[header] !== 'string')
+        authHeaders[header] = String(authHeaders[header]);
     }
   }
 
-  return auth_headers;
+  return authHeaders;
 };

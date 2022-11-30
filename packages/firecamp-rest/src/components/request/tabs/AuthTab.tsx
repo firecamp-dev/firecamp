@@ -11,11 +11,11 @@ const AuthTab = () => {
   let { ctx_resetAuthHeaders, ctx_updateAuthValue, ctx_updateActiveAuth } =
     useContext(RestContext);
 
-  let { auth, active_auth_type, oauth2_last_fetched_token } = useRestStore(
+  let { auth, activeAuthType, oauth2LastFetchedToken } = useRestStore(
     (s: IRestStore) => ({
       auth: s.request.auth,
-      active_auth_type: s.request.meta.active_auth_type,
-      oauth2_last_fetched_token: s.runtime.oauth2_last_fetched_token,
+      activeAuthType: s.request.__meta.activeAuthType,
+      oauth2LastFetchedToken: s.runtime.oauth2LastFetchedToken,
 
       changeAuth: s.changeAuth,
     }),
@@ -59,7 +59,7 @@ const AuthTab = () => {
   return (
     <AuthSetting
       auth={auth}
-      activeAuth={active_auth_type}
+      activeAuth={activeAuthType}
       onChangeAuth={ctx_updateAuthValue}
       onChangeActiveAuth={ctx_updateActiveAuth}
       onChangeOAuth2Value={_updateOAuth2}
@@ -67,9 +67,9 @@ const AuthTab = () => {
       fetchInheritedAuth={_onSelectInheritAuth}
       openParentAuthModal={_openParentAuthModal}
       // inheritAuthMessage={
-      //   ctx_tabData?.meta?.isSaved ? '' : 'Please save request first'
+      //   ctx_tabData?request.__meta?.isSaved ? '' : 'Please save request first'
       // }
-      oauth2LastToken={oauth2_last_fetched_token || ''}
+      oauth2LastToken={oauth2LastFetchedToken || ''}
     />
   );
 };

@@ -50,16 +50,16 @@ export default (request: IRest): Request => {
 
   // transform request query params
   harRequest.queryString = transformKeyValueTable(
-    request?.url?.query_params as IKeyValueTableWithID[]
+    request?.url?.queryParams as IKeyValueTableWithID[]
   );
 
   // transform request body
   if (
     !_object.isEmpty(request.body) &&
-    Object.values(ERestBodyTypes).includes(request?.meta?.active_body_type) &&
-    request.meta.active_body_type !== ERestBodyTypes.NoBody
+    Object.values(ERestBodyTypes).includes(request?.meta?.activeBodyType) &&
+    request.__meta.activeBodyType !== ERestBodyTypes.NoBody
   ) {
-    switch (request.meta.active_body_type) {
+    switch (request.__meta.activeBodyType) {
       case ERestBodyTypes.FormData:
         harRequest.postData = {
           mimeType: ERestBodyTypes.FormData,
@@ -130,7 +130,7 @@ export default (request: IRest): Request => {
   // parse path params from the URL string
   harRequest.url = _url.replacePathParams(
     harRequest.url,
-    request?.url?.path_params
+    request?.url?.pathParams
   );
 
   // add protocol if not exist

@@ -44,10 +44,10 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
 
     // Update raw URL into state
     url.raw = raw;
-    url.query_params = queryParams;
+    url.queryParams = queryParams;
 
     let updatedUiRequestPanel = prepareUIRequestPanelState({
-      url: { query_params: queryParams, raw: existingURL.raw },
+      url: { queryParams: queryParams, raw: existingURL.raw },
     });
     // console.log({ updated_query_params_url: url });
 
@@ -73,11 +73,11 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
     let existingURL = get().request.url;
     let url = _cloneDeep({
       ...existingURL,
-      path_params: pathParams,
+      pathParams: pathParams,
     });
 
     let updatedUiRequestPanel = prepareUIRequestPanelState({
-      url: { path_params: pathParams, raw: existingURL.raw },
+      url: { pathParams: pathParams, raw: existingURL.raw },
     });
 
     set((s) => ({
@@ -97,7 +97,7 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
 
     // Prepare commit action for url
     get()?.prepareUrlPushAction(get()?.last?.request.url, {
-      path_params: pathParams,
+      pathParams: pathParams,
     });
   },
 });

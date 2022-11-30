@@ -40,7 +40,7 @@ const BodyTab: FC<any> = () => {
   let restStoreApi = useRestStoreApi();
 
   let {
-    active_body_type,
+    activeBodyType,
     body,
 
     changeMeta,
@@ -48,7 +48,7 @@ const BodyTab: FC<any> = () => {
     changeHeaders,
   } = useRestStore(
     (s: any) => ({
-      active_body_type: s.request.meta.active_body_type,
+      activeBodyType: s.request.__meta.activeBodyType,
 
       body: s.request.body,
 
@@ -61,11 +61,11 @@ const BodyTab: FC<any> = () => {
 
   //when user elect the body type from the dropdown, follow these
   // 1. change the DropDown state/model
-  // 2. set active_body_type to specific/current body's meta
+  // 2. set activeBodyType to specific/current body's meta
   let _selectBodyType = (selectedType: any) => {
-    if (active_body_type == selectedType.id) return;
+    if (activeBodyType == selectedType.id) return;
 
-    changeMeta({ active_body_type: selectedType.id });
+    changeMeta({ activeBodyType: selectedType.id });
     _updateHeadersByBodyType(selectedType.id);
   };
 
@@ -148,15 +148,15 @@ const BodyTab: FC<any> = () => {
   };
 
   let _renderBodyTab = () => {
-    if (active_body_type) {
-      switch (active_body_type) {
+    if (activeBodyType) {
+      switch (activeBodyType) {
         case ERestBodyTypes.NoBody:
           return <NoBodyTab selectBodyType={_selectBodyType} />;
         case ERestBodyTypes.FormData:
           return (
             <MultipartTable
-              onChange={(value) => _changeBodyValue(active_body_type, value)}
-              rows={body[active_body_type] ? body[active_body_type].value : []}
+              onChange={(value) => _changeBodyValue(activeBodyType, value)}
+              rows={body[activeBodyType] ? body[activeBodyType].value : []}
             />
           );
           break;
@@ -164,8 +164,8 @@ const BodyTab: FC<any> = () => {
           return (
             <BasicTable
               title=""
-              onChange={(value) => _changeBodyValue(active_body_type, value)}
-              rows={body[active_body_type]?.value || []}
+              onChange={(value) => _changeBodyValue(activeBodyType, value)}
+              rows={body[activeBodyType]?.value || []}
             />
           );
           break;
@@ -176,12 +176,12 @@ const BodyTab: FC<any> = () => {
           return (
             <Editor
               autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
-              value={body?.[active_body_type]?.value}
+              value={body?.[activeBodyType]?.value}
               language={
-                bodyTypeNames[active_body_type]?.toLowerCase() || 'json'
+                bodyTypeNames[activeBodyType]?.toLowerCase() || 'json'
               } //json//xml
               onChange={({ target: { value } }) =>
-                _changeBodyValue(active_body_type, value)
+                _changeBodyValue(activeBodyType, value)
               }
               controlsConfig={{ show: true }}
             />
@@ -190,7 +190,7 @@ const BodyTab: FC<any> = () => {
         case ERestBodyTypes.Binary:
           return (
             <BinaryBody
-              body={body?.[active_body_type] || {}}
+              body={body?.[activeBodyType] || {}}
               onChange={_changeBodyValue}
             />
           );
@@ -198,7 +198,7 @@ const BodyTab: FC<any> = () => {
         case ERestBodyTypes.GraphQL:
           return (
             <GraphQLBody
-              body={body?.[active_body_type] || {}}
+              body={body?.[activeBodyType] || {}}
               onChange={_changeBodyValue}
             />
           );
@@ -220,7 +220,7 @@ const BodyTab: FC<any> = () => {
         <StatusBar className="fc-statusbar">
           <StatusBar.PrimaryRegion>
             <BodyTypeDropDown
-              selectedOption={bodyTypeNames[active_body_type]}
+              selectedOption={bodyTypeNames[activeBodyType]}
               onSelect={(selected) => _selectBodyType(selected)}
               fetchOptions={() => _preparERestBodyTypesOptions()}
             />

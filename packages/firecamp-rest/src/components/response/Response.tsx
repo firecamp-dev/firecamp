@@ -7,7 +7,7 @@ import { useRestStore, IRestStore } from '../../store';
 const Response: FC<any> = () => {
   let { requestId, response, isRequestRunning } = useRestStore(
     (s: IRestStore) => ({
-      requestId: s.request._meta.id,
+      requestId: s.request.__ref?.id,
       response: s.response,
       isRequestRunning: s.runtime.isRequestRunning,
     }),

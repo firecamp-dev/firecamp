@@ -62,8 +62,8 @@ interface IPushPayload extends Partial<IRest> {
     item_id: TId;
     item_type: 'R';
     request_type: ERequestTypes.Rest;
-    collection_id: TId;
-    workspace_id: TId;
+    collectionId: TId;
+    workspaceId: TId;
     keys: IPushAction;
   };
 }
@@ -250,12 +250,12 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
     pushPayload = { ...requestToPush };
     pushPayload._action = {
       type: EPushActionType.Insert,
-      item_id: request._meta.id,
+      item_id: request.__meta.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.Rest,
-      collection_id: '',
+      collectionId: '',
       keys: {},
-      workspace_id: '',
+      workspaceId: '',
     };
     return Promise.resolve(pushPayload);
   },
@@ -293,20 +293,20 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
     pushPayload = { ...requestToPush };
 
-    pushPayload._meta = {
-      ...pushPayload._meta,
-      id: request._meta.id,
-      collection_id: request._meta.collection_id,
-      folder_id: request._meta.folder_id || '',
+    pushPayload.__meta = {
+      ...pushPayload.__meta,
+      id: request.__meta.id,
+      collectionId: request.__meta.collectionId,
+      folderId: request.__meta.folderId || '',
     };
 
     pushPayload._action = {
       type: EPushActionType.Update,
-      item_id: request._meta.id,
+      item_id: request.__meta.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.Rest,
-      collection_id: request._meta.collection_id,
-      workspace_id: '',
+      collectionId: request.__meta.collectionId,
+      workspaceId: '',
       keys: pushAction,
     };
     // console.log({ updatedRequest });
@@ -339,7 +339,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
         case 'meta':
           pushAction['meta'] = PushActionService.prepareMetaPushAction(
             lastRequest.meta,
-            request.meta
+            request.__meta
             // get().pushAction?.meta
           );
 
@@ -348,9 +348,9 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
         // handle _meta
         /* case '_meta':
           pushAction['_meta'] = PushActionService.prepare_MetaPushAction(
-            lastRequest._meta,
-            request._meta
-            // get().pushAction?._meta
+            lastRequest.__meta,
+            request.__meta
+            // get().pushAction?.__meta
           );
           break; */
 

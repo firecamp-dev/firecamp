@@ -1,6 +1,4 @@
 import { memo, useEffect } from 'react';
-
-import { nanoid as id } from 'nanoid';
 import _url from '@firecamp/url';
 import { Container, Row, Loader } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
@@ -9,22 +7,14 @@ import _cleanDeep from 'clean-deep';
 import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
 import {
   EAuthTypes,
-  ERestBodyTypes,
-  EHttpMethod,
   EPushActionType,
-  ERequestTypes,
   IRest,
 } from '@firecamp/types';
-
 import shallow from 'zustand/shallow';
-
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
 import CodeSnippets from './common/code-snippets/CodeSnippets';
-
-import { configState, bodyState } from '../constants';
-import { ERequestPanelTabs, IRestClientRequest } from '../types';
 import { RestContext } from './Rest.context';
 
 import {
@@ -32,17 +22,15 @@ import {
   RestStoreProvider,
   createRestStore,
   useRestStoreApi,
-  IPushAction,
   IPushPayload,
-  emptyPushAction,
   IRestStore,
 } from '../store';
 
 import { _misc, _object, _table, _auth } from '@firecamp/utils';
 import {
   getAuthHeaders,
+  initialiseStoreFromRequest,
   normalizeRequest,
-  prepareUIRequestPanelState,
 } from '../services/rest-service';
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
@@ -106,7 +94,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
             workspace: activeEnvironments.workspace,
             collection: activeEnvironments.collection || '',
           },
-          collectionId: tab?.request?._meta?.collection_id || '',
+          collectionId: tab?.request?.__meta?.collectionId || '',
         });
       }
 
@@ -127,17 +115,17 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
    */
   useEffect(() => {
     // subscribe request updates
-    if (tab.meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.meta.isSaved && tab?.request?.__meta?.id) {
       platformContext.request.subscribeChanges(
-        tab.request._meta.id,
+        tab.request.__meta.id,
         handlePull
       );
     }
 
     // unsubscribe request updates
     return () => {
-      if (tab.meta.isSaved && tab?.request?._meta.id) {
-        platformContext.request.unsubscribeChanges(tab.request._meta.id);
+      if (tab.meta.isSaved && tab?.request?.__meta.id) {
+        platformContext.request.unsubscribeChanges(tab.request.__meta.id);
       }
     };
   }, []);
@@ -183,7 +171,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialiseRequest(updatedRequest, true, pushAction, true, false);
+      // initialiseRequest(updatedRequest, true, pushAction, true, false);
     } catch (error) {
       console.error({
         API: 'rest.handlePull',
@@ -195,23 +183,15 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
-        const isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalize: IRest = {
-          method: EHttpMethod.GET,
-          __meta: {
-            name: '',
-            version: '2.0.0',
-            type: ERequestTypes.Rest,
-            activeBodyType: ERestBodyTypes.NoBody,
-          },
-          __ref: { id: '', collectionId: '' },
-        };
+        const isRequestSaved = !!tab?.request?.__meta?.id || false;
+        // prepare a minimal request payload
+        const requestToNormalize: IRest = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
             const response = await platformContext.request.onFetch(
-              tab.request._meta.id
+              tab.request.__meta.id
             );
             requestToNormalize = response.data;
           } catch (error) {
@@ -223,13 +203,11 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           }
         }
 
-        initialiseRequest(
-          requestToNormalize,
-          isRequestSaved,
-          _cloneDeep(emptyPushAction),
-          false,
-          true
-        );
+        /** initialise ws store on tab load */
+        initialise(requestToNormalize);
+        setIsFetchingReqFlag(false);
+        // Update auth type, generate auth headers
+        updateActiveAuth(requestToNormalize.__meta.activeAuthType);
       } catch (error) {
         console.error({
           API: 'fetch and normalize rest request',
@@ -241,49 +219,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     };
     _fetchRequest();
   }, []);
-
-  /**
-   * initialiseRequest: normalize request and initialise in store on tab load and manage pull
-   */
-  const initialiseRequest = async (
-    requestToNormalize: IRest,
-    isRequestSaved: boolean,
-    pushAction?: IPushAction,
-    hasPull?: boolean,
-    isFresh?: boolean
-  ) => {
-    let request: IRestClientRequest = normalizeRequest(
-      requestToNormalize,
-      isRequestSaved
-    );
-
-    let requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
-    // console.log({ request });
-    let uiActiveTab = hasPull
-      ? restStoreApi.getState().ui?.requestPanel?.activeTab ||
-        ERequestPanelTabs.Body
-      : ERequestPanelTabs.Body;
-
-    initialise(
-      {
-        request,
-        ui: {
-          ...restStoreApi.getState().ui,
-          requestPanel: {
-            ...requestPanel,
-            activeTab: uiActiveTab,
-          },
-        },
-        pushAction: pushAction
-          ? pushAction
-          : restStoreApi.getState().pushAction,
-      },
-      isFresh
-    );
-    setIsFetchingReqFlag(false);
-    // Update auth type, generate auth headers
-    updateActiveAuth(request.__meta.activeAuthType);
-  };
 
   const resetAuthHeaders = async (authType: EAuthTypes) => {
     try {
@@ -387,7 +322,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       let curlRequest = new CurlToFirecamp(curl?.trim() || '').transform();
       console.log({ curlRequest });
 
-      initialiseRequest(curlRequest, false, emptyPushAction, false, true);
+      // initialiseRequest(curlRequest, false, emptyPushAction, false, true);
     } catch (error) {
       console.error({
         API: 'Rest _onPasteCurl',
@@ -442,7 +377,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       <Container className="h-full with-divider" overflow="visible">
         <UrlBarContainer
           tab={tab}
-          collectionId={tab?.request?._meta?.collection_id || ''}
+          collectionId={tab?.request?.__meta?.collectionId || ''}
           postComponents={platformComponents}
           onSaveRequest={onSave}
           platformContext={platformContext}
@@ -477,65 +412,10 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    let { request = {} } = tab;
-    // console.log({ request });
-
-    let initReqPayload: any = {
-      request: {
-        url: request.url || {
-          raw: '' /*  'https://jsonplaceholder.typicode.com/todos/1' */,
-        },
-        method: request?.method || EHttpMethod.GET,
-        headers: request?.headers || [],
-        config: request.config || configState,
-        scripts: {
-          pre: '',
-          post: '',
-          test: '',
-        },
-        meta: request.meta || {
-          active_body_type: ERestBodyTypes.NoBody,
-          activeAuthType: EAuthTypes.Inherit,
-          inherit_scripts: {
-            pre: true,
-            post: true,
-            test: true,
-          },
-        },
-        body: bodyState,
-        auth: request.auth || _cloneDeep(_auth.defaultAuthState),
-        _meta: {
-          id: id(),
-        },
-      },
-      ui: {
-        isFetchingRequest: false,
-        isCodeSnippetOpen: false,
-        requestPanel: {
-          activeTab: ERequestPanelTabs.Body,
-        },
-      },
-      runtime: {
-        auth_headers: [],
-        inherit: {
-          auth: {
-            active: '',
-            payload: {},
-            oauth2_last_fetched_token: '',
-          },
-          script: {
-            pre: '',
-            post: '',
-            test: '',
-          },
-        },
-        isRequestSaved: tab?.meta?.isSaved,
-        oauth2_last_fetched_token: '',
-      },
-    };
-
+    const { request = {} } = tab;
+    const initState = initialiseStoreFromRequest(request);
     return (
-      <RestStoreProvider createStore={() => createRestStore(initReqPayload)}>
+      <RestStoreProvider createStore={() => createRestStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
       </RestStoreProvider>
     );

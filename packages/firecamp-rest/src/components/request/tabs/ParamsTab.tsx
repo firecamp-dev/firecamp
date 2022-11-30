@@ -12,11 +12,11 @@ import { useRestStore } from '../../../store';
 
 const ParamsTab = () => {
   const tableApi = useRef<TTableApi>();
-  const { query_params, path_params, changeQueryParams, changePathParams } =
+  const { queryParams, pathParams, changeQueryParams, changePathParams } =
     useRestStore(
       (s: any) => ({
-        query_params: s.request.url?.query_params || [],
-        path_params: s.request.url?.path_params || [],
+        queryParams: s.request.url?.queryParams || [],
+        pathParams: s.request.url?.pathParams || [],
         changeQueryParams: s.changeQueryParams,
         changePathParams: s.changePathParams,
       }),
@@ -25,9 +25,9 @@ const ParamsTab = () => {
 
   // useEffect(() => {
   // const tRows = tableApi.current.getRows();
-  // console.log(tRows, query_params, tRows == query_params, ' query_params...');
-  // tableApi.current.initialize(query_params);
-  // }, [query_params]);
+  // console.log(tRows, queryParams, tRows == queryParams, ' queryParams...');
+  // tableApi.current.initialize(queryParams);
+  // }, [queryParams]);
 
   return (
     <Container>
@@ -35,17 +35,17 @@ const ParamsTab = () => {
         <BulkEditTable
           key={'queryParams'}
           title="Query params"
-          rows={query_params || []}
+          rows={queryParams || []}
           onChange={(data) => {
             // console.log({ data });
             changeQueryParams(data);
           }}
           onMount={(tApi) => (tableApi.current = tApi)}
         />
-        {!_array.isEmpty(path_params) ? (
+        {!_array.isEmpty(pathParams) ? (
           <div className="pt-14">
             <BasicTable
-              rows={path_params || []}
+              rows={pathParams || []}
               key={'pathParams'}
               title="Path params"
               options={{
@@ -65,7 +65,7 @@ const ParamsTab = () => {
                 changePathParams(data);
               }}
               key={'pathParams'}
-              rows={path_params || []}
+              rows={pathParams || []}
               title="Path params"
               options={{
                 disabledColumns: ['key', 'disable'],

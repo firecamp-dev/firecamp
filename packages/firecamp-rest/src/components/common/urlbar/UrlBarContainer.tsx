@@ -1,9 +1,8 @@
-import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
-
+import shallow from 'zustand/shallow';
+import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
-import shallow from 'zustand/shallow';
 
 import { IPushPayload, IRestStore, useRestStore } from '../../../store';
 
@@ -22,8 +21,8 @@ const UrlBarContainer = ({
   const {
     url,
     method,
-    meta,
-    _meta,
+    __meta = {},
+    __ref = {},
     activeEnvironments,
     isRequestRunning,
     isRequestSaved,
@@ -43,8 +42,8 @@ const UrlBarContainer = ({
     (s: IRestStore) => ({
       url: s.request.url,
       method: s.request.method,
-      meta: s.request.meta,
-      _meta: s.request._meta,
+      __meta: s.request.__meta,
+      __ref: s.request.__ref,
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestRunning: s.runtime.isRequestRunning,
       isRequestSaved: s.runtime.isRequestSaved,
@@ -62,9 +61,6 @@ const UrlBarContainer = ({
     }),
     shallow
   );
-  /* useEffect(()=>{console.log({url});
-},[url]) */
-  // console.log({ pushAction })
 
   const _handleUrlChange = (e: {
     preventDefault: () => void;
@@ -132,9 +128,8 @@ const UrlBarContainer = ({
       // Do not execute if url is empty
       if (!url.raw) return;
 
-      const envVariables = await platformContext.environment.getVariablesByTabId(
-        tab.id
-      );
+      const envVariables =
+        await platformContext.environment.getVariablesByTabId(tab.id);
       // console.log({ envVariables });
 
       const agent: EFirecampAgent = platformContext.getFirecampAgent();
@@ -165,14 +160,14 @@ const UrlBarContainer = ({
           }}
         />
       }
-      nodePath={meta.name}
+      nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {
         context.appService.modals.openEditRequest({
-          name: meta.name,
-          description: meta.description,
-          collection_id: _meta.collection_id,
-          request_id: _meta.id,
+          name: __meta.name,
+          description: __meta.description,
+          collectionId: __ref.collectionId,
+          requestId: __ref.id,
         });
       }}
     >
@@ -213,9 +208,9 @@ const UrlBarContainer = ({
         {/* <SavePopover                               
           onFirstTimeSave={_onSave}
           onSaveCallback={_onUpdate}
-          tabMeta={tab.meta}
+          tabMeta={tab.__meta}
           tabId={tab.id}
-          meta={{
+          __meta={{
             formTitle: 'Rest Request',
             namePlaceholder: 'Title',
             descPlaceholder: 'Description',

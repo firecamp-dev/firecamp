@@ -9,15 +9,15 @@ export enum EPushAction_rootKeys {
 export enum EPushActionMetaKeys {
   name = 'name',
   description = 'description',
-  active_body_type = 'active_body_type',
-  active_auth_type = 'active_auth_type',
-  inherit_scripts = 'inherit_scripts',
+  activeBodyType = 'activeBodyType',
+  activeAuthType = 'activeAuthType',
+  inheritScripts = 'inheritScripts',
 }
 
 export enum EPushActionUrlKeys {
   raw = 'raw',
-  query_params = 'query_params',
-  path_params = 'path_params',
+  queryParams = 'queryParams',
+  pathParams = 'pathParams',
 }
 
 export enum EPushActionScriptsKeys {
@@ -27,10 +27,10 @@ export enum EPushActionScriptsKeys {
 }
 
 export enum EPushAction_metaKeys {
-  collection_id = 'collection_id',
-  folder_id = 'folder_id',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  collectionId = 'collectionId',
+  folderId = 'folderId',
+  updatedAt = 'updatedAt',
+  updatedBy = 'updatedBy',
 }
 
 export enum ERequestPanelTabs {
@@ -43,10 +43,10 @@ export enum ERequestPanelTabs {
 }
 
 export enum ERestConfigKeys {
-  MaxRedirects = 'max_redirects',
-  FollowLocation = 'follow_location',
-  RejectUnauthorized = 'reject_unauthorized',
-  RequestTimeout = 'request_timeout',
+  MaxRedirects = 'maxRedirects',
+  FollowLocation = 'followLocation',
+  RejectUnauthorized = 'rejectUnauthorized',
+  RequestTimeout = 'requestTimeout',
 }
 
 export interface IRestClientRequest extends Omit<IRest, 'auth'> {

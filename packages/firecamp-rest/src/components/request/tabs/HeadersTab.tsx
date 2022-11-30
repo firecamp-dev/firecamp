@@ -6,10 +6,10 @@ import {  BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
 import { useRestStore } from '../../../store';
 
 const HeadersTab = () => {
-  let { headers, auth_headers, changeHeaders } = useRestStore(
+  let { headers, authHeaders, changeHeaders } = useRestStore(
     (s: any) => ({
       headers: s.request.headers,
-      auth_headers: s.runtime.auth_headers,
+      authHeaders: s.runtime.authHeaders,
       changeHeaders: s.changeHeaders,
     }),
     shallow
@@ -50,11 +50,11 @@ const HeadersTab = () => {
 
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
-          auth_headers && auth_headers.length ? (
+          authHeaders && authHeaders.length ? (
             <div className="pt-14">
               <BasicTable
-                key={'auth_headers'}
-                rows={auth_headers}
+                key={'authHeaders'}
+                rows={authHeaders}
                 title="Headers derived from auth"
                 disable={true}
                 options={{

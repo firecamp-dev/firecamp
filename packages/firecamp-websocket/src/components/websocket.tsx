@@ -198,7 +198,7 @@ const Websocket = ({
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
-        const isRequestSaved = !!tab?.request?._meta?.id || false;
+        const isRequestSaved = !!tab?.request?.__ref?.id || false;
         // prepare a minimal request payload
         let requestToNormalize: IWebSocket = normalizeRequest({});
 

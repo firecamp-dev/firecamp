@@ -82,7 +82,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
   changeHeaders: (headers: IHeader[]) => {
     // let updatedUiRequestPanel = prepareUIRequestPanelState({ headers });
 
-    let headersLength = get().runtime.auth_headers?.length + headers.length;
+    let headersLength = get().runtime.authHeaders?.length + headers.length;
     let updatedUiRequestPanel = {
       hasHeaders: headersLength ? true : false,
       headers: headersLength,
@@ -135,9 +135,9 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
     );
   },
   changeMeta: (meta) => {
-    let lastMeta = get()?.last?.request.meta;
+    let lastMeta = get()?.last?.request.__meta;
     let updatedMeta = {
-      ...(get()?.request.meta || {}),
+      ...(get()?.request.__meta || {}),
       ...meta,
     };
 
@@ -164,17 +164,17 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
     //todo: will create enum for pre,post,test
 
     let lastScripts = get()?.last?.request.scripts;
-    let udpatedScripts = {
+    let updatedScripts = {
       ...(get()?.request.scripts || {}),
       [scriptType]: value,
     };
     let updatedUiRequestPanel = prepareUIRequestPanelState({
-      scripts: udpatedScripts,
+      scripts: updatedScripts,
     });
 
     set((s) => ({
       ...s,
-      request: { ...s.request, scripts: udpatedScripts },
+      request: { ...s.request, scripts: updatedScripts },
       ui: {
         ...s.ui,
         requestPanel: {
@@ -185,7 +185,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
     }));
 
     // Prepare commit action for headers in scripts
-    get()?.prepareScriptsPushAction(lastScripts, udpatedScripts);
+    get()?.prepareScriptsPushAction(lastScripts, updatedScripts);
   },
 });
 
