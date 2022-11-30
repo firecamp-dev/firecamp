@@ -250,7 +250,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
     pushPayload = { ...requestToPush };
     pushPayload._action = {
       type: EPushActionType.Insert,
-      item_id: request.__meta.id,
+      item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.Rest,
       collectionId: '',
@@ -293,19 +293,19 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
     pushPayload = { ...requestToPush };
 
-    pushPayload.__meta = {
-      ...pushPayload.__meta,
-      id: request.__meta.id,
-      collectionId: request.__meta.collectionId,
-      folderId: request.__meta.folderId || '',
+    pushPayload.__ref = {
+      ...pushPayload.__ref,
+      id: request.__ref.id,
+      collectionId: request.__ref.collectionId,
+      folderId: request.__ref.folderId || '',
     };
 
     pushPayload._action = {
       type: EPushActionType.Update,
-      item_id: request.__meta.id,
+      item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.Rest,
-      collectionId: request.__meta.collectionId,
+      collectionId: request.__ref.collectionId,
       workspaceId: '',
       keys: pushAction,
     };
@@ -338,7 +338,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
         // handle meta
         case 'meta':
           pushAction['meta'] = PushActionService.prepareMetaPushAction(
-            lastRequest.meta,
+            lastRequest.__meta,
             request.__meta
             // get().pushAction?.meta
           );
@@ -347,10 +347,10 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
         // handle _meta
         /* case '_meta':
-          pushAction['_meta'] = PushActionService.prepare_MetaPushAction(
-            lastRequest.__meta,
-            request.__meta
-            // get().pushAction?.__meta
+          pushAction['_ref'] = PushActionService.prepare_MetaPushAction(
+            lastRequest.__ref,
+            request.__ref
+            // get().pushAction?.__ref
           );
           break; */
 

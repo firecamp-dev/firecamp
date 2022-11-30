@@ -142,7 +142,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
     };
 
     let updatedUiRequestPanel = prepareUIRequestPanelState({
-      meta: updatedMeta,
+      __meta: updatedMeta,
     });
 
     set((s) => ({
