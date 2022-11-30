@@ -14,10 +14,8 @@ const Url: FC<IUrl> = ({
 }) => {
   return (
     <Row className="fc-urlbar">
-      <Column flex={1} className="fc-urlbar-input">
-        <Row className="flex-col">
-          <Column overflow="visible">
-            <SingleLineEditor
+      <Column flex={1}>
+      <SingleLineEditor
               key={id}
               path={id}
               value={url}
@@ -35,8 +33,6 @@ const Url: FC<IUrl> = ({
               onEnter={onEnter}
               onPaste={onPaste}
             />
-          </Column>
-        </Row>
       </Column>
     </Row>
   );
