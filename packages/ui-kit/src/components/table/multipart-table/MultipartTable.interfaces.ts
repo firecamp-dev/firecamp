@@ -1,4 +1,5 @@
 import { IRowCellMeta } from '../basic-table/BasicTable.interfaces';
+import { ITableOptions, TTableApi } from '../primitive/table.interfaces';
 
 export enum ERowType {
   Text = 'text',
@@ -12,8 +13,18 @@ export interface IMultipartIFT {
   /** multipart table key to represent multipart value (Which key holds value). default key 'value' */
   multipartKey?: string;
 
-  /** update table data */
-  onChange: (updates: Array<IRowCellMeta>) => void;
+  /** */
+  name?: string;
+
+  /** table options */
+  options?: ITableOptions;
+
+  /** updated table values */
+  onChange: (updatedRows: Array<IRowCellMeta>) => void;
+
+  /** on mount table callback to expose table api */
+  onMount?: (tApi: TTableApi) => void;
+
 }
 
 export interface IMultiPartInput {
@@ -24,6 +35,9 @@ export interface IMultiPartInput {
 
   /** row value */
   value: string | number | boolean | object;
+
+    /** table options */
+  options?: ITableOptions;
 
   /** on change text input value*/
   onChange?: (evt: object) => void;

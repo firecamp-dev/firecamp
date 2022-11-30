@@ -110,6 +110,16 @@ describe("Table : ", () => {
     expect(initialRowId).toBe(updatedRowId);
   });
 
+
+  test('table add options : should add a new row on click action on "Add Row" button ', async () => {
+    mountTableComponent();
+    let initialMountedRow = await getRenderedTableRow();
+    let AddRowButton = screen.getByRole('button', { name: 'Add Row' });
+    click(AddRowButton);
+    let updatedMountedRow = await waitFor(() => getRenderedTableRow());
+    expect(updatedMountedRow).toHaveLength(initialMountedRow.length + 1);
+  });
+
   test('table options : allowSort to disable the row sorting ', async () => {
     mountDisableSortRowTableComponent()
     const tableRows = await getRenderedTableRow();

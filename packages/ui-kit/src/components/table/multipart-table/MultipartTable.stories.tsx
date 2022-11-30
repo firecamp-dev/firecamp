@@ -2,6 +2,7 @@ import { _array } from '@firecamp/utils';
 import { defaultData } from '../../../../__mocks__/testData';
 import MultipartTable from './MultipartTable';
 import { ITableRows, TTableApi } from '../primitive/table.interfaces';
+import { IMultipartIFT } from './MultipartTable.interfaces';
 
 export default {
   title: 'UI-Kit/Table/MultipartTable',
@@ -9,7 +10,7 @@ export default {
   argTypes: {},
 };
 
-const Template = ({...args}) => {
+const Template = ({...args}: IMultipartIFT) => {
   return (
     <MultipartTable
     {...args}

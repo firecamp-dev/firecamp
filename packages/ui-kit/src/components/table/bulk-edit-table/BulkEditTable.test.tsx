@@ -1,6 +1,6 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { WithTableOptions, TemplateWithRowChange } from "./BulkEditTable.stories";
+import { WithTableOptions } from "./BulkEditTable.stories";
 import { _array } from '@firecamp/utils';
 import ResizeObserver from "../../../../__mocks__/ResizeObserver";
 import { click } from "../../../../__mocks__/eventMock";
@@ -48,9 +48,23 @@ describe("Table : ", () => {
     // let editor = await screen.findAllByTestId('monaco-editor');
     // console.log(`editorWrapper`, editor)
 
+    // debug the elements rendered on the screen & validate the editor on the screen
+    // screen.debug();  
+    // await waitFor(() => {
+      // let editor = screen.queryByTestId('monaco-editor');
+      // console.log(`editorWrapper`, editor);
+      // expect(editor).toBeInTheDocument();
+    // })
+    
 
   });
 });
+
+// replace import in BulkEditTable to run this test
+// import { default as TabHeader } from '../../tab-header/TabHeader';
+// import { default as Button } from '../../buttons/Button';
+// import { default as BasicTable } from '../basic-table/BasicTable';
+// import { default as Editor } from '../../editors/monaco-v2/Editor';
 
 //@ts-nocheck
 //SingleLineEditor
