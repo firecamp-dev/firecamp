@@ -2779,6 +2779,10 @@ tr:focus-visible{
   width: 8px;
   height: 8px;
 }
+.visible-scrollbar.thick::-webkit-scrollbar{
+  width: 8px !important;
+  display: block !important;
+}
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }
