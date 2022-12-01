@@ -41,17 +41,16 @@ const BodyTab: FC<any> = () => {
 
   let {
     activeBodyType,
+    // request,
     body,
-
     changeMeta,
     changeBodyValue,
     changeHeaders,
   } = useRestStore(
     (s: any) => ({
-      activeBodyType: s.request.__meta.activeBodyType,
-
+      activeBodyType: s.request.__meta?.activeBodyType,
+      // request: s.request,
       body: s.request.body,
-
       changeMeta: s.changeMeta,
       changeBodyValue: s.changeBodyValue,
       changeHeaders: s.changeHeaders,
@@ -177,9 +176,7 @@ const BodyTab: FC<any> = () => {
             <Editor
               autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
               value={body?.[activeBodyType]?.value}
-              language={
-                bodyTypeNames[activeBodyType]?.toLowerCase() || 'json'
-              } //json//xml
+              language={bodyTypeNames[activeBodyType]?.toLowerCase() || 'json'} //json//xml
               onChange={({ target: { value } }) =>
                 _changeBodyValue(activeBodyType, value)
               }

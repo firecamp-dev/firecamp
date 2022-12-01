@@ -123,7 +123,7 @@ const Socket = ({
    */
   useEffect(() => {
     // subscribe request updates
-    if (tab.meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.__meta.isSaved && tab?.request?._meta?.id) {
       platformContext.request.subscribeChanges(
         tab.request._meta.id,
         handlePull
@@ -132,7 +132,7 @@ const Socket = ({
 
     // unsubscribe request updates
     return () => {
-      if (tab.meta.isSaved && tab?.request?._meta?.id) {
+      if (tab.__meta.isSaved && tab?.request?._meta?.id) {
         platformContext.request.unsubscribeChanges(tab.request._meta.id);
       }
     };

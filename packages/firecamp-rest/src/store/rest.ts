@@ -56,7 +56,7 @@ interface IRestStore
   last: any;
 
   setLast: (initialState: IRestStoreState) => void;
-  initialise: (initialState: IRest) => void;
+  initialise: (request: IRest) => void;
   context?: any;
   setContext: (ctx: any) => void;
   execute(
@@ -94,6 +94,7 @@ const createRestStore = (initialState: IRestStoreState) =>
 
       initialise: (request: Partial<IRest>) => {
         const initState = initialiseStoreFromRequest(request);
+        console.log(initState, 'initState');
         set((s) => ({
           ...s,
           ...initState,
