@@ -8,7 +8,7 @@ import ws from 'ws';
 import { _array, _string, _table } from '@firecamp/utils';
 
 import fetchCertificates from './ssl-manager';
-import { EClientOptions, EClientOptionsDefaultValues } from './constants';
+import { ClientOptions, EClientOptionsDefaultValues } from './constants';
 import { TExecutorOptions } from './executor.interface';
 
 export default class ConfigGenerator {
@@ -49,10 +49,10 @@ export default class ConfigGenerator {
 
   checkBooleanValues() {
     const keys = [
-      EClientOptions.reconnect,
-      EClientOptions.perMessageDeflate,
-      EClientOptions.rejectUnauthorized,
-      EClientOptions.followRedirects,
+      ClientOptions.reconnect,
+      ClientOptions.perMessageDeflate,
+      ClientOptions.rejectUnauthorized,
+      ClientOptions.followRedirects,
     ];
 
     keys.map((key) => {
@@ -67,9 +67,9 @@ export default class ConfigGenerator {
 
   checkStringValues() {
     const keys = [
-      EClientOptions.ca,
-      EClientOptions.origin,
-      EClientOptions.maxPayload,
+      ClientOptions.ca,
+      ClientOptions.origin,
+      ClientOptions.maxPayload,
     ];
 
     keys.map((key) => {
@@ -81,12 +81,12 @@ export default class ConfigGenerator {
 
   checkNumberValues() {
     const keys = [
-      EClientOptions.reconnectAttempts,
-      EClientOptions.reconnectTimeout,
-      EClientOptions.handshakeTimeout,
-      EClientOptions.maxRedirects,
-      EClientOptions.maxPayload,
-      EClientOptions.protocolVersion,
+      ClientOptions.reconnectAttempts,
+      ClientOptions.reconnectTimeout,
+      ClientOptions.handshakeTimeout,
+      ClientOptions.maxRedirects,
+      ClientOptions.maxPayload,
+      ClientOptions.protocolVersion,
     ];
 
     keys.map((key) => {
@@ -135,9 +135,7 @@ export default class ConfigGenerator {
     this.setPingInfo();
     this.setCACertificate();
     const normalizedUrl = _url.normalize(this.address, ['http', 'ws']);
-
-    console.log(normalizedUrl);
-
+    // console.log(normalizedUrl);
     return {
       address: normalizedUrl,
       protocols: this.config.protocols,

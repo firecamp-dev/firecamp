@@ -609,6 +609,7 @@ video {
     --app-foreground-active: #fff;
     --app-foreground-inactive: #777777;
     --app-primary: #D48332;
+    --app-primary-with-opacity: #d483328a;
     --app-secondary: #3c3c3c;
     --app-border: #414141;
     --app-focus: #5E8FED;
@@ -834,6 +835,9 @@ video {
 .relative {
 	position: relative;
 }
+.sticky {
+	position: sticky;
+}
 .-left-8 {
 	left: -2rem;
 }
@@ -1047,6 +1051,9 @@ video {
 .\!mt-0 {
 	margin-top: 0px !important;
 }
+.-mt-px {
+	margin-top: -1px;
+}
 .mt-0 {
 	margin-top: 0px;
 }
@@ -1255,11 +1262,14 @@ video {
 .w-screen {
 	width: 100vw;
 }
-.w-36 {
-	width: 9rem;
+.w-40 {
+	width: 10rem;
 }
 .w-80 {
 	width: 20rem;
+}
+.w-32 {
+	width: 8rem;
 }
 .w-auto {
 	width: auto;
@@ -1269,6 +1279,9 @@ video {
 }
 .\!min-w-full {
 	min-width: 100% !important;
+}
+.min-w-full {
+	min-width: 100%;
 }
 .max-w-sm {
 	max-width: 24rem;
@@ -1360,6 +1373,14 @@ video {
 }
 .overflow-visible {
 	overflow: visible;
+}
+.\!overflow-y-auto {
+	overflow-y: auto !important;
+}
+.truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .overflow-ellipsis {
 	text-overflow: ellipsis;
@@ -1585,6 +1606,9 @@ video {
 }
 .\!bg-transparent {
 	background-color: #ffffff00 !important;
+}
+.\!bg-appBackground2 {
+	background-color: var(--app-background-secondary) !important;
 }
 .bg-inputBackground {
 	background-color: var(--input-background);
@@ -2232,6 +2256,9 @@ video {
 .first\:mt-0:first-child {
 	margin-top: 0px;
 }
+.first\:border-t-0:first-child {
+	border-top-width: 0px;
+}
 .first\:border-l-0:first-child {
 	border-left-width: 0px;
 }
@@ -2264,6 +2291,9 @@ video {
 }
 .hover\:\!bg-focus2:hover {
 	background-color: var(--focus-level-2) !important;
+}
+.hover\:\!bg-focus1:hover {
+	background-color: var(--focus-level-1) !important;
 }
 .hover\:bg-inputFocusBackground:hover {
 	background-color: var(--inputFocus-background);
@@ -2299,6 +2329,9 @@ video {
 .hover\:after\:bg-focusBorder:hover::after {
 	content: "";
 	background-color: var(--focus-border);
+}
+.focus\:\!bg-primaryColorOpacity:focus {
+	background-color: var(--app-primary-with-opacity) !important;
 }
 .focus\:bg-inputFocusBackground:focus {
 	background-color: var(--inputFocus-background);
@@ -2374,6 +2407,9 @@ input:focus,input:focus-visible
 textarea:focus,textarea:focus-visible{
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
+}
+tr:focus-visible{
+  box-shadow: none !important;
 }
 .focus-outer:focus{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
@@ -2627,7 +2663,7 @@ textarea:focus,textarea:focus-visible{
   transform: rotate(180deg);
 }
 .fc-btn-collapse.v2 {
-  left: 0px;
+  left: -1px;
   min-height: 32px !important;
 }
 .fc-collapsed{
@@ -2742,6 +2778,10 @@ textarea:focus,textarea:focus-visible{
   display: block;
   width: 8px;
   height: 8px;
+}
+.visible-scrollbar.thick::-webkit-scrollbar{
+  width: 8px !important;
+  display: block !important;
 }
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;

@@ -61,7 +61,7 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
       }}
       content={
         <div className="p-2">
-          <div className="mb-2 w-36">
+          <div className="mb-2 w-40">
             {title && title.length ? <p>{title}</p> : ''}
             {message && message.length ? <p>{message}</p> : ''}
           </div>

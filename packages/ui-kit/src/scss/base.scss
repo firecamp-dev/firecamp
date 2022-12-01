@@ -37,6 +37,7 @@
     --app-foreground-active: #fff;
     --app-foreground-inactive: #777777;
     --app-primary: #D48332;
+    --app-primary-with-opacity: #d483328a;
     --app-secondary: #3c3c3c;
     --app-border: #414141;
     --app-focus: #5E8FED;
@@ -274,6 +275,9 @@ input:focus,input:focus-visible
 textarea:focus,textarea:focus-visible{
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
+}
+tr:focus-visible{
+  box-shadow: none !important;
 }
 .focus-outer:focus{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
@@ -524,7 +528,7 @@ textarea:focus,textarea:focus-visible{
   transform: rotate(180deg);
 }
 .fc-btn-collapse.v2 {
-  left: 0px;
+  left: -1px;
   min-height: 32px !important;
 }
 .fc-collapsed{
@@ -637,6 +641,10 @@ textarea:focus,textarea:focus-visible{
   display: block;
   width: 8px;
   height: 8px;
+}
+.visible-scrollbar.thick::-webkit-scrollbar{
+  width: 8px !important;
+  display: block !important;
 }
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;

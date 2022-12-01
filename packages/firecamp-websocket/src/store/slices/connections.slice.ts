@@ -126,6 +126,8 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       request: { ...s.request, connections: _connections },
       runtime: { ...s.runtime, displayUrl },
     }));
+
+    console.log(state.equalityChecker(qps, 'queryParams'));
   },
 });
 

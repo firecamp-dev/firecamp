@@ -1,15 +1,13 @@
-import { IEmitterArgument } from './types';
-import { EArgumentType } from './constants';
 import { ETypedArrayView, EFirecampAgent } from '@firecamp/types';
 import { _buffer, _misc } from '@firecamp/utils';
+
+import { IEmitterArgument, EArgumentType } from './types';
 
 /**
  * Function which accept Firecamp request
  * emitter arguments and return actual arguments which
  * will sent over the socket
- *
- * @param args
- * @returns
+ 
  */
 export const parseEmitterArguments = async (
   args: Array<IEmitterArgument>
@@ -18,16 +16,16 @@ export const parseEmitterArguments = async (
 
   for (const { meta, payload } of args) {
     switch (meta.type) {
-      case EArgumentType.NUMBER:
+      case EArgumentType.Number:
         result.push(payload);
         break;
-      case EArgumentType.BOOLEAN:
+      case EArgumentType.Boolean:
         result.push(payload);
         break;
-      case EArgumentType.TEXT:
+      case EArgumentType.Text:
         result.push(payload);
         break;
-      case EArgumentType.JSON:
+      case EArgumentType.Json:
         try {
           result.push(JSON.parse(payload));
         } catch (error) {
@@ -36,15 +34,15 @@ export const parseEmitterArguments = async (
           });
         }
         break;
-      case EArgumentType.FILE:
+      case EArgumentType.File:
         result.push(payload);
         break;
-      case EArgumentType.ARRAY_BUFFER:
+      case EArgumentType.ArrayBuffer:
         result.push(
           _buffer.strToBuffer(payload, meta.typedArrayView as ETypedArrayView)
         );
         break;
-      case EArgumentType.ARRAY_BUFFER_VIEW:
+      case EArgumentType.ArrayBufferView:
         result.push(
           _buffer.strToBinary(payload, meta.typedArrayView as ETypedArrayView)
         );
@@ -83,7 +81,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
           result.push({
             payload,
             meta: {
-              type: EArgumentType.ARRAY_BUFFER,
+              type: EArgumentType.ArrayBuffer,
               typedArrayView: ETypedArrayView.Uint8Array,
             },
           });
@@ -92,7 +90,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
             result.push({
               payload: arg,
               meta: {
-                type: EArgumentType.NUMBER,
+                type: EArgumentType.Number,
                 typedArrayView: '',
               },
             });
@@ -100,7 +98,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
             result.push({
               payload: arg,
               meta: {
-                type: EArgumentType.NUMBER,
+                type: EArgumentType.Number,
                 typedArrayView: '',
               },
             });
@@ -110,7 +108,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
             result.push({
               payload: arg,
               meta: {
-                type: EArgumentType.BOOLEAN,
+                type: EArgumentType.Boolean,
                 typedArrayView: '',
               },
             });
@@ -118,7 +116,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
             result.push({
               payload: arg,
               meta: {
-                type: EArgumentType.BOOLEAN,
+                type: EArgumentType.Boolean,
                 typedArrayView: '',
               },
             });
@@ -128,7 +126,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
             result.push({
               payload: JSON.stringify(JSON.parse(arg), null, 4),
               meta: {
-                type: EArgumentType.JSON,
+                type: EArgumentType.Json,
                 typedArrayView: '',
               },
             });
@@ -136,7 +134,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
             result.push({
               payload: arg,
               meta: {
-                type: EArgumentType.TEXT,
+                type: EArgumentType.Text,
                 typedArrayView: '',
               },
             });
@@ -147,7 +145,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
           result.push({
             payload,
             meta: {
-              type: EArgumentType.ARRAY_BUFFER,
+              type: EArgumentType.ArrayBuffer,
               typedArrayView: ETypedArrayView.Uint8Array,
             },
           });
@@ -157,7 +155,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
           result.push({
             payload,
             meta: {
-              type: EArgumentType.ARRAY_BUFFER,
+              type: EArgumentType.ArrayBuffer,
               typedArrayView: ETypedArrayView.Uint8Array,
             },
           });
@@ -167,7 +165,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
           result.push({
             payload,
             meta: {
-              type: EArgumentType.JSON,
+              type: EArgumentType.Json,
               typedArrayView: '',
             },
           });
@@ -176,7 +174,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
         result.push({
           payload: '',
           meta: {
-            type: EArgumentType.TEXT,
+            type: EArgumentType.Text,
             typedArrayView: '',
           },
         });

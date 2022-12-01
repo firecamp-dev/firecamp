@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { FocusEventHandler, MouseEventHandler, ReactNode } from 'react';
 
 /** Table options */
 export interface ITableOptions {
@@ -18,9 +18,6 @@ export interface ITableOptions {
   mode?: string | { key: string; value: string };
 
   language?: string;
-
-  /** apply table element classes */
-  classes?: 
 }
 
 export interface ITable<R> {
@@ -34,19 +31,19 @@ export interface ITable<R> {
   onMount?: (tableApi: TTableApi) => void;
   showDefaultEmptyRows?: boolean;
   options?: ITableOptions;
-  classes?: ITableClasses
+  classes?: ITableClasses;
 }
 
 export interface ITableClasses {
-    container?: string;
-    table?: string;
-    thead?: string;
-    theadTr?: string;
-    tbody?: string;
-    th?: string;
-    tr?: string;
-    td?: string;
-  };
+  container?: string;
+  table?: string;
+  thead?: string;
+  theadTr?: string;
+  tbody?: string;
+  th?: string;
+  tr?: string;
+  td?: string;
+}
 
 export interface IRow<R> {
   classes?: { tr?: string; td?: string };
@@ -56,9 +53,11 @@ export interface IRow<R> {
   tableApi?: TTableApi;
   options?: ITableOptions;
   renderCell: TRenderCell<R>;
-  onChangeCell: TOnChangeCell;
   handleDrag: (row: R, index?: number) => void;
   handleDrop: (row: R) => any;
+  onChangeCell: TOnChangeCell;
+  onClick?: (rowDom: HTMLTableRowElement) => void;
+  onFocus?: (rowDom: HTMLTableRowElement) => void;
 }
 export interface IColumn {
   id: string;
@@ -83,6 +82,8 @@ export type TTr = {
   children: ReactNode;
   className?: string;
   style?: TPlainObject;
+  onClick?: MouseEventHandler;
+  onFocus?: FocusEventHandler;
 };
 export type TTh = {
   children: ReactNode;

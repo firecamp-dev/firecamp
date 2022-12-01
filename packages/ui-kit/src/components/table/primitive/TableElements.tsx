@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEvent, FocusEvent, useRef } from 'react';
 import cx from 'classnames';
 import { _array, _misc, _object } from '@firecamp/utils';
 import {
@@ -18,17 +18,32 @@ const TableRow: FC<IRow<any>> = ({
   row,
   tableApi,
   renderCell,
-  onChangeCell,
   handleDrag,
   handleDrop,
   options,
+  onChangeCell,
+  onClick = (rowDom) => {},
+  onFocus = (rowDom) => {},
 }) => {
+  const tableRowRef = useRef<HTMLTableRowElement>(null);
   const onChange = (ck: string, cv: any, e: any) => {
     onChangeCell(ck, cv, row.id, e);
   };
 
+  const _onClick = (e: MouseEvent<HTMLElement>) => {
+    onClick((e.target as HTMLElement).closest('tr'));
+  };
+  const _onFocus = (e: FocusEvent<HTMLElement>) => {
+    onFocus((e.target as HTMLElement).closest('tr'));
+  };
+
   return (
-    <Tr className={classes.tr} key={row.id}>
+    <Tr
+      className={classes.tr}
+      key={row.id}
+      onClick={_onClick}
+      onFocus={_onFocus}
+    >
       {columns.map((c: IColumn, i: number) => {
         return (
           <Td
@@ -71,9 +86,25 @@ const TBody: FC<TTBody> = ({ className = '', children, style = {} }) => {
   );
 };
 
-const Tr: FC<TTr> = ({ className = '', children, style = {} }) => {
+const Tr: FC<TTr> = ({
+  className = '',
+  onClick = (rowDom) => {},
+  onFocus,
+  children,
+  style = {},
+}) => {
   return (
-    <tr className={className} style={style}>
+    <tr
+      className={className}
+      style={style}
+      onClick={(e) => {
+        // console.log(e.target.closest('tr'));
+        // e.target.closest('tr').focus();
+        onClick(e);
+      }}
+      onFocus={onFocus}
+      tabIndex={0}
+    >
       {children}
     </tr>
   );

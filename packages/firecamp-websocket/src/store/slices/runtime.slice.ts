@@ -3,7 +3,7 @@ import { TId } from '@firecamp/types';
 interface IPlaygroundTab {
   id: string;
   name: string;
-  meta?: {
+  __meta?: {
     isSaved?: boolean;
     hasChange?: boolean;
   };

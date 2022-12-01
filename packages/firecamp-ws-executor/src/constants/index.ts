@@ -2,31 +2,11 @@ import { readyState, closeEvents } from './connection-info';
 
 export const { statusCodes: StatusCodes } = closeEvents;
 
-export enum ELogTypes {
-  Send = 's',
-  Receive = 'r',
-  Ack = 'ack',
-  System = 'sys',
-  Upgrade = 'upgrade',
-}
-
-export enum ELogEvents {
-  onOpen = 'onOpen',
-  onClose = 'onClose',
-  onConnecting = 'onConnecting',
-  common = 'common',
-}
-
-export enum ELogColors {
-  Success = 'success',
-  Danger = 'danger',
-}
-
 export const ConnectionStatus = {
   ...readyState,
 };
 
-export const EClientOptions = {
+export const ClientOptions = {
   handshakeTimeout: 'handshakeTimeout',
   rejectUnauthorized: 'rejectUnauthorized',
   followRedirects: 'followRedirects',

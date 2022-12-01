@@ -1,5 +1,4 @@
-import { IEmitterArgument, ILog } from './types';
-import { ELogEvents } from './constants';
+import { IEmitterArgument, ELogEvents, ILog } from './types';
 import {
   ICertificate,
   ISocketIOConfig,

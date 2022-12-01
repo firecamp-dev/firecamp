@@ -1,5 +1,7 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
+import _cloneDeep from 'lodash/cloneDeep';
+import equal from 'react-fast-compare';
 
 import {
   // request
@@ -78,6 +80,7 @@ interface IWebsocketStore
   initialise: (request: Partial<IWebSocket>) => void;
 
   setLast: (initialState: IWebsocketStoreState) => void;
+  equalityChecker: (payload: any, reqKey_s: string) => void;
 }
 
 const createWebsocketStore = (initialState: IWebsocketStoreState) =>
@@ -87,9 +90,11 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
 
       initialise: async (request: Partial<IWebSocket>) => {
         const initState = initialiseStoreFromRequest(request);
+        // console.log(initState.request, 'initState.request');
         set((s) => ({
           ...s,
           ...initState,
+          originalRequest: _cloneDeep(initState.request),
         }));
       },
 
@@ -98,6 +103,12 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
           ...s,
           last: initialState,
         }));
+      },
+
+      equalityChecker: (payload, reqKey_s) => {
+        const state = get();
+        console.log(state.originalRequest.connections[0][reqKey_s], payload);
+        return equal(state.originalRequest.connections[0][reqKey_s], payload);
       },
 
       ...createRequestSlice(
