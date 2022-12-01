@@ -27,11 +27,7 @@ const Response = ({
   return (
     <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
       <FullScreen handle={handleFS} className="h-full">
-        <Container>
-          <Container.Body>
-            <ResponseBody align={messagesAlignment} eventsList={eventsList} />
-          </Container.Body>
-        </Container>
+      <ResponseBody align={messagesAlignment} eventsList={eventsList} />
       </FullScreen>
     </Column>
   );

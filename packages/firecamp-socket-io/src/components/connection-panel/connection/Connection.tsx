@@ -122,9 +122,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   };
 
   return (
-    <Container>
-      <Container.Body>
-        <Row flex={1} overflow="auto" className=" with-divider h-full">
+    <Row flex={1} overflow="auto" className=" with-divider h-full">
           <Column className="h-full flex flex-col z-20">
             <div className="z-20 relative">
               <Tabs
@@ -148,13 +146,9 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
               'fc-collapsable'
             )}
           >
-            <Column className="h-full">
-              <Response key={activePlayground} />
-            </Column>
+            <Response key={activePlayground} />
           </Resizable>
-        </Row>{' '}
-      </Container.Body>
-    </Container>
+        </Row>
   );
 };
 export default memo(ConnectionTab);

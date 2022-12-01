@@ -637,7 +637,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
 
   return (
     <Container>
-      <BodyControls
+      {/* <BodyControls
         emitterName={playgroundEmitter.name || ''}
         isSaveEmitterPopoverOpen={isSaveEmitterPopoverOpen}
         tabData={tabData}
@@ -659,7 +659,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         }
         addNewEmitter={_addNewEmitter}
         editorCommands={EditorCommands}
-      />
+      /> */}
       <EmitterName
         name={playgroundEmitter.name || ''}
         onChange={(name) => {
@@ -667,7 +667,6 @@ const EmitterPlayground = ({ tabData = {} }) => {
         }}
         onEmit={_onEmit}
       />
-      <div className="z-20 relative">
         <EmitterArgTabs
           ack={playgroundEmitter.meta ? playgroundEmitter.meta.ack : false}
           args={playgroundEmitter.body}
@@ -679,7 +678,6 @@ const EmitterPlayground = ({ tabData = {} }) => {
           onRemoveArg={(index) => _playgroundEmitterFns.removeArg(index)}
           toggleAck={(ack) => _playgroundEmitterFns.updateMeta({ ack })}
         />
-      </div>
       <EmitterArgMeta
         activeArgIndex={arg_ref.current}
         ArgTypes={ArgTypes}
@@ -706,16 +704,16 @@ const EmitterPlayground = ({ tabData = {} }) => {
         onSelectFile={_onSelectFile}
         shortcutFns={shortcutFns}
       />
-      <Footer
+      {/* <Footer
         emitterName={playgroundEmitter.name || ''}
         activeEmitter={selectedCollectionEmitter}
         saveButtonHandler={saveButtonHandler}
         showEmitButton={
           true /* activeArgType.id !== EEmitterPayloadTypes.noBody */
         }
-        onEmit={_onEmit}
+        {/* onEmit={_onEmit}
         setToOriginal={_setToOriginal}
-      />
+      /> */} 
     </Container>
   );
 };
@@ -733,25 +731,26 @@ const EmitterName = ({ name = '', onChange = () => {}, onEmit = () => {} }) => {
   };
 
   return (
-    <Container.Header className="with-divider">
+    <Container.Header className="!px-2 !py-2">
       <Input
         autoFocus={true}
         placeholder="Type emitter name"
+        label='Type emitter name'
         className="border-0"
         value={name}
         onChange={_handleInputChange}
         wrapperClassName="!mb-0"
-        postComponents={[
-          <Button
-            icon={<IoSendSharp className="toggle-arrow" size={12} />}
-            onClick={onEmit}
-            disabled={!name}
-            className="!rounded-none"
-            primary
-            sm
-            iconLeft
-          />,
-        ]}
+        // postComponents={[
+        //   <Button
+        //     icon={<IoSendSharp className="toggle-arrow" size={12} />}
+        //     onClick={onEmit}
+        //     disabled={!name}
+        //     className="!rounded-none"
+        //     primary
+        //     sm
+        //     iconLeft
+        //   />,
+        // ]}
       />
     </Container.Header>
   );
