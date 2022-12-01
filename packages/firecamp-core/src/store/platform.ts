@@ -16,7 +16,7 @@ let firecampAgent: EFirecampAgent = localStorage.getItem(
 console.log(firecampAgent, 'firecampAgent...');
 if (!firecampAgent) {
   const agent = _misc.firecampAgent();
-  firecampAgent = agent === EFirecampAgent.web ? EFirecampAgent.proxy : agent;
+  firecampAgent = agent === EFirecampAgent.Web ? EFirecampAgent.Cloud : agent;
 }
 
 const initialState = {
@@ -26,7 +26,7 @@ const initialState = {
   organization: null,
   switchingOrg: null, // It'll hold the org obj temporarily while switching org through modal, so the next modal of selecting workspace can access org id
   appInfo: {},
-  meta: {
+  __meta: {
     agent: firecampAgent,
     isExtAgentInstalled: false,
   },
@@ -39,7 +39,7 @@ export interface IPlatformStore {
   organization?: Partial<IOrganization> | null;
   switchingOrg: Partial<IOrganization> | null;
   appInfo: { [k: string]: any };
-  meta: {
+  __meta: {
     agent: EFirecampAgent;
     isExtAgentInstalled: boolean;
     [k: string]: any;
@@ -68,12 +68,12 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
   },
 
   setOrg: (org: Partial<IOrganization>) => {
-    if (!org || !org._meta?.id) return;
+    if (!org || !org.__ref?.id) return;
     set({ scope: EPlatformScope.Organization, organization: org });
   },
 
   setSwitchingOrg: (org: Partial<IOrganization>) => {
-    if (!org || !org._meta?.id) return;
+    if (!org || !org.__ref?.id) return;
     set({ switchingOrg: org });
   },
 
@@ -88,41 +88,41 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
   changeFirecampAgent: (agent: EFirecampAgent) => {
     if (!agent) return;
 
-    const meta = get().meta;
-    if (agent == EFirecampAgent.extension && !meta.isExtAgentInstalled)
-      agent = meta.agent;
+    const __meta = get().__meta;
+    if (agent == EFirecampAgent.Extension && !__meta.isExtAgentInstalled)
+      agent = __meta.agent;
 
     // set agent in local storage
     localStorage.setItem('firecampAgent', agent);
 
     // set agent in store
-    set((s) => ({ meta: { ...s.meta, agent } }));
+    set((s) => ({ __meta: { ...s.__meta, agent } }));
   },
 
   getFirecampAgent: (): EFirecampAgent =>
-    get().meta.agent || EFirecampAgent.proxy,
+    get().__meta.agent || EFirecampAgent.Cloud,
 
   checkExtAgentInstalled: async () => {
     executor
       .pingExtension()
       .then((res) => {
         set((s) => ({
-          meta: {
-            ...s.meta,
+          __meta: {
+            ...s.__meta,
             isExtAgentInstalled: res == 'pong' ? true : false,
           },
         }));
       })
       .catch((e) => {
-        const agent = get().meta.agent;
+        const agent = get().__meta.agent;
         set((s) => ({
-          meta: {
-            ...s.meta,
-            ...s.meta,
-            ...s.meta,
+          __meta: {
+            ...s.__meta,
+            ...s.__meta,
+            ...s.__meta,
             isExtAgentInstalled: false,
             agent:
-              agent == EFirecampAgent.extension ? EFirecampAgent.proxy : agent,
+              agent == EFirecampAgent.Extension ? EFirecampAgent.Cloud : agent,
           },
         }));
       });

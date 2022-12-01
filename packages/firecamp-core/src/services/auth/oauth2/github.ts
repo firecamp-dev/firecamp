@@ -10,7 +10,7 @@ export const authorize = async (): Promise<string> => {
     // Execute following logic when using electron agent
     if (_misc.firecampAgent() === EFirecampAgent.desktop) {
       return window.fc.auth.loginViaGithub({
-        client_id: GITHUB_CONFIG.CLIENT_ID,
+        clientId: GITHUB_CONFIG.CLIENT_ID,
         scope: GITHUB_CONFIG.SCOPE.join(),
       });
     }

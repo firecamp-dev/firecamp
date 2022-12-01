@@ -15,7 +15,7 @@ import { useModalStore } from '../../../../store/modal';
 import { useWorkspaceStore } from '../../../../store/workspace'
 import AppService from '../../../../services/app'
 
-type TModalMeta = { name: string, description: string, request_id: TId, collection_id: TId, folder_id?: TId };
+type TModalMeta = { name: string, description: string, requestId: TId, collectionId: TId, folderId?: TId };
 
 const EditRequest: FC<IModal> = ({
   isOpen = false,
@@ -24,7 +24,7 @@ const EditRequest: FC<IModal> = ({
   width = '500px',
 }) => {
 
-  const { name, description, request_id, collection_id, folder_id  } = useModalStore.getState().meta as TModalMeta;
+  const { name, description, requestId, collectionId, folderId  } = useModalStore.getState().__meta as TModalMeta;
   const [request, setRequest] = useState({
     name,
     description
@@ -46,20 +46,20 @@ const EditRequest: FC<IModal> = ({
       return;
     }
     const _request = {
-      meta: {
+      __meta: {
         name,
         description: request?.description?.trim(),
       },
-      _meta: {
-        id: request_id,
-        collection_id,
-        folder_id
+      __ref: {
+        id: requestId,
+        collectionId,
+        folderId
       }
     };
 
     setIsRequesting(true);
     const {  updateRequest } = useWorkspaceStore.getState()
-    updateRequest(request_id, _request)
+    updateRequest(requestId, _request)
       .then((res)=> {
         AppService.modals.close();
       })

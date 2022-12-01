@@ -18,8 +18,8 @@ const DomainList: FC<IDomainList> = ({ list = [], domainFns = {} }) => {
       {list.map((v, i) => {
         return (
           <DomainItem
-            key={v._meta ? v._meta.id : ''}
-            id={v._meta ? v._meta.id : ''}
+            key={v.__ref ? v.__ref.id : ''}
+            id={v.__ref ? v.__ref.id : ''}
             url={v.url}
             disable={v.disable}
             list={list}
@@ -60,7 +60,7 @@ const DomainItem: FC<IDomainItem> = ({
     try {
       let found = list.find(
         (proxy) =>
-          proxy._meta.id !== id &&
+          proxy.__ref.id !== id &&
           (proxy.url || '').trim() === (url || '').trim()
       );
 

@@ -51,8 +51,8 @@ const FolderSetting: FC<IFolderSetting> = ({
   let _updateModule = (payload = {}) => {
     if (module) {
       // F.appStore.project.updateModule(payload, {
-      //   id: module?._meta?.id || '',
-      //   collection_id: module?._meta?.collection_id || ''
+      //   id: module?.__ref?.id || '',
+      //   collectionId: module?.__ref?.collectionId || ''
       // });
     }
   };

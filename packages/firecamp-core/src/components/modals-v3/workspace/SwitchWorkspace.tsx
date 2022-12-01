@@ -74,7 +74,7 @@ const SwitchWorkspace: FC<IModal> = ({
               <div className="pl-4 pb-4 pr-2 overflow-auto visible-scrollbar h-80 mr-2">
                 {workspaces.map((w) => (
                   <WorkspaceCard
-                    key={w._meta.id}
+                    key={w.__ref.id}
                     workspace={w}
                     onClick={(e) => {
                       e.preventDefault();

@@ -24,8 +24,8 @@ const FcAgentSelector: FC<any> = () => {
   
   const { agent, isExtAgentInstalled, changeFirecampAgent, checkExtAgentInstalled } = usePlatformStore(
     (s: IPlatformStore) => ({
-      agent: s.meta.agent,
-      isExtAgentInstalled: s.meta.isExtAgentInstalled,
+      agent: s.__meta.agent,
+      isExtAgentInstalled: s.__meta.isExtAgentInstalled,
       changeFirecampAgent: s.changeFirecampAgent,
       checkExtAgentInstalled: s.checkExtAgentInstalled
     }),

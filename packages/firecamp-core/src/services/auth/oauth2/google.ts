@@ -12,7 +12,7 @@ export const authorize = async (): Promise<string> => {
     if (_misc.firecampAgent() === EFirecampAgent.desktop) {
       return window.fc.auth.loginViaGoogle({
         authorize_url: GOOGLE_CONFIG.AUTHORIZE_URL,
-        client_id: GOOGLE_CONFIG.CLIENT_ID,
+        clientId: GOOGLE_CONFIG.CLIENT_ID,
         scope: GOOGLE_CONFIG.SCOPE,
         redirect_url: GOOGLE_CONFIG.REDIRECT_URI,
         response_type: GOOGLE_CONFIG.RESPONSE_TYPE,

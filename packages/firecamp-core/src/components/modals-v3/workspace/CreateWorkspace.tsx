@@ -2,11 +2,8 @@ import { FC, useState } from 'react';
 import {
   Input,
   TextArea,
-  Container,
   TabHeader,
   Button,
- 
-  
   Modal,
   IModal,
   Alert,
@@ -71,13 +68,13 @@ const CreateWorkspace: FC<IModal> = ({
 
   const _checkWrsNameAvailability = async (payload: {
     name: string;
-    org_id?: string;
+    orgId?: string;
   }) => {
     try {
       setFlagWNCP(true);
       const response = await checkNameAvailability(
         payload.name,
-        payload.org_id
+        payload.orgId
       );
       if ([200, 201].includes(response?.status) && response?.data) {
         setError((s) => ({ ...s, global: '' }));
@@ -127,7 +124,7 @@ const CreateWorkspace: FC<IModal> = ({
     const _workspace = {
       name: workspace.name.trim(),
       description: workspace.description,
-      // meta: { org_id } // org_id will be handled by store action
+      // meta: { orgId } // orgId will be handled by store action
     };
 
     try {

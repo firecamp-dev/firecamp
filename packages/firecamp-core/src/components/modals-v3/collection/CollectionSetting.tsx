@@ -34,8 +34,8 @@ export const defaultCollection: ICollectionSettingUi = {
     test: '',
   },
   auth: {},
-  meta: { active_auth_type: EAuthTypes.NoAuth },
-  _meta: { id: '', workspace_id: '' },
+  __meta: { activeAuthType: EAuthTypes.NoAuth },
+  __ref: { id: '', workspaceId: '' },
 };
 
 enum ETabTypes {
@@ -157,7 +157,7 @@ const CollectionSetting: FC<IModal> = ({
             type={EPlatformModalTypes.CollectionSetting}
             initialPayload={initialCollection}
             auth={collection.auth}
-            activeAuthType={collection.meta.active_auth_type}
+            activeAuthType={collection.__meta.activeAuthType}
             onChange={onChange}
             close={onClose}
             onUpdate={onUpdate}

@@ -22,7 +22,7 @@ export const preferenceStore = create((set, get) => ({
 
   // Add proxy
   ['ADD_PROXY']: (proxy = {}) => {
-    if (proxy?._meta?.id) {
+    if (proxy?.__ref?.id) {
       let proxies = new Array(...(get().proxies || []));
       proxies = [...proxies, proxy];
       set({ proxies });
@@ -31,9 +31,9 @@ export const preferenceStore = create((set, get) => ({
 
   // Update proxy
   ['UPDATE_PROXY']: (proxy = {}) => {
-    if (proxy?._meta?.id) {
+    if (proxy?.__ref?.id) {
       let proxies = new Array(...(get().proxies || []));
-      let index = proxies.findIndex((p) => p._meta.id === proxy?._meta?.id);
+      let index = proxies.findIndex((p) => p.__ref.id === proxy?.__ref?.id);
       if (index !== -1) {
         proxies[index] = proxy;
         set({
@@ -48,7 +48,7 @@ export const preferenceStore = create((set, get) => ({
     if (_meta?.id) {
       let proxies = new Array(...(get().proxies || []));
 
-      let index = proxies.findIndex((p) => p._meta.id === _meta?.id);
+      let index = proxies.findIndex((p) => p.__ref.id === _meta?.id);
       proxies = [...proxies.slice(0, index), ...proxies.slice(index + 1)];
       set({ proxies: proxies });
     }
@@ -61,7 +61,7 @@ export const preferenceStore = create((set, get) => ({
 
   // Add certificate
   ['ADD_CERTIFICATE']: (certificate = {}) => {
-    if (certificate?._meta?.id) {
+    if (certificate?.__ref?.id) {
       let existingCertificates = new Array(...(get().certificates || []));
       existingCertificates = [...existingCertificates, certificate];
       set({
@@ -72,10 +72,10 @@ export const preferenceStore = create((set, get) => ({
 
   // Update certificate
   ['UPDATE_CERTIFICATE']: (certificate = {}) => {
-    if (certificate?._meta?.id) {
+    if (certificate?.__ref?.id) {
       let certificates = new Array(...(get().certificates || []));
       let index = certificates.findIndex(
-        (c) => c._meta.id === certificate?._meta?.id
+        (c) => c.__ref.id === certificate?.__ref?.id
       );
       if (index !== -1) {
         certificates[index] = certificate;
@@ -90,7 +90,7 @@ export const preferenceStore = create((set, get) => ({
   ['REMOVE_CERTIFICATE']: (_meta = {}) => {
     if (_meta?.id) {
       let certificates = new Array(...(get().certificates || []));
-      let index = certificates.findIndex((c) => c._meta.id === _meta?.id);
+      let index = certificates.findIndex((c) => c.__ref.id === _meta?.id);
       certificates = [
         ...certificates.slice(0, index),
         ...certificates.slice(index + 1),
@@ -104,11 +104,11 @@ export const preferenceStore = create((set, get) => ({
     set({ schemas: new Array(...schemas) });
   },
 
-  // Fetch schemas by collection_id
-  ['FETCH_SCHEMAS_BY_COLLECTIONID']: (collection_id = '') => {
+  // Fetch schemas by collectionId
+  ['FETCH_SCHEMAS_BY_COLLECTIONID']: (collectionId = '') => {
     let schemas = new Array(...(get().schemas || []));
     let schemasByCollectionId = schemas.filter(
-      (s) => s?._meta?.collection_id === collection_id
+      (s) => s?.__ref?.collectionId === collectionId
     );
 
     return schemasByCollectionId;
@@ -116,7 +116,7 @@ export const preferenceStore = create((set, get) => ({
 
   // Add schema
   ['ADD_SCHEMA']: (schema = {}) => {
-    if (schema?._meta?.id) {
+    if (schema?.__ref?.id) {
       let schemas = new Array(...(get().schemas || []));
       schemas = [...schemas, schema];
       set({
@@ -127,9 +127,9 @@ export const preferenceStore = create((set, get) => ({
 
   // Update schema
   ['UPDATE_SCHEMA']: (schema = {}) => {
-    if (schema?._meta?.id) {
+    if (schema?.__ref?.id) {
       let schemas = new Array(...(get().schemas || []));
-      let index = schemas.findIndex((s) => s._meta.id === schema?._meta?.id);
+      let index = schemas.findIndex((s) => s.__ref.id === schema?.__ref?.id);
       if (index !== -1) {
         schemas[index] = schema;
         set({
@@ -145,7 +145,7 @@ export const preferenceStore = create((set, get) => ({
     if (_meta?.id) {
       let schemas = new Array(...(get().schemas || []));
       console.log({ schemas });
-      let index = schemas.findIndex((c) => c._meta.id === _meta?.id);
+      let index = schemas.findIndex((c) => c.__ref.id === _meta?.id);
       schemas = [...schemas.slice(0, index), ...schemas.slice(index + 1)];
       set({ schemas: schemas });
     }
@@ -276,19 +276,19 @@ export const Preferences = {
   // WORKSPACE_ACTIVE_ENVIRONMENT
   /**
    * Update workspace active environment in user preference
-   * @param {*} env_id : <type: String> environment id
+   * @param {*} envId : <type: String> environment id
    */
-  updateWrsActiveEnv: async (env_id) => {
+  updateWrsActiveEnv: async (envId) => {
     try {
-      if (env_id) {
+      if (envId) {
         // preferenceStore.getState()["UPDATE"]({
-        //   activeTabWrsEnv: env_id,
+        //   activeTabWrsEnv: envId,
         // });
       }
     } catch (error) {
       console.error({
         API: 'preferences.updateWrsActiveEnv',
-        args: { env_id },
+        args: { envId },
         error,
       });
     }
@@ -297,12 +297,12 @@ export const Preferences = {
   // PROJECT_ACTIVE_ENVIRONMENT
   /**
    * Update project active environment in user preference
-   * @param {*} wrs_id : <type: String> project id for which user need to update active environment
-   * @param {*} env_id : <type: String> environment id
+   * @param {*} wrsId : <type: String> project id for which user need to update active environment
+   * @param {*} envId : <type: String> environment id
    */
-  updatePrjActiveEnv: async (col_id, env_id) => {
+  updatePrjActiveEnv: async (colId, envId) => {
     try {
-      if (col_id && env_id) {
+      if (colId && envId) {
         // Update zustand store
         let existingPrjActiveEnv = Object.create(
           preferenceStore.getState().project_active_environment || {}
@@ -310,17 +310,17 @@ export const Preferences = {
 
         existingPrjActiveEnv = {
           ...existingPrjActiveEnv,
-          [col_id]: env_id,
+          [colId]: envId,
         };
 
         // Update DB
-        // await F.db.preference.setProjectActiveEnvironment(col_id, env_id);
+        // await F.db.preference.setProjectActiveEnvironment(colId, envId);
 
         // Emit set active environment for project
         // F.cloudAPI.socket.setActiveEnvironment({
         //   item_type: 'P',
-        //   item_id: col_id,
-        //   env_id: env_id,
+        //   itemId: colId,
+        //   envId: envId,
         // });
 
         // F.notification.success(
@@ -333,7 +333,7 @@ export const Preferences = {
     } catch (error) {
       console.error({
         API: 'preferences.updatePrjActiveEnv',
-        args: { col_id, env_id },
+        args: { colId, envId },
         error,
       });
       // F.notification.alert('failed to update default active environment', {
