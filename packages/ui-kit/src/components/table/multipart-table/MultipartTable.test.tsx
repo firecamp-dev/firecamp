@@ -11,15 +11,15 @@ window.ResizeObserver = ResizeObserver;
 describe("Table : ", () => {
 
   const mountTableComponent = () => render(<BasicDataWithDefaultRows {...BasicDataWithDefaultRows.args} />);
-  
+
   const getRenderedTable = () => screen.queryByRole('table');
   const getTableBody = () => screen.getAllByRole('rowgroup');
   const getRenderedTableRow = async () => within(getTableBody()[1]).findAllByRole("row");
 
-  //Todo add test cases similar to basic table
+  //discuss add test cases similar to basic table - ?
   test('Table should render', () => {
     mountTableComponent();
-  
+
     expect(getRenderedTable()).toBeInTheDocument();
   });
 
@@ -32,28 +32,38 @@ describe("Table : ", () => {
     expect(updatedMountedRow).toHaveLength(initialMountedRow.length + 1);
   });
 
-  test('Table should render MultipartInput component on columnid- value, & checking click event on icon', async () => {
+  test('Table should render components based on column id provied', async () => {
+    // ColumnId - value : MultipartInput component 
+    // validate the icon & checking its icon click event
+    // validate the icon input fields available based on type update
+
     mountTableComponent();
     let initialMountedRow = await getRenderedTableRow();
 
     let columnIndexForMultipartInput = _columns.findIndex(col => col.key === 'value');
-    let TDElement = initialMountedRow[0].children?.[columnIndexForMultipartInput];
-    //find nested elements from MultipartInput
-    let MultipartInputElement = TDElement.firstElementChild;
-    let MultipartInputElementSvgIcon = MultipartInputElement.lastElementChild.firstElementChild as HTMLElement;
-    let initialIconName = MultipartInputElementSvgIcon.textContent;
-    // let MultipartInputElementSvgIcon = screen.getAllByTitle("IconTextSize")[0];
+    let MultipartInputElement = initialMountedRow[0].children?.[columnIndexForMultipartInput].firstElementChild;
 
-    // screen.debug(screen.getAllByTitle("IconTextSize"));
-    expect(initialIconName).toBe("IconTextSize");
-  
-    click(MultipartInputElementSvgIcon);
-    
-    await waitFor(() => screen.getAllByTitle("IconTextSize") )
-    let updatedIconName = MultipartInputElement.lastElementChild.firstElementChild.textContent;
-    
-    expect(updatedIconName).toBe("IconFile");
-    
+    // initial - icon title should be IconTextSize & text field is of SingleLineEditor
+    let svgIconWrapperDiv = MultipartInputElement.lastElementChild;
+    expect(svgIconWrapperDiv).toHaveClass("absolute cursor-pointer");
+
+    let svgIcon = svgIconWrapperDiv.firstElementChild as HTMLElement;
+    expect(svgIcon.textContent).toBe("IconTextSize");
+
+    let textFieldWrapperDiv = MultipartInputElement.firstElementChild;
+    expect(textFieldWrapperDiv).toHaveClass("without-border px-2");
+
+    click(svgIcon);
+
+    // later - icon title should be IconFile & text field is of input type
+    expect(svgIconWrapperDiv.querySelector('svg').textContent).toBe("IconFile");
+    let fileSelectionInputField = MultipartInputElement.children[0];
+    expect(fileSelectionInputField).toHaveAttribute("type", "file");
+    expect(fileSelectionInputField).toHaveClass("fc-file-input hidden");
+
+    let selectedFileTextWrapper = MultipartInputElement.children[1];
+    expect(selectedFileTextWrapper).toHaveClass("cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre");
+    expect(selectedFileTextWrapper.textContent).toBe("select file");
 
   });
 
