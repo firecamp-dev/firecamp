@@ -204,11 +204,11 @@ const MembersTab = () => {
   useEffect(() => {
     setIsRequesting(true);
     Rest.workspace
-      .getMembers(workspace._meta.id)
+      .getMembers(workspace.__ref.id)
       .then(({ data }) => {
         const members = data.members?.map((m) => {
           return {
-            id: m._meta.uuid || m._meta.id,
+            id: m.__ref.uuid || m.__ref.id,
             name: m.name || m.username,
             email: m.email,
             role: m.w_relation.role,

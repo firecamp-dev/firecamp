@@ -115,7 +115,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
    */
   useEffect(() => {
     // subscribe request updates
-    if (tab.meta.isSaved && tab?.request?.__ref?.id) {
+    if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
       platformContext.request.subscribeChanges(
         tab.request.__ref.id,
         handlePull
@@ -124,7 +124,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
 
     // unsubscribe request updates
     return () => {
-      if (tab.meta.isSaved && tab?.request?.__ref.id) {
+      if (tab.__meta.isSaved && tab?.request?.__ref.id) {
         platformContext.request.unsubscribeChanges(tab.request.__ref.id);
       }
     };
@@ -185,7 +185,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       try {
         const isRequestSaved = !!tab?.request?.__ref?.id || false;
         // prepare a minimal request payload
-        const requestToNormalize: IRest = normalizeRequest({});
+        let requestToNormalize: IRest = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -399,11 +399,11 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           />
         </Container.Body>
       </Container>
-      {tab.meta.isSaved && (
+      {tab.__meta.isSaved && (
         <TabChangesDetector
           onChangeRequestTab={platformContext.request.onChangeRequestTab}
           tabId={tab.id}
-          tabMeta={tab.meta}
+          tabMeta={tab.__meta}
         />
       )}
     </RestContext.Provider>
@@ -442,7 +442,7 @@ const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
       );
       // console.log({ pushAction });
 
-      // Update tab meta if existing tab.meta.hasChange is not same as isTabDirty
+      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
       if (tabMeta.hasChange !== isTabDirty) {
         onChangeRequestTab(tabId, { hasChange: isTabDirty });
       }

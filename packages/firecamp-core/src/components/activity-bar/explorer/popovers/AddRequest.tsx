@@ -49,14 +49,14 @@ const AddRequest: FC<IAddRequest> = ({
       const name = requestName.trim();
       const type = requestType.type;
       const model: any = {
-        meta: {
+        __meta: {
           name,
           type,
         },
-        _meta: {
+        __ref: {
           id: nanoid(),
-          collection_id: meta.collectionId,
-          folder_id: meta.folderId,
+          collectionId: meta.collectionId,
+          folderId: meta.folderId,
         },
       };
       if (type == ERequestTypes.Rest) model.method = 'GET';

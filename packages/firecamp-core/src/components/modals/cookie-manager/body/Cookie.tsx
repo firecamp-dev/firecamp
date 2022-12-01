@@ -23,19 +23,19 @@ const Cookie: FC<ICookieComp> = ({ cookie = {}, cookieFns = () => {} }) => {
   // console.log(`cookieJSON`, cookieJSON);
 
   return (
-    <div className="fc-cookie-list-item" key={cookie._meta.id || ''}>
+    <div className="fc-cookie-list-item" key={cookie.__ref.id || ''}>
       <div className="fc-cookie-list-item-action">
         <AddCookie
-          popoverID={`update-cookie-from-cookie-card-${cookie._meta.id}`}
+          popoverID={`update-cookie-from-cookie-card-${cookie.__ref.id}`}
           mutation={true}
           cookie={Object.assign({}, cookieJSON, {
-            _meta: { id: cookie._meta.id || '' },
+            __ref: { id: cookie.__ref.id || '' },
           })}
           cookieFns={cookieFns}
         />
 
         <ConfirmationPopover
-          id={`remove-cookie-${cookie._meta.id}`}
+          id={`remove-cookie-${cookie.__ref.id}`}
           handler={<span className="iconv2-delete-v2-icon"></span>}
           title="Are you sure remove?"
           _meta={{
@@ -64,7 +64,7 @@ const Cookie: FC<ICookieComp> = ({ cookie = {}, cookieFns = () => {} }) => {
       <div className="fc-cookie-string">
         <div className="fc-cookie">{cookieString || ''}</div>
         <CopyButton
-          id={`copy-button-${cookie._meta.id || ''}`}
+          id={`copy-button-${cookie.__ref.id || ''}`}
           text={cookieString || ''}
         />
       </div>

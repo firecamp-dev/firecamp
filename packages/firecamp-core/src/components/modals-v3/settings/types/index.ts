@@ -5,8 +5,8 @@ export interface ICollectionSettingUi {
   description: string;
   scripts: IRestScripts;
   auth: IUiAuth;
-  meta: { [key: string]: any };
-  _meta: { [key: string]: any };
+  __meta: { [key: string]: any };
+  __ref: { [key: string]: any };
 }
 
 export interface IFolderSettingUi extends ICollectionSettingUi {}

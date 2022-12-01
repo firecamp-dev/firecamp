@@ -23,7 +23,7 @@ const CollectionSetting: FC<ICollectionSetting> = ({
   );
   let projectsList = []; //projectStore(state => state[_Project.LIST], shallow) || [];
   let zustandProject = projectsList.find(
-    (p) => p._meta && p._meta.id === collectionId
+    (p) => p.__ref && p.__ref.id === collectionId
   );
 
   let [project, setProject] = useState(zustandProject || {});

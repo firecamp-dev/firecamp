@@ -35,7 +35,7 @@ const IdentityPage = () => {
         .viaGithub(code)
         .then((rs) => {
           // TODO: move it to cookie based auth
-          localStorage.setItem('token', rs.data.meta.access_token);
+          localStorage.setItem('token', rs.data.__meta.access_token);
           localStorage.setItem(
             'authSuccessMessage',
             "You're signed in successfully."

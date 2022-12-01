@@ -5,8 +5,6 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  
   Modal,
   IModal,
   ProgressBar,
@@ -29,8 +27,8 @@ const SaveRequest: FC<IModal> = ({
   const [request, setRequest] = useState({
     name: '',
     description: '',
-    collection_id: '',
-    folder_id: '',
+    collectionId: '',
+    folderId: '',
   });
   const [isRequesting, setIsRequesting] = useState(false);
   const [error, setError] = useState({ name: '' });
@@ -104,10 +102,9 @@ const SaveRequest: FC<IModal> = ({
           </div>
 
           <PathSelector
-            onSelect={(_meta) => {
-              // console.log({ _meta });
-
-              setRequest((r) => ({ ...r, ..._meta }));
+            onSelect={(__ref) => {
+              // console.log({ __ref });
+              setRequest((r) => ({ ...r, ...__ref }));
             }}
           />
 
@@ -165,17 +162,17 @@ const PathSelector: FC<{ onSelect: (_: any) => void }> = ({ onSelect }) => {
   const onItemSelect = (itemIds: string[], treeId: string) => {
     if (!itemIds?.length) return;
     const selectedItem = itemIds[0];
-    const item = collections.find((i) => i._meta.id == selectedItem);
+    const item = collections.find((i) => i.__ref.id == selectedItem);
 
     // console.log({ item });
 
     if (item) {
-      onSelect({ collection_id: item._meta.id });
+      onSelect({ collectionId: item.__ref.id });
     } else {
-      const item = folders.find((i) => i._meta.id == selectedItem);
+      const item = folders.find((i) => i.__ref.id == selectedItem);
       onSelect({
-        folder_id: item._meta.id,
-        collection_id: item._meta.collection_id,
+        folderId: item.__ref.id,
+        collectionId: item.__ref.collectionId,
       });
     }
   };

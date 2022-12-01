@@ -139,8 +139,7 @@ export const isRestBodyEmpty = (bodies: { [key: string]: any }) => {
  * normalize the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
  */
 export const normalizeRequest = (
-  request: Partial<IRest>,
-  isSaved: boolean = true
+  request: Partial<IRest>
 ): IRestClientRequest => {
   // prepare normalized request aka _nr
   const _nr: IRestClientRequest = {
@@ -159,7 +158,7 @@ export const normalizeRequest = (
 
   const {
     url,
-    method,
+    method = _nr.method,
     auth,
     headers,
     config,
@@ -295,6 +294,10 @@ export const initialiseStoreFromRequest = (
           post: '',
           test: '',
         },
+      },
+      activeEnvironments: {
+        collection: '',
+        workspace: '',
       },
       isRequestSaved: !!request.__ref.collectionId,
       oauth2LastFetchedToken: '',

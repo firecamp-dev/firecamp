@@ -60,7 +60,7 @@ const CookieManager: FC<ICookieManager> = ({
     update: (cookie = {}) => {
       let existingCookies = cookiesByDomain[activeDomain];
       let cookieIndex = (existingCookies || []).findIndex(
-        (c) => c._meta.id === cookie._meta.id
+        (c) => c.__ref.id === cookie.__ref.id
       );
       // console.log(`cookie`, cookieIndex, cookie);
       if (cookieIndex !== -1) {
@@ -84,7 +84,7 @@ const CookieManager: FC<ICookieManager> = ({
       setCookiesByDomain((existingCookiesByDomain) => {
         let existingCookies = existingCookiesByDomain[activeDomain];
         let cookieIndex = (existingCookies || []).findIndex(
-          (c) => c._meta.id === cookieId
+          (c) => c.__ref.id === cookieId
         );
         if (cookieIndex !== -1) {
           let cookies = [
@@ -140,7 +140,7 @@ const CookieManager: FC<ICookieManager> = ({
           await cookieManager_Instance.addCookie(parsedCookie);
 
           parsedCookie = Object.assign({}, parsedCookie, {
-            _meta: {
+            __ref: {
               id: id(),
             },
           });
@@ -155,7 +155,7 @@ const CookieManager: FC<ICookieManager> = ({
             _setActiveDomain(cookie.domain);
           }
 
-          return Promise.resolve(parsedCookie._meta.id);
+          return Promise.resolve(parsedCookie.__ref.id);
         }
       } catch (error) {
         return Promise.reject(error);
@@ -183,7 +183,7 @@ const CookieManager: FC<ICookieManager> = ({
 
           let existingCookie =
             cookiesByDomain[activeDomain].find(
-              (c) => c._meta.id === cookie.id
+              (c) => c.__ref.id === cookie.id
             ) || {};
 
           // console.log({ existingCookie });
@@ -201,7 +201,7 @@ const CookieManager: FC<ICookieManager> = ({
           await cookieManager_Instance.updateCookie(oldCookie, parsedCookie);
 
           parsedCookie = Object.assign({}, parsedCookie, {
-            _meta: { id: cookie.id },
+            __ref: { id: cookie.id },
           });
 
           // Update cookie in DB
@@ -269,15 +269,15 @@ const CookieManager: FC<ICookieManager> = ({
           cookie.key
         );
 
-        let _meta = {
-          id: cookie._meta.id,
+        let __ref = {
+          id: cookie.__ref.id,
         };
 
         //Remove from DB
-        // await F.db.cookie.remove(_meta);
+        // await F.db.cookie.remove(__ref);
 
         //Remove from state
-        _stateCookieFns.remove(cookie._meta.id);
+        _stateCookieFns.remove(cookie.__ref.id);
       }
     },
     removeAllByDomain: async (domain = '') => {

@@ -114,7 +114,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     fetchRequest();
 
     // subscribe request updates
-    if (tab.meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.__meta.isSaved && tab?.request?._meta?.id) {
       platformContext.request.subscribeChanges(
         tab.request._meta.id,
         handlePull
@@ -123,7 +123,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
     // unsubscribe request updates
     return () => {
-      if (tab.meta.isSaved && tab?.request?._meta?.id) {
+      if (tab.__meta.isSaved && tab?.request?._meta?.id) {
         platformContext.request.unsubscribeChanges(tab.request._meta.id);
       }
     };
@@ -318,11 +318,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
           <DocWrapper />
         </Row>
       </Container.Body>
-      {tab.meta.isSaved && (
+      {tab.__meta.isSaved && (
         <TabChangesDetector
           onChangeRequestTab={platformContext.request.onChangeRequestTab}
           tabId={tab.id}
-          tabMeta={tab.meta}
+          tabMeta={tab.__meta}
         />
       )}
     </Container>
@@ -392,7 +392,7 @@ const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
       );
       // console.log({ pushAction });
 
-      // Update tab meta if existing tab.meta.hasChange is not same as isTabDirty
+      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
       if (tabMeta.hasChange !== isTabDirty) {
         onChangeRequestTab(tabId, { hasChange: isTabDirty });
       }

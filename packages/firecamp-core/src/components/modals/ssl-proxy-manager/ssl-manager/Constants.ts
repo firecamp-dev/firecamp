@@ -8,11 +8,11 @@ const LOCAL_CLIENT_META_TYPES = {
 
 const CONSTS = {
   DUMMY_SSL: {
-    _meta: {
+    __ref: {
       id: '',
       type: LOCAL_CLIENT_TYPES.CERTIFICATE,
     },
-    meta: {
+    __meta: {
       type: LOCAL_CLIENT_META_TYPES.SSL,
       host: '',
       file_path: '',

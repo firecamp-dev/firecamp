@@ -134,8 +134,8 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
         break;
       case ERequestPanelTabs.Config:
         if (
-          _misc.firecampAgent() === EFirecampAgent.desktop ||
-          getFirecampAgent() === EFirecampAgent.proxy
+          _misc.firecampAgent() === EFirecampAgent.Desktop ||
+          getFirecampAgent() === EFirecampAgent.Cloud
         ) {
           return <ConfigTab />;
         } else {
@@ -143,7 +143,7 @@ const RequestPanel = ({ tab, getFirecampAgent }) => {
         }
         break;
       default:
-        return <BodyTab />;
+        // return <BodyTab />;
 
         break;
     }

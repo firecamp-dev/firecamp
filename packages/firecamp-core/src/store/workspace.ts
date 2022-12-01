@@ -18,14 +18,14 @@ import AppService from '../services/app';
 const initialState = {
   workspace: {
     name: 'My Workspace',
-    meta: { c_orders: [], type: EWorkspaceType.Personal },
-    _meta: {
+    __meta: { cOrders: [], type: EWorkspaceType.Personal },
+    __ref: {
       id: nanoid(), // only when user is guest
     },
   },
   explorer: {
     tdpInstance: null,
-    is_progressing: false,
+    isProgressing: false,
 
     collections: [],
     folders: [],
@@ -36,7 +36,7 @@ const initialState = {
 export interface IWorkspaceStore {
   explorer: {
     tdpInstance: any;
-    is_progressing: boolean;
+    isProgressing: boolean;
     collections?: any[];
     folders?: any[];
     requests?: any[];
@@ -55,8 +55,8 @@ export interface IWorkspaceStore {
   setWorkspace: (workspace: IWorkspace) => void;
   fetchExplorer: (wId?: string) => void;
   create: (payload: TCreateWrsPayload) => Promise<any>;
-  checkNameAvailability: (name: string, org_id?: string) => Promise<any>;
-  switch: (workspace_id: string, activeWorkspace: string) => void;
+  checkNameAvailability: (name: string, orgId?: string) => Promise<any>;
+  switch: (workspaceId: string, activeWorkspace: string) => void;
   update: (updates: any, commitAction: boolean, updateDB: boolean) => void;
   remove: (workspaceId: string) => void;
   getWorkspaceId: () => TId;
@@ -91,20 +91,20 @@ export interface IWorkspaceStore {
   changeWorkspaceMetaOrders: (orders: TId[]) => Promise<any>;
   changeCollectionMetaOrders: (
     id: TId,
-    payload: { f_orders?: TId[]; r_orders?: TId[] }
+    payload: { fOrders?: TId[]; rOrders?: TId[] }
   ) => Promise<any>;
   changeFolderMetaOrders: (
     id: TId,
-    payload: { f_orders?: TId[]; r_orders?: TId[] }
+    payload: { fOrders?: TId[]; rOrders?: TId[] }
   ) => Promise<any>;
 
   moveFolder: (
     folderId: TId,
-    to: { collection_id: string; folder_id?: string }
+    to: { collectionId: string; folderId?: string }
   ) => Promise<any>;
   moveRequest: (
     requestId: TId,
-    to: { collection_id: string; folder_id?: string }
+    to: { collectionId: string; folderId?: string }
   ) => Promise<any>;
 
   // common
@@ -124,7 +124,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         collections,
         folders,
         requests,
-        state.workspace.meta.c_orders
+        state.workspace.__meta.cOrders
       );
       set((s) => {
         return { explorer: { ...s.explorer, tdpInstance: instance } };
@@ -140,8 +140,8 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       set((s) => ({
         explorer: {
           ...s.explorer,
-          is_progressing:
-            typeof flag == 'boolean' ? flag : !s.explorer.is_progressing,
+          isProgressing:
+            typeof flag == 'boolean' ? flag : !s.explorer.isProgressing,
         },
       }));
     },
@@ -155,7 +155,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const state = get();
 
       state.toggleProgressBar(true);
-      const wId = workspaceId || state.workspace._meta.id;
+      const wId = workspaceId || state.workspace.__ref.id;
       await Rest.workspace
         .fetchWorkspaceArtifacts(wId)
         .then((res: any) => {
@@ -175,7 +175,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
                 collections,
                 folders,
                 requests,
-                workspace.meta.c_orders
+                workspace.__meta.cOrders
               );
               return {
                 workspace,
@@ -197,21 +197,21 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     // create a new workspace #v3
-    // if `org_id` is presented then It'll be an organizational wrs or else personal
+    // if `orgId` is presented then It'll be an organizational wrs or else personal
     create: async (payload: TCreateWrsPayload) => {
       return Rest.workspace.createV3(payload);
     },
 
     // check the workspace name is available or not
-    // if `org_id` is presented then It'll be an organizational wrs or else personal
-    checkNameAvailability: (name: string, org_id?: string) => {
-      return Rest.workspace.availability({ name, org_id });
+    // if `orgId` is presented then It'll be an organizational wrs or else personal
+    checkNameAvailability: (name: string, orgId?: string) => {
+      return Rest.workspace.availability({ name, orgId });
     },
 
     /**
      * switch: To switch another workspace
      */
-    switch: async (workspace_id: string, activeWorkspace: string) => {},
+    switch: async (workspaceId: string, activeWorkspace: string) => {},
 
     update: async (updates = {}) => {
       // const workspace = get().workspace;
@@ -225,7 +225,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
 
     getWorkspaceId: (): TId => {
       const state = get();
-      return state.workspace._meta.id;
+      return state.workspace.__ref.id;
     },
 
     // collection
@@ -234,9 +234,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const _collection = {
         name: payload?.name,
         description: payload?.description,
-        _meta: {
+        __ref: {
           id: nanoid(),
-          workspace_id: state.workspace._meta.id,
+          workspaceId: state.workspace.__ref.id,
         },
       };
       state.toggleProgressBar(true);
@@ -289,9 +289,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         return {
           workspace: {
             ...s.workspace,
-            meta: {
-              ...s.workspace.meta,
-              c_orders: [...s.workspace.meta.c_orders, collection._meta.id],
+            __meta: {
+              ...s.workspace.__meta,
+              cOrders: [...s.workspace.__meta.cOrders, collection.__ref.id],
             },
           },
           explorer: {
@@ -306,7 +306,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       set((s) => {
         s.explorer.tdpInstance?.updateCollectionItem(collection);
         const collections = s.explorer.collections.map((c) => {
-          if (c._meta.id == collection._meta.id)
+          if (c.__ref.id == collection.__ref.id)
             c = { ...c, name: collection.name }; //note: this condition is used considering only renaming use case
           return c;
         });
@@ -315,16 +315,16 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
     onDeleteCollection: (collection) => {
       const cId =
-        typeof collection == 'string' ? collection : collection._meta.id;
+        typeof collection == 'string' ? collection : collection.__ref.id;
       set((s) => {
         const collections = s.explorer.collections.filter(
-          (c) => c._meta.id != cId
+          (c) => c.__ref.id != cId
         );
         const workspace = {
           ...s.workspace,
-          meta: {
-            ...s.workspace.meta,
-            c_orders: s.workspace.meta.c_orders.filter((id) => id != cId),
+          __meta: {
+            ...s.workspace.__meta,
+            cOrders: s.workspace.__meta.cOrders.filter((id) => id != cId),
           },
         };
         s.explorer.tdpInstance?.deleteCollectionItem(cId);
@@ -338,11 +338,11 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const _folder: IFolder = {
         name: payload?.name,
         description: payload?.description,
-        meta: { f_orders: [], r_orders: [] },
-        _meta: {
+        __meta: { fOrders: [], rOrders: [] },
+        __ref: {
           id: nanoid(),
-          collection_id: payload?._meta?.collection_id,
-          folder_id: payload?._meta?.folder_id,
+          collectionId: payload?.__ref?.collectionId,
+          folderId: payload?.__ref?.folderId,
         },
       };
 
@@ -401,20 +401,20 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
     onCreateFolder: (folder) => {
       //@ts-ignore
-      if (folder.meta?.type) folder.meta.type = 'F'; // TODO: remove it later after migration M=>F
+      if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration M=>F
       set((s) => {
         s.explorer.tdpInstance?.addFolderItem(folder);
         const { collections, folders } = s.explorer;
-        if (folder._meta.folder_id) {
+        if (folder.__ref.folderId) {
           folders.map((f) => {
-            if (f._meta.id == folder._meta.folder_id) {
-              f.meta.f_orders.push(folder._meta.id);
+            if (f.__ref.id == folder.__ref.folderId) {
+              f.__meta.fOrders.push(folder.__ref.id);
             }
           });
-        } else if (folder._meta.collection_id) {
+        } else if (folder.__ref.collectionId) {
           collections.map((c) => {
-            if (c._meta.id == folder._meta.collection_id) {
-              c.meta.f_orders.push(folder._meta.id);
+            if (c.__ref.id == folder.__ref.collectionId) {
+              c.__meta.fOrders.push(folder.__ref.id);
             }
           });
         }
@@ -431,17 +431,17 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       set((s) => {
         s.explorer.tdpInstance?.updateFolderItem(folder);
         const folders = s.explorer.folders.map((f) => {
-          if (f._meta.id == folder._meta.id) f = { ...f, name: folder.name }; //note: this condition is used considering only renaming usecase
+          if (f.__ref.id == folder.__ref.id) f = { ...f, name: folder.name }; //note: this condition is used considering only renaming usecase
           return f;
         });
         return { explorer: { ...s.explorer, folders } };
       });
     },
     onDeleteFolder: (folder) => {
-      const fId = typeof folder == 'string' ? folder : folder._meta.id;
+      const fId = typeof folder == 'string' ? folder : folder.__ref.id;
       set((s) => {
         s.explorer.tdpInstance?.deleteFolderItem(fId);
-        const folders = s.explorer.folders.filter((f) => f._meta.id != fId);
+        const folders = s.explorer.folders.filter((f) => f.__ref.id != fId);
         return { explorer: { ...s.explorer, folders } };
       });
     },
@@ -454,18 +454,18 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         s.explorer?.tdpInstance?.addRequestItem(request);
 
         let { collections, folders, requests } = s.explorer;
-        const { url, method, meta, _meta } = request;
-        if (request._meta.folder_id) {
+        const { url, method, __meta, __ref } = request;
+        if (request.__ref.folderId) {
           folders = s.explorer.folders.map((f) => {
-            if (f._meta.id == request._meta.folder_id) {
-              f.meta.r_orders.push(request._meta.id);
+            if (f.__ref.id == request.__ref.folderId) {
+              f.__meta.rOrders.push(request.__ref.id);
             }
             return f;
           });
-        } else if (request._meta?.collection_id) {
+        } else if (request.__ref?.collectionId) {
           collections = s.explorer.collections.map((c) => {
-            if (c._meta.id == request._meta.collection_id) {
-              c.meta.r_orders.push(request._meta.id);
+            if (c.__ref.id == request.__ref.collectionId) {
+              c.__meta.rOrders.push(request.__ref.id);
             }
             return c;
           });
@@ -476,7 +476,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             ...s.explorer,
             folders,
             collections,
-            requests: [...requests, { url, method, meta, _meta }],
+            requests: [...requests, { url, method, __meta, __ref }],
           },
         };
       });
@@ -487,7 +487,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const state = get();
       const _request = {
         ...payload,
-        _meta: { ...payload._meta, workspace_id: state.workspace._meta.id },
+        __ref: { ...payload.__ref, workspaceId: state.workspace.__ref.id },
       };
       state.toggleProgressBar(true);
       const res = await Rest.request
@@ -545,16 +545,16 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       set((s) => {
         s.explorer?.tdpInstance?.addRequestItem(request);
         const { collections, folders } = s.explorer;
-        if (request._meta.folder_id) {
+        if (request.__ref.folderId) {
           folders.map((f) => {
-            if (f._meta.id == request._meta.folder_id) {
-              f.meta.r_orders.push(request._meta.id);
+            if (f.__ref.id == request.__ref.folderId) {
+              f.__meta.rOrders.push(request.__ref.id);
             }
           });
-        } else if (request._meta.collection_id) {
+        } else if (request.__ref.collectionId) {
           collections.map((c) => {
-            if (c._meta.id == request._meta.collection_id) {
-              c.meta.r_orders.push(request._meta.id);
+            if (c.__ref.id == request.__ref.collectionId) {
+              c.__meta.rOrders.push(request.__ref.id);
             }
           });
         }
@@ -572,17 +572,17 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       set((s) => {
         s.explorer.tdpInstance?.updateRequestItem(request);
         const requests = s.explorer.requests.map((r) => {
-          if (r._meta.id == request._meta.id)
-            r = { ...r, meta: { ...r.meta, name: request.meta.name } }; //note: this condition is used considering only renaming use case
+          if (r.__ref.id == request.__ref.id)
+            r = { ...r, __meta: { ...r.__meta, name: request.__meta.name } }; //note: this condition is used considering only renaming use case
           return r;
         });
         return { explorer: { ...s.explorer, requests } };
       });
     },
     onDeleteRequest: (request: TId | any) => {
-      const rId = typeof request == 'string' ? request : request._meta.id;
+      const rId = typeof request == 'string' ? request : request.__ref.id;
       set((s) => {
-        const requests = s.explorer.requests.filter((r) => r._meta.id != rId);
+        const requests = s.explorer.requests.filter((r) => r.__ref.id != rId);
         s.explorer.tdpInstance?.deleteRequestItem(rId);
         return { explorer: { ...s.explorer, requests } };
       });
@@ -603,12 +603,12 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const state = get();
       state.toggleProgressBar(true);
       const res = await Rest.workspace
-        .changeMetaOrders(state.workspace._meta.id, orders)
+        .changeMetaOrders(state.workspace.__ref.id, orders)
         .then(() => {
           set((s) => ({
             workspace: {
               ...s.workspace,
-              meta: { ...s.workspace.meta, c_orders: orders },
+              __meta: { ...s.workspace.__meta, cOrders: orders },
             },
           }));
         })
@@ -626,18 +626,18 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     /** change folder and requests orders in collection */
-    changeCollectionMetaOrders: async (id, { f_orders, r_orders }) => {
+    changeCollectionMetaOrders: async (id, { fOrders, rOrders }) => {
       const state = get();
       state.toggleProgressBar(true);
       const res = await Rest.collection
-        .changeMetaOrders(id, f_orders, r_orders)
+        .changeMetaOrders(id, fOrders, rOrders)
         .then(() => {
           set((s) => {
             const { collections } = s.explorer;
             collections.map((c) => {
-              if (c._meta.id == id) {
-                if (Array.isArray(f_orders)) c.meta.f_orders = f_orders;
-                if (Array.isArray(r_orders)) c.meta.r_orders = r_orders;
+              if (c.__ref.id == id) {
+                if (Array.isArray(fOrders)) c.__meta.fOrders = fOrders;
+                if (Array.isArray(rOrders)) c.__meta.rOrders = rOrders;
               }
               return c;
             });
@@ -658,18 +658,18 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     /** change folder and requests orders in folder */
-    changeFolderMetaOrders: async (id, { f_orders, r_orders }) => {
+    changeFolderMetaOrders: async (id, { fOrders, rOrders }) => {
       const state = get();
       state.toggleProgressBar(true);
       const res = await Rest.folder
-        .changeMetaOrders(id, f_orders, r_orders)
+        .changeMetaOrders(id, fOrders, rOrders)
         .then(() => {
           set((s) => {
             const { folders } = s.explorer;
             folders.map((f) => {
-              if (f._meta.id == id) {
-                if (Array.isArray(f_orders)) f.meta.f_orders = f_orders;
-                if (Array.isArray(r_orders)) f.meta.r_orders = r_orders;
+              if (f.__ref.id == id) {
+                if (Array.isArray(fOrders)) f.__meta.fOrders = fOrders;
+                if (Array.isArray(rOrders)) f.__meta.rOrders = rOrders;
               }
               return f;
             });
@@ -692,7 +692,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     /** move folder */
     moveFolder: async (
       folderId: TId,
-      to: { collection_id: string; folder_id?: string }
+      to: { collectionId: string; folderId?: string }
     ) => {
       const state = get();
       state.toggleProgressBar(true);
@@ -717,7 +717,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     /** move request */
     moveRequest: async (
       requestId: TId,
-      to: { collection_id: string; folder_id?: string }
+      to: { collectionId: string; folderId?: string }
     ) => {
       const state = get();
       state.toggleProgressBar(true);
@@ -759,5 +759,5 @@ type TCreateOrgPayload = { name: string; default_workspace_name: string };
 type TCreateWrsPayload = {
   name: string;
   description?: string;
-  _meta?: { org_id: string };
+  __ref?: { orgId: string };
 };
