@@ -122,7 +122,7 @@ const initApp = async () => {
   // const wrsId = localStorage.getItem('workspace');
 
   // TODO: Load cookie into cookie-jar
-  // if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+  // if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
   //     const allCookies = await F.db.cookie.fetchAll()
   //     F.cookieManager.addCookies(allCookies)
   // }

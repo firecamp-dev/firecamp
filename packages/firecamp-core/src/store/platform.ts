@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { EFirecampAgent, IOrganization, TId } from '@firecamp/types';
+import { EFirecampAgent, IOrganization } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import * as executor from '@firecamp/agent-manager';
 import { DefaultTheme } from '../types';

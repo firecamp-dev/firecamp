@@ -21,7 +21,7 @@ const CookieManager: FC<ICookieManager> = ({
   // const cookieManager_Instance = F.cookieManager;
 
   useEffect(() => {
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       let _setCookiesByDomain = async (domain = '') => {
         // let fetchedCookiesByDomain = /*dummyCookies;*/ await F.db.cookie.fetchAllByDomain(
         //   domain
@@ -316,7 +316,7 @@ const CookieManager: FC<ICookieManager> = ({
         Cookie Manager
       </Modal.Header>
       <Modal.Body>
-        {_misc.firecampAgent() === EFirecampAgent.desktop ? (
+        {_misc.firecampAgent() === EFirecampAgent.Desktop ? (
           activeDomain && cookiesByDomain && cookiesByDomain[activeDomain] ? (
             <Row className="w-full with-divider">
               <Sidebar

@@ -82,6 +82,8 @@ const createRestStore = (initialState: IRestStoreState) =>
   create<IRestStore>((set, get): IRestStore => {
     let uiRequestPanel = prepareUIRequestPanelState(initialState.request);
 
+    
+
     return {
       last: initialState,
 

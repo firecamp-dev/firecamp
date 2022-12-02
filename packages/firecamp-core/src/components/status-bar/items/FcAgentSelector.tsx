@@ -15,9 +15,9 @@ import {
 import { IPlatformStore, usePlatformStore } from '../../../store/platform';
 
 const agentNamesMap = {
-  [EFirecampAgent.proxy]: 'Cloud Agent',
-  [EFirecampAgent.extension]: 'Extension Agent',
-  [EFirecampAgent.web]: 'Browser Agent',
+  [EFirecampAgent.Cloud]: 'Cloud Agent',
+  [EFirecampAgent.Extension]: 'Extension Agent',
+  [EFirecampAgent.Web]: 'Browser Agent',
 };
 
 const FcAgentSelector: FC<any> = () => {
@@ -56,20 +56,20 @@ const FcAgentSelector: FC<any> = () => {
           <hr />
 
           <AgentItem
-            name={agentNamesMap[EFirecampAgent.proxy]}
-            isSelected={agent == EFirecampAgent.proxy}
+            name={agentNamesMap[EFirecampAgent.Cloud]}
+            isSelected={agent == EFirecampAgent.Cloud}
             className={`mt-4 mb-2`}
             description={`Send rest requests via Firecamp's <a href="">secure cloud servers</a>.`}
-            onSelect={() => _onSelectAgent(EFirecampAgent.proxy)}
+            onSelect={() => _onSelectAgent(EFirecampAgent.Cloud)}
           />
 
           <AgentItem
-            name={agentNamesMap[EFirecampAgent.extension]}
+            name={agentNamesMap[EFirecampAgent.Extension]}
             className={`mb-2`}
-            isSelected={agent == EFirecampAgent.extension}
+            isSelected={agent == EFirecampAgent.Extension}
             disabled={!isExtAgentInstalled}
             description={`Send rest requests via Firecamp's browser extension.`}
-            onSelect={() => _onSelectAgent(EFirecampAgent.extension)}
+            onSelect={() => _onSelectAgent(EFirecampAgent.Extension)}
           >
             {
               !isExtAgentInstalled
@@ -85,10 +85,10 @@ const FcAgentSelector: FC<any> = () => {
           </AgentItem>
 
           <AgentItem
-            name={agentNamesMap[EFirecampAgent.web]}
-            isSelected={agent == EFirecampAgent.web}
+            name={agentNamesMap[EFirecampAgent.Web]}
+            isSelected={agent == EFirecampAgent.Web}
             description={`Sending your requests through your browser comes with <a href="#">limitations</a>`}
-            onSelect={() => _onSelectAgent(EFirecampAgent.web)}
+            onSelect={() => _onSelectAgent(EFirecampAgent.Web)}
           />
         </div>
       }

@@ -17,7 +17,7 @@ const NetworkTiming = ({ tabId = '', response, isRequestRunning = false }) => {
   return (
     <Popover
       content={
-        _misc.firecampAgent() === EFirecampAgent.desktop &&
+        _misc.firecampAgent() === EFirecampAgent.Desktop &&
         !isRequestRunning &&
         !response.error ? (
           <div className="fc-popover-v2 without-padding">

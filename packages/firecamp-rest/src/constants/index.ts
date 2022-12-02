@@ -6,9 +6,9 @@ export const bodyTypeNames = {
   [ERestBodyTypes.FormData]: 'Multipart',
   [ERestBodyTypes.UrlEncoded]: 'Form URL Encode',
   [ERestBodyTypes.GraphQL]: 'GraphQL Queries',
-  [ERestBodyTypes.Json]: 'JSON',
-  [ERestBodyTypes.Xml]: 'XML',
-  [ERestBodyTypes.Text]: 'TEXT',
+  [ERestBodyTypes.Json]: 'Json',
+  [ERestBodyTypes.Xml]: 'Xml',
+  [ERestBodyTypes.Text]: 'Text',
   [ERestBodyTypes.Binary]: 'Binary',
 };
 

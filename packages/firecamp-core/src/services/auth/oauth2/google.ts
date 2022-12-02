@@ -9,7 +9,7 @@ import { GOOGLE_CONFIG } from './constants';
 export const authorize = async (): Promise<string> => {
   try {
     // Execute following logic when using electron agent
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       return window.fc.auth.loginViaGoogle({
         authorize_url: GOOGLE_CONFIG.AUTHORIZE_URL,
         clientId: GOOGLE_CONFIG.CLIENT_ID,

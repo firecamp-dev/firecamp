@@ -159,7 +159,7 @@ export const normalizeRequest = (
   };
 
   const {
-    url,
+    url = _nr.url,
     method = _nr.method,
     auth,
     headers,
@@ -171,9 +171,11 @@ export const normalizeRequest = (
   } = request;
 
   //normalize url
-  _nr.url = !_object.isEmpty(url)
-    ? url
-    : { raw: '', queryParams: [], pathParams: [] };
+  _nr.url = {
+    raw: url.raw || '',
+    queryParams: url.queryParams || [],
+    pathParams: url.pathParams || [],
+  };
   if (!_array.isEmpty(_nr.url.queryParams)) {
     const queryParams = [];
     if (!url.queryParams?.length) url.queryParams = [];
@@ -244,7 +246,13 @@ export const normalizeRequest = (
   // normalize __meta
   _nr.__meta.name = __meta.name || 'Untitled Request';
   _nr.__meta.description = __meta.description || '';
+  //@ts-ignore
+  if (__meta.activeBodyType === 'no_body')
+    __meta.activeBodyType = ERestBodyTypes.NoBody;
   _nr.__meta.activeBodyType = __meta.activeBodyType || ERestBodyTypes.NoBody;
+  //@ts-ignore
+  if (__meta.activeAuthType === 'no_auth')
+    __meta.activeAuthType = EAuthTypes.NoAuth;
   _nr.__meta.activeAuthType = __meta.activeAuthType || EAuthTypes.NoAuth;
   _nr.__meta.version = '2.0.0';
   _nr.__meta.inheritScripts = {
@@ -375,7 +383,7 @@ export const normalizeSendRequestPayload = async (
     'method',
     'config',
     'headers',
-    'meta',
+    '__meta',
   ]) as IRest;
 
   try {
@@ -430,10 +438,10 @@ export const normalizeSendRequestPayload = async (
           request.auth[request.__meta.activeAuthType],
       };
     } else if (request.__meta.activeAuthType === EAuthTypes.Inherit) {
-      let inherited_auth = request.__meta.inheritedAuth;
-      if (inherited_auth) {
+      let inheritedAuth = request.__meta.inheritedAuth;
+      if (inheritedAuth) {
         sendRequestPayload.auth = {
-          [inherited_auth.auth]: inherited_auth.payload,
+          [inheritedAuth.auth]: inheritedAuth.payload,
         };
       }
     }
@@ -587,22 +595,22 @@ export const getAuthHeaders = async (
     let requestAuth = auth;
 
     // @ts-ignore
-    let inherited_auth = request.__meta.inherited_auth;
+    let inheritedAuth = request.__meta.inheritedAuth;
 
-    if (authType === EAuthTypes.Inherit && inherited_auth) {
-      let normalizedAuth = _auth.normalizeToUi(inherited_auth.payload);
+    if (authType === EAuthTypes.Inherit && inheritedAuth) {
+      let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
       requestAuth = {
-        [inherited_auth.type]: normalizedAuth[inherited_auth.type],
+        [inheritedAuth.type]: normalizedAuth[inheritedAuth.type],
       };
-      authType = inherited_auth.type;
+      authType = inheritedAuth.type;
     }
 
     if (__meta?.activeAuthType !== EAuthTypes.NoAuth) {
       try {
         let agent =
-          _misc.firecampAgent() === EFirecampAgent.desktop
-            ? EFirecampAgent.desktop
-            : EFirecampAgent.extension;
+          _misc.firecampAgent() === EFirecampAgent.Desktop
+            ? EFirecampAgent.Desktop
+            : EFirecampAgent.Extension;
         const extraParams = {
           url,
           method,
