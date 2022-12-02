@@ -6,7 +6,7 @@ import {
 } from '@firecamp/types';
 import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
-import { isRestBodyEmpty } from '../../../services/rest-service';
+import { isRestBodyEmpty } from '../../../services/request-service';
 
 import {
   Container,

@@ -7,7 +7,7 @@ import {
   normalizeVariables,
   normalizeSendRequestPayload,
   initialiseStoreFromRequest,
-} from '../services/rest-service';
+} from '../services/request-service';
 import _cloneDeep from 'lodash/cloneDeep';
 
 import {

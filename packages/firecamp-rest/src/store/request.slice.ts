@@ -4,7 +4,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 
-import { prepareUIRequestPanelState } from '../services/rest-service';
+import { prepareUIRequestPanelState } from '../services/request-service';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -22,10 +22,10 @@ const requestSliceKeys = [
   'headers',
   'body',
   'auth',
-  'meta',
   'scripts',
   'config',
-  '_meta',
+  '__meta',
+  '__ref',
 ];
 
 interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
@@ -35,7 +35,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   initialiseRequestByKeyValue: (key: string, value: any) => void;
   changeMethod: (method: EHttpMethod) => any;
   changeHeaders: (headers: IHeader[]) => any;
-  changeMeta: (meta: any) => any;
+  changeMeta: (__meta: any) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
 }
@@ -134,11 +134,11 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
       { config: updatedConfig }
     );
   },
-  changeMeta: (meta) => {
+  changeMeta: (__meta) => {
     let lastMeta = get()?.last?.request.__meta;
     let updatedMeta = {
       ...(get()?.request.__meta || {}),
-      ...meta,
+      ...__meta,
     };
 
     let updatedUiRequestPanel = prepareUIRequestPanelState({
@@ -147,7 +147,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
 
     set((s) => ({
       ...s,
-      request: { ...s.request, meta: updatedMeta },
+      request: { ...s.request, __meta: updatedMeta },
       ui: {
         ...s.ui,
         requestPanel: {
@@ -157,7 +157,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
       },
     }));
 
-    // Prepare commit action for meta
+    // Prepare commit action for __meta
     get()?.prepareMetaPushAction(lastMeta, updatedMeta);
   },
   changeScripts: (scriptType: string, value: string) => {

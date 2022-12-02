@@ -55,7 +55,7 @@ const createPullActionSlice = (set, get): IPullSlice => ({
             break;
 
           // case '_meta':
-          case 'meta':
+          case '__meta':
           case 'url':
           case 'body':
           case 'scripts':

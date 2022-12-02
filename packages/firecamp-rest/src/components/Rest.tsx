@@ -31,7 +31,7 @@ import {
   getAuthHeaders,
   initialiseStoreFromRequest,
   normalizeRequest,
-} from '../services/rest-service';
+} from '../services/request-service';
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   const restStoreApi: any = useRestStoreApi();
@@ -107,8 +107,8 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   }, [activeTab]);
 
   useEffect(() => {
-    setRequestSavedFlag(tab?.meta?.isSaved);
-  }, [tab?.meta?.isSaved]);
+    setRequestSavedFlag(tab.__meta?.isSaved);
+  }, [tab?.__meta?.isSaved]);
 
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
@@ -302,7 +302,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
 
     // Reset url and return is request is saved as data can not be replaced in saved request
-    if (tab?.meta?.isSaved) {
+    if (tab?.__meta?.isSaved) {
       /*  firecampFunctions.notification.alert(
          'You can not paste the CURL snippet into the saved request, please open a new empty request tab instead.',
          {    

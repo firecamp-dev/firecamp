@@ -53,11 +53,13 @@ export const prepareUIRequestPanelState = (
         isRestBodyEmpty(_cloneDeep(request.body))?.isEmpty || false
       ); */
         break;
-      case 'meta':
+      case '__meta':
         if (request.__meta.activeBodyType) {
           updatedUiStore = {
             ...updatedUiStore,
-            hasBody: request.__meta.activeBodyType !== ERestBodyTypes.NoBody,
+            hasBody: ![ERestBodyTypes.NoBody, 'no_body'].includes(
+              request.__meta.activeBodyType
+            ),
           };
         }
 
