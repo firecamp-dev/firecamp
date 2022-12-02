@@ -140,7 +140,7 @@ const Body = ({
   };
 
   return (
-    <Container.Body className="with-divider">
+    <Container.Body>
       {activeArgType.id === EEmitterPayloadTypes.noBody ? (
         <Container.Empty>
           <QuickSelection menus={quickSelectionMenus} />

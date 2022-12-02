@@ -13,6 +13,8 @@ import {
   Container,
   Input,
   Button,
+  TabHeader,
+  Checkbox
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
@@ -667,6 +669,27 @@ const EmitterPlayground = ({ tabData = {} }) => {
         }}
         onEmit={_onEmit}
       />
+      <div className="px-2 pb-2 flex-1 flex flex-col">
+      <TabHeader className="height-small !px-0">
+        <TabHeader.Left>
+        <span className="text-appForeground text-sm block">add arguments</span>
+        </TabHeader.Left>
+        <TabHeader.Right>
+        <Checkbox
+          isChecked={true}
+          label="Ack"
+        />
+        <Button
+              icon={<IoSendSharp size={12} className="ml-1" />}
+              primary
+              iconCenter
+              xs
+              text="Send"
+              iconRight
+            />
+        </TabHeader.Right>
+      </TabHeader>
+      <div className="border border-appBorder flex-1 flex flex-col">
         <EmitterArgTabs
           ack={playgroundEmitter.meta ? playgroundEmitter.meta.ack : false}
           args={playgroundEmitter.body}
@@ -704,6 +727,8 @@ const EmitterPlayground = ({ tabData = {} }) => {
         onSelectFile={_onSelectFile}
         shortcutFns={shortcutFns}
       />
+      </div>
+      </div>
       {/* <Footer
         emitterName={playgroundEmitter.name || ''}
         activeEmitter={selectedCollectionEmitter}
