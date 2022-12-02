@@ -80,6 +80,10 @@ module.exports = {
       rest: 'var(--req-link)',
       socket: 'var(--req-socketio)',
       websocket: 'var(--req-socketio)',
+
+      "purple": "#9c27b0",
+	    "purple-50": "#f3e5f5",
+	    "purple-100": "#e1bee7",
     },
     extend: {
       keyframes: {
