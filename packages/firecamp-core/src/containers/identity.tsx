@@ -4,7 +4,6 @@ import { Integrations } from '@sentry/tracing';
 import { useEffect, useState } from 'react';
 import CloudApiGlobal, { Rest } from '@firecamp/cloud-apis';
 import { ECloudApiHeaders } from '../types';
-import { string } from 'prop-types';
 
 const IdentityPage = () => {
   const [error, setError] = useState('');

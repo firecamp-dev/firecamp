@@ -181,6 +181,7 @@ export const normalizeRequest = (
     if (!url.queryParams?.length) url.queryParams = [];
     url.queryParams.map((qp) => {
       // add default key: `type: text`
+      qp.id = nanoid();
       qp.type = EKeyValueTableRowType.Text;
       qp.value = qp.value || '';
       if (isValidRow(qp)) queryParams.push(qp);
@@ -192,6 +193,7 @@ export const normalizeRequest = (
     if (!url.pathParams?.length) url.pathParams = [];
     url.pathParams.map((pp) => {
       // add default key: `type: text`
+      qp.id = nanoid();
       pp.type = EKeyValueTableRowType.Text;
       pp.value = pp.value || '';
       if (isValidRow(pp)) pathParams.push(pp);

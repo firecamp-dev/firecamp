@@ -1,4 +1,4 @@
-export * from './rest';
+export * from './rest.store';
 
 export * from './request.slice';
 export * from './pushAction.slice';

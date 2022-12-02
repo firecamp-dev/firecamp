@@ -10,7 +10,7 @@ import {
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
-import { IRestStore } from './rest';
+import { IRestStore } from './rest.store';
 
 interface IAuthSlice {
   changeAuth: (type: EAuthTypes, updates: { key: string; value: any }) => any;

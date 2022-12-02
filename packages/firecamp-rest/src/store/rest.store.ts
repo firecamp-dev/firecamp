@@ -1,3 +1,5 @@
+import _cloneDeep from 'lodash/cloneDeep';
+import equal from 'react-fast-compare';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { IRest, IRestResponse } from '@firecamp/types';
@@ -8,8 +10,6 @@ import {
   normalizeSendRequestPayload,
   initialiseStoreFromRequest,
 } from '../services/request-service';
-import _cloneDeep from 'lodash/cloneDeep';
-
 import {
   IRequestSlice,
   createRequestSlice,
@@ -54,9 +54,12 @@ interface IRestStore
     IUiSlice,
     IPullSlice {
   last: any;
+  originalRequest?: IRest;
 
   setLast: (initialState: IRestStoreState) => void;
   initialise: (request: IRest) => void;
+  equalityChecker: (request: Partial<IRest>) => void;
+
   context?: any;
   setContext: (ctx: any) => void;
   execute(
@@ -82,8 +85,6 @@ const createRestStore = (initialState: IRestStoreState) =>
   create<IRestStore>((set, get): IRestStore => {
     let uiRequestPanel = prepareUIRequestPanelState(initialState.request);
 
-    
-
     return {
       last: initialState,
 
@@ -100,10 +101,30 @@ const createRestStore = (initialState: IRestStoreState) =>
         set((s) => ({
           ...s,
           ...initState,
-          originalRequest: _cloneDeep(initState.request),
+          // @ts-ignore
+          originalRequest: _cloneDeep(initState.request) as IRest,
         }));
       },
 
+      equalityChecker: (request: Partial<IRest>) => {
+        const state = get();
+        const { url, method } = state.originalRequest;
+
+        const changeKeys = { __root: [] };
+        for (let key in request) {
+          switch (key) {
+            case 'url':
+              const isUrlChanged = !equal(url, request.url);
+              if (isUrlChanged) changeKeys.__root.push('url');
+              break;
+            case 'method':
+              const isMethodChanged = equal(method, request.method);
+              if (!isMethodChanged) changeKeys.__root.push('method');
+              break;
+          }
+        }
+        console.log(changeKeys);
+      },
       setContext: (ctx: any) => set({ context: ctx }),
 
       ...createRequestSlice(
