@@ -213,6 +213,7 @@ export const normalizeRequest = (
   _nr.headers = !headers || _array.isEmpty(headers) ? [] : headers;
   _nr.headers = _nr.headers.filter((h) => {
     // add default key: `type: text`
+    h.id = nanoid();
     h.type = EKeyValueTableRowType.Text;
     h.value = h.value ? h.value : '';
     return isValidRow(h);

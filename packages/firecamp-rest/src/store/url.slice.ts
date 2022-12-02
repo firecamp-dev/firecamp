@@ -31,8 +31,6 @@ const createUrlSlice = (set, get) => ({
     }));
 
     state.equalityChecker({ url: urlObj });
-    // prepare commit action for url
-    // state.prepareUrlPushAction(lastUrl, updatedUrl);
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
     const state = get();
@@ -64,7 +62,6 @@ const createUrlSlice = (set, get) => ({
     }));
 
     state.equalityChecker({ url });
-    // state.prepareUrlPushAction(get()?.last?.request.url, url);
   },
   changePathParams: (pathParams: IPathParam[]) => {
     const state = get();
@@ -93,9 +90,6 @@ const createUrlSlice = (set, get) => ({
     }));
 
     state.equalityChecker({ url });
-    // state.prepareUrlPushAction(state.last?.request.url, {
-    //   pathParams: pathParams,
-    // });
   },
 });
 

@@ -1,5 +1,4 @@
 import _cloneDeep from 'lodash/cloneDeep';
-import equal from 'react-fast-compare';
 import create from 'zustand';
 import createContext from 'zustand/context';
 import { IRest, IRestResponse } from '@firecamp/types';
@@ -27,6 +26,8 @@ import {
   IUiSlice,
   IPullSlice,
   createPullActionSlice,
+  IRequestChangeStateSlice,
+  createRequestChangeStateSlice,
 } from './index';
 import { EFirecampAgent } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';
@@ -58,7 +59,6 @@ interface IRestStore
 
   setLast: (initialState: IRestStoreState) => void;
   initialise: (request: IRest) => void;
-  equalityChecker: (request: Partial<IRest>) => void;
 
   context?: any;
   setContext: (ctx: any) => void;
@@ -106,25 +106,6 @@ const createRestStore = (initialState: IRestStoreState) =>
         }));
       },
 
-      equalityChecker: (request: Partial<IRest>) => {
-        const state = get();
-        const { url, method } = state.originalRequest;
-
-        const changeKeys = { __root: [] };
-        for (let key in request) {
-          switch (key) {
-            case 'url':
-              const isUrlChanged = !equal(url, request.url);
-              if (isUrlChanged) changeKeys.__root.push('url');
-              break;
-            case 'method':
-              const isMethodChanged = equal(method, request.method);
-              if (!isMethodChanged) changeKeys.__root.push('method');
-              break;
-          }
-        }
-        console.log(changeKeys);
-      },
       setContext: (ctx: any) => set({ context: ctx }),
 
       ...createRequestSlice(
@@ -146,6 +127,7 @@ const createRestStore = (initialState: IRestStoreState) =>
         },
       }),
       ...createPullActionSlice(set, get),
+      ...createRequestChangeStateSlice(set, get),
 
       execute: async (
         variables: {

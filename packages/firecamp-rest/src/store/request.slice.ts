@@ -68,26 +68,19 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
   },
 
   changeMethod: (method: EHttpMethod) => {
+    const state = get();
     set((s) => ({
-      ...s,
       request: { ...s.request, method },
     }));
-
-    // Prepare commit action for method in _root
-    get()?.prepareRootPushAction(
-      { method: get()?.last?.request.method },
-      { method }
-    );
+    state.equalityChecker({ method });
   },
   changeHeaders: (headers: IHeader[]) => {
-    // let updatedUiRequestPanel = prepareUIRequestPanelState({ headers });
-
-    let headersLength = get().runtime.authHeaders?.length + headers.length;
-    let updatedUiRequestPanel = {
-      hasHeaders: headersLength ? true : false,
-      headers: headersLength,
+    const state = get();
+    const headerCount = state.runtime.authHeaders?.length + headers.length;
+    const updatedUiRequestPanel = {
+      hasHeaders: headerCount ? true : false,
+      headers: headerCount,
     };
-
     set((s) => ({
       ...s,
       request: { ...s.request, headers },
@@ -99,12 +92,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
         },
       },
     }));
-
-    // Prepare commit action for headers in _root
-    get()?.prepareRootPushAction(
-      { headers: get()?.last?.request.headers },
-      { headers }
-    );
+    state.equalityChecker({ headers });
   },
   changeConfig: (configKey: string, configValue: any) => {
     let lastConfig = get()?.last?.request.config;
