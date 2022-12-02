@@ -110,18 +110,15 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag(tab?.meta?.isSaved);
   }, [tab?.meta?.isSaved]);
 
-  /**
-   * Subscribe/ unsubscribe request changes (pull-actions)
-   */
+  /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
+    if (tab.__meta.isSaved && tab?.request.__ref?.id) {
       platformContext.request.subscribeChanges(
         tab.request.__ref.id,
         handlePull
       );
     }
-
     // unsubscribe request updates
     return () => {
       if (tab.__meta.isSaved && tab?.request?.__ref.id) {
@@ -129,6 +126,45 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const _fetchRequest = async () => {
+      try {
+        const isRequestSaved = !!tab?.request?.__ref?.id || false;
+        // prepare a minimal request payload
+        let requestToNormalize: IRest = normalizeRequest({});
+
+        if (isRequestSaved === true) {
+          setIsFetchingReqFlag(true);
+          try {
+            const response = await platformContext.request.onFetch(
+              tab.request.__ref.id
+            );
+            requestToNormalize = response.data;
+          } catch (error) {
+            console.error({
+              API: 'fetch rest request',
+              error,
+            });
+            throw error;
+          }
+        }
+
+        /** initialise rest store on tab load */
+        initialise(requestToNormalize);
+        setIsFetchingReqFlag(false);
+        // Update auth type, generate auth headers
+        updateActiveAuth(requestToNormalize.__meta.activeAuthType);
+      } catch (error) {
+        console.error({
+          API: 'fetch and normalize rest request',
+          error,
+        });
+      }
+    };
+    _fetchRequest();
+  }, []);
+
 
   /**
    * Handle pull payload
@@ -150,7 +186,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = await getMergedRequestByPullAction(pullPayload);
 
-      updatedRequest = normalizeRequest(updatedRequest, true);
+      updatedRequest = normalizeRequest(updatedRequest);
 
       // set last value by pull action and request
       setLast({
@@ -179,46 +215,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       });
     }
   };
-
-  useEffect(() => {
-    const _fetchRequest = async () => {
-      try {
-        const isRequestSaved = !!tab?.request?.__ref?.id || false;
-        // prepare a minimal request payload
-        let requestToNormalize: IRest = normalizeRequest({});
-
-        if (isRequestSaved === true) {
-          setIsFetchingReqFlag(true);
-          try {
-            const response = await platformContext.request.onFetch(
-              tab.request.__ref.id
-            );
-            requestToNormalize = response.data;
-          } catch (error) {
-            console.error({
-              API: 'fetch rest request',
-              error,
-            });
-            throw error;
-          }
-        }
-
-        /** initialise ws store on tab load */
-        initialise(requestToNormalize);
-        setIsFetchingReqFlag(false);
-        // Update auth type, generate auth headers
-        updateActiveAuth(requestToNormalize.__meta.activeAuthType);
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
-
-        // TODO: close tab and show error popup
-      }
-    };
-    _fetchRequest();
-  }, []);
 
   const resetAuthHeaders = async (authType: EAuthTypes) => {
     try {
