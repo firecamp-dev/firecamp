@@ -29,7 +29,6 @@ const createUrlSlice = (set, get) => ({
         },
       },
     }));
-
     state.equalityChecker({ url: urlObj });
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
@@ -60,7 +59,6 @@ const createUrlSlice = (set, get) => ({
         },
       },
     }));
-
     state.equalityChecker({ url });
   },
   changePathParams: (pathParams: IPathParam[]) => {
@@ -88,7 +86,6 @@ const createUrlSlice = (set, get) => ({
         },
       },
     }));
-
     state.equalityChecker({ url });
   },
 });

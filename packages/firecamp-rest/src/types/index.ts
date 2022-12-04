@@ -1,12 +1,12 @@
 import { IUiAuth, IRest } from '@firecamp/types';
 
-export enum EPushAction_rootKeys {
+export enum EReqChangeRootKeys {
   method = 'method',
   headers = 'headers',
   config = 'config',
 }
 
-export enum EPushActionMetaKeys {
+export enum EReqChangeMetaKeys {
   name = 'name',
   description = 'description',
   activeBodyType = 'activeBodyType',
@@ -14,23 +14,16 @@ export enum EPushActionMetaKeys {
   inheritScripts = 'inheritScripts',
 }
 
-export enum EPushActionUrlKeys {
+export enum EReqChangeUrlKeys {
   raw = 'raw',
   queryParams = 'queryParams',
   pathParams = 'pathParams',
 }
 
-export enum EPushActionScriptsKeys {
+export enum EReqChangeScriptsKeys {
   pre = 'pre',
   post = 'post',
   test = 'test',
-}
-
-export enum EPushAction_metaKeys {
-  collectionId = 'collectionId',
-  folderId = 'folderId',
-  updatedAt = 'updatedAt',
-  updatedBy = 'updatedBy',
 }
 
 export enum ERequestPanelTabs {

@@ -1,4 +1,4 @@
-import { EPushActionType, ERequestTypes, IUiAuth } from '@firecamp/types';
+import { ERequestTypes, IUiAuth } from '@firecamp/types';
 import { _object, _auth } from '@firecamp/utils';
 
 import { IPushAction, IPushPayload } from './pushAction.slice';
@@ -22,7 +22,7 @@ interface IPullSlice {
 const createPullActionSlice = (set, get): IPullSlice => ({
   pull: {
     _action: {
-      type: EPushActionType.Update,
+      type: 'u',
       item_id: '',
       item_type: 'R',
       request_type: ERequestTypes.Rest,
@@ -36,7 +36,7 @@ const createPullActionSlice = (set, get): IPullSlice => ({
     if (
       pullActionPayload &&
       pullActionPayload._action &&
-      pullActionPayload._action.type === EPushActionType.Update &&
+      pullActionPayload._action.type === 'u' &&
       pullActionPayload._action.keys
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);

@@ -3,15 +3,13 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 
-import PushActionService from '../services/push-actions';
 import { TAuth } from './index';
 
 import {
-  EPushAction_rootKeys,
-  EPushActionScriptsKeys,
-  EPushActionMetaKeys,
-  EPushAction_metaKeys,
-  EPushActionUrlKeys,
+  EReqChangeRootKeys,
+  EReqChangeScriptsKeys,
+  EReqChangeMetaKeys,
+  EReqChangeUrlKeys,
   IRestClientRequest,
 } from '../types';
 import { _array, _object } from '@firecamp/utils';
@@ -35,13 +33,12 @@ const RequestChangeState: IRequestChangeState = {
 };
 
 interface IRequestChangeState {
-  url?: EPushActionUrlKeys[];
-  scripts?: EPushActionScriptsKeys[];
+  url?: EReqChangeUrlKeys[];
+  scripts?: EReqChangeScriptsKeys[];
   auth?: EAuthTypes[];
   body?: ERestBodyTypes[];
-  __meta?: EPushActionMetaKeys[];
-  __ref?: EPushAction_metaKeys[];
-  __root?: EPushAction_rootKeys[];
+  __meta?: EReqChangeMetaKeys[];
+  __root?: EReqChangeRootKeys[];
   __removed?: {
     body?: ERestBodyTypes[];
     auth?: EAuthTypes[];

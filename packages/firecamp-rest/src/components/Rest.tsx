@@ -7,7 +7,6 @@ import _cleanDeep from 'clean-deep';
 import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
 import {
   EAuthTypes,
-  EPushActionType,
   IRest,
 } from '@firecamp/types';
 import shallow from 'zustand/shallow';
@@ -48,7 +47,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     setIsFetchingReqFlag,
     setOAuth2LastFetchedToken,
     getMergedRequestByPullAction,
-    prepareRequestUpdatePushAction,
+
     setLast,
     setContext,
   } = useRestStore(
@@ -64,7 +63,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
-      prepareRequestUpdatePushAction: s.prepareRequestUpdatePushAction,
       setLast: s.setLast,
       setContext: s.setContext,
     }),
@@ -203,7 +201,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       // });
 
       // get push action payload
-      let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
+      // let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
@@ -334,7 +332,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     // console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === EPushActionType.Insert) {
+    if (pushPayload._action.type === 'i') {
       platformContext.request.subscribeChanges(
         pushPayload._action.item_id,
         handlePull

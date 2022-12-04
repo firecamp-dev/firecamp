@@ -1,27 +1,24 @@
+import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
 import {
   IUrl,
   EAuthTypes,
   ERequestTypes,
   TId,
-  EPushActionType,
   ERestBodyTypes,
   IRest,
 } from '@firecamp/types';
-import _cleanDeep from 'clean-deep';
-import _cloneDeep from 'lodash/cloneDeep';
-
+import { _array, _object } from '@firecamp/utils';
 import PushActionService from '../services/push-actions';
 import { TAuth } from './index';
 
 import {
-  EPushAction_rootKeys,
-  EPushActionScriptsKeys,
-  EPushActionMetaKeys,
-  EPushAction_metaKeys,
-  EPushActionUrlKeys,
+  EReqChangeRootKeys,
+  EReqChangeScriptsKeys,
+  EReqChangeMetaKeys,
+  EReqChangeUrlKeys,
   IRestClientRequest,
 } from '../types';
-import { _array, _object } from '@firecamp/utils';
 import { normalizePushPayload } from '../services/request-service';
 
 /**
@@ -43,12 +40,12 @@ const emptyPushAction = {
 };
 
 interface IPushAction {
-  _root?: Array<EPushAction_rootKeys>;
-  meta?: Array<EPushActionMetaKeys>;
-  url?: Array<EPushActionUrlKeys>;
-  scripts?: Array<EPushActionScriptsKeys>;
+  _root?: Array<EReqChangeRootKeys>;
+  meta?: Array<EReqChangeMetaKeys>;
+  url?: Array<EReqChangeUrlKeys>;
+  scripts?: Array<EReqChangeScriptsKeys>;
   auth?: Array<EAuthTypes>;
-  _meta?: Array<EPushAction_metaKeys>;
+  _meta?: Array<string>;
   body?: Array<ERestBodyTypes>;
   _removed?: {
     body?: Array<ERestBodyTypes>;
@@ -58,7 +55,7 @@ interface IPushAction {
 
 interface IPushPayload extends Partial<IRest> {
   _action?: {
-    type: EPushActionType;
+    type: string;
     item_id: TId;
     item_type: 'R';
     request_type: ERequestTypes.Rest;
@@ -70,17 +67,11 @@ interface IPushPayload extends Partial<IRest> {
 
 interface IPushActionSlice {
   pushAction?: IPushAction;
-
-  initializePushAction: (pushAction: IPushAction) => void;
-  prepareUrlPushAction?: (lastUrl: IUrl, url: IUrl) => void;
-  prepareRootPushAction?: (lastRequest, request) => void;
-  prepareScriptsPushAction?: (lastScripts, scripts) => void;
   prepareAuthPushAction?: (
     lastAuth: TAuth,
     auth: TAuth,
     authType: EAuthTypes
   ) => void;
-  prepareMetaPushAction?: (lastMeta, meta) => void;
   prepareActiveBodyTypePushAction?: (lastBodyType, bodyType) => void;
   prepareBodyPushAction?: (lastBody, body, bodyType: string) => void;
   prepareRequestInsertPushPayload: () => Promise<IPushPayload>;
@@ -93,74 +84,6 @@ interface IPushActionSlice {
 
 const createPushActionSlice = (set, get): IPushActionSlice => ({
   pushAction: _cloneDeep(emptyPushAction),
-
-  initializePushAction: (pushAction: IPushAction) => {
-    set((s) => ({
-      ...s,
-      pushAction,
-    }));
-  },
-
-  prepareUrlPushAction: (lastUrl, url) => {
-    // Return if request is not saved
-    if (!get()?.runtime?.isRequestSaved) return;
-
-    let urlPushAction = PushActionService.prepareUrlPushAction(
-      lastUrl,
-      url,
-      get().pushAction?.url
-    );
-
-    // console.log({ urlPushAction });
-
-    set((s) => ({
-      ...s,
-      pushAction: {
-        ...s.pushAction,
-        url: urlPushAction,
-      },
-    }));
-  },
-
-  prepareRootPushAction: (lastRequest, request) => {
-    // Return if request is not saved
-    if (!get()?.runtime?.isRequestSaved) return;
-
-    let rootPushAction = PushActionService.prepareRootPushAction(
-      lastRequest,
-      request,
-      get().pushAction?._root
-    );
-
-    set((s) => ({
-      ...s,
-      pushAction: {
-        ...s.pushAction,
-        _root: rootPushAction,
-      },
-    }));
-  },
-
-  prepareScriptsPushAction: (lastScripts, scripts) => {
-    // Return if request is not saved
-    if (!get()?.runtime?.isRequestSaved) return;
-
-    let scriptsPushAction = PushActionService.prepareScriptsPushAction(
-      lastScripts,
-      scripts,
-      get().pushAction?.scripts
-    );
-
-    // console.log({ 1: scripts, 2: lastScripts });
-
-    set((s) => ({
-      ...s,
-      pushAction: {
-        ...s.pushAction,
-        scripts: scriptsPushAction,
-      },
-    }));
-  },
 
   prepareAuthPushAction: (
     lastAuth: TAuth,
@@ -189,25 +112,6 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
           ...s.pushAction._removed,
           auth: authPushAction._removed.auth,
         },
-      },
-    }));
-  },
-
-  prepareMetaPushAction: (lastMeta, meta) => {
-    // Return if request is not saved
-    if (!get()?.runtime?.isRequestSaved) return;
-
-    let metaPushAction = PushActionService.prepareMetaPushAction(
-      lastMeta,
-      meta,
-      get().pushAction?.meta
-    );
-
-    set((s) => ({
-      ...s,
-      pushAction: {
-        ...s.pushAction,
-        meta: metaPushAction,
       },
     }));
   },
@@ -249,7 +153,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
     pushPayload = { ...requestToPush };
     pushPayload._action = {
-      type: EPushActionType.Insert,
+      type: 'i',
       item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.Rest,
@@ -301,7 +205,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
     };
 
     pushPayload._action = {
-      type: EPushActionType.Update,
+      type: 'u',
       item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.Rest,
@@ -324,54 +228,6 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
     for (let key in request) {
       switch (key) {
-        // handle _root
-        case EPushAction_rootKeys.config:
-        case EPushAction_rootKeys.headers:
-        case EPushAction_rootKeys.method:
-          pushAction['_root'] = PushActionService.prepareRootPushAction(
-            { [key]: lastRequest[key] },
-            { [key]: request[key] }
-            // get().pushAction?._root
-          );
-          break;
-
-        // handle meta
-        case 'meta':
-          pushAction['meta'] = PushActionService.prepareMetaPushAction(
-            lastRequest.__meta,
-            request.__meta
-            // get().pushAction?.meta
-          );
-
-          break;
-
-        // handle _meta
-        /* case '_meta':
-          pushAction['_ref'] = PushActionService.prepare_MetaPushAction(
-            lastRequest.__ref,
-            request.__ref
-            // get().pushAction?.__ref
-          );
-          break; */
-
-        // handle url
-        case 'url':
-          pushAction['url'] = PushActionService.prepareUrlPushAction(
-            lastRequest.url,
-            request.url
-            // get().pushAction?.url
-          );
-          break;
-
-        // handle scripts
-        case 'scripts':
-          pushAction['scripts'] = PushActionService.prepareScriptsPushAction(
-            lastRequest.scripts,
-            request.scripts
-            // get().pushAction?.scripts
-          );
-          break;
-
         // handle auth
         case 'auth':
           for (let authType in request.auth) {
@@ -414,9 +270,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
           break;
       }
     }
-
     console.log({ prepareRequestUpdatePushAction: pushAction });
-
     return Promise.resolve(pushAction);
   },
 

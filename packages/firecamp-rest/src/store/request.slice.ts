@@ -95,15 +95,11 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
     state.equalityChecker({ headers });
   },
   changeConfig: (configKey: string, configValue: any) => {
-    let lastConfig = get()?.last?.request.config;
-    let updatedConfig = {
-      ...(get()?.request.config || {}),
-      [configKey]: configValue,
-    };
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
+    const state = get();
+    const updatedConfig = { ...state.request.config, [configKey]: configValue };
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
       config: updatedConfig,
     });
-
     set((s) => ({
       ...s,
       request: { ...s.request, config: updatedConfig },
@@ -115,21 +111,15 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
         },
       },
     }));
-
-    // Prepare commit action for headers in _root
-    get()?.prepareRootPushAction(
-      { config: lastConfig },
-      { config: updatedConfig }
-    );
+    state.equalityChecker({ config: updatedConfig });
   },
   changeMeta: (__meta) => {
-    let lastMeta = get()?.last?.request.__meta;
-    let updatedMeta = {
-      ...(get()?.request.__meta || {}),
+    const state = get();
+    const updatedMeta = {
+      ...state.request.__meta,
       ...__meta,
     };
-
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
       __meta: updatedMeta,
     });
 
@@ -144,9 +134,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
         },
       },
     }));
-
-    // Prepare commit action for __meta
-    get()?.prepareMetaPushAction(lastMeta, updatedMeta);
+    state.equalityChecker({ __meta: updatedMeta });
   },
   changeScripts: (scriptType: string, value: string) => {
     //todo: will create enum for pre,post,test

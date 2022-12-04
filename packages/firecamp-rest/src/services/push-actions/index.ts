@@ -4,68 +4,9 @@ import cleanDeep from 'clean-deep';
 import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 
-import {
-  EPushActionMetaKeys,
-  EPushActionScriptsKeys,
-  EPushActionUrlKeys,
-  EPushAction_metaKeys,
-  EPushAction_rootKeys,
-} from '../../types';
+import { EReqChangeMetaKeys } from '../../types';
 
 const PushActionService = {
-  // TODO: add below function as common logic for all clients
-  prepareRootPushAction: (
-    lastRequest: any,
-    request: any,
-    existingPushAction?: Array<EPushAction_rootKeys>
-  ) => {
-    let pushAction: Array<EPushAction_rootKeys> = existingPushAction || [];
-
-    if (!lastRequest || !request) return [];
-
-    Object.keys(request).forEach((key: EPushAction_rootKeys) => {
-      if (!equal(lastRequest[key], request[key])) {
-        /**
-         * Push request key in commit action
-         * If updated request and lastRequest value are not same
-         */
-        pushAction.push(key);
-      } else if (
-        pushAction.includes(key) &&
-        equal(lastRequest[key], request[key])
-      ) {
-        pushAction = _array.without(pushAction, key) as EPushAction_rootKeys[];
-      }
-    });
-
-    return _array.uniq(pushAction);
-  },
-
-  // TODO: add below function as common logic for all clients
-  prepareUrlPushAction: (
-    lastUrl: IUrl,
-    url: IUrl,
-    existingPushAction?: Array<EPushActionUrlKeys>
-  ) => {
-    let pushAction: Array<EPushActionUrlKeys> = existingPushAction || [];
-
-    if (!lastUrl || !url) return [];
-
-    Object.keys(url).forEach((key: EPushActionUrlKeys) => {
-      if (!equal(lastUrl[key], url[key])) {
-        /**
-         * Push url key in commit action
-         * If updated url and lastUrl value are not same
-         */
-        pushAction.push(key);
-      } else if (pushAction.includes(key) && equal(lastUrl[key], url[key])) {
-        pushAction = _array.without(pushAction, key) as EPushActionUrlKeys[];
-      }
-    });
-
-    return _array.uniq(pushAction);
-  },
-
   prepareAuthPushAction: (
     lastAuth: any,
     auth: any,
@@ -141,88 +82,6 @@ const PushActionService = {
     // console.log({ pushAction });
 
     return pushAction;
-  },
-
-  prepareScriptsPushAction: (
-    lastScripts: any,
-    scripts: any,
-    existingPushAction?: Array<EPushActionScriptsKeys>
-  ) => {
-    let pushAction: Array<EPushActionScriptsKeys> = existingPushAction || [];
-
-    if (!lastScripts || !scripts) return [];
-
-    Object.keys(scripts).forEach((key: EPushActionScriptsKeys) => {
-      if (!equal(lastScripts[key], scripts[key])) {
-        /**
-         * Push script key in commit action
-         * If updated script and lastScripts value are not same
-         */
-        pushAction.push(key);
-      } else if (
-        pushAction.includes(key) &&
-        equal(lastScripts[key], scripts[key])
-      ) {
-        pushAction = _array.without(
-          pushAction,
-          key
-        ) as EPushActionScriptsKeys[];
-      }
-    });
-
-    return _array.uniq(pushAction);
-  },
-
-  // TODO: add below function as common logic for all clients
-  prepareMetaPushAction: (
-    lastMeta: any,
-    meta: any,
-    existingPushAction?: Array<EPushActionMetaKeys>
-  ) => {
-    let pushAction: Array<EPushActionMetaKeys> = existingPushAction || [];
-
-    if (!lastMeta || !meta) return [];
-
-    Object.keys(meta).forEach((key: EPushActionMetaKeys) => {
-      if (!equal(lastMeta[key], meta[key])) {
-        /**
-         * Push meta key in commit action
-         * If updated meta and lastMeta value are not same
-         */
-        pushAction.push(key);
-      } else if (pushAction.includes(key) && equal(lastMeta[key], meta[key])) {
-        pushAction = _array.without(pushAction, key) as EPushActionMetaKeys[];
-      }
-    });
-
-    return _array.uniq(pushAction);
-  },
-
-  // TODO: add below function as common logic for all clients
-  prepare_MetaPushAction: (
-    last_Meta: any,
-    _meta: any,
-    existingPushAction?: Array<EPushAction_metaKeys>
-  ) => {
-    let pushAction: Array<EPushAction_metaKeys> = existingPushAction || [];
-    if (!last_Meta || !_meta) return [];
-
-    Object.keys(_meta).forEach((key: EPushAction_metaKeys) => {
-      if (!equal(last_Meta[key], _meta[key])) {
-        /**
-         * Push _meta key in commit action
-         * If updated _meta and last_Meta value are not same
-         */
-        pushAction.push(key);
-      } else if (
-        pushAction.includes(key) &&
-        equal(last_Meta[key], _meta[key])
-      ) {
-        pushAction = _array.without(pushAction, key) as EPushAction_metaKeys[];
-      }
-    });
-
-    return _array.uniq(pushAction);
   },
 
   prepareBodyPushAction: (
