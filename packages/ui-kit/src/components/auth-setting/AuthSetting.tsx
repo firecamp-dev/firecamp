@@ -137,7 +137,7 @@ const AuthSetting: FC<IAuthSetting> = ({
 
         authPayload = Object.assign(authPayload, { [key]: isKeyEmpty });
       } else {
-        let oauth2Payload = authObj[EAuthTypes.OAuth2].grant_types;
+        let oauth2Payload = authObj[EAuthTypes.OAuth2].grantTypes;
 
         let i;
         for (i in oauth2Payload) {

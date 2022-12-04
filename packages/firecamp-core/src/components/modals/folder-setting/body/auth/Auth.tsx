@@ -267,16 +267,16 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
       const { key, value } = payload;
 
       setAuthDetails((state) => {
-        let type = state.auth[EAuthTypes.OAuth2].active_grant_type;
+        let type = state.auth[EAuthTypes.OAuth2].activeGrantType;
         return {
           ...state,
           auth: {
             ...state.auth,
             [EAuthTypes.OAuth2]: Object.assign(state.auth[EAuthTypes.OAuth2], {
-              grant_types: {
-                ...state.auth[EAuthTypes.OAuth2].grant_types,
+              grantTypes: {
+                ...state.auth[EAuthTypes.OAuth2].grantTypes,
                 [type]: Object.assign(
-                  state.auth[EAuthTypes.OAuth2].grant_types[type],
+                  state.auth[EAuthTypes.OAuth2].grantTypes[type],
                   {
                     [key]: value,
                   }
@@ -294,7 +294,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
           auth: {
             ...state.auth,
             [EAuthTypes.OAuth2]: Object.assign(state.auth[EAuthTypes.OAuth2], {
-              active_grant_type: payload,
+              activeGrantType: payload,
             }),
           },
         };

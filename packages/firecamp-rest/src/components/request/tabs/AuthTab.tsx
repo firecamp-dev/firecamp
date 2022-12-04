@@ -32,14 +32,14 @@ const AuthTab = () => {
     // console.log({ updated, payload, updates });
 
     if (updated === 'activeGrantType') {
-      updates = Object.assign(updates, { active_grant_type: payload });
+      updates = Object.assign(updates, { activeGrantType: payload });
     }
-    if (updated === 'activeGrantTypeValue' && 'grant_types' in updates) {
+    if (updated === 'activeGrantTypeValue' && 'grantTypes' in updates) {
       const { key, value } = payload;
 
-      updates['grant_types'] = Object.assign(updates['grant_types'], {
-        [updates.active_grant_type]: Object.assign(
-          updates['grant_types'][updates.active_grant_type],
+      updates['grantTypes'] = Object.assign(updates['grantTypes'], {
+        [updates.activeGrantType]: Object.assign(
+          updates['grantTypes'][updates.activeGrantType],
           { [key]: value }
         ),
       });

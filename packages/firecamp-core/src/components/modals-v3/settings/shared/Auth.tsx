@@ -43,15 +43,15 @@ const Auth: FC<IAuthSettingUi> = ({
     if (updated === 'activeGrantTypeValue') {
       const { key, value } = payload;
 
-      let type = propAuth[EAuthTypes.OAuth2].active_grant_type;
+      let type = propAuth[EAuthTypes.OAuth2].activeGrantType;
 
       onChange('auth', {
         ...propAuth,
         [EAuthTypes.OAuth2]: Object.assign(propAuth[EAuthTypes.OAuth2], {
-          grant_types: {
-            ...propAuth[EAuthTypes.OAuth2].grant_types,
+          grantTypes: {
+            ...propAuth[EAuthTypes.OAuth2].grantTypes,
             [type]: Object.assign(
-              propAuth[EAuthTypes.OAuth2].grant_types[type],
+              propAuth[EAuthTypes.OAuth2].grantTypes[type],
               {
                 [key]: value,
               }
@@ -65,7 +65,7 @@ const Auth: FC<IAuthSettingUi> = ({
       onChange('auth', {
         ...propAuth,
         [EAuthTypes.OAuth2]: Object.assign(propAuth[EAuthTypes.OAuth2], {
-          active_grant_type: payload,
+          activeGrantType: payload,
         }),
       });
     }

@@ -5,14 +5,14 @@ import { IExtra } from '../types';
 
 export default (credentials: IOAuth1, extra: IExtra): string => {
   const {
-    consumer_key,
-    consumer_secret,
-    token_key,
-    token_secret,
-    callback_url,
+    consumerKey,
+    consumerSecret,
+    tokenKey,
+    tokenSecret,
+    callbackUrl,
     nonce,
     realm,
-    signature_method,
+    signatureMethod,
     timestamp,
     verifier,
     version,
@@ -40,12 +40,12 @@ export default (credentials: IOAuth1, extra: IExtra): string => {
 
   const oauth = new OAuth({
     consumer: {
-      key: consumer_key,
-      secret: consumer_secret,
+      key: consumerKey,
+      secret: consumerSecret,
     },
-    signature_method: signature_method,
+    signature_method: signatureMethod,
     version: version,
-    hash_function: hashFunction(signature_method),
+    hash_function: hashFunction(signatureMethod),
     realm: realm || null,
   });
 
@@ -53,14 +53,14 @@ export default (credentials: IOAuth1, extra: IExtra): string => {
     url: url.raw,
     method,
     data: {
-      oauth_callback: callback_url || '',
+      oauth_callback: callbackUrl || '',
       oauth_timestamp: timestamp || '',
       oauth_nonce: nonce || '',
       oauth_verifier: verifier || '',
     },
   };
 
-  let token: { key: string, secret: string } = { key: token_key, secret: token_secret };
+  const token: { key: string, secret: string } = { key: tokenKey, secret: tokenSecret };
 
   const data = oauth.authorize(requestData, token);
   const authInfo = oauth.toHeader(data).Authorization;

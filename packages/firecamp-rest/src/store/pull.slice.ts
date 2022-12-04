@@ -1,4 +1,4 @@
-import { ERequestTypes, IUiAuth } from '@firecamp/types';
+import { IUiAuth } from '@firecamp/types';
 import { _object, _auth } from '@firecamp/utils';
 
 import { IPushAction, IPushPayload } from './pushAction.slice';
@@ -20,17 +20,6 @@ interface IPullSlice {
 }
 
 const createPullActionSlice = (set, get): IPullSlice => ({
-  pull: {
-    _action: {
-      type: 'u',
-      item_id: '',
-      item_type: 'R',
-      request_type: ERequestTypes.Rest,
-      collectionId: '',
-      workspaceId: '',
-      keys: {},
-    },
-  },
 
   getMergedRequestByPullAction: (pullActionPayload: IPushPayload) => {
     if (

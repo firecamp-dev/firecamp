@@ -1,11 +1,5 @@
 import { FC, useState, useReducer, useEffect, Key } from 'react';
-import {
-  Dropdown,
-  Button,
- 
-  Input,
-  
-} from '@firecamp/ui-kit';
+import { Dropdown, Button, Input } from '@firecamp/ui-kit';
 import { EAuthTypes, IUiOAuth2 } from '@firecamp/types';
 import { typePayload } from './constants';
 
@@ -35,51 +29,51 @@ const OAuth2: FC<IOAuth2Comp> = ({
   oauth2LastToken = '',
   fetchTokenOnChangeOAuth2 = () => {},
 }) => {
-  let { active_grant_type, grant_types } = auth;
+  let { activeGrantType, grantTypes } = auth;
 
-  const grantTypes = typePayload[EAuthTypes.OAuth2]['grant_types'];
+  const grantTypesOptions = typePayload[EAuthTypes.OAuth2]['grantTypes'];
   const grantTypesPayloads =
-    typePayload[EAuthTypes.OAuth2]['grant_types_payload'];
-  const inputList = grantTypesPayloads?.[active_grant_type]['inputList'];
+    typePayload[EAuthTypes.OAuth2]['grantTypesPayload'];
+  const inputList = grantTypesPayloads?.[activeGrantType]['inputList'];
   const advancedInputList =
-    grantTypesPayloads?.[active_grant_type]['advancedInputList'];
+    grantTypesPayloads?.[activeGrantType]['advancedInputList'];
 
   let isDirtyState = {};
   (inputList || []).map((e: { id: any }) => {
     isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
   });
 
-  let [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
-  let [isDDOpen, toggleDD] = useState(false);
+  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const [isDDOpen, toggleDD] = useState(false);
 
   useEffect(() => {
     setIsDirty({ type: 'setInitial', value: isDirtyState });
-  }, [active_grant_type]);
+  }, [activeGrantType]);
 
-  let _handleChange = (e: any, id: any) => {
+  const _handleChange = (e: any, id: any) => {
     e.preventDefault();
     // console.log("id", id);
-    let value = e.target.value;
+    const value = e.target.value;
     if (((inputList || []).map((e: { id: any }) => e.id) || []).includes(id)) {
       setIsDirty({ type: 'setDirty', element: id, value: true });
     }
     onChangeOAuth2Value('activeGrantTypeValue', { key: id, value });
   };
 
-  let _onSelectGrantType = (type: { id: any }) => {
+  const _onSelectGrantType = (type: { id: any }) => {
     console.log({ type });
     if (!type || !type.id) return;
     onChangeOAuth2Value('activeGrantType', type.id);
   };
 
-  let _fetchTokenOnChangeOAuth2 = async () => {
-    let activeGrantType = auth.active_grant_type;
-    let activeGrantTypePayload = auth.grant_types[activeGrantType];
+  const _fetchTokenOnChangeOAuth2 = async () => {
+    const activeGrantType = auth.activeGrantType;
+    const activeGrantTypePayload = auth.grantTypes[activeGrantType];
 
     fetchTokenOnChangeOAuth2(activeGrantTypePayload || {});
   };
 
-  let _handleSubmit = (e: { preventDefault: () => any }) => {
+  const _handleSubmit = (e: { preventDefault: () => any }) => {
     e && e.preventDefault();
   };
 
@@ -88,12 +82,15 @@ const OAuth2: FC<IOAuth2Comp> = ({
       <div className="form-group">
         <label>Grant Type:</label>
         <Dropdown
-          selected={grantTypes.find((t) => t.id === active_grant_type) || ''}
+          selected={
+            grantTypesOptions.find((t) => t.id === activeGrantType) || ''
+          }
         >
           <Dropdown.Handler>
             <Button
               text={
-                grantTypes.find((t) => t.id === active_grant_type)?.name || ''
+                grantTypesOptions.find((t) => t.id === activeGrantType)?.name ||
+                ''
               }
               sm
               secondary
@@ -101,7 +98,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
             />
           </Dropdown.Handler>
           <Dropdown.Options
-            options={grantTypes}
+            options={grantTypesOptions}
             onSelect={(element) => _onSelectGrantType(element)}
           />
         </Dropdown>
@@ -110,7 +107,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
         let errorMsg = '';
         if (
           isDirty[input.id] &&
-          !grant_types[active_grant_type][input.id]?.length
+          !grantTypes[activeGrantType][input.id]?.length
         ) {
           errorMsg = `${input.name} can not be empty`;
         }
@@ -128,7 +125,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
             }
             placeholder={input.name}
             name={input.id}
-            value={grant_types?.[active_grant_type]?.[input.id] || ''}
+            value={grantTypes[activeGrantType]?.[input.id] || ''}
             error={errorMsg}
             /* style={{
             borderColor:
@@ -158,7 +155,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
                 : 'text'
             }
             placeholder={input.name}
-            value={grant_types?.[active_grant_type]?.[input.id] || ''}
+            value={grantTypes[activeGrantType]?.[input.id] || ''}
             onChange={(e) => _handleChange(e, input.id)}
             isEditor={true}
           />
@@ -174,7 +171,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
       </div>
 
       <Input
-        key={'oauth2_last_token'}
+        key={'oauth2LastToken'}
         label={'Fetched Token'}
         type={'text'}
         value={oauth2LastToken || ''}

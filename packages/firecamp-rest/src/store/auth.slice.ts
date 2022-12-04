@@ -20,18 +20,19 @@ type TAuth = IAuthBasic | IAuthBearer | IAuthDigest | IOAuth1 | IUiOAuth2;
 
 const createAuthSlice = (set, get, initialAuth: IUiAuth) => ({
   changeAuth: (type: EAuthTypes, updates: { key: string; value: any }) => {
-    let { key, value } = updates;
-
-    let lastAuth = get()?.last?.request.auth?.[type];
-    let updatedAuth = { ...(get().request.auth[type] || {}), [key]: value };
+    const state = get();
+    const { key, value } = updates;
+    let updatedAuth = {};
 
     // for auth type oauth2 whole auth payload will be there in updates instead update key value pair
     if (type === EAuthTypes.OAuth2) {
       updatedAuth = updates;
+    } else {
+      updatedAuth = { ...state.request.auth[type], [key]: value };
     }
-
-    let updatedAuths = {
-      ...get().request.auth,
+    console.log(updatedAuth, 'updatedAuth...');
+    const updatedAuths = {
+      ...state.request.auth,
       [type]: updatedAuth,
     };
 
@@ -42,9 +43,7 @@ const createAuthSlice = (set, get, initialAuth: IUiAuth) => ({
         auth: updatedAuths,
       },
     }));
-
-    // Prepare commit action for auth
-    get()?.prepareAuthPushAction(lastAuth, updatedAuth, type);
+    state.equalityChecker({ auth: updatedAuths });
   },
 });
 

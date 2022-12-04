@@ -4,7 +4,6 @@ import cleanDeep from 'clean-deep';
 import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 
-import { EReqChangeMetaKeys } from '../../types';
 
 const PushActionService = {
   prepareAuthPushAction: (

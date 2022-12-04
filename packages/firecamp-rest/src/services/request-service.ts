@@ -630,8 +630,8 @@ export const getAuthHeaders = async (
         // manage OAuth2 payload
         if (__meta?.activeAuthType === EAuthTypes.OAuth2) {
           let oAuth2 = requestAuth[EAuthTypes.OAuth2];
-          let activeGrantType = oAuth2.active_grant_type;
-          let activeGrantTypePayload = oAuth2.grant_types[activeGrantType];
+          let activeGrantType = oAuth2.activeGrantType;
+          let activeGrantTypePayload = oAuth2.grantTypes[activeGrantType];
           authServicePayload = activeGrantTypePayload;
         }
 
