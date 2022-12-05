@@ -42,7 +42,7 @@ export const authorize = async (): Promise<string> => {
 export const deAuthorize = async (): Promise<void> => {
   try {
     // Execute following logic when using electron agent
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       return window.fc.auth.logoutFromGoogle();
     }
     // Execute following logic when using chrome extension

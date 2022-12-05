@@ -235,7 +235,7 @@ const Config = ({ connections = [], config = {} }) => {
         {configInputs
           ? configInputs.map((config, index) => _renderElement(config, index))
           : ''}
-        {_misc.firecampAgent() === EFirecampAgent.desktop && electronSideConfig
+        {_misc.firecampAgent() === EFirecampAgent.Desktop && electronSideConfig
           ? electronSideConfig.map((config, index) =>
               _renderElement(config, index)
             )

@@ -899,7 +899,7 @@ const Websocket = ({
         newConfig.certificates = sslManager;
         newConfig.proxies = proxyManager;
 
-        if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+        if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
           // Fetch variables to parse URL to fetch cookies
           const envVar = _commonFns.getMergedVariables();
 
@@ -961,10 +961,10 @@ const Websocket = ({
         );
 
         const executor =
-          _misc.firecampAgent() !== EFirecampAgent.desktop
+          _misc.firecampAgent() !== EFirecampAgent.Desktop
             ? new Executor({
                 WebSocket,
-                agent: EFirecampAgent.extension,
+                agent: EFirecampAgent.Extension,
                 connectionId,
                 url,
                 protocols,
@@ -972,7 +972,7 @@ const Websocket = ({
                 envVariables,
               })
             : window.fc.websocket({
-                agent: EFirecampAgent.desktop,
+                agent: EFirecampAgent.Desktop,
                 connectionId,
                 url,
                 protocols,
@@ -987,7 +987,7 @@ const Websocket = ({
 
           executor.subscribe(async (result) => {
             if (result.meta.event === ELogTypes.UPGRADE) {
-              if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+              if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
                 // Set cookie from response header `Set-Cookie`
                 await _commonFns._setCookie(url, result.message.payload);
               }
@@ -1326,7 +1326,7 @@ const Websocket = ({
      * @param responseHeaders
      */
     _setCookie: async (requestURL, responseHeaders) => {
-      if (_misc.firecampAgent() !== EFirecampAgent.desktop) {
+      if (_misc.firecampAgent() !== EFirecampAgent.Desktop) {
         return '';
       }
       try {

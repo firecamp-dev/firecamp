@@ -49,7 +49,7 @@ const createHandleConnectionExecutor = (
       };
 
       const executor: IExecutor =
-        _misc.firecampAgent() === EFirecampAgent.desktop
+        _misc.firecampAgent() === EFirecampAgent.Desktop
           ? // @ts-ignore
             window.fc.websocket(options)
           : new Executor(options);

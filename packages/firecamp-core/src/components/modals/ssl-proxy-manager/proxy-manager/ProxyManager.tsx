@@ -247,7 +247,7 @@ const AddProxy: FC<IAddProxy> = ({ proxyList = [], onAdd = () => {} }) => {
     url: '',
     no_proxy: '',
     set_for: '',
-    reject_unauthorized: true,
+    rejectUnauthorized: true,
   });
 
   let [isAddProxyOpen, toggleProxyOpen] = useState(false);
@@ -296,7 +296,7 @@ const AddProxy: FC<IAddProxy> = ({ proxyList = [], onAdd = () => {} }) => {
       url: '',
       no_proxy: '',
       set_for: '',
-      reject_unauthorized: false,
+      rejectUnauthorized: false,
     });
     setAddProxyError('');
   };
@@ -316,7 +316,7 @@ const AddProxy: FC<IAddProxy> = ({ proxyList = [], onAdd = () => {} }) => {
         <div className="p-2">
           <DomainBody
             url={addProxyData.url || ''}
-            reject_unauthorized={addProxyData.reject_unauthorized || false}
+            rejectUnauthorized={addProxyData.rejectUnauthorized || false}
             no_proxy={addProxyData.no_proxy || ''}
             set_for={addProxyData.set_for || ''}
             onUpdate={_onUpdateAddProxyData}

@@ -272,7 +272,7 @@ const AuthSetting: FC<IAuthSetting> = ({
         );
         break;
       case EAuthTypes.OAuth2:
-        if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+        if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
           return (
             <OAuth2
               auth={auth[EAuthTypes.OAuth2]}
