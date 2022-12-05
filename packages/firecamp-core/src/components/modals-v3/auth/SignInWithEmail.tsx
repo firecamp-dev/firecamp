@@ -32,8 +32,8 @@ const SignInWithEmail: FC<IModal> = () => {
       .then(({ response }) => {
         // console.log(response.access_token, response.user, response.workspace, "sign in response")
 
-        localStorage.setItem('token', response.meta.access_token);
-        // localStorage.setItem('workspace', res.response.workspace._meta.id); //handled at initWorkspace fn
+        localStorage.setItem('token', response.__meta.access_token);
+        // localStorage.setItem('workspace', res.response.workspace.__ref.id); //handled at initWorkspace fn
         AppService.initApp();
         AppService.modals.close();
         AppService.notify.success(`You have signed in successfully`, {

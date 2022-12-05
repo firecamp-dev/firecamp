@@ -1,11 +1,12 @@
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
 
-import { Url, UrlBar, HttpMethodDropDown, Button, EButtonColor, EButtonSize } from '@firecamp/ui-kit';
+import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { VERSIONS } from '../../../constants/index';
 
 import { IPushPayload, ISocketStore, useSocketStore } from '../../../store';
 import { TId } from '@firecamp/types';
+import ConnectionButton from '../connection/ConnectButton'
 
 const UrlBarContainer = ({
   tab,
@@ -14,16 +15,17 @@ const UrlBarContainer = ({
   onSaveRequest = (pushAction, tabId: string) => {},
   platformContext,
 }) => {
-  let { EnvironmentWidget } = postComponents;
+  const { EnvironmentWidget } = postComponents;
 
-  let {
+  const {
     url,
+    displayUrl,
     version,
-    active_environments,
-    is_request_saved,
+    activeEnvironments,
+    isRequestSaved,
 
     changeUrl,
-    changeConfig /* pushAction */,
+    changeConfig,
     changeActiveEnvironment,
     prepareRequestInsertPushPayload,
     prepareRequestUpdatePushPayload,
@@ -31,9 +33,10 @@ const UrlBarContainer = ({
   } = useSocketStore(
     (s: ISocketStore) => ({
       url: s.request.url,
+      displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
-      active_environments: s.runtime.active_environments,
-      is_request_saved:s.runtime.is_request_saved,
+      activeEnvironments: s.runtime.activeEnvironments,
+      isRequestSaved: s.runtime.isRequestSaved,
 
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
@@ -48,10 +51,10 @@ const UrlBarContainer = ({
   );
   // console.log({pushAction});
 
-  let _onSave = async () => {
+  const _onSave = async () => {
     try {
       let pushPayload: IPushPayload;
-      if (!is_request_saved) {
+      if (!isRequestSaved) {
         pushPayload = await prepareRequestInsertPushPayload();
       } else {
         pushPayload = await prepareRequestUpdatePushPayload();
@@ -69,15 +72,14 @@ const UrlBarContainer = ({
     }
   };
 
-  let _handleUrlChange = (e: {
+  const _handleUrlChange = (e: {
     preventDefault: () => void;
     target: { value: any };
   }) => {
     e.preventDefault();
-    let value = e.target.value;
-
-    let urlObject = _url.updateByRaw({ ...url, raw: value });
-
+    const value = e.target.value;
+    const proxyUrl = { ...url, queryParams: [], pathParams: [] };
+    const urlObject = _url.updateByRaw({ ...proxyUrl, raw: value });
     changeUrl(urlObject);
   };
 
@@ -89,7 +91,6 @@ const UrlBarContainer = ({
   } else {
     versionToolTip = 'npm-socket.io-client@4.1.3';
   }
-  
 
   return (
     <UrlBar
@@ -98,8 +99,8 @@ const UrlBarContainer = ({
           key={tab.id}
           previewId={`socket-io-env-variables-${tab.id}`}
           collectionId={collectionId}
-          collectionActiveEnv={active_environments.collection}
-          workspaceActiveEnv={active_environments.workspace}
+          collectionActiveEnv={activeEnvironments.collection}
+          workspaceActiveEnv={activeEnvironments.workspace}
           onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
             changeActiveEnvironment('collection', envId);
           }}
@@ -122,13 +123,14 @@ const UrlBarContainer = ({
       <UrlBar.Body>
         <Url
           id={`url-${tab.id}`}
-          url={url?.raw || ''}
+          url={displayUrl || ''}
           placeholder={'http://'}
           onChangeURL={_handleUrlChange}
         />
       </UrlBar.Body>
       <UrlBar.Suffix>
-      <Button
+        <ConnectionButton />
+        <Button
           id={`save-request-${tab.id}`}
           text="Save"
           disabled={false}

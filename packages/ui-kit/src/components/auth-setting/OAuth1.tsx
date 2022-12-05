@@ -1,6 +1,6 @@
 import { FC, useState, useReducer } from 'react';
 
-import { Button, Dropdown ,EButtonColor,Input,CheckboxInGrid} from '@firecamp/ui-kit';
+import { Button, Dropdown , Input,CheckboxInGrid} from '@firecamp/ui-kit';
 import { typePayload } from './constants';
 import { IOAuth1, EAuthTypes } from '@firecamp/types'
 
@@ -56,7 +56,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
     <form className="fc-form grid" onSubmit={_handleSubmit}>
     {(inputList || []).map((input:{[key: string]: any}, i) => {
       let errorMsg = '';
-      if (isDirty[input.id] && !auth?.[input.id]?.length) {
+      if (isDirty[input.id] && !auth?.[input.id as keyof IOAuth1]?.length) {
         errorMsg = `${input.name} can not be empty`;
       }
       return (
@@ -73,7 +73,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
           }
           placeholder={input.name}
           name={input.id}
-          value={auth?.[input.id] || ''}
+          value={auth?.[input.id  as keyof IOAuth1] || ''}
           error={errorMsg}
           /* style={{
             borderColor:
@@ -141,7 +141,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
           }
           placeholder={input.name}
           name={input.id}
-          value={auth?.[input.id] || ''}
+          value={auth?.[input.id  as keyof IOAuth1] || ''}
           onChange={(e) => _handleChange(e, input.id)}
           isEditor={true}
         />

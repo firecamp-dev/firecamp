@@ -4,8 +4,7 @@ import { nanoid as id } from 'nanoid';
 import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { _object } from '@firecamp/utils';
-
+import { _array, _object } from '@firecamp/utils';
 import {
   EPushActionType,
   ERequestTypes,
@@ -14,15 +13,18 @@ import {
 } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 
-import { normalizeRequest } from '../services/reqeust.service';
+import {
+  initialiseStoreFromRequest,
+  normalizeRequest,
+} from '../services/reqeust.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
-import '../sass/ws.sass';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 
 import Emitter from './common/Emitter';
 import { WebsocketContext } from './WebSocket.context';
-import { DefaultRequestConnection, DefaultConfigState } from '../constants';
+import { DefaultRequestConnection } from '../constants';
 import { EConnectionState, EMessagePayloadTypes } from '../types';
+import '../sass/ws.sass';
 
 // store
 import {
@@ -35,13 +37,9 @@ import {
   IPushPayload,
   emptyPushAction,
 } from '../store/index';
-import { _array } from '@firecamp/utils';
-import { DefaultConnectionState } from '../constants';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 
 const Websocket = ({
-  firecampFunctions = {},
-  constants: propConstants = {},
   additionalComponents: prop_additionalComponents = {},
   onUpdateEnvironment = () => {},
 
@@ -65,7 +63,6 @@ const Websocket = ({
     updateMessage: _noop,
     setMessage: _noop,
     updateURL: _noop,
-    updateConnection: _noop,
     removeConnection: _noop,
     onChangeConfig: _noop,
     updateMeta: _noop,
@@ -182,7 +179,7 @@ const Websocket = ({
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     // subscribe request updates
-    if (tab.meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.__meta.isSaved && tab?.request?._meta?.id) {
       platformContext.request.subscribeChanges(
         tab.request._meta.id,
         handlePull
@@ -191,7 +188,7 @@ const Websocket = ({
 
     // unsubscribe request updates
     return () => {
-      if (tab.meta.isSaved && tab?.request?._meta?.id) {
+      if (tab.__meta.isSaved && tab?.request?._meta?.id) {
         platformContext.request.unsubscribeChanges(tab.request._meta.id);
       }
     };
@@ -201,16 +198,9 @@ const Websocket = ({
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
-        const isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalize: IWebSocket = {
-          url: { raw: '' },
-          meta: {
-            name: '',
-            version: '2.0.0',
-            type: ERequestTypes.WebSocket,
-          },
-          _meta: { id: id(), collectionId: '' },
-        };
+        const isRequestSaved = !!tab?.request?.__ref?.id || false;
+        // prepare a minimal request payload
+        let requestToNormalize: IWebSocket = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -218,7 +208,7 @@ const Websocket = ({
             const response = await platformContext.request.onFetch(
               tab.request._meta.id
             );
-            requestToNormalize = response.data;
+            requestToNormalize = { ...response.data };
           } catch (error) {
             console.error({
               api: 'fetch rest request',
@@ -227,10 +217,8 @@ const Websocket = ({
             throw error;
           }
         }
-
-        /** normalize request and initialise in store on tab load */
-        initialise(requestToNormalize, true);
-        // _cloneDeep({ request: emptyPushAction }),
+        /** initialise ws store on tab load */
+        initialise(requestToNormalize);
         setIsFetchingReqFlag(false);
       } catch (error) {
         console.error({
@@ -284,7 +272,7 @@ const Websocket = ({
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialise(updatedRequest, false); //pushAction
+      initialise(updatedRequest); //pushAction
       // _cloneDeep({ request: emptyPushAction }),
       setIsFetchingReqFlag(false);
     } catch (error) {
@@ -407,19 +395,19 @@ const Websocket = ({
     addDirectory: (folder: IRequestFolder) => {
       const {
         name,
-        _meta: { collectionId, requestId, folderId },
+        __ref: { collectionId, requestId, folderId },
       } = folder;
       const _id = id();
       const _folder: IRequestFolder = {
         name,
-        _meta: {
+        __ref: {
           id: _id,
           collectionId,
           folderId,
           requestId,
           requestType: ERequestTypes.WebSocket,
         },
-        meta: {
+        __meta: {
           fOrders: [],
           iOrders: [],
         },
@@ -838,14 +826,6 @@ const Websocket = ({
   return (
     <WebsocketContext.Provider
       value={{
-        //props
-        // ctx_firecampFunctions: firecampFunctions,
-        // ctx_constants: propConstants,
-        // ctx_tabData: tab,
-
-        //prop components
-        // ctx_additionalComponents: prop_additionalComponents,
-
         //functions
         ctx_requestFns: _requestFns,
         ctx_wsFns: wsFns,
@@ -860,16 +840,14 @@ const Websocket = ({
     >
       <RootContainer className="h-full w-full">
         <Container className="h-full with-divider">
-          <Container.Header>
-            <UrlBarContainer
-              tab={tab}
-              collectionId={tab?.request?._meta?.collectionId || ''}
-              postComponents={platformComponents}
-              onSaveRequest={onSave}
-              platformContext={platformContext}
-              // onPasteCurl={onPasteCurl}
-            />
-          </Container.Header>
+          <UrlBarContainer
+            tab={tab}
+            collectionId={tab?.request?._meta?.collectionId || ''}
+            postComponents={platformComponents}
+            onSaveRequest={onSave}
+            platformContext={platformContext}
+            // onPasteCurl={onPasteCurl}
+          />
           <Container.Body>
             <Row flex={1} overflow="auto" className="with-divider h-full">
               <SidebarPanel />
@@ -880,11 +858,11 @@ const Websocket = ({
           </Container.Body>
         </Container>
       </RootContainer>
-      {tab.meta.isSaved && (
+      {tab.__meta.isSaved && (
         <TabChangesDetector
           onChangeRequestTab={platformContext.request.onChangeRequestTab}
           tabId={tab.id}
-          tabMeta={tab.meta}
+          tabMeta={tab.__meta}
         />
       )}
     </WebsocketContext.Provider>
@@ -894,64 +872,10 @@ const Websocket = ({
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
     const { request = {} } = tab;
-    const defaultConnection =
-      request.connections?.find((c) => c.isDefault === true) ||
-      DefaultConnectionState;
-
-    const initPayload = {
-      request: {
-        url: request.url || { raw: '' },
-        config: request.config || DefaultConfigState,
-        connections: request.connections || [defaultConnection],
-        meta: request.meta || {
-          fOrders: [],
-          iOrders: [],
-          version: '2.0.0',
-        },
-        _meta: request?._meta || {
-          id: id(),
-          collectionId: '',
-        },
-      },
-      collection: request.collection || {
-        items: [],
-        folders: [],
-      },
-      runtime: {
-        activePlayground: defaultConnection?.id,
-        playgroundTabs: [
-          {
-            id: defaultConnection.id,
-            name: defaultConnection.name,
-            meta: {
-              isSaved: false,
-              hasChange: false,
-            },
-          },
-        ],
-        activeEnvironments: {
-          workspace: '',
-          collection: '',
-        },
-        isRequestSaved: false,
-      },
-      playgrounds: {
-        // Add logic for init playgrounds by connections
-        [defaultConnection.id]: {
-          id: defaultConnection.id,
-          connectionState: EConnectionState.Ideal,
-          logFilters: {
-            type: '',
-          },
-          message: initialPlaygroundMessage,
-          selectedCollectionMessage: '',
-        },
-      },
-    };
-
+    const initState = initialiseStoreFromRequest(request);
     return (
       <WebsocketStoreProvider
-        createStore={() => createWebsocketStore(initPayload)}
+        createStore={() => createWebsocketStore(initState)}
       >
         <WrappedComponent tab={tab} {...props} />
       </WebsocketStoreProvider>
@@ -976,12 +900,10 @@ const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
       // console.log({ pushAction });
 
       // Check if push action empty or not
-      let isTabDirty = !_object.isEmpty(
+      const isTabDirty = !_object.isEmpty(
         _cleanDeep(_cloneDeep(pushAction || {})) || {}
       );
-      // console.log({ pushAction });
-
-      // Update tab meta if existing tab.meta.hasChange is not same as isTabDirty
+      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
       if (tabMeta.hasChange !== isTabDirty) {
         onChangeRequestTab(tabId, { hasChange: isTabDirty });
       }

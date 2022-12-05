@@ -41,6 +41,7 @@ import {
   createUiSlice,
 } from './slices';
 import { _object } from '@firecamp/utils';
+import { initialiseStoreFromRequest } from '../services/request.service'
 
 const {
   Provider: SocketStoreProvider,
@@ -70,7 +71,7 @@ interface ISocketStore
   last: any;
 
   setLast: (initialState: ISocket) => void;
-  initialise: (initialState: ISocket, isFresh: boolean) => void;
+  initialise: (request: Partial<ISocketIO>) => void;
 }
 
 const createSocketStore = (initialState: ISocket) =>
@@ -84,33 +85,12 @@ const createSocketStore = (initialState: ISocket) =>
         }));
       },
 
-      initialise: (initialState, isFresh: boolean) => {
-        // request
-        let initialRequest: ISocketIO = _object.pick(
-          initialState.request,
-          requestSliceKeys
-        ) as ISocketIO;
-
-        // console.log({ initialRequest, initialState });
-
-        if (!_object.isEmpty(initialRequest))
-          get().initialiseRequest(initialRequest);
-
-        if (initialState.ui) get().initializeUi(initialState.ui);
-
-        // if (initialState.pushAction)
-        //   get().initializePushAction(initialState.pushAction);
-
-        // console.log({ initialState });
-
-        if (isFresh) {
-          set((s) => ({
-            ...s,
-            last: initialState,
-          }));
-        }
-
-        // runtime
+      initialise: async (request: Partial<ISocketIO>) => {
+        const initState = initialiseStoreFromRequest(request);
+        set((s) => ({
+          ...s,
+          ...initState,
+        }));
       },
       ...createRequestSlice(
         set,

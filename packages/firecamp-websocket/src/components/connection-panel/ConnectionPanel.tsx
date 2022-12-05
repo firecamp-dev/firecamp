@@ -10,25 +10,21 @@ import {
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
 
-import ConnectionTab from './connection/ConnectionTab';
+import Connection from './connection/Connection';
 import { IWebsocketStore, useWebsocketStore } from '../../store';
 
 const ConnectionPanel = () => {
-  const {
-    activePlayground,
-    playgroundTabs,
+  const { activePlayground, playgroundTabs, setActivePlayground } =
+    useWebsocketStore(
+      (s: IWebsocketStore) => ({
+        config: s.request.config,
+        activePlayground: s.runtime.activePlayground,
+        playgroundTabs: s.runtime.playgroundTabs,
 
-    setActivePlayground,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
-      config: s.request.config,
-      activePlayground: s.runtime.activePlayground,
-      playgroundTabs: s.runtime.playgroundTabs,
-
-      setActivePlayground: s.setActivePlayground,
-    }),
-    shallow
-  );
+        setActivePlayground: s.setActivePlayground,
+      }),
+      shallow
+    );
 
   const [isAddConnPopoverOpen, toggleConnPopover] = useState(false);
 
@@ -74,7 +70,7 @@ const ConnectionPanel = () => {
         />
       </Container.Header>
       <Container.Body>
-        <ConnectionTab />
+        <Connection />
       </Container.Body>
     </Container>
   );

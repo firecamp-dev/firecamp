@@ -38,11 +38,9 @@ const createHandleConnectionExecutor = (
         );
 
       // console.log(connection, url);
-
       if (!connection || !url.raw) return;
-
       const options: TExecutorOptions = {
-        url,
+        url: { ...url, queryParams: connection.queryParams },
         config,
         connection,
         WebSocket,
@@ -51,7 +49,7 @@ const createHandleConnectionExecutor = (
       };
 
       const executor: IExecutor =
-        _misc.firecampAgent() === EFirecampAgent.desktop
+        _misc.firecampAgent() === EFirecampAgent.Desktop
           ? // @ts-ignore
             window.fc.websocket(options)
           : new Executor(options);

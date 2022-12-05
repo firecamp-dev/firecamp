@@ -103,7 +103,6 @@ export default class ConfigGenerator {
       cookies: response.cookies || [],
       error: response.error || '',
       timeline: response.timeline || '',
-      protobuf: response.protobuf,
     };
   }
 }

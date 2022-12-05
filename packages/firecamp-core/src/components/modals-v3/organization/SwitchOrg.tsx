@@ -35,7 +35,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   }, []);
 
   const switchOrg = (org) => {
-    localStorage.setItem('switch_to_org', org._meta.id);
+    localStorage.setItem('switch_to_org', org.__ref.id);
     AppService.modals.openSwitchWorkspace();
     setSwitchingOrg(org);
   };
@@ -65,7 +65,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
                 {orgs.map((org, i) => (
                   <div
                     className="card relative flex items-center p-2 mb-2 text-base font-semibold border border-appBorder cursor-pointer hover:border-focusBorder  after:content-['_↗']  after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
-                    key={org._meta.id}
+                    key={org.__ref.id}
                   >
                     <a
                       className="z-10 flex-1"

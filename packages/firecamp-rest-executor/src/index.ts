@@ -83,22 +83,22 @@ export default class RestExecutor implements IRestExecutor {
     const { __meta, body, config, headers, url } = request;
 
     const axiosRequest: AxiosRequestConfig = {
-      url: _url.parse(url?.raw || '', ['http', 'https']),
+      url: _url.normalize(url?.raw || '', ['http', 'https']),
       params: QueryString.stringify(_table.toObject(url?.queryParams || [])),
       method: request.method,
       headers: _table.toObject(headers || []),
       // TODO: Supported in browser
       httpsAgent: new HTTPS.Agent({ rejectUnauthorized: false }),
       signal: this._controller.signal,
-      timeout: config?.request_timeout,
-      maxRedirects: config?.max_redirects,
+      timeout: config?.requestTimeout,
+      maxRedirects: config?.maxRedirects,
       transformResponse: (response) => response,
     };
 
     // disable SSL validation default
     if (isNode) {
       axiosRequest.httpsAgent = new HTTPS.Agent({
-        rejectUnauthorized: config?.reject_unauthorized,
+        rejectUnauthorized: config?.rejectUnauthorized,
       });
     }
 

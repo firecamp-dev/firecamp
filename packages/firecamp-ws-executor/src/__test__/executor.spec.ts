@@ -4,8 +4,7 @@ import Executor from '../';
 import { EMessageBodyType, ERequestTypes } from '@firecamp/types';
 import { localServerRequest, secureServerRequest } from './__mocks__';
 import { IExecutor } from '../executor.interface';
-import { ILog } from '../types';
-import { ELogTypes } from '../constants';
+import { ILog, ELogTypes } from '../types';
 
 let executor1: IExecutor;
 let executor2: IExecutor;
@@ -45,7 +44,7 @@ describe('Connection', () => {
 describe.skip('Message passing', () => {
   it('should pass the message via connection', (done) => {
     executor1.logs((log: ILog) => {
-      if (log.meta.type === ELogTypes.SEND) {
+      if (log.__meta.type === ELogTypes.Send) {
         expect(log.message.body).toEqual('hi');
         done();
       }

@@ -1,11 +1,17 @@
-import { IWebSocketConnection, TId, EPushActionType } from '@firecamp/types';
-import equal from 'deep-equal';
-import { IWebsocketStore } from '../websocket.store'
+import {
+  IWebSocketConnection,
+  TId,
+  EPushActionType,
+  IQueryParam,
+} from '@firecamp/types';
+import _url from '@firecamp/url';
+import { IWebsocketStore } from '../websocket.store';
 
 interface IConnectionsSlice {
   addConnection: (connection: IWebSocketConnection) => void;
   updateConnection: (connectionId: TId, key: string, value: any) => void;
   removeConnection: (connectionId: TId) => void;
+  changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => void;
 }
 
 const createConnectionSlice = (set, get): IConnectionsSlice => ({
@@ -25,50 +31,41 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
     );
   },
   updateConnection: (connectionId: TId, key: string, value: any) => {
-    //If connection id not provided
-    if (!connectionId || !key) return;
+    //if connection id not provided, queryParams has dedicated change fn below
+    if (!connectionId || !key || key == 'queryParams') return;
 
     const state = get();
+    let { displayUrl } = state.runtime;
     const { connections } = state.request;
 
-    //If connection not found
-    let connectionIndex = connections.findIndex((c) => c.id === connectionId);
-    if (connectionIndex === -1) return;
-
-    //Update connection
-    let updatedConnection = Object.assign({}, connections[connectionIndex], {
-      [key]: value,
+    const _connections = connections.map((c) => {
+      if (c.id == connectionId) {
+        if (key == 'config') {
+          /**
+           * Note: here for config update, value will be an object that holds updated key value pair from config
+           * Example: value = { pingInterval: 10}
+           */
+          c = Object.assign({}, c, {
+            [key]: Object.assign({}, c.config, value),
+          });
+        } else {
+          c = Object.assign({}, c, { [key]: value });
+        }
+      }
+      return c;
     });
 
-    if (key === 'config') {
-      // Note: here for config update, value will be an object that holds updated key value pair from config
-      // Example: value = { pingInterval: 10}
-
-      updatedConnection = Object.assign({}, connections[connectionIndex], {
-        [key]: Object.assign({}, connections[connectionIndex]?.config, value),
-      });
-    }
-
-    if (equal(updatedConnection, connections[connectionIndex])) return;
-
     set((s) => ({
-      ...s,
-      request: {
-        ...s.request,
-        connections: [
-          ...s.request.connections.slice(0, connectionIndex),
-          updatedConnection,
-          ...s.request.connections.slice(connectionIndex + 1),
-        ],
-      },
+      request: { ...s.request, connections: _connections },
+      runtime: { ...s.runtime, displayUrl },
     }));
 
-    state.prepareRequestConnectionsPushAction(
-      connectionId,
-      EPushActionType.Update,
-      state.last?.request?.connections[connectionIndex],
-      updatedConnection
-    );
+    // state.prepareRequestConnectionsPushAction(
+    //   connectionId,
+    //   EPushActionType.Update,
+    //   state.last?.request?.connections[connectionIndex],
+    //   updatedConnection
+    // );
   },
   removeConnection: (connectionId: TId) => {
     const state = get() as IWebsocketStore;
@@ -110,6 +107,27 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
         EPushActionType.Delete
       );
     }
+  },
+  changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {
+    if (!connectionId) return;
+    const state = get();
+    let { displayUrl } = state.runtime;
+    const { connections } = state.request;
+    const _connections = connections.map((c) => {
+      if (c.id == connectionId) {
+        c.queryParams = qps;
+        const newUrl = _url.updateByQuery(state.request.url, c.queryParams);
+        displayUrl = newUrl.raw;
+      }
+      return c;
+    });
+
+    set((s) => ({
+      request: { ...s.request, connections: _connections },
+      runtime: { ...s.runtime, displayUrl },
+    }));
+
+    console.log(state.equalityChecker(qps, 'queryParams'));
   },
 });
 

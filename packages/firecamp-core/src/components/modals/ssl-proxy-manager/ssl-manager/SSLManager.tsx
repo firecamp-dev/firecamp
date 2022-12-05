@@ -27,7 +27,7 @@ const SSLManager: FC<any> = () => {
   const certRef = useRef(preferenceStore.getState()[Name.CERTIFICATES]);
 
   let certificates = certRef.current.filter(
-    (c) => c?.meta?.type === PreferenceMisc.SSL
+    (c) => c?.__meta?.type === PreferenceMisc.SSL
   );
 
   // Connect to the store on mount, disconnect on unmount, catch state-changes in a reference
@@ -55,11 +55,11 @@ const SSLManager: FC<any> = () => {
   let sslListFns = {
     add: async (sslData = {}) => {
       let addPayload = Object.assign({}, DUMMY_SSL, {
-        meta: Object.assign({}, DUMMY_SSL.meta, sslData),
-        _meta: Object.assign({}, DUMMY_SSL._meta, {
+        meta: Object.assign({}, DUMMY_SSL.__meta, sslData),
+        _meta: Object.assign({}, DUMMY_SSL.__ref, {
           id: id(),
-          created_at: new Date().valueOf(),
-          // created_by: F.userMeta.id
+          createdAt: new Date().valueOf(),
+          // createdBy: F.userMeta.id
         }),
       });
 
@@ -67,11 +67,11 @@ const SSLManager: FC<any> = () => {
     },
     update: (sslId = '', payload = {}) => {
       let updateIndex = sslList.findIndex(
-        (lc) => lc._meta && lc._meta.id === sslId
+        (lc) => lc.__ref && lc.__ref.id === sslId
       );
       if (updateIndex !== -1) {
         let updatedSSL = Object.assign({}, sslList[updateIndex], {
-          meta: Object.assign({}, sslList[updateIndex].meta, payload),
+          meta: Object.assign({}, sslList[updateIndex].__meta, payload),
         });
         let updatePayload = [
           ...sslList.slice(0, updateIndex),
@@ -95,7 +95,7 @@ const SSLManager: FC<any> = () => {
     },
     save: async (sslId = '', updatedSSL = {}) => {
       let updateIndex = sslList.findIndex(
-        (lc) => lc._meta && lc._meta.id === sslId
+        (lc) => lc.__ref && lc.__ref.id === sslId
       );
 
       if (updateIndex !== -1) {
@@ -164,8 +164,8 @@ const AddSSLPopover: FC<any> = ({ sslList = [], onAdd = () => {} }) => {
     try {
       let found = sslList.find(
         (ssl) =>
-          ssl.meta &&
-          ssl.meta.host.toLowerCase() === addSSLData.host.toLowerCase()
+          ssl.__meta &&
+          ssl.__meta.host.toLowerCase() === addSSLData.host.toLowerCase()
       );
       if (found) {
         setAddSSLError(`Certificate for this host is already set.`);

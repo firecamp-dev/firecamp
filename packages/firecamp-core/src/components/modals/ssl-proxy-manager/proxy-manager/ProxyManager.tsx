@@ -24,10 +24,10 @@ const ProxyManager: FC<any> = () => {
   let _generateProxyPayload = (proxy = []) => {
     let proxyPayload = proxy.map((s) => {
       // FC-v2.1: 'id' will be from '_meta' key. If id not found, return
-      if (!s._meta || (s._meta && !s._meta.id)) return [];
+      if (!s.__ref || (s.__ref && !s.__ref.id)) return [];
 
       let index = proxyData.findIndex(
-        (i) => i._meta && i._meta.id === s._meta.id
+        (i) => i.__ref && i.__ref.id === s.__ref.id
       );
 
       // console.log(`proxyData`, proxyData, index)
@@ -84,7 +84,7 @@ const ProxyManager: FC<any> = () => {
     toggleCollapse: (id = '') => {
       if (!id) return;
 
-      let index = proxyData.findIndex((d) => d._meta && d._meta.id === id);
+      let index = proxyData.findIndex((d) => d.__ref && d.__ref.id === id);
 
       if (index === -1 || !proxyData[index]) return;
 
@@ -107,8 +107,8 @@ const ProxyManager: FC<any> = () => {
       let addPayload = Object.assign({}, payload, {
         _meta: {
           id: id(),
-          created_at: new Date().valueOf(),
-          // created_by: F.userMeta.id,
+          createdAt: new Date().valueOf(),
+          // createdBy: F.userMeta.id,
         },
         disable: false,
         isCollapsed: false,
@@ -135,7 +135,7 @@ const ProxyManager: FC<any> = () => {
     edit: (id = '', updatedProxy = {}) => {
       if (!id || !updatedProxy) return;
 
-      let index = proxyData.findIndex((d) => d._meta && d._meta.id === id);
+      let index = proxyData.findIndex((d) => d.__ref && d.__ref.id === id);
       // console.log({ index, initialState, updatedProxy });
       if (index === -1 || !proxyData[index]) return;
       let proxyToUpdate = {
@@ -165,14 +165,14 @@ const ProxyManager: FC<any> = () => {
 
       // console.log({ proxyToUpdate, newData, updatedProxy });
       if (_object.has(updatedProxy, 'disable')) {
-        domainFns.save(proxyData[index]._meta.id, proxyToUpdate);
+        domainFns.save(proxyData[index].__ref.id, proxyToUpdate);
       }
     },
     save: async (id = '', proxyToUpdate = {}) => {
       let dataToSave = proxyToUpdate;
 
       if (_object.isEmpty(proxyToUpdate)) {
-        let updatedProxy = proxyData.find((proxy) => proxy._meta.id === id);
+        let updatedProxy = proxyData.find((proxy) => proxy.__ref.id === id);
         if (updatedProxy) {
           dataToSave = updatedProxy;
         }
@@ -190,8 +190,8 @@ const ProxyManager: FC<any> = () => {
       if (!_object.isEmpty(dataToSave)) {
         dataToSave['_meta'] = {
           id,
-          updated_at: new Date().valueOf(),
-          // updated_by: F.userMeta.id,
+          updatedAt: new Date().valueOf(),
+          // updatedBy: F.userMeta.id,
         };
         dataToSave = _object.omit(dataToSave, ['isCollapsed', 'isUpdated']);
         // console.log({ proxyUpdate: dataToSave });
@@ -199,7 +199,7 @@ const ProxyManager: FC<any> = () => {
       }
     },
     remove: async (id = '') => {
-      let index = proxyData.findIndex((i) => i._meta.id === id);
+      let index = proxyData.findIndex((i) => i.__ref.id === id);
       if (index === -1) return;
       let dataToSave = proxyData.map((i) => {
         return _object.omit(i, ['isCollapsed', 'isUpdated']);
@@ -247,7 +247,7 @@ const AddProxy: FC<IAddProxy> = ({ proxyList = [], onAdd = () => {} }) => {
     url: '',
     no_proxy: '',
     set_for: '',
-    reject_unauthorized: true,
+    rejectUnauthorized: true,
   });
 
   let [isAddProxyOpen, toggleProxyOpen] = useState(false);
@@ -296,7 +296,7 @@ const AddProxy: FC<IAddProxy> = ({ proxyList = [], onAdd = () => {} }) => {
       url: '',
       no_proxy: '',
       set_for: '',
-      reject_unauthorized: false,
+      rejectUnauthorized: false,
     });
     setAddProxyError('');
   };
@@ -316,7 +316,7 @@ const AddProxy: FC<IAddProxy> = ({ proxyList = [], onAdd = () => {} }) => {
         <div className="p-2">
           <DomainBody
             url={addProxyData.url || ''}
-            reject_unauthorized={addProxyData.reject_unauthorized || false}
+            rejectUnauthorized={addProxyData.rejectUnauthorized || false}
             no_proxy={addProxyData.no_proxy || ''}
             set_for={addProxyData.set_for || ''}
             onUpdate={_onUpdateAddProxyData}

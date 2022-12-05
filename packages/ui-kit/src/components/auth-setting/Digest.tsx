@@ -63,7 +63,7 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
     <form className="fc-form grid" onSubmit={_handleSubmit}>
       {(inputList || []).map((input, i) => {
         let errorMsg = '';
-        if (isDirty[input.id] && !auth?.[input.id]?.length) {
+        if (isDirty[input.id] && !auth?.[input.id as keyof IAuthDigest]?.length) {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
@@ -80,7 +80,7 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
             }
             placeholder={input.name}
             name={input.name}
-            value={auth?.[input.id] || ''}
+            value={auth?.[input.id as keyof IAuthDigest] || ''}
             error={errorMsg}
             /* style={{
             borderColor:
@@ -135,7 +135,7 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
             }
             placeholder={input.name}
             name={input.id}
-            value={auth?.[input.id] || ''}
+            value={auth?.[input.id as keyof IAuthDigest] || ''}
             onChange={(e) => _handleChange(e, input.id)}
             isEditor={true}
             disabled={input.id === 'qop'}

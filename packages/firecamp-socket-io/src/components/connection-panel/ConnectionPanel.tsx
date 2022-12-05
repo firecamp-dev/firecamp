@@ -1,9 +1,9 @@
-import { useState, useRef, useContext, memo, useEffect } from 'react';
+import { useState, memo } from 'react';
 import { Container, Checkbox, Input, Tabs, Popover } from '@firecamp/ui-kit';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
 
-import ConnectionTab from './connection/ConnectionTab';
+import Connection from './connection/Connection';
 import { ISocketStore, useSocketStore } from '../../store';
 
 const ConnectionPanel = ({ visiblePanel = '' }) => {
@@ -71,7 +71,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
         />
       </Container.Header>
       <Container.Body>
-        <ConnectionTab />
+        <Connection />
       </Container.Body>
     </Container>
   );

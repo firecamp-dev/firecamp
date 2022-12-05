@@ -73,6 +73,7 @@
     "jest-environment-jsdom": "^29.0.2",
     "postcss": "^8.4.16",
     "postcss-cli": "^8.3.1",
+    "raw-loader": "^4.0.2",
     "react-dom": "17.0.2",
     "sass": "^1.54.4",
     "sass-loader": "^13.0.2",
@@ -82,7 +83,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@firecamp/types": "^0.0.16",
+    "@firecamp/types": "^0.0.19",
     "@monaco-editor/react": "4.4.5",
     "@radix-ui/react-toast": "^1.0.0",
     "@szhsin/react-menu": "^2.3.2",

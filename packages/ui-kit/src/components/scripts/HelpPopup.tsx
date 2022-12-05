@@ -198,9 +198,7 @@ const HelpPopUp: FC<IHelpPopup> = ({
 
                                                             <Button
                                                               text={'Add'}
-                                                              color={
-                                                                EButtonColor.Primary
-                                                              }
+                                                              primary
                                                               size={
                                                                 .ExSmall
                                                               }

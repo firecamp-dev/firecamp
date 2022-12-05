@@ -7,7 +7,7 @@ import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 export default {
   renderItemArrow: ({ item, context }) => {
     // console.log( info, "arrow context");
-    if (item.data._meta?.is_request) {
+    if (item.data.__ref?.isRequest) {
       return (
         <div
           className={cx(
@@ -18,13 +18,13 @@ export default {
           {item.data?.icon?.text}
         </div>
       );
-    } else if (item.data._meta?.is_collection) {
+    } else if (item.data.__ref?.isCollection) {
       return context.isExpanded ? (
         <VscChevronDown size={20} />
       ) : (
         <VscChevronRight size={20} />
       );
-    } else if (item.data._meta?.is_folder) {
+    } else if (item.data.__ref?.isFolder) {
       return context.isExpanded ? (
         <>
           <VscChevronDown size={20} />

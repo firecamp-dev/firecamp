@@ -20,22 +20,22 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
 
   let [initialAuthDetails, setInitialAuthDetails] = useState({
     auth: project?.auth || {},
-    active_auth_type:
-      project?.meta?.active_auth_type || EAuthTypes.NoAuth || '',
-    oauth2_last_fetched_token: project?._dnp?.oauth2_last_fetched_token || '',
+    activeAuthType:
+      project?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+    oauth2LastFetchedToken: project?._dnp?.oauth2LastFetchedToken || '',
   });
   let [authDetails, setAuthDetails] = useState(
     cloneDeep({
       auth: project?.auth || {},
-      active_auth_type:
-        project?.meta?.active_auth_type || EAuthTypes.NoAuth || '',
-      oauth2_last_fetched_token: project?._dnp?.oauth2_last_fetched_token || '',
+      activeAuthType:
+        project?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+      oauth2LastFetchedToken: project?._dnp?.oauth2LastFetchedToken || '',
     })
   );
 
   // Get auth details on select auth setting
   useEffect(() => {
-    // Get auth detials (auth and active_auth_type) from DB and set to state.
+    // Get auth detials (auth and activeAuthType) from DB and set to state.
     const _getAuth = async () => {
       try {
         let updatedAuthDetails = {};
@@ -44,20 +44,20 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
           updatedAuthDetails.auth = project.auth;
         }
         if (
-          project?.meta?.active_auth_type &&
-          !equal(project?.meta?.active_auth_type, authDetails.active_auth_type)
+          project?.__meta?.activeAuthType &&
+          !equal(project?.__meta?.activeAuthType, authDetails.activeAuthType)
         ) {
-          updatedAuthDetails.active_auth_type = project.meta.active_auth_type;
+          updatedAuthDetails.activeAuthType = project.__meta.activeAuthType;
         }
         if (
-          project?._dnp?.oauth2_last_fetched_token &&
+          project?._dnp?.oauth2LastFetchedToken &&
           !equal(
-            project?._dnp?.oauth2_last_fetched_token,
-            authDetails.oauth2_last_fetched_token
+            project?._dnp?.oauth2LastFetchedToken,
+            authDetails.oauth2LastFetchedToken
           )
         ) {
-          updatedAuthDetails.oauth2_last_fetched_token =
-            project._dnp.oauth2_last_fetched_token;
+          updatedAuthDetails.oauth2LastFetchedToken =
+            project._dnp.oauth2LastFetchedToken;
         }
 
         updatedAuthDetails = cloneDeep(updatedAuthDetails);
@@ -84,11 +84,11 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
   }, [collectionId, project]);
 
   let _onchangeActiveAuth = (activeAuth = '') => {
-    if (activeAuth !== authDetails.active_auth_type) {
+    if (activeAuth !== authDetails.activeAuthType) {
       setAuthDetails((ps) => {
         return {
           ...ps,
-          active_auth_type: activeAuth,
+          activeAuthType: activeAuth,
         };
       });
     }
@@ -121,36 +121,36 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
 
     try {
       if (
-        initialAuthDetails.active_auth_type !== authDetails.active_auth_type
+        initialAuthDetails.activeAuthType !== authDetails.activeAuthType
       ) {
         updates = {
           ...updates,
-          meta: { active_auth_type: authDetails.active_auth_type },
+          meta: { activeAuthType: authDetails.activeAuthType },
         };
       }
 
-      if (_object.size(updates.auth) || _object.size(updates.meta)) {
+      if (_object.size(updates.auth) || _object.size(updates.__meta)) {
         // await F.appStore.project.update(cloneDeep(updates), collectionId);
 
         stateUpdates = updates;
       }
 
       if (
-        authDetails.oauth2_last_fetched_token !==
-        initialAuthDetails.oauth2_last_fetched_token
+        authDetails.oauth2LastFetchedToken !==
+        initialAuthDetails.oauth2LastFetchedToken
       ) {
         // Set auth token in to db. (_dnp)
         // await F.appStore.project.update(
         //   {
         //     _dnp: {
-        //       oauth2_last_fetched_token: authDetails.oauth2_last_fetched_token
+        //       oauth2LastFetchedToken: authDetails.oauth2LastFetchedToken
         //     }
         //   },
         //   collectionId
         // );
         stateUpdates = {
           ...stateUpdates,
-          oauth2_last_fetched_token: authDetails.oauth2_last_fetched_token,
+          oauth2LastFetchedToken: authDetails.oauth2LastFetchedToken,
         };
       }
 
@@ -179,16 +179,16 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
       const { key, value } = payload;
 
       setAuthDetails((state) => {
-        let type = state.auth[EAuthTypes.OAuth2].active_grant_type;
+        let type = state.auth[EAuthTypes.OAuth2].activeGrantType;
         return {
           ...state,
           auth: {
             ...state.auth,
             [EAuthTypes.OAuth2]: Object.assign(state.auth[EAuthTypes.OAuth2], {
-              grant_types: {
-                ...state.auth[EAuthTypes.OAuth2].grant_types,
+              grantTypes: {
+                ...state.auth[EAuthTypes.OAuth2].grantTypes,
                 [type]: Object.assign(
-                  state.auth[EAuthTypes.OAuth2].grant_types[type],
+                  state.auth[EAuthTypes.OAuth2].grantTypes[type],
                   {
                     [key]: value,
                   }
@@ -206,7 +206,7 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
           auth: {
             ...state.auth,
             [EAuthTypes.OAuth2]: Object.assign(state.auth[EAuthTypes.OAuth2], {
-              active_grant_type: payload,
+              activeGrantType: payload,
             }),
           },
         };
@@ -240,7 +240,7 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
             setAuthDetails(ps => {
               return {
                 ...ps,
-                oauth2_last_fetched_token: token
+                oauth2LastFetchedToken: token
               };
             });
             F.notification.success(
@@ -262,13 +262,13 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
         <Container className="pt-16 padding-wrapper">
           <AuthSetting
             auth={authDetails.auth || {}}
-            activeAuth={authDetails.active_auth_type || EAuthTypes.NoAuth || ''}
+            activeAuth={authDetails.activeAuthType || EAuthTypes.NoAuth || ''}
             allowInherit={false}
             onChangeAuth={_onChangeAuth}
             onChangeActiveAuth={_onchangeActiveAuth}
             onChangeOAuth2Value={_onChangeOAuth2Value}
             fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
-            oauth2LastToken={authDetails.oauth2_last_fetched_token || ''}
+            oauth2LastToken={authDetails.oauth2LastFetchedToken || ''}
           />
         </Container>
       </Container.Body>

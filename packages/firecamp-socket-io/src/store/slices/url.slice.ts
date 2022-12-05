@@ -7,15 +7,29 @@ interface IUrlSlice {
   changeQueryParams: (queryParams: IQueryParam[]) => void;
 }
 
+const getPathFromUrl = (url: string) => {
+  return url.split(/[?#]/)[0];
+};
+
 const createUrlSlice = (set, get): IUrlSlice => ({
   changeUrl: (urlObj: IUrl) => {
-    let lastUrl = get()?.last?.request.url;
-    let updatedUrl = { ...(get()?.request.url || {}), ...urlObj };
+    const url = { raw: getPathFromUrl(urlObj.raw) };
+    set((s) => {
+      const { activePlayground } = s.runtime;
+      const connections = s.request.connections.map((c) => {
+        if (c.id == activePlayground) {
+          c.queryParams = urlObj.queryParams;
+        }
+        return c;
+      });
+      return {
+        ...s,
+        request: { ...s.request, url, connections },
+        runtime: { ...s.runtime, displayUrl: urlObj.raw },
+      };
+    });
 
-    set((s) => ({ ...s, request: { ...s.request, url: updatedUrl } }));
-
-    // Prepare push action for url
-    get()?.prepareUrlPushAction(lastUrl, updatedUrl);
+    // state.prepareUrlPushAction(lastUrl, updatedUrl);
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
     set((s) => ({

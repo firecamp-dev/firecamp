@@ -275,14 +275,14 @@ const Socket = ({
           {
             meta: {
               type: "text",
-              envelope: ""
+              typedArrayView: ""
             },
             payload: "Hello from Vinaxi Khalasi"
           },
           {
             meta: {
               type: "json",
-              envelope: ""
+              typedArrayView: ""
             },
             payload: `
               {
@@ -1061,7 +1061,7 @@ const Socket = ({
               )
             : undefined;
 
-        if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+        if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
           // Fetch variables to parse URL to fetch cookies
           const envVar = _commonFns.getMergedVariables();
 
@@ -1094,7 +1094,7 @@ const Socket = ({
         }).prepare();
 
         const executor =
-          _misc.firecampAgent() !== EFirecampAgent.desktop
+          _misc.firecampAgent() !== EFirecampAgent.Desktop
             ? new Executor({
                 io: {
                   v2,
@@ -1102,16 +1102,16 @@ const Socket = ({
                   v4,
                 },
                 agent:
-                  _misc.firecampAgent() === EFirecampAgent.desktop
-                    ? EFirecampAgent.desktop
-                    : EFirecampAgent.extension,
+                  _misc.firecampAgent() === EFirecampAgent.Desktop
+                    ? EFirecampAgent.Desktop
+                    : EFirecampAgent.Extension,
                 connectionId,
                 url,
                 config,
                 envVariables,
               })
             : window.fc.io({
-                agent: EFirecampAgent.desktop,
+                agent: EFirecampAgent.Desktop,
                 connectionId,
                 url,
                 config,

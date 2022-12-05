@@ -114,7 +114,7 @@ export const ModalContainer = () => {
   // return renderModal(currentOpenModal);
 
   const modalProps = EPlatformModalDefaultProps[currentOpenModal];
-  console.log(modalProps, '.....');
+  // console.log(modalProps, '.....');
   return (
     <Modal isOpen={isOpen} onClose={close} {...modalProps}>
       {renderModal(currentOpenModal)}

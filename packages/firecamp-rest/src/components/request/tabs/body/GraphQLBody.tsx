@@ -1,5 +1,4 @@
 import { ERestBodyTypes } from '@firecamp/types';
-
 import {
   Container,
   Column,
@@ -8,15 +7,14 @@ import {
 } from '@firecamp/ui-kit';
 
 const GraphQLBody = ({ body, onChange }) => {
-  let { value = '', variables = '' } = body;
+  const { value = '', variables = '' } = body;
 
-  let _onChangeVariables = (value) => {
+  const _onChangeVariables = (value) => {
     // console.log("update", key, value)
-
     onChange(ERestBodyTypes.GraphQL, value, 'variables');
   };
 
-  let _onChangeQuery = (value) => {
+  const _onChangeQuery = (value) => {
     onChange(ERestBodyTypes.GraphQL, value);
   };
 

@@ -70,7 +70,5 @@ export interface IResizable {
   minWidth?: string | number;
 
   onResizeStart?: () => void;
-  onResizeStop?: (...props:async (params:type) => {
-    
-  }) => void;
+  onResizeStop?: (...props: any) => void;
 }

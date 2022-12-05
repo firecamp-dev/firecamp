@@ -4,8 +4,6 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  
   CopyButton,
   Input,
   Popover,
@@ -32,7 +30,7 @@ const Edit: FC<IEdit> = ({
   let [isUpdating, toggleUpdating] = useState(false);
   let [isLeaving, toggleLeaving] = useState(false);
 
-  const workspaceType = propWorkspace?.meta?.type || '';
+  const workspaceType = propWorkspace?.__meta?.type || '';
 
   useEffect(() => {
     if (
@@ -55,7 +53,7 @@ const Edit: FC<IEdit> = ({
     // if (userMeta.isLoggedIn) {
     //   _setIsAdmin();
     // }
-  }, [mWRelation?.w_relation?.role, propWorkspace?._meta?.id]);
+  }, [mWRelation?.w_relation?.role, propWorkspace?.__ref?.id]);
 
   let [notification, setNotification] = useState({
     message: '',
@@ -147,24 +145,24 @@ const Edit: FC<IEdit> = ({
         if (
           _object.size(updatedPayload) === 1 &&
           updatedPayload.name &&
-          propWorkspace?.meta?.is_default === true &&
-          propWorkspace?.meta?.type === 1
+          propWorkspace?.__meta?.isDefault === true &&
+          propWorkspace?.__meta?.type === 1
         )
           return;
 
         let updatePayload = {
           ...updatedPayload,
-          _meta: {
-            id: propWorkspace?._meta?.id || '',
-            updated_at: new Date().valueOf(),
-            // updated_by: F.userMeta.id
+          __ref: {
+            id: propWorkspace?.__ref?.id || '',
+            updatedAt: new Date().valueOf(),
+            // updatedBy: F.userMeta.id
           },
         };
 
-        if (propWorkspace?._meta?.org_id) {
-          updatePayload['_meta'] = {
-            ...updatePayload['_meta'],
-            org_id: propWorkspace._meta.org_id,
+        if (propWorkspace?.__ref?.orgId) {
+          updatePayload.__ref = {
+            ...updatePayload.__ref,
+            orgId: propWorkspace.__ref.orgId,
           };
         }
         // await F.appStore.workspace.update(updatePayload, true);
@@ -177,7 +175,7 @@ const Edit: FC<IEdit> = ({
         };
       });
       updateWorkspaceData({
-        id: propWorkspace?._meta?.id ? propWorkspace._meta.id : '',
+        id: propWorkspace?.__ref?.id ? propWorkspace.__ref.id : '',
         name: workspace.name || '',
         description: workspace.description || '',
       });
@@ -187,7 +185,7 @@ const Edit: FC<IEdit> = ({
       // if (isLeaving || !userMeta.isLoggedIn) return;
       toggleLeaving(true);
 
-      let apiPayload = propWorkspace?._meta?.id || '';
+      let apiPayload = propWorkspace?.__ref?.id || '';
 
       try {
         let response =
@@ -224,10 +222,10 @@ const Edit: FC<IEdit> = ({
 
       return Promise.resolve(false);
     }
-    if (propWorkspace?._meta?.id) {
+    if (propWorkspace?.__ref?.id) {
       let workspace_payload = {
-        id: propWorkspace?._meta?.id ? propWorkspace._meta.id : '',
-        org_id: propWorkspace?._meta?.org_id,
+        id: propWorkspace?.__ref?.id ? propWorkspace.__ref.id : '',
+        orgId: propWorkspace?.__ref?.orgId,
         name: wrsName,
         meta: {
           type: workspaceType,
@@ -273,8 +271,8 @@ const Edit: FC<IEdit> = ({
               disabled={
                 // !userMeta.isLoggedIn ||
                 (workspaceType !== EWorkspaceTypes.Personal && !isAdmin) ||
-                (propWorkspace?.meta?.is_default === true &&
-                  propWorkspace?.meta?.type === EWorkspaceTypes.Personal)
+                (propWorkspace?.__meta?.isDefault === true &&
+                  propWorkspace?.__meta?.type === EWorkspaceTypes.Personal)
               }
               // onBlur={_onBlurWrsName}
             />
@@ -294,8 +292,8 @@ const Edit: FC<IEdit> = ({
               }
               autoFocus={true}
             />
-            {propWorkspace?.meta?.is_default === true &&
-            propWorkspace?.meta?.type === EWorkspaceTypes.Personal
+            {propWorkspace?.__meta?.isDefault === true &&
+            propWorkspace?.__meta?.type === EWorkspaceTypes.Personal
               ? ''
               : [
                   <hr key={`delete-hr`} />,
@@ -371,11 +369,11 @@ const RemoveWorkspace: FC<IRemoveWorkspace> = ({
   onLeave = () => {},
 }) => {
   let [isOpen, toggleOpen] = useState(false);
-  let workspaceType = workspace?.meta?.type ? workspace.meta.type : '';
+  let workspaceType = workspace?.__meta?.type ? workspace.__meta.type : '';
   let isAdmin = propIsAdmin || workspaceType === EWorkspaceTypes.Personal;
   let isDefaultWRS = false;
 
-  if (workspace?._meta?.is_default) {
+  if (workspace?.__ref?.isDefault) {
     isDefaultWRS = true;
   }
 

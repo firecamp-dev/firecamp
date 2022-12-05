@@ -52,7 +52,7 @@ const App: FC<any> = () => {
     init();
 
     return () => {
-      if (_misc.firecampAgent() === EFirecampAgent.desktop)
+      if (_misc.firecampAgent() === EFirecampAgent.Desktop)
         //@ts-ignore
         window.fc.dialog.openErrorDialog();
       else alert('I am unmounting');

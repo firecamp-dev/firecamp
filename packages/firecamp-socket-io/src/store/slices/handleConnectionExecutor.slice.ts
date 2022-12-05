@@ -67,7 +67,7 @@ const createHandleConnectionExecutor = (
       };
 
       const executor: IExecutorInterface =
-        _misc.firecampAgent() === EFirecampAgent.desktop
+        _misc.firecampAgent() === EFirecampAgent.Desktop
           ? window.fc.io(options)
           : new Executor(options);
 

@@ -13,13 +13,13 @@ enum ETreeEventTypes {
 type TTreeItemData = {
   name: string;
   icon?: { text?: string };
-  _meta: {
+  __ref: {
     id: string;
-    is_collection?: boolean;
-    is_folder?: boolean;
-    is_request?: boolean;
-    collection_id?: string; // exist in folder and request
-    folder_id?: string;
+    isCollection?: boolean;
+    isFolder?: boolean;
+    isRequest?: boolean;
+    collectionId?: string; // exist in folder and request
+    folderId?: string;
   };
 };
 
@@ -42,12 +42,12 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     this.items = [
       ...collections.map((i) => ({
         ...i,
-        _meta: { ...i._meta, is_collection: true },
+        __ref: { ...i.__ref, isCollection: true },
       })),
-      ...folders.map((i) => ({ ...i, _meta: { ...i._meta, is_folder: true } })),
+      ...folders.map((i) => ({ ...i, __ref: { ...i.__ref, isFolder: true } })),
       ...requests.map((i) => ({
         ...i,
-        _meta: { ...i._meta, is_request: true },
+        __ref: { ...i.__ref, isRequest: true },
       })),
     ];
     // console.log(rootOrders, 'rootOrders...');
@@ -61,42 +61,42 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       return Promise.resolve({
         index: 'root',
         canMove: true,
-        data: { name: 'Root', _meta: { id: 'root', is_collection: true } },
+        data: { name: 'Root', __ref: { id: 'root', isCollection: true } },
         canRename: false,
         hasChildren: true,
         children: this.rootOrders,
       });
     }
 
-    let item = this.items.find((i) => i._meta?.id == itemId);
+    let item = this.items.find((i) => i.__ref?.id == itemId);
     if (!item) return Promise.resolve({ index: null, data: null });
     // return Promise.reject(
     //   "The item id is existing in parent's meta orders array but can't find the item in data provider's items array"
     // );
 
     let treeItem: TTreeItemData = {
-      name: item.name || item.meta.name, // in request, the `name` key will be in `meta`
+      name: item.name || item.__meta.name, // in request, the `name` key will be in `meta`
       icon: { text: item?.method || undefined },
-      _meta: {
-        id: item._meta.id,
-        collection_id: item._meta?.collection_id,
-        folder_id: item._meta?.folder_id,
+      __ref: {
+        id: item.__ref.id,
+        collectionId: item.__ref?.collectionId,
+        folderId: item.__ref?.folderId,
       },
     };
-    if (item._meta?.is_collection == true) treeItem._meta.is_collection = true;
-    if (item._meta?.is_folder == true) treeItem._meta.is_folder = true;
-    if (item._meta?.is_request == true) treeItem._meta.is_request = true;
+    if (item.__ref?.isCollection == true) treeItem.__ref.isCollection = true;
+    if (item.__ref?.isFolder == true) treeItem.__ref.isFolder = true;
+    if (item.__ref?.isRequest == true) treeItem.__ref.isRequest = true;
 
     const children = _uniq([
-      ...(item.meta.f_orders || []),
-      ...(item.meta.r_orders || []),
+      ...(item.__meta.fOrders || []),
+      ...(item.__meta.rOrders || []),
     ]);
     return Promise.resolve({
-      index: item._meta.id,
+      index: item.__ref.id,
       canMove: true,
       data: treeItem,
       canRename: true,
-      hasChildren: !treeItem._meta.is_request, //!!children?.length, //note: if it's false then folder click has no effect, we need to open it even it's empty
+      hasChildren: !treeItem.__ref.isRequest, //!!children?.length, //note: if it's false then folder click has no effect, we need to open it even it's empty
       children,
     });
   }
@@ -117,29 +117,29 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       this.rootOrders = newChildren;
       changeWorkspaceMetaOrders(newChildren as string[]);
     } else {
-      // split new children into f_orders and r_orders
-      const { f_orders, r_orders } = newChildren.reduce(
+      // split new children into fOrders and rOrders
+      const { fOrders, rOrders } = newChildren.reduce(
         (p, n) => {
-          const item = this.items.find((i) => i._meta.id == n);
-          if (item && item._meta.is_folder)
-            return { f_orders: [...p.f_orders, n], r_orders: p.r_orders };
-          else if (item && item._meta.is_request)
-            return { f_orders: p.f_orders, r_orders: [...p.r_orders, n] };
+          const item = this.items.find((i) => i.__ref.id == n);
+          if (item && item.__ref.isFolder)
+            return { fOrders: [...p.fOrders, n], rOrders: p.rOrders };
+          else if (item && item.__ref.isRequest)
+            return { fOrders: p.fOrders, rOrders: [...p.rOrders, n] };
           else return p;
         },
-        { f_orders: [], r_orders: [] }
+        { fOrders: [], rOrders: [] }
       );
 
       this.items = this.items.map((i) => {
-        if (i._meta.id == itemId) {
-          if (i._meta.is_collection)
+        if (i.__ref.id == itemId) {
+          if (i.__ref.isCollection)
             changeCollectionMetaOrders(itemId as string, {
-              f_orders,
-              r_orders,
+              fOrders,
+              rOrders,
             });
-          if (i._meta.is_folder)
-            changeFolderMetaOrders(itemId as string, { f_orders, r_orders });
-          return { ...i, meta: { ...i.meta, f_orders, r_orders } };
+          if (i.__ref.isFolder)
+            changeFolderMetaOrders(itemId as string, { fOrders, rOrders });
+          return { ...i, __meta: { ...i.__meta, fOrders, rOrders } };
         }
         return i;
       });
@@ -169,9 +169,11 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
 
   public async onRenameItem(item: TreeItem<any>, name: string): Promise<void> {
     this.items = this.items.map((i) => {
-      if (i._meta.id == item.index) {
+      if (i.__ref.id == item.index) {
         // request will have name in meta while other items will have name key at root
-        return !!i.name ? { ...i, name } : { ...i, meta: { ...i.meta, name } };
+        return !!i.name
+          ? { ...i, name }
+          : { ...i, __meta: { ...i.__meta, name } };
       }
       return i;
     });
@@ -191,12 +193,12 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     this.items = [
       ...collections.map((i) => ({
         ...i,
-        _meta: { ...i._meta, is_collection: true },
+        __ref: { ...i.__ref, isCollection: true },
       })),
-      ...folders.map((i) => ({ ...i, _meta: { ...i._meta, is_folder: true } })),
+      ...folders.map((i) => ({ ...i, __ref: { ...i.__ref, isFolder: true } })),
       ...requests.map((i) => ({
         ...i,
-        _meta: { ...i._meta, is_request: true },
+        __ref: { ...i.__ref, isRequest: true },
       })),
     ];
     this.rootOrders = rootOrders;
@@ -206,35 +208,35 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   }
 
   public addCollectionItem(item: any) {
-    this.items.push({ ...item, _meta: { ...item._meta, is_collection: true } });
-    this.rootOrders.push(item._meta.id);
+    this.items.push({ ...item, __ref: { ...item.__ref, isCollection: true } });
+    this.rootOrders.push(item.__ref.id);
     this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
   }
 
   public updateCollectionItem(item: any) {
     this.items = this.items.map((i) => {
-      if (item._meta.id == i._meta.id) {
+      if (item.__ref.id == i.__ref.id) {
         if (item.name) i.name = item.name;
         if (item.description) i.description = item.description;
       }
       return i;
     });
-    this.emitter.emit(ETreeEventTypes.itemChanged, ['root', item._meta.id]);
+    this.emitter.emit(ETreeEventTypes.itemChanged, ['root', item.__ref.id]);
   }
 
   public deleteCollectionItem(itemId: string) {
-    this.items = this.items.filter((i) => i._meta.id != itemId);
+    this.items = this.items.filter((i) => i.__ref.id != itemId);
     this.rootOrders = this.rootOrders.filter((i) => i != itemId);
     this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
   }
 
   public addFolderItem(item: any) {
-    if (!item.meta) item.meta = { f_orders: [], r_orders: [] };
-    this.items.push({ ...item, _meta: { ...item._meta, is_folder: true } });
-    const parentId = item._meta.folder_id || item._meta.collection_id;
+    if (!item.__meta) item.__meta = { fOrders: [], rOrders: [] };
+    this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
+    const parentId = item.__ref.folderId || item.__ref.collectionId;
     this.items.map((i) => {
-      if (i._meta.id == parentId) {
-        i.meta.f_orders.push(item._meta.id);
+      if (i.__ref.id == parentId) {
+        i.__meta.fOrders.push(item.__ref.id);
       }
       return i;
     });
@@ -243,27 +245,27 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
 
   public updateFolderItem(item: any) {
     this.items = this.items.map((i) => {
-      if (item._meta.id == i._meta.id) {
+      if (item.__ref.id == i.__ref.id) {
         if (item.name) i.name = item.name;
         if (item.description) i.description = item.description;
       }
       return i;
     });
-    this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.id]);
+    this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.id]);
   }
 
   public deleteFolderItem(itemId: string) {
-    const item = this.items.find((i) => i._meta.id == itemId);
+    const item = this.items.find((i) => i.__ref.id == itemId);
     if (!item) return;
 
-    const parentId = item._meta.folder_id || item._meta.collection_id;
+    const parentId = item.__ref.folderId || item.__ref.collectionId;
     this.items = this.items
-      .filter((i) => i._meta.id != itemId)
+      .filter((i) => i.__ref.id != itemId)
       .map((i) => {
-        // remove folder from parent's f_orders
-        if (i._meta.id == parentId) {
-          const newFldOrders = i.meta.f_orders.filter((f) => f != itemId);
-          return { ...i, meta: { ...i.meta, f_orders: newFldOrders } };
+        // remove folder from parent's fOrders
+        if (i.__ref.id == parentId) {
+          const newFldOrders = i.__meta.fOrders.filter((f) => f != itemId);
+          return { ...i, __meta: { ...i.__meta, fOrders: newFldOrders } };
         }
         return i;
       });
@@ -272,11 +274,11 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   }
 
   public addRequestItem(item: any) {
-    this.items.push({ ...item, _meta: { ...item._meta, is_request: true } });
-    const parentId = item._meta.folder_id || item._meta.collection_id;
+    this.items.push({ ...item, __ref: { ...item.__ref, isRequest: true } });
+    const parentId = item.__ref.folderId || item.__ref.collectionId;
     this.items.map((i) => {
-      if (item._meta.folder_id && i._meta.id == parentId) {
-        i.meta.r_orders.push(item._meta.id);
+      if (item.__ref.folderId && i.__ref.id == parentId) {
+        i.__meta.rOrders.push(item.__ref.id);
       }
       return i;
     });
@@ -285,34 +287,35 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
 
   public updateRequestItem(item: any) {
     this.items = this.items.map((i) => {
-      if (item._meta.id == i._meta.id) {
-        if (item.meta?.name) i.meta.name = item.meta.name;
-        if (item.meta?.description) i.meta.description = item.meta.description;
+      if (item.__ref.id == i.__ref.id) {
+        if (item.__meta?.name) i.__meta.name = item.__meta.name;
+        if (item.__meta?.description)
+          i.__meta.description = item.__meta.description;
       }
       return i;
     });
-    const parentId = item._meta.folder_id || item._meta.collection_id;
-    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId, item._meta.id]);
+    const parentId = item.__ref.folderId || item.__ref.collectionId;
+    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId, item.__ref.id]);
   }
 
   public deleteRequestItem(itemId: string) {
-    const item = this.items.find((i) => i._meta.id == itemId);
+    const item = this.items.find((i) => i.__ref.id == itemId);
     if (!item) return;
     this.items = this.items
-      .filter((i) => i._meta.id != itemId)
+      .filter((i) => i.__ref.id != itemId)
       .map((i) => {
-        // remove request from parent's r_orders
+        // remove request from parent's rOrders
         if (
-          i._meta.id == item._meta.folder_id ||
-          i._meta.id == item._meta.collection_id
+          i.__ref.id == item.__ref.folderId ||
+          i.__ref.id == item.__ref.collectionId
         ) {
-          const newReqOrders = i.meta.r_orders.filter((r) => r != itemId);
-          return { ...i, meta: { ...i.meta, r_orders: newReqOrders } };
+          const newReqOrders = i.__meta.rOrders.filter((r) => r != itemId);
+          return { ...i, __meta: { ...i.__meta, rOrders: newReqOrders } };
         }
         return i;
       });
 
-    const parentId = item._meta.folder_id || item._meta.collection_id;
+    const parentId = item.__ref.folderId || item.__ref.collectionId;
     this.emitter.emit(ETreeEventTypes.itemChanged, [parentId]);
   }
 }

@@ -21,12 +21,12 @@ const DomainList: FC<IDomainList> = ({
     <div className="fc-ssl-domain-list">
       {list.map((domain, i) => {
         let ssl = sslList.find(
-          (lc) => lc._meta && domain._meta && lc._meta.id === domain._meta.id
+          (lc) => lc.__ref && domain.__ref && lc.__ref.id === domain.__ref.id
         );
         return (
           <DomainItem
-            key={domain._meta ? domain._meta.id : ''}
-            isUpdated={ssl && !equal(ssl.meta, domain.meta)}
+            key={domain.__ref ? domain.__ref.id : ''}
+            isUpdated={ssl && !equal(ssl.__meta, domain.__meta)}
             sslList={sslList}
             domain={domain}
             domainFns={domainFns}
@@ -59,10 +59,10 @@ const DomainItem: FC<IDomainItem> = ({
     try {
       let found = sslList.find(
         (ssl) =>
-          ssl.meta &&
-          ssl._meta &&
-          ssl._meta.id !== id &&
-          (ssl.meta.host.toLowerCase() || '').trim() ===
+          ssl.__meta &&
+          ssl.__ref &&
+          ssl.__ref.id !== id &&
+          (ssl.__meta.host.toLowerCase() || '').trim() ===
             (host.toLowerCase() || '').trim()
       );
       if (found) {

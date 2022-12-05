@@ -1,5 +1,4 @@
-import { IEmitterArgument, ILog } from './types';
-import { ELogEvents } from './constants';
+import { IEmitterArgument, ELogEvents, ILog } from './types';
 import {
   ICertificate,
   ISocketIOConfig,
@@ -21,7 +20,7 @@ export interface IExecutorInterface {
    *
    * @param title - Title of the Log card
    * @param message - Message to display in Log card.
-   *          when type belongs to [ R, S, ACK ], It's [ { payload, meta: { type, envelope } } ]
+   *          when type belongs to [ R, S, ACK ], It's [ { payload, meta: { type, typedArrayView } } ]
    *          when type belongs to [SYS], it's STRING (empty "")
    * @param meta
    */

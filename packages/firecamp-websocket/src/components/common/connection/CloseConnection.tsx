@@ -6,6 +6,8 @@ const CloseConnection = ({
   activePlayground = '',
   closeManually = true,
   onClose,
+  sm,
+  xs,
 }) => {
   const [state, setState] = useState({
     status: '',
@@ -145,7 +147,8 @@ const CloseConnection = ({
           text={'Connected'}
           onClick={closeManually === false ? onClose : () => {}}
           primary
-          xs
+          sm={sm}
+          xs={xs}
           iconLeft
         />
       </Popover.Handler>

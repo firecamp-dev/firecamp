@@ -11,12 +11,12 @@ enum ETreeEventTypes {
 }
 type TTreeItemData = {
   name: string;
-  _meta: {
+  __ref: {
     id: string;
-    is_collection?: boolean;
-    is_folder?: boolean;
-    collection_id?: string; // exist in folder and request
-    folder_id?: string; // exist in folder/request
+    isCollection?: boolean;
+    isFolder?: boolean;
+    collectionId?: string; // exist in folder and request
+    folderId?: string; // exist in folder/request
   };
 };
 export class CollectionDataProvider<T = any> implements TreeDataProvider {
@@ -34,11 +34,11 @@ export class CollectionDataProvider<T = any> implements TreeDataProvider {
     this.items = [
       ...collections.map((i) => ({
         ...i,
-        _meta: { ...i._meta, is_collection: true },
+        __ref: { ...i.__ref, isCollection: true },
       })),
-      ...folders.map((i) => ({ ...i, _meta: { ...i._meta, is_folder: true } })),
+      ...folders.map((i) => ({ ...i, __ref: { ...i.__ref, isFolder: true } })),
     ];
-    this.rootOrders = collections.map((i) => i._meta.id);
+    this.rootOrders = collections.map((i) => i.__ref.id);
   }
 
   public async getTreeItem(
@@ -49,31 +49,31 @@ export class CollectionDataProvider<T = any> implements TreeDataProvider {
       return Promise.resolve({
         index: 'root',
         canMove: true,
-        data: { name: 'Root', _meta: { id: 'root', is_collection: true } },
+        data: { name: 'Root', __ref: { id: 'root', isCollection: true } },
         canRename: false,
         hasChildren: !!this.rootOrders?.length,
         children: this.rootOrders,
       });
     }
 
-    const item = this.items.find((i) => i._meta?.id == itemId);
+    const item = this.items.find((i) => i.__ref?.id == itemId);
 
     // console.log(item, itemId, 12)
 
     let treeItem: TTreeItemData = {
       name: item.name,
-      _meta: {
-        id: item._meta.id,
-        collection_id: item._meta?.collection_id,
-        folder_id: item._meta?.folder_id,
+      __ref: {
+        id: item.__ref.id,
+        collectionId: item.__ref?.collectionId,
+        folderId: item.__ref?.folderId,
       },
     };
-    if (item._meta?.is_collection == true) treeItem._meta.is_collection = true;
-    if (item._meta?.is_folder == true) treeItem._meta.is_folder = true;
+    if (item.__ref?.isCollection == true) treeItem.__ref.isCollection = true;
+    if (item.__ref?.isFolder == true) treeItem.__ref.isFolder = true;
 
-    let children = [...item?.meta?.f_orders];
+    let children = [...item?.__meta?.fOrders];
     return Promise.resolve({
-      index: item._meta.id,
+      index: item.__ref.id,
       canMove: true,
       data: treeItem,
       canRename: true,
@@ -92,7 +92,7 @@ export class CollectionDataProvider<T = any> implements TreeDataProvider {
     else {
       console.log(itemId, newChildren, 'onChangeItemChildren...');
       this.items = this.items.map((i) => {
-        return i._meta.id == itemId ? { ...i, children: newChildren } : i;
+        return i.__ref.id == itemId ? { ...i, children: newChildren } : i;
       });
     }
     this.emitter.emit(ETreeEventTypes.itemChanged, [itemId]);
@@ -110,9 +110,11 @@ export class CollectionDataProvider<T = any> implements TreeDataProvider {
 
   public async onRenameItem(item: TreeItem<any>, name: string): Promise<void> {
     this.items = this.items.map((i) => {
-      if (i._meta.id == item.index) {
+      if (i.__ref.id == item.index) {
         // request will have name in meta while other items will have name key at root
-        return !!i.name ? { ...i, name } : { ...i, meta: { ...i.meta, name } };
+        return !!i.name
+          ? { ...i, name }
+          : { ...i, __meta: { ...i.__meta, name } };
       }
       return i;
     });

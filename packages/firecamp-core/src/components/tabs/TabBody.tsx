@@ -40,7 +40,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
   }
 
   const { getFirecampAgent } = usePlatformStore.getState();
-  const { changeActiveTab, close } = useTabStore.getState();
+  // const { changeActiveTab, close } = useTabStore.getState();
 
   if (
     [

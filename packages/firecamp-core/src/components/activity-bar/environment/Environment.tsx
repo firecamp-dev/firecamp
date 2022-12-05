@@ -203,7 +203,7 @@ export default Environment;
 
 const ProgressBarContainer = () => {
   let { isProgressing } = useWorkspaceStore((s) => ({
-    isProgressing: s.explorer.is_progressing,
+    isProgressing: s.explorer.isProgressing,
   }));
 
   return <ProgressBar active={isProgressing} />;

@@ -8,9 +8,9 @@ const Helper = {
 
       if (environments?.length) {
         for (let value of environments) {
-          if (value._meta) {
+          if (value.__ref) {
             options.push({
-              id: value._meta.id,
+              id: value.__ref.id,
               name: value.name,
             });
           }

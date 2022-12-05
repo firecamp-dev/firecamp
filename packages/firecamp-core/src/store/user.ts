@@ -10,7 +10,7 @@ export interface IUserStore {
     username: string;
     email: string;
     provider?: any; //TODO: check type here
-    _meta?: {
+    __ref?: {
       id: TId;
     };
   };

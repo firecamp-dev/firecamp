@@ -8,15 +8,15 @@ const ActiveEnvDD: FC<IActiveEnvDD> = ({
   onSelect = () => {},
 }) => {
   let [selected, setSelected] = useState(
-    environments.find((env) => env?._meta?.id === activeEnv)
+    environments.find((env) => env?.__ref?.id === activeEnv)
   );
 
   useEffect(() => {
     let selectedOpt = environments.find(
-      (env) => env?._meta?.id === activeEnv
+      (env) => env?.__ref?.id === activeEnv
     ) || {
       name: environments?.[0]?.name || '',
-      id: environments?.[0]?._meta?.id || '',
+      id: environments?.[0]?.__ref?.id || '',
     };
     if (selectedOpt !== selected) {
       setSelected(selectedOpt);
@@ -37,7 +37,7 @@ const ActiveEnvDD: FC<IActiveEnvDD> = ({
       <Dropdown.Options
         className={'width-full bg-appBackground2'}
         options={environments.map((env) => {
-          return { name: env.name, id: env?._meta?.id };
+          return { name: env.name, id: env?.__ref?.id };
         })}
         onSelect={(env) => {
           setSelected(env);

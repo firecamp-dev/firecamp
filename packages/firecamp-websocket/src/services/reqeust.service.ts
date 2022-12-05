@@ -3,13 +3,23 @@ import {
   ERequestTypes,
   IWebSocketConnection,
 } from '@firecamp/types';
+import { _object, _array, _string } from '@firecamp/utils';
+import _url from '@firecamp/url';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid as id } from 'nanoid';
-import { _object, _array, _string } from '@firecamp/utils';
 
-import { IUiRequestPanel } from '../store';
+import {
+  initialPlaygroundMessage,
+  IUiRequestPanel,
+  IWebsocketStoreState,
+} from '../store';
 import { DefaultConnectionState, DefaultConfigState } from '../constants';
+import { EConnectionState, ERequestPanelTabs } from '../types';
+
+const getPathFromUrl = (url: string) => {
+  return url.split(/[?#]/)[0];
+};
 
 export const prepareUIRequestPanelState = (
   request: Partial<IWebSocket>
@@ -28,42 +38,51 @@ export const prepareUIRequestPanelState = (
 };
 
 /** normalize the websocket request */
-export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
+export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   const _nr: IWebSocket = {
-    url: { raw: '' },
-    meta: {
+    //ws url will only have { raw: ""} but in ui we need actual url object IUrl
+    //@ts-ignore
+    url: { raw: '', queryParams: [], pathParams: [] },
+    connections: [],
+    __meta: {
       name: '',
       type: ERequestTypes.WebSocket,
       version: '2.0.0',
     },
-    _meta: { id: '', collectionId: '' },
+    __ref: { id: '', collectionId: '' },
   };
 
-  const { meta, _meta, url, connections, config } = request;
-
-  // console.log({ request });
+  const {
+    url,
+    connections = _nr.connections,
+    config = {},
+    __meta = _nr.__meta,
+    __ref = _nr.__ref,
+  } = request;
 
   //normalize url
-  _nr.url = !_object.isEmpty(url) ? url : { raw: '' };
+  if (url?.raw) {
+    _nr.url.raw = getPathFromUrl(url.raw);
+  }
 
-  // normalize meta
-  _nr.meta.name = meta.name || 'Untitled Request';
-  _nr.meta.description = meta.description || '';
-  _nr.meta.fOrders = meta.fOrders || [];
-  _nr.meta.iOrders = meta.iOrders || [];
-  _nr.meta.type = ERequestTypes.WebSocket;
-  _nr.meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
+  // normalize __meta
+  _nr.__meta.name = __meta.name || 'Untitled Request';
+  _nr.__meta.description = __meta.description || '';
+  _nr.__meta.fOrders = __meta.fOrders || [];
+  _nr.__meta.iOrders = __meta.iOrders || [];
+  _nr.__meta.type = ERequestTypes.WebSocket;
+  _nr.__meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
 
-  // normalize _meta
-  _nr._meta.id = _meta?.id || id();
-  _nr._meta.collectionId = _meta?.collectionId;
-  _nr._meta.folderId = _meta?.folderId;
-  _nr._meta.createdAt = _meta?.createdAt || new Date().valueOf();
-  _nr._meta.updatedAt = _meta?.updatedAt || new Date().valueOf();
-  _nr._meta.createdBy = _meta?.createdBy || '';
-  _nr._meta.updatedBy = _meta?.updatedBy || '';
+  // normalize __ref
+  _nr.__ref.id = __ref.id || id();
+  _nr.__ref.collectionId = __ref.collectionId;
+  _nr.__ref.folderId = __ref.folderId;
+  _nr.__ref.createdAt = __ref.createdAt || new Date().valueOf();
+  _nr.__ref.updatedAt = __ref.updatedAt || new Date().valueOf();
+  _nr.__ref.createdBy = __ref.createdBy || '';
+  _nr.__ref.updatedBy = __ref.updatedBy || '';
 
-  // normalize _meta
+  // normalize connections
   _nr.connections = [];
   _nr.connections = connections.map(
     (connection: IWebSocketConnection) =>
@@ -74,11 +93,9 @@ export const normalizeRequest = (request: IWebSocket): Promise<IWebSocket> => {
   );
   if (!_nr.connections?.length) _nr.connections = [DefaultConnectionState];
 
-  console.log(connections, _nr.connections, 789789);
-
   // normalize config
   _nr.config = _object.mergeDeep(DefaultConfigState, config || {});
-  return Promise.resolve(_nr);
+  return _nr;
 };
 
 /**
@@ -136,4 +153,67 @@ export const normalizeVariables = (
   });
 
   return Promise.resolve(updatedVariables);
+};
+
+export const initialiseStoreFromRequest = (
+  _request: Partial<IWebSocket>
+): IWebsocketStoreState => {
+  const request: IWebSocket = normalizeRequest(_request);
+  const requestPanel = prepareUIRequestPanelState(request);
+
+  const defaultConnection =
+    request.connections?.find((c) => c.isDefault === true) ||
+    DefaultConnectionState;
+  const playgroundId = defaultConnection.id;
+
+  const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
+  const displayUrl = url.raw;
+  // console.log(url, displayUrl, 'url...');
+
+  return {
+    request,
+    playgrounds: {
+      // add logic for init playgrounds by connections
+      [playgroundId]: {
+        id: playgroundId,
+        connectionState: EConnectionState.Ideal,
+        logFilters: {
+          type: '',
+        },
+        message: initialPlaygroundMessage,
+        selectedCollectionMessage: '',
+      },
+    },
+    runtime: {
+      displayUrl,
+      activePlayground: playgroundId,
+      playgroundTabs: request.connections.map((c) => {
+        return {
+          id: c.id,
+          name: c.name,
+          meta: {
+            isSaved: true,
+            hasChange: false,
+          },
+        };
+      }),
+      activeEnvironments: {
+        workspace: '',
+        collection: '',
+      },
+      _dnp: {},
+      isRequestSaved: !!request.__ref.collectionId,
+    },
+    ui: {
+      // ...state.ui,
+      requestPanel: {
+        ...requestPanel,
+        activeTab: ERequestPanelTabs.Playgrounds, //uiActiveTab,
+      },
+      isFetchingRequest: false,
+    },
+    connectionsLogs: {
+      [playgroundId]: [],
+    },
+  };
 };

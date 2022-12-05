@@ -8,6 +8,7 @@ import {
   IWebsocketStore,
   useWebsocketStore,
 } from '../../../store/index';
+import ConnectButton from '../connection/ConnectButton';
 
 const UrlBarContainer = ({
   tab,
@@ -21,6 +22,7 @@ const UrlBarContainer = ({
 
   const {
     url,
+    displayUrl,
     activeEnvironments,
     isRequestSaved,
 
@@ -32,6 +34,7 @@ const UrlBarContainer = ({
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       url: s.request.url,
+      displayUrl: s.runtime.displayUrl,
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
 
@@ -51,8 +54,8 @@ const UrlBarContainer = ({
   /*   const _onSave = async (savedRequestData: {
     name: string;
     description: string;
-    collection_id: TId;
-    folder_id: TId;
+    collectionId: TId;
+    folderId: TId;
   }) => {
     try {
       // console.log({ savedRequestData });
@@ -60,8 +63,8 @@ const UrlBarContainer = ({
       const pushPayload: IPushPayload = await prepareRequestInsertPushPayload({
         name: savedRequestData.name,
         description: savedRequestData.description,
-        collection_id: savedRequestData.collection_id,
-        folder_id: savedRequestData.folder_id,
+        collectionId: savedRequestData.collectionId,
+        folderId: savedRequestData.folder_id,
       });
       console.log({ pushPayload });
 
@@ -112,7 +115,8 @@ const UrlBarContainer = ({
   const _onUpdateURL = (e) => {
     e.preventDefault();
     const value = e.target.value;
-    const urlObject = _url.updateByRaw({ ...url, raw: value });
+    const proxyUrl = { ...url, queryParams: [], pathParams: [] };
+    const urlObject = _url.updateByRaw({ ...proxyUrl, raw: value });
     changeUrl(urlObject);
   };
 
@@ -141,7 +145,7 @@ const UrlBarContainer = ({
       <UrlBar.Body>
         <Url
           id={`url-${tab.id}`}
-          url={url.raw || _url.toString(url)}
+          url={displayUrl}
           placeholder={'ws://'}
           onChangeURL={_onUpdateURL}
           // onEnter={_onExecute}
@@ -149,6 +153,7 @@ const UrlBarContainer = ({
         />
       </UrlBar.Body>
       <UrlBar.Suffix>
+        <ConnectButton sm={true} />
         <Button
           id={`save-request-${tab.id}`}
           text="Save"
@@ -157,17 +162,6 @@ const UrlBarContainer = ({
           secondary
           sm
         />
-        {/*   <SavePopover
-          onFirstTimeSave={_onSave}
-          onSaveCallback={_onUpdate}
-          tabMeta={tab.meta}
-          tabId={tab.id}
-          meta={{
-            formTitle: 'Websocket Request',
-            namePlaceholder: 'Title',
-            descPlaceholder: 'Description',
-          }}
-        /> */}
       </UrlBar.Suffix>
     </UrlBar>
   );

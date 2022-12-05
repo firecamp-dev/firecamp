@@ -1,5 +1,7 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
+import _cloneDeep from 'lodash/cloneDeep';
+import equal from 'react-fast-compare';
 
 import {
   // request
@@ -42,16 +44,10 @@ import {
   IUi,
   createUiSlice,
   IUiSlice,
-  initialPlaygroundMessage,
 } from './index';
 import { _object } from '@firecamp/utils';
 import { IWebSocket } from '@firecamp/types';
-import {
-  normalizeRequest,
-  prepareUIRequestPanelState,
-} from '../services/reqeust.service';
-import { EConnectionState, ERequestPanelTabs } from '../types';
-import { DefaultConnectionState } from '../constants';
+import { initialiseStoreFromRequest } from '../services/reqeust.service';
 
 const {
   Provider: WebsocketStoreProvider,
@@ -81,9 +77,10 @@ interface IWebsocketStore
     IUiSlice {
   last: any;
 
-  initialise: (request: IWebSocket, memoiseRequest: boolean) => void;
+  initialise: (request: Partial<IWebSocket>) => void;
 
   setLast: (initialState: IWebsocketStoreState) => void;
+  equalityChecker: (payload: any, reqKey_s: string) => void;
 }
 
 const createWebsocketStore = (initialState: IWebsocketStoreState) =>
@@ -91,65 +88,14 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
     return {
       last: initialState,
 
-      initialise: async (_request, memoiseRequest) => {
-        const state = get();
-        const request: IWebSocket = await normalizeRequest(_request);
-        // const uiActiveTab = hasPull
-        //   ? state.ui?.requestPanel?.activeTab || ERequestPanelTabs.Playgrounds
-        //   : ERequestPanelTabs.Playgrounds;
-
-        const requestPanel = prepareUIRequestPanelState(request);
-
-        const defaultConnection =
-          request.connections?.find((c) => c.isDefault === true) ||
-          DefaultConnectionState;
-        const playgroundId = defaultConnection.id;
-
-        const playgrounds = {
-          // Add logic for init playgrounds by connections
-          [playgroundId]: {
-            id: playgroundId,
-            connectionState: EConnectionState.Ideal,
-            logFilters: {
-              type: '',
-            },
-            message: initialPlaygroundMessage,
-            selectedCollectionMessage: '',
-          },
-        };
-
-        const runtime = {
-          ...state.runtime,
-          activePlayground: playgroundId,
-          playgroundTabs: request.connections.map((c) => {
-            return {
-              id: c.id,
-              name: c.name,
-              meta: {
-                isSaved: true,
-                hasChange: false,
-              },
-            };
-          }),
-        };
-        const ui = {
-          ...state.ui,
-          requestPanel: {
-            ...requestPanel,
-            activeTab: ERequestPanelTabs.Playgrounds, //uiActiveTab,
-          },
-        };
-
-        const last = memoiseRequest ? { request } : {};
-        set((s) => {
-          return {
-            last: { ...s.last, ...last },
-            request,
-            playgrounds,
-            runtime,
-            ui,
-          };
-        });
+      initialise: async (request: Partial<IWebSocket>) => {
+        const initState = initialiseStoreFromRequest(request);
+        // console.log(initState.request, 'initState.request');
+        set((s) => ({
+          ...s,
+          ...initState,
+          originalRequest: _cloneDeep(initState.request),
+        }));
       },
 
       setLast: (initialState: IWebsocketStoreState) => {
@@ -157,6 +103,12 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
           ...s,
           last: initialState,
         }));
+      },
+
+      equalityChecker: (payload, reqKey_s) => {
+        const state = get();
+        console.log(state.originalRequest.connections[0][reqKey_s], payload);
+        return equal(state.originalRequest.connections[0][reqKey_s], payload);
       },
 
       ...createRequestSlice(

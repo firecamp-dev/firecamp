@@ -137,7 +137,7 @@ const Websocket = ({
       initMessage = {
         name: foundMessage.name || '',
         message: foundMessage.body || '',
-        envelope: foundMessage.meta.envelope || '',
+        typedArrayView: foundMessage.meta.typedArrayView || '',
         type: foundMessage.meta.type || EMessagePayloadTypes.no_body,
         path: '', //TODO: add original path
       };
@@ -211,7 +211,7 @@ const Websocket = ({
         message: {
           type: EMessagePayloadTypes.no_body,
           message: '',
-          envelope: '',
+          typedArrayView: '',
           path: '',
           ...initMessage,
         },
@@ -357,7 +357,7 @@ const Websocket = ({
     if (!found) return;
 
     /**
-     * Update url on change active_connction as query_params updated
+     * Update url on change active_connection as query_params updated
      * @type {*}
      */
     let found_params = found[prop_STRINGS.URL.QUERY_PARAMS];
@@ -899,7 +899,7 @@ const Websocket = ({
         newConfig.certificates = sslManager;
         newConfig.proxies = proxyManager;
 
-        if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+        if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
           // Fetch variables to parse URL to fetch cookies
           const envVar = _commonFns.getMergedVariables();
 
@@ -961,10 +961,10 @@ const Websocket = ({
         );
 
         const executor =
-          _misc.firecampAgent() !== EFirecampAgent.desktop
+          _misc.firecampAgent() !== EFirecampAgent.Desktop
             ? new Executor({
                 WebSocket,
-                agent: EFirecampAgent.extension,
+                agent: EFirecampAgent.Extension,
                 connectionId,
                 url,
                 protocols,
@@ -972,7 +972,7 @@ const Websocket = ({
                 envVariables,
               })
             : window.fc.websocket({
-                agent: EFirecampAgent.desktop,
+                agent: EFirecampAgent.Desktop,
                 connectionId,
                 url,
                 protocols,
@@ -987,7 +987,7 @@ const Websocket = ({
 
           executor.subscribe(async (result) => {
             if (result.meta.event === ELogTypes.UPGRADE) {
-              if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+              if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
                 // Set cookie from response header `Set-Cookie`
                 await _commonFns._setCookie(url, result.message.payload);
               }
@@ -1076,7 +1076,7 @@ const Websocket = ({
      *    "name":"",
      *    "message": "",
      *    "type": "",
-     *    "envelope": ""
+     *    "typedArrayView": ""
      *   }
      * @returns {Promise.<void>}
      */
@@ -1129,7 +1129,7 @@ const Websocket = ({
           name: msg_payload?.message?.name,
           meta: {
             type: msg_payload.type || '',
-            envelope: msg_payload.envelope || '',
+            typedArrayView: msg_payload.typedArrayView || '',
           },
           payload: ws_message || '',
         });
@@ -1270,7 +1270,7 @@ const Websocket = ({
           name: existingMsg.name || '',
           meta: {
             type: existingMsg.type || '',
-            envelope: existingMsg.envelope || '',
+            typedArrayView: existingMsg.typedArrayView || '',
           },
           body: existingMsg.message || '',
           _meta: {
@@ -1326,7 +1326,7 @@ const Websocket = ({
      * @param responseHeaders
      */
     _setCookie: async (requestURL, responseHeaders) => {
-      if (_misc.firecampAgent() !== EFirecampAgent.desktop) {
+      if (_misc.firecampAgent() !== EFirecampAgent.Desktop) {
         return '';
       }
       try {
@@ -1476,7 +1476,7 @@ const Websocket = ({
           body: request.message.message,
           meta: {
             type: request.message.type,
-            envelope: request.message.envelope,
+            typedArrayView: request.message.typedArrayView,
           },
           _meta: {
             id: msgId,
@@ -1789,7 +1789,7 @@ const Websocket = ({
         name: payload.name || '',
         message: payload.body || '',
         type: payload.meta.type || '',
-        envelope: payload.meta.envelope || '',
+        typedArrayView: payload.meta.typedArrayView || '',
         path: payload.path || '',
         _meta: payload?._meta || {},
       };
@@ -1849,8 +1849,8 @@ const Websocket = ({
             type: msgToSetInPlayground.meta
               ? msgToSetInPlayground.meta.type || ''
               : '',
-            envelope: msgToSetInPlayground.meta
-              ? msgToSetInPlayground.meta.envelope || ''
+            typedArrayView: msgToSetInPlayground.meta
+              ? msgToSetInPlayground.meta.typedArrayView || ''
               : '',
             name: msgToSetInPlayground.name || '',
           }
@@ -1878,13 +1878,13 @@ const Websocket = ({
           payload = _object.omit(payload, ['type']);
         }
 
-        if (payload.hasOwnProperty('envelope')) {
+        if (payload.hasOwnProperty('typedArrayView')) {
           payload = Object.assign({}, payload, {
             meta: Object.assign({}, payload.meta, {
-              envelope: payload.envelope,
+              typedArrayView: payload.typedArrayView,
             }),
           });
-          payload = _object.omit(payload, ['envelope']);
+          payload = _object.omit(payload, ['typedArrayView']);
         }
       }
 
@@ -1900,10 +1900,10 @@ const Websocket = ({
             message.meta &&
             (message.meta.type === EMessagePayloadTypes.arraybufferview ||
               message.meta.type === EMessagePayloadTypes.arraybuffer) &&
-            (message.meta.envelope === '' || !message.meta.envelope)
+            (message.meta.typedArrayView === '' || !message.meta.typedArrayView)
           ) {
             message = Object.assign({}, message, {
-              meta: Object.assign({}, message.meta, { envelope: 'Int8Array' }),
+              meta: Object.assign({}, message.meta, { typedArrayView: 'Int8Array' }),
             });
           }
 
@@ -2017,7 +2017,7 @@ const Websocket = ({
         name: '',
         type: EMessagePayloadTypes.no_body,
         message: '',
-        envelope: '',
+        typedArrayView: '',
         path: '',
       };
       _requestFns.setMessage(msg);

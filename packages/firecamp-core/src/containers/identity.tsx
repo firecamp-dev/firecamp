@@ -4,7 +4,6 @@ import { Integrations } from '@sentry/tracing';
 import { useEffect, useState } from 'react';
 import CloudApiGlobal, { Rest } from '@firecamp/cloud-apis';
 import { ECloudApiHeaders } from '../types';
-import { string } from 'prop-types';
 
 const IdentityPage = () => {
   const [error, setError] = useState('');
@@ -35,7 +34,7 @@ const IdentityPage = () => {
         .viaGithub(code)
         .then((rs) => {
           // TODO: move it to cookie based auth
-          localStorage.setItem('token', rs.data.meta.access_token);
+          localStorage.setItem('token', rs.data.__meta.access_token);
           localStorage.setItem(
             'authSuccessMessage',
             "You're signed in successfully."

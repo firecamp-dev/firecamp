@@ -78,7 +78,7 @@ describe('rest executor', () => {
       },
       method: EHttpMethod.GET,
       config: {
-        reject_unauthorized: false,
+        rejectUnauthorized: false,
       },
       __meta: {
         name: '',
@@ -105,7 +105,7 @@ describe('rest executor', () => {
         },
         method: EHttpMethod.GET,
         config: {
-          reject_unauthorized: true,
+          rejectUnauthorized: true,
         },
         __meta: {
           activeBodyType: ERestBodyTypes.NoBody,

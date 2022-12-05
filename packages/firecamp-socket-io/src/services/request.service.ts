@@ -1,4 +1,10 @@
-import { ERequestTypes, ISocketIOConnection, ISocketIO } from '@firecamp/types';
+import {
+  ERequestTypes,
+  ISocketIOConnection,
+  ISocketIO,
+  ESocketIOClientVersion,
+} from '@firecamp/types';
+import _url from '@firecamp/url';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid as id } from 'nanoid';
@@ -6,9 +12,16 @@ import { _object, _array, _string } from '@firecamp/utils';
 import {
   RequestConnection,
   DefaultRequestConfig,
+  InitPlayground,
 } from '../constants';
+import { ISocket } from '../store';
+import { EConnectionState } from '../types';
 
 // import { IUiRequestPanel } from '../store/slices';
+
+const getPathFromUrl = (url: string) => {
+  return url.split(/[?#]/)[0];
+};
 
 // export const prepareUIRequestPanelState = (
 //   request: Partial<IWebSocket>
@@ -18,9 +31,22 @@ import {
 // };
 
 /** normalize the socket.io request */
-export const normalizeRequest = (request: ISocketIO): Promise<ISocketIO> => {
+export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   const _nr: ISocketIO = {
-    url: { raw: '' },
+    //ws url will only have { raw: ""} but in ui we need actual url object IUrl
+    //@ts-ignore
+    url: { raw: '', queryParams: [], pathParams: [] },
+    config: {
+      rejectUnauthorized: false,
+      timeout: 20000,
+      reconnection: false,
+      reconnectionAttempts: 3,
+      reconnectionDelay: 1000,
+      reconnectionDelayMax: 5000,
+      version: ESocketIOClientVersion.v4,
+      onConnectListeners: [],
+    },
+    connections: [],
     __meta: {
       name: '',
       type: ERequestTypes.SocketIO,
@@ -29,12 +55,19 @@ export const normalizeRequest = (request: ISocketIO): Promise<ISocketIO> => {
     __ref: { id: '', collectionId: '' },
   };
 
-  const { __meta, __ref, url, connections, config } = request;
-
-  // console.log({ request });
+  const {
+    url,
+    connections = _nr.connections,
+    config = _nr.config,
+    __meta = _nr.__meta,
+    __ref = _nr.__ref,
+  } = request;
 
   //normalize url
-  _nr.url = !_object.isEmpty(url) ? url : { raw: '' };
+  //normalize url
+  if (url?.raw) {
+    _nr.url.raw = getPathFromUrl(url.raw);
+  }
 
   // normalize __meta
   _nr.__meta.name = __meta.name || 'Untitled Request';
@@ -45,13 +78,13 @@ export const normalizeRequest = (request: ISocketIO): Promise<ISocketIO> => {
   _nr.__meta.version = '2.0.0';
 
   // normalize __ref
-  _nr.__ref.id = __ref?.id || id();
-  _nr.__ref.collectionId = __ref?.collectionId;
-  _nr.__ref.folderId = __ref?.folderId;
-  _nr.__ref.createdAt = __ref?.createdAt || new Date().valueOf();
-  _nr.__ref.updatedAt = __ref?.updatedAt || new Date().valueOf();
-  _nr.__ref.createdBy = __ref?.createdBy || '';
-  _nr.__ref.updatedBy = __ref?.updatedBy || '';
+  _nr.__ref.id = __ref.id || id();
+  _nr.__ref.collectionId = __ref.collectionId;
+  _nr.__ref.folderId = __ref.folderId;
+  _nr.__ref.createdAt = __ref.createdAt || new Date().valueOf();
+  _nr.__ref.updatedAt = __ref.updatedAt || new Date().valueOf();
+  _nr.__ref.createdBy = __ref.createdBy || '';
+  _nr.__ref.updatedBy = __ref.updatedBy || '';
 
   // normalize _meta
   _nr.connections = [];
@@ -61,9 +94,63 @@ export const normalizeRequest = (request: ISocketIO): Promise<ISocketIO> => {
   );
   if (!_nr.connections?.length) _nr.connections = [RequestConnection];
 
-  console.log(connections, _nr.connections, 789789);
-
   // normalize config
-  _nr.config = _object.mergeDeep(DefaultRequestConfig, config || {});
-  return Promise.resolve(_nr);
+  _nr.config = _object.mergeDeep(DefaultRequestConfig, config);
+  return _nr;
+};
+
+export const initialiseStoreFromRequest = (
+  _request: Partial<ISocketIO>
+): ISocket => {
+  const request: ISocketIO = normalizeRequest(_request);
+  const defaultConnection =
+    request.connections?.find((c) => c.isDefault === true) || RequestConnection;
+  const playgroundId = defaultConnection.id;
+
+  const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
+  const displayUrl = url.raw;
+
+  return {
+    request,
+    runtime: {
+      displayUrl,
+      activePlayground: defaultConnection.id,
+      playgroundTabs: [
+        {
+          id: defaultConnection.id,
+          name: defaultConnection.name,
+          meta: {
+            isSaved: false,
+            hasChange: false,
+          },
+        },
+      ],
+      activeEnvironments: {
+        workspace: '',
+        collection: '',
+      },
+      isRequestRunning: false,
+      isRequestSaved: !!request.__ref.collectionId,
+    },
+    playgrounds: {
+      // add logic for init playgrounds by connections
+      [defaultConnection.id]: {
+        id: defaultConnection.id,
+        connectionState: EConnectionState.Ideal,
+        logFilters: {
+          type: '',
+          event: '',
+        },
+        emitter: InitPlayground,
+        selectedCollectionEmitter: '',
+        listeners: {},
+      },
+    },
+    connectionsLogs: {
+      [playgroundId]: [],
+    },
+    ui: {
+      isFetchingRequest: false,
+    },
+  };
 };

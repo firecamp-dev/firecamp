@@ -14,8 +14,8 @@ const initialState = {
 type TCreateEnvPayload = {
   name: string;
   variables: { [k: string]: string };
-  meta: { type: string; visibility?: number };
-  _meta: { workspace_id: string; collection_id?: string };
+  __meta: { type: string; visibility?: number };
+  __ref: { workspaceId: string; collectionId?: string };
 };
 
 export interface IEnvironmentStore {
@@ -23,7 +23,7 @@ export interface IEnvironmentStore {
 
   activeTabWrsEnv: string | TId;
   activeTabCollectionEnvs: { [key: TId]: TId };
-  is_progressing?: boolean;
+  isProgressing?: boolean;
   colEnvTdpInstance: any;
   wrsEnvTdpInstance: any;
   envs: IEnvironment[];
@@ -59,25 +59,25 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     let activeTabWrsEnv = '';
     let activeTabCollectionEnvs = {};
     const firstWrsEnv = envs.filter(
-      (e) => e.meta.type == EEnvironmentScope.Workspace
+      (e) => e.__meta.type == EEnvironmentScope.Workspace
     )[0];
-    if (firstWrsEnv) activeTabWrsEnv = firstWrsEnv._meta.id;
+    if (firstWrsEnv) activeTabWrsEnv = firstWrsEnv.__ref.id;
 
     let cEnvs = envs
-      .filter((e) => ['C', 'P'].includes(e.meta.type))
+      .filter((e) => ['C', 'P'].includes(e.__meta.type))
       .reduce((p, e) => {
-        if (!p[e._meta.collection_id]) p[e._meta.collection_id] = [];
+        if (!p[e.__ref.collectionId]) p[e.__ref.collectionId] = [];
 
         //@ts-ignore
         return {
           ...p,
-          [e._meta.collection_id]: [...p[e._meta.collection_id], e],
+          [e.__ref.collectionId]: [...p[e.__ref.collectionId], e],
         };
       }, {} as any);
     let _cEnvs = Object.keys(cEnvs).reduce(
       (collEnvs, key) => ({
         ...collEnvs,
-        [key]: cEnvs[key].reduce((c, e) => ({ ...c, [e._meta.id]: e }), {}),
+        [key]: cEnvs[key].reduce((c, e) => ({ ...c, [e.__ref.id]: e }), {}),
       }),
       {}
     );
@@ -115,7 +115,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   toggleProgressBar: (flag: boolean) => {
-    set((s) => ({ is_progressing: flag }));
+    set((s) => ({ isProgressing: flag }));
   },
 
   setWorkspaceActiveEnv: (envId: TId) => {
@@ -125,7 +125,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   setEnvVariables: (envId: TId, variables: object) => {
     set((s) => {
       const envs = s.envs.map((e) => {
-        if (e._meta.id == envId) {
+        if (e.__ref.id == envId) {
           return { ...e, variables };
         }
         return e;
@@ -136,7 +136,9 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   getWorkspaceEnvs: () => {
-    return get().envs.filter((e) => e.meta.type == EEnvironmentScope.Workspace);
+    return get().envs.filter(
+      (e) => e.__meta.type == EEnvironmentScope.Workspace
+    );
   },
 
   setCollectionActiveEnv: (collectionId: TId, envId: TId) => {
@@ -154,7 +156,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   getCollectionEnvs: (collectionId: TId) => {
     // console.log({ 1: get().envs, collectionId });
-    return get().envs.filter((e) => e._meta.collection_id == collectionId);
+    return get().envs.filter((e) => e.__ref.collectionId == collectionId);
   },
 
   // Environment
@@ -181,7 +183,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       .create(_collection)
       .then((r) => {
         set((s) => {
-          r.data.meta.type == EEnvironmentScope.Collection
+          r.data.__meta.type == EEnvironmentScope.Collection
             ? s.colEnvTdpInstance?.addEnvItem(r.data)
             : s.wrsEnvTdpInstance?.addEnvItem(r.data);
           return { envs: [...s.envs, r.data] };
@@ -203,7 +205,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
         const env = r.data;
         set((s) => {
           const envs = s.envs.map((e) => {
-            if (e._meta.id == env._meta.id) return env;
+            if (e.__ref.id == env.__ref.id) return env;
             return e;
           });
           return { envs };
@@ -223,13 +225,13 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       .delete(envId)
       .then((r) => {
         set((s) => {
-          const env = s.envs.find((e) => e._meta.id == envId);
+          const env = s.envs.find((e) => e.__ref.id == envId);
           if (env) {
-            env.meta.type == EEnvironmentScope.Collection
+            env.__meta.type == EEnvironmentScope.Collection
               ? s.colEnvTdpInstance?.removeEnvItem(envId)
               : s.wrsEnvTdpInstance?.removeEnvItem(envId);
           }
-          const envs = s.envs.filter((e) => e._meta.id != envId);
+          const envs = s.envs.filter((e) => e.__ref.id != envId);
           return { envs };
         });
         return r;

@@ -3,13 +3,14 @@ import { TId } from '@firecamp/types';
 interface IPlaygroundTab {
   id: string;
   name: string;
-  meta?: {
+  __meta?: {
     isSaved?: boolean;
     hasChange?: boolean;
   };
 }
 
 interface IRuntime {
+  displayUrl: string;
   playgroundTabs?: IPlaygroundTab[];
   activePlayground?: TId;
   activeEnvironments?: {
@@ -119,7 +120,7 @@ const createRuntimeSlice = (
     }));
   },
   setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
-    // console.log({updates});
+    console.log({ updates });
 
     set((s) => ({
       ...s,

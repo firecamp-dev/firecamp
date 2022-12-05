@@ -2,8 +2,8 @@
 {
     "url": {
       "raw": "",
-      "query_params": [],
-      "path_params": []
+      "queryParams": [],
+      "pathParams": []
     },
     "headers": [
         {
@@ -12,14 +12,14 @@
         }
     ],
     "method": "GET",
-    "meta": {
+    "__meta": {
       "name": "Untitled Request",
       "type": "rest",
       "version": "2.0.0"
     },
-    "_meta": {
+    "__ref": {
       "id": "",
-      "collection_id": ""
+      "collectionId": ""
     }
   }
   
