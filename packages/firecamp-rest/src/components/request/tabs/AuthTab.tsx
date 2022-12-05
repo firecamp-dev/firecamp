@@ -1,30 +1,36 @@
-import { useContext } from 'react';
 import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
 import { AuthSetting } from '@firecamp/ui-kit';
 
-import { RestContext } from '../../Rest.context';
 import { IRestStore, useRestStore } from '../../../store';
 
 const AuthTab = () => {
-  let { ctx_resetAuthHeaders, ctx_updateAuthValue, ctx_updateActiveAuth } =
-    useContext(RestContext);
 
-  let { auth, activeAuthType, oauth2LastFetchedToken } = useRestStore(
+  const {
+    auth,
+    activeAuthType,
+    oauth2LastFetchedToken,
+    resetAuthHeaders,
+    updateAuthValue,
+    updateActiveAuth,
+  } = useRestStore(
     (s: IRestStore) => ({
       auth: s.request.auth,
       activeAuthType: s.request.__meta.activeAuthType,
       oauth2LastFetchedToken: s.runtime.oauth2LastFetchedToken,
 
+      resetAuthHeaders: s.resetAuthHeaders,
       changeAuth: s.changeAuth,
+      updateActiveAuth: s.updateActiveAuth,
+      updateAuthValue: s.updateAuthValue,
     }),
     shallow
   );
 
   //  console.log({ auth });
 
-  let _updateOAuth2 = (updated = '', payload: { key: any; value: any }) => {
+  const _updateOAuth2 = (updated = '', payload: { key: any; value: any }) => {
     if (!payload) return;
 
     let updates = auth[EAuthTypes.OAuth2];
@@ -45,23 +51,23 @@ const AuthTab = () => {
       });
     }
 
-    ctx_updateAuthValue(EAuthTypes.OAuth2, updates);
+    updateAuthValue(EAuthTypes.OAuth2, updates);
     // console.log({ updates });
   };
 
-  let _onSelectInheritAuth = () => {};
-  let _openParentAuthModal = () => {};
+  const _onSelectInheritAuth = () => {};
+  const _openParentAuthModal = () => {};
 
-  let _fetchTokenOnChangeOAuth2 = () => {
-    ctx_resetAuthHeaders(EAuthTypes.OAuth2);
+  const _fetchTokenOnChangeOAuth2 = () => {
+    resetAuthHeaders(EAuthTypes.OAuth2);
   };
 
   return (
     <AuthSetting
       auth={auth}
       activeAuth={activeAuthType}
-      onChangeAuth={ctx_updateAuthValue}
-      onChangeActiveAuth={ctx_updateActiveAuth}
+      onChangeAuth={updateAuthValue}
+      onChangeActiveAuth={updateActiveAuth}
       onChangeOAuth2Value={_updateOAuth2}
       fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
       fetchInheritedAuth={_onSelectInheritAuth}

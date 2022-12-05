@@ -66,12 +66,11 @@ const createRuntimeSlice = (
   },
 
   changeAuthHeaders: (authHeaders: Array<IHeader>) => {
-    let headersLength = get().request.headers?.length + authHeaders.length;
-    let updatedUiRequestPanel = {
+    const headersLength = get().request.headers?.length + authHeaders.length;
+    const updatedUiRequestPanel = {
       hasHeaders: headersLength ? true : false,
       headers: headersLength,
     };
-
     set((s) => ({
       ...s,
       runtime: {

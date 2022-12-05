@@ -1,20 +1,16 @@
 import { memo, useEffect } from 'react';
-import _url from '@firecamp/url';
-import { Container, Row, Loader } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
-import {
-  EAuthTypes,
-  IRest,
-} from '@firecamp/types';
 import shallow from 'zustand/shallow';
+import { Container, Row, Loader } from '@firecamp/ui-kit';
+import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
+import { IRest } from '@firecamp/types';
+import _url from '@firecamp/url';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
 import CodeSnippets from './common/code-snippets/CodeSnippets';
-import { RestContext } from './Rest.context';
 
 import {
   useRestStore,
@@ -27,7 +23,6 @@ import {
 
 import { _misc, _object, _table, _auth } from '@firecamp/utils';
 import {
-  getAuthHeaders,
   initialiseStoreFromRequest,
   normalizeRequest,
 } from '../services/request-service';
@@ -38,14 +33,10 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   const {
     isFetchingRequest,
     initialise,
-    changeAuthHeaders,
     changeUrl,
     setActiveEnvironments,
-    changeAuth,
-    changeMeta,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
-    setOAuth2LastFetchedToken,
     getMergedRequestByPullAction,
 
     setLast,
@@ -151,8 +142,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         /** initialise rest store on tab load */
         initialise(requestToNormalize);
         setIsFetchingReqFlag(false);
-        // Update auth type, generate auth headers
-        updateActiveAuth(requestToNormalize.__meta.activeAuthType);
       } catch (error) {
         console.error({
           API: 'fetch and normalize rest request',
@@ -162,7 +151,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     };
     _fetchRequest();
   }, []);
-
 
   /**
    * Handle pull payload
@@ -212,53 +200,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         error,
       });
     }
-  };
-
-  const resetAuthHeaders = async (authType: EAuthTypes) => {
-    try {
-      if (authType !== EAuthTypes.Inherit) {
-        let authHeaders = await getAuthHeaders(
-          restStoreApi.getState()?.request,
-          authType
-        );
-
-        if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
-          authHeaders[
-            'Authorization'
-          ] = `Bearer ${authHeaders['Authorization']}`;
-          setOAuth2LastFetchedToken(authHeaders['Authorization']);
-        }
-
-        // prepare auth headers array
-        const headersAry = _table.objectToTable(authHeaders) || [];
-        // console.log({ headersAry });
-
-        changeAuthHeaders(headersAry);
-      } else {
-        changeAuthHeaders([]);
-      }
-    } catch (error) {
-      console.log({ API: 'rest.getAuthHeaders', error });
-    }
-  };
-
-  const updateActiveAuth = (authType: EAuthTypes) => {
-    // console.log({authType});
-
-    changeMeta({ activeAuthType: authType });
-    resetAuthHeaders(authType);
-  };
-
-  const updateAuthValue = (
-    authType: EAuthTypes,
-    updates: { key: string; value: any }
-  ) => {
-    if (!authType) return;
-
-    // update store
-    changeAuth(authType, updates);
-
-    resetAuthHeaders(authType);
   };
 
   /**
@@ -360,14 +301,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   if (isFetchingRequest === true) return <Loader />;
 
   return (
-    <RestContext.Provider
-      value={{
-        // auth
-        ctx_resetAuthHeaders: resetAuthHeaders,
-        ctx_updateAuthValue: updateAuthValue,
-        ctx_updateActiveAuth: updateActiveAuth,
-      }}
-    >
+    <>
       <Container className="h-full with-divider" overflow="visible">
         <UrlBarContainer
           tab={tab}
@@ -400,7 +334,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           tabMeta={tab.__meta}
         />
       )}
-    </RestContext.Provider>
+    </>
   );
 };
 

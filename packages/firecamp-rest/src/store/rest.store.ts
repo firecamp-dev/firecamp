@@ -96,6 +96,7 @@ const createRestStore = (initialState: IRestStoreState) =>
       },
 
       initialise: (request: Partial<IRest>) => {
+        const state = get();
         const initState = initialiseStoreFromRequest(request);
         console.log(initState, 'initState');
         set((s) => ({
@@ -104,6 +105,8 @@ const createRestStore = (initialState: IRestStoreState) =>
           // @ts-ignore
           originalRequest: _cloneDeep(initState.request) as IRest,
         }));
+        // update auth type, generate auth headers
+        state.updateActiveAuth(request.__meta.activeAuthType);
       },
 
       setContext: (ctx: any) => set({ context: ctx }),
