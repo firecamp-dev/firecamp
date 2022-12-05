@@ -75,8 +75,8 @@ const MarkdownTab: FC<IMarkdownTab> = ({ tab: propTab = {}, tabFns = {} }) => {
       },
     },
     revision:
-      propTab.meta && Object.keys(propTab.meta).includes('revision')
-        ? propTab.meta.revision
+      propTab.__meta && Object.keys(propTab.__meta).includes('revision')
+        ? propTab.__meta.revision
         : 1,
     ...(propTab?.session?.request || {}),
   });
@@ -100,20 +100,20 @@ const MarkdownTab: FC<IMarkdownTab> = ({ tab: propTab = {}, tabFns = {} }) => {
     let statePayload = {};
 
     if (
-      Object.keys(propTab.meta).includes('revision') &&
-      !equal(propTab.meta.revision, state.revision) &&
+      Object.keys(propTab.__meta).includes('revision') &&
+      !equal(propTab.__meta.revision, state.revision) &&
       (!equal(state.panel.source.body, propTab.request.data) ||
-        !equal(state.panel.source.type, propTab.request.meta.data_type))
+        !equal(state.panel.source.type, propTab.request.__meta.data_type))
     ) {
       if (state.panel && state.panel.source && state.panel.source.body) {
         statePayload = Object.assign({}, state, {
           panel: Object.assign({}, state.panel, {
             source: Object.assign({}, state.panel.source, {
               body: propTab.request.data,
-              type: propTab.request.meta.data_type || 'md',
+              type: propTab.request.__meta.data_type || 'md',
             }),
           }),
-          revision: propTab.meta.revision || 1,
+          revision: propTab.__meta.revision || 1,
         });
       }
     }
@@ -214,8 +214,8 @@ const MarkdownTab: FC<IMarkdownTab> = ({ tab: propTab = {}, tabFns = {} }) => {
   let _onSaveRequest = async ({
     name,
     description,
-    project: collection_id,
-    module: folder_id,
+    project: collectionId,
+    module: folderId,
   }) => {
     let {
       panel: {
@@ -225,15 +225,15 @@ const MarkdownTab: FC<IMarkdownTab> = ({ tab: propTab = {}, tabFns = {} }) => {
 
     let tabRequest = {
       data: body,
-      meta: {
+      __meta: {
         name,
         description,
         type: ERequestTypes.File,
         data_type: type,
       },
-      _meta: {
-        collection_id,
-        folder_id,
+      __ref: {
+        collectionId,
+        folderId,
       },
     }; //TODO: version
 
@@ -276,9 +276,9 @@ const MarkdownTab: FC<IMarkdownTab> = ({ tab: propTab = {}, tabFns = {} }) => {
           >
             <Source
               source={state?.panel?.source || ''}
-              tabMeta={propTab.meta}
+              tabMeta={propTab.__meta}
               tabId={propTab.id}
-              requestMeta={propTab?.request?.meta || {}}
+              requestMeta={propTab?.request?.__meta || {}}
               tabFns={tabFns}
               onSourceUpdate={_onSourceUpdate}
               onCopy={_onCopy}

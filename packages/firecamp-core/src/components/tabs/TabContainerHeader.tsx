@@ -23,10 +23,15 @@ const TabHeaderContainer: FC = () => {
     }),
     shallow
   );
-  const { list: tabs, orders, changeActiveTab, changeOrders } = useTabStore.getState() as ITabStore;
+  const {
+    list: tabs,
+    orders,
+    changeActiveTab,
+    changeOrders,
+  } = useTabStore.getState() as ITabStore;
 
   useEffect(() => {
-    console.log(tabApi, 'tabApi..');
+    // console.log(tabApi, 'tabApi..');
     emitter.on(EPlatformTabs.opened, ([tab, orders]) => {
       tabApi.current.add(tab);
     });
@@ -43,7 +48,7 @@ const TabHeaderContainer: FC = () => {
     emitter.emit(EPlatformTabs.openNew);
   };
 
-  console.log(tabs, orders, 'orders... 12');
+  // console.log(tabs, orders, 'orders... 12');
 
   return (
     <Column

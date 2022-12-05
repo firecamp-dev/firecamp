@@ -72,7 +72,7 @@ const CreateOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
   const _checkOrgNameAvailability = async (payload: {
     name: string;
-    org_id?: string;
+    orgId?: string;
   }) => {
     try {
       setFlagONCP(true);

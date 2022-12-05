@@ -81,7 +81,7 @@ const Menu: FC = () => {
           name: 'Close All',
           postfix: () => (
             <div className="dropdown-text">
-              {_misc.firecampAgent() === EFirecampAgent.desktop ? (
+              {_misc.firecampAgent() === EFirecampAgent.Desktop ? (
                 <span>
                   {osName && ['Windows', 'UNIX', 'Linux'].includes(osName)
                     ? `Ctrl + K + W`
@@ -100,7 +100,7 @@ const Menu: FC = () => {
           name: 'Close saved',
           postfix: () => (
             <div className="dropdown-text">
-              {_misc.firecampAgent() === EFirecampAgent.desktop ? (
+              {_misc.firecampAgent() === EFirecampAgent.Desktop ? (
                 <span>
                   {osName && ['Windows', 'UNIX', 'Linux'].includes(osName)
                     ? `Ctrl + K + U`

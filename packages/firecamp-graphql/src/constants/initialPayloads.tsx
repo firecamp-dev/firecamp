@@ -75,7 +75,7 @@ const STATE_PAYLOADS = {
     methods: ['GET', 'POST'],
   },
   authTypes: {
-    typeList: [{ name: 'No Auth', id: 'no_auth', enable: true }],
+    typeList: [{ name: 'No Auth', id: 'noAuth', enable: true }],
   },
   graphql_body: {
     queryTypeList: ['Query', 'Mutation', 'Subscription'],

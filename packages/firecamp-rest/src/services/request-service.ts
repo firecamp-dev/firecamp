@@ -1,3 +1,5 @@
+import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
 import {
   EAuthTypes,
   ERestBodyTypes,
@@ -10,8 +12,6 @@ import {
   EFirecampAgent,
   IAuth,
 } from '@firecamp/types';
-import _cleanDeep from 'clean-deep';
-import _cloneDeep from 'lodash/cloneDeep';
 import {
   _object,
   _array,
@@ -25,8 +25,8 @@ import { nanoid } from 'nanoid';
 import equal from 'deep-equal';
 
 import { configState, bodyState } from '../constants';
-import { IUiRequestPanel } from '../store';
-import { IRestClientRequest } from '../types';
+import { IRestStoreState, IUiRequestPanel } from '../store';
+import { ERequestPanelTabs, IRestClientRequest } from '../types';
 import { Auth } from '.';
 import { IAuthHeader } from './auth/types';
 
@@ -53,18 +53,20 @@ export const prepareUIRequestPanelState = (
         isRestBodyEmpty(_cloneDeep(request.body))?.isEmpty || false
       ); */
         break;
-      case 'meta':
-        if (request.meta.active_body_type) {
+      case '__meta':
+        if (request.__meta.activeBodyType) {
           updatedUiStore = {
             ...updatedUiStore,
-            hasBody: request.meta.active_body_type !== ERestBodyTypes.NoBody,
+            hasBody: ![ERestBodyTypes.NoBody, 'no_body'].includes(
+              request.__meta.activeBodyType
+            ),
           };
         }
 
-        if (request.meta.active_auth_type) {
+        if (request.__meta.activeAuthType) {
           updatedUiStore = {
             ...updatedUiStore,
-            hasAuth: request.meta.active_auth_type !== EAuthTypes.NoAuth,
+            hasAuth: request.__meta.activeAuthType !== EAuthTypes.NoAuth,
           };
         }
         break;
@@ -139,47 +141,61 @@ export const isRestBodyEmpty = (bodies: { [key: string]: any }) => {
  * normalize the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
  */
 export const normalizeRequest = (
-  request: Partial<IRest>,
-  isSaved: boolean = true
+  request: Partial<IRest>
 ): IRestClientRequest => {
   // prepare normalized request aka _nr
   const _nr: IRestClientRequest = {
+    url: { raw: '', queryParams: [], pathParams: [] },
     method: EHttpMethod.GET,
     __meta: {
       name: '',
       description: '',
       type: ERequestTypes.Rest,
-      version: '2.0.0' /* ERestRequestVersion.V1; */, // TODO: check version
+      version: '2.0.0',
       activeBodyType: ERestBodyTypes.NoBody,
       activeAuthType: EAuthTypes.NoAuth,
     },
     __ref: { id: '', collectionId: '' },
   };
 
-  const { url, method, auth, headers, config, body, scripts, __meta, __ref } =
-    request;
+  const {
+    url = _nr.url,
+    method = _nr.method,
+    auth,
+    headers,
+    config,
+    body,
+    scripts,
+    __meta = _nr.__meta,
+    __ref = _nr.__ref,
+  } = request;
 
   //normalize url
-  _nr.url = !_object.isEmpty(url)
-    ? url
-    : { raw: '', queryParams: [], pathParams: [] };
+  _nr.url = {
+    raw: url.raw || '',
+    queryParams: url.queryParams || [],
+    pathParams: url.pathParams || [],
+  };
   if (!_array.isEmpty(_nr.url.queryParams)) {
     const queryParams = [];
-    const pathParams = [];
-    if (!url?.queryParams?.length) url.queryParams = [];
-    if (!url?.pathParams?.length) url.pathParams = [];
+    if (!url.queryParams?.length) url.queryParams = [];
     url.queryParams.map((qp) => {
       // add default key: `type: text`
+      qp.id = nanoid();
       qp.type = EKeyValueTableRowType.Text;
-      qp.value = qp.value ? qp.value : '';
+      qp.value = qp.value || '';
       if (isValidRow(qp)) queryParams.push(qp);
     });
     _nr.url.queryParams = queryParams;
-
+  }
+  if (!_array.isEmpty(_nr.url.pathParams)) {
+    const pathParams = [];
+    if (!url.pathParams?.length) url.pathParams = [];
     url.pathParams.map((pp) => {
       // add default key: `type: text`
+      qp.id = nanoid();
       pp.type = EKeyValueTableRowType.Text;
-      pp.value = pp.value ? pp.value : '';
+      pp.value = pp.value || '';
       if (isValidRow(pp)) pathParams.push(pp);
     });
     _nr.url.pathParams = pathParams;
@@ -197,6 +213,7 @@ export const normalizeRequest = (
   _nr.headers = !headers || _array.isEmpty(headers) ? [] : headers;
   _nr.headers = _nr.headers.filter((h) => {
     // add default key: `type: text`
+    h.id = nanoid();
     h.type = EKeyValueTableRowType.Text;
     h.value = h.value ? h.value : '';
     return isValidRow(h);
@@ -232,13 +249,19 @@ export const normalizeRequest = (
   // normalize __meta
   _nr.__meta.name = __meta.name || 'Untitled Request';
   _nr.__meta.description = __meta.description || '';
+  //@ts-ignore
+  if (__meta.activeBodyType === 'no_body')
+    __meta.activeBodyType = ERestBodyTypes.NoBody;
   _nr.__meta.activeBodyType = __meta.activeBodyType || ERestBodyTypes.NoBody;
+  //@ts-ignore
+  if (__meta.activeAuthType === 'no_auth')
+    __meta.activeAuthType = EAuthTypes.NoAuth;
   _nr.__meta.activeAuthType = __meta.activeAuthType || EAuthTypes.NoAuth;
-  _nr.__meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
+  _nr.__meta.version = '2.0.0';
   _nr.__meta.inheritScripts = {
-    pre: __meta?.inheritScripts?.pre || true,
-    post: __meta?.inheritScripts?.post || true,
-    test: __meta?.inheritScripts?.test || true,
+    pre: __meta.inheritScripts?.pre || true,
+    post: __meta.inheritScripts?.post || true,
+    test: __meta.inheritScripts?.test || true,
   };
   _nr.__meta.inheritedAuth = __meta.inheritedAuth;
 
@@ -254,6 +277,46 @@ export const normalizeRequest = (
   return _nr;
 };
 
+export const initialiseStoreFromRequest = (
+  _request: Partial<IRest>
+): IRestStoreState => {
+  const request: IRestClientRequest = normalizeRequest(_request);
+  const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
+  // console.log({ request });
+
+  return {
+    request,
+    ui: {
+      isFetchingRequest: false,
+      isCodeSnippetOpen: false,
+      requestPanel: {
+        ...requestPanel,
+        activeTab: ERequestPanelTabs.Body,
+      },
+    },
+    runtime: {
+      authHeaders: [],
+      inherit: {
+        auth: {
+          active: '',
+          payload: {},
+          oauth2LastFetchedToken: '',
+        },
+        script: {
+          pre: '',
+          post: '',
+          test: '',
+        },
+      },
+      activeEnvironments: {
+        collection: '',
+        workspace: '',
+      },
+      isRequestSaved: !!request.__ref.collectionId,
+      oauth2LastFetchedToken: '',
+    },
+  };
+};
 /**
  * Normalize variables at runtime (on send request)
  * Set and unset variables from scripts response and update variables to platform
@@ -323,7 +386,7 @@ export const normalizeSendRequestPayload = async (
     'method',
     'config',
     'headers',
-    'meta',
+    '__meta',
   ]) as IRest;
 
   try {
@@ -378,10 +441,10 @@ export const normalizeSendRequestPayload = async (
           request.auth[request.__meta.activeAuthType],
       };
     } else if (request.__meta.activeAuthType === EAuthTypes.Inherit) {
-      let inherited_auth = request.__meta.inheritedAuth;
-      if (inherited_auth) {
+      let inheritedAuth = request.__meta.inheritedAuth;
+      if (inheritedAuth) {
         sendRequestPayload.auth = {
-          [inherited_auth.auth]: inherited_auth.payload,
+          [inheritedAuth.auth]: inheritedAuth.payload,
         };
       }
     }
@@ -535,22 +598,22 @@ export const getAuthHeaders = async (
     let requestAuth = auth;
 
     // @ts-ignore
-    let inherited_auth = request.meta.inherited_auth;
+    let inheritedAuth = request.__meta.inheritedAuth;
 
-    if (authType === EAuthTypes.Inherit && inherited_auth) {
-      let normalizedAuth = _auth.normalizeToUi(inherited_auth.payload);
+    if (authType === EAuthTypes.Inherit && inheritedAuth) {
+      let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
       requestAuth = {
-        [inherited_auth.type]: normalizedAuth[inherited_auth.type],
+        [inheritedAuth.type]: normalizedAuth[inheritedAuth.type],
       };
-      authType = inherited_auth.type;
+      authType = inheritedAuth.type;
     }
 
     if (__meta?.activeAuthType !== EAuthTypes.NoAuth) {
       try {
         let agent =
-          _misc.firecampAgent() === EFirecampAgent.desktop
-            ? EFirecampAgent.desktop
-            : EFirecampAgent.extension;
+          _misc.firecampAgent() === EFirecampAgent.Desktop
+            ? EFirecampAgent.Desktop
+            : EFirecampAgent.Extension;
         const extraParams = {
           url,
           method,
@@ -567,8 +630,8 @@ export const getAuthHeaders = async (
         // manage OAuth2 payload
         if (__meta?.activeAuthType === EAuthTypes.OAuth2) {
           let oAuth2 = requestAuth[EAuthTypes.OAuth2];
-          let activeGrantType = oAuth2.active_grant_type;
-          let activeGrantTypePayload = oAuth2.grant_types[activeGrantType];
+          let activeGrantType = oAuth2.activeGrantType;
+          let activeGrantTypePayload = oAuth2.grantTypes[activeGrantType];
           authServicePayload = activeGrantTypePayload;
         }
 

@@ -13,8 +13,8 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    // console.log( item.data._meta, "arrow context");
-    if (item.data._meta?.is_collection || item.data._meta?.is_workspace) {
+    // console.log( item.data.__ref, "arrow context");
+    if (item.data.__ref?.isCollection || item.data.__ref?.isWorkspace) {
       return context.isExpanded ? (
         <>
           <VscTriangleDown
@@ -42,10 +42,10 @@ export default {
           />
         </>
       );
-    } else if (item.data._meta?.is_environment) {
+    } else if (item.data.__ref?.isEnvironment) {
       return (
         <>
-          {item.data.meta.visibility == 2 ? (
+          {item.data.__meta.visibility == 2 ? (
             <VscLock className="mr-0.5 flex-none" size={18} opacity={1} />
           ) : (
             <></>
@@ -145,7 +145,7 @@ export default {
           <span
             className={cx(
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-              { '!top-4': item.data._meta.is_request }
+              { '!top-4': item.data.__ref.isRequest }
             )}
             style={{ left: `${renderDepthOffset * 2 - 3}px` }}
           ></span>
@@ -166,8 +166,8 @@ export default {
             <span className="w-full overflow-hidden overflow-ellipsis items-center block">
               {title}
 
-              {item.data._meta?.is_collection ||
-              item.data._meta?.is_workspace ? (
+              {item.data.__ref?.isCollection ||
+              item.data.__ref?.isWorkspace ? (
                 <span className={'text-sm'}>- {item.children?.length}</span>
               ) : (
                 <></>
@@ -184,7 +184,7 @@ export default {
 
             <Button
               text={
-                item.data._meta?.is_collection || item.data._meta?.is_workspace
+                item.data.__ref?.isCollection || item.data.__ref?.isWorkspace
                   ? 'Add Env'
                   : 'Open'
               }
@@ -196,17 +196,17 @@ export default {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                item.data._meta?.is_collection || item.data._meta?.is_workspace
+                item.data.__ref?.isCollection || item.data.__ref?.isWorkspace
                   ? openCreateEnv(item.index)
                   : openEnv(
-                      item.data._meta.collection_id ||
-                        item.data._meta?.workspace_id,
-                      item.data._meta.id
+                      item.data.__ref.collectionId ||
+                        item.data.__ref?.workspaceId,
+                      item.data.__ref.id
                     );
               }}
             />
 
-            {item.data._meta.is_environment ? (
+            {item.data.__ref.isEnvironment ? (
               <VscTrash
                 className="ml-1 cursor-pointer"
                 size={14}

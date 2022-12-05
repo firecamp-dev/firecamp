@@ -1,14 +1,14 @@
+import _cloneDeep from 'lodash/cloneDeep';
 import create from 'zustand';
 import createContext from 'zustand/context';
-import { IRestResponse } from '@firecamp/types';
+import { IRest, IRestResponse } from '@firecamp/types';
 import ScriptService from '../services/scripts/index';
 import {
   prepareUIRequestPanelState,
   normalizeVariables,
   normalizeSendRequestPayload,
-} from '../services/rest-service';
-import _cloneDeep from 'lodash/cloneDeep';
-
+  initialiseStoreFromRequest,
+} from '../services/request-service';
 import {
   IRequestSlice,
   createRequestSlice,
@@ -26,6 +26,8 @@ import {
   IUiSlice,
   IPullSlice,
   createPullActionSlice,
+  IRequestChangeStateSlice,
+  createRequestChangeStateSlice,
 } from './index';
 import { EFirecampAgent } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';
@@ -53,9 +55,11 @@ interface IRestStore
     IUiSlice,
     IPullSlice {
   last: any;
+  originalRequest?: IRest;
 
   setLast: (initialState: IRestStoreState) => void;
-  initialise: (initialState: IRestStoreState, isFresh: boolean) => void;
+  initialise: (request: IRest) => void;
+
   context?: any;
   setContext: (ctx: any) => void;
   execute(
@@ -91,33 +95,18 @@ const createRestStore = (initialState: IRestStoreState) =>
         }));
       },
 
-      initialise: (initialState, isFresh: boolean) => {
-        // request
-        let initialRequest: IRestClientRequest = _object.pick(
-          initialState.request,
-          requestSliceKeys
-        ) as IRestClientRequest;
-
-        // console.log({ initialRequest, initialState });
-
-        if (!_object.isEmpty(initialRequest))
-          get().initialiseRequest(initialRequest);
-
-        if (initialState.ui) get().initializeUi(initialState.ui);
-
-        if (initialState.pushAction)
-          get().initializePushAction(initialState.pushAction);
-
-        // console.log({ initialState });
-
-        if (isFresh) {
-          set((s) => ({
-            ...s,
-            last: initialState,
-          }));
-        }
-
-        // runtime
+      initialise: (request: Partial<IRest>) => {
+        const state = get();
+        const initState = initialiseStoreFromRequest(request);
+        console.log(initState, 'initState');
+        set((s) => ({
+          ...s,
+          ...initState,
+          // @ts-ignore
+          originalRequest: _cloneDeep(initState.request) as IRest,
+        }));
+        // update auth type, generate auth headers
+        state.updateActiveAuth(request.__meta.activeAuthType);
       },
 
       setContext: (ctx: any) => set({ context: ctx }),
@@ -141,6 +130,7 @@ const createRestStore = (initialState: IRestStoreState) =>
         },
       }),
       ...createPullActionSlice(set, get),
+      ...createRequestChangeStateSlice(set, get),
 
       execute: async (
         variables: {
@@ -166,7 +156,7 @@ const createRestStore = (initialState: IRestStoreState) =>
           // Check if request is running or not. stop running request if already true
           if (get().runtime.isRequestRunning === true) {
             await state.context.request.cancelExecution(
-              request._meta.id,
+              request.__ref.id,
               fcAgent
             );
 

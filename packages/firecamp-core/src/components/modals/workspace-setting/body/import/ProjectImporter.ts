@@ -14,7 +14,7 @@ export default class ProjectImporter {
         if (source === 'firecamp') {
           let isSame = [];
           Object.values(META_KEY).map((k, i) => {
-            isSame.push(_object.has(payload.meta, k));
+            isSame.push(_object.has(payload.__meta, k));
           });
           if (isSame.length) {
             if (!isSame.includes(false)) {

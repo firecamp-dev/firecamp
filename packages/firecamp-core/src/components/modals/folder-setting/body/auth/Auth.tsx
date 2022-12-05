@@ -21,17 +21,17 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
   let [initialAuthDetails, setInitialAuthDetails] = useState(
     cloneDeep({
       auth: module?.auth || {},
-      active_auth_type:
-        module?.meta?.active_auth_type || EAuthTypes.NoAuth || '',
-      oauth2_last_fetched_token: module?._dnp?.oauth2_last_fetched_token || '',
+      activeAuthType:
+        module?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+      oauth2LastFetchedToken: module?._dnp?.oauth2LastFetchedToken || '',
     })
   );
   let [authDetails, setAuthDetails] = useState(
     cloneDeep({
       auth: module?.auth || {},
-      active_auth_type:
-        module?.meta?.active_auth_type || EAuthTypes.NoAuth || '',
-      oauth2_last_fetched_token: module?._dnp?.oauth2_last_fetched_token || '',
+      activeAuthType:
+        module?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+      oauth2LastFetchedToken: module?._dnp?.oauth2LastFetchedToken || '',
     })
   );
 
@@ -41,7 +41,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
 
   // Get auth details on select auth setting
   useEffect(() => {
-    // Ge auth detials (auth and active_auth_type) from DB and set to state.
+    // Ge auth detials (auth and activeAuthType) from DB and set to state.
     const _getAuth = async () => {
       try {
         let updatedAuthDetails = {};
@@ -50,20 +50,20 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
           updatedAuthDetails.auth = module.auth;
         }
         if (
-          module?.meta?.active_auth_type &&
-          !equal(module?.meta?.active_auth_type, authDetails.active_auth_type)
+          module?.__meta?.activeAuthType &&
+          !equal(module?.__meta?.activeAuthType, authDetails.activeAuthType)
         ) {
-          updatedAuthDetails.active_auth_type = module.meta.active_auth_type;
+          updatedAuthDetails.activeAuthType = module.__meta.activeAuthType;
         }
         if (
-          module?._dnp?.oauth2_last_fetched_token &&
+          module?._dnp?.oauth2LastFetchedToken &&
           !equal(
-            module?._dnp?.oauth2_last_fetched_token,
-            authDetails.oauth2_last_fetched_token
+            module?._dnp?.oauth2LastFetchedToken,
+            authDetails.oauth2LastFetchedToken
           )
         ) {
-          updatedAuthDetails.oauth2_last_fetched_token =
-            module._dnp.oauth2_last_fetched_token;
+          updatedAuthDetails.oauth2LastFetchedToken =
+            module._dnp.oauth2LastFetchedToken;
         }
 
         if (_object.size(updatedAuthDetails)) {
@@ -87,11 +87,11 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
   }, [folderId, module]);
 
   let _onchangeActiveAuth = async (activeAuth = '') => {
-    if (activeAuth !== authDetails.active_auth_type) {
+    if (activeAuth !== authDetails.activeAuthType) {
       setAuthDetails((ps) => {
         return {
           ...ps,
-          active_auth_type: activeAuth,
+          activeAuthType: activeAuth,
         };
       });
 
@@ -111,8 +111,8 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
     let inheitedAuth = {};
     try {
       let parentId =
-          module?._meta?.parent_id || module?._meta?.collection_id || '',
-        parentType = module?._meta?.parent_id ? 'M' : 'P';
+          module?.__ref?.parentId || module?.__ref?.collectionId || '',
+        parentType = module?.__ref?.parentId ? 'M' : 'P';
 
       // inheitedAuth = await F.db.request.fetchAuth(parentId, parentType);
       // console.log({ inheitedAuth });
@@ -150,15 +150,15 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
 
     try {
       if (
-        initialAuthDetails.active_auth_type !== authDetails.active_auth_type
+        initialAuthDetails.activeAuthType !== authDetails.activeAuthType
       ) {
         updates = {
           ...updates,
-          meta: { active_auth_type: authDetails.active_auth_type },
+          meta: { activeAuthType: authDetails.activeAuthType },
         };
       }
 
-      if (_object.size(updates.auth) || _object.size(updates.meta)) {
+      if (_object.size(updates.auth) || _object.size(updates.__meta)) {
         // await F.appStore.project.updateModule(cloneDeep(updates), {
         //   id: folderId,
         // });
@@ -167,24 +167,24 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
       }
 
       if (
-        authDetails.oauth2_last_fetched_token !==
-        initialAuthDetails.oauth2_last_fetched_token
+        authDetails.oauth2LastFetchedToken !==
+        initialAuthDetails.oauth2LastFetchedToken
       ) {
         // Set auth token in to db. (_dnp)
         // await F.appStore.project.updateModule(
         //   {
         //     _dnp: {
-        //       oauth2_last_fetched_token: authDetails.oauth2_last_fetched_token,
+        //       oauth2LastFetchedToken: authDetails.oauth2LastFetchedToken,
         //     },
         //   },
         //   {
-        //     id: module?._meta?.id || '',
-        //     collection_id: module?._meta?.collection_id || '',
+        //     id: module?.__ref?.id || '',
+        //     collectionId: module?.__ref?.collectionId || '',
         //   }
         // );
         stateUpdates = {
           ...stateUpdates,
-          oauth2_last_fetched_token: authDetails.oauth2_last_fetched_token,
+          oauth2LastFetchedToken: authDetails.oauth2LastFetchedToken,
         };
       }
 
@@ -205,14 +205,14 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
     // F.ModalService.close(EModals.MODULE_SETTING);
     // if (inheritedAuth_Ref?.current?.parent_type === 'M') {
     //   F.ModalService.open(EModals.MODULE_SETTING, EFolderSettingTabs.AUTH, {
-    //     id: inheritedAuth_Ref?.current?.parent_id || '',
+    //     id: inheritedAuth_Ref?.current?.parentId || '',
     //   });
     // } else {
     //   F.ModalService.open(
     //     EModals.PROJECT_SETTING,
     //     ECollectionSettingTabs.AUTH,
     //     {
-    //       id: inheritedAuth_Ref?.current?.parent_id || '',
+    //       id: inheritedAuth_Ref?.current?.parentId || '',
     //     }
     //   );
     // }
@@ -228,12 +228,12 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
         'global'
       );
       let defaultProjectEnv = EvnProvider_Instance.getDefaultEnvironment(
-        module?._meta?.collection_id || ''
+        module?.__ref?.collectionId || ''
       );
 
       let mergedVars = EvnProvider_Instance.getVariablesByTabId({
         globalEnvID: defaultGlobalEnv || '',
-        collectionId: module?._meta?.collection_id || '',
+        collectionId: module?.__ref?.collectionId || '',
         collectionEnvID: defaultProjectEnv || ''
       });
 
@@ -245,7 +245,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
             setAuthDetails(ps => {
               return {
                 ...ps,
-                oauth2_last_fetched_token: token
+                oauth2LastFetchedToken: token
               };
             });
 
@@ -267,16 +267,16 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
       const { key, value } = payload;
 
       setAuthDetails((state) => {
-        let type = state.auth[EAuthTypes.OAuth2].active_grant_type;
+        let type = state.auth[EAuthTypes.OAuth2].activeGrantType;
         return {
           ...state,
           auth: {
             ...state.auth,
             [EAuthTypes.OAuth2]: Object.assign(state.auth[EAuthTypes.OAuth2], {
-              grant_types: {
-                ...state.auth[EAuthTypes.OAuth2].grant_types,
+              grantTypes: {
+                ...state.auth[EAuthTypes.OAuth2].grantTypes,
                 [type]: Object.assign(
-                  state.auth[EAuthTypes.OAuth2].grant_types[type],
+                  state.auth[EAuthTypes.OAuth2].grantTypes[type],
                   {
                     [key]: value,
                   }
@@ -294,7 +294,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
           auth: {
             ...state.auth,
             [EAuthTypes.OAuth2]: Object.assign(state.auth[EAuthTypes.OAuth2], {
-              active_grant_type: payload,
+              activeGrantType: payload,
             }),
           },
         };
@@ -309,7 +309,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
           <AuthSetting
             auth={authDetails.auth || {}}
             activeAuth={
-              authDetails.active_auth_type || EAuthTypes.Inherit || ''
+              authDetails.activeAuthType || EAuthTypes.Inherit || ''
             }
             onChangeAuth={_onChangeAuth}
             onChangeActiveAuth={_onchangeActiveAuth}
@@ -317,7 +317,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
             openParentAuthModal={_openParentAuthModal}
             fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
             fetchInheritedAuth={_onSelectInherit}
-            oauth2LastToken={authDetails.oauth2_last_fetched_token || ''}
+            oauth2LastToken={authDetails.oauth2LastFetchedToken || ''}
           />
         </Container>
       </Container.Body>

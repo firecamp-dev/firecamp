@@ -30,7 +30,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
   const { collections } = explorer;
   const { fetchEnvironment, updateEnvironment } = useEnvStore.getState();
   const { scope, envId, collectionId } = useModalStore.getState()
-    .meta as TModalMeta;
+    .__meta as TModalMeta;
 
   const [isFetching, setIsFetching] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
@@ -38,7 +38,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
 
   let collection: any;
   if (scope == EEnvironmentScope.Collection) {
-    collection = collections.find((c) => c._meta.id == collectionId);
+    collection = collections.find((c) => c.__ref.id == collectionId);
     console.log(collection, 'collection....');
   }
 
@@ -109,7 +109,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       return;
     }
 
-    const _env: Partial<IEnvironment> = { name, variables, meta: env.meta };
+    const _env: Partial<IEnvironment> = { name, variables, meta: env.__meta };
 
     console.log(_env, '_env');
 
@@ -194,11 +194,11 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               Visibility
             </label>
             <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
-              {env.meta.visibility == 2 ? 'Private' : 'Public'}
+              {env.__meta.visibility == 2 ? 'Private' : 'Public'}
             </label>
 
             <span className="text-sm font-normal text-appForegroundInActive block mt-1">
-              {env.meta.visibility == 2
+              {env.__meta.visibility == 2
                 ? 'This environment is private and will only be accessible to you'
                 : 'This environment is public and will be accessible to all members of the workspace'}
             </span>

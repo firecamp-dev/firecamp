@@ -24,7 +24,7 @@ const configInputs = [
 ];
 
 const Config = ({ config = {}, onUpdate }) => {
-  const isElectron = _misc.firecampAgent() === EFirecampAgent.desktop;
+  const isElectron = _misc.firecampAgent() === EFirecampAgent.Desktop;
 
   if (!config) return <></>;
 

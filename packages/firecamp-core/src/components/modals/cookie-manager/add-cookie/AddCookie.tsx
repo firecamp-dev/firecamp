@@ -31,7 +31,7 @@ const AddCookie: FC<IAddCookie> = ({
     if (isAddCookieOpen) {
       _resetCookies();
     }
-  }, [propCookie?._meta?.id, isAddCookieOpen]);
+  }, [propCookie?.__ref?.id, isAddCookieOpen]);
 
   let _resetCookies = () => {
     // console.log(`propCookie`, propCookie);
@@ -132,7 +132,7 @@ const AddCookie: FC<IAddCookie> = ({
         await cookieFns
           .update(
             Object.assign({}, result, {
-              id: propCookie?._meta?.id || '',
+              id: propCookie?.__ref?.id || '',
             }),
             checkIfExist
           )

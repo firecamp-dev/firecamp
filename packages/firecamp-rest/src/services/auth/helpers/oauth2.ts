@@ -2,12 +2,12 @@ import { EOAuth2Types, IOAuth2, EFirecampAgent } from '@firecamp/types';
 import { IExtra } from '../types';
 
 export default (credentials: IOAuth2, extra: IExtra): Promise<string> => {
-  if (extra.agent !== EFirecampAgent.desktop)
+  if (extra.agent !== EFirecampAgent.Desktop)
     return Promise.reject(
       'Please download desktop application to use OAuth2 features.'
     );
 
-  switch (credentials.grant_type) {
+  switch (credentials.grantType) {
     case EOAuth2Types.Code:
       return window.fc.http.oauth2(EOAuth2Types.Code, credentials);
     case EOAuth2Types.ClientCredentials:

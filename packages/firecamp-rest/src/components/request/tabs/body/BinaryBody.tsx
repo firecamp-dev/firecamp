@@ -1,12 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';
-import { ERestBodyTypes } from '@firecamp/types';
 import { FileDrop } from 'react-file-drop';
-
-import {
-  Container,
-  Button,
-} from '@firecamp/ui-kit';
+import { ERestBodyTypes } from '@firecamp/types';
+import { Container, Button } from '@firecamp/ui-kit';
 
 const BinaryTab = ({ body, onChange }) => {
   const inputEle = useRef(null);
@@ -20,17 +16,13 @@ const BinaryTab = ({ body, onChange }) => {
     // console.log("file body--> component did mount");
 
     const _setFileName = async () => {
-      // console.log({ body });
-
-      let text: string = body?.value?.name || '';
-
+      const text: string = body?.value?.name || '';
       if (fileName !== text) {
         setFileName(text);
       }
     };
     setErrorMsg('');
     setButtonDisabled(false);
-
     _setFileName();
   }, [body]);
 

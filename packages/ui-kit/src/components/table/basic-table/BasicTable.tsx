@@ -1,9 +1,9 @@
+import { useRef } from 'react';
+import cx from 'classnames';
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import { useRef } from 'react';
-import cx from 'classnames';
 import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
@@ -29,7 +29,7 @@ const _columns = [
 ];
 
 const BasicTable = ({
-  name = '',
+  title = '',
   rows = [],
   options = {},
   onChange = (rs: ITableRows) => {},

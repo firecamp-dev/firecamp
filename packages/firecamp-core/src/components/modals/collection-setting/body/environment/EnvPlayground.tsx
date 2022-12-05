@@ -18,12 +18,12 @@ const EnvPlayground: FC<IEnvPlayground> = ({
   let [activeEnvCache, setActiveEnvCache] = useState(
     storeEnvironments
       ?.getState()
-      ?.environments?.get?.(activeEnv?._meta?.id || '')
+      ?.environments?.get?.(activeEnv?.__ref?.id || '')
   );
 
   let { update, save } = storeEnvFns;
 
-  let activeEnv_Ref = useRef(activeEnv?._meta?.id || '');
+  let activeEnv_Ref = useRef(activeEnv?.__ref?.id || '');
 
   useEffect(() => {
     // Subscribe environments changes
@@ -31,7 +31,7 @@ const EnvPlayground: FC<IEnvPlayground> = ({
       (updates) => {
         _updateActiveEnvCache(
           updates,
-          activeEnv_Ref.current || activeEnv?._meta?.id
+          activeEnv_Ref.current || activeEnv?.__ref?.id
         );
       },
       (state) => state.environments
@@ -45,10 +45,10 @@ const EnvPlayground: FC<IEnvPlayground> = ({
   useEffect(() => {
     _updateActiveEnvCache(
       storeEnvironments?.getState()?.environments,
-      activeEnv?._meta?.id
+      activeEnv?.__ref?.id
     );
-    activeEnv_Ref.current = activeEnv?._meta?.id;
-  }, [envsCache, activeEnv?._meta?.id]);
+    activeEnv_Ref.current = activeEnv?.__ref?.id;
+  }, [envsCache, activeEnv?.__ref?.id]);
 
   let _updateActiveEnvCache = (updates = new Map(), activeenvId) => {
     let updatedActiveEnvCache = updates?.get?.(activeenvId || '') || {};
@@ -62,7 +62,7 @@ const EnvPlayground: FC<IEnvPlayground> = ({
 
   let _updateVariables = (value) => {
     // setBody(value);
-    update(activeEnv_Ref.current || activeEnv?._meta?.id || '', {
+    update(activeEnv_Ref.current || activeEnv?.__ref?.id || '', {
       body: value,
     });
   };
@@ -76,8 +76,8 @@ const EnvPlayground: FC<IEnvPlayground> = ({
       let parsed = JSON.parse(activeEnvCache.body || '{}');
       if (activeEnv) {
         save(
-          activeEnv._meta.id,
-          activeEnv.meta ? activeEnv.meta.parent_id : '',
+          activeEnv.__ref.id,
+          activeEnv.__meta ? activeEnv.__meta.parentId : '',
           activeEnvCache ? activeEnvCache.body : '{}'
         );
       }
@@ -87,7 +87,7 @@ const EnvPlayground: FC<IEnvPlayground> = ({
   let _handleCancel = (e) => {
     if (e) e.preventDefault();
     if (activeEnv) {
-      update(activeEnv._meta.id, { body: activeEnv.body });
+      update(activeEnv.__ref.id, { body: activeEnv.body });
     }
   };
 

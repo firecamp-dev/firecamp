@@ -90,15 +90,15 @@ export default class RestExecutor implements IRestExecutor {
       // TODO: Supported in browser
       httpsAgent: new HTTPS.Agent({ rejectUnauthorized: false }),
       signal: this._controller.signal,
-      timeout: config?.request_timeout,
-      maxRedirects: config?.max_redirects,
+      timeout: config?.requestTimeout,
+      maxRedirects: config?.maxRedirects,
       transformResponse: (response) => response,
     };
 
     // disable SSL validation default
     if (isNode) {
       axiosRequest.httpsAgent = new HTTPS.Agent({
-        rejectUnauthorized: config?.reject_unauthorized,
+        rejectUnauthorized: config?.rejectUnauthorized,
       });
     }
 

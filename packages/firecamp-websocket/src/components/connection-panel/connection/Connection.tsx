@@ -57,7 +57,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   const [activeBodyTab, onSelectBodyTab] = useState('playground');
 
   useEffect(() => {
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       bodyTabs.push({
         id: 'headers',
         name: 'Headers',

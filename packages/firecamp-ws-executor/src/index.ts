@@ -74,7 +74,7 @@ export default class Executor implements IExecutor {
 
       this.#emitLog(log, ELogEvents.onConnecting);
 
-      if (firecampAgent === EFirecampAgent.desktop) {
+      if (firecampAgent === EFirecampAgent.Desktop) {
         this.#socket.on('pong', async (arg) => {
           log = this.#log(
             'Pong',
@@ -138,7 +138,7 @@ export default class Executor implements IExecutor {
 
           // Start pinging if ping enable
           if (
-            firecampAgent === EFirecampAgent.desktop &&
+            firecampAgent === EFirecampAgent.Desktop &&
             clientOptions &&
             clientOptions.ping &&
             clientOptions.pingInterval

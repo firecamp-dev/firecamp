@@ -58,7 +58,7 @@ export const parseReceivedMessage = async (
   try {
     if (arg) {
       if (
-        _misc.firecampAgent() === EFirecampAgent.desktop &&
+        _misc.firecampAgent() === EFirecampAgent.Desktop &&
         Buffer.isBuffer(arg) &&
         arg.length > 0
       ) {

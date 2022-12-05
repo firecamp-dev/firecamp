@@ -31,7 +31,7 @@ const RealtimeEventManager: FC<any> = () => {
       Realtime.onRequestChanges((payload) => {
         console.log({ onRequestChanges: payload });
         emitter.emit(
-          prepareEventNameForRequestPull(payload.request_id),
+          prepareEventNameForRequestPull(payload.requestId),
           payload.actions
         );
       });
@@ -117,11 +117,11 @@ const RealtimeEventManager: FC<any> = () => {
       emitter.emit(EPlatformTabs.opened, [
         {
           ...tab,
-          name: tab.name || tab.request.meta.name,
+          name: tab.name || tab.request.__meta.name,
           preComp: (
             <PreComp method={tab?.request?.method || ''} type={tab.type} />
           ),
-          dotIndicator: tab.meta?.hasChange === true,
+          dotIndicator: tab.__meta?.hasChange === true,
         },
         orders,
       ]);
@@ -133,11 +133,11 @@ const RealtimeEventManager: FC<any> = () => {
       if (!tab) return;
       emitter.emit(EPlatformTabs.opened, [{
         ...tab,
-        name: tab.name || request.meta.name,
+        name: tab.name || request.__meta.name,
         preComp: (
           <PreComp method={tab?.request?.method || ''} type={tab.type} />
         ),
-        dotIndicator: tab.meta?.hasChange === true,
+        dotIndicator: tab.__meta?.hasChange === true,
       }, orders]);
     });
 

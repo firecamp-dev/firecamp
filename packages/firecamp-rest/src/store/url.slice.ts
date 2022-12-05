@@ -2,7 +2,7 @@ import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
 import _url from '@firecamp/url';
 import _cloneDeep from 'lodash/cloneDeep';
 
-import { prepareUIRequestPanelState } from '../services/rest-service';
+import { prepareUIRequestPanelState } from '../services/request-service';
 
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
@@ -10,11 +10,11 @@ interface IUrlSlice {
   changePathParams: (pathParams: IPathParam[]) => void;
 }
 
-const createUrlSlice = (set, get, initialUrl: IUrl) => ({
+const createUrlSlice = (set, get) => ({
   changeUrl: (urlObj: IUrl) => {
-    let lastUrl = get()?.last?.request.url;
-    let updatedUrl = { ...(get()?.request.url || {}), ...urlObj };
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
+    const state = get();
+    const updatedUrl = { ...state.request.url, ...urlObj };
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
       url: urlObj,
     });
 
@@ -29,27 +29,21 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
         },
       },
     }));
-
-    // Prepare commit action for url
-    get()?.prepareUrlPushAction(lastUrl, updatedUrl);
+    state.equalityChecker({ url: urlObj });
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
-    let existingURL = get().request.url;
-    let url = _cloneDeep(existingURL);
+    const state = get();
+    const url = _cloneDeep(state.request.url);
 
-    // Return URL object by updating query into raw URL from table
+    // return URL object by updating query into raw URL from table
     const { raw } = _url.updateByQuery(url, queryParams);
-
-    // console.log({ raw });
-
-    // Update raw URL into state
+    // update raw URL into state
     url.raw = raw;
-    url.query_params = queryParams;
+    url.queryParams = queryParams;
 
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
-      url: { query_params: queryParams, raw: existingURL.raw },
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
+      url: { queryParams: queryParams, raw: url.raw },
     });
-    // console.log({ updated_query_params_url: url });
 
     set((s) => ({
       ...s,
@@ -65,19 +59,17 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
         },
       },
     }));
-
-    // Prepare commit action for url
-    get()?.prepareUrlPushAction(get()?.last?.request.url, url);
+    state.equalityChecker({ url });
   },
   changePathParams: (pathParams: IPathParam[]) => {
-    let existingURL = get().request.url;
-    let url = _cloneDeep({
-      ...existingURL,
-      path_params: pathParams,
+    const state = get();
+    const url = _cloneDeep({
+      ...state.request.url,
+      pathParams: pathParams,
     });
 
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
-      url: { path_params: pathParams, raw: existingURL.raw },
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
+      url: { pathParams: pathParams, raw: url.raw },
     });
 
     set((s) => ({
@@ -94,11 +86,7 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
         },
       },
     }));
-
-    // Prepare commit action for url
-    get()?.prepareUrlPushAction(get()?.last?.request.url, {
-      path_params: pathParams,
-    });
+    state.equalityChecker({ url });
   },
 });
 

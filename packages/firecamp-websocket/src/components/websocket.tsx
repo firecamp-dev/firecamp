@@ -179,7 +179,7 @@ const Websocket = ({
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     // subscribe request updates
-    if (tab.meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.__meta.isSaved && tab?.request?._meta?.id) {
       platformContext.request.subscribeChanges(
         tab.request._meta.id,
         handlePull
@@ -188,7 +188,7 @@ const Websocket = ({
 
     // unsubscribe request updates
     return () => {
-      if (tab.meta.isSaved && tab?.request?._meta?.id) {
+      if (tab.__meta.isSaved && tab?.request?._meta?.id) {
         platformContext.request.unsubscribeChanges(tab.request._meta.id);
       }
     };
@@ -198,7 +198,7 @@ const Websocket = ({
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
-        const isRequestSaved = !!tab?.request?._meta?.id || false;
+        const isRequestSaved = !!tab?.request?.__ref?.id || false;
         // prepare a minimal request payload
         let requestToNormalize: IWebSocket = normalizeRequest({});
 
@@ -858,11 +858,11 @@ const Websocket = ({
           </Container.Body>
         </Container>
       </RootContainer>
-      {tab.meta.isSaved && (
+      {tab.__meta.isSaved && (
         <TabChangesDetector
           onChangeRequestTab={platformContext.request.onChangeRequestTab}
           tabId={tab.id}
-          tabMeta={tab.meta}
+          tabMeta={tab.__meta}
         />
       )}
     </WebsocketContext.Provider>
@@ -903,7 +903,7 @@ const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
       const isTabDirty = !_object.isEmpty(
         _cleanDeep(_cloneDeep(pushAction || {})) || {}
       );
-      // Update tab meta if existing tab.meta.hasChange is not same as isTabDirty
+      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
       if (tabMeta.hasChange !== isTabDirty) {
         onChangeRequestTab(tabId, { hasChange: isTabDirty });
       }

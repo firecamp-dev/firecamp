@@ -23,7 +23,7 @@ let config_inputs = [
     type: INPUT_TYPES.boolean,
     labelFor: 'Reject unauthorized',
     label: 'Reject unauthorized',
-    isDisabled: _misc.firecampAgent() !== EFirecampAgent.desktop,
+    isDisabled: _misc.firecampAgent() !== EFirecampAgent.Desktop,
   },
   {
     name: 'timeout',
@@ -145,7 +145,7 @@ const Config = ({ config = {}, listeners = [] }) => {
             disabled={isDisabled}
             onToggleCheck={() => _onChange(name, !config[name])}
             note={
-              _misc.firecampAgent() !== EFirecampAgent.desktop &&
+              _misc.firecampAgent() !== EFirecampAgent.Desktop &&
               name === 'rejectUnauthorized'
                 ? 'Desktop only feature'
                 : ''
