@@ -1451,6 +1451,9 @@ video {
 .border-solid {
 	border-style: solid;
 }
+.border-dashed {
+	border-style: dashed;
+}
 .\!border-transparent {
 	border-color: #ffffff00 !important;
 }
@@ -1492,10 +1495,6 @@ video {
 }
 .\!border-inputBorder {
 	border-color: var(--input-border) !important;
-}
-.border-purple {
-	--tw-border-opacity: 1;
-	border-color: rgba(156, 39, 176, var(--tw-border-opacity));
 }
 .border-inputBorder {
 	border-color: var(--input-border);
@@ -1619,14 +1618,6 @@ video {
 }
 .bg-appBackground {
 	background-color: var(--app-background);
-}
-.bg-purple-50 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(243, 229, 245, var(--tw-bg-opacity));
-}
-.bg-purple-100 {
-	--tw-bg-opacity: 1;
-	background-color: rgba(225, 190, 231, var(--tw-bg-opacity));
 }
 .bg-focusColor {
 	background-color: #ffffff1a;

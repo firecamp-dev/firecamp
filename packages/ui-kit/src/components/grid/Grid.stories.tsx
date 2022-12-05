@@ -1,6 +1,7 @@
 //@ts-nocheck
 import Row from './Row';
 import Column from './Column';
+import Container from './Container';
 import RootContainer from './RootContainer';
 import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
 
@@ -90,88 +91,261 @@ MultipleRowColumns.args = { width: '100%', overflow: 'auto', height: 'auto', cla
 //   ); 
 // TwoColumn.args = { className: 'bg-gray-500' };
 
-export const ContainerLayout1 = ({ nested }) => (
+export const LayoutWithSingleColumn = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`${nested ? "h-full w-full" : "h-screen w-screen"} bg-appBackground text-appForeground border border-purple`}
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
   >
-    <RowDemo className=" bg-purple-50" flex={1} >
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column
 
-      <ColumnDemo className="bg-purple-100 mx-2 my-3" flex={1}>
-        <div style={{ margin: "20% 35%" }}> #1 Row  : Column 1 </div>
-      </ColumnDemo>
+        * Solid border represents the RootContainer
+        * Dashed border represents the Row
 
-    </RowDemo>
+        * RootContainer classnames gets updated based on usage
+        - "h-screen w-screen" updated to "h-full w-full" when nested
+      </Column>
+    </Row>
+  </RootContainer>
+)
+export const LayoutWithMultipleColumn = () => (
+  <RootContainer
+    flex={1}
+    overflow="auto"
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+  >
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column
+      </Column>
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 2nd Column
+      </Column>
+    </Row>
+  </RootContainer>
+)
+export const LayoutWithMultipleRow = () => (
+  <RootContainer
+    flex={1}
+    overflow="auto"
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+  >
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column
+      </Column>
+    </Row>
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        2nd Row - 1st Column
+      </Column>
+    </Row>
+  </RootContainer>
+)
+export const LayoutWithMultipleRowColumn = () => (
+  <RootContainer
+    flex={1}
+    overflow="auto"
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+  >
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column
+      </Column>
+
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 2nd Column
+      </Column>
+
+    </Row>
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        2nd Row - 1st Column
+      </Column>
+
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        2nd Row - 2nd Column
+      </Column>
+
+    </Row>
 
   </RootContainer>
 )
-export const ContainerLayout2 = ({ nested }) => (
+export const LayoutWithNestedColumn = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`${nested ? "h-full w-full" : "h-screen w-screen"} bg-appBackground text-appForeground border border-purple`}
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
   >
-    <RowDemo className=" bg-purple-50" flex={1} >
-
-      <ColumnDemo className="bg-purple-100 mx-2 my-3" flex={1}>
-        <div style={{ margin: "20% 35%" }}> #1 Row  : Column 1 </div>
-      </ColumnDemo>
-      <ColumnDemo className="bg-purple-100 mx-2 my-3" flex={1}>
-        <div style={{ margin: "20% 35%" }}> #1 Row  : Column 2 </div>
-      </ColumnDemo>
-
-    </RowDemo>
-
-  </RootContainer>
-)
-export const ContainerLayout3 = ({ nested }) => (
-  <RootContainer
-    flex={1}
-    overflow="auto"
-    className={`${nested ? "h-full w-full" : "h-screen w-screen"} bg-appBackground text-appForeground border border-purple`}
-  >
-    <RowDemo className=" bg-purple-50" flex={1} >
-
-      <ColumnDemo className="bg-purple-100 mx-2 my-3" flex={1}>
-        <ContainerLayout2 nested={true} />
-      </ColumnDemo>
-      <ColumnDemo className="bg-purple-100 mx-2 my-3" flex={1}>
-        <div style={{ margin: "20% 35%" }}> #1 Row  : Column 2 </div>
-      </ColumnDemo>
-
-    </RowDemo>
-
-  </RootContainer>
-)
-export const ContainerLayout4 = ({ nested = true }) => (
-  <RootContainer
-    flex={1}
-    overflow="auto"
-    className={`${nested ? "h-full w-full" : "h-screen w-screen"} bg-appBackground text-appForeground border border-purple`}
-  >
-    <RowDemo className=" bg-purple-50" flex={1} >
-
-      <ColumnDemo className="bg-purple-100 mx-2 my-3" flex={1}>
-        <div style={{ margin: "20% 35%" }}> #1 Row  : Column 2 </div>
-      </ColumnDemo>
-      <ColumnDemo className="bg-purple-100 mx-2 my-3" flex={1}>
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column
+      </Column>
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
 
         <RootContainer
           flex={1}
           overflow="auto"
-          className={`${nested ? "h-full w-full" : "-h-screen w-screen"} bg-appBackground text-appForeground border border-purple`}
+          className={`h-full w-full bg-appBackground2 text-appForeground border border-appBackground`}
         >
-          <RowDemo className=" bg-purple-50" flex={1} >
-            <ContainerLayout1 />
-          </RowDemo>
-          <RowDemo className=" bg-purple-50" flex={1} >
-            <ContainerLayout1 />
-          </RowDemo>
+          <Row className="bg-focus1 border border-dashed" flex={1} >
+            <Column className="bg-focus4 mx-2 my-3" flex={1}>
+              1st Row - 1st Column
+            </Column>
+          </Row>
+          <Row className="bg-focus1 border border-dashed" flex={1} >
+            <Column className="bg-focus4 mx-2 my-3" flex={1}>
+              2nd Row - 1st Column
+            </Column>
+          </Row>
         </RootContainer>
-      </ColumnDemo>
 
-    </RowDemo>
+      </Column>
+    </Row>
 
+  </RootContainer>
+)
+export const Layout_App = () => (
+  <RootContainer
+    flex={1}
+    overflow="auto"
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+  >
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        App Layout
+      </Column>
+    </Row>
+  </RootContainer>
+)
+export const Layout_Graph_QL = () => (
+  <RootContainer
+    flex={1}
+    overflow="auto"
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+  >
+    <Row className="bg-focus1 border border-dashed" >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column (Header)
+      </Column>
+    </Row>
+
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        <div  > 2nd Row - 1st Column </div>
+      </Column>
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        <div  > 2nd Row - 2nd Column </div>
+      </Column>
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        <div  > 2nd Row - 3rd Column </div>
+      </Column>
+    </Row>
+
+  </RootContainer>
+)
+export const Layout_HTTP = () => (
+  <RootContainer
+    flex={1}
+    overflow="auto"
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+  >
+
+    <Row className="bg-focus1 border border-dashed" >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column (Header)
+      </Column>
+    </Row>
+
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        <div  > 2nd Row - 1st Column </div>
+      </Column>
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        <div  > 2nd Row - 2nd Column </div>
+      </Column>
+    </Row>
+
+  </RootContainer>
+)
+export const Layout_Web_Socket = () => (
+  <RootContainer
+    flex={1}
+    overflow="auto"
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+  >
+
+    <Row className="bg-focus1 border border-dashed" >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column (Header)
+      </Column>
+    </Row>
+
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        {/* 2nd Row - 1st Column */}
+
+        <RootContainer
+          flex={1}
+          overflow="auto"
+          className={`h-full w-full bg-appBackground2 text-appForeground border border-appBackground`}
+        >
+          <Row className="bg-focus1 border border-dashed" flex={1} >
+            <Column className="bg-focus4 mx-2 my-3" flex={1}>
+              1st Row - 1st Column
+            </Column>
+            <Column className="bg-focus4 mx-2 my-3" flex={1}>
+              1st Row - 2nd Column
+            </Column>
+          </Row>
+        </RootContainer>
+
+      </Column>
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        <div  > 2nd Row - 2nd Column </div>
+      </Column>
+    </Row>
+  </RootContainer>
+)
+export const Layout_Socket_IO = () => (
+  <RootContainer
+    flex={1}
+    overflow="auto"
+    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+  >
+
+    <Row className="bg-focus1 border border-dashed" >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        1st Row - 1st Column (Header)
+      </Column>
+    </Row>
+
+    <Row className="bg-focus1 border border-dashed" flex={1} >
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        <div  > 2nd Row - 1st Column </div>
+      </Column>
+      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+        {/* <div  > 2nd Row - 2nd Column </div> */}
+        <RootContainer
+          flex={1}
+          overflow="auto"
+          className={`h-full w-full bg-appBackground2 text-appForeground border border-appBackground`}
+        >
+          <Row className="bg-focus1 border border-dashed" flex={1} >
+            <Column className="bg-focus4 mx-2 my-3" flex={1}>
+              1st Row - 1st Column
+            </Column>
+            <Column className="bg-focus4 mx-2 my-3" flex={1}>
+              1st Row - 2nd Column
+            </Column>
+          </Row>
+        </RootContainer>
+
+      </Column>
+    </Row>
   </RootContainer>
 )
