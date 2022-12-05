@@ -1,3 +1,5 @@
+import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
 import {
   EAuthTypes,
   ERestBodyTypes,
@@ -10,8 +12,6 @@ import {
   EFirecampAgent,
   IAuth,
 } from '@firecamp/types';
-import _cleanDeep from 'clean-deep';
-import _cloneDeep from 'lodash/cloneDeep';
 import {
   _object,
   _array,
