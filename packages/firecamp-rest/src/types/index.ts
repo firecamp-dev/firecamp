@@ -35,6 +35,13 @@ export enum ERequestPanelTabs {
   Config = 'Config',
 }
 
+export enum EResponsePanelTabs {
+  Body = 'Body',
+  Headers = 'Headers',
+  Cookies = 'Cookies',
+  TestResult = 'TestResult',
+}
+
 export enum ERestConfigKeys {
   MaxRedirects = 'maxRedirects',
   FollowLocation = 'followLocation',

@@ -50,8 +50,8 @@ export interface IColumnCellMeta {
 }
 
 export interface IBasicTable<R> {
-  /** Unused prop, can be used to provide a name to the table*/
-  name?: string;
+  /** Title of the table, aka Header*/
+  title?: string;
   /** Rows to be rendered on table*/
   rows?: R[];
   /** To provide additional functions to the primitive table */
@@ -59,6 +59,6 @@ export interface IBasicTable<R> {
   /** To provide the updated rows on ever changed value*/
   onChange: (rows: ITableRows) => any;
   /** To provide the table reference */
-  onMount: (tableApi: TTableApi) => any;
+  onMount?: (tableApi: TTableApi) => any;
   classes?: ITableClasses;
 }

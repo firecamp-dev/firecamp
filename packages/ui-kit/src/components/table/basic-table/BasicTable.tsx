@@ -29,7 +29,7 @@ const _columns = [
 ];
 
 const BasicTable = ({
-  name = '',
+  title = '',
   rows = [],
   options = {},
   onChange = (rs: ITableRows) => {},

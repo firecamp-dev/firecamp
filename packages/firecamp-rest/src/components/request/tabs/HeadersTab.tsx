@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-
 import {  BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
-
 import { useRestStore } from '../../../store';
 
 const HeadersTab = () => {
@@ -63,7 +61,6 @@ const HeadersTab = () => {
                     value: 'ife-header-value',
                   },
                   language: 'ife-header-key',
-                  allowDescription: false,
                 }}
               />
             </div>

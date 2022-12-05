@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import _compact from 'lodash/compact';
-import { AuthSetting } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
+import { AuthSetting } from '@firecamp/ui-kit';
 
 import { RestContext } from '../../Rest.context';
 import { IRestStore, useRestStore } from '../../../store';

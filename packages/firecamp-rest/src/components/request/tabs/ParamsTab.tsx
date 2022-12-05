@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import {
   Container,
   BulkEditTable,
@@ -7,7 +7,6 @@ import {
 } from '@firecamp/ui-kit';
 import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
-
 import { useRestStore } from '../../../store';
 
 const ParamsTab = () => {
@@ -55,25 +54,9 @@ const ParamsTab = () => {
                 allowSort: false,
               }}
               onChange={(data) => {
-                // _onChangeParamsValue(data, PATH_PARAMS);
                 changePathParams(data);
               }}
             />
-            {/* <BasicTable
-              onChange={(data) => {
-                // _onChangeParamsValue(data, PATH_PARAMS);
-                changePathParams(data);
-              }}
-              key={'pathParams'}
-              rows={pathParams || []}
-              title="Path params"
-              options={{
-                disabledColumns: ['key', 'disable'],
-                allowRowRemove: false,
-                allowRowAdd: false,
-                allowSort: false,
-              }}
-            /> */}
           </div>
         ) : (
           <></>
