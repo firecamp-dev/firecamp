@@ -101,10 +101,11 @@ export const LayoutWithSingleColumn = () => (
       <Column className="bg-focus4 mx-2 my-3" flex={1}>
         1st Row - 1st Column
 
-        * Solid border represents the RootContainer
-        * Dashed border represents the Row
-
-        * RootContainer classnames gets updated based on usage
+        <hr/>
+        <br/>
+        * Solid border represents the RootContainer <br/>
+        * Dashed border represents the Row<br/>
+        * RootContainer classnames gets updated based on usage<br/>
         - "h-screen w-screen" updated to "h-full w-full" when nested
       </Column>
     </Row>
@@ -126,15 +127,20 @@ export const LayoutWithMultipleColumn = () => (
     </Row>
   </RootContainer>
 )
-export const LayoutWithMultipleRow = () => (
+export const LayoutWithMultipleRowOverflowCol = () => (
   <RootContainer
     flex={1}
     overflow="auto"
     className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
   >
-    <Row className="bg-focus1 border border-dashed" flex={1} >
-      <Column className="bg-focus4 mx-2 my-3" flex={1}>
+    <Row className="bg-focus1 border border-dashed" flex={1}  maxHeight="50%">
+      <Column className="bg-focus2 mx-2 my-3" flex={1} >
         1st Row - 1st Column
+        <br/>
+        
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum
+
       </Column>
     </Row>
     <Row className="bg-focus1 border border-dashed" flex={1} >
@@ -263,7 +269,7 @@ export const Layout_HTTP = () => (
 
     <Row className="bg-focus1 border border-dashed" flex={1} >
       <Column className="bg-focus4 mx-2 my-3" flex={1}>
-        <div  > 2nd Row - 1st Column </div>
+         2nd Row - 1st Column
       </Column>
       <Column className="bg-focus4 mx-2 my-3" flex={1}>
         <div  > 2nd Row - 2nd Column </div>
