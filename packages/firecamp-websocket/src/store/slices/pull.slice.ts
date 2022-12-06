@@ -1,4 +1,4 @@
-import { EPushActionType, ERequestTypes, IWebSocket } from '@firecamp/types';
+import { ERequestTypes, IWebSocket } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 
 import { IPushAction, IPushPayload } from './push-action/pushAction.slice';
@@ -17,7 +17,7 @@ interface IPullSlice {
 const createPullActionSlice = (set, get): IPullSlice => ({
   pull: {
     _action: {
-      type: EPushActionType.Update,
+      type: 'u',
       itemId: '',
       itemType: 'R',
       requestType: ERequestTypes.WebSocket,
@@ -31,7 +31,7 @@ const createPullActionSlice = (set, get): IPullSlice => ({
     if (
       pullActionPayload &&
       pullActionPayload._action &&
-      pullActionPayload._action.type === EPushActionType.Update &&
+      pullActionPayload._action.type === 'u' &&
       pullActionPayload._action.keys
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);

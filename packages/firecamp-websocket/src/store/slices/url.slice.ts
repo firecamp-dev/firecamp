@@ -32,9 +32,7 @@ const createUrlSlice = (set, get): IUrlSlice => ({
     console.log(state.equalityChecker(urlObj, 'url'));
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
-    const state = get();
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         url: { ...s.request.url, queryParams },
@@ -49,7 +47,6 @@ const createUrlSlice = (set, get): IUrlSlice => ({
         },
       },
     }));
-
   },
 });
 

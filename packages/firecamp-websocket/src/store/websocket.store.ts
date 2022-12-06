@@ -76,6 +76,7 @@ interface IWebsocketStore
     IHandleConnectionExecutorSlice,
     IUiSlice {
   last: any;
+  originalRequest?: IWebSocket;
 
   initialise: (request: Partial<IWebSocket>) => void;
 

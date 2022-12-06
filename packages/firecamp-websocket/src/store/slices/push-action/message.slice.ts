@@ -1,11 +1,11 @@
-import { TId, IWebSocketMessage, EPushActionType } from '@firecamp/types';
+import { TId, IWebSocketMessage } from '@firecamp/types';
 
 import PushActionService from '../../../services/push-actions';
 
 interface IPushActionMessageSlice {
   prepareCollectionMessagesPushAction: (
     id: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastMessage?: IWebSocketMessage,
     message?: IWebSocketMessage
   ) => void;
@@ -14,7 +14,7 @@ interface IPushActionMessageSlice {
 const createPushActionMessageSlice = (set, get): IPushActionMessageSlice => ({
   prepareCollectionMessagesPushAction: (
     id: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastMessage?: IWebSocketMessage,
     message?: IWebSocketMessage
   ) => {

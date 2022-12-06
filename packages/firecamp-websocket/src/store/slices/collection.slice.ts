@@ -1,9 +1,4 @@
-import {
-  IWebSocketMessage,
-  IRequestFolder,
-  TId,
-  EPushActionType,
-} from '@firecamp/types';
+import { IWebSocketMessage, IRequestFolder, TId } from '@firecamp/types';
 
 interface ICollection {
   items?: Array<IWebSocketMessage>;
@@ -84,7 +79,7 @@ const createCollectionSlice = (
     return undefined;
   },
   addMessage: (message: IWebSocketMessage) => {
-    if (!message?.__ref?.id) return;
+    if (!message.__ref?.id) return;
     const state = get();
 
     set((s) => ({
@@ -95,11 +90,8 @@ const createCollectionSlice = (
       },
     }));
 
-    // Prepare push action for insert message
-    state.prepareCollectionMessagesPushAction(
-      message?.__ref?.id,
-      EPushActionType.Insert
-    );
+    // prepare push action for insert message
+    state.prepareCollectionMessagesPushAction(message.__ref?.id, 'i');
   },
   changeMessage: (id: TId, updates: { key: string; value: any }) => {
     const state = get();
@@ -111,9 +103,9 @@ const createCollectionSlice = (
       messageDetails.message &&
       messageDetails.messageIndex !== -1
     ) {
-      let { key, value } = updates;
-      let { message, messageIndex } = messageDetails;
-      let updatedMessage = Object.assign({}, message, {
+      const { key, value } = updates;
+      const { message, messageIndex } = messageDetails;
+      const updatedMessage = Object.assign({}, message, {
         [key]: value,
       });
 
@@ -129,11 +121,11 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastMessage = state.getMessage(id, true);
+      const lastMessage = state.getMessage(id, true);
       // Prepare push action for update message
       state.prepareCollectionMessagesPushAction(
         id,
-        EPushActionType.Update,
+        'u',
         lastMessage,
         updatedMessage
       );
@@ -155,8 +147,8 @@ const createCollectionSlice = (
           ],
         },
       }));
-      // Prepare push action for delete message
-      state.prepareCollectionMessagesPushAction(id, EPushActionType.Delete);
+      // prepare push action for delete message
+      state.prepareCollectionMessagesPushAction(id, 'd');
     }
   },
   setMessage: (id: TId, messageToSet: IWebSocketMessage) => {
@@ -184,11 +176,11 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastMessage = state.getMessage(id, true);
-      // Prepare push action for update message
+      const lastMessage = state.getMessage(id, true);
+      // prepare push action for update message
       state.prepareCollectionMessagesPushAction(
         id,
-        EPushActionType.Update,
+        'u',
         lastMessage,
         updatedMessage
       );
@@ -204,7 +196,7 @@ const createCollectionSlice = (
       : state.collection?.directories;
 
     // directory index
-    let directoryIndex = directories.findIndex(
+    const directoryIndex = directories.findIndex(
       (directory: IRequestFolder) => directory?.__ref?.id === id
     );
 
@@ -228,10 +220,7 @@ const createCollectionSlice = (
     }));
 
     // Prepare push action for insert message
-    state.prepareCollectionDirectoriesPushAction(
-      directory?.__ref?.id,
-      EPushActionType.Insert
-    );
+    state.prepareCollectionDirectoriesPushAction(directory?.__ref?.id, 'i');
   },
   changeDirectory: (id: TId, updates: { key: string; value: any }) => {
     const state = get();
@@ -243,9 +232,9 @@ const createCollectionSlice = (
       directoryDetails.directory &&
       directoryDetails.directoryIndex !== -1
     ) {
-      let { key, value } = updates;
-      let { directory, directoryIndex } = directoryDetails;
-      let updatedDirectory = Object.assign({}, directory, {
+      const { key, value } = updates;
+      const { directory, directoryIndex } = directoryDetails;
+      const updatedDirectory = Object.assign({}, directory, {
         [key]: value,
       });
 
@@ -261,11 +250,11 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastDirectory = state.getDirectory(id, true);
+      const lastDirectory = state.getDirectory(id, true);
       // Prepare push action for update message
       state.prepareCollectionDirectoriesPushAction(
         id,
-        EPushActionType.Update,
+        'u',
         lastDirectory,
         updatedDirectory
       );
@@ -293,8 +282,8 @@ const createCollectionSlice = (
         },
       }));
 
-      // Prepare push action for delete directory
-      state.prepareCollectionDirectoriesPushAction(id, EPushActionType.Delete);
+      // prepare push action for delete directory
+      state.prepareCollectionDirectoriesPushAction(id, 'd');
     }
   },
 });

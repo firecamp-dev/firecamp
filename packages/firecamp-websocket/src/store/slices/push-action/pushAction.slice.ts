@@ -28,7 +28,6 @@ import {
   createPushActionMessageSlice,
 } from './message.slice';
 import {
-  EPushActionType,
   ERequestTypes,
   IWebSocket,
   TId,
@@ -53,7 +52,7 @@ export interface IPushAction {
 
 export interface IPushPayload extends Partial<IWebSocket> {
   _action?: {
-    type: EPushActionType;
+    type: string;
     itemId: TId;
     itemType: 'R';
     requestType: ERequestTypes.WebSocket;
@@ -112,7 +111,7 @@ export const createPushActionSlice = (
 
     pushPayload = { ...request };
     pushPayload._action = {
-      type: EPushActionType.Insert,
+      type: 'i',
       itemId: request.__ref.id,
       itemType: 'R', // TODO: add type here
       requestType: ERequestTypes.WebSocket,
@@ -161,7 +160,7 @@ export const createPushActionSlice = (
     };
 
     pushPayload._action = {
-      type: EPushActionType.Update,
+      type: 'u',
       itemId: request.__ref.id,
       itemType: 'R', // TODO: add type here
       requestType: ERequestTypes.WebSocket,

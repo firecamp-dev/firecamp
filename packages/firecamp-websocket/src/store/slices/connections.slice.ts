@@ -27,7 +27,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
     }));
     state.prepareRequestConnectionsPushAction(
       connection.id,
-      EPushActionType.Insert
+      'i'
     );
   },
   updateConnection: (connectionId: TId, key: string, value: any) => {
@@ -35,7 +35,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
     if (!connectionId || !key || key == 'queryParams') return;
 
     const state = get();
-    let { displayUrl } = state.runtime;
+    const { displayUrl } = state.runtime;
     const { connections } = state.request;
 
     const _connections = connections.map((c) => {
@@ -104,7 +104,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       }));
       state.prepareRequestConnectionsPushAction(
         connectionId,
-        EPushActionType.Delete
+        'd'
       );
     }
   },

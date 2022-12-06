@@ -53,10 +53,9 @@ const createRequestSlice = (
       ...(get()?.request.config || {}),
       [key]: value,
     };
+    set((s) => ({ request: { ...s.request, config: updatedConfig } }));
 
-    set((s) => ({ ...s, request: { ...s.request, config: updatedConfig } }));
-
-    // Prepare push action for config in _root
+    // prepare push action for config in _root
     state.prepareRootPushAction({ config: lastConfig }, updatedConfig);
   },
 });

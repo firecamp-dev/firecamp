@@ -5,7 +5,6 @@ import {
   IWebSocketConnection,
   IWebSocketMessage,
   IRequestFolder,
-  EPushActionType,
 } from '@firecamp/types';
 import equal from 'deep-equal';
 import CleanDeep from 'clean-deep';
@@ -158,7 +157,7 @@ const PushActionService = {
 
   prepareRequestConnectionsPushAction: (
     connectionId: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastConnection: IWebSocketConnection,
     connection: IWebSocketConnection,
     existingPushAction: IPushActionConnections
@@ -166,7 +165,7 @@ const PushActionService = {
     let pushAction: IPushActionConnections = existingPushAction || {};
 
     // INSERT
-    if (pushActionType === EPushActionType.Insert) {
+    if (pushActionType === 'i') {
       pushAction[pushActionType] = _array.uniq([
         ...(pushAction[pushActionType] || []),
         connectionId,
@@ -174,11 +173,11 @@ const PushActionService = {
     }
 
     // UPDATE
-    else if (pushActionType === EPushActionType.Update) {
+    else if (pushActionType === 'u') {
       if (
-        (pushAction[EPushActionType.Insert] &&
-          !pushAction[EPushActionType.Insert]?.includes(connectionId)) ||
-        !pushAction[EPushActionType.Insert]
+        (pushAction['i'] &&
+          !pushAction['i']?.includes(connectionId)) ||
+        !pushAction['i']
       ) {
         // Get existing push action from connectionId
         let existingConnectionCAIndex = pushAction?.[pushActionType]?.findIndex(
@@ -252,21 +251,21 @@ const PushActionService = {
     else {
       // check if in insert and delete both, if true then remove
       if (
-        pushAction[EPushActionType.Insert] &&
-        pushAction[EPushActionType.Insert]?.includes(connectionId)
+        pushAction['i'] &&
+        pushAction['i']?.includes(connectionId)
       ) {
-        pushAction[EPushActionType.Insert] = _array.without(
-          pushAction[EPushActionType.Insert],
+        pushAction['i'] = _array.without(
+          pushAction['i'],
           connectionId
         ) as string[];
       } else {
         // check if in update and delete both, if true then remove
         if (
-          pushAction[EPushActionType.Update] &&
-          pushAction[EPushActionType.Update]?.find((c) => c.id === connectionId)
+          pushAction['u'] &&
+          pushAction['u']?.find((c) => c.id === connectionId)
         ) {
-          pushAction[EPushActionType.Update] = pushAction[
-            EPushActionType.Update
+          pushAction['u'] = pushAction[
+            'u'
           ].filter((c) => c.id === connectionId);
         }
 
@@ -285,7 +284,7 @@ const PushActionService = {
 
   prepareCollectionMessagesPushAction: (
     messageId: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastMessage: IWebSocketMessage,
     message: IWebSocketMessage,
     existingPushAction: IPushActionMessage
@@ -293,7 +292,7 @@ const PushActionService = {
     let pushAction: IPushActionMessage = existingPushAction || {};
 
     // INSERT
-    if (pushActionType === EPushActionType.Insert) {
+    if (pushActionType === 'i') {
       pushAction[pushActionType] = _array.uniq([
         ...(pushAction[pushActionType] || []),
         messageId,
@@ -301,11 +300,11 @@ const PushActionService = {
     }
 
     // UPDATE
-    else if (pushActionType === EPushActionType.Update) {
+    else if (pushActionType === 'u') {
       if (
-        (pushAction[EPushActionType.Insert] &&
-          !pushAction[EPushActionType.Insert]?.includes(messageId)) ||
-        !pushAction[EPushActionType.Insert]
+        (pushAction['i'] &&
+          !pushAction['i']?.includes(messageId)) ||
+        !pushAction['i']
       ) {
         // Get existing push action from messageId
         let existingMessageCAIndex = pushAction?.[pushActionType]?.findIndex(
@@ -379,21 +378,21 @@ const PushActionService = {
     else {
       // check if in insert and delete both, if true then remove
       if (
-        pushAction[EPushActionType.Insert] &&
-        pushAction[EPushActionType.Insert]?.includes(messageId)
+        pushAction['i'] &&
+        pushAction['i']?.includes(messageId)
       ) {
-        pushAction[EPushActionType.Insert] = _array.without(
-          pushAction[EPushActionType.Insert],
+        pushAction['i'] = _array.without(
+          pushAction['i'],
           messageId
         ) as string[];
       } else {
         // check if in update and delete both, if true then remove
         if (
-          pushAction[EPushActionType.Update] &&
-          pushAction[EPushActionType.Update]?.find((m) => m.id === messageId)
+          pushAction['u'] &&
+          pushAction['u']?.find((m) => m.id === messageId)
         ) {
-          pushAction[EPushActionType.Update] = pushAction[
-            EPushActionType.Update
+          pushAction['u'] = pushAction[
+            'u'
           ].filter((m) => m.id === messageId);
         }
 
@@ -412,7 +411,7 @@ const PushActionService = {
 
   prepareCollectionDirectoriesPushAction: (
     directoryId: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastDirectory: IRequestFolder,
     directory: IRequestFolder,
     existingPushAction: IPushActionDirectory
@@ -420,7 +419,7 @@ const PushActionService = {
     let pushAction: IPushActionDirectory = existingPushAction || {};
 
     // INSERT
-    if (pushActionType === EPushActionType.Insert) {
+    if (pushActionType === 'i') {
       pushAction[pushActionType] = _array.uniq([
         ...(pushAction[pushActionType] || []),
         directoryId,
@@ -428,11 +427,11 @@ const PushActionService = {
     }
 
     // UPDATE
-    else if (pushActionType === EPushActionType.Update) {
+    else if (pushActionType === 'u') {
       if (
-        (pushAction[EPushActionType.Insert] &&
-          !pushAction[EPushActionType.Insert]?.includes(directoryId)) ||
-        !pushAction[EPushActionType.Insert]
+        (pushAction['i'] &&
+          !pushAction['i']?.includes(directoryId)) ||
+        !pushAction['i']
       ) {
         // Get existing push action from directoryId
         let existingDirectoryCAIndex = pushAction?.[pushActionType]?.findIndex(
@@ -504,23 +503,23 @@ const PushActionService = {
 
     // DELETE
     else {
-      // check if in instert and delete both, if true then remove
+      // check if in insert and delete both, if true then remove
       if (
-        pushAction[EPushActionType.Insert] &&
-        pushAction[EPushActionType.Insert]?.includes(directoryId)
+        pushAction['i'] &&
+        pushAction['i']?.includes(directoryId)
       ) {
-        pushAction[EPushActionType.Insert] = _array.without(
-          pushAction[EPushActionType.Insert],
+        pushAction['i'] = _array.without(
+          pushAction['i'],
           directoryId
         ) as string[];
       } else {
         // check if in update and delete both, if true then remove
         if (
-          pushAction[EPushActionType.Update] &&
-          pushAction[EPushActionType.Update]?.find((d) => d.id === directoryId)
+          pushAction['u'] &&
+          pushAction['u']?.find((d) => d.id === directoryId)
         ) {
-          pushAction[EPushActionType.Update] = pushAction[
-            EPushActionType.Update
+          pushAction['u'] = pushAction[
+            'u'
           ].filter((d) => d.id === directoryId);
         }
 
