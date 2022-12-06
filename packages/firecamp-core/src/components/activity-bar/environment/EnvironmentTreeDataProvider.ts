@@ -61,13 +61,13 @@ export class WrsEnvDataProvider {
     this.items = {
       root: {
         index: 'root',
-        hasChildren: true,
+        isFolder: true,
         children: [this.workspace.__ref.id],
         data: { name: 'root', __ref: { id: 'root' } },
       },
       [this.workspace.__ref.id]: {
         index: this.workspace.__ref.id,
-        hasChildren: true,
+        isFolder: true,
         children,
         data: {
           name: this.workspace.name,
@@ -80,7 +80,7 @@ export class WrsEnvDataProvider {
       this.items[env.__ref.id] = {
         index: env.__ref.id,
         children: [],
-        hasChildren: false,
+        isFolder: false,
         data: {
           ...env,
           __ref: { ...env.__ref, isEnvironment: true },
@@ -104,7 +104,7 @@ export class WrsEnvDataProvider {
       [envId]: {
         index: envId,
         children: [],
-        hasChildren: false,
+        isFolder: false,
         data: { ...env, __ref: { ...env.__ref, isEnvironment: true } },
       },
     };
@@ -180,7 +180,7 @@ export class CollectionEnvDataProvider {
     this.items = {
       root: {
         index: 'root',
-        hasChildren: true,
+        isFolder: true,
         children,
         data: { name: 'root' },
       },
@@ -192,7 +192,7 @@ export class CollectionEnvDataProvider {
         children: envs
           .filter((e) => e.__ref?.collectionId == c.__ref.id)
           .map((e) => e.__ref.id),
-        hasChildren: true,
+        isFolder: true,
         data: {
           name: c.name,
           __ref: { ...c.__ref, isCollection: true },
@@ -204,7 +204,7 @@ export class CollectionEnvDataProvider {
       this.items[env.__ref.id] = {
         index: env.__ref.id,
         children: [],
-        hasChildren: false,
+        isFolder: false,
         data: {
           ...env,
           __ref: { ...env.__ref, isEnvironment: true },
@@ -228,7 +228,7 @@ export class CollectionEnvDataProvider {
       [envId]: {
         index: envId,
         children: [],
-        hasChildren: false,
+        isFolder: false,
         data: { ...env, __ref: { ...env.__ref, isEnvironment: true } },
       },
     };
