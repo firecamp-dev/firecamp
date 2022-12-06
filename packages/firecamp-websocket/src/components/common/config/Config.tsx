@@ -134,7 +134,7 @@ const Config = ({ connections = [], config = {} }) => {
       if (value.length) {
         protocolsAry = value.split(',');
         protocolsAry = protocolsAry.map((ele, i) => {
-          let e = ele.trim();
+          const e = ele.trim();
           if (e) {
             return e;
           } else {
@@ -201,7 +201,7 @@ const Config = ({ connections = [], config = {} }) => {
             onChange={(e: any) => {
               if (e) {
                 e.preventDefault();
-                let { name, value } = e.target;
+                const { name, value } = e.target;
                 _onChange(name, value);
               }
             }}

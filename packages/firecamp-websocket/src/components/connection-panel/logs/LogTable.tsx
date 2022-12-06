@@ -1,4 +1,7 @@
 import { useRef, useState, useEffect, FC } from 'react';
+import shallow from 'zustand/shallow';
+import classnames from 'classnames';
+import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import {
   Container,
   TabHeader,
@@ -10,10 +13,6 @@ import {
   LogTable as LTable,
   Editor,
 } from '@firecamp/ui-kit';
-import shallow from 'zustand/shallow';
-import classnames from 'classnames';
-import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
-
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
 import { ELogTypes } from '../../../types';
 
@@ -239,26 +238,26 @@ const LogTable = () => {
         </TabHeader>
       </Container.Header>
       <Container.Body overflow="hidden" className="flex flex-col">
-      <LTable
-              classes={{
-                table: 'text-sm !m-0 !border-0 !w-full',
-                td: 'px-2 py-1 whitespace-nowrap first:border-t-0 truncate first:border-l-0 leading-5',
-                th: 'first:border-l-0',
-                thead: 'sticky top-0 !bg-appBackground2 z-10',
-                container: 'h-full !overflow-y-auto -mt-px visible-scrollbar thick',
-                theadTr: '!border-0 !bg-appBackground2',
-                tr: 'hover:!bg-focus1 focus:!bg-primaryColorOpacity  !border-0',
-              }}
-              rows={[]}
-              onChange={(rows) => {
-                console.log(rows, 'log table change');
-              }}
-              onMount={(tApi) => {
-                lLogTableApiRef.current = tApi;
-                console.log(tApi);
-              }}
-            />
-            {/* <ReactTable
+        <LTable
+          classes={{
+            table: 'text-sm !m-0 !border-0 !w-full',
+            td: 'px-2 py-1 whitespace-nowrap first:border-t-0 truncate first:border-l-0 leading-5',
+            th: 'first:border-l-0',
+            thead: 'sticky top-0 !bg-appBackground2 z-10',
+            container: 'h-full !overflow-y-auto -mt-px visible-scrollbar thick',
+            theadTr: '!border-0 !bg-appBackground2',
+            tr: 'hover:!bg-focus1 focus:!bg-primaryColorOpacity  !border-0',
+          }}
+          rows={[]}
+          onChange={(rows) => {
+            console.log(rows, 'log table change');
+          }}
+          onMount={(tApi) => {
+            lLogTableApiRef.current = tApi;
+            console.log(tApi);
+          }}
+        />
+        {/* <ReactTable
               key={activePlayground}
               virtualListHeight={tableHeight} //  40 is an estimated height of table header
               columns={columns}
@@ -267,7 +266,7 @@ const LogTable = () => {
               }}
               onRowClick={_onRowClick}
             /> */}
-      <Resizable
+        <Resizable
           top={true}
           height="100px"
           width="100%"
@@ -276,10 +275,8 @@ const LogTable = () => {
           onResizeStop={_onResizeStop}
           className="bg-focus-3"
         >
-        <LogPreview activePlayground={activePlayground} row={selectedRow} />
-            </Resizable>
-     
-        
+          <LogPreview activePlayground={activePlayground} row={selectedRow} />
+        </Resizable>
       </Container.Body>
     </Container>
   );
@@ -301,11 +298,7 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
   const language = row?.message?.__meta?.type === 'json' ? 'json' : 'text';
 
   return (
-    <Column
-      minHeight={100}
-      className="bg-appBackground2"
-      height={"100%"}
-    >
+    <Column minHeight={100} className="bg-appBackground2" height={'100%'}>
       <Container className="bg-focus2">
         <Container.Header className="bg-focus2">
           <TabHeader

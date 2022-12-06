@@ -2,13 +2,12 @@ import { Button, Url, UrlBar } from '@firecamp/ui-kit';
 import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
 import { TId } from '@firecamp/types';
-
+import ConnectButton from '../connection/ConnectButton';
 import {
   IPushPayload,
   IWebsocketStore,
   useWebsocketStore,
 } from '../../../store/index';
-import ConnectButton from '../connection/ConnectButton';
 
 const UrlBarContainer = ({
   tab,

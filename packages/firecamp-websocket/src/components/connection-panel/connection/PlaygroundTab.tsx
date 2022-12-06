@@ -834,7 +834,7 @@ const SaveMessage = ({
     toggleOpenPopover(!isPopoverOpen);
     set_message_name('');
     setFocusedNode({
-      _meta: { _relative_path: './' },
+      __ref: { _relative_path: './' },
     });
   };
 
