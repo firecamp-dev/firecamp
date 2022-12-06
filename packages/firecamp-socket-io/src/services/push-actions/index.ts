@@ -170,8 +170,7 @@ const PushActionService = {
     // UPDATE
     else if (pushActionType === 'u') {
       if (
-        (pushAction['i'] &&
-          !pushAction['i']?.includes(connectionId)) ||
+        (pushAction['i'] && !pushAction['i']?.includes(connectionId)) ||
         !pushAction['i']
       ) {
         // Get existing push action from connectionId
@@ -223,23 +222,17 @@ const PushActionService = {
     // DELETE
     else {
       // check if in instert and delete both, if true then remove
-      if (
-        pushAction['i'] &&
-        pushAction['i']?.includes(connectionId)
-      ) {
-        pushAction['i'] = _array.without(
-          pushAction['i'],
-          connectionId
-        );
+      if (pushAction['i'] && pushAction['i']?.includes(connectionId)) {
+        pushAction['i'] = _array.without(pushAction['i'], connectionId);
       } else {
         // check if in udpate and delete both, if true then remove
         if (
           pushAction['u'] &&
           pushAction['u']?.find((c) => c.id === connectionId)
         ) {
-          pushAction['u'] = pushAction[
-            'u'
-          ].filter((c) => c.id === connectionId);
+          pushAction['u'] = pushAction['u'].filter(
+            (c) => c.id === connectionId
+          );
         }
 
         // Add connectionId in delete
@@ -275,8 +268,7 @@ const PushActionService = {
     // UPDATE
     else if (pushActionType === 'u') {
       if (
-        (pushAction['i'] &&
-          !pushAction['i']?.includes(emitter_id)) ||
+        (pushAction['i'] && !pushAction['i']?.includes(emitter_id)) ||
         !pushAction['i']
       ) {
         // Get existing push action from emitter_id
@@ -347,23 +339,15 @@ const PushActionService = {
     // DELETE
     else {
       // check if in instert and delete both, if true then remove
-      if (
-        pushAction['i'] &&
-        pushAction['i']?.includes(emitter_id)
-      ) {
-        pushAction['i'] = _array.without(
-          pushAction['i'],
-          emitter_id
-        );
+      if (pushAction['i'] && pushAction['i']?.includes(emitter_id)) {
+        pushAction['i'] = _array.without(pushAction['i'], emitter_id);
       } else {
         // check if in udpate and delete both, if true then remove
         if (
           pushAction['u'] &&
           pushAction['u']?.find((m) => m.id === emitter_id)
         ) {
-          pushAction['u'] = pushAction[
-            'u'
-          ].filter((m) => m.id === emitter_id);
+          pushAction['u'] = pushAction['u'].filter((m) => m.id === emitter_id);
         }
 
         // Add emitter_id in delete
@@ -399,8 +383,7 @@ const PushActionService = {
     // UPDATE
     else if (pushActionType === 'u') {
       if (
-        (pushAction['i'] &&
-          !pushAction['i']?.includes(directory_id)) ||
+        (pushAction['i'] && !pushAction['i']?.includes(directory_id)) ||
         !pushAction['i']
       ) {
         // Get existing push action from directory_id
@@ -474,23 +457,17 @@ const PushActionService = {
     // DELETE
     else {
       // check if in instert and delete both, if true then remove
-      if (
-        pushAction['i'] &&
-        pushAction['i']?.includes(directory_id)
-      ) {
-        pushAction['i'] = _array.without(
-          pushAction['i'],
-          directory_id
-        );
+      if (pushAction['i'] && pushAction['i']?.includes(directory_id)) {
+        pushAction['i'] = _array.without(pushAction['i'], directory_id);
       } else {
         // check if in udpate and delete both, if true then remove
         if (
           pushAction['u'] &&
           pushAction['u']?.find((d) => d.id === directory_id)
         ) {
-          pushAction['u'] = pushAction[
-            'u'
-          ].filter((d) => d.id === directory_id);
+          pushAction['u'] = pushAction['u'].filter(
+            (d) => d.id === directory_id
+          );
         }
 
         // Add connectionId in delete

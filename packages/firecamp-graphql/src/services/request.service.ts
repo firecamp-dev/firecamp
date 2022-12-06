@@ -11,7 +11,7 @@ import { _object, _array, _string } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
 
 import { IGraphQLStoreState, IUi } from '../store';
-import { ESidebarTabs } from '../types'
+import { ESidebarTabs } from '../types';
 
 /** prepare Ui state for the request tab from given partial request */
 export const prepareUiState = (request: Partial<IGraphQL>): Partial<IUi> => {

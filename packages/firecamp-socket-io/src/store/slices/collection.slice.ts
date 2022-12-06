@@ -1,12 +1,8 @@
-import {
-  ISocketIOEmitter,
-  IRequestFolder,
-  TId,
-} from '@firecamp/types';
+import { ISocketIOEmitter, IRequestFolder, TId } from '@firecamp/types';
 
 interface ICollection {
-  folders: any
-  items: any
+  folders: any;
+  items: any;
   emitters?: Array<ISocketIOEmitter>;
   directories?: Array<IRequestFolder>;
 }
@@ -94,10 +90,7 @@ const createCollectionSlice = (
     }));
 
     // prepare push action for insert emitter
-    state.prepareCollectionEmittersPushAction(
-      emitter?.__ref.id,
-      'i'
-    );
+    state.prepareCollectionEmittersPushAction(emitter?.__ref.id, 'i');
   },
   changeEmitter: (id: TId, updates: { key: string; value: any }) => {
     const state = get();
@@ -222,10 +215,7 @@ const createCollectionSlice = (
     }));
 
     // prepare push action for insert emitter
-    state.prepareCollectionDirectoriesPushAction(
-      directory?.__ref.id,
-      'i'
-    );
+    state.prepareCollectionDirectoriesPushAction(directory?.__ref.id, 'i');
   },
   changeDirectory: (id: TId, updates: { key: string; value: any }) => {
     const state = get();

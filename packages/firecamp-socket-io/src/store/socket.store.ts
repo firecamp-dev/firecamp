@@ -41,7 +41,7 @@ import {
   createUiSlice,
 } from './slices';
 import { _object } from '@firecamp/utils';
-import { initialiseStoreFromRequest } from '../services/request.service'
+import { initialiseStoreFromRequest } from '../services/request.service';
 
 const {
   Provider: SocketStoreProvider,

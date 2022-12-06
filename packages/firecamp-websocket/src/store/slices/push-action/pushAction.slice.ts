@@ -27,11 +27,7 @@ import {
   IPushActionMessageSlice,
   createPushActionMessageSlice,
 } from './message.slice';
-import {
-  ERequestTypes,
-  IWebSocket,
-  TId,
-} from '@firecamp/types';
+import { ERequestTypes, IWebSocket, TId } from '@firecamp/types';
 import PushActionService from '../../../services/push-actions';
 
 export interface IPushActionRequest {
