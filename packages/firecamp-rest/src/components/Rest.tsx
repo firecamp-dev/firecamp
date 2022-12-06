@@ -25,7 +25,7 @@ import { _misc, _object, _table, _auth } from '@firecamp/utils';
 import {
   initialiseStoreFromRequest,
   normalizeRequest,
-} from '../services/request-service';
+} from '../services/request.service';
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   const restStoreApi: any = useRestStoreApi();

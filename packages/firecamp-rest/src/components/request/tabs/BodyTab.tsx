@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
-import { isRestBodyEmpty } from '../../../services/request-service';
+import { isRestBodyEmpty } from '../../../services/request.service';
 import {
   EKeyValueTableRowType,
   ERestBodyTypes,

@@ -8,7 +8,7 @@ import {
   normalizeVariables,
   normalizeSendRequestPayload,
   initialiseStoreFromRequest,
-} from '../services/request-service';
+} from '../services/request.service';
 import {
   IRequestSlice,
   createRequestSlice,

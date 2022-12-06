@@ -11,7 +11,7 @@ import {
 } from '@firecamp/types';
 import { _object, _table } from '@firecamp/utils';
 import { IRestStore } from './rest.store';
-import { getAuthHeaders } from '../services/request-service';
+import { getAuthHeaders } from '../services/request.service';
 
 interface IAuthSlice {
   changeAuth: (type: EAuthTypes, updates: { key: string; value: any }) => void;
