@@ -14,7 +14,7 @@
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
     "test": "yarn build && npx jest --bail --silent --verbose",
-    "test:lint": "eslint src --ext .ts",
+    "test:lint": "NODE_ENV=development eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
     "test:unit": "nyc --silent jest",
