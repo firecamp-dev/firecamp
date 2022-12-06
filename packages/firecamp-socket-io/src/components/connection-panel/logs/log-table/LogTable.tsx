@@ -96,10 +96,10 @@ const LogTable = ({
           filteredLogs = filteredLogs.filter((log) => {
             if (filterKey === 'type') {
               return (
-                log?.__meta.[filterKey] === logTypes[logFilters?.[filterKey]]
+                log?.__meta[filterKey] === logTypes[logFilters?.[filterKey]]
               );
             } else {
-              return log?.__meta.[filterKey] === logFilters?.[filterKey];
+              return log?.__meta[filterKey] === logFilters?.[filterKey];
             }
           });
         }

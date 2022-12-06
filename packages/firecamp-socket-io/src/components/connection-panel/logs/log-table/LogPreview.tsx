@@ -59,7 +59,7 @@ const LogPreview = ({
         <Container.Header className="bg-focus2">
           <Header
             row={row || {}}
-          emitterArg={row?.message?.[selectedArgIndex]}
+            emitterArg={row?.message?.[selectedArgIndex]}
           />
         </Container.Header>
         <Container.Body>
@@ -88,7 +88,7 @@ const LogPreview = ({
 
 export default LogPreview;
 
-const Header = ({ row = {}, emitterArg = {} }) => {
+const Header = ({ row = {}, emitterArg = {} }: any) => {
   // console.log(`row`, row)
   return (
     <TabHeader
@@ -98,47 +98,49 @@ const Header = ({ row = {}, emitterArg = {} }) => {
       )}
     >
       <TabHeader.Left className="font-bold font-base">
-        {row && row.__meta
-          ? [
-              row.__meta.type !== 'ACK' ? (
-                <span
-                  key={'event-icon'}
-                  className={classnames(
-                    'td-icon',
-                    { 'iconv2-to-server-icon': row.__meta.type == 'S' },
-                    { 'iconv2-from-server-icon': row.__meta.type == 'R' },
-                    { 'icon-disk': row.__meta.type == 'SYS' },
-                    { 'icon-disk': row.__meta.type == 'SYS' }
-                  )}
-                ></span>
-              ) : (
-                <AckIcon />
-              ),
-              <span className="font-sm" key="event-name">
-                {row.__meta.event}
-              </span>,
-              row.__meta.type !== 'SYS' ? (
-                <div
-                  className="font-xs text-appForegroundInActive whitespace-pre"
-                  key={'event-id'}
-                >
-                  {row.__meta.id || ''}
-                </div>
-              ) : (
-                <></>
-              ),
-            ]
-          : <></>}
+        {row && row.__meta ? (
+          [
+            row.__meta.type !== 'ACK' ? (
+              <span
+                key={'event-icon'}
+                className={classnames(
+                  'td-icon',
+                  { 'iconv2-to-server-icon': row.__meta.type == 'S' },
+                  { 'iconv2-from-server-icon': row.__meta.type == 'R' },
+                  { 'icon-disk': row.__meta.type == 'SYS' },
+                  { 'icon-disk': row.__meta.type == 'SYS' }
+                )}
+              ></span>
+            ) : (
+              <AckIcon />
+            ),
+            <span className="font-sm" key="event-name">
+              {row.__meta.event}
+            </span>,
+            row.__meta.type !== 'SYS' ? (
+              <div
+                className="font-xs text-appForegroundInActive whitespace-pre"
+                key={'event-id'}
+              >
+                {row.__meta.id || ''}
+              </div>
+            ) : (
+              <></>
+            ),
+          ]
+        ) : (
+          <></>
+        )}
       </TabHeader.Left>
       <TabHeader.Right className="font-xs text-appForegroundInActive whitespace-pre">
         <span className="font-sm">
-          {emitterArg?.__meta.length
+          {emitterArg?.__meta?.length
             ? `Length: ${emitterArg?.__meta.length}`
             : ''}
         </span>
 
         <div className="font-sm">
-          {row?.__meta.timestamp
+          {row?.__meta?.timestamp
             ? `Time: ${new Date(row?.__meta.timestamp).toLocaleTimeString()}`
             : ''}
         </div>
@@ -177,7 +179,7 @@ const Footer = ({
   return (
     <SecondaryTab
       list={tabs}
-      activeTab={selectedArgIndex.toString() || "0"}
+      activeTab={selectedArgIndex.toString() || '0'}
       isBgTransperant={true}
       onSelect={setSelectedArgIndex}
     />
