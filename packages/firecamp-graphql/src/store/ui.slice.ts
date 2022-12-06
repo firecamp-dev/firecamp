@@ -12,21 +12,14 @@ interface IUi {
 }
 interface IUiSlice {
   ui: IUi;
-
-  initializeUi: (ui: IUi) => void;
   changeUiActiveTab: (tab: string) => void;
   setIsFetchingReqFlag: (flag: boolean) => void;
-  setUiState?: (ui: Partial<IUi>) => void;
 }
 
 const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
   ui: initialUi || {
     isFetchingRequest: false,
     sidebarActiveTab: ESidebarTabs.Explorer,
-  },
-
-  initializeUi: (ui: IUi) => {
-    set({ ui });
   },
   changeUiActiveTab: (tab: string) => {
     set((s) => ({
@@ -40,16 +33,7 @@ const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
 
     set((s) => ({
-      ...s,
       ui: { ...s.ui, isFetchingRequest: flag },
-    }));
-  },
-  setUiState: (ui: Partial<IUi>) => {
-    set((s) => ({
-      ui: {
-        ...s.ui,
-        ...ui,
-      },
     }));
   },
 });

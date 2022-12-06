@@ -16,12 +16,11 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
     const state = get();
     const lastUrl = state.last?.request.url;
     const updatedUrl = _cloneDeep({ ...(state.request.url || {}), ...urlObj });
-    let updatedUiState = prepareUiState({
+    const updatedUiState = prepareUiState({
       url: urlObj,
     });
 
     set((s) => ({
-      ...s,
       request: { ...s.request, url: updatedUrl },
       ui: {
         ...s.ui,
@@ -44,12 +43,12 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
 
     // console.log({ raw });
 
-    // Update raw URL into state
+    // update raw URL into state
     url.raw = raw;
-    url.query_params = queryParams;
+    url.queryParams = queryParams;
 
     const updatedUiState = prepareUiState({
-      url: { query_params: queryParams, raw: existingURL.raw },
+      url: { queryParams: queryParams, raw: existingURL.raw },
     });
 
     set((s) => ({
@@ -74,11 +73,11 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
     const existingURL = state.request.url;
     const url = _cloneDeep({
       ...existingURL,
-      path_params: pathParams,
+      pathParams: pathParams,
     });
 
     const updatedUiState = prepareUiState({
-      url: { path_params: pathParams, raw: existingURL.raw },
+      url: { pathParams: pathParams, raw: existingURL.raw },
     });
 
     set((s) => ({

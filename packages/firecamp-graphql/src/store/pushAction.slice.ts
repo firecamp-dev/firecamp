@@ -1,5 +1,4 @@
 import {
-  EPushActionType,
   ERequestTypes,
   IGraphQL,
   IUrl,
@@ -19,7 +18,7 @@ import {
 
 interface IPushPayload extends Partial<IGraphQL> {
   _action?: {
-    type: EPushActionType;
+    type: string;
     item_id: TId;
     item_type: 'R';
     request_type: ERequestTypes.GraphQL;
@@ -141,8 +140,8 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
     pushPayload = { ...request };
 
     pushPayload._action = {
-      type: EPushActionType.Insert,
-      item_id: request._meta.id,
+      type: 'i',
+      item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.GraphQL,
       collection_id: '',
@@ -174,20 +173,20 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
     let pushPayload: IPushPayload = updatedRequest;
 
-    pushPayload._meta = {
-      ...pushPayload._meta,
-      id: request._meta.id,
-      collection_id: request._meta.collection_id,
-      folder_id: request._meta.folder_id || '',
+    pushPayload.__ref = {
+      ...pushPayload.__ref,
+      id: request.__ref.id,
+      collectionId: request.__ref.collectionId,
+      folderId: request.__ref.folderId || '',
     };
 
     pushPayload._action = {
-      type: EPushActionType.Update,
-      item_id: request._meta.id,
+      type: 'u',
+      item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
-      request_type: ERequestTypes.GraphQL,
-      collection_id: request._meta.collection_id,
-      workspace_id: '',
+      requestType: ERequestTypes.GraphQL,
+      collectionId: request.__ref.collectionId,
+      workspaceId: '',
       keys: pushAction,
     };
     // console.log({ updatedRequest });
@@ -215,9 +214,9 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
 
         // handle meta
         case 'meta':
-          pushAction['meta'] = pushActionS.prepareMetaPushAction(
-            lastRequest.meta,
-            request.meta
+          pushAction['__meta'] = pushActionS.prepareMetaPushAction(
+            lastRequest.__meta,
+            request.__meta
             // get().pushAction?.meta
           );
 

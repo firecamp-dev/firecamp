@@ -14,7 +14,7 @@ export enum EPushActionMetaKeys {
 
 export enum EPushActionUrlKeys {
   raw = 'raw',
-  query_params = 'query_params',
+  queryParams = 'queryParams',
 }
 
 export enum EPushAction_metaKeys {

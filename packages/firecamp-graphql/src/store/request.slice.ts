@@ -20,10 +20,9 @@ const requestSliceKeys = [
 
 interface IRequestSlice extends IUrlSlice {
   request: IGraphQL;
-  initialiseRequestByKeyValue: (key: string, value: any) => void;
   changeMethod: (method: EHttpMethod) => any;
   changeHeaders: (headers: IHeader[]) => any;
-  changeMeta: (meta: object) => any;
+  changeMeta: (__meta: object) => any;
   // changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
 }
@@ -32,30 +31,22 @@ const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
   request: initialRequest,
 
   ...createUrlSlice(set, get, initialRequest.url),
-  initialiseRequestByKeyValue: (key: string, value: any) => {
-    set((s) => ({
-      ...s,
-      request: {
-        ...s.request,
-        [key]: value,
-      },
-    }));
-  },
 
   changeMethod: (method: EHttpMethod) => {
+    const state = get();
     set((s) => ({
-      ...s,
       request: { ...s.request, method },
     }));
 
-    // Prepare commit action for method in _root
-    get()?.prepareRootPushAction(
-      { method: get()?.last?.request.method },
+    // prepare commit action for method in _root
+    state.prepareRootPushAction(
+      { method: state.last?.request.method },
       { method }
     );
   },
 
   changeHeaders: (headers: IHeader[]) => {
+    const state = get();
     const headersLength = headers.length;
     set((s) => ({
       ...s,
@@ -67,32 +58,33 @@ const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
       },
     }));
 
-    // Prepare commit action for headers in _root
-    get()?.prepareRootPushAction(
-      { headers: get()?.last?.request.headers },
+    // prepare commit action for headers in _root
+    state.prepareRootPushAction(
+      { headers: state.last?.request.headers },
       { headers }
     );
   },
   changeConfig: (configKey: string, configValue: any) => {
-    let lastConfig = get()?.last?.request.config;
-    let updatedConfig = {
-      ...(get()?.request.config || {}),
+    const state = get();
+    const lastConfig = state.last?.request.config;
+    const updatedConfig = {
+      ...state.request.config,
       [configKey]: configValue,
     };
 
     set((s) => ({ ...s, request: { ...s.request, config: updatedConfig } }));
 
-    // Prepare commit action for headers in _root
-    get()?.prepareRootPushAction({ config: lastConfig }, updatedConfig);
+    // prepare commit action for headers in _root
+    state.prepareRootPushAction({ config: lastConfig }, updatedConfig);
   },
-  changeMeta: (meta: object) => {
+  changeMeta: (__meta: object) => {
+    const state = get();
     set((s) => ({
-      ...s,
-      request: { ...s.request, meta: { ...s.request.meta, ...meta } },
+      request: { ...s.request, __meta: { ...s.request.__meta, ...__meta } },
     }));
 
-    // Prepare commit action for meta
-    get()?.prepareMetaPushAction(get()?.last?.request.meta, meta);
+    // prepare commit action for __meta
+    state.prepareMetaPushAction(state.last?.request.__meta, __meta);
   },
 });
 

@@ -35,7 +35,7 @@ interface IRuntime {
   };
   isRequestSaved: boolean;
 
-  /** true if fetch introspectionis under progress */
+  /** true if fetch introspections under progress */
   isFetchingIntrospection?: boolean;
 }
 

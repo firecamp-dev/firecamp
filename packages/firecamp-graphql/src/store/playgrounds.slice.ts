@@ -99,19 +99,19 @@ export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
     });
   },
 
-  // open saved playgrund in tab
+  // open saved playground in tab
   openPlayground: (plg: IGraphQLPlayground) => {
     // If variables is table like array from old version then convert then in JSON string
-    if (Array.isArray(plg.meta?.variables)) {
-      const variables = plg.meta?.variables.reduce((p, n) => {
+    if (Array.isArray(plg.__meta?.variables)) {
+      const variables = plg.__meta?.variables.reduce((p, n) => {
         p[n.key] = n.value;
         return p;
       }, {});
-      plg.meta.variables = JSON.stringify(variables, null, 4);
+      plg.__meta.variables = JSON.stringify(variables, null, 4);
     }
 
     set((s) => {
-      const pId = plg._meta.id;
+      const pId = plg.__ref.id;
       const plgExits = !!s.playgrounds[pId];
       const playgrounds = plgExits
         ? s.playgrounds

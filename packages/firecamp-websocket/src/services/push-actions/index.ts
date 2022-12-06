@@ -194,7 +194,7 @@ const PushActionService = {
 
         for (let key in connection) {
           if (key === 'headers' || key === 'queryParams') {
-            // For headers and query_params add in to key '_root'
+            // For headers and queryParams add in to key '_root'
             if (!equal(connection[key], lastConnection[key])) {
               connectionUpdatedCA['_root'] = _array.uniq([
                 ...(connectionUpdatedCA?.['_root'] || []),
