@@ -13,18 +13,13 @@ const requestSliceKeys = [
   'url',
   'method',
   'headers',
-  // 'body',
-  // 'auth',
-  'meta',
-  // 'scripts',
   'config',
-  '_meta',
+  '__meta',
+  '__ref',
 ];
 
 interface IRequestSlice extends IUrlSlice {
   request: IGraphQL;
-
-  initialiseRequest: (request: IGraphQL) => void;
   initialiseRequestByKeyValue: (key: string, value: any) => void;
   changeMethod: (method: EHttpMethod) => any;
   changeHeaders: (headers: IHeader[]) => any;
@@ -37,14 +32,6 @@ const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
   request: initialRequest,
 
   ...createUrlSlice(set, get, initialRequest.url),
-
-  initialiseRequest: (request: IGraphQL) => {
-    set((s) => ({
-      ...s,
-      request,
-    }));
-  },
-
   initialiseRequestByKeyValue: (key: string, value: any) => {
     set((s) => ({
       ...s,

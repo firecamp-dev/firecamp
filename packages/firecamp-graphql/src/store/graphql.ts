@@ -24,9 +24,10 @@ import {
   IUi,
   IUiSlice,
 } from './index';
-import { ERestBodyTypes, IGraphQL, IRest } from '@firecamp/types';
+import { ERestBodyTypes, IGraphQL } from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
+import { initialiseStoreFromRequest } from '../services/request.service';
 
 const {
   Provider: GraphQLStoreProvider,
@@ -43,16 +44,13 @@ interface IGraphQLStore
     IPullSlice,
     IUiSlice {
   last: any;
+  originalRequest?: IGraphQL;
 
   setLast: (initialState: IGraphQLStoreState) => void;
-  initialise: (
-    initialState: IGraphQLStoreState,
-    collection: ICollection,
-    isFresh: boolean
-  ) => void;
+  initialise: (_request: Partial<IGraphQL>) => void;
   context?: any;
   setContext: (ctx: any) => void;
-  getRequest: () => IRest;
+  getRequest: () => IGraphQL;
   execute?: (query?: string, variables?: string) => Promise<IRestResponse>;
   fetchIntrospectionSchema: () => Promise<void>;
 }
@@ -89,33 +87,18 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
         }));
       },
 
-      initialise: (initialState, collection: ICollection, isFresh: boolean) => {
-        const state = get();
-
-        // request
-        let initialRequest: IGraphQL = _object.pick(
-          initialState.request,
-          requestSliceKeys
-        ) as IGraphQL;
-
-        // console.log({ initialRequest, initialState });
-
-        if (!_object.isEmpty(initialRequest))
-          state.initialiseRequest(initialRequest);
-
-        if (initialState.ui) state.initializeUi(initialState.ui);
-
-        if (!_object.isEmpty(collection))
-          state.initialiseCollection(collection);
-
-        if (initialState.pushAction)
-          state.initializePushAction(initialState.pushAction);
-
-        // console.log({ initialState });
-
-        if (isFresh) set({ last: initialState });
-
-        // runtime
+      initialise: (request: Partial<IGraphQL>) => {
+        // const state = get();
+        const initState = initialiseStoreFromRequest(request);
+        // console.log(initState, 'initState');
+        set((s) => ({
+          ...s,
+          ...initState,
+          // @ts-ignore
+          originalRequest: _cloneDeep(initState.request) as IGraphQL,
+        }));
+        //  if (!_object.isEmpty(collection))
+        //  state.initialiseCollection(collection);
       },
 
       setContext: (ctx: any) => set({ context: ctx }),
@@ -152,7 +135,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
             variables,
           },
         };
-        request.meta.active_body_type = ERestBodyTypes.GraphQL;
+        request.__meta.activeBodyType = ERestBodyTypes.GraphQL;
 
         // let response: IRestResponse = { statusCode: 0 };
         state.setRequestRunningFlag(activePlayground, true);
@@ -187,7 +170,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
             // variables
           },
         };
-        request.meta.active_body_type = ERestBodyTypes.GraphQL;
+        request.__meta.activeBodyType = ERestBodyTypes.GraphQL;
 
         state.setFetchIntrospectionFlag(true);
         state.context.request

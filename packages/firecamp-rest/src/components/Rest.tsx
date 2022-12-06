@@ -121,7 +121,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       try {
         const isRequestSaved = !!tab?.request?.__ref?.id || false;
         // prepare a minimal request payload
-        let requestToNormalize: IRest = normalizeRequest({});
+        let _request: IRest = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -129,7 +129,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
             const response = await platformContext.request.onFetch(
               tab.request.__ref.id
             );
-            requestToNormalize = response.data;
+            _request = response.data;
           } catch (error) {
             console.error({
               API: 'fetch rest request',
@@ -140,7 +140,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         }
 
         /** initialise rest store on tab load */
-        initialise(requestToNormalize);
+        initialise(_request);
         setIsFetchingReqFlag(false);
       } catch (error) {
         console.error({

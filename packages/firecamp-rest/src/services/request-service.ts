@@ -267,12 +267,12 @@ export const normalizeRequest = (
 
   // normalize __ref
   _nr.__ref.id = __ref.id || nanoid();
-  _nr.__ref.collectionId = __ref?.collectionId;
-  _nr.__ref.folderId = __ref?.folderId;
-  _nr.__ref.createdAt = __ref?.createdAt || new Date().valueOf();
-  _nr.__ref.updatedAt = __ref?.updatedAt || new Date().valueOf();
-  _nr.__ref.createdBy = __ref?.createdBy || '';
-  _nr.__ref.updatedBy = __ref?.updatedBy || '';
+  _nr.__ref.collectionId = __ref.collectionId;
+  _nr.__ref.folderId = __ref.folderId;
+  _nr.__ref.createdAt = __ref.createdAt || new Date().valueOf();
+  _nr.__ref.updatedAt = __ref.updatedAt || new Date().valueOf();
+  _nr.__ref.createdBy = __ref.createdBy || '';
+  _nr.__ref.updatedBy = __ref.updatedBy || '';
 
   return _nr;
 };

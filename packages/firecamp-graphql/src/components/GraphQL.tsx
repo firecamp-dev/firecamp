@@ -2,12 +2,7 @@ import { useEffect } from 'react';
 import { nanoid as id } from 'nanoid';
 import equal from 'deep-equal';
 import { _object } from '@firecamp/utils';
-import {
-  EHttpMethod,
-  EPushActionType,
-  ERequestTypes,
-  IGraphQL,
-} from '@firecamp/types';
+import { EHttpMethod, ERequestTypes, IGraphQL } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 import _cleanDeep from 'clean-deep';
 
@@ -169,7 +164,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialiseRequest(updatedRequest, true, pushAction, true, false);
+      // initialiseRequest(updatedRequest, true, pushAction, true, false);
     } catch (error) {
       console.error({
         API: 'rest.handlePull',
@@ -180,16 +175,9 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   const fetchRequest = async () => {
     try {
-      const isRequestSaved = !!tab?.request?._meta?.id || false;
-      let _request: IGraphQL = {
-        method: EHttpMethod.POST,
-        __meta: {
-          name: '',
-          version: '2.0.0',
-          type: ERequestTypes.GraphQL,
-        },
-        __ref: { id: '', collectionId: '' },
-      };
+      const isRequestSaved = !!tab?.request?.__ref?.id || false;
+      // prepare a minimal request payload
+      let _request: IGraphQL = normalizeRequest({});
 
       if (isRequestSaved === true) {
         setIsFetchingReqFlag(true);
@@ -209,55 +197,15 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
         }
       }
 
-      initialiseRequest(
-        _request,
-        isRequestSaved,
-        _cloneDeep(emptyPushAction),
-        false,
-        true
-      );
+      /** initialise graphql store on tab load */
+      initialise(_request);
+      setIsFetchingReqFlag(false);
     } catch (error) {
       console.error({
         API: 'fetch and normalize rest request',
         error,
       });
-      // TODO: close tab and show error popup
     }
-  };
-
-  /**
-   * initialiseRequest: normalise request and initialise in store on tab load and manage pull
-   */
-  const initialiseRequest = async (
-    requestToNormalize: IGraphQL,
-    isRequestSaved: boolean,
-    pushAction?: IPushAction,
-    hasPull?: boolean,
-    isFresh?: boolean
-  ) => {
-    //@ts-ignore
-    const { collection = { folders: [], items: [] } } = requestToNormalize;
-
-    const state = graphqlStoreApi.getState();
-    const request: IGraphQL = await normalizeRequest(requestToNormalize);
-
-    const ui = prepareUiState(_cloneDeep(request));
-    initialise(
-      {
-        request,
-        pushAction,
-        playgrounds: {},
-        ui: {
-          ...state.ui,
-          ...ui,
-          sidebarActiveTab:
-            state.ui?.sidebarActiveTab || ESidebarTabs.Collection,
-        },
-      },
-      collection,
-      isFresh
-    );
-    setIsFetchingReqFlag(false);
   };
 
   // handle updates for environments from platform
@@ -280,7 +228,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     // console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === EPushActionType.Insert) {
+    if (pushPayload._action.type === 'i') {
       platformContext.request.subscribeChanges(
         pushPayload._action.item_id,
         handlePull
