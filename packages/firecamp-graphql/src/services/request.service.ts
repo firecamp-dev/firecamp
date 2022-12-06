@@ -11,6 +11,7 @@ import { _object, _array, _string } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
 
 import { IGraphQLStoreState, IUi } from '../store';
+import { ESidebarTabs } from '../types'
 
 /** prepare Ui state for the request tab from given partial request */
 export const prepareUiState = (request: Partial<IGraphQL>): Partial<IUi> => {
@@ -88,9 +89,12 @@ export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
   _nr.method = EHttpMethod[method.toUpperCase()] ? method : EHttpMethod.POST;
 
   // normalize headers
-  _nr.headers = !headers || _array.isEmpty(headers) ? [] : headers;
+  _nr.headers =
+    !headers || _array.isEmpty(headers)
+      ? [{ key: 'content-type', value: 'application/json' }]
+      : headers;
   _nr.headers = _nr.headers.filter((h) => {
-    h.id = nanoid();
+    if (h.id) h.id = nanoid();
     h.type = EKeyValueTableRowType.Text;
     h.value = h.value ? h.value : '';
     return isValidRow(h);
@@ -99,6 +103,8 @@ export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
   // normalize __meta
   _nr.__meta.name = __meta.name || 'Untitled Request';
   _nr.__meta.description = __meta.description || '';
+  _nr.__meta.version = '2.0.0';
+  _nr.__meta.type = ERequestTypes.GraphQL;
 
   // normalize __ref
   _nr.__ref.id = __ref.id || nanoid();
@@ -138,6 +144,7 @@ export const initialiseStoreFromRequest = (
       hasHeaders: false,
       headers: 0,
       isFetchingRequest: false,
+      sidebarActiveTab: ESidebarTabs.Collection,
       ...uiState,
     },
   };

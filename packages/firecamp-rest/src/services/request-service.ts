@@ -258,6 +258,7 @@ export const normalizeRequest = (
     __meta.activeAuthType = EAuthTypes.NoAuth;
   _nr.__meta.activeAuthType = __meta.activeAuthType || EAuthTypes.NoAuth;
   _nr.__meta.version = '2.0.0';
+  _nr.__meta.type = ERequestTypes.Rest;
   _nr.__meta.inheritScripts = {
     pre: __meta.inheritScripts?.pre || true,
     post: __meta.inheritScripts?.post || true,

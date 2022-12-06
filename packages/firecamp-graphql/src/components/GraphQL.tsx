@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
-import { nanoid as id } from 'nanoid';
-import equal from 'deep-equal';
-import { _object } from '@firecamp/utils';
-import { EHttpMethod, ERequestTypes, IGraphQL } from '@firecamp/types';
-import shallow from 'zustand/shallow';
 import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
+import equal from 'deep-equal';
+import shallow from 'zustand/shallow';
 
+import { _object } from '@firecamp/utils';
+import { IGraphQL } from '@firecamp/types';
 import { Container, Row, Column, Loader } from '@firecamp/ui-kit';
 
-import _cloneDeep from 'lodash/cloneDeep';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import PlaygroundPanel from './playground-panel/PlaygroundPanel';
@@ -22,12 +21,14 @@ import {
   useGraphQLStore,
   IPushPayload,
   emptyPushAction,
-  IPushAction,
   IGraphQLStore,
-  IGraphQLStoreState,
 } from '../store';
 
-import { normalizeRequest, prepareUiState } from '../services/request.service';
+import {
+  initialiseStoreFromRequest,
+  normalizeRequest,
+  prepareUiState,
+} from '../services/request.service';
 import { ESidebarTabs } from '../types';
 
 const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
@@ -280,40 +281,10 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
     const { request = {} } = tab;
-    // console.log({ request });
-
-    const initReqPayload: IGraphQLStoreState = {
-      request: {
-        url: request?.url || {
-          raw: '',
-        },
-        method: request?.method || 'POST',
-        headers: request?.headers || [
-          { key: 'content-type', value: 'application/json' },
-        ],
-        config: request?.config || {},
-        __meta: request.__meta || {
-          type: ERequestTypes.GraphQL,
-          version: '2.0.0',
-          name: '',
-        },
-        __ref: request.__ref || {
-          id: id(),
-          collectionId: '',
-        },
-      },
-      playgrounds: {},
-      ui: {
-        isFetchingRequest: false,
-        sidebarActiveTab: ESidebarTabs.Collection,
-      },
-    };
-    // console.log({ initReqPayload });
+    const initState = initialiseStoreFromRequest(request);
 
     return (
-      <GraphQLStoreProvider
-        createStore={() => createGraphQLStore(initReqPayload)}
-      >
+      <GraphQLStoreProvider createStore={() => createGraphQLStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
       </GraphQLStoreProvider>
     );
