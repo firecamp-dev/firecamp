@@ -54,7 +54,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
       // collection: s.collection,
       playground: s.playgrounds[s.runtime.activePlayground],
       playgroundTabs: s.runtime.playgroundTabs,
-      meta: s.request.meta,
+      __meta: s.request.__meta,
 
       changePlaygroundEmitter: s.changePlaygroundEmitter,
       setSelectedCollectionEmitter: s.setSelectedCollectionEmitter,
@@ -146,18 +146,18 @@ const EmitterPlayground = ({ tabData = {} }) => {
     (!playgroundEmitter.body ||
       (playgroundEmitter.body &&
         (!playgroundEmitter.body[arg_ref.current] ||
-          !playgroundEmitter.body[arg_ref.current].meta ||
-          (playgroundEmitter.body[arg_ref.current].meta &&
+          !playgroundEmitter.body[arg_ref.current].__meta ||
+          (playgroundEmitter.body[arg_ref.current].__meta &&
             (!Object.hasOwnProperty.call(
               playgroundEmitter.body[arg_ref.current],
               'payload'
             ) ||
               !Object.hasOwnProperty.call(
-                playgroundEmitter.body[arg_ref.current].meta,
+                playgroundEmitter.body[arg_ref.current].__meta,
                 'typedArrayView'
               ) ||
               !Object.hasOwnProperty.call(
-                playgroundEmitter.body[arg_ref.current].meta,
+                playgroundEmitter.body[arg_ref.current].__meta,
                 'type'
               ))))))
   ) {
@@ -173,13 +173,13 @@ const EmitterPlayground = ({ tabData = {} }) => {
   // prepare(
   //   propCollection.directories || [],
   //   propCollection.emitters || [],
-  //   meta
+  //   __meta
   // ) || [];
 
   let [activeArgType, setActiveArgType] = useState(
     () =>
       ArgTypes.find(
-        (t) => t.id === playgroundEmitter.body[arg_ref.current].meta.type
+        (t) => t.id === playgroundEmitter.body[arg_ref.current].__meta.type
       ) || {
         id: EEmitterPayloadTypes.noBody,
         name: 'No body',
@@ -207,12 +207,12 @@ const EmitterPlayground = ({ tabData = {} }) => {
 
   useEffect(() => {
     if (
-      playgroundEmitter.body[arg_ref.current].meta.type &&
-      playgroundEmitter.body[arg_ref.current].meta.type !== activeArgType.id
+      playgroundEmitter.body[arg_ref.current].__meta.type &&
+      playgroundEmitter.body[arg_ref.current].__meta.type !== activeArgType.id
     ) {
       setActiveArgType(
         ArgTypes.find(
-          (t) => t.id === playgroundEmitter.body[arg_ref.current].meta.type
+          (t) => t.id === playgroundEmitter.body[arg_ref.current].__meta.type
         )
       );
     }
@@ -227,13 +227,13 @@ const EmitterPlayground = ({ tabData = {} }) => {
     }
 
     if (
-      playgroundEmitter.body[arg_ref.current].meta.typedArrayView &&
-      playgroundEmitter.body[arg_ref.current].meta.typedArrayView !==
+      playgroundEmitter.body[arg_ref.current].__meta.typedArrayView &&
+      playgroundEmitter.body[arg_ref.current].__meta.typedArrayView !==
         selectedEnvelope.id
     ) {
       setSelectedEnvelope(
         envelopeList.find(
-          (e) => e.id === playgroundEmitter.body[arg_ref.current].meta.typedArrayView
+          (e) => e.id === playgroundEmitter.body[arg_ref.current].__meta.typedArrayView
         ) || selectedEnvelope
       );
     }
@@ -249,22 +249,22 @@ const EmitterPlayground = ({ tabData = {} }) => {
 
   useEffect(() => {
     if (
-      playgroundEmitter?.body?.[arg_ref.current]?.meta?.type !==
+      playgroundEmitter?.body?.[arg_ref.current]?.__meta.type !==
       activeArgType.id
     ) {
       setActiveArgType(
         ArgTypes.find(
-          (t) => t.id === playgroundEmitter.body[arg_ref.current].meta.type
+          (t) => t.id === playgroundEmitter.body[arg_ref.current].__meta.type
         )
       );
     }
     if (
-      playgroundEmitter?.body?.[arg_ref.current]?.meta?.typedArrayView !==
+      playgroundEmitter?.body?.[arg_ref.current]?.__meta.typedArrayView !==
       selectedEnvelope.id
     ) {
       setSelectedEnvelope(
         envelopeList.find(
-          (e) => e.id === playgroundEmitter.body[arg_ref.current].meta.typedArrayView
+          (e) => e.id === playgroundEmitter.body[arg_ref.current].__meta.typedArrayView
         ) || selectedEnvelope
       );
     }
@@ -310,7 +310,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         {
           payload: '',
           path: '',
-          meta: {
+          __meta: {
             typedArrayView: '',
             type: EEmitterPayloadTypes.noBody,
           },
@@ -376,19 +376,19 @@ const EmitterPlayground = ({ tabData = {} }) => {
       toggleSelectArgTypeDD(false);
       if (
         playgroundEmitter &&
-        // playgroundEmitter.body[arg_ref.current].meta.typedArrayView === "" &&
+        // playgroundEmitter.body[arg_ref.current].__meta.typedArrayView === "" &&
         (type.id === EEmitterPayloadTypes.arraybufferview ||
           type.id === EEmitterPayloadTypes.arraybuffer)
       ) {
-        if (playgroundEmitter.body[arg_ref.current].meta.typedArrayView !== '') {
+        if (playgroundEmitter.body[arg_ref.current].__meta.typedArrayView !== '') {
           _playgroundEmitterFns.updateBody({
-            meta: { type: type.id },
+            __meta: { type: type.id },
             payload: '',
           });
         } else {
           _playgroundEmitterFns.updateBody({
             payload: '',
-            meta: { type: type.id, typedArrayView: selectedEnvelope.id },
+            __meta: { type: type.id, typedArrayView: selectedEnvelope.id },
           });
         }
       } else if (
@@ -402,29 +402,29 @@ const EmitterPlayground = ({ tabData = {} }) => {
         ) {
           _playgroundEmitterFns.updateBody({
             payload: '',
-            meta: { type: type.id },
+            __meta: { type: type.id },
             typedArrayView: '',
           });
           setEmitterBody('');
         } else if (
-          playgroundEmitter.body[arg_ref.current].meta.typedArrayView !== ''
+          playgroundEmitter.body[arg_ref.current].__meta.typedArrayView !== ''
         ) {
           _playgroundEmitterFns.updateBody({
-            meta: { type: type.id, typedArrayView: '' },
+            __meta: { type: type.id, typedArrayView: '' },
           });
         } else {
-          _playgroundEmitterFns.updateBody({ meta: { type: type.id } });
+          _playgroundEmitterFns.updateBody({ __meta: { type: type.id } });
         }
       }
     }
     setPrevType(activeArgType);
-    // _playgroundEmitterFns.updateBody({ meta: { type: type.id } });
+    // _playgroundEmitterFns.updateBody({ __meta: { type: type.id } });
   };
 
   let _onSelectEnvelope = (env) => {
     if (env && env.id) {
       setSelectedEnvelope(env);
-      _playgroundEmitterFns.updateBody({ meta: { typedArrayView: env.id } });
+      _playgroundEmitterFns.updateBody({ __meta: { typedArrayView: env.id } });
     }
   };
 
@@ -492,16 +492,16 @@ const EmitterPlayground = ({ tabData = {} }) => {
       _playgroundEmitterFns.update({ body: emitterBodyPayload });
     },
 
-    updateMeta: (meta = {}) => {
-      let emitterMeta = Object.assign({}, playgroundEmitter.meta || {}, meta);
-      _playgroundEmitterFns.update({ meta: emitterMeta });
+    updateMeta: (__meta = {}) => {
+      let emitterMeta = Object.assign({}, playgroundEmitter.__meta || {}, __meta);
+      _playgroundEmitterFns.update({ __meta: emitterMeta });
     },
 
     addArg: async () => {
       if (
         playgroundEmitter.body &&
         playgroundEmitter.body.length === 5 &&
-        playgroundEmitter.body[arg_ref.current]?.meta?.type ===
+        playgroundEmitter.body[arg_ref.current]?.__meta.type ===
           EEmitterPayloadTypes.noBody
       ) {
         return;
@@ -513,15 +513,15 @@ const EmitterPlayground = ({ tabData = {} }) => {
        */
       let newArg = {
         ...InitArg,
-        meta: {
-          ...InitArg.meta,
+        __meta: {
+          ...InitArg.__meta,
           type:
-            playgroundEmitter.body[arg_ref.current]?.meta?.type ||
+            playgroundEmitter.body[arg_ref.current]?.__meta.type ||
             EEmitterPayloadTypes.noBody,
           typedArrayView:
-            playgroundEmitter.body[arg_ref.current]?.meta?.type ===
+            playgroundEmitter.body[arg_ref.current]?.__meta.type ===
               EEmitterPayloadTypes.arraybuffer ||
-            playgroundEmitter.body[arg_ref.current]?.meta?.type ===
+            playgroundEmitter.body[arg_ref.current]?.__meta.type ===
               EEmitterPayloadTypes.arraybufferview
               ? EnvelopeTypes[0]
               : '',
@@ -647,7 +647,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         collection={collection}
         activeType={activeArgType}
         toggleSaveEmitterPopover={toggleSaveEmitterPopover}
-        playgroundTabMeta={playgroundTab.meta}
+        playgroundTabMeta={playgroundTab.__meta}
         onAddEmitter={_onAddEmitter}
         onUpdateEmitter={_onUpdateEmitter}
         path={playgroundEmitter.path || `./`}
@@ -691,7 +691,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
       </TabHeader>
       <div className="border border-appBorder flex-1 flex flex-col">
         <EmitterArgTabs
-          ack={playgroundEmitter.meta ? playgroundEmitter.meta.ack : false}
+          ack={playgroundEmitter.__meta ? playgroundEmitter.__meta.ack : false}
           args={playgroundEmitter.body}
           activeArgIndex={arg_ref.current}
           onAddArg={() => _playgroundEmitterFns.addArg()}

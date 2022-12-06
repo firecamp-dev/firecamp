@@ -165,7 +165,7 @@ const createHandleConnectionExecutor = (
         // console.log({ emitter });
 
         // send emitter
-        if (emitter?.meta?.ack) {
+        if (emitter?.__meta.ack) {
           existingPlayground.executor.emitWithAck(emitter.name, emitter.body);
         } else {
           existingPlayground.executor.emit(emitter.name, emitter.body);

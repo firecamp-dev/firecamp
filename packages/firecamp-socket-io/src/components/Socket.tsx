@@ -102,7 +102,7 @@ const Socket = ({
             workspace: activeEnvironments.workspace,
             collection: activeEnvironments.collection || '',
           },
-          collectionId: tab?.request?._meta?.collectionId || '',
+          collectionId: tab?.request?.__ref.collectionId || '',
         });
       }
 
@@ -115,25 +115,25 @@ const Socket = ({
   }, [activeTab]);
 
   useEffect(() => {
-    setRequestSavedFlag(tab?.meta?.isSaved);
-  }, [tab?.meta?.isSaved]);
+    setRequestSavedFlag(tab?.__meta.isSaved);
+  }, [tab?.__meta.isSaved]);
 
   /**
    * Subscribe/ unsubscribe request changes (pull-actions)
    */
   useEffect(() => {
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
       platformContext.request.subscribeChanges(
-        tab.request._meta.id,
+        tab.request.__ref.id,
         handlePull
       );
     }
 
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && tab?.request?._meta?.id) {
-        platformContext.request.unsubscribeChanges(tab.request._meta.id);
+      if (tab.__meta.isSaved && tab?.request?.__ref.id) {
+        platformContext.request.unsubscribeChanges(tab.request.__ref.id);
       }
     };
   }, []);
@@ -141,7 +141,7 @@ const Socket = ({
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
-        const isRequestSaved = !!tab?.request?._meta?.id || false;
+        const isRequestSaved = !!tab?.request?.__ref.id || false;
         let requestToNormalize: ISocketIO = {
           url: { raw: '' },
           __meta: {
@@ -156,7 +156,7 @@ const Socket = ({
           setIsFetchingReqFlag(true);
           try {
             const response = await platformContext.request.onFetch(
-              tab.request._meta.id
+              tab.request.__ref.id
             );
             requestToNormalize = response.data;
           } catch (error) {
@@ -211,7 +211,7 @@ const Socket = ({
       addEmitter(emitterPayload);
 
       changePlaygroundTab(activePlayground, {
-        meta: {
+        __meta: {
           isSaved: true,
           hasChange: false,
         },
@@ -251,7 +251,7 @@ const Socket = ({
 
       if (emitterDetails.emitter) {
         deleteEmitter(id);
-        let parentId = emitterDetails.emitter?._meta?.parentId || '';
+        let parentId = emitterDetails.emitter?.__ref.parentId || '';
 
         //Update parent orders on remove emitter
         updateCollectionFns.updateOrders({
@@ -271,11 +271,11 @@ const Socket = ({
 
       let directoryPayload = {
         name,
-        _meta: {
+        __ref: {
           id: directoryID,
           parentId,
         },
-        meta: {
+        __meta: {
           fOrders: [],
           iOrders: [],
         },
@@ -304,13 +304,13 @@ const Socket = ({
 
       // Directory to remove
       let foundDirectory = collection.directories.find(
-        (dir) => dir._meta.id === id
+        (dir) => dir.__ref.id === id
       );
 
       if (foundDirectory) {
         deleteDirectory(id);
 
-        let parentId = foundDirectory._meta.parentId || '';
+        let parentId = foundDirectory.__ref.parentId || '';
         //update parent orders on remove dirctory
         updateCollectionFns.updateOrders({
           action: 'remove',
@@ -334,13 +334,13 @@ const Socket = ({
           let getChildren = async (dirId = '') => {
             // Child directories ids
             let childDirIds = collection.directories
-              .filter((childDir) => childDir._meta.parentId === dirId)
-              .map((childDir) => childDir._meta.id);
+              .filter((childDir) => childDir.__ref.parentId === dirId)
+              .map((childDir) => childDir.__ref.id);
 
             // Child emitters ids
             let childemitterIds = collection.emitters
-              .filter((childEmitter) => childEmitter._meta.parentId === dirId)
-              .map((childEmitter) => childEmitter._meta.id);
+              .filter((childEmitter) => childEmitter.__ref.parentId === dirId)
+              .map((childEmitter) => childEmitter.__ref.id);
 
             if (!_array.isEmpty(childDirIds)) {
               dirsToRemoveIds = dirsToRemoveIds.concat(childDirIds);
@@ -366,7 +366,7 @@ const Socket = ({
           ) {
             // emitterRes: Collection emitters to set
             let emitterRes = collection.emitters.filter(
-              (emtr) => !emittersToRemoveIds.includes(emtr._meta.id)
+              (emtr) => !emittersToRemoveIds.includes(emtr.__ref.id)
             );
 
             if (emitterRes && !equal(emitterRes, collection.emitters)) {
@@ -377,7 +377,7 @@ const Socket = ({
 
           // dirResult: Collection directories to set
           let dirResult = collection.directories.filter(
-            (dir) => !dirsToRemoveIds.includes(dir._meta.id)
+            (dir) => !dirsToRemoveIds.includes(dir.__ref.id)
           );
 
           if (dirResult && !equal(dirResult, collection.directories)) {
@@ -395,7 +395,7 @@ const Socket = ({
     }) => {
       let {
         collection,
-        request: { meta },
+        request: { __meta },
       } = socketStoreApi.getState();
 
       //Variable declaration
@@ -404,21 +404,21 @@ const Socket = ({
         parentType =
           parentId && parentId.length ? 'DIR' : ERequestTypes.SocketIO;
       let foundParentDirectoryIndex = collection.directories.findIndex(
-        (dir) => dir._meta.id === parentId
+        (dir) => dir.__ref.id === parentId
       );
 
       //Get existing orders from parent
       if (parentType === ERequestTypes.SocketIO) {
-        existingOrders = meta[key] || [];
+        existingOrders = __meta[key] || [];
       } else if (parentType === 'DIR' && parentId.length) {
         if (collection.directories) {
           if (
             foundParentDirectoryIndex !== -1 &&
-            collection.directories[foundParentDirectoryIndex].meta &&
-            collection.directories[foundParentDirectoryIndex].meta[key]
+            collection.directories[foundParentDirectoryIndex].__meta &&
+            collection.directories[foundParentDirectoryIndex].__meta[key]
           ) {
             existingOrders =
-              collection.directories[foundParentDirectoryIndex].meta[key];
+              collection.directories[foundParentDirectoryIndex].__meta[key];
           }
         }
       }
@@ -443,11 +443,11 @@ const Socket = ({
       if (parentType === ERequestTypes.SocketIO) {
         changeMeta(key, newOrders);
       } else if (parentType === 'DIR' && parentId.length) {
-        // Update directory meta
+        // Update directory __meta
         changeDirectory(parentId, {
-          key: 'meta',
+          key: '__meta',
           value: {
-            ...collection.directories[foundParentDirectoryIndex].meta,
+            ...collection.directories[foundParentDirectoryIndex].__meta,
             [key]: newOrders,
           },
         });
@@ -458,7 +458,7 @@ const Socket = ({
 
   const playgroundEmitterFns = {
     setToPlayground: (payload) => {
-      if (!payload?._meta?.id) return;
+      if (!payload?.__ref.id) return;
 
       let {
         runtime: { activePlayground },
@@ -468,7 +468,7 @@ const Socket = ({
     },
 
     add: (payload, send = false) => {
-      if (!payload?._meta?.id) return;
+      if (!payload?.__ref.id) return;
 
       let {
         collection,
@@ -477,12 +477,12 @@ const Socket = ({
 
       let emitter =
         collection?.emitters.find(
-          (emitter) => emitter._meta.id === payload._meta.id
+          (emitter) => emitter.__ref.id === payload.__ref.id
         ) || {};
       let emitterToSetInPlayground = Object.assign({}, emitter, payload); //TODO: check
 
       playgroundEmitterFns.setToPlayground(emitterToSetInPlayground);
-      setSelectedCollectionEmitter(activePlayground, payload?._meta?.id);
+      setSelectedCollectionEmitter(activePlayground, payload?.__ref.id);
 
       if (send === true && emitterToSetInPlayground) {
         sendMessage(activePlayground, emitterToSetInPlayground);
@@ -539,7 +539,7 @@ const Socket = ({
       } = socketStoreApi.getState();
 
       if (collection?.emitters && id) {
-        let oringinal = collection?.emitters.find((e) => e._meta.id === id);
+        let oringinal = collection?.emitters.find((e) => e.__ref.id === id);
         let emitter = playgrounds?.[activePlayground]?.emitter;
         if (oringinal) {
           if (emitter) {
@@ -558,7 +558,7 @@ const Socket = ({
       let existingEmitters = collection?.emitters;
 
       if (existingEmitters) {
-        let foundEmitter = existingEmitters.find((e) => e._meta.id === id);
+        let foundEmitter = existingEmitters.find((e) => e.__ref.id === id);
 
         if (foundEmitter) {
           setEmitter(id, foundEmitter);
@@ -678,7 +678,7 @@ const Socket = ({
         <Container className="h-full with-divider">
           <UrlBarContainer
             tab={tab}
-            collectionId={tab?.request?._meta?.collectionId || ''}
+            collectionId={tab?.request?.__ref.collectionId || ''}
             postComponents={platformComponents}
             onSaveRequest={onSave}
             platformContext={platformContext}

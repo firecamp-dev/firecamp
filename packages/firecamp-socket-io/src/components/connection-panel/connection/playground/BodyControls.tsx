@@ -194,7 +194,7 @@ const SaveEmitter = ({
   let [emitterLabel, setEmitterLabel] = useState('');
   // let [is_popover_open, toggle_popover] = useState(false);
   let [focusedNode, setFocusedNode] = useState({
-    _meta: { _relative_path: './' },
+    __ref: { _relative_path: './' },
   });
 
   let _handleChangeName = (e) => {
@@ -226,19 +226,19 @@ const SaveEmitter = ({
     let emitterPayload = { label: emitterLabel };
     let path = '';
 
-    if (focusedNode && focusedNode._meta.id) {
+    if (focusedNode && focusedNode.__ref.id) {
       path =
-        focusedNode._meta && focusedNode._meta._relative_path
-          ? focusedNode._meta._relative_path + `/${emitterName}`
+        focusedNode.__ref && focusedNode.__ref._relative_path
+          ? focusedNode.__ref._relative_path + `/${emitterName}`
           : '';
       emitterPayload = Object.assign({}, emitterPayload, {
-        parentId: focusedNode._meta.id,
+        parentId: focusedNode.__ref.id,
         path,
       });
     } else {
       path =
-        focusedNode._meta && focusedNode._meta._relative_path
-          ? focusedNode._meta._relative_path + `${emitterName}`
+        focusedNode.__ref && focusedNode.__ref._relative_path
+          ? focusedNode.__ref._relative_path + `${emitterName}`
           : '';
       emitterPayload = Object.assign({}, emitterPayload, {
         path,
@@ -250,7 +250,7 @@ const SaveEmitter = ({
     toggleOpenPopover(!isPopoverOpen);
     setEmitterLabel('');
     setFocusedNode({
-      _meta: { _relative_path: './' },
+      __ref: { _relative_path: './' },
     });
   };
 
@@ -280,7 +280,7 @@ const SaveEmitter = ({
                 <div className="fc-push-message-collection">
                   <label>
                     Select Folder{' '}
-                    <span>({focusedNode._meta._relative_path})</span>
+                    <span>({focusedNode.__ref._relative_path})</span>
                   </label>
                   {/*   <Collection
                     className="with-border"

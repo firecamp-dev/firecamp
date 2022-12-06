@@ -17,7 +17,7 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   changeConfig: (key: string, value: any) => void;
 }
 
-const requestSliceKeys = ['url', 'connections', 'config', 'meta', '_meta'];
+const requestSliceKeys = ['url', 'connections', 'config', '__meta', '__ref'];
 
 const createRequestSlice = (
   set,
@@ -65,17 +65,17 @@ const createRequestSlice = (
   },
 
   changeMeta: (key: string, value: any) => {
-    let lastMeta = get()?.last?.request.meta;
+    let lastMeta = get()?.last?.request.__meta;
     let updatedMeta = {
-      ...(get()?.request.meta || {}),
+      ...(get()?.request.__meta || {}),
       [key]: value,
     };
     set((s) => ({
       ...s,
-      request: { ...s.request, meta: updatedMeta },
+      request: { ...s.request, __meta: updatedMeta },
     }));
 
-    // Prepare push action for meta
+    // Prepare push action for __meta
     get()?.prepareMetaPushAction(lastMeta, updatedMeta);
   },
   changeConfig: (key: string, value: any) => {

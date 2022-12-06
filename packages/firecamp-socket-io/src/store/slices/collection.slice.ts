@@ -72,7 +72,7 @@ const createCollectionSlice = (
 
     // emitter index
     let emitterIndex = emitters.findIndex(
-      (emitter) => emitter?._meta?.id === id
+      (emitter) => emitter?.__ref.id === id
     );
 
     // If emitter found then update in store
@@ -83,7 +83,7 @@ const createCollectionSlice = (
     return undefined;
   },
   addEmitter: (emitter: ISocketIOEmitter) => {
-    if (!emitter?._meta?.id) return;
+    if (!emitter?.__ref.id) return;
 
     set((s) => ({
       ...s,
@@ -95,7 +95,7 @@ const createCollectionSlice = (
 
     // Prepare push action for insert emitter
     get()?.prepareCollectionEmittersPushAction(
-      emitter?._meta?.id,
+      emitter?.__ref.id,
       EPushActionType.Insert
     );
   },
@@ -199,7 +199,7 @@ const createCollectionSlice = (
 
     // directory index
     let directoryIndex = directories.findIndex(
-      (directory: IRequestFolder) => directory?._meta?.id === id
+      (directory: IRequestFolder) => directory?.__ref.id === id
     );
 
     // If directory found then update in store
@@ -210,7 +210,7 @@ const createCollectionSlice = (
     return undefined;
   },
   addDirectory: (directory: IRequestFolder) => {
-    if (!directory?._meta?.id) return;
+    if (!directory?.__ref.id) return;
 
     set((s) => ({
       ...s,
@@ -222,7 +222,7 @@ const createCollectionSlice = (
 
     // Prepare push action for insert emitter
     get()?.prepareCollectionDirectoriesPushAction(
-      directory?._meta?.id,
+      directory?.__ref.id,
       EPushActionType.Insert
     );
   },

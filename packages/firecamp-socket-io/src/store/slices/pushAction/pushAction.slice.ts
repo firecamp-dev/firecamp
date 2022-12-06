@@ -37,11 +37,11 @@ import PushActionService from '../../../services/push-actions';
 
 export interface IPushActionRequest {
   url?: Array<EPushActionUrlKeys>;
-  meta?: Array<EPushActionMetaKeys>;
-  config?: Array<EPushActionConfigKeys>;
+    config?: Array<EPushActionConfigKeys>;
   connections?: IPushActionConnections;
   _root?: Array<EPushAction_rootKeys>;
-  _meta?: Array<EPushAction_metaKeys>;
+  __meta: Array<EPushActionMetaKeys>;
+  __ref: Array<EPushAction_metaKeys>;
   _removed?: {};
 }
 
@@ -56,9 +56,9 @@ export interface IPushPayload extends Partial<ISocketIO> {
     type: EPushActionType;
     item_id: TId;
     item_type: 'R';
-    request_type: ERequestTypes.SocketIO;
+    requestType: ERequestTypes.SocketIO;
     collectionId: TId;
-    workspace_id: TId;
+    workspaceId: TId;
     keys: IPushAction;
   };
 }
@@ -80,10 +80,10 @@ export interface IPushActionSlice
 
 export const emptyPushAction = {
   _root: [],
-  meta: [],
+  __meta: [],
   url: [],
 
-  _meta: [],
+  __ref: [],
   _removed: {},
 };
 
@@ -111,12 +111,12 @@ export const createPushActionSlice = (
     pushPayload = { ...request };
     pushPayload._action = {
       type: EPushActionType.Insert,
-      item_id: request._meta.id,
+      item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
-      request_type: ERequestTypes.SocketIO,
+      requestType: ERequestTypes.SocketIO,
       collectionId: '',
       keys: {},
-      workspace_id: '',
+      workspaceId: '',
     };
     return Promise.resolve(pushPayload);
   },
@@ -150,20 +150,20 @@ export const createPushActionSlice = (
 
     let pushPayload: IPushPayload = updatedReqeust;
 
-    pushPayload._meta = {
-      ...pushPayload._meta,
-      id: request._meta.id,
-      collectionId: request._meta.collectionId,
-      folderId: request._meta.folderId || '',
+    pushPayload.__ref = {
+      ...pushPayload.__ref,
+      id: request.__ref.id,
+      collectionId: request.__ref.collectionId,
+      folderId: request.__ref.folderId || '',
     };
 
     pushPayload._action = {
       type: EPushActionType.Update,
-      item_id: request._meta.id,
+      item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
-      request_type: ERequestTypes.SocketIO,
-      collectionId: request._meta.collectionId,
-      workspace_id: '',
+      requestType: ERequestTypes.SocketIO,
+      collectionId: request.__ref.collectionId,
+      workspaceId: '',
       keys: pushAction,
     };
     // console.log({ updatedReqeust });
@@ -188,22 +188,22 @@ export const createPushActionSlice = (
           );
           break;
 
-        // handle meta
-        case 'meta':
-          pushAction['meta'] = PushActionService.prepareMetaPushAction(
-            lastRequest.meta,
-            request.meta
-            // get().pushAction?.meta
+        // handle __meta
+        case '__meta':
+          pushAction['__meta'] = PushActionService.prepareMetaPushAction(
+            lastRequest.__meta,
+            request.__meta
+            // get().pushAction?.__meta
           );
 
           break;
 
-        // handle _meta
-        /* case '_meta':
-          pushAction['_meta'] = PushActionService.prepare_MetaPushAction(
-            lastRequest._meta,
-            request._meta
-            // get().pushAction?._meta
+        // handle __ref
+        /* case '__ref':
+          pushAction['__ref'] = PushActionService.prepare_MetaPushAction(
+            lastRequest.__ref,
+            request.__ref
+            // get().pushAction?.__ref
           );
           break; */
 

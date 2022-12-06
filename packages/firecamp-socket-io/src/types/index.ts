@@ -123,8 +123,8 @@ export interface IPushActionEmitter {
   [EPushActionType.Update]?: Array<{
     id: TId;
     _root?: Array<EPushActionMessage_RootKeys>;
-    meta?: Array<EPushActionMessageMetaKeys>;
-    _meta?: Array<EPushActionMessage_metaKeys>;
+    __meta: Array<EPushActionMessageMetaKeys>;
+    __ref: Array<EPushActionMessage_metaKeys>;
   }>;
   [EPushActionType.Delete]?: Array<TId>;
 }
@@ -151,8 +151,8 @@ export interface IPushActionDirectory {
   [EPushActionType.Update]?: Array<{
     id: TId;
     _root?: Array<EPushActionDirectory_RootKeys>;
-    meta?: Array<EPushActionDirectoryMetaKeys>;
-    _meta?: Array<EPushActionDirectory_metaKeys>;
+    __meta: Array<EPushActionDirectoryMetaKeys>;
+    __ref: Array<EPushActionDirectory_metaKeys>;
   }>;
   [EPushActionType.Delete]?: Array<TId>;
 }

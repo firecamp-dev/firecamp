@@ -42,7 +42,7 @@ const CollectionTab = () => {
 
   const openPlg = (plgId) => {
     // get a fresh copy of state
-    const item = items.find((i) => i._meta.id == plgId);
+    const item = items.find((i) => i.__ref.id == plgId);
     console.log(item, 1100099);
     openPlayground(item);
   };

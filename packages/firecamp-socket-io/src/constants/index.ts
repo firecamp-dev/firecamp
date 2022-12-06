@@ -86,7 +86,7 @@ export const DefaultRequestConfig: ISocketIOConfig = {
 export const ResponseCollection = {
   id: '',
   name: '',
-  meta: {
+  __meta: {
     state: EConnectionState.Ideal,
     socketId: '',
   },
@@ -121,7 +121,7 @@ export const InitPlayground = {
   },
 };
 export const InitArg = {
-  meta: {
+  __meta: {
     type: EArgumentBodyType.Text,
     typedArrayView: ETypedArrayView.Int8Array,
   },
@@ -130,7 +130,7 @@ export const InitArg = {
 export const InitLog = {
   title: '',
   message: '',
-  meta: {
+  __meta: {
     id: '',
     event: '',
     timestamp: '',

@@ -86,7 +86,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   _nr.__ref.createdBy = __ref.createdBy || '';
   _nr.__ref.updatedBy = __ref.updatedBy || '';
 
-  // normalize _meta
+  // normalize connections
   _nr.connections = [];
   _nr.connections = connections.map(
     (connection: ISocketIOConnection) =>
@@ -119,7 +119,7 @@ export const initialiseStoreFromRequest = (
         {
           id: defaultConnection.id,
           name: defaultConnection.name,
-          meta: {
+          __meta: {
             isSaved: false,
             hasChange: false,
           },

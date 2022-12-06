@@ -51,7 +51,7 @@ const EmitterArgTabs = ({
         show:
           tabs &&
           tabs.length < 5 &&
-          args[activeArgIndex]?.meta?.type !== EEmitterPayloadTypes.noBody,
+          args[activeArgIndex]?.__meta.type !== EEmitterPayloadTypes.noBody,
         onClick: onAddArg,
       }}
       tabBorderMeta={{

@@ -92,14 +92,14 @@ const LogTable = ({
 
       for (let filterKey in logFilters) {
         if (logFilters[filterKey]) {
-          // filter accessor .meta
+          // filter accessor .__meta
           filteredLogs = filteredLogs.filter((log) => {
             if (filterKey === 'type') {
               return (
-                log?.meta?.[filterKey] === logTypes[logFilters?.[filterKey]]
+                log?.__meta.[filterKey] === logTypes[logFilters?.[filterKey]]
               );
             } else {
-              return log?.meta?.[filterKey] === logFilters?.[filterKey];
+              return log?.__meta.[filterKey] === logFilters?.[filterKey];
             }
           });
         }
@@ -149,12 +149,12 @@ const LogTable = ({
   const renderMessageCellValue = (value, cell) => {
     let row = cell.row.original;
 
-    if (row.meta.type == ELogTypes.System) {
+    if (row.__meta.type == ELogTypes.System) {
       return <span dangerouslySetInnerHTML={{ __html: row.title }} />;
     } else {
       return (
         <>
-          {value?.meta?.type !== 'file'
+          {value?.__meta.type !== 'file'
             ? '' + value?.payload
             : value?.name || ''}
         </>
@@ -166,9 +166,9 @@ const LogTable = ({
     {
       id: 'iconcolumn',
       Header: 'Type',
-      accessor: 'meta.type',
+      accessor: '__meta.type',
       Cell: (values) => {
-        let cellValue = values?.row?.original?.meta || {};
+        let cellValue = values?.row?.original?.__meta || {};
         return <IconColumn {...cellValue} />;
       },
       minWidth: 35,
@@ -178,7 +178,7 @@ const LogTable = ({
     {
       id: 'eventname',
       Header: 'Event',
-      accessor: 'meta.event',
+      accessor: '__meta.event',
       minWidth: 100,
       width: 140,
       maxWidth: 140,
@@ -194,7 +194,7 @@ const LogTable = ({
     {
       id: 'timecolumn',
       Header: 'Time',
-      accessor: 'meta.timestamp',
+      accessor: '__meta.timestamp',
       Cell: TimeColumn,
       minWidth: 35,
       width: 35,

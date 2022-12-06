@@ -46,21 +46,24 @@ const PushActionService = {
 
   prepareMetaPushAction: (
     lastMeta: any,
-    meta: any,
+    __meta: any,
     existingPushAction?: Array<string>
   ) => {
     let pushAction: Array<string> = existingPushAction || [];
 
-    if (!lastMeta || !meta) return [];
+    if (!lastMeta || !__meta) return [];
 
-    for (let key in meta) {
-      if (!equal(lastMeta[key], meta[key])) {
+    for (let key in __meta) {
+      if (!equal(lastMeta[key], __meta[key])) {
         /**
-         * Push meta key in push action
-         * If updated meta and lastMeta value are not same
+         * Push __meta key in push action
+         * If updated __meta and lastMeta value are not same
          */
         pushAction.push(key);
-      } else if (pushAction.includes(key) && equal(lastMeta[key], meta[key])) {
+      } else if (
+        pushAction.includes(key) &&
+        equal(lastMeta[key], __meta[key])
+      ) {
         pushAction = _array.without(pushAction, key);
       }
     }
@@ -124,22 +127,22 @@ const PushActionService = {
 
   prepare_MetaPushAction: (
     last_Meta: any,
-    _meta: any,
+    __ref: any,
     existingPushAction?: Array<string>
   ) => {
     let pushAction: Array<string> = existingPushAction || [];
-    if (!last_Meta || !_meta) return [];
+    if (!last_Meta || !__ref) return [];
 
-    for (let key in _meta) {
-      if (!equal(last_Meta[key], _meta[key])) {
+    for (let key in __ref) {
+      if (!equal(last_Meta[key], __ref[key])) {
         /**
-         * Push _meta key in push action
-         * If updated _meta and last_Meta value are not same
+         * Push __ref key in push action
+         * If updated __ref and last_Meta value are not same
          */
         pushAction.push(key);
       } else if (
         pushAction.includes(key) &&
-        equal(last_Meta[key], _meta[key])
+        equal(last_Meta[key], __ref[key])
       ) {
         pushAction = _array.without(pushAction, key);
       }

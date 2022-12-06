@@ -34,7 +34,7 @@ const EmitterCollection = ({
 
   let {
     collection: prop_collection,
-    // meta,
+    // __meta,
     playground,
     activePlayground,
     // changeMeta,
@@ -42,7 +42,7 @@ const EmitterCollection = ({
   } = useSocketStore(
     (s: ISocketStore) => ({
       collection: s.collection,
-      // meta: s.request.meta,
+      // __meta: s.request.__meta,
       playground: s.playgrounds[s.runtime.activePlayground],
       activePlayground: s.runtime.activePlayground,
       changeMeta: s.changeMeta,
@@ -60,10 +60,10 @@ const EmitterCollection = ({
   // prepare(
   //   prop_collection.directories || [],
   //   prop_collection.messages || [],
-  //   meta
+  //   __meta
   // ).collection
 
-  let [activeDir, setActiveDir] = useState({ path: './', _meta: { id: '' } });
+  let [activeDir, setActiveDir] = useState({ path: './', __ref: { id: '' } });
   let [selectedEmitter, selectEmitter] = useState();
   let [is_popover_open, toggle_popover] = useState(false);
   let [showCollection, toggleShowCollection] = useState(true);
@@ -72,14 +72,14 @@ const EmitterCollection = ({
     // let { collection } = prepare(
     //   prop_collection.directories || [],
     //   prop_collection.emitters || [],
-    //   meta
+    //   __meta
     // );
     // setCollection(collection);
   }, [prop_collection.directories, prop_collection.emitters]);
 
   useEffect(() => {
     if (isPlaygroundEmpty === true) {
-      setActiveDir({ path: './', _meta: { id: '' } });
+      setActiveDir({ path: './', __ref: { id: '' } });
       selectEmitter({});
     }
   }, [isPlaygroundEmpty]);
@@ -96,25 +96,25 @@ const EmitterCollection = ({
   };
 
   let _onNodeFocus = (collectionNode = {}) => {
-    if (collectionNode._meta.id === selectedemitterId) {
+    if (collectionNode.__ref.id === selectedemitterId) {
       return;
     }
 
     if (!!collectionNode.children) {
       setActiveDir({
-        path: collectionNode._meta._relative_path,
-        _meta: { id: collectionNode._meta.id },
+        path: collectionNode.__ref._relative_path,
+        __ref: { id: collectionNode.__ref.id },
       });
       selectEmitter(null);
 
-      if (collectionNode && !collectionNode._meta.id && !collectionNode.meta) {
+      if (collectionNode && !collectionNode.__ref.id && !collectionNode.__meta) {
         _resetPlayground();
       }
     } else {
       selectEmitter(collectionNode);
       _onSelectEmitter(
         collectionNode,
-        collectionNode._meta._relative_path,
+        collectionNode.__ref._relative_path,
         false,
         true,
         false
@@ -153,29 +153,29 @@ const EmitterCollection = ({
     // console.log(`id`, id)
     // console.log(`selectedemitterId`, selectedemitterId)
 
-    if (emitter._meta.id === selectedemitterId) {
+    if (emitter.__ref.id === selectedemitterId) {
       _resetPlayground();
     }
-    emitters_fns.remove(emitter._meta.id);
+    emitters_fns.remove(emitter.__ref.id);
   };
 
   let _onRemoveDirectory = (dir) => {
-    if (!dir._meta.id) {
+    if (!dir.__ref.id) {
       return;
     }
-    directories_fns.remove(dir._meta.id);
-    if (activeDir && activeDir._meta.id === dir._meta.id) {
-      setActiveDir({ path: './', _meta: { id: '' } }); //TODO: enhance later
+    directories_fns.remove(dir.__ref.id);
+    if (activeDir && activeDir.__ref.id === dir.__ref.id) {
+      setActiveDir({ path: './', __ref: { id: '' } }); //TODO: enhance later
     }
   };
 
   let _resetPlayground = () => {
     addNewEmitter();
-    setSelectedEmitter({ _meta: { id: '' } }, true);
+    setSelectedEmitter({ __ref: { id: '' } }, true);
   };
 
   let _resetPathOnCloseAddDir = () => {
-    setActiveDir({ path: './', _meta: { id: '' } });
+    setActiveDir({ path: './', __ref: { id: '' } });
   };
 
   let _onRenameCollectionNode = async (node = {}) => {
@@ -186,27 +186,27 @@ const EmitterCollection = ({
       if (
         directories_fns &&
         directories_fns.update &&
-        node._meta.id &&
+        node.__ref.id &&
         node.name
       ) {
         let name = node.name.trim();
         directories_fns.update({
-          id: node._meta.id,
+          id: node.__ref.id,
           key: 'name',
           value: name,
         });
       }
     } else {
-      if (emitters_fns && emitters_fns.update && node._meta.id && node.name) {
+      if (emitters_fns && emitters_fns.update && node.__ref.id && node.name) {
         let name = node.name.trim();
-        let path = node._meta ? node._meta._relative_path || '' : '';
+        let path = node.__ref ? node.__ref._relative_path || '' : '';
         await emitters_fns.update({
-          id: node._meta.id,
+          id: node.__ref.id,
           key: 'name',
           value: name,
         });
         await emitters_fns.update({
-          id: node._meta.id,
+          id: node.__ref.id,
           key: 'path',
           value: path,
         });
@@ -235,7 +235,7 @@ const EmitterCollection = ({
             <MessageCollectionHeader
               isCollectionEmpty={(collection || []).length == 0}
               path={activeDir.path}
-              parentId={activeDir._meta.id}
+              parentId={activeDir.__ref.id}
               id={`add-collection-${tabData.id}`}
               onAddDirectory={_addDirectory}
               resetPathOnCloseAddDir={_resetPathOnCloseAddDir}

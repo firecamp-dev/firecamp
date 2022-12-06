@@ -1,6 +1,5 @@
-import { TId, ISocketIOEmitter, ERequestTypes } from '@firecamp/types';
+import { TId, ERequestTypes } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
-
 import { InitPlayground } from '../../constants';
 import { ELogColors, ELogTypes } from '../../types';
 
@@ -9,14 +8,14 @@ const emptyLog = {
   message: {
     name: '',
     body: InitPlayground,
-    _meta: {
+    __ref: {
       id: '',
       collectionId: '',
-      request_id: '',
-      request_type: ERequestTypes.SocketIO,
+      requestId: '',
+      requestType: ERequestTypes.SocketIO,
     },
   },
-  meta: {
+  __meta: {
     id: '',
     event: '',
     timestamp: 0,
@@ -70,8 +69,8 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
     let log = {
       ...emptyLog,
       title: message || '',
-      meta: {
-        ...emptyLog.meta,
+      __meta: {
+        ...emptyLog.__meta,
         type: ELogTypes.System,
         color: ELogColors.Danger,
       },

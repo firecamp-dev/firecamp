@@ -24,18 +24,18 @@ const EmitterNode = forwardRef(
     // console.log(`item`,item)
 
     let _onSend = () => {
-      if (!item._meta.id) return;
+      if (!item.__ref.id) return;
 
       let path =
-        item._meta && item._meta._relative_path
-          ? item._meta._relative_path
+        item.__ref && item.__ref._relative_path
+          ? item.__ref._relative_path
           : '';
 
       onEmit(item, path);
     };
     // console.log(`item`, item);
     let _onDelete = () => {
-      if (!item._meta.id) return;
+      if (!item.__ref.id) return;
       onDelete(item._toJSON());
     };
 
@@ -47,7 +47,7 @@ const EmitterNode = forwardRef(
     // console.log(`emitterArg`, emitterArg, typeof emitterArg);
     if (
       emitterArg &&
-      emitterArg.meta.type === 'file' &&
+      emitterArg.__meta.type === 'file' &&
       typeof emitterArg.payload !== 'string'
     ) {
       emitterArg.payload = emitterArg.payload.name || '';
@@ -68,7 +68,7 @@ const EmitterNode = forwardRef(
           )}
 
           <div className="collection_message-node-type">
-            {item.meta && item.meta.label ? item.meta.label : ''}
+            {item.__meta && item.__meta.label ? item.__meta.label : ''}
           </div>
           {item.body &&
           Array.isArray(item.body) &&
@@ -94,7 +94,7 @@ const EmitterNode = forwardRef(
               }}
             />
             <ConfirmationPopover
-              id={item._meta.id}
+              id={item.__ref.id}
               handler={
                 <div className="fc-action-delete iconv2-delete-v2-icon pr-1 text-sm" />
               }
