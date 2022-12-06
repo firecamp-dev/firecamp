@@ -100,7 +100,7 @@ const PlaygroundTab = () => {
     collection: propCollection,
     playground,
     playgroundTabs,
-    meta,
+    __meta,
 
     changePlaygroundMessage,
     setSelectedCollectionMessage,
@@ -111,7 +111,7 @@ const PlaygroundTab = () => {
       collection: s.collection,
       playground: s.playgrounds[s.runtime.activePlayground],
       playgroundTabs: s.runtime.playgroundTabs,
-      meta: s.request.__meta,
+      __meta: s.request.__meta,
 
       changePlaygroundMessage: s.changePlaygroundMessage,
       setSelectedCollectionMessage: s.setSelectedCollectionMessage,
@@ -268,7 +268,7 @@ const PlaygroundTab = () => {
     if (type.id === EMessagePayloadTypes.noBody) {
       _updateMessage(
         Object.assign({}, initialPlaygroundMessage, {
-          meta: Object.assign({}, initialPlaygroundMessage.__meta, {
+          __meta: Object.assign({}, initialPlaygroundMessage.__meta, {
             type: EMessagePayloadTypes.noBody,
           }),
         })
@@ -284,7 +284,7 @@ const PlaygroundTab = () => {
     ) {
       _updateMessage({
         body: '',
-        meta: Object.assign({}, initialPlaygroundMessage.__meta, {
+        __meta: Object.assign({}, initialPlaygroundMessage.__meta, {
           type: EMessagePayloadTypes.file,
         }),
       });
@@ -296,7 +296,7 @@ const PlaygroundTab = () => {
         type.id === EMessagePayloadTypes.arraybuffer)
     ) {
       _updateMessage({
-        meta: {
+        __meta: {
           typedArrayView: selectedEnvelope.id,
           type: type.id,
         },
@@ -306,7 +306,7 @@ const PlaygroundTab = () => {
       type.id !== EMessagePayloadTypes.arraybuffer
     ) {
       _updateMessage({
-        meta: {
+        __meta: {
           typedArrayView: '',
           type: type.id,
         },
@@ -318,7 +318,7 @@ const PlaygroundTab = () => {
     if (env && env.id) {
       setSelectedEnvelope(env);
       _updateMessage({
-        meta: {
+        __meta: {
           ...message.__meta,
           typedArrayView: env.id,
         },
@@ -433,7 +433,7 @@ const PlaygroundTab = () => {
     // ctx_updateCollectionFns.addMessage(_object.omit(data, ['path']));
 
     if (data.path) {
-      _updateMessage({ meta: { ...message.__meta }, path: data.path || '' });
+      _updateMessage({ __meta: { ...message.__meta }, path: data.path || '' });
     }
   };
 
@@ -780,7 +780,7 @@ const SaveMessage = ({
   const [messageName, set_message_name] = useState('');
   // let [is_popover_open, toggle_popover] = useState(false);
   const [focusedNode, setFocusedNode] = useState({
-    _meta: { _relative_path: './' },
+    __ref: { _relative_path: './' },
   });
 
   const _handleChangeName = (e) => {
@@ -811,19 +811,19 @@ const SaveMessage = ({
     let msgPayload = { name: messageName };
     let path = '';
 
-    if (focusedNode && focusedNode._meta.id) {
+    if (focusedNode && focusedNode.__ref.id) {
       path =
-        focusedNode._meta && focusedNode._meta._relative_path
-          ? focusedNode._meta._relative_path + `/${messageName}`
+        focusedNode.__ref && focusedNode.__ref._relative_path
+          ? focusedNode.__ref._relative_path + `/${messageName}`
           : '';
       msgPayload = Object.assign({}, msgPayload, {
-        parent_id: focusedNode._meta.id,
+        parent_id: focusedNode.__ref.id,
         path,
       });
     } else {
       path =
-        focusedNode._meta && focusedNode._meta._relative_path
-          ? focusedNode._meta._relative_path + `${messageName}`
+        focusedNode.__ref && focusedNode.__ref._relative_path
+          ? focusedNode.__ref._relative_path + `${messageName}`
           : '';
       msgPayload = Object.assign({}, msgPayload, {
         path,
@@ -859,7 +859,7 @@ const SaveMessage = ({
                 <div className="fc-push-message-collection">
                   <label>
                     Select Folder{' '}
-                    <span>({focusedNode._meta._relative_path})</span>
+                    <span>({focusedNode.__ref._relative_path})</span>
                   </label>
                   {/*   <Collection
                     className="with-border"

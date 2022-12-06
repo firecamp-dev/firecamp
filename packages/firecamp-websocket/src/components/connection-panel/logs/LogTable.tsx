@@ -62,11 +62,11 @@ const LogTable = () => {
 
     const filteredLogs = getFilteredLogsByMeta(logs, typeFilter);
     // const newLogs = filteredLogs.map((l) => {
-    //   const { meta, message, title } = l;
+    //   const { __meta, message, title } = l;
     //   return {
     //     message,
     //     title,
-    //     ...meta,
+    //     ...__meta,
     //   };
     // });
     lLogTableApiRef.current?.initialize(filteredLogs);
@@ -138,7 +138,7 @@ const LogTable = () => {
         } else {
           return (
             <>
-              {value?.meta?.type !== 'file'
+              {value?.__meta?.type !== 'file'
                 ? value?.body || ''
                 : value?.name || 'Sending File'}
             </>
@@ -298,7 +298,7 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
       ? row?.message?.payload || row?.title || ''
       : row?.message?.name || 'Sending File';
 
-  const language = row?.message?.meta?.type === 'json' ? 'json' : 'text';
+  const language = row?.message?.__meta?.type === 'json' ? 'json' : 'text';
 
   return (
     <Column
@@ -348,8 +348,8 @@ const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
               )}
             </TabHeader.Left>
             <TabHeader.Right className="font-bold font-regular">
-              {row?.meta?.timestamp &&
-                new Date(row?.meta?.timestamp).toLocaleTimeString()}
+              {row?.__meta?.timestamp &&
+                new Date(row?.__meta?.timestamp).toLocaleTimeString()}
             </TabHeader.Right>
           </TabHeader>
         </Container.Header>

@@ -73,7 +73,7 @@ const createCollectionSlice = (
 
     // message index
     const messageIndex = messages.findIndex(
-      (message) => message?._meta?.id === id
+      (message) => message?.__ref?.id === id
     );
 
     // If message found then update in store
@@ -84,7 +84,7 @@ const createCollectionSlice = (
     return undefined;
   },
   addMessage: (message: IWebSocketMessage) => {
-    if (!message?._meta?.id) return;
+    if (!message?.__ref?.id) return;
     const state = get();
 
     set((s) => ({
@@ -97,7 +97,7 @@ const createCollectionSlice = (
 
     // Prepare push action for insert message
     state.prepareCollectionMessagesPushAction(
-      message?._meta?.id,
+      message?.__ref?.id,
       EPushActionType.Insert
     );
   },
@@ -205,7 +205,7 @@ const createCollectionSlice = (
 
     // directory index
     let directoryIndex = directories.findIndex(
-      (directory: IRequestFolder) => directory?._meta?.id === id
+      (directory: IRequestFolder) => directory?.__ref?.id === id
     );
 
     // If directory found then update in store
@@ -216,7 +216,7 @@ const createCollectionSlice = (
     return undefined;
   },
   addDirectory: (directory: IRequestFolder) => {
-    if (!directory?._meta?.id) return;
+    if (!directory?.__ref?.id) return;
     const state = get();
 
     set((s) => ({
@@ -229,7 +229,7 @@ const createCollectionSlice = (
 
     // Prepare push action for insert message
     state.prepareCollectionDirectoriesPushAction(
-      directory?._meta?.id,
+      directory?.__ref?.id,
       EPushActionType.Insert
     );
   },

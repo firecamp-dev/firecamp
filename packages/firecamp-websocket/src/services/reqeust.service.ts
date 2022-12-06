@@ -191,7 +191,7 @@ export const initialiseStoreFromRequest = (
         return {
           id: c.id,
           name: c.name,
-          meta: {
+          __meta: {
             isSaved: true,
             hasChange: false,
           },

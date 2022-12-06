@@ -177,7 +177,15 @@ const CloseConnStatusCode = {
 };
 
 const KeysOnSaveRequest = {
-  REQUEST: ['url', 'config', 'scripts', 'connections', 'meta', '_dnp', '_meta'],
+  REQUEST: [
+    'url',
+    'config',
+    'scripts',
+    'connections',
+    '__meta',
+    '_dnp',
+    '__ref',
+  ],
   KEYS: ['message_collection'],
 };
 
@@ -208,7 +216,7 @@ const ResponseConnection = {
 const InitLog = {
   title: '',
   message: '',
-  meta: {
+  __meta: {
     id: '',
     event: '',
     timestamp: '',

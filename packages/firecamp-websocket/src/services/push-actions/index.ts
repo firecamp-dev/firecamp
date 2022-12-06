@@ -108,23 +108,20 @@ const PushActionService = {
   // TODO: add below function as common logic for all clients
   prepare_MetaPushAction: (
     last_Meta: any,
-    _meta: any,
+    __ref: any,
     existingPushAction?: Array<EPushAction_metaKeys>
   ) => {
     let pushAction: Array<EPushAction_metaKeys> = existingPushAction || [];
-    if (!last_Meta || !_meta) return [];
+    if (!last_Meta || !__ref) return [];
 
-    Object.keys(_meta).forEach((key: EPushAction_metaKeys) => {
-      if (!equal(last_Meta[key], _meta[key])) {
+    Object.keys(__ref).forEach((key: EPushAction_metaKeys) => {
+      if (!equal(last_Meta[key], __ref[key])) {
         /**
-         * Push _meta key in push action
-         * If updated _meta and last_Meta value are not same
+         * Push __ref key in push action
+         * If updated __ref and last_Meta value are not same
          */
         pushAction.push(key);
-      } else if (
-        pushAction.includes(key) &&
-        equal(last_Meta[key], _meta[key])
-      ) {
+      } else if (pushAction.includes(key) && equal(last_Meta[key], __ref[key])) {
         pushAction = _array.without(pushAction, key) as EPushAction_metaKeys[];
       }
     });

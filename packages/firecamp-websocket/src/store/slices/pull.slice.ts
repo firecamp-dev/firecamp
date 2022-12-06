@@ -50,8 +50,8 @@ const createPullActionSlice = (set, get): IPullSlice => ({
             );
             break;
 
-          // case '_meta':
-          case 'meta':
+          // case '__ref':
+          case '__meta':
           case 'url':
           case 'config':
             if (key in pullPayload) {

@@ -10,7 +10,7 @@ import PushActionService from '../../../services/push-actions';
 
 interface IPushActionRequestSlice {
   prepareUrlPushAction?: (lastUrl: IUrl, url: IUrl) => void;
-  prepareRequestMetaPushAction?: (lastMeta, meta) => void;
+  prepareRequestMetaPushAction?: (lastMeta, __meta) => void;
   prepareRequestConfigPushAction?: (
     lastConfig: IWebSocketConfig,
     config: IWebSocketConfig
@@ -42,11 +42,11 @@ const createPushActionRequestSlice = (set, get): IPushActionRequestSlice => ({
       },
     }));
   },
-  prepareRequestMetaPushAction: (lastMeta, meta) => {
+  prepareRequestMetaPushAction: (lastMeta, __meta) => {
     let metaPushAction = PushActionService.prepareMetaPushAction(
       lastMeta,
-      meta,
-      get().pushAction?.request?.meta
+      __meta,
+      get().pushAction?.request?.__meta
     );
 
     set((s) => ({
@@ -55,7 +55,7 @@ const createPushActionRequestSlice = (set, get): IPushActionRequestSlice => ({
         ...s.pushAction,
         request: {
           ...s.pushAction.request,
-          meta: metaPushAction,
+          __meta: metaPushAction,
         },
       },
     }));
@@ -67,7 +67,7 @@ const createPushActionRequestSlice = (set, get): IPushActionRequestSlice => ({
     let configPushAction = PushActionService.prepareMetaPushAction(
       lastConfig,
       config,
-      get().pushAction?.request?.meta
+      get().pushAction?.request?.__meta
     );
 
     set((s) => ({

@@ -41,7 +41,7 @@ export interface IPushActionRequest {
   config?: Array<EPushActionConfigKeys>;
   connections?: IPushActionConnections;
   _root?: Array<EPushActionRootKeys>;
-  _meta?: Array<EPushAction_metaKeys>;
+  __ref?: Array<EPushAction_metaKeys>;
   _removed?: {};
 }
 
@@ -80,10 +80,9 @@ export interface IPushActionSlice
 
 export const emptyPushAction = {
   _root: [],
-  meta: [],
   url: [],
-
-  _meta: [],
+  __meta: [],
+  __ref: [],
   _removed: {},
 };
 
@@ -114,7 +113,7 @@ export const createPushActionSlice = (
     pushPayload = { ...request };
     pushPayload._action = {
       type: EPushActionType.Insert,
-      itemId: request._meta.id,
+      itemId: request.__ref.id,
       itemType: 'R', // TODO: add type here
       requestType: ERequestTypes.WebSocket,
       collectionId: '',
@@ -154,19 +153,19 @@ export const createPushActionSlice = (
 
     let pushPayload: IPushPayload = updatedRequest;
 
-    pushPayload._meta = {
-      ...pushPayload._meta,
-      id: request._meta.id,
-      collectionId: request._meta.collectionId,
-      folderId: request._meta.folderId || '',
+    pushPayload.__ref = {
+      ...pushPayload.__ref,
+      id: request.__ref.id,
+      collectionId: request.__ref.collectionId,
+      folderId: request.__ref.folderId || '',
     };
 
     pushPayload._action = {
       type: EPushActionType.Update,
-      itemId: request._meta.id,
+      itemId: request.__ref.id,
       itemType: 'R', // TODO: add type here
       requestType: ERequestTypes.WebSocket,
-      collectionId: request._meta.collectionId,
+      collectionId: request.__ref.collectionId,
       workspaceId: '',
       keys: pushAction,
     };
@@ -194,21 +193,21 @@ export const createPushActionSlice = (
           break;
 
         // handle meta
-        case 'meta':
-          pushAction['meta'] = PushActionService.prepareMetaPushAction(
-            lastRequest.meta,
-            request.meta
-            // get().pushAction?.meta
+        case '__meta':
+          pushAction['__meta'] = PushActionService.prepareMetaPushAction(
+            lastRequest.__meta,
+            request.__meta
+            // get().pushAction?.__meta
           );
 
           break;
 
-        // handle _meta
-        /* case '_meta':
-          pushAction['_meta'] = PushActionService.prepare_MetaPushAction(
-            lastRequest._meta,
-            request._meta
-            // get().pushAction?._meta
+        // handle __ref
+        /* case '__ref':
+          pushAction['__ref'] = PushActionService.prepare_MetaPushAction(
+            lastRequest.__ref,
+            request.__ref
+            // get().pushAction?.__ref
           );
           break; */
 

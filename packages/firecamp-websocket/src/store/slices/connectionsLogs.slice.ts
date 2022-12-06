@@ -5,12 +5,12 @@ const emptyLog = {
   title: '',
   message: {
     body: '',
-    meta: {
+    __meta: {
       type: EMessageBodyType.Text,
       typedArrayView: '',
     },
   },
-  meta: {
+  __meta: {
     id: '',
     event: '',
     timestamp: new Date().getTime(),
