@@ -10,7 +10,6 @@ import { EEmitterPayloadTypes } from '../../../../types';
 
 const Body = ({
   emitterName = '',
-
   activeArgType = {},
   emitterBody = '',
   playgroundBody = '',
@@ -21,7 +20,7 @@ const Body = ({
   shortcutFns = {},
   onSelectFile = () => {}
 }) => {
-  let _renderActiveBody = (type = {}) => {
+  const _renderActiveBody = (type = {}) => {
     if (!type || !type.id) return <span />;
 
     if (

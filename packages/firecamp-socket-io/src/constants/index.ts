@@ -9,10 +9,6 @@ import {
 import { nanoid } from 'nanoid';
 import { EConnectionState } from '../types';
 
-export const LOG_CUSTOM_EVENTS = {
-  LISTEN_ON: 'L_ON',
-  LISTEN_OFF: 'L_OFF',
-};
 export const SYSTEM_LOGS = {
   clearAll: `chatboard  cleared `,
   onConnecting: `Socket has been  created . The connection is not yet open.`,
@@ -26,17 +22,6 @@ export const SYSTEM_LOGS = {
   pong: `pong`,
   listen: `you're listening `,
   listenOff: `you have listen off `,
-};
-
-export const PANEL = {
-  REQUEST: 'REQUEST',
-  RESPONSE: 'RESPONSE',
-  ALL: 'ALL',
-};
-
-export const CustomLogTypes = {
-  LISTEN_ON: 'L_ON',
-  LISTEN_OFF: 'L_OFF',
 };
 
 export const ConnectionStatus = {
@@ -86,14 +71,14 @@ export const DefaultRequestConfig: ISocketIOConfig = {
 export const ResponseCollection = {
   id: '',
   name: '',
-  __meta: {
-    state: EConnectionState.Ideal,
-    socketId: '',
-  },
   listeners: {},
   logFilters: {
     type: '',
     event: '',
+  },
+  __meta: {
+    state: EConnectionState.Ideal,
+    socketId: '',
   },
 };
 export const InitPlayground = {

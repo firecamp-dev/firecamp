@@ -16,7 +16,7 @@ import { _object } from '@firecamp/utils';
 
 import LogPreview from './LogPreview';
 import AckIcon from './AckIcon';
-import { useSocketStore } from '../../../../store';
+import { ISocketStore, useSocketStore } from '../../../../store';
 
 import { ELogTypes } from '../../../../types';
 
@@ -32,18 +32,16 @@ const LogTable = ({
   align = 'center',
   eventsList = [],
 }) => {
-  let logTableAPIRef = useRef();
-
-  let {
+  const logTableAPIRef = useRef();
+  const {
     activePlayground,
     logFilters,
     connectionLogs,
-
     changePlaygroundLogFilters,
   } = useSocketStore(
-    (s) => ({
+    (s: ISocketStore) => ({
       activePlayground: s.runtime.activePlayground,
-      logFilters: s.playgrounds?.[s.runtime.activePlayground]?.logFilters || '',
+      logFilters: s.playgrounds[s.runtime.activePlayground]?.logFilters || '',
       connectionLogs: s.connectionsLogs?.[s.runtime.activePlayground] || [],
 
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
@@ -51,8 +49,8 @@ const LogTable = ({
     shallow
   );
 
-  let [tableHeight, setTableHeight] = useState(465);
-  let [selectedRow, setSelectedRow] = useState({});
+  const [tableHeight, setTableHeight] = useState(465);
+  const [selectedRow, setSelectedRow] = useState({});
 
   /**
    * Reflect filter updates by eventsList provided as props.
@@ -89,7 +87,6 @@ const LogTable = ({
       }
     ) => {
       let filteredLogs = logs;
-
       for (let filterKey in logFilters) {
         if (logFilters[filterKey]) {
           // filter accessor .__meta
@@ -108,21 +105,19 @@ const LogTable = ({
       return filteredLogs;
     };
 
-    let filteredLogs = getFilteredLogsByMeta(connectionLogs, logFilters);
-
-    logTableAPIRef?.current?.setRows(filteredLogs);
+    const filteredLogs = getFilteredLogsByMeta(connectionLogs, logFilters);
+    logTableAPIRef.current?.setRows(filteredLogs);
   }, [connectionLogs, logFilters, selectedConnection]);
 
-  let _onRowClick = (rtRow) => {
-    let originalRowValue = rtRow.original;
-
+  const _onRowClick = (rtRow) => {
+    const originalRowValue = rtRow.original;
     setSelectedRow((ps) => ({
       ...originalRowValue,
       index: rtRow.index,
     }));
   };
 
-  let _onResizeStop = (e, a, b, delta) => {
+  const _onResizeStop = (e, a, b, delta) => {
     setTableHeight((ps) => ps + delta.height);
   };
 
@@ -162,7 +157,7 @@ const LogTable = ({
     }
   };
 
-  let columns = [
+  const columns = [
     {
       id: 'iconcolumn',
       Header: 'Type',
@@ -208,9 +203,8 @@ const LogTable = ({
    * @param {*} filter : Filter value
    * @returns
    */
-  let _onFilter = (type, filter = '') => {
+   const _onFilter = (type, filter = '') => {
     if (!type) return;
-
     if (logFilters[type] !== filter) {
       changePlaygroundLogFilters(activePlayground, { type: filter });
     }

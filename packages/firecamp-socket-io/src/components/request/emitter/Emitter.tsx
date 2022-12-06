@@ -1,7 +1,7 @@
-import { Column, Row,RootContainer } from '@firecamp/ui-kit';
+import { Column, Row, RootContainer } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
-
-import EmitterPlayground from './playground/EmitterPlayground';
+import EmitterPlayground from '../../connection-panel/connection/playground/EmitterPlayground'
+// import EmitterPlayground from './playground/EmitterPlayground';
 import EmitterCollection from './EmitterCollection';
 
 const Emitter = ({
@@ -10,11 +10,11 @@ const Emitter = ({
   __meta = {},
   tabData = {},
   playground = {},
-  runtimeActiveConnection = ''
+  runtimeActiveConnection = '',
 }) => {
   let _setSelectedEmitter = (
     emitter = {
-      __ref: { id: '' }
+      __ref: { id: '' },
     },
     isEmpty = false,
     setOriginal = false,
@@ -23,10 +23,7 @@ const Emitter = ({
   ) => {
     // console.log(`emitter`, emitter, isEmpty);
 
-    if (
-      emitter?.__ref.id &&
-      !equal(_dnp.activeEmitter, emitter.__ref.id)
-    ) {
+    if (emitter?.__ref.id && !equal(_dnp.activeEmitter, emitter.__ref.id)) {
       // tTODO: add logic to set active playground emitter
     }
 
@@ -41,7 +38,7 @@ const Emitter = ({
           collection={prop_collection}
           __meta={__meta}
           tabData={{
-            id: tabData.id || ''
+            id: tabData.id || '',
           }}
           _dnp={_dnp}
           isPlaygroundEmpty={
@@ -57,7 +54,7 @@ const Emitter = ({
             __meta={__meta}
             _dnp={_dnp}
             tabData={{
-              id: tabData.id || ''
+              id: tabData.id || '',
             }}
             setSelectedEmitter={_setSelectedEmitter}
           />

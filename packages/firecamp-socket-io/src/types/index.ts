@@ -1,5 +1,11 @@
 import { TId, EPushActionType } from '@firecamp/types';
 
+export enum EPanel {
+  Request= 'Request',
+  Response= 'Response',
+  All= 'All',
+};
+
 export enum EEmitterPayloadTypes {
   text = 'text',
   json = 'json',

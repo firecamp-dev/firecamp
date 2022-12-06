@@ -1,5 +1,4 @@
 import { useState } from 'react';
-
 import {
   Container,
   Button,
@@ -21,7 +20,6 @@ const BodyControls = ({
   playgroundTabMeta = {},
   onAddEmitter = () => {},
   onUpdateEmitter = () => {},
-
   tabId = '',
   path = '',
   editorCommands = {},
@@ -191,20 +189,20 @@ const SaveEmitter = ({
   onUpdate = () => {},
   toggleOpenPopover = () => {},
 }) => {
-  let [emitterLabel, setEmitterLabel] = useState('');
+  const [emitterLabel, setEmitterLabel] = useState('');
   // let [is_popover_open, toggle_popover] = useState(false);
-  let [focusedNode, setFocusedNode] = useState({
+  const [focusedNode, setFocusedNode] = useState({
     __ref: { _relative_path: './' },
   });
 
-  let _handleChangeName = (e) => {
+  const _handleChangeName = (e) => {
     e.preventDefault();
 
-    let { value } = e.target;
+    const { value } = e.target;
     setEmitterLabel(value);
   };
 
-  let _onKeyDown = (e) => {
+  const _onKeyDown = (e) => {
     if (e.key === 'Enter') {
       // e.preventDefault();
       _onSubmit(e);
@@ -214,7 +212,7 @@ const SaveEmitter = ({
     }
   };
 
-  let _onSubmit = (e) => {
+  const _onSubmit = (e) => {
     emitterName = (emitterName || '').trim();
     if (!emitterName) return;
 
@@ -223,7 +221,7 @@ const SaveEmitter = ({
       e.preventDefault();
     }
 
-    let emitterPayload = { label: emitterLabel };
+    const emitterPayload = { label: emitterLabel };
     let path = '';
 
     if (focusedNode && focusedNode.__ref.id) {
@@ -254,7 +252,7 @@ const SaveEmitter = ({
     });
   };
 
-  let _onClickSaveMessage = () => {
+  const _onClickSaveMessage = () => {
     if (!emitterName.length) return;
     if (hasChange) {
       onUpdate();

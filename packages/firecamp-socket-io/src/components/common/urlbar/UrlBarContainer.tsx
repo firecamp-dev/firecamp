@@ -16,7 +16,6 @@ const UrlBarContainer = ({
   platformContext,
 }) => {
   const { EnvironmentWidget } = postComponents;
-
   const {
     url,
     displayUrl,

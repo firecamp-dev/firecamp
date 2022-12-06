@@ -5,6 +5,8 @@ import {
 } from '@firecamp/types';
 
 interface ICollection {
+  folders: any
+  items: any
   emitters?: Array<ISocketIOEmitter>;
   directories?: Array<IRequestFolder>;
 }

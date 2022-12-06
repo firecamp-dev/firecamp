@@ -6,7 +6,7 @@ import { _array } from '@firecamp/utils';
 import { ISocketStore, useSocketStore } from '../../store';
 
 const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
-  let {
+  const {
     changeListeners,
     addListenersToAllPlaygrounds,
     deleteListenerFromAllPlaygrounds,
@@ -19,16 +19,15 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
     shallow
   );
 
-  let [listenersNames, setListenersNames] = useState('');
+  const [listenersNames, setListenersNames] = useState('');
 
-  let _handleChangeName = (e) => {
+  const _handleChangeName = (e) => {
     e.preventDefault();
-
-    let { value } = e.target;
+    const { value } = e.target;
     setListenersNames(value);
   };
 
-  let _onKeyDown = (e) => {
+  const _onKeyDown = (e) => {
     if (e.key === 'Enter') {
       _onAddListeners();
     }
@@ -40,7 +39,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
    * Update on connect listeners list
    * @param {} e
    */
-  let _onAddListeners = (e) => {
+   const _onAddListeners = (e?:any) => {
     if (e) e.preventDefault();
 
     let listenersAry = [];
@@ -68,7 +67,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
     setListenersNames('');
   };
 
-  let _onDelete = (listener = '') => {
+  const _onDelete = (listener = '') => {
     changeListeners(_array.without(onConnectListeners, listener));
     deleteListenerFromAllPlaygrounds(listener);
   };

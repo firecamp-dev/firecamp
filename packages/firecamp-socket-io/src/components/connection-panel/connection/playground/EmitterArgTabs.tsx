@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Checkbox, TabHeader, Tabs } from '@firecamp/ui-kit';
+import { Tabs } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import { EEmitterPayloadTypes } from '../../../../types';
 
