@@ -83,7 +83,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
         platformContext.environment.setActiveEnvironments({
           activeEnvironments,
-          collectionId: tab?.request?.__meta?.collectionId || '',
+          collectionId: tab?.request?.__meta.collectionId || '',
         });
       }
 
@@ -97,8 +97,8 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   /** if request is being saved then after successful flag set the request's as saved */
   useEffect(() => {
-    setRequestSavedFlag(tab?.meta?.isSaved);
-  }, [tab?.meta?.isSaved]);
+    setRequestSavedFlag(tab?.__meta?.isSaved);
+  }, [tab?.__meta?.isSaved]);
 
   /**
    * Fetch request and Handle realtime changes of the Request
@@ -110,17 +110,17 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     fetchRequest();
 
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
       platformContext.request.subscribeChanges(
-        tab.request._meta.id,
+        tab.request.__ref.id,
         handlePull
       );
     }
 
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && tab?.request?._meta?.id) {
-        platformContext.request.unsubscribeChanges(tab.request._meta.id);
+      if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
+        platformContext.request.unsubscribeChanges(tab.request.__ref.id);
       }
     };
   }, []);
@@ -184,7 +184,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
         setIsFetchingReqFlag(true);
         try {
           const response = await platformContext.request.onFetch(
-            tab.request._meta.id
+            tab.request.__ref.id
           );
 
           console.log(response.data, 'fetch request...');
@@ -254,7 +254,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     <Container className="h-full w-full with-divider" overflow="visible">
       <UrlBarContainer
         tab={tab}
-        collectionId={tab?.request?._meta?.collectionId || ''}
+        collectionId={tab?.request?.__ref?.collectionId || ''}
         postComponents={platformComponents}
         onSaveRequest={onSave}
       />
@@ -311,7 +311,7 @@ const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
       );
       // console.log({ pushAction });
 
-      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
+      // Update tab __meta if existing tab.__meta.hasChange is not same as isTabDirty
       if (tabMeta.hasChange !== isTabDirty) {
         onChangeRequestTab(tabId, { hasChange: isTabDirty });
       }

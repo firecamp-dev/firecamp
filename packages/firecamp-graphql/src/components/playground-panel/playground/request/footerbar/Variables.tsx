@@ -14,9 +14,9 @@ const Variables = () => {
   return (
     <Editor
       language={`json`}
-      value={playground?.request?.meta?.variables || `{ }`}
+      value={playground?.request?.__meta?.variables || `{ }`}
       onChange={(e) => {
-        changeVariables(playground.request._meta.id, e.target.value);
+        changeVariables(playground.request.__ref.id, e.target.value);
       }}
       onLoad={(editor) => {
         // setEditorDOM(editor);

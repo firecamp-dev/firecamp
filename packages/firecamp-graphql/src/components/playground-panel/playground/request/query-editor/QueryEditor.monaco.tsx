@@ -1,14 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
+import _upperFirst from 'lodash/upperFirst';
 import { print } from 'graphql/language/printer';
 import { Container, Column, Editor } from '@firecamp/ui-kit';
 import { _table } from '@firecamp/utils';
 import getQueryFacts, {
   getCurrentOperation,
 } from '../../../../../services/GraphQLservice';
-import {
-  QUERY_TYPES,
-  STRINGS_QUERY_TYPES,
-} from '../../../../../constants/constants';
+import { EQueryTypes } from '../../../../../types'
 
 const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
   const clientSchemaRef = useRef({});
@@ -67,15 +65,15 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
           queryVariablesAry = [];
 
         try {
-          queryVariablesAry = _table.objectToTable(q.meta.variables);
+          queryVariablesAry = _table.objectToTable(q.__meta.variables);
         } catch (e) {
           console.log('e', e);
         }
 
         queryPayload = Object.assign(q, {
-          name: q.name || STRINGS_QUERY_TYPES[q.meta.type.toUpperCase()],
-          meta: {
-            type: QUERY_TYPES[q.meta.type.toUpperCase()],
+          name: q.name || _upperFirst[q.__meta.type],
+          __meta: {
+            type: EQueryTypes[_upperFirst(q.__meta.type)],
             variables: queryVariablesAry || [],
           },
           variableToType: q.variableToType || {},
@@ -93,13 +91,13 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
   const _onUpdateCurrentQuery = (body) => {
     updateCurrentQuery({
       name: body.name || '',
-      meta: { type: body.meta.type || QUERY_TYPES.QUERY },
+      __meta: { type: body.__meta.type || EQueryTypes.Query },
     });
   };
 
   const _onCallGQLReuqest = () => {
     let queryObject = _onCursorGetCurrentOperation(editorValue);
-    // ctx_onSendRequest(queryObject.body, queryObject.meta.variables);
+    // ctx_onSendRequest(queryObject.body, queryObject.__meta.variables);
   };
 
   const _onUpdateQuery = (q) => {

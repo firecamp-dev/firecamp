@@ -30,13 +30,13 @@ const ReqStatusBar = ({}) => {
   );
   const [isOpen, toggleOpen] = useState(false);
 
-  const plgOperations = playgroundMeta.operationNames.map((n) => ({ name: n })); //[{ name: 'MyCompany', meta: { type: 'q' } }];
+  const plgOperations = playgroundMeta.operationNames.map((n) => ({ name: n })); //[{ name: 'MyCompany', __meta: { type: 'q' } }];
   const currentOps = playgroundMeta.activeOperation
     ? { name: playgroundMeta.activeOperation }
     : plgOperations[0];
 
   const onSelectOperation = (operation: { name: string }) => {
-    setPlaygroundOperation(operation.name, playground.request._meta.id);
+    setPlaygroundOperation(operation.name, playground.request.__ref.id);
   };
 
   const savePlg = async () => {
@@ -48,7 +48,7 @@ const ReqStatusBar = ({}) => {
     execute(
       currentOps.name,
       playground.request.body,
-      playground.request.meta.variables
+      playground.request.__meta.variables
     );
   };
 
@@ -62,7 +62,7 @@ const ReqStatusBar = ({}) => {
     execute(
       currentOps.name,
       playground.request.body,
-      playground.request.meta.variables
+      playground.request.__meta.variables
     );
   };
 
@@ -124,7 +124,7 @@ const ReqStatusBar = ({}) => {
                 transparent={true}
                 className="!border-0 hover:!bg-focus2"
                 onClick={() =>
-                  undoPlaygroundChanges(playground.request?._meta.id)
+                  undoPlaygroundChanges(playground.request?.__ref.id)
                 }
               />
               <Button

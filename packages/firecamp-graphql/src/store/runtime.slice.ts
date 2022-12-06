@@ -22,7 +22,7 @@ interface IRuntime {
   // Manage multiple tabs of playground
   playgroundTabs?: ITab[];
 
-  // Manage runtime meta of open tabs
+  // Manage runtime __meta of open tabs
   playgroundsMeta: { [k: string]: IPlaygroundMeta };
 
   // active tab/playground
@@ -103,12 +103,12 @@ const createRuntimeSlice = (set, get): IRuntimeSlice => ({
     });
   },
 
-  setFetchIntrospectionFlag: (flag: boolean)=> {
-    set((s)=> ({
+  setFetchIntrospectionFlag: (flag: boolean) => {
+    set((s) => ({
       runtime: {
         ...s.runtime,
-        isFetchingIntrospection: flag
-      }
+        isFetchingIntrospection: flag,
+      },
     }));
   },
 

@@ -7,9 +7,9 @@ export enum EPushAction_rootKeys {
 export enum EPushActionMetaKeys {
   name = 'name',
   description = 'description',
-  active_body = 'active_body',
-  active_auth_type = 'active_auth_type',
-  inherit_scripts = 'inherit_scripts',
+  activeBody = 'activeBody',
+  activeAuthType = 'activeAuthType',
+  inheritScripts = 'inheritScripts',
 }
 
 export enum EPushActionUrlKeys {
@@ -20,12 +20,18 @@ export enum EPushActionUrlKeys {
 export enum EPushAction_metaKeys {
   collectionId = 'collectionId',
   folderId = 'folderId',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  updated_at = 'updatedAt',
+  updated_by = 'updatedBy',
 }
 
 export enum ESidebarTabs {
   Collection = 'Collection',
   Explorer = 'Explorer',
   Headers = 'Headers',
+}
+
+export enum EQueryTypes {
+  Query = 'Q',
+  Mutation = 'M',
+  Subscription = 'S',
 }

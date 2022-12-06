@@ -24,9 +24,9 @@ const createPullActionSlice = (set, get): IPullSlice => ({
       type: 'u',
       item_id: '',
       item_type: 'R',
-      request_type: ERequestTypes.GraphQL,
+      requestType: ERequestTypes.GraphQL,
       collectionId: '',
-      workspace_id: '',
+      workspaceId: '',
       keys: {},
     },
   },
@@ -53,8 +53,8 @@ const createPullActionSlice = (set, get): IPullSlice => ({
             );
             break;
 
-          // case '_meta':
-          case 'meta':
+          // case '__ref':
+          case '__meta':
           case 'url':
             if (key in pullPayload) {
               updatedRequest[key] = _object.mergeDeep(

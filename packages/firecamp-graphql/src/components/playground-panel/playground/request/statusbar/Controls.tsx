@@ -6,7 +6,7 @@ import {
 
 const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
   //todo: need to refactor
-  const tabId = 123; // todo: this will be received from tab meta
+  const tabId = 123; // todo: this will be received from tab __meta
   const body = '';
   const prettifyQuery = (_) => {};
   const getOS = () => 'MacOS';

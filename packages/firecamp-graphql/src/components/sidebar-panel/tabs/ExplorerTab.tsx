@@ -1,33 +1,31 @@
 import { Button, Container, ProgressBar } from '@firecamp/ui-kit';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import QueryExplorer from '../../common/explorer/QueryExplorer';
-import { QUERY_TYPES } from '../../../constants/constants';
 import { IGraphQLStore, useGraphQLStore } from '../../../store';
+import { EQueryTypes } from '../../../types';
 
 const addQueryButtons = [
   {
     name: 'query',
-    type: QUERY_TYPES.QUERY,
+    type: EQueryTypes.Query,
   },
   {
     name: 'mutation',
-    type: QUERY_TYPES.MUTATION,
+    type: EQueryTypes.Mutation,
   },
   {
     name: 'subscription',
-    type: QUERY_TYPES.SUBSCRIPTION,
+    type: EQueryTypes.Subscription,
   },
 ];
 
 const ExplorerTab = () => {
-
-  const {
-    isFetchingIntrospection,
-    fetchIntrospectionSchema,
-  } = useGraphQLStore((s: IGraphQLStore)=> ({
-    isFetchingIntrospection: s.runtime.isFetchingIntrospection,
-    fetchIntrospectionSchema: s.fetchIntrospectionSchema
-  }));
+  const { isFetchingIntrospection, fetchIntrospectionSchema } = useGraphQLStore(
+    (s: IGraphQLStore) => ({
+      isFetchingIntrospection: s.runtime.isFetchingIntrospection,
+      fetchIntrospectionSchema: s.fetchIntrospectionSchema,
+    })
+  );
   const _addNewQuery = (type) => {};
 
   return (
@@ -36,13 +34,17 @@ const ExplorerTab = () => {
         <div className="flex pane-header px-2 py-1">
           <div className="ml-auto flex">
             <div>
-              <VscRefresh size={14} className="cursor-pointer" onClick={fetchIntrospectionSchema} />
+              <VscRefresh
+                size={14}
+                className="cursor-pointer"
+                onClick={fetchIntrospectionSchema}
+              />
             </div>
           </div>
         </div>
       </Container.Header>
       <Container.Body className="visible-scrollbar">
-        <ProgressBar active={isFetchingIntrospection}/>
+        <ProgressBar active={isFetchingIntrospection} />
         <div className="tab-pane active h-full graphql-explorer">
           <QueryExplorer />
         </div>

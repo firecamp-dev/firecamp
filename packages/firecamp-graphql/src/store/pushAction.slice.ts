@@ -16,18 +16,18 @@ interface IPushPayload extends Partial<IGraphQL> {
     type: string;
     item_id: TId;
     item_type: 'R';
-    request_type: ERequestTypes.GraphQL;
+    requestType: ERequestTypes.GraphQL;
     collectionId: TId;
-    workspace_id: TId;
+    workspaceId: TId;
     keys: IPushAction;
   };
 }
 
 interface IPushAction {
   _root?: Array<EPushAction_rootKeys>;
-  meta?: Array<EPushActionMetaKeys>;
+  __meta?: Array<EPushActionMetaKeys>;
   url?: Array<EPushActionUrlKeys>;
-  _meta?: Array<EPushAction_metaKeys>;
+  __ref?: Array<EPushAction_metaKeys>;
   _removed?: {};
 }
 
@@ -38,7 +38,7 @@ interface IPushActionSlice {
 
   prepareUrlPushAction?: (lastUrl: IUrl, url: IUrl) => void;
   prepareRootPushAction?: (lastRequest, request) => void;
-  prepareMetaPushAction?: (lastMeta, meta) => void;
+  prepareMetaPushAction?: (lastMeta, __meta) => void;
 
   prepareRequestInsertPushPayload: () => Promise<IPushPayload>;
   prepareRequestUpdatePushPayload: () => Promise<IPushPayload>;
@@ -50,10 +50,10 @@ interface IPushActionSlice {
 
 export const emptyPushAction = {
   _root: [],
-  meta: [],
+  __meta: [],
   url: [],
 
-  _meta: [],
+  __ref: [],
   _removed: {
     body: [],
     auth: [],
@@ -109,21 +109,21 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
     }));
   },
 
-  prepareMetaPushAction: (lastMeta, meta) => {
+  prepareMetaPushAction: (lastMeta, __meta) => {
     // Return if request is not saved
     if (!get()?.runtime?.isRequestSaved) return;
 
     let metaPushAction = pushActionS.prepareMetaPushAction(
       lastMeta,
-      meta,
-      get().pushAction?.meta
+      __meta,
+      get().pushAction?.__meta
     );
 
     set((s) => ({
       ...s,
       pushAction: {
         ...s.pushAction,
-        meta: metaPushAction,
+        __meta: metaPushAction,
       },
     }));
   },
@@ -138,10 +138,10 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
       type: 'i',
       item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
-      request_type: ERequestTypes.GraphQL,
+      requestType: ERequestTypes.GraphQL,
       collectionId: '',
       keys: {},
-      workspace_id: '',
+      workspaceId: '',
     };
     return Promise.resolve(pushPayload);
   },
@@ -207,22 +207,22 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
           );
           break;
 
-        // handle meta
-        case 'meta':
+        // handle __meta
+        case '__meta':
           pushAction['__meta'] = pushActionS.prepareMetaPushAction(
             lastRequest.__meta,
             request.__meta
-            // get().pushAction?.meta
+            // get().pushAction?.__meta
           );
 
           break;
 
-        // handle _meta
-        /* case '_meta':
-          pushAction['_meta'] = pushActionS.prepare_MetaPushAction(
-            lastRequest._meta,
-            request._meta
-            // get().pushAction?._meta
+        // handle __ref
+        /* case '__ref':
+          pushAction['__ref'] = pushActionS.prepare_MetaPushAction(
+            lastRequest.__ref,
+            request.__ref
+            // get().pushAction?.__ref
           );
           break; */
 
