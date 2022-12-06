@@ -267,38 +267,6 @@ const Socket = ({
 
     _storeClientFns.updateResActiveConn(runtime_activeConnection);
 
-    //TODO: remove code later
-    /*_responseConnectionLogFns.addLog(
-      {
-        title: "Message",
-        message: [
-          {
-            meta: {
-              type: "text",
-              typedArrayView: ""
-            },
-            payload: "Hello from Vinaxi Khalasi"
-          },
-          {
-            meta: {
-              type: "json",
-              typedArrayView: ""
-            },
-            payload: `
-              {
-                "name":"Vinaxi Khalasi"
-              }
-              `
-          }
-        ],
-        meta: {
-          type: "R",
-          color: "",
-          time: new Date()
-        }
-      },
-      runtime_activeConnection
-    );*/
     return async () => {
       try {
         store_client.setState((state) => {
