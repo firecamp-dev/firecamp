@@ -251,7 +251,7 @@ const Explorer: FC<any> = () => {
           canRename={true}
           canReorderItems={true}
           canDragAndDrop={true}
-          canDropOnItemWithChildren={true}
+          canDropOnFolder={true}
           ref={environmentRef}
           keyboardBindings={{
             // primaryAction: ['f3'],

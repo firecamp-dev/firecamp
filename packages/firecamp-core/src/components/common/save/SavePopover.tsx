@@ -354,7 +354,7 @@ const PathSelector: FC<{ onSelect: (_: any) => void }> = ({ onSelect }) => {
           canRename={false}
           canReorderItems={false}
           canDragAndDrop={false}
-          canDropOnItemWithChildren={false}
+          canDropOnFolder={false}
           keyboardBindings={{
             // primaryAction: ['f3'],
             renameItem: ['enter', 'f2'],
