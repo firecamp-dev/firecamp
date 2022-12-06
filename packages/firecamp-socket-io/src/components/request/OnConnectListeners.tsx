@@ -3,18 +3,18 @@ import { Container, Button, Input } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { _array } from '@firecamp/utils';
 
-import { useSocketStore } from '../../store';
+import { ISocketStore, useSocketStore } from '../../store';
 
 const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
   let {
     changeListeners,
-    addListenresToAllPlaygrounds,
-    deleteListenreFromAllPlaygrounds,
+    addListenersToAllPlaygrounds,
+    deleteListenerFromAllPlaygrounds,
   } = useSocketStore(
-    (s) => ({
+    (s: ISocketStore) => ({
       changeListeners: s.changeListeners,
-      addListenresToAllPlaygrounds: s.addListenresToAllPlaygrounds,
-      deleteListenreFromAllPlaygrounds: s.deleteListenreFromAllPlaygrounds,
+      addListenersToAllPlaygrounds: s.addListenersToAllPlaygrounds,
+      deleteListenerFromAllPlaygrounds: s.deleteListenerFromAllPlaygrounds,
     }),
     shallow
   );
@@ -57,7 +57,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
          * if already exist
          */
         if (!listeners.includes(listener))
-          addListenresToAllPlaygrounds(listener);
+          addListenersToAllPlaygrounds(listener);
       }
     });
 
@@ -70,7 +70,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
 
   let _onDelete = (listener = '') => {
     changeListeners(_array.without(onConnectListeners, listener));
-    deleteListenreFromAllPlaygrounds(listener);
+    deleteListenerFromAllPlaygrounds(listener);
   };
 
   return (

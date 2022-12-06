@@ -39,7 +39,6 @@ const createRequestSlice = (
 
   setRequestKey: (key: string, value: any) => {
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         [key]: value,
@@ -47,48 +46,45 @@ const createRequestSlice = (
     }));
   },
   changeListeners: (listeners: Array<string>) => {
-    let lastListeners = get()?.last?.request.listeners;
+    const state = get();
+    const lastListeners = state.last?.request.listeners;
 
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         listeners,
       },
     }));
-
     // update config
-    get()?.changeMeta('onConnectListeners', listeners);
-
+    state.changeMeta('onConnectListeners', listeners);
     // prepare _root push action
-    get()?.prepareRootPushAction({ listeners: lastListeners }, { listeners });
+    state.prepareRootPushAction({ listeners: lastListeners }, { listeners });
   },
 
   changeMeta: (key: string, value: any) => {
-    let lastMeta = get()?.last?.request.__meta;
-    let updatedMeta = {
-      ...(get()?.request.__meta || {}),
+    const state = get();
+    const lastMeta = state.last?.request.__meta;
+    const updatedMeta = {
+      ...(state.request.__meta || {}),
       [key]: value,
     };
     set((s) => ({
-      ...s,
       request: { ...s.request, __meta: updatedMeta },
     }));
 
-    // Prepare push action for __meta
-    get()?.prepareMetaPushAction(lastMeta, updatedMeta);
+    // prepare push action for __meta
+    state.prepareMetaPushAction(lastMeta, updatedMeta);
   },
   changeConfig: (key: string, value: any) => {
-    let lastConfig = get()?.last?.request.config;
-    let updatedConfig = {
-      ...(get()?.request.config || {}),
+    const state = get();
+    const lastConfig = state.last?.request.config;
+    const updatedConfig = {
+      ...(state.request.config || {}),
       [key]: value,
     };
-
-    set((s) => ({ ...s, request: { ...s.request, config: updatedConfig } }));
-
-    // Prepare push action for config in _root
-    get()?.prepareRequestConfigPushAction(lastConfig, updatedConfig);
+    set((s) => ({ request: { ...s.request, config: updatedConfig } }));
+    // prepare push action for config in _root
+    state.prepareRequestConfigPushAction(lastConfig, updatedConfig);
   },
 });
 

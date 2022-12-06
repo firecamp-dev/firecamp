@@ -27,17 +27,12 @@ import {
   IPushActionEmitterSlice,
   createPushActionEmitterSlice,
 } from './emitter.slice';
-import {
-  EPushActionType,
-  ERequestTypes,
-  ISocketIO,
-  TId,
-} from '@firecamp/types';
+import { ERequestTypes, ISocketIO, TId } from '@firecamp/types';
 import PushActionService from '../../../services/push-actions';
 
 export interface IPushActionRequest {
   url?: Array<EPushActionUrlKeys>;
-    config?: Array<EPushActionConfigKeys>;
+  config?: Array<EPushActionConfigKeys>;
   connections?: IPushActionConnections;
   _root?: Array<EPushAction_rootKeys>;
   __meta: Array<EPushActionMetaKeys>;
@@ -53,7 +48,7 @@ export interface IPushAction {
 
 export interface IPushPayload extends Partial<ISocketIO> {
   _action?: {
-    type: EPushActionType;
+    type: string;
     item_id: TId;
     item_type: 'R';
     requestType: ERequestTypes.SocketIO;
@@ -110,7 +105,7 @@ export const createPushActionSlice = (
 
     pushPayload = { ...request };
     pushPayload._action = {
-      type: EPushActionType.Insert,
+      type: 'i',
       item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
       requestType: ERequestTypes.SocketIO,
@@ -128,19 +123,19 @@ export const createPushActionSlice = (
     // console.log({ state: get() });
 
     let request: ISocketIO = get().request;
-    let updatedReqeust: IPushPayload = {};
+    let updatedRequest: IPushPayload = {};
     if (pushAction.request) {
       // console.log({ pushAction, request });
       for (let key in pushAction.request) {
         // console.log({ key, 1: request[key], 2: pushAction.request[key] });
 
         if (key === '_root') {
-          updatedReqeust = {
-            ...updatedReqeust,
+          updatedRequest = {
+            ...updatedRequest,
             ..._object.pick(request, pushAction.request[key]),
           };
         } else if (key !== '_removed' && key in request) {
-          updatedReqeust[key] = _object.pick(
+          updatedRequest[key] = _object.pick(
             request[key],
             pushAction.request[key]
           );
@@ -148,7 +143,7 @@ export const createPushActionSlice = (
       }
     }
 
-    let pushPayload: IPushPayload = updatedReqeust;
+    let pushPayload: IPushPayload = updatedRequest;
 
     pushPayload.__ref = {
       ...pushPayload.__ref,
@@ -158,7 +153,7 @@ export const createPushActionSlice = (
     };
 
     pushPayload._action = {
-      type: EPushActionType.Update,
+      type: 'u',
       item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
       requestType: ERequestTypes.SocketIO,
@@ -166,9 +161,9 @@ export const createPushActionSlice = (
       workspaceId: '',
       keys: pushAction,
     };
-    // console.log({ updatedReqeust });
+    // console.log({ updatedRequest });
 
-    return Promise.resolve(updatedReqeust);
+    return Promise.resolve(updatedRequest);
   },
 
   prepareRequestUpdatePushAction: (request: Partial<ISocketIO>) => {

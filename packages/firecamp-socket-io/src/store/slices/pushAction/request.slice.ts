@@ -3,7 +3,6 @@ import {
   ISocketIOConfig,
   TId,
   ISocketIOConnection,
-  EPushActionType,
 } from '@firecamp/types';
 
 import PushActionService from '../../../services/push-actions';
@@ -17,7 +16,7 @@ interface IPushActionRequestSlice {
   ) => void;
   prepareRequestConnectionsPushAction?: (
     id: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastConnection: ISocketIOConnection,
     connection: ISocketIOConnection
   ) => void;
@@ -84,7 +83,7 @@ const createPushActionRequestSlice = (set, get): IPushActionRequestSlice => ({
   },
   prepareRequestConnectionsPushAction: (
     id: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastConnection: ISocketIOConnection,
     connection: ISocketIOConnection
   ) => {

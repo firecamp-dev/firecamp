@@ -2,7 +2,6 @@ import {
   ISocketIOEmitter,
   IRequestFolder,
   TId,
-  EPushActionType,
 } from '@firecamp/types';
 
 interface ICollection {
@@ -54,7 +53,6 @@ const createCollectionSlice = (
     value: Array<ISocketIOEmitter> | Array<IRequestFolder>
   ) => {
     set((s) => ({
-      ...s,
       collection: {
         ...s.collection,
         [key]: value,
@@ -65,13 +63,14 @@ const createCollectionSlice = (
   // emitter
 
   getEmitter: (id: TId, getLast = false) => {
+    const state = get();
     // existing emitters
-    let emitters = getLast
-      ? get()?.last?.collection?.emitters
-      : get().collection?.emitters;
+    const emitters = getLast
+      ? state.last?.collection?.emitters
+      : state.collection?.emitters;
 
     // emitter index
-    let emitterIndex = emitters.findIndex(
+    const emitterIndex = emitters.findIndex(
       (emitter) => emitter?.__ref.id === id
     );
 
@@ -79,28 +78,28 @@ const createCollectionSlice = (
     if (emitterIndex !== -1) {
       return { emitter: emitters[emitterIndex], emitterIndex };
     }
-
     return undefined;
   },
   addEmitter: (emitter: ISocketIOEmitter) => {
     if (!emitter?.__ref.id) return;
+    const state = get();
 
     set((s) => ({
-      ...s,
       collection: {
         ...s.collection,
         emitters: [...s.collection.emitters, emitter],
       },
     }));
 
-    // Prepare push action for insert emitter
-    get()?.prepareCollectionEmittersPushAction(
+    // prepare push action for insert emitter
+    state.prepareCollectionEmittersPushAction(
       emitter?.__ref.id,
-      EPushActionType.Insert
+      'i'
     );
   },
   changeEmitter: (id: TId, updates: { key: string; value: any }) => {
-    let emitterDetails = get().getEmitter(id);
+    const state = get();
+    const emitterDetails = state.getEmitter(id);
 
     // If emitter found then update in store
     if (
@@ -108,14 +107,13 @@ const createCollectionSlice = (
       emitterDetails.emitter &&
       emitterDetails.emitterIndex !== -1
     ) {
-      let { key, value } = updates;
-      let { emitter, emitterIndex } = emitterDetails;
-      let updatedEmitter = Object.assign({}, emitter, {
+      const { key, value } = updates;
+      const { emitter, emitterIndex } = emitterDetails;
+      const updatedEmitter = Object.assign({}, emitter, {
         [key]: value,
       });
 
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           emitters: [
@@ -126,23 +124,23 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastEmitter = get().getEmitter(id, true);
-      // Prepare push action for update emitter
-      get()?.prepareCollectionEmittersPushAction(
+      const lastEmitter = state.getEmitter(id, true);
+      // prepare push action for update emitter
+      state.prepareCollectionEmittersPushAction(
         id,
-        EPushActionType.Update,
+        'u',
         lastEmitter,
         updatedEmitter
       );
     }
   },
   deleteEmitter: (id: TId) => {
-    let emitterDetails = get().getEmitter(id);
+    const state = get();
+    const emitterDetails = state.getEmitter(id);
 
     // If emitter found then update in store
     if (emitterDetails && emitterDetails.emitterIndex !== -1) {
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           emitters: [
@@ -151,12 +149,13 @@ const createCollectionSlice = (
           ],
         },
       }));
-      // Prepare push action for delete emitter
-      get()?.prepareCollectionEmittersPushAction(id, EPushActionType.Delete);
+      // prepare push action for delete emitter
+      state.prepareCollectionEmittersPushAction(id, 'd');
     }
   },
   setEmitter: (id: TId, emitterToSet: ISocketIOEmitter) => {
-    let emitterDetails = get().getEmitter(id);
+    const state = get();
+    const emitterDetails = state.getEmitter(id);
 
     // If emitter found then update in store
     if (
@@ -164,11 +163,10 @@ const createCollectionSlice = (
       emitterDetails.emitter &&
       emitterDetails.emitterIndex !== -1
     ) {
-      let { emitter, emitterIndex } = emitterDetails;
-      let updatedEmitter = Object.assign({}, emitter, emitterToSet);
+      const { emitter, emitterIndex } = emitterDetails;
+      const updatedEmitter = Object.assign({}, emitter, emitterToSet);
 
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           emitters: [
@@ -179,11 +177,11 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastEmitter = get().getEmitter(id, true);
-      // Prepare push action for update emitter
-      get()?.prepareCollectionEmittersPushAction(
+      const lastEmitter = state.getEmitter(id, true);
+      // prepare push action for update emitter
+      state.prepareCollectionEmittersPushAction(
         id,
-        EPushActionType.Update,
+        'u',
         lastEmitter,
         updatedEmitter
       );
@@ -192,13 +190,14 @@ const createCollectionSlice = (
 
   // directories
   getDirectory: (id: TId, getLast = false) => {
+    const state = get();
     // existing directories
-    let directories = getLast
-      ? get()?.last?.collection?.directories
-      : get().collection?.directories;
+    const directories = getLast
+      ? state.last?.collection?.directories
+      : state.collection?.directories;
 
     // directory index
-    let directoryIndex = directories.findIndex(
+    const directoryIndex = directories.findIndex(
       (directory: IRequestFolder) => directory?.__ref.id === id
     );
 
@@ -210,24 +209,25 @@ const createCollectionSlice = (
     return undefined;
   },
   addDirectory: (directory: IRequestFolder) => {
+    const state = get();
     if (!directory?.__ref.id) return;
 
     set((s) => ({
-      ...s,
       collection: {
         ...s.collection,
         directories: [...s.collection.directories, directory],
       },
     }));
 
-    // Prepare push action for insert emitter
-    get()?.prepareCollectionDirectoriesPushAction(
+    // prepare push action for insert emitter
+    state.prepareCollectionDirectoriesPushAction(
       directory?.__ref.id,
-      EPushActionType.Insert
+      'i'
     );
   },
   changeDirectory: (id: TId, updates: { key: string; value: any }) => {
-    let directoryDetails = get().getDirectory(id);
+    const state = get();
+    const directoryDetails = state.getDirectory(id);
 
     // If directory found then update in store
     if (
@@ -235,14 +235,13 @@ const createCollectionSlice = (
       directoryDetails.directory &&
       directoryDetails.directoryIndex !== -1
     ) {
-      let { key, value } = updates;
-      let { directory, directoryIndex } = directoryDetails;
-      let updatedDirectory = Object.assign({}, directory, {
+      const { key, value } = updates;
+      const { directory, directoryIndex } = directoryDetails;
+      const updatedDirectory = Object.assign({}, directory, {
         [key]: value,
       });
 
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           directories: [
@@ -253,18 +252,19 @@ const createCollectionSlice = (
         },
       }));
 
-      let lastDirectory = get().getDirectory(id, true);
-      // Prepare push action for update emitter
-      get()?.prepareCollectionDirectoriesPushAction(
+      const lastDirectory = state.getDirectory(id, true);
+      // prepare push action for update emitter
+      state.prepareCollectionDirectoriesPushAction(
         id,
-        EPushActionType.Update,
+        'u',
         lastDirectory,
         updatedDirectory
       );
     }
   },
   deleteDirectory: (id: TId) => {
-    let directoryDetails = get().getDirectory(id);
+    const state = get();
+    const directoryDetails = state.getDirectory(id);
 
     // If directory found then update in store
     if (directoryDetails && directoryDetails.directoryIndex !== -1) {
@@ -284,8 +284,8 @@ const createCollectionSlice = (
         },
       }));
 
-      // Prepare push action for delete directory
-      get()?.prepareCollectionDirectoriesPushAction(id, EPushActionType.Delete);
+      // prepare push action for delete directory
+      state.prepareCollectionDirectoriesPushAction(id, 'd');
     }
   },
 });

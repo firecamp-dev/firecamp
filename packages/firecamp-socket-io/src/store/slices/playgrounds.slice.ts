@@ -1,9 +1,8 @@
 import equal from 'deep-equal';
 import { IExecutor } from '@firecamp/ws-executor/dist/esm';
-
+import { _object } from '@firecamp/utils';
 import { ISocketIOEmitter, TId } from '@firecamp/types';
 import { EConnectionState } from '../../types';
-import { _object } from '@firecamp/utils';
 import { InitPlayground } from '../../constants';
 
 interface IEmitter extends ISocketIOEmitter {
@@ -52,7 +51,7 @@ interface IPlaygroundSlice {
 
   setSelectedCollectionEmitter: (
     connectionId: TId,
-    emitter_id: TId | string
+    emitterId: TId | string
   ) => void;
 
   deletePlayground: (connectionId: TId) => void;
@@ -70,10 +69,10 @@ interface IPlaygroundSlice {
 
   deletePlaygroundListener: (connectionId: TId, name: string) => void;
 
-  updatePlaygrondListenersValue: (connectionId: TId, listen: boolean) => void;
+  updatePlaygroundListenersValue: (connectionId: TId, listen: boolean) => void;
 
-  addListenresToAllPlaygrounds: (listenerName: string, listen: boolean) => void;
-  deleteListenreFromAllPlaygrounds: (listenerName: string) => void;
+  addListenersToAllPlaygrounds: (listenerName: string, listen: boolean) => void;
+  deleteListenerFromAllPlaygrounds: (listenerName: string) => void;
 }
 
 const createPlaygroundsSlice = (
@@ -84,11 +83,11 @@ const createPlaygroundsSlice = (
   playgrounds: initialPlaygrounds,
 
   getPlayground: (connectionId: TId) => {
-    return get()?.playgrounds?.[connectionId];
+    const state = get();
+    return state.playgrounds?.[connectionId];
   },
   addPlayground: (connectionId: TId, playground: IPlayground) => {
     set((s) => ({
-      ...s,
       playgrounds: {
         ...s.playgrounds,
         [connectionId]: playground,
@@ -98,7 +97,6 @@ const createPlaygroundsSlice = (
 
   changePlayground: (connectionId: TId, updates: object) => {
     set((s) => ({
-      ...s,
       playgrounds: {
         ...s.playgrounds,
         [connectionId]: {
@@ -113,13 +111,12 @@ const createPlaygroundsSlice = (
     connectionId: TId,
     connectionState: EConnectionState
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.connectionState = connectionState;
-
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -131,13 +128,12 @@ const createPlaygroundsSlice = (
     connectionId: TId,
     updates: { type: string }
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.logFilters = { type: updates.type };
-
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -147,13 +143,12 @@ const createPlaygroundsSlice = (
   },
 
   setPlaygroundEmitter: (connectionId: TId, emitter: IEmitter) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.emitter = emitter;
-
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -162,7 +157,8 @@ const createPlaygroundsSlice = (
     }
   },
   changePlaygroundEmitter: async (connectionId: TId, updates: object) => {
-    let existingPlayground = await get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = await state.playgrounds?.[connectionId];
 
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = Object.assign({}, existingPlayground);
@@ -175,20 +171,19 @@ const createPlaygroundsSlice = (
         )
       ) {
         set((s) => ({
-          ...s,
           playgrounds: {
             ...s.playgrounds,
             [connectionId]: updatedPlayground,
           },
         }));
-        get()?.changePlaygroundTab(connectionId, {
+        state.changePlaygroundTab(connectionId, {
           __meta: {
             isSaved: !!updatedPlayground.emitter?.__ref.id,
             hasChange: true,
           },
         });
       } else {
-        get()?.changePlaygroundTab(connectionId, {
+        state.changePlaygroundTab(connectionId, {
           __meta: {
             isSaved: !!updatedPlayground.emitter?.__ref.id,
             hasChange: false,
@@ -198,13 +193,12 @@ const createPlaygroundsSlice = (
     }
   },
   resetPlaygroundEmitter: (connectionId: TId) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.emitter = InitPlayground;
-
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -215,15 +209,14 @@ const createPlaygroundsSlice = (
 
   setSelectedCollectionEmitter: (
     connectionId: TId,
-    emitter_id: TId | string
+    emitterId: TId | string
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
-      updatedPlayground.selectedCollectionEmitter = emitter_id;
-
+      updatedPlayground.selectedCollectionEmitter = emitterId;
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -233,29 +226,28 @@ const createPlaygroundsSlice = (
   },
 
   deletePlayground: (connectionId: TId) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    let existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       set((s) => ({
-        ...s,
         playgrounds: s.playgrounds?.filter((c) => c.id != connectionId),
       }));
 
-      // Listen off/ remove all listeners
-      get()?.removeAllListenersFromExecutor(connectionId);
+      // listen off/ remove all listeners
+      state.removeAllListenersFromExecutor(connectionId);
     }
   },
 
   deleteExecutor: (connectionId: TId) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.executor = {};
 
       // Listen off/ remove all listeners
-      get()?.removeAllListenersFromExecutor(connectionId);
-
+      state.removeAllListenersFromExecutor(connectionId);
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -265,17 +257,16 @@ const createPlaygroundsSlice = (
   },
 
   setPlaygroundListeners: (connectionId: TId, listeners: object) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
 
     if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
+      const updatedPlayground = existingPlayground;
       updatedPlayground.listeners = listeners;
       console.log({ updatedPlayground });
 
       //TODO: add Listen on/ off all listeners
-
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -284,12 +275,13 @@ const createPlaygroundsSlice = (
     }
   },
   listenOnConnect: (connectionId: TId) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
 
     if (existingPlayground) {
       for (let listen in existingPlayground.listeners) {
         if (existingPlayground.listeners[listen] === true) {
-          get().addListenerToExecutor(connectionId, listen);
+          state.addListenerToExecutor(connectionId, listen);
         }
       }
     }
@@ -299,23 +291,23 @@ const createPlaygroundsSlice = (
     name: string,
     listen: boolean
   ) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
 
     if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
+      const updatedPlayground = existingPlayground;
       updatedPlayground.listeners = Object.assign(updatedPlayground.listeners, {
         [name]: listen,
       });
       console.log({ updatedPlayground });
 
       if (listen) {
-        get()?.addListenerToExecutor(connectionId, name);
+        state.addListenerToExecutor(connectionId, name);
       } else {
-        get()?.removeListenerFromExecutor(connectionId, name);
+        state.removeListenerFromExecutor(connectionId, name);
       }
 
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -325,20 +317,20 @@ const createPlaygroundsSlice = (
   },
 
   deletePlaygroundListener: (connectionId: TId, name: string) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
 
     if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
+      const updatedPlayground = existingPlayground;
       updatedPlayground.listeners = _object.omit(updatedPlayground.listeners, [
         name,
       ]);
 
-      // Remove listener from executor/ listen off
-      get()?.removeListenerFromExecutor(connectionId, name);
+      // remove listener from executor/ listen off
+      state.removeListenerFromExecutor(connectionId, name);
 
       // Update slice
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -347,26 +339,23 @@ const createPlaygroundsSlice = (
     }
   },
 
-  updatePlaygrondListenersValue: (connectionId: TId, listen: boolean) => {
-    let existingPlayground = get()?.playgrounds?.[connectionId];
+  updatePlaygroundListenersValue: (connectionId: TId, listen: boolean) => {
+    const state = get();
+    const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
+      const updatedPlayground = existingPlayground;
       for (let key in updatedPlayground.listeners) {
         // TODO: add logic to listen on/ off
         updatedPlayground.listeners[key] = listen;
       }
 
       if (listen) {
-        get()?.addListenersToExecutor(
-          connectionId,
-          updatedPlayground.listeners
-        );
+        state.addListenersToExecutor(connectionId, updatedPlayground.listeners);
       } else {
-        get()?.removeAllListenersFromExecutor(connectionId);
+        state.removeAllListenersFromExecutor(connectionId);
       }
 
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -374,12 +363,13 @@ const createPlaygroundsSlice = (
       }));
     }
   },
-  addListenresToAllPlaygrounds: (listenerName: string, listen: boolean) => {
-    let updatedPlaygrounds = get().playgrounds;
+  addListenersToAllPlaygrounds: (listenerName: string, listen: boolean) => {
+    const state = get();
+    let updatedPlaygrounds = state.playgrounds;
 
     for (let connectionId in updatedPlaygrounds) {
       try {
-        let existingPlayground = updatedPlaygrounds[connectionId];
+        const existingPlayground = updatedPlaygrounds[connectionId];
 
         // check if already exist or not
         if (!(listenerName in existingPlayground.listeners)) {
@@ -390,12 +380,12 @@ const createPlaygroundsSlice = (
 
           // listen on if connected
           if (listen) {
-            get()?.addListenerToExecutor(connectionId, listenerName);
+            state.addListenerToExecutor(connectionId, listenerName);
           }
         }
       } catch (error) {
         console.info({
-          API: 'socket.addListenresToAllPlaygrounds',
+          API: 'socket.addListenersToAllPlaygrounds',
           connectionId,
           error,
         });
@@ -404,28 +394,28 @@ const createPlaygroundsSlice = (
 
     // Set to store
     set((s) => ({
-      ...s,
       playgrounds: {
         playgrounds: updatedPlaygrounds,
       },
     }));
   },
-  deleteListenreFromAllPlaygrounds: (listenerName: string) => {
-    let updatedPlaygrounds = get().playgrounds;
+  deleteListenerFromAllPlaygrounds: (listenerName: string) => {
+    const state = get();
+    let updatedPlaygrounds = state.playgrounds;
 
     for (let connectionId in updatedPlaygrounds) {
       try {
-        let existingPlayground = updatedPlaygrounds[connectionId];
+        const existingPlayground = updatedPlaygrounds[connectionId];
         existingPlayground.listeners = _object.omit(
           existingPlayground.listeners,
           [listenerName]
         );
 
         // Set listen off
-        get().removeListenerFromExecutor(connectionId, listenerName);
+        state.removeListenerFromExecutor(connectionId, listenerName);
       } catch (error) {
         console.info({
-          API: 'socket.deleteListenreFromAllPlaygrounds',
+          API: 'socket.deleteListenerFromAllPlaygrounds',
           connectionId,
           error,
         });
@@ -434,7 +424,6 @@ const createPlaygroundsSlice = (
 
     // Set to store
     set((s) => ({
-      ...s,
       playgrounds: {
         playgrounds: updatedPlaygrounds,
       },

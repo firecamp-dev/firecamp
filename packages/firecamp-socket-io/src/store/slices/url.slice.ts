@@ -23,7 +23,6 @@ const createUrlSlice = (set, get): IUrlSlice => ({
         return c;
       });
       return {
-        ...s,
         request: { ...s.request, url, connections },
         runtime: { ...s.runtime, displayUrl: urlObj.raw },
       };
@@ -32,8 +31,8 @@ const createUrlSlice = (set, get): IUrlSlice => ({
     // state.prepareUrlPushAction(lastUrl, updatedUrl);
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
+    const state = get();
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         url: { ...s.request.url, queryParams },
@@ -49,8 +48,8 @@ const createUrlSlice = (set, get): IUrlSlice => ({
       },
     }));
 
-    // Prepare push action for url
-    get()?.prepareUrlPushAction(get()?.last?.request.url, {
+    // prepare push action for url
+    state.prepareUrlPushAction(state.last?.request.url, {
       queryParams: queryParams,
     });
   },

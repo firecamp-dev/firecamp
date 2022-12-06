@@ -1,11 +1,11 @@
-import { TId, ISocketIOEmitter, EPushActionType } from '@firecamp/types';
+import { TId, ISocketIOEmitter } from '@firecamp/types';
 
 import PushActionService from '../../../services/push-actions';
 
 interface IPushActionEmitterSlice {
   prepareCollectionEmittersPushAction: (
     id: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastEmitter?: ISocketIOEmitter,
     emitter?: ISocketIOEmitter
   ) => void;
@@ -14,7 +14,7 @@ interface IPushActionEmitterSlice {
 const createPushActionEmitterSlice = (set, get): IPushActionEmitterSlice => ({
   prepareCollectionEmittersPushAction: (
     id: TId,
-    pushActionType: EPushActionType,
+    pushActionType: string,
     lastEmitter?: ISocketIOEmitter,
     emitter?: ISocketIOEmitter
   ) => {

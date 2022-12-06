@@ -56,7 +56,6 @@ const createRuntimeSlice = (
 
   setActivePlayground: (playgroundId: TId) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         activePlayground: playgroundId,
@@ -65,7 +64,6 @@ const createRuntimeSlice = (
   },
   addPlaygroundTab: (playground: IPlaygroundTab) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         playgroundTabs: [...s.runtime.playgroundTabs, playground],
@@ -73,12 +71,12 @@ const createRuntimeSlice = (
     }));
   },
   changePlaygroundTab: (playgroundId: TId, updates: object) => {
-    let existingTabIndex = get()?.runtime.playgroundTabs.findIndex(
+    const state = get();
+    const existingTabIndex = state.runtime.playgroundTabs.findIndex(
       (tab) => tab.id === playgroundId
     );
     if (existingTabIndex !== -1) {
       set((s) => ({
-        ...s,
         runtime: {
           ...s.runtime,
           playgroundTabs: [
@@ -94,12 +92,12 @@ const createRuntimeSlice = (
     }
   },
   deletePlaygroundTab: (playgroundId: TId) => {
-    let existingTabIndex = get()?.runtime.playgroundTabs.findIndex(
+    const state = get();
+    const existingTabIndex = state.runtime.playgroundTabs.findIndex(
       (tab) => tab.id === playgroundId
     );
     if (existingTabIndex !== -1) {
       set((s) => ({
-        ...s,
         runtime: {
           ...s.runtime,
           playgroundTabs: [
@@ -114,10 +112,7 @@ const createRuntimeSlice = (
     scope: 'collection' | 'workspace',
     environmentId: TId
   ) => {
-    // console.log({ scope, environmentId });
-
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         activeEnvironments: {
@@ -129,9 +124,7 @@ const createRuntimeSlice = (
   },
   setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
     console.log({ updates });
-
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         activeEnvironments: updates,
@@ -140,7 +133,6 @@ const createRuntimeSlice = (
   },
   setRequestRunningFlag: (flag: boolean) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         isRequestRunning: flag,
@@ -149,7 +141,6 @@ const createRuntimeSlice = (
   },
   setRequestSavedFlag: (flag: boolean) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         isRequestSaved: flag,

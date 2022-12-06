@@ -16,7 +16,6 @@ const emptyLog = {
     },
   },
   __meta: {
-    id: '',
     event: '',
     timestamp: 0,
     type: ELogTypes.System,
@@ -42,14 +41,13 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
 
   addConnectionLog: (connectionId: TId, log: ILog) => {
     // console.log({ log });
-
-    let connectionsLogs = get()?.connectionsLogs;
+    const state = get();
+    const connectionsLogs = state.connectionsLogs;
     if (connectionId in connectionsLogs) {
-      let logs = connectionsLogs[connectionId];
+      const logs = connectionsLogs[connectionId];
       log = { ...emptyLog, ...log };
 
       set((s) => ({
-        ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
           [connectionId]: [...logs, log],
@@ -57,7 +55,6 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
       }));
     } else {
       set((s) => ({
-        ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
           [connectionId]: [log],
@@ -66,7 +63,8 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
     }
   },
   addErrorLog: (connectionId: TId, message: string) => {
-    let log = {
+    const state = get();
+    const log = {
       ...emptyLog,
       title: message || '',
       __meta: {
@@ -75,13 +73,13 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
         color: ELogColors.Danger,
       },
     };
-    get()?.addConnectionLog(connectionId, log);
+    state.addConnectionLog(connectionId, log);
   },
   clearAllConnectionLogs: (connectionId: TId) => {
-    let connectionsLogs = get()?.connectionsLogs;
+    const state = get();
+    const connectionsLogs = state.connectionsLogs;
     if (connectionId in connectionsLogs) {
       set((s) => ({
-        ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
           [connectionId]: [],

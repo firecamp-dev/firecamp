@@ -1,9 +1,4 @@
-import {
-  ISocketIOConnection,
-  TId,
-  EPushActionType,
-  IQueryParam,
-} from '@firecamp/types';
+import { ISocketIOConnection, TId, IQueryParam } from '@firecamp/types';
 import equal from 'deep-equal';
 import _url from '@firecamp/url';
 
@@ -16,29 +11,27 @@ interface IConnectionsSlice {
 
 const createConnectionSlice = (set, get): IConnectionsSlice => ({
   addConnection: (connection: ISocketIOConnection) => {
-    let updatedConnections = [...get().request.connections, connection];
+    const state = get();
+    const updatedConnections = [...state.request.connections, connection];
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         connections: updatedConnections,
       },
     }));
-    get()?.prepareRequestConnectionsPushAction(
-      connection.id,
-      EPushActionType.Insert
-    );
+    state.prepareRequestConnectionsPushAction(connection.id, 'i');
   },
   updateConnection: (connectionId: TId, key: string, value: any) => {
+    const state = get();
     console.log({ key, value });
 
     //If connection id not provided
     if (!connectionId || !key) return;
 
-    let { connections } = get()?.request;
+    const { connections } = state.request;
 
     //If connection not found
-    let connectionIndex = connections.findIndex((c) => c.id === connectionId);
+    const connectionIndex = connections.findIndex((c) => c.id === connectionId);
     if (connectionIndex === -1) return;
 
     //Update connection
@@ -49,13 +42,13 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
     // Ping on/off
     if (key === 'ping') {
       if (value) {
-        get().togglePingConnection(
+        state.togglePingConnection(
           connectionId,
           true,
           updatedConnection?.pingInterval
         );
       } else {
-        get().togglePingConnection(connectionId, false);
+        state.togglePingConnection(connectionId, false);
       }
     }
 
@@ -72,16 +65,14 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
         [key]: Object.assign({}, connections[connectionIndex]?.config, value),
       });
     } else if (key === 'queryParams') {
-      get().changeUrl({
-        raw: get().request.url?.raw,
+      state.changeUrl({
+        raw: state.request.url?.raw,
         [key]: value,
       });
     }
 
     if (equal(updatedConnection, connections[connectionIndex])) return;
-
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         connections: [
@@ -92,35 +83,35 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       },
     }));
 
-    get()?.prepareRequestConnectionsPushAction(
+    state.prepareRequestConnectionsPushAction(
       connectionId,
-      EPushActionType.Update,
-      get()?.last?.request?.connections[connectionIndex],
+      'u',
+      state.last?.request?.connections[connectionIndex],
       updatedConnection
     );
   },
   removeConnection: (connectionId: TId) => {
-    let {
+    const state = get();
+    const {
       request: { connections },
       runtime: { _dnp },
-    } = get();
+    } = state;
 
-    let removeConnIndex = connections.findIndex(
+    const removeConnIndex = connections.findIndex(
       (conn) => conn.id === connectionId
     );
     if (removeConnIndex !== -1) {
-      let resultConnections = [
-          ...connections.slice(0, removeConnIndex),
-          ...connections.slice(removeConnIndex + 1),
-        ],
-        newActiveConnection = _dnp.runtime_activeConnection;
+      const resultConnections = [
+        ...connections.slice(0, removeConnIndex),
+        ...connections.slice(removeConnIndex + 1),
+      ];
+      let newActiveConnection = _dnp.runtime_activeConnection;
 
       if (connectionId === _dnp.runtime_activeConnection) {
         newActiveConnection = connections.find((c) => c.isDefault);
       }
 
       set((s) => ({
-        ...s,
         request: {
           ...s.request,
           connections: resultConnections,
@@ -129,14 +120,11 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
           ...s.runtime,
           _dnp: {
             ...s.runtime._dnp,
-            runtime_activeConnection: newActiveConnection,
+            runtimeActiveConnection: newActiveConnection,
           },
         },
       }));
-      get()?.prepareRequestConnectionsPushAction(
-        connectionId,
-        EPushActionType.Delete
-      );
+      state.prepareRequestConnectionsPushAction(connectionId, 'd');
     }
   },
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {
