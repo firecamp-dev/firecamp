@@ -63,7 +63,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
         canMove: true,
         data: { name: 'Root', __ref: { id: 'root', isCollection: true } },
         canRename: false,
-        hasChildren: true,
+        isFolder: true,
         children: this.rootOrders,
       });
     }
@@ -96,7 +96,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       canMove: true,
       data: treeItem,
       canRename: true,
-      hasChildren: !treeItem.__ref.isRequest, //!!children?.length, //note: if it's false then folder click has no effect, we need to open it even it's empty
+      isFolder: !treeItem.__ref.isRequest, //!!children?.length, //note: if it's false then folder click has no effect, we need to open it even it's empty
       children,
     });
   }

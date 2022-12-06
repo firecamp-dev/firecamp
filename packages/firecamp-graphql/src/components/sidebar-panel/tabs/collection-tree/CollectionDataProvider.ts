@@ -60,7 +60,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
         canMove: true,
         data: { name: 'Root', _meta: { id: 'root' } },
         canRename: false,
-        hasChildren: true,
+        isFolder: true,
         children: this.rootOrders,
       });
     }
@@ -94,7 +94,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       canMove: true,
       data: treeItem,
       canRename: true,
-      hasChildren: item._meta.is_folder,
+      isFolder: item._meta.is_folder,
       children,
     });
   }

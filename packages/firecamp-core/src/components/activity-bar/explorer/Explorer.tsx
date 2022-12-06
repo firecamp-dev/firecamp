@@ -293,7 +293,7 @@ const Explorer: FC<any> = () => {
                        */
                       onClick: e => { //avoid multi select
                         // console.log(item, actions, renderFlags)
-                        if (item.hasChildren) actions.toggleExpandedState();
+                        if (item.isFolder) actions.toggleExpandedState();
                         if(!renderFlags.isFocused)  actions.focusItem();
                         else actions.selectItem();
                       },
@@ -317,8 +317,8 @@ const Explorer: FC<any> = () => {
                   canRename={true}
                   canReorderItems={true}
                   canDragAndDrop={true}
-                  canDropOnItemWithChildren={true}
-                  canDropOnItemWithoutChildren={true}
+                  canDropOnFolder={true}
+                  canDropOnNonFolder={true}
                   canDrag={(items)=> {
                     return true;
                   }}

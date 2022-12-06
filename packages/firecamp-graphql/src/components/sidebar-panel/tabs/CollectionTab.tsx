@@ -95,7 +95,7 @@ const CollectionTab = () => {
             canRename={true}
             canReorderItems={true}
             canDragAndDrop={true}
-            canDropOnItemWithChildren={true}
+            canDropOnFolder={true}
             keyboardBindings={{
               renameItem: ['enter', 'f2'],
               abortRenameItem: ['esc'],
