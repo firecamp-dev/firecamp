@@ -1,9 +1,4 @@
-import {
-  ERequestTypes,
-  IGraphQL,
-  IUrl,
-  TId,
-} from '@firecamp/types';
+import { ERequestTypes, IGraphQL, IUrl, TId } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
@@ -22,7 +17,7 @@ interface IPushPayload extends Partial<IGraphQL> {
     item_id: TId;
     item_type: 'R';
     request_type: ERequestTypes.GraphQL;
-    collection_id: TId;
+    collectionId: TId;
     workspace_id: TId;
     keys: IPushAction;
   };
@@ -144,7 +139,7 @@ const createPushActionSlice = (set, get): IPushActionSlice => ({
       item_id: request.__ref.id,
       item_type: 'R', // TODO: add type here
       request_type: ERequestTypes.GraphQL,
-      collection_id: '',
+      collectionId: '',
       keys: {},
       workspace_id: '',
     };

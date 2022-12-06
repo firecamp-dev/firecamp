@@ -14,7 +14,7 @@ type TTreeItemData = {
   name: string;
   _meta: {
     id: string;
-    collection_id?: string;
+    collectionId?: string;
     is_folder?: boolean;
     is_item?: boolean;
   };
@@ -47,7 +47,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       ...items.map((i) => ({ ...i, _meta: { ...i._meta, is_item: true } })),
     ];
     this.rootOrders = this.items
-      .filter((i) => !i._meta.folder_id)
+      .filter((i) => !i._meta.folderId)
       .map((i) => i._meta.id);
   }
 
@@ -74,7 +74,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       _meta: {
         id: item._meta.id,
         is_folder: item._meta.is_folder,
-        collection_id: item._meta?.collection_id,
+        collectionId: item._meta?.collectionId,
       },
     };
 
@@ -82,7 +82,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       if (item._meta.is_leaf) return [];
       return this.items
         .filter((i) => {
-          if (item._meta.is_folder) return i._meta.folder_id == item._meta.id;
+          if (item._meta.is_folder) return i._meta.folderId == item._meta.id;
           return true;
         })
         .map((i) => i._meta.id);
@@ -129,21 +129,21 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   // extra methods of provider
   public addFolder(item: TFolderItem) {
     this.items.push({ ...item, _meta: { ...item._meta, is_folder: true } });
-    if (!item._meta.folder_id) {
+    if (!item._meta.folderId) {
       this.rootOrders.push(item._meta.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folderId]);
     }
   }
 
   public addItem(item: TItem) {
     this.items.push({ ...item, _meta: { ...item._meta, is_item: true } });
-    if (!item._meta.folder_id) {
+    if (!item._meta.folderId) {
       this.rootOrders.push(item._meta.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folderId]);
     }
   }
 
@@ -160,11 +160,11 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       return itm;
     });
 
-    if (!item._meta.folder_id) {
+    if (!item._meta.folderId) {
       this.rootOrders.push(item._meta.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folderId]);
     }
   }
 
@@ -174,11 +174,11 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     console.log(id, item);
     if (!item) return;
     this.items = this.items.filter((i) => i._meta.id != id);
-    if (!item._meta.folder_id) {
+    if (!item._meta.folderId) {
       this.rootOrders = this.rootOrders.filter((i) => i != id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folderId]);
     }
   }
 }

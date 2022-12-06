@@ -1,26 +1,23 @@
 import { useEffect, useState } from 'react';
 import {
   Button,
- 
-  
   ConfirmationPopover,
 } from '@firecamp/ui-kit';
 
 const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
   //todo: need to refactor
-  let tabId = 123; // todo: this will be received from tab meta
-  let body = '';
-  let prettifyQuery = (_) => {};
-  let getOS = () => 'MacOS';
+  const tabId = 123; // todo: this will be received from tab meta
+  const body = '';
+  const prettifyQuery = (_) => {};
+  const getOS = () => 'MacOS';
 
-  let resetQuery = () => {};
-  let onSaveQueriesToCollection = () => {};
+  const resetQuery = () => {};
+  const onSaveQueriesToCollection = () => {};
 
-  let [addNewQueryMessage, setAddNewQueryMessage] = useState('');
+  const [addNewQueryMessage, setAddNewQueryMessage] = useState('');
+  const [isResetConfirmOpen, toggleResetConfirmPopover] = useState(false);
 
-  let [isResetConfirmOpen, toggleResetConfirmPopover] = useState(false);
-
-  let _setNewQueryMessage = () => {
+  const _setNewQueryMessage = () => {
     if (!body) {
       setAddNewQueryMessage(``);
     } else {
@@ -36,11 +33,11 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
     _setNewQueryMessage();
   }, [body]);
 
-  let _toggleResetConfirmPopover = (value) => {
+  const _toggleResetConfirmPopover = (value) => {
     toggleResetConfirmPopover(value);
   };
 
-  let _onReset = () => {
+  const _onReset = () => {
     resetQuery();
     setAddNewQueryMessage('');
     _toggleResetConfirmPopover(false);

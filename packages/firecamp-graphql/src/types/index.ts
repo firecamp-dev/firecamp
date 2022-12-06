@@ -18,8 +18,8 @@ export enum EPushActionUrlKeys {
 }
 
 export enum EPushAction_metaKeys {
-  collection_id = 'collection_id',
-  folder_id = 'folder_id',
+  collectionId = 'collectionId',
+  folderId = 'folderId',
   updated_at = 'updated_at',
   updated_by = 'updated_by',
 }

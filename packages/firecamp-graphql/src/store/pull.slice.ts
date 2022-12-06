@@ -25,7 +25,7 @@ const createPullActionSlice = (set, get): IPullSlice => ({
       item_id: '',
       item_type: 'R',
       request_type: ERequestTypes.GraphQL,
-      collection_id: '',
+      collectionId: '',
       workspace_id: '',
       keys: {},
     },

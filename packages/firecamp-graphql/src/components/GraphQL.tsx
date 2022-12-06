@@ -83,7 +83,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
         platformContext.environment.setActiveEnvironments({
           activeEnvironments,
-          collectionId: tab?.request?._meta?.collection_id || '',
+          collectionId: tab?.request?.__meta?.collectionId || '',
         });
       }
 
@@ -254,7 +254,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     <Container className="h-full w-full with-divider" overflow="visible">
       <UrlBarContainer
         tab={tab}
-        collectionId={tab?.request?._meta?.collection_id || ''}
+        collectionId={tab?.request?._meta?.collectionId || ''}
         postComponents={platformComponents}
         onSaveRequest={onSave}
       />

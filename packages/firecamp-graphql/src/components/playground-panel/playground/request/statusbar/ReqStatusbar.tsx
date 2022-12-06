@@ -1,18 +1,9 @@
 import { useState } from 'react';
-import {
-  Button,
- 
-  
-  Dropdown,
-  StatusBar,
-  ToolBar
-} from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-
+import { Button, Dropdown, StatusBar, ToolBar } from '@firecamp/ui-kit';
 import SavePlayground from './SavePlayground';
 import EditPlaygroundName from './EditPlaygroundName';
-
 import { useGraphQLStore } from '../../../../../store';
 import { isValid } from '../../../../../services/GraphQLservice';
 
@@ -40,29 +31,39 @@ const ReqStatusBar = ({}) => {
   const [isOpen, toggleOpen] = useState(false);
 
   const plgOperations = playgroundMeta.operationNames.map((n) => ({ name: n })); //[{ name: 'MyCompany', meta: { type: 'q' } }];
-  const currentOps = playgroundMeta.activeOperation? { name: playgroundMeta.activeOperation }: plgOperations[0];
+  const currentOps = playgroundMeta.activeOperation
+    ? { name: playgroundMeta.activeOperation }
+    : plgOperations[0];
 
-  const onSelectOperation = (operation: { name: string}) => {
+  const onSelectOperation = (operation: { name: string }) => {
     setPlaygroundOperation(operation.name, playground.request._meta.id);
   };
 
-  const savePlg = async() => {
+  const savePlg = async () => {
     const isQueryValid = await isValid(playground.request.body);
-    if(isQueryValid == false) {
-      context.appService.notify.alert("The playground query is not valid.")
+    if (isQueryValid == false) {
+      context.appService.notify.alert('The playground query is not valid.');
       return;
     }
-    execute(currentOps.name, playground.request.body, playground.request.meta.variables);
+    execute(
+      currentOps.name,
+      playground.request.body,
+      playground.request.meta.variables
+    );
   };
 
   const _execute = async () => {
     const isQueryValid = await isValid(playground.request.body);
-    console.log(isQueryValid, "isQueryValid...")
-    if(isQueryValid == false) {
-      context.appService.notify.alert("The playground query is not valid.")
+    console.log(isQueryValid, 'isQueryValid...');
+    if (isQueryValid == false) {
+      context.appService.notify.alert('The playground query is not valid.');
       return;
     }
-    execute(currentOps.name, playground.request.body, playground.request.meta.variables);
+    execute(
+      currentOps.name,
+      playground.request.body,
+      playground.request.meta.variables
+    );
   };
 
   return (
@@ -73,9 +74,8 @@ const ReqStatusBar = ({}) => {
           {/* root */}
           {/* <VscChevronRight /> */}
           ./{playground.request.name}
-          
           <ToolBar className="ml-2 visible">
-              { playgroundMeta.isSaved? <EditPlaygroundName/>: <></> }
+            {playgroundMeta.isSaved ? <EditPlaygroundName /> : <></>}
           </ToolBar>
         </div>
         <div className="flex ml-auto mr-1">

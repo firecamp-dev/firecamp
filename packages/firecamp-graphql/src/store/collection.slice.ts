@@ -127,7 +127,7 @@ const createCollectionSlice = (
       _meta: {
         request_id: state.request._meta.id,
         request_type: ERequestTypes.GraphQL,
-        collection_id: state.request._meta.collection_id,
+        collectionId: state.request._meta.collectionId,
       },
     };
 
@@ -201,18 +201,17 @@ const createCollectionSlice = (
       _meta: {
         id: plg.request._meta.id,
         request_id: state.request._meta.id,
-        collection_id: state.request._meta.collection_id,
+        collectionId: state.request._meta.collectionId,
       },
     };
-    if(updateOnlyName) {
+    if (updateOnlyName) {
       //@ts-ignore
-      item.name = plg.request.name
-    }
-    else {
+      item.name = plg.request.name;
+    } else {
       //@ts-ignore
-      item.body= plg.request.body;
+      item.body = plg.request.body;
       //@ts-ignore
-      item.meta= plg.request.meta;
+      item.meta = plg.request.meta;
     }
 
     state.toggleProgressBar(true);
@@ -252,7 +251,7 @@ const createCollectionSlice = (
         state.context.appService.notify.success(
           updateOnlyName
             ? 'The playground name has been changed successfully'
-              : 'The playground has been updated successfully'
+            : 'The playground has been updated successfully'
         );
       })
       .catch((e) => {

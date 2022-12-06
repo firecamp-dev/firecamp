@@ -20,9 +20,9 @@ const UrlBarContainer = ({
   postComponents,
   onSaveRequest = (pushAction: IPushPayload, tabId: string) => {},
 }) => {
-  let { EnvironmentWidget } = postComponents;
+  const { EnvironmentWidget } = postComponents;
 
-  let {
+  const {
     url,
     method,
     __meta,
@@ -63,25 +63,25 @@ const UrlBarContainer = ({
   );
   // console.log({ url, request });
 
-  let schema = {};
+  const schema = {};
 
-  let _handleUrlChange = (e) => {
+  const _handleUrlChange = (e) => {
     e.preventDefault();
-    let value = e.target.value;
+    const value = e.target.value;
 
-    let urlObject = _url.updateByRaw({ ...url, raw: value });
+    const urlObject = _url.updateByRaw({ ...url, raw: value });
 
     changeUrl(urlObject);
   };
 
-  let _toggleGraphqlDoc = () => {
+  const _toggleGraphqlDoc = () => {
     if (url?.raw?.length && (!schema || !Object.keys(schema).length)) {
       fetchIntrospectionSchema();
     }
     toggleDoc(true);
   };
 
-  let _onSave = async () => {
+  const _onSave = async () => {
     try {
       let pushPayload: IPushPayload;
       if (!isRequestSaved) {

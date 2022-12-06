@@ -58,13 +58,13 @@ const Explorer: FC<any> = () => {
         let intentData = {
           id: intent._meta.id,
           type: intent.meta ? intent.meta.type : '',
-          collection_id: intent.meta ? intent.meta.collection_id || '' : '',
+          collectionId: intent.meta ? intent.meta.collectionId || '' : '',
           ...updatedInfo,
         };
 
         if (intent.meta && intent.meta.type === 'R') {
           intentData['request_type'] = intent.meta.request_type;
-          intentData['folder_id'] = intent.meta.folder_id || '';
+          intentData['folderId'] = intent.meta.folderId || '';
         }
         if (intent.meta && intent.meta.type === 'M') {
           intentData['parent_id'] = intent.meta.parent_id || '';
@@ -94,7 +94,7 @@ const Explorer: FC<any> = () => {
         };
 
         if (from?.meta?.type === 'M') {
-          fromData['collection_id'] = from.meta.collection_id || '';
+          fromData['collectionId'] = from.meta.collectionId || '';
         }
 
         return fromData;
@@ -120,7 +120,7 @@ const Explorer: FC<any> = () => {
           ...updatedInfo,
         };
         if (to?.meta?.type === 'M') {
-          toData['collection_id'] = to.meta.collection_id || '';
+          toData['collectionId'] = to.meta.collectionId || '';
         }
 
         return toData;
@@ -159,23 +159,23 @@ const Explorer: FC<any> = () => {
       let dataForIntent = _dndFns.prepareData.intent(intent, updatedInfo);
 
       if (dataForTo.type === 'P') {
-        // Add collection_id and remove folder_id if node is being placed to project.
-        dataForIntent['collection_id'] = dataForTo.id || '';
+        // Add collectionId and remove folderId if node is being placed to project.
+        dataForIntent['collectionId'] = dataForTo.id || '';
         if (intent?.meta?.type === 'M') {
           dataForIntent['parent_id'] = '';
         } else {
-          dataForIntent['folder_id'] = '';
+          dataForIntent['folderId'] = '';
         }
       } else if (dataForTo.type === 'M') {
-        // Add collection_id from target (to) node
-        if (to.meta && to.meta.collection_id) {
-          dataForIntent['collection_id'] = to.meta.collection_id || '';
+        // Add collectionId from target (to) node
+        if (to.meta && to.meta.collectionId) {
+          dataForIntent['collectionId'] = to.meta.collectionId || '';
         }
-        // Add folder_id from module id.
+        // Add folderId from module id.
         if (intent?.meta?.type === 'M') {
           dataForIntent['parent_id'] = dataForTo.id || '';
         } else {
-          dataForIntent['folder_id'] = dataForTo.id || '';
+          dataForIntent['folderId'] = dataForTo.id || '';
         }
       }
 
