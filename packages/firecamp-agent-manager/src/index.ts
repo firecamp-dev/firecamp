@@ -24,17 +24,17 @@ export const send = async (
   firecampAgent: EFirecampAgent
 ): Promise<IRestResponse> => {
   switch (firecampAgent) {
-    case EFirecampAgent.desktop:
+    case EFirecampAgent.Desktop:
       return window.fc.restExecutor.send(request);
 
-    case EFirecampAgent.extension:
+    case EFirecampAgent.Extension:
       return extension.send(request);
 
     case EFirecampAgent.web:
       restExecutors[request._meta.id] = new RestExecutor();
       return await restExecutors[request._meta.id].send(request);
 
-    case EFirecampAgent.proxy:
+    case EFirecampAgent.Cloud:
       if (!_object.isEmpty(request?.body?.[ERestBodyTypes.FormData])) {
         const data = await parseBody(
           request?.body,
@@ -72,9 +72,9 @@ export const cancel = async (
   firecampAgent: EFirecampAgent
 ): Promise<void> => {
   switch (firecampAgent) {
-    case EFirecampAgent.desktop:
+    case EFirecampAgent.Desktop:
       return window.fc.restExecutor.cancel(requestId);
-    case EFirecampAgent.extension:
+    case EFirecampAgent.Extension:
       return extension.cancel(requestId);
     case EFirecampAgent.web:
       restExecutors[requestId].cancel();
@@ -82,7 +82,7 @@ export const cancel = async (
       delete restExecutors[requestId];
 
       return;
-    case EFirecampAgent.proxy:
+    case EFirecampAgent.Cloud:
       const response = await axios.get(
         `${process.env.FIRECAMP_PROXY_API_HOST}/api/cancel/${requestId}`
       );
@@ -90,7 +90,6 @@ export const cancel = async (
       return response.data;
   }
 };
-
 
 export const pingExtension = (): Promise<string> => {
   return extension.ping();

@@ -30,7 +30,7 @@ const StatusBarContainer: FC<any> = ({ className = '' }) => {
         <DDMenuContainer />
       </StatusBar.PrimaryRegion>
       <StatusBar.SecondaryRegion id={'firecamp-status-bar-secondary-region'}>
-        {firecampAgent === EFirecampAgent.web && (
+        {firecampAgent === EFirecampAgent.Web && (
           <div className="pr-3">
             <FcAgentSelector />
           </div>

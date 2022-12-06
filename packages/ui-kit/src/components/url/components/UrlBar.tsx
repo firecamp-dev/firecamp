@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CopyButton, Column, Row, RootContainer, ToolBar } from '@firecamp/ui-kit';
+import { CopyButton, Column, Row, RootContainer, ToolBar,Container } from '@firecamp/ui-kit';
 import cx from 'classnames';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import './UrlBar.scss';
@@ -10,7 +10,7 @@ const UrlBar: FC<IUrlBar> & {
   Suffix: FC<ISuffix>
 } = ({ children, environmentCard = '', nodePath = '', showEditIcon=false, onEditClick= ()=>{} }) => {
   return (
-    <>
+    <Container.Header className="urlbar-wrapper">
       <div className="fc-statusbar">
         {!!nodePath ? (
           <div className="fc-urlbar-path flex">
@@ -29,7 +29,7 @@ const UrlBar: FC<IUrlBar> & {
       <RootContainer className="px-2 h-10 items-center justify-center">
         <Row className="fc-urlbar-container w-full overflow-visible">{children}</Row>
       </RootContainer>
-    </>
+    </Container.Header>
   );
 };
 

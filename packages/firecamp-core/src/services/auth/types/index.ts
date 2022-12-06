@@ -8,15 +8,15 @@ export interface IWorkspace {
   /**
    * workspace metadata
    */
-  meta: {
+  __meta: {
     /**
      * is workspace default created at the time user
      * collaboration account created
      */
-    is_default: boolean;
+    isDefault: boolean;
     type: EWorkspaceType;
   };
-  _meta: {
+  __ref: {
     id: string;
   };
 }
@@ -26,7 +26,7 @@ export interface IWorkspace {
  */
 export interface IUser {
   email: string;
-  _meta: {
+  __ref: {
     id: string;
   };
 }
@@ -35,9 +35,9 @@ export interface IUser {
  * Response of authentication API
  */
 export interface IAuthResponse {
-  meta: {
-    access_token: string;
-    active_workspace: string;
+  __meta: {
+    accessToken: string;
+    activeWorkspace: string;
   };
   user: IUser;
   workspace: IWorkspace;
@@ -58,6 +58,6 @@ export enum EProvider {
 export interface IRefreshTokenResponse {
   status: number;
   data: {
-    access_token: string;
+    accessToken: string;
   };
 }

@@ -51,7 +51,7 @@ return (
   <form className="fc-form grid" onSubmit={_handleSubmit}>
   {(inputList || []).map((input, i) => {
     let errorMsg = '';
-    if (isDirty[input.id] && !auth?.[input.id]?.length) {
+    if (isDirty[input.id] && !auth?.[input.id as keyof IAuthBasic]?.length) {
       errorMsg = `${input.name} can not be empty`;
     }
     return (
@@ -67,7 +67,7 @@ return (
               : 'text'
         }
         placeholder={input.name}
-        value={auth?.[input.id] || ''}
+        value={auth?.[input.id as keyof IAuthBasic] || ''}
         error={isDirty[input.id] && errorMsg ? errorMsg : ''}
         /* style={{
           borderColor:

@@ -66,6 +66,7 @@ module.exports = {
       secondaryBG: '#333333',
       secondaryText: '#ffffff',
       primaryColor: 'var(--app-primary)',
+      primaryColorOpacity: 'var(--app-primary-with-opacity)',
       primaryColorText: '#ffffff',
       secondaryColor: 'var(--app-secondary)',
       secondaryColorText: '#ffffff',

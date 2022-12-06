@@ -47,7 +47,7 @@ const Explorer: FC<any> = () => {
 
   const _dndFns = {
     /**
-     * prepareData: Prepate data for intent, from, and to with respect to Firecamp.
+     * prepareData: prepare data for intent, from, and to with respect to Firecamp.
      */
     prepareData: {
       /**
@@ -251,7 +251,7 @@ const Explorer: FC<any> = () => {
           canRename={true}
           canReorderItems={true}
           canDragAndDrop={true}
-          canDropOnItemWithChildren={true}
+          canDropOnFolder={true}
           ref={environmentRef}
           keyboardBindings={{
             // primaryAction: ['f3'],

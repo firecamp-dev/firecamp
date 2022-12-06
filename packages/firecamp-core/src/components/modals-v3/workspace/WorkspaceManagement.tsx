@@ -5,13 +5,11 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  
   Modal,
   IModal,
   Alert,
   SecondaryTab,
-  PrimaryTable,
+  PrimitiveTable,
   TTableApi,
   Dropdown,
   ProgressBar,
@@ -206,11 +204,11 @@ const MembersTab = () => {
   useEffect(() => {
     setIsRequesting(true);
     Rest.workspace
-      .getMembers(workspace._meta.id)
+      .getMembers(workspace.__ref.id)
       .then(({ data }) => {
         const members = data.members?.map((m) => {
           return {
-            id: m._meta.uuid || m._meta.id,
+            id: m.__ref.uuid || m.__ref.id,
             name: m.name || m.username,
             email: m.email,
             role: m.w_relation.role,
@@ -287,7 +285,7 @@ const MembersTab = () => {
   return (
     <div className="p-6  flex-1 flex flex-col">
       <ProgressBar active={isRequesting} />
-      <PrimaryTable
+      <PrimitiveTable
         columns={columns}
         apiRef={tableApi}
         renderColumn={(c) => c.name}

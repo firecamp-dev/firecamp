@@ -1,20 +1,20 @@
-import vm from 'vm'
+import vm from 'vm';
 
 export default (code: string, options: vm.Context): Promise<any> => {
-  let result: unknown
+  let result: unknown;
 
   return new Promise(async (resolve, reject) => {
     try {
-      result = await vm.runInNewContext(code, options)
+      result = await vm.runInNewContext(code, options);
 
-      resolve(result)
+      resolve(result);
     } catch (e) {
       console.error({
         API: 'vm',
-        error: e
-      })
+        error: e,
+      });
 
-      reject(e)
+      reject(e);
     }
-  })
-}
+  });
+};

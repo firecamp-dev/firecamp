@@ -9,10 +9,10 @@ import { GOOGLE_CONFIG } from './constants';
 export const authorize = async (): Promise<string> => {
   try {
     // Execute following logic when using electron agent
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       return window.fc.auth.loginViaGoogle({
         authorize_url: GOOGLE_CONFIG.AUTHORIZE_URL,
-        client_id: GOOGLE_CONFIG.CLIENT_ID,
+        clientId: GOOGLE_CONFIG.CLIENT_ID,
         scope: GOOGLE_CONFIG.SCOPE,
         redirect_url: GOOGLE_CONFIG.REDIRECT_URI,
         response_type: GOOGLE_CONFIG.RESPONSE_TYPE,
@@ -42,7 +42,7 @@ export const authorize = async (): Promise<string> => {
 export const deAuthorize = async (): Promise<void> => {
   try {
     // Execute following logic when using electron agent
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       return window.fc.auth.logoutFromGoogle();
     }
     // Execute following logic when using chrome extension

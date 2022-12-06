@@ -8,9 +8,9 @@ import { _object } from '@firecamp/utils';
 
 import { useTabStore } from '../../store/tab';
 import { IEnvironmentStore, useEnvStore } from '../../store/environment';
-import { ITab } from '../../components/tabs/types/tab';
-import { prepareEventNameForEnvToTab } from '../platform-emitter/events'
-import { platformEmitter } from '../platform-emitter'
+import { IRequestTab } from '../../components/tabs/types/tab';
+import { prepareEventNameForEnvToTab } from '../platform-emitter/events';
+import { platformEmitter } from '../platform-emitter';
 
 interface IPlatformEnvironmentService {
   // subscribe to environment changes
@@ -107,17 +107,17 @@ const environment: IPlatformEnvironmentService = {
 
   getActiveEnvsByTabId: (tabId: TId) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
-    let tab: ITab = useTabStore.getState().list[tabId];
+    let tab: IRequestTab = useTabStore.getState().list[tabId];
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
     //workspace active environment
     const wrsActiveEnv = envStore.activeTabWrsEnv;
     let collectionActiveEnv = '';
 
-    // get collectionId and collectionActiveEnv from tab's request's meta
-    if (tab.meta.isSaved && tab.request?._meta.collection_id) {
+    // get collectionId and collectionActiveEnv from tab's request's __meta
+    if (tab.__meta.isSaved && tab.request?.__ref.collectionId) {
       collectionActiveEnv =
-        envStore.activeTabCollectionEnvs[tab.request._meta.collection_id];
+        envStore.activeTabCollectionEnvs[tab.request.__ref.collectionId];
     }
 
     return Promise.resolve({
@@ -129,22 +129,22 @@ const environment: IPlatformEnvironmentService = {
   // get variables by tab id
   getVariablesByTabId: async (tabId: TId) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
-    const tab: ITab = useTabStore.getState().list[tabId];
+    const tab: IRequestTab = useTabStore.getState().list[tabId];
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
     const activeEnvsOfTab = await environment.getActiveEnvsByTabId(tabId);
-    const collectionId = tab.request?._meta.collection_id || '';
+    const collectionId = tab.request?.__ref.collectionId || '';
 
     //workspace active environment
     const wrsActiveEnv = envStore.envs.find(
-      (e) => e._meta.id == envStore.activeTabWrsEnv
+      (e) => e.__ref.id == envStore.activeTabWrsEnv
     );
     const wrsEnvVars = wrsActiveEnv ? wrsActiveEnv.variables : {};
 
     let collectionEnv: Partial<IEnvironment> = { name: '', variables: {} };
     if (collectionId && activeEnvsOfTab.collection) {
       collectionEnv = envStore.envs.find(
-        (e) => e._meta.id == activeEnvsOfTab.collection
+        (e) => e.__ref.id == activeEnvsOfTab.collection
       );
     }
     const colEnvVars = collectionEnv.variables || {};
@@ -211,10 +211,10 @@ const environment: IPlatformEnvironmentService = {
           requestEnvMeta.collectionId &&
           requestEnvMeta.activeEnvironments['collection']
         ) {
-          let collection_id = requestEnvMeta.collectionId;
+          let collectionId = requestEnvMeta.collectionId;
 
           let currentCollectionSelectedEnv =
-              envStore.activeTabCollectionEnvs[collection_id],
+              envStore.activeTabCollectionEnvs[collectionId],
             updatedActiveCollectionEnv =
               requestEnvMeta.activeEnvironments['collection'];
 
@@ -225,7 +225,7 @@ const environment: IPlatformEnvironmentService = {
             console.log({ updatedActiveCollectionEnv });
 
             envStore.setCollectionActiveEnv(
-              collection_id,
+              collectionId,
               updatedActiveCollectionEnv
             );
           }

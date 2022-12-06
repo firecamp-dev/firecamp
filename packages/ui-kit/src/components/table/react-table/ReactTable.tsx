@@ -17,7 +17,7 @@ import classnames from 'classnames';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
 
-import { IHeadLessTable, IReactTable } from "../interfaces/ReactTable.interfaces"
+import { IHeadLessTable, IReactTable } from "./ReactTable.interfaces"
 
 const headerProps = (props, { column }) => getStyles(props, column.align);
 
@@ -220,7 +220,7 @@ const HeadLessTable: FC<IHeadLessTable> = ({
   };
 
   return (
-    <div {...getTableProps()} className={classnames('fc-table', className)}>
+    <div {...getTableProps()} className={classnames('fc-table h-full', className)}>
       <div>
         {headerGroups.map((headerGroup) => (
           <div
@@ -258,7 +258,7 @@ const HeadLessTable: FC<IHeadLessTable> = ({
         {...getTableBodyProps()}
         as="tbody"
         ref={tbodyRef}
-        className="visible-scrollbar"
+        style={{height: "calc(100% - 32px)"}}
       >
         <FixedSizeList
           ref={listRef}
@@ -266,7 +266,7 @@ const HeadLessTable: FC<IHeadLessTable> = ({
           itemCount={rows.length}
           itemSize={32}
           //width={totalColumnsWidth + scrollBarSize}
-          className="invisible-scrollbar"
+          className="visible-scrollbar"
           // onScroll={_onItemRendered}
           onItemsRendered={_onItemRendered}
         >

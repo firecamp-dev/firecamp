@@ -24,7 +24,7 @@ const Auth: FC<IAuthSettingUi> = ({
   onChange = (key: string, value: any) => {},
   close = () => {},
 }) => {
-  let itemId: TId = useMemo(() => initialPayload?._meta.id, [initialPayload]);
+  let itemId: TId = useMemo(() => initialPayload?.__ref.id, [initialPayload]);
 
   let _onChangeAuth = (type, payload) => {
     if (!type || !payload || !payload.key) return;
@@ -43,15 +43,15 @@ const Auth: FC<IAuthSettingUi> = ({
     if (updated === 'activeGrantTypeValue') {
       const { key, value } = payload;
 
-      let type = propAuth[EAuthTypes.OAuth2].active_grant_type;
+      let type = propAuth[EAuthTypes.OAuth2].activeGrantType;
 
       onChange('auth', {
         ...propAuth,
         [EAuthTypes.OAuth2]: Object.assign(propAuth[EAuthTypes.OAuth2], {
-          grant_types: {
-            ...propAuth[EAuthTypes.OAuth2].grant_types,
+          grantTypes: {
+            ...propAuth[EAuthTypes.OAuth2].grantTypes,
             [type]: Object.assign(
-              propAuth[EAuthTypes.OAuth2].grant_types[type],
+              propAuth[EAuthTypes.OAuth2].grantTypes[type],
               {
                 [key]: value,
               }
@@ -65,7 +65,7 @@ const Auth: FC<IAuthSettingUi> = ({
       onChange('auth', {
         ...propAuth,
         [EAuthTypes.OAuth2]: Object.assign(propAuth[EAuthTypes.OAuth2], {
-          active_grant_type: payload,
+          activeGrantType: payload,
         }),
       });
     }
@@ -96,7 +96,7 @@ const Auth: FC<IAuthSettingUi> = ({
             setAuthDetails(ps => {
               return {
                 ...ps,
-                oauth2_last_fetched_token: token
+                oauth2LastFetchedToken: token
               };
             });
             F.notification.success(
@@ -122,16 +122,16 @@ const Auth: FC<IAuthSettingUi> = ({
       updates['auth'] = _object.pick(propAuth, updatedKeys);
 
     try {
-      if (activeAuthType !== initialPayload.meta.active_auth_type) {
+      if (activeAuthType !== initialPayload.__meta.activeAuthType) {
         updates = {
           ...updates,
-          meta: { active_auth_type: activeAuthType },
+          meta: { activeAuthType: activeAuthType },
         };
       }
 
       if (
         _object.size(updates) &&
-        (_object.size(updates.auth) || _object.size(updates.meta))
+        (_object.size(updates.auth) || _object.size(updates.__meta))
       ) {
         onUpdate(updates);
       }
@@ -155,7 +155,7 @@ const Auth: FC<IAuthSettingUi> = ({
             allowInherit={type === EPlatformModalTypes.FolderSetting}
             onChangeAuth={_onChangeAuth}
             onChangeActiveAuth={(activeAuth = EAuthTypes.NoAuth) => {
-              onChange('meta', { active_auth_type: activeAuth });
+              onChange('meta', { activeAuthType: activeAuth });
             }}
             onChangeOAuth2Value={_onChangeOAuth2Value}
             fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
@@ -182,11 +182,11 @@ const Auth: FC<IAuthSettingUi> = ({
                 equal(
                   _cloneDeep({
                     auth: propAuth,
-                    active_auth_type: activeAuthType,
+                    activeAuthType: activeAuthType,
                   }),
                   {
                     auth: initialPayload.auth,
-                    active_auth_type: initialPayload.meta.active_auth_type,
+                    activeAuthType: initialPayload.__meta.activeAuthType,
                   }
                 ) || isRequesting
               }

@@ -36,8 +36,10 @@ export enum EPlatformTabs {
   openNew = 'platform/tabs.openNew',
   openRequest = 'platform/tabs.openRequest',
   openSaved = 'platform/tabs.openSaved',
+  close = 'platform/tabs.close',
 
   opened = 'platform/tabs.opened',
+  closed = 'platform/tabs.closed',
 }
 
 export const prepareEventNameForRequestPull = (reqId: TId) => `pull/r/${reqId}`;

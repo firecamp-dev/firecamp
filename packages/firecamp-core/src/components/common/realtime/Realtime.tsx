@@ -8,6 +8,7 @@ import {
 } from '../../../services/platform-emitter/events';
 import { useTabStore } from '../../../store/tab';
 import PreComp from '../../tabs/header/PreComp';
+import { TId } from '@firecamp/types';
 
 const RealtimeEventManager: FC<any> = () => {
   const { open, close } = useTabStore.getState();
@@ -30,7 +31,7 @@ const RealtimeEventManager: FC<any> = () => {
       Realtime.onRequestChanges((payload) => {
         console.log({ onRequestChanges: payload });
         emitter.emit(
-          prepareEventNameForRequestPull(payload.request_id),
+          prepareEventNameForRequestPull(payload.requestId),
           payload.actions
         );
       });
@@ -112,28 +113,37 @@ const RealtimeEventManager: FC<any> = () => {
   // handle platform events
   useEffect(() => {
     emitter.on(EPlatformTabs.openNew, (type: string) => {
-      const tab = open.new(type, true);
-      emitter.emit(EPlatformTabs.opened, {
-        ...tab,
-        name: tab.name || tab.request.meta.name,
-        preComp: (
-          <PreComp method={tab?.request?.method || ''} type={tab.type} />
-        ),
-        dotIndicator: tab.meta?.hasChange === true,
-      });
+      const [tab, orders] = open.new(type, true);
+      emitter.emit(EPlatformTabs.opened, [
+        {
+          ...tab,
+          name: tab.name || tab.request.__meta.name,
+          preComp: (
+            <PreComp method={tab?.request?.method || ''} type={tab.type} />
+          ),
+          dotIndicator: tab.__meta?.hasChange === true,
+        },
+        orders,
+      ]);
     });
 
     emitter.on(EPlatformTabs.openSaved, (request: any) => {
-      const tab = open.saved(request);
+      const [ tab, orders ] = open.saved(request);
+      console.log(tab, "opened tab")
       if (!tab) return;
-      emitter.emit(EPlatformTabs.opened, {
+      emitter.emit(EPlatformTabs.opened, [{
         ...tab,
-        name: tab.name || tab.request.meta.name,
+        name: tab.name || request.__meta.name,
         preComp: (
           <PreComp method={tab?.request?.method || ''} type={tab.type} />
         ),
-        dotIndicator: tab.meta?.hasChange === true,
-      });
+        dotIndicator: tab.__meta?.hasChange === true,
+      }, orders]);
+    });
+
+    emitter.on(EPlatformTabs.close, (tabId_s: TId | TId[]) => {
+      close.byIds(Array.isArray(tabId_s) ? tabId_s : [tabId_s]);
+      emitter.emit(EPlatformTabs.closed, tabId_s);
     });
 
     return () => {

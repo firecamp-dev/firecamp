@@ -39,12 +39,11 @@ module.exports = {
       include: path.resolve(__dirname, '../'),
     });
 
-    //todo resolve the alias issue
-    // config.resolve.alias = {
-    //   ...config.resolve.alias,
-    //   "@firecamp/ui-kit": path.resolve("../src/ui-kit")
-    // }
-    
+    config.module.rules.push({
+        test: /\.txt$/,
+        use: ['raw-loader'],
+        include: path.resolve(__dirname, '../'),
+    })
 
     // config.resolve.alias = {
     //   ...config.resolve.alias,

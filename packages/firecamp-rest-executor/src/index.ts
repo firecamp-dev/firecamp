@@ -80,40 +80,40 @@ export default class RestExecutor implements IRestExecutor {
    * @param request: IRest
    */
   private async _prepare(request: IRest): Promise<AxiosRequestConfig> {
-    const { meta, body, config, headers, url } = request;
+    const { __meta, body, config, headers, url } = request;
 
     const axiosRequest: AxiosRequestConfig = {
-      url: _url.parse(url?.raw || '', ['http', 'https']),
-      params: QueryString.stringify(_table.toObject(url?.query_params || [])),
+      url: _url.normalize(url?.raw || '', ['http', 'https']),
+      params: QueryString.stringify(_table.toObject(url?.queryParams || [])),
       method: request.method,
       headers: _table.toObject(headers || []),
       // TODO: Supported in browser
       httpsAgent: new HTTPS.Agent({ rejectUnauthorized: false }),
       signal: this._controller.signal,
-      timeout: config?.request_timeout,
-      maxRedirects: config?.max_redirects,
+      timeout: config?.requestTimeout,
+      maxRedirects: config?.maxRedirects,
       transformResponse: (response) => response,
     };
 
     // disable SSL validation default
     if (isNode) {
       axiosRequest.httpsAgent = new HTTPS.Agent({
-        rejectUnauthorized: config?.reject_unauthorized,
+        rejectUnauthorized: config?.rejectUnauthorized,
       });
     }
 
     // parse path params
-    if (!_array.isEmpty(url?.path_params as any))
+    if (!_array.isEmpty(url?.pathParams as any))
       axiosRequest.url = _url.replacePathParams(
         url?.raw || '',
-        url?.path_params || []
+        url?.pathParams || []
       );
 
     // TODO: Check sending file without serialize in desktop environment
     // parse body payload
     axiosRequest.data = await parseBody(
       body || {},
-      meta?.active_body_type || ERestBodyTypes.NoBody
+      __meta.activeBodyType || ERestBodyTypes.NoBody
     );
 
     return axiosRequest;

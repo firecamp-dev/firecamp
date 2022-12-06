@@ -106,8 +106,8 @@ const ConverterTab: FC<IConverterTab> = ({ tab: propTab, tabFns }) => {
       isTargetSelected: false,
     },
     revision:
-      propTab.meta && Object.keys(propTab.meta).includes('revision')
-        ? propTab.meta.revision
+      propTab.__meta && Object.keys(propTab.__meta).includes('revision')
+        ? propTab.__meta.revision
         : 1,
     ...(propTab?.session?.request || {}),
   });
@@ -129,20 +129,20 @@ const ConverterTab: FC<IConverterTab> = ({ tab: propTab, tabFns }) => {
     let statePayload = {};
 
     if (
-      Object.keys(propTab.meta).includes('revision') &&
-      !equal(propTab.meta.revision, state.revision) &&
+      Object.keys(propTab.__meta).includes('revision') &&
+      !equal(propTab.__meta.revision, state.revision) &&
       (!equal(state.panel.source.body, propTab.request.data) ||
-        !equal(state.panel.source.type, propTab.request.meta.data_type))
+        !equal(state.panel.source.type, propTab.request.__meta.data_type))
     ) {
       if (state.panel && state.panel.source && state.panel.source.body) {
         statePayload = Object.assign({}, state, {
           panel: Object.assign({}, state.panel, {
             source: Object.assign({}, state.panel.source, {
               body: propTab.request.data,
-              type: propTab.request.meta.data_type || Json,
+              type: propTab.request.__meta.data_type || Json,
             }),
           }),
-          revision: propTab.meta.revision || 1,
+          revision: propTab.__meta.revision || 1,
         });
       }
     }
@@ -306,8 +306,8 @@ const ConverterTab: FC<IConverterTab> = ({ tab: propTab, tabFns }) => {
   let _onSaveRequest = async ({
     name,
     description,
-    project: collection_id,
-    module: folder_id,
+    project: collectionId,
+    module: folderId,
   }) => {
     let {
       panel: {
@@ -319,16 +319,16 @@ const ConverterTab: FC<IConverterTab> = ({ tab: propTab, tabFns }) => {
 
     let tabRequest;
     tabRequest = {
-      meta: {
+      __meta: {
         name,
         description,
         type: ERequestTypes.File,
         data_type: type,
       },
       data: body,
-      _meta: {
-        collection_id,
-        folder_id,
+      __ref: {
+        collectionId,
+        folderId,
       },
     }; //TODO: version
 
@@ -505,10 +505,10 @@ const ConverterTab: FC<IConverterTab> = ({ tab: propTab, tabFns }) => {
         >
           <Source
             source={state?.panel?.source || {}}
-            tabMeta={propTab.meta}
+            tabMeta={propTab.__meta}
             tabId={propTab.id}
             tabFns={tabFns}
-            requestMeta={propTab?.request?.meta || {}}
+            requestMeta={propTab?.request?.__meta || {}}
             onSourceUpdate={_onSourceUpdate}
             onDemoJsonRequest={_onDemoJsonRequest}
             onClearPanel={_onClearPanel}

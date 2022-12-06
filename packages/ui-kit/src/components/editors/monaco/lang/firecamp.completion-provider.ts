@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { _env } from '@firecamp/utils';
 import * as monaco from 'monaco-editor';
 import { headers, contentTypes, charsets, encodings } from './headerList';

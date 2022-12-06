@@ -31,18 +31,18 @@ const TabItem = (tabData: {
       )}
       onClick={() => onSelect(tab.id)}
     >
-      {tab.name}{' '}
+      {tab.name}
       {_object.has(tab, 'count') && tab.count && tab.count > 0 ? (
         <Count number={tab.count} />
       ) : (
-        ''
+        <></>
       )}
       {tab?.dotIndicator === true ? (
         <div className={'flex items-center text-primaryColor opacity-100'}>
           <VscCircleFilled size={10} />
         </div>
       ) : (
-        ''
+        <></>
       )}
     </div>
   );
@@ -60,13 +60,13 @@ const SecondaryTab: FC<ISecondaryTab> = ({
   let { button, controls } = components;
 
   return (
-    <div className={'flex'}>
+    <div className={'flex w-full'}>
       <div
         className={classnames(
           {
-            'flex text-base items-center py-1 bg-transparent': isBgTransperant,
+            'flex text-base items-center py-1 bg-transparent ': isBgTransperant,
           },
-          'flex text-base items-center',
+          'flex text-base items-center w-full' ,
           className
         )}
       >
@@ -82,8 +82,11 @@ const SecondaryTab: FC<ISecondaryTab> = ({
         })}
         {button ? button : ''}
         {controls ? controls : ''}
-        {additionalComponent ? additionalComponent : ''}
+       <div className=" ml-auto mr-2">
+
+       {additionalComponent ? additionalComponent : <></>}
       </div>
+    </div>
     </div>
   );
 };

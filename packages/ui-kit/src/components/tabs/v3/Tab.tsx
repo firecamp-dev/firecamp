@@ -2,7 +2,6 @@ import { FC } from 'react';
 import cx from 'classnames';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
-import { useDrag, useDrop } from 'react-dnd';
 
 import { EActiveBorderPosition, ITab } from './Tab.interface';
 import Count from '../Count';
@@ -31,7 +30,7 @@ const TitlePlacement = ({
 const CloseIconPlacement = ({
   id = '',
   state = 'default',
-  onClick = () => {},
+  onClick = (e: any) => {},
   show = false,
 }: {
   id: string;
@@ -43,26 +42,24 @@ const CloseIconPlacement = ({
     <div className="fc-tab-action flex items-center pl-1 -mr-1" id={id}>
       {state == 'modified' ? (
         <div className="flex items-center h-4 w-4 cursor-pointer">
-          <VscCircleFilled size={14} onClick={onClick} />
+          <VscCircleFilled size={14} onClick={(e) => onClick(e)} />
         </div>
       ) : (
         <div className="fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor">
-          <VscClose size={14} onClick={onClick} />
+          <VscClose size={14} onClick={(e) => onClick(e)} />
         </div>
       )}
     </div>
   );
 
-const ReorderType = 'tab';
-
 const Tab: FC<ITab> = ({
-  id = '',
-  index = '',
+  id,
+  index,
   className = '',
   name = '',
   state = 'default',
   isPreview = false,
-  canReorder = false,
+  draggable = false,
   borderMeta = {
     placementForActive: 'top',
     right: true,
@@ -76,51 +73,18 @@ const Tab: FC<ITab> = ({
   onSelect = () => {},
   preComp,
   postComp,
-  onReorder = (draggedItem, index) => {},
   count,
   height,
   dotIndicator,
   tabVersion,
+
+  onTabDragStart,
+  onTabDrop,
   ...tabProps
 }) => {
-  const [tabDragProps, tabDrag] = canReorder
-    ? useDrag({
-        item: {
-          id: id,
-          index: index,
-          name: name,
-        },
-        type: ReorderType,
-        collect: (monitor: any) => monitor,
-      })
-    : [];
-
-  const [tabDropProps, tabDrop] = canReorder
-    ? useDrop({
-        accept: ReorderType,
-        drop: (draggedItem: { id: number; index: number; name: string }) =>
-          onReorder(draggedItem.index, index),
-        collect: (monitor: { isOver: () => any; canDrop: () => any }) => ({
-          monitor,
-          isOver: monitor.isOver(),
-          canDrop: monitor.canDrop(),
-        }),
-      })
-    : [];
-
-  let setTabRef = (ref: any) => {
-    // console.log({ ref });
-
-    if (canReorder) {
-      tabDrag && tabDrag(ref);
-      tabDrop && tabDrop(ref);
-    }
-  };
-
   return (
     <div
       tabIndex={1}
-      draggable="true"
       role="tab"
       title={name}
       aria-label={name}
@@ -144,14 +108,18 @@ const Tab: FC<ITab> = ({
         { tabVersion },
         className
       )}
-      ref={setTabRef}
       onClick={(e) => onSelect(id, index, e)}
+      onDragOver={(ev) => ev.preventDefault()}
+      onDragStart={onTabDragStart}
+      onDrop={onTabDrop}
+      draggable={draggable}
     >
       <div
         className={cx(
           { 'active !bg-tabActiveBackground': isActive },
           { 'bg-tabBackground2': tabVersion == 2 },
           { 'bg-statusBarBackground2': tabVersion == 2 && isActive },
+          { 'bg-tabBackground': tabVersion == 1 },
           'fc-tab',
           'hover:bg-tabHoverBackground',
           'flex',
@@ -161,8 +129,7 @@ const Tab: FC<ITab> = ({
           'relative',
           'w-full',
           'whitespace-pre',
-          'relative',
-          { 'bg-tabBackground': tabVersion == 1 }
+          'relative'
         )}
       >
         <TopBorderPlacement
@@ -181,12 +148,12 @@ const Tab: FC<ITab> = ({
               <VscCircleFilled size={10} />
             </div>
           ) : (
-            ''
+            <></>
           )}
           {postComp ? (
-            <div className="flex items-center pr-1 pl-1">{postComp()}</div>
+            <div className="flex items-center pr-1 pl-1">{postComp}</div>
           ) : (
-            ''
+            <></>
           )}
         </div>
         <CloseIconPlacement
@@ -197,7 +164,7 @@ const Tab: FC<ITab> = ({
             //when user click on the close icon the tab should not call onSelect fn
             e.preventDefault();
             e.stopPropagation();
-            closeTabIconMeta?.onClick(index, id, e);
+            closeTabIconMeta?.onClick(id, index);
           }}
           show={closeTabIconMeta?.show}
         />
@@ -213,11 +180,10 @@ export default Tab;
 
 Tab.defaultProps = {
   id: '',
-  index: '',
   name: '',
   state: 'default',
   isPreview: false,
-  canReorder: false,
+  draggable: false,
   borderMeta: {
     placementForActive: EActiveBorderPosition.Top,
     right: true,

@@ -74,18 +74,15 @@ export { default as SingleLineEditor } from './components/editors/monaco-v2/Sing
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';
-export { default as PrimaryIFT } from './components/table/primary-ift/PrimaryIFT';
-export { default as MultipartIFT } from './components/table/multipart-ift/MultipartIFT';
-export { default as BulkEditIFT } from './components/table/bulk-edit-ift/BulkEditIFT';
-export { default as IFT } from './components/table/ift/IFT';
-export { default as SmartJSONTable } from './components/smart-json-table/SmartJSONTable';
+export { default as BulkEditTable } from './components/table/bulk-edit-table/BulkEditTable';
+// export { default as BasicTableRT8 } from './components/table/rt8/BasicTable';
 
 //table v3
-export { default as PrimaryTable } from './components/table-v3/primary-table/PrimaryTable';
-export type {
-  ITable,
-  TTableApi,
-} from './components/table-v3/primary-table/PrimaryTable';
+export { default as PrimitiveTable } from './components/table/primitive/Table';
+export { default as BasicTable } from './components/table/basic-table/BasicTable';
+export { default as MultipartTable } from './components/table/multipart-table/MultipartTable';
+export { default as LogTable } from './components/table/log-table/LogTable';
+export type { ITable, TTableApi } from './components/table/primitive/Table';
 
 // Url
 export { default as Url } from './components/url/components/Url';
@@ -108,6 +105,10 @@ export { default as Response } from './components/response/Response';
 //----------------------------------------------------enums---------------------------------------------------------------------------
 
 export { EPlacementForActive as ETabsPlacementForActive } from './components/tabs/interfaces/Tabs.interfaces';
+export type {
+  ITab,
+  EActiveBorderPosition,
+} from './components/tabs/v3/Tab.interface';
 
 export { EPopoverPosition } from './components/popover/interfaces/Popover.interfaces';
 

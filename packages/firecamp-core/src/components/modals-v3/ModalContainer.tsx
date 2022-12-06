@@ -73,7 +73,7 @@ export const ModalContainer = () => {
       case EPlatformModalTypes.CollectionSetting:
         return <CollectionSetting onClose={close} />;
 
-      // Fodler
+      // Folder
       case EPlatformModalTypes.CreateFolder:
         return <CreateFolder onClose={close} />;
       case EPlatformModalTypes.FolderSetting:
@@ -85,7 +85,7 @@ export const ModalContainer = () => {
       case EPlatformModalTypes.EditRequest:
         return <EditRequest onClose={close} />;
 
-      // Environemnt
+      // Environment
       case EPlatformModalTypes.CreateEnvironment:
         return <CreateEnvironment onClose={close} />;
       case EPlatformModalTypes.ManageEnvironment:
@@ -114,7 +114,7 @@ export const ModalContainer = () => {
   // return renderModal(currentOpenModal);
 
   const modalProps = EPlatformModalDefaultProps[currentOpenModal];
-  console.log(modalProps, '.....');
+  // console.log(modalProps, '.....');
   return (
     <Modal isOpen={isOpen} onClose={close} {...modalProps}>
       {renderModal(currentOpenModal)}

@@ -5,7 +5,7 @@ import { typePayload } from './constants';
 import { EAuthTypes } from '@firecamp/types';
 
 const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => { } }) => {
-  const algorithmList = typePayload[EAuthTypes.Hawk]['algorithmList'];
+  const algorithmList = typePayload[EAuthTypes.Hawk]['algorithmList'] as [];
   const inputList = typePayload[EAuthTypes.Hawk]['inputList'];
   const advancedInputList = typePayload[EAuthTypes.Hawk]['advancedInputList'];
 

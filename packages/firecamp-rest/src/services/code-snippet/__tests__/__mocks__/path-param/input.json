@@ -1,8 +1,8 @@
 {
   "url": {
     "raw": "https://localhost:3000/:id/:user",
-    "query_params": [],
-    "path_params": [
+    "queryParams": [],
+    "pathParams": [
       {
         "key": "id",
         "value": 1
@@ -14,13 +14,13 @@
     ]
   },
   "method": "GET",
-  "meta": {
+  "__meta": {
     "name": "Untitled Request",
     "type": "rest",
     "version": "2.0.0"
   },
-  "_meta": {
+  "__ref": {
     "id": "",
-    "collection_id": ""
+    "collectionId": ""
   }
 }

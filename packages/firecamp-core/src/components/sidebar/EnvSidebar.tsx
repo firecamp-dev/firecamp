@@ -41,7 +41,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
 
   const { tab, activeTab } = useTabStore(
     (s: any) => ({
-      tab: s.list?.find((t) => t.id === s.activeTab) || {},
+      tab: s.list[s.activeTab] || {},
       activeTab: s.activeTab,
     }),
     shallow
@@ -51,10 +51,10 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
 
   /** if active tab change then set current active tab's envs in sidebar*/
   useEffect(() => {
-    let collection_id = tab?.request?._meta?.collection_id;
-    // console.log({ collection_id });
-    if (tab?.meta?.isSaved && collection_id) {
-      setActiveCollectionEnv(activeTabCollectionEnvs[collection_id] || '');
+    let collectionId = tab?.request?.__ref?.collectionId;
+    // console.log({ collectionId });
+    if (tab?.__meta?.isSaved && collectionId) {
+      setActiveCollectionEnv(activeTabCollectionEnvs[collectionId] || '');
     } else {
       /** is request is not saved then don't set collection scoped env */
       setActiveCollectionEnv('');
@@ -93,7 +93,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
               scope={EEnvironmentScope.Collection}
               activeEnvId={activeCollectionEnv}
               activeTab={activeTab}
-              collectionId={tab?.request?._meta?.collection_id}
+              collectionId={tab?.request?.__ref?.collectionId}
             />
           ) :  <></>}
         </Container.Body>
@@ -160,13 +160,13 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
 
   // console.log({ activeEnvId, collectionId, activeTab, scope, envs });
 
-  const activeEnv = useRef<IEnvironment>(envs.find((env) => env._meta.id === activeEnvId));
+  const activeEnv = useRef<IEnvironment>(envs.find((env) => env.__ref.id === activeEnvId));
   const [ variables, setVariables ] = useState<string>('');
   const [ isVarUpdated, setIsVarUpdated ] = useState<boolean>(false);
 
   // if env/variables change from outer side then update them into the currently opened sidebar
   useEffect(() => {
-    activeEnv.current = envs.find((env) => env._meta.id === activeEnvId);
+    activeEnv.current = envs.find((env) => env.__ref.id === activeEnvId);
     try {
       if(!activeEnv.current) return;
       const variablesString = JSON.stringify(activeEnv.current.variables || {}, null, 2);

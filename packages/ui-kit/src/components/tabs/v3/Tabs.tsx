@@ -1,8 +1,8 @@
 import {
+  DragEventHandler,
   FC,
   forwardRef,
   Fragment,
-  useEffect,
   useImperativeHandle,
   useRef,
   useState,
@@ -21,63 +21,115 @@ const Tabs: FC<ITabs> = forwardRef(
       id,
       className,
       list,
-      orders,
+      orders: _orders,
       preComp,
       postComp,
       suffixComp,
       withDivider,
-      activeTab,
+      activeTab: _activeTab,
       equalWidth,
-      canReorder,
       height,
       tabsVersion,
       tabIndex,
-      focus,
       closeTabIconMeta,
       addTabIconMeta,
       tabBorderMeta,
+      reOrderable,
 
       onSelect = () => {},
-      // onReorder: prop_onReorder = () => {},
+      onReorder,
     },
     ref
   ) => {
-    const [tabs, setTabs] = useState(list);
-
-    // const onReorder = async (dragIndex, hoverIndex) => {
-    //   // console.log({ dragIndex, hoverIndex });
-
-    //   let reorderedList = [...sortedList];
-
-    //   let dragTab = reorderedList[dragIndex];
-    //   if (dragIndex === undefined || hoverIndex === undefined || !dragTab)
-    //     return s;
-    //   // console.log({ reorderedList });
-
-    //   //Get sorted Tabs
-    //   reorderedList.splice(dragIndex, 1);
-    //   reorderedList.splice(hoverIndex, 0, dragTab);
-    //   setSortedList(reorderedList);
-    //   prop_onReorder(reorderedList);
-    // };
-
-    useImperativeHandle(ref, () => {
-      return {
-        changeName: (tabId: TId, name: string) => {
-          setTabs((tabs) => {
-            tabs[tabId].name = name;
-            return tabs;
-          });
-        },
-        reorder: () => {},
-        add: (tab: ITab) => {
-          setTabs((tabs) => {
-            return { ...tabs, [tab.id]: tab };
-          });
-        },
-        remove: () => {},
-      };
+    const dndIds = useRef({ dragId: null, dropId: null });
+    const [state, setState] = useState({
+      tabs: list,
+      activeTab: _activeTab,
+      orders: _orders,
     });
+
+    useImperativeHandle(
+      ref,
+      () => {
+        return {
+          changeName: (tabId: TId, name: string) => {
+            setState((s) => ({
+              ...s,
+              tabs: {
+                ...s.tabs,
+                [tabId]: { ...s.tabs[tabId], name },
+              },
+            }));
+          },
+          reorder: () => {},
+          add: (tab: ITab) => {
+            setState((s) => ({
+              ...s,
+              tabs: {
+                ...s.tabs,
+                [tab.id]: tab,
+              },
+              activeTab: tab.id,
+              orders: [...s.orders, tab.id],
+            }));
+          },
+          close: (tabId_s: TId | TId[]) => {
+            setState((s) => {
+              let orders = s.orders;
+              if (typeof tabId_s == 'string') {
+                delete s.tabs[tabId_s];
+                orders = orders.filter((i) => i != tabId_s);
+              } else {
+                tabId_s.forEach((id) => {
+                  delete s.tabs[id];
+                });
+                orders = orders.filter((i) => !tabId_s.includes(i));
+              }
+              const activeTab = orders.includes(s.activeTab)
+                ? s.activeTab
+                : orders[orders.length - 1];
+              return { tabs: s.tabs, orders, activeTab };
+            });
+          },
+        };
+      },
+      []
+    );
+
+    const _onSelect = (tabId: TId, index: number, e: any) => {
+      setState((s) => ({
+        ...s,
+        activeTab: tabId,
+      }));
+      onSelect(tabId, index, e);
+    };
+
+    /** set dragId on drag start at Tabs */
+    const onDragStart: DragEventHandler<HTMLDivElement> = (e) => {
+      dndIds.current.dragId = e.currentTarget.id;
+    };
+
+    /** set dropId on drop at Tabs and reorder ids/tabs */
+    const onDrop: DragEventHandler<HTMLDivElement> = (e) => {
+      dndIds.current.dropId = e.currentTarget.id;
+      reorder();
+    };
+
+    const reorder = async () => {
+      const { dragId, dropId } = dndIds.current;
+      const dragIndex = state.orders.findIndex((i) => i == dragId);
+      const dropIndex = state.orders.findIndex((i) => i == dropId);
+
+      const orders = [...state.orders];
+      orders.splice(dropIndex, 0, orders.splice(dragIndex, 1)[0]);
+
+      setState((s) => ({
+        ...s,
+        orders,
+      }));
+      dndIds.current = { dragId: null, dropId: null };
+      if (typeof onReorder == 'function') onReorder(orders);
+    };
 
     return (
       <div
@@ -87,7 +139,6 @@ const Tabs: FC<ITabs> = forwardRef(
           'text-base',
           '!border-tabBorder',
           '!border-t-transparent'
-          // {'focus-outer-tab' : focus == true }
         )}
         id={id}
         tabIndex={tabIndex}
@@ -99,27 +150,26 @@ const Tabs: FC<ITabs> = forwardRef(
               className="flex border-b border-tabBorder items-start"
               style={{ height: height }}
             >
-              {orders.map((tabId, i) => {
-                const tab = tabs[tabId];
-                console.log(tabs, tabId, 555);
-                if (!tab) return <Fragment key={tabId}/>;
+              {state.orders.map((tabId, i) => {
+                const tab = state.tabs[tabId];
+                // console.log(state.tabs, tabId, 555);
+                if (!tab) return <Fragment key={tabId} />;
                 return (
                   <Tab
                     key={tabId}
                     index={i}
                     id={tabId}
-                    // canReorder={canReorder}
-                    tabsVersion={tabsVersion}
-                    focus={focus}
+                    draggable={reOrderable}
+                    tabVersion={tabsVersion}
                     className={cx(
                       'border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
                       {
                         "active text-tabForeground before:block before:content-[''] before:absolute before:bg-primaryColor before:h-0.5 before:-top-px before:-inset-x-px after:block after:content-[''] after:absolute after:bg-statusBarBackground2 after:h-px after:-bottom-px after:inset-x-0 border-r-tabBorder border-l-tabBorder":
-                          tabId == activeTab,
+                          tabId == state.activeTab,
                       },
                       {
                         " after:block text-tabForegroundInactive after:content-[''] after:absolute after:h-px after:w-0.5 after:-left-0.5 after:-bottom-px after:border-t after:border-tabBorder":
-                          tabId != activeTab,
+                          tabId != state.activeTab,
                       },
                       {
                         'border-r-tabBorder !border-l-transparent': withDivider,
@@ -127,29 +177,30 @@ const Tabs: FC<ITabs> = forwardRef(
                       {
                         ' after:!bg-statusBarBackground2':
                           // i == 0 &&
-                          tabId == activeTab,
+                          tabId == state.activeTab,
                       },
                       {
                         'flex-1 text-center': equalWidth,
                       },
                       {
                         'after:!bg-tabActiveBackground':
-                          tabsVersion == 1 && tabId == activeTab,
+                          tabsVersion == 1 && tabId == state.activeTab,
                       },
                       {
                         'after:!bg-statusBarBackground2':
-                          tabsVersion == 2 && tabId == activeTab,
+                          tabsVersion == 2 && tabId == state.activeTab,
                       },
                       { 'bg-transparent text-base': tabsVersion == 1 },
                       { 'bg-tabBackground2 text-sm': tabsVersion == 2 }
                     )}
-                    // onReorder={onReorder}
                     name={tab.name}
                     closeTabIconMeta={closeTabIconMeta}
                     borderMeta={tabBorderMeta}
-                    isActive={tabId == activeTab}
-                    onSelect={onSelect}
+                    isActive={tabId == state.activeTab}
+                    onSelect={_onSelect}
                     height={height}
+                    onTabDragStart={onDragStart}
+                    onTabDrop={onDrop}
                     {...tab}
                   />
                 );
@@ -158,7 +209,7 @@ const Tabs: FC<ITabs> = forwardRef(
               {addTabIconMeta?.show && (
                 <div
                   id={addTabIconMeta.id || ''}
-                  className="px-2 cursor-pointer h-3"
+                  className="px-2 cursor-pointer h-8 flex items-center justify-center"
                   onClick={(e) => {
                     if (!addTabIconMeta?.disabled) {
                       addTabIconMeta?.onClick?.(e);
@@ -228,11 +279,10 @@ Tabs.defaultProps = {
   orders: [],
   withDivider: false,
   equalWidth: false,
-  canReorder: false,
+  reOrderable: false,
   height: 32,
   tabsVersion: 1,
   tabIndex: 1,
-  focus: true,
 
   closeTabIconMeta: {
     show: false,

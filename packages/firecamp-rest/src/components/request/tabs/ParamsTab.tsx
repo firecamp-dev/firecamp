@@ -1,55 +1,65 @@
-import { PrimaryIFT, BulkEditIFT } from '@firecamp/ui-kit';
-import { Container } from '@firecamp/ui-kit';
+import { useRef } from 'react';
+import {
+  Container,
+  BulkEditTable,
+  TTableApi,
+  BasicTable,
+} from '@firecamp/ui-kit';
+import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
 import { useRestStore } from '../../../store';
-import { _array } from '@firecamp/utils';
 
 const ParamsTab = () => {
-  let { query_params, path_params, changeQueryParams, changePathParams } =
+  const tableApi = useRef<TTableApi>();
+  const { queryParams, pathParams, changeQueryParams, changePathParams } =
     useRestStore(
       (s: any) => ({
-        query_params: s.request.url?.query_params || [],
-        path_params: s.request.url?.path_params || [],
-
+        queryParams: s.request.url?.queryParams || [],
+        pathParams: s.request.url?.pathParams || [],
         changeQueryParams: s.changeQueryParams,
         changePathParams: s.changePathParams,
       }),
       shallow
     );
 
+  // useEffect(() => {
+  // const tRows = tableApi.current.getRows();
+  // console.log(tRows, queryParams, tRows == queryParams, ' queryParams...');
+  // tableApi.current.initialize(queryParams);
+  // }, [queryParams]);
+
   return (
     <Container>
       <Container.Body className="flex flex-col">
-        <BulkEditIFT
+        <BulkEditTable
+          key={'queryParams'}
+          title="Query params"
+          rows={queryParams || []}
           onChange={(data) => {
             // console.log({ data });
-
             changeQueryParams(data);
           }}
-          key={'queryParams'}
-          rows={query_params || []}
-          title="Query params"
+          onMount={(tApi) => (tableApi.current = tApi)}
         />
-        {!_array.isEmpty(path_params) ? (
+        {!_array.isEmpty(pathParams) ? (
           <div className="pt-14">
-            <PrimaryIFT
-              onChange={(data) => {
-                // _onChangeParamsValue(data, PATH_PARAMS);
-                changePathParams(data);
-              }}
+            <BasicTable
+              rows={pathParams || []}
               key={'pathParams'}
-              rows={path_params || []}
               title="Path params"
-              meta={{
+              options={{
                 disabledColumns: ['key', 'disable'],
                 allowRowRemove: false,
                 allowRowAdd: false,
                 allowSort: false,
               }}
+              onChange={(data) => {
+                changePathParams(data);
+              }}
             />
           </div>
         ) : (
-          ''
+          <></>
         )}
       </Container.Body>
     </Container>

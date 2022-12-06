@@ -48,7 +48,7 @@ const Tabs = ({ activeBodyTab = 'body', onChangeActiveBodyTab = () => {} }) => {
     }
   }, [headers, cookies]);
 
-  if (_misc.firecampAgent() !== EFirecampAgent.desktop) {
+  if (_misc.firecampAgent() !== EFirecampAgent.Desktop) {
     let newTabs = tabs.filter((e) => e.id !== 'timeline');
     if (!equal(newTabs, tabs)) {
       setTabs(newTabs);

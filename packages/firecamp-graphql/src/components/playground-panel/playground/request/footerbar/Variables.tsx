@@ -26,6 +26,7 @@ const Variables = () => {
       monacoOptions={{
         name: `variables`,
       }}
+      height="100%"
     />
   );
 };
