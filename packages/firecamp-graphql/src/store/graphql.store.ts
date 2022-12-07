@@ -27,6 +27,7 @@ import {
   ERestBodyTypes,
   IGraphQL,
   IRest,
+  TId,
 } from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
@@ -50,7 +51,7 @@ interface IGraphQLStore
   originalRequest?: IGraphQL;
 
   setLast: (initialState: IGraphQLStoreState) => void;
-  initialise: (_request: Partial<IGraphQL>) => void;
+  initialise: (_request: Partial<IGraphQL>, tabId: TId) => void;
   context?: any;
   setContext: (ctx: any) => void;
   execute?: (query?: string, variables?: string) => Promise<IRestResponse>;
@@ -73,7 +74,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
         initialState.request //_object.pick(initialState.request, requestSliceKeys)
       ),
       ...createPlaygroundsSlice(set, get),
-      ...createRuntimeSlice(set, get),
+      ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get),
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
@@ -88,9 +89,9 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
         }));
       },
 
-      initialise: (request: Partial<IGraphQL>) => {
+      initialise: (request: Partial<IGraphQL>, tabId: TId) => {
         // const state = get();
-        const initState = initialiseStoreFromRequest(request);
+        const initState = initialiseStoreFromRequest(request, tabId);
         // console.log(initState, 'initState');
         set((s) => ({
           ...s,

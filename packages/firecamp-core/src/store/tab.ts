@@ -6,6 +6,8 @@ import { _object } from '@firecamp/utils';
 import { dissoc } from 'ramda';
 
 import { IRequestTab } from '../components/tabs/types';
+import { platformEmitter } from '../services/platform-emitter';
+import { EPlatformTabs } from '../services/platform-emitter/events';
 
 const initialState = {
   list: {},
@@ -109,8 +111,11 @@ const useTabStore = create<ITabStore>((set, get) => {
     },
 
     changeMeta: (tabId: TId, __meta: IRequestTab['__meta']) => {
+      const state = get();
+      const tab = state.list[tabId];
+      if (!tab?.__meta) return;
+      // console.log(s.list, tabId, __meta, 9999);
       set((s) => {
-        const tab = s.list[tabId];
         const list = {
           ...s.list,
           [tabId]: {
@@ -123,6 +128,12 @@ const useTabStore = create<ITabStore>((set, get) => {
         };
         return { list };
       });
+      // if __meta.hasChange will change then emit EPlatformTabs.changeState
+      if (tab.__meta.hasChange === false && __meta.hasChange === true) {
+        platformEmitter.emit(EPlatformTabs.changeState, [tabId, 'modified']);
+      } else if (tab.__meta.hasChange === true && __meta.hasChange === false) {
+        platformEmitter.emit(EPlatformTabs.changeState, [tabId, 'default']);
+      }
     },
 
     changeActiveTab: (tabId) => {

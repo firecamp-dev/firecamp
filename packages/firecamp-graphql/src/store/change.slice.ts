@@ -62,7 +62,10 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
       }
     }
     console.log(_rcs);
-    state.context.request.onChangeRequestTab({ hasChange: true });
+    const hasChange = !_object.isEmpty(_cleanDeep(_cloneDeep(_rcs)));
+    state.context.request.onChangeRequestTab(state.runtime.tabId, {
+      hasChange,
+    });
   },
 });
 

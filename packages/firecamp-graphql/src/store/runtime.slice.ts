@@ -59,24 +59,25 @@ interface IRuntimeSlice {
   setRequestSavedFlag: (flag: boolean) => void;
 }
 
-const createRuntimeSlice = (set, get): IRuntimeSlice => ({
-  runtime: {
-    playgroundTabs: [
-      // { id: 'playground-1', name: 'playground 1' }
-    ],
-    playgroundsMeta: {
-      // 'playground-1': { isSaved: false, isRequestRunning: false, operationNames: [] },
-    },
-    activePlayground: '', // 'playground-1',
-    schema: '',
-    isDocOpened: false,
-    activeEnvironments: {
-      workspace: '',
-      collection: '',
-    },
-    isRequestSaved: false,
-    isFetchingIntrospection: false,
-  },
+const createRuntimeSlice = (set, get, initState): IRuntimeSlice => ({
+  runtime: initState,
+  // runtime: {
+  //   playgroundTabs: [
+  //     // { id: 'playground-1', name: 'playground 1' }
+  //   ],
+  //   playgroundsMeta: {
+  //     // 'playground-1': { isSaved: false, isRequestRunning: false, operationNames: [] },
+  //   },
+  //   activePlayground: '', // 'playground-1',
+  //   schema: '',
+  //   isDocOpened: false,
+  //   activeEnvironments: {
+  //     workspace: '',
+  //     collection: '',
+  //   },
+  //   isRequestSaved: false,
+  //   isFetchingIntrospection: false,
+  // },
 
   setActivePlayground: (playgroundId: string) => {
     set((s: IRuntimeSlice) => ({

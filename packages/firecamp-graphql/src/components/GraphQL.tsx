@@ -42,7 +42,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
-
       initialise: s.initialise,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       setActiveEnvironments: s.setActiveEnvironments,
@@ -193,7 +192,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       }
 
       /** initialise graphql store on tab load */
-      initialise(_request);
+      initialise(_request, tab.id);
       setIsFetchingReqFlag(false);
     } catch (error) {
       console.error({
@@ -261,58 +260,21 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
           <DocWrapper />
         </Row>
       </Container.Body>
-      {tab.__meta.isSaved && (
-        <TabChangesDetector
-          onChangeRequestTab={platformContext.request.onChangeRequestTab}
-          tabId={tab.id}
-          tabMeta={tab.__meta}
-        />
-      )}
     </Container>
   );
 };
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {} } = tab;
-    const initState = initialiseStoreFromRequest(request);
-
+    const { request = {}, id } = tab;
+    const initState = initialiseStoreFromRequest(request, id);
+    // console.log(tab, 'tab.....', initState)
     return (
       <GraphQLStoreProvider createStore={() => createGraphQLStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
       </GraphQLStoreProvider>
     );
   };
-
   return MyComponent;
 };
-
-const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
-  let { pushAction } = useGraphQLStore(
-    (s: any) => ({
-      pushAction: s.pushAction,
-    }),
-    shallow
-  );
-
-  useEffect(() => {
-    if (tabMeta.isSaved) {
-      // console.log({ pushAction });
-
-      // Check if push action empty or not
-      let isTabDirty = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(pushAction || {})) || {}
-      );
-      // console.log({ pushAction });
-
-      // Update tab __meta if existing tab.__meta.hasChange is not same as isTabDirty
-      if (tabMeta.hasChange !== isTabDirty) {
-        onChangeRequestTab(tabId, { hasChange: isTabDirty });
-      }
-    }
-  }, [pushAction]);
-
-  return <></>;
-};
-
 export default withStore(GraphQL);
