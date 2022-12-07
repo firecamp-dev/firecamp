@@ -20,7 +20,6 @@ interface IPullSlice {
 }
 
 const createPullActionSlice = (set, get): IPullSlice => ({
-
   getMergedRequestByPullAction: (pullActionPayload: IPushPayload) => {
     if (
       pullActionPayload &&

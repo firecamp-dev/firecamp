@@ -1,27 +1,22 @@
 import { useState } from 'react';
+import shallow from 'zustand/shallow';
 import {
   Container,
-  Button,
   Column,
- 
-  
   Resizable,
 } from '@firecamp/ui-kit';
-import shallow from 'zustand/shallow';
-
 import ReqStatusbar from './statusbar/ReqStatusbar';
 // import QueryEditorMonaco from './query-editor/QueryEditor.monaco';
 import QueryEditor from './query-editor/QueryEditor';
 import PlaygroundFooter from './footerbar/PlaygroundFooter';
 import './sass/doc-explorer.css';
-
-import { useGraphQLStore } from '../../../../store';
+import { IGraphQLStore, useGraphQLStore } from '../../../../store';
 
 const Request = () => {
-  let [isQueryDirty, toggleQueryDirty] = useState(false);
+  const [isQueryDirty, toggleQueryDirty] = useState(false);
 
-  let { playground, activePlayground, changePlaygroundValue } = useGraphQLStore(
-    (s: any) => ({
+  const { playground, activePlayground, changePlaygroundValue } = useGraphQLStore(
+    (s: IGraphQLStore) => ({
       playground: s.playgrounds[s.runtime.activePlayground],
       activePlayground: s.runtime.activePlayground,
       changePlaygroundValue: s.changePlaygroundValue,
@@ -29,7 +24,7 @@ const Request = () => {
     shallow
   );
 
-  let onChangeEditor = (value) => {
+  const onChangeEditor = (value) => {
     changePlaygroundValue(activePlayground, value);
   };
 

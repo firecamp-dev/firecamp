@@ -60,7 +60,10 @@ export default (credentials: IOAuth1, extra: IExtra): string => {
     },
   };
 
-  const token: { key: string, secret: string } = { key: tokenKey, secret: tokenSecret };
+  const token: { key: string; secret: string } = {
+    key: tokenKey,
+    secret: tokenSecret,
+  };
 
   const data = oauth.authorize(requestData, token);
   const authInfo = oauth.toHeader(data).Authorization;

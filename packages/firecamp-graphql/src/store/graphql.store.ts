@@ -1,20 +1,17 @@
 import create from 'zustand';
+import _cloneDeep from 'lodash/cloneDeep';
 import createContext from 'zustand/context';
 import { buildClientSchema, getIntrospectionQuery } from 'graphql';
 
 import {
   IRequestSlice,
   createRequestSlice,
-  requestSliceKeys,
   IPlaygrounds,
   IPlaygroundsSlice,
   createPlaygroundsSlice,
   ICollection,
   ICollectionSlice,
   createCollectionSlice,
-  IPushActionSlice,
-  IPushAction,
-  createPushActionSlice,
   createRuntimeSlice,
   IRuntime,
   IRuntimeSlice,
@@ -23,10 +20,13 @@ import {
   createUiSlice,
   IUi,
   IUiSlice,
+  IRequestChangeStateSlice,
+  createRequestChangeStateSlice,
 } from './index';
-import { ERestBodyTypes, IGraphQL, IRest } from '@firecamp/types';
+import { ERestBodyTypes, IGraphQL } from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
+import { initialiseStoreFromRequest } from '../services/request.service';
 
 const {
   Provider: GraphQLStoreProvider,
@@ -38,28 +38,23 @@ interface IGraphQLStore
   extends IRequestSlice,
     IPlaygroundsSlice,
     IRuntimeSlice,
-    IPushActionSlice,
     ICollectionSlice,
     IPullSlice,
-    IUiSlice {
+    IUiSlice,
+    IRequestChangeStateSlice {
   last: any;
+  originalRequest?: IGraphQL;
 
   setLast: (initialState: IGraphQLStoreState) => void;
-  initialise: (
-    initialState: IGraphQLStoreState,
-    collection: ICollection,
-    isFresh: boolean
-  ) => void;
+  initialise: (_request: Partial<IGraphQL>) => void;
   context?: any;
   setContext: (ctx: any) => void;
-  getRequest: () => IRest;
   execute?: (query?: string, variables?: string) => Promise<IRestResponse>;
   fetchIntrospectionSchema: () => Promise<void>;
 }
 
 interface IGraphQLStoreState {
   request: IGraphQL;
-  pushAction?: IPushAction;
   playgrounds: IPlaygrounds;
   runtime?: IRuntime;
   ui?: IUi;
@@ -75,10 +70,10 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
       ),
       ...createPlaygroundsSlice(set, get),
       ...createRuntimeSlice(set, get),
-      ...createPushActionSlice(set, get),
       ...createCollectionSlice(set, get),
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
+      ...createRequestChangeStateSlice(set, get),
 
       last: initialState,
 
@@ -89,58 +84,25 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
         }));
       },
 
-      initialise: (initialState, collection: ICollection, isFresh: boolean) => {
-        const state = get();
-
-        // request
-        let initialRequest: IGraphQL = _object.pick(
-          initialState.request,
-          requestSliceKeys
-        ) as IGraphQL;
-
-        // console.log({ initialRequest, initialState });
-
-        if (!_object.isEmpty(initialRequest))
-          state.initialiseRequest(initialRequest);
-
-        if (initialState.ui) state.initializeUi(initialState.ui);
-
-        if (!_object.isEmpty(collection))
-          state.initialiseCollection(collection);
-
-        if (initialState.pushAction)
-          state.initializePushAction(initialState.pushAction);
-
-        // console.log({ initialState });
-
-        if (isFresh) set({ last: initialState });
-
-        // runtime
+      initialise: (request: Partial<IGraphQL>) => {
+        // const state = get();
+        const initState = initialiseStoreFromRequest(request);
+        // console.log(initState, 'initState');
+        set((s) => ({
+          ...s,
+          ...initState,
+          // @ts-ignore
+          originalRequest: _cloneDeep(initState.request) as IGraphQL,
+        }));
+        //  if (!_object.isEmpty(collection))
+        //  state.initialiseCollection(collection);
       },
 
       setContext: (ctx: any) => set({ context: ctx }),
 
-      getRequest: (): any | Partial<IGraphQL> => {
-        // request
-        const state = get();
-        const request: Partial<IGraphQL> = {
-          ..._object.pick(state.request, [
-            'url',
-            'method',
-            'headers',
-            'meta',
-            '_meta',
-          ]),
-        };
-
-        // request.meta = { active_body_type: ERestBodyTypes.GraphQL };
-        // console.log({ request });
-        return request;
-      },
-
       execute: async (opsName: string, query?: string, variables?: string) => {
         const state = get();
-        const request = state.getRequest();
+        const request = state.request;
         // const certificates = [],
         // proxies = [];
         const activePlayground = state.runtime.activePlayground;
@@ -152,7 +114,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
             variables,
           },
         };
-        request.meta.active_body_type = ERestBodyTypes.GraphQL;
+        request.__meta.activeBodyType = ERestBodyTypes.GraphQL;
 
         // let response: IRestResponse = { statusCode: 0 };
         state.setRequestRunningFlag(activePlayground, true);
@@ -176,7 +138,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
         if (state.runtime.isFetchingIntrospection) return;
 
         const query = getIntrospectionQuery();
-        const request = state.getRequest();
+        const request = state.request;
         // let response;
         // const certificates = [],
         // proxies = [];
@@ -187,7 +149,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
             // variables
           },
         };
-        request.meta.active_body_type = ERestBodyTypes.GraphQL;
+        request.__meta.activeBodyType = ERestBodyTypes.GraphQL;
 
         state.setFetchIntrospectionFlag(true);
         state.context.request

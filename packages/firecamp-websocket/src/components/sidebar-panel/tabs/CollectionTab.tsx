@@ -1,9 +1,9 @@
 import { useRef } from 'react';
-import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 // import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
+import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
@@ -14,8 +14,7 @@ import {
 } from '../../../store';
 
 const CollectionTab = () => {
-  let treeRef = useRef();
-
+  const treeRef = useRef();
   const { folders = [], items = [] } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       folders: s.collection.folders,
@@ -23,7 +22,7 @@ const CollectionTab = () => {
     }),
     shallow
   );
-  let {
+  const {
     context,
     // registerTDP,
     // unRegisterTDP,

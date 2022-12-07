@@ -1,7 +1,6 @@
 import {
   IWebSocketConnection,
   TId,
-  EPushActionType,
   IQueryParam,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
@@ -25,17 +24,14 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
         connections: updatedConnections,
       },
     }));
-    state.prepareRequestConnectionsPushAction(
-      connection.id,
-      EPushActionType.Insert
-    );
+    // state.prepareRequestConnectionsPushAction(connection.id, 'i');
   },
   updateConnection: (connectionId: TId, key: string, value: any) => {
     //if connection id not provided, queryParams has dedicated change fn below
     if (!connectionId || !key || key == 'queryParams') return;
 
     const state = get();
-    let { displayUrl } = state.runtime;
+    const { displayUrl } = state.runtime;
     const { connections } = state.request;
 
     const _connections = connections.map((c) => {
@@ -62,7 +58,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
 
     // state.prepareRequestConnectionsPushAction(
     //   connectionId,
-    //   EPushActionType.Update,
+    //   'u,
     //   state.last?.request?.connections[connectionIndex],
     //   updatedConnection
     // );
@@ -102,10 +98,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
           },
         },
       }));
-      state.prepareRequestConnectionsPushAction(
-        connectionId,
-        EPushActionType.Delete
-      );
+      // state.prepareRequestConnectionsPushAction(connectionId, 'd');
     }
   },
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {

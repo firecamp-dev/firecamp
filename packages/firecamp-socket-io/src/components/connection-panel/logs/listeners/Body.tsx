@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import shallow from 'zustand/shallow';
 import {
   Input,
   Container,
@@ -6,10 +7,8 @@ import {
   Button,
   Column,
 } from '@firecamp/ui-kit';
-import shallow from 'zustand/shallow';
-import { ISocketStore, useSocketStore } from '../../../../store';
-
 import List from './List';
+import { ISocketStore, useSocketStore } from '../../../../store';
 
 const Body = ({ toggleCollapsed = (bool) => {} }) => {
   let {

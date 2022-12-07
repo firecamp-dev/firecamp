@@ -103,7 +103,7 @@ export default {
           <span
             className={cx(
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-              { '!top-4': item.data._meta.is_request }
+              { '!top-4': item.data.__ref.is_request }
             )}
             style={{ left: `${renderDepthOffset * 2 - 3}px` }}
           ></span>
@@ -124,8 +124,8 @@ export default {
             <span className="w-full overflow-hidden overflow-ellipsis items-center block">
               {title}
 
-              {item.data._meta?.is_collection ||
-              item.data._meta?.is_workspace ? (
+              {item.data.__ref?.is_collection ||
+              item.data.__ref?.is_workspace ? (
                 <span className={'text-sm'}>- {item.children?.length}</span>
               ) : (
                 <></>
@@ -150,7 +150,7 @@ export default {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                openPlg(item.data._meta.id);
+                openPlg(item.data.__ref.id);
               }}
             />
 

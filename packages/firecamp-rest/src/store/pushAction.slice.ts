@@ -16,7 +16,7 @@ import {
   EReqChangeUrlKeys,
   IRestClientRequest,
 } from '../types';
-import { normalizePushPayload } from '../services/request-service';
+import { normalizePushPayload } from '../services/request.service';
 
 /**
  * @reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json

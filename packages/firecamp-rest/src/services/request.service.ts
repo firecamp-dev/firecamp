@@ -258,6 +258,7 @@ export const normalizeRequest = (
     __meta.activeAuthType = EAuthTypes.NoAuth;
   _nr.__meta.activeAuthType = __meta.activeAuthType || EAuthTypes.NoAuth;
   _nr.__meta.version = '2.0.0';
+  _nr.__meta.type = ERequestTypes.Rest;
   _nr.__meta.inheritScripts = {
     pre: __meta.inheritScripts?.pre || true,
     post: __meta.inheritScripts?.post || true,
@@ -267,12 +268,12 @@ export const normalizeRequest = (
 
   // normalize __ref
   _nr.__ref.id = __ref.id || nanoid();
-  _nr.__ref.collectionId = __ref?.collectionId;
-  _nr.__ref.folderId = __ref?.folderId;
-  _nr.__ref.createdAt = __ref?.createdAt || new Date().valueOf();
-  _nr.__ref.updatedAt = __ref?.updatedAt || new Date().valueOf();
-  _nr.__ref.createdBy = __ref?.createdBy || '';
-  _nr.__ref.updatedBy = __ref?.updatedBy || '';
+  _nr.__ref.collectionId = __ref.collectionId;
+  _nr.__ref.folderId = __ref.folderId;
+  _nr.__ref.createdAt = __ref.createdAt || new Date().valueOf();
+  _nr.__ref.updatedAt = __ref.updatedAt || new Date().valueOf();
+  _nr.__ref.createdBy = __ref.createdBy || '';
+  _nr.__ref.updatedBy = __ref.updatedBy || '';
 
   return _nr;
 };

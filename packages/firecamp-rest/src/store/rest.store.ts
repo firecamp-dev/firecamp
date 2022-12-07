@@ -8,7 +8,7 @@ import {
   normalizeVariables,
   normalizeSendRequestPayload,
   initialiseStoreFromRequest,
-} from '../services/request-service';
+} from '../services/request.service';
 import {
   IRequestSlice,
   createRequestSlice,
@@ -53,7 +53,8 @@ interface IRestStore
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IPullSlice {
+    IPullSlice,
+    IRequestChangeStateSlice {
   last: any;
   originalRequest?: IRest;
 

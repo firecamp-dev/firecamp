@@ -79,7 +79,7 @@ const Websocket = require('@firecamp/websocket');
 |  onSendMessage |  Function |To add history on add message  |
   
 
-##### Detailed descrption of props with example:  
+##### Detailed description of props with example:  
 
 1. envSnippetsMeta:
 
@@ -90,8 +90,8 @@ const Websocket = require('@firecamp/websocket');
    show= true,
    name= "Global", //optional
    snippets= {},
-   active_snnippet= "",
-   allowed_snippet_variable_formates= [],
+   activeSnippet= "",
+   allowedSnippetVariableFormats= [],
    onChangeActiveSnippet=() => {
    },
    onChangeSnippetVariables= () => {
@@ -105,8 +105,8 @@ const Websocket = require('@firecamp/websocket');
     uuid="",
     name= "",
     snippets= {},
-    active_snnippet= "",
-    allowed_snippet_variable_formates= [],
+    activeSnippet= "",
+    allowedSnippetVariableFormats= [],
     onChangeActiveSnippet= () => {
     },
     onChangeSnippetVariables= () => {
@@ -159,13 +159,13 @@ const Websocket = require('@firecamp/websocket');
         }
       ],
       "auth": {},
-      "active_auth_type": ""
+      "activeAuthType": ""
     },
     "connections": [
       {
         "uuid": "",
         "is_default": false,
-        "name": "Vinaxi",
+        "name": "Elon",
         "headers": [
           {
             "key": "header_name",
@@ -181,7 +181,7 @@ const Websocket = require('@firecamp/websocket');
           }
         ],
         "auth": {},
-        "active_auth_type": ""
+        "activeAuthType": ""
       }
     ],
     "message": {

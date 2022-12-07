@@ -26,7 +26,7 @@ const LogPreview = ({
       setValue(row?.title || '');
       return;
     }
-    if (emitterArg?.payload && emitterArg?.meta?.type !== 'file') {
+    if (emitterArg?.payload && emitterArg?.__meta.type !== 'file') {
       setValue(emitterArg?.payload || '');
     } else {
       setValue(emitterArg?.name || '');
@@ -51,7 +51,7 @@ const LogPreview = ({
   }, []);
 
   const language =
-    row?.message?.[selectedArgIndex]?.meta?.type === 'json' ? 'json' : 'text';
+    row?.message?.[selectedArgIndex]?.__meta.type === 'json' ? 'json' : 'text';
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
@@ -59,7 +59,7 @@ const LogPreview = ({
         <Container.Header className="bg-focus2">
           <Header
             row={row || {}}
-          emitterArg={row?.message?.[selectedArgIndex]}
+            emitterArg={row?.message?.[selectedArgIndex]}
           />
         </Container.Header>
         <Container.Body>
@@ -88,58 +88,60 @@ const LogPreview = ({
 
 export default LogPreview;
 
-const Header = ({ row = {}, emitterArg = {} }) => {
+const Header = ({ row = {}, emitterArg = {} }: any) => {
   // console.log(`row`, row)
   return (
     <TabHeader
       className={classnames(
-        row.meta ? row.meta.color || '' : '',
+        row.__meta ? row.__meta.color || '' : '',
         'height-ex-small'
       )}
     >
       <TabHeader.Left className="font-bold font-base">
-        {row && row.meta
-          ? [
-              row.meta.type !== 'ACK' ? (
-                <span
-                  key={'event-icon'}
-                  className={classnames(
-                    'td-icon',
-                    { 'iconv2-to-server-icon': row.meta.type == 'S' },
-                    { 'iconv2-from-server-icon': row.meta.type == 'R' },
-                    { 'icon-disk': row.meta.type == 'SYS' },
-                    { 'icon-disk': row.meta.type == 'SYS' }
-                  )}
-                ></span>
-              ) : (
-                <AckIcon />
-              ),
-              <span className="font-sm" key="event-name">
-                {row.meta.event}
-              </span>,
-              row.meta.type !== 'SYS' ? (
-                <div
-                  className="font-xs text-appForegroundInActive whitespace-pre"
-                  key={'event-id'}
-                >
-                  {row.meta.id || ''}
-                </div>
-              ) : (
-                <></>
-              ),
-            ]
-          : <></>}
+        {row && row.__meta ? (
+          [
+            row.__meta.type !== 'ACK' ? (
+              <span
+                key={'event-icon'}
+                className={classnames(
+                  'td-icon',
+                  { 'iconv2-to-server-icon': row.__meta.type == 'S' },
+                  { 'iconv2-from-server-icon': row.__meta.type == 'R' },
+                  { 'icon-disk': row.__meta.type == 'SYS' },
+                  { 'icon-disk': row.__meta.type == 'SYS' }
+                )}
+              ></span>
+            ) : (
+              <AckIcon />
+            ),
+            <span className="font-sm" key="event-name">
+              {row.__meta.event}
+            </span>,
+            row.__meta.type !== 'SYS' ? (
+              <div
+                className="font-xs text-appForegroundInActive whitespace-pre"
+                key={'event-id'}
+              >
+                {row.__meta.id || ''}
+              </div>
+            ) : (
+              <></>
+            ),
+          ]
+        ) : (
+          <></>
+        )}
       </TabHeader.Left>
       <TabHeader.Right className="font-xs text-appForegroundInActive whitespace-pre">
         <span className="font-sm">
-          {emitterArg?.meta?.length
-            ? `Length: ${emitterArg?.meta?.length}`
+          {emitterArg?.__meta?.length
+            ? `Length: ${emitterArg?.__meta.length}`
             : ''}
         </span>
 
         <div className="font-sm">
-          {row?.meta?.timestamp
-            ? `Time: ${new Date(row?.meta?.timestamp).toLocaleTimeString()}`
+          {row?.__meta?.timestamp
+            ? `Time: ${new Date(row?.__meta.timestamp).toLocaleTimeString()}`
             : ''}
         </div>
       </TabHeader.Right>
@@ -177,7 +179,7 @@ const Footer = ({
   return (
     <SecondaryTab
       list={tabs}
-      activeTab={selectedArgIndex.toString() || "0"}
+      activeTab={selectedArgIndex.toString() || '0'}
       isBgTransperant={true}
       onSelect={setSelectedArgIndex}
     />

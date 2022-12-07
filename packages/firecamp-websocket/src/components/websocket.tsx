@@ -5,12 +5,7 @@ import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import { _array, _object } from '@firecamp/utils';
-import {
-  EPushActionType,
-  ERequestTypes,
-  IRequestFolder,
-  IWebSocket,
-} from '@firecamp/types';
+import { ERequestTypes, IRequestFolder, IWebSocket } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 
 import {
@@ -34,8 +29,6 @@ import {
   WebsocketStoreProvider,
   IWebsocketStore,
   initialPlaygroundMessage,
-  IPushPayload,
-  emptyPushAction,
 } from '../store/index';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 
@@ -51,37 +44,6 @@ const Websocket = ({
   const { current: emitterRef } = useRef(new Emitter({})); //TODO: remove later
   const { current: WSInstances_Ref } = useRef(new Map());
 
-  const _noop = () => {};
-
-  /**
-   * _requestFns: Request functions
-   * @type {{updateMessage: ((p1?:*, p2:*)), updateURL: ((p1?:*)), updateConnection: ((p1?:*, p2?:*, p3:*)),  }}
-   * @private
-   */
-  const _requestFns = {
-    updateRequest: _noop,
-    updateMessage: _noop,
-    setMessage: _noop,
-    updateURL: _noop,
-    removeConnection: _noop,
-    onChangeConfig: _noop,
-    updateMeta: _noop,
-    updateDNP: _noop,
-  };
-
-  const _commonFns = {
-    getMergedVariables: _noop,
-    onChange: _noop,
-    onSave: _noop,
-    onUpdateRequest: _noop,
-    setHistory: _noop,
-    updateCacheMessageOnSave: _noop,
-    setVisiblePanel: (panel) => _noop,
-    setActiveEnvSnippets: _noop,
-    _setCookie: _noop,
-    _addCookies: _noop,
-  };
-
   //---------------------------------init store value--------------------------------
 
   const websocketStoreApi: any = useWebsocketStoreApi();
@@ -95,18 +57,11 @@ const Websocket = ({
     changeDirectory,
     deleteDirectory,
     updateCollection,
-    addConnection,
-    addPlayground,
-
-    setActivePlayground,
     setPlaygroundMessage,
     setSelectedCollectionMessage,
-    addPlaygroundTab,
     changePlaygroundTab,
     sendMessage,
-    connect,
     setLast,
-    // prepareRequestUpdatePushAction,
     setRequestSavedFlag,
     getMergedRequestByPullAction,
     setIsFetchingReqFlag,
@@ -122,19 +77,12 @@ const Websocket = ({
       changeDirectory: s.changeDirectory,
       deleteDirectory: s.deleteDirectory,
       updateCollection: s.updateCollection,
-
-      addConnection: s.addConnection,
-      addPlayground: s.addPlayground,
-
-      setActivePlayground: s.setActivePlayground,
       setPlaygroundMessage: s.setPlaygroundMessage,
       setSelectedCollectionMessage: s.setSelectedCollectionMessage,
-      addPlaygroundTab: s.addPlaygroundTab,
       changePlaygroundTab: s.changePlaygroundTab,
       sendMessage: s.sendMessage,
       connect: s.connect,
       setLast: s.setLast,
-      prepareRequestUpdatePushAction: s.prepareRequestUpdatePushAction,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
@@ -160,7 +108,7 @@ const Websocket = ({
             workspace: activeEnvironments.workspace,
             collection: activeEnvironments.collection || '',
           },
-          collectionId: tab?.request?._meta?.collectionId || '',
+          collectionId: tab?.request?.__ref?.collectionId || '',
         });
       }
 
@@ -173,23 +121,23 @@ const Websocket = ({
   }, [activeTab]);
 
   useEffect(() => {
-    setRequestSavedFlag(tab?.meta?.isSaved);
-  }, [tab?.meta?.isSaved]);
+    setRequestSavedFlag(tab?.__meta?.isSaved);
+  }, [tab?.__meta?.isSaved]);
 
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.__meta.isSaved && tab.request?.__ref?.id) {
       platformContext.request.subscribeChanges(
-        tab.request._meta.id,
+        tab.request.__ref.id,
         handlePull
       );
     }
 
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && tab?.request?._meta?.id) {
-        platformContext.request.unsubscribeChanges(tab.request._meta.id);
+      if (tab.__meta.isSaved && tab.request?.__ref?.id) {
+        platformContext.request.unsubscribeChanges(tab.request.__ref.id);
       }
     };
   }, []);
@@ -206,7 +154,7 @@ const Websocket = ({
           setIsFetchingReqFlag(true);
           try {
             const response = await platformContext.request.onFetch(
-              tab.request._meta.id
+              tab.request.__ref.id
             );
             requestToNormalize = { ...response.data };
           } catch (error) {
@@ -237,7 +185,7 @@ const Websocket = ({
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  const handlePull = async (pullActions: IPushPayload[]) => {
+  const handlePull = async (pullActions: any[]) => {
     try {
       const pullPayload = pullActions[0];
 
@@ -264,14 +212,13 @@ const Websocket = ({
       setLast({
         ...last,
         request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
       });
 
-      // get push action payload
+  
       // const pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
-      // initialise request with updated request and push action
+      // initialise request with updated request
       initialise(updatedRequest); //pushAction
       // _cloneDeep({ request: emptyPushAction }),
       setIsFetchingReqFlag(false);
@@ -311,8 +258,8 @@ const Websocket = ({
       let message = playgrounds?.[activePlayground]?.message;
 
       if (
-        message.meta.type === 'noBody' ||
-        message.meta.type === EMessagePayloadTypes.file
+        message.__meta.type === 'noBody' ||
+        message.__meta.type === EMessagePayloadTypes.file
       ) {
         return;
       }
@@ -320,8 +267,8 @@ const Websocket = ({
       let messagePayload = {
         ...message,
         name,
-        _meta: {
-          ...message._meta,
+        __ref: {
+          ...message.__ref,
           id: msgId,
           parentId,
         },
@@ -330,7 +277,7 @@ const Websocket = ({
       addMessage(messagePayload);
 
       changePlaygroundTab(activePlayground, {
-        meta: {
+        __meta: {
           isSaved: true,
           hasChange: false,
         },
@@ -378,7 +325,7 @@ const Websocket = ({
 
       if (messageDetails.message) {
         deleteMessage(id);
-        let parentId = messageDetails.message?._meta?.parentId || '';
+        let parentId = messageDetails.message?.__ref?.parentId || '';
 
         //Update parent orders on remove message
         updateCollectionFns.updateOrders({
@@ -436,13 +383,13 @@ const Websocket = ({
 
       // Directory to remove
       let foundDirectory = collection.directories.find(
-        (dir) => dir._meta.id === id
+        (dir) => dir.__ref.id === id
       );
 
       if (foundDirectory) {
         deleteDirectory(id);
 
-        let parentId = foundDirectory._meta.parentId || '';
+        let parentId = foundDirectory.__ref.parentId || '';
         //update parent orders on remove directory
         updateCollectionFns.updateOrders({
           action: 'remove',
@@ -466,13 +413,13 @@ const Websocket = ({
           let getChildren = async (dirId = '') => {
             // Child directories ids
             let childDirIds = collection.directories
-              .filter((childDir) => childDir._meta.parentId === dirId)
-              .map((childDir) => childDir._meta.id);
+              .filter((childDir) => childDir.__ref.parentId === dirId)
+              .map((childDir) => childDir.__ref.id);
 
             // Child messages ids
             let childMessageIds = collection.messages
-              .filter((childMsg) => childMsg._meta.parentId === dirId)
-              .map((childMsg) => childMsg._meta.id);
+              .filter((childMsg) => childMsg.__ref.parentId === dirId)
+              .map((childMsg) => childMsg.__ref.id);
 
             if (!_array.isEmpty(childDirIds)) {
               dirsToRemoveIds = dirsToRemoveIds.concat(childDirIds);
@@ -498,7 +445,7 @@ const Websocket = ({
           ) {
             // messageRes: Collection messages to set
             let messageRes = collection.messages.filter(
-              (emtr) => !messagesToRemoveIds.includes(emtr._meta.id)
+              (emtr) => !messagesToRemoveIds.includes(emtr.__ref.id)
             );
 
             if (messageRes && !equal(messageRes, collection.messages)) {
@@ -509,7 +456,7 @@ const Websocket = ({
 
           // dirResult: Collection directories to set
           let dirResult = collection.directories.filter(
-            (dir) => !dirsToRemoveIds.includes(dir._meta.id)
+            (dir) => !dirsToRemoveIds.includes(dir.__ref.id)
           );
 
           if (dirResult && !equal(dirResult, collection.directories)) {
@@ -527,7 +474,7 @@ const Websocket = ({
     }) => {
       let {
         collection,
-        request: { meta },
+        request: { __meta },
       } = websocketStoreApi.getState();
 
       //Variable declaration
@@ -536,21 +483,21 @@ const Websocket = ({
         parentType =
           parentId && parentId.length ? 'DIR' : ERequestTypes.WebSocket;
       let foundParentDirectoryIndex = collection.directories.findIndex(
-        (dir) => dir._meta.id === parentId
+        (dir) => dir.__ref.id === parentId
       );
 
       //Get existing orders from parent
       if (parentType === ERequestTypes.WebSocket) {
-        existingOrders = meta[key] || [];
+        existingOrders = __meta[key] || [];
       } else if (parentType === 'DIR' && parentId.length) {
         if (collection.directories) {
           if (
             foundParentDirectoryIndex !== -1 &&
-            collection.directories[foundParentDirectoryIndex].meta &&
-            collection.directories[foundParentDirectoryIndex].meta[key]
+            collection.directories[foundParentDirectoryIndex].__meta &&
+            collection.directories[foundParentDirectoryIndex].__meta[key]
           ) {
             existingOrders =
-              collection.directories[foundParentDirectoryIndex].meta[key];
+              collection.directories[foundParentDirectoryIndex].__meta[key];
           }
         }
       }
@@ -574,13 +521,13 @@ const Websocket = ({
       //update state and parent component callback
       if (parentType === ERequestTypes.WebSocket) {
         //@ts-ignore
-        _requestFns.updateMeta(key, newOrders);
+        // _requestFns.updateMeta(key, newOrders);
       } else if (parentType === 'DIR' && parentId.length) {
         // Update directory meta
         changeDirectory(parentId, {
           key: 'meta',
           value: {
-            ...collection.directories[foundParentDirectoryIndex].meta,
+            ...collection.directories[foundParentDirectoryIndex].__meta,
             [key]: newOrders,
           },
         });
@@ -591,7 +538,7 @@ const Websocket = ({
 
   const playgroundMessageFns = {
     setToPlayground: (payload) => {
-      if (!payload?._meta?.id) return;
+      if (!payload?.__ref?.id) return;
 
       let {
         runtime: { activePlayground },
@@ -601,7 +548,7 @@ const Websocket = ({
     },
 
     add: (payload, send = false) => {
-      if (!payload?._meta?.id) return;
+      if (!payload?.__ref?.id) return;
 
       let {
         collection,
@@ -609,12 +556,12 @@ const Websocket = ({
       } = websocketStoreApi.getState();
 
       let msg =
-        collection?.messages.find((msg) => msg._meta.id === payload._meta.id) ||
+        collection?.messages.find((msg) => msg.__ref.id === payload.__ref.id) ||
         {};
       let msgToSetInPlayground = Object.assign({}, msg, payload); //TODO: check
 
       playgroundMessageFns.setToPlayground(msgToSetInPlayground);
-      setSelectedCollectionMessage(activePlayground, payload?._meta?.id);
+      setSelectedCollectionMessage(activePlayground, payload?.__ref?.id);
 
       if (send === true && msgToSetInPlayground) {
         sendMessage(activePlayground, msgToSetInPlayground);
@@ -671,7 +618,7 @@ const Websocket = ({
       } = websocketStoreApi.getState();
 
       if (collection?.messages && id) {
-        let original = collection?.messages.find((msg) => msg._meta.id === id);
+        let original = collection?.messages.find((msg) => msg.__ref.id === id);
         let message = playgrounds?.[activePlayground]?.message;
         if (original) {
           if (message) {
@@ -690,7 +637,7 @@ const Websocket = ({
       let existingMsgs = collection?.messages;
 
       if (existingMsgs) {
-        let foundMsg = existingMsgs.find((msg) => msg._meta.id === id);
+        let foundMsg = existingMsgs.find((msg) => msg.__ref.id === id);
 
         if (foundMsg) {
           setMessage(id, foundMsg);
@@ -705,80 +652,6 @@ const Websocket = ({
 
       setPlaygroundMessage(activePlayground, initialPlaygroundMessage);
       setSelectedCollectionMessage(activePlayground, '');
-    },
-  };
-
-  const connectionsFns = {
-    addConnection: async (name = '', connectOnCreate = true) => {
-      if (!name) return;
-
-      let {
-        request: { connections: reqConnections },
-      } = websocketStoreApi.getState();
-
-      let newConnectionId = id();
-      let newReqConnection = Object.assign({}, DefaultRequestConnection);
-
-      // Existing default connection
-      let defaultConnection = reqConnections.find((c) => c.is_default);
-
-      if (!defaultConnection && !_array.isEmpty(reqConnections)) {
-        defaultConnection = reqConnections[0];
-      }
-
-      let queryParams = defaultConnection['queryParams'] || [];
-      queryParams = queryParams.map((q) => Object.assign({}, q, { id: id() }));
-
-      let headers = defaultConnection['headers'] || [];
-      headers = headers.map((h) => Object.assign({}, h, { id: id() }));
-
-      defaultConnection = Object.assign({}, defaultConnection, {
-        queryParams: queryParams,
-        headers,
-      });
-
-      delete defaultConnection['isDefault'];
-
-      newReqConnection = Object.assign(
-        {},
-        newReqConnection,
-        defaultConnection || {},
-        {
-          name,
-          id: newConnectionId,
-        }
-      );
-
-      // Add connection in store
-      addConnection(newReqConnection);
-
-      let connectionPlayground = {
-        id: newConnectionId,
-        connectionState: EConnectionState.Ideal,
-        logFilters: {
-          type: '',
-        },
-        message: initialPlaygroundMessage,
-        selectedCollectionMessage: '',
-      };
-
-      addPlayground(newConnectionId, connectionPlayground);
-      addPlaygroundTab({
-        id: newConnectionId,
-        name: name,
-        meta: {
-          isSaved: false,
-          hasChange: false,
-        },
-      });
-
-      // update active connection
-      setActivePlayground(newConnectionId);
-
-      if (connectOnCreate === true) {
-        await connect(newConnectionId);
-      }
-      // return Promise.resolve(newReqConnection);
     },
   };
 
@@ -797,13 +670,13 @@ const Websocket = ({
     },
   };
 
-  const onSave = (pushPayload: IPushPayload, tabId) => {
+  const onSave = (pushPayload: any, tabId) => {
     console.log({ pushPayload });
 
-    if (!pushPayload._action || !pushPayload._meta.id) return;
-    if (pushPayload._action.type === EPushActionType.Insert) {
+    if (!pushPayload._action || !pushPayload.__ref.id) return;
+    if (pushPayload._action.type === 'i') {
       platformContext.request.subscribeChanges(
-        pushPayload._meta.id,
+        pushPayload.__ref.id,
         handlePull
       );
     }
@@ -817,7 +690,7 @@ const Websocket = ({
     setLast({
       ...last,
       request,
-      pushAction: emptyPushAction,
+      pushAction: {}, //emptyPushAction,
     });
   };
 
@@ -827,12 +700,8 @@ const Websocket = ({
     <WebsocketContext.Provider
       value={{
         //functions
-        ctx_requestFns: _requestFns,
-        ctx_wsFns: wsFns,
-        ctx_commonFns: _commonFns,
         ctx_playgroundMessageFns: playgroundMessageFns,
         ctx_updateCollectionFns: updateCollectionFns,
-        ctx_connectionsFns: connectionsFns,
 
         ctx_emitter: emitterRef,
         ctx_onUpdateEnvironment: onUpdateEnvironment,
@@ -842,7 +711,7 @@ const Websocket = ({
         <Container className="h-full with-divider">
           <UrlBarContainer
             tab={tab}
-            collectionId={tab?.request?._meta?.collectionId || ''}
+            collectionId={tab?.request?.__ref?.collectionId || ''}
             postComponents={platformComponents}
             onSaveRequest={onSave}
             platformContext={platformContext}
@@ -899,7 +768,7 @@ const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
     if (tabMeta.isSaved) {
       // console.log({ pushAction });
 
-      // Check if push action empty or not
+      // Check if empty or not
       const isTabDirty = !_object.isEmpty(
         _cleanDeep(_cloneDeep(pushAction || {})) || {}
       );

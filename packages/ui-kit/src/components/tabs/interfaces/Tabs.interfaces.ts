@@ -46,7 +46,7 @@ export interface ITabs {
   /**
    * A callback function to call when tab is being clicked/ selected
    */
-  onSelect?: (id: string | number, index: number, event: any) => void;
+  onSelect?: (id: string | number, index?: number, event?: any) => void;
   /**
    * A callback function to call when tab is being re-ordered
    */

@@ -4,7 +4,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 
-import { prepareUIRequestPanelState } from '../services/request-service';
+import { prepareUIRequestPanelState } from '../services/request.service';
 import {
   IUrlSlice,
   createUrlSlice,

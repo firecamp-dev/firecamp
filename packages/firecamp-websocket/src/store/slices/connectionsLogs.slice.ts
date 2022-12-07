@@ -5,18 +5,20 @@ const emptyLog = {
   title: '',
   message: {
     body: '',
-    meta: {
+    __meta: {
       type: EMessageBodyType.Text,
       typedArrayView: '',
     },
   },
-  meta: {
-    id: '',
+  __meta: {
     event: '',
     timestamp: new Date().getTime(),
     type: '',
     color: '',
     ackRef: '',
+  },
+  __ref: {
+    id: '',
   },
 };
 
@@ -35,9 +37,9 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
   addConnectionLog: (connectionId: TId, log: ILog) => {
     // console.log({ log });
 
-    let connectionsLogs = get()?.connectionsLogs;
+    const connectionsLogs = get()?.connectionsLogs;
     if (connectionId in connectionsLogs) {
-      let logs = connectionsLogs[connectionId];
+      const logs = connectionsLogs[connectionId];
       log = { ...emptyLog, ...log };
 
       set((s) => ({
@@ -58,7 +60,7 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
     }
   },
   clearAllConnectionLogs: (connectionId: TId) => {
-    let connectionsLogs = get()?.connectionsLogs;
+    const connectionsLogs = get()?.connectionsLogs;
     if (connectionId in connectionsLogs) {
       set((s) => ({
         ...s,

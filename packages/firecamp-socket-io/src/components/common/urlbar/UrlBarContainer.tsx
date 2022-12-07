@@ -16,7 +16,6 @@ const UrlBarContainer = ({
   platformContext,
 }) => {
   const { EnvironmentWidget } = postComponents;
-
   const {
     url,
     displayUrl,
@@ -27,9 +26,6 @@ const UrlBarContainer = ({
     changeUrl,
     changeConfig,
     changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
   } = useSocketStore(
     (s: ISocketStore) => ({
       url: s.request.url,
@@ -41,9 +37,6 @@ const UrlBarContainer = ({
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-      setPushActionEmpty: s.setPushActionEmpty,
 
       // pushAction: s.pushAction,
     }),
@@ -55,13 +48,13 @@ const UrlBarContainer = ({
     try {
       let pushPayload: IPushPayload;
       if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
+        // pushPayload = await prepareRequestInsertPushPayload();
       } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
+        // pushPayload = await prepareRequestUpdatePushPayload();
       }
 
       // console.log({ pushPayload });
-      setPushActionEmpty();
+      // setPushActionEmpty();
 
       onSaveRequest(pushPayload, tab.id);
     } catch (error) {

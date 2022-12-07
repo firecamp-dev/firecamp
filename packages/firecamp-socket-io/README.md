@@ -90,8 +90,8 @@ const Websocket = require('@firecamp/websocket');
    show= true,
    name= "Global", //optional
    snippets= {},
-   active_snnippet= "",
-   allowed_snippet_variable_formates= [],
+   activeSnippet= "",
+   allowedSnippetVariableFormats= [],
    onChangeActiveSnippet=() => {
    },
    onChangeSnippetVariables= () => {
@@ -105,8 +105,8 @@ const Websocket = require('@firecamp/websocket');
     uuid="",
     name= "",
     snippets= {},
-    active_snnippet= "",
-    allowed_snippet_variable_formates= [],
+    activeSnippet= "",
+    allowedSnippetVariableFormats= [],
     onChangeActiveSnippet= () => {
     },
     onChangeSnippetVariables= () => {
@@ -159,13 +159,13 @@ const Websocket = require('@firecamp/websocket');
         }
       ],
       "auth": {},
-      "active_auth_type": ""
+      "activeAuthType": ""
     },
     "connections": [
       {
         "uuid": "",
         "isDefault": false,
-        "name": "Vinaxi",
+        "name": "Elon",
         "headers": [
           {
             "key": "header_name",
@@ -181,7 +181,7 @@ const Websocket = require('@firecamp/websocket');
           }
         ],
         "auth": {},
-        "active_auth_type": ""
+        "activeAuthType": ""
       }
     ],
     "message": {
