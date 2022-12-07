@@ -27,8 +27,8 @@ const defaultFolder: IFolderSettingUi = {
     test: '',
   },
   auth: {},
-  meta: { active_auth_type: EAuthTypes.NoAuth },
-  _meta: { id: '', workspace_id: '' },
+  __meta: { activeAuthType: EAuthTypes.NoAuth },
+  __ref: { id: '', workspaceId: '' },
 };
 
 enum ETabTypes {
@@ -42,7 +42,7 @@ type TModalMeta = {
 };
 
 const FolderSetting: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
-  const { folderId } = useModalStore.getState().meta as TModalMeta;
+  const { folderId } = useModalStore.getState().__meta as TModalMeta;
 
   const [folder, setFolder] = useState(defaultFolder);
   const [initialPayload, setInitialFolder] = useState(defaultFolder);
@@ -145,7 +145,7 @@ const FolderSetting: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             type={EPlatformModalTypes.FolderSetting}
             initialPayload={initialPayload}
             auth={folder.auth}
-            activeAuthType={folder.meta.active_auth_type}
+            activeAuthType={folder.__meta.activeAuthType}
             onChange={onChange}
             close={onClose}
             onUpdate={onUpdate}

@@ -22,7 +22,7 @@ interface IRuntime {
   // Manage multiple tabs of playground
   playgroundTabs?: ITab[];
 
-  // Manage runtime meta of open tabs
+  // Manage runtime __meta of open tabs
   playgroundsMeta: { [k: string]: IPlaygroundMeta };
 
   // active tab/playground
@@ -35,7 +35,7 @@ interface IRuntime {
   };
   isRequestSaved: boolean;
 
-  /** true if fetch introspectionis under progress */
+  /** true if fetch introspections under progress */
   isFetchingIntrospection?: boolean;
 }
 
@@ -50,7 +50,7 @@ interface IRuntimeSlice {
   toggleDoc: (flag: boolean) => void;
   changeActiveEnvironment?: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => void;
   setActiveEnvironments?: (updates: {
     workspace: TId;
@@ -103,12 +103,12 @@ const createRuntimeSlice = (set, get): IRuntimeSlice => ({
     });
   },
 
-  setFetchIntrospectionFlag: (flag: boolean)=> {
-    set((s)=> ({
+  setFetchIntrospectionFlag: (flag: boolean) => {
+    set((s) => ({
       runtime: {
         ...s.runtime,
-        isFetchingIntrospection: flag
-      }
+        isFetchingIntrospection: flag,
+      },
     }));
   },
 
@@ -121,9 +121,9 @@ const createRuntimeSlice = (set, get): IRuntimeSlice => ({
   },
   changeActiveEnvironment: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => {
-    // console.log({ scope, environment_id });
+    // console.log({ scope, environmentId });
 
     set((s) => ({
       ...s,
@@ -131,7 +131,7 @@ const createRuntimeSlice = (set, get): IRuntimeSlice => ({
         ...s.runtime,
         activeEnvironments: {
           ...s.runtime.activeEnvironments,
-          [scope]: environment_id,
+          [scope]: environmentId,
         },
       },
     }));

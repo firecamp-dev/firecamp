@@ -1,4 +1,14 @@
-import { EAuthTypes, EHttpMethod, IAuthAws4, IAuthBasic, IAuthBearer, IAuthDigest, IOAuth1, IOAuth2, IUrl } from '@firecamp/types';
+import {
+  EAuthTypes,
+  EHttpMethod,
+  IAuthAws4,
+  IAuthBasic,
+  IAuthBearer,
+  IAuthDigest,
+  IOAuth1,
+  IOAuth2,
+  IUrl,
+} from '@firecamp/types';
 import { IAuthHeader, IExtra, TAuth } from './types';
 import { aws4, basic, bearer, digest, oauth1, oauth2 } from './helpers';
 
@@ -27,7 +37,10 @@ export default class Auth {
         this.authHeader = bearer(this.credentials as IAuthBearer);
         break;
       case EAuthTypes.Digest:
-        this.authHeader = digest(this.credentials as IAuthDigest, this.extra as { url: IUrl, method: EHttpMethod });
+        this.authHeader = digest(
+          this.credentials as IAuthDigest,
+          this.extra as { url: IUrl; method: EHttpMethod }
+        );
         break;
       case EAuthTypes.OAuth1:
         this.authHeader = oauth1(this.credentials as IOAuth1, this.extra);
@@ -44,7 +57,6 @@ export default class Auth {
   getHeader(): IAuthHeader | object {
     if (this.authType === EAuthTypes.Aws4) {
       return { ...this.aws4AuthHeaders };
-    } else
-      return { "Authorization": this.authHeader };
+    } else return { Authorization: this.authHeader };
   }
 }

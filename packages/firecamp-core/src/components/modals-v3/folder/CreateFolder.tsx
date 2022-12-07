@@ -24,7 +24,7 @@ type TModalMeta = {
 const CreateFolder: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   const createFolder = useWorkspaceStore.getState().createFolder;
   const { collectionId, folderId } = useModalStore.getState()
-    .meta as TModalMeta;
+    .__meta as TModalMeta;
 
   const [folder, setFolder] = useState({ name: '', description: '' });
   const [isRequesting, setIsRequesting] = useState(false);
@@ -56,7 +56,7 @@ const CreateFolder: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
     const _folder = {
       name,
       description: folder?.description?.trim(),
-      _meta: { collection_id: collectionId, folder_id: folderId },
+      __ref: { collectionId: collectionId, folderId: folderId },
     };
 
     setIsRequesting(true);

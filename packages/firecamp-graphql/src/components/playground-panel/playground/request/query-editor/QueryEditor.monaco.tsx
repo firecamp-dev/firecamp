@@ -1,24 +1,21 @@
 import { useState, useRef, useEffect } from 'react';
+import _upperFirst from 'lodash/upperFirst';
 import { print } from 'graphql/language/printer';
 import { Container, Column, Editor } from '@firecamp/ui-kit';
-
+import { _table } from '@firecamp/utils';
 import getQueryFacts, {
   getCurrentOperation,
 } from '../../../../../services/GraphQLservice';
-import {
-  QUERY_TYPES,
-  STRINGS_QUERY_TYPES,
-} from '../../../../../constants/constants';
-import { _table } from '@firecamp/utils';
+import { EQueryTypes } from '../../../../../types'
 
 const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
-  let clientSchemaRef = useRef({});
-  let currentQueryRef = useRef({});
+  const clientSchemaRef = useRef({});
+  const currentQueryRef = useRef({});
 
-  let update_query = () => {};
-  let updateCurrentQuery = (a: any) => {};
+  const updateQuery = () => {};
+  const updateCurrentQuery = (a: any) => {};
 
-  let ctx_graphql_body = {
+  const ctx_graphql_body = {
     body: '',
     current_query: '',
     clientSchema: {},
@@ -42,7 +39,7 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
     currentQueryRef.current = current_query;
   }, [current_query]);
 
-  let _onCursorGetCurrentOperation = (
+  const _onCursorGetCurrentOperation = (
     value: any,
     position?: any,
     currentQuery?: any
@@ -50,13 +47,13 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
     // console.log(`clientSchema`, clientSchema);
     try {
       // debugger;
-      let currentOperation = getCurrentOperation(
-          value,
-          position.position
-          // currentQuery
-        ),
-        operation: any = {},
-        queryPayload = {};
+      const currentOperation = getCurrentOperation(
+        value,
+        position.position
+        // currentQuery
+      );
+      let operation: any = {};
+      let queryPayload = {};
 
       operation = getQueryFacts(
         clientSchemaRef.current || {},
@@ -68,15 +65,15 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
           queryVariablesAry = [];
 
         try {
-          queryVariablesAry = _table.objectToTable(q.meta.variables);
+          queryVariablesAry = _table.objectToTable(q.__meta.variables);
         } catch (e) {
           console.log('e', e);
         }
 
         queryPayload = Object.assign(q, {
-          name: q.name || STRINGS_QUERY_TYPES[q.meta.type.toUpperCase()],
-          meta: {
-            type: QUERY_TYPES[q.meta.type.toUpperCase()],
+          name: q.name || _upperFirst[q.__meta.type],
+          __meta: {
+            type: EQueryTypes[_upperFirst(q.__meta.type)],
             variables: queryVariablesAry || [],
           },
           variableToType: q.variableToType || {},
@@ -91,21 +88,21 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
     }
   };
 
-  let _onUpdateCurrentQuery = (body) => {
+  const _onUpdateCurrentQuery = (body) => {
     updateCurrentQuery({
       name: body.name || '',
-      meta: { type: body.meta.type || QUERY_TYPES.QUERY },
+      __meta: { type: body.__meta.type || EQueryTypes.Query },
     });
   };
 
-  let _onCallGQLReuqest = () => {
+  const _onCallGQLReuqest = () => {
     let queryObject = _onCursorGetCurrentOperation(editorValue);
-    // ctx_onSendRequest(queryObject.body, queryObject.meta.variables);
+    // ctx_onSendRequest(queryObject.body, queryObject.__meta.variables);
   };
 
-  let _onUpdateQuery = (q) => {
+  const _onUpdateQuery = (q) => {
     setEditorValue(q);
-    update_query(q);
+    updateQuery(q);
   };
 
   return (

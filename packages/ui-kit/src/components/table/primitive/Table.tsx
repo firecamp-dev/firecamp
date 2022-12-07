@@ -1,27 +1,15 @@
-import {
-  FC,
-  MutableRefObject,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { _array, _misc, _object } from '@firecamp/utils';
-import cx from 'classnames';
 import {
   ITable,
   ITableOptions,
-  IRow,
-  IColumn,
   TOnChangeCell,
   TTableApi,
-  TTd,
-  TTh,
-  TTr,
   TPlainObject,
 } from './table.interfaces';
-
+import { TableRow, TBody, Th, THead, Tr } from './TableElements';
+import useTableResize from './useTableResize';
 import './table.sass';
 
 const defaultOptions: ITableOptions = {
@@ -29,6 +17,33 @@ const defaultOptions: ITableOptions = {
   allowRowRemove: true,
   allowRowAdd: true,
   allowSort: true,
+};
+
+const prepareTableInitState = (
+  rows: any[],
+  showDefaultEmptyRows?: boolean,
+  defaultRow?: TPlainObject
+) => {
+  let _rows = {};
+  let _orders = [];
+  if (_array.isEmpty(rows)) {
+    const row1Id = nanoid();
+    const row2Id = nanoid();
+    _orders.push(row1Id, row2Id);
+    _rows = showDefaultEmptyRows
+      ? {
+          [row1Id]: { id: row1Id, ...defaultRow },
+          [row2Id]: { id: row2Id, ...defaultRow },
+        }
+      : {};
+  } else {
+    _rows = rows.reduce((p, n) => {
+      const id: string = n.id || nanoid();
+      _orders.push(id);
+      return { ...p, [id]: { id, ...n } };
+    }, {});
+  }
+  return { rows: _rows, orders: _orders };
 };
 
 const Table: FC<ITable<any>> = ({
@@ -41,49 +56,53 @@ const Table: FC<ITable<any>> = ({
   onMount = (api) => {},
   showDefaultEmptyRows = true,
   options = {},
+  classes = {
+    container: '',
+    table: '',
+    thead: '',
+    theadTr: '',
+    tbody: '',
+    th: '',
+    tr: '',
+    td: '',
+  },
 }) => {
   const tableRef = useRef<HTMLTableElement>(null);
   const rowBeingDragRef = useRef<HTMLTableElement>(null);
-  const [_state, _setState] = useState<TPlainObject>({
-    orders: [],
-    rows: {},
-  });
+  const [_state, _setState] = useState<{
+    rows: TPlainObject;
+    orders: string[];
+  }>(prepareTableInitState(rows, showDefaultEmptyRows, defaultRow));
   useTableResize(tableRef);
+
+  const containerDivRef = useRef<HTMLTableElement>(null);
+  const [containerWidth, setContainerWidth] = useState(0);
+
+  //get the width of container div in pixels
+  useEffect(() => {
+    if (!containerDivRef.current) return () => {};
+    const resizeObserver = new ResizeObserver(() => {
+      if (containerDivRef?.current)
+        setContainerWidth(containerDivRef.current?.clientWidth);
+    });
+    resizeObserver.observe(containerDivRef.current);
+    return () => {
+      if (containerDivRef?.current) containerDivRef.current = null;
+      return resizeObserver.disconnect();
+    };
+  }, [containerDivRef.current]);
 
   useEffect(() => {
     onMount(tableApi);
   }, []);
 
   useEffect(() => {
-    let _rows = {};
-    let _orders = [];
-    if (rows?.length) {
-      _rows = rows.reduce((p, n) => {
-        const id: string = n.id || nanoid();
-        _orders.push(id);
-        return { ...p, [id]: { id, ...n } };
-      }, {});
-    }
-    if (_object.isEmpty(_rows)) {
-      const row1Id = nanoid();
-      const row2Id = nanoid();
-      _orders.push(row1Id, row2Id);
-      _rows = showDefaultEmptyRows
-        ? {
-            [row1Id]: { id: row1Id, ...defaultRow },
-            [row2Id]: { id: row2Id, ...defaultRow },
-          }
-        : {};
-    }
-    _setState({
-      orders: _orders,
-      rows: _rows,
-    });
+    _setState(prepareTableInitState(rows, showDefaultEmptyRows, defaultRow));
   }, [rows]);
 
   options = { ...defaultOptions, ...options };
 
-  const handleDrag = (row: any, index: number) => {
+  const handleDrag = (row: any) => {
     rowBeingDragRef.current = row;
     // console.log(row, index, 'handleDrag');
   };
@@ -133,12 +152,11 @@ const Table: FC<ITable<any>> = ({
   };
 
   const getRows = () => {
-    return _state.orders;
     return _state.orders.map((id: string) => _state.rows[id]);
   };
 
   // each render assign apis to parent ref
-  const tableApi = {
+  const tableApi: TTableApi<any> = {
     initialize: _misc.debounce(300, (rows: any[]) => {
       rows = rows.map((r) => {
         if (!r.id) r.id = nanoid();
@@ -199,27 +217,50 @@ const Table: FC<ITable<any>> = ({
   };
 
   return (
-    <div className={'w-full'}>
+    <div
+      className={`w-full custom-scrollbar ${classes.container}`}
+      ref={containerDivRef}
+    >
       <table
-        className="primary-table border border-appBorder mb-4"
+        className={`primary-table border border-appBorder mb-4 w-auto ${classes.table}`}
         style={{ minWidth: '450px' }}
         ref={tableRef}
       >
-        <thead>
-          <Tr className="border text-base text-left font-semibold bg-focus2">
+        <THead className={classes.thead}>
+          <Tr
+            className={`border text-base text-left font-semibold bg-focus2 ${classes.theadTr}`}
+          >
             {columns.map((c, i) => {
               return (
-                <Th style={{ width: c.width }} key={i}>
+                <Th
+                  className={classes.th}
+                  style={{
+                    width: c.resizeWithContainer ? '100%' : parseInt(c.width),
+                    minWidth:
+                      !c.fixedWidth &&
+                      c.resizeWithContainer &&
+                      containerWidth > tableRef.current?.clientWidth
+                        ? parseInt(c.width) +
+                          (containerWidth - tableRef.current.clientWidth - 4)
+                        : c.width,
+                  }}
+                  key={i}
+                  additionalProp={{
+                    'data-allow_resize': !c.fixedWidth,
+                    'data-initial_width': c.width,
+                  }}
+                >
                   {renderColumn(c)}
                 </Th>
               );
             })}
           </Tr>
-        </thead>
-        <tbody>
+        </THead>
+        <TBody className={classes.tbody}>
           {_state.orders.map((rId: string, i: number) => {
             return (
               <TableRow
+                classes={{ tr: classes.tr, td: classes.td }}
                 columns={columns}
                 index={i}
                 row={_state.rows[rId]}
@@ -233,103 +274,18 @@ const Table: FC<ITable<any>> = ({
               />
             );
           })}
-        </tbody>
+        </TBody>
       </table>
-      {JSON.stringify(_state.rows, () => {}, 2)}
     </div>
   );
 };
 
-const TableRow: FC<IRow<any>> = ({
-  index,
-  columns,
-  row,
-  tableApi,
-  renderCell,
-  onChangeCell,
-  handleDrag,
-  handleDrop,
-  options,
-}) => {
-  const onChange = (ck: string, cv: any, e: any) => {
-    onChangeCell(ck, cv, row.id, e);
-  };
-
-  return (
-    <Tr className="">
-      {columns.map((c: IColumn, i: number) => {
-        return (
-          <Td
-            key={i}
-            style={{ width: c.width }}
-            row={row}
-            handleDrop={handleDrop}
-          >
-            {renderCell(
-              c,
-              row[c.key],
-              index,
-              row,
-              tableApi,
-              onChange,
-              handleDrag,
-              options
-            )}
-          </Td>
-        );
-      })}
-    </Tr>
-  );
-};
-
-const Tr: FC<TTr> = ({ className = '', children, style = {} }) => {
-  return (
-    <tr className={className} style={style}>
-      {children}
-    </tr>
-  );
-};
-
-const Th: FC<TTh> = ({ children, className = '', style = {} }) => {
-  return (
-    <th className={cx('p-1 border border-appBorder', className)} style={style}>
-      {children}
-    </th>
-  );
-};
-
-const Td: FC<TTd<any>> = ({
-  children,
-  className = '',
-  row,
-  handleDrop,
-  style = {},
-}) => {
-  return (
-    <td
-      className={cx(
-        'relative border-b border-l first:border-l-0 border-appBorder',
-        className
-      )}
-      style={{ ...style, height: '27px' }}
-      data-testid="row-sorter"
-      onDrop={(e) => {
-        e.preventDefault();
-        handleDrop(row);
-      }}
-      onDragOver={(e) => e.preventDefault()}
-    >
-      {children}
-    </td>
-  );
-};
-
-const _groupBy = (array: any[], key: string) => {
-  return array.reduce((pv, x) => {
-    (pv[x[key]] = pv[x[key]] || []).push(x);
-    return pv;
-  }, {});
-};
+// const _groupBy = (array: any[], key: string) => {
+//   return array.reduce((pv, x) => {
+//     (pv[x[key]] = pv[x[key]] || []).push(x);
+//     return pv;
+//   }, {});
+// };
 
 /**
  * array to object by any key of given object
@@ -345,63 +301,11 @@ const _keyBy = (array: any[], key: string) => {
  * create an array of given object's values (ignore keys)
  * { a: 1, b: 2 } => [1, 2]
  */
-const _valueBy = (obj: TPlainObject) => {
-  return Object.keys(obj).reduce((pv: any[], k: string | number) => {
-    return [...pv, obj[k]];
-  }, []);
-};
+// const _valueBy = (obj: TPlainObject) => {
+//   return Object.keys(obj).reduce((pv: any[], k: string | number) => {
+//     return [...pv, obj[k]];
+//   }, []);
+// };
 
 export default Table;
 export type { ITable, TTableApi };
-
-const useTableResize = (tableRef: MutableRefObject<HTMLTableElement>) => {
-  useEffect(() => {
-    const createResizableTable = (table: HTMLElement) => {
-      const cols = table.querySelectorAll('th');
-      [].forEach.call(cols, (col: HTMLElement) => {
-        // Add a resizer element to the column
-        const resizer = document.createElement('div');
-        resizer.classList.add('pt-resizer');
-
-        // Set the height
-        resizer.style.height = `${table.offsetHeight}px`;
-        col.appendChild(resizer);
-        createResizableColumn(col, resizer);
-      });
-    };
-
-    const createResizableColumn = (col: HTMLElement, resizer: HTMLElement) => {
-      let x = 0;
-      let w = 0;
-
-      const mouseDownHandler = (e: MouseEvent) => {
-        x = e.clientX;
-
-        const styles = window.getComputedStyle(col);
-        w = parseInt(styles.width, 10);
-
-        document.addEventListener('mousemove', mouseMoveHandler);
-        document.addEventListener('mouseup', mouseUpHandler);
-
-        resizer.classList.add('pt-resizing');
-      };
-
-      const mouseMoveHandler = (e: MouseEvent) => {
-        const dx = e.clientX - x;
-        col.style.width = `${w + dx}px`;
-      };
-
-      const mouseUpHandler = () => {
-        resizer.classList.remove('pt-resizing');
-        document.removeEventListener('mousemove', mouseMoveHandler);
-        document.removeEventListener('mouseup', mouseUpHandler);
-      };
-
-      resizer.addEventListener('mousedown', mouseDownHandler);
-    };
-
-    setTimeout(() => {
-      if (tableRef.current) createResizableTable(tableRef.current);
-    }, 500);
-  }, []);
-};

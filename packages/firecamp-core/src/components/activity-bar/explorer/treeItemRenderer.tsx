@@ -13,12 +13,12 @@ import CollectionMenu from './menus/CollectionMenu';
 export default {
   renderItemArrow: ({ item, context }) => {
     // console.log( info, "arrow context");
-    if (item.data._meta?.is_request) {
+    if (item.data.__ref?.isRequest) {
       const text = item.data?.icon?.text?.toUpperCase();
       return (
         <div className={cx(text, 'collection_leaf-node-type pl-2')}>{text}</div>
       );
-    } else if (item.data._meta?.is_collection) {
+    } else if (item.data.__ref?.isCollection) {
       return context.isExpanded ? (
         <>
           {/* <VscChevronDown className="mr-1" size={20}/> */}
@@ -48,7 +48,7 @@ export default {
           />
         </>
       );
-    } else if (item.data._meta?.is_folder) {
+    } else if (item.data.__ref?.isFolder) {
       return context.isExpanded ? (
         <>
           {/* <VscChevronDown className="mr-1" size={20} opacity={'0.8'}/> */}
@@ -134,7 +134,7 @@ export default {
         className={cx(
           'relative',
           'rct-tree-item-li',
-          item.hasChildren && 'rct-tree-item-li-hasChildren',
+          item.isFolder && 'rct-tree-item-li-isFolder',
           context.isSelected && 'rct-tree-item-li-selected',
           context.isExpanded && 'rct-tree-item-li-expanded',
           context.isFocused && 'rct-tree-item-li-focused',
@@ -152,7 +152,7 @@ export default {
           className={cx(
             'pr-2',
             'rct-tree-item-title-container',
-            item.hasChildren && 'rct-tree-item-title-container-hasChildren',
+            item.isFolder && 'rct-tree-item-title-container-isFolder',
             context.isSelected && 'rct-tree-item-title-container-selected',
             context.isExpanded && 'rct-tree-item-title-container-expanded',
             context.isFocused && 'rct-tree-item-title-container-focused',
@@ -162,7 +162,7 @@ export default {
               'rct-tree-item-title-container-search-match'
           )}
         >
-          {context.isExpanded && item.hasChildren && (
+          {context.isExpanded && item.isFolder && (
             <span
               className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
@@ -171,7 +171,7 @@ export default {
           <span
             className={cx(
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-              { '!top-4': item.data._meta.is_request }
+              { '!top-4': item.data.__ref.isRequest }
             )}
             style={{ left: `${renderDepthOffset * 2 - 3}px` }}
           ></span>
@@ -181,7 +181,7 @@ export default {
             {...(context.interactiveElementProps as any)}
             className={cx(
               'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button',
-              item.hasChildren && 'rct-tree-item-button-hasChildren',
+              item.isFolder && 'rct-tree-item-button-isFolder',
               context.isSelected && 'rct-tree-item-button-selected',
               context.isExpanded && 'rct-tree-item-button-expanded',
               context.isFocused && 'rct-tree-item-button-focused',
@@ -197,20 +197,20 @@ export default {
           <CollectionMenu
             startRenaming={_startRenaming}
             collectionId={
-              item.data._meta.is_collection
-                ? item.data._meta?.id
-                : item.data._meta?.collection_id
+              item.data.__ref.isCollection
+                ? item.data.__ref?.id
+                : item.data.__ref?.collectionId
             }
             folderId={
-              item.data._meta.is_folder
-                ? item.data._meta?.id
-                : item.data._meta?.folder_id
+              item.data.__ref.isFolder
+                ? item.data.__ref?.id
+                : item.data.__ref?.folderId
             }
-            requestId= {item.data._meta.is_request? item.data._meta?.id: null}
+            requestId= {item.data.__ref.isRequest? item.data.__ref?.id: null}
             menuType={
-              item.data._meta.is_folder
+              item.data.__ref.isFolder
                 ? 'folder'
-                : item.data._meta.is_collection
+                : item.data.__ref.isCollection
                 ? 'collection'
                 : 'request'
             }

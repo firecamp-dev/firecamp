@@ -2,7 +2,7 @@ import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
 import _url from '@firecamp/url';
 import _cloneDeep from 'lodash/cloneDeep';
 
-import { prepareUiState } from '../services/graphql-service';
+import { prepareUiState } from '../services/request.service';
 
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
@@ -14,23 +14,19 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
   /** change url */
   changeUrl: (urlObj: IUrl) => {
     const state = get();
-    const lastUrl = state.last?.request.url;
-    const updatedUrl = _cloneDeep({ ...(state.request.url || {}), ...urlObj });
-    let updatedUiState = prepareUiState({
+    const url = _cloneDeep({ ...(state.request.url || {}), ...urlObj });
+    const updatedUiState = prepareUiState({
       url: urlObj,
     });
 
     set((s) => ({
-      ...s,
-      request: { ...s.request, url: updatedUrl },
+      request: { ...s.request, url },
       ui: {
         ...s.ui,
         ...updatedUiState,
       },
     }));
-
-    /** prepare commit action for url */
-    state.prepareUrlPushAction(lastUrl, updatedUrl);
+    state.equalityChecker({ url });
   },
 
   /** change query params */
@@ -44,12 +40,12 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
 
     // console.log({ raw });
 
-    // Update raw URL into state
+    // update raw URL into state
     url.raw = raw;
-    url.query_params = queryParams;
+    url.queryParams = queryParams;
 
     const updatedUiState = prepareUiState({
-      url: { query_params: queryParams, raw: existingURL.raw },
+      url: { queryParams: queryParams, raw: existingURL.raw },
     });
 
     set((s) => ({
@@ -63,9 +59,7 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
         ...updatedUiState,
       },
     }));
-
-    /** Prepare commit action for url */
-    state.prepareUrlPushAction(state.last?.request.url, url);
+    state.equalityChecker({ url });
   },
 
   /** change path params */
@@ -74,11 +68,11 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
     const existingURL = state.request.url;
     const url = _cloneDeep({
       ...existingURL,
-      path_params: pathParams,
+      pathParams: pathParams,
     });
 
     const updatedUiState = prepareUiState({
-      url: { path_params: pathParams, raw: existingURL.raw },
+      url: { pathParams: pathParams, raw: existingURL.raw },
     });
 
     set((s) => ({
@@ -92,9 +86,7 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
         ...updatedUiState,
       },
     }));
-
-    /** prepare push action for url */
-    state.prepareUrlPushAction(state.last?.request.url, url);
+    state.equalityChecker({ url });
   },
 });
 

@@ -609,6 +609,7 @@ video {
     --app-foreground-active: #fff;
     --app-foreground-inactive: #777777;
     --app-primary: #D48332;
+    --app-primary-with-opacity: #d483328a;
     --app-secondary: #3c3c3c;
     --app-border: #414141;
     --app-focus: #5E8FED;
@@ -822,6 +823,9 @@ video {
 .static {
 	position: static;
 }
+.fixed {
+	position: fixed;
+}
 .absolute {
 	position: absolute;
 }
@@ -830,6 +834,9 @@ video {
 }
 .relative {
 	position: relative;
+}
+.sticky {
+	position: sticky;
 }
 .-left-8 {
 	left: -2rem;
@@ -914,6 +921,12 @@ video {
 }
 .m-4 {
 	margin: 1rem;
+}
+.\!m-2 {
+	margin: 0.5rem !important;
+}
+.\!m-0 {
+	margin: 0px !important;
 }
 .m-0 {
 	margin: 0px;
@@ -1035,6 +1048,12 @@ video {
 .mb-14 {
 	margin-bottom: 3.5rem;
 }
+.\!mt-0 {
+	margin-top: 0px !important;
+}
+.-mt-px {
+	margin-top: -1px;
+}
 .mt-0 {
 	margin-top: 0px;
 }
@@ -1068,14 +1087,14 @@ video {
 .mt-3 {
 	margin-top: 0.75rem;
 }
-.-mb-2 {
-	margin-bottom: -0.5rem;
-}
 .-mr-1 {
 	margin-right: -0.25rem;
 }
 .-mb-80 {
 	margin-bottom: -20rem;
+}
+.-mb-2 {
+	margin-bottom: -0.5rem;
 }
 .block {
 	display: block;
@@ -1095,8 +1114,23 @@ video {
 .table {
 	display: table;
 }
+.\!table {
+	display: table !important;
+}
 .table-caption {
 	display: table-caption;
+}
+.table-cell {
+	display: table-cell;
+}
+.table-header-group {
+	display: table-header-group;
+}
+.table-row-group {
+	display: table-row-group;
+}
+.table-row {
+	display: table-row;
 }
 .grid {
 	display: grid;
@@ -1146,9 +1180,6 @@ video {
 .h-0 {
 	height: 0px;
 }
-.h-28 {
-	height: 7rem;
-}
 .h-32 {
 	height: 8rem;
 }
@@ -1160,6 +1191,9 @@ video {
 }
 .h-3 {
 	height: 0.75rem;
+}
+.h-28 {
+	height: 7rem;
 }
 .h-\[30px\] {
 	height: 30px;
@@ -1228,17 +1262,26 @@ video {
 .w-screen {
 	width: 100vw;
 }
-.w-36 {
-	width: 9rem;
+.w-40 {
+	width: 10rem;
 }
 .w-80 {
 	width: 20rem;
+}
+.w-32 {
+	width: 8rem;
+}
+.w-auto {
+	width: auto;
 }
 .w-7 {
 	width: 1.75rem;
 }
 .\!min-w-full {
 	min-width: 100% !important;
+}
+.min-w-full {
+	min-width: 100%;
 }
 .max-w-sm {
 	max-width: 24rem;
@@ -1276,6 +1319,9 @@ video {
 }
 .cursor-pointer {
 	cursor: pointer;
+}
+.cursor-default {
+	cursor: default;
 }
 .resize-none {
 	resize: none;
@@ -1327,6 +1373,14 @@ video {
 }
 .overflow-visible {
 	overflow: visible;
+}
+.\!overflow-y-auto {
+	overflow-y: auto !important;
+}
+.truncate {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .overflow-ellipsis {
 	text-overflow: ellipsis;
@@ -1553,6 +1607,9 @@ video {
 .\!bg-transparent {
 	background-color: #ffffff00 !important;
 }
+.\!bg-appBackground2 {
+	background-color: var(--app-background-secondary) !important;
+}
 .bg-inputBackground {
 	background-color: var(--input-background);
 }
@@ -1711,6 +1768,14 @@ video {
 	padding-top: 0px !important;
 	padding-bottom: 0px !important;
 }
+.\!px-2 {
+	padding-left: 0.5rem !important;
+	padding-right: 0.5rem !important;
+}
+.\!py-2 {
+	padding-top: 0.5rem !important;
+	padding-bottom: 0.5rem !important;
+}
 .px-0 {
 	padding-left: 0px;
 	padding-right: 0px;
@@ -1814,14 +1879,14 @@ video {
 .pl-1 {
 	padding-left: 0.25rem;
 }
-.pr-4 {
-	padding-right: 1rem;
-}
 .pr-1\.5 {
 	padding-right: 0.375rem;
 }
 .pb-80 {
 	padding-bottom: 20rem;
+}
+.pr-4 {
+	padding-right: 1rem;
 }
 .text-left {
 	text-align: left;
@@ -2195,6 +2260,9 @@ video {
 .first\:mt-0:first-child {
 	margin-top: 0px;
 }
+.first\:border-t-0:first-child {
+	border-top-width: 0px;
+}
 .first\:border-l-0:first-child {
 	border-left-width: 0px;
 }
@@ -2227,6 +2295,9 @@ video {
 }
 .hover\:\!bg-focus2:hover {
 	background-color: var(--focus-level-2) !important;
+}
+.hover\:\!bg-focus1:hover {
+	background-color: var(--focus-level-1) !important;
 }
 .hover\:bg-inputFocusBackground:hover {
 	background-color: var(--inputFocus-background);
@@ -2262,6 +2333,9 @@ video {
 .hover\:after\:bg-focusBorder:hover::after {
 	content: "";
 	background-color: var(--focus-border);
+}
+.focus\:\!bg-primaryColorOpacity:focus {
+	background-color: var(--app-primary-with-opacity) !important;
 }
 .focus\:bg-inputFocusBackground:focus {
 	background-color: var(--inputFocus-background);
@@ -2337,6 +2411,9 @@ input:focus,input:focus-visible
 textarea:focus,textarea:focus-visible{
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
+}
+tr:focus-visible{
+  box-shadow: none !important;
 }
 .focus-outer:focus{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
@@ -2575,7 +2652,7 @@ textarea:focus,textarea:focus-visible{
   margin-left: -3px;
 }
 .fc-btn-collapse {
-  max-height: 33px !important;
+  max-height: 32px !important;
   border: 1px solid var(--app-border);
   max-width: 20px !important;
   position: absolute;
@@ -2590,8 +2667,8 @@ textarea:focus,textarea:focus-visible{
   transform: rotate(180deg);
 }
 .fc-btn-collapse.v2 {
-  left: 0px;
-  min-height: 33px !important;
+  left: -1px;
+  min-height: 32px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -2604,6 +2681,43 @@ textarea:focus,textarea:focus-visible{
 .fc-collapsed > .fc-collapse-btn-v3{
   display: block !important 
 } 
+.fc-collapsed > *:not(.fc-collapse-btn),
+.fc-collapsed.fc-collapsed-v3 > *:not(.fc-collapse-btn-v3) {
+  display: none;
+}
+.fc-collapsed > .fc-collapse-btn-v3 {
+  display: block !important;
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 {
+  display: flex;
+  flex-direction: column-reverse;
+  position: absolute;
+  left: 0px;
+  width: 32px !important;
+  border-left: 1px solid var(--appBorder);
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-left {
+  position: absolute;
+  transform: rotate(90deg);
+  left: -23px;
+  top: 54px;
+}
+.fc-collapsable > .fc-collapse-btn-v3 {
+  display: none;
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-right {
+  top: 6px;
+  position: absolute;
+  font-size: 20px;
+  left: 6px;
+  transform: rotate(180deg);
+}
+.fc-collapsed-v3 {
+  width: 32px !important;
+}
+.fc-col-resizer.fc-collapsed.fc-collapsed-v3.fc-collapsable.left {
+    border-left: 1px solid var(--app-border) !important;
+}
 .fc-collapsed > .fc-collapse-btn, .fc-collapsed ~ div .fc-collapse-btn{
   transform: rotate(180deg);
 }
@@ -2705,6 +2819,10 @@ textarea:focus,textarea:focus-visible{
   display: block;
   width: 8px;
   height: 8px;
+}
+.visible-scrollbar.thick::-webkit-scrollbar{
+  width: 8px !important;
+  display: block !important;
 }
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
@@ -2912,3 +3030,23 @@ body .ace_editor .ace_scrollbar{
   border-left: 0px solid transparent;
 }
 /*--------table temporary css starts ------------*/
+
+/*--------table 2 css starts------------*/
+.fc-table-2 {
+  font-size: 14px;
+  border: 1px solid var(--app-border);
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.fc-table-2 .td,.fc-table-2 .th {
+  border: 1px solid var(--app-border);
+  padding: 6px 8px;
+}
+
+.fc-table-2 .th {
+  padding: 4px 8px;
+  font-weight: 800;
+  background: var(--focus-level-2);
+}
+/*-----------table 2 css end --------*/

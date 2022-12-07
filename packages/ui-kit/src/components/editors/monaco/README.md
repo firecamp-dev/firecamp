@@ -1,5 +1,5 @@
-### Interactoive Firecamp Editor
-IFE is an Editor with advance features like interative variables, auto completion and hover preview support. It'll powers the single-line input to code editor functionality in Firecamp.
+### Interactive Firecamp Editor
+IFE is an Editor with advance features like interactive variables, auto completion and hover preview support. It'll powers the single-line input to code editor functionality in Firecamp.
 
 ### Usage
 

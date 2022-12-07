@@ -38,8 +38,8 @@ const switchWorkspace = async (wrs: IWorkspace) => {
   AppService.initOrg(org as IOrganization);
 
   AppService.notify.success(`You have switched to ${wrs.name}`);
-  await fetchExplorer(wrs._meta.id);
-  localStorage.setItem('workspace', wrs._meta.id);
+  await fetchExplorer(wrs.__ref.id);
+  localStorage.setItem('workspace', wrs.__ref.id);
 };
 
 //initialize app flow on first load, after login and after signup
@@ -61,11 +61,12 @@ const initApp = async () => {
 
   //1/ check if user is logged in or not
   const t = localStorage.getItem('token');
+  const wrsId = localStorage.getItem('workspace');
   if (!t) return AppService.modals.openSignIn();
   CloudApiGlobal.setGlobalHeaders({
     [ECloudApiHeaders.Authorization]: `Bearer ${t}`,
+    [ECloudApiHeaders.WorkspaceId]: wrsId,
   });
-  const wrsId = localStorage.getItem('workspace');
   Rest.auth
     .me(wrsId)
     .then(async (res) => {
@@ -73,7 +74,7 @@ const initApp = async () => {
       AppService.initUser(user);
       AppService.initWorkspace(workspace);
       AppService.initOrg(org);
-      await fetchExplorer(workspace._meta.id);
+      await fetchExplorer(workspace.__ref.id);
       return res.data;
     })
     .then((res) => {
@@ -91,7 +92,7 @@ const initApp = async () => {
         Realtime.connect({
           endpoint: process.env.FIRECAMP_API_HOST,
           token: t,
-          userId: user._meta.id,
+          userId: user.__ref.id,
         })
           .onConnect(async (socketId) => {
             // receives the data on socket connection open
@@ -105,7 +106,7 @@ const initApp = async () => {
             // Realtime.onRequestChanges((payload) => {
             //   console.log({ onRequestChanges: payload });
             //   platformEmitter.emit(
-            //     prepareEventNameForRequestPull(payload.request_id),
+            //     prepareEventNameForRequestPull(payload.requestId),
             //     payload.actions
             //   );
             // });
@@ -121,7 +122,7 @@ const initApp = async () => {
   // const wrsId = localStorage.getItem('workspace');
 
   // TODO: Load cookie into cookie-jar
-  // if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+  // if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
   //     const allCookies = await F.db.cookie.fetchAll()
   //     F.cookieManager.addCookies(allCookies)
   // }
@@ -138,7 +139,7 @@ const initUser = (user: any) => {
   setUser(user);
 };
 const initWorkspace = (workspace: IWorkspace) => {
-  if (localStorage) localStorage.setItem('workspace', workspace?._meta?.id);
+  if (localStorage) localStorage.setItem('workspace', workspace?.__ref?.id);
   const { setWorkspace } = useWorkspaceStore.getState();
   setWorkspace(workspace);
 };

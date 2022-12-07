@@ -1,11 +1,7 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import {
-  Container,
-  Dropdown,
-  Button,
-} from '@firecamp/ui-kit';
+import { Container, Dropdown, Button } from '@firecamp/ui-kit';
 import * as monaco from 'monaco-editor';
 import { IFEThemes } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
 import { ERequestTypes } from '@firecamp/types';
@@ -19,25 +15,22 @@ import {
 
 import { usePlatformStore } from '../../../store/platform';
 import { EThemeColor, EThemeMode } from '../../../types';
-import { platformEmitter as emitter } from '../../../services/platform-emitter'
-import { EPlatformTabs } from '../../../services/platform-emitter/events'
+import { platformEmitter as emitter } from '../../../services/platform-emitter';
+import { EPlatformTabs } from '../../../services/platform-emitter/events';
 
 const Home: FC<any> = () => {
-
   useEffect(() => {
     // F?.reactGA?.pageview?.('home');
   }, []);
 
-  const _openTab = (
-    type?: ERequestTypes
-  ) => {
+  const _openTab = (type?: ERequestTypes) => {
     const allowed_app = [
       ERequestTypes.SocketIO,
       ERequestTypes.WebSocket,
       ERequestTypes.Rest,
       ERequestTypes.GraphQL,
     ];
-    // if (!allowed_app.includes(type)) 
+    // if (!allowed_app.includes(type))
     emitter.emit(EPlatformTabs.openNew, type);
   };
 
@@ -98,7 +91,7 @@ const Home: FC<any> = () => {
           name: 'SSE',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              <img src={'icon/png/icons-color/sse.png'} />
+              {/* <img src={'icon/png/icons-color/sse.png'} /> */}
             </div>
           ),
           postfix: () => <span>Coming soon</span>,
@@ -113,7 +106,7 @@ const Home: FC<any> = () => {
           name: 'gRPC',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              <img src={'icon/png/icons-color/grpc.png'} />
+              {/* <img src={'icon/png/icons-color/grpc.png'} /> */}
             </div>
           ),
           postfix: () => <span>Coming soon</span>,
@@ -123,7 +116,7 @@ const Home: FC<any> = () => {
           name: 'gRPC',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              <img src={'icon/png/icons-color/rpc.png'} />
+              {/* <img src={'icon/png/icons-color/rpc.png'} /> */}
             </div>
           ),
           postfix: () => <span>Coming soon</span>,
@@ -180,10 +173,10 @@ const Home: FC<any> = () => {
         <div className="mb-8">
           <Dropdown>
             <Dropdown.Handler className="flex items-center invert w-fit">
-              <img
+              {/* <img
                 className="max-h-4 mr-2 absolute "
                 src="icon/png/initial-request-icon.png"
-              />
+              /> */}
               <Button
                 text="Create a request"
                 md
@@ -312,8 +305,9 @@ let Theme: FC<any> = () => {
         theme?.color || 'orange'
       }`;
 
-      const monacoTheme = theme?.mode == EThemeMode.Dark ? IFEThemes.DARK : IFEThemes.LITE;
-      console.log(monacoTheme, "monacoTheme")
+      const monacoTheme =
+        theme?.mode == EThemeMode.Dark ? IFEThemes.DARK : IFEThemes.LITE;
+      console.log(monacoTheme, 'monacoTheme');
       // Set monaco editor theme
       monaco.editor.setTheme(monacoTheme);
     } catch (error) {

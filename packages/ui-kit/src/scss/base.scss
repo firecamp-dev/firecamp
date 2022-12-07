@@ -37,6 +37,7 @@
     --app-foreground-active: #fff;
     --app-foreground-inactive: #777777;
     --app-primary: #D48332;
+    --app-primary-with-opacity: #d483328a;
     --app-secondary: #3c3c3c;
     --app-border: #414141;
     --app-focus: #5E8FED;
@@ -275,6 +276,9 @@ textarea:focus,textarea:focus-visible{
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
 }
+tr:focus-visible{
+  box-shadow: none !important;
+}
 .focus-outer:focus{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
   outline: none;
@@ -509,7 +513,7 @@ textarea:focus,textarea:focus-visible{
   margin-left: -3px;
 }
 .fc-btn-collapse {
-  max-height: 33px !important;
+  max-height: 32px !important;
   border: 1px solid var(--app-border);
   max-width: 20px !important;
   position: absolute;
@@ -524,8 +528,8 @@ textarea:focus,textarea:focus-visible{
   transform: rotate(180deg);
 }
 .fc-btn-collapse.v2 {
-  left: 0px;
-  min-height: 33px !important;
+  left: -1px;
+  min-height: 32px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -538,6 +542,43 @@ textarea:focus,textarea:focus-visible{
 .fc-collapsed > .fc-collapse-btn-v3{
   display: block !important 
 } 
+.fc-collapsed > *:not(.fc-collapse-btn),
+.fc-collapsed.fc-collapsed-v3 > *:not(.fc-collapse-btn-v3) {
+  display: none;
+}
+.fc-collapsed > .fc-collapse-btn-v3 {
+  display: block !important;
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 {
+  display: flex;
+  flex-direction: column-reverse;
+  position: absolute;
+  left: 0px;
+  width: 32px !important;
+  border-left: 1px solid var(--appBorder);
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-left {
+  position: absolute;
+  transform: rotate(90deg);
+  left: -23px;
+  top: 54px;
+}
+.fc-collapsable > .fc-collapse-btn-v3 {
+  display: none;
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-right {
+  top: 6px;
+  position: absolute;
+  font-size: 20px;
+  left: 6px;
+  transform: rotate(180deg);
+}
+.fc-collapsed-v3 {
+  width: 32px !important;
+}
+.fc-col-resizer.fc-collapsed.fc-collapsed-v3.fc-collapsable.left {
+    border-left: 1px solid var(--app-border) !important;
+}
 .fc-collapsed > .fc-collapse-btn, .fc-collapsed ~ div .fc-collapse-btn{
   transform: rotate(180deg);
 }
@@ -637,6 +678,10 @@ textarea:focus,textarea:focus-visible{
   display: block;
   width: 8px;
   height: 8px;
+}
+.visible-scrollbar.thick::-webkit-scrollbar{
+  width: 8px !important;
+  display: block !important;
 }
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
@@ -840,3 +885,23 @@ body .ace_editor .ace_scrollbar{
   border-left: 0px solid transparent;
 }
 /*--------table temporary css starts ------------*/
+
+/*--------table 2 css starts------------*/
+.fc-table-2 {
+  font-size: 14px;
+  border: 1px solid var(--app-border);
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.fc-table-2 .td,.fc-table-2 .th {
+  border: 1px solid var(--app-border);
+  padding: 6px 8px;
+}
+
+.fc-table-2 .th {
+  padding: 4px 8px;
+  font-weight: 800;
+  background: var(--focus-level-2);
+}
+/*-----------table 2 css end --------*/

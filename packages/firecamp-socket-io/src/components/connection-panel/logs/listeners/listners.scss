@@ -1,0 +1,22 @@
+
+/*------listner css start----------*/
+
+.fc-listners-list-item:hover {
+    background-color: var(--focus-level-3);
+}
+  
+.fc-listners-list-item:hover > .fc-listners-list-item-action{
+    visibility: visible;
+    display: flex;
+}
+  
+.fc-listners-list-item-action{
+    position: absolute;
+    right: 0px;
+    font-size: 12px;
+    top: 4px;
+    right: 2px;   
+    visibility: hidden ;
+}
+  
+  /*------listner css start----------*/  

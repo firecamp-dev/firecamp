@@ -209,7 +209,7 @@ const Tabs: FC<ITabs> = forwardRef(
               {addTabIconMeta?.show && (
                 <div
                   id={addTabIconMeta.id || ''}
-                  className="px-2 cursor-pointer h-3"
+                  className="px-2 cursor-pointer h-8 flex items-center justify-center"
                   onClick={(e) => {
                     if (!addTabIconMeta?.disabled) {
                       addTabIconMeta?.onClick?.(e);

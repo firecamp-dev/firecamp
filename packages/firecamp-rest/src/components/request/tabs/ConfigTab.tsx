@@ -1,5 +1,4 @@
 import shallow from 'zustand/shallow';
-
 import { Container, CheckboxInGrid, Input } from '@firecamp/ui-kit';
 import { useRestStore } from '../../../store';
 import { ERestConfigKeys } from '../../../types';

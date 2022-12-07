@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { FocusEventHandler, MouseEventHandler, ReactNode } from 'react';
 
 /** Table options */
 export interface ITableOptions {
@@ -31,35 +31,65 @@ export interface ITable<R> {
   onMount?: (tableApi: TTableApi) => void;
   showDefaultEmptyRows?: boolean;
   options?: ITableOptions;
+  classes?: ITableClasses;
+}
+
+export interface ITableClasses {
+  container?: string;
+  table?: string;
+  thead?: string;
+  theadTr?: string;
+  tbody?: string;
+  th?: string;
+  tr?: string;
+  td?: string;
 }
 
 export interface IRow<R> {
+  classes?: { tr?: string; td?: string };
   index: number;
   columns: IColumn[];
   row: R;
-  tableApi: TTableApi;
+  tableApi?: TTableApi;
   options?: ITableOptions;
   renderCell: TRenderCell<R>;
+  handleDrag: (row: R, index?: number) => void;
+  handleDrop: (row: R) => any;
   onChangeCell: TOnChangeCell;
-  handleDrag: (row: R) => void;
-  handleDrop: (row: R) => void;
+  onClick?: (rowDom: HTMLTableRowElement) => void;
+  onFocus?: (rowDom: HTMLTableRowElement) => void;
 }
 export interface IColumn {
   id: string;
   name: string;
   key: string;
   width?: string;
+  fixedWidth?: boolean;
+  resizeWithContainer?: boolean;
 }
 
+export type TTHead = {
+  children: ReactNode;
+  className?: string;
+  style?: TPlainObject;
+};
+export type TTBody = {
+  children: ReactNode;
+  className?: string;
+  style?: TPlainObject;
+};
 export type TTr = {
   children: ReactNode;
   className?: string;
   style?: TPlainObject;
+  onClick?: MouseEventHandler;
+  onFocus?: FocusEventHandler;
 };
 export type TTh = {
   children: ReactNode;
   className?: string;
   style?: TPlainObject;
+  additionalProp?: TPlainObject;
 };
 export type TTd<R> = {
   row: R;
@@ -79,7 +109,7 @@ export type TRenderCell<R> = (
   index: number,
   row: R,
   tableApi: TTableApi,
-  onChange: (ck: string, cv: any, e: any) => void,
+  onChange: (ck: string, cv: any, e?: any) => void,
   handleDrag: (row: R) => void,
   options?: ITableOptions
 ) => ReactNode;
@@ -90,9 +120,17 @@ export type TOnChangeCell = (
   e: any
 ) => void;
 export type TTableApi<R = any> = {
-  initialize: (rows: R[]) => void;
+  initialize: Function; //(rows: R[]) => void;
   getRows: () => R[];
   addRow: () => void;
   setRow: (row: R) => void;
   removeRow: (rowId: TsORn) => void;
 };
+
+type ITableRowValue = {
+  key: string;
+  value: string;
+  description: string;
+  disable?: boolean;
+};
+export type ITableRows = Array<ITableRowValue>;

@@ -1,8 +1,5 @@
 import {
   Button,
- 
-  
-  EButtonIconPosition,
   Url,
   UrlBar,
   HttpMethodDropDown,
@@ -14,40 +11,36 @@ import { EHttpMethod, TId } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
 
-import { IGraphQLStore, IPushPayload, useGraphQLStore } from '../../../store';
+import { IGraphQLStore, useGraphQLStore } from '../../../store';
 const methods = Object.values(EHttpMethod);
 
 const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: IPushPayload, tabId: string) => {},
+  onSaveRequest = (pushAction: any, tabId: string) => {},
 }) => {
-  let { EnvironmentWidget } = postComponents;
+  const { EnvironmentWidget } = postComponents;
 
-  let {
+  const {
     url,
     method,
-    meta,
-    _meta,
+    __meta,
+    __ref,
     activeEnvironments,
     isRequestSaved,
     context,
-
     changeUrl,
     changeMethod,
     fetchIntrospectionSchema,
     toggleDoc,
     changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       url: s.request.url,
       method: s.request.method,
-      meta: s.request.meta,
-      _meta: s.request._meta,
+      __meta: s.request.__meta,
+      __ref: s.request.__ref,
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
@@ -57,44 +50,40 @@ const UrlBarContainer = ({
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
       toggleDoc: s.toggleDoc,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-
-      setPushActionEmpty: s.setPushActionEmpty,
     }),
     shallow
   );
   // console.log({ url, request });
 
-  let schema = {};
+  const schema = {};
 
-  let _handleUrlChange = (e) => {
+  const _handleUrlChange = (e) => {
     e.preventDefault();
-    let value = e.target.value;
+    const value = e.target.value;
 
-    let urlObject = _url.updateByRaw({ ...url, raw: value });
+    const urlObject = _url.updateByRaw({ ...url, raw: value });
 
     changeUrl(urlObject);
   };
 
-  let _toggleGraphqlDoc = () => {
+  const _toggleGraphqlDoc = () => {
     if (url?.raw?.length && (!schema || !Object.keys(schema).length)) {
       fetchIntrospectionSchema();
     }
     toggleDoc(true);
   };
 
-  let _onSave = async () => {
+  const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
+      let pushPayload: any;
       if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
+        // pushPayload = await prepareRequestInsertPushPayload();
       } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
+        // pushPayload = await prepareRequestUpdatePushPayload();
       }
 
       // console.log({ pushPayload });
-      setPushActionEmpty();
+      // setPushActionEmpty();
 
       onSaveRequest(pushPayload, tab.id);
     } catch (error) {
@@ -122,14 +111,14 @@ const UrlBarContainer = ({
           }}
         />
       }
-      nodePath={meta.name}
+      nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={()=> {
         context.appService.modals.openEditRequest({
-          name: meta.name,
-          description: meta.description,
-          collection_id: _meta.collection_id,
-          request_id: _meta.id
+          name: __meta.name,
+          description: __meta.description,
+          collectionId: __ref.collectionId,
+          requestId: __ref.id
         });
       }}
     >

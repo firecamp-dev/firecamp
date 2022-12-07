@@ -44,7 +44,7 @@ export class WrsEnvDataProvider {
     //@ts-ignore
     this.items = {
       ...this.items,
-      [item._meta.id]: { ...this.items[item._meta.id], name },
+      [item.__ref.id]: { ...this.items[item.__ref.id], name },
     };
     this.emitter.emit(ETreeEventTypes.itemChanged, [item.index]);
 
@@ -56,34 +56,34 @@ export class WrsEnvDataProvider {
 
   // extra methods of provider
   init(envs: IEnvironment[] = []) {
-    envs = envs.filter((e) => e.meta.type == EEnvironmentScope.Workspace);
-    const children: string[] = envs.map((e) => e._meta.id);
+    envs = envs.filter((e) => e.__meta.type == EEnvironmentScope.Workspace);
+    const children: string[] = envs.map((e) => e.__ref.id);
     this.items = {
       root: {
         index: 'root',
-        hasChildren: true,
-        children: [this.workspace._meta.id],
-        data: { name: 'root', _meta: { id: 'root' } },
+        isFolder: true,
+        children: [this.workspace.__ref.id],
+        data: { name: 'root', __ref: { id: 'root' } },
       },
-      [this.workspace._meta.id]: {
-        index: this.workspace._meta.id,
-        hasChildren: true,
+      [this.workspace.__ref.id]: {
+        index: this.workspace.__ref.id,
+        isFolder: true,
         children,
         data: {
           name: this.workspace.name,
-          _meta: { ...this.workspace._meta, is_workspace: true },
+          __ref: { ...this.workspace.__ref, isWorkspace: true },
         },
       },
     };
 
     envs.map((env, i) => {
-      this.items[env._meta.id] = {
-        index: env._meta.id,
+      this.items[env.__ref.id] = {
+        index: env.__ref.id,
         children: [],
-        hasChildren: false,
+        isFolder: false,
         data: {
           ...env,
-          _meta: { ...env._meta, is_environment: true },
+          __ref: { ...env.__ref, isEnvironment: true },
         },
       };
     });
@@ -93,8 +93,8 @@ export class WrsEnvDataProvider {
   }
 
   public addEnvItem(env: any) {
-    const wrsId = env._meta.workspace_id;
-    const envId = env._meta.id;
+    const wrsId = env.__ref.workspaceId;
+    const envId = env.__ref.id;
     this.items = {
       ...this.items,
       [wrsId]: {
@@ -104,8 +104,8 @@ export class WrsEnvDataProvider {
       [envId]: {
         index: envId,
         children: [],
-        hasChildren: false,
-        data: { ...env, _meta: { ...env._meta, is_environment: true } },
+        isFolder: false,
+        data: { ...env, __ref: { ...env.__ref, isEnvironment: true } },
       },
     };
     this.emitter.emit(ETreeEventTypes.itemChanged, [wrsId]);
@@ -113,7 +113,7 @@ export class WrsEnvDataProvider {
 
   public removeEnvItem(envId: string) {
     const env = this.items[envId].data;
-    const wrsId = env._meta.workspace_id;
+    const wrsId = env.__ref.workspaceId;
     delete this.items[envId];
     this.items = {
       ...this.items,
@@ -164,7 +164,7 @@ export class CollectionEnvDataProvider {
     //@ts-ignore
     this.items = {
       ...this.items,
-      [item._meta.id]: { ...this.items[item._meta.id], name },
+      [item.__ref.id]: { ...this.items[item.__ref.id], name },
     };
     this.emitter.emit(ETreeEventTypes.itemChanged, [item.index]);
 
@@ -176,38 +176,38 @@ export class CollectionEnvDataProvider {
 
   // extra methods of provider
   init(envs: IEnvironment[] = []) {
-    const children: string[] = this.collections.map((c) => c._meta.id);
+    const children: string[] = this.collections.map((c) => c.__ref.id);
     this.items = {
       root: {
         index: 'root',
-        hasChildren: true,
+        isFolder: true,
         children,
         data: { name: 'root' },
       },
     };
 
     this.collections.map((c) => {
-      this.items[c._meta.id] = {
-        index: c._meta.id,
+      this.items[c.__ref.id] = {
+        index: c.__ref.id,
         children: envs
-          .filter((e) => e._meta?.collection_id == c._meta.id)
-          .map((e) => e._meta.id),
-        hasChildren: true,
+          .filter((e) => e.__ref?.collectionId == c.__ref.id)
+          .map((e) => e.__ref.id),
+        isFolder: true,
         data: {
           name: c.name,
-          _meta: { ...c._meta, is_collection: true },
+          __ref: { ...c.__ref, isCollection: true },
         },
       };
     });
 
     envs.map((env, i) => {
-      this.items[env._meta.id] = {
-        index: env._meta.id,
+      this.items[env.__ref.id] = {
+        index: env.__ref.id,
         children: [],
-        hasChildren: false,
+        isFolder: false,
         data: {
           ...env,
-          _meta: { ...env._meta, is_environment: true },
+          __ref: { ...env.__ref, isEnvironment: true },
         },
       };
     });
@@ -217,8 +217,8 @@ export class CollectionEnvDataProvider {
   }
 
   public addEnvItem(env: any) {
-    const colId = env._meta.collection_id;
-    const envId = env._meta.id;
+    const colId = env.__ref.collectionId;
+    const envId = env.__ref.id;
     this.items = {
       ...this.items,
       [colId]: {
@@ -228,8 +228,8 @@ export class CollectionEnvDataProvider {
       [envId]: {
         index: envId,
         children: [],
-        hasChildren: false,
-        data: { ...env, _meta: { ...env._meta, is_environment: true } },
+        isFolder: false,
+        data: { ...env, __ref: { ...env.__ref, isEnvironment: true } },
       },
     };
     this.emitter.emit(ETreeEventTypes.itemChanged, [colId]);
@@ -237,7 +237,7 @@ export class CollectionEnvDataProvider {
 
   public removeEnvItem(envId: string) {
     const env = this.items[envId].data;
-    const colId = env._meta.collection_id;
+    const colId = env.__ref.collectionId;
     delete this.items[envId];
     this.items = {
       ...this.items,

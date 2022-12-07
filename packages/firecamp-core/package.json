@@ -16,7 +16,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://Nishchit14@bitbucket.org/jsbotio/firecamp.git"
+    "url": ""
   },
   "scripts": {
     "build": "run-p 'build:*' && yarn copy-files",
@@ -61,9 +61,9 @@
     "@firecamp/cookie-manager": "^0.0.0",
     "@firecamp/graphql": "^0.0.0",
     "@firecamp/rest": "^0.0.0",
-    "@firecamp/types": "^0.0.11",
+    "@firecamp/types": "^0.0.19",
     "@firecamp/ui-kit": "0.0.1",
-    "@firecamp/url": "^0.0.15",
+    "@firecamp/url": "^0.0.17",
     "@sentry/browser": "7.17.2",
     "@sentry/tracing": "7.17.2",
     "awesome-notifications": "3.1.3",

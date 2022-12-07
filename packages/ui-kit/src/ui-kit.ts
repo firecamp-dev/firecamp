@@ -74,13 +74,14 @@ export { default as SingleLineEditor } from './components/editors/monaco-v2/Sing
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';
-export { default as BulkEditTable } from './components/table/BulkEditTable';
-export { default as BasicTableRT8 } from './components/table/rt8/BasicTable';
+export { default as BulkEditTable } from './components/table/bulk-edit-table/BulkEditTable';
+// export { default as BasicTableRT8 } from './components/table/rt8/BasicTable';
 
 //table v3
 export { default as PrimitiveTable } from './components/table/primitive/Table';
-export { default as BasicTable } from './components/table/BasicTable';
-export { default as MultipartTable } from './components/table/MultipartTable';
+export { default as BasicTable } from './components/table/basic-table/BasicTable';
+export { default as MultipartTable } from './components/table/multipart-table/MultipartTable';
+export { default as LogTable } from './components/table/log-table/LogTable';
 export type { ITable, TTableApi } from './components/table/primitive/Table';
 
 // Url

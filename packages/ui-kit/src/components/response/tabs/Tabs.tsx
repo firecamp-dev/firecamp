@@ -11,7 +11,7 @@ import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 
 interface IResTabs {
-  id: TId,
+  id: TId;
   response: any;
   activeBodyTab: string;
   isRequestRunning: boolean;
@@ -34,12 +34,12 @@ const Tabs: FC<IResTabs> = ({
     statusMessage,
     headers,
     cookies,
-    error,
+    // error,
     timeline,
     testScriptResult,
   } = response;
 
-  let [tabs, setTabs] = useState([
+  const [tabs] = useState([
     { name: 'Body', id: 'body', count: 0 },
     { name: 'Headers', id: 'headers', count: headers?.length || 0 },
     { name: 'Cookies', id: 'cookies', count: cookies?.length || 0 },
@@ -51,7 +51,7 @@ const Tabs: FC<IResTabs> = ({
   // console.log({ response });
 
   let _renderTab = (tab: string) => {
-    console.log("tab", tab);
+    console.log('tab', tab);
     switch (tab) {
       case 'body':
         if (!!response.error && !!response.data) {

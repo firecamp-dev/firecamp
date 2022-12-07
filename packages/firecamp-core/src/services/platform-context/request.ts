@@ -1,7 +1,6 @@
 import { Realtime, Rest } from '@firecamp/cloud-apis';
 import {
   TId,
-  EPushActionType,
   IRest,
   IGraphQL,
   IRestResponse,
@@ -25,18 +24,18 @@ import { prepareEventNameForRequestPull } from '../platform-emitter/events';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
-  subscribeChanges?: (request_id: TId, handlePull: () => any) => void;
+  subscribeChanges?: (requestId: TId, handlePull: () => any) => void;
 
   // unsubscribe real-time request changes (pull-actions from server)
-  unsubscribeChanges?: (request_id: TId) => void;
+  unsubscribeChanges?: (requestId: TId) => void;
 
   // Save and update request
   onSave: (pushPayload: any, tabId: TId) => Promise<any>;
 
-  // on change request, update tab meta
+  // on change request, update tab __meta
   onChangeRequestTab: (
     tabId: TId,
-    tabMeta: IRequestTab['meta'],
+    tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL, // |ISocket | IWebsocket ,
     pushActions?: any[]
   ) => void;
@@ -54,29 +53,29 @@ interface IPlatformRequestService {
 
 const request: IPlatformRequestService = {
   // subscribe real-time request changes (pull-actions from server)
-  subscribeChanges: (request_id: TId, handlePull: () => any) => {
+  subscribeChanges: (requestId: TId, handlePull: () => any) => {
     // TODO: manage user is logged in from store
     // if (!F.userMeta.isLoggedIn) return;
 
-    // console.log({ subscribeChanges: request_id });
+    // console.log({ subscribeChanges: requestId });
 
     // Subscribe request changes
-    Realtime.subscribeRequest(request_id);
+    Realtime.subscribeRequest(requestId);
 
     // listen/ subscribe updates
-    platformEmitter.on(prepareEventNameForRequestPull(request_id), handlePull);
+    platformEmitter.on(prepareEventNameForRequestPull(requestId), handlePull);
   },
 
   // unsubscribe real-time request changes (pull-actions from server)
-  unsubscribeChanges: (request_id: TId) => {
+  unsubscribeChanges: (requestId: TId) => {
     // TODO: handle isLoggedIn
     // if (!F.userMeta.isLoggedIn) return;
 
-    // console.log({ unsubscribeChanges: request_id });
+    // console.log({ unsubscribeChanges: requestId });
 
     // unsubscribe request changes
-    // Realtime.unsubscribeRequest(request_id); // TODO: add socket API
-    platformEmitter.off(prepareEventNameForRequestPull(request_id));
+    // Realtime.unsubscribeRequest(requestId); // TODO: add socket API
+    platformEmitter.off(prepareEventNameForRequestPull(requestId));
   },
 
   /**
@@ -89,7 +88,7 @@ const request: IPlatformRequestService = {
       // set request payload to store to be saved for next step
       requestState.setReqAndTabId(pushPayload, tabId);
 
-      if (pushPayload && pushPayload._action.type === EPushActionType.Insert) {
+      if (pushPayload && pushPayload._action.type === 'i') {
         // open save request
         AppService.modals.openSaveRequest();
       } else {
@@ -116,7 +115,7 @@ const request: IPlatformRequestService = {
   normalizePushPayload: (pushPayload: any) => {
     let active_workspace = useWorkspaceStore.getState().getWorkspaceId();
 
-    let user_id = useUserStore.getState().user;
+    let userId = useUserStore.getState().user;
 
     let timestamp = new Date().valueOf();
 
@@ -124,33 +123,33 @@ const request: IPlatformRequestService = {
       let type = pushPayload._action.type;
       // console.log({ pushPayload });
 
-      // add workspace_id
+      // add workspaceId
       pushPayload._action = {
         ...pushPayload._action,
-        workspace_id: active_workspace,
+        workspaceId: active_workspace,
       };
 
       switch (type) {
-        case EPushActionType.Insert:
-          pushPayload._meta = {
-            ...pushPayload._meta,
-            created_by: user_id,
-            created_at: timestamp,
+        case 'i':
+          pushPayload.__ref = {
+            ...pushPayload.__ref,
+            createdBy: userId,
+            createdAt: timestamp,
           };
           break;
 
-        case EPushActionType.Update:
-          pushPayload._meta = {
-            ...pushPayload._meta,
-            updated_by: user_id,
-            updated_at: timestamp,
+        case 'u':
+          pushPayload.__ref = {
+            ...pushPayload.__ref,
+            updatedBy: userId,
+            updatedAt: timestamp,
           };
           break;
 
-        case EPushActionType.Delete:
-          pushPayload._meta = {
-            ...pushPayload._meta,
-            deleted_by: user_id,
+        case 'd':
+          pushPayload.__ref = {
+            ...pushPayload.__ref,
+            deleted_by: userId,
             deleted_at: timestamp,
           };
           break;
@@ -167,7 +166,7 @@ const request: IPlatformRequestService = {
   // on change request
   onChangeRequestTab: (
     tabId: TId,
-    tabMeta: IRequestTab['meta'],
+    tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL, // | ISocket | IWebsocket,
     pushActions?: any[]
   ) => {

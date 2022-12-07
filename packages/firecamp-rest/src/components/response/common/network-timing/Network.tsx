@@ -4,12 +4,12 @@ import equal from 'deep-equal';
 import classnames from 'classnames';
 
 const Network = ({ times = [], network = [] }) => {
-  let [total, setTotal] = useState(() =>
+  const [total, setTotal] = useState(() =>
     times.filter((t) => t.curlEvent === 'TOTAL' || t.curlEvent === 'REDIRECT')
   );
 
   useEffect(() => {
-    let newTotal = times.filter(
+    const newTotal = times.filter(
       (t) => t.curlEvent === 'TOTAL' || t.curlEvent === 'REDIRECT'
     );
     if (!equal(newTotal, total)) {
@@ -65,7 +65,7 @@ const Network = ({ times = [], network = [] }) => {
               <EventListItem
                 event="Prepare"
                 time="4.77 ms"
-                slotstart="0"
+                slotStart="0"
                 width="5%"
               />*/}
               {times && Array.isArray(times)
@@ -80,7 +80,7 @@ const Network = ({ times = [], network = [] }) => {
                         key={`times-${index}`}
                         event={time.event || ''}
                         time={`${time.time || '0'} ${time.unit || ''}`}
-                        slotstart={`${time.percentage || ''}%`}
+                        slotStart={`${time.percentage || ''}%`}
                         width={`${time.percentage || ''}%`}
                         description={time.description || ''}
                         curlEvent={time.curlEvent || ''}
@@ -118,7 +118,7 @@ const Network = ({ times = [], network = [] }) => {
 const EventListItem: FC<{
   event: string;
   time: string;
-  slotstart: string;
+  slotStart: string;
   width: string;
   className?: string;
   description: string;
@@ -126,7 +126,7 @@ const EventListItem: FC<{
 }> = ({
   event = '',
   time = '',
-  slotstart = '',
+  slotStart = '',
   width = '',
   className = '',
   description = '',
@@ -147,7 +147,7 @@ const EventListItem: FC<{
         <span
           className="fc-event-list-item-progress"
           style={{
-            /*  center: slotstart, // todo: check span property */ width: width,
+            /*  center: slotStart, // todo: check span property */ width: width,
           }}
         ></span>
       </Column>

@@ -1,10 +1,11 @@
+// @ts-nocheck
 import { FC, useState } from 'react';
 import equal from 'deep-equal';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from './Table';
-import { defaultData } from './TableData'
+import { defaultData } from './TableData';
 
 const BasicTable: FC<any> = ({
   rows,
@@ -29,11 +30,11 @@ const BasicTable: FC<any> = ({
   //   }, 5000)
   // }, [])
 
-  const updateTableData = (newRows: any[] = []) => {
-    if (!equal(newRows, data)) {
-      setData(newRows);
-    }
-  };
+  // const updateTableData = (newRows: any[] = []) => {
+  //   if (!equal(newRows, data)) {
+  //     setData(newRows);
+  //   }
+  // };
 
   return (
     <>

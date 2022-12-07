@@ -6,9 +6,9 @@ export const bodyTypeNames = {
   [ERestBodyTypes.FormData]: 'Multipart',
   [ERestBodyTypes.UrlEncoded]: 'Form URL Encode',
   [ERestBodyTypes.GraphQL]: 'GraphQL Queries',
-  [ERestBodyTypes.Json]: 'JSON',
-  [ERestBodyTypes.Xml]: 'XML',
-  [ERestBodyTypes.Text]: 'TEXT',
+  [ERestBodyTypes.Json]: 'Json',
+  [ERestBodyTypes.Xml]: 'Xml',
+  [ERestBodyTypes.Text]: 'Text',
   [ERestBodyTypes.Binary]: 'Binary',
 };
 
@@ -119,10 +119,10 @@ export const bodyState = {
 
 // empty config state
 export const configState: IRestConfig = {
-  follow_location: true,
-  max_redirects: 21,
-  reject_unauthorized: false,
-  request_timeout: 0,
+  followLocation: true,
+  maxRedirects: 21,
+  rejectUnauthorized: false,
+  requestTimeout: 0,
 };
 
 // headers mapping by body types

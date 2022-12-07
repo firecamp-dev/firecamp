@@ -43,7 +43,7 @@ const Body: FC<IBody> = ({
             meta={{
               showHeader: true,
               header: 'Environments',
-              ...meta,
+              ...__meta,
             }}
           />
         );

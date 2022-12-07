@@ -33,14 +33,14 @@ const CreateEnvironment: FC<IModal> = ({
   const { scope, collectionId } = useModalStore.getState().meta as TModalMeta;
   let collection: any;
   if (scope == EEnvironmentScope.Collection) {
-    collection = collections.find((c) => c._meta.id == collectionId);
+    collection = collections.find((c) => c.__ref.id == collectionId);
     console.log(collection, 'collection....');
   }
 
   const [env, setEnv] = useState({
     name: '',
     variables: JSON.stringify({ variable_key: 'value' }, null, 4),
-    meta: { type: scope, visibility: 1 },
+    __meta: { type: scope, visibility: 1 },
   });
 
   const [isRequesting, setIsRequesting] = useState(false);
@@ -61,7 +61,7 @@ const CreateEnvironment: FC<IModal> = ({
   const onChangeVisibility = (value: { private: boolean }) => {
     setEnv((s) => ({
       ...s,
-      meta: { ...s.meta, visibility: value.private == true ? 2 : 1 },
+      meta: { ...s.__meta, visibility: value.private == true ? 2 : 1 },
     }));
   };
 
@@ -95,12 +95,12 @@ const CreateEnvironment: FC<IModal> = ({
     const _env = {
       name,
       variables,
-      meta: env.meta,
-      _meta: { workspace_id: workspace._meta.id },
+      __meta: env.__meta,
+      __ref: { workspaceId: workspace.__ref.id },
     };
     if (scope == EEnvironmentScope.Collection) {
       //@ts-ignore
-      _env._meta.collection_id = collectionId;
+      _env.__ref.collectionId = collectionId;
     }
 
     console.log(_env, '_env');
@@ -123,14 +123,14 @@ const CreateEnvironment: FC<IModal> = ({
   const visibility = [
     {
       id: 'public',
-      isChecked: env.meta.visibility == 1,
+      isChecked: env.__meta.visibility == 1,
       label: 'Public',
       showLabel: true,
       disabled: false,
     },
     {
       id: 'private',
-      isChecked: env.meta.visibility == 2,
+      isChecked: env.__meta.visibility == 2,
       label: 'Private',
       showLabel: true,
       disabled: false,
@@ -210,7 +210,7 @@ const CreateEnvironment: FC<IModal> = ({
               onToggleCheck={onChangeVisibility}
             />
             <span className="text-sm font-normal text-appForegroundInActive block mt-1">
-              {env.meta.visibility == 2
+              {env.__meta.visibility == 2
                 ? 'This environment is private and will only be accessible to you'
                 : 'This environment is public and will be accessible to all members of the workspace'}
             </span>

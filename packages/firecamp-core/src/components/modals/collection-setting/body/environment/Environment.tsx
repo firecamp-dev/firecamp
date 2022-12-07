@@ -106,13 +106,13 @@ const Environment: FC<IEnvironment> = ({
    * @returns {{}|unknown}
    */
   let getActiveEnv = () => {
-    if (environmentCollection && environments?.[envType]?.meta) {
+    if (environmentCollection && environments?.[envType]?.__meta) {
       let activeEnvData = (environmentCollection || []).find(
-        (env) => env._meta.id === activeEnv
+        (env) => env.__ref.id === activeEnv
       );
-      return activeEnvData || { _meta: {} };
+      return activeEnvData || { __ref: {} };
     } else {
-      return { _meta: {} };
+      return { __ref: {} };
     }
   };
 
@@ -132,11 +132,11 @@ const Environment: FC<IEnvironment> = ({
   }, []);
 
   useEffect(() => {
-    if (environments && environments[envType] && environments[envType].meta) {
-      let envId = activeEnvCard?._meta?.id || activeEnv;
+    if (environments && environments[envType] && environments[envType].__meta) {
+      let envId = activeEnvCard?.__ref?.id || activeEnv;
 
       let newActiveEnv = (environmentCollection || []).find(
-        (env) => env._meta.id === envId
+        (env) => env.__ref.id === envId
       );
       if (!newActiveEnv && environmentCollection) {
         newActiveEnv = environmentCollection[0];
@@ -154,7 +154,7 @@ const Environment: FC<IEnvironment> = ({
                   [
                     envId,
                     {
-                      _meta: { id: envId },
+                      __ref: { id: envId },
                       body: newActiveEnv.body || '',
                     },
                   ],
@@ -169,7 +169,7 @@ const Environment: FC<IEnvironment> = ({
 
         let isActiveEnvCardExistInCollection = (
           environmentCollection || []
-        ).find((env) => env._meta.id === activeEnvCard._meta.id);
+        ).find((env) => env.__ref.id === activeEnvCard.__ref.id);
 
         if (
           !equal(newActiveEnv, activeEnvCard) &&
@@ -178,11 +178,11 @@ const Environment: FC<IEnvironment> = ({
           setActiveEnvCard(newActiveEnv);
           if (coll_ref && coll_ref.current) {
             coll_ref.current._clearSelections();
-            coll_ref.current._setSelection([newActiveEnv._meta.id]);
-            coll_ref.current._focus(newActiveEnv._meta.id);
+            coll_ref.current._setSelection([newActiveEnv.__ref.id]);
+            coll_ref.current._focus(newActiveEnv.__ref.id);
           }
         } else if (
-          newActiveEnv._meta.id === activeEnvCard._meta.id &&
+          newActiveEnv.__ref.id === activeEnvCard.__ref.id &&
           !equal(newActiveEnv, activeEnvCard)
         ) {
           setActiveEnvCard(newActiveEnv);
@@ -193,12 +193,12 @@ const Environment: FC<IEnvironment> = ({
 
   let _zustandEnvFns = {
     add: (payload, setOriginal = false, appendExistingPayload = false) => {
-      if (!payload || !payload._meta.id) return;
+      if (!payload || !payload.__ref.id) return;
 
       store_environments.setState((state) => {
         let environments = state.environments || new Map();
-        if (environments.has(payload._meta.id) && setOriginal === false) {
-          let existingEnv = environments.get(payload._meta.id);
+        if (environments.has(payload.__ref.id) && setOriginal === false) {
+          let existingEnv = environments.get(payload.__ref.id);
           let snToSet = Object.assign({}, payload);
 
           if (appendExistingPayload === true) {
@@ -209,14 +209,14 @@ const Environment: FC<IEnvironment> = ({
           return {
             environments: new Map([
               ...environments,
-              [payload._meta.id, snToSet],
+              [payload.__ref.id, snToSet],
             ]),
           };
         } else {
           return {
             environments: new Map([
               ...environments,
-              [payload._meta.id, payload],
+              [payload.__ref.id, payload],
             ]),
           };
         }
@@ -265,7 +265,7 @@ const Environment: FC<IEnvironment> = ({
       let environmentPayload = Object.assign(
         {},
         {
-          _meta: { id: newEnvId },
+          __ref: { id: newEnvId },
           variables: {
             variableName: 'variableValue',
           },
@@ -277,9 +277,9 @@ const Environment: FC<IEnvironment> = ({
       );
 
       if (collectionId !== 'global') {
-        environmentPayload['_meta'] = {
-          ...environmentPayload['_meta'],
-          collection_id: collectionId,
+        environmentPayload['__ref'] = {
+          ...environmentPayload['__ref'],
+          collectionId: collectionId,
         };
       }
 
@@ -301,11 +301,11 @@ const Environment: FC<IEnvironment> = ({
       if (environment.hasOwnProperty('children')) {
         return;
       } else {
-        if (environment._meta.id && environment.name) {
+        if (environment.__ref.id && environment.name) {
           let name = environment.name.trim();
           if (!name) return false;
-          let path = environment._meta
-            ? environment._meta._relative_path || ''
+          let path = environment.__ref
+            ? environment.__ref._relative_path || ''
             : '';
           let envs = (environmentCollection || []).map((env) => env.name);
 
@@ -314,8 +314,8 @@ const Environment: FC<IEnvironment> = ({
           }
           await _envFns.update(
             { name },
-            environment._meta.id,
-            environment.meta ? environment.meta.parent_id || '' : ''
+            environment.__ref.id,
+            environment.__meta ? environment.__meta.parentId || '' : ''
           );
           return true;
         }
@@ -323,7 +323,7 @@ const Environment: FC<IEnvironment> = ({
     },
 
     update: async (payload = {}, envId, collectionId) => {
-      if (!activeEnvCard || !activeEnvCard._meta.id) return;
+      if (!activeEnvCard || !activeEnvCard.__ref.id) return;
     },
 
     remove: async (environment = {}) => {
@@ -333,7 +333,7 @@ const Environment: FC<IEnvironment> = ({
 
   let _onNodeFocus = ({ _meta, ...collectionNode }) => {
     if (
-      _meta.id === activeEnvCard._meta.id &&
+      _meta.id === activeEnvCard.__ref.id &&
       _meta._relative_path === activeEnvCard.path
     ) {
       return;
@@ -434,7 +434,7 @@ const Environment: FC<IEnvironment> = ({
                         // rootHeader={"My WorkSpace"}
                         onNodeFocus={_onNodeFocus}
                         defaultSelectedIds={
-                          activeEnvCard ? [activeEnvCard._meta.id] : []
+                          activeEnvCard ? [activeEnvCard.__ref.id] : []
                         }
                         nodeRenderer={({
                           isDirectory,
@@ -473,10 +473,10 @@ const Environment: FC<IEnvironment> = ({
                           if (
                             col &&
                             activeEnvCard &&
-                            activeEnvCard._meta.id
+                            activeEnvCard.__ref.id
                           ) {
-                            col._setSelection([activeEnvCard._meta.id]);
-                            col._focus(activeEnvCard._meta.id);
+                            col._setSelection([activeEnvCard.__ref.id]);
+                            col._focus(activeEnvCard.__ref.id);
                           }
                         }}
                       /> */ ''

@@ -42,11 +42,11 @@ const CloseIconPlacement = ({
     <div className="fc-tab-action flex items-center pl-1 -mr-1" id={id}>
       {state == 'modified' ? (
         <div className="flex items-center h-4 w-4 cursor-pointer">
-          <VscCircleFilled size={14} onClick={onClick} />
+          <VscCircleFilled size={14} onClick={(e) => onClick(e)} />
         </div>
       ) : (
         <div className="fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor">
-          <VscClose size={14} onClick={onClick} />
+          <VscClose size={14} onClick={(e) => onClick(e)} />
         </div>
       )}
     </div>

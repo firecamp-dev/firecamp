@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { Container, Resizable, SecondaryTab, Tabs } from '@firecamp/ui-kit';
-// import equal from 'deep-equal';
+import { Container, Resizable, SecondaryTab } from '@firecamp/ui-kit';
 import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 
 import Variables from './Variables';
@@ -8,26 +7,25 @@ import Files from './Files';
 import classnames from 'classnames';
 
 const PlaygroundFooter = () => {
-  let [tabs, setTabs] = useState([
+  const [tabs, setTabs] = useState([
     { id: 'variables', name: 'Variables' },
     { id: 'files', name: 'Files' },
   ]);
-  let [activeTab, onSelect] = useState('variables');
-  let [showFooter, toggleFooter] = useState(true);
+  const [activeTab, onSelect] = useState('variables');
+  const [showFooter, toggleFooter] = useState(true);
 
-  let _renderTab = (tab) => {
+  const _renderTab = (tab: string) => {
     switch (tab) {
       case 'variables':
         return <Variables />;
-        break;
       case 'files':
         return <Files />;
-        break;
+      default:
+        return <></>;
     }
   };
 
-  let _onSelectTab = (tab) => {
-    // console.log(`tab`, tab, showFooter);
+  const _onSelectTab = (tab) => {
     if (!showFooter) toggleFooter(true);
     onSelect(tab);
   };

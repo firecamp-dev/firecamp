@@ -6,7 +6,7 @@ import { IScriptRequest } from '../types';
  * request script
  */
 export class Request implements IScriptRequest {
-  url: IUrl = { raw: '', path_params: [], query_params: [] };
+  url: IUrl = { raw: '', pathParams: [], queryParams: [] };
   headers: IHeader[] = [];
   method: EHttpMethod | string;
   body: IRestBody;
@@ -46,17 +46,17 @@ export class Request implements IScriptRequest {
     );
   }
   addQueryParam(queryName: string, queryValue: string): void {
-    if (!Array.isArray(this.url.query_params)) return;
+    if (!Array.isArray(this.url.queryParams)) return;
 
-    this.url.query_params.push({
+    this.url.queryParams.push({
       key: queryName,
       value: queryValue,
     });
   }
   updateQueryParam(queryName: string, queryValue: string): void {
-    if (!Array.isArray(this.url.query_params)) return;
+    if (!Array.isArray(this.url.queryParams)) return;
 
-    const index = this.url.query_params.findIndex(
+    const index = this.url.queryParams.findIndex(
       (query) => query.key === queryName
     );
 
@@ -65,20 +65,20 @@ export class Request implements IScriptRequest {
     }
   }
   getQueryParam(queryName: string): string | undefined {
-    if (!Array.isArray(this.url.query_params)) return undefined;
+    if (!Array.isArray(this.url.queryParams)) return undefined;
 
-    return this.url.query_params.find((query) => query.key === queryName)?.[0]
+    return this.url.queryParams.find((query) => query.key === queryName)?.[0]
       ?.value;
   }
   removeQueryParam(...queryNames: string[]): void {
-    this.url.query_params = this.headers.filter(
+    this.url.queryParams = this.headers.filter(
       (query) => !queryNames.includes(query.key)
     );
   }
   getQueries(): { [key: string]: string } {
-    if (!Array.isArray(this.url.query_params)) return {};
+    if (!Array.isArray(this.url.queryParams)) return {};
 
-    return this.url.query_params.reduce((queryParams, item) => {
+    return this.url.queryParams.reduce((queryParams, item) => {
       queryParams[item.key] = item.value;
       return queryParams;
     }, {});

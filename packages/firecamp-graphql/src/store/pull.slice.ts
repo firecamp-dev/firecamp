@@ -1,64 +1,58 @@
-import { EPushActionType, ERequestTypes, IGraphQL } from '@firecamp/types';
+import { ERequestTypes, IGraphQL } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 
-import { IPushAction, IPushPayload } from './pushAction.slice';
-
-/**
- * Referance:
- */
-
-interface IPullslice {
-  pull?: IPushPayload;
+interface IPullSlice {
+  pull?: any; //:IPushPayload
 
   /**
    * Handle pull payload by keys and updated request payload
    */
   getMergedRequestByPullAction?: (
-    pullPayload: IPushPayload
+    pullPayload: any // IPushPayload
   ) => Promise<IGraphQL> | PromiseRejectedResult; //define type for pullPayload here
 }
 
-const createPullActionSlice = (set, get): IPullslice => ({
+const createPullActionSlice = (set, get): IPullSlice => ({
   pull: {
     _action: {
-      type: EPushActionType.Update,
+      type: 'u',
       item_id: '',
       item_type: 'R',
-      request_type: ERequestTypes.GraphQL,
-      collection_id: '',
-      workspace_id: '',
+      requestType: ERequestTypes.GraphQL,
+      collectionId: '',
+      workspaceId: '',
       keys: {},
     },
   },
 
-  getMergedRequestByPullAction: (pullActionPayload: IPushPayload) => {
+  getMergedRequestByPullAction: (pullActionPayload: any) => {
     if (
       pullActionPayload &&
       pullActionPayload._action &&
-      pullActionPayload._action.type === EPushActionType.Update &&
+      pullActionPayload._action.type === 'u' &&
       pullActionPayload._action.keys
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);
       let existingRequest: IGraphQL = get().request;
-      let updatedReqeust: IGraphQL = existingRequest;
-      let pullAction: IPushAction = pullActionPayload._action.keys;
+      let updatedRequest: IGraphQL = existingRequest;
+      let pullAction: any = pullActionPayload._action.keys;
 
       for (let key in pullAction) {
         switch (key) {
           // manage _root keys
           case '_root':
-            updatedReqeust = Object.assign(
-              updatedReqeust,
+            updatedRequest = Object.assign(
+              updatedRequest,
               _object.pick(pullPayload, pullAction[key])
             );
             break;
 
-          // case '_meta':
-          case 'meta':
+          // case '__ref':
+          case '__meta':
           case 'url':
             if (key in pullPayload) {
-              updatedReqeust[key] = _object.mergeDeep(
-                updatedReqeust[key],
+              updatedRequest[key] = _object.mergeDeep(
+                updatedRequest[key],
                 _object.pick(pullPayload[key], pullAction[key])
               ) as IGraphQL;
             }
@@ -71,12 +65,12 @@ const createPullActionSlice = (set, get): IPullslice => ({
           // do noting
         }
       }
-      console.log('getMergedRequestByPullAction:', { updatedReqeust });
+      console.log('getMergedRequestByPullAction:', { updatedRequest });
 
-      return Promise.resolve(updatedReqeust);
+      return Promise.resolve(updatedRequest);
     }
     return Promise.reject('Invalid pull payload');
   },
 });
 
-export { IPullslice, createPullActionSlice };
+export { IPullSlice, createPullActionSlice };

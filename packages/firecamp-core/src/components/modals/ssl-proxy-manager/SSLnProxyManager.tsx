@@ -53,7 +53,7 @@ const SSLnProxyManager: FC<ISSLnProxyManager> = ({
               tabsClassName="tabs-with-bottom-border-left-section"
             />
           </div>
-          {_misc.firecampAgent() === EFirecampAgent.desktop ? (
+          {_misc.firecampAgent() === EFirecampAgent.Desktop ? (
             activeTab === 'ssl_manager' ? (
               <SSLManager key="ssl_manager" />
             ) : (

@@ -45,7 +45,7 @@ const Sidebar: FC<ISidebar> = ({
     if (_object.size(cookiesByDomain)) {
       return (
         Object.keys(cookiesByDomain).map((key, i) => {
-          return { name: key, _meta: { id: key } };
+          return { name: key, __ref: { id: key } };
         }) || []
       );
     } else {
