@@ -1,7 +1,7 @@
 import {render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import {CopyButtonWithTextPreview, CopyButtonWithoutTextPreview, CopyButtonWithoutAnimation, CopyButtonWithCustomComponent} from "./CopyButton.stories";
-import { clickEvent } from "../../../__mocks__/eventMock";
+import { click } from "../../../__mocks__/eventMock";
 
 describe("Button : " , () => {
 
@@ -36,7 +36,7 @@ describe("Button : " , () => {
     const copyElement = button.lastChild as HTMLElement;
   
     expect(copyElement).toHaveClass('iconv2-copy-icon');
-    clickEvent(copyElement);
+    click(copyElement);
     await waitFor(() => getCopyButton());
     const animationExist = await getCopyAnimation();
     
@@ -51,7 +51,7 @@ describe("Button : " , () => {
     const copyElement = button.lastChild as HTMLElement;
   
     expect(copyElement).toHaveClass('iconv2-copy-icon');
-    clickEvent(copyElement);
+    click(copyElement);
     await waitFor(() => getCopyButton());
     const animationExist = await getCopyAnimation();
     

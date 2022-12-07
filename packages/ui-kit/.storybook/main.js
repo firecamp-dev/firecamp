@@ -45,12 +45,14 @@ module.exports = {
         include: path.resolve(__dirname, '../'),
     })
 
-    // config.resolve.alias = {
-    //   ...config.resolve.alias,
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@firecamp/rest-executor/dist/esm": path.join(__dirname,"../../firecamp-rest-executor/dist/esm/script-runner/snippets/index.js")
+      
     //   "https": path.join(__dirname, "../../../node_modules/@types/node/https")
     //   "react/jsx-dev-runtime": path.join(__dirname, "../../../node_modules/react/jsx-dev-runtime.js"),
     //   "react/jsx-runtime": path.join(__dirname, "../../../node_modules/react/jsx-runtime.js")
-    // }
+    }
     // console.log(config);
     config.externals = {
       ...config.externals,

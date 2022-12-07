@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { useState } from 'react';
 import Checkbox from './Checkbox';
 
 export default {
@@ -12,8 +13,12 @@ export default {
 
 const Template = (args) => <div className="bg-activityBarActiveBackground text-activityBarForeground"><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /></div>;
 
+const TemplateWithState = (args) => {
+    const [isChecked, onToggleCheck] = useState(args.isChecked);
+    return <Checkbox {...args} isChecked={isChecked} onToggleCheck={(label, value) => onToggleCheck(value)}/>
+}
 
-export const CheckBoxPrimary = Template.bind({});
+export const CheckBoxPrimary = TemplateWithState.bind({});
 CheckBoxPrimary.args = { label: 'CheckBoxPrimary', color: 'primary', labelPlacing: 'right', isChecked: false };
 
 
