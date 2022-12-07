@@ -3,11 +3,7 @@ import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
 import { TId } from '@firecamp/types';
 import ConnectButton from '../connection/ConnectButton';
-import {
-  IPushPayload,
-  IWebsocketStore,
-  useWebsocketStore,
-} from '../../../store/index';
+import { IWebsocketStore, useWebsocketStore } from '../../../store/index';
 
 const UrlBarContainer = ({
   tab,
@@ -27,21 +23,14 @@ const UrlBarContainer = ({
 
     changeUrl,
     changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
-
       changeUrl: s.changeUrl,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-      setPushActionEmpty: s.setPushActionEmpty,
     }),
     shallow
   );
@@ -78,7 +67,7 @@ const UrlBarContainer = ({
 
   const _onUpdate = async () => {
     try {
-      const pushPayload: IPushPayload = await prepareRequestUpdatePushPayload();
+      // const pushPayload: IPushPayload = await prepareRequestUpdatePushPayload();
       // console.log({ pushPayload });
 
       await onSaveRequest(pushPayload, tab.id);
@@ -92,15 +81,15 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
+      let pushPayload: any; //IPushPayload;
       if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
+        // pushPayload = await prepareRequestInsertPushPayload();
       } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
+        // pushPayload = await prepareRequestUpdatePushPayload();
       }
 
       // console.log({ pushPayload });
-      setPushActionEmpty();
+      // setPushActionEmpty();
 
       onSaveRequest(pushPayload, tab.id);
     } catch (error) {

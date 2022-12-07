@@ -28,8 +28,7 @@ const createUrlSlice = (set, get): IUrlSlice => ({
         runtime: { ...s.runtime, displayUrl: urlObj.raw },
       };
     });
-
-    console.log(state.equalityChecker(urlObj, 'url'));
+    state.equalityChecker(url);
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
     set((s) => ({

@@ -1,8 +1,6 @@
 import { ERequestTypes, IWebSocket } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 
-import { IPushAction, IPushPayload } from './push-action/pushAction.slice';
-
 interface IPullSlice {
   pull?: IPushPayload;
 
@@ -37,7 +35,7 @@ const createPullActionSlice = (set, get): IPullSlice => ({
       let pullPayload = _object.omit(pullActionPayload, ['_action']);
       let existingRequest: IWebSocket = get().request;
       let updatedRequest: IWebSocket = existingRequest;
-      let pullAction: IPushAction = pullActionPayload._action.keys;
+      let pullAction: any = pullActionPayload._action.keys;
       let requestPullAction = pullAction.request;
 
       for (let key in requestPullAction) {

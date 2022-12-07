@@ -49,7 +49,6 @@ const createCollectionSlice = (
     value: Array<IWebSocketMessage> | Array<IRequestFolder>
   ) => {
     set((s) => ({
-      ...s,
       collection: {
         ...s.collection,
         [key]: value,
@@ -81,17 +80,14 @@ const createCollectionSlice = (
   addMessage: (message: IWebSocketMessage) => {
     if (!message.__ref?.id) return;
     const state = get();
-
     set((s) => ({
-      ...s,
       collection: {
         ...s.collection,
         messages: [...s.collection.messages, message],
       },
     }));
 
-    // prepare push action for insert message
-    state.prepareCollectionMessagesPushAction(message.__ref?.id, 'i');
+    // state.prepareCollectionMessagesPushAction(message.__ref?.id, 'i');
   },
   changeMessage: (id: TId, updates: { key: string; value: any }) => {
     const state = get();
@@ -110,7 +106,6 @@ const createCollectionSlice = (
       });
 
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           messages: [
@@ -122,13 +117,13 @@ const createCollectionSlice = (
       }));
 
       const lastMessage = state.getMessage(id, true);
-      // Prepare push action for update message
-      state.prepareCollectionMessagesPushAction(
-        id,
-        'u',
-        lastMessage,
-        updatedMessage
-      );
+
+      // state.prepareCollectionMessagesPushAction(
+      //   id,
+      //   'u',
+      //   lastMessage,
+      //   updatedMessage
+      // );
     }
   },
   deleteMessage: (id: TId) => {
@@ -138,7 +133,6 @@ const createCollectionSlice = (
     // If message found then update in store
     if (messageDetails && messageDetails.messageIndex !== -1) {
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           messages: [
@@ -147,8 +141,7 @@ const createCollectionSlice = (
           ],
         },
       }));
-      // prepare push action for delete message
-      state.prepareCollectionMessagesPushAction(id, 'd');
+      // state.prepareCollectionMessagesPushAction(id, 'd');
     }
   },
   setMessage: (id: TId, messageToSet: IWebSocketMessage) => {
@@ -165,7 +158,6 @@ const createCollectionSlice = (
       const updatedMessage = Object.assign({}, message, messageToSet);
 
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           messages: [
@@ -177,13 +169,12 @@ const createCollectionSlice = (
       }));
 
       const lastMessage = state.getMessage(id, true);
-      // prepare push action for update message
-      state.prepareCollectionMessagesPushAction(
-        id,
-        'u',
-        lastMessage,
-        updatedMessage
-      );
+      // state.prepareCollectionMessagesPushAction(
+      //   id,
+      //   'u',
+      //   lastMessage,
+      //   updatedMessage
+      // );
     }
   },
 
@@ -212,15 +203,12 @@ const createCollectionSlice = (
     const state = get();
 
     set((s) => ({
-      ...s,
       collection: {
         ...s.collection,
         directories: [...s.collection.directories, directory],
       },
     }));
-
-    // Prepare push action for insert message
-    state.prepareCollectionDirectoriesPushAction(directory?.__ref?.id, 'i');
+    // state.prepareCollectionDirectoriesPushAction(directory?.__ref?.id, 'i');
   },
   changeDirectory: (id: TId, updates: { key: string; value: any }) => {
     const state = get();
@@ -239,7 +227,6 @@ const createCollectionSlice = (
       });
 
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           directories: [
@@ -251,13 +238,12 @@ const createCollectionSlice = (
       }));
 
       const lastDirectory = state.getDirectory(id, true);
-      // Prepare push action for update message
-      state.prepareCollectionDirectoriesPushAction(
-        id,
-        'u',
-        lastDirectory,
-        updatedDirectory
-      );
+      // state.prepareCollectionDirectoriesPushAction(
+      //   id,
+      //   'u',
+      //   lastDirectory,
+      //   updatedDirectory
+      // );
     }
   },
   deleteDirectory: (id: TId) => {
@@ -267,7 +253,6 @@ const createCollectionSlice = (
     // If directory found then update in store
     if (directoryDetails && directoryDetails.directoryIndex !== -1) {
       set((s) => ({
-        ...s,
         collection: {
           ...s.collection,
           directories: [
@@ -282,8 +267,7 @@ const createCollectionSlice = (
         },
       }));
 
-      // prepare push action for delete directory
-      state.prepareCollectionDirectoriesPushAction(id, 'd');
+      // state.prepareCollectionDirectoriesPushAction(id, 'd');
     }
   },
 });

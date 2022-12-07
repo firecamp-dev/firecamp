@@ -24,7 +24,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
         connections: updatedConnections,
       },
     }));
-    state.prepareRequestConnectionsPushAction(connection.id, 'i');
+    // state.prepareRequestConnectionsPushAction(connection.id, 'i');
   },
   updateConnection: (connectionId: TId, key: string, value: any) => {
     //if connection id not provided, queryParams has dedicated change fn below
@@ -98,7 +98,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
           },
         },
       }));
-      state.prepareRequestConnectionsPushAction(connectionId, 'd');
+      // state.prepareRequestConnectionsPushAction(connectionId, 'd');
     }
   },
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {

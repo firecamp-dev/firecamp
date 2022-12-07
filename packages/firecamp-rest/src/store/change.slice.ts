@@ -3,21 +3,13 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 
-import { TAuth } from './index';
-
 import {
   EReqChangeRootKeys,
   EReqChangeScriptsKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
-  IRestClientRequest,
 } from '../types';
 import { _array, _object } from '@firecamp/utils';
-import { normalizePushPayload } from '../services/request.service';
-
-/**
- * @reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
- */
 
 const RequestChangeState: IRequestChangeState = {
   url: [],

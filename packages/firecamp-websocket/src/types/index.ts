@@ -1,4 +1,4 @@
-import { TId, EPushActionType } from '@firecamp/types';
+import { TId } from '@firecamp/types';
 
 export enum ELogTypes {
   Send = 's',
@@ -22,9 +22,9 @@ export enum EConnectionState {
 }
 
 export enum EMessageTypes {
-  System = 'SYS',
-  Send = 'S',
-  Receive = 'R',
+  System = 'sys',
+  Send = 's',
+  Receive = 'r',
 }
 
 export enum ESystemMessages {
@@ -79,28 +79,20 @@ export enum EWebsocketConfigKeys {
   MaxPayload = 'maxPayload', //bytes
 }
 
-// Request push action
-
-export enum EPushActionRootKeys {
+// request changes
+export enum EReChangeRootKeys {
   headers = 'headers',
+  config = 'config',
 }
 
-export enum EPushAction_metaKeys {
-  collectionId = 'collectionId',
-  folderId = 'folderId',
-  updatedAt = 'updatedAt',
-  updatedBy = 'updatedBy',
-}
-
-export enum EPushActionMetaKeys {
+export enum EReqChangeMetaKeys {
   name = 'name',
   description = 'description',
   iOrders = 'iOrders',
   fOrders = 'fOrders',
 }
-export enum EPushActionUrlKeys {
+export enum EReqChangeUrlKeys {
   raw = 'raw',
-  queryParams = 'queryParams',
 }
 
 export enum EPushActionConfigKeys {
@@ -118,13 +110,13 @@ export enum EPushActionConfigKeys {
 }
 
 export interface IPushActionConnections {
-  [EPushActionType.Insert]?: Array<TId>;
-  [EPushActionType.Update]?: Array<{
+  ['i']?: Array<TId>;
+  ['u']?: Array<{
     id: TId;
     _root?: Array<string>;
     config?: Array<string>;
   }>;
-  [EPushActionType.Delete]?: Array<TId>;
+  ['d']?: Array<TId>;
 }
 
 // Leaf push action
@@ -146,14 +138,14 @@ export enum EPushActionMessage_meta {
 }
 
 export interface IPushActionMessage {
-  [EPushActionType.Insert]?: Array<TId>;
-  [EPushActionType.Update]?: Array<{
+  ['i']?: Array<TId>;
+  ['u']?: Array<{
     id: TId;
     _root?: Array<EPushActionMessage_Root>;
     __meta?: Array<EPushActionMessageMeta>;
     __ref?: Array<EPushActionMessage_meta>;
   }>;
-  [EPushActionType.Delete]?: Array<TId>;
+  ['d']?: Array<TId>;
 }
 
 // Directory push action
@@ -174,12 +166,12 @@ export enum EPushActionDirectory_meta {
 }
 
 export interface IPushActionDirectory {
-  [EPushActionType.Insert]?: Array<TId>;
-  [EPushActionType.Update]?: Array<{
+  ['i']?: Array<TId>;
+  ['u']?: Array<{
     id: TId;
     _root?: Array<EPushActionDirectory_Root>;
     __meta?: Array<EPushActionDirectoryMeta>;
     __ref?: Array<EPushActionDirectory_meta>;
   }>;
-  [EPushActionType.Delete]?: Array<TId>;
+  ['d']?: Array<TId>;
 }

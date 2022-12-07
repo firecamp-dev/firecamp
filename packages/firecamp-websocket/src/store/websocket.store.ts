@@ -29,10 +29,11 @@ import {
   IConnectionsLogs,
   createConnectionsLogsSlice,
 
-  // push actions
-  IPushAction,
-  IPushActionSlice,
-  createPushActionSlice,
+  // request changes
+  IRequestChangeStateSlice,
+  createRequestChangeStateSlice,
+
+  // handle execution
   IHandleConnectionExecutorSlice,
   createHandleConnectionExecutor,
 
@@ -58,7 +59,6 @@ const {
 interface IWebsocketStoreState {
   request?: IWebSocket;
   collection?: ICollection;
-  pushAction?: IPushAction;
   runtime?: IRuntime;
   playgrounds?: IPlaygrounds;
   connectionsLogs?: IConnectionsLogs;
@@ -71,17 +71,14 @@ interface IWebsocketStore
     ICollectionSlice,
     IPlaygroundSlice,
     IConnectionsLogsSlice,
-    IPushActionSlice,
     IPullSlice,
     IHandleConnectionExecutorSlice,
-    IUiSlice {
+    IUiSlice,
+    IRequestChangeStateSlice {
   last: any;
   originalRequest?: IWebSocket;
-
   initialise: (request: Partial<IWebSocket>) => void;
-
   setLast: (initialState: IWebsocketStoreState) => void;
-  equalityChecker: (payload: any, reqKey_s: string) => void;
 }
 
 const createWebsocketStore = (initialState: IWebsocketStoreState) =>
@@ -106,12 +103,6 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
         }));
       },
 
-      equalityChecker: (payload, reqKey_s) => {
-        const state = get();
-        console.log(state.originalRequest.connections[0][reqKey_s], payload);
-        return equal(state.originalRequest.connections[0][reqKey_s], payload);
-      },
-
       ...createRequestSlice(
         set,
         get,
@@ -122,12 +113,10 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
       ...createConnectionsLogsSlice(set, get),
-      ...createPushActionSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
-
-      //   ...createPushActionSlice(set, get),
+      ...createRequestChangeStateSlice(set, get),
     };
   });
 

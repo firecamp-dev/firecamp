@@ -29,8 +29,6 @@ import {
   WebsocketStoreProvider,
   IWebsocketStore,
   initialPlaygroundMessage,
-  IPushPayload,
-  emptyPushAction,
 } from '../store/index';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 
@@ -59,18 +57,11 @@ const Websocket = ({
     changeDirectory,
     deleteDirectory,
     updateCollection,
-    addConnection,
-    addPlayground,
-
-    setActivePlayground,
     setPlaygroundMessage,
     setSelectedCollectionMessage,
-    addPlaygroundTab,
     changePlaygroundTab,
     sendMessage,
-    connect,
     setLast,
-    // prepareRequestUpdatePushAction,
     setRequestSavedFlag,
     getMergedRequestByPullAction,
     setIsFetchingReqFlag,
@@ -86,19 +77,12 @@ const Websocket = ({
       changeDirectory: s.changeDirectory,
       deleteDirectory: s.deleteDirectory,
       updateCollection: s.updateCollection,
-
-      addConnection: s.addConnection,
-      addPlayground: s.addPlayground,
-
-      setActivePlayground: s.setActivePlayground,
       setPlaygroundMessage: s.setPlaygroundMessage,
       setSelectedCollectionMessage: s.setSelectedCollectionMessage,
-      addPlaygroundTab: s.addPlaygroundTab,
       changePlaygroundTab: s.changePlaygroundTab,
       sendMessage: s.sendMessage,
       connect: s.connect,
       setLast: s.setLast,
-      prepareRequestUpdatePushAction: s.prepareRequestUpdatePushAction,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
@@ -201,7 +185,7 @@ const Websocket = ({
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  const handlePull = async (pullActions: IPushPayload[]) => {
+  const handlePull = async (pullActions: any[]) => {
     try {
       const pullPayload = pullActions[0];
 
@@ -228,14 +212,13 @@ const Websocket = ({
       setLast({
         ...last,
         request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
       });
 
-      // get push action payload
+  
       // const pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
-      // initialise request with updated request and push action
+      // initialise request with updated request
       initialise(updatedRequest); //pushAction
       // _cloneDeep({ request: emptyPushAction }),
       setIsFetchingReqFlag(false);
@@ -687,7 +670,7 @@ const Websocket = ({
     },
   };
 
-  const onSave = (pushPayload: IPushPayload, tabId) => {
+  const onSave = (pushPayload: any, tabId) => {
     console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload.__ref.id) return;
@@ -707,7 +690,7 @@ const Websocket = ({
     setLast({
       ...last,
       request,
-      pushAction: emptyPushAction,
+      pushAction: {}, //emptyPushAction,
     });
   };
 
@@ -785,7 +768,7 @@ const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
     if (tabMeta.isSaved) {
       // console.log({ pushAction });
 
-      // Check if push action empty or not
+      // Check if empty or not
       const isTabDirty = !_object.isEmpty(
         _cleanDeep(_cloneDeep(pushAction || {})) || {}
       );

@@ -33,30 +33,24 @@ const createRequestSlice = (
   ...createConnectionSlice(set, get),
 
   changeMeta: (key: string, value: any) => {
-    let lastMeta = get()?.last?.request.__meta;
-    let updatedMeta = {
-      ...(get()?.request.__meta || {}),
+    const state = get();
+    const __meta = {
+      ...(state.request.__meta || {}),
       [key]: value,
     };
     set((s) => ({
-      ...s,
-      request: { ...s.request, __meta: updatedMeta },
+      request: { ...s.request, __meta },
     }));
-
-    // Prepare push action for __meta
-    get()?.prepareMetaPushAction(lastMeta, updatedMeta);
+    state.equalityChecker({ __meta });
   },
   changeConfig: (key: string, value: any) => {
     const state = get();
-    const lastConfig = state.last?.request.config;
-    const updatedConfig = {
-      ...(get()?.request.config || {}),
+    const config = {
+      ...(state.request.config || {}),
       [key]: value,
     };
-    set((s) => ({ request: { ...s.request, config: updatedConfig } }));
-
-    // prepare push action for config in _root
-    state.prepareRootPushAction({ config: lastConfig }, updatedConfig);
+    set((s) => ({ request: { ...s.request, config } }));
+    state.equalityChecker({ config });
   },
 });
 
