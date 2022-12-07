@@ -47,8 +47,6 @@ const createRequestSlice = (
   },
   changeListeners: (listeners: Array<string>) => {
     const state = get();
-    const lastListeners = state.last?.request.listeners;
-
     set((s) => ({
       request: {
         ...s.request,
@@ -57,23 +55,19 @@ const createRequestSlice = (
     }));
     // update config
     state.changeMeta('onConnectListeners', listeners);
-    // prepare _root push action
-    state.prepareRootPushAction({ listeners: lastListeners }, { listeners });
+    // state.equalityChecker({ listeners });
   },
 
   changeMeta: (key: string, value: any) => {
     const state = get();
-    const lastMeta = state.last?.request.__meta;
-    const updatedMeta = {
+    const __meta = {
       ...(state.request.__meta || {}),
       [key]: value,
     };
     set((s) => ({
-      request: { ...s.request, __meta: updatedMeta },
+      request: { ...s.request, __meta },
     }));
-
-    // prepare push action for __meta
-    state.prepareMetaPushAction(lastMeta, updatedMeta);
+    state.equalityChecker({ __meta });
   },
   changeConfig: (key: string, value: any) => {
     const state = get();

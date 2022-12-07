@@ -19,7 +19,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
         connections: updatedConnections,
       },
     }));
-    state.prepareRequestConnectionsPushAction(connection.id, 'i');
+    // state.prepareRequestConnectionsPushAction(connection.id, 'i');
   },
   updateConnection: (connectionId: TId, key: string, value: any) => {
     const state = get();
@@ -83,12 +83,12 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       },
     }));
 
-    state.prepareRequestConnectionsPushAction(
-      connectionId,
-      'u',
-      state.last?.request?.connections[connectionIndex],
-      updatedConnection
-    );
+    // state.prepareRequestConnectionsPushAction(
+    //   connectionId,
+    //   'u',
+    //   state.last?.request?.connections[connectionIndex],
+    //   updatedConnection
+    // );
   },
   removeConnection: (connectionId: TId) => {
     const state = get();
@@ -124,7 +124,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
           },
         },
       }));
-      state.prepareRequestConnectionsPushAction(connectionId, 'd');
+      // state.prepareRequestConnectionsPushAction(connectionId, 'd');
     }
   },
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {

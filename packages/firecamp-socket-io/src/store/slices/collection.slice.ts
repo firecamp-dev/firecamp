@@ -88,9 +88,7 @@ const createCollectionSlice = (
         emitters: [...s.collection.emitters, emitter],
       },
     }));
-
-    // prepare push action for insert emitter
-    state.prepareCollectionEmittersPushAction(emitter?.__ref.id, 'i');
+    // state.prepareCollectionEmittersPushAction(emitter?.__ref.id, 'i');
   },
   changeEmitter: (id: TId, updates: { key: string; value: any }) => {
     const state = get();
@@ -120,13 +118,12 @@ const createCollectionSlice = (
       }));
 
       const lastEmitter = state.getEmitter(id, true);
-      // prepare push action for update emitter
-      state.prepareCollectionEmittersPushAction(
-        id,
-        'u',
-        lastEmitter,
-        updatedEmitter
-      );
+      // state.prepareCollectionEmittersPushAction(
+      //   id,
+      //   'u',
+      //   lastEmitter,
+      //   updatedEmitter
+      // );
     }
   },
   deleteEmitter: (id: TId) => {
@@ -144,8 +141,7 @@ const createCollectionSlice = (
           ],
         },
       }));
-      // prepare push action for delete emitter
-      state.prepareCollectionEmittersPushAction(id, 'd');
+      // state.prepareCollectionEmittersPushAction(id, 'd');
     }
   },
   setEmitter: (id: TId, emitterToSet: ISocketIOEmitter) => {
@@ -173,13 +169,12 @@ const createCollectionSlice = (
       }));
 
       const lastEmitter = state.getEmitter(id, true);
-      // prepare push action for update emitter
-      state.prepareCollectionEmittersPushAction(
-        id,
-        'u',
-        lastEmitter,
-        updatedEmitter
-      );
+      // state.prepareCollectionEmittersPushAction(
+      //   id,
+      //   'u',
+      //   lastEmitter,
+      //   updatedEmitter
+      // );
     }
   },
 
@@ -213,9 +208,7 @@ const createCollectionSlice = (
         directories: [...s.collection.directories, directory],
       },
     }));
-
-    // prepare push action for insert emitter
-    state.prepareCollectionDirectoriesPushAction(directory?.__ref.id, 'i');
+    // state.prepareCollectionDirectoriesPushAction(directory?.__ref.id, 'i');
   },
   changeDirectory: (id: TId, updates: { key: string; value: any }) => {
     const state = get();
@@ -243,15 +236,13 @@ const createCollectionSlice = (
           ],
         },
       }));
-
-      const lastDirectory = state.getDirectory(id, true);
       // prepare push action for update emitter
-      state.prepareCollectionDirectoriesPushAction(
-        id,
-        'u',
-        lastDirectory,
-        updatedDirectory
-      );
+      // state.prepareCollectionDirectoriesPushAction(
+      //   id,
+      //   'u',
+      //   lastDirectory,
+      //   updatedDirectory
+      // );
     }
   },
   deleteDirectory: (id: TId) => {
@@ -275,9 +266,7 @@ const createCollectionSlice = (
           ],
         },
       }));
-
-      // prepare push action for delete directory
-      state.prepareCollectionDirectoriesPushAction(id, 'd');
+      // state.prepareCollectionDirectoriesPushAction(id, 'd');
     }
   },
 });

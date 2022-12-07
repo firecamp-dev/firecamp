@@ -1,5 +1,5 @@
 import { Rest } from '@firecamp/cloud-apis';
-import { EHttpMethod, EPushActionType, TId } from '@firecamp/types';
+import { EHttpMethod, TId } from '@firecamp/types';
 import create from 'zustand';
 import AppService from '../services/app';
 
@@ -86,7 +86,7 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
       const tabState = useTabStore.getState();
       if (
         requestBeingSaved &&
-        requestBeingSaved._action.type === EPushActionType.Insert
+        requestBeingSaved._action.type === 'i'
       ) {
         tabState.changeRootKeys(requestTabId, {
           name: requestBeingSaved?.__meta?.name || 'Untitled request',

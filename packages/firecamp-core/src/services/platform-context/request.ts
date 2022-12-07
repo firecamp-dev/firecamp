@@ -1,7 +1,6 @@
 import { Realtime, Rest } from '@firecamp/cloud-apis';
 import {
   TId,
-  EPushActionType,
   IRest,
   IGraphQL,
   IRestResponse,
@@ -89,7 +88,7 @@ const request: IPlatformRequestService = {
       // set request payload to store to be saved for next step
       requestState.setReqAndTabId(pushPayload, tabId);
 
-      if (pushPayload && pushPayload._action.type === EPushActionType.Insert) {
+      if (pushPayload && pushPayload._action.type === 'i') {
         // open save request
         AppService.modals.openSaveRequest();
       } else {
@@ -131,7 +130,7 @@ const request: IPlatformRequestService = {
       };
 
       switch (type) {
-        case EPushActionType.Insert:
+        case 'i':
           pushPayload.__ref = {
             ...pushPayload.__ref,
             createdBy: userId,
@@ -139,7 +138,7 @@ const request: IPlatformRequestService = {
           };
           break;
 
-        case EPushActionType.Update:
+        case 'u':
           pushPayload.__ref = {
             ...pushPayload.__ref,
             updatedBy: userId,
@@ -147,7 +146,7 @@ const request: IPlatformRequestService = {
           };
           break;
 
-        case EPushActionType.Delete:
+        case 'd':
           pushPayload.__ref = {
             ...pushPayload.__ref,
             deleted_by: userId,

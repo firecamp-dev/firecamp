@@ -58,7 +58,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
 
     // state.prepareRequestConnectionsPushAction(
     //   connectionId,
-    //   EPushActionType.Update,
+    //   'u,
     //   state.last?.request?.connections[connectionIndex],
     //   updatedConnection
     // );
