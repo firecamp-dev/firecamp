@@ -7,7 +7,7 @@
   "main": "packages/firecamp-desktop-app/dist/services/Main",
   "homepage": "./dev",
   "scripts": {
-    "build:monorepo": "lerna run build --scope=@firecamp/rest-executor --scope=@firecamp/ws-executor",
+    "build:monorepo": "lerna run build --scope=@firecamp/rest-executor --scope=@firecamp/ws-executor --scope=@firecamp/socket.io-executor",
     "start": "npx webpack serve --config ./webpack.dev.js",
     "dev": "APP_VERSION=$npm_package_version AppFormat=webapp && node scripts/build && yarn build:monorepo && yarn start",
     "electron": "npx electron .",
