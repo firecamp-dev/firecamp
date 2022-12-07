@@ -14,22 +14,19 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
   /** change url */
   changeUrl: (urlObj: IUrl) => {
     const state = get();
-    const lastUrl = state.last?.request.url;
-    const updatedUrl = _cloneDeep({ ...(state.request.url || {}), ...urlObj });
+    const url = _cloneDeep({ ...(state.request.url || {}), ...urlObj });
     const updatedUiState = prepareUiState({
       url: urlObj,
     });
 
     set((s) => ({
-      request: { ...s.request, url: updatedUrl },
+      request: { ...s.request, url },
       ui: {
         ...s.ui,
         ...updatedUiState,
       },
     }));
-
-    /** prepare commit action for url */
-    state.prepareUrlPushAction(lastUrl, updatedUrl);
+    state.equalityChecker({ url });
   },
 
   /** change query params */
@@ -62,9 +59,7 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
         ...updatedUiState,
       },
     }));
-
-    /** Prepare commit action for url */
-    state.prepareUrlPushAction(state.last?.request.url, url);
+    state.equalityChecker({ url });
   },
 
   /** change path params */
@@ -91,9 +86,7 @@ const createUrlSlice = (set, get, initialUrl: IUrl) => ({
         ...updatedUiState,
       },
     }));
-
-    /** prepare push action for url */
-    state.prepareUrlPushAction(state.last?.request.url, url);
+    state.equalityChecker({ url });
   },
 });
 

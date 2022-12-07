@@ -12,9 +12,6 @@ import {
   ICollection,
   ICollectionSlice,
   createCollectionSlice,
-  IPushActionSlice,
-  IPushAction,
-  createPushActionSlice,
   createRuntimeSlice,
   IRuntime,
   IRuntimeSlice,
@@ -23,6 +20,8 @@ import {
   createUiSlice,
   IUi,
   IUiSlice,
+  IRequestChangeStateSlice,
+  createRequestChangeStateSlice,
 } from './index';
 import { ERestBodyTypes, IGraphQL } from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
@@ -39,10 +38,10 @@ interface IGraphQLStore
   extends IRequestSlice,
     IPlaygroundsSlice,
     IRuntimeSlice,
-    IPushActionSlice,
     ICollectionSlice,
     IPullSlice,
-    IUiSlice {
+    IUiSlice,
+    IRequestChangeStateSlice {
   last: any;
   originalRequest?: IGraphQL;
 
@@ -56,7 +55,6 @@ interface IGraphQLStore
 
 interface IGraphQLStoreState {
   request: IGraphQL;
-  pushAction?: IPushAction;
   playgrounds: IPlaygrounds;
   runtime?: IRuntime;
   ui?: IUi;
@@ -72,10 +70,10 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
       ),
       ...createPlaygroundsSlice(set, get),
       ...createRuntimeSlice(set, get),
-      ...createPushActionSlice(set, get),
       ...createCollectionSlice(set, get),
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
+      ...createRequestChangeStateSlice(set, get),
 
       last: initialState,
 

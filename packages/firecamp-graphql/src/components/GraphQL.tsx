@@ -19,17 +19,13 @@ import {
   createGraphQLStore,
   useGraphQLStoreApi,
   useGraphQLStore,
-  IPushPayload,
-  emptyPushAction,
   IGraphQLStore,
 } from '../store';
 
 import {
   initialiseStoreFromRequest,
   normalizeRequest,
-  prepareUiState,
 } from '../services/request.service';
-import { ESidebarTabs } from '../types';
 
 const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
   let graphqlStoreApi: any = useGraphQLStoreApi();
@@ -41,7 +37,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
-    prepareRequestUpdatePushAction,
     setLast,
     setContext,
   } = useGraphQLStore(
@@ -53,7 +48,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       setActiveEnvironments: s.setActiveEnvironments,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
-      prepareRequestUpdatePushAction: s.prepareRequestUpdatePushAction,
       setLast: s.setLast,
       setContext: s.setContext,
     }),
@@ -130,7 +124,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  const handlePull = async (pullActions: IPushPayload[]) => {
+  const handlePull = async (pullActions: any[]) => {
     try {
       let pullPayload = pullActions[0];
 
@@ -161,7 +155,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       });
 
       // get push action payload
-      let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
+      // let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
@@ -225,7 +219,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  const onSave = (pushPayload: IPushPayload, tabId) => {
+  const onSave = (pushPayload: any, tabId) => {
     // console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload._action.item_id) return;
@@ -245,7 +239,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     setLast({
       ...last,
       request,
-      pushAction: emptyPushAction,
+      pushAction: {} // emptyPushAction,
     });
   };
 

@@ -11,14 +11,14 @@ import { EHttpMethod, TId } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
 
-import { IGraphQLStore, IPushPayload, useGraphQLStore } from '../../../store';
+import { IGraphQLStore, useGraphQLStore } from '../../../store';
 const methods = Object.values(EHttpMethod);
 
 const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: IPushPayload, tabId: string) => {},
+  onSaveRequest = (pushAction: any, tabId: string) => {},
 }) => {
   const { EnvironmentWidget } = postComponents;
 
@@ -30,15 +30,11 @@ const UrlBarContainer = ({
     activeEnvironments,
     isRequestSaved,
     context,
-
     changeUrl,
     changeMethod,
     fetchIntrospectionSchema,
     toggleDoc,
     changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       url: s.request.url,
@@ -54,10 +50,6 @@ const UrlBarContainer = ({
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
       toggleDoc: s.toggleDoc,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-
-      setPushActionEmpty: s.setPushActionEmpty,
     }),
     shallow
   );
@@ -83,15 +75,15 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
+      let pushPayload: any;
       if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
+        // pushPayload = await prepareRequestInsertPushPayload();
       } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
+        // pushPayload = await prepareRequestUpdatePushPayload();
       }
 
       // console.log({ pushPayload });
-      setPushActionEmpty();
+      // setPushActionEmpty();
 
       onSaveRequest(pushPayload, tab.id);
     } catch (error) {

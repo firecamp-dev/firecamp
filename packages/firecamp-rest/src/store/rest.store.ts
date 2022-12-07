@@ -53,7 +53,8 @@ interface IRestStore
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IPullSlice {
+    IPullSlice,
+    IRequestChangeStateSlice {
   last: any;
   originalRequest?: IRest;
 

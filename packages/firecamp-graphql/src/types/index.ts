@@ -1,27 +1,17 @@
-export enum EPushAction_rootKeys {
+export enum EReqChangeRootKeys {
   method = 'method',
   headers = 'headers',
   config = 'config',
 }
 
-export enum EPushActionMetaKeys {
+export enum EReqChangeMetaKeys {
   name = 'name',
   description = 'description',
-  activeBody = 'activeBody',
-  activeAuthType = 'activeAuthType',
-  inheritScripts = 'inheritScripts',
 }
 
-export enum EPushActionUrlKeys {
+export enum EReqChangeUrlKeys {
   raw = 'raw',
   queryParams = 'queryParams',
-}
-
-export enum EPushAction_metaKeys {
-  collectionId = 'collectionId',
-  folderId = 'folderId',
-  updated_at = 'updatedAt',
-  updated_by = 'updatedBy',
 }
 
 export enum ESidebarTabs {
