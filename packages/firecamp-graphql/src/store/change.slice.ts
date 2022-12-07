@@ -62,6 +62,7 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
       }
     }
     console.log(_rcs);
+    state.context.request.onChangeRequestTab({ hasChange: true });
   },
 });
 
