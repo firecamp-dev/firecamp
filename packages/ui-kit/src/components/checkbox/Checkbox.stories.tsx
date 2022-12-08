@@ -13,12 +13,7 @@ export default {
 
 const Template = (args) => <div className="bg-activityBarActiveBackground text-activityBarForeground"><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /></div>;
 
-const TemplateWithState = (args) => {
-    const [isChecked, onToggleCheck] = useState(args.isChecked);
-    return <Checkbox {...args} isChecked={isChecked} onToggleCheck={(label, value) => onToggleCheck(value)}/>
-}
-
-export const CheckBoxPrimary = TemplateWithState.bind({});
+export const CheckBoxPrimary = Template.bind({});
 CheckBoxPrimary.args = { label: 'CheckBoxPrimary', color: 'primary', labelPlacing: 'right', isChecked: false };
 
 

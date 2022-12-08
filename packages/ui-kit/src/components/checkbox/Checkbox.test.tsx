@@ -1,15 +1,30 @@
+import { useState } from "react";
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import { click } from "../../../__mocks__/eventMock";
-import { CheckBoxPrimary } from "./Checkbox.stories";
 // import { Checkbox } from "@firecamp/ui-kit";
+import Checkbox from './Checkbox';
+import { ICheckbox } from './interfaces/Checkbox.interfaces';
+
+const CheckBoxPrimary = {
+    args: { 
+        label: 'CheckBoxPrimary', 
+        color: 'primary', 
+        labelPlacing: 'right',
+        isChecked: false
+    }
+}
+const TemplateWithState = (args: ICheckbox) => {
+    const [isChecked, onToggleCheck] = useState(args.isChecked);
+    return <Checkbox {...args} isChecked={isChecked} onToggleCheck={(label, value) => onToggleCheck(value)} />
+}
 
 describe("Checkbox component : ", () => {
 
-    const mountCheckBox = () => render(<CheckBoxPrimary {...CheckBoxPrimary.args} />);
+    const mountCheckBox = (args = {}) => render(<TemplateWithState {...Object.assign({}, CheckBoxPrimary.args, args)} />);
     const getCheckBoxInputElement = () => screen.getByRole('checkbox');
 
-    test("should be rendered & validate its click event updates", async () => {
+    test("should render & validate its click event updates", async () => {
         mountCheckBox();
 
         //checkbox input should be available
@@ -38,58 +53,87 @@ describe("Checkbox component : ", () => {
 
     });
 
-    test("should verify the label text & its location", () => {
-        let {container} = mountCheckBox();
-        let CheckboxWrapper = container.firstElementChild;
+    test("should be disabled", async () => {
+        mountCheckBox({disabled: true});
 
-        expect(CheckboxWrapper).toHaveClass(`${CheckBoxPrimary.args.className ? CheckBoxPrimary.args.className: ""} flex`);
+        let CheckboxInput = getCheckBoxInputElement() as HTMLInputElement;
 
-        //validating label value based on 'showLabel' args
-        if(typeof CheckBoxPrimary.args.showLabel === "undefined" || !!CheckBoxPrimary.args.showLabel){
-            let CheckboxLabelSpanWrapper = CheckboxWrapper.firstElementChild;
+        //validating the styles for checkbox input div wrapper 
+        let CheckboxInputDivWrapper = CheckboxInput.parentElement;
+        expect(CheckboxInputDivWrapper).toHaveClass( "opacity-50 cursor-default" );
 
-            //validating the styles for the label tag wrapper along with the child element count in label
-            if(CheckBoxPrimary.args.label === ""){
-                expect(CheckboxLabelSpanWrapper).toHaveClass("fc-custom-checkbox !flex items-center mb-0 w-4");
-                expect(CheckboxLabelSpanWrapper.childElementCount).toBe(1)
-            }else{
-                expect(CheckboxLabelSpanWrapper).toHaveClass("fc-custom-checkbox !flex items-center mb-0");
-                expect(CheckboxLabelSpanWrapper.childElementCount).toBe(2)
-                let labelSpan = screen.getByText(CheckBoxPrimary.args.label);
-                
-                //validating the location for the label element along with its classnames
-                if(typeof CheckBoxPrimary.args.labelPlacing === "undefined" || CheckBoxPrimary.args.labelPlacing === "right" ){
-                    expect(CheckboxLabelSpanWrapper.lastElementChild).toEqual(labelSpan);
-                    expect(CheckboxLabelSpanWrapper.lastElementChild).toHaveClass("text-sm ml-2 cursor-pointer");
-                }else{
-                    expect(CheckboxLabelSpanWrapper.firstElementChild).toEqual(labelSpan);
-                    expect(CheckboxLabelSpanWrapper.firstElementChild).toHaveClass("text-sm mr-2");
-                }
-            }
-            
-        
-        }
-        
+        screen.debug(CheckboxInputDivWrapper)
+        //validating the change in checkbox input on click event
+        click(CheckboxInputDivWrapper);
+        await waitFor(() => {
+            expect(CheckboxInput.checked).toBeFalsy();
+        });
 
     });
 
-    test("should render the provided note text if provided", () => {
-        let {container} = mountCheckBox();
+    test("should verify the label text & its location", () => {
+        let { container, unmount } = mountCheckBox();
+        let CheckboxWrapper = container.firstElementChild;
+
+        expect(CheckboxWrapper).toHaveClass(`${CheckBoxPrimary.args.className ? CheckBoxPrimary.args.className : ""} flex`);
+
+        //1: to display the label based on 'showLabel' args
+        if (typeof CheckBoxPrimary.args.showLabel === "undefined" || !!CheckBoxPrimary.args.showLabel) {
+            let CheckboxLabelSpanWrapper = CheckboxWrapper.firstElementChild;
+
+            //2. to validate the styles for label tag wrapper & the child element count when label is not empty
+            expect(CheckboxLabelSpanWrapper).toHaveClass("fc-custom-checkbox !flex items-center mb-0");
+            expect(CheckboxLabelSpanWrapper.childElementCount).toBe(2)
+            let labelSpan = screen.getByText(CheckBoxPrimary.args.label);
+
+            //3. validating the location for the label element along with its classnames with label direction is undefined/right
+            if (typeof CheckBoxPrimary.args.labelPlacing === "undefined" || CheckBoxPrimary.args.labelPlacing === "right") {
+                expect(CheckboxLabelSpanWrapper.lastElementChild).toEqual(labelSpan);
+                expect(CheckboxLabelSpanWrapper.lastElementChild).toHaveClass("text-sm ml-2 cursor-pointer");
+            }
+        }
+        unmount();
+
+        //4. validating the location for the label element along with its classnames when label direction is left
+        let { container: containerWithLabelOnLeft, unmount: unmountWithLabelOnLeft } = mountCheckBox({ labelPlacing: "left" });
+        {
+            let CheckboxLabelSpanWrapper = containerWithLabelOnLeft.firstElementChild.firstElementChild;
+            let labelSpan = screen.getByText(CheckBoxPrimary.args.label);
+            expect(CheckboxLabelSpanWrapper.firstElementChild).toEqual(labelSpan);
+            expect(CheckboxLabelSpanWrapper.firstElementChild).toHaveClass("text-sm mr-2");
+            unmountWithLabelOnLeft();
+        }
+
+        //5. to prevent the label to be rendered based on 'showLabel' args
+        let { container: containerWithoutLabel } = mountCheckBox({ showLabel: false });
+        {
+            let CheckboxLabelSpanWrapper = containerWithoutLabel.firstElementChild.firstElementChild;
+            expect(CheckboxLabelSpanWrapper.childElementCount).toBe(1)
+        }
+    });
+
+    test("should render with and without the provided note text", () => {
+        const CUSTOM_NOTE = "a note text";
+        let { container, unmount } = mountCheckBox({ note: CUSTOM_NOTE });
         let CheckboxWrapper = container.firstElementChild;
 
         let CheckboxNoteDivWrapper = CheckboxWrapper.lastElementChild;
-        
-        //validate the note div wrapper when not is provided in the args
-        if(typeof CheckBoxPrimary.args.note !== "undefined" && CheckBoxPrimary.args.note.length > 0){
 
+        //1. validate the note div wrapper when note is provided in the args
+        if (CUSTOM_NOTE.length > 0) {
             expect(CheckboxNoteDivWrapper).toHaveClass("fc-input-note");
             expect(CheckboxNoteDivWrapper.firstElementChild).toHaveClass("iconv2-info-icon");
-            expect(CheckboxNoteDivWrapper.textContent).toBe(CheckBoxPrimary.args.note);
-
-        }else{
-            expect(CheckboxWrapper.childElementCount).toBe(1)
+            expect(CheckboxNoteDivWrapper.textContent).toBe(CUSTOM_NOTE);
         }
-        
+        unmount();
+        //2. validate the note div wrapper not rendered 
+        let { container: containerWithoutNote } = mountCheckBox({ note: "" });
+        {
+            let CheckboxWrapper = containerWithoutNote.firstElementChild;
+            expect(CheckboxWrapper.childElementCount).toBe(1);
+        }
 
     })
-})
+});
+    // discuss:  w-4 depends on label instead of showLabel 
+    // expect(CheckboxLabelSpanWrapper).toHaveClass("fc-custom-checkbox !flex items-center mb-0 w-4");
