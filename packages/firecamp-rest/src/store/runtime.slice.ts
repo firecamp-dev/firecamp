@@ -17,6 +17,7 @@ interface IRuntime {
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
   oauth2LastFetchedToken: string;
+  tabId: TId;
 }
 
 interface IRuntimeSlice {

@@ -37,6 +37,7 @@ interface IRuntime {
 
   /** true if fetch introspections under progress */
   isFetchingIntrospection?: boolean;
+  tabId: TId;
 }
 
 interface IRuntimeSlice {

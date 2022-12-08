@@ -140,7 +140,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         }
 
         /** initialise rest store on tab load */
-        initialise(_request);
+        initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
       } catch (error) {
         console.error({
@@ -327,21 +327,14 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           />
         </Container.Body>
       </Container>
-      {tab.__meta.isSaved && (
-        <TabChangesDetector
-          onChangeRequestTab={platformContext.request.onChangeRequestTab}
-          tabId={tab.id}
-          tabMeta={tab.__meta}
-        />
-      )}
     </>
   );
 };
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {} } = tab;
-    const initState = initialiseStoreFromRequest(request);
+    const { request = {}, id } = tab;
+    const initState = initialiseStoreFromRequest(request, id);
     return (
       <RestStoreProvider createStore={() => createRestStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
@@ -351,33 +344,4 @@ const withStore = (WrappedComponent) => {
 
   return MyComponent;
 };
-
-const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
-  let { pushAction } = useRestStore(
-    (s: any) => ({
-      pushAction: s.pushAction,
-    }),
-    shallow
-  );
-
-  useEffect(() => {
-    if (tabMeta.isSaved) {
-      // console.log({ pushAction });
-
-      // Check if push action empty or not
-      let isTabDirty = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(pushAction || {})) || {}
-      );
-      // console.log({ pushAction });
-
-      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
-      if (tabMeta.hasChange !== isTabDirty) {
-        onChangeRequestTab(tabId, { hasChange: isTabDirty });
-      }
-    }
-  }, [pushAction]);
-
-  return <></>;
-};
-
 export default withStore(memo(Rest));

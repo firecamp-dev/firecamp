@@ -1,6 +1,6 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
-import { ISocketIO } from '@firecamp/types';
+import { ISocketIO, TId } from '@firecamp/types';
 
 import {
   // request
@@ -70,15 +70,14 @@ interface ISocketStore
     IRequestChangeStateSlice {
   originalRequest?: ISocketIO;
 
-  initialise: (request: Partial<ISocketIO>) => void;
+  initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
 }
 
 const createSocketStore = (initialState: ISocket) =>
   create<ISocketStore>((set, get): ISocketStore => {
     return {
-
-      initialise: async (request: Partial<ISocketIO>) => {
-        const initState = initialiseStoreFromRequest(request);
+      initialise: async (request: Partial<ISocketIO>, tabId: TId) => {
+        const initState = initialiseStoreFromRequest(request, tabId);
         set((s) => ({
           ...s,
           ...initState,
@@ -89,7 +88,6 @@ const createSocketStore = (initialState: ISocket) =>
         get,
         _object.pick(initialState.request, requestSliceKeys) as ISocketIO
       ),
-
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
