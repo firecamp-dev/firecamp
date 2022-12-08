@@ -1,17 +1,11 @@
-import {
-  Button,
-  Url,
-  UrlBar,
-  HttpMethodDropDown,
-} from '@firecamp/ui-kit';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { FaFile } from '@react-icons/all-files/fa/FaFile';
-import { EHttpMethod, TId } from '@firecamp/types';
-
 import shallow from 'zustand/shallow';
+import { EHttpMethod, TId } from '@firecamp/types';
 import _url from '@firecamp/url';
-
+import { Button, Url, UrlBar, HttpMethodDropDown } from '@firecamp/ui-kit';
 import { IGraphQLStore, useGraphQLStore } from '../../../store';
+
 const methods = Object.values(EHttpMethod);
 
 const UrlBarContainer = ({
@@ -35,6 +29,8 @@ const UrlBarContainer = ({
     fetchIntrospectionSchema,
     toggleDoc,
     changeActiveEnvironment,
+    preparePayloadForSaveRequest,
+    preparePayloadForUpdateRequest,
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       url: s.request.url,
@@ -50,6 +46,8 @@ const UrlBarContainer = ({
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
       toggleDoc: s.toggleDoc,
       changeActiveEnvironment: s.changeActiveEnvironment,
+      preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
+      preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
     }),
     shallow
   );
@@ -60,9 +58,7 @@ const UrlBarContainer = ({
   const _handleUrlChange = (e) => {
     e.preventDefault();
     const value = e.target.value;
-
     const urlObject = _url.updateByRaw({ ...url, raw: value });
-
     changeUrl(urlObject);
   };
 
@@ -75,22 +71,17 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      let pushPayload: any;
-      if (!isRequestSaved) {
-        // pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        // pushPayload = await prepareRequestUpdatePushPayload();
-      }
+      const _request =
+        isRequestSaved === true
+          ? preparePayloadForUpdateRequest()
+          : preparePayloadForSaveRequest();
 
-      // console.log({ pushPayload });
+      console.log({ _request });
       // setPushActionEmpty();
 
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      // onSaveRequest(_request, tab.id);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -113,12 +104,12 @@ const UrlBarContainer = ({
       }
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
-      onEditClick={()=> {
+      onEditClick={() => {
         context.appService.modals.openEditRequest({
           name: __meta.name,
           description: __meta.description,
           collectionId: __ref.collectionId,
-          requestId: __ref.id
+          requestId: __ref.id,
         });
       }}
     >
@@ -142,31 +133,31 @@ const UrlBarContainer = ({
       </UrlBar.Body>
       <UrlBar.Suffix>
         <Button
-          sm
-          iconCenter
-          secondary
           onClick={_toggleGraphqlDoc}
           icon={<FaFile fontSize={16} />}
           id={`open-schema-doc-${tab.id}`}
           tooltip={'open schema doc'}
+          sm
+          iconCenter
+          secondary
         />
 
         <Button
-          sm
-          iconLeft
-          primary
           icon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
           onClick={fetchIntrospectionSchema}
           id={`refresh-schema-${tab.id}`}
           tooltip={'refresh schema'}
+          sm
+          iconLeft
+          primary
         />
         <Button
           id={`save-request-${tab.id}`}
+          text="Save"
+          onClick={_onSave}
+          disabled={false}
           secondary
           sm
-          text="Save"
-          disabled={false}
-          onClick={_onSave}
         />
       </UrlBar.Suffix>
     </UrlBar>

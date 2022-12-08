@@ -1,5 +1,7 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
+import { nanoid } from 'nanoid';
+import equal from 'deep-equal';
 import {
   EAuthTypes,
   ERestBodyTypes,
@@ -22,8 +24,6 @@ import {
   _table,
 } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
-import { nanoid } from 'nanoid';
-import equal from 'deep-equal';
 
 import { configState, bodyState } from '../constants';
 import { IRestStoreState, IUiRequestPanel } from '../store';
@@ -194,7 +194,7 @@ export const normalizeRequest = (
     if (!url.pathParams?.length) url.pathParams = [];
     url.pathParams.map((pp) => {
       // add default key: `type: text`
-      qp.id = nanoid();
+      pp.id = nanoid();
       pp.type = EKeyValueTableRowType.Text;
       pp.value = pp.value || '';
       if (isValidRow(pp)) pathParams.push(pp);
@@ -317,7 +317,7 @@ export const initialiseStoreFromRequest = (
       },
       isRequestSaved: !!request.__ref.collectionId,
       oauth2LastFetchedToken: '',
-      tabId
+      tabId,
     },
   };
 };
