@@ -3,7 +3,6 @@ import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
-
 import { IPushPayload, IRestStore, useRestStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
@@ -21,23 +20,18 @@ const UrlBarContainer = ({
   const {
     url,
     method,
-    __meta = {},
-    __ref = {},
+    __meta,
+    __ref,
     activeEnvironments,
     isRequestRunning,
     isRequestSaved,
     context,
-
     changeUrl,
     changeMethod,
-
     execute,
     changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
-
-    // pushAction,
+    preparePayloadForSaveRequest,
+    preparePayloadForUpdateRequest,
   } = useRestStore(
     (s: IRestStore) => ({
       url: s.request.url,
@@ -48,16 +42,15 @@ const UrlBarContainer = ({
       isRequestRunning: s.runtime.isRequestRunning,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
-
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
-
       changeActiveEnvironment: s.changeActiveEnvironment,
       prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
       prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
       setPushActionEmpty: s.setPushActionEmpty,
-      // pushAction: s.pushAction,
+      preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
+      preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
     }),
     shallow
   );
@@ -84,22 +77,16 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
-      if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
-      }
+      const _request =
+        isRequestSaved === true
+          ? preparePayloadForUpdateRequest()
+          : preparePayloadForSaveRequest();
 
-      // console.log({ pushPayload });
-      setPushActionEmpty();
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      console.log({ _request });
+      // setPushActionEmpty();
+      // onSaveRequest(_request, tab.id);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -204,18 +191,6 @@ const UrlBarContainer = ({
           disabled={false}
           onClick={_onSave}
         />
-
-        {/* <SavePopover                               
-          onFirstTimeSave={_onSave}
-          onSaveCallback={_onUpdate}
-          tabMeta={tab.__meta}
-          tabId={tab.id}
-          __meta={{
-            formTitle: 'Rest Request',
-            namePlaceholder: 'Title',
-            descPlaceholder: 'Description',
-          }}
-        /> */}
       </UrlBar.Suffix>
     </UrlBar>
   );

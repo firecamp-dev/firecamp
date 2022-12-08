@@ -40,7 +40,6 @@ const UrlBarContainer = ({
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
-
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
@@ -78,7 +77,6 @@ const UrlBarContainer = ({
 
       console.log({ _request });
       // setPushActionEmpty();
-
       // onSaveRequest(_request, tab.id);
     } catch (e) {
       console.error(e);

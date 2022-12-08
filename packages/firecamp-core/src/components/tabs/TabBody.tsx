@@ -26,13 +26,11 @@ const SocketIOClient = lazy(() =>
 
 import EnvironmentWidget from '../common/environment/environment-widget/EnvironmentWidget';
 import ErrorPopup from '../common/error-boundary/ErrorPopup';
-// import SavePopover from '../common/save/SavePopover';
 import { IRequestTabProps } from './types';
 
 import * as platformContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 import AppService from '../../services/app';
-import { useTabStore } from '../../store/tab';
 
 const TabBody = ({ tabObj, index, activeTab }) => {
   if (!tabObj || index === -1) {

@@ -24,12 +24,11 @@ import {
   _table,
 } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
-
-import { configState, bodyState } from '../constants';
 import { IRestStoreState, IUiRequestPanel } from '../store';
 import { ERequestPanelTabs, IRestClientRequest } from '../types';
-import { Auth } from '.';
+import { configState, bodyState } from '../constants';
 import { IAuthHeader } from './auth/types';
+import { Auth } from '.';
 
 export const prepareUIRequestPanelState = (
   request: Partial<IRestClientRequest>
