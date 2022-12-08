@@ -82,7 +82,7 @@ describe("Checkbox component : ", () => {
         click(CheckboxInput);
 
         await waitFor(() => {
-            screen.debug(lastCheckbox);
+            // screen.debug(lastCheckbox);
 
             expect(CheckboxInput.checked).toBeTruthy();
 

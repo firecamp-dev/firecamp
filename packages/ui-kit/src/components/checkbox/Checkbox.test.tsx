@@ -11,7 +11,9 @@ const CheckBoxPrimary = {
         label: 'CheckBoxPrimary', 
         color: 'primary', 
         labelPlacing: 'right',
-        isChecked: false
+        isChecked: false,
+        showLabel: true,
+        className: ''
     }
 }
 const TemplateWithState = (args: ICheckbox) => {
