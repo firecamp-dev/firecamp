@@ -740,8 +740,8 @@ const Websocket = ({
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {} } = tab;
-    const initState = initialiseStoreFromRequest(request);
+    const { request = {}, id } = tab;
+    const initState = initialiseStoreFromRequest(request, id);
     return (
       <WebsocketStoreProvider
         createStore={() => createWebsocketStore(initState)}

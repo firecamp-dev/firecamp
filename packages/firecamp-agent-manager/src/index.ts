@@ -30,15 +30,15 @@ export const send = async (
     case EFirecampAgent.Extension:
       return extension.send(request);
 
-    case EFirecampAgent.web:
-      restExecutors[request._meta.id] = new RestExecutor();
-      return await restExecutors[request._meta.id].send(request);
+    case EFirecampAgent.Web:
+      restExecutors[request.__ref.id] = new RestExecutor();
+      return await restExecutors[request.__ref.id].send(request);
 
     case EFirecampAgent.Cloud:
       if (!_object.isEmpty(request?.body?.[ERestBodyTypes.FormData])) {
         const data = await parseBody(
           request?.body,
-          request.meta.active_body_type
+          request.__meta.activeBodyType
         );
         const response = await axios.post(
           `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute/multipart`,
@@ -76,7 +76,7 @@ export const cancel = async (
       return window.fc.restExecutor.cancel(requestId);
     case EFirecampAgent.Extension:
       return extension.cancel(requestId);
-    case EFirecampAgent.web:
+    case EFirecampAgent.Web:
       restExecutors[requestId].cancel();
 
       delete restExecutors[requestId];

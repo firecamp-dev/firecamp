@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, Ref } from 'react';
 import { TId } from '@firecamp/types';
 import { ITab, ICloseTabIconMeta, ITabBorderMeta } from './Tab.interface';
 
@@ -58,6 +58,10 @@ export interface ITabs {
 
   /** apply equal widths to all tabs */
   equalWidth?: boolean;
+
+  ref?: Ref<any>;
+
+  focus?: boolean;
 }
 
 /** Tab add icon configuration to set icon position, visibility, click event, and disabled property */

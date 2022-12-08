@@ -40,6 +40,7 @@ export enum EPlatformTabs {
 
   opened = 'platform/tabs.opened',
   closed = 'platform/tabs.closed',
+  changeState = 'platform/tabs.changeState',
 }
 
 export const prepareEventNameForRequestPull = (reqId: TId) => `pull/r/${reqId}`;
