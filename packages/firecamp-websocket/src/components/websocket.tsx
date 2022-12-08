@@ -148,7 +148,7 @@ const Websocket = ({
       try {
         const isRequestSaved = !!tab?.request?.__ref?.id || false;
         // prepare a minimal request payload
-        let requestToNormalize: IWebSocket = normalizeRequest({});
+        let _request: IWebSocket = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -156,7 +156,7 @@ const Websocket = ({
             const response = await platformContext.request.onFetch(
               tab.request.__ref.id
             );
-            requestToNormalize = { ...response.data };
+            _request = { ...response.data };
           } catch (error) {
             console.error({
               api: 'fetch rest request',
@@ -166,7 +166,7 @@ const Websocket = ({
           }
         }
         /** initialise ws store on tab load */
-        initialise(requestToNormalize);
+        initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
       } catch (error) {
         console.error({
@@ -219,7 +219,7 @@ const Websocket = ({
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request
-      initialise(updatedRequest); //pushAction
+      // initialise(updatedRequest); //pushAction
       // _cloneDeep({ request: emptyPushAction }),
       setIsFetchingReqFlag(false);
     } catch (error) {
@@ -727,13 +727,6 @@ const Websocket = ({
           </Container.Body>
         </Container>
       </RootContainer>
-      {tab.__meta.isSaved && (
-        <TabChangesDetector
-          onChangeRequestTab={platformContext.request.onChangeRequestTab}
-          tabId={tab.id}
-          tabMeta={tab.__meta}
-        />
-      )}
     </WebsocketContext.Provider>
   );
 };
@@ -755,29 +748,3 @@ const withStore = (WrappedComponent) => {
 };
 
 export default withStore(Websocket);
-
-const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
-  let { pushAction } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
-      pushAction: s.pushAction,
-    }),
-    shallow
-  );
-
-  useEffect(() => {
-    if (tabMeta.isSaved) {
-      // console.log({ pushAction });
-
-      // Check if empty or not
-      const isTabDirty = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(pushAction || {})) || {}
-      );
-      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
-      if (tabMeta.hasChange !== isTabDirty) {
-        onChangeRequestTab(tabId, { hasChange: isTabDirty });
-      }
-    }
-  }, [pushAction]);
-
-  return <></>;
-};

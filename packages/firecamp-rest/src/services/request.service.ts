@@ -11,6 +11,7 @@ import {
   IKeyValueTable,
   EFirecampAgent,
   IAuth,
+  TId,
 } from '@firecamp/types';
 import {
   _object,
@@ -279,7 +280,8 @@ export const normalizeRequest = (
 };
 
 export const initialiseStoreFromRequest = (
-  _request: Partial<IRest>
+  _request: Partial<IRest>,
+  tabId: TId
 ): IRestStoreState => {
   const request: IRestClientRequest = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
@@ -315,6 +317,7 @@ export const initialiseStoreFromRequest = (
       },
       isRequestSaved: !!request.__ref.collectionId,
       oauth2LastFetchedToken: '',
+      tabId
     },
   };
 };

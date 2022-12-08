@@ -1,7 +1,7 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import create from 'zustand';
 import createContext from 'zustand/context';
-import { IRest, IRestResponse } from '@firecamp/types';
+import { IRest, IRestResponse, TId } from '@firecamp/types';
 import ScriptService from '../services/scripts/index';
 import {
   prepareUIRequestPanelState,
@@ -59,7 +59,7 @@ interface IRestStore
   originalRequest?: IRest;
 
   setLast: (initialState: IRestStoreState) => void;
-  initialise: (request: IRest) => void;
+  initialise: (request: IRest, tabId: TId) => void;
 
   context?: any;
   setContext: (ctx: any) => void;
@@ -96,9 +96,9 @@ const createRestStore = (initialState: IRestStoreState) =>
         }));
       },
 
-      initialise: (request: Partial<IRest>) => {
+      initialise: (request: Partial<IRest>, tabId: TId) => {
         const state = get();
-        const initState = initialiseStoreFromRequest(request);
+        const initState = initialiseStoreFromRequest(request, tabId);
         console.log(initState, 'initState');
         set((s) => ({
           ...s,

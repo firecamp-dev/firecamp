@@ -205,6 +205,7 @@ export const initialiseStoreFromRequest = (
       },
       _dnp: {},
       isRequestSaved: !!request.__ref.collectionId,
+      tabId,
     },
     ui: {
       // ...state.ui,

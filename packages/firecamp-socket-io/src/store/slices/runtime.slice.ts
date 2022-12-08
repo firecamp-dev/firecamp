@@ -19,6 +19,7 @@ interface IRuntime {
   };
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
+  tabId?: TId
 }
 
 interface IRuntimeSlice {
