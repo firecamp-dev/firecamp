@@ -189,11 +189,11 @@ const Websocket = ({
 
       // console.log({ pullPayload });
 
-      const last = websocketStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // const last = websocketStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = (await getMergedRequestByPullAction(
@@ -665,7 +665,6 @@ const Websocket = ({
 
   const onSave = (pushPayload: any, tabId) => {
     console.log({ pushPayload });
-
     if (!pushPayload._action || !pushPayload.__ref.id) return;
     if (pushPayload._action.type === 'i') {
       platformContext.request.subscribeChanges(
@@ -673,9 +672,7 @@ const Websocket = ({
         handlePull
       );
     }
-
     platformContext.request.onSave(pushPayload, tabId);
-
     // let last = websocketStoreApi.getState().last,
     // request = websocketStoreApi.getState().request;
   };

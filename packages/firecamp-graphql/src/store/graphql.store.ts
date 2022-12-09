@@ -47,7 +47,6 @@ interface IGraphQLStore
     IPullSlice,
     IUiSlice,
     IRequestChangeStateSlice {
-  last: any;
   originalRequest?: IGraphQL;
   initialise: (_request: Partial<IGraphQL>, tabId: TId) => void;
   context?: any;
@@ -77,8 +76,6 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
       ...createRequestChangeStateSlice(set, get),
-
-      last: initialState,
 
       initialise: (request: Partial<IGraphQL>, tabId: TId) => {
         // const state = get();

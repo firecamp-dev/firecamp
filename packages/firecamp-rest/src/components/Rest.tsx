@@ -160,16 +160,16 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
 
       // console.log({ pullPayload });
 
-      let last = restStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // let last = restStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = await getMergedRequestByPullAction(pullPayload);
 
-      updatedRequest = normalizeRequest(updatedRequest);
+      // updatedRequest = normalizeRequest(updatedRequest);
 
       // set last value by pull action and request
 
