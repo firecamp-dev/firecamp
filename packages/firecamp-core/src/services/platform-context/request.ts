@@ -112,7 +112,7 @@ const request: IPlatformRequestService = {
 
   // normalize request push payload for insert and update
   normalizePushPayload: (pushPayload: any) => {
-    let active_workspace = useWorkspaceStore.getState().getWorkspaceId();
+    let activeWorkspace = useWorkspaceStore.getState().getWorkspaceId();
 
     let userId = useUserStore.getState().user;
 
@@ -125,7 +125,7 @@ const request: IPlatformRequestService = {
       // add workspaceId
       pushPayload._action = {
         ...pushPayload._action,
-        workspaceId: active_workspace,
+        workspaceId: activeWorkspace,
       };
 
       switch (type) {
