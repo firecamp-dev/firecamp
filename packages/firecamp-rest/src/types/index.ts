@@ -4,6 +4,8 @@ export enum EReqChangeRootKeys {
   method = 'method',
   headers = 'headers',
   config = 'config',
+  body = 'body',
+  auth = 'auth',
 }
 
 export enum EReqChangeMetaKeys {

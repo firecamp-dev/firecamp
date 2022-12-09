@@ -152,8 +152,8 @@ export const normalizeRequest = (
       description: '',
       type: ERequestTypes.Rest,
       version: '2.0.0',
-      activeBodyType: ERestBodyTypes.NoBody,
-      activeAuthType: EAuthTypes.NoAuth,
+      // activeBodyType: ERestBodyTypes.NoBody,
+      // activeAuthType: EAuthTypes.NoAuth,
     },
     __ref: { id: '', collectionId: '' },
   };
@@ -235,9 +235,12 @@ export const normalizeRequest = (
   });
 
   // normalize body
-  _nr.body = _object.isEmpty(body)
-    ? _cloneDeep(bodyState)
-    : _object.mergeDeep(_cloneDeep(bodyState), body || {});
+  if (!_object.isEmpty(body)) {
+    _nr.body = { value: body.value, type: body.type };
+  }
+  // _nr.body = _object.isEmpty(body)
+  //   ? _cloneDeep(bodyState)
+  //   : _object.mergeDeep(_cloneDeep(bodyState), body || {});
 
   // normalize scripts
   _nr.scripts = {
@@ -250,13 +253,13 @@ export const normalizeRequest = (
   _nr.__meta.name = __meta.name || 'Untitled Request';
   _nr.__meta.description = __meta.description || '';
   //@ts-ignore
-  if (__meta.activeBodyType === 'no_body')
-    __meta.activeBodyType = ERestBodyTypes.NoBody;
-  _nr.__meta.activeBodyType = __meta.activeBodyType || ERestBodyTypes.NoBody;
-  //@ts-ignore
-  if (__meta.activeAuthType === 'no_auth')
-    __meta.activeAuthType = EAuthTypes.NoAuth;
-  _nr.__meta.activeAuthType = __meta.activeAuthType || EAuthTypes.NoAuth;
+  // if (__meta.activeBodyType === 'no_body')
+  //   __meta.activeBodyType = ERestBodyTypes.NoBody;
+  // _nr.__meta.activeBodyType = __meta.activeBodyType || ERestBodyTypes.NoBody;
+  // //@ts-ignore
+  // if (__meta.activeAuthType === 'no_auth')
+  //   __meta.activeAuthType = EAuthTypes.NoAuth;
+  // _nr.__meta.activeAuthType = __meta.activeAuthType || EAuthTypes.NoAuth;
   _nr.__meta.version = '2.0.0';
   _nr.__meta.type = ERequestTypes.Rest;
   _nr.__meta.inheritScripts = {
