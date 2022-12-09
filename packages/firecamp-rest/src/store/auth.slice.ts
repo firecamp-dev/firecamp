@@ -75,6 +75,7 @@ const createAuthSlice = (set, get, initialAuth: IUiAuth) => ({
     }
   },
   updateActiveAuth: (authType: EAuthTypes) => {
+    if (!authType) return;
     const state = get();
     state.changeMeta({ activeAuthType: authType });
     state.resetAuthHeaders(authType);

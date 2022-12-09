@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
-import { isRestBodyEmpty } from '../../../services/request.service';
+import { nanoid } from 'nanoid';
 import {
   EKeyValueTableRowType,
   ERestBodyTypes,
@@ -16,7 +16,8 @@ import {
   StatusBar,
   MultipartTable,
   /* ToolBar, */
-} from '@firecamp/ui-kit'; /* 
+} from '@firecamp/ui-kit';
+/* 
 import { VscCode } from '@react-icons/all-files/vsc/VscCode';
 import { FaCopy } from '@react-icons/all-files/fa/FaCopy';
 import { VscWordWrap } from '@react-icons/all-files/vsc/VscWordWrap';
@@ -28,9 +29,9 @@ import GraphQLBody from './body/GraphQLBody';
 import BinaryBody from './body/BinaryBody';
 import NoBodyTab from './body/NoBodyTab';
 
+import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
 import { IRestStore, useRestStore, useRestStoreApi } from '../../../store';
-import { nanoid } from 'nanoid';
 
 const BodyTab: FC<any> = () => {
   const restStoreApi = useRestStoreApi();
@@ -121,12 +122,12 @@ const BodyTab: FC<any> = () => {
     const updatedBodyTypes = Object.values(bodyTypesDDValues);
 
     if (isEmptyAPIBody) {
-      (updatedBodyTypes || []).map((type, k) => {
+      updatedBodyTypes.map((type, i) => {
         return Object.assign(type, {
-          list: type.list.map((o) => {
-            if (isEmptyAPIBody[o.id] === undefined) isEmptyAPIBody[o.id] = true;
-            return Object.assign(o, {
-              dotIndicator: !(!o.id ? isEmptyAPIBody[o.id] : true),
+          list: type.list.map((l) => {
+            // if (isEmptyAPIBody[l.id] === undefined) isEmptyAPIBody[l.id] = true;
+            return Object.assign(l, {
+              dotIndicator: false,
             });
           }),
         });
@@ -194,7 +195,7 @@ const BodyTab: FC<any> = () => {
             />
           );
           break;
-        case "":
+        case '':
           return <NoBodyTab selectBodyType={_selectBodyType} />;
           break;
         default:

@@ -88,7 +88,7 @@ const createRestStore = (initialState: IRestStoreState) =>
           originalRequest: _cloneDeep(initState.request) as IRest,
         }));
         // update auth type, generate auth headers
-        state.updateActiveAuth(request.auth.type);
+        state.updateActiveAuth(request.auth?.type);
       },
       setContext: (ctx: any) => set({ context: ctx }),
       ...createRequestSlice(

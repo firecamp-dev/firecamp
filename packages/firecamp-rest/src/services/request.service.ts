@@ -101,7 +101,7 @@ export const prepareUIRequestPanelState = (
   return updatedUiStore;
 };
 
-export const isRestBodyEmpty = (body: IRestBody) => {
+export const isRestBodyEmpty = (body: IRestBody): boolean => {
   return !body?.value || !body?.type;
 };
 

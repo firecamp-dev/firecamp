@@ -37,18 +37,14 @@ export const bodyTypesDDValues = {
         name: bodyTypeNames[ERestBodyTypes.Json],
         id: ERestBodyTypes.Json,
       },
-      // {name: 'Javascript', id: 'application/javascript'},
       {
         name: bodyTypeNames[ERestBodyTypes.Xml],
         id: ERestBodyTypes.Xml,
       },
-      //{name: 'XML/text', id: 'text/xml'},
-      //{name: 'HTML', id: 'text/html'},
       {
         name: bodyTypeNames[ERestBodyTypes.Text],
         id: ERestBodyTypes.Text,
       },
-      //{name: 'text/plain', id: 'text/plain'}
     ],
   },
   other: {
@@ -64,7 +60,7 @@ export const bodyTypesDDValues = {
         isEmpty: true,
       },
     ],
-  }
+  },
 };
 
 // empty body state

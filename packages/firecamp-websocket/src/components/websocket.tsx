@@ -166,12 +166,8 @@ const Websocket = ({
         /** initialise ws store on tab load */
         initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
-
+      } catch (e) {
+        console.error(e);
         // TODO: close tab and show error popup
       }
     };

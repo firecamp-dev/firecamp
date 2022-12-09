@@ -139,11 +139,8 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         /** initialise rest store on tab load */
         initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
+      } catch (e) {
+        console.error(e);
       }
     };
     _fetchRequest();
