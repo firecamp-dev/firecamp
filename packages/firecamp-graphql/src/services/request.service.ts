@@ -78,7 +78,7 @@ export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
     if (!url.pathParams?.length) url.pathParams = [];
     url.pathParams.map((pp) => {
       // add default key: `type: text`
-      qp.id = nanoid();
+      pp.id = nanoid();
       pp.type = EKeyValueTableRowType.Text;
       pp.value = pp.value || '';
       if (isValidRow(pp)) pathParams.push(pp);

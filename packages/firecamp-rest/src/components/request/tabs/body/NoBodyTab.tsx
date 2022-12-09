@@ -8,7 +8,7 @@ const NoBodyTab = ({ selectBodyType = ({ id: ERestBodyTypes }) => {} }) => {
   const menus = useMemo(() => {
     let bodyTypes = [];
     for (let type in bodyTypeNames) {
-      if (type !== ERestBodyTypes.NoBody) {
+      if (type) {
         bodyTypes.push({
           id: bodyTypeNames[type],
           name: bodyTypeNames[type],
@@ -22,7 +22,7 @@ const NoBodyTab = ({ selectBodyType = ({ id: ERestBodyTypes }) => {} }) => {
       {
         title: 'Quick body type selection',
         items: bodyTypes,
-        active_item: ERestBodyTypes.NoBody,
+        activeItem: "",
       },
     ];
   }, []);

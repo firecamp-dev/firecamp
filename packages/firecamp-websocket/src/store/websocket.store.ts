@@ -78,7 +78,6 @@ interface IWebsocketStore
   last: any;
   originalRequest?: IWebSocket;
   initialise: (request: Partial<IWebSocket>, tabId: TId) => void;
-  setLast: (initialState: IWebsocketStoreState) => void;
 }
 
 const createWebsocketStore = (initialState: IWebsocketStoreState) =>
@@ -93,13 +92,6 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
           ...s,
           ...initState,
           originalRequest: _cloneDeep(initState.request),
-        }));
-      },
-
-      setLast: (initialState: IWebsocketStoreState) => {
-        set((s) => ({
-          ...s,
-          last: initialState,
         }));
       },
 

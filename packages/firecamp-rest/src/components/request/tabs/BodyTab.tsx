@@ -28,12 +28,9 @@ import GraphQLBody from './body/GraphQLBody';
 import BinaryBody from './body/BinaryBody';
 import NoBodyTab from './body/NoBodyTab';
 
-import {
-  bodyTypesDDValues,
-  bodyTypeNames,
-  headersByBodyType,
-} from '../../../constants';
+import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
 import { IRestStore, useRestStore, useRestStoreApi } from '../../../store';
+import { nanoid } from 'nanoid';
 
 const BodyTab: FC<any> = () => {
   const restStoreApi = useRestStoreApi();
@@ -67,28 +64,33 @@ const BodyTab: FC<any> = () => {
     _updateHeadersByBodyType(selectedType.id);
   };
 
-  const _updateHeadersByBodyType = (type) => {
+  const _updateHeadersByBodyType = (type: ERestBodyTypes) => {
     const state: Partial<IRestStore> = restStoreApi.getState();
     const headers: IHeader[] = state?.request?.headers;
     let contentType = '';
     let updatedHeaders: IHeader[] = headers;
 
-    if (type !== ERestBodyTypes.GraphQL) {
-      contentType = headersByBodyType[type] || '';
+    if (type == ERestBodyTypes.GraphQL) {
+      contentType = ERestBodyTypes.Json; //if graphql body,set header application/json
+    } else if (type == ERestBodyTypes.Text) {
+      contentType = `text/plain`;
+    } else if (type == ERestBodyTypes.Binary) {
+      contentType = `text/plain`;
     } else {
-      contentType = headersByBodyType[ERestBodyTypes.Json] || ''; //if graphql body,set header application/json
+      contentType = type;
     }
 
     // TODO: check without method for array object
-    let headersWithoutContentType: IHeader[] = _array.without(
+    const headersWithoutContentType: IHeader[] = _array.without(
       headers,
       (h) => h?.key?.trim().toLowerCase() !== 'content-type'
     ) as unknown as IHeader[];
 
-    if (type === ERestBodyTypes.NoBody) {
+    if (!type) {
       updatedHeaders = headersWithoutContentType;
     } else if (contentType) {
       const bodyHeader: IHeader = {
+        id: nanoid(),
         key: 'Content-Type',
         value: contentType,
         type: EKeyValueTableRowType.Text,
@@ -124,9 +126,7 @@ const BodyTab: FC<any> = () => {
           list: type.list.map((o) => {
             if (isEmptyAPIBody[o.id] === undefined) isEmptyAPIBody[o.id] = true;
             return Object.assign(o, {
-              dotIndicator: !(o.id !== ERestBodyTypes.NoBody
-                ? isEmptyAPIBody[o.id]
-                : true),
+              dotIndicator: !(!o.id ? isEmptyAPIBody[o.id] : true),
             });
           }),
         });
@@ -143,7 +143,7 @@ const BodyTab: FC<any> = () => {
   const _renderBodyTab = () => {
     if (activeBodyType) {
       switch (activeBodyType) {
-        case ERestBodyTypes.NoBody:
+        case '':
           return <NoBodyTab selectBodyType={_selectBodyType} />;
         case ERestBodyTypes.FormData:
           return (
@@ -194,7 +194,7 @@ const BodyTab: FC<any> = () => {
             />
           );
           break;
-        case ERestBodyTypes.NoBody:
+        case "":
           return <NoBodyTab selectBodyType={_selectBodyType} />;
           break;
         default:
@@ -260,7 +260,7 @@ const BodyTypeDropDown: FC<any> = ({
   /**
    * On toggle open body types dropdown menu
    */
-   const _onToggleOpen = () => {
+  const _onToggleOpen = () => {
     const isDropdownOpen = !isOpen;
     toggle(isDropdownOpen);
 

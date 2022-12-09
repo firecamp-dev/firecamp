@@ -1,5 +1,7 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
+import { nanoid } from 'nanoid';
+import equal from 'deep-equal';
 import {
   EAuthTypes,
   ERestBodyTypes,
@@ -12,6 +14,7 @@ import {
   EFirecampAgent,
   IAuth,
   TId,
+  IRestBody,
 } from '@firecamp/types';
 import {
   _object,
@@ -22,14 +25,11 @@ import {
   _table,
 } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
-import { nanoid } from 'nanoid';
-import equal from 'deep-equal';
-
-import { configState, bodyState } from '../constants';
 import { IRestStoreState, IUiRequestPanel } from '../store';
 import { ERequestPanelTabs, IRestClientRequest } from '../types';
-import { Auth } from '.';
+import { configState, bodyState } from '../constants';
 import { IAuthHeader } from './auth/types';
+import { Auth } from '.';
 
 export const prepareUIRequestPanelState = (
   request: Partial<IRestClientRequest>
@@ -39,39 +39,21 @@ export const prepareUIRequestPanelState = (
   for (let key in request) {
     switch (key) {
       case 'auth':
-        /*  
-      TODO: check usecase
-     
-     let hasAuth = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(request.auth))
-      ); */
+        if (request.auth?.type) {
+          updatedUiStore = {
+            ...updatedUiStore,
+            hasAuth: true,
+          };
+        }
         break;
       case 'body':
-        /* 
-      TODO: check usecase
-      
-      let hasBody = !(
-        isRestBodyEmpty(_cloneDeep(request.body))?.isEmpty || false
-      ); */
-        break;
-      case '__meta':
-        if (request.__meta.activeBodyType) {
+        if (request.body?.type) {
           updatedUiStore = {
             ...updatedUiStore,
-            hasBody: ![ERestBodyTypes.NoBody, 'no_body'].includes(
-              request.__meta.activeBodyType
-            ),
-          };
-        }
-
-        if (request.__meta.activeAuthType) {
-          updatedUiStore = {
-            ...updatedUiStore,
-            hasAuth: request.__meta.activeAuthType !== EAuthTypes.NoAuth,
+            hasBody: true,
           };
         }
         break;
-
       case 'headers':
         let headers = request?.headers.length;
         updatedUiStore = {
@@ -119,23 +101,8 @@ export const prepareUIRequestPanelState = (
   return updatedUiStore;
 };
 
-export const isRestBodyEmpty = (bodies: { [key: string]: any }) => {
-  if (!bodies) return { isEmpty: true };
-
-  let body = {};
-  for (let key in bodies) {
-    body[key] =
-      key !== ERestBodyTypes.NoBody
-        ? _string.isString(bodies[key]['value'])
-          ? _string.isEmpty(bodies[key]['value'])
-          : _array.isEmpty(bodies[key]['value'])
-        : true;
-  }
-
-  let isBodyEmpty = !Object.values(body).includes(false);
-  return isBodyEmpty
-    ? { isEmpty: true }
-    : Object.assign(body, { isEmpty: false });
+export const isRestBodyEmpty = (body: IRestBody) => {
+  return !body?.value || !body?.type;
 };
 
 /**
@@ -153,8 +120,6 @@ export const normalizeRequest = (
       description: '',
       type: ERequestTypes.Rest,
       version: '2.0.0',
-      activeBodyType: ERestBodyTypes.NoBody,
-      activeAuthType: EAuthTypes.NoAuth,
     },
     __ref: { id: '', collectionId: '' },
   };
@@ -194,7 +159,7 @@ export const normalizeRequest = (
     if (!url.pathParams?.length) url.pathParams = [];
     url.pathParams.map((pp) => {
       // add default key: `type: text`
-      qp.id = nanoid();
+      pp.id = nanoid();
       pp.type = EKeyValueTableRowType.Text;
       pp.value = pp.value || '';
       if (isValidRow(pp)) pathParams.push(pp);
@@ -236,9 +201,12 @@ export const normalizeRequest = (
   });
 
   // normalize body
-  _nr.body = _object.isEmpty(body)
-    ? _cloneDeep(bodyState)
-    : _object.mergeDeep(_cloneDeep(bodyState), body || {});
+  if (!_object.isEmpty(body)) {
+    _nr.body = { value: body.value, type: body.type };
+  }
+  // _nr.body = _object.isEmpty(body)
+  //   ? _cloneDeep(bodyState)
+  //   : _object.mergeDeep(_cloneDeep(bodyState), body || {});
 
   // normalize scripts
   _nr.scripts = {
@@ -250,14 +218,6 @@ export const normalizeRequest = (
   // normalize __meta
   _nr.__meta.name = __meta.name || 'Untitled Request';
   _nr.__meta.description = __meta.description || '';
-  //@ts-ignore
-  if (__meta.activeBodyType === 'no_body')
-    __meta.activeBodyType = ERestBodyTypes.NoBody;
-  _nr.__meta.activeBodyType = __meta.activeBodyType || ERestBodyTypes.NoBody;
-  //@ts-ignore
-  if (__meta.activeAuthType === 'no_auth')
-    __meta.activeAuthType = EAuthTypes.NoAuth;
-  _nr.__meta.activeAuthType = __meta.activeAuthType || EAuthTypes.NoAuth;
   _nr.__meta.version = '2.0.0';
   _nr.__meta.type = ERequestTypes.Rest;
   _nr.__meta.inheritScripts = {
@@ -317,7 +277,7 @@ export const initialiseStoreFromRequest = (
       },
       isRequestSaved: !!request.__ref.collectionId,
       oauth2LastFetchedToken: '',
-      tabId
+      tabId,
     },
   };
 };
@@ -395,71 +355,60 @@ export const normalizeSendRequestPayload = async (
 
   try {
     // Send active body payload
-    if (request.__meta.activeBodyType !== ERestBodyTypes.NoBody) {
+    if (!request.body?.type) {
       sendRequestPayload.body = {
-        [request.__meta.activeBodyType]:
-          request.body[request.__meta.activeBodyType],
+        value: request.body.value,
+        type: request.body.type,
       };
 
-      if (request.__meta.activeBodyType === ERestBodyTypes.FormData) {
-        // Add file entry value after parse env. variable in body
-        if (
-          !_array.isEmpty(request.body?.[request.__meta.activeBodyType]?.value)
-        ) {
-          sendRequestPayload.body[request.__meta.activeBodyType].value =
-            request.body[request.__meta.activeBodyType].value.map(
-              (item, index) => {
-                if (item.type === EKeyValueTableRowType.File) {
-                  item.value =
-                    originalRequest.body[request.__meta.activeBodyType].value[
-                      index
-                    ].value;
-                }
-                return item;
+      if (request.body?.type === ERestBodyTypes.FormData) {
+        // add file entry value after parse env. variable in body
+        if (!_array.isEmpty(request.body?.value as any[])) {
+          sendRequestPayload.body.value = request.body.value.map(
+            (item, index) => {
+              if (item.type === EKeyValueTableRowType.File) {
+                item.value = originalRequest.body.value[index].value;
               }
-            );
+              return item;
+            }
+          );
         }
       } else if (
-        request.__meta.activeBodyType === ERestBodyTypes.Binary &&
-        originalRequest.body[request.__meta.activeBodyType].value
+        request.body.type === ERestBodyTypes.Binary &&
+        originalRequest.body.value
       ) {
         // handle binary body payload
         let text: string | ArrayBuffer = await readFile(
-          originalRequest.body[request.__meta.activeBodyType].value
+          originalRequest.body.value
         )
           .then((r) => r)
           .catch((e) => {
             return '';
           });
-        sendRequestPayload.body[request.__meta.activeBodyType].value = text;
+        sendRequestPayload.body.value = text;
       }
     }
 
     // Send active auth payload
-    if (
-      request.__meta.activeAuthType !== EAuthTypes.NoAuth &&
-      request.__meta.activeAuthType !== EAuthTypes.Inherit
-    ) {
+    if (request.auth?.type !== EAuthTypes.Inherit) {
       sendRequestPayload.auth = {
-        [request.__meta.activeAuthType]:
-          request.auth[request.__meta.activeAuthType],
+        value: request.auth.value,
+        type: request.auth.type,
       };
-    } else if (request.__meta.activeAuthType === EAuthTypes.Inherit) {
-      let inheritedAuth = request.__meta.inheritedAuth;
+    } else if (request.auth?.type === EAuthTypes.Inherit) {
+      const inheritedAuth = request.__meta.inheritedAuth;
       if (inheritedAuth) {
         sendRequestPayload.auth = {
-          [inheritedAuth.auth]: inheritedAuth.payload,
+          value: inheritedAuth.value,
+          type: inheritedAuth.auth,
         };
       }
     }
     sendRequestPayload.__ref = { id: request.__ref.id, collectionId: '' };
     // console.log({ sendRequestPayload });
 
-    //  Merge headers and auth headers
-    let authHeaders = await getAuthHeaders(
-      request,
-      request.__meta.activeAuthType
-    );
+    //  merge headers and auth headers
+    const authHeaders = await getAuthHeaders(request, request.auth?.type);
     const headersAry = _table.objectToTable(authHeaders) || [];
     // console.log({ headersAry, request });
 
@@ -586,18 +535,18 @@ export const getAuthHeaders = async (
   authType?: EAuthTypes
 ): Promise<{ [key: string]: any } | IAuthHeader> => {
   if (!authType) {
-    authType = request.__meta?.activeAuthType;
+    authType = request.auth.type;
   }
   // console.log({ authType });
 
-  if (authType === EAuthTypes.NoAuth) {
+  if (!authType) {
     return Promise.resolve({});
   } /* else if (authType === EAuthTypes.Inherit) {
     // TODO: add logic to fetch inherit auth
     // set inherit auth to runtimeSlice.inherit
     // update auth headers by inherit auth
   } */ else {
-    let { url, method, body, headers, auth, __meta } = request;
+    let { url, method, body, headers, auth } = request;
 
     let requestAuth = auth;
 
@@ -607,12 +556,13 @@ export const getAuthHeaders = async (
     if (authType === EAuthTypes.Inherit && inheritedAuth) {
       let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
       requestAuth = {
-        [inheritedAuth.type]: normalizedAuth[inheritedAuth.type],
+        value: normalizedAuth[inheritedAuth.type],
+        type: inheritedAuth.type,
       };
       authType = inheritedAuth.type;
     }
 
-    if (__meta?.activeAuthType !== EAuthTypes.NoAuth) {
+    if (!auth.type) {
       try {
         let agent =
           _misc.firecampAgent() === EFirecampAgent.Desktop
@@ -632,22 +582,22 @@ export const getAuthHeaders = async (
         // console.log({ authServicePayload });
 
         // manage OAuth2 payload
-        if (__meta?.activeAuthType === EAuthTypes.OAuth2) {
-          let oAuth2 = requestAuth[EAuthTypes.OAuth2];
-          let activeGrantType = oAuth2.activeGrantType;
-          let activeGrantTypePayload = oAuth2.grantTypes[activeGrantType];
+        if (auth?.type === EAuthTypes.OAuth2) {
+          const oAuth2 = requestAuth[EAuthTypes.OAuth2];
+          const activeGrantType = oAuth2.activeGrantType;
+          const activeGrantTypePayload = oAuth2.grantTypes[activeGrantType];
           authServicePayload = activeGrantTypePayload;
         }
 
         const authService = new Auth(
-          authType || __meta.activeAuthType,
+          authType || auth.type,
           authServicePayload,
           extraParams
         );
         await authService.authorize();
-        let authHeaders = await authService.getHeader();
+        const authHeaders = await authService.getHeader();
 
-        // If OAuth2 then set headers with prefix Bearer and set to token
+        // if OAuth2 then set headers with prefix Bearer and set to token
         if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
           authHeaders[
             'Authorization'
@@ -666,6 +616,5 @@ export const getAuthHeaders = async (
       }
     }
   }
-
   return Promise.reject({});
 };

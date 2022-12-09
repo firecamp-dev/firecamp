@@ -38,8 +38,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
-
-    setLast,
     setContext,
   } = useRestStore(
     (s: IRestStore) => ({
@@ -54,7 +52,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
-      setLast: s.setLast,
       setContext: s.setContext,
     }),
     shallow
@@ -163,23 +160,18 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
 
       // console.log({ pullPayload });
 
-      let last = restStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // let last = restStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = await getMergedRequestByPullAction(pullPayload);
 
-      updatedRequest = normalizeRequest(updatedRequest);
+      // updatedRequest = normalizeRequest(updatedRequest);
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
-      });
 
       // console.log({ req: restStoreApi.getState().request });
 
@@ -194,11 +186,8 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
 
       // initialise request with updated request and push action
       // initialiseRequest(updatedRequest, true, pushAction, true, false);
-    } catch (error) {
-      console.error({
-        API: 'rest.handlePull',
-        error,
-      });
+    } catch (e) {
+      console.error(e);
     }
   };
 

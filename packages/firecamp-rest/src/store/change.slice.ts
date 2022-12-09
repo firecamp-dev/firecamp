@@ -10,36 +10,28 @@ import {
   EReqChangeUrlKeys,
 } from '../types';
 import { _array, _object } from '@firecamp/utils';
+import { normalizeRequest } from '../services/request.service';
+import { IRestStore } from './rest.store';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
   scripts: [],
-  auth: [],
-  body: [],
   __meta: [],
   __root: [],
-  __removed: {
-    body: [],
-    auth: [],
-  },
 };
 
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
   scripts?: EReqChangeScriptsKeys[];
-  auth?: EAuthTypes[];
-  body?: ERestBodyTypes[];
   __meta?: EReqChangeMetaKeys[];
   __root?: EReqChangeRootKeys[];
-  __removed?: {
-    body?: ERestBodyTypes[];
-    auth?: EAuthTypes[];
-  };
 }
 
 interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<IRest>) => void;
+  preparePayloadForSaveRequest: () => IRest;
+  preparePayloadForUpdateRequest: () => Partial<IRest>;
 }
 
 const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
@@ -58,6 +50,8 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
         case 'method':
         case 'config':
         case 'headers':
+        case 'body':
+        case 'auth':
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {
@@ -75,7 +69,7 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
             }
           });
           break;
-        case 'auth':
+        /*case 'auth':
           const { activeAuthType } = state.request.__meta;
           if (
             !equal(_request[key][activeAuthType], request[key][activeAuthType])
@@ -84,13 +78,13 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
           } else {
             _rcs.__root = _array.without(_rcs.__root, key);
           }
-          break;
-        case 'body':
+          break;*/
+        /*case 'body':
           /**
            * when body type will change, the change will already be made at __meta: ['activeBodyType] key
            * so here just check the current activeBodyType of original and latest request's body
            * when user update the request with new body the server will only save/replace with latest updated body type
-           */
+           *-/
           const { activeBodyType } = state.request.__meta;
           if (
             !equal(_request[key][activeBodyType], request[key][activeBodyType])
@@ -100,6 +94,7 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
             _rcs.__root = _array.without(_rcs.__root, key);
           }
           break;
+          */
       }
     }
     console.log(_rcs);
@@ -108,6 +103,35 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     state.context.request.onChangeRequestTab(state.runtime.tabId, {
       hasChange,
     });
+  },
+  preparePayloadForSaveRequest: () => {
+    const state = get();
+    const _sr = normalizeRequest(state.request);
+    console.log(_sr);
+    return _sr;
+  },
+  preparePayloadForUpdateRequest: () => {
+    const state = get() as IRestStore;
+    const { request, requestChangeState: _rcs } = state;
+    const _request = normalizeRequest(request);
+    let _ur: Partial<IRest> = {};
+
+    for (let key in _rcs) {
+      switch (key) {
+        case '__root':
+          _ur = { ..._ur, ..._object.pick(_request, _rcs[key]) };
+          break;
+        case 'url':
+          //@ts-ignore url will have only updated key
+          _ur.url = _object.pick(_request[key], _rcs[key]);
+          break;
+        case '__meta':
+          _ur.__meta = _object.pick(_request[key], _rcs[key]);
+          break;
+      }
+    }
+    console.log(_ur);
+    return _ur;
   },
 });
 

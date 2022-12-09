@@ -37,7 +37,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
-    setLast,
     setContext,
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
@@ -47,7 +46,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       setActiveEnvironments: s.setActiveEnvironments,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
-      setLast: s.setLast,
       setContext: s.setContext,
     }),
     shallow
@@ -129,11 +127,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
       // console.log({ pullPayload });
 
-      let last = graphqlStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // let last = graphqlStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = (await getMergedRequestByPullAction(
@@ -147,12 +145,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       // console.log({ updatedRequest, mergedPullAndLastRequest });
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
-      });
-
       // get push action payload
       // let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
@@ -231,15 +223,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
     platformContext.request.onSave(pushPayload, tabId);
 
-    let last = graphqlStoreApi.getState().last,
-      request = graphqlStoreApi.getState().request;
+    // let last = graphqlStoreApi.getState().last,
+      // request = graphqlStoreApi.getState().request;
 
     // set last value by pull action and request
-    setLast({
-      ...last,
-      request,
-      pushAction: {} // emptyPushAction,
-    });
+   
   };
 
   if (isFetchingRequest === true) return <Loader />;

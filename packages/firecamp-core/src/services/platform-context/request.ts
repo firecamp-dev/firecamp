@@ -37,7 +37,6 @@ interface IPlatformRequestService {
     tabId: TId,
     tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL, // |ISocket | IWebsocket ,
-    pushActions?: any[]
   ) => void;
 
   // fetch request from server by request id
@@ -168,7 +167,6 @@ const request: IPlatformRequestService = {
     tabId: TId,
     tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL, // | ISocket | IWebsocket,
-    pushActions?: any[]
   ) => {
     // Here, request and pushActions are used for future purpose
     // console.log({ tabMeta });
