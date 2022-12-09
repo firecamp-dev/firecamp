@@ -583,11 +583,6 @@ const Socket = ({
       updatedReqeust = await normalizeRequestPayload(updatedReqeust, true);
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
-      });
 
       // console.log({ req: restStoreApi.getState().request });
 

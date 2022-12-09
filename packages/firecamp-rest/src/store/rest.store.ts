@@ -13,9 +13,6 @@ import {
   IRequestSlice,
   createRequestSlice,
   requestSliceKeys,
-  IPushActionSlice,
-  IPushAction,
-  createPushActionSlice,
   createRuntimeSlice,
   IRuntime,
   IRuntimeSlice,
@@ -49,7 +46,6 @@ type TOnChangeVariables = ({
 
 interface IRestStore
   extends IRequestSlice,
-    IPushActionSlice,
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
@@ -57,10 +53,7 @@ interface IRestStore
     IRequestChangeStateSlice {
   last: any;
   originalRequest?: IRest;
-
-  setLast: (initialState: IRestStoreState) => void;
   initialise: (request: IRest, tabId: TId) => void;
-
   context?: any;
   setContext: (ctx: any) => void;
   execute(
@@ -76,7 +69,6 @@ interface IRestStore
 
 interface IRestStoreState {
   request?: IRestClientRequest;
-  pushAction?: IPushAction;
   runtime?: IRuntime;
   response?: IRestResponse;
   ui?: IUi;
@@ -88,14 +80,6 @@ const createRestStore = (initialState: IRestStoreState) =>
 
     return {
       last: initialState,
-
-      setLast: (initialState: IRestStoreState) => {
-        set((s) => ({
-          ...s,
-          last: initialState,
-        }));
-      },
-
       initialise: (request: Partial<IRest>, tabId: TId) => {
         const state = get();
         const initState = initialiseStoreFromRequest(request, tabId);
@@ -121,7 +105,6 @@ const createRestStore = (initialState: IRestStoreState) =>
         ) as IRestClientRequest
       ),
       ...createRuntimeSlice(set, get, initialState.runtime),
-      ...createPushActionSlice(set, get),
       ...createResponseSlice(set, get),
       ...createUiSlice(set, get, {
         ...initialState.ui,

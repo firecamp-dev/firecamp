@@ -2,7 +2,6 @@ import { ERestBodyTypes, IRestConfig } from '@firecamp/types';
 
 // body type and name mapping
 export const bodyTypeNames = {
-  [ERestBodyTypes.NoBody]: 'No Body',
   [ERestBodyTypes.FormData]: 'Multipart',
   [ERestBodyTypes.UrlEncoded]: 'Form URL Encode',
   [ERestBodyTypes.GraphQL]: 'GraphQL Queries',
@@ -60,22 +59,12 @@ export const bodyTypesDDValues = {
         id: ERestBodyTypes.Binary,
       },
       {
-        name: bodyTypeNames[ERestBodyTypes.NoBody],
-        id: ERestBodyTypes.NoBody,
+        name: 'No Body',
+        id: 'noBody',
         isEmpty: true,
       },
     ],
-  } /* ,
-  empty: {
-    header: "Empty",
-    list: [
-      {
-        name: "No Body",
-        id: ERestBodyTypes.NoBody,
-        isEmpty: true
-      }
-    ]
-  } */,
+  }
 };
 
 // empty body state
@@ -93,28 +82,15 @@ export const bodyState = {
   [ERestBodyTypes.Json]: {
     value: '',
   },
-  /* "application/javascript": {
-   value: ""
-   },*/
   [ERestBodyTypes.Xml]: {
     value: '',
   },
-  /* "text/xml": {
-   value: ""
-   },
-   "text/html": {
-   value: ""
-   },*/
   [ERestBodyTypes.Text]: {
     value: '',
   },
-  /* "text/plain": {
-   value: ""
-   },*/
   [ERestBodyTypes.Binary]: {
     value: '',
   },
-  [ERestBodyTypes.NoBody]: null,
 };
 
 // empty config state
@@ -123,20 +99,4 @@ export const configState: IRestConfig = {
   maxRedirects: 21,
   rejectUnauthorized: false,
   requestTimeout: 0,
-};
-
-// headers mapping by body types
-export const headersByBodyType = {
-  [ERestBodyTypes.FormData]: ERestBodyTypes.FormData,
-  [ERestBodyTypes.UrlEncoded]: ERestBodyTypes.UrlEncoded,
-  [ERestBodyTypes.GraphQL]: ERestBodyTypes.GraphQL,
-  [ERestBodyTypes.Json]: ERestBodyTypes.Json,
-  // "application/javascript": "application/javascript",
-  [ERestBodyTypes.Xml]: ERestBodyTypes.Xml,
-  // "text/xml": "text/xml",
-  // "text/html": "text/html",
-  [ERestBodyTypes.Text]: 'text/plain',
-  // "text/plain": "text/plain",
-  [ERestBodyTypes.Binary]: 'text/plain',
-  protocol_buffer: 'application/octet-stream',
 };

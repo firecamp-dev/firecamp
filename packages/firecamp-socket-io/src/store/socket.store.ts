@@ -94,8 +94,6 @@ const createSocketStore = (initialState: ISocket) =>
       ...createConnectionsLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
       ...createRequestChangeStateSlice(set, get),
-
-      //   ...createPushActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
     };
   });

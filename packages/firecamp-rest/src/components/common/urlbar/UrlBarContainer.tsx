@@ -3,7 +3,7 @@ import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { IPushPayload, IRestStore, useRestStore } from '../../../store';
+import { IRestStore, useRestStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 
@@ -11,7 +11,7 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: IPushPayload, tabId: string) => {},
+  onSaveRequest = (pushAction: any, tabId: string) => {},
   platformContext,
   onPasteCurl = (curl: string) => {},
 }) => {
@@ -46,9 +46,6 @@ const UrlBarContainer = ({
       changeMethod: s.changeMethod,
       execute: s.execute,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-      setPushActionEmpty: s.setPushActionEmpty,
       preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
       preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
     }),

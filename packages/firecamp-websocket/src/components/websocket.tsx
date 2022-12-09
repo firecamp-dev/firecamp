@@ -61,7 +61,6 @@ const Websocket = ({
     setSelectedCollectionMessage,
     changePlaygroundTab,
     sendMessage,
-    setLast,
     setRequestSavedFlag,
     getMergedRequestByPullAction,
     setIsFetchingReqFlag,
@@ -82,7 +81,6 @@ const Websocket = ({
       changePlaygroundTab: s.changePlaygroundTab,
       sendMessage: s.sendMessage,
       connect: s.connect,
-      setLast: s.setLast,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
@@ -209,12 +207,7 @@ const Websocket = ({
       // console.log({ updatedRequest, mergedPullAndLastRequest });
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-      });
 
-  
       // const pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
@@ -683,16 +676,11 @@ const Websocket = ({
 
     platformContext.request.onSave(pushPayload, tabId);
 
-    let last = websocketStoreApi.getState().last,
-      request = websocketStoreApi.getState().request;
-
-    // set last value by pull action and request
-    setLast({
-      ...last,
-      request,
-      pushAction: {}, //emptyPushAction,
-    });
+    // let last = websocketStoreApi.getState().last,
+    // request = websocketStoreApi.getState().request;
   };
+
+  // set last value by pull action and request
 
   // if(isFetchingRequest === true) return <Loader />;
   console.log(tab, 'tab...');
