@@ -12,7 +12,7 @@ export interface IScriptRequest {
   method: EHttpMethod | string;
 
   /** request body */
-  body: IRestBody;
+  body?: IRestBody;
 
   /** add the new header or update the existing header */
   addHeader: (headerName: string, headerValue: string) => void;

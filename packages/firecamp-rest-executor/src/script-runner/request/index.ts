@@ -9,13 +9,13 @@ export class Request implements IScriptRequest {
   url: IUrl = { raw: '', pathParams: [], queryParams: [] };
   headers: IHeader[] = [];
   method: EHttpMethod | string;
-  body: IRestBody;
+  body?: IRestBody;
 
   constructor(request: IRest) {
     this.url = { ...this.url, ...request.url };
     this.headers = request.headers || [];
     this.method = request.method || EHttpMethod.GET;
-    this.body = request.body || {};
+    this.body = request?.body;
   }
 
   addHeader(headerName: string, headerValue: string): void {

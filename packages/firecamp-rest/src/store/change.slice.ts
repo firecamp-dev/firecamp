@@ -69,32 +69,6 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
             }
           });
           break;
-        /*case 'auth':
-          const { activeAuthType } = state.request.__meta;
-          if (
-            !equal(_request[key][activeAuthType], request[key][activeAuthType])
-          ) {
-            if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
-          } else {
-            _rcs.__root = _array.without(_rcs.__root, key);
-          }
-          break;*/
-        /*case 'body':
-          /**
-           * when body type will change, the change will already be made at __meta: ['activeBodyType] key
-           * so here just check the current activeBodyType of original and latest request's body
-           * when user update the request with new body the server will only save/replace with latest updated body type
-           *-/
-          const { activeBodyType } = state.request.__meta;
-          if (
-            !equal(_request[key][activeBodyType], request[key][activeBodyType])
-          ) {
-            if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
-          } else {
-            _rcs.__root = _array.without(_rcs.__root, key);
-          }
-          break;
-          */
       }
     }
     console.log(_rcs);

@@ -11,8 +11,6 @@ export enum EReqChangeRootKeys {
 export enum EReqChangeMetaKeys {
   name = 'name',
   description = 'description',
-  activeBodyType = 'activeBodyType',
-  activeAuthType = 'activeAuthType',
   inheritScripts = 'inheritScripts',
 }
 
