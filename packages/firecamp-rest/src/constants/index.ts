@@ -56,7 +56,7 @@ export const bodyTypesDDValues = {
       },
       {
         name: 'No Body',
-        id: 'noBody',
+        id: '',
         isEmpty: true,
       },
     ],

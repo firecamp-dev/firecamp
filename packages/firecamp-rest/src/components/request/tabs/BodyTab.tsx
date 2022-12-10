@@ -1,11 +1,8 @@
 import { FC, useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
-import { nanoid } from 'nanoid';
 import {
-  EKeyValueTableRowType,
   ERestBodyTypes,
-  IHeader,
 } from '@firecamp/types';
 import {
   Container,
@@ -31,83 +28,37 @@ import NoBodyTab from './body/NoBodyTab';
 
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
-import { IRestStore, useRestStore, useRestStoreApi } from '../../../store';
+import { useRestStore } from '../../../store';
 
 const BodyTab: FC<any> = () => {
-  const restStoreApi = useRestStoreApi();
-
   const {
     // request,
     body,
     changeBodyValue,
-    changeHeaders,
+    updateHeadersOnBodyTypeChange,
   } = useRestStore(
     (s: any) => ({
       // request: s.request,
       body: s.request.body,
       changeBodyValue: s.changeBodyValue,
       changeHeaders: s.changeHeaders,
+      updateHeadersOnBodyTypeChange: s.updateHeadersOnBodyTypeChange
     }),
     shallow
   );
+
+  console.log(body, "body...")
   
   //when user elect the body type from the dropdown, follow these
-  const _selectBodyType = (selectedType: any) => {
-    if (body.type == selectedType.id) return;
-    _updateHeadersByBodyType(selectedType.id);
+  const _selectBodyType = (selectedType: { id: ERestBodyTypes, [k: string]: string}) => {
+    if (body?.type == selectedType.id) return;
+    updateHeadersOnBodyTypeChange(selectedType.id);
   };
-
-  const _updateHeadersByBodyType = (type: ERestBodyTypes) => {
-    const state: Partial<IRestStore> = restStoreApi.getState();
-    const headers: IHeader[] = state?.request?.headers;
-    let contentType = '';
-    let updatedHeaders: IHeader[] = headers;
-
-    if (type == ERestBodyTypes.GraphQL) {
-      contentType = ERestBodyTypes.Json; //if graphql body,set header application/json
-    } else if (type == ERestBodyTypes.Text) {
-      contentType = `text/plain`;
-    } else if (type == ERestBodyTypes.Binary) {
-      contentType = `text/plain`;
-    } else {
-      contentType = type;
-    }
-
-    // TODO: check without method for array object
-    const headersWithoutContentType: IHeader[] = _array.without(
-      headers,
-      (h) => h?.key?.trim().toLowerCase() !== 'content-type'
-    ) as unknown as IHeader[];
-
-    if (!type) {
-      updatedHeaders = headersWithoutContentType;
-    } else if (contentType) {
-      const bodyHeader: IHeader = {
-        id: nanoid(),
-        key: 'Content-Type',
-        value: contentType,
-        type: EKeyValueTableRowType.Text,
-        disable: false,
-        description: '',
-      };
-
-      updatedHeaders = [...headersWithoutContentType, bodyHeader];
-    }
-    changeHeaders(updatedHeaders);
-  };
-
-  //flatten all nested options to the one level, so find operation can be perform easily if needed
-  /*   let flattenBodyTypeOptions = [];
-    (Object.values(bodyTypesDDValues) || []).map(b => {
-      flattenBodyTypeOptions = [...flattenBodyTypeOptions, ...b.options];
-    }); */
 
   /**
-   * purpose: Add '*' for non-empty body types (body having non-empty values) to indicate empty and non-empty body.
+   * purpose: add '*' for non-empty body types (body having non-empty values) to indicate empty and non-empty body.
    */
   const _prepareRestBodyTypesOptions = () => {
-    // console.log({body});
-
     const isEmptyAPIBody = isRestBodyEmpty(body || {});
     // console.log({ isEmptyAPIBody });
 
@@ -246,6 +197,7 @@ const BodyTypeDropDown: FC<any> = ({
 
   useEffect(() => {
     setOptions(fetchOptions());
+    console.log(fetchOptions(), "fetch options")
   }, []);
 
   /**
@@ -254,7 +206,6 @@ const BodyTypeDropDown: FC<any> = ({
   const _onToggleOpen = () => {
     const isDropdownOpen = !isOpen;
     toggle(isDropdownOpen);
-
     /**
      * If dropdown is toggled as open then and then only call parent (prop) function 'onToggle'.
      * Reason: Re-fetch dropdown options value on open only.
@@ -273,13 +224,13 @@ const BodyTypeDropDown: FC<any> = ({
     >
       <Dropdown.Handler>
         <Button
-          text={selectedOption || ''}
-          xs
+          text={selectedOption || 'No Body'}
           className="font-bold"
+          withCaret
+          transparent
+          ghost
+          xs
           primary
-          withCaret={true}
-          transparent={true}
-          ghost={true}
         />
       </Dropdown.Handler>
       <Dropdown.Options
