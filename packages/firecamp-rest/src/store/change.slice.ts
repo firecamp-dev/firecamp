@@ -1,4 +1,4 @@
-import { EAuthTypes, ERestBodyTypes, IRest } from '@firecamp/types';
+import { IRest } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
@@ -100,6 +100,7 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
           _ur.url = _object.pick(_request[key], _rcs[key]);
           break;
         case '__meta':
+          //@ts-ignore TODO: manage types here
           _ur.__meta = _object.pick(_request[key], _rcs[key]);
           break;
       }

@@ -50,7 +50,7 @@ const BodyTab: FC<any> = () => {
     }),
     shallow
   );
-
+  
   //when user elect the body type from the dropdown, follow these
   const _selectBodyType = (selectedType: any) => {
     if (body.type == selectedType.id) return;
@@ -134,7 +134,7 @@ const BodyTab: FC<any> = () => {
   };
 
   const _renderBodyTab = () => {
-    if (body.type) {
+    if (body?.type) {
       switch (body.type) {
         case '':
           return <NoBodyTab selectBodyType={_selectBodyType} />;
@@ -162,7 +162,7 @@ const BodyTab: FC<any> = () => {
           return (
             <Editor
               autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
-              value={body.value}
+              value={JSON.stringify(body.value)}
               language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
               onChange={({ target: { value } })=> _changeBodyValue(body.type, value)}
               controlsConfig={{ show: true }}
@@ -202,7 +202,7 @@ const BodyTab: FC<any> = () => {
         <StatusBar className="fc-statusbar">
           <StatusBar.PrimaryRegion>
             <BodyTypeDropDown
-              selectedOption={bodyTypeNames[body.type]}
+              selectedOption={bodyTypeNames[body?.type]}
               onSelect={(selected) => _selectBodyType(selected)}
               fetchOptions={() => _prepareRestBodyTypesOptions()}
             />

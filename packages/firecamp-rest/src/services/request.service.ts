@@ -202,7 +202,7 @@ export const normalizeRequest = (
 
   // normalize body
   if (!_object.isEmpty(body)) {
-    _nr.body = { value: body.value, type: body.type };
+    _nr.body = { value: body.value, type: body?.type };
   }
   // _nr.body = _object.isEmpty(body)
   //   ? _cloneDeep(bodyState)

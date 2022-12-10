@@ -56,8 +56,7 @@ export default (request: IRest): Request => {
   // transform request body
   if (
     !_object.isEmpty(request.body) &&
-    Object.values(ERestBodyTypes).includes(request?.body.type) &&
-    !request.body.type
+    Object.values(ERestBodyTypes).includes(request.body?.type)
   ) {
     switch (request.body.type) {
       case ERestBodyTypes.FormData:
