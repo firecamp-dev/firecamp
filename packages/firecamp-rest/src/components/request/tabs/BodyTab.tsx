@@ -1,9 +1,6 @@
 import { FC, useState, useEffect } from 'react';
-import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
-import {
-  ERestBodyTypes,
-} from '@firecamp/types';
+import { ERestBodyTypes } from '@firecamp/types';
 import {
   Container,
   Dropdown,
@@ -28,31 +25,34 @@ import NoBodyTab from './body/NoBodyTab';
 
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
-import { useRestStore } from '../../../store';
+import { IRestStore, useRestStore } from '../../../store';
 
 const BodyTab: FC<any> = () => {
   const {
     // request,
     body,
     changeBodyValue,
-    updateHeadersOnBodyTypeChange,
+    changeBodyType,
   } = useRestStore(
-    (s: any) => ({
+    (s: IRestStore) => ({
       // request: s.request,
       body: s.request.body,
       changeBodyValue: s.changeBodyValue,
-      changeHeaders: s.changeHeaders,
-      updateHeadersOnBodyTypeChange: s.updateHeadersOnBodyTypeChange
+      changeBodyType: s.changeBodyType,
+      changeHeaders: s.changeHeaders
     }),
     shallow
   );
 
-  console.log(body, "body...")
-  
+  console.log(body, 'body...');
+
   //when user elect the body type from the dropdown, follow these
-  const _selectBodyType = (selectedType: { id: ERestBodyTypes, [k: string]: string}) => {
+  const _selectBodyType = (selectedType: {
+    id: ERestBodyTypes;
+    [k: string]: string;
+  }) => {
     if (body?.type == selectedType.id) return;
-    updateHeadersOnBodyTypeChange(selectedType.id);
+    changeBodyType(selectedType.id);
   };
 
   /**
@@ -80,10 +80,6 @@ const BodyTab: FC<any> = () => {
     return updatedBodyTypes;
   };
 
-  const _changeBodyValue = (bodyType: string, value?: any, key = 'value') => {
-    changeBodyValue(bodyType, { key, value });
-  };
-
   const _renderBodyTab = () => {
     if (body?.type) {
       switch (body.type) {
@@ -92,7 +88,7 @@ const BodyTab: FC<any> = () => {
         case ERestBodyTypes.FormData:
           return (
             <MultipartTable
-              onChange={(value) => _changeBodyValue(body.type, value)}
+              onChange={changeBodyValue}
               rows={body.value || []}
             />
           );
@@ -101,7 +97,7 @@ const BodyTab: FC<any> = () => {
           return (
             <BasicTable
               title=""
-              onChange={(value) => _changeBodyValue(body.type, value)}
+              onChange={changeBodyValue}
               rows={body.value || []}
             />
           );
@@ -115,26 +111,16 @@ const BodyTab: FC<any> = () => {
               autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
               value={JSON.stringify(body.value)}
               language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
-              onChange={({ target: { value } })=> _changeBodyValue(body.type, value)}
+              onChange={({ target: { value } }) => changeBodyValue(value)}
               controlsConfig={{ show: true }}
             />
           );
           break;
         case ERestBodyTypes.Binary:
-          return (
-            <BinaryBody
-              body={body || {}}
-              onChange={_changeBodyValue}
-            />
-          );
+          return <BinaryBody body={body || {}} onChange={changeBodyValue} />;
           break;
         case ERestBodyTypes.GraphQL:
-          return (
-            <GraphQLBody
-              body={body || {}}
-              onChange={_changeBodyValue}
-            />
-          );
+          return <GraphQLBody body={body || {}} onChange={changeBodyValue} />;
           break;
         case '':
           return <NoBodyTab selectBodyType={_selectBodyType} />;
@@ -197,7 +183,7 @@ const BodyTypeDropDown: FC<any> = ({
 
   useEffect(() => {
     setOptions(fetchOptions());
-    console.log(fetchOptions(), "fetch options")
+    console.log(fetchOptions(), 'fetch options');
   }, []);
 
   /**

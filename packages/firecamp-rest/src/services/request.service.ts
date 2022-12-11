@@ -10,7 +10,6 @@ import {
   ERequestTypes,
   EKeyValueTableRowType,
   IUiAuth,
-  IKeyValueTable,
   EFirecampAgent,
   IAuth,
   TId,
@@ -27,7 +26,7 @@ import {
 import { isValidRow } from '@firecamp/utils/dist/table';
 import { IRestStoreState, IUiRequestPanel } from '../store';
 import { ERequestPanelTabs, IRestClientRequest } from '../types';
-import { configState, bodyState } from '../constants';
+import { configState, RuntimeBodies } from '../constants';
 import { IAuthHeader } from './auth/types';
 import { Auth } from '.';
 
@@ -202,11 +201,8 @@ export const normalizeRequest = (
 
   // normalize body
   if (!_object.isEmpty(body)) {
-    _nr.body = { value: body.value, type: body?.type };
+    _nr.body = { value: body.value, type: body.type };
   }
-  // _nr.body = _object.isEmpty(body)
-  //   ? _cloneDeep(bodyState)
-  //   : _object.mergeDeep(_cloneDeep(bodyState), body || {});
 
   // normalize scripts
   _nr.scripts = {
@@ -258,6 +254,7 @@ export const initialiseStoreFromRequest = (
       },
     },
     runtime: {
+      bodies: RuntimeBodies,
       authHeaders: [],
       inherit: {
         auth: {

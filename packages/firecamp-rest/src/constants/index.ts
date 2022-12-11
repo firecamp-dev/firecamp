@@ -64,29 +64,14 @@ export const bodyTypesDDValues = {
 };
 
 // empty body state
-export const bodyState = {
-  [ERestBodyTypes.FormData]: {
-    value: [],
-  },
-  [ERestBodyTypes.UrlEncoded]: {
-    value: [],
-  },
-  [ERestBodyTypes.GraphQL]: {
-    value: '',
-    variables: '',
-  },
-  [ERestBodyTypes.Json]: {
-    value: '',
-  },
-  [ERestBodyTypes.Xml]: {
-    value: '',
-  },
-  [ERestBodyTypes.Text]: {
-    value: '',
-  },
-  [ERestBodyTypes.Binary]: {
-    value: '',
-  },
+export const RuntimeBodies = {
+  [ERestBodyTypes.FormData]: [],
+  [ERestBodyTypes.UrlEncoded]: [],
+  [ERestBodyTypes.GraphQL]: { query: '', variables: '' },
+  [ERestBodyTypes.Json]: '',
+  [ERestBodyTypes.Xml]: '',
+  [ERestBodyTypes.Text]: '',
+  [ERestBodyTypes.Binary]: '',
 };
 
 // empty config state
