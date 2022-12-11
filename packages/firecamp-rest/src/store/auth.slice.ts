@@ -16,7 +16,7 @@ import { getAuthHeaders } from '../services/request.service';
 interface IAuthSlice {
   changeAuth: (type: EAuthTypes, updates: { key: string; value: any }) => void;
   resetAuthHeaders: (authType: EAuthTypes) => void;
-  updateActiveAuth: (authType: EAuthTypes) => void;
+  changeAuthType: (authType: EAuthTypes) => void;
   updateAuthValue: (
     authType: EAuthTypes,
     updates: { key: string; value: any }
@@ -74,11 +74,19 @@ const createAuthSlice = (set, get, initialAuth: IUiAuth) => ({
       console.log({ api: 'rest.getAuthHeaders', error });
     }
   },
-  updateActiveAuth: (authType: EAuthTypes) => {
-    if (!authType) return;
+  changeAuthType: (type: EAuthTypes) => {
+    if (!type) return;
     const state = get();
-    state.changeMeta({ activeAuthType: authType });
-    state.resetAuthHeaders(authType);
+    set((s)=> ({
+      request: {
+        ...s.request,
+        auth: {
+          ...s.request.auth,
+          type
+        }
+      }
+    }));
+    state.resetAuthHeaders(type);
   },
   updateAuthValue: (
     authType: EAuthTypes,

@@ -1,7 +1,7 @@
 import { FC, useState, useReducer, useEffect, Key } from 'react';
 import { Dropdown, Button, Input } from '@firecamp/ui-kit';
 import { EAuthTypes, IUiOAuth2 } from '@firecamp/types';
-import { typePayload } from './constants';
+import { authUiState } from './constants';
 
 const _setDirty = (
   state: any,
@@ -29,14 +29,14 @@ const OAuth2: FC<IOAuth2Comp> = ({
   oauth2LastToken = '',
   fetchTokenOnChangeOAuth2 = () => {},
 }) => {
-  let { activeGrantType, grantTypes } = auth;
-
-  const grantTypesOptions = typePayload[EAuthTypes.OAuth2]['grantTypes'];
+  const { OAuth2 } = EAuthTypes;
+  const { activeGrantType, grantTypes } = auth;
+  const grantTypesOptions = authUiState[OAuth2].grantTypes;
   const grantTypesPayloads =
-    typePayload[EAuthTypes.OAuth2]['grantTypesPayload'];
-  const inputList = grantTypesPayloads?.[activeGrantType]['inputList'];
+    authUiState[OAuth2].grantTypesPayload;
+  const inputList = grantTypesPayloads?.[activeGrantType].inputList;
   const advancedInputList =
-    grantTypesPayloads?.[activeGrantType]['advancedInputList'];
+    grantTypesPayloads?.[activeGrantType].advancedInputList;
 
   let isDirtyState = {};
   (inputList || []).map((e: { id: any }) => {
@@ -140,7 +140,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
       })}
       <label className="fc-form-field-group">
         Advanced
-        <span>(optional)</span>
+        <span>optional</span>
       </label>
       {advancedInputList.map((input: { name: string; id: string }, i: Key) => {
         return (
@@ -181,24 +181,17 @@ const OAuth2: FC<IOAuth2Comp> = ({
     </form>
   );
 };
-
 export default OAuth2;
 
 interface IOAuth2Comp {
   auth: IUiOAuth2;
 
-  /**
-   * Update auth value for auth tyoe OAuth2
-   */
+  /** update auth value for auth tyoe OAuth2 */
   onChangeOAuth2Value: (key: string, updates: any) => void;
 
-  /**
-   * OAuth2 previous/ last fetched token
-   */
+  /** OAuth2 previous/ last fetched token */
   oauth2LastToken: string;
 
-  /**
-   * Fetch OAuth2 token
-   */
+  /** fetch OAuth2 token */
   fetchTokenOnChangeOAuth2: (options: any) => void;
 }

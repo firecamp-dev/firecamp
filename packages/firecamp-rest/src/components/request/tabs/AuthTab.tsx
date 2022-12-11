@@ -8,27 +8,27 @@ import { IRestStore, useRestStore } from '../../../store';
 const AuthTab = () => {
 
   const {
-    auth,
-    activeAuthType,
+    auth= { value: '', type: ''},
+    runtimeAuths,
     oauth2LastFetchedToken,
     resetAuthHeaders,
     updateAuthValue,
-    updateActiveAuth,
+    changeAuthType
   } = useRestStore(
     (s: IRestStore) => ({
       auth: s.request.auth,
-      activeAuthType: s.request.__meta.activeAuthType,
+      runtimeAuths: s.runtime.auths,
       oauth2LastFetchedToken: s.runtime.oauth2LastFetchedToken,
-
       resetAuthHeaders: s.resetAuthHeaders,
       changeAuth: s.changeAuth,
-      updateActiveAuth: s.updateActiveAuth,
+      changeAuthType: s.changeAuthType,
       updateAuthValue: s.updateAuthValue,
     }),
     shallow
   );
 
-  //  console.log({ auth });
+   console.log({ auth });
+   const { value, type } = auth
 
   const _updateOAuth2 = (updated = '', payload: { key: any; value: any }) => {
     if (!payload) return;
@@ -64,10 +64,10 @@ const AuthTab = () => {
 
   return (
     <AuthSetting
-      auth={auth}
-      activeAuth={activeAuthType}
+      auth={runtimeAuths}
+      activeAuth={type}
       onChangeAuth={updateAuthValue}
-      onChangeActiveAuth={updateActiveAuth}
+      onChangeActiveAuth={changeAuthType}
       onChangeOAuth2Value={_updateOAuth2}
       fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
       fetchInheritedAuth={_onSelectInheritAuth}

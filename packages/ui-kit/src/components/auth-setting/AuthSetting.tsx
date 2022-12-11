@@ -1,9 +1,18 @@
 import { FC, useState, Fragment, useEffect, useReducer } from 'react';
 import _compact from 'lodash/compact';
 import equal from 'deep-equal';
+import { _misc, _object } from '@firecamp/utils';
+import { EFirecampAgent, EAuthTypes, IUiAuth } from '@firecamp/types';
+import {
+  AvailableOnElectron,
+  Notes,
+  Dropdown,
+  Button,
+  Container,
+} from '@firecamp/ui-kit';
 
 import {
-  Atlassion,
+  // Atlassion,
   Aws,
   Basic,
   Bearer,
@@ -16,24 +25,11 @@ import {
   NoAuth,
   Inherit,
 } from './index';
-
-import { typeList as authTypesList, typePayload } from './constants';
-import {
-  AvailableOnElectron,
-  Notes,
-  Dropdown,
-  Button,
-  
- 
-  Container,
-} from '@firecamp/ui-kit';
-
+import { authTypeList, authUiState } from './constants';
 import { IAuthSetting } from './interfaces/AuthSetting.interfaces';
-import { _misc, _object } from '@firecamp/utils';
-import { EFirecampAgent, EAuthTypes, IUiAuth } from '@firecamp/types';
 
 const AuthSetting: FC<IAuthSetting> = ({
-  auth = {},
+  auth,
   activeAuth = '',
   allowInherit = true,
   inheritAuthMessage = '',
@@ -45,41 +41,28 @@ const AuthSetting: FC<IAuthSetting> = ({
   fetchInheritedAuth = () => {},
   oauth2LastToken = '',
 }) => {
-  //TODO: undo code for HAWK
-  if (activeAuth === EAuthTypes.Hawk || !activeAuth) {
-    activeAuth = EAuthTypes.Inherit;
-  }
+  const _authTypeList = allowInherit
+    ? [...authTypeList]
+    : authTypeList.filter((a) => a.id !== EAuthTypes.Inherit);
 
-  let typeList = authTypesList || [];
-
-  if (!allowInherit) {
-    typeList = typeList.filter((a) => a.id !== EAuthTypes.Inherit);
-  }
-
-  /**
-   * To generate payload with auth types for which who's belongs to inpux box input
-   * @type {{}}
-   */
-  let auth_types_keys: any = {};
-  if (typePayload && Object.keys(typePayload).length) {
-    let k: any;
-    for (k in typePayload) {
-      let keys: any[] = [];
-      if (typePayload[k].inputList) {
-        typePayload[k].inputList.map((i: { id: any }) => {
-          keys.push(i.id || '');
-        });
-      }
-      if (typePayload[k].advancedInputList) {
-        typePayload[k].advancedInputList.map((i: { id: any }) => {
-          keys.push(i.id || '');
-        });
-      }
-      auth_types_keys = Object.assign({}, auth_types_keys, { [k]: keys });
+  /** to generate payload with auth types for which who's belongs to inpux box input */
+  const authTypesKeys: any = {};
+  for (let k in authUiState) {
+    let keys: any[] = [];
+    if (authUiState[k].inputList) {
+      authUiState[k].inputList.map((i: { id: any }) => {
+        keys.push(i.id || '');
+      });
     }
+    if (authUiState[k].advancedInputList) {
+      authUiState[k].advancedInputList.map((i: { id: any }) => {
+        keys.push(i.id || '');
+      });
+    }
+    authTypesKeys = Object.assign({}, authTypesKeys, { [k]: keys });
   }
 
-  let reducer = (
+  const reducer = (
     state: { isAuthTypesDDOpen: any; activeAuthType: any; authTypes: any },
     action: { type: any; value: any }
   ) => {
@@ -90,7 +73,6 @@ const AuthSetting: FC<IAuthSetting> = ({
           isAuthTypesDDOpen: !state.isAuthTypesDDOpen,
         };
         break;
-
       case 'setActiveAuthType':
         if (action.value !== state.activeAuthType) {
           return {
@@ -109,13 +91,12 @@ const AuthSetting: FC<IAuthSetting> = ({
     }
   };
 
-  let _isAPIAuthEmpty = (authObj: { [x: string]: any }) => {
+  const _isApiAuthEmpty = (authObj: { [x: string]: any }) => {
     if (!authObj) return;
     let authPayload = {},
-      key: string,
       isAuthEmpty = true;
 
-    for (key in authObj) {
+    for (let key in authObj) {
       let isKeyEmpty = true;
       if (key !== EAuthTypes.OAuth2) {
         let i: any,
@@ -124,8 +105,8 @@ const AuthSetting: FC<IAuthSetting> = ({
         for (i in authObj[key]) {
           //Check for those keys which is having Inputbox
           if (
-            auth_types_keys[key] &&
-            auth_types_keys[key].includes(i) &&
+            authTypesKeys[key] &&
+            authTypesKeys[key].includes(i) &&
             authObj[key][i] &&
             authObj[key][i].length
           ) {
@@ -161,22 +142,22 @@ const AuthSetting: FC<IAuthSetting> = ({
       : Object.assign(authPayload, { isEmpty: false });
   };
 
-  let _generateAuthTypesDD = (authPayload: IUiAuth) => {
-    let isEmptyAPIAuth = _isAPIAuthEmpty(authPayload || {});
-    let authTypes = _compact(
-      typeList.map((type, i) => {
+  const _generateAuthTypesDD = (authPayload: IUiAuth) => {
+    const isEmptyApiAuth = _isApiAuthEmpty(authPayload || {});
+    const authTypes = _compact(
+      _authTypeList.map((type, i) => {
         if (type.enable) {
           return _object.omit(type, ['enable']);
         }
       })
     );
-    let authTypesPayload = authTypes.map((v: any, k) => {
+    const authTypesPayload = authTypes.map((v: any, k) => {
       if (v.id !== EAuthTypes.Hawk) {
-        let isEmpty = isEmptyAPIAuth[v.id] as Boolean;
+        const isEmpty = isEmptyApiAuth[v.id] as Boolean;
         return Object.assign(v, {
           isEmpty:
             v.id !== EAuthTypes.NoAuth
-              ? Object.keys(isEmptyAPIAuth).includes(v.id)
+              ? Object.keys(isEmptyApiAuth).includes(v.id)
                 ? isEmpty
                 : true
               : true,
@@ -189,23 +170,22 @@ const AuthSetting: FC<IAuthSetting> = ({
     return authTypesPayload;
   };
 
-  let initialState = {
+  const initialState = {
     isAuthTypesDDOpen: false,
-    activeAuthType: typeList.find((type) => type.id === activeAuth),
+    activeAuthType: _authTypeList.find((type) => type.id === activeAuth),
     authTypes: _generateAuthTypesDD(auth),
   };
 
-  let [state, setState] = useReducer(reducer, initialState);
-  let [inheitedAuth, setInheitedAuth] = useState({ parent_name: '' });
-
-  let { isAuthTypesDDOpen, activeAuthType, authTypes } = state;
+  const [state, setState] = useReducer(reducer, initialState);
+  const [inheitedAuth, setInheitedAuth] = useState({ parentName: '' });
+  const { isAuthTypesDDOpen, activeAuthType, authTypes } = state;
 
   useEffect(() => {
     setState({
       type: 'setActiveAuthType',
-      value: typeList.find((type) => type.id === activeAuth),
+      value: _authTypeList.find((type) => type.id === activeAuth),
     });
-    let _fetchInherit = async () => {
+    const _fetchInherit = async () => {
       if (activeAuth === EAuthTypes.Inherit) {
         let inherited = await fetchInheritedAuth();
         if (inherited && inherited !== inheitedAuth) {
@@ -213,12 +193,11 @@ const AuthSetting: FC<IAuthSetting> = ({
         }
       }
     };
-
     _fetchInherit();
   }, [activeAuth]);
 
   useEffect(() => {
-    let updatedAuthTypes = _generateAuthTypesDD(auth);
+    const updatedAuthTypes = _generateAuthTypesDD(auth);
     if (!equal(updatedAuthTypes, authTypes)) {
       setState({
         type: 'authTypes',
@@ -227,10 +206,9 @@ const AuthSetting: FC<IAuthSetting> = ({
     }
   }, [auth]);
 
-  let _onchangeActiveAuth = async (authType: EAuthTypes) => {
+  const _onchangeActiveAuth = async (authType: EAuthTypes) => {
     try {
-      let authData = await onChangeActiveAuth(authType);
-
+      const authData = await onChangeActiveAuth(authType);
       if (
         authData &&
         authType === EAuthTypes.Inherit &&
@@ -243,13 +221,13 @@ const AuthSetting: FC<IAuthSetting> = ({
     }
   };
 
-  let _renderTabBody = () => {
+  const _renderTabBody = () => {
     switch (activeAuth || EAuthTypes.Inherit) {
       case EAuthTypes.NoAuth:
         return (
           <NoAuth
             onChangeActiveAuth={_onchangeActiveAuth}
-            typeList={typeList}
+            authTypeList={_authTypeList}
           />
         );
         break;
@@ -319,7 +297,7 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
         return (
           <Inherit
             openParentAuthModal={openParentAuthModal}
-            parentName={inheitedAuth?.parent_name || ''}
+            parentName={inheitedAuth?.parentName || ''}
             message={inheritAuthMessage}
           />
         );
@@ -328,29 +306,28 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
         return allowInherit ? (
           <Inherit
             openParentAuthModal={openParentAuthModal}
-            parentName={inheitedAuth?.parent_name || ''}
+            parentName={inheitedAuth?.parentName || ''}
             message={inheritAuthMessage}
           />
         ) : (
           <NoAuth
             onChangeActiveAuth={_onchangeActiveAuth}
-            typeList={typeList}
+            authTypeList={_authTypeList}
           />
         );
         break;
     }
   };
 
-  let _onToggleAuthTypesDD = () => {
+  const _onToggleAuthTypesDD = () => {
     setState({
       type: 'toggleAuthTypesDD',
       value: !state.isAuthTypesDDOpen,
     });
   };
 
-  let _onSelectAuthType = (element: { id: EAuthTypes }) => {
+  const _onSelectAuthType = (element: { id: EAuthTypes }) => {
     if (!element || !element.id) return;
-
     setState({ type: 'setActiveAuthType', value: element });
     _onchangeActiveAuth(element.id);
   };
@@ -368,12 +345,12 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
             <Dropdown.Handler>
               <Button
                 text={activeAuthType?.name || ''}
-                xs
                 className="font-bold"
-                ghost={true}
-                transparent={true}
-                withCaret={true}
+                ghost
+                transparent
+                withCaret
                 primary
+                xs
               />
             </Dropdown.Handler>
             <Dropdown.Options

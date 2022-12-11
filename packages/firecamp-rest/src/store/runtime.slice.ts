@@ -1,8 +1,10 @@
 import { IHeader, IRestScripts, IAuth, TId } from '@firecamp/types';
+import { _auth } from '@firecamp/utils';
 import { RuntimeBodies } from '../constants';
 
 interface IRuntime {
   bodies: typeof RuntimeBodies;
+  auths: typeof _auth.defaultAuthState;
   authHeaders?: IHeader[];
   inherit?: {
     auth: {

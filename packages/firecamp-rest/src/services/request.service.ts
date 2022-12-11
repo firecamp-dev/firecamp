@@ -169,11 +169,6 @@ export const normalizeRequest = (
   //normalize method
   _nr.method = EHttpMethod[method.toUpperCase()] ? method : EHttpMethod.GET;
 
-  // normalize auth
-  _nr.auth = !_object.isEmpty(auth)
-    ? (_auth.normalizeToUi(auth) as IUiAuth)
-    : _cloneDeep(_auth.defaultAuthState);
-
   // normalize headers
   _nr.headers = !headers || _array.isEmpty(headers) ? [] : headers;
   _nr.headers = _nr.headers.filter((h) => {
@@ -190,8 +185,7 @@ export const normalizeRequest = (
     : _object.mergeDeep(_cloneDeep(configState), config);
   Object.keys(_nr.config).map((key) => {
     // remove extra keys if exists config values
-    if (!configState.hasOwnProperty(key)) {
-      delete _nr.config[key];
+    if (!configState.hasOwnProperty(key)) {      delete _nr.config[key];
       return;
     }
     if (typeof _nr.config[key] !== typeof configState[key]) {
@@ -203,6 +197,14 @@ export const normalizeRequest = (
   if (!_object.isEmpty(body)) {
     _nr.body = { value: body.value, type: body.type };
   }
+
+  // normalize auth
+  if (!_object.isEmpty(auth)) {
+    _nr.auth = { value: auth.value, type: auth.type };
+  }
+  // _nr.auth = !_object.isEmpty(auth)
+  //   ? (_auth.normalizeToUi(auth) as IUiAuth)
+  //   : _cloneDeep(_auth.defaultAuthState);
 
   // normalize scripts
   _nr.scripts = {
@@ -255,6 +257,7 @@ export const initialiseStoreFromRequest = (
     },
     runtime: {
       bodies: RuntimeBodies,
+      auths: _auth.defaultAuthState,
       authHeaders: [],
       inherit: {
         auth: {
