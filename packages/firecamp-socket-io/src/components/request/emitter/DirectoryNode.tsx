@@ -17,7 +17,7 @@ const DirectoryNode = ({
 }) => {
   // console.log(item, "item directory")
   let _onDelete = () => {
-    if (!item._meta.id) return;
+    if (!item.__ref.id) return;
     onDelete(item._toJSON());
   };
 
@@ -72,7 +72,7 @@ const DirectoryNode = ({
             />
 
             <ConfirmationPopover
-              id={item._meta.id}
+              id={item.__ref.id}
               handler={<div className="iconv2-delete-v2-icon" />}
               title={`Are you sure to remove ${item.name || ''}?`}
               _meta={{

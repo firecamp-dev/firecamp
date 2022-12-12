@@ -107,7 +107,7 @@ const SaveForm: FC<ISaveForm> = ({
   meta = {
     formTitle: 'Socket Details',
     namePlaceholder: 'socket name',
-    descPlaceholder: 'socket description(optional)',
+    descPlaceholder: 'socket description (optional)',
   },
 }) => {
   let [state, setState] = useState({
@@ -354,7 +354,7 @@ const PathSelector: FC<{ onSelect: (_: any) => void }> = ({ onSelect }) => {
           canRename={false}
           canReorderItems={false}
           canDragAndDrop={false}
-          canDropOnItemWithChildren={false}
+          canDropOnFolder={false}
           keyboardBindings={{
             // primaryAction: ['f3'],
             renameItem: ['enter', 'f2'],

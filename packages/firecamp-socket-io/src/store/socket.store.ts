@@ -1,6 +1,6 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
-import { ISocketIO } from '@firecamp/types';
+import { ISocketIO, TId } from '@firecamp/types';
 
 import {
   // request
@@ -28,10 +28,11 @@ import {
   IConnectionsLogs,
   createConnectionsLogsSlice,
 
-  // push actions
-  IPushAction,
-  IPushActionSlice,
-  createPushActionSlice,
+  // req changes
+  IRequestChangeStateSlice,
+  createRequestChangeStateSlice,
+
+  // execute slice
   IHandleConnectionExecutorSlice,
   createHandleConnectionExecutor,
 
@@ -41,7 +42,7 @@ import {
   createUiSlice,
 } from './slices';
 import { _object } from '@firecamp/utils';
-import { initialiseStoreFromRequest } from '../services/request.service'
+import { initialiseStoreFromRequest } from '../services/request.service';
 
 const {
   Provider: SocketStoreProvider,
@@ -52,7 +53,6 @@ const {
 interface ISocket {
   request?: ISocketIO;
   collection?: ICollection;
-  pushAction?: IPushAction;
   runtime?: IRuntime;
   playgrounds?: IPlaygrounds;
   connectionsLogs?: IConnectionsLogs;
@@ -65,28 +65,19 @@ interface ISocketStore
     ICollectionSlice,
     IPlaygroundSlice,
     IConnectionsLogsSlice,
-    IPushActionSlice,
     IHandleConnectionExecutorSlice,
-    IUiSlice {
-  last: any;
+    IUiSlice,
+    IRequestChangeStateSlice {
+  originalRequest?: ISocketIO;
 
-  setLast: (initialState: ISocket) => void;
-  initialise: (request: Partial<ISocketIO>) => void;
+  initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
 }
 
 const createSocketStore = (initialState: ISocket) =>
   create<ISocketStore>((set, get): ISocketStore => {
     return {
-      last: initialState,
-      setLast: (initialState: ISocket) => {
-        set((s) => ({
-          ...s,
-          last: initialState,
-        }));
-      },
-
-      initialise: async (request: Partial<ISocketIO>) => {
-        const initState = initialiseStoreFromRequest(request);
+      initialise: async (request: Partial<ISocketIO>, tabId: TId) => {
+        const initState = initialiseStoreFromRequest(request, tabId);
         set((s) => ({
           ...s,
           ...initState,
@@ -97,15 +88,12 @@ const createSocketStore = (initialState: ISocket) =>
         get,
         _object.pick(initialState.request, requestSliceKeys) as ISocketIO
       ),
-
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
       ...createConnectionsLogsSlice(set, get),
-      ...createPushActionSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
-
-      //   ...createPushActionSlice(set, get),
+      ...createRequestChangeStateSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
     };
   });

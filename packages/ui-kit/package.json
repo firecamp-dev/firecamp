@@ -83,7 +83,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@firecamp/types": "^0.0.19",
+    "@firecamp/types": "^0.1.2",
     "@monaco-editor/react": "4.4.5",
     "@radix-ui/react-toast": "^1.0.0",
     "@szhsin/react-menu": "^2.3.2",
@@ -100,7 +100,7 @@
     "prettify-xml": "^1.2.0",
     "re-resizable": "^6.9.9",
     "react-codemirror2": "^7.2.1",
-    "react-complex-tree": "^1.1.11",
+    "react-complex-tree": "^2.0.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-full-screen": "^0.3.1-0",
     "react-hook-form": "^6.8.1",

@@ -1,9 +1,9 @@
 import { useState, memo } from 'react';
-import { Container, Column } from '@firecamp/ui-kit';
+import { Column } from '@firecamp/ui-kit';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
-import { PANEL } from '../../../constants';
 
 import ResponseBody from './ResponseBody';
+import { EPanel } from '../../../types'
 
 const Response = ({
   visiblePanel = '',
@@ -15,10 +15,10 @@ const Response = ({
 
   const _setVisiblePanel = (e) => {
     if (e) e.preventDefault;
-    if (visiblePanel === PANEL.RESPONSE) {
-      setVisiblePanel(PANEL.ALL);
+    if (visiblePanel === EPanel.Response) {
+      setVisiblePanel(EPanel.All);
     } else {
-      setVisiblePanel(PANEL.RESPONSE);
+      setVisiblePanel(EPanel.Response);
     }
   };
 

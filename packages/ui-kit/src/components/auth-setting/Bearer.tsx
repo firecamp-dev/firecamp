@@ -1,19 +1,18 @@
 import { FC, useReducer } from 'react';
-
-
 import { Input } from '@firecamp/ui-kit';
-import { typePayload } from './constants';
 import { IAuthBearer, EAuthTypes } from '@firecamp/types'
+import { authUiState } from './constants';
 
-const Bearer: FC<IBearer> = ({ auth = {}, onChange = () => {} }) => {
-  const inputList = typePayload[EAuthTypes.Bearer]['inputList'];
+const Bearer: FC<IBearer> = ({ auth, onChange = () => {} }) => {
+  const { Bearer} = EAuthTypes;
+  const inputList = authUiState[Bearer]['inputList'];
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
     isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
   });
 
-  let _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
+  const _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
     switch (action.type) {
       case 'setDirty':
         return {
@@ -23,15 +22,15 @@ const Bearer: FC<IBearer> = ({ auth = {}, onChange = () => {} }) => {
     }
   };
 
-  let [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
 
-  let _handleChange = (e: any, id: string) => {
+  const _handleChange = (e: any, id: string) => {
     e.preventDefault();
-    let value = e.target.value;
-    onChange(EAuthTypes.Bearer, { key: id, value });
+    const value = e.target.value;
+    onChange(Bearer, { key: id, value });
   };
 
-  let _handleSubmit = (e: { preventDefault: () => any; }) => {
+  const _handleSubmit = (e: { preventDefault: () => any; }) => {
     e && e.preventDefault();
   };
 

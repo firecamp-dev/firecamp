@@ -1,21 +1,18 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import create from 'zustand';
 import createContext from 'zustand/context';
-import { IRest, IRestResponse } from '@firecamp/types';
+import { IRest, IRestResponse, TId } from '@firecamp/types';
 import ScriptService from '../services/scripts/index';
 import {
   prepareUIRequestPanelState,
   normalizeVariables,
   normalizeSendRequestPayload,
   initialiseStoreFromRequest,
-} from '../services/request-service';
+} from '../services/request.service';
 import {
   IRequestSlice,
   createRequestSlice,
   requestSliceKeys,
-  IPushActionSlice,
-  IPushAction,
-  createPushActionSlice,
   createRuntimeSlice,
   IRuntime,
   IRuntimeSlice,
@@ -49,17 +46,13 @@ type TOnChangeVariables = ({
 
 interface IRestStore
   extends IRequestSlice,
-    IPushActionSlice,
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IPullSlice {
-  last: any;
+    IPullSlice,
+    IRequestChangeStateSlice {
   originalRequest?: IRest;
-
-  setLast: (initialState: IRestStoreState) => void;
-  initialise: (request: IRest) => void;
-
+  initialise: (request: IRest, tabId: TId) => void;
   context?: any;
   setContext: (ctx: any) => void;
   execute(
@@ -75,7 +68,6 @@ interface IRestStore
 
 interface IRestStoreState {
   request?: IRestClientRequest;
-  pushAction?: IPushAction;
   runtime?: IRuntime;
   response?: IRestResponse;
   ui?: IUi;
@@ -83,21 +75,11 @@ interface IRestStoreState {
 
 const createRestStore = (initialState: IRestStoreState) =>
   create<IRestStore>((set, get): IRestStore => {
-    let uiRequestPanel = prepareUIRequestPanelState(initialState.request);
-
+    const uiRequestPanel = prepareUIRequestPanelState(initialState.request);
     return {
-      last: initialState,
-
-      setLast: (initialState: IRestStoreState) => {
-        set((s) => ({
-          ...s,
-          last: initialState,
-        }));
-      },
-
-      initialise: (request: Partial<IRest>) => {
+      initialise: (request: Partial<IRest>, tabId: TId) => {
         const state = get();
-        const initState = initialiseStoreFromRequest(request);
+        const initState = initialiseStoreFromRequest(request, tabId);
         console.log(initState, 'initState');
         set((s) => ({
           ...s,
@@ -106,11 +88,9 @@ const createRestStore = (initialState: IRestStoreState) =>
           originalRequest: _cloneDeep(initState.request) as IRest,
         }));
         // update auth type, generate auth headers
-        state.updateActiveAuth(request.__meta.activeAuthType);
+        state.changeAuthType(request.auth?.type);
       },
-
       setContext: (ctx: any) => set({ context: ctx }),
-
       ...createRequestSlice(
         set,
         get,
@@ -120,7 +100,6 @@ const createRestStore = (initialState: IRestStoreState) =>
         ) as IRestClientRequest
       ),
       ...createRuntimeSlice(set, get, initialState.runtime),
-      ...createPushActionSlice(set, get),
       ...createResponseSlice(set, get),
       ...createUiSlice(set, get, {
         ...initialState.ui,
@@ -143,31 +122,26 @@ const createRestStore = (initialState: IRestStoreState) =>
       ) => {
         try {
           // set response empty
-          set((s) => ({
-            response: { statusCode: 0 },
-          }));
+          set({ response: { statusCode: 0 } });
 
-          let state = get();
+          const state = get();
           let request: Omit<IRestClientRequest, 'auth'> = _cloneDeep(
             state.request
-          ); //todo: discuss this type
+          ); //todo: discuss/review this type
           // console.log({ request, variables, fcAgent });
 
           // Check if request is running or not. stop running request if already true
-          if (get().runtime.isRequestRunning === true) {
+          if (state.runtime.isRequestRunning === true) {
             await state.context.request.cancelExecution(
               request.__ref.id,
               fcAgent
             );
-
             // set request running state as false
-            get().setRequestRunningFlag(false);
-
+            state.setRequestRunningFlag(false);
             return;
           }
-
-          get().setRequestRunningFlag(true);
-
+          state.setRequestRunningFlag(true);
+          
           let preScriptResponse: any = {};
           let postScriptResponse: any = {};
           let testScriptResponse: any = {};

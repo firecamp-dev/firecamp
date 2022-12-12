@@ -15,9 +15,7 @@ const CloseConnection = ({
     isStatusDirty: false,
     hasValidStatus: false,
   });
-
   const [isOpen, toggleOpen] = useState(false);
-
   const { status, reason, isStatusDirty, hasValidStatus } = state;
 
   const _handleInputChange = (e) => {

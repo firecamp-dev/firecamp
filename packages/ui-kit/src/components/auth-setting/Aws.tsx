@@ -1,18 +1,19 @@
 import { FC, useReducer } from 'react';
 import { Input } from '@firecamp/ui-kit';
-import { typePayload } from './constants';
 import { IAuthAws4, EAuthTypes } from '@firecamp/types'
+import { authUiState } from './constants';
 
 const Aws: FC<IAws> = ({ auth , onChange = () => { } }) => {
-  const inputList = typePayload[EAuthTypes.Aws4]['inputList'];
-  const advancedInputList = typePayload[EAuthTypes.Aws4]['advancedInputList'];
+  const { Aws4 } = EAuthTypes;
+  const inputList = authUiState[Aws4].inputList;
+  const advancedInputList = authUiState[Aws4].advancedInputList;
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
     isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
   });
 
-  let _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
+  const _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
     switch (action.type) {
       case 'setDirty':
         return {
@@ -22,18 +23,18 @@ const Aws: FC<IAws> = ({ auth , onChange = () => { } }) => {
     }
   };
 
-  let [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
 
-  let _handleChange = (e: any, id: string) => {
+  const _handleChange = (e: any, id: string) => {
     e.preventDefault();
-    let value = e.target.value;
+    const value = e.target.value;
     if (((inputList || []).map((e) => e.id) || []).includes(id)) {
       setIsDirty({ type: 'setDirty', element: id, value: true });
     }
-    onChange(EAuthTypes.Aws4, { key: id, value });
+    onChange(Aws4, { key: id, value });
   };
 
-  let _handleSubmit = (e: { preventDefault: () => any; }) => {
+  const _handleSubmit = (e: { preventDefault: () => any; }) => {
     e && e.preventDefault();
   };
 
@@ -73,7 +74,7 @@ const Aws: FC<IAws> = ({ auth , onChange = () => { } }) => {
     })}
     <label className="fc-form-field-group">
       Advanced
-      <span>(optional)</span>
+      <span>optional</span>
     </label>
     {(advancedInputList || []).map((input, i) => {
       return (

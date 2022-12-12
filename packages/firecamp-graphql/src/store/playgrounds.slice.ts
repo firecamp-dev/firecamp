@@ -12,9 +12,9 @@ import {
 } from '../services/GraphQLservice';
 
 export interface IPlaygroundRequest
-  extends Omit<IGraphQLPlayground, '_meta' | 'meta'> {
-  _meta?: any;
-  meta?: any;
+  extends Omit<IGraphQLPlayground, '__ref' | '__meta'> {
+  __ref?: any;
+  __meta?: any;
 }
 export interface IPlayground {
   lastRequest?: IPlaygroundRequest;
@@ -47,10 +47,10 @@ export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
       'playground-1': {
         lastRequest: null,
         request: {
-          _meta: { id: 'playground-1' },
+          __ref: { id: 'playground-1' },
           body: 'query MyQuery {\n  __typename\n}',
           // body: '{\n  __typename\n  company {\n    ceo\n    coo\n    cto\n    cto_propulsion\n    employees\n  }\n}\n',
-          meta: {
+          __meta: {
             type: EGraphQLOperationType.Query,
             variables: `{ "key": "value" }`,
           },
@@ -71,8 +71,8 @@ export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
       const plg = {
         name,
         body: 'query MyQuery {\n  __typename\n}',
-        meta: { type: EGraphQLOperationType.Query, variables: `{ }` },
-        _meta: { id: playgroundId },
+        __meta: { type: EGraphQLOperationType.Query, variables: `{ }` },
+        __ref: { id: playgroundId },
       };
 
       return {
@@ -99,19 +99,19 @@ export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
     });
   },
 
-  // open saved playgrund in tab
+  // open saved playground in tab
   openPlayground: (plg: IGraphQLPlayground) => {
     // If variables is table like array from old version then convert then in JSON string
-    if (Array.isArray(plg.meta?.variables)) {
-      const variables = plg.meta?.variables.reduce((p, n) => {
+    if (Array.isArray(plg.__meta?.variables)) {
+      const variables = plg.__meta?.variables.reduce((p, n) => {
         p[n.key] = n.value;
         return p;
       }, {});
-      plg.meta.variables = JSON.stringify(variables, null, 4);
+      plg.__meta.variables = JSON.stringify(variables, null, 4);
     }
 
     set((s) => {
-      const pId = plg._meta.id;
+      const pId = plg.__ref.id;
       const plgExits = !!s.playgrounds[pId];
       const playgrounds = plgExits
         ? s.playgrounds
@@ -228,7 +228,7 @@ export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
     set((s) => {
       const plg = s.playgrounds[playgroundId];
       let hasChange = false;
-      if (plg.lastRequest?.meta.variables != variables) hasChange = true;
+      if (plg.lastRequest?.__meta.variables != variables) hasChange = true;
 
       return {
         playgrounds: {
@@ -237,8 +237,8 @@ export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
             ...plg,
             request: {
               ...plg.request,
-              meta: {
-                ...plg.request.meta,
+              __meta: {
+                ...plg.request.__meta,
                 variables,
               },
             },

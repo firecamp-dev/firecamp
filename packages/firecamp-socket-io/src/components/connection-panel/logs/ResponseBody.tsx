@@ -6,14 +6,12 @@ import {
   Row,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-
 import LogTable from './log-table/LogTable';
 import Listeners from './listeners/Listeners';
-
 import { ISocketStore, useSocketStore } from '../../../store';
 
 const ResponseBody = ({ eventsList = [] }) => {
-  let { socketId, activePlayground, clearAllConnectionLogs } = useSocketStore(
+  const { socketId, activePlayground, clearAllConnectionLogs } = useSocketStore(
     (s: ISocketStore) => ({
       socketId: s.playgrounds[s.runtime.activePlayground]?.socketId,
       activePlayground: s.runtime.activePlayground,

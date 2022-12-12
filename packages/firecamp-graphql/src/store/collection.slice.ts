@@ -9,8 +9,8 @@ import {
 interface ICollection {
   isProgressing?: boolean;
   tdpInstance?: any;
-  items?: Array<Partial<IGraphQLPlayground & { _meta: { is_item?: boolean } }>>;
-  folders?: Array<Partial<IRequestFolder & { _meta: { is_folder?: boolean } }>>;
+  items?: Array<Partial<IGraphQLPlayground & { __ref: { isItem?: boolean } }>>;
+  folders?: Array<Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>>;
 }
 
 interface ICollectionSlice {
@@ -78,13 +78,13 @@ const createCollectionSlice = (
   deleteItem: async (id: TId) => {
     const state = get();
     // console.log(state)
-    if (!state.request?._meta.id) return;
+    if (!state.request?.__ref.id) return;
     state.toggleProgressBar(true);
     const res = await Rest.request
-      .deleteItem(state.request._meta.id, id)
+      .deleteItem(state.request.__ref.id, id)
       .then((r) => {
         set((s) => {
-          const items = s.collection.items.filter((i) => i._meta.id != id);
+          const items = s.collection.items.filter((i) => i.__ref.id != id);
           s.collection.tdpInstance?.deleteItem(id);
           return {
             collection: { ...s.collection, items },
@@ -117,25 +117,25 @@ const createCollectionSlice = (
     const state = get();
     // console.log(state)
     if (!name) return;
-    if (!state.request?._meta.id) return;
+    if (!state.request?.__ref.id) return;
     const plg = state.playgrounds[state.runtime.activePlayground];
 
     const item = {
       name,
       body: plg.request.body,
-      meta: plg.request.meta,
-      _meta: {
-        request_id: state.request._meta.id,
-        request_type: ERequestTypes.GraphQL,
-        collection_id: state.request._meta.collection_id,
+      __meta: plg.request.__meta,
+      __ref: {
+        requestId: state.request.__ref.id,
+        requestType: ERequestTypes.GraphQL,
+        collectionId: state.request.__ref.collectionId,
       },
     };
 
     state.toggleProgressBar(true);
     const res = await Rest.request
-      .createItem(state.request._meta.id, item)
+      .createItem(state.request.__ref.id, item)
       .then((r) => {
-        const playgroundId = r.data._meta.id;
+        const playgroundId = r.data.__ref.id;
         set((s) => {
           console.log(r.data);
           const items = [...s.collection.items, r.data];
@@ -193,35 +193,34 @@ const createCollectionSlice = (
 
   updateItem: async (updateOnlyName?: boolean) => {
     const state = get();
-    if (!state.request?._meta.id) return;
+    if (!state.request?.__ref.id) return;
     const playgroundId = state.runtime.activePlayground;
     const plg = state.playgrounds[playgroundId];
 
     const item = {
-      _meta: {
-        id: plg.request._meta.id,
-        request_id: state.request._meta.id,
-        collection_id: state.request._meta.collection_id,
+      __ref: {
+        id: plg.request.__ref.id,
+        requestId: state.request.__ref.id,
+        collectionId: state.request.__ref.collectionId,
       },
     };
-    if(updateOnlyName) {
+    if (updateOnlyName) {
       //@ts-ignore
-      item.name = plg.request.name
-    }
-    else {
+      item.name = plg.request.name;
+    } else {
       //@ts-ignore
-      item.body= plg.request.body;
+      item.body = plg.request.body;
       //@ts-ignore
-      item.meta= plg.request.meta;
+      item.__meta = plg.request.__meta;
     }
 
     state.toggleProgressBar(true);
     const res = await Rest.request
-      .updateItem(item._meta.request_id, item._meta.id, item)
+      .updateItem(item.__ref.requestId, item.__ref.id, item)
       .then((r) => {
         set((s) => {
           const items = s.collection.items.map((i) => {
-            if (i._meta.id == r.data._meta.id) return { ...i, ...r.data };
+            if (i.__ref.id == r.data.__ref.id) return { ...i, ...r.data };
             return i;
           });
           s.collection.tdpInstance?.updateItem(r.data);
@@ -252,7 +251,7 @@ const createCollectionSlice = (
         state.context.appService.notify.success(
           updateOnlyName
             ? 'The playground name has been changed successfully'
-              : 'The playground has been updated successfully'
+            : 'The playground has been updated successfully'
         );
       })
       .catch((e) => {

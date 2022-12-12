@@ -1,7 +1,11 @@
 import { IHeader, IRestScripts, IAuth, TId } from '@firecamp/types';
+import { _auth } from '@firecamp/utils';
+import { RuntimeBodies } from '../constants';
 
 interface IRuntime {
-  authHeaders?: Array<IHeader>;
+  bodies: typeof RuntimeBodies;
+  auths: typeof _auth.defaultAuthState;
+  authHeaders?: IHeader[];
   inherit?: {
     auth: {
       active: string;
@@ -17,6 +21,7 @@ interface IRuntime {
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
   oauth2LastFetchedToken: string;
+  tabId: TId;
 }
 
 interface IRuntimeSlice {
@@ -72,7 +77,6 @@ const createRuntimeSlice = (
       headers: headersLength,
     };
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         authHeaders,
@@ -88,7 +92,6 @@ const createRuntimeSlice = (
   },
   changeInherit: (key: string, value: any) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         inherit: {
@@ -105,7 +108,6 @@ const createRuntimeSlice = (
     // console.log({ scope, environmentId });
 
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         activeEnvironments: {
@@ -120,7 +122,6 @@ const createRuntimeSlice = (
     // console.log({updates});
 
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         activeEnvironments: updates,
@@ -129,7 +130,6 @@ const createRuntimeSlice = (
   },
   setRequestRunningFlag: (flag: boolean) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         isRequestRunning: flag,
@@ -138,7 +138,6 @@ const createRuntimeSlice = (
   },
   setRequestSavedFlag: (flag: boolean) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         isRequestSaved: flag,
@@ -147,7 +146,6 @@ const createRuntimeSlice = (
   },
   setOAuth2LastFetchedToken: (token: string) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         oauth2LastFetchedToken: token,

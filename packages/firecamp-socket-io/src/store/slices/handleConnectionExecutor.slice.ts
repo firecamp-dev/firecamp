@@ -44,11 +44,12 @@ const createHandleConnectionExecutor = (
      */
 
     if (!connectionId) return;
+    const state = get();
 
     try {
-      let url = get()?.request?.url,
-        config = get()?.request?.config,
-        connection = get()?.request?.connections.find(
+      const url = state.request?.url,
+        config = state.request?.config,
+        connection = state.request?.connections.find(
           (c) => c.id === connectionId
         );
 
@@ -73,7 +74,7 @@ const createHandleConnectionExecutor = (
 
       // on open
       executor.onOpen(() => {
-        get()?.changePlaygroundConnectionState(
+        state.changePlaygroundConnectionState(
           connectionId,
           EConnectionState.Open
         );
@@ -81,7 +82,7 @@ const createHandleConnectionExecutor = (
 
       // on close
       executor.onClose(() => {
-        get()?.changePlaygroundConnectionState(
+        state.changePlaygroundConnectionState(
           connectionId,
           EConnectionState.Closed
         );
@@ -89,7 +90,7 @@ const createHandleConnectionExecutor = (
 
       // on reconnect
       executor.onConnecting(() => {
-        get()?.changePlaygroundConnectionState(
+        state.changePlaygroundConnectionState(
           connectionId,
           EConnectionState.Connecting
         );
@@ -100,17 +101,17 @@ const createHandleConnectionExecutor = (
         console.log({ log });
 
         if (!log) return;
-        get()?.addConnectionLog(connectionId, log);
+        state.addConnectionLog(connectionId, log);
       });
 
       // connect
       executor.connect();
 
       // set executor in to playground
-      get()?.changePlayground(connectionId, { executor });
+      state.changePlayground(connectionId, { executor });
 
       // listen to on connect listener
-      get()?.listenOnConnect(connectionId);
+      state.listenOnConnect(connectionId);
     } catch (error) {
       console.info({
         API: 'socket.connect',
@@ -121,8 +122,9 @@ const createHandleConnectionExecutor = (
   },
 
   disconnect: (connectionId: TId, code: number, reason: string) => {
+    const state = get();
     try {
-      let existingPlayground = get().getPlayground(connectionId);
+      const existingPlayground = state.getPlayground(connectionId);
       if (
         existingPlayground &&
         existingPlayground?.connectionState === EConnectionState.Open &&
@@ -132,9 +134,9 @@ const createHandleConnectionExecutor = (
         existingPlayground.executor?.close(code, reason);
 
         // set empty executor
-        get()?.deleteExecutor(connectionId);
+        state.deleteExecutor(connectionId);
       } else {
-        get()?.addErrorLog(connectionId, 'disconnected');
+        state.addErrorLog(connectionId, 'disconnected');
       }
     } catch (error) {
       console.info({
@@ -146,6 +148,7 @@ const createHandleConnectionExecutor = (
   },
 
   sendMessage: (connectionId: TId, emitter: ISocketIOEmitter) => {
+    const state = get();
     try {
       /**
        * TODOs:
@@ -153,7 +156,7 @@ const createHandleConnectionExecutor = (
        * 2. history
        */
 
-      let existingPlayground = get().getPlayground(connectionId);
+      const existingPlayground = state.getPlayground(connectionId);
       if (
         existingPlayground &&
         existingPlayground?.connectionState === EConnectionState.Open &&
@@ -165,13 +168,13 @@ const createHandleConnectionExecutor = (
         // console.log({ emitter });
 
         // send emitter
-        if (emitter?.meta?.ack) {
+        if (emitter?.__meta.ack) {
           existingPlayground.executor.emitWithAck(emitter.name, emitter.body);
         } else {
           existingPlayground.executor.emit(emitter.name, emitter.body);
         }
       } else {
-        get()?.addErrorLog(connectionId, 'disconnected');
+        state.addErrorLog(connectionId, 'disconnected');
       }
     } catch (error) {
       console.info({
@@ -188,8 +191,9 @@ const createHandleConnectionExecutor = (
     pinging: true,
     interval: number
   ) => {
+    const state = get();
     try {
-      let existingPlayground = get().getPlayground(connectionId);
+      const existingPlayground = state.getPlayground(connectionId);
       if (
         existingPlayground &&
         existingPlayground?.connectionState === EConnectionState.Open &&
@@ -202,7 +206,7 @@ const createHandleConnectionExecutor = (
           existingPlayground.executor?.stopPinging();
         }
       } else {
-        get()?.addErrorLog(connectionId, 'disconnected');
+        state.addErrorLog(connectionId, 'disconnected');
       }
     } catch (error) {
       console.info({
@@ -213,8 +217,9 @@ const createHandleConnectionExecutor = (
     }
   },
   addListenerToExecutor: (connectionId: TId, eventName: string) => {
+    const state = get();
     try {
-      let existingPlayground = get().getPlayground(connectionId);
+      const existingPlayground = state.getPlayground(connectionId);
       if (
         existingPlayground &&
         existingPlayground?.connectionState === EConnectionState.Open &&
@@ -222,7 +227,7 @@ const createHandleConnectionExecutor = (
       ) {
         existingPlayground.executor?.addListener(eventName);
       } else {
-        get()?.addErrorLog(connectionId, 'disconnected');
+        state.addErrorLog(connectionId, 'disconnected');
       }
     } catch (error) {
       console.info({
@@ -233,8 +238,9 @@ const createHandleConnectionExecutor = (
     }
   },
   addListenersToExecutor: (connectionId: TId, eventNames: Array<string>) => {
+    const state = get();
     try {
-      let existingPlayground = get().getPlayground(connectionId);
+      const existingPlayground = state.getPlayground(connectionId);
       if (
         existingPlayground &&
         existingPlayground?.connectionState === EConnectionState.Open &&
@@ -242,7 +248,7 @@ const createHandleConnectionExecutor = (
       ) {
         existingPlayground.executor?.addListeners(eventNames);
       } else {
-        get()?.addErrorLog(connectionId, 'disconnected');
+        state.addErrorLog(connectionId, 'disconnected');
       }
     } catch (error) {
       console.info({
@@ -253,8 +259,9 @@ const createHandleConnectionExecutor = (
     }
   },
   removeListenerFromExecutor: (connectionId: TId, eventName: string) => {
+    const state = get();
     try {
-      let existingPlayground = get().getPlayground(connectionId);
+      const existingPlayground = state.getPlayground(connectionId);
       if (
         existingPlayground &&
         existingPlayground?.connectionState === EConnectionState.Open &&
@@ -262,7 +269,7 @@ const createHandleConnectionExecutor = (
       ) {
         existingPlayground.executor?.removeListener(eventName);
       } else {
-        get()?.addErrorLog(connectionId, 'disconnected');
+        state.addErrorLog(connectionId, 'disconnected');
       }
     } catch (error) {
       console.info({
@@ -276,8 +283,9 @@ const createHandleConnectionExecutor = (
     connectionId: TId,
     eventNames?: Array<string>
   ) => {
+    const state = get();
     try {
-      let existingPlayground = get().getPlayground(connectionId);
+      const existingPlayground = state.getPlayground(connectionId);
       if (
         existingPlayground &&
         existingPlayground?.connectionState === EConnectionState.Open &&
@@ -285,7 +293,7 @@ const createHandleConnectionExecutor = (
       ) {
         existingPlayground.executor?.removeListeners(eventNames);
       } else {
-        get()?.addErrorLog(connectionId, 'disconnected');
+        state.addErrorLog(connectionId, 'disconnected');
       }
     } catch (error) {
       console.info({
@@ -296,8 +304,9 @@ const createHandleConnectionExecutor = (
     }
   },
   removeAllListenersFromExecutor: (connectionId: TId) => {
+    const state = get();
     try {
-      let existingPlayground = get().getPlayground(connectionId);
+      const existingPlayground = state.getPlayground(connectionId);
       if (
         existingPlayground &&
         existingPlayground?.connectionState === EConnectionState.Open &&
@@ -305,7 +314,7 @@ const createHandleConnectionExecutor = (
       ) {
         existingPlayground.executor?.removeAllListeners();
       } else {
-        get()?.addErrorLog(connectionId, 'disconnected');
+        state.addErrorLog(connectionId, 'disconnected');
       }
     } catch (error) {
       console.info({
@@ -316,11 +325,12 @@ const createHandleConnectionExecutor = (
     }
   },
   changeListenerToAllExecutors: (eventName: string, listen: boolean) => {
-    let existingPlaygrounds = get().playgrounds;
+    const state = get();
+    const existingPlaygrounds = state.playgrounds;
 
     for (let connectionId in existingPlaygrounds) {
       try {
-        let existingPlayground = existingPlaygrounds[connectionId];
+        const existingPlayground = existingPlaygrounds[connectionId];
         if (
           existingPlayground &&
           existingPlayground?.connectionState === EConnectionState.Open &&
@@ -332,7 +342,7 @@ const createHandleConnectionExecutor = (
             existingPlayground.executor?.removeListener(eventName);
           }
         } else {
-          get()?.addErrorLog(connectionId, 'disconnected');
+          state.addErrorLog(connectionId, 'disconnected');
         }
       } catch (error) {
         console.info({

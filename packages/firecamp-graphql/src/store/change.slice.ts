@@ -1,42 +1,39 @@
-import { IRest } from '@firecamp/types';
+import { IGraphQL } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 
 import {
   EReqChangeRootKeys,
-  EReqChangeScriptsKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
 } from '../types';
 import { _array, _object } from '@firecamp/utils';
 import { normalizeRequest } from '../services/request.service';
-import { IRestStore } from './rest.store';
+import { IGraphQLStore } from './graphql.store';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
-  scripts: [],
   __meta: [],
   __root: [],
 };
 
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
-  scripts?: EReqChangeScriptsKeys[];
   __meta?: EReqChangeMetaKeys[];
   __root?: EReqChangeRootKeys[];
 }
 
 interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
-  equalityChecker: (request: Partial<IRest>) => void;
-  preparePayloadForSaveRequest: () => IRest;
-  preparePayloadForUpdateRequest: () => Partial<IRest>;
+  equalityChecker: (request: Partial<IGraphQL>) => void;
+  preparePayloadForSaveRequest: () => IGraphQL;
+  preparePayloadForUpdateRequest: () => Partial<IGraphQL>;
 }
 
 const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
   requestChangeState: RequestChangeState,
-  equalityChecker: (request: Partial<IRest>) => {
+  equalityChecker: (request: Partial<IGraphQL>) => {
     const state = get();
     const {
       originalRequest: _request,
@@ -50,8 +47,6 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
         case 'method':
         case 'config':
         case 'headers':
-        case 'body':
-        case 'auth':
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {
@@ -59,7 +54,6 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
           }
           break;
         case 'url':
-        case 'scripts':
         case '__meta':
           Object.keys(request[key]).forEach((k) => {
             if (!equal(_request[key][k], request[key][k])) {
@@ -73,7 +67,6 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     }
     console.log(_rcs);
     const hasChange = !_object.isEmpty(_cleanDeep(_cloneDeep(_rcs)));
-    console.log(state.context.request, state.runtime.tabId, hasChange);
     state.context.request.onChangeRequestTab(state.runtime.tabId, {
       hasChange,
     });
@@ -85,10 +78,10 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     return _sr;
   },
   preparePayloadForUpdateRequest: () => {
-    const state = get() as IRestStore;
+    const state = get() as IGraphQLStore;
     const { request, requestChangeState: _rcs } = state;
     const _request = normalizeRequest(request);
-    let _ur: Partial<IRest> = {};
+    let _ur: Partial<IGraphQL> = {};
 
     for (let key in _rcs) {
       switch (key) {
@@ -100,7 +93,6 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
           _ur.url = _object.pick(_request[key], _rcs[key]);
           break;
         case '__meta':
-          //@ts-ignore TODO: manage types here
           _ur.__meta = _object.pick(_request[key], _rcs[key]);
           break;
       }

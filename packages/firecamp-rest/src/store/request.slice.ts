@@ -4,7 +4,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 
-import { prepareUIRequestPanelState } from '../services/request-service';
+import { prepareUIRequestPanelState } from '../services/request.service';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -43,7 +43,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
 const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
   request: initialRequest,
 
-  ...createUrlSlice(set, get, initialRequest.url),
+  ...createUrlSlice(set, get),
   ...createBodySlice(set, get, initialRequest.body),
   ...createAuthSlice(set, get, initialRequest.auth),
 
@@ -101,7 +101,6 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
       config: updatedConfig,
     });
     set((s) => ({
-      ...s,
       request: { ...s.request, config: updatedConfig },
       ui: {
         ...s.ui,
@@ -124,7 +123,6 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
     });
 
     set((s) => ({
-      ...s,
       request: { ...s.request, __meta: updatedMeta },
       ui: {
         ...s.ui,
@@ -138,18 +136,16 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
   },
   changeScripts: (scriptType: string, value: string) => {
     //todo: will create enum for pre,post,test
-
-    let lastScripts = get()?.last?.request.scripts;
-    let updatedScripts = {
-      ...(get()?.request.scripts || {}),
+    const state = get();
+    const updatedScripts = {
+      ...state.request.scripts,
       [scriptType]: value,
     };
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
       scripts: updatedScripts,
     });
 
     set((s) => ({
-      ...s,
       request: { ...s.request, scripts: updatedScripts },
       ui: {
         ...s.ui,
@@ -159,9 +155,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
         },
       },
     }));
-
-    // Prepare commit action for headers in scripts
-    get()?.prepareScriptsPushAction(lastScripts, updatedScripts);
+    state.equalityChecker({ scripts: updatedScripts });
   },
 });
 

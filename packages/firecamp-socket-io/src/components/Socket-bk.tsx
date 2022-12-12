@@ -34,7 +34,6 @@ import {
   ON_CHANGE_ACTIONS,
   STRINGS,
   SYSTEM_LOGS,
-  PANEL,
   RESERVED_EMITTER_EVENTS,
   EMITTER_PAYLOAD_TYPES,
 } from '../constants';
@@ -149,7 +148,7 @@ const Socket = ({
     prop_collection.emitters
   ) {
     let emitterFound = prop_collection.emitters.find(
-      (emitter) => emitter._meta.id === prop_request._dnp.active_emitter
+      (emitter) => emitter.__ref.id === prop_request._dnp.active_emitter
     );
     if (emitterFound) {
       initPlayground = Object.assign({}, InitPayload, emitterFound);
@@ -171,7 +170,7 @@ const Socket = ({
           reconnectionDelay: 1000,
           reconnectionDelayMax: 5000,
           version: 'v4',
-          on_connect_listeners: [],
+          onConnectListeners: [],
         },
         connections: [],
         playground: InitPayload,
@@ -185,7 +184,7 @@ const Socket = ({
           runtime_activeConnection: '',
         },
         listeners: [],
-        _meta: {},
+        __ref: {},
       },
       { ...prop_request },
       false,
@@ -252,7 +251,7 @@ const Socket = ({
       prop_collection.emitters
     ) {
       let emitterFound = prop_collection.emitters.find(
-        (emitter) => emitter._meta.id === prop_request._dnp.active_emitter
+        (emitter) => emitter.__ref.id === prop_request._dnp.active_emitter
       );
       if (emitterFound) {
         _cacheEmittersFns.add(emitterFound);
@@ -267,38 +266,6 @@ const Socket = ({
 
     _storeClientFns.updateResActiveConn(runtime_activeConnection);
 
-    //TODO: remove code later
-    /*_responseConnectionLogFns.addLog(
-      {
-        title: "Message",
-        message: [
-          {
-            meta: {
-              type: "text",
-              typedArrayView: ""
-            },
-            payload: "Hello from Vinaxi Khalasi"
-          },
-          {
-            meta: {
-              type: "json",
-              typedArrayView: ""
-            },
-            payload: `
-              {
-                "name":"Vinaxi Khalasi"
-              }
-              `
-          }
-        ],
-        meta: {
-          type: "R",
-          color: "",
-          time: new Date()
-        }
-      },
-      runtime_activeConnection
-    );*/
     return async () => {
       try {
         store_client.setState((state) => {
@@ -1343,7 +1310,7 @@ const Socket = ({
   let _commonFns = {
     getMergedVariables: () => {
       let mergedVars = {};
-      const collectionId = tabData?.request?._meta?.collectionId || '';
+      const collectionId = tabData?.request?.__ref?.collectionId || '';
 
       if (environments) {
         const defaultGlobalEnv =
@@ -1451,7 +1418,7 @@ const Socket = ({
               'meta',
             ]) || {};
 
-        leafPayload._meta = {
+        leafPayload.__ref = {
           id: leafId,
         };
 
@@ -1466,7 +1433,7 @@ const Socket = ({
             },
           },
           leaf: leafPayload,
-          _meta: (state_Ref?.current?.request || request)?._meta,
+          __ref: (state_Ref?.current?.request || request)?.__ref,
         };
 
         console.log(`SIO: history_payload`, history_payload);
@@ -1610,9 +1577,9 @@ const Socket = ({
             name: request.playground.name,
             body: request.playground.body,
             meta: Object.assign({}, request.playground.meta, { label }),
-            _meta: {
+            __ref: {
               id: emitterId,
-              parent_id,
+              folderId: parent_id,
             },
           }
         );
@@ -1662,13 +1629,13 @@ const Socket = ({
         // console.log(`id`, id);
 
         let emitterFound = collection.emitters.find(
-          (emitter) => emitter._meta.id === id
+          (emitter) => emitter.__ref.id === id
         );
         // console.log(`emitterFound`, emitterFound);
         if (emitterFound) {
           setState({ type: DELETE.COLLECTION_EMITTER, value: id });
 
-          let parent_id = emitterFound._meta.parent_id || '';
+          let parent_id = emitterFound.__ref.parent_id || '';
           //Update parent orders on remove emitter
           _collectionFns.updateOrders({
             action: 'remove',
@@ -1705,7 +1672,7 @@ const Socket = ({
 
         let directoryPayload = {
           name,
-          _meta: {
+          __ref: {
             id: directoryID,
             parent_id,
           },
@@ -1754,13 +1721,13 @@ const Socket = ({
 
         // Directory to remove
         let foundDirectory = collection.directories.find(
-          (dir) => dir._meta.id === id
+          (dir) => dir.__ref.id === id
         );
 
         if (foundDirectory) {
           setState({ type: DELETE.COLLECTION_DIRECTORY, value: id });
 
-          let parent_id = foundDirectory._meta.parent_id || '';
+          let parent_id = foundDirectory.__ref.parent_id || '';
           //update parent orders on remove dirctory
           _collectionFns.updateOrders({
             action: 'remove',
@@ -1789,13 +1756,13 @@ const Socket = ({
             let getChildren = async (dirId = '') => {
               // Child directories ids
               let childDirIds = collection.directories
-                .filter((childDir) => childDir._meta.parent_id === dirId)
-                .map((childDir) => childDir._meta.id);
+                .filter((childDir) => childDir.__ref.parent_id === dirId)
+                .map((childDir) => childDir.__ref.id);
 
               // Child emitter ids
               let childemitterIds = collection.emitters
-                .filter((childEmtr) => childEmtr._meta.parent_id === dirId)
-                .map((childEmtr) => childEmtr._meta.id);
+                .filter((childEmtr) => childEmtr.__ref.parent_id === dirId)
+                .map((childEmtr) => childEmtr.__ref.id);
 
               if (!_array.isEmpty(childDirIds)) {
                 dirsToRemoveIds = dirsToRemoveIds.concat(childDirIds);
@@ -1819,7 +1786,7 @@ const Socket = ({
             if (collection.emitters && emittersToRemoveIds) {
               // emitterRes: Collection emitters to set
               let emitterRes = collection.emitters.filter(
-                (emtr) => !emittersToRemoveIds.includes(emtr._meta.id)
+                (emtr) => !emittersToRemoveIds.includes(emtr.__ref.id)
               );
 
               if (emitterRes && !equal(emitterRes, collection.emitters)) {
@@ -1830,7 +1797,7 @@ const Socket = ({
 
             // dirResult: Collection directories to set
             let dirResult = collection.directories.filter(
-              (dir) => !dirsToRemoveIds.includes(dir._meta.id)
+              (dir) => !dirsToRemoveIds.includes(dir.__ref.id)
             );
 
             if (dirResult && !equal(dirResult, collection.directories)) {
@@ -1861,7 +1828,7 @@ const Socket = ({
         if (collection.directories) {
           // console.log(`collection.directories`, collection.directories)
           let foundParentDirectoryIndex = collection.directories.findIndex(
-            (dir) => dir._meta.id === parent_id
+            (dir) => dir.__ref.id === parent_id
           );
           if (
             foundParentDirectoryIndex !== -1 &&
@@ -1917,7 +1884,7 @@ const Socket = ({
 
   let _cacheEmittersFns = {
     setToPlayground: (payload) => {
-      if (!payload?._meta?.id) return;
+      if (!payload?.__ref?.id) return;
       _requestFns.setPlayground(payload);
     },
 
@@ -1927,13 +1894,13 @@ const Socket = ({
       appendExistingPayload = false,
       emit = false
     ) => {
-      if (!payload?._meta?.id) return;
+      if (!payload?.__ref?.id) return;
 
       // console.log(`payload`, payload)
 
       let emitter =
         state_Ref?.current?.collection?.emitters?.find(
-          (emitter) => emitter._meta.id === payload._meta.id
+          (emitter) => emitter.__ref.id === payload.__ref.id
         ) || {};
       let emitterToSetInPlayground = {};
 
@@ -1941,8 +1908,8 @@ const Socket = ({
 
       store_client.setState((state) => {
         let collectionEmitters = state.collectionEmittersCache || new Map();
-        if (collectionEmitters.has(payload._meta.id) && setOriginal === false) {
-          let existingEmitter = collectionEmitters.get(payload._meta.id);
+        if (collectionEmitters.has(payload.__ref.id) && setOriginal === false) {
+          let existingEmitter = collectionEmitters.get(payload.__ref.id);
 
           // console.log(`appendExistingPayload`, appendExistingPayload)
 
@@ -1964,7 +1931,7 @@ const Socket = ({
           return {
             collectionEmittersCache: new Map([
               ...collectionEmitters,
-              [payload._meta.id, payload],
+              [payload.__ref.id, payload],
             ]),
           };
         }
@@ -2049,7 +2016,7 @@ const Socket = ({
     setToOriginal: (id) => {
       if (state_Ref?.current?.collection?.emitters && id) {
         let oringinal = state_Ref?.current?.collection.emitters.find(
-          (emitter) => emitter._meta.id === id
+          (emitter) => emitter.__ref.id === id
         );
         if (oringinal) {
           if (request.playground) {
@@ -2078,7 +2045,7 @@ const Socket = ({
 
       if (existingEmtrs) {
         let EmitterFound = existingEmtrs.find(
-          (emitter) => emitter._meta.id === id
+          (emitter) => emitter.__ref.id === id
         );
 
         let collEmitters =

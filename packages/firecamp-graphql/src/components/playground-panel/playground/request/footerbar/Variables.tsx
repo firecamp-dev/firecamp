@@ -1,12 +1,10 @@
 import shallow from 'zustand/shallow';
 import { Editor } from '@firecamp/ui-kit';
-// import equal from 'deep-equal';
-
-import { useGraphQLStore } from '../../../../../store';
+import { IGraphQLStore, useGraphQLStore } from '../../../../../store';
 
 const Variables = () => {
-  let { playground, changeVariables } = useGraphQLStore(
-    (s: any) => ({
+  const { playground, changeVariables } = useGraphQLStore(
+    (s: IGraphQLStore) => ({
       playground: s.playgrounds?.[s.runtime.activePlayground],
       changeVariables: s.changePlaygroundVariables,
     }),
@@ -16,9 +14,9 @@ const Variables = () => {
   return (
     <Editor
       language={`json`}
-      value={playground?.request?.meta?.variables || `{ }`}
+      value={playground?.request?.__meta?.variables || `{ }`}
       onChange={(e) => {
-        changeVariables(playground.request._meta.id, e.target.value);
+        changeVariables(playground.request.__ref.id, e.target.value);
       }}
       onLoad={(editor) => {
         // setEditorDOM(editor);

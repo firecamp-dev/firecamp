@@ -12,23 +12,23 @@ enum ETreeEventTypes {
 }
 type TTreeItemData = {
   name: string;
-  _meta: {
+  __ref: {
     id: string;
-    collection_id?: string;
-    is_folder?: boolean;
-    is_item?: boolean;
+    collectionId?: string;
+    isFolder?: boolean;
+    isItem?: boolean;
   };
 };
-type TItemExtra_meta = {
+type TItemExtraRef = {
   //todo: ts improvement needed
-  _meta?: {
-    is_folder?: boolean;
-    is_item?: boolean;
+  __ref?: {
+    isFolder?: boolean;
+    isItem?: boolean;
   };
 };
 
-type TFolderItem = Partial<IRequestFolder & TItemExtra_meta>;
-type TItem = Partial<IGraphQLPlayground & TItemExtra_meta>;
+type TFolderItem = Partial<IRequestFolder & TItemExtraRef>;
+type TItem = Partial<IGraphQLPlayground & TItemExtraRef>;
 type TCItem = TFolderItem | TItem;
 
 export class CollectionTreeDataProvider<T = TTreeItemData>
@@ -42,13 +42,13 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     this.items = [
       ...folders.map((i) => ({
         ...i,
-        _meta: { ...i._meta, is_folder: true },
+        __ref: { ...i.__ref, isFolder: true },
       })),
-      ...items.map((i) => ({ ...i, _meta: { ...i._meta, is_item: true } })),
+      ...items.map((i) => ({ ...i, __ref: { ...i.__ref, isItem: true } })),
     ];
     this.rootOrders = this.items
-      .filter((i) => !i._meta.folder_id)
-      .map((i) => i._meta.id);
+      .filter((i) => !i.__ref.folderId)
+      .map((i) => i.__ref.id);
   }
 
   public async getTreeItem(
@@ -58,43 +58,43 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       return Promise.resolve({
         index: 'root',
         canMove: true,
-        data: { name: 'Root', _meta: { id: 'root' } },
+        data: { name: 'Root', __ref: { id: 'root' } },
         canRename: false,
-        hasChildren: true,
+        isFolder: true,
         children: this.rootOrders,
       });
     }
 
-    let item = this.items.find((i) => i._meta?.id == itemId);
+    const item = this.items.find((i) => i.__ref?.id == itemId);
 
     console.log(this.items, itemId);
 
-    let treeItem: TTreeItemData = {
+    const treeItem: TTreeItemData = {
       name: item.name,
-      _meta: {
-        id: item._meta.id,
-        is_folder: item._meta.is_folder,
-        collection_id: item._meta?.collection_id,
+      __ref: {
+        id: item.__ref.id,
+        isFolder: item.__ref.isFolder,
+        collectionId: item.__ref?.collectionId,
       },
     };
 
-    let getChildren = (item) => {
-      if (item._meta.is_leaf) return [];
+    const getChildren = (item) => {
+      if (item.__ref.is_leaf) return [];
       return this.items
         .filter((i) => {
-          if (item._meta.is_folder) return i._meta.folder_id == item._meta.id;
+          if (item.__ref.isFolder) return i.__ref.folderId == item.__ref.id;
           return true;
         })
-        .map((i) => i._meta.id);
+        .map((i) => i.__ref.id);
     };
 
-    let children = getChildren(item);
+    const children = getChildren(item);
     return Promise.resolve({
-      index: item._meta.id,
+      index: item.__ref.id,
       canMove: true,
       data: treeItem,
       canRename: true,
-      hasChildren: item._meta.is_folder,
+      isFolder: item.__ref.isFolder,
       children,
     });
   }
@@ -106,7 +106,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     if (itemId == 'root') this.rootOrders = newChildren;
     else {
       this.items = this.items.map((i) => {
-        return i._meta.id == itemId ? { ...i, children: newChildren } : i;
+        return i.__ref.id == itemId ? { ...i, children: newChildren } : i;
       });
     }
     this.emitter.emit(ETreeEventTypes.itemChanged, [itemId]);
@@ -128,57 +128,57 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
 
   // extra methods of provider
   public addFolder(item: TFolderItem) {
-    this.items.push({ ...item, _meta: { ...item._meta, is_folder: true } });
-    if (!item._meta.folder_id) {
-      this.rootOrders.push(item._meta.id);
+    this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
+    if (!item.__ref.folderId) {
+      this.rootOrders.push(item.__ref.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
   }
 
   public addItem(item: TItem) {
-    this.items.push({ ...item, _meta: { ...item._meta, is_item: true } });
-    if (!item._meta.folder_id) {
-      this.rootOrders.push(item._meta.id);
+    this.items.push({ ...item, __ref: { ...item.__ref, isItem: true } });
+    if (!item.__ref.folderId) {
+      this.rootOrders.push(item.__ref.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
   }
 
   public updateItem(item: TItem) {
     this.items = this.items.map((itm: TItem) => {
-      if (itm._meta.id == item._meta.id) {
+      if (itm.__ref.id == item.__ref.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
         return {
           ...itm,
           ...item,
-          _meta: { ...itm._meta, ...item._meta, is_item: true },
+          __ref: { ...itm.__ref, ...item.__ref, isItem: true },
         };
       }
       return itm;
     });
 
-    if (!item._meta.folder_id) {
-      this.rootOrders.push(item._meta.id);
+    if (!item.__ref.folderId) {
+      this.rootOrders.push(item.__ref.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
   }
 
   public deleteItem(id: TId) {
-    const item = this.items.find((i) => i._meta.id == id);
+    const item = this.items.find((i) => i.__ref.id == id);
 
     console.log(id, item);
     if (!item) return;
-    this.items = this.items.filter((i) => i._meta.id != id);
-    if (!item._meta.folder_id) {
+    this.items = this.items.filter((i) => i.__ref.id != id);
+    if (!item.__ref.folderId) {
       this.rootOrders = this.rootOrders.filter((i) => i != id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item._meta.folder_id]);
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
   }
 }

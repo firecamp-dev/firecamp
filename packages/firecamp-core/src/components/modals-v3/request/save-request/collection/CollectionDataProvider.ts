@@ -51,7 +51,7 @@ export class CollectionDataProvider<T = any> implements TreeDataProvider {
         canMove: true,
         data: { name: 'Root', __ref: { id: 'root', isCollection: true } },
         canRename: false,
-        hasChildren: !!this.rootOrders?.length,
+        isFolder: !!this.rootOrders?.length,
         children: this.rootOrders,
       });
     }
@@ -77,7 +77,7 @@ export class CollectionDataProvider<T = any> implements TreeDataProvider {
       canMove: true,
       data: treeItem,
       canRename: true,
-      hasChildren: !!children?.length,
+      isFolder: !!children?.length,
       children,
     });
   }

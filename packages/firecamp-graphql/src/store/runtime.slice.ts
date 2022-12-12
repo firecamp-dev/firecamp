@@ -22,7 +22,7 @@ interface IRuntime {
   // Manage multiple tabs of playground
   playgroundTabs?: ITab[];
 
-  // Manage runtime meta of open tabs
+  // Manage runtime __meta of open tabs
   playgroundsMeta: { [k: string]: IPlaygroundMeta };
 
   // active tab/playground
@@ -35,8 +35,9 @@ interface IRuntime {
   };
   isRequestSaved: boolean;
 
-  /** true if fetch introspectionis under progress */
+  /** true if fetch introspections under progress */
   isFetchingIntrospection?: boolean;
+  tabId: TId;
 }
 
 interface IRuntimeSlice {
@@ -59,24 +60,25 @@ interface IRuntimeSlice {
   setRequestSavedFlag: (flag: boolean) => void;
 }
 
-const createRuntimeSlice = (set, get): IRuntimeSlice => ({
-  runtime: {
-    playgroundTabs: [
-      // { id: 'playground-1', name: 'playground 1' }
-    ],
-    playgroundsMeta: {
-      // 'playground-1': { isSaved: false, isRequestRunning: false, operationNames: [] },
-    },
-    activePlayground: '', // 'playground-1',
-    schema: '',
-    isDocOpened: false,
-    activeEnvironments: {
-      workspace: '',
-      collection: '',
-    },
-    isRequestSaved: false,
-    isFetchingIntrospection: false,
-  },
+const createRuntimeSlice = (set, get, initState): IRuntimeSlice => ({
+  runtime: initState,
+  // runtime: {
+  //   playgroundTabs: [
+  //     // { id: 'playground-1', name: 'playground 1' }
+  //   ],
+  //   playgroundsMeta: {
+  //     // 'playground-1': { isSaved: false, isRequestRunning: false, operationNames: [] },
+  //   },
+  //   activePlayground: '', // 'playground-1',
+  //   schema: '',
+  //   isDocOpened: false,
+  //   activeEnvironments: {
+  //     workspace: '',
+  //     collection: '',
+  //   },
+  //   isRequestSaved: false,
+  //   isFetchingIntrospection: false,
+  // },
 
   setActivePlayground: (playgroundId: string) => {
     set((s: IRuntimeSlice) => ({
@@ -103,12 +105,12 @@ const createRuntimeSlice = (set, get): IRuntimeSlice => ({
     });
   },
 
-  setFetchIntrospectionFlag: (flag: boolean)=> {
-    set((s)=> ({
+  setFetchIntrospectionFlag: (flag: boolean) => {
+    set((s) => ({
       runtime: {
         ...s.runtime,
-        isFetchingIntrospection: flag
-      }
+        isFetchingIntrospection: flag,
+      },
     }));
   },
 

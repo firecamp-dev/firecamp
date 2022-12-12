@@ -247,6 +247,7 @@ class MarkdownTabService {
         type: UPDATE,
         itemId: reqId,
         collectionId,
+        activeWorkspace,
         // workspaceId: F.appStore.Preferences.active_workspace
       };
 

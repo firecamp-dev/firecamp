@@ -1,28 +1,22 @@
-import {
-  Button,
-  Url,
-  UrlBar,
-  HttpMethodDropDown,
-} from '@firecamp/ui-kit';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { FaFile } from '@react-icons/all-files/fa/FaFile';
-import { EHttpMethod, TId } from '@firecamp/types';
-
 import shallow from 'zustand/shallow';
+import { EHttpMethod, TId } from '@firecamp/types';
 import _url from '@firecamp/url';
+import { Button, Url, UrlBar, HttpMethodDropDown } from '@firecamp/ui-kit';
+import { IGraphQLStore, useGraphQLStore } from '../../../store';
 
-import { IGraphQLStore, IPushPayload, useGraphQLStore } from '../../../store';
 const methods = Object.values(EHttpMethod);
 
 const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: IPushPayload, tabId: string) => {},
+  onSaveRequest = (pushAction: any, tabId: string) => {},
 }) => {
-  let { EnvironmentWidget } = postComponents;
+  const { EnvironmentWidget } = postComponents;
 
-  let {
+  const {
     url,
     method,
     __meta,
@@ -30,15 +24,13 @@ const UrlBarContainer = ({
     activeEnvironments,
     isRequestSaved,
     context,
-
     changeUrl,
     changeMethod,
     fetchIntrospectionSchema,
     toggleDoc,
     changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
+    preparePayloadForSaveRequest,
+    preparePayloadForUpdateRequest,
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       url: s.request.url,
@@ -48,57 +40,46 @@ const UrlBarContainer = ({
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
-
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
       toggleDoc: s.toggleDoc,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-
-      setPushActionEmpty: s.setPushActionEmpty,
+      preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
+      preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
     }),
     shallow
   );
   // console.log({ url, request });
 
-  let schema = {};
+  const schema = {};
 
-  let _handleUrlChange = (e) => {
+  const _handleUrlChange = (e) => {
     e.preventDefault();
-    let value = e.target.value;
-
-    let urlObject = _url.updateByRaw({ ...url, raw: value });
-
+    const value = e.target.value;
+    const urlObject = _url.updateByRaw({ ...url, raw: value });
     changeUrl(urlObject);
   };
 
-  let _toggleGraphqlDoc = () => {
+  const _toggleGraphqlDoc = () => {
     if (url?.raw?.length && (!schema || !Object.keys(schema).length)) {
       fetchIntrospectionSchema();
     }
     toggleDoc(true);
   };
 
-  let _onSave = async () => {
+  const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
-      if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
-      }
+      const _request =
+        isRequestSaved === true
+          ? preparePayloadForUpdateRequest()
+          : preparePayloadForSaveRequest();
 
-      // console.log({ pushPayload });
-      setPushActionEmpty();
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      console.log({ _request });
+      // setPushActionEmpty();
+      // onSaveRequest(_request, tab.id);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -121,12 +102,12 @@ const UrlBarContainer = ({
       }
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
-      onEditClick={()=> {
+      onEditClick={() => {
         context.appService.modals.openEditRequest({
           name: __meta.name,
           description: __meta.description,
           collectionId: __ref.collectionId,
-          requestId: __ref.id
+          requestId: __ref.id,
         });
       }}
     >
@@ -150,31 +131,31 @@ const UrlBarContainer = ({
       </UrlBar.Body>
       <UrlBar.Suffix>
         <Button
-          sm
-          iconCenter
-          secondary
           onClick={_toggleGraphqlDoc}
           icon={<FaFile fontSize={16} />}
           id={`open-schema-doc-${tab.id}`}
           tooltip={'open schema doc'}
+          sm
+          iconCenter
+          secondary
         />
 
         <Button
-          sm
-          iconLeft
-          primary
           icon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
           onClick={fetchIntrospectionSchema}
           id={`refresh-schema-${tab.id}`}
           tooltip={'refresh schema'}
+          sm
+          iconLeft
+          primary
         />
         <Button
           id={`save-request-${tab.id}`}
+          text="Save"
+          onClick={_onSave}
+          disabled={false}
           secondary
           sm
-          text="Save"
-          disabled={false}
-          onClick={_onSave}
         />
       </UrlBar.Suffix>
     </UrlBar>

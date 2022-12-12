@@ -48,7 +48,7 @@ const _getResConnTabs = (
 };
 
 const ResConnTabs = ({ isFS = false, setFS = (is) => {} }) => {
-  
+
   return (
     <div className="chatboard-align">
     <div className="icon-open" onClick={e => setFS(!isFS)}></div>

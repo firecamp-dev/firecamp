@@ -1,9 +1,8 @@
 import { useState } from 'react';
-
 import { Input } from '@firecamp/ui-kit';
 
 const Atlassion = () => {
-  let initialState = {
+  const initialState = {
     issuer: '',
     subject: '',
     audience: '',
@@ -12,9 +11,9 @@ const Atlassion = () => {
     privateKey: '',
   };
 
-  let [state, setState] = useState(initialState);
+  const [state, setState] = useState(initialState);
 
-  let { issuer, subject, audience, additionalClaims, keyId, privateKey } =
+  const { issuer, subject, audience, additionalClaims, keyId, privateKey } =
     state;
 
   /*let [issuer, setIssuer] = useState("");
@@ -75,16 +74,16 @@ const Atlassion = () => {
     },
   ];
 
-  let _handleChange = (e: any) => {
+  const _handleChange = (e: any) => {
     e.preventDefault();
-    let { name, value } = e.target;
+    const { name, value } = e.target;
     setState({
       ...state,
       [name]: value,
     });
   };
 
-  let _onKeyDown = ({ key }:{key: string}) => {
+  const _onKeyDown = ({ key }:{key: string}) => {
     if (key == 'Enter') {
       setState(initialState);
     }
@@ -93,7 +92,7 @@ const Atlassion = () => {
   return (
     <form className="fc-form grid">
         {(inputList || []).map((input, i) => {
-          let { id, labelFor, label, type, placeholder, value } = input;
+          const { id, labelFor, label, type, placeholder, value } = input;
           return (
             <Input
               key={i}
