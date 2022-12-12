@@ -53,7 +53,7 @@
     "node": ">=10"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.184",
+    "@types/chrome": "^0.0.204",
     "@types/react-dom": "^17.0.13"
   },
   "dependencies": {
