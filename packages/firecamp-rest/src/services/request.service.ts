@@ -14,6 +14,7 @@ import {
   IAuth,
   TId,
   IRestBody,
+  IOAuth2UiState,
 } from '@firecamp/types';
 import {
   _object,
@@ -185,7 +186,8 @@ export const normalizeRequest = (
     : _object.mergeDeep(_cloneDeep(configState), config);
   Object.keys(_nr.config).map((key) => {
     // remove extra keys if exists config values
-    if (!configState.hasOwnProperty(key)) {      delete _nr.config[key];
+    if (!configState.hasOwnProperty(key)) {
+      delete _nr.config[key];
       return;
     }
     if (typeof _nr.config[key] !== typeof configState[key]) {
@@ -435,90 +437,71 @@ export const readFile = (file): Promise<string | ArrayBuffer> => {
 };
 
 export const getAuthHeaders = async (
-  request: IRestClientRequest,
+  request: IRest,
   authType?: EAuthTypes
 ): Promise<{ [key: string]: any } | IAuthHeader> => {
   if (!authType) {
-    authType = request.auth.type;
+    authType = request.auth?.type;
   }
-  // console.log({ authType });
-
   if (!authType) {
     return Promise.resolve({});
   } /* else if (authType === EAuthTypes.Inherit) {
     // TODO: add logic to fetch inherit auth
     // set inherit auth to runtimeSlice.inherit
     // update auth headers by inherit auth
-  } */ else {
-    let { url, method, body, headers, auth } = request;
+  } */
 
-    let requestAuth = auth;
+  const { url, method, body, headers, auth } = request;
+  let requestAuth = Object.assign({}, auth);
 
-    // @ts-ignore
-    let inheritedAuth = request.__meta.inheritedAuth;
-
-    if (authType === EAuthTypes.Inherit && inheritedAuth) {
-      let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
-      requestAuth = {
-        value: normalizedAuth[inheritedAuth.type],
-        type: inheritedAuth.type,
-      };
-      authType = inheritedAuth.type;
-    }
-
-    if (!auth.type) {
-      try {
-        let agent =
-          _misc.firecampAgent() === EFirecampAgent.Desktop
-            ? EFirecampAgent.Desktop
-            : EFirecampAgent.Extension;
-        const extraParams = {
-          url,
-          method,
-          body,
-          agent,
-          headers,
-        };
-
-        // console.log({ extraParams, requestAuth });
-
-        let authServicePayload = requestAuth[authType];
-        // console.log({ authServicePayload });
-
-        // manage OAuth2 payload
-        if (auth?.type === EAuthTypes.OAuth2) {
-          const oAuth2 = requestAuth[EAuthTypes.OAuth2];
-          const activeGrantType = oAuth2.activeGrantType;
-          const activeGrantTypePayload = oAuth2.grantTypes[activeGrantType];
-          authServicePayload = activeGrantTypePayload;
-        }
-
-        const authService = new Auth(
-          authType || auth.type,
-          authServicePayload,
-          extraParams
-        );
-        await authService.authorize();
-        const authHeaders = await authService.getHeader();
-
-        // if OAuth2 then set headers with prefix Bearer and set to token
-        if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
-          authHeaders[
-            'Authorization'
-          ] = `Bearer ${authHeaders['Authorization']}`;
-          return Promise.resolve(authHeaders['Authorization']);
-        }
-
-        // prepare auth headers array
-        return Promise.resolve(authHeaders);
-      } catch (error) {
-        console.info({
-          API: 'rest get auth headers',
-          error,
-        });
-        return Promise.reject({});
-      }
-    }
+  // @ts-ignore
+  let inheritedAuth = request.__meta.inheritedAuth;
+  if (authType === EAuthTypes.Inherit && inheritedAuth) {
+    let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
+    requestAuth = {
+      value: normalizedAuth[inheritedAuth.type],
+      type: inheritedAuth.type,
+    };
+    authType = inheritedAuth.type;
   }
-  return Promise.reject({});
+
+  try {
+    const agent =
+      _misc.firecampAgent() === EFirecampAgent.Desktop
+        ? EFirecampAgent.Desktop
+        : EFirecampAgent.Extension;
+
+    // console.log({ extraParams, requestAuth });
+
+    let authvalue = requestAuth.value;
+    // console.log({ authvalue });
+
+    // manage OAuth2 payload // TODO: fix Auth2 later
+    // if (auth?.type === EAuthTypes.OAuth2) {
+    //   const OAuth2 = requestAuth.value as IOAuth2UiState;
+    //   authvalue = OAuth2.grantTypes[OAuth2.activeGrantType];
+    // }
+
+    const authService = new Auth(authType, authvalue, {
+      url,
+      method,
+      body,
+      agent,
+      headers,
+    });
+    await authService.authorize();
+    const authHeaders = await authService.getHeader();
+
+    // if OAuth2 then set headers with prefix Bearer and set to token
+    if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
+      authHeaders['Authorization'] = `Bearer ${authHeaders['Authorization']}`;
+      return Promise.resolve(authHeaders['Authorization']);
+    }
+
+    // prepare auth headers array
+    return Promise.resolve(authHeaders);
+  } catch (e) {
+    console.error(e);
+    return Promise.reject({});
+  }
 };

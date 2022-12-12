@@ -12,7 +12,7 @@ const AuthTab = () => {
     runtimeAuths,
     oauth2LastFetchedToken,
     resetAuthHeaders,
-    updateAuthValue,
+    changeAuth,
     changeAuthType
   } = useRestStore(
     (s: IRestStore) => ({
@@ -20,9 +20,8 @@ const AuthTab = () => {
       runtimeAuths: s.runtime.auths,
       oauth2LastFetchedToken: s.runtime.oauth2LastFetchedToken,
       resetAuthHeaders: s.resetAuthHeaders,
-      changeAuth: s.changeAuth,
       changeAuthType: s.changeAuthType,
-      updateAuthValue: s.updateAuthValue,
+      changeAuth: s.changeAuth,
     }),
     shallow
   );
@@ -51,7 +50,7 @@ const AuthTab = () => {
       });
     }
 
-    updateAuthValue(EAuthTypes.OAuth2, updates);
+    changeAuth(EAuthTypes.OAuth2, updates);
     // console.log({ updates });
   };
 
@@ -64,10 +63,10 @@ const AuthTab = () => {
 
   return (
     <AuthSetting
-      auth={runtimeAuths}
+      authUiState={runtimeAuths}
       activeAuth={type}
-      onChangeAuth={updateAuthValue}
       onChangeActiveAuth={changeAuthType}
+      onChangeAuth={changeAuth}
       onChangeOAuth2Value={_updateOAuth2}
       fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
       fetchInheritedAuth={_onSelectInheritAuth}
