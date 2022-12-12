@@ -45,15 +45,13 @@ describe("Table : ", () => {
 
     let editorWrapper = container.getElementsByClassName('firecamp-editor__placeholder')[0]?.parentElement;
     expect(editorWrapper).toBeInTheDocument();
+  
     // let editor = await screen.findAllByTestId('monaco-editor');
-    // console.log(`editorWrapper`, editor)
-
-    // debug the elements rendered on the screen & validate the editor on the screen
     // screen.debug();  
+    // // debug the elements rendered on the screen & validate the editor on the screen
     // await waitFor(() => {
-    // let editor = screen.queryByTestId('monaco-editor');
-    // console.log(`editorWrapper`, editor);
-    // expect(editor).toBeInTheDocument();
+    //   let editor = screen.queryByTestId('monaco-editor');
+    //   expect(editor).toBeInTheDocument();
     // })
 
 
