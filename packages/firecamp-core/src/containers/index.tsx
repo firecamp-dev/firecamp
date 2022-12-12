@@ -4,7 +4,7 @@ import { Integrations } from '@sentry/tracing';
 
 import App from './App';
 
-console.log(window.location);
+// console.log(window.location);
 if (process.env.NODE_ENV == 'production') {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,

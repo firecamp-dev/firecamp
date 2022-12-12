@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Checkbox, Tabs } from '@firecamp/ui-kit';
+import { Tabs } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import { EEmitterPayloadTypes } from '../../../../types';
 
@@ -36,6 +36,9 @@ const EmitterArgTabs = ({
 
   console.log(tabs, 'tabs....');
   return (
+
+    <div className="z-20 relative">
+      
     <Tabs
       list={tabs || []}
       activeTab={activeArgIndex}
@@ -48,7 +51,7 @@ const EmitterArgTabs = ({
         show:
           tabs &&
           tabs.length < 5 &&
-          args[activeArgIndex]?.meta?.type !== EEmitterPayloadTypes.noBody,
+          args[activeArgIndex]?.__meta.type !== EEmitterPayloadTypes.noBody,
         onClick: onAddArg,
       }}
       tabBorderMeta={{
@@ -56,14 +59,8 @@ const EmitterArgTabs = ({
         right: true,
       }}
       onSelect={onSelectArgTab}
-      postComp={(_) => (
-        <Checkbox
-          isChecked={ack}
-          label="Ack"
-          onToggleCheck={(_) => toggleAck(!ack)}
-        />
-      )}
     />
+    </div>
   );
 };
 export default EmitterArgTabs;

@@ -24,18 +24,18 @@ import { EPanel } from '../../../types';
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
 
 const bodyTabs = [
-  // {
-  //   id: 'config',
-  //   name: 'Config',
-  // },
-  {
-    id: 'params',
-    name: 'Params',
-  },
   {
     id: 'playground',
     name: 'Playground',
   },
+  {
+    id: 'params',
+    name: 'Params',
+  },
+  // {
+  //   id: 'config',
+  //   name: 'Config',
+  // },
 ];
 
 const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
@@ -57,7 +57,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   const [activeBodyTab, onSelectBodyTab] = useState('playground');
 
   useEffect(() => {
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       bodyTabs.push({
         id: 'headers',
         name: 'Headers',
@@ -110,7 +110,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         return <PlaygroundTab />;
     }
   };
-
 
   return (
     <Row flex={1} overflow="auto" className=" with-divider h-full">

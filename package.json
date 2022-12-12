@@ -7,7 +7,7 @@
   "main": "packages/firecamp-desktop-app/dist/services/Main",
   "homepage": "./dev",
   "scripts": {
-    "build:monorepo": "lerna run build --scope=@firecamp/rest-executor --scope=@firecamp/ws-executor",
+    "build:monorepo": "lerna run build --scope=@firecamp/rest-executor --scope=@firecamp/ws-executor --scope=@firecamp/socket.io-executor",
     "start": "npx webpack serve --config ./webpack.dev.js",
     "dev": "APP_VERSION=$npm_package_version AppFormat=webapp && node scripts/build && yarn build:monorepo && yarn start",
     "electron": "npx electron .",
@@ -78,7 +78,7 @@
     "css-modules-require-hook": "^4.2.3",
     "electron": "19.0.0",
     "eslint": "^7.6.0",
-    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^26.6.0",
     "eslint-plugin-jsx": "^0.1.0",
@@ -118,7 +118,7 @@
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "@firecamp/url": "^0.0.17",
-    "@firecamp/utils": "^0.0.10",
+    "@firecamp/utils": "^0.0.11",
     "@react-icons/all-files": "^4.1.0",
     "autoprefixer": "^10.4.8",
     "dotenv": "^16.0.1",

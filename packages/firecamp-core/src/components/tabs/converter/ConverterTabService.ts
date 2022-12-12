@@ -25,7 +25,7 @@ class ConverterTabService {
 
   applyTabRefresh = () => {
     this.syncAction = {};
-    FCtx.tab.update.meta(this.tab, {
+    FCtx.tab.update.__meta(this.tab, {
       hasChange: false,
       isFresh: true,
       isDeleted: false,
@@ -54,7 +54,7 @@ class ConverterTabService {
           break;
       }
     }
-    FCtx.tab.update.meta(this.tab, { hasChange });
+    FCtx.tab.update.__meta(this.tab, { hasChange });
   };
 
   /**
@@ -98,7 +98,7 @@ class ConverterTabService {
         ? this.syncAction[UPDATE]._root || []
         : [];
       let changedMetaKeys = this.syncAction[UPDATE]
-        ? this.syncAction[UPDATE].meta || []
+        ? this.syncAction[UPDATE].__meta || []
         : [];
 
       _root = _array.uniq([..._root, ...updatedKeys]);
@@ -142,10 +142,10 @@ class ConverterTabService {
         let reqId = id();
 
         if (_object.size(request)) {
-          request['_meta'] = Object.assign({}, request['_meta'], {
+          request['__ref'] = Object.assign({}, request['__ref'], {
             id: reqId,
-            created_at: new Date().valueOf(),
-            // created_by: F.userMeta.id
+            createdAt: new Date().valueOf(),
+            // createdBy: F.userMeta.id
           });
           // await F.db.request.add(request, true);
 
@@ -170,7 +170,7 @@ class ConverterTabService {
       let {
         meta: { hasChange },
         request: {
-          _meta: { id: reqId, collection_id },
+          __ref: { id: reqId, collectionId },
         },
       } = this.tab;
       let { panel } = state;
@@ -178,11 +178,11 @@ class ConverterTabService {
       if (!hasChange || _object.isEmpty(this.syncAction[UPDATE])) return;
 
       let updatedInfo = {
-        updated_at: new Date().valueOf(),
-        // updated_by: F.userMeta.id
+        updatedAt: new Date().valueOf(),
+        // updatedBy: F.userMeta.id
       };
 
-      if (this.syncAction[UPDATE]._root || this.syncAction[UPDATE]._meta) {
+      if (this.syncAction[UPDATE]._root || this.syncAction[UPDATE].__ref) {
         let { _root = [], meta = [] } = this.syncAction[UPDATE];
         let payload = {};
         _root.map((k) => {
@@ -223,15 +223,15 @@ class ConverterTabService {
         action:
           {
             ...this.syncAction[UPDATE],
-            _meta: ['updated_at', 'updated_by'],
+            _meta: ['updatedAt', 'updatedBy'],
           } || {},
         id: id(),
         item_type: 'R',
         request_type: 'F',
         type: UPDATE,
-        item_id: reqId,
-        collection_id,
-        // workspace_id: F.appStore.Preferences.active_workspace
+        itemId: reqId,
+        collectionId,
+        // workspaceId: F.appStore.Preferences.activeWorkspace
       };
 
       // await F.db.request

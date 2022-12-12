@@ -4,7 +4,7 @@ import {
   EHttpMethod,
   IMeta,
   IUrl,
-  I_Meta,
+  IRef,
   TId,
 } from '@firecamp/types';
 import { ITab } from '@firecamp/ui-kit';
@@ -19,14 +19,14 @@ export interface IRequestTab extends ITab {
   type: string;
 
   /** request meta */
-  meta?: IRequestTabMeta;
+  __meta?: IRequestTabMeta;
 
   /** minimal request */
   request?: {
     url?: IUrl;
     method?: EHttpMethod;
-    meta?: IMeta;
-    _meta?: I_Meta;
+    __meta?: IMeta;
+    __ref?: IRef;
   };
 }
 
@@ -76,7 +76,6 @@ export interface IRequestTabProps {
 
   //v3 props
   platformComponents: {
-    SavePopover?: ReactNode;
     EnvironmentWidget: ReactNode;
   };
   envVariables?: {

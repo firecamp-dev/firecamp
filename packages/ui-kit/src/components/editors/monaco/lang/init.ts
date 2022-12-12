@@ -35,7 +35,7 @@ const _registerLanguage = (langId, langMonarch, cb = () => {}) => {
   console.log(langId, 'lang before register');
   monaco.languages.onLanguage(langId, () => {
     monaco.languages.setMonarchTokensProvider(langId, langMonarch);
-    console.log(langId, langMonarch, 'lang after registering');
+    // console.log(langId, langMonarch, 'lang after registering');
     cb();
   });
 };

@@ -6,6 +6,8 @@ import { _object } from '@firecamp/utils';
 import { dissoc } from 'ramda';
 
 import { IRequestTab } from '../components/tabs/types';
+import { platformEmitter } from '../services/platform-emitter';
+import { EPlatformTabs } from '../services/platform-emitter/events';
 
 const initialState = {
   list: {},
@@ -20,7 +22,7 @@ interface ITabStore {
 
   reorder: (dragIndex: number, hoverIndex: number) => void;
   remove: (tbId: string) => void;
-  changeMeta: (tab, meta, request?: any) => void; //todo: define types...
+  changeMeta: (tab, __meta, request?: any) => void; //todo: define types...
   changeActiveTab: (tabId: string) => void;
   changeRootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => void;
   changeOrders: (orders: TId[]) => void;
@@ -35,7 +37,7 @@ interface ITabStore {
         setActive?: boolean;
         isSaved?: boolean;
         isHistoryTab?: boolean;
-        _meta?: any;
+        __ref?: any;
       }
     ) => [tab: IRequestTab, orders: TId[]];
     saved: (request: any) => [tab: IRequestTab, orders: TId[]];
@@ -108,21 +110,30 @@ const useTabStore = create<ITabStore>((set, get) => {
       });
     },
 
-    changeMeta: (tabId: TId, meta: IRequestTab['meta']) => {
+    changeMeta: (tabId: TId, __meta: IRequestTab['__meta']) => {
+      const state = get();
+      const tab = state.list[tabId];
+      if (!tab?.__meta) return;
+      // console.log(s.list, tabId, __meta, 9999);
       set((s) => {
-        const tab = s.list[tabId];
         const list = {
           ...s.list,
           [tabId]: {
             ...tab,
-            meta: {
-              ...tab.meta,
-              ...meta,
+            __meta: {
+              ...tab.__meta,
+              ...__meta,
             },
           },
         };
         return { list };
       });
+      // if __meta.hasChange will change then emit EPlatformTabs.changeState
+      if (tab.__meta.hasChange === false && __meta.hasChange === true) {
+        platformEmitter.emit(EPlatformTabs.changeState, [tabId, 'modified']);
+      } else if (tab.__meta.hasChange === true && __meta.hasChange === false) {
+        platformEmitter.emit(EPlatformTabs.changeState, [tabId, 'default']);
+      }
     },
 
     changeActiveTab: (tabId) => {
@@ -169,7 +180,7 @@ const useTabStore = create<ITabStore>((set, get) => {
           id: tId,
           name: 'New Tab',
           type: type || ERequestTypes.Rest,
-          meta: {
+          __meta: {
             isSaved: false,
             hasChange: false,
             isFresh: true,
@@ -193,16 +204,16 @@ const useTabStore = create<ITabStore>((set, get) => {
 
       request: (
         request,
-        { setActive = false, isSaved = true, isHistoryTab = false, _meta = {} }
+        { setActive = false, isSaved = true, isHistoryTab = false, __ref = {} }
       ) => {
         const { list, orders, activeTab } = get();
         const tId = nanoid();
         const tab: IRequestTab = {
           id: tId,
-          name: request?.meta?.name || 'untitled request',
-          type: request.meta.type,
+          name: request?.__meta?.name || 'untitled request',
+          type: request.__meta.type,
           request,
-          meta: {
+          __meta: {
             isSaved: isSaved,
             hasChange: false,
             isFresh: true,
@@ -228,20 +239,20 @@ const useTabStore = create<ITabStore>((set, get) => {
         return [tab, _orders];
       },
 
-      saved: ({ name, url, method, meta, _meta }) => {
+      saved: ({ name, url, method, __meta, __ref }) => {
         // Todo: need to improve this old structure
         // note: above request is coming from explorer/tree item
 
         let request = {
           url,
           method,
-          meta,
-          _meta,
+          __meta,
+          __ref,
         };
 
         let { list, changeActiveTab, open } = get();
         let tabAlreadyExists = Object.values(list).find(
-          (l) => l?.request?._meta?.id == request?._meta?.id
+          (l) => l?.request?.__ref?.id == request?.__ref?.id
         );
 
         // console.log(tabAlreadyExists);
@@ -255,7 +266,7 @@ const useTabStore = create<ITabStore>((set, get) => {
 
         return open.request(request, {
           setActive: true,
-          _meta: request._meta,
+          __ref: request.__ref,
           isSaved: true,
         });
       },
@@ -361,7 +372,8 @@ const useTabStore = create<ITabStore>((set, get) => {
         let { list, close } = get();
 
         let tabsToClose = Object.values(list).filter(
-          (tab) => tab?.meta?.isSaved === true && tab.meta?.hasChange !== true
+          (tab) =>
+            tab?.__meta?.isSaved === true && tab.__meta?.hasChange !== true
         );
         // console.log({ list, tabsToClose });
 
@@ -376,10 +388,10 @@ const useTabStore = create<ITabStore>((set, get) => {
         let { list, close } = get();
         let tabsToClose = Object.values(list).filter(
           (tab) =>
-            tab.meta &&
-            tab.meta.isSaved === false &&
-            tab.meta.isFresh === true &&
-            tab.meta.hasChange === false
+            tab.__meta &&
+            tab.__meta.isSaved === false &&
+            tab.__meta.isFresh === true &&
+            tab.__meta.hasChange === false
         );
         if (tabsToClose) {
           console.log(`Close saved: tabsToClose`, tabsToClose);
@@ -392,7 +404,9 @@ const useTabStore = create<ITabStore>((set, get) => {
         let { list, close } = get();
         let tabsToClose = Object.values(list).filter(
           (tab) =>
-            tab.meta && tab.meta.isSaved === true && tab.meta.hasChange === true
+            tab.__meta &&
+            tab.__meta.isSaved === true &&
+            tab.__meta.hasChange === true
         );
         if (tabsToClose) {
           console.log(`Close saved: tabsToClose`, tabsToClose);

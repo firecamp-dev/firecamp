@@ -14,8 +14,7 @@ import {
 } from '../../../store';
 
 const CollectionTab = () => {
-  let treeRef = useRef();
-
+  const treeRef = useRef();
   const { folders, items } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       folders: s.collection.folders,
@@ -23,10 +22,8 @@ const CollectionTab = () => {
     }),
     shallow
   );
-  let { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
+  const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
     useGraphQLStoreApi().getState() as IGraphQLStore;
-
-  // console.log(items, 'items...');
 
   const dataProvider = useRef(new CollectionTreeDataProvider(folders, items));
 
@@ -37,7 +34,7 @@ const CollectionTab = () => {
 
   const openPlg = (plgId) => {
     // get a freh copy of state
-    const item = items.find((i) => i._meta.id == plgId);
+    const item = items.find((i) => i.__ref.id == plgId);
     console.log(item, 1100099);
     openPlayground(item);
   };
@@ -95,7 +92,7 @@ const CollectionTab = () => {
             canRename={true}
             canReorderItems={true}
             canDragAndDrop={true}
-            canDropOnItemWithChildren={true}
+            canDropOnFolder={true}
             keyboardBindings={{
               renameItem: ['enter', 'f2'],
               abortRenameItem: ['esc'],

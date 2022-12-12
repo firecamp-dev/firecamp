@@ -1,10 +1,8 @@
 import { FC } from 'react';
 import { Button, Column } from '@firecamp/ui-kit';
-
-import SaveButton from '../../../common/save/SavePopover';
 import { EConverterLang, ISourceState } from '../types';
-
 import { ITabMeta } from '../../types/tab';
+
 const { JSON: Json } = EConverterLang;
 
 const Control: FC<IControl> = ({
@@ -46,7 +44,7 @@ const Control: FC<IControl> = ({
       ) : (
         <span />
       )}
-      <SaveButton
+      {/* <SaveButton
         onSave={onSaveRequest}
         onUpdate={onUpdateRequest}
         tabMeta={tabMeta}
@@ -57,13 +55,8 @@ const Control: FC<IControl> = ({
           descPlaceholder: 'Description',
         }}
         isDisabled={source.hasError || !source.hasTypeDetected}
-      />
-      <Button
-        secondary
-        sm
-        text="Clear"
-        onClick={onClearPanel}
-      />
+      /> */}
+      <Button secondary sm text="Clear" onClick={onClearPanel} />
     </Column>
   );
 };

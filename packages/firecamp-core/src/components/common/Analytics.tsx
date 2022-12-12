@@ -13,7 +13,7 @@ export default () => {
       if (env !== 'production') return;
 
       const trackingId =
-        _misc.firecampAgent() === EFirecampAgent.desktop
+        _misc.firecampAgent() === EFirecampAgent.Desktop
           ? process.env.GOOGLE_ANALYTICS_ELECTRON_ID
           : process.env.GOOGLE_ANALYTICS_CHROME_ID;
 

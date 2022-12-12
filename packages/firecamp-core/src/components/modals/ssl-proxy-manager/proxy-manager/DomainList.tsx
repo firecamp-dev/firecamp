@@ -18,12 +18,12 @@ const DomainList: FC<IDomainList> = ({ list = [], domainFns = {} }) => {
       {list.map((v, i) => {
         return (
           <DomainItem
-            key={v._meta ? v._meta.id : ''}
-            id={v._meta ? v._meta.id : ''}
+            key={v.__ref ? v.__ref.id : ''}
+            id={v.__ref ? v.__ref.id : ''}
             url={v.url}
             disable={v.disable}
             list={list}
-            reject_unauthorized={v.reject_unauthorized}
+            rejectUnauthorized={v.rejectUnauthorized}
             no_proxy={v.no_proxy}
             set_for={v.set_for}
             isCollapsed={v.isCollapsed}
@@ -42,7 +42,7 @@ const DomainItem: FC<IDomainItem> = ({
   id = '',
   url = '',
   disable = false,
-  reject_unauthorized = false,
+  rejectUnauthorized = false,
   no_proxy = '',
   set_for = '',
   list = [],
@@ -60,7 +60,7 @@ const DomainItem: FC<IDomainItem> = ({
     try {
       let found = list.find(
         (proxy) =>
-          proxy._meta.id !== id &&
+          proxy.__ref.id !== id &&
           (proxy.url || '').trim() === (url || '').trim()
       );
 
@@ -116,7 +116,7 @@ const DomainItem: FC<IDomainItem> = ({
           />
           <DomainBody
             url={url || ''}
-            reject_unauthorized={reject_unauthorized || false}
+            rejectUnauthorized={rejectUnauthorized || false}
             no_proxy={no_proxy || ''}
             set_for={set_for || ''}
             onUpdate={(key, value) => {
@@ -172,7 +172,7 @@ const DomainControls: FC<IDomainControls> = ({
 const DomainBody: FC<IDomainBody> = ({
   formgroupClassname = '',
   url = '',
-  reject_unauthorized = false,
+  rejectUnauthorized = false,
   no_proxy = '',
   set_for = '',
   errorMsg = '',
@@ -230,11 +230,11 @@ const DomainBody: FC<IDomainBody> = ({
       >
         <label></label>
         <Checkbox
-          isChecked={reject_unauthorized}
+          isChecked={rejectUnauthorized}
           checkboxFor={'Reject unauthorized'}
           tabIndex={0}
           onToggleCheck={() =>
-            onUpdate('reject_unauthorized', !reject_unauthorized)
+            onUpdate('rejectUnauthorized', !rejectUnauthorized)
           }
           label="Reject unauthorized"
         />
@@ -256,7 +256,7 @@ interface IDomainItem {
   id: string;
   url: string;
   disable: boolean;
-  reject_unauthorized: boolean;
+  rejectUnauthorized: boolean;
   no_proxy: string;
   set_for: string;
   list: any[]; //todo: define a proper type here
@@ -276,7 +276,7 @@ interface IDomainControls {
 interface IDomainBody {
   formgroupClassname: string;
   url: string;
-  reject_unauthorized: boolean;
+  rejectUnauthorized: boolean;
   no_proxy: string;
   set_for: string;
   errorMsg: string;

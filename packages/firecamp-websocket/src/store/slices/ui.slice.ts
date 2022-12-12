@@ -33,14 +33,10 @@ const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
   },
 
   initializeUi: (ui: IUi) => {
-    set((s) => ({
-      ...s,
-      ui,
-    }));
+    set((s) => ({ ui }));
   },
   changeUiActiveTab: (tabName: string) => {
     set((s) => ({
-      ...s,
       ui: {
         ...s.ui,
         requestPanel: {
@@ -54,13 +50,11 @@ const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
 
     set((s) => ({
-      ...s,
       ui: { ...s.ui, isFetchingRequest: flag },
     }));
   },
   setUIRequestPanelState: (uiRequestPanel: { [key: string]: any }) => {
     set((s) => ({
-      ...s,
       ui: {
         ...s.ui,
         requestPanel: {

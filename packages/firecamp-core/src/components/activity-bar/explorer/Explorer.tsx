@@ -70,7 +70,7 @@ const Explorer: FC<any> = () => {
     shallow
   );
 
-  const { is_progressing, collections, folders, requests } = explorer;
+  const { isProgressing, collections, folders, requests } = explorer;
 
   let {
     // explorer: { collections, folders, requests },
@@ -82,7 +82,7 @@ const Explorer: FC<any> = () => {
 
   // console.log(folders, "folders....")
   const dataProvider = useRef(
-    new WorkspaceCollectionsProvider(collections, folders, requests, workspace.meta?.c_orders || [])
+    new WorkspaceCollectionsProvider(collections, folders, requests, workspace.__meta?.cOrders || [])
   );
 
   //effect: register and unregister treeDataProvider instance
@@ -101,11 +101,11 @@ const Explorer: FC<any> = () => {
 
     let res: any;
     try {
-      if (item._meta.is_collection)
-        res = updateCollection(item._meta.id, { name });
-      if (item._meta.is_folder) res = updateFolder(item._meta.id, { name });
-      if (item._meta.is_request)
-        res = updateRequest(item._meta.id, { meta: { name } });
+      if (item.__ref.isCollection)
+        res = updateCollection(item.__ref.id, { name });
+      if (item.__ref.isFolder) res = updateFolder(item.__ref.id, { name });
+      if (item.__ref.isRequest)
+        res = updateRequest(item.__ref.id, { __meta: { name } });
     } catch (e) {
       //TODO: undo renaming using treeRef
     } finally {
@@ -124,7 +124,7 @@ const Explorer: FC<any> = () => {
 
     let nodeIndex = nodeIndexes[0];
     let nodeItem = [...collections, ...folders, ...requests].find(
-      (c) => c._meta.id == nodeIndex
+      (c) => c.__ref.id == nodeIndex
     );
     // console.log({ nodeItem });
     if (
@@ -134,7 +134,7 @@ const Explorer: FC<any> = () => {
         ERequestTypes.GraphQL,
         ERequestTypes.SocketIO,
         ERequestTypes.WebSocket,
-      ].includes(nodeItem.meta.type)
+      ].includes(nodeItem.__meta.type)
     ) {
       // console.log({ nodeItem });
       _openReqInTab(nodeItem);
@@ -143,9 +143,9 @@ const Explorer: FC<any> = () => {
 
   const canDropAt = useCallback((item, target) => {
     const itemPayload= item.data;
-    const isItemCollection = itemPayload._meta.is_collection;
-    const isItemFolder = itemPayload._meta.is_folder;
-    const isItemRequest = itemPayload._meta.is_request;
+    const isItemCollection = itemPayload.__ref.isCollection;
+    const isItemFolder = itemPayload.__ref.isFolder;
+    const isItemRequest = itemPayload.__ref.isRequest;
     const { targetType, depth, parentItem } = target;
 
     // return true
@@ -171,8 +171,8 @@ const Explorer: FC<any> = () => {
       return true;
     }
 
-    const parentCollection = collections.find(i=> i._meta.id == parentItem);
-    const parentFolder = folders.find(i=> i._meta.id == parentItem);
+    const parentCollection = collections.find(i=> i.__ref.id == parentItem);
+    const parentFolder = folders.find(i=> i.__ref.id == parentItem);
 
     /** request and folders can be drop on collection and folder or reorder within the same depth/level */
     if((parentCollection || parentFolder) && (isItemFolder || isItemRequest)) {
@@ -189,28 +189,28 @@ const Explorer: FC<any> = () => {
     const item = items[0].data;
     const { childIndex=0, parentItem, targetItem } = target;
 
-    if(item._meta.is_collection) return;
+    if(item.__ref.isCollection) return;
 
     // if both exists then item is moving to collection/folder or just reordering
     if(parentItem && targetItem) {
-      const payload: { collection_id: string, folder_id?: string} = { collection_id: "" }
-      const tCollection = collections.find(i=> i._meta.id == targetItem);
+      const payload: { collectionId: string, folderId?: string} = { collectionId: "" }
+      const tCollection = collections.find(i=> i.__ref.id == targetItem);
       if(tCollection){
-        payload.collection_id = tCollection._meta.id;
+        payload.collectionId = tCollection.__ref.id;
       }
       else {
-        const tFolder = folders.find(i=> i._meta.id == targetItem);
+        const tFolder = folders.find(i=> i.__ref.id == targetItem);
         if(tFolder) {
-          payload.collection_id = tFolder._meta.collection_id;
-          payload.folder_id = tFolder._meta.id;
+          payload.collectionId = tFolder.__ref.collectionId;
+          payload.folderId = tFolder.__ref.id;
         }
       }
 
-      if(item._meta.is_folder) {
-        moveFolder(item._meta.id, payload);
+      if(item.__ref.isFolder) {
+        moveFolder(item.__ref.id, payload);
       }
-      else if(item._meta.is_request) {
-        moveRequest(item._meta.id, payload);
+      else if(item.__ref.isRequest) {
+        moveRequest(item.__ref.id, payload);
       }
       else {}
     }
@@ -234,7 +234,7 @@ const Explorer: FC<any> = () => {
                     className="cursor-pointer"
                     size={16}
                     onClick={() => {
-                      fetchExplorer(workspace._meta.id);
+                      fetchExplorer(workspace.__ref.id);
                     }}
                   />
                 </div>
@@ -252,7 +252,7 @@ const Explorer: FC<any> = () => {
             );
           }}
           bodyRenderer={({ expanded }) => {
-            if (!is_progressing && !collections?.length) {
+            if (!isProgressing && !collections?.length) {
               return (
                 <div className="items-center">
                   <Empty
@@ -293,7 +293,7 @@ const Explorer: FC<any> = () => {
                        */
                       onClick: e => { //avoid multi select
                         // console.log(item, actions, renderFlags)
-                        if (item.hasChildren) actions.toggleExpandedState();
+                        if (item.isFolder) actions.toggleExpandedState();
                         if(!renderFlags.isFocused)  actions.focusItem();
                         else actions.selectItem();
                       },
@@ -317,8 +317,8 @@ const Explorer: FC<any> = () => {
                   canRename={true}
                   canReorderItems={true}
                   canDragAndDrop={true}
-                  canDropOnItemWithChildren={true}
-                  canDropOnItemWithoutChildren={true}
+                  canDropOnFolder={true}
+                  canDropOnNonFolder={true}
                   canDrag={(items)=> {
                     return true;
                   }}
@@ -415,7 +415,7 @@ export default Explorer;
 
 const ProgressBarContainer = () => {
   let { isProgressing } = useWorkspaceStore((s) => ({
-    isProgressing: s.explorer.is_progressing,
+    isProgressing: s.explorer.isProgressing,
   }));
 
   return <ProgressBar active={isProgressing} />;

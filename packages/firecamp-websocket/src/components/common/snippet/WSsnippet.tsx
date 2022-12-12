@@ -26,7 +26,7 @@ const initConfig = {
   message: {
     name: '24/04/2020, 12:01:40',
     body: 'hell wsv2 i update you',
-    meta: {
+    __meta: {
       type: 'arraybuffer',
       envelop: 'uint8array'
     }

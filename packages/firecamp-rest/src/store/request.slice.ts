@@ -4,7 +4,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 
-import { prepareUIRequestPanelState } from '../services/rest-service';
+import { prepareUIRequestPanelState } from '../services/request.service';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -22,10 +22,10 @@ const requestSliceKeys = [
   'headers',
   'body',
   'auth',
-  'meta',
   'scripts',
   'config',
-  '_meta',
+  '__meta',
+  '__ref',
 ];
 
 interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
@@ -35,7 +35,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   initialiseRequestByKeyValue: (key: string, value: any) => void;
   changeMethod: (method: EHttpMethod) => any;
   changeHeaders: (headers: IHeader[]) => any;
-  changeMeta: (meta: any) => any;
+  changeMeta: (__meta: any) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
 }
@@ -43,7 +43,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
 const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
   request: initialRequest,
 
-  ...createUrlSlice(set, get, initialRequest.url),
+  ...createUrlSlice(set, get),
   ...createBodySlice(set, get, initialRequest.body),
   ...createAuthSlice(set, get, initialRequest.auth),
 
@@ -68,26 +68,19 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
   },
 
   changeMethod: (method: EHttpMethod) => {
+    const state = get();
     set((s) => ({
-      ...s,
       request: { ...s.request, method },
     }));
-
-    // Prepare commit action for method in _root
-    get()?.prepareRootPushAction(
-      { method: get()?.last?.request.method },
-      { method }
-    );
+    state.equalityChecker({ method });
   },
   changeHeaders: (headers: IHeader[]) => {
-    // let updatedUiRequestPanel = prepareUIRequestPanelState({ headers });
-
-    let headersLength = get().runtime.auth_headers?.length + headers.length;
-    let updatedUiRequestPanel = {
-      hasHeaders: headersLength ? true : false,
-      headers: headersLength,
+    const state = get();
+    const headerCount = state.runtime.authHeaders?.length + headers.length;
+    const updatedUiRequestPanel = {
+      hasHeaders: headerCount ? true : false,
+      headers: headerCount,
     };
-
     set((s) => ({
       ...s,
       request: { ...s.request, headers },
@@ -99,25 +92,15 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
         },
       },
     }));
-
-    // Prepare commit action for headers in _root
-    get()?.prepareRootPushAction(
-      { headers: get()?.last?.request.headers },
-      { headers }
-    );
+    state.equalityChecker({ headers });
   },
   changeConfig: (configKey: string, configValue: any) => {
-    let lastConfig = get()?.last?.request.config;
-    let updatedConfig = {
-      ...(get()?.request.config || {}),
-      [configKey]: configValue,
-    };
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
+    const state = get();
+    const updatedConfig = { ...state.request.config, [configKey]: configValue };
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
       config: updatedConfig,
     });
-
     set((s) => ({
-      ...s,
       request: { ...s.request, config: updatedConfig },
       ui: {
         ...s.ui,
@@ -127,27 +110,20 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
         },
       },
     }));
-
-    // Prepare commit action for headers in _root
-    get()?.prepareRootPushAction(
-      { config: lastConfig },
-      { config: updatedConfig }
-    );
+    state.equalityChecker({ config: updatedConfig });
   },
-  changeMeta: (meta) => {
-    let lastMeta = get()?.last?.request.meta;
-    let updatedMeta = {
-      ...(get()?.request.meta || {}),
-      ...meta,
+  changeMeta: (__meta) => {
+    const state = get();
+    const updatedMeta = {
+      ...state.request.__meta,
+      ...__meta,
     };
-
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
-      meta: updatedMeta,
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
+      __meta: updatedMeta,
     });
 
     set((s) => ({
-      ...s,
-      request: { ...s.request, meta: updatedMeta },
+      request: { ...s.request, __meta: updatedMeta },
       ui: {
         ...s.ui,
         requestPanel: {
@@ -156,25 +132,21 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
         },
       },
     }));
-
-    // Prepare commit action for meta
-    get()?.prepareMetaPushAction(lastMeta, updatedMeta);
+    state.equalityChecker({ __meta: updatedMeta });
   },
   changeScripts: (scriptType: string, value: string) => {
     //todo: will create enum for pre,post,test
-
-    let lastScripts = get()?.last?.request.scripts;
-    let udpatedScripts = {
-      ...(get()?.request.scripts || {}),
+    const state = get();
+    const updatedScripts = {
+      ...state.request.scripts,
       [scriptType]: value,
     };
-    let updatedUiRequestPanel = prepareUIRequestPanelState({
-      scripts: udpatedScripts,
+    const updatedUiRequestPanel = prepareUIRequestPanelState({
+      scripts: updatedScripts,
     });
 
     set((s) => ({
-      ...s,
-      request: { ...s.request, scripts: udpatedScripts },
+      request: { ...s.request, scripts: updatedScripts },
       ui: {
         ...s.ui,
         requestPanel: {
@@ -183,9 +155,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
         },
       },
     }));
-
-    // Prepare commit action for headers in scripts
-    get()?.prepareScriptsPushAction(lastScripts, udpatedScripts);
+    state.equalityChecker({ scripts: updatedScripts });
   },
 });
 

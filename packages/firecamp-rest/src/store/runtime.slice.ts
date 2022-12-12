@@ -1,12 +1,16 @@
 import { IHeader, IRestScripts, IAuth, TId } from '@firecamp/types';
+import { _auth } from '@firecamp/utils';
+import { RuntimeBodies } from '../constants';
 
 interface IRuntime {
-  auth_headers?: Array<IHeader>;
+  bodies: typeof RuntimeBodies;
+  auths: typeof _auth.defaultAuthState;
+  authHeaders?: IHeader[];
   inherit?: {
     auth: {
       active: string;
       payload: IAuth;
-      oauth2_last_fetched_token: string;
+      oauth2LastFetchedToken: string;
     };
     script: IRestScripts;
   };
@@ -16,17 +20,18 @@ interface IRuntime {
   };
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
-  oauth2_last_fetched_token: string;
+  oauth2LastFetchedToken: string;
+  tabId: TId;
 }
 
 interface IRuntimeSlice {
   runtime?: IRuntime;
 
-  changeAuthHeaders?: (auth_headers: Array<IHeader>) => void;
+  changeAuthHeaders?: (authHeaders: Array<IHeader>) => void;
   changeInherit?: (key: string, value: any) => void;
   changeActiveEnvironment?: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => void;
   setActiveEnvironments?: (updates: {
     workspace: TId;
@@ -43,12 +48,12 @@ const createRuntimeSlice = (
   initialRuntimeState: IRuntime
 ): IRuntimeSlice => ({
   runtime: {
-    auth_headers: [],
+    authHeaders: [],
     inherit: {
       auth: {
         active: '',
         payload: {},
-        oauth2_last_fetched_token: '',
+        oauth2LastFetchedToken: '',
       },
       script: {
         pre: '',
@@ -61,22 +66,20 @@ const createRuntimeSlice = (
       collection: '',
     },
     isRequestRunning: false,
-    oauth2_last_fetched_token: '',
+    oauth2LastFetchedToken: '',
     ...initialRuntimeState,
   },
 
-  changeAuthHeaders: (auth_headers: Array<IHeader>) => {
-    let headersLength = get().request.headers?.length + auth_headers.length;
-    let updatedUiRequestPanel = {
+  changeAuthHeaders: (authHeaders: Array<IHeader>) => {
+    const headersLength = get().request.headers?.length + authHeaders.length;
+    const updatedUiRequestPanel = {
       hasHeaders: headersLength ? true : false,
       headers: headersLength,
     };
-
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
-        auth_headers,
+        authHeaders,
       },
       ui: {
         ...s.ui,
@@ -89,7 +92,6 @@ const createRuntimeSlice = (
   },
   changeInherit: (key: string, value: any) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         inherit: {
@@ -101,17 +103,16 @@ const createRuntimeSlice = (
   },
   changeActiveEnvironment: (
     scope: 'collection' | 'workspace',
-    environment_id: TId
+    environmentId: TId
   ) => {
-    // console.log({ scope, environment_id });
+    // console.log({ scope, environmentId });
 
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         activeEnvironments: {
           ...s.runtime.activeEnvironments,
-          [scope]: environment_id,
+          [scope]: environmentId,
         },
       },
     }));
@@ -121,7 +122,6 @@ const createRuntimeSlice = (
     // console.log({updates});
 
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         activeEnvironments: updates,
@@ -130,7 +130,6 @@ const createRuntimeSlice = (
   },
   setRequestRunningFlag: (flag: boolean) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         isRequestRunning: flag,
@@ -139,7 +138,6 @@ const createRuntimeSlice = (
   },
   setRequestSavedFlag: (flag: boolean) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         isRequestSaved: flag,
@@ -148,10 +146,9 @@ const createRuntimeSlice = (
   },
   setOAuth2LastFetchedToken: (token: string) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
-        oauth2_last_fetched_token: token,
+        oauth2LastFetchedToken: token,
       },
     }));
   },

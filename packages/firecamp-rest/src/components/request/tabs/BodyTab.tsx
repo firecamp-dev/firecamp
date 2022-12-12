@@ -1,13 +1,6 @@
 import { FC, useState, useEffect } from 'react';
-import {
-  EKeyValueTableRowType,
-  ERestBodyTypes,
-  IHeader,
-} from '@firecamp/types';
-import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
-import { isRestBodyEmpty } from '../../../services/rest-service';
-
+import { ERestBodyTypes } from '@firecamp/types';
 import {
   Container,
   Dropdown,
@@ -17,7 +10,8 @@ import {
   StatusBar,
   MultipartTable,
   /* ToolBar, */
-} from '@firecamp/ui-kit'; /* 
+} from '@firecamp/ui-kit';
+/* 
 import { VscCode } from '@react-icons/all-files/vsc/VscCode';
 import { FaCopy } from '@react-icons/all-files/fa/FaCopy';
 import { VscWordWrap } from '@react-icons/all-files/vsc/VscWordWrap';
@@ -29,109 +23,54 @@ import GraphQLBody from './body/GraphQLBody';
 import BinaryBody from './body/BinaryBody';
 import NoBodyTab from './body/NoBodyTab';
 
-import {
-  bodyTypesDDValues,
-  bodyTypeNames,
-  headersByBodyType,
-} from '../../../constants';
-import { IRestStore, useRestStore, useRestStoreApi } from '../../../store';
+import { isRestBodyEmpty } from '../../../services/request.service';
+import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
+import { IRestStore, useRestStore } from '../../../store';
 
 const BodyTab: FC<any> = () => {
-  let restStoreApi = useRestStoreApi();
-
-  let {
-    active_body_type,
+  const {
+    // request,
     body,
-
-    changeMeta,
     changeBodyValue,
-    changeHeaders,
+    changeBodyType,
   } = useRestStore(
-    (s: any) => ({
-      active_body_type: s.request.meta.active_body_type,
-
+    (s: IRestStore) => ({
+      // request: s.request,
       body: s.request.body,
-
-      changeMeta: s.changeMeta,
       changeBodyValue: s.changeBodyValue,
-      changeHeaders: s.changeHeaders,
+      changeBodyType: s.changeBodyType,
+      changeHeaders: s.changeHeaders
     }),
     shallow
   );
 
+  console.log(body, 'body...');
+
   //when user elect the body type from the dropdown, follow these
-  // 1. change the DropDown state/model
-  // 2. set active_body_type to specific/current body's meta
-  let _selectBodyType = (selectedType: any) => {
-    if (active_body_type == selectedType.id) return;
-
-    changeMeta({ active_body_type: selectedType.id });
-    _updateHeadersByBodyType(selectedType.id);
+  const _selectBodyType = (selectedType: {
+    id: ERestBodyTypes;
+    [k: string]: string;
+  }) => {
+    if (body?.type == selectedType.id) return;
+    changeBodyType(selectedType.id);
   };
-
-  let _updateHeadersByBodyType = (type) => {
-    let state: Partial<IRestStore> = restStoreApi.getState();
-    let headers: IHeader[] = state?.request?.headers,
-      contentType = '';
-    let updatedHeaders: IHeader[] = headers;
-
-    if (type !== ERestBodyTypes.GraphQL) {
-      contentType = headersByBodyType[type] || '';
-    } else {
-      contentType = headersByBodyType[ERestBodyTypes.Json] || ''; //if graphql body,set header application/json
-    }
-
-    // TODO: check without method for array object
-    let headersWithoutContentType: IHeader[] = _array.without(
-      headers,
-      (h) => h?.key?.trim().toLowerCase() !== 'content-type'
-    ) as unknown as IHeader[];
-
-    // console.log({ headersWithoutContentType });
-
-    if (type === ERestBodyTypes.NoBody) {
-      updatedHeaders = headersWithoutContentType;
-    } else if (contentType) {
-      const bodyHeader: IHeader = {
-        key: 'Content-Type',
-        value: contentType,
-        type: EKeyValueTableRowType.Text,
-        disable: false,
-        description: '',
-      };
-
-      updatedHeaders = [...headersWithoutContentType, bodyHeader];
-    }
-
-    changeHeaders(updatedHeaders);
-  };
-
-  //flatten all nested options to the one level, so find operation can be perform easily if needed
-  /*   let flattenBodyTypeOptions = [];
-    (Object.values(bodyTypesDDValues) || []).map(b => {
-      flattenBodyTypeOptions = [...flattenBodyTypeOptions, ...b.options];
-    }); */
 
   /**
-   * Purpose: Add '*' for non-empty body types (body having non-empty values) to indicate empty and non-empty body.
+   * purpose: add '*' for non-empty body types (body having non-empty values) to indicate empty and non-empty body.
    */
-  let _preparERestBodyTypesOptions = () => {
-    // console.log({body});
-
-    let isEmptyAPIBody = isRestBodyEmpty(body || {});
+  const _prepareRestBodyTypesOptions = () => {
+    const isEmptyAPIBody = isRestBodyEmpty(body || {});
     // console.log({ isEmptyAPIBody });
 
-    let updatedBodyTypes = Object.values(bodyTypesDDValues);
+    const updatedBodyTypes = Object.values(bodyTypesDDValues);
 
     if (isEmptyAPIBody) {
-      (updatedBodyTypes || []).map((type, k) => {
+      updatedBodyTypes.map((type, i) => {
         return Object.assign(type, {
-          list: type.list.map((o) => {
-            if (isEmptyAPIBody[o.id] === undefined) isEmptyAPIBody[o.id] = true;
-            return Object.assign(o, {
-              dotIndicator: !(o.id !== ERestBodyTypes.NoBody
-                ? isEmptyAPIBody[o.id]
-                : true),
+          list: type.list.map((l) => {
+            // if (isEmptyAPIBody[l.id] === undefined) isEmptyAPIBody[l.id] = true;
+            return Object.assign(l, {
+              dotIndicator: false,
             });
           }),
         });
@@ -141,22 +80,16 @@ const BodyTab: FC<any> = () => {
     return updatedBodyTypes;
   };
 
-  let _changeBodyValue = (bodyType: string, value?: any, key = 'value') => {
-    // console.log({ value });
-
-    changeBodyValue(bodyType, { key, value });
-  };
-
-  let _renderBodyTab = () => {
-    if (active_body_type) {
-      switch (active_body_type) {
-        case ERestBodyTypes.NoBody:
+  const _renderBodyTab = () => {
+    if (body?.type) {
+      switch (body.type) {
+        case '':
           return <NoBodyTab selectBodyType={_selectBodyType} />;
         case ERestBodyTypes.FormData:
           return (
             <MultipartTable
-              onChange={(value) => _changeBodyValue(active_body_type, value)}
-              rows={body[active_body_type] ? body[active_body_type].value : []}
+              onChange={changeBodyValue}
+              rows={body.value || []}
             />
           );
           break;
@@ -164,8 +97,8 @@ const BodyTab: FC<any> = () => {
           return (
             <BasicTable
               title=""
-              onChange={(value) => _changeBodyValue(active_body_type, value)}
-              rows={body[active_body_type]?.value || []}
+              onChange={changeBodyValue}
+              rows={body.value || []}
             />
           );
           break;
@@ -176,34 +109,20 @@ const BodyTab: FC<any> = () => {
           return (
             <Editor
               autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
-              value={body?.[active_body_type]?.value}
-              language={
-                bodyTypeNames[active_body_type]?.toLowerCase() || 'json'
-              } //json//xml
-              onChange={({ target: { value } }) =>
-                _changeBodyValue(active_body_type, value)
-              }
+              value={JSON.stringify(body.value)}
+              language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
+              onChange={({ target: { value } }) => changeBodyValue(value)}
               controlsConfig={{ show: true }}
             />
           );
           break;
         case ERestBodyTypes.Binary:
-          return (
-            <BinaryBody
-              body={body?.[active_body_type] || {}}
-              onChange={_changeBodyValue}
-            />
-          );
+          return <BinaryBody body={body || {}} onChange={changeBodyValue} />;
           break;
         case ERestBodyTypes.GraphQL:
-          return (
-            <GraphQLBody
-              body={body?.[active_body_type] || {}}
-              onChange={_changeBodyValue}
-            />
-          );
+          return <GraphQLBody body={body || {}} onChange={changeBodyValue} />;
           break;
-        case ERestBodyTypes.NoBody:
+        case '':
           return <NoBodyTab selectBodyType={_selectBodyType} />;
           break;
         default:
@@ -220,9 +139,9 @@ const BodyTab: FC<any> = () => {
         <StatusBar className="fc-statusbar">
           <StatusBar.PrimaryRegion>
             <BodyTypeDropDown
-              selectedOption={bodyTypeNames[active_body_type]}
+              selectedOption={bodyTypeNames[body?.type]}
               onSelect={(selected) => _selectBodyType(selected)}
-              fetchOptions={() => _preparERestBodyTypesOptions()}
+              fetchOptions={() => _prepareRestBodyTypesOptions()}
             />
           </StatusBar.PrimaryRegion>
           {/*     <StatusBar.SecondaryRegion>
@@ -259,21 +178,20 @@ const BodyTypeDropDown: FC<any> = ({
   onSelect,
   fetchOptions,
 }) => {
-  let [isOpen, toggle] = useState(false);
-  let [options, setOptions] = useState([]);
+  const [isOpen, toggle] = useState(false);
+  const [options, setOptions] = useState([]);
 
   useEffect(() => {
     setOptions(fetchOptions());
+    console.log(fetchOptions(), 'fetch options');
   }, []);
 
   /**
    * On toggle open body types dropdown menu
    */
-  let _onToggleOpen = () => {
-    let isDropdownOpen = !isOpen;
-
+  const _onToggleOpen = () => {
+    const isDropdownOpen = !isOpen;
     toggle(isDropdownOpen);
-
     /**
      * If dropdown is toggled as open then and then only call parent (prop) function 'onToggle'.
      * Reason: Re-fetch dropdown options value on open only.
@@ -282,7 +200,6 @@ const BodyTypeDropDown: FC<any> = ({
       setOptions(fetchOptions());
     }
   };
-  // console.log({ options });
 
   return (
     <Dropdown
@@ -293,13 +210,13 @@ const BodyTypeDropDown: FC<any> = ({
     >
       <Dropdown.Handler>
         <Button
-          text={selectedOption || ''}
-          xs
+          text={selectedOption || 'No Body'}
           className="font-bold"
+          withCaret
+          transparent
+          ghost
+          xs
           primary
-          withCaret={true}
-          transparent={true}
-          ghost={true}
         />
       </Dropdown.Handler>
       <Dropdown.Options

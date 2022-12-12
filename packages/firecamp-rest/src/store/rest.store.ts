@@ -1,21 +1,18 @@
+import _cloneDeep from 'lodash/cloneDeep';
 import create from 'zustand';
 import createContext from 'zustand/context';
-import { IRestResponse } from '@firecamp/types';
+import { IRest, IRestResponse, TId } from '@firecamp/types';
 import ScriptService from '../services/scripts/index';
 import {
   prepareUIRequestPanelState,
   normalizeVariables,
   normalizeSendRequestPayload,
-} from '../services/rest-service';
-import _cloneDeep from 'lodash/cloneDeep';
-
+  initialiseStoreFromRequest,
+} from '../services/request.service';
 import {
   IRequestSlice,
   createRequestSlice,
   requestSliceKeys,
-  IPushActionSlice,
-  IPushAction,
-  createPushActionSlice,
   createRuntimeSlice,
   IRuntime,
   IRuntimeSlice,
@@ -26,6 +23,8 @@ import {
   IUiSlice,
   IPullSlice,
   createPullActionSlice,
+  IRequestChangeStateSlice,
+  createRequestChangeStateSlice,
 } from './index';
 import { EFirecampAgent } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';
@@ -47,15 +46,13 @@ type TOnChangeVariables = ({
 
 interface IRestStore
   extends IRequestSlice,
-    IPushActionSlice,
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IPullSlice {
-  last: any;
-
-  setLast: (initialState: IRestStoreState) => void;
-  initialise: (initialState: IRestStoreState, isFresh: boolean) => void;
+    IPullSlice,
+    IRequestChangeStateSlice {
+  originalRequest?: IRest;
+  initialise: (request: IRest, tabId: TId) => void;
   context?: any;
   setContext: (ctx: any) => void;
   execute(
@@ -71,7 +68,6 @@ interface IRestStore
 
 interface IRestStoreState {
   request?: IRestClientRequest;
-  pushAction?: IPushAction;
   runtime?: IRuntime;
   response?: IRestResponse;
   ui?: IUi;
@@ -79,49 +75,22 @@ interface IRestStoreState {
 
 const createRestStore = (initialState: IRestStoreState) =>
   create<IRestStore>((set, get): IRestStore => {
-    let uiRequestPanel = prepareUIRequestPanelState(initialState.request);
-
+    const uiRequestPanel = prepareUIRequestPanelState(initialState.request);
     return {
-      last: initialState,
-
-      setLast: (initialState: IRestStoreState) => {
+      initialise: (request: Partial<IRest>, tabId: TId) => {
+        const state = get();
+        const initState = initialiseStoreFromRequest(request, tabId);
+        console.log(initState, 'initState');
         set((s) => ({
           ...s,
-          last: initialState,
+          ...initState,
+          // @ts-ignore
+          originalRequest: _cloneDeep(initState.request) as IRest,
         }));
+        // update auth type, generate auth headers
+        state.changeAuthType(request.auth?.type);
       },
-
-      initialise: (initialState, isFresh: boolean) => {
-        // request
-        let initialRequest: IRestClientRequest = _object.pick(
-          initialState.request,
-          requestSliceKeys
-        ) as IRestClientRequest;
-
-        // console.log({ initialRequest, initialState });
-
-        if (!_object.isEmpty(initialRequest))
-          get().initialiseRequest(initialRequest);
-
-        if (initialState.ui) get().initializeUi(initialState.ui);
-
-        if (initialState.pushAction)
-          get().initializePushAction(initialState.pushAction);
-
-        // console.log({ initialState });
-
-        if (isFresh) {
-          set((s) => ({
-            ...s,
-            last: initialState,
-          }));
-        }
-
-        // runtime
-      },
-
       setContext: (ctx: any) => set({ context: ctx }),
-
       ...createRequestSlice(
         set,
         get,
@@ -131,7 +100,6 @@ const createRestStore = (initialState: IRestStoreState) =>
         ) as IRestClientRequest
       ),
       ...createRuntimeSlice(set, get, initialState.runtime),
-      ...createPushActionSlice(set, get),
       ...createResponseSlice(set, get),
       ...createUiSlice(set, get, {
         ...initialState.ui,
@@ -141,6 +109,7 @@ const createRestStore = (initialState: IRestStoreState) =>
         },
       }),
       ...createPullActionSlice(set, get),
+      ...createRequestChangeStateSlice(set, get),
 
       execute: async (
         variables: {
@@ -153,31 +122,26 @@ const createRestStore = (initialState: IRestStoreState) =>
       ) => {
         try {
           // set response empty
-          set((s) => ({
-            response: { statusCode: 0 },
-          }));
+          set({ response: { statusCode: 0 } });
 
-          let state = get();
+          const state = get();
           let request: Omit<IRestClientRequest, 'auth'> = _cloneDeep(
             state.request
-          ); //todo: discuss this type
+          ); //todo: discuss/review this type
           // console.log({ request, variables, fcAgent });
 
           // Check if request is running or not. stop running request if already true
-          if (get().runtime.isRequestRunning === true) {
+          if (state.runtime.isRequestRunning === true) {
             await state.context.request.cancelExecution(
-              request._meta.id,
+              request.__ref.id,
               fcAgent
             );
-
             // set request running state as false
-            get().setRequestRunningFlag(false);
-
+            state.setRequestRunningFlag(false);
             return;
           }
-
-          get().setRequestRunningFlag(true);
-
+          state.setRequestRunningFlag(true);
+          
           let preScriptResponse: any = {};
           let postScriptResponse: any = {};
           let testScriptResponse: any = {};

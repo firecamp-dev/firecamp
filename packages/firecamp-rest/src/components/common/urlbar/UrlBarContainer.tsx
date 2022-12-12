@@ -1,11 +1,9 @@
-import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
-
+import shallow from 'zustand/shallow';
+import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
-import shallow from 'zustand/shallow';
-
-import { IPushPayload, IRestStore, useRestStore } from '../../../store';
+import { IRestStore, useRestStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 
@@ -13,7 +11,7 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: IPushPayload, tabId: string) => {},
+  onSaveRequest = (pushAction: any, tabId: string) => {},
   platformContext,
   onPasteCurl = (curl: string) => {},
 }) => {
@@ -22,49 +20,37 @@ const UrlBarContainer = ({
   const {
     url,
     method,
-    meta,
-    _meta,
+    __meta,
+    __ref,
     activeEnvironments,
     isRequestRunning,
     isRequestSaved,
     context,
-
     changeUrl,
     changeMethod,
-
     execute,
     changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
-
-    // pushAction,
+    preparePayloadForSaveRequest,
+    preparePayloadForUpdateRequest,
   } = useRestStore(
     (s: IRestStore) => ({
       url: s.request.url,
       method: s.request.method,
-      meta: s.request.meta,
-      _meta: s.request._meta,
+      __meta: s.request.__meta,
+      __ref: s.request.__ref,
       activeEnvironments: s.runtime.activeEnvironments,
       isRequestRunning: s.runtime.isRequestRunning,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
-
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
-
       changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-      setPushActionEmpty: s.setPushActionEmpty,
-      // pushAction: s.pushAction,
+      preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
+      preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
     }),
     shallow
   );
-  /* useEffect(()=>{console.log({url});
-},[url]) */
-  // console.log({ pushAction })
 
   const _handleUrlChange = (e: {
     preventDefault: () => void;
@@ -88,22 +74,16 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
-      if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
-      }
+      const _request =
+        isRequestSaved === true
+          ? preparePayloadForUpdateRequest()
+          : preparePayloadForSaveRequest();
 
-      // console.log({ pushPayload });
-      setPushActionEmpty();
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      console.log({ _request });
+      // setPushActionEmpty();
+      // onSaveRequest(_request, tab.id);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -132,9 +112,8 @@ const UrlBarContainer = ({
       // Do not execute if url is empty
       if (!url.raw) return;
 
-      const envVariables = await platformContext.environment.getVariablesByTabId(
-        tab.id
-      );
+      const envVariables =
+        await platformContext.environment.getVariablesByTabId(tab.id);
       // console.log({ envVariables });
 
       const agent: EFirecampAgent = platformContext.getFirecampAgent();
@@ -165,14 +144,14 @@ const UrlBarContainer = ({
           }}
         />
       }
-      nodePath={meta.name}
+      nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {
         context.appService.modals.openEditRequest({
-          name: meta.name,
-          description: meta.description,
-          collection_id: _meta.collection_id,
-          request_id: _meta.id,
+          name: __meta.name,
+          description: __meta.description,
+          collectionId: __ref.collectionId,
+          requestId: __ref.id,
         });
       }}
     >
@@ -209,18 +188,6 @@ const UrlBarContainer = ({
           disabled={false}
           onClick={_onSave}
         />
-
-        {/* <SavePopover                               
-          onFirstTimeSave={_onSave}
-          onSaveCallback={_onUpdate}
-          tabMeta={tab.meta}
-          tabId={tab.id}
-          meta={{
-            formTitle: 'Rest Request',
-            namePlaceholder: 'Title',
-            descPlaceholder: 'Description',
-          }}
-        /> */}
       </UrlBar.Suffix>
     </UrlBar>
   );

@@ -2,7 +2,6 @@ import { useState, memo } from 'react';
 import { Container, Checkbox, Input, Tabs, Popover } from '@firecamp/ui-kit';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
-
 import Connection from './connection/Connection';
 import { ISocketStore, useSocketStore } from '../../store';
 
@@ -10,7 +9,6 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
   const {
     activePlayground,
     playgroundTabs,
-
     setActivePlayground,
   } = useSocketStore(
     (s: ISocketStore) => ({
@@ -22,9 +20,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     }),
     shallow
   );
-
   const [isAddConnPopoverOpen, toggleConnPopover] = useState(false);
-
   const _onAddNewConnection = async (name = '') => {
     if (!name) return;
     try {
@@ -34,11 +30,9 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
       console.log({ error });
     }
   };
-
   const _toggleDeleteConnection = (index, id) => {
     // dom onClick event for close-icon-${id} wjere id is connection id
   };
-
   const _onSelectConnectionTab = (id) => {
     setActivePlayground(id);
   };
@@ -85,7 +79,7 @@ const AddNewConnectionPopover = ({
   existingConnectionNames = [],
   onAddNewConnection = (name = '') => {},
 }) => {
-  let [newConnectionData, setNewConnectionData] = useState({
+  const [newConnectionData, setNewConnectionData] = useState({
     isOpen: false,
     name: '',
     errorMsg: '',
@@ -94,11 +88,9 @@ const AddNewConnectionPopover = ({
     connectOnCreate: true,
   });
 
-  let _onAddConn = (e) => {
+  const _onAddConn = (e) => {
     if (e) e.preventDefault();
-
     newConnectionData.name = (newConnectionData.name || '').trim();
-
     if (!newConnectionData.name || newConnectionData.name.length < 1) {
       setNewConnectionData(
         Object.assign({}, newConnectionData, {
@@ -144,7 +136,7 @@ const AddNewConnectionPopover = ({
     );
   };
 
-  let _onUpdateAddNewConnData = (key, value) => {
+  const _onUpdateAddNewConnData = (key, value) => {
     if (!key) return;
 
     setNewConnectionData(
@@ -157,16 +149,16 @@ const AddNewConnectionPopover = ({
     );
   };
 
-  let _onKeyDown = (e) => {
+  const _onKeyDown = (e) => {
     if (e.key === 'Enter') {
       _onAddConn(e);
     }
   };
 
-  let _handleInputChange = (e) => {
+  const _handleInputChange = (e) => {
     if (e) e.preventDefault();
 
-    let { value } = e.target;
+    const { value } = e.target;
     _onUpdateAddNewConnData('name', value);
   };
 

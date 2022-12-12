@@ -1,5 +1,5 @@
 import { Rest } from '@firecamp/cloud-apis';
-import { EHttpMethod, EPushActionType, TId } from '@firecamp/types';
+import { EHttpMethod, TId } from '@firecamp/types';
 import create from 'zustand';
 import AppService from '../services/app';
 
@@ -15,8 +15,8 @@ export interface IRequestStore {
   onSaveRequest: (request?: {
     name: string;
     description?: string;
-    collection_id: TId;
-    folder_id?: TId;
+    collectionId: TId;
+    folderId?: TId;
   }) => void;
 }
 
@@ -30,8 +30,8 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
   onSaveRequest: async (request?: {
     name: string;
     description?: string;
-    collection_id: TId;
-    folder_id?: TId;
+    collectionId: TId;
+    folderId?: TId;
   }) => {
     try {
       //   console.log({ requestToSave: request });
@@ -44,30 +44,30 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
       /**
        * Check if request is inserted or not
        * If yes, update tab name, type, and subType by saved request
-       * Else, update tab meta
+       * Else, update tab __meta
        */
 
       console.log({ requestBeingSaved, request });
 
       if (request && requestBeingSaved) {
-        if (!request.name || !request.collection_id) return;
+        if (!request.name || !request.collectionId) return;
 
         // prepare request payload
         requestBeingSaved = {
           ...requestBeingSaved,
-          meta: {
-            ...requestBeingSaved['meta'],
+          __meta: {
+            ...requestBeingSaved['__meta'],
             name: request.name,
             description: request.description || '',
           },
-          _meta: {
-            ...requestBeingSaved['_meta'],
-            collection_id: request.collection_id,
-            folder_id: request.folder_id,
+          __ref: {
+            ...requestBeingSaved['__ref'],
+            collectionId: request.collectionId,
+            folderId: request.folderId,
           },
           _action: {
             ...requestBeingSaved['_action'],
-            collection_id: request.collection_id,
+            collectionId: request.collectionId,
           },
         };
       }
@@ -86,19 +86,19 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
       const tabState = useTabStore.getState();
       if (
         requestBeingSaved &&
-        requestBeingSaved._action.type === EPushActionType.Insert
+        requestBeingSaved._action.type === 'i'
       ) {
         tabState.changeRootKeys(requestTabId, {
-          name: requestBeingSaved?.meta?.name || 'Untitled request',
-          type: requestBeingSaved?.meta?.type || '',
-          // subType: requestBeingSaved?.meta?.data_type || '',
+          name: requestBeingSaved?.__meta?.name || 'Untitled request',
+          type: requestBeingSaved?.__meta?.type || '',
+          // subType: requestBeingSaved?.__meta?.data_type || '',
           request: {
             url: requestBeingSaved.url,
             method: requestBeingSaved.method || EHttpMethod.POST,
-            meta: requestBeingSaved.meta,
-            _meta: requestBeingSaved._meta,
+            __meta: requestBeingSaved.__meta,
+            __ref: requestBeingSaved.__ref,
           },
-          meta: {
+          __meta: {
             isSaved: true,
             hasChange: false,
             isFresh: false,

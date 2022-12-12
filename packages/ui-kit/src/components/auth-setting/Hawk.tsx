@@ -1,20 +1,20 @@
 import { FC, useState, useReducer } from 'react';
-
 import { Dropdown,Input } from '@firecamp/ui-kit';
-import { typePayload } from './constants';
 import { EAuthTypes } from '@firecamp/types';
+import { authUiState } from './constants';
 
 const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => { } }) => {
-  const algorithmList = typePayload[EAuthTypes.Hawk]['algorithmList'] as [];
-  const inputList = typePayload[EAuthTypes.Hawk]['inputList'];
-  const advancedInputList = typePayload[EAuthTypes.Hawk]['advancedInputList'];
+  const { Hawk } = EAuthTypes;
+  const algorithmList = authUiState[Hawk].algorithmList as [];
+  const inputList = authUiState[Hawk].inputList;
+  const advancedInputList = authUiState[Hawk].advancedInputList;
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
     isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
   });
 
-  let _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
+  const _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
     switch (action.type) {
       case 'setDirty':
         return {
@@ -24,28 +24,28 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => { } }) => {
     }
   };
 
-  let [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
-  let [isDDOpen, toggleDD] = useState(false);
+  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const [isDDOpen, toggleDD] = useState(false);
 
-  let _handleChange = (e: any, id: string) => {
+  const _handleChange = (e: any, id: string) => {
     e.preventDefault();
-    let value = e.target.value;
+    const value = e.target.value;
     if (((inputList || []).map((e) => e.id) || []).includes(id)) {
       setIsDirty({ type: 'setDirty', element: id, value: true });
     }
-    onChange(EAuthTypes.Hawk, { key: id, value });
+    onChange(Hawk, { key: id, value });
     // console.log("value", value, id)
   };
 
-  let _setAlgorithm = (algo: any) => {
+  const _setAlgorithm = (algo: any) => {
     if (!algo) return;
-    onChange(EAuthTypes.Hawk, {
+    onChange(Hawk, {
       key: 'algorithm',
       value: algo,
     });
   };
 
-  let _handleSubmit = (e: { preventDefault: () => any; }) => {
+  const _handleSubmit = (e: { preventDefault: () => any; }) => {
     e && e.preventDefault();
   };
 
@@ -86,7 +86,7 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => { } }) => {
     })}
     <label className="fc-form-field-group">
       Advanced
-      <span>(optional)</span>
+      <span>optional</span>
     </label>
     {(advancedInputList || []).map((input, i) => {
       return (
@@ -111,11 +111,11 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => { } }) => {
     <div className="form-group">
       <label>Algorithm</label>
       <Dropdown
-        selected={auth[EAuthTypes.Hawk]['algorithm'] || 'SHA256'} //default "SHA256
+        selected={auth[Hawk]['algorithm'] || 'SHA256'} //default "SHA256
       >
         <Dropdown.Handler>
           <div className={'select-box-title'}>
-            {auth[EAuthTypes.Hawk]['algorithm'] || 'SHA256'}
+            {auth[Hawk]['algorithm'] || 'SHA256'}
           </div>
         </Dropdown.Handler>
         <Dropdown.Options

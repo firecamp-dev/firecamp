@@ -29,7 +29,7 @@ const SignUp: FC<IModal> = () => {
       .signUp({ username, email, password })
       .then((res) => {
         console.log(res);
-        localStorage.setItem('token', res.response.meta.access_token);
+        localStorage.setItem('token', res.response.__meta.access_token);
         AppService.initApp();
         AppService.notify.success(`You have signed up successfully`, {
           labels: { alert: 'success' },

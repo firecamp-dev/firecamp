@@ -20,7 +20,7 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
   workspaceActiveEnv = '',
   collectionActiveEnv = '',
   onWorkspaceActiveEnvChange = (envId: TId) => {},
-  onCollectionActiveEnvChange = (collection_id: TId, envId: TId) => {},
+  onCollectionActiveEnvChange = (collectionId: TId, envId: TId) => {},
 }) => {
   let {
     wEnvs,
@@ -31,8 +31,8 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
     toggleEnvSidebar,
   } = useEnvStore(
     (s: IEnvironmentStore) => ({
-      wEnvs: s.envs.filter((e) => e.meta.type == EEnvironmentScope.Workspace),
-      cEnvs: s.envs.filter((e) => e._meta.collection_id == collectionId),
+      wEnvs: s.envs.filter((e) => e.__meta.type == EEnvironmentScope.Workspace),
+      cEnvs: s.envs.filter((e) => e.__ref.collectionId == collectionId),
       // wEnvs: Object.values(s.environments.workspace || {}),
       // cEnvs: Object.values(s.environments?.[collectionId] || {}),
       setWorkspaceActiveEnv: s.setWorkspaceActiveEnv,
@@ -199,5 +199,5 @@ export interface IEnvironmentWidget {
   onWorkspaceActiveEnvChange: (envId: TId) => void;
 
   // callback fn to return updated collection active env to parent component
-  onCollectionActiveEnvChange: (collection_id: TId, envId: TId) => void;
+  onCollectionActiveEnvChange: (collectionId: TId, envId: TId) => void;
 }

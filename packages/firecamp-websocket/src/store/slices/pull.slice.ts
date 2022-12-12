@@ -1,7 +1,5 @@
-import { EPushActionType, ERequestTypes, IWebSocket } from '@firecamp/types';
+import { ERequestTypes, IWebSocket } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-
-import { IPushAction, IPushPayload } from './push-action/pushAction.slice';
 
 interface IPullSlice {
   pull?: IPushPayload;
@@ -17,7 +15,7 @@ interface IPullSlice {
 const createPullActionSlice = (set, get): IPullSlice => ({
   pull: {
     _action: {
-      type: EPushActionType.Update,
+      type: 'u',
       itemId: '',
       itemType: 'R',
       requestType: ERequestTypes.WebSocket,
@@ -31,13 +29,13 @@ const createPullActionSlice = (set, get): IPullSlice => ({
     if (
       pullActionPayload &&
       pullActionPayload._action &&
-      pullActionPayload._action.type === EPushActionType.Update &&
+      pullActionPayload._action.type === 'u' &&
       pullActionPayload._action.keys
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);
       let existingRequest: IWebSocket = get().request;
       let updatedRequest: IWebSocket = existingRequest;
-      let pullAction: IPushAction = pullActionPayload._action.keys;
+      let pullAction: any = pullActionPayload._action.keys;
       let requestPullAction = pullAction.request;
 
       for (let key in requestPullAction) {
@@ -50,8 +48,8 @@ const createPullActionSlice = (set, get): IPullSlice => ({
             );
             break;
 
-          // case '_meta':
-          case 'meta':
+          // case '__ref':
+          case '__meta':
           case 'url':
           case 'config':
             if (key in pullPayload) {

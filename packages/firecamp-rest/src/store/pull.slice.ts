@@ -1,7 +1,5 @@
-import { EPushActionType, ERequestTypes, IUiAuth } from '@firecamp/types';
+import { IUiAuth } from '@firecamp/types';
 import { _object, _auth } from '@firecamp/utils';
-
-import { IPushAction, IPushPayload } from './pushAction.slice';
 import { IRestClientRequest } from '../types';
 
 /**
@@ -9,40 +7,28 @@ import { IRestClientRequest } from '../types';
  */
 
 interface IPullSlice {
-  pull?: IPushPayload;
+  pull?: any //IPushPayload;
 
   /**
    * Handle pull payload by keys and updated request payload
    */
   getMergedRequestByPullAction?: (
-    pullPayload: IPushPayload
+    pullPayload: any //IPushPayload
   ) => Promise<IRestClientRequest> | PromiseRejectedResult; //define type for pullPayload here
 }
 
 const createPullActionSlice = (set, get): IPullSlice => ({
-  pull: {
-    _action: {
-      type: EPushActionType.Update,
-      item_id: '',
-      item_type: 'R',
-      request_type: ERequestTypes.Rest,
-      collection_id: '',
-      workspace_id: '',
-      keys: {},
-    },
-  },
-
-  getMergedRequestByPullAction: (pullActionPayload: IPushPayload) => {
+  getMergedRequestByPullAction: (pullActionPayload: any) => {
     if (
       pullActionPayload &&
       pullActionPayload._action &&
-      pullActionPayload._action.type === EPushActionType.Update &&
+      pullActionPayload._action.type === 'u' &&
       pullActionPayload._action.keys
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);
       let existingRequest: IRestClientRequest = get().request;
       let updatedRequest: IRestClientRequest = existingRequest;
-      let pullAction: IPushAction = pullActionPayload._action.keys;
+      let pullAction: any = pullActionPayload._action.keys;
 
       for (let key in pullAction) {
         switch (key) {
@@ -55,7 +41,7 @@ const createPullActionSlice = (set, get): IPullSlice => ({
             break;
 
           // case '_meta':
-          case 'meta':
+          case '__meta':
           case 'url':
           case 'body':
           case 'scripts':

@@ -8,9 +8,9 @@ import { GITHUB_CONFIG } from './constants';
 export const authorize = async (): Promise<string> => {
   try {
     // Execute following logic when using electron agent
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       return window.fc.auth.loginViaGithub({
-        client_id: GITHUB_CONFIG.CLIENT_ID,
+        clientId: GITHUB_CONFIG.CLIENT_ID,
         scope: GITHUB_CONFIG.SCOPE.join(),
       });
     }
@@ -37,7 +37,7 @@ export const authorize = async (): Promise<string> => {
 export const deAuthorize = async (): Promise<void> => {
   try {
     // Execute following logic when using electron agent
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       return window.fc.auth.logoutFromGithub();
     }
 

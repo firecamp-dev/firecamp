@@ -26,7 +26,7 @@ const Scripts: FC<IScriptsSettingUi> = ({
   onChange = (key: string, value: any) => {},
   close = () => {},
 }) => {
-  let itemId: TId = useMemo(() => initialPayload?._meta.id, [initialPayload]);
+  let itemId: TId = useMemo(() => initialPayload?.__ref.id, [initialPayload]);
 
   let _onChangeScript = (type, script = '') => {
     if (!type) return;

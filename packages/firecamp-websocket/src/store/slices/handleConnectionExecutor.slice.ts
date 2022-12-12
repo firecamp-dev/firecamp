@@ -44,12 +44,12 @@ const createHandleConnectionExecutor = (
         config,
         connection,
         WebSocket,
-        // agent: EFirecampAgent.web,
+        // agent: EFirecampAgent.Web,
         certificates: [], // TODO: add ssl certs
       };
 
       const executor: IExecutor =
-        _misc.firecampAgent() === EFirecampAgent.desktop
+        _misc.firecampAgent() === EFirecampAgent.Desktop
           ? // @ts-ignore
             window.fc.websocket(options)
           : new Executor(options);

@@ -1,7 +1,6 @@
-
 import { memo } from 'react';
-import { Container, Column } from '@firecamp/ui-kit';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import { Container, Column } from '@firecamp/ui-kit';
 
 import LogTable from './LogTable';
 import { EPanel } from '../../../types';

@@ -5,6 +5,7 @@ import { _misc } from '@firecamp/utils';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
 import shallow from 'zustand/shallow';
+import { TId } from '@firecamp/types';
 
 import Menu from './header/Menu';
 import CollabButton from './header/CollabButton';
@@ -12,10 +13,9 @@ import { ITabStore, useTabStore } from '../../store/tab';
 
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
-import { TId } from '@firecamp/types';
 
 const TabHeaderContainer: FC = () => {
-  const tabApi = useRef();
+  const tabApi = useRef({});
   const { activeTab } = useTabStore(
     (s: ITabStore) => ({
       activeTab: s.activeTab,
@@ -23,19 +23,38 @@ const TabHeaderContainer: FC = () => {
     }),
     shallow
   );
-  const { list: tabs, orders, changeActiveTab, changeOrders } = useTabStore.getState() as ITabStore;
+  const {
+    list: tabs,
+    orders,
+    changeActiveTab,
+    changeOrders,
+  } = useTabStore.getState() as ITabStore;
 
   useEffect(() => {
-    console.log(tabApi, 'tabApi..');
+    // console.log(tabApi, 'tabApi..');
     emitter.on(EPlatformTabs.opened, ([tab, orders]) => {
       tabApi.current.add(tab);
     });
     emitter.on(EPlatformTabs.closed, (tabId_s: TId | TId[]) => {
       tabApi.current.close(tabId_s);
     });
+    emitter.on(
+      EPlatformTabs.changeState,
+      ([tabId, state]: [string, 'modified' | 'default']) => {
+        tabApi.current.changeState(tabId, state);
+      }
+    );
+    emitter.on(
+      EPlatformTabs.changeState,
+      ([tabId, state]: [string, 'modified' | 'default']) => {
+        tabApi.current.changeState(tabId, state);
+      }
+    );
     return () => {
       emitter.off(EPlatformTabs.opened);
       emitter.off(EPlatformTabs.closed);
+      emitter.off(EPlatformTabs.showDotIndicator);
+      emitter.off(EPlatformTabs.hideDotIndicator);
     };
   }, []);
 
@@ -43,7 +62,7 @@ const TabHeaderContainer: FC = () => {
     emitter.emit(EPlatformTabs.openNew);
   };
 
-  console.log(tabs, orders, 'orders... 12');
+  // console.log(tabs, orders, 'orders... 12');
 
   return (
     <Column

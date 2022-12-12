@@ -21,24 +21,24 @@ const EnvCard: FC<any> = forwardRef(
     ref
   ) => {
     let _onSetVariables = () => {
-      if (!item._meta.id) return;
+      if (!item.__ref.id) return;
       let vari_payload = {
-        id: item._meta.id,
+        id: item.__ref.id,
         name: item.name || '',
         body: item.body || '',
-        type: item.meta.type || '',
+        type: item.__meta.type || '',
       };
 
       let path =
-        item._meta && item._meta._relative_path
-          ? item._meta._relative_path
+        item.__ref && item.__ref._relative_path
+          ? item.__ref._relative_path
           : '';
 
       onSetVariables(vari_payload, path);
     };
     // console.log(`item`, item);
     let _onDelete = () => {
-      if (!item._meta.id) return;
+      if (!item.__ref.id) return;
       onDelete(item._toJSON());
     };
 
@@ -71,7 +71,7 @@ const EnvCard: FC<any> = forwardRef(
           )}
           {meta.allowRemove ? (
             <ConfirmationPopover
-              id={`delete-environment-${item._meta.id || ''}`}
+              id={`delete-environment-${item.__ref.id || ''}`}
               handler={
                 <div className="fc-action-delete iconv2-delete-v2-icon pr-1 text-sm" />
               }

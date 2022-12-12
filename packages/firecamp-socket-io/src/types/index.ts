@@ -1,4 +1,8 @@
-import { TId, EPushActionType } from '@firecamp/types';
+export enum EPanel {
+  Request = 'Request',
+  Response = 'Response',
+  All = 'All',
+}
 
 export enum EEmitterPayloadTypes {
   text = 'text',
@@ -20,10 +24,10 @@ export enum EConnectionState {
 }
 
 export enum ELogTypes {
-  Send = 'S',
-  Receive = 'R',
-  Ack = 'ACK',
-  System = 'SYS',
+  Send = 's',
+  Receive = 'r',
+  Ack = 'ack',
+  System = 'sys',
 }
 
 export enum ELogColors {
@@ -32,31 +36,20 @@ export enum ELogColors {
   Warning = 'warning',
 }
 
-export enum EPushActionMetaKeys {
+export enum EReqChangeMetaKeys {
   name = 'name',
   description = 'description',
   iOrders = 'iOrders',
   fOrders = 'fOrders',
 }
 
-export enum EPushActionUrlKeys {
-  protocol = 'protocol',
-  slashes = 'slashes',
-  auth = 'auth',
-  username = 'username',
-  password = 'password',
-  host = 'host',
-  hostname = 'hostname',
+export enum EReqChangeUrlKeys {
+  raw = 'raw',
   queryParams = 'queryParams',
   pathParams = 'pathParams',
-  port = 'port',
-  pathname = 'pathname',
-  hash = 'hash',
-  href = 'href',
-  origin = 'origin',
 }
 
-export enum EPushActionConfigKeys {
+export enum EReqChangeConfigKeys {
   version = 'version',
   defaultConnection = 'defaultConnection',
   timeout = 'timeout',
@@ -68,15 +61,9 @@ export enum EPushActionConfigKeys {
   onConnectListeners = 'onConnectListeners',
 }
 
-export enum EPushAction_rootKeys {
+export enum EReqChangeRootKeys {
   headers = 'headers',
-}
-
-export enum EPushAction_metaKeys {
-  collectionId = 'collectionId',
-  folderId = 'folderId',
-  updatedAt = 'updatedAt',
-  updatedBy = 'updatedBy',
+  config = 'config',
 }
 
 export enum ICommitActionConnectionUpdate_root {
@@ -89,70 +76,4 @@ export enum ICommitActionConnectionUpdate_root {
   headers = 'headers',
   queryParams = 'queryParams',
   auth = 'auth',
-}
-
-export interface IPushActionConnections {
-  [EPushActionType.Insert]?: Array<TId>;
-  [EPushActionType.Update]?: Array<{
-    id: TId;
-    _root?: Array<ICommitActionConnectionUpdate_root>;
-  }>;
-  [EPushActionType.Delete]?: Array<TId>;
-}
-
-// Leaf push action
-
-export enum EPushActionMessage_RootKeys {
-  name = 'name',
-  body = 'body',
-}
-
-export enum EPushActionMessageMetaKeys {
-  type = 'type',
-  typedArrayView = 'typedArrayView',
-}
-
-export enum EPushActionMessage_metaKeys {
-  parentId = 'parentId',
-  updatedAt = 'updatedAt',
-  updatedBy = 'updatedBy',
-}
-
-export interface IPushActionEmitter {
-  [EPushActionType.Insert]?: Array<TId>;
-  [EPushActionType.Update]?: Array<{
-    id: TId;
-    _root?: Array<EPushActionMessage_RootKeys>;
-    meta?: Array<EPushActionMessageMetaKeys>;
-    _meta?: Array<EPushActionMessage_metaKeys>;
-  }>;
-  [EPushActionType.Delete]?: Array<TId>;
-}
-
-// Directory push action
-
-export enum EPushActionDirectory_RootKeys {
-  name = 'name',
-}
-
-export enum EPushActionDirectoryMetaKeys {
-  fOrders = 'fOrders',
-  iOrders = 'iOrders',
-}
-
-export enum EPushActionDirectory_metaKeys {
-  parentId = 'parentId',
-  updatedAt = 'updatedAt',
-  updatedBy = 'updatedBy',
-}
-
-export interface IPushActionDirectory {
-  [EPushActionType.Insert]?: Array<TId>;
-  [EPushActionType.Update]?: Array<{
-    id: TId;
-    _root?: Array<EPushActionDirectory_RootKeys>;
-    meta?: Array<EPushActionDirectoryMetaKeys>;
-    _meta?: Array<EPushActionDirectory_metaKeys>;
-  }>;
-  [EPushActionType.Delete]?: Array<TId>;
 }

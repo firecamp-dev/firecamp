@@ -9,7 +9,6 @@ import {
 } from '@firecamp/ui-kit';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
-
 import Connection from './connection/Connection';
 import { IWebsocketStore, useWebsocketStore } from '../../store';
 

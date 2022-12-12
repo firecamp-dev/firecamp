@@ -21,7 +21,7 @@ const Scripts = ({ module = {}, folderId = '' }) => {
   );
 
   let [inheritScript, setInheritScript] = useState(
-    module?.meta?.inherit_scripts || {
+    module?.__meta?.inherit_scripts || {
       pre: true,
       post: true,
       test: true,
@@ -46,7 +46,7 @@ const Scripts = ({ module = {}, folderId = '' }) => {
     let updates = {},
       updatedScripts = _object.difference(module.scripts, scripts) || {},
       updatedInheritScripts = _object.difference(
-        module?.meta?.inherit_scripts,
+        module?.__meta?.inherit_scripts,
         inheritScript
       );
 
@@ -69,7 +69,7 @@ const Scripts = ({ module = {}, folderId = '' }) => {
       console.log({ updates });
       if (_object.size(updates)) {
         // await F.appStore.project.updateModule(cloneDeep(updates), {
-        //   id: module?._meta?.id || ''
+        //   id: module?.__ref?.id || ''
         // });
       }
       // F.notification.success('Scripts updated successfully!!', {
@@ -88,8 +88,8 @@ const Scripts = ({ module = {}, folderId = '' }) => {
        */
 
       let parentId =
-          module?._meta?.parent_id || module?._meta?.collection_id || '',
-        parentType = module?._meta?.parent_id ? 'm' : 'p';
+          module?.__ref?.parentId || module?.__ref?.collectionId || '',
+        parentType = module?.__ref?.parentId ? 'm' : 'p';
 
       setInheritScript((ps) => {
         return {
@@ -125,14 +125,14 @@ const Scripts = ({ module = {}, folderId = '' }) => {
     // F.ModalService.close(EModals.MODULE_SETTING);
     // if (inheritScript_Ref?.current?.parent_type === "M") {
     //   F.ModalService.open(EModals.MODULE_SETTING, EFolderSettingTabs.SCRIPT, {
-    //     id: inheritScript_Ref?.current?.parent_id || ''
+    //     id: inheritScript_Ref?.current?.parentId || ''
     //   });
     // } else {
     //   F.ModalService.open(
     //     EModals.PROJECT_SETTING,
     //     ECollectionSettingTabs.SCRIPT,
     //     {
-    //       id: inheritScript_Ref?.current?.parent_id || ''
+    //       id: inheritScript_Ref?.current?.parentId || ''
     //     }
     //   );
     // }
@@ -163,7 +163,7 @@ const Scripts = ({ module = {}, folderId = '' }) => {
               sm
               disabled={
                 equal(cloneDeep(module?.scripts), scripts) &&
-                equal(cloneDeep(module?.meta?.inherit_scripts), inheritScript)
+                equal(cloneDeep(module?.__meta?.inherit_scripts), inheritScript)
               }
               onClick={_onUpdate}
             />

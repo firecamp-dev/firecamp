@@ -19,7 +19,6 @@ describe('rest executor', () => {
       method: EHttpMethod.GET,
       __meta: {
         name: '',
-        activeBodyType: ERestBodyTypes.NoBody,
         type: ERequestTypes.Rest,
         version: '2.0.0',
       },
@@ -47,12 +46,10 @@ describe('rest executor', () => {
       ],
       method: EHttpMethod.POST,
       body: {
-        'application/json': {
-          value: JSON.stringify({ msg: 'Hi' }),
-        },
+        value: JSON.stringify({ msg: 'Hi' }),
+        type: ERestBodyTypes.Json
       },
       __meta: {
-        activeBodyType: ERestBodyTypes.Json,
         name: '',
         type: ERequestTypes.Rest,
         version: '2.0.0',
@@ -78,11 +75,10 @@ describe('rest executor', () => {
       },
       method: EHttpMethod.GET,
       config: {
-        reject_unauthorized: false,
+        rejectUnauthorized: false,
       },
       __meta: {
         name: '',
-        activeBodyType: ERestBodyTypes.NoBody,
         type: ERequestTypes.Rest,
         version: '2.0.0',
       },
@@ -105,10 +101,9 @@ describe('rest executor', () => {
         },
         method: EHttpMethod.GET,
         config: {
-          reject_unauthorized: true,
+          rejectUnauthorized: true,
         },
         __meta: {
-          activeBodyType: ERestBodyTypes.NoBody,
           name: '',
           type: ERequestTypes.Rest,
           version: '2.0.0',

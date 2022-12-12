@@ -29,10 +29,11 @@ import {
   IConnectionsLogs,
   createConnectionsLogsSlice,
 
-  // push actions
-  IPushAction,
-  IPushActionSlice,
-  createPushActionSlice,
+  // request changes
+  IRequestChangeStateSlice,
+  createRequestChangeStateSlice,
+
+  // handle execution
   IHandleConnectionExecutorSlice,
   createHandleConnectionExecutor,
 
@@ -46,7 +47,7 @@ import {
   IUiSlice,
 } from './index';
 import { _object } from '@firecamp/utils';
-import { IWebSocket } from '@firecamp/types';
+import { IWebSocket, TId } from '@firecamp/types';
 import { initialiseStoreFromRequest } from '../services/reqeust.service';
 
 const {
@@ -58,7 +59,6 @@ const {
 interface IWebsocketStoreState {
   request?: IWebSocket;
   collection?: ICollection;
-  pushAction?: IPushAction;
   runtime?: IRuntime;
   playgrounds?: IPlaygrounds;
   connectionsLogs?: IConnectionsLogs;
@@ -71,16 +71,13 @@ interface IWebsocketStore
     ICollectionSlice,
     IPlaygroundSlice,
     IConnectionsLogsSlice,
-    IPushActionSlice,
     IPullSlice,
     IHandleConnectionExecutorSlice,
-    IUiSlice {
+    IUiSlice,
+    IRequestChangeStateSlice {
   last: any;
-
-  initialise: (request: Partial<IWebSocket>) => void;
-
-  setLast: (initialState: IWebsocketStoreState) => void;
-  equalityChecker: (payload: any, reqKey_s: string) => void;
+  originalRequest?: IWebSocket;
+  initialise: (request: Partial<IWebSocket>, tabId: TId) => void;
 }
 
 const createWebsocketStore = (initialState: IWebsocketStoreState) =>
@@ -88,27 +85,14 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
     return {
       last: initialState,
 
-      initialise: async (request: Partial<IWebSocket>) => {
-        const initState = initialiseStoreFromRequest(request);
+      initialise: async (request: Partial<IWebSocket>, tabId: TId) => {
+        const initState = initialiseStoreFromRequest(request, tabId);
         // console.log(initState.request, 'initState.request');
         set((s) => ({
           ...s,
           ...initState,
           originalRequest: _cloneDeep(initState.request),
         }));
-      },
-
-      setLast: (initialState: IWebsocketStoreState) => {
-        set((s) => ({
-          ...s,
-          last: initialState,
-        }));
-      },
-
-      equalityChecker: (payload, reqKey_s) => {
-        const state = get();
-        console.log(state.originalRequest.connections[0][reqKey_s], payload);
-        return equal(state.originalRequest.connections[0][reqKey_s], payload);
       },
 
       ...createRequestSlice(
@@ -121,12 +105,10 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
       ...createConnectionsLogsSlice(set, get),
-      ...createPushActionSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
-
-      //   ...createPushActionSlice(set, get),
+      ...createRequestChangeStateSlice(set, get),
     };
   });
 

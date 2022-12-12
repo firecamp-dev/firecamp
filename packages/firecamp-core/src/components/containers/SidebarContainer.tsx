@@ -128,7 +128,7 @@ const actionBarItems = [
 const SidebarContainer: FC<any> = () => {
   const user = AppService.user.get();
   let [activeItem, setActiveItem] = useState<EActivityBarItems | null>(
-    user?._meta?.id && EActivityBarItems.Explorer
+    user?.__ref?.id && EActivityBarItems.Explorer
   );
 
   useHotkeys(`${isMac ? 'cmd' : 'ctrl'}+Shift+C`, (e) => {

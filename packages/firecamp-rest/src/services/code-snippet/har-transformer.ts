@@ -35,7 +35,7 @@ export default (request: IRest): Request => {
   const harRequest: Request = {
     method: request.method || EHttpMethod.GET,
     url: request.url.raw || 'https://example.com',
-    httpVersion: request?.config?.http_version || EHttpVersion.V2Tls,
+    httpVersion: request?.config?.httpVersion || EHttpVersion.V2Tls,
     cookies: [],
     headers: [],
     queryString: [],
@@ -45,21 +45,20 @@ export default (request: IRest): Request => {
 
   // transform request headers
   harRequest.headers = transformKeyValueTable(
-    request.headers as IKeyValueTableWithID[]
+    request.headers as IKeyValueTable[]
   );
 
   // transform request query params
   harRequest.queryString = transformKeyValueTable(
-    request?.url?.query_params as IKeyValueTableWithID[]
+    request?.url?.queryParams as IKeyValueTable[]
   );
 
   // transform request body
   if (
     !_object.isEmpty(request.body) &&
-    Object.values(ERestBodyTypes).includes(request?.meta?.active_body_type) &&
-    request.meta.active_body_type !== ERestBodyTypes.NoBody
+    Object.values(ERestBodyTypes).includes(request.body?.type)
   ) {
-    switch (request.meta.active_body_type) {
+    switch (request.body.type) {
       case ERestBodyTypes.FormData:
         harRequest.postData = {
           mimeType: ERestBodyTypes.FormData,
@@ -69,7 +68,7 @@ export default (request: IRest): Request => {
             ? []
             : transformKeyValueTable(
                 request?.body?.[ERestBodyTypes.FormData]
-                  ?.value as IKeyValueTableWithID[]
+                  ?.value as IKeyValueTable[]
               ),
         };
 
@@ -112,7 +111,7 @@ export default (request: IRest): Request => {
             ? []
             : transformKeyValueTable(
                 request?.body?.[ERestBodyTypes.UrlEncoded]
-                  ?.value as IKeyValueTableWithID[]
+                  ?.value as IKeyValueTable[]
               ),
         };
         break;
@@ -130,7 +129,7 @@ export default (request: IRest): Request => {
   // parse path params from the URL string
   harRequest.url = _url.replacePathParams(
     harRequest.url,
-    request?.url?.path_params
+    request?.url?.pathParams
   );
 
   // add protocol if not exist
