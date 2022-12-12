@@ -61,7 +61,6 @@ const Websocket = ({
     setSelectedCollectionMessage,
     changePlaygroundTab,
     sendMessage,
-    setLast,
     setRequestSavedFlag,
     getMergedRequestByPullAction,
     setIsFetchingReqFlag,
@@ -82,7 +81,6 @@ const Websocket = ({
       changePlaygroundTab: s.changePlaygroundTab,
       sendMessage: s.sendMessage,
       connect: s.connect,
-      setLast: s.setLast,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
@@ -168,12 +166,8 @@ const Websocket = ({
         /** initialise ws store on tab load */
         initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
-
+      } catch (e) {
+        console.error(e);
         // TODO: close tab and show error popup
       }
     };
@@ -191,11 +185,11 @@ const Websocket = ({
 
       // console.log({ pullPayload });
 
-      const last = websocketStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // const last = websocketStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = (await getMergedRequestByPullAction(
@@ -209,12 +203,7 @@ const Websocket = ({
       // console.log({ updatedRequest, mergedPullAndLastRequest });
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-      });
 
-  
       // const pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
@@ -672,7 +661,6 @@ const Websocket = ({
 
   const onSave = (pushPayload: any, tabId) => {
     console.log({ pushPayload });
-
     if (!pushPayload._action || !pushPayload.__ref.id) return;
     if (pushPayload._action.type === 'i') {
       platformContext.request.subscribeChanges(
@@ -680,19 +668,12 @@ const Websocket = ({
         handlePull
       );
     }
-
     platformContext.request.onSave(pushPayload, tabId);
-
-    let last = websocketStoreApi.getState().last,
-      request = websocketStoreApi.getState().request;
-
-    // set last value by pull action and request
-    setLast({
-      ...last,
-      request,
-      pushAction: {}, //emptyPushAction,
-    });
+    // let last = websocketStoreApi.getState().last,
+    // request = websocketStoreApi.getState().request;
   };
+
+  // set last value by pull action and request
 
   // if(isFetchingRequest === true) return <Loader />;
   console.log(tab, 'tab...');

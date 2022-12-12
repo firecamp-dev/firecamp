@@ -4,8 +4,6 @@ import { Button, TabHeader } from '@firecamp/ui-kit';
 import { ITabMeta } from '../../types/tab';
 import { ISourceState } from './Source';
 
-import SaveButton from '../../../common/save/SavePopover';
-
 const Header: FC<IHeader> = ({
   source: { body = '' },
   tabMeta = {},
@@ -41,7 +39,7 @@ const Header: FC<IHeader> = ({
               />
             )
           }
-          <SaveButton
+          {/* <SaveButton
             onSave={onSaveRequest}
             onUpdate={onUpdateRequest}
             tabMeta={tabMeta}
@@ -52,7 +50,7 @@ const Header: FC<IHeader> = ({
               descPlaceholder: 'Description',
             }}
             isDisabled={body ? false : true}
-          />
+          /> */}
           <Button
             secondary
             // TODO: add className="bordered"

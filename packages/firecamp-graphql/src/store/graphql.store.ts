@@ -47,10 +47,7 @@ interface IGraphQLStore
     IPullSlice,
     IUiSlice,
     IRequestChangeStateSlice {
-  last: any;
   originalRequest?: IGraphQL;
-
-  setLast: (initialState: IGraphQLStoreState) => void;
   initialise: (_request: Partial<IGraphQL>, tabId: TId) => void;
   context?: any;
   setContext: (ctx: any) => void;
@@ -79,15 +76,6 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
       ...createRequestChangeStateSlice(set, get),
-
-      last: initialState,
-
-      setLast: (initialState: IGraphQLStoreState) => {
-        set((s) => ({
-          ...s,
-          last: initialState,
-        }));
-      },
 
       initialise: (request: Partial<IGraphQL>, tabId: TId) => {
         // const state = get();
@@ -120,13 +108,10 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
             ...request,
             __meta: {
               ...request.__meta,
-              activeBodyType: ERestBodyTypes.GraphQL,
             },
             body: {
-              [ERestBodyTypes.GraphQL]: {
-                value: query,
-                variables,
-              },
+              value: { query, variables },
+              type: ERestBodyTypes.GraphQL,
             },
           }
         );
@@ -164,14 +149,10 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
           {},
           {
             ...request,
-            __meta: {
-              ...request.__meta,
-              activeBodyType: ERestBodyTypes.GraphQL,
-            },
+            __meta: request.__meta,
             body: {
-              [ERestBodyTypes.GraphQL]: {
-                value: query,
-              },
+              value: { query },
+              type: ERestBodyTypes.GraphQL,
             },
           }
         );

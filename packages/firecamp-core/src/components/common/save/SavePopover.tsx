@@ -107,7 +107,7 @@ const SaveForm: FC<ISaveForm> = ({
   meta = {
     formTitle: 'Socket Details',
     namePlaceholder: 'socket name',
-    descPlaceholder: 'socket description(optional)',
+    descPlaceholder: 'socket description (optional)',
   },
 }) => {
   let [state, setState] = useState({

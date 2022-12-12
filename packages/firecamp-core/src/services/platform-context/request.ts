@@ -37,7 +37,6 @@ interface IPlatformRequestService {
     tabId: TId,
     tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL, // |ISocket | IWebsocket ,
-    pushActions?: any[]
   ) => void;
 
   // fetch request from server by request id
@@ -113,7 +112,7 @@ const request: IPlatformRequestService = {
 
   // normalize request push payload for insert and update
   normalizePushPayload: (pushPayload: any) => {
-    let active_workspace = useWorkspaceStore.getState().getWorkspaceId();
+    let activeWorkspace = useWorkspaceStore.getState().getWorkspaceId();
 
     let userId = useUserStore.getState().user;
 
@@ -126,7 +125,7 @@ const request: IPlatformRequestService = {
       // add workspaceId
       pushPayload._action = {
         ...pushPayload._action,
-        workspaceId: active_workspace,
+        workspaceId: activeWorkspace,
       };
 
       switch (type) {
@@ -168,7 +167,6 @@ const request: IPlatformRequestService = {
     tabId: TId,
     tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL, // | ISocket | IWebsocket,
-    pushActions?: any[]
   ) => {
     // Here, request and pushActions are used for future purpose
     // console.log({ tabMeta });

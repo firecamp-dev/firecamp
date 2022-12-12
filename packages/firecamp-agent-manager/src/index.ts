@@ -36,10 +36,7 @@ export const send = async (
 
     case EFirecampAgent.Cloud:
       if (!_object.isEmpty(request?.body?.[ERestBodyTypes.FormData])) {
-        const data = await parseBody(
-          request?.body,
-          request.__meta.activeBodyType
-        );
+        const data = await parseBody(request?.body);
         const response = await axios.post(
           `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute/multipart`,
           data,

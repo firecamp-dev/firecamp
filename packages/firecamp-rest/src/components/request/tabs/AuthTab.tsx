@@ -8,27 +8,26 @@ import { IRestStore, useRestStore } from '../../../store';
 const AuthTab = () => {
 
   const {
-    auth,
-    activeAuthType,
+    auth= { value: '', type: ''},
+    runtimeAuths,
     oauth2LastFetchedToken,
     resetAuthHeaders,
-    updateAuthValue,
-    updateActiveAuth,
+    changeAuth,
+    changeAuthType
   } = useRestStore(
     (s: IRestStore) => ({
       auth: s.request.auth,
-      activeAuthType: s.request.__meta.activeAuthType,
+      runtimeAuths: s.runtime.auths,
       oauth2LastFetchedToken: s.runtime.oauth2LastFetchedToken,
-
       resetAuthHeaders: s.resetAuthHeaders,
+      changeAuthType: s.changeAuthType,
       changeAuth: s.changeAuth,
-      updateActiveAuth: s.updateActiveAuth,
-      updateAuthValue: s.updateAuthValue,
     }),
     shallow
   );
 
-  //  console.log({ auth });
+   console.log({ auth });
+   const { value, type } = auth
 
   const _updateOAuth2 = (updated = '', payload: { key: any; value: any }) => {
     if (!payload) return;
@@ -51,7 +50,7 @@ const AuthTab = () => {
       });
     }
 
-    updateAuthValue(EAuthTypes.OAuth2, updates);
+    changeAuth(EAuthTypes.OAuth2, updates);
     // console.log({ updates });
   };
 
@@ -64,10 +63,10 @@ const AuthTab = () => {
 
   return (
     <AuthSetting
-      auth={auth}
-      activeAuth={activeAuthType}
-      onChangeAuth={updateAuthValue}
-      onChangeActiveAuth={updateActiveAuth}
+      authUiState={runtimeAuths}
+      activeAuth={type}
+      onChangeActiveAuth={changeAuthType}
+      onChangeAuth={changeAuth}
       onChangeOAuth2Value={_updateOAuth2}
       fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
       fetchInheritedAuth={_onSelectInheritAuth}

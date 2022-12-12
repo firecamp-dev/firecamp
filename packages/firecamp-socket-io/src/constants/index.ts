@@ -220,7 +220,7 @@ export const ArgTypes = [
     name: 'No body',
   },
 ];
-export const EnvelopeTypes = [
+export const TypedArrayViews = [
   'Int8Array',
   'Uint8Array',
   'Uint8ClampedArray',

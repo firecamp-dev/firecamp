@@ -40,7 +40,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.0.19",
+    "@firecamp/types": "^0.1.2",
     "@firecamp/url": "^0.0.17",
     "codemirror": "^5.63.0",
     "codemirror-graphql": "^1.0.2",
