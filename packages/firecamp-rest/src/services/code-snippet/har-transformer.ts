@@ -56,10 +56,9 @@ export default (request: IRest): Request => {
   // transform request body
   if (
     !_object.isEmpty(request.body) &&
-    Object.values(ERestBodyTypes).includes(request?.__meta?.activeBodyType) &&
-    request.__meta.activeBodyType !== ERestBodyTypes.NoBody
+    Object.values(ERestBodyTypes).includes(request.body?.type)
   ) {
-    switch (request.__meta.activeBodyType) {
+    switch (request.body.type) {
       case ERestBodyTypes.FormData:
         harRequest.postData = {
           mimeType: ERestBodyTypes.FormData,

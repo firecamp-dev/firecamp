@@ -1,10 +1,10 @@
-import { IUiAuth, EAuthTypes } from '@firecamp/types';
+import { IAuthUiState, EAuthTypes } from '@firecamp/types';
 
 export interface IAuthSetting {
   /**
    * Auth data
    */
-  auth: IUiAuth;
+  authUiState: IAuthUiState;
 
   /**
    * Active auth among all auth

@@ -23,7 +23,7 @@ import { IPushPayload } from '../store/slices';
 import { InitPlayground } from '../constants';
 
 import SidebarPanel from './sidebar-panel/SidebarPanel';
-import { initialiseStoreFromRequest } from '../services/request.service';
+import { initialiseStoreFromRequest, normalizeRequest } from '../services/request.service';
 
 const Socket = ({
   // firecampFunctions = {},
@@ -137,15 +137,8 @@ const Socket = ({
     const _fetchRequest = async () => {
       try {
         const isRequestSaved = !!tab?.request?.__ref.id || false;
-        let requestToNormalize: ISocketIO = {
-          url: { raw: '' },
-          __meta: {
-            name: '',
-            version: '2.0.0',
-            type: ERequestTypes.SocketIO,
-          },
-          __ref: { id: '', collectionId: '' },
-        };
+        // prepare a minimal request payload
+        let _request: ISocketIO = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -153,20 +146,17 @@ const Socket = ({
             const response = await platformContext.request.onFetch(
               tab.request.__ref.id
             );
-            requestToNormalize = response.data;
+            _request = response.data;
           } catch (error) {
             console.error(error);
             throw error;
           }
         }
         /** initialise socket.io store on tab load */
-        initialise(requestToNormalize);
+        initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
+      } catch (e) {
+        console.error(e);
 
         // TODO: close tab and show error popup
       }
@@ -590,11 +580,6 @@ const Socket = ({
       updatedReqeust = await normalizeRequestPayload(updatedReqeust, true);
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
-      });
 
       // console.log({ req: restStoreApi.getState().request });
 
@@ -691,8 +676,8 @@ const Socket = ({
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {} } = tab;
-    const initState = initialiseStoreFromRequest(request);
+    const { request = {}, id } = tab;
+    const initState = initialiseStoreFromRequest(request, id);
     return (
       <SocketStoreProvider createStore={() => createSocketStore(initState)}>
         <WrappedComponent tab={tab} {...props} />

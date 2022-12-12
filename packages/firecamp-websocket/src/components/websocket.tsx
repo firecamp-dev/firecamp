@@ -61,7 +61,6 @@ const Websocket = ({
     setSelectedCollectionMessage,
     changePlaygroundTab,
     sendMessage,
-    setLast,
     setRequestSavedFlag,
     getMergedRequestByPullAction,
     setIsFetchingReqFlag,
@@ -82,7 +81,6 @@ const Websocket = ({
       changePlaygroundTab: s.changePlaygroundTab,
       sendMessage: s.sendMessage,
       connect: s.connect,
-      setLast: s.setLast,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
@@ -148,7 +146,7 @@ const Websocket = ({
       try {
         const isRequestSaved = !!tab?.request?.__ref?.id || false;
         // prepare a minimal request payload
-        let requestToNormalize: IWebSocket = normalizeRequest({});
+        let _request: IWebSocket = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -156,7 +154,7 @@ const Websocket = ({
             const response = await platformContext.request.onFetch(
               tab.request.__ref.id
             );
-            requestToNormalize = { ...response.data };
+            _request = { ...response.data };
           } catch (error) {
             console.error({
               api: 'fetch rest request',
@@ -166,14 +164,10 @@ const Websocket = ({
           }
         }
         /** initialise ws store on tab load */
-        initialise(requestToNormalize);
+        initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
-
+      } catch (e) {
+        console.error(e);
         // TODO: close tab and show error popup
       }
     };
@@ -191,11 +185,11 @@ const Websocket = ({
 
       // console.log({ pullPayload });
 
-      const last = websocketStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // const last = websocketStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = (await getMergedRequestByPullAction(
@@ -209,17 +203,12 @@ const Websocket = ({
       // console.log({ updatedRequest, mergedPullAndLastRequest });
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-      });
 
-  
       // const pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request
-      initialise(updatedRequest); //pushAction
+      // initialise(updatedRequest); //pushAction
       // _cloneDeep({ request: emptyPushAction }),
       setIsFetchingReqFlag(false);
     } catch (error) {
@@ -672,7 +661,6 @@ const Websocket = ({
 
   const onSave = (pushPayload: any, tabId) => {
     console.log({ pushPayload });
-
     if (!pushPayload._action || !pushPayload.__ref.id) return;
     if (pushPayload._action.type === 'i') {
       platformContext.request.subscribeChanges(
@@ -680,19 +668,12 @@ const Websocket = ({
         handlePull
       );
     }
-
     platformContext.request.onSave(pushPayload, tabId);
-
-    let last = websocketStoreApi.getState().last,
-      request = websocketStoreApi.getState().request;
-
-    // set last value by pull action and request
-    setLast({
-      ...last,
-      request,
-      pushAction: {}, //emptyPushAction,
-    });
+    // let last = websocketStoreApi.getState().last,
+    // request = websocketStoreApi.getState().request;
   };
+
+  // set last value by pull action and request
 
   // if(isFetchingRequest === true) return <Loader />;
   console.log(tab, 'tab...');
@@ -727,21 +708,14 @@ const Websocket = ({
           </Container.Body>
         </Container>
       </RootContainer>
-      {tab.__meta.isSaved && (
-        <TabChangesDetector
-          onChangeRequestTab={platformContext.request.onChangeRequestTab}
-          tabId={tab.id}
-          tabMeta={tab.__meta}
-        />
-      )}
     </WebsocketContext.Provider>
   );
 };
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {} } = tab;
-    const initState = initialiseStoreFromRequest(request);
+    const { request = {}, id } = tab;
+    const initState = initialiseStoreFromRequest(request, id);
     return (
       <WebsocketStoreProvider
         createStore={() => createWebsocketStore(initState)}
@@ -755,29 +729,3 @@ const withStore = (WrappedComponent) => {
 };
 
 export default withStore(Websocket);
-
-const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
-  let { pushAction } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
-      pushAction: s.pushAction,
-    }),
-    shallow
-  );
-
-  useEffect(() => {
-    if (tabMeta.isSaved) {
-      // console.log({ pushAction });
-
-      // Check if empty or not
-      const isTabDirty = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(pushAction || {})) || {}
-      );
-      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
-      if (tabMeta.hasChange !== isTabDirty) {
-        onChangeRequestTab(tabId, { hasChange: isTabDirty });
-      }
-    }
-  }, [pushAction]);
-
-  return <></>;
-};

@@ -37,18 +37,15 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
-    setLast,
     setContext,
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
-
       initialise: s.initialise,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       setActiveEnvironments: s.setActiveEnvironments,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
-      setLast: s.setLast,
       setContext: s.setContext,
     }),
     shallow
@@ -130,11 +127,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
       // console.log({ pullPayload });
 
-      let last = graphqlStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // let last = graphqlStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = (await getMergedRequestByPullAction(
@@ -148,12 +145,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       // console.log({ updatedRequest, mergedPullAndLastRequest });
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
-      });
-
       // get push action payload
       // let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
@@ -193,7 +184,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       }
 
       /** initialise graphql store on tab load */
-      initialise(_request);
+      initialise(_request, tab.id);
       setIsFetchingReqFlag(false);
     } catch (error) {
       console.error({
@@ -232,15 +223,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
     platformContext.request.onSave(pushPayload, tabId);
 
-    let last = graphqlStoreApi.getState().last,
-      request = graphqlStoreApi.getState().request;
+    // let last = graphqlStoreApi.getState().last,
+      // request = graphqlStoreApi.getState().request;
 
     // set last value by pull action and request
-    setLast({
-      ...last,
-      request,
-      pushAction: {} // emptyPushAction,
-    });
+   
   };
 
   if (isFetchingRequest === true) return <Loader />;
@@ -261,58 +248,21 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
           <DocWrapper />
         </Row>
       </Container.Body>
-      {tab.__meta.isSaved && (
-        <TabChangesDetector
-          onChangeRequestTab={platformContext.request.onChangeRequestTab}
-          tabId={tab.id}
-          tabMeta={tab.__meta}
-        />
-      )}
     </Container>
   );
 };
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {} } = tab;
-    const initState = initialiseStoreFromRequest(request);
-
+    const { request = {}, id } = tab;
+    const initState = initialiseStoreFromRequest(request, id);
+    // console.log(tab, 'tab.....', initState)
     return (
       <GraphQLStoreProvider createStore={() => createGraphQLStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
       </GraphQLStoreProvider>
     );
   };
-
   return MyComponent;
 };
-
-const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
-  let { pushAction } = useGraphQLStore(
-    (s: any) => ({
-      pushAction: s.pushAction,
-    }),
-    shallow
-  );
-
-  useEffect(() => {
-    if (tabMeta.isSaved) {
-      // console.log({ pushAction });
-
-      // Check if push action empty or not
-      let isTabDirty = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(pushAction || {})) || {}
-      );
-      // console.log({ pushAction });
-
-      // Update tab __meta if existing tab.__meta.hasChange is not same as isTabDirty
-      if (tabMeta.hasChange !== isTabDirty) {
-        onChangeRequestTab(tabId, { hasChange: isTabDirty });
-      }
-    }
-  }, [pushAction]);
-
-  return <></>;
-};
-
 export default withStore(GraphQL);

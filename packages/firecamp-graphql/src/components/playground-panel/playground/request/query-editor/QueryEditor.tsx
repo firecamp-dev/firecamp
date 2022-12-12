@@ -77,15 +77,16 @@ const QueryEditor = ({
   //when value/query will ge generated from explorer or other source like `Q|M|S` buttons then update them in playground
   useEffect(() => {
     const currentCursor = editorRef.current.getCursor();
-    if (value != editorRef?.current?.getValue()) {
-      // console.log(editorRef?.current, "editorRef?.current")
-      editorRef?.current?.setValue(value || '');
+    if (value != editorRef.current?.getValue()) {
+      // console.log(editorRef.current, "editorRef?.current")
+      editorRef.current?.setValue(value || '');
 
       //the cursor always set to first line after .setValue, so need to set prev cursor position after setting value
       editorRef.current?.focus();
       editorRef.current?.setCursor(currentCursor);
       editorRef.current?.scrollIntoView(
-        { line: currentCursor.line + 5, char: currentCursor.ch },
+        // { line: currentCursor.line + 5, char: currentCursor.ch },
+        { line: currentCursor.line, char: currentCursor.ch },
         20
       );
       // console.log(currentCursor)
@@ -179,9 +180,7 @@ ${print(GraphQLParse(`query MyQuery{__typename }`))}`;
           matchBrackets: true,
           showCursorWhenSelecting: true,
           readOnly: false,
-          foldGutter: {
-            minFoldSize: 4,
-          },
+          foldGutter: true,
           // lint: true,
           lint: {
             schema: clientSchema,

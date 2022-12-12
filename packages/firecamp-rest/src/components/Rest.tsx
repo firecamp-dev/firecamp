@@ -7,25 +7,23 @@ import { Container, Row, Loader } from '@firecamp/ui-kit';
 import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
 import { IRest } from '@firecamp/types';
 import _url from '@firecamp/url';
-import UrlBarContainer from './common/urlbar/UrlBarContainer';
-import Request from './request/Request';
-import Response from './response/Response';
-import CodeSnippets from './common/code-snippets/CodeSnippets';
+import { _misc, _object, _table, _auth } from '@firecamp/utils';
 
 import {
   useRestStore,
   RestStoreProvider,
   createRestStore,
   useRestStoreApi,
-  IPushPayload,
   IRestStore,
 } from '../store';
-
-import { _misc, _object, _table, _auth } from '@firecamp/utils';
 import {
   initialiseStoreFromRequest,
   normalizeRequest,
 } from '../services/request.service';
+import UrlBarContainer from './common/urlbar/UrlBarContainer';
+import Request from './request/Request';
+import Response from './response/Response';
+import CodeSnippets from './common/code-snippets/CodeSnippets';
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   const restStoreApi: any = useRestStoreApi();
@@ -38,8 +36,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
-
-    setLast,
     setContext,
   } = useRestStore(
     (s: IRestStore) => ({
@@ -50,11 +46,9 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       changeUrl: s.changeUrl,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       setActiveEnvironments: s.setActiveEnvironments,
-      changeAuth: s.changeAuth,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
-      setLast: s.setLast,
       setContext: s.setContext,
     }),
     shallow
@@ -140,13 +134,10 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         }
 
         /** initialise rest store on tab load */
-        initialise(_request);
+        initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
+      } catch (e) {
+        console.error(e);
       }
     };
     _fetchRequest();
@@ -157,29 +148,24 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  const handlePull = async (pullActions: IPushPayload[]) => {
+  const handlePull = async (pullActions: any[]) => {
     try {
       let pullPayload = pullActions[0];
 
       // console.log({ pullPayload });
 
-      let last = restStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // let last = restStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = await getMergedRequestByPullAction(pullPayload);
 
-      updatedRequest = normalizeRequest(updatedRequest);
+      // updatedRequest = normalizeRequest(updatedRequest);
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
-      });
 
       // console.log({ req: restStoreApi.getState().request });
 
@@ -194,11 +180,8 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
 
       // initialise request with updated request and push action
       // initialiseRequest(updatedRequest, true, pushAction, true, false);
-    } catch (error) {
-      console.error({
-        API: 'rest.handlePull',
-        error,
-      });
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -269,7 +252,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   // console.log({ isFetchingRequest })
 
-  const onSave = (pushPayload: IPushPayload, tabId) => {
+  const onSave = (pushPayload: any, tabId) => {
     // console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload._action.item_id) return;
@@ -327,21 +310,14 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           />
         </Container.Body>
       </Container>
-      {tab.__meta.isSaved && (
-        <TabChangesDetector
-          onChangeRequestTab={platformContext.request.onChangeRequestTab}
-          tabId={tab.id}
-          tabMeta={tab.__meta}
-        />
-      )}
     </>
   );
 };
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {} } = tab;
-    const initState = initialiseStoreFromRequest(request);
+    const { request = {}, id } = tab;
+    const initState = initialiseStoreFromRequest(request, id);
     return (
       <RestStoreProvider createStore={() => createRestStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
@@ -351,33 +327,4 @@ const withStore = (WrappedComponent) => {
 
   return MyComponent;
 };
-
-const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
-  let { pushAction } = useRestStore(
-    (s: any) => ({
-      pushAction: s.pushAction,
-    }),
-    shallow
-  );
-
-  useEffect(() => {
-    if (tabMeta.isSaved) {
-      // console.log({ pushAction });
-
-      // Check if push action empty or not
-      let isTabDirty = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(pushAction || {})) || {}
-      );
-      // console.log({ pushAction });
-
-      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
-      if (tabMeta.hasChange !== isTabDirty) {
-        onChangeRequestTab(tabId, { hasChange: isTabDirty });
-      }
-    }
-  }, [pushAction]);
-
-  return <></>;
-};
-
 export default withStore(memo(Rest));

@@ -23,7 +23,12 @@ import {
   IRequestChangeStateSlice,
   createRequestChangeStateSlice,
 } from './index';
-import { ERestBodyTypes, IGraphQL } from '@firecamp/types';
+import {
+  ERestBodyTypes,
+  IGraphQL,
+  IRest,
+  TId,
+} from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import { initialiseStoreFromRequest } from '../services/request.service';
@@ -42,11 +47,8 @@ interface IGraphQLStore
     IPullSlice,
     IUiSlice,
     IRequestChangeStateSlice {
-  last: any;
   originalRequest?: IGraphQL;
-
-  setLast: (initialState: IGraphQLStoreState) => void;
-  initialise: (_request: Partial<IGraphQL>) => void;
+  initialise: (_request: Partial<IGraphQL>, tabId: TId) => void;
   context?: any;
   setContext: (ctx: any) => void;
   execute?: (query?: string, variables?: string) => Promise<IRestResponse>;
@@ -69,24 +71,15 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
         initialState.request //_object.pick(initialState.request, requestSliceKeys)
       ),
       ...createPlaygroundsSlice(set, get),
-      ...createRuntimeSlice(set, get),
+      ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get),
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
       ...createRequestChangeStateSlice(set, get),
 
-      last: initialState,
-
-      setLast: (initialState: IGraphQLStoreState) => {
-        set((s) => ({
-          ...s,
-          last: initialState,
-        }));
-      },
-
-      initialise: (request: Partial<IGraphQL>) => {
+      initialise: (request: Partial<IGraphQL>, tabId: TId) => {
         // const state = get();
-        const initState = initialiseStoreFromRequest(request);
+        const initState = initialiseStoreFromRequest(request, tabId);
         // console.log(initState, 'initState');
         set((s) => ({
           ...s,
@@ -102,24 +95,34 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
 
       execute: async (opsName: string, query?: string, variables?: string) => {
         const state = get();
-        const request = state.request;
+        const {
+          request,
+          runtime: { activePlayground },
+        } = state;
+        if (!request.url?.raw) return;
+
+        //@ts-ignore
+        const _request: IRest = Object.assign(
+          {},
+          {
+            ...request,
+            __meta: {
+              ...request.__meta,
+            },
+            body: {
+              value: { query, variables },
+              type: ERestBodyTypes.GraphQL,
+            },
+          }
+        );
         // const certificates = [],
         // proxies = [];
-        const activePlayground = state.runtime.activePlayground;
-        if (!request?.url?.raw) return;
 
-        request.body = {
-          [ERestBodyTypes.GraphQL]: {
-            value: query,
-            variables,
-          },
-        };
-        request.__meta.activeBodyType = ERestBodyTypes.GraphQL;
-
+        // console.log(_request, 'request...');
         // let response: IRestResponse = { statusCode: 0 };
         state.setRequestRunningFlag(activePlayground, true);
         return state.context.request
-          .execute(request)
+          .execute(_request)
           .then((r: IRestResponse) => {
             state.setPlaygroundResponse(r);
             return r;
@@ -135,25 +138,30 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
 
       fetchIntrospectionSchema: async () => {
         const state = get();
-        if (state.runtime.isFetchingIntrospection) return;
+        const {
+          request,
+          runtime: { isFetchingIntrospection },
+        } = state;
+        if (isFetchingIntrospection) return;
 
         const query = getIntrospectionQuery();
-        const request = state.request;
-        // let response;
+        const _request = Object.assign(
+          {},
+          {
+            ...request,
+            __meta: request.__meta,
+            body: {
+              value: { query },
+              type: ERestBodyTypes.GraphQL,
+            },
+          }
+        );
         // const certificates = [],
         // proxies = [];
 
-        request.body = {
-          [ERestBodyTypes.GraphQL]: {
-            value: query,
-            // variables
-          },
-        };
-        request.__meta.activeBodyType = ERestBodyTypes.GraphQL;
-
         state.setFetchIntrospectionFlag(true);
         state.context.request
-          .execute(request)
+          .execute(_request)
           .then((r: { data: string }) => {
             try {
               const schema = JSON.parse(r.data).data;

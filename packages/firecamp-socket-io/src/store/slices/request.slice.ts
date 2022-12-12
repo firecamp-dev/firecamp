@@ -9,7 +9,6 @@ import {
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
-
   initialiseRequest: (request: ISocketIO) => void;
   setRequestKey: (key: string, value: any) => void;
   changeListeners: (listeners: Array<string>) => void;
@@ -71,14 +70,12 @@ const createRequestSlice = (
   },
   changeConfig: (key: string, value: any) => {
     const state = get();
-    const lastConfig = state.last?.request.config;
-    const updatedConfig = {
+    const config = {
       ...(state.request.config || {}),
       [key]: value,
     };
-    set((s) => ({ request: { ...s.request, config: updatedConfig } }));
-    // prepare push action for config in _root
-    state.prepareRequestConfigPushAction(lastConfig, updatedConfig);
+    set((s) => ({ request: { ...s.request, config } }));
+    state.equalityChecker({ config });
   },
 });
 

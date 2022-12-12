@@ -1,13 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';
 import { FileDrop } from 'react-file-drop';
-import { ERestBodyTypes } from '@firecamp/types';
 import { Container, Button } from '@firecamp/ui-kit';
 
 const BinaryTab = ({ body, onChange }) => {
   const inputEle = useRef(null);
-  // console.log({ body });
-
   const [fileName, setFileName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -44,7 +41,7 @@ const BinaryTab = ({ body, onChange }) => {
       // _import(raw_text);
       setErrorMsg('');
       setButtonDisabled(false);
-      _onChangeBinaryBodyValue(file);
+      onChange(file);
     }
   };
 
@@ -63,12 +60,8 @@ const BinaryTab = ({ body, onChange }) => {
 
       setErrorMsg('');
       setButtonDisabled(false);
-      _onChangeBinaryBodyValue(file);
+      onChange(file);
     }
-  };
-
-  const _onChangeBinaryBodyValue = (text) => {
-    onChange(ERestBodyTypes.Binary, text);
   };
 
   return (

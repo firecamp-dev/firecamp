@@ -33,7 +33,7 @@ import {
   InitArg,
   EditorCommands,
   ArgTypes,
-  EnvelopeTypes,
+  TypedArrayViews,
   InitPlayground,
 } from '../../../../constants';
 import { ISocketStore, useSocketStore } from '../../../../store';
@@ -192,7 +192,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
     isOpenPopup: false,
     isMessageDirty: false,
   });
-  const envelopeList = EnvelopeTypes.map((e) => {
+  const typedArrayList = TypedArrayViews.map((e) => {
     return {
       id: e,
       name: e,
@@ -200,7 +200,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
   });
 
   //arraybuffer
-  const [selectedEnvelope, setSelectedEnvelope] = useState(envelopeList[0]);
+  const [selectedTypedArray, setSelectedTypedArray] = useState(typedArrayList[0]);
 
   useEffect(() => {
     if (
@@ -226,12 +226,12 @@ const EmitterPlayground = ({ tabData = {} }) => {
     if (
       playgroundEmitter.body[argRef.current].__meta.typedArrayView &&
       playgroundEmitter.body[argRef.current].__meta.typedArrayView !==
-        selectedEnvelope.id
+        selectedTypedArray.id
     ) {
-      setSelectedEnvelope(
-        envelopeList.find(
+      setSelectedTypedArray(
+        typedArrayList.find(
           (e) => e.id === playgroundEmitter.body[argRef.current].__meta.typedArrayView
-        ) || selectedEnvelope
+        ) || selectedTypedArray
       );
     }
     if (!equal(emitterBody, playgroundEmitter.body[argRef.current].payload)) {
@@ -257,12 +257,12 @@ const EmitterPlayground = ({ tabData = {} }) => {
     }
     if (
       playgroundEmitter?.body?.[argRef.current]?.__meta.typedArrayView !==
-      selectedEnvelope.id
+      selectedTypedArray.id
     ) {
-      setSelectedEnvelope(
-        envelopeList.find(
+      setSelectedTypedArray(
+        typedArrayList.find(
           (e) => e.id === playgroundEmitter.body[argRef.current].__meta.typedArrayView
-        ) || selectedEnvelope
+        ) || selectedTypedArray
       );
     }
   }, [argRef.current, playgroundEmitter]);
@@ -385,7 +385,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
         } else {
           _playgroundEmitterFns.updateBody({
             payload: '',
-            __meta: { type: type.id, typedArrayView: selectedEnvelope.id },
+            __meta: { type: type.id, typedArrayView: selectedTypedArray.id },
           });
         }
       } else if (
@@ -418,9 +418,9 @@ const EmitterPlayground = ({ tabData = {} }) => {
     // _playgroundEmitterFns.updateBody({ __meta: { type: type.id } });
   };
 
-  const _onSelectEnvelope = (env) => {
+  const _onSelectTypedArray = (env) => {
     if (env && env.id) {
-      setSelectedEnvelope(env);
+      setSelectedTypedArray(env);
       _playgroundEmitterFns.updateBody({ __meta: { typedArrayView: env.id } });
     }
   };
@@ -520,13 +520,13 @@ const EmitterPlayground = ({ tabData = {} }) => {
               EEmitterPayloadTypes.arraybuffer ||
             playgroundEmitter.body[argRef.current]?.__meta.type ===
               EEmitterPayloadTypes.arraybufferview
-              ? EnvelopeTypes[0]
+              ? TypedArrayViews[0]
               : '',
         },
       };
 
       const emitterBodyPayload = [...playgroundEmitter.body, newArg];
-      setSelectedEnvelope(envelopeList[0]);
+      setSelectedTypedArray(typedArrayList[0]);
       _playgroundEmitterFns.update({ body: emitterBodyPayload });
       await _playgroundEmitterFns.setIndex(
         emitterBodyPayload.length > 0 ? emitterBodyPayload.length - 1 : 0
@@ -702,12 +702,12 @@ const EmitterPlayground = ({ tabData = {} }) => {
         activeArgIndex={argRef.current}
         ArgTypes={ArgTypes}
         activeArgType={activeArgType}
-        envelopeList={envelopeList}
-        selectedEnvelope={selectedEnvelope}
+        typedArrayList={typedArrayList}
+        selectedTypedArray={selectedTypedArray}
         isSelectTypeDDOpen={isSelectTypeDDOpen}
         onSelectArgType={_onSelectArgType}
         toggleSelectArgTypeDD={toggleSelectArgTypeDD}
-        onSelectEnvelope={_onSelectEnvelope}
+        onSelectTypedArray={_onSelectTypedArray}
       />
       <Body
         emitterName={playgroundEmitter.name || ''}

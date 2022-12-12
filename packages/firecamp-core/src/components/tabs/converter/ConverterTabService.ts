@@ -231,7 +231,7 @@ class ConverterTabService {
         type: UPDATE,
         itemId: reqId,
         collectionId,
-        // workspaceId: F.appStore.Preferences.active_workspace
+        // workspaceId: F.appStore.Preferences.activeWorkspace
       };
 
       // await F.db.request

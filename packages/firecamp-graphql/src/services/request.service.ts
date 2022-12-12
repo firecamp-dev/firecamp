@@ -3,6 +3,7 @@ import {
   EHttpMethod,
   ERequestTypes,
   EKeyValueTableRowType,
+  TId,
 } from '@firecamp/types';
 import { nanoid } from 'nanoid';
 import _cleanDeep from 'clean-deep';
@@ -77,7 +78,7 @@ export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
     if (!url.pathParams?.length) url.pathParams = [];
     url.pathParams.map((pp) => {
       // add default key: `type: text`
-      qp.id = nanoid();
+      pp.id = nanoid();
       pp.type = EKeyValueTableRowType.Text;
       pp.value = pp.value || '';
       if (isValidRow(pp)) pathParams.push(pp);
@@ -119,7 +120,8 @@ export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
 };
 
 export const initialiseStoreFromRequest = (
-  _request: Partial<IGraphQL>
+  _request: Partial<IGraphQL>,
+  tabId: TId
 ): IGraphQLStoreState => {
   const request = normalizeRequest(_request);
   const uiState = prepareUiState(_cloneDeep(request));
@@ -139,6 +141,7 @@ export const initialiseStoreFromRequest = (
       isFetchingIntrospection: false,
       isRequestSaved: !!request.__ref.collectionId,
       schema: null,
+      tabId,
     },
     ui: {
       hasHeaders: false,
