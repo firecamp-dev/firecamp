@@ -62,7 +62,7 @@
     "@babel/register": "^7.0.0",
     "@types/ramda": "^0.28.15",
     "babel-eslint": "^7.1.0",
-    "babel-loader": "^8.2.4",
+    "babel-loader": "^9.1.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "babel-preset-react-optimize": "^1.0.1",
