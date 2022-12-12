@@ -32,7 +32,7 @@ By default, a server at [localhost:6006](http://localhost:6006/) is started.
 3.  Button (Button [x], CopyButton [x], DocButton [x])
 4.  Checkbox [x]
 5.  CheckboxGroup [x]
-6.  Dropdown [ ]
+6.  Dropdown [x]
 7.  Editor [ ]
 8.  FormGroup [ ]
 9.  Grid [ ]
