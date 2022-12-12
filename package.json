@@ -78,7 +78,7 @@
     "css-modules-require-hook": "^4.2.3",
     "electron": "19.0.0",
     "eslint": "^7.6.0",
-    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jest": "^26.6.0",
     "eslint-plugin-jsx": "^0.1.0",
