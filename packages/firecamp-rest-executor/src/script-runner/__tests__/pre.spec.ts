@@ -1,5 +1,4 @@
 import {
-  ERestBodyTypes,
   EHttpMethod,
   ERequestTypes,
   IRest,
@@ -20,7 +19,6 @@ const request: IRest = {
     name: 'script',
     type: ERequestTypes.Rest,
     version: '2.0.0',
-    activeBodyType: ERestBodyTypes.NoBody,
   },
   __ref: {
     id: '',

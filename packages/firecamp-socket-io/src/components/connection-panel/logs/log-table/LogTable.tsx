@@ -16,7 +16,7 @@ import { _object } from '@firecamp/utils';
 
 import LogPreview from './LogPreview';
 import AckIcon from './AckIcon';
-import { useSocketStore } from '../../../../store';
+import { ISocketStore, useSocketStore } from '../../../../store';
 
 import { ELogTypes } from '../../../../types';
 
@@ -32,18 +32,16 @@ const LogTable = ({
   align = 'center',
   eventsList = [],
 }) => {
-  let logTableAPIRef = useRef();
-
-  let {
+  const logTableAPIRef = useRef();
+  const {
     activePlayground,
     logFilters,
     connectionLogs,
-
     changePlaygroundLogFilters,
   } = useSocketStore(
-    (s) => ({
+    (s: ISocketStore) => ({
       activePlayground: s.runtime.activePlayground,
-      logFilters: s.playgrounds?.[s.runtime.activePlayground]?.logFilters || '',
+      logFilters: s.playgrounds[s.runtime.activePlayground]?.logFilters || '',
       connectionLogs: s.connectionsLogs?.[s.runtime.activePlayground] || [],
 
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
@@ -51,8 +49,8 @@ const LogTable = ({
     shallow
   );
 
-  let [tableHeight, setTableHeight] = useState(465);
-  let [selectedRow, setSelectedRow] = useState({});
+  const [tableHeight, setTableHeight] = useState(465);
+  const [selectedRow, setSelectedRow] = useState({});
 
   /**
    * Reflect filter updates by eventsList provided as props.
@@ -89,17 +87,16 @@ const LogTable = ({
       }
     ) => {
       let filteredLogs = logs;
-
       for (let filterKey in logFilters) {
         if (logFilters[filterKey]) {
-          // filter accessor .meta
+          // filter accessor .__meta
           filteredLogs = filteredLogs.filter((log) => {
             if (filterKey === 'type') {
               return (
-                log?.meta?.[filterKey] === logTypes[logFilters?.[filterKey]]
+                log?.__meta[filterKey] === logTypes[logFilters?.[filterKey]]
               );
             } else {
-              return log?.meta?.[filterKey] === logFilters?.[filterKey];
+              return log?.__meta[filterKey] === logFilters?.[filterKey];
             }
           });
         }
@@ -108,21 +105,19 @@ const LogTable = ({
       return filteredLogs;
     };
 
-    let filteredLogs = getFilteredLogsByMeta(connectionLogs, logFilters);
-
-    logTableAPIRef?.current?.setRows(filteredLogs);
+    const filteredLogs = getFilteredLogsByMeta(connectionLogs, logFilters);
+    logTableAPIRef.current?.setRows(filteredLogs);
   }, [connectionLogs, logFilters, selectedConnection]);
 
-  let _onRowClick = (rtRow) => {
-    let originalRowValue = rtRow.original;
-
+  const _onRowClick = (rtRow) => {
+    const originalRowValue = rtRow.original;
     setSelectedRow((ps) => ({
       ...originalRowValue,
       index: rtRow.index,
     }));
   };
 
-  let _onResizeStop = (e, a, b, delta) => {
+  const _onResizeStop = (e, a, b, delta) => {
     setTableHeight((ps) => ps + delta.height);
   };
 
@@ -149,12 +144,12 @@ const LogTable = ({
   const renderMessageCellValue = (value, cell) => {
     let row = cell.row.original;
 
-    if (row.meta.type == ELogTypes.System) {
+    if (row.__meta.type == ELogTypes.System) {
       return <span dangerouslySetInnerHTML={{ __html: row.title }} />;
     } else {
       return (
         <>
-          {value?.meta?.type !== 'file'
+          {value?.__meta.type !== 'file'
             ? '' + value?.payload
             : value?.name || ''}
         </>
@@ -162,13 +157,13 @@ const LogTable = ({
     }
   };
 
-  let columns = [
+  const columns = [
     {
       id: 'iconcolumn',
       Header: 'Type',
-      accessor: 'meta.type',
+      accessor: '__meta.type',
       Cell: (values) => {
-        let cellValue = values?.row?.original?.meta || {};
+        let cellValue = values?.row?.original?.__meta || {};
         return <IconColumn {...cellValue} />;
       },
       minWidth: 35,
@@ -178,7 +173,7 @@ const LogTable = ({
     {
       id: 'eventname',
       Header: 'Event',
-      accessor: 'meta.event',
+      accessor: '__meta.event',
       minWidth: 100,
       width: 140,
       maxWidth: 140,
@@ -194,7 +189,7 @@ const LogTable = ({
     {
       id: 'timecolumn',
       Header: 'Time',
-      accessor: 'meta.timestamp',
+      accessor: '__meta.timestamp',
       Cell: TimeColumn,
       minWidth: 35,
       width: 35,
@@ -208,9 +203,8 @@ const LogTable = ({
    * @param {*} filter : Filter value
    * @returns
    */
-  let _onFilter = (type, filter = '') => {
+   const _onFilter = (type, filter = '') => {
     if (!type) return;
-
     if (logFilters[type] !== filter) {
       changePlaygroundLogFilters(activePlayground, { type: filter });
     }

@@ -1,10 +1,9 @@
 import { useRef } from 'react';
-import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 // import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
-
+import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
 import {
@@ -14,8 +13,7 @@ import {
 } from '../../../store';
 
 const CollectionTab = () => {
-  let treeRef = useRef();
-
+  const treeRef = useRef();
   const { folders = [], items = [] } = useSocketStore(
     (s: ISocketStore) => ({
       folders: s.collection.folders,
@@ -23,7 +21,7 @@ const CollectionTab = () => {
     }),
     shallow
   );
-  let {
+  const {
     context,
     // registerTDP,
     // unRegisterTDP,
@@ -42,7 +40,7 @@ const CollectionTab = () => {
 
   const openPlg = (plgId) => {
     // get a fresh copy of state
-    const item = items.find((i) => i._meta.id == plgId);
+    const item = items.find((i) => i.__ref.id == plgId);
     console.log(item, 1100099);
     openPlayground(item);
   };

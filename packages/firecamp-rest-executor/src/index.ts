@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
 import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
-import { ERestBodyTypes, IRest, IRestResponse } from '@firecamp/types';
+import { IRest, IRestResponse } from '@firecamp/types';
 import { _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 
@@ -80,7 +80,7 @@ export default class RestExecutor implements IRestExecutor {
    * @param request: IRest
    */
   private async _prepare(request: IRest): Promise<AxiosRequestConfig> {
-    const { __meta, body, config, headers, url } = request;
+    const { body, config, headers, url } = request;
 
     const axiosRequest: AxiosRequestConfig = {
       url: _url.normalize(url?.raw || '', ['http', 'https']),
@@ -111,11 +111,9 @@ export default class RestExecutor implements IRestExecutor {
 
     // TODO: Check sending file without serialize in desktop environment
     // parse body payload
-    axiosRequest.data = await parseBody(
-      body || {},
-      __meta.activeBodyType || ERestBodyTypes.NoBody
-    );
-
+    if (body) {
+      axiosRequest.data = await parseBody(body);
+    }
     return axiosRequest;
   }
 

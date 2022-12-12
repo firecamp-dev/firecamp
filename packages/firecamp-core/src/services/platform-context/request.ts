@@ -1,7 +1,6 @@
 import { Realtime, Rest } from '@firecamp/cloud-apis';
 import {
   TId,
-  EPushActionType,
   IRest,
   IGraphQL,
   IRestResponse,
@@ -38,7 +37,6 @@ interface IPlatformRequestService {
     tabId: TId,
     tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL, // |ISocket | IWebsocket ,
-    pushActions?: any[]
   ) => void;
 
   // fetch request from server by request id
@@ -89,7 +87,7 @@ const request: IPlatformRequestService = {
       // set request payload to store to be saved for next step
       requestState.setReqAndTabId(pushPayload, tabId);
 
-      if (pushPayload && pushPayload._action.type === EPushActionType.Insert) {
+      if (pushPayload && pushPayload._action.type === 'i') {
         // open save request
         AppService.modals.openSaveRequest();
       } else {
@@ -114,7 +112,7 @@ const request: IPlatformRequestService = {
 
   // normalize request push payload for insert and update
   normalizePushPayload: (pushPayload: any) => {
-    let active_workspace = useWorkspaceStore.getState().getWorkspaceId();
+    let activeWorkspace = useWorkspaceStore.getState().getWorkspaceId();
 
     let userId = useUserStore.getState().user;
 
@@ -127,11 +125,11 @@ const request: IPlatformRequestService = {
       // add workspaceId
       pushPayload._action = {
         ...pushPayload._action,
-        workspaceId: active_workspace,
+        workspaceId: activeWorkspace,
       };
 
       switch (type) {
-        case EPushActionType.Insert:
+        case 'i':
           pushPayload.__ref = {
             ...pushPayload.__ref,
             createdBy: userId,
@@ -139,7 +137,7 @@ const request: IPlatformRequestService = {
           };
           break;
 
-        case EPushActionType.Update:
+        case 'u':
           pushPayload.__ref = {
             ...pushPayload.__ref,
             updatedBy: userId,
@@ -147,7 +145,7 @@ const request: IPlatformRequestService = {
           };
           break;
 
-        case EPushActionType.Delete:
+        case 'd':
           pushPayload.__ref = {
             ...pushPayload.__ref,
             deleted_by: userId,
@@ -169,7 +167,6 @@ const request: IPlatformRequestService = {
     tabId: TId,
     tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL, // | ISocket | IWebsocket,
-    pushActions?: any[]
   ) => {
     // Here, request and pushActions are used for future purpose
     // console.log({ tabMeta });

@@ -16,6 +16,6 @@ export * from './slices/connectionsLogs.slice';
 export * from './slices/ui.slice';
 
 // export * from "./slices/ui.slice"
-export * from './slices/push-action/pushAction.slice';
 export * from './slices/handleConnectionExecutor.slice';
 export * from './slices/pull.slice';
+export * from './slices/change.slice';

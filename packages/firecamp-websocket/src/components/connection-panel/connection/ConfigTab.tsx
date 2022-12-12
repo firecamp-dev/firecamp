@@ -2,22 +2,22 @@ import { Input, Container, Notes, CheckboxInGrid } from '@firecamp/ui-kit';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
-const INPUT_TYPES = {
-  text: 'text',
-  boolean: 'boolean',
-  number: 'number',
+enum EInputTypes {
+  Text='text',
+  Boolean= 'boolean',
+  Number= 'number',
 };
 
 const configInputs = [
   {
     name: 'ping',
-    type: INPUT_TYPES.boolean,
+    type: EInputTypes.Boolean,
     labelFor: 'Ping',
     label: 'Ping',
   },
   {
     name: 'ping_interval',
-    type: INPUT_TYPES.number,
+    type: EInputTypes.Number,
     labelFor: 'Ping interval',
     label: 'Ping interval',
   },
@@ -30,7 +30,6 @@ const Config = ({ config = {}, onUpdate }) => {
 
   const _onChange = (name, value) => {
     if (!name) return;
-
     onUpdate(name, value);
   };
 
@@ -47,8 +46,8 @@ const Config = ({ config = {}, onUpdate }) => {
 
     // console.log(`config[name]`, name, config[name])
     switch (type) {
-      case INPUT_TYPES.text:
-      case INPUT_TYPES.number:
+      case EInputTypes.Text:
+      case EInputTypes.Number:
         // console.log(`config["ping"] `, config["ping"]);
         return (
           <Input
@@ -71,7 +70,7 @@ const Config = ({ config = {}, onUpdate }) => {
           />
         );
         break;
-      case INPUT_TYPES.boolean:
+      case EInputTypes.Boolean:
         // console.log(`config[name]`, config[name]);
         return (
           <CheckboxInGrid

@@ -76,7 +76,6 @@ export interface IRequestTabProps {
 
   //v3 props
   platformComponents: {
-    SavePopover?: ReactNode;
     EnvironmentWidget: ReactNode;
   };
   envVariables?: {

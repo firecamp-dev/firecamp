@@ -1,6 +1,5 @@
-import { TId, ISocketIOEmitter, ERequestTypes } from '@firecamp/types';
+import { TId, ERequestTypes } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
-
 import { InitPlayground } from '../../constants';
 import { ELogColors, ELogTypes } from '../../types';
 
@@ -9,15 +8,14 @@ const emptyLog = {
   message: {
     name: '',
     body: InitPlayground,
-    _meta: {
+    __ref: {
       id: '',
       collectionId: '',
-      request_id: '',
-      request_type: ERequestTypes.SocketIO,
+      requestId: '',
+      requestType: ERequestTypes.SocketIO,
     },
   },
-  meta: {
-    id: '',
+  __meta: {
     event: '',
     timestamp: 0,
     type: ELogTypes.System,
@@ -43,14 +41,13 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
 
   addConnectionLog: (connectionId: TId, log: ILog) => {
     // console.log({ log });
-
-    let connectionsLogs = get()?.connectionsLogs;
+    const state = get();
+    const connectionsLogs = state.connectionsLogs;
     if (connectionId in connectionsLogs) {
-      let logs = connectionsLogs[connectionId];
+      const logs = connectionsLogs[connectionId];
       log = { ...emptyLog, ...log };
 
       set((s) => ({
-        ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
           [connectionId]: [...logs, log],
@@ -58,7 +55,6 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
       }));
     } else {
       set((s) => ({
-        ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
           [connectionId]: [log],
@@ -67,22 +63,23 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
     }
   },
   addErrorLog: (connectionId: TId, message: string) => {
-    let log = {
+    const state = get();
+    const log = {
       ...emptyLog,
       title: message || '',
-      meta: {
-        ...emptyLog.meta,
+      __meta: {
+        ...emptyLog.__meta,
         type: ELogTypes.System,
         color: ELogColors.Danger,
       },
     };
-    get()?.addConnectionLog(connectionId, log);
+    state.addConnectionLog(connectionId, log);
   },
   clearAllConnectionLogs: (connectionId: TId) => {
-    let connectionsLogs = get()?.connectionsLogs;
+    const state = get();
+    const connectionsLogs = state.connectionsLogs;
     if (connectionId in connectionsLogs) {
       set((s) => ({
-        ...s,
         connectionsLogs: {
           ...s.connectionsLogs,
           [connectionId]: [],

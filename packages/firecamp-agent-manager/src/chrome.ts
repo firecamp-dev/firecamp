@@ -14,9 +14,9 @@ enum EReqEvent {
 }
 
 type ExtResponse = {
-  error: any,
-  response: IRestResponse
-}
+  error: any;
+  response: IRestResponse;
+};
 
 /**
  * Send the REST request to execute to the extension via
@@ -32,32 +32,33 @@ export const send = (request: IRest): Promise<IRestResponse> => {
       {
         requestOperation: EReqEvent.Send,
         request,
-        requestId: request._meta.id,
+        requestId: request.__ref.id,
       },
       (result: ExtResponse) => {
-
-        if(result?.response) return resolve(result.response);
-        if(result?.error) return reject(result.error);
+        if (result?.response) return resolve(result.response);
+        if (result?.error) return reject(result.error);
 
         // reject if found any error in message passing
         // console.log(chrome.runtime.lastError) // { message: ""}
-        if (chrome.runtime.lastError) return reject(chrome.runtime.lastError.message);
+        if (chrome.runtime.lastError)
+          return reject(chrome.runtime.lastError.message);
         return;
       }
     );
   });
 };
 
-export const ping = (ping: string= "ping"): Promise<string> => {
+export const ping = (ping: string = 'ping'): Promise<string> => {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(
       process.env.FIRECAMP_EXTENSION_AGENT_ID,
       ping,
       (pong: string) => {
-        if(pong === "pong") return resolve(pong);
+        if (pong === 'pong') return resolve(pong);
         // reject if found any error in message passing
-        if (chrome.runtime.lastError) return reject(chrome.runtime.lastError.message);
-        return reject("pong not received");
+        if (chrome.runtime.lastError)
+          return reject(chrome.runtime.lastError.message);
+        return reject('pong not received');
       }
     );
   });

@@ -1,19 +1,13 @@
 import { useEffect } from 'react';
-import { nanoid as id } from 'nanoid';
-import equal from 'deep-equal';
-import { _object } from '@firecamp/utils';
-import {
-  EHttpMethod,
-  EPushActionType,
-  ERequestTypes,
-  IGraphQL,
-} from '@firecamp/types';
-import shallow from 'zustand/shallow';
 import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
+import equal from 'deep-equal';
+import shallow from 'zustand/shallow';
 
+import { _object } from '@firecamp/utils';
+import { IGraphQL } from '@firecamp/types';
 import { Container, Row, Column, Loader } from '@firecamp/ui-kit';
 
-import _cloneDeep from 'lodash/cloneDeep';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import PlaygroundPanel from './playground-panel/PlaygroundPanel';
@@ -25,15 +19,13 @@ import {
   createGraphQLStore,
   useGraphQLStoreApi,
   useGraphQLStore,
-  IPushPayload,
-  emptyPushAction,
-  IPushAction,
   IGraphQLStore,
-  IGraphQLStoreState,
 } from '../store';
 
-import { normalizeRequest, prepareUiState } from '../services/request.service';
-import { ESidebarTabs } from '../types';
+import {
+  initialiseStoreFromRequest,
+  normalizeRequest,
+} from '../services/request.service';
 
 const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
   let graphqlStoreApi: any = useGraphQLStoreApi();
@@ -45,20 +37,15 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
-    prepareRequestUpdatePushAction,
-    setLast,
     setContext,
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
-
       initialise: s.initialise,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       setActiveEnvironments: s.setActiveEnvironments,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
-      prepareRequestUpdatePushAction: s.prepareRequestUpdatePushAction,
-      setLast: s.setLast,
       setContext: s.setContext,
     }),
     shallow
@@ -87,7 +74,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
         platformContext.environment.setActiveEnvironments({
           activeEnvironments,
-          collectionId: tab?.request?._meta?.collection_id || '',
+          collectionId: tab?.request?.__meta.collectionId || '',
         });
       }
 
@@ -101,8 +88,8 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   /** if request is being saved then after successful flag set the request's as saved */
   useEffect(() => {
-    setRequestSavedFlag(tab?.meta?.isSaved);
-  }, [tab?.meta?.isSaved]);
+    setRequestSavedFlag(tab?.__meta?.isSaved);
+  }, [tab?.__meta?.isSaved]);
 
   /**
    * Fetch request and Handle realtime changes of the Request
@@ -114,17 +101,17 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     fetchRequest();
 
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.request?._meta?.id) {
+    if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
       platformContext.request.subscribeChanges(
-        tab.request._meta.id,
+        tab.request.__ref.id,
         handlePull
       );
     }
 
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && tab?.request?._meta?.id) {
-        platformContext.request.unsubscribeChanges(tab.request._meta.id);
+      if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
+        platformContext.request.unsubscribeChanges(tab.request.__ref.id);
       }
     };
   }, []);
@@ -134,17 +121,17 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  const handlePull = async (pullActions: IPushPayload[]) => {
+  const handlePull = async (pullActions: any[]) => {
     try {
       let pullPayload = pullActions[0];
 
       // console.log({ pullPayload });
 
-      let last = graphqlStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
+      // let last = graphqlStoreApi.getState().last;
+      // let mergedPullAndLastRequest = _object.mergeDeep(
+      //   _cloneDeep(last.request),
+      //   _object.omit(pullPayload, ['_action'])
+      // );
 
       // merged request payload: merged existing request and pull payload request
       let updatedRequest = (await getMergedRequestByPullAction(
@@ -158,18 +145,12 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       // console.log({ updatedRequest, mergedPullAndLastRequest });
 
       // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
-      });
-
       // get push action payload
-      let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
+      // let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
       // console.log({ 'pushAction on pull': pushAction });
 
       // initialise request with updated request and push action
-      initialiseRequest(updatedRequest, true, pushAction, true, false);
+      // initialiseRequest(updatedRequest, true, pushAction, true, false);
     } catch (error) {
       console.error({
         API: 'rest.handlePull',
@@ -180,22 +161,15 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   const fetchRequest = async () => {
     try {
-      const isRequestSaved = !!tab?.request?._meta?.id || false;
-      let _request: IGraphQL = {
-        method: EHttpMethod.POST,
-        __meta: {
-          name: '',
-          version: '2.0.0',
-          type: ERequestTypes.GraphQL,
-        },
-        __ref: { id: '', collectionId: '' },
-      };
+      const isRequestSaved = !!tab?.request?.__ref?.id || false;
+      // prepare a minimal request payload
+      let _request: IGraphQL = normalizeRequest({});
 
       if (isRequestSaved === true) {
         setIsFetchingReqFlag(true);
         try {
           const response = await platformContext.request.onFetch(
-            tab.request._meta.id
+            tab.request.__ref.id
           );
 
           console.log(response.data, 'fetch request...');
@@ -209,55 +183,15 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
         }
       }
 
-      initialiseRequest(
-        _request,
-        isRequestSaved,
-        _cloneDeep(emptyPushAction),
-        false,
-        true
-      );
+      /** initialise graphql store on tab load */
+      initialise(_request, tab.id);
+      setIsFetchingReqFlag(false);
     } catch (error) {
       console.error({
         API: 'fetch and normalize rest request',
         error,
       });
-      // TODO: close tab and show error popup
     }
-  };
-
-  /**
-   * initialiseRequest: normalise request and initialise in store on tab load and manage pull
-   */
-  const initialiseRequest = async (
-    requestToNormalize: IGraphQL,
-    isRequestSaved: boolean,
-    pushAction?: IPushAction,
-    hasPull?: boolean,
-    isFresh?: boolean
-  ) => {
-    //@ts-ignore
-    const { collection = { folders: [], items: [] } } = requestToNormalize;
-
-    const state = graphqlStoreApi.getState();
-    const request: IGraphQL = await normalizeRequest(requestToNormalize);
-
-    const ui = prepareUiState(_cloneDeep(request));
-    initialise(
-      {
-        request,
-        pushAction,
-        playgrounds: {},
-        ui: {
-          ...state.ui,
-          ...ui,
-          sidebarActiveTab:
-            state.ui?.sidebarActiveTab || ESidebarTabs.Collection,
-        },
-      },
-      collection,
-      isFresh
-    );
-    setIsFetchingReqFlag(false);
   };
 
   // handle updates for environments from platform
@@ -276,11 +210,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  const onSave = (pushPayload: IPushPayload, tabId) => {
+  const onSave = (pushPayload: any, tabId) => {
     // console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === EPushActionType.Insert) {
+    if (pushPayload._action.type === 'i') {
       platformContext.request.subscribeChanges(
         pushPayload._action.item_id,
         handlePull
@@ -289,15 +223,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
 
     platformContext.request.onSave(pushPayload, tabId);
 
-    let last = graphqlStoreApi.getState().last,
-      request = graphqlStoreApi.getState().request;
+    // let last = graphqlStoreApi.getState().last,
+      // request = graphqlStoreApi.getState().request;
 
     // set last value by pull action and request
-    setLast({
-      ...last,
-      request,
-      pushAction: emptyPushAction,
-    });
+   
   };
 
   if (isFetchingRequest === true) return <Loader />;
@@ -305,7 +235,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     <Container className="h-full w-full with-divider" overflow="visible">
       <UrlBarContainer
         tab={tab}
-        collectionId={tab?.request?._meta?.collection_id || ''}
+        collectionId={tab?.request?.__ref?.collectionId || ''}
         postComponents={platformComponents}
         onSaveRequest={onSave}
       />
@@ -318,88 +248,21 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
           <DocWrapper />
         </Row>
       </Container.Body>
-      {tab.__meta.isSaved && (
-        <TabChangesDetector
-          onChangeRequestTab={platformContext.request.onChangeRequestTab}
-          tabId={tab.id}
-          tabMeta={tab.__meta}
-        />
-      )}
     </Container>
   );
 };
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {} } = tab;
-    // console.log({ request });
-
-    const initReqPayload: IGraphQLStoreState = {
-      request: {
-        url: request?.url || {
-          raw: '',
-        },
-        method: request?.method || 'POST',
-        headers: request?.headers || [
-          { key: 'content-type', value: 'application/json' },
-        ],
-        config: request?.config || {},
-        __meta: request.__meta || {
-          type: ERequestTypes.GraphQL,
-          version: '2.0.0',
-          name: '',
-        },
-        __ref: request.__ref || {
-          id: id(),
-          collectionId: '',
-        },
-      },
-      playgrounds: {},
-      ui: {
-        isFetchingRequest: false,
-        sidebarActiveTab: ESidebarTabs.Collection,
-      },
-    };
-    // console.log({ initReqPayload });
-
+    const { request = {}, id } = tab;
+    const initState = initialiseStoreFromRequest(request, id);
+    // console.log(tab, 'tab.....', initState)
     return (
-      <GraphQLStoreProvider
-        createStore={() => createGraphQLStore(initReqPayload)}
-      >
+      <GraphQLStoreProvider createStore={() => createGraphQLStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
       </GraphQLStoreProvider>
     );
   };
-
   return MyComponent;
 };
-
-const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
-  let { pushAction } = useGraphQLStore(
-    (s: any) => ({
-      pushAction: s.pushAction,
-    }),
-    shallow
-  );
-
-  useEffect(() => {
-    if (tabMeta.isSaved) {
-      // console.log({ pushAction });
-
-      // Check if push action empty or not
-      let isTabDirty = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(pushAction || {})) || {}
-      );
-      // console.log({ pushAction });
-
-      // Update tab meta if existing tab.__meta.hasChange is not same as isTabDirty
-      if (tabMeta.hasChange !== isTabDirty) {
-        onChangeRequestTab(tabId, { hasChange: isTabDirty });
-      }
-    }
-  }, [pushAction]);
-
-  return <></>;
-};
-
 export default withStore(GraphQL);

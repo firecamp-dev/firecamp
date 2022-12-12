@@ -1,10 +1,9 @@
+import { FC } from 'react';
 import { Button } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-
 import CloseConnection from './CloseConnection';
 import { EConnectionState } from '../../../types';
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
-import { FC } from 'react';
 
 const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
   if (!props.hasOwnProperty('sm')) props.xs = true;
@@ -77,7 +76,6 @@ const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
         );
     }
   };
-
   return <div className="flex items-center">{_renderConnectionButton()}</div>;
 };
 export default ConnectButton;

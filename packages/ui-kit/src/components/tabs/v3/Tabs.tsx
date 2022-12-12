@@ -1,6 +1,6 @@
 import {
-  DragEventHandler,
   FC,
+  DragEventHandler,
   forwardRef,
   Fragment,
   useImperativeHandle,
@@ -35,7 +35,6 @@ const Tabs: FC<ITabs> = forwardRef(
       addTabIconMeta,
       tabBorderMeta,
       reOrderable,
-
       onSelect = () => {},
       onReorder,
     },
@@ -91,6 +90,18 @@ const Tabs: FC<ITabs> = forwardRef(
               return { tabs: s.tabs, orders, activeTab };
             });
           },
+          changeState: (tabId: TId, state: 'modified' | 'default' = 'default') => {
+            setState((s) => ({
+              ...s,
+              tabs: {
+                ...s.tabs,
+                [tabId]: {
+                  ...s.tabs[tabId],
+                  state,
+                },
+              },
+            }));
+          }
         };
       },
       []

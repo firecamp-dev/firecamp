@@ -9,7 +9,6 @@ import {
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
-
   initialiseRequest: (request: ISocketIO) => void;
   setRequestKey: (key: string, value: any) => void;
   changeListeners: (listeners: Array<string>) => void;
@@ -17,7 +16,7 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   changeConfig: (key: string, value: any) => void;
 }
 
-const requestSliceKeys = ['url', 'connections', 'config', 'meta', '_meta'];
+const requestSliceKeys = ['url', 'connections', 'config', '__meta', '__ref'];
 
 const createRequestSlice = (
   set,
@@ -39,7 +38,6 @@ const createRequestSlice = (
 
   setRequestKey: (key: string, value: any) => {
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         [key]: value,
@@ -47,48 +45,37 @@ const createRequestSlice = (
     }));
   },
   changeListeners: (listeners: Array<string>) => {
-    let lastListeners = get()?.last?.request.listeners;
-
+    const state = get();
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         listeners,
       },
     }));
-
     // update config
-    get()?.changeMeta('onConnectListeners', listeners);
-
-    // prepare _root push action
-    get()?.prepareRootPushAction({ listeners: lastListeners }, { listeners });
+    state.changeMeta('onConnectListeners', listeners);
+    // state.equalityChecker({ listeners });
   },
 
   changeMeta: (key: string, value: any) => {
-    let lastMeta = get()?.last?.request.meta;
-    let updatedMeta = {
-      ...(get()?.request.meta || {}),
+    const state = get();
+    const __meta = {
+      ...(state.request.__meta || {}),
       [key]: value,
     };
     set((s) => ({
-      ...s,
-      request: { ...s.request, meta: updatedMeta },
+      request: { ...s.request, __meta },
     }));
-
-    // Prepare push action for meta
-    get()?.prepareMetaPushAction(lastMeta, updatedMeta);
+    state.equalityChecker({ __meta });
   },
   changeConfig: (key: string, value: any) => {
-    let lastConfig = get()?.last?.request.config;
-    let updatedConfig = {
-      ...(get()?.request.config || {}),
+    const state = get();
+    const config = {
+      ...(state.request.config || {}),
       [key]: value,
     };
-
-    set((s) => ({ ...s, request: { ...s.request, config: updatedConfig } }));
-
-    // Prepare push action for config in _root
-    get()?.prepareRequestConfigPushAction(lastConfig, updatedConfig);
+    set((s) => ({ request: { ...s.request, config } }));
+    state.equalityChecker({ config });
   },
 });
 

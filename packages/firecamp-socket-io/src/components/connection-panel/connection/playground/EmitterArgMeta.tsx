@@ -4,14 +4,14 @@ import { EEmitterPayloadTypes } from '../../../../types';
 const EmitterArgMeta = ({
   argTypes = [],
   activeArgType = {},
-  envelopeList = [],
-  selectedEnvelope = {},
+  typedArrayList = [],
+  selectedTypedArray = {},
   isSelectTypeDDOpen = () => { },
   onSelectArgType = () => { },
   toggleSelectArgTypeDD = () => { },
-  onSelectEnvelope = () => { }
+  onSelectTypedArray = () => { }
 }) => {
-  let [isSelectedEnvelopeOpen, toggleSelectedEnvelopeOpen] = useState(false);
+  let [isSelectedTypedArrOpen, toggleSelectedTypedArrOpen] = useState(false);
 
   return (
     <Container.Header>
@@ -40,13 +40,13 @@ const EmitterArgMeta = ({
           (activeArgType.id === EEmitterPayloadTypes.arraybuffer ||
             activeArgType.id === EEmitterPayloadTypes.arraybufferview) ? (
           <Dropdown
-            isOpen={isSelectedEnvelopeOpen}
-            selected={selectedEnvelope.name || ''}
-            onToggle={() => toggleSelectedEnvelopeOpen(!isSelectedEnvelopeOpen)}
+            isOpen={isSelectedTypedArrOpen}
+            selected={selectedTypedArray.name || ''}
+            onToggle={() => toggleSelectedTypedArrOpen(!isSelectedTypedArrOpen)}
           >
             <Dropdown.Handler>
               <Button
-                text={selectedEnvelope.name || ''}
+                text={selectedTypedArray.name || ''}
                 transparent={true}
                 ghost={true}
                 withCaret={true}
@@ -55,8 +55,8 @@ const EmitterArgMeta = ({
               />
             </Dropdown.Handler>
             <Dropdown.Options
-              options={envelopeList || []}
-              onSelect={onSelectEnvelope}
+              options={typedArrayList || []}
+              onSelect={onSelectTypedArray}
             />
           </Dropdown>
         ) : (

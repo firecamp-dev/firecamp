@@ -1,8 +1,6 @@
-export const Scopes = {
-  USER: 'user',
-  USER_CLIENT: 'user_client',
-};
-
+/**
+ * @deprecated
+ */
 export const Name = {
   ACTIVE_ORG: 'active_org',
   ORG_ACTIVE_WORKSPACE: 'org_active_workspace',
@@ -13,6 +11,9 @@ export const Name = {
   CERTIFICATES: 'certificates',
 };
 
+/**
+ * @deprecated
+ */
 export const PreferenceMisc = {
   SCHEMA_DIR: 'schema_dir',
   SCHEMA_FILE: 'schema_file',

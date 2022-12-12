@@ -1,5 +1,5 @@
 import { useState, memo } from 'react';
-import { Container, Column, Resizable, Tabs, Row } from '@firecamp/ui-kit';
+import { Column, Resizable, Tabs, Row } from '@firecamp/ui-kit';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
 import ConfigTab from './ConfigTab';
@@ -8,8 +8,8 @@ import ParamsTab from './ParamsTab';
 import AuthTab from './AuthTab';
 import EmitterPlayground from './playground/EmitterPlayground';
 import Response from '../logs/Response';
-import { PANEL } from '../../../constants';
 import { ISocketStore, useSocketStore } from '../../../store';
+import { EPanel } from '../../../types'
 
 const bodyTabs = [
   {
@@ -49,7 +49,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     }),
     shallow
   );
-  const [activeBodyTab, onSelectBodyTab] = useState('config');
+  const [activeBodyTab, setActiveBodyTab] = useState('config');
   const connection = connections.find((c) => c.id === activePlayground);
 
   const _onChangeConfig = (key, value) => {
@@ -129,7 +129,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
                 key="tabs"
                 list={bodyTabs || []}
                 activeTab={activeBodyTab || ''}
-                onSelect={onSelectBodyTab}
+                onSelect={(tabId: string)=> setActiveBodyTab(tabId)}
                 // tabsClassName="tabs-with-bottom-border-left-section"
               />
             </div>
@@ -142,7 +142,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
             minWidth="20%"
             left={true}
             className={classnames(
-              { 'fc-collapsed': visiblePanel === PANEL.RESPONSE },
+              { 'fc-collapsed': visiblePanel === EPanel.Response },
               'fc-collapsable'
             )}
           >

@@ -2,55 +2,76 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import {
   EAuthTypes,
+  IAuth,
   IAuthBasic,
   IAuthBearer,
   IAuthDigest,
   IOAuth1,
-  IUiOAuth2,
-  IUiAuth,
+  IOAuth2UiState,
 } from '@firecamp/types';
 import { _object, _table } from '@firecamp/utils';
 import { IRestStore } from './rest.store';
-import { getAuthHeaders } from '../services/request-service';
+import { getAuthHeaders } from '../services/request.service';
 
 interface IAuthSlice {
+  changeAuthType: (authType: EAuthTypes) => void;
   changeAuth: (type: EAuthTypes, updates: { key: string; value: any }) => void;
   resetAuthHeaders: (authType: EAuthTypes) => void;
-  updateActiveAuth: (authType: EAuthTypes) => void;
-  updateAuthValue: (
-    authType: EAuthTypes,
-    updates: { key: string; value: any }
-  ) => void;
 }
 
-type TAuth = IAuthBasic | IAuthBearer | IAuthDigest | IOAuth1 | IUiOAuth2;
+type TAuth = IAuthBasic | IAuthBearer | IAuthDigest | IOAuth1 | IOAuth2UiState;
 
-const createAuthSlice = (set, get, initialAuth: IUiAuth) => ({
-  changeAuth: (type: EAuthTypes, updates: { key: string; value: any }) => {
+const createAuthSlice = (set, get) => ({
+  changeAuthType: (type: EAuthTypes) => {
     const state = get();
-    const { key, value } = updates;
-    let updatedAuth = {};
+    let { request, runtime } = state;
+    let auth: Partial<IAuth> | undefined = { type };
+    if (!type) {
+      // if type is NoBody ('') then  remove the auth from request
+      delete request.auth;
+      auth = undefined;
+    } else {
+      auth = {
+        type,
+        value: runtime.auths[type],
+      };
+      request = { ...request, auth };
+    }
+    set({ request });
+    state.resetAuthHeaders(type);
+    state.equalityChecker({ auth });
+  },
+  changeAuth: (type: EAuthTypes, changes: { key: string; value: any }) => {
+    const state = get();
+    const { key, value } = changes;
+    let auth: Partial<IAuth> = {
+      type,
+      // value: {},
+    };
 
     // for auth type oauth2 whole auth payload will be there in updates instead update key value pair
     if (type === EAuthTypes.OAuth2) {
-      updatedAuth = updates;
+      //@ts-ignore
+      auth.value = { ...changes };
     } else {
-      updatedAuth = { ...state.request.auth[type], [key]: value };
+      auth.value = { ...state.request.auth.value, [key]: value };
     }
-    console.log(updatedAuth, 'updatedAuth...');
-    const updatedAuths = {
-      ...state.request.auth,
-      [type]: updatedAuth,
-    };
 
     set((s: IRestStore) => ({
-      ...s,
       request: {
         ...s.request,
-        auth: updatedAuths,
+        auth,
+      },
+      runtime: {
+        ...s.runtime,
+        auths: {
+          ...s.runtime.auths,
+          [auth.type]: auth.value,
+        },
       },
     }));
-    state.equalityChecker({ auth: updatedAuths });
+    state.resetAuthHeaders(auth.type);
+    state.equalityChecker({ auth });
   },
   resetAuthHeaders: async (authType: EAuthTypes) => {
     const state = get();
@@ -73,21 +94,6 @@ const createAuthSlice = (set, get, initialAuth: IUiAuth) => ({
     } catch (error) {
       console.log({ api: 'rest.getAuthHeaders', error });
     }
-  },
-  updateActiveAuth: (authType: EAuthTypes) => {
-    const state = get();
-    state.changeMeta({ activeAuthType: authType });
-    state.resetAuthHeaders(authType);
-  },
-  updateAuthValue: (
-    authType: EAuthTypes,
-    updates: { key: string; value: any }
-  ) => {
-    if (!authType) return;
-    const state = get();
-    // update store
-    state.changeAuth(authType, updates);
-    state.resetAuthHeaders(authType);
   },
 });
 

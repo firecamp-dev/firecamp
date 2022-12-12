@@ -44,7 +44,7 @@ const createHandleConnectionExecutor = (
         config,
         connection,
         WebSocket,
-        // agent: EFirecampAgent.web,
+        // agent: EFirecampAgent.Web,
         certificates: [], // TODO: add ssl certs
       };
 

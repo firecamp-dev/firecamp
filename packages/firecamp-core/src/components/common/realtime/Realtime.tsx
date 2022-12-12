@@ -1,5 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Realtime } from '@firecamp/cloud-apis';
+import { TId } from '@firecamp/types';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { useWorkspaceStore } from '../../../store/workspace';
 import {
@@ -8,7 +9,6 @@ import {
 } from '../../../services/platform-emitter/events';
 import { useTabStore } from '../../../store/tab';
 import PreComp from '../../tabs/header/PreComp';
-import { TId } from '@firecamp/types';
 
 const RealtimeEventManager: FC<any> = () => {
   const { open, close } = useTabStore.getState();

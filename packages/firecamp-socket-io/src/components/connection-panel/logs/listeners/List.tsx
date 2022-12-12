@@ -1,16 +1,15 @@
 import shallow from 'zustand/shallow';
-
 import { useSocketStore } from '../../../../store';
 import './listners.scss';
 
 const List = ({ listeners = {}, activePlayground = '' }) => {
-  let { deletePlaygroundListener } = useSocketStore(
+  const { deletePlaygroundListener } = useSocketStore(
     (s) => ({
       deletePlaygroundListener,
     }),
     shallow
   );
-  let removeListener = (name) => {
+  const removeListener = (name) => {
     if (!name) return;
     deletePlaygroundListener(activePlayground, name);
   };
@@ -41,16 +40,16 @@ const Listener = ({
   name = 'Listener',
   value = false,
 }) => {
-  let { updatePlaygroundListener, deletePlaygroundListener } = useSocketStore(
+  const { updatePlaygroundListener, deletePlaygroundListener } = useSocketStore(
     (s) => ({
       updatePlaygroundListener: s.updatePlaygroundListener,
       deletePlaygroundListener: s.deletePlaygroundListener,
     })
   );
 
-  let uniqueId = `${activePlayground}-${id}-listen`;
+  const uniqueId = `${activePlayground}-${id}-listen`;
 
-  let _onToggleListen = (event) => {
+  const _onToggleListen = (event) => {
     updatePlaygroundListener(
       activePlayground,
       name,
@@ -58,7 +57,7 @@ const Listener = ({
     );
   };
 
-  let _onRemove = (event) => {
+  const _onRemove = (event) => {
     if (event) event.preventDefault();
     deletePlaygroundListener(activePlayground, name);
   };
