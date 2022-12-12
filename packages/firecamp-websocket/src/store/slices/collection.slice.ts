@@ -1,14 +1,20 @@
 import { IWebSocketMessage, IRequestFolder, TId } from '@firecamp/types';
 
 interface ICollection {
-  items?: Array<IWebSocketMessage>;
-  folders?: Array<IRequestFolder>;
+  isProgressing?: boolean;
+  tdpInstance?: any;
+  items?: Partial<IWebSocketMessage & { __ref: { isItem?: boolean } }>[];
+  folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
 }
 
 interface ICollectionSlice {
   collection: ICollection;
 
-  initialiseConnection: (collection: ICollection) => void; // TODO: rename API
+  toggleProgressBar: (flag?: boolean) => void;
+  registerTDP: (instance: any) => void;
+  unRegisterTDP: () => void;
+
+  initialiseCollection: (collection: ICollection) => void; // TODO: rename API
   updateCollection: (
     key: string,
     value: Array<IWebSocketMessage> | Array<IRequestFolder>
@@ -42,8 +48,41 @@ const createCollectionSlice = (
     folders: [],
   },
 
+  // register TreeDatProvider instance
+  registerTDP: (instance: any) => {
+    set((s) => ({ collection: { ...s.collection, tdpInstance: instance } }));
+  },
+
+  // unregister TreeDatProvider instance
+  unRegisterTDP: () => {
+    set((s) => ({ collection: { ...s.collection, tdpInstance: null } }));
+  },
+
+  toggleProgressBar: (flag?: boolean) => {
+    set((s) => ({
+      isProgressing: typeof flag == 'boolean' ? flag : !s.isProgressing,
+    }));
+  },
+  
   // collection
-  initialiseConnection: (collection: ICollection) => {},
+  initialiseCollection: (collection: ICollection) => {
+    console.log(collection?.items?.length, 'collection?.items?.length...');
+    const state = get();
+    set((s) => ({
+      collection: {
+        ...s.collection,
+        ...collection,
+      },
+      ui: {
+        ...s.ui,
+        playgrounds: collection?.items?.length,
+      },
+    }));
+    state.collection.tdpInstance?.init(
+      collection.folders || [],
+      collection.items || []
+    );
+  },
   updateCollection: (
     key: string,
     value: Array<IWebSocketMessage> | Array<IRequestFolder>

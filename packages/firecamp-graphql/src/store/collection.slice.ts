@@ -9,8 +9,8 @@ import {
 interface ICollection {
   isProgressing?: boolean;
   tdpInstance?: any;
-  items?: Array<Partial<IGraphQLPlayground & { __ref: { isItem?: boolean } }>>;
-  folders?: Array<Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>>;
+  items?: Partial<IGraphQLPlayground & { __ref: { isItem?: boolean } }>[];
+  folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
 }
 
 interface ICollectionSlice {
