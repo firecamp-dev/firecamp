@@ -140,7 +140,7 @@ const Td: FC<TTd<any>> = ({
         'relative border-b border-l first:border-l-0 border-appBorder',
         className
       )}
-      style={{ ...style, height: '27px' }}
+      style={{ ...style, height: '30px' }}
       onDrop={(e) => {
         e.preventDefault();
         handleDrop(row);

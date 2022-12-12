@@ -750,7 +750,7 @@ const PlaygroundTab = () => {
           </TabHeader.Right>
         </TabHeader>
       </Container.Header>
-      <Container.Body className="with-divider !m-2 !mt-0 border border-appBorder">
+      <Container.Body className="!mt-0">
         {activeType.id === EMessagePayloadTypes.noBody ? (
           <Container.Empty>
             <QuickSelection menus={quickSelectionMenus} />
