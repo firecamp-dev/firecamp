@@ -5,7 +5,7 @@ import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
 import { EArgumentBodyType, ERequestTypes, ISocketIO } from '@firecamp/types';
-import { _array } from '@firecamp/utils';
+import { _array, _object } from '@firecamp/utils';
 
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
@@ -19,11 +19,13 @@ import {
   useSocketStore,
   ISocketStore,
 } from '../store';
-import { IPushPayload } from '../store/slices';
 import { InitPlayground } from '../constants';
 
 import SidebarPanel from './sidebar-panel/SidebarPanel';
-import { initialiseStoreFromRequest, normalizeRequest } from '../services/request.service';
+import {
+  initialiseStoreFromRequest,
+  normalizeRequest,
+} from '../services/request.service';
 
 const Socket = ({
   // firecampFunctions = {},
@@ -40,6 +42,7 @@ const Socket = ({
 
   let {
     initialise,
+    initialiseCollection,
     setSelectedCollectionEmitter,
     addEmitter,
     changePlaygroundTab,
@@ -59,6 +62,7 @@ const Socket = ({
     setIsFetchingReqFlag,
   } = useSocketStore((s: ISocketStore) => ({
     initialise: s.initialise,
+    initialiseCollection: s.initialiseCollection,
     setActivePlayground: s.setActivePlayground,
     setSelectedCollectionEmitter: s.setSelectedCollectionEmitter,
     addEmitter: s.addEmitter,
@@ -138,7 +142,7 @@ const Socket = ({
       try {
         const isRequestSaved = !!tab?.request?.__ref.id || false;
         // prepare a minimal request payload
-        let _request: ISocketIO = normalizeRequest({});
+        let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the reuqest to prepare minimal request for tab
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -152,8 +156,11 @@ const Socket = ({
             throw error;
           }
         }
+        const { collection, ...request } = _request;
         /** initialise socket.io store on tab load */
-        initialise(_request, tab.id);
+        initialise(request, tab.id);
+        if (collection && !_object.isEmpty(collection))
+          initialiseCollection(collection);
         setIsFetchingReqFlag(false);
       } catch (e) {
         console.error(e);
@@ -316,7 +323,7 @@ const Socket = ({
            * getChildren: Get and set children of directory
            * @param {*} dirId : Directory's id to get children
            */
-           const getChildren = async (dirId = '') => {
+          const getChildren = async (dirId = '') => {
             // Child directories ids
             const childDirIds = collection.directories
               .filter((childDir) => childDir.__ref.parentId === dirId)
@@ -562,7 +569,7 @@ const Socket = ({
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  /*  let handlePull = async (pullActions: IPushPayload[]) => {
+  /*  let handlePull = async (pullActions: any[]) => {
     try {
       let pullPayload = pullActions[0];
 
@@ -604,7 +611,7 @@ const Socket = ({
 
   const handlePull = () => {};
 
-  const onSave = (pushPayload: IPushPayload, tabId) => {
+  const onSave = (pushPayload: any, tabId) => {
     // console.log({ pushPayload });
 
     if (!pushPayload._action || !pushPayload._action.item_id) return;
