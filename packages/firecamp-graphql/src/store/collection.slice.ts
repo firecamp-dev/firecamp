@@ -57,6 +57,7 @@ const createCollectionSlice = (
   // collection
   initialiseCollection: (collection: ICollection) => {
     console.log(collection?.items?.length, 'collection?.items?.length...');
+    const state = get();
     set((s) => ({
       collection: {
         ...s.collection,
@@ -67,6 +68,7 @@ const createCollectionSlice = (
         playgrounds: collection?.items?.length,
       },
     }));
+    state.collection.tdpInstance?.init(collection.folders || [], collection.items || [])
   },
 
   toggleProgressBar: (flag?: boolean) => {

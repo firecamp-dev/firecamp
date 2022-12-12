@@ -23,12 +23,7 @@ import {
   IRequestChangeStateSlice,
   createRequestChangeStateSlice,
 } from './index';
-import {
-  ERestBodyTypes,
-  IGraphQL,
-  IRest,
-  TId,
-} from '@firecamp/types';
+import { ERestBodyTypes, IGraphQL, IRest, TId } from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import { initialiseStoreFromRequest } from '../services/request.service';
@@ -60,6 +55,7 @@ interface IGraphQLStoreState {
   playgrounds: IPlaygrounds;
   runtime?: IRuntime;
   ui?: IUi;
+  collection?: ICollection;
 }
 
 const createGraphQLStore = (initialState: IGraphQLStoreState) =>
@@ -77,18 +73,17 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
       ...createUiSlice(set, get, initialState.ui),
       ...createRequestChangeStateSlice(set, get),
 
-      initialise: (request: Partial<IGraphQL>, tabId: TId) => {
+      initialise: (_request: Partial<IGraphQL>, tabId: TId) => {
         // const state = get();
-        const initState = initialiseStoreFromRequest(request, tabId);
+        const initState = initialiseStoreFromRequest(_request, tabId);
+        const { request } = initState;
         // console.log(initState, 'initState');
         set((s) => ({
           ...s,
           ...initState,
           // @ts-ignore
-          originalRequest: _cloneDeep(initState.request) as IGraphQL,
+          originalRequest: _cloneDeep(request) as IGraphQL,
         }));
-        //  if (!_object.isEmpty(collection))
-        //  state.initialiseCollection(collection);
       },
 
       setContext: (ctx: any) => set({ context: ctx }),

@@ -100,7 +100,12 @@ export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
   },
 
   // open saved playground in tab
-  openPlayground: (plg: IGraphQLPlayground) => {
+  openPlayground: (plgId: TId) => {
+    const state = get();
+    const plg: IGraphQLPlayground = state.collection.items?.find(
+      (i) => i.__ref.id == plgId
+    );
+    if (!plg) return;
     // If variables is table like array from old version then convert then in JSON string
     if (Array.isArray(plg.__meta?.variables)) {
       const variables = plg.__meta?.variables.reduce((p, n) => {
