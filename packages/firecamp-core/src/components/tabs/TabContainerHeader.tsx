@@ -101,7 +101,7 @@ const TabHeaderContainer: FC = () => {
               }}
               tabIndex={-1}
               focus={false}
-              className="flex-1 overflow-x-auto overflow-y-visible visible-scrollbar request-tab-wrapper"
+              className="flex-1 overflow-x-auto overflow-y-visible visible-scrollbar fc-tab-main"
               suffixComp={
                 <div className="flex -ml-1 h-full">
                   <div
