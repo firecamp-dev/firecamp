@@ -4,23 +4,37 @@ import {
   FileInput,
   Container,
   QuickSelection,
-  Checkbox
+  Checkbox,
 } from '@firecamp/ui-kit';
 import { EEmitterPayloadTypes } from '../../../../types';
 
+interface IBody {
+  emitterName?: string;
+  activeArgType?: {
+    id: string;
+  };
+  emitterBody?: string;
+  playgroundBody?: string | boolean | number;
+  quickSelectionMenus?: any[];
+  setEmitterBody?: (val: any) => void;
+  setEditorDOM?: () => void;
+  updateEmitterBody?: (val: any) => void;
+  shortcutFns?: {};
+  onSelectFile: any;
+}
 const Body = ({
   emitterName = '',
-  activeArgType = {},
+  activeArgType = { id: 'text' },
   emitterBody = '',
   playgroundBody = '',
   quickSelectionMenus = [],
-  setEmitterBody = () => {},
+  setEmitterBody = (val) => {},
   setEditorDOM = () => {},
-  updateEmitterBody = () => {},
+  updateEmitterBody = (val) => {},
   shortcutFns = {},
-  onSelectFile = () => {}
-}) => {
-  const _renderActiveBody = (type = {}) => {
+  onSelectFile,
+}: IBody) => {
+  const _renderActiveBody = (type) => {
     if (!type || !type.id) return <span />;
 
     if (
@@ -69,7 +83,7 @@ const Body = ({
                 highlightActiveLine: false,
                 showLineNumbers: false,
                 tabSize: 2,
-                cursorStart: 1
+                cursorStart: 1,
               }}
               {...shortcutFns}
             />
@@ -102,12 +116,12 @@ const Body = ({
             <Checkbox
               isChecked={playgroundBody === true}
               label="True"
-              onToggleCheck={_ => updateEmitterBody(true)}
+              onToggleCheck={(_) => updateEmitterBody(true)}
             />
             <Checkbox
               isChecked={playgroundBody === false}
               label="False"
-              onToggleCheck={_ => updateEmitterBody(false)}
+              onToggleCheck={(_) => updateEmitterBody(false)}
             />
           </div>
         );
@@ -117,10 +131,10 @@ const Body = ({
           <Input
             autoFocus={true}
             type={'number'}
-            value={playgroundBody}
+            value={playgroundBody.toString()}
             name={'number'}
             min={0}
-            onChange={e => {
+            onChange={(e) => {
               if (e) {
                 e.preventDefault();
                 let { value } = e.target;

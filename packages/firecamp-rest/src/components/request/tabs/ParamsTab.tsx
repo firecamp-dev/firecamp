@@ -33,7 +33,7 @@ const ParamsTab = () => {
       <Container.Body className="flex flex-col">
         <BulkEditTable
           key={'queryParams'}
-          title="Query params"
+          title="Query Params"
           rows={queryParams || []}
           onChange={(data) => {
             // console.log({ data });

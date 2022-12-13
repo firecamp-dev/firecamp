@@ -1,12 +1,11 @@
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
-
-import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
-import { VERSIONS } from '../../../constants/index';
-
-import { IPushPayload, ISocketStore, useSocketStore } from '../../../store';
 import { TId } from '@firecamp/types';
+import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import ConnectionButton from '../connection/ConnectButton'
+import { VERSIONS } from '../../../constants';
+import { useSocketStore } from '../../../store';
+import { ISocketStore } from '../../../store/store.type';
 
 const UrlBarContainer = ({
   tab,
@@ -46,7 +45,7 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
+      let pushPayload: any;
       if (!isRequestSaved) {
         // pushPayload = await prepareRequestInsertPushPayload();
       } else {

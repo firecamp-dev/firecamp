@@ -65,6 +65,7 @@ const Websocket = ({
     getMergedRequestByPullAction,
     setIsFetchingReqFlag,
     initialise,
+    initialiseCollection,
     setActiveEnvironments,
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({
@@ -85,6 +86,7 @@ const Websocket = ({
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       initialise: s.initialise,
+      initialiseCollection: s.initialiseCollection,
       setActiveEnvironments: s.setActiveEnvironments,
     }),
     shallow
@@ -146,7 +148,7 @@ const Websocket = ({
       try {
         const isRequestSaved = !!tab?.request?.__ref?.id || false;
         // prepare a minimal request payload
-        let _request: IWebSocket = normalizeRequest({});
+        let _request = { collection: { folders:[], items: []}}; // initialise will normalize the reuqest to prepare minimal request for tab
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
@@ -163,8 +165,10 @@ const Websocket = ({
             throw error;
           }
         }
+        const { collection, ...request} = _request;
         /** initialise ws store on tab load */
-        initialise(_request, tab.id);
+        initialise(request, tab.id);
+        if(collection && !_object.isEmpty(collection)) initialiseCollection(collection);
         setIsFetchingReqFlag(false);
       } catch (e) {
         console.error(e);

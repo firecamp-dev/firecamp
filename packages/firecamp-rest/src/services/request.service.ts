@@ -353,6 +353,7 @@ export const normalizeSendRequestPayload = async (
     'config',
     'headers',
     '__meta',
+    '__ref',
   ]) as IRest;
 
   try {

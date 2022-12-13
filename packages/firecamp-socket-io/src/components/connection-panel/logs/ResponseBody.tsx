@@ -8,7 +8,8 @@ import {
 import shallow from 'zustand/shallow';
 import LogTable from './log-table/LogTable';
 import Listeners from './listeners/Listeners';
-import { ISocketStore, useSocketStore } from '../../../store';
+import { useSocketStore } from '../../../store';
+import { ISocketStore } from '../../../store/store.type';
 
 const ResponseBody = ({ eventsList = [] }) => {
   const { socketId, activePlayground, clearAllConnectionLogs } = useSocketStore(

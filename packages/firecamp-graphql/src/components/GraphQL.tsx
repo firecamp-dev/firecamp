@@ -38,6 +38,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
     setContext,
+    initialiseCollection
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
@@ -47,6 +48,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setContext: s.setContext,
+      initialiseCollection: s.initialiseCollection
     }),
     shallow
   );
@@ -163,8 +165,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     try {
       const isRequestSaved = !!tab?.request?.__ref?.id || false;
       // prepare a minimal request payload
-      let _request: IGraphQL = normalizeRequest({});
-
+      let _request = { collection: { folders:[], items: []}}; // initialise will normalize the reuqest to prepare minimal request for tab
       if (isRequestSaved === true) {
         setIsFetchingReqFlag(true);
         try {
@@ -182,9 +183,10 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
           throw error;
         }
       }
-
+      const { collection, ...request} = _request;
       /** initialise graphql store on tab load */
-      initialise(_request, tab.id);
+      initialise(request, tab.id);
+      if(collection && !_object.isEmpty(collection)) initialiseCollection(collection);
       setIsFetchingReqFlag(false);
     } catch (error) {
       console.error({

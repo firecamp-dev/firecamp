@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Container, Button, Input } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { _array } from '@firecamp/utils';
-
-import { ISocketStore, useSocketStore } from '../../store';
+import { useSocketStore } from '../../store';
+import { ISocketStore } from '../../store/store.type';
 
 const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
   const {
