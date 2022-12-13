@@ -618,8 +618,8 @@ video {
     --app-background-secondary: #252526;
 
     --tab-background: var(--app-background);
-    --tab-foreground: #ffffff;
-    --tab-foreground-inactive: #cccccc;
+    --tab-foreground: #bbb;
+    --tab-foreground-inactive: #ffffff80;
     --tab-border: var(--app-border);
     --tab-hoverBackground: #1B1A1A;
     --tab-activeBackground: var(--statusBar-background2);
@@ -2713,7 +2713,7 @@ tr:focus-visible{
   transform: rotate(180deg);
 }
 .fc-collapsed-v3 {
-  width: 32px !important;
+    width: 32px !important;
 }
 .fc-col-resizer.fc-collapsed.fc-collapsed-v3.fc-collapsable.left {
     border-left: 1px solid var(--app-border) !important;
