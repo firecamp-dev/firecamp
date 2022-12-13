@@ -38,17 +38,8 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
 
-  constructor(folders: Array<TFolderItem>, items: Array<TItem>) {
-    this.items = [
-      ...folders.map((i) => ({
-        ...i,
-        __ref: { ...i.__ref, isFolder: true },
-      })),
-      ...items.map((i) => ({ ...i, __ref: { ...i.__ref, isItem: true } })),
-    ];
-    this.rootOrders = this.items
-      .filter((i) => !i.__ref.folderId)
-      .map((i) => i.__ref.id);
+  constructor(folders: TFolderItem[], items: TItem[]) {
+    this.init(folders, items)
   }
 
   public async getTreeItem(
@@ -125,6 +116,19 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
 
   public async onRenameItem(item: TreeItem<any>, name: string): Promise<void> {
     //todo: implement
+  }
+
+  public init(folders: TFolderItem[], items: TItem[]) {
+    this.items = [
+      ...folders.map((i) => ({
+        ...i,
+        __ref: { ...i.__ref, isFolder: true },
+      })),
+      ...items.map((i) => ({ ...i, __ref: { ...i.__ref, isItem: true } })),
+    ];
+    this.rootOrders = this.items
+      .filter((i) => !i.__ref.folderId)
+      .map((i) => i.__ref.id);
   }
 
   // extra methods of provider

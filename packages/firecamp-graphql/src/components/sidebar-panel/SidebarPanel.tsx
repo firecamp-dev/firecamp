@@ -42,14 +42,14 @@ const SidebarPanel = () => {
     [playgrounds, headers]
   );
 
-  let _setActiveTab = (tab) => {
+  const _setActiveTab = (tab) => {
     if (tab) {
       // console.log(`tab`, tab);
       changeUiActiveTab(tab);
     }
   };
 
-  let _getRender = (tab) => {
+  const _renderTab = (tab) => {
     switch (tab) {
       case ESidebarTabs.Collection:
         return <CollectionTab />;
@@ -86,7 +86,7 @@ const SidebarPanel = () => {
               id={activeTab}
               className="invisible-scrollbar tab-content h-full"
             >
-              {_getRender(activeTab)}
+              {_renderTab(activeTab)}
             </div>
           </Container.Body>
         </Container>

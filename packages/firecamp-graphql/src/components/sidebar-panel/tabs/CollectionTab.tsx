@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Pane, ToolBar, Empty,  } from '@firecamp/ui-kit';
+import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
@@ -15,17 +15,17 @@ import {
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { folders, items } = useGraphQLStore(
+  const { isCollectionEmpty } = useGraphQLStore(
     (s: IGraphQLStore) => ({
-      folders: s.collection.folders,
-      items: s.collection.items,
+      isCollectionEmpty:
+        !s.collection.folders?.length && !s.collection.items?.length,
     }),
     shallow
   );
   const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
     useGraphQLStoreApi().getState() as IGraphQLStore;
 
-  const dataProvider = useRef(new CollectionTreeDataProvider(folders, items));
+  const dataProvider = useRef(new CollectionTreeDataProvider([], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);
@@ -33,10 +33,7 @@ const CollectionTab = () => {
   }, []);
 
   const openPlg = (plgId) => {
-    // get a freh copy of state
-    const item = items.find((i) => i.__ref.id == plgId);
-    console.log(item, 1100099);
-    openPlayground(item);
+    openPlayground(plgId);
   };
   const deletePlg = (plgId: string) => {
     context.appService.notify.confirm(
@@ -75,7 +72,7 @@ const CollectionTab = () => {
         );
       }}
       bodyRenderer={({ expanded }) => {
-        if (!folders?.length && !items?.length) {
+        if (isCollectionEmpty) {
           return (
             <div className="items-center">
               <Empty

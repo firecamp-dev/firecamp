@@ -8,7 +8,8 @@ import {
   Column,
 } from '@firecamp/ui-kit';
 import List from './List';
-import { ISocketStore, useSocketStore } from '../../../../store';
+import { useSocketStore } from '../../../../store';
+import { ISocketStore } from '../../../../store/store.type';
 
 const Body = ({ toggleCollapsed = (bool) => {} }) => {
   let {

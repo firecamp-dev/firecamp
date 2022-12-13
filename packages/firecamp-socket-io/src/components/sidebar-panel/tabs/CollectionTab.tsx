@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 // import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
@@ -6,18 +6,17 @@ import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
-import {
-  ISocketStore,
-  useSocketStore,
-  useSocketStoreApi,
-} from '../../../store';
+import { useSocketStore, useSocketStoreApi } from '../../../store';
+import { ISocketStore } from '../../../store/store.type';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { folders = [], items = [] } = useSocketStore(
+  const { isCollectionEmpty, registerTDP, unRegisterTDP } = useSocketStore(
     (s: ISocketStore) => ({
-      folders: s.collection.folders,
-      items: s.collection.items,
+      isCollectionEmpty:
+        !s.collection.folders?.length && !s.collection.items?.length,
+      registerTDP: s.registerTDP,
+      unRegisterTDP: s.unRegisterTDP,
     }),
     shallow
   );
@@ -31,18 +30,18 @@ const CollectionTab = () => {
 
   // console.log(items, 'items...');
 
-  const dataProvider = useRef(new CollectionTreeDataProvider(folders, items));
+  const dataProvider = useRef(new CollectionTreeDataProvider([], []));
 
-  // useEffect(() => {
-  //   registerTDP(dataProvider.current);
-  //   return unRegisterTDP;
-  // }, []);
+  useEffect(() => {
+    registerTDP(dataProvider.current);
+    return unRegisterTDP;
+  }, []);
 
   const openPlg = (plgId) => {
     // get a fresh copy of state
-    const item = items.find((i) => i.__ref.id == plgId);
-    console.log(item, 1100099);
-    openPlayground(item);
+    // const item = items.find((i) => i.__ref.id == plgId);
+    // console.log(item, 1100099);
+    // openPlayground(item);
   };
   const deletePlg = (plgId: string) => {
     context.appService.notify.confirm(
@@ -70,7 +69,7 @@ const CollectionTab = () => {
       }}
       headerActionRenderer={() => {
         return (
-          <ToolBar> 
+          <ToolBar>
             <div className="action">
               <VscRefresh size={14} className="mr-2 cursor-pointer" />
             </div>
@@ -81,7 +80,7 @@ const CollectionTab = () => {
         );
       }}
       bodyRenderer={({ expanded }) => {
-        if (!folders?.length && !items?.length) {
+        if (isCollectionEmpty) {
           return (
             <div className="items-center">
               <Empty

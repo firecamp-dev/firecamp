@@ -1,7 +1,8 @@
 import { Container, Column, Resizable } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import CollectionTab from './tabs/CollectionTab';
-import { ISocketStore, useSocketStore } from '../../store';
+import { useSocketStore } from '../../store';
+import { ISocketStore } from '../../store/store.type';
 
 export enum ESidebarTabs {
   Collection = 'Collection',

@@ -120,11 +120,10 @@ const createRestStore = (initialState: IRestStoreState) =>
         fcAgent: EFirecampAgent,
         onChangeVariables: TOnChangeVariables
       ) => {
+        const state = get();
         try {
           // set response empty
           set({ response: { statusCode: 0 } });
-
-          const state = get();
           let request: Omit<IRestClientRequest, 'auth'> = _cloneDeep(
             state.request
           ); //todo: discuss/review this type
@@ -256,27 +255,27 @@ const createRestStore = (initialState: IRestStoreState) =>
 
           set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
           // console.log({ testScriptResponse });
-          get().setRequestRunningFlag(false);
+          state.setRequestRunningFlag(false);
 
           // variables to update
           onChangeVariables(updatedVariables);
-        } catch (error) {
-          get().setRequestRunningFlag(false);
+        } catch (e) {
+          state.setRequestRunningFlag(false);
 
-          console.info({
-            API: 'execute',
-            error,
+          console.error({
+            api: 'execute',
+            e,
           });
 
-          if (_object.isObject(error) && 'statusCode' in error) {
-            set((s) => ({ response: error }));
+          if (_object.isObject(e) && 'statusCode' in e) {
+            set((s) => ({ response: e }));
           } else {
-            if (_object.isObject(error) && 'message' in error) {
+            if (_object.isObject(e) && 'message' in e) {
               set((s) => ({
-                response: { error: error.message, statusCode: 0 },
+                response: { error: e.message, statusCode: 0 },
               }));
             } else {
-              set((s) => ({ response: { error, statusCode: 0 } }));
+              set((s) => ({ response: { e, statusCode: 0 } }));
             }
           }
         }
