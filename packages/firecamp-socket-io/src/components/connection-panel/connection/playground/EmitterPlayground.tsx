@@ -14,15 +14,13 @@ import {
   Input,
   Button,
   TabHeader,
-  Checkbox
+  Checkbox,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { _object } from '@firecamp/utils';
 
-// import Header from './Header';
-import Footer from './Footer';
 import BodyControls from './BodyControls';
 import EmitterArgMeta from './EmitterArgMeta';
 import EmitterArgTabs from './EmitterArgTabs';
@@ -200,7 +198,9 @@ const EmitterPlayground = ({ tabData = {} }) => {
   });
 
   //arraybuffer
-  const [selectedTypedArray, setSelectedTypedArray] = useState(typedArrayList[0]);
+  const [selectedTypedArray, setSelectedTypedArray] = useState(
+    typedArrayList[0]
+  );
 
   useEffect(() => {
     if (
@@ -230,7 +230,9 @@ const EmitterPlayground = ({ tabData = {} }) => {
     ) {
       setSelectedTypedArray(
         typedArrayList.find(
-          (e) => e.id === playgroundEmitter.body[argRef.current].__meta.typedArrayView
+          (e) =>
+            e.id ===
+            playgroundEmitter.body[argRef.current].__meta.typedArrayView
         ) || selectedTypedArray
       );
     }
@@ -261,7 +263,9 @@ const EmitterPlayground = ({ tabData = {} }) => {
     ) {
       setSelectedTypedArray(
         typedArrayList.find(
-          (e) => e.id === playgroundEmitter.body[argRef.current].__meta.typedArrayView
+          (e) =>
+            e.id ===
+            playgroundEmitter.body[argRef.current].__meta.typedArrayView
         ) || selectedTypedArray
       );
     }
@@ -296,11 +300,11 @@ const EmitterPlayground = ({ tabData = {} }) => {
    *    on click confirm, remove all next arguments and set current argument type as noBody.
    *    on click cancel, do nothing.
    */
-   const _onSelectTypeNoBody = async () => {
+  const _onSelectTypeNoBody = async () => {
     /**
      * on confirm, set argument type as noBody, close dropdown and update emitter
      */
-     const _onConfirm = () => {
+    const _onConfirm = () => {
       setActiveArgType(EEmitterPayloadTypes.noBody);
       toggleSelectArgTypeDD(false);
       _playgroundEmitterFns.updateBody(
@@ -377,7 +381,9 @@ const EmitterPlayground = ({ tabData = {} }) => {
         (type.id === EEmitterPayloadTypes.arraybufferview ||
           type.id === EEmitterPayloadTypes.arraybuffer)
       ) {
-        if (playgroundEmitter.body[argRef.current].__meta.typedArrayView !== '') {
+        if (
+          playgroundEmitter.body[argRef.current].__meta.typedArrayView !== ''
+        ) {
           _playgroundEmitterFns.updateBody({
             __meta: { type: type.id },
             payload: '',
@@ -490,7 +496,11 @@ const EmitterPlayground = ({ tabData = {} }) => {
     },
 
     updateMeta: (__meta = {}) => {
-      const emitterMeta = Object.assign({}, playgroundEmitter.__meta || {}, __meta);
+      const emitterMeta = Object.assign(
+        {},
+        playgroundEmitter.__meta || {},
+        __meta
+      );
       _playgroundEmitterFns.update({ __meta: emitterMeta });
     },
 
@@ -508,7 +518,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
        * Set new argument type as previous one
        * Set argument typedArrayView type by default if type is arraybuffer or arraybufferview
        */
-       const newArg = {
+      const newArg = {
         ...InitArg,
         __meta: {
           ...InitArg.__meta,
@@ -667,16 +677,15 @@ const EmitterPlayground = ({ tabData = {} }) => {
         onEmit={_onEmit}
       />
       <div className="px-2 pb-2 flex-1 flex flex-col">
-      <TabHeader className="height-small !px-0">
-        <TabHeader.Left>
-        <span className="text-appForeground text-sm block">add arguments</span>
-        </TabHeader.Left>
-        <TabHeader.Right>
-        <Checkbox
-          isChecked={true}
-          label="Ack"
-        />
-        <Button
+        <TabHeader className="height-small !px-0">
+          <TabHeader.Left>
+            <span className="text-appForeground text-sm block">
+              add arguments
+            </span>
+          </TabHeader.Left>
+          <TabHeader.Right>
+            <Checkbox isChecked={true} label="Ack" />
+            <Button
               icon={<IoSendSharp size={12} className="ml-1" />}
               primary
               iconCenter
@@ -684,65 +693,61 @@ const EmitterPlayground = ({ tabData = {} }) => {
               text="Send"
               iconRight
             />
-        </TabHeader.Right>
-      </TabHeader>
-      <div className="border border-appBorder flex-1 flex flex-col">
-        <EmitterArgTabs
-          ack={playgroundEmitter.__meta ? playgroundEmitter.__meta.ack : false}
-          args={playgroundEmitter.body}
-          activeArgIndex={argRef.current}
-          onAddArg={() => _playgroundEmitterFns.addArg()}
-          onSelectArgTab={(index) =>
-            _playgroundEmitterFns.setIndex(index, 'manually')
-          }
-          onRemoveArg={(index) => _playgroundEmitterFns.removeArg(index)}
-          toggleAck={(ack) => _playgroundEmitterFns.updateMeta({ ack })}
-        />
-      <EmitterArgMeta
-        activeArgIndex={argRef.current}
-        ArgTypes={ArgTypes}
-        activeArgType={activeArgType}
-        typedArrayList={typedArrayList}
-        selectedTypedArray={selectedTypedArray}
-        isSelectTypeDDOpen={isSelectTypeDDOpen}
-        onSelectArgType={_onSelectArgType}
-        toggleSelectArgTypeDD={toggleSelectArgTypeDD}
-        onSelectTypedArray={_onSelectTypedArray}
-      />
-      <Body
-        emitterName={playgroundEmitter.name || ''}
-        activeArgIndex={argRef.current}
-        tabId={tabData.id}
-        activeArgType={activeArgType}
-        emitterBody={emitterBody}
-        playgroundBody={playgroundEmitter.body[argRef.current].payload}
-        quickSelectionMenus={quickSelectionMenus}
-        setEmitterBody={setEmitterBody}
-        updateEmitterBody={(value) =>
-          _playgroundEmitterFns.updateBody({ payload: value })
-        }
-        onSelectFile={_onSelectFile}
-        shortcutFns={shortcutFns}
-      />
+          </TabHeader.Right>
+        </TabHeader>
+        <div className="border border-appBorder flex-1 flex flex-col">
+          <EmitterArgTabs
+            // ack={
+            //   playgroundEmitter.__meta ? playgroundEmitter.__meta.ack : false
+            // }
+            args={playgroundEmitter.body}
+            activeArgIndex={argRef.current}
+            onAddTab={() => _playgroundEmitterFns.addArg()}
+            onSelectTab={(index) =>
+              _playgroundEmitterFns.setIndex(index, 'manually')
+            }
+            onRemoveTab={(index) => _playgroundEmitterFns.removeArg(index)}
+            // toggleAck={(ack) => _playgroundEmitterFns.updateMeta({ ack })}
+          />
+          <EmitterArgMeta
+            activeArgIndex={argRef.current}
+            ArgTypes={ArgTypes}
+            activeArgType={activeArgType}
+            typedArrayList={typedArrayList}
+            selectedTypedArray={selectedTypedArray}
+            isSelectTypeDDOpen={isSelectTypeDDOpen}
+            onSelectArgType={_onSelectArgType}
+            toggleSelectArgTypeDD={toggleSelectArgTypeDD}
+            onSelectTypedArray={_onSelectTypedArray}
+          />
+          <Body
+            emitterName={playgroundEmitter.name || ''}
+            activeArgIndex={argRef.current}
+            tabId={tabData.id}
+            activeArgType={activeArgType}
+            emitterBody={emitterBody}
+            playgroundBody={playgroundEmitter.body[argRef.current].payload}
+            quickSelectionMenus={quickSelectionMenus}
+            setEmitterBody={setEmitterBody}
+            updateEmitterBody={(value) =>
+              _playgroundEmitterFns.updateBody({ payload: value })
+            }
+            onSelectFile={_onSelectFile}
+            shortcutFns={shortcutFns}
+          />
+        </div>
       </div>
-      </div>
-      {/* <Footer
-        emitterName={playgroundEmitter.name || ''}
-        activeEmitter={selectedCollectionEmitter}
-        saveButtonHandler={saveButtonHandler}
-        showEmitButton={
-          true /* activeArgType.id !== EEmitterPayloadTypes.noBody */
-        }
-        {/* onEmit={_onEmit}
-        setToOriginal={_setToOriginal}
-      /> */} 
     </Container>
   );
 };
 
 export default EmitterPlayground;
 
-const EmitterName = ({ name = '', onChange = (val) => {}, onEmit = () => {} }) => {
+const EmitterName = ({
+  name = '',
+  onChange = (val) => {},
+  onEmit = () => {},
+}) => {
   const _handleInputChange = (e) => {
     if (e) {
       e.preventDefault();
@@ -756,7 +761,7 @@ const EmitterName = ({ name = '', onChange = (val) => {}, onEmit = () => {} }) =
       <Input
         autoFocus={true}
         placeholder="Type emitter name"
-        label='Type emitter name'
+        label="Type emitter name"
         className="border-0"
         value={name}
         onChange={_handleInputChange}

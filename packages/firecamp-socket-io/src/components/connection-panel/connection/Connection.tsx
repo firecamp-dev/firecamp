@@ -49,7 +49,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     }),
     shallow
   );
-  const [activeBodyTab, setActiveBodyTab] = useState('config');
+  const [activeBodyTab, setActiveBodyTab] = useState('playground');
   const connection = connections.find((c) => c.id === activePlayground);
 
   const _onChangeConfig = (key, value) => {
