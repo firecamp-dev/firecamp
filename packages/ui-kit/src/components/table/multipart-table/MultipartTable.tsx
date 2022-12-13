@@ -268,14 +268,14 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
 
             <div
               key={`${row.id}-file-type`}
-              className="cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre"
+              className="cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre mr-1"
               onClick={_onClick}
             >
               {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}
             </div>
           </>
         )}
-        <div className="absolute cursor-pointer" style={{ right: '5px', bottom: '-10px' }}>
+        <div className="absolute cursor-pointer right-0 bottom-0 pr-1">
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} title='IconTextSize' />
           ) : (
