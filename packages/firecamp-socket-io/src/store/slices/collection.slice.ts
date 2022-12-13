@@ -1,4 +1,11 @@
-import { ISocketIOEmitter, IRequestFolder, TId } from '@firecamp/types';
+import {
+  ISocketIOEmitter,
+  IRequestFolder,
+  TId,
+  EArgumentBodyType,
+} from '@firecamp/types';
+import { nanoid } from 'nanoid';
+import { TStoreSlice } from '../store.type';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -9,7 +16,6 @@ interface ICollection {
 
 interface ICollectionSlice {
   collection: ICollection;
-
   toggleProgressBar: (flag?: boolean) => void;
   registerTDP: (instance: any) => void;
   unRegisterTDP: () => void;
@@ -24,25 +30,25 @@ interface ICollectionSlice {
   getEmitter: (
     id: TId
   ) => { emitter: ISocketIOEmitter; emitterIndex: number } | undefined;
-  addEmitter: (emitter: ISocketIOEmitter) => void;
+  addEmitter: (obj: { name: string; label?: string }, folderId: TId) => void;
   changeEmitter: (id: TId, updates: { key: string; value: any }) => void;
   deleteEmitter: (id: TId) => void;
   setEmitter: (id: TId, emitterToSet: ISocketIOEmitter) => void; // TODO: check usage
 
-  // directories
-  getDirectory: (
+  // folders
+  getFolder: (
     id: TId
-  ) => { directory: IRequestFolder; directoryIndex: number } | undefined;
-  addDirectory: (directory: IRequestFolder) => void;
-  changeDirectory: (id: TId, updates: { key: string; value: any }) => void;
-  deleteDirectory: (id: TId) => void;
+  ) => { folder: IRequestFolder; folderIndex: number } | undefined;
+  addFolder: (folder: IRequestFolder) => void;
+  changeFolder: (id: TId, updates: { key: string; value: any }) => void;
+  deleteFolder: (id: TId) => void;
 }
 
-const createCollectionSlice = (
+const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   set,
   get,
   initialCollection: ICollection
-): ICollectionSlice => ({
+) => ({
   collection: initialCollection || {
     folders: [],
     items: [],
@@ -116,18 +122,54 @@ const createCollectionSlice = (
     }
     return undefined;
   },
-  addEmitter: (emitter: ISocketIOEmitter) => {
-    if (!emitter?.__ref.id) return;
+
+  addEmitter: ({ name, label }, folderId?: TId) => {
     const state = get();
+    const emitterId = nanoid();
+    const {
+      runtime: { activePlayground },
+      playgrounds,
+    } = state;
+    const emitter = playgrounds[activePlayground]?.emitter;
+    if (
+      [EArgumentBodyType.NoBody, EArgumentBodyType.File].includes(
+        emitter.__meta.type
+      )
+    ) {
+      return;
+    }
+
+    const item = {
+      ...emitter,
+      name,
+      __meta: { ...emitter.__meta, label },
+      __ref: {
+        ...emitter.__ref,
+        id: emitterId,
+        folderId,
+      },
+    };
 
     set((s) => ({
       collection: {
         ...s.collection,
-        emitters: [...s.collection.emitters, emitter],
+        items: [...s.collection.items, item],
       },
     }));
-    // state.prepareCollectionEmittersPushAction(emitter?.__ref.id, 'i');
+
+    state.changePlaygroundTab(activePlayground, {
+      __meta: {
+        isSaved: true,
+        hasChange: false,
+      },
+    });
+
+    // TODO: Update parent orders on add emitter
+    // TODO: check update playground emitter
+    // TODO: check update active emitter
+    // TODO: update request
   },
+
   changeEmitter: (id: TId, updates: { key: string; value: any }) => {
     const state = get();
     const emitterDetails = state.getEmitter(id);
@@ -164,6 +206,7 @@ const createCollectionSlice = (
       // );
     }
   },
+
   deleteEmitter: (id: TId) => {
     const state = get();
     const emitterDetails = state.getEmitter(id);
@@ -182,6 +225,7 @@ const createCollectionSlice = (
       // state.prepareCollectionEmittersPushAction(id, 'd');
     }
   },
+
   setEmitter: (id: TId, emitterToSet: ISocketIOEmitter) => {
     const state = get();
     const emitterDetails = state.getEmitter(id);
@@ -216,61 +260,63 @@ const createCollectionSlice = (
     }
   },
 
-  // directories
-  getDirectory: (id: TId, getLast = false) => {
+  // folders
+  getFolder: (id: TId, getLast = false) => {
     const state = get();
-    // existing directories
-    const directories = getLast
-      ? state.last?.collection?.directories
-      : state.collection?.directories;
+    // existing folders
+    const folders = getLast
+      ? state.last?.collection?.folders
+      : state.collection?.folders;
 
-    // directory index
-    const directoryIndex = directories.findIndex(
-      (directory: IRequestFolder) => directory?.__ref.id === id
+    // folder index
+    const folderIndex = folders.findIndex(
+      (folder: IRequestFolder) => folder?.__ref.id === id
     );
 
-    // If directory found then update in store
-    if (directoryIndex !== -1) {
-      return { directory: directories[directoryIndex], directoryIndex };
+    // If folder found then update in store
+    if (folderIndex !== -1) {
+      return { folder: folders[folderIndex], folderIndex };
     }
 
     return undefined;
   },
-  addDirectory: (directory: IRequestFolder) => {
+
+  addFolder: (folder: IRequestFolder) => {
     const state = get();
-    if (!directory?.__ref.id) return;
+    if (!folder?.__ref.id) return;
 
     set((s) => ({
       collection: {
         ...s.collection,
-        directories: [...s.collection.directories, directory],
+        folders: [...s.collection.folders, folder],
       },
     }));
-    // state.prepareCollectionDirectoriesPushAction(directory?.__ref.id, 'i');
+    // state.prepareCollectionDirectoriesPushAction(folder?.__ref.id, 'i');
   },
-  changeDirectory: (id: TId, updates: { key: string; value: any }) => {
-    const state = get();
-    const directoryDetails = state.getDirectory(id);
 
-    // If directory found then update in store
+  changeFolder: (id: TId, updates: { key: string; value: any }) => {
+    const state = get();
+    const folderDetails = state.getFolder(id);
+
+    // If folder found then update in store
     if (
-      directoryDetails &&
-      directoryDetails.directory &&
-      directoryDetails.directoryIndex !== -1
+      folderDetails &&
+      folderDetails.folder &&
+      folderDetails.folderIndex !== -1
     ) {
       const { key, value } = updates;
-      const { directory, directoryIndex } = directoryDetails;
-      const updatedDirectory = Object.assign({}, directory, {
+      const { folder, folderIndex } = folderDetails;
+      const updatedFolder = Object.assign({}, folder, {
         [key]: value,
       });
 
       set((s) => ({
         collection: {
           ...s.collection,
-          directories: [
-            ...s.collection.directories.slice(0, directoryIndex),
-            updatedDirectory,
-            ...s.collection.directories.slice(directoryIndex + 1),
+          folders: [
+            ...s.collection.folders.slice(0, folderIndex),
+            updatedFolder,
+            ...s.collection.folders.slice(folderIndex + 1),
           ],
         },
       }));
@@ -278,29 +324,25 @@ const createCollectionSlice = (
       // state.prepareCollectionDirectoriesPushAction(
       //   id,
       //   'u',
-      //   lastDirectory,
-      //   updatedDirectory
+      //   lastFolder,
+      //   updatedFolder
       // );
     }
   },
-  deleteDirectory: (id: TId) => {
-    const state = get();
-    const directoryDetails = state.getDirectory(id);
 
-    // If directory found then update in store
-    if (directoryDetails && directoryDetails.directoryIndex !== -1) {
+  deleteFolder: (id: TId) => {
+    const state = get();
+    const folderDetails = state.getFolder(id);
+
+    // If folder found then update in store
+    if (folderDetails && folderDetails.folderIndex !== -1) {
       set((s) => ({
         ...s,
         collection: {
           ...s.collection,
-          directories: [
-            ...s.collection.directories.slice(
-              0,
-              directoryDetails.directoryIndex
-            ),
-            ...s.collection.directories.slice(
-              directoryDetails.directoryIndex + 1
-            ),
+          folders: [
+            ...s.collection.folders.slice(0, folderDetails.folderIndex),
+            ...s.collection.folders.slice(folderDetails.folderIndex + 1),
           ],
         },
       }));

@@ -8,8 +8,9 @@ import ParamsTab from './ParamsTab';
 import AuthTab from './AuthTab';
 import EmitterPlayground from './playground/EmitterPlayground';
 import Response from '../logs/Response';
-import { ISocketStore, useSocketStore } from '../../../store';
+import { useSocketStore } from '../../../store';
 import { EPanel } from '../../../types'
+import { ISocketStore } from '../../../store/store.type';
 
 const bodyTabs = [
   {

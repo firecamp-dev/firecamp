@@ -4,7 +4,7 @@ import equal from 'react-fast-compare';
 import { EEmitterPayloadTypes } from '../../../../types';
 
 interface IEmitterArgTabs {
-  args?: { id: string, name?: 'string'}[];
+  args?: { id: string; name?: 'string' }[];
   activeArgIndex?: string;
   onAddTab?: () => void;
   onRemoveTab?: () => void;

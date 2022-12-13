@@ -6,11 +6,8 @@ import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
-import {
-  ISocketStore,
-  useSocketStore,
-  useSocketStoreApi,
-} from '../../../store';
+import { useSocketStore, useSocketStoreApi } from '../../../store';
+import { ISocketStore } from '../../../store/store.type';
 
 const CollectionTab = () => {
   const treeRef = useRef();
@@ -18,8 +15,8 @@ const CollectionTab = () => {
     (s: ISocketStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
-        registerTDP: s.registerTDP,
-        unRegisterTDP: s.unRegisterTDP
+      registerTDP: s.registerTDP,
+      unRegisterTDP: s.unRegisterTDP,
     }),
     shallow
   );
@@ -72,7 +69,7 @@ const CollectionTab = () => {
       }}
       headerActionRenderer={() => {
         return (
-          <ToolBar> 
+          <ToolBar>
             <div className="action">
               <VscRefresh size={14} className="mr-2 cursor-pointer" />
             </div>
