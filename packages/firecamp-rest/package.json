@@ -71,7 +71,7 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@types/chrome": "0.0.193",
+    "@types/chrome": "0.0.204",
     "@types/har-format": "^1.2.8",
     "@types/httpsnippet": "^1.23.1",
     "@types/jest": "27.5.0",

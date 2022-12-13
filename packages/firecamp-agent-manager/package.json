@@ -47,7 +47,7 @@
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@types/chai": "^4.3.1",
-    "@types/chrome": "0.0.196",
+    "@types/chrome": "0.0.204",
     "@types/jest": "^28.1.6",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
