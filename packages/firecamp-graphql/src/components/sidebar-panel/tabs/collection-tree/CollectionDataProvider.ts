@@ -70,7 +70,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     };
 
     const getChildren = (item) => {
-      if (item.__ref.is_leaf) return [];
+      if (item.__ref.isItem) return [];
       return this.items
         .filter((i) => {
           if (item.__ref.isFolder) return i.__ref.folderId == item.__ref.id;

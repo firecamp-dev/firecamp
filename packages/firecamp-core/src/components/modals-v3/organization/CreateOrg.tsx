@@ -129,7 +129,7 @@ const CreateOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
     const _model = {
       name: model.org_name.trim(),
-      default_workspace_name: model.wrs_name.trim(),
+      defaultWorkspaceName: model.wrs_name.trim(),
     };
 
     try {

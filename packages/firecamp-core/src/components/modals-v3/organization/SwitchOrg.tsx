@@ -1,12 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import {
-  Modal,
-  Button,
-  
- 
-  ProgressBar,
-  IModal,
-} from '@firecamp/ui-kit';
+import { Modal, Button, ProgressBar, IModal } from '@firecamp/ui-kit';
 import { Rest } from '@firecamp/cloud-apis';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 
@@ -35,7 +28,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   }, []);
 
   const switchOrg = (org) => {
-    localStorage.setItem('switch_to_org', org.__ref.id);
+    localStorage.setItem('switchToOrg', org.__ref.id);
     AppService.modals.openSwitchWorkspace();
     setSwitchingOrg(org);
   };

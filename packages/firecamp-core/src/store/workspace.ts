@@ -755,7 +755,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
   }))
 );
 
-type TCreateOrgPayload = { name: string; default_workspace_name: string };
+type TCreateOrgPayload = { name: string; defaultWorkspaceName: string };
 type TCreateWrsPayload = {
   name: string;
   description?: string;

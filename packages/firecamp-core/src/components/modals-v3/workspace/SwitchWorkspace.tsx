@@ -21,12 +21,11 @@ const SwitchWorkspace: FC<IModal> = ({
     unsetSwitchingOrg: s.unsetSwitchingOrg,
   }));
   const [isFetchingWrs, setFetchWrsFlag] = useState(false);
-
   const [workspaces, setWorkspaces] = useState([]);
 
   useEffect(() => {
-    if (!isOpen) return;
-    const orgId = localStorage.getItem('switch_to_org');
+    if (!isOpen) return ()=> {};
+    const orgId = localStorage.getItem('switchToOrg');
     setFetchWrsFlag(true);
     Rest.organization
       .getMyWorkspacesOfOrg(orgId)

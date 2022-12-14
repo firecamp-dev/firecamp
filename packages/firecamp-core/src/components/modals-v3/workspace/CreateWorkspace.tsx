@@ -78,7 +78,7 @@ const CreateWorkspace: FC<IModal> = ({
       );
       if ([200, 201].includes(response?.status) && response?.data) {
         setError((s) => ({ ...s, global: '' }));
-        setFlagIWNA(response?.data?.is_available);
+        setFlagIWNA(response?.data?.isAvailable);
       } else {
         setError((s) => ({ ...s, global: response.error }));
       }
