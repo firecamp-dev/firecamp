@@ -30,9 +30,9 @@ const SignInWithEmail: FC<IModal> = () => {
     _auth
       .signIn(EProvider.LOCAL, { username, password })
       .then(({ response }) => {
-        // console.log(response.access_token, response.user, response.workspace, "sign in response")
+        // console.log(response.accessToken, response.user, response.workspace, "sign in response")
 
-        localStorage.setItem('token', response.__meta.access_token);
+        localStorage.setItem('token', response.__meta.accessToken);
         // localStorage.setItem('workspace', res.response.workspace.__ref.id); //handled at initWorkspace fn
         AppService.initApp();
         AppService.modals.close();

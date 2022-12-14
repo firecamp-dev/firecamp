@@ -248,7 +248,7 @@ class MarkdownTabService {
         itemId: reqId,
         collectionId,
         activeWorkspace,
-        // workspaceId: F.appStore.Preferences.active_workspace
+        // workspaceId: F.appStore.Preferences.activeWorkspace
       };
 
       // await F.db.request

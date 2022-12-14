@@ -245,7 +245,7 @@ const Edit: FC<IEdit> = ({
           }
         }
       } catch (error) {
-        // Re-authenticate user if access_token expired
+        // Re-authenticate user if accessToken expired
         // await reLogin(error);
       }
     }

@@ -61,7 +61,7 @@ export default async (logoutForcefully = true, manuallyLogout = false) => {
     // TODO:Update commit status to false
     // F.appStore.fcStatus.toggleLock(false)
 
-    // TODO: Re-authenticate user if access_token expired
+    // TODO: Re-authenticate user if accessToken expired
     // await F.collaboration.reLogin(error)
 
     //   return Promise.reject({

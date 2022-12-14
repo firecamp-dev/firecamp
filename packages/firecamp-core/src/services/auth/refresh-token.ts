@@ -38,7 +38,7 @@ export default async ({
           response = await Rest.auth.refreshToken.reLogin({
             provider,
             email,
-            access_token: token,
+            accessToken: token,
           });
         }
         break;
@@ -61,8 +61,8 @@ export default async ({
       // Fetch existing user from DB
       // const user = await F.db.firecamp.fetch('user')
       // if (user) {
-      //     // Update access_token from response
-      //     user.access_token = response?.data?.access_token
+      //     // Update accessTokenfrom response
+      //     user.accessToken = response?.data?.accessToken
 
       //     // Update user in DB
       //     await F.db.firecamp.update('user', user)

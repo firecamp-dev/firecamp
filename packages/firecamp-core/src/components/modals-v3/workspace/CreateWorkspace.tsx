@@ -84,7 +84,7 @@ const CreateWorkspace: FC<IModal> = ({
       }
     } catch (error) {
       setError((s) => ({ ...s, global: error.data.message }));
-      // Re-authenticate user if access_token expired
+      // Re-authenticate user if accessToken expired
       // await F.collab.reLogin(error);
     } finally {
       setFlagWNCP(false);
