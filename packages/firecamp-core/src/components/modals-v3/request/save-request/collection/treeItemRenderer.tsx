@@ -85,12 +85,12 @@ export default {
         className={cx(
           'relative',
           'rct-tree-item-li',
-          item.isFolder && 'rct-tree-item-li-isFolder',
-          context.isSelected && 'rct-tree-item-li-selected',
-          context.isExpanded && 'rct-tree-item-li-expanded',
-          context.isFocused && 'rct-tree-item-li-focused',
-          context.isDraggingOver && 'rct-tree-item-li-dragging-over',
-          context.isSearchMatching && 'rct-tree-item-li-search-match'
+          { 'rct-tree-item-li-isFolder': item.isFolder },
+          { 'rct-tree-item-li-selected': context.isSelected },
+          { 'rct-tree-item-li-expanded': context.isExpanded },
+          { 'rct-tree-item-li-focused': context.isFocused },
+          { 'rct-tree-item-li-dragging-over': context.isDraggingOver },
+          { 'rct-tree-item-li-search-match': context.isSearchMatching }
         )}
       >
         <div
@@ -102,15 +102,28 @@ export default {
           }}
           className={cx(
             'pr-2',
-            'rct-tree-item-title-container',
-            item.isFolder && 'rct-tree-item-title-container-isFolder',
-            context.isSelected && 'rct-tree-item-title-container-selected',
-            context.isExpanded && 'rct-tree-item-title-container-expanded',
-            context.isFocused && 'rct-tree-item-title-container-focused',
-            context.isDraggingOver &&
-              'rct-tree-item-title-container-dragging-over',
-            context.isSearchMatching &&
-              'rct-tree-item-title-container-search-match'
+            'rct-tree-item-title-container opacity-80',
+            { 'rct-tree-item-title-container-isFolder': item.isFolder },
+            {
+              'rct-tree-item-title-container-selected !opacity-100':
+                context.isSelected,
+            },
+            {
+              'rct-tree-item-title-container-expanded !opacity-100':
+                context.isExpanded,
+            },
+            {
+              'rct-tree-item-title-container-focused !opacity-100':
+                context.isFocused,
+            },
+            {
+              'rct-tree-item-title-container-dragging-over':
+                context.isDraggingOver,
+            },
+            {
+              'rct-tree-item-title-container-search-match':
+                context.isSearchMatching,
+            }
           )}
         >
           {context.isExpanded && item.isFolder && (
@@ -124,13 +137,13 @@ export default {
             type={type}
             {...(context.interactiveElementProps as any)}
             className={cx(
-              'pl-1 rct-tree-item-button',
-              item.isFolder && 'rct-tree-item-button-isFolder',
-              context.isSelected && 'rct-tree-item-button-selected',
-              context.isExpanded && 'rct-tree-item-button-expanded',
-              context.isFocused && 'rct-tree-item-button-focused',
-              context.isDraggingOver && 'rct-tree-item-button-dragging-over',
-              context.isSearchMatching && 'rct-tree-item-button-search-match'
+              'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button',
+              { 'rct-tree-item-button-isFolder': item.isFolder },
+              { 'rct-tree-item-button-selected': context.isSelected },
+              { 'rct-tree-item-button-expanded': context.isExpanded },
+              { 'rct-tree-item-button-focused': context.isFocused },
+              { 'rct-tree-item-button-dragging-over': context.isDraggingOver },
+              { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
             <span className="w-full overflow-hidden overflow-ellipsis">

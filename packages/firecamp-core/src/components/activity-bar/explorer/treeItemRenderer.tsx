@@ -12,7 +12,7 @@ import CollectionMenu from './menus/CollectionMenu';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    console.log( item, "arrow context");
+    console.log(item, 'arrow context');
     if (item.data?.__ref?.isRequest) {
       const text = item.data.icon?.text?.toUpperCase();
       return (
@@ -134,12 +134,12 @@ export default {
         className={cx(
           'relative',
           'rct-tree-item-li',
-          item.isFolder && 'rct-tree-item-li-isFolder',
-          context.isSelected && 'rct-tree-item-li-selected',
-          context.isExpanded && 'rct-tree-item-li-expanded',
-          context.isFocused && 'rct-tree-item-li-focused',
-          context.isDraggingOver && 'rct-tree-item-li-dragging-over',
-          context.isSearchMatching && 'rct-tree-item-li-search-match'
+          { 'rct-tree-item-li-isFolder': item.isFolder },
+          { 'rct-tree-item-li-selected': context.isSelected },
+          { 'rct-tree-item-li-expanded': context.isExpanded },
+          { 'rct-tree-item-li-focused': context.isFocused },
+          { 'rct-tree-item-li-dragging-over': context.isDraggingOver },
+          { 'rct-tree-item-li-search-match': context.isSearchMatching }
         )}
       >
         <div
@@ -152,14 +152,27 @@ export default {
           className={cx(
             'pr-2',
             'rct-tree-item-title-container opacity-80',
-            item.isFolder && 'rct-tree-item-title-container-isFolder',
-            context.isSelected && 'rct-tree-item-title-container-selected !opacity-100',
-            context.isExpanded && 'rct-tree-item-title-container-expanded !opacity-100',
-            context.isFocused && 'rct-tree-item-title-container-focused !opacity-100',
-            context.isDraggingOver &&
-              'rct-tree-item-title-container-dragging-over',
-            context.isSearchMatching &&
-              'rct-tree-item-title-container-search-match'
+            { 'rct-tree-item-title-container-isFolder': item.isFolder },
+            {
+              'rct-tree-item-title-container-selected !opacity-100':
+                context.isSelected,
+            },
+            {
+              'rct-tree-item-title-container-expanded !opacity-100':
+                context.isExpanded,
+            },
+            {
+              'rct-tree-item-title-container-focused !opacity-100':
+                context.isFocused,
+            },
+            {
+              'rct-tree-item-title-container-dragging-over':
+                context.isDraggingOver,
+            },
+            {
+              'rct-tree-item-title-container-search-match':
+                context.isSearchMatching,
+            }
           )}
         >
           {context.isExpanded && item.isFolder && (
@@ -181,12 +194,12 @@ export default {
             {...(context.interactiveElementProps as any)}
             className={cx(
               'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button',
-              item.isFolder && 'rct-tree-item-button-isFolder',
-              context.isSelected && 'rct-tree-item-button-selected',
-              context.isExpanded && 'rct-tree-item-button-expanded',
-              context.isFocused && 'rct-tree-item-button-focused',
-              context.isDraggingOver && 'rct-tree-item-button-dragging-over',
-              context.isSearchMatching && 'rct-tree-item-button-search-match'
+              { 'rct-tree-item-button-isFolder': item.isFolder },
+              { 'rct-tree-item-button-selected': context.isSelected },
+              { 'rct-tree-item-button-expanded': context.isExpanded },
+              { 'rct-tree-item-button-focused': context.isFocused },
+              { 'rct-tree-item-button-dragging-over': context.isDraggingOver },
+              { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
             <span className="w-full overflow-hidden overflow-ellipsis">
@@ -206,7 +219,7 @@ export default {
                 ? item.data?.__ref?.id
                 : item.data?.__ref?.folderId
             }
-            requestId= {item.data.__ref.isRequest? item.data.__ref?.id: null}
+            requestId={item.data.__ref.isRequest ? item.data.__ref?.id : null}
             menuType={
               item.data.__ref.isFolder
                 ? 'folder'

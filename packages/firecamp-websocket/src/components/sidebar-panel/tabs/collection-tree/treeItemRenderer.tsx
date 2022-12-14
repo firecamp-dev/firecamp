@@ -8,12 +8,10 @@ import { Button } from '@firecamp/ui-kit';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    console.log( item, "arrow context");
+    console.log(item, 'arrow context');
 
     if (item.data?.__ref?.isItem) {
-      return (
-        <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>
-      );
+      return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <>
@@ -96,12 +94,12 @@ export default {
         className={cx(
           'relative',
           'rct-tree-item-li',
-          item.isFolder && 'rct-tree-item-li-isFolder',
-          context.isSelected && 'rct-tree-item-li-selected',
-          context.isExpanded && 'rct-tree-item-li-expanded',
-          context.isFocused && 'rct-tree-item-li-focused',
-          context.isDraggingOver && 'rct-tree-item-li-dragging-over',
-          context.isSearchMatching && 'rct-tree-item-li-search-match'
+          { 'rct-tree-item-li-isFolder': item.isFolder },
+          { 'rct-tree-item-li-selected': context.isSelected },
+          { 'rct-tree-item-li-expanded': context.isExpanded },
+          { 'rct-tree-item-li-focused': context.isFocused },
+          { 'rct-tree-item-li-dragging-over': context.isDraggingOver },
+          { 'rct-tree-item-li-search-match': context.isSearchMatching }
         )}
       >
         <div
@@ -113,15 +111,28 @@ export default {
           }}
           className={cx(
             'pr-2',
-            'rct-tree-item-title-container',
-            item.isFolder && 'rct-tree-item-title-container-isFolder',
-            context.isSelected && 'rct-tree-item-title-container-selected',
-            context.isExpanded && 'rct-tree-item-title-container-expanded',
-            context.isFocused && 'rct-tree-item-title-container-focused',
-            context.isDraggingOver &&
-              'rct-tree-item-title-container-dragging-over',
-            context.isSearchMatching &&
-              'rct-tree-item-title-container-search-match'
+            'rct-tree-item-title-container opacity-80',
+            { 'rct-tree-item-title-container-isFolder': item.isFolder },
+            {
+              'rct-tree-item-title-container-selected !opacity-100':
+                context.isSelected,
+            },
+            {
+              'rct-tree-item-title-container-expanded !opacity-100':
+                context.isExpanded,
+            },
+            {
+              'rct-tree-item-title-container-focused !opacity-100':
+                context.isFocused,
+            },
+            {
+              'rct-tree-item-title-container-dragging-over':
+                context.isDraggingOver,
+            },
+            {
+              'rct-tree-item-title-container-search-match':
+                context.isSearchMatching,
+            }
           )}
         >
           {context.isExpanded && item.isFolder && (
@@ -143,45 +154,36 @@ export default {
             {...(context.interactiveElementProps as any)}
             className={cx(
               'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button',
-              item.isFolder && 'rct-tree-item-button-isFolder',
-              context.isSelected && 'rct-tree-item-button-selected',
-              context.isExpanded && 'rct-tree-item-button-expanded',
-              context.isFocused && 'rct-tree-item-button-focused',
-              context.isDraggingOver && 'rct-tree-item-button-dragging-over',
-              context.isSearchMatching && 'rct-tree-item-button-search-match'
+              { 'rct-tree-item-button-isFolder': item.isFolder },
+              { 'rct-tree-item-button-selected': context.isSelected },
+              { 'rct-tree-item-button-expanded': context.isExpanded },
+              { 'rct-tree-item-button-focused': context.isFocused },
+              { 'rct-tree-item-button-dragging-over': context.isDraggingOver },
+              { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
             <span className="w-full overflow-hidden overflow-ellipsis items-center block">
               {title}
-
-              {item.data.__ref?.isCollection || item.data.__ref?.isWorkspace ? (
-                <span className={'text-sm'}>- {item.children?.length}</span>
-              ) : (
-                <></>
-              )}
             </span>
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
-            {/* <VscJson size={14} className="ml-1" onClick={(e)=> {
-                e.preventDefault()
-                e.stopPropagation()
-                openEnv(item.index);
-                console.log(1234)
-              }}/> */}
-
-            <Button
-              text={'Open'}
-              xs
-              className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
-              ghost={true}
-              transparent={true}
-              secondary
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                openPlg(item.data.__ref.id);
-              }}
-            />
+            {item.data.__ref.isItem ? (
+              <Button
+                text={'Open'}
+                className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openPlg(item.data.__ref.id);
+                }}
+                xs
+                secondary
+                ghost
+                transparent
+              />
+            ) : (
+              <></>
+            )}
 
             <VscTrash
               className="ml-1 cursor-pointer"
