@@ -21,15 +21,8 @@ import {
   IWebsocketStore,
 } from '../store/index';
 
-const Websocket = ({
-  additionalComponents: prop_additionalComponents = {},
-  tab,
-  platformContext,
-  activeTab,
-  platformComponents,
-}) => {
+const Websocket = ({ tab, platformContext, activeTab, platformComponents }) => {
   const websocketStoreApi: any = useWebsocketStoreApi();
-
   const {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
@@ -51,18 +44,18 @@ const Websocket = ({
   /** assign environments on tab load or when activeTab change **/
   useEffect(() => {
     if (activeTab === tab.id) {
+      const state = websocketStoreApi.getState() as IWebsocketStore;
       // existing active environments in to runtime
-      const activeEnvironments =
-        websocketStoreApi?.getState()?.runtime?.activeEnvironments;
+      const {
+        activeEnvironments: { workspace = '', collection = '' },
+      } = state.runtime;
 
       // set active environments to platform
-      if (activeEnvironments && !!activeEnvironments.workspace) {
-        // console.log({ activeEnvironments });
-
+      if (!!workspace) {
         platformContext.environment.setActiveEnvironments({
           activeEnvironments: {
-            workspace: activeEnvironments.workspace,
-            collection: activeEnvironments.collection || '',
+            workspace,
+            collection,
           },
           collectionId: tab?.request?.__ref?.collectionId || '',
         });
@@ -139,10 +132,9 @@ const Websocket = ({
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
-
     if (!platformActiveEnvironments) return;
-    let activeEnvironments =
-      websocketStoreApi.getState().runtime.activeEnvironments;
+    const state = websocketStoreApi.getState() as IWebsocketStore;
+    const { activeEnvironments } = state.runtime;
 
     if (
       platformActiveEnvironments.workspace &&

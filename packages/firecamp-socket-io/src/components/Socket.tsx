@@ -39,16 +39,16 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     if (activeTab === tab.id) {
       const state = socketStoreApi.getState() as ISocketStore;
       // existing active environments in to runtime
-      const { activeEnvironments } = state.runtime;
+      const {
+        activeEnvironments: { workspace = '', collection = '' },
+      } = state.runtime;
 
       // set active environments to platform
-      if (activeEnvironments && !!activeEnvironments.workspace) {
-        console.log({ activeEnvironments });
-
+      if (!!workspace) {
         platformContext.environment.setActiveEnvironments({
           activeEnvironments: {
-            workspace: activeEnvironments.workspace,
-            collection: activeEnvironments.collection || '',
+            workspace,
+            collection,
           },
           collectionId: tab?.request?.__ref.collectionId || '',
         });
