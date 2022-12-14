@@ -24,39 +24,39 @@ const emptyLog = {
   },
 };
 
-interface IConnectionsLogs {
+interface ILogs {
   [key: TId]: Array<ILog>;
 }
 
-interface IConnectionsLogsSlice {
-  connectionsLogs: IConnectionsLogs;
-  addConnectionLog: (connectionId: TId, log: ILog) => void;
+interface ILogsSlice {
+  logs: ILogs;
+  addLog: (connectionId: TId, log: ILog) => void;
   addErrorLog: (connectionId: TId, message: string) => void;
 
-  clearAllConnectionLogs: (connectionId: TId) => void;
+  clearLogs: (connectionId: TId) => void;
 }
 
-const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
-  connectionsLogs: {},
+const createLogsSlice = (set, get): ILogsSlice => ({
+  logs: {},
 
-  addConnectionLog: (connectionId: TId, log: ILog) => {
+  addLog: (connectionId: TId, log: ILog) => {
     // console.log({ log });
     const state = get();
-    const connectionsLogs = state.connectionsLogs;
-    if (connectionId in connectionsLogs) {
-      const logs = connectionsLogs[connectionId];
+    const logs = state.logs;
+    if (connectionId in logs) {
+      const logs = logs[connectionId];
       log = { ...emptyLog, ...log };
 
       set((s) => ({
-        connectionsLogs: {
-          ...s.connectionsLogs,
+        logs: {
+          ...s.logs,
           [connectionId]: [...logs, log],
         },
       }));
     } else {
       set((s) => ({
-        connectionsLogs: {
-          ...s.connectionsLogs,
+        logs: {
+          ...s.logs,
           [connectionId]: [log],
         },
       }));
@@ -73,15 +73,15 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
         color: ELogColors.Danger,
       },
     };
-    state.addConnectionLog(connectionId, log);
+    state.addLog(connectionId, log);
   },
-  clearAllConnectionLogs: (connectionId: TId) => {
+  clearLogs: (connectionId: TId) => {
     const state = get();
-    const connectionsLogs = state.connectionsLogs;
-    if (connectionId in connectionsLogs) {
+    const logs = state.logs;
+    if (connectionId in logs) {
       set((s) => ({
-        connectionsLogs: {
-          ...s.connectionsLogs,
+        logs: {
+          ...s.logs,
           [connectionId]: [],
         },
       }));
@@ -89,9 +89,4 @@ const createConnectionsLogsSlice = (set, get): IConnectionsLogsSlice => ({
   },
 });
 
-export {
-  emptyLog,
-  IConnectionsLogs,
-  IConnectionsLogsSlice,
-  createConnectionsLogsSlice,
-};
+export { emptyLog, ILogs, ILogsSlice, createLogsSlice };

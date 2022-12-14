@@ -151,11 +151,11 @@ export default {
           }}
           className={cx(
             'pr-2',
-            'rct-tree-item-title-container',
+            'rct-tree-item-title-container opacity-80',
             item.isFolder && 'rct-tree-item-title-container-isFolder',
-            context.isSelected && 'rct-tree-item-title-container-selected',
-            context.isExpanded && 'rct-tree-item-title-container-expanded',
-            context.isFocused && 'rct-tree-item-title-container-focused',
+            context.isSelected && 'rct-tree-item-title-container-selected !opacity-100',
+            context.isExpanded && 'rct-tree-item-title-container-expanded !opacity-100',
+            context.isFocused && 'rct-tree-item-title-container-focused !opacity-100',
             context.isDraggingOver &&
               'rct-tree-item-title-container-dragging-over',
             context.isSearchMatching &&

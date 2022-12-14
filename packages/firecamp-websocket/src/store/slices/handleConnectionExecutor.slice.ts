@@ -83,7 +83,7 @@ const createHandleConnectionExecutor = (
       // get logs
       executor.logs((log) => {
         if (!log) return;
-        state.addConnectionLog(connectionId, log);
+        state.addLog(connectionId, log);
       });
 
       // connect

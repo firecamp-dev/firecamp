@@ -9,8 +9,6 @@ interface IEmitter extends ISocketIOEmitter {
   path: string;
 }
 
-// TODO: add key for active_emitter from collection
-
 interface IPlayground {
   id: TId;
   connectionState: EConnectionState;

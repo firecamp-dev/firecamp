@@ -17,7 +17,7 @@ import {
   createPlaygroundsSlice,
 
   // connections logs
-  createConnectionsLogsSlice,
+  createLogsSlice,
 
   // req changes
   createRequestChangeStateSlice,
@@ -56,7 +56,7 @@ const createSocketStore = (initialState: ISocket) =>
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
-      ...createConnectionsLogsSlice(set, get),
+      ...createLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
       ...createRequestChangeStateSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),

@@ -101,7 +101,7 @@ const createHandleConnectionExecutor = (
         console.log({ log });
 
         if (!log) return;
-        state.addConnectionLog(connectionId, log);
+        state.addLog(connectionId, log);
       });
 
       // connect

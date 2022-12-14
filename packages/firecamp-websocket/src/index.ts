@@ -1,1 +1,1 @@
-export { default as WSClient } from './components/websocket';
+export { default as WSClient } from './components/WebSocket';
