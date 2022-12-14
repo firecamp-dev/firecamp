@@ -126,7 +126,7 @@ const Environment: FC<any> = () => {
             return (
               <UncontrolledTreeEnvironment
                 dataProvider={wrsEnvDataProvider.current}
-                getItemTitle={(item) => item.data.name}
+                getItemTitle={(item) => item.data?.name}
                 viewState={{}}
                 renderItemArrow={treeRenderer.renderItemArrow}
                 // renderItemTitle={treeRenderer.renderItemTitle}
@@ -171,7 +171,7 @@ const Environment: FC<any> = () => {
             return (
               <UncontrolledTreeEnvironment
                 dataProvider={colEnvDataProvider.current}
-                getItemTitle={(item) => item.data.name}
+                getItemTitle={(item) => item.data?.name}
                 viewState={{}}
                 renderItemArrow={treeRenderer.renderItemArrow}
                 // renderItemTitle={treeRenderer.renderItemTitle}

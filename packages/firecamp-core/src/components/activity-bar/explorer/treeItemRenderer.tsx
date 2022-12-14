@@ -12,13 +12,13 @@ import CollectionMenu from './menus/CollectionMenu';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    // console.log( info, "arrow context");
-    if (item.data.__ref?.isRequest) {
-      const text = item.data?.icon?.text?.toUpperCase();
+    console.log( item, "arrow context");
+    if (item.data?.__ref?.isRequest) {
+      const text = item.data.icon?.text?.toUpperCase();
       return (
         <div className={cx(text, 'collection_leaf-node-type pl-2')}>{text}</div>
       );
-    } else if (item.data.__ref?.isCollection) {
+    } else if (item.data?.__ref?.isCollection) {
       return context.isExpanded ? (
         <>
           {/* <VscChevronDown className="mr-1" size={20}/> */}
@@ -48,7 +48,7 @@ export default {
           />
         </>
       );
-    } else if (item.data.__ref?.isFolder) {
+    } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <>
           {/* <VscChevronDown className="mr-1" size={20} opacity={'0.8'}/> */}
@@ -171,7 +171,7 @@ export default {
           <span
             className={cx(
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-              { '!top-4': item.data.__ref.isRequest }
+              { '!top-4': item.data?.__ref.isRequest }
             )}
             style={{ left: `${renderDepthOffset * 2 - 3}px` }}
           ></span>
@@ -197,20 +197,20 @@ export default {
           <CollectionMenu
             startRenaming={_startRenaming}
             collectionId={
-              item.data.__ref.isCollection
+              item.data?.__ref.isCollection
                 ? item.data.__ref?.id
-                : item.data.__ref?.collectionId
+                : item.data?.__ref?.collectionId
             }
             folderId={
-              item.data.__ref.isFolder
-                ? item.data.__ref?.id
-                : item.data.__ref?.folderId
+              item.data?.__ref.isFolder
+                ? item.data?.__ref?.id
+                : item.data?.__ref?.folderId
             }
             requestId= {item.data.__ref.isRequest? item.data.__ref?.id: null}
             menuType={
               item.data.__ref.isFolder
                 ? 'folder'
-                : item.data.__ref.isCollection
+                : item.data?.__ref.isCollection
                 ? 'collection'
                 : 'request'
             }

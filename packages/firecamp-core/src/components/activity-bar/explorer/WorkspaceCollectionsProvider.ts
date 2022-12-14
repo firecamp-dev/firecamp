@@ -69,10 +69,8 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     }
 
     let item = this.items.find((i) => i.__ref?.id == itemId);
-    if (!item) return Promise.resolve({ index: null, data: null });
-    // return Promise.reject(
-    //   "The item id is existing in parent's meta orders array but can't find the item in data provider's items array"
-    // );
+    if (!item)
+      return Promise.resolve({ index: null, data: null, isFolder: false });
 
     let treeItem: TTreeItemData = {
       name: item.name || item.__meta.name, // in request, the `name` key will be in `meta`

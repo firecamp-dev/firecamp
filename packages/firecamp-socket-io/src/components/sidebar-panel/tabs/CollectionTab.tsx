@@ -107,7 +107,7 @@ const CollectionTab = () => {
               console.log(a, 'onStartRenamingItem');
             }}
             // onSelectItems={onSelectItems}
-            getItemTitle={(item) => item.data.name}
+            getItemTitle={(item) => item.data?.name}
             viewState={{}}
             renderItemArrow={treeRenderer.renderItemArrow}
             renderItem={(props) =>

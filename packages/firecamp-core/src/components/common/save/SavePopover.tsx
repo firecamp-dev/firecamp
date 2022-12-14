@@ -366,7 +366,7 @@ const PathSelector: FC<{ onSelect: (_: any) => void }> = ({ onSelect }) => {
             console.log(a, 'onStartRenamingItem');
           }}
           onSelectItems={onItemSelect}
-          getItemTitle={(item) => item.data.name}
+          getItemTitle={(item) => item.data?.name}
           viewState={{}}
           // renderItemTitle={({ title }) => <span>{title}</span>}
           renderItemArrow={treeRenderer.renderItemArrow}

@@ -303,7 +303,7 @@ const Explorer: FC<any> = () => {
                     }),
                   }}
 
-                  getItemTitle={(item) => item.data.name}
+                  getItemTitle={(item) => item.data?.name}
                   viewState={{}}
                   // renderItemTitle={({ title }) => <span>{title}</span>}
                   renderItemArrow={treeRenderer.renderItemArrow}
