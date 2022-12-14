@@ -215,7 +215,7 @@ export const initialiseStoreFromRequest = (
       },
       isFetchingRequest: false,
     },
-    connectionsLogs: {
+    logs: {
       [playgroundId]: [],
     },
   };

@@ -14,8 +14,8 @@ import {
   IPlaygrounds,
   IPlaygroundSlice,
   // connections logs
-  IConnectionsLogsSlice,
-  IConnectionsLogs,
+  ILogsSlice,
+  ILogs,
   // req changes
   IRequestChangeStateSlice,
   // execute slice
@@ -30,19 +30,19 @@ interface ISocket {
   collection?: ICollection;
   runtime?: IRuntime;
   playgrounds?: IPlaygrounds;
-  connectionsLogs?: IConnectionsLogs;
+  logs?: ILogs;
   ui?: IUi;
 }
 
-interface ISocketStore 
+interface ISocketStore
   extends IRequestSlice,
-  IRuntimeSlice,
-  ICollectionSlice,
-  IPlaygroundSlice,
-  IConnectionsLogsSlice,
-  IHandleConnectionExecutorSlice,
-  IUiSlice,
-  IRequestChangeStateSlice {
+    IRuntimeSlice,
+    ICollectionSlice,
+    IPlaygroundSlice,
+    ILogsSlice,
+    IHandleConnectionExecutorSlice,
+    IUiSlice,
+    IRequestChangeStateSlice {
   initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
 }
 

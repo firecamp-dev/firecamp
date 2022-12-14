@@ -40,9 +40,7 @@ const SnippetModal = ({
   activeMessage = '',
   onClose = _ => {}
 }) => {
-  // let {
-  //   ctx_wsFns: { generateRequestConfig }
-  // } = useContext(WebsocketContext);
+
   let generateRequestConfig = ()=> {};
 
   let [state, setState] = useState({

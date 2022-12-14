@@ -34,14 +34,12 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     setIsFetchingReqFlag: s.setIsFetchingReqFlag,
   }));
 
-  /**
-   * Environments on tab load
-   */
+  /** setup environments on tab load */
   useEffect(() => {
     if (activeTab === tab.id) {
+      const state = socketStoreApi.getState() as ISocketStore;
       // existing active environments in to runtime
-      let activeEnvironments =
-        socketStoreApi.getState().runtime?.activeEnvironments;
+      const { activeEnvironments } = state.runtime;
 
       // set active environments to platform
       if (activeEnvironments && !!activeEnvironments.workspace) {
@@ -68,9 +66,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag(tab?.__meta.isSaved);
   }, [tab?.__meta.isSaved]);
 
-  /**
-   * Subscribe/ unsubscribe request changes (pull-actions)
-   */
+  /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     // subscribe request updates
     if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
@@ -79,7 +75,6 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
         handlePull
       );
     }
-
     // unsubscribe request updates
     return () => {
       if (tab.__meta.isSaved && tab?.request?.__ref.id) {
@@ -88,6 +83,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     };
   }, []);
 
+  //fetch request
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
@@ -138,10 +134,10 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
-
     if (!platformActiveEnvironments) return;
-    const activeEnvironments =
-      socketStoreApi.getState().runtime.activeEnvironments;
+    const state = socketStoreApi.getState() as ISocketStore;
+    // existing active environments in to runtime
+    const { activeEnvironments } = state.runtime;
 
     if (
       platformActiveEnvironments.workspace &&
