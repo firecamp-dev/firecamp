@@ -8,15 +8,9 @@ export default {
   renderItemArrow: ({ item, context }) => {
     // console.log( info, "arrow context");
     if (item.data.__ref?.isRequest) {
+      const text = item.data.icon?.text?.toUpperCase();
       return (
-        <div
-          className={cx(
-            item.data?.icon?.text,
-            'collection_leaf-node-type pl-2'
-          )}
-        >
-          {item.data?.icon?.text}
-        </div>
+        <div className={cx(text, 'collection_leaf-node-type pl-2')}>{text}</div>
       );
     } else if (item.data.__ref?.isCollection) {
       return context.isExpanded ? (

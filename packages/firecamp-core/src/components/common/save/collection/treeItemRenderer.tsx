@@ -7,18 +7,7 @@ import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 export default {
   renderItemArrow: ({ item, context }) => {
     // console.log( info, "arrow context");
-    if (item.data.__ref?.isRequest) {
-      return (
-        <div
-          className={cx(
-            item.data?.icon?.text,
-            'collection_leaf-node-type pl-2'
-          )}
-        >
-          {item.data?.icon?.text}
-        </div>
-      );
-    } else if (item.data.__ref?.isCollection) {
+    if (item.data.__ref?.isCollection) {
       return context.isExpanded ? (
         <VscChevronDown size={20} />
       ) : (

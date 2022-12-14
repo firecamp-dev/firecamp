@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { GenIcon, IconBaseProps } from '@react-icons/all-files/lib/esm';
 
-const FcGraphQL: FC<IconBaseProps> = (props) => {
+const FcIconGraphQL: FC<IconBaseProps> = (props) => {
   return GenIcon({
     tag: 'svg',
     attr: { viewBox: '0 0 24 24', fill: 'currentColor' },
@@ -19,7 +19,7 @@ const FcGraphQL: FC<IconBaseProps> = (props) => {
   })(props);
 };
 
-const FcSocketIo: FC<IconBaseProps> = (props) => {
+const FcIconSocketIo: FC<IconBaseProps> = (props) => {
   return GenIcon({
     tag: 'svg',
     attr: { viewBox: '0 0 24 24', fill: 'currentColor' },
@@ -58,7 +58,7 @@ const FcSocketIo: FC<IconBaseProps> = (props) => {
   })(props);
 };
 
-const FcSocketIoSquare: FC<IconBaseProps> = (props) => {
+const FcIconSocketIoSquare: FC<IconBaseProps> = (props) => {
   return GenIcon({
     tag: 'svg',
     attr: { viewBox: '0 0 24 24', fill: 'none' },
@@ -89,7 +89,7 @@ const FcSocketIoSquare: FC<IconBaseProps> = (props) => {
   })(props);
 };
 
-const FcWebSocket: FC<IconBaseProps> = (props) => {
+const FcIconWebSocket: FC<IconBaseProps> = (props) => {
   return GenIcon({
     tag: 'svg',
     attr: { viewBox: '0 0 24 24', fill: 'currentColor' },
@@ -107,7 +107,7 @@ const FcWebSocket: FC<IconBaseProps> = (props) => {
   })(props);
 };
 
-const FcGetSquare: FC<IconBaseProps> = (props) => {
+const FcIconGetSquare: FC<IconBaseProps> = (props) => {
   return GenIcon({
     tag: 'svg',
     attr: { viewBox: '0 0 24 24', fill: 'none' },
@@ -137,7 +137,7 @@ const FcGetSquare: FC<IconBaseProps> = (props) => {
   })(props);
 };
 
-const FcPostSquare: FC<IconBaseProps> = (props) => {
+const FcIconPostSquare: FC<IconBaseProps> = (props) => {
   return GenIcon({
     tag: 'svg',
     attr: { viewBox: '0 0 24 24', fill: 'none' },
@@ -158,10 +158,10 @@ const FcPostSquare: FC<IconBaseProps> = (props) => {
 };
 
 export {
-  FcGraphQL,
-  FcSocketIo,
-  FcSocketIoSquare,
-  FcWebSocket,
-  FcGetSquare,
-  FcPostSquare,
+  FcIconGraphQL,
+  FcIconSocketIo,
+  FcIconSocketIoSquare,
+  FcIconWebSocket,
+  FcIconGetSquare,
+  FcIconPostSquare,
 };

@@ -12,7 +12,7 @@ enum ETreeEventTypes {
 }
 type TTreeItemData = {
   name: string;
-  icon?: { text?: string };
+  __meta?: { type?: string, method?: string };
   __ref: {
     id: string;
     isCollection?: boolean;
@@ -73,8 +73,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       return Promise.resolve({ index: null, data: null, isFolder: false });
 
     let treeItem: TTreeItemData = {
-      name: item.name || item.__meta.name, // in request, the `name` key will be in `meta`
-      icon: { text: item?.method || undefined },
+      name: item.name || item.__meta.name, // in request, the `name` key will be in `__meta`
       __ref: {
         id: item.__ref.id,
         collectionId: item.__ref?.collectionId,
@@ -83,7 +82,10 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     };
     if (item.__ref?.isCollection == true) treeItem.__ref.isCollection = true;
     if (item.__ref?.isFolder == true) treeItem.__ref.isFolder = true;
-    if (item.__ref?.isRequest == true) treeItem.__ref.isRequest = true;
+    if (item.__ref?.isRequest == true) {
+      treeItem.__ref.isRequest = true;
+      treeItem.__meta = { type: item.__meta.type, method: item.method };
+    }
 
     const children = _uniq([
       ...(item.__meta.fOrders || []),

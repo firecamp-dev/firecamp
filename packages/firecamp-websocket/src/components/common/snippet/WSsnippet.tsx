@@ -196,7 +196,7 @@ const SnippetModal = ({
     <Modal open={isOpen} onClose={() => onClose(false)}>
       <Container className="fc-modal">
         <Container.Header className="fc-modal-head" key="head">
-          Websocket Code Snippet
+          WebSocket Code Snippet
         </Container.Header>
         <Row
           className="with-divider fc-h-full fc-modal-body without-padding fc-modal-body-row"

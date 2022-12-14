@@ -72,7 +72,7 @@ const ConfigTab = ({
       isChecked: connection['transports']
         ? connection['transports'].websocket
         : false,
-      label: 'Websocket',
+      label: 'WebSocket',
       showLabel: true,
       disabled: false,
     },

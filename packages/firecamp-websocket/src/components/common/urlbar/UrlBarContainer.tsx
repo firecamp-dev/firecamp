@@ -128,7 +128,7 @@ const UrlBarContainer = ({
       nodePath={``}
     >
       <UrlBar.Prefix>
-        <Button text={'Websocket'} secondary sm />
+        <Button text={'WebSocket'} secondary sm />
       </UrlBar.Prefix>
       <UrlBar.Body>
         <Url

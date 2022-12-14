@@ -7,17 +7,36 @@ import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
 import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
-
 import CollectionMenu from './menus/CollectionMenu';
+import {
+  FcIconGraphQL,
+  FcIconSocketIoSquare,
+  FcIconWebSocket,
+} from '@firecamp/ui-kit';
+import { ERequestTypes } from '@firecamp/types';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    console.log(item, 'arrow context');
+    // console.log(item, 'arrow context');
     if (item.data?.__ref?.isRequest) {
-      const text = item.data.icon?.text?.toUpperCase();
-      return (
-        <div className={cx(text, 'collection_leaf-node-type pl-2')}>{text}</div>
-      );
+      const { type = null, method = '' } = item.data?.__meta;
+      switch (type) {
+        case ERequestTypes.Rest:
+          const text = method.toUpperCase();
+          return (
+            <div className={cx(text, 'collection_leaf-node-type pl-2')}>
+              {text}
+            </div>
+          );
+        case ERequestTypes.GraphQL:
+          return <FcIconGraphQL className="text-graphql" size={24} />;
+        case ERequestTypes.WebSocket:
+          return <FcIconWebSocket className="text-websocket" size={24} />;
+        case ERequestTypes.SocketIO:
+          return <FcIconSocketIoSquare className="text-socket" size={24} />;
+        default:
+          return <></>;
+      }
     } else if (item.data?.__ref?.isCollection) {
       return context.isExpanded ? (
         <>
@@ -117,7 +136,7 @@ export default {
     info,
     treeRef,
   }) => {
-    let _startRenaming = () => {
+    const _startRenaming = () => {
       // context.startRenamingItem(item.index);
       treeRef?.current.startRenamingItem(item.index);
       // console.log(item, treeRef, context, "... _startRenaming")

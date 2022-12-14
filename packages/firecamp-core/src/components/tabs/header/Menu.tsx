@@ -5,11 +5,11 @@ import { _misc } from '@firecamp/utils';
 import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 
 import {
-  FcGetSquare,
-  FcGraphQL,
-  FcSocketIoSquare,
-  FcWebSocket,
-} from '../../common/icons';
+  FcIconGetSquare,
+  FcIconGraphQL,
+  FcIconSocketIoSquare,
+  FcIconWebSocket,
+} from '@firecamp/ui-kit';
 
 import getOs from '../../../services/get-os';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
@@ -29,7 +29,7 @@ const Menu: FC = () => {
           prefix: () => (
             <div className={'dropdown-icon'}>
               {/* <img src={'icon/png/icons-gray/http.png'} /> */}
-              <FcGetSquare className="text-rest" size={24} />
+              <FcIconGetSquare className="text-rest" size={24} />
             </div>
           ),
           onClick: () => {
@@ -41,7 +41,7 @@ const Menu: FC = () => {
           prefix: () => (
             <div className={'dropdown-icon'}>
               {/* <img src={'icon/png/icons-gray/graphql.png'} /> */}
-              {<FcGraphQL className="text-graphql" size={24} />}
+              {<FcIconGraphQL className="text-graphql" size={24} />}
             </div>
           ),
           onClick: () => {
@@ -53,7 +53,7 @@ const Menu: FC = () => {
           prefix: () => (
             <div className={'dropdown-icon'}>
               {/* <img src={'icon/png/icons-gray/websocket.png'} /> */}
-              <FcWebSocket className="text-websocket" size={24} />
+              <FcIconWebSocket className="text-websocket" size={24} />
             </div>
           ),
           onClick: () => {
@@ -65,7 +65,7 @@ const Menu: FC = () => {
           prefix: () => (
             <div className={'dropdown-icon '}>
               {/* <img src={'icon/png/icons-gray/socketio.png'} /> */}
-              <FcSocketIoSquare className="text-socket" size={24} />
+              <FcIconSocketIoSquare className="text-socket" size={24} />
             </div>
           ),
           onClick: () => {

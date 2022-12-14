@@ -18,6 +18,9 @@ export { default as RootContainer } from './components/grid/RootContainer';
 export { default as Container } from './components/grid/Container';
 export { default as Resizable } from './components/grid/Resizable';
 
+//Icons
+export * from './components/icons';
+
 // Input
 export { default as Input } from './components/input/Input';
 export { default as FileInput } from './components/input/FileInput';

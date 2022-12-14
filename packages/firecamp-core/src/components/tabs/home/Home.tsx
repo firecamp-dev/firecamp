@@ -6,12 +6,12 @@ import * as monaco from 'monaco-editor';
 import { IFEThemes } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
 import { ERequestTypes } from '@firecamp/types';
 import {
-  FcGetSquare,
-  FcGraphQL,
-  FcSocketIo,
-  FcSocketIoSquare,
-  FcWebSocket,
-} from '../../common/icons';
+  FcIconGetSquare,
+  FcIconGraphQL,
+  FcIconSocketIo,
+  FcIconSocketIoSquare,
+  FcIconWebSocket,
+} from '@firecamp/ui-kit';
 
 import { usePlatformStore } from '../../../store/platform';
 import { EThemeColor, EThemeMode } from '../../../types';
@@ -42,7 +42,7 @@ const Home: FC<any> = () => {
           name: 'Rest',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              <FcGetSquare className="text-rest" size={24} />
+              <FcIconGetSquare className="text-rest" size={24} />
             </div>
           ),
           onClick: () => {
@@ -53,7 +53,7 @@ const Home: FC<any> = () => {
           name: 'GraphQL',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              <FcGraphQL className="text-graphql" size={24} />
+              <FcIconGraphQL className="text-graphql" size={24} />
             </div>
           ),
           onClick: () => {
@@ -69,7 +69,7 @@ const Home: FC<any> = () => {
           name: 'WebSocket',
           prefix: () => (
             <div className={'dropdown-icon invert'}>
-              <FcWebSocket className="text-websocket" size={24} />
+              <FcIconWebSocket className="text-websocket" size={24} />
             </div>
           ),
           onClick: () => {
@@ -80,7 +80,7 @@ const Home: FC<any> = () => {
           name: 'SocketIO',
           prefix: () => (
             <div className={'dropdown-icon invert'}>
-              <FcSocketIoSquare className="text-socket" size={24} />
+              <FcIconSocketIoSquare className="text-socket" size={24} />
             </div>
           ),
           onClick: () => {
@@ -145,26 +145,26 @@ const Home: FC<any> = () => {
           <div className="flex border-b border-appBorder mr-14 w-fit flex-none">
             <RequestItem
               label="Rest"
-              icon={<FcGetSquare size={50} />}
+              icon={<FcIconGetSquare size={50} />}
               openRequest={() => _openTab(ERequestTypes.Rest)}
             />
 
             <RequestItem
               label="GraphQL"
-              icon={<FcGraphQL size={24} />}
+              icon={<FcIconGraphQL size={24} />}
               openRequest={() => _openTab(ERequestTypes.GraphQL)}
             />
 
             <RequestItem
               label="WebSocket"
-              icon={<FcWebSocket size={24} />}
+              icon={<FcIconWebSocket size={24} />}
               openRequest={() => _openTab(ERequestTypes.WebSocket)}
               hasInvertIcon={true}
             />
 
             <RequestItem
               label="SocketIO"
-              icon={<FcSocketIoSquare size={24} />}
+              icon={<FcIconSocketIoSquare size={24} />}
               openRequest={() => _openTab(ERequestTypes.SocketIO)}
               hasInvertIcon={true}
             />

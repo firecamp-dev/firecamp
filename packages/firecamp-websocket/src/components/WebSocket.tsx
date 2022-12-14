@@ -21,7 +21,7 @@ import {
   IWebsocketStore,
 } from '../store/index';
 
-const Websocket = ({ tab, platformContext, activeTab, platformComponents }) => {
+const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
   const websocketStoreApi: any = useWebsocketStoreApi();
   const {
     setRequestSavedFlag,
@@ -198,4 +198,4 @@ const withStore = (WrappedComponent) => {
   return MyComponent;
 };
 
-export default withStore(Websocket);
+export default withStore(WebSocket);
