@@ -168,6 +168,7 @@ export const Inputv2: FC<IInput> = React.forwardRef(
       note = '',
       type = '',
       isEditor = false,
+      useFormRef = false,
       disabled = false,
       postComponents = [],
       onChange = () => {},
@@ -184,13 +185,10 @@ export const Inputv2: FC<IInput> = React.forwardRef(
 
     /**
     * To use input field with "react-hook-form" functionality: 
-    * 1. Need to pass the ref with register function of 'useForm' hook 
-    * 2. The value prop will remain un-controlled state
+    * 1. useFormRef to be true
+    * 2. Need to pass the ref with register function of 'useForm' hook 
+    * 3. The value prop will remain un-controlled state 
     **/
-    let inputMeta = {};
-    if (!isEditor && typeof ref !== "function"){
-      inputMeta = { value };
-    }
 
     return (
       <div
@@ -242,8 +240,8 @@ export const Inputv2: FC<IInput> = React.forwardRef(
               onBlur={onBlur}
               onFocus={onFocus}
               onKeyDown={onKeyDown}
+              value={!useFormRef ? value : undefined}
               defaultValue={defaultValue}
-              {...inputMeta}
               tabIndex={1}
             />
             <span

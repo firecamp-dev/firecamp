@@ -3,6 +3,7 @@ import Input, { Inputv2 } from './Input';
 import Button from '../buttons/Button'
 import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
 
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default {
@@ -51,6 +52,8 @@ withRightComp.args = {
 
 export function TemplateWithReactHookForm() {
 
+  const additionalRef = useRef();
+  const [dummyInput, setDummyInput] = useState('');
   const { register, handleSubmit, errors } = useForm();
 
   const onSubmit = (data) => console.log(`on-form-submit`, data);
@@ -65,7 +68,7 @@ export function TemplateWithReactHookForm() {
       ref={
         register({
           required: {
-            value:true,
+            value: true,
             message: "Email is required"
           },
           maxLength: 50,
@@ -73,6 +76,7 @@ export function TemplateWithReactHookForm() {
           pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
         })
       }
+      useFormRef={true}
       autoFocus={true}
       error={
         (errors?.email) ? errors?.email?.message || 'Invalid email' : ''
@@ -80,16 +84,26 @@ export function TemplateWithReactHookForm() {
       value={"value-of-email-here"}
     />
     <Inputv2 type="password"
-    id='user-password'
-    
+      id='user-password'
       label='Password'
       placeholder='Enter Password'
       name="password"
+      useFormRef={true}
       ref={register({ required: true, minLength: 6 })}
       error={
         (errors?.password) ?
           (errors.password.type === "required" ? "Password is required." : "Password should be at-least 6 characters.") : ''
       }
+    />
+    <Inputv2
+      id='extra-details'
+      label='Dummy input - not added in form submit'
+      placeholder='Enter Password'
+      name="dummy input"
+      ref={additionalRef}
+      note={"Note preview"}
+      value={dummyInput}
+      onChange={({ target: { value } }) => setDummyInput(value)}
     />
     <div className="form-control">
       <Button
