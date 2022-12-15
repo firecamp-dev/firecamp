@@ -25,7 +25,7 @@
     "test-e2e": "cross-env NODE_ENV=test mocha -r ./test/setup-app test/e2e",
     "_test": "cross-env NODE_ENV=test mocha -r ./test/setup-app test/app",
     "test": "jest",
-    "prettify": "prettier --write \"packages/firecamp-core/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
+    "prettify": "prettier --write \"packages/firecamp-platform/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
     "precommit": "lint-staged"
   },
   "lint-staged": {
