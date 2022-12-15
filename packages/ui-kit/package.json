@@ -62,7 +62,7 @@
     "@types/react": "^17.0.14",
     "@types/react-table": "^7.7.10",
     "babel-jest": "^29.1.2",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^9.1.0",
     "babel-preset-react-app": "^10.0.0",
     "chromatic": "^6.7.0",
     "copyfiles": "^2.4.1",
