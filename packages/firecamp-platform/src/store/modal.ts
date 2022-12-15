@@ -5,7 +5,7 @@ export interface IModalStore {
   currentOpenModalType: EPlatformModalTypes;
   isOpen: boolean;
   activeTab?: string; //TODO: check this type later
-  meta?: any; //meta holds the extra information of currentOpenModal
+  __meta?: any; //meta holds the extra information of currentOpenModal
 
   open: (modalType: EPlatformModalTypes, meta?: any) => void;
   close: () => void;
@@ -18,17 +18,17 @@ const initialState = {
   currentOpenModalType: EPlatformModalTypes.None,
   isOpen: false,
   activeTab: '',
-  meta: {},
+  __meta: {},
 };
 
 export const useModalStore = create<IModalStore>((set, get) => ({
   ...initialState,
 
-  open: (modalType: EPlatformModalTypes, meta?: any) => {
+  open: (modalType: EPlatformModalTypes, __meta?: any) => {
     set((s) => ({
       currentOpenModalType: modalType,
       isOpen: true,
-      meta: meta || {},
+      __meta: __meta || {},
     }));
   },
 
@@ -37,7 +37,7 @@ export const useModalStore = create<IModalStore>((set, get) => ({
       currentOpenModalType: EPlatformModalTypes.None,
       isOpen: false,
       activeTab: '',
-      meta: {},
+      __meta: {},
     }));
   },
 

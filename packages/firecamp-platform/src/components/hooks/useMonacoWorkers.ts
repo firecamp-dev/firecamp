@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
-console.log(__webpack_public_path__, '__webpack_public_path__');
-
+// console.log(__webpack_public_path__, '__webpack_public_path__');
 const useMonacoWorkers = () => {
   useEffect(() => {
     const basePath =

@@ -3,8 +3,6 @@ import {
   Input,
   TabHeader,
   Button,
- 
-  
   Modal,
   IModal,
   ProgressBar,
@@ -14,7 +12,7 @@ import { _misc } from '@firecamp/utils';
 import { useWorkspaceStore } from '../../../store/workspace';
 import AppService from '../../../services/app';
 import { useModalStore } from '../../../store/modal';
-import { RE } from '../../../types'
+import { RE } from '../../../types';
 
 type TModalMeta = {
   collectionId: string;
