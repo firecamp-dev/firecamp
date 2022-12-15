@@ -150,6 +150,142 @@ const Input: FC<IInput> = React.forwardRef(
 
 export default Input;
 
+export const Inputv2: FC<IInput> = React.forwardRef(
+  (
+    {
+      id = '',
+      autoFocus = false,
+      className = '',
+      wrapperClassName = '',
+      placeholder = '',
+      value = '',
+      defaultValue,
+      icon = '',
+      iconPosition = 'left',
+      name = '',
+      label = '',
+      error = '',
+      note = '',
+      type = '',
+      isEditor = false,
+      disabled = false,
+      postComponents = [],
+      onChange = () => {},
+      onKeyDown = () => {},
+      onBlur = () => {},
+      onFocus = () => {},
+      ...domProps
+    },
+    ref
+  ) => {
+
+    let hasIconLeft = icon && iconPosition == 'left';
+    let hasIconRight = icon && iconPosition == 'right';
+
+    /**
+    * To use input field with "react-hook-form" functionality: 
+    * 1. Need to pass the ref with register function of 'useForm' hook 
+    * 2. The value prop will remain un-controlled state
+    **/
+    let inputMeta = {};
+    if (!isEditor && typeof ref !== "function"){
+      inputMeta = { value };
+    }
+
+    return (
+      <div
+        className={cx(
+          'relative items-center text-inputText text-sm w-full mb-5',
+          wrapperClassName
+        )}
+      >
+        {label !== '' && (
+          <label
+            className="text-appForeground text-sm mb-1 block"
+            htmlFor={label}
+          >
+            {label}
+          </label>
+        )}
+        {!!icon && (
+          <span
+            className={cx(
+              'absolute flex items-center top-2',
+              { 'left-3': hasIconLeft },
+              { 'right-3': hasIconRight },
+              { 'text-inputText': value != '' },
+              { 'text-inputPlaceholder': value == '' }
+            )}
+          ></span>
+        )}
+        {isEditor === false ? (
+          <div
+            className={cx('w-full relative', { flex: postComponents != '' })}
+          >
+            <input
+              {...domProps}
+              ref={ref}
+              id={id}
+              key={name}
+              name={name}
+              type={type}
+              className={cx(
+                'border !border-inputBorder rounded-sm p-2 leading-5 outline-none placeholder-inputPlaceholder text-base focus:bg-inputFocusBackground w-full bg-inputBackground',
+                { '!pl-9': hasIconLeft },
+                { '!pr-9': hasIconRight },
+                className
+              )}
+              placeholder={placeholder}
+              disabled={disabled}
+              autoFocus={autoFocus}
+              onChange={onChange}
+              onBlur={onBlur}
+              onFocus={onFocus}
+              onKeyDown={onKeyDown}
+              defaultValue={defaultValue}
+              {...inputMeta}
+              tabIndex={1}
+            />
+            <span
+              className={cx(
+                'absolute top-3 cursor-pointer',
+                { 'left-2': hasIconLeft },
+                { 'right-2': hasIconRight }
+              )}
+            >
+              {icon}
+            </span>
+            {postComponents || ''}
+            {error && <ErrorMessage error={error} />}
+            {note && <Note note={note} />}
+          </div>
+        ) : (
+          <div>
+            <SingleLineEditor
+              id={id}
+              autoFocus={autoFocus}
+              type={type}
+              value={value}
+              name={name}
+              disabled={disabled}
+              className={className}
+              onChange={onChange}
+              onBlur={onBlur}
+              onFocus={onFocus}
+              onKeyDown={onKeyDown}
+              height="21px"
+              className="border px-2 py-1 border-inputBorder"
+            />
+            {postComponents || ''}
+            {error && <ErrorMessage error={error} />}
+            {note && <Note note={note} />}
+          </div>
+        )}
+      </div>
+    );
+  }
+);
+
 const ErrorMessage = ({ error = '', className }) => {
   return (
     <div className={cx('text-sm font-light text-error block absolute')}>
