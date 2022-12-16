@@ -59,10 +59,10 @@
   "dependencies": {
     "@firecamp/cloud-apis": "^0.1.5",
     "@firecamp/cookie-manager": "^0.0.0",
-    "@firecamp/graphql": "^0.0.0",
-    "@firecamp/rest": "^0.0.0",
+    "@firecamp/graphql": "workspace:*",
+    "@firecamp/rest": "workspace:*",
     "@firecamp/types": "^0.1.2",
-    "@firecamp/ui-kit": "0.0.1",
+    "@firecamp/ui-kit": "workspace:*",
     "@firecamp/url": "^0.0.17",
     "@sentry/browser": "7.17.2",
     "@sentry/tracing": "7.24.2",
@@ -99,11 +99,6 @@
     "xml-js": "^1.6.9",
     "xmljson": "^0.2.0",
     "zustand": "3.7.2"
-  },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
   },
   "prettier": {
     "singleQuote": true
