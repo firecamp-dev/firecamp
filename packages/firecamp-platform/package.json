@@ -57,12 +57,15 @@
     "@types/react-dom": "^17.0.13"
   },
   "dependencies": {
+    "@firecamp/agent-manager": "workspace:*",
     "@firecamp/cloud-apis": "^0.1.5",
     "@firecamp/cookie-manager": "^0.0.0",
     "@firecamp/graphql": "workspace:*",
     "@firecamp/rest": "workspace:*",
+    "@firecamp/socket.io": "workspace:*",
     "@firecamp/types": "^0.1.2",
     "@firecamp/ui-kit": "workspace:*",
+    "@firecamp/websocket": "workspace:*",
     "@firecamp/url": "^0.0.17",
     "@sentry/browser": "7.17.2",
     "@sentry/tracing": "7.24.2",

@@ -90,7 +90,6 @@
     "ignore-loader": "^0.1.2",
     "jest-css-modules": "^2.1.0",
     "jest-css-modules-transform": "^4.4.2",
-    "lerna": "^5.4.3",
     "lint-staged": "^12.3.7",
     "node-polyfill-webpack-plugin": "^2.0.0",
     "postcss-loader": "^6.2.1",
@@ -129,6 +128,10 @@
     "querystring": "^0.2.1",
     "ramda": "^0.28.0",
     "react-file-drop": "^3.1.5"
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
   },
   "bugs": {
     "url": "https://github.com/firecamp.io/firecamp/issues"

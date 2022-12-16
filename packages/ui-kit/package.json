@@ -60,6 +60,7 @@
     "@types/deep-equal": "^1.0.1",
     "@types/markdown-it": "^12.2.3",
     "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2",
     "@types/react-table": "^7.7.10",
     "babel-jest": "^29.1.2",
     "babel-loader": "^9.1.0",
@@ -83,13 +84,13 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
+    "@firecamp/rest-executor": "workspace:*",
     "@firecamp/types": "^0.1.2",
+    "@firecamp/ui-kit": "workspace:*",
     "@monaco-editor/react": "4.4.5",
     "@radix-ui/react-toast": "^1.0.0",
     "@szhsin/react-menu": "^2.3.2",
     "@tanstack/react-table": "^8.6.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
     "autoprefixer": "^10",
     "classnames": "^2.3.1",
     "deep-equal": "^2.0.5",
