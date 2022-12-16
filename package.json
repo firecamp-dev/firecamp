@@ -7,6 +7,8 @@
   "homepage": "./dev",
   "scripts": {
     "build:workspace": "pnpm --filter=@firecamp/rest-executor --filter=@firecamp/ws-executor --filter=@firecamp/spcket-io-executor build",
+    "i": "pnpm install --shamefully-hoist",
+    "install": "pnpm install --shamefully-hoist",
     "start": "npx webpack serve --config ./webpack.dev.js",
     "dev": "APP_VERSION=$npm_package_version AppFormat=webapp && node scripts/build && pnpm build:workspace && pnpm start",
     "electron": "npx electron .",
