@@ -6,7 +6,7 @@
   "main": "packages/firecamp-desktop-app/dist/services/Main",
   "homepage": "./dev",
   "scripts": {
-    "build:workspace": "pnpm --filter=@firecamp/rest-executor --filter=@firecamp/ws-executor --filter=@firecamp/spcket-io-executor build",
+    "build:workspace": "pnpm --filter=@firecamp/rest-executor --filter=@firecamp/ws-executor --filter=@firecamp/socket.io-executor build",
     "boot": "pnpm install --shamefully-hoist",
     "bootstrap": "pnpm install --shamefully-hoist",
     "start": "npx webpack serve --config ./webpack.dev.js",
