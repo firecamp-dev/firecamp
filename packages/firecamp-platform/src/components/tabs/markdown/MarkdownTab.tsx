@@ -1,17 +1,15 @@
 // @ts-nocheck
 import { FC, useState, useEffect, useRef } from 'react';
-import { Container, Column, Row, Resizable } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import { ERequestTypes } from '@firecamp/types';
-import './MarkdownTab.sass';
+import { Container, Column, Row, Resizable } from '@firecamp/ui-kit';
 import MDConvertor from './MDConverter';
 import Copy from '../../../services/copy-to-text';
-import * as cacheTabsFactory from '../../../services/cache-tabs-factory';
 import MarkdownTabService from './MarkdownTabService';
 import Source from './source/Source';
 import Target from './target/Target';
-
 import { ITab, ITabFns } from '../types/tab';
+import './MarkdownTab.sass';
 
 const demoMD = `### Firecamp    
 ###### Release note: **v0.1.1-beta**
@@ -41,15 +39,15 @@ const demoMD = `### Firecamp
 const MarkdownTab: FC<IMarkdownTab> = ({ tab: propTab = {}, tabFns = {} }) => {
   let { current: markdownTabService } = useRef(new MarkdownTabService(propTab));
 
-  let cacheTabsFactoryFns = cacheTabsFactory;
+  // let cacheTabsFactoryFns = cacheTabsFactory;
 
   let _updateCacheTab = (state) => {
     let syncState = markdownTabService.getCurrentState() || {};
-    let reactState = Object.assign({}, state);
-    cacheTabsFactoryFns.setTab(propTab.id, {
-      request: reactState,
-      sync: syncState,
-    });
+    // let reactState = Object.assign({}, state);
+    // cacheTabsFactoryFns.setTab(propTab.id, {
+    //   request: reactState,
+    //   sync: syncState,
+    // });
   };
 
   let [state, setState] = useState({

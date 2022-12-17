@@ -4,11 +4,10 @@ import {
   IRest,
   IGraphQL,
   IRestResponse,
+  ISocketIO,
+  IWebSocket,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
-
-// import { ISocket } from '@firecamp/socket.io/src/store';
-// import { IWebsocket } from '@firecamp/websocket/src/store';
 
 import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
@@ -36,7 +35,7 @@ interface IPlatformRequestService {
   onChangeRequestTab: (
     tabId: TId,
     tabMeta: IRequestTab['__meta'],
-    request?: IRest | IGraphQL, // |ISocket | IWebsocket ,
+    request?: IRest | IGraphQL | ISocketIO | IWebSocket
   ) => void;
 
   // fetch request from server by request id
@@ -166,7 +165,7 @@ const request: IPlatformRequestService = {
   onChangeRequestTab: (
     tabId: TId,
     tabMeta: IRequestTab['__meta'],
-    request?: IRest | IGraphQL, // | ISocket | IWebsocket,
+    request?: IRest | IGraphQL // | ISocket | IWebsocket,
   ) => {
     // Here, request and pushActions are used for future purpose
     // console.log({ tabMeta });
