@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@firecamp/types": "^0.1.2",
+    "@firecamp/ui-kit": "workspace:*",
     "@firecamp/url": "^0.0.17",
     "codemirror": "^5.63.0",
     "codemirror-graphql": "^1.0.2",
@@ -88,11 +89,6 @@
     "LICENSE",
     "README.md"
   ],
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "prettier": {
     "singleQuote": true
   },
