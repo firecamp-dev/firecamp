@@ -30,6 +30,7 @@ import AppService from '../../../services/app';
 import { RE } from '../../../types'
 import { platformEmitter as emitter } from '../../../services/platform-emitter'
 import { EPlatformTabs } from '../../../services/platform-emitter/events'
+import pltContext from '../../../services/platform-context';
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();
@@ -242,7 +243,10 @@ const Explorer: FC<any> = () => {
                   <VscNewFolder
                     className="cursor-pointer"
                     size={16}
-                    onClick={() => AppService.modals.openCreateCollection()}
+                    onClick={() => {
+                      pltContext.window.promptInput({ header: "Create Collection", value: 'Testing the input on heaven' }).then(console.log);
+                      // AppService.modals.openCreateCollection()
+                    }}
                   />
                 </div>
                 {/* <div>

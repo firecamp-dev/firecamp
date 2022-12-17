@@ -1,7 +1,8 @@
 import ReactDOM from 'react-dom';
-import { IPromptInput, PromptInput } from '../components/prompt/PromptInput';
+import { IPromptInput, PromptInput } from '../../components/prompt/PromptInput';
 
-const open = ({ header, value, texts, validator, executor }) => {
+type TOpenPromptInput = (props: TPromptInputOpenProps) => Promise<any>;
+const promptInput: TOpenPromptInput = ({ header, value, texts, validator, executor }) => {
   // @ts-ignore
   const promptContainer = document.createElement('div');
   const onClose = () => {
@@ -27,7 +28,4 @@ type TPromptInputOpenProps = Pick<
   'header' | 'texts' | 'value' | 'validator' | 'executor'
 >;
 
-const service: { open: (props: TPromptInputOpenProps) => void } = {
-  open,
-};
-export default service;
+export { promptInput };

@@ -3,7 +3,7 @@ import { EHttpMethod, TId } from '@firecamp/types';
 import create from 'zustand';
 import AppService from '../services/app';
 
-import * as platformContext from '../services/platform-context';
+import pltContext from '../services/platform-context';
 import { useTabStore } from './tab';
 import { useWorkspaceStore } from './workspace';
 
@@ -73,7 +73,7 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
       }
 
       const requestPushPayload =
-        await platformContext.request.normalizePushPayload(requestBeingSaved);
+        await pltContext.request.normalizePushPayload(requestBeingSaved);
 
       const { onNewRequestCreate } = useWorkspaceStore.getState();
       // TODO: handle error here

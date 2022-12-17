@@ -15,7 +15,6 @@ import { _misc } from '@firecamp/utils';
 
 import Crisp from '../components/common/Crisp';
 import Analytics from '../components/common/Analytics';
-import pService from '../services/prompt.service';
 import SidebarContainer from '../components/containers/SidebarContainer';
 import TabsContainer from '../components/containers/TabsContainer';
 import StatusBarContainer from '../components/status-bar/StatusBarContainer';
@@ -46,13 +45,7 @@ const App: FC<any> = () => {
         // await initApp();
       }, 100);
     };
-
     init();
-
-    setTimeout(() => {
-      pService.open({ value: 'Testing the input on heaven' }).then(console.log);
-    }, 5000);
-
     return () => {
       if (_misc.firecampAgent() === EFirecampAgent.Desktop)
         //@ts-ignore
