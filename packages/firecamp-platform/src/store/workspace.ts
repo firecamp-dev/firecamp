@@ -5,11 +5,11 @@ import _reject from 'lodash/reject';
 import { _object, _string } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import {
+  TId,
   ICollection,
   IFolder,
   IWorkspace,
   EWorkspaceType,
-  TId,
 } from '@firecamp/types';
 
 import { useEnvStore } from './environment';

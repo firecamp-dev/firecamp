@@ -152,14 +152,14 @@ const Explorer: FC<any> = () => {
     // return pltContext.app.modals.openCreateCollection();
     pltContext.window
       .promptInput({
-        header: 'Enter New Collection Name',
-        title: 'Name',
+        header: 'Create New Collection',
+        title: 'Collection Name',
         texts: {
           btnOking: 'Creating...',
           btnOk: 'Create',
           btnCancle: 'Cancle',
         },
-        value: 'Testing the input on heaven',
+        value: '',
         validator: (val) => {
           if (!val || val.length < 3) {
             return {
@@ -182,11 +182,6 @@ const Explorer: FC<any> = () => {
       })
       .then((res) => {
         // console.log(res, 1111);
-      })
-      .catch((e) => {
-        console.log(e);
-        // console.log(e.response, e.response?.data)
-        // AppService.notify.alert(e?.response?.data?.message || e.message);
       });
   };
 

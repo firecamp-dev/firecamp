@@ -2,14 +2,7 @@ import ReactDOM from 'react-dom';
 import { IPromptInput, PromptInput } from '../../components/prompt/PromptInput';
 
 type TOpenPromptInput = (props: TPromptInputOpenProps) => Promise<any>;
-const promptInput: TOpenPromptInput = ({
-  header,
-  value,
-  texts,
-  validator,
-  executor,
-  onError
-}) => {
+const promptInput: TOpenPromptInput = (props) => {
   // @ts-ignore
   const promptContainer = document.createElement('div');
   const onClose = () => {
@@ -18,14 +11,9 @@ const promptInput: TOpenPromptInput = ({
   return new Promise((rs, rj) => {
     ReactDOM.render(
       <PromptInput
-        header={header}
-        texts={texts}
-        value={value}
+        {...props}
         onClose={onClose}
-        validator={validator}
-        executor={executor}
         onResolve={(res) => rs(res)} //resolve for executor
-        onError={onError} // error handler is needed
       />,
       promptContainer
     );

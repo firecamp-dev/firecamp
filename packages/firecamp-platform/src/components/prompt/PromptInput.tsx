@@ -18,6 +18,7 @@ export interface IPromptInput {
 
 export const PromptInput: FC<IPromptInput> = ({
   header,
+  title = 'Name',
   texts,
   value,
   onClose,
@@ -92,8 +93,8 @@ export const PromptInput: FC<IPromptInput> = ({
           <div className="mt-4">
             <Input
               autoFocus={true}
-              label="Name"
-              placeholder="Folder name"
+              label={title}
+              placeholder={`Type ${title}`}
               name={'prompInput'}
               value={state.value}
               onChange={_onChangeValue}
