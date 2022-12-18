@@ -1,4 +1,5 @@
 import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
+import { nanoid } from 'nanoid';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -23,8 +24,9 @@ interface ICollectionSlice {
 
   // folders
   getFolder: (id: TId) => IRequestFolder | undefined;
-  addFolder: (directory: IRequestFolder) => void;
+  createFolder: (folder: Partial<IRequestFolder>) => void;
   deleteFolder: (id: TId) => void;
+  onCreateFolder: (folder: IRequestFolder) => void;
 }
 
 const createCollectionSlice = (
@@ -101,19 +103,37 @@ const createCollectionSlice = (
   },
 
   // folders
-  getFolder: (id: TId, getLast = false) => {
+  getFolder: (id: TId) => {
     const state = get();
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
     return folder;
   },
-  addFolder: (folder: IRequestFolder) => {
+  createFolder: async (folder: Partial<IRequestFolder>) => {
     if (!folder?.__ref?.id) return;
-    set((s) => ({
-      collection: {
-        ...s.collection,
-        folders: [...s.collection.folders, folder],
+    const state = get();
+    const _folder = {
+      name: folder?.name,
+      // @ts-ignore
+      description: folder?.description,
+      __ref: {
+        id: nanoid(),
+        workspaceId: state.workspace.__ref.id,
       },
-    }));
+    };
+    state.toggleProgressBar(true);
+    return Promise.resolve().then(() => {
+      state.onCreateFolder(_folder);
+    });
+    // const res = await Rest.requestFolder
+    //   .create(_folder)
+    //   .then((r) => {
+    //     state.onCreateFolder(r.data);
+    //     return r;
+    //   })
+    //   .finally(() => {
+    //     state.toggleProgressBar(false);
+    //   });
+    // return res;
   },
   deleteFolder: (id: TId) => {
     set((s) => {
@@ -122,6 +142,29 @@ const createCollectionSlice = (
         collection: {
           ...s.collection,
           ...folders,
+        },
+      };
+    });
+  },
+
+  onCreateFolder: (folder) => {
+    //@ts-ignore
+    if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
+    set((s) => {
+      s.collection.tdpInstance?.addFolderItem(folder);
+      const { folders } = s.collection;
+      if (folder.__ref.folderId) {
+        folders.map((f) => {
+          if (f.__ref.id == folder.__ref.folderId) {
+            f.__meta.fOrders.push(folder.__ref.id);
+          }
+        });
+      } else {
+      }
+      return {
+        collection: {
+          ...s.collection,
+          folders: [...folders, folder],
         },
       };
     });

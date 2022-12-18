@@ -1,7 +1,8 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import create from 'zustand';
 import createContext from 'zustand/context';
-import { IRest, IRestResponse, TId } from '@firecamp/types';
+import { TId, IRest, IRestResponse, EFirecampAgent } from '@firecamp/types';
+import { _object, _env, _array, _string } from '@firecamp/utils';
 import ScriptService from '../services/scripts/index';
 import {
   prepareUIRequestPanelState,
@@ -26,8 +27,6 @@ import {
   IRequestChangeStateSlice,
   createRequestChangeStateSlice,
 } from './index';
-import { EFirecampAgent } from '@firecamp/types';
-import { _object, _env, _array, _string } from '@firecamp/utils';
 import { IRestClientRequest } from '../types';
 
 const {
@@ -52,9 +51,9 @@ interface IRestStore
     IPullSlice,
     IRequestChangeStateSlice {
   originalRequest?: IRest;
-  initialise: (request: IRest, tabId: TId) => void;
   context?: any;
   setContext: (ctx: any) => void;
+  initialise: (request: IRest, tabId: TId) => void;
   execute(
     variables: {
       merged: {};
@@ -77,6 +76,7 @@ const createRestStore = (initialState: IRestStoreState) =>
   create<IRestStore>((set, get): IRestStore => {
     const uiRequestPanel = prepareUIRequestPanelState(initialState.request);
     return {
+      setContext: (ctx: any) => set({ context: ctx }),
       initialise: (request: Partial<IRest>, tabId: TId) => {
         const state = get();
         const initState = initialiseStoreFromRequest(request, tabId);
@@ -90,7 +90,6 @@ const createRestStore = (initialState: IRestStoreState) =>
         // update auth type, generate auth headers
         state.changeAuthType(request.auth?.type);
       },
-      setContext: (ctx: any) => set({ context: ctx }),
       ...createRequestSlice(
         set,
         get,
@@ -140,7 +139,7 @@ const createRestStore = (initialState: IRestStoreState) =>
             return;
           }
           state.setRequestRunningFlag(true);
-          
+
           let preScriptResponse: any = {};
           let postScriptResponse: any = {};
           let testScriptResponse: any = {};

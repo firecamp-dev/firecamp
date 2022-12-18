@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-// import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
+import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
@@ -22,13 +22,8 @@ const CollectionTab = () => {
     }),
     shallow
   );
-  const {
-    context,
-    registerTDP,
-    unRegisterTDP,
-    openPlayground,
-    deleteItem,
-  } = useWebsocketStoreApi().getState() as IWebsocketStore;
+  const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
+    useWebsocketStoreApi().getState() as IWebsocketStore;
 
   // console.log(items, 'items...');
 
@@ -62,6 +57,39 @@ const CollectionTab = () => {
     );
   };
 
+  const _createFolderPrompt = async () => {
+    context.window
+      .promptInput({
+        header: 'Create A New Folder',
+        lable: 'Folder Name',
+        placeholder: '',
+        texts: { btnOking: 'Creating...' },
+        value: '',
+        validator: (val) => {
+          if (!val || val.length < 3) {
+            return {
+              isValid: false,
+              message: 'The folder name must have minimum 3 characters.',
+            };
+          }
+          const isValid = RE.NoSpecialCharacters.test(val);
+          return {
+            isValid,
+            message:
+              !isValid &&
+              'The folder name must not contain any special characters.',
+          };
+        },
+        executor: (name) => createCollection({ name, description: '' }),
+        onError: (e) => {
+          AppService.notify.alert(e?.response?.data?.message || e.message);
+        },
+      })
+      .then((res) => {
+        // console.log(res, 1111);
+      });
+  };
+
   return (
     <Pane
       expanded={true}
@@ -75,9 +103,9 @@ const CollectionTab = () => {
             <div className="action">
               <VscRefresh size={14} className="mr-2 cursor-pointer" />
             </div>
-            {/* <div>
-                <VscNewFolder size={14} className="cursor-pointer" />
-              </div> */}
+            <div>
+              <VscNewFolder size={14} className="cursor-pointer" onClick={_createFolderPrompt}/>
+            </div>
           </ToolBar>
         );
       }}
