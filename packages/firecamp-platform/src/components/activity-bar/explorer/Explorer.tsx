@@ -153,12 +153,9 @@ const Explorer: FC<any> = () => {
     pltContext.window
       .promptInput({
         header: 'Create New Collection',
-        title: 'Collection Name',
-        texts: {
-          btnOking: 'Creating...',
-          btnOk: 'Create',
-          btnCancle: 'Cancle',
-        },
+        lable: 'Collection Name',
+        placeholder: 'type collection name',
+        texts: { btnOking: 'Creating...' },
         value: '',
         validator: (val) => {
           if (!val || val.length < 3) {

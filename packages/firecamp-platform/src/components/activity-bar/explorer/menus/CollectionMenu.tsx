@@ -53,12 +53,9 @@ const CollectionMenu = ({
       platformContext.window
         .promptInput({
           header: 'Create New Folder',
-          title: 'Folder Name',
-          texts: {
-            btnOking: 'Creating...',
-            btnOk: 'Create',
-            btnCancle: 'Cancle',
-          },
+          lable: 'Folder Name',
+          placeholder: 'type folder name',
+          texts: { btnOking: 'Creating...' },
           value: '',
           validator: (val) => {
             if (!val || val.length < 3) {

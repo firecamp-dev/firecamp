@@ -2,11 +2,12 @@ import { FC, useState } from 'react';
 import { Button, Input, Modal, ProgressBar, TabHeader } from '@firecamp/ui-kit';
 export interface IPromptInput {
   header: string;
-  title?: string;
+  lable?: string;
+  placeholder?: string;
   texts?: {
-    btnOk: string;
-    btnOking: string;
-    btnCancle: string;
+    btnOk?: string;
+    btnOking?: string;
+    btnCancle?: string;
   };
   value: string;
   onClose: Function;
@@ -16,9 +17,16 @@ export interface IPromptInput {
   onError?: (e) => void;
 }
 
+const _texts: IPromptInput['texts'] = {
+  btnOk: 'Create',
+  btnOking: 'Creating...',
+  btnCancle: 'Cancle',
+};
+
 export const PromptInput: FC<IPromptInput> = ({
   header,
-  title = 'Name',
+  lable = 'Name',
+  placeholder,
   texts,
   value,
   onClose,
@@ -77,6 +85,7 @@ export const PromptInput: FC<IPromptInput> = ({
     }
   };
 
+  texts = { ..._texts, ...texts };
   return (
     <Modal
       isOpen={state.isOpen}
@@ -93,8 +102,8 @@ export const PromptInput: FC<IPromptInput> = ({
           <div className="mt-4">
             <Input
               autoFocus={true}
-              label={title}
-              placeholder={`Type ${title}`}
+              label={lable}
+              placeholder={placeholder}
               name={'prompInput'}
               value={state.value}
               onChange={_onChangeValue}

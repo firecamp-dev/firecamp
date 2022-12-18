@@ -22,7 +22,7 @@ const promptInput: TOpenPromptInput = (props) => {
 
 type TPromptInputOpenProps = Pick<
   IPromptInput,
-  'header' | 'title' | 'texts' | 'value' | 'validator' | 'executor' | 'onError'
+  'header' | 'lable' | 'placeholder' | 'texts' | 'value' | 'validator' | 'executor' | 'onError'
 >;
 
 export { promptInput };
