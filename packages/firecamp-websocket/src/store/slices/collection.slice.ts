@@ -1,5 +1,5 @@
-import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
 import { nanoid } from 'nanoid';
+import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -24,7 +24,7 @@ interface ICollectionSlice {
 
   // folders
   getFolder: (id: TId) => IRequestFolder | undefined;
-  createFolder: (folder: Partial<IRequestFolder>) => void;
+  createFolder: (name: string, parentFolderId: TId) => void;
   deleteFolder: (id: TId) => void;
   onCreateFolder: (folder: IRequestFolder) => void;
 }
@@ -57,8 +57,9 @@ const createCollectionSlice = (
 
   // collection
   initialiseCollection: (collection: ICollection) => {
-    console.log(collection?.items?.length, 'collection?.items?.length...');
+    // console.log(collection?.items?.length, 'collection?.items?.length...');
     const state = get();
+    // console.log(state.request.__meta.fOrders, state.request.__meta.iOrders);
     set((s) => ({
       collection: {
         ...s.collection,
@@ -71,7 +72,8 @@ const createCollectionSlice = (
     }));
     state.collection.tdpInstance?.init(
       collection.folders || [],
-      collection.items || []
+      collection.items || [],
+      [...state.request.__meta.fOrders, ...state.request.__meta.iOrders]
     );
   },
 
@@ -108,16 +110,17 @@ const createCollectionSlice = (
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
     return folder;
   },
-  createFolder: async (folder: Partial<IRequestFolder>) => {
-    if (!folder?.__ref?.id) return;
+  createFolder: async (name: string, parentFolderId?: TId) => {
     const state = get();
-    const _folder = {
-      name: folder?.name,
-      // @ts-ignore
-      description: folder?.description,
+    const _folder: IRequestFolder = {
+      name,
+      __meta: { fOrders: [], iOrders: [] },
       __ref: {
         id: nanoid(),
-        workspaceId: state.workspace.__ref.id,
+        requestId: state.request.__ref.id,
+        requestType: state.request.__ref.type,
+        collectionId: state.request.__ref.collectionId,
+        folderId: parentFolderId,
       },
     };
     state.toggleProgressBar(true);
@@ -151,7 +154,7 @@ const createCollectionSlice = (
     //@ts-ignore
     if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
     set((s) => {
-      s.collection.tdpInstance?.addFolderItem(folder);
+      s.collection.tdpInstance?.addFolder(folder);
       const { folders } = s.collection;
       if (folder.__ref.folderId) {
         folders.map((f) => {
@@ -160,6 +163,7 @@ const createCollectionSlice = (
           }
         });
       } else {
+        // TODO: add root folder id in request.__meta.fOrders
       }
       return {
         collection: {

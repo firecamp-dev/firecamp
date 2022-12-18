@@ -70,7 +70,10 @@ export const PromptInput: FC<IPromptInput> = ({
             setState((s) => ({ ...s, isOpen: false, isExecuting: false }));
           })
           .catch((e) => {
-            if (typeof onError == 'function') onError(e);
+            if (typeof onError == 'function') {
+              console.error(e)
+              onError(e);
+            }
             setState((s) => ({
               ...s,
               isExecuting: false,

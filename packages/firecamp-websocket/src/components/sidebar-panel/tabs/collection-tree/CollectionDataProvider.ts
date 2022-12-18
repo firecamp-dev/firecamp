@@ -38,8 +38,8 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
 
-  constructor(folders: TFolderItem[], items: TItem[]) {
-    this.init(folders, items)
+  constructor(folders: TFolderItem[], items: TItem[], rootOrders: string[]) {
+    this.init(folders, items, rootOrders);
   }
 
   public async getTreeItem(
@@ -118,7 +118,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     //todo: implement
   }
 
-  public init(folders: TFolderItem[], items: TItem[]) {
+  public init(folders: TFolderItem[], items: TItem[], rootOrders: string[]) {
     this.items = [
       ...folders.map((i) => ({
         ...i,
@@ -126,13 +126,15 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       })),
       ...items.map((i) => ({ ...i, __ref: { ...i.__ref, isItem: true } })),
     ];
-    this.rootOrders = this.items
-      .filter((i) => !i.__ref.folderId)
-      .map((i) => i.__ref.id);
+    // this.rootOrders = this.items
+    //   .filter((i) => !i.__ref.folderId)
+    //   .map((i) => i.__ref.id);
+    this.rootOrders = rootOrders;
   }
 
   // extra methods of provider
   public addFolder(item: TFolderItem) {
+    console.log(item, 8855888);
     this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
     if (!item.__ref.folderId) {
       this.rootOrders.push(item.__ref.id);
