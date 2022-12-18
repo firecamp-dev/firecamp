@@ -4,6 +4,7 @@ import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { Button } from '@firecamp/ui-kit';
 
 export default {
@@ -83,6 +84,7 @@ export default {
     info,
     openPlg,
     deletePlg,
+    createFolder,
   }) => {
     const renderDepthOffset = 8;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
@@ -185,6 +187,13 @@ export default {
               <></>
             )}
 
+            <VscAdd
+              className="ml-1 cursor-pointer"
+              size={14}
+              onClick={() => {
+                createFolder(item.index);
+              }}
+            />
             <VscTrash
               className="ml-1 cursor-pointer"
               size={14}

@@ -14,7 +14,7 @@ const HeadersTab = ({
       key={`headers-${activeConnectionId}`}
       id={`headers-${activeConnectionId}`}
       rows={headers || []}
-      title={'headers'}
+      title={'Headers'}
       // meta={{
       //   mode: {
       //     key: 'ife-header-key',

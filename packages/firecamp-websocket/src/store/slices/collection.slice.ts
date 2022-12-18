@@ -118,7 +118,7 @@ const createCollectionSlice = (
       __ref: {
         id: nanoid(),
         requestId: state.request.__ref.id,
-        requestType: state.request.__ref.type,
+        requestType: state.request.__meta.type,
         collectionId: state.request.__ref.collectionId,
         folderId: parentFolderId,
       },

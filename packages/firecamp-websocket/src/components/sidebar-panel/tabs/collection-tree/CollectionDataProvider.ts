@@ -134,7 +134,6 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
 
   // extra methods of provider
   public addFolder(item: TFolderItem) {
-    console.log(item, 8855888);
     this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
     if (!item.__ref.folderId) {
       this.rootOrders.push(item.__ref.id);

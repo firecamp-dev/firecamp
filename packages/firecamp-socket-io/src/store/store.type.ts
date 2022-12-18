@@ -43,6 +43,9 @@ interface ISocketStore
     IHandleConnectionExecutorSlice,
     IUiSlice,
     IRequestChangeStateSlice {
+  originalRequest?: ISocketIO;
+  context?: any;
+  setContext: (ctx: any) => void;
   initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
 }
 
