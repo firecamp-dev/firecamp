@@ -20,7 +20,7 @@ const Input: FC<IInput> = React.forwardRef(
       icon = '',
       iconPosition = 'left',
       registerMeta = {},
-      useformRef = () => {},
+      useformRef = () => { },
       name = '',
       label = '',
       error = '',
@@ -29,10 +29,10 @@ const Input: FC<IInput> = React.forwardRef(
       isEditor = false,
       disabled = false,
       postComponents = [],
-      onChange = () => {},
-      onKeyDown = () => {},
-      onBlur = () => {},
-      onFocus = () => {},
+      onChange = () => { },
+      onKeyDown = () => { },
+      onBlur = () => { },
+      onFocus = () => { },
       ...domProps
     },
     ref
@@ -150,6 +150,12 @@ const Input: FC<IInput> = React.forwardRef(
 
 export default Input;
 
+/**
+* Inputv2: To use input field with "react-hook-form" functionality: 
+* 1. Pass the ref with register function of 'useForm' hook 
+* 2. The value prop should not be passed from parent component
+* So that the input field will remain in un-controlled state 
+**/
 export const Inputv2: FC<IInput> = React.forwardRef(
   (
     {
@@ -158,7 +164,7 @@ export const Inputv2: FC<IInput> = React.forwardRef(
       className = '',
       wrapperClassName = '',
       placeholder = '',
-      value = '',
+      value,
       defaultValue,
       icon = '',
       iconPosition = 'left',
@@ -167,14 +173,12 @@ export const Inputv2: FC<IInput> = React.forwardRef(
       error = '',
       note = '',
       type = '',
-      isEditor = false,
-      useFormRef = false,
       disabled = false,
       postComponents = [],
-      onChange = () => {},
-      onKeyDown = () => {},
-      onBlur = () => {},
-      onFocus = () => {},
+      onChange = () => { },
+      onKeyDown = () => { },
+      onBlur = () => { },
+      onFocus = () => { },
       ...domProps
     },
     ref
@@ -182,13 +186,6 @@ export const Inputv2: FC<IInput> = React.forwardRef(
 
     let hasIconLeft = icon && iconPosition == 'left';
     let hasIconRight = icon && iconPosition == 'right';
-
-    /**
-    * To use input field with "react-hook-form" functionality: 
-    * 1. useFormRef to be true
-    * 2. Need to pass the ref with register function of 'useForm' hook 
-    * 3. The value prop will remain un-controlled state 
-    **/
 
     return (
       <div
@@ -216,69 +213,44 @@ export const Inputv2: FC<IInput> = React.forwardRef(
             )}
           ></span>
         )}
-        {isEditor === false ? (
-          <div
-            className={cx('w-full relative', { flex: postComponents != '' })}
+        <div
+          className={cx('w-full relative', { flex: postComponents != '' })}
+        >
+          <input
+            {...domProps}
+            ref={ref}
+            id={id}
+            key={name}
+            name={name}
+            type={type}
+            className={cx(
+              'border !border-inputBorder rounded-sm p-2 leading-5 outline-none placeholder-inputPlaceholder text-base focus:bg-inputFocusBackground w-full bg-inputBackground',
+              { '!pl-9': hasIconLeft },
+              { '!pr-9': hasIconRight },
+              className
+            )}
+            placeholder={placeholder}
+            disabled={disabled}
+            autoFocus={autoFocus}
+            onChange={onChange}
+            onBlur={onBlur}
+            onFocus={onFocus}
+            onKeyDown={onKeyDown}
+            tabIndex={1}
+          />
+          <span
+            className={cx(
+              'absolute top-3 cursor-pointer',
+              { 'left-2': hasIconLeft },
+              { 'right-2': hasIconRight }
+            )}
           >
-            <input
-              {...domProps}
-              ref={ref}
-              id={id}
-              key={name}
-              name={name}
-              type={type}
-              className={cx(
-                'border !border-inputBorder rounded-sm p-2 leading-5 outline-none placeholder-inputPlaceholder text-base focus:bg-inputFocusBackground w-full bg-inputBackground',
-                { '!pl-9': hasIconLeft },
-                { '!pr-9': hasIconRight },
-                className
-              )}
-              placeholder={placeholder}
-              disabled={disabled}
-              autoFocus={autoFocus}
-              onChange={onChange}
-              onBlur={onBlur}
-              onFocus={onFocus}
-              onKeyDown={onKeyDown}
-              value={!useFormRef ? value : undefined}
-              defaultValue={defaultValue}
-              tabIndex={1}
-            />
-            <span
-              className={cx(
-                'absolute top-3 cursor-pointer',
-                { 'left-2': hasIconLeft },
-                { 'right-2': hasIconRight }
-              )}
-            >
-              {icon}
-            </span>
-            {postComponents || ''}
-            {error && <ErrorMessage error={error} />}
-            {note && <Note note={note} />}
-          </div>
-        ) : (
-          <div>
-            <SingleLineEditor
-              id={id}
-              autoFocus={autoFocus}
-              type={type}
-              value={value}
-              name={name}
-              disabled={disabled}
-              className={className}
-              onChange={onChange}
-              onBlur={onBlur}
-              onFocus={onFocus}
-              onKeyDown={onKeyDown}
-              height="21px"
-              className="border px-2 py-1 border-inputBorder"
-            />
-            {postComponents || ''}
-            {error && <ErrorMessage error={error} />}
-            {note && <Note note={note} />}
-          </div>
-        )}
+            {icon}
+          </span>
+          {postComponents || ''}
+          {error && <ErrorMessage error={error} />}
+          {note && <Note note={note} />}
+        </div>
       </div>
     );
   }

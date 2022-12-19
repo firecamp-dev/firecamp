@@ -76,19 +76,16 @@ export function TemplateWithReactHookForm() {
           pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
         })
       }
-      useFormRef={true}
       autoFocus={true}
       error={
         (errors?.email) ? errors?.email?.message || 'Invalid email' : ''
       }
-      value={"value-of-email-here"}
     />
     <Inputv2 type="password"
       id='user-password'
       label='Password'
       placeholder='Enter Password'
       name="password"
-      useFormRef={true}
       ref={register({ required: true, minLength: 6 })}
       error={
         (errors?.password) ?

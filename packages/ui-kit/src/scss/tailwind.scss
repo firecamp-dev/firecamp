@@ -1012,6 +1012,9 @@ video {
 .mb-0 {
 	margin-bottom: 0px;
 }
+.ml-auto {
+	margin-left: auto;
+}
 .mb-4 {
 	margin-bottom: 1rem;
 }
@@ -1077,9 +1080,6 @@ video {
 }
 .mt-6 {
 	margin-top: 1.5rem;
-}
-.ml-auto {
-	margin-left: auto;
 }
 .mt-2 {
 	margin-top: 0.5rem;
@@ -1403,11 +1403,11 @@ video {
 .rounded-sm {
 	border-radius: 0.125rem;
 }
-.rounded-full {
-	border-radius: 9999px;
-}
 .rounded {
 	border-radius: 0.25rem;
+}
+.rounded-full {
+	border-radius: 9999px;
 }
 .rounded-3xl {
 	border-radius: 1.5rem;
@@ -1607,6 +1607,12 @@ video {
 .bg-danger {
 	background-color: var(--danger);
 }
+.bg-appForeground {
+	background-color: var(--app-foreground);
+}
+.bg-appBackground {
+	background-color: var(--app-background);
+}
 .bg-appBorder {
 	background-color: var(--app-border);
 }
@@ -1618,9 +1624,6 @@ video {
 }
 .bg-inputBackground {
 	background-color: var(--input-background);
-}
-.bg-appBackground {
-	background-color: var(--app-background);
 }
 .bg-focusColor {
 	background-color: #ffffff1a;
