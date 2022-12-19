@@ -2,14 +2,12 @@ import { FC, useState } from 'react';
 import {
   Container,
   Button,
- 
-  
   Modal,
 } from '@firecamp/ui-kit';
-
 import { IConfirmationModal } from './ConfirmationModal.interfaces';
 
 const ConfirmationModal: FC<IConfirmationModal> = ({
+  onResolve,
   isOpen: propIsOpen = false,
   title = '',
   message = '',
@@ -33,18 +31,17 @@ const ConfirmationModal: FC<IConfirmationModal> = ({
   onCancel = () => {},
   onClose = () => {},
 }) => {
-  let [isOpen, toggleOpen] = useState(propIsOpen);
-
-  let _onConfirm = (e) => {
+  const [isOpen, toggleOpen] = useState(propIsOpen);
+  const _onConfirm = (e) => {
     if (e) e.preventDefault();
     onConfirm();
     toggleOpen(false);
   };
-
-  let _onCancel = (e) => {
+  const _onCancel = (e) => {
     if (e) e.preventDefault();
     onCancel();
     toggleOpen(false);
+    onResolve && onResolve("I am confirming that It'll work perfectly.")
   };
 
   return (

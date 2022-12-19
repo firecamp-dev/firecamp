@@ -3,7 +3,6 @@ import { Column, Row, RootContainer, Resizable } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import './ConverterTab.sass';
 import DataConverter from './DataConverter';
-import * as cacheTabsFactory from '../../../services/cache-tabs-factory';
 import ConverterTabService from './ConverterTabService';
 import Source from './source/Source';
 import Target from './target/Target';
@@ -29,15 +28,15 @@ const ConverterTab: FC<IConverterTab> = ({ tab: propTab, tabFns }) => {
     new ConverterTabService(propTab)
   );
 
-  let cacheTabsFactoryFns = cacheTabsFactory;
+  // let cacheTabsFactoryFns = cacheTabsFactory;
 
   let _updateCacheTab = (state) => {
     let syncState = converterTabService.getCurrentState() || {};
     let reactState = Object.assign({}, state);
-    cacheTabsFactoryFns.setTab(propTab.id, {
-      request: reactState,
-      sync: syncState,
-    });
+    // cacheTabsFactoryFns.setTab(propTab.id, {
+    //   request: reactState,
+    //   sync: syncState,
+    // });
   };
 
   let [state, setState] = useState({

@@ -1,4 +1,5 @@
 import shallow from 'zustand/shallow';
+import { Modal } from '@firecamp/ui-kit';
 // import Environment from '../modals/environment/Environment';
 // import WorkspaceSetting from '../modals/workspace-setting/WorkspaceSetting';
 // import SSLnProxyManager from '../modals/ssl-proxy-manager/SSLnProxyManager';
@@ -25,7 +26,6 @@ import WorkspaceManagement from './workspace/WorkspaceManagement';
 import SwitchWorkspace from './workspace/SwitchWorkspace';
 import CreateCollection from './collection/CreateCollection';
 import SaveRequest from './request/save-request/SaveRequest';
-import { Modal } from '@firecamp/ui-kit';
 import CreateEnvironment from './environment/CreateEnvironment';
 import CreateFolder from './folder/CreateFolder';
 import CollectionSetting from './collection/CollectionSetting';

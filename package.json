@@ -2,17 +2,18 @@
   "name": "firecamp",
   "version": "2.6.1",
   "private": true,
-  "packageManager": "yarn@3.2.3",
   "description": "Universal API testing and collaboration platform",
   "main": "packages/firecamp-desktop-app/dist/services/Main",
   "homepage": "./dev",
   "scripts": {
-    "build:monorepo": "lerna run build --scope=@firecamp/rest-executor --scope=@firecamp/ws-executor --scope=@firecamp/socket.io-executor",
+    "build:workspace": "pnpm --filter=@firecamp/rest-executor --filter=@firecamp/ws-executor --filter=@firecamp/socket.io-executor build",
+    "boot": "pnpm install --shamefully-hoist",
+    "bootstrap": "pnpm install --shamefully-hoist",
     "start": "npx webpack serve --config ./webpack.dev.js",
-    "dev": "APP_VERSION=$npm_package_version AppFormat=webapp && node scripts/build && yarn build:monorepo && yarn start",
+    "dev": "APP_VERSION=$npm_package_version AppFormat=webapp && node scripts/build && pnpm build:workspace && pnpm start",
     "electron": "npx electron .",
     "release:web-app": "AppFormat=webapp && node scripts/release production",
-    "release:web-app:staging": "AppFormat=webapp && yarn build:monorepo && node scripts/release staging",
+    "release:web-app:staging": "AppFormat=webapp && pnpm build:workspace && node scripts/release staging",
     "release:prod:mac-dmg": "AppFormat=dmg && node scripts/release production p",
     "release:prod:linux-appImage": "AppFormat=appImage && node scripts/release production",
     "release:prod:linux-snap": "AppFormat=snap scripts/release production p",
@@ -26,11 +27,12 @@
     "_test": "cross-env NODE_ENV=test mocha -r ./test/setup-app test/app",
     "test": "jest",
     "prettify": "prettier --write \"packages/firecamp-platform/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "preinstall": "npx only-allow pnpm"
   },
   "lint-staged": {
     "**/*.ts": [
-      "yarn prettify",
+      "pnpm prettify",
       "git add ."
     ]
   },
@@ -90,7 +92,6 @@
     "ignore-loader": "^0.1.2",
     "jest-css-modules": "^2.1.0",
     "jest-css-modules-transform": "^4.4.2",
-    "lerna": "^5.4.3",
     "lint-staged": "^12.3.7",
     "node-polyfill-webpack-plugin": "^2.0.0",
     "postcss-loader": "^6.2.1",
@@ -130,10 +131,10 @@
     "ramda": "^0.28.0",
     "react-file-drop": "^3.1.5"
   },
-  "workspaces": [
-    "packages/*",
-    "./"
-  ],
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  },
   "bugs": {
     "url": "https://github.com/firecamp.io/firecamp/issues"
   },

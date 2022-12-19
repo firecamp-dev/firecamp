@@ -22,11 +22,11 @@ const SignIn: FC<IModal> = () => {
           <Button
             text="Continue with Email"
             icon={<VscAccount size={18} />}
-            iconLeft
-            md
             className="!w-full mb-5"
             onClick={() => AppService.modals.openSignInWithEmail()}
-            transparent={true}
+            transparent
+            iconLeft
+            md
           />
         </div>
         {/* <div className="mb-8 mt-8 flex justify-center items-center">

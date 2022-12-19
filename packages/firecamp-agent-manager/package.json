@@ -40,7 +40,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/rest-executor": "^1.0.3",
+    "@firecamp/rest-executor": "workspace:*",
     "@firecamp/types": "^0.1.2",
     "@firecamp/utils": "^0.0.11"
   },
@@ -81,11 +81,6 @@
     "LICENSE",
     "README.md"
   ],
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "prettier": {
     "singleQuote": true
   },
