@@ -25,9 +25,9 @@ import {
   createPlaygroundsSlice,
 
   // connections logs
-  IConnectionsLogsSlice,
-  IConnectionsLogs,
-  createConnectionsLogsSlice,
+  ILogsSlice,
+  ILogs,
+  createLogsSlice,
 
   // request changes
   IRequestChangeStateSlice,
@@ -61,7 +61,7 @@ interface IWebsocketStoreState {
   collection?: ICollection;
   runtime?: IRuntime;
   playgrounds?: IPlaygrounds;
-  connectionsLogs?: IConnectionsLogs;
+  logs?: ILogs;
   ui?: IUi;
 }
 
@@ -70,7 +70,7 @@ interface IWebsocketStore
     IRuntimeSlice,
     ICollectionSlice,
     IPlaygroundSlice,
-    IConnectionsLogsSlice,
+    ILogsSlice,
     IPullSlice,
     IHandleConnectionExecutorSlice,
     IUiSlice,
@@ -104,7 +104,7 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
-      ...createConnectionsLogsSlice(set, get),
+      ...createLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),

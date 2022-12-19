@@ -28,16 +28,16 @@ const LogTable = () => {
     typeFilter,
     logs,
     changePlaygroundLogFilters,
-    clearAllConnectionLogs,
+    clearLogs,
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       activePlayground: s.runtime.activePlayground,
       typeFilter:
         s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
-      logs: s.connectionsLogs?.[s.runtime.activePlayground] || [],
+      logs: s.logs?.[s.runtime.activePlayground] || [],
 
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
-      clearAllConnectionLogs: s.clearAllConnectionLogs,
+      clearLogs: s.clearLogs,
     }),
     shallow
   );
@@ -73,7 +73,7 @@ const LogTable = () => {
   }, [logs, typeFilter, activePlayground]);
 
   const _onClearAllMessages = () => {
-    clearAllConnectionLogs(activePlayground);
+    clearLogs(activePlayground);
     setSelectedRow(null);
   };
 

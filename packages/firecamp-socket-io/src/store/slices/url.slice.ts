@@ -1,7 +1,4 @@
 import { IUrl, IQueryParam } from '@firecamp/types';
-
-// TODO: check for path params
-
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
   changeQueryParams: (queryParams: IQueryParam[]) => void;

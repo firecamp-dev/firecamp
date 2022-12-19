@@ -9,7 +9,7 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
-    '@storybook/addon-jest'
+    '@storybook/addon-jest',
   ],
   framework: '@storybook/react',
   core: {
@@ -40,10 +40,10 @@ module.exports = {
     });
 
     config.module.rules.push({
-        test: /\.txt$/,
-        use: ['raw-loader'],
-        include: path.resolve(__dirname, '../'),
-    })
+      test: /\.txt$/,
+      use: ['raw-loader'],
+      include: path.resolve(__dirname, '../'),
+    });
 
     config.resolve.alias = {
       ...config.resolve.alias,
@@ -57,6 +57,12 @@ module.exports = {
     config.externals = {
       ...config.externals,
       vscode: 'commonjs vscode', // the vscode-module is created on-the-fly and must be excluded. Add other modules that cannot be webpack'ed, 📖 -> https://webpack.js.org/configuration/externals/
+    };
+
+    // Alternately, for an alias:
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@components': path.resolve(__dirname, '..', 'src', 'components'),
     };
 
     return config;

@@ -1,5 +1,4 @@
 import { ISocketIO } from '@firecamp/types';
-
 import {
   IUrlSlice,
   createUrlSlice,
@@ -10,7 +9,6 @@ import {
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
   initialiseRequest: (request: ISocketIO) => void;
-  setRequestKey: (key: string, value: any) => void;
   changeListeners: (listeners: Array<string>) => void;
   changeMeta: (key: string, value: any) => void;
   changeConfig: (key: string, value: any) => void;
@@ -36,14 +34,6 @@ const createRequestSlice = (
     }));
   },
 
-  setRequestKey: (key: string, value: any) => {
-    set((s) => ({
-      request: {
-        ...s.request,
-        [key]: value,
-      },
-    }));
-  },
   changeListeners: (listeners: Array<string>) => {
     const state = get();
     set((s) => ({

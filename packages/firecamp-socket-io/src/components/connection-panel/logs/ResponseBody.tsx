@@ -8,14 +8,15 @@ import {
 import shallow from 'zustand/shallow';
 import LogTable from './log-table/LogTable';
 import Listeners from './listeners/Listeners';
-import { ISocketStore, useSocketStore } from '../../../store';
+import { useSocketStore } from '../../../store';
+import { ISocketStore } from '../../../store/store.type';
 
 const ResponseBody = ({ eventsList = [] }) => {
-  const { socketId, activePlayground, clearAllConnectionLogs } = useSocketStore(
+  const { socketId, activePlayground, clearLogs } = useSocketStore(
     (s: ISocketStore) => ({
       socketId: s.playgrounds[s.runtime.activePlayground]?.socketId,
       activePlayground: s.runtime.activePlayground,
-      clearAllConnectionLogs: s.clearAllConnectionLogs,
+      clearLogs: s.clearLogs,
     }),
     shallow
   );
@@ -56,7 +57,7 @@ const ResponseBody = ({ eventsList = [] }) => {
                 <span
                   id={`socket-io-clear-response-log-${activePlayground}`}
                   className="iconv2-clear-icon"
-                  onClick={()=>clearAllConnectionLogs(activePlayground)}
+                  onClick={()=>clearLogs(activePlayground)}
                   data-tip={'Clear all logs'}
                 />
               </div>

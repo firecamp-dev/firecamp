@@ -8,8 +8,9 @@ import ParamsTab from './ParamsTab';
 import AuthTab from './AuthTab';
 import EmitterPlayground from './playground/EmitterPlayground';
 import Response from '../logs/Response';
-import { ISocketStore, useSocketStore } from '../../../store';
+import { useSocketStore } from '../../../store';
 import { EPanel } from '../../../types'
+import { ISocketStore } from '../../../store/store.type';
 
 const bodyTabs = [
   {
@@ -49,7 +50,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     }),
     shallow
   );
-  const [activeBodyTab, setActiveBodyTab] = useState('config');
+  const [activeBodyTab, setActiveBodyTab] = useState('playground');
   const connection = connections.find((c) => c.id === activePlayground);
 
   const _onChangeConfig = (key, value) => {

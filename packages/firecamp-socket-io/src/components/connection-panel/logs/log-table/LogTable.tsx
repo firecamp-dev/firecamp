@@ -16,9 +16,10 @@ import { _object } from '@firecamp/utils';
 
 import LogPreview from './LogPreview';
 import AckIcon from './AckIcon';
-import { ISocketStore, useSocketStore } from '../../../../store';
+import { useSocketStore } from '../../../../store';
 
 import { ELogTypes } from '../../../../types';
+import { ISocketStore } from '../../../../store/store.type';
 
 const logTypes = {
   system: ELogTypes.System,
@@ -36,13 +37,13 @@ const LogTable = ({
   const {
     activePlayground,
     logFilters,
-    connectionLogs,
+    logs,
     changePlaygroundLogFilters,
   } = useSocketStore(
     (s: ISocketStore) => ({
       activePlayground: s.runtime.activePlayground,
       logFilters: s.playgrounds[s.runtime.activePlayground]?.logFilters || '',
-      connectionLogs: s.connectionsLogs?.[s.runtime.activePlayground] || [],
+      logs: s.logs?.[s.runtime.activePlayground] || [],
 
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
     }),
@@ -66,10 +67,10 @@ const LogTable = ({
    * Set selected row as empty if no logs.
    */
   useEffect(() => {
-    if (!connectionLogs.length && _object.size(selectedRow) !== 0) {
+    if (!logs.length && _object.size(selectedRow) !== 0) {
       setSelectedRow({});
     }
-  }, [connectionLogs]);
+  }, [logs]);
 
   /**
    * Filter logs by event type and name.
@@ -105,9 +106,9 @@ const LogTable = ({
       return filteredLogs;
     };
 
-    const filteredLogs = getFilteredLogsByMeta(connectionLogs, logFilters);
+    const filteredLogs = getFilteredLogsByMeta(logs, logFilters);
     logTableAPIRef.current?.setRows(filteredLogs);
-  }, [connectionLogs, logFilters, selectedConnection]);
+  }, [logs, logFilters, selectedConnection]);
 
   const _onRowClick = (rtRow) => {
     const originalRowValue = rtRow.original;

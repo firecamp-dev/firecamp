@@ -133,7 +133,7 @@ export const initialiseStoreFromRequest = (
       },
       isRequestRunning: false,
       isRequestSaved: !!request.__ref.collectionId,
-      tabId
+      tabId,
     },
     playgrounds: {
       // add logic for init playgrounds by connections
@@ -149,7 +149,7 @@ export const initialiseStoreFromRequest = (
         listeners: {},
       },
     },
-    connectionsLogs: {
+    logs: {
       [playgroundId]: [],
     },
     ui: {
