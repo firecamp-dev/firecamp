@@ -597,7 +597,7 @@ const PlaygroundTab = () => {
         placeholder: '',
         texts: { btnOk: 'Save', btnOking: 'Saving...' },
         value: '',
-        items: folders,
+        folders,
         onError: (e) => {
           context.app.notify.alert(e?.response?.data?.message || e.message);
         },
@@ -861,48 +861,9 @@ const SaveMessage = ({
                     Select Folder{' '}
                     <span>({focusedNode.__ref._relative_path})</span>
                   </label>
-                  {/*   <Collection
-                    className="with-border"
-                    onlyDirectory={true}
-                    onNodeFocus={setFocusedNode}
-                    data={collection}
-                    primaryKey={'id'}
-                    nodeRenderer={({
-                      isDirectory,
-                      item,
-                      isExpanded,
-                      classes,
-                      getNodeProps,
-                    }) => {
-                      if (isDirectory) {
-                        return (
-                          <CollectionFcNode
-                            isOpen={isExpanded}
-                            name={item.name}
-                            className={classes}
-                            icon="folder"
-                            {...getNodeProps()}
-                          />
-                        );
-                        // return <div className={classes}> {item.name}</div>;
-                      } else {
-                        return (
-                          <CollectionMsgNode
-                            item={item}
-                            className={classes}
-                            {...getNodeProps()}
-                          />
-                        );
-                      }
-                    }}
-                    allowDND={false}
-                    allowSort={false}
-                    onSort={() => {}}
-                    onDND={() => {}}
-                  /> */}
                 </div>
               ) : (
-                ''
+                <></>
               )}
               <Input
                 autoFocus={true}
@@ -922,7 +883,7 @@ const SaveMessage = ({
             </div>
           </div>
         ) : (
-          ''
+          <></>
         )
       }
     >

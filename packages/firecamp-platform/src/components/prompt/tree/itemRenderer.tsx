@@ -9,8 +9,7 @@ import { Button } from '@firecamp/ui-kit';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    console.log(item, 'arrow context');
-
+    // console.log(item, 'arrow context');
     if (item.data?.__ref?.isItem) {
       return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
     } else if (item.data?.__ref?.isFolder) {
@@ -83,8 +82,7 @@ export default {
     arrow,
     info,
     openPlg,
-    deletePlg,
-    createFolder
+    // createFolder
   }) => {
     const renderDepthOffset = 8;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
@@ -187,7 +185,7 @@ export default {
               <></>
             )}
 
-            <VscAdd
+            {/* <VscAdd
               className="ml-1 cursor-pointer"
               size={14}
               onClick={() => {
@@ -200,7 +198,7 @@ export default {
               onClick={() => {
                 deletePlg(item.index);
               }}
-            />
+            /> */}
           </div>
         </div>
         {children}

@@ -32,7 +32,9 @@ const promptInput: TOpenPromptInput = (props) => {
   });
 };
 
-const promptSaveItem: TOpenPromptInput = (props) => {
+
+type TOpenPromptSaveItem = (props: TPromptInputOpenProps & { folders: any[]}) => Promise<any>;
+const promptSaveItem: TOpenPromptSaveItem = (props) => {
   // @ts-ignore
   const promptContainer = document.createElement('div');
   const onClose = () => {
@@ -42,7 +44,7 @@ const promptSaveItem: TOpenPromptInput = (props) => {
     ReactDOM.render(
       <PromptSaveItem
         {...props}
-        items={props.items}
+        folders={props.folders}
         onClose={onClose}
         onResolve={(res) => rs(res)} //resolve for executor
       />,

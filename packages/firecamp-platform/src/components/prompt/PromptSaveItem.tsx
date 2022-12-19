@@ -8,40 +8,23 @@ import {
   TabHeader,
 } from '@firecamp/ui-kit';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
-
 import { TreeDataProvider } from './tree/dataProvider';
 import treeRenderer from './tree/itemRenderer';
+import { IPromptSaveItem } from './types';
 
-export interface IPromptInput {
-  header: string;
-  lable?: string;
-  placeholder?: string;
-  texts?: {
-    btnOk?: string;
-    btnOking?: string;
-    btnCancle?: string;
-  };
-  value: string;
-  onClose: Function;
-  validator?: (value: string) => { isValid: boolean; message?: string };
-  executor?: (value: string) => Promise<any>;
-  onResolve: (res: any) => void;
-  onError?: (e) => void;
-}
-
-const _texts: IPromptInput['texts'] = {
+const _texts: IPromptSaveItem['texts'] = {
   btnOk: 'Create',
   btnOking: 'Creating...',
   btnCancle: 'Cancle',
 };
 
-export const PromptSaveItem: FC<IPromptInput> = ({
+export const PromptSaveItem: FC<IPromptSaveItem> = ({
   header,
   lable = 'Name',
   placeholder,
   texts,
   value,
-  items,
+  folders,
   onClose,
   validator,
   executor,
@@ -51,7 +34,8 @@ export const PromptSaveItem: FC<IPromptInput> = ({
   const [state, setState] = useState({
     isOpen: true,
     isExecuting: false,
-    value,
+    inputValue: value,
+    folderId: '',
     error: '',
   });
   const _close = (e) => {
@@ -66,7 +50,8 @@ export const PromptSaveItem: FC<IPromptInput> = ({
   };
   const _onClickOk = async (e) => {
     e.preventDefault();
-    const value = state.value.trim();
+    const value = state.inputValue.trim();
+    const result = { value, folderId: state.folderId };
     let _validator: { isValid: boolean; message?: string } = { isValid: true };
     if (typeof validator == 'function') _validator = validator(value);
     // console.log(_validator, '_validator');
@@ -76,7 +61,7 @@ export const PromptSaveItem: FC<IPromptInput> = ({
     } else {
       if (typeof executor == 'function') {
         setState((s) => ({ ...s, error: '', isExecuting: true }));
-        executor(value)
+        executor(result)
           .then((res) => {
             onResolve(res);
             // finally close the prompt on success
@@ -94,13 +79,12 @@ export const PromptSaveItem: FC<IPromptInput> = ({
             }));
           });
       } else {
-        onResolve(value);
+        onResolve(result);
         // finally close the prompt on success
         setState((s) => ({ ...s, error: '', isOpen: false }));
       }
     }
   };
-
   texts = { ..._texts, ...texts };
   return (
     <Modal
@@ -121,7 +105,7 @@ export const PromptSaveItem: FC<IPromptInput> = ({
               label={lable}
               placeholder={placeholder}
               name={'prompInput'}
-              value={state.value}
+              value={state.inputValue}
               onChange={_onChangeValue}
               onKeyDown={() => {}}
               onBlur={() => {}}
@@ -129,11 +113,11 @@ export const PromptSaveItem: FC<IPromptInput> = ({
             />
           </div>
           <PathSelector
-            onSelect={(__ref) => {
-              // console.log({ __ref });
-              // setRequest((r) => ({ ...r, ...__ref }));
+            onSelect={(folderId) => {
+              // console.log({ folderId });
+              setState((s) => ({ ...s, folderId }));
             }}
-            items={items}
+            folders={folders}
           />
           <TabHeader className="px-4">
             <TabHeader.Right>
@@ -162,25 +146,23 @@ export const PromptSaveItem: FC<IPromptInput> = ({
   );
 };
 
-const PathSelector: FC<{ onSelect: (_: any) => void; items: any[] }> = ({
-  onSelect,
-  items = [],
-}) => {
-  const rootOrders = items
+const PathSelector: FC<{
+  onSelect: (itemId: string) => void;
+  folders: any[];
+}> = ({ onSelect, folders = [] }) => {
+  if (!folders?.length) return <></>;
+  const rootOrders = folders
     .filter((i) => !i.__ref.folderId)
     .map((i) => i.__ref.id);
-  const dataProvider = useRef(new TreeDataProvider(items, rootOrders));
+  const dataProvider = useRef(new TreeDataProvider(folders, rootOrders));
   const onItemSelect = (itemIds: string[], treeId: string) => {
     if (!itemIds?.length) return;
-    const selectedItem = itemIds[0];
-    console.log(selectedItem);
+    onSelect(itemIds[0]);
   };
 
   return (
     <Container className="max-h-48 mb-14 !h-fit">
-      <label className="text-appForeground text-sm mb-1 block">
-        Select collection or folder
-      </label>
+      <label className="text-appForeground text-sm mb-1 block">Save at</label>
       <div className="border border-appBorder">
         <Container.Body className="save-modal-collection pane-body  visible-scrollbar overflow-visible">
           <UncontrolledTreeEnvironment
@@ -205,9 +187,9 @@ const PathSelector: FC<{ onSelect: (_: any) => void; items: any[] }> = ({
             // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
           >
             <Tree
-              treeId="collection-selector-save-request"
+              treeId="selector-save-item"
               rootItem="root"
-              treeLabel="Collections Explorer"
+              treeLabel={'Save Item'}
             />
           </UncontrolledTreeEnvironment>
         </Container.Body>

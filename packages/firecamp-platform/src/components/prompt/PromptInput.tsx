@@ -1,21 +1,6 @@
 import { FC, useState } from 'react';
 import { Button, Input, Modal, ProgressBar, TabHeader } from '@firecamp/ui-kit';
-export interface IPromptInput {
-  header: string;
-  lable?: string;
-  placeholder?: string;
-  texts?: {
-    btnOk?: string;
-    btnOking?: string;
-    btnCancle?: string;
-  };
-  value: string;
-  onClose: Function;
-  validator?: (value: string) => { isValid: boolean; message?: string };
-  executor?: (value: string) => Promise<any>;
-  onResolve: (res: any) => void;
-  onError?: (e) => void;
-}
+import { IPromptInput } from './types';
 
 const _texts: IPromptInput['texts'] = {
   btnOk: 'Create',
