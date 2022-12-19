@@ -13,19 +13,19 @@ import {
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 
-import EmitterArgMeta from './EmitterArgMeta';
-import EmitterArgTabs from './EmitterArgTabs';
-import Body from './Body';
-import { EEmitterPayloadTypes } from '../../../../types';
+import EmitterArgMeta from './playground/EmitterArgMeta';
+import EmitterArgTabs from './playground/EmitterArgTabs';
+import Body from './playground/Body';
+import { EEmitterPayloadTypes } from '../../../types';
 import {
   InitArg,
   EditorCommands,
   ArgTypes,
   TypedArrayViews,
   InitPlayground,
-} from '../../../../constants';
-import { useSocketStore } from '../../../../store';
-import { ISocketStore } from '../../../../store/store.type';
+} from '../../../constants';
+import { useSocketStore } from '../../../store';
+import { ISocketStore } from '../../../store/store.type';
 
 const EmitterPlayground = ({ tabData = {} }) => {
   const { getActivePlayground } = useSocketStore(

@@ -1,5 +1,5 @@
 import equal from 'deep-equal';
-import { IExecutor } from '@firecamp/socket-io-executor/dist/esm';
+import { IExecutorInterface } from '@firecamp/socket.io-executor/dist/esm';
 import { _object } from '@firecamp/utils';
 import { ISocketIOEmitter, TId } from '@firecamp/types';
 import { EConnectionState } from '../../types';
@@ -18,7 +18,7 @@ interface IPlayground {
   };
   emitter: IEmitter;
   selectedCollectionEmitter: TId;
-  executor?: IExecutor;
+  executor?: IExecutorInterface;
   listeners?: { [key: string]: boolean };
   socketId?: string;
 }

@@ -6,7 +6,7 @@ import ConfigTab from './ConfigTab';
 import HeadersTab from './HeadersTab';
 import ParamsTab from './ParamsTab';
 import AuthTab from './AuthTab';
-import EmitterPlayground from './playground/EmitterPlayground';
+import EmitterPlayground from './PlaygroundTab';
 import Response from '../logs/Response';
 import { useSocketStore } from '../../../store';
 import { EPanel } from '../../../types'
