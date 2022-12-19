@@ -23,7 +23,7 @@ const emptyLog = {
 };
 
 interface ILogs {
-  [key: TId]: Array<ILog>;
+  [key: TId]: ILog[];
 }
 
 interface ILogsSlice {
@@ -36,7 +36,6 @@ const createLogsSlice = (set, get): ILogsSlice => ({
   logs: {},
   addLog: (connectionId: TId, log: ILog) => {
     // console.log({ log });
-
     const { logs } = get();
     console.log(logs, 12324);
     if (connectionId in logs) {

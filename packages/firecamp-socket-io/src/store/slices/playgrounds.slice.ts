@@ -1,5 +1,5 @@
 import equal from 'deep-equal';
-import { IExecutor } from '@firecamp/ws-executor/dist/esm';
+import { IExecutor } from '@firecamp/socket-io-executor/dist/esm';
 import { _object } from '@firecamp/utils';
 import { ISocketIOEmitter, TId } from '@firecamp/types';
 import { EConnectionState } from '../../types';
@@ -30,7 +30,11 @@ interface IPlaygrounds {
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
-  getPlayground: (connectionId: TId) => void;
+  getActivePlayground: () => {
+    activePlayground: TId;
+    playground: IPlayground;
+    plgTab: any; //IPlaygroundTab
+  };
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
   changePlayground: (connectionId: TId, updates: object) => void;
 
@@ -80,9 +84,17 @@ const createPlaygroundsSlice = (
 ): IPlaygroundSlice => ({
   playgrounds: initialPlaygrounds,
 
-  getPlayground: (connectionId: TId) => {
+  getActivePlayground: () => {
     const state = get();
-    return state.playgrounds?.[connectionId];
+    const {
+      playgrounds,
+      runtime: { playgroundTabs, activePlayground },
+    } = state;
+    return {
+      activePlayground,
+      playground: playgrounds[activePlayground],
+      plgTab: playgroundTabs.find((p) => p.id == activePlayground),
+    };
   },
   addPlayground: (connectionId: TId, playground: IPlayground) => {
     set((s) => ({

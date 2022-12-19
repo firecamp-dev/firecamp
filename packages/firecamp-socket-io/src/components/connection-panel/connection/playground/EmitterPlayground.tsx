@@ -1,13 +1,9 @@
-import {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-} from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import _compact from 'lodash/compact';
 import _cloneDeep from 'lodash/cloneDeep';
 import _merge from 'lodash/merge';
+import shallow from 'zustand/shallow';
+import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import {
   Container,
   Input,
@@ -15,8 +11,6 @@ import {
   TabHeader,
   Checkbox,
 } from '@firecamp/ui-kit';
-import shallow from 'zustand/shallow';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { _object } from '@firecamp/utils';
 
 import EmitterArgMeta from './EmitterArgMeta';
@@ -34,157 +28,33 @@ import { useSocketStore } from '../../../../store';
 import { ISocketStore } from '../../../../store/store.type';
 
 const EmitterPlayground = ({ tabData = {} }) => {
-  const {
-    activePlayground,
-    playground,
-    playgroundTabs,
-  } = useSocketStore(
+  const { getActivePlayground } = useSocketStore(
     (s: ISocketStore) => ({
-      activePlayground: s.runtime.activePlayground,
-      // collection: s.collection,
-      playground: s.playgrounds[s.runtime.activePlayground],
-      playgroundTabs: s.runtime.playgroundTabs,
+      getActivePlayground: s.getActivePlayground,
       __meta: s.request.__meta,
     }),
     shallow
   );
-
-  // Prevent updating actual prop element
-  const _playground = _cloneDeep(playground);
-
-  const selectedCollectionEmitter = _playground.selectedCollectionEmitter;
-  const playgroundTab = useMemo(
-    () => playgroundTabs.find((tab) => tab.id === activePlayground),
-    [activePlayground, playgroundTabs]
-  );
-  const playgroundEmitter = useMemo(
-    () => _playground?.emitter || InitPlayground,
-    [_playground, activePlayground]
-  );
-  const ctx_firecampFunctions = {
-    confirmationPopup:  (obj)=> {
-    
-    }
-  }
-  const activeEmitterRef = useRef(selectedCollectionEmitter);
-  const useStateWithPromise = (initialState) => {
-    const [state, setState] = useState(initialState);
-    const resolverRef = useRef(null);
-
-    useEffect(() => {
-      if (resolverRef.current) {
-        resolverRef.current(state);
-        resolverRef.current = null;
-      }
-      /**
-       * Since a state update could be triggered with the exact same state again,
-       * it's not enough to specify state as the only dependency of this useEffect.
-       * That's why resolverRef.current is also a dependency, because it will guarantee,
-       * that handleSetState was called in previous render
-       */
-    }, [resolverRef.current, state]);
-
-    const handleSetState = useCallback(
-      (stateAction) => {
-        setState(stateAction);
-        return new Promise((resolve) => {
-          resolverRef.current = resolve;
-        });
-      },
-      [setState]
-    );
-    return [state, handleSetState];
-  };
+  const { activePlayground, playground, plgTab } = getActivePlayground();
+  const { emitter: plgEmitter } = playground;
 
   // @bug: on real-time update, can not switch argument except 0
-  const [activeArgIndex, setActiveArgIndex] = useStateWithPromise(0);
-  const argRef = useRef(activeArgIndex);
+  const [activeArgIndex, setActiveArgIndex] = useState(0);
   const [activeArgType, setActiveArgType] = useState(
     () =>
       ArgTypes.find(
-        (t) => t.id === playgroundEmitter.body[argRef.current].__meta.type
+        (t) => t.id === plgEmitter.payload[activeArgIndex].__meta.type
       ) || {
         id: EEmitterPayloadTypes.noBody,
         name: 'No body',
       }
   );
 
-  const [prevType, setPrevType] = useState(EEmitterPayloadTypes.noBody);
-  const [isSelectTypeDDOpen, toggleSelectArgTypeDD] = useState(false);
-  const [emitterBody, setEmitterBody] = useState('');
-  const [isSaveEmitterPopoverOpen, toggleSaveEmitterPopover] = useState(false);
-
-  const typedArrayList = TypedArrayViews.map((e) => {
-    return {
-      id: e,
-      name: e,
-    };
-  });
-
-  //arraybuffer
-  const [selectedTypedArray, setSelectedTypedArray] = useState(
-    typedArrayList[0]
-  );
-
-  const quickSelectionMenus = [];
-
-  /**
-   * On select argument type noBody
-   * check if last argument or not. If last argument then ask confirmation. else set argument type noBody.
-   * Confirmation modal:
-   *    on click confirm, remove all next arguments and set current argument type as noBody.
-   *    on click cancel, do nothing.
-   */
-  const _onSelectTypeNoBody = async () => {
-
-    try {
-      /**
-       * Open confirmation modal if current argument is not last one.
-       */
-      await ctx_firecampFunctions.confirmationPopup({
-        isOpen: true,
-        title: 'Confirmation Required',
-        message: `After switching to noBody, all subsequent arguments will be removed (Revert by clicking on the Set Original button)`,
-        note: 'Please confirm before switch type',
-        _meta: {
-          buttons: {
-            confirm: {
-              text: 'Confirm',
-              classname: '',
-              color: '',
-            },
-            cancel: {
-              text: 'Cancel',
-              classname: '',
-              color: '',
-            },
-          },
-          confirmButtonText: 'Confirm',
-          cancelButtonText: 'Cancel',
-        },
-        onConfirm: () => {
-        },
-        onCancel: () => {},
-      });
-    } catch (e) {
-      console.log({ e });
-    }
-  };
-
   const _onSelectArgType = (type) => {
     if (!type || !type.id || activeArgType.id === type.id) return;
   };
-
   const _onSelectTypedArray = (ta) => {};
-
-  const _onSelectFile = (e) => {
-    const target = e.target;
-    const file = target.files[0];
-    setEmitterBody(file);
-  };
-
-  const _onEmit = (e) => {
-  };
+  const _onEmit = () => {};
 
   const shortcutFns = {
     onCtrlS: () => {
@@ -208,7 +78,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
   return (
     <Container>
       {/* <BodyControls
-        emitterName={playgroundEmitter.name || ''}
+        emitterName={plgEmitter.name || ''}
         isSaveEmitterPopoverOpen={isSaveEmitterPopoverOpen}
         tabData={tabData}
         tabId={tabData.id || ''}
@@ -218,20 +88,20 @@ const EmitterPlayground = ({ tabData = {} }) => {
         playgroundTabMeta={playgroundTab.__meta}
         onAddEmitter={_onAddEmitter}
         onUpdateEmitter={_onUpdateEmitter}
-        path={playgroundEmitter.path || `./`}
+        path={plgEmitter.path || `./`}
         showClearPlaygroundButton={
           !!(emitterBody && emitterBody.length) ||
           !!(
-            playgroundEmitter.name &&
-            playgroundEmitter.name.trim() &&
-            playgroundEmitter.name.trim().length
+            plgEmitter.name &&
+            plgEmitter.name.trim() &&
+            plgEmitter.name.trim().length
           )
         }
         addNewEmitter={_addNewEmitter}
         editorCommands={EditorCommands}
       /> */}
       <EmitterName
-        name={playgroundEmitter.name || ''}
+        name={plgEmitter.name || ''}
         onChange={(name) => {}}
         onEmit={_onEmit}
       />
@@ -245,45 +115,47 @@ const EmitterPlayground = ({ tabData = {} }) => {
           <TabHeader.Right>
             <Checkbox isChecked={true} label="Ack" />
             <Button
+              text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
+              xs
               primary
               iconCenter
-              xs
-              text="Send"
               iconRight
             />
           </TabHeader.Right>
         </TabHeader>
         <div className="border border-appBorder flex-1 flex flex-col">
           <EmitterArgTabs
-            args={playgroundEmitter.body}
-            activeArgIndex={argRef.current}
+            args={plgEmitter.payload}
+            activeArgIndex={activeArgIndex}
             onAddTab={() => {}}
             onSelectTab={(index) => {}}
             onRemoveTab={(index) => {}}
           />
           <EmitterArgMeta
-            activeArgIndex={argRef.current}
+            activeArgIndex={activeArgIndex}
             ArgTypes={ArgTypes}
             activeArgType={activeArgType}
-            typedArrayList={typedArrayList}
-            selectedTypedArray={selectedTypedArray}
-            isSelectTypeDDOpen={isSelectTypeDDOpen}
+            // typedArrayList={typedArrayList}
+            // selectedTypedArray={selectedTypedArray}
+            // isSelectTypeDDOpen={isSelectTypeDDOpen}
             onSelectArgType={_onSelectArgType}
-            toggleSelectArgTypeDD={toggleSelectArgTypeDD}
+            // toggleSelectArgTypeDD={toggleSelectArgTypeDD}
             onSelectTypedArray={_onSelectTypedArray}
           />
           <Body
-            emitterName={playgroundEmitter.name || ''}
-            activeArgIndex={argRef.current}
+            emitterName={plgEmitter.name || ''}
+            activeArgIndex={activeArgIndex}
             tabId={tabData.id}
             activeArgType={activeArgType}
-            emitterBody={emitterBody}
-            playgroundBody={playgroundEmitter.body[argRef.current].payload}
-            quickSelectionMenus={quickSelectionMenus}
-            setEmitterBody={setEmitterBody}
-            updateEmitterBody={(value) =>{}}
-            onSelectFile={_onSelectFile}
+            emitterBody={plgEmitter.payload}
+            playgroundBody={plgEmitter.payload[activeArgIndex].payload}
+            quickSelectionMenus={[]}
+            // setEmitterBody={setEmitterBody}
+            updateEmitterBody={(value) => {}}
+            onSelectFile={(e) => {
+              // setEmitterBody(e.target.files[0]);
+            }}
             shortcutFns={shortcutFns}
           />
         </div>
@@ -300,9 +172,7 @@ const EmitterName = ({
   onEmit = () => {},
 }) => {
   const _handleInputChange = (e) => {
-    if (e) {
-      e.preventDefault();
-    }
+    if (e) e.preventDefault();
     const { value } = e.target;
     onChange(value);
   };
