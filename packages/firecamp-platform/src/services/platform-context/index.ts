@@ -1,5 +1,5 @@
 import { request } from './request';
-import { promptInput } from './prompt.service';
+import { promptInput, promptSaveItem } from './prompt.service';
 import AppService from '../../services/app';
 import { environment } from './environment';
 
@@ -9,8 +9,12 @@ export default {
   environment,
   window: {
     promptInput,
+    promptSaveItem,
   },
 };
 
 export type { IPlatformRequestService } from './request';
-export type { IPlatformEnvironmentService, IPlatformVariables } from './environment';
+export type {
+  IPlatformEnvironmentService,
+  IPlatformVariables,
+} from './environment';

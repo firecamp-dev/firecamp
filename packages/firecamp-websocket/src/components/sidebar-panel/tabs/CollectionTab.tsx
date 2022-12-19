@@ -153,7 +153,12 @@ const CollectionTab = () => {
             viewState={{}}
             renderItemArrow={treeRenderer.renderItemArrow}
             renderItem={(props) =>
-              treeRenderer.renderItem({ ...props, openPlg, deletePlg, createFolder: _createFolderPrompt })
+              treeRenderer.renderItem({
+                ...props,
+                openPlg,
+                deletePlg,
+                createFolder: _createFolderPrompt,
+              })
             }
           >
             <Tree
