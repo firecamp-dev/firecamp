@@ -1,5 +1,5 @@
-import { IRequestFolder, IGraphQLPlayground, TId } from '@firecamp/types';
 import mitt from 'mitt';
+import { IRequestFolder, IGraphQLPlayground, TId } from '@firecamp/types';
 import {
   Disposable,
   TreeDataProvider,

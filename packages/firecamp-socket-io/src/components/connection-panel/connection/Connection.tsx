@@ -116,7 +116,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     return (
       <Row flex={1} overflow="auto" className=" with-divider h-full">
         <Column className="h-full">
-          <EmitterPlayground tabData={{ id: '123' }} />
+          {/* <EmitterPlayground tabData={{ id: '123' }} /> */}
         </Column>
       </Row>
     );

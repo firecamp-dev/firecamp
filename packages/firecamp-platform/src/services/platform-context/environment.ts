@@ -12,7 +12,7 @@ import { IRequestTab } from '../../components/tabs/types/tab';
 import { prepareEventNameForEnvToTab } from '../platform-emitter/events';
 import { platformEmitter } from '../platform-emitter';
 
-interface IPlatformEnvironmentService {
+export interface IPlatformEnvironmentService {
   // subscribe to environment changes
   subscribeChanges: (tabId: TId, getPlatformVariables) => void;
 
@@ -53,7 +53,7 @@ interface IPlatformEnvironmentService {
     }
   ) => void;
 }
-interface IPlatformVariables {
+export interface IPlatformVariables {
   merged: {};
   workspace: {};
   collection: {};
@@ -260,4 +260,4 @@ const environment: IPlatformEnvironmentService = {
   },
 };
 
-export { IPlatformEnvironmentService, IPlatformVariables, environment };
+export { environment };

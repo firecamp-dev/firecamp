@@ -1,5 +1,5 @@
-import { IRequestFolder, TId, ISocketIOEmitter } from '@firecamp/types';
 import mitt from 'mitt';
+import { IRequestFolder, TId, ISocketIOEmitter } from '@firecamp/types';
 import {
   Disposable,
   TreeDataProvider,
@@ -38,8 +38,8 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
 
-  constructor(folders: Array<TFolderItem>, items: Array<TItem>) {
-    this.init(folders, items);
+  constructor(folders: TFolderItem[], items: TItem[], rootOrders: string[]) {
+    this.init(folders, items, rootOrders);
   }
 
   public async getTreeItem(
@@ -120,7 +120,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
 
   // extra methods of provider
 
-  public init(folders, items) {
+  public init(folders, items, rootOrders) {
     this.items = [
       ...folders.map((i) => ({
         ...i,
@@ -128,9 +128,10 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       })),
       ...items.map((i) => ({ ...i, __ref: { ...i.__ref, isItem: true } })),
     ];
-    this.rootOrders = this.items
-      .filter((i) => !i.__ref.folderId)
-      .map((i) => i.__ref.id);
+    // this.rootOrders = this.items
+    //   .filter((i) => !i.__ref.folderId)
+    //   .map((i) => i.__ref.id);
+    this.rootOrders = rootOrders;
   }
 
   public addFolder(item: TFolderItem) {

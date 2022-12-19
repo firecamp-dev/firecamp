@@ -26,13 +26,20 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
+    setContext,
   } = useSocketStore((s: ISocketStore) => ({
     initialise: s.initialise,
     initialiseCollection: s.initialiseCollection,
     setActiveEnvironments: s.setActiveEnvironments,
     setRequestSavedFlag: s.setRequestSavedFlag,
     setIsFetchingReqFlag: s.setIsFetchingReqFlag,
+    setContext: s.setContext,
   }));
+
+  //set context to store
+  useEffect(() => {
+    setContext(platformContext);
+  }, []);
 
   /** setup environments on tab load */
   useEffect(() => {

@@ -1,8 +1,8 @@
 import mitt from 'mitt';
-import { IRequestFolder, TId, IWebSocketMessage } from '@firecamp/types';
+import { IRequestFolder } from '@firecamp/types';
 import {
   Disposable,
-  TreeDataProvider,
+  TreeDataProvider as _TreeDataProvider,
   TreeItem,
   TreeItemIndex,
 } from '@firecamp/ui-kit/src/tree';
@@ -28,18 +28,15 @@ type TItemExtra_meta = {
 };
 
 type TFolderItem = Partial<IRequestFolder & TItemExtra_meta>;
-type TItem = Partial<IWebSocketMessage & TItemExtra_meta>;
-type TCItem = TFolderItem | TItem;
+type TCItem = TFolderItem;
 
-export class CollectionTreeDataProvider<T = TTreeItemData>
-  implements TreeDataProvider
-{
+export class TreeDataProvider<T = TTreeItemData> implements _TreeDataProvider {
   private items: Array<TCItem>;
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
 
-  constructor(folders: TFolderItem[], items: TItem[], rootOrders: string[]) {
-    this.init(folders, items, rootOrders);
+  constructor(folders: TFolderItem[], rootOrders: string[]) {
+    this.init(folders, rootOrders);
   }
 
   public async getTreeItem(
@@ -118,13 +115,12 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     //todo: implement
   }
 
-  public init(folders: TFolderItem[], items: TItem[], rootOrders: string[]) {
+  public init(folders: TFolderItem[], rootOrders: string[]) {
     this.items = [
       ...folders.map((i) => ({
         ...i,
         __ref: { ...i.__ref, isFolder: true },
       })),
-      ...items.map((i) => ({ ...i, __ref: { ...i.__ref, isItem: true } })),
     ];
     // this.rootOrders = this.items
     //   .filter((i) => !i.__ref.folderId)
@@ -137,51 +133,6 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
     this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
     if (!item.__ref.folderId) {
       this.rootOrders.push(item.__ref.id);
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
-    }
-  }
-
-  public addItem(item: TItem) {
-    this.items.push({ ...item, __ref: { ...item.__ref, isItem: true } });
-    if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
-    }
-  }
-
-  public updateItem(item: TItem) {
-    this.items = this.items.map((itm: TItem) => {
-      if (itm.__ref.id == item.__ref.id) {
-        // if only name is updated then even this will work, or full payload. just merging updated item with previous item
-        return {
-          ...itm,
-          ...item,
-          __ref: { ...itm.__ref, ...item.__ref, isItem: true },
-        };
-      }
-      return itm;
-    });
-
-    if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
-    }
-  }
-
-  public deleteItem(id: TId) {
-    const item = this.items.find((i) => i.__ref.id == id);
-
-    console.log(id, item);
-    if (!item) return;
-    this.items = this.items.filter((i) => i.__ref.id != id);
-    if (!item.__ref.folderId) {
-      this.rootOrders = this.rootOrders.filter((i) => i != id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
