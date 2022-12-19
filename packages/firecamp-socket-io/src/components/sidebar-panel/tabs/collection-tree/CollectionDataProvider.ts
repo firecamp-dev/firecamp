@@ -1,5 +1,5 @@
-import { IRequestFolder, TId, ISocketIOEmitter } from '@firecamp/types';
 import mitt from 'mitt';
+import { IRequestFolder, TId, ISocketIOEmitter } from '@firecamp/types';
 import {
   Disposable,
   TreeDataProvider,

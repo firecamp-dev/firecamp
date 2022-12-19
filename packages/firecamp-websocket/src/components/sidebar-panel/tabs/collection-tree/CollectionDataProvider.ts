@@ -1,5 +1,5 @@
-import { IRequestFolder, TId, IWebSocketMessage } from '@firecamp/types';
 import mitt from 'mitt';
+import { IRequestFolder, TId, IWebSocketMessage } from '@firecamp/types';
 import {
   Disposable,
   TreeDataProvider,
