@@ -19,12 +19,13 @@ import { useSocketStore } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
 
 const EmitterPlayground = () => {
-  const { playground, __version } = useSocketStore(
+  const { playground, __version, changePlgArgType } = useSocketStore(
     (s: ISocketStore) => ({
       playground: s.playgrounds[s.runtime.activePlayground],
       __meta: s.request.__meta,
       // @ts-ignore
       __version: s.__version,
+      changePlgArgType: s.changePlgArgType
     }),
     shallow
   );
@@ -81,6 +82,7 @@ const EmitterPlayground = () => {
             activeArgIndex={activeArgIndex}
             autoFocus={!!plgEmitter.name}
             emitter={plgEmitter}
+            changeArgType={changePlgArgType}
           />
         </div>
       </div>

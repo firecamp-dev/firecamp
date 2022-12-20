@@ -34,9 +34,12 @@ interface IPlaygroundSlice {
   getActivePlayground: () => IPlayground;
   setPlgExecutor: (connectionId: TId, executor: any) => void;
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
+  //arguments
   selectPlgArgTab: (index: number) => void;
   addPlgArgTab: () => void;
   removePlgArgTab: (index: number) => void;
+  changePlgArgType: (type: EArgumentBodyType) => void;
+
   changePlaygroundConnectionState: (
     connectionId: TId,
     connectionState: EConnectionState
@@ -101,6 +104,8 @@ const createPlaygroundsSlice = (
       },
     }));
   },
+
+  //arguments
   selectPlgArgTab: (index: number) => {
     set((s) => {
       const plg = s.playgrounds[s.runtime.activePlayground];
@@ -112,7 +117,7 @@ const createPlaygroundsSlice = (
             activeArgIndex: index,
           },
         },
-        __version: ++s.__version,
+        __manualUpdates: ++s.__manualUpdates,
       };
     });
   },
@@ -131,13 +136,12 @@ const createPlaygroundsSlice = (
         },
       ];
       // console.log(plg.emitter.payload, 'emitter.payload ...555');
-      let __version = s.__version || 1;
       return {
         playgrounds: {
           ...s.playgrounds,
           [activePlayground]: plg,
         },
-        __version: ++__version, // assigning new version key because zustand can't detect nested deep change and useStore don't detect reactive change, thus by incrementing this key tell zustand to deect change
+        __manualUpdates: ++s.__manualUpdates,
       };
     });
   },
@@ -152,14 +156,26 @@ const createPlaygroundsSlice = (
         ...plg.emitter.payload.slice(index + 1),
       ];
 
-      // console.log(plg.emitter.payload, 'emitter.payload ...555');
-      let __version = s.__version || 1;
       return {
         playgrounds: {
           ...s.playgrounds,
           [activePlayground]: plg,
         },
-        __version: ++__version,
+        __manualUpdates: ++s.__manualUpdates,
+      };
+    });
+  },
+  changePlgArgType: (type: EArgumentBodyType) => {
+    set((s) => {
+      const plg = s.playgrounds[s.runtime.activePlayground];
+      const { activeArgIndex } = plg;
+      plg.emitter.payload[activeArgIndex].__meta.type = type;
+      return {
+        playgrounds: {
+          ...s.playgrounds,
+          [s.runtime.activePlayground]: plg,
+        },
+        __manualUpdates: ++s.__manualUpdates,
       };
     });
   },

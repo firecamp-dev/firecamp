@@ -9,8 +9,7 @@ import {
   Dropdown,
   Button,
 } from '@firecamp/ui-kit';
-import { ISocketIOEmitter } from '@firecamp/types';
-import { EEmitterPayloadTypes } from '../../../../types';
+import { EArgumentBodyType, ISocketIOEmitter } from '@firecamp/types';
 import {
   ArgTypes,
   InitArg,
@@ -22,29 +21,28 @@ import {
 interface IBody {
   autoFocus?: boolean;
   activeArgIndex: number;
-  activeArgType?: {
-    id: string;
-    name: string;
-  };
   emitter?: ISocketIOEmitter;
+  changeArgType: (type: EArgumentBodyType) => void;
 }
 const Body = ({
   autoFocus = false,
   activeArgIndex,
   emitter: plgEmitter,
+  changeArgType,
 }: IBody) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
   const { payload, name } = plgEmitter;
-  let value = payload[activeArgIndex];
+  console.log(activeArgIndex, 'activeArgIndex...')
+  const argument = payload[activeArgIndex];
 
   const activeArgType = useMemo(() => {
     return (
-      ArgTypes.find((t) => t.id === payload[activeArgIndex].__meta.type) || {
-        id: EEmitterPayloadTypes.Text,
+      ArgTypes.find((t) => t.id === argument.__meta.type) || {
+        id: EArgumentBodyType.Text,
         name: 'Text',
       }
     );
-  }, [activeArgIndex]);
+  }, [argument.__meta.type]);
 
   const shortcutFns = {
     onCtrlS: () => {
@@ -68,18 +66,18 @@ const Body = ({
   const _renderActiveBody = (bodyType) => {
     if (!bodyType) return <span />;
     if (
-      bodyType === EEmitterPayloadTypes.Boolean &&
-      typeof value !== 'boolean'
+      bodyType === EArgumentBodyType.Boolean &&
+      typeof argument.body !== 'boolean'
     ) {
-      value = true;
+      argument.body = true;
     }
 
     switch (bodyType) {
-      case EEmitterPayloadTypes.Text:
-      case EEmitterPayloadTypes.Json:
-      case EEmitterPayloadTypes.ArrayBuffer:
-      case EEmitterPayloadTypes.ArrayBufferView:
-        value = !isNaN(value) ? value.toString() : value;
+      case EArgumentBodyType.Text:
+      case EArgumentBodyType.Json:
+      case EArgumentBodyType.ArrayBuffer:
+      case EArgumentBodyType.ArrayBufferView:
+        const value = !isNaN(argument.body) ? argument.body.toString() : argument.body;
         if (typeof value === 'string') {
           return (
             <Editor
@@ -88,20 +86,20 @@ const Body = ({
                 type.id
               }-${activeArgIndex}-${playgroundBody.length || 0}`}*/
               language={
-                bodyType === EEmitterPayloadTypes.Json ? 'json' : 'ife-text'
+                bodyType === EArgumentBodyType.Json ? 'json' : 'ife-text'
               }
               value={value || ''}
               onChange={({ target: { _value } }) => {
                 if (value !== _value) {
-                  // setEmitterBody(value);
-                  // updateEmitterBody(value);
+                  // setEmitterBody(_value);
+                  // updateEmitterBody(_value);
                 }
               }}
               // controlsConfig={{
               //   show:
-              //     bodyType !== EEmitterPayloadTypes.noBody &&
+              //     bodyType !== EArgumentBodyType.noBody &&
               //     typeof playgroundBody === 'string' &&
-              //     bodyType !== EEmitterPayloadTypes.file,
+              //     bodyType !== EArgumentBodyType.file,
               //   position: 'vertical'
               // }}
               monacoOptions={{
@@ -119,7 +117,7 @@ const Body = ({
         } else {
           return <QuickSelection menus={[]} />;
         }
-      // case EEmitterPayloadTypes.File:
+      // case EArgumentBodyType.File:
       //   let fileName = '';
       //   return (
       //     <div className="fc-center-aligned">
@@ -131,18 +129,18 @@ const Body = ({
       //       />
       //     </div>
       //   );
-      case EEmitterPayloadTypes.Boolean:
+      case EArgumentBodyType.Boolean:
         return (
           <div className="flex p-2">
             <Checkbox
-              isChecked={value === true}
+              isChecked={argument.body === true}
               label="True"
               onToggleCheck={(_) => {
                 // updateEmitterBody(true);
               }}
             />
             <Checkbox
-              isChecked={value === false}
+              isChecked={argument.body === false}
               label="False"
               onToggleCheck={(_) => {
                 // updateEmitterBody(false);
@@ -150,12 +148,12 @@ const Body = ({
             />
           </div>
         );
-      case EEmitterPayloadTypes.Number:
+      case EArgumentBodyType.Number:
         return (
           <Input
             autoFocus={true}
             type={'number'}
-            value={value.toString()}
+            value={argument.body.toString()}
             name={'number'}
             min={0}
             onChange={(e) => {
@@ -178,7 +176,7 @@ const Body = ({
 
   return (
     <Container.Body>
-      {activeArgType.id === EEmitterPayloadTypes.NoBody ? (
+      {activeArgType.id === EArgumentBodyType.NoBody ? (
         <Container.Empty>
           <QuickSelection menus={[]} />
         </Container.Empty>
@@ -199,7 +197,10 @@ const Body = ({
                 sm
               />
             </Dropdown.Handler>
-            <Dropdown.Options options={ArgTypes} onSelect={() => {}} />
+            <Dropdown.Options
+              options={ArgTypes}
+              onSelect={(argType) => changeArgType(argType.id)}
+            />
           </Dropdown>
           {_renderActiveBody(activeArgType.id)}
         </div>
