@@ -97,13 +97,15 @@ export default {
         {...(context.itemContainerWithChildrenProps as any)}
         className={cx(
           'relative',
+          'message-node',
           'rct-tree-item-li',
           { 'rct-tree-item-li-isFolder': item.isFolder },
           { 'rct-tree-item-li-selected': context.isSelected },
           { 'rct-tree-item-li-expanded': context.isExpanded },
           { 'rct-tree-item-li-focused': context.isFocused },
           { 'rct-tree-item-li-dragging-over': context.isDraggingOver },
-          { 'rct-tree-item-li-search-match': context.isSearchMatching }
+          { 'rct-tree-item-li-search-match': context.isSearchMatching },
+          
         )}
       >
         <div
@@ -114,7 +116,7 @@ export default {
             }px`,
           }}
           className={cx(
-            'pr-2',
+            'pr-2 mx-1 border border-appBorder',
             'rct-tree-item-title-container opacity-80',
             { 'rct-tree-item-title-container-isFolder': item.isFolder },
             {
@@ -141,7 +143,7 @@ export default {
         >
           {context.isExpanded && item.isFolder && (
             <span
-              className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
+              className="rct-tree-line absolute top-12 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
             ></span>
           )}
@@ -150,14 +152,14 @@ export default {
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
               { '!top-4': item.data.__ref.isRequest }
             )}
-            style={{ left: `${renderDepthOffset * 2 - 3}px` }}
+            style={{ left: `${(renderDepthOffset * (depth+1) ) + 2}px` }}
           ></span>
           {arrow}
           <InteractiveComponent
             type={type}
             {...(context.interactiveElementProps as any)}
             className={cx(
-              'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button',
+              'whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button !h-fit	!block',
               { 'rct-tree-item-button-isFolder': item.isFolder },
               { 'rct-tree-item-button-selected': context.isSelected },
               { 'rct-tree-item-button-expanded': context.isExpanded },
@@ -166,9 +168,16 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <span className="w-full overflow-hidden overflow-ellipsis items-center block">
-              {title} Hello
+            <div className="w-full overflow-hidden overflow-ellipsis items-center block">
+              {title} 
+              <span className="bg-focus2 text-xs px-1 !mx-1">
+              {"tag"}
             </span>
+            </div>
+            
+            <div className="text-sm appForegroundInActive">
+              {"JSON SAMPLE"}
+            </div>
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
             {item.data.__ref.isItem ? (
@@ -195,6 +204,7 @@ export default {
               onClick={() => {
                 createFolder(item.index);
               }}
+              tabIndex={2}
             />
             <VscTrash
               className="ml-1 cursor-pointer"
@@ -202,6 +212,7 @@ export default {
               onClick={() => {
                 deletePlg(item.index);
               }}
+              tabIndex={2}
             />
           </div>
         </div>
