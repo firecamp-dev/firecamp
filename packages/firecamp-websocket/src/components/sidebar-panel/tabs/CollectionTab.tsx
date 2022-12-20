@@ -109,7 +109,7 @@ const CollectionTab = () => {
         return (
           <ToolBar>
             <div className="action">
-              <VscRefresh size={14} className="mr-2 cursor-pointer" />
+              <VscRefresh size={14} className="cursor-pointer" />
             </div>
             <div>
               <VscNewFolder

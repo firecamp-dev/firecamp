@@ -102,6 +102,7 @@ const Tabs: FC<ITabs> = ({
                   id={tab?.id || ''}
                   canReorder={canReorder}
                   tabVersion={tabsVersion}
+                  hasStatusbar={true}
                   className={cx(
                     'border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
                     {
@@ -123,14 +124,7 @@ const Tabs: FC<ITabs> = ({
                     {
                       'flex-1 text-center': equalWidth,
                     },
-                    {
-                      'after:!bg-tabActiveBackground':
-                        tabsVersion == 1 && tab?.id == activeTab,
-                    },
-                    {
-                      'after:!bg-statusBarBackground2':
-                        tabsVersion == 2 && tab?.id == activeTab,
-                    },
+                   
                     { 'bg-transparent text-base': tabsVersion == 1 },
                     { 'bg-tabBackground2 text-sm': tabsVersion == 2 }
                   )}
