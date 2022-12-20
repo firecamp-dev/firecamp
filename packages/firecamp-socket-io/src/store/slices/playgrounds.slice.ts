@@ -40,6 +40,8 @@ interface IPlaygroundSlice {
   removePlgArgTab: (index: number) => void;
   changePlgArgType: (type: EArgumentBodyType) => void;
   changePlgArgValue: (value: string | number | boolean) => void;
+  changePlgEmitterName: (name: string) => void;
+  changePlgEmitterAck: (value: boolean) => void;
 
   changePlaygroundConnectionState: (
     connectionId: TId,
@@ -105,7 +107,7 @@ const createPlaygroundsSlice = (
     }));
   },
 
-  //arguments
+  // emitter and arguments
   selectPlgArgTab: (index: number) => {
     console.log(index, 789789);
     set((s) => {
@@ -187,7 +189,6 @@ const createPlaygroundsSlice = (
     });
   },
   changePlgArgValue: (value: string | number | boolean) => {
-    console.log(value, 4141);
     set((s) => {
       const plg = s.playgrounds[s.runtime.activePlayground];
       const { activeArgIndex } = plg;
@@ -201,7 +202,39 @@ const createPlaygroundsSlice = (
       };
     });
   },
+  changePlgEmitterName: (name: string) => {
+    set((s) => {
+      const plg = s.playgrounds[s.runtime.activePlayground];
+      return {
+        playgrounds: {
+          ...s.playgrounds,
+          [s.runtime.activePlayground]: {
+            ...plg,
+            emitter: {
+              ...plg.emitter,
+              name,
+            },
+          },
+        },
+        __manualUpdates: ++s.__manualUpdates,
+      };
+    });
+  },
+  changePlgEmitterAck: (ack: boolean) => {
+    set((s) => {
+      const plg = s.playgrounds[s.runtime.activePlayground];
+      plg.emitter.__meta.ack = ack;
+      return {
+        playgrounds: {
+          ...s.playgrounds,
+          [s.runtime.activePlayground]: plg,
+        },
+        __manualUpdates: ++s.__manualUpdates,
+      };
+    });
+  },
 
+  // connection and logs
   changePlaygroundConnectionState: (
     connectionId: TId,
     connectionState: EConnectionState
@@ -238,19 +271,17 @@ const createPlaygroundsSlice = (
   },
 
   //emitter
-  resetPlaygroundEmitter: (connectionId: TId) => {
-    const state = get();
-    const existingPlayground = state.playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.emitter = InitPlayground;
-      set((s) => ({
+  resetPlaygroundEmitter: () => {
+    set((s) => {
+      const plg = s.playgrounds[s.runtime.activePlayground];
+      plg.emitter = InitPlayground;
+      return {
         playgrounds: {
           ...s.playgrounds,
-          [connectionId]: updatedPlayground,
+          [s.runtime.activePlayground]: plg,
         },
-      }));
-    }
+      };
+    });
   },
   setSelectedCollectionEmitter: (
     connectionId: TId,
