@@ -10,4 +10,8 @@ github:
   prebuilds:
     master: false
     branches: false
-    pullRequests: falss
+    pullRequests: false
+    pullRequestsFromForks: false
+    addCheck: false
+    addComment: false
+    addBadge: false
