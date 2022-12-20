@@ -15,7 +15,7 @@ import { _object } from '@firecamp/utils';
 
 import EmitterArgMeta from './playground/EmitterArgMeta';
 import EmitterArgTabs from './playground/EmitterArgTabs';
-import Body from './playground/Body';
+import Body from './playground/EmitterBody';
 import { EEmitterPayloadTypes } from '../../../types';
 import {
   InitArg,
