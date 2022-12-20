@@ -8,6 +8,6 @@ tasks:
 
 github:
   prebuilds:
-    main: false
+    master: false
     branches: false
     pullRequests: falss
