@@ -1,5 +1,6 @@
 //@ts-nocheck
-import Input, { Inputv2 } from './Input';
+import Input from './Input';
+import Inputv2 from './Inputv2';
 import Button from '../buttons/Button'
 import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
 
@@ -22,7 +23,7 @@ export const InputDemo = Template.bind({});
 InputDemo.args = { placeholder: 'Sample Button', value: '' };
 
 export const withIcon = Template.bind({});
-withIcon.args = { placeholder: 'Sample Button', value: '', icon: () => <VscMenu title="Account" size={16} />, iconPosition: 'left' };
+withIcon.args = { placeholder: 'Sample Button', value: '', icon: <VscMenu title="Account" size={16} />, iconPosition: 'left' };
 
 export const withIconRight = Template.bind({});
 withIconRight.args = { placeholder: 'Sample Button', value: '', icon: () => <VscMenu title="Account" size={16} />, iconPosition: 'right' };
