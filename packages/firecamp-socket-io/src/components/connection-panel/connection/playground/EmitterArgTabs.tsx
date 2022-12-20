@@ -1,27 +1,20 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Tabs } from '@firecamp/ui-kit';
-import { useSocketStore } from '../../../../store';
-import { ISocketStore } from '../../../../store/store.type';
 
 interface IEmitterArgTabs {
   totalTabs: number;
-  onAddTab?: () => void;
-  onSelectTab?: () => void;
+  activeArgIndex: number;
+  selectArgTab: Function;
+  addArgTab: Function;
+  removeArgTab;
 }
 const EmitterArgTabs = ({
   totalTabs = 0,
-  onSelectTab = () => {},
+  activeArgIndex,
+  selectArgTab,
+  addArgTab,
+  removeArgTab,
 }: IEmitterArgTabs) => {
-  const { addPlgArgTab, removePlgArgTab } = useSocketStore(
-    (s: ISocketStore) => ({
-      addPlgArgTab: s.addPlgArgTab,
-      removePlgArgTab: s.removePlgArgTab,
-    })
-  );
-  const [activeArgIndex, setArgIndex] = useState(0);
-  useEffect(() => {
-    setArgIndex(totalTabs);
-  }, [totalTabs]);
   const tabs = useMemo(() => {
     return Array(totalTabs)
       .fill('')
@@ -40,18 +33,18 @@ const EmitterArgTabs = ({
         activeTab={activeArgIndex.toString()}
         closeTabIconMeta={{
           show: tabs.length > 0,
-          onClick: removePlgArgTab,
+          onClick: removeArgTab,
         }}
         addTabIconMeta={{
           show: tabs && tabs.length < 5,
-          onClick: addPlgArgTab,
+          onClick: addArgTab,
         }}
         tabBorderMeta={{
           placementForActive: '',
           right: true,
         }}
         onSelect={(id, index) => {
-          setArgIndex(index);
+          selectArgTab(index);
         }}
       />
     </div>

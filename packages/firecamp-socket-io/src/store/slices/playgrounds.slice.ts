@@ -107,6 +107,7 @@ const createPlaygroundsSlice = (
 
   //arguments
   selectPlgArgTab: (index: number) => {
+    console.log(index, 789789);
     set((s) => {
       const plg = s.playgrounds[s.runtime.activePlayground];
       return {
@@ -139,7 +140,10 @@ const createPlaygroundsSlice = (
       return {
         playgrounds: {
           ...s.playgrounds,
-          [activePlayground]: plg,
+          [activePlayground]: {
+            ...plg,
+            activeArgIndex: plg.emitter.payload.length - 1,
+          },
         },
         __manualUpdates: ++s.__manualUpdates,
       };
@@ -159,7 +163,10 @@ const createPlaygroundsSlice = (
       return {
         playgrounds: {
           ...s.playgrounds,
-          [activePlayground]: plg,
+          [activePlayground]: {
+            ...plg,
+            activeArgIndex: index - 1,
+          },
         },
         __manualUpdates: ++s.__manualUpdates,
       };

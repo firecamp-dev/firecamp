@@ -19,13 +19,18 @@ import { useSocketStore } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
 
 const EmitterPlayground = () => {
-  const { playground, __version, changePlgArgType } = useSocketStore(
+  const { playground, __manualUpdates, changePlgArgType,  
+    selectPlgArgTab,
+    addPlgArgTab,
+    removePlgArgTab, } = useSocketStore(
     (s: ISocketStore) => ({
       playground: s.playgrounds[s.runtime.activePlayground],
       __meta: s.request.__meta,
-      // @ts-ignore
-      __version: s.__version,
-      changePlgArgType: s.changePlgArgType
+      __manualUpdates: s.__manualUpdates,
+      changePlgArgType: s.changePlgArgType,
+      selectPlgArgTab: s.selectPlgArgTab,
+      addPlgArgTab: s.addPlgArgTab,
+      removePlgArgTab: s.removePlgArgTab,
     }),
     shallow
   );
@@ -77,7 +82,13 @@ const EmitterPlayground = () => {
           </TabHeader.Right>
         </TabHeader>
         <div className="border border-appBorder flex-1 flex flex-col">
-          <EmitterArgTabs totalTabs={plgEmitter.payload?.length || 0} />
+          <EmitterArgTabs
+            activeArgIndex={activeArgIndex}
+            totalTabs={plgEmitter.payload?.length}
+            selectArgTab={selectPlgArgTab}
+            addArgTab={addPlgArgTab}
+            removeArgTab={removePlgArgTab}
+          />
           <EmitterBody
             activeArgIndex={activeArgIndex}
             autoFocus={!!plgEmitter.name}
