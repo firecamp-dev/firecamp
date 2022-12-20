@@ -10,8 +10,8 @@ import {
   ProgressBar,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
+
 import { CollectionDataProvider } from './collection/CollectionDataProvider';
 import treeRenderer from './collection/treeItemRenderer';
 

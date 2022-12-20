@@ -4,11 +4,13 @@ import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { Button } from '@firecamp/ui-kit';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    console.log(item, 'arrow context');
+    // console.log(item, 'arrow context');
+    return <></>
 
     if (item.data?.__ref?.isItem) {
       return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
@@ -83,7 +85,9 @@ export default {
     info,
     openPlg,
     deletePlg,
+    createFolder,
   }) => {
+    console.log({ title });
     const renderDepthOffset = 8;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
@@ -163,7 +167,7 @@ export default {
             )}
           >
             <span className="w-full overflow-hidden overflow-ellipsis items-center block">
-              {title}
+              {title} Hello
             </span>
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
@@ -185,6 +189,13 @@ export default {
               <></>
             )}
 
+            <VscAdd
+              className="ml-1 cursor-pointer"
+              size={14}
+              onClick={() => {
+                createFolder(item.index);
+              }}
+            />
             <VscTrash
               className="ml-1 cursor-pointer"
               size={14}

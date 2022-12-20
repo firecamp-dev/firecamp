@@ -1,5 +1,6 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
+import _cloneDeep from 'lodash/cloneDeep';
 import { ISocketIO, TId } from '@firecamp/types';
 
 import {
@@ -41,11 +42,13 @@ const {
 const createSocketStore = (initialState: ISocket) =>
   create<ISocketStore>((set, get) => {
     return {
+      setContext: (ctx: any) => set({ context: ctx }),
       initialise: (request: Partial<ISocketIO>, tabId: TId) => {
         const initState = initialiseStoreFromRequest(request, tabId);
         set((s) => ({
           ...s,
           ...initState,
+          originalRequest: _cloneDeep(initState.request),
         }));
       },
       ...createRequestSlice(

@@ -29,6 +29,7 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
     initialise,
     initialiseCollection,
     setActiveEnvironments,
+    setContext,
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({
       connect: s.connect,
@@ -37,9 +38,15 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
       initialise: s.initialise,
       initialiseCollection: s.initialiseCollection,
       setActiveEnvironments: s.setActiveEnvironments,
+      setContext: s.setContext,
     }),
     shallow
   );
+
+  //set context to store
+  useEffect(() => {
+    setContext(platformContext);
+  }, []);
 
   /** assign environments on tab load or when activeTab change **/
   useEffect(() => {

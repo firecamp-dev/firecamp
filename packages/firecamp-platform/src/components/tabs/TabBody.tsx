@@ -28,11 +28,10 @@ import EnvironmentWidget from '../common/environment/environment-widget/Environm
 import ErrorPopup from '../common/error-boundary/ErrorPopup';
 import { IRequestTabProps } from './types';
 
-import * as platformContext from '../../services/platform-context';
+import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
-import AppService from '../../services/app';
 
-const TabBody = ({ tabObj, index, activeTab }) => {
+const TabBody: FC<any> = ({ tabObj, index, activeTab }) => {
   if (!tabObj || index === -1) {
     return <span />;
   }
@@ -63,9 +62,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
       //v3 props
       platformComponents: { EnvironmentWidget },
       platformContext: {
-        request: platformContext.request,
-        environment: platformContext.environment,
-        appService: AppService,
+        ...pltContext,
         getFirecampAgent,
       },
     };

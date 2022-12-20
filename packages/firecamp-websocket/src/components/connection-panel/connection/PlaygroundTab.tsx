@@ -96,8 +96,9 @@ const EDITOR_COMMANDS = {
 
 const PlaygroundTab = () => {
   const {
+    context,
     activePlayground,
-    collection: propCollection,
+    collection,
     playground,
     playgroundTabs,
     __meta,
@@ -107,6 +108,7 @@ const PlaygroundTab = () => {
     sendMessage,
   } = useWebsocketStore(
     (s: IWebsocketStore) => ({
+      context: s.context,
       activePlayground: s.runtime.activePlayground,
       collection: s.collection,
       playground: s.playgrounds[s.runtime.activePlayground],
@@ -119,8 +121,7 @@ const PlaygroundTab = () => {
     }),
     shallow
   );
-
-  // console.log(playground, 'playground..');
+  const { folders } = collection;
 
   const [selectedMessageId] = useState('');
 
@@ -146,24 +147,6 @@ const PlaygroundTab = () => {
   if (!activePlayground || !message.__meta) {
     return <span />;
   }
-
-  // Implement with useMemo instead create on every render
-  const collection = []; /*  { collection } = useMemo(
-    () =>
-      prepare(
-        propCollection.directories || [],
-        propCollection.messages || [],
-        meta
-      ) || [],
-    [propCollection.directories, propCollection.messages, meta]
-  ); */
-
-  /* const { collection } =
-    prepare(
-      propCollection.directories || [],
-      propCollection.messages || [],
-      meta
-    ) || []; */
 
   const [activeType, setActiveType] = useState(
     MessageTypeDropDownList.find((t) => t.id === message.__meta.type) || {
@@ -606,6 +589,24 @@ const PlaygroundTab = () => {
     },
   };
 
+  const promptSave = () => {
+    context.window
+      .promptSaveItem({
+        header: 'Save WebSocket Message',
+        lable: 'Message Title',
+        placeholder: '',
+        texts: { btnOk: 'Save', btnOking: 'Saving...' },
+        value: '',
+        folders,
+        onError: (e) => {
+          context.app.notify.alert(e?.response?.data?.message || e.message);
+        },
+      })
+      .then((res) => {
+        // console.log(res, 1111);
+      });
+  };
+
   /* const _onClickPrettify = e => {
     if (e) {
       e.preventDefault();
@@ -730,12 +731,11 @@ const PlaygroundTab = () => {
           </TabHeader.Left>
           <TabHeader.Right>
             <Button
-              icon={<VscFile size={12} className="ml-1" />}
-              onClick={() => {}}
-              secondary
-              iconCenter
-              xs
               text="Save"
+              icon={<VscFile size={12} className="ml-1" />}
+              onClick={() => promptSave()}
+              xs
+              secondary
               iconRight
             />
             <Button
@@ -861,48 +861,9 @@ const SaveMessage = ({
                     Select Folder{' '}
                     <span>({focusedNode.__ref._relative_path})</span>
                   </label>
-                  {/*   <Collection
-                    className="with-border"
-                    onlyDirectory={true}
-                    onNodeFocus={setFocusedNode}
-                    data={collection}
-                    primaryKey={'id'}
-                    nodeRenderer={({
-                      isDirectory,
-                      item,
-                      isExpanded,
-                      classes,
-                      getNodeProps,
-                    }) => {
-                      if (isDirectory) {
-                        return (
-                          <CollectionFcNode
-                            isOpen={isExpanded}
-                            name={item.name}
-                            className={classes}
-                            icon="folder"
-                            {...getNodeProps()}
-                          />
-                        );
-                        // return <div className={classes}> {item.name}</div>;
-                      } else {
-                        return (
-                          <CollectionMsgNode
-                            item={item}
-                            className={classes}
-                            {...getNodeProps()}
-                          />
-                        );
-                      }
-                    }}
-                    allowDND={false}
-                    allowSort={false}
-                    onSort={() => {}}
-                    onDND={() => {}}
-                  /> */}
                 </div>
               ) : (
-                ''
+                <></>
               )}
               <Input
                 autoFocus={true}
@@ -922,7 +883,7 @@ const SaveMessage = ({
             </div>
           </div>
         ) : (
-          ''
+          <></>
         )
       }
     >
