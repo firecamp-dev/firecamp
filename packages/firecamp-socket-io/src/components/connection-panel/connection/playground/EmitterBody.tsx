@@ -25,7 +25,7 @@ interface IBody {
   changeArgType: (type: EArgumentBodyType) => void;
   changeArgValue: (value: any) => void;
 }
-const Body = ({
+const EmitterBody = ({
   autoFocus = false,
   activeArgIndex,
   emitter: plgEmitter,
@@ -201,4 +201,4 @@ const Body = ({
   );
 };
 
-export default Body;
+export default EmitterBody;

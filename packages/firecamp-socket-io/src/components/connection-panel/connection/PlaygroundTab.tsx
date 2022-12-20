@@ -12,6 +12,7 @@ import {
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 
+import BodyControls from './playground/BodyControls';
 import EmitterArgTabs from './playground/EmitterArgTabs';
 import EmitterBody from './playground/EmitterBody';
 
@@ -44,29 +45,13 @@ const EmitterPlayground = () => {
 
   return (
     <Container>
-      {/* <BodyControls
-        emitterName={plgEmitter.name || ''}
-        isSaveEmitterPopoverOpen={isSaveEmitterPopoverOpen}
-        tabData={tabData}
-        tabId={tabData.id || ''}
-        collection={collection}
-        activeType={activeArgType}
-        toggleSaveEmitterPopover={toggleSaveEmitterPopover}
-        playgroundTabMeta={playgroundTab.__meta}
-        onAddEmitter={_onAddEmitter}
-        onUpdateEmitter={_onUpdateEmitter}
-        path={plgEmitter.path || `./`}
-        showClearPlaygroundButton={
-          !!(emitterBody && emitterBody.length) ||
-          !!(
-            plgEmitter.name &&
-            plgEmitter.name.trim() &&
-            plgEmitter.name.trim().length
-          )
-        }
-        addNewEmitter={_addNewEmitter}
-        editorCommands={EditorCommands}
-      /> */}
+      <BodyControls
+        emitter={plgEmitter}
+        isSaveEmitterPopoverOpen={true}
+        tabData={{id: 123}}
+        activeType={{id: 'text'}}
+        // editorCommands={EditorCommands}
+      />
       <EmitterName name={plgEmitter.name || ''} onChange={(name) => {}} />
       <div className="px-2 pb-2 flex-1 flex flex-col">
         <TabHeader className="height-small !px-0">
