@@ -23,17 +23,19 @@ interface IBody {
   activeArgIndex: number;
   emitter?: ISocketIOEmitter;
   changeArgType: (type: EArgumentBodyType) => void;
+  changeArgValue: (value: any) => void;
 }
 const Body = ({
   autoFocus = false,
   activeArgIndex,
   emitter: plgEmitter,
   changeArgType,
+  changeArgValue,
 }: IBody) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
   const { payload, name } = plgEmitter;
-  console.log(activeArgIndex, 'activeArgIndex...')
   const argument = payload[activeArgIndex];
+  console.log(payload, activeArgIndex, argument, 'argument');
 
   const activeArgType = useMemo(() => {
     return (
@@ -77,8 +79,7 @@ const Body = ({
       case EArgumentBodyType.Json:
       case EArgumentBodyType.ArrayBuffer:
       case EArgumentBodyType.ArrayBufferView:
-        const value = !isNaN(argument.body) ? argument.body.toString() : argument.body;
-        if (typeof value === 'string') {
+        if (typeof argument.body === 'string') {
           return (
             <Editor
               autoFocus={autoFocus}
@@ -88,12 +89,9 @@ const Body = ({
               language={
                 bodyType === EArgumentBodyType.Json ? 'json' : 'ife-text'
               }
-              value={value || ''}
-              onChange={({ target: { _value } }) => {
-                if (value !== _value) {
-                  // setEmitterBody(_value);
-                  // updateEmitterBody(_value);
-                }
+              value={argument.body || ''}
+              onChange={({ target: { value } }) => {
+                if (argument.body !== value) changeArgValue(value);
               }}
               // controlsConfig={{
               //   show:
@@ -136,14 +134,14 @@ const Body = ({
               isChecked={argument.body === true}
               label="True"
               onToggleCheck={(_) => {
-                // updateEmitterBody(true);
+                changeArgValue(true);
               }}
             />
             <Checkbox
               isChecked={argument.body === false}
               label="False"
               onToggleCheck={(_) => {
-                // updateEmitterBody(false);
+                changeArgValue(false);
               }}
             />
           </div>
@@ -157,20 +155,14 @@ const Body = ({
             name={'number'}
             min={0}
             onChange={(e) => {
-              if (e) {
-                e.preventDefault();
-                let { value } = e.target;
-                // setEmitterBody(value);
-                // updateEmitterBody(value);
-              }
+              if (e) e.preventDefault();
+              changeArgValue(e.target.value);
             }}
             isEditor={true}
           />
         );
-        break;
       default:
         return <QuickSelection menus={[]} />;
-        break;
     }
   };
 

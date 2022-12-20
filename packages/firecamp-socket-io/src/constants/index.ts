@@ -83,7 +83,6 @@ export const ResponseCollection = {
 };
 export const InitPlayground = {
   name: '',
-  path: '',
   payload: [
     {
       body: '',

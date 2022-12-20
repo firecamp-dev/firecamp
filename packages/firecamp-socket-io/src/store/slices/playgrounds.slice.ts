@@ -39,6 +39,7 @@ interface IPlaygroundSlice {
   addPlgArgTab: () => void;
   removePlgArgTab: (index: number) => void;
   changePlgArgType: (type: EArgumentBodyType) => void;
+  changePlgArgValue: (value: string | number | boolean) => void;
 
   changePlaygroundConnectionState: (
     connectionId: TId,
@@ -48,7 +49,6 @@ interface IPlaygroundSlice {
     connectionId: TId,
     updates: { type: string }
   ) => void;
-  changePlaygroundEmitter: (connectionId: TId, updates: object) => void;
   resetPlaygroundEmitter: (connectionId: TId) => void;
 
   setSelectedCollectionEmitter: (
@@ -186,6 +186,21 @@ const createPlaygroundsSlice = (
       };
     });
   },
+  changePlgArgValue: (value: string | number | boolean) => {
+    console.log(value, 4141);
+    set((s) => {
+      const plg = s.playgrounds[s.runtime.activePlayground];
+      const { activeArgIndex } = plg;
+      plg.emitter.payload[activeArgIndex].body = value;
+      return {
+        playgrounds: {
+          ...s.playgrounds,
+          [s.runtime.activePlayground]: plg,
+        },
+        __manualUpdates: ++s.__manualUpdates,
+      };
+    });
+  },
 
   changePlaygroundConnectionState: (
     connectionId: TId,
@@ -223,42 +238,6 @@ const createPlaygroundsSlice = (
   },
 
   //emitter
-  changePlaygroundEmitter: async (connectionId: TId, updates: object) => {
-    const state = get();
-    const existingPlayground = await state.playgrounds?.[connectionId];
-
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = Object.assign({}, existingPlayground);
-      updatedPlayground.emitter = { ...updatedPlayground.emitter, ...updates };
-
-      if (
-        !equal(
-          _object.omit(existingPlayground.emitter, ['path']),
-          _object.omit(updatedPlayground.emitter, ['path'])
-        )
-      ) {
-        set((s) => ({
-          playgrounds: {
-            ...s.playgrounds,
-            [connectionId]: updatedPlayground,
-          },
-        }));
-        state.changePlaygroundTab(connectionId, {
-          __meta: {
-            isSaved: !!updatedPlayground.emitter?.__ref.id,
-            hasChange: true,
-          },
-        });
-      } else {
-        state.changePlaygroundTab(connectionId, {
-          __meta: {
-            isSaved: !!updatedPlayground.emitter?.__ref.id,
-            hasChange: false,
-          },
-        });
-      }
-    }
-  },
   resetPlaygroundEmitter: (connectionId: TId) => {
     const state = get();
     const existingPlayground = state.playgrounds?.[connectionId];
