@@ -6,10 +6,8 @@ tasks:
   - init: pnpm boot
     command: pnpm dev
 
-prebuilds:
-    # enable for the default branch (defaults to true)
-    main: true
-    # enable for all branches in this repo (defaults to false)
+github:
+  prebuilds:
+    main: false
     branches: false
-    # enable for pull requests coming from this repo (defaults to true)
-    pullRequests: false
+    pullRequests: falss
