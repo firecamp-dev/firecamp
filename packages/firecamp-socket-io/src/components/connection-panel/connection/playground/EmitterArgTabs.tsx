@@ -29,7 +29,7 @@ const EmitterArgTabs = ({
         };
       });
   }, [totalTabs]);
-  
+
   return (
     <div className="z-20 relative">
       <Tabs

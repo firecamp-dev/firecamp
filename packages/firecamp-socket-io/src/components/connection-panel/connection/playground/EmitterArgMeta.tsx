@@ -11,7 +11,6 @@ const EmitterArgMeta = ({
   toggleSelectArgTypeDD = () => {},
   onSelectTypedArray = () => {},
 }) => {
-  let [isSelectedTypedArrOpen, toggleSelectedTypedArrOpen] = useState(false);
 
   return (
     <Container.Header>
@@ -36,32 +35,6 @@ const EmitterArgMeta = ({
             onSelect={onSelectArgType}
           />
         </Dropdown>
-        {activeArgType &&
-        (activeArgType.id === EEmitterPayloadTypes.arraybuffer ||
-          activeArgType.id === EEmitterPayloadTypes.arraybufferview) ? (
-          <Dropdown
-            isOpen={isSelectedTypedArrOpen}
-            selected={selectedTypedArray.name || ''}
-            onToggle={() => toggleSelectedTypedArrOpen(!isSelectedTypedArrOpen)}
-          >
-            <Dropdown.Handler>
-              <Button
-                text={selectedTypedArray.name || ''}
-                transparent={true}
-                ghost={true}
-                withCaret={true}
-                primary
-                sm
-              />
-            </Dropdown.Handler>
-            <Dropdown.Options
-              options={typedArrayList || []}
-              onSelect={onSelectTypedArray}
-            />
-          </Dropdown>
-        ) : (
-          <></>
-        )}
       </TabHeader.Left>
     </Container.Header>
   );

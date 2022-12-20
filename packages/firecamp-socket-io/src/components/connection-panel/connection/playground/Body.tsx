@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Editor,
   Input,
@@ -5,11 +6,14 @@ import {
   Container,
   QuickSelection,
   Checkbox,
+  Dropdown,
+  Button,
 } from '@firecamp/ui-kit';
+import { ArgTypes } from '../../../../constants';
 import { EEmitterPayloadTypes } from '../../../../types';
 
 interface IBody {
-  emitterName?: string;
+  autoFocus?: boolean;
   activeArgType?: {
     id: string;
   };
@@ -23,7 +27,7 @@ interface IBody {
   onSelectFile: any;
 }
 const Body = ({
-  emitterName = '',
+  autoFocus = false,
   activeArgType = { id: 'text' },
   emitterBody = '',
   playgroundBody = '',
@@ -34,9 +38,9 @@ const Body = ({
   shortcutFns = {},
   onSelectFile,
 }: IBody) => {
+  const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
   const _renderActiveBody = (type) => {
     if (!type || !type.id) return <span />;
-
     if (
       type.id === EEmitterPayloadTypes.boolean &&
       typeof playgroundBody !== 'boolean'
@@ -55,7 +59,7 @@ const Body = ({
         if (typeof value === 'string') {
           return (
             <Editor
-              autoFocus={!!emitterName}
+              autoFocus={autoFocus}
               /* key={`${tabId}-${
                 type.id
               }-${activeArgIndex}-${playgroundBody.length || 0}`}*/
@@ -94,17 +98,17 @@ const Body = ({
 
         break;
       case EEmitterPayloadTypes.file:
-        let file_name = '';
+        let fileName = '';
         // console.log(`emitterBody`, emitterBody);
         if (emitterBody && typeof emitterBody !== 'string') {
-          file_name = emitterBody.name || '';
+          fileName = emitterBody.name || '';
         }
         return (
           <div className="fc-center-aligned">
             <FileInput
               ButtonText="Select file"
               path={''}
-              name={file_name}
+              name={fileName}
               onSelectFile={onSelectFile}
             />
           </div>
@@ -159,7 +163,26 @@ const Body = ({
           <QuickSelection menus={quickSelectionMenus} />
         </Container.Empty>
       ) : (
-        _renderActiveBody(activeArgType)
+        <div>
+          <Dropdown
+            selected={activeArgType}
+            isOpen={isBodyTypeDDOpen}
+            onToggle={() => toggleBodyTypeDD(!isBodyTypeDDOpen)}
+          >
+            <Dropdown.Handler>
+              <Button
+                text={activeArgType.name}
+                transparent={true}
+                ghost={true}
+                withCaret={true}
+                primary
+                sm
+              />
+            </Dropdown.Handler>
+            <Dropdown.Options options={ArgTypes} onSelect={() => {}} />
+          </Dropdown>
+          {_renderActiveBody(activeArgType)}
+        </div>
       )}
     </Container.Body>
   );

@@ -27,18 +27,19 @@ import {
 import { useSocketStore } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
 
-const EmitterPlayground = ({ tabData = {} }) => {
-  const { playground, __version, getActivePlayground, addPlaygroundArgTab } = useSocketStore(
-    (s: ISocketStore) => ({
-      playground: s.playgrounds[s.runtime.activePlayground],
-      getActivePlayground: s.getActivePlayground,
-      addPlaygroundArgTab: s.addPlaygroundArgTab,
-      __meta: s.request.__meta,
-      // @ts-ignore
-      __version: s.__version
-    }),
-    shallow
-  );
+const EmitterPlayground = () => {
+  const { playground, __version, getActivePlayground, addPlaygroundArgTab } =
+    useSocketStore(
+      (s: ISocketStore) => ({
+        playground: s.playgrounds[s.runtime.activePlayground],
+        getActivePlayground: s.getActivePlayground,
+        addPlaygroundArgTab: s.addPlaygroundArgTab,
+        __meta: s.request.__meta,
+        // @ts-ignore
+        __version: s.__version,
+      }),
+      shallow
+    );
   // const { activePlayground, plgTab } = getActivePlayground();
   const { emitter: plgEmitter } = playground;
 
@@ -135,22 +136,12 @@ const EmitterPlayground = ({ tabData = {} }) => {
             onSelectTab={(index) => {}}
             onRemoveTab={(index) => {}}
           />
-          <EmitterArgMeta
-            activeArgIndex={activeArgIndex}
-            ArgTypes={ArgTypes}
-            activeArgType={activeArgType}
-            // typedArrayList={typedArrayList}
-            // selectedTypedArray={selectedTypedArray}
-            // isSelectTypeDDOpen={isSelectTypeDDOpen}
-            onSelectArgType={_onSelectArgType}
-            // toggleSelectArgTypeDD={toggleSelectArgTypeDD}
-            onSelectTypedArray={_onSelectTypedArray}
-          />
+
           <Body
-            emitterName={plgEmitter.name || ''}
-            activeArgIndex={activeArgIndex}
-            tabId={tabData.id}
+            onSelectArgType={_onSelectArgType}
             activeArgType={activeArgType}
+            autoFocus={!!plgEmitter.name}
+            tabId={playground.id}
             emitterBody={plgEmitter.payload}
             playgroundBody={plgEmitter.payload[activeArgIndex].payload}
             quickSelectionMenus={[]}
