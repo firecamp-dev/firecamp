@@ -28,14 +28,18 @@ import { useSocketStore } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
 
 const EmitterPlayground = ({ tabData = {} }) => {
-  const { getActivePlayground } = useSocketStore(
+  const { playground, __version, getActivePlayground, addPlaygroundArgTab } = useSocketStore(
     (s: ISocketStore) => ({
+      playground: s.playgrounds[s.runtime.activePlayground],
       getActivePlayground: s.getActivePlayground,
+      addPlaygroundArgTab: s.addPlaygroundArgTab,
       __meta: s.request.__meta,
+      // @ts-ignore
+      __version: s.__version
     }),
     shallow
   );
-  const { activePlayground, playground, plgTab } = getActivePlayground();
+  // const { activePlayground, plgTab } = getActivePlayground();
   const { emitter: plgEmitter } = playground;
 
   // @bug: on real-time update, can not switch argument except 0
@@ -74,7 +78,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
       // _onSaveMessageFromPlygnd();
     },
   };
-
+  console.log(plgEmitter);
   return (
     <Container>
       {/* <BodyControls
@@ -126,9 +130,8 @@ const EmitterPlayground = ({ tabData = {} }) => {
         </TabHeader>
         <div className="border border-appBorder flex-1 flex flex-col">
           <EmitterArgTabs
-            args={plgEmitter.payload}
-            activeArgIndex={activeArgIndex}
-            onAddTab={() => {}}
+            totalTabs={plgEmitter.payload?.length || 0}
+            onAddTab={addPlaygroundArgTab}
             onSelectTab={(index) => {}}
             onRemoveTab={(index) => {}}
           />
@@ -166,11 +169,7 @@ const EmitterPlayground = ({ tabData = {} }) => {
 
 export default EmitterPlayground;
 
-const EmitterName = ({
-  name = '',
-  onChange = (val) => {},
-  onEmit = () => {},
-}) => {
+const EmitterName = ({ name = '', onChange = (val) => {} }) => {
   const _handleInputChange = (e) => {
     if (e) e.preventDefault();
     const { value } = e.target;
@@ -187,17 +186,6 @@ const EmitterName = ({
         value={name}
         onChange={_handleInputChange}
         wrapperClassName="!mb-0"
-        // postComponents={[
-        //   <Button
-        //     icon={<IoSendSharp className="toggle-arrow" size={12} />}
-        //     onClick={onEmit}
-        //     disabled={!name}
-        //     className="!rounded-none"
-        //     primary
-        //     sm
-        //     iconLeft
-        //   />,
-        // ]}
       />
     </Container.Header>
   );

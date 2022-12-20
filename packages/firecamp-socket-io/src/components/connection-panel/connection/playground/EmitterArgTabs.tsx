@@ -1,66 +1,56 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Tabs } from '@firecamp/ui-kit';
 import equal from 'react-fast-compare';
 import { EEmitterPayloadTypes } from '../../../../types';
 
 interface IEmitterArgTabs {
-  args?: { id: string; name?: 'string' }[];
-  activeArgIndex?: string;
+  totalTabs: number;
   onAddTab?: () => void;
   onRemoveTab?: () => void;
   onSelectTab?: () => void;
 }
 const EmitterArgTabs = ({
-  args = [],
-  activeArgIndex = '',
+  totalTabs = 0,
   onAddTab = () => {},
   onRemoveTab = () => {},
   onSelectTab = () => {},
 }: IEmitterArgTabs) => {
-  const [tabs, setTabs] = useState(
-    args.map((arg, index) => {
-      return {
-        id: index.toString(),
-        name: `Arg ${index + 1}`,
-      };
-    })
-  );
-
+  const [activeArgIndex, setArgIndex] = useState(0);
   useEffect(() => {
-    const newTabs = args.map((arg, index) => {
-      return {
-        id: index.toString(),
-        name: `Arg ${index + 1}`,
-      };
-    });
-    if (!equal(tabs, newTabs)) {
-      setTabs(newTabs);
-    }
-  }, [args]);
-
-  console.log(tabs, 'tabs....');
+    setArgIndex(totalTabs);
+  }, [totalTabs]);
+  const tabs = useMemo(() => {
+    return Array(totalTabs)
+      .fill('')
+      .map((a, i) => {
+        return {
+          id: i.toString(),
+          name: `Arg ${i + 1}`,
+        };
+      });
+  }, [totalTabs]);
+  
   return (
     <div className="z-20 relative">
       <Tabs
-        list={tabs || []}
-        activeTab={activeArgIndex}
+        list={tabs}
+        activeTab={activeArgIndex.toString()}
         // tabsClassName="tabs-with-bottom-border-left-section"
         closeTabIconMeta={{
           show: tabs.length > 0,
           onClick: onRemoveTab,
         }}
         addTabIconMeta={{
-          show:
-            tabs &&
-            tabs.length < 5 &&
-            args[activeArgIndex]?.__meta.type !== EEmitterPayloadTypes.noBody,
+          show: tabs && tabs.length < 5,
           onClick: onAddTab,
         }}
         tabBorderMeta={{
           placementForActive: '',
           right: true,
         }}
-        onSelect={onSelectTab}
+        onSelect={(id, index) => {
+          setArgIndex(index);
+        }}
       />
     </div>
   );

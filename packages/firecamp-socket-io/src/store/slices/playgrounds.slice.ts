@@ -1,7 +1,7 @@
 import equal from 'deep-equal';
 import { IExecutorInterface } from '@firecamp/socket.io-executor/dist/esm';
 import { _object } from '@firecamp/utils';
-import { ISocketIOEmitter, TId } from '@firecamp/types';
+import { EArgumentBodyType, ISocketIOEmitter, TId } from '@firecamp/types';
 import { EConnectionState } from '../../types';
 import { InitPlayground } from '../../constants';
 
@@ -36,8 +36,8 @@ interface IPlaygroundSlice {
     plgTab: any; //IPlaygroundTab
   };
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
+  addPlaygroundArgTab: () => void;
   changePlayground: (connectionId: TId, updates: object) => void;
-
   changePlaygroundConnectionState: (
     connectionId: TId,
     connectionState: EConnectionState
@@ -46,8 +46,6 @@ interface IPlaygroundSlice {
     connectionId: TId,
     updates: { type: string }
   ) => void;
-
-  setPlaygroundEmitter: (connectionId: TId, emitter: IEmitter) => void;
   changePlaygroundEmitter: (connectionId: TId, updates: object) => void;
   resetPlaygroundEmitter: (connectionId: TId) => void;
 
@@ -104,7 +102,31 @@ const createPlaygroundsSlice = (
       },
     }));
   },
-
+  addPlaygroundArgTab: () => {
+    set((s) => {
+      const { activePlayground } = s.runtime;
+      const plg = s.playgrounds[activePlayground];
+      if (!plg.emitter.payload?.length) plg.emitter.payload = [];
+      plg.emitter.payload = [
+        ...plg.emitter.payload,
+        {
+          body: '',
+          __meta: {
+            type: EArgumentBodyType.Text,
+          },
+        },
+      ];
+      console.log(plg.emitter.payload, 'emitter.payload ...555');
+      let __version = s.__version || 1;
+      return {
+        playgrounds: {
+          ...s.playgrounds,
+          [activePlayground]: plg,
+        },
+        __version: ++__version, // assigning new version key because zustand can't detect nested deep change and useStore don't detect reactive change, thus by incrementing this key tell zustand to deect change
+      };
+    });
+  },
   changePlayground: (connectionId: TId, updates: object) => {
     set((s) => ({
       playgrounds: {
@@ -116,7 +138,6 @@ const createPlaygroundsSlice = (
       },
     }));
   },
-
   changePlaygroundConnectionState: (
     connectionId: TId,
     connectionState: EConnectionState
@@ -152,20 +173,6 @@ const createPlaygroundsSlice = (
     }
   },
 
-  setPlaygroundEmitter: (connectionId: TId, emitter: IEmitter) => {
-    const state = get();
-    const existingPlayground = state.playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.emitter = emitter;
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: updatedPlayground,
-        },
-      }));
-    }
-  },
   changePlaygroundEmitter: async (connectionId: TId, updates: object) => {
     const state = get();
     const existingPlayground = await state.playgrounds?.[connectionId];
