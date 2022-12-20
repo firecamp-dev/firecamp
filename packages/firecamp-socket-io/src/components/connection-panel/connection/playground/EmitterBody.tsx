@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   Editor,
   Input,
@@ -9,53 +9,77 @@ import {
   Dropdown,
   Button,
 } from '@firecamp/ui-kit';
-import { ArgTypes } from '../../../../constants';
+import { ISocketIOEmitter } from '@firecamp/types';
 import { EEmitterPayloadTypes } from '../../../../types';
+import {
+  ArgTypes,
+  InitArg,
+  EditorCommands,
+  TypedArrayViews,
+  InitPlayground,
+} from '../../../../constants';
 
 interface IBody {
   autoFocus?: boolean;
+  activeArgIndex: number;
   activeArgType?: {
     id: string;
+    name: string;
   };
-  emitterBody?: string;
-  playgroundBody?: string | boolean | number;
-  quickSelectionMenus?: any[];
-  setEmitterBody?: (val: any) => void;
-  setEditorDOM?: () => void;
-  updateEmitterBody?: (val: any) => void;
-  shortcutFns?: {};
-  onSelectFile: any;
+  emitter?: ISocketIOEmitter;
 }
 const Body = ({
   autoFocus = false,
-  activeArgType = { id: 'text' },
-  emitterBody = '',
-  playgroundBody = '',
-  quickSelectionMenus = [],
-  setEmitterBody = (val) => {},
-  setEditorDOM = () => {},
-  updateEmitterBody = (val) => {},
-  shortcutFns = {},
-  onSelectFile,
+  activeArgIndex,
+  emitter: plgEmitter,
 }: IBody) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
-  const _renderActiveBody = (type) => {
-    if (!type || !type.id) return <span />;
+  const { payload, name } = plgEmitter;
+  let value = payload[activeArgIndex];
+
+  const activeArgType = useMemo(() => {
+    return (
+      ArgTypes.find((t) => t.id === payload[activeArgIndex].__meta.type) || {
+        id: EEmitterPayloadTypes.Text,
+        name: 'Text',
+      }
+    );
+  }, [activeArgIndex]);
+
+  const shortcutFns = {
+    onCtrlS: () => {
+      // _onSaveMessageFromPlygnd();
+    },
+    onCtrlEnter: async () => {
+      // _onEmit();
+    },
+    onCtrlO: () => {
+      // _setToOriginal();
+    },
+    onCtrlK: () => {
+      // _addNewEmitter();
+    },
+    onCtrlShiftEnter: async () => {
+      // await _onEmit();
+      // _onSaveMessageFromPlygnd();
+    },
+  };
+
+  const _renderActiveBody = (bodyType) => {
+    if (!bodyType) return <span />;
     if (
-      type.id === EEmitterPayloadTypes.boolean &&
-      typeof playgroundBody !== 'boolean'
+      bodyType === EEmitterPayloadTypes.Boolean &&
+      typeof value !== 'boolean'
     ) {
-      playgroundBody = true;
+      value = true;
     }
 
-    switch (type.id) {
-      case EEmitterPayloadTypes.text:
-      case EEmitterPayloadTypes.json:
-      case EEmitterPayloadTypes.arraybuffer:
-      case EEmitterPayloadTypes.arraybufferview:
-        let value = !isNaN(playgroundBody)
-          ? playgroundBody.toString()
-          : playgroundBody;
+    switch (bodyType) {
+      case EEmitterPayloadTypes.Text:
+      case EEmitterPayloadTypes.Json:
+      case EEmitterPayloadTypes.ArrayBuffer:
+      case EEmitterPayloadTypes.ArrayBufferView:
+        value = !isNaN(value) ? value.toString() : value;
         if (typeof value === 'string') {
           return (
             <Editor
@@ -64,20 +88,20 @@ const Body = ({
                 type.id
               }-${activeArgIndex}-${playgroundBody.length || 0}`}*/
               language={
-                type.id === EEmitterPayloadTypes.json ? 'json' : 'ife-text'
+                bodyType === EEmitterPayloadTypes.Json ? 'json' : 'ife-text'
               }
               value={value || ''}
-              onChange={({ target: { value } }) => {
-                if (playgroundBody !== value) {
-                  setEmitterBody(value);
-                  updateEmitterBody(value);
+              onChange={({ target: { _value } }) => {
+                if (value !== _value) {
+                  // setEmitterBody(value);
+                  // updateEmitterBody(value);
                 }
               }}
               // controlsConfig={{
               //   show:
-              //     activeArgType.id !== EEmitterPayloadTypes.noBody &&
+              //     bodyType !== EEmitterPayloadTypes.noBody &&
               //     typeof playgroundBody === 'string' &&
-              //     activeArgType.id !== EEmitterPayloadTypes.file,
+              //     bodyType !== EEmitterPayloadTypes.file,
               //   position: 'vertical'
               // }}
               monacoOptions={{
@@ -93,57 +117,53 @@ const Body = ({
             />
           );
         } else {
-          return <QuickSelection menus={quickSelectionMenus} />;
+          return <QuickSelection menus={[]} />;
         }
-
-        break;
-      case EEmitterPayloadTypes.file:
-        let fileName = '';
-        // console.log(`emitterBody`, emitterBody);
-        if (emitterBody && typeof emitterBody !== 'string') {
-          fileName = emitterBody.name || '';
-        }
-        return (
-          <div className="fc-center-aligned">
-            <FileInput
-              ButtonText="Select file"
-              path={''}
-              name={fileName}
-              onSelectFile={onSelectFile}
-            />
-          </div>
-        );
-        break;
-      case EEmitterPayloadTypes.boolean:
+      // case EEmitterPayloadTypes.File:
+      //   let fileName = '';
+      //   return (
+      //     <div className="fc-center-aligned">
+      //       <FileInput
+      //         ButtonText="Select file"
+      //         path={''}
+      //         name={fileName}
+      //         onSelectFile={()=> {}}
+      //       />
+      //     </div>
+      //   );
+      case EEmitterPayloadTypes.Boolean:
         return (
           <div className="flex p-2">
             <Checkbox
-              isChecked={playgroundBody === true}
+              isChecked={value === true}
               label="True"
-              onToggleCheck={(_) => updateEmitterBody(true)}
+              onToggleCheck={(_) => {
+                // updateEmitterBody(true);
+              }}
             />
             <Checkbox
-              isChecked={playgroundBody === false}
+              isChecked={value === false}
               label="False"
-              onToggleCheck={(_) => updateEmitterBody(false)}
+              onToggleCheck={(_) => {
+                // updateEmitterBody(false);
+              }}
             />
           </div>
         );
-        break;
-      case EEmitterPayloadTypes.number:
+      case EEmitterPayloadTypes.Number:
         return (
           <Input
             autoFocus={true}
             type={'number'}
-            value={playgroundBody.toString()}
+            value={value.toString()}
             name={'number'}
             min={0}
             onChange={(e) => {
               if (e) {
                 e.preventDefault();
                 let { value } = e.target;
-                setEmitterBody(value);
-                updateEmitterBody(value);
+                // setEmitterBody(value);
+                // updateEmitterBody(value);
               }
             }}
             isEditor={true}
@@ -151,16 +171,16 @@ const Body = ({
         );
         break;
       default:
-        return <QuickSelection menus={quickSelectionMenus} />;
+        return <QuickSelection menus={[]} />;
         break;
     }
   };
 
   return (
     <Container.Body>
-      {activeArgType.id === EEmitterPayloadTypes.noBody ? (
+      {activeArgType.id === EEmitterPayloadTypes.NoBody ? (
         <Container.Empty>
-          <QuickSelection menus={quickSelectionMenus} />
+          <QuickSelection menus={[]} />
         </Container.Empty>
       ) : (
         <div>
@@ -181,7 +201,7 @@ const Body = ({
             </Dropdown.Handler>
             <Dropdown.Options options={ArgTypes} onSelect={() => {}} />
           </Dropdown>
-          {_renderActiveBody(activeArgType)}
+          {_renderActiveBody(activeArgType.id)}
         </div>
       )}
     </Container.Body>

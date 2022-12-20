@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import _compact from 'lodash/compact';
 import _cloneDeep from 'lodash/cloneDeep';
 import _merge from 'lodash/merge';
@@ -13,73 +12,24 @@ import {
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 
-import EmitterArgMeta from './playground/EmitterArgMeta';
 import EmitterArgTabs from './playground/EmitterArgTabs';
-import Body from './playground/EmitterBody';
-import { EEmitterPayloadTypes } from '../../../types';
-import {
-  InitArg,
-  EditorCommands,
-  ArgTypes,
-  TypedArrayViews,
-  InitPlayground,
-} from '../../../constants';
+import EmitterBody from './playground/EmitterBody';
+
 import { useSocketStore } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
 
 const EmitterPlayground = () => {
-  const { playground, __version, getActivePlayground, addPlaygroundArgTab } =
-    useSocketStore(
-      (s: ISocketStore) => ({
-        playground: s.playgrounds[s.runtime.activePlayground],
-        getActivePlayground: s.getActivePlayground,
-        addPlaygroundArgTab: s.addPlaygroundArgTab,
-        __meta: s.request.__meta,
-        // @ts-ignore
-        __version: s.__version,
-      }),
-      shallow
-    );
-  // const { activePlayground, plgTab } = getActivePlayground();
-  const { emitter: plgEmitter } = playground;
-
-  // @bug: on real-time update, can not switch argument except 0
-  const [activeArgIndex, setActiveArgIndex] = useState(0);
-  const [activeArgType, setActiveArgType] = useState(
-    () =>
-      ArgTypes.find(
-        (t) => t.id === plgEmitter.payload[activeArgIndex].__meta.type
-      ) || {
-        id: EEmitterPayloadTypes.noBody,
-        name: 'No body',
-      }
+  const { playground, __version } = useSocketStore(
+    (s: ISocketStore) => ({
+      playground: s.playgrounds[s.runtime.activePlayground],
+      __meta: s.request.__meta,
+      // @ts-ignore
+      __version: s.__version,
+    }),
+    shallow
   );
+  const { emitter: plgEmitter, activeArgIndex = 0 } = playground;
 
-  const _onSelectArgType = (type) => {
-    if (!type || !type.id || activeArgType.id === type.id) return;
-  };
-  const _onSelectTypedArray = (ta) => {};
-  const _onEmit = () => {};
-
-  const shortcutFns = {
-    onCtrlS: () => {
-      // _onSaveMessageFromPlygnd();
-    },
-    onCtrlEnter: async () => {
-      _onEmit();
-    },
-    onCtrlO: () => {
-      // _setToOriginal();
-    },
-    onCtrlK: () => {
-      // _addNewEmitter();
-    },
-    onCtrlShiftEnter: async () => {
-      // await _onEmit();
-      // _onSaveMessageFromPlygnd();
-    },
-  };
-  console.log(plgEmitter);
   return (
     <Container>
       {/* <BodyControls
@@ -105,11 +55,7 @@ const EmitterPlayground = () => {
         addNewEmitter={_addNewEmitter}
         editorCommands={EditorCommands}
       /> */}
-      <EmitterName
-        name={plgEmitter.name || ''}
-        onChange={(name) => {}}
-        onEmit={_onEmit}
-      />
+      <EmitterName name={plgEmitter.name || ''} onChange={(name) => {}} />
       <div className="px-2 pb-2 flex-1 flex flex-col">
         <TabHeader className="height-small !px-0">
           <TabHeader.Left>
@@ -122,35 +68,19 @@ const EmitterPlayground = () => {
             <Button
               text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
-              xs
               primary
               iconCenter
               iconRight
+              xs
             />
           </TabHeader.Right>
         </TabHeader>
         <div className="border border-appBorder flex-1 flex flex-col">
-          <EmitterArgTabs
-            totalTabs={plgEmitter.payload?.length || 0}
-            onAddTab={addPlaygroundArgTab}
-            onSelectTab={(index) => {}}
-            onRemoveTab={(index) => {}}
-          />
-
-          <Body
-            onSelectArgType={_onSelectArgType}
-            activeArgType={activeArgType}
+          <EmitterArgTabs totalTabs={plgEmitter.payload?.length || 0} />
+          <EmitterBody
+            activeArgIndex={activeArgIndex}
             autoFocus={!!plgEmitter.name}
-            tabId={playground.id}
-            emitterBody={plgEmitter.payload}
-            playgroundBody={plgEmitter.payload[activeArgIndex].payload}
-            quickSelectionMenus={[]}
-            // setEmitterBody={setEmitterBody}
-            updateEmitterBody={(value) => {}}
-            onSelectFile={(e) => {
-              // setEmitterBody(e.target.files[0]);
-            }}
-            shortcutFns={shortcutFns}
+            emitter={plgEmitter}
           />
         </div>
       </div>

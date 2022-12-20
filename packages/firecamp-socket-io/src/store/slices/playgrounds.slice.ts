@@ -21,6 +21,7 @@ interface IPlayground {
   executor?: IExecutorInterface;
   listeners?: { [key: string]: boolean };
   socketId?: string;
+  activeArgIndex: number;
 }
 
 interface IPlaygrounds {
@@ -30,14 +31,12 @@ interface IPlaygrounds {
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
-  getActivePlayground: () => {
-    activePlayground: TId;
-    playground: IPlayground;
-    plgTab: any; //IPlaygroundTab
-  };
+  getActivePlayground: () => IPlayground;
+  setPlgExecutor: (connectionId: TId, executor: any) => void;
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
-  addPlaygroundArgTab: () => void;
-  changePlayground: (connectionId: TId, updates: object) => void;
+  selectPlgArgTab: (index: number) => void;
+  addPlgArgTab: () => void;
+  removePlgArgTab: (index: number) => void;
   changePlaygroundConnectionState: (
     connectionId: TId,
     connectionState: EConnectionState
@@ -55,7 +54,6 @@ interface IPlaygroundSlice {
   ) => void;
 
   deletePlayground: (connectionId: TId) => void;
-
   deleteExecutor: (connectionId: TId) => void;
 
   setPlaygroundListeners: (connectionId: TId, listeners: object) => void;
@@ -68,9 +66,7 @@ interface IPlaygroundSlice {
   ) => void;
 
   deletePlaygroundListener: (connectionId: TId, name: string) => void;
-
   updatePlaygroundListenersValue: (connectionId: TId, listen: boolean) => void;
-
   addListenersToAllPlaygrounds: (listenerName: string, listen: boolean) => void;
   deleteListenerFromAllPlaygrounds: (listenerName: string) => void;
 }
@@ -84,15 +80,18 @@ const createPlaygroundsSlice = (
 
   getActivePlayground: () => {
     const state = get();
-    const {
-      playgrounds,
-      runtime: { playgroundTabs, activePlayground },
-    } = state;
-    return {
-      activePlayground,
-      playground: playgrounds[activePlayground],
-      plgTab: playgroundTabs.find((p) => p.id == activePlayground),
-    };
+    return state.playgrounds[state.runtime.activePlayground];
+  },
+  setPlgExecutor: (connectionId: TId, executor: any) => {
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [connectionId]: {
+          ...(s.playgrounds[connectionId] || {}),
+          executor,
+        },
+      },
+    }));
   },
   addPlayground: (connectionId: TId, playground: IPlayground) => {
     set((s) => ({
@@ -102,7 +101,22 @@ const createPlaygroundsSlice = (
       },
     }));
   },
-  addPlaygroundArgTab: () => {
+  selectPlgArgTab: (index: number) => {
+    set((s) => {
+      const plg = s.playgrounds[s.runtime.activePlayground];
+      return {
+        playgrounds: {
+          ...s.playgrounds,
+          [s.runtime.activePlayground]: {
+            ...plg,
+            activeArgIndex: index,
+          },
+        },
+        __version: ++s.__version,
+      };
+    });
+  },
+  addPlgArgTab: () => {
     set((s) => {
       const { activePlayground } = s.runtime;
       const plg = s.playgrounds[activePlayground];
@@ -116,7 +130,7 @@ const createPlaygroundsSlice = (
           },
         },
       ];
-      console.log(plg.emitter.payload, 'emitter.payload ...555');
+      // console.log(plg.emitter.payload, 'emitter.payload ...555');
       let __version = s.__version || 1;
       return {
         playgrounds: {
@@ -127,17 +141,29 @@ const createPlaygroundsSlice = (
       };
     });
   },
-  changePlayground: (connectionId: TId, updates: object) => {
-    set((s) => ({
-      playgrounds: {
-        ...s.playgrounds,
-        [connectionId]: {
-          ...(s.playgrounds[connectionId] || {}),
-          ...updates,
+  removePlgArgTab: (index: number) => {
+    if (index == 0) return;
+    set((s) => {
+      const { activePlayground } = s.runtime;
+      const plg = s.playgrounds[activePlayground];
+      if (!plg.emitter.payload?.length) plg.emitter.payload = [];
+      plg.emitter.payload = [
+        ...plg.emitter.payload.slice(0, index),
+        ...plg.emitter.payload.slice(index + 1),
+      ];
+
+      // console.log(plg.emitter.payload, 'emitter.payload ...555');
+      let __version = s.__version || 1;
+      return {
+        playgrounds: {
+          ...s.playgrounds,
+          [activePlayground]: plg,
         },
-      },
-    }));
+        __version: ++__version,
+      };
+    });
   },
+
   changePlaygroundConnectionState: (
     connectionId: TId,
     connectionState: EConnectionState
@@ -173,6 +199,7 @@ const createPlaygroundsSlice = (
     }
   },
 
+  //emitter
   changePlaygroundEmitter: async (connectionId: TId, updates: object) => {
     const state = get();
     const existingPlayground = await state.playgrounds?.[connectionId];
@@ -223,7 +250,6 @@ const createPlaygroundsSlice = (
       }));
     }
   },
-
   setSelectedCollectionEmitter: (
     connectionId: TId,
     emitterId: TId | string
@@ -241,7 +267,7 @@ const createPlaygroundsSlice = (
       }));
     }
   },
-
+  //delete
   deletePlayground: (connectionId: TId) => {
     const state = get();
     let existingPlayground = state.playgrounds?.[connectionId];
@@ -254,7 +280,6 @@ const createPlaygroundsSlice = (
       state.removeAllListenersFromExecutor(connectionId);
     }
   },
-
   deleteExecutor: (connectionId: TId) => {
     const state = get();
     const existingPlayground = state.playgrounds?.[connectionId];
@@ -273,6 +298,7 @@ const createPlaygroundsSlice = (
     }
   },
 
+  //listeners
   setPlaygroundListeners: (connectionId: TId, listeners: object) => {
     const state = get();
     const existingPlayground = state.playgrounds?.[connectionId];
@@ -332,7 +358,6 @@ const createPlaygroundsSlice = (
       }));
     }
   },
-
   deletePlaygroundListener: (connectionId: TId, name: string) => {
     const state = get();
     const existingPlayground = state.playgrounds?.[connectionId];
@@ -355,7 +380,6 @@ const createPlaygroundsSlice = (
       }));
     }
   },
-
   updatePlaygroundListenersValue: (connectionId: TId, listen: boolean) => {
     const state = get();
     const existingPlayground = state.playgrounds?.[connectionId];

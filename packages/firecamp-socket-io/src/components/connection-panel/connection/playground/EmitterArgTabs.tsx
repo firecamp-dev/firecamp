@@ -1,20 +1,23 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Tabs } from '@firecamp/ui-kit';
-import equal from 'react-fast-compare';
-import { EEmitterPayloadTypes } from '../../../../types';
+import { useSocketStore } from '../../../../store';
+import { ISocketStore } from '../../../../store/store.type';
 
 interface IEmitterArgTabs {
   totalTabs: number;
   onAddTab?: () => void;
-  onRemoveTab?: () => void;
   onSelectTab?: () => void;
 }
 const EmitterArgTabs = ({
   totalTabs = 0,
-  onAddTab = () => {},
-  onRemoveTab = () => {},
   onSelectTab = () => {},
 }: IEmitterArgTabs) => {
+  const { addPlgArgTab, removePlgArgTab } = useSocketStore(
+    (s: ISocketStore) => ({
+      addPlgArgTab: s.addPlgArgTab,
+      removePlgArgTab: s.removePlgArgTab,
+    })
+  );
   const [activeArgIndex, setArgIndex] = useState(0);
   useEffect(() => {
     setArgIndex(totalTabs);
@@ -35,14 +38,13 @@ const EmitterArgTabs = ({
       <Tabs
         list={tabs}
         activeTab={activeArgIndex.toString()}
-        // tabsClassName="tabs-with-bottom-border-left-section"
         closeTabIconMeta={{
           show: tabs.length > 0,
-          onClick: onRemoveTab,
+          onClick: removePlgArgTab,
         }}
         addTabIconMeta={{
           show: tabs && tabs.length < 5,
-          onClick: onAddTab,
+          onClick: addPlgArgTab,
         }}
         tabBorderMeta={{
           placementForActive: '',
