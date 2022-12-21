@@ -138,7 +138,7 @@ export default class Executor implements IExecutor {
 
           // Start pinging if ping enable
           if (
-            firecampAgent === EFirecampAgent.Desktop &&
+            firecampAgent == EFirecampAgent.Desktop &&
             clientOptions &&
             clientOptions.ping &&
             clientOptions.pingInterval
