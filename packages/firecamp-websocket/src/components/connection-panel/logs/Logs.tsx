@@ -113,71 +113,72 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
   return (
     <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
       <FullScreen handle={handleFS}>
-        <Container.Header>
-          <TabHeader className="height-small border-b border-appBorder padding-left-extra">
-            <div className="fc-btn-collapse v2" onClick={_setVisiblePanel}>
-              <VscChevronLeft />
-            </div>
-            <TabHeader.Left>
-              <label className="m-0 text-sm font-bold whitespace-pre">
-                Event Logs
-              </label>
-            </TabHeader.Left>
-            <TabHeader.Right>
-              <label className="m-0 text-sm font-bold whitespace-pre">
-                Filter:
-              </label>
-              <div className="flex items-center">
-                {/* <label className="m-0 text-base font-bold">Type</label> */}
-                <span>
-                  <Dropdown
-                    selected={typeFilter || 'select log type'}
-                    className="fc-dropdown-fixwidth"
-                  >
-                    <Dropdown.Handler
-                      id={`websocket-response-log-${activePlayground}-filter-event`}
-                    >
-                      <Button
-                        text={typeFilter || 'select log type'}
-                        transparent={true}
-                        ghost={true}
-                        withCaret={true}
-                        tooltip={
-                          typeFilter ? `Log type: ${typeFilter || ''}` : ''
-                        }
-                        sm
-                      />
-                    </Dropdown.Handler>
-                    <Dropdown.Options
-                      options={Object.keys(logTypes).map((o) => ({ name: o }))}
-                      onSelect={(type) => _onFilter(type?.name)}
-                    />
-                  </Dropdown>
-                </span>
-
-                {typeFilter ? (
-                  <div className="pl-1 w-4">
-                    <span
-                      className="text-base  iconv2-remove-icon"
-                      onClick={() => _onFilter('')}
-                    />
-                  </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="flex">
-                <VscCircleSlash
-                  className="cursor-pointer"
-                  title="clear logs"
-                  onClick={_onClearAllMessages}
-                />
-              </div>
-            </TabHeader.Right>
-          </TabHeader>
-        </Container.Header>
-
         <Container>
+          <Container.Header>
+            <TabHeader className="height-small border-b border-appBorder padding-left-extra">
+              <div className="fc-btn-collapse v2" onClick={_setVisiblePanel}>
+                <VscChevronLeft />
+              </div>
+              <TabHeader.Left>
+                <label className="m-0 text-sm font-bold whitespace-pre">
+                  Event Logs
+                </label>
+              </TabHeader.Left>
+              <TabHeader.Right>
+                <label className="m-0 text-sm font-bold whitespace-pre">
+                  Filter:
+                </label>
+                <div className="flex items-center">
+                  {/* <label className="m-0 text-base font-bold">Type</label> */}
+                  <span>
+                    <Dropdown
+                      selected={typeFilter || 'select log type'}
+                      className="fc-dropdown-fixwidth"
+                    >
+                      <Dropdown.Handler
+                        id={`websocket-response-log-${activePlayground}-filter-event`}
+                      >
+                        <Button
+                          text={typeFilter || 'select log type'}
+                          transparent={true}
+                          ghost={true}
+                          withCaret={true}
+                          tooltip={
+                            typeFilter ? `Log type: ${typeFilter || ''}` : ''
+                          }
+                          sm
+                        />
+                      </Dropdown.Handler>
+                      <Dropdown.Options
+                        options={Object.keys(logTypes).map((o) => ({
+                          name: o,
+                        }))}
+                        onSelect={(type) => _onFilter(type?.name)}
+                      />
+                    </Dropdown>
+                  </span>
+
+                  {typeFilter ? (
+                    <div className="pl-1 w-4">
+                      <span
+                        className="text-base  iconv2-remove-icon"
+                        onClick={() => _onFilter('')}
+                      />
+                    </div>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <div className="flex">
+                  <VscCircleSlash
+                    className="cursor-pointer"
+                    title="clear logs"
+                    onClick={_onClearAllMessages}
+                  />
+                </div>
+              </TabHeader.Right>
+            </TabHeader>
+          </Container.Header>
           <Container.Body overflow="hidden" className="flex flex-col">
             <LogTable
               onLoad={(tApi) => {

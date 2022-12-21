@@ -2,16 +2,17 @@ import cx from 'classnames';
 import { Container, Column, TabHeader, Editor } from '@firecamp/ui-kit';
 import { ELogTypes } from '../../../types';
 
-const LogPreview = ({
-  row = {
-    title: '',
-    message: { name: '', payload: '', __meta: { type: '' } },
-    __meta: { id: '', type: '', color: '', timestamp: '' },
-  },
-}) => {
+const emptyRow = {
+  title: '',
+  message: { name: '', payload: '', __meta: { type: '' } },
+  __meta: { id: '', event: '', type: '', color: '', timestamp: '' },
+};
+
+const LogPreview = ({ row = emptyRow }) => {
+  if (!row?.message) row = emptyRow;
   const value =
-    row?.message?.__meta?.type !== 'file'
-      ? row?.message?.payload || row?.title || ''
+    row.message?.__meta?.type !== 'file'
+      ? row?.message?.payload || row.title || ''
       : row?.message?.name || 'Sending File';
 
   const language = row?.message?.__meta?.type === 'json' ? 'json' : 'text';
@@ -20,9 +21,7 @@ const LogPreview = ({
     <Column minHeight={100} className="bg-appBackground2" height={'100%'}>
       <Container className="bg-focus2">
         <Container.Header className="bg-focus2">
-          <TabHeader
-            className={cx(row?.__meta?.color || '', 'height-ex-small')}
-          >
+          <TabHeader className={cx(row.__meta?.color || '', 'height-ex-small')}>
             <TabHeader.Left className="font-bold font-regular">
               {row?.__meta ? (
                 [
@@ -40,7 +39,7 @@ const LogPreview = ({
                       },
                       { 'icon-disk': row.__meta.type == ELogTypes.System }
                     )}
-                  ></span>,
+                  />,
                   <span className="font-sm" key="event-name">
                     {row.__meta.event}
                   </span>,
@@ -60,8 +59,8 @@ const LogPreview = ({
               )}
             </TabHeader.Left>
             <TabHeader.Right className="font-bold font-regular">
-              {row?.__meta?.timestamp &&
-                new Date(row?.__meta?.timestamp).toLocaleTimeString()}
+              {row.__meta?.timestamp &&
+                new Date(row.__meta?.timestamp).toLocaleTimeString()}
             </TabHeader.Right>
           </TabHeader>
         </Container.Header>

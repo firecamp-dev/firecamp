@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import equal from 'deep-equal';
 import classnames from 'classnames';
-
 import {
   SecondaryTab,
   Container,
@@ -10,8 +9,18 @@ import {
   Editor,
 } from '@firecamp/ui-kit';
 import AckIcon from './AckIcon';
+const emptyRow = {
+  message: [
+    {
+      __meta: {
+        type: '',
+      },
+    },
+  ],
+  __meta: { id: '', type: '', color: '', timestamp: '' },
+};
 
-const LogPreview = ({ row = { message: '' }, setSelectedRow = (_) => {} }) => {
+const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
   const [selectedArgIndex, setSelectedArgIndex] = useState(0);
   const [value, setValue] = useState('');
   const _setArgIndex = (index = 0) => {
@@ -28,6 +37,7 @@ const LogPreview = ({ row = { message: '' }, setSelectedRow = (_) => {} }) => {
       setValue(emitterArg?.name || '');
     }
   };
+  if (!row?.message) row = emptyRow;
 
   /**
    * On row update, set argument index to zero as row can have number of arguments.
@@ -45,7 +55,7 @@ const LogPreview = ({ row = { message: '' }, setSelectedRow = (_) => {} }) => {
   }, []);
 
   const language =
-    row?.message?.[selectedArgIndex]?.__meta.type === 'json' ? 'json' : 'text';
+    row?.message[selectedArgIndex]?.__meta.type === 'json' ? 'json' : 'text';
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
