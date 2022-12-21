@@ -9,7 +9,6 @@ import {
   Dropdown,
   Resizable,
   Button,
-  ReactTable,
   LogTable as LTable,
   Editor,
 } from '@firecamp/ui-kit';
