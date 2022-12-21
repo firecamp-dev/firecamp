@@ -34,7 +34,7 @@ const getPathFromUrl = (url: string) => {
 /** normalize the socket.io request */
 export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   const _nr: ISocketIO = {
-    //ws url will only have { raw: ""} but in ui we need actual url object IUrl
+    //socket.io url will only have { raw: ""} but in ui we need actual url object IUrl
     //@ts-ignore
     url: { raw: '', queryParams: [], pathParams: [] },
     config: {
@@ -147,6 +147,7 @@ export const initialiseStoreFromRequest = (
         emitter: InitPlayground,
         selectedCollectionEmitter: '',
         listeners: {},
+        activeArgIndex: 0,
       },
     },
     logs: {

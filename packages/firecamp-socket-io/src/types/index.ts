@@ -5,14 +5,14 @@ export enum EPanel {
 }
 
 export enum EEmitterPayloadTypes {
-  text = 'text',
-  json = 'json',
-  file = 'file',
-  arraybuffer = 'arraybuffer',
-  arraybufferview = 'arraybufferview',
-  number = 'number',
-  boolean = 'boolean',
-  noBody = 'noBody',
+  Text = 'text',
+  Json = 'json',
+  File = 'file',
+  ArrayBuffer = 'arraybuffer',
+  ArrayBufferView = 'arraybufferview',
+  Number = 'number',
+  Boolean = 'boolean',
+  NoBody = 'noBody',
 }
 
 export enum EConnectionState {

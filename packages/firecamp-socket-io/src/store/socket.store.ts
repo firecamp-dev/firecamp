@@ -42,6 +42,7 @@ const {
 const createSocketStore = (initialState: ISocket) =>
   create<ISocketStore>((set, get) => {
     return {
+      __manualUpdates: 0,
       setContext: (ctx: any) => set({ context: ctx }),
       initialise: (request: Partial<ISocketIO>, tabId: TId) => {
         const initState = initialiseStoreFromRequest(request, tabId);
