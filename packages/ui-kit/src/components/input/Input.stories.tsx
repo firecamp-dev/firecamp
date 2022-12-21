@@ -17,7 +17,6 @@ export default {
 };
 
 const Template = (args) => <div className="bg-activityBarBackground p-4 w-96"> <Input {...args} /></div>;
-const Template2 = (args) => <div className="bg-activityBarBackground p-4 w-96 flex"> <Input {...args} /> <Button color="primary" text="Send" size="md" /> </div>;
 
 export const InputDemo = Template.bind({});
 InputDemo.args = { placeholder: 'Sample Button', value: '' };
@@ -26,30 +25,16 @@ export const withIcon = Template.bind({});
 withIcon.args = { placeholder: 'Sample Button', value: '', icon: <VscMenu title="Account" size={16} />, iconPosition: 'left' };
 
 export const withIconRight = Template.bind({});
-withIconRight.args = { placeholder: 'Sample Button', value: '', icon: () => <VscMenu title="Account" size={16} />, iconPosition: 'right' };
+withIconRight.args = { placeholder: 'Sample Button', value: '', icon: <VscMenu title="Account" size={16} />, iconPosition: 'right' };
 
 export const withText = Template.bind({});
-withText.args = { placeholder: 'Sample Button', value: 'Sample Text', icon: () => <VscMenu title="Account" size={16} />, iconPosition: 'right' };
+withText.args = { placeholder: 'Sample Button', value: 'Sample Text', icon: <VscMenu title="Account" size={16} />, iconPosition: 'right' };
 
-// export const withButton = Template2.bind({});
-// withButton.args = {placeholder: 'Sample Button', value: 'Sample Text', className: 'h-full border-r-0'};
+export const withErrorText = Template.bind({});
+withErrorText.args = { placeholder: 'Sample Button', value: 'Sample Text', icon: <VscMenu title="Account" size={16} />, iconPosition: 'right', error: "Error Message" };
 
-export const withLeftComp = Template.bind({});
-withLeftComp.args = {
-  placeholder: 'Sample Button',
-  value: 'Sample Text',
-  className: 'h-full border-r-0',
-  // leftComp: () => <Button color="primary" text="left" size="md" onClick={console.log}/>
-};
-
-export const withRightComp = Template.bind({});
-withRightComp.args = {
-  placeholder: 'Sample Button',
-  value: 'Sample Text',
-  className: 'h-full border-r-0',
-  // rightComp: () => <Button color="primary" text="right" size="md" onClick={console.log}/>
-};
-
+export const withNoteText = Template.bind({});
+withNoteText.args = { placeholder: 'Sample Button', value: 'Sample Text', icon: <VscMenu title="Account" size={16} />, iconPosition: 'right', note: "Note Text" };
 
 export function TemplateWithReactHookForm() {
 
@@ -57,8 +42,8 @@ export function TemplateWithReactHookForm() {
   const [dummyInput, setDummyInput] = useState('');
   const { register, handleSubmit, errors } = useForm();
 
-  const onSubmit = (data) => console.log(`on-form-submit`, data);
-  const onErrors = (errors) => console.error('on-form-error', errors);
+  const onSubmit = (data: { [k: string]: any }) => console.log(`on-form-submit`, data);
+  const onErrors = (errors: { [k: string]: any }) => console.log('on-form-error', errors);
 
   return (<form onSubmit={handleSubmit(onSubmit, onErrors)}>
     <Inputv2
@@ -105,10 +90,10 @@ export function TemplateWithReactHookForm() {
     />
     <div className="form-control">
       <Button
-        color="primary"
+        primary={true}
         text={`Submit`}
         fullWidth={true}
-        size="md"
+        md={true}
         onClick={() => handleSubmit(onSubmit, onErrors)}
       />
     </div>

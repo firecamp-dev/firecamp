@@ -1,9 +1,8 @@
-//@ts-nocheck
-import React, { FC } from 'react';
+import React from 'react';
 import cx from 'classnames';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 
-import { IInput } from './interfaces/input.interfaces';
+import { IInput2, IErrorMessage, INote } from './interfaces/input.interfaces';
 import './InputBox.sass';
 
 /**
@@ -12,7 +11,7 @@ import './InputBox.sass';
 * 2. The value prop should not be passed from parent component
 * So that the input field will remain in un-controlled state 
 **/
-export const Input: FC<IInput> = React.forwardRef(
+export const Input= React.forwardRef<HTMLInputElement, IInput2>(
   (
     {
       id = '',
@@ -20,8 +19,6 @@ export const Input: FC<IInput> = React.forwardRef(
       className = '',
       wrapperClassName = '',
       placeholder = '',
-      value,
-      defaultValue,
       icon = '',
       iconPosition = 'left',
       name = '',
@@ -103,7 +100,7 @@ export const Input: FC<IInput> = React.forwardRef(
 );
 export default Input;
 
-const ErrorMessage = ({ error = '', className }) => {
+const ErrorMessage = ({ error = '' }: IErrorMessage) => {
   return (
     <div className={cx('text-sm font-light text-error block absolute')}>
       {error}
@@ -111,7 +108,7 @@ const ErrorMessage = ({ error = '', className }) => {
   );
 };
 
-const Note = ({ note = '' }) => {
+const Note = ({ note = '' }: INote) => {
   return (
     <div className="text-xs text-appForeground  flex items-center">
       <VscInfo title='info-icon'/>

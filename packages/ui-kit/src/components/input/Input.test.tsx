@@ -1,7 +1,6 @@
-//@ts-nocheck
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
-import { change } from "../../../__mocks__/eventMock";
+import { change, click } from "../../../__mocks__/eventMock";
 
 import { useRef, useState } from "react";
 import { useForm } from 'react-hook-form';
@@ -9,6 +8,7 @@ import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
 
 import Button from "../buttons/Button";
 import Inputv2 from "./Inputv2";
+import { IInput2 } from "./interfaces/input.interfaces";
 
 const InputProps = {
     placeholder: "Enter E-mail",
@@ -16,7 +16,6 @@ const InputProps = {
     label: "Email",
     id: 'user-email'
 }
-// Todo write test case with using 'react-hook-form'
 function TemplateWithReactHookForm() {
 
     const additionalRef = useRef();
@@ -24,7 +23,7 @@ function TemplateWithReactHookForm() {
     const { register, handleSubmit, errors } = useForm();
 
     const onSubmit = (data: { [k: string]: any }) => console.log(`on-form-submit`, data);
-    const onErrors = (errors: { [k: string]: any }) => console.error('on-form-error', errors);
+    const onErrors = (errors: { [k: string]: any }) => console.log('on-form-error', errors);
 
     return (<form onSubmit={handleSubmit(onSubmit, onErrors)}>
         <Inputv2
@@ -48,7 +47,7 @@ function TemplateWithReactHookForm() {
                 (errors?.email) ? errors?.email?.message || 'Invalid email' : ''
             }
         />
-        <Inputv2 type="password"
+        <Inputv2
             id='user-password'
             label='Password'
             placeholder='Enter Password'
@@ -62,7 +61,7 @@ function TemplateWithReactHookForm() {
         <Inputv2
             id='extra-details'
             label='Dummy input - not added in form submit'
-            placeholder='Enter Password'
+            placeholder='Dummy Input'
             name="dummy input"
             ref={additionalRef}
             note={"Note preview"}
@@ -70,18 +69,17 @@ function TemplateWithReactHookForm() {
             onChange={({ target: { value } }) => setDummyInput(value)}
         />
         <div className="form-control">
-            <Button
-                color="primary"
+            <Button primary={true}
                 text={`Submit`}
                 fullWidth={true}
-                size="md"
+                md={true}
                 onClick={() => handleSubmit(onSubmit, onErrors)}
             />
         </div>
     </form>);
 }
 
-const InputElementTemplate = (args = {}) => {
+const InputElementTemplate = (args: IInput2 = {}) => {
     const [inputValue, updateInputValue] = useState('');
 
     return <Inputv2 {...InputProps} {...args} value={inputValue} onChange={(e) => updateInputValue(e.target.value)} />
@@ -90,9 +88,9 @@ describe("Input component: ", () => {
 
     test("should render with default stylings and provided props", async () => {
 
-        render(<InputElementTemplate />)
+        const { unmount } = render(<InputElementTemplate />)
 
-        let InputElement = screen.getByRole('textbox', { placeholder: InputProps.placeholder });
+        let InputElement = screen.getByRole('textbox') as HTMLInputElement;
 
         //Input element exists
         expect(InputElement).toBeInTheDocument();
@@ -109,7 +107,16 @@ describe("Input component: ", () => {
 
         //update the value & validate the input value
         change(InputElement, "input change");
-        await waitFor(() => expect(InputElement.value).toBe("input change"));
+        await waitFor(() => expect(InputElement).toHaveValue("input change"));
+
+        unmount();
+
+        //should render with default value
+        render(<Inputv2 {...InputProps} defaultValue="defaultValue" />);
+
+        let InputElementWithoutValue = screen.getByRole('textbox');
+        // screen.debug(InputElementWithoutValue)
+        expect(InputElementWithoutValue).toHaveValue("defaultValue");
     });
 
     test("should render with label text", async () => {
@@ -149,13 +156,15 @@ describe("Input component: ", () => {
         expect(IconWrapperDiv).toHaveClass('absolute top-3 cursor-pointer left-2');
 
         unmount();
+
         render(<InputElementTemplate icon={<VscMenu title="menu-icon" size={16} />} iconPosition="right" label={""} />);
 
-        //validate icon location to be in right direction
-        let IconElement = screen.queryByText("menu-icon")
-        let IconWrapperDiv = IconElement.parentElement.parentElement;
-        expect(IconWrapperDiv).toHaveClass('absolute top-3 cursor-pointer right-2');
-
+         //validate icon location to be in right direction
+        {       
+            let IconElement = screen.queryByText("menu-icon")
+            let IconWrapperDiv = IconElement.parentElement.parentElement;
+            expect(IconWrapperDiv).toHaveClass('absolute top-3 cursor-pointer right-2');
+        }
     });
 
     test("should render with error message", async () => {
@@ -200,4 +209,42 @@ describe("Input component: ", () => {
         expect(PostComponentElement.textContent).toBe('Custom Component');
     });
 
+    test("should render in uncontrolled state to be used with react-hook-form", async () => {
+
+        render(<TemplateWithReactHookForm />);
+        let InputElements = screen.getAllByRole('textbox');
+        let SubmitButton = screen.getByText('Submit');
+
+        //validate the value prop for input elements
+        expect(InputElements[0].getAttributeNames()).not.toContain('value'); //for form input
+        expect(InputElements[1].getAttributeNames()).not.toContain('value'); //for password input
+        expect(InputElements[2].getAttributeNames()).toContain('value'); //for dummy input 
+
+
+        //validated for required field errors
+        click(SubmitButton);
+        let emailInputError = await waitFor(() => screen.findByText("Email is required"));
+        expect(emailInputError).toBeInTheDocument();
+
+        let passwordInputError = await waitFor(() => screen.queryByText("Password is required."));
+        expect(passwordInputError).toBeInTheDocument();
+
+        //validate the pattern error for input change
+        change(InputElements[0], "input change");
+        click(SubmitButton);
+
+        emailInputError = await waitFor(() => screen.findByText("Invalid email"));
+        expect(emailInputError).toBeInTheDocument();
+
+        //update input fields with proper values & validate error message no longer exists
+        change(InputElements[0], "example@gmail.com");
+        change(InputElements[1], "password");
+        change(InputElements[2], "dummy-text");
+        click(SubmitButton);
+
+        await waitFor(() => expect(InputElements[2]).toHaveValue("dummy-text"));
+        emailInputError = await waitFor(() => screen.queryByText("Invalid email"));
+        expect(emailInputError).toBeNull();
+
+    });
 });
