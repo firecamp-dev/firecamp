@@ -1,2 +1,2 @@
 [context.deploy-preview]
-command = "yarn dlx dotenv-vault@latest pull --dotenvMe $STAGING_DOTENV_IT -y && yarn release:web-app:staging"
+command = "pnpm dlx dotenv-vault@latest pull --dotenvMe $STAGING_DOTENV_IT -y && pnpm run release:web-app:staging"

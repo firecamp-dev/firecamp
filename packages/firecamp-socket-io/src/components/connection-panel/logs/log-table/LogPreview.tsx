@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import equal from 'deep-equal';
 import classnames from 'classnames';
-
 import {
   SecondaryTab,
   Container,
@@ -10,14 +9,20 @@ import {
   Editor,
 } from '@firecamp/ui-kit';
 import AckIcon from './AckIcon';
+const emptyRow = {
+  message: [
+    {
+      __meta: {
+        type: '',
+      },
+    },
+  ],
+  __meta: { id: '', type: '', color: '', timestamp: '' },
+};
 
-const LogPreview = ({
-  selectedConnection = '',
-  row = {},
-  setSelectedRow = (_) => {},
-}) => {
-  let [selectedArgIndex, setSelectedArgIndex] = useState(0);
-
+const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
+  const [selectedArgIndex, setSelectedArgIndex] = useState(0);
+  const [value, setValue] = useState('');
   const _setArgIndex = (index = 0) => {
     setSelectedArgIndex(index);
     let emitterArg = row?.message?.[index] || null;
@@ -32,8 +37,7 @@ const LogPreview = ({
       setValue(emitterArg?.name || '');
     }
   };
-
-  let [value, setValue] = useState('');
+  if (!row?.message) row = emptyRow;
 
   /**
    * On row update, set argument index to zero as row can have number of arguments.
@@ -51,7 +55,7 @@ const LogPreview = ({
   }, []);
 
   const language =
-    row?.message?.[selectedArgIndex]?.__meta.type === 'json' ? 'json' : 'text';
+    row?.message[selectedArgIndex]?.__meta.type === 'json' ? 'json' : 'text';
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
@@ -148,13 +152,12 @@ const Header = ({ row = {}, emitterArg = {} }: any) => {
     </TabHeader>
   );
 };
-
 const Footer = ({
   args = [],
   selectedArgIndex = 0,
   setSelectedArgIndex = () => {},
 }) => {
-  let [tabs, setTabs] = useState(
+  const [tabs, setTabs] = useState(
     args.map((arg, index) => {
       return {
         id: index,
@@ -164,13 +167,12 @@ const Footer = ({
   );
 
   useEffect(() => {
-    let newTabs = args.map((arg, index) => {
+    const newTabs = args.map((arg, index) => {
       return {
         id: index,
         name: `Arg ${index + 1}`,
       };
     });
-
     if (!equal(tabs, newTabs)) {
       setTabs(newTabs);
     }

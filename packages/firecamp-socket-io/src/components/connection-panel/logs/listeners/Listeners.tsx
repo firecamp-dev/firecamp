@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import classnames from 'classnames';
+import cx from 'classnames';
 import { Resizable } from '@firecamp/ui-kit';
 
 import Head from './Head';
@@ -16,7 +16,7 @@ const Listeners = () => {
       height="100%"
       flex="none"
       left={true}
-      className={classnames(
+      className={cx(
         { 'fc-collapsed fc-collapsed-v3': isCollapsed },
         'fc-collapsable'
       )}

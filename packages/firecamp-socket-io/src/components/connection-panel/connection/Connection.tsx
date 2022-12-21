@@ -7,7 +7,7 @@ import HeadersTab from './HeadersTab';
 import ParamsTab from './ParamsTab';
 import AuthTab from './AuthTab';
 import PlaygroundTab from './PlaygroundTab';
-import Response from '../logs/Response';
+import Logs from '../logs/Logs';
 import { EPanel } from '../../../types';
 import { useSocketStore } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
@@ -132,7 +132,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
           'fc-collapsable'
         )}
       >
-        <Response key={activePlayground} />
+        <Logs key={activePlayground} />
       </Resizable>
     </Row>
   );

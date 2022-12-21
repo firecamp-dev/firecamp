@@ -3,7 +3,8 @@ import { Container, Checkbox, Input, Tabs, Popover } from '@firecamp/ui-kit';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
 import Connection from './connection/Connection';
-import { ISocketStore, useSocketStore } from '../../store';
+import { useSocketStore } from '../../store';
+import { ISocketStore } from '../../store/store.type';
 
 const ConnectionPanel = ({ visiblePanel = '' }) => {
   const {
