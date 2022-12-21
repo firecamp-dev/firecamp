@@ -5,12 +5,10 @@ import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import {
   Container,
   TabHeader,
-  Column,
   Dropdown,
   Resizable,
   Button,
   LogTable as LTable,
-  Editor,
 } from '@firecamp/ui-kit';
 import LogPreview from './LogPreview';
 import { useSocketStore } from '../../../../store';

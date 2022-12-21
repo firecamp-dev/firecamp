@@ -11,6 +11,7 @@ import LogTable from './log-table/LogTable';
 import Listeners from './listeners/Listeners';
 import { useSocketStore } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
+import { EPanel } from '../../../types';
 
 const Logs = ({
   visiblePanel = '',
@@ -26,42 +27,41 @@ const Logs = ({
     shallow
   );
   const handleFS = useFullScreenHandle();
-  // const _setVisiblePanel = (e) => {
-  //   if (e) e.preventDefault;
-  //   if (visiblePanel === EPanel.Response) {
-  //     setVisiblePanel(EPanel.All);
-  //   } else {
-  //     setVisiblePanel(EPanel.Response);
-  //   }
-  // };
+  const _setVisiblePanel = (e) => {
+    if (e) e.preventDefault;
+    if (visiblePanel === EPanel.Response) {
+      setVisiblePanel(EPanel.All);
+    } else {
+      setVisiblePanel(EPanel.Response);
+    }
+  };
 
   return (
     <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
-      <FullScreen handle={handleFS} className="h-full">
+      <FullScreen handle={handleFS}>
         <Row className="with-divider h-full" flex={1}>
           <Column overflow="auto" className="h-full">
             <Container>
               <Container.Header className="with-divider">
+                <div className="fc-btn-collapse v2" onClick={_setVisiblePanel}>
+                  <span className="icon-caret"></span>
+                </div>
                 <TabHeader className="height-small ">
                   <TabHeader.Left>
                     <div className="fc-tab-panel-info whitespace-pre">
                       {socketId ? (
                         [
-                          <label key={`res-body-label-${activePlayground}`}>
+                          <label key={`label-${activePlayground}`}>
                             Connection id:
                           </label>,
-                          <span key={`res-body-socket-id-${activePlayground}`}>
+                          <span key={`socket-id-${activePlayground}`}>
                             {socketId || '-'}
                           </span>,
-                          !!socketId ? (
-                            <CopyButton
-                              id={activePlayground}
-                              key={`copy-socketID-${activePlayground}`}
-                              text={socketId || ''}
-                            />
-                          ) : (
-                            <></>
-                          ),
+                          <CopyButton
+                            id={activePlayground}
+                            key={`copy-socketId-${activePlayground}`}
+                            text={socketId || ''}
+                          />,
                         ]
                       ) : (
                         <></>
@@ -81,11 +81,7 @@ const Logs = ({
                 </TabHeader>
               </Container.Header>
               <Container.Body>
-                <LogTable
-                  selectedConnection={activePlayground}
-                  onLoad={(logTable) => {}}
-                  eventsList={eventsList}
-                />
+                <LogTable />
               </Container.Body>
             </Container>
           </Column>
