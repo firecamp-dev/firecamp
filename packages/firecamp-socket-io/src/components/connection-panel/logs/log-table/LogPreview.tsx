@@ -167,13 +167,12 @@ const Footer = ({
   );
 
   useEffect(() => {
-    let newTabs = args.map((arg, index) => {
+    const newTabs = args.map((arg, index) => {
       return {
         id: index,
         name: `Arg ${index + 1}`,
       };
     });
-
     if (!equal(tabs, newTabs)) {
       setTabs(newTabs);
     }

@@ -57,9 +57,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
     }
   };
 
-  const logTableAPIRef = useRef({});
-  const lLogTableApiRef = useRef({});
-
+  const logTableApiRef = useRef({});
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
 
@@ -83,8 +81,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
     //     ...__meta,
     //   };
     // });
-    lLogTableApiRef.current?.initialize(filteredLogs);
-    //logTableAPIRef?.current?.setRows(filteredLogs);
+    logTableApiRef.current?.initialize(filteredLogs);
   }, [logs, typeFilter, activePlayground]);
 
   const _onClearAllMessages = () => {
@@ -121,8 +118,8 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
           <Column overflow="auto" className="h-full">
             <Container>
               <Container.Header className="with-divider">
-                <div className="fc-btn-collapse v2" onClick={_setVisiblePanel}>
-                  <VscChevronLeft />
+                <div className="fc-btn-collapse v2">
+                  <VscChevronLeft onClick={_setVisiblePanel}/>
                 </div>
                 <TabHeader className="height-small border-b border-appBorder padding-left-extra">
                   <TabHeader.Left>
@@ -214,7 +211,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
               <Container.Body overflow="hidden" className="flex flex-col">
                 <LogTable
                   onLoad={(tApi) => {
-                    lLogTableApiRef.current = tApi;
+                    logTableApiRef.current = tApi;
                   }}
                 />
                 <Resizable
