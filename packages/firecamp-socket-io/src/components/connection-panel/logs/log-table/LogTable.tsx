@@ -12,6 +12,7 @@ import {
   LogTable as LTable,
   Editor,
 } from '@firecamp/ui-kit';
+import LogPreview from './LogPreview';
 import { useSocketStore } from '../../../../store';
 import { ISocketStore } from '../../../../store/store.type';
 import { ELogTypes } from '../../../../types';
@@ -287,74 +288,4 @@ export default LogTable;
 const TimeColumn = ({ value, cell, ...rest }) => {
   // console.log(rest, 9888)
   return <>{new Date(value).toLocaleTimeString()}</>;
-};
-
-const LogPreview: FC<any> = ({ activePlayground = '', row = {} }) => {
-  const value =
-    row?.message?.__meta?.type !== 'file'
-      ? row?.message?.payload || row?.title || ''
-      : row?.message?.name || 'Sending File';
-
-  const language = row?.message?.__meta?.type === 'json' ? 'json' : 'text';
-
-  return (
-    <Column minHeight={100} className="bg-appBackground2" height={'100%'}>
-      <Container className="bg-focus2">
-        <Container.Header className="bg-focus2">
-          <TabHeader
-            className={classnames(row?.__meta?.color || '', 'height-ex-small')}
-          >
-            <TabHeader.Left className="font-bold font-regular">
-              {row?.__meta ? (
-                [
-                  <span
-                    key={'event-icon'}
-                    className={classnames(
-                      'td-icon',
-                      {
-                        'iconv2-to-server-icon':
-                          row.__meta.type == ELogTypes.Send,
-                      },
-                      {
-                        'iconv2-from-server-icon':
-                          row.__meta.type == ELogTypes.Receive,
-                      },
-                      { 'icon-disk': row.__meta.type == ELogTypes.System }
-                    )}
-                  ></span>,
-                  <span className="font-sm" key="event-name">
-                    {row.__meta.event}
-                  </span>,
-                  row.__meta.type !== ELogTypes.System ? (
-                    <div
-                      className="font-xs  text-appForegroundInActive "
-                      key={'event-id'}
-                    >
-                      {row.__meta.id || ''}
-                    </div>
-                  ) : (
-                    <></>
-                  ),
-                ]
-              ) : (
-                <></>
-              )}
-            </TabHeader.Left>
-            <TabHeader.Right className="font-bold font-regular">
-              {row?.__meta?.timestamp &&
-                new Date(row?.__meta?.timestamp).toLocaleTimeString()}
-            </TabHeader.Right>
-          </TabHeader>
-        </Container.Header>
-        <Container.Body>
-          <Editor
-            language={language}
-            value={'' + value}
-            disabled={true}
-            // controlsConfig={{ show: true, position: 'horizontal' }}
-          />
-        </Container.Body>
-      </Container>
-    </Column>
-  );
 };

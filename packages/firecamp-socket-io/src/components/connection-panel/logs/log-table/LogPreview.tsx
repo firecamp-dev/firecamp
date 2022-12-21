@@ -11,13 +11,9 @@ import {
 } from '@firecamp/ui-kit';
 import AckIcon from './AckIcon';
 
-const LogPreview = ({
-  selectedConnection = '',
-  row = {},
-  setSelectedRow = (_) => {},
-}) => {
-  let [selectedArgIndex, setSelectedArgIndex] = useState(0);
-
+const LogPreview = ({ row = { message: '' }, setSelectedRow = (_) => {} }) => {
+  const [selectedArgIndex, setSelectedArgIndex] = useState(0);
+  const [value, setValue] = useState('');
   const _setArgIndex = (index = 0) => {
     setSelectedArgIndex(index);
     let emitterArg = row?.message?.[index] || null;
@@ -32,8 +28,6 @@ const LogPreview = ({
       setValue(emitterArg?.name || '');
     }
   };
-
-  let [value, setValue] = useState('');
 
   /**
    * On row update, set argument index to zero as row can have number of arguments.
@@ -148,13 +142,12 @@ const Header = ({ row = {}, emitterArg = {} }: any) => {
     </TabHeader>
   );
 };
-
 const Footer = ({
   args = [],
   selectedArgIndex = 0,
   setSelectedArgIndex = () => {},
 }) => {
-  let [tabs, setTabs] = useState(
+  const [tabs, setTabs] = useState(
     args.map((arg, index) => {
       return {
         id: index,
