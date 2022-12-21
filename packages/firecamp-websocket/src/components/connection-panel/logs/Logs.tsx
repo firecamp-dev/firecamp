@@ -1,5 +1,8 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
+import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
+import { VscChevronLeft } from '@react-icons/all-files/vsc/VscChevronLeft';
+import shallow from 'zustand/shallow';
 import {
   Container,
   Column,
@@ -7,15 +10,11 @@ import {
   Dropdown,
   Button,
   Resizable,
-  Editor,
 } from '@firecamp/ui-kit';
 
 import LogTable from './LogTable';
 import { ELogTypes, EPanel } from '../../../types';
 import { IWebsocketStore, useWebsocketStore } from '../../../store';
-import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
-import shallow from 'zustand/shallow';
-import classNames from 'classnames';
 import LogPreview from './LogPreview';
 
 const logTypes = {
@@ -82,7 +81,6 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
   const handleFS = useFullScreenHandle();
   const _setVisiblePanel = (e) => {
     if (e) e.preventDefault;
-
     if (visiblePanel === EPanel.Response) {
       setVisiblePanel(EPanel.All);
     } else {
@@ -117,8 +115,8 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
       <FullScreen handle={handleFS}>
         <Container.Header>
           <TabHeader className="height-small border-b border-appBorder padding-left-extra">
-            <div className="fc-btn-collapse v2" onClick={() => {}}>
-              <span className="icon-caret"></span>
+            <div className="fc-btn-collapse v2" onClick={_setVisiblePanel}>
+              <VscChevronLeft />
             </div>
             <TabHeader.Left>
               <label className="m-0 text-sm font-bold whitespace-pre">

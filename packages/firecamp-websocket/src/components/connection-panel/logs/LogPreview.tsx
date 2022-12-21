@@ -2,7 +2,13 @@ import cx from 'classnames';
 import { Container, Column, TabHeader, Editor } from '@firecamp/ui-kit';
 import { ELogTypes } from '../../../types';
 
-const LogPreview = ({ row = {} }) => {
+const LogPreview = ({
+  row = {
+    title: '',
+    message: { name: '', payload: '', __meta: { type: '' } },
+    __meta: { id: '', type: '', color: '', timestamp: '' },
+  },
+}) => {
   const value =
     row?.message?.__meta?.type !== 'file'
       ? row?.message?.payload || row?.title || ''
@@ -54,7 +60,7 @@ const LogPreview = ({ row = {} }) => {
               )}
             </TabHeader.Left>
             <TabHeader.Right className="font-bold font-regular">
-              {row.__meta?.timestamp &&
+              {row?.__meta?.timestamp &&
                 new Date(row?.__meta?.timestamp).toLocaleTimeString()}
             </TabHeader.Right>
           </TabHeader>
