@@ -1,10 +1,9 @@
 import ReactDOM from 'react-dom';
 import { PromptInput } from '../../components/prompt/PromptInput';
 import { PromptSaveItem } from '../../components/prompt/PromptSaveItem';
-import { IPromptInput } from '../../components/prompt/types';
+import { IPromptInput, IPromptSaveItem } from '../../components/prompt/types';
 
-type TPromptInputOpenProps = Pick<
-  IPromptInput,
+type TPropKeys =
   | 'header'
   | 'lable'
   | 'placeholder'
@@ -12,8 +11,8 @@ type TPromptInputOpenProps = Pick<
   | 'value'
   | 'validator'
   | 'executor'
-  | 'onError'
->;
+  | 'onError';
+type TPromptInputOpenProps = Pick<IPromptInput, TPropKeys>;
 type TOpenPromptInput = (props: TPromptInputOpenProps) => Promise<any>;
 const promptInput: TOpenPromptInput = (props) => {
   // @ts-ignore
@@ -33,8 +32,8 @@ const promptInput: TOpenPromptInput = (props) => {
   });
 };
 
-
-type TOpenPromptSaveItem = (props: TPromptInputOpenProps & { folders: any[]}) => Promise<any>;
+type TPromptSaveItemProps = Pick<IPromptSaveItem, TPropKeys | 'collection'>;
+type TOpenPromptSaveItem = (props: TPromptSaveItemProps) => Promise<any>;
 const promptSaveItem: TOpenPromptSaveItem = (props) => {
   // @ts-ignore
   const promptContainer = document.createElement('div');
@@ -45,7 +44,7 @@ const promptSaveItem: TOpenPromptSaveItem = (props) => {
     ReactDOM.render(
       <PromptSaveItem
         {...props}
-        folders={props.folders}
+        collection={props.collection}
         onClose={onClose}
         onResolve={(res) => rs(res)} //resolve for executor
       />,

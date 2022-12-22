@@ -58,7 +58,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
 
     const item = this.items.find((i) => i.__ref?.id == itemId);
 
-    console.log(this.items, itemId);
+    // console.log(this.items, itemId);
 
     const treeItem: TTreeItemData = {
       name: item.name,
