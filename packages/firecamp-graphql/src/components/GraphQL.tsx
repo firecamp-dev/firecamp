@@ -212,26 +212,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  const onSave = (pushPayload: any, tabId) => {
-    // console.log({ pushPayload });
-
-    if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === 'i') {
-      platformContext.request.subscribeChanges(
-        pushPayload._action.item_id,
-        handlePull
-      );
-    }
-
-    platformContext.request.save(pushPayload, tabId);
-
-    // let last = graphqlStoreApi.getState().last,
-      // request = graphqlStoreApi.getState().request;
-
-    // set last value by pull action and request
-   
-  };
-
   if (isFetchingRequest === true) return <Loader />;
   return (
     <Container className="h-full w-full with-divider" overflow="visible">
@@ -239,7 +219,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
         tab={tab}
         collectionId={tab?.request?.__ref?.collectionId || ''}
         postComponents={platformComponents}
-        onSaveRequest={onSave}
       />
       <Container.Body>
         <Row flex={1} overflow="auto" className="with-divider h-full">

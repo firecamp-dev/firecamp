@@ -148,42 +148,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  const handlePull = async (pullActions: any[]) => {
-    try {
-      let pullPayload = pullActions[0];
-
-      // console.log({ pullPayload });
-
-      // let last = restStoreApi.getState().last;
-      // let mergedPullAndLastRequest = _object.mergeDeep(
-      //   _cloneDeep(last.request),
-      //   _object.omit(pullPayload, ['_action'])
-      // );
-
-      // merged request payload: merged existing request and pull payload request
-      let updatedRequest = await getMergedRequestByPullAction(pullPayload);
-
-      // updatedRequest = normalizeRequest(updatedRequest);
-
-      // set last value by pull action and request
-
-      // console.log({ req: restStoreApi.getState().request });
-
-      // console.log({
-      //   'updatedRequest on pull': updatedRequest,
-      //   mergedPullAndLastRequest,
-      // });
-
-      // get push action payload
-      // let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
-      // console.log({ 'pushAction on pull': pushAction });
-
-      // initialise request with updated request and push action
-      // initialiseRequest(updatedRequest, true, pushAction, true, false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const handlePull = async () => {};
 
   /**
    * on paste url, call CurlToFirecamp(curl).transform() and set resultant request data to state
@@ -250,22 +215,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  // console.log({ isFetchingRequest })
-
-  const onSave = (pushPayload: any, tabId) => {
-    // console.log({ pushPayload });
-
-    if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === 'i') {
-      platformContext.request.subscribeChanges(
-        pushPayload._action.item_id,
-        handlePull
-      );
-    }
-
-    platformContext.request.save(pushPayload, tabId);
-  };
-
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
@@ -290,8 +239,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           tab={tab}
           collectionId={tab?.request?.__ref?.collectionId || ''}
           postComponents={platformComponents}
-          onSaveRequest={onSave}
-          platformContext={platformContext}
           onPasteCurl={onPasteCurl}
         />
         <Container.Body>

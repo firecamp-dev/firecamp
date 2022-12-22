@@ -74,13 +74,13 @@ const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
   },
   save: (tabId) => {
     const state = get();
-    const {
-      request,
-      runtime: { isRequestSaved },
-    } = state;
-    if (!isRequestSaved) {
-      const _request = normalizeRequest(request);
+    if (!state.runtime.isRequestSaved) {
+      const _request = state.preparePayloadForSaveRequest();
       state.context.request.save(_request, tabId);
+      // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
+    } else {
+      // const _request = state.preparePayloadForUpdateRequest();
+      // state.context.request.update(_request, tabId);
     }
   },
 });

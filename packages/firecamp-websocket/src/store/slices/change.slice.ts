@@ -3,6 +3,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
 import { IWebSocket } from '@firecamp/types';
+import { normalizeRequest } from '../../services/reqeust.service';
 import {
   EReqChangeUrlKeys,
   EReqChangeMetaKeys,
@@ -24,6 +25,7 @@ interface IRequestChangeState {
 interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<IWebSocket>) => void;
+  preparePayloadForSaveRequest: () => IWebSocket;
 }
 
 const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
