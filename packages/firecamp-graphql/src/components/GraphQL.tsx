@@ -223,7 +223,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
       );
     }
 
-    platformContext.request.onSave(pushPayload, tabId);
+    platformContext.request.save(pushPayload, tabId);
 
     // let last = graphqlStoreApi.getState().last,
       // request = graphqlStoreApi.getState().request;

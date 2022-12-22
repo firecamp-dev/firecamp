@@ -49,7 +49,6 @@ interface ISocketStore
   context?: any;
   setContext: (ctx: any) => void;
   initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
-  save: (tabId: TId) => void;
 }
 
 type TStoreSlice<T> = (

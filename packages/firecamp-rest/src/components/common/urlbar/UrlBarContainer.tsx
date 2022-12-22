@@ -11,7 +11,6 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: any, tabId: string) => {},
   platformContext,
   onPasteCurl = (curl: string) => {},
 }) => {
@@ -30,8 +29,7 @@ const UrlBarContainer = ({
     changeMethod,
     execute,
     changeActiveEnvironment,
-    preparePayloadForSaveRequest,
-    preparePayloadForUpdateRequest,
+    save,
   } = useRestStore(
     (s: IRestStore) => ({
       url: s.request.url,
@@ -46,8 +44,7 @@ const UrlBarContainer = ({
       changeMethod: s.changeMethod,
       execute: s.execute,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
-      preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
+      save: s.save,
     }),
     shallow
   );
@@ -74,14 +71,7 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      const _request =
-        isRequestSaved === true
-          ? preparePayloadForUpdateRequest()
-          : preparePayloadForSaveRequest();
-
-      console.log({ _request });
-      // setPushActionEmpty();
-      // onSaveRequest(_request, tab.id);
+      save(tab.id);
     } catch (e) {
       console.error(e);
     }

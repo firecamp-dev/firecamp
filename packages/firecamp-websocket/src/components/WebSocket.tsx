@@ -160,7 +160,7 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
         handlePull
       );
     }
-    platformContext.request.onSave(pushPayload, tabId);
+    platformContext.request.save(pushPayload, tabId);
   };
 
   // if(isFetchingRequest === true) return <Loader />;

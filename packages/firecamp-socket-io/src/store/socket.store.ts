@@ -32,7 +32,6 @@ import {
 import { _object } from '@firecamp/utils';
 import {
   initialiseStoreFromRequest,
-  normalizeRequest,
 } from '../services/request.service';
 import { ISocket, ISocketStore } from './store.type';
 
@@ -54,17 +53,6 @@ const createSocketStore = (initialState: ISocket) =>
           ...initState,
           originalRequest: _cloneDeep(initState.request),
         }));
-      },
-      save: (tabId) => {
-        const state = get() as ISocketStore;
-        const {
-          request,
-          runtime: { isRequestSaved },
-        } = state;
-        if (!isRequestSaved) {
-          const _request = normalizeRequest(request);
-          state.context.request.onSave(_request, tabId);
-        }
       },
       ...createRequestSlice(
         set,

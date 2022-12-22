@@ -135,7 +135,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     //     handlePull
     //   );
     // }
-    // platformContext.request.onSave(pushPayload, tabId);
+    // platformContext.request.save(pushPayload, tabId);
   };
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
