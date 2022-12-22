@@ -2,6 +2,8 @@
 
   .react-responsive-modal-modal {
     padding: 0px;
+    max-height: 90vh;
+    height: inherit;
   }
   
   .react-responsive-modal-closeButton {
@@ -16,4 +18,5 @@
     max-height: 96vh;
     min-height: 400px;
   }
+  
   /*-----Modal css End------------*/

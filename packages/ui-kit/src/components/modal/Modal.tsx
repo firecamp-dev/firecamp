@@ -38,7 +38,7 @@ const Modal: FC<IModal> & {
         <div
           className={cx(
             className,
-            'max-w-screen-md min-w-screen-md bg-modalBackground text-appForeground w-full relative z-9999 max-h-modal flex fc-modal-wrapper'
+            'max-w-screen-md min-w-screen-md bg-modalBackground text-appForeground w-full relative z-9999 max-h-modal flex fc-modal-wrapper h-full'
           )}
           style={{ height: height, width: width }}
           id={id}

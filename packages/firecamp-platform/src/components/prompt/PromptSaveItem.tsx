@@ -90,15 +90,19 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
     <Modal
       isOpen={state.isOpen}
       onClose={_close}
-      height="250px"
       width={'400px'}
+      className="p-6"
     >
-      <Modal.Body>
-        <ProgressBar active={state.isExecuting} />
-        <div className="p-6">
-          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+
+<ProgressBar active={state.isExecuting} />
+<Modal.Header>
+    <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
             {header || `THIS IS A HEADER PLACE`}
           </label>
+</Modal.Header>
+      <Modal.Body>
+        <div>
+          
           <div className="mt-4">
             <Input
               autoFocus={true}
@@ -119,7 +123,11 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
             }}
             folders={folders}
           />
-          <TabHeader className="px-4">
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+
+      <TabHeader className="!px-0">
             <TabHeader.Right>
               <Button
                 text={texts?.btnCancle || `Cancel`}
@@ -140,8 +148,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
               />
             </TabHeader.Right>
           </TabHeader>
-        </div>
-      </Modal.Body>
+      </Modal.Footer>
     </Modal>
   );
 };
