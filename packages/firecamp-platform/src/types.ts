@@ -35,11 +35,9 @@ export enum EPlatformModalTypes {
   SwitchWorkspace = 'switchWorkspace',
 
   // collection
-  CreateCollection = 'createCollection',
   CollectionSetting = 'collectionSetting',
 
   // Folder
-  CreateFolder = 'createFolder',
   FolderSetting = 'folderSetting',
 
   // request
@@ -87,11 +85,9 @@ export const EPlatformModalDefaultProps = {
   },
 
   // collection
-  [EPlatformModalTypes.CreateCollection]: { height: '', width: '500px' },
   [EPlatformModalTypes.CollectionSetting]: { height: '650px', width: '500px' },
 
   // folder
-  [EPlatformModalTypes.CreateFolder]: { height: '', width: '500px' },
   [EPlatformModalTypes.FolderSetting]: { height: '650px', width: '500px' },
 
   // request
