@@ -19,7 +19,7 @@ export default {
 };
 
 const Template = (args: any) =>
-    <StatusBar {...args} >
+    <StatusBar {...args}  className= "border-t focus-outer2">
         <StatusBar.PrimaryRegion>
             {args?.primaryRegion() || ''}
         </StatusBar.PrimaryRegion>

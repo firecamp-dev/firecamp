@@ -80,4 +80,4 @@ describe("StatusBar component", () => {
         expect(SecondaryRegion.textContent).toBe('My workspace');
 
     });
-})
+});

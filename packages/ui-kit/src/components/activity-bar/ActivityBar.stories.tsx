@@ -9,7 +9,12 @@ export default {
   component: ActivityBar,
   argTypes: {
     className: 'bg-black'
-  }
+  },
+  parameters: {
+    actions: {
+      handles: ['click'],
+    },
+  },
 };
 
 const compositeBar = [
@@ -36,3 +41,12 @@ const TemplateContainer = (args: any) => {
 
 export const ActivityBarDemo = TemplateContainer.bind({});
 ActivityBarDemo.args = { className: 'theme-light', compositeBar: compositeBar, actionBar: actionBar };
+
+export const ActivityContainerInSidebar = (args: any) => {
+  return (
+    <ActivityBar>
+      <ActivityBar.CompositeBar items={compositeBar} activeItem="" onClickItem={()=>{}}/>
+      <ActivityBar.ActionBar items={actionBar} onClickItem={()=>{}} />
+    </ActivityBar>
+  )
+};
