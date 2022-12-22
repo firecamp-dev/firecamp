@@ -173,7 +173,7 @@ const EmitterBody = ({
           <QuickSelection menus={[]} />
         </Container.Empty>
       ) : (
-        <div>
+        <div className='h-full'>
           <Dropdown
             selected={activeArgType}
             isOpen={isBodyTypeDDOpen}
