@@ -128,7 +128,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
       </Modal.Body>
       <Modal.Footer>
 
-      <TabHeader className="!px-0">
+      <TabHeader className="!px-0 pt-4">
             <TabHeader.Right>
               <Button
                 text={texts?.btnCancle || `Cancel`}

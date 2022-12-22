@@ -2,8 +2,6 @@
 
   .react-responsive-modal-modal {
     padding: 0px;
-    max-height: 90vh;
-    height: inherit;
   }
   
   .react-responsive-modal-closeButton {
@@ -14,9 +12,10 @@
     border-color: inherit !important;
   }
 
-  .fc-modal-wrapper{
-    max-height: 96vh;
+  .fc-modal-wrapper {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
     min-height: 400px;
-  }
-  
+}
   /*-----Modal css End------------*/

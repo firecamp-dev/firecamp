@@ -52,9 +52,7 @@ const Modal: FC<IModal> & {
               }}
             />
           ) : <></>} */}
-            <Container className={`fc-modal relative bg-modalBackground ` + modalClass}>
-              {children}
-            </Container>
+            {children}
         </div>
     </ResponsiveModal>
   )
