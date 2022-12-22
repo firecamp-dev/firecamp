@@ -114,10 +114,16 @@ const request: IPlatformRequestService = {
             async (res: {
               name: string;
               description?: string;
-              collectionId: TId;
               folderId?: TId;
             }) => {
-              console.log(res, 'res...');
+              if (!res.folderId) throw 'The path is not selected';
+              const item = [...collections, ...folders].find(
+                (i) => i.__ref.id == res.folderId
+              );
+              if (!item)
+                throw 'The collection/folder you have selected is not found';
+              const collectionId = item.__ref.collectionId || item.__ref.id;
+              console.log(res, item, 'res...');
               return request;
               const _request = {
                 ...request,
@@ -128,7 +134,7 @@ const request: IPlatformRequestService = {
                 },
                 __ref: {
                   ...request.__ref,
-                  collectionId: res.collectionId,
+                  collectionId: collectionId,
                   folderId: res.folderId,
                 },
               };

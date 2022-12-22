@@ -46,7 +46,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
   };
   const _onChangeValue = (e) => {
     const { value } = e.target;
-    setState((s) => ({ ...s, value, error: '' }));
+    setState((s) => ({ ...s, inputValue: value, error: '' }));
   };
   const _onClickOk = async (e) => {
     e.preventDefault();
