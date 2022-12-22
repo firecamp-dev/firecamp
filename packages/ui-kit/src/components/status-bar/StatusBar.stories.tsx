@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { default as StatusBar } from './StatusBar';
 import { VscTwitter } from "@react-icons/all-files/vsc/VscTwitter";
 import { VscGithubInverted } from "@react-icons/all-files/vsc/VscGithubInverted";
@@ -19,7 +18,7 @@ export default {
     }
 };
 
-const Template = (args) =>
+const Template = (args: any) =>
     <StatusBar {...args} >
         <StatusBar.PrimaryRegion>
             {args?.primaryRegion() || ''}
