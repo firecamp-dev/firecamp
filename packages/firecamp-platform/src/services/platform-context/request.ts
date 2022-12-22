@@ -6,17 +6,17 @@ import {
   IRestResponse,
   ISocketIO,
   IWebSocket,
+  EHttpMethod,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
-
 import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
 import { useRequestStore } from '../../store/request';
 import { useUserStore } from '../../store/user';
 import { usePlatformStore } from '../../store/platform';
-
 import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
+import { promptSaveItem } from './prompt.service';
 
 import AppService from '../app';
 import { prepareEventNameForRequestPull } from '../platform-emitter/events';
@@ -80,15 +80,103 @@ const request: IPlatformRequestService = {
    * Open save request modal if request is newly created
    * if request is already saved then update request with chanes/payload
    */
-  onSave: async (pushPayload: any, tabId: TId) => {
+  onSave: async (request: any, tabId: TId) => {
+    const { onNewRequestCreate } = useWorkspaceStore.getState();
+    const tabState = useTabStore.getState();
     const requestState = useRequestStore.getState();
+    const {
+      explorer: { collections, folders },
+    } = useWorkspaceStore.getState();
     try {
       // set request payload to store to be saved for next step
-      requestState.setReqAndTabId(pushPayload, tabId);
+      // requestState.setReqAndTabId(request, tabId);
 
-      if (pushPayload && pushPayload._action.type === 'i') {
+      if (true) {
+        promptSaveItem({
+          header: 'Save Request',
+          texts: { btnOk: 'Save', btnOking: 'Saving...' },
+          folders: [...collections, ...folders],
+          value: '',
+          validator: (val) => {
+            let isValid = false,
+              message = '';
+            if (!val) message = 'The request name is required';
+            else if (val.length < 3) {
+              message = 'The request name must have min 3 characters';
+            } else {
+              isValid = true;
+            }
+            // TODO: add regex validation
+            return { isValid, message };
+          },
+        })
+          .then(
+            async (res: {
+              name: string;
+              description?: string;
+              collectionId: TId;
+              folderId?: TId;
+            }) => {
+              console.log(res, 'res...');
+              return request;
+              const _request = {
+                ...request,
+                __meta: {
+                  ...request.__meta,
+                  name: res.name,
+                  description: res.description || '',
+                },
+                __ref: {
+                  ...request.__ref,
+                  collectionId: res.collectionId,
+                  folderId: res.folderId,
+                },
+              };
+
+              // TODO: handle error here
+              return Rest.request
+                .push([_request])
+                .then((res) => {
+                  return _request;
+                })
+                .catch((e) => {
+                  console.log(e, 'error 007');
+                });
+            }
+          )
+          .then((_request) => {
+            // reflect in explorer
+            onNewRequestCreate(_request);
+            return _request;
+          })
+          .then((_request) => {
+            tabState.changeRootKeys(tabId, {
+              name: _request.__meta?.name,
+              type: _request.__meta?.type || '',
+              request: {
+                url: _request.url,
+                method: _request.method || EHttpMethod.POST,
+                __meta: _request.__meta,
+                __ref: _request.__ref,
+              },
+              __meta: {
+                isSaved: true,
+                hasChange: false,
+                isFresh: false,
+                isDeleted: false,
+                revision: 1,
+              },
+            });
+            // TODO: // update tab meta on save request
+            // tabState.changeMeta(tabId, {
+            //   isSaved: true,
+            //   hasChange: false,
+            //   isFresh: false,
+            // });
+          });
+
         // open save request
-        AppService.modals.openSaveRequest();
+        // AppService.modals.openSaveRequest();
       } else {
         // update request
         requestState.onSaveRequest();
@@ -97,7 +185,7 @@ const request: IPlatformRequestService = {
     } catch (error) {
       console.error({
         fn: 'onSaveRequest',
-        pushPayload,
+        request,
         error,
       });
       // return Promise.reject(error);

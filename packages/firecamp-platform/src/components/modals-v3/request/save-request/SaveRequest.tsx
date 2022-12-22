@@ -153,7 +153,7 @@ const SaveRequest: FC<IModal> = ({
 export default SaveRequest;
 
 const PathSelector: FC<{ onSelect: (_: any) => void }> = ({ onSelect }) => {
-  let {
+  const {
     explorer: { collections, folders },
   } = useWorkspaceStore.getState();
 
