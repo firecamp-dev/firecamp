@@ -1,5 +1,5 @@
-import { IWebSocket } from '@firecamp/types';
-
+import { IWebSocket, TId } from '@firecamp/types';
+import { normalizeRequest } from '../../services/reqeust.service';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -11,6 +11,7 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: IWebSocket;
   changeMeta: (key: string, value: any) => void;
   changeConfig: (key: string, value: any) => void;
+  save: (tabId: TId) => void;
 }
 
 const requestSliceKeys: string[] = [
@@ -51,6 +52,17 @@ const createRequestSlice = (
     };
     set((s) => ({ request: { ...s.request, config } }));
     state.equalityChecker({ config });
+  },
+  save: (tabId) => {
+    const state = get();
+    const {
+      request,
+      runtime: { isRequestSaved },
+    } = state;
+    if (!isRequestSaved) {
+      const _request = normalizeRequest(request);
+      state.context.request.save(_request, tabId);
+    }
   },
 });
 

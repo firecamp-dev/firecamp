@@ -26,8 +26,8 @@ interface IPlatformRequestService {
   // unsubscribe real-time request changes (pull-actions from server)
   unsubscribeChanges?: (requestId: TId) => void;
 
-  // Save and update request
-  onSave: (pushPayload: any, tabId: TId) => Promise<any>;
+  // save and update request
+  save: (request: any, tabId: TId) => Promise<any>;
 
   // on change request, update tab __meta
   onChangeRequestTab: (
@@ -78,7 +78,7 @@ const request: IPlatformRequestService = {
    * Open save request modal if request is newly created
    * if request is already saved then update request with chanes/payload
    */
-  onSave: async (request: any, tabId: TId) => {
+  save: async (request: any, tabId: TId) => {
     const { onNewRequestCreate, workspace } = useWorkspaceStore.getState();
     const tabState = useTabStore.getState();
     const requestState = useRequestStore.getState();

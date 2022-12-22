@@ -263,7 +263,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       );
     }
 
-    platformContext.request.onSave(pushPayload, tabId);
+    platformContext.request.save(pushPayload, tabId);
   };
 
   // handle updates for environments from platform

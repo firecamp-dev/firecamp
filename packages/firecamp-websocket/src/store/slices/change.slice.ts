@@ -65,6 +65,12 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
       hasChange,
     });
   },
+  preparePayloadForSaveRequest: () => {
+    const state = get();
+    const _sr = normalizeRequest(state.request);
+    console.log(_sr);
+    return _sr;
+  },
 });
 
 export { createRequestChangeStateSlice, IRequestChangeStateSlice };
