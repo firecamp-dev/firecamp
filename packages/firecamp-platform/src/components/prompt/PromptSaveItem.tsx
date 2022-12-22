@@ -151,12 +151,29 @@ const PathSelector: FC<{
   onSelect: (itemId: string) => void;
   collection: IPromptSaveItem['collection'];
 }> = ({ onSelect, collection = { items: [], rootOrders: [] } }) => {
-  if (!collection.items?.length) return <></>;
+  if (!collection?.items?.length) return <></>;
+  const [path, setPath] = useState('');
   const { items, rootOrders } = collection;
   const dataProvider = useRef(new TreeDataProvider(items, rootOrders));
   const onItemSelect = (itemIds: string[], treeId: string) => {
     if (!itemIds?.length) return;
-    onSelect(itemIds[0]);
+    const itemId = itemIds[0];
+    setPath(pathFinder(itemId));
+    onSelect(itemId);
+  };
+  const pathFinder = (itemId: string) => {
+    const findPath = (iId: string, path: string = '') => {
+      const item = items.find((i) => i.__ref.id == iId);
+      if (!item) return path;
+      const pId = item.__ref.folderId || item.__ref.collectionId;
+      const _path = path ? `${item.name}/${path}` : `${item.name}`;
+      if (!pId) {
+        return _path;
+      } else {
+        return findPath(pId, _path);
+      }
+    };
+    return findPath(itemId);
   };
 
   return (
@@ -193,7 +210,7 @@ const PathSelector: FC<{
           </UncontrolledTreeEnvironment>
         </Container.Body>
         <Container.Header className="bg-focus2 !p-1 text-appForegroundInActive leading-3">
-          Path
+          {`./${path}`}
         </Container.Header>
       </div>
     </Container>
