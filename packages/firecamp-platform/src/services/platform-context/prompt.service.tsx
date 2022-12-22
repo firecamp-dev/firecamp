@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom';
-import { IPromptInput, PromptInput } from '../../components/prompt/PromptInput';
+import { PromptInput } from '../../components/prompt/PromptInput';
 import { PromptSaveItem } from '../../components/prompt/PromptSaveItem';
+import { IPromptInput } from '../../components/prompt/types';
 
 type TPromptInputOpenProps = Pick<
   IPromptInput,

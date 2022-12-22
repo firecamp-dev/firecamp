@@ -1,4 +1,4 @@
-import create, { GetState, SetState } from 'zustand';
+import { GetState, SetState } from 'zustand';
 import { ISocketIO, TId } from '@firecamp/types';
 
 import {
@@ -49,6 +49,7 @@ interface ISocketStore
   context?: any;
   setContext: (ctx: any) => void;
   initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
+  save: (tabId: TId) => void;
 }
 
 type TStoreSlice<T> = (

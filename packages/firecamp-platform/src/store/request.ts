@@ -35,7 +35,6 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
   }) => {
     try {
       //   console.log({ requestToSave: request });
-
       const state = get();
 
       let requestTabId = state.requestTabId,
@@ -89,7 +88,7 @@ export const useRequestStore = create<IRequestStore>((set, get) => ({
         requestBeingSaved._action.type === 'i'
       ) {
         tabState.changeRootKeys(requestTabId, {
-          name: requestBeingSaved?.__meta?.name || 'Untitled request',
+          name: requestBeingSaved?.__meta?.name,
           type: requestBeingSaved?.__meta?.type || '',
           // subType: requestBeingSaved?.__meta?.data_type || '',
           request: {
