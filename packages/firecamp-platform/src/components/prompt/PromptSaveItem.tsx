@@ -24,7 +24,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
   placeholder,
   texts,
   value,
-  folders,
+  collection,
   onClose,
   validator,
   executor,
@@ -35,7 +35,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
     isOpen: true,
     isExecuting: false,
     inputValue: value,
-    folderId: '',
+    itemId: '',
     error: '',
   });
   const _close = (e) => {
@@ -51,9 +51,10 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
   const _onClickOk = async (e) => {
     e.preventDefault();
     const value = state.inputValue.trim();
-    const result = { value, folderId: state.folderId };
+    const result = { value, itemId: state.itemId };
     let _validator: { isValid: boolean; message?: string } = { isValid: true };
-    if (typeof validator == 'function') _validator = validator(value);
+    if (typeof validator == 'function')
+      _validator = validator({ value, itemId: state.itemId });
     // console.log(_validator, '_validator');
     if (_validator.isValid == false) {
       setState((s) => ({ ...s, error: _validator.message }));
@@ -117,11 +118,11 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
             />
           </div>
           <PathSelector
-            onSelect={(folderId) => {
-              // console.log({ folderId });
-              setState((s) => ({ ...s, folderId }));
+            onSelect={(itemId) => {
+              // console.log({ itemId });
+              setState((s) => ({ ...s, itemId }));
             }}
-            folders={folders}
+            collection={collection}
           />
         </div>
       </Modal.Body>
@@ -155,13 +156,11 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
 
 const PathSelector: FC<{
   onSelect: (itemId: string) => void;
-  folders: any[];
-}> = ({ onSelect, folders = [] }) => {
-  if (!folders?.length) return <></>;
-  const rootOrders = folders
-    .filter((i) => !i.__ref.folderId)
-    .map((i) => i.__ref.id);
-  const dataProvider = useRef(new TreeDataProvider(folders, rootOrders));
+  collection: IPromptSaveItem['collection'];
+}> = ({ onSelect, collection = { items: [], rootOrders: [] } }) => {
+  if (!collection.items?.length) return <></>;
+  const { items, rootOrders } = collection;
+  const dataProvider = useRef(new TreeDataProvider(items, rootOrders));
   const onItemSelect = (itemIds: string[], treeId: string) => {
     if (!itemIds?.length) return;
     onSelect(itemIds[0]);

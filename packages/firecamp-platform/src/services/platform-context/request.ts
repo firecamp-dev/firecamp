@@ -17,8 +17,6 @@ import { usePlatformStore } from '../../store/platform';
 import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 import { promptSaveItem } from './prompt.service';
-
-import AppService from '../app';
 import { prepareEventNameForRequestPull } from '../platform-emitter/events';
 
 interface IPlatformRequestService {
@@ -81,7 +79,7 @@ const request: IPlatformRequestService = {
    * if request is already saved then update request with chanes/payload
    */
   onSave: async (request: any, tabId: TId) => {
-    const { onNewRequestCreate } = useWorkspaceStore.getState();
+    const { onNewRequestCreate, workspace } = useWorkspaceStore.getState();
     const tabState = useTabStore.getState();
     const requestState = useRequestStore.getState();
     const {
@@ -91,23 +89,36 @@ const request: IPlatformRequestService = {
       // set request payload to store to be saved for next step
       // requestState.setReqAndTabId(request, tabId);
 
+      console.log(workspace, 132456789);
+
       if (true) {
         promptSaveItem({
           header: 'Save Request',
           texts: { btnOk: 'Save', btnOking: 'Saving...' },
-          folders: [...collections, ...folders],
+          collection: {
+            items: [...collections, ...folders],
+            rootOrders: workspace.__meta.cOrders,
+          },
           value: '',
-          validator: (val) => {
+          validator: ({ value, itemId }) => {
             let isValid = false,
               message = '';
-            if (!val) message = 'The request name is required';
-            else if (val.length < 3) {
+            if (!value) message = 'The request name is required';
+            if (!itemId)
+              message =
+                'Please select the colletion/folder to save the request.';
+            else if (value.length < 3) {
               message = 'The request name must have min 3 characters';
             } else {
               isValid = true;
             }
             // TODO: add regex validation
             return { isValid, message };
+          },
+          executor: ({ value, itemId }) => {
+            return new Promise((rs, rj) => {
+              setTimeout(() => rs(123), 5000);
+            });
           },
         })
           .then(

@@ -1,5 +1,6 @@
 import mitt from 'mitt';
 import { IRequestFolder } from '@firecamp/types';
+import { _array } from '@firecamp/utils';
 import {
   Disposable,
   TreeDataProvider as _TreeDataProvider,
@@ -15,23 +16,12 @@ type TTreeItemData = {
   __ref: {
     id: string;
     collectionId?: string;
-    isFolder?: boolean;
-    isItem?: boolean;
   };
 };
-type TItemExtra_meta = {
-  //todo: ts improvement needed
-  __ref?: {
-    isFolder?: boolean;
-    isItem?: boolean;
-  };
-};
-
-type TFolderItem = Partial<IRequestFolder & TItemExtra_meta>;
-type TCItem = TFolderItem;
+type TFolderItem = Partial<IRequestFolder>;
 
 export class TreeDataProvider<T = TTreeItemData> implements _TreeDataProvider {
-  private items: Array<TCItem>;
+  private items: TFolderItem[];
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
 
@@ -53,37 +43,30 @@ export class TreeDataProvider<T = TTreeItemData> implements _TreeDataProvider {
       });
     }
 
-    let item = this.items.find((i) => i.__ref?.id == itemId);
+    const item = this.items.find((i) => i.__ref?.id == itemId);
+    // console.log(item, itemId);
+    if (!item) {
+      return {
+        data: null,
+        index: null,
+      };
+    }
 
-    console.log(this.items, itemId);
-
-    let treeItem: TTreeItemData = {
+    const treeItem: TTreeItemData = {
       name: item.name,
       __ref: {
         id: item.__ref.id,
-        isFolder: item.__ref.isFolder,
         collectionId: item.__ref?.collectionId,
       },
     };
 
-    let getChildren = (item) => {
-      if (item.__ref.isLeaf) return [];
-      return this.items
-        .filter((i) => {
-          if (item.__ref.isFolder) return i.__ref.folderId == item.__ref.id;
-          return true;
-        })
-        .map((i) => i.__ref.id);
-    };
-
-    let children = getChildren(item);
     return Promise.resolve({
       index: item.__ref.id,
       canMove: true,
       data: treeItem,
       canRename: true,
-      isFolder: item.__ref.isFolder,
-      children,
+      isFolder: true,
+      children: _array.uniq(item.__meta.fOrders || []),
     });
   }
 
@@ -119,7 +102,7 @@ export class TreeDataProvider<T = TTreeItemData> implements _TreeDataProvider {
     this.items = [
       ...folders.map((i) => ({
         ...i,
-        __ref: { ...i.__ref, isFolder: true },
+        __ref: { ...i.__ref },
       })),
     ];
     // this.rootOrders = this.items
@@ -130,7 +113,7 @@ export class TreeDataProvider<T = TTreeItemData> implements _TreeDataProvider {
 
   // extra methods of provider
   public addFolder(item: TFolderItem) {
-    this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
+    this.items.push({ ...item });
     if (!item.__ref.folderId) {
       this.rootOrders.push(item.__ref.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
