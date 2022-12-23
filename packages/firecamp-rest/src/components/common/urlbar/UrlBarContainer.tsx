@@ -11,7 +11,6 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  platformContext,
   onPasteCurl = (curl: string) => {},
 }) => {
   const { EnvironmentWidget } = postComponents;
@@ -91,7 +90,7 @@ const UrlBarContainer = ({
       variables: variables.collection,
     };
 
-    platformContext.environment.setVariables(
+    context.environment.setVariables(
       workspaceUpdates,
       collectionUpdates
     );
@@ -103,10 +102,10 @@ const UrlBarContainer = ({
       if (!url.raw) return;
 
       const envVariables =
-        await platformContext.environment.getVariablesByTabId(tab.id);
+        await context.environment.getVariablesByTabId(tab.id);
       // console.log({ envVariables });
 
-      const agent: EFirecampAgent = platformContext.getFirecampAgent();
+      const agent: EFirecampAgent = context.getFirecampAgent();
 
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
     } catch (error) {

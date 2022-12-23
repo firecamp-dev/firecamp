@@ -151,18 +151,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  const onSave = (pushPayload: any, tabId) => {
-    console.log({ pushPayload });
-    if (!pushPayload._action || !pushPayload.__ref.id) return;
-    if (pushPayload._action.type === 'i') {
-      platformContext.request.subscribeChanges(
-        pushPayload.__ref.id,
-        handlePull
-      );
-    }
-    platformContext.request.save(pushPayload, tabId);
-  };
-
   // if(isFetchingRequest === true) return <Loader />;
   console.log(tab, 'tab...');
   return (
@@ -172,8 +160,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
           tab={tab}
           collectionId={tab?.request?.__ref?.collectionId || ''}
           postComponents={platformComponents}
-          onSaveRequest={onSave}
-          platformContext={platformContext}
           // onPasteCurl={onPasteCurl}
         />
         <Container.Body>

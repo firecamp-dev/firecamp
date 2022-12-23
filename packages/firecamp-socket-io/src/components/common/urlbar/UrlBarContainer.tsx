@@ -11,8 +11,6 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction, tabId: string) => {},
-  platformContext,
 }) => {
   const { EnvironmentWidget } = postComponents;
   const {
@@ -37,16 +35,12 @@ const UrlBarContainer = ({
     }),
     shallow
   );
-  // console.log({pushAction});
 
   const _onSave = async () => {
     try {
       save(tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+    } catch (e) {
+      console.error(e);
     }
   };
 

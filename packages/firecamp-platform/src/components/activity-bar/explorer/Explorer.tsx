@@ -1,6 +1,9 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-
+import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
+import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
+// import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
+import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import {
   InteractionMode,
   Tree,
@@ -9,7 +12,6 @@ import {
   UncontrolledTreeEnvironment,
 } from '@firecamp/ui-kit/src/tree';
 import { ERequestTypes } from '@firecamp/types';
-
 import {
   Container,
   ProgressBar,
@@ -18,10 +20,6 @@ import {
   Empty,
   Button,
 } from '@firecamp/ui-kit';
-import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
-import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
-// import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import { WorkspaceCollectionsProvider } from './WorkspaceCollectionsProvider';
@@ -149,7 +147,6 @@ const Explorer: FC<any> = () => {
   };
 
   const _createCollectionPrompt = async () => {
-    // return pltContext.app.modals.openCreateCollection();
     pltContext.window
       .promptInput({
         header: 'Create New Collection',
@@ -316,7 +313,7 @@ const Explorer: FC<any> = () => {
                     sm
                     primary
                     className="mx-auto mb-6"
-                    onClick={() => AppService.modals.openCreateCollection()}
+                    onClick={_createCollectionPrompt}
                   />
                 </div>
               );

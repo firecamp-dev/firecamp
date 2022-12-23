@@ -56,11 +56,6 @@ const modalService = {
   },
 
   // Collection
-  openCreateCollection: () => {
-    const { isGuest } = useUserStore.getState();
-    if (isGuest) return modalService.openSignIn();
-    open(EPlatformModalTypes.CreateCollection);
-  },
   openCollectionSetting: (meta?: any) => {
     const { isGuest } = useUserStore.getState();
     if (isGuest) return modalService.openSignIn();
@@ -68,11 +63,6 @@ const modalService = {
   },
 
   // Folder
-  openCreateFolder: (meta: any) => {
-    const { isGuest } = useUserStore.getState();
-    if (isGuest) return modalService.openSignIn();
-    open(EPlatformModalTypes.CreateFolder, meta);
-  },
   openFolderSetting: (meta: any) => {
     const { isGuest } = useUserStore.getState();
     if (isGuest) return modalService.openSignIn();
