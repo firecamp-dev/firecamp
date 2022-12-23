@@ -68,7 +68,7 @@ let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
 
 let Body: FC<IBody> = ({ id = '', children = '', className = '' }) => {
   return (
-    <Container.Body className={className || 'flex flex-col overflow-auto'} id={id}>
+    <Container.Body className={className || 'flex flex-col overflow-auto visible-scrollbar thin'} id={id}>
       {children}
     </Container.Body>
   );
