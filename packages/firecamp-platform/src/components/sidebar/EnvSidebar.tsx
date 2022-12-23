@@ -81,12 +81,12 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col">
-          <EnvVarPreview
+          {/* <EnvVarPreview
             key={`env-preview-${EEnvironmentScope.Workspace}`}
             scope={EEnvironmentScope.Workspace}
             activeEnvId={activeTabWrsEnv}
             activeTab={activeTab}
-          />
+          /> */}
           {!!activeCollectionEnv ? (
             <EnvVarPreview
               key={`env-preview-${EEnvironmentScope.Collection}`}

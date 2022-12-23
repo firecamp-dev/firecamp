@@ -17,7 +17,7 @@ import AppService from '../../../services/app';
 import {
   WrsEnvDataProvider,
   CollectionEnvDataProvider,
-} from './EnvironmentTreeDataProvider';
+} from './treeDataProvider';
 import { useEnvStore } from '../../../store/environment';
 
 const Environment: FC<any> = () => {
@@ -103,7 +103,7 @@ const Environment: FC<any> = () => {
     <div className="w-full h-full flex flex-row explorer-wrapper">
       <Container>
         <ProgressBarContainer />
-        <Pane
+        {/* <Pane
           expanded={true}
           height="200px"
           bodyClassName={'!p-0'}
@@ -113,12 +113,7 @@ const Environment: FC<any> = () => {
           headerActionRenderer={() => {
             return (
               <ToolBar>
-                {/* <div>
-                  <VscRefresh className="cursor-pointer" size={16} onClick={()=> {}}/>
-                </div>
-                <div>
-                  <VscNewFolder className="cursor-pointer" size={16} onClick={()=> {}}/>
-                </div> */}
+                
               </ToolBar>
             );
           }}
@@ -147,7 +142,7 @@ const Environment: FC<any> = () => {
               </UncontrolledTreeEnvironment>
             );
           }}
-        ></Pane>
+        ></Pane> */}
 
         <Pane
           expanded={true}
