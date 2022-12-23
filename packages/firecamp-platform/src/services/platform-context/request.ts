@@ -92,7 +92,7 @@ const request: IPlatformRequestService = {
       console.log(workspace, 132456789);
 
       if (true) {
-        promptSaveItem({
+        return promptSaveItem({
           header: 'Save Request',
           texts: { btnOk: 'Save', btnOking: 'Saving...' },
           collection: {
@@ -116,51 +116,37 @@ const request: IPlatformRequestService = {
             return { isValid, message };
           },
           executor: ({ value, itemId }) => {
+            if (!itemId) throw 'The path is not selected';
+            const item = [...collections, ...folders].find(
+              (i) => i.__ref.id == itemId
+            );
+            if (!item)
+              throw 'The collection/folder you have selected is not found';
+            const collectionId = item.__ref.collectionId || item.__ref.id;
+            const folderId = item.__ref.collectionId
+              ? item.__ref.id
+              : undefined;
+            console.log(item, 'res...');
+            const _request = {
+              ...request,
+              __meta: {
+                ...request.__meta,
+                name: value,
+                description: '',
+              },
+              __ref: { ...request.__ref, collectionId },
+            };
+            if (folderId) _request.__ref.folderId = folderId;
+            // return Rest.request.create(_request);
             return new Promise((rs, rj) => {
-              setTimeout(() => rs(123), 5000);
+              setTimeout(() => rs(_request), 2000);
             });
           },
         })
-          .then(
-            async (res: {
-              name: string;
-              description?: string;
-              folderId?: TId;
-            }) => {
-              if (!res.folderId) throw 'The path is not selected';
-              const item = [...collections, ...folders].find(
-                (i) => i.__ref.id == res.folderId
-              );
-              if (!item)
-                throw 'The collection/folder you have selected is not found';
-              const collectionId = item.__ref.collectionId || item.__ref.id;
-              console.log(res, item, 'res...');
-              return request;
-              const _request = {
-                ...request,
-                __meta: {
-                  ...request.__meta,
-                  name: res.name,
-                  description: res.description || '',
-                },
-                __ref: {
-                  ...request.__ref,
-                  collectionId: collectionId,
-                  folderId: res.folderId,
-                },
-              };
-
-              // TODO: handle error here
-              return Rest.request
-                .push([_request])
-                .then((res) => {
-                  return _request;
-                })
-                .catch((e) => {
-                  console.log(e, 'error 007');
-                });
-            }
-          )
+          .then(async (_request) => {
+            console.log(_request, '_request...');
+            return _request;
+          })
           .then((_request) => {
             // reflect in explorer
             onNewRequestCreate(_request);
@@ -190,6 +176,8 @@ const request: IPlatformRequestService = {
             //   hasChange: false,
             //   isFresh: false,
             // });
+
+            return _request;
           });
 
         // open save request
