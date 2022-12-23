@@ -1856,6 +1856,9 @@ video {
 .pb-0 {
 	padding-bottom: 0px;
 }
+.\!pt-4 {
+	padding-top: 1rem !important;
+}
 .pl-0 {
 	padding-left: 0px;
 }
@@ -2840,6 +2843,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
+.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }

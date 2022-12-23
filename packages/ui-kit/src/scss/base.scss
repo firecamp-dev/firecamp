@@ -683,6 +683,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
+.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }
