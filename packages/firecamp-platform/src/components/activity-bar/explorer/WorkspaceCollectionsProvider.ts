@@ -56,11 +56,14 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       });
     }
 
-    let item = this.items.find((i) => i.__ref?.id == itemId);
-    if (!item)
-      return Promise.resolve({ index: null, data: null, isFolder: false });
+    const item = this.items.find((i) => i.__ref?.id == itemId);
+    if (!item) {
+      console.log(itemId, 'item not found for itemId in children');
+      // return { index: null, data: null };
+      return Promise.resolve({ index: null, data: null });
+    }
 
-    let treeItem: TTreeItemData = {
+    const treeItem: TTreeItemData = {
       name: item.name || item.__meta.name, // in request, the `name` key will be in `__meta`
       __ref: {
         id: item.__ref.id,

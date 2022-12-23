@@ -109,7 +109,7 @@ const BodyTab: FC<any> = () => {
           return (
             <Editor
               autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
-              value={JSON.stringify(body.value)}
+              value={body.value as string}
               language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
               onChange={({ target: { value } }) => changeBodyValue(value)}
               controlsConfig={{ show: true }}
