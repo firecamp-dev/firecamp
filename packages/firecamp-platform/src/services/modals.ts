@@ -73,7 +73,6 @@ const modalService = {
   openSaveRequest: () => {
     const { isGuest } = useUserStore.getState();
     if (isGuest) return modalService.openSignIn();
-    open(EPlatformModalTypes.SaveRequest);
   },
   openEditRequest: (meta) => {
     const { isGuest } = useUserStore.getState();

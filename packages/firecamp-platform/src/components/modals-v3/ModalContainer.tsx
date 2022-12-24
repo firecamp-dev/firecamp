@@ -24,7 +24,6 @@ import Invite from './workspace/Invite';
 import OrgManagement from './organization/OrgManagement';
 import WorkspaceManagement from './workspace/WorkspaceManagement';
 import SwitchWorkspace from './workspace/SwitchWorkspace';
-import SaveRequest from './request/save-request/SaveRequest';
 import CreateEnvironment from './environment/CreateEnvironment';
 import CollectionSetting from './collection/CollectionSetting';
 import ManageEnvironment from './environment/ManageEnvironment';
@@ -74,8 +73,6 @@ export const ModalContainer = () => {
         return <FolderSetting onClose={close} />;
 
       // Request
-      case EPlatformModalTypes.SaveRequest:
-        return <SaveRequest onClose={close} />;
       case EPlatformModalTypes.EditRequest:
         return <EditRequest onClose={close} />;
 
@@ -152,11 +149,6 @@ export const ModalContainer = () => {
           isOpen={modalType == EPlatformModalTypes.SwitchWorkspace && isOpen}
           onClose={close}
         />
-
-        {/* Request */}
-        {modalType == EPlatformModalTypes.SaveRequest && (
-          <SaveRequest onClose={close} />
-        )}
 
         {/* User */}
         {/* <UserProfile isOpen={modalType == EPlatformModalTypes.UserProfile && isOpen} onClose={close} />; */}
