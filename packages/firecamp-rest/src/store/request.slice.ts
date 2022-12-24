@@ -158,9 +158,14 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
   },
   save: (tabId) => {
     const state = get();
+    state.context.window.confirm({
+      title: 'This is the confirmation',
+      isOpen: true
+    });
+    return;
     if (!state.runtime.isRequestSaved) {
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId).then(console.log)
+      state.context.request.save(_request, tabId).then(console.log);
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
       // const _request = state.preparePayloadForUpdateRequest();

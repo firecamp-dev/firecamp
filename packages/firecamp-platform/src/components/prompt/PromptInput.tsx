@@ -105,10 +105,10 @@ export const PromptInput: FC<IPromptInput> = ({
               <Button
                 text={texts?.btnCancle || `Cancel`}
                 onClick={_close}
-                sm
                 secondary
                 transparent
                 ghost
+                sm
               />
               <Button
                 text={
