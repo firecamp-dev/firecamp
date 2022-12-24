@@ -24,7 +24,6 @@ import {
 import { useWorkspaceStore } from '../../../store/workspace';
 import { WorkspaceCollectionsProvider } from './WorkspaceCollectionsProvider';
 import treeRenderer from './treeItemRenderer';
-import AppService from '../../../services/app';
 import { RE } from '../../../types';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../services/platform-emitter/events';
@@ -171,7 +170,7 @@ const Explorer: FC<any> = () => {
         },
         executor: (name) => createCollection({ name, description: '' }),
         onError: (e) => {
-          AppService.notify.alert(e?.response?.data?.message || e.message);
+          pltContext.app.notify.alert(e?.response?.data?.message || e.message);
         },
       })
       .then((res) => {

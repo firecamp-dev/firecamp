@@ -136,7 +136,7 @@ const UrlBarContainer = ({
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {
-        context.appService.modals.openEditRequest({
+        context.app.modals.openEditRequest({
           name: __meta.name,
           description: __meta.description,
           collectionId: __ref.collectionId,

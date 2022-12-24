@@ -42,7 +42,7 @@ const ReqStatusBar = ({}) => {
   const savePlg = async () => {
     const isQueryValid = await isValid(playground.request.body);
     if (isQueryValid == false) {
-      context.appService.notify.alert('The playground query is not valid.');
+      context.app.notify.alert('The playground query is not valid.');
       return;
     }
     execute(
@@ -56,7 +56,7 @@ const ReqStatusBar = ({}) => {
     const isQueryValid = await isValid(playground.request.body);
     console.log(isQueryValid, 'isQueryValid...');
     if (isQueryValid == false) {
-      context.appService.notify.alert('The playground query is not valid.');
+      context.app.notify.alert('The playground query is not valid.');
       return;
     }
     execute(

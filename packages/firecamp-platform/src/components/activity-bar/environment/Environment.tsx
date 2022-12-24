@@ -13,12 +13,12 @@ import {
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import treeRenderer from './treeItemRenderer';
-import AppService from '../../../services/app';
 import {
   WrsEnvDataProvider,
   CollectionEnvDataProvider,
 } from './treeDataProvider';
 import { useEnvStore } from '../../../store/environment';
+import platformContext from '../../../services/platform-context';
 
 const Environment: FC<any> = () => {
   const treeRef = useRef();
@@ -49,13 +49,13 @@ const Environment: FC<any> = () => {
   }, []);
 
   const openCreateWrsEnv = (wrsId: string) => {
-    AppService.modals.openCreateEnvironment({
+    platformContext.app.modals.openCreateEnvironment({
       scope: EEnvironmentScope.Workspace,
     });
   };
 
   const openWrsEnv = (wrsId: string, envId: string) => {
-    AppService.modals.openManageEnvironemnt({
+    platformContext.app.modals.openManageEnvironemnt({
       scope: EEnvironmentScope.Workspace,
       workspaceId: wrsId,
       envId,
@@ -63,14 +63,14 @@ const Environment: FC<any> = () => {
   };
 
   const openCreateColEnv = (colId: string) => {
-    AppService.modals.openCreateEnvironment({
+    platformContext.app.modals.openCreateEnvironment({
       scope: EEnvironmentScope.Collection,
       collectionId: colId,
     });
   };
 
   const openColEnv = (colId: string, envId: string) => {
-    AppService.modals.openManageEnvironemnt({
+    platformContext.app.modals.openManageEnvironemnt({
       scope: EEnvironmentScope.Collection,
       collectionId: colId,
       envId,
@@ -78,25 +78,24 @@ const Environment: FC<any> = () => {
   };
 
   const deleteEnv = (envId: string) => {
-    AppService.notify.confirm(
-      'Are you sure to delete the environment?',
-      () => {
+    platformContext.window
+      .confirm({
+        title: 'Are you sure to delete the environment?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then(() => {
         deleteEnvironment(envId)
           .then((r) => {
             return r;
           })
           .catch((e) => {
-            AppService.notify.alert(e.response?.data?.message || e.message);
+            platformContext.app.notify.alert(
+              e.response?.data?.message || e.message
+            );
           });
-      },
-      console.log,
-      {
-        labels: {
-          confirm: 'Need your confirmation.',
-          confirmOk: 'Yes, delete it.',
-        },
-      }
-    );
+      });
   };
 
   return (

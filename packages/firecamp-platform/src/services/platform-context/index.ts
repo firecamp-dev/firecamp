@@ -1,6 +1,6 @@
 import { request } from './request';
 import { confirm, promptInput, promptSaveItem } from './prompt.service';
-import AppService from '../../services/app';
+import AppService from '../app.service';
 import { environment } from './environment';
 
 export default {

@@ -5,7 +5,7 @@ import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
-import AppService from '../../../services/app';
+import platformContext from '../../../services/platform-context';
 
 /**
  * User Sign up
@@ -30,15 +30,15 @@ const SignUp: FC<IModal> = () => {
       .then((res) => {
         console.log(res);
         localStorage.setItem('token', res.response.__meta.accessToken);
-        AppService.initApp();
-        AppService.notify.success(`You have signed up successfully`, {
+        platformContext.app.initApp();
+        platformContext.app.notify.success(`You have signed up successfully`, {
           labels: { alert: 'success' },
         });
-        AppService.modals.close();
+        platformContext.app.modals.close();
       })
       .catch((e) => {
         // console.log(e.response)
-        AppService.notify.alert(e.response?.data?.message || e.message, {
+        platformContext.app.notify.alert(e.response?.data?.message || e.message, {
           labels: { alert: 'error!' },
         });
       })
@@ -135,11 +135,11 @@ const SignUp: FC<IModal> = () => {
             />
 
             <Button
-              color="primary"
               text={isRequesting ? 'Signing up...' : 'Sign up'}
-              fullWidth={true}
-              size="md"
               onClick={handleSubmit(_onSignUp)}
+              fullWidth={true}
+              primary
+              md
             />
           </form>
         </div>
@@ -154,7 +154,7 @@ const SignUp: FC<IModal> = () => {
               className="font-bold underline"
               onClick={(e) => {
                 if (e) e.preventDefault();
-                AppService.modals.openSignIn();
+                platformContext.app.modals.openSignIn();
               }}
               tabIndex={1}
             >

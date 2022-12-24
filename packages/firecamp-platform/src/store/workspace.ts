@@ -13,7 +13,6 @@ import {
 } from '@firecamp/types';
 
 import { useEnvStore } from './environment';
-import AppService from '../services/app';
 
 const initialState = {
   workspace: {
@@ -189,7 +188,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         })
         .catch((e) => {
           console.log(e.response, 'e');
-          AppService.notify.alert(e.response?.data?.message || e.message);
+          platformContext.app.notifyalert(
+            e.response?.data?.message || e.message
+          );
         })
         .finally(() => {
           state.toggleProgressBar(false);
