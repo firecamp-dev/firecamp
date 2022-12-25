@@ -6,7 +6,7 @@ import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
+import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import {
   IGraphQLStore,
   useGraphQLStore,
@@ -25,7 +25,7 @@ const CollectionTab = () => {
   const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
     useGraphQLStoreApi().getState() as IGraphQLStore;
 
-  const dataProvider = useRef(new CollectionTreeDataProvider([], []));
+  const dataProvider = useRef(new TreeDataProvider([], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);
