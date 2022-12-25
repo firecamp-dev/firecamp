@@ -10,8 +10,6 @@ import { Button } from '@firecamp/ui-kit';
 export default {
   renderItemArrow: ({ item, context }) => {
     // console.log(item, 'arrow context');
-    return <></>
-
     if (item.data?.__ref?.isItem) {
       return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
     } else if (item.data?.__ref?.isFolder) {
@@ -104,8 +102,7 @@ export default {
           { 'rct-tree-item-li-expanded': context.isExpanded },
           { 'rct-tree-item-li-focused': context.isFocused },
           { 'rct-tree-item-li-dragging-over': context.isDraggingOver },
-          { 'rct-tree-item-li-search-match': context.isSearchMatching },
-          
+          { 'rct-tree-item-li-search-match': context.isSearchMatching }
         )}
       >
         <div
@@ -152,7 +149,7 @@ export default {
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
               { '!top-4': item.data.__ref.isRequest }
             )}
-            style={{ left: `${(renderDepthOffset * (depth+1) ) + 2}px` }}
+            style={{ left: `${renderDepthOffset * (depth + 1) + 2}px` }}
           ></span>
           {arrow}
           <InteractiveComponent
@@ -168,16 +165,21 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <div className="w-full overflow-hidden overflow-ellipsis items-center block">
-              {title} 
-              <span className="bg-focus2 text-xs px-1 !mx-1">
-              {"tag"}
-            </span>
-            </div>
-            
-            <div className="text-sm appForegroundInActive">
-              {"JSON SAMPLE"}
-            </div>
+            {item.data.__ref.isFolder ? (
+              <span className="w-full overflow-hidden overflow-ellipsis items-center block">
+                {title}
+              </span>
+            ) : (
+              <div>
+                <div className="w-full overflow-hidden overflow-ellipsis items-center block">
+                  {title}
+                  <span className="bg-focus2 text-xs px-1 !mx-1">{'tag'}</span>
+                </div>
+                <div className="text-sm appForegroundInActive">
+                  {'{ "name": "Firecamp}'}
+                </div>
+              </div>
+            )}
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
             {item.data.__ref.isItem ? (
@@ -198,14 +200,19 @@ export default {
               <></>
             )}
 
-            <VscAdd
-              className="ml-1 cursor-pointer"
-              size={14}
-              onClick={() => {
-                createFolder(item.index);
-              }}
-              tabIndex={2}
-            />
+            {item.data.__ref.isFolder ? (
+              <VscAdd
+                className="ml-1 cursor-pointer"
+                size={14}
+                onClick={() => {
+                  createFolder(item.index);
+                }}
+                tabIndex={2}
+              />
+            ) : (
+              <></>
+            )}
+
             <VscTrash
               className="ml-1 cursor-pointer"
               size={14}
