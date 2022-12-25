@@ -1,10 +1,13 @@
-import { EHttpMethod, IHeader } from '@firecamp/types';
+import { EHttpMethod, IHeader, TId } from '@firecamp/types';
 import { _clipboard } from '@firecamp/utils';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 
-import { prepareUIRequestPanelState } from '../services/request.service';
+import {
+  normalizeRequest,
+  prepareUIRequestPanelState,
+} from '../services/request.service';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -30,7 +33,6 @@ const requestSliceKeys = [
 
 interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   request: IRestClientRequest;
-
   initialiseRequest: (request: IRestClientRequest) => void;
   initialiseRequestByKeyValue: (key: string, value: any) => void;
   changeMethod: (method: EHttpMethod) => any;
@@ -38,6 +40,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   changeMeta: (__meta: any) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
+  save: (tabId: TId) => void;
 }
 
 const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
@@ -45,7 +48,7 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
 
   ...createUrlSlice(set, get),
   ...createBodySlice(set, get, initialRequest.body),
-  ...createAuthSlice(set, get, initialRequest.auth),
+  ...createAuthSlice(set, get),
 
   initialiseRequest: (request: IRestClientRequest) => {
     // console.log({initReq: request});
@@ -59,7 +62,6 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
 
   initialiseRequestByKeyValue: (key: string, value: any) => {
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         [key]: value,
@@ -82,7 +84,6 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
       headers: headerCount,
     };
     set((s) => ({
-      ...s,
       request: { ...s.request, headers },
       ui: {
         ...s.ui,
@@ -121,7 +122,6 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
     const updatedUiRequestPanel = prepareUIRequestPanelState({
       __meta: updatedMeta,
     });
-
     set((s) => ({
       request: { ...s.request, __meta: updatedMeta },
       ui: {
@@ -144,7 +144,6 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
     const updatedUiRequestPanel = prepareUIRequestPanelState({
       scripts: updatedScripts,
     });
-
     set((s) => ({
       request: { ...s.request, scripts: updatedScripts },
       ui: {
@@ -156,6 +155,22 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
       },
     }));
     state.equalityChecker({ scripts: updatedScripts });
+  },
+  save: (tabId) => {
+    const state = get();
+    state.context.window.confirm({
+      title: 'This is the confirmation',
+      isOpen: true
+    });
+    return;
+    if (!state.runtime.isRequestSaved) {
+      const _request = state.preparePayloadForSaveRequest();
+      state.context.request.save(_request, tabId).then(console.log);
+      // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
+    } else {
+      // const _request = state.preparePayloadForUpdateRequest();
+      // state.context.request.update(_request, tabId);
+    }
   },
 });
 

@@ -30,7 +30,9 @@ import {
   createUiSlice,
 } from './slices';
 import { _object } from '@firecamp/utils';
-import { initialiseStoreFromRequest } from '../services/request.service';
+import {
+  initialiseStoreFromRequest,
+} from '../services/request.service';
 import { ISocket, ISocketStore } from './store.type';
 
 const {
@@ -47,7 +49,7 @@ const createSocketStore = (initialState: ISocket) =>
       initialise: (request: Partial<ISocketIO>, tabId: TId) => {
         const initState = initialiseStoreFromRequest(request, tabId);
         set((s) => ({
-          ...s,
+          ...s, // do not remove this, we need the previously set state here so.
           ...initState,
           originalRequest: _cloneDeep(initState.request),
         }));

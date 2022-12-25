@@ -13,8 +13,8 @@ import cx from 'classnames';
 import Explorer from '../activity-bar/explorer/Explorer';
 // import History from '../activity-bar/history/History';
 import getOs from '../../services/get-os';
-import AppService from '../../services/app';
 import Environment from '../activity-bar/environment/Environment';
+import platformContext from '../../services/platform-context';
 
 // check if MAC OS
 const isMac = !['Windows', 'UNIX', 'Linux'].includes(getOs());
@@ -126,7 +126,7 @@ const actionBarItems = [
 ];
 
 const SidebarContainer: FC<any> = () => {
-  const user = AppService.user.get();
+  const user = platformContext.app.user.get();
   let [activeItem, setActiveItem] = useState<EActivityBarItems | null>(
     user?.__ref?.id && EActivityBarItems.Explorer
   );
@@ -242,13 +242,13 @@ const SidebarContainer: FC<any> = () => {
   const _setActiveItem = async (selected) => {
     if (!selected?.id) return;
     else if (selected.item == EActivityBarItems.User)
-      AppService.modals.openSaveRequest(); // openUserProfile();
+      platformContext.app.modals.openSaveRequest(); // openUserProfile();
     else if (selected.item == EActivityBarItems.Settings)
-      AppService.modals.openWorkspaceManagement();
+      platformContext.app.modals.openWorkspaceManagement();
     else if (selected.item == EActivityBarItems.SslNProxy)
-      AppService.modals.openWorkspaceManagement();
+      platformContext.app.modals.openWorkspaceManagement();
     else if (selected.item == EActivityBarItems.Cookie)
-      AppService.modals.openOrgManagement();
+      platformContext.app.modals.openOrgManagement();
     else setActiveItem((s) => (selected.id == s ? null : selected?.id));
   };
 

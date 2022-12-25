@@ -1,4 +1,4 @@
-import create, { GetState, SetState } from 'zustand';
+import { GetState, SetState } from 'zustand';
 import { ISocketIO, TId } from '@firecamp/types';
 
 import {

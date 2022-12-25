@@ -24,7 +24,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
   placeholder,
   texts,
   value,
-  folders,
+  collection,
   onClose,
   validator,
   executor,
@@ -35,7 +35,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
     isOpen: true,
     isExecuting: false,
     inputValue: value,
-    folderId: '',
+    itemId: '',
     error: '',
   });
   const _close = (e) => {
@@ -46,14 +46,15 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
   };
   const _onChangeValue = (e) => {
     const { value } = e.target;
-    setState((s) => ({ ...s, value, error: '' }));
+    setState((s) => ({ ...s, inputValue: value, error: '' }));
   };
   const _onClickOk = async (e) => {
     e.preventDefault();
     const value = state.inputValue.trim();
-    const result = { value, folderId: state.folderId };
+    const result = { value, itemId: state.itemId };
     let _validator: { isValid: boolean; message?: string } = { isValid: true };
-    if (typeof validator == 'function') _validator = validator(value);
+    if (typeof validator == 'function')
+      _validator = validator({ value, itemId: state.itemId });
     // console.log(_validator, '_validator');
     if (_validator.isValid == false) {
       setState((s) => ({ ...s, error: _validator.message }));
@@ -90,15 +91,17 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
     <Modal
       isOpen={state.isOpen}
       onClose={_close}
-      height="250px"
       width={'400px'}
+      className="p-6"
     >
+      <ProgressBar active={state.isExecuting} />
+      <Modal.Header>
+        <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+          {header || `THIS IS A HEADER PLACE`}
+        </label>
+      </Modal.Header>
       <Modal.Body>
-        <ProgressBar active={state.isExecuting} />
-        <div className="p-6">
-          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
-            {header || `THIS IS A HEADER PLACE`}
-          </label>
+        <div>
           <div className="mt-4">
             <Input
               autoFocus={true}
@@ -113,51 +116,68 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
             />
           </div>
           <PathSelector
-            onSelect={(folderId) => {
-              // console.log({ folderId });
-              setState((s) => ({ ...s, folderId }));
+            onSelect={(itemId) => {
+              // console.log({ itemId });
+              setState((s) => ({ ...s, itemId }));
             }}
-            folders={folders}
+            collection={collection}
           />
-          <TabHeader className="px-4">
-            <TabHeader.Right>
-              <Button
-                text={texts?.btnCancle || `Cancel`}
-                onClick={_close}
-                sm
-                secondary
-                transparent
-                ghost
-              />
-              <Button
-                text={
-                  state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
-                }
-                onClick={_onClickOk}
-                disabled={state.isExecuting}
-                primary
-                sm
-              />
-            </TabHeader.Right>
-          </TabHeader>
         </div>
       </Modal.Body>
+      <Modal.Footer className="!pt-4">
+        <TabHeader className="!px-0">
+          <TabHeader.Right>
+            <Button
+              text={texts?.btnCancle || `Cancel`}
+              onClick={_close}
+              sm
+              secondary
+              transparent
+              ghost
+            />
+            <Button
+              text={
+                state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
+              }
+              onClick={_onClickOk}
+              disabled={state.isExecuting}
+              primary
+              sm
+            />
+          </TabHeader.Right>
+        </TabHeader>
+      </Modal.Footer>
     </Modal>
   );
 };
 
 const PathSelector: FC<{
   onSelect: (itemId: string) => void;
-  folders: any[];
-}> = ({ onSelect, folders = [] }) => {
-  if (!folders?.length) return <></>;
-  const rootOrders = folders
-    .filter((i) => !i.__ref.folderId)
-    .map((i) => i.__ref.id);
-  const dataProvider = useRef(new TreeDataProvider(folders, rootOrders));
+  collection: IPromptSaveItem['collection'];
+}> = ({ onSelect, collection = { items: [], rootOrders: [] } }) => {
+  if (!collection?.items?.length) return <></>;
+  const [path, setPath] = useState('');
+  const { items, rootOrders } = collection;
+  const dataProvider = useRef(new TreeDataProvider(items, rootOrders));
   const onItemSelect = (itemIds: string[], treeId: string) => {
     if (!itemIds?.length) return;
-    onSelect(itemIds[0]);
+    const itemId = itemIds[0];
+    setPath(pathFinder(itemId));
+    onSelect(itemId);
+  };
+  const pathFinder = (itemId: string) => {
+    const findPath = (iId: string, path: string = '') => {
+      const item = items.find((i) => i.__ref.id == iId);
+      if (!item) return path;
+      const pId = item.__ref.folderId || item.__ref.collectionId;
+      const _path = path ? `${item.name}/${path}` : `${item.name}`;
+      if (!pId) {
+        return _path;
+      } else {
+        return findPath(pId, _path);
+      }
+    };
+    return findPath(itemId);
   };
 
   return (
@@ -194,7 +214,7 @@ const PathSelector: FC<{
           </UncontrolledTreeEnvironment>
         </Container.Body>
         <Container.Header className="bg-focus2 !p-1 text-appForegroundInActive leading-3">
-          Path
+          {`./${path}`}
         </Container.Header>
       </div>
     </Container>

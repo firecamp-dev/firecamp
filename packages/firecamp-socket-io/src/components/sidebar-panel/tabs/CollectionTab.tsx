@@ -43,20 +43,16 @@ const CollectionTab = () => {
     // openPlayground(item);
   };
   const deletePlg = (plgId: string) => {
-    context.app.notify.confirm(
-      'Are you sure to delete the playground?',
-      (s) => {
-        console.log(plgId, 'plgId...');
-        deleteItem(plgId);
-      },
-      console.log,
-      {
-        labels: {
-          confirm: 'Need your confirmation.',
-          confirmOk: 'Yes, delete it.',
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the playground?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
         },
-      }
-    );
+      })
+      .then((isConfirmed) => {
+        if (isConfirmed) deleteItem(plgId);
+      });
   };
 
   const _createFolderPrompt = async (parentFolderId?: TId) => {

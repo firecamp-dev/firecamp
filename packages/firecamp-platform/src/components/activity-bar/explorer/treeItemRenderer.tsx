@@ -255,9 +255,9 @@ export default {
                 ? item.data?.__ref?.id
                 : item.data?.__ref?.folderId
             }
-            requestId={item.data.__ref.isRequest ? item.data.__ref?.id : null}
+            requestId={item.data?.__ref.isRequest ? item.data.__ref?.id : null}
             menuType={
-              item.data.__ref.isFolder
+              item.data?.__ref.isFolder
                 ? 'folder'
                 : item.data?.__ref.isCollection
                 ? 'collection'

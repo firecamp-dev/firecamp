@@ -1,4 +1,5 @@
-import { EHttpMethod, IHeader, IGraphQL } from '@firecamp/types';
+import { EHttpMethod, IHeader, IGraphQL, TId } from '@firecamp/types';
+import { normalizeRequest } from '../services/request.service';
 
 import {
   IUrlSlice,
@@ -25,6 +26,7 @@ interface IRequestSlice extends IUrlSlice {
   changeMeta: (__meta: object) => any;
   // changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
+  save: (tabId: TId) => void;
 }
 
 const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
@@ -69,6 +71,17 @@ const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
       request: { ...s.request, __meta: { ...s.request.__meta, ...__meta } },
     }));
     state.equalityChecker({ __meta });
+  },
+  save: (tabId) => {
+    const state = get();
+    if (!state.runtime.isRequestSaved) {
+      const _request = state.preparePayloadForSaveRequest();
+      state.context.request.save(_request, tabId);
+      // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
+    } else {
+      // const _request = state.preparePayloadForUpdateRequest();
+      // state.context.request.update(_request, tabId);
+    }
   },
 });
 

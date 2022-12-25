@@ -529,7 +529,7 @@ tr:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: -1px;
-  min-height: 32px !important;
+  min-height: 33px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -683,6 +683,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
+.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }

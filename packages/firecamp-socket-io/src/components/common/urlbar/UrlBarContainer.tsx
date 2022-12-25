@@ -11,8 +11,6 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction, tabId: string) => {},
-  platformContext,
 }) => {
   const { EnvironmentWidget } = postComponents;
   const {
@@ -20,47 +18,29 @@ const UrlBarContainer = ({
     displayUrl,
     version,
     activeEnvironments,
-    isRequestSaved,
-
     changeUrl,
     changeConfig,
     changeActiveEnvironment,
+    save
   } = useSocketStore(
     (s: ISocketStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
       activeEnvironments: s.runtime.activeEnvironments,
-      isRequestSaved: s.runtime.isRequestSaved,
-
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
       changeActiveEnvironment: s.changeActiveEnvironment,
-
-      // pushAction: s.pushAction,
+      save: s.save
     }),
     shallow
   );
-  // console.log({pushAction});
 
   const _onSave = async () => {
     try {
-      let pushPayload: any;
-      if (!isRequestSaved) {
-        // pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        // pushPayload = await prepareRequestUpdatePushPayload();
-      }
-
-      // console.log({ pushPayload });
-      // setPushActionEmpty();
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      save(tab.id);
+    } catch (e) {
+      console.error(e);
     }
   };
 

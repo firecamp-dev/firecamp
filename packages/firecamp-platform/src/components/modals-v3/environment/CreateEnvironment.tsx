@@ -14,7 +14,6 @@ import { EEnvironmentScope } from '@firecamp/types';
 
 import { useEnvStore } from '../../../store/environment';
 import { useWorkspaceStore } from '../../../store/workspace';
-import AppService from '../../../services/app';
 import { useModalStore } from '../../../store/modal';
 import { RE } from '../../../types'
 
@@ -109,11 +108,11 @@ const CreateEnvironment: FC<IModal> = ({
     createEnvironment(_env)
       .then((r) => {
         console.log(r, 'r......');
-        AppService.modals.close();
+        platformContext.app.modals.close();
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
-        AppService.notify.alert(e?.response?.data?.message || e.message);
+        platformContext.app.notifyalert(e?.response?.data?.message || e.message);
       })
       .finally(() => {
         setIsRequesting(false);

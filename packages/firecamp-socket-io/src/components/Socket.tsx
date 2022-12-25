@@ -127,17 +127,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   const handlePull = () => {};
 
-  const onSave = (pushPayload: any, tabId) => {
-    // console.log({ pushPayload });
-    if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === 'i') {
-      platformContext.request.subscribeChanges(
-        pushPayload._action.item_id,
-        handlePull
-      );
-    }
-    platformContext.request.onSave(pushPayload, tabId);
-  };
+  
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
@@ -161,7 +151,6 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
           tab={tab}
           collectionId={tab?.request?.__ref.collectionId || ''}
           postComponents={platformComponents}
-          onSaveRequest={onSave}
           platformContext={platformContext}
         />
         <Container.Body>

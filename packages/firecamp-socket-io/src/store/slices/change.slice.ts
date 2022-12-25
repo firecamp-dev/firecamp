@@ -3,7 +3,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
 import { ISocketIO } from '@firecamp/types';
-
+import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
   EReqChangeMetaKeys,
@@ -25,6 +25,7 @@ interface IRequestChangeState {
 interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<ISocketIO>) => void;
+  preparePayloadForSaveRequest: () => ISocketIO;
 }
 
 const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
@@ -66,6 +67,12 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     state.context.request.onChangeRequestTab(state.runtime.tabId, {
       hasChange,
     });
+  },
+  preparePayloadForSaveRequest: () => {
+    const state = get();
+    const _sr = normalizeRequest(state.request);
+    console.log(_sr);
+    return _sr;
   },
 });
 

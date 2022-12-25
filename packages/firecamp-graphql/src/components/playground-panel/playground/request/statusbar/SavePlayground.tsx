@@ -35,7 +35,7 @@ const SavePlayground: FC<ISavePlayground> = ({
     setTimeout(() => {
       if (isOpen == true) {
         if (!isRequestSaved) {
-          context.appService.notify.info(
+          context.app.notify.info(
             'Please save the graphql request first.'
           );
           toggleOpen(false);
@@ -49,7 +49,7 @@ const SavePlayground: FC<ISavePlayground> = ({
             inputRef.current?.focus();
           }
           else {
-            context.appService.notify.alert(
+            context.app.notify.alert(
               'Playground has invalid operations, please check again.'
             );
             toggleOpen(false);

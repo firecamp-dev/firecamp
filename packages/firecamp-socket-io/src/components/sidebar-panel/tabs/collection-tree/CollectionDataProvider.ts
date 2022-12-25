@@ -56,11 +56,11 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       });
     }
 
-    let item = this.items.find((i) => i.__ref?.id == itemId);
+    const item = this.items.find((i) => i.__ref?.id == itemId);
 
-    console.log(this.items, itemId);
+    // console.log(this.items, itemId);
 
-    let treeItem: TTreeItemData = {
+    const treeItem: TTreeItemData = {
       name: item.name,
       __ref: {
         id: item.__ref.id,
@@ -69,8 +69,8 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
       },
     };
 
-    let getChildren = (item) => {
-      if (item.__ref.isLeaf) return [];
+    const getChildren = (item) => {
+      if (item.__ref.isItem) return [];
       return this.items
         .filter((i) => {
           if (item.__ref.isFolder) return i.__ref.folderId == item.__ref.id;
@@ -79,7 +79,7 @@ export class CollectionTreeDataProvider<T = TTreeItemData>
         .map((i) => i.__ref.id);
     };
 
-    let children = getChildren(item);
+    const children = getChildren(item);
     return Promise.resolve({
       index: item.__ref.id,
       canMove: true,

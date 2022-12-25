@@ -1,3 +1,5 @@
+import { TId } from '@firecamp/types';
+
 export interface IPromptInput {
   header: string;
   lable?: string;
@@ -15,7 +17,15 @@ export interface IPromptInput {
   onError?: (e) => void;
 }
 
-export interface IPromptSaveItem extends Omit<IPromptInput, 'executor'> {
-  folders: any[];
-  executor?: (obj: { value: string; folderId: string }) => Promise<any>;
+export interface IPromptSaveItem
+  extends Omit<IPromptInput, 'validator' | 'executor'> {
+  collection: {
+    items: any[];
+    rootOrders: TId[];
+  };
+  validator?: (obj: { value: string; itemId: TId }) => {
+    isValid: boolean;
+    message?: string;
+  };
+  executor?: (obj: { value: string; itemId: TId }) => Promise<any>;
 }

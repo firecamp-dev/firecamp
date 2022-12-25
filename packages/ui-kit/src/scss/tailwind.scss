@@ -1650,11 +1650,11 @@ video {
 .bg-statusBarBackground2 {
 	background-color: var(--statusBar-background2);
 }
-.bg-tabBackground {
-	background-color: var(--tab-background);
-}
 .\!bg-statusBarBackground2 {
 	background-color: var(--statusBar-background2) !important;
+}
+.bg-tabBackground {
+	background-color: var(--tab-background);
 }
 .bg-focus4 {
 	background-color: var(--focus-level-4);
@@ -1855,6 +1855,9 @@ video {
 }
 .pb-0 {
 	padding-bottom: 0px;
+}
+.\!pt-4 {
+	padding-top: 1rem !important;
 }
 .pl-0 {
 	padding-left: 0px;
@@ -2251,10 +2254,6 @@ video {
 	content: "";
 	border-color: var(--tab-border);
 }
-.after\:bg-statusBarBackground2::after {
-	content: "";
-	background-color: var(--statusBar-background2);
-}
 .after\:\!bg-statusBarBackground2::after {
 	content: "";
 	background-color: var(--statusBar-background2) !important;
@@ -2262,6 +2261,10 @@ video {
 .after\:\!bg-tabActiveBackground::after {
 	content: "";
 	background-color: var(--tab-activeBackground) !important;
+}
+.after\:bg-statusBarBackground2::after {
+	content: "";
+	background-color: var(--statusBar-background2);
 }
 .after\:opacity-10::after {
 	content: "";
@@ -2684,7 +2687,7 @@ tr:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: -1px;
-  min-height: 32px !important;
+  min-height: 33px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -2840,6 +2843,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
+.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }
