@@ -56,11 +56,11 @@ const createRequestSlice = (
     const state = get();
     if (!state.runtime.isRequestSaved) {
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId);
+      state.context.request.save(_request, tabId, true);
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
-      // const _request = state.preparePayloadForUpdateRequest();
-      // state.context.request.update(_request, tabId);
+      const _request = state.preparePayloadForUpdateRequest();
+      state.context.request.update(_request, tabId);
     }
   },
 });
