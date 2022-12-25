@@ -2,7 +2,7 @@ import mitt from 'mitt';
 import { IRequestFolder, TId, ISocketIOEmitter } from '@firecamp/types';
 import {
   Disposable,
-  TreeDataProvider,
+  TreeDataProvider as ITreeDataProvider,
   TreeItem,
   TreeItemIndex,
 } from '@firecamp/ui-kit/src/tree';
@@ -31,8 +31,8 @@ type TFolderItem = Partial<IRequestFolder & TItemExtra_meta>;
 type TItem = Partial<ISocketIOEmitter & TItemExtra_meta>;
 type TCItem = TFolderItem | TItem;
 
-export class CollectionTreeDataProvider<T = TTreeItemData>
-  implements TreeDataProvider
+export class TreeDataProvider<T = TTreeItemData>
+  implements ITreeDataProvider
 {
   private items: Array<TCItem>;
   private rootOrders: TreeItemIndex[];

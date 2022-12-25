@@ -5,9 +5,10 @@ import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
+import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import { useSocketStore, useSocketStoreApi } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
+import { TId } from '@firecamp/types';
 
 const CollectionTab = () => {
   const treeRef = useRef();
@@ -22,14 +23,14 @@ const CollectionTab = () => {
   const {
     registerTDP,
     unRegisterTDP,
-    openPlayground,
+    // openPlayground,
     createFolder,
     deleteItem,
   } = useSocketStoreApi().getState() as ISocketStore;
 
   // console.log(items, 'items...');
 
-  const dataProvider = useRef(new CollectionTreeDataProvider([], [], []));
+  const dataProvider = useRef(new TreeDataProvider([], [], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);

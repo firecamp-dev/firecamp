@@ -7,7 +7,7 @@ import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import { TId } from '@firecamp/types';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
+import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import {
   IWebsocketStore,
   useWebsocketStore,
@@ -27,14 +27,14 @@ const CollectionTab = () => {
   const {
     registerTDP,
     unRegisterTDP,
-    openPlayground,
+    // openPlayground,
     createFolder,
     deleteItem,
   } = useWebsocketStoreApi().getState() as IWebsocketStore;
 
   // console.log(items, 'items...');
 
-  const dataProvider = useRef(new CollectionTreeDataProvider([], [], []));
+  const dataProvider = useRef(new TreeDataProvider([], [], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);
