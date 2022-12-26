@@ -3,7 +3,7 @@ import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
 import { TId } from '@firecamp/types';
 import ConnectButton from '../connection/ConnectButton';
-import { IWebsocketStore, useWebsocketStore } from '../../../store/index';
+import { IWebsocketStore, useWebsocketStore } from '../../../store';
 
 const UrlBarContainer = ({
   tab,

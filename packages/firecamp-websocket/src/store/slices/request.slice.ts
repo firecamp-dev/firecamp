@@ -4,7 +4,7 @@ import {
   createUrlSlice,
   IConnectionsSlice,
   createConnectionSlice,
-} from '../index';
+} from './';
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: IWebSocket;

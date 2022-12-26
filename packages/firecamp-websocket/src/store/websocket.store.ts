@@ -2,6 +2,9 @@ import create from 'zustand';
 import createContext from 'zustand/context';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
+import { _object } from '@firecamp/utils';
+import { IWebSocket, TId } from '@firecamp/types';
+import { initialiseStoreFromRequest } from '../services/reqeust.service';
 
 import {
   // request
@@ -45,10 +48,7 @@ import {
   IUi,
   createUiSlice,
   IUiSlice,
-} from './index';
-import { _object } from '@firecamp/utils';
-import { IWebSocket, TId } from '@firecamp/types';
-import { initialiseStoreFromRequest } from '../services/reqeust.service';
+} from './slices/';
 
 const {
   Provider: WebsocketStoreProvider,
