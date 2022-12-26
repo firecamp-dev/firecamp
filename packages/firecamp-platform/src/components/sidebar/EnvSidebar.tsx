@@ -17,7 +17,6 @@ import pltContext from '../../services/platform-context';
 
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
-import AppService from '../../services/app'
 
 const EnvSidebar: FC<any> = ({ expanded }) => {
   const {
@@ -81,12 +80,12 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col">
-          <EnvVarPreview
+          {/* <EnvVarPreview
             key={`env-preview-${EEnvironmentScope.Workspace}`}
             scope={EEnvironmentScope.Workspace}
             activeEnvId={activeTabWrsEnv}
             activeTab={activeTab}
-          />
+          /> */}
           {!!activeCollectionEnv ? (
             <EnvVarPreview
               key={`env-preview-${EEnvironmentScope.Collection}`}
@@ -206,7 +205,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
       vars = JSON.parse(variables);
     }
     catch (e) {
-      AppService.notify.alert("The variables are not valid JSON.")
+      platformContext.app.notifyalert("The variables are not valid JSON.")
     }
 
     /** update env vars */

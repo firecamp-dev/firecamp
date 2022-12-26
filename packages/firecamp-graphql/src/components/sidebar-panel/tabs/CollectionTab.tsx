@@ -36,20 +36,17 @@ const CollectionTab = () => {
     openPlayground(plgId);
   };
   const deletePlg = (plgId: string) => {
-    context.appService.notify.confirm(
-      'Are you sure to delete the playground?',
-      (s) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the playground?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((s) => {
         console.log(plgId, 'plgId...');
         deleteItem(plgId);
-      },
-      console.log,
-      {
-        labels: {
-          confirm: 'Need your confirmation.',
-          confirmOk: 'Yes, delete it.',
-        },
-      }
-    );
+      });
   };
 
   return (

@@ -94,16 +94,14 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
       width={'400px'}
       className="p-6"
     >
-
-<ProgressBar active={state.isExecuting} />
-<Modal.Header>
-    <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
-            {header || `THIS IS A HEADER PLACE`}
-          </label>
-</Modal.Header>
+      <ProgressBar active={state.isExecuting} />
+      <Modal.Header>
+        <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+          {header || `THIS IS A HEADER PLACE`}
+        </label>
+      </Modal.Header>
       <Modal.Body>
         <div>
-          
           <div className="mt-4">
             <Input
               autoFocus={true}
@@ -127,28 +125,27 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
         </div>
       </Modal.Body>
       <Modal.Footer className="!pt-4">
-
-      <TabHeader className="!px-0">
-            <TabHeader.Right>
-              <Button
-                text={texts?.btnCancle || `Cancel`}
-                onClick={_close}
-                sm
-                secondary
-                transparent
-                ghost
-              />
-              <Button
-                text={
-                  state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
-                }
-                onClick={_onClickOk}
-                disabled={state.isExecuting}
-                primary
-                sm
-              />
-            </TabHeader.Right>
-          </TabHeader>
+        <TabHeader className="!px-0">
+          <TabHeader.Right>
+            <Button
+              text={texts?.btnCancle || `Cancel`}
+              onClick={_close}
+              sm
+              secondary
+              transparent
+              ghost
+            />
+            <Button
+              text={
+                state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
+              }
+              onClick={_onClickOk}
+              disabled={state.isExecuting}
+              primary
+              sm
+            />
+          </TabHeader.Right>
+        </TabHeader>
       </Modal.Footer>
     </Modal>
   );

@@ -130,7 +130,7 @@ const RealtimeEventManager: FC<any> = () => {
     emitter.on(EPlatformTabs.openSaved, (request: any) => {
       const [ tab, orders ] = open.saved(request);
       console.log(tab, "opened tab")
-      if (!tab) return;
+      if (!tab) return; // if request is already opened then retun value would be [ null, null]
       emitter.emit(EPlatformTabs.opened, [{
         ...tab,
         name: tab.name || request.__meta.name,

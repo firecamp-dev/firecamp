@@ -5,8 +5,8 @@ import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
-import AppService from '../../../services/app';
 import { EProvider } from '../../../services/auth/types';
+import platformContext from '../../../services/platform-context';
 
 /**
  * User Sign in
@@ -34,15 +34,15 @@ const SignInWithEmail: FC<IModal> = () => {
 
         localStorage.setItem('token', response.__meta.accessToken);
         // localStorage.setItem('workspace', res.response.workspace.__ref.id); //handled at initWorkspace fn
-        AppService.initApp();
-        AppService.modals.close();
-        AppService.notify.success(`You have signed in successfully`, {
+        platformContext.app.initApp();
+        platformContext.app.modals.close();
+        platformContext.app.notify.success(`You have signed in successfully`, {
           labels: { alert: 'success' },
         });
       })
       .catch((e) => {
         // console.log(e.response)
-        AppService.notify.alert(e.response?.data?.message || e.message, {
+        platformContext.app.notify.alert(e.response?.data?.message || e.message, {
           labels: { alert: 'error!' },
         });
       })
@@ -135,7 +135,7 @@ const SignInWithEmail: FC<IModal> = () => {
                 className="!text-primaryColor text-sm mb-4 -mt-1"
                 onClick={(e) => {
                   if (e) e.preventDefault();
-                  AppService.modals.openForgotPassword();
+                  platformContext.app.modals.openForgotPassword();
                 }}
                 tabIndex={1}
               >
@@ -143,11 +143,11 @@ const SignInWithEmail: FC<IModal> = () => {
               </a>
             </div>
             <Button
-              color="primary"
               text={isRequesting ? `Singing...` : `Sign in`}
-              fullWidth={true}
-              size="md"
               onClick={handleSubmit(_onSignIn)}
+              fullWidth={true}
+              primary
+              md
             />
           </form>
         </div>
@@ -162,7 +162,7 @@ const SignInWithEmail: FC<IModal> = () => {
               className="font-bold underline"
               onClick={(e) => {
                 if (e) e.preventDefault();
-                AppService.modals.openSignUp();
+                platformContext.app.modals.openSignUp();
               }}
               tabIndex={1}
             >

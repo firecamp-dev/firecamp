@@ -13,8 +13,8 @@ import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useUserStore } from '../../../store/user';
-import AppService from '../../../services/app';
 import { usePlatformStore, EPlatformScope } from '../../../store/platform';
+import platformContext from '../../../services/platform-context';
 
 const DDMenuContainer = () => {
   const { isGuest, user } = useUserStore(
@@ -77,7 +77,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
               <VscSignIn size={20} />
             </div>
           ),
-          onClick: () => AppService.modals.openSignIn(),
+          onClick: () => platformContext.app.modals.openSignIn(),
         },
         {
           name: 'Create an account',
@@ -86,7 +86,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
               <VscAccount size={20} />
             </div>
           ),
-          onClick: () => AppService.modals.openSignUp(),
+          onClick: () => platformContext.app.modals.openSignUp(),
         },
       ],
     },
@@ -112,7 +112,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            AppService.modals.openCreateOrg();
+            platformContext.app.modals.openCreateOrg();
           },
         },
         {
@@ -123,7 +123,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            AppService.modals.openSwitchOrg();
+            platformContext.app.modals.openSwitchOrg();
           },
         },
         {
@@ -133,7 +133,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
               <VscSignOut size={14} />
             </div>
           ),
-          onClick: () => AppService.logout(),
+          onClick: () => platformContext.app.logout(),
         },
       ],
     },
@@ -177,7 +177,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            AppService.modals.openWorkspaceManagement();
+            platformContext.app.modals.openWorkspaceManagement();
           },
         },
         {
@@ -189,7 +189,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            AppService.modals.openInviteMembers();
+            platformContext.app.modals.openInviteMembers();
           },
         },
         {
@@ -210,7 +210,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            AppService.modals.openSwitchOrg();
+            platformContext.app.modals.openSwitchOrg();
           },
         },
       ],
@@ -255,7 +255,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            AppService.modals.openOrgManagement();
+            platformContext.app.modals.openOrgManagement();
           },
         },
         {
@@ -267,7 +267,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            AppService.modals.openCreateOrg();
+            platformContext.app.modals.openCreateOrg();
           },
         },
         {
@@ -279,7 +279,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            AppService.modals.openSwitchOrg();
+            platformContext.app.modals.openSwitchOrg();
           },
         },
       ],

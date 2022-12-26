@@ -21,9 +21,8 @@ import StatusBarContainer from '../components/status-bar/StatusBarContainer';
 import { ModalContainer } from '../components/modals-v3/ModalContainer';
 import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
-
-import AppService from '../services/app';
 import RealtimeEventManager from '../components/common/realtime/Realtime';
+import platformContext from '../services/platform-context';
 
 // Initialise Firecamp languages settings
 MonacoFirecampLangInit();
@@ -41,7 +40,7 @@ const App: FC<any> = () => {
   useEffect(() => {
     const init = async () => {
       setTimeout(async () => {
-        await AppService.initApp();
+        await platformContext.app.initApp();
         // await initApp();
       }, 100);
     };

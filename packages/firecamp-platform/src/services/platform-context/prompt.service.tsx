@@ -1,4 +1,5 @@
 import ReactDOM from 'react-dom';
+import Confirm from '../../components/prompt/Confirm';
 import { PromptInput } from '../../components/prompt/PromptInput';
 import { PromptSaveItem } from '../../components/prompt/PromptSaveItem';
 import { IPromptInput, IPromptSaveItem } from '../../components/prompt/types';
@@ -53,4 +54,17 @@ const promptSaveItem: TOpenPromptSaveItem = (props) => {
   });
 };
 
-export { promptInput, promptSaveItem };
+const confirm = (props: any) => {
+  const confirmContainer = document.createElement('div');
+  const onClose = () => {
+    ReactDOM.unmountComponentAtNode(confirmContainer);
+  };
+  return new Promise((rs, rj) => {
+    ReactDOM.render(
+      <Confirm {...props} onClose={onClose} onResolve={(bool) => rs(bool)} />,
+      confirmContainer
+    );
+  });
+};
+
+export { promptInput, promptSaveItem, confirm };

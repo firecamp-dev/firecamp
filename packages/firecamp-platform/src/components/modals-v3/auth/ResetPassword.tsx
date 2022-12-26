@@ -3,8 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Modal, IModal, Button, Input } from '@firecamp/ui-kit';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import { Rest } from '@firecamp/cloud-apis';
-
-import AppService from '../../../services/app';
+import platformContext from '../../../services/platform-context';
 
 /**
  * ResetPassword component
@@ -27,18 +26,18 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
       .resetPassword({ token, new_password: password })
       .then((res) => {
         if ([200, 201].includes(res?.status)) {
-          AppService.notify.success(res.data?.message, {
+          platformContext.app.notify.success(res.data?.message, {
             labels: { success: 'Reset password' },
           });
-          AppService.modals.openSignIn();
+          platformContext.app.modals.openSignIn();
         } else {
-          AppService.notify.alert(`Failed to reset password!`, {
+          platformContext.app.notify.alert(`Failed to reset password!`, {
             labels: { alert: 'Reset password' },
           });
         }
       })
       .catch((e) => {
-        AppService.notify.alert(e?.response?.data?.message || e.message, {
+        platformContext.app.notify.alert(e?.response?.data?.message || e.message, {
           labels: { alert: 'error!' },
         });
       })
@@ -118,11 +117,11 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               }
             />
             <Button
-              color="primary"
               text={isRequesting ? `Resetting password...` : 'Reset Password'}
-              fullWidth={true}
-              size="md"
               onClick={handleSubmit(_onSubmit)}
+              fullWidth={true}
+              primary
+              md
             />
           </form>
         </div>
@@ -135,7 +134,7 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               href="#"
               onClick={(e) => {
                 if (e) e.preventDefault();
-                AppService.modals.openSignUp();
+                platformContext.app.modals.openSignUp();
               }}
               tabIndex={1}
               className="font-bold underline"
@@ -150,7 +149,7 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               href="#"
               onClick={(e) => {
                 if (e) e.preventDefault();
-                AppService.modals.openSignIn();
+                platformContext.app.modals.openSignIn();
               }}
               tabIndex={1}
               className="font-bold underline"
@@ -168,7 +167,7 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
         className="fc-auth-footer-link with-underline"
         onClick={e => {
           if (e) e.preventDefault();
-          AppService.modals.openSignUp();
+          platformContext.app.modals.openSignUp();
         }}>
         Not have an account? Sign Up
       </a>
@@ -178,7 +177,7 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
         className="fc-auth-footer-link with-underline"
         onClick={e => {
           if (e) e.preventDefault();
-          AppService.modals.openSignIn();
+          platformContext.app.modals.openSignIn();
         }}
       >
         Already have an account? Sign In

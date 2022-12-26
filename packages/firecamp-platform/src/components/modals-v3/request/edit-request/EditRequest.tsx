@@ -10,10 +10,8 @@ import {
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
-
 import { useModalStore } from '../../../../store/modal';
 import { useWorkspaceStore } from '../../../../store/workspace'
-import AppService from '../../../../services/app'
 
 type TModalMeta = { name: string, description: string, requestId: TId, collectionId: TId, folderId?: TId };
 
@@ -61,7 +59,7 @@ const EditRequest: FC<IModal> = ({
     const {  updateRequest } = useWorkspaceStore.getState()
     updateRequest(requestId, _request)
       .then((res)=> {
-        AppService.modals.close();
+        platformContext.app.modals.close();
       })
       .finally(()=> {
         setIsRequesting(false);

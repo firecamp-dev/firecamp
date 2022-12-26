@@ -4,7 +4,7 @@ import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
-import AppService from '../../../services/app';
+import platformContext from '../../../services/platform-context';
 
 /**
  * User Sign in
@@ -23,7 +23,7 @@ const SignIn: FC<IModal> = () => {
             text="Continue with Email"
             icon={<VscAccount size={18} />}
             className="!w-full mb-5"
-            onClick={() => AppService.modals.openSignInWithEmail()}
+            onClick={() => platformContext.app.modals.openSignInWithEmail()}
             transparent
             iconLeft
             md
@@ -44,7 +44,7 @@ const SignIn: FC<IModal> = () => {
               className="font-bold underline"
               onClick={(e) => {
                 if (e) e.preventDefault();
-                AppService.modals.openSignUp();
+                platformContext.app.modals.openSignUp();
               }}
               tabIndex={1}
             >

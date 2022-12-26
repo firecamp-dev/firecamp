@@ -243,25 +243,22 @@ const useTabStore = create<ITabStore>((set, get) => {
         // Todo: need to improve this old structure
         // note: above request is coming from explorer/tree item
 
-        let request = {
+        const request = {
           url,
           method,
           __meta,
           __ref,
         };
 
-        let { list, changeActiveTab, open } = get();
-        let tabAlreadyExists = Object.values(list).find(
+        const { list, changeActiveTab, open } = get();
+        const tabAlreadyExists = Object.values(list).find(
           (l) => l?.request?.__ref?.id == request?.__ref?.id
         );
-
         // console.log(tabAlreadyExists);
-
         if (tabAlreadyExists) {
           changeActiveTab(tabAlreadyExists.id);
-          return null;
+          return [null, null];
         }
-
         // console.log('in store...', request);
 
         return open.request(request, {

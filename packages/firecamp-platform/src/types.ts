@@ -41,7 +41,6 @@ export enum EPlatformModalTypes {
   FolderSetting = 'folderSetting',
 
   // request
-  SaveRequest = 'saveRequest',
   EditRequest = 'editRequest',
 
   // environment
@@ -91,7 +90,6 @@ export const EPlatformModalDefaultProps = {
   [EPlatformModalTypes.FolderSetting]: { height: '650px', width: '500px' },
 
   // request
-  [EPlatformModalTypes.SaveRequest]: { height: '732px', width: '450px' },
   [EPlatformModalTypes.EditRequest]: { height: '600px', width: '450px' },
 
   // environment

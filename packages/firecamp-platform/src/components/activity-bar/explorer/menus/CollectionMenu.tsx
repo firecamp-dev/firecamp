@@ -7,7 +7,6 @@ import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import AppService from '../../../../services/app';
 import { useWorkspaceStore } from '../../../../store/workspace';
 import { RE } from '../../../../types';
 import platformContext from '../../../../services/platform-context';
@@ -81,7 +80,7 @@ const CollectionMenu = ({
             return createFolder(_folder);
           },
           onError: (e) => {
-            AppService.notify.alert(e?.response?.data?.message || e.message);
+            platformContext.app.notifyalert(e?.response?.data?.message || e.message);
           },
         })
         .then((res) => {
@@ -109,9 +108,9 @@ const CollectionMenu = ({
     name: 'Setting',
     onClick: () => {
       if (menuType == EMenuType.Collection) {
-        AppService.modals.openCollectionSetting({ collectionId });
+        platformContext.app.modals.openCollectionSetting({ collectionId });
       } else if (menuType == EMenuType.Folder) {
-        AppService.modals.openFolderSetting({ collectionId, folderId });
+        platformContext.app.modals.openFolderSetting({ collectionId, folderId });
       }
     },
   };
@@ -124,25 +123,24 @@ const CollectionMenu = ({
     ),
     name: 'Delete',
     onClick: () => {
-      AppService.notify.confirm(
-        `Are you sure to delete the ${menuType}?`,
-        (s) => {
-          if (menuType == EMenuType.Collection) {
-            deleteCollection(collectionId);
-          } else if (menuType == EMenuType.Folder) {
-            deleteFolder(folderId);
-          } else if (menuType == EMenuType.Request) {
-            deleteRequest(requestId);
-          }
-        },
-        console.log,
-        {
-          labels: {
-            confirm: 'Need your confirmation.',
-            confirmOk: 'Yes, delete it.',
+      platformContext.window
+        .confirm({
+          title: `Are you sure to delete the ${menuType}?`,
+          texts: {
+            btnConfirm: 'Yes, delete it.',
           },
-        }
-      );
+        })
+        .then((isConfirmed) => {
+          if (isConfirmed) {
+            if (menuType == EMenuType.Collection) {
+              deleteCollection(collectionId);
+            } else if (menuType == EMenuType.Folder) {
+              deleteFolder(folderId);
+            } else if (menuType == EMenuType.Request) {
+              deleteRequest(requestId);
+            }
+          }
+        });
     },
   };
 
