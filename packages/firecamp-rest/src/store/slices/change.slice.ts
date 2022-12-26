@@ -10,6 +10,7 @@ import {
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
 } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
@@ -32,7 +33,10 @@ interface IRequestChangeStateSlice {
   preparePayloadForUpdateRequest: () => Partial<IRest>;
 }
 
-const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
+  set,
+  get
+) => ({
   requestChangeState: RequestChangeState,
   equalityChecker: (request: Partial<IRest>) => {
     const state = get();

@@ -1,6 +1,7 @@
 import { IHeader, IRestScripts, IAuth, TId } from '@firecamp/types';
 import { _auth } from '@firecamp/utils';
 import { RuntimeBodies } from '../../constants';
+import { TStoreSlice } from '../store.type';
 
 interface IRuntime {
   bodies: typeof RuntimeBodies;
@@ -42,11 +43,11 @@ interface IRuntimeSlice {
   setOAuth2LastFetchedToken: (token: string) => void;
 }
 
-const createRuntimeSlice = (
+const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   set,
   get,
   initialRuntimeState: IRuntime
-): IRuntimeSlice => ({
+) => ({
   runtime: {
     authHeaders: [],
     inherit: {

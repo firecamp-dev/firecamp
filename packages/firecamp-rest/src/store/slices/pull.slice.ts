@@ -1,6 +1,7 @@
 import { IUiAuth } from '@firecamp/types';
 import { _object, _auth } from '@firecamp/utils';
 import { IRestClientRequest } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 /**
  * Reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
@@ -17,7 +18,7 @@ interface IPullSlice {
   ) => Promise<IRestClientRequest> | PromiseRejectedResult; //define type for pullPayload here
 }
 
-const createPullActionSlice = (set, get): IPullSlice => ({
+const createPullActionSlice: TStoreSlice<IPullSlice> = (set, get) => ({
   getMergedRequestByPullAction: (pullActionPayload: any) => {
     if (
       pullActionPayload &&
