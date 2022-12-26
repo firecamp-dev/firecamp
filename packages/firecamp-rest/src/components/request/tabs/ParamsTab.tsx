@@ -7,7 +7,7 @@ import {
 } from '@firecamp/ui-kit';
 import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
-import { useRestStore } from '../../../store';
+import { useRestStore } from '../../../store/slices';
 
 const ParamsTab = () => {
   const tableApi = useRef<TTableApi>();

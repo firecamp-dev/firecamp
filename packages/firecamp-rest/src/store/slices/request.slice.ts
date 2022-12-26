@@ -3,11 +3,9 @@ import { _clipboard } from '@firecamp/utils';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
-
-import {
-  normalizeRequest,
-  prepareUIRequestPanelState,
-} from '../../services/request.service';
+import { prepareUIRequestPanelState } from '../../services/request.service';
+import { IRestClientRequest } from '../../types';
+import { TStoreSlice } from '../store.type';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -15,9 +13,7 @@ import {
   IBodySlice,
   createAuthSlice,
   IAuthSlice,
-} from '../index';
-
-import { IRestClientRequest } from '../../types';
+} from './index';
 
 const requestSliceKeys = [
   'url',
@@ -43,23 +39,21 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   save: (tabId: TId) => void;
 }
 
-const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
+  set,
+  get,
+  initialRequest: IRestClientRequest
+) => ({
   request: initialRequest,
-
   ...createUrlSlice(set, get),
   ...createBodySlice(set, get, initialRequest.body),
   ...createAuthSlice(set, get),
-
   initialiseRequest: (request: IRestClientRequest) => {
     // console.log({initReq: request});
     set((s) => ({
-      ...s,
       request,
     }));
-
-    // console.log({req: get().request});
   },
-
   initialiseRequestByKeyValue: (key: string, value: any) => {
     set((s) => ({
       request: {
@@ -68,7 +62,6 @@ const createRequestSlice = (set, get, initialRequest: IRestClientRequest) => ({
       },
     }));
   },
-
   changeMethod: (method: EHttpMethod) => {
     const state = get();
     set((s) => ({

@@ -25,7 +25,7 @@ import {
   _table,
 } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
-import { IRestStoreState, IUiRequestPanel } from '../store';
+import { IStoreState, IUiRequestPanel } from '../store/slices';
 import { ERequestPanelTabs, IRestClientRequest } from '../types';
 import { configState, RuntimeBodies } from '../constants';
 import { IAuthHeader } from './auth/types';
@@ -242,7 +242,7 @@ export const normalizeRequest = (
 export const initialiseStoreFromRequest = (
   _request: Partial<IRest>,
   tabId: TId
-): IRestStoreState => {
+): IStoreState => {
   const request: IRestClientRequest = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
   // console.log({ request });

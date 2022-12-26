@@ -11,7 +11,7 @@ import {
 } from '../types';
 import { _array, _object } from '@firecamp/utils';
 import { normalizeRequest } from '../services/request.service';
-import { IRestStore } from './rest.store';
+import { IStore } from './rest.store';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
@@ -85,7 +85,7 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     return _sr;
   },
   preparePayloadForUpdateRequest: () => {
-    const state = get() as IRestStore;
+    const state = get() as IStore;
     const { request, requestChangeState: _rcs } = state;
     const _request = normalizeRequest(request);
     let _ur: Partial<IRest> = {};

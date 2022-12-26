@@ -10,7 +10,7 @@ import {
   IOAuth2UiState,
 } from '@firecamp/types';
 import { _object, _table } from '@firecamp/utils';
-import { IRestStore } from '../rest.store';
+import { IStore } from '../rest.store';
 import { getAuthHeaders } from '../../services/request.service';
 
 interface IAuthSlice {
@@ -57,7 +57,7 @@ const createAuthSlice = (set, get) => ({
       auth.value = { ...state.request.auth.value, [key]: value };
     }
 
-    set((s: IRestStore) => ({
+    set((s: IStore) => ({
       request: {
         ...s.request,
         auth,

@@ -3,11 +3,11 @@ import shallow from 'zustand/shallow';
 import Statuses from '../../../common/responseStatus.json';
 
 import { ResStatus, ResSize, ResTime } from '@firecamp/ui-kit';
-import { IRestStore, useRestStore } from '../../../../store';
+import { IStore, useRestStore } from '../../../../store/slices';
 
 const ResponseMetaData = () => {
   let { response, isRequestRunning } = useRestStore(
-    (s: IRestStore) => ({
+    (s: IStore) => ({
       response: s.response,
       isRequestRunning: s.runtime.isRequestRunning,
     }),

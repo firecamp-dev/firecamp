@@ -3,7 +3,7 @@ import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
 import { AuthSetting } from '@firecamp/ui-kit';
 
-import { IRestStore, useRestStore } from '../../../store';
+import { IStore, useRestStore } from '../../../store/slices';
 
 const AuthTab = () => {
 
@@ -15,7 +15,7 @@ const AuthTab = () => {
     changeAuth,
     changeAuthType
   } = useRestStore(
-    (s: IRestStore) => ({
+    (s: IStore) => ({
       auth: s.request.auth,
       runtimeAuths: s.runtime.auths,
       oauth2LastFetchedToken: s.runtime.oauth2LastFetchedToken,

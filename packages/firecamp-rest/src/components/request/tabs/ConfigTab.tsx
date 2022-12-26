@@ -1,6 +1,6 @@
 import shallow from 'zustand/shallow';
 import { Container, CheckboxInGrid, Input } from '@firecamp/ui-kit';
-import { useRestStore } from '../../../store';
+import { useRestStore } from '../../../store/slices';
 import { ERestConfigKeys } from '../../../types';
 
 const { MaxRedirects, FollowLocation, RejectUnauthorized, RequestTimeout } =

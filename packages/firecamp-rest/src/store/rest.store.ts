@@ -11,23 +11,16 @@ import {
   initialiseStoreFromRequest,
 } from '../services/request.service';
 import {
-  IRequestSlice,
   createRequestSlice,
   requestSliceKeys,
   createRuntimeSlice,
-  IRuntime,
-  IRuntimeSlice,
   createResponseSlice,
-  IResponseSlice,
   createUiSlice,
-  IUi,
-  IUiSlice,
-  IPullSlice,
   createPullActionSlice,
-  IRequestChangeStateSlice,
   createRequestChangeStateSlice,
-} from './index';
+} from './slices/index';
 import { IRestClientRequest } from '../types';
+import { IStoreState, IStore, TStoreSlice, TOnChangeVariables } from './store.type';
 
 const {
   Provider: RestStoreProvider,
@@ -35,45 +28,8 @@ const {
   useStoreApi: useRestStoreApi,
 } = createContext();
 
-type TOnChangeVariables = ({
-  workspace,
-  collection,
-}: {
-  workspace: { [key: string]: any };
-  collection?: { [key: string]: any };
-}) => void;
-
-interface IRestStore
-  extends IRequestSlice,
-    IRuntimeSlice,
-    IResponseSlice,
-    IUiSlice,
-    IPullSlice,
-    IRequestChangeStateSlice {
-  originalRequest?: IRest;
-  context?: any;
-  setContext: (ctx: any) => void;
-  initialise: (request: IRest, tabId: TId) => void;
-  execute(
-    variables: {
-      merged: {};
-      workspace: {};
-      collection?: {};
-    },
-    fcAgent: EFirecampAgent,
-    onChangeVariables: TOnChangeVariables
-  ): void;
-}
-
-interface IRestStoreState {
-  request?: IRestClientRequest;
-  runtime?: IRuntime;
-  response?: IRestResponse;
-  ui?: IUi;
-}
-
-const createRestStore = (initialState: IRestStoreState) =>
-  create<IRestStore>((set, get): IRestStore => {
+const createRestStore = (initialState: IStoreState) =>
+  create<IStore>((set, get): IStore => {
     const uiRequestPanel = prepareUIRequestPanelState(initialState.request);
     return {
       setContext: (ctx: any) => set({ context: ctx }),
@@ -287,6 +243,6 @@ export {
   useRestStore,
   createRestStore,
   useRestStoreApi,
-  IRestStoreState,
-  IRestStore,
+  IStoreState,
+  IStore,
 };

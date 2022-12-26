@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 import {  BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
-import { useRestStore } from '../../../store';
+import { useRestStore } from '../../../store/slices';
 
 const HeadersTab = () => {
   let { headers, authHeaders, changeHeaders } = useRestStore(
