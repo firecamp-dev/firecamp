@@ -1,6 +1,6 @@
 import { IHeader, IRestScripts, IAuth, TId } from '@firecamp/types';
 import { _auth } from '@firecamp/utils';
-import { RuntimeBodies } from '../constants';
+import { RuntimeBodies } from '../../constants';
 
 interface IRuntime {
   bodies: typeof RuntimeBodies;

@@ -1,13 +1,13 @@
 import { IUiAuth } from '@firecamp/types';
 import { _object, _auth } from '@firecamp/utils';
-import { IRestClientRequest } from '../types';
+import { IRestClientRequest } from '../../types';
 
 /**
  * Reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
  */
 
 interface IPullSlice {
-  pull?: any //IPushPayload;
+  pull?: any; //IPushPayload;
 
   /**
    * Handle pull payload by keys and updated request payload

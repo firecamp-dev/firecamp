@@ -7,7 +7,7 @@ import { _object } from '@firecamp/utils';
 import {
   normalizeRequest,
   prepareUIRequestPanelState,
-} from '../services/request.service';
+} from '../../services/request.service';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -15,9 +15,9 @@ import {
   IBodySlice,
   createAuthSlice,
   IAuthSlice,
-} from './index';
+} from '../index';
 
-import { IRestClientRequest } from '../types';
+import { IRestClientRequest } from '../../types';
 
 const requestSliceKeys = [
   'url',

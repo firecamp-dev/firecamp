@@ -1,7 +1,7 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object, _array } from '@firecamp/utils';
-import { ERequestPanelTabs } from '../types';
+import { ERequestPanelTabs } from '../../types';
 
 interface IUiRequestPanel {
   activeTab?: string;

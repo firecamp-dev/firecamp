@@ -10,8 +10,8 @@ import {
   IOAuth2UiState,
 } from '@firecamp/types';
 import { _object, _table } from '@firecamp/utils';
-import { IRestStore } from './rest.store';
-import { getAuthHeaders } from '../services/request.service';
+import { IRestStore } from '../rest.store';
+import { getAuthHeaders } from '../../services/request.service';
 
 interface IAuthSlice {
   changeAuthType: (authType: EAuthTypes) => void;
