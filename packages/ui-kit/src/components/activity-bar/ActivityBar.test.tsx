@@ -1,11 +1,13 @@
+import {useState} from 'react';
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-
-import ActivityBar from './ActivityBar';
+import { render, screen, waitFor } from '@testing-library/react';
 import { VscFiles } from "@react-icons/all-files/vsc/VscFiles";
 import { VscHistory } from "@react-icons/all-files/vsc/VscHistory";
 import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
 import { VscSettingsGear } from "@react-icons/all-files/vsc/VscSettingsGear";
+
+import ActivityBar from './ActivityBar';
+import { click } from '../../../__mocks__/eventMock';
 
 const compositeBarList = [
     { id: '1', icon: <VscFiles data-tip={'Explorer (⇧⌘P)'} data-for={'1'} />, text: 'Explorer (⇧⌘P)', active: false },
@@ -19,23 +21,28 @@ const actionBarList = [
 ];
 
 const Template = (args: any = {}) => {
+    const [text, updateText] = useState('');
+
+    
     return <ActivityBar {...args.ActivityBar} >
+        {text !== '' && <span data-testid='validate-text'>{text}</span>}
         {
             (typeof args.CompositeBar !== "undefined" || typeof args.ActionBar !== "undefined") &&
             (<>
-                {typeof args.CompositeBar !== "undefined" && (<ActivityBar.CompositeBar {...args.CompositeBar} items={compositeBarList} />)}
-                {typeof args.ActionBar !== "undefined" && (<ActivityBar.ActionBar {...args.ActionBar}  items={actionBarList}/>)}
+                {typeof args.CompositeBar !== "undefined" && (<ActivityBar.CompositeBar {...args.CompositeBar} items={compositeBarList} 
+                onClickItem={(item:  {id:number, text: string,icon: () => {},active: boolean}) => updateText(item.text)}/>)}
+                {typeof args.ActionBar !== "undefined" && (<ActivityBar.ActionBar {...args.ActionBar}  items={actionBarList}
+                 onClickItem={(item: {id:number, text: string,icon: () => {},active: boolean}) => updateText(item.text)}
+                />)}
             </>)
         }
     </ActivityBar>
 }
 
-//Todo write test case for selection in CompositeBar and ActionBar component
-
 describe("ActivityBar component", () => {
 
     test("should render the wrapper div with provided props", () => {
-        let { container } = render(<Template
+        const { container } = render(<Template
             ActivityBar={{
                 id: 'activity-bar-container',
                 className: 'activity-bar-classname',
@@ -44,9 +51,9 @@ describe("ActivityBar component", () => {
             CompositeBar
             ActionBar
         />);
-        let ActivityBarWrapper = container.firstElementChild;
-        let CompositeBar = ActivityBarWrapper.firstElementChild;
-        let ActionBar = ActivityBarWrapper.lastElementChild;
+        const ActivityBarWrapper = container.firstElementChild;
+        const CompositeBar = screen.getByTestId('activitybar-composite-bar');
+        const ActionBar = screen.getByTestId('activitybar-action-bar');
 
         //validate the wrapper component attributes
         expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBarBackground text-activityBarForeground flex flex-col  border-r border-activityBarBorder');
@@ -66,7 +73,7 @@ describe("ActivityBar component", () => {
     });
 
     test("should render with CompositeBar only", () => {
-        let { container } = render(<Template
+        const { container } = render(<Template
             ActivityBar={{
                 id: 'activity-bar-container',
                 className: 'activity-bar-classname',
@@ -74,8 +81,8 @@ describe("ActivityBar component", () => {
             }}
             CompositeBar
         />);
-        let ActivityBarWrapper = container.firstElementChild;
-        let CompositeBar = ActivityBarWrapper.firstElementChild;
+        const ActivityBarWrapper = container.firstElementChild;
+        const CompositeBar = screen.getByTestId('activitybar-composite-bar');
 
         //validate the wrapper component attributes
         expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBarBackground text-activityBarForeground flex flex-col  border-r border-activityBarBorder');
@@ -92,7 +99,7 @@ describe("ActivityBar component", () => {
     });
 
     test("should render with ActionBar only", () => {
-        let { container } = render(<Template
+        const { container } = render(<Template
             ActivityBar={{
                 id: 'activity-bar-container',
                 className: 'activity-bar-classname',
@@ -100,8 +107,8 @@ describe("ActivityBar component", () => {
             }}
             ActionBar
         />);
-        let ActivityBarWrapper = container.firstElementChild;
-        let ActionBar = ActivityBarWrapper.lastElementChild;
+        const ActivityBarWrapper = container.firstElementChild;
+        const ActionBar = screen.getByTestId('activitybar-action-bar');
 
         //validate the wrapper component attributes
         expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBarBackground text-activityBarForeground flex flex-col  border-r border-activityBarBorder');
@@ -114,6 +121,32 @@ describe("ActivityBar component", () => {
         expect(ActionBar).toHaveClass('action-bar mt-auto');
         expect(ActionBar.childElementCount).toBe(actionBarList.length);
 
+    });
+
+    test("should update the text of label with CompositeBar & ActionBar click action", async () => {
+        const { container } = render(<Template
+            CompositeBar
+            ActionBar
+        />);
+        const ActivityBarWrapper = container.firstElementChild;
+        const CompositeBar = screen.getByTestId('activitybar-composite-bar');
+        const ActionBar = screen.getByTestId('activitybar-action-bar');
+
+        expect(ActivityBarWrapper).toBeInTheDocument();
+
+        //Validate click action for CompositeBar List Item
+        click(CompositeBar.lastElementChild as HTMLDivElement);
+        await waitFor(() => {
+            const DivWithClickedItemText = screen.queryByTestId('validate-text');
+            expect(DivWithClickedItemText.textContent).toBe(compositeBarList[2].text)
+        });
+
+        //Validate click action for ActionBar List Item
+        click(ActionBar.firstElementChild as HTMLDivElement);
+        await waitFor(() => {
+            const DivWithClickedItemText = screen.queryByTestId('validate-text');
+            expect(DivWithClickedItemText.textContent).toBe(actionBarList[0].text)
+        });
     });
 
 });

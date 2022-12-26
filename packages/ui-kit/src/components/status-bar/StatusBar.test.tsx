@@ -22,7 +22,7 @@ describe("StatusBar component", () => {
         let { container } = render(<Template
             StatusBar={{ id: "status-bar-wrapper", className: "className" }}
             PrimaryRegion={{ id: "status-bar-primary-region-id", children: 'My workspace' }}
-            SecondaryRegion={{ id: "status-bar-secscreen.debugondary-region-id", children: <VscTwitter title="twitter-icon" /> }}
+            SecondaryRegion={{ id: "status-bar-secondary-region-id", children: <VscTwitter title="twitter-icon" /> }}
         />);
         let StatusBarWrapper = container.firstElementChild;
         let PrimaryRegion = StatusBarWrapper.firstElementChild;
