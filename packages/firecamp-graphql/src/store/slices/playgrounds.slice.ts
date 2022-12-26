@@ -9,7 +9,7 @@ import {
   getOperationNames,
   getPlaygroundName,
   prettifyQueryString,
-} from '../services/GraphQLservice';
+} from '../../services/GraphQLservice';
 
 export interface IPlaygroundRequest
   extends Omit<IGraphQLPlayground, '__ref' | '__meta'> {

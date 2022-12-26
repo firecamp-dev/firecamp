@@ -8,9 +8,9 @@ import {
   EReqChangeRootKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
-} from '../types';
-import { normalizeRequest } from '../services/request.service';
-import { IGraphQLStore } from './graphql.store';
+} from '../../types';
+import { normalizeRequest } from '../../services/request.service';
+import { IGraphQLStore } from '../graphql.store';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],

@@ -2,7 +2,7 @@ import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
 import _url from '@firecamp/url';
 import _cloneDeep from 'lodash/cloneDeep';
 
-import { prepareUiState } from '../services/request.service';
+import { prepareUiState } from '../../services/request.service';
 
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;

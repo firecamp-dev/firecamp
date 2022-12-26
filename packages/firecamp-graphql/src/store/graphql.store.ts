@@ -22,7 +22,7 @@ import {
   IUiSlice,
   IRequestChangeStateSlice,
   createRequestChangeStateSlice,
-} from './index';
+} from './slices';
 import { ERestBodyTypes, IGraphQL, IRest, TId } from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
