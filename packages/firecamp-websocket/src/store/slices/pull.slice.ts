@@ -1,5 +1,6 @@
 import { ERequestTypes, IWebSocket } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
+import { TStoreSlice } from '../store.type';
 
 interface IPullSlice {
   pull?: IPushPayload;
@@ -12,7 +13,7 @@ interface IPullSlice {
   ) => Promise<IWebSocket> | PromiseRejectedResult; //define type for pullPayload here
 }
 
-const createPullActionSlice = (set, get): IPullSlice => ({
+const createPullActionSlice: TStoreSlice<IPullSlice> = (set, get) => ({
   pull: {
     _action: {
       type: 'u',

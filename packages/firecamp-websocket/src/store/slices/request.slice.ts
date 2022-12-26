@@ -1,4 +1,5 @@
 import { IWebSocket, TId } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -21,11 +22,11 @@ const requestSliceKeys: string[] = [
   '__ref',
 ];
 
-const createRequestSlice = (
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
   set,
   get,
   initialRequest: IWebSocket
-): IRequestSlice => ({
+) => ({
   request: initialRequest,
 
   // url

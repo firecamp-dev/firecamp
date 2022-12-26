@@ -6,6 +6,7 @@ import { TId, IWebSocketMessage, EFirecampAgent } from '@firecamp/types';
 import { IPlayground } from './playgrounds.slice';
 import { _misc, _object } from '@firecamp/utils';
 import { EConnectionState } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 interface IHandleConnectionExecutorSlice {
   connect: (connectionId: TId) => void;
@@ -13,10 +14,9 @@ interface IHandleConnectionExecutorSlice {
   sendMessage: (connectionId: TId, message: IWebSocketMessage) => void;
 }
 
-const createHandleConnectionExecutor = (
-  set,
-  get
-): IHandleConnectionExecutorSlice => ({
+const createHandleConnectionExecutor: TStoreSlice<
+  IHandleConnectionExecutorSlice
+> = (set, get) => ({
   connect: (connectionId: TId) => {
     /**
      * TOODs:

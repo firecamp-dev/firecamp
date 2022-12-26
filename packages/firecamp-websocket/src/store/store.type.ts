@@ -58,8 +58,6 @@ interface IStoreState {
   logs?: ILogs;
   ui?: IUi;
 }
-
-
 type TStoreSlice<T> = (
   set: SetState<IStore>,
   get: GetState<IStore>,
