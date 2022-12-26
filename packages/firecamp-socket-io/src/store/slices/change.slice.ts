@@ -9,26 +9,28 @@ import {
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
 } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
   __meta: [],
   __root: [],
 };
-
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
   __meta?: EReqChangeMetaKeys[];
   __root?: EReqChangeRootKeys[];
 }
-
 interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<ISocketIO>) => void;
   preparePayloadForSaveRequest: () => ISocketIO;
 }
 
-const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
+  set,
+  get
+) => ({
   requestChangeState: RequestChangeState,
   equalityChecker: (request: Partial<ISocketIO>) => {
     const state = get();

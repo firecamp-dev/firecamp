@@ -5,6 +5,7 @@ import {
   IConnectionsSlice,
   createConnectionSlice,
 } from '.';
+import { TStoreSlice } from '../store.type';
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
@@ -16,11 +17,11 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
 
 const requestSliceKeys = ['url', 'connections', 'config', '__meta', '__ref'];
 
-const createRequestSlice = (
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
   set,
   get,
   initialRequest: ISocketIO
-): IRequestSlice => ({
+) => ({
   request: initialRequest,
 
   //url

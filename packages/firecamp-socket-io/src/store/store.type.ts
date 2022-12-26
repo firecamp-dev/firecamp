@@ -32,7 +32,6 @@ interface ISocket {
   logs?: ILogs;
   ui?: IUi;
 }
-
 interface ISocketStore
   extends IRequestSlice,
     IRuntimeSlice,
@@ -49,7 +48,6 @@ interface ISocketStore
   setContext: (ctx: any) => void;
   initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
 }
-
 type TStoreSlice<T> = (
   set: SetState<ISocketStore>,
   get: GetState<ISocketStore>,

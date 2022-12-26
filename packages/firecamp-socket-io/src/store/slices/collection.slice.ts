@@ -33,7 +33,7 @@ interface ICollectionSlice {
   onCreateFolder: (folder: IRequestFolder) => void;
 }
 
-const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
+const createCollectionSlice: TStoreSlice<> = (
   set,
   get,
   initialCollection: ICollection
