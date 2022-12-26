@@ -1,54 +1,40 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
 import _cloneDeep from 'lodash/cloneDeep';
-import equal from 'react-fast-compare';
 import { _object } from '@firecamp/utils';
 import { IWebSocket, TId } from '@firecamp/types';
 import { initialiseStoreFromRequest } from '../services/reqeust.service';
 
 import {
   // request
-  IRequestSlice,
   createRequestSlice,
   requestSliceKeys,
 
   // runtime
-  IRuntime,
-  IRuntimeSlice,
   createRuntimeSlice,
 
   // collection
   createCollectionSlice,
-  ICollection,
-  ICollectionSlice,
 
   // playground
-  IPlaygrounds,
-  IPlaygroundSlice,
   createPlaygroundsSlice,
 
   // connections logs
-  ILogsSlice,
-  ILogs,
   createLogsSlice,
 
   // request changes
-  IRequestChangeStateSlice,
   createRequestChangeStateSlice,
 
   // handle execution
-  IHandleConnectionExecutorSlice,
   createHandleConnectionExecutor,
 
   // pull
-  IPullSlice,
   createPullActionSlice,
 
   // ui
-  IUi,
   createUiSlice,
-  IUiSlice,
-} from './slices/';
+} from './slices';
+import { IStore, IStoreState } from './store.type';
 
 const {
   Provider: WebsocketStoreProvider,
@@ -56,33 +42,8 @@ const {
   useStoreApi: useWebsocketStoreApi,
 } = createContext();
 
-interface IWebsocketStoreState {
-  request?: IWebSocket;
-  collection?: ICollection;
-  runtime?: IRuntime;
-  playgrounds?: IPlaygrounds;
-  logs?: ILogs;
-  ui?: IUi;
-}
-
-interface IWebsocketStore
-  extends IRequestSlice,
-    IRuntimeSlice,
-    ICollectionSlice,
-    IPlaygroundSlice,
-    ILogsSlice,
-    IPullSlice,
-    IHandleConnectionExecutorSlice,
-    IUiSlice,
-    IRequestChangeStateSlice {
-  originalRequest?: IWebSocket;
-  context?: any;
-  setContext: (ctx: any) => void;
-  initialise: (request: Partial<IWebSocket>, tabId: TId) => void;
-}
-
-const createWebsocketStore = (initialState: IWebsocketStoreState) =>
-  create<IWebsocketStore>((set, get): IWebsocketStore => {
+const createWebsocketStore = (initialState: IStoreState) =>
+  create<IStore>((set, get): IStore => {
     return {
       setContext: (ctx: any) => set({ context: ctx }),
       initialise: async (request: Partial<IWebSocket>, tabId: TId) => {
@@ -115,6 +76,6 @@ export {
   useWebsocketStore,
   useWebsocketStoreApi,
   createWebsocketStore,
-  IWebsocketStore,
-  IWebsocketStoreState,
+  IStore,
+  IStoreState,
 };
