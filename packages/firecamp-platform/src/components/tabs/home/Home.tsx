@@ -142,28 +142,28 @@ const Home: FC<any> = () => {
           <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
             Popular Requests
           </div>
-          <div className="flex border-b border-appBorder mr-14 w-fit flex-none">
+          <div className="flex-col border-b border-appBorder pb-4 w-fit flex-none">
             <RequestItem
-              label="Rest"
+              label="Create Rest API"
               icon={<FcIconGetSquare size={50} />}
               openRequest={() => _openTab(ERequestTypes.Rest)}
             />
 
             <RequestItem
-              label="GraphQL"
+              label="Create GraphQL Playground"
               icon={<FcIconGraphQL size={24} />}
               openRequest={() => _openTab(ERequestTypes.GraphQL)}
             />
 
             <RequestItem
-              label="WebSocket"
+              label="Create WebSocket Playground"
               icon={<FcIconWebSocket size={24} />}
               openRequest={() => _openTab(ERequestTypes.WebSocket)}
               hasInvertIcon={true}
             />
 
             <RequestItem
-              label="SocketIO"
+              label="Create SocketIO Playground"
               icon={<FcIconSocketIoSquare size={24} />}
               openRequest={() => _openTab(ERequestTypes.SocketIO)}
               hasInvertIcon={true}
@@ -240,7 +240,7 @@ const RequestItem: FC<IRequestItem> = ({
 }) => {
   return (
     <div
-      className={cx('flex text-sm mr-14 items-center mb-8 cursor-pointer', {
+      className={cx('flex text-sm mr-4 items-center mb-4  text-appForegroundInActive cursor-pointer hover:text-appForegroundActive', {
         invert: hasInvertIcon,
       })}
       onClick={openRequest}
@@ -248,7 +248,7 @@ const RequestItem: FC<IRequestItem> = ({
       <div className="flex-none w-6 h-6 mr-3 flex items-center justify-center">
         {icon}
       </div>
-      <div className="text-base text-appForegroundInActive">{label}</div>
+      <div className="text-base">{label}</div>
     </div>
   );
 };

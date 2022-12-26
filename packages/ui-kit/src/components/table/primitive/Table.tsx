@@ -218,7 +218,7 @@ const Table: FC<ITable<any>> = ({
 
   return (
     <div
-      className={`w-full custom-scrollbar ${classes.container}`}
+      className={`w-full custom-scrollbar z-30 ${classes.container}`}
       ref={containerDivRef}
     >
       <table
