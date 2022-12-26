@@ -20,7 +20,7 @@ import {
   createRequestChangeStateSlice,
 } from './slices/index';
 import { IRestClientRequest } from '../types';
-import { IStoreState, IStore, TStoreSlice, TOnChangeVariables } from './store.type';
+import { IStoreState, IStore, TOnChangeVariables } from './store.type';
 
 const {
   Provider: RestStoreProvider,

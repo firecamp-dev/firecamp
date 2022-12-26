@@ -3,7 +3,7 @@ import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { IStore, useRestStore } from '../../../store/slices';
+import { IStore, useRestStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 

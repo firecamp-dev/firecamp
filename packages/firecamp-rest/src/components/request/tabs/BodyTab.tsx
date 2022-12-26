@@ -25,7 +25,7 @@ import NoBodyTab from './body/NoBodyTab';
 
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
-import { IStore, useRestStore } from '../../../store/slices';
+import { IStore, useRestStore } from '../../../store';
 
 const BodyTab: FC<any> = () => {
   const {

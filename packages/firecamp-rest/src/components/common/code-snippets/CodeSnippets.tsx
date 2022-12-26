@@ -9,7 +9,7 @@ import codeSnippet, {
   TTargetClients,
 } from '../../../services/code-snippet';
 import targetsInfo from '../../../services/code-snippet/targets-info';
-import { useRestStoreApi, useRestStore, IStore } from '../../../store/slices';
+import { useRestStoreApi, useRestStore, IStore } from '../../../store';
 
 const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
   let { request, toggleOpenCodeSnippet } =

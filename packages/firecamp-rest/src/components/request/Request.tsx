@@ -19,7 +19,7 @@ import HeadersTab from './tabs/HeadersTab';
 import AuthTab from './tabs/AuthTab';
 import ParamsTab from './tabs/ParamsTab';
 import ConfigTab from './tabs/ConfigTab';
-import { IStore, useRestStore } from '../../store/slices';
+import { IStore, useRestStore } from '../../store';
 import { ERequestPanelTabs } from '../../types';
 
 const Request = ({ tab, getFirecampAgent }) => {

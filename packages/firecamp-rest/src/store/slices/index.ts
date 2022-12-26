@@ -1,5 +1,3 @@
-export * from '../rest.store';
-
 export * from './request.slice';
 export * from './url.slice';
 export * from './auth.slice';
