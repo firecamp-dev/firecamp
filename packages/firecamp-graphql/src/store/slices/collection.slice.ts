@@ -37,7 +37,7 @@ const createCollectionSlice = (
   set,
   get,
   initialCollection?: ICollection
-): TStoreSlice<ICollectionSlice> => ({
+): ICollectionSlice => ({
   collection: initialCollection || {
     isProgressing: false,
     tdpInstance: null,
