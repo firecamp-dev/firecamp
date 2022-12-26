@@ -3,14 +3,13 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
-
 import {
   EReqChangeRootKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
 } from '../../types';
 import { normalizeRequest } from '../../services/request.service';
-import { IGraphQLStore } from '../graphql.store';
+import { TStoreSlice } from '../store.type';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
@@ -31,7 +30,10 @@ interface IRequestChangeStateSlice {
   preparePayloadForUpdateRequest: () => Partial<IGraphQL>;
 }
 
-const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
+  set,
+  get
+) => ({
   requestChangeState: RequestChangeState,
   equalityChecker: (request: Partial<IGraphQL>) => {
     const state = get();
@@ -78,7 +80,7 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     return _sr;
   },
   preparePayloadForUpdateRequest: () => {
-    const state = get() as IGraphQLStore;
+    const state = get();
     const { request, requestChangeState: _rcs } = state;
     const _request = normalizeRequest(request);
     let _ur: Partial<IGraphQL> = {};

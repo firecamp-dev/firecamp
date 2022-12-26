@@ -1,5 +1,6 @@
 import { ERequestTypes, IGraphQL } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
+import { TStoreSlice } from '../store.type';
 
 interface IPullSlice {
   pull?: any; //:IPushPayload
@@ -12,7 +13,10 @@ interface IPullSlice {
   ) => Promise<IGraphQL> | PromiseRejectedResult; //define type for pullPayload here
 }
 
-const createPullActionSlice = (set, get): IPullSlice => ({
+const createPullActionSlice: TStoreSlice<IPullSlice> = (
+  set,
+  get
+): IPullSlice => ({
   pull: {
     _action: {
       type: 'u',

@@ -33,7 +33,7 @@ interface ICollectionSlice {
   updateItem: (updateOnlyName?: boolean) => Promise<any>;
 }
 
-const createCollectionSlice = (
+const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   set,
   get,
   initialCollection?: ICollection
@@ -77,7 +77,11 @@ const createCollectionSlice = (
 
   toggleProgressBar: (flag?: boolean) => {
     set((s) => ({
-      isProgressing: typeof flag == 'boolean' ? flag : !s.isProgressing,
+      collection: {
+        ...s.collection,
+        isProgressing:
+          typeof flag == 'boolean' ? flag : !s.collection.isProgressing,
+      },
     }));
   },
 

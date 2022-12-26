@@ -1,5 +1,6 @@
 import { EHttpMethod, IHeader, IGraphQL, TId } from '@firecamp/types';
 import { normalizeRequest } from '../services/request.service';
+import { TStoreSlice } from '../store.type';
 
 import {
   IUrlSlice,
@@ -29,7 +30,11 @@ interface IRequestSlice extends IUrlSlice {
   save: (tabId: TId) => void;
 }
 
-const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
+  set,
+  get,
+  initialRequest: IGraphQL
+) => ({
   request: initialRequest,
 
   ...createUrlSlice(set, get, initialRequest.url),

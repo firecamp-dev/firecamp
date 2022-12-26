@@ -2,6 +2,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object, _array } from '@firecamp/utils';
 import { ESidebarTabs } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 interface IUi {
   isFetchingRequest: boolean; //TODO: rename it
@@ -16,12 +17,12 @@ interface IUiSlice {
   setIsFetchingReqFlag: (flag: boolean) => void;
 }
 
-const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
+const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi): IUiSlice => ({
   ui: initialUi || {
     isFetchingRequest: false,
     sidebarActiveTab: ESidebarTabs.Explorer,
   },
-  changeUiActiveTab: (tab: string) => {
+  changeUiActiveTab: (tab: ESidebarTabs) => {
     set((s) => ({
       ui: {
         ...s.ui,

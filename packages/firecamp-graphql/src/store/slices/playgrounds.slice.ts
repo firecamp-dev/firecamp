@@ -10,6 +10,7 @@ import {
   getPlaygroundName,
   prettifyQueryString,
 } from '../../services/GraphQLservice';
+import { TStoreSlice } from '../store.type';
 
 export interface IPlaygroundRequest
   extends Omit<IGraphQLPlayground, '__ref' | '__meta'> {
@@ -41,7 +42,10 @@ export interface IPlaygroundsSlice {
   setPlaygroundResponse: (response: any) => void;
 }
 
-export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
+export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
+  set,
+  get
+): IPlaygroundsSlice => ({
   /**
    * {
       'playground-1': {
@@ -64,9 +68,9 @@ export const createPlaygroundsSlice = (set, get): IPlaygroundsSlice => ({
 
   addPlayground: () => {
     set((s) => {
-      let playgroundId = nanoid();
+      const playgroundId = nanoid();
       const plgsCount = s.runtime?.playgroundTabs?.length;
-      let name = `playground-${plgsCount + 1}`;
+      const name = `playground-${plgsCount + 1}`;
 
       const plg = {
         name,

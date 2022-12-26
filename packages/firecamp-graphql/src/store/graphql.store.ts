@@ -51,9 +51,7 @@ const createGraphQLStore = (initialState: IStoreState) =>
           originalRequest: _cloneDeep(request) as IGraphQL,
         }));
       },
-
       setContext: (ctx: any) => set({ context: ctx }),
-
       execute: async (opsName: string, query?: string, variables?: string) => {
         const state = get();
         const {

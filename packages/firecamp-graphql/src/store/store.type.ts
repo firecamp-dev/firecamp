@@ -5,14 +5,11 @@ import {
   IRequestSlice,
   IPlaygrounds,
   IPlaygroundsSlice,
-
   ICollection,
   ICollectionSlice,
-
   IRuntime,
   IRuntimeSlice,
   IPullSlice,
-
   IUi,
   IUiSlice,
   IRequestChangeStateSlice,
@@ -40,12 +37,9 @@ interface IStoreState {
   ui?: IUi;
   collection?: ICollection;
 }
-
-
 type TStoreSlice<T> = (
   set: SetState<IStore>,
   get: GetState<IStore>,
   ...k: any
 ) => T;
-
 export { IStoreState, IStore, TStoreSlice };
