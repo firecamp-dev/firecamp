@@ -5,6 +5,7 @@ import {
   TId,
   ERequestTypes,
 } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -36,7 +37,7 @@ const createCollectionSlice = (
   set,
   get,
   initialCollection?: ICollection
-): ICollectionSlice => ({
+): TStoreSlice<ICollectionSlice> => ({
   collection: initialCollection || {
     isProgressing: false,
     tdpInstance: null,
@@ -68,7 +69,10 @@ const createCollectionSlice = (
         playgrounds: collection?.items?.length,
       },
     }));
-    state.collection.tdpInstance?.init(collection.folders || [], collection.items || [])
+    state.collection.tdpInstance?.init(
+      collection.folders || [],
+      collection.items || []
+    );
   },
 
   toggleProgressBar: (flag?: boolean) => {
@@ -105,9 +109,7 @@ const createCollectionSlice = (
         if (e.message == 'Network Error') {
           //TODO: show error notification
         }
-        state.context.app.notify.alert(
-          e.response?.data.message || e.message
-        );
+        state.context.app.notify.alert(e.response?.data.message || e.message);
       })
       .finally(() => {
         state.toggleProgressBar(false);
@@ -183,9 +185,7 @@ const createCollectionSlice = (
         if (e.message == 'Network Error') {
           //TODO: show error notification
         }
-        state.context.app.notify.alert(
-          e.response?.data.message || e.message
-        );
+        state.context.app.notify.alert(e.response?.data.message || e.message);
       })
       .finally(() => {
         state.toggleProgressBar(false);
@@ -261,9 +261,7 @@ const createCollectionSlice = (
         if (e.message == 'Network Error') {
           //TODO: show error notification
         }
-        state.context.app.notify.alert(
-          e.response?.data.message || e.message
-        );
+        state.context.app.notify.alert(e.response?.data.message || e.message);
       })
       .finally(() => {
         state.toggleProgressBar(false);
