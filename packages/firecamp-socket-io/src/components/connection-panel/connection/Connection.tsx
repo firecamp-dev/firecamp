@@ -6,10 +6,10 @@ import ConfigTab from './ConfigTab';
 import HeadersTab from './HeadersTab';
 import ParamsTab from './ParamsTab';
 import AuthTab from './AuthTab';
-import EmitterPlayground from './playground/EmitterPlayground';
-import Response from '../logs/Response';
+import PlaygroundTab from './PlaygroundTab';
+import Logs from '../logs/Logs';
+import { EPanel } from '../../../types';
 import { useSocketStore } from '../../../store';
-import { EPanel } from '../../../types'
 import { ISocketStore } from '../../../store/store.type';
 
 const bodyTabs = [
@@ -68,8 +68,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   const _renderBody = () => {
     switch (activeBodyTab) {
       case 'playground':
-        return <Playground key={activePlayground} />;
-
+        return <PlaygroundTab key={activePlayground} />;
       case 'config':
         return (
           <ConfigTab
@@ -78,7 +77,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
             onUpdate={_onChangeConfig}
           />
         );
-
       case 'headers':
         return (
           <HeadersTab
@@ -88,7 +86,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
             onUpdate={_onChangeHeaders}
           />
         );
-
       case 'params':
         return (
           <ParamsTab
@@ -97,7 +94,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
             onUpdate={(qps) => changeConQueryParams(activePlayground, qps)}
           />
         );
-
       case 'auth':
         return (
           <AuthTab
@@ -106,50 +102,39 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
             onUpdate={_onChangeAuth}
           />
         );
-
       default:
-        return <Playground />;
+        return <PlaygroundTab />;
     }
-  };
-
-  const Playground = () => {
-    return (
-      <Row flex={1} overflow="auto" className=" with-divider h-full">
-        <Column className="h-full">
-          <EmitterPlayground tabData={{ id: '123' }} />
-        </Column>
-      </Row>
-    );
   };
 
   return (
     <Row flex={1} overflow="auto" className=" with-divider h-full">
-          <Column className="h-full flex flex-col z-20">
-            <div className="z-20 relative">
-              <Tabs
-                key="tabs"
-                list={bodyTabs || []}
-                activeTab={activeBodyTab || ''}
-                onSelect={(tabId: string)=> setActiveBodyTab(tabId)}
-                // tabsClassName="tabs-with-bottom-border-left-section"
-              />
-            </div>
-            {_renderBody()}
-          </Column>
-          <Resizable
-            width={'100%'}
-            height="100%"
-            maxWidth="60%"
-            minWidth="20%"
-            left={true}
-            className={classnames(
-              { 'fc-collapsed': visiblePanel === EPanel.Response },
-              'fc-collapsable'
-            )}
-          >
-            <Response key={activePlayground} />
-          </Resizable>
-        </Row>
+      <Column className="h-full flex flex-col z-20">
+        <div className="z-20 relative">
+          <Tabs
+            key="tabs"
+            list={bodyTabs || []}
+            activeTab={activeBodyTab || ''}
+            onSelect={(tabId: string) => setActiveBodyTab(tabId)}
+            // tabsClassName="tabs-with-bottom-border-left-section"
+          />
+        </div>
+        {_renderBody()}
+      </Column>
+      <Resizable
+        width={'100%'}
+        height="100%"
+        maxWidth="60%"
+        minWidth="20%"
+        left={true}
+        className={classnames(
+          { 'fc-collapsed': visiblePanel === EPanel.Response },
+          'fc-collapsable'
+        )}
+      >
+        <Logs key={activePlayground} />
+      </Resizable>
+    </Row>
   );
 };
 export default memo(ConnectionTab);

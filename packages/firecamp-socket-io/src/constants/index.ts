@@ -83,13 +83,12 @@ export const ResponseCollection = {
 };
 export const InitPlayground = {
   name: '',
-  path: '',
-  body: [
+  payload: [
     {
       body: '',
       __meta: {
         type: EArgumentBodyType.Text,
-        typedArrayView: ETypedArrayView.Int8Array,
+        // typedArrayView: ETypedArrayView.Int8Array,
       },
     },
   ],
@@ -106,22 +105,24 @@ export const InitPlayground = {
   },
 };
 export const InitArg = {
+  body: '',
   __meta: {
     type: EArgumentBodyType.Text,
     typedArrayView: ETypedArrayView.Int8Array,
   },
-  body: '',
 };
 export const InitLog = {
   title: '',
   message: '',
   __meta: {
-    id: '',
     event: '',
     timestamp: '',
     type: '',
     color: '',
     ackRef: '',
+  },
+  __ref: {
+    id: nanoid(),
   },
 };
 export const EditorCommands = {
@@ -193,8 +194,9 @@ export const ArgTypes = [
   },
   {
     id: EArgumentBodyType.Json,
-    name: 'JSON',
+    name: 'Json',
   },
+  /*
   {
     id: EArgumentBodyType.File,
     name: 'File',
@@ -206,7 +208,7 @@ export const ArgTypes = [
   {
     id: EArgumentBodyType.ArrayBufferView,
     name: 'Array buffer view',
-  },
+  }, */
   {
     id: EArgumentBodyType.Number,
     name: 'Number',

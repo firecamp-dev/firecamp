@@ -20,6 +20,7 @@
 }
 .pane>.pane-body{
     min-height: 160px;
+    height: inherit;
 }
 .rct-tree-root::-webkit-scrollbar{
     background: transparent;

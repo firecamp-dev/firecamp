@@ -101,14 +101,14 @@ const createHandleConnectionExecutor = (
         console.log({ log });
 
         if (!log) return;
-        state.addConnectionLog(connectionId, log);
+        state.addLog(connectionId, log);
       });
 
       // connect
       executor.connect();
 
       // set executor in to playground
-      state.changePlayground(connectionId, { executor });
+      state.setPlgExecutor(connectionId, executor);
 
       // listen to on connect listener
       state.listenOnConnect(connectionId);

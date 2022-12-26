@@ -6,7 +6,7 @@ import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
+import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import {
   IGraphQLStore,
   useGraphQLStore,
@@ -25,7 +25,7 @@ const CollectionTab = () => {
   const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
     useGraphQLStoreApi().getState() as IGraphQLStore;
 
-  const dataProvider = useRef(new CollectionTreeDataProvider([], []));
+  const dataProvider = useRef(new TreeDataProvider([], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);
@@ -36,20 +36,17 @@ const CollectionTab = () => {
     openPlayground(plgId);
   };
   const deletePlg = (plgId: string) => {
-    context.appService.notify.confirm(
-      'Are you sure to delete the playground?',
-      (s) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the playground?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((s) => {
         console.log(plgId, 'plgId...');
         deleteItem(plgId);
-      },
-      console.log,
-      {
-        labels: {
-          confirm: 'Need your confirmation.',
-          confirmOk: 'Yes, delete it.',
-        },
-      }
-    );
+      });
   };
 
   return (
@@ -99,7 +96,7 @@ const CollectionTab = () => {
               console.log(a, 'onStartRenamingItem');
             }}
             // onSelectItems={onSelectItems}
-            getItemTitle={(item) => item.data.name}
+            getItemTitle={(item) => item.data?.name}
             viewState={{}}
             renderItemArrow={treeRenderer.renderItemArrow}
             renderItem={(props) =>

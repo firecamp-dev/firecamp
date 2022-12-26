@@ -1,4 +1,4 @@
-import create, { GetState, SetState } from 'zustand';
+import { GetState, SetState } from 'zustand';
 import { ISocketIO, TId } from '@firecamp/types';
 
 import {
@@ -14,8 +14,8 @@ import {
   IPlaygrounds,
   IPlaygroundSlice,
   // connections logs
-  IConnectionsLogsSlice,
-  IConnectionsLogs,
+  ILogsSlice,
+  ILogs,
   // req changes
   IRequestChangeStateSlice,
   // execute slice
@@ -30,19 +30,24 @@ interface ISocket {
   collection?: ICollection;
   runtime?: IRuntime;
   playgrounds?: IPlaygrounds;
-  connectionsLogs?: IConnectionsLogs;
+  logs?: ILogs;
   ui?: IUi;
 }
 
-interface ISocketStore 
+interface ISocketStore
   extends IRequestSlice,
-  IRuntimeSlice,
-  ICollectionSlice,
-  IPlaygroundSlice,
-  IConnectionsLogsSlice,
-  IHandleConnectionExecutorSlice,
-  IUiSlice,
-  IRequestChangeStateSlice {
+    IRuntimeSlice,
+    ICollectionSlice,
+    IPlaygroundSlice,
+    ILogsSlice,
+    IHandleConnectionExecutorSlice,
+    IUiSlice,
+    IRequestChangeStateSlice {
+  originalRequest?: ISocketIO;
+  /** assigning new __manualUpdates key because zustand can't detect nested deep changes so useStore never detects reactive change, thus by incrementing this key tends zustand to detect change */
+  __manualUpdates: number;
+  context?: any;
+  setContext: (ctx: any) => void;
   initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
 }
 

@@ -12,7 +12,6 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: any, tabId: string) => {},
 }) => {
   const { EnvironmentWidget } = postComponents;
 
@@ -29,8 +28,7 @@ const UrlBarContainer = ({
     fetchIntrospectionSchema,
     toggleDoc,
     changeActiveEnvironment,
-    preparePayloadForSaveRequest,
-    preparePayloadForUpdateRequest,
+    save,
   } = useGraphQLStore(
     (s: IGraphQLStore) => ({
       url: s.request.url,
@@ -45,12 +43,10 @@ const UrlBarContainer = ({
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
       toggleDoc: s.toggleDoc,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
-      preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
+      save: s.save,
     }),
     shallow
   );
-  // console.log({ url, request });
 
   const schema = {};
 
@@ -70,14 +66,7 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      const _request =
-        isRequestSaved === true
-          ? preparePayloadForUpdateRequest()
-          : preparePayloadForSaveRequest();
-
-      console.log({ _request });
-      // setPushActionEmpty();
-      // onSaveRequest(_request, tab.id);
+      save(tab.id);
     } catch (e) {
       console.error(e);
     }
@@ -103,7 +92,7 @@ const UrlBarContainer = ({
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {
-        context.appService.modals.openEditRequest({
+        context.app.modals.openEditRequest({
           name: __meta.name,
           description: __meta.description,
           collectionId: __ref.collectionId,

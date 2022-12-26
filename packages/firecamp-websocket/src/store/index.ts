@@ -12,7 +12,7 @@ export * from './slices/collection.slice';
 // runtime
 export * from './slices/runtime.slice';
 export * from './slices/playgrounds.slice';
-export * from './slices/connectionsLogs.slice';
+export * from './slices/logs.slice';
 export * from './slices/ui.slice';
 
 // export * from "./slices/ui.slice"

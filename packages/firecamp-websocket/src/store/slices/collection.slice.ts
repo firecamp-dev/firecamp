@@ -1,4 +1,5 @@
-import { IWebSocketMessage, IRequestFolder, TId } from '@firecamp/types';
+import { nanoid } from 'nanoid';
+import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -15,27 +16,17 @@ interface ICollectionSlice {
   unRegisterTDP: () => void;
 
   initialiseCollection: (collection: ICollection) => void; // TODO: rename API
-  updateCollection: (
-    key: string,
-    value: Array<IWebSocketMessage> | Array<IRequestFolder>
-  ) => void;
 
   // message
-  getMessage: (
-    id: TId
-  ) => { message: IWebSocketMessage; messageIndex: number } | undefined;
-  addMessage: (message: IWebSocketMessage) => void;
-  changeMessage: (id: TId, updates: { key: string; value: any }) => void;
-  deleteMessage: (id: TId) => void;
-  setMessage: (id: TId, messageToSet: IWebSocketMessage) => void; // TODO: check usage
+  getItem: (id: TId) => IWebSocketMessage | undefined;
+  addItem: (message: IWebSocketMessage) => void;
+  deleteItem: (id: TId) => void;
 
-  // directories
-  getDirectory: (
-    id: TId
-  ) => { directory: IRequestFolder; directoryIndex: number } | undefined;
-  addDirectory: (directory: IRequestFolder) => void;
-  changeDirectory: (id: TId, updates: { key: string; value: any }) => void;
-  deleteDirectory: (id: TId) => void;
+  // folders
+  getFolder: (id: TId) => IRequestFolder | undefined;
+  createFolder: (name: string, parentFolderId: TId) => void;
+  deleteFolder: (id: TId) => void;
+  onCreateFolder: (folder: IRequestFolder) => void;
 }
 
 const createCollectionSlice = (
@@ -63,11 +54,12 @@ const createCollectionSlice = (
       isProgressing: typeof flag == 'boolean' ? flag : !s.isProgressing,
     }));
   },
-  
+
   // collection
   initialiseCollection: (collection: ICollection) => {
-    console.log(collection?.items?.length, 'collection?.items?.length...');
+    // console.log(collection?.items?.length, 'collection?.items?.length...');
     const state = get();
+    // console.log(state.request.__meta.fOrders, state.request.__meta.iOrders);
     set((s) => ({
       collection: {
         ...s.collection,
@@ -80,234 +72,106 @@ const createCollectionSlice = (
     }));
     state.collection.tdpInstance?.init(
       collection.folders || [],
-      collection.items || []
+      collection.items || [],
+      [...state.request.__meta.fOrders, ...state.request.__meta.iOrders]
     );
-  },
-  updateCollection: (
-    key: string,
-    value: Array<IWebSocketMessage> | Array<IRequestFolder>
-  ) => {
-    set((s) => ({
-      collection: {
-        ...s.collection,
-        [key]: value,
-      },
-    }));
   },
 
   // message
-
-  getMessage: (id: TId, getLast = false) => {
+  getItem: (id: TId) => {
     const state = get();
-    // existing messages
-    const messages = getLast
-      ? state.last?.collection?.messages
-      : state.collection?.messages;
-
-    // message index
-    const messageIndex = messages.findIndex(
-      (message) => message?.__ref?.id === id
-    );
-
-    // If message found then update in store
-    if (messageIndex !== -1) {
-      return { message: messages[messageIndex], messageIndex };
-    }
-
-    return undefined;
+    const item = state.collection.items.find((i) => i.__ref?.id === id);
+    return item;
   },
-  addMessage: (message: IWebSocketMessage) => {
-    if (!message.__ref?.id) return;
-    const state = get();
+  addItem: (item: IWebSocketMessage) => {
+    if (!item.__ref?.id) return;
     set((s) => ({
       collection: {
         ...s.collection,
-        messages: [...s.collection.messages, message],
+        items: [...s.collection.items, item],
       },
     }));
-
-    // state.prepareCollectionMessagesPushAction(message.__ref?.id, 'i');
   },
-  changeMessage: (id: TId, updates: { key: string; value: any }) => {
-    const state = get();
-    const messageDetails = state.getMessage(id);
-
-    // If message found then update in store
-    if (
-      messageDetails &&
-      messageDetails.message &&
-      messageDetails.messageIndex !== -1
-    ) {
-      const { key, value } = updates;
-      const { message, messageIndex } = messageDetails;
-      const updatedMessage = Object.assign({}, message, {
-        [key]: value,
-      });
-
-      set((s) => ({
+  deleteItem: (id: TId) => {
+    set((s) => {
+      const items = s.collection.items.filter((i) => i.__ref.id != id);
+      return {
         collection: {
           ...s.collection,
-          messages: [
-            ...s.collection.messages.slice(0, messageIndex),
-            updatedMessage,
-            ...s.collection.messages.slice(messageIndex + 1),
-          ],
+          ...items,
         },
-      }));
-
-      const lastMessage = state.getMessage(id, true);
-
-      // state.prepareCollectionMessagesPushAction(
-      //   id,
-      //   'u',
-      //   lastMessage,
-      //   updatedMessage
-      // );
-    }
-  },
-  deleteMessage: (id: TId) => {
-    const state = get();
-    const messageDetails = state.getMessage(id);
-
-    // If message found then update in store
-    if (messageDetails && messageDetails.messageIndex !== -1) {
-      set((s) => ({
-        collection: {
-          ...s.collection,
-          messages: [
-            ...s.collection.messages.slice(0, messageDetails.messageIndex),
-            ...s.collection.messages.slice(messageDetails.messageIndex + 1),
-          ],
-        },
-      }));
-      // state.prepareCollectionMessagesPushAction(id, 'd');
-    }
-  },
-  setMessage: (id: TId, messageToSet: IWebSocketMessage) => {
-    const state = get();
-    const messageDetails = state.getMessage(id);
-
-    // If message found then update in store
-    if (
-      messageDetails &&
-      messageDetails.message &&
-      messageDetails.messageIndex !== -1
-    ) {
-      const { message, messageIndex } = messageDetails;
-      const updatedMessage = Object.assign({}, message, messageToSet);
-
-      set((s) => ({
-        collection: {
-          ...s.collection,
-          messages: [
-            ...s.collection.messages.slice(0, messageIndex),
-            updatedMessage,
-            ...s.collection.messages.slice(messageIndex + 1),
-          ],
-        },
-      }));
-
-      const lastMessage = state.getMessage(id, true);
-      // state.prepareCollectionMessagesPushAction(
-      //   id,
-      //   'u',
-      //   lastMessage,
-      //   updatedMessage
-      // );
-    }
+      };
+    });
   },
 
-  // directories
-  getDirectory: (id: TId, getLast = false) => {
+  // folders
+  getFolder: (id: TId) => {
     const state = get();
-    // existing directories
-    const directories = getLast
-      ? state.last?.collection?.directories
-      : state.collection?.directories;
-
-    // directory index
-    const directoryIndex = directories.findIndex(
-      (directory: IRequestFolder) => directory?.__ref?.id === id
-    );
-
-    // If directory found then update in store
-    if (directoryIndex !== -1) {
-      return { directory: directories[directoryIndex], directoryIndex };
-    }
-
-    return undefined;
+    const folder = state.collection.folders.find((f) => f.__ref?.id === id);
+    return folder;
   },
-  addDirectory: (directory: IRequestFolder) => {
-    if (!directory?.__ref?.id) return;
+  createFolder: async (name: string, parentFolderId?: TId) => {
     const state = get();
-
-    set((s) => ({
-      collection: {
-        ...s.collection,
-        directories: [...s.collection.directories, directory],
+    const _folder: IRequestFolder = {
+      name,
+      __meta: { fOrders: [], iOrders: [] },
+      __ref: {
+        id: nanoid(),
+        requestId: state.request.__ref.id,
+        requestType: state.request.__meta.type,
+        collectionId: state.request.__ref.collectionId,
+        folderId: parentFolderId,
       },
-    }));
-    // state.prepareCollectionDirectoriesPushAction(directory?.__ref?.id, 'i');
+    };
+    state.toggleProgressBar(true);
+    return Promise.resolve().then(() => {
+      state.onCreateFolder(_folder);
+    });
+    // const res = await Rest.requestFolder
+    //   .create(_folder)
+    //   .then((r) => {
+    //     state.onCreateFolder(r.data);
+    //     return r;
+    //   })
+    //   .finally(() => {
+    //     state.toggleProgressBar(false);
+    //   });
+    // return res;
   },
-  changeDirectory: (id: TId, updates: { key: string; value: any }) => {
-    const state = get();
-    const directoryDetails = state.getDirectory(id);
-
-    // If directory found then update in store
-    if (
-      directoryDetails &&
-      directoryDetails.directory &&
-      directoryDetails.directoryIndex !== -1
-    ) {
-      const { key, value } = updates;
-      const { directory, directoryIndex } = directoryDetails;
-      const updatedDirectory = Object.assign({}, directory, {
-        [key]: value,
-      });
-
-      set((s) => ({
+  deleteFolder: (id: TId) => {
+    set((s) => {
+      const folders = s.collection.folders.filter((f) => f.__ref.id != id);
+      return {
         collection: {
           ...s.collection,
-          directories: [
-            ...s.collection.directories.slice(0, directoryIndex),
-            updatedDirectory,
-            ...s.collection.directories.slice(directoryIndex + 1),
-          ],
+          ...folders,
         },
-      }));
-
-      const lastDirectory = state.getDirectory(id, true);
-      // state.prepareCollectionDirectoriesPushAction(
-      //   id,
-      //   'u',
-      //   lastDirectory,
-      //   updatedDirectory
-      // );
-    }
+      };
+    });
   },
-  deleteDirectory: (id: TId) => {
-    const state = get();
-    const directoryDetails = state.getDirectory(id);
 
-    // If directory found then update in store
-    if (directoryDetails && directoryDetails.directoryIndex !== -1) {
-      set((s) => ({
+  onCreateFolder: (folder) => {
+    //@ts-ignore
+    if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
+    set((s) => {
+      s.collection.tdpInstance?.addFolder(folder);
+      const { folders } = s.collection;
+      if (folder.__ref.folderId) {
+        folders.map((f) => {
+          if (f.__ref.id == folder.__ref.folderId) {
+            f.__meta.fOrders.push(folder.__ref.id);
+          }
+        });
+      } else {
+        // TODO: add root folder id in request.__meta.fOrders
+      }
+      return {
         collection: {
           ...s.collection,
-          directories: [
-            ...s.collection.directories.slice(
-              0,
-              directoryDetails.directoryIndex
-            ),
-            ...s.collection.directories.slice(
-              directoryDetails.directoryIndex + 1
-            ),
-          ],
+          folders: [...folders, folder],
         },
-      }));
-
-      // state.prepareCollectionDirectoriesPushAction(id, 'd');
-    }
+      };
+    });
   },
 });
 

@@ -1,20 +1,48 @@
 import cx from 'classnames';
-// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-// import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
-// import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { Button  } from '@firecamp/ui-kit';
+import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
+import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { Button } from '@firecamp/ui-kit';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    return <small>Plg.</small>;
-    // return item.isFolder ? (
-    //   context.isExpanded ? (
-    //     <VscChevronDown size={20} />
-    //   ) : (
-    //     <VscChevronRight size={20} />
-    //   )
-    // ) : null;
+    // console.log(item, 'arrow context');
+    if (item.data?.__ref?.isItem) {
+      return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
+    } else if (item.data?.__ref?.isFolder) {
+      return context.isExpanded ? (
+        <>
+          <VscTriangleDown
+            className="mr-1 flex-none"
+            size={12}
+            opacity={'0.6'}
+          />
+          <VscFolderOpened
+            className="mr-1 flex-none"
+            size={16}
+            opacity={'0.8'}
+          />
+        </>
+      ) : (
+        <>
+          <VscTriangleRight
+            className="mr-1 flex-none"
+            size={12}
+            opacity={'0.6'}
+          />
+          <VscFolder
+            className="mr-1 opacity-80 flex-none"
+            size={16}
+            opacity={'0.8'}
+          />
+        </>
+      );
+    } else {
+      return <></>;
+    }
   },
 
   renderItemTitle: ({ item, title, context, info }) => {
@@ -55,7 +83,9 @@ export default {
     info,
     openPlg,
     deletePlg,
+    createFolder,
   }) => {
+    console.log({ title });
     const renderDepthOffset = 8;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
@@ -65,13 +95,14 @@ export default {
         {...(context.itemContainerWithChildrenProps as any)}
         className={cx(
           'relative',
+          'message-node',
           'rct-tree-item-li',
-          item.isFolder && 'rct-tree-item-li-isFolder',
-          context.isSelected && 'rct-tree-item-li-selected',
-          context.isExpanded && 'rct-tree-item-li-expanded',
-          context.isFocused && 'rct-tree-item-li-focused',
-          context.isDraggingOver && 'rct-tree-item-li-dragging-over',
-          context.isSearchMatching && 'rct-tree-item-li-search-match'
+          { 'rct-tree-item-li-isFolder': item.isFolder },
+          { 'rct-tree-item-li-selected': context.isSelected },
+          { 'rct-tree-item-li-expanded': context.isExpanded },
+          { 'rct-tree-item-li-focused': context.isFocused },
+          { 'rct-tree-item-li-dragging-over': context.isDraggingOver },
+          { 'rct-tree-item-li-search-match': context.isSearchMatching }
         )}
       >
         <div
@@ -82,21 +113,34 @@ export default {
             }px`,
           }}
           className={cx(
-            'pr-2',
-            'rct-tree-item-title-container',
-            item.isFolder && 'rct-tree-item-title-container-isFolder',
-            context.isSelected && 'rct-tree-item-title-container-selected',
-            context.isExpanded && 'rct-tree-item-title-container-expanded',
-            context.isFocused && 'rct-tree-item-title-container-focused',
-            context.isDraggingOver &&
-              'rct-tree-item-title-container-dragging-over',
-            context.isSearchMatching &&
-              'rct-tree-item-title-container-search-match'
+            'pr-2 mx-1 border border-appBorder',
+            'rct-tree-item-title-container opacity-80',
+            { 'rct-tree-item-title-container-isFolder': item.isFolder },
+            {
+              'rct-tree-item-title-container-selected !opacity-100':
+                context.isSelected,
+            },
+            {
+              'rct-tree-item-title-container-expanded !opacity-100':
+                context.isExpanded,
+            },
+            {
+              'rct-tree-item-title-container-focused !opacity-100':
+                context.isFocused,
+            },
+            {
+              'rct-tree-item-title-container-dragging-over':
+                context.isDraggingOver,
+            },
+            {
+              'rct-tree-item-title-container-search-match':
+                context.isSearchMatching,
+            }
           )}
         >
           {context.isExpanded && item.isFolder && (
             <span
-              className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
+              className="rct-tree-line absolute top-12 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
             ></span>
           )}
@@ -105,54 +149,69 @@ export default {
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
               { '!top-4': item.data.__ref.isRequest }
             )}
-            style={{ left: `${renderDepthOffset * 2 - 3}px` }}
+            style={{ left: `${renderDepthOffset * (depth + 1) + 2}px` }}
           ></span>
           {arrow}
           <InteractiveComponent
             type={type}
             {...(context.interactiveElementProps as any)}
             className={cx(
-              'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button',
-              item.isFolder && 'rct-tree-item-button-isFolder',
-              context.isSelected && 'rct-tree-item-button-selected',
-              context.isExpanded && 'rct-tree-item-button-expanded',
-              context.isFocused && 'rct-tree-item-button-focused',
-              context.isDraggingOver && 'rct-tree-item-button-dragging-over',
-              context.isSearchMatching && 'rct-tree-item-button-search-match'
+              'whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button !h-fit	!block',
+              { 'rct-tree-item-button-isFolder': item.isFolder },
+              { 'rct-tree-item-button-selected': context.isSelected },
+              { 'rct-tree-item-button-expanded': context.isExpanded },
+              { 'rct-tree-item-button-focused': context.isFocused },
+              { 'rct-tree-item-button-dragging-over': context.isDraggingOver },
+              { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <span className="w-full overflow-hidden overflow-ellipsis items-center block">
-              {title}
-
-              {item.data.__ref?.isCollection ||
-              item.data.__ref?.isWorkspace ? (
-                <span className={'text-sm'}>- {item.children?.length}</span>
-              ) : (
-                <></>
-              )}
-            </span>
+            {item.data.__ref.isFolder ? (
+              <span className="w-full overflow-hidden overflow-ellipsis items-center block">
+                {title}
+              </span>
+            ) : (
+              <div>
+                <div className="w-full overflow-hidden overflow-ellipsis items-center block">
+                  {title}
+                  <span className="bg-focus2 text-xs px-1 !mx-1">{'tag'}</span>
+                </div>
+                <div className="text-sm appForegroundInActive">
+                  {'{ "name": "Firecamp}'}
+                </div>
+              </div>
+            )}
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
-            {/* <VscJson size={14} className="ml-1" onClick={(e)=> {
-                e.preventDefault()
-                e.stopPropagation()
-                openEnv(item.index);
-                console.log(1234)
-              }}/> */}
+            {item.data.__ref.isItem ? (
+              <Button
+                text={'Open'}
+                className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openPlg(item.data.__ref.id);
+                }}
+                xs
+                secondary
+                ghost
+                transparent
+              />
+            ) : (
+              <></>
+            )}
 
-            <Button
-              text={'Open'}
-              xs
-              className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
-              ghost={true}
-              transparent={true}
-              secondary
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                openPlg(item.data.__ref.id);
-              }}
-            />
+            {item.data.__ref.isFolder ? (
+              <VscAdd
+                className="ml-1 cursor-pointer"
+                size={14}
+                onClick={() => {
+                  createFolder(item.index);
+                }}
+                tabIndex={2}
+              />
+            ) : (
+              <></>
+            )}
 
             <VscTrash
               className="ml-1 cursor-pointer"
@@ -160,6 +219,7 @@ export default {
               onClick={() => {
                 deletePlg(item.index);
               }}
+              tabIndex={2}
             />
           </div>
         </div>

@@ -618,8 +618,8 @@ video {
     --app-background-secondary: #252526;
 
     --tab-background: var(--app-background);
-    --tab-foreground: #ffffff;
-    --tab-foreground-inactive: #cccccc;
+    --tab-foreground: #bbb;
+    --tab-foreground-inactive: #ffffff80;
     --tab-border: var(--app-border);
     --tab-hoverBackground: #1B1A1A;
     --tab-activeBackground: var(--statusBar-background2);
@@ -871,6 +871,9 @@ video {
 .right-4 {
 	right: 1rem;
 }
+.top-12 {
+	top: 3rem;
+}
 .top-3 {
 	top: 0.75rem;
 }
@@ -928,6 +931,9 @@ video {
 .\!m-0 {
 	margin: 0px !important;
 }
+.\!m-1 {
+	margin: 0.25rem !important;
+}
 .m-0 {
 	margin: 0px;
 }
@@ -949,6 +955,10 @@ video {
 .mx-auto {
 	margin-left: auto;
 	margin-right: auto;
+}
+.\!mx-1 {
+	margin-left: 0.25rem !important;
+	margin-right: 0.25rem !important;
 }
 .mx-0 {
 	margin-left: 0px;
@@ -1098,6 +1108,9 @@ video {
 }
 .block {
 	display: block;
+}
+.\!block {
+	display: block !important;
 }
 .inline {
 	display: inline;
@@ -1637,6 +1650,9 @@ video {
 .bg-statusBarBackground2 {
 	background-color: var(--statusBar-background2);
 }
+.\!bg-statusBarBackground2 {
+	background-color: var(--statusBar-background2) !important;
+}
 .bg-tabBackground {
 	background-color: var(--tab-background);
 }
@@ -1839,6 +1855,9 @@ video {
 }
 .pb-0 {
 	padding-bottom: 0px;
+}
+.\!pt-4 {
+	padding-top: 1rem !important;
 }
 .pl-0 {
 	padding-left: 0px;
@@ -2235,10 +2254,6 @@ video {
 	content: "";
 	border-color: var(--tab-border);
 }
-.after\:bg-statusBarBackground2::after {
-	content: "";
-	background-color: var(--statusBar-background2);
-}
 .after\:\!bg-statusBarBackground2::after {
 	content: "";
 	background-color: var(--statusBar-background2) !important;
@@ -2246,6 +2261,10 @@ video {
 .after\:\!bg-tabActiveBackground::after {
 	content: "";
 	background-color: var(--tab-activeBackground) !important;
+}
+.after\:bg-statusBarBackground2::after {
+	content: "";
+	background-color: var(--statusBar-background2);
 }
 .after\:opacity-10::after {
 	content: "";
@@ -2668,7 +2687,7 @@ tr:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: -1px;
-  min-height: 32px !important;
+  min-height: 33px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -2713,7 +2732,7 @@ tr:focus-visible{
   transform: rotate(180deg);
 }
 .fc-collapsed-v3 {
-  width: 32px !important;
+    width: 32px !important;
 }
 .fc-col-resizer.fc-collapsed.fc-collapsed-v3.fc-collapsable.left {
     border-left: 1px solid var(--app-border) !important;
@@ -2824,6 +2843,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
+.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }

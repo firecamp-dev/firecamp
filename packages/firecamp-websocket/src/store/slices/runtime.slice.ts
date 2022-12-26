@@ -4,8 +4,11 @@ interface IPlaygroundTab {
   id: string;
   name: string;
   __meta?: {
+    /** isSaved and hasChange will not be in use for now, it is for multi connection tabs purpose */
     isSaved?: boolean;
     hasChange?: boolean;
+    isMsgSaved?: boolean;
+    hasMsgChanged?: boolean;
   };
 }
 
@@ -19,7 +22,7 @@ interface IRuntime {
   };
   isRequestSaved?: boolean;
   _dnp?: { [k: string]: any };
-  tabId?: TId
+  tabId?: TId;
 }
 
 interface IRuntimeSlice {

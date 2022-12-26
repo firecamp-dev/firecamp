@@ -25,9 +25,9 @@ import {
   createPlaygroundsSlice,
 
   // connections logs
-  IConnectionsLogsSlice,
-  IConnectionsLogs,
-  createConnectionsLogsSlice,
+  ILogsSlice,
+  ILogs,
+  createLogsSlice,
 
   // request changes
   IRequestChangeStateSlice,
@@ -61,7 +61,7 @@ interface IWebsocketStoreState {
   collection?: ICollection;
   runtime?: IRuntime;
   playgrounds?: IPlaygrounds;
-  connectionsLogs?: IConnectionsLogs;
+  logs?: ILogs;
   ui?: IUi;
 }
 
@@ -70,21 +70,21 @@ interface IWebsocketStore
     IRuntimeSlice,
     ICollectionSlice,
     IPlaygroundSlice,
-    IConnectionsLogsSlice,
+    ILogsSlice,
     IPullSlice,
     IHandleConnectionExecutorSlice,
     IUiSlice,
     IRequestChangeStateSlice {
-  last: any;
   originalRequest?: IWebSocket;
+  context?: any;
+  setContext: (ctx: any) => void;
   initialise: (request: Partial<IWebSocket>, tabId: TId) => void;
 }
 
 const createWebsocketStore = (initialState: IWebsocketStoreState) =>
   create<IWebsocketStore>((set, get): IWebsocketStore => {
     return {
-      last: initialState,
-
+      setContext: (ctx: any) => set({ context: ctx }),
       initialise: async (request: Partial<IWebSocket>, tabId: TId) => {
         const initState = initialiseStoreFromRequest(request, tabId);
         // console.log(initState.request, 'initState.request');
@@ -94,17 +94,15 @@ const createWebsocketStore = (initialState: IWebsocketStoreState) =>
           originalRequest: _cloneDeep(initState.request),
         }));
       },
-
       ...createRequestSlice(
         set,
         get,
         _object.pick(initialState.request, requestSliceKeys) as IWebSocket
       ),
-
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
-      ...createConnectionsLogsSlice(set, get),
+      ...createLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
       ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),

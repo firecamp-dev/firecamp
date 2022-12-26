@@ -26,31 +26,36 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
+    setContext,
   } = useSocketStore((s: ISocketStore) => ({
     initialise: s.initialise,
     initialiseCollection: s.initialiseCollection,
     setActiveEnvironments: s.setActiveEnvironments,
     setRequestSavedFlag: s.setRequestSavedFlag,
     setIsFetchingReqFlag: s.setIsFetchingReqFlag,
+    setContext: s.setContext,
   }));
 
-  /**
-   * Environments on tab load
-   */
+  //set context to store
+  useEffect(() => {
+    setContext(platformContext);
+  }, []);
+
+  /** setup environments on tab load */
   useEffect(() => {
     if (activeTab === tab.id) {
+      const state = socketStoreApi.getState() as ISocketStore;
       // existing active environments in to runtime
-      let activeEnvironments =
-        socketStoreApi.getState().runtime?.activeEnvironments;
+      const {
+        activeEnvironments: { workspace = '', collection = '' },
+      } = state.runtime;
 
       // set active environments to platform
-      if (activeEnvironments && !!activeEnvironments.workspace) {
-        console.log({ activeEnvironments });
-
+      if (!!workspace) {
         platformContext.environment.setActiveEnvironments({
           activeEnvironments: {
-            workspace: activeEnvironments.workspace,
-            collection: activeEnvironments.collection || '',
+            workspace,
+            collection,
           },
           collectionId: tab?.request?.__ref.collectionId || '',
         });
@@ -68,9 +73,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag(tab?.__meta.isSaved);
   }, [tab?.__meta.isSaved]);
 
-  /**
-   * Subscribe/ unsubscribe request changes (pull-actions)
-   */
+  /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     // subscribe request updates
     if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
@@ -79,7 +82,6 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
         handlePull
       );
     }
-
     // unsubscribe request updates
     return () => {
       if (tab.__meta.isSaved && tab?.request?.__ref.id) {
@@ -88,6 +90,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     };
   }, []);
 
+  //fetch request
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
@@ -124,24 +127,14 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   const handlePull = () => {};
 
-  const onSave = (pushPayload: any, tabId) => {
-    // console.log({ pushPayload });
-    if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === 'i') {
-      platformContext.request.subscribeChanges(
-        pushPayload._action.item_id,
-        handlePull
-      );
-    }
-    platformContext.request.onSave(pushPayload, tabId);
-  };
+  
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
-
     if (!platformActiveEnvironments) return;
-    const activeEnvironments =
-      socketStoreApi.getState().runtime.activeEnvironments;
+    const state = socketStoreApi.getState() as ISocketStore;
+    // existing active environments in to runtime
+    const { activeEnvironments } = state.runtime;
 
     if (
       platformActiveEnvironments.workspace &&
@@ -158,7 +151,6 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
           tab={tab}
           collectionId={tab?.request?.__ref.collectionId || ''}
           postComponents={platformComponents}
-          onSaveRequest={onSave}
           platformContext={platformContext}
         />
         <Container.Body>

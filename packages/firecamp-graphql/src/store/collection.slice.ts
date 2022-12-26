@@ -96,7 +96,7 @@ const createCollectionSlice = (
         // return r;
       })
       .then((r) => {
-        state.context.appService.notify.success(
+        state.context.app.notify.success(
           'The playground has been deleted successfully'
         );
       })
@@ -105,7 +105,7 @@ const createCollectionSlice = (
         if (e.message == 'Network Error') {
           //TODO: show error notification
         }
-        state.context.appService.notify.alert(
+        state.context.app.notify.alert(
           e.response?.data.message || e.message
         );
       })
@@ -174,7 +174,7 @@ const createCollectionSlice = (
         // return r;
       })
       .then((r) => {
-        get().context.appService.notify.success(
+        state.context.app.notify.success(
           'The playground has been saved successfully'
         );
       })
@@ -183,7 +183,7 @@ const createCollectionSlice = (
         if (e.message == 'Network Error') {
           //TODO: show error notification
         }
-        get().context.appService.notify.alert(
+        state.context.app.notify.alert(
           e.response?.data.message || e.message
         );
       })
@@ -250,7 +250,7 @@ const createCollectionSlice = (
         return r;
       })
       .then((r) => {
-        state.context.appService.notify.success(
+        state.context.app.notify.success(
           updateOnlyName
             ? 'The playground name has been changed successfully'
             : 'The playground has been updated successfully'
@@ -261,7 +261,7 @@ const createCollectionSlice = (
         if (e.message == 'Network Error') {
           //TODO: show error notification
         }
-        state.context.appService.notify.alert(
+        state.context.app.notify.alert(
           e.response?.data.message || e.message
         );
       })

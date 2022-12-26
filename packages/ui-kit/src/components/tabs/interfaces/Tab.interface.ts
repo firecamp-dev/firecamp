@@ -51,4 +51,5 @@ export interface ITab {
   height?: number;
   tabVersion?: number;
   tabIndex?: number;
+  hasStatusbar?: boolean;
 }

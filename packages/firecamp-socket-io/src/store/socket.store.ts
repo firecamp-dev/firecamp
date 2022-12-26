@@ -1,5 +1,6 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
+import _cloneDeep from 'lodash/cloneDeep';
 import { ISocketIO, TId } from '@firecamp/types';
 
 import {
@@ -17,7 +18,7 @@ import {
   createPlaygroundsSlice,
 
   // connections logs
-  createConnectionsLogsSlice,
+  createLogsSlice,
 
   // req changes
   createRequestChangeStateSlice,
@@ -29,7 +30,9 @@ import {
   createUiSlice,
 } from './slices';
 import { _object } from '@firecamp/utils';
-import { initialiseStoreFromRequest } from '../services/request.service';
+import {
+  initialiseStoreFromRequest,
+} from '../services/request.service';
 import { ISocket, ISocketStore } from './store.type';
 
 const {
@@ -41,11 +44,14 @@ const {
 const createSocketStore = (initialState: ISocket) =>
   create<ISocketStore>((set, get) => {
     return {
+      __manualUpdates: 0,
+      setContext: (ctx: any) => set({ context: ctx }),
       initialise: (request: Partial<ISocketIO>, tabId: TId) => {
         const initState = initialiseStoreFromRequest(request, tabId);
         set((s) => ({
-          ...s,
+          ...s, // do not remove this, we need the previously set state here so.
           ...initState,
+          originalRequest: _cloneDeep(initState.request),
         }));
       },
       ...createRequestSlice(
@@ -56,7 +62,7 @@ const createSocketStore = (initialState: ISocket) =>
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
-      ...createConnectionsLogsSlice(set, get),
+      ...createLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
       ...createRequestChangeStateSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
