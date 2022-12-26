@@ -25,7 +25,7 @@ import {
   _table,
 } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
-import { IStoreState, IUiRequestPanel } from '../store/slices';
+import { IStoreState, IUiRequestPanel } from '../store';
 import { ERequestPanelTabs, IRestClientRequest } from '../types';
 import { configState, RuntimeBodies } from '../constants';
 import { IAuthHeader } from './auth/types';

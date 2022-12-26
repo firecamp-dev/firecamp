@@ -2,16 +2,14 @@ import { IRest } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
-
+import { _array, _object } from '@firecamp/utils';
+import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
   EReqChangeScriptsKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
-} from '../types';
-import { _array, _object } from '@firecamp/utils';
-import { normalizeRequest } from '../services/request.service';
-import { IStore } from './rest.store';
+} from '../../types';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
@@ -85,7 +83,7 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     return _sr;
   },
   preparePayloadForUpdateRequest: () => {
-    const state = get() as IStore;
+    const state = get();
     const { request, requestChangeState: _rcs } = state;
     const _request = normalizeRequest(request);
     let _ur: Partial<IRest> = {};

@@ -238,11 +238,4 @@ const createRestStore = (initialState: IStoreState) =>
     };
   });
 
-export {
-  RestStoreProvider,
-  useRestStore,
-  createRestStore,
-  useRestStoreApi,
-  IStoreState,
-  IStore,
-};
+export { RestStoreProvider, useRestStore, createRestStore, useRestStoreApi };

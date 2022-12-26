@@ -76,6 +76,4 @@ export {
   useWebsocketStore,
   useWebsocketStoreApi,
   createWebsocketStore,
-  IStore,
-  IStoreState,
 };

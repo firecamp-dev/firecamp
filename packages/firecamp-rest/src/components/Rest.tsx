@@ -15,7 +15,7 @@ import {
   createRestStore,
   useRestStoreApi,
   IStore,
-} from '../store/slices';
+} from '../store';
 import {
   initialiseStoreFromRequest,
   normalizeRequest,

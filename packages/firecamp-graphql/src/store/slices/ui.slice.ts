@@ -1,7 +1,7 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object, _array } from '@firecamp/utils';
-import { ESidebarTabs } from '../types';
+import { ESidebarTabs } from '../../types';
 
 interface IUi {
   isFetchingRequest: boolean; //TODO: rename it

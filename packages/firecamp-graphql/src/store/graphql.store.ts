@@ -144,6 +144,4 @@ export {
   createGraphQLStore,
   useGraphQLStore,
   useGraphQLStoreApi,
-  IStore,
-  IStoreState,
 };
