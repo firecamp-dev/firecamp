@@ -19,7 +19,7 @@ import {
   useWebsocketStoreApi,
   WebsocketStoreProvider,
   IWebsocketStore,
-} from '../store/index';
+} from '../store';
 
 const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
   const websocketStoreApi: any = useWebsocketStoreApi();

@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -29,11 +30,11 @@ interface ICollectionSlice {
   onCreateFolder: (folder: IRequestFolder) => void;
 }
 
-const createCollectionSlice = (
+const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   set,
   get,
   initialCollection: ICollection
-): ICollectionSlice => ({
+) => ({
   collection: initialCollection || {
     items: [],
     folders: [],
@@ -51,7 +52,11 @@ const createCollectionSlice = (
 
   toggleProgressBar: (flag?: boolean) => {
     set((s) => ({
-      isProgressing: typeof flag == 'boolean' ? flag : !s.isProgressing,
+      collection: {
+        ...s.collection,
+        isProgressing:
+          typeof flag == 'boolean' ? flag : !s.collection.isProgressing,
+      },
     }));
   },
 

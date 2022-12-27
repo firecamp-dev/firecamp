@@ -2,20 +2,18 @@ import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
 import { AuthSetting } from '@firecamp/ui-kit';
-
-import { IRestStore, useRestStore } from '../../../store';
+import { IStore, useRestStore } from '../../../store';
 
 const AuthTab = () => {
-
   const {
-    auth= { value: '', type: ''},
+    auth = { value: '', type: '' },
     runtimeAuths,
     oauth2LastFetchedToken,
     resetAuthHeaders,
     changeAuth,
-    changeAuthType
+    changeAuthType,
   } = useRestStore(
-    (s: IRestStore) => ({
+    (s: IStore) => ({
       auth: s.request.auth,
       runtimeAuths: s.runtime.auths,
       oauth2LastFetchedToken: s.runtime.oauth2LastFetchedToken,
@@ -26,8 +24,8 @@ const AuthTab = () => {
     shallow
   );
 
-   console.log({ auth });
-   const { value, type } = auth
+  console.log({ auth });
+  const { value, type } = auth;
 
   const _updateOAuth2 = (updated = '', payload: { key: any; value: any }) => {
     if (!payload) return;

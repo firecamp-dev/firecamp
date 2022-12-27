@@ -10,6 +10,7 @@ import {
 
 import { EConnectionState } from '../../types';
 import { _object } from '@firecamp/utils';
+import { TStoreSlice } from '../store.type';
 
 const initialPlaygroundMessage = {
   name: '',
@@ -82,11 +83,11 @@ interface IPlaygroundSlice {
   deleteExecutor: (connectionId: TId) => void;
 }
 
-const createPlaygroundsSlice = (
+const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   set,
   get,
   initialPlaygrounds: IPlaygrounds
-): IPlaygroundSlice => ({
+) => ({
   playgrounds: initialPlaygrounds,
 
   getActivePlayground: () => {

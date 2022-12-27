@@ -2,6 +2,7 @@ import { TId, ERequestTypes } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
 import { InitPlayground } from '../../constants';
 import { ELogColors, ELogTypes } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 const emptyLog = {
   title: '',
@@ -35,7 +36,7 @@ interface ILogsSlice {
   clearLogs: (connectionId: TId) => void;
 }
 
-const createLogsSlice = (set, get): ILogsSlice => ({
+const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
   logs: {},
 
   addLog: (connectionId: TId, log: ILog) => {

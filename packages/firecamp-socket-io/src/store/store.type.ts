@@ -1,10 +1,9 @@
 import { GetState, SetState } from 'zustand';
 import { ISocketIO, TId } from '@firecamp/types';
-
+import { _object } from '@firecamp/utils';
 import {
   // request
   IRequestSlice,
-  // runtime
   IRuntime,
   IRuntimeSlice,
   // collection
@@ -24,7 +23,7 @@ import {
   IUiSlice,
   IUi,
 } from './slices';
-import { _object } from '@firecamp/utils';
+
 interface ISocket {
   request?: ISocketIO;
   collection?: ICollection;
@@ -33,7 +32,6 @@ interface ISocket {
   logs?: ILogs;
   ui?: IUi;
 }
-
 interface ISocketStore
   extends IRequestSlice,
     IRuntimeSlice,
@@ -50,7 +48,6 @@ interface ISocketStore
   setContext: (ctx: any) => void;
   initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
 }
-
 type TStoreSlice<T> = (
   set: SetState<ISocketStore>,
   get: GetState<ISocketStore>,

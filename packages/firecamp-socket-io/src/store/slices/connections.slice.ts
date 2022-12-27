@@ -1,6 +1,7 @@
 import { ISocketIOConnection, TId, IQueryParam } from '@firecamp/types';
 import equal from 'deep-equal';
 import _url from '@firecamp/url';
+import { TStoreSlice } from '../store.type';
 
 interface IConnectionsSlice {
   addConnection: (connection: ISocketIOConnection) => void;
@@ -9,7 +10,7 @@ interface IConnectionsSlice {
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => void;
 }
 
-const createConnectionSlice = (set, get): IConnectionsSlice => ({
+const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
   addConnection: (connection: ISocketIOConnection) => {
     const state = get();
     const updatedConnections = [...state.request.connections, connection];

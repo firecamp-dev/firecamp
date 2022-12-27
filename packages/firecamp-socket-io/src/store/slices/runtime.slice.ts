@@ -1,4 +1,5 @@
 import { TId } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 
 interface IPlaygroundTab {
   id: string;
@@ -44,11 +45,11 @@ interface IRuntimeSlice {
   setRequestSavedFlag: (flag: boolean) => void;
 }
 
-const createRuntimeSlice = (
+const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   set,
   get,
   initialRuntime: IRuntime
-): IRuntimeSlice => ({
+) => ({
   runtime: {
     playgroundTabs: [],
     activePlayground: '',

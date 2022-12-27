@@ -4,6 +4,7 @@ import { _object } from '@firecamp/utils';
 import { EArgumentBodyType, ISocketIOEmitter, TId } from '@firecamp/types';
 import { EConnectionState } from '../../types';
 import { InitPlayground } from '../../constants';
+import { TStoreSlice } from '../store.type';
 
 interface IEmitter extends ISocketIOEmitter {
   path: string;
@@ -76,11 +77,11 @@ interface IPlaygroundSlice {
   deleteListenerFromAllPlaygrounds: (listenerName: string) => void;
 }
 
-const createPlaygroundsSlice = (
+const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   set,
   get,
   initialPlaygrounds: IPlaygrounds
-): IPlaygroundSlice => ({
+) => ({
   playgrounds: initialPlaygrounds,
 
   getActivePlayground: () => {

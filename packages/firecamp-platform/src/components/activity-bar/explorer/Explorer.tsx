@@ -146,6 +146,9 @@ const Explorer: FC<any> = () => {
   };
 
   const _createCollectionPrompt = async () => {
+    if (!pltContext.app.user.isLoggedIn()) {
+      return pltContext.app.modals.openSignIn();
+    }
     pltContext.window
       .promptInput({
         header: 'Create New Collection',
@@ -271,7 +274,7 @@ const Explorer: FC<any> = () => {
           expanded={true}
           bodyClassName={'!p-0'}
           headerTitleRenderer={() => {
-            return <span>Collections Explorer</span>;
+            return <span className="font-bold">COLLECTIONS EPLORER</span>;
           }}
           headerActionRenderer={() => {
             return (
@@ -409,7 +412,7 @@ const Explorer: FC<any> = () => {
       <Container>
         <Container.Body>
           <div className="flex flex-col mt-8 p-4 items-center justify-center mt-2">
-            <div className="fc-sidebar-noproject-icon iconv2-folder-icon text-5xl opacity-20 mb-2"></div>
+            <div className="fc-sidebar-noproject-icon text-5xl opacity-20 mb-2"></div>
             {!!searchString ? (
               <div className="text-sm text-appForegroundInActive text-center mb-1">
                 <span className="text-base block mb-2">No search found...</span>

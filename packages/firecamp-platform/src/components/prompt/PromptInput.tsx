@@ -72,8 +72,13 @@ export const PromptInput: FC<IPromptInput> = ({
       }
     }
   };
-
+  const _onKeyDown = (e)=> {
+    if(e.key == 'Enter') {
+      _onClickOk(e)
+    }
+  }
   texts = { ..._texts, ...texts };
+  
   return (
     <Modal
       isOpen={state.isOpen}
@@ -95,7 +100,7 @@ export const PromptInput: FC<IPromptInput> = ({
               name={'prompInput'}
               value={state.value}
               onChange={_onChangeValue}
-              onKeyDown={() => {}}
+              onKeyDown={_onKeyDown}
               onBlur={() => {}}
               error={state.error}
             />

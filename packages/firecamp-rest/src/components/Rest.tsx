@@ -14,7 +14,7 @@ import {
   RestStoreProvider,
   createRestStore,
   useRestStoreApi,
-  IRestStore,
+  IStore,
 } from '../store';
 import {
   initialiseStoreFromRequest,
@@ -38,7 +38,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     getMergedRequestByPullAction,
     setContext,
   } = useRestStore(
-    (s: IRestStore) => ({
+    (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
       changeAuthHeaders: s.changeAuthHeaders,

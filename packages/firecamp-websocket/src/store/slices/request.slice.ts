@@ -1,10 +1,11 @@
 import { IWebSocket, TId } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 import {
   IUrlSlice,
   createUrlSlice,
   IConnectionsSlice,
   createConnectionSlice,
-} from '../index';
+} from './';
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: IWebSocket;
@@ -21,11 +22,11 @@ const requestSliceKeys: string[] = [
   '__ref',
 ];
 
-const createRequestSlice = (
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
   set,
   get,
   initialRequest: IWebSocket
-): IRequestSlice => ({
+) => ({
   request: initialRequest,
 
   // url
@@ -56,11 +57,11 @@ const createRequestSlice = (
     const state = get();
     if (!state.runtime.isRequestSaved) {
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId);
+      state.context.request.save(_request, tabId, true);
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
-      // const _request = state.preparePayloadForUpdateRequest();
-      // state.context.request.update(_request, tabId);
+      const _request = state.preparePayloadForUpdateRequest();
+      state.context.request.update(_request, tabId);
     }
   },
 });

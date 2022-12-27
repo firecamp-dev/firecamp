@@ -5,6 +5,7 @@ import {
   IConnectionsSlice,
   createConnectionSlice,
 } from '.';
+import { TStoreSlice } from '../store.type';
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
@@ -16,11 +17,11 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
 
 const requestSliceKeys = ['url', 'connections', 'config', '__meta', '__ref'];
 
-const createRequestSlice = (
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
   set,
   get,
   initialRequest: ISocketIO
-): IRequestSlice => ({
+) => ({
   request: initialRequest,
 
   //url
@@ -64,11 +65,11 @@ const createRequestSlice = (
     const state = get();
     if (!state.runtime.isRequestSaved) {
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId);
+      state.context.request.save(_request, tabId, true);
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
-      // const _request = state.preparePayloadForUpdateRequest();
-      // state.context.request.update(_request, tabId);
+      const _request = state.preparePayloadForUpdateRequest();
+      state.context.request.update(_request, tabId);
     }
   },
 });

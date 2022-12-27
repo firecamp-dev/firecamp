@@ -5,31 +5,33 @@ import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
+import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import { useSocketStore, useSocketStoreApi } from '../../../store';
 import { ISocketStore } from '../../../store/store.type';
+import { TId } from '@firecamp/types';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty, context } = useSocketStore(
+  const { isCollectionEmpty, context, isRequestSaved } = useSocketStore(
     (s: ISocketStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
       context: s.context,
+      isRequestSaved: s.runtime.isRequestSaved,
     }),
     shallow
   );
   const {
     registerTDP,
     unRegisterTDP,
-    openPlayground,
+    // openPlayground,
     createFolder,
     deleteItem,
   } = useSocketStoreApi().getState() as ISocketStore;
 
   // console.log(items, 'items...');
 
-  const dataProvider = useRef(new CollectionTreeDataProvider([], [], []));
+  const dataProvider = useRef(new TreeDataProvider([], [], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);
@@ -57,6 +59,11 @@ const CollectionTab = () => {
 
   const _createFolderPrompt = async (parentFolderId?: TId) => {
     if (typeof parentFolderId != 'string') parentFolderId = undefined;
+    if (!isRequestSaved) {
+      return context.app.notify.info(
+        'Please save the socket.io request first.'
+      );
+    }
     context.window
       .promptInput({
         header: 'Create A New Folder',
@@ -67,7 +74,7 @@ const CollectionTab = () => {
         // validator: (val) => {
         //   if (!val || val.length < 3) {
         //     return {
-        //       isValid: false,
+        //       isValid: false,ß
         //       message: 'The folder name must have minimum 3 characters.',
         //     };
         //   }

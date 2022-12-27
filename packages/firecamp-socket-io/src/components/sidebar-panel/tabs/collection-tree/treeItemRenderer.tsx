@@ -164,9 +164,21 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <span className="w-full overflow-hidden overflow-ellipsis items-center block">
-              {title}
-            </span>
+            {item.data.__ref.isFolder ? (
+              <span className="w-full overflow-hidden overflow-ellipsis items-center block">
+                {title}
+              </span>
+            ) : (
+              <div>
+                <div className="w-full overflow-hidden overflow-ellipsis items-center block">
+                  {title}
+                  <span className="bg-focus2 text-xs px-1 !mx-1">{'tag'}</span>
+                </div>
+                <div className="text-sm appForegroundInActive">
+                  {'{ "name": "Firecamp}'}
+                </div>
+              </div>
+            )}
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
             {item.data.__ref.isItem ? (
@@ -187,13 +199,19 @@ export default {
               <></>
             )}
 
-            <VscAdd
-              className="ml-1 cursor-pointer"
-              size={14}
-              onClick={() => {
-                createFolder(item.index);
-              }}
-            />
+            {item.data.__ref.isFolder ? (
+              <VscAdd
+                className="ml-1 cursor-pointer"
+                size={14}
+                onClick={() => {
+                  createFolder(item.index);
+                }}
+                tabIndex={2}
+              />
+            ) : (
+              <></>
+            )}
+
             <VscTrash
               className="ml-1 cursor-pointer"
               size={14}

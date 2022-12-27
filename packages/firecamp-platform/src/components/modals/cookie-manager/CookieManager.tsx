@@ -1,12 +1,12 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { nanoid as id } from 'nanoid';
 import { AvailableOnElectron, Modal, Row } from '@firecamp/ui-kit';
-import './CookieManager.sass';
+import { _array, _misc, _object } from '@firecamp/utils';
+import { EFirecampAgent } from '@firecamp/types';
 import Sidebar from './sidebar/Sidebar';
 import Body from './body/Body';
 import AddCookie from './add-cookie/AddCookie';
-import { _array, _misc, _object } from '@firecamp/utils';
-import { EFirecampAgent } from '@firecamp/types';
+import './CookieManager.sass';
 
 const CookieManager: FC<ICookieManager> = ({
   isOpen = false,
