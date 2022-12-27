@@ -11,12 +11,12 @@ import {
 import * as executor from '@firecamp/agent-manager';
 import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
-import { useUserStore } from '../../store/user';
 import { usePlatformStore } from '../../store/platform';
 import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 import { promptSaveItem } from './prompt.service';
 import { prepareEventNameForRequestPull } from '../platform-emitter/events';
+import AppService from '../app.service';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -74,7 +74,10 @@ const request: IPlatformRequestService = {
    * Open save request modal if request is newly created
    * if request is already saved then update request with chanes/payload
    */
-  save: async (request: any, tabId: TId, isNew: boolean= false) => {
+  save: async (request: any, tabId: TId, isNew: boolean = false) => {
+    if (!AppService.user.isLoggedIn()) {
+      return AppService.modals.openSignIn();
+    }
     const { onNewRequestCreate, workspace } = useWorkspaceStore.getState();
     const tabState = useTabStore.getState();
     const {

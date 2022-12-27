@@ -147,7 +147,7 @@ const Environment: FC<any> = () => {
           expanded={true}
           bodyClassName={'!p-0'}
           headerTitleRenderer={() => {
-            return <span>Scope: Collection</span>;
+            return <span className='font-bold'>SCOPE: COLLECTION</span>;
           }}
           headerActionRenderer={() => {
             return (

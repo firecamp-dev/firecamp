@@ -8,18 +8,16 @@ import { TId } from '@firecamp/types';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { TreeDataProvider } from './collection-tree/TreeDataProvider';
-import {
-  IWebsocketStore,
-  useWebsocketStore,
-  useWebsocketStoreApi,
-} from '../../../store';
+import { useWebsocketStore, useWebsocketStoreApi } from '../../../store';
+import { IStore } from '../../../store/store.type';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty, context } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  const { isCollectionEmpty, isRequestSaved, context } = useWebsocketStore(
+    (s: IStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
+      isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
     }),
     shallow
@@ -30,7 +28,7 @@ const CollectionTab = () => {
     // openPlayground,
     createFolder,
     deleteItem,
-  } = useWebsocketStoreApi().getState() as IWebsocketStore;
+  } = useWebsocketStoreApi().getState() as IStore;
 
   // console.log(items, 'items...');
 
@@ -62,6 +60,11 @@ const CollectionTab = () => {
 
   const _createFolderPrompt = async (parentFolderId?: TId) => {
     if (typeof parentFolderId != 'string') parentFolderId = undefined;
+    if (!isRequestSaved) {
+      return context.app.notify.info(
+        'Please save the websocket request first.'
+      );
+    }
     context.window
       .promptInput({
         header: 'Create A New Folder',
