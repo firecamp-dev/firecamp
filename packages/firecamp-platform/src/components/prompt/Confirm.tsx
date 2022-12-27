@@ -37,14 +37,14 @@ const ConfirmationModal: FC<IConfirm> = ({
   texts = { ..._texts, ...texts };
 
   return (
-    <Modal isOpen={state.isOpen} onClose={_close} width={'400px'}>
+    <Modal isOpen={state.isOpen} onClose={_close} width={'400px'} className="min-h-0">
       <Modal.Body>
         <div className="p-6">
           <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
             {`CONFIRMATION Required.`}
           </label>
-          <div className="mt-4">{title}</div>
-          <TabHeader className="px-4">
+          <div className="my-4">{title}</div>
+          <TabHeader className="!px-0">
             <TabHeader.Right>
               <Button
                 text={texts?.btnCancle || `Cancel`}

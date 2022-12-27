@@ -34,7 +34,9 @@
   }
   .rct-tree-root:not(.rct-tree-root-focus) .message-node .rct-tree-item-title-container-focused,.message-node .rct-tree-item-title-container {
     background: var(--focus-level-1) !important;
-    margin: 4px !important;
+    margin-right: 4px !important;
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
   }
   .rct-tree-line{
     display: none;
