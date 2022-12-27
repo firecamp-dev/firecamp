@@ -83,7 +83,7 @@ export const PromptInput: FC<IPromptInput> = ({
     <Modal
       isOpen={state.isOpen}
       onClose={_close}
-      height="250px"
+      className="min-h-0"
       width={'400px'}
     >
       <Modal.Body>
@@ -105,7 +105,7 @@ export const PromptInput: FC<IPromptInput> = ({
               error={state.error}
             />
           </div>
-          <TabHeader className="px-4">
+          <TabHeader className="!px-0">
             <TabHeader.Right>
               <Button
                 text={texts?.btnCancle || `Cancel`}

@@ -95,7 +95,7 @@ export default {
         {...(context.itemContainerWithChildrenProps as any)}
         className={cx(
           'relative',
-          'message-node',
+          { 'message-node': !item.isFolder },
           'rct-tree-item-li',
           { 'rct-tree-item-li-isFolder': item.isFolder },
           { 'rct-tree-item-li-selected': context.isSelected },
@@ -112,9 +112,11 @@ export default {
               (depth + 1) * renderDepthOffset + depth * renderDepthOffset
             }px`,
           }}
+          
           className={cx(
             'pr-2 mx-1 border border-appBorder',
             'rct-tree-item-title-container opacity-80',
+            // { 'rct-tree-item-li-isFolder': !item.isFolder },
             { 'rct-tree-item-title-container-isFolder': item.isFolder },
             {
               'rct-tree-item-title-container-selected !opacity-100':
@@ -140,17 +142,29 @@ export default {
         >
           {context.isExpanded && item.isFolder && (
             <span
-              className="rct-tree-line absolute top-12 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
+              className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
             ></span>
           )}
-          <span
+          {item.isFolder && (
+           <span
+           className={cx(
+             'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
+             { '!top-4': item.data.__ref.isRequest },
+           )}
+           style={{ left: `${renderDepthOffset * (depth + (depth - 1)) + 6 }px` }}
+         ></span>
+          )}
+          {!item.isFolder && (
+            <span
             className={cx(
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-              { '!top-4': item.data.__ref.isRequest }
+              { '!top-4': item.data.__ref.isRequest },
             )}
             style={{ left: `${renderDepthOffset * (depth + 1) + 2}px` }}
           ></span>
+          )}
+          
           {arrow}
           <InteractiveComponent
             type={type}

@@ -11,6 +11,7 @@ import {
   // ConfirmationPopover,
   Popover,
   EPopoverPosition,
+  StatusBar,
   // EPopoverPosition,
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
@@ -259,12 +260,12 @@ const PlaygroundTab = () => {
   return (
     <Container className="h-full">
       <Container.Header>
-        <TabHeader className="height-small collection-path-wrapper with-border-top !px-2">
-          <TabHeader.Left>
-            <div className="collection-path">{message.path || `./`}</div>
-          </TabHeader.Left>
-          <TabHeader.Right>
-            {!plgTab.__meta.isSaved ? (
+      <StatusBar className="bg-statusBarBackground2 px-1">
+        <StatusBar.PrimaryRegion>
+        <div className="collection-path" data-tip={message.path} >{message.path || `./`}</div>
+        </StatusBar.PrimaryRegion>
+        <StatusBar.SecondaryRegion>
+        {!plgTab.__meta.isSaved ? (
               <Button
                 text={'Save'}
                 className="mr-1 hover:!bg-focus2"
@@ -289,8 +290,8 @@ const PlaygroundTab = () => {
               <></>
             )}
             <ShortcutsPopover id={playground.id} />
-          </TabHeader.Right>
-        </TabHeader>
+          </StatusBar.SecondaryRegion>
+          </StatusBar>
       </Container.Header>
       <Container.Header className="message-playground-scrollable top invisible-scrollbar ">
         <TabHeader className="height-small">
