@@ -6,7 +6,8 @@ import 'react-responsive-modal/styles.css';
 import './Modal.scss';
 
 import { Container, Row } from '../../ui-kit'
-import { IModal } from "./interfaces/Modal.interface"
+
+import { IModal, IHeader, IBody, IFooter } from "./interfaces/Modal.interface"
 
 const Modal: FC<IModal> & {
   Header: FC<IHeader>,
@@ -89,21 +90,3 @@ Modal.Body = Body;
 Modal.Footer = Footer;
 
 export default Modal;
-
-interface IHeader {
-  id?: string
-  children?: any
-  className?: string
-}
-
-interface IBody {
-  id?: string
-  children?: any
-  className?: string
-}
-
-interface IFooter {
-  id?: string
-  children?: any
-  className?: string
-}
