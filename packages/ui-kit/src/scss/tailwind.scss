@@ -1064,6 +1064,9 @@ video {
 .-mt-px {
 	margin-top: -1px;
 }
+.-mb-1 {
+	margin-bottom: -0.25rem;
+}
 .mt-0 {
 	margin-top: 0px;
 }
@@ -1386,6 +1389,9 @@ video {
 }
 .overflow-visible {
 	overflow: visible;
+}
+.overflow-x-auto {
+	overflow-x: auto;
 }
 .\!overflow-y-auto {
 	overflow-y: auto !important;
