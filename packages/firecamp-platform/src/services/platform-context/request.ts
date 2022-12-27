@@ -11,7 +11,6 @@ import {
 import * as executor from '@firecamp/agent-manager';
 import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
-import { useUserStore } from '../../store/user';
 import { usePlatformStore } from '../../store/platform';
 import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
