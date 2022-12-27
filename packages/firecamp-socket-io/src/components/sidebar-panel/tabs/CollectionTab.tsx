@@ -12,11 +12,12 @@ import { TId } from '@firecamp/types';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty, context } = useSocketStore(
+  const { isCollectionEmpty, context, isRequestSaved } = useSocketStore(
     (s: ISocketStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
       context: s.context,
+      isRequestSaved: s.runtime.isRequestSaved,
     }),
     shallow
   );
@@ -58,6 +59,11 @@ const CollectionTab = () => {
 
   const _createFolderPrompt = async (parentFolderId?: TId) => {
     if (typeof parentFolderId != 'string') parentFolderId = undefined;
+    if (!isRequestSaved) {
+      return context.app.notify.info(
+        'Please save the socket.io request first.'
+      );
+    }
     context.window
       .promptInput({
         header: 'Create A New Folder',
@@ -68,7 +74,7 @@ const CollectionTab = () => {
         // validator: (val) => {
         //   if (!val || val.length < 3) {
         //     return {
-        //       isValid: false,
+        //       isValid: false,ß
         //       message: 'The folder name must have minimum 3 characters.',
         //     };
         //   }

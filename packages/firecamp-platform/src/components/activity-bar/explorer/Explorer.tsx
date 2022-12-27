@@ -146,6 +146,9 @@ const Explorer: FC<any> = () => {
   };
 
   const _createCollectionPrompt = async () => {
+    if (!pltContext.app.user.isLoggedIn()) {
+      return pltContext.app.modals.openSignIn();
+    }
     pltContext.window
       .promptInput({
         header: 'Create New Collection',

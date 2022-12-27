@@ -49,6 +49,9 @@ const CollectionMenu = ({
     name: 'Add Folder',
     onClick: () => {
       console.log(collectionId, folderId);
+      if (!platformContext.app.user.isLoggedIn()) {
+        return platformContext.app.modals.openSignIn();
+      }
       platformContext.window
         .promptInput({
           header: 'Create New Folder',
@@ -80,7 +83,9 @@ const CollectionMenu = ({
             return createFolder(_folder);
           },
           onError: (e) => {
-            platformContext.app.notifyalert(e?.response?.data?.message || e.message);
+            platformContext.app.notifyalert(
+              e?.response?.data?.message || e.message
+            );
           },
         })
         .then((res) => {
@@ -110,7 +115,10 @@ const CollectionMenu = ({
       if (menuType == EMenuType.Collection) {
         platformContext.app.modals.openCollectionSetting({ collectionId });
       } else if (menuType == EMenuType.Folder) {
-        platformContext.app.modals.openFolderSetting({ collectionId, folderId });
+        platformContext.app.modals.openFolderSetting({
+          collectionId,
+          folderId,
+        });
       }
     },
   };
