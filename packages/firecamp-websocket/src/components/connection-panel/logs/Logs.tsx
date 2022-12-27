@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
-import { VscChevronLeft } from '@react-icons/all-files/vsc/VscChevronLeft';
+import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import shallow from 'zustand/shallow';
 import {
   Container,
@@ -114,7 +114,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
           <Container.Header>
             <TabHeader className="height-small border-b border-appBorder padding-left-extra">
               <div className="fc-btn-collapse v2">
-                <VscChevronLeft onClick={_setVisiblePanel} />
+                <VscChevronRight onClick={_setVisiblePanel} />
               </div>
               <TabHeader.Left>
                 <label className="m-0 text-sm font-bold whitespace-pre">
