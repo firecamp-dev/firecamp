@@ -5,10 +5,14 @@ import { ErrorBoundary } from 'react-error-boundary';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Loader } from '@firecamp/ui-kit';
 
+import JsonTab from './requests/json/Request';
+import MdTab from './requests/markdown/Request';
+
 // import { Rest } from '@firecamp/rest';
 // import { GraphQL } from '@firecamp/graphql';
 // import { WSClient } from '@firecamp/websocket';
 // import { SocketIOClient } from '@firecamp/socket.io';
+
 const Rest = lazy(() =>
   import('@firecamp/rest').then((module) => ({ default: module.Rest }))
 );
@@ -97,6 +101,13 @@ const TabBody: FC<any> = ({ tabObj, index, activeTab }) => {
             <WSClient {...tabProps} />
           </Suspense>
         );
+        break;
+
+      case 'json':
+        return <JsonTab {...tabProps} />;
+        break;
+      case 'md':
+        return <MdTab {...tabProps} />;
         break;
       default:
         return <span>Default Request Tab</span>;
