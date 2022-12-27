@@ -27,8 +27,8 @@ yarn start:storybook
 By default, a server at [localhost:6006](http://localhost:6006/) is started.
 
 ## Storybook component story exists: (tick for the test cases)
-1.  ActivityBar (ActivityBar [ ], StatusBar [x])
-2.  MenuBar [ ]
+1.  ActivityBar (ActivityBar [x], StatusBar [x])
+2.  MenuBar [-] (no longer in use)
 3.  Button (Button [x], CopyButton [x], DocButton [x])
 4.  Checkbox [x]
 5.  CheckboxGroup [x]
@@ -36,7 +36,7 @@ By default, a server at [localhost:6006](http://localhost:6006/) is started.
 7.  Editor [ ]
 8.  FormGroup [ ]
 9.  Grid [ ]
-10. HelpAndSupport [ ]
+10. HelpAndSupport [x]
 11. Input [x]
 12. Modal [ ]
 13. Popover [ ]
