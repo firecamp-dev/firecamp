@@ -13,6 +13,7 @@ import {
 } from '@firecamp/types';
 
 import { useEnvStore } from './environment';
+import platformContext from '../services/platform-context';
 
 const initialState = {
   workspace: {
@@ -188,7 +189,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         })
         .catch((e) => {
           console.log(e.response, 'e');
-          platformContext.app.notifyalert(
+          platformContext.app.notify.alert(
             e.response?.data?.message || e.message
           );
         })

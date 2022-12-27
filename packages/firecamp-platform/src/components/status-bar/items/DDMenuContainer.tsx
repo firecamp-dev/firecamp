@@ -127,6 +127,19 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
           },
         },
         {
+          name: 'Switch to Peronal Workspace',
+          postfix: () => (
+            <div className={'ml-2 text-primaryColor'}>
+              <VscRemote size={14} />
+            </div>
+          ),
+          onClick: () => {
+            localStorage.removeItem('switchToOrg');
+            localStorage.removeItem('workspace');
+            platformContext.app.modals.openSwitchWorkspace();
+          },
+        },
+        {
           name: 'Signout',
           postfix: () => (
             <div className={'ml-2 text-primaryColor'}>
@@ -200,6 +213,9 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
               <VscRemote size={14} strokeWidth={1.5} />
             </div>
           ),
+          onClick: () => {
+            platformContext.app.modals.openSwitchWorkspace();
+          },
         },
         {
           name: 'Switch to Org',

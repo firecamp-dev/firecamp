@@ -16,6 +16,7 @@ import { useEnvStore } from '../../../store/environment';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useModalStore } from '../../../store/modal';
 import { RE } from '../../../types'
+import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
   scope: EEnvironmentScope;
@@ -112,7 +113,7 @@ const CreateEnvironment: FC<IModal> = ({
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
-        platformContext.app.notifyalert(e?.response?.data?.message || e.message);
+        platformContext.app.notify.alert(e?.response?.data?.message || e.message);
       })
       .finally(() => {
         setIsRequesting(false);
