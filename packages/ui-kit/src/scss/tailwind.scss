@@ -1378,11 +1378,11 @@ video {
 .overflow-auto {
 	overflow: auto;
 }
-.overflow-hidden {
-	overflow: hidden;
-}
 .\!overflow-hidden {
 	overflow: hidden !important;
+}
+.overflow-hidden {
+	overflow: hidden;
 }
 .overflow-visible {
 	overflow: visible;
@@ -2393,6 +2393,9 @@ body {
 }
 .icon{
   font-family: 'icomoon' !important;
+}
+.text-ellipsis{
+  text-overflow: ellipsis !important;
 }
 a,a:hover{
   color: inherit !important

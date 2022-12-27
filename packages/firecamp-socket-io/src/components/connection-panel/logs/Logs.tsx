@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { VscChevronLeft } from '@react-icons/all-files/vsc/VscChevronLeft';
+import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import shallow from 'zustand/shallow';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
@@ -119,7 +119,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
             <Container>
               <Container.Header className="with-divider">
                 <div className="fc-btn-collapse v2">
-                  <VscChevronLeft onClick={_setVisiblePanel}/>
+                  <VscChevronRight onClick={_setVisiblePanel}/>
                 </div>
                 <TabHeader className="height-small border-b border-appBorder padding-left-extra">
                   <TabHeader.Left>
