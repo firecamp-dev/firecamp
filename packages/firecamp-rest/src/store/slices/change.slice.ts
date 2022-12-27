@@ -2,16 +2,15 @@ import { IRest } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
-
+import { _array, _object } from '@firecamp/utils';
+import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
   EReqChangeScriptsKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
-} from '../types';
-import { _array, _object } from '@firecamp/utils';
-import { normalizeRequest } from '../services/request.service';
-import { IRestStore } from './rest.store';
+} from '../../types';
+import { TStoreSlice } from '../store.type';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
@@ -34,7 +33,10 @@ interface IRequestChangeStateSlice {
   preparePayloadForUpdateRequest: () => Partial<IRest>;
 }
 
-const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
+  set,
+  get
+) => ({
   requestChangeState: RequestChangeState,
   equalityChecker: (request: Partial<IRest>) => {
     const state = get();
@@ -85,7 +87,7 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     return _sr;
   },
   preparePayloadForUpdateRequest: () => {
-    const state = get() as IRestStore;
+    const state = get();
     const { request, requestChangeState: _rcs } = state;
     const _request = normalizeRequest(request);
     let _ur: Partial<IRest> = {};

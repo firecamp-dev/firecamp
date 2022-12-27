@@ -1,5 +1,6 @@
 import { EHttpMethod, IHeader, IGraphQL, TId } from '@firecamp/types';
 import { normalizeRequest } from '../services/request.service';
+import { TStoreSlice } from '../store.type';
 
 import {
   IUrlSlice,
@@ -29,7 +30,11 @@ interface IRequestSlice extends IUrlSlice {
   save: (tabId: TId) => void;
 }
 
-const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
+  set,
+  get,
+  initialRequest: IGraphQL
+) => ({
   request: initialRequest,
 
   ...createUrlSlice(set, get, initialRequest.url),
@@ -76,11 +81,11 @@ const createRequestSlice = (set, get, initialRequest: IGraphQL) => ({
     const state = get();
     if (!state.runtime.isRequestSaved) {
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId);
+      state.context.request.save(_request, tabId, true);
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
-      // const _request = state.preparePayloadForUpdateRequest();
-      // state.context.request.update(_request, tabId);
+      const _request = state.preparePayloadForUpdateRequest();
+      state.context.request.save(_request, tabId);
     }
   },
 });

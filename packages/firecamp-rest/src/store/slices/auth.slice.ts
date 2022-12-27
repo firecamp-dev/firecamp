@@ -10,8 +10,8 @@ import {
   IOAuth2UiState,
 } from '@firecamp/types';
 import { _object, _table } from '@firecamp/utils';
-import { IRestStore } from './rest.store';
-import { getAuthHeaders } from '../services/request.service';
+import { getAuthHeaders } from '../../services/request.service';
+import { TStoreSlice } from '../store.type';
 
 interface IAuthSlice {
   changeAuthType: (authType: EAuthTypes) => void;
@@ -21,7 +21,7 @@ interface IAuthSlice {
 
 type TAuth = IAuthBasic | IAuthBearer | IAuthDigest | IOAuth1 | IOAuth2UiState;
 
-const createAuthSlice = (set, get) => ({
+const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
   changeAuthType: (type: EAuthTypes) => {
     const state = get();
     let { request, runtime } = state;
@@ -57,7 +57,7 @@ const createAuthSlice = (set, get) => ({
       auth.value = { ...state.request.auth.value, [key]: value };
     }
 
-    set((s: IRestStore) => ({
+    set((s) => ({
       request: {
         ...s.request,
         auth,

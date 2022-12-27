@@ -1,5 +1,6 @@
 import { TId } from '@firecamp/types';
 import { ITab } from '@firecamp/ui-kit/src/components/tabs/interfaces/Tab.interface';
+import { TStoreSlice } from '../store.type';
 
 interface IPlaygroundMeta {
   // name: string, // if the playground is saved then this will be the same name of it, if not saved then this will be auto generated from the query.
@@ -60,7 +61,11 @@ interface IRuntimeSlice {
   setRequestSavedFlag: (flag: boolean) => void;
 }
 
-const createRuntimeSlice = (set, get, initState): IRuntimeSlice => ({
+const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
+  set,
+  get,
+  initState
+): IRuntimeSlice => ({
   runtime: initState,
   // runtime: {
   //   playgroundTabs: [

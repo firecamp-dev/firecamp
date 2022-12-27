@@ -7,7 +7,7 @@ const { MaxRedirects, FollowLocation, RejectUnauthorized, RequestTimeout } =
   ERestConfigKeys;
 
 const ConfigTab = () => {
-  let [config, changeConfig] = useRestStore(
+  const [config, changeConfig] = useRestStore(
     (s: any) => [s.request.config, s.changeConfig],
     shallow
   );

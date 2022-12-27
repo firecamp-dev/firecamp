@@ -1,22 +1,18 @@
 import shallow from 'zustand/shallow';
-
-import Statuses from '../../../common/responseStatus.json';
-
 import { ResStatus, ResSize, ResTime } from '@firecamp/ui-kit';
-import { IRestStore, useRestStore } from '../../../../store';
+import Statuses from '../../../common/responseStatus.json';
+import { IStore, useRestStore } from '../../../../store';
 
 const ResponseMetaData = () => {
-  let { response, isRequestRunning } = useRestStore(
-    (s: IRestStore) => ({
+  const { response, isRequestRunning } = useRestStore(
+    (s: IStore) => ({
       response: s.response,
       isRequestRunning: s.runtime.isRequestRunning,
     }),
     shallow
   );
-
-  let { duration, size, statusCode } = response || {};
-
-  let _getStatusObj = (statusCode) => {
+  const { duration, size, statusCode } = response || {};
+  const _getStatusObj = (statusCode) => {
     return (
       Statuses[statusCode] || { statusCode, color: 'gray', text: 'custom' }
     );
@@ -51,7 +47,7 @@ const ResponseMetaData = () => {
           {contentType}
         </div>
       ) : (
-        ''
+        <></>
       )}
       <div className="fc-response-header-stats-results">
         <ResStatus

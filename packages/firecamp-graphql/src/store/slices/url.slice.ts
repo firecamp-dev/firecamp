@@ -1,8 +1,8 @@
 import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
 import _url from '@firecamp/url';
 import _cloneDeep from 'lodash/cloneDeep';
-
-import { prepareUiState } from '../services/request.service';
+import { prepareUiState } from '../../services/request.service';
+import { TStoreSlice } from '../store.type';
 
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
@@ -10,7 +10,11 @@ interface IUrlSlice {
   changePathParams: (pathParams: IPathParam[]) => void;
 }
 
-const createUrlSlice = (set, get, initialUrl: IUrl) => ({
+const createUrlSlice: TStoreSlice<IUrlSlice> = (
+  set,
+  get,
+  initialUrl: IUrl
+) => ({
   /** change url */
   changeUrl: (urlObj: IUrl) => {
     const state = get();

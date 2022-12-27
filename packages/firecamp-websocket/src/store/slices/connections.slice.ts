@@ -1,10 +1,6 @@
-import {
-  IWebSocketConnection,
-  TId,
-  IQueryParam,
-} from '@firecamp/types';
+import { IWebSocketConnection, TId, IQueryParam } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { IWebsocketStore } from '../websocket.store';
+import { TStoreSlice } from '../store.type';
 
 interface IConnectionsSlice {
   addConnection: (connection: IWebSocketConnection) => void;
@@ -13,7 +9,7 @@ interface IConnectionsSlice {
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => void;
 }
 
-const createConnectionSlice = (set, get): IConnectionsSlice => ({
+const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
   addConnection: (connection: IWebSocketConnection) => {
     const state = get();
     const updatedConnections = [...state.request.connections, connection];
@@ -64,7 +60,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
     // );
   },
   removeConnection: (connectionId: TId) => {
-    const state = get() as IWebsocketStore;
+    const state = get();
     const {
       request: { connections },
       runtime: { _dnp },
@@ -120,7 +116,7 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       runtime: { ...s.runtime, displayUrl },
     }));
 
-    console.log(state.equalityChecker(qps, 'queryParams'));
+    // console.log(state.equalityChecker(qps, 'queryParams'));
   },
 });
 

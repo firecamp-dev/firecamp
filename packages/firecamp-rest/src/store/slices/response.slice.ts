@@ -1,8 +1,8 @@
 import { IRestResponse } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 
 interface IResponseSlice {
   response: IRestResponse;
-
   initialiseResponse: (response: IRestResponse) => void;
 }
 
@@ -15,12 +15,10 @@ const emptyResponse = {
   timeline: '',
 };
 
-const createResponseSlice = (set, get): IResponseSlice => ({
+const createResponseSlice: TStoreSlice<IResponseSlice> = (set, get) => ({
   response: { statusCode: 0 },
-
   initialiseResponse: (response: IRestResponse) => {
     set((s) => ({
-      ...s,
       response: {
         ...emptyResponse,
         ...response,

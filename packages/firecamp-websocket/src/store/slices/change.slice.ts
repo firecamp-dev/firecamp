@@ -9,6 +9,7 @@ import {
   EReqChangeMetaKeys,
   EReChangeRootKeys,
 } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
@@ -28,7 +29,7 @@ interface IRequestChangeStateSlice {
   preparePayloadForSaveRequest: () => IWebSocket;
 }
 
-const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (set, get) => ({
   requestChangeState: RequestChangeState,
   equalityChecker: (request: Partial<IWebSocket>) => {
     const state = get();

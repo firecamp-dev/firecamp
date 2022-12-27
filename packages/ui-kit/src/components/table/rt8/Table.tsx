@@ -110,7 +110,7 @@ const Table: FC<ITable> = ({
   return (
     <div
       className={cx(
-        `w-full custom-scrollbar m-auto max-w-[calc(100%-24px)]`,
+        `w-full custom-scrollbar m-auto max-w-[calc(100%-24px)] z-30`,
         options.containerClassName
       )}
       ref={containerDivRef}

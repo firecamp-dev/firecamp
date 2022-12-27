@@ -4,29 +4,19 @@ import createContext from 'zustand/context';
 import { buildClientSchema, getIntrospectionQuery } from 'graphql';
 
 import {
-  IRequestSlice,
   createRequestSlice,
-  IPlaygrounds,
-  IPlaygroundsSlice,
   createPlaygroundsSlice,
-  ICollection,
-  ICollectionSlice,
   createCollectionSlice,
   createRuntimeSlice,
-  IRuntime,
-  IRuntimeSlice,
-  IPullSlice,
   createPullActionSlice,
   createUiSlice,
-  IUi,
-  IUiSlice,
-  IRequestChangeStateSlice,
   createRequestChangeStateSlice,
-} from './index';
+} from './slices';
 import { ERestBodyTypes, IGraphQL, IRest, TId } from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import { initialiseStoreFromRequest } from '../services/request.service';
+import { IStore, IStoreState } from './store.type';
 
 const {
   Provider: GraphQLStoreProvider,
@@ -34,32 +24,8 @@ const {
   useStoreApi: useGraphQLStoreApi,
 } = createContext();
 
-interface IGraphQLStore
-  extends IRequestSlice,
-    IPlaygroundsSlice,
-    IRuntimeSlice,
-    ICollectionSlice,
-    IPullSlice,
-    IUiSlice,
-    IRequestChangeStateSlice {
-  originalRequest?: IGraphQL;
-  initialise: (_request: Partial<IGraphQL>, tabId: TId) => void;
-  context?: any;
-  setContext: (ctx: any) => void;
-  execute?: (query?: string, variables?: string) => Promise<IRestResponse>;
-  fetchIntrospectionSchema: () => Promise<void>;
-}
-
-interface IGraphQLStoreState {
-  request: IGraphQL;
-  playgrounds: IPlaygrounds;
-  runtime?: IRuntime;
-  ui?: IUi;
-  collection?: ICollection;
-}
-
-const createGraphQLStore = (initialState: IGraphQLStoreState) =>
-  create<IGraphQLStore>((set, get): IGraphQLStore => {
+const createGraphQLStore = (initialState: IStoreState) =>
+  create<IStore>((set, get): IStore => {
     return {
       ...createRequestSlice(
         set,
@@ -85,9 +51,7 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
           originalRequest: _cloneDeep(request) as IGraphQL,
         }));
       },
-
       setContext: (ctx: any) => set({ context: ctx }),
-
       execute: async (opsName: string, query?: string, variables?: string) => {
         const state = get();
         const {
@@ -174,10 +138,8 @@ const createGraphQLStore = (initialState: IGraphQLStoreState) =>
   });
 
 export {
-  IGraphQLStore,
   GraphQLStoreProvider,
   createGraphQLStore,
   useGraphQLStore,
   useGraphQLStoreApi,
-  IGraphQLStoreState,
 };

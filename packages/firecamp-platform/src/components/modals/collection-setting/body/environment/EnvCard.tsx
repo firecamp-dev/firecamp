@@ -73,7 +73,7 @@ const EnvCard: FC<any> = forwardRef(
             <ConfirmationPopover
               id={`delete-environment-${item.__ref.id || ''}`}
               handler={
-                <div className="fc-action-delete iconv2-delete-v2-icon pr-1 text-sm" />
+                <div className="fc-action-delete  pr-1 text-sm" />
               }
               title="Are you sure remove?"
               _meta={{

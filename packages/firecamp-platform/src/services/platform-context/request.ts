@@ -26,7 +26,7 @@ interface IPlatformRequestService {
   unsubscribeChanges?: (requestId: TId) => void;
 
   // save and update request
-  save: (request: any, tabId: TId) => Promise<any>;
+  save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
 
   // on change request, update tab __meta
   onChangeRequestTab: (
@@ -74,15 +74,22 @@ const request: IPlatformRequestService = {
    * Open save request modal if request is newly created
    * if request is already saved then update request with chanes/payload
    */
-  save: async (request: any, tabId: TId) => {
+  save: async (request: any, tabId: TId, isNew: boolean= false) => {
     const { onNewRequestCreate, workspace } = useWorkspaceStore.getState();
     const tabState = useTabStore.getState();
     const {
       explorer: { collections, folders },
     } = useWorkspaceStore.getState();
     try {
+      const _request = {
+        ...request,
+        __ref: {
+          ...request.__ref,
+          workspaceId: workspace.__ref.id,
+        },
+      };
       // console.log(workspace, 132456789);
-      if (true) {
+      if (isNew === true) {
         return promptSaveItem({
           header: 'Save Request',
           texts: { btnOk: 'Save', btnOking: 'Saving...' },
@@ -118,19 +125,9 @@ const request: IPlatformRequestService = {
               ? item.__ref.id
               : undefined;
             console.log(item, 'res...');
-            const _request = {
-              ...request,
-              __meta: {
-                ...request.__meta,
-                name: value,
-                description: '',
-              },
-              __ref: {
-                ...request.__ref,
-                collectionId,
-                workspaceId: workspace.__ref.id,
-              },
-            };
+            _request.__meta.name = value;
+            _request.__meta.description = '0;';
+            _request.__ref.collectionId = collectionId;
             if (folderId) _request.__ref.folderId = folderId;
             const { data } = await Rest.request.create(_request);
             return _request;
@@ -173,7 +170,8 @@ const request: IPlatformRequestService = {
             return _request;
           });
       } else {
-        // TODO: update request
+        // TODO: Update request
+        // const { data } = await Rest.request.update(_request.__ref.id, _request);
       }
       // return Promise.resolve(response);
     } catch (error) {

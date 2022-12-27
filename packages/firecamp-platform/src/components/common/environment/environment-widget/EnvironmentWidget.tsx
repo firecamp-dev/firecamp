@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from 'react';
-import { Button,  } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui-kit';
 // import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import shallow from 'zustand/shallow';
 import { EEnvironmentScope, TId } from '@firecamp/types';
@@ -131,11 +131,11 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
             <Button
               key={`add-environment-button-${previewId}`}
               text={'Create New Environment'}
-              primary
-              transparent={true}
-              xs
-              onClick={_openWrsModal}
               className="ml-2 leading-4"
+              onClick={_openWrsModal}
+              primary
+              transparent
+              xs
             />,
           ]
         : [
@@ -147,23 +147,25 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
             //   onChange={_setWrsActiveEnv}
             //   scope={EEnvironmentScope.Workspace}
             // />,
-            collectionId && collectionId.length ? (
-              <EnvironmentDD
-                key={`collection-env-dd-${previewId}`}
-                activeEnv={collectionActiveEnv}
-                environments={cEnvs}
-                collectionId={collectionId}
-                onChange={_setCollectionActiveEnv}
-                scope={EEnvironmentScope.Collection}
-              />
+            collectionId ? (
+              <>
+                <EnvironmentDD
+                  key={`collection-env-dd-${previewId}`}
+                  activeEnv={collectionActiveEnv}
+                  environments={cEnvs}
+                  collectionId={collectionId}
+                  onChange={_setCollectionActiveEnv}
+                  scope={EEnvironmentScope.Collection}
+                />
+                <span
+                  key={'toggle-env-button'}
+                  className="cursor-pointer ml-1 text-base"
+                  onClick={() => toggleEnvSidebar()}
+                />
+              </>
             ) : (
-              ''
+              <></>
             ),
-            <span
-              key={'toggle-env-button'}
-              className="iconv2-eye-icon cursor-pointer ml-1 text-base"
-              onClick={() => toggleEnvSidebar()}
-            />,
           ]}
     </div>
   );
@@ -193,7 +195,7 @@ export interface IEnvironmentWidget {
    * Update action and payload
    */
   //TODO: add and import interface from zustand store
-  onChange: ({ action: string, payload: object }) => void;
+  onChange: (obj: { action: string, payload: object }) => void;
 
   // callback fn to return updated workspace active env to parent component
   onWorkspaceActiveEnvChange: (envId: TId) => void;

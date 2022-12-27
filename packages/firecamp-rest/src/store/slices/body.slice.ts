@@ -6,13 +6,18 @@ import {
 } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import { nanoid } from 'nanoid';
+import { TStoreSlice } from '../store.type';
 
 interface IBodySlice {
   changeBodyValue: (value: any) => void;
   changeBodyType: (bodyType: ERestBodyTypes) => void;
   updateHeadersOnBodyTypeChange: (type: ERestBodyTypes) => void;
 }
-const createBodySlice = (set, get, initialBody: IRestBody): IBodySlice => {
+const createBodySlice: TStoreSlice<IBodySlice> = (
+  set,
+  get,
+  initialBody: IRestBody
+) => {
   return {
     // change the value of active body, example, write the json or multipart table
     changeBodyValue: (value: any) => {
@@ -54,7 +59,7 @@ const createBodySlice = (set, get, initialBody: IRestBody): IBodySlice => {
     updateHeadersOnBodyTypeChange: (type: ERestBodyTypes) => {
       const state = get();
       const { headers } = state.request;
-      let contentType = new String(type);
+      let contentType = '' + type;
       let updatedHeaders: IHeader[] = [...headers];
 
       switch (type) {

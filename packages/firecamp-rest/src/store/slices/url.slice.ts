@@ -1,8 +1,8 @@
 import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
 import _url from '@firecamp/url';
 import _cloneDeep from 'lodash/cloneDeep';
-
-import { prepareUIRequestPanelState } from '../services/request.service';
+import { prepareUIRequestPanelState } from '../../services/request.service';
+import { TStoreSlice } from '../store.type';
 
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
@@ -10,16 +10,14 @@ interface IUrlSlice {
   changePathParams: (pathParams: IPathParam[]) => void;
 }
 
-const createUrlSlice = (set, get) => ({
+const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
   changeUrl: (urlObj: IUrl) => {
     const state = get();
     const updatedUrl = { ...state.request.url, ...urlObj };
     const updatedUiRequestPanel = prepareUIRequestPanelState({
       url: urlObj,
     });
-
     set((s) => ({
-      ...s,
       request: { ...s.request, url: updatedUrl },
       ui: {
         ...s.ui,
@@ -40,13 +38,11 @@ const createUrlSlice = (set, get) => ({
     // update raw URL into state
     url.raw = raw;
     url.queryParams = queryParams;
-
     const updatedUiRequestPanel = prepareUIRequestPanelState({
       url: { queryParams: queryParams, raw: url.raw },
     });
 
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         url,
@@ -71,9 +67,7 @@ const createUrlSlice = (set, get) => ({
     const updatedUiRequestPanel = prepareUIRequestPanelState({
       url: { pathParams: pathParams, raw: url.raw },
     });
-
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         url,

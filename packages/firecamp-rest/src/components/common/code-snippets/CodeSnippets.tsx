@@ -9,14 +9,14 @@ import codeSnippet, {
   TTargetClients,
 } from '../../../services/code-snippet';
 import targetsInfo from '../../../services/code-snippet/targets-info';
-import { useRestStoreApi, useRestStore, IRestStore } from '../../../store';
+import { useRestStoreApi, useRestStore, IStore } from '../../../store';
 
 const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
   let { request, toggleOpenCodeSnippet } =
-    useRestStoreApi().getState() as IRestStore;
+    useRestStoreApi().getState() as IStore;
   const envVariables = getPlatformEnvironments(tabId);
   const { isCodeSnippetOpen } = useRestStore(
-    (s: IRestStore) => ({
+    (s: IStore) => ({
       isCodeSnippetOpen: s.ui.isCodeSnippetOpen,
     }),
     shallow

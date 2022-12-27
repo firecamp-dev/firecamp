@@ -1,19 +1,18 @@
 import { IUrl, IQueryParam } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
   changeQueryParams: (queryParams: IQueryParam[]) => void;
 }
-
 const getPathFromUrl = (url: string) => {
   return url.split(/[?#]/)[0];
 };
 
-const createUrlSlice = (set, get): IUrlSlice => ({
+const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
   changeUrl: (urlObj: IUrl) => {
     const state = get();
     const url = { ...state.request.url, raw: getPathFromUrl(urlObj.raw) };
-
     set((s) => {
       const { activePlayground } = s.runtime;
       const connections = s.request.connections.map((c) => {
@@ -23,12 +22,11 @@ const createUrlSlice = (set, get): IUrlSlice => ({
         return c;
       });
       return {
-        ...s,
         request: { ...s.request, url, connections },
         runtime: { ...s.runtime, displayUrl: urlObj.raw },
       };
     });
-    state.equalityChecker(url);
+    state.equalityChecker({ url });
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
     set((s) => ({
@@ -36,7 +34,6 @@ const createUrlSlice = (set, get): IUrlSlice => ({
         ...s.request,
         url: { ...s.request.url, queryParams },
       },
-
       // manage ui state
       ui: {
         ...s.ui,

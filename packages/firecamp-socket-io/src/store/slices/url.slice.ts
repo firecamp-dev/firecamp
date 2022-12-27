@@ -1,4 +1,5 @@
 import { IUrl, IQueryParam } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
   changeQueryParams: (queryParams: IQueryParam[]) => void;
@@ -8,7 +9,7 @@ const getPathFromUrl = (url: string) => {
   return url.split(/[?#]/)[0];
 };
 
-const createUrlSlice = (set, get): IUrlSlice => ({
+const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
   changeUrl: (urlObj: IUrl) => {
     const state = get();
     const url = { raw: getPathFromUrl(urlObj.raw) };

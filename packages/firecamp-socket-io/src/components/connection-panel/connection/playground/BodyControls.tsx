@@ -84,7 +84,7 @@ const BodyControls = ({
 
   return (
     <Container.Header>
-      <StatusBar>
+      <StatusBar className="bg-statusBarBackground2 px-1">
         <StatusBar.PrimaryRegion>
           <div data-tip={path} className="collection-path">
             {path || `./`}
