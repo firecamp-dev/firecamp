@@ -98,10 +98,7 @@ const useTabStore = create<ITabStore>((set, get) => {
               : s.orders[index - 1]
             : s.activeTab;
 
-        /*To remove tab from cacheTabs*/
-        // cacheTabsFactoryFns.removeTab(tabId)
         const list = dissoc(tabId, s.list);
-
         return {
           list,
           activeTab,
@@ -189,10 +186,7 @@ const useTabStore = create<ITabStore>((set, get) => {
           },
         };
 
-        /*To add tab in cacheTabs*/
-        // cacheTabsFactoryFns.setTab(tab.id, cacheTabPayload)
         const _list = { ...list, [tId]: tab };
-
         const _orders = [...orders, tId];
         set((s) => ({
           list: _list,
@@ -223,9 +217,6 @@ const useTabStore = create<ITabStore>((set, get) => {
             // _meta,
           },
         };
-
-        /*To add tab in cacheTabs*/
-        // cacheTabsFactoryFns.setTab(tab.id, cacheTabPayload)
 
         const _orders = [...orders, tId];
         set((s: ITabStore) => {
@@ -271,7 +262,6 @@ const useTabStore = create<ITabStore>((set, get) => {
 
     close: {
       all: () => {
-        // cacheTabsFactoryFns.closeAllTabs();
         set((s) => ({
           list: {},
           activeTab: 'home',
