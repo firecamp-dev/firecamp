@@ -14,7 +14,7 @@ import {
 
 import LogTable from './LogTable';
 import { ELogTypes, EPanel } from '../../../types';
-import { IWebsocketStore, useWebsocketStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 import LogPreview from './LogPreview';
 
 const logTypes = {
@@ -30,8 +30,8 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
     logs,
     changePlaygroundLogFilters,
     clearLogs,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       activePlayground: s.runtime.activePlayground,
       typeFilter:
         s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',

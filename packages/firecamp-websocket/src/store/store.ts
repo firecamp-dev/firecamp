@@ -37,12 +37,12 @@ import {
 import { IStore, IStoreState } from './store.type';
 
 const {
-  Provider: WebsocketStoreProvider,
-  useStore: useWebsocketStore,
-  useStoreApi: useWebsocketStoreApi,
+  Provider: StoreProvider,
+  useStore: useStore,
+  useStoreApi: useStoreApi,
 } = createContext();
 
-const createWebsocketStore = (initialState: IStoreState) =>
+const createStore = (initialState: IStoreState) =>
   create<IStore>((set, get): IStore => {
     return {
       setContext: (ctx: any) => set({ context: ctx }),
@@ -71,9 +71,4 @@ const createWebsocketStore = (initialState: IStoreState) =>
     };
   });
 
-export {
-  WebsocketStoreProvider,
-  useWebsocketStore,
-  useWebsocketStoreApi,
-  createWebsocketStore,
-};
+export { StoreProvider, useStore, useStoreApi, createStore };

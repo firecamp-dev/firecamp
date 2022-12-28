@@ -1,8 +1,7 @@
 import { Container, Column, Resizable } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-
 import CollectionTab from './tabs/CollectionTab';
-import { IWebsocketStore, useWebsocketStore } from '../../store';
+import { IStore, useStore } from '../../store';
 
 export enum ESidebarTabs {
   Collection = 'Collection',
@@ -10,8 +9,8 @@ export enum ESidebarTabs {
 }
 
 const SidebarPanel = () => {
-  const { activeTab } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  const { activeTab } = useStore(
+    (s: IStore) => ({
       activeTab: ESidebarTabs.Collection, //s.ui.sidebarActiveTab,
       // headers: s.ui.headers,
       // playgrounds: s.ui.playgrounds,

@@ -23,9 +23,9 @@ import { ETypedArrayView } from '@firecamp/types';
 
 import { EMessagePayloadTypes } from '../../../types';
 import {
-  useWebsocketStore,
+  useStore,
   initialPlaygroundMessage,
-  IWebsocketStore,
+  IStore,
 } from '../../../store';
 import { MessageTypeDropDownList } from '../../../constants';
 import MessageTypeDropDown from './playground/MessageTypeDropDown';
@@ -39,8 +39,8 @@ const PlaygroundTab = () => {
     getActivePlayground,
     changePlaygroundMessage,
     sendMessage,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       context: s.context,
       collection: s.collection,
       __meta: s.request.__meta,
