@@ -14,15 +14,15 @@ import '../sass/ws.sass';
 
 // store
 import {
-  createWebsocketStore,
-  useWebsocketStore,
-  useWebsocketStoreApi,
-  WebsocketStoreProvider,
-  IWebsocketStore,
+  createStore,
+  useStore,
+  useStoreApi,
+  StoreProvider,
+  IStore,
 } from '../store';
 
 const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
-  const websocketStoreApi: any = useWebsocketStoreApi();
+  const websocketStoreApi: any = useStoreApi();
   const {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
@@ -30,8 +30,8 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
     initialiseCollection,
     setActiveEnvironments,
     setContext,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       connect: s.connect,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
@@ -51,7 +51,7 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
   /** assign environments on tab load or when activeTab change **/
   useEffect(() => {
     if (activeTab === tab.id) {
-      const state = websocketStoreApi.getState() as IWebsocketStore;
+      const state = websocketStoreApi.getState() as IStore;
       // existing active environments in to runtime
       const {
         activeEnvironments: { workspace = '', collection = '' },
@@ -140,7 +140,7 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
     if (!platformActiveEnvironments) return;
-    const state = websocketStoreApi.getState() as IWebsocketStore;
+    const state = websocketStoreApi.getState() as IStore;
     const { activeEnvironments } = state.runtime;
 
     if (
@@ -180,11 +180,9 @@ const withStore = (WrappedComponent) => {
     const { request = {}, id } = tab;
     const initState = initialiseStoreFromRequest(request, id);
     return (
-      <WebsocketStoreProvider
-        createStore={() => createWebsocketStore(initState)}
-      >
+      <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
-      </WebsocketStoreProvider>
+      </StoreProvider>
     );
   };
 

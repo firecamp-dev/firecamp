@@ -25,7 +25,7 @@ import NoBodyTab from './body/NoBodyTab';
 
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
-import { IStore, useRestStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const BodyTab: FC<any> = () => {
   const {
@@ -33,7 +33,7 @@ const BodyTab: FC<any> = () => {
     body,
     changeBodyValue,
     changeBodyType,
-  } = useRestStore(
+  } = useStore(
     (s: IStore) => ({
       // request: s.request,
       body: s.request.body,

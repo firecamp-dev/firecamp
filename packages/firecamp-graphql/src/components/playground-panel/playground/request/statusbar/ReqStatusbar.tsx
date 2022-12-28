@@ -2,29 +2,34 @@ import { useState } from 'react';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { Button, Dropdown, StatusBar, ToolBar } from '@firecamp/ui-kit';
-import SavePlayground from './SavePlayground';
 import EditPlaygroundName from './EditPlaygroundName';
-import { useGraphQLStore } from '../../../../../store';
+import { IStore, useStore } from '../../../../../store';
 import { isValid } from '../../../../../services/GraphQLservice';
 
 const ReqStatusBar = ({}) => {
-  let {
+  const {
     context,
+    isRequestSaved,
     playground,
     playgroundMeta,
     undoPlaygroundChanges,
     updateItem,
     setPlaygroundOperation,
     execute,
-  } = useGraphQLStore(
-    (s: any) => ({
+    getPlgNameSuggestion,
+    savePlg,
+  } = useStore(
+    (s: IStore) => ({
       context: s.context,
+      isRequestSaved: s.runtime.isRequestSaved,
       playground: s.playgrounds[s.runtime.activePlayground],
       playgroundMeta: s.runtime.playgroundsMeta[s.runtime.activePlayground],
       undoPlaygroundChanges: s.undoPlaygroundChanges,
       updateItem: s.updateItem,
       setPlaygroundOperation: s.setPlaygroundOperation,
       execute: s.execute,
+      getPlgNameSuggestion: s.prepareRuntimeActivePlgName,
+      savePlg: s.addItem,
     }),
     shallow
   );
@@ -39,17 +44,44 @@ const ReqStatusBar = ({}) => {
     setPlaygroundOperation(operation.name, playground.request.__ref.id);
   };
 
-  const savePlg = async () => {
+  const _savePlg = async () => {
+    if (!isRequestSaved) {
+      context.app.notify.info('Please save the graphql request first.');
+      return;
+    }
     const isQueryValid = await isValid(playground.request.body);
     if (isQueryValid == false) {
       context.app.notify.alert('The playground query is not valid.');
       return;
     }
-    execute(
-      currentOps.name,
-      playground.request.body,
-      playground.request.__meta.variables
-    );
+    const plgName = getPlgNameSuggestion();
+    context.window
+      .promptInput({
+        header: 'SAVE PLAYGROUND',
+        value: plgName,
+        validator: (value) => {
+          const name = value.trim();
+          if (!name) {
+            return {
+              isValid: false,
+              message: 'The playground name is reuquired',
+            };
+          } else if (name?.length <= 3) {
+            return {
+              isValid: false,
+              message: 'The playground name must have minimum 3 characters',
+            };
+          } else {
+            return { isValid: true, message: '' };
+          }
+        },
+        executor: (plgName) => {
+          return savePlg(plgName);
+        },
+      })
+      .then((res) => {
+        // console.log(res)
+      });
   };
 
   const _execute = async () => {
@@ -118,29 +150,41 @@ const ReqStatusBar = ({}) => {
             <>
               <Button
                 text="Undo changes"
-                secondary
-                xs
-                ghost={true}
-                transparent={true}
                 className="!border-0 hover:!bg-focus2"
                 onClick={() =>
                   undoPlaygroundChanges(playground.request?.__ref.id)
                 }
+                secondary
+                transparent
+                ghost
+                xs
               />
               <Button
                 text="Save changes"
-                secondary
-                xs
-                ghost={true}
-                transparent={true}
                 className="!border-0 hover:!bg-focus2"
                 onClick={updateItem}
+                secondary
+                transparent
+                ghost
+                xs
               />
             </>
           ) : (
             <></>
           )}
-          {!playgroundMeta.isSaved ? <SavePlayground isOpen={false} /> : <></>}
+          {!playgroundMeta.isSaved ? (
+            <Button
+              text="Save playground"
+              className="!border-0 hover:!bg-focus2"
+              onClick={_savePlg}
+              transparent
+              secondary
+              ghost
+              xs
+            />
+          ) : (
+            <></>
+          )}
         </StatusBar.SecondaryRegion>
       </StatusBar>
     </>

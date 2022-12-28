@@ -9,17 +9,17 @@ import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import {
-  SocketStoreProvider,
-  createSocketStore,
-  useSocketStoreApi,
-  useSocketStore,
+  StoreProvider,
+  createStore,
+  useStoreApi,
+  useStore,
+  IStore,
 } from '../store';
-import { ISocketStore } from '../store/store.type';
 import { initialiseStoreFromRequest } from '../services/request.service';
 import '../sass/socket.sass';
 
 const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
-  const socketStoreApi = useSocketStoreApi();
+  const socketStoreApi = useStoreApi();
   const {
     initialise,
     initialiseCollection,
@@ -27,7 +27,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     setContext,
-  } = useSocketStore((s: ISocketStore) => ({
+  } = useStore((s: IStore) => ({
     initialise: s.initialise,
     initialiseCollection: s.initialiseCollection,
     setActiveEnvironments: s.setActiveEnvironments,
@@ -44,7 +44,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
   /** setup environments on tab load */
   useEffect(() => {
     if (activeTab === tab.id) {
-      const state = socketStoreApi.getState() as ISocketStore;
+      const state = socketStoreApi.getState() as IStore;
       // existing active environments in to runtime
       const {
         activeEnvironments: { workspace = '', collection = '' },
@@ -127,12 +127,11 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   const handlePull = () => {};
 
-  
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
     if (!platformActiveEnvironments) return;
-    const state = socketStoreApi.getState() as ISocketStore;
+    const state = socketStoreApi.getState() as IStore;
     // existing active environments in to runtime
     const { activeEnvironments } = state.runtime;
 
@@ -171,9 +170,9 @@ const withStore = (WrappedComponent) => {
     const { request = {}, id } = tab;
     const initState = initialiseStoreFromRequest(request, id);
     return (
-      <SocketStoreProvider createStore={() => createSocketStore(initState)}>
+      <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
-      </SocketStoreProvider>
+      </StoreProvider>
     );
   };
   return MyComponent;

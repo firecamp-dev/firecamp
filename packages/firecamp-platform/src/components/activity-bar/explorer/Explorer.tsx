@@ -274,7 +274,7 @@ const Explorer: FC<any> = () => {
           expanded={true}
           bodyClassName={'!p-0'}
           headerTitleRenderer={() => {
-            return <span className="font-bold">COLLECTIONS EPLORER</span>;
+            return <span className="font-bold">COLLECTIONS EXPLORER</span>;
           }}
           headerActionRenderer={() => {
             return (

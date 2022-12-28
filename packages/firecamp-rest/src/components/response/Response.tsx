@@ -1,10 +1,10 @@
 import { FC } from 'react';
 import { Response as ResponsePanel } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-import { IStore, useRestStore } from '../../store';
+import { IStore, useStore } from '../../store';
 
 const Response: FC<any> = () => {
-  const { requestId, response, isRequestRunning } = useRestStore(
+  const { requestId, response, isRequestRunning } = useStore(
     (s: IStore) => ({
       requestId: s.request.__ref?.id,
       response: s.response,

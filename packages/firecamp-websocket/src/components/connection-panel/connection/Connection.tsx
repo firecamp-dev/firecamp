@@ -21,7 +21,7 @@ import PlaygroundTab from './PlaygroundTab';
 import Logs from '../logs/Logs';
 import ConnectButton from '../../common/connection/ConnectButton';
 import { EPanel } from '../../../types';
-import { IWebsocketStore, useWebsocketStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const bodyTabs = [
   {
@@ -44,8 +44,8 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     connections,
     updateConnection,
     changeConQueryParams,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       activePlayground: s.runtime.activePlayground,
       connections: s.request.connections,
       updateConnection: s.updateConnection,

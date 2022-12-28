@@ -8,22 +8,22 @@ import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import {
-  IGraphQLStore,
-  useGraphQLStore,
-  useGraphQLStoreApi,
+  IStore,
+  useStore,
+  useStoreApi,
 } from '../../../store';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+  const { isCollectionEmpty } = useStore(
+    (s: IStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
     }),
     shallow
   );
   const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
-    useGraphQLStoreApi().getState() as IGraphQLStore;
+    useStoreApi().getState() as IStore;
 
   const dataProvider = useRef(new TreeDataProvider([], []));
 

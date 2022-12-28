@@ -90,12 +90,24 @@ export default {
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
     // TODO have only root li component create all the classes
+    const style = item.isFolder ? {
+      paddingLeft: `${
+        (depth + 1) * renderDepthOffset + depth * renderDepthOffset
+      }px`,
+    } : {
+      marginLeft: `${
+        ((((depth+1) * 2) * renderDepthOffset) - 4)
+      }px`,
+      paddingLeft: `${
+        renderDepthOffset
+      }px`,
+    }
     return (
       <li
         {...(context.itemContainerWithChildrenProps as any)}
         className={cx(
           'relative',
-          'message-node',
+          { 'message-node': !item.isFolder },
           'rct-tree-item-li',
           { 'rct-tree-item-li-isFolder': item.isFolder },
           { 'rct-tree-item-li-selected': context.isSelected },
@@ -107,13 +119,9 @@ export default {
       >
         <div
           {...(context.itemContainerWithoutChildrenProps as any)}
-          style={{
-            paddingLeft: `${
-              (depth + 1) * renderDepthOffset + depth * renderDepthOffset
-            }px`,
-          }}
+          style={style}
           className={cx(
-            'pr-2 mx-1 border border-appBorder',
+            'pr-2 mr-1 border border-appBorder',
             'rct-tree-item-title-container opacity-80',
             { 'rct-tree-item-title-container-isFolder': item.isFolder },
             {
@@ -140,17 +148,29 @@ export default {
         >
           {context.isExpanded && item.isFolder && (
             <span
-              className="rct-tree-line absolute top-12 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
+              className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
             ></span>
           )}
-          <span
+          {item.isFolder && (
+           <span
+           className={cx(
+             'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
+             { '!top-4': item.data.__ref.isRequest },
+           )}
+           style={{ left: `${renderDepthOffset * (depth + (depth - 1)) + 6 }px` }}
+         ></span>
+          )}
+          {!item.isFolder && (
+            <span
             className={cx(
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-              { '!top-4': item.data.__ref.isRequest }
+              { '!top-4': item.data.__ref.isRequest },
             )}
-            style={{ left: `${renderDepthOffset * (depth + 1) + 2}px` }}
+            style={{ left: `${renderDepthOffset * (depth + (depth - 1)) + 6 }px` }}
           ></span>
+          )}
+          
           {arrow}
           <InteractiveComponent
             type={type}

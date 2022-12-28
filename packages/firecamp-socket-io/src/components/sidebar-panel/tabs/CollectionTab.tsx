@@ -6,14 +6,13 @@ import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { TreeDataProvider } from './collection-tree/TreeDataProvider';
-import { useSocketStore, useSocketStoreApi } from '../../../store';
-import { ISocketStore } from '../../../store/store.type';
+import { IStore, useStore, useStoreApi } from '../../../store';
 import { TId } from '@firecamp/types';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty, context, isRequestSaved } = useSocketStore(
-    (s: ISocketStore) => ({
+  const { isCollectionEmpty, context, isRequestSaved } = useStore(
+    (s: IStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
       context: s.context,
@@ -27,7 +26,7 @@ const CollectionTab = () => {
     // openPlayground,
     createFolder,
     deleteItem,
-  } = useSocketStoreApi().getState() as ISocketStore;
+  } = useStoreApi().getState() as IStore;
 
   // console.log(items, 'items...');
 

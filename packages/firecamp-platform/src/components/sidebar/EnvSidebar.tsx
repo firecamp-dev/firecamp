@@ -17,6 +17,7 @@ import pltContext from '../../services/platform-context';
 
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
+import platformContext from '../../services/platform-context';
 
 const EnvSidebar: FC<any> = ({ expanded }) => {
   const {
@@ -205,7 +206,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
       vars = JSON.parse(variables);
     }
     catch (e) {
-      platformContext.app.notifyalert("The variables are not valid JSON.")
+      platformContext.app.notify.alert("The variables are not valid JSON.")
     }
 
     /** update env vars */

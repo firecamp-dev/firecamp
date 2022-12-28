@@ -16,6 +16,7 @@ import { useWorkspaceStore } from '../../../store/workspace';
 import { useModalStore } from '../../../store/modal';
 import { useEnvStore } from '../../../store/environment';
 import { RE } from '../../../types'
+import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
   scope: EEnvironmentScope;
@@ -64,7 +65,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
         });
       })
       .catch((e) => {
-        platformContext.app.notifyalert(e.response?.data?.message || e.message);
+        platformContext.app.notify.alert(e.response?.data?.message || e.message);
         console.log(e);
       });
   }, []);
@@ -108,7 +109,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       return;
     }
 
-    const _env: Partial<IEnvironment> = { name, variables, meta: env.__meta };
+    const _env: Partial<IEnvironment> = { name, variables, __meta: env.__meta };
 
     console.log(_env, '_env');
 
@@ -120,7 +121,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
-        platformContext.app.notifyalert(e?.response?.data?.message || e.message);
+        platformContext.app.notify.alert(e?.response?.data?.message || e.message);
       })
       .finally(() => {
         setIsRequesting(false);

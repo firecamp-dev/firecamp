@@ -2,7 +2,7 @@ import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
 import { AuthSetting } from '@firecamp/ui-kit';
-import { IStore, useRestStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const AuthTab = () => {
   const {
@@ -12,7 +12,7 @@ const AuthTab = () => {
     resetAuthHeaders,
     changeAuth,
     changeAuthType,
-  } = useRestStore(
+  } = useStore(
     (s: IStore) => ({
       auth: s.request.auth,
       runtimeAuths: s.runtime.auths,

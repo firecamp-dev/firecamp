@@ -213,7 +213,7 @@ const PathSelector: FC<{
             />
           </UncontrolledTreeEnvironment>
         </Container.Body>
-        <Container.Header className="bg-focus2 !p-1 text-appForegroundInActive leading-3">
+        <Container.Header className="bg-focus2 !p-1 text-appForegroundInActive leading-3 whitespace-pre text-ellipsis !overflow-hidden text-sm">
           {`./${path}`}
         </Container.Header>
       </div>

@@ -8,12 +8,11 @@ import { TId } from '@firecamp/types';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { TreeDataProvider } from './collection-tree/TreeDataProvider';
-import { useWebsocketStore, useWebsocketStoreApi } from '../../../store';
-import { IStore } from '../../../store/store.type';
+import { useStore, useStoreApi, IStore } from '../../../store';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty, isRequestSaved, context } = useWebsocketStore(
+  const { isCollectionEmpty, isRequestSaved, context } = useStore(
     (s: IStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
@@ -28,7 +27,7 @@ const CollectionTab = () => {
     // openPlayground,
     createFolder,
     deleteItem,
-  } = useWebsocketStoreApi().getState() as IStore;
+  } = useStoreApi().getState() as IStore;
 
   // console.log(items, 'items...');
 

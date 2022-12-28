@@ -83,7 +83,7 @@ const CollectionMenu = ({
             return createFolder(_folder);
           },
           onError: (e) => {
-            platformContext.app.notifyalert(
+            platformContext.app.notify.alert(
               e?.response?.data?.message || e.message
             );
           },

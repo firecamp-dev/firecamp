@@ -1,3 +1,6 @@
+import { nanoid } from 'nanoid';
+import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
 import {
   IGraphQL,
   EHttpMethod,
@@ -5,13 +8,10 @@ import {
   EKeyValueTableRowType,
   TId,
 } from '@firecamp/types';
-import { nanoid } from 'nanoid';
-import _cleanDeep from 'clean-deep';
-import _cloneDeep from 'lodash/cloneDeep';
 import { _object, _array, _string } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
 
-import { IGraphQLStoreState, IUi } from '../store';
+import { IStoreState, IUi } from '../store';
 import { ESidebarTabs } from '../types';
 
 /** prepare Ui state for the request tab from given partial request */
@@ -39,6 +39,7 @@ export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
     headers: [],
     __meta: {
       name: '',
+      description: '',
       type: ERequestTypes.GraphQL,
       version: '2.0.0',
     },
@@ -122,7 +123,7 @@ export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
 export const initialiseStoreFromRequest = (
   _request: Partial<IGraphQL>,
   tabId: TId
-): IGraphQLStoreState => {
+): IStoreState => {
   const request = normalizeRequest(_request);
   const uiState = prepareUiState(_cloneDeep(request));
   // console.log({ request });

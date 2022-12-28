@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
-import { VscChevronLeft } from '@react-icons/all-files/vsc/VscChevronLeft';
+import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import shallow from 'zustand/shallow';
 import {
   Container,
@@ -14,7 +14,7 @@ import {
 
 import LogTable from './LogTable';
 import { ELogTypes, EPanel } from '../../../types';
-import { IWebsocketStore, useWebsocketStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 import LogPreview from './LogPreview';
 
 const logTypes = {
@@ -30,8 +30,8 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
     logs,
     changePlaygroundLogFilters,
     clearLogs,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       activePlayground: s.runtime.activePlayground,
       typeFilter:
         s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
@@ -114,7 +114,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
           <Container.Header>
             <TabHeader className="height-small border-b border-appBorder padding-left-extra">
               <div className="fc-btn-collapse v2">
-                <VscChevronLeft onClick={_setVisiblePanel} />
+                <VscChevronRight onClick={_setVisiblePanel} />
               </div>
               <TabHeader.Left>
                 <label className="m-0 text-sm font-bold whitespace-pre">

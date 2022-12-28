@@ -32,7 +32,7 @@ interface ISocket {
   logs?: ILogs;
   ui?: IUi;
 }
-interface ISocketStore
+interface IStore
   extends IRequestSlice,
     IRuntimeSlice,
     ICollectionSlice,
@@ -49,9 +49,9 @@ interface ISocketStore
   initialise: (request: Partial<ISocketIO>, tabId: TId) => void;
 }
 type TStoreSlice<T> = (
-  set: SetState<ISocketStore>,
-  get: GetState<ISocketStore>,
+  set: SetState<IStore>,
+  get: GetState<IStore>,
   ...k: any
 ) => T;
 
-export { ISocketStore, ISocket, TStoreSlice };
+export { IStore, ISocket, TStoreSlice };

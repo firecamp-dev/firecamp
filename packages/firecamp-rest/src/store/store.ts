@@ -23,12 +23,12 @@ import { IRestClientRequest } from '../types';
 import { IStoreState, IStore, TOnChangeVariables } from './store.type';
 
 const {
-  Provider: RestStoreProvider,
-  useStore: useRestStore,
-  useStoreApi: useRestStoreApi,
+  Provider: StoreProvider,
+  useStore: useStore,
+  useStoreApi: useStoreApi,
 } = createContext();
 
-const createRestStore = (initialState: IStoreState) =>
+const createStore = (initialState: IStoreState) =>
   create<IStore>((set, get): IStore => {
     const uiRequestPanel = prepareUIRequestPanelState(initialState.request);
     return {
@@ -154,9 +154,11 @@ const createRestStore = (initialState: IStoreState) =>
 
           console.log({ normalizedRequest, request });
           // execute request
-          let response: IRestResponse = await state.context.request.execute(
-            normalizedRequest
-          );
+          let response: IRestResponse = await state.context.request
+            .execute(normalizedRequest)
+            .catch((e) => {
+              console.log(e.message, e.stack, e.response, e, 9090);
+            });
 
           console.log({ response });
 
@@ -238,4 +240,4 @@ const createRestStore = (initialState: IStoreState) =>
     };
   });
 
-export { RestStoreProvider, useRestStore, createRestStore, useRestStoreApi };
+export { StoreProvider, useStore, createStore, useStoreApi };

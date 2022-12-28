@@ -8,16 +8,15 @@ import {
   Column,
 } from '@firecamp/ui-kit';
 import List from './List';
-import { useSocketStore } from '../../../../store';
-import { ISocketStore } from '../../../../store/store.type';
+import { IStore, useStore } from '../../../../store';
 
 const Body = ({ toggleCollapsed = (bool) => {} }) => {
   let {
     listeners,
     activePlayground,
     updatePlaygroundListenersValue,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       updatePlaygroundListenersValue: s.updatePlayground,
       listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
       activePlayground: s.runtime.activePlayground,
@@ -81,8 +80,8 @@ const Body = ({ toggleCollapsed = (bool) => {} }) => {
 export default Body;
 
 const AddListener = ({ activePlayground = '' }) => {
-  const { updatePlaygroundListener } = useSocketStore(
-    (s: ISocketStore) => ({
+  const { updatePlaygroundListener } = useStore(
+    (s: IStore) => ({
       updatePlaygroundListener: s.updatePlaygroundListener,
     }),
     shallow

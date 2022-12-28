@@ -130,7 +130,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     const item = {
       name,
-      body: plg.request.body,
+      payload: plg.request.body,
       __meta: plg.request.__meta,
       __ref: {
         requestId: state.request.__ref.id,

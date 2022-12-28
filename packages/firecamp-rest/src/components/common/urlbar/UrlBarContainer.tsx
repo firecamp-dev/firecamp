@@ -3,7 +3,7 @@ import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { IStore, useRestStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 
@@ -29,7 +29,7 @@ const UrlBarContainer = ({
     execute,
     changeActiveEnvironment,
     save,
-  } = useRestStore(
+  } = useStore(
     (s: IStore) => ({
       url: s.request.url,
       method: s.request.method,

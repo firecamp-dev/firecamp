@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { VscChevronLeft } from '@react-icons/all-files/vsc/VscChevronLeft';
+import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import shallow from 'zustand/shallow';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
@@ -15,8 +15,7 @@ import {
 } from '@firecamp/ui-kit';
 import LogTable from './log-table/LogTable';
 import Listeners from './listeners/Listeners';
-import { useSocketStore } from '../../../store';
-import { ISocketStore } from '../../../store/store.type';
+import { useStore, IStore } from '../../../store';
 import { ELogTypes, EPanel } from '../../../types';
 import LogPreview from './log-table/LogPreview';
 
@@ -34,8 +33,8 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
     activePlayground,
     clearLogs,
     changePlaygroundLogFilters,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       socketId: s.playgrounds[s.runtime.activePlayground]?.socketId,
       activePlayground: s.runtime.activePlayground,
       typeFilter:
@@ -119,7 +118,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
             <Container>
               <Container.Header className="with-divider">
                 <div className="fc-btn-collapse v2">
-                  <VscChevronLeft onClick={_setVisiblePanel}/>
+                  <VscChevronRight onClick={_setVisiblePanel}/>
                 </div>
                 <TabHeader className="height-small border-b border-appBorder padding-left-extra">
                   <TabHeader.Left>

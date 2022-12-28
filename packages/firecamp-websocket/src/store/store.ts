@@ -1,7 +1,9 @@
 import create from 'zustand';
 import createContext from 'zustand/context';
 import _cloneDeep from 'lodash/cloneDeep';
-import { ISocketIO, TId } from '@firecamp/types';
+import { _object } from '@firecamp/utils';
+import { IWebSocket, TId } from '@firecamp/types';
+import { initialiseStoreFromRequest } from '../services/reqeust.service';
 
 import {
   // request
@@ -20,36 +22,35 @@ import {
   // connections logs
   createLogsSlice,
 
-  // req changes
+  // request changes
   createRequestChangeStateSlice,
 
-  // execute slice
+  // handle execution
   createHandleConnectionExecutor,
+
+  // pull
+  createPullActionSlice,
 
   // ui
   createUiSlice,
 } from './slices';
-import { _object } from '@firecamp/utils';
-import {
-  initialiseStoreFromRequest,
-} from '../services/request.service';
-import { ISocket, ISocketStore } from './store.type';
+import { IStore, IStoreState } from './store.type';
 
 const {
-  Provider: SocketStoreProvider,
-  useStore: useSocketStore,
-  useStoreApi: useSocketStoreApi,
+  Provider: StoreProvider,
+  useStore: useStore,
+  useStoreApi: useStoreApi,
 } = createContext();
 
-const createSocketStore = (initialState: ISocket) =>
-  create<ISocketStore>((set, get) => {
+const createStore = (initialState: IStoreState) =>
+  create<IStore>((set, get): IStore => {
     return {
-      __manualUpdates: 0,
       setContext: (ctx: any) => set({ context: ctx }),
-      initialise: (request: Partial<ISocketIO>, tabId: TId) => {
+      initialise: async (request: Partial<IWebSocket>, tabId: TId) => {
         const initState = initialiseStoreFromRequest(request, tabId);
+        // console.log(initState.request, 'initState.request');
         set((s) => ({
-          ...s, // do not remove this, we need the previously set state here so.
+          ...s,
           ...initState,
           originalRequest: _cloneDeep(initState.request),
         }));
@@ -57,21 +58,17 @@ const createSocketStore = (initialState: ISocket) =>
       ...createRequestSlice(
         set,
         get,
-        _object.pick(initialState.request, requestSliceKeys) as ISocketIO
+        _object.pick(initialState.request, requestSliceKeys) as IWebSocket
       ),
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get, initialState.collection),
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
       ...createLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
-      ...createRequestChangeStateSlice(set, get),
+      ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
+      ...createRequestChangeStateSlice(set, get),
     };
   });
 
-export {
-  SocketStoreProvider,
-  useSocketStore,
-  useSocketStoreApi,
-  createSocketStore,
-};
+export { StoreProvider, useStore, useStoreApi, createStore };
