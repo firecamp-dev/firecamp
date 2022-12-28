@@ -38,7 +38,7 @@ By default, a server at [localhost:6006](http://localhost:6006/) is started.
 9.  Grid [ ]
 10. HelpAndSupport [x]
 11. Input [x]
-12. Modal [ ]
+12. Modal [x]
 13. Popover [ ]
 14. ProgressBar [ ]
 15. SpitView [ ]

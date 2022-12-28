@@ -61,6 +61,7 @@ const Modal: FC<IModal> & {
   )
 }
 
+// `id`: is not being updated on the element
 let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
   return (
     <Container.Header className={className || ''} id={id}>
@@ -69,6 +70,7 @@ let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
   );
 };
 
+// `id`: is not being updated on the element
 let Body: FC<IBody> = ({ id = '', children = '', className = '' }) => {
   return (
     <Container.Body className={className || 'flex flex-col overflow-auto'} id={id}>
