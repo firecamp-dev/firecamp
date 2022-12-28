@@ -168,9 +168,21 @@ export default class RestExecutor implements IRestExecutor {
         // prepare timeline of request execution
         response['timeline'] = this._timeline(axiosRequest, error.response);
 
-        return Promise.reject(response);
+        return Promise.reject({
+          response,
+          error: {
+            message: error.message,
+            code: error.code,
+          },
+        });
       }
-      return Promise.reject(error.message);
+      return Promise.reject({
+        response: null,
+        error: {
+          message: error.message,
+          code: error.code,
+        },
+      });
     }
   }
 
