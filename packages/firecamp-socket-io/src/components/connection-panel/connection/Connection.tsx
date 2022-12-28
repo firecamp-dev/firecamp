@@ -9,8 +9,7 @@ import AuthTab from './AuthTab';
 import PlaygroundTab from './PlaygroundTab';
 import Logs from '../logs/Logs';
 import { EPanel } from '../../../types';
-import { useSocketStore } from '../../../store';
-import { ISocketStore } from '../../../store/store.type';
+import { IStore, useStore } from '../../../store';
 
 const bodyTabs = [
   {
@@ -41,8 +40,8 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     connections,
     updateConnection,
     changeConQueryParams,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       activePlayground: s.runtime.activePlayground,
       connections: s.request.connections,
       updateConnection: s.updateConnection,

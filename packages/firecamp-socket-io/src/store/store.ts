@@ -30,19 +30,17 @@ import {
   createUiSlice,
 } from './slices';
 import { _object } from '@firecamp/utils';
-import {
-  initialiseStoreFromRequest,
-} from '../services/request.service';
-import { ISocket, ISocketStore } from './store.type';
+import { initialiseStoreFromRequest } from '../services/request.service';
+import { ISocket, IStore } from './store.type';
 
 const {
-  Provider: SocketStoreProvider,
-  useStore: useSocketStore,
-  useStoreApi: useSocketStoreApi,
+  Provider: StoreProvider,
+  useStore: useStore,
+  useStoreApi: useStoreApi,
 } = createContext();
 
-const createSocketStore = (initialState: ISocket) =>
-  create<ISocketStore>((set, get) => {
+const createStore = (initialState: ISocket) =>
+  create<IStore>((set, get) => {
     return {
       __manualUpdates: 0,
       setContext: (ctx: any) => set({ context: ctx }),
@@ -69,9 +67,4 @@ const createSocketStore = (initialState: ISocket) =>
     };
   });
 
-export {
-  SocketStoreProvider,
-  useSocketStore,
-  useSocketStoreApi,
-  createSocketStore,
-};
+export { StoreProvider, useStore, useStoreApi, createStore };

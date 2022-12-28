@@ -2,16 +2,15 @@ import { useState } from 'react';
 import { Container, Button, Input } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { _array } from '@firecamp/utils';
-import { useSocketStore } from '../../store';
-import { ISocketStore } from '../../store/store.type';
+import { IStore, useStore } from '../../store';
 
 const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
   const {
     changeListeners,
     addListenersToAllPlaygrounds,
     deleteListenerFromAllPlaygrounds,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       changeListeners: s.changeListeners,
       addListenersToAllPlaygrounds: s.addListenersToAllPlaygrounds,
       deleteListenerFromAllPlaygrounds: s.deleteListenerFromAllPlaygrounds,

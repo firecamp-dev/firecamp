@@ -15,8 +15,7 @@ import {
 } from '@firecamp/ui-kit';
 import LogTable from './log-table/LogTable';
 import Listeners from './listeners/Listeners';
-import { useSocketStore } from '../../../store';
-import { ISocketStore } from '../../../store/store.type';
+import { useStore, IStore } from '../../../store';
 import { ELogTypes, EPanel } from '../../../types';
 import LogPreview from './log-table/LogPreview';
 
@@ -34,8 +33,8 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
     activePlayground,
     clearLogs,
     changePlaygroundLogFilters,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       socketId: s.playgrounds[s.runtime.activePlayground]?.socketId,
       activePlayground: s.runtime.activePlayground,
       typeFilter:

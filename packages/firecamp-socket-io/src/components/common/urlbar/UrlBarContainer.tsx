@@ -4,8 +4,7 @@ import { TId } from '@firecamp/types';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import ConnectionButton from '../connection/ConnectButton'
 import { VERSIONS } from '../../../constants';
-import { useSocketStore } from '../../../store';
-import { ISocketStore } from '../../../store/store.type';
+import { IStore, useStore } from '../../../store';
 
 const UrlBarContainer = ({
   tab,
@@ -22,8 +21,8 @@ const UrlBarContainer = ({
     changeConfig,
     changeActiveEnvironment,
     save
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,

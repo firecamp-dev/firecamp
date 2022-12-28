@@ -8,8 +8,7 @@ import { TId } from '@firecamp/types';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { TreeDataProvider } from './collection-tree/TreeDataProvider';
-import { useStore, useStoreApi } from '../../../store';
-import { IStore } from '../../../store/store.type';
+import { useStore, useStoreApi, IStore } from '../../../store';
 
 const CollectionTab = () => {
   const treeRef = useRef();

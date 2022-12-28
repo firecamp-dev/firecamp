@@ -15,9 +15,7 @@ import { _object } from '@firecamp/utils';
 import BodyControls from './playground/BodyControls';
 import EmitterArgTabs from './playground/EmitterArgTabs';
 import EmitterBody from './playground/EmitterBody';
-
-import { useSocketStore } from '../../../store';
-import { ISocketStore } from '../../../store/store.type';
+import { IStore, useStore } from '../../../store';
 
 const EmitterPlayground = () => {
   const {
@@ -30,8 +28,8 @@ const EmitterPlayground = () => {
     changePlgArgValue,
     changePlgEmitterName,
     changePlgEmitterAck,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       playground: s.playgrounds[s.runtime.activePlayground],
       __meta: s.request.__meta,
       __manualUpdates: s.__manualUpdates,

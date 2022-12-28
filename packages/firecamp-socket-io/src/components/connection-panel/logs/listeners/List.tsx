@@ -1,9 +1,9 @@
 import shallow from 'zustand/shallow';
-import { useSocketStore } from '../../../../store';
+import { useStore } from '../../../../store';
 import './listners.scss';
 
 const List = ({ listeners = {}, activePlayground = '' }) => {
-  const { deletePlaygroundListener } = useSocketStore(
+  const { deletePlaygroundListener } = useStore(
     (s) => ({
       deletePlaygroundListener,
     }),
@@ -40,7 +40,7 @@ const Listener = ({
   name = 'Listener',
   value = false,
 }) => {
-  const { updatePlaygroundListener, deletePlaygroundListener } = useSocketStore(
+  const { updatePlaygroundListener, deletePlaygroundListener } = useStore(
     (s) => ({
       updatePlaygroundListener: s.updatePlaygroundListener,
       deletePlaygroundListener: s.deletePlaygroundListener,
