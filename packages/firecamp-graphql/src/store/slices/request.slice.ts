@@ -1,5 +1,4 @@
 import { EHttpMethod, IHeader, IGraphQL, TId } from '@firecamp/types';
-import { normalizeRequest } from '../services/request.service';
 import { TStoreSlice } from '../store.type';
 
 import {

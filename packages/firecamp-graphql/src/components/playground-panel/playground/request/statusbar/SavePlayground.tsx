@@ -8,14 +8,14 @@ import {
   Input,
 } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-import { IGraphQLStore, useGraphQLStore } from '../../../../../store';
+import { IStore, useGraphQLStore } from '../../../../../store';
 
 const SavePlayground: FC<ISavePlayground> = ({
   isOpen: propIsOpen = false,
 }) => {
   const { context, isRequestSaved, getPlgNameSuggestion, savePlg } =
     useGraphQLStore(
-      (s: IGraphQLStore) => ({
+      (s: IStore) => ({
         context: s.context,
         isRequestSaved: s.runtime.isRequestSaved,
         getPlgNameSuggestion: s.prepareRuntimeActivePlgName,

@@ -1,10 +1,10 @@
 import { BulkEditTable } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-import { IGraphQLStore, useGraphQLStore } from '../../../store';
+import { IStore, useGraphQLStore } from '../../../store';
 
 const HeadersTab = () => {
   let { headers, changeHeaders } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+    (s: IStore) => ({
       headers: s.request.headers,
       changeHeaders: s.changeHeaders,
     }),

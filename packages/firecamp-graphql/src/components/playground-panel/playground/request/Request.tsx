@@ -10,13 +10,13 @@ import ReqStatusbar from './statusbar/ReqStatusbar';
 import QueryEditor from './query-editor/QueryEditor';
 import PlaygroundFooter from './footerbar/PlaygroundFooter';
 import './sass/doc-explorer.css';
-import { IGraphQLStore, useGraphQLStore } from '../../../../store';
+import { IStore, useGraphQLStore } from '../../../../store';
 
 const Request = () => {
   const [isQueryDirty, toggleQueryDirty] = useState(false);
 
   const { playground, activePlayground, changePlaygroundValue } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+    (s: IStore) => ({
       playground: s.playgrounds[s.runtime.activePlayground],
       activePlayground: s.runtime.activePlayground,
       changePlaygroundValue: s.changePlaygroundValue,

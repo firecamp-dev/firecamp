@@ -19,7 +19,7 @@ import {
   createGraphQLStore,
   useGraphQLStoreApi,
   useGraphQLStore,
-  IGraphQLStore,
+  IStore,
 } from '../store';
 
 import {
@@ -40,7 +40,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     setContext,
     initialiseCollection
   } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+    (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
