@@ -10,10 +10,10 @@ import _url from '@firecamp/url';
 import { _misc, _object, _table, _auth } from '@firecamp/utils';
 
 import {
-  useRestStore,
-  RestStoreProvider,
-  createRestStore,
-  useRestStoreApi,
+  useStore,
+  StoreProvider,
+  createStore,
+  useStoreApi,
   IStore,
 } from '../store';
 import {
@@ -26,7 +26,7 @@ import Response from './response/Response';
 import CodeSnippets from './common/code-snippets/CodeSnippets';
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
-  const restStoreApi: any = useRestStoreApi();
+  const restStoreApi: any = useStoreApi();
 
   const {
     isFetchingRequest,
@@ -37,7 +37,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
     setContext,
-  } = useRestStore(
+  } = useStore(
     (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
@@ -266,9 +266,9 @@ const withStore = (WrappedComponent) => {
     const { request = {}, id } = tab;
     const initState = initialiseStoreFromRequest(request, id);
     return (
-      <RestStoreProvider createStore={() => createRestStore(initState)}>
+      <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
-      </RestStoreProvider>
+      </StoreProvider>
     );
   };
 

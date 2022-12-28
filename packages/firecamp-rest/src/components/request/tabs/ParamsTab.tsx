@@ -7,12 +7,12 @@ import {
 } from '@firecamp/ui-kit';
 import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
-import { IStore, useRestStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const ParamsTab = () => {
   const tableApi = useRef<TTableApi>();
   const { queryParams, pathParams, changeQueryParams, changePathParams } =
-    useRestStore(
+    useStore(
       (s: IStore) => ({
         queryParams: s.request.url?.queryParams || [],
         pathParams: s.request.url?.pathParams || [],
