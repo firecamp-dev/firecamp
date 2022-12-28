@@ -9,13 +9,13 @@ import treeRenderer from './collection-tree/treeItemRenderer';
 import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import {
   IStore,
-  useGraphQLStore,
-  useGraphQLStoreApi,
+  useStore,
+  useStoreApi,
 } from '../../../store';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty } = useGraphQLStore(
+  const { isCollectionEmpty } = useStore(
     (s: IStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
@@ -23,7 +23,7 @@ const CollectionTab = () => {
     shallow
   );
   const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
-    useGraphQLStoreApi().getState() as IStore;
+    useStoreApi().getState() as IStore;
 
   const dataProvider = useRef(new TreeDataProvider([], []));
 

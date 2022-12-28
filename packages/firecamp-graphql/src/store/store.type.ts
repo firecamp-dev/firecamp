@@ -27,7 +27,11 @@ interface IStore
   initialise: (_request: Partial<IGraphQL>, tabId: TId) => void;
   context?: any;
   setContext: (ctx: any) => void;
-  execute?: (query?: string, variables?: string) => Promise<IRestResponse>;
+  execute?: (
+    opsName: string,
+    query: string,
+    variables?: string
+  ) => Promise<IRestResponse>;
   fetchIntrospectionSchema: () => Promise<void>;
 }
 interface IStoreState {

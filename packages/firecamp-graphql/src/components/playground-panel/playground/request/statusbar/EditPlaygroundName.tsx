@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import shallow from 'zustand/shallow';
 import { Popover, Input } from '@firecamp/ui-kit';
-import { IStore, useGraphQLStore } from '../../../../../store';
+import { IStore, useStore } from '../../../../../store';
 
 const EditPlaygroundName: FC<any> = ({}) => {
-  const { isRequestSaved, updatePlg, playground } = useGraphQLStore(
+  const { isRequestSaved, updatePlg, playground } = useStore(
     (s: IStore) => ({
       context: s.context,
       isRequestSaved: s.runtime.isRequestSaved,

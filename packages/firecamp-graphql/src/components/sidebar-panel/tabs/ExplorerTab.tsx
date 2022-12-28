@@ -1,7 +1,7 @@
 import { Button, Container, ProgressBar } from '@firecamp/ui-kit';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import QueryExplorer from '../../common/explorer/QueryExplorer';
-import { IStore, useGraphQLStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 import { EQueryTypes } from '../../../types';
 
 const addQueryButtons = [
@@ -20,7 +20,7 @@ const addQueryButtons = [
 ];
 
 const ExplorerTab = () => {
-  const { isFetchingIntrospection, fetchIntrospectionSchema } = useGraphQLStore(
+  const { isFetchingIntrospection, fetchIntrospectionSchema } = useStore(
     (s: IStore) => ({
       isFetchingIntrospection: s.runtime.isFetchingIntrospection,
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,

@@ -19,12 +19,12 @@ import { initialiseStoreFromRequest } from '../services/request.service';
 import { IStore, IStoreState } from './store.type';
 
 const {
-  Provider: GraphQLStoreProvider,
-  useStore: useGraphQLStore,
-  useStoreApi: useGraphQLStoreApi,
+  Provider: StoreProvider,
+  useStore: useStore,
+  useStoreApi: useStoreApi,
 } = createContext();
 
-const createGraphQLStore = (initialState: IStoreState) =>
+const createStore = (initialState: IStoreState) =>
   create<IStore>((set, get): IStore => {
     return {
       ...createRequestSlice(
@@ -68,7 +68,7 @@ const createGraphQLStore = (initialState: IStoreState) =>
             __meta: {
               ...request.__meta,
             },
-            body: {
+            payload: {
               value: { query, variables },
               type: ERestBodyTypes.GraphQL,
             },
@@ -137,9 +137,4 @@ const createGraphQLStore = (initialState: IStoreState) =>
     };
   });
 
-export {
-  GraphQLStoreProvider,
-  createGraphQLStore,
-  useGraphQLStore,
-  useGraphQLStoreApi,
-};
+export { StoreProvider, createStore, useStore, useStoreApi };

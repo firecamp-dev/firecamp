@@ -9,12 +9,12 @@ import ReqStatusbar from './statusbar/ReqStatusbar';
 // import QueryEditorMonaco from './query-editor/QueryEditor.monaco';
 import QueryEditor from './query-editor/QueryEditor';
 import PlaygroundFooter from './footerbar/PlaygroundFooter';
-import { IStore, useGraphQLStore } from '../../../../store';
+import { IStore, useStore } from '../../../../store';
 import './sass/doc-explorer.css';
 
 const Request = () => {
   const [isQueryDirty, toggleQueryDirty] = useState(false);
-  const { playground, activePlayground, changePlaygroundValue } = useGraphQLStore(
+  const { playground, activePlayground, changePlaygroundValue } = useStore(
     (s: IStore) => ({
       playground: s.playgrounds[s.runtime.activePlayground],
       activePlayground: s.runtime.activePlayground,

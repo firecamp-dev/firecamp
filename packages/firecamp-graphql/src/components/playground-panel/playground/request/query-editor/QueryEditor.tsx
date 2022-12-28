@@ -52,7 +52,7 @@ import getQueryFacts, {
   getCurrentOperation,
 } from '../../../../../services/GraphQLservice';
 import Controls from '../statusbar/Controls';
-import { useGraphQLStore } from '../../../../../store';
+import { useStore } from '../../../../../store';
 import { EQueryTypes } from '../../../../../types';
 
 const AUTO_COMPLETE_AFTER_KEY = /^[a-zA-Z0-9_@(]$/;
@@ -64,7 +64,7 @@ const QueryEditor = ({
   isQueryDirty,
   toggleQueryDirty,
 }) => {
-  const { schema } = useGraphQLStore(
+  const { schema } = useStore(
     (s: any) => ({ schema: s.runtime.schema }),
     shallow
   );

@@ -1,9 +1,9 @@
 import shallow from 'zustand/shallow';
 import { Response as ResponsePanel } from '@firecamp/ui-kit';
-import { IStore, useGraphQLStore } from '../../../../store';
+import { IStore, useStore } from '../../../../store';
 
 const Response = () => {
-  const { playground, activePlayground, isRequestRunning } = useGraphQLStore(
+  const { playground, activePlayground, isRequestRunning } = useStore(
     (s: IStore) => {
       const pId = s.runtime.activePlayground;
       return {

@@ -15,10 +15,10 @@ import PlaygroundPanel from './playground-panel/PlaygroundPanel';
 import DocWrapper from './common/explorer/GraphQLDoc';
 
 import {
-  GraphQLStoreProvider,
-  createGraphQLStore,
-  useGraphQLStoreApi,
-  useGraphQLStore,
+  StoreProvider,
+  createStore,
+  useStoreApi,
+  useStore,
   IStore,
 } from '../store';
 
@@ -28,7 +28,7 @@ import {
 } from '../services/request.service';
 
 const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
-  let graphqlStoreApi: any = useGraphQLStoreApi();
+  let graphqlStoreApi: any = useStoreApi();
 
   let {
     isFetchingRequest,
@@ -39,7 +39,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     getMergedRequestByPullAction,
     setContext,
     initialiseCollection
-  } = useGraphQLStore(
+  } = useStore(
     (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
@@ -239,9 +239,9 @@ const withStore = (WrappedComponent) => {
     const initState = initialiseStoreFromRequest(request, id);
     // console.log(tab, 'tab.....', initState)
     return (
-      <GraphQLStoreProvider createStore={() => createGraphQLStore(initState)}>
+      <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
-      </GraphQLStoreProvider>
+      </StoreProvider>
     );
   };
   return MyComponent;

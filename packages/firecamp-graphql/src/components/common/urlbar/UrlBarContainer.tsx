@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow';
 import { EHttpMethod, TId } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { Button, Url, UrlBar, HttpMethodDropDown } from '@firecamp/ui-kit';
-import { IStore, useGraphQLStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 
@@ -29,7 +29,7 @@ const UrlBarContainer = ({
     toggleDoc,
     changeActiveEnvironment,
     save,
-  } = useGraphQLStore(
+  } = useStore(
     (s: IStore) => ({
       url: s.request.url,
       method: s.request.method,
