@@ -10,11 +10,10 @@ import {
   TabHeader,
   Button, 
 } from '@firecamp/ui-kit';
-import { EEnvironmentScope, IEnvironment } from '@firecamp/types';
+import { EEditorLanguage, EEnvironmentScope, IEnvironment } from '@firecamp/types';
 
 import EnvironmentDD from '../common/environment/environment-widget/EnvironmentDD';
 import pltContext from '../../services/platform-context';
-
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
 import platformContext from '../../services/platform-context';
@@ -249,7 +248,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
       <div style={{ height: 'calc(50vh - 100px)' }}>
         <Editor
           autoFocus={true}
-          language="json"
+          language={EEditorLanguage.Json}
           value={variables}
           placeholder="{ variableKey: variableValue}"
           onChange={(e) => {

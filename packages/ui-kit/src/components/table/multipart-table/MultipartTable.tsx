@@ -1,15 +1,17 @@
+import { FC, memo, useEffect, useRef, useState } from 'react';
+import equals from 'deep-equal';
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import { FC, memo, useEffect, useRef, useState } from 'react';
+import { EEditorLanguage } from '@firecamp/types';
+
 import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from '../primitive/Table';
-import equals from 'deep-equal';
 
 import { IMultiPartInput, ERowType } from './MultipartTable.interfaces';
 
@@ -103,7 +105,7 @@ const MultipartTable = ({
         return (
           <SingleLineEditor
             // path={`${rowIndex}_${column.id}`}
-            language={'ife-header-key'}
+            language={EEditorLanguage.HeaderKey}
             className="without-border px-2"
             style={{
               position: 'absolute',
@@ -243,7 +245,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
         {type == 'text' ? (
           <SingleLineEditor
             key={`${row.id}`}
-            language={'ife-header-key'}
+            language={EEditorLanguage.HeaderKey}
             className="without-border px-2"
             style={{
               position: 'absolute',

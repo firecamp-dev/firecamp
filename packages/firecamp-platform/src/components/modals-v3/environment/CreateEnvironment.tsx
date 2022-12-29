@@ -10,7 +10,7 @@ import {
   CheckboxGroup,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-import { EEnvironmentScope } from '@firecamp/types';
+import { EEditorLanguage, EEnvironmentScope } from '@firecamp/types';
 
 import { useEnvStore } from '../../../store/environment';
 import { useWorkspaceStore } from '../../../store/workspace';
@@ -228,7 +228,7 @@ const CreateEnvironment: FC<IModal> = ({
               {`{ "host": "https://myapi.com" }`}
             </span>
             <Editor
-              language="json"
+              language={EEditorLanguage.Json}
               value={env.variables}
               onChange={onVariableEditorChange}
               monacoOptions={{

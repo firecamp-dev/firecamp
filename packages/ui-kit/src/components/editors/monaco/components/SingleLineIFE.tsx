@@ -1,7 +1,7 @@
 import { FC, useRef, useEffect, memo } from 'react';
-
-import FirecampEditor from './FirecampEditor';
 import classnames from 'classnames';
+import { EEditorLanguage } from '@firecamp/types';
+import FirecampEditor from './FirecampEditor';
 import '../sass/SingleLineIFE.sass';
 
 import { ISingleLineIFE } from './SingleLineIFE.interfaces';
@@ -10,7 +10,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
   type = 'text',
   name = '',
   value = '',
-  language = 'ife-text',
+  language = EEditorLanguage.FcText,
   onChange = () => {},
   onBlur = () => {},
   onFocus = () => {},
@@ -270,8 +270,8 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
       >
         <FirecampEditor
           options={{
-            language: language || 'ife-header-key', // if values is undefined then use "ife-text"
-            // theme: IFEThemes.DARK,
+            language: language || EEditorLanguage.HeaderKey, // if values is undefined then use "FcText"
+            // theme: EEditorTheme.Dark,
             value:
               /**
                * 1. Check if number or not, if number then convert to string and show

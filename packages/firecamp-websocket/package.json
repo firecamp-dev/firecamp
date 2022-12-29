@@ -40,7 +40,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.4",
+    "@firecamp/types": "^0.1.5",
     "@firecamp/ui-kit": "workspace:*",
     "@firecamp/url": "^0.0.17",
     "@firecamp/ws-executor": "workspace:*",

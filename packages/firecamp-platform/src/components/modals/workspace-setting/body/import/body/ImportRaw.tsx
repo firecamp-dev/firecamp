@@ -1,13 +1,13 @@
 // @ts-nocheck
 
 import { FC, useEffect, useState } from 'react';
-
 import {
   Container,
   TabHeader,
   Button,
   Editor,
 } from '@firecamp/ui-kit';
+import { EEditorLanguage } from '@firecamp/types';
 
 const ImportRaw: FC<IImportRaw> = ({
   isImporting = false,
@@ -38,7 +38,7 @@ const ImportRaw: FC<IImportRaw> = ({
         <Editor
           disabled={false}
           name={'jsonbody'}
-          language={'json'}
+          language={EEditorLanguage.Json}
           value={value}
           onLoad={(editor) => {
             editor.focus();

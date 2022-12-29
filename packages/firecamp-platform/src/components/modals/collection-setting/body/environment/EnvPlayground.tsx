@@ -7,6 +7,7 @@ import {
 } from '@firecamp/ui-kit';
 import equal from 'deep-equal';
 import { _object } from '@firecamp/utils';
+import { EEditorLanguage } from '@firecamp/types';
 
 const EnvPlayground: FC<IEnvPlayground> = ({
   activeEnv = {},
@@ -168,7 +169,7 @@ const EnvPlayground: FC<IEnvPlayground> = ({
       <Container.Body>
         <Editor
           autoFocus={!isAddEnvPopoverOpen}
-          language={'json'}
+          language={EEditorLanguage.Json}
           value={
             activeEnvCache && activeEnvCache.body
               ? activeEnvCache.body || '{}'

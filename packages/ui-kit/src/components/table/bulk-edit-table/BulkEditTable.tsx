@@ -1,12 +1,12 @@
 import { FC, useState, useEffect } from 'react';
+import equal from 'deep-equal';
 import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui-kit';
+import { _table } from '@firecamp/utils';
+import { EEditorLanguage } from '@firecamp/types';
 // import { default as TabHeader } from '../tab-header/TabHeader';
 // import { default as Button } from '../buttons/Button';
 // import { default as BasicTable } from './BasicTable';
 // import { default as Editor } from '../editors/monaco-v2/Editor';
-
-import { _table } from '@firecamp/utils';
-import equal from 'deep-equal';
 
 import { IBulkEditTable } from './BulkEditTable.interfaces';
 
@@ -100,7 +100,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
         <div className="h-28 pt-3">
           <Editor
             value={raw}
-            language="text"
+            language={EEditorLanguage.Text}
             monacoOptions={{
               style: { display: 'table-caption' },
               height: '100px',

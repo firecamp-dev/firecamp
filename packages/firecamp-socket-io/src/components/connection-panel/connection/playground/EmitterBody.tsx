@@ -9,7 +9,7 @@ import {
   Dropdown,
   Button,
 } from '@firecamp/ui-kit';
-import { EArgumentBodyType, ISocketIOEmitter } from '@firecamp/types';
+import { EArgumentBodyType, EEditorLanguage, ISocketIOEmitter } from '@firecamp/types';
 import {
   ArgTypes,
   InitArg,
@@ -87,7 +87,7 @@ const EmitterBody = ({
                 type.id
               }-${activeArgIndex}-${playgroundBody.length || 0}`}*/
               language={
-                bodyType === EArgumentBodyType.Json ? 'json' : 'ife-text'
+                bodyType === EArgumentBodyType.Json ? EEditorLanguage.Json : EEditorLanguage.FcText
               }
               value={argument.body || ''}
               onChange={({ target: { value } }) => {

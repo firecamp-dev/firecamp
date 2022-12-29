@@ -14,8 +14,8 @@ const AuthTab = ({
       title={'Auth'}
       // meta={{
       //   mode: {
-      //     key: 'ife-header-key',
-      //     value: 'ife-header-value'
+      //     key: EEditorLanguage.HeaderKey,
+      //     value: EEditorLanguage.HeaderValue
       //   }
       // }}
     />
