@@ -1,6 +1,11 @@
 import {render, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import {PrimaryButton, SecondaryButton, DangerButton, TransparentButton, GhostButton, FullWidthButton, ButtonWithUpperCaseText, ButtonSizes, ButtonIconPosition, CaretButton} from "./Button.stories";
+import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
+import Button from "./Button";
+import { IButton } from "./interfaces/Button.interfaces";
+
+const Template = (args: IButton) => <Button {...args} />;
+const TemplateWithVariant = ({variant}: {variant: IButton[]}) => <div className='flex flex-col gap-2'>{variant.map((args,index) => <div key={index}><Button {...args} /></div>)}</div>
 
 describe("Button : " , () => {
 
@@ -11,97 +16,137 @@ describe("Button : " , () => {
     'text-lg py-3 px-6' // lg
   ]
 
-  const mountPrimaryButtonComponent = () => render(<PrimaryButton {...PrimaryButton.args}/>);
-  const mountSecondaryButtonComponent = () => render(<SecondaryButton {...SecondaryButton.args}/>);
-  const mountDangerButtonComponent = () => render(<DangerButton {...DangerButton.args}/>);
-  const mountTransparentButtonComponent = () => render(<TransparentButton {...TransparentButton.args}/>);
-  const mountGhostButtonComponent = () => render(<GhostButton {...GhostButton.args}/>);
-  const mountFullWidthButtonComponent = () => render(<FullWidthButton {...FullWidthButton.args}/>);
-  const mountButtonWithUpperCaseTextComponent = () => render(<ButtonWithUpperCaseText {...ButtonWithUpperCaseText.args}/>);
-  const mountButtonSizesComponent = () => render(<ButtonSizes {...ButtonSizes.args}/>);
-  const mountButtonIconPositionComponent = () => render(<ButtonIconPosition {...ButtonIconPosition.args}/>);
-  const mountCaretButtonComponent = () => render(<CaretButton {...CaretButton.args}/>);
-  
   test('Primary button should render', () => {
-    mountPrimaryButtonComponent();
-    let button = screen.getByRole('button', { name: PrimaryButton.args.text });
-    if(PrimaryButton.args.transparent){
+    
+    const PrimaryButtonArgs : IButton = { text: 'Primary Button', primary: true, md: true };
+    render(<Template {...PrimaryButtonArgs}/>);
+
+    let button = screen.getByRole('button', { name: PrimaryButtonArgs.text });
+    if(PrimaryButtonArgs.transparent){
       expect(button).toHaveClass('text-primaryColor !border-primaryColor hover:bg-primaryColor'); 
-      if(!PrimaryButton.args.ghost){
+      if(!PrimaryButtonArgs.ghost){
         expect(button).toHaveClass('text-primaryColorText bg-primaryColor !border-primaryColor'); 
       }
-    }else if(!PrimaryButton.args.transparent){
+    }else if(!PrimaryButtonArgs.transparent){
       expect(button).toHaveClass('text-primaryColorText bg-primaryColor !border-primaryColor'); 
     }
     
   });
   
   test('Secondary button should render', () => {
-    mountSecondaryButtonComponent();
-    let button = screen.getByRole('button', { name: SecondaryButton.args.text });
-    if(SecondaryButton.args.transparent){
+    const SecondaryButtonArgs : IButton = { text: 'Secondary Button', secondary: true, md: true };
+    render(<Template {...SecondaryButtonArgs}/>);
+
+    let button = screen.getByRole('button', { name: SecondaryButtonArgs.text });
+    if(SecondaryButtonArgs.transparent){
       expect(button).toHaveClass('text-appForeground !border-secondaryColor'); 
-    }else if(!SecondaryButton.args.transparent){
+    }else if(!SecondaryButtonArgs.transparent){
       expect(button).toHaveClass('text-secondaryColorText bg-secondaryColor !border-secondaryColor'); 
     }
   });
 
   test('Danger button should render', () => {
-    mountDangerButtonComponent();
-    let button = screen.getByRole('button', { name: DangerButton.args.text });
-    if(DangerButton.args.transparent){
+    const DangerButtonArgs : IButton = { text: 'Danger Button', danger: true, md: true };
+    render(<Template {...DangerButtonArgs}/>);
+
+    let button = screen.getByRole('button', { name: DangerButtonArgs.text });
+    if(DangerButtonArgs.transparent){
       expect(button).toHaveClass('text-danger !border-danger'); 
-    }else if(!DangerButton.args.transparent){
+    }else if(!DangerButtonArgs.transparent){
       expect(button).toHaveClass('text-secondaryColorText bg-danger !border-danger'); 
     }
   });
   
   test('Transparent button should render', () => {
-    mountTransparentButtonComponent();
-    let button = screen.getByRole('button', { name: TransparentButton.args.text });
-    if(TransparentButton.args.primary){
+    const TransparentButtonArgs : IButton = { text: 'Transparent Button', primary: true, md: true, transparent: true };
+    render(<Template {...TransparentButtonArgs}/>);
+
+    let button = screen.getByRole('button', { name: TransparentButtonArgs.text });
+    if(TransparentButtonArgs.primary){
       expect(button).toHaveClass('text-primaryColor !border-primaryColor hover:bg-primaryColor');
-      if(!TransparentButton.args.ghost)
+      if(!TransparentButtonArgs.ghost)
         expect(button).toHaveClass('hover:text-primaryColorText');
-    }else if(TransparentButton.args.secondary){
+    }else if(TransparentButtonArgs.secondary){
       expect(button).toHaveClass('text-appForeground !border-secondaryColor'); 
-    }else if(TransparentButton.args.danger){
+    }else if(TransparentButtonArgs.danger){
       expect(button).toHaveClass('text-danger !border-danger'); 
     }
     expect(button).toHaveClass('bg-transparent'); 
   });
   
   test('Ghost button should render', () => {
-    mountGhostButtonComponent();
-    let button = screen.getByRole('button', { name: GhostButton.args.text });
+    const GhostButtonArgs : IButton = { text: 'Ghost Button', primary: true, md: true, ghost: true };
+    render(<Template {...GhostButtonArgs}/>);
+
+    let button = screen.getByRole('button', { name: GhostButtonArgs.text });
     expect(button).not.toHaveClass('border hover:text-primaryColorText'); 
     expect(button).toHaveClass('hover:!bg-focusColor'); 
   });
 
   test('Full Width button should render', () => {
-    mountFullWidthButtonComponent();
-    let button = screen.getByRole('button', { name: FullWidthButton.args.text });
+    const FullWidthButtonArgs : IButton = { text: 'FullWidth Button', primary: true, md: true, fullWidth: true };
+    render(<Template {...FullWidthButtonArgs}/>);
+
+    let button = screen.getByRole('button', { name: FullWidthButtonArgs.text });
     expect(button).not.toHaveClass('w-max'); 
     expect(button).toHaveClass('w-full'); 
   });
 
   test('Button with upper case text should render', () => {
-    mountButtonWithUpperCaseTextComponent();
-    let button = screen.getByRole('button', { name: ButtonWithUpperCaseText.args.text });
+    const ButtonWithUpperCaseTextComponentArgs : IButton = { text: 'Button with uppercase text', primary: true, md: true, uppercase: true };
+    render(<Template {...ButtonWithUpperCaseTextComponentArgs}/>);
+
+    let button = screen.getByRole('button', { name: ButtonWithUpperCaseTextComponentArgs.text });
     expect(button).toHaveClass('uppercase'); 
   });
 
   test('Button with different sizes should have appropriate styles', () => {
-    mountButtonSizesComponent();
-    ButtonSizes.args.variant.forEach((element: {text: string}, index: number) => {
+    const ButtonSizesArgs = {
+      variant: [
+        { text: 'Extra Small Button', primary: true, xs: true },
+        { text: 'Small Button', primary: true, sm: true },
+        { text: 'Medium Button', primary: true, md: true },
+        { text: 'Large Button', primary: true, lg: true }
+      ]
+    }
+    render(<TemplateWithVariant {...ButtonSizesArgs}/>);
+
+    ButtonSizesArgs.variant.forEach((element: {text: string}, index: number) => {
       let button = screen.getByRole('button', { name: element.text });
       expect(button).toHaveClass(BUTTON_SIZE_PADDING[index]);
     });
   });
 
   test('Button with icon should render icon at proper position', () => {
-    mountButtonIconPositionComponent();
-    ButtonIconPosition.args.variant.forEach((element: {text: string, iconLeft: boolean, iconRight: boolean}, index: number) => {
+    const ButtonIconPosition : {variant: IButton[]}= {
+      variant: [
+        {
+          text: 'Sample Button (with left icon)', 
+          primary: true, 
+          md: true, 
+          icon: <VscMenu
+            title="Account"
+            size={16}
+            className="z-20"
+          />, 
+          iconLeft: true
+        },
+        {
+          text: 'Sample Button (with right icon)', 
+          primary: true, 
+          md: true, 
+          icon: <VscMenu
+            title="Account"
+            size={16}
+            className="z-20"
+          />, 
+          iconRight: true
+        }
+      ]
+    };
+    render(<TemplateWithVariant {...ButtonIconPosition}/>);
+    
+    ButtonIconPosition.variant.forEach((element: {text: string, iconLeft: boolean, iconRight: boolean}, index: number) => {
       let button = screen.getByText(element.text);
       if(element.iconLeft){
         expect(button.parentElement).toHaveClass("flex-row");
@@ -115,8 +160,10 @@ describe("Button : " , () => {
   });
 
   test('Button with caret icon should render ', () => {
-    mountCaretButtonComponent();
-    let button = screen.getByRole('button', { name: CaretButton.args.text });
+    const CaretButtonArgs = { text: 'Button with caret icon', primary: true, md: true, withCaret: true };
+    render(<Template {...CaretButtonArgs}/>);
+    
+    let button = screen.getByRole('button', { name: CaretButtonArgs.text });
     
     let caretElement = button.lastChild;
     expect(caretElement).toHaveClass("ml-2 toggle-arrow");
