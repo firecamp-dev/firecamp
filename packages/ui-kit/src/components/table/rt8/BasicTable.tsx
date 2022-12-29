@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { FC, useState } from 'react';
-import equal from 'deep-equal';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
