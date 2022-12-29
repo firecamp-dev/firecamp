@@ -12,7 +12,13 @@ import {
   createUiSlice,
   createRequestChangeStateSlice,
 } from './slices';
-import { ERestBodyTypes, IGraphQL, IRest, TId } from '@firecamp/types';
+import {
+  ERequestTypes,
+  ERestBodyTypes,
+  IGraphQL,
+  IRest,
+  TId,
+} from '@firecamp/types';
 import { IRestResponse } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import { initialiseStoreFromRequest } from '../services/request.service';
@@ -65,12 +71,13 @@ const createStore = (initialState: IStoreState) =>
           {},
           {
             ...request,
-            __meta: {
-              ...request.__meta,
-            },
-            payload: {
+            body: {
               value: { query, variables },
               type: ERestBodyTypes.GraphQL,
+            },
+            __meta: {
+              ...request.__meta,
+              type: ERequestTypes.Rest,
             },
           }
         );
@@ -87,8 +94,7 @@ const createStore = (initialState: IStoreState) =>
             return r;
           })
           .catch((e: IRestResponse) => {
-            state.setPlaygroundResponse(e);
-            return e;
+            // executor will never throw an error
           })
           .finally(() => {
             state.setRequestRunningFlag(activePlayground, false);

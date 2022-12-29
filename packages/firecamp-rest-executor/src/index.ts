@@ -7,7 +7,7 @@ import { _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 
 import parseBody from './helpers/body';
-import { IRestExecutor } from './types';
+import { IRestExecutor, TResponse } from './types';
 export * from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
@@ -130,13 +130,13 @@ export default class RestExecutor implements IRestExecutor {
     return axiosRequest;
   }
 
-  async send(request: IRest) {
+  async send(request: IRest): Promise<TResponse> {
     const axiosRequest: AxiosRequestConfig = await this._prepare(request);
     try {
       if (_object.isEmpty(request)) {
-        const message = 'Invalid request payload';
+        const message: string = 'Invalid request payload';
         return Promise.resolve({
-          response: null,
+          statusCode: 0,
           error: {
             message,
             code: 'INVALID REQUEST',
@@ -150,7 +150,7 @@ export default class RestExecutor implements IRestExecutor {
       const response = this._normalizeResponse(axiosResponse);
       // prepare timeline of request execution
       response.timeline = this._timeline(axiosRequest, axiosResponse);
-      return Promise.resolve({ response, error: null });
+      return Promise.resolve({ ...response });
     } catch (e) {
       console.error(e);
       if (!_object.isEmpty(e.response)) {
@@ -159,10 +159,10 @@ export default class RestExecutor implements IRestExecutor {
         if (!e.response?.config && e.config) e.response.config = e.config;
 
         // prepare timeline of request execution
-        response['timeline'] = this._timeline(axiosRequest, e.response);
+        response.timeline = this._timeline(axiosRequest, e.response);
 
         return Promise.resolve({
-          response,
+          ...response,
           error: {
             message: e.message,
             code: e.code,
@@ -171,7 +171,7 @@ export default class RestExecutor implements IRestExecutor {
         });
       }
       return Promise.resolve({
-        response: null,
+        statutsCode: 0,
         error: {
           message: e.message,
           code: e.code,

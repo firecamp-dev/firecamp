@@ -5,7 +5,7 @@ describe('rest executor', () => {
   it('should send response successfully', async () => {
     const request = new RestExecutor();
 
-    const { response } = await request.send({
+    const response = await request.send({
       url: {
         raw: 'https://jsonplaceholder.typicode.com/posts',
         queryParams: [
@@ -34,7 +34,7 @@ describe('rest executor', () => {
   it('should send body', async () => {
     const request = new RestExecutor();
 
-    const { response } = await request.send({
+    const response = await request.send({
       url: {
         raw: 'https://jsonplaceholder.typicode.com/posts',
       },
@@ -69,7 +69,7 @@ describe('rest executor', () => {
   it.skip('should allow to connect secure server', async () => {
     const request = new RestExecutor();
 
-    const { response } = await request.send({
+    const response = await request.send({
       url: {
         raw: 'https://localhost:3002/api/http/methods',
       },

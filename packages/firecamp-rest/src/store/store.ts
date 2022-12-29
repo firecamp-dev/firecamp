@@ -156,29 +156,22 @@ const createStore = (initialState: IStoreState) =>
           // execute request
           await state.context.request
             .execute(normalizedRequest)
-            .then(
-              ({
-                response,
-                error,
-              }: {
-                response: IRestResponse;
-                error?: any;
-              }) => {
-                console.log({ response: response });
-                if (error) {
-                  console.log(
-                    error.message,
-                    error.code,
-                    error.e.response,
-                    error.e,
-                    9090
-                  );
-                }
-                return response;
+            .then((response) => {
+              console.log({ response: response });
+              const error = response.error;
+              if (error) {
+                console.log(
+                  error.message,
+                  error.code,
+                  error.e.response,
+                  error.e,
+                  9090
+                );
               }
-            )
+              return response;
+            })
             .then(async (response) => {
-              if(!response) return;
+              if (!response) return;
               // TODO: add cookies
 
               // run post-script
