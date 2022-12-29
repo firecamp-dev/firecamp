@@ -4,7 +4,7 @@
 @tailwind screens;
 
 @import url(../components/split-view/SplitView.scss);
-@import url(collection.scss);
+/* @import url(collection.scss); */
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap');
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
@@ -37,6 +37,7 @@
     --app-foreground-active: #fff;
     --app-foreground-inactive: #777777;
     --app-primary: #D48332;
+    --app-primary-with-opacity: #d483328a;
     --app-secondary: #3c3c3c;
     --app-border: #414141;
     --app-focus: #5E8FED;
@@ -45,8 +46,8 @@
     --app-background-secondary: #252526;
 
     --tab-background: var(--app-background);
-    --tab-foreground: #ffffff;
-    --tab-foreground-inactive: #cccccc;
+    --tab-foreground: #bbb;
+    --tab-foreground-inactive: #ffffff80;
     --tab-border: var(--app-border);
     --tab-hoverBackground: #1B1A1A;
     --tab-activeBackground: var(--statusBar-background2);
@@ -232,8 +233,16 @@ body{
   font-weight: 400;
   font-family: var(--font-family)
 }
+
+.theme-dark .drag-icon 
+{
+    filter: invert(1);
+}
 .icon{
   font-family: 'icomoon' !important;
+}
+.text-ellipsis{
+  text-overflow: ellipsis !important;
 }
 a,a:hover{
   color: inherit !important
@@ -269,6 +278,9 @@ input:focus,input:focus-visible
 textarea:focus,textarea:focus-visible{
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
+}
+tr:focus-visible{
+  box-shadow: none !important;
 }
 .focus-outer:focus{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
@@ -504,7 +516,7 @@ textarea:focus,textarea:focus-visible{
   margin-left: -3px;
 }
 .fc-btn-collapse {
-  max-height: 33px !important;
+  max-height: 32px !important;
   border: 1px solid var(--app-border);
   max-width: 20px !important;
   position: absolute;
@@ -519,7 +531,7 @@ textarea:focus,textarea:focus-visible{
   transform: rotate(180deg);
 }
 .fc-btn-collapse.v2 {
-  left: 0px;
+  left: -1px;
   min-height: 33px !important;
 }
 .fc-collapsed{
@@ -533,6 +545,43 @@ textarea:focus,textarea:focus-visible{
 .fc-collapsed > .fc-collapse-btn-v3{
   display: block !important 
 } 
+.fc-collapsed > *:not(.fc-collapse-btn),
+.fc-collapsed.fc-collapsed-v3 > *:not(.fc-collapse-btn-v3) {
+  display: none;
+}
+.fc-collapsed > .fc-collapse-btn-v3 {
+  display: block !important;
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 {
+  display: flex;
+  flex-direction: column-reverse;
+  position: absolute;
+  left: 0px;
+  width: 32px !important;
+  border-left: 1px solid var(--appBorder);
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-left {
+  position: absolute;
+  transform: rotate(90deg);
+  left: -23px;
+  top: 54px;
+}
+.fc-collapsable > .fc-collapse-btn-v3 {
+  display: none;
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-right {
+  top: 6px;
+  position: absolute;
+  font-size: 20px;
+  left: 6px;
+  transform: rotate(180deg);
+}
+.fc-collapsed-v3 {
+    width: 32px !important;
+}
+.fc-col-resizer.fc-collapsed.fc-collapsed-v3.fc-collapsable.left {
+    border-left: 1px solid var(--app-border) !important;
+}
 .fc-collapsed > .fc-collapse-btn, .fc-collapsed ~ div .fc-collapse-btn{
   transform: rotate(180deg);
 }
@@ -633,6 +682,15 @@ textarea:focus,textarea:focus-visible{
   width: 8px;
   height: 8px;
 }
+.visible-scrollbar.thick::-webkit-scrollbar{
+  width: 8px !important;
+  display: block !important;
+}
+.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }
@@ -728,7 +786,7 @@ body .ace_editor .ace_scrollbar{
   .request-tab-wrapper {
     width: calc(100% - 40px);
   }
-  .fc-urlbar-path,.fc-tab-panel-info > span,.smart-table-row-cell,.fc-history-req-list-item-url-text,.collection_leaf-node-name{
+  .fc-urlbar-path,.fc-tab-panel-info > span,.fc-history-req-list-item-url-text,.collection_leaf-node-name{
     user-select: text;
   }
   /*
@@ -801,3 +859,57 @@ body .ace_editor .ace_scrollbar{
 .expandable-right-pane.expanded{
   transform: scaleX(1); 
 }
+
+/*--------table temporary css starts ------------*/
+.response-headers-table,.response-cookies-table {
+  display: table;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.response-headers-table>div,.response-cookies-table>div {
+  display: table-row;
+}
+
+.response-headers-table>div>div,.response-cookies-table>div>div {
+  display: table-cell;
+  border: 1px solid var(--app-border);
+  border-collapse: collapse;
+  padding: 4px 8px;
+  font-size: 14px;
+  word-break: break-all;
+  color: var(--app-foreground-inactive);
+  user-select: text;
+}
+
+.response-headers-table>div:first-child,.response-cookies-table>div:first-child {
+  background: var(--focus-level-2);
+  font-weight: 600;
+}
+.response-headers-table>div:first-child>div,.response-cookies-table>div:first-child>div {
+  border-top: 0px solid transparent;
+}
+.response-headers-table>div>div:first-child,.response-cookies-table>div>div:first-child {
+  border-left: 0px solid transparent;
+}
+/*--------table temporary css starts ------------*/
+
+/*--------table 2 css starts------------*/
+.fc-table-2 {
+  font-size: 14px;
+  border: 1px solid var(--app-border);
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.fc-table-2 .td,.fc-table-2 .th {
+  border: 1px solid var(--app-border);
+  padding: 6px 8px;
+}
+
+.fc-table-2 .th {
+  padding: 4px 8px;
+  font-weight: 800;
+  background: var(--focus-level-2);
+}
+/*-----------table 2 css end --------*/

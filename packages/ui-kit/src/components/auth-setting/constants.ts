@@ -1,6 +1,6 @@
 import { EAuthTypes } from '@firecamp/types';
 
-const typePayload = {
+const authUiState = {
   [EAuthTypes.Basic]: {
     inputList: [
       {
@@ -50,11 +50,11 @@ const typePayload = {
         name: 'Qop',
       },
       {
-        id: 'nonce_count',
+        id: 'nonceCount',
         name: 'Nonce count',
       },
       {
-        id: 'client_nonce',
+        id: 'clientNonce',
         name: 'Client nonce',
       },
       {
@@ -62,24 +62,24 @@ const typePayload = {
         name: 'Opaque',
       },
     ],
-    algorithmList:[ 'MD5', 'MD5-sess']
+    algorithmList: ['MD5', 'MD5-sess'],
   },
   [EAuthTypes.OAuth1]: {
     inputList: [
       {
-        id: 'consumer_key',
+        id: 'consumerKey',
         name: 'Consumer Key',
       },
       {
-        id: 'consumer_secret',
+        id: 'consumerSecret',
         name: 'Consumer Secret',
       },
       {
-        id: 'token_key',
+        id: 'tokenKey',
         name: 'Token Key',
       },
       {
-        id: 'token_secret',
+        id: 'tokenSecret',
         name: 'Token Secret',
       },
     ],
@@ -89,8 +89,8 @@ const typePayload = {
         name: 'Version',
       },
       {
-        id: 'callback_URL',
-        name: 'Callback URL',
+        id: 'callbackUrl',
+        name: 'Callback Url',
       },
       {
         id: 'verifier',
@@ -116,7 +116,7 @@ const typePayload = {
     ],
   },
   [EAuthTypes.OAuth2]: {
-    grant_types: [
+    grantTypes: [
       {
         id: 'code',
         name: 'Code',
@@ -130,11 +130,11 @@ const typePayload = {
         name: 'Implicit',
       },
       {
-        id: 'client_credentials',
+        id: 'clientCredentials',
         name: 'Client Credentials',
       },
     ],
-    grant_types_payload: {
+    grantTypesPayload: {
       code: {
         inputList: [
           {
@@ -142,19 +142,19 @@ const typePayload = {
             name: 'Callback',
           },
           {
-            id: 'auth_url',
-            name: 'Auth URL',
+            id: 'authUrl',
+            name: 'Auth Url',
           },
           {
-            id: 'access_token_url',
-            name: 'Access Token URL',
+            id: 'accessTokenUrl',
+            name: 'Access Token Url',
           },
           {
-            id: 'client_id',
+            id: 'clientId',
             name: 'Client ID',
           },
           {
-            id: 'client_secret',
+            id: 'clientSecret',
             name: 'Client Secret',
           },
         ],
@@ -176,11 +176,11 @@ const typePayload = {
             name: 'Callback',
           },
           {
-            id: 'auth_url',
-            name: 'Auth URL',
+            id: 'authUrl',
+            name: 'Auth Url',
           },
           {
-            id: 'client_id',
+            id: 'clientId',
             name: 'Client ID',
           },
         ],
@@ -198,8 +198,8 @@ const typePayload = {
       password: {
         inputList: [
           {
-            id: 'access_token_url',
-            name: 'Access Token URL',
+            id: 'accessTokenUrl',
+            name: 'Access Token Url',
           },
           {
             id: 'username',
@@ -210,11 +210,11 @@ const typePayload = {
             name: 'Password',
           },
           {
-            id: 'client_id',
+            id: 'clientId',
             name: 'Client ID',
           },
           {
-            id: 'client_secret',
+            id: 'clientSecret',
             name: 'Client Secret',
           },
         ],
@@ -225,18 +225,18 @@ const typePayload = {
           },
         ],
       },
-      client_credentials: {
+      clientCredentials: {
         inputList: [
           {
-            id: 'access_token_url',
-            name: 'Access Token URL',
+            id: 'accessTokenUrl',
+            name: 'Access Token Url',
           },
           {
-            id: 'client_id',
+            id: 'clientId',
             name: 'Client ID',
           },
           {
-            id: 'client_secret',
+            id: 'clientSecret',
             name: 'Client Secret',
           },
         ],
@@ -270,11 +270,11 @@ const typePayload = {
         name: 'Nonce',
       },
       {
-        id: 'extra_data',
+        id: 'extraData',
         name: 'Extra Data',
       },
       {
-        id: 'app_id',
+        id: 'appId',
         name: 'App Id',
       },
       {
@@ -291,11 +291,11 @@ const typePayload = {
   [EAuthTypes.Aws4]: {
     inputList: [
       {
-        id: 'access_key',
+        id: 'accessKey',
         name: 'Access Key',
       },
       {
-        id: 'secret_key',
+        id: 'secretKey',
         name: 'Secret Key',
       },
     ],
@@ -309,7 +309,7 @@ const typePayload = {
         name: 'Service',
       },
       {
-        id: 'session_token',
+        id: 'sessionToken',
         name: 'Session Token',
       },
     ],
@@ -338,19 +338,19 @@ const typePayload = {
   },
 };
 
-const typeList = [
-  { name: 'Inherit', id: EAuthTypes.Inherit, enable: true },
+const authTypeList = [
   { name: 'No Auth', id: EAuthTypes.NoAuth, enable: true },
+  { name: 'Inherit', id: EAuthTypes.Inherit, enable: true },
   { name: 'Bearer', id: EAuthTypes.Bearer, enable: true },
   { name: 'Basic', id: EAuthTypes.Basic, enable: true },
   { name: 'Digest', id: EAuthTypes.Digest, enable: true },
   { name: 'OAuth 1', id: EAuthTypes.OAuth1, enable: true },
-  { name: 'OAuth 2', id: EAuthTypes.OAuth2, enable: true },
-  { name: 'Hawk', id: EAuthTypes.Hawk, enable: false }, //TODO: enable: true
+  { name: 'OAuth 2', id: EAuthTypes.OAuth2, enable: false },
+  { name: 'Hawk', id: EAuthTypes.Hawk, enable: false },
   { name: 'AWS', id: EAuthTypes.Aws4, enable: true },
-  { name: 'NTLM', id: EAuthTypes.Ntlm, enable: true },
+  { name: 'NTLM', id: EAuthTypes.Ntlm, enable: false },
   { name: 'Atlassian', id: EAuthTypes.Atlassian, enable: false },
   { name: 'Netrc', id: EAuthTypes.Nertc, enable: false },
 ];
 
-export { typePayload, typeList };
+export { authUiState, authTypeList };

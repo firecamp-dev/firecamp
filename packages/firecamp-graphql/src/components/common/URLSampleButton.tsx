@@ -1,16 +1,6 @@
-// @ts-nocheck
-
-import { useContext } from 'react';
-import { APP_TYPES } from '../../constants/constants';
-import {
-  Button,
- 
-  
-  EButtonIconPosition,
-} from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui-kit';
 
 const URLSampleButton = ({ buttonText = 'Sample' }) => {
-  // if (ctx_propAppType == APP_TYPES.GRAPHQL && !ctx_request.raw_url.length) {
   return (
     <Button
       secondary
@@ -23,9 +13,6 @@ const URLSampleButton = ({ buttonText = 'Sample' }) => {
       // onClick={e => ctx_graphql_body_fns._common_fns.setSample(e)}
     />
   );
-  // } else {
-  //   return '';
-  // }
 };
 
 export default URLSampleButton;

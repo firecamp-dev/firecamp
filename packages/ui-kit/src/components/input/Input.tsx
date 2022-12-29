@@ -135,6 +135,8 @@ const Input: FC<IInput> = React.forwardRef(
               onBlur={onBlur}
               onFocus={onFocus}
               onKeyDown={onKeyDown}
+              height="21px"
+              className="border px-2 py-1 border-inputBorder"
             />
             {postComponents || ''}
             {error && <ErrorMessage error={error} />}

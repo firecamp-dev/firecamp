@@ -5,13 +5,13 @@ import shallow from 'zustand/shallow';
 import ExplorerTab from './tabs/ExplorerTab';
 import CollectionTab from './tabs/CollectionTab';
 import HeadersTab from './tabs/HeadersTab';
-import { IGraphQLStore, useGraphQLStore } from '../../store';
+import { IStore, useStore } from '../../store';
 import { ESidebarTabs } from '../../types';
 
 const SidebarPanel = () => {
   const { activeTab, headers, playgrounds, changeUiActiveTab } =
-    useGraphQLStore(
-      (s: IGraphQLStore) => ({
+    useStore(
+      (s: IStore) => ({
         activeTab: s.ui.sidebarActiveTab,
         headers: s.ui.headers,
         playgrounds: s.ui.playgrounds,
@@ -42,14 +42,14 @@ const SidebarPanel = () => {
     [playgrounds, headers]
   );
 
-  let _setActiveTab = (tab) => {
+  const _setActiveTab = (tab) => {
     if (tab) {
       // console.log(`tab`, tab);
       changeUiActiveTab(tab);
     }
   };
 
-  let _getRender = (tab) => {
+  const _renderTab = (tab) => {
     switch (tab) {
       case ESidebarTabs.Collection:
         return <CollectionTab />;
@@ -86,7 +86,7 @@ const SidebarPanel = () => {
               id={activeTab}
               className="invisible-scrollbar tab-content h-full"
             >
-              {_getRender(activeTab)}
+              {_renderTab(activeTab)}
             </div>
           </Container.Body>
         </Container>

@@ -1,16 +1,12 @@
 import { FC, useState, useMemo } from 'react';
-
-import {
-  Container,
-  SecondaryTab,
-  Checkbox,
-  Editor,
-} from '@firecamp/ui-kit';
+import { Container, SecondaryTab, Checkbox, Editor } from '@firecamp/ui-kit';
 import {
   preScriptSnippets,
   postScriptSnippets,
   testScriptSnippets,
 } from '@firecamp/rest-executor/dist/esm';
+//@ts-ignore
+import ScriptDefs from './interfaces/Scripts.d.txt?raw';
 
 import HelpPopUp from './HelpPopup';
 
@@ -201,7 +197,7 @@ const ScriptsTabs: FC<IScriptsTab> = ({
             ''
           )}
         </div>
-        <div style={{ height: '250px' }}>
+        <div style={{ height: '100%' }}>
           {
             // TODO: remove above parent div and height
           }
@@ -209,13 +205,17 @@ const ScriptsTabs: FC<IScriptsTab> = ({
             autoFocus={true}
             id={`scripts-tab-${activeTab}-${id}`}
             value={scripts[activeTab] || ''}
-            language={'javascript'}
+            language={'typescript'}
             onLoad={(editor) => {
               setEditorDOM(editor);
             }}
             onChange={({ target: { value } }) =>
               onChangeScript(activeTab, value)
             }
+            addExtraLib={{
+              typeDefinition: ScriptDefs,
+              path: 'file:///node_modules/@firecamp/scripts/index.d.ts',
+            }}
           />
         </div>
         {/* )} */}

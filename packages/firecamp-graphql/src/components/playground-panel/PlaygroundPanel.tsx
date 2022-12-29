@@ -1,26 +1,19 @@
-import {
-  Button,
-  Container,
- 
-  EButtonIconPosition,
-  
-  Tabs,
-} from '@firecamp/ui-kit';
+import { useEffect } from 'react';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
+import { Button, Container, Tabs } from '@firecamp/ui-kit';
 import Playground from './playground/Playground';
-import { useGraphQLStore, IGraphQLStore } from '../../store';
-import { useEffect } from 'react';
+import { useStore, IStore } from '../../store';
 
 const PlaygroundPanel = () => {
-  let {
+  const {
     playgroundTabs,
     activePlayground,
     setActivePlayground,
     addPlayground,
     removePlayground,
-  } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       playgroundTabs: s.runtime.playgroundTabs,
       activePlayground: s.runtime.activePlayground,
       setActivePlayground: s.setActivePlayground,
@@ -55,7 +48,7 @@ const PlaygroundPanel = () => {
                 iconLeft
                 sm
                 transparent={true}
-                onClick={() => addPlayground('Hello Tab')}
+                onClick={() => addPlayground()}
                 ghost={true}
               />
             );

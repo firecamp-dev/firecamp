@@ -1,8 +1,6 @@
 import { ITab } from './Tab.interface';
 
-/**
- * Tabs props
- */
+/** Tabs props */
 export interface ITabs {
   /**
    * A unique identifier
@@ -48,11 +46,11 @@ export interface ITabs {
   /**
    * A callback function to call when tab is being clicked/ selected
    */
-  onSelect?: (id: string | number, index: number, event: any) => void;
+  onSelect?: (id: string | number, index?: number, event?: any) => void;
   /**
    * A callback function to call when tab is being re-ordered
    */
-  onReorder?: () => { orderedList: Array<ITab> };
+  onReorder?: (orderedList: ITab[]) => void;
 
   withDivider?: boolean;
   /**
@@ -60,11 +58,13 @@ export interface ITabs {
    */
   height?: number;
   /**
-   * Manage classname/ UI by tabVersion, [1,2]
+   * Manage className/ UI by tabVersion, [1,2]
    */
   tabsVersion?: number;
 
-  equalWidth?: boolean
+  equalWidth?: boolean;
+
+  tabIndex?: number;
 }
 
 /**

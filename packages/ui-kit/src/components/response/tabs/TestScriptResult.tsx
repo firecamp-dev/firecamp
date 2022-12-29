@@ -1,19 +1,16 @@
 import classnames from 'classnames';
 import { CustomMessage } from '@firecamp/ui-kit';
+import './testscriptResult.sass';
 
-// import './testscriptResult.sass';
-
-const TestScriptResult = (result: any) => {
-  console.log(`result`, result);
-
+const TestScriptResult = ({ result }) => {
   if (
     !result ||
     typeof result !== 'object' ||
     (typeof result === 'object' && !Object.keys(result).length)
   )
-    return <span />;
-  if (!result.suites && !result.error) {
-    return <span />;
+    return <></>;
+  if (!result.suites?.length) {
+    return <></>;
   } else if (result.error) {
     if (typeof result.error === 'string') {
       return <CustomMessage message={result.error || ''} />;
@@ -27,43 +24,44 @@ const TestScriptResult = (result: any) => {
   }
 
   return (
-    <div className="fc-testscript-box-content">
-      {result.suites.suites && result.suites.suites.length
-        ? result.suites.suites.map((suite: any, i: number) => (
-            <Suite suite={suite} key={i} />
-          ))
-        : ''}
-      {result.suites.tests && result.suites.tests.length ? (
+    <div className="">
+      {result.suites && result.suites.length ? (
+        result.suites.map((suite: any, i: number) => (
+          <Suite suite={suite} key={i} />
+        ))
+      ) : (
+        <></>
+      )}
+      {/* {result.suites.tests && result.suites.tests.length ? (
         <Tests tests={result.suites.tests} key="tests" />
       ) : (
-        ''
-      )}
+        <></>
+      )} */}
     </div>
   );
 };
 export default TestScriptResult;
 
-const Suite = ({ suite }: any) => {
-  if (!Object.keys(suite).length) return <span />;
-
-  let { suites = [], tests = [], title } = suite;
+const Suite = ({ suite }) => {
+  const {
+    // suites = [],
+    tests = [],
+    name,
+  } = suite;
   return (
-    <div className="fc-testscript-box">
-      <div className="fc-testscript-box-content">
+    <div className="fc-suite">
+      <div className="">
         <div
-          className={classnames(
-            { invalid: suite.meta ? suite.meta.fail > 0 : false },
-            'fc-testscript-box-content__title'
-          )}
+          className={classnames({ invalid: suite.fail > 0 }, 'fc-suite__name')}
         >
-          {title || ''}
+          {name || ''}
         </div>
 
-        {tests && tests.length ? <Tests tests={tests} /> : ''}
+        {tests?.length ? <Tests tests={tests} /> : <></>}
 
-        {suites.length
+        {/* {suites.length
           ? suites.map((s: any, i: number) => <Suite suite={s} key={i} />)
-          : ''}
+          : ''} */}
       </div>
     </div>
   );
@@ -71,26 +69,22 @@ const Suite = ({ suite }: any) => {
 
 const Tests = ({ tests = [] }) => {
   return (
-    <div className="fc-testscript-box-content-list">
+    <div className="fc-test__list">
       {tests.map((test, i) => (
         <div key={i}>
           <div
-            className={classnames('fc-testscript-box-content-list-item', {
-              invalid: test.state == 2,
+            className={classnames('fc-test', {
+              invalid: test.passed == false,
             })}
           >
-            {test.title || ''}
+            {test.name}
           </div>
-          {test?.err?.message ? (
-            <div
-              className={classnames(
-                'fc-testscript-box-content-list-item-error'
-              )}
-            >
-              Error: {test?.err?.message || ''}
+          {test.error?.message ? (
+            <div className={classnames('fc-test__error')}>
+              Error: {test?.error?.message || ''}
             </div>
           ) : (
-            ''
+            <></>
           )}
         </div>
       ))}

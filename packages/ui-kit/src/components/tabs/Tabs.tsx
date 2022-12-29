@@ -1,11 +1,8 @@
-//@ts-nocheck
 import { FC, useEffect, useState } from 'react';
-
 import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import Tab from './Tab';
 import { ITabs } from './interfaces/Tabs.interfaces';
-import '../../scss/tailwind.scss';
 
 const Tabs: FC<ITabs> = ({
   id = '',
@@ -20,8 +17,7 @@ const Tabs: FC<ITabs> = ({
   canReorder = false,
   height = 32,
   tabsVersion = 1,
-  tabIndex=1,
-  focus = true,
+  tabIndex = 1,
 
   closeTabIconMeta = {
     show: false,
@@ -42,7 +38,7 @@ const Tabs: FC<ITabs> = ({
   },
 
   onSelect = () => {},
-  onReorder: prop_onReorder = () => {},
+  onReorder: propOnReorder,
 }) => {
   let [sortedList, setSortedList] = useState(list);
 
@@ -52,21 +48,20 @@ const Tabs: FC<ITabs> = ({
     }
   }, [list]);
 
-  let onReorder = async (dragIndex, hoverIndex) => {
+  const onReorder = (dragIndex: number, hoverIndex: number) => {
     // console.log({ dragIndex, hoverIndex });
 
-    let reorderedList = [...sortedList];
+    const reorderedList = [...sortedList];
 
-    let dragTab = reorderedList[dragIndex];
-    if (dragIndex === undefined || hoverIndex === undefined || !dragTab)
-      return s;
+    const dragTab = reorderedList[dragIndex];
+    if (dragIndex === undefined || hoverIndex === undefined || !dragTab) return;
     // console.log({ reorderedList });
 
     //Get sorted Tabs
     reorderedList.splice(dragIndex, 1);
     reorderedList.splice(hoverIndex, 0, dragTab);
     setSortedList(reorderedList);
-    prop_onReorder(reorderedList);
+    if (typeof propOnReorder == 'function') propOnReorder(reorderedList);
   };
 
   return (
@@ -76,7 +71,7 @@ const Tabs: FC<ITabs> = ({
         'flex',
         'text-base',
         '!border-tabBorder',
-        '!border-t-transparent',
+        '!border-t-transparent'
         // {'focus-outer-tab' : focus == true }
       )}
       id={id}
@@ -85,7 +80,7 @@ const Tabs: FC<ITabs> = ({
       {preComp && (
         <div
           className={cx(
-            'flex items-center pr-2 border-b border-tabBorder',
+            'flex items-center pr-2 border-b border-tabBorder border-r ',
             { 'bg-tabBackground': tabsVersion == 1 },
             { 'bg-tabBackground2': tabsVersion == 2 }
           )}
@@ -106,8 +101,8 @@ const Tabs: FC<ITabs> = ({
                   index={i}
                   id={tab?.id || ''}
                   canReorder={canReorder}
-                  tabsVersion = {tabsVersion}
-                  focus={focus}
+                  tabVersion={tabsVersion}
+                  hasStatusbar={true}
                   className={cx(
                     'border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
                     {
@@ -129,8 +124,7 @@ const Tabs: FC<ITabs> = ({
                     {
                       'flex-1 text-center': equalWidth,
                     },
-                    { 'after:!bg-tabActiveBackground': tabsVersion == 1 && tab?.id == activeTab  },
-                    { 'after:!bg-statusBarBackground2': tabsVersion == 2 && tab?.id == activeTab },
+                   
                     { 'bg-transparent text-base': tabsVersion == 1 },
                     { 'bg-tabBackground2 text-sm': tabsVersion == 2 }
                   )}
@@ -148,25 +142,18 @@ const Tabs: FC<ITabs> = ({
             {addTabIconMeta?.show && (
               <div
                 id={addTabIconMeta.id || ''}
-                className="px-2 cursor-pointer h-3"
+                className="px-2 cursor-pointer h-8 flex items-center justify-center"
                 onClick={(e) => {
                   if (!addTabIconMeta?.disabled) {
-                    addTabIconMeta?.onClick?.(e);
+                    addTabIconMeta?.onClick(e);
                   }
                 }}
-                name={tab?.name || ''}
-                closeTabIconMeta={closeTabIconMeta}
-                borderMeta={tabBorderMeta}
-                isActive={tab?.id == activeTab}
-                onSelect={onSelect}
-                onReorder={onReorder}
-                {...tab}
               />
             )}
             {addTabIconMeta?.show && (
               <div
                 id={addTabIconMeta.id || ''}
-                className="px-2 cursor-pointer h-3"
+                className="px-2 cursor-pointer h-8 flex items-center justify-center"
                 onClick={(e) => {
                   if (!addTabIconMeta?.disabled) {
                     addTabIconMeta?.onClick?.(e);

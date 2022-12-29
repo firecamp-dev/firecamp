@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface IEditor {
   id?: string | number;
 
@@ -25,6 +27,12 @@ export interface IEditor {
   /** monaco path */
   path?: string;
 
+  /** when lang is typescript then provide extra types for auto completion and preview comments */
+  addExtraLib?: {
+    typeDefinition: string;
+    path: string;
+  };
+
   /** monaco editor options */
   monacoOptions?: any;
 
@@ -33,6 +41,12 @@ export interface IEditor {
 
   /** apply class to editor's container */
   className?: string;
+
+  /** apply styles to editor's container */
+  style?: { [key: string]: any };
+
+  /** editor's loading element */
+  loading?: ReactNode;
 
   /** on load editor */
   editorDidMount?: (edt: any, monaco: any) => {};

@@ -5,23 +5,19 @@ import { EAuthTypes } from '@firecamp/types';
 
 const NoAuth: FC<INoAuth> = ({
   onChangeActiveAuth = (authType: EAuthTypes) => {},
-  typeList = [],
+  authTypeList = [],
 }) => {
-  /**
-   * MENUS
-   */
-  let menus = useMemo(() => {
-    /**
-     * AUTH TYPES
-     */
-    let authTypesList = [];
-    for (let k in typeList) {
-      if (typeList[k].id !== EAuthTypes.NoAuth && typeList[k].enable) {
-        authTypesList.push({
-          id: typeList[k].id,
-          name: typeList[k].name,
+
+  const menus = useMemo(() => {
+
+    const options = [];
+    for (const k in authTypeList) {
+      if (authTypeList[k].id !== EAuthTypes.NoAuth && authTypeList[k].enable) {
+        options.push({
+          id: authTypeList[k].id,
+          name: authTypeList[k].name,
           onClick: () => {
-            onChangeActiveAuth(typeList[k].id);
+            onChangeActiveAuth(authTypeList[k].id);
           },
         });
       }
@@ -29,8 +25,8 @@ const NoAuth: FC<INoAuth> = ({
     return [
       {
         title: 'Quick auth type selection',
-        items: authTypesList,
-        active_item: EAuthTypes.NoAuth,
+        items: options,
+        activeItem: EAuthTypes.NoAuth,
       },
     ];
   }, []);
@@ -46,13 +42,9 @@ const NoAuth: FC<INoAuth> = ({
 export default NoAuth;
 
 interface INoAuth {
-  /**
-   * Update active auth
-   */
+  /** update active auth */
   onChangeActiveAuth: (authType: EAuthTypes) => void;
 
-  /**
-   * Auth types
-   */
-  typeList: any;
+  /** suth types */
+  authTypeList: any;
 }

@@ -17,11 +17,11 @@ exports.common = {
   entry: {
     index: path.join(
       __dirname,
-      './packages/firecamp-core/src/containers/index.tsx'
+      './packages/firecamp-platform/src/containers/index.tsx'
     ),
     // identity: path.join(
     //   __dirname,
-    //   './packages/firecamp-core/src/containers/identity.tsx'
+    //   './packages/firecamp-platform/src/containers/identity.tsx'
     // ),
   },
   optimization: {
@@ -162,6 +162,10 @@ exports.rules = [
       'css-loader', // translates CSS into CommonJS
       'sass-loader', // compiles Sass to CSS
     ],
+  },
+  {
+    resourceQuery: /raw/,
+    type: 'asset/source',
   },
   {
     test: /\.(woff|woff2|eot|ttf|otf)$/i,

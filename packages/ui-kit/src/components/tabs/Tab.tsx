@@ -1,9 +1,8 @@
-// @ts-nocheck
-import { FC } from "react";
+import { FC } from 'react';
 import cx from 'classnames';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
-import { useDrag, useDrop } from 'react-dnd';
+// import { useDrag, useDrop } from 'react-dnd';
 
 import '../../scss/tailwind.scss';
 import './Tabs.scss';
@@ -45,11 +44,11 @@ const CloseIconPlacement = ({
     <div className="fc-tab-action flex items-center pl-1 -mr-1" id={id}>
       {state == 'modified' ? (
         <div className="flex items-center h-4 w-4 cursor-pointer">
-          <VscCircleFilled size={14} onClick={onClick} />
+          <VscCircleFilled size={14} onClick={(e) => onClick(e)} />
         </div>
       ) : (
         <div className="fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor">
-          <VscClose size={14} onClick={onClick} />
+          <VscClose size={14} onClick={(e) => onClick(e)} />
         </div>
       )}
     </div>
@@ -83,45 +82,47 @@ const Tab: FC<ITab> = ({
   height,
   dotIndicator,
   tabVersion,
+  hasStatusbar = false,
   ...tabProps
 }) => {
-  const [tabDragProps, tabDrag] = canReorder
-    ? useDrag({
-        item: {
-          id: id,
-          index: index,
-          name: name,
-        },
-        type: ReorderType,
-        collect: (monitor: any) => monitor,
-      })
-    : [];
+  // const [tabDragProps, tabDrag] = canReorder
+  //   ? []
+  //   : // useDrag({
+  //     //     item: {
+  //     //       id: id,
+  //     //       index: index,
+  //     //       name: name,
+  //     //     },
+  //     //     type: ReorderType,
+  //     //     collect: (monitor: any) => monitor,
+  //     //   })
+  //     [];
 
-  const [tabDropProps, tabDrop] = canReorder
-    ? useDrop({
-        accept: ReorderType,
-        drop: (draggedItem: { id: number; index: number; name: string }) =>
-          onReorder(draggedItem.index, index),
-        collect: (monitor: { isOver: () => any; canDrop: () => any }) => ({
-          monitor,
-          isOver: monitor.isOver(),
-          canDrop: monitor.canDrop(),
-        }),
-      })
-    : [];
+  // const [tabDropProps, tabDrop] = canReorder
+  //   ? []
+  //   : // useDrop({
+  //     //     accept: ReorderType,
+  //     //     drop: (draggedItem: { id: number; index: number; name: string }) =>
+  //     //       onReorder(draggedItem.index, index),
+  //     //     collect: (monitor: { isOver: () => any; canDrop: () => any }) => ({
+  //     //       monitor,
+  //     //       isOver: monitor.isOver(),
+  //     //       canDrop: monitor.canDrop(),
+  //     //     }),
+  //     //   })
+  //     [];
 
-  let setTabRef = (ref: any) => {
+  const setTabRef = (ref: any) => {
     // console.log({ ref });
 
     if (canReorder) {
-      tabDrag && tabDrag(ref);
-      tabDrop && tabDrop(ref);
+      // tabDrag && tabDrag(ref);
+      // tabDrop && tabDrop(ref);
     }
   };
 
   return (
     <div
-
       tabIndex={1}
       draggable="true"
       role="tab"
@@ -136,6 +137,8 @@ const Tab: FC<ITab> = ({
       className={cx(
         { modified: state == 'modified' },
         { 'border-r': borderMeta?.right },
+        {'after:!bg-statusBarBackground2': hasStatusbar && isActive } ,
+        {'after:!bg-tabActiveBackground': !hasStatusbar && isActive },
         'fc-tab',
         'flex',
         'items-center',
@@ -144,7 +147,7 @@ const Tab: FC<ITab> = ({
         'w-fit',
         'whitespace-pre',
         'relative',
-        {tabVersion},
+        { tabVersion },
         className
       )}
       ref={setTabRef}
@@ -153,8 +156,9 @@ const Tab: FC<ITab> = ({
       <div
         className={cx(
           { 'active !bg-tabActiveBackground': isActive },
-          {'bg-tabBackground2': (tabVersion == 2) },
-          {'bg-statusBarBackground2': (tabVersion == 2 && isActive) },
+          { 'bg-tabBackground2': tabVersion == 2 },
+          { 'bg-statusBarBackground2': tabVersion == 2 && isActive },
+          {'!bg-statusBarBackground2': hasStatusbar && isActive },
           'fc-tab',
           'hover:bg-tabHoverBackground',
           'flex',
@@ -165,48 +169,48 @@ const Tab: FC<ITab> = ({
           'w-full',
           'whitespace-pre',
           'relative',
-          {'bg-tabBackground': (tabVersion == 1) },
+          { 'bg-tabBackground': tabVersion == 1 },
         )}
       >
-      <TopBorderPlacement
-        show={borderMeta?.placementForActive === 'top' && isActive}
-      />
-      <div className="fc-tab-content flex flex-1 items-center">
-        {preComp ? (
-          <div className="flex items-center pr-1.5">{preComp()}</div>
-        ) : (
-          ''
-        )}
-        <TitlePlacement name={name} isPreview={isPreview} />
-        <Count number={count || ''} />
-        {dotIndicator === true ? (
-          <div className="pl-1 flex items-center text-primaryColor">
-            <VscCircleFilled size={10} />
-          </div>
-        ) : (
-          ''
-        )}
-        {postComp ? (
-          <div className="flex items-center pr-1 pl-1">{postComp()}</div>
-        ) : (
-          ''
-        )}
-      </div>
-      <CloseIconPlacement
-        id={`close-icon-${id}`}
-        state={state}
-        onClick={(e: any) => {
-          //to stop firing the onSelect event
-          //when user click on the close icon the tab should not call onSelect fn
-          e.preventDefault();
-          e.stopPropagation();
-          closeTabIconMeta?.onClick(index, id, e);
-        }}
-        show={closeTabIconMeta?.show}
-      />
-      <BottomBorderPlacement
-        show={borderMeta?.placementForActive === 'bottom' && isActive}
-      />
+        <TopBorderPlacement
+          show={borderMeta?.placementForActive === 'top' && isActive}
+        />
+        <div className="fc-tab-content flex flex-1 items-center">
+          {preComp ? (
+            <div className="flex items-center pr-1.5">{preComp()}</div>
+          ) : (
+            ''
+          )}
+          <TitlePlacement name={name} isPreview={isPreview} />
+          <Count number={count || ''} />
+          {dotIndicator === true ? (
+            <div className="pl-1 flex items-center text-primaryColor">
+              <VscCircleFilled size={10} />
+            </div>
+          ) : (
+            ''
+          )}
+          {postComp ? (
+            <div className="flex items-center pr-1 pl-1">{postComp()}</div>
+          ) : (
+            ''
+          )}
+        </div>
+        <CloseIconPlacement
+          id={`close-icon-${id}`}
+          state={state}
+          onClick={(e: any) => {
+            //to stop firing the onSelect event
+            //when user click on the close icon the tab should not call onSelect fn
+            e.preventDefault();
+            e.stopPropagation();
+            closeTabIconMeta?.onClick(index, id, e);
+          }}
+          show={closeTabIconMeta?.show}
+        />
+        <BottomBorderPlacement
+          show={borderMeta?.placementForActive === 'bottom' && isActive}
+        />
       </div>
     </div>
   );

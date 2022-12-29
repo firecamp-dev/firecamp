@@ -26,6 +26,7 @@
   }
   .fc-urlbar-container-prefix{
     padding-left: 8px;
+    overflow: visible !important;
   }
   
   .fc-urlbar-container-suffix{
@@ -50,6 +51,10 @@
     margin-bottom: calc(-100vh + 140px);
     padding-bottom: calc(100vh - 140px);
     overflow: visible;
+  }
+  .urlbar-wrapper{
+    margin-bottom: calc(-100vh + 140px);
+    padding-bottom: calc(100vh - 140px); 
   }
 
   /*---------URLbar css start end------------*/

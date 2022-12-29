@@ -28,7 +28,7 @@ const Container: FC<IContainer> & {
 
 const Header: FC<IHeader> = ({ children, className, flex = 'none', height = '' }) => {
   return (
-    <Column className={className} height={height} flex={flex}>
+    <Column className={className} height={height} flex={flex} overflow="visible">
       {children}
     </Column>
   );

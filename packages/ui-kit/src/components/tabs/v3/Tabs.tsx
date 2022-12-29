@@ -1,6 +1,6 @@
 import {
-  DragEventHandler,
   FC,
+  DragEventHandler,
   forwardRef,
   Fragment,
   useImperativeHandle,
@@ -35,7 +35,6 @@ const Tabs: FC<ITabs> = forwardRef(
       addTabIconMeta,
       tabBorderMeta,
       reOrderable,
-
       onSelect = () => {},
       onReorder,
     },
@@ -91,6 +90,18 @@ const Tabs: FC<ITabs> = forwardRef(
               return { tabs: s.tabs, orders, activeTab };
             });
           },
+          changeState: (tabId: TId, state: 'modified' | 'default' = 'default') => {
+            setState((s) => ({
+              ...s,
+              tabs: {
+                ...s.tabs,
+                [tabId]: {
+                  ...s.tabs[tabId],
+                  state,
+                },
+              },
+            }));
+          }
         };
       },
       []
@@ -209,7 +220,7 @@ const Tabs: FC<ITabs> = forwardRef(
               {addTabIconMeta?.show && (
                 <div
                   id={addTabIconMeta.id || ''}
-                  className="px-2 cursor-pointer h-3"
+                  className="px-2 cursor-pointer h-8 flex items-center justify-center"
                   onClick={(e) => {
                     if (!addTabIconMeta?.disabled) {
                       addTabIconMeta?.onClick?.(e);

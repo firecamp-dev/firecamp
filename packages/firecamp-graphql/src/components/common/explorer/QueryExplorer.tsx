@@ -4,7 +4,7 @@ import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
 import { buildClientSchema } from 'graphql';
 
-import { useGraphQLStore } from '../../../store';
+import { useStore } from '../../../store';
 import { isEmpty } from 'lodash';
 
 import './QueryExplorer.scss';
@@ -13,7 +13,7 @@ import './QueryExplorer.scss';
 
 const QueryExplorer = () => {
   let { playground, activePlayground, schema, changePlaygroundValue } =
-    useGraphQLStore(
+    useStore(
       (s: any) => ({
         schema: s.runtime.schema,
         activePlayground: s.runtime.activePlayground,

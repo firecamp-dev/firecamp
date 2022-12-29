@@ -1,4 +1,5 @@
-import { FC, useEffect, useRef, memo } from 'react';
+//@ts-nocheck
+import { FC, useEffect, useRef, memo, ReactNode } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
 import { IEditor } from './Editor.interface';
@@ -7,11 +8,15 @@ import MonacoFirecampLangInit, {
 } from '../monaco/lang/init';
 
 type TSLEditor = {
+  name?: string;
   type: 'text' | 'number';
+  loading?: ReactNode;
+  style?: object;
 };
 
 const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   type = 'text',
+  name,
   value,
   disabled = false,
   autoFocus = false,
@@ -19,8 +24,10 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   monacoOptions = {},
   placeholder = '',
   className = '',
-  height,
+  style = {},
+  height = 50,
   path,
+  loading,
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
   onBlur,
   onFocus,
@@ -36,40 +43,188 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   onCtrlShiftEnter = () => {},
 }) => {
   const editorIdRef = useRef('');
-  useEffect(() => {
-    MonacoFirecampLangInit();
-    SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
-  }, []);
+  // useEffect(() => {
+  //   MonacoFirecampLangInit();
+  //   SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
+  // }, []);
 
   useEffect(() => {
+    console.log('this is re-rendering <SingleLineEditor />');
     //@ts-ignore
-    if (!window.ife) window.ife = new Map();
+    if (!window.editors) window.editors = new Map();
     return () => {
       //@ts-ignore
-      if (window.ife) window.ife.delete(editorIdRef.current);
+      if (window.editors) window.editors.delete(editorIdRef.current);
     };
   }, []);
 
   const onMount: OnMount = (editor, monaco) => {
-    // Add shortcuts on keydown event
-
     const KM = monaco.KeyMod;
     const KC = monaco.KeyCode;
 
-    // editor.addCommand(KC.Enter, (e: any) => {
-    //   console.log('ENTER...');
-    //   onEnter(e);
-    // });
+    editor.onDidFocusEditorWidget(() => {
+      localStorage.setItem('currentEditor', editor.getId());
+      console.log(editor.getId(), 'Focus event triggered ');
+    });
 
-    // editor.addCommand(KM.CtrlCmd | KC.KeyS, (e: any) => {
-    //   console.log('CMD+S...');
-    //   onCtrlS(e);
-    // });
+    /**
+     * disable `Find` widget
+     * @ref: https://github.com/microsoft/monaco-editor/issues/287#issuecomment-328371787
+     */
+    // eslint-disable-next-line no-bitwise
+    editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF, () => {});
 
-    // editor.addCommand(KM.CtrlCmd | KM.Shift | KC.KeyS, (e: any) => {
-    //   console.log('CMD+Shift+S...');
-    //   onCtrlShiftS(e);
-    // });
+    // disable `F1` command palette
+    editor.addCommand(monaco.KeyCode.F1, () => {});
+
+    /**
+     * allow comments for JSON language
+     * @ref: https://github.com/microsoft/monaco-editor/issues/2426
+     */
+    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+      validate: true,
+      allowComments: true,
+      schemaValidation: 'error',
+    });
+
+    onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
+    onFocus && editor.onDidFocusEditorText(() => onFocus(editor));
+    onPaste && editor.onDidPaste(() => onPaste(editor));
+
+    editor.onKeyDown((evt: any) => {
+      switch (evt.keyCode) {
+        /** shift command is not recognizable in Monaco atm. so used this keyDown event for SHIFT + TAB */
+        case monaco.KeyCode.Tab:
+          // console.log(editor.getId(), 'tab triggered');
+          //@ts-ignore
+          if (!window.editors) return;
+          // @ts-ignore
+          const mapKeys = [...window.editors.keys()];
+          const currentEditor = localStorage.getItem('currentEditor');
+          const currentIndex = mapKeys.findIndex((k) => k == currentEditor);
+
+          // SHIFT+TAB
+          if (evt.shiftKey) {
+            let prevIndex = currentIndex - 1;
+            // @ts-ignore
+            let et = window.editors.get(mapKeys[prevIndex]);
+            editor.setSelection(new monaco.Range(0, 0, 0, 0));
+            if (et) {
+              console.log(et.getId(), 'shift+tab');
+              evt.preventDefault();
+              evt.stopPropagation();
+              const range = et?.getModel()?.getFullModelRange();
+              et.setSelection(range);
+              et.focus();
+            } else {
+              //todo:  this is experimental, if no Editor ref found then blur it naturally with browser DOM API
+              if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+              }
+            }
+          } else {
+            /**
+             * this command is applied to all editors which is a bug, thus last Edt's command will be considered for all
+             * in this case the id of editor will be the same for all editor which is not correct
+             *
+             *  @solution: currently we're using localStorage to set id on focus and manage tab event
+             *
+             * issue: https://github.com/microsoft/monaco-editor/issues/2947
+             */
+
+            const nextIndex = currentIndex + 1;
+            console.log(currentIndex, nextIndex, 9999);
+            // @ts-ignore
+            const et = window.editors.get(mapKeys[nextIndex]);
+            editor.setSelection(new monaco.Range(0, 0, 0, 0));
+            if (et) {
+              console.log(et.getId(), 'tab');
+              evt.preventDefault();
+              evt.stopPropagation();
+              const range = et?.getModel()?.getFullModelRange();
+              et.setSelection(range);
+              et.focus();
+            } else {
+              //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
+              if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+              }
+            }
+          }
+          break;
+
+        case monaco.KeyCode.Enter:
+          /**
+           * ctrl+enter or cmd+enter shortcut
+           * It'll also prevent new line on (ctrl | cmd) + enter
+           */
+          if (evt.ctrlKey || evt.metaKey) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            if (evt.shiftKey) {
+              console.log('ctrl + shift + enter');
+            } else {
+              editor.trigger('', 'acceptSelectedSuggestion', {});
+              onCtrlEnter(evt);
+            }
+          } else {
+            // if suggestion widget is opened then ignore onEnter custom event
+            const contentWidget =
+              editor._contentWidgets['editor.widget.suggestWidget'];
+            let isWidgetOpened = !!contentWidget; // note: some times (first render) it's value is undefined
+            if (contentWidget) isWidgetOpened = !contentWidget.widget._hidden;
+            // console.log(isWidgetOpened, 'isWidgetOpened');
+            if (!isWidgetOpened) {
+              evt.preventDefault();
+              evt.stopPropagation();
+              onEnter(evt);
+            }
+          }
+          break;
+
+        // ctrl+s or cmd+s shortcut
+        // case monaco.KeyCode.KeyS:
+        //   if (evt.ctrlKey || evt.metaKey) {
+        //     evt.preventDefault();
+        //     evt.stopPropagation();
+
+        //     if (evt.shiftKey) {
+        //       onCtrlShiftS(evt);
+        //     } else {
+        //       onCtrlS(evt);
+        //     }
+        //   }
+        //   break;
+
+        // ctrl+O shortcut
+        case monaco.KeyCode.KeyO:
+          if (evt.ctrlKey) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            onCtrlO(evt);
+          }
+          break;
+
+        // ctrl+K shortcut
+        case monaco.KeyCode.KeyK:
+          if (evt.ctrlKey) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            onCtrlK(evt);
+          }
+          break;
+      }
+    });
+
+    editor.addCommand(KM.CtrlCmd | KC.KeyS, (e: any) => {
+      console.log('CMD+S...');
+      onCtrlS(e);
+    });
+
+    editor.addCommand(KM.CtrlCmd | KM.Shift | KC.KeyS, (e: any) => {
+      console.log('CMD+Shift+S...');
+      onCtrlShiftS(e);
+    });
 
     // editor.addCommand(KM.CtrlCmd | KC.Enter, (e: any) => {
     //   console.log('CMD+ENTER...');
@@ -91,8 +246,8 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     //   onCtrlK(e);
     // });
 
-    // editor.addCommand((KC.Ctrl | KC.KeyS), (e)=> {
-    //   console.log("CTRL+S...");
+    // editor.addCommand(KC.Ctrl | KC.KeyS, (e) => {
+    //   console.log('CTRL+S...');
     //   onCtrlS();
     // });
 
@@ -105,41 +260,6 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     //   console.log("I am in the Editor...")
     // });
 
-    // editor.onKeyDown = (evt) => {
-    // console.log(evt);
-    // ctrl+s or cmd+s shortcut
-    // if (evt.keyCode === monaco.KeyCode.KeyS) {
-    // console.log("I am in...")
-    // if (evt.ctrlKey || evt.metaKey) {
-    //   evt.preventDefault();
-    //   evt.stopPropagation();
-    //   if (evt.shiftKey) {
-    //     onCtrlShiftS();
-    //   } else {
-    //     console.log("222222")
-    //     onCtrlS();
-    //   }
-    // }
-    // }
-
-    // ctrl+O shortcut
-    // else if (evt.keyCode === monaco.KeyCode.KEY_O) {
-    //   if (evt.ctrlKey) {
-    //     evt.preventDefault();
-    //     evt.stopPropagation();
-    //     onCtrlO(evt);
-    //   }
-    // }
-
-    // ctrl+K shortcut
-    // else if (evt.keyCode === monaco.KeyCode.KEY_K) {
-    //   if (evt.ctrlKey) {
-    //     evt.preventDefault();
-    //     evt.stopPropagation();
-    //     onCtrlK(evt);
-    //   }
-    // }
-
     // set focus to Editor if autoFocus is given true to Input
     if (autoFocus === true) {
       try {
@@ -150,7 +270,17 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
         }, 200);
       } catch (e) {}
     }
+
+    onLoad(editor);
+    // editorDidMount && editorDidMount(editor, monaco);
+    editorIdRef.current = editor.getId();
+
+    // @ts-ignore
+    if (!window.editors) window.editors = new Map();
+    // @ts-ignore
+    window.editors.set(editorIdRef.current, editor);
   };
+
   const options: EditorProps['options'] = {
     readOnly: false,
     fontFamily: "'Open Sans', sans-serif",
@@ -209,8 +339,11 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     // auto adjust width and height to parent
     // see: https://github.com/Microsoft/monaco-editor/issues/543#issuecomment-321767059
     automaticLayout: true,
-    // if monaco is inside a table, hover tips or completion may casue table body scroll
+    // if monaco is inside a table, hover tips or completion may cause table body scroll
     fixedOverflowWidgets: true,
+
+    suggestOnTriggerCharacters: false,
+    tabCompletion: 'off',
   };
 
   /** if 'readOnly' is not provided then consider 'disabled' */
@@ -218,7 +351,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     options.readOnly = disabled;
   }
 
-  console.log(value, language, 'language...');
+  // console.log(value, language, 'language...');
   value = type === 'number' ? '' + value : value;
   /**
    * 1. Check if number or not, if number then convert to string and show
@@ -227,15 +360,15 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   //  value = value.replace(/[\n\r]/g, '');
 
   return (
-    <div className="fc-input-wrapper">
+    <>
       {placeholder && !value ? (
-        <div className="urlbar-url-text-placeholder absolute top-0 left-0 text-inputPlaceholder text-lg ">
+        <div className="absolute top-0 left-0 text-inputPlaceholder text-lg ">
           {placeholder}
         </div>
       ) : (
         <></>
       )}
-      <div className={cx('fc-input-IFE', '-fc-input-IFE-focused', className)}>
+      <div className={cx(className, { 'opacity-50': disabled })} style={style}>
         <MonacoEditor
           language={language}
           defaultValue={value}
@@ -244,100 +377,38 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           height={height}
           path={path}
           key={path}
-          onChange={(value, e) => {
-            value = value.replace(/[\n\r]/g, '');
-            console.log(value);
-            onChange({
-              preventDefault: () => {},
-              target: { value },
-            });
+          loading={loading || <></>}
+          onChange={(newValue) => {
+            newValue = newValue.replace(/[\n\r]/g, '');
+            if (type === 'number') {
+              const val = !isNaN(Number(newValue))
+                ? newValue === '0'
+                  ? newValue
+                  : Number(newValue) !== 0
+                  ? Number(newValue)
+                  : ''
+                : value;
+              onChange({
+                preventDefault: () => {},
+                target: {
+                  value: val,
+                  name,
+                },
+              });
+            } else {
+              // console.log(newValue);
+              onChange({
+                preventDefault: () => {},
+                target: { value: newValue, name },
+              });
+            }
           }}
           onMount={(editor, monaco) => {
-            console.log(editor, monaco, 9999);
-            /**
-             * disable `Find` widget
-             * @ref: https://github.com/microsoft/monaco-editor/issues/287#issuecomment-328371787
-             */
-            // eslint-disable-next-line no-bitwise
-            // editor.addCommand(
-            //   monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyF,
-            //   () => {}
-            // );
-
-            // disable press `Enter` in case of producing line breaks
-            // editor.addCommand(monaco.KeyCode.Enter, (e) => {
-            //   // State: https://github.com/microsoft/vscode/blob/1.56.0/src/vs/editor/contrib/suggest/suggestWidget.ts#L50
-            //   // const StateOpen = 3;
-            //   // if (
-            //   //   editor._contentWidgets['editor.widget.suggestWidget'].widget
-            //   //     .state !== StateOpen
-            //   // ) {
-            //   //   onEnter(editor.getValue());
-            //   // } else {
-            //   /**
-            //    * Origin purpose: disable line breaks
-            //    * Side Effect: If defining completions, will prevent `Enter` confirm selection
-            //    * Side Effect Solution: always accept selected suggestion when `Enter`
-            //    *
-            //    * But it is hard to find out the name `acceptSelectedSuggestion` to trigger.
-            //    *
-            //    * Where to find the `acceptSelectedSuggestion` at monaco official documents ?
-            //    * Below is some refs:
-            //    * - https://stackoverflow.com/questions/64430041/get-a-list-of-monaco-commands-actions-ids
-            //    * - command from: https://github.com/microsoft/vscode/blob/e216a598d3e02401f26459fb63a4f1b6365ec4ec/src/vs/editor/contrib/suggest/suggestController.ts#L632-L638
-            //    * - https://github.com/microsoft/vscode/search?q=registerEditorCommand
-            //    * - real list: https://github.com/microsoft/vscode/blob/e216a598d3e02401f26459fb63a4f1b6365ec4ec/src/vs/editor/browser/editorExtensions.ts#L611
-            //    *
-            //    *
-            //    * Finally, `acceptSelectedSuggestion` appears here:
-            //    * - `editorExtensions.js` Line 288
-            //    */
-            //   editor.trigger('', 'acceptSelectedSuggestion', {});
-            //   // }
-            // });
-
-            // disable `F1` command palette
-            editor.addCommand(monaco.KeyCode.F1, () => {});
-
-            /**
-             * allow comments for JSON language
-             * @ref: https://github.com/microsoft/monaco-editor/issues/2426
-             */
-            monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-              validate: true,
-              allowComments: true,
-              schemaValidation: 'error',
-            });
-
-            onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
-            onFocus && editor.onDidFocusEditorText(() => onFocus(editor));
-            onPaste && editor.onDidPaste(() => onPaste(editor));
-
-            // https://www.anycodings.com/1questions/1773746/how-do-i-insert-text-into-a-monaco-editor
-            // editor.insertTextAtCurrentCursor = (text: any) => {
-            //   let p = editor.getPosition();
-            //   editor.executeEdits('', [
-            //     {
-            //       range: new monaco.Range(
-            //         p.lineNumber,
-            //         p.column,
-            //         p.lineNumber,
-            //         p.column
-            //       ),
-            //       text,
-            //     },
-            //   ]);
-            // };
             onMount(editor, monaco);
-            onLoad(editor);
-            editorDidMount && editorDidMount(editor, monaco);
-            editorIdRef.current = editor.getId();
-            // @ts-ignore
-            window.ife.set(editorIdRef.current, editor);
           }}
         />
       </div>
-    </div>
+    </>
   );
 };
 

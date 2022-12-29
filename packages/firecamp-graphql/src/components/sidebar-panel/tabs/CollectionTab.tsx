@@ -1,34 +1,31 @@
 import { useEffect, useRef } from 'react';
-import { Pane, ToolBar, Empty,  } from '@firecamp/ui-kit';
+import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
+import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import {
-  IGraphQLStore,
-  useGraphQLStore,
-  useGraphQLStoreApi,
+  IStore,
+  useStore,
+  useStoreApi,
 } from '../../../store';
 
 const CollectionTab = () => {
-  let treeRef = useRef();
-
-  const { folders, items } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
-      folders: s.collection.folders,
-      items: s.collection.items,
+  const treeRef = useRef();
+  const { isCollectionEmpty } = useStore(
+    (s: IStore) => ({
+      isCollectionEmpty:
+        !s.collection.folders?.length && !s.collection.items?.length,
     }),
     shallow
   );
-  let { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
-    useGraphQLStoreApi().getState() as IGraphQLStore;
+  const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
+    useStoreApi().getState() as IStore;
 
-  // console.log(items, 'items...');
-
-  const dataProvider = useRef(new CollectionTreeDataProvider(folders, items));
+  const dataProvider = useRef(new TreeDataProvider([], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);
@@ -36,26 +33,20 @@ const CollectionTab = () => {
   }, []);
 
   const openPlg = (plgId) => {
-    // get a freh copy of state
-    const item = items.find((i) => i._meta.id == plgId);
-    console.log(item, 1100099);
-    openPlayground(item);
+    openPlayground(plgId);
   };
   const deletePlg = (plgId: string) => {
-    context.appService.notify.confirm(
-      'Are you sure to delete the playground?',
-      (s) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the playground?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((s) => {
         console.log(plgId, 'plgId...');
         deleteItem(plgId);
-      },
-      console.log,
-      {
-        labels: {
-          confirm: 'Need your confirmation.',
-          confirmOk: 'Yes, delete it.',
-        },
-      }
-    );
+      });
   };
 
   return (
@@ -78,7 +69,7 @@ const CollectionTab = () => {
         );
       }}
       bodyRenderer={({ expanded }) => {
-        if (!folders?.length && !items?.length) {
+        if (isCollectionEmpty) {
           return (
             <div className="items-center">
               <Empty
@@ -95,7 +86,7 @@ const CollectionTab = () => {
             canRename={true}
             canReorderItems={true}
             canDragAndDrop={true}
-            canDropOnItemWithChildren={true}
+            canDropOnFolder={true}
             keyboardBindings={{
               renameItem: ['enter', 'f2'],
               abortRenameItem: ['esc'],
@@ -105,7 +96,7 @@ const CollectionTab = () => {
               console.log(a, 'onStartRenamingItem');
             }}
             // onSelectItems={onSelectItems}
-            getItemTitle={(item) => item.data.name}
+            getItemTitle={(item) => item.data?.name}
             viewState={{}}
             renderItemArrow={treeRenderer.renderItemArrow}
             renderItem={(props) =>

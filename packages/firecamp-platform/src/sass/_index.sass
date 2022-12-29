@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap')
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap')
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap')
+
+@import "./icons"
+
+
+//GraphQL Explorer Checkbox css
+
+.graphiql-explorer-node input[type="checkbox"]
+  position: absolute
+  // take it out of document flow
+  opacity: 0
+  // hide it
+
+  & + span
+    position: relative
+    cursor: pointer
+    padding: 0
+
+
+  // Box.
+  & + span:before
+    content: ''
+    margin-right: 10px
+    display: inline-block
+    vertical-align: text-top
+    width: 18px
+    height: 16px
+    border: 1px solid var(--app-border)
+
+
+  // Box hover
+  &:hover + span:before
+    background: #345967
+
+
+  // Box focus
+  &:focus + span:before
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12)
+
+
+  // Box checked
+  &:checked + span:before
+    background: var(--app-background)
+    border-color: var(--appPrimary)
+
+
+  // Disabled state label.
+  &:disabled + span
+    color: #b8b8b8
+    cursor: auto
+
+  // Disabled box.
+  &:disabled + span:before
+    box-shadow: none
+    background: var(--app-border)
+    border: 1px solid var(--app-border)
+
+  // Checkmark. Could be replaced with an image
+  &:checked + span:after
+    content: ''
+    position: absolute
+    left: 4px
+    top: 7px
+    background: var(--appPrimary)
+    width: 2px
+    height: 2px
+    box-shadow: 2px 0 0 var(--appPrimary), 4px 0 0 var(--appPrimary), 4px -2px 0 var(--appPrimary), 4px -4px 0 var(--appPrimary), 4px -6px 0 var(--appPrimary), 4px -8px 0 var(--appPrimary)
+    transform: rotate(45deg)
+
+
+
+

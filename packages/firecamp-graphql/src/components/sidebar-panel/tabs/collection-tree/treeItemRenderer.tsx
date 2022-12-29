@@ -8,7 +8,7 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 export default {
   renderItemArrow: ({ item, context }) => {
     return <small>Plg.</small>;
-    // return item.hasChildren ? (
+    // return item.isFolder ? (
     //   context.isExpanded ? (
     //     <VscChevronDown size={20} />
     //   ) : (
@@ -66,12 +66,12 @@ export default {
         className={cx(
           'relative',
           'rct-tree-item-li',
-          item.hasChildren && 'rct-tree-item-li-hasChildren',
-          context.isSelected && 'rct-tree-item-li-selected',
-          context.isExpanded && 'rct-tree-item-li-expanded',
-          context.isFocused && 'rct-tree-item-li-focused',
-          context.isDraggingOver && 'rct-tree-item-li-dragging-over',
-          context.isSearchMatching && 'rct-tree-item-li-search-match'
+          { 'rct-tree-item-li-isFolder': item.isFolder },
+          { 'rct-tree-item-li-selected': context.isSelected },
+          { 'rct-tree-item-li-expanded': context.isExpanded },
+          { 'rct-tree-item-li-focused': context.isFocused },
+          { 'rct-tree-item-li-dragging-over': context.isDraggingOver },
+          { 'rct-tree-item-li-search-match': context.isSearchMatching }
         )}
       >
         <div
@@ -84,17 +84,30 @@ export default {
           className={cx(
             'pr-2',
             'rct-tree-item-title-container',
-            item.hasChildren && 'rct-tree-item-title-container-hasChildren',
-            context.isSelected && 'rct-tree-item-title-container-selected',
-            context.isExpanded && 'rct-tree-item-title-container-expanded',
-            context.isFocused && 'rct-tree-item-title-container-focused',
-            context.isDraggingOver &&
-              'rct-tree-item-title-container-dragging-over',
-            context.isSearchMatching &&
-              'rct-tree-item-title-container-search-match'
+            { 'rct-tree-item-title-container-isFolder': item.isFolder },
+            {
+              'rct-tree-item-title-container-selected !opacity-100':
+                context.isSelected,
+            },
+            {
+              'rct-tree-item-title-container-expanded !opacity-100':
+                context.isExpanded,
+            },
+            {
+              'rct-tree-item-title-container-focused !opacity-100':
+                context.isFocused,
+            },
+            {
+              'rct-tree-item-title-container-dragging-over':
+                context.isDraggingOver,
+            },
+            {
+              'rct-tree-item-title-container-search-match':
+                context.isSearchMatching,
+            }
           )}
         >
-          {context.isExpanded && item.hasChildren && (
+          {context.isExpanded && item.isFolder && (
             <span
               className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
@@ -103,7 +116,7 @@ export default {
           <span
             className={cx(
               'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-              { '!top-4': item.data._meta.is_request }
+              { '!top-4': item.data.__ref.isItem }
             )}
             style={{ left: `${renderDepthOffset * 2 - 3}px` }}
           ></span>
@@ -113,19 +126,19 @@ export default {
             {...(context.interactiveElementProps as any)}
             className={cx(
               'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button',
-              item.hasChildren && 'rct-tree-item-button-hasChildren',
-              context.isSelected && 'rct-tree-item-button-selected',
-              context.isExpanded && 'rct-tree-item-button-expanded',
-              context.isFocused && 'rct-tree-item-button-focused',
-              context.isDraggingOver && 'rct-tree-item-button-dragging-over',
-              context.isSearchMatching && 'rct-tree-item-button-search-match'
+              { 'rct-tree-item-button-isFolder': item.isFolder },
+              { 'rct-tree-item-button-selected': context.isSelected },
+              { 'rct-tree-item-button-expanded': context.isExpanded },
+              { 'rct-tree-item-button-focused': context.isFocused },
+              { 'rct-tree-item-button-dragging-over': context.isDraggingOver },
+              { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
             <span className="w-full overflow-hidden overflow-ellipsis items-center block">
               {title}
 
-              {item.data._meta?.is_collection ||
-              item.data._meta?.is_workspace ? (
+              {item.data.__ref?.isCollection ||
+              item.data.__ref?.isWorkspace ? (
                 <span className={'text-sm'}>- {item.children?.length}</span>
               ) : (
                 <></>
@@ -150,7 +163,7 @@ export default {
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                openPlg(item.data._meta.id);
+                openPlg(item.data.__ref.id);
               }}
             />
 

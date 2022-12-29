@@ -1,32 +1,26 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import {
-  Popover,
-  Input,
-} from '@firecamp/ui-kit';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
-
 import shallow from 'zustand/shallow';
-import { IGraphQLStore, useGraphQLStore } from '../../../../../store';
+import { Popover, Input } from '@firecamp/ui-kit';
+import { IStore, useStore } from '../../../../../store';
 
 const EditPlaygroundName: FC<any> = ({}) => {
+  const { isRequestSaved, updatePlg, playground } = useStore(
+    (s: IStore) => ({
+      context: s.context,
+      isRequestSaved: s.runtime.isRequestSaved,
+      playground: s.playgrounds[s.runtime.activePlayground],
+      savePlg: s.addItem,
+      updatePlg: s.updateItem,
+    }),
+    shallow
+  );
 
-  const { isRequestSaved, updatePlg, playground } =
-    useGraphQLStore(
-      (s: IGraphQLStore) => ({
-        context: s.context,
-        isRequestSaved: s.runtime.isRequestSaved,
-        playground: s.playgrounds[s.runtime.activePlayground],
-        savePlg: s.addItem,
-        updatePlg: s.updateItem
-      }),
-      shallow
-    );
-
-  let [isOpen, toggleOpen] = useState(false);
-  let [name, setName] = useState('');
-  let [nameError, setNameError] = useState('');
-  let inputRef = useRef<HTMLInputElement>();
+  const [isOpen, toggleOpen] = useState(false);
+  const [name, setName] = useState('');
+  const [nameError, setNameError] = useState('');
+  const inputRef = useRef<HTMLInputElement>();
   const { register, handleSubmit, errors } = useForm();
 
   //focus input on popver open
@@ -43,9 +37,8 @@ const EditPlaygroundName: FC<any> = ({}) => {
     });
   }, [isOpen]);
 
-  let _submitName = ({ name = '' }) => {
+  const _submitName = ({ name = '' }) => {
     name = name.trim();
-
     console.log(name, 'name....');
     if (!name) {
       setNameError('Invalid name');
@@ -119,16 +112,9 @@ const EditPlaygroundName: FC<any> = ({}) => {
         id={`edit-playground-${123}`}
         className="font-bold cursor-pointer font-base pl-16 pb-0"
       >
-        <VscEdit size={12}/>
+        <VscEdit size={12} />
       </Popover.Handler>
     </Popover>
   );
 };
 export default EditPlaygroundName;
-
-interface IEditPlaygroundName {
-  /**
-   * popoover open or not
-   */
-  isOpen?: boolean;
-}

@@ -1,23 +1,24 @@
 import { FC, useState, useReducer } from 'react';
 
-import { Button, Dropdown ,EButtonColor,Input,CheckboxInGrid} from '@firecamp/ui-kit';
-import { typePayload } from './constants';
+import { Button, Dropdown , Input,CheckboxInGrid} from '@firecamp/ui-kit';
+import { authUiState } from './constants';
 import { IOAuth1, EAuthTypes } from '@firecamp/types'
 
 
 const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
+  const { OAuth1 } = EAuthTypes;
   const signatureMethodList = (
-    typePayload?.[EAuthTypes.OAuth1]?.['signatureMethodList'] || []
+    authUiState?.[OAuth1]?.signatureMethodList || []
   ).map((i) => ({ name: i }));
-  const inputList = typePayload[EAuthTypes.OAuth1]['inputList'];
-  const advancedInputList = typePayload[EAuthTypes.OAuth1]['advancedInputList'];
+  const inputList = authUiState[OAuth1].inputList;
+  const advancedInputList = authUiState[OAuth1].advancedInputList;
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
     isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
   });
 
-  let _setDirty = (state: any, action: any) => {
+  const _setDirty = (state: any, action: any) => {
     switch (action.type) {
       case 'setDirty':
         return {
@@ -27,28 +28,28 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
     }
   };
 
-  let [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
-  let [isDDOpen, toggleDD] = useState(false);
+  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const [isDDOpen, toggleDD] = useState(false);
 
-  let _handleChange = (e: any, id: string) => {
+  const _handleChange = (e: any, id: string) => {
     e.preventDefault();
-    let value = e.target.value;
+    const value = e.target.value;
     if (((inputList || []).map((e) => e.id) || []).includes(id)) {
       setIsDirty({ type: 'setDirty', element: id, value: true });
     }
-    onChange(EAuthTypes.OAuth1, { key: id, value });
+    onChange(OAuth1, { key: id, value });
   };
 
-  let _onSelectSignatureMethod = (method: string) => {
+  const _onSelectSignatureMethod = (method: string) => {
     if (!method) return;
     toggleDD(!isDDOpen);
-    onChange(EAuthTypes.OAuth1, {
-      key: 'signature_method',
+    onChange(OAuth1, {
+      key: 'signatureMethod',
       value: method,
     });
   };
 
-  let _handleSubmit = (e: any) => {
+  const _handleSubmit = (e: any) => {
     e && e.preventDefault();
   };
 
@@ -56,7 +57,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
     <form className="fc-form grid" onSubmit={_handleSubmit}>
     {(inputList || []).map((input:{[key: string]: any}, i) => {
       let errorMsg = '';
-      if (isDirty[input.id] && !auth?.[input.id]?.length) {
+      if (isDirty[input.id] && !auth?.[input.id as keyof IOAuth1]?.length) {
         errorMsg = `${input.name} can not be empty`;
       }
       return (
@@ -73,7 +74,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
           }
           placeholder={input.name}
           name={input.id}
-          value={auth?.[input.id] || ''}
+          value={auth?.[input.id  as keyof IOAuth1] || ''}
           error={errorMsg}
           /* style={{
             borderColor:
@@ -88,17 +89,17 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
     })}
     <label className="fc-form-field-group">
       Advanced
-      <span>(optional)</span>
+      <span>optional</span>
     </label>
     <div className="form-group">
       <label>Signature Method:</label>
 
       <Dropdown
-        selected={auth['signature_method'] || 'HMAC-SHA1'} //defalut "HMAC-SHA1"
+        selected={auth['signatureMethod'] || 'HMAC-SHA1'} //defalut "HMAC-SHA1"
       >
         <Dropdown.Handler>
         <Button 
-          text={auth['signature_method'] || 'HMAC-SHA1'}
+          text={auth['signatureMethod'] || 'HMAC-SHA1'}
           sm
           secondary
           withCaret={true}
@@ -112,15 +113,15 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
         />
       </Dropdown>
     </div>
-    {/* {auth?.['signature_method'] === 'RSA-SHA1' ? (
+    {/* {auth?.['signatureMethod'] === 'RSA-SHA1' ? (
       <Input
-        key={'private_key'}
+        key={'privateKey'}
         label="Private Key"
         type="text"
         placeholder="Private Key"
-        name={'private_key'}
-        value={auth?.['private_key'] || ''}
-        onChange={(e) => _handleChange(e, 'private_key')}
+        name={'privateKey'}
+        value={auth?.['privateKey'] || ''}
+        onChange={(e) => _handleChange(e, 'privateKey')}
         isEditor={true}
       />
     ) : (
@@ -141,7 +142,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
           }
           placeholder={input.name}
           name={input.id}
-          value={auth?.[input.id] || ''}
+          value={auth?.[input.id  as keyof IOAuth1] || ''}
           onChange={(e) => _handleChange(e, input.id)}
           isEditor={true}
         />

@@ -1,5 +1,3 @@
-import { ERestBodyTypes } from '@firecamp/types';
-
 import {
   Container,
   Column,
@@ -8,17 +6,8 @@ import {
 } from '@firecamp/ui-kit';
 
 const GraphQLBody = ({ body, onChange }) => {
-  let { value = '', variables = '' } = body;
 
-  let _onChangeVariables = (value) => {
-    // console.log("update", key, value)
-
-    onChange(ERestBodyTypes.GraphQL, value, 'variables');
-  };
-
-  let _onChangeQuery = (value) => {
-    onChange(ERestBodyTypes.GraphQL, value);
-  };
+  const { query = '', variables = '' } = body;
 
   return (
     <Container>
@@ -27,8 +16,8 @@ const GraphQLBody = ({ body, onChange }) => {
           <div className="text-base px-1 py-2 bg-focus1">Query</div>
           <div className="flex-1 overflow-y-scroll">
             <CMGQueryEditor
-              query={value}
-              onChangeQuery={(value) => _onChangeQuery(value)}
+              query={query}
+              onChangeQuery={(query) => onChange({ query, variables})}
             />
           </div>
         </Column>
@@ -43,7 +32,7 @@ const GraphQLBody = ({ body, onChange }) => {
               // value: variables,
               height: '30%',
             }}
-            onChange={({ target: { value } }) => _onChangeVariables(value)}
+            onChange={({ target: { value } }) => onchange({ query, variables: value})}
           />
         </Column>
       </Container.Body>

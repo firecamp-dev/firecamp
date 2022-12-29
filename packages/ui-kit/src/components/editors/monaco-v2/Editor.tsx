@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FC, useEffect, useRef } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
@@ -15,11 +16,7 @@ const Editor: FC<IEditor> = ({
   monacoOptions = {},
   height,
   path,
-  onChange = () => {}, // similar DOM event, e = { preventDefault, target }
-  onBlur,
-  onFocus,
-  onPaste,
-  onLoad = (editor) => {},
+  addExtraLib,
   // controlsConfig = {
   //   show: false,
   //   position: 'vertical',
@@ -27,8 +24,12 @@ const Editor: FC<IEditor> = ({
   // },
   placeholder = '',
   className = '',
+  onChange = () => {}, // similar DOM event, e = { preventDefault, target }
+  onBlur,
+  onFocus,
+  onPaste,
+  onLoad = (editor) => {},
   editorDidMount = null,
-  onEnter = () => {},
   onCtrlS = () => {},
   onCtrlShiftS = () => {},
   onCtrlO = () => {},
@@ -44,33 +45,81 @@ const Editor: FC<IEditor> = ({
 
   useEffect(() => {
     //@ts-ignore
-    if (!window.ife) window.ife = new Map();
+    if (!window.editors) window.editors = new Map();
     return () => {
       //@ts-ignore
-      if (window.ife) window.ife.delete(editorIdRef.current);
+      if (window.editors) window.editors.delete(editorIdRef.current);
     };
   }, []);
 
   const onMount: OnMount = (editor, monaco) => {
-    // Add shortcuts on keydown event
-
     const KM = monaco.KeyMod;
     const KC = monaco.KeyCode;
 
-    // editor.addCommand(KC.Enter, (e: any) => {
-    //   console.log('ENTER...');
-    //   onEnter(e);
-    // });
+    editor.onDidFocusEditorWidget(() => {
+      localStorage.setItem('currentEditor', editor.getId());
+      // console.log(editor.getId(), 'Focus event triggered ');
+    });
 
-    // editor.addCommand(KM.CtrlCmd | KC.KeyS, (e: any) => {
-    //   console.log('CMD+S...');
-    //   onCtrlS(e);
-    // });
+    /**
+     * allow comments for JSON language
+     * @ref: https://github.com/microsoft/monaco-editor/issues/2426
+     */
+    monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+      validate: true,
+      allowComments: true,
+      schemaValidation: 'error',
+    });
 
-    // editor.addCommand(KM.CtrlCmd | KM.Shift | KC.KeyS, (e: any) => {
-    //   console.log('CMD+Shift+S...');
-    //   onCtrlShiftS(e);
-    // });
+    onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
+    onFocus && editor.onDidFocusEditorText(() => onFocus(editor));
+    onPaste && editor.onDidPaste(() => onPaste(editor));
+
+    editor.onKeyDown((evt: any) => {
+      switch (evt.keyCode) {
+        // ctrl+s or cmd+s shortcut
+        // case monaco.KeyCode.KeyS:
+        //   if (evt.ctrlKey || evt.metaKey) {
+        //     evt.preventDefault();
+        //     evt.stopPropagation();
+
+        //     if (evt.shiftKey) {
+        //       onCtrlShiftS(evt);
+        //     } else {
+        //       onCtrlS(evt);
+        //     }
+        //   }
+        //   break;
+
+        // ctrl+O shortcut
+        case monaco.KeyCode.KeyO:
+          if (evt.ctrlKey) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            onCtrlO(evt);
+          }
+          break;
+
+        // ctrl+K shortcut
+        case monaco.KeyCode.KeyK:
+          if (evt.ctrlKey) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            onCtrlK(evt);
+          }
+          break;
+      }
+    });
+
+    editor.addCommand(KM.CtrlCmd | KC.KeyS, (e: any) => {
+      console.log('CMD+S...');
+      onCtrlS(e);
+    });
+
+    editor.addCommand(KM.CtrlCmd | KM.Shift | KC.KeyS, (e: any) => {
+      console.log('CMD+Shift+S...');
+      onCtrlShiftS(e);
+    });
 
     // editor.addCommand(KM.CtrlCmd | KC.Enter, (e: any) => {
     //   console.log('CMD+ENTER...');
@@ -92,8 +141,8 @@ const Editor: FC<IEditor> = ({
     //   onCtrlK(e);
     // });
 
-    // editor.addCommand((KC.Ctrl | KC.KeyS), (e)=> {
-    //   console.log("CTRL+S...");
+    // editor.addCommand(KC.Ctrl | KC.KeyS, (e) => {
+    //   console.log('CTRL+S...');
     //   onCtrlS();
     // });
 
@@ -106,41 +155,6 @@ const Editor: FC<IEditor> = ({
     //   console.log("I am in the Editor...")
     // });
 
-    // editor.onKeyDown = (evt) => {
-    // console.log(evt);
-    // ctrl+s or cmd+s shortcut
-    // if (evt.keyCode === monaco.KeyCode.KeyS) {
-    // console.log("I am in...")
-    // if (evt.ctrlKey || evt.metaKey) {
-    //   evt.preventDefault();
-    //   evt.stopPropagation();
-    //   if (evt.shiftKey) {
-    //     onCtrlShiftS();
-    //   } else {
-    //     console.log("222222")
-    //     onCtrlS();
-    //   }
-    // }
-    // }
-
-    // ctrl+O shortcut
-    // else if (evt.keyCode === monaco.KeyCode.KEY_O) {
-    //   if (evt.ctrlKey) {
-    //     evt.preventDefault();
-    //     evt.stopPropagation();
-    //     onCtrlO(evt);
-    //   }
-    // }
-
-    // ctrl+K shortcut
-    // else if (evt.keyCode === monaco.KeyCode.KEY_K) {
-    //   if (evt.ctrlKey) {
-    //     evt.preventDefault();
-    //     evt.stopPropagation();
-    //     onCtrlK(evt);
-    //   }
-    // }
-
     // set focus to Editor if autoFocus is given true to Input
     if (autoFocus === true) {
       try {
@@ -151,7 +165,17 @@ const Editor: FC<IEditor> = ({
         }, 200);
       } catch (e) {}
     }
+
+    onLoad(editor);
+    // editorDidMount && editorDidMount(editor, monaco);
+    editorIdRef.current = editor.getId();
+
+    // @ts-ignore
+    if (!window.editors) window.editors = new Map();
+    // @ts-ignore
+    window.editors.set(editorIdRef.current, editor);
   };
+
   const options: EditorProps['options'] = {
     readOnly: false,
     fontFamily: "'Open Sans', sans-serif",
@@ -171,10 +195,16 @@ const Editor: FC<IEditor> = ({
       // horizontal: "hidden",
       handleMouseWheel: true,
       useShadows: true,
-
       verticalScrollbarSize: 10,
       horizontalScrollbarSize: 5,
     },
+    suggest: {
+      showKeywords: false,
+      showVariables: true, // disables `undefined`, but also disables user-defined variables suggestions.
+      showModules: false, // disables `globalThis`, but also disables user-defined modules suggestions.
+    },
+    suggestOnTriggerCharacters: false,
+    wordBasedSuggestions: false,
     ...monacoOptions,
   };
 
@@ -183,7 +213,7 @@ const Editor: FC<IEditor> = ({
     options.readOnly = disabled;
   }
 
-  console.log(value, language, 'language...');
+  // console.log(value, language, 'language...');
 
   return (
     <div className={cx('relative h-full', className)}>
@@ -205,44 +235,34 @@ const Editor: FC<IEditor> = ({
           })
         }
         onMount={(editor, monaco) => {
-          // disable `F1` command palette
-          // editor.addCommand(monaco.KeyCode.F1, () => {});
-
-          /**
-           * allow comments for JSON language
-           * @ref: https://github.com/microsoft/monaco-editor/issues/2426
-           */
-          monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-            validate: true,
-            allowComments: true,
-            schemaValidation: 'error',
-          });
-
-          onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
-          onFocus && editor.onDidFocusEditorText(() => onFocus(editor));
-          onPaste && editor.onDidPaste(() => onPaste(editor));
+          if (language == 'typescript') {
+            monaco.languages.typescript.typescriptDefaults.setCompilerOptions({
+              noLib: true,
+              allowNonTsExtensions: true,
+            });
+            monaco.languages.typescript.typescriptDefaults.addExtraLib(
+              addExtraLib.typeDefinition,
+              addExtraLib.path
+            );
+          }
 
           // https://www.anycodings.com/1questions/1773746/how-do-i-insert-text-into-a-monaco-editor
-          // editor.insertTextAtCurrentCursor = (text: any) => {
-          //   let p = editor.getPosition();
-          //   editor.executeEdits('', [
-          //     {
-          //       range: new monaco.Range(
-          //         p.lineNumber,
-          //         p.column,
-          //         p.lineNumber,
-          //         p.column
-          //       ),
-          //       text,
-          //     },
-          //   ]);
-          // };
+          editor.insertTextAtCurrentCursor = (text: any) => {
+            let p = editor.getPosition();
+            editor.executeEdits('', [
+              {
+                range: new monaco.Range(
+                  p.lineNumber,
+                  p.column,
+                  p.lineNumber,
+                  p.column
+                ),
+                text,
+              },
+            ]);
+          };
+
           onMount(editor, monaco);
-          onLoad(editor);
-          editorDidMount && editorDidMount(editor, monaco);
-          editorIdRef.current = editor.getId();
-          // @ts-ignore
-          window.ife.set(editorIdRef.current, editor);
         }}
       />
     </div>
