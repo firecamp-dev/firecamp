@@ -154,68 +154,86 @@ const createStore = (initialState: IStoreState) =>
 
           console.log({ normalizedRequest, request });
           // execute request
-          let response: IRestResponse = await state.context.request
+          await state.context.request
             .execute(normalizedRequest)
+            .then(
+              ({
+                response,
+                error,
+              }: {
+                response: IRestResponse;
+                error?: any;
+              }) => {
+                console.log({ response: response });
+                if (error) {
+                  console.log(
+                    error.message,
+                    error.code,
+                    error.e.response,
+                    error.e,
+                    9090
+                  );
+                }
+                return response;
+              }
+            )
+            .then(async (response) => {
+              if(!response) return;
+              // TODO: add cookies
+
+              // run post-script
+              if (request.scripts?.post) {
+                // TODO: add inherit support
+                postScriptResponse = await ScriptService.runPostScript(
+                  request.scripts?.post,
+                  response,
+                  {
+                    ...updatedVariables.workspace,
+                    ...(updatedVariables.collection || {}),
+                  }
+                );
+              }
+              // merge post script response with actual response
+              if (postScriptResponse?.response) {
+                response = { ...response, ...postScriptResponse.response };
+              }
+
+              // console.log({ postScriptResponse });
+              if (postScriptResponse.environment) {
+                updatedVariables = await normalizeVariables(
+                  updatedVariables,
+                  postScriptResponse.environment
+                );
+              }
+              // console.log({ updatedVariables });
+
+              try {
+                // run test-script
+                // TODO: add inherit support
+                testScriptResponse = await ScriptService.runTestScript(
+                  request,
+                  response,
+                  {
+                    ...updatedVariables.workspace,
+                    ...(updatedVariables.collection || {}),
+                  }
+                );
+
+                if (testScriptResponse) {
+                  response['testScriptResult'] = testScriptResponse;
+                }
+              } catch (error) {}
+
+              set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
+              // console.log({ testScriptResponse });
+              state.setRequestRunningFlag(false);
+
+              // variables to update
+              onChangeVariables(updatedVariables);
+            })
             .catch((e) => {
               console.log(e.message, e.stack, e.response, e, 9090);
             });
-
-          console.log({ response });
-
-          // TODO: add cookies
-
-          // run post-script
-          if (request.scripts?.post) {
-            // TODO: add inherit support
-            postScriptResponse = await ScriptService.runPostScript(
-              request.scripts?.post,
-              response,
-              {
-                ...updatedVariables.workspace,
-                ...(updatedVariables.collection || {}),
-              }
-            );
-          }
-
-          // merge post script response with actual response
-          if (postScriptResponse?.response) {
-            response = { ...response, ...postScriptResponse.response };
-          }
-
-          // console.log({ postScriptResponse });
-
-          if (postScriptResponse.environment) {
-            updatedVariables = await normalizeVariables(
-              updatedVariables,
-              postScriptResponse.environment
-            );
-          }
-
-          // console.log({ updatedVariables });
-
-          try {
-            // run test-script
-            // TODO: add inherit support
-            testScriptResponse = await ScriptService.runTestScript(
-              request,
-              response,
-              {
-                ...updatedVariables.workspace,
-                ...(updatedVariables.collection || {}),
-              }
-            );
-
-            if (testScriptResponse) {
-              response['testScriptResult'] = testScriptResponse;
-            }
-          } catch (error) {}
-
-          set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
-          // console.log({ testScriptResponse });
-          state.setRequestRunningFlag(false);
-
-          // variables to update
-          onChangeVariables(updatedVariables);
         } catch (e) {
           state.setRequestRunningFlag(false);
 

@@ -51,13 +51,13 @@ export default class RestExecutor implements IRestExecutor {
 
     const { status, statusText, config, headers } = response;
 
-    tl.push('\n----------------GENERAL----------------\n');
+    tl.push('\n-----------   GENERAL  -----------n');
     tl.push(`# Request URL:  ${config.url}`);
     tl.push(`# Request Method: ${config.method}`);
     tl.push(`# Status Code: ${status} ${statusText}`);
 
     if (!_object.isEmpty(request.headers || {})) {
-      tl.push('\n-----------Request Headers-----------\n');
+      tl.push('\n-----------   REQUEST HEADERS   -----------\n');
       tl.push(objectToText(request.headers, '>'));
     }
 
@@ -66,11 +66,11 @@ export default class RestExecutor implements IRestExecutor {
       tl.push(`> ${config.data}`);
     }
 
-    tl.push(`\n-----------RESPONSE HEADERS-----------\n`);
+    tl.push(`\n-----------   RESPONSE HEADERS   -----------\n`);
     tl.push(objectToText(headers, '<'));
 
     if (typeof response.data === 'string') {
-      tl.push('\n-----------RESPONSE DATA-----------\n');
+      tl.push('\n-----------   RESPONSE DATA   -----------\n');
       tl.push(`> ${response.data}`);
     }
     return tl.join('\n');
@@ -81,7 +81,7 @@ export default class RestExecutor implements IRestExecutor {
       statusCode: axiosResponse.status,
       statusMessage: axiosResponse.statusText,
       data: axiosResponse.data,
-      headers: axiosResponse.headers,
+      headers: axiosResponse.headers || {},
       //@ts-ignore
       duration: axiosResponse?.config?.metadata?.duration || 0,
       size: Number(axiosResponse?.headers?.['content-length']) || 0,
