@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { VscGithub } from "@react-icons/all-files/vsc/VscGithub";
 import { VscLock } from "@react-icons/all-files/vsc/VscLock";
 import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
@@ -16,9 +17,12 @@ export default {
     }
 };
 
-const Template = (args) =>
-    <div className="bg-appBackground h-screen w-screen block">
-        <Modal {...args} >
+const Template = (args: any) => {
+    const [isOpen, toggleOpen] = useState(true);
+
+    return <div className="bg-appBackground h-screen w-screen block">
+        <Button text="Open Modal" onClick={() => toggleOpen(true)} />
+        <Modal {...args} isOpen={isOpen} onClose={() => toggleOpen(false)}>
             <Modal.Header >
                 {args?.header() || ''}
             </Modal.Header>
@@ -29,24 +33,25 @@ const Template = (args) =>
                 {args?.footer() || ''}
             </Modal.Footer>
         </Modal>
-    </div>;
+    </div>
+};
 
 export const ModalDemo = Template.bind({});
 
 ModalDemo.args = {
     className: 'test',
-    header: _ => <ModalHeader />,
-    body: _ => <ModalBody />,
-    footer: _ => <ModalFooter />
+    header: () => <ModalHeader />,
+    body: () => <ModalBody />,
+    footer: () => <ModalFooter />
 };
 
 export const SignUpDemo = Template.bind({});
 
 SignUpDemo.args = {
     className: 'test',
-    header: _ => <SignUpHeader />,
-    body: _ => <SignUpBody />,
-    footer: _ => <SignUpFooter />
+    header: () => <SignUpHeader />,
+    body: () => <SignUpBody />,
+    footer: () => <SignUpFooter />
 };
 
 const SignUpHeader = () => {
@@ -66,15 +71,15 @@ const SignUpBody = () => {
             <hr className="border-modalBorder -ml-8 -mr-8 mb-6" />
             <div className="">
                 <FormGroup label="Username or E-mail" >
-                    <Input 
-                    placeholder='Username or E-mail'
-                     iconPosition='left' 
-                     icon={ <VscAccount title="Account" size={16} />} />
+                    <Input
+                        placeholder='Username or E-mail'
+                        iconPosition='left'
+                        icon={<VscAccount title="Account" size={16} />} />
                 </FormGroup>
                 <FormGroup label="password">
                     <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
                 </FormGroup>
-                <Button color="primary" text="sign in" fullWidth={true} size="md" />
+                <Button primary={true} text="sign in" fullWidth={true} md={true} />
                 <a className="cursor-pointer text-appForeground block pb-6 text-right text-sm -mt-4">Already have an account? Sign In</a>
             </div>
         </div>

@@ -6,7 +6,8 @@ import 'react-responsive-modal/styles.css';
 import './Modal.scss';
 
 import { Container, Row } from '../../ui-kit'
-import { IModal } from "./interfaces/Modal.interface"
+
+import { IModal, IHeader, IBody, IFooter } from "./interfaces/Modal.interface"
 
 const Modal: FC<IModal> & {
   Header: FC<IHeader>,
@@ -58,6 +59,7 @@ const Modal: FC<IModal> & {
   )
 }
 
+// `id`: is not being updated on the element
 let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
   return (
     <Container.Header className={className || ''} id={id}>
@@ -66,6 +68,7 @@ let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
   );
 };
 
+// `id`: is not being updated on the element
 let Body: FC<IBody> = ({ id = '', children = '', className = '' }) => {
   return (
     <Container.Body className={className || 'flex flex-col overflow-auto visible-scrollbar thin'} id={id}>
@@ -87,21 +90,3 @@ Modal.Body = Body;
 Modal.Footer = Footer;
 
 export default Modal;
-
-interface IHeader {
-  id?: string
-  children?: any
-  className?: string
-}
-
-interface IBody {
-  id?: string
-  children?: any
-  className?: string
-}
-
-interface IFooter {
-  id?: string
-  children?: any
-  className?: string
-}

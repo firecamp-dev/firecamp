@@ -1008,23 +1008,26 @@ video {
 .mr-1 {
 	margin-right: 0.25rem;
 }
-.ml-3 {
-	margin-left: 0.75rem;
-}
 .mr-3 {
 	margin-right: 0.75rem;
 }
-.ml-4 {
-	margin-left: 1rem;
-}
 .mr-4 {
 	margin-right: 1rem;
+}
+.ml-3 {
+	margin-left: 0.75rem;
+}
+.ml-4 {
+	margin-left: 1rem;
 }
 .ml-2 {
 	margin-left: 0.5rem;
 }
 .mb-0 {
 	margin-bottom: 0px;
+}
+.ml-auto {
+	margin-left: auto;
 }
 .mb-4 {
 	margin-bottom: 1rem;
@@ -1094,9 +1097,6 @@ video {
 }
 .mt-6 {
 	margin-top: 1.5rem;
-}
-.ml-auto {
-	margin-left: auto;
 }
 .mt-2 {
 	margin-top: 0.5rem;
@@ -1175,6 +1175,9 @@ video {
 }
 .h-9 {
 	height: 2.25rem;
+}
+.h-2 {
+	height: 0.5rem;
 }
 .h-4 {
 	height: 1rem;
@@ -1257,12 +1260,12 @@ video {
 .w-12 {
 	width: 3rem;
 }
-.w-full {
-	width: 100%;
-}
 .w-max {
 	width: -moz-max-content;
 	width: max-content;
+}
+.w-full {
+	width: 100%;
 }
 .w-4 {
 	width: 1rem;
@@ -1385,6 +1388,9 @@ video {
 .justify-center {
 	justify-content: center;
 }
+.gap-2 {
+	gap: 0.5rem;
+}
 .overflow-auto {
 	overflow: auto;
 }
@@ -1423,11 +1429,11 @@ video {
 .rounded-sm {
 	border-radius: 0.125rem;
 }
-.rounded-full {
-	border-radius: 9999px;
-}
 .rounded {
 	border-radius: 0.25rem;
+}
+.rounded-full {
+	border-radius: 9999px;
 }
 .rounded-3xl {
 	border-radius: 1.5rem;
@@ -1627,6 +1633,12 @@ video {
 .bg-danger {
 	background-color: var(--danger);
 }
+.bg-appForeground {
+	background-color: var(--app-foreground);
+}
+.bg-appBackground {
+	background-color: var(--app-background);
+}
 .bg-appBorder {
 	background-color: var(--app-border);
 }
@@ -1638,9 +1650,6 @@ video {
 }
 .bg-inputBackground {
 	background-color: var(--input-background);
-}
-.bg-appBackground {
-	background-color: var(--app-background);
 }
 .bg-focusColor {
 	background-color: #ffffff1a;
@@ -2030,6 +2039,9 @@ video {
 .text-appForegroundInActive {
 	color: var(--app-foreground-inactive);
 }
+.text-primaryColor {
+	color: var(--app-primary);
+}
 .text-primaryColorText {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
@@ -2037,9 +2049,6 @@ video {
 .text-secondaryColorText {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
-}
-.text-primaryColor {
-	color: var(--app-primary);
 }
 .text-danger {
 	color: var(--danger);

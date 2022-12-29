@@ -109,6 +109,7 @@ export interface IOption {
   list?: Array<IItem>;
 
   //----------- If no header is there ----------
+  id?: string;
   name?: string;
   /**
    * Boolean value whether option disabled or not

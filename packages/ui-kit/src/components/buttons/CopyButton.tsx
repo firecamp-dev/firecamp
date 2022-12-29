@@ -30,7 +30,7 @@ const CopyButton: FC<ICopyButton> = ({
  };
 
  return (
-   <div className={cx('fc-copy bg-gray-800', className)}>
+   <div className={cx('fc-copy bg-gray-800', className)} data-testid="copy-button">
      {text && showText ? text : ''}
      {animation && showCopied ? <span>Copied!</span> : ''}
      {children && children.length ? (

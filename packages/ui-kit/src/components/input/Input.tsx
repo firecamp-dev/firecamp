@@ -20,7 +20,7 @@ const Input: FC<IInput> = React.forwardRef(
       icon = '',
       iconPosition = 'left',
       registerMeta = {},
-      useformRef = () => {},
+      useformRef = () => { },
       name = '',
       label = '',
       error = '',
@@ -29,10 +29,10 @@ const Input: FC<IInput> = React.forwardRef(
       isEditor = false,
       disabled = false,
       postComponents = [],
-      onChange = () => {},
-      onKeyDown = () => {},
-      onBlur = () => {},
-      onFocus = () => {},
+      onChange = () => { },
+      onKeyDown = () => { },
+      onBlur = () => { },
+      onFocus = () => { },
       ...domProps
     },
     ref

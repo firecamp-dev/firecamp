@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { FC } from "react";
 import { VscGithubInverted } from "@react-icons/all-files/vsc/VscGithubInverted";
 import { VscFile } from "@react-icons/all-files/vsc/VscFile";

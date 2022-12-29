@@ -59,6 +59,7 @@ const Checkbox: FC<ICheckbox> = ({
           {isChecked ? (
             <VscCheck
               size={12}
+              title={"IconCheck"}
               className="text-primaryColor absolute"
             />
           ) : (

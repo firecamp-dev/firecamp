@@ -38,3 +38,21 @@ export interface IModal {
     height?: number | string;
     width?: number | string;
 }
+
+export interface IHeader {
+  id?: string
+  children?: any
+  className?: string
+}
+
+export interface IBody {
+  id?: string
+  children?: any
+  className?: string
+}
+
+export interface IFooter {
+  id?: string
+  children?: any
+  className?: string
+}
