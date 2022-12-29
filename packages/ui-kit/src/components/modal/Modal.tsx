@@ -39,7 +39,7 @@ const Modal: FC<IModal> & {
         <div
           className={cx(
             className,
-            'max-w-screen-md min-w-screen-md bg-modalBackground text-appForeground w-full relative z-9999 max-h-modal flex fc-modal-wrapper'
+            'max-w-screen-md min-w-screen-md bg-modalBackground text-appForeground w-full relative z-9999 max-h-modal flex fc-modal-wrapper h-full'
           )}
           style={{ height: height, width: width }}
           id={id}
@@ -53,9 +53,7 @@ const Modal: FC<IModal> & {
               }}
             />
           ) : <></>} */}
-            <Container className={`fc-modal relative bg-modalBackground ` + modalClass}>
-              {children}
-            </Container>
+            {children}
         </div>
     </ResponsiveModal>
   )
@@ -73,7 +71,7 @@ let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
 // `id`: is not being updated on the element
 let Body: FC<IBody> = ({ id = '', children = '', className = '' }) => {
   return (
-    <Container.Body className={className || 'flex flex-col overflow-auto'} id={id}>
+    <Container.Body className={className || 'flex flex-col overflow-auto visible-scrollbar thin'} id={id}>
       {children}
     </Container.Body>
   );

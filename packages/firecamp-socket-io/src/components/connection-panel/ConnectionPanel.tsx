@@ -3,15 +3,15 @@ import { Container, Checkbox, Input, Tabs, Popover } from '@firecamp/ui-kit';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
 import Connection from './connection/Connection';
-import { ISocketStore, useSocketStore } from '../../store';
+import { IStore, useStore } from '../../store';
 
 const ConnectionPanel = ({ visiblePanel = '' }) => {
   const {
     activePlayground,
     playgroundTabs,
     setActivePlayground,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       config: s.request.config,
       activePlayground: s.runtime.activePlayground,
       playgroundTabs: s.runtime.playgroundTabs,

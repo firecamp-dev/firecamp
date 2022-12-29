@@ -8,6 +8,7 @@ import v2 from 'socket.io-client-v2';
 import v3 from 'socket.io-client-v3';
 import v4 from 'socket.io-client-v4';
 import { EConnectionState } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 interface IHandleConnectionExecutorSlice {
   connect: (connectionId: TId) => void;
@@ -32,10 +33,9 @@ interface IHandleConnectionExecutorSlice {
   changeListenerToAllExecutors: (eventName: string, listen: boolean) => void;
 }
 
-const createHandleConnectionExecutor = (
-  set,
-  get
-): IHandleConnectionExecutorSlice => ({
+const createHandleConnectionExecutor: TStoreSlice<
+  IHandleConnectionExecutorSlice
+> = (set, get) => ({
   connect: (connectionId: TId) => {
     /**
      * TOODs:
@@ -108,7 +108,7 @@ const createHandleConnectionExecutor = (
       executor.connect();
 
       // set executor in to playground
-      state.changePlayground(connectionId, { executor });
+      state.setPlgExecutor(connectionId, executor);
 
       // listen to on connect listener
       state.listenOnConnect(connectionId);

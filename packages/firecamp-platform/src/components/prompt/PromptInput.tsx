@@ -1,34 +1,30 @@
 import { FC, useState } from 'react';
-import { Button, Input, Modal, TabHeader } from '@firecamp/ui-kit';
-export interface IPromptInput {
-  header;
-  texts?: {
-    btnOk: string;
-    btnOking: string;
-    btnCancle: string;
-  };
-  value: string;
-  onClose: Function;
-  validator?: (value: string) => boolean;
-  executor?: (value: string) => Promise<void>;
-  onResolve: (res: any) => void;
-  onReject: (e) => void;
-}
+import { Button, Input, Modal, ProgressBar, TabHeader } from '@firecamp/ui-kit';
+import { IPromptInput } from './types';
+
+const _texts: IPromptInput['texts'] = {
+  btnOk: 'Create',
+  btnOking: 'Creating...',
+  btnCancle: 'Cancle',
+};
 
 export const PromptInput: FC<IPromptInput> = ({
   header,
+  lable = 'Name',
+  placeholder,
   texts,
   value,
   onClose,
   validator,
   executor,
-  onReject,
   onResolve,
+  onError,
 }) => {
   const [state, setState] = useState({
     isOpen: true,
     isExecuting: false,
     value,
+    error: '',
   });
   const _close = (e) => {
     setState((s) => ({ ...s, isOpen: false }));
@@ -38,38 +34,60 @@ export const PromptInput: FC<IPromptInput> = ({
   };
   const _onChangeValue = (e) => {
     const { value } = e.target;
-    setState((s) => ({ ...s, value }));
+    setState((s) => ({ ...s, value, error: '' }));
   };
   const _onClickOk = async (e) => {
     e.preventDefault();
-    let isValid = true;
-    if (typeof validator == 'function') isValid = validator(state.value);
-    if (isValid !== true) {
-      onReject(new Error('validation error'));
+    const value = state.value.trim();
+    let _validator: { isValid: boolean; message?: string } = { isValid: true };
+    if (typeof validator == 'function') _validator = validator(value);
+    // console.log(_validator, '_validator');
+    if (_validator.isValid == false) {
+      setState((s) => ({ ...s, error: _validator.message }));
+      if (typeof onError == 'function') onError(new Error(_validator.message));
     } else {
       if (typeof executor == 'function') {
-        setState((s) => ({ ...s, isExecuting: true }));
-        executor(state.value)
-          .then((res) => onResolve(res))
-          .catch((e) => onReject(e))
-          .finally(() => {
-            setState((s) => ({ ...s, isExecuting: false }));
+        setState((s) => ({ ...s, error: '', isExecuting: true }));
+        executor(value)
+          .then((res) => {
+            onResolve(res);
+            // finally close the prompt on success
+            setState((s) => ({ ...s, isOpen: false, isExecuting: false }));
+          })
+          .catch((e) => {
+            if (typeof onError == 'function') {
+              console.error(e)
+              onError(e);
+            }
+            setState((s) => ({
+              ...s,
+              isExecuting: false,
+              error: e?.response?.data?.message || e.message,
+            }));
           });
       } else {
-        onResolve(state.value);
+        onResolve(value);
+        // finally close the prompt on success
+        setState((s) => ({ ...s, error: '', isOpen: false }));
       }
     }
   };
-
+  const _onKeyDown = (e)=> {
+    if(e.key == 'Enter') {
+      _onClickOk(e)
+    }
+  }
+  texts = { ..._texts, ...texts };
+  
   return (
     <Modal
       isOpen={state.isOpen}
       onClose={_close}
-      height="250px"
+      className="min-h-0"
       width={'400px'}
     >
       <Modal.Body>
-        {/* <ProgressBar active={isRequesting} /> */}
+        <ProgressBar active={state.isExecuting} />
         <div className="p-6">
           <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
             {header || `THIS IS A HEADER PLACE`}
@@ -77,25 +95,25 @@ export const PromptInput: FC<IPromptInput> = ({
           <div className="mt-4">
             <Input
               autoFocus={true}
-              label="Name"
-              placeholder="Folder name"
+              label={lable}
+              placeholder={placeholder}
               name={'prompInput'}
-              value={value}
+              value={state.value}
               onChange={_onChangeValue}
-              onKeyDown={() => {}}
+              onKeyDown={_onKeyDown}
               onBlur={() => {}}
-              error={''}
+              error={state.error}
             />
           </div>
-          <TabHeader className="px-4">
+          <TabHeader className="!px-0">
             <TabHeader.Right>
               <Button
                 text={texts?.btnCancle || `Cancel`}
                 onClick={_close}
-                sm
                 secondary
                 transparent
                 ghost
+                sm
               />
               <Button
                 text={

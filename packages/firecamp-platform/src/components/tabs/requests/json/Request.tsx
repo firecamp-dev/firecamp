@@ -1,0 +1,28 @@
+import { useEffect } from 'react';
+import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
+import _cloneDeep from 'lodash/cloneDeep';
+import _cleanDeep from 'clean-deep';
+import { _array, _object } from '@firecamp/utils';
+import shallow from 'zustand/shallow';
+
+const Request = ({ tab, platformContext, activeTab, platformComponents }) => {
+  // if(isFetchingRequest === true) return <Loader />;
+  console.log(tab, 'tab...');
+  return (
+    <RootContainer className="h-full w-full">
+      <Container className="h-full with-divider">
+        {/* <UrlBarContainer
+          tab={tab}
+          collectionId={tab?.request?.__ref?.collectionId || ''}
+          postComponents={platformComponents}
+          // onPasteCurl={onPasteCurl}
+        /> */}
+        <Container.Body>
+          <Row flex={1} overflow="auto" className="with-divider h-full"></Row>
+        </Container.Body>
+      </Container>
+    </RootContainer>
+  );
+};
+
+export default Request;

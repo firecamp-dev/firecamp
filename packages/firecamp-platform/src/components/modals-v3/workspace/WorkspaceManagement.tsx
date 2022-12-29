@@ -16,14 +16,10 @@ import {
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
-
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 import { EUserRolesWorkspace } from '../../../types';
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';
-import AppService from '../../../services/app';
-
 import './workspace.scss';
 
 enum ETabTypes {
@@ -300,7 +296,7 @@ const MembersTab = () => {
             text={'Invite Members'}
             primary
             sm
-            onClick={() => AppService.modals.openInviteMembers()}
+            onClick={() => platformContext.app.modals.openInviteMembers()}
           />
         </TabHeader.Left>
       </TabHeader>

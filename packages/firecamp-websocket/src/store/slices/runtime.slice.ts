@@ -1,11 +1,15 @@
 import { TId } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 
 interface IPlaygroundTab {
   id: string;
   name: string;
   __meta?: {
+    /** isSaved and hasChange will not be in use for now, it is for multi connection tabs purpose */
     isSaved?: boolean;
     hasChange?: boolean;
+    isMsgSaved?: boolean;
+    hasMsgChanged?: boolean;
   };
 }
 
@@ -19,7 +23,7 @@ interface IRuntime {
   };
   isRequestSaved?: boolean;
   _dnp?: { [k: string]: any };
-  tabId?: TId
+  tabId?: TId;
 }
 
 interface IRuntimeSlice {
@@ -40,11 +44,11 @@ interface IRuntimeSlice {
   setRequestSavedFlag: (flag: boolean) => void;
 }
 
-const createRuntimeSlice = (
+const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   set,
   get,
   initialRuntime: IRuntime
-): IRuntimeSlice => ({
+) => ({
   runtime: initialRuntime,
 
   setActivePlayground: (playgroundId: TId) => {

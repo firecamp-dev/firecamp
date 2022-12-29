@@ -4,10 +4,10 @@ import shallow from 'zustand/shallow';
 import { isEmpty } from 'lodash';
 
 import { DocExplorer } from '../doc-explorer/DocExplorer';
-import { useGraphQLStore } from '../../../store';
+import { useStore } from '../../../store';
 
 const DocExplorerCmp = () => {
-  let { schema, toggleDoc } = useGraphQLStore(
+  let { schema, toggleDoc } = useStore(
     (s: any) => ({
       schema: s.runtime.schema,
       toggleDoc: s.toggleDoc,
@@ -39,7 +39,7 @@ const DocExplorerCmp = () => {
 };
 
 const DocWrapper = () => {
-  let { schema, isDocOpened } = useGraphQLStore(
+  let { schema, isDocOpened } = useStore(
     (s: any) => ({
       schema: s.runtime.schema,
       isDocOpened: s.runtime.isDocOpened,

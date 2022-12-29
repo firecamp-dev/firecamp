@@ -15,16 +15,14 @@ import { _misc } from '@firecamp/utils';
 
 import Crisp from '../components/common/Crisp';
 import Analytics from '../components/common/Analytics';
-import pService from '../services/prompt.service';
 import SidebarContainer from '../components/containers/SidebarContainer';
 import TabsContainer from '../components/containers/TabsContainer';
 import StatusBarContainer from '../components/status-bar/StatusBarContainer';
 import { ModalContainer } from '../components/modals-v3/ModalContainer';
 import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
-
-import AppService from '../services/app';
 import RealtimeEventManager from '../components/common/realtime/Realtime';
+import platformContext from '../services/platform-context';
 
 // Initialise Firecamp languages settings
 MonacoFirecampLangInit();
@@ -42,17 +40,11 @@ const App: FC<any> = () => {
   useEffect(() => {
     const init = async () => {
       setTimeout(async () => {
-        await AppService.initApp();
+        await platformContext.app.initApp();
         // await initApp();
       }, 100);
     };
-
     init();
-
-    setTimeout(() => {
-      pService.open({ value: 'Testing the input on heaven' }).then(console.log);
-    }, 5000);
-
     return () => {
       if (_misc.firecampAgent() === EFirecampAgent.Desktop)
         //@ts-ignore

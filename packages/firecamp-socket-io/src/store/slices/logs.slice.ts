@@ -2,12 +2,13 @@ import { TId, ERequestTypes } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
 import { InitPlayground } from '../../constants';
 import { ELogColors, ELogTypes } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 const emptyLog = {
   title: '',
   message: {
     name: '',
-    body: InitPlayground,
+    payload: InitPlayground,
     __ref: {
       id: '',
       collectionId: '',
@@ -25,18 +26,17 @@ const emptyLog = {
 };
 
 interface ILogs {
-  [key: TId]: Array<ILog>;
+  [key: TId]: ILog[];
 }
 
 interface ILogsSlice {
   logs: ILogs;
   addLog: (connectionId: TId, log: ILog) => void;
   addErrorLog: (connectionId: TId, message: string) => void;
-
   clearLogs: (connectionId: TId) => void;
 }
 
-const createLogsSlice = (set, get): ILogsSlice => ({
+const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
   logs: {},
 
   addLog: (connectionId: TId, log: ILog) => {
@@ -44,13 +44,11 @@ const createLogsSlice = (set, get): ILogsSlice => ({
     const state = get();
     const logs = state.logs;
     if (connectionId in logs) {
-      const logs = logs[connectionId];
-      log = { ...emptyLog, ...log };
-
+      const cLogs = logs[connectionId];
       set((s) => ({
         logs: {
           ...s.logs,
-          [connectionId]: [...logs, log],
+          [connectionId]: [...cLogs, { ...emptyLog, ...log }],
         },
       }));
     } else {

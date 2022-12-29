@@ -6,8 +6,6 @@ import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 
 import { EUserRolesWorkspace } from '../../../types';
-
-import AppService from '../../../services/app';
 import { useUserStore } from '../../../store/user';
 import { usePlatformStore, EPlatformScope } from '../../../store/platform';
 
@@ -23,7 +21,7 @@ const CollabButton: FC<any> = () => {
           icon={<AiOutlineUpload className="mr-2 toggle-arrow" size={16} />}
           secondary
           iconLeft
-          onClick={(e) => AppService.modals.openSignIn()}
+          onClick={(e) => platformContext.app.modals.openSignIn()}
           sm
           transparent={true}
         />
@@ -37,7 +35,7 @@ const CollabButton: FC<any> = () => {
           iconLeft
           sm
           transparent={true}
-          onClick={(e) => AppService.modals.openCreateOrg()}
+          onClick={(e) => platformContext.app.modals.openCreateOrg()}
         />
       );
     } else if (
@@ -53,7 +51,7 @@ const CollabButton: FC<any> = () => {
           secondary
           iconLeft
           sm
-          onClick={(e) => AppService.modals.openInviteMembers()}
+          onClick={(e) => platformContext.app.modals.openInviteMembers()}
           transparent={true}
         />
       );

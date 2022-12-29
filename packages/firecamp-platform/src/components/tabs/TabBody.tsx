@@ -5,10 +5,14 @@ import { ErrorBoundary } from 'react-error-boundary';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Loader } from '@firecamp/ui-kit';
 
+import JsonTab from './requests/json/Request';
+import MdTab from './requests/markdown/Request';
+
 // import { Rest } from '@firecamp/rest';
 // import { GraphQL } from '@firecamp/graphql';
 // import { WSClient } from '@firecamp/websocket';
 // import { SocketIOClient } from '@firecamp/socket.io';
+
 const Rest = lazy(() =>
   import('@firecamp/rest').then((module) => ({ default: module.Rest }))
 );
@@ -28,11 +32,10 @@ import EnvironmentWidget from '../common/environment/environment-widget/Environm
 import ErrorPopup from '../common/error-boundary/ErrorPopup';
 import { IRequestTabProps } from './types';
 
-import * as platformContext from '../../services/platform-context';
+import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
-import AppService from '../../services/app';
 
-const TabBody = ({ tabObj, index, activeTab }) => {
+const TabBody: FC<any> = ({ tabObj, index, activeTab }) => {
   if (!tabObj || index === -1) {
     return <span />;
   }
@@ -63,9 +66,7 @@ const TabBody = ({ tabObj, index, activeTab }) => {
       //v3 props
       platformComponents: { EnvironmentWidget },
       platformContext: {
-        request: platformContext.request,
-        environment: platformContext.environment,
-        appService: AppService,
+        ...pltContext,
         getFirecampAgent,
       },
     };
@@ -100,6 +101,13 @@ const TabBody = ({ tabObj, index, activeTab }) => {
             <WSClient {...tabProps} />
           </Suspense>
         );
+        break;
+
+      case 'json':
+        return <JsonTab {...tabProps} />;
+        break;
+      case 'md':
+        return <MdTab {...tabProps} />;
         break;
       default:
         return <span>Default Request Tab</span>;

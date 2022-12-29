@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   Container,
   Button,
@@ -7,26 +6,17 @@ import {
   Popover,
   EPopoverPosition,
   StatusBar,
+  TabHeader,
 } from '@firecamp/ui-kit';
-import { EEmitterPayloadTypes } from '../../../../types';
+import { EditorCommands } from '../../../../constants';
 
 const BodyControls = ({
-  emitterName = '',
-  isSaveEmitterPopoverOpen = false,
-  tabData = {},
-  collection = [],
-  activeType = {},
-  toggleSaveEmitterPopover = () => {},
-  playgroundTabMeta = {},
-  onAddEmitter = () => {},
-  onUpdateEmitter = () => {},
   tabId = '',
   path = '',
-  editorCommands = {},
   showClearPlaygroundButton = false,
   addNewEmitter = () => {},
 }) => {
-  let _renderKeyboardShortcutInfo = () => {
+  const _renderKeyboardShortcutInfo = () => {
     // console.log(`showClearPlaygroundButton`,showClearPlaygroundButton)
 
     try {
@@ -42,7 +32,7 @@ const BodyControls = ({
         case 'Linux':
           return (
             <div className="pb-2">
-              {Object.values(editorCommands).map((val, i) => {
+              {Object.values(EditorCommands).map((val, i) => {
                 {
                   return (
                     <div className="flex" key={i}>
@@ -64,7 +54,7 @@ const BodyControls = ({
         case 'MacOS':
           return (
             <div className="pb-2">
-              {Object.values(editorCommands).map((val, i) => {
+              {Object.values(EditorCommands).map((val, i) => {
                 {
                   return (
                     <div className="flex" key={i}>
@@ -94,36 +84,13 @@ const BodyControls = ({
 
   return (
     <Container.Header>
-      <StatusBar>
+      <StatusBar className="bg-statusBarBackground2 px-1">
         <StatusBar.PrimaryRegion>
           <div data-tip={path} className="collection-path">
             {path || `./`}
           </div>
         </StatusBar.PrimaryRegion>
         <StatusBar.SecondaryRegion>
-          {(!!(
-            emitterName &&
-            emitterName.trim() &&
-            emitterName.trim().length
-          ) &&
-            activeType.id !== EEmitterPayloadTypes.file &&
-            playgroundTabMeta.hasChange &&
-            !playgroundTabMeta.isSaved) ||
-          (playgroundTabMeta.hasChange && playgroundTabMeta.isSaved) ===
-            true ? (
-            <SaveEmitter
-              emitterName={emitterName}
-              isPopoverOpen={isSaveEmitterPopoverOpen}
-              collection={collection || []}
-              id={`push-message-${tabData.id || ''}`}
-              hasChange={playgroundTabMeta.hasChange || false}
-              onSubmit={onAddEmitter}
-              onUpdate={onUpdateEmitter}
-              toggleOpenPopover={(val) => toggleSaveEmitterPopover(val)}
-            />
-          ) : (
-            ''
-          )}
           {showClearPlaygroundButton === true ? (
             <ConfirmationPopover
               id={tabId}
@@ -177,187 +144,3 @@ const BodyControls = ({
   );
 };
 export default BodyControls;
-
-const SaveEmitter = ({
-  emitterName = '',
-  isPopoverOpen = false,
-  collection = [],
-  id = '',
-  hasChange = false,
-
-  onSubmit = () => {},
-  onUpdate = () => {},
-  toggleOpenPopover = () => {},
-}) => {
-  const [emitterLabel, setEmitterLabel] = useState('');
-  // let [is_popover_open, toggle_popover] = useState(false);
-  const [focusedNode, setFocusedNode] = useState({
-    __ref: { _relative_path: './' },
-  });
-
-  const _handleChangeName = (e) => {
-    e.preventDefault();
-
-    const { value } = e.target;
-    setEmitterLabel(value);
-  };
-
-  const _onKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      // e.preventDefault();
-      _onSubmit(e);
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      toggleOpenPopover(false);
-    }
-  };
-
-  const _onSubmit = (e) => {
-    emitterName = (emitterName || '').trim();
-    if (!emitterName) return;
-
-    // if (!emitterLabel.length) return;
-    if (e) {
-      e.preventDefault();
-    }
-
-    const emitterPayload = { label: emitterLabel };
-    let path = '';
-
-    if (focusedNode && focusedNode.__ref.id) {
-      path =
-        focusedNode.__ref && focusedNode.__ref._relative_path
-          ? focusedNode.__ref._relative_path + `/${emitterName}`
-          : '';
-      emitterPayload = Object.assign({}, emitterPayload, {
-        parentId: focusedNode.__ref.id,
-        path,
-      });
-    } else {
-      path =
-        focusedNode.__ref && focusedNode.__ref._relative_path
-          ? focusedNode.__ref._relative_path + `${emitterName}`
-          : '';
-      emitterPayload = Object.assign({}, emitterPayload, {
-        path,
-      });
-    }
-
-    // console.log(`emitterPayload`, emitterPayload);
-    onSubmit(emitterPayload);
-    toggleOpenPopover(!isPopoverOpen);
-    setEmitterLabel('');
-    setFocusedNode({
-      __ref: { _relative_path: './' },
-    });
-  };
-
-  const _onClickSaveMessage = () => {
-    if (!emitterName.length) return;
-    if (hasChange) {
-      onUpdate();
-    }
-  };
-
-  return (
-    <Popover
-      isOpen={isPopoverOpen}
-      detach={false}
-      onToggleOpen={() => {
-        if (hasChange === false) {
-          toggleOpenPopover(!isPopoverOpen);
-        } else {
-          toggleOpenPopover(false);
-        }
-      }}
-      content={
-        hasChange === false && isPopoverOpen === true ? (
-          <div className="fc-popover-v2">
-            <div className="fc-push-message">
-              {collection && collection.length ? (
-                <div className="fc-push-message-collection">
-                  <label>
-                    Select Folder{' '}
-                    <span>({focusedNode.__ref._relative_path})</span>
-                  </label>
-                  {/*   <Collection
-                    className="with-border"
-                    onlyDirectory={true}
-                    onNodeFocus={setFocusedNode}
-                    data={collection}
-                    primaryKey={'id'}
-                    nodeRenderer={({
-                      isDirectory,
-                      item,
-                      isExpanded,
-                      classes,
-                      getNodeProps,
-                    }) => {
-                      if (isDirectory) {
-                        return (
-                          <CollectionFcNode
-                            isOpen={isExpanded}
-                            name={item.name}
-                            className={classes}
-                            icon="folder"
-                            {...getNodeProps()}
-                          />
-                        );
-                      } else {
-                        return (
-                          <CollectionMsgNode
-                            item={item}
-                            className={classes}
-                            {...getNodeProps()}
-                          />
-                        );
-                      }
-                    }}
-                  /> */}
-                </div>
-              ) : (
-                ''
-              )}
-              <Input
-                autoFocus={true}
-                type="text"
-                name="label"
-                id="status"
-                className="fc-input border-alt small"
-                placeholder="Emitter label"
-                label="Emitter Label (Optional)"
-                value={emitterLabel}
-                onChange={_handleChangeName}
-                onKeyDown={_onKeyDown}
-                disabled={!emitterName}
-              />
-
-              {!emitterName ? (
-                <div className="fc-error">Please write emitter name first</div>
-              ) : (
-                ''
-              )}
-            </div>
-
-            <div className="flex mt-1 align-right">
-              <Button text={'Save'} onClick={_onSubmit} primary iconRight />
-            </div>
-          </div>
-        ) : (
-          <></>
-        )
-      }
-    >
-      <Popover.Handler id={`SM-${id}`}>
-        <Button
-          text={'Save'}
-          onClick={_onClickSaveMessage}
-          sm
-          primary
-          ghost
-          transparent
-        />
-      </Popover.Handler>
-    </Popover>
-  );
-};

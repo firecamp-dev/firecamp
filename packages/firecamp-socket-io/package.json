@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@firecamp/socket.io-executor": "workspace:*",
-    "@firecamp/types": "^0.1.2",
+    "@firecamp/types": "^0.1.3",
     "@firecamp/ui-kit": "workspace:*",
     "@firecamp/url": "^0.0.17",
     "classnames": "^2.1.3",

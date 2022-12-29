@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import {  BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
-import { useRestStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const HeadersTab = () => {
-  let { headers, authHeaders, changeHeaders } = useRestStore(
-    (s: any) => ({
+  const { headers, authHeaders, changeHeaders } = useStore(
+    (s: IStore) => ({
       headers: s.request.headers,
       authHeaders: s.runtime.authHeaders,
       changeHeaders: s.changeHeaders,
@@ -17,7 +17,7 @@ const HeadersTab = () => {
     console.log('1. re-rendering the header tabs');
   }, [headers]);
 
-  let onHeaderChange = (headers) => {
+  const onHeaderChange = (headers) => {
     changeHeaders(headers);
   };
 

@@ -4,7 +4,7 @@
 @tailwind screens;
 
 @import url(../components/split-view/SplitView.scss);
-@import url(collection.scss);
+/* @import url(collection.scss); */
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap');
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
@@ -241,12 +241,10 @@ body{
 .icon{
   font-family: 'icomoon' !important;
 }
-/** styling added to preview copy button in storybook
-.fc-button-icon,
-.iconv2-copy-icon{
-  border: 10px solid var(--app-foreground);
+
+.text-ellipsis{
+  text-overflow: ellipsis !important;
 }
-/** */
 
 a,a:hover{
   color: inherit !important
@@ -536,7 +534,7 @@ tr:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: -1px;
-  min-height: 32px !important;
+  min-height: 33px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -690,6 +688,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
+.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }

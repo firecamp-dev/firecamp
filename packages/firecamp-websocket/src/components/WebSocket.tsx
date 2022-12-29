@@ -14,37 +14,44 @@ import '../sass/ws.sass';
 
 // store
 import {
-  createWebsocketStore,
-  useWebsocketStore,
-  useWebsocketStoreApi,
-  WebsocketStoreProvider,
-  IWebsocketStore,
-} from '../store/index';
+  createStore,
+  useStore,
+  useStoreApi,
+  StoreProvider,
+  IStore,
+} from '../store';
 
 const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
-  const websocketStoreApi: any = useWebsocketStoreApi();
+  const websocketStoreApi: any = useStoreApi();
   const {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     initialise,
     initialiseCollection,
     setActiveEnvironments,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+    setContext,
+  } = useStore(
+    (s: IStore) => ({
       connect: s.connect,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       initialise: s.initialise,
       initialiseCollection: s.initialiseCollection,
       setActiveEnvironments: s.setActiveEnvironments,
+      setContext: s.setContext,
     }),
     shallow
   );
 
+  //set context to store
+  useEffect(() => {
+    setContext(platformContext);
+  }, []);
+
   /** assign environments on tab load or when activeTab change **/
   useEffect(() => {
     if (activeTab === tab.id) {
-      const state = websocketStoreApi.getState() as IWebsocketStore;
+      const state = websocketStoreApi.getState() as IStore;
       // existing active environments in to runtime
       const {
         activeEnvironments: { workspace = '', collection = '' },
@@ -133,7 +140,7 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
     if (!platformActiveEnvironments) return;
-    const state = websocketStoreApi.getState() as IWebsocketStore;
+    const state = websocketStoreApi.getState() as IStore;
     const { activeEnvironments } = state.runtime;
 
     if (
@@ -142,18 +149,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
     ) {
       setActiveEnvironments(platformActiveEnvironments);
     }
-  };
-
-  const onSave = (pushPayload: any, tabId) => {
-    console.log({ pushPayload });
-    if (!pushPayload._action || !pushPayload.__ref.id) return;
-    if (pushPayload._action.type === 'i') {
-      platformContext.request.subscribeChanges(
-        pushPayload.__ref.id,
-        handlePull
-      );
-    }
-    platformContext.request.onSave(pushPayload, tabId);
   };
 
   // if(isFetchingRequest === true) return <Loader />;
@@ -165,8 +160,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
           tab={tab}
           collectionId={tab?.request?.__ref?.collectionId || ''}
           postComponents={platformComponents}
-          onSaveRequest={onSave}
-          platformContext={platformContext}
           // onPasteCurl={onPasteCurl}
         />
         <Container.Body>
@@ -187,11 +180,9 @@ const withStore = (WrappedComponent) => {
     const { request = {}, id } = tab;
     const initState = initialiseStoreFromRequest(request, id);
     return (
-      <WebsocketStoreProvider
-        createStore={() => createWebsocketStore(initState)}
-      >
+      <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
-      </WebsocketStoreProvider>
+      </StoreProvider>
     );
   };
 

@@ -4,15 +4,12 @@ import { TId } from '@firecamp/types';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import ConnectionButton from '../connection/ConnectButton'
 import { VERSIONS } from '../../../constants';
-import { useSocketStore } from '../../../store';
-import { ISocketStore } from '../../../store/store.type';
+import { IStore, useStore } from '../../../store';
 
 const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction, tabId: string) => {},
-  platformContext,
 }) => {
   const { EnvironmentWidget } = postComponents;
   const {
@@ -20,47 +17,29 @@ const UrlBarContainer = ({
     displayUrl,
     version,
     activeEnvironments,
-    isRequestSaved,
-
     changeUrl,
     changeConfig,
     changeActiveEnvironment,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+    save
+  } = useStore(
+    (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
       activeEnvironments: s.runtime.activeEnvironments,
-      isRequestSaved: s.runtime.isRequestSaved,
-
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
       changeActiveEnvironment: s.changeActiveEnvironment,
-
-      // pushAction: s.pushAction,
+      save: s.save
     }),
     shallow
   );
-  // console.log({pushAction});
 
   const _onSave = async () => {
     try {
-      let pushPayload: any;
-      if (!isRequestSaved) {
-        // pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        // pushPayload = await prepareRequestUpdatePushPayload();
-      }
-
-      // console.log({ pushPayload });
-      // setPushActionEmpty();
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      save(tab.id);
+    } catch (e) {
+      console.error(e);
     }
   };
 

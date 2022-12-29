@@ -1,4 +1,6 @@
+import { nanoid } from 'nanoid';
 import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -23,15 +25,16 @@ interface ICollectionSlice {
 
   // folders
   getFolder: (id: TId) => IRequestFolder | undefined;
-  addFolder: (directory: IRequestFolder) => void;
+  createFolder: (name: string, parentFolderId: TId) => void;
   deleteFolder: (id: TId) => void;
+  onCreateFolder: (folder: IRequestFolder) => void;
 }
 
-const createCollectionSlice = (
+const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   set,
   get,
   initialCollection: ICollection
-): ICollectionSlice => ({
+) => ({
   collection: initialCollection || {
     items: [],
     folders: [],
@@ -49,14 +52,19 @@ const createCollectionSlice = (
 
   toggleProgressBar: (flag?: boolean) => {
     set((s) => ({
-      isProgressing: typeof flag == 'boolean' ? flag : !s.isProgressing,
+      collection: {
+        ...s.collection,
+        isProgressing:
+          typeof flag == 'boolean' ? flag : !s.collection.isProgressing,
+      },
     }));
   },
 
   // collection
   initialiseCollection: (collection: ICollection) => {
-    console.log(collection?.items?.length, 'collection?.items?.length...');
+    // console.log(collection?.items?.length, 'collection?.items?.length...');
     const state = get();
+    // console.log(state.request.__meta.fOrders, state.request.__meta.iOrders);
     set((s) => ({
       collection: {
         ...s.collection,
@@ -69,7 +77,8 @@ const createCollectionSlice = (
     }));
     state.collection.tdpInstance?.init(
       collection.folders || [],
-      collection.items || []
+      collection.items || [],
+      [...state.request.__meta.fOrders, ...state.request.__meta.iOrders]
     );
   },
 
@@ -101,19 +110,38 @@ const createCollectionSlice = (
   },
 
   // folders
-  getFolder: (id: TId, getLast = false) => {
+  getFolder: (id: TId) => {
     const state = get();
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
     return folder;
   },
-  addFolder: (folder: IRequestFolder) => {
-    if (!folder?.__ref?.id) return;
-    set((s) => ({
-      collection: {
-        ...s.collection,
-        folders: [...s.collection.folders, folder],
+  createFolder: async (name: string, parentFolderId?: TId) => {
+    const state = get();
+    const _folder: IRequestFolder = {
+      name,
+      __meta: { fOrders: [], iOrders: [] },
+      __ref: {
+        id: nanoid(),
+        requestId: state.request.__ref.id,
+        requestType: state.request.__meta.type,
+        collectionId: state.request.__ref.collectionId,
+        folderId: parentFolderId,
       },
-    }));
+    };
+    state.toggleProgressBar(true);
+    return Promise.resolve().then(() => {
+      state.onCreateFolder(_folder);
+    });
+    // const res = await Rest.requestFolder
+    //   .create(_folder)
+    //   .then((r) => {
+    //     state.onCreateFolder(r.data);
+    //     return r;
+    //   })
+    //   .finally(() => {
+    //     state.toggleProgressBar(false);
+    //   });
+    // return res;
   },
   deleteFolder: (id: TId) => {
     set((s) => {
@@ -122,6 +150,30 @@ const createCollectionSlice = (
         collection: {
           ...s.collection,
           ...folders,
+        },
+      };
+    });
+  },
+
+  onCreateFolder: (folder) => {
+    //@ts-ignore
+    if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
+    set((s) => {
+      s.collection.tdpInstance?.addFolder(folder);
+      const { folders } = s.collection;
+      if (folder.__ref.folderId) {
+        folders.map((f) => {
+          if (f.__ref.id == folder.__ref.folderId) {
+            f.__meta.fOrders.push(folder.__ref.id);
+          }
+        });
+      } else {
+        // TODO: add root folder id in request.__meta.fOrders
+      }
+      return {
+        collection: {
+          ...s.collection,
+          folders: [...folders, folder],
         },
       };
     });

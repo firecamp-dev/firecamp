@@ -10,14 +10,10 @@ import { _auth, _misc, _object } from '@firecamp/utils';
 import _cloneDeep from 'lodash/cloneDeep';
 import { EAuthTypes, TId } from '@firecamp/types';
 import { Rest } from '@firecamp/cloud-apis';
-
 // import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 // import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
-// import AppService from '../../../services/app';
-
 import { useModalStore } from '../../../store/modal';
-
 import Auth from '../settings/shared/Auth';
 import Scripts from '../settings/shared/Scripts';
 import EditInfo from '../settings/shared/EditInfo';

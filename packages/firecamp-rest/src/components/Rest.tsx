@@ -10,11 +10,11 @@ import _url from '@firecamp/url';
 import { _misc, _object, _table, _auth } from '@firecamp/utils';
 
 import {
-  useRestStore,
-  RestStoreProvider,
-  createRestStore,
-  useRestStoreApi,
-  IRestStore,
+  useStore,
+  StoreProvider,
+  createStore,
+  useStoreApi,
+  IStore,
 } from '../store';
 import {
   initialiseStoreFromRequest,
@@ -26,7 +26,7 @@ import Response from './response/Response';
 import CodeSnippets from './common/code-snippets/CodeSnippets';
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
-  const restStoreApi: any = useRestStoreApi();
+  const restStoreApi: any = useStoreApi();
 
   const {
     isFetchingRequest,
@@ -37,8 +37,8 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
     setContext,
-  } = useRestStore(
-    (s: IRestStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
       changeAuthHeaders: s.changeAuthHeaders,
@@ -148,42 +148,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  const handlePull = async (pullActions: any[]) => {
-    try {
-      let pullPayload = pullActions[0];
-
-      // console.log({ pullPayload });
-
-      // let last = restStoreApi.getState().last;
-      // let mergedPullAndLastRequest = _object.mergeDeep(
-      //   _cloneDeep(last.request),
-      //   _object.omit(pullPayload, ['_action'])
-      // );
-
-      // merged request payload: merged existing request and pull payload request
-      let updatedRequest = await getMergedRequestByPullAction(pullPayload);
-
-      // updatedRequest = normalizeRequest(updatedRequest);
-
-      // set last value by pull action and request
-
-      // console.log({ req: restStoreApi.getState().request });
-
-      // console.log({
-      //   'updatedRequest on pull': updatedRequest,
-      //   mergedPullAndLastRequest,
-      // });
-
-      // get push action payload
-      // let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
-      // console.log({ 'pushAction on pull': pushAction });
-
-      // initialise request with updated request and push action
-      // initialiseRequest(updatedRequest, true, pushAction, true, false);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const handlePull = async () => {};
 
   /**
    * on paste url, call CurlToFirecamp(curl).transform() and set resultant request data to state
@@ -250,22 +215,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  // console.log({ isFetchingRequest })
-
-  const onSave = (pushPayload: any, tabId) => {
-    // console.log({ pushPayload });
-
-    if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === 'i') {
-      platformContext.request.subscribeChanges(
-        pushPayload._action.item_id,
-        handlePull
-      );
-    }
-
-    platformContext.request.onSave(pushPayload, tabId);
-  };
-
   // handle updates for environments from platform
   const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
     // console.log({ platformActiveEnvironments });
@@ -290,8 +239,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
           tab={tab}
           collectionId={tab?.request?.__ref?.collectionId || ''}
           postComponents={platformComponents}
-          onSaveRequest={onSave}
-          platformContext={platformContext}
           onPasteCurl={onPasteCurl}
         />
         <Container.Body>
@@ -319,9 +266,9 @@ const withStore = (WrappedComponent) => {
     const { request = {}, id } = tab;
     const initState = initialiseStoreFromRequest(request, id);
     return (
-      <RestStoreProvider createStore={() => createRestStore(initState)}>
+      <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
-      </RestStoreProvider>
+      </StoreProvider>
     );
   };
 

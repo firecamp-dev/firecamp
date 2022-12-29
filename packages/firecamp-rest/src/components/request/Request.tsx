@@ -19,7 +19,7 @@ import HeadersTab from './tabs/HeadersTab';
 import AuthTab from './tabs/AuthTab';
 import ParamsTab from './tabs/ParamsTab';
 import ConfigTab from './tabs/ConfigTab';
-import { IRestStore, useRestStore } from '../../store';
+import { IStore, useStore } from '../../store';
 import { ERequestPanelTabs } from '../../types';
 
 const Request = ({ tab, getFirecampAgent }) => {
@@ -34,8 +34,8 @@ const Request = ({ tab, getFirecampAgent }) => {
     changeMeta,
     changeUiActiveTab,
     toggleOpenCodeSnippet,
-  } = useRestStore(
-    (s: IRestStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       // headers: s.headers,
       scripts: s.request.scripts,
       __meta: s.request.__meta,

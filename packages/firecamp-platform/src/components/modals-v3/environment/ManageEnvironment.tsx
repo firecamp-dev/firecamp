@@ -13,10 +13,10 @@ import { IEnvironment, EEnvironmentScope } from '@firecamp/types';
 import { Rest } from '@firecamp/cloud-apis';
 
 import { useWorkspaceStore } from '../../../store/workspace';
-import AppService from '../../../services/app';
 import { useModalStore } from '../../../store/modal';
 import { useEnvStore } from '../../../store/environment';
 import { RE } from '../../../types'
+import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
   scope: EEnvironmentScope;
@@ -65,7 +65,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
         });
       })
       .catch((e) => {
-        AppService.notify.alert(e.response?.data?.message || e.message);
+        platformContext.app.notify.alert(e.response?.data?.message || e.message);
         console.log(e);
       });
   }, []);
@@ -109,7 +109,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       return;
     }
 
-    const _env: Partial<IEnvironment> = { name, variables, meta: env.__meta };
+    const _env: Partial<IEnvironment> = { name, variables, __meta: env.__meta };
 
     console.log(_env, '_env');
 
@@ -117,11 +117,11 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
     updateEnvironment(envId, _env)
       .then((r) => {
         console.log(r, 'r...... update env');
-        setTimeout(() => AppService.modals.close());
+        setTimeout(() => platformContext.app.modals.close());
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
-        AppService.notify.alert(e?.response?.data?.message || e.message);
+        platformContext.app.notify.alert(e?.response?.data?.message || e.message);
       })
       .finally(() => {
         setIsRequesting(false);

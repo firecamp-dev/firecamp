@@ -3,7 +3,7 @@ import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { IRestStore, useRestStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 
@@ -11,8 +11,6 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: any, tabId: string) => {},
-  platformContext,
   onPasteCurl = (curl: string) => {},
 }) => {
   const { EnvironmentWidget } = postComponents;
@@ -30,10 +28,9 @@ const UrlBarContainer = ({
     changeMethod,
     execute,
     changeActiveEnvironment,
-    preparePayloadForSaveRequest,
-    preparePayloadForUpdateRequest,
-  } = useRestStore(
-    (s: IRestStore) => ({
+    save,
+  } = useStore(
+    (s: IStore) => ({
       url: s.request.url,
       method: s.request.method,
       __meta: s.request.__meta,
@@ -46,8 +43,7 @@ const UrlBarContainer = ({
       changeMethod: s.changeMethod,
       execute: s.execute,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
-      preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
+      save: s.save,
     }),
     shallow
   );
@@ -74,14 +70,7 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      const _request =
-        isRequestSaved === true
-          ? preparePayloadForUpdateRequest()
-          : preparePayloadForSaveRequest();
-
-      console.log({ _request });
-      // setPushActionEmpty();
-      // onSaveRequest(_request, tab.id);
+      save(tab.id);
     } catch (e) {
       console.error(e);
     }
@@ -101,7 +90,7 @@ const UrlBarContainer = ({
       variables: variables.collection,
     };
 
-    platformContext.environment.setVariables(
+    context.environment.setVariables(
       workspaceUpdates,
       collectionUpdates
     );
@@ -113,10 +102,10 @@ const UrlBarContainer = ({
       if (!url.raw) return;
 
       const envVariables =
-        await platformContext.environment.getVariablesByTabId(tab.id);
+        await context.environment.getVariablesByTabId(tab.id);
       // console.log({ envVariables });
 
-      const agent: EFirecampAgent = platformContext.getFirecampAgent();
+      const agent: EFirecampAgent = context.getFirecampAgent();
 
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
     } catch (error) {
@@ -147,7 +136,7 @@ const UrlBarContainer = ({
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {
-        context.appService.modals.openEditRequest({
+        context.app.modals.openEditRequest({
           name: __meta.name,
           description: __meta.description,
           collectionId: __ref.collectionId,

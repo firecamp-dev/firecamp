@@ -1,10 +1,10 @@
 import shallow from 'zustand/shallow';
 import { Editor } from '@firecamp/ui-kit';
-import { IGraphQLStore, useGraphQLStore } from '../../../../../store';
+import { IStore, useStore } from '../../../../../store';
 
 const Variables = () => {
-  const { playground, changeVariables } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+  const { playground, changeVariables } = useStore(
+    (s: IStore) => ({
       playground: s.playgrounds?.[s.runtime.activePlayground],
       changeVariables: s.changePlaygroundVariables,
     }),

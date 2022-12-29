@@ -1,36 +1,36 @@
 import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-// import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
+import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
-import { useSocketStore, useSocketStoreApi } from '../../../store';
-import { ISocketStore } from '../../../store/store.type';
+import { TreeDataProvider } from './collection-tree/TreeDataProvider';
+import { IStore, useStore, useStoreApi } from '../../../store';
+import { TId } from '@firecamp/types';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty, registerTDP, unRegisterTDP } = useSocketStore(
-    (s: ISocketStore) => ({
+  const { isCollectionEmpty, context, isRequestSaved } = useStore(
+    (s: IStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
-      registerTDP: s.registerTDP,
-      unRegisterTDP: s.unRegisterTDP,
+      context: s.context,
+      isRequestSaved: s.runtime.isRequestSaved,
     }),
     shallow
   );
   const {
-    context,
-    // registerTDP,
-    // unRegisterTDP,
-    openPlayground,
+    registerTDP,
+    unRegisterTDP,
+    // openPlayground,
+    createFolder,
     deleteItem,
-  } = useSocketStoreApi().getState() as ISocketStore;
+  } = useStoreApi().getState() as IStore;
 
   // console.log(items, 'items...');
 
-  const dataProvider = useRef(new CollectionTreeDataProvider([], []));
+  const dataProvider = useRef(new TreeDataProvider([], [], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);
@@ -44,20 +44,55 @@ const CollectionTab = () => {
     // openPlayground(item);
   };
   const deletePlg = (plgId: string) => {
-    context.appService.notify.confirm(
-      'Are you sure to delete the playground?',
-      (s) => {
-        console.log(plgId, 'plgId...');
-        deleteItem(plgId);
-      },
-      console.log,
-      {
-        labels: {
-          confirm: 'Need your confirmation.',
-          confirmOk: 'Yes, delete it.',
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the playground?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
         },
-      }
-    );
+      })
+      .then((isConfirmed) => {
+        if (isConfirmed) deleteItem(plgId);
+      });
+  };
+
+  const _createFolderPrompt = async (parentFolderId?: TId) => {
+    if (typeof parentFolderId != 'string') parentFolderId = undefined;
+    if (!isRequestSaved) {
+      return context.app.notify.info(
+        'Please save the socket.io request first.'
+      );
+    }
+    context.window
+      .promptInput({
+        header: 'Create A New Folder',
+        lable: 'Folder Name',
+        placeholder: '',
+        texts: { btnOking: 'Creating...' },
+        value: '',
+        // validator: (val) => {
+        //   if (!val || val.length < 3) {
+        //     return {
+        //       isValid: false,ß
+        //       message: 'The folder name must have minimum 3 characters.',
+        //     };
+        //   }
+        //   const isValid = RE.NoSpecialCharacters.test(val);
+        //   return {
+        //     isValid,
+        //     message:
+        //       !isValid &&
+        //       'The folder name must not contain any special characters.',
+        //   };
+        // },
+        executor: (name) => createFolder(name, parentFolderId),
+        onError: (e) => {
+          context.app.notify.alert(e?.response?.data?.message || e.message);
+        },
+      })
+      .then((res) => {
+        // console.log(res, 1111);
+      });
   };
 
   return (
@@ -73,9 +108,13 @@ const CollectionTab = () => {
             <div className="action">
               <VscRefresh size={14} className="mr-2 cursor-pointer" />
             </div>
-            {/* <div>
-                <VscNewFolder size={14} className="cursor-pointer" />
-              </div> */}
+            <div>
+              <VscNewFolder
+                size={14}
+                className="cursor-pointer"
+                onClick={() => _createFolderPrompt()}
+              />
+            </div>
           </ToolBar>
         );
       }}
@@ -111,7 +150,12 @@ const CollectionTab = () => {
             viewState={{}}
             renderItemArrow={treeRenderer.renderItemArrow}
             renderItem={(props) =>
-              treeRenderer.renderItem({ ...props, openPlg, deletePlg })
+              treeRenderer.renderItem({
+                ...props,
+                openPlg,
+                deletePlg,
+                createFolder: _createFolderPrompt,
+              })
             }
           >
             <Tree

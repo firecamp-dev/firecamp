@@ -3,31 +3,34 @@ import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
 import { ISocketIO } from '@firecamp/types';
-
+import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
 } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
   __meta: [],
   __root: [],
 };
-
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
   __meta?: EReqChangeMetaKeys[];
   __root?: EReqChangeRootKeys[];
 }
-
 interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<ISocketIO>) => void;
+  preparePayloadForSaveRequest: () => ISocketIO;
 }
 
-const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
+  set,
+  get
+) => ({
   requestChangeState: RequestChangeState,
   equalityChecker: (request: Partial<ISocketIO>) => {
     const state = get();
@@ -66,6 +69,12 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     state.context.request.onChangeRequestTab(state.runtime.tabId, {
       hasChange,
     });
+  },
+  preparePayloadForSaveRequest: () => {
+    const state = get();
+    const _sr = normalizeRequest(state.request);
+    console.log(_sr);
+    return _sr;
   },
 });
 

@@ -170,18 +170,18 @@ export default {
           }}
           className={cx(
             'pr-2',
-            'rct-tree-item-title-container opacity-80',
+            'rct-tree-item-title-container',
             { 'rct-tree-item-title-container-isFolder': item.isFolder },
             {
-              'rct-tree-item-title-container-selected !opacity-100':
+              'rct-tree-item-title-container-selected':
                 context.isSelected,
             },
             {
-              'rct-tree-item-title-container-expanded !opacity-100':
+              'rct-tree-item-title-container-expanded':
                 context.isExpanded,
             },
             {
-              'rct-tree-item-title-container-focused !opacity-100':
+              'rct-tree-item-title-container-focused':
                 context.isFocused,
             },
             {
@@ -221,7 +221,24 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <span className="w-full overflow-hidden overflow-ellipsis">
+            <span 
+             className={cx(
+              'pr-2',
+              'w-full overflow-hidden overflow-ellipsis opacity-80',
+              {
+                '!opacity-100':
+                  context.isSelected,
+              },
+              {
+                '!opacity-100':
+                  context.isExpanded,
+              },
+              {
+                '!opacity-100':
+                  context.isFocused,
+              },
+              )}
+              >
               {title}
             </span>
           </InteractiveComponent>
@@ -238,9 +255,9 @@ export default {
                 ? item.data?.__ref?.id
                 : item.data?.__ref?.folderId
             }
-            requestId={item.data.__ref.isRequest ? item.data.__ref?.id : null}
+            requestId={item.data?.__ref.isRequest ? item.data.__ref?.id : null}
             menuType={
-              item.data.__ref.isFolder
+              item.data?.__ref.isFolder
                 ? 'folder'
                 : item.data?.__ref.isCollection
                 ? 'collection'

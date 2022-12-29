@@ -4,6 +4,7 @@ import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { Button } from '@firecamp/ui-kit';
 
 export default {
@@ -83,6 +84,7 @@ export default {
     info,
     openPlg,
     deletePlg,
+    createFolder,
   }) => {
     const renderDepthOffset = 8;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
@@ -162,9 +164,21 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <span className="w-full overflow-hidden overflow-ellipsis items-center block">
-              {title}
-            </span>
+            {item.data.__ref.isFolder ? (
+              <span className="w-full overflow-hidden overflow-ellipsis items-center block">
+                {title}
+              </span>
+            ) : (
+              <div>
+                <div className="w-full overflow-hidden overflow-ellipsis items-center block">
+                  {title}
+                  <span className="bg-focus2 text-xs px-1 !mx-1">{'tag'}</span>
+                </div>
+                <div className="text-sm appForegroundInActive">
+                  {'{ "name": "Firecamp}'}
+                </div>
+              </div>
+            )}
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
             {item.data.__ref.isItem ? (
@@ -180,6 +194,19 @@ export default {
                 secondary
                 ghost
                 transparent
+              />
+            ) : (
+              <></>
+            )}
+
+            {item.data.__ref.isFolder ? (
+              <VscAdd
+                className="ml-1 cursor-pointer"
+                size={14}
+                onClick={() => {
+                  createFolder(item.index);
+                }}
+                tabIndex={2}
               />
             ) : (
               <></>

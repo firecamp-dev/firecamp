@@ -12,7 +12,7 @@ enum ETreeEventTypes {
 }
 type TTreeItemData = {
   name: string;
-  __meta?: { type?: string, method?: string };
+  __meta?: { type?: string; method?: string };
   __ref: {
     id: string;
     isCollection?: boolean;
@@ -39,19 +39,7 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
     // items: Record<TreeItemIndex, TreeItem<T>>,
     // private implicitItemOrdering?: (itemA: TreeItem<T>, itemB: TreeItem<T>) => number,
   ) {
-    this.items = [
-      ...collections.map((i) => ({
-        ...i,
-        __ref: { ...i.__ref, isCollection: true },
-      })),
-      ...folders.map((i) => ({ ...i, __ref: { ...i.__ref, isFolder: true } })),
-      ...requests.map((i) => ({
-        ...i,
-        __ref: { ...i.__ref, isRequest: true },
-      })),
-    ];
-    // console.log(rootOrders, 'rootOrders...');
-    this.rootOrders = rootOrders;
+    this.init(collections, folders, requests, rootOrders);
   }
 
   public async getTreeItem(
@@ -68,11 +56,14 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
       });
     }
 
-    let item = this.items.find((i) => i.__ref?.id == itemId);
-    if (!item)
-      return Promise.resolve({ index: null, data: null, isFolder: false });
+    const item = this.items.find((i) => i.__ref?.id == itemId);
+    if (!item) {
+      console.log(itemId, 'item not found for itemId in children');
+      // return { index: null, data: null };
+      return Promise.resolve({ index: null, data: null });
+    }
 
-    let treeItem: TTreeItemData = {
+    const treeItem: TTreeItemData = {
       name: item.name || item.__meta.name, // in request, the `name` key will be in `__meta`
       __ref: {
         id: item.__ref.id,

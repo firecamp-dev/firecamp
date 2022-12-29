@@ -24,10 +24,7 @@ import Invite from './workspace/Invite';
 import OrgManagement from './organization/OrgManagement';
 import WorkspaceManagement from './workspace/WorkspaceManagement';
 import SwitchWorkspace from './workspace/SwitchWorkspace';
-import CreateCollection from './collection/CreateCollection';
-import SaveRequest from './request/save-request/SaveRequest';
 import CreateEnvironment from './environment/CreateEnvironment';
-import CreateFolder from './folder/CreateFolder';
 import CollectionSetting from './collection/CollectionSetting';
 import ManageEnvironment from './environment/ManageEnvironment';
 import FolderSetting from './folder/FolderSetting';
@@ -68,20 +65,14 @@ export const ModalContainer = () => {
         return <SwitchWorkspace isOpen={isOpen} onClose={close} />;
 
       // Collection
-      case EPlatformModalTypes.CreateCollection:
-        return <CreateCollection onClose={close} />;
       case EPlatformModalTypes.CollectionSetting:
         return <CollectionSetting onClose={close} />;
 
       // Folder
-      case EPlatformModalTypes.CreateFolder:
-        return <CreateFolder onClose={close} />;
       case EPlatformModalTypes.FolderSetting:
         return <FolderSetting onClose={close} />;
 
       // Request
-      case EPlatformModalTypes.SaveRequest:
-        return <SaveRequest onClose={close} />;
       case EPlatformModalTypes.EditRequest:
         return <EditRequest onClose={close} />;
 
@@ -158,17 +149,6 @@ export const ModalContainer = () => {
           isOpen={modalType == EPlatformModalTypes.SwitchWorkspace && isOpen}
           onClose={close}
         />
-
-        {/* Collection */}
-        <CreateCollection
-          isOpen={modalType == EPlatformModalTypes.CreateCollection && isOpen}
-          onClose={close}
-        />
-
-        {/* Request */}
-        {modalType == EPlatformModalTypes.SaveRequest && (
-          <SaveRequest onClose={close} />
-        )}
 
         {/* User */}
         {/* <UserProfile isOpen={modalType == EPlatformModalTypes.UserProfile && isOpen} onClose={close} />; */}

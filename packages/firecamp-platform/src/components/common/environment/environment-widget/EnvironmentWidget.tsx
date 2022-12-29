@@ -1,5 +1,5 @@
 import { useState, useEffect, FC } from 'react';
-import { Button,  } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui-kit';
 // import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import shallow from 'zustand/shallow';
 import { EEnvironmentScope, TId } from '@firecamp/types';
@@ -22,7 +22,7 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
   onWorkspaceActiveEnvChange = (envId: TId) => {},
   onCollectionActiveEnvChange = (collectionId: TId, envId: TId) => {},
 }) => {
-  let {
+  const {
     wEnvs,
     cEnvs,
     setWorkspaceActiveEnv,
@@ -43,23 +43,23 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
     shallow
   );
 
-  let { isGuest } = useUserStore((s: IUserStore) => ({
+  const { isGuest } = useUserStore((s: IUserStore) => ({
     isGuest: s.isGuest,
   }));
 
-  /*  let { activeTab } = useTabStore((s) => ({
+  /*  const { activeTab } = useTabStore((s) => ({
     activeTab: s.activeTab,
   })); */
 
-  /*  let collectionActiveEnv = useMemo(
+  /*  const collectionActiveEnv = useMemo(
     () => getCollectionActiveEnv(collectionId),          
     [activeTab, collectionId]
   ); */
 
-  let [showCreateEnvButton, toggleShowCreateEnvButton] = useState(false);
+  const [showCreateEnvButton, toggleShowCreateEnvButton] = useState(false);
 
-  // let wEnvs = getWorkspaceEnvs();
-  // let cEnvs = useMemo(() => getCollectionEnvs(collectionId), [collectionId]);
+  // const wEnvs = getWorkspaceEnvs();
+  // const cEnvs = useMemo(() => getCollectionEnvs(collectionId), [collectionId]);
 
   // console.log({ cEnvs, collectionId });
 
@@ -101,7 +101,7 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
     onCollectionActiveEnvChange(collectionId, collectionActiveEnv);
   }, [collectionActiveEnv]); */
 
-  let _openWrsModal = () => {
+  const _openWrsModal = () => {
     // F.ModalService.open(
     //   EModals.WORKSPACE_SETTING,
     //   EWorkspaceSettingTabs.ENVIRONMENT,
@@ -109,12 +109,12 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
     // );
   };
 
-  let _setWrsActiveEnv = (envId: TId) => {
+  const _setWrsActiveEnv = (envId: TId) => {
     setWorkspaceActiveEnv(envId);
     onWorkspaceActiveEnvChange(envId);
   };
 
-  let _setCollectionActiveEnv = (envId: TId) => {
+  const _setCollectionActiveEnv = (envId: TId) => {
     // console.log({ envId });
 
     setCollectionActiveEnv(collectionId, envId);
@@ -131,39 +131,41 @@ const EnvironmentWidget: FC<IEnvironmentWidget> = ({
             <Button
               key={`add-environment-button-${previewId}`}
               text={'Create New Environment'}
-              primary
-              transparent={true}
-              xs
-              onClick={_openWrsModal}
               className="ml-2 leading-4"
+              onClick={_openWrsModal}
+              primary
+              transparent
+              xs
             />,
           ]
         : [
-            <EnvironmentDD
-              key={`global-env-dd-${previewId}`}
-              activeEnv={workspaceActiveEnv}
-              environments={wEnvs}
-              // envVariableProvider={envVariableProvider}
-              onChange={_setWrsActiveEnv}
-              scope={EEnvironmentScope.Workspace}
-            />,
-            collectionId && collectionId.length ? (
-              <EnvironmentDD
-                key={`collection-env-dd-${previewId}`}
-                activeEnv={collectionActiveEnv}
-                environments={cEnvs}
-                collectionId={collectionId}
-                onChange={_setCollectionActiveEnv}
-                scope={EEnvironmentScope.Collection}
-              />
+            // <EnvironmentDD
+            //   key={`global-env-dd-${previewId}`}
+            //   activeEnv={workspaceActiveEnv}
+            //   environments={wEnvs}
+            //   // envVariableProvider={envVariableProvider}
+            //   onChange={_setWrsActiveEnv}
+            //   scope={EEnvironmentScope.Workspace}
+            // />,
+            collectionId ? (
+              <>
+                <EnvironmentDD
+                  key={`collection-env-dd-${previewId}`}
+                  activeEnv={collectionActiveEnv}
+                  environments={cEnvs}
+                  collectionId={collectionId}
+                  onChange={_setCollectionActiveEnv}
+                  scope={EEnvironmentScope.Collection}
+                />
+                <span
+                  key={'toggle-env-button'}
+                  className="cursor-pointer ml-1 text-base"
+                  onClick={() => toggleEnvSidebar()}
+                />
+              </>
             ) : (
-              ''
+              <></>
             ),
-            <span
-              key={'toggle-env-button'}
-              className="iconv2-eye-icon cursor-pointer ml-1 text-base"
-              onClick={() => toggleEnvSidebar()}
-            />,
           ]}
     </div>
   );
@@ -193,7 +195,7 @@ export interface IEnvironmentWidget {
    * Update action and payload
    */
   //TODO: add and import interface from zustand store
-  onChange: ({ action: string, payload: object }) => void;
+  onChange: (obj: { action: string, payload: object }) => void;
 
   // callback fn to return updated workspace active env to parent component
   onWorkspaceActiveEnvChange: (envId: TId) => void;

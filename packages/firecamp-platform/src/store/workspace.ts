@@ -5,15 +5,15 @@ import _reject from 'lodash/reject';
 import { _object, _string } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import {
+  TId,
   ICollection,
   IFolder,
   IWorkspace,
   EWorkspaceType,
-  TId,
 } from '@firecamp/types';
 
 import { useEnvStore } from './environment';
-import AppService from '../services/app';
+import platformContext from '../services/platform-context';
 
 const initialState = {
   workspace: {
@@ -189,7 +189,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         })
         .catch((e) => {
           console.log(e.response, 'e');
-          AppService.notify.alert(e.response?.data?.message || e.message);
+          platformContext.app.notify.alert(
+            e.response?.data?.message || e.message
+          );
         })
         .finally(() => {
           state.toggleProgressBar(false);

@@ -2,7 +2,7 @@ import { Container, TabHeader, CheckboxInGrid, Input } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 import OnConnectListeners from './OnConnectListeners';
-import { useSocketStore } from '../../store';
+import { useStore } from '../../store';
 
 const INPUT_TYPES = {
   text: 'text',
@@ -62,7 +62,7 @@ let config_inputs = [
 ];
 
 const Config = ({ config = {}, listeners = [] }) => {
-  let { config, changeConfig } = useSocketStore((s) => ({
+  let { config, changeConfig } = useStore((s) => ({
     config: s.request.config,
     changeConfig: s.changeConfig,
   }));

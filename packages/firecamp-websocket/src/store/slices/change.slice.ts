@@ -3,11 +3,13 @@ import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
 import { IWebSocket } from '@firecamp/types';
+import { normalizeRequest } from '../../services/reqeust.service';
 import {
   EReqChangeUrlKeys,
   EReqChangeMetaKeys,
   EReChangeRootKeys,
 } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 const RequestChangeState: IRequestChangeState = {
   url: [],
@@ -24,9 +26,10 @@ interface IRequestChangeState {
 interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<IWebSocket>) => void;
+  preparePayloadForSaveRequest: () => IWebSocket;
 }
 
-const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (set, get) => ({
   requestChangeState: RequestChangeState,
   equalityChecker: (request: Partial<IWebSocket>) => {
     const state = get();
@@ -64,6 +67,12 @@ const createRequestChangeStateSlice = (set, get): IRequestChangeStateSlice => ({
     state.context.request.onChangeRequestTab(state.runtime.tabId, {
       hasChange,
     });
+  },
+  preparePayloadForSaveRequest: () => {
+    const state = get();
+    const _sr = normalizeRequest(state.request);
+    console.log(_sr);
+    return _sr;
   },
 });
 

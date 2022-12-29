@@ -15,11 +15,11 @@ import PlaygroundPanel from './playground-panel/PlaygroundPanel';
 import DocWrapper from './common/explorer/GraphQLDoc';
 
 import {
-  GraphQLStoreProvider,
-  createGraphQLStore,
-  useGraphQLStoreApi,
-  useGraphQLStore,
-  IGraphQLStore,
+  StoreProvider,
+  createStore,
+  useStoreApi,
+  useStore,
+  IStore,
 } from '../store';
 
 import {
@@ -28,7 +28,7 @@ import {
 } from '../services/request.service';
 
 const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
-  let graphqlStoreApi: any = useGraphQLStoreApi();
+  let graphqlStoreApi: any = useStoreApi();
 
   let {
     isFetchingRequest,
@@ -39,8 +39,8 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     getMergedRequestByPullAction,
     setContext,
     initialiseCollection
-  } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
@@ -212,26 +212,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  const onSave = (pushPayload: any, tabId) => {
-    // console.log({ pushPayload });
-
-    if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === 'i') {
-      platformContext.request.subscribeChanges(
-        pushPayload._action.item_id,
-        handlePull
-      );
-    }
-
-    platformContext.request.onSave(pushPayload, tabId);
-
-    // let last = graphqlStoreApi.getState().last,
-      // request = graphqlStoreApi.getState().request;
-
-    // set last value by pull action and request
-   
-  };
-
   if (isFetchingRequest === true) return <Loader />;
   return (
     <Container className="h-full w-full with-divider" overflow="visible">
@@ -239,7 +219,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
         tab={tab}
         collectionId={tab?.request?.__ref?.collectionId || ''}
         postComponents={platformComponents}
-        onSaveRequest={onSave}
       />
       <Container.Body>
         <Row flex={1} overflow="auto" className="with-divider h-full">
@@ -260,9 +239,9 @@ const withStore = (WrappedComponent) => {
     const initState = initialiseStoreFromRequest(request, id);
     // console.log(tab, 'tab.....', initState)
     return (
-      <GraphQLStoreProvider createStore={() => createGraphQLStore(initState)}>
+      <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
-      </GraphQLStoreProvider>
+      </StoreProvider>
     );
   };
   return MyComponent;

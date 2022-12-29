@@ -2,15 +2,12 @@ import { FC, useEffect, useState } from 'react';
 import {
   Modal,
   Button,
- 
-  
   ProgressBar,
   IModal,
 } from '@firecamp/ui-kit';
 import { Rest } from '@firecamp/cloud-apis';
-import AppService from '../../../services/app';
 import { usePlatformStore } from '../../../store/platform';
-
+import platformContext from '../../../services/platform-context';
 import './workspace.scss';
 
 const SwitchWorkspace: FC<IModal> = ({
@@ -44,8 +41,8 @@ const SwitchWorkspace: FC<IModal> = ({
   }, []);
 
   const switchToWrs = async (wrs: any) => {
-    await AppService.switchWorkspace(wrs);
-    AppService.modals.close();
+    await platformContext.app.switchWorkspace(wrs);
+    platformContext.app.modals.close();
   };
 
   const renderBody = (isFetchingFlag: boolean) => {

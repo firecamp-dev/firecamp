@@ -1,3 +1,5 @@
+import { TStoreSlice } from '../store.type';
+
 export interface IUi {
   isFetchingRequest: boolean;
 }
@@ -8,20 +10,17 @@ export interface IUiSlice {
   setIsFetchingReqFlag: (flag: boolean) => void;
 }
 
-export const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
-  ui: initialUi || {
-    isFetchingRequest: false,
-  },
-
+export const createUiSlice: TStoreSlice<IUiSlice> = (
+  set,
+  get,
+  initialUi: IUi
+) => ({
+  ui: initialUi || { isFetchingRequest: false },
   initializeUi: (ui: IUi) => {
-    set((s) => ({
-      ui,
-    }));
+    set((s) => ({ ui }));
   },
   setIsFetchingReqFlag: (flag: boolean) => {
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
-    set((s) => ({
-      ui: { ...s.ui, isFetchingRequest: flag },
-    }));
+    set((s) => ({ ui: { ...s.ui, isFetchingRequest: flag } }));
   },
 });

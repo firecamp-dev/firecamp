@@ -1,10 +1,11 @@
 import { TId, EMessageBodyType } from '@firecamp/types';
 import { ILog } from '@firecamp/ws-executor/dist/esm';
+import { TStoreSlice } from '../store.type';
 
 const emptyLog = {
   title: '',
   message: {
-    body: '',
+    payload: '',
     __meta: {
       type: EMessageBodyType.Text,
       typedArrayView: '',
@@ -23,7 +24,7 @@ const emptyLog = {
 };
 
 interface ILogs {
-  [key: TId]: Array<ILog>;
+  [key: TId]: ILog[];
 }
 
 interface ILogsSlice {
@@ -32,26 +33,22 @@ interface ILogsSlice {
   clearLogs: (connectionId: TId) => void;
 }
 
-const createLogsSlice = (set, get): ILogsSlice => ({
+const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
   logs: {},
   addLog: (connectionId: TId, log: ILog) => {
     // console.log({ log });
-
-    const logs = get()?.logs;
+    const { logs } = get();
+    console.log(logs, 12324);
     if (connectionId in logs) {
-      const logs = logs[connectionId];
-      log = { ...emptyLog, ...log };
-
+      const cLogs = logs[connectionId];
       set((s) => ({
-        ...s,
         logs: {
           ...s.logs,
-          [connectionId]: [...logs, log],
+          [connectionId]: [...cLogs, { ...emptyLog, ...log }],
         },
       }));
     } else {
       set((s) => ({
-        ...s,
         logs: {
           ...s.logs,
           [connectionId]: [log],
@@ -63,7 +60,6 @@ const createLogsSlice = (set, get): ILogsSlice => ({
     const logs = get()?.logs;
     if (connectionId in logs) {
       set((s) => ({
-        ...s,
         logs: {
           ...s.logs,
           [connectionId]: [],

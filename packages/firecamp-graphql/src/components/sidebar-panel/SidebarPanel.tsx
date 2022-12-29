@@ -5,13 +5,13 @@ import shallow from 'zustand/shallow';
 import ExplorerTab from './tabs/ExplorerTab';
 import CollectionTab from './tabs/CollectionTab';
 import HeadersTab from './tabs/HeadersTab';
-import { IGraphQLStore, useGraphQLStore } from '../../store';
+import { IStore, useStore } from '../../store';
 import { ESidebarTabs } from '../../types';
 
 const SidebarPanel = () => {
   const { activeTab, headers, playgrounds, changeUiActiveTab } =
-    useGraphQLStore(
-      (s: IGraphQLStore) => ({
+    useStore(
+      (s: IStore) => ({
         activeTab: s.ui.sidebarActiveTab,
         headers: s.ui.headers,
         playgrounds: s.ui.playgrounds,

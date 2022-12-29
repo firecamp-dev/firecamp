@@ -2,9 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import { Modal, Button, ProgressBar, IModal } from '@firecamp/ui-kit';
 import { Rest } from '@firecamp/cloud-apis';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-
-import AppService from '../../../services/app';
 import { usePlatformStore } from '../../../store/platform';
+import platformContext from '../../../services/platform-context';
 
 const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   const { setSwitchingOrg } = usePlatformStore((s) => ({
@@ -29,7 +28,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
   const switchOrg = (org) => {
     localStorage.setItem('switchToOrg', org.__ref.id);
-    AppService.modals.openSwitchWorkspace();
+    platformContext.app.modals.openSwitchWorkspace();
     setSwitchingOrg(org);
   };
 
@@ -116,7 +115,7 @@ const NoOrgFoundMessage = () => {
         text="Create Organization"
         sm
         primary
-        onClick={() => AppService.modals.openCreateOrg()}
+        onClick={() => platformContext.app.modals.openCreateOrg()}
       />
     </div>
   );

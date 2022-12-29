@@ -1,2 +1,3 @@
-// socket
-export * from './socket.store';
+export * from './slices';
+export * from './store';
+export * from './store.type';

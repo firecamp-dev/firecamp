@@ -83,7 +83,6 @@ export const ResponseCollection = {
 };
 export const InitPlayground = {
   name: '',
-  path: '',
   payload: [
     {
       body: '',
@@ -106,11 +105,11 @@ export const InitPlayground = {
   },
 };
 export const InitArg = {
+  body: '',
   __meta: {
     type: EArgumentBodyType.Text,
     typedArrayView: ETypedArrayView.Int8Array,
   },
-  body: '',
 };
 export const InitLog = {
   title: '',
@@ -123,8 +122,8 @@ export const InitLog = {
     ackRef: '',
   },
   __ref: {
-    id: nanoid()
-  }
+    id: nanoid(),
+  },
 };
 export const EditorCommands = {
   SAVE: {

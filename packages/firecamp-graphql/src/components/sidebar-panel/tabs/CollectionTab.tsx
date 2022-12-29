@@ -6,26 +6,26 @@ import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { CollectionTreeDataProvider } from './collection-tree/CollectionDataProvider';
+import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import {
-  IGraphQLStore,
-  useGraphQLStore,
-  useGraphQLStoreApi,
+  IStore,
+  useStore,
+  useStoreApi,
 } from '../../../store';
 
 const CollectionTab = () => {
   const treeRef = useRef();
-  const { isCollectionEmpty } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+  const { isCollectionEmpty } = useStore(
+    (s: IStore) => ({
       isCollectionEmpty:
         !s.collection.folders?.length && !s.collection.items?.length,
     }),
     shallow
   );
   const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
-    useGraphQLStoreApi().getState() as IGraphQLStore;
+    useStoreApi().getState() as IStore;
 
-  const dataProvider = useRef(new CollectionTreeDataProvider([], []));
+  const dataProvider = useRef(new TreeDataProvider([], []));
 
   useEffect(() => {
     registerTDP(dataProvider.current);
@@ -36,20 +36,17 @@ const CollectionTab = () => {
     openPlayground(plgId);
   };
   const deletePlg = (plgId: string) => {
-    context.appService.notify.confirm(
-      'Are you sure to delete the playground?',
-      (s) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the playground?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((s) => {
         console.log(plgId, 'plgId...');
         deleteItem(plgId);
-      },
-      console.log,
-      {
-        labels: {
-          confirm: 'Need your confirmation.',
-          confirmOk: 'Yes, delete it.',
-        },
-      }
-    );
+      });
   };
 
   return (

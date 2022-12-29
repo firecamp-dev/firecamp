@@ -7,13 +7,14 @@ import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import AppService from '../../../../services/app';
-import { useWorkspaceStore } from '../../../../store/workspace'
+import { useWorkspaceStore } from '../../../../store/workspace';
+import { RE } from '../../../../types';
+import platformContext from '../../../../services/platform-context';
 
 enum EMenuType {
   Collection = 'collection',
   Folder = 'folder',
-  Request = 'request'
+  Request = 'request',
 }
 
 const CollectionMenu = ({
@@ -23,8 +24,8 @@ const CollectionMenu = ({
   startRenaming,
   menuType,
 }) => {
-
-  const { deleteCollection, deleteFolder, deleteRequest } = useWorkspaceStore.getState();
+  const { createFolder, deleteCollection, deleteFolder, deleteRequest } =
+    useWorkspaceStore.getState();
   let [isMenuOpened, toggleMenu] = useState(false);
 
   const renameMenu = {
@@ -37,7 +38,7 @@ const CollectionMenu = ({
     onClick: (e) => {
       startRenaming();
     },
-  }
+  };
 
   const addFolderMenu = {
     prefix: () => (
@@ -48,9 +49,50 @@ const CollectionMenu = ({
     name: 'Add Folder',
     onClick: () => {
       console.log(collectionId, folderId);
-      AppService.modals.openCreateFolder({ collectionId, folderId });
+      if (!platformContext.app.user.isLoggedIn()) {
+        return platformContext.app.modals.openSignIn();
+      }
+      platformContext.window
+        .promptInput({
+          header: 'Create New Folder',
+          lable: 'Folder Name',
+          placeholder: 'type folder name',
+          texts: { btnOking: 'Creating...' },
+          value: '',
+          validator: (val) => {
+            if (!val || val.length < 3) {
+              return {
+                isValid: false,
+                message: 'The folder name must have minimum 3 characters.',
+              };
+            }
+            const isValid = RE.NoSpecialCharacters.test(val);
+            return {
+              isValid,
+              message:
+                !isValid &&
+                'The folder name must not contain any special characters.',
+            };
+          },
+          executor: (name) => {
+            const _folder = {
+              name,
+              description: '',
+              __ref: { collectionId, folderId },
+            };
+            return createFolder(_folder);
+          },
+          onError: (e) => {
+            platformContext.app.notify.alert(
+              e?.response?.data?.message || e.message
+            );
+          },
+        })
+        .then((res) => {
+          // console.log(res);
+        });
     },
-  }
+  };
 
   const addRequestMenu = {
     prefix: () => (
@@ -60,7 +102,7 @@ const CollectionMenu = ({
     ),
     name: 'Add Request',
     onClick: () => {},
-  }
+  };
 
   const settingMenu = {
     prefix: () => (
@@ -71,12 +113,15 @@ const CollectionMenu = ({
     name: 'Setting',
     onClick: () => {
       if (menuType == EMenuType.Collection) {
-        AppService.modals.openCollectionSetting({ collectionId });
+        platformContext.app.modals.openCollectionSetting({ collectionId });
       } else if (menuType == EMenuType.Folder) {
-        AppService.modals.openFolderSetting({ collectionId, folderId });
+        platformContext.app.modals.openFolderSetting({
+          collectionId,
+          folderId,
+        });
       }
     },
-  }
+  };
 
   const deleteMenu = {
     prefix: () => (
@@ -86,33 +131,35 @@ const CollectionMenu = ({
     ),
     name: 'Delete',
     onClick: () => {
-      AppService.notify.confirm(
-        `Are you sure to delete the ${menuType}?`,
-        (s) => {
-          if (menuType == EMenuType.Collection) {
-            deleteCollection(collectionId);
-          } else if (menuType == EMenuType.Folder) {
-            deleteFolder(folderId);
-          }
-          else if (menuType == EMenuType.Request) {
-            deleteRequest(requestId);
-          }
-        },
-        console.log,
-        {
-          labels: {
-            confirm: 'Need your confirmation.',
-            confirmOk: 'Yes, delete it.',
+      platformContext.window
+        .confirm({
+          title: `Are you sure to delete the ${menuType}?`,
+          texts: {
+            btnConfirm: 'Yes, delete it.',
           },
-        }
-      );
+        })
+        .then((isConfirmed) => {
+          if (isConfirmed) {
+            if (menuType == EMenuType.Collection) {
+              deleteCollection(collectionId);
+            } else if (menuType == EMenuType.Folder) {
+              deleteFolder(folderId);
+            } else if (menuType == EMenuType.Request) {
+              deleteRequest(requestId);
+            }
+          }
+        });
     },
-  }
+  };
 
-  const commonMenu = [ renameMenu, addFolderMenu, 
-    // addRequestMenu, 
-    settingMenu, deleteMenu ];
-  const requestMenu = [ renameMenu, deleteMenu ];
+  const commonMenu = [
+    renameMenu,
+    addFolderMenu,
+    // addRequestMenu,
+    settingMenu,
+    deleteMenu,
+  ];
+  const requestMenu = [renameMenu, deleteMenu];
   return (
     <>
       <Dropdown
@@ -121,7 +168,10 @@ const CollectionMenu = ({
         onToggle={(value) => toggleMenu(value)}
       >
         <Dropdown.Handler className="transparent icon-more without-border without-padding fc-button" />
-        <Dropdown.Options className="bg-main" options={menuType == EMenuType.Request? requestMenu: commonMenu} />
+        <Dropdown.Options
+          className="bg-main"
+          options={menuType == EMenuType.Request ? requestMenu : commonMenu}
+        />
       </Dropdown>
       {/* {
           isAddRequestPoOpen ?

@@ -25,7 +25,7 @@ import NoBodyTab from './body/NoBodyTab';
 
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
-import { IRestStore, useRestStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const BodyTab: FC<any> = () => {
   const {
@@ -33,8 +33,8 @@ const BodyTab: FC<any> = () => {
     body,
     changeBodyValue,
     changeBodyType,
-  } = useRestStore(
-    (s: IRestStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       // request: s.request,
       body: s.request.body,
       changeBodyValue: s.changeBodyValue,
@@ -109,7 +109,7 @@ const BodyTab: FC<any> = () => {
           return (
             <Editor
               autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
-              value={JSON.stringify(body.value)}
+              value={body.value as string}
               language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
               onChange={({ target: { value } }) => changeBodyValue(value)}
               controlsConfig={{ show: true }}

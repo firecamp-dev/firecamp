@@ -1,10 +1,8 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Modal, Button, Input, IModal } from '@firecamp/ui-kit';
-
 import _auth from '../../../services/auth';
-import AppService from '../../../services/app';
-
+import platformContext from '../../../services/platform-context';
 /**
  * ForgotPassword component
  */
@@ -22,19 +20,19 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
       .forgotPassword(email)
       .then((res) => {
         if ([200, 201].includes(res?.status)) {
-          AppService.notify.success(res?.data?.message || '', {
+          platformContext.app.notify.success(res?.data?.message || '', {
             labels: { success: 'token sent!' },
           });
-          AppService.modals.openResetPassword();
+          platformContext.app.modals.openResetPassword();
         } else {
-          AppService.notify.alert(`Failed to send token, please try again!`, {
+          platformContext.app.notify.alert(`Failed to send token, please try again!`, {
             labels: { alert: 'Forgot password' },
           });
         }
       })
       .catch((e) => {
         console.log(e);
-        AppService.notify.alert(e.response?.data?.message || e.message, {
+        platformContext.app.notify.alert(e.response?.data?.message || e.message, {
           labels: { alert: 'error' },
         });
       })
@@ -77,11 +75,11 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               }
             />
             <Button
-              color="primary"
               text={isRequesting ? `Sending...` : `Send`}
-              fullWidth={true}
-              size="md"
               onClick={handleSubmit(_onSubmit)}
+              fullWidth={true}
+              primary
+              md
             />
           </form>
         </div>
@@ -94,7 +92,7 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             id="forgotPasswordToken"
             onClick={(e) => {
               if (e) e.preventDefault();
-              AppService.modals.openResetPassword();
+              platformContext.app.modals.openResetPassword();
             }}
             tabIndex={1}
           >

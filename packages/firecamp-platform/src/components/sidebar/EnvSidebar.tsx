@@ -1,5 +1,8 @@
 import { FC, useState, useEffect, useMemo, useRef } from 'react';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
+import classnames from 'classnames';
+import equal from 'deep-equal';
+import shallow from 'zustand/shallow';
 import {
   Resizable,
   Container,
@@ -7,17 +10,14 @@ import {
   TabHeader,
   Button, 
 } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
-import shallow from 'zustand/shallow';
 import { EEnvironmentScope, IEnvironment } from '@firecamp/types';
 
 import EnvironmentDD from '../common/environment/environment-widget/EnvironmentDD';
-import * as platformContext from '../../services/platform-context';
-import classnames from 'classnames';
+import pltContext from '../../services/platform-context';
 
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
-import AppService from '../../services/app'
+import platformContext from '../../services/platform-context';
 
 const EnvSidebar: FC<any> = ({ expanded }) => {
   const {
@@ -81,12 +81,12 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col">
-          <EnvVarPreview
+          {/* <EnvVarPreview
             key={`env-preview-${EEnvironmentScope.Workspace}`}
             scope={EEnvironmentScope.Workspace}
             activeEnvId={activeTabWrsEnv}
             activeTab={activeTab}
-          />
+          /> */}
           {!!activeCollectionEnv ? (
             <EnvVarPreview
               key={`env-preview-${EEnvironmentScope.Collection}`}
@@ -206,7 +206,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
       vars = JSON.parse(variables);
     }
     catch (e) {
-      AppService.notify.alert("The variables are not valid JSON.")
+      platformContext.app.notify.alert("The variables are not valid JSON.")
     }
 
     /** update env vars */
@@ -214,7 +214,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
     setIsVarUpdated(false);
     
     // get environment changes and emit to request tab
-    platformContext.environment.setVarsToProvidersAndEmitEnvsToTab();
+    pltContext.environment.setVarsToProvidersAndEmitEnvsToTab();
   };
 
   const _setActiveEnv = (envId) => {
@@ -224,7 +224,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
       setCollectionActiveEnv(collectionId, envId);
     }
     // get environment changes and emit to request tab
-    platformContext.environment.setVarsToProvidersAndEmitEnvsToTab();
+    pltContext.environment.setVarsToProvidersAndEmitEnvsToTab();
   };
 
   return (

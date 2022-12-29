@@ -3,14 +3,14 @@ import { Button } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import CloseConnection from './CloseConnection';
 import { EConnectionState } from '../../../types';
-import { IWebsocketStore, useWebsocketStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
   if (!props.hasOwnProperty('sm')) props.xs = true;
   const { sm, xs } = props;
   const { connectionState, activePlayground, connect, disconnect } =
-    useWebsocketStore(
-      (s: IWebsocketStore) => ({
+    useStore(
+      (s: IStore) => ({
         connectionState:
           s.playgrounds[s.runtime.activePlayground]?.connectionState,
         playgrounds: s.playgrounds,

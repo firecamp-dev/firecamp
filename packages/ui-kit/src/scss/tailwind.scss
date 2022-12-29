@@ -871,6 +871,9 @@ video {
 .right-4 {
 	right: 1rem;
 }
+.top-12 {
+	top: 3rem;
+}
 .top-3 {
 	top: 0.75rem;
 }
@@ -928,6 +931,9 @@ video {
 .\!m-0 {
 	margin: 0px !important;
 }
+.\!m-1 {
+	margin: 0.25rem !important;
+}
 .m-0 {
 	margin: 0px;
 }
@@ -949,6 +955,14 @@ video {
 .mx-auto {
 	margin-left: auto;
 	margin-right: auto;
+}
+.\!mx-1 {
+	margin-left: 0.25rem !important;
+	margin-right: 0.25rem !important;
+}
+.my-4 {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 }
 .mx-0 {
 	margin-left: 0px;
@@ -1057,6 +1071,9 @@ video {
 .-mt-px {
 	margin-top: -1px;
 }
+.-mb-1 {
+	margin-bottom: -0.25rem;
+}
 .mt-0 {
 	margin-top: 0px;
 }
@@ -1098,6 +1115,9 @@ video {
 }
 .block {
 	display: block;
+}
+.\!block {
+	display: block !important;
 }
 .inline {
 	display: inline;
@@ -1212,6 +1232,9 @@ video {
 }
 .max-h-48 {
 	max-height: 12rem;
+}
+.min-h-0 {
+	min-height: 0px;
 }
 .w-56 {
 	width: 14rem;
@@ -1371,14 +1394,17 @@ video {
 .overflow-auto {
 	overflow: auto;
 }
-.overflow-hidden {
-	overflow: hidden;
-}
 .\!overflow-hidden {
 	overflow: hidden !important;
 }
+.overflow-hidden {
+	overflow: hidden;
+}
 .overflow-visible {
 	overflow: visible;
+}
+.overflow-x-auto {
+	overflow-x: auto;
 }
 .\!overflow-y-auto {
 	overflow-y: auto !important;
@@ -1646,6 +1672,9 @@ video {
 .bg-statusBarBackground2 {
 	background-color: var(--statusBar-background2);
 }
+.\!bg-statusBarBackground2 {
+	background-color: var(--statusBar-background2) !important;
+}
 .bg-tabBackground {
 	background-color: var(--tab-background);
 }
@@ -1848,6 +1877,9 @@ video {
 }
 .pb-0 {
 	padding-bottom: 0px;
+}
+.\!pt-4 {
+	padding-top: 1rem !important;
 }
 .pl-0 {
 	padding-left: 0px;
@@ -2244,10 +2276,6 @@ video {
 	content: "";
 	border-color: var(--tab-border);
 }
-.after\:bg-statusBarBackground2::after {
-	content: "";
-	background-color: var(--statusBar-background2);
-}
 .after\:\!bg-statusBarBackground2::after {
 	content: "";
 	background-color: var(--statusBar-background2) !important;
@@ -2255,6 +2283,10 @@ video {
 .after\:\!bg-tabActiveBackground::after {
 	content: "";
 	background-color: var(--tab-activeBackground) !important;
+}
+.after\:bg-statusBarBackground2::after {
+	content: "";
+	background-color: var(--statusBar-background2);
 }
 .after\:opacity-10::after {
 	content: "";
@@ -2324,6 +2356,9 @@ video {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
+.hover\:text-appForegroundActive:hover {
+	color: var(--app-foreground-active);
+}
 .hover\:text-modalActiveForeground:hover {
 	color: var(--modal-activeForeground);
 }
@@ -2351,7 +2386,7 @@ video {
 }
 
 @import url(../components/split-view/SplitView.scss);
-@import url(collection.scss);
+/* @import url(collection.scss); */
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap');
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
@@ -2381,13 +2416,9 @@ body {
 .icon{
   font-family: 'icomoon' !important;
 }
-/** styling added to preview copy button in storybook
-.fc-button-icon,
-.iconv2-copy-icon{
-  border: 10px solid var(--app-foreground);
+.text-ellipsis{
+  text-overflow: ellipsis !important;
 }
-/** */
-
 a,a:hover{
   color: inherit !important
 }
@@ -2684,7 +2715,7 @@ tr:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: -1px;
-  min-height: 32px !important;
+  min-height: 33px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -2840,6 +2871,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
+.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }

@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow';
 import { EHttpMethod, TId } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { Button, Url, UrlBar, HttpMethodDropDown } from '@firecamp/ui-kit';
-import { IGraphQLStore, useGraphQLStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 
@@ -12,7 +12,6 @@ const UrlBarContainer = ({
   tab,
   collectionId = '',
   postComponents,
-  onSaveRequest = (pushAction: any, tabId: string) => {},
 }) => {
   const { EnvironmentWidget } = postComponents;
 
@@ -29,10 +28,9 @@ const UrlBarContainer = ({
     fetchIntrospectionSchema,
     toggleDoc,
     changeActiveEnvironment,
-    preparePayloadForSaveRequest,
-    preparePayloadForUpdateRequest,
-  } = useGraphQLStore(
-    (s: IGraphQLStore) => ({
+    save,
+  } = useStore(
+    (s: IStore) => ({
       url: s.request.url,
       method: s.request.method,
       __meta: s.request.__meta,
@@ -45,12 +43,10 @@ const UrlBarContainer = ({
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
       toggleDoc: s.toggleDoc,
       changeActiveEnvironment: s.changeActiveEnvironment,
-      preparePayloadForSaveRequest: s.preparePayloadForSaveRequest,
-      preparePayloadForUpdateRequest: s.preparePayloadForUpdateRequest,
+      save: s.save,
     }),
     shallow
   );
-  // console.log({ url, request });
 
   const schema = {};
 
@@ -70,14 +66,7 @@ const UrlBarContainer = ({
 
   const _onSave = async () => {
     try {
-      const _request =
-        isRequestSaved === true
-          ? preparePayloadForUpdateRequest()
-          : preparePayloadForSaveRequest();
-
-      console.log({ _request });
-      // setPushActionEmpty();
-      // onSaveRequest(_request, tab.id);
+      save(tab.id);
     } catch (e) {
       console.error(e);
     }
@@ -103,7 +92,7 @@ const UrlBarContainer = ({
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {
-        context.appService.modals.openEditRequest({
+        context.app.modals.openEditRequest({
           name: __meta.name,
           description: __meta.description,
           collectionId: __ref.collectionId,
