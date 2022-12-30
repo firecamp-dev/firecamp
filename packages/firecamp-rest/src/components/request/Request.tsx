@@ -22,7 +22,7 @@ import ConfigTab from './tabs/ConfigTab';
 import { IStore, useStore } from '../../store';
 import { ERequestPanelTabs } from '../../types';
 
-const Request = ({ tab, getFirecampAgent }) => {
+const Request = ({ tab }) => {
   useHotkeys(`cmd+h`, (k, e) => console.log('This is the cmd+h', k, e));
   const {
     // headers,
@@ -137,7 +137,7 @@ const Request = ({ tab, getFirecampAgent }) => {
       case ERequestPanelTabs.Config:
         if (
           _misc.firecampAgent() === EFirecampAgent.Desktop
-          // || getFirecampAgent() === EFirecampAgent.Cloud
+          // || context.getFirecampAgent() === EFirecampAgent.Cloud
         ) {
           return <ConfigTab />;
         } else {

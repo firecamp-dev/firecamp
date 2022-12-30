@@ -404,105 +404,6 @@ importers:
       typedoc: 0.23.22_typescript@4.9.4
       typescript: 4.9.4
 
-  packages/firecamp-platform:
-    specifiers:
-      '@firecamp/agent-manager': workspace:*
-      '@firecamp/cloud-apis': ^0.1.5
-      '@firecamp/cookie-manager': ^0.0.0
-      '@firecamp/graphql': workspace:*
-      '@firecamp/rest': workspace:*
-      '@firecamp/socket.io': workspace:*
-      '@firecamp/types': ^0.1.5
-      '@firecamp/ui-kit': workspace:*
-      '@firecamp/url': ^0.0.17
-      '@firecamp/websocket': workspace:*
-      '@sentry/browser': 7.17.2
-      '@sentry/tracing': 7.24.2
-      '@types/chrome': ^0.0.204
-      '@types/react-dom': ^17.0.13
-      awesome-notifications: 3.1.3
-      classnames: ^2.1.3
-      clean-deep: ^3.0.2
-      deep-equal: ^1.1.0
-      deepdash: ^5.3.9
-      faker: ^4.1.0
-      fuzzysort: ^2.0.1
-      javascript-stringify: ^2.0.0
-      js-yaml: ^4.1.0
-      json-templates: ^3.0.0
-      markdown-it: ^13.0.1
-      marked: ^0.7.0
-      mitt: ^3.0.0
-      nanoid: 3.3.4
-      prettify-xml: ^1.2.0
-      prop-types: ^15.6.2
-      re-resizable: ^4.7.1
-      react: 17.0.2
-      react-dom: 17.0.2
-      react-error-boundary: ^3.1.4
-      react-file-drop: ^3.1.5
-      react-ga: ^3.1.2
-      react-hook-form: ^6.8.1
-      react-hotkeys-hook: ^3.3.1
-      react-markdown: ^8.0.3
-      react-responsive-modal: ^6.2.0
-      react-tooltip: ^3.10.0
-      redux: ^3.2.1
-      safer-eval: ^1.3.5
-      validator: ^10.11.0
-      xml-js: ^1.6.9
-      xmljson: ^0.2.0
-      zustand: 3.7.2
-    dependencies:
-      '@firecamp/agent-manager': link:../firecamp-agent-manager
-      '@firecamp/cloud-apis': 0.1.5
-      '@firecamp/cookie-manager': link:../firecamp-cookie-manager
-      '@firecamp/graphql': link:../firecamp-graphql
-      '@firecamp/rest': link:../firecamp-rest
-      '@firecamp/socket.io': link:../firecamp-socket-io
-      '@firecamp/types': 0.1.5
-      '@firecamp/ui-kit': link:../ui-kit
-      '@firecamp/url': 0.0.17
-      '@firecamp/websocket': link:../firecamp-websocket
-      '@sentry/browser': 7.17.2
-      '@sentry/tracing': 7.24.2
-      awesome-notifications: 3.1.3
-      classnames: 2.3.2
-      clean-deep: 3.4.0
-      deep-equal: 1.1.1
-      deepdash: 5.3.9
-      faker: 4.1.0
-      fuzzysort: 2.0.4
-      javascript-stringify: 2.1.0
-      js-yaml: 4.1.0
-      json-templates: 3.2.0
-      markdown-it: 13.0.1
-      marked: 0.7.0
-      mitt: 3.0.0
-      nanoid: 3.3.4
-      prettify-xml: 1.2.0
-      prop-types: 15.8.1
-      re-resizable: 4.11.0
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-error-boundary: 3.1.4_react@17.0.2
-      react-file-drop: 3.1.6
-      react-ga: 3.3.1_at7mkepldmzoo6silmqc5bca74
-      react-hook-form: 6.15.8_react@17.0.2
-      react-hotkeys-hook: 3.4.7_sfoxds7t5ydpegc3knd667wn6m
-      react-markdown: 8.0.4_react@17.0.2
-      react-responsive-modal: 6.4.1_sfoxds7t5ydpegc3knd667wn6m
-      react-tooltip: 3.11.6_sfoxds7t5ydpegc3knd667wn6m
-      redux: 3.7.2
-      safer-eval: 1.3.6
-      validator: 10.11.0
-      xml-js: 1.6.11
-      xmljson: 0.2.0
-      zustand: 3.7.2_react@17.0.2
-    devDependencies:
-      '@types/chrome': 0.0.204
-      '@types/react-dom': 17.0.18
-
   packages/firecamp-rest:
     specifiers:
       '@firecamp/curl-to-firecamp': ^0.0.10
@@ -1175,6 +1076,105 @@ importers:
       tailwindcss: /@tailwindcss/postcss7-compat/2.2.17
       ts-jest: 29.0.3_jav3n3okgvu6u2xhc6e4p2qzoi
       typescript: 4.9.4
+
+  platform/firecamp-platform:
+    specifiers:
+      '@firecamp/agent-manager': workspace:*
+      '@firecamp/cloud-apis': ^0.1.5
+      '@firecamp/cookie-manager': ^0.0.0
+      '@firecamp/graphql': workspace:*
+      '@firecamp/rest': workspace:*
+      '@firecamp/socket.io': workspace:*
+      '@firecamp/types': ^0.1.5
+      '@firecamp/ui-kit': workspace:*
+      '@firecamp/url': ^0.0.17
+      '@firecamp/websocket': workspace:*
+      '@sentry/browser': 7.17.2
+      '@sentry/tracing': 7.24.2
+      '@types/chrome': ^0.0.204
+      '@types/react-dom': ^17.0.13
+      awesome-notifications: 3.1.3
+      classnames: ^2.1.3
+      clean-deep: ^3.0.2
+      deep-equal: ^1.1.0
+      deepdash: ^5.3.9
+      faker: ^4.1.0
+      fuzzysort: ^2.0.1
+      javascript-stringify: ^2.0.0
+      js-yaml: ^4.1.0
+      json-templates: ^3.0.0
+      markdown-it: ^13.0.1
+      marked: ^0.7.0
+      mitt: ^3.0.0
+      nanoid: 3.3.4
+      prettify-xml: ^1.2.0
+      prop-types: ^15.6.2
+      re-resizable: ^4.7.1
+      react: 17.0.2
+      react-dom: 17.0.2
+      react-error-boundary: ^3.1.4
+      react-file-drop: ^3.1.5
+      react-ga: ^3.1.2
+      react-hook-form: ^6.8.1
+      react-hotkeys-hook: ^3.3.1
+      react-markdown: ^8.0.3
+      react-responsive-modal: ^6.2.0
+      react-tooltip: ^3.10.0
+      redux: ^3.2.1
+      safer-eval: ^1.3.5
+      validator: ^10.11.0
+      xml-js: ^1.6.9
+      xmljson: ^0.2.0
+      zustand: 3.7.2
+    dependencies:
+      '@firecamp/agent-manager': link:../../packages/firecamp-agent-manager
+      '@firecamp/cloud-apis': 0.1.5
+      '@firecamp/cookie-manager': link:../../packages/firecamp-cookie-manager
+      '@firecamp/graphql': link:../../packages/firecamp-graphql
+      '@firecamp/rest': link:../../packages/firecamp-rest
+      '@firecamp/socket.io': link:../../packages/firecamp-socket-io
+      '@firecamp/types': 0.1.5
+      '@firecamp/ui-kit': link:../../packages/ui-kit
+      '@firecamp/url': 0.0.17
+      '@firecamp/websocket': link:../../packages/firecamp-websocket
+      '@sentry/browser': 7.17.2
+      '@sentry/tracing': 7.24.2
+      awesome-notifications: 3.1.3
+      classnames: 2.3.2
+      clean-deep: 3.4.0
+      deep-equal: 1.1.1
+      deepdash: 5.3.9
+      faker: 4.1.0
+      fuzzysort: 2.0.4
+      javascript-stringify: 2.1.0
+      js-yaml: 4.1.0
+      json-templates: 3.2.0
+      markdown-it: 13.0.1
+      marked: 0.7.0
+      mitt: 3.0.0
+      nanoid: 3.3.4
+      prettify-xml: 1.2.0
+      prop-types: 15.8.1
+      re-resizable: 4.11.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-error-boundary: 3.1.4_react@17.0.2
+      react-file-drop: 3.1.6
+      react-ga: 3.3.1_at7mkepldmzoo6silmqc5bca74
+      react-hook-form: 6.15.8_react@17.0.2
+      react-hotkeys-hook: 3.4.7_sfoxds7t5ydpegc3knd667wn6m
+      react-markdown: 8.0.4_react@17.0.2
+      react-responsive-modal: 6.4.1_sfoxds7t5ydpegc3knd667wn6m
+      react-tooltip: 3.11.6_sfoxds7t5ydpegc3knd667wn6m
+      redux: 3.7.2
+      safer-eval: 1.3.6
+      validator: 10.11.0
+      xml-js: 1.6.11
+      xmljson: 0.2.0
+      zustand: 3.7.2_react@17.0.2
+    devDependencies:
+      '@types/chrome': 0.0.204
+      '@types/react-dom': 17.0.18
 
 packages:
 
@@ -3277,7 +3277,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       chalk: 4.1.2
       jest-message-util: 29.3.1
       jest-util: 29.3.1
@@ -3384,14 +3384,14 @@ packages:
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       ci-info: 3.7.0
       exit: 0.1.2
       graceful-fs: 4.2.10
       jest-changed-files: 29.2.0
-      jest-config: 29.3.1_@types+node@18.11.15
+      jest-config: 29.3.1_@types+node@18.11.18
       jest-haste-map: 29.3.1
       jest-message-util: 29.3.1
       jest-regex-util: 29.2.0
@@ -3418,7 +3418,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       jest-mock: 28.1.3
     dev: true
 
@@ -3428,7 +3428,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 29.3.1
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       jest-mock: 29.3.1
     dev: true
 
@@ -3484,7 +3484,7 @@ packages:
     dependencies:
       '@jest/types': 29.3.1
       '@sinonjs/fake-timers': 9.1.2
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       jest-message-util: 29.3.1
       jest-mock: 29.3.1
       jest-util: 29.3.1
@@ -3566,7 +3566,7 @@ packages:
       '@jest/transform': 29.3.1
       '@jest/types': 29.3.1
       '@jridgewell/trace-mapping': 0.3.17
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       chalk: 4.1.2
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
@@ -3770,7 +3770,7 @@ packages:
       '@jest/schemas': 29.0.0
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       '@types/yargs': 17.0.17
       chalk: 4.1.2
     dev: true
@@ -4749,7 +4749,7 @@ packages:
       '@storybook/store': 6.5.14_react-dom@17.0.2
       '@storybook/theming': 6.5.14_react-dom@17.0.2
       '@storybook/ui': 6.5.14_react-dom@17.0.2
-      '@types/node': 16.18.9
+      '@types/node': 16.18.11
       '@types/webpack': 4.41.33
       autoprefixer: 9.8.8
       babel-loader: 8.3.0_em3sh5kto35xuanci4cvhzqfay
@@ -5112,7 +5112,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@storybook/store': 6.5.14_react-dom@17.0.2
       '@storybook/telemetry': 6.5.14_jatgao6ueby62vsg7va2gxv6sm
-      '@types/node': 16.18.9
+      '@types/node': 16.18.11
       '@types/node-fetch': 2.6.2
       '@types/pretty-hrtime': 1.0.1
       '@types/webpack': 4.41.33
@@ -5295,7 +5295,7 @@ packages:
       '@storybook/node-logger': 6.5.14
       '@storybook/theming': 6.5.14_react-dom@17.0.2
       '@storybook/ui': 6.5.14_react-dom@17.0.2
-      '@types/node': 16.18.9
+      '@types/node': 16.18.11
       '@types/webpack': 4.41.33
       babel-loader: 8.3.0_em3sh5kto35xuanci4cvhzqfay
       case-sensitive-paths-webpack-plugin: 2.4.0
@@ -5958,13 +5958,13 @@ packages:
     resolution: {integrity: sha512-ALYone6pm6QmwZoAgeyNksccT9Q4AWZQ6PvfwR37GT6r6FWUPguq6sUmNGSMV2Wr761oQoBxwGGa6DR5o1DC9g==}
     dependencies:
       '@types/connect': 3.4.35
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /@types/bonjour/3.5.10:
     resolution: {integrity: sha512-p7ienRMiS41Nu2/igbJxxLDWrSZ0WxM8UQgCeO9KhoVF7cOVFkrKsiDr1EsJIla8vV3oEEjGcz11jc5yimhzZw==}
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /@types/chai/4.3.4:
@@ -5998,13 +5998,13 @@ packages:
     resolution: {integrity: sha512-h8QJa8xSb1WD4fpKBDcATDNGXghFj6/3GRWG6dhmRcu0RX1Ubasur2Uvx5aeEwlf0MwblEC2bMzzMQntxnw/Cw==}
     dependencies:
       '@types/express-serve-static-core': 4.17.31
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /@types/connect/3.4.35:
     resolution: {integrity: sha512-cdeYyv4KWoEgpBISTxWvqYsVy444DOqehiF3fM3ne10AmJ62RSyNkUnxMJXHQWRQQX2eR94m5y1IZyDwBjV9FQ==}
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /@types/cookiejar/2.1.2:
@@ -6046,7 +6046,7 @@ packages:
   /@types/express-serve-static-core/4.17.31:
     resolution: {integrity: sha512-DxMhY+NAsTwMMFHBTtJFNp5qiHKJ7TeqOo23zVEM9alT1Ml27Q3xcTH0xwxn7Q0BbMcVEJOs/7aQtUWupUQN3Q==}
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       '@types/qs': 6.9.7
       '@types/range-parser': 1.2.4
     dev: true
@@ -6074,14 +6074,14 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 16.18.9
+      '@types/node': 18.11.18
     dev: true
 
   /@types/glob/8.0.0:
     resolution: {integrity: sha512-l6NQsDDyQUVeoTynNpC9uRvCUint/gSUXQA2euwmTuWGvPY5LSDUu6tkCtJB2SvGQlJQzLaKqcGZP4//7EDveA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 16.18.9
+      '@types/node': 18.11.18
     dev: true
 
   /@types/graceful-fs/4.1.5:
@@ -6110,7 +6110,7 @@ packages:
   /@types/http-proxy/1.17.9:
     resolution: {integrity: sha512-QsbSjA/fSk7xB+UXlCT3wHBy5ai9wOcNDWwZAtud+jXhwOM3l+EYZh8Lng4+/6n8uar0J7xILzqftJdJ/Wdfkw==}
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /@types/httpsnippet/1.23.1:
@@ -6163,7 +6163,7 @@ packages:
   /@types/jsdom/20.0.1:
     resolution: {integrity: sha512-d0r18sZPmMQr1eG35u12FZfhIXNrnsPU/g5wvRKCUf/tOGilKKwYMYGqh33BNR6ba+2gkHw1EUiHoN3mn7E5IQ==}
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       '@types/tough-cookie': 4.0.2
       parse5: 7.1.2
     dev: true
@@ -6179,7 +6179,7 @@ packages:
   /@types/keyv/3.1.4:
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
     dependencies:
-      '@types/node': 16.18.9
+      '@types/node': 18.11.18
     dev: true
 
   /@types/linkify-it/3.0.2:
@@ -6233,7 +6233,7 @@ packages:
   /@types/node-fetch/2.6.2:
     resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
     dependencies:
-      '@types/node': 16.18.9
+      '@types/node': 18.11.18
       form-data: 3.0.1
     dev: true
 
@@ -6320,7 +6320,7 @@ packages:
   /@types/responselike/1.0.0:
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
     dependencies:
-      '@types/node': 16.18.9
+      '@types/node': 18.11.18
     dev: true
 
   /@types/retry/0.12.0:
@@ -6345,13 +6345,13 @@ packages:
     resolution: {integrity: sha512-z5xyF6uh8CbjAu9760KDKsH2FcDxZ2tFCsA4HIMWE6IkiYMXfVoa+4f9KX+FN0ZLsaMw1WNG2ETLA6N+/YA+cg==}
     dependencies:
       '@types/mime': 3.0.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /@types/sockjs/0.3.33:
     resolution: {integrity: sha512-f0KEEe05NvUnat+boPTZ0dgaLZ4SfSouXUgv5noUiefG2ajgKjmETo9ZJyuqsl7dfl2aHlLJUiki6B4ZYldiiw==}
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /@types/source-list-map/0.1.2:
@@ -6411,7 +6411,7 @@ packages:
   /@types/webpack-sources/3.2.0:
     resolution: {integrity: sha512-Ft7YH3lEVRQ6ls8k4Ff1oB4jN6oy/XmU6tQISKdhfh+1mR+viZFphS6WL0IrtDOzvefmJg5a0s7ZQoRXwqTEFg==}
     dependencies:
-      '@types/node': 16.18.9
+      '@types/node': 18.11.18
       '@types/source-list-map': 0.1.2
       source-map: 0.7.4
     dev: true
@@ -6419,7 +6419,7 @@ packages:
   /@types/webpack/4.41.33:
     resolution: {integrity: sha512-PPajH64Ft2vWevkerISMtnZ8rTs4YmRbs+23c402J0INmxDKCrhZNvwZYtzx96gY2wAtXdrK1BS2fiC8MlLr3g==}
     dependencies:
-      '@types/node': 16.18.9
+      '@types/node': 18.11.18
       '@types/tapable': 1.0.8
       '@types/uglify-js': 3.17.1
       '@types/webpack-sources': 3.2.0
@@ -6430,7 +6430,7 @@ packages:
   /@types/ws/8.5.3:
     resolution: {integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==}
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /@types/yargs-parser/21.0.0:
@@ -10516,11 +10516,6 @@ packages:
     engines: {node: '>=0.3.1'}
     dev: false
 
-  /diff/5.1.0:
-    resolution: {integrity: sha512-D+mk+qE8VC/PAUrlAU34N+VfXev0ghe5ywmpqrawphmVZc1bEfn56uo9qpyGp1p4xpzOHkSW4ztBd6L7Xx4ACw==}
-    engines: {node: '>=0.3.1'}
-    dev: false
-
   /diffable-html/4.1.0:
     resolution: {integrity: sha512-++kyNek+YBLH8cLXS+iTj/Hiy2s5qkRJEJ8kgu/WHbFrVY2vz9xPFUT+fii2zGF0m1CaojDlQJjkfrCt7YWM1g==}
     dependencies:
@@ -12703,7 +12698,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.4
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -13349,7 +13344,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@4.10.0
     dev: true
 
   /htmlparser2/3.10.1:
@@ -14410,7 +14405,7 @@ packages:
       '@jest/expect': 29.3.1
       '@jest/test-result': 29.3.1
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       chalk: 4.1.2
       co: 4.6.0
       dedent: 0.7.0
@@ -14736,7 +14731,7 @@ packages:
       - supports-color
     dev: true
 
-  /jest-config/29.3.1_@types+node@18.11.15:
+  /jest-config/29.3.1_@types+node@18.11.18:
     resolution: {integrity: sha512-y0tFHdj2WnTEhxmGUK1T7fgLen7YK4RtfvpLFBXfQkh2eMJAQq24Vx9472lvn5wg0MAO6B+iPfJfzdR9hJYalg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -14751,7 +14746,7 @@ packages:
       '@babel/core': 7.20.5
       '@jest/test-sequencer': 29.3.1
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       babel-jest: 29.3.1_@babel+core@7.20.5
       chalk: 4.1.2
       ci-info: 3.7.0
@@ -14886,7 +14881,7 @@ packages:
       '@jest/environment': 28.1.3
       '@jest/fake-timers': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       jest-mock: 28.1.3
       jest-util: 28.1.3
     dev: true
@@ -14898,7 +14893,7 @@ packages:
       '@jest/environment': 29.3.1
       '@jest/fake-timers': 29.3.1
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       jest-mock: 29.3.1
       jest-util: 29.3.1
     dev: true
@@ -15086,7 +15081,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       jest-util: 29.3.1
     dev: true
 
@@ -15227,7 +15222,7 @@ packages:
       '@jest/test-result': 28.1.3
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       chalk: 4.1.2
       emittery: 0.10.2
       graceful-fs: 4.2.10
@@ -15256,7 +15251,7 @@ packages:
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.10
@@ -15317,7 +15312,7 @@ packages:
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
       '@jest/types': 29.3.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       chalk: 4.1.2
       cjs-module-lexer: 1.2.2
       collect-v8-coverage: 1.0.1
@@ -15530,7 +15525,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 16.18.9
+      '@types/node': 18.11.18
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -15539,7 +15534,7 @@ packages:
     resolution: {integrity: sha512-CqRA220YV/6jCo8VWvAt1KKx6eek1VIHMPeLEbpcfSfkEeWyBNppynM/o6q+Wmw+sOhos2ml34wZbSX3G13//g==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -22540,7 +22535,7 @@ packages:
     hasBin: true
     dependencies:
       dequal: 2.0.3
-      diff: 5.1.0
+      diff: 5.0.0
       kleur: 4.1.5
       sade: 1.8.1
     dev: false

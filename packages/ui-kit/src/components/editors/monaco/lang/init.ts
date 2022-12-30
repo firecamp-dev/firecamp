@@ -1,5 +1,5 @@
 import { loader, Monaco } from '@monaco-editor/react';
-import { EEditorLanguage } from '@firecamp/types';
+import { EEditorLanguage, EEditorTheme } from '@firecamp/types';
 import EditorLangTextMonarch from './editor.lang-text';
 import EditorDarkTheme from './themes/editor.theme-dark';
 import EditorLiteTheme from './themes/editor.theme-lite';

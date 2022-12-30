@@ -10,13 +10,6 @@ import _url from '@firecamp/url';
 import { _misc, _object, _table, _auth } from '@firecamp/utils';
 
 import {
-  useStore,
-  StoreProvider,
-  createStore,
-  useStoreApi,
-  IStore,
-} from '../store';
-import {
   initialiseStoreFromRequest,
   normalizeRequest,
 } from '../services/request.service';
@@ -24,6 +17,13 @@ import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
 import CodeSnippets from './common/code-snippets/CodeSnippets';
+import {
+  useStore,
+  StoreProvider,
+  createStore,
+  useStoreApi,
+  IStore,
+} from '../store';
 
 const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   const restStoreApi: any = useStoreApi();
@@ -35,7 +35,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
-    getMergedRequestByPullAction,
     setContext,
   } = useStore(
     (s: IStore) => ({
@@ -243,10 +242,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         />
         <Container.Body>
           <Row flex={1} className="with-divider h-full" overflow="auto">
-            <Request
-              tab={tab}
-              getFirecampAgent={platformContext.getFirecampAgent}
-            />
+            <Request tab={tab} />
             <Response />
           </Row>
           <CodeSnippets
