@@ -1,25 +1,44 @@
 import {render, screen} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { DocButton, CustomDocButton } from "./DocButton.stories";
+
+import Button from './DocButton';
+import { IDocButton } from "./interfaces/DocButton.interfaces";
+
+const Template = (args: IDocButton) => <Button {...args} />;
+const DocButtonArgs = { 
+  text: 'Help',
+  link:"",
+  className:"",
+  iconClassName: ""
+};
+const CustomDocButtonArgs = { 
+  text: 'Custom Help Text',
+  link: 'https://firecamp.io/',
+  className: 'p-3',
+  showIcon: false,
+  iconClassName: 'icon-info-24px-1 font-base',
+  style: {
+    background: "coral"
+  },
+  target: "_blank"
+};
+
 
 describe("Button : " , () => {
 
-  const mountDocButton = () => render(<DocButton {...DocButton.args}/>);
-  const mountCustomDocButton = () => render(<CustomDocButton {...CustomDocButton.args}/>);
-
-  const getCustomDocButton = () => screen.getByText(CustomDocButton.args.text);
+  const getCustomDocButton = () => screen.getByText(CustomDocButtonArgs.text);
   const DEFAULT_DOC_BUTTON_VALUES = {
     text: 'Help',
     link: 'https://firecamp.io/docs/',
     target: '_blank',
-    className: 'transparent without-padding small',
+    className: 'transparent without-padding',
     showIcon:true,
-    iconClassName: 'icon-info-24px-1 font-base fc-button-icon'
+    iconClassName: 'fc-button-icon'
   }
 
   test('Doc button should render with all default props', () => {
-    mountDocButton();
-    let button = screen.getByText(DocButton.args.text);
+    render(<Template {...DocButtonArgs}/>);
+    let button = screen.getByText(DocButtonArgs.text);
     expect(button).toBeInTheDocument();
     expect(button).toHaveProperty('href', DEFAULT_DOC_BUTTON_VALUES.link);
     expect(button).toHaveProperty('target', DEFAULT_DOC_BUTTON_VALUES.target);
@@ -32,24 +51,25 @@ describe("Button : " , () => {
   });
 
   test('Doc button should render provided classname or have the default classname', () => {
-    mountCustomDocButton();
+    render(<Template {...CustomDocButtonArgs}/>);
+    
     let button = getCustomDocButton();
     expect(button).toBeInTheDocument();
     
-    if(CustomDocButton.args.link){
-      expect(button).toHaveProperty('href', CustomDocButton.args.link);
+    if(CustomDocButtonArgs.link){
+      expect(button).toHaveProperty('href', CustomDocButtonArgs.link);
     }
-    if(CustomDocButton.args.target){
-      expect(button).toHaveProperty('target', CustomDocButton.args.target);
+    if(CustomDocButtonArgs.target){
+      expect(button).toHaveProperty('target', CustomDocButtonArgs.target);
     }
-    if(CustomDocButton.args.className){
-      expect(button).toHaveClass(CustomDocButton.args.className);
+    if(CustomDocButtonArgs.className){
+      expect(button).toHaveClass(CustomDocButtonArgs.className);
     }
-    if(CustomDocButton.args.showIcon){
+    if(CustomDocButtonArgs.showIcon){
       //icon is rendered with default classnames to confirm the showIcon prop & iconClassName prop
       let iconElement = Array.from(button.children)[0];
-      if(CustomDocButton.args.iconClassName){
-        expect(iconElement).toHaveClass(CustomDocButton.args.iconClassName + 'font-base fc-button-icon');
+      if(CustomDocButtonArgs.iconClassName){
+        expect(iconElement).toHaveClass(CustomDocButtonArgs.iconClassName + 'font-base fc-button-icon');
       }else{
         expect(iconElement).toHaveClass(DEFAULT_DOC_BUTTON_VALUES.iconClassName);
       }
@@ -57,8 +77,8 @@ describe("Button : " , () => {
       expect(button.children.length).toBe(0);
     }
 
-    if(!["undefined", "null"].includes(typeof CustomDocButton.args.style) && Object.keys(CustomDocButton.args.style).length > 0){
-      expect(button).toHaveStyle(CustomDocButton.args.style);
+    if(!["undefined", "null"].includes(typeof CustomDocButtonArgs.style) && Object.keys(CustomDocButtonArgs.style).length > 0){
+      expect(button).toHaveStyle(CustomDocButtonArgs.style);
     }else{
       expect(button.style.length).toBe(0);
     }

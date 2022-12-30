@@ -1,14 +1,43 @@
 import {render, screen, waitFor} from "@testing-library/react";
 import "@testing-library/jest-dom";
-import {CopyButtonWithTextPreview, CopyButtonWithoutTextPreview, CopyButtonWithoutAnimation, CopyButtonWithCustomComponent} from "./CopyButton.stories";
+
+import Button from './CopyButton';
 import { click } from "../../../__mocks__/eventMock";
+import { ICopyButton } from "./interfaces/CopyButton.interfaces";
+
+const CopyButtonWithTextPreviewArgs = { 
+  className: 'border p-3',
+  text: 'Copy Button Text' ,
+  showText: true,
+  onCopy: (text: string) => console.log(`copied-text`, text)
+}
+const CopyButtonWithoutTextPreviewArgs = { 
+  className: 'border p-3',
+  text: 'Copy Button Text' ,
+  showText: false,
+  onCopy: (text: string) => console.log(`copied-text`, text)
+};
+const CopyButtonWithoutAnimationArgs = { 
+  className: 'border p-3',
+  text: 'Copy Button Text' ,
+  showText: true,
+  animation: false,
+  onCopy: (text: string) => console.log(`copied-text-without-animation`, text)
+};
+
+const CopyButtonWithCustomComponentArgs = { 
+  className: 'border p-3',
+  text: 'Copy Button Text' ,
+  children: [
+    <div key="custom-component" className='h-2 p-3 border border-primaryColor text-primaryColor'>Custom component disables copy functionality</div>
+  ]
+};
+
+const Template = (args: ICopyButton) => <Button {...args} />;
 
 describe("Button : " , () => {
 
-  const mountCopyButtonWithTextComponent = () => render(<CopyButtonWithTextPreview {...CopyButtonWithTextPreview.args}/>);
-  const mountCopyButtonWithoutTextComponent = () => render(<CopyButtonWithoutTextPreview {...CopyButtonWithoutTextPreview.args}/>);
-  const mountCopyButtonWithoutAnimationTextComponent = () => render(<CopyButtonWithoutAnimation {...CopyButtonWithoutAnimation.args}/>);
-  const mountCopyButtonWithCustomComponent = () => render(<CopyButtonWithCustomComponent {...CopyButtonWithCustomComponent.args}/>);
+  const mountCopyButtonWithTextComponent = () => render(<Template {...CopyButtonWithTextPreviewArgs}/>);
   
   const getCopyButton = () => screen.getByTestId('copy-button');
   const getCopyAnimation = () => screen.queryByText(/Copied/i);
@@ -18,11 +47,11 @@ describe("Button : " , () => {
     mountCopyButtonWithTextComponent();
     let button = screen.getByTestId('copy-button');
     expect(button).toHaveClass('fc-copy bg-gray-800');
-    expect(button.textContent).toEqual(CopyButtonWithTextPreview.args.text);
+    expect(button.textContent).toEqual(CopyButtonWithTextPreviewArgs.text);
   });
   
   test('Copy button should render without a preview of text to be copied', () => {
-    mountCopyButtonWithoutTextComponent();
+    render(<Template {...CopyButtonWithoutTextPreviewArgs}/>);
     let button = screen.getByTestId('copy-button');
     
     expect(button).toBeInTheDocument();
@@ -46,7 +75,7 @@ describe("Button : " , () => {
   
   test('Copy button should render the copy text without animation on click event', async () => {
   
-    mountCopyButtonWithoutAnimationTextComponent();
+    render(<Template {...CopyButtonWithoutAnimationArgs}/>);
     const button = getCopyButton();
     const copyElement = button.lastChild as HTMLElement;
   
@@ -55,7 +84,7 @@ describe("Button : " , () => {
     await waitFor(() => getCopyButton());
     const animationExist = await getCopyAnimation();
     
-      if(CopyButtonWithoutAnimation.args.animation){
+      if(CopyButtonWithoutAnimationArgs.animation){
         expect(animationExist).toBeInTheDocument();  
       }else{
         expect(animationExist).toBeNull();  
@@ -64,8 +93,8 @@ describe("Button : " , () => {
   });
   
   test('Copy button should render the custom component', async () => {
-  
-    mountCopyButtonWithCustomComponent();
+
+    render(<Template {...CopyButtonWithCustomComponentArgs}/>);
     const button = getCopyButton();
     const copyElement = button.lastChild as HTMLElement;
   
