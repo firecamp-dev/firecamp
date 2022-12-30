@@ -48,9 +48,7 @@ module.exports = async () => {
     // Copy react app assets
     cp(
       '-R',
-      path.join(
-        `${__dirname}/../packages/firecamp-platform/public/assets/*`
-      ),
+      path.join(`${__dirname}/../platform/firecamp-platform/public/assets/*`),
       buildPath
     );
 
@@ -61,7 +59,7 @@ module.exports = async () => {
     // exec(
     //   `pug -O "{ env: '${env}' }" -o ${buildPath} ${path.join(
     //     __dirname,
-    //     '../packages/firecamp-platform/public/views/'
+    //     '../platform/firecamp-platform/public/views/'
     //   )}`
     // );
 

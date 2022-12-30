@@ -24,8 +24,7 @@
   },
   "include": [
     "src",
-    "src/components/scripts", 
-    "../../packages-clients/http/src/components/common/AddElementPopover.tsx"
+    "src/components/scripts",
   ],
   "exclude": [
     "node_modules",

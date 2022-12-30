@@ -17,11 +17,11 @@ exports.common = {
   entry: {
     index: path.join(
       __dirname,
-      './packages/firecamp-platform/src/containers/index.tsx'
+      './platform/firecamp-platform/src/containers/index.tsx'
     ),
     // identity: path.join(
     //   __dirname,
-    //   './packages/firecamp-platform/src/containers/identity.tsx'
+    //   './platform/firecamp-platform/src/containers/identity.tsx'
     // ),
   },
   optimization: {
