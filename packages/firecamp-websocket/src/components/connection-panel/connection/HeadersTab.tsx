@@ -17,8 +17,8 @@ const HeadersTab = ({
       title={'headers'}
       // meta={{
       //   mode: {
-      //     key: 'ife-header-key',
-      //     value: 'ife-header-value',
+      //     key: EEditorLanguage.HeaderKey,
+      //     value: EEditorLanguage.HeaderValue,
       //   },
       // }}
     />

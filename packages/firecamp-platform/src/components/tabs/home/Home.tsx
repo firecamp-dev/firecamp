@@ -1,10 +1,9 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
+import * as monaco from 'monaco-editor';
 import shallow from 'zustand/shallow';
 import { Container } from '@firecamp/ui-kit';
-import * as monaco from 'monaco-editor';
-import { IFEThemes } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
-import { ERequestTypes } from '@firecamp/types';
+import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
   FcIconGetSquare,
   FcIconGraphQL,
@@ -159,7 +158,7 @@ const Theme: FC<any> = () => {
       }`;
 
       const monacoTheme =
-        theme?.mode == EThemeMode.Dark ? IFEThemes.DARK : IFEThemes.LITE;
+        theme?.mode == EThemeMode.Dark ? EEditorTheme.Dark : EEditorTheme.Lite;
       console.log(monacoTheme, 'monacoTheme');
       // Set monaco editor theme
       monaco.editor.setTheme(monacoTheme);
@@ -174,7 +173,7 @@ const Theme: FC<any> = () => {
       updateTheme(theme);
 
       //Set monaco editor theme
-      theme?.value?.mode == EThemeMode.Dark ? IFEThemes.DARK : IFEThemes.LITE;
+      theme?.value?.mode == EThemeMode.Dark ? EEditorTheme.Dark : EEditorTheme.Lite;
     } catch (error) {
       console.error(error);
     }

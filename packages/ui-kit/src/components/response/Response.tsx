@@ -1,13 +1,12 @@
 import { FC, memo, useState } from 'react';
-import deepEqual from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { ProgressBar, Help, Container, Resizable } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { IRestResponse, TId } from '@firecamp/types';
-
 import Tabs from './tabs/Tabs';
 
 interface IResponsePanel {
-  id: TId,
+  id: TId;
   response: IRestResponse;
   isRequestRunning?: boolean;
   docLink?: string;
@@ -20,9 +19,7 @@ const Response: FC<IResponsePanel> = ({
   docLink = '',
   client = '',
 }) => {
-  let [activeBodyTab, setActiveBodyTab] = useState('body');
-  // console.log('[ui-kit]response component:', response);
-
+  const [activeBodyTab, setActiveBodyTab] = useState('Body');
   return (
     <Resizable
       width={'50%'}
@@ -34,13 +31,10 @@ const Response: FC<IResponsePanel> = ({
     >
       <Container>
         <Container.Header className="z-20">
-          <ProgressBar active={isRequestRunning}  short/>
+          <ProgressBar active={isRequestRunning} short />
         </Container.Header>
         <Container.Body className="w-full">
-          {response &&
-          Object.keys(response).length > 1 &&
-          (response.statusCode !== 0 || response.error) /* ||
-          isRequestRunning === true */ ? (
+          {response && Object.keys(response).length > 1 ? (
             <div className="h-full">
               <Tabs
                 id={id}
@@ -65,5 +59,5 @@ const Response: FC<IResponsePanel> = ({
 
 export default memo(Response, (pp, np) => {
   // console.log(pp, np, deepEqual(pp, np));
-  return deepEqual(pp, np);
+  return isEqual(pp, np);
 });

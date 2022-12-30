@@ -9,7 +9,7 @@ import {
   Editor,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-import { IEnvironment, EEnvironmentScope } from '@firecamp/types';
+import { IEnvironment, EEnvironmentScope, EEditorLanguage } from '@firecamp/types';
 import { Rest } from '@firecamp/cloud-apis';
 
 import { useWorkspaceStore } from '../../../store/workspace';
@@ -216,7 +216,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               {`{ "host": "https://myapi.com" }`}
             </span>
             <Editor
-              language="json"
+              language={EEditorLanguage.Json}
               value={env.variables}
               onChange={onVariableEditorChange}
               monacoOptions={{

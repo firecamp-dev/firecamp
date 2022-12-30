@@ -1,4 +1,4 @@
-import { IEnvironment, TId } from '@firecamp/types';
+import { EEditorLanguage, IEnvironment, TId } from '@firecamp/types';
 import {
   SetCompletionProvider,
   SetHoverProvider,
@@ -163,19 +163,19 @@ const environment: IPlatformEnvironmentService = {
     });
   },
 
-  // set variables to IFE provider
+  // set variables to editor provider
   setVariablesToProvider: (variables: { [key: string]: any }) => {
-    SetCompletionProvider('ife-text', variables);
-    SetHoverProvider('ife-text', variables);
+    SetCompletionProvider(EEditorLanguage.FcText, variables);
+    SetHoverProvider(EEditorLanguage.FcText, variables);
 
-    SetCompletionProvider('ife-header-key', variables);
-    SetHoverProvider('ife-header-key', variables);
+    SetCompletionProvider(EEditorLanguage.HeaderKey, variables);
+    SetHoverProvider(EEditorLanguage.HeaderKey, variables);
 
-    SetCompletionProvider('ife-header-value', variables);
-    SetHoverProvider('ife-header-value', variables);
+    SetCompletionProvider(EEditorLanguage.HeaderValue, variables);
+    SetHoverProvider(EEditorLanguage.HeaderValue, variables);
 
-    SetCompletionProvider('json', variables);
-    SetHoverProvider('json', variables);
+    SetCompletionProvider(EEditorLanguage.Json, variables);
+    SetHoverProvider(EEditorLanguage.Json, variables);
   },
 
   setActiveEnvironments: (requestEnvMeta: {

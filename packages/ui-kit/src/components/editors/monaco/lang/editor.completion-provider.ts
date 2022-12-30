@@ -61,7 +61,7 @@ function createDependencyProposals(
 
   let headerKeys = [];
   let headerValues = [];
-  if (meta && meta.modeId == 'ife-header-key') {
+  if (meta && meta.modeId == EEditorLanguage.HeaderKey) {
     headerKeys = headers.map((h, i) => {
       return {
         label: h.name,
@@ -73,7 +73,7 @@ function createDependencyProposals(
       };
     });
   }
-  if (meta && meta.modeId == 'ife-header-value') {
+  if (meta && meta.modeId == EEditorLanguage.HeaderValue) {
     headerValues = contentTypes.map((h, i) => {
       return {
         label: h.name,

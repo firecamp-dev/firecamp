@@ -160,7 +160,7 @@ importers:
   packages/firecamp-agent-manager:
     specifiers:
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@firecamp/utils': ^0.0.11
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chai': ^4.3.1
@@ -191,7 +191,7 @@ importers:
       typescript: ^4.7.4
     dependencies:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       '@firecamp/utils': 0.0.11
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
@@ -281,7 +281,7 @@ importers:
 
   packages/firecamp-graphql:
     specifiers:
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -316,7 +316,7 @@ importers:
       typedoc: ^0.23.8
       typescript: ^4.7.4
     dependencies:
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       codemirror: 5.65.10
@@ -412,7 +412,7 @@ importers:
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
       '@firecamp/socket.io': workspace:*
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@firecamp/websocket': workspace:*
@@ -460,7 +460,7 @@ importers:
       '@firecamp/graphql': link:../firecamp-graphql
       '@firecamp/rest': link:../firecamp-rest
       '@firecamp/socket.io': link:../firecamp-socket-io
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       '@firecamp/websocket': link:../firecamp-websocket
@@ -507,7 +507,7 @@ importers:
     specifiers:
       '@firecamp/curl-to-firecamp': ^0.0.10
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@hapi/joi': ^17.1.1
@@ -568,7 +568,7 @@ importers:
     dependencies:
       '@firecamp/curl-to-firecamp': 0.0.10
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       '@hapi/joi': 17.1.1
@@ -630,7 +630,7 @@ importers:
 
   packages/firecamp-rest-executor:
     specifiers:
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@firecamp/url': ^0.0.17
       '@hapi/joi': ^17.1.1
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -675,7 +675,7 @@ importers:
       typescript: ^4.7.4
       vm2: ^3.9.11
     dependencies:
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       '@firecamp/url': 0.0.17
       '@hapi/joi': 17.1.1
       ajv: 8.11.2
@@ -724,7 +724,7 @@ importers:
   packages/firecamp-socket-io:
     specifiers:
       '@firecamp/socket.io-executor': workspace:*
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -766,7 +766,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/socket.io-executor': link:../firecamp-socket-io-executor
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       classnames: 2.3.2
@@ -810,7 +810,7 @@ importers:
 
   packages/firecamp-socket-io-executor:
     specifiers:
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/jest': 27.5.0
       '@types/node': ^18.0.0
@@ -841,7 +841,7 @@ importers:
       typedoc: ^0.23.8
       typescript: ^4.7.4
     dependencies:
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       comment-json: 4.2.3
       mitt: 3.0.0
       socket.io-client-v2: /socket.io-client/2.4.0
@@ -875,7 +875,7 @@ importers:
 
   packages/firecamp-websocket:
     specifiers:
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@firecamp/ws-executor': workspace:*
@@ -917,7 +917,7 @@ importers:
       typescript: ^4.7.4
       zustand: 3.7.2
     dependencies:
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       '@firecamp/ws-executor': link:../firecamp-ws-executor
@@ -962,7 +962,7 @@ importers:
 
   packages/firecamp-ws-executor:
     specifiers:
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chrome': ^0.0.204
       '@types/jest': 27.5.0
@@ -993,7 +993,7 @@ importers:
       typescript: ^4.6.3
       ws: 8.0.0
     dependencies:
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       comment-json: 4.2.3
       mitt: 3.0.0
       nanoid: 3.3.4
@@ -1031,7 +1031,7 @@ importers:
       '@babel/core': ^7.14.8
       '@babel/preset-env': ^7.19.4
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.3
+      '@firecamp/types': ^0.1.5
       '@firecamp/ui-kit': workspace:*
       '@monaco-editor/react': 4.4.5
       '@radix-ui/react-toast': ^1.0.0
@@ -1102,7 +1102,7 @@ importers:
       vscode: ^1.1.37
     dependencies:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.3
+      '@firecamp/types': 0.1.5
       '@firecamp/ui-kit': 'link:'
       '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
       '@radix-ui/react-toast': 1.1.2_react-dom@17.0.2
@@ -3095,8 +3095,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@firecamp/types/0.1.3:
-    resolution: {integrity: sha512-b772lGiHSEduROvJ3rxDd10wyMWmcOfJdreBDYAelCBl5AN36mGVM4N8TcCiulhN5V1C0KQ8GnprCYeU6d+I/Q==}
+  /@firecamp/types/0.1.5:
+    resolution: {integrity: sha512-fF7JrbI03UJfyg7JQTHFS0aslPVQpXkCQXFYz67KWRrwuQYO9U6zrXUZxZE97YT7ehgr+5LJNGnZMf6BDQ71Fw==}
     engines: {node: '>=10'}
     dev: false
 
@@ -3265,7 +3265,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.3
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       chalk: 4.1.2
       jest-message-util: 28.1.3
       jest-util: 28.1.3
@@ -3472,7 +3472,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@sinonjs/fake-timers': 9.1.2
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       jest-message-util: 28.1.3
       jest-mock: 28.1.3
       jest-util: 28.1.3
@@ -3528,7 +3528,7 @@ packages:
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
       '@jridgewell/trace-mapping': 0.3.17
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       chalk: 4.1.2
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
@@ -3735,7 +3735,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       '@types/yargs': 15.0.14
       chalk: 4.1.2
     dev: true
@@ -3746,7 +3746,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
       '@types/yargs': 16.0.4
       chalk: 4.1.2
     dev: true
@@ -5040,7 +5040,7 @@ packages:
       '@babel/register': 7.18.9_@babel+core@7.20.5
       '@storybook/node-logger': 6.5.14
       '@storybook/semver': 7.3.2
-      '@types/node': 16.18.9
+      '@types/node': 16.18.11
       '@types/pretty-hrtime': 1.0.1
       babel-loader: 8.3.0_em3sh5kto35xuanci4cvhzqfay
       babel-plugin-macros: 3.1.0
@@ -6087,7 +6087,7 @@ packages:
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
     dev: true
 
   /@types/har-format/1.2.10:
@@ -6242,6 +6242,10 @@ packages:
     dev: true
     optional: true
 
+  /@types/node/16.18.11:
+    resolution: {integrity: sha512-3oJbGBUWuS6ahSnEq1eN2XrCyf4YsWI8OyCvo7c64zQJNplk3mO84t53o8lfTk+2ji59g5ycfc6qQ3fdHliHuA==}
+    dev: true
+
   /@types/node/16.18.9:
     resolution: {integrity: sha512-nhrqXYxiQ+5B/tPorWum37VgAiefi/wmfJ1QZKGKKecC8/3HqcTTJD0O+VABSPwtseMMF7NCPVT9uGgwn0YqsQ==}
 
@@ -6249,8 +6253,8 @@ packages:
     resolution: {integrity: sha512-VkhBbVo2+2oozlkdHXLrb3zjsRkpdnaU2bXmX8Wgle3PUi569eLRaHGlgETQHR7lLL1w7GiG3h9SnePhxNDecw==}
     dev: true
 
-  /@types/node/18.11.17:
-    resolution: {integrity: sha512-HJSUJmni4BeDHhfzn6nF0sVmd1SMezP7/4F0Lq+aXzmp2xm9O7WXrUtHW/CHlYVtZUbByEvWidHqRtcJXGF2Ng==}
+  /@types/node/18.11.18:
+    resolution: {integrity: sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==}
     dev: true
 
   /@types/normalize-package-data/2.4.1:
@@ -6397,7 +6401,7 @@ packages:
   /@types/wait-on/5.3.1:
     resolution: {integrity: sha512-2FFOKCF/YydrMUaqg+fkk49qf0e5rDgwt6aQsMzFQzbS419h2gNOXyiwp/o2yYy27bi/C1z+HgfncryjGzlvgQ==}
     dependencies:
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
     dev: true
 
   /@types/webpack-env/1.18.0:
@@ -7550,7 +7554,7 @@ packages:
     hasBin: true
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001439
+      caniuse-lite: 1.0.30001441
       normalize-range: 0.1.2
       num2fraction: 1.2.2
       picocolors: 0.2.1
@@ -8295,7 +8299,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001439
+      caniuse-lite: 1.0.30001441
       electron-to-chromium: 1.4.284
       node-releases: 2.0.8
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -8560,6 +8564,10 @@ packages:
 
   /caniuse-lite/1.0.30001439:
     resolution: {integrity: sha512-1MgUzEkoMO6gKfXflStpYgZDlFM7M/ck/bgfVCACO5vnAf0fXoNVHdWtqGU+MYca+4bL9Z5bpOVmR33cWW9G2A==}
+    dev: false
+
+  /caniuse-lite/1.0.30001441:
+    resolution: {integrity: sha512-OyxRR4Vof59I3yGWXws6i908EtGbMzVUi3ganaZQHmydk1iwDhRnvaPG2WaR0KcqrDFKrxVZHULT396LEPhXfg==}
 
   /capture-exit/2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
@@ -14375,7 +14383,7 @@ packages:
       '@jest/expect': 28.1.3
       '@jest/test-result': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       chalk: 4.1.2
       co: 4.6.0
       dedent: 0.7.0
@@ -14916,7 +14924,7 @@ packages:
     dependencies:
       '@jest/types': 26.6.2
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.10
@@ -14939,7 +14947,7 @@ packages:
     dependencies:
       '@jest/types': 28.1.3
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.10
@@ -14958,7 +14966,7 @@ packages:
     dependencies:
       '@jest/types': 29.3.1
       '@types/graceful-fs': 4.1.5
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.10
@@ -15062,7 +15070,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 18.11.15
+      '@types/node': 18.11.18
     dev: true
 
   /jest-mock/28.1.3:
@@ -15070,7 +15078,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.3
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
     dev: true
 
   /jest-mock/29.3.1:
@@ -15338,7 +15346,7 @@ packages:
     resolution: {integrity: sha512-S5wqyz0DXnNJPd/xfIzZ5Xnp1HrJWBczg8mMfMpN78OJ5eDxXyf+Ygld9wX1DnUWbIbhM1YDY95NjR4CBXkb2g==}
     engines: {node: '>= 10.14.2'}
     dependencies:
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       graceful-fs: 4.2.10
     dev: true
 
@@ -15410,7 +15418,7 @@ packages:
     engines: {node: '>= 10.14.2'}
     dependencies:
       '@jest/types': 26.6.2
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       chalk: 4.1.2
       graceful-fs: 4.2.10
       is-ci: 2.0.0
@@ -15434,7 +15442,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/types': 29.3.1
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       chalk: 4.1.2
       ci-info: 3.7.0
       graceful-fs: 4.2.10
@@ -15487,7 +15495,7 @@ packages:
     dependencies:
       '@jest/test-result': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.10.2
@@ -15501,7 +15509,7 @@ packages:
     dependencies:
       '@jest/test-result': 29.3.1
       '@jest/types': 29.3.1
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -15513,7 +15521,7 @@ packages:
     resolution: {integrity: sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       merge-stream: 2.0.0
       supports-color: 7.2.0
     dev: true
@@ -15540,7 +15548,7 @@ packages:
     resolution: {integrity: sha512-lY4AnnmsEWeiXirAIA0c9SDPbuCBq8IYuDVL8PMm0MZ2PEs2yPvRA/J64QBXuZp7CYKrDM/rmNrc9/i3KJQncw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@types/node': 18.11.17
+      '@types/node': 18.11.18
       jest-util: 29.3.1
       merge-stream: 2.0.0
       supports-color: 8.1.1

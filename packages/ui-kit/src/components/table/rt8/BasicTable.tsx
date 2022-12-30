@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { FC, useState } from 'react';
-import equal from 'deep-equal';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { EEditorLanguage } from '@firecamp/types';
 
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from './Table';
@@ -76,7 +76,7 @@ const BasicTable: FC<any> = ({
                   value={value}
                   disabled={false}
                   type="text"
-                  language={'ife-header-key'}
+                  language={EEditorLanguage.HeaderKey}
                   onChange={(e) => {
                     console.log(e);
                   }}

@@ -10,7 +10,6 @@ export default class URLWorker {
 import * as worker from 'monaco-editor/esm/vs/editor/editor.worker';
 
 self.onmessage = () => {
-  debugger;
   try {
     worker.initialize((ctx, createData) => {
       // debugger
@@ -19,7 +18,6 @@ self.onmessage = () => {
       // return new GraphQLWorker(ctx, createData);
     });
   } catch (err) {
-    debugger;
     throw err;
   }
 };

@@ -1,5 +1,6 @@
 import { FC, useState, useMemo } from 'react';
 import { Container, SecondaryTab, Checkbox, Editor } from '@firecamp/ui-kit';
+import { EEditorLanguage } from '@firecamp/types';
 import {
   preScriptSnippets,
   postScriptSnippets,
@@ -7,9 +8,7 @@ import {
 } from '@firecamp/rest-executor/dist/esm';
 //@ts-ignore
 import ScriptDefs from './interfaces/Scripts.d.txt?raw';
-
 import HelpPopUp from './HelpPopup';
-
 import { IScriptsTab } from './interfaces/Scripts.interfaces';
 
 const snippets: { [key: string]: any } = {
@@ -205,7 +204,7 @@ const ScriptsTabs: FC<IScriptsTab> = ({
             autoFocus={true}
             id={`scripts-tab-${activeTab}-${id}`}
             value={scripts[activeTab] || ''}
-            language={'typescript'}
+            language={EEditorLanguage.TypeScript}
             onLoad={(editor) => {
               setEditorDOM(editor);
             }}

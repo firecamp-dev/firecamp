@@ -1,3 +1,4 @@
+import { EEditorLanguage } from '@firecamp/types';
 import { BulkEditTable } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { IStore, useStore } from '../../../store';
@@ -16,11 +17,11 @@ const HeadersTab = () => {
       onChange={changeHeaders}
       key={'headers'}
       rows={headers}
-      name={'headers'}
+      title={'Headers'}
       meta={{
         mode: {
-          key: 'ife-header-key',
-          value: 'ife-header-value',
+          key: EEditorLanguage.HeaderKey,
+          value: EEditorLanguage.HeaderValue,
         },
         allowDescription: false,
       }}

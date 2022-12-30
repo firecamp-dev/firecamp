@@ -7,7 +7,7 @@ import { _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 
 import parseBody from './helpers/body';
-import { IRestExecutor } from './types';
+import { IRestExecutor, TResponse } from './types';
 export * from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
@@ -15,6 +15,25 @@ export default class RestExecutor implements IRestExecutor {
 
   constructor() {
     this._controller = new AbortController();
+    // note the request start time
+    axios.interceptors.request.use((request) => {
+      request['metadata'] = {
+        startTime: new Date(),
+      };
+      return request;
+    });
+
+    // note the request finished time
+    axios.interceptors.response.use((res) => {
+      res.config['metadata']['endTime'] = new Date();
+      res.config['metadata'] = {
+        ...res.config['metadata'],
+        get duration() {
+          return this.endTime - this.startTime;
+        },
+      };
+      return res;
+    });
   }
 
   private _timeline(
@@ -23,12 +42,7 @@ export default class RestExecutor implements IRestExecutor {
   ): string {
     const tl: string[] = [];
 
-    /**
-     * Return the key:value string
-     * @param object
-     * @param prefix
-     * @returns
-     */
+    /** return the key:value string */
     const objectToText = (object = {}, prefix: string) =>
       Object.keys(object).reduce(
         (prev, key) => `${prev + prefix + ' ' + key}:${object[key]}\n`,
@@ -37,13 +51,13 @@ export default class RestExecutor implements IRestExecutor {
 
     const { status, statusText, config, headers } = response;
 
-    tl.push('\n----------------General----------------\n');
+    tl.push('\n-----------   GENERAL  -----------n');
     tl.push(`# Request URL:  ${config.url}`);
     tl.push(`# Request Method: ${config.method}`);
     tl.push(`# Status Code: ${status} ${statusText}`);
 
     if (!_object.isEmpty(request.headers || {})) {
-      tl.push('\n-----------Request Headers-----------\n');
+      tl.push('\n-----------   REQUEST HEADERS   -----------\n');
       tl.push(objectToText(request.headers, '>'));
     }
 
@@ -52,14 +66,13 @@ export default class RestExecutor implements IRestExecutor {
       tl.push(`> ${config.data}`);
     }
 
-    tl.push(`\n-----------Response Headers-----------\n`);
+    tl.push(`\n-----------   RESPONSE HEADERS   -----------\n`);
     tl.push(objectToText(headers, '<'));
 
     if (typeof response.data === 'string') {
-      tl.push('\n-----------Response Data-----------\n');
+      tl.push('\n-----------   RESPONSE DATA   -----------\n');
       tl.push(`> ${response.data}`);
     }
-
     return tl.join('\n');
   }
 
@@ -68,7 +81,7 @@ export default class RestExecutor implements IRestExecutor {
       statusCode: axiosResponse.status,
       statusMessage: axiosResponse.statusText,
       data: axiosResponse.data,
-      headers: axiosResponse.headers,
+      headers: axiosResponse.headers || {},
       //@ts-ignore
       duration: axiosResponse?.config?.metadata?.duration || 0,
       size: Number(axiosResponse?.headers?.['content-length']) || 0,
@@ -76,7 +89,7 @@ export default class RestExecutor implements IRestExecutor {
   }
 
   /**
-   * Return axios request config generated from Firecamp REST request
+   * return axios request config generated from Firecamp REST request
    * @param request: IRest
    */
   private async _prepare(request: IRest): Promise<AxiosRequestConfig> {
@@ -117,70 +130,52 @@ export default class RestExecutor implements IRestExecutor {
     return axiosRequest;
   }
 
-  async send(request: IRest): Promise<IRestResponse> {
-    let axiosRequest: AxiosRequestConfig = {};
-
+  async send(request: IRest): Promise<TResponse> {
+    const axiosRequest: AxiosRequestConfig = await this._prepare(request);
     try {
-      if (_object.isEmpty(request))
-        return Promise.reject(new Error('Invalid request payload'));
-
-      axiosRequest = await this._prepare(request);
-
-      // note the request start time
-      axios.interceptors.request.use((request) => {
-        request['metadata'] = {
-          startTime: new Date(),
-        };
-        return request;
-      });
-
-      // note the request finished time
-      axios.interceptors.response.use((res) => {
-        res.config['metadata']['endTime'] = new Date();
-        res.config['metadata'] = {
-          ...res.config['metadata'],
-          get duration() {
-            return this.endTime - this.startTime;
-          },
-        };
-        return res;
-      });
-
-      // execute request
-      const axiosResponse = await axios(axiosRequest);
-
-      // normalize response according to Firecamp REST request's response
-      const response = this._normalizeResponse(axiosResponse);
-
-      // prepare timeline of request execution
-      response['timeline'] = this._timeline(axiosRequest, axiosResponse);
-
-      return Promise.resolve(response);
-    } catch (error) {
-      console.error(error);
-      if (!_object.isEmpty(error.response)) {
-        const response = this._normalizeResponse(error.response);
-
-        if (!error?.response?.config && error?.config) {
-          error.response.config = error.config;
-        }
-
-        // prepare timeline of request execution
-        response['timeline'] = this._timeline(axiosRequest, error.response);
-
-        return Promise.reject({
-          response,
+      if (_object.isEmpty(request)) {
+        const message: string = 'Invalid request payload';
+        return Promise.resolve({
+          statusCode: 0,
           error: {
-            message: error.message,
-            code: error.code,
+            message,
+            code: 'INVALID REQUEST',
+            e: new Error(message),
           },
         });
       }
-      return Promise.reject({
-        response: null,
+      // execute request
+      const axiosResponse = await axios(axiosRequest);
+      // normalize response according to Firecamp REST request's response
+      const response = this._normalizeResponse(axiosResponse);
+      // prepare timeline of request execution
+      response.timeline = this._timeline(axiosRequest, axiosResponse);
+      return Promise.resolve({ ...response });
+    } catch (e) {
+      console.error(e);
+      if (!_object.isEmpty(e.response)) {
+        const response = this._normalizeResponse(e.response);
+
+        if (!e.response?.config && e.config) e.response.config = e.config;
+
+        // prepare timeline of request execution
+        response.timeline = this._timeline(axiosRequest, e.response);
+
+        return Promise.resolve({
+          ...response,
+          error: {
+            message: e.message,
+            code: e.code,
+            e,
+          },
+        });
+      }
+      return Promise.resolve({
+        statutsCode: 0,
         error: {
-          message: error.message,
-          code: error.code,
+          message: e.message,
+          code: e.code,
+          e,
         },
       });
     }

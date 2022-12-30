@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Column, Row, SingleLineEditor } from '@firecamp/ui-kit';
-import { IFELanguages } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
+import { EEditorLanguage } from '@firecamp/types';
 
 const Url: FC<IUrl> = ({
   id = '',
@@ -18,7 +18,7 @@ const Url: FC<IUrl> = ({
           key={id}
           path={id}
           value={url}
-          language={IFELanguages.TEXT}
+          language={EEditorLanguage.Text}
           autoFocus={autoFocus}
           placeholder={placeholder}
           monacoOptions={{
