@@ -5,22 +5,20 @@ import { Row, RootContainer, Column } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { _misc } from '@firecamp/utils';
 
-import { useTabStore } from '../../store/tab';
-import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import TabContainerHeader from '../tabs/TabContainerHeader';
 import TabContainerBody from '../tabs/TabContainerBody';
+import { useTabStore, ITabStore } from '../../store/tab';
+import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 
 const TabsContainer: FC<any> = () => {
   const { tabs, activeTab, tabFns } = useTabStore(
-    (s: any) => ({
+    (s: ITabStore) => ({
       tabs: s.list,
       activeTab: s.activeTab,
-
       tabFns: {
         reorder: s.reorder,
         open: s.open,
         close: s.close,
-        update: s.update,
       },
     }),
     shallow
