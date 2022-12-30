@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
-import { Row, RootContainer, Column } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
+import { Row, RootContainer, Column } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { _misc } from '@firecamp/utils';
 
@@ -11,7 +11,7 @@ import TabContainerHeader from '../tabs/TabContainerHeader';
 import TabContainerBody from '../tabs/TabContainerBody';
 
 const TabsContainer: FC<any> = () => {
-  let { tabs, activeTab, tabFns } = useTabStore(
+  const { tabs, activeTab, tabFns } = useTabStore(
     (s: any) => ({
       tabs: s.list,
       activeTab: s.activeTab,
@@ -26,7 +26,7 @@ const TabsContainer: FC<any> = () => {
     shallow
   );
 
-  let { toggleEnvSidebar } = useEnvStore(
+  const { toggleEnvSidebar } = useEnvStore(
     (s: IEnvironmentStore) => ({
       toggleEnvSidebar: s.toggleEnvSidebar,
       setWorkspaceActiveEnv: s.setWorkspaceActiveEnv,

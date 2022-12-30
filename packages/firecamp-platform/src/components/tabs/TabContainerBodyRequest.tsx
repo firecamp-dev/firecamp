@@ -1,10 +1,9 @@
-import { FC, lazy, Suspense, useMemo } from 'react';
+import { FC, lazy, Suspense, useMemo, memo } from 'react';
+import isEqual from 'react-fast-compare';
+import _cloneDeep from 'lodash/cloneDeep';
 import { ERequestTypes } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-import { ErrorBoundary } from 'react-error-boundary';
-import _cloneDeep from 'lodash/cloneDeep';
 import { Loader } from '@firecamp/ui-kit';
-
 import JsonTab from './requests/json/Request';
 import MdTab from './requests/markdown/Request';
 
@@ -29,17 +28,15 @@ const SocketIOClient = lazy(() =>
 );
 
 import EnvironmentWidget from '../common/environment/environment-widget/EnvironmentWidget';
-import ErrorPopup from '../common/error-boundary/ErrorPopup';
 import { IRequestTabProps } from './types';
 
 import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 
-const TabBody: FC<any> = ({ tabObj, index, activeTab }) => {
-  if (!tabObj || index === -1) {
+const TabContainerBodyRequest: FC<any> = ({ tab, index, activeTab }) => {
+  if (!tab || index === -1) {
     return <span />;
   }
-
   const { getFirecampAgent } = usePlatformStore.getState();
   // const { changeActiveTab, close } = useTabStore.getState();
 
@@ -49,18 +46,15 @@ const TabBody: FC<any> = ({ tabObj, index, activeTab }) => {
       ERequestTypes.WebSocket,
       ERequestTypes.Rest,
       ERequestTypes.GraphQL,
-    ].includes(tabObj.type)
+    ].includes(tab.type)
   ) {
-    tabObj = Object.assign({}, tabObj, {
-      // ssl_manager: sslList,
-      // proxy_manager: proxyList,
-    });
+    tab = Object.assign({}, tab, {});
   }
 
   const tabProps: IRequestTabProps = useMemo(() => {
     return {
+      tab,
       index: index,
-      tab: tabObj,
       activeTab: activeTab,
 
       //v3 props
@@ -70,7 +64,7 @@ const TabBody: FC<any> = ({ tabObj, index, activeTab }) => {
         getFirecampAgent,
       },
     };
-  }, [activeTab, tabObj]);
+  }, [activeTab, tab]);
 
   const _renderRequestTab = (type) => {
     switch (type) {
@@ -80,54 +74,36 @@ const TabBody: FC<any> = ({ tabObj, index, activeTab }) => {
             <Rest {...tabProps} />
           </Suspense>
         );
-        break;
       case ERequestTypes.GraphQL:
         return (
           <Suspense fallback={<Loader />}>
             <GraphQL {...tabProps} />
           </Suspense>
         );
-        break;
       case ERequestTypes.SocketIO:
         return (
           <Suspense fallback={<Loader />}>
             <SocketIOClient {...tabProps} />
           </Suspense>
         );
-        break;
       case ERequestTypes.WebSocket:
         return (
           <Suspense fallback={<Loader />}>
             <WSClient {...tabProps} />
           </Suspense>
         );
-        break;
-
       case 'json':
         return <JsonTab {...tabProps} />;
-        break;
       case 'md':
         return <MdTab {...tabProps} />;
-        break;
       default:
         return <span>Default Request Tab</span>;
     }
   };
 
-  // return _renderRequestTab(tabObj.type);
-
-  return (
-    <ErrorBoundary
-      FallbackComponent={ErrorPopup}
-      // onError={(error, info) => {
-      //   console.log({ error, info });
-      //   close.byIds([tabObj.id]);
-      //   changeActiveTab('home');
-      // }}
-    >
-      {_renderRequestTab(tabObj.type)}
-    </ErrorBoundary>
-  );
+  return _renderRequestTab(tab.type);
 };
 
-export default TabBody;
+export default memo(TabContainerBodyRequest, (pp, np) => {
+  return isEqual(pp, np);
+});
