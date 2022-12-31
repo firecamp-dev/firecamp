@@ -237,7 +237,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         <UrlBarContainer
           tab={tab}
           collectionId={tab?.request?.__ref?.collectionId || ''}
-          postComponents={platformComponents}
           onPasteCurl={onPasteCurl}
         />
         <Container.Body>

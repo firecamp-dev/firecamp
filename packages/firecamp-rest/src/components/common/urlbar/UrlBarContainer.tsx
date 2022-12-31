@@ -10,10 +10,8 @@ const methods = Object.values(EHttpMethod);
 const UrlBarContainer = ({
   tab,
   collectionId = '',
-  postComponents,
   onPasteCurl = (curl: string) => {},
 }) => {
-  const { EnvironmentWidget } = postComponents;
 
   const {
     url,
@@ -27,7 +25,6 @@ const UrlBarContainer = ({
     changeUrl,
     changeMethod,
     execute,
-    changeActiveEnvironment,
     save,
   } = useStore(
     (s: IStore) => ({
@@ -42,7 +39,6 @@ const UrlBarContainer = ({
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
-      changeActiveEnvironment: s.changeActiveEnvironment,
       save: s.save,
     }),
     shallow
@@ -90,10 +86,7 @@ const UrlBarContainer = ({
       variables: variables.collection,
     };
 
-    context.environment.setVariables(
-      workspaceUpdates,
-      collectionUpdates
-    );
+    context.environment.setVariables(workspaceUpdates, collectionUpdates);
   };
 
   const _onExecute = async () => {
@@ -101,8 +94,9 @@ const UrlBarContainer = ({
       // Do not execute if url is empty
       if (!url.raw) return;
 
-      const envVariables =
-        await context.environment.getVariablesByTabId(tab.id);
+      const envVariables = await context.environment.getVariablesByTabId(
+        tab.id
+      );
       // console.log({ envVariables });
 
       const agent: EFirecampAgent = context.getFirecampAgent();
@@ -118,21 +112,7 @@ const UrlBarContainer = ({
 
   return (
     <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`http-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
+      environmentCard={<></>}
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {

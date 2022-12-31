@@ -8,6 +8,7 @@ import { dissoc } from 'ramda';
 import { IRequestTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
+import { useEnvStore } from './environment';
 
 const initialState = {
   list: {},
@@ -214,18 +215,19 @@ const useTabStore = create<ITabStore>((set, get) => {
             revision: 1,
             isDeleted: false,
             isHistoryTab,
-            // _meta,
           },
         };
 
         const _orders = [...orders, tId];
-        set((s: ITabStore) => {
-          return {
-            list: { ...list, [tId]: tab },
-            activeTab: setActive == true ? tab.id : activeTab,
-            orders: _orders,
-          };
+        set({
+          list: { ...list, [tId]: tab },
+          activeTab: setActive == true ? tab.id : activeTab,
+          orders: _orders,
         });
+
+        /** -- set tabId and collectionId in tabColMap -- */
+        const envStore = useEnvStore.getState();
+        envStore.setTabCollection(tId, request.__ref.collectionId);
 
         return [tab, _orders];
       },

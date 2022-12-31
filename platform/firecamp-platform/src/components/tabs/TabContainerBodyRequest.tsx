@@ -27,9 +27,7 @@ const SocketIOClient = lazy(() =>
   }))
 );
 
-import EnvironmentWidget from '../common/environment/environment-widget/EnvironmentWidget';
 import { IRequestTabProps } from './types';
-
 import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 
@@ -58,7 +56,6 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index, activeTab }) => {
       activeTab: activeTab,
 
       //v3 props
-      platformComponents: { EnvironmentWidget },
       platformContext: {
         ...pltContext,
         getFirecampAgent,

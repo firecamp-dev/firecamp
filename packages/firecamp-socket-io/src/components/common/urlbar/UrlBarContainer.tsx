@@ -1,36 +1,19 @@
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
-import { TId } from '@firecamp/types';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
-import ConnectionButton from '../connection/ConnectButton'
+import ConnectionButton from '../connection/ConnectButton';
 import { VERSIONS } from '../../../constants';
 import { IStore, useStore } from '../../../store';
 
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  postComponents,
-}) => {
-  const { EnvironmentWidget } = postComponents;
-  const {
-    url,
-    displayUrl,
-    version,
-    activeEnvironments,
-    changeUrl,
-    changeConfig,
-    changeActiveEnvironment,
-    save
-  } = useStore(
+const UrlBarContainer = ({ tab }) => {
+  const { url, displayUrl, version, changeUrl, changeConfig, save } = useStore(
     (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
-      activeEnvironments: s.runtime.activeEnvironments,
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
-      changeActiveEnvironment: s.changeActiveEnvironment,
-      save: s.save
+      save: s.save,
     }),
     shallow
   );
@@ -64,24 +47,7 @@ const UrlBarContainer = ({
   }
 
   return (
-    <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`socket-io-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
-      nodePath={''}
-    >
+    <UrlBar environmentCard={<></>} nodePath={''}>
       <UrlBar.Prefix>
         <HttpMethodDropDown
           id={tab.id}

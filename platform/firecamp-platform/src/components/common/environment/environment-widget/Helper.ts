@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 const Helper = {
   generate: {
     environmentsDD: (environments = [], activeEnv = '') => {
@@ -9,10 +7,7 @@ const Helper = {
       if (environments?.length) {
         for (let value of environments) {
           if (value.__ref) {
-            options.push({
-              id: value.__ref.id,
-              name: value.name,
-            });
+            options.push({ id: value.__ref.id, name: value.name });
           }
         }
       }
@@ -21,21 +16,9 @@ const Helper = {
         if (activeEnv) {
           selected = options.find((o) => o.id === activeEnv);
         }
-
-        if (!selected) {
-          selected = options[0];
-        }
+        if (!selected) selected = options[0];
       }
-
-      // /*  console.log({
-      //    options,
-      //    selected
-      //  }); */
-
-      return {
-        options,
-        selected,
-      };
+      return { options, selected };
     },
   },
 };

@@ -5,11 +5,10 @@ import { AiOutlineUsergroupAdd } from '@react-icons/all-files/ai/AiOutlineUsergr
 import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 
+import platformContext from '../../../services/platform-context';
 import { EUserRolesWorkspace } from '../../../types';
 import { useUserStore } from '../../../store/user';
 import { usePlatformStore, EPlatformScope } from '../../../store/platform';
-import platformContext from '../../../services/platform-context';
-import EnvironmentWidget from '../../common/environment/environment-widget/EnvironmentWidget';
 
 const CollabButton: FC<any> = () => {
   const isGuest = useUserStore((s) => s.isGuest, shallow);
@@ -21,34 +20,23 @@ const CollabButton: FC<any> = () => {
         <Button
           text="save my workspace"
           icon={<AiOutlineUpload className="mr-2 toggle-arrow" size={16} />}
+          onClick={(e) => platformContext.app.modals.openSignIn()}
           secondary
           iconLeft
-          onClick={(e) => platformContext.app.modals.openSignIn()}
+          transparent
           sm
-          transparent={true}
         />
       );
     } else if (platformScope == EPlatformScope.Person) {
       return (
-        <EnvironmentWidget
-          key={123}
-          previewId={`http-env-variables-123`}
-          collectionId={'8I564M4AgLnbV54q9iVNX'}
-          collectionActiveEnv={''}
-          onCollectionActiveEnvChange={(collectionId, envId) => {
-            // changeActiveEnvironment('collection', envId);
-          }}
-        />
-      );
-      return (
         <Button
           text="create organization"
           icon={<VscAdd className="mr-2 toggle-arrow" size={12} />}
+          onClick={(e) => platformContext.app.modals.openCreateOrg()}
           secondary
           iconLeft
+          transparent
           sm
-          transparent={true}
-          onClick={(e) => platformContext.app.modals.openCreateOrg()}
         />
       );
     } else if (
@@ -61,11 +49,11 @@ const CollabButton: FC<any> = () => {
           icon={
             <AiOutlineUsergroupAdd className="ml-2 toggle-arrow" size={12} />
           }
+          onClick={(e) => platformContext.app.modals.openInviteMembers()}
           secondary
           iconLeft
+          transparent
           sm
-          onClick={(e) => platformContext.app.modals.openInviteMembers()}
-          transparent={true}
         />
       );
     } else return <></>;

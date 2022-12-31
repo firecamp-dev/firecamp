@@ -146,12 +146,7 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
-        <UrlBarContainer
-          tab={tab}
-          collectionId={tab?.request?.__ref.collectionId || ''}
-          postComponents={platformComponents}
-          platformContext={platformContext}
-        />
+        <UrlBarContainer tab={tab} />
         <Container.Body>
           <Row flex={1} overflow="auto" className="with-divider h-full">
             <SidebarPanel />

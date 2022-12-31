@@ -158,8 +158,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
       <Container className="h-full with-divider">
         <UrlBarContainer
           tab={tab}
-          collectionId={tab?.request?.__ref?.collectionId || ''}
-          postComponents={platformComponents}
           // onPasteCurl={onPasteCurl}
         />
         <Container.Body>

@@ -1,18 +1,19 @@
 import { FC, useEffect, memo, useRef } from 'react';
 import classnames from 'classnames';
+import shallow from 'zustand/shallow';
 import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
-import shallow from 'zustand/shallow';
 import { TId } from '@firecamp/types';
 
 import Menu from './header/Menu';
 import CollabButton from './header/CollabButton';
-import { ITabStore, useTabStore } from '../../store/tab';
+import EnvironmentSelecctor from '../common/environment/environment-widget/EnvironmentSelector';
 
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
+import { ITabStore, useTabStore } from '../../store/tab';
 
 const TabHeaderContainer: FC = () => {
   const tabApi = useRef({});
@@ -122,6 +123,7 @@ const TabHeaderContainer: FC = () => {
           </div>
         </Column>
         <CollabButton />
+        <EnvironmentSelecctor />
       </Row>
     </Column>
   );

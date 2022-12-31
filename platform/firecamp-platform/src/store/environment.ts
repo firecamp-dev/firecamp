@@ -39,6 +39,7 @@ export interface IEnvironmentStore {
   getCollectionEnvs: (collectionId: TColId) => any[];
   getCollectionActiveEnv: (collectionId: TColId) => TEnvId;
 
+  setTabCollection: (tabId: TTabId, collectionId: TColId) => void;
   setCollectionActiveEnv: (collectionId: TColId, envId: TEnvId) => void;
   setEnvVariables: (envId: TEnvId, variables: object) => void;
 
@@ -55,38 +56,24 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   ...initialState,
 
   initialize: (envs: IEnvironment[] = []) => {
-    let activeTabCollectionEnvs = {};
-    let cEnvs = envs
-      .filter((e) => ['C', 'P'].includes(e.__meta.type))
-      .reduce((p, e) => {
-        if (!p[e.__ref.collectionId]) p[e.__ref.collectionId] = [];
-
-        //@ts-ignore
-        return {
-          ...p,
-          [e.__ref.collectionId]: [...p[e.__ref.collectionId], e],
-        };
-      }, {} as any);
-    let _cEnvs = Object.keys(cEnvs).reduce(
-      (collEnvs, key) => ({
-        ...collEnvs,
-        [key]: cEnvs[key].reduce((c, e) => ({ ...c, [e.__ref.id]: e }), {}),
-      }),
-      {}
+    const cEnvs = envs.filter(
+      (e) => ['C', 'P'].includes(e.__meta.type) && e.__ref.collectionId
     );
-
-    // set active environment for workspace and collection
-    for (let key in _cEnvs) {
-      activeTabCollectionEnvs[key] = Object.keys(_cEnvs[key])[0] || '';
-    }
-
-    // console.log({ activeTabCollectionEnvs });
-    // console.log({ _wEnvs, _cEnvs });
-
-    set((s) => ({
-      envs: envs,
-      activeTabCollectionEnvs,
-    }));
+    const colIds = cEnvs.map((e) => e.__ref.collectionId);
+    const colEnvMap = colIds.reduce((p, n) => {
+      let env = cEnvs.find(
+        (e) => e.__ref.collectionId == n && e.name == 'Development'
+      );
+      // id=f develoment env not found then find te first env for now
+      if (!env) {
+        env = cEnvs.find((e) => e.__ref.collectionId == n);
+      }
+      return {
+        ...p,
+        [n]: env.__ref.id,
+      };
+    }, {});
+    set({ envs, colEnvMap });
   },
 
   registerTDP: (colEnvTdpInstance) => {
@@ -97,7 +84,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   // unregister TreeDatProvider instance
   unRegisterTDP: () => {
-    set((s) => ({ colEnvTdpInstance: null }));
+    set({ colEnvTdpInstance: null });
   },
 
   toggleEnvSidebar: () => {
@@ -105,7 +92,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   toggleProgressBar: (flag: boolean) => {
-    set((s) => ({ isProgressing: flag }));
+    set({ isProgressing: flag });
   },
 
   setEnvVariables: (envId, variables: object) => {
@@ -119,6 +106,17 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       return { envs };
     });
     return;
+  },
+
+  setTabCollection: (tabId: TTabId, collectionId: TColId) => {
+    console.log(tabId, collectionId, 1111111);
+    debugger;
+    set((s) => ({
+      tabColMap: {
+        ...s.tabColMap,
+        [tabId]: collectionId,
+      },
+    }));
   },
 
   setCollectionActiveEnv: (collectionId, envId) => {
