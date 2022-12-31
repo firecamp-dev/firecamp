@@ -6,11 +6,11 @@ import {
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 
-import { useTabStore } from '../../store/tab';
-import { IEnvironmentStore, useEnvStore } from '../../store/environment';
 import { IRequestTab } from '../../components/tabs/types/tab';
 import { prepareEventNameForEnvToTab } from '../platform-emitter/events';
 import { platformEmitter } from '../platform-emitter';
+import { IEnvironmentStore, useEnvStore } from '../../store/environment';
+import { useTabStore } from '../../store/tab';
 
 export interface IPlatformEnvironmentService {
   // subscribe to environment changes
@@ -21,7 +21,6 @@ export interface IPlatformEnvironmentService {
 
   // get active workspace and collection envs
   getActiveEnvsByTabId: (tabId: TId) => Promise<{
-    workspace: TId;
     collection?: TId;
   }>;
 
@@ -42,10 +41,6 @@ export interface IPlatformEnvironmentService {
   }) => void;
 
   setVariables: (
-    workspace: {
-      environmentId: TId;
-      variables: { [key: string]: any };
-    },
     collection?: {
       id?: TId;
       environmentId: TId;
@@ -54,8 +49,6 @@ export interface IPlatformEnvironmentService {
   ) => void;
 }
 export interface IPlatformVariables {
-  merged: {};
-  workspace: {};
   collection: {};
 }
 
@@ -95,13 +88,13 @@ const environment: IPlatformEnvironmentService = {
     const platformVariables: IPlatformVariables =
       await environment.getVariablesByTabId(tabId);
     console.log(platformVariables, 'platformVariables');
-    environment.setVariablesToProvider(platformVariables.merged);
+    environment.setVariablesToProvider(platformVariables.collection);
 
     /**
      * 2.1  get platform active envs
      * 2.2  emit event: platform environment updates
      */
-    let activeEnvsOfTan = await environment.getActiveEnvsByTabId(tabId);
+    const activeEnvsOfTan = await environment.getActiveEnvsByTabId(tabId);
     platformEmitter.emit(prepareEventNameForEnvToTab(tabId), activeEnvsOfTan);
   },
 
@@ -110,18 +103,14 @@ const environment: IPlatformEnvironmentService = {
     let tab: IRequestTab = useTabStore.getState().list[tabId];
     if (!tab || !tabId) return Promise.reject('invalid tab id');
 
-    //workspace active environment
-    const wrsActiveEnv = envStore.activeTabWrsEnv;
     let collectionActiveEnv = '';
-
     // get collectionId and collectionActiveEnv from tab's request's __meta
     if (tab.__meta.isSaved && tab.request?.__ref.collectionId) {
       collectionActiveEnv =
-        envStore.activeTabCollectionEnvs[tab.request.__ref.collectionId];
+        envStore.colEnvMap[tab.request.__ref.collectionId];
     }
 
     return Promise.resolve({
-      workspace: wrsActiveEnv,
       collection: collectionActiveEnv,
     });
   },
@@ -135,12 +124,6 @@ const environment: IPlatformEnvironmentService = {
     const activeEnvsOfTab = await environment.getActiveEnvsByTabId(tabId);
     const collectionId = tab.request?.__ref.collectionId || '';
 
-    //workspace active environment
-    const wrsActiveEnv = envStore.envs.find(
-      (e) => e.__ref.id == envStore.activeTabWrsEnv
-    );
-    const wrsEnvVars = wrsActiveEnv ? wrsActiveEnv.variables : {};
-
     let collectionEnv: Partial<IEnvironment> = { name: '', variables: {} };
     if (collectionId && activeEnvsOfTab.collection) {
       collectionEnv = envStore.envs.find(
@@ -149,16 +132,9 @@ const environment: IPlatformEnvironmentService = {
     }
     const colEnvVars = collectionEnv.variables || {};
 
-    // Merged workspace and collection variables
-    const mergedVars =
-      _object.mergeDeep(_cloneDeep(wrsEnvVars), _cloneDeep(colEnvVars)) || {};
-
-    // console.log({ wrsEnvVars, colEnvVars, mergedVars });
-
     // Platform environment resultant payload
     return Promise.resolve({
-      merged: mergedVars,
-      workspace: wrsEnvVars,
+      merged: colEnvVars,
       collection: colEnvVars,
     });
   },
@@ -180,7 +156,6 @@ const environment: IPlatformEnvironmentService = {
 
   setActiveEnvironments: (requestEnvMeta: {
     activeEnvironments: {
-      workspace: TId;
       collection?: TId;
     };
     collectionId?: TId;
@@ -191,21 +166,7 @@ const environment: IPlatformEnvironmentService = {
 
     if ('activeEnvironments' in requestEnvMeta) {
       if (requestEnvMeta.activeEnvironments) {
-        if (requestEnvMeta.activeEnvironments['workspace']) {
-          // Change workspace selected environment
-          let currentWrsSelectedEnv = envStore.activeTabWrsEnv,
-            updatedActiveWrsEnv =
-              requestEnvMeta.activeEnvironments['workspace'];
-
-          // console.log({ currentWrsSelectedEnv, updatedActiveWrsEnv });
-
-          if (
-            updatedActiveWrsEnv &&
-            updatedActiveWrsEnv !== currentWrsSelectedEnv
-          ) {
-            envStore.setWorkspaceActiveEnv(updatedActiveWrsEnv);
-          }
-        }
+      
         // Change collection selected environment
         if (
           requestEnvMeta.collectionId &&
@@ -214,7 +175,7 @@ const environment: IPlatformEnvironmentService = {
           let collectionId = requestEnvMeta.collectionId;
 
           let currentCollectionSelectedEnv =
-              envStore.activeTabCollectionEnvs[collectionId],
+              envStore.colEnvMap[collectionId],
             updatedActiveCollectionEnv =
               requestEnvMeta.activeEnvironments['collection'];
 
@@ -235,24 +196,13 @@ const environment: IPlatformEnvironmentService = {
   },
 
   setVariables: (
-    workspace: {
-      environmentId: TId;
-      variables: { [key: string]: any };
-    },
     collection?: {
       id?: TId;
       environmentId: TId;
       variables: { [key: string]: any };
     }
   ) => {
-    console.log({ workspace, collection });
     const envStore: IEnvironmentStore = useEnvStore.getState();
-
-    // set workspace environment
-    if (workspace?.environmentId) {
-      envStore.setEnvVariables(workspace.environmentId, workspace.variables);
-    }
-
     // set collection environment
     if (collection?.id && collection?.environmentId) {
       envStore.setEnvVariables(collection.environmentId, collection.variables);

@@ -28,13 +28,6 @@ import platformContext from '../services/platform-context';
 MonacoFirecampLangInit();
 
 const App: FC<any> = () => {
-  // let { isEnvSidebarOpen } = useEnvStore(
-  //   (s: IEnvironmentStore) => ({
-  //     isEnvSidebarOpen: s.isEnvSidebarOpen,
-  //   }),
-  //   shallow
-  // );
-
   // useMonacoWorkers();
 
   useEffect(() => {

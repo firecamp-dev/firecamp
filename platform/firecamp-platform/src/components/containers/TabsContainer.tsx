@@ -27,7 +27,6 @@ const TabsContainer: FC<any> = () => {
   const { toggleEnvSidebar } = useEnvStore(
     (s: IEnvironmentStore) => ({
       toggleEnvSidebar: s.toggleEnvSidebar,
-      setWorkspaceActiveEnv: s.setWorkspaceActiveEnv,
       setCollectionActiveEnv: s.setCollectionActiveEnv,
     }),
     shallow

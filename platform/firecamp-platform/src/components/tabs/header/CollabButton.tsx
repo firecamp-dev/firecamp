@@ -8,6 +8,8 @@ import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { EUserRolesWorkspace } from '../../../types';
 import { useUserStore } from '../../../store/user';
 import { usePlatformStore, EPlatformScope } from '../../../store/platform';
+import platformContext from '../../../services/platform-context';
+import EnvironmentWidget from '../../common/environment/environment-widget/EnvironmentWidget';
 
 const CollabButton: FC<any> = () => {
   const isGuest = useUserStore((s) => s.isGuest, shallow);
@@ -27,6 +29,17 @@ const CollabButton: FC<any> = () => {
         />
       );
     } else if (platformScope == EPlatformScope.Person) {
+      return (
+        <EnvironmentWidget
+          key={123}
+          previewId={`http-env-variables-123`}
+          collectionId={'8I564M4AgLnbV54q9iVNX'}
+          collectionActiveEnv={''}
+          onCollectionActiveEnvChange={(collectionId, envId) => {
+            // changeActiveEnvironment('collection', envId);
+          }}
+        />
+      );
       return (
         <Button
           text="create organization"
