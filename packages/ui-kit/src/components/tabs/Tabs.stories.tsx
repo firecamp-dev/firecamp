@@ -7,14 +7,14 @@ import { default as Button } from '../buttons/Button';
 const demoArgs = [
     {
         id: 'body',
-        title: 'Body',
+        name: 'Body',
         icon: <VscJson />
     }, {
         id: 'auth',
-        title: 'Auth'
+        name: 'Auth'
     }, {
         id: 'header',
-        title: 'Header'
+        name: 'Header'
     }
 ]
 

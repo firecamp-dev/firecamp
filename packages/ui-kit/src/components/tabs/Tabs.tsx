@@ -76,6 +76,7 @@ const Tabs: FC<ITabs> = ({
       )}
       id={id}
       tabIndex={tabIndex}
+      data-testid={"tabs-container"}
     >
       {preComp && (
         <div
