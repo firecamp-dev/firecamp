@@ -48,7 +48,7 @@ const CloseIconPlacement = ({
         </div>
       ) : (
         <div className="fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor">
-          <VscClose size={14} onClick={(e) => onClick(e)} />
+          <VscClose size={14} onClick={(e) => onClick(e)} title={"IconClose"}/>
         </div>
       )}
     </div>

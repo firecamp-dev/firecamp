@@ -43,6 +43,6 @@ By default, a server at [localhost:6006](http://localhost:6006/) is started.
 14. ProgressBar [x]
 15. SpitView [ ]
 16. Table (BasicTable [x], BulkEditTable [x], MultipartTable [x], ReactTable [x])
-17. Tabs [ ]
+17. Tabs [x]
 18. Toast [ ]
 19. FirecampTreeView [ ]

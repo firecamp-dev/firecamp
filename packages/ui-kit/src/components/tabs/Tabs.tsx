@@ -161,7 +161,7 @@ const Tabs: FC<ITabs> = ({
                   }
                 }}
               >
-                <VscAdd className="flex" size={16} />
+                <VscAdd className="flex" size={16} title="IconAdd"/>
               </div>
             )}
           </div>
