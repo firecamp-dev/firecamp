@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
 import { _array, _object } from '@firecamp/utils';
@@ -11,14 +10,13 @@ import SidebarPanel from './sidebar-panel/SidebarPanel';
 import {
   StoreProvider,
   createStore,
-  useStoreApi,
   useStore,
   IStore,
 } from '../store';
 import { initialiseStoreFromRequest } from '../services/request.service';
 import '../sass/socket.sass';
 
-const Socket = ({ tab, platformContext, activeTab }) => {
+const Socket = ({ tab, platformContext }) => {
   const {
     initialise,
     initialiseCollection,
@@ -37,19 +35,6 @@ const Socket = ({ tab, platformContext, activeTab }) => {
   useEffect(() => {
     setContext(platformContext);
   }, []);
-
-  /** setup environments on tab load */
-  useEffect(() => {
-    if (activeTab === tab.id) {
-      platformContext.environment.setActiveEnvironments(tab?.request?.__ref.collectionId || '');
-
-      // subscribe environment updates
-      // platformContext.environment.subscribeChanges(
-      //   tab.id,
-      //   console.log
-      // );
-    }
-  }, [activeTab]);
 
   useEffect(() => {
     setRequestSavedFlag(tab?.__meta.isSaved);

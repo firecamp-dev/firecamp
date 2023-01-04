@@ -17,7 +17,6 @@ importers:
       '@firecamp/url': ^0.0.17
       '@firecamp/utils': ^0.0.11
       '@react-icons/all-files': ^4.1.0
-      '@types/ramda': ^0.28.15
       autoprefixer: ^10.4.8
       babel-eslint: ^7.1.0
       babel-loader: ^9.1.0
@@ -58,7 +57,6 @@ importers:
       prettify-xml: ^1.2.0
       pug-cli: ^1.0.0-alpha6
       querystring: ^0.2.1
-      ramda: ^0.28.0
       react-addons-test-utils: ^15.0.2
       react-file-drop: ^3.1.5
       remote-redux-devtools: ^0.5.16
@@ -91,7 +89,6 @@ importers:
       prettify-xml: 1.2.0
       pug-cli: 1.0.0-alpha6
       querystring: 0.2.1
-      ramda: 0.28.0
       react-file-drop: 3.1.6
     devDependencies:
       '@babel/core': 7.20.5
@@ -103,7 +100,6 @@ importers:
       '@babel/preset-react': 7.18.6_@babel+core@7.20.5
       '@babel/preset-typescript': 7.18.6_@babel+core@7.20.5
       '@babel/register': 7.18.9_@babel+core@7.20.5
-      '@types/ramda': 0.28.20
       babel-eslint: 7.2.3
       babel-loader: 9.1.0_ztqwsvkb6z73luspkai6ilstpu
       babel-plugin-add-module-exports: 1.0.4
@@ -6285,12 +6281,6 @@ packages:
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
-    dev: true
-
-  /@types/ramda/0.28.20:
-    resolution: {integrity: sha512-MeUhzGSXQTRsY19JGn5LIBTLxVEnyF6HDNr08KSJqybsm4DlfLIgK1jBHjhpiSyk252tXYmp+UOe0UFg0UiFsA==}
-    dependencies:
-      ts-toolbelt: 6.15.5
     dev: true
 
   /@types/range-parser/1.2.4:
@@ -18876,6 +18866,7 @@ packages:
 
   /ramda/0.28.0:
     resolution: {integrity: sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==}
+    dev: true
 
   /randombytes/2.1.0:
     resolution: {integrity: sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==}
@@ -21456,7 +21447,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.0
       terser: 5.16.1
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@4.10.0
     dev: true
 
   /terser/4.8.1:
@@ -21941,10 +21932,6 @@ packages:
         optional: true
     dependencies:
       typescript: 4.9.4
-    dev: true
-
-  /ts-toolbelt/6.15.5:
-    resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
     dev: true
 
   /tsconfig-paths/3.14.1:

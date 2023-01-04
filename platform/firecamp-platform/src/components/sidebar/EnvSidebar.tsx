@@ -135,12 +135,12 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   const {
     updateEnvironment,
     getCollectionEnvs,
-    setCollectionActiveEnv,
+    setCurrentTabActiveEnv,
   } = useEnvStore(
     (s) => ({
       updateEnvironment: s.updateEnvironment,
       getCollectionEnvs: s.getCollectionEnvs,
-      setCollectionActiveEnv: s.setCollectionActiveEnv,
+      setCurrentTabActiveEnv: s.setCurrentTabActiveEnv,
     }),
     shallow
   );
@@ -223,7 +223,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
 
   const _setActiveEnv = (envId) => {
     if (scope === EEnvironmentScope.Collection) {
-      setCollectionActiveEnv(collectionId, envId);
+      setCurrentTabActiveEnv(collectionId, envId);
     }
     // get environment changes and emit to request tab
     pltContext.environment.setVarsToProvidersAndEmitEnvsToTab();

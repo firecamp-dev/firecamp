@@ -1,9 +1,9 @@
 import { EEditorLanguage, IEnvironment, TId } from '@firecamp/types';
+import _cloneDeep from 'lodash/cloneDeep';
 import {
   SetCompletionProvider,
   SetHoverProvider,
 } from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
-import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 
 import { IRequestTab } from '../../components/tabs/types/tab';
@@ -32,21 +32,11 @@ export interface IPlatformEnvironmentService {
 
   setVarsToProvidersAndEmitEnvsToTab: (tabId?: TId) => void;
 
-  setActiveEnvironments: (requestEnvMeta: {
-    activeEnvironments: {
-      workspace: TId;
-      collection?: TId;
-    };
-    collectionId?: TId;
+  setVariables: (collection?: {
+    id?: TId;
+    environmentId: TId;
+    variables: { [key: string]: any };
   }) => void;
-
-  setVariables: (
-    collection?: {
-      id?: TId;
-      environmentId: TId;
-      variables: { [key: string]: any };
-    }
-  ) => void;
 }
 export interface IPlatformVariables {
   collection: {};
@@ -106,8 +96,7 @@ const environment: IPlatformEnvironmentService = {
     let collectionActiveEnv = '';
     // get collectionId and collectionActiveEnv from tab's request's __meta
     if (tab.__meta.isSaved && tab.request?.__ref.collectionId) {
-      collectionActiveEnv =
-        envStore.colEnvMap[tab.request.__ref.collectionId];
+      collectionActiveEnv = envStore.colEnvMap[tab.request.__ref.collectionId];
     }
 
     return Promise.resolve({
@@ -154,54 +143,11 @@ const environment: IPlatformEnvironmentService = {
     SetHoverProvider(EEditorLanguage.Json, variables);
   },
 
-  setActiveEnvironments: (requestEnvMeta: {
-    activeEnvironments: {
-      collection?: TId;
-    };
-    collectionId?: TId;
+  setVariables: (collection?: {
+    id?: TId;
+    environmentId: TId;
+    variables: { [key: string]: any };
   }) => {
-    const envStore: IEnvironmentStore = useEnvStore.getState();
-
-    // console.log({ requestEnvMeta });
-
-    if ('activeEnvironments' in requestEnvMeta) {
-      if (requestEnvMeta.activeEnvironments) {
-      
-        // Change collection selected environment
-        if (
-          requestEnvMeta.collectionId &&
-          requestEnvMeta.activeEnvironments['collection']
-        ) {
-          let collectionId = requestEnvMeta.collectionId;
-
-          let currentCollectionSelectedEnv =
-              envStore.colEnvMap[collectionId],
-            updatedActiveCollectionEnv =
-              requestEnvMeta.activeEnvironments['collection'];
-
-          if (
-            updatedActiveCollectionEnv &&
-            updatedActiveCollectionEnv !== currentCollectionSelectedEnv
-          ) {
-            console.log({ updatedActiveCollectionEnv });
-
-            envStore.setCollectionActiveEnv(
-              collectionId,
-              updatedActiveCollectionEnv
-            );
-          }
-        }
-      }
-    }
-  },
-
-  setVariables: (
-    collection?: {
-      id?: TId;
-      environmentId: TId;
-      variables: { [key: string]: any };
-    }
-  ) => {
     const envStore: IEnvironmentStore = useEnvStore.getState();
     // set collection environment
     if (collection?.id && collection?.environmentId) {

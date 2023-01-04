@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import { _array, _object } from '@firecamp/utils';
@@ -21,8 +20,7 @@ import {
   IStore,
 } from '../store';
 
-const WebSocket = ({ tab, platformContext, activeTab }) => {
-  const websocketStoreApi: any = useStoreApi();
+const WebSocket = ({ tab, platformContext }) => {
   const {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
@@ -45,20 +43,6 @@ const WebSocket = ({ tab, platformContext, activeTab }) => {
   useEffect(() => {
     setContext(platformContext);
   }, []);
-
-  /** assign environments on tab load or when activeTab change **/
-  useEffect(() => {
-    if (activeTab === tab.id) {
-      // set collection to platform
-        platformContext.environment.setActiveEnvironments(tab?.request?.__ref?.collectionId || '');
-  
-      // subscribe environment updates
-      // platformContext.environment.subscribeChanges(
-      //   tab.id,
-      //   console.log
-      // );
-    }
-  }, [activeTab]);
 
   useEffect(() => {
     setRequestSavedFlag(tab?.__meta?.isSaved);

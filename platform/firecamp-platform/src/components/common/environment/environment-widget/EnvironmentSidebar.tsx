@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { EEnvironmentScope } from '@firecamp/types';
 import {
@@ -10,7 +9,6 @@ import {
   Pane,
   ToolBar,
 } from '@firecamp/ui-kit';
-
 import treeRenderer from './tree/treeItemRenderer';
 import { CollectionEnvDataProvider } from './tree/treeDataProvider';
 import platformContext from '../../../../services/platform-context';
@@ -94,52 +92,11 @@ const EnvironmentSidebar: FC<any> = () => {
     <div className="w-full h-full flex flex-row explorer-wrapper">
       <Container>
         <ProgressBarContainer />
-        {/* <Pane
-          expanded={true}
-          height="200px"
-          bodyClassName={'!p-0'}
-          headerTitleRenderer={() => {
-            return <span>Scope: Workspace</span>;
-          }}
-          headerActionRenderer={() => {
-            return (
-              <ToolBar>
-                
-              </ToolBar>
-            );
-          }}
-          bodyRenderer={({ expanded }) => {
-            return (
-              <UncontrolledTreeEnvironment
-                dataProvider={wrsEnvDataProvider.current}
-                getItemTitle={(item) => item.data?.name}
-                viewState={{}}
-                renderItemArrow={treeRenderer.renderItemArrow}
-                // renderItemTitle={treeRenderer.renderItemTitle}
-                renderItem={(props) =>
-                  treeRenderer.renderItem({
-                    ...props,
-                    openEnv: openWrsEnv,
-                    openCreateEnv: openCreateWrsEnv,
-                    deleteEnv,
-                  })
-                }
-              >
-                <Tree
-                  treeId="tree-1"
-                  rootItem="root"
-                  treeLabel="Tree Example"
-                />
-              </UncontrolledTreeEnvironment>
-            );
-          }}
-        ></Pane> */}
-
         <Pane
           expanded={true}
           bodyClassName={'!p-0'}
           headerTitleRenderer={() => {
-            return <span className="font-bold">SCOPE: COLLECTION</span>;
+            return <span className="font-bold">COLLECTION ENVIRONMENTS</span>;
           }}
           headerActionRenderer={() => {
             return (

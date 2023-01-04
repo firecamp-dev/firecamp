@@ -3,7 +3,6 @@ import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
 import { ERequestTypes, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-import { dissoc } from 'ramda';
 
 import { IRequestTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
@@ -21,6 +20,7 @@ interface ITabStore {
   activeTab: TId;
   orders: TId[];
 
+  getActiveTab: () => TId;
   reorder: (dragIndex: number, hoverIndex: number) => void;
   remove: (tbId: string) => void;
   changeMeta: (tab, __meta, request?: any) => void; //todo: define types...
@@ -63,6 +63,9 @@ const useTabStore = create<ITabStore>((set, get) => {
   return {
     ...initialState,
 
+    getActiveTab: () => {
+      return get().activeTab;
+    },
     reorder: async (dragIndex, hoverIndex) => {
       set((s) => {
         let orders = [...s.orders];
@@ -99,9 +102,9 @@ const useTabStore = create<ITabStore>((set, get) => {
               : s.orders[index - 1]
             : s.activeTab;
 
-        const list = dissoc(tabId, s.list);
+        delete s.list[tabId];
         return {
-          list,
+          list: { ...s.list },
           activeTab,
           orders: s.orders.filter((id) => id != tabId),
         };

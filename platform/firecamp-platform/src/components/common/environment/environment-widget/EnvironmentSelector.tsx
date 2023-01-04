@@ -8,21 +8,19 @@ import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
 import { ITabStore, useTabStore } from '../../../../store/tab';
 
-const EnvironmentSelecctor = ({
-  onCollectionActiveEnvChange = (colId: TId, envId: TId) => {},
-}) => {
+const EnvironmentSelecctor = () => {
   const {
     tabColMap,
     colEnvMap,
     getCollectionEnvs,
-    setCollectionActiveEnv,
+    setCurrentTabActiveEnv,
     toggleEnvSidebar,
   } = useEnvStore(
     (s: IEnvironmentStore) => ({
       tabColMap: s.tabColMap,
       colEnvMap: s.colEnvMap,
       getCollectionEnvs: s.getCollectionEnvs,
-      setCollectionActiveEnv: s.setCollectionActiveEnv,
+      setCurrentTabActiveEnv: s.setCurrentTabActiveEnv,
       toggleEnvSidebar: s.toggleEnvSidebar,
     }),
     shallow
@@ -49,9 +47,8 @@ const EnvironmentSelecctor = ({
 
   console.log(envId, envs, colId, colEnvMap, 4445445);
 
-  const _setCollectionActiveEnv = (envId: TId) => {
-    console.log(envId, 78956)
-    // setCollectionActiveEnv(collectionId, envId);
+  const setActiveEnv = (envId: TId) => {
+    setCurrentTabActiveEnv(envId);
     // onCollectionActiveEnvChange(collectionId, envId);
   };
 
@@ -63,7 +60,7 @@ const EnvironmentSelecctor = ({
           key={`collection-env-selector`}
           activeEnvId={envId}
           environments={envs}
-          onChange={_setCollectionActiveEnv}
+          onChange={setActiveEnv}
         />
         <span
           key={'toggle-env-button'}

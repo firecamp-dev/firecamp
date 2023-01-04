@@ -24,9 +24,8 @@ import {
   IStore,
 } from '../store';
 
-const Rest = ({ tab, platformContext, activeTab }) => {
+const Rest = ({ tab, platformContext }) => {
   const restStoreApi: any = useStoreApi();
-
   const {
     isFetchingRequest,
     initialise,
@@ -54,24 +53,6 @@ const Rest = ({ tab, platformContext, activeTab }) => {
   useEffect(() => {
     setContext(platformContext);
   }, []);
-
-  /**
-   * Environments on tab load
-   */
-  useEffect(() => {
-    if (activeTab === tab.id) {
-      // set active collection to platform
-      platformContext.environment.setActiveEnvironments(
-        tab?.request?.__ref?.collectionId
-      );
-
-      // subscribe environment updates
-      // platformContext.environment.subscribeChanges(
-      //   tab.id,
-      //   console.log
-      // );
-    }
-  }, [activeTab]);
 
   useEffect(() => {
     setRequestSavedFlag(tab.__meta?.isSaved);

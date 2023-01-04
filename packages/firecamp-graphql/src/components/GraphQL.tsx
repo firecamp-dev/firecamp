@@ -1,23 +1,18 @@
 import { useEffect } from 'react';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
-import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
-
 import { _object } from '@firecamp/utils';
 import { IGraphQL } from '@firecamp/types';
 import { Container, Row, Column, Loader } from '@firecamp/ui-kit';
-
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import PlaygroundPanel from './playground-panel/PlaygroundPanel';
-
 import DocWrapper from './common/explorer/GraphQLDoc';
 
 import {
   StoreProvider,
   createStore,
-  useStoreApi,
   useStore,
   IStore,
 } from '../store';
@@ -27,10 +22,8 @@ import {
   normalizeRequest,
 } from '../services/request.service';
 
-const GraphQL = ({ tab, platformContext, activeTab }) => {
-  let graphqlStoreApi: any = useStoreApi();
-
-  let {
+const GraphQL = ({ tab, platformContext }) => {
+  const {
     isFetchingRequest,
     initialise,
     setRequestSavedFlag,
@@ -55,23 +48,6 @@ const GraphQL = ({ tab, platformContext, activeTab }) => {
   useEffect(() => {
     setContext(platformContext);
   }, []);
-
-  /**
-   * Handle environments activities on load and while being active tab
-   *
-   * 1. on Tab focus pass previously set environment names to the platform
-   * 2. subscribe the environment related changes
-   * */
-  useEffect(() => {
-    if (activeTab === tab.id) {
-      platformContext.environment.setActiveEnvironments(
-        tab?.request?.__meta.collectionId || ''
-      );
-
-      // subscribe environment updates
-      // platformContext.environment.subscribeChanges(tab.id, console.log);
-    }
-  }, [activeTab]);
 
   /** if request is being saved then after successful flag set the request's as saved */
   useEffect(() => {

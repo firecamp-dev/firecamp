@@ -1,6 +1,7 @@
 import create from 'zustand';
-import { IEnvironment, TId, EEnvironmentScope } from '@firecamp/types';
 import { Rest } from '@firecamp/cloud-apis';
+import { IEnvironment, TId, EEnvironmentScope } from '@firecamp/types';
+import { useTabStore } from './tab';
 
 type TTabId = TId;
 type TColId = TId;
@@ -40,7 +41,7 @@ export interface IEnvironmentStore {
   getCollectionActiveEnv: (collectionId: TColId) => TEnvId;
 
   setTabCollection: (tabId: TTabId, collectionId: TColId) => void;
-  setCollectionActiveEnv: (collectionId: TColId, envId: TEnvId) => void;
+  setCurrentTabActiveEnv: (envId?: TEnvId) => void;
   setEnvVariables: (envId: TEnvId, variables: object) => void;
 
   fetchEnvironment: (envId: TEnvId) => Promise<any>;
@@ -109,23 +110,48 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setTabCollection: (tabId: TTabId, collectionId: TColId) => {
-    console.log(tabId, collectionId, 1111111);
-    debugger;
-    set((s) => ({
-      tabColMap: {
-        ...s.tabColMap,
-        [tabId]: collectionId,
-      },
-    }));
+    set((s) => {
+      const env = s.envs.find(
+        (e) => e.__ref.collectionId == collectionId && e.name == 'Development'
+      );
+      const envId = env?.__ref.id;
+      console.log(tabId, collectionId, envId, 1111111);
+      if (!envId) return s;
+      return {
+        tabColMap: {
+          ...s.tabColMap,
+          [tabId]: collectionId,
+        },
+        colEnvMap: {
+          ...s.colEnvMap,
+          [collectionId]: envId,
+        },
+      };
+    });
   },
 
-  setCollectionActiveEnv: (collectionId, envId) => {
-    set((s) => ({
-      colEnvMap: {
-        ...s.colEnvMap,
-        [collectionId]: envId,
-      },
-    }));
+  setCurrentTabActiveEnv: (envId) => {
+    const tabStore = useTabStore.getState();
+    const tabId = tabStore.getActiveTab();
+    if (!tabId) return;
+    const state = get();
+    const collectionId = state.tabColMap[tabId];
+    if (!collectionId) return;
+    set((s) => {
+      if (!envId) {
+        const env = s.envs.find(
+          (e) => e.__ref.collectionId == collectionId && e.name == 'Development'
+        );
+        if (env) envId = env.__ref.id;
+      }
+      if (!envId) return s;
+      return {
+        colEnvMap: {
+          ...s.colEnvMap,
+          [collectionId]: envId,
+        },
+      };
+    });
   },
 
   getCollectionActiveEnv: (collectionId) => {
