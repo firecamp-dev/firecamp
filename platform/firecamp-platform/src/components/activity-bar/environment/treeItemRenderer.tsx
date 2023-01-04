@@ -201,11 +201,7 @@ export default {
                   ? 'Add Env'
                   : 'Open'
               }
-              sm
               className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
-              ghost
-              transparent
-              secondary
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -217,6 +213,10 @@ export default {
                       item.data.__ref.id
                     );
               }}
+              transparent
+              secondary
+              ghost
+              sm
             />
 
             {item.data.__ref.isEnvironment ? (

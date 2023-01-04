@@ -13,10 +13,7 @@ import {
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import treeRenderer from './treeItemRenderer';
-import {
-  WrsEnvDataProvider,
-  CollectionEnvDataProvider,
-} from './treeDataProvider';
+import { CollectionEnvDataProvider } from './treeDataProvider';
 import { useEnvStore } from '../../../store/environment';
 import platformContext from '../../../services/platform-context';
 
@@ -39,12 +36,11 @@ const Environment: FC<any> = () => {
     shallow
   );
 
-  const wrsEnvDataProvider = useRef(new WrsEnvDataProvider(workspace));
   const colEnvDataProvider = useRef(new CollectionEnvDataProvider(collections));
 
   //effect: register and unregister col/wrs env's treeDataProvider instance
   useEffect(() => {
-    registerTDP(wrsEnvDataProvider.current, colEnvDataProvider.current);
+    registerTDP(colEnvDataProvider.current);
     return unRegisterTDP;
   }, []);
 
@@ -147,7 +143,7 @@ const Environment: FC<any> = () => {
           expanded={true}
           bodyClassName={'!p-0'}
           headerTitleRenderer={() => {
-            return <span className='font-bold'>SCOPE: COLLECTION</span>;
+            return <span className="font-bold">SCOPE: COLLECTION</span>;
           }}
           headerActionRenderer={() => {
             return (

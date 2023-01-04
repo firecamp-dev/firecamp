@@ -62,7 +62,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     >
       <Dropdown.Handler>
         <Button
-          text={`Firecamp V3 Apis > ` + menu?.selected?.name || ''}
+          text={`Firecamp V3 Apis / ` + menu?.selected?.name || ''}
           className={classnames(
             { '!text-primaryColor': scope === EEnvironmentScope.Workspace },
             { '!text-info': scope === EEnvironmentScope.Collection }

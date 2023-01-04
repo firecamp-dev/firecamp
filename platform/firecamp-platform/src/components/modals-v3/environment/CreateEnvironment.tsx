@@ -12,11 +12,11 @@ import {
 import { _misc } from '@firecamp/utils';
 import { EEditorLanguage, EEnvironmentScope } from '@firecamp/types';
 
+import { RE } from '../../../types';
+import platformContext from '../../../services/platform-context';
 import { useEnvStore } from '../../../store/environment';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useModalStore } from '../../../store/modal';
-import { RE } from '../../../types'
-import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
   scope: EEnvironmentScope;
@@ -30,7 +30,7 @@ const CreateEnvironment: FC<IModal> = ({
   const { workspace, explorer } = useWorkspaceStore.getState();
   const { collections } = explorer;
   const createEnvironment = useEnvStore.getState().createEnvironment;
-  const { scope, collectionId } = useModalStore.getState().meta as TModalMeta;
+  const { scope, collectionId } = useModalStore.getState().__meta as TModalMeta;
   let collection: any;
   if (scope == EEnvironmentScope.Collection) {
     collection = collections.find((c) => c.__ref.id == collectionId);
@@ -61,7 +61,7 @@ const CreateEnvironment: FC<IModal> = ({
   const onChangeVisibility = (value: { private: boolean }) => {
     setEnv((s) => ({
       ...s,
-      meta: { ...s.__meta, visibility: value.private == true ? 2 : 1 },
+      __meta: { ...s.__meta, visibility: value.private == true ? 2 : 1 },
     }));
   };
 
@@ -113,7 +113,9 @@ const CreateEnvironment: FC<IModal> = ({
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
-        platformContext.app.notify.alert(e?.response?.data?.message || e.message);
+        platformContext.app.notify.alert(
+          e?.response?.data?.message || e.message
+        );
       })
       .finally(() => {
         setIsRequesting(false);
