@@ -4,6 +4,7 @@ import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { EEditorLanguage } from '@firecamp/types';
 import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
@@ -14,6 +15,7 @@ import {
   TTableApi,
 } from '../primitive/table.interfaces';
 import { IBasicTable } from './BasicTable.interfaces';
+
 const _columns = [
   { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
   { id: 'key', key: 'key', name: 'Key', width: '100px' },
@@ -92,7 +94,7 @@ const BasicTable = ({
         return (
           <SingleLineEditor
             path={`${row.id}_${column.id}`}
-            language={'ife-header-key'}
+            language={EEditorLanguage.HeaderKey}
             className="without-border px-2"
             style={{
               position: 'absolute',

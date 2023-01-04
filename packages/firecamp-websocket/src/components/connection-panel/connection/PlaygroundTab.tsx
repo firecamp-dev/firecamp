@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
 import {
   FileInput,
@@ -14,12 +14,11 @@ import {
   StatusBar,
   // EPopoverPosition,
 } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
 import { _object } from '@firecamp/utils';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
-import { ETypedArrayView } from '@firecamp/types';
+import { EEditorLanguage, ETypedArrayView } from '@firecamp/types';
 
 import { EMessagePayloadTypes } from '../../../types';
 import {
@@ -197,7 +196,7 @@ const PlaygroundTab = () => {
             autoFocus={true}
             key={playground.id}
             language={
-              type.id === EMessagePayloadTypes.json ? 'json' : 'ife-text'
+              type.id === EMessagePayloadTypes.json ? EEditorLanguage.Json : EEditorLanguage.FcText
             }
             value={payload}
             controlsConfig={{

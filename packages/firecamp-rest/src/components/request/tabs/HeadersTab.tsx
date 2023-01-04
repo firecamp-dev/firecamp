@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
-import {  BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
+import { BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
 import { IStore, useStore } from '../../../store';
+import { EEditorLanguage } from '@firecamp/types';
 
 const HeadersTab = () => {
   const { headers, authHeaders, changeHeaders } = useStore(
@@ -32,8 +33,8 @@ const HeadersTab = () => {
           onMount={() => {}}
           meta={{
             mode: {
-              key: 'ife-header-key',
-              value: 'ife-header-value',
+              key: EEditorLanguage.HeaderKey,
+              value: EEditorLanguage.HeaderValue,
             },
           }}
         />
@@ -57,10 +58,10 @@ const HeadersTab = () => {
                 disable={true}
                 options={{
                   mode: {
-                    key: 'ife-header-key',
-                    value: 'ife-header-value',
+                    key: EEditorLanguage.HeaderKey,
+                    value: EEditorLanguage.HeaderValue,
                   },
-                  language: 'ife-header-key',
+                  language: EEditorLanguage.HeaderKey,
                 }}
               />
             </div>

@@ -2,10 +2,8 @@
 import { FC, useEffect, useRef, memo, ReactNode } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
+import { EEditorLanguage } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
-import MonacoFirecampLangInit, {
-  SetCompletionProvider,
-} from '../monaco/lang/init';
 
 type TSLEditor = {
   name?: string;
@@ -20,7 +18,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   value,
   disabled = false,
   autoFocus = false,
-  language = 'json',
+  language = EEditorLanguage.Json,
   monacoOptions = {},
   placeholder = '',
   className = '',
@@ -43,11 +41,6 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   onCtrlShiftEnter = () => {},
 }) => {
   const editorIdRef = useRef('');
-  // useEffect(() => {
-  //   MonacoFirecampLangInit();
-  //   SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
-  // }, []);
-
   useEffect(() => {
     console.log('this is re-rendering <SingleLineEditor />');
     //@ts-ignore

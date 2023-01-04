@@ -220,7 +220,7 @@ const HelpPopUp: FC<IHelpPopup> = ({
                                                                   help.snippet
                                                                 }
                                                                 language={
-                                                                  'javascript'
+                                                                  EEditorLanguage.JavaScript
                                                                 }
                                                                 onLoad={(
                                                                   editor
