@@ -19,18 +19,15 @@ import { initialiseStoreFromRequest } from '../services/request.service';
 import '../sass/socket.sass';
 
 const Socket = ({ tab, platformContext, activeTab }) => {
-  const socketStoreApi = useStoreApi();
   const {
     initialise,
     initialiseCollection,
-    setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     setContext,
   } = useStore((s: IStore) => ({
     initialise: s.initialise,
     initialiseCollection: s.initialiseCollection,
-    setActiveEnvironments: s.setActiveEnvironments,
     setRequestSavedFlag: s.setRequestSavedFlag,
     setIsFetchingReqFlag: s.setIsFetchingReqFlag,
     setContext: s.setContext,
@@ -44,28 +41,13 @@ const Socket = ({ tab, platformContext, activeTab }) => {
   /** setup environments on tab load */
   useEffect(() => {
     if (activeTab === tab.id) {
-      const state = socketStoreApi.getState() as IStore;
-      // existing active environments in to runtime
-      const {
-        activeEnvironments: { workspace = '', collection = '' },
-      } = state.runtime;
-
-      // set active environments to platform
-      if (!!workspace) {
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments: {
-            workspace,
-            collection,
-          },
-          collectionId: tab?.request?.__ref.collectionId || '',
-        });
-      }
+      platformContext.environment.setActiveEnvironments(tab?.request?.__ref.collectionId || '');
 
       // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
+      // platformContext.environment.subscribeChanges(
+      //   tab.id,
+      //   console.log
+      // );
     }
   }, [activeTab]);
 
@@ -126,22 +108,6 @@ const Socket = ({ tab, platformContext, activeTab }) => {
   }, []);
 
   const handlePull = () => {};
-
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-    if (!platformActiveEnvironments) return;
-    const state = socketStoreApi.getState() as IStore;
-    // existing active environments in to runtime
-    const { activeEnvironments } = state.runtime;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
-    }
-  };
 
   return (
     <RootContainer className="h-full w-full">
