@@ -27,7 +27,7 @@ import {
   normalizeRequest,
 } from '../services/request.service';
 
-const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
+const GraphQL = ({ tab, platformContext, activeTab }) => {
   let graphqlStoreApi: any = useStoreApi();
 
   let {

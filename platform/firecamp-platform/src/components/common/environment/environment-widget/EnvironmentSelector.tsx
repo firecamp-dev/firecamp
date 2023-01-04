@@ -8,7 +8,7 @@ import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
 import { ITabStore, useTabStore } from '../../../../store/tab';
 
-const EnvironmentSelecctor: FC<any> = ({
+const EnvironmentSelecctor = ({
   onCollectionActiveEnvChange = (colId: TId, envId: TId) => {},
 }) => {
   const {
@@ -50,6 +50,7 @@ const EnvironmentSelecctor: FC<any> = ({
   console.log(envId, envs, colId, colEnvMap, 4445445);
 
   const _setCollectionActiveEnv = (envId: TId) => {
+    console.log(envId, 78956)
     // setCollectionActiveEnv(collectionId, envId);
     // onCollectionActiveEnvChange(collectionId, envId);
   };

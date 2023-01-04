@@ -21,7 +21,7 @@ import {
   IStore,
 } from '../store';
 
-const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
+const WebSocket = ({ tab, platformContext, activeTab }) => {
   const websocketStoreApi: any = useStoreApi();
   const {
     setRequestSavedFlag,

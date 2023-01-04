@@ -18,7 +18,7 @@ import {
 import { initialiseStoreFromRequest } from '../services/request.service';
 import '../sass/socket.sass';
 
-const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
+const Socket = ({ tab, platformContext, activeTab }) => {
   const socketStoreApi = useStoreApi();
   const {
     initialise,

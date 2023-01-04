@@ -25,7 +25,7 @@ import {
   IStore,
 } from '../store';
 
-const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
+const Rest = ({ tab, platformContext, activeTab }) => {
   const restStoreApi: any = useStoreApi();
 
   const {
