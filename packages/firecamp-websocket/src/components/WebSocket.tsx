@@ -28,7 +28,6 @@ const WebSocket = ({ tab, platformContext, activeTab }) => {
     setIsFetchingReqFlag,
     initialise,
     initialiseCollection,
-    setActiveEnvironments,
     setContext,
   } = useStore(
     (s: IStore) => ({
@@ -37,7 +36,6 @@ const WebSocket = ({ tab, platformContext, activeTab }) => {
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       initialise: s.initialise,
       initialiseCollection: s.initialiseCollection,
-      setActiveEnvironments: s.setActiveEnvironments,
       setContext: s.setContext,
     }),
     shallow
@@ -51,28 +49,14 @@ const WebSocket = ({ tab, platformContext, activeTab }) => {
   /** assign environments on tab load or when activeTab change **/
   useEffect(() => {
     if (activeTab === tab.id) {
-      const state = websocketStoreApi.getState() as IStore;
-      // existing active environments in to runtime
-      const {
-        activeEnvironments: { workspace = '', collection = '' },
-      } = state.runtime;
-
-      // set active environments to platform
-      if (!!workspace) {
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments: {
-            workspace,
-            collection,
-          },
-          collectionId: tab?.request?.__ref?.collectionId || '',
-        });
-      }
-
+      // set collection to platform
+        platformContext.environment.setActiveEnvironments(tab?.request?.__ref?.collectionId || '');
+  
       // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
+      // platformContext.environment.subscribeChanges(
+      //   tab.id,
+      //   console.log
+      // );
     }
   }, [activeTab]);
 
@@ -135,21 +119,6 @@ const WebSocket = ({ tab, platformContext, activeTab }) => {
   }, []);
 
   const handlePull = () => {};
-
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-    if (!platformActiveEnvironments) return;
-    const state = websocketStoreApi.getState() as IStore;
-    const { activeEnvironments } = state.runtime;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
-    }
-  };
 
   // if(isFetchingRequest === true) return <Loader />;
   console.log(tab, 'tab...');
