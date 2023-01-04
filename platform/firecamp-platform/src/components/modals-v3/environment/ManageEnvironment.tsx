@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { Rest } from '@firecamp/cloud-apis';
 import {
   Input,
   TabHeader,
@@ -9,13 +10,16 @@ import {
   Editor,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-import { IEnvironment, EEnvironmentScope, EEditorLanguage } from '@firecamp/types';
-import { Rest } from '@firecamp/cloud-apis';
+import {
+  IEnvironment,
+  EEnvironmentScope,
+  EEditorLanguage,
+} from '@firecamp/types';
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useModalStore } from '../../../store/modal';
 import { useEnvStore } from '../../../store/environment';
-import { RE } from '../../../types'
+import { RE } from '../../../types';
 import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
@@ -46,7 +50,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
     name: '',
     description: '',
     variables: JSON.stringify({}, null, 4),
-    meta: { type: EEnvironmentScope.Collection, visibility: 2 },
+    __meta: { type: EEnvironmentScope.Collection, visibility: 2 },
   });
 
   //load environment
@@ -65,7 +69,9 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
         });
       })
       .catch((e) => {
-        platformContext.app.notify.alert(e.response?.data?.message || e.message);
+        platformContext.app.notify.alert(
+          e.response?.data?.message || e.message
+        );
         console.log(e);
       });
   }, []);
@@ -121,7 +127,9 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
-        platformContext.app.notify.alert(e?.response?.data?.message || e.message);
+        platformContext.app.notify.alert(
+          e?.response?.data?.message || e.message
+        );
       })
       .finally(() => {
         setIsRequesting(false);
