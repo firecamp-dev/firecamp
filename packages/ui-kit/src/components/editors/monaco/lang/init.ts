@@ -1,35 +1,30 @@
-// @ts-nocheck
-import { loader } from '@monaco-editor/react';
-// import * as monaco from 'monaco-editor';
-import IFELangText from './IFE.lang-text';
-import FirecampDarkTheme from './themes/firecamp.dark.theme';
-import FirecampLiteTheme from './themes/firecamp.lite.theme';
-import FirecampCompletionProvider from './firecamp.completion-provider';
-import FirecampHoverProvider from './firecamp.hover-provider';
-import { IFELanguages, IFEThemes } from './IFE.constants';
+import { loader, Monaco } from '@monaco-editor/react';
+import { EEditorLanguage, EEditorTheme } from '@firecamp/types';
+import EditorLangTextMonarch from './editor.lang-text';
+import EditorDarkTheme from './themes/editor.theme-dark';
+import EditorLiteTheme from './themes/editor.theme-lite';
+import FirecampCompletionProvider from './editor.completion-provider';
+import FirecampHoverProvider from './editor.hover-provider';
 
-let { TEXT, HEADER_KEY, HEADER_VALUE } = IFELanguages;
-
-let monaco;
+let monaco: Monaco;
 export default () => {
   loader.init().then((_monaco) => {
     monaco = _monaco;
-    _registerLanguage(TEXT, IFELangText);
-    _registerLanguage(HEADER_KEY, IFELangText);
-    _registerLanguage(HEADER_VALUE, IFELangText);
+    _registerLanguage(EEditorLanguage.FcText, EditorLangTextMonarch);
+    _registerLanguage(EEditorLanguage.HeaderKey, EditorLangTextMonarch);
+    _registerLanguage(EEditorLanguage.HeaderValue, EditorLangTextMonarch);
 
     /**
      * @bug Temporary fix the setTheme issue by setTimeout
-     * TODO: Need to update the flow to call this function after
-     * TODO: DOM initialization
+     * TODO: Need to update the flow to call this function after DOM initialization
      */
     setTimeout(() => {
-      monaco.editor.defineTheme(IFEThemes.DARK, FirecampDarkTheme);
-      monaco.editor.defineTheme(IFEThemes.LITE, FirecampLiteTheme);
+      monaco.editor.defineTheme(EEditorTheme.Dark, EditorDarkTheme);
+      monaco.editor.defineTheme(EEditorTheme.Lite, EditorLiteTheme);
     });
   });
 };
-const _registerLanguage = (langId, langMonarch, cb = () => {}) => {
+const _registerLanguage = (langId: string, langMonarch: any, cb = () => {}) => {
   monaco.languages.register({ id: langId });
   console.log(langId, 'lang before register');
   monaco.languages.onLanguage(langId, () => {
@@ -39,25 +34,30 @@ const _registerLanguage = (langId, langMonarch, cb = () => {}) => {
   });
 };
 
-let _completionProviders = new Map(),
+const _completionProviders = new Map(),
   _hoverProviders = new Map();
-const SetCompletionProvider = (lang, vars) => {
+const SetCompletionProvider = (
+  lang: EEditorLanguage,
+  vars: { [k: string]: string }
+) => {
   // console.log(_completionProviders, "_completionProviders");
-
   if (
     _completionProviders.has(lang) &&
     typeof _completionProviders.get(lang).dispose == 'function'
   ) {
     _completionProviders.get(lang).dispose();
   }
-  let _coProvider = monaco.languages.registerCompletionItemProvider(
+  const _coProvider = monaco.languages.registerCompletionItemProvider(
     lang,
     FirecampCompletionProvider(vars)
   );
   _completionProviders.set(lang, _coProvider);
 };
 
-const SetHoverProvider = (lang, vars) => {
+const SetHoverProvider = (
+  lang: EEditorLanguage,
+  vars: { [k: string]: string }
+) => {
   // console.log(_hoverProviders, "_hoverProviders");
 
   if (
@@ -67,11 +67,10 @@ const SetHoverProvider = (lang, vars) => {
     _hoverProviders.get(lang).dispose();
   }
 
-  let _hProvider = monaco.languages.registerHoverProvider(
+  const _hProvider = monaco.languages.registerHoverProvider(
     lang,
     FirecampHoverProvider(vars)
   );
   _hoverProviders.set(lang, _hProvider);
 };
-
 export { SetCompletionProvider, SetHoverProvider };

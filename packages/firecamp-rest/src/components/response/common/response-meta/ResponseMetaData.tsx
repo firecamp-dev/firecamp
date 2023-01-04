@@ -37,19 +37,19 @@ const ResponseMetaData = () => {
   }
 
   return (
-    <div className="fc-response-header-stats">
+    <div>
       {/* <div>Response</div> */}
       {response && contentType && contentType.length ? (
         <div
-          className="fc-response-header-stats-type whitespace-nowrap text-xs text-primaryColor w-fit overflow-hidden ml-4 overflow-ellipsis"
+          className="whitespace-nowrap text-xs text-primaryColor w-fit overflow-hidden ml-4 overflow-ellipsis"
           style={{ fontSize: '11px' }}
         >
           {contentType}
         </div>
       ) : (
         <></>
-      )}
-      <div className="fc-response-header-stats-results">
+      )}ƒ
+      <div>
         <ResStatus
           {..._getStatusObj(statusCode)}
           isRequestRunning={isRequestRunning}

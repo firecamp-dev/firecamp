@@ -1,3 +1,8 @@
+import FormData from 'form-data';
+import fs from 'fs';
+import qs from 'qs';
+import { isNode } from 'browser-or-node';
+import { _array, _misc, _string, _table } from '@firecamp/utils';
 import {
   ERestBodyTypes,
   EKeyValueTableRowType,
@@ -5,15 +10,9 @@ import {
   IRestBody,
   TGraphQLBody,
 } from '@firecamp/types';
-import { _array, _misc, _string, _table } from '@firecamp/utils';
-import FormData from 'form-data';
-import fs from 'fs';
-import qs from 'qs';
-import { isNode } from 'browser-or-node';
 
 export default async (body: IRestBody): Promise<any> => {
   const { value: payload, type } = body;
-
   if (!payload) return;
 
   switch (type) {
@@ -50,7 +49,6 @@ export default async (body: IRestBody): Promise<any> => {
           form.append(item.key, fs.createReadStream(item.value || ''));
         } else form.append(item.key, item.value);
       });
-
       return form;
 
     // encode data using the qs library

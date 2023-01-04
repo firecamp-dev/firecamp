@@ -1,6 +1,6 @@
 {
   "name": "firecamp",
-  "version": "2.6.1",
+  "version": "3.0.0",
   "private": true,
   "description": "Universal API testing and collaboration platform",
   "main": "packages/firecamp-desktop-app/dist/services/Main",
@@ -26,7 +26,7 @@
     "test-e2e": "cross-env NODE_ENV=test mocha -r ./test/setup-app test/e2e",
     "_test": "cross-env NODE_ENV=test mocha -r ./test/setup-app test/app",
     "test": "jest",
-    "prettify": "prettier --write \"packages/firecamp-platform/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
+    "prettify": "prettier --write \"platform/firecamp-platform/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
     "precommit": "lint-staged",
     "preinstall": "npx only-allow pnpm"
   },

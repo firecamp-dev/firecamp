@@ -196,7 +196,7 @@ const MultiLineIFE: FC<IMultiLineIFE> = ({
         controlsConfig={controlsConfig}
         options={{
           language,
-          // theme: IFEThemes.DARK,
+          // theme: EEditorTheme.Dark,
           value,
           readOnly:
             typeof disabled == 'boolean' ? disabled : disabled == 'disabled',

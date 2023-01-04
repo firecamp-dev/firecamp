@@ -1,3 +1,4 @@
+import { EEditorLanguage } from '@firecamp/types';
 import {
   Container,
   Column,
@@ -25,7 +26,7 @@ const GraphQLBody = ({ body, onChange }) => {
           <div className="text-base px-1 py-2 bg-focus1">Query variables</div>
           <Editor
             value={variables}
-            language={'json'}
+            language={EEditorLanguage.GraphQl}
             monacoOptions={{
               // mode: "json",
               name: 'graphQLBodyVariables',

@@ -8,7 +8,9 @@ import {
   Column,
   Editor,
 } from '@firecamp/ui-kit';
+import { EEditorLanguage } from '@firecamp/types';
 import AckIcon from './AckIcon';
+
 const emptyRow = {
   message: [
     {
@@ -55,7 +57,7 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
   }, []);
 
   const language =
-    row?.message[selectedArgIndex]?.__meta.type === 'json' ? 'json' : 'text';
+    row?.message[selectedArgIndex]?.__meta.type === 'json' ? EEditorLanguage.Json : EEditorLanguage.Text;
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">

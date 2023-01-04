@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { Editor } from '@firecamp/ui-kit';
+import { EEditorLanguage } from '@firecamp/types';
 
 const TimelineTab: FC<{ id: string; timeline: string }> = ({
   id,
@@ -9,7 +10,7 @@ const TimelineTab: FC<{ id: string; timeline: string }> = ({
     <Editor
       disabled={true}
       value={timeline || ``}
-      language="text"
+      language={EEditorLanguage.Text}
       path={`${id}/response/timeline`}
       // controlsConfig={{
       //   show: true,

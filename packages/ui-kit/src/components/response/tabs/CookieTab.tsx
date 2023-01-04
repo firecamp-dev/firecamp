@@ -22,8 +22,6 @@ const CookieTab: FC<{cookies: any}> = ({ cookies }) => {
     // ctx_copyToClipboard(cookiesStr);
   };
 
-  console.log(Resizable, "Resizable...");
-
   return (
     <div className=" striped response-cookies-table">
       <div className="">
