@@ -13,7 +13,7 @@ import cx from 'classnames';
 import Explorer from '../activity-bar/explorer/Explorer';
 // import History from '../activity-bar/history/History';
 import getOs from '../../services/get-os';
-import Environment from '../activity-bar/environment/Environment';
+import Environment from '../common/environment/environment-widget/EnvironmentSidebar';
 import platformContext from '../../services/platform-context';
 
 // check if MAC OS

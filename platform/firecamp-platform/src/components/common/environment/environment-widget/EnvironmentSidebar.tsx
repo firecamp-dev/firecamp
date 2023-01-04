@@ -11,21 +11,17 @@ import {
   ToolBar,
 } from '@firecamp/ui-kit';
 
-import { useWorkspaceStore } from '../../../store/workspace';
-import treeRenderer from './treeItemRenderer';
-import { CollectionEnvDataProvider } from './treeDataProvider';
-import { useEnvStore } from '../../../store/environment';
-import platformContext from '../../../services/platform-context';
+import treeRenderer from './tree/treeItemRenderer';
+import { CollectionEnvDataProvider } from './tree/treeDataProvider';
+import platformContext from '../../../../services/platform-context';
+import { useWorkspaceStore } from '../../../../store/workspace';
+import { useEnvStore } from '../../../../store/environment';
 
-const Environment: FC<any> = () => {
+const EnvironmentSidebar: FC<any> = () => {
   const treeRef = useRef();
   const {
-    workspace,
     explorer: { collections },
-  } = useWorkspaceStore(
-    (s) => ({ workspace: s.workspace, explorer: s.explorer }),
-    shallow
-  );
+  } = useWorkspaceStore((s) => ({ explorer: s.explorer }), shallow);
   const { envs, deleteEnvironment, registerTDP, unRegisterTDP } = useEnvStore(
     (s) => ({
       envs: s.envs,
@@ -189,7 +185,7 @@ const Environment: FC<any> = () => {
   );
 };
 
-export default Environment;
+export default EnvironmentSidebar;
 
 const ProgressBarContainer = () => {
   let { isProgressing } = useWorkspaceStore((s) => ({
