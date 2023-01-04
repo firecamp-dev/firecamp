@@ -18,7 +18,6 @@ const UrlBarContainer = ({
     method,
     __meta,
     __ref,
-    activeEnvironments,
     isRequestRunning,
     isRequestSaved,
     context,
@@ -32,7 +31,6 @@ const UrlBarContainer = ({
       method: s.request.method,
       __meta: s.request.__meta,
       __ref: s.request.__ref,
-      activeEnvironments: s.runtime.activeEnvironments,
       isRequestRunning: s.runtime.isRequestRunning,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
@@ -75,40 +73,29 @@ const UrlBarContainer = ({
   const _onChangeVariables = (variables: { workspace: {}; collection: {} }) => {
     // console.log({ variables });
 
-    const workspaceUpdates = {
-      environmentId: activeEnvironments.workspace,
-      variables: variables.workspace,
-    };
-
     const collectionUpdates = {
       id: collectionId || '',
-      environmentId: activeEnvironments.collection,
+      environmentId: collectionId,
       variables: variables.collection,
     };
 
-    context.environment.setVariables(workspaceUpdates, collectionUpdates);
+    context.environment.setVariables(collectionUpdates);
   };
 
   const _onExecute = async () => {
     try {
-      // Do not execute if url is empty
+      // do not execute if url is empty
       if (!url.raw) return;
 
       const envVariables = await context.environment.getVariablesByTabId(
         tab.id
       );
-      // console.log({ envVariables });
-
       const agent: EFirecampAgent = context.getFirecampAgent();
-
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
     } catch (error) {
       console.error({ API: 'rest._onExecute' });
     }
   };
-
-  // console.log({ activeEnvironments, collectionId });
-  // console.log({ isRequestSaved });
 
   return (
     <UrlBar

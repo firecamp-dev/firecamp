@@ -1,5 +1,4 @@
 import { memo, useEffect } from 'react';
-import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import shallow from 'zustand/shallow';
@@ -32,7 +31,6 @@ const Rest = ({ tab, platformContext, activeTab }) => {
     isFetchingRequest,
     initialise,
     changeUrl,
-    setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     setContext,
@@ -44,7 +42,6 @@ const Rest = ({ tab, platformContext, activeTab }) => {
       changeMeta: s.changeMeta,
       changeUrl: s.changeUrl,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
-      setActiveEnvironments: s.setActiveEnvironments,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
@@ -63,28 +60,16 @@ const Rest = ({ tab, platformContext, activeTab }) => {
    */
   useEffect(() => {
     if (activeTab === tab.id) {
-      // existing active environments in to runtime
-      let activeEnvironments =
-        restStoreApi?.getState()?.runtime?.activeEnvironments;
-
-      // set active environments to platform
-      if (activeEnvironments && !!activeEnvironments.workspace) {
-        console.log({ activeEnvironments });
-
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments: {
-            workspace: activeEnvironments.workspace,
-            collection: activeEnvironments.collection || '',
-          },
-          collectionId: tab?.request?.__ref?.collectionId || '',
-        });
-      }
+      // set active collection to platform
+      platformContext.environment.setActiveEnvironments(
+        tab?.request?.__ref?.collectionId
+      );
 
       // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
+      // platformContext.environment.subscribeChanges(
+      //   tab.id,
+      //   console.log
+      // );
     }
   }, [activeTab]);
 
@@ -211,21 +196,6 @@ const Rest = ({ tab, platformContext, activeTab }) => {
         curl,
         error,
       });
-    }
-  };
-
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-
-    if (!platformActiveEnvironments) return;
-    let activeEnvironments = restStoreApi.getState().runtime.activeEnvironments;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
     }
   };
 

@@ -273,10 +273,6 @@ export const initialiseStoreFromRequest = (
           test: '',
         },
       },
-      activeEnvironments: {
-        collection: '',
-        workspace: '',
-      },
       isRequestSaved: !!request.__ref.collectionId,
       oauth2LastFetchedToken: '',
       tabId,

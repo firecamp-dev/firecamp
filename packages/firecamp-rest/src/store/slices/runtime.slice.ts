@@ -15,10 +15,6 @@ interface IRuntime {
     };
     script: IRestScripts;
   };
-  activeEnvironments?: {
-    workspace: TId;
-    collection: TId;
-  };
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
   oauth2LastFetchedToken: string;
@@ -30,14 +26,6 @@ interface IRuntimeSlice {
 
   changeAuthHeaders?: (authHeaders: Array<IHeader>) => void;
   changeInherit?: (key: string, value: any) => void;
-  changeActiveEnvironment?: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => void;
-  setActiveEnvironments?: (updates: {
-    workspace: TId;
-    collection: TId;
-  }) => void;
   setRequestRunningFlag: (flag: boolean) => void;
   setRequestSavedFlag: (flag: boolean) => void;
   setOAuth2LastFetchedToken: (token: string) => void;
@@ -61,10 +49,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
         post: '',
         test: '',
       },
-    },
-    activeEnvironments: {
-      workspace: '',
-      collection: '',
     },
     isRequestRunning: false,
     oauth2LastFetchedToken: '',
@@ -99,33 +83,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
           ...s.runtime.inherit,
           [key]: value,
         },
-      },
-    }));
-  },
-  changeActiveEnvironment: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => {
-    // console.log({ scope, environmentId });
-
-    set((s) => ({
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: {
-          ...s.runtime.activeEnvironments,
-          [scope]: environmentId,
-        },
-      },
-    }));
-    get().context.environment.setVarsToProvidersAndEmitEnvsToTab();
-  },
-  setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
-    // console.log({updates});
-
-    set((s) => ({
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: updates,
       },
     }));
   },
