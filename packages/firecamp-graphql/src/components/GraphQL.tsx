@@ -33,7 +33,6 @@ const GraphQL = ({ tab, platformContext, activeTab }) => {
   let {
     isFetchingRequest,
     initialise,
-    setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
@@ -44,7 +43,6 @@ const GraphQL = ({ tab, platformContext, activeTab }) => {
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
-      setActiveEnvironments: s.setActiveEnvironments,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setContext: s.setContext,
@@ -66,25 +64,12 @@ const GraphQL = ({ tab, platformContext, activeTab }) => {
    * */
   useEffect(() => {
     if (activeTab === tab.id) {
-      // existing active environments in to runtime
-      const activeEnvironments =
-        graphqlStoreApi.getState().runtime.activeEnvironments;
-
-      // set active environments to platform
-      if (!!activeEnvironments?.workspace) {
-        // console.log({ activeEnvironments });
-
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments,
-          collectionId: tab?.request?.__meta.collectionId || '',
-        });
-      }
+      platformContext.environment.setActiveEnvironments(
+        tab?.request?.__meta.collectionId || ''
+      );
 
       // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
+      // platformContext.environment.subscribeChanges(tab.id, console.log);
     }
   }, [activeTab]);
 
@@ -194,22 +179,6 @@ const GraphQL = ({ tab, platformContext, activeTab }) => {
         API: 'fetch and normalize rest request',
         error,
       });
-    }
-  };
-
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-
-    if (!platformActiveEnvironments) return;
-    let activeEnvironments =
-      graphqlStoreApi.getState().runtime.activeEnvironments;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
     }
   };
 
