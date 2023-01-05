@@ -7,7 +7,7 @@ import { _object } from '@firecamp/utils';
 import { IRequestTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
-import { useEnvStore } from './environment';
+import platformContext from '../services/platform-context';
 
 const initialState = {
   list: {},
@@ -229,8 +229,10 @@ const useTabStore = create<ITabStore>((set, get) => {
         });
 
         /** -- set tabId and collectionId in tabColMap -- */
-        const envStore = useEnvStore.getState();
-        envStore.setTabCollection(tId, request.__ref.collectionId);
+        platformContext.environment.setTabCollection(
+          tId,
+          request.__ref.collectionId
+        );
 
         return [tab, _orders];
       },
