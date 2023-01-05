@@ -58,6 +58,7 @@ const EnvironmentSelecctor = () => {
       <div className="!ml-auto !mr-1 w-fit flex items-center">
         <EnvironmentDD
           key={`collection-env-selector`}
+          activeCollectionId={colId}
           activeEnvId={envId}
           environments={envs}
           onChange={setActiveEnv}

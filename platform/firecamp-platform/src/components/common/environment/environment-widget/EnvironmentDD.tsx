@@ -1,11 +1,13 @@
 import { FC, useState, useMemo } from 'react';
 import classnames from 'classnames';
 import { Dropdown, Button } from '@firecamp/ui-kit';
-import { EEnvironmentScope } from '@firecamp/types';
+import { EEnvironmentScope, TId } from '@firecamp/types';
 import Helper from './Helper';
+import { useWorkspaceStore } from '../../../../store/workspace';
 
 const EnvironmentDD: FC<IEnvironmentDD> = ({
-  activeEnvId: propActiveEnv = '',
+  activeCollectionId,
+  activeEnvId,
   environments,
   scope = EEnvironmentScope.Collection,
   onChange = () => {},
@@ -14,9 +16,15 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
   const [isOpen, toggleOpen] = useState(false);
 
   const menu = useMemo(
-    () => Helper.generate.environmentsDD(environments, propActiveEnv),
-    [environments, propActiveEnv]
+    () => Helper.generate.environmentsDD(environments, activeEnvId),
+    [environments, activeEnvId]
   );
+  const collection = useMemo(() => {
+    const wStore = useWorkspaceStore.getState();
+    return wStore.explorer.collections.find(
+      (c) => c.__ref.id == activeCollectionId
+    );
+  }, [activeCollectionId]);
 
   if (
     !menu.options ||
@@ -51,6 +59,9 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     },
   ];
 
+  if (!collection || !menu?.selected) return <></>;
+  const title = `${collection.name} / ${menu.selected.name}`;
+
   return (
     <Dropdown
       detach={false}
@@ -62,7 +73,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     >
       <Dropdown.Handler>
         <Button
-          text={`Firecamp V3 Apis / ` + menu?.selected?.name || ''}
+          text={title}
           className={classnames(
             { '!text-primaryColor': scope === EEnvironmentScope.Workspace },
             { '!text-info': scope === EEnvironmentScope.Collection }
@@ -86,7 +97,8 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
 export default EnvironmentDD;
 
 interface IEnvironmentDD {
-  activeEnvId: string;
+  activeCollectionId: TId;
+  activeEnvId: TId;
   environments: any[];
   scope?: EEnvironmentScope;
 

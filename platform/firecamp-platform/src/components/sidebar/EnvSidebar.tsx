@@ -218,15 +218,15 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
     setIsVarUpdated(false);
 
     // get environment changes and emit to request tab
-    pltContext.environment.setVarsToProvidersAndEmitEnvsToTab();
+    // pltContext.environment.setVarsToProvidersAndEmitEnvsToTa();
   };
 
   const _setActiveEnv = (envId) => {
     if (scope === EEnvironmentScope.Collection) {
-      setCurrentTabActiveEnv(collectionId, envId);
+      setCurrentTabActiveEnv(envId);
     }
     // get environment changes and emit to request tab
-    pltContext.environment.setVarsToProvidersAndEmitEnvsToTab();
+    // pltContext.environment.setVarsToProvidersAndEmitEnvsToTa();
   };
 
   return (

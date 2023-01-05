@@ -1,7 +1,7 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
-import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
+import { EHttpMethod, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { IStore, useStore } from '../../../store';
 
@@ -87,9 +87,10 @@ const UrlBarContainer = ({
       // do not execute if url is empty
       if (!url.raw) return;
 
-      const envVariables = await context.environment.getVariablesByTabId(
-        tab.id
-      );
+      const envVariables = {merged: {}, collection: {}, workspace: {}}
+      //  = await context.environment.getVariablesByTabId(
+      //   tab.id
+      // );
       const agent: EFirecampAgent = context.getFirecampAgent();
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
     } catch (error) {
@@ -99,7 +100,6 @@ const UrlBarContainer = ({
 
   return (
     <UrlBar
-      environmentCard={<></>}
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {
