@@ -8,6 +8,7 @@ import TabsV3 from "./v3/Tabs";
 import { ITabs } from "./interfaces/Tabs.interfaces";
 import { TId } from "@firecamp/types";
 import { click, dragAndDrop } from "../../../__mocks__/eventMock";
+import { ITab } from "./v3/Tab.interface";
 
 const TAB_LIST = [
     {
@@ -23,11 +24,10 @@ const TAB_LIST = [
     }
 ];
 
-const TAB_LIST_V3: ITabs = {
+const TAB_LIST_V3: Record<string,ITab> = {
     body: {
         id: 'body',
-        name: 'Body',
-        icon: <VscJson />
+        name: 'Body'
     },
     auth: {
         id: 'auth',
@@ -177,7 +177,7 @@ describe("Tabs component : ", () => {
 
         let closeTabContainer = screen.getAllByTitle('IconClose');
         expect(closeTabContainer[0].parentElement.parentElement).toHaveClass('fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor');
-        screen.debug(closeTabContainer[0].parentElement.parentElement);
+        // screen.debug(closeTabContainer[0].parentElement.parentElement);
 
         const SecondTab = closeTabContainer[1];
         click(SecondTab);

@@ -1,12 +1,11 @@
 //@ts-nocheck
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 import Dropdown from './Dropdown';
+import DropDownV2 from './DropdownV2';
 import Button from '../buttons/Button';
 
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import cx from 'classnames';
 
 export default {
   title: "UI-Kit/Dropdown",
@@ -116,6 +115,7 @@ const options = [
     className: '',
     showSeparator: true,
     postfix: () => (<VscChevronRight size={10} className={"ml-auto"} />),
+    optionContainerClassName: 'p-1',
     list: [{
       id: '2.1',
       name: 'Firecamp 2.1',
@@ -130,6 +130,7 @@ const options = [
       postfix: () => (<VscChevronRight size={10} className={"ml-auto"} />),
       disabled: false,
       className: 'mr-2',
+      optionContainerClassName: 'p-2',
       list: [{
         id: '2.1.1',
         name: 'Firecamp 2.1.1',
@@ -199,130 +200,79 @@ const options = [
 ]
 
 export const DropDownv2Example = () => {
-  let [selected, setSelected] = useState('API style');
+  const [selected, setSelected] = useState('API style');
 
-  return <DropDownv2
-    selectedElement={<Button id={"button"} text={selected} color='primary' size='sm' className='rounded p-2' uppercase={true} withCaret={true} />}
+  return <DropDownV2
+    displayDefaultOptionClassName={1}
+    handleRenderer={() => <Button id={"button"} text={selected} color='primary' size='sm' className='rounded p-2' uppercase={true} withCaret={true} />}
     option={options}
     onSelect={(value) => setSelected(value)}
-    optionsClassName={"ml-2"}
+    optionContainerClassName={"ml-2"}
+    showOptionArrow={true}
   />
 };
 
-const DropDownv2 = ({ selectedElement, option, onSelect, optionsClassName = "", className = '', disabled = false }) => {
+const bodyTabOptions = [
 
-  return (<DropdownMenu.Root>
+  {
+    id: 'FormAndQueryHeader',
+    name: 'Form and query',
+    disabled: true,
+    className: '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans '
+  },
+  {
+    id: 'multipart',
+    name: 'Multipart',
+    className: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none'
+  },
+  {
+    id: 'FormURLEncode',
+    name: 'Form URL Encode',
+    className: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none'
+  },
+  {
+    id: 'GraphQLQueries',
+    name: 'GraphQL Queries',
+    className: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none'
+  },
+  {
+    id: 'RawHeader',
+    name: 'Raw',
+    disabled: true,
+    className: '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans '
+  },
+  {
+    id: 'json',
+    name: 'Json',
+    className: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none'
+  },
+  {
+    id: 'xml',
+    name: 'Xml',
+    className: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none'
+  },
+  {
+    id: 'text',
+    name: 'Text',
+    className: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none'
+  }
+];
+export const BodyTabExample = () => {
+  const [selected, setSelected] = useState('');
 
-    <DropdownMenu.Trigger className={cx({ 'opacity-50': disabled })} disabled={disabled} asChild>
-      <span>
-        {typeof prefix === 'function' && prefix()}
-        <span className={className}>{selectedElement}
-        </span>
-        {typeof postfix === 'function' && postfix()}
-      </span>
-    </DropdownMenu.Trigger>
-
-    <DropdownMenu.Portal>
-      <DropdownMenu.Content className={cx("rounded bg-appBackground border border-appForeground ", optionsClassName)} sideOffset={5}>
-
-        {
-          option.map((item) => {
-            if (item.list !== undefined) {
-              return <Fragment key={item.id}>
-                <DropDownNested className={item.className}
-                  selectedElement={item.name}
-                  onSelect={onSelect}
-                  option={item.list}
-                  postfix={item.postfix}
-                  prefix={item.prefix}
-                  disabled={item.disabled}
-                  optionsClassName={item.optionsClassName}
-
-                />
-                {item.showSeparator && <Separator />}
-              </Fragment>
-            }
-            return <Fragment key={item.id}>
-              <Item
-                className={item.className}
-                text={item.name}
-                prefix={item.prefix}
-                postfix={item.postfix}
-                disabled={item.disabled}
-                onClick={() => onSelect(item.name)} />
-              {item.showSeparator && <Separator />}
-            </Fragment>
-          })
-        }
-
-        <DropdownMenu.Arrow />
-      </DropdownMenu.Content>
-
-    </DropdownMenu.Portal>
-  </DropdownMenu.Root>
-  );
-};
-const DropDownNested = ({ postfix, prefix, selectedElement, option, onSelect, className = '', optionsClassName = '', disabled = false }) => {
-
-  return <DropdownMenu.Sub>
-    <DropdownMenu.SubTrigger className={cx('px-2 flex items-center', { 'opacity-50': disabled })} disabled={disabled} asChild>
-      <span>
-        {typeof prefix === 'function' && prefix()}
-        <span className={className}>
-          {selectedElement}
-        </span>
-        {typeof postfix === 'function' && postfix()}
-      </span>
-    </DropdownMenu.SubTrigger>
-    <DropdownMenu.Portal>
-      <DropdownMenu.SubContent
-        className={cx("rounded bg-appBackground border border-appForeground ", optionsClassName)}
-        sideOffset={5}
-        alignOffset={0}
-      >
-        {
-          option.map((item) => {
-            if (item.list !== undefined) {
-              return <Fragment key={item.id}>
-                <DropDownNested selectedElement={item.name}
-                  className={item.className}
-                  onSelect={onSelect} option={item.list} postfix={item.postfix}
-                  prefix={item.prefix}
-                  disabled={item.disabled}
-
-                />
-                {item.showSeparator && <Separator />}
-              </Fragment>
-            }
-            return <Fragment key={item.id}>
-              <Item
-                className={item.className}
-                text={item.name}
-                prefix={item.prefix}
-                postfix={item.postfix}
-                disabled={item.disabled}
-                onClick={() => onSelect(item.name)} />
-              {item.showSeparator && <Separator />}
-            </Fragment>
-          })
-        }
-        <DropdownMenu.Arrow />
-      </DropdownMenu.SubContent>
-    </DropdownMenu.Portal>
-  </DropdownMenu.Sub>
-
-};
-const Item = ({ text, onClick, disabled = false, prefix, postfix, className = '' }) => {
-  return <DropdownMenu.Item
-    className={cx('flex items-center h-6 relative text-appForeground px-2', className, { 'opacity-50': disabled })}
-    disabled={disabled}
-    onClick={onClick}>
-    {typeof prefix === 'function' && prefix()}
-    {text}
-    {typeof postfix === 'function' && postfix()}
-  </DropdownMenu.Item>
-};
-const Separator = () => {
-  return (<DropdownMenu.Separator className="my-1 bg-appForeground opacity-50 " style={{ height: "1px" }} />
-  );
+  return <DropDownV2
+  handleRenderer={() => <Button
+      text={selected || 'No Body'}
+      className="font-bold hover:!bg-focus1"
+      withCaret
+      transparent
+      ghost
+      xs
+      primary
+    />}
+    option={bodyTabOptions}
+    onSelect={(value) => setSelected(value)}
+    displayDefaultOptionClassName={2}
+    optionContainerClassName="w-36 bg-popoverBackground"
+  />
 };
