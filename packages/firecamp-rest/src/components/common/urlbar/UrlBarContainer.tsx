@@ -88,9 +88,12 @@ const UrlBarContainer = ({
       if (!url.raw) return;
 
       const envVariables = {merged: {}, collection: {}, workspace: {}}
-      //  = await context.environment.getVariablesByTabId(
-      //   tab.id
-      // );
+      const tabEnv = await context.environment.getCurrentTabEnv(
+        tab.id
+      );
+      if(tabEnv) {
+        envVariables.collection = { ...(tabEnv.variables|| {}) };
+      }
       const agent: EFirecampAgent = context.getFirecampAgent();
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
     } catch (error) {
