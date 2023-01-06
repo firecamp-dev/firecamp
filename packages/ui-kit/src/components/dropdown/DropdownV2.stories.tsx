@@ -2,6 +2,12 @@
 import { useState } from 'react';
 import DropDownV2 from './DropdownV2';
 import Button from '../buttons/Button';
+import {
+  FcIconGetSquare,
+  FcIconGraphQL,
+  FcIconSocketIoSquare,
+  FcIconWebSocket
+} from '../icons';
 
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
@@ -68,7 +74,7 @@ export const DropDownv2Example = () => {
             postfix: '',
             disabled: true,
             className: ''
-    
+
           }, {
             id: '2.1.3',
             name: 'Firecamp 2.1.3',
@@ -77,7 +83,7 @@ export const DropDownv2Example = () => {
             disabled: false,
             showSeparator: true,
             className: 'w-fit',
-    
+
           }, {
             id: '2.1.4',
             name: 'Firecamp 2.1.4',
@@ -119,7 +125,7 @@ export const DropDownv2Example = () => {
           className: ''
         }]
       }
-    
+
     ]}
     onSelect={(value) => setSelected(value)}
     optionContainerClassName={"ml-2"}
@@ -131,16 +137,19 @@ const STYLES = {
   bodyTabOptionContainer: 'w-36 bg-popoverBackground',
   bodyTabHeader: '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
   bodyTabItem: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-  
+
   emitterBodyOptionContainer: 'w-fit ml-2 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
   emitterTabItem: 'pl-3 text-popoverForeground text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+
+  logOptionContainer: 'w-36 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
+  logTabItem: '!p-1 !pl-2 text-sm leading-4 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
 }
 
 export const BodyTabExample = () => {
   const [selected, setSelected] = useState('');
 
   return <DropDownV2
-  handleRenderer={() => <Button
+    handleRenderer={() => <Button
       text={selected || 'No Body'}
       className="font-bold hover:!bg-focus1"
       withCaret
@@ -149,7 +158,7 @@ export const BodyTabExample = () => {
       xs
       primary
     />}
-    option={ [
+    option={[
 
       {
         id: 'FormAndQueryHeader',
@@ -205,7 +214,7 @@ export const EmitterBodyExample = () => {
   const [selected, setSelected] = useState('Text');
 
   return <DropDownV2
-  handleRenderer={() => <Button
+    handleRenderer={() => <Button
       text={selected}
       className="font-bold hover:!bg-focus1"
       withCaret
@@ -255,8 +264,50 @@ export const EmitterBodyExample = () => {
         name: 'No body',
         className: STYLES.emitterTabItem
       }
-  ]}
+    ]}
     onSelect={(value) => setSelected(value)}
     optionContainerClassName={STYLES.emitterBodyOptionContainer}
+  />
+};
+
+
+const LogsOptions = [
+  {
+    id: 'system',
+    name: 'System',
+    className: STYLES.logTabItem
+  },
+  {
+    id: 'send',
+    name: 'Send',
+    className: STYLES.logTabItem
+  },
+  {
+    id: 'receive',
+    name: 'Receive',
+    className: STYLES.logTabItem
+  }
+];
+export const LogsExample = () => {
+  const [selected, setSelected] = useState('');
+
+  return <DropDownV2
+    handleRenderer={() => <Button
+    className='w-36 text-base'
+  
+      text={selected || 'select log type'}
+      tooltip={
+        selected
+          ? `Log type: ${selected || ''}`
+          : ''
+      }
+      secondary
+      withCaret
+      sm
+    />}
+    option={LogsOptions}
+    onSelect={(value) => setSelected(value)}
+    optionContainerClassName={STYLES.logOptionContainer}
+    // displayDefaultOptionClassName={2}
   />
 };
