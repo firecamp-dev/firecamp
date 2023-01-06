@@ -7,6 +7,14 @@ import {
     IItemV2,
 } from './interfaces/Dropdown.interfaces';
 
+const DEFAULT_STYLES = {
+    disabled: 'opacity-50',
+    optionContainerDefault1: 'rounded bg-appBackground border border-appForeground',
+    optionContainerDefault2: 'border border-focusBorder focus-visible:!shadow-none',
+    nestedOptionTrigger: 'flex items-center',
+    optionItem: 'flex items-center text-appForeground px-2',
+    separator: 'my-1 bg-appForeground opacity-50'
+}
 const DropDownV2 = ({
     showOptionArrow = false, handleRenderer, option, onSelect, optionContainerClassName = "",
     displayDefaultOptionClassName = 0, className = '', disabled = false
@@ -14,15 +22,15 @@ const DropDownV2 = ({
 
     return (<DropdownMenu.Root>
 
-        <DropdownMenu.Trigger className={cx({ 'opacity-50': disabled })} disabled={disabled} asChild>
+        <DropdownMenu.Trigger className={cx({  [DEFAULT_STYLES.disabled] : disabled })} disabled={disabled} asChild>
             <span className={className}>{handleRenderer()}
             </span>
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Portal>
             <DropdownMenu.Content className={cx(
-                { "rounded bg-appBackground border border-appForeground ": displayDefaultOptionClassName === 1 },
-                { "border border-focusBorder focus-visible:!shadow-none": displayDefaultOptionClassName === 2 },
+                { [DEFAULT_STYLES.optionContainerDefault1]: displayDefaultOptionClassName === 1 },
+                { [DEFAULT_STYLES.optionContainerDefault2]: displayDefaultOptionClassName === 2 },
                 optionContainerClassName)}
                 sideOffset={5}>
 
@@ -66,7 +74,7 @@ const DropDownV2 = ({
 const DropDownNested = ({ postfix, prefix, selectedElement, list, onSelect, className = '', displayDefaultOptionClassName = 0, optionContainerClassName = '', disabled = false }: IOptionsV2) => {
 
     return <DropdownMenu.Sub>
-        <DropdownMenu.SubTrigger className={cx('flex items-center', { 'opacity-50': disabled })} disabled={disabled} asChild>
+        <DropdownMenu.SubTrigger className={cx([DEFAULT_STYLES.nestedOptionTrigger], { [DEFAULT_STYLES.disabled] : disabled })} disabled={disabled} asChild>
             <span>
                 {typeof prefix === 'function' && prefix()}
                 <span className={className}>
@@ -78,8 +86,8 @@ const DropDownNested = ({ postfix, prefix, selectedElement, list, onSelect, clas
         <DropdownMenu.Portal>
             <DropdownMenu.SubContent
                 className={cx(
-                    { "rounded bg-appBackground border border-appForeground ": displayDefaultOptionClassName === 1 },
-                    { "border border-focusBorder focus-visible:!shadow-none": displayDefaultOptionClassName === 2 },
+                    { [DEFAULT_STYLES.optionContainerDefault1]: displayDefaultOptionClassName === 1 },
+                    { [DEFAULT_STYLES.optionContainerDefault2]: displayDefaultOptionClassName === 2 },
                     optionContainerClassName)}
                 sideOffset={5}
                 alignOffset={0}
@@ -122,7 +130,7 @@ const DropDownNested = ({ postfix, prefix, selectedElement, list, onSelect, clas
 };
 const Item = ({ text, onClick, disabled = false, prefix, postfix, className = '', defaultItemClass = true }: IItemV2) => {
     return <DropdownMenu.Item
-        className={cx({ 'flex items-center text-appForeground px-2': defaultItemClass }, className, { 'opacity-50': disabled })}
+        className={cx({ [DEFAULT_STYLES.optionItem]: defaultItemClass }, className, { [DEFAULT_STYLES.disabled] : disabled })}
         disabled={disabled}
         onClick={onClick}>
         {typeof prefix === 'function' && prefix()}
@@ -131,7 +139,7 @@ const Item = ({ text, onClick, disabled = false, prefix, postfix, className = ''
     </DropdownMenu.Item>
 };
 const Separator = () => {
-    return (<DropdownMenu.Separator className="my-1 bg-appForeground opacity-50 " style={{ height: "1px" }} />
+    return (<DropdownMenu.Separator className={DEFAULT_STYLES.separator} style={{ height: "1px" }} />
     );
 };
 
