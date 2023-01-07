@@ -6,7 +6,7 @@ import { ICount } from "./interfaces/Count.interfaces"
  */
 const Count: FC<ICount> = ({ number = '' }) => {
   if (!number) return <sup />;
-  return <sup className="px-1">{number}</sup>;
+  return <sup className="px-1 bg-primaryColor text-primaryColorText rounded-2xl leading-3">{number}</sup>;
 };
 
 export default Count;

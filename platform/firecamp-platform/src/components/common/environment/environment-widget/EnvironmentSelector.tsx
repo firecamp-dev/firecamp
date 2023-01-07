@@ -4,6 +4,7 @@ import { Button, Column } from '@firecamp/ui-kit';
 import { TId } from '@firecamp/types';
 
 import EnvironmentDD from './EnvironmentDD';
+import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
 import { ITabStore, useTabStore } from '../../../../store/tab';
@@ -54,7 +55,7 @@ const EnvironmentSelecctor = () => {
 
   if (isGuest === true) return <></>;
   return (
-    <Column className="fc-tab-header-right  border-b border-tabBorder ml-auto flex-none bg-transparent w-36 flex items-center justify-end pr-1">
+    <Column overflow="visible" className="fc-tab-header-right  border-b border-tabBorder flex-none bg-transparent w-36 flex items-center justify-end pr-1 border-l pl-1">
       <div className="!ml-auto !mr-1 w-fit flex items-center">
         <EnvironmentDD
           key={`collection-env-selector`}
@@ -65,9 +66,11 @@ const EnvironmentSelecctor = () => {
         />
         <span
           key={'toggle-env-button'}
-          className="cursor-pointer ml-1 text-base"
+          className="cursor-pointer ml-1 text-base !text-info"
           onClick={() => toggleEnvSidebar()}
-        />
+        >
+          <VscEye size={14} />
+          </span>
       </div>
     </Column>
   );

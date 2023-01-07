@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import shallow from 'zustand/shallow';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
-import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
+import { Column, Row, TabsV3 as Tabs,Dropdown, Button } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 import EnvironmentSelecctor from '../common/environment/environment-widget/EnvironmentSelector';
@@ -120,7 +120,29 @@ const TabHeaderContainer: FC = () => {
             />
           </div>
         </Column>
+        <div className="-mb-96 pb-96 flex">
         <EnvironmentSelecctor />
+        <div className="border-l border-b border-tabBorder flex items-center pl-1">
+        <Dropdown
+          detach={false}
+          isOpen={false}
+        >
+      <Dropdown.Handler>
+        <Button
+          text={"Create"}
+          className={classnames("!text-primaryColor")}
+          withCaret
+          transparent
+          ghost
+          xs
+        />
+      </Dropdown.Handler>
+      <Dropdown.Options
+        options={[]}
+      />
+    </Dropdown>
+        </div>
+        </div>
       </Row>
     </Column>
   );
