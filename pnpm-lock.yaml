@@ -161,7 +161,7 @@ importers:
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chai': ^4.3.1
       '@types/chrome': 0.0.204
-      '@types/jest': ^28.1.6
+      '@types/jest': ^29.2.4
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
       '@typescript-eslint/parser': ^5.29.0
@@ -193,7 +193,7 @@ importers:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
       '@types/chai': 4.3.4
       '@types/chrome': 0.0.204
-      '@types/jest': 28.1.8
+      '@types/jest': 29.2.4
       '@types/node': 18.11.15
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
       '@typescript-eslint/parser': 5.46.1_ha6vam6werchizxrnqvarmz2zu
@@ -221,7 +221,7 @@ importers:
   packages/firecamp-cookie-manager:
     specifiers:
       '@istanbuljs/nyc-config-typescript': ^1.0.1
-      '@types/jest': ^28.1.6
+      '@types/jest': ^29.2.4
       '@types/node': ^18.0.0
       '@types/tough-cookie': ^4.0.1
       '@typescript-eslint/eslint-plugin': ^5.35.1
@@ -250,7 +250,7 @@ importers:
       tough-cookie: 4.1.2
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
-      '@types/jest': 28.1.8
+      '@types/jest': 29.2.4
       '@types/node': 18.11.15
       '@types/tough-cookie': 4.0.2
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
@@ -281,7 +281,7 @@ importers:
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@istanbuljs/nyc-config-typescript': ^1.0.1
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
@@ -323,7 +323,7 @@ importers:
       react-ga: 3.3.1
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/lodash': 4.14.191
       '@types/node': 18.11.15
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
@@ -351,7 +351,7 @@ importers:
   packages/firecamp-js-executor:
     specifiers:
       '@istanbuljs/nyc-config-typescript': ^1.0.1
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
       '@typescript-eslint/parser': ^5.29.0
@@ -376,7 +376,7 @@ importers:
       typescript: ^4.7.4
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/node': 18.11.15
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
       '@typescript-eslint/parser': 5.46.1_ha6vam6werchizxrnqvarmz2zu
@@ -412,7 +412,7 @@ importers:
       '@types/chrome': 0.0.204
       '@types/har-format': ^1.2.8
       '@types/httpsnippet': ^1.23.1
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
       '@types/md5': ^2.3.2
       '@types/node': ^16.4.3
@@ -497,7 +497,7 @@ importers:
       '@types/chrome': 0.0.204
       '@types/har-format': 1.2.10
       '@types/httpsnippet': 1.23.1
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/lodash': 4.14.191
       '@types/md5': 2.3.2
       '@types/node': 16.18.9
@@ -533,7 +533,7 @@ importers:
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chai': ^4.3.1
       '@types/chrome': ^0.0.204
-      '@types/jest': ^28.1.6
+      '@types/jest': ^29.2.4
       '@types/mocha': ^10.0.0
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
@@ -591,7 +591,7 @@ importers:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
       '@types/chai': 4.3.4
       '@types/chrome': 0.0.204
-      '@types/jest': 28.1.8
+      '@types/jest': 29.2.4
       '@types/mocha': 10.0.1
       '@types/node': 18.11.15
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
@@ -625,7 +625,7 @@ importers:
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@istanbuljs/nyc-config-typescript': ^1.0.1
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
@@ -680,7 +680,7 @@ importers:
       zustand: 3.7.2
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/lodash': 4.14.191
       '@types/node': 18.11.15
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
@@ -709,7 +709,7 @@ importers:
     specifiers:
       '@firecamp/types': ^0.1.5
       '@istanbuljs/nyc-config-typescript': ^1.0.1
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
       '@typescript-eslint/parser': ^5.29.0
@@ -746,7 +746,7 @@ importers:
       socket.io-client-v4: /socket.io-client/4.1.3
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/node': 18.11.15
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
       '@typescript-eslint/parser': 5.46.1_ha6vam6werchizxrnqvarmz2zu
@@ -777,7 +777,7 @@ importers:
       '@firecamp/url': ^0.0.17
       '@firecamp/ws-executor': workspace:*
       '@istanbuljs/nyc-config-typescript': ^1.0.1
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
@@ -831,7 +831,7 @@ importers:
       zustand: 3.7.2
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/lodash': 4.14.191
       '@types/node': 18.11.15
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
@@ -862,7 +862,7 @@ importers:
       '@firecamp/types': ^0.1.5
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chrome': ^0.0.204
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
       '@typescript-eslint/parser': ^5.29.0
@@ -888,17 +888,17 @@ importers:
       ts-node: ^10.9.1
       typedoc: ^0.23.8
       typescript: ^4.6.3
-      ws: 8.0.0
+      ws: 8.11.0
     dependencies:
       '@firecamp/types': 0.1.5
       comment-json: 4.2.3
       mitt: 3.0.0
       nanoid: 3.3.4
-      ws: 8.0.0
+      ws: 8.11.0
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
       '@types/chrome': 0.0.204
-      '@types/jest': 27.5.0
+      '@types/jest': 29.2.4
       '@types/node': 18.11.15
       '@typescript-eslint/eslint-plugin': 5.46.1_imrg37k3svwu377c6q7gkarwmi
       '@typescript-eslint/parser': 5.46.1_ha6vam6werchizxrnqvarmz2zu
@@ -930,7 +930,7 @@ importers:
       '@firecamp/rest-executor': workspace:*
       '@firecamp/types': ^0.1.5
       '@firecamp/ui-kit': workspace:*
-      '@monaco-editor/react': 4.4.5
+      '@monaco-editor/react': 4.4.6
       '@radix-ui/react-toast': ^1.0.0
       '@storybook/addon-actions': ^6.5.10
       '@storybook/addon-essentials': ^6.5.10
@@ -1001,7 +1001,7 @@ importers:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
       '@firecamp/types': 0.1.5
       '@firecamp/ui-kit': 'link:'
-      '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
+      '@monaco-editor/react': 4.4.6_3fm4er4v6u3lnlq66fhkchucru
       '@radix-ui/react-toast': 1.1.2_react-dom@17.0.2
       '@szhsin/react-menu': 2.3.4_react-dom@17.0.2
       '@tanstack/react-table': 8.7.3_react-dom@17.0.2
@@ -1085,8 +1085,8 @@ importers:
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@firecamp/websocket': workspace:*
-      '@sentry/browser': 7.17.2
-      '@sentry/tracing': 7.24.2
+      '@sentry/browser': 7.28.1
+      '@sentry/tracing': 7.28.1
       '@types/chrome': ^0.0.204
       '@types/react-dom': ^17.0.13
       awesome-notifications: 3.1.3
@@ -1133,8 +1133,8 @@ importers:
       '@firecamp/ui-kit': link:../../packages/ui-kit
       '@firecamp/url': 0.0.17
       '@firecamp/websocket': link:../../packages/firecamp-websocket
-      '@sentry/browser': 7.17.2
-      '@sentry/tracing': 7.24.2
+      '@sentry/browser': 7.28.1
+      '@sentry/tracing': 7.28.1
       awesome-notifications: 3.1.3
       classnames: 2.3.2
       clean-deep: 3.4.0
@@ -3094,6 +3094,7 @@ packages:
   /@firecamp/types/0.1.5:
     resolution: {integrity: sha512-fF7JrbI03UJfyg7JQTHFS0aslPVQpXkCQXFYz67KWRrwuQYO9U6zrXUZxZE97YT7ehgr+5LJNGnZMf6BDQ71Fw==}
     engines: {node: '>=10'}
+    requiresBuild: true
     dev: false
 
   /@firecamp/url/0.0.12:
@@ -3872,8 +3873,8 @@ packages:
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react/4.4.5_3fm4er4v6u3lnlq66fhkchucru:
-    resolution: {integrity: sha512-IImtzU7sRc66OOaQVCG+5PFHkSWnnhrUWGBuH6zNmH2h0YgmAhcjHZQc/6MY9JWEbUtVF1WPBMJ9u1XuFbRrVA==}
+  /@monaco-editor/react/4.4.6_3fm4er4v6u3lnlq66fhkchucru:
+    resolution: {integrity: sha512-Gr3uz3LYf33wlFE3eRnta4RxP5FSNxiIV9ENn2D2/rN8KgGAD8ecvcITRtsbbyuOuNkwbuHYxfeaz2Vr+CtyFA==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -4157,67 +4158,58 @@ packages:
       react: '*'
     dev: false
 
-  /@sentry/browser/7.17.2:
-    resolution: {integrity: sha512-LICJvwnES+Jp7ShN7zkmTFYIQB9jWOg/s9U58CQWfwrkMTwE4zKylojF3OTtyNaMmekVv/y/1JjeS5KAK3IrHQ==}
+  /@sentry/browser/7.28.1:
+    resolution: {integrity: sha512-N8j93IcrWKWorfJ5D+RSKVAvcR4S5tIcZ/HvFPMrQWnfVa/jtJcrKThdjZYteA0wjmPiy8/D3KA8nB91yulBPA==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/core': 7.17.2
-      '@sentry/types': 7.17.2
-      '@sentry/utils': 7.17.2
+      '@sentry/core': 7.28.1
+      '@sentry/replay': 7.28.1_@sentry+browser@7.28.1
+      '@sentry/types': 7.28.1
+      '@sentry/utils': 7.28.1
       tslib: 1.14.1
     dev: false
 
-  /@sentry/core/7.17.2:
-    resolution: {integrity: sha512-mBFjngWJPN3V1A/tz/qa1jkQvmZtU07hhlWg+kmajD0nFulPHUWEvZhsi8NFveGcxMxc/wmaSSLcEOpKq5L29g==}
+  /@sentry/core/7.28.1:
+    resolution: {integrity: sha512-7wvnuvn/mrAfcugWoCG/3pqDIrUgH5t+HisMJMGw0h9Tc33KqrmqMDCQVvjlrr2pWrw/vuUCFdm8CbUHJ832oQ==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/types': 7.17.2
-      '@sentry/utils': 7.17.2
+      '@sentry/types': 7.28.1
+      '@sentry/utils': 7.28.1
       tslib: 1.14.1
     dev: false
 
-  /@sentry/core/7.24.2:
-    resolution: {integrity: sha512-CDfrVvr3PQ0qImJv7/6yN/5hxhwxy1HicxTL9K5RwSDoXqgK3kUGv/WmTvPNIVB2RQKodLwzS2T52NFRxRoqNw==}
+  /@sentry/replay/7.28.1_@sentry+browser@7.28.1:
+    resolution: {integrity: sha512-Os0PzMjKlwtHwzTU0kfVzGzsi4Vaj3g2arCl4Qnr3b6kYTb9WOFZo/n/v56ss7Z+nZG3K8W5PisoD4MRsRJRig==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      '@sentry/browser': '>=7.24.0'
+    dependencies:
+      '@sentry/browser': 7.28.1
+      '@sentry/core': 7.28.1
+      '@sentry/types': 7.28.1
+      '@sentry/utils': 7.28.1
+    dev: false
+
+  /@sentry/tracing/7.28.1:
+    resolution: {integrity: sha512-uWspnuz+7FyW8ES5lRaVA7O/YJSzMlSkvBFtgzaoKmdaueokU/sRLwlCsrdgwavG1wpm79df7R1iiSeqhaXDlw==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/types': 7.24.2
-      '@sentry/utils': 7.24.2
+      '@sentry/core': 7.28.1
+      '@sentry/types': 7.28.1
+      '@sentry/utils': 7.28.1
       tslib: 1.14.1
     dev: false
 
-  /@sentry/tracing/7.24.2:
-    resolution: {integrity: sha512-rK1HUeCLM27DGGah1+5DN0C9Y4g9dnyMU5rdrRxGQGqxIJiwzHYwJI9xoNoAVMmt8jqFliDEpYvh2jsW8593IA==}
+  /@sentry/types/7.28.1:
+    resolution: {integrity: sha512-DvSplMVrVEmOzR2M161V5+B8Up3vR71xMqJOpWTzE9TqtFJRGPtqT/5OBsNJJw1+/j2ssMcnKwbEo9Q2EGeS6g==}
+    engines: {node: '>=8'}
+    dev: false
+
+  /@sentry/utils/7.28.1:
+    resolution: {integrity: sha512-75/jzLUO9HH09iC9TslNimGbxOP3jgn89P+q7uR+rp2fJfRExHVeKJZQdK0Ij4/SmE7TJ3Uh2r154N0INZEx1g==}
     engines: {node: '>=8'}
     dependencies:
-      '@sentry/core': 7.24.2
-      '@sentry/types': 7.24.2
-      '@sentry/utils': 7.24.2
-      tslib: 1.14.1
-    dev: false
-
-  /@sentry/types/7.17.2:
-    resolution: {integrity: sha512-zxhNQ8Xt/hfP8bFZEV66ovJZK7aUqok5w1wjsHgkUz/S6/gkiMrDYT3OtRCRuY3mfQu9KmeBniM0xZkaxREJ1w==}
-    engines: {node: '>=8'}
-    dev: false
-
-  /@sentry/types/7.24.2:
-    resolution: {integrity: sha512-x2LEnKBPzUVzTGspvB0CjZmt1dWeJsLVHGeDKPUMUm004nIscFCxJsmYefqaJQdaIUMqDit5ApwcmKchuK6VKQ==}
-    engines: {node: '>=8'}
-    dev: false
-
-  /@sentry/utils/7.17.2:
-    resolution: {integrity: sha512-l8t6qzyi+UUzD0a/oOYn4i+Eii+Ei29/TVwj/+9ogfJzBk6dSwSLvXievsyCRpcN3tftpWP0cHREcbZN64ZOWw==}
-    engines: {node: '>=8'}
-    dependencies:
-      '@sentry/types': 7.17.2
-      tslib: 1.14.1
-    dev: false
-
-  /@sentry/utils/7.24.2:
-    resolution: {integrity: sha512-VuuYEF39v43Qk6YZMid8Em/N0HqCsS5ItuTSvunMtBai2dzDAIkJ2LqemF95wWFAXrzpLy4Nx3QyGVHayMn31A==}
-    engines: {node: '>=8'}
-    dependencies:
-      '@sentry/types': 7.24.2
+      '@sentry/types': 7.28.1
       tslib: 1.14.1
     dev: false
 
@@ -6133,20 +6125,6 @@ packages:
     resolution: {integrity: sha512-c3mAZEuK0lvBp8tmuL74XRKn1+y2dcwOUpH7x4WrF6gk1GIgiluDRgMYQtw2OFcBvAJWlt6ASU3tSqxp0Uu0Aw==}
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
-    dev: true
-
-  /@types/jest/27.5.0:
-    resolution: {integrity: sha512-9RBFx7r4k+msyj/arpfaa0WOOEcaAZNmN+j80KFbFCoSqCJGHTz7YMAMGQW9Xmqm5w6l5c25vbSjMwlikJi5+g==}
-    dependencies:
-      jest-matcher-utils: 27.5.1
-      pretty-format: 27.5.1
-    dev: true
-
-  /@types/jest/28.1.8:
-    resolution: {integrity: sha512-8TJkV++s7B6XqnDrzR1m/TT0A0h948Pnl/097veySPN67VRAgQ4gZ7n2KfJo2rVq6njQjdxU3GCCyDvAeuHoiw==}
-    dependencies:
-      expect: 28.1.3
-      pretty-format: 28.1.3
     dev: true
 
   /@types/jest/29.2.4:
@@ -10476,11 +10454,6 @@ packages:
     resolution: {integrity: sha512-gxtyfqMg7GKyhQmb056K7M3xszy/myH8w+B4RT+QXBQsvAOdc3XymqDDPHx1BgPgsdAA5SIifona89YtRATDzw==}
     dev: true
 
-  /diff-sequences/27.5.1:
-    resolution: {integrity: sha512-k1gCAXAsNgLwEL+Y8Wvl+M6oEFj5bgazfZULpS5CneoPPXRaCCW7dm+q21Ky2VEE5X+VeRDBVg1Pcvvsr4TtNQ==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    dev: true
-
   /diff-sequences/28.1.1:
     resolution: {integrity: sha512-FU0iFaH/E23a+a718l8Qa/19bF9p06kgE0KipMOMadwa3SjnaElKzPaUC0vnibs6/B/9ni97s61mcejk8W1fQw==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -14775,16 +14748,6 @@ packages:
       identity-obj-proxy: 3.0.0
     dev: true
 
-  /jest-diff/27.5.1:
-    resolution: {integrity: sha512-m0NvkX55LDt9T4mctTEgnZk3fmEg3NRYutvMPWM/0iPnkFj2wIeF45O1718cMSOFO1vINkqmxqD8vE37uTEbqw==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    dependencies:
-      chalk: 4.1.2
-      diff-sequences: 27.5.1
-      jest-get-type: 27.5.1
-      pretty-format: 27.5.1
-    dev: true
-
   /jest-diff/28.1.3:
     resolution: {integrity: sha512-8RqP1B/OXzjjTWkqMX67iqgwBVJRgCyKD3L9nq+6ZqJMdvjE8RgHktqZ6jNrkdMT+dJuYNI3rhQpxaz7drJHfw==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -14888,11 +14851,6 @@ packages:
       jest-util: 29.3.1
     dev: true
 
-  /jest-get-type/27.5.1:
-    resolution: {integrity: sha512-2KY95ksYSaK7DMBWQn6dQz3kqAf3BB64y2udeG+hv4KfSOb9qwcYQstTJc1KCbsix+wLZWZYN8t7nwX3GOBLRw==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    dev: true
-
   /jest-get-type/28.0.2:
     resolution: {integrity: sha512-ioj2w9/DxSYHfOm5lJKCdcAmPJzQXmbM/Url3rhlghrPvT3tt+7a/+oXc9azkKmLvoiXjtV83bEWqi+vs5nlPA==}
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
@@ -14988,16 +14946,6 @@ packages:
     dependencies:
       jest-get-type: 29.2.0
       pretty-format: 29.3.1
-    dev: true
-
-  /jest-matcher-utils/27.5.1:
-    resolution: {integrity: sha512-z2uTx/T6LBaCoNWNFWwChLBKYxTMcGBRjAt+2SbP929/Fflb9aa5LGma654Rz8z9HLxsrUaYzxE9T/EFIL/PAw==}
-    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
-    dependencies:
-      chalk: 4.1.2
-      jest-diff: 27.5.1
-      jest-get-type: 27.5.1
-      pretty-format: 27.5.1
     dev: true
 
   /jest-matcher-utils/28.1.3:
@@ -23348,19 +23296,6 @@ packages:
         optional: true
     dev: true
 
-  /ws/8.0.0:
-    resolution: {integrity: sha512-6AcSIXpBlS0QvCVKk+3cWnWElLsA6SzC0lkQ43ciEglgXJXiCWK3/CGFEJ+Ybgp006CMibamAsqOlxE9s4AvYA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: false
-
   /ws/8.11.0:
     resolution: {integrity: sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg==}
     engines: {node: '>=10.0.0'}
@@ -23372,7 +23307,6 @@ packages:
         optional: true
       utf-8-validate:
         optional: true
-    dev: true
 
   /ws/8.2.3:
     resolution: {integrity: sha512-wBuoj1BDpC6ZQ1B7DWQBYVLphPWkm8i9Y0/3YdHjHKHiohOJ1ws+3OccDWtH+PoC9DZD5WOTrJvNbWvjS6JWaA==}
