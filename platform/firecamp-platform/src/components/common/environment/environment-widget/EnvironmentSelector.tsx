@@ -2,9 +2,9 @@ import { FC, useMemo } from 'react';
 import shallow from 'zustand/shallow';
 import { Button, Column } from '@firecamp/ui-kit';
 import { TId } from '@firecamp/types';
+import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 
 import EnvironmentDD from './EnvironmentDD';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
 import { ITabStore, useTabStore } from '../../../../store/tab';
@@ -54,8 +54,12 @@ const EnvironmentSelecctor = () => {
   };
 
   if (isGuest === true) return <></>;
+  if (!colId || !envId) return <></>;
   return (
-    <Column overflow="visible" className="fc-tab-header-right  border-b border-tabBorder flex-none bg-transparent w-36 flex items-center justify-end pr-1 border-l pl-1">
+    <Column
+      overflow="visible"
+      className="fc-tab-header-right  border-b border-tabBorder flex-none bg-transparent w-36 flex items-center justify-end pr-1 border-l pl-1"
+    >
       <div className="!ml-auto !mr-1 w-fit flex items-center">
         <EnvironmentDD
           key={`collection-env-selector`}
@@ -70,7 +74,7 @@ const EnvironmentSelecctor = () => {
           onClick={() => toggleEnvSidebar()}
         >
           <VscEye size={14} />
-          </span>
+        </span>
       </div>
     </Column>
   );

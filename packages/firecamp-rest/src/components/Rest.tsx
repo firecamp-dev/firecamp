@@ -195,7 +195,7 @@ const Rest = ({ tab, platformContext }) => {
             <Request tab={tab} />
             <Response />
           </Row>
-          <CodeSnippets tabId={tab.id} getPlatformEnvironments={() => {}} />
+          {/* <CodeSnippets tabId={tab.id} getPlatformEnvironments={() => {}} /> */}
         </Container.Body>
       </Container>
     </>

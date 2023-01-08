@@ -14,7 +14,6 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
   showFooter = true,
 }) => {
   const [isOpen, toggleOpen] = useState(false);
-
   const menu = useMemo(
     () => Helper.generate.environmentsDD(environments, activeEnvId),
     [environments, activeEnvId]
