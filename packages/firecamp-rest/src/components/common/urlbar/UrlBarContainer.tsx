@@ -88,7 +88,7 @@ const UrlBarContainer = ({
       if (!url.raw) return;
 
       const envVariables = {merged: {}, collection: {}, workspace: {}}
-      const tabEnv = await context.environment.getCurrentTabEnv(
+      const { env: tabEnv } = context.environment.getCurrentTabEnv(
         tab.id
       );
       if(tabEnv) {

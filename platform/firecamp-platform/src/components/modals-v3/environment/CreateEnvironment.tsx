@@ -23,24 +23,22 @@ type TModalMeta = {
   collectionId?: string;
 };
 
-const CreateEnvironment: FC<IModal> = ({
-  isOpen = false,
-  onClose = () => {},
-}) => {
+const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
   const { workspace, explorer } = useWorkspaceStore.getState();
   const { collections } = explorer;
   const createEnvironment = useEnvStore.getState().createEnvironment;
-  const { scope, collectionId } = useModalStore.getState().__meta as TModalMeta;
-  let collection: any;
-  if (scope == EEnvironmentScope.Collection) {
-    collection = collections.find((c) => c.__ref.id == collectionId);
-    console.log(collection, 'collection....');
+  let { collectionId } = useModalStore.getState().__meta as TModalMeta;
+  if (!collectionId) {
+    onClose();
+    return <></>;
   }
+  const collection = collections.find((c) => c.__ref.id == collectionId);
+  // console.log(collection, 'collection....');
 
   const [env, setEnv] = useState({
     name: '',
     variables: JSON.stringify({ variable_key: 'value' }, null, 4),
-    __meta: { type: scope, visibility: 1 },
+    __meta: { type: EEnvironmentScope.Collection, visibility: 1 },
   });
 
   const [isRequesting, setIsRequesting] = useState(false);
@@ -96,12 +94,8 @@ const CreateEnvironment: FC<IModal> = ({
       name,
       variables,
       __meta: env.__meta,
-      __ref: { workspaceId: workspace.__ref.id },
+      __ref: { workspaceId: workspace.__ref.id, collectionId },
     };
-    if (scope == EEnvironmentScope.Collection) {
-      //@ts-ignore
-      _env.__ref.collectionId = collectionId;
-    }
 
     console.log(_env, '_env');
 
@@ -157,37 +151,16 @@ const CreateEnvironment: FC<IModal> = ({
                 className="text-appForeground text-sm block mb-1"
                 htmlFor="envBane"
               >
-                Scope:{' '}
-                {scope == EEnvironmentScope.Collection
-                  ? 'Collection'
-                  : 'Workspace'}
+                Collection Name
               </label>
               <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
-                {scope == EEnvironmentScope.Collection
-                  ? collection?.name
-                  : workspace?.name}
+                {collection?.name}
               </label>
-              {/* <Dropdown
-                isOpen={false}
-                id="envName"
-              >
-                <Dropdown.Handler>
-                  <Button
-                    text="Environment"
-                    xs
-                    className="font-bold"
-                    withCaret={true}
-                    secondary
-                  />
-                </Dropdown.Handler>
-                <Dropdown.Options
-                />
-              </Dropdown> */}
             </div>
             <Input
               autoFocus={true}
-              label="Name"
-              placeholder="Environment name"
+              label="Environment name"
+              placeholder="type env name"
               name={'name'}
               value={env.name}
               onChange={onChange}
@@ -253,18 +226,18 @@ const CreateEnvironment: FC<IModal> = ({
             <TabHeader.Right>
               <Button
                 text="Cancel"
-                secondary
-                transparent={true}
-                sm
                 onClick={(e) => onClose()}
-                ghost={true}
+                secondary
+                transparent
+                ghost
+                sm
               />
               <Button
                 text={isRequesting ? 'Creating...' : 'Create'}
-                primary
-                sm
                 onClick={onCreate}
                 disabled={isRequesting}
+                primary
+                sm
               />
             </TabHeader.Right>
           </TabHeader>

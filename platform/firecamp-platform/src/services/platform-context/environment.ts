@@ -11,7 +11,12 @@ import { useTabStore } from '../../store/tab';
 
 export interface IPlatformEnvironmentService {
   // get current env of the tab
-  getCurrentTabEnv: () => Promise<IEnvironment>;
+  getCurrentTabEnv: () => {
+    tabId: TId;
+    collectionId?: TId;
+    envId?: TId;
+    env?: IEnvironment;
+  };
   setTabCollection: (tabId: TId, collectionId: TId) => void;
 
   // set variables to monaco provider
@@ -28,16 +33,22 @@ export interface IPlatformVariables {
 }
 
 const environment: IPlatformEnvironmentService = {
-  getCurrentTabEnv: async () => {
+  getCurrentTabEnv: () => {
     const { activeTab } = useTabStore.getState();
     const { envs, tabColMap, colEnvMap } = useEnvStore.getState();
     const collectionId = tabColMap[activeTab];
-    if (!collectionId) return Promise.resolve(null);
+    if (!collectionId) return { tabId: activeTab };
     const envId = colEnvMap[collectionId];
-    if (!envId) return Promise.resolve(null);
-    return envs.find(
+    if (!envId) return { tabId: activeTab, collectionId };
+    const env = envs.find(
       (e) => e.__ref.collectionId == collectionId && e.__ref.id == envId
     );
+    return {
+      tabId: activeTab,
+      collectionId,
+      envId,
+      env,
+    };
   },
 
   setTabCollection: (tabId: TId, collectionId: TId) => {

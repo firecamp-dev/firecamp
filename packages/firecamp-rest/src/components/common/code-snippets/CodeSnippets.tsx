@@ -17,7 +17,7 @@ const CodeSnippets = ({ tabId = '' }) => {
     useStoreApi().getState() as IStore;
   if (!context) return <></>;
   let envVariables = {};
-  const env = context.environment.getCurrentTabEnv(tabId);
+  const { env } = context.environment.getCurrentTabEnv(tabId);
   if (env) {
     envVariables = { ...(env.variable || {}) };
   }
