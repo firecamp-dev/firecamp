@@ -4,6 +4,7 @@ import { Dropdown, Button } from '@firecamp/ui-kit';
 import platformContext from '../../services/platform-context';
 import { platformEmitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
+import { useWorkspaceStore } from '../../store/workspace';
 
 enum EMenuOptions {
   Request = 'request',
@@ -42,6 +43,8 @@ const GlobalCreateDD = ({}) => {
         platformEmitter.emit(EPlatformTabs.openNew, 'rest');
         break;
       case EMenuOptions.Collection:
+        const { createCollectionPrompt } = useWorkspaceStore.getState();
+        createCollectionPrompt();
         break;
       case EMenuOptions.Environment:
         const { tabId, collectionId } =
@@ -84,7 +87,7 @@ const GlobalCreateDD = ({}) => {
       >
         <Dropdown.Handler>
           <Button
-            text={'Create'}
+            text={'NEW'}
             className={classnames('!text-primaryColor')}
             withCaret
             transparent
