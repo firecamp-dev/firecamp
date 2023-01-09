@@ -1,32 +1,15 @@
 import { Button, Url, UrlBar } from '@firecamp/ui-kit';
 import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
-import { TId } from '@firecamp/types';
 import ConnectButton from '../connection/ConnectButton';
 import { IStore, useStore } from '../../../store';
 
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  postComponents,
-  onPasteCurl = (curl: string) => {},
-}) => {
-  const { EnvironmentWidget } = postComponents;
-
-  const {
-    url,
-    displayUrl,
-    activeEnvironments,
-    changeUrl,
-    changeActiveEnvironment,
-    save,
-  } = useStore(
+const UrlBarContainer = ({ tab, onPasteCurl = (curl: string) => {} }) => {
+  const { url, displayUrl, changeUrl, save } = useStore(
     (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
-      activeEnvironments: s.runtime.activeEnvironments,
       changeUrl: s.changeUrl,
-      changeActiveEnvironment: s.changeActiveEnvironment,
       save: s.save,
     }),
     shallow
@@ -49,24 +32,7 @@ const UrlBarContainer = ({
   };
 
   return (
-    <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`websocket-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
-      nodePath={``}
-    >
+    <UrlBar environmentCard={<></>} nodePath={``}>
       <UrlBar.Prefix>
         <Button text={'WebSocket'} secondary sm />
       </UrlBar.Prefix>

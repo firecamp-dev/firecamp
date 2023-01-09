@@ -1,5 +1,4 @@
 import { memo, useEffect } from 'react';
-import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import shallow from 'zustand/shallow';
@@ -25,14 +24,12 @@ import {
   IStore,
 } from '../store';
 
-const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
+const Rest = ({ tab, platformContext }) => {
   const restStoreApi: any = useStoreApi();
-
   const {
     isFetchingRequest,
     initialise,
     changeUrl,
-    setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     setContext,
@@ -44,7 +41,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
       changeMeta: s.changeMeta,
       changeUrl: s.changeUrl,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
-      setActiveEnvironments: s.setActiveEnvironments,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
@@ -57,36 +53,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
   useEffect(() => {
     setContext(platformContext);
   }, []);
-
-  /**
-   * Environments on tab load
-   */
-  useEffect(() => {
-    if (activeTab === tab.id) {
-      // existing active environments in to runtime
-      let activeEnvironments =
-        restStoreApi?.getState()?.runtime?.activeEnvironments;
-
-      // set active environments to platform
-      if (activeEnvironments && !!activeEnvironments.workspace) {
-        console.log({ activeEnvironments });
-
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments: {
-            workspace: activeEnvironments.workspace,
-            collection: activeEnvironments.collection || '',
-          },
-          collectionId: tab?.request?.__ref?.collectionId || '',
-        });
-      }
-
-      // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
-    }
-  }, [activeTab]);
 
   useEffect(() => {
     setRequestSavedFlag(tab.__meta?.isSaved);
@@ -214,21 +180,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-
-    if (!platformActiveEnvironments) return;
-    let activeEnvironments = restStoreApi.getState().runtime.activeEnvironments;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
-    }
-  };
-
   if (isFetchingRequest === true) return <Loader />;
 
   return (
@@ -237,7 +188,6 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
         <UrlBarContainer
           tab={tab}
           collectionId={tab?.request?.__ref?.collectionId || ''}
-          postComponents={platformComponents}
           onPasteCurl={onPasteCurl}
         />
         <Container.Body>
@@ -245,12 +195,7 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
             <Request tab={tab} />
             <Response />
           </Row>
-          <CodeSnippets
-            tabId={tab.id}
-            getPlatformEnvironments={
-              platformContext.environment.getVariablesByTabId
-            }
-          />
+          {/* <CodeSnippets tabId={tab.id} getPlatformEnvironments={() => {}} /> */}
         </Container.Body>
       </Container>
     </>

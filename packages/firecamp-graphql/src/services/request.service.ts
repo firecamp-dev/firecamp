@@ -133,10 +133,6 @@ export const initialiseStoreFromRequest = (
     runtime: {
       playgroundTabs: [],
       playgroundsMeta: {},
-      activeEnvironments: {
-        collection: '',
-        workspace: '',
-      },
       activePlayground: '',
       isDocOpened: false,
       isFetchingIntrospection: false,

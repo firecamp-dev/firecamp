@@ -1,6 +1,6 @@
 import { LegacyRef } from 'react';
-import {MenuDirection,
-} from '@szhsin/react-menu';
+import { MenuDirection } from '@szhsin/react-menu';
+import { TId } from '@firecamp/types';
 /**
  * Dropdown interface
  */
@@ -130,6 +130,10 @@ export interface IOption {
  * Dropdown options's single option's list interface when option header is there
  */
 export interface IItem {
+  /**
+   * optinal option id
+   */
+  id?: TId;
   /**
    * Option item name
    */

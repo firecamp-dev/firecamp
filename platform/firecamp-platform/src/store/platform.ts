@@ -118,8 +118,6 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
         set((s) => ({
           __meta: {
             ...s.__meta,
-            ...s.__meta,
-            ...s.__meta,
             isExtAgentInstalled: false,
             agent:
               agent == EFirecampAgent.Extension ? EFirecampAgent.Cloud : agent,

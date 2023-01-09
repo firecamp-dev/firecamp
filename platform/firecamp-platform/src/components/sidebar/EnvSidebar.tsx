@@ -8,11 +8,15 @@ import {
   Container,
   Editor,
   TabHeader,
-  Button, 
+  Button,
 } from '@firecamp/ui-kit';
-import { EEditorLanguage, EEnvironmentScope, IEnvironment } from '@firecamp/types';
+import {
+  EEditorLanguage,
+  EEnvironmentScope,
+  IEnvironment,
+} from '@firecamp/types';
 
-import EnvironmentDD from '../common/environment/environment-widget/EnvironmentDD';
+import EnvironmentDD from '../common/environment/selector/EnvironmentDD';
 import pltContext from '../../services/platform-context';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
@@ -20,23 +24,16 @@ import platformContext from '../../services/platform-context';
 
 const EnvSidebar: FC<any> = ({ expanded }) => {
   const {
-    activeTabWrsEnv,
-    activeTabCollectionEnvs,
+    colEnvMap,
 
     toggleEnvSidebar,
   } = useEnvStore(
     (s: IEnvironmentStore) => ({
-      activeTabWrsEnv: s.activeTabWrsEnv,
-      activeTabCollectionEnvs: s.activeTabCollectionEnvs,
+      colEnvMap: s.colEnvMap,
       toggleEnvSidebar: s.toggleEnvSidebar,
     }),
     shallow
   );
-
-  console.log({
-    activeTabWrsEnv,
-    activeTabCollectionEnvs,
-  })
 
   const { tab, activeTab } = useTabStore(
     (s: any) => ({
@@ -53,13 +50,13 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
     let collectionId = tab?.request?.__ref?.collectionId;
     // console.log({ collectionId });
     if (tab?.__meta?.isSaved && collectionId) {
-      setActiveCollectionEnv(activeTabCollectionEnvs[collectionId] || '');
+      setActiveCollectionEnv(colEnvMap[collectionId] || '');
     } else {
       /** is request is not saved then don't set collection scoped env */
       setActiveCollectionEnv('');
     }
-  }, [tab, activeTab, activeTabCollectionEnvs]);
-  
+  }, [tab, activeTab, colEnvMap]);
+
   return (
     <Resizable
       width={'400'}
@@ -67,11 +64,16 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
       left={true}
       minWidth={'250'}
       maxWidth={'600'}
-      className={classnames("!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30 expandable-right-pane", {'expanded': expanded})}
+      className={classnames(
+        '!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30 expandable-right-pane',
+        { expanded: expanded }
+      )}
     >
       <Container>
         <Container.Header className="flex !p-2 bg-focus1">
-          <div className="flex-1 mr-2 text-base p-2 font-bold">Active Environments</div>
+          <div className="flex-1 mr-2 text-base p-2 font-bold">
+            Active Environments
+          </div>
           <div
             className="ml-auto flex-none text-base flex justify-center items-center cursor-pointer"
             onClick={toggleEnvSidebar}
@@ -94,7 +96,9 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
               activeTab={activeTab}
               collectionId={tab?.request?.__ref?.collectionId}
             />
-          ) :  <></>}
+          ) : (
+            <></>
+          )}
         </Container.Body>
         <Container.Footer className="text-sm !p-1 bg-focus3">
           <ol>
@@ -110,18 +114,16 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
   );
 };
 
-const EnvSidebarContainer = ()=> {
-  const {
-    isEnvSidebarOpen
-  } = useEnvStore(
+const EnvSidebarContainer = () => {
+  const { isEnvSidebarOpen } = useEnvStore(
     (s: IEnvironmentStore) => ({
-      isEnvSidebarOpen: s.isEnvSidebarOpen
+      isEnvSidebarOpen: s.isEnvSidebarOpen,
     }),
     shallow
   );
-  if(!isEnvSidebarOpen) return <></>;
-  return <EnvSidebar expanded={isEnvSidebarOpen}/>
-}
+  if (!isEnvSidebarOpen) return <></>;
+  return <EnvSidebar expanded={isEnvSidebarOpen} />;
+};
 export { EnvSidebar, EnvSidebarContainer };
 
 const EnvVarPreview: FC<IEnvVarPreview> = ({
@@ -132,19 +134,13 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
 }) => {
   const {
     updateEnvironment,
-    getWorkspaceEnvs,
     getCollectionEnvs,
-    setEnvVariables,
-    setWorkspaceActiveEnv,
-    setCollectionActiveEnv,
+    setCurrentTabActiveEnv,
   } = useEnvStore(
     (s) => ({
       updateEnvironment: s.updateEnvironment,
-      getWorkspaceEnvs: s.getWorkspaceEnvs,
       getCollectionEnvs: s.getCollectionEnvs,
-      setEnvVariables: s.setEnvVariables,
-      setWorkspaceActiveEnv: s.setWorkspaceActiveEnv,
-      setCollectionActiveEnv: s.setCollectionActiveEnv,
+      setCurrentTabActiveEnv: s.setCurrentTabActiveEnv,
     }),
     shallow
   );
@@ -152,23 +148,29 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   const envs = useMemo(
     () =>
       scope == EEnvironmentScope.Workspace
-        ? getWorkspaceEnvs()
+        ? []
         : getCollectionEnvs(collectionId),
     [activeEnvId, collectionId, activeTab]
   );
 
   // console.log({ activeEnvId, collectionId, activeTab, scope, envs });
 
-  const activeEnv = useRef<IEnvironment>(envs.find((env) => env.__ref.id === activeEnvId));
-  const [ variables, setVariables ] = useState<string>('');
-  const [ isVarUpdated, setIsVarUpdated ] = useState<boolean>(false);
+  const activeEnv = useRef<IEnvironment>(
+    envs.find((env) => env.__ref.id === activeEnvId)
+  );
+  const [variables, setVariables] = useState<string>('');
+  const [isVarUpdated, setIsVarUpdated] = useState<boolean>(false);
 
   // if env/variables change from outer side then update them into the currently opened sidebar
   useEffect(() => {
     activeEnv.current = envs.find((env) => env.__ref.id === activeEnvId);
     try {
-      if(!activeEnv.current) return;
-      const variablesString = JSON.stringify(activeEnv.current.variables || {}, null, 2);
+      if (!activeEnv.current) return;
+      const variablesString = JSON.stringify(
+        activeEnv.current.variables || {},
+        null,
+        2
+      );
 
       if (variablesString !== variables) {
         // console.log({ variablesString })
@@ -195,35 +197,36 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   };
 
   const onUndoChanges = () => {
-    let variablesString = JSON.stringify(activeEnv.current.variables || {}, null, 2);
+    let variablesString = JSON.stringify(
+      activeEnv.current.variables || {},
+      null,
+      2
+    );
     setVariables(variablesString);
   };
 
   const onUpdate = async () => {
-    let vars ={};
+    let vars = {};
     try {
       vars = JSON.parse(variables);
-    }
-    catch (e) {
-      platformContext.app.notify.alert("The variables are not valid JSON.")
+    } catch (e) {
+      platformContext.app.notify.alert('The variables are not valid JSON.');
     }
 
     /** update env vars */
     await updateEnvironment(activeEnvId, { variables: vars });
     setIsVarUpdated(false);
-    
+
     // get environment changes and emit to request tab
-    pltContext.environment.setVarsToProvidersAndEmitEnvsToTab();
+    // pltContext.environment.setVarsToProvidersAndEmitEnvsToTa();
   };
 
   const _setActiveEnv = (envId) => {
-    if (scope === EEnvironmentScope.Workspace) {
-      setWorkspaceActiveEnv(envId);
-    } else {
-      setCollectionActiveEnv(collectionId, envId);
+    if (scope === EEnvironmentScope.Collection) {
+      setCurrentTabActiveEnv(envId);
     }
     // get environment changes and emit to request tab
-    pltContext.environment.setVarsToProvidersAndEmitEnvsToTab();
+    // pltContext.environment.setVarsToProvidersAndEmitEnvsToTa();
   };
 
   return (
@@ -231,7 +234,8 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
       <div className="border-b border-t border-appBorder flex">
         <TabHeader className="height-ex-small">
           <TabHeader.Left className="text-base font-normal">
-            Scope: {scope == EEnvironmentScope.Workspace? "Workspace": "Collection"}
+            Scope:{' '}
+            {scope == EEnvironmentScope.Workspace ? 'Workspace' : 'Collection'}
           </TabHeader.Left>
           <TabHeader.Right className="env-popover-nested">
             <EnvironmentDD
@@ -285,7 +289,9 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
               />
             </TabHeader.Right>
           </TabHeader>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

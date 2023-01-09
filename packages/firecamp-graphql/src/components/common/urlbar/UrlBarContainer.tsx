@@ -1,33 +1,25 @@
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { FaFile } from '@react-icons/all-files/fa/FaFile';
 import shallow from 'zustand/shallow';
-import { EHttpMethod, TId } from '@firecamp/types';
+import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { Button, Url, UrlBar, HttpMethodDropDown } from '@firecamp/ui-kit';
 import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  postComponents,
-}) => {
-  const { EnvironmentWidget } = postComponents;
-
+const UrlBarContainer = ({ tab }) => {
   const {
     url,
     method,
     __meta,
     __ref,
-    activeEnvironments,
     isRequestSaved,
     context,
     changeUrl,
     changeMethod,
     fetchIntrospectionSchema,
     toggleDoc,
-    changeActiveEnvironment,
     save,
   } = useStore(
     (s: IStore) => ({
@@ -35,14 +27,12 @@ const UrlBarContainer = ({
       method: s.request.method,
       __meta: s.request.__meta,
       __ref: s.request.__ref,
-      activeEnvironments: s.runtime.activeEnvironments,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
       toggleDoc: s.toggleDoc,
-      changeActiveEnvironment: s.changeActiveEnvironment,
       save: s.save,
     }),
     shallow
@@ -74,21 +64,7 @@ const UrlBarContainer = ({
 
   return (
     <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`graphql-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
+      environmentCard={<></>}
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {

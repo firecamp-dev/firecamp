@@ -1,4 +1,6 @@
 import { FC, useState, Fragment } from 'react';
+import { useHotkeys } from 'react-hotkeys-hook';
+import cx from 'classnames';
 import { VscFiles } from '@react-icons/all-files/vsc/VscFiles';
 import { VscHistory } from '@react-icons/all-files/vsc/VscHistory';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
@@ -7,13 +9,11 @@ import { VscLock } from '@react-icons/all-files/vsc/VscLock';
 import { BiCookie } from '@react-icons/all-files/bi/BiCookie';
 import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
 import { ActivityBar, Column, Resizable } from '@firecamp/ui-kit';
-import { useHotkeys } from 'react-hotkeys-hook';
-import cx from 'classnames';
 
 import Explorer from '../activity-bar/explorer/Explorer';
 // import History from '../activity-bar/history/History';
 import getOs from '../../services/get-os';
-import Environment from '../activity-bar/environment/Environment';
+import Environment from '../common/environment/sidebar/EnvironmentSidebar';
 import platformContext from '../../services/platform-context';
 
 // check if MAC OS

@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { EEnvironmentScope } from '@firecamp/types';
 import {
@@ -10,25 +9,17 @@ import {
   Pane,
   ToolBar,
 } from '@firecamp/ui-kit';
+import treeRenderer from './tree/treeItemRenderer';
+import { CollectionEnvDataProvider } from './tree/treeDataProvider';
+import platformContext from '../../../../services/platform-context';
+import { useWorkspaceStore } from '../../../../store/workspace';
+import { useEnvStore } from '../../../../store/environment';
 
-import { useWorkspaceStore } from '../../../store/workspace';
-import treeRenderer from './treeItemRenderer';
-import {
-  WrsEnvDataProvider,
-  CollectionEnvDataProvider,
-} from './treeDataProvider';
-import { useEnvStore } from '../../../store/environment';
-import platformContext from '../../../services/platform-context';
-
-const Environment: FC<any> = () => {
+const EnvironmentSidebar: FC<any> = () => {
   const treeRef = useRef();
   const {
-    workspace,
     explorer: { collections },
-  } = useWorkspaceStore(
-    (s) => ({ workspace: s.workspace, explorer: s.explorer }),
-    shallow
-  );
+  } = useWorkspaceStore((s) => ({ explorer: s.explorer }), shallow);
   const { envs, deleteEnvironment, registerTDP, unRegisterTDP } = useEnvStore(
     (s) => ({
       envs: s.envs,
@@ -39,12 +30,11 @@ const Environment: FC<any> = () => {
     shallow
   );
 
-  const wrsEnvDataProvider = useRef(new WrsEnvDataProvider(workspace));
   const colEnvDataProvider = useRef(new CollectionEnvDataProvider(collections));
 
   //effect: register and unregister col/wrs env's treeDataProvider instance
   useEffect(() => {
-    registerTDP(wrsEnvDataProvider.current, colEnvDataProvider.current);
+    registerTDP(colEnvDataProvider.current);
     return unRegisterTDP;
   }, []);
 
@@ -102,52 +92,11 @@ const Environment: FC<any> = () => {
     <div className="w-full h-full flex flex-row explorer-wrapper">
       <Container>
         <ProgressBarContainer />
-        {/* <Pane
-          expanded={true}
-          height="200px"
-          bodyClassName={'!p-0'}
-          headerTitleRenderer={() => {
-            return <span>Scope: Workspace</span>;
-          }}
-          headerActionRenderer={() => {
-            return (
-              <ToolBar>
-                
-              </ToolBar>
-            );
-          }}
-          bodyRenderer={({ expanded }) => {
-            return (
-              <UncontrolledTreeEnvironment
-                dataProvider={wrsEnvDataProvider.current}
-                getItemTitle={(item) => item.data?.name}
-                viewState={{}}
-                renderItemArrow={treeRenderer.renderItemArrow}
-                // renderItemTitle={treeRenderer.renderItemTitle}
-                renderItem={(props) =>
-                  treeRenderer.renderItem({
-                    ...props,
-                    openEnv: openWrsEnv,
-                    openCreateEnv: openCreateWrsEnv,
-                    deleteEnv,
-                  })
-                }
-              >
-                <Tree
-                  treeId="tree-1"
-                  rootItem="root"
-                  treeLabel="Tree Example"
-                />
-              </UncontrolledTreeEnvironment>
-            );
-          }}
-        ></Pane> */}
-
         <Pane
           expanded={true}
           bodyClassName={'!p-0'}
           headerTitleRenderer={() => {
-            return <span className='font-bold'>SCOPE: COLLECTION</span>;
+            return <span className="font-bold">COLLECTION ENVIRONMENTS</span>;
           }}
           headerActionRenderer={() => {
             return (
@@ -193,7 +142,7 @@ const Environment: FC<any> = () => {
   );
 };
 
-export default Environment;
+export default EnvironmentSidebar;
 
 const ProgressBarContainer = () => {
   let { isProgressing } = useWorkspaceStore((s) => ({
