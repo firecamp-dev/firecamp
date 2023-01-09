@@ -3,14 +3,10 @@ import classnames from 'classnames';
 import shallow from 'zustand/shallow';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
-import {
-  Column,
-  Row,
-  TabsV3 as Tabs,
-} from '@firecamp/ui-kit';
+import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
-import EnvironmentSelecctor from '../common/environment/environment-widget/EnvironmentSelector';
+import EnvironmentSelecctor from '../common/environment/selector/EnvironmentSelector';
 import Menu from './header/Menu';
 
 import { platformEmitter as emitter } from '../../services/platform-emitter';
@@ -57,8 +53,6 @@ const TabHeaderContainer: FC = () => {
     return () => {
       emitter.off(EPlatformTabs.opened);
       emitter.off(EPlatformTabs.closed);
-      emitter.off(EPlatformTabs.showDotIndicator);
-      emitter.off(EPlatformTabs.hideDotIndicator);
     };
   }, []);
 

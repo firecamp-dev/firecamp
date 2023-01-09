@@ -16,7 +16,7 @@ import {
   IEnvironment,
 } from '@firecamp/types';
 
-import EnvironmentDD from '../common/environment/environment-widget/EnvironmentDD';
+import EnvironmentDD from '../common/environment/selector/EnvironmentDD';
 import pltContext from '../../services/platform-context';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
