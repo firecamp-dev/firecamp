@@ -3,7 +3,11 @@ import classnames from 'classnames';
 import shallow from 'zustand/shallow';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
-import { Column, Row, TabsV3 as Tabs,Dropdown, Button } from '@firecamp/ui-kit';
+import {
+  Column,
+  Row,
+  TabsV3 as Tabs,
+} from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 import EnvironmentSelecctor from '../common/environment/environment-widget/EnvironmentSelector';
@@ -12,6 +16,7 @@ import Menu from './header/Menu';
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
 import { ITabStore, useTabStore } from '../../store/tab';
+import GlobalCreateDD from '../common/GlobalCreate';
 
 const TabHeaderContainer: FC = () => {
   const tabApi = useRef({});
@@ -60,8 +65,6 @@ const TabHeaderContainer: FC = () => {
   const openNewTab = () => {
     emitter.emit(EPlatformTabs.openNew);
   };
-
-  // console.log(tabs, orders, 'orders... 12');
 
   return (
     <Column
@@ -121,27 +124,8 @@ const TabHeaderContainer: FC = () => {
           </div>
         </Column>
         <div className="-mb-96 pb-96 flex">
-        <EnvironmentSelecctor />
-        <div className="border-l border-b border-tabBorder flex items-center pl-1">
-        <Dropdown
-          detach={false}
-          isOpen={false}
-        >
-      <Dropdown.Handler>
-        <Button
-          text={"Create"}
-          className={classnames("!text-primaryColor")}
-          withCaret
-          transparent
-          ghost
-          xs
-        />
-      </Dropdown.Handler>
-      <Dropdown.Options
-        options={[]}
-      />
-    </Dropdown>
-        </div>
+          <EnvironmentSelecctor />
+          <GlobalCreateDD />
         </div>
       </Row>
     </Column>

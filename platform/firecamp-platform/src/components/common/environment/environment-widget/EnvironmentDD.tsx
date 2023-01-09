@@ -18,6 +18,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     () => Helper.generate.environmentsDD(environments, activeEnvId),
     [environments, activeEnvId]
   );
+  console.log(menu, 778899)
   const collection = useMemo(() => {
     const wStore = useWorkspaceStore.getState();
     return wStore.explorer.collections.find(
@@ -48,14 +49,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
       header:
         scope === EEnvironmentScope.Collection ? 'Collection Environment' : '',
       list: menu.options,
-    },
-    {
-      name:
-        scope === EEnvironmentScope.Collection
-          ? 'Manage Collection Environment'
-          : '',
-      onClick: () => {},
-    },
+    }
   ];
 
   if (!collection || !menu?.selected) return <></>;
