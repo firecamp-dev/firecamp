@@ -4,8 +4,7 @@ import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
 
 // Todo : Discuss Button props
 // Unused props : iconCenter, animation,
-// Not working : tooltip (test case pending)
-// Not able to define the control : icon (review in storybook)
+// Not working : tooltip (test case pending) [data-tip - replace with title]
 
 export default {
   title: "UI-Kit/Button/main",
@@ -32,7 +31,8 @@ export default {
     fullWidth: {control : 'boolean'},
     uppercase: {control : 'boolean'},
     withCaret: {control : 'boolean'},
-    tooltip: {control : 'text'}
+    tooltip: {control : 'text'},
+    icon: {control : 'text' }
   }
 };
 

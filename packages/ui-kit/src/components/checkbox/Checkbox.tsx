@@ -21,7 +21,7 @@ const Checkbox: FC<ICheckbox> = ({
     <div className={cx(className, 'flex')} tabIndex={tabIndex}>
       <label
         className={cx('fc-custom-checkbox !flex items-center mb-0 ', {
-          'w-4': label == '',
+          'w-4': !showLabel,
         })}
         onClick={(e) => {
           if (e) {

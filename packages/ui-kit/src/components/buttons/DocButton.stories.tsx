@@ -1,8 +1,5 @@
 import Button from './DocButton';
 import { IDocButton } from "./interfaces/DocButton.interfaces"
-// Todo : Discuss Button props
-// iconClassName (default)
-// fc-button-icon icon not visible (review)
 
 export default {
   title: "UI-Kit/Button/variant2",

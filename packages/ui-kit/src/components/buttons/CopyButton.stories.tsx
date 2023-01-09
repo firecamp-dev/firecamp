@@ -4,7 +4,7 @@ import { ICopyButton } from "./interfaces/CopyButton.interfaces"
 
 // Todo : Discuss Button props
 // Unused props : id
-// copy icon not visible (review)
+// copy icon not visible (icomoon font not configured)
 
 export default {
   title: "UI-Kit/Button/variant",
@@ -49,6 +49,8 @@ CopyButtonWithCustomComponent.args = {
   className: 'border p-3',
   text: 'Copy Button Text' ,
   children: [
-    <div key="custom-component" className='h-2 p-3 border border-primaryColor text-primaryColor'>Custom component disables copy functionality</div>
+    <div key="custom-component" className='h-3 p-3 border border-primaryColor text-primaryColor'>
+      Custom component disables copy functionality
+      </div>
   ]
 };

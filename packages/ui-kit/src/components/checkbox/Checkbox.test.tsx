@@ -137,5 +137,3 @@ describe("Checkbox component : ", () => {
 
     })
 });
-    // discuss:  w-4 depends on label instead of showLabel 
-    // expect(CheckboxLabelSpanWrapper).toHaveClass("fc-custom-checkbox !flex items-center mb-0 w-4");

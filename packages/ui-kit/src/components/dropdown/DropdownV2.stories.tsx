@@ -2,13 +2,8 @@
 import { useState } from 'react';
 import DropDownV2 from './DropdownV2';
 import Button from '../buttons/Button';
-import {
-  FcIconGetSquare,
-  FcIconGraphQL,
-  FcIconSocketIoSquare,
-  FcIconWebSocket
-} from '../icons';
 
+import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 
@@ -143,6 +138,9 @@ const STYLES = {
 
   logOptionContainer: 'w-36 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
   logTabItem: '!p-1 !pl-2 text-sm leading-4 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
+
+  reqStatusBarOptionContainer: 'ml-1 w-36 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
+  reqStatusBarTabItem: '!p-1 !pl-2 text-sm leading-4 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
 }
 
 export const BodyTabExample = () => {
@@ -293,8 +291,7 @@ export const LogsExample = () => {
 
   return <DropDownV2
     handleRenderer={() => <Button
-    className='w-36 text-base'
-  
+      className='w-36 text-base'
       text={selected || 'select log type'}
       tooltip={
         selected
@@ -308,6 +305,47 @@ export const LogsExample = () => {
     option={LogsOptions}
     onSelect={(value) => setSelected(value)}
     optionContainerClassName={STYLES.logOptionContainer}
-    // displayDefaultOptionClassName={2}
+  // displayDefaultOptionClassName={2}
   />
+};
+
+const ReqStatusBarOptions = [
+  {
+    id: 'my_query',
+    name: 'MyQuery',
+    className: STYLES.reqStatusBarTabItem
+  },
+  {
+    id: 'my_query_1',
+    name: 'MyQuery1',
+    className: STYLES.reqStatusBarTabItem
+  },
+];
+export const ReqStatusBarExample = () => {
+  const [selected, setSelected] = useState('MyQuery');
+
+  return <div className="flex ml-auto mr-1">
+
+    <DropDownV2
+      handleRenderer={() => <Button
+        text={selected}
+        secondary
+        withCaret
+        xs
+        className='leading-6 !rounded-br-none !rounded-tr-none'
+      />}
+      option={ReqStatusBarOptions}
+      onSelect={(value) => setSelected(value)}
+      optionContainerClassName={STYLES.reqStatusBarOptionContainer}
+    />
+    <Button
+      text=""
+      primary
+      sm
+      icon={<IoSendSharp />}
+      iconLeft
+      onClick={() => { }}
+      className="!rounded-bl-none !rounded-tl-none"
+    />
+  </div>
 };
