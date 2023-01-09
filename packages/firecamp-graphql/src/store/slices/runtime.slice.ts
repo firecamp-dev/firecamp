@@ -30,10 +30,6 @@ interface IRuntime {
   activePlayground?: string;
   schema?: any;
   isDocOpened?: boolean;
-  activeEnvironments?: {
-    workspace: TId;
-    collection: TId;
-  };
   isRequestSaved: boolean;
 
   /** true if fetch introspections under progress */
@@ -50,14 +46,6 @@ interface IRuntimeSlice {
   setFetchIntrospectionFlag: (flag: boolean) => void;
   setSchema: (schema: any) => void;
   toggleDoc: (flag: boolean) => void;
-  changeActiveEnvironment?: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => void;
-  setActiveEnvironments?: (updates: {
-    workspace: TId;
-    collection: TId;
-  }) => void;
   setRequestSavedFlag: (flag: boolean) => void;
 }
 
@@ -77,10 +65,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   //   activePlayground: '', // 'playground-1',
   //   schema: '',
   //   isDocOpened: false,
-  //   activeEnvironments: {
-  //     workspace: '',
-  //     collection: '',
-  //   },
   //   isRequestSaved: false,
   //   isFetchingIntrospection: false,
   // },
@@ -125,34 +109,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
 
   toggleDoc: (flag: boolean) => {
     set((s) => ({ runtime: { ...s.runtime, isDocOpened: flag } }));
-  },
-  changeActiveEnvironment: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => {
-    // console.log({ scope, environmentId });
-
-    set((s) => ({
-      ...s,
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: {
-          ...s.runtime.activeEnvironments,
-          [scope]: environmentId,
-        },
-      },
-    }));
-  },
-  setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
-    // console.log({updates});
-
-    set((s) => ({
-      ...s,
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: updates,
-      },
-    }));
   },
   setRequestSavedFlag: (flag: boolean) => {
     set((s) => ({

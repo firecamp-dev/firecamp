@@ -75,13 +75,8 @@ export interface IRequestTabProps {
   activeTab?: TId;
 
   //v3 props
-  platformComponents: {
-    EnvironmentWidget: ReactNode;
-  };
   envVariables?: {
-    mergedEnvVariables: object;
     collectionEnvVariables: object;
-    workspaceEnvVariables: object;
   };
   platformContext: {
     request: IPlatformRequestService;

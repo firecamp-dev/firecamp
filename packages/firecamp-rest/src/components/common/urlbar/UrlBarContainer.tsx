@@ -1,7 +1,7 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
-import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
+import { EHttpMethod, EFirecampAgent } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { IStore, useStore } from '../../../store';
 
@@ -10,24 +10,20 @@ const methods = Object.values(EHttpMethod);
 const UrlBarContainer = ({
   tab,
   collectionId = '',
-  postComponents,
   onPasteCurl = (curl: string) => {},
 }) => {
-  const { EnvironmentWidget } = postComponents;
 
   const {
     url,
     method,
     __meta,
     __ref,
-    activeEnvironments,
     isRequestRunning,
     isRequestSaved,
     context,
     changeUrl,
     changeMethod,
     execute,
-    changeActiveEnvironment,
     save,
   } = useStore(
     (s: IStore) => ({
@@ -35,14 +31,12 @@ const UrlBarContainer = ({
       method: s.request.method,
       __meta: s.request.__meta,
       __ref: s.request.__ref,
-      activeEnvironments: s.runtime.activeEnvironments,
       isRequestRunning: s.runtime.isRequestRunning,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
-      changeActiveEnvironment: s.changeActiveEnvironment,
       save: s.save,
     }),
     shallow
@@ -79,60 +73,36 @@ const UrlBarContainer = ({
   const _onChangeVariables = (variables: { workspace: {}; collection: {} }) => {
     // console.log({ variables });
 
-    const workspaceUpdates = {
-      environmentId: activeEnvironments.workspace,
-      variables: variables.workspace,
-    };
-
     const collectionUpdates = {
       id: collectionId || '',
-      environmentId: activeEnvironments.collection,
+      environmentId: collectionId,
       variables: variables.collection,
     };
 
-    context.environment.setVariables(
-      workspaceUpdates,
-      collectionUpdates
-    );
+    context.environment.setVariables(collectionUpdates);
   };
 
   const _onExecute = async () => {
     try {
-      // Do not execute if url is empty
+      // do not execute if url is empty
       if (!url.raw) return;
 
-      const envVariables =
-        await context.environment.getVariablesByTabId(tab.id);
-      // console.log({ envVariables });
-
+      const envVariables = {merged: {}, collection: {}, workspace: {}}
+      const { env: tabEnv } = context.environment.getCurrentTabEnv(
+        tab.id
+      );
+      if(tabEnv) {
+        envVariables.collection = { ...(tabEnv.variables|| {}) };
+      }
       const agent: EFirecampAgent = context.getFirecampAgent();
-
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
     } catch (error) {
       console.error({ API: 'rest._onExecute' });
     }
   };
 
-  // console.log({ activeEnvironments, collectionId });
-  // console.log({ isRequestSaved });
-
   return (
     <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`http-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {

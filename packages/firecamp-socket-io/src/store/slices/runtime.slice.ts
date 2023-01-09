@@ -17,10 +17,6 @@ interface IRuntime {
   displayUrl: string;
   playgroundTabs?: IPlaygroundTab[];
   activePlayground?: TId;
-  activeEnvironments?: {
-    workspace: TId;
-    collection: TId;
-  };
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
   tabId?: TId;
@@ -37,10 +33,6 @@ interface IRuntimeSlice {
     scope: 'collection' | 'workspace',
     environmentId: TId
   ) => void;
-  setActiveEnvironments?: (updates: {
-    workspace: TId;
-    collection: TId;
-  }) => void;
   setRequestRunningFlag: (flag: boolean) => void;
   setRequestSavedFlag: (flag: boolean) => void;
 }
@@ -53,7 +45,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   runtime: {
     playgroundTabs: [],
     activePlayground: '',
-    activeEnvironments: { collection: '', workspace: '' },
     isRequestRunning: false,
     isRequestSaved: false,
     ...initialRuntime,
@@ -112,29 +103,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
         },
       }));
     }
-  },
-  changeActiveEnvironment: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => {
-    set((s) => ({
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: {
-          ...s.runtime.activeEnvironments,
-          [scope]: environmentId,
-        },
-      },
-    }));
-  },
-  setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
-    console.log({ updates });
-    set((s) => ({
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: updates,
-      },
-    }));
   },
   setRequestRunningFlag: (flag: boolean) => {
     set((s) => ({

@@ -5,18 +5,12 @@ import _cleanDeep from 'clean-deep';
 import { _array, _object } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
 
-const Request = ({ tab, platformContext, activeTab, platformComponents }) => {
+const Request = ({ tab, platformContext, activeTab }) => {
   // if(isFetchingRequest === true) return <Loader />;
   console.log(tab, 'tab...');
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
-        {/* <UrlBarContainer
-          tab={tab}
-          collectionId={tab?.request?.__ref?.collectionId || ''}
-          postComponents={platformComponents}
-          // onPasteCurl={onPasteCurl}
-        /> */}
         <Container.Body>
           <Row flex={1} overflow="auto" className="with-divider h-full"></Row>
         </Container.Body>

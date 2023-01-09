@@ -1,18 +1,18 @@
 import { FC, useEffect, memo, useRef } from 'react';
 import classnames from 'classnames';
-import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
-import { _misc } from '@firecamp/utils';
+import shallow from 'zustand/shallow';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
-import shallow from 'zustand/shallow';
+import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
+import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
-
+import EnvironmentSelecctor from '../common/environment/selector/EnvironmentSelector';
 import Menu from './header/Menu';
-import CollabButton from './header/CollabButton';
-import { ITabStore, useTabStore } from '../../store/tab';
 
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
+import { ITabStore, useTabStore } from '../../store/tab';
+import GlobalCreateDD from '../common/GlobalCreate';
 
 const TabHeaderContainer: FC = () => {
   const tabApi = useRef({});
@@ -53,16 +53,12 @@ const TabHeaderContainer: FC = () => {
     return () => {
       emitter.off(EPlatformTabs.opened);
       emitter.off(EPlatformTabs.closed);
-      emitter.off(EPlatformTabs.showDotIndicator);
-      emitter.off(EPlatformTabs.hideDotIndicator);
     };
   }, []);
 
   const openNewTab = () => {
     emitter.emit(EPlatformTabs.openNew);
   };
-
-  // console.log(tabs, orders, 'orders... 12');
 
   return (
     <Column
@@ -121,7 +117,10 @@ const TabHeaderContainer: FC = () => {
             />
           </div>
         </Column>
-        <CollabButton />
+        <div className="-mb-96 pb-96 flex">
+          <EnvironmentSelecctor />
+          <GlobalCreateDD />
+        </div>
       </Row>
     </Column>
   );

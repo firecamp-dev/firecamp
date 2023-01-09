@@ -199,10 +199,6 @@ export const initialiseStoreFromRequest = (
           },
         };
       }),
-      activeEnvironments: {
-        workspace: '',
-        collection: '',
-      },
       _dnp: {},
       isRequestSaved: !!request.__ref.collectionId,
       tabId,

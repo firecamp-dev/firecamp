@@ -3,11 +3,11 @@ import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
 import { ERequestTypes, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-import { dissoc } from 'ramda';
 
 import { IRequestTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
+import platformContext from '../services/platform-context';
 
 const initialState = {
   list: {},
@@ -20,6 +20,7 @@ interface ITabStore {
   activeTab: TId;
   orders: TId[];
 
+  getActiveTab: () => TId;
   reorder: (dragIndex: number, hoverIndex: number) => void;
   remove: (tbId: string) => void;
   changeMeta: (tab, __meta, request?: any) => void; //todo: define types...
@@ -62,6 +63,9 @@ const useTabStore = create<ITabStore>((set, get) => {
   return {
     ...initialState,
 
+    getActiveTab: () => {
+      return get().activeTab;
+    },
     reorder: async (dragIndex, hoverIndex) => {
       set((s) => {
         let orders = [...s.orders];
@@ -98,9 +102,9 @@ const useTabStore = create<ITabStore>((set, get) => {
               : s.orders[index - 1]
             : s.activeTab;
 
-        const list = dissoc(tabId, s.list);
+        delete s.list[tabId];
         return {
-          list,
+          list: { ...s.list },
           activeTab,
           orders: s.orders.filter((id) => id != tabId),
         };
@@ -214,18 +218,21 @@ const useTabStore = create<ITabStore>((set, get) => {
             revision: 1,
             isDeleted: false,
             isHistoryTab,
-            // _meta,
           },
         };
 
         const _orders = [...orders, tId];
-        set((s: ITabStore) => {
-          return {
-            list: { ...list, [tId]: tab },
-            activeTab: setActive == true ? tab.id : activeTab,
-            orders: _orders,
-          };
+        set({
+          list: { ...list, [tId]: tab },
+          activeTab: setActive == true ? tab.id : activeTab,
+          orders: _orders,
         });
+
+        /** -- set tabId and collectionId in tabColMap -- */
+        platformContext.environment.setTabCollection(
+          tId,
+          request.__ref.collectionId
+        );
 
         return [tab, _orders];
       },

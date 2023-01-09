@@ -1,13 +1,17 @@
 import create from 'zustand';
-import { IEnvironment, TId, EEnvironmentScope } from '@firecamp/types';
 import { Rest } from '@firecamp/cloud-apis';
+import { IEnvironment, TId, EEnvironmentScope } from '@firecamp/types';
+import { useTabStore } from './tab';
+
+type TTabId = TId;
+type TColId = TId;
+type TEnvId = TId;
 
 const initialState = {
+  tabColMap: {},
+  colEnvMap: {},
   isEnvSidebarOpen: false,
-  activeTabWrsEnv: '',
-  activeTabCollectionEnvs: {},
   colEnvTdpInstance: null,
-  wrsEnvTdpInstance: null,
   envs: [],
 };
 
@@ -20,30 +24,26 @@ type TCreateEnvPayload = {
 
 export interface IEnvironmentStore {
   isEnvSidebarOpen: boolean;
-
-  activeTabWrsEnv: string | TId;
-  activeTabCollectionEnvs: { [key: TId]: TId };
+  tabColMap: { [tabId: TTabId]: TColId };
+  colEnvMap: { [colId: TColId]: TEnvId };
   isProgressing?: boolean;
   colEnvTdpInstance: any;
-  wrsEnvTdpInstance: any;
   envs: IEnvironment[];
 
-  registerTDP: (wrsEnvTdpInstance: any, colEnvTdpInstance: any) => void;
+  registerTDP: (colEnvTdpInstance: any) => void;
   unRegisterTDP: () => void;
 
   initialize: (envs: IEnvironment[]) => void;
   toggleEnvSidebar: () => void;
   toggleProgressBar: (flag?: boolean) => void;
 
-  getWorkspaceEnvs: () => any[];
-  getCollectionEnvs: (collectionId: TId) => any[];
-  getCollectionActiveEnv: (collectionId: TId) => string;
+  getCollectionEnvs: (collectionId: TColId) => any[];
+  getCollectionActiveEnv: (collectionId: TColId) => TEnvId;
 
-  setWorkspaceActiveEnv: (envId: TId) => void;
-  setCollectionActiveEnv: (collectionId: TId, envId: TId) => void;
-  setEnvVariables: (envId: TId, variables: object) => void;
+  setCurrentTabActiveEnv: (envId?: TEnvId) => void;
+  setEnvVariables: (envId: TEnvId, variables: object) => void;
 
-  fetchEnvironment: (envId: string) => Promise<any>;
+  fetchEnvironment: (envId: TEnvId) => Promise<any>;
   createEnvironment: (payload: TCreateEnvPayload) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
   deleteEnvironment: (envId: TId) => Promise<any>;
@@ -56,58 +56,35 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   ...initialState,
 
   initialize: (envs: IEnvironment[] = []) => {
-    let activeTabWrsEnv = '';
-    let activeTabCollectionEnvs = {};
-    const firstWrsEnv = envs.filter(
-      (e) => e.__meta.type == EEnvironmentScope.Workspace
-    )[0];
-    if (firstWrsEnv) activeTabWrsEnv = firstWrsEnv.__ref.id;
-
-    let cEnvs = envs
-      .filter((e) => ['C', 'P'].includes(e.__meta.type))
-      .reduce((p, e) => {
-        if (!p[e.__ref.collectionId]) p[e.__ref.collectionId] = [];
-
-        //@ts-ignore
-        return {
-          ...p,
-          [e.__ref.collectionId]: [...p[e.__ref.collectionId], e],
-        };
-      }, {} as any);
-    let _cEnvs = Object.keys(cEnvs).reduce(
-      (collEnvs, key) => ({
-        ...collEnvs,
-        [key]: cEnvs[key].reduce((c, e) => ({ ...c, [e.__ref.id]: e }), {}),
-      }),
-      {}
+    const cEnvs = envs.filter(
+      (e) => ['C', 'P'].includes(e.__meta.type) && e.__ref.collectionId
     );
-
-    // set active environment for workspace and collection
-    // let activeTabWrsEnv = Object.keys(wEnvs)[0] || '';
-    for (let key in _cEnvs) {
-      activeTabCollectionEnvs[key] = Object.keys(_cEnvs[key])[0] || '';
-    }
-
-    // console.log({ activeTabWrsEnv, activeTabCollectionEnvs });
-    // console.log({ _wEnvs, _cEnvs });
-
-    set((s) => ({
-      envs: envs,
-      activeTabWrsEnv,
-      activeTabCollectionEnvs,
-    }));
+    const colIds = cEnvs.map((e) => e.__ref.collectionId);
+    const colEnvMap = colIds.reduce((p, n) => {
+      let env = cEnvs.find(
+        (e) => e.__ref.collectionId == n && e.name == 'Development'
+      );
+      // id=f develoment env not found then find te first env for now
+      if (!env) {
+        env = cEnvs.find((e) => e.__ref.collectionId == n);
+      }
+      return {
+        ...p,
+        [n]: env.__ref.id,
+      };
+    }, {});
+    set({ envs, colEnvMap });
   },
 
-  registerTDP: (wrsEnvTdpInstance, colEnvTdpInstance) => {
+  registerTDP: (colEnvTdpInstance) => {
     const { envs } = get();
     colEnvTdpInstance?.init(envs);
-    wrsEnvTdpInstance?.init(envs);
-    set((s) => ({ wrsEnvTdpInstance, colEnvTdpInstance }));
+    set((s) => ({ colEnvTdpInstance }));
   },
 
   // unregister TreeDatProvider instance
   unRegisterTDP: () => {
-    set((s) => ({ colEnvTdpInstance: null, wrsEnvTdpInstance: null }));
+    set({ colEnvTdpInstance: null });
   },
 
   toggleEnvSidebar: () => {
@@ -115,14 +92,10 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   toggleProgressBar: (flag: boolean) => {
-    set((s) => ({ isProgressing: flag }));
+    set({ isProgressing: flag });
   },
 
-  setWorkspaceActiveEnv: (envId: TId) => {
-    set(() => ({ activeTabWrsEnv: envId }));
-  },
-
-  setEnvVariables: (envId: TId, variables: object) => {
+  setEnvVariables: (envId, variables: object) => {
     set((s) => {
       const envs = s.envs.map((e) => {
         if (e.__ref.id == envId) {
@@ -135,27 +108,35 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     return;
   },
 
-  getWorkspaceEnvs: () => {
-    return get().envs.filter(
-      (e) => e.__meta.type == EEnvironmentScope.Workspace
-    );
+  setCurrentTabActiveEnv: (envId) => {
+    const tabStore = useTabStore.getState();
+    const tabId = tabStore.getActiveTab();
+    if (!tabId) return;
+    const state = get();
+    const collectionId = state.tabColMap[tabId];
+    if (!collectionId) return;
+    set((s) => {
+      if (!envId) {
+        const env = s.envs.find(
+          (e) => e.__ref.collectionId == collectionId && e.name == 'Development'
+        );
+        if (env) envId = env.__ref.id;
+      }
+      if (!envId) return s;
+      return {
+        colEnvMap: {
+          ...s.colEnvMap,
+          [collectionId]: envId,
+        },
+      };
+    });
   },
 
-  setCollectionActiveEnv: (collectionId: TId, envId: TId) => {
-    set((s) => ({
-      activeTabCollectionEnvs: {
-        ...s.activeTabCollectionEnvs,
-        [collectionId]: envId,
-      },
-    }));
+  getCollectionActiveEnv: (collectionId) => {
+    return get().colEnvMap[collectionId];
   },
 
-  getCollectionActiveEnv: (collectionId: TId) => {
-    return get().activeTabCollectionEnvs[collectionId];
-  },
-
-  getCollectionEnvs: (collectionId: TId) => {
-    // console.log({ 1: get().envs, collectionId });
+  getCollectionEnvs: (collectionId) => {
     return get().envs.filter((e) => e.__ref.collectionId == collectionId);
   },
 
@@ -183,9 +164,9 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       .create(_collection)
       .then((r) => {
         set((s) => {
-          r.data.__meta.type == EEnvironmentScope.Collection
-            ? s.colEnvTdpInstance?.addEnvItem(r.data)
-            : s.wrsEnvTdpInstance?.addEnvItem(r.data);
+          if (r.data.__meta.type == EEnvironmentScope.Collection) {
+            s.colEnvTdpInstance?.addEnvItem(r.data);
+          }
           return { envs: [...s.envs, r.data] };
         });
         return r;
@@ -227,9 +208,9 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
         set((s) => {
           const env = s.envs.find((e) => e.__ref.id == envId);
           if (env) {
-            env.__meta.type == EEnvironmentScope.Collection
-              ? s.colEnvTdpInstance?.removeEnvItem(envId)
-              : s.wrsEnvTdpInstance?.removeEnvItem(envId);
+            if (env.__meta.type == EEnvironmentScope.Collection) {
+              s.colEnvTdpInstance?.removeEnvItem(envId);
+            }
           }
           const envs = s.envs.filter((e) => e.__ref.id != envId);
           return { envs };

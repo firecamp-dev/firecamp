@@ -44,4 +44,3 @@ export enum EPlatformTabs {
 }
 
 export const prepareEventNameForRequestPull = (reqId: TId) => `pull/r/${reqId}`;
-export const prepareEventNameForEnvToTab = (tabId: TId) => `env/t/${tabId}`;

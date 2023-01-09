@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
 import { _array, _object } from '@firecamp/utils';
@@ -11,26 +10,22 @@ import SidebarPanel from './sidebar-panel/SidebarPanel';
 import {
   StoreProvider,
   createStore,
-  useStoreApi,
   useStore,
   IStore,
 } from '../store';
 import { initialiseStoreFromRequest } from '../services/request.service';
 import '../sass/socket.sass';
 
-const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
-  const socketStoreApi = useStoreApi();
+const Socket = ({ tab, platformContext }) => {
   const {
     initialise,
     initialiseCollection,
-    setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     setContext,
   } = useStore((s: IStore) => ({
     initialise: s.initialise,
     initialiseCollection: s.initialiseCollection,
-    setActiveEnvironments: s.setActiveEnvironments,
     setRequestSavedFlag: s.setRequestSavedFlag,
     setIsFetchingReqFlag: s.setIsFetchingReqFlag,
     setContext: s.setContext,
@@ -40,34 +35,6 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
   useEffect(() => {
     setContext(platformContext);
   }, []);
-
-  /** setup environments on tab load */
-  useEffect(() => {
-    if (activeTab === tab.id) {
-      const state = socketStoreApi.getState() as IStore;
-      // existing active environments in to runtime
-      const {
-        activeEnvironments: { workspace = '', collection = '' },
-      } = state.runtime;
-
-      // set active environments to platform
-      if (!!workspace) {
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments: {
-            workspace,
-            collection,
-          },
-          collectionId: tab?.request?.__ref.collectionId || '',
-        });
-      }
-
-      // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
-    }
-  }, [activeTab]);
 
   useEffect(() => {
     setRequestSavedFlag(tab?.__meta.isSaved);
@@ -127,31 +94,10 @@ const Socket = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   const handlePull = () => {};
 
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-    if (!platformActiveEnvironments) return;
-    const state = socketStoreApi.getState() as IStore;
-    // existing active environments in to runtime
-    const { activeEnvironments } = state.runtime;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
-    }
-  };
-
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
-        <UrlBarContainer
-          tab={tab}
-          collectionId={tab?.request?.__ref.collectionId || ''}
-          postComponents={platformComponents}
-          platformContext={platformContext}
-        />
+        <UrlBarContainer tab={tab} />
         <Container.Body>
           <Row flex={1} overflow="auto" className="with-divider h-full">
             <SidebarPanel />
