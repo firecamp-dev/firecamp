@@ -23,28 +23,28 @@ import { RE } from '../../../types';
 import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
-  scope: EEnvironmentScope;
   workspaceId: string;
   collectionId?: string;
   envId: string;
 };
 
 const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
-  const { workspace, explorer } = useWorkspaceStore.getState();
+  const { explorer } = useWorkspaceStore.getState();
   const { collections } = explorer;
   const { fetchEnvironment, updateEnvironment } = useEnvStore.getState();
-  const { scope, envId, collectionId } = useModalStore.getState()
-    .__meta as TModalMeta;
+  const { envId, collectionId } = useModalStore.getState().__meta as TModalMeta;
 
   const [isFetching, setIsFetching] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   const [error, setError] = useState({ name: '', variables: '' });
 
-  let collection: any;
-  if (scope == EEnvironmentScope.Collection) {
-    collection = collections.find((c) => c.__ref.id == collectionId);
-    console.log(collection, 'collection....');
+  if (!collectionId) {
+    onClose();
+    return <></>;
   }
+
+  const collection = collections.find((c) => c.__ref.id == collectionId);
+  console.log(collection, 'collection....');
 
   const [env, setEnv] = useState({
     name: '',
@@ -168,15 +168,10 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
                 className="text-appForeground text-sm block mb-1"
                 htmlFor="envBane"
               >
-                Scope:{' '}
-                {scope == EEnvironmentScope.Collection
-                  ? 'Collection'
-                  : 'Workspace'}
+                Collection Name
               </label>
               <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
-                {scope == EEnvironmentScope.Collection
-                  ? collection?.name
-                  : workspace?.name}
+                {collection?.name}
               </label>
             </div>
             <Input
@@ -248,18 +243,18 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
             <TabHeader.Right>
               <Button
                 text="Cancel"
-                secondary
-                transparent={true}
-                sm
                 onClick={(e) => onClose()}
-                ghost={true}
+                secondary
+                transparent
+                ghost
+                sm
               />
               <Button
                 text={isRequesting ? 'Updating...' : 'Update'}
-                primary
-                sm
                 onClick={onCreate}
                 disabled={isRequesting}
+                primary
+                sm
               />
             </TabHeader.Right>
           </TabHeader>
