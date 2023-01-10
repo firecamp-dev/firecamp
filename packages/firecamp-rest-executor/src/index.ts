@@ -9,6 +9,7 @@ import _url from '@firecamp/url';
 import parseBody from './helpers/body';
 import { IRestExecutor, TResponse } from './types';
 import * as scriptRunner from './script-runner';
+import { TEnvVariable } from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
   private _controller: AbortController;
@@ -37,7 +38,7 @@ export default class RestExecutor implements IRestExecutor {
   }
 
   /** run pre script */
-  private async runPreScript(request: any, vars: { [key: string]: any }) {
+  private async runPreScript(request: any, vars: TEnvVariable) {
     // pre script
     // TODO: Inherit script
     if (!request?.scripts?.pre) return {};
@@ -156,7 +157,7 @@ export default class RestExecutor implements IRestExecutor {
     return axiosRequest;
   }
 
-  async send(fcRequest: IRest): Promise<TResponse> {
+  async send(fcRequest: IRest, variables: TEnvVariable= {}): Promise<TResponse> {
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
       return Promise.resolve({
@@ -174,6 +175,7 @@ export default class RestExecutor implements IRestExecutor {
       {} //vars
     )
       .then((res) => {
+        console.log(res, '_____789458');
         const { request, environment } = res as any;
         if (environment) {
           // updatedVariables = await normalizeVariables(

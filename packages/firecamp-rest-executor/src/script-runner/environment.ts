@@ -40,24 +40,4 @@ export class Environment implements IEnvironment {
             this.unsetVariables = []
         }
     }
-
-    workspace = {
-        variables: {},
-        unsetVariables: [],
-        name: '',
-        clearEnvironment: false,
-        set(variableName: string, variableValue: string | number | boolean) {
-            this.variables[variableName] = variableValue
-        },
-        unset(...variableNames: string[]) {
-            this.variables = _object.omit(this.variables, variableNames)
-
-            this.unsetVariables = variableNames
-        },
-        clear() {
-            this.clearEnvironment = true
-            this.variables = {}
-            this.unsetVariables = []
-        }
-    }
 }

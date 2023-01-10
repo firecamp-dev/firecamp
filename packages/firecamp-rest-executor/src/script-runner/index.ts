@@ -1,8 +1,8 @@
-import { IRest, IRestResponse } from '@firecamp/types';
-import { _misc, _string } from '@firecamp/utils';
 import Joi from '@hapi/joi';
 import tv4 from 'tv4';
 import chai from 'chai';
+import { IRest, IRestResponse } from '@firecamp/types';
+import { _misc, _string } from '@firecamp/utils';
 
 import jsExecutor from './lib/js-executor';
 import { Environment } from './environment';
@@ -31,7 +31,6 @@ export const preScript: TPreScript = async (
               environment
             }
           })()`;
-
     return jsExecutor(script, {
       request: new Request(request),
       environment: new Environment(variables),
@@ -39,7 +38,6 @@ export const preScript: TPreScript = async (
   } catch (error) {
     console.info('%cpre-script sandbox error', 'color: red; font-size: 14px');
     console.info(error);
-
     return Promise.reject(error.message);
   }
 };
@@ -57,7 +55,6 @@ export const postScript: TPostScript = async (
               environment
             }
           })()`;
-
     return jsExecutor(script, {
       response: new Response(response),
       environment: new Environment(variables),
@@ -65,7 +62,6 @@ export const postScript: TPostScript = async (
   } catch (error) {
     console.info('%cpost-script sandbox error', 'color: red; font-size: 14px');
     console.info(error);
-
     return Promise.reject(error.message);
   }
 };
