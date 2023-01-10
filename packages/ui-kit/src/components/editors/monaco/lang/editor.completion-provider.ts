@@ -1,4 +1,4 @@
-//@ts-nocheck
+import { EEditorLanguage } from '@firecamp/types';
 import { _env } from '@firecamp/utils';
 import * as monaco from 'monaco-editor';
 import { headers, contentTypes, charsets, encodings } from './headerList';
@@ -6,22 +6,25 @@ import { headers, contentTypes, charsets, encodings } from './headerList';
 const mockVariables = _env.mockVariablesList.reduce((c, d) => {
   c[d.api.firecamp] = d.description;
   return c;
-}, {});
+}, {} as { [k: string]: any });
 
-// let vars = {
-//   name: "Nishchit",
-//   startup: "Firecamp",
-// };
+let vars = {
+  name: 'Nishchit',
+  startup: 'Firecamp',
+};
 
 function createDependencyProposals(
-  range,
-  variables,
-  meta = { modeId: null, triggerCharacter: '' }
+  range: monaco.IRange,
+  variables: { [k: string]: any },
+  meta: { modeId: string | null; triggerCharacter: string } = {
+    modeId: null,
+    triggerCharacter: '',
+  }
 ) {
   // returning a static list of proposals, not even looking at the prefix (filtering is done by the Monaco editor),
   // here you could do a server side lookup
 
-  const prepareInsertText = (v, triggerCharacter) => {
+  const prepareInsertText = (v: string, triggerCharacter: string) => {
     let insertText = '';
     if (!triggerCharacter) {
       insertText = `{{${v}}}`;
@@ -35,54 +38,54 @@ function createDependencyProposals(
     return insertText;
   };
 
-  let varList = Object.keys(variables).map((v, i) => {
-    let insertText = prepareInsertText(v, meta.triggerCharacter);
+  const varList = Object.keys(variables).map((v, i) => {
+    const insertText = prepareInsertText(v, meta.triggerCharacter);
     return {
       label: v,
       kind: monaco.languages.CompletionItemKind.Variable,
       documentation: `value- ${variables[v]}`,
       insertText: insertText,
-      range: range,
+      range,
       sortText: 'a',
     };
   });
 
-  let mockVarList = Object.keys(mockVariables).map((v, i) => {
-    let insertText = prepareInsertText(v, meta.triggerCharacter);
+  const mockVarList = Object.keys(mockVariables).map((v, i) => {
+    const insertText = prepareInsertText(v, meta.triggerCharacter);
     return {
       label: v,
       kind: monaco.languages.CompletionItemKind.Function,
       documentation: `${mockVariables[v]}`,
       insertText: insertText,
-      range: range,
+      range,
       sortText: 'z',
     };
   });
 
-  let headerKeys = [];
-  let headerValues = [];
-  if (meta && meta.modeId == EEditorLanguage.HeaderKey) {
-    headerKeys = headers.map((h, i) => {
-      return {
+  const headerKeys: any[] = [];
+  const headerValues: any[] = [];
+  if (meta?.modeId == EEditorLanguage.HeaderKey) {
+    headers.map((h, i) => {
+      headerKeys.push({
         label: h.name,
         kind: monaco.languages.CompletionItemKind.Field,
         documentation: h.description,
         insertText: h.name,
         range: range,
         sortText: 'b',
-      };
+      });
     });
   }
-  if (meta && meta.modeId == EEditorLanguage.HeaderValue) {
-    headerValues = contentTypes.map((h, i) => {
-      return {
+  if (meta?.modeId == EEditorLanguage.HeaderValue) {
+    contentTypes.map((h, i) => {
+      headerValues.push({
         label: h.name,
         kind: monaco.languages.CompletionItemKind.Field,
         documentation: h.description,
         insertText: h.name,
         range: range,
         sortText: 'b',
-      };
+      });
     });
   }
 
@@ -124,17 +127,21 @@ function createDependencyProposals(
 
 export default (variables = vars) => ({
   triggerCharacters: ['.', '{'],
-  provideCompletionItems: (model, position, token) => {
+  provideCompletionItems: (
+    model: monaco.editor.IModel,
+    position: monaco.IPosition,
+    token: any
+  ) => {
     // find out if we are completing a property in the 'dependencies' object.
     // var textUntilPosition = model.getValueInRange({startLineNumber: 1, startColumn: 1, endLineNumber: position.lineNumber, endColumn: position.column});
     // var match = textUntilPosition.match(/"dependencies"\s*:\s*\{\s*("[^"]*"\s*:\s*"[^"]*"\s*,\s*)*([^"]*)?$/);
     // if (!match) {
     //     return { suggestions: [] };
     // }
-    var word = model.getWordUntilPosition(position);
+    const word = model.getWordUntilPosition(position);
 
     // let triggerCharLength = token.triggerCharacter.length;
-    var range = {
+    const range: monaco.IRange = {
       startLineNumber: position.lineNumber,
       endLineNumber: position.lineNumber,
       startColumn: word.startColumn,
@@ -142,13 +149,13 @@ export default (variables = vars) => ({
     };
 
     let triggerCharacter = '';
-    let triggerRange = {
-      tartLineNumber: position.lineNumber,
+    const triggerRange = {
+      startLineNumber: position.lineNumber,
       endLineNumber: position.lineNumber,
       startColumn: position.column - 2,
       endColumn: position.column,
     };
-    let prev2CharsBeforeTrigger = model.getValueInRange(triggerRange);
+    const prev2CharsBeforeTrigger = model.getValueInRange(triggerRange);
 
     // console.log(prev2CharsBeforeTrigger, prev2CharsBeforeTrigger.substr(prev2CharsBeforeTrigger.length - 1));
 

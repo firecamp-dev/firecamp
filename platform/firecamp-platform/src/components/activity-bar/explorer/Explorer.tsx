@@ -27,7 +27,6 @@ import treeRenderer from './treeItemRenderer';
 import { RE } from '../../../types';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../services/platform-emitter/events';
-import pltContext from '../../../services/platform-context';
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();
@@ -38,7 +37,7 @@ const Explorer: FC<any> = () => {
     explorer,
     fetchExplorer,
 
-    createCollection,
+    createCollectionPrompt,
     updateCollection,
     updateFolder,
     updateRequest,
@@ -54,7 +53,7 @@ const Explorer: FC<any> = () => {
       explorer: s.explorer,
       fetchExplorer: s.fetchExplorer,
 
-      createCollection: s.createCollection,
+      createCollectionPrompt: s.createCollectionPrompt,
       updateCollection: s.updateCollection,
       updateFolder: s.updateFolder,
       updateRequest: s.updateRequest,
@@ -143,42 +142,6 @@ const Explorer: FC<any> = () => {
       // console.log({ nodeItem });
       _openReqInTab(nodeItem);
     }
-  };
-
-  const _createCollectionPrompt = async () => {
-    if (!pltContext.app.user.isLoggedIn()) {
-      return pltContext.app.modals.openSignIn();
-    }
-    pltContext.window
-      .promptInput({
-        header: 'Create New Collection',
-        lable: 'Collection Name',
-        placeholder: 'type collection name',
-        texts: { btnOking: 'Creating...' },
-        value: '',
-        validator: (val) => {
-          if (!val || val.length < 3) {
-            return {
-              isValid: false,
-              message: 'The collection name must have minimum 3 characters.',
-            };
-          }
-          const isValid = RE.NoSpecialCharacters.test(val);
-          return {
-            isValid,
-            message:
-              !isValid &&
-              'The collection name must not contain any special characters.',
-          };
-        },
-        executor: (name) => createCollection({ name, description: '' }),
-        onError: (e) => {
-          pltContext.app.notify.alert(e?.response?.data?.message || e.message);
-        },
-      })
-      .then((res) => {
-        // console.log(res, 1111);
-      });
   };
 
   const canDropAt = useCallback(
@@ -292,7 +255,7 @@ const Explorer: FC<any> = () => {
                   <VscNewFolder
                     className="cursor-pointer"
                     size={16}
-                    onClick={_createCollectionPrompt}
+                    onClick={createCollectionPrompt}
                   />
                 </div>
                 {/* <div>
@@ -315,7 +278,7 @@ const Explorer: FC<any> = () => {
                     sm
                     primary
                     className="mx-auto mb-6"
-                    onClick={_createCollectionPrompt}
+                    onClick={createCollectionPrompt}
                   />
                 </div>
               );

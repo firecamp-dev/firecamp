@@ -1438,11 +1438,14 @@ video {
 .rounded-sm {
 	border-radius: 0.125rem;
 }
-.rounded {
-	border-radius: 0.25rem;
-}
 .rounded-full {
 	border-radius: 9999px;
+}
+.rounded-2xl {
+	border-radius: 1rem;
+}
+.rounded {
+	border-radius: 0.25rem;
 }
 .rounded-3xl {
 	border-radius: 1.5rem;
@@ -1822,6 +1825,10 @@ video {
 .\!py-2 {
 	padding-top: 0.5rem !important;
 	padding-bottom: 0.5rem !important;
+}
+.px-0\.5 {
+	padding-left: 0.125rem;
+	padding-right: 0.125rem;
 }
 .px-0 {
 	padding-left: 0px;

@@ -27,7 +27,7 @@ const TitlePlacement = ({
 }: {
   name: string;
   isPreview: boolean;
-}) => <div className={cx('title flex-1', { italic: isPreview })}>{name}</div>;
+}) => <div className={cx('title', { italic: isPreview })}>{name}</div>;
 
 const CloseIconPlacement = ({
   id = '',
@@ -175,7 +175,7 @@ const Tab: FC<ITab> = ({
         <TopBorderPlacement
           show={borderMeta?.placementForActive === 'top' && isActive}
         />
-        <div className="fc-tab-content flex flex-1 items-center">
+        <div className="fc-tab-content flex flex-1 items-center justify-center">
           {preComp ? (
             <div className="flex items-center pr-1.5">{preComp()}</div>
           ) : (

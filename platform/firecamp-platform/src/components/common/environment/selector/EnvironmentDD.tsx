@@ -1,24 +1,30 @@
 import { FC, useState, useMemo } from 'react';
-import { Dropdown, Button,  } from '@firecamp/ui-kit';
 import classnames from 'classnames';
+import { Dropdown, Button } from '@firecamp/ui-kit';
 import { EEnvironmentScope, TId } from '@firecamp/types';
-
 import Helper from './Helper';
+import { useWorkspaceStore } from '../../../../store/workspace';
 
 const EnvironmentDD: FC<IEnvironmentDD> = ({
-  collectionId = '',
-  activeEnv: propActiveEnv = '',
+  activeCollectionId,
+  activeEnvId,
   environments,
-  scope = EEnvironmentScope.Workspace,
+  scope = EEnvironmentScope.Collection,
   onChange = () => {},
   showFooter = true,
 }) => {
-  let [isOpen, toggleOpen] = useState(false);
-
-  let menu = useMemo(
-    () => Helper.generate.environmentsDD(environments, propActiveEnv),
-    [environments, propActiveEnv, collectionId]
+  const [isOpen, toggleOpen] = useState(false);
+  const menu = useMemo(
+    () => Helper.generate.environmentsDD(environments, activeEnvId),
+    [environments, activeEnvId]
   );
+  console.log(menu, 778899)
+  const collection = useMemo(() => {
+    const wStore = useWorkspaceStore.getState();
+    return wStore.explorer.collections.find(
+      (c) => c.__ref.id == activeCollectionId
+    );
+  }, [activeCollectionId]);
 
   if (
     !menu.options ||
@@ -29,7 +35,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     return <span />;
   }
 
-  let _onSelectEnv = (env: { id: string }) => {
+  const _onSelectEnv = (env: { id: string }) => {
     //    console.log({ env });
 
     if (env === menu.selected) return;
@@ -38,24 +44,16 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     }
   };
 
-  let options = [
+  const options = [
     {
       header:
-        scope === EEnvironmentScope.Workspace
-          ? 'Workspace Environment'
-          : 'Collection Environment',
+        scope === EEnvironmentScope.Collection ? 'Collection Environment' : '',
       list: menu.options,
-    },
-    {
-      name:
-        scope === EEnvironmentScope.Workspace
-          ? 'Manage Workspace Environment'
-          : 'Manage Collection Environment',
-      onClick: () => {
-        
-      },
-    },
+    }
   ];
+
+  if (!collection || !menu?.selected) return <></>;
+  const title = `${collection.name} / ${menu.selected.name}`;
 
   return (
     <Dropdown
@@ -68,15 +66,15 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     >
       <Dropdown.Handler>
         <Button
-          text={menu?.selected?.name || ''}
-          xs
-          transparent={true}
-          ghost={true}
+          text={title}
           className={classnames(
             { '!text-primaryColor': scope === EEnvironmentScope.Workspace },
             { '!text-info': scope === EEnvironmentScope.Collection }
           )}
-          withCaret={true}
+          withCaret
+          transparent
+          ghost
+          xs
         />
       </Dropdown.Handler>
       <Dropdown.Options
@@ -89,29 +87,22 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     </Dropdown>
   );
 };
-
 export default EnvironmentDD;
 
-/**
- * Workspace environments
- * Update active environment for workspace
- */
 interface IEnvironmentDD {
-  collectionId?: TId;
-  activeEnv: string;
-
+  activeCollectionId: TId;
+  activeEnvId: TId;
   environments: any[];
-
-  scope: EEnvironmentScope;
+  scope?: EEnvironmentScope;
 
   /**
-   * Update action and payload
+   * update action and payload
    */
   //TODO: add and import interface from zustand store
   onChange: (envId: string) => void;
   /**
-   * Boolean value whether want to show footer or not.
-   * Footer contains menu to open environment modal
+   * whether want to show footer or not.
+   * footer contains menu to open environment modal
    */
   showFooter?: boolean;
 }

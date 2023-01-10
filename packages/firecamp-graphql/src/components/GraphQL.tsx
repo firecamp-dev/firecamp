@@ -1,23 +1,18 @@
 import { useEffect } from 'react';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
-import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
-
 import { _object } from '@firecamp/utils';
 import { IGraphQL } from '@firecamp/types';
 import { Container, Row, Column, Loader } from '@firecamp/ui-kit';
-
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import PlaygroundPanel from './playground-panel/PlaygroundPanel';
-
 import DocWrapper from './common/explorer/GraphQLDoc';
 
 import {
   StoreProvider,
   createStore,
-  useStoreApi,
   useStore,
   IStore,
 } from '../store';
@@ -27,28 +22,24 @@ import {
   normalizeRequest,
 } from '../services/request.service';
 
-const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
-  let graphqlStoreApi: any = useStoreApi();
-
-  let {
+const GraphQL = ({ tab, platformContext }) => {
+  const {
     isFetchingRequest,
     initialise,
-    setActiveEnvironments,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     getMergedRequestByPullAction,
     setContext,
-    initialiseCollection
+    initialiseCollection,
   } = useStore(
     (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
-      setActiveEnvironments: s.setActiveEnvironments,
       setRequestSavedFlag: s.setRequestSavedFlag,
       getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setContext: s.setContext,
-      initialiseCollection: s.initialiseCollection
+      initialiseCollection: s.initialiseCollection,
     }),
     shallow
   );
@@ -57,36 +48,6 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
   useEffect(() => {
     setContext(platformContext);
   }, []);
-
-  /**
-   * Handle environments activities on load and while being active tab
-   *
-   * 1. on Tab focus pass previously set environment names to the platform
-   * 2. subscribe the environment related changes
-   * */
-  useEffect(() => {
-    if (activeTab === tab.id) {
-      // existing active environments in to runtime
-      const activeEnvironments =
-        graphqlStoreApi.getState().runtime.activeEnvironments;
-
-      // set active environments to platform
-      if (!!activeEnvironments?.workspace) {
-        // console.log({ activeEnvironments });
-
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments,
-          collectionId: tab?.request?.__meta.collectionId || '',
-        });
-      }
-
-      // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
-    }
-  }, [activeTab]);
 
   /** if request is being saved then after successful flag set the request's as saved */
   useEffect(() => {
@@ -165,7 +126,7 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     try {
       const isRequestSaved = !!tab?.request?.__ref?.id || false;
       // prepare a minimal request payload
-      let _request = { collection: { folders:[], items: []}}; // initialise will normalize the reuqest to prepare minimal request for tab
+      let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the reuqest to prepare minimal request for tab
       if (isRequestSaved === true) {
         setIsFetchingReqFlag(true);
         try {
@@ -183,10 +144,11 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
           throw error;
         }
       }
-      const { collection, ...request} = _request;
+      const { collection, ...request } = _request;
       /** initialise graphql store on tab load */
       initialise(request, tab.id);
-      if(collection && !_object.isEmpty(collection)) initialiseCollection(collection);
+      if (collection && !_object.isEmpty(collection))
+        initialiseCollection(collection);
       setIsFetchingReqFlag(false);
     } catch (error) {
       console.error({
@@ -196,30 +158,10 @@ const GraphQL = ({ tab, platformContext, activeTab, platformComponents }) => {
     }
   };
 
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-
-    if (!platformActiveEnvironments) return;
-    let activeEnvironments =
-      graphqlStoreApi.getState().runtime.activeEnvironments;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
-    }
-  };
-
   if (isFetchingRequest === true) return <Loader />;
   return (
     <Container className="h-full w-full with-divider" overflow="visible">
-      <UrlBarContainer
-        tab={tab}
-        collectionId={tab?.request?.__ref?.collectionId || ''}
-        postComponents={platformComponents}
-      />
+      <UrlBarContainer tab={tab} />
       <Container.Body>
         <Row flex={1} overflow="auto" className="with-divider h-full">
           <SidebarPanel />

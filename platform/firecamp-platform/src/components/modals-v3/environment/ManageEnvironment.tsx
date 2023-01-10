@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { Rest } from '@firecamp/cloud-apis';
 import {
   Input,
   TabHeader,
@@ -9,44 +10,47 @@ import {
   Editor,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-import { IEnvironment, EEnvironmentScope, EEditorLanguage } from '@firecamp/types';
-import { Rest } from '@firecamp/cloud-apis';
+import {
+  IEnvironment,
+  EEnvironmentScope,
+  EEditorLanguage,
+} from '@firecamp/types';
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useModalStore } from '../../../store/modal';
 import { useEnvStore } from '../../../store/environment';
-import { RE } from '../../../types'
+import { RE } from '../../../types';
 import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
-  scope: EEnvironmentScope;
   workspaceId: string;
   collectionId?: string;
   envId: string;
 };
 
 const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
-  const { workspace, explorer } = useWorkspaceStore.getState();
+  const { explorer } = useWorkspaceStore.getState();
   const { collections } = explorer;
   const { fetchEnvironment, updateEnvironment } = useEnvStore.getState();
-  const { scope, envId, collectionId } = useModalStore.getState()
-    .__meta as TModalMeta;
+  const { envId, collectionId } = useModalStore.getState().__meta as TModalMeta;
 
   const [isFetching, setIsFetching] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   const [error, setError] = useState({ name: '', variables: '' });
 
-  let collection: any;
-  if (scope == EEnvironmentScope.Collection) {
-    collection = collections.find((c) => c.__ref.id == collectionId);
-    console.log(collection, 'collection....');
+  if (!collectionId) {
+    onClose();
+    return <></>;
   }
+
+  const collection = collections.find((c) => c.__ref.id == collectionId);
+  console.log(collection, 'collection....');
 
   const [env, setEnv] = useState({
     name: '',
     description: '',
     variables: JSON.stringify({}, null, 4),
-    meta: { type: EEnvironmentScope.Collection, visibility: 2 },
+    __meta: { type: EEnvironmentScope.Collection, visibility: 2 },
   });
 
   //load environment
@@ -65,7 +69,9 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
         });
       })
       .catch((e) => {
-        platformContext.app.notify.alert(e.response?.data?.message || e.message);
+        platformContext.app.notify.alert(
+          e.response?.data?.message || e.message
+        );
         console.log(e);
       });
   }, []);
@@ -121,7 +127,9 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
-        platformContext.app.notify.alert(e?.response?.data?.message || e.message);
+        platformContext.app.notify.alert(
+          e?.response?.data?.message || e.message
+        );
       })
       .finally(() => {
         setIsRequesting(false);
@@ -160,15 +168,10 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
                 className="text-appForeground text-sm block mb-1"
                 htmlFor="envBane"
               >
-                Scope:{' '}
-                {scope == EEnvironmentScope.Collection
-                  ? 'Collection'
-                  : 'Workspace'}
+                Collection Name
               </label>
               <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
-                {scope == EEnvironmentScope.Collection
-                  ? collection?.name
-                  : workspace?.name}
+                {collection?.name}
               </label>
             </div>
             <Input
@@ -240,18 +243,18 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
             <TabHeader.Right>
               <Button
                 text="Cancel"
-                secondary
-                transparent={true}
-                sm
                 onClick={(e) => onClose()}
-                ghost={true}
+                secondary
+                transparent
+                ghost
+                sm
               />
               <Button
                 text={isRequesting ? 'Updating...' : 'Update'}
-                primary
-                sm
                 onClick={onCreate}
                 disabled={isRequesting}
+                primary
+                sm
               />
             </TabHeader.Right>
           </TabHeader>

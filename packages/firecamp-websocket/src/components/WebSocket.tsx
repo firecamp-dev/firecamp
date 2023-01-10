@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import { _array, _object } from '@firecamp/utils';
@@ -21,14 +20,12 @@ import {
   IStore,
 } from '../store';
 
-const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
-  const websocketStoreApi: any = useStoreApi();
+const WebSocket = ({ tab, platformContext }) => {
   const {
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     initialise,
     initialiseCollection,
-    setActiveEnvironments,
     setContext,
   } = useStore(
     (s: IStore) => ({
@@ -37,7 +34,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       initialise: s.initialise,
       initialiseCollection: s.initialiseCollection,
-      setActiveEnvironments: s.setActiveEnvironments,
       setContext: s.setContext,
     }),
     shallow
@@ -47,34 +43,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
   useEffect(() => {
     setContext(platformContext);
   }, []);
-
-  /** assign environments on tab load or when activeTab change **/
-  useEffect(() => {
-    if (activeTab === tab.id) {
-      const state = websocketStoreApi.getState() as IStore;
-      // existing active environments in to runtime
-      const {
-        activeEnvironments: { workspace = '', collection = '' },
-      } = state.runtime;
-
-      // set active environments to platform
-      if (!!workspace) {
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments: {
-            workspace,
-            collection,
-          },
-          collectionId: tab?.request?.__ref?.collectionId || '',
-        });
-      }
-
-      // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
-    }
-  }, [activeTab]);
 
   useEffect(() => {
     setRequestSavedFlag(tab?.__meta?.isSaved);
@@ -136,21 +104,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
 
   const handlePull = () => {};
 
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-    if (!platformActiveEnvironments) return;
-    const state = websocketStoreApi.getState() as IStore;
-    const { activeEnvironments } = state.runtime;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
-    }
-  };
-
   // if(isFetchingRequest === true) return <Loader />;
   console.log(tab, 'tab...');
   return (
@@ -158,8 +111,6 @@ const WebSocket = ({ tab, platformContext, activeTab, platformComponents }) => {
       <Container className="h-full with-divider">
         <UrlBarContainer
           tab={tab}
-          collectionId={tab?.request?.__ref?.collectionId || ''}
-          postComponents={platformComponents}
           // onPasteCurl={onPasteCurl}
         />
         <Container.Body>

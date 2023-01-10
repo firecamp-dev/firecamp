@@ -17,10 +17,6 @@ import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../services/platform-emitter/events';
 
 const Home: FC<any> = () => {
-  useEffect(() => {
-    // F?.reactGA?.pageview?.('home');
-  }, []);
-
   const _openTab = (type?: ERequestTypes) => {
     const allowed_app = [
       ERequestTypes.SocketIO,

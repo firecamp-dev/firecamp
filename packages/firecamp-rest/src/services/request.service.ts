@@ -273,10 +273,6 @@ export const initialiseStoreFromRequest = (
           test: '',
         },
       },
-      activeEnvironments: {
-        collection: '',
-        workspace: '',
-      },
       isRequestSaved: !!request.__ref.collectionId,
       oauth2LastFetchedToken: '',
       tabId,
@@ -350,6 +346,7 @@ export const normalizeSendRequestPayload = async (
   let sendRequestPayload: IRest = _object.pick(request, [
     'url',
     'method',
+    'body',
     'config',
     'headers',
     '__meta',
@@ -358,10 +355,10 @@ export const normalizeSendRequestPayload = async (
 
   try {
     // Send active body payload
-    if (!request.body?.type) {
+    if (request.body?.type) {
       sendRequestPayload.body = {
-        value: request.body.value,
-        type: request.body.type,
+        value: request.body?.value,
+        type: request.body?.type,
       };
 
       if (request.body?.type === ERestBodyTypes.FormData) {
