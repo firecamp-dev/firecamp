@@ -3,7 +3,6 @@ import create from 'zustand';
 import createContext from 'zustand/context';
 import { TId, IRest, IRestResponse, EFirecampAgent } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';
-import ScriptService from '../services/scripts/index';
 import {
   prepareUIRequestPanelState,
   normalizeVariables,
@@ -36,7 +35,7 @@ const createStore = (initialState: IStoreState) =>
       initialise: (request: Partial<IRest>, tabId: TId) => {
         const state = get();
         const initState = initialiseStoreFromRequest(request, tabId);
-        console.log(initState, 'initState');
+        // console.log(initState, 'initState');
         set((s) => ({
           ...s,
           ...initState,
@@ -68,8 +67,6 @@ const createStore = (initialState: IStoreState) =>
 
       execute: async (
         variables: {
-          merged: {};
-          workspace: {};
           collection?: {};
         },
         fcAgent: EFirecampAgent,
@@ -79,10 +76,6 @@ const createStore = (initialState: IStoreState) =>
         try {
           // set response empty
           set({ response: { statusCode: 0 } });
-          let request: Omit<IRestClientRequest, 'auth'> = _cloneDeep(
-            state.request
-          ); //todo: discuss/review this type
-          // console.log({ request, variables, fcAgent });
 
           // Check if request is running or not. stop running request if already true
           if (state.runtime.isRequestRunning === true) {
@@ -96,66 +89,16 @@ const createStore = (initialState: IStoreState) =>
           }
           state.setRequestRunningFlag(true);
 
-          let preScriptResponse: any = {};
-          let postScriptResponse: any = {};
-          let testScriptResponse: any = {};
-
-          // run pre-script
-          if (request?.scripts?.pre) {
-            // TODO: add inherit support
-            preScriptResponse = await ScriptService.runPreScript(
-              state.request,
-              variables.merged
-            );
-          }
-
-          // TODO: history payload
-
-          /* let certificates = [],
-            proxies = []; */
-          let updatedVariables: {
-            workspace: {};
-            collection?: {};
-          } = {
-            workspace: variables['workspace'],
-            collection: variables['collection'],
-          };
-
-          // Merge script updated request with state request
-          if (preScriptResponse?.request) {
-            request = { ...state.request, ...preScriptResponse.request };
-          }
-          console.log({ preScriptResponse });
-
-          // Normalize variables from pre script response and existing variables
-          if (preScriptResponse.environment) {
-            updatedVariables = await normalizeVariables(
-              {
-                workspace: variables['workspace'],
-                collection: variables['collection'],
-              },
-              preScriptResponse.environment
-            );
-          }
-
-          // console.log({ updatedVariables });
-
-          // Parse variables
-          request = _env.applyVariables(request, {
-            ...updatedVariables.workspace,
-            ...(updatedVariables.collection || {}),
-          }) as Omit<IRestClientRequest, 'auth'>;
-
           // normalize request
-          const normalizedRequest = await normalizeSendRequestPayload(
-            request,
-            state.request
-          );
+          // const normalizedRequest = await normalizeSendRequestPayload(
+          //   request,
+          //   state.request
+          // );
 
-          console.log({ normalizedRequest, request });
+          // console.log({ normalizedRequest, request });
           // execute request
           await state.context.request
-            .execute(normalizedRequest)
+            .execute(state.request)
             .then((response) => {
               console.log({ response: response });
               const error = response.error;
@@ -174,78 +117,18 @@ const createStore = (initialState: IStoreState) =>
               if (!response) return;
               // TODO: add cookies
 
-              // run post-script
-              if (request.scripts?.post) {
-                // TODO: add inherit support
-                postScriptResponse = await ScriptService.runPostScript(
-                  request.scripts?.post,
-                  response,
-                  {
-                    ...updatedVariables.workspace,
-                    ...(updatedVariables.collection || {}),
-                  }
-                );
-              }
-              // merge post script response with actual response
-              if (postScriptResponse?.response) {
-                response = { ...response, ...postScriptResponse.response };
-              }
-
-              // console.log({ postScriptResponse });
-              if (postScriptResponse.environment) {
-                updatedVariables = await normalizeVariables(
-                  updatedVariables,
-                  postScriptResponse.environment
-                );
-              }
-              // console.log({ updatedVariables });
-
-              try {
-                // run test-script
-                // TODO: add inherit support
-                testScriptResponse = await ScriptService.runTestScript(
-                  request,
-                  response,
-                  {
-                    ...updatedVariables.workspace,
-                    ...(updatedVariables.collection || {}),
-                  }
-                );
-
-                if (testScriptResponse) {
-                  response['testScriptResult'] = testScriptResponse;
-                }
-              } catch (error) {}
-
               set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
-              // console.log({ testScriptResponse });
               state.setRequestRunningFlag(false);
-
-              // variables to update
-              onChangeVariables(updatedVariables);
             })
             .catch((e) => {
               console.log(e.message, e.stack, e.response, e, 9090);
             });
         } catch (e) {
           state.setRequestRunningFlag(false);
-
           console.error({
             api: 'execute',
             e,
           });
-
-          if (_object.isObject(e) && 'statusCode' in e) {
-            set((s) => ({ response: e }));
-          } else {
-            if (_object.isObject(e) && 'message' in e) {
-              set((s) => ({
-                response: { error: e.message, statusCode: 0 },
-              }));
-            } else {
-              set((s) => ({ response: { e, statusCode: 0 } }));
-            }
-          }
         }
       },
     };

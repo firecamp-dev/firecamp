@@ -49,11 +49,11 @@ const ScriptsTabs: FC<IScriptsTab> = ({
         name: 'Post',
         dotIndicator: !!scripts['post'],
       },
-      {
+      /*{
         id: 'test',
         name: 'Test cases',
         dotIndicator: !!scripts['test'],
-      },
+      }, */
     ],
     [scripts]
   );

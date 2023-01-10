@@ -3,12 +3,12 @@ import HTTPS from 'https';
 import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
 import { IRest, IRestResponse } from '@firecamp/types';
-import { _array, _object, _table } from '@firecamp/utils';
+import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 
 import parseBody from './helpers/body';
 import { IRestExecutor, TResponse } from './types';
-export * from './script-runner';
+import * as scriptRunner from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
   private _controller: AbortController;
@@ -34,6 +34,32 @@ export default class RestExecutor implements IRestExecutor {
       };
       return res;
     });
+  }
+
+  /** run pre script */
+  private async runPreScript(request: any, vars: { [key: string]: any }) {
+    // pre script
+    // TODO: Inherit script
+    if (!request?.scripts?.pre) return {};
+
+    // TODO: manage/ update envs from scriptResponse
+    return scriptRunner.preScript(request, vars);
+  }
+
+  /** run post script */
+  private async runPostScript(script: string, response: any, vars: {}) {
+    // TODO: Inherit script
+    const res = await scriptRunner.postScript(script, response, vars);
+    return res;
+  }
+
+  /** run test scripts */
+  // @ts-ignore
+  private async runTestScript(request: any, response: any, vars) {
+    // TODO: Inherit script
+    const res = await scriptRunner.testScript(request, response, vars);
+    // TODO: manage/ update envs from scriptResponse
+    return res;
   }
 
   private _timeline(
@@ -124,61 +150,129 @@ export default class RestExecutor implements IRestExecutor {
 
     // TODO: Check sending file without serialize in desktop environment
     // parse body payload
-    if (body) {
+    if (body?.value) {
       axiosRequest.data = await parseBody(body);
     }
     return axiosRequest;
   }
 
-  async send(request: IRest): Promise<TResponse> {
-    const axiosRequest: AxiosRequestConfig = await this._prepare(request);
-    try {
-      if (_object.isEmpty(request)) {
-        const message: string = 'Invalid request payload';
-        return Promise.resolve({
-          statusCode: 0,
-          error: {
-            message,
-            code: 'INVALID REQUEST',
-            e: new Error(message),
-          },
-        });
-      }
-      // execute request
-      const axiosResponse = await axios(axiosRequest);
-      // normalize response according to Firecamp REST request's response
-      const response = this._normalizeResponse(axiosResponse);
-      // prepare timeline of request execution
-      response.timeline = this._timeline(axiosRequest, axiosResponse);
-      return Promise.resolve({ ...response });
-    } catch (e) {
-      console.error(e);
-      if (!_object.isEmpty(e.response)) {
-        const response = this._normalizeResponse(e.response);
-
-        if (!e.response?.config && e.config) e.response.config = e.config;
-
-        // prepare timeline of request execution
-        response.timeline = this._timeline(axiosRequest, e.response);
-
-        return Promise.resolve({
-          ...response,
-          error: {
-            message: e.message,
-            code: e.code,
-            e,
-          },
-        });
-      }
+  async send(fcRequest: IRest): Promise<TResponse> {
+    if (_object.isEmpty(fcRequest)) {
+      const message: string = 'invalid request payload';
       return Promise.resolve({
-        statutsCode: 0,
+        statusCode: 0,
         error: {
-          message: e.message,
-          code: e.code,
-          e,
+          message,
+          code: 'INVALID REQUEST',
+          e: new Error(message),
         },
       });
     }
+    //@ts-ignore
+    return this.runPreScript(
+      fcRequest,
+      {} //vars
+    )
+      .then((res) => {
+        const { request, environment } = res as any;
+        if (environment) {
+          // updatedVariables = await normalizeVariables(
+          //   {
+          //     workspace: variables['workspace'],
+          //     collection: variables['collection'],
+          //   },
+          //   preScriptResponse.environment
+          // );
+        }
+        if (request) {
+          // Merge script updated request with fc request
+          fcRequest = { ...fcRequest, ...request };
+        }
+        return { fcRequest };
+      })
+      .then(({ fcRequest }) => {
+        // Parse variables
+        const request = _env.applyVariables(fcRequest, {
+          ...{},
+        }) as IRest;
+        return request;
+      })
+      .then(async (request) => {
+        const axiosRequest: AxiosRequestConfig = await this._prepare(request);
+        try {
+          // execute request
+          const axiosResponse = await axios(axiosRequest);
+          // normalize response according to Firecamp REST request's response
+          const response = this._normalizeResponse(axiosResponse);
+          // prepare timeline of request execution
+          response.timeline = this._timeline(axiosRequest, axiosResponse);
+          return Promise.resolve({ ...response });
+        } catch (e) {
+          console.error(e);
+          if (!_object.isEmpty(e.response)) {
+            const response = this._normalizeResponse(e.response);
+            if (!e.response?.config && e.config) e.response.config = e.config;
+            // prepare timeline of request execution
+            response.timeline = this._timeline(axiosRequest, e.response);
+            return Promise.resolve({
+              ...response,
+              error: {
+                message: e.message,
+                code: e.code,
+                e,
+              },
+            });
+          }
+          return Promise.resolve({
+            statutsCode: 0,
+            error: {
+              message: e.message,
+              code: e.code,
+              e,
+            },
+          });
+        }
+      })
+      .then(async (response) => {
+        // run post-script
+        if (!fcRequest.scripts?.post) return response;
+        // TODO: add inherit support
+        let postScriptRes = await this.runPostScript(
+          fcRequest.scripts?.post,
+          response,
+          {}
+        );
+        // merge post script response with actual response
+        if (postScriptRes?.response) {
+          response = { ...response, ...postScriptRes.response };
+
+          // console.log({ postScriptResponse });
+          // if (postScriptResponse.environment) {
+          //   updatedVariables = await normalizeVariables(
+          //     updatedVariables,
+          //     postScriptResponse.environment
+          //   );
+          // }
+        }
+        return response;
+      });
+    // .then(() => {
+    //   try {
+    //     // run test-script
+    //     // TODO: add inherit support
+    //     testScriptResponse = await ScriptService.runTestScript(
+    //       request,
+    //       response,
+    //       {
+    //         ...(updatedVariables.collection || {}),
+    //       }
+    //     );
+
+    //     if (testScriptResponse) {
+    //       response['testScriptResult'] = testScriptResponse;
+    //     }
+    //   } catch (error) {}
+    // });
   }
 
   cancel() {
