@@ -23,6 +23,7 @@ export const preScript: TPreScript = async (
   request: IRest,
   variables: TEnvVariable
 ) => {
+  if (!request?.scripts?.pre) return {};
   try {
     const script = `(()=>{
             ${request.scripts?.pre};
@@ -43,19 +44,20 @@ export const preScript: TPreScript = async (
 };
 
 export const postScript: TPostScript = async (
-  postScript: string,
+  script: string,
   response: IRestResponse,
   variables: TEnvVariable
 ) => {
+  if (!script) return {};
   try {
-    const script = `(()=>{
-            ${postScript};
+    const _script = `(()=>{
+            ${script};
             return {
               response,
               environment
             }
           })()`;
-    return jsExecutor(script, {
+    return jsExecutor(_script, {
       response: new Response(response),
       environment: new Environment(variables),
     });

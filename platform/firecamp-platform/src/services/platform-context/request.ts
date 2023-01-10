@@ -9,14 +9,15 @@ import {
   EHttpMethod,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
-import { useTabStore } from '../../store/tab';
-import { useWorkspaceStore } from '../../store/workspace';
-import { usePlatformStore } from '../../store/platform';
 import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 import { promptSaveItem } from './prompt.service';
 import { prepareEventNameForRequestPull } from '../platform-emitter/events';
 import AppService from '../app.service';
+import { useTabStore } from '../../store/tab';
+import { useWorkspaceStore } from '../../store/workspace';
+import { usePlatformStore } from '../../store/platform';
+import { useEnvStore } from '../../store/environment';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -207,6 +208,8 @@ const request: IPlatformRequestService = {
   // execute request
   execute: async (request: IRest) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
+    const env = useEnvStore.getState().getActiveTabEnv();
+    const vars = env ? env.variables : {};
     return executor.send(request, agent);
   },
 

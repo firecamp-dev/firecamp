@@ -37,32 +37,6 @@ export default class RestExecutor implements IRestExecutor {
     });
   }
 
-  /** run pre script */
-  private async runPreScript(request: any, vars: TEnvVariable) {
-    // pre script
-    // TODO: Inherit script
-    if (!request?.scripts?.pre) return {};
-
-    // TODO: manage/ update envs from scriptResponse
-    return scriptRunner.preScript(request, vars);
-  }
-
-  /** run post script */
-  private async runPostScript(script: string, response: any, vars: {}) {
-    // TODO: Inherit script
-    const res = await scriptRunner.postScript(script, response, vars);
-    return res;
-  }
-
-  /** run test scripts */
-  // @ts-ignore
-  private async runTestScript(request: any, response: any, vars) {
-    // TODO: Inherit script
-    const res = await scriptRunner.testScript(request, response, vars);
-    // TODO: manage/ update envs from scriptResponse
-    return res;
-  }
-
   private _timeline(
     request: AxiosRequestConfig,
     response: AxiosResponse
@@ -78,7 +52,7 @@ export default class RestExecutor implements IRestExecutor {
 
     const { status, statusText, config, headers } = response;
 
-    tl.push('\n-----------   GENERAL  -----------n');
+    tl.push('\n-----------   GENERAL  -----------\n');
     tl.push(`# Request URL:  ${config.url}`);
     tl.push(`# Request Method: ${config.method}`);
     tl.push(`# Status Code: ${status} ${statusText}`);
@@ -157,7 +131,10 @@ export default class RestExecutor implements IRestExecutor {
     return axiosRequest;
   }
 
-  async send(fcRequest: IRest, variables: TEnvVariable= {}): Promise<TResponse> {
+  async send(
+    fcRequest: IRest,
+    variables: TEnvVariable = {}
+  ): Promise<TResponse> {
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
       return Promise.resolve({
@@ -169,14 +146,13 @@ export default class RestExecutor implements IRestExecutor {
         },
       });
     }
-    //@ts-ignore
-    return this.runPreScript(
-      fcRequest,
-      {} //vars
-    )
+    //@ts-ignorel
+    /** run pre script */
+    // TODO: Inherit script
+    return scriptRunner
+      .preScript(fcRequest, variables)
       .then((res) => {
-        console.log(res, '_____789458');
-        const { request, environment } = res as any;
+        const { request: reqInstance, environment } = res as any;
         if (environment) {
           // updatedVariables = await normalizeVariables(
           //   {
@@ -186,16 +162,19 @@ export default class RestExecutor implements IRestExecutor {
           //   preScriptResponse.environment
           // );
         }
-        if (request) {
+        if (reqInstance) {
           // Merge script updated request with fc request
-          fcRequest = { ...fcRequest, ...request };
+          // note: reqInstance will have other methods too like addHeaders, but desctucting it will add only it's private properties like body, headers, url
+          //TODO:  we can improve this later
+          fcRequest = { ...fcRequest, ...reqInstance };
         }
+        console.log(res, fcRequest, '_____789458');
         return { fcRequest };
       })
       .then(({ fcRequest }) => {
         // Parse variables
         const request = _env.applyVariables(fcRequest, {
-          ...{},
+          ...{ todoId: 10 },
         }) as IRest;
         return request;
       })
@@ -236,11 +215,10 @@ export default class RestExecutor implements IRestExecutor {
         }
       })
       .then(async (response) => {
-        // run post-script
-        if (!fcRequest.scripts?.post) return response;
+        /** run post-script */
         // TODO: add inherit support
-        let postScriptRes = await this.runPostScript(
-          fcRequest.scripts?.post,
+        let postScriptRes = await scriptRunner.postScript(
+          fcRequest.scripts?.post as string,
           response,
           {}
         );
@@ -260,16 +238,10 @@ export default class RestExecutor implements IRestExecutor {
       });
     // .then(() => {
     //   try {
-    //     // run test-script
+    //     /** run test-script */
     //     // TODO: add inherit support
-    //     testScriptResponse = await ScriptService.runTestScript(
-    //       request,
-    //       response,
-    //       {
-    //         ...(updatedVariables.collection || {}),
-    //       }
+    //     testScriptResponse = await scriptRunner.testScript(request, response, vars)
     //     );
-
     //     if (testScriptResponse) {
     //       response['testScriptResult'] = testScriptResponse;
     //     }
