@@ -1,10 +1,6 @@
-//@ts-nocheck
 import Button from './Button';
 import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
-
-// Todo : Discuss Button props
-// Unused props : iconCenter, animation,
-// Not working : tooltip (test case pending) [data-tip - replace with title]
+import { IButton } from './interfaces/Button.interfaces';
 
 export default {
   title: "UI-Kit/Button/main",
@@ -36,8 +32,8 @@ export default {
   }
 };
 
-const Template = (args) => <Button {...args} />;
-const TemplateWithVariant = ({variant}) => <div className='flex flex-col gap-2'>{variant.map((args,index) => <div key={index}><Button {...args} /></div>)}</div>
+const Template = (args: IButton) => <Button {...args} />;
+const TemplateWithVariant = ({variant} : {variant: IButton[]}) => <div className='flex flex-col gap-2'>{variant.map((args,index) => <div key={index}><Button {...args} /></div>)}</div>
 
 export const PrimaryButton = Template.bind({});
 PrimaryButton.args = { text: 'Primary Button', primary: true, md: true };

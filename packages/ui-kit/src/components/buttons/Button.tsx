@@ -14,11 +14,10 @@ const Button: FC<IButton> = ({
 
     primary, secondary, danger,
     xs, sm, md, lg,
-    iconLeft, iconRight, iconCenter,
+    iconLeft, iconRight,
 
     fullWidth = false,
     uppercase = false,
-    animation = true,
     onClick = () => { },
     withCaret = false,
     tooltip = '',
@@ -30,7 +29,7 @@ const Button: FC<IButton> = ({
             tabIndex={1}
             key={id}
             id={id}
-            data-tip={tooltip}
+            title={tooltip}
             className={cx(
                 'text-center whitespace-pre cursor-pointer active:--animate-wiggle relative flex items-center rounded-sm justify-center ',
                 {
