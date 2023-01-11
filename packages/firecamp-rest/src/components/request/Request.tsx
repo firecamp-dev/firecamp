@@ -74,8 +74,8 @@ const Request = ({ tab }) => {
         count: requestPanel.params,
       },
       {
-        id: ERequestPanelTabs.Scripts,
-        name: ERequestPanelTabs.Scripts,
+        id: ERequestPanelTabs.PrePostScripts,
+        name: ERequestPanelTabs.PrePostScripts,
         dotIndicator: requestPanel.hasScripts,
       },
       {
@@ -118,7 +118,7 @@ const Request = ({ tab }) => {
       case ERequestPanelTabs.Params:
         return <ParamsTab />;
         break;
-      case ERequestPanelTabs.Scripts:
+      case ERequestPanelTabs.PrePostScripts:
         return (
           <ScriptsTabs
             id={tab?.id}
@@ -195,7 +195,7 @@ const Request = ({ tab }) => {
           />
         </Container.Header>
         <Container.Body
-          overflow={activeTab === ERequestPanelTabs.Scripts ? 'auto' : 'hidden'}
+          overflow={activeTab === ERequestPanelTabs.PrePostScripts ? 'auto' : 'hidden'}
         >
           {_renderTab()}
         </Container.Body>
