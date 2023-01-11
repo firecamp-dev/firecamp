@@ -19,7 +19,7 @@ type TSnippets = {
 };
 const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
   id = '',
-  scripts: pScripts = {
+  scripts = {
     pre: '',
     post: '',
     test: '',
@@ -29,19 +29,14 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
   onChangeScript = (tab, value) => {},
 }) => {
   if (
-    !pScripts ||
-    (pScripts[EScriptTabs.Pre] === pScripts[EScriptTabs.Post]) === undefined
+    !scripts ||
+    (scripts[EScriptTabs.Pre] === scripts[EScriptTabs.Post]) === undefined
   )
     return <></>;
 
   const [activeTab, setActiveTab] = useState<EScriptTabs>(EScriptTabs.Pre);
   const [isSnippetPopupOpen, toggleSnippetPopup] = useState(false);
   const [editorDOM, setEditorDOM] = useState(null);
-  console.log(pScripts, 'pScripts...');
-  const [scripts, setScripts] = useState({});
-  // useEffect(() => {
-  //   setScripts(pScripts);
-  // }, [pScripts]);
   useEffect(() => {
     console.log('rendering script tab first time');
   }, []);
@@ -68,7 +63,7 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
 
   const _onAddScriptFromSnippet = async (script = '') => {
     const _concateExisting = (
-      type = 'pre',
+      type: EScriptTabs = EScriptTabs.Pre,
       script = '',
       concateScript = false
     ) => {
@@ -123,13 +118,8 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
       _concateExisting(activeTab, script, true);
     }
   };
-  const _onChangeScript = (tab: EScriptTabs, value: string) => {
-    console.log('in changing the script', tab, activeTab, value);
-    setScripts((s) => ({ ...s, [tab]: value }));
-    // onChangeScript(activeTab, value);
-  };
-  console.log(scripts, 'scripts...');
 
+  // console.log(scripts, 'scripts...');
   return (
     <Container>
       <Container.Header className="flex items-center whitespace-pre">
@@ -178,9 +168,10 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
           onLoad={(editor) => {
             setEditorDOM(editor);
           }}
-          onChange={({ target: { value } }) =>
-            _onChangeScript(activeTab, value)
-          }
+          onChange={({ target: { value } }) => {
+            // console.log('------- on change -------');
+            onChangeScript(activeTab, value);
+          }}
           addExtraLib={{
             typeDefinition: ScriptDefs,
             path: 'file:///node_modules/@firecamp/scripts/index.d.ts',

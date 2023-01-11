@@ -875,10 +875,9 @@ importers:
       '@babel/cli': ^7.16.0
       '@babel/core': ^7.14.8
       '@babel/preset-env': ^7.19.4
-      '@firecamp/rest-executor': workspace:*
       '@firecamp/types': ^0.1.5
       '@firecamp/ui-kit': workspace:*
-      '@monaco-editor/react': 4.4.6
+      '@monaco-editor/react': 4.4.5
       '@radix-ui/react-toast': ^1.0.0
       '@storybook/addon-actions': ^6.5.10
       '@storybook/addon-essentials': ^6.5.10
@@ -946,10 +945,9 @@ importers:
       typescript: ^4.3.5
       vscode: ^1.1.37
     dependencies:
-      '@firecamp/rest-executor': link:../firecamp-rest-executor
       '@firecamp/types': 0.1.5
       '@firecamp/ui-kit': 'link:'
-      '@monaco-editor/react': 4.4.6_3fm4er4v6u3lnlq66fhkchucru
+      '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
       '@radix-ui/react-toast': 1.1.2_react-dom@17.0.2
       '@szhsin/react-menu': 2.3.4_react-dom@17.0.2
       '@tanstack/react-table': 8.7.3_react-dom@17.0.2
@@ -3821,8 +3819,8 @@ packages:
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react/4.4.6_3fm4er4v6u3lnlq66fhkchucru:
-    resolution: {integrity: sha512-Gr3uz3LYf33wlFE3eRnta4RxP5FSNxiIV9ENn2D2/rN8KgGAD8ecvcITRtsbbyuOuNkwbuHYxfeaz2Vr+CtyFA==}
+  /@monaco-editor/react/4.4.5_3fm4er4v6u3lnlq66fhkchucru:
+    resolution: {integrity: sha512-IImtzU7sRc66OOaQVCG+5PFHkSWnnhrUWGBuH6zNmH2h0YgmAhcjHZQc/6MY9JWEbUtVF1WPBMJ9u1XuFbRrVA==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
