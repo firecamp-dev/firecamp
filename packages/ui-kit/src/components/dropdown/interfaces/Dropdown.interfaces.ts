@@ -188,7 +188,7 @@ export interface IDropdownV2 {
   /**
    * To display arrow shown at the begin of container
    */
-  showOptionArrow: boolean,
+  showOptionArrow?: boolean,
   /**
    * Element to be shown to preview the dropdown
    */
@@ -208,21 +208,21 @@ export interface IDropdownV2 {
   /**
    * displaying static default styles [1-default, 2-focus border]
    */
-  displayDefaultOptionClassName: number,
+  displayDefaultOptionClassName?: number,
   /**
-   * Wrapper classname for handerer element
+   * Wrapper classname for handler element
    */
-  className: string,
+  className?: string,
   /**
    * To disable the selection option
    */
-  disabled: boolean
+  disabled?: boolean
 }
 export interface IOptionsV2 {
    /**
    * Option text for preview
    */
-  selectedElement: string;
+  selectedElement?: string;
 
   /**
    * Option items nested

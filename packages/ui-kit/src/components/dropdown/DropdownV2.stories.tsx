@@ -1,11 +1,19 @@
-//@ts-nocheck
 import { useState } from 'react';
+import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
+import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
+import { VscFile } from "@react-icons/all-files/vsc/VscFile";
+import { VscGithubInverted } from "@react-icons/all-files/vsc/VscGithubInverted";
+import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
+import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
+import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
+import { VscSignOut } from '@react-icons/all-files/vsc/VscSignOut';
+import { VscTwitter } from "@react-icons/all-files/vsc/VscTwitter";
+
 import DropDownV2 from './DropdownV2';
 import Button from '../buttons/Button';
-
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { IOptionsV2 } from './interfaces/Dropdown.interfaces';
+import StatusBar from '../status-bar/StatusBar';
 
 export default {
   title: "UI-Kit/Dropdown/v2",
@@ -21,20 +29,18 @@ export const DropDownv2Example = () => {
 
   return <DropDownV2
     displayDefaultOptionClassName={1}
-    handleRenderer={() => <Button id={"button"} text={selected} color='primary' size='sm' className='rounded p-2' uppercase={true} withCaret={true} />}
+    handleRenderer={() => <Button id={"button"} text={selected} primary sm className='rounded p-2' uppercase={true} withCaret={true} />}
     option={[
       {
         id: '1',
         name: 'Rest',
-        prefix: '',
-        postfix: '',
         disabled: false,
         className: 'w-fit'
       },
       {
         id: '2',
         name: 'GraphQL',
-        prefix: _ => (<VscAdd className='mr-2' size={10} />),
+        prefix: () => (<VscAdd className='mr-2' size={10} />),
         disabled: false,
         className: '',
         showSeparator: true,
@@ -43,14 +49,11 @@ export const DropDownv2Example = () => {
         list: [{
           id: '2.1',
           name: 'Firecamp 2.1',
-          prefix: '',
-          postfix: '',
           disabled: false,
           className: 'w-fit'
         }, {
           id: '2.2',
           name: 'Firecamp 2.2',
-          prefix: '',
           postfix: () => (<VscChevronRight size={10} className={"ml-auto"} />),
           disabled: false,
           className: 'mr-2',
@@ -58,23 +61,17 @@ export const DropDownv2Example = () => {
           list: [{
             id: '2.1.1',
             name: 'Firecamp 2.1.1',
-            prefix: '',
-            postfix: '',
             disabled: false,
             className: ''
           }, {
             id: '2.1.2',
             name: 'Firecamp 2.1.2',
-            prefix: '',
-            postfix: '',
             disabled: true,
             className: ''
 
           }, {
             id: '2.1.3',
             name: 'Firecamp 2.1.3',
-            prefix: '',
-            postfix: '',
             disabled: false,
             showSeparator: true,
             className: 'w-fit',
@@ -82,8 +79,6 @@ export const DropDownv2Example = () => {
           }, {
             id: '2.1.4',
             name: 'Firecamp 2.1.4',
-            prefix: '',
-            postfix: '',
             disabled: false,
             className: ''
           }
@@ -93,8 +88,7 @@ export const DropDownv2Example = () => {
       {
         id: '3',
         name: 'Socket.io',
-        prefix: '',
-        postfix: _ => (
+        postfix: () => (
           <div className="dropdown-text">
             <span className="ml-4" >
               Coming soon
@@ -107,15 +101,12 @@ export const DropDownv2Example = () => {
       {
         id: '4',
         name: 'Websocket',
-        prefix: '',
         postfix: () => (<VscChevronRight size={10} className={"ml-auto"} />),
         disabled: true,
         className: '',
         list: [{
           id: '5',
           name: 'Firecamp',
-          prefix: '',
-          postfix: '',
           disabled: false,
           className: ''
         }]
@@ -141,6 +132,10 @@ const STYLES = {
 
   reqStatusBarOptionContainer: 'ml-1 w-36 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
   reqStatusBarTabItem: '!p-1 !pl-2 text-sm leading-4 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
+
+  statusBarOptionContainer: 'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
+  statusBarTabHeader: '!pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2',
+  statusBarTabItem: '!py-1 !px-3 text-sm leading-6 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
 }
 
 export const BodyTabExample = () => {
@@ -200,7 +195,7 @@ export const BodyTabExample = () => {
         name: 'Text',
         className: STYLES.bodyTabItem
       }
-    ]}
+    ] as IOptionsV2[]}
     onSelect={(value) => setSelected(value)}
     displayDefaultOptionClassName={2}
     optionContainerClassName={STYLES.bodyTabOptionContainer}
@@ -262,30 +257,12 @@ export const EmitterBodyExample = () => {
         name: 'No body',
         className: STYLES.emitterTabItem
       }
-    ]}
+    ] as IOptionsV2[]}
     onSelect={(value) => setSelected(value)}
     optionContainerClassName={STYLES.emitterBodyOptionContainer}
   />
 };
 
-
-const LogsOptions = [
-  {
-    id: 'system',
-    name: 'System',
-    className: STYLES.logTabItem
-  },
-  {
-    id: 'send',
-    name: 'Send',
-    className: STYLES.logTabItem
-  },
-  {
-    id: 'receive',
-    name: 'Receive',
-    className: STYLES.logTabItem
-  }
-];
 export const LogsExample = () => {
   const [selected, setSelected] = useState('');
 
@@ -302,25 +279,29 @@ export const LogsExample = () => {
       withCaret
       sm
     />}
-    option={LogsOptions}
+    option={[
+      {
+        id: 'system',
+        name: 'System',
+        className: STYLES.logTabItem
+      },
+      {
+        id: 'send',
+        name: 'Send',
+        className: STYLES.logTabItem
+      },
+      {
+        id: 'receive',
+        name: 'Receive',
+        className: STYLES.logTabItem
+      }
+    ]}
     onSelect={(value) => setSelected(value)}
     optionContainerClassName={STYLES.logOptionContainer}
-  // displayDefaultOptionClassName={2}
+
   />
 };
 
-const ReqStatusBarOptions = [
-  {
-    id: 'my_query',
-    name: 'MyQuery',
-    className: STYLES.reqStatusBarTabItem
-  },
-  {
-    id: 'my_query_1',
-    name: 'MyQuery1',
-    className: STYLES.reqStatusBarTabItem
-  },
-];
 export const ReqStatusBarExample = () => {
   const [selected, setSelected] = useState('MyQuery');
 
@@ -334,7 +315,18 @@ export const ReqStatusBarExample = () => {
         xs
         className='leading-6 !rounded-br-none !rounded-tr-none'
       />}
-      option={ReqStatusBarOptions}
+      option={[
+        {
+          id: 'my_query',
+          name: 'MyQuery',
+          className: STYLES.reqStatusBarTabItem
+        },
+        {
+          id: 'my_query_1',
+          name: 'MyQuery1',
+          className: STYLES.reqStatusBarTabItem
+        },
+      ]}
       onSelect={(value) => setSelected(value)}
       optionContainerClassName={STYLES.reqStatusBarOptionContainer}
     />
@@ -348,4 +340,149 @@ export const ReqStatusBarExample = () => {
       className="!rounded-bl-none !rounded-tl-none"
     />
   </div>
+};
+
+export const StatusBarExample = () => {
+  const [selected, setSelected] = useState('My workspace');
+  const [userSelected, setUserSelected] = useState('Guest');
+
+  return <StatusBar className="border-t focus-outer2 mt-[50%]">
+    <StatusBar.PrimaryRegion>
+      <div
+        tabIndex={1}
+        className="bg-primaryColor text-primaryColorText w-fit px-3 flex items-center"
+        id={'status-bar-firecamp-version'}
+        data-tip={`Firecamp`}
+      >
+        <VscRemote size={12} />
+        <span className="pl-1">Firecamp</span>
+      </div>
+      <div className="bg-focus3 flex items-center px-3">
+        <VscAccount size={16} className="mr-1" />
+
+        <DropDownV2
+          handleRenderer={() =>
+            <span className="pl-1 cursor-pointer">
+              {userSelected}
+            </span>
+          }
+          option={[
+            {
+              id: 'heading',
+              name: 'Guest',
+              className: STYLES.statusBarTabHeader,
+              disabled: true,
+              postfix: () => (
+                <>
+                  <br />
+                  <div className={'text-sm font-light leading-3 text-appForegroundInActive'}>
+                    User
+                  </div>
+                </>
+
+              ),
+            },
+            {
+              id: 'sign_in',
+              name: 'Sign in',
+              className: STYLES.statusBarTabItem,
+              postfix: () => (
+                <div className={'ml-2 leading-3 text-primaryColor'}>
+                  <VscSignIn size={20} />
+                </div>
+              ),
+            },
+            {
+              id: 'create_account',
+              name: 'Create an account',
+              className: STYLES.statusBarTabItem,
+              postfix: () => (
+                <div className={'ml-2 leading-3 text-primaryColor'}>
+                  <VscAccount size={20} />
+                </div>
+              ),
+            }
+          ]}
+          onSelect={(value) => setUserSelected(value)}
+          optionContainerClassName={STYLES.statusBarOptionContainer}
+        />
+        <VscChevronRight size={14} className="mt-0.5" />
+
+        <DropDownV2
+          handleRenderer={() =>
+            <span className="pl-1 cursor-pointer">
+              {selected}
+            </span>
+          }
+          option={[
+            {
+              id: 'heading',
+              name: 'FC Team',
+              className: STYLES.statusBarTabHeader,
+              disabled: true,
+              postfix: () => (
+                <>
+                  <br />
+                  <div className={'text-sm font-light leading-3 text-appForegroundInActive'}>
+                    Workspace
+                  </div>
+                </>
+
+              ),
+            },
+            {
+              id: 'workspace_mgmt',
+              name: 'Workspace Management',
+              className: STYLES.statusBarTabItem,
+              postfix: () => (
+                <div className={'ml-2 leading-3'}>
+                  <VscAdd size={14} strokeWidth={1.5} />
+                </div>
+              ),
+            },
+            {
+              id: 'invite_member',
+              name: 'Invite Members',
+              className: STYLES.statusBarTabItem,
+              postfix: () => (
+                <div className={'ml-2 leading-3'}>
+                  <VscAdd size={14} strokeWidth={1.5} />
+                </div>
+              ),
+            },
+            {
+              id: 'switch_workspace',
+              name: 'Switch to Workspace',
+              className: STYLES.statusBarTabItem,
+              postfix: () => (
+                <div className={'ml-2 leading-3 text-primaryColor'}>
+                  <VscRemote size={14} strokeWidth={1.5} />
+                </div>
+              ),
+            },
+            {
+              id: 'switch_org',
+              name: 'Switch to Org',
+              className: STYLES.statusBarTabItem,
+              postfix: () => (
+                <div className={'ml-2 leading-3 text-primaryColor'}>
+                  <VscRemote size={14} strokeWidth={1.5} />
+                </div>
+              ),
+            }
+          ]}
+          onSelect={(value) => setSelected(value)}
+          optionContainerClassName={STYLES.statusBarOptionContainer}
+        />
+      </div>
+    </StatusBar.PrimaryRegion>
+    <StatusBar.SecondaryRegion>
+      <div className="flex items-center">
+        <a className="flex items-center pr-2 " href="#" ><VscTwitter size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
+        <a className="flex items-center pr-2" href="#" ><VscGithubInverted size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
+        <a className="flex items-center pr-2" href="#" ><VscFile size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
+      </div>
+    </StatusBar.SecondaryRegion>
+  </StatusBar>
+
 };
