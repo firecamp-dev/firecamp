@@ -145,7 +145,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const collectionId = state.tabColMap[tabId];
     if (!collectionId) return null;
     const envId = state.getCollectionActiveEnv(collectionId);
-    if(!envId) return null;
+    if (!envId) return null;
     return state.envs.find((e) => e.__ref.id == envId);
   },
 

@@ -132,18 +132,15 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   collectionId = '',
   activeTab = '',
 }) => {
-  const {
-    updateEnvironment,
-    getCollectionEnvs,
-    setCurrentTabActiveEnv,
-  } = useEnvStore(
-    (s) => ({
-      updateEnvironment: s.updateEnvironment,
-      getCollectionEnvs: s.getCollectionEnvs,
-      setCurrentTabActiveEnv: s.setCurrentTabActiveEnv,
-    }),
-    shallow
-  );
+  const { updateEnvironment, getCollectionEnvs, setCurrentTabActiveEnv } =
+    useEnvStore(
+      (s) => ({
+        updateEnvironment: s.updateEnvironment,
+        getCollectionEnvs: s.getCollectionEnvs,
+        setCurrentTabActiveEnv: s.setCurrentTabActiveEnv,
+      }),
+      shallow
+    );
 
   const envs = useMemo(
     () =>
@@ -222,9 +219,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   };
 
   const _setActiveEnv = (envId) => {
-    if (scope === EEnvironmentScope.Collection) {
-      setCurrentTabActiveEnv(envId);
-    }
+    setCurrentTabActiveEnv(envId);
     // get environment changes and emit to request tab
     // pltContext.environment.setVarsToProvidersAndEmitEnvsToTa();
   };
@@ -240,11 +235,10 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
           <TabHeader.Right className="env-popover-nested">
             <EnvironmentDD
               key={`${scope}-env-dd-${activeEnvId}`}
-              activeEnv={activeEnvId}
+              activeEnvId={activeEnvId}
+              activeCollectionId={collectionId}
               environments={envs}
               onChange={_setActiveEnv}
-              scope={scope}
-              collectionId={collectionId}
             />
           </TabHeader.Right>
         </TabHeader>

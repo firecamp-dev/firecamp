@@ -135,6 +135,7 @@ export default class RestExecutor implements IRestExecutor {
     fcRequest: IRest,
     variables: TEnvVariable = {}
   ): Promise<TResponse> {
+    console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
       return Promise.resolve({
@@ -146,7 +147,7 @@ export default class RestExecutor implements IRestExecutor {
         },
       });
     }
-    //@ts-ignorel
+
     /** run pre script */
     // TODO: Inherit script
     return scriptRunner
@@ -165,17 +166,16 @@ export default class RestExecutor implements IRestExecutor {
         if (reqInstance) {
           // Merge script updated request with fc request
           // note: reqInstance will have other methods too like addHeaders, but desctucting it will add only it's private properties like body, headers, url
-          //TODO:  we can improve this later
+          // TODO:  we can improve this later
           fcRequest = { ...fcRequest, ...reqInstance };
         }
         console.log(res, fcRequest, '_____789458');
         return { fcRequest };
       })
       .then(({ fcRequest }) => {
-        // Parse variables
-        const request = _env.applyVariables(fcRequest, {
-          ...{ todoId: 10 },
-        }) as IRest;
+        // apply variables to request
+        console.log(variables, 77777);
+        const request = _env.applyVariables(fcRequest, variables) as IRest;
         return request;
       })
       .then(async (request) => {

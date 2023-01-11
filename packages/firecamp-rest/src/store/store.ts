@@ -101,8 +101,8 @@ const createStore = (initialState: IStoreState) =>
             .execute(state.request)
             .then((response) => {
               console.log({ response: response });
-              const error = response.error;
-              if (error) {
+              if (response?.error) {
+                const error = response.error;
                 console.log(
                   error.message,
                   error.code,

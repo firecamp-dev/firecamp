@@ -21,6 +21,7 @@ const restExecutors: { [key: TId]: RestExecutor } = {};
  */
 export const send = async (
   request: IRest,
+  vars: { [k: string]: any },
   firecampAgent: EFirecampAgent
 ): Promise<IRestResponse> => {
   switch (firecampAgent) {
@@ -32,7 +33,7 @@ export const send = async (
 
     case EFirecampAgent.Web:
       restExecutors[request.__ref.id] = new RestExecutor();
-      return await restExecutors[request.__ref.id].send(request);
+      return await restExecutors[request.__ref.id].send(request, vars);
 
     case EFirecampAgent.Cloud:
       if (!_object.isEmpty(request?.body?.[ERestBodyTypes.FormData])) {

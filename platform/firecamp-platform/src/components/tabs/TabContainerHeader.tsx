@@ -6,7 +6,7 @@ import { VscHome } from '@react-icons/all-files/vsc/VscHome';
 import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
-import EnvironmentSelecctor from '../common/environment/selector/EnvironmentSelector';
+import EnvironmentSelector from '../common/environment/selector/EnvironmentSelector';
 import Menu from './header/Menu';
 
 import { platformEmitter as emitter } from '../../services/platform-emitter';
@@ -118,7 +118,7 @@ const TabHeaderContainer: FC = () => {
           </div>
         </Column>
         <div className="-mb-96 pb-96 flex">
-          <EnvironmentSelecctor />
+          <EnvironmentSelector />
           <GlobalCreateDD />
         </div>
       </Row>
