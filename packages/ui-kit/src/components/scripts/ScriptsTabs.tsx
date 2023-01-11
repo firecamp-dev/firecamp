@@ -44,12 +44,12 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
     () => [
       {
         id: EScriptTabs.Pre,
-        name: 'Pre',
+        name: 'Pre-Request Script',
         dotIndicator: !!scripts.pre,
       },
       {
         id: EScriptTabs.Post,
-        name: 'Post',
+        name: 'Post-Response Script',
         dotIndicator: !!scripts.post,
       },
       /*{
@@ -162,6 +162,7 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
         {/* <div style={{ height: '100%' }}> */}
         <Editor
           autoFocus={true}
+          path={`scripts-tab-${activeTab}-${id}`}
           id={`scripts-tab-${activeTab}-${id}`}
           value={scripts[activeTab] || ''}
           language={EEditorLanguage.TypeScript}
