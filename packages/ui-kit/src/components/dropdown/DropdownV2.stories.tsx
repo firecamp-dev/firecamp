@@ -405,6 +405,7 @@ export const StatusBarExample = () => {
           ]}
           onSelect={(value) => setUserSelected(value)}
           optionContainerClassName={STYLES.statusBarOptionContainer}
+          displayDefaultOptionClassName={2}
         />
         <VscChevronRight size={14} className="mt-0.5" />
 
@@ -473,6 +474,7 @@ export const StatusBarExample = () => {
           ]}
           onSelect={(value) => setSelected(value)}
           optionContainerClassName={STYLES.statusBarOptionContainer}
+          displayDefaultOptionClassName={2}
         />
       </div>
     </StatusBar.PrimaryRegion>
