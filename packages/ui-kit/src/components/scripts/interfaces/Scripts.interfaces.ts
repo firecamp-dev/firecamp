@@ -37,13 +37,12 @@ export interface IScriptsTab {
    * A function to open parent script modal
    */
   openParentScriptsModal?: () => void;
-
 }
-export interface IHelpPopup {
+export interface ISnippetPopup {
   /**
-   * Script help payload data to display in popup
+   * script snippets
    */
-  scriptHelpPayload: any[];
+  snippets: any[];
 
   /**
    * Popup title

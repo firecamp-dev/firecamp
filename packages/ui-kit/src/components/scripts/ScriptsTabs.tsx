@@ -1,12 +1,15 @@
-import { FC, useState, useMemo } from 'react';
+import { FC, useState, useMemo, useEffect } from 'react';
 import { Container, SecondaryTab, Checkbox, Editor } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
-
 //@ts-ignore
 import ScriptDefs from './interfaces/Scripts.d.txt?raw';
-import HelpPopUp from './HelpPopup';
 import { IScriptsTab } from './interfaces/Scripts.interfaces';
+import HelpPopUp from './SnippetPopup';
 
+enum EScriptTabs {
+  Pre = 'pre',
+  Post = 'post',
+}
 type TSnippets = {
   snippets: {
     pre?: any;
@@ -16,32 +19,41 @@ type TSnippets = {
 };
 const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
   id = '',
-  scripts = {
+  scripts: pScripts = {
     pre: '',
     post: '',
     test: '',
   },
-  inheritScript: propInheritScript = {
-    pre: true,
-    post: true,
-    test: true,
-  },
-  inheritScriptMessage = '',
   allowInherit = true,
   snippets,
-  onChangeScript = () => {},
-  onClickInherit = () => {},
-  openParentScriptsModal = () => {},
+  onChangeScript = (tab, value) => {},
 }) => {
+  if (
+    !pScripts ||
+    (pScripts[EScriptTabs.Pre] === pScripts[EScriptTabs.Post]) === undefined
+  )
+    return <></>;
+
+  const [activeTab, setActiveTab] = useState<EScriptTabs>(EScriptTabs.Pre);
+  const [isSnippetPopupOpen, toggleSnippetPopup] = useState(false);
+  const [editorDOM, setEditorDOM] = useState(null);
+  console.log(pScripts, 'pScripts...');
+  const [scripts, setScripts] = useState({});
+  // useEffect(() => {
+  //   setScripts(pScripts);
+  // }, [pScripts]);
+  useEffect(() => {
+    console.log('rendering script tab first time');
+  }, []);
   const tabs = useMemo(
     () => [
       {
-        id: 'pre',
+        id: EScriptTabs.Pre,
         name: 'Pre',
         dotIndicator: !!scripts.pre,
       },
       {
-        id: 'post',
+        id: EScriptTabs.Post,
         name: 'Post',
         dotIndicator: !!scripts.post,
       },
@@ -54,30 +66,14 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
     [scripts]
   );
 
-  const [activeTab, setActiveTab] = useState<'pre' | 'post'>('pre');
-
-  if (!scripts || scripts[activeTab] === undefined) {
-    return <span />;
-  }
-
-  const [isHelpPopupOpen, toggleHelpPopup] = useState(false);
-  const [editorDOM, setEditorDOM] = useState(null);
-  const [inheitedScripts, setInheitedScripts] = useState({});
-  // const [isInheried, toggleInherited] = useState(propInheritScript[activeTab]);
-
-  /*  useEffect(() => {
-     _onClickInherit(propInheritScript[activeTab]);
-   }, [activeTab]); */
-
-  const _onAddScriptFromHelp = async (script = '') => {
+  const _onAddScriptFromSnippet = async (script = '') => {
     const _concateExisting = (
-      scriptType = 'pre',
+      type = 'pre',
       script = '',
       concateScript = false
     ) => {
-      if (!scriptType || !scripts) return;
-
-      const existingScript = scripts[scriptType];
+      if (!type || !scripts) return;
+      const existingScript = scripts[type];
       let updatedScript = script;
 
       if (concateScript === true) {
@@ -87,13 +83,12 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
           : `${script || ''}`;
       }
 
-      onChangeScript(scriptType, updatedScript);
+      onChangeScript(type, updatedScript);
     };
 
     if (editorDOM && editorDOM !== null) {
       if (activeTab === 'test') {
         script = script.replace(/\n/g, '\n\t');
-
         if (!scripts[activeTab] || !scripts[activeTab].length) {
           const defaultScript = `describe("Untitled suite", ()=>{
         
@@ -108,14 +103,14 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
           editorDOM.setPosition({ column: 0, lineNumber: rowNum });
           await editorDOM.insertTextAtCurrentCursor(`\n\n\t${script}
 `);
-        } else if (scripts[activeTab] && scripts[activeTab].length) {
+        } else if (scripts[activeTab]?.length) {
           await editorDOM.insertTextAtCurrentCursor(`\n\t${script}
 `);
         } else {
           await editorDOM.insertTextAtCurrentCursor(`\n${script}
 `);
         }
-      } else if (scripts[activeTab] && scripts[activeTab].length) {
+      } else if (scripts[activeTab]?.length) {
         await editorDOM.insertTextAtCurrentCursor(`\n${script}
 `);
       } else {
@@ -128,20 +123,12 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
       _concateExisting(activeTab, script, true);
     }
   };
-
-  const _onClickInherit = async (isChecked = false) => {
-    try {
-      // toggleInherited(isChecked);
-      // return onClickInherit(activeTab, isChecked);
-
-      const inherited = await onClickInherit(activeTab, isChecked);
-      if (inherited && inherited !== inheitedScripts) {
-        setInheitedScripts(inherited);
-      }
-    } catch (error) {
-      console.error({ error });
-    }
+  const _onChangeScript = (tab: EScriptTabs, value: string) => {
+    console.log('in changing the script', tab, activeTab, value);
+    setScripts((s) => ({ ...s, [tab]: value }));
+    // onChangeScript(activeTab, value);
   };
+  console.log(scripts, 'scripts...');
 
   return (
     <Container>
@@ -150,68 +137,56 @@ const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
           list={tabs}
           activeTab={activeTab}
           isBgTransperant={true}
-          onSelect={(tab) => {
+          onSelect={(tab: EScriptTabs) => {
             if (tab !== activeTab) {
               setActiveTab(tab);
             }
           }}
         />
       </Container.Header>
+
       <Container.Body>
-        {/*  {allowInherit && propInheritScript[activeTab] ? (
-          <Inherit
-            message={inheritScriptMessage}
-            openParentScriptsModal={openParentScriptsModal}
-            parentName={inheitedScripts?.parent_name || ''}
-          />
-        ) : ( */}
         <div className="flex items-center ml-auto justify-end">
           {allowInherit ? (
             <Checkbox
               className={'position-top-right'}
-              isChecked={propInheritScript[activeTab]}
-              onToggleCheck={() =>
-                _onClickInherit(!propInheritScript[activeTab])
-              }
+              // isChecked={propInheritScript[activeTab]}
+              onToggleCheck={() => {}}
               label="Inherit from parent"
               // labelPlacing="left"
             />
           ) : (
-            <span />
+            <></>
           )}
           {snippets[activeTab] ? (
             <HelpPopUp
-              isOpen={isHelpPopupOpen}
-              scriptHelpPayload={snippets[activeTab]}
-              onClose={() => toggleHelpPopup(!isHelpPopupOpen)}
-              onAddScript={_onAddScriptFromHelp}
+              isOpen={isSnippetPopupOpen}
+              snippets={snippets[activeTab]}
+              onClose={() => toggleSnippetPopup(!isSnippetPopupOpen)}
+              onAddScript={_onAddScriptFromSnippet}
             />
           ) : (
             <></>
           )}
         </div>
-        <div style={{ height: '100%' }}>
-          {
-            // TODO: remove above parent div and height
+        {/* <div style={{ height: '100%' }}> */}
+        <Editor
+          autoFocus={true}
+          id={`scripts-tab-${activeTab}-${id}`}
+          value={scripts[activeTab] || ''}
+          language={EEditorLanguage.TypeScript}
+          onLoad={(editor) => {
+            setEditorDOM(editor);
+          }}
+          onChange={({ target: { value } }) =>
+            _onChangeScript(activeTab, value)
           }
-          <Editor
-            autoFocus={true}
-            id={`scripts-tab-${activeTab}-${id}`}
-            value={scripts[activeTab] || ''}
-            language={EEditorLanguage.TypeScript}
-            onLoad={(editor) => {
-              setEditorDOM(editor);
-            }}
-            onChange={({ target: { value } }) =>
-              onChangeScript(activeTab, value)
-            }
-            addExtraLib={{
-              typeDefinition: ScriptDefs,
-              path: 'file:///node_modules/@firecamp/scripts/index.d.ts',
-            }}
-          />
-        </div>
-        {/* )} */}
+          addExtraLib={{
+            typeDefinition: ScriptDefs,
+            path: 'file:///node_modules/@firecamp/scripts/index.d.ts',
+          }}
+        />
+        {/* </div> */}
       </Container.Body>
     </Container>
   );

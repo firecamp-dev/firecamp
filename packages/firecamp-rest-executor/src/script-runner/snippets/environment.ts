@@ -1,7 +1,7 @@
 export default {
   id: 'environment',
-  name: 'environment',
-  snippets: [
+  name: 'Environment Snippets',
+  groups: [
     {
       id: 'common',
       name: 'common',
@@ -9,22 +9,22 @@ export default {
         {
           id: 'has',
           name: 'variable exists or not',
-          snippet: 'environment.has("variableName");',
+          value: 'environment.has("variableName");',
         },
         {
           id: 'has',
           name: 'variable value',
-          snippet: 'environment.get("variableName");',
+          value: 'environment.get("variableName");',
         },
         {
           id: 'replace',
           name: 'resolve value of dynamic variables from the string content',
-          snippet: 'environment.replace("data");',
+          value: 'environment.replace("data");',
         },
         {
           id: 'variables',
           name: 'combined variables of global and collection',
-          snippet: 'environment.variables();',
+          value: 'environment.variables();',
         },
       ],
     },
@@ -35,24 +35,23 @@ export default {
         {
           id: 'name',
           name: 'active environment name',
-          snippet: 'environment.collection.name;',
+          value: 'environment.collection.name;',
         },
         {
           id: 'set',
           name: 'set the new/overwrite variable in the active environment',
-          snippet:
-            'environment.collection.set("variableName", "variableValue");',
+          value: 'environment.collection.set("variableName", "variableValue");',
         },
         {
           id: 'unset',
           name: 'unset variables from the active environment',
-          snippet:
+          value:
             'environment.collection.unset("variableName1", "variableName2",...,"variableName-n");',
         },
         {
           id: 'clear',
           name: 'remove all variables from the active environment',
-          snippet: 'environment.collection.clear();',
+          value: 'environment.collection.clear();',
         },
       ],
     },

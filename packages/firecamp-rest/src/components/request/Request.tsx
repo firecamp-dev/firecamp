@@ -6,7 +6,6 @@ import {
   preScriptSnippets,
   postScriptSnippets,
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
-
 import {
   AvailableOnElectron,
   Button,
@@ -30,29 +29,21 @@ const Request = ({ tab }) => {
   useHotkeys(`cmd+h`, (k, e) => console.log('This is the cmd+h', k, e));
   const {
     scripts,
-    __meta: { inheritScripts } = { inheritScripts: {} },
     requestPanel,
     changeScripts,
-
-    changeMeta,
     changeUiActiveTab,
     toggleOpenCodeSnippet,
   } = useStore(
     (s: IStore) => ({
       scripts: s.request.scripts,
-      __meta: s.request.__meta,
       requestPanel: s.ui.requestPanel,
-
       changeScripts: s.changeScripts,
-      changeMeta: s.changeMeta,
       changeUiActiveTab: s.changeUiActiveTab,
       toggleOpenCodeSnippet: s.toggleOpenCodeSnippet,
     }),
     shallow
   );
-
   const { activeTab } = requestPanel;
-
   const tabs = useMemo(
     () => [
       {
@@ -89,23 +80,6 @@ const Request = ({ tab }) => {
     [requestPanel]
   );
 
-  const _onSelectInheritScript = (
-    type: string,
-    inherit: boolean
-  ): Promise<any> => {
-    changeMeta({
-      inheritScripts: {
-        ...inheritScripts,
-        [type]: inherit,
-      },
-    });
-    // todo: add code for inherit
-
-    return Promise.resolve({});
-  };
-
-  const openParentScriptsModal = (): void => {};
-
   const _renderTab = () => {
     switch (activeTab) {
       case ERequestPanelTabs.Body:
@@ -117,22 +91,20 @@ const Request = ({ tab }) => {
       case ERequestPanelTabs.Params:
         return <ParamsTab />;
       case ERequestPanelTabs.PrePostScripts:
+        console.log(scripts, 'scripts in request');
         return (
           <ScriptsTabs
             id={tab?.id}
             scripts={scripts}
-            onChangeScript={changeScripts}
             allowInherit={false}
-            onClickInherit={_onSelectInheritScript}
-            openParentScriptsModal={openParentScriptsModal}
             inheritScriptMessage={
               tab?.__meta?.isSaved ? '' : 'Please save request first'
             }
-            inheritScript={inheritScripts || {}}
             snippets={{
               pre: preScriptSnippets,
               post: postScriptSnippets,
             }}
+            onChangeScript={changeScripts}
           />
         );
       case ERequestPanelTabs.Config:
@@ -179,15 +151,15 @@ const Request = ({ tab }) => {
           } */
             postComp={() => (
               <Button
+                icon={<VscCode className="mr-2" size={12} />}
+                // TODO: Add class for tabs-with-bottom-border-right-section
+                onClick={_toggleCodeSnippet}
                 secondary
                 text="Code"
                 transparent={true}
                 ghost={true}
                 iconLeft
                 sm
-                icon={<VscCode className="mr-2" size={12} />}
-                // TODO: Add class for tabs-with-bottom-border-right-section
-                onClick={_toggleCodeSnippet}
               />
             )}
           />
