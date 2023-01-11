@@ -1,12 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
-import {
-  Editor,
-  Button,
-  Popover,
-  EPopoverPosition,
-} from '@firecamp/ui-kit';
+import { Button, Popover, EPopoverPosition } from '@firecamp/ui-kit';
 
 import { IHelpPopup } from './interfaces/Scripts.interfaces';
 
@@ -177,73 +172,6 @@ const HelpPopUp: FC<IHelpPopup> = ({
                                               >
                                                 {`- ${help.name}` || ''}
                                               </div>
-                                           {/*    <div className="cursor-pointer action">
-                                                <Popover
-                                                  className="p-3 w-80"
-                                                  positions={[
-                                                    EPopoverPosition.Left,
-                                                  ]}
-                                                  content={
-                                                    <div>
-                                                      <div className="text-base font-bold mb-1 ">
-                                                        {help.name || ''}
-                                                      </div>
-                                                      <div>
-                                                        {help.snippet &&
-                                                        help.snippet.length ? (
-                                                          <div className="mt-3 mb-1 pt-4 pb-2 border !border-appBorder rounded-sm relative">
-                                                            <label className="absolute -top-3 left-2 bg-popoverBackground p-1">
-                                                              Code Snippet
-                                                            </label>
-
-                                                            <Button
-                                                              text={'Add'}
-                                                              primary
-                                                              size={
-                                                                .ExSmall
-                                                              }
-                                                              onClick={() => {
-                                                                onAddScript(
-                                                                  help.snippet ||
-                                                                    ''
-                                                                );
-                                                              }}
-                                                              className="absolute -top-3 right-2"
-                                                            />
-                                                            <div
-                                                              style={{
-                                                                height: '50px',
-                                                              }}
-                                                            >
-                                                              <Editor
-                                                                value={
-                                                                  help.snippet
-                                                                }
-                                                                language={
-                                                                  EEditorLanguage.JavaScript
-                                                                }
-                                                                onLoad={(
-                                                                  editor
-                                                                ) => {}}
-                                                                disabled={true}
-                                                                monacoOptions={{
-                                                                  maxLines: 20,
-                                                                }}
-                                                              />
-                                                            </div>
-                                                          </div>
-                                                        ) : (
-                                                          ''
-                                                        )}
-                                                      </div>
-                                                    </div>
-                                                  }
-                                                >
-                                                  <Popover.Handler>
-                                                    <i className="icon-info-24px-1"></i>
-                                                  </Popover.Handler>
-                                                </Popover>
-                                              </div> */}
                                             </div>
                                           );
                                         }

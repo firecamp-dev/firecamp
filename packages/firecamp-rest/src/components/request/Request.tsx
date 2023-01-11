@@ -2,6 +2,10 @@ import { useMemo } from 'react';
 import { VscCode } from '@react-icons/all-files/vsc/VscCode';
 import shallow from 'zustand/shallow';
 import { useHotkeys } from 'react-hotkeys-hook';
+import {
+  preScriptSnippets,
+  postScriptSnippets,
+} from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 
 import {
   AvailableOnElectron,
@@ -25,7 +29,6 @@ import { ERequestPanelTabs } from '../../types';
 const Request = ({ tab }) => {
   useHotkeys(`cmd+h`, (k, e) => console.log('This is the cmd+h', k, e));
   const {
-    // headers,
     scripts,
     __meta: { inheritScripts } = { inheritScripts: {} },
     requestPanel,
@@ -36,7 +39,6 @@ const Request = ({ tab }) => {
     toggleOpenCodeSnippet,
   } = useStore(
     (s: IStore) => ({
-      // headers: s.headers,
       scripts: s.request.scripts,
       __meta: s.request.__meta,
       requestPanel: s.ui.requestPanel,
@@ -108,32 +110,31 @@ const Request = ({ tab }) => {
     switch (activeTab) {
       case ERequestPanelTabs.Body:
         return <BodyTab />;
-        break;
       case ERequestPanelTabs.Auths:
         return <AuthTab />;
-        break;
       case ERequestPanelTabs.Headers:
         return <HeadersTab />;
-        break;
       case ERequestPanelTabs.Params:
         return <ParamsTab />;
-        break;
       case ERequestPanelTabs.PrePostScripts:
         return (
           <ScriptsTabs
             id={tab?.id}
             scripts={scripts}
             onChangeScript={changeScripts}
-            allowInherit={true}
+            allowInherit={false}
             onClickInherit={_onSelectInheritScript}
             openParentScriptsModal={openParentScriptsModal}
             inheritScriptMessage={
               tab?.__meta?.isSaved ? '' : 'Please save request first'
             }
             inheritScript={inheritScripts || {}}
+            snippets={{
+              pre: preScriptSnippets,
+              post: postScriptSnippets,
+            }}
           />
         );
-        break;
       case ERequestPanelTabs.Config:
         if (
           _misc.firecampAgent() === EFirecampAgent.Desktop
@@ -143,11 +144,8 @@ const Request = ({ tab }) => {
         } else {
           return <AvailableOnElectron name="Request configuration" />;
         }
-        break;
       default:
-        // return <BodyTab />;
-
-        break;
+        return <></>;
     }
   };
 
@@ -195,7 +193,9 @@ const Request = ({ tab }) => {
           />
         </Container.Header>
         <Container.Body
-          overflow={activeTab === ERequestPanelTabs.PrePostScripts ? 'auto' : 'hidden'}
+          overflow={
+            activeTab === ERequestPanelTabs.PrePostScripts ? 'auto' : 'hidden'
+          }
         >
           {_renderTab()}
         </Container.Body>

@@ -1,23 +1,20 @@
 import { FC, useState, useMemo } from 'react';
 import { Container, SecondaryTab, Checkbox, Editor } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
-import {
-  preScriptSnippets,
-  postScriptSnippets,
-  testScriptSnippets,
-} from '@firecamp/rest-executor/dist/esm';
+
 //@ts-ignore
 import ScriptDefs from './interfaces/Scripts.d.txt?raw';
 import HelpPopUp from './HelpPopup';
 import { IScriptsTab } from './interfaces/Scripts.interfaces';
 
-const snippets: { [key: string]: any } = {
-  pre: preScriptSnippets,
-  post: postScriptSnippets,
-  test: testScriptSnippets,
+type TSnippets = {
+  snippets: {
+    pre?: any;
+    post?: any;
+    test?: any;
+  };
 };
-
-const ScriptsTabs: FC<IScriptsTab> = ({
+const ScriptsTabs: FC<IScriptsTab & TSnippets> = ({
   id = '',
   scripts = {
     pre: '',
@@ -30,51 +27,50 @@ const ScriptsTabs: FC<IScriptsTab> = ({
     test: true,
   },
   inheritScriptMessage = '',
-
   allowInherit = true,
-
+  snippets,
   onChangeScript = () => {},
   onClickInherit = () => {},
   openParentScriptsModal = () => {},
 }) => {
-  let tabs = useMemo(
+  const tabs = useMemo(
     () => [
       {
         id: 'pre',
         name: 'Pre',
-        dotIndicator: !!scripts['pre'],
+        dotIndicator: !!scripts.pre,
       },
       {
         id: 'post',
         name: 'Post',
-        dotIndicator: !!scripts['post'],
+        dotIndicator: !!scripts.post,
       },
       /*{
         id: 'test',
         name: 'Test cases',
-        dotIndicator: !!scripts['test'],
+        dotIndicator: !!scripts.test,
       }, */
     ],
     [scripts]
   );
 
-  let [activeTab, setActiveTab] = useState<string>('pre');
+  const [activeTab, setActiveTab] = useState<'pre' | 'post'>('pre');
 
   if (!scripts || scripts[activeTab] === undefined) {
     return <span />;
   }
 
-  let [isHelpPopupOpen, toggleHelpPopup] = useState(false);
-  let [editorDOM, setEditorDOM] = useState(null);
-  let [inheitedScripts, setInheitedScripts] = useState({});
-  // let [isInheried, toggleInherited] = useState(propInheritScript[activeTab]);
+  const [isHelpPopupOpen, toggleHelpPopup] = useState(false);
+  const [editorDOM, setEditorDOM] = useState(null);
+  const [inheitedScripts, setInheitedScripts] = useState({});
+  // const [isInheried, toggleInherited] = useState(propInheritScript[activeTab]);
 
   /*  useEffect(() => {
      _onClickInherit(propInheritScript[activeTab]);
    }, [activeTab]); */
 
-  let _onAddScriptFromHelp = async (script = '') => {
-    let _concateExisting = (
+  const _onAddScriptFromHelp = async (script = '') => {
+    const _concateExisting = (
       scriptType = 'pre',
       script = '',
       concateScript = false
@@ -82,7 +78,6 @@ const ScriptsTabs: FC<IScriptsTab> = ({
       if (!scriptType || !scripts) return;
 
       const existingScript = scripts[scriptType];
-
       let updatedScript = script;
 
       if (concateScript === true) {
@@ -100,16 +95,16 @@ const ScriptsTabs: FC<IScriptsTab> = ({
         script = script.replace(/\n/g, '\n\t');
 
         if (!scripts[activeTab] || !scripts[activeTab].length) {
-          let defaultScript = `describe("Untitled suite", ()=>{
+          const defaultScript = `describe("Untitled suite", ()=>{
         
 });`;
           await editorDOM.insertTextAtCurrentCursor(defaultScript);
           editorDOM.revealLineInCenter(2);
         }
 
-        let init_cursor = await editorDOM.getPosition();
-        if (init_cursor.lineNumber !== 1) {
-          let rowNum = init_cursor.lineNumber - 1;
+        const initCursor = await editorDOM.getPosition();
+        if (initCursor.lineNumber !== 1) {
+          const rowNum = initCursor.lineNumber - 1;
           editorDOM.setPosition({ column: 0, lineNumber: rowNum });
           await editorDOM.insertTextAtCurrentCursor(`\n\n\t${script}
 `);
@@ -127,20 +122,19 @@ const ScriptsTabs: FC<IScriptsTab> = ({
         await editorDOM.insertTextAtCurrentCursor(script);
       }
 
-      let scriptValue = await editorDOM.getValue();
+      const scriptValue = await editorDOM.getValue();
       _concateExisting(activeTab, scriptValue, false);
     } else {
       _concateExisting(activeTab, script, true);
     }
   };
 
-  let _onClickInherit = async (isChecked = false) => {
+  const _onClickInherit = async (isChecked = false) => {
     try {
       // toggleInherited(isChecked);
       // return onClickInherit(activeTab, isChecked);
 
-      let inherited = await onClickInherit(activeTab, isChecked);
-
+      const inherited = await onClickInherit(activeTab, isChecked);
       if (inherited && inherited !== inheitedScripts) {
         setInheitedScripts(inherited);
       }
@@ -193,7 +187,7 @@ const ScriptsTabs: FC<IScriptsTab> = ({
               onAddScript={_onAddScriptFromHelp}
             />
           ) : (
-            ''
+            <></>
           )}
         </div>
         <div style={{ height: '100%' }}>
