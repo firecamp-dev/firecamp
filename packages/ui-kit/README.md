@@ -13,37 +13,37 @@ import uiKit from 'ui-kit';
 # Run
 Run Storybook:
 ```
-yarn storybook
+pnpm storybook
 ```
-Run Jest:
+Run Jest test cases :
 ```
-yarn test
+pnpm test
 ```
-Storybook with Jest:
+Run the Storybook after running all available test cases:
 ```
-yarn start:storybook
+pnpm start:storybook
 ```
 
 By default, a server at [localhost:6006](http://localhost:6006/) is started.
 
 <!-- [-] (no longer in use) -->
-## Storybook component story exists: (tick for the test cases)
-1.  ActivityBar (ActivityBar [x], StatusBar [x])
+## Storybook Component: with story & test cases
+1.  ActivityBar (ActivityBar [+], StatusBar [+])
 2.  MenuBar [-] 
-3.  Button (Button [x], CopyButton [x], DocButton [x])
-4.  Checkbox [x]
-5.  CheckboxGroup [x]
-6.  Dropdown [x]
+3.  Button (Button [+], CopyButton [+], DocButton [+])
+4.  Checkbox [+]
+5.  CheckboxGroup [+]
+6.  Dropdown [+]
 7.  Editor [ ]
 8.  FormGroup [-]
 9.  Grid [-]
-10. HelpAndSupport [x]
-11. Input [x]
-12. Modal [x]
+10. HelpAndSupport [+]
+11. Input [+]
+12. Modal [+]
 13. Popover [-]
-14. ProgressBar [x]
+14. ProgressBar [+]
 15. SpitView [-]
-16. Table (BasicTable [x], BulkEditTable [x], MultipartTable [x], ReactTable [x])
-17. Tabs [x]
+16. Table (BasicTable [+], BulkEditTable [+], MultipartTable [+], ReactTable [+])
+17. Tabs [+]
 18. Toast [-]
 19. FirecampTreeView [-]
