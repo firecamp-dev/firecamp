@@ -38,14 +38,6 @@ const HeadersTab = () => {
             },
           }}
         />
-        {/* <SingleLineEditor type="text" path="a" value="123" />
-        <SingleLineEditor type="text" path="b" value="qwqe" />
-        <SingleLineEditor type="text" path="c" value="66666666" />
-        <SingleLineEditor type="text" path="d" value="fgfgfg" />
-        <SingleLineEditor type="text" path="e" value="tytytyty" />
-        <SingleLineEditor type="text" path="f" value="bbbb" /> */}
-
-        {/* <BasicTable resizable={true} /> */}
 
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration

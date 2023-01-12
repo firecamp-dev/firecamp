@@ -44,10 +44,10 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
       state.equalityChecker({ body: reqBody });
     },
     changeBodyType: (type: ERestBodyTypes) => {
+      const state = get();
       set((s) => {
         const runtimeBodies = s.runtime.bodies;
         const reqBody = { value: runtimeBodies[type], type };
-        s.updateHeadersOnBodyTypeChange(type);
         return {
           request: {
             ...s.request,
@@ -55,6 +55,8 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
           },
         };
       });
+      // @note: only update headers after body type changed
+      state.updateHeadersOnBodyTypeChange(type);
     },
     updateHeadersOnBodyTypeChange: (type: ERestBodyTypes) => {
       const state = get();
@@ -75,11 +77,9 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
           break;
       }
 
-      // TODO: check without method for array object
-      const headersWithoutContentType: IHeader[] = _array.without(
-        headers,
+      const headersWithoutContentType: IHeader[] = updatedHeaders.filter(
         (h: IHeader) => h.key?.trim().toLowerCase() !== 'content-type'
-      ) as unknown as IHeader[];
+      );
 
       if (type?.length) {
         const bodyHeader: IHeader = {

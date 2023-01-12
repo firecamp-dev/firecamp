@@ -39,7 +39,7 @@ const BodyTab: FC<any> = () => {
       body: s.request.body,
       changeBodyValue: s.changeBodyValue,
       changeBodyType: s.changeBodyType,
-      changeHeaders: s.changeHeaders
+      changeHeaders: s.changeHeaders,
     }),
     shallow
   );
@@ -61,9 +61,7 @@ const BodyTab: FC<any> = () => {
   const _prepareRestBodyTypesOptions = () => {
     const isEmptyAPIBody = isRestBodyEmpty(body || {});
     // console.log({ isEmptyAPIBody });
-
     const updatedBodyTypes = Object.values(bodyTypesDDValues);
-
     if (isEmptyAPIBody) {
       updatedBodyTypes.map((type, i) => {
         return Object.assign(type, {
@@ -76,61 +74,50 @@ const BodyTab: FC<any> = () => {
         });
       });
     }
-
     return updatedBodyTypes;
   };
 
   const _renderBodyTab = () => {
-    if (body?.type) {
-      switch (body.type) {
-        case '':
-          return <NoBodyTab selectBodyType={_selectBodyType} />;
-        case ERestBodyTypes.FormData:
-          return (
-            <MultipartTable
-              onChange={changeBodyValue}
-              rows={body.value || []}
-            />
-          );
-          break;
-        case ERestBodyTypes.UrlEncoded:
-          return (
-            <BasicTable
-              title=""
-              onChange={changeBodyValue}
-              rows={body.value || []}
-            />
-          );
-          break;
-        case ERestBodyTypes.Json:
-        case ERestBodyTypes.Xml:
-        case 'application/text':
-        case ERestBodyTypes.Text:
-          return (
-            <Editor
-              autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
-              value={body.value as string}
-              language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
-              onChange={({ target: { value } }) => changeBodyValue(value)}
-              controlsConfig={{ show: true }}
-            />
-          );
-          break;
-        case ERestBodyTypes.Binary:
-          return <BinaryBody body={body || {}} onChange={changeBodyValue} />;
-          break;
-        case ERestBodyTypes.GraphQL:
-          return <GraphQLBody body={body || {}} onChange={changeBodyValue} />;
-          break;
-        case '':
-          return <NoBodyTab selectBodyType={_selectBodyType} />;
-          break;
-        default:
-          return '';
-          break;
-      }
+    if (!body?.type) return <></>;
+    switch (body.type) {
+      case '':
+        return <NoBodyTab selectBodyType={_selectBodyType} />;
+      case ERestBodyTypes.FormData:
+        return (
+          <MultipartTable onChange={changeBodyValue} rows={body.value || []} />
+        );
+        break;
+      case ERestBodyTypes.UrlEncoded:
+        return (
+          <BasicTable
+            title=""
+            onChange={changeBodyValue}
+            rows={body.value || []}
+          />
+        );
+        break;
+      case ERestBodyTypes.Json:
+      case ERestBodyTypes.Xml:
+      case 'application/text':
+      case ERestBodyTypes.Text:
+        return (
+          <Editor
+            autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
+            value={body.value as string}
+            language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
+            onChange={({ target: { value } }) => changeBodyValue(value)}
+            controlsConfig={{ show: true }}
+          />
+        );
+      case ERestBodyTypes.Binary:
+        return <BinaryBody body={body || {}} onChange={changeBodyValue} />;
+      case ERestBodyTypes.GraphQL:
+        return <GraphQLBody body={body || {}} onChange={changeBodyValue} />;
+      case '':
+        return <NoBodyTab selectBodyType={_selectBodyType} />;
+      default:
+        return <></>;
     }
-    return <></>;
   };
 
   return (
