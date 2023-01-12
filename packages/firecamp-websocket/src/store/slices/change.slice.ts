@@ -29,7 +29,10 @@ interface IRequestChangeStateSlice {
   preparePayloadForSaveRequest: () => IWebSocket;
 }
 
-const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (set, get) => ({
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
+  set,
+  get
+) => ({
   requestChangeState: RequestChangeState,
   equalityChecker: (request: Partial<IWebSocket>) => {
     const state = get();
@@ -64,7 +67,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (se
     }
     console.log(_rcs);
     const hasChange = !_object.isEmpty(_cleanDeep(_cloneDeep(_rcs)));
-    state.context.request.onChangeRequestTab(state.runtime.tabId, {
+    state.context.tab.changeMeta(state.runtime.tabId, {
       hasChange,
     });
   },

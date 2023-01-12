@@ -29,13 +29,6 @@ interface IPlatformRequestService {
   // save and update request
   save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
 
-  // on change request, update tab __meta
-  onChangeRequestTab: (
-    tabId: TId,
-    tabMeta: IRequestTab['__meta'],
-    request?: IRest | IGraphQL | ISocketIO | IWebSocket
-  ) => void;
-
   // fetch request from server by request id
   onFetch: (reqId: TId) => Promise<any>;
 
@@ -191,16 +184,6 @@ const request: IPlatformRequestService = {
   // fetch request from server by request id
   onFetch: async (reqId: TId) => {
     return await Rest.request.findOne(reqId);
-  },
-
-  // on change request
-  onChangeRequestTab: (
-    tabId: TId,
-    tabMeta: IRequestTab['__meta'],
-    request?: IRest | IGraphQL // | ISocket | IWebsocket,
-  ) => {
-    // console.log({ tabMeta });
-    useTabStore.getState().changeMeta(tabId, tabMeta);
   },
 
   // execute request
