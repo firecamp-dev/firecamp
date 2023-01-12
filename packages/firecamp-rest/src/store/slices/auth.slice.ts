@@ -25,16 +25,12 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
   changeAuthType: (type: EAuthTypes) => {
     const state = get();
     let { request, runtime } = state;
-    let auth: Partial<IAuth> | undefined = { type };
+    let auth: IAuth = { value: runtime.auths[type], type };
     if (!type) {
       // if type is NoBody ('') then  remove the auth from request
       delete request.auth;
-      auth = undefined;
+      auth = { value: '', type: 'none' };
     } else {
-      auth = {
-        type,
-        value: runtime.auths[type],
-      };
       request = { ...request, auth };
     }
     set({ request });

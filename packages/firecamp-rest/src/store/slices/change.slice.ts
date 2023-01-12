@@ -1,8 +1,8 @@
-import { IRest } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
+import { IRest } from '@firecamp/types';
 import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
@@ -11,13 +11,6 @@ import {
   EReqChangeUrlKeys,
 } from '../../types';
 import { TStoreSlice } from '../store.type';
-
-const RequestChangeState: IRequestChangeState = {
-  url: [],
-  scripts: [],
-  __meta: [],
-  __root: [],
-};
 
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
@@ -37,7 +30,12 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
   set,
   get
 ) => ({
-  requestChangeState: RequestChangeState,
+  requestChangeState: {
+    url: [],
+    scripts: [],
+    __meta: [],
+    __root: [],
+  },
   equalityChecker: (request: Partial<IRest>) => {
     const state = get();
     const {
@@ -73,9 +71,9 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
           break;
       }
     }
-    console.log(_rcs);
+    console.log('_rcs', _rcs);
     const hasChange = !_object.isEmpty(_cleanDeep(_cloneDeep(_rcs)));
-    console.log(state.context.request, state.runtime.tabId, hasChange);
+    // console.log(state.context.request, state.runtime.tabId, hasChange);
     state.context.request.onChangeRequestTab(state.runtime.tabId, {
       hasChange,
     });

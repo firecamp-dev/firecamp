@@ -198,11 +198,15 @@ export const normalizeRequest = (
   // normalize body
   if (!_object.isEmpty(body)) {
     _nr.body = { value: body.value, type: body.type };
+  } else {
+    _nr.body = { value: '', type: 'none' };
   }
 
   // normalize auth
   if (!_object.isEmpty(auth)) {
     _nr.auth = { value: auth.value, type: auth.type };
+  } else {
+    _nr.auth = { value: '', type: 'none' };
   }
   // _nr.auth = !_object.isEmpty(auth)
   //   ? (_auth.normalizeToUi(auth) as IUiAuth)
@@ -248,6 +252,7 @@ export const initialiseStoreFromRequest = (
   // console.log({ request });
 
   return {
+    originalRequest: _cloneDeep(request) as IRest,
     request,
     ui: {
       isFetchingRequest: false,

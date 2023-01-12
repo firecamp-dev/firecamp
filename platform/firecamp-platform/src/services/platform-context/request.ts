@@ -199,9 +199,7 @@ const request: IPlatformRequestService = {
     tabMeta: IRequestTab['__meta'],
     request?: IRest | IGraphQL // | ISocket | IWebsocket,
   ) => {
-    // Here, request and pushActions are used for future purpose
     // console.log({ tabMeta });
-
     useTabStore.getState().changeMeta(tabId, tabMeta);
   },
 

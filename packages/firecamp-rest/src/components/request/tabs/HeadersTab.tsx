@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
+import { EEditorLanguage } from '@firecamp/types';
 import { BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
 import { IStore, useStore } from '../../../store';
-import { EEditorLanguage } from '@firecamp/types';
 
 const HeadersTab = () => {
   const { headers, authHeaders, changeHeaders } = useStore(

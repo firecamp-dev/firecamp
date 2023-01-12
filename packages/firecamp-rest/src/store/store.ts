@@ -31,16 +31,17 @@ const createStore = (initialState: IStoreState) =>
   create<IStore>((set, get): IStore => {
     const uiRequestPanel = prepareUIRequestPanelState(initialState.request);
     return {
+      ...initialState,
       setContext: (ctx: any) => set({ context: ctx }),
       initialise: (request: Partial<IRest>, tabId: TId) => {
         const state = get();
         const initState = initialiseStoreFromRequest(request, tabId);
         // console.log(initState, 'initState');
         set((s) => ({
-          ...s,
-          ...initState,
-          // @ts-ignore
-          originalRequest: _cloneDeep(initState.request) as IRest,
+            ...s,
+            ...initState,
+            // @ts-ignore
+            originalRequest: _cloneDeep(initState.request) as IRest,
         }));
         // update auth type, generate auth headers
         state.changeAuthType(request.auth?.type);
@@ -80,7 +81,7 @@ const createStore = (initialState: IStoreState) =>
           // Check if request is running or not. stop running request if already true
           if (state.runtime.isRequestRunning === true) {
             await state.context.request.cancelExecution(
-              request.__ref.id,
+              state.request.__ref.id,
               fcAgent
             );
             // set request running state as false

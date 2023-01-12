@@ -122,11 +122,8 @@ const Rest = ({ tab, platformContext }) => {
   const onPasteCurl = async (curlString: string) => {
     // return if no curl or request is already saved
     if (!curlString) return;
-
     let { url } = restStoreApi.getState()?.request;
-
     let curl = curlString;
-
     /**
      * If not same existing url and curlString, do set substring of url
      * i.e: url= 'https://' and curlString= 'https://', do not set substring of curlString
@@ -138,17 +135,14 @@ const Rest = ({ tab, platformContext }) => {
       // Set Trimmed/ substring of curlString with the length of current state URL
       curl = curlString.substring((url.raw || '').length) || '';
     }
-
     if (
       url.raw === curlString.substring(0, (url.raw || '').length) &&
       curl !== curlString
     ) {
       // TODO: check usage
-      // _update_request_config_fns._onChangeURLbar('raw_url', curl);
     } else {
       curl = curlString;
     }
-
     if (curl.substring(0, 4) !== 'curl') {
       return;
     }
@@ -206,6 +200,7 @@ const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
     const { request = {}, id } = tab;
     const initState = initialiseStoreFromRequest(request, id);
+    console.log(initialiseStoreFromRequest, initState);
     return (
       <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
