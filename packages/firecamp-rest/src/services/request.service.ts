@@ -39,7 +39,7 @@ export const prepareUIRequestPanelState = (
   for (let key in request) {
     switch (key) {
       case 'auth':
-        if (request.auth?.type) {
+        if (request.auth?.type != 'none') {
           updatedUiStore = {
             ...updatedUiStore,
             hasAuth: true,
@@ -47,7 +47,7 @@ export const prepareUIRequestPanelState = (
         }
         break;
       case 'body':
-        if (request.body?.type) {
+        if (request.body.type != 'none') {
           updatedUiStore = {
             ...updatedUiStore,
             hasBody: true,

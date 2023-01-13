@@ -46,12 +46,18 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
     changeBodyType: (type: ERestBodyTypes) => {
       const state = get();
       set((s) => {
-        const runtimeBodies = s.runtime.bodies;
-        const reqBody = { value: runtimeBodies[type], type };
+        const body = { value: s.runtime.bodies[type], type };
         return {
           request: {
             ...s.request,
-            body: reqBody,
+            body,
+          },
+          ui: {
+            ...s.ui,
+            requestPanel: {
+              ...s.ui.requestPanel,
+              hasBody: type != 'none',
+            },
           },
         };
       });

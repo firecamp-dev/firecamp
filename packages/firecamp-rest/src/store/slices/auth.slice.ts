@@ -24,23 +24,29 @@ type TAuth = IAuthBasic | IAuthBearer | IAuthDigest | IOAuth1 | IOAuth2UiState;
 const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
   changeAuthType: (type: EAuthTypes) => {
     const state = get();
-    let { request, runtime } = state;
-    let auth: IAuth = { value: runtime.auths[type], type };
-    if (!type) {
-      // if type is NoBody ('') then  remove the auth from request
-      delete request.auth;
-      auth = { value: '', type: 'none' };
-    } else {
-      request = { ...request, auth };
-    }
-    set({ request });
+    set((s) => {
+      const auth: IAuth = { value: s.runtime.auths[type], type };
+      return {
+        request: {
+          ...s.request,
+          auth,
+        },
+        ui: {
+          ...s.ui,
+          requestPanel: {
+            ...s.ui.requestPanel,
+            hasAuth: type != 'none',
+          },
+        },
+      };
+    });
     state.resetAuthHeaders(type);
     state.equalityChecker({ auth });
   },
   changeAuth: (type: EAuthTypes, changes: { key: string; value: any }) => {
     const state = get();
     const { key, value } = changes;
-    let auth: Partial<IAuth> = {
+    const auth: Partial<IAuth> = {
       type,
       // value: {},
     };
