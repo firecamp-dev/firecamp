@@ -59,7 +59,7 @@ interface IUrl {
   onEnter?: () => void;
 
   /** on paste */
-  onPaste?: (edt: any) => void;
+  onPaste?: (paste: string, edt: any) => void;
 
   /** auto focus url input*/
   autoFocus?: boolean;

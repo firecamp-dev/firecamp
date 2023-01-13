@@ -6,13 +6,7 @@ import _url from '@firecamp/url';
 import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
-
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  onPasteCurl = (curl: string) => {},
-}) => {
-
+const UrlBarContainer = ({ tab, collectionId = '' }) => {
   const {
     url,
     method,
@@ -24,6 +18,7 @@ const UrlBarContainer = ({
     changeUrl,
     changeMethod,
     execute,
+    onPasteCurl,
     save,
   } = useStore(
     (s: IStore) => ({
@@ -37,6 +32,7 @@ const UrlBarContainer = ({
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
+      onPasteCurl: s.onPasteCurl,
       save: s.save,
     }),
     shallow
@@ -54,12 +50,9 @@ const UrlBarContainer = ({
     changeUrl(urlObject);
   };
 
-  const _onPaste = (edt: any) => {
-    if (!edt) return;
-    const curl = edt.getValue();
-    if (curl) {
-      onPasteCurl(curl);
-    }
+  const _onPaste = (paste, edt: any) => {
+    if (!paste) return;
+    onPasteCurl(paste);
   };
 
   const _onSave = async () => {
@@ -71,14 +64,11 @@ const UrlBarContainer = ({
   };
 
   const _onChangeVariables = (variables: { workspace: {}; collection: {} }) => {
-    // console.log({ variables });
-
     const collectionUpdates = {
       id: collectionId || '',
       environmentId: collectionId,
       variables: variables.collection,
     };
-
     context.environment.setVariables(collectionUpdates);
   };
 
@@ -86,13 +76,10 @@ const UrlBarContainer = ({
     try {
       // do not execute if url is empty
       if (!url.raw) return;
-
-      const envVariables = {merged: {}, collection: {}, workspace: {}}
-      const { env: tabEnv } = context.environment.getCurrentTabEnv(
-        tab.id
-      );
-      if(tabEnv) {
-        envVariables.collection = { ...(tabEnv.variables|| {}) };
+      const envVariables = { merged: {}, collection: {}, workspace: {} };
+      const { env: tabEnv } = context.environment.getCurrentTabEnv(tab.id);
+      if (tabEnv) {
+        envVariables.collection = { ...(tabEnv.variables || {}) };
       }
       const agent: EFirecampAgent = context.getFirecampAgent();
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
@@ -134,18 +121,18 @@ const UrlBarContainer = ({
       </UrlBar.Body>
       <UrlBar.Suffix>
         <Button
+          text={isRequestRunning === true ? `Cancel` : `Send`}
+          onClick={_onExecute}
           primary
           sm
-          onClick={_onExecute}
-          text={isRequestRunning === true ? `Stop` : `Send`}
         />
         <Button
           id={`save-request-${tab.id}`}
+          text="Save"
+          onClick={_onSave}
+          disabled={false}
           secondary
           sm
-          text="Save"
-          disabled={false}
-          onClick={_onSave}
         />
       </UrlBar.Suffix>
     </UrlBar>
