@@ -27,7 +27,7 @@ const defaultFolder: IFolderSettingUi = {
     test: '',
   },
   auth: {},
-  __meta: { activeAuthType: EAuthTypes.NoAuth },
+  __meta: { activeAuthType: EAuthTypes.None },
   __ref: { id: '', workspaceId: '' },
 };
 

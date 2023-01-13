@@ -51,7 +51,7 @@ export const EMessagePayloadTypes = {
   file: 'file',
   arraybuffer: 'arraybuffer',
   arraybufferview: 'arraybufferview',
-  noBody: 'noBody',
+  none: 'none',
 };
 
 export enum EPanel {

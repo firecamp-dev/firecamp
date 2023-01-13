@@ -16,7 +16,7 @@ export default async (body: IRestBody): Promise<any> => {
   if (!payload) return;
 
   switch (type) {
-    case ERestBodyTypes.NoBody:
+    case ERestBodyTypes.None:
       return;
     case ERestBodyTypes.Binary:
       return payload;

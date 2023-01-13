@@ -3,8 +3,6 @@ import {
   AuthSetting,
   Button,
   Container,
- 
-  
   TabHeader,
 } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
@@ -18,7 +16,7 @@ const Auth: FC<IAuthSettingUi> = ({
   type = EPlatformModalTypes.CollectionSetting,
   initialPayload,
   auth: propAuth = {},
-  activeAuthType = EAuthTypes.NoAuth,
+  activeAuthType = EAuthTypes.None,
   isRequesting = false,
   onUpdate = () => {},
   onChange = (key: string, value: any) => {},
@@ -151,10 +149,10 @@ const Auth: FC<IAuthSettingUi> = ({
           <AuthSetting
             key={itemId}
             auth={propAuth || {}}
-            activeAuth={activeAuthType || EAuthTypes.NoAuth || ''}
+            activeAuth={activeAuthType || EAuthTypes.None || ''}
             allowInherit={type === EPlatformModalTypes.FolderSetting}
             onChangeAuth={_onChangeAuth}
-            onChangeActiveAuth={(activeAuth = EAuthTypes.NoAuth) => {
+            onChangeActiveAuth={(activeAuth = EAuthTypes.None) => {
               onChange('meta', { activeAuthType: activeAuth });
             }}
             onChangeOAuth2Value={_onChangeOAuth2Value}
@@ -167,17 +165,15 @@ const Auth: FC<IAuthSettingUi> = ({
           <TabHeader.Right>
             <Button
               text="Cancel"
-              secondary
-              transparent={true}
-              sm
               onClick={(e) => close()}
-              ghost={true}
+              transparent
+              secondary
+              ghost
+              sm
             />
 
             <Button
               text={isRequesting ? 'Updating Auth...' : 'Update Auth'}
-              primary
-              sm
               disabled={
                 equal(
                   _cloneDeep({
@@ -191,6 +187,8 @@ const Auth: FC<IAuthSettingUi> = ({
                 ) || isRequesting
               }
               onClick={_onUpdate}
+              primary
+              sm
             />
           </TabHeader.Right>
         </TabHeader>

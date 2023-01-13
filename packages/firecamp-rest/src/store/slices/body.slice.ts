@@ -49,7 +49,7 @@ const createBodySlice: TStoreSlice<IBodySlice> = (set, get) => {
             ...s.ui,
             requestPanel: {
               ...s.ui.requestPanel,
-              hasBody: type != 'none',
+              hasBody: type != ERestBodyTypes.None,
             },
           },
         };

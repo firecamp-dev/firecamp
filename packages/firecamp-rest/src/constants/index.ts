@@ -55,8 +55,8 @@ export const bodyTypesDDValues = {
         id: ERestBodyTypes.Binary,
       },
       {
-        name: 'No Body',
-        id: '',
+        name: 'None',
+        id: ERestBodyTypes.None,
         isEmpty: true,
       },
     ],

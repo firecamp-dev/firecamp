@@ -80,7 +80,7 @@ const BodyTab: FC<any> = () => {
   const _renderBodyTab = () => {
     if (!body?.type) return <></>;
     switch (body.type) {
-      case '':
+      case ERestBodyTypes.None:
         return <NoBodyTab selectBodyType={_selectBodyType} />;
       case ERestBodyTypes.FormData:
         return (
@@ -193,11 +193,11 @@ const BodyTypeDropDown: FC<any> = ({
       detach={false}
       isOpen={isOpen}
       onToggle={_onToggleOpen}
-      selected={selectedOption || ''}
+      selected={selectedOption || 'None'}
     >
       <Dropdown.Handler>
         <Button
-          text={selectedOption || 'No Body'}
+          text={selectedOption || 'None'}
           className="font-bold"
           withCaret
           transparent

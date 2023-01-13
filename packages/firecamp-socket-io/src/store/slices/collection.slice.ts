@@ -97,7 +97,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     } = state;
     const emitter = playgrounds[activePlayground]?.emitter;
     if (
-      [EArgumentBodyType.NoBody, EArgumentBodyType.File].includes(
+      [EArgumentBodyType.None, EArgumentBodyType.File].includes(
         emitter.__meta.type
       )
     ) {

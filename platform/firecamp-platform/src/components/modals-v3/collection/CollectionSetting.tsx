@@ -30,7 +30,7 @@ export const defaultCollection: ICollectionSettingUi = {
     test: '',
   },
   auth: {},
-  __meta: { activeAuthType: EAuthTypes.NoAuth },
+  __meta: { activeAuthType: EAuthTypes.None },
   __ref: { id: '', workspaceId: '' },
 };
 
@@ -48,7 +48,7 @@ const CollectionSetting: FC<IModal> = ({
   isOpen = false,
   onClose = () => {},
 }) => {
-  const { collectionId } = useModalStore.getState().meta as TModalMeta;
+  const { collectionId } = useModalStore.getState().__meta as TModalMeta;
 
   const [collection, setCollection] = useState(defaultCollection);
   const [initialCollection, setInitialCollection] = useState(defaultCollection);

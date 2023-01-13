@@ -4,8 +4,6 @@ import {
   Container,
   TabHeader,
   Button,
- 
-  
 } from '@firecamp/ui-kit';
 import { EAuthTypes } from '@firecamp/types';
 import equal from 'deep-equal';
@@ -22,7 +20,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
     cloneDeep({
       auth: module?.auth || {},
       activeAuthType:
-        module?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+        module?.__meta?.activeAuthType || EAuthTypes.None || '',
       oauth2LastFetchedToken: module?._dnp?.oauth2LastFetchedToken || '',
     })
   );
@@ -30,7 +28,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
     cloneDeep({
       auth: module?.auth || {},
       activeAuthType:
-        module?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+        module?.__meta?.activeAuthType || EAuthTypes.None || '',
       oauth2LastFetchedToken: module?._dnp?.oauth2LastFetchedToken || '',
     })
   );

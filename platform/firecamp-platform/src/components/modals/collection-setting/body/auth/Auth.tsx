@@ -21,14 +21,14 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
   let [initialAuthDetails, setInitialAuthDetails] = useState({
     auth: project?.auth || {},
     activeAuthType:
-      project?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+      project?.__meta?.activeAuthType || EAuthTypes.None || '',
     oauth2LastFetchedToken: project?._dnp?.oauth2LastFetchedToken || '',
   });
   let [authDetails, setAuthDetails] = useState(
     cloneDeep({
       auth: project?.auth || {},
       activeAuthType:
-        project?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+        project?.__meta?.activeAuthType || EAuthTypes.None || '',
       oauth2LastFetchedToken: project?._dnp?.oauth2LastFetchedToken || '',
     })
   );
@@ -262,7 +262,7 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
         <Container className="pt-16 padding-wrapper">
           <AuthSetting
             auth={authDetails.auth || {}}
-            activeAuth={authDetails.activeAuthType || EAuthTypes.NoAuth || ''}
+            activeAuth={authDetails.activeAuthType || EAuthTypes.None || ''}
             allowInherit={false}
             onChangeAuth={_onChangeAuth}
             onChangeActiveAuth={_onchangeActiveAuth}

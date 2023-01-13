@@ -199,14 +199,14 @@ export const normalizeRequest = (
   if (!_object.isEmpty(body)) {
     _nr.body = { value: body.value, type: body.type };
   } else {
-    _nr.body = { value: '', type: 'none' };
+    _nr.body = { value: '', type: ERestBodyTypes.None };
   }
 
   // normalize auth
   if (!_object.isEmpty(auth)) {
     _nr.auth = { value: auth.value, type: auth.type };
   } else {
-    _nr.auth = { value: '', type: 'none' };
+    _nr.auth = { value: '', type: EAuthTypes.None };
   }
   // _nr.auth = !_object.isEmpty(auth)
   //   ? (_auth.normalizeToUi(auth) as IUiAuth)
