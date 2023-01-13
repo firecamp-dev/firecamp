@@ -14,20 +14,12 @@ import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
 import CodeSnippets from './common/code-snippets/CodeSnippets';
-import {
-  useStore,
-  StoreProvider,
-  createStore,
-  useStoreApi,
-  IStore,
-} from '../store';
+import { useStore, StoreProvider, createStore, IStore } from '../store';
 
 const Rest = ({ tab, platformContext }) => {
-  const restStoreApi: any = useStoreApi();
   const {
     isFetchingRequest,
     initialise,
-    changeUrl,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     setContext,
@@ -37,7 +29,6 @@ const Rest = ({ tab, platformContext }) => {
       initialise: s.initialise,
       changeAuthHeaders: s.changeAuthHeaders,
       changeMeta: s.changeMeta,
-      changeUrl: s.changeUrl,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
@@ -114,7 +105,6 @@ const Rest = ({ tab, platformContext }) => {
   const handlePull = async () => {};
 
   if (isFetchingRequest === true) return <Loader />;
-
   return (
     <>
       <Container className="h-full with-divider" overflow="visible">
@@ -138,7 +128,7 @@ const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
     const { request = {}, id } = tab;
     const initState = initialiseStoreFromRequest(request, id);
-    console.log(initialiseStoreFromRequest, initState);
+    // console.log(initState);
     return (
       <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />

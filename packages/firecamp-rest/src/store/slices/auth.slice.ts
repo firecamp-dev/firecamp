@@ -24,8 +24,8 @@ type TAuth = IAuthBasic | IAuthBearer | IAuthDigest | IOAuth1 | IOAuth2UiState;
 const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
   changeAuthType: (type: EAuthTypes) => {
     const state = get();
+    const auth: IAuth = { value: state.runtime.auths[type], type };
     set((s) => {
-      const auth: IAuth = { value: s.runtime.auths[type], type };
       return {
         request: {
           ...s.request,

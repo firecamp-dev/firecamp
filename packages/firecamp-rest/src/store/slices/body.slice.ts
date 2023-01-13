@@ -1,5 +1,4 @@
 import {
-  IRestBody,
   ERestBodyTypes,
   IHeader,
   EKeyValueTableRowType,
@@ -13,24 +12,18 @@ interface IBodySlice {
   changeBodyType: (bodyType: ERestBodyTypes) => void;
   updateHeadersOnBodyTypeChange: (type: ERestBodyTypes) => void;
 }
-const createBodySlice: TStoreSlice<IBodySlice> = (
-  set,
-  get,
-  initialBody: IRestBody
-) => {
+const createBodySlice: TStoreSlice<IBodySlice> = (set, get) => {
   return {
     // change the value of active body, example, write the json or multipart table
     changeBodyValue: (value: any) => {
       const state = get();
-      const {
-        body: { type },
-      } = state.request;
-      const reqBody = { type, value };
+      const { type } = state.request.body;
+      const body = { value, type };
       set((s) => {
         return {
           request: {
             ...s.request,
-            body: reqBody,
+            body,
           },
           runtime: {
             ...s.runtime,
@@ -41,12 +34,12 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
           },
         };
       });
-      state.equalityChecker({ body: reqBody });
+      state.equalityChecker({ body });
     },
     changeBodyType: (type: ERestBodyTypes) => {
       const state = get();
+      const body = { value: state.runtime.bodies[type], type };
       set((s) => {
-        const body = { value: s.runtime.bodies[type], type };
         return {
           request: {
             ...s.request,
@@ -63,6 +56,7 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
       });
       // @note: only update headers after body type changed
       state.updateHeadersOnBodyTypeChange(type);
+      state.equalityChecker({ body });
     },
     updateHeadersOnBodyTypeChange: (type: ERestBodyTypes) => {
       const state = get();
