@@ -1,7 +1,7 @@
-import { EHttpMethod, IHeader, TId } from '@firecamp/types';
-import { _clipboard } from '@firecamp/utils';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
+import { EFirecampAgent, EHttpMethod, IHeader, TId } from '@firecamp/types';
+import { _clipboard } from '@firecamp/utils';
 import { _object } from '@firecamp/utils';
 import { prepareUIRequestPanelState } from '../../services/request.service';
 import { IRestClientRequest } from '../../types';
@@ -36,6 +36,14 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   changeMeta: (__meta: any) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
+  execute(
+    variables: {
+      merged: {};
+      workspace: {};
+      collection?: {};
+    },
+    fcAgent: EFirecampAgent
+  ): void;
   save: (tabId: TId) => void;
 }
 
@@ -148,6 +156,70 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       },
     }));
     state.equalityChecker({ scripts: updatedScripts });
+  },
+  execute: async (
+    variables: {
+      collection?: {};
+    },
+    fcAgent: EFirecampAgent
+  ) => {
+    const state = get();
+    try {
+      // set response empty
+      set({ response: { statusCode: 0 } });
+
+      // Check if request is running or not. stop running request if already true
+      if (state.runtime.isRequestRunning === true) {
+        await state.context.request.cancelExecution(
+          state.request.__ref.id,
+          fcAgent
+        );
+        // set request running state as false
+        state.setRequestRunningFlag(false);
+        return;
+      }
+      state.setRequestRunningFlag(true);
+
+      // normalize request
+      // const normalizedRequest = await normalizeSendRequestPayload(
+      //   request,
+      //   state.request
+      // );
+
+      // console.log({ normalizedRequest, request });
+      // execute request
+      await state.context.request
+        .execute(state.request)
+        .then((response) => {
+          console.log({ response: response });
+          if (response?.error) {
+            const error = response.error;
+            console.log(
+              error.message,
+              error.code,
+              error.e.response,
+              error.e,
+              9090
+            );
+          }
+          return response;
+        })
+        .then(async (response) => {
+          if (!response) return;
+          // TODO: add cookies
+          set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
+          state.setRequestRunningFlag(false);
+        })
+        .catch((e) => {
+          console.log(e.message, e.stack, e.response, e, 9090);
+        });
+    } catch (e) {
+      state.setRequestRunningFlag(false);
+      console.error({
+        api: 'execute',
+        e,
+      });
+    }
   },
   save: (tabId) => {
     const state = get();

@@ -1,7 +1,7 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import create from 'zustand';
 import createContext from 'zustand/context';
-import { TId, IRest, IRestResponse, EFirecampAgent } from '@firecamp/types';
+import { TId, IRest } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';
 import {
   prepareUIRequestPanelState,
@@ -19,7 +19,7 @@ import {
   createRequestChangeStateSlice,
 } from './slices/index';
 import { IRestClientRequest } from '../types';
-import { IStoreState, IStore, TOnChangeVariables } from './store.type';
+import { IStoreState, IStore } from './store.type';
 
 const {
   Provider: StoreProvider,
@@ -65,73 +65,6 @@ const createStore = (initialState: IStoreState) =>
       }),
       ...createPullActionSlice(set, get),
       ...createRequestChangeStateSlice(set, get),
-
-      execute: async (
-        variables: {
-          collection?: {};
-        },
-        fcAgent: EFirecampAgent,
-        onChangeVariables: TOnChangeVariables
-      ) => {
-        const state = get();
-        try {
-          // set response empty
-          set({ response: { statusCode: 0 } });
-
-          // Check if request is running or not. stop running request if already true
-          if (state.runtime.isRequestRunning === true) {
-            await state.context.request.cancelExecution(
-              state.request.__ref.id,
-              fcAgent
-            );
-            // set request running state as false
-            state.setRequestRunningFlag(false);
-            return;
-          }
-          state.setRequestRunningFlag(true);
-
-          // normalize request
-          // const normalizedRequest = await normalizeSendRequestPayload(
-          //   request,
-          //   state.request
-          // );
-
-          // console.log({ normalizedRequest, request });
-          // execute request
-          await state.context.request
-            .execute(state.request)
-            .then((response) => {
-              console.log({ response: response });
-              if (response?.error) {
-                const error = response.error;
-                console.log(
-                  error.message,
-                  error.code,
-                  error.e.response,
-                  error.e,
-                  9090
-                );
-              }
-              return response;
-            })
-            .then(async (response) => {
-              if (!response) return;
-              // TODO: add cookies
-
-              set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
-              state.setRequestRunningFlag(false);
-            })
-            .catch((e) => {
-              console.log(e.message, e.stack, e.response, e, 9090);
-            });
-        } catch (e) {
-          state.setRequestRunningFlag(false);
-          console.error({
-            api: 'execute',
-            e,
-          });
-        }
-      },
     };
   });
 
