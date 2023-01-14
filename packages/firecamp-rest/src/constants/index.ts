@@ -65,6 +65,7 @@ export const bodyTypesDDValues = {
 
 // empty body state
 export const RuntimeBodies = {
+  [ERestBodyTypes.None]: '',
   [ERestBodyTypes.FormData]: [],
   [ERestBodyTypes.UrlEncoded]: [],
   [ERestBodyTypes.GraphQL]: { query: '', variables: '' },
