@@ -73,7 +73,10 @@ const Editor: FC<IEditor> = ({
 
     onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
     onFocus && editor.onDidFocusEditorText(() => onFocus(editor));
-    onPaste && editor.onDidPaste(() => onPaste(editor));
+    onPaste &&
+      editor.onDidPaste((l) => {
+        onPaste(editor.getModel().getValueInRange(l.range), editor);
+      });
 
     editor.onKeyDown((evt: any) => {
       switch (evt.keyCode) {

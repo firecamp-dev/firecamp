@@ -12,7 +12,7 @@ const NoAuth: FC<INoAuth> = ({
 
     const options = [];
     for (const k in authTypeList) {
-      if (authTypeList[k].id !== EAuthTypes.NoAuth && authTypeList[k].enable) {
+      if (authTypeList[k].id !== EAuthTypes.None && authTypeList[k].enable) {
         options.push({
           id: authTypeList[k].id,
           name: authTypeList[k].name,
@@ -26,7 +26,7 @@ const NoAuth: FC<INoAuth> = ({
       {
         title: 'Quick auth type selection',
         items: options,
-        activeItem: EAuthTypes.NoAuth,
+        activeItem: EAuthTypes.None,
       },
     ];
   }, []);

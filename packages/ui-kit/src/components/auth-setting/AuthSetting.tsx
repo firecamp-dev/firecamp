@@ -158,7 +158,7 @@ const AuthSetting: FC<IAuthSetting> = ({
         const isEmpty = isEmptyApiAuth[v.id] as Boolean;
         return Object.assign(v, {
           isEmpty:
-            v.id !== EAuthTypes.NoAuth
+            v.id !== EAuthTypes.None
               ? Object.keys(isEmptyApiAuth).includes(v.id)
                 ? isEmpty
                 : true
@@ -224,7 +224,7 @@ const AuthSetting: FC<IAuthSetting> = ({
 
   const _renderTabBody = () => {
     switch (activeAuth) {
-      case EAuthTypes.NoAuth:
+      case EAuthTypes.None:
         return (
           <NoAuth
             onChangeActiveAuth={_onchangeActiveAuth}

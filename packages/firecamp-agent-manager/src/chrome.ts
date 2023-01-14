@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/@types/chrome/index.d.ts"/>
 
-import { EFirecampAgent, IRest, IRestResponse, TId } from '@firecamp/types';
+import { IRest, IRestResponse, TId } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
 

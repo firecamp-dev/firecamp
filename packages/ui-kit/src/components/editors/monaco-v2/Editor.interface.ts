@@ -64,7 +64,7 @@ export interface IEditor {
   onLoad?: (event: any) => any;
 
   /** on paste text */
-  onPaste?: (event: any) => any;
+  onPaste?: (paste: string, event: any) => any;
 
   /** on press enter */
   onEnter?: (event: any) => any;

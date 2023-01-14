@@ -95,7 +95,7 @@ const EmitterBody = ({
               }}
               // controlsConfig={{
               //   show:
-              //     bodyType !== EArgumentBodyType.noBody &&
+              //     bodyType !== EArgumentBodyType.None &&
               //     typeof playgroundBody === 'string' &&
               //     bodyType !== EArgumentBodyType.file,
               //   position: 'vertical'
@@ -168,7 +168,7 @@ const EmitterBody = ({
 
   return (
     <Container.Body>
-      {activeArgType.id === EArgumentBodyType.NoBody ? (
+      {activeArgType.id === EArgumentBodyType.None ? (
         <Container.Empty>
           <QuickSelection menus={[]} />
         </Container.Empty>
@@ -182,9 +182,9 @@ const EmitterBody = ({
             <Dropdown.Handler>
               <Button
                 text={activeArgType.name}
-                transparent={true}
-                ghost={true}
-                withCaret={true}
+                transparent
+                ghost
+                withCaret
                 primary
                 sm
               />

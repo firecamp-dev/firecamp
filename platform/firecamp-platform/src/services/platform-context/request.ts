@@ -9,14 +9,15 @@ import {
   EHttpMethod,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
-import { useTabStore } from '../../store/tab';
-import { useWorkspaceStore } from '../../store/workspace';
-import { usePlatformStore } from '../../store/platform';
 import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 import { promptSaveItem } from './prompt.service';
 import { prepareEventNameForRequestPull } from '../platform-emitter/events';
 import AppService from '../app.service';
+import { useTabStore } from '../../store/tab';
+import { useWorkspaceStore } from '../../store/workspace';
+import { usePlatformStore } from '../../store/platform';
+import { useEnvStore } from '../../store/environment';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -27,13 +28,6 @@ interface IPlatformRequestService {
 
   // save and update request
   save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
-
-  // on change request, update tab __meta
-  onChangeRequestTab: (
-    tabId: TId,
-    tabMeta: IRequestTab['__meta'],
-    request?: IRest | IGraphQL | ISocketIO | IWebSocket
-  ) => void;
 
   // fetch request from server by request id
   onFetch: (reqId: TId) => Promise<any>;
@@ -192,22 +186,12 @@ const request: IPlatformRequestService = {
     return await Rest.request.findOne(reqId);
   },
 
-  // on change request
-  onChangeRequestTab: (
-    tabId: TId,
-    tabMeta: IRequestTab['__meta'],
-    request?: IRest | IGraphQL // | ISocket | IWebsocket,
-  ) => {
-    // Here, request and pushActions are used for future purpose
-    // console.log({ tabMeta });
-
-    useTabStore.getState().changeMeta(tabId, tabMeta);
-  },
-
   // execute request
   execute: async (request: IRest) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
-    return executor.send(request, agent);
+    const env = useEnvStore.getState().getActiveTabEnv();
+    const vars = env ? env.variables : {};
+    return executor.send(request, vars, agent);
   },
 
   cancelExecution: (reqId: TId) => {

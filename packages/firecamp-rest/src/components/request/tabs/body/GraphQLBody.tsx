@@ -9,7 +9,6 @@ import {
 const GraphQLBody = ({ body, onChange }) => {
 
   const { query = '', variables = '' } = body;
-
   return (
     <Container>
       <Container.Body className="flex flex-col">
@@ -33,7 +32,7 @@ const GraphQLBody = ({ body, onChange }) => {
               // value: variables,
               height: '30%',
             }}
-            onChange={({ target: { value } }) => onchange({ query, variables: value})}
+            onChange={({ target: { value } }) => onChange({ query, variables: value})}
           />
         </Column>
       </Container.Body>

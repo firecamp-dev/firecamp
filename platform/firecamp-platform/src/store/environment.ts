@@ -39,6 +39,7 @@ export interface IEnvironmentStore {
 
   getCollectionEnvs: (collectionId: TColId) => any[];
   getCollectionActiveEnv: (collectionId: TColId) => TEnvId;
+  getActiveTabEnv: () => IEnvironment | null;
 
   setCurrentTabActiveEnv: (envId?: TEnvId) => void;
   setEnvVariables: (envId: TEnvId, variables: object) => void;
@@ -134,6 +135,18 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   getCollectionActiveEnv: (collectionId) => {
     return get().colEnvMap[collectionId];
+  },
+
+  getActiveTabEnv: () => {
+    const tabStore = useTabStore.getState();
+    const tabId = tabStore.getActiveTab();
+    if (!tabId) return null;
+    const state = get();
+    const collectionId = state.tabColMap[tabId];
+    if (!collectionId) return null;
+    const envId = state.getCollectionActiveEnv(collectionId);
+    if (!envId) return null;
+    return state.envs.find((e) => e.__ref.id == envId);
   },
 
   getCollectionEnvs: (collectionId) => {

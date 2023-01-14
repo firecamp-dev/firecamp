@@ -39,7 +39,7 @@ export const prepareUIRequestPanelState = (
   for (let key in request) {
     switch (key) {
       case 'auth':
-        if (request.auth?.type) {
+        if (request.auth?.type != 'none') {
           updatedUiStore = {
             ...updatedUiStore,
             hasAuth: true,
@@ -47,7 +47,7 @@ export const prepareUIRequestPanelState = (
         }
         break;
       case 'body':
-        if (request.body?.type) {
+        if (request.body.type != 'none') {
           updatedUiStore = {
             ...updatedUiStore,
             hasBody: true,
@@ -82,7 +82,7 @@ export const prepareUIRequestPanelState = (
 
         updatedUiStore = {
           ...updatedUiStore,
-          // activeTab: ERequestPanelTabs.Scripts,
+          // activeTab: ERequestPanelTabs.PrePostScripts,
           hasScripts,
         };
         break;
@@ -198,11 +198,15 @@ export const normalizeRequest = (
   // normalize body
   if (!_object.isEmpty(body)) {
     _nr.body = { value: body.value, type: body.type };
+  } else {
+    _nr.body = { value: '', type: ERestBodyTypes.None };
   }
 
   // normalize auth
   if (!_object.isEmpty(auth)) {
     _nr.auth = { value: auth.value, type: auth.type };
+  } else {
+    _nr.auth = { value: '', type: EAuthTypes.None };
   }
   // _nr.auth = !_object.isEmpty(auth)
   //   ? (_auth.normalizeToUi(auth) as IUiAuth)
@@ -248,6 +252,7 @@ export const initialiseStoreFromRequest = (
   // console.log({ request });
 
   return {
+    originalRequest: _cloneDeep(request) as IRest,
     request,
     ui: {
       isFetchingRequest: false,
@@ -343,7 +348,7 @@ export const normalizeSendRequestPayload = async (
   request: IRestClientRequest,
   originalRequest: IRestClientRequest
 ) => {
-  let sendRequestPayload: IRest = _object.pick(request, [
+  const _request: IRest = _object.pick(request, [
     'url',
     'method',
     'body',
@@ -356,24 +361,14 @@ export const normalizeSendRequestPayload = async (
   try {
     // Send active body payload
     if (request.body?.type) {
-      sendRequestPayload.body = {
+      _request.body = {
         value: request.body?.value,
         type: request.body?.type,
       };
 
-      if (request.body?.type === ERestBodyTypes.FormData) {
-        // add file entry value after parse env. variable in body
-        if (!_array.isEmpty(request.body?.value as any[])) {
-          sendRequestPayload.body.value = request.body.value.map(
-            (item, index) => {
-              if (item.type === EKeyValueTableRowType.File) {
-                item.value = originalRequest.body.value[index].value;
-              }
-              return item;
-            }
-          );
-        }
-      } else if (
+      //TODO: handle multipart formdata
+
+      if (
         request.body.type === ERestBodyTypes.Binary &&
         originalRequest.body.value
       ) {
@@ -385,39 +380,39 @@ export const normalizeSendRequestPayload = async (
           .catch((e) => {
             return '';
           });
-        sendRequestPayload.body.value = text;
+        _request.body.value = text;
       }
     }
 
     // Send active auth payload
     if (request.auth?.type !== EAuthTypes.Inherit) {
-      sendRequestPayload.auth = {
+      _request.auth = {
         value: request.auth.value,
         type: request.auth.type,
       };
     } else if (request.auth?.type === EAuthTypes.Inherit) {
       const inheritedAuth = request.__meta.inheritedAuth;
       if (inheritedAuth) {
-        sendRequestPayload.auth = {
+        _request.auth = {
           value: inheritedAuth.value,
           type: inheritedAuth.auth,
         };
       }
     }
-    sendRequestPayload.__ref = { id: request.__ref.id, collectionId: '' };
-    // console.log({ sendRequestPayload });
+    _request.__ref = { id: request.__ref.id, collectionId: '' };
+    // console.log({ _request });
 
     //  merge headers and auth headers
     const authHeaders = await getAuthHeaders(request, request.auth?.type);
     const headersAry = _table.objectToTable(authHeaders) || [];
     // console.log({ headersAry, request });
 
-    sendRequestPayload.headers = [...request.headers, ...headersAry];
+    _request.headers = [...request.headers, ...headersAry];
   } catch (error) {
     console.log({ normalizeSendRequestPayload: error });
   }
 
-  return Promise.resolve(sendRequestPayload);
+  return Promise.resolve(_request);
 };
 
 /**

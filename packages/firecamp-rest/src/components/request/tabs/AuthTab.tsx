@@ -39,7 +39,6 @@ const AuthTab = () => {
     }
     if (updated === 'activeGrantTypeValue' && 'grantTypes' in updates) {
       const { key, value } = payload;
-
       updates['grantTypes'] = Object.assign(updates['grantTypes'], {
         [updates.activeGrantType]: Object.assign(
           updates['grantTypes'][updates.activeGrantType],

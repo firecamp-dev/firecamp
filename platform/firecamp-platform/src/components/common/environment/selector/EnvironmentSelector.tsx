@@ -1,7 +1,6 @@
-import { FC, useMemo } from 'react';
+import { useMemo } from 'react';
 import shallow from 'zustand/shallow';
-import { Button, Column } from '@firecamp/ui-kit';
-import { TId } from '@firecamp/types';
+import { Column } from '@firecamp/ui-kit';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 
 import EnvironmentDD from './EnvironmentDD';
@@ -9,7 +8,7 @@ import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
 import { ITabStore, useTabStore } from '../../../../store/tab';
 
-const EnvironmentSelecctor = () => {
+const EnvironmentSelector = () => {
   const {
     tabColMap,
     colEnvMap,
@@ -44,14 +43,9 @@ const EnvironmentSelecctor = () => {
     const envs = !colId ? [] : getCollectionEnvs(colId);
     const envId = colEnvMap[colId];
     return { envs, envId, colId };
-  }, [activeTab]);
+  }, [activeTab, colEnvMap]);
 
-  console.log(envId, envs, colId, colEnvMap, 4445445);
-
-  const setActiveEnv = (envId: TId) => {
-    setCurrentTabActiveEnv(envId);
-    // onCollectionActiveEnvChange(collectionId, envId);
-  };
+  // console.log(envId, envs, colId, colEnvMap, 4445445);
 
   if (isGuest === true) return <></>;
   if (!colId || !envId) return <></>;
@@ -66,7 +60,9 @@ const EnvironmentSelecctor = () => {
           activeCollectionId={colId}
           activeEnvId={envId}
           environments={envs}
-          onChange={setActiveEnv}
+          onChange={(envId) => {
+            setCurrentTabActiveEnv(envId);
+          }}
         />
         <span
           key={'toggle-env-button'}
@@ -79,4 +75,4 @@ const EnvironmentSelecctor = () => {
     </Column>
   );
 };
-export default EnvironmentSelecctor;
+export default EnvironmentSelector;

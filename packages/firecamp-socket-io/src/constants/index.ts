@@ -218,8 +218,8 @@ export const ArgTypes = [
     name: 'Boolean',
   },
   {
-    id: EArgumentBodyType.NoBody,
-    name: 'No body',
+    id: EArgumentBodyType.None,
+    name: 'None',
   },
 ];
 export const TypedArrayViews = [

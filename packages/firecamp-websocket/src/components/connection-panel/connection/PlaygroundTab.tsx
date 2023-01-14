@@ -61,8 +61,8 @@ const PlaygroundTab = () => {
   }
   const [activeType, setActiveType] = useState(
     MessageTypeDropDownList.find((t) => t.id === message.__meta.type) || {
-      id: EMessagePayloadTypes.noBody,
-      name: 'No body',
+      id: EMessagePayloadTypes.none,
+      name: 'None',
     }
   );
   const [isSelectTypeDDOpen, toggleSelectTypeDD] = useState(false);
@@ -201,7 +201,7 @@ const PlaygroundTab = () => {
             value={payload}
             controlsConfig={{
               show:
-                activeType.id !== EMessagePayloadTypes.noBody &&
+                activeType.id !== EMessagePayloadTypes.none &&
                 activeType.id !== EMessagePayloadTypes.file &&
                 typeof payload === 'string',
               position: 'down',
@@ -347,7 +347,7 @@ const PlaygroundTab = () => {
         </TabHeader>
       </Container.Header>
       <Container.Body className="!mt-0">
-        {activeType.id === EMessagePayloadTypes.noBody ? (
+        {activeType.id === EMessagePayloadTypes.none ? (
           <Container.Empty>
             {/* <QuickSelection menus={quickSelectionMenus} /> //TODO: manage it later if feel need */}
           </Container.Empty>

@@ -1,8 +1,8 @@
-import { IRest, IRestResponse } from '@firecamp/types';
-import { _misc, _string } from '@firecamp/utils';
 import Joi from '@hapi/joi';
 import tv4 from 'tv4';
 import chai from 'chai';
+import { IRest, IRestResponse } from '@firecamp/types';
+import { _misc, _string } from '@firecamp/utils';
 
 import jsExecutor from './lib/js-executor';
 import { Environment } from './environment';
@@ -23,6 +23,7 @@ export const preScript: TPreScript = async (
   request: IRest,
   variables: TEnvVariable
 ) => {
+  if (!request?.scripts?.pre) return {};
   try {
     const script = `(()=>{
             ${request.scripts?.pre};
@@ -31,7 +32,6 @@ export const preScript: TPreScript = async (
               environment
             }
           })()`;
-
     return jsExecutor(script, {
       request: new Request(request),
       environment: new Environment(variables),
@@ -39,33 +39,31 @@ export const preScript: TPreScript = async (
   } catch (error) {
     console.info('%cpre-script sandbox error', 'color: red; font-size: 14px');
     console.info(error);
-
     return Promise.reject(error.message);
   }
 };
 
 export const postScript: TPostScript = async (
-  postScript: string,
+  script: string,
   response: IRestResponse,
   variables: TEnvVariable
 ) => {
+  if (!script) return {};
   try {
-    const script = `(()=>{
-            ${postScript};
+    const _script = `(()=>{
+            ${script};
             return {
               response,
               environment
             }
           })()`;
-
-    return jsExecutor(script, {
+    return jsExecutor(_script, {
       response: new Response(response),
       environment: new Environment(variables),
     });
   } catch (error) {
     console.info('%cpost-script sandbox error', 'color: red; font-size: 14px');
     console.info(error);
-
     return Promise.reject(error.message);
   }
 };

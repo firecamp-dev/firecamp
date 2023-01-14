@@ -12,7 +12,7 @@ export enum EEmitterPayloadTypes {
   ArrayBufferView = 'arraybufferview',
   Number = 'number',
   Boolean = 'boolean',
-  NoBody = 'noBody',
+  None = 'none',
 }
 
 export enum EConnectionState {

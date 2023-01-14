@@ -3,11 +3,9 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import shallow from 'zustand/shallow';
 import { Container, Row, Loader } from '@firecamp/ui-kit';
-import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
 import { IRest } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { _misc, _object, _table, _auth } from '@firecamp/utils';
-
 import {
   initialiseStoreFromRequest,
   normalizeRequest,
@@ -16,20 +14,12 @@ import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
 import CodeSnippets from './common/code-snippets/CodeSnippets';
-import {
-  useStore,
-  StoreProvider,
-  createStore,
-  useStoreApi,
-  IStore,
-} from '../store';
+import { useStore, StoreProvider, createStore, IStore } from '../store';
 
 const Rest = ({ tab, platformContext }) => {
-  const restStoreApi: any = useStoreApi();
   const {
     isFetchingRequest,
     initialise,
-    changeUrl,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     setContext,
@@ -39,7 +29,6 @@ const Rest = ({ tab, platformContext }) => {
       initialise: s.initialise,
       changeAuthHeaders: s.changeAuthHeaders,
       changeMeta: s.changeMeta,
-      changeUrl: s.changeUrl,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
@@ -115,80 +104,13 @@ const Rest = ({ tab, platformContext }) => {
    */
   const handlePull = async () => {};
 
-  /**
-   * on paste url, call CurlToFirecamp(curl).transform() and set resultant request data to state
-   * @param curl: <type: string>
-   */
-  const onPasteCurl = async (curlString: string) => {
-    // return if no curl or request is already saved
-    if (!curlString) return;
-
-    let { url } = restStoreApi.getState()?.request;
-
-    let curl = curlString;
-
-    /**
-     * If not same existing url and curlString, do set substring of url
-     * i.e: url= 'https://' and curlString= 'https://', do not set substring of curlString
-     */
-    if (
-      url.raw !== curlString &&
-      curlString.substring(0, (url.raw || '').length) !== url.raw
-    ) {
-      // Set Trimmed/ substring of curlString with the length of current state URL
-      curl = curlString.substring((url.raw || '').length) || '';
-    }
-
-    if (
-      url.raw === curlString.substring(0, (url.raw || '').length) &&
-      curl !== curlString
-    ) {
-      // TODO: check usage
-      // _update_request_config_fns._onChangeURLbar('raw_url', curl);
-    } else {
-      curl = curlString;
-    }
-
-    if (curl.substring(0, 4) !== 'curl') {
-      return;
-    }
-
-    // Reset url and return is request is saved as data can not be replaced in saved request
-    if (tab?.__meta?.isSaved) {
-      /*  firecampFunctions.notification.alert(
-         'You can not paste the CURL snippet into the saved request, please open a new empty request tab instead.',
-         {    
-           labels: { success: 'curl request' }
-         }
-       ); */
-
-      changeUrl(url);
-      return;
-    }
-
-    try {
-      let curlRequest = new CurlToFirecamp(curl?.trim() || '').transform();
-      console.log({ curlRequest });
-
-      // initialiseRequest(curlRequest, false, emptyPushAction, false, true);
-    } catch (error) {
-      console.error({
-        API: 'Rest _onPasteCurl',
-        curl,
-        error,
-      });
-    }
-  };
-
   if (isFetchingRequest === true) return <Loader />;
-
   return (
     <>
       <Container className="h-full with-divider" overflow="visible">
         <UrlBarContainer
           tab={tab}
           collectionId={tab?.request?.__ref?.collectionId || ''}
-          onPasteCurl={onPasteCurl}
         />
         <Container.Body>
           <Row flex={1} className="with-divider h-full" overflow="auto">
@@ -206,6 +128,7 @@ const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
     const { request = {}, id } = tab;
     const initState = initialiseStoreFromRequest(request, id);
+    // console.log(initState);
     return (
       <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />

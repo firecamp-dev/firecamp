@@ -339,7 +339,7 @@ const authUiState = {
 };
 
 const authTypeList = [
-  { name: 'No Auth', id: EAuthTypes.NoAuth, enable: true },
+  { name: 'None', id: EAuthTypes.None, enable: true },
   { name: 'Inherit', id: EAuthTypes.Inherit, enable: true },
   { name: 'Bearer', id: EAuthTypes.Bearer, enable: true },
   { name: 'Basic', id: EAuthTypes.Basic, enable: true },

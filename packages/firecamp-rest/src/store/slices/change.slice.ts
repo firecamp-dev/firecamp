@@ -1,8 +1,8 @@
-import { IRest } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
+import { IRest } from '@firecamp/types';
 import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
@@ -11,13 +11,6 @@ import {
   EReqChangeUrlKeys,
 } from '../../types';
 import { TStoreSlice } from '../store.type';
-
-const RequestChangeState: IRequestChangeState = {
-  url: [],
-  scripts: [],
-  __meta: [],
-  __root: [],
-};
 
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
@@ -37,7 +30,12 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
   set,
   get
 ) => ({
-  requestChangeState: RequestChangeState,
+  requestChangeState: {
+    url: [],
+    scripts: [],
+    __meta: [],
+    __root: [],
+  },
   equalityChecker: (request: Partial<IRest>) => {
     const state = get();
     const {
@@ -49,15 +47,19 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
 
     for (let key in request) {
       switch (key) {
-        case 'method':
-        case 'config':
-        case 'headers':
-        case 'body':
-        case 'auth':
+        case EReqChangeRootKeys.method:
+        case EReqChangeRootKeys.config:
+        case EReqChangeRootKeys.headers:
+        case EReqChangeRootKeys.body:
+        case EReqChangeRootKeys.auth:
+          console.log((_request[key], request[key]), key);
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {
-            _rcs.__root = _array.without(_rcs.__root, key);
+            _rcs.__root = _array.without(
+              _rcs.__root,
+              key
+            ) as EReqChangeRootKeys[];
           }
           break;
         case 'url':
@@ -73,10 +75,10 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
           break;
       }
     }
-    console.log(_rcs);
+    console.log('_rcs', _rcs);
     const hasChange = !_object.isEmpty(_cleanDeep(_cloneDeep(_rcs)));
-    console.log(state.context.request, state.runtime.tabId, hasChange);
-    state.context.request.onChangeRequestTab(state.runtime.tabId, {
+    // console.log(state.context.request, state.runtime.tabId, hasChange);
+    state.context.tab.changeMeta(state.runtime.tabId, {
       hasChange,
     });
   },
@@ -93,6 +95,11 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
     let _ur: Partial<IRest> = {};
 
     for (let key in _rcs) {
+      /**
+       * @note: if _rcs kry is empty then continue the next loop
+       * because _object.pick will return the empty {} in below case if we allow to loop with _rcs[key] = []
+       */
+      if (!_rcs[key].length) continue;
       switch (key) {
         case '__root':
           _ur = { ..._ur, ..._object.pick(_request, _rcs[key]) };
@@ -107,7 +114,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
           break;
       }
     }
-    console.log(_ur);
+    console.log(_rcs, _ur);
     return _ur;
   },
 });

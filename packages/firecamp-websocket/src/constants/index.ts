@@ -264,8 +264,8 @@ const MessageTypeDropDownList = [
     name: 'Array buffer view',
   },*/
   // {
-  //   id: 'noBody',
-  //   name: 'No body',
+  //   id: 'none',
+  //   name: 'None',
   // },
 ];
 
