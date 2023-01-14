@@ -52,7 +52,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
         case EReqChangeRootKeys.headers:
         case EReqChangeRootKeys.body:
         case EReqChangeRootKeys.auth:
-          console.log((_request[key], request[key]), key);
+          console.log(_request[key], request[key], key);
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {

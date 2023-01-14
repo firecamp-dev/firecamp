@@ -18,7 +18,6 @@ interface IAuthSlice {
   changeAuth: (type: EAuthTypes, updates: { key: string; value: any }) => void;
   resetAuthHeaders: (authType: EAuthTypes) => void;
 }
-
 type TAuth = IAuthBasic | IAuthBearer | IAuthDigest | IOAuth1 | IOAuth2UiState;
 
 const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
@@ -35,7 +34,7 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
           ...s.ui,
           requestPanel: {
             ...s.ui.requestPanel,
-            hasAuth: type != 'none',
+            hasAuth: type != EAuthTypes.None,
           },
         },
       };
@@ -75,15 +74,15 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
     state.resetAuthHeaders(auth.type);
     state.equalityChecker({ auth });
   },
-  resetAuthHeaders: async (authType: EAuthTypes) => {
+  resetAuthHeaders: async (type: EAuthTypes) => {
     const state = get();
     try {
-      if (authType == EAuthTypes.Inherit) {
+      if (type == EAuthTypes.Inherit) {
         state.changeAuthHeaders([]);
         return;
       }
-      const authHeaders = await getAuthHeaders(state.request, authType);
-      if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
+      const authHeaders = await getAuthHeaders(state.request, type);
+      if (type === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
         authHeaders['Authorization'] = `Bearer ${authHeaders['Authorization']}`;
         state.setOAuth2LastFetchedToken(authHeaders['Authorization']);
       }

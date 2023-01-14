@@ -3,17 +3,16 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid } from 'nanoid';
 import equal from 'deep-equal';
 import {
+  TId,
   EAuthTypes,
   ERestBodyTypes,
   IRest,
   EHttpMethod,
   ERequestTypes,
   EKeyValueTableRowType,
-  IUiAuth,
   EFirecampAgent,
-  IAuth,
-  TId,
   IRestBody,
+  IAuth,
   IOAuth2UiState,
 } from '@firecamp/types';
 import {
@@ -115,6 +114,8 @@ export const normalizeRequest = (
   const _nr: IRestClientRequest = {
     url: { raw: '', queryParams: [], pathParams: [] },
     method: EHttpMethod.GET,
+    body: { value: '', type: ERestBodyTypes.None },
+    auth: { value: '', type: EAuthTypes.None },
     __meta: {
       name: '',
       description: '',
@@ -127,10 +128,10 @@ export const normalizeRequest = (
   const {
     url = _nr.url,
     method = _nr.method,
-    auth,
+    body = _nr.body,
+    auth = _nr.auth,
     headers,
     config,
-    body,
     scripts,
     __meta = _nr.__meta,
     __ref = _nr.__ref,
@@ -249,7 +250,7 @@ export const initialiseStoreFromRequest = (
 ): IStoreState => {
   const request: IRestClientRequest = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
-  // console.log({ request });
+  console.log({ request });
 
   return {
     originalRequest: _cloneDeep(request) as IRest,
@@ -431,14 +432,11 @@ export const readFile = (file): Promise<string | ArrayBuffer> => {
 
 export const getAuthHeaders = async (
   request: IRest,
-  authType?: EAuthTypes
+  type?: EAuthTypes
 ): Promise<{ [key: string]: any } | IAuthHeader> => {
-  if (!authType) {
-    authType = request.auth?.type;
-  }
-  if (!authType) {
-    return Promise.resolve({});
-  } /* else if (authType === EAuthTypes.Inherit) {
+  if (!type || type == EAuthTypes.None) return Promise.resolve({});
+
+  /*  if (type === EAuthTypes.Inherit) {
     // TODO: add logic to fetch inherit auth
     // set inherit auth to runtimeSlice.inherit
     // update auth headers by inherit auth
@@ -449,13 +447,13 @@ export const getAuthHeaders = async (
 
   // @ts-ignore
   let inheritedAuth = request.__meta.inheritedAuth;
-  if (authType === EAuthTypes.Inherit && inheritedAuth) {
+  if (type === EAuthTypes.Inherit && inheritedAuth) {
     let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
     requestAuth = {
       value: normalizedAuth[inheritedAuth.type],
       type: inheritedAuth.type,
     };
-    authType = inheritedAuth.type;
+    type = inheritedAuth.type;
   }
 
   try {
@@ -475,7 +473,7 @@ export const getAuthHeaders = async (
     //   authvalue = OAuth2.grantTypes[OAuth2.activeGrantType];
     // }
 
-    const authService = new Auth(authType, authvalue, {
+    const authService = new Auth(type, authvalue, {
       url,
       method,
       body,
@@ -486,7 +484,7 @@ export const getAuthHeaders = async (
     const authHeaders = await authService.getHeader();
 
     // if OAuth2 then set headers with prefix Bearer and set to token
-    if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
+    if (type === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
       authHeaders['Authorization'] = `Bearer ${authHeaders['Authorization']}`;
       return Promise.resolve(authHeaders['Authorization']);
     }

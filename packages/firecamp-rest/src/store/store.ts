@@ -38,13 +38,13 @@ const createStore = (initialState: IStoreState) =>
         const initState = initialiseStoreFromRequest(request, tabId);
         // console.log(initState, 'initState');
         set((s) => ({
-            ...s,
-            ...initState,
-            // @ts-ignore
-            originalRequest: _cloneDeep(initState.request) as IRest,
+          ...s,
+          ...initState,
+          // @ts-ignore
+          originalRequest: _cloneDeep(initState.request) as IRest,
         }));
         // update auth type, generate auth headers
-        state.changeAuthType(request.auth?.type);
+        state.changeAuthType(initState.request.auth.type);
       },
       ...createRequestSlice(
         set,

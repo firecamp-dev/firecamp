@@ -15,7 +15,7 @@ importers:
       '@babel/register': ^7.0.0
       '@babel/runtime': ^7.15.4
       '@firecamp/url': ^0.0.17
-      '@firecamp/utils': ^0.0.11
+      '@firecamp/utils': 0.0.12
       '@react-icons/all-files': ^4.1.0
       autoprefixer: ^10.4.8
       babel-eslint: ^7.1.0
@@ -80,7 +80,7 @@ importers:
     dependencies:
       '@babel/runtime': 7.20.6
       '@firecamp/url': 0.0.17
-      '@firecamp/utils': 0.0.11
+      '@firecamp/utils': 0.0.12
       '@react-icons/all-files': 4.1.0
       autoprefixer: 10.4.13
       dotenv: 16.0.3
@@ -157,7 +157,7 @@ importers:
     specifiers:
       '@firecamp/rest-executor': workspace:*
       '@firecamp/types': ^0.1.6
-      '@firecamp/utils': ^0.0.11
+      '@firecamp/utils': 0.0.12
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chai': ^4.3.1
       '@types/chrome': 0.0.204
@@ -188,7 +188,7 @@ importers:
     dependencies:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
       '@firecamp/types': 0.1.6
-      '@firecamp/utils': 0.0.11
+      '@firecamp/utils': 0.0.12
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
       '@types/chai': 4.3.4
@@ -3063,8 +3063,8 @@ packages:
       url-parse: 1.5.10
     dev: false
 
-  /@firecamp/utils/0.0.11:
-    resolution: {integrity: sha512-bWhVreSFB832QQm13orNC8SL0nuZJdovE1PuOHUedsC7zWU1xR8RpdrWN3uaKCz/fsIVcabLrYZYL8L2CV0Yew==}
+  /@firecamp/utils/0.0.12:
+    resolution: {integrity: sha512-UUGjL5Si6+w1zOc/enCX+e9ENJvMKu6JDfAjGJABRLiIY8wEyNCXiMfQvjLzsemeEZTxjnX+qoLhfovjy6U9yw==}
     engines: {node: '>=10'}
     dependencies:
       clean-deep: 3.4.0
@@ -12635,7 +12635,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.4
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
