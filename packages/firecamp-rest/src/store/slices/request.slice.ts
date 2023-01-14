@@ -38,8 +38,6 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   changeConfig: (configKey: string, configValue: any) => any;
   execute(
     variables: {
-      merged: {};
-      workspace: {};
       collection?: {};
     },
     fcAgent: EFirecampAgent
@@ -224,12 +222,23 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
   save: (tabId) => {
     const state = get();
     if (!state.runtime.isRequestSaved) {
+      // sae new request
       const _request = state.preparePayloadForSaveRequest();
       state.context.request.save(_request, tabId, true).then(console.log);
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
+      // update request
       const _request = state.preparePayloadForUpdateRequest();
-      state.context.request.save(_request, tabId);
+      if (!_request) {
+        state.context.app.notify.info(
+          "The request doesn't have any changes to be saved."
+        );
+        return null;
+      }
+      state.context.request.save(_request, tabId).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
     }
   },
 });

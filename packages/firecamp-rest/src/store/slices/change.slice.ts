@@ -23,19 +23,29 @@ interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<IRest>) => void;
   preparePayloadForSaveRequest: () => IRest;
-  preparePayloadForUpdateRequest: () => Partial<IRest>;
+  preparePayloadForUpdateRequest: () => Partial<IRest | null>;
+  /**
+   * dispose request change state
+   * 1. set originalRequest to the current state.request
+   * 2. initialise the rcs state
+   */
+  disposeRCS: () => void;
 }
-
-const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
-  set,
-  get
-) => ({
+//@note; always use _cloneDeep at its usage otherrwise it's value will be manipulate at global scope
+const initialSliceState = {
   requestChangeState: {
     url: [],
     scripts: [],
     __meta: [],
     __root: [],
   },
+};
+
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
+  set,
+  get
+) => ({
+  requestChangeState: _cloneDeep(initialSliceState.requestChangeState),
   equalityChecker: (request: Partial<IRest>) => {
     const state = get();
     const {
@@ -114,8 +124,21 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
           break;
       }
     }
-    console.log(_rcs, _ur);
+    if (_object.isEmpty(_ur)) return null; //if request has no change then return null as update payload
+    _ur.__ref = {
+      id: _request.__ref.id,
+      collectionId: _request.__ref.collectionId,
+    };
+    //@ts-ignore
+    _ur.__changes = { ..._rcs };
+    console.log(_ur);
     return _ur;
+  },
+  disposeRCS: () => {
+    set((s) => ({
+      originalRequest: _cloneDeep(s.request),
+      requestChangeState: _cloneDeep(initialSliceState.requestChangeState),
+    }));
   },
 });
 

@@ -18,6 +18,7 @@ import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
 import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
+import platformContext from '.';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -65,8 +66,7 @@ const request: IPlatformRequestService = {
   },
 
   /**
-   * Open save request modal if request is newly created
-   * if request is already saved then update request with chanes/payload
+   * save a new request or update the request changes
    */
   save: async (request: any, tabId: TId, isNew: boolean = false) => {
     if (!AppService.user.isLoggedIn()) {
@@ -74,110 +74,114 @@ const request: IPlatformRequestService = {
     }
     const { onNewRequestCreate, workspace } = useWorkspaceStore.getState();
     const tabState = useTabStore.getState();
+
     const {
       explorer: { collections, folders },
     } = useWorkspaceStore.getState();
-    try {
-      const _request = {
-        ...request,
-        __ref: {
-          ...request.__ref,
-          workspaceId: workspace.__ref.id,
+    const _request = {
+      ...request,
+      __ref: {
+        ...request.__ref,
+        workspaceId: workspace.__ref.id,
+      },
+    };
+    // console.log(workspace, 132456789);
+    if (isNew === true) {
+      return promptSaveItem({
+        header: 'Save Request',
+        texts: { btnOk: 'Save', btnOking: 'Saving...' },
+        collection: {
+          items: [...collections, ...folders],
+          rootOrders: workspace.__meta.cOrders,
         },
-      };
-      // console.log(workspace, 132456789);
-      if (isNew === true) {
-        return promptSaveItem({
-          header: 'Save Request',
-          texts: { btnOk: 'Save', btnOking: 'Saving...' },
-          collection: {
-            items: [...collections, ...folders],
-            rootOrders: workspace.__meta.cOrders,
-          },
-          value: '',
-          validator: ({ value, itemId }) => {
-            let isValid = false,
-              message = '';
-            if (!value) message = 'The request name is required';
-            if (!itemId)
-              message =
-                'Please select the colletion/folder to save the request.';
-            else if (value.length < 3) {
-              message = 'The request name must have min 3 characters';
-            } else {
-              isValid = true;
-            }
-            // TODO: add regex validation
-            return { isValid, message };
-          },
-          executor: async ({ value, itemId }) => {
-            if (!itemId) throw 'The path is not selected';
-            const item = [...collections, ...folders].find(
-              (i) => i.__ref.id == itemId
-            );
-            if (!item)
-              throw 'The collection/folder you have selected is not found';
-            const collectionId = item.__ref.collectionId || item.__ref.id;
-            const folderId = item.__ref.collectionId
-              ? item.__ref.id
-              : undefined;
-            console.log(item, 'res...');
-            _request.__meta.name = value;
-            _request.__meta.description = '0;';
-            _request.__ref.collectionId = collectionId;
-            if (folderId) _request.__ref.folderId = folderId;
-            const { data } = await Rest.request.create(_request);
-            return _request;
-          },
+        value: '',
+        validator: ({ value, itemId }) => {
+          let isValid = false,
+            message = '';
+          if (!value) message = 'The request name is required';
+          if (!itemId)
+            message = 'Please select the colletion/folder to save the request.';
+          else if (value.length < 3) {
+            message = 'The request name must have min 3 characters';
+          } else {
+            isValid = true;
+          }
+          // TODO: add regex validation
+          return { isValid, message };
+        },
+        executor: async ({ value, itemId }) => {
+          if (!itemId) throw 'The path is not selected';
+          const item = [...collections, ...folders].find(
+            (i) => i.__ref.id == itemId
+          );
+          if (!item)
+            throw 'The collection/folder you have selected is not found';
+          const collectionId = item.__ref.collectionId || item.__ref.id;
+          const folderId = item.__ref.collectionId ? item.__ref.id : undefined;
+          console.log(item, 'res...');
+          _request.__meta.name = value;
+          _request.__meta.description = '0;';
+          _request.__ref.collectionId = collectionId;
+          if (folderId) _request.__ref.folderId = folderId;
+          const { data } = await Rest.request.create(_request);
+          return _request;
+        },
+      })
+        .then(async (_request) => {
+          // console.log(_request, '_request...');
+          return _request;
         })
-          .then(async (_request) => {
-            // console.log(_request, '_request...');
-            return _request;
-          })
-          .then((_request) => {
-            // reflect in explorer
-            onNewRequestCreate(_request);
-            return _request;
-          })
-          .then((_request) => {
-            tabState.changeRootKeys(tabId, {
-              name: _request.__meta?.name,
-              type: _request.__meta?.type || '',
-              request: {
-                url: _request.url,
-                method: _request.method || EHttpMethod.POST,
-                __meta: _request.__meta,
-                __ref: _request.__ref,
-              },
-              __meta: {
-                isSaved: true,
-                hasChange: false,
-                isFresh: false,
-                isDeleted: false,
-                revision: 1,
-              },
-            });
-            // TODO: // update tab meta on save request
-            // tabState.changeMeta(tabId, {
-            //   isSaved: true,
-            //   hasChange: false,
-            //   isFresh: false,
-            // });
-
-            return _request;
+        .then((_request) => {
+          // reflect in explorer
+          onNewRequestCreate(_request);
+          return _request;
+        })
+        .then((_request) => {
+          tabState.changeRootKeys(tabId, {
+            name: _request.__meta?.name,
+            type: _request.__meta?.type || '',
+            request: {
+              url: _request.url,
+              method: _request.method || EHttpMethod.POST,
+              __meta: _request.__meta,
+              __ref: _request.__ref,
+            },
+            __meta: {
+              isSaved: true,
+              hasChange: false,
+              isFresh: false,
+              isDeleted: false,
+              revision: 1,
+            },
           });
-      } else {
-        // TODO: Update request
-        // const { data } = await Rest.request.update(_request.__ref.id, _request);
-      }
-      // return Promise.resolve(response);
-    } catch (error) {
-      console.error({
-        fn: 'onSaveRequest',
-        request,
-        error,
-      });
-      // return Promise.reject(error);
+          return _request;
+        });
+    } else {
+      // Update request
+      return Rest.request
+        .update(_request.__ref.id, _request)
+        .then((res) => {
+          // console.log(res);
+          if (res.data.flag) {
+            platformContext.app.notify.success(
+              'The request changes are successfully saved.'
+            );
+          }
+          return res.data;
+        })
+        .then((request) => {
+          // update tab meta on save request
+          tabState.changeMeta(tabId, {
+            isSaved: true,
+            hasChange: false,
+            isFresh: false,
+          });
+          return request;
+        })
+        .catch((e) => {
+          console.log(e);
+          if (e?.message) platformContext.app.notify.alert(e.message);
+        });
     }
   },
 
