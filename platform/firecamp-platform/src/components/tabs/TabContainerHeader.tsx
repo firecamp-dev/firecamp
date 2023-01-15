@@ -8,18 +8,19 @@ import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 import EnvironmentSelector from '../common/environment/selector/EnvironmentSelector';
 import Menu from './header/Menu';
-
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
 import { ITabStore, useTabStore } from '../../store/tab';
 import GlobalCreateDD from '../common/GlobalCreate';
+import platformContext from '../../services/platform-context';
 
 const TabHeaderContainer: FC = () => {
   const tabApi = useRef({});
-  const { activeTab } = useTabStore(
+  const { activeTab, getTab } = useTabStore(
     (s: ITabStore) => ({
       activeTab: s.activeTab,
       // orders: s.orders
+      getTab: s.getTab,
     }),
     shallow
   );
@@ -60,6 +61,27 @@ const TabHeaderContainer: FC = () => {
     emitter.emit(EPlatformTabs.openNew);
   };
 
+  const closeTab = (tabId) => {
+    const tab = getTab(tabId);
+    if (!tab.__meta.hasChange) emitter.emit(EPlatformTabs.close, tabId);
+    else {
+      platformContext.window.confirm({
+        title:
+          'The request has changes which are not saved, You can forcefully close the request by ignorig the current changes.',
+        message: '',
+        texts: {
+          btnCancle: 'Cancle',
+          btnConfirm: 'Ignore Changes & Close Request',
+        },
+        onConfirm: () => {
+          emitter.emit(EPlatformTabs.close, tabId);
+        },
+        onCancel: () => {},
+        onClose: () => {},
+      });
+    }
+  };
+
   return (
     <Column
       overflow="visible"
@@ -93,7 +115,7 @@ const TabHeaderContainer: FC = () => {
               tabsVersion={2}
               closeTabIconMeta={{
                 show: true,
-                onClick: (id) => emitter.emit(EPlatformTabs.close, id),
+                onClick: closeTab,
               }}
               tabIndex={-1}
               focus={false}
