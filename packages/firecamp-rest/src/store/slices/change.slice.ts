@@ -2,7 +2,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
-import { IRest } from '@firecamp/types';
+import { ERequestTypes, IRest } from '@firecamp/types';
 import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
@@ -106,7 +106,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
 
     for (let key in _rcs) {
       /**
-       * @note: if _rcs kry is empty then continue the next loop
+       * @note: if _rcs key is empty then continue the next loop
        * because _object.pick will return the empty {} in below case if we allow to loop with _rcs[key] = []
        */
       if (!_rcs[key].length) continue;
@@ -125,6 +125,10 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
       }
     }
     if (_object.isEmpty(_ur)) return null; //if request has no change then return null as update payload
+    //@ts-ignore
+    _ur.__meta = {
+      type: ERequestTypes.Rest,
+    };
     _ur.__ref = {
       id: _request.__ref.id,
       collectionId: _request.__ref.collectionId,

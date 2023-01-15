@@ -222,9 +222,12 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
   save: (tabId) => {
     const state = get();
     if (!state.runtime.isRequestSaved) {
-      // sae new request
+      // save new request
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId, true).then(console.log);
+      state.context.request.save(_request, tabId, true).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
       // update request
