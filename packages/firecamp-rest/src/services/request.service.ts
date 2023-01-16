@@ -25,13 +25,13 @@ import {
 } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
 import { IStoreState, IUiRequestPanel } from '../store';
-import { ERequestPanelTabs, IRestClientRequest } from '../types';
+import { ERequestPanelTabs } from '../types';
 import { configState, RuntimeBodies } from '../constants';
 import { IAuthHeader } from './auth/types';
 import { Auth } from '.';
 
 export const prepareUIRequestPanelState = (
-  request: Partial<IRestClientRequest>
+  request: Partial<IRest>
 ): IUiRequestPanel => {
   let updatedUiStore: IUiRequestPanel = {};
 
@@ -107,14 +107,13 @@ export const isRestBodyEmpty = (body: IRestBody): boolean => {
 /**
  * normalize the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
  */
-export const normalizeRequest = (
-  request: Partial<IRest>
-): IRestClientRequest => {
+export const normalizeRequest = (request: Partial<IRest>): IRest => {
   // prepare normalized request aka _nr
-  const _nr: IRestClientRequest = {
+  const _nr: IRest = {
     url: { raw: '', queryParams: [], pathParams: [] },
     method: EHttpMethod.GET,
     body: { value: '', type: ERestBodyTypes.None },
+    //@ts-ignore
     auth: { value: '', type: EAuthTypes.None },
     __meta: {
       name: '',
@@ -207,6 +206,7 @@ export const normalizeRequest = (
   if (!_object.isEmpty(auth)) {
     _nr.auth = { value: auth.value, type: auth.type };
   } else {
+    //@ts-ignore
     _nr.auth = { value: '', type: EAuthTypes.None };
   }
   // _nr.auth = !_object.isEmpty(auth)
@@ -248,7 +248,7 @@ export const initialiseStoreFromRequest = (
   _request: Partial<IRest>,
   tabId: TId
 ): IStoreState => {
-  const request: IRestClientRequest = normalizeRequest(_request);
+  const request: IRest = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
   console.log({ request });
 
@@ -285,69 +285,13 @@ export const initialiseStoreFromRequest = (
     },
   };
 };
-/**
- * Normalize variables at runtime (on send request)
- * Set and unset variables from scripts response and update variables to platform
- */
-export const normalizeVariables = (
-  existing: {
-    collection?: { [key: string]: any };
-    workspace: { [key: string]: any };
-  },
-  updated: {
-    workspace: {
-      variables: { [key: string]: any };
-      unsetVariables: string[];
-      name: string;
-      clearEnvironment: boolean;
-    };
-    collection?: {
-      variables: { [key: string]: any };
-      unsetVariables: string[];
-      name: string;
-      clearEnvironment: boolean;
-    };
-  }
-): Promise<{
-  collection?: { [key: string]: any };
-  workspace: { [key: string]: any };
-}> => {
-  // updated variables
-  let updatedVariables: {
-    collection?: { [key: string]: any };
-    workspace: { [key: string]: any };
-  } = existing;
-
-  ['workspace', 'collection'].forEach((scope) => {
-    // if clear environment is true then set variables as empty
-    if (updated[scope].clearEnvironment === true) {
-      updatedVariables[scope] = {};
-    } else {
-      // set variables, updated variables
-      updatedVariables[scope] = Object.assign(
-        updatedVariables[scope],
-        updated[scope].variables
-      );
-
-      // unset variables, removed variables
-      if (updated[scope].unsetVariables) {
-        updatedVariables[scope] = _object.omit(
-          updatedVariables[scope],
-          updated[scope].unsetVariables
-        );
-      }
-    }
-  });
-
-  return Promise.resolve(updatedVariables);
-};
 
 /**
- * Prepare normalize payload for send request.
+ * prepare normalize payload for send request.
  */
 export const normalizeSendRequestPayload = async (
-  request: IRestClientRequest,
-  originalRequest: IRestClientRequest
+  request: IRest,
+  originalRequest: IRest
 ) => {
   const _request: IRest = _object.pick(request, [
     'url',

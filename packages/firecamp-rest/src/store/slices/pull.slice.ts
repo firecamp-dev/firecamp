@@ -1,10 +1,9 @@
-import { IUiAuth } from '@firecamp/types';
+import { IRest } from '@firecamp/types';
 import { _object, _auth } from '@firecamp/utils';
-import { IRestClientRequest } from '../../types';
 import { TStoreSlice } from '../store.type';
 
 /**
- * Reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
+ * @reference: https://github.com/firecamp-io/firecamp-collaboration-json-examples/blob/main/push/v3/requests/rest/rest.u.json
  */
 
 interface IPullSlice {
@@ -15,7 +14,7 @@ interface IPullSlice {
    */
   getMergedRequestByPullAction?: (
     pullPayload: any //IPushPayload
-  ) => Promise<IRestClientRequest> | PromiseRejectedResult; //define type for pullPayload here
+  ) => Promise<IRest> | PromiseRejectedResult; //define type for pullPayload here
 }
 
 const createPullActionSlice: TStoreSlice<IPullSlice> = (set, get) => ({
@@ -27,8 +26,8 @@ const createPullActionSlice: TStoreSlice<IPullSlice> = (set, get) => ({
       pullActionPayload._action.keys
     ) {
       let pullPayload = _object.omit(pullActionPayload, ['_action']);
-      let existingRequest: IRestClientRequest = get().request;
-      let updatedRequest: IRestClientRequest = existingRequest;
+      let existingRequest: IRest = get().request;
+      let updatedRequest: IRest = existingRequest;
       let pullAction: any = pullActionPayload._action.keys;
 
       for (let key in pullAction) {
@@ -49,26 +48,27 @@ const createPullActionSlice: TStoreSlice<IPullSlice> = (set, get) => ({
             let updates = _object.pick(
               pullPayload[key],
               pullAction[key]
-            ) as IRestClientRequest;
+            ) as IRest;
             if (key in pullPayload) {
               updatedRequest[key] = _object.mergeDeep(
                 updatedRequest[key],
                 updates
-              ) as IRestClientRequest;
+              ) as IRest;
             }
             break;
           case 'auth':
             if (key in pullPayload) {
               // normalize auth
-              let normalizedAuth: IUiAuth = _auth.normalizeToUi(
-                _object.pick(pullPayload[key], pullAction[key])
-              );
+              let normalizedAuth: any = //IUiAuth
+                _auth.normalizeToUi(
+                  _object.pick(pullPayload[key], pullAction[key])
+                );
 
               // merge existing auth with normalized auth
               updatedRequest[key] = _object.mergeDeep(
                 updatedRequest[key],
                 normalizedAuth
-              ) as IUiAuth;
+              ) as any; //IUiAuth;
             }
             break;
 

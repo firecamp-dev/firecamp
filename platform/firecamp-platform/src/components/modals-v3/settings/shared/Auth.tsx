@@ -6,7 +6,7 @@ import {
   TabHeader,
 } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
-import { EAuthTypes, IUiAuth, TId } from '@firecamp/types';
+import { EAuthTypes, TId } from '@firecamp/types';
 import { _env, _object, _auth, _array } from '@firecamp/utils';
 import equal from 'deep-equal';
 import { IExplorerSettingsUi } from '../types';
@@ -203,7 +203,7 @@ interface IAuthSettingUi {
     | EPlatformModalTypes.CollectionSetting
     | EPlatformModalTypes.FolderSetting;
 
-  auth: IUiAuth; //todo: define a proper type here
+  auth: any //IUiAuth; //todo: define a proper type here
   initialPayload: IExplorerSettingsUi;
   activeAuthType: EAuthTypes;
   isRequesting?: boolean;

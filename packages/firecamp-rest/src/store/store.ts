@@ -5,7 +5,6 @@ import { TId, IRest } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';
 import {
   prepareUIRequestPanelState,
-  normalizeVariables,
   normalizeSendRequestPayload,
   initialiseStoreFromRequest,
 } from '../services/request.service';
@@ -18,7 +17,6 @@ import {
   createPullActionSlice,
   createRequestChangeStateSlice,
 } from './slices/index';
-import { IRestClientRequest } from '../types';
 import { IStoreState, IStore } from './store.type';
 
 const {
@@ -52,7 +50,7 @@ const createStore = (initialState: IStoreState) =>
         _object.pick(
           initialState.request,
           requestSliceKeys
-        ) as IRestClientRequest
+        ) as IRest
       ),
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createResponseSlice(set, get),

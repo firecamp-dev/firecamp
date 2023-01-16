@@ -12,7 +12,6 @@ import {
   IPullSlice,
   IRequestChangeStateSlice,
 } from './slices';
-import { IRestClientRequest } from '../types';
 
 interface IStore
   extends IRequestSlice,
@@ -28,7 +27,7 @@ interface IStore
 }
 
 interface IStoreState {
-  request?: IRestClientRequest;
+  request?: IRest;
   runtime?: IRuntime;
   response?: IRestResponse;
   ui?: IUi;
