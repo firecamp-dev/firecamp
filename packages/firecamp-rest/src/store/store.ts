@@ -38,7 +38,6 @@ const createStore = (initialState: IStoreState) =>
         set((s) => ({
           ...s,
           ...initState,
-          // @ts-ignore
           originalRequest: _cloneDeep(initState.request) as IRest,
         }));
         // update auth type, generate auth headers
@@ -47,10 +46,7 @@ const createStore = (initialState: IStoreState) =>
       ...createRequestSlice(
         set,
         get,
-        _object.pick(
-          initialState.request,
-          requestSliceKeys
-        ) as IRest
+        _object.pick(initialState.request, requestSliceKeys) as IRest
       ),
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createResponseSlice(set, get),

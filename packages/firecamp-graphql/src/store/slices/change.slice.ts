@@ -1,4 +1,4 @@
-import { IGraphQL } from '@firecamp/types';
+import { ERequestTypes, IGraphQL } from '@firecamp/types';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
@@ -11,12 +11,6 @@ import {
 import { normalizeRequest } from '../../services/request.service';
 import { TStoreSlice } from '../store.type';
 
-const RequestChangeState: IRequestChangeState = {
-  url: [],
-  __meta: [],
-  __root: [],
-};
-
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
   __meta?: EReqChangeMetaKeys[];
@@ -28,13 +22,27 @@ interface IRequestChangeStateSlice {
   equalityChecker: (request: Partial<IGraphQL>) => void;
   preparePayloadForSaveRequest: () => IGraphQL;
   preparePayloadForUpdateRequest: () => Partial<IGraphQL>;
+  /**
+   * dispose request change state
+   * 1. set originalRequest to the current state.request
+   * 2. initialise the rcs state
+   */
+  disposeRCS: () => void;
 }
+//@note; always use _cloneDeep at its usage otherrwise it's value will be manipulate at global scope
+const initialSliceState = {
+  requestChangeState: {
+    url: [],
+    __meta: [],
+    __root: [],
+  },
+};
 
 const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
   set,
   get
 ) => ({
-  requestChangeState: RequestChangeState,
+  requestChangeState: _cloneDeep(initialSliceState.requestChangeState),
   equalityChecker: (request: Partial<IGraphQL>) => {
     const state = get();
     const {
@@ -46,13 +54,16 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
 
     for (let key in request) {
       switch (key) {
-        case 'method':
-        case 'config':
-        case 'headers':
+        case EReqChangeRootKeys.method:
+        case EReqChangeRootKeys.config:
+        case EReqChangeRootKeys.headers:
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {
-            _rcs.__root = _array.without(_rcs.__root, key);
+            _rcs.__root = _array.without(
+              _rcs.__root,
+              key
+            ) as EReqChangeRootKeys[];
           }
           break;
         case 'url':
@@ -100,8 +111,25 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
           break;
       }
     }
+    if (_object.isEmpty(_ur)) return null; //if request has no change then return null as update payload
+    //@ts-ignore
+    _ur.__meta = {
+      type: ERequestTypes.GraphQL,
+    };
+    _ur.__ref = {
+      id: _request.__ref.id,
+      collectionId: _request.__ref.collectionId,
+    };
+    //@ts-ignore
+    _ur.__changes = { ..._rcs };
     console.log(_ur);
     return _ur;
+  },
+  disposeRCS: () => {
+    set((s) => ({
+      originalRequest: _cloneDeep(s.request),
+      requestChangeState: _cloneDeep(initialSliceState.requestChangeState),
+    }));
   },
 });
 

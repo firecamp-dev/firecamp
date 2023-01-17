@@ -1,6 +1,12 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
-import { EFirecampAgent, EHttpMethod, IHeader, IRest, TId } from '@firecamp/types';
+import {
+  EFirecampAgent,
+  EHttpMethod,
+  IHeader,
+  IRest,
+  TId,
+} from '@firecamp/types';
 import { _clipboard } from '@firecamp/utils';
 import { _object } from '@firecamp/utils';
 import { prepareUIRequestPanelState } from '../../services/request.service';
@@ -32,7 +38,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   initialiseRequestByKeyValue: (key: string, value: any) => void;
   changeMethod: (method: EHttpMethod) => any;
   changeHeaders: (headers: IHeader[]) => any;
-  changeMeta: (__meta: any) => any;
+  changeMeta: (__meta: Partial<IRest['__meta']>) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
   execute(
@@ -117,18 +123,8 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       ...state.request.__meta,
       ...__meta,
     };
-    const updatedUiRequestPanel = prepareUIRequestPanelState({
-      __meta: updatedMeta,
-    });
     set((s) => ({
       request: { ...s.request, __meta: updatedMeta },
-      ui: {
-        ...s.ui,
-        requestPanel: {
-          ...s.ui.requestPanel,
-          ...updatedUiRequestPanel,
-        },
-      },
     }));
     state.equalityChecker({ __meta: updatedMeta });
   },
