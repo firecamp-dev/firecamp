@@ -36,7 +36,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
   changeMeta: (key: string, value: any) => {
     const state = get();
     const __meta = {
-      ...(state.request.__meta || {}),
+      ...state.request.__meta,
       [key]: value,
     };
     set((s) => ({
@@ -57,11 +57,23 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     const state = get();
     if (!state.runtime.isRequestSaved) {
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId, true);
+      state.context.request.save(_request, tabId, true).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
       const _request = state.preparePayloadForUpdateRequest();
-      state.context.request.update(_request, tabId);
+      if (!_request) {
+        state.context.app.notify.info(
+          "The request doesn't have any changes to be saved."
+        );
+        return null;
+      }
+      state.context.request.save(_request, tabId).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
     }
   },
 });

@@ -4,7 +4,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 import { IWebSocket, TId } from '@firecamp/types';
 import { initialiseStoreFromRequest } from '../services/reqeust.service';
-
+import { IStore, IStoreState } from './store.type';
 import {
   // request
   createRequestSlice,
@@ -34,7 +34,6 @@ import {
   // ui
   createUiSlice,
 } from './slices';
-import { IStore, IStoreState } from './store.type';
 
 const {
   Provider: StoreProvider,

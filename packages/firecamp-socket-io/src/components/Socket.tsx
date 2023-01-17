@@ -3,17 +3,11 @@ import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
 import { _array, _object } from '@firecamp/utils';
-
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
-import {
-  StoreProvider,
-  createStore,
-  useStore,
-  IStore,
-} from '../store';
 import { initialiseStoreFromRequest } from '../services/request.service';
+import { StoreProvider, createStore, useStore, IStore } from '../store';
 import '../sass/socket.sass';
 
 const Socket = ({ tab, platformContext }) => {

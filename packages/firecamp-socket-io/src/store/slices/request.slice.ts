@@ -1,11 +1,11 @@
 import { ISocketIO, TId } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 import {
   IUrlSlice,
   createUrlSlice,
   IConnectionsSlice,
   createConnectionSlice,
 } from '.';
-import { TStoreSlice } from '../store.type';
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
@@ -44,7 +44,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
   changeMeta: (key: string, value: any) => {
     const state = get();
     const __meta = {
-      ...(state.request.__meta || {}),
+      ...state.request.__meta,
       [key]: value,
     };
     set((s) => ({

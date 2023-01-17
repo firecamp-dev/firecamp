@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { _array, _object } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
+import { _array, _object } from '@firecamp/utils';
+import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
 
 import { initialiseStoreFromRequest } from '../services/reqeust.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
@@ -15,7 +15,6 @@ import '../sass/ws.sass';
 import {
   createStore,
   useStore,
-  useStoreApi,
   StoreProvider,
   IStore,
 } from '../store';

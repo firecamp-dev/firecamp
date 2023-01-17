@@ -3,14 +3,13 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
+import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
 } from '../../types';
-import { normalizeRequest } from '../../services/request.service';
 import { TStoreSlice } from '../store.type';
-
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
   __meta?: EReqChangeMetaKeys[];
