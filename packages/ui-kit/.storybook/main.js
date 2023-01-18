@@ -47,7 +47,8 @@ module.exports = {
       ...config.resolve.alias,
       "@firecamp/rest-executor/dist/esm": path.join(__dirname,"../../firecamp-rest-executor/dist/esm/script-runner/snippets/index.js"),
       "react-hook-form": path.join(__dirname,"../../../node_modules/react-hook-form")
-    //   "https": path.join(__dirname, "../../../node_modules/@types/node/https")
+    //   "https": path.join(__dirname, "../../../node_modules/@types/node/https"),
+    // "fs": path.join(__dirname, "../../../node_modules/@types/node/ts4.8/fs.d.ts"),
     //   "react/jsx-dev-runtime": path.join(__dirname, "../../../node_modules/react/jsx-dev-runtime.js"),
     //   "react/jsx-runtime": path.join(__dirname, "../../../node_modules/react/jsx-runtime.js")
     }

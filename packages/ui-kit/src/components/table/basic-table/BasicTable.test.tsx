@@ -1,12 +1,63 @@
 import { render, screen, waitFor, within } from "@testing-library/react";
 import { _array } from '@firecamp/utils';
 import "@testing-library/jest-dom";
-import { BasicTableData, DisableSortRow, DisableNewRow, DisableRemoveRow, DisableColumns } from "./BasicTable.stories";
+
+import BasicTable from "./BasicTable";
+import { IBasicTable } from "./BasicTable.interfaces";
+import { ITableRows, TTableApi } from "../primitive/table.interfaces";
+
 import ResizeObserver from "../../../../__mocks__/ResizeObserver";
 import { dragAndDrop, dropAndMove, mouseDrop, mouseUp, click } from "../../../../__mocks__/eventMock";
 import { defaultData, _columns } from '../../../../__mocks__/testData';
 
 window.ResizeObserver = ResizeObserver;
+
+const Template = ({...args}: IBasicTable<any>) => {
+  return (
+    <BasicTable
+    {...args}
+    />
+  );
+};
+const BasicTableDataArgs = {
+  rows: defaultData,
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value)
+};
+const DisableSortRowArgs = {
+  rows: defaultData,
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
+  options: {
+    allowSort: false,
+  }
+};
+const DisableNewRowArgs = {
+  rows: defaultData,
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
+  options: {
+    allowRowAdd: false,
+  }
+};
+
+const DisableRemoveRowArgs = {
+  rows: defaultData,
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
+  options: {
+    allowRowRemove: false,
+  }
+};
+const DisableColumnsArgs = {
+  rows: defaultData,
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
+  options: {
+    disabledColumns: ["disable", "value"],
+  }
+};
+
 
 
 describe("Table : ", () => {
@@ -14,11 +65,7 @@ describe("Table : ", () => {
   const COLUMNS_PROVIDED = _columns;
   const ROWS_PROVIDED = defaultData;
 
-  const mountTableComponent = () => render(<BasicTableData {...BasicTableData.args} />);
-  const mountDisableSortRowTableComponent = () => render(<DisableSortRow {...DisableSortRow.args} />);
-  const mountDisableNewRowTableComponent = () => render(<DisableNewRow {...DisableNewRow.args} />);
-  const mountDisableRemoveRowTableComponent = () => render(<DisableRemoveRow {...DisableRemoveRow.args} />);
-  const mountDisableColumnsTableComponent = () => render(<DisableColumns {...DisableColumns.args} />);
+  const mountTableComponent = () => render(<Template {...BasicTableDataArgs} />);
 
   const getRenderedTable = () => screen.getByRole('table');
 
@@ -91,8 +138,6 @@ describe("Table : ", () => {
       let updatedColumnWidth = parseInt(resizerElement.parentElement.style.minWidth);
 
       expect(updatedColumnWidth).toBeGreaterThan(intialColumnWidth);
-    } else {
-      expect(BasicTableData.args.tableResizable).toBeFalsy();
     }
   });
 
@@ -110,8 +155,18 @@ describe("Table : ", () => {
     expect(initialRowId).toBe(updatedRowId);
   });
 
+
+  test('table add options : should add a new row on click action on "Add Row" button ', async () => {
+    mountTableComponent();
+    let initialMountedRow = await getRenderedTableRow();
+    let AddRowButton = screen.getByRole('button', { name: 'Add Row' });
+    click(AddRowButton);
+    let updatedMountedRow = await waitFor(() => getRenderedTableRow());
+    expect(updatedMountedRow).toHaveLength(initialMountedRow.length + 1);
+  });
+
   test('table options : allowSort to disable the row sorting ', async () => {
-    mountDisableSortRowTableComponent()
+    render(<Template {...DisableSortRowArgs} />);
     const tableRows = await getRenderedTableRow();
     tableRows.map((row: HTMLElement) => {
       let SortElementContainerDiv = row.firstChild.firstChild as HTMLElement;
@@ -122,7 +177,7 @@ describe("Table : ", () => {
   })
 
   test('table options : allowRowAdd value should prevent the action on "Add Row" button and apply disable styles ', async () => {
-    mountDisableNewRowTableComponent();
+    render(<Template {...DisableNewRowArgs} />);
     let initialMountedRow = await getRenderedTableRow();
     let AddRowButton = screen.getByRole('button', { name: 'Add Row' });
     expect(AddRowButton).toHaveClass('cursor-default')
@@ -132,7 +187,7 @@ describe("Table : ", () => {
   });
 
   test('table options : allowRowRemove value should not render trash icon ', async () => {
-    mountDisableRemoveRowTableComponent();
+    render(<Template {...DisableRemoveRowArgs} />);
     let tableRows = await getRenderedTableRow();
     tableRows.map((row: HTMLElement) => {
       expect(row.lastChild.hasChildNodes()).toBeFalsy();
@@ -140,10 +195,10 @@ describe("Table : ", () => {
   });
 
   test('table options : disabledColumns [] should pass the disable prop to the child element whose column key is defined', async () => {
-    mountDisableColumnsTableComponent(); //"disable", "value"
+    render(<Template {...DisableColumnsArgs} />); //"disable", "value"
 
     let columnIndex = COLUMNS_PROVIDED.reduce((obj, column, index) =>
-      (DisableColumns.args.options.disabledColumns.includes(column.key)) ?
+      (DisableColumnsArgs.options.disabledColumns.includes(column.key)) ?
         [...obj, { index, key: column.key }] : obj
       , []);
 

@@ -39,8 +39,10 @@ const Editor: FC<IEditor> = ({
 }) => {
   const editorIdRef = useRef('');
   useEffect(() => {
-    MonacoFirecampLangInit();
-    SetCompletionProvider(EEditorLanguage.HeaderKey, { name: 'Nishchit' });
+    MonacoFirecampLangInit(() => {
+      SetCompletionProvider(EEditorLanguage.HeaderKey, { name: 'Nishchit' });
+    });
+    
   }, []);
 
   useEffect(() => {
@@ -221,6 +223,7 @@ const Editor: FC<IEditor> = ({
         <div>{!value ? placeholder || '' : ''}</div>
       </div>
       <MonacoEditor
+        data-testid="monaco-editor"
         language={language}
         defaultValue={value}
         value={value}

@@ -24,20 +24,21 @@ const ActionItem: FC<IActionItem> = ({
       { 'before:block before:z-0 before:content-[""] before:absolute before:top-0 before:bottom-0 before:left-0 before:w-0.5 before:bg-activityBarActiveBorder text-activityBarForeground bg-activityBarActiveBackground': active == true },
       className)
     } style={style} onClick={onClick} data-tip={tooltip}
-    data-for={id}>
+      data-for={id}>
 
       {!!icon
         ? icon
         : <VscAccount
-            /*title="Account"
-              size={24}*/
-            tabIndex={-1}
-            data-tip={tooltip}
-            data-for={id}
+          /*title="Account"
+            size={24}*/
+          tabIndex={-1}
+          data-tip={tooltip}
+          data-for={id}
         />}
 
+      {/* @ts-ignore */}
       <ReactTooltip
-      data-delay-hide='10000'
+        data-delay-hide='10000'
         id={id}
         className="bg-appForegroundInActive"
         place="right"
@@ -82,5 +83,5 @@ export interface IActionItem {
    */
   tooltip: string,
 
-  onClick: ()=> void
+  onClick: () => void
 }

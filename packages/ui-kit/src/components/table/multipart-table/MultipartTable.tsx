@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { FC, memo, useEffect, useRef, useState } from 'react';
 import equals from 'deep-equal';
 import { _array } from '@firecamp/utils';
@@ -13,39 +14,34 @@ import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table, { TTableApi } from '../primitive/Table';
 
-import { IMultiPartInput, ERowType } from './MultipartTable.interfaces';
+import { IMultipartIFT, IMultiPartInput, ERowType } from './MultipartTable.interfaces';
+import { TRenderCell } from '../primitive/table.interfaces';
 
-const MultipartTable = ({
-  name = '',
-  multipartKey = 'value',
+const MultipartTable: FC<IMultipartIFT> = ({
+  name = '', //unused prop
+  multipartKey = 'value',   //unused prop
   rows = [],
   options = {},
-  onChange = (rs) => {},
-  onMount = (api) => {},
+  onChange = () => {},
+  onMount = () => {},
 }) => {
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
-    { id: 'select', key: 'disable', name: '', width: '40px' },
+    { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
     { id: 'key', key: 'key', name: 'Key', width: '100px' },
-    { id: 'value', key: 'value', name: 'Value', width: '250px' },
+    { id: 'value', key: 'value', name: 'Value', width: '100px' },
     {
       id: 'description',
       key: 'description',
       name: 'Description',
       width: '150px',
+      resizeWithContainer: true,
     },
-    { id: 'remove', key: '', name: '', width: 20 },
+    { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
   ];
 
-  const handleDrag = (a) => {
-    console.log(a);
-  };
-  const handleDrop = (a) => {
-    console.log(a);
-  };
-
-  const renderCell = (
+  const renderCell: TRenderCell<any> = (
     column,
     cellValue,
     rowIndex,
@@ -62,7 +58,7 @@ const MultipartTable = ({
             <span
               draggable={true}
               onDragStart={(e) => {
-                handleDrag(row, rowIndex);
+                handleDrag(row);
               }}
               className="flex"
             >
@@ -160,8 +156,6 @@ const MultipartTable = ({
           description: '',
         }}
         renderCell={renderCell}
-        handleDrag={handleDrag}
-        handleDrop={handleDrop}
         options={options}
         onChange={(rows) => {
           // console.log(rows)
@@ -213,12 +207,12 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     //   }
     // }, [value]);
 
-    const _onChangeTextInput = (e) => {
+    const _onChangeTextInput = (e: Event & { target: HTMLInputElement }) => {
       const value = e.target.value;
       onChange({ target: { value } });
     };
 
-    const _onChangeFileInput = (e) => {
+    const _onChangeFileInput = (e: Event & { target: HTMLInputElement }) => {
       // console.log(e.target.files, 'e...');
       const file = e.target.files[0];
       onChangeFile({ target: { file } }); // It'll always be a single file
@@ -276,18 +270,18 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
 
             <div
               key={`${row.id}-file-type`}
-              className="cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre"
+              className="cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre mr-1"
               onClick={_onClick}
             >
               {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}
             </div>
           </>
         )}
-        <div className="absolute cursor-pointer" style={{ right: '5px', bottom: '-10px' }}>
+        <div className="absolute cursor-pointer right-0 bottom-0 pr-1">
           {type == 'text' ? (
-            <VscTextSize onClick={_changeType} />
+            <VscTextSize onClick={_changeType} title='IconTextSize' />
           ) : (
-            <VscFile onClick={_changeType} />
+            <VscFile onClick={_changeType} title='IconFile' />
           )}
         </div>
       </div>

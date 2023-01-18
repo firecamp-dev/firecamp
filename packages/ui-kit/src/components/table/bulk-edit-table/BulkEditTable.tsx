@@ -91,7 +91,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
         <BasicTable
           onChange={_onChangeRows}
           rows={rows}
-          name={title}
+          title={title}
           options={options}
           // disabled={disabled}
           onMount={onMount}

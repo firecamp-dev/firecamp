@@ -7,7 +7,7 @@ import FirecampCompletionProvider from './editor.completion-provider';
 import FirecampHoverProvider from './editor.hover-provider';
 
 let monaco: Monaco;
-export default () => {
+export default (_callback) => {
   loader.init().then((_monaco) => {
     monaco = _monaco;
     _registerLanguage(EEditorLanguage.FcText, EditorLangTextMonarch);
@@ -22,6 +22,7 @@ export default () => {
       monaco.editor.defineTheme(EEditorTheme.Dark, EditorDarkTheme);
       monaco.editor.defineTheme(EEditorTheme.Lite, EditorLiteTheme);
     });
+    _callback?.();
   });
 };
 const _registerLanguage = (langId: string, langMonarch: any, cb = () => {}) => {
