@@ -27,9 +27,6 @@ import {
   // handle execution
   IHandleConnectionExecutorSlice,
 
-  // pull
-  IPullSlice,
-
   // ui
   IUi,
   IUiSlice,
@@ -41,7 +38,6 @@ interface IStore
     ICollectionSlice,
     IPlaygroundSlice,
     ILogsSlice,
-    IPullSlice,
     IHandleConnectionExecutorSlice,
     IUiSlice,
     IRequestChangeStateSlice {

@@ -9,7 +9,6 @@ import {
   IResponseSlice,
   IUi,
   IUiSlice,
-  IPullSlice,
   IRequestChangeStateSlice,
 } from './slices';
 
@@ -18,7 +17,6 @@ interface IStore
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IPullSlice,
     IRequestChangeStateSlice {
   originalRequest?: IRest;
   context?: any;

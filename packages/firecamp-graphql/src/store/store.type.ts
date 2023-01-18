@@ -9,7 +9,6 @@ import {
   ICollectionSlice,
   IRuntime,
   IRuntimeSlice,
-  IPullSlice,
   IUi,
   IUiSlice,
   IRequestChangeStateSlice,
@@ -20,7 +19,6 @@ interface IStore
     IPlaygroundsSlice,
     IRuntimeSlice,
     ICollectionSlice,
-    IPullSlice,
     IUiSlice,
     IRequestChangeStateSlice {
   originalRequest?: IGraphQL;

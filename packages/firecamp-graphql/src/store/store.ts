@@ -9,7 +9,6 @@ import {
   createPlaygroundsSlice,
   createCollectionSlice,
   createRuntimeSlice,
-  createPullActionSlice,
   createUiSlice,
   createRequestChangeStateSlice,
 } from './slices';
@@ -32,7 +31,6 @@ const createStore = (initialState: IStoreState) =>
       ...createPlaygroundsSlice(set, get),
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get),
-      ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
       ...createRequestChangeStateSlice(set, get),
 

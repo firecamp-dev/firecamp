@@ -14,7 +14,6 @@ import {
   createRuntimeSlice,
   createResponseSlice,
   createUiSlice,
-  createPullActionSlice,
   createRequestChangeStateSlice,
 } from './slices/index';
 import { IStoreState, IStore } from './store.type';
@@ -57,7 +56,6 @@ const createStore = (initialState: IStoreState) =>
           ...uiRequestPanel,
         },
       }),
-      ...createPullActionSlice(set, get),
       ...createRequestChangeStateSlice(set, get),
     };
   });

@@ -28,9 +28,6 @@ import {
   // handle execution
   createHandleConnectionExecutor,
 
-  // pull
-  createPullActionSlice,
-
   // ui
   createUiSlice,
 } from './slices';
@@ -64,7 +61,6 @@ const createStore = (initialState: IStoreState) =>
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
       ...createLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
-      ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
       ...createRequestChangeStateSlice(set, get),
     };
