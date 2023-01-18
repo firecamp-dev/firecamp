@@ -49,7 +49,7 @@ const EditPlaygroundName: FC<any> = ({}) => {
       return;
     }
 
-    updatePlg(true);
+    updatePlg();
     toggleOpen(false);
     // save playground
     // toggleClose

@@ -18,7 +18,7 @@ export interface IPlaygroundRequest
   __meta?: any;
 }
 export interface IPlayground {
-  lastRequest?: IPlaygroundRequest;
+  originalRequest?: IPlaygroundRequest;
   request: IPlaygroundRequest;
   response: Partial<IRestResponse>;
 }
@@ -49,7 +49,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
   /**
    * {
       'playground-1': {
-        lastRequest: null,
+        originalRequest: null,
         request: {
           __ref: { id: 'playground-1' },
           body: 'query MyQuery {\n  __typename\n}',
@@ -72,17 +72,18 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
       const plgsCount = s.runtime?.playgroundTabs?.length;
       const name = `playground-${plgsCount + 1}`;
 
-      const plg = {
+      const plg: IGraphQLPlayground = {
         name,
         body: 'query MyQuery {\n  __typename\n}',
         __meta: { type: EGraphQLOperationType.Query, variables: `{ }` },
+        //@ts-ignore
         __ref: { id: playgroundId },
       };
 
       return {
         playgrounds: {
           ...s.playgrounds,
-          [playgroundId]: { request: plg },
+          [playgroundId]: { request: plg, response: {} },
         },
         runtime: {
           ...s.runtime,
@@ -106,11 +107,11 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
   // open saved playground in tab
   openPlayground: (plgId: TId) => {
     const state = get();
-    const plg: IGraphQLPlayground = state.collection.items?.find(
+    const plg = state.collection.items?.find(
       (i) => i.__ref.id == plgId
-    );
+    ) as IGraphQLPlayground;
     if (!plg) return;
-    // If variables is table like array from old version then convert then in JSON string
+    // if variables is table like array from old version then convert then in JSON string
     if (Array.isArray(plg.__meta?.variables)) {
       const variables = plg.__meta?.variables.reduce((p, n) => {
         p[n.key] = n.value;
@@ -124,7 +125,10 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
       const plgExits = !!s.playgrounds[pId];
       const playgrounds = plgExits
         ? s.playgrounds
-        : { ...s.playgrounds, [pId]: { lastRequest: plg, request: plg } };
+        : {
+            ...s.playgrounds,
+            [pId]: { originalRequest: plg, request: plg, response: {} },
+          };
       const plgRuntimeTabs = plgExits
         ? s.runtime.playgroundTabs
         : [...s.runtime.playgroundTabs, { id: pId, name: plg.name }];
@@ -205,7 +209,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
       let hasChange = false;
       const plgMeta = s.runtime.playgroundsMeta[playgroundId];
 
-      if (plg.lastRequest?.body != value && plgMeta.isSaved) hasChange = true;
+      if (plg.originalRequest?.body != value && plgMeta.isSaved) hasChange = true;
 
       return {
         playgrounds: {
@@ -237,7 +241,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
     set((s) => {
       const plg = s.playgrounds[playgroundId];
       let hasChange = false;
-      if (plg.lastRequest?.__meta.variables != variables) hasChange = true;
+      if (plg.originalRequest?.__meta.variables != variables) hasChange = true;
 
       return {
         playgrounds: {
@@ -296,7 +300,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
           ...s.playgrounds,
           [playgroundId]: {
             ...s.playgrounds[playgroundId],
-            request: plg.lastRequest,
+            request: plg.originalRequest,
           },
         },
         runtime: {

@@ -1,3 +1,4 @@
+import isEqual from 'react-fast-compare';
 import { Rest } from '@firecamp/cloud-apis';
 import {
   IRequestFolder,
@@ -5,6 +6,7 @@ import {
   TId,
   ERequestTypes,
 } from '@firecamp/types';
+import { getOperationNames } from '../../services/GraphQLservice';
 import { TStoreSlice } from '../store.type';
 
 interface ICollection {
@@ -30,7 +32,7 @@ interface ICollectionSlice {
   addItem: (name: string) => Promise<any>;
 
   /** update playground */
-  updateItem: (updateOnlyName?: boolean) => Promise<any>;
+  updateItem: () => Promise<any>;
 }
 
 const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
@@ -146,8 +148,9 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         const playgroundId = r.data.__ref.id;
         set((s) => {
           console.log(r.data);
-          const items = [...s.collection.items, r.data];
-          s.collection.tdpInstance?.addItem(r.data);
+          const newItem = { ...r.data, body: r.data.payload };
+          const items = [...s.collection.items, newItem];
+          s.collection.tdpInstance?.addItem(newItem);
           return {
             collection: { ...s.collection, items },
             ui: { ...s.ui, playgrounds: items?.length },
@@ -155,8 +158,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               ...s.playgrounds,
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
-                request: r.data,
-                lastRequest: null,
+                request: newItem,
+                originalRequest: null,
               },
             },
             runtime: {
@@ -164,7 +167,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               activePlayground: playgroundId,
               playgroundTabs: s.runtime.playgroundTabs.map((t) =>
                 t.id == s.runtime.activePlayground
-                  ? { id: playgroundId, name: r.data.name }
+                  ? { id: playgroundId, name: newItem.name }
                   : t
               ),
               playgroundsMeta: {
@@ -172,6 +175,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
                 [playgroundId]: {
                   ...s.runtime.playgroundsMeta[playgroundId],
                   isSaved: true,
+                  operationNames: getOperationNames(plg.request.body).names,
                 },
               },
             },
@@ -197,7 +201,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     return res;
   },
 
-  updateItem: async (updateOnlyName?: boolean) => {
+  updateItem: async () => {
     const state = get();
     if (!state.request?.__ref.id) return;
     const playgroundId = state.runtime.activePlayground;
@@ -207,18 +211,33 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       __ref: {
         id: plg.request.__ref.id,
         requestId: state.request.__ref.id,
+        requestType: ERequestTypes.GraphQL,
         collectionId: state.request.__ref.collectionId,
       },
     };
-    if (updateOnlyName) {
+
+    const { originalRequest: _oRequest, request: _request } = plg;
+
+    if (!isEqual(_oRequest.name, _request.name)) {
       //@ts-ignore
-      item.name = plg.request.name;
-    } else {
-      //@ts-ignore
-      item.body = plg.request.body;
-      //@ts-ignore
-      item.__meta = plg.request.__meta;
+      item.name = _request.name;
     }
+    if (!isEqual(_oRequest.body, _request.body)) {
+      //@ts-ignore
+      item.body = _request.body;
+    }
+    if (
+      _request.__meta &&
+      typeof _request.__meta.variables == 'string' &&
+      !isEqual(_oRequest.__meta.variables, _request.__meta.variables)
+    ) {
+      //@ts-ignore
+      item.__meta = {
+        variables: _request.__meta.variables,
+      };
+    }
+
+    console.log(item, 'item...');
 
     state.toggleProgressBar(true);
     const res = await Rest.request
@@ -236,7 +255,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               ...s.playgrounds,
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
-                lastRequest: null,
+                originalRequest: null,
               },
             },
             runtime: {
@@ -255,9 +274,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       })
       .then((r) => {
         state.context.app.notify.success(
-          updateOnlyName
-            ? 'The playground name has been changed successfully'
-            : 'The playground has been updated successfully'
+          'The playground has been updated successfully'
         );
       })
       .catch((e) => {

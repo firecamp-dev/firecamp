@@ -31,9 +31,7 @@ type TFolderItem = Partial<IRequestFolder & TItemExtraRef>;
 type TItem = Partial<IGraphQLPlayground & TItemExtraRef>;
 type TCItem = TFolderItem | TItem;
 
-export class TreeDataProvider<T = TTreeItemData>
-  implements ITreeDataProvider
-{
+export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
   private items: Array<TCItem>;
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
@@ -170,7 +168,6 @@ export class TreeDataProvider<T = TTreeItemData>
     });
 
     if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
