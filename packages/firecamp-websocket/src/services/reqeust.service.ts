@@ -88,11 +88,12 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   _nr.connections = connections.map(
     (connection: IWebSocketConnection) =>
       _object.mergeDeep(
-        DefaultConnectionState,
+        _cloneDeep(DefaultConnectionState),
         connection
       ) as IWebSocketConnection
   );
-  if (!_nr.connections?.length) _nr.connections = [DefaultConnectionState];
+  if (!_nr.connections?.length)
+    _nr.connections = [_cloneDeep(DefaultConnectionState)];
 
   // normalize config
   _nr.config = _object.mergeDeep(DefaultConfigState, config || {});
@@ -108,7 +109,7 @@ export const initialiseStoreFromRequest = (
 
   const defaultConnection =
     request.connections?.find((c) => c.isDefault === true) ||
-    DefaultConnectionState;
+    _cloneDeep(DefaultConnectionState);
   const playgroundId = defaultConnection.id;
 
   const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
