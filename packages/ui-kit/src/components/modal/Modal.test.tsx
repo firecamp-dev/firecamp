@@ -38,7 +38,8 @@ describe("Modal component", () => {
         const ModalContainerDiv = ModalContainer.querySelector('#modal-container-div');
 
         expect(ModalContainerDiv).toHaveClass('max-w-screen-md min-w-screen-md bg-modalBackground text-appForeground w-full relative z-9999 max-h-modal flex fc-modal-wrapper');
-        expect(ModalContainerDiv.firstElementChild.childElementCount).toBe(3);
+        expect(ModalContainerDiv.childElementCount).toBe(3);
+    
     });
 
     test("Validating default classnames for modal children elements", () => {
@@ -46,7 +47,7 @@ describe("Modal component", () => {
 
         const ModalContainer = screen.queryByTestId('root');
         const ModalContainerDiv = ModalContainer.querySelector('#modal-container-div');
-        const ModalContainerElements = ModalContainerDiv.firstElementChild.children;
+        const ModalContainerElements = ModalContainerDiv.children;
 
         //Header - dont have default class names
 

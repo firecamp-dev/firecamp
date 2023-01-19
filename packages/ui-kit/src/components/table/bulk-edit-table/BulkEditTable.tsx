@@ -3,10 +3,6 @@ import equal from 'deep-equal';
 import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui-kit';
 import { _table } from '@firecamp/utils';
 import { EEditorLanguage } from '@firecamp/types';
-// import { default as TabHeader } from '../tab-header/TabHeader';
-// import { default as Button } from '../buttons/Button';
-// import { default as BasicTable } from './BasicTable';
-// import { default as Editor } from '../editors/monaco-v2/Editor';
 
 import { IBulkEditTable } from './BulkEditTable.interfaces';
 

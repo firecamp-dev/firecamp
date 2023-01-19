@@ -211,7 +211,3 @@ describe("Tabs component : ", () => {
     });
 
 });
-
-//Discuss:
-// Reorder is not available for tab
-// closeTabIconMeta disabled prop not working

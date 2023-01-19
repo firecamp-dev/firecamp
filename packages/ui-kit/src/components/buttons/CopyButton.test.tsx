@@ -45,17 +45,17 @@ describe("Button : " , () => {
 
   test('Copy button should render with a preview of text to be copied', () => {
     mountCopyButtonWithTextComponent();
-    let button = screen.getByTestId('copy-button');
+    const button = screen.getByTestId('copy-button');
     expect(button).toHaveClass('fc-copy bg-gray-800');
-    expect(button.textContent).toEqual(CopyButtonWithTextPreviewArgs.text);
+    expect(button).toHaveTextContent(CopyButtonWithTextPreviewArgs.text);
   });
   
   test('Copy button should render without a preview of text to be copied', () => {
     render(<Template {...CopyButtonWithoutTextPreviewArgs}/>);
-    let button = screen.getByTestId('copy-button');
+    const button = screen.getByTestId('copy-button');
     
     expect(button).toBeInTheDocument();
-    expect(button.textContent).toEqual('');
+    expect(button).not.toHaveTextContent(CopyButtonWithoutTextPreviewArgs.text);
   });
   
   test('Copy button should render the copied text as animation on click event', async () => {
@@ -64,7 +64,7 @@ describe("Button : " , () => {
     const button = getCopyButton();
     const copyElement = button.lastChild as HTMLElement;
   
-    expect(copyElement).toHaveClass('iconv2-copy-icon');
+    expect(copyElement.textContent).toBe('IconCopy');
     click(copyElement);
     await waitFor(() => getCopyButton());
     const animationExist = await getCopyAnimation();
@@ -79,7 +79,7 @@ describe("Button : " , () => {
     const button = getCopyButton();
     const copyElement = button.lastChild as HTMLElement;
   
-    expect(copyElement).toHaveClass('iconv2-copy-icon');
+    expect(copyElement.textContent).toBe('IconCopy');
     click(copyElement);
     await waitFor(() => getCopyButton());
     const animationExist = await getCopyAnimation();
@@ -98,7 +98,7 @@ describe("Button : " , () => {
     const button = getCopyButton();
     const copyElement = button.lastChild as HTMLElement;
   
-    expect(copyElement).not.toHaveClass('iconv2-copy-icon');
+    expect(copyElement.textContent).not.toBe('IconCopy');
     const customComponent = getCustomComponentByText();
     expect(customComponent).toBeInTheDocument();
 

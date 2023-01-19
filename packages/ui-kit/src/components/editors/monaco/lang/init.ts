@@ -7,7 +7,7 @@ import FirecampCompletionProvider from './editor.completion-provider';
 import FirecampHoverProvider from './editor.hover-provider';
 
 let monaco: Monaco;
-export default (_callback) => {
+export default (_callback: Function) => {
   loader.init().then((_monaco) => {
     monaco = _monaco;
     _registerLanguage(EEditorLanguage.FcText, EditorLangTextMonarch);

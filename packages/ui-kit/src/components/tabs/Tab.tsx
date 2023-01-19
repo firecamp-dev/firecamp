@@ -204,6 +204,8 @@ const Tab: FC<ITab> = ({
             //when user click on the close icon the tab should not call onSelect fn
             e.preventDefault();
             e.stopPropagation();
+            //validate the disabled value for close icon
+            !closeTabIconMeta?.disabled && 
             closeTabIconMeta?.onClick(index, id, e);
           }}
           show={closeTabIconMeta?.show}

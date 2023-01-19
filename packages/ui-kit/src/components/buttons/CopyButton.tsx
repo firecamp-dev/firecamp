@@ -37,7 +37,7 @@ const CopyButton: FC<ICopyButton> = ({
      {children && children.length ? (
        children
      ) : (
-      <FaCopy fontSize={16} onClick={_onClickCopy} className="align-baseline"/>
+      <FaCopy fontSize={16} onClick={_onClickCopy} className="align-baseline" title='IconCopy'/>
      )}
    </div>
  );

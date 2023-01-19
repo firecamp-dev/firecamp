@@ -125,7 +125,7 @@ function createDependencyProposals(
   ];
 }
 
-export default (variables = vars) => ({
+export default (variables = vars as { [k: string]: any }) => ({
   triggerCharacters: ['.', '{'],
   provideCompletionItems: (
     model: monaco.editor.IModel,

@@ -250,6 +250,7 @@ const Editor: FC<IEditor> = ({
           }
 
           // https://www.anycodings.com/1questions/1773746/how-do-i-insert-text-into-a-monaco-editor
+          //@ts-ignore
           editor.insertTextAtCurrentCursor = (text: any) => {
             let p = editor.getPosition();
             editor.executeEdits('', [
