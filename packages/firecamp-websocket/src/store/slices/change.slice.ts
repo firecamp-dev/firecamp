@@ -3,7 +3,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
 import { ERequestTypes, IWebSocket } from '@firecamp/types';
-import { normalizeRequest } from '../../services/reqeust.service';
+import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeUrlKeys,
   EReqChangeMetaKeys,

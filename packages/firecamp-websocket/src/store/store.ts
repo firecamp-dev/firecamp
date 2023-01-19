@@ -3,7 +3,7 @@ import createContext from 'zustand/context';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 import { IWebSocket, TId } from '@firecamp/types';
-import { initialiseStoreFromRequest } from '../services/reqeust.service';
+import { initialiseStoreFromRequest } from '../services/request.service';
 import { IStore, IStoreState } from './store.type';
 import {
   // request

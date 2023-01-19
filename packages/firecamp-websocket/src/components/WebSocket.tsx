@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow';
 import { _array, _object } from '@firecamp/utils';
 import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
 
-import { initialiseStoreFromRequest } from '../services/reqeust.service';
+import { initialiseStoreFromRequest } from '../services/request.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 import SidebarPanel from './sidebar-panel/SidebarPanel';

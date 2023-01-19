@@ -96,7 +96,7 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
     _nr.connections = [_cloneDeep(DefaultConnectionState)];
 
   // normalize config
-  _nr.config = _object.mergeDeep(DefaultConfigState, config || {});
+  _nr.config = _object.mergeDeep(_cloneDeep(DefaultConfigState), config || {});
   return _nr;
 };
 
