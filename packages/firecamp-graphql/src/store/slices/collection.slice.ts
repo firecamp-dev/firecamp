@@ -8,6 +8,7 @@ import {
 } from '@firecamp/types';
 import { getOperationNames } from '../../services/GraphQLservice';
 import { TStoreSlice } from '../store.type';
+import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -19,8 +20,9 @@ interface ICollection {
 interface ICollectionSlice {
   collection: ICollection;
 
+  getCollection: () => ICollection;
   toggleProgressBar: (flag?: boolean) => void;
-  registerTDP: (instance: any) => void;
+  registerTDP: () => void;
   unRegisterTDP: () => void;
 
   initialiseCollection: (collection: ICollection) => void;
@@ -32,7 +34,7 @@ interface ICollectionSlice {
   addItem: (name: string) => Promise<any>;
 
   /** update playground */
-  updateItem: () => Promise<any>;
+  updateItem: (name?: string) => Promise<any>;
 }
 
 const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
@@ -47,9 +49,19 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     folders: [],
   },
 
+  getCollection: () => {
+    return get().collection;
+  },
   // register TreeDatProvider instance
-  registerTDP: (instance: any) => {
-    set((s) => ({ collection: { ...s.collection, tdpInstance: instance } }));
+  registerTDP: () => {
+    set((s) => {
+      const instance = new TreeDataProvider(
+        s.collection.folders,
+        s.collection.items
+      );
+      // instance?.init(collection.folders || [], collection.items || []);
+      return { collection: { ...s.collection, tdpInstance: instance } };
+    });
   },
 
   // unregister TreeDatProvider instance
@@ -201,7 +213,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     return res;
   },
 
-  updateItem: async () => {
+  updateItem: async (name?: string) => {
     const state = get();
     if (!state.request?.__ref.id) return;
     const playgroundId = state.runtime.activePlayground;
@@ -218,9 +230,11 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     const { originalRequest: _oRequest, request: _request } = plg;
 
-    if (!isEqual(_oRequest.name, _request.name)) {
+    // @note: here name will be updated from rename prompt where other plg property will be updated by state value
+    // that is why we're passing name as fn prop and handling other plg info from the state
+    if (name && !isEqual(_oRequest.name, name)) {
       //@ts-ignore
-      item.name = _request.name;
+      item.name = name;
     }
     if (!isEqual(_oRequest.body, _request.body)) {
       //@ts-ignore
@@ -238,28 +252,35 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     }
 
     console.log(item, 'item...');
-
     state.toggleProgressBar(true);
     const res = await Rest.request
       .updateItem(item.__ref.requestId, item.__ref.id, item)
       .then((r) => {
+        const updatedPlg = r.data;
         set((s) => {
           const items = s.collection.items.map((i) => {
-            if (i.__ref.id == r.data.__ref.id) return { ...i, ...r.data };
+            if (i.__ref.id == updatedPlg.__ref.id)
+              return { ...i, ...updatedPlg };
             return i;
           });
-          s.collection.tdpInstance?.updateItem(r.data);
+          s.collection.tdpInstance?.updateItem(updatedPlg);
           return {
             collection: { ...s.collection, items },
             playgrounds: {
               ...s.playgrounds,
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
+                request: { ...updatedPlg },
                 originalRequest: null,
               },
             },
             runtime: {
               ...s.runtime,
+              playgroundTabs: s.runtime.playgroundTabs.map((t) => {
+                if (t.id == updatedPlg.__ref.id)
+                  return { ...t, name: updatedPlg.name };
+                return t;
+              }),
               playgroundsMeta: {
                 ...s.runtime.playgroundsMeta,
                 [playgroundId]: {

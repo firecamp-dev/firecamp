@@ -1,20 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
-
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { TreeDataProvider } from './collection-tree/TreeDataProvider';
-import {
-  IStore,
-  useStore,
-  useStoreApi,
-} from '../../../store';
+import { IStore, useStore, useStoreApi } from '../../../store';
 
 const CollectionTab = () => {
-  const treeRef = useRef();
   const { isCollectionEmpty } = useStore(
     (s: IStore) => ({
       isCollectionEmpty:
@@ -22,33 +14,6 @@ const CollectionTab = () => {
     }),
     shallow
   );
-  const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
-    useStoreApi().getState() as IStore;
-
-  const dataProvider = useRef(new TreeDataProvider([], []));
-
-  useEffect(() => {
-    registerTDP(dataProvider.current);
-    return unRegisterTDP;
-  }, []);
-
-  const openPlg = (plgId) => {
-    openPlayground(plgId);
-  };
-  const deletePlg = (plgId: string) => {
-    context.window
-      .confirm({
-        title: 'Are you sure to delete the playground?',
-        texts: {
-          btnConfirm: 'Yes, delete it.',
-        },
-      })
-      .then((s) => {
-        console.log(plgId, 'plgId...');
-        deleteItem(plgId);
-      });
-  };
-
   return (
     <Pane
       expanded={true}
@@ -80,40 +45,78 @@ const CollectionTab = () => {
             </div>
           );
         }
-
-        return (
-          <UncontrolledTreeEnvironment
-            canRename={true}
-            canReorderItems={true}
-            canDragAndDrop={true}
-            canDropOnFolder={true}
-            keyboardBindings={{
-              renameItem: ['enter', 'f2'],
-              abortRenameItem: ['esc'],
-            }}
-            dataProvider={dataProvider.current}
-            onStartRenamingItem={(a) => {
-              console.log(a, 'onStartRenamingItem');
-            }}
-            // onSelectItems={onSelectItems}
-            getItemTitle={(item) => item.data?.name}
-            viewState={{}}
-            renderItemArrow={treeRenderer.renderItemArrow}
-            renderItem={(props) =>
-              treeRenderer.renderItem({ ...props, openPlg, deletePlg })
-            }
-          >
-            <Tree
-              treeId="fc-environment-tree"
-              rootItem="root"
-              treeLabel="Firecamp Environment Management"
-              ref={treeRef}
-            />
-          </UncontrolledTreeEnvironment>
-        );
+        return <PlgColelction />;
       }}
     />
   );
 };
 
 export default CollectionTab;
+
+const PlgColelction = () => {
+  const treeRef = useRef();
+  const { tdpInstance } = useStore(
+    (s: IStore) => ({
+      tdpInstance: s.collection.tdpInstance,
+    }),
+    shallow
+  );
+  const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
+    useStoreApi().getState() as IStore;
+
+  useEffect(() => {
+    registerTDP();
+    // console.log('rendering the collection');
+    return unRegisterTDP;
+  }, []);
+
+  const openPlg = (plgId) => {
+    openPlayground(plgId);
+  };
+  const deletePlg = (plgId: string) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the playground?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((s) => {
+        console.log(plgId, 'plgId...');
+        deleteItem(plgId);
+      });
+  };
+
+  if (!tdpInstance) return <></>;
+
+  return (
+    <UncontrolledTreeEnvironment
+      canRename={false}
+      canReorderItems={true}
+      canDragAndDrop={true}
+      canDropOnFolder={true}
+      keyboardBindings={{
+        renameItem: ['enter', 'f2'],
+        abortRenameItem: ['esc'],
+      }}
+      dataProvider={tdpInstance}
+      onStartRenamingItem={(a) => {
+        // console.log(a, 'onStartRenamingItem');
+      }}
+      // onSelectItems={onSelectItems}
+      getItemTitle={(item) => item.data?.name}
+      viewState={{}}
+      renderItemArrow={treeRenderer.renderItemArrow}
+      renderItem={(props) =>
+        treeRenderer.renderItem({ ...props, openPlg, deletePlg })
+      }
+    >
+      <Tree
+        treeId="fc-environment-tree"
+        rootItem="root"
+        treeLabel="GraphQL Playground Collection"
+        ref={treeRef}
+      />
+    </UncontrolledTreeEnvironment>
+  );
+};

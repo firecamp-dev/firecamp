@@ -53,11 +53,8 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
         children: this.rootOrders,
       });
     }
-
     const item = this.items.find((i) => i.__ref?.id == itemId);
-
     // console.log(this.items, itemId);
-
     const treeItem: TTreeItemData = {
       name: item.name,
       __ref: {
@@ -158,16 +155,18 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     this.items = this.items.map((itm: TItem) => {
       if (itm.__ref.id == item.__ref.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
-        return {
+        const i = {
           ...itm,
           ...item,
           __ref: { ...itm.__ref, ...item.__ref, isItem: true },
         };
+        // console.log(i, '...iiiiii');
       }
       return itm;
     });
 
     if (!item.__ref.folderId) {
+      // console.log('shaking the root...', this.rootOrders);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
