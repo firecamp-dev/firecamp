@@ -7,14 +7,14 @@ import { normalizeRequest } from '../../services/reqeust.service';
 import {
   EReqChangeUrlKeys,
   EReqChangeMetaKeys,
-  EReChangeRootKeys,
+  EReqChangeRootKeys,
 } from '../../types';
 import { TStoreSlice } from '../store.type';
 
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
   __meta?: EReqChangeMetaKeys[];
-  __root?: EReChangeRootKeys[];
+  __root?: EReqChangeRootKeys[];
 }
 
 interface IRequestChangeStateSlice {
@@ -55,15 +55,15 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
 
     for (let key in request) {
       switch (key) {
-        case EReChangeRootKeys.config:
-        case EReChangeRootKeys.headers:
+        case EReqChangeRootKeys.config:
+        case EReqChangeRootKeys.connections:
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {
             _rcs.__root = _array.without(
               _rcs.__root,
               key
-            ) as EReChangeRootKeys[];
+            ) as EReqChangeRootKeys[];
           }
           break;
         case 'url':
