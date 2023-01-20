@@ -17,6 +17,7 @@ interface ICollection {
 
 interface ICollectionSlice {
   collection: ICollection;
+  isCollectionEmpty: () => boolean;
 
   toggleProgressBar: (flag?: boolean) => void;
   registerTDP: () => void;
@@ -45,6 +46,11 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     items: [],
     folders: [],
     __manualUpdates: 0,
+  },
+
+  isCollectionEmpty: () => {
+    const { folders, items } = get().collection;
+    return folders.length == 0 && items.length == 0;
   },
 
   // register TreeDatProvider instance
@@ -189,6 +195,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
     set((s) => {
       s.collection.tdpInstance?.addFolder(folder);
+      const { request } = s;
       const { folders } = s.collection;
       if (folder.__ref.folderId) {
         folders.map((f) => {
@@ -197,9 +204,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
           }
         });
       } else {
-        // TODO: add root folder id in request.__meta.fOrders
+        request.__meta.fOrders = [...request.__meta.fOrders, folder.__ref.id];
       }
       return {
+        request,
         collection: {
           ...s.collection,
           folders: [...folders, folder],

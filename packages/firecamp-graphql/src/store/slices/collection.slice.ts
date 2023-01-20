@@ -15,6 +15,11 @@ interface ICollection {
   tdpInstance?: any;
   items?: Partial<IGraphQLPlayground & { __ref: { isItem?: boolean } }>[];
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
+  /**
+   * increate the number on each action/event happens within collection
+   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   */
+  __manualUpdates?: number;
 }
 
 interface ICollectionSlice {
@@ -47,6 +52,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     tdpInstance: null,
     items: [],
     folders: [],
+    __manualUpdates: 0,
   },
 
   getCollection: () => {
@@ -67,6 +73,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         collection: {
           ...s.collection,
           tdpInstance: instance,
+          __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
     });
@@ -78,6 +85,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         tdpInstance: null,
+        __manualUpdates: 0,
       },
     }));
   },
@@ -90,6 +98,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         ...collection,
+        __manualUpdates: ++s.collection.__manualUpdates,
       },
       ui: {
         ...s.ui,
@@ -127,6 +136,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
             collection: {
               ...s.collection,
               items,
+              __manualUpdates: ++s.collection.__manualUpdates,
             },
             ui: { ...s.ui, playgrounds: items?.length },
           };
@@ -183,6 +193,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
             collection: {
               ...s.collection,
               items,
+              __manualUpdates: ++s.collection.__manualUpdates,
             },
             ui: { ...s.ui, playgrounds: items?.length },
             playgrounds: {
@@ -287,6 +298,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
             collection: {
               ...s.collection,
               items,
+              __manualUpdates: ++s.collection.__manualUpdates,
             },
             playgrounds: {
               ...s.playgrounds,

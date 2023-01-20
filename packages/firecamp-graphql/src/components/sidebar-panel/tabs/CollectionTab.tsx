@@ -40,6 +40,7 @@ const Colelction = () => {
   const { tdpInstance } = useStore(
     (s: IStore) => ({
       tdpInstance: s.collection.tdpInstance,
+      __manualUpdates: ++s.collection.__manualUpdates,
     }),
     shallow
   );

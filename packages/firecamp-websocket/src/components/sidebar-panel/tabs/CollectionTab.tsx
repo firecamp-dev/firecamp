@@ -86,7 +86,6 @@ const CollectionTab = () => {
     />
   );
 };
-
 export default CollectionTab;
 
 const Collection = ({ openCreateFolderPrompt }) => {
@@ -104,6 +103,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
     registerTDP,
     unRegisterTDP,
     deleteItem,
+    isCollectionEmpty,
   } = useStoreApi().getState() as IStore;
 
   useEffect(() => {
@@ -131,52 +131,54 @@ const Collection = ({ openCreateFolderPrompt }) => {
   };
 
   if (!tdpInstance) return <></>;
-  console.log(tdpInstance, tdpInstance.isEmpty(), 5655555);
-  if (tdpInstance.isEmpty()) {
-    return (
-      <div className="items-center">
-        <Empty
-          // icon={<VscFolder size="40" />}
-          title="No saved messages"
-          message="This WebSocket request does not have any saved messages.."
-        />
-      </div>
-    );
-  }
-
   return (
-    <UncontrolledTreeEnvironment
-      canRename={true}
-      canReorderItems={true}
-      canDragAndDrop={true}
-      canDropOnFolder={true}
-      keyboardBindings={{
-        renameItem: ['enter', 'f2'],
-        abortRenameItem: ['esc'],
-      }}
-      dataProvider={tdpInstance}
-      onStartRenamingItem={(a) => {
-        console.log(a, 'onStartRenamingItem');
-      }}
-      // onSelectItems={onSelectItems}
-      getItemTitle={(item) => item.data?.name}
-      viewState={{}}
-      renderItemArrow={treeRenderer.renderItemArrow}
-      renderItem={(props) =>
-        treeRenderer.renderItem({
-          ...props,
-          openPlg,
-          deletePlg,
-          createFolder: openCreateFolderPrompt,
-        })
-      }
-    >
-      <Tree
-        treeId="fc-environment-tree"
-        rootItem="root"
-        treeLabel="WebSocket Message Collection"
-        ref={treeRef}
-      />
-    </UncontrolledTreeEnvironment>
+    <>
+      {isCollectionEmpty() ? (
+        <div className="items-center">
+          <Empty
+            title="No saved messages"
+            message="This WebSocket request does not have any saved messages.."
+          />
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {/* even if the collection is empty, the tree must be initialised with tdp.
+        however it'll not show anything but when new item'll get added/created then tree will pop up the entry  */}
+      <UncontrolledTreeEnvironment
+        canRename={true}
+        canReorderItems={true}
+        canDragAndDrop={true}
+        canDropOnFolder={true}
+        keyboardBindings={{
+          renameItem: ['enter', 'f2'],
+          abortRenameItem: ['esc'],
+        }}
+        dataProvider={tdpInstance}
+        onStartRenamingItem={(a) => {
+          console.log(a, 'onStartRenamingItem');
+        }}
+        // onSelectItems={onSelectItems}
+        getItemTitle={(item) => item.data?.name}
+        viewState={{}}
+        renderItemArrow={treeRenderer.renderItemArrow}
+        renderItem={(props) =>
+          treeRenderer.renderItem({
+            ...props,
+            openPlg,
+            deletePlg,
+            createFolder: openCreateFolderPrompt,
+          })
+        }
+      >
+        <Tree
+          treeId="fc-environment-tree"
+          rootItem="root"
+          treeLabel="WebSocket Message Collection"
+          ref={treeRef}
+        />
+      </UncontrolledTreeEnvironment>
+    </>
   );
 };
