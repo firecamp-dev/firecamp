@@ -156,7 +156,7 @@ importers:
   packages/firecamp-agent-manager:
     specifiers:
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@firecamp/utils': 0.0.12
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chai': ^4.3.1
@@ -187,7 +187,7 @@ importers:
       typescript: ^4.7.4
     dependencies:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       '@firecamp/utils': 0.0.12
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
@@ -277,7 +277,7 @@ importers:
 
   packages/firecamp-graphql:
     specifiers:
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -312,7 +312,7 @@ importers:
       typedoc: ^0.23.8
       typescript: ^4.7.4
     dependencies:
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       codemirror: 5.65.10
@@ -352,7 +352,7 @@ importers:
     specifiers:
       '@firecamp/curl-to-firecamp': ^0.0.10
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@hapi/joi': ^17.1.1
@@ -413,7 +413,7 @@ importers:
     dependencies:
       '@firecamp/curl-to-firecamp': 0.0.10
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       '@hapi/joi': 17.1.1
@@ -475,7 +475,7 @@ importers:
 
   packages/firecamp-rest-executor:
     specifiers:
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@firecamp/url': ^0.0.17
       '@hapi/joi': ^17.1.1
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -520,7 +520,7 @@ importers:
       typescript: ^4.7.4
       vm2: ^3.9.11
     dependencies:
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       '@firecamp/url': 0.0.17
       '@hapi/joi': 17.1.1
       ajv: 8.11.2
@@ -569,7 +569,7 @@ importers:
   packages/firecamp-socket-io:
     specifiers:
       '@firecamp/socket.io-executor': workspace:*
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -611,7 +611,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/socket.io-executor': link:../firecamp-socket-io-executor
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       classnames: 2.3.2
@@ -655,7 +655,7 @@ importers:
 
   packages/firecamp-socket-io-executor:
     specifiers:
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/jest': 29.2.4
       '@types/node': ^18.0.0
@@ -686,7 +686,7 @@ importers:
       typedoc: ^0.23.8
       typescript: ^4.7.4
     dependencies:
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       comment-json: 4.2.3
       mitt: 3.0.0
       socket.io-client-v2: /socket.io-client/2.4.0
@@ -720,7 +720,7 @@ importers:
 
   packages/firecamp-websocket:
     specifiers:
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@firecamp/ws-executor': workspace:*
@@ -762,7 +762,7 @@ importers:
       typescript: ^4.7.4
       zustand: 3.7.2
     dependencies:
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.17
       '@firecamp/ws-executor': link:../firecamp-ws-executor
@@ -807,7 +807,7 @@ importers:
 
   packages/firecamp-ws-executor:
     specifiers:
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chrome': ^0.0.204
       '@types/jest': 29.2.4
@@ -838,7 +838,7 @@ importers:
       typescript: ^4.6.3
       ws: 8.11.0
     dependencies:
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       comment-json: 4.2.3
       mitt: 3.0.0
       nanoid: 3.3.4
@@ -875,7 +875,7 @@ importers:
       '@babel/cli': ^7.16.0
       '@babel/core': ^7.14.8
       '@babel/preset-env': ^7.19.4
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@firecamp/ui-kit': workspace:*
       '@monaco-editor/react': 4.4.5
       '@radix-ui/react-toast': ^1.0.0
@@ -945,7 +945,7 @@ importers:
       typescript: ^4.3.5
       vscode: ^1.1.37
     dependencies:
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       '@firecamp/ui-kit': 'link:'
       '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
       '@radix-ui/react-toast': 1.1.2_react-dom@17.0.2
@@ -1027,7 +1027,7 @@ importers:
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
       '@firecamp/socket.io': workspace:*
-      '@firecamp/types': ^0.1.6
+      '@firecamp/types': ^0.1.7
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': ^0.0.17
       '@firecamp/websocket': workspace:*
@@ -1075,7 +1075,7 @@ importers:
       '@firecamp/graphql': link:../../packages/firecamp-graphql
       '@firecamp/rest': link:../../packages/firecamp-rest
       '@firecamp/socket.io': link:../../packages/firecamp-socket-io
-      '@firecamp/types': 0.1.6
+      '@firecamp/types': 0.1.7
       '@firecamp/ui-kit': link:../../packages/ui-kit
       '@firecamp/url': 0.0.17
       '@firecamp/websocket': link:../../packages/firecamp-websocket
@@ -3037,8 +3037,8 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /@firecamp/types/0.1.6:
-    resolution: {integrity: sha512-UrGubJDiN/9Tmz3o6UmPFHMyTgW+hCg64Tg8UpuqsdiBlVmHkZj1b+PH2Xo/5JYpPwwf3xoLXQH4A3AFQ/3aRA==}
+  /@firecamp/types/0.1.7:
+    resolution: {integrity: sha512-JoR20k3CS112rbyy/pLVQDs0D9LLHuPe02/oeD90dULM8N0meLLel36BmEIx7ETk42LupXv83Lb7+ohaym9G0A==}
     engines: {node: '>=10'}
     requiresBuild: true
     dev: false
@@ -5182,7 +5182,7 @@ packages:
   /@storybook/expect/27.5.2-0:
     resolution: {integrity: sha512-cP99mhWN/JeCp7VSIiymvj5tmuMY050iFohvp8Zq+kewKsBSZ6/qpTJAGCCZk6pneTcp4S0Fm5BSqyxzbyJ3gw==}
     dependencies:
-      '@types/jest': 29.2.5
+      '@types/jest': 29.2.6
     dev: true
 
   /@storybook/instrumenter/6.5.14_react-dom@17.0.2:
@@ -6080,8 +6080,8 @@ packages:
       pretty-format: 29.3.1
     dev: true
 
-  /@types/jest/29.2.5:
-    resolution: {integrity: sha512-H2cSxkKgVmqNHXP7TC2L/WUorrZu8ZigyRywfVzv6EyBlxj39n4C00hjXYQWsbwqgElaj/CiAeSRmk5GoaKTgw==}
+  /@types/jest/29.2.6:
+    resolution: {integrity: sha512-XEUC/Tgw3uMh6Ho8GkUtQ2lPhY5Fmgyp3TdlkTJs1W9VgNxs+Ow/x3Elh8lHQKqCbZL0AubQuqWjHVT033Hhrw==}
     dependencies:
       expect: 29.3.1
       pretty-format: 29.3.1
@@ -6303,7 +6303,7 @@ packages:
   /@types/testing-library__jest-dom/5.14.5:
     resolution: {integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==}
     dependencies:
-      '@types/jest': 29.2.5
+      '@types/jest': 29.2.6
     dev: true
 
   /@types/tough-cookie/4.0.2:
@@ -7485,7 +7485,7 @@ packages:
     hasBin: true
     dependencies:
       browserslist: 4.21.4
-      caniuse-lite: 1.0.30001444
+      caniuse-lite: 1.0.30001446
       normalize-range: 0.1.2
       num2fraction: 1.2.2
       picocolors: 0.2.1
@@ -8230,7 +8230,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001444
+      caniuse-lite: 1.0.30001446
       electron-to-chromium: 1.4.284
       node-releases: 2.0.8
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -8497,8 +8497,8 @@ packages:
     resolution: {integrity: sha512-1MgUzEkoMO6gKfXflStpYgZDlFM7M/ck/bgfVCACO5vnAf0fXoNVHdWtqGU+MYca+4bL9Z5bpOVmR33cWW9G2A==}
     dev: false
 
-  /caniuse-lite/1.0.30001444:
-    resolution: {integrity: sha512-ecER9xgJQVMqcrxThKptsW0pPxSae8R2RB87LNa+ivW9ppNWRHEplXcDzkCOP4LYWGj8hunXLqaiC41iBATNyg==}
+  /caniuse-lite/1.0.30001446:
+    resolution: {integrity: sha512-fEoga4PrImGcwUUGEol/PoFCSBnSkA9drgdkxXkJLsUBOnJ8rs3zDv6ApqYXGQFOyMPsjh79naWhF4DAxbF8rw==}
 
   /capture-exit/2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
@@ -10824,7 +10824,7 @@ packages:
     dependencies:
       '@socket.io/component-emitter': 3.1.0
       debug: 4.3.4
-      engine.io-parser: 5.0.5
+      engine.io-parser: 5.0.6
       ws: 8.2.3
       xmlhttprequest-ssl: 2.0.0
     transitivePeerDependencies:
@@ -10850,8 +10850,8 @@ packages:
       base64-arraybuffer: 0.1.4
     dev: false
 
-  /engine.io-parser/5.0.5:
-    resolution: {integrity: sha512-mjEyaa4zhuuRhaSLOdjEb57X0XPP9JEsnXI4E+ivhwT0GgzUogARx4MqoY1jQyB+4Bkz3BUOmzL7t9RMKmlG3g==}
+  /engine.io-parser/5.0.6:
+    resolution: {integrity: sha512-tjuoZDMAdEhVnSFleYPCtdL2GXwVTGtNjoeJd9IhIG3C1xs9uwxqRNEu5WpnDZCaozwVlK/nuQhpodhXSIMaxw==}
     engines: {node: '>=10.0.0'}
     dev: false
 
@@ -12635,7 +12635,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.1.2
+      minimatch: 3.0.4
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -13281,7 +13281,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.75.0_webpack-cli@4.10.0
+      webpack: 5.75.0
     dev: true
 
   /htmlparser2/3.10.1:
@@ -20580,7 +20580,7 @@ packages:
       '@socket.io/component-emitter': 3.1.0
       debug: 4.3.4
       engine.io-client: 6.2.3
-      socket.io-parser: 4.2.1
+      socket.io-parser: 4.2.2
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -20608,8 +20608,8 @@ packages:
       - supports-color
     dev: false
 
-  /socket.io-parser/4.2.1:
-    resolution: {integrity: sha512-V4GrkLy+HeF1F/en3SpUaM+7XxYXpuMUWLGde1kSSh5nQMN4hLrbPIkD+otwh6q9R6NOQBN4AMaOZ2zVjui82g==}
+  /socket.io-parser/4.2.2:
+    resolution: {integrity: sha512-DJtziuKypFkMMHCm2uIshOYC7QaylbtzQwiMYDuCKy3OPkjLzu4B2vAhTlqipRHHzrI0NJeBAizTK7X+6m1jVw==}
     engines: {node: '>=10.0.0'}
     dependencies:
       '@socket.io/component-emitter': 3.1.0
