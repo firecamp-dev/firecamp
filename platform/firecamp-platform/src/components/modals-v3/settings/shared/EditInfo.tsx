@@ -1,15 +1,13 @@
 import { FC, useState } from 'react';
+import isEqual from 'react-fast-compare';
 import {
   Input,
   TextArea,
   TabHeader,
   Button,
- 
-  
   Container,
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
-import equal from 'deep-equal';
 import { IExplorerSettingsUi } from '../types';
 import { EPlatformModalTypes } from '../../../../types';
 
@@ -143,7 +141,7 @@ const EditInfo: FC<IEditInfoUi> = ({
               sm
               onClick={_onUpdate}
               disabled={
-                equal(
+                isEqual(
                   {
                     name: initialPayload.name,
                     description: initialPayload.description,

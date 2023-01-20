@@ -1,12 +1,9 @@
 import { FC, useState, useEffect, useRef } from 'react';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { nanoid as id } from 'nanoid';
 import {
   Button,
- 
-  
   Popover,
-  EPopoverPosition,
 } from '@firecamp/ui-kit';
 import DomainList, { DomainBody } from './DomainList';
 import {
@@ -47,7 +44,7 @@ const SSLManager: FC<any> = () => {
   let [sslList, setSSLList] = useState([]);
 
   useEffect(() => {
-    if (!equal(sslList, certificates)) {
+    if (!isEqual(sslList, certificates)) {
       setSSLList(certificates);
     }
   }, [certRef.current]);

@@ -1,4 +1,5 @@
 import { FC, useMemo } from 'react';
+import isEqual from 'react-fast-compare';
 import {
   AuthSetting,
   Button,
@@ -8,7 +9,6 @@ import {
 import _cloneDeep from 'lodash/cloneDeep';
 import { EAuthTypes, TId } from '@firecamp/types';
 import { _env, _object, _auth, _array } from '@firecamp/utils';
-import equal from 'deep-equal';
 import { IExplorerSettingsUi } from '../types';
 import { EPlatformModalTypes } from '../../../../types';
 
@@ -175,7 +175,7 @@ const Auth: FC<IAuthSettingUi> = ({
             <Button
               text={isRequesting ? 'Updating Auth...' : 'Update Auth'}
               disabled={
-                equal(
+                isEqual(
                   _cloneDeep({
                     auth: propAuth,
                     activeAuthType: activeAuthType,

@@ -1,14 +1,12 @@
 import { FC, useMemo } from 'react';
+import isEqual from 'react-fast-compare';
+import _cloneDeep from 'lodash/cloneDeep';
 import {
   Container,
   Button,
- 
-  
   TabHeader,
   ScriptsTabs,
 } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
-import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 import { TId, IRestScripts } from '@firecamp/types';
 
@@ -79,7 +77,7 @@ const Scripts: FC<IScriptsSettingUi> = ({
               primary
               sm
               disabled={
-                equal(propScripts, initialPayload.scripts) || isRequesting
+                isEqual(propScripts, initialPayload.scripts) || isRequesting
               }
               onClick={_onUpdate}
             />

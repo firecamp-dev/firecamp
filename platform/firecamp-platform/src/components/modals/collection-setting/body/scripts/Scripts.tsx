@@ -1,14 +1,12 @@
 import { useState } from 'react';
+import isEqual from 'react-fast-compare';
+import { cloneDeep } from 'lodash';
 import {
   Container,
   Button,
- 
-  
   TabHeader,
   ScriptsTabs,
 } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
-import { cloneDeep } from 'lodash';
 import { _object } from '@firecamp/utils';
 
 const Scripts = ({ project = {}, collectionId = '' }) => {
@@ -68,7 +66,7 @@ const Scripts = ({ project = {}, collectionId = '' }) => {
               text="Update"
               primary
               sm
-              disabled={equal(cloneDeep(project?.scripts), scripts)}
+              disabled={isEqual(cloneDeep(project?.scripts), scripts)}
               onClick={_onUpdate}
             />
           </TabHeader.Right>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import GraphiQLExplorer from 'graphiql-explorer';
-import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
 import { buildClientSchema } from 'graphql';
 

@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react';
 
 import { Modal, Row, Container, Tabs } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 
 import SettingBody from './body/SettingBody';
 import './CollectionSetting.sass';
@@ -35,7 +35,7 @@ const CollectionSetting: FC<ICollectionSetting> = ({
     try {
       // let fetchedProject = await F.db.project.populate(collectionId);
       // // console.log({ fetchedProject });
-      // if (!equal(project, fetchedProject)) {
+      // if (!isEqual(project, fetchedProject)) {
       //   setProject(fetchedProject);
       // }
     } catch (error) {

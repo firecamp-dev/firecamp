@@ -1,7 +1,7 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid } from 'nanoid';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import {
   TId,
   EAuthTypes,
@@ -54,7 +54,7 @@ export const prepareUIRequestPanelState = (
         }
         break;
       case 'headers':
-        let headers = request?.headers.length;
+        const headers = request?.headers.length;
         updatedUiStore = {
           ...updatedUiStore,
           // activeTab: ERequestPanelTabs.Headers,
@@ -64,8 +64,8 @@ export const prepareUIRequestPanelState = (
         break;
       case 'url':
         if (request['url']?.queryParams || request['url']?.pathParams) {
-          let queryParamsLength = request?.url?.queryParams?.length || 0;
-          let pathParamsLength = request?.url?.pathParams?.length || 0;
+          const queryParamsLength = request?.url?.queryParams?.length || 0;
+          const pathParamsLength = request?.url?.pathParams?.length || 0;
           updatedUiStore = {
             ...updatedUiStore,
             // activeTab: ERequestPanelTabs.Params,
@@ -86,7 +86,7 @@ export const prepareUIRequestPanelState = (
         };
         break;
       case 'config':
-        let hasConfig = !equal(request.config, _cloneDeep(configState));
+        const hasConfig = !isEqual(request.config, _cloneDeep(configState));
         updatedUiStore = {
           ...updatedUiStore,
           // activeTab: ERequestPanelTabs.Config,

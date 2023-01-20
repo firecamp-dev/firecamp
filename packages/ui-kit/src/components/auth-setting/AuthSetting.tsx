@@ -1,6 +1,6 @@
 import { FC, useState, Fragment, useEffect, useReducer } from 'react';
 import _compact from 'lodash/compact';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { _misc, _object } from '@firecamp/utils';
 import { EFirecampAgent, EAuthTypes, IAuthUiState } from '@firecamp/types';
 import {
@@ -199,7 +199,7 @@ const AuthSetting: FC<IAuthSetting> = ({
 
   useEffect(() => {
     const updatedAuthTypes = _generateAuthTypesDD(authUiState);
-    if (!equal(updatedAuthTypes, authTypes)) {
+    if (!isEqual(updatedAuthTypes, authTypes)) {
       setState({
         type: 'authTypes',
         value: authTypes,
@@ -213,7 +213,7 @@ const AuthSetting: FC<IAuthSetting> = ({
       if (
         authData &&
         authType === EAuthTypes.Inherit &&
-        !equal(authData, inheitedAuth)
+        !isEqual(authData, inheitedAuth)
       ) {
         setInheitedAuth(authData);
       }

@@ -1,4 +1,4 @@
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { IExecutor } from '@firecamp/ws-executor/dist/esm';
 import {
   TId,
@@ -179,7 +179,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       updatedPlayground.message = { ...updatedPlayground.message, ...updates };
 
       if (
-        !equal(
+        !isEqual(
           _object.omit(existingPlayground.message, ['path']),
           _object.omit(updatedPlayground.message, ['path'])
         )

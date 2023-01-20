@@ -2,12 +2,10 @@ import { useState, useRef } from 'react';
 import {
   Container,
   Button,
- 
-  
   TabHeader,
   ScriptsTabs,
 } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { cloneDeep } from 'lodash';
 import { _object } from '@firecamp/utils';
 
@@ -162,8 +160,8 @@ const Scripts = ({ module = {}, folderId = '' }) => {
               primary
               sm
               disabled={
-                equal(cloneDeep(module?.scripts), scripts) &&
-                equal(cloneDeep(module?.__meta?.inherit_scripts), inheritScript)
+                isEqual(cloneDeep(module?.scripts), scripts) &&
+                isEqual(cloneDeep(module?.__meta?.inherit_scripts), inheritScript)
               }
               onClick={_onUpdate}
             />

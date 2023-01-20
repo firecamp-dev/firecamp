@@ -1,7 +1,7 @@
 import { FC, useState, useEffect, useMemo, useRef } from 'react';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import classnames from 'classnames';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import shallow from 'zustand/shallow';
 import {
   Resizable,
@@ -182,7 +182,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   useEffect(() => {
     try {
       const vars = JSON.parse(variables || '{}');
-      const isEqual = equal(vars, activeEnv.current.variables);
+      const isEqual = isEqual(vars, activeEnv.current.variables);
       setIsVarUpdated(!isEqual);
     } catch (e) {
       console.log({ e });

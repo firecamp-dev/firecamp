@@ -1,8 +1,7 @@
 // @ts-nocheck
 import { FC, useState, useRef, useEffect } from 'react';
-
 import classnames from 'classnames';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import {
   Input,
   FileInput,
@@ -26,7 +25,7 @@ const DomainList: FC<IDomainList> = ({
         return (
           <DomainItem
             key={domain.__ref ? domain.__ref.id : ''}
-            isUpdated={ssl && !equal(ssl.__meta, domain.__meta)}
+            isUpdated={ssl && !isEqual(ssl.__meta, domain.__meta)}
             sslList={sslList}
             domain={domain}
             domainFns={domainFns}
