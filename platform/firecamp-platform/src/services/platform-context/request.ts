@@ -17,6 +17,7 @@ import { useWorkspaceStore } from '../../store/workspace';
 import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
 import platformContext from '.';
+import { RE } from '../../types';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -32,8 +33,12 @@ interface IPlatformRequestService {
   save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
 
   // request folders
+  createRequestFolderPrompt: (
+    folder: IRequestFolder,
+    tabId: TId
+  ) => Promise<IRequestFolder>;
   createRequestFolder: (
-    item: IRequestFolder,
+    folder: IRequestFolder,
     tabId: TId
   ) => Promise<IRequestFolder>;
   updateRequestFolder: (
@@ -212,8 +217,56 @@ const request: IPlatformRequestService = {
     }
   },
 
+  createRequestFolderPrompt: async (folder, tabId) => {
+    return platformContext.window
+      .promptInput({
+        header: 'Create A New Folder',
+        lable: 'Folder Name',
+        placeholder: '',
+        texts: { btnOking: 'Creating...' },
+        value: folder.name,
+        validator: (val) => {
+          if (!val || val.length < 3) {
+            return {
+              isValid: false,
+              message: 'The folder name must have minimum 3 characters.',
+            };
+          }
+          const isValid = RE.NoSpecialCharacters.test(val);
+          return {
+            isValid,
+            message:
+              !isValid &&
+              'The folder name must not contain any special characters.',
+          };
+        },
+        executor: (name) => {
+          const _folder = { ...folder, name };
+          // const res = await Rest.requestFolder
+          //   .create(_folder)
+          //   .then((r) => {
+          //     state.onCreateFolder(r.data);
+          //     return r;
+          //   })
+          //   .finally(() => {
+          //     state.toggleProgressBar(false);
+          //   });
+          // return res;
+          return Promise.resolve(_folder);
+        },
+        onError: (e) => {
+          platformContext.app.notify.alert(
+            e?.response?.data?.message || e.message
+          );
+        },
+      })
+      .then((res) => {
+        console.log(res, 1111);
+        return res;
+      });
+  },
   createRequestFolder: async (folder, tabId) => {
-    return folder;
+    return Promise.resolve(folder);
   },
   updateRequestFolder: async (folder, tabId) => {
     return folder;

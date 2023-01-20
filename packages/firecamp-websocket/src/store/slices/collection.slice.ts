@@ -32,7 +32,7 @@ interface ICollectionSlice {
 
   // folders
   getFolder: (id: TId) => IRequestFolder | undefined;
-  createFolder: (name: string, parentFolderId: TId) => void;
+  prepareCreateFolderPayload: (name: string, parentFolderId: TId) => void;
   deleteFolder: (id: TId) => void;
   onCreateFolder: (folder: IRequestFolder) => void;
 }
@@ -149,7 +149,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
     return folder;
   },
-  createFolder: async (name: string, parentFolderId?: TId) => {
+  prepareCreateFolderPayload: (name: string, parentFolderId?: TId) => {
     const state = get();
     const _folder: IRequestFolder = {
       name,
@@ -163,34 +163,11 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       },
     };
     state.toggleProgressBar(true);
-    return Promise.resolve().then(() => {
-      state.onCreateFolder(_folder);
-    });
-    // const res = await Rest.requestFolder
-    //   .create(_folder)
-    //   .then((r) => {
-    //     state.onCreateFolder(r.data);
-    //     return r;
-    //   })
-    //   .finally(() => {
-    //     state.toggleProgressBar(false);
-    //   });
-    // return res;
+    return _folder;
   },
-  deleteFolder: (id: TId) => {
-    set((s) => {
-      const folders = s.collection.folders.filter((f) => f.__ref.id != id);
-      return {
-        collection: {
-          ...s.collection,
-          ...folders,
-          __manualUpdates: ++s.collection.__manualUpdates,
-        },
-      };
-    });
-  },
-
   onCreateFolder: (folder) => {
+    const state = get();
+    state.toggleProgressBar(false);
     //@ts-ignore
     if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
     set((s) => {
@@ -211,6 +188,19 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         collection: {
           ...s.collection,
           folders: [...folders, folder],
+          __manualUpdates: ++s.collection.__manualUpdates,
+        },
+      };
+    });
+  },
+
+  deleteFolder: (id: TId) => {
+    set((s) => {
+      const folders = s.collection.folders.filter((f) => f.__ref.id != id);
+      return {
+        collection: {
+          ...s.collection,
+          ...folders,
           __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
