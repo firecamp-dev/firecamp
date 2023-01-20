@@ -1,9 +1,9 @@
-import equal from 'deep-equal';
+import _deepClone from 'lodash/clone';
 import { IExecutorInterface } from '@firecamp/socket.io-executor/dist/esm';
 import { _object } from '@firecamp/utils';
 import { EArgumentBodyType, ISocketIOEmitter, TId } from '@firecamp/types';
-import { EConnectionState } from '../../types';
 import { InitPlayground } from '../../constants';
+import { EConnectionState } from '../../types';
 import { TStoreSlice } from '../store.type';
 
 interface IEmitter extends ISocketIOEmitter {
@@ -93,7 +93,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       playgrounds: {
         ...s.playgrounds,
         [connectionId]: {
-          ...(s.playgrounds[connectionId] || {}),
+          ...s.playgrounds[connectionId],
           executor,
         },
       },
@@ -129,9 +129,9 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     set((s) => {
       const { activePlayground } = s.runtime;
       const plg = s.playgrounds[activePlayground];
-      if (!plg.emitter.payload?.length) plg.emitter.payload = [];
-      plg.emitter.payload = [
-        ...plg.emitter.payload,
+      if (!plg.emitter.value?.length) plg.emitter.value = [];
+      plg.emitter.value = [
+        ...plg.emitter.value,
         {
           body: '',
           __meta: {
@@ -145,7 +145,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
           ...s.playgrounds,
           [activePlayground]: {
             ...plg,
-            activeArgIndex: plg.emitter.payload.length - 1,
+            activeArgIndex: plg.emitter.value.length - 1,
           },
         },
         __manualUpdates: ++s.__manualUpdates,
@@ -157,10 +157,10 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     set((s) => {
       const { activePlayground } = s.runtime;
       const plg = s.playgrounds[activePlayground];
-      if (!plg.emitter.payload?.length) plg.emitter.payload = [];
-      plg.emitter.payload = [
-        ...plg.emitter.payload.slice(0, index),
-        ...plg.emitter.payload.slice(index + 1),
+      if (!plg.emitter.value?.length) plg.emitter.value = [];
+      plg.emitter.value = [
+        ...plg.emitter.value.slice(0, index),
+        ...plg.emitter.value.slice(index + 1),
       ];
 
       return {
@@ -179,7 +179,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     set((s) => {
       const plg = s.playgrounds[s.runtime.activePlayground];
       const { activeArgIndex } = plg;
-      plg.emitter.payload[activeArgIndex].__meta.type = type;
+      plg.emitter.value[activeArgIndex].__meta.type = type;
       return {
         playgrounds: {
           ...s.playgrounds,
@@ -193,7 +193,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     set((s) => {
       const plg = s.playgrounds[s.runtime.activePlayground];
       const { activeArgIndex } = plg;
-      plg.emitter.payload[activeArgIndex].body = value;
+      plg.emitter.value[activeArgIndex].body = value;
       return {
         playgrounds: {
           ...s.playgrounds,
@@ -261,7 +261,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
-      updatedPlayground.logFilters = { type: updates.type };
+      updatedPlayground.logFilters = { type: updates.type, event: '' };
       set((s) => ({
         playgrounds: {
           ...s.playgrounds,
@@ -275,7 +275,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   resetPlaygroundEmitter: () => {
     set((s) => {
       const plg = s.playgrounds[s.runtime.activePlayground];
-      plg.emitter = InitPlayground;
+      plg.emitter = _deepClone(InitPlayground) as ISocketIOEmitter;
       return {
         playgrounds: {
           ...s.playgrounds,
@@ -333,7 +333,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   },
 
   //listeners
-  setPlaygroundListeners: (connectionId: TId, listeners: object) => {
+  setPlaygroundListeners: (connectionId: TId, listeners: { [k: string]: boolean }) => {
     const state = get();
     const existingPlayground = state.playgrounds?.[connectionId];
 
@@ -400,7 +400,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       const updatedPlayground = existingPlayground;
       updatedPlayground.listeners = _object.omit(updatedPlayground.listeners, [
         name,
-      ]);
+      ]) as { [k: string]: boolean };
 
       // remove listener from executor/ listen off
       state.removeListenerFromExecutor(connectionId, name);
@@ -469,9 +469,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 
     // Set to store
     set((s) => ({
-      playgrounds: {
-        playgrounds: updatedPlaygrounds,
-      },
+      playgrounds: updatedPlaygrounds,
     }));
   },
   deleteListenerFromAllPlaygrounds: (listenerName: string) => {
@@ -484,7 +482,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         existingPlayground.listeners = _object.omit(
           existingPlayground.listeners,
           [listenerName]
-        );
+        ) as { [k: string]: boolean };
 
         // Set listen off
         state.removeListenerFromExecutor(connectionId, listenerName);
@@ -499,9 +497,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 
     // Set to store
     set((s) => ({
-      playgrounds: {
-        playgrounds: updatedPlaygrounds,
-      },
+      playgrounds: updatedPlaygrounds,
     }));
   },
 });

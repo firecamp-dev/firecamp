@@ -36,7 +36,7 @@ const Request = () => {
           <QueryEditor
             isQueryDirty={isQueryDirty}
             toggleQueryDirty={toggleQueryDirty}
-            value={playground.request.body}
+            value={playground.request.value}
             onChange={(v) => onChangeEditor(v)}
           />
           {/* <QueryEditorMonaco

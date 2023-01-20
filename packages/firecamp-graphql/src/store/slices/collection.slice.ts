@@ -144,7 +144,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     const item = {
       name,
-      payload: plg.request.body,
+      payload: plg.request.value,
       __meta: plg.request.__meta,
       __ref: {
         requestId: state.request.__ref.id,
@@ -160,7 +160,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         const playgroundId = r.data.__ref.id;
         set((s) => {
           console.log(r.data);
-          const newItem = { ...r.data, body: r.data.payload };
+          const newItem = { ...r.data, value: r.data.value };
           const items = [...s.collection.items, newItem];
           s.collection.tdpInstance?.addItem(newItem);
           return {
@@ -187,7 +187,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
                 [playgroundId]: {
                   ...s.runtime.playgroundsMeta[playgroundId],
                   isSaved: true,
-                  operationNames: getOperationNames(plg.request.body).names,
+                  operationNames: getOperationNames(plg.request.value).names,
                 },
               },
             },
@@ -236,9 +236,9 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       //@ts-ignore
       item.name = name;
     }
-    if (!isEqual(_oRequest.body, _request.body)) {
+    if (!isEqual(_oRequest.value, _request.value)) {
       //@ts-ignore
-      item.body = _request.body;
+      item.value = _request.value;
     }
     if (
       _request.__meta &&

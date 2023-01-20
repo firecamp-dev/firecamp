@@ -7,15 +7,15 @@ import {
   ERequestTypes,
   ETypedArrayView,
 } from '@firecamp/types';
+import { _object } from '@firecamp/utils';
 
 import { EConnectionState } from '../../types';
-import { _object } from '@firecamp/utils';
 import { TStoreSlice } from '../store.type';
 
 const initialPlaygroundMessage = {
   name: '',
   path: '',
-  payload: '',
+  value: '',
   __meta: {
     type: EMessageBodyType.Text,
     // typedArrayView: ETypedArrayView.Int8Array,
@@ -46,7 +46,7 @@ interface IPlayground {
 }
 
 interface IPlaygrounds {
-  [key: TId]: IPlayground;
+  [key: string]: IPlayground;
 }
 
 interface IPlaygroundSlice {
@@ -116,7 +116,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       playgrounds: {
         ...s.playgrounds,
         [connectionId]: {
-          ...(s.playgrounds[connectionId] || {}),
+          ...s.playgrounds[connectionId],
           ...updates,
         },
       },

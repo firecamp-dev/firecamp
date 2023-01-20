@@ -37,9 +37,9 @@ const QueryExplorer = () => {
 
   useEffect(() => {}, []);
 
-  let _onEdit = (body) => {
-    console.log({ body });
-    changePlaygroundValue(activePlayground, body);
+  let _onEdit = (value) => {
+    console.log({ value });
+    changePlaygroundValue(activePlayground, value);
     // debugger;
     // setCurrentQueryPayload(queryPayload);
     // mergeSingleQueryToQueries(queryPayload);
@@ -51,7 +51,7 @@ const QueryExplorer = () => {
     <GraphiQLExplorer
       id={`query-explorer-${tabId}`}
       schema={clientSchema}
-      query={playground.request.body}
+      query={playground.request.value}
       onEdit={_onEdit}
       explorerIsOpen={true}
       onToggleExplorer={(_) => console.log()}

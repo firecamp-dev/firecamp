@@ -52,8 +52,8 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
         originalRequest: null,
         request: {
           __ref: { id: 'playground-1' },
-          body: 'query MyQuery {\n  __typename\n}',
-          // body: '{\n  __typename\n  company {\n    ceo\n    coo\n    cto\n    cto_propulsion\n    employees\n  }\n}\n',
+          value: 'query MyQuery {\n  __typename\n}',
+          // value: '{\n  __typename\n  company {\n    ceo\n    coo\n    cto\n    cto_propulsion\n    employees\n  }\n}\n',
           __meta: {
             type: EGraphQLOperationType.Query,
             variables: `{ "key": "value" }`,
@@ -74,7 +74,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
 
       const plg: IGraphQLPlayground = {
         name,
-        body: 'query MyQuery {\n  __typename\n}',
+        value: 'query MyQuery {\n  __typename\n}',
         __meta: { type: EGraphQLOperationType.Query, variables: `{ }` },
         //@ts-ignore
         __ref: { id: playgroundId },
@@ -95,7 +95,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
             ...s.runtime.playgroundsMeta,
             [playgroundId]: {
               isSaved: false,
-              operationNames: getOperationNames(plg.body).names,
+              operationNames: getOperationNames(plg.value).names,
             },
           },
           activePlayground: playgroundId,
@@ -140,7 +140,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
               isSaved: true,
               hasChange: false,
               isRequestRunning: false,
-              operationNames: getOperationNames(plg.body).names,
+              operationNames: getOperationNames(plg.value).names,
             },
           };
 
@@ -209,7 +209,8 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
       let hasChange = false;
       const plgMeta = s.runtime.playgroundsMeta[playgroundId];
 
-      if (plg.originalRequest?.body != value && plgMeta.isSaved) hasChange = true;
+      if (plg.originalRequest?.value != value && plgMeta.isSaved)
+        hasChange = true;
 
       return {
         playgrounds: {
@@ -218,7 +219,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
             ...s.playgrounds[playgroundId],
             request: {
               ...plg.request,
-              body: value,
+              value,
             },
           },
         },
@@ -320,7 +321,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
   prepareRuntimeActivePlgName: () => {
     const state = get();
     const editorValue =
-      state.playgrounds[state.runtime.activePlayground]?.request?.body;
+      state.playgrounds[state.runtime.activePlayground]?.request?.value;
     let name = getPlaygroundName(editorValue);
     return name;
   },
