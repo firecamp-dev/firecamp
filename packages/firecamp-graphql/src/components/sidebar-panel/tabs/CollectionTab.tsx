@@ -7,13 +7,6 @@ import treeRenderer from './collection-tree/treeItemRenderer';
 import { IStore, useStore, useStoreApi } from '../../../store';
 
 const CollectionTab = () => {
-  const { isCollectionEmpty } = useStore(
-    (s: IStore) => ({
-      isCollectionEmpty:
-        !s.collection.folders?.length && !s.collection.items?.length,
-    }),
-    shallow
-  );
   return (
     <Pane
       expanded={true}
@@ -34,18 +27,7 @@ const CollectionTab = () => {
         );
       }}
       bodyRenderer={({ expanded }) => {
-        if (isCollectionEmpty) {
-          return (
-            <div className="items-center">
-              <Empty
-                // icon={<VscFolder size="40" />}
-                title="No saved playgrounds"
-                message="This graphql request doesn't have any saved playgrounds.."
-              />
-            </div>
-          );
-        }
-        return <PlgColelction />;
+        return <Colelction />;
       }}
     />
   );
@@ -53,7 +35,7 @@ const CollectionTab = () => {
 
 export default CollectionTab;
 
-const PlgColelction = () => {
+const Colelction = () => {
   const treeRef = useRef();
   const { tdpInstance } = useStore(
     (s: IStore) => ({
@@ -61,12 +43,19 @@ const PlgColelction = () => {
     }),
     shallow
   );
-  const { context, registerTDP, unRegisterTDP, openPlayground, deleteItem } =
-    useStoreApi().getState() as IStore;
+
+  const {
+    context,
+    registerTDP,
+    unRegisterTDP,
+    isCollectionEmpty,
+    openPlayground,
+    deleteItem,
+  } = useStoreApi().getState() as IStore;
 
   useEffect(() => {
-    registerTDP();
     // console.log('rendering the collection');
+    registerTDP();
     return unRegisterTDP;
   }, []);
 
@@ -88,35 +77,50 @@ const PlgColelction = () => {
   };
 
   if (!tdpInstance) return <></>;
-
   return (
-    <UncontrolledTreeEnvironment
-      canRename={false}
-      canReorderItems={true}
-      canDragAndDrop={true}
-      canDropOnFolder={true}
-      keyboardBindings={{
-        renameItem: ['enter', 'f2'],
-        abortRenameItem: ['esc'],
-      }}
-      dataProvider={tdpInstance}
-      onStartRenamingItem={(a) => {
-        // console.log(a, 'onStartRenamingItem');
-      }}
-      // onSelectItems={onSelectItems}
-      getItemTitle={(item) => item.data?.name}
-      viewState={{}}
-      renderItemArrow={treeRenderer.renderItemArrow}
-      renderItem={(props) =>
-        treeRenderer.renderItem({ ...props, openPlg, deletePlg })
-      }
-    >
-      <Tree
-        treeId="fc-environment-tree"
-        rootItem="root"
-        treeLabel="GraphQL Playground Collection"
-        ref={treeRef}
-      />
-    </UncontrolledTreeEnvironment>
+    <>
+      {isCollectionEmpty() ? (
+        <div className="items-center">
+          <Empty
+            // icon={<VscFolder size="40" />}
+            title="No saved playgrounds"
+            message="This graphql request doesn't have any saved playgrounds.."
+          />
+        </div>
+      ) : (
+        <></>
+      )}
+
+      {/* even if the collection is empty, the tree must be initialised with tdp.
+        however it'll not show anything but when new item'll get added/created then tree will pop up the entry  */}
+      <UncontrolledTreeEnvironment
+        canRename={false}
+        canReorderItems={true}
+        canDragAndDrop={true}
+        canDropOnFolder={true}
+        keyboardBindings={{
+          renameItem: ['enter', 'f2'],
+          abortRenameItem: ['esc'],
+        }}
+        dataProvider={tdpInstance}
+        onStartRenamingItem={(a) => {
+          // console.log(a, 'onStartRenamingItem');
+        }}
+        // onSelectItems={onSelectItems}
+        getItemTitle={(item) => item.data?.name}
+        viewState={{}}
+        renderItemArrow={treeRenderer.renderItemArrow}
+        renderItem={(props) =>
+          treeRenderer.renderItem({ ...props, openPlg, deletePlg })
+        }
+      >
+        <Tree
+          treeId="fc-environment-tree"
+          rootItem="root"
+          treeLabel="GraphQL Playground Collection"
+          ref={treeRef}
+        />
+      </UncontrolledTreeEnvironment>
+    </>
   );
 };

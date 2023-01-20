@@ -19,8 +19,8 @@ interface ICollection {
 
 interface ICollectionSlice {
   collection: ICollection;
-
   getCollection: () => ICollection;
+  isCollectionEmpty: () => boolean;
   toggleProgressBar: (flag?: boolean) => void;
   registerTDP: () => void;
   unRegisterTDP: () => void;
@@ -52,6 +52,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   getCollection: () => {
     return get().collection;
   },
+  isCollectionEmpty: () => {
+    const { folders, items } = get().collection;
+    return folders.length == 0 && items.length == 0;
+  },
   // register TreeDatProvider instance
   registerTDP: () => {
     set((s) => {
@@ -59,14 +63,23 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         s.collection.folders,
         s.collection.items
       );
-      // instance?.init(collection.folders || [], collection.items || []);
-      return { collection: { ...s.collection, tdpInstance: instance } };
+      return {
+        collection: {
+          ...s.collection,
+          tdpInstance: instance,
+        },
+      };
     });
   },
 
   // unregister TreeDatProvider instance
   unRegisterTDP: () => {
-    set((s) => ({ collection: { ...s.collection, tdpInstance: null } }));
+    set((s) => ({
+      collection: {
+        ...s.collection,
+        tdpInstance: null,
+      },
+    }));
   },
 
   // collection
@@ -111,7 +124,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
           const items = s.collection.items.filter((i) => i.__ref.id != id);
           s.collection.tdpInstance?.deleteItem(id);
           return {
-            collection: { ...s.collection, items },
+            collection: {
+              ...s.collection,
+              items,
+            },
             ui: { ...s.ui, playgrounds: items?.length },
           };
         });
@@ -164,7 +180,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
           const items = [...s.collection.items, newItem];
           s.collection.tdpInstance?.addItem(newItem);
           return {
-            collection: { ...s.collection, items },
+            collection: {
+              ...s.collection,
+              items,
+            },
             ui: { ...s.ui, playgrounds: items?.length },
             playgrounds: {
               ...s.playgrounds,
@@ -265,7 +284,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
           });
           s.collection.tdpInstance?.updateItem(updatedPlg);
           return {
-            collection: { ...s.collection, items },
+            collection: {
+              ...s.collection,
+              items,
+            },
             playgrounds: {
               ...s.playgrounds,
               [playgroundId]: {
