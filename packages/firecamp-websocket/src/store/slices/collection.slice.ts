@@ -1,19 +1,25 @@
 import { nanoid } from 'nanoid';
 import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
+import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
 
 interface ICollection {
   isProgressing?: boolean;
   tdpInstance?: any;
   items?: Partial<IWebSocketMessage & { __ref: { isItem?: boolean } }>[];
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
+  /**
+   * increate the number on each action/event happens within collection
+   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   */
+  __manualUpdates?: number;
 }
 
 interface ICollectionSlice {
   collection: ICollection;
 
   toggleProgressBar: (flag?: boolean) => void;
-  registerTDP: (instance: any) => void;
+  registerTDP: () => void;
   unRegisterTDP: () => void;
 
   initialiseCollection: (collection: ICollection) => void; // TODO: rename API
@@ -38,11 +44,30 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   collection: initialCollection || {
     items: [],
     folders: [],
+    __manualUpdates: 0,
   },
 
   // register TreeDatProvider instance
-  registerTDP: (instance: any) => {
-    set((s) => ({ collection: { ...s.collection, tdpInstance: instance } }));
+  registerTDP: () => {
+    set((s) => {
+      const rootOrders = [
+        ...s.request.__meta.fOrders,
+        ...s.request.__meta.iOrders,
+      ];
+      console.log(rootOrders, 'rootOrders...');
+      const instance = new TreeDataProvider(
+        s.collection.folders,
+        s.collection.items,
+        rootOrders
+      );
+      return {
+        collection: {
+          ...s.collection,
+          tdpInstance: instance,
+          __manualUpdates: ++s.collection.__manualUpdates,
+        },
+      };
+    });
   },
 
   // unregister TreeDatProvider instance
@@ -69,6 +94,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         ...collection,
+        __manualUpdates: 0,
       },
       ui: {
         ...s.ui,
@@ -94,6 +120,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         items: [...s.collection.items, item],
+        __manualUpdates: ++s.collection.__manualUpdates,
       },
     }));
   },
@@ -104,6 +131,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         collection: {
           ...s.collection,
           ...items,
+          __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
     });
@@ -150,6 +178,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         collection: {
           ...s.collection,
           ...folders,
+          __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
     });
@@ -174,6 +203,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         collection: {
           ...s.collection,
           folders: [...folders, folder],
+          __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
     });

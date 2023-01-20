@@ -185,4 +185,8 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
   }
+
+  public isEmpty() {
+    return !this.items.length;
+  }
 }

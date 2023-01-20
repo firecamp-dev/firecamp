@@ -5,57 +5,18 @@ import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
 import { TId } from '@firecamp/types';
-
 import treeRenderer from './collection-tree/treeItemRenderer';
-import { TreeDataProvider } from './collection-tree/TreeDataProvider';
 import { useStore, useStoreApi, IStore } from '../../../store';
 
 const CollectionTab = () => {
-  const treeRef = useRef();
-  const { isCollectionEmpty, isRequestSaved, context } = useStore(
+  const { context, isRequestSaved, createFolder } = useStore(
     (s: IStore) => ({
-      isCollectionEmpty:
-        !s.collection.folders?.length && !s.collection.items?.length,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
+      createFolder: s.createFolder,
     }),
     shallow
   );
-  const {
-    registerTDP,
-    unRegisterTDP,
-    // openPlayground,
-    createFolder,
-    deleteItem,
-  } = useStoreApi().getState() as IStore;
-
-  // console.log(items, 'items...');
-
-  const dataProvider = useRef(new TreeDataProvider([], [], []));
-
-  useEffect(() => {
-    registerTDP(dataProvider.current);
-    return unRegisterTDP;
-  }, []);
-
-  const openPlg = (plgId) => {
-    // get a fresh copy of state
-    // const item = items.find((i) => i.__ref.id == plgId);
-    // console.log(item, 1100099);
-    // openPlayground(plgId);
-  };
-  const deletePlg = (plgId: string) => {
-    context.window
-      .confirm({
-        title: 'Are you sure to delete the playground?',
-        texts: {
-          btnConfirm: 'Yes, delete it.',
-        },
-      })
-      .then((isConfirmed) => {
-        if (isConfirmed) deleteItem(plgId);
-      });
-  };
 
   const _createFolderPrompt = async (parentFolderId?: TId) => {
     if (typeof parentFolderId != 'string') parentFolderId = undefined;
@@ -120,56 +81,102 @@ const CollectionTab = () => {
         );
       }}
       bodyRenderer={({ expanded }) => {
-        if (isCollectionEmpty) {
-          return (
-            <div className="items-center">
-              <Empty
-                // icon={<VscFolder size="40" />}
-                title="No saved messages"
-                message="This WebSocket request does not have any saved messages.."
-              />
-            </div>
-          );
-        }
-
-        return (
-          <UncontrolledTreeEnvironment
-            canRename={true}
-            canReorderItems={true}
-            canDragAndDrop={true}
-            canDropOnFolder={true}
-            keyboardBindings={{
-              renameItem: ['enter', 'f2'],
-              abortRenameItem: ['esc'],
-            }}
-            dataProvider={dataProvider.current}
-            onStartRenamingItem={(a) => {
-              console.log(a, 'onStartRenamingItem');
-            }}
-            // onSelectItems={onSelectItems}
-            getItemTitle={(item) => item.data?.name}
-            viewState={{}}
-            renderItemArrow={treeRenderer.renderItemArrow}
-            renderItem={(props) =>
-              treeRenderer.renderItem({
-                ...props,
-                openPlg,
-                deletePlg,
-                createFolder: _createFolderPrompt,
-              })
-            }
-          >
-            <Tree
-              treeId="fc-environment-tree"
-              rootItem="root"
-              treeLabel="WebSocket Message Collection"
-              ref={treeRef}
-            />
-          </UncontrolledTreeEnvironment>
-        );
+        return <Collection openCreateFolderPrompt={_createFolderPrompt} />;
       }}
     />
   );
 };
 
 export default CollectionTab;
+
+const Collection = ({ openCreateFolderPrompt }) => {
+  const treeRef = useRef();
+  const { context, tdpInstance } = useStore(
+    (s: IStore) => ({
+      context: s.context,
+      tdpInstance: s.collection.tdpInstance,
+      __manualUpdates: s.collection.__manualUpdates,
+    }),
+    shallow
+  );
+  const {
+    // openPlayground,
+    registerTDP,
+    unRegisterTDP,
+    deleteItem,
+  } = useStoreApi().getState() as IStore;
+
+  useEffect(() => {
+    registerTDP();
+    return unRegisterTDP;
+  }, []);
+
+  const openPlg = (plgId) => {
+    // get a fresh copy of state
+    // const item = items.find((i) => i.__ref.id == plgId);
+    // console.log(item, 1100099);
+    // openPlayground(plgId);
+  };
+  const deletePlg = (plgId: string) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the playground?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((isConfirmed) => {
+        if (isConfirmed) deleteItem(plgId);
+      });
+  };
+
+  if (!tdpInstance) return <></>;
+  console.log(tdpInstance, tdpInstance.isEmpty(), 5655555);
+  if (tdpInstance.isEmpty()) {
+    return (
+      <div className="items-center">
+        <Empty
+          // icon={<VscFolder size="40" />}
+          title="No saved messages"
+          message="This WebSocket request does not have any saved messages.."
+        />
+      </div>
+    );
+  }
+
+  return (
+    <UncontrolledTreeEnvironment
+      canRename={true}
+      canReorderItems={true}
+      canDragAndDrop={true}
+      canDropOnFolder={true}
+      keyboardBindings={{
+        renameItem: ['enter', 'f2'],
+        abortRenameItem: ['esc'],
+      }}
+      dataProvider={tdpInstance}
+      onStartRenamingItem={(a) => {
+        console.log(a, 'onStartRenamingItem');
+      }}
+      // onSelectItems={onSelectItems}
+      getItemTitle={(item) => item.data?.name}
+      viewState={{}}
+      renderItemArrow={treeRenderer.renderItemArrow}
+      renderItem={(props) =>
+        treeRenderer.renderItem({
+          ...props,
+          openPlg,
+          deletePlg,
+          createFolder: openCreateFolderPrompt,
+        })
+      }
+    >
+      <Tree
+        treeId="fc-environment-tree"
+        rootItem="root"
+        treeLabel="WebSocket Message Collection"
+        ref={treeRef}
+      />
+    </UncontrolledTreeEnvironment>
+  );
+};
