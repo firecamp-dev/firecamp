@@ -1,15 +1,13 @@
+import { IRequestItem } from '@firecamp/types/dist/common/request-item';
 import { Realtime, Rest } from '@firecamp/cloud-apis';
 import {
   TId,
   IRest,
-  IGraphQL,
   IRestResponse,
-  ISocketIO,
-  IWebSocket,
   EHttpMethod,
+  IRequestFolder,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
-import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 import { promptSaveItem } from './prompt.service';
 import { prepareEventNameForRequestPull } from '../platform-emitter/events';
@@ -27,11 +25,37 @@ interface IPlatformRequestService {
   // unsubscribe real-time request changes (pull-actions from server)
   unsubscribeChanges?: (requestId: TId) => void;
 
+  // fetch request from server by request id
+  fetch: (reqId: TId) => Promise<any>;
+
   // save and update request
   save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
 
-  // fetch request from server by request id
-  onFetch: (reqId: TId) => Promise<any>;
+  // request folders
+  createRequestFolder: (
+    item: IRequestFolder,
+    tabId: TId
+  ) => Promise<IRequestFolder>;
+  updateRequestFolder: (
+    item: IRequestFolder,
+    tabId: TId
+  ) => Promise<IRequestFolder>;
+  deleteRequestFolder: (
+    folderId: TId,
+    requestId: TId,
+    tabId: TId
+  ) => Promise<any>;
+
+  // request items
+  createRequestItem: (
+    item: IRequestItem<any, any>,
+    tabId: TId
+  ) => Promise<IRequestItem<any, any>>;
+  updateRequestItem: (
+    item: Partial<IRequestItem<any, any>>,
+    tabId: TId
+  ) => Promise<IRequestItem<any, any>>;
+  deleteRequestItem: (itemId: TId, requestId: TId, tabId: TId) => Promise<any>;
 
   // get executor
   execute: (request: IRest) => Promise<IRestResponse>;
@@ -65,9 +89,12 @@ const request: IPlatformRequestService = {
     platformEmitter.off(prepareEventNameForRequestPull(requestId));
   },
 
-  /**
-   * save a new request or update the request changes
-   */
+  // fetch request by request id
+  fetch: async (reqId: TId) => {
+    return await Rest.request.findOne(reqId);
+  },
+
+  /** save a new request or update the request changes */
   save: async (request: any, tabId: TId, isNew: boolean = false) => {
     if (!AppService.user.isLoggedIn()) {
       return AppService.modals.openSignIn();
@@ -185,9 +212,24 @@ const request: IPlatformRequestService = {
     }
   },
 
-  // fetch request from server by request id
-  onFetch: async (reqId: TId) => {
-    return await Rest.request.findOne(reqId);
+  createRequestFolder: async (folder, tabId) => {
+    return folder;
+  },
+  updateRequestFolder: async (folder, tabId) => {
+    return folder;
+  },
+  deleteRequestFolder: async (folderId, requestId, tabId) => {
+    return true;
+  },
+
+  createRequestItem: async (item, tabId) => {
+    return item;
+  },
+  updateRequestItem: async (item, tabId) => {
+    return item as IRequestItem<any, any>;
+  },
+  deleteRequestItem: async (itemId, requestId, tabId) => {
+    return true;
   },
 
   // execute request

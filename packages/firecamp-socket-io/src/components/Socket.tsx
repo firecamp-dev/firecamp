@@ -62,7 +62,7 @@ const Socket = ({ tab, platformContext }) => {
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            const response = await platformContext.request.onFetch(
+            const response = await platformContext.request.fetch(
               tab.request.__ref.id
             );
             _request = response.data;

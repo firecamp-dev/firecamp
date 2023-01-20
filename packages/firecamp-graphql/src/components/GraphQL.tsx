@@ -3,19 +3,13 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { _object } from '@firecamp/utils';
-import { IGraphQL } from '@firecamp/types';
 import { Container, Row, Column, Loader } from '@firecamp/ui-kit';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import PlaygroundPanel from './playground-panel/PlaygroundPanel';
 import DocWrapper from './common/explorer/GraphQLDoc';
 
-import {
-  StoreProvider,
-  createStore,
-  useStore,
-  IStore,
-} from '../store';
+import { StoreProvider, createStore, useStore, IStore } from '../store';
 
 import {
   initialiseStoreFromRequest,
@@ -77,7 +71,6 @@ const GraphQL = ({ tab, platformContext }) => {
     };
   }, []);
 
-
   const handlePull = async () => {};
 
   const fetchRequest = async () => {
@@ -88,10 +81,9 @@ const GraphQL = ({ tab, platformContext }) => {
       if (isRequestSaved === true) {
         setIsFetchingReqFlag(true);
         try {
-          const response = await platformContext.request.onFetch(
+          const response = await platformContext.request.fetch(
             tab.request.__ref.id
           );
-
           console.log(response.data, 'fetch request...');
           _request = response.data;
         } catch (error) {
