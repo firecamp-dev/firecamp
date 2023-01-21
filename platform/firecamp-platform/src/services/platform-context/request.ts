@@ -96,7 +96,7 @@ const request: IPlatformRequestService = {
 
   // fetch request by request id
   fetch: async (reqId: TId) => {
-    return await Rest.request.findOne(reqId);
+    return await Rest.request.findOne(reqId).then((res) => res.data);
   },
 
   /** save a new request or update the request changes */

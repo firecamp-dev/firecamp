@@ -108,7 +108,6 @@ const Collection = ({ openCreateFolderPrompt }) => {
       });
   };
 
-  console.log(tdpInstance, 789789)
   if (!tdpInstance) return <></>;
   return (
     <>
