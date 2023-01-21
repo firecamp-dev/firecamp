@@ -23,7 +23,7 @@ interface ICollectionSlice {
   registerTDP: () => void;
   unRegisterTDP: () => void;
 
-  initialiseCollection: (collection: ICollection) => void; // TODO: rename API
+  initialiseCollection: (collection: ICollection, rootOrders?: TId[]) => void; // TODO: rename API
 
   // message
   getItem: (id: TId) => IWebSocketMessage | undefined;
@@ -60,7 +60,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         ...s.request.__meta.fOrders,
         ...s.request.__meta.iOrders,
       ];
-      console.log(rootOrders, 'rootOrders...');
+      // console.log(rootOrders, 'rootOrders...');
       const instance = new TreeDataProvider(
         s.collection.folders,
         s.collection.items,
@@ -92,7 +92,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   },
 
   // collection
-  initialiseCollection: (collection: ICollection) => {
+  initialiseCollection: (collection: ICollection, rootOrders) => {
     // console.log(collection?.items?.length, 'collection?.items?.length...');
     const state = get();
     // console.log(state.request.__meta.fOrders, state.request.__meta.iOrders);
@@ -100,7 +100,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         ...collection,
-        __manualUpdates: 0,
+        __manualUpdates: ++s.collection.__manualUpdates,
       },
       ui: {
         ...s.ui,
@@ -110,7 +110,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     state.collection.tdpInstance?.init(
       collection.folders || [],
       collection.items || [],
-      [...state.request.__meta.fOrders, ...state.request.__meta.iOrders]
+      rootOrders || [
+        ...state.request.__meta.fOrders,
+        ...state.request.__meta.iOrders,
+      ]
     );
   },
 
@@ -166,6 +169,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     return _folder;
   },
   onCreateFolder: (folder) => {
+    if (!folder) return;
     const state = get();
     state.toggleProgressBar(false);
     //@ts-ignore

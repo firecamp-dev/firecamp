@@ -16,8 +16,8 @@ import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
 import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
-import platformContext from '.';
 import { RE } from '../../types';
+import platformContext from '.';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -242,17 +242,7 @@ const request: IPlatformRequestService = {
         },
         executor: (name) => {
           const _folder = { ...folder, name };
-          // const res = await Rest.requestFolder
-          //   .create(_folder)
-          //   .then((r) => {
-          //     state.onCreateFolder(r.data);
-          //     return r;
-          //   })
-          //   .finally(() => {
-          //     state.toggleProgressBar(false);
-          //   });
-          // return res;
-          return Promise.resolve(_folder);
+          return request.createRequestFolder(_folder, '');
         },
         onError: (e) => {
           platformContext.app.notify.alert(
@@ -261,12 +251,14 @@ const request: IPlatformRequestService = {
         },
       })
       .then((res) => {
-        console.log(res, 1111);
+        // console.log(res, 'createRequestFolder response);
         return res;
       });
   },
   createRequestFolder: async (folder, tabId) => {
-    return Promise.resolve(folder);
+    return Rest.request
+      .createFolder(folder.__ref.requestId, folder)
+      .then((res) => res.data);
   },
   updateRequestFolder: async (folder, tabId) => {
     return folder;

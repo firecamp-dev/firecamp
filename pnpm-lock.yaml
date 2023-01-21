@@ -1012,7 +1012,7 @@ importers:
   platform/firecamp-platform:
     specifiers:
       '@firecamp/agent-manager': workspace:*
-      '@firecamp/cloud-apis': ^0.1.5
+      '@firecamp/cloud-apis': ^0.1.6
       '@firecamp/cookie-manager': ^0.0.0
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
@@ -1059,7 +1059,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/agent-manager': link:../../packages/firecamp-agent-manager
-      '@firecamp/cloud-apis': 0.1.5
+      '@firecamp/cloud-apis': 0.1.6
       '@firecamp/cookie-manager': link:../../packages/firecamp-cookie-manager
       '@firecamp/graphql': link:../../packages/firecamp-graphql
       '@firecamp/rest': link:../../packages/firecamp-rest
@@ -2986,8 +2986,8 @@ packages:
       - supports-color
     dev: true
 
-  /@firecamp/cloud-apis/0.1.5:
-    resolution: {integrity: sha512-0bGGD8nUK2XH2kCAfTVhpTV1SsGbt4lhMYWE3Qo+21mSIYA9CgxRh9BuavUv2ZgKRxikvd4aZiFLOGPPNpsNPQ==}
+  /@firecamp/cloud-apis/0.1.6:
+    resolution: {integrity: sha512-1wtE/UnLosJ0oI6v8gpfa3QpEldO2uZlysVgjyFR2Z6ciDqbg1z/v74sCGZjeCmvFaO5t7nMvkRfKU9sOTMiHQ==}
     engines: {node: '>=10'}
     dependencies:
       axios: 0.21.4
@@ -12614,7 +12614,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.1.2
+      minimatch: 3.0.4
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -13263,7 +13263,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.75.0_webpack-cli@4.10.0
+      webpack: 5.75.0
     dev: true
 
   /htmlparser2/3.10.1:

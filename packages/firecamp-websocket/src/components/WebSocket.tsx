@@ -17,6 +17,7 @@ import {
   useStore,
   StoreProvider,
   IStore,
+  IWebSocket,
 } from '../store';
 
 const WebSocket = ({ tab, platformContext }) => {
@@ -88,11 +89,13 @@ const WebSocket = ({ tab, platformContext }) => {
             throw error;
           }
         }
-        const { collection, ...request } = _request;
+        const { collection, ...request } = _request as IWebSocket & {
+          collection: any;
+        };
         /** initialise ws store on tab load */
         initialise(request, tab.id);
         if (collection && !_object.isEmpty(collection))
-          initialiseCollection(collection);
+          setTimeout(() => initialiseCollection(collection));
         setIsFetchingReqFlag(false);
       } catch (e) {
         console.error(e);
