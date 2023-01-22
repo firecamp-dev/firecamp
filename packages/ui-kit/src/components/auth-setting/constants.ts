@@ -1,6 +1,6 @@
 import { EAuthTypes } from '@firecamp/types';
 
-const authUiState = {
+const authUiFormState = {
   [EAuthTypes.Basic]: {
     inputList: [
       {
@@ -353,4 +353,4 @@ const authTypeList = [
   // { name: 'Netrc', id: EAuthTypes.Nertc, enable: false },
 ];
 
-export { authUiState, authTypeList };
+export { authUiFormState, authTypeList };

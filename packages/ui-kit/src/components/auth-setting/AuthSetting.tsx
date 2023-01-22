@@ -1,4 +1,4 @@
-import { FC, useState, Fragment, useEffect, useReducer } from 'react';
+import { FC, useState, useEffect, useReducer } from 'react';
 import _compact from 'lodash/compact';
 import isEqual from 'react-fast-compare';
 import { _misc, _object } from '@firecamp/utils';
@@ -25,7 +25,7 @@ import {
   NoAuth,
   Inherit,
 } from './index';
-import { authTypeList, authUiState } from './constants';
+import { authTypeList } from './constants';
 import { IAuthSetting } from './interfaces/AuthSetting.interfaces';
 
 const AuthSetting: FC<IAuthSetting> = ({

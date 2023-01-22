@@ -1,17 +1,15 @@
 import { FC, useState, useReducer } from 'react';
+import { Button, Dropdown, Input, CheckboxInGrid } from '@firecamp/ui-kit';
+import { IOAuth1, EAuthTypes } from '@firecamp/types';
+import { authUiFormState } from './constants';
 
-import { Button, Dropdown , Input,CheckboxInGrid} from '@firecamp/ui-kit';
-import { authUiState } from './constants';
-import { IOAuth1, EAuthTypes } from '@firecamp/types'
-
-
-const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
+const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
   const { OAuth1 } = EAuthTypes;
   const signatureMethodList = (
-    authUiState?.[OAuth1]?.signatureMethodList || []
+    authUiFormState?.[OAuth1]?.signatureMethodList || []
   ).map((i) => ({ name: i }));
-  const inputList = authUiState[OAuth1].inputList;
-  const advancedInputList = authUiState[OAuth1].advancedInputList;
+  const inputList = authUiFormState[OAuth1].inputList;
+  const advancedInputList = authUiFormState[OAuth1].advancedInputList;
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
@@ -55,65 +53,65 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
 
   return (
     <form className="fc-form grid" onSubmit={_handleSubmit}>
-    {(inputList || []).map((input:{[key: string]: any}, i) => {
-      let errorMsg = '';
-      if (isDirty[input.id] && !auth?.[input.id as keyof IOAuth1]?.length) {
-        errorMsg = `${input.name} can not be empty`;
-      }
-      return (
-        <Input
-          key={i}
-          autoFocus={i === 0}
-          label={input.name}
-          type={
-            input.id === 'password'
-              ? 'password'
-              : input.id === 'timestamp'
+      {(inputList || []).map((input: { [key: string]: any }, i) => {
+        let errorMsg = '';
+        if (isDirty[input.id] && !auth?.[input.id as keyof IOAuth1]?.length) {
+          errorMsg = `${input.name} can not be empty`;
+        }
+        return (
+          <Input
+            key={i}
+            autoFocus={i === 0}
+            label={input.name}
+            type={
+              input.id === 'password'
+                ? 'password'
+                : input.id === 'timestamp'
                 ? 'number'
                 : 'text'
-          }
-          placeholder={input.name}
-          name={input.id}
-          value={auth?.[input.id  as keyof IOAuth1] || ''}
-          error={errorMsg}
-          /* style={{
+            }
+            placeholder={input.name}
+            name={input.id}
+            value={auth?.[input.id as keyof IOAuth1] || ''}
+            error={errorMsg}
+            /* style={{
             borderColor:
               isDirty[input.id] && errorMsg
                 ? 'red'
                 : isDirty[input.id] && 'green',
           }} */
-          onChange={(e) => _handleChange(e, input.id)}
-          isEditor={true}
-        />
-      );
-    })}
-    <label className="fc-form-field-group">
-      Advanced
-      <span>optional</span>
-    </label>
-    <div className="form-group">
-      <label>Signature Method:</label>
-
-      <Dropdown
-        selected={auth['signatureMethod'] || 'HMAC-SHA1'} //defalut "HMAC-SHA1"
-      >
-        <Dropdown.Handler>
-        <Button 
-          text={auth['signatureMethod'] || 'HMAC-SHA1'}
-          sm
-          secondary
-          withCaret={true}
+            onChange={(e) => _handleChange(e, input.id)}
+            isEditor={true}
           />
-        </Dropdown.Handler>
-        <Dropdown.Options
-          options={signatureMethodList}
-          onSelect={(method) => {
-            _onSelectSignatureMethod(method?.name);
-          }}
-        />
-      </Dropdown>
-    </div>
-    {/* {auth?.['signatureMethod'] === 'RSA-SHA1' ? (
+        );
+      })}
+      <label className="fc-form-field-group">
+        Advanced
+        <span>optional</span>
+      </label>
+      <div className="form-group">
+        <label>Signature Method:</label>
+
+        <Dropdown
+          selected={auth['signatureMethod'] || 'HMAC-SHA1'} //defalut "HMAC-SHA1"
+        >
+          <Dropdown.Handler>
+            <Button
+              text={auth['signatureMethod'] || 'HMAC-SHA1'}
+              sm
+              secondary
+              withCaret={true}
+            />
+          </Dropdown.Handler>
+          <Dropdown.Options
+            options={signatureMethodList}
+            onSelect={(method) => {
+              _onSelectSignatureMethod(method?.name);
+            }}
+          />
+        </Dropdown>
+      </div>
+      {/* {auth?.['signatureMethod'] === 'RSA-SHA1' ? (
       <Input
         key={'privateKey'}
         label="Private Key"
@@ -128,34 +126,36 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange= ()=> { } }) => {
       ''
     )} */}
 
-    {(advancedInputList || []).map((input, i) => {
-      return (
-        <Input
-          key={i}
-          label={input.name}
-          type={
-            input.id === 'password'
-              ? 'password'
-              : input.id === 'timestamp'
+      {(advancedInputList || []).map((input, i) => {
+        return (
+          <Input
+            key={i}
+            label={input.name}
+            type={
+              input.id === 'password'
+                ? 'password'
+                : input.id === 'timestamp'
                 ? 'number'
                 : 'text'
-          }
-          placeholder={input.name}
-          name={input.id}
-          value={auth?.[input.id  as keyof IOAuth1] || ''}
-          onChange={(e) => _handleChange(e, input.id)}
-          isEditor={true}
-        />
-      );
-    })}
-   
-  </form>
+            }
+            placeholder={input.name}
+            name={input.id}
+            value={auth?.[input.id as keyof IOAuth1] || ''}
+            onChange={(e) => _handleChange(e, input.id)}
+            isEditor={true}
+          />
+        );
+      })}
+    </form>
   );
 };
 
 export default OAuth1;
 
 interface IOAuth1Comp {
-  auth: IOAuth1,
-  onChange: (authType: EAuthTypes.OAuth1, updates: { key: string, value: any }) => void
+  auth: IOAuth1;
+  onChange: (
+    authType: EAuthTypes.OAuth1,
+    updates: { key: string; value: any }
+  ) => void;
 }
