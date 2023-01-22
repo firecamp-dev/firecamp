@@ -5,7 +5,7 @@ import {
   Container,
   Button,
   TabHeader,
-  ScriptsTabs,
+  ScriptTab,
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { TId, IRestScripts } from '@firecamp/types';
@@ -51,12 +51,11 @@ const Scripts: FC<IScriptsSettingUi> = ({
     <Container className="with-divider h-full">
       <Container.Body>
         <Container className="p-4">
-          <ScriptsTabs
+          <ScriptTab
             id={itemId}
             key={itemId}
-            scripts={propScripts}
+            script={propScripts}
             onChangeScript={_onChangeScript}
-            allowInherit={type === EPlatformModalTypes.FolderSetting}
           />
         </Container>
       </Container.Body>

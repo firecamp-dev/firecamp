@@ -16,6 +16,7 @@ const Editor: FC<IEditor> = ({
   monacoOptions = {},
   height,
   path,
+  loading,
   addExtraLib,
   // controlsConfig = {
   //   show: false,
@@ -231,6 +232,7 @@ const Editor: FC<IEditor> = ({
         height={height}
         path={path}
         key={path}
+        loading={loading || <></>}
         onChange={(value, e) =>
           onChange({
             preventDefault: () => {},

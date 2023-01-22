@@ -29,7 +29,8 @@ export enum ERequestPanelTabs {
   Auths = 'Auths',
   Headers = 'Headers',
   Params = 'Params',
-  PrePostScripts = 'Pre/Post Scripts',
+  PreRequestScript = 'Pre-request Script',
+  Test = 'Test',
   Config = 'Config',
 }
 

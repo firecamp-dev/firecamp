@@ -5,7 +5,7 @@ import {
   Container,
   Button,
   TabHeader,
-  ScriptsTabs,
+  ScriptTab,
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 
@@ -50,12 +50,11 @@ const Scripts = ({ project = {}, collectionId = '' }) => {
     <Container className="with-divider h-full">
       <Container.Body>
         <Container className="pt-16 padding-wrapper">
-          <ScriptsTabs
+          <ScriptTab
             id={collectionId}
             key={collectionId}
-            scripts={scripts}
+            script={scripts}
             onChangeScript={_onChangeScript}
-            allowInherit={false}
           />
         </Container>
       </Container.Body>

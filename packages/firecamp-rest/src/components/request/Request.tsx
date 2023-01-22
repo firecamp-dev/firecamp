@@ -11,7 +11,7 @@ import {
   Button,
   Column,
   Container,
-  ScriptsTabs,
+  ScriptTab,
   Tabs,
 } from '@firecamp/ui-kit';
 import { EFirecampAgent } from '@firecamp/types';
@@ -67,8 +67,13 @@ const Request = ({ tab }) => {
         count: requestPanel.params,
       },
       {
-        id: ERequestPanelTabs.PrePostScripts,
-        name: ERequestPanelTabs.PrePostScripts,
+        id: ERequestPanelTabs.PreRequestScript,
+        name: ERequestPanelTabs.PreRequestScript,
+        dotIndicator: requestPanel.hasScripts,
+      },
+      {
+        id: ERequestPanelTabs.Test,
+        name: ERequestPanelTabs.Test,
         dotIndicator: requestPanel.hasScripts,
       },
       {
@@ -90,21 +95,24 @@ const Request = ({ tab }) => {
         return <HeadersTab />;
       case ERequestPanelTabs.Params:
         return <ParamsTab />;
-      case ERequestPanelTabs.PrePostScripts:
+      case ERequestPanelTabs.PreRequestScript:
         console.log(scripts, 'scripts in request');
         return (
-          <ScriptsTabs
-            id={tab?.id}
-            scripts={scripts}
-            allowInherit={false}
-            inheritScriptMessage={
-              tab?.__meta?.isSaved ? '' : 'Please save request first'
-            }
-            snippets={{
-              pre: preScriptSnippets,
-              post: postScriptSnippets,
-            }}
-            onChangeScript={changeScripts}
+          <ScriptTab
+            id={`preRequest-${tab?.id}`}
+            script={scripts.pre}
+            snippets={preScriptSnippets}
+            onChangeScript={(val) => changeScripts('pre', val)}
+          />
+        );
+      case ERequestPanelTabs.Test:
+        console.log(scripts, 'scripts in request');
+        return (
+          <ScriptTab
+            id={`test-${tab?.id}`}
+            script={scripts.post}
+            snippets={postScriptSnippets}
+            onChangeScript={(val) => changeScripts('post', val)}
           />
         );
       case ERequestPanelTabs.Config:
@@ -166,7 +174,7 @@ const Request = ({ tab }) => {
         </Container.Header>
         <Container.Body
           overflow={
-            activeTab === ERequestPanelTabs.PrePostScripts ? 'auto' : 'hidden'
+            activeTab === ERequestPanelTabs.PreRequestScript ? 'auto' : 'hidden'
           }
         >
           {_renderTab()}

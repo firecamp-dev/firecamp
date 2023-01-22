@@ -81,7 +81,7 @@ export const prepareUIRequestPanelState = (
 
         updatedUiStore = {
           ...updatedUiStore,
-          // activeTab: ERequestPanelTabs.PrePostScripts,
+          // activeTab: ERequestPanelTabs.PreRequestScript,
           hasScripts,
         };
         break;
