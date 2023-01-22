@@ -9,30 +9,32 @@ export default {
         {
           id: 'getGlobalVaribale',
           name: 'Get a global variable',
-          value: 'fc.globals.get("variable_key");',
+          value: ['fc.globals.get("variable_key");'],
         },
         {
           id: 'setGlobalVariable',
           name: 'Set a global variable',
-          value: 'fc.globals.set("variable_key", "variable_value");',
+          value: ['fc.globals.set("variable_key", "variable_value");'],
         },
         {
           id: 'clearGlobalVariable',
           name: 'Clear a global variable',
-          value: 'fc.globals.unset("variable_key");',
+          value: ['fc.globals.unset("variable_key");'],
         },
         {
           id: 'getVariable',
           name: 'Get a variable',
-          value: 'fc.variables.get("variable_key");',
+          value: ['fc.variables.get("variable_key");'],
         },
-        //         {
-        //           id: 'sendRequest',
-        //           name: 'Send a request',
-        //           value: `fc.sendRequest('https://postman-echo.com/get', function (err, response) {
-        //   console.log(response.json());
-        // });`,
-        //         },
+        // {
+        //   id: 'sendRequest',
+        //   name: 'Send a request',
+        //   value: [
+        //     "fc.sendRequest('https://postman-echo.com/get', function (err, response) {",
+        //     '   console.log(response.json());',
+        //     '});',
+        //   ],
+        // },
       ],
       /** @deprecated */
       _snippets: [
@@ -65,17 +67,17 @@ export default {
         {
           id: 'getEnvironemntVariable',
           name: 'Get an environment variable',
-          value: 'fc.environment.get("variable_key");',
+          value: ['fc.environment.get("variable_key");'],
         },
         {
           id: 'setEnvironmentVariable',
           name: 'Set an environment variable',
-          value: 'fc.environment.set("variable_key", "variable_value");',
+          value: ['fc.environment.set("variable_key", "variable_value");'],
         },
         {
           id: 'clearEnvironmentVariable',
           name: 'Clear an environment variable',
-          value: 'fc.environment.unset("variable_key");',
+          value: ['fc.environment.unset("variable_key");'],
         },
       ],
       /** @deprecated */
@@ -109,18 +111,19 @@ export default {
         {
           id: 'getCollectionVariable',
           name: 'Get a collection variable',
-          value: 'fc.collectionVariables.get("variable_key");',
+          value: ['fc.collectionVariables.get("variable_key");'],
         },
         {
           id: 'setCollectionVariable',
           name: 'Set a collection variable',
-          value:
+          value: [
             'fc.collectionVariables.set("variable_key", "variable_value");',
+          ],
         },
         {
           id: 'clearCollectionVariable',
           name: 'Clear a collection variable',
-          value: 'fc.collectionVariables.unset("variable_key");',
+          value: ['fc.collectionVariables.unset("variable_key");'],
         },
       ],
       /** @deprecated */
