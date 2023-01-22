@@ -345,12 +345,12 @@ const authTypeList = [
   { name: 'Basic', id: EAuthTypes.Basic, enable: true },
   { name: 'Digest', id: EAuthTypes.Digest, enable: true },
   { name: 'OAuth 1', id: EAuthTypes.OAuth1, enable: true },
-  { name: 'OAuth 2', id: EAuthTypes.OAuth2, enable: false },
-  { name: 'Hawk', id: EAuthTypes.Hawk, enable: false },
+  // { name: 'OAuth 2', id: EAuthTypes.OAuth2, enable: false },
+  // { name: 'Hawk', id: EAuthTypes.Hawk, enable: false },
   { name: 'AWS', id: EAuthTypes.Aws4, enable: true },
-  { name: 'NTLM', id: EAuthTypes.Ntlm, enable: false },
-  { name: 'Atlassian', id: EAuthTypes.Atlassian, enable: false },
-  { name: 'Netrc', id: EAuthTypes.Nertc, enable: false },
+  // { name: 'NTLM', id: EAuthTypes.Ntlm, enable: false },
+  // { name: 'Atlassian', id: EAuthTypes.Atlassian, enable: false },
+  // { name: 'Netrc', id: EAuthTypes.Nertc, enable: false },
 ];
 
 export { authUiState, authTypeList };
