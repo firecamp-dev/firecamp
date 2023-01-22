@@ -1,8 +1,8 @@
-import { FC, useState, Fragment, useEffect, useReducer } from 'react';
+import { FC, useState, useEffect, useReducer } from 'react';
 import _compact from 'lodash/compact';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { _misc, _object } from '@firecamp/utils';
-import { EFirecampAgent, EAuthTypes, IAuthUiState } from '@firecamp/types';
+import { EFirecampAgent, EAuthTypes } from '@firecamp/types';
 import {
   AvailableOnElectron,
   Notes,
@@ -25,7 +25,7 @@ import {
   NoAuth,
   Inherit,
 } from './index';
-import { authTypeList, authUiState } from './constants';
+import { authTypeList } from './constants';
 import { IAuthSetting } from './interfaces/AuthSetting.interfaces';
 
 const AuthSetting: FC<IAuthSetting> = ({
@@ -50,7 +50,7 @@ const AuthSetting: FC<IAuthSetting> = ({
   for (let k in authUiState) {
     let keys: any[] = [];
     //@ts-ignore
-    const authUi = authUiState[k]
+    const authUi = authUiState[k];
     if (authUi.inputList) {
       authUi.inputList.map((i: { id: any }) => {
         keys.push(i.id || '');
@@ -93,88 +93,10 @@ const AuthSetting: FC<IAuthSetting> = ({
     }
   };
 
-  const _isApiAuthEmpty = (authObj: { [x: string]: any }) => {
-    if (!authObj) return;
-    let authPayload = {},
-      isAuthEmpty = true;
-
-    for (let key in authObj) {
-      let isKeyEmpty = true;
-      if (key !== EAuthTypes.OAuth2) {
-        let i: any,
-          payload = [];
-
-        for (i in authObj[key]) {
-          //Check for those keys which is having Inputbox
-          if (
-            authTypesKeys[key] &&
-            authTypesKeys[key].includes(i) &&
-            authObj[key][i] &&
-            authObj[key][i].length
-          ) {
-            isKeyEmpty = false;
-            isAuthEmpty = false;
-            break;
-          }
-        }
-
-        authPayload = Object.assign(authPayload, { [key]: isKeyEmpty });
-      } else {
-        let oauth2Payload = authObj[EAuthTypes.OAuth2].grantTypes;
-
-        let i;
-        for (i in oauth2Payload) {
-          let gtKey;
-          for (gtKey in oauth2Payload[i]) {
-            if (gtKey !== 'grant_type') {
-              if (oauth2Payload?.[i]?.[gtKey]?.length) {
-                isKeyEmpty = false;
-                isAuthEmpty = false;
-                break;
-              }
-            }
-          }
-        }
-        authPayload = Object.assign(authPayload, { [key]: isKeyEmpty });
-      }
-    }
-
-    return isAuthEmpty
-      ? { isEmpty: true }
-      : Object.assign(authPayload, { isEmpty: false });
-  };
-
-  const _generateAuthTypesDD = (authPayload: IAuthUiState) => {
-    const isEmptyApiAuth = _isApiAuthEmpty(authPayload || {});
-    const authTypes = _compact(
-      _authTypeList.map((type, i) => {
-        if (type.enable) {
-          return _object.omit(type, ['enable']);
-        }
-      })
-    );
-    const authTypesPayload = authTypes.map((v: any, k) => {
-      if (v.id !== EAuthTypes.Hawk) {
-        const isEmpty = isEmptyApiAuth[v.id] as Boolean;
-        return Object.assign(v, {
-          isEmpty:
-            v.id !== EAuthTypes.None
-              ? Object.keys(isEmptyApiAuth).includes(v.id)
-                ? isEmpty
-                : true
-              : true,
-        });
-      }
-    });
-
-    // console.log({ authTypesPayload });
-    return authTypesPayload;
-  };
-
   const initialState = {
     isAuthTypesDDOpen: false,
     activeAuthType: _authTypeList.find((type) => type.id === activeAuth),
-    authTypes: _generateAuthTypesDD(authUiState),
+    authTypes: _authTypeList,
   };
 
   const [state, setState] = useReducer(reducer, initialState);
@@ -197,23 +119,13 @@ const AuthSetting: FC<IAuthSetting> = ({
     _fetchInherit();
   }, [activeAuth]);
 
-  useEffect(() => {
-    const updatedAuthTypes = _generateAuthTypesDD(authUiState);
-    if (!equal(updatedAuthTypes, authTypes)) {
-      setState({
-        type: 'authTypes',
-        value: authTypes,
-      });
-    }
-  }, [authUiState]);
-
   const _onchangeActiveAuth = async (authType: EAuthTypes) => {
     try {
       const authData = await onChangeActiveAuth(authType);
       if (
         authData &&
         authType === EAuthTypes.Inherit &&
-        !equal(authData, inheitedAuth)
+        !isEqual(authData, inheitedAuth)
       ) {
         setInheitedAuth(authData);
       }
@@ -231,25 +143,31 @@ const AuthSetting: FC<IAuthSetting> = ({
             authTypeList={_authTypeList}
           />
         );
-        break;
       case EAuthTypes.Bearer:
         return (
-          <Bearer auth={authUiState[EAuthTypes.Bearer]} onChange={onChangeAuth} />
+          <Bearer
+            auth={authUiState[EAuthTypes.Bearer]}
+            onChange={onChangeAuth}
+          />
         );
-        break;
       case EAuthTypes.Basic:
-        return <Basic auth={authUiState[EAuthTypes.Basic]} onChange={onChangeAuth} />;
-        break;
+        return (
+          <Basic auth={authUiState[EAuthTypes.Basic]} onChange={onChangeAuth} />
+        );
       case EAuthTypes.Digest:
         return (
-          <Digest auth={authUiState[EAuthTypes.Digest]} onChange={onChangeAuth} />
+          <Digest
+            auth={authUiState[EAuthTypes.Digest]}
+            onChange={onChangeAuth}
+          />
         );
-        break;
       case EAuthTypes.OAuth1:
         return (
-          <OAuth1 auth={authUiState[EAuthTypes.OAuth1]} onChange={onChangeAuth} />
+          <OAuth1
+            auth={authUiState[EAuthTypes.OAuth1]}
+            onChange={onChangeAuth}
+          />
         );
-        break;
       case EAuthTypes.OAuth2:
         if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
           return (
@@ -263,14 +181,13 @@ const AuthSetting: FC<IAuthSetting> = ({
         } else {
           return <AvailableOnElectron name="OAuth2" />;
         }
-        break;
       case EAuthTypes.Hawk:
         return <></>;
-        // <Hawk auth={authUiState[EAuthTypes.Hawk]} onChange={onChangeAuth} />;
-        break;
+      // <Hawk auth={authUiState[EAuthTypes.Hawk]} onChange={onChangeAuth} />;
       case EAuthTypes.Aws4:
-        return <Aws auth={authUiState[EAuthTypes.Aws4]} onChange={onChangeAuth} />;
-        break;
+        return (
+          <Aws auth={authUiState[EAuthTypes.Aws4]} onChange={onChangeAuth} />
+        );
       case EAuthTypes.Ntlm:
         return (
           <div className="p-3">
@@ -282,15 +199,13 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
             />
           </div>
         );
-        break;
       /* case EAuthTypes.Atlassian:
         return (
           <Atlassion
             auth={authUiState[EAuthTypes.Atlassian]}
             onChange={onChangeAuth}
           />
-        );
-        break; */
+        );*/
       case EAuthTypes.Nertc:
         return <Netrc />;
         break;
@@ -302,7 +217,6 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
             message={inheritAuthMessage}
           />
         );
-        break;
       default:
         return allowInherit ? (
           <Inherit
@@ -316,7 +230,6 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
             authTypeList={_authTypeList}
           />
         );
-        break;
     }
   };
 
@@ -346,10 +259,10 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
               <Button
                 text={activeAuthType?.name || ''}
                 className="font-bold"
-                ghost
                 transparent
                 withCaret
                 primary
+                ghost
                 xs
               />
             </Dropdown.Handler>

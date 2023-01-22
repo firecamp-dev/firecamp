@@ -5,7 +5,6 @@ import { TId, IRest } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';
 import {
   prepareUIRequestPanelState,
-  normalizeVariables,
   normalizeSendRequestPayload,
   initialiseStoreFromRequest,
 } from '../services/request.service';
@@ -15,10 +14,8 @@ import {
   createRuntimeSlice,
   createResponseSlice,
   createUiSlice,
-  createPullActionSlice,
   createRequestChangeStateSlice,
 } from './slices/index';
-import { IRestClientRequest } from '../types';
 import { IStoreState, IStore } from './store.type';
 
 const {
@@ -38,21 +35,17 @@ const createStore = (initialState: IStoreState) =>
         const initState = initialiseStoreFromRequest(request, tabId);
         // console.log(initState, 'initState');
         set((s) => ({
-            ...s,
-            ...initState,
-            // @ts-ignore
-            originalRequest: _cloneDeep(initState.request) as IRest,
+          ...s,
+          ...initState,
+          originalRequest: _cloneDeep(initState.request) as IRest,
         }));
         // update auth type, generate auth headers
-        state.changeAuthType(request.auth?.type);
+        state.changeAuthType(initState.request.auth.type);
       },
       ...createRequestSlice(
         set,
         get,
-        _object.pick(
-          initialState.request,
-          requestSliceKeys
-        ) as IRestClientRequest
+        _object.pick(initialState.request, requestSliceKeys) as IRest
       ),
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createResponseSlice(set, get),
@@ -63,7 +56,6 @@ const createStore = (initialState: IStoreState) =>
           ...uiRequestPanel,
         },
       }),
-      ...createPullActionSlice(set, get),
       ...createRequestChangeStateSlice(set, get),
     };
   });

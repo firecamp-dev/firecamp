@@ -1,5 +1,3 @@
-import { TId } from '@firecamp/types';
-
 export enum ELogTypes {
   Send = 's',
   Receive = 'r',
@@ -80,9 +78,9 @@ export enum EWebsocketConfigKeys {
 }
 
 // request changes
-export enum EReChangeRootKeys {
-  headers = 'headers',
+export enum EReqChangeRootKeys {
   config = 'config',
+  connections = 'connections', //queryParams and headers will be in connection
 }
 
 export enum EReqChangeMetaKeys {
@@ -93,85 +91,4 @@ export enum EReqChangeMetaKeys {
 }
 export enum EReqChangeUrlKeys {
   raw = 'raw',
-}
-
-export enum EPushActionConfigKeys {
-  reconnect = 'reconnect',
-  reconnectAttempts = 'reconnectAttempts',
-  reconnectTimeout = 'reconnectTimeout',
-  protocols = 'protocols',
-  rejectUnauthorized = 'rejectUnauthorized',
-  handshakeTimeout = 'handshakeTimeout',
-  protocolVersion = 'protocolVersion',
-  maxRedirects = 'maxRedirects',
-  followRedirects = 'followRedirects',
-  origin = 'origin',
-  maxPayload = 'maxPayload',
-}
-
-export interface IPushActionConnections {
-  ['i']?: Array<TId>;
-  ['u']?: Array<{
-    id: TId;
-    _root?: Array<string>;
-    config?: Array<string>;
-  }>;
-  ['d']?: Array<TId>;
-}
-
-// Leaf push action
-
-export enum EPushActionMessage_Root {
-  name = 'name',
-  body = 'body',
-}
-
-export enum EPushActionMessageMeta {
-  type = 'type',
-  typedArrayView = 'typedArrayView',
-}
-
-export enum EPushActionMessage_meta {
-  parentId = 'parentId',
-  updatedAt = 'updatedAt',
-  updatedBy = 'updatedBy',
-}
-
-export interface IPushActionMessage {
-  ['i']?: Array<TId>;
-  ['u']?: Array<{
-    id: TId;
-    _root?: Array<EPushActionMessage_Root>;
-    __meta?: Array<EPushActionMessageMeta>;
-    __ref?: Array<EPushActionMessage_meta>;
-  }>;
-  ['d']?: Array<TId>;
-}
-
-// Directory push action
-
-export enum EPushActionDirectory_Root {
-  name = 'name',
-}
-
-export enum EPushActionDirectoryMeta {
-  fOrders = 'fOrders',
-  iOrders = 'iOrders',
-}
-
-export enum EPushActionDirectory_meta {
-  parentId = 'parentId',
-  updatedAt = 'updatedAt',
-  updatedBy = 'updatedBy',
-}
-
-export interface IPushActionDirectory {
-  ['i']?: Array<TId>;
-  ['u']?: Array<{
-    id: TId;
-    _root?: Array<EPushActionDirectory_Root>;
-    __meta?: Array<EPushActionDirectoryMeta>;
-    __ref?: Array<EPushActionDirectory_meta>;
-  }>;
-  ['d']?: Array<TId>;
 }

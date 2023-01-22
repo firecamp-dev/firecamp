@@ -4,7 +4,7 @@ import { ELogTypes } from '../../../types';
 
 const emptyRow = {
   title: '',
-  message: { name: '', payload: '', __meta: { type: '' } },
+  message: { name: '', value: '', __meta: { type: '' } },
   __meta: { id: '', event: '', type: '', color: '', timestamp: '' },
 };
 
@@ -12,7 +12,7 @@ const LogPreview = ({ row = emptyRow }) => {
   if (!row?.message) row = emptyRow;
   const value =
     row.message?.__meta?.type !== 'file'
-      ? row?.message?.payload || row.title || ''
+      ? row?.message?.value || row.title || ''
       : row?.message?.name || 'Sending File';
 
   const language = row?.message?.__meta?.type === 'json' ? 'json' : 'text';

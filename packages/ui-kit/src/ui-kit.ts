@@ -100,7 +100,7 @@ export { default as ConfirmationPopover } from './components/popover/Confirmatio
 export { default as Toast } from './components/toast/Toast';
 
 // scripts
-export { default as ScriptsTabs } from './components/scripts/ScriptsTabs';
+export { default as ScriptTab } from './components/scripts/ScriptTab';
 
 // response
 export { default as Response } from './components/response/Response';

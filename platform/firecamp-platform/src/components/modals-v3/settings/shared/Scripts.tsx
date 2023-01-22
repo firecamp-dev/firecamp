@@ -1,14 +1,12 @@
 import { FC, useMemo } from 'react';
+import isEqual from 'react-fast-compare';
+import _cloneDeep from 'lodash/cloneDeep';
 import {
   Container,
   Button,
- 
-  
   TabHeader,
-  ScriptsTabs,
+  ScriptTab,
 } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
-import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 import { TId, IRestScripts } from '@firecamp/types';
 
@@ -53,12 +51,11 @@ const Scripts: FC<IScriptsSettingUi> = ({
     <Container className="with-divider h-full">
       <Container.Body>
         <Container className="p-4">
-          <ScriptsTabs
+          <ScriptTab
             id={itemId}
             key={itemId}
-            scripts={propScripts}
+            script={propScripts}
             onChangeScript={_onChangeScript}
-            allowInherit={type === EPlatformModalTypes.FolderSetting}
           />
         </Container>
       </Container.Body>
@@ -79,7 +76,7 @@ const Scripts: FC<IScriptsSettingUi> = ({
               primary
               sm
               disabled={
-                equal(propScripts, initialPayload.scripts) || isRequesting
+                isEqual(propScripts, initialPayload.scripts) || isRequesting
               }
               onClick={_onUpdate}
             />

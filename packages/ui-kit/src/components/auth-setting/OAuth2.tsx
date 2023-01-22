@@ -1,7 +1,7 @@
 import { FC, useState, useReducer, useEffect, Key } from 'react';
 import { Dropdown, Button, Input } from '@firecamp/ui-kit';
 import { EAuthTypes, IUiOAuth2 } from '@firecamp/types';
-import { authUiState } from './constants';
+import { authUiFormState } from './constants';
 
 const _setDirty = (
   state: any,
@@ -31,9 +31,8 @@ const OAuth2: FC<IOAuth2Comp> = ({
 }) => {
   const { OAuth2 } = EAuthTypes;
   const { activeGrantType, grantTypes } = auth;
-  const grantTypesOptions = authUiState[OAuth2].grantTypes;
-  const grantTypesPayloads =
-    authUiState[OAuth2].grantTypesPayload;
+  const grantTypesOptions = authUiFormState[OAuth2].grantTypes;
+  const grantTypesPayloads = authUiFormState[OAuth2].grantTypesPayload;
   const inputList = grantTypesPayloads?.[activeGrantType].inputList;
   const advancedInputList =
     grantTypesPayloads?.[activeGrantType].advancedInputList;

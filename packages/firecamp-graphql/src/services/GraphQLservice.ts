@@ -54,7 +54,7 @@ export default function getQueryFacts(schema, documentStr) {
     operationList.push(def);
     operations.push({
       name: def.name ? def.name.value : undefined,
-      body: print(def),
+      value: print(def),
       __meta: {
         variables: def.variables,
         variableToType: def.variableToType,

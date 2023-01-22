@@ -1,19 +1,18 @@
 import { FC, useReducer } from 'react';
-import {
-  Button,
-  Dropdown,
-  Input,
-} from '@firecamp/ui-kit';
+import { Button, Dropdown, Input } from '@firecamp/ui-kit';
 import { IAuthDigest, EAuthTypes } from '@firecamp/types';
-import { authUiState } from './constants';
+import { authUiFormState } from './constants';
 
-const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
+const Digest: FC<IDigest> = ({
+  auth = { username: '', password: '' },
+  onChange = () => {},
+}) => {
   const { Digest } = EAuthTypes;
-  const inputList = authUiState[Digest].inputList;
-  const advancedInputList = authUiState[Digest].advancedInputList;
-  const algorithmList = (
-    authUiState[Digest].algorithmList || []
-  ).map((i) => ({ name: i }));
+  const inputList = authUiFormState[Digest].inputList;
+  const advancedInputList = authUiFormState[Digest].advancedInputList;
+  const algorithmList = (authUiFormState[Digest].algorithmList || []).map(
+    (i) => ({ name: i })
+  );
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
@@ -62,7 +61,10 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
     <form className="fc-form grid" onSubmit={_handleSubmit}>
       {(inputList || []).map((input, i) => {
         let errorMsg = '';
-        if (isDirty[input.id] && !auth?.[input.id as keyof IAuthDigest]?.length) {
+        if (
+          isDirty[input.id] &&
+          !auth?.[input.id as keyof IAuthDigest]?.length
+        ) {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
@@ -105,12 +107,7 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
           selected={auth['algorithm'] || 'MD5'} //defalut "MD5"
         >
           <Dropdown.Handler>
-            <Button
-              text={auth['algorithm'] || 'MD5'}
-              secondary
-              withCaret
-              sm
-            />
+            <Button text={auth['algorithm'] || 'MD5'} secondary withCaret sm />
           </Dropdown.Handler>
           <Dropdown.Options
             options={algorithmList}

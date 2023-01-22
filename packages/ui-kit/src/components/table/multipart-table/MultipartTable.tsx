@@ -1,5 +1,5 @@
 import { FC, memo, useEffect, useRef, useState } from 'react';
-import equals from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';
@@ -294,6 +294,6 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     );
   },
   (p, n) => {
-    return equals(p.row, n.row) && equals(p.value, n.value);
+    return isEqual(p.row, n.row) && isEqual(p.value, n.value);
   }
 );

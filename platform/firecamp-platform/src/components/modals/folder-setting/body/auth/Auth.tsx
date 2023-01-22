@@ -1,4 +1,5 @@
 import { FC, useState, useEffect, useRef } from 'react';
+import isEqual from 'react-fast-compare';
 import {
   AuthSetting,
   Container,
@@ -6,7 +7,6 @@ import {
   Button,
 } from '@firecamp/ui-kit';
 import { EAuthTypes } from '@firecamp/types';
-import equal from 'deep-equal';
 import { Auth as AuthService } from '@firecamp/rest/src/services';
 
 import { cloneDeep } from 'lodash';
@@ -44,18 +44,18 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
       try {
         let updatedAuthDetails = {};
 
-        if (module.auth && !equal(module.auth, authDetails.auth)) {
+        if (module.auth && !isEqual(module.auth, authDetails.auth)) {
           updatedAuthDetails.auth = module.auth;
         }
         if (
           module?.__meta?.activeAuthType &&
-          !equal(module?.__meta?.activeAuthType, authDetails.activeAuthType)
+          !isEqual(module?.__meta?.activeAuthType, authDetails.activeAuthType)
         ) {
           updatedAuthDetails.activeAuthType = module.__meta.activeAuthType;
         }
         if (
           module?._dnp?.oauth2LastFetchedToken &&
-          !equal(
+          !isEqual(
             module?._dnp?.oauth2LastFetchedToken,
             authDetails.oauth2LastFetchedToken
           )
@@ -326,7 +326,7 @@ const Auth: FC<IAuth> = ({ module = {}, folderId = '' }) => {
               text="Update"
               primary
               sm
-              disabled={equal(initialAuthDetails, authDetails)}
+              disabled={isEqual(initialAuthDetails, authDetails)}
               onClick={_onUpdate}
             />
           </TabHeader.Right>

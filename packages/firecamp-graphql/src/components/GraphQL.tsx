@@ -3,19 +3,13 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { _object } from '@firecamp/utils';
-import { IGraphQL } from '@firecamp/types';
 import { Container, Row, Column, Loader } from '@firecamp/ui-kit';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import PlaygroundPanel from './playground-panel/PlaygroundPanel';
 import DocWrapper from './common/explorer/GraphQLDoc';
 
-import {
-  StoreProvider,
-  createStore,
-  useStore,
-  IStore,
-} from '../store';
+import { StoreProvider, createStore, useStore, IStore } from '../store';
 
 import {
   initialiseStoreFromRequest,
@@ -28,7 +22,6 @@ const GraphQL = ({ tab, platformContext }) => {
     initialise,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
-    getMergedRequestByPullAction,
     setContext,
     initialiseCollection,
   } = useStore(
@@ -37,7 +30,6 @@ const GraphQL = ({ tab, platformContext }) => {
       initialise: s.initialise,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       setRequestSavedFlag: s.setRequestSavedFlag,
-      getMergedRequestByPullAction: s.getMergedRequestByPullAction,
       setContext: s.setContext,
       initialiseCollection: s.initialiseCollection,
     }),
@@ -79,48 +71,7 @@ const GraphQL = ({ tab, platformContext }) => {
     };
   }, []);
 
-  /**
-   * Handle pull payload
-   * 1. initialise/ merge request
-   * 2. Generate pull action
-   */
-  const handlePull = async (pullActions: any[]) => {
-    try {
-      let pullPayload = pullActions[0];
-
-      // console.log({ pullPayload });
-
-      // let last = graphqlStoreApi.getState().last;
-      // let mergedPullAndLastRequest = _object.mergeDeep(
-      //   _cloneDeep(last.request),
-      //   _object.omit(pullPayload, ['_action'])
-      // );
-
-      // merged request payload: merged existing request and pull payload request
-      let updatedRequest = (await getMergedRequestByPullAction(
-        pullPayload
-      )) as IGraphQL;
-
-      // console.log({ 111: updatedRequest });
-
-      updatedRequest = normalizeRequest(updatedRequest);
-
-      // console.log({ updatedRequest, mergedPullAndLastRequest });
-
-      // set last value by pull action and request
-      // get push action payload
-      // let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
-      // console.log({ 'pushAction on pull': pushAction });
-
-      // initialise request with updated request and push action
-      // initialiseRequest(updatedRequest, true, pushAction, true, false);
-    } catch (error) {
-      console.error({
-        API: 'rest.handlePull',
-        error,
-      });
-    }
-  };
+  const handlePull = async () => {};
 
   const fetchRequest = async () => {
     try {
@@ -130,12 +81,11 @@ const GraphQL = ({ tab, platformContext }) => {
       if (isRequestSaved === true) {
         setIsFetchingReqFlag(true);
         try {
-          const response = await platformContext.request.onFetch(
+          const request = await platformContext.request.fetch(
             tab.request.__ref.id
           );
-
-          console.log(response.data, 'fetch request...');
-          _request = response.data;
+          console.log(request, 'fetch request...');
+          _request = { ...request };
         } catch (error) {
           console.error({
             API: 'fetch rest request',

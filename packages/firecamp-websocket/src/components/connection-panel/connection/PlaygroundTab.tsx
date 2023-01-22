@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
+import { VscFile } from '@react-icons/all-files/vsc/VscFile';
+import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
+import shallow from 'zustand/shallow';
 import {
   FileInput,
   Container,
@@ -15,20 +18,12 @@ import {
   // EPopoverPosition,
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import shallow from 'zustand/shallow';
 import { EEditorLanguage, ETypedArrayView } from '@firecamp/types';
-
-import { EMessagePayloadTypes } from '../../../types';
-import {
-  useStore,
-  initialPlaygroundMessage,
-  IStore,
-} from '../../../store';
-import { MessageTypeDropDownList } from '../../../constants';
 import MessageTypeDropDown from './playground/MessageTypeDropDown';
 import TypedArrayViewDropDown from './playground/TypedArrayViewDropDown';
+import { EMessagePayloadTypes } from '../../../types';
+import { useStore, initialPlaygroundMessage, IStore } from '../../../store';
+import { MessageTypeDropDownList } from '../../../constants';
 
 const PlaygroundTab = () => {
   const {
@@ -53,7 +48,7 @@ const PlaygroundTab = () => {
   const { folders } = collection;
   const { activePlayground, playground, plgTab } = getActivePlayground();
   const { message } = playground;
-  const { payload } = message;
+  const { value } = message;
 
   console.log(playground, plgTab, 'playground');
   if (!activePlayground || !message.__meta) {
@@ -196,14 +191,16 @@ const PlaygroundTab = () => {
             autoFocus={true}
             key={playground.id}
             language={
-              type.id === EMessagePayloadTypes.json ? EEditorLanguage.Json : EEditorLanguage.FcText
+              type.id === EMessagePayloadTypes.json
+                ? EEditorLanguage.Json
+                : EEditorLanguage.FcText
             }
-            value={payload}
+            value={value}
             controlsConfig={{
               show:
                 activeType.id !== EMessagePayloadTypes.none &&
                 activeType.id !== EMessagePayloadTypes.file &&
-                typeof payload === 'string',
+                typeof value === 'string',
               position: 'down',
               collapsed: true,
             }}
@@ -211,9 +208,9 @@ const PlaygroundTab = () => {
               setEditorDOM(editor);
             }}
             onChange={(e) => {
-              if (message.payload !== e.target.value) {
+              if (message.value !== e.target.value) {
                 changePlaygroundMessage(activePlayground, {
-                  payload: e.target.value,
+                  value: e.target.value,
                 });
               }
             }}
@@ -232,8 +229,8 @@ const PlaygroundTab = () => {
         break;
       case EMessagePayloadTypes.file:
         let fileName = '';
-        if (payload && typeof payload !== 'string') {
-          fileName = payload.name || '';
+        if (value && typeof value !== 'string') {
+          fileName = value.name || '';
         }
         return (
           <div className="fc-center-aligned">
@@ -243,7 +240,7 @@ const PlaygroundTab = () => {
               name={fileName}
               onSelectFile={(e) => {
                 changePlaygroundMessage(activePlayground, {
-                  payload: e.target.files[0],
+                  value: e.target.files[0],
                 });
               }}
             /> */}
@@ -259,12 +256,14 @@ const PlaygroundTab = () => {
   return (
     <Container className="h-full">
       <Container.Header>
-      <StatusBar className="bg-statusBarBackground2 px-1">
-        <StatusBar.PrimaryRegion>
-        <div className="collection-path" data-tip={message.path} >{message.path || `./`}</div>
-        </StatusBar.PrimaryRegion>
-        <StatusBar.SecondaryRegion>
-        {!plgTab.__meta.isSaved ? (
+        <StatusBar className="bg-statusBarBackground2 px-1">
+          <StatusBar.PrimaryRegion>
+            <div className="collection-path" data-tip={message.path}>
+              {message.path || `./`}
+            </div>
+          </StatusBar.PrimaryRegion>
+          <StatusBar.SecondaryRegion>
+            {!plgTab.__meta.isSaved ? (
               <Button
                 text={'Save'}
                 className="mr-1 hover:!bg-focus2"
@@ -290,7 +289,7 @@ const PlaygroundTab = () => {
             )}
             <ShortcutsPopover id={playground.id} />
           </StatusBar.SecondaryRegion>
-          </StatusBar>
+        </StatusBar>
       </Container.Header>
       <Container.Header className="message-playground-scrollable top invisible-scrollbar ">
         <TabHeader className="height-small">

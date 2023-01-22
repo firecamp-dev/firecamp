@@ -57,6 +57,12 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     const item = this.items.find((i) => i.__ref?.id == itemId);
 
     // console.log(this.items, itemId);
+    if (!item) {
+      return Promise.resolve({
+        index: null,
+        data: null,
+      });
+    }
 
     const treeItem: TTreeItemData = {
       name: item.name,
@@ -184,5 +190,9 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     } else {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
+  }
+
+  public isEmpty() {
+    return !this.items.length;
   }
 }

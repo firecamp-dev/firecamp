@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from 'react';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui-kit';
 import { _table } from '@firecamp/utils';
 import { EEditorLanguage } from '@firecamp/types';
@@ -33,7 +33,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
         const tableToString = _table.toText([...rows]);
         // console.log({raw, tableToString});
 
-        if (!equal(raw, tableToString)) {
+        if (!isEqual(raw, tableToString)) {
           setRaw(tableToString);
         }
       }
@@ -58,7 +58,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
   };
 
   const _onChangeRows = (newRows: any[] = []) => {
-    if (!equal(newRows, rows)) {
+    if (!isEqual(newRows, rows)) {
       // console.log({ newRows, rows });
 
       onChange(newRows);
@@ -89,10 +89,10 @@ const BulkEditTable: FC<IBulkEditTable> = ({
       </TabHeader>
       {mode === modes.Table ? (
         <BasicTable
-          onChange={_onChangeRows}
+          title={title}
           rows={rows}
-          name={title}
           options={options}
+          onChange={_onChangeRows}
           // disabled={disabled}
           onMount={onMount}
         />

@@ -43,7 +43,7 @@
   "dependencies": {
     "@firecamp/curl-to-firecamp": "^0.0.10",
     "@firecamp/rest-executor": "workspace:*",
-    "@firecamp/types": "^0.1.6",
+    "@firecamp/types": "^0.1.9",
     "@firecamp/ui-kit": "workspace:*",
     "@firecamp/url": "^0.0.17",
     "@hapi/joi": "^17.1.1",
@@ -55,7 +55,6 @@
     "codemirror-graphql": "^1.0.2",
     "comment-json": "^4.1.1",
     "debounce-promise": "^3.1.2",
-    "deep-equal": "^2.0.3",
     "fuzzysort": "^1.1.4",
     "graphql": "^15.6.0",
     "hawk": "^9.0.0",

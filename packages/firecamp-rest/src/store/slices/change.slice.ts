@@ -2,7 +2,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import equal from 'react-fast-compare';
 import { _array, _object } from '@firecamp/utils';
-import { IRest } from '@firecamp/types';
+import { ERequestTypes, IRest } from '@firecamp/types';
 import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
@@ -23,19 +23,29 @@ interface IRequestChangeStateSlice {
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<IRest>) => void;
   preparePayloadForSaveRequest: () => IRest;
-  preparePayloadForUpdateRequest: () => Partial<IRest>;
+  preparePayloadForUpdateRequest: () => Partial<IRest | null>;
+  /**
+   * dispose request change state
+   * 1. set originalRequest to the current state.request
+   * 2. initialise the rcs state
+   */
+  disposeRCS: () => void;
 }
-
-const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
-  set,
-  get
-) => ({
+//@note; always use _cloneDeep at its usage otherrwise it's value will be manipulate at global scope
+const initialSliceState = {
   requestChangeState: {
     url: [],
     scripts: [],
     __meta: [],
     __root: [],
   },
+};
+
+const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
+  set,
+  get
+) => ({
+  requestChangeState: _cloneDeep(initialSliceState.requestChangeState),
   equalityChecker: (request: Partial<IRest>) => {
     const state = get();
     const {
@@ -52,7 +62,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
         case EReqChangeRootKeys.headers:
         case EReqChangeRootKeys.body:
         case EReqChangeRootKeys.auth:
-          console.log((_request[key], request[key]), key);
+          console.log(_request[key], request[key], key);
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {
@@ -96,7 +106,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
 
     for (let key in _rcs) {
       /**
-       * @note: if _rcs kry is empty then continue the next loop
+       * @note: if _rcs key is empty then continue the next loop
        * because _object.pick will return the empty {} in below case if we allow to loop with _rcs[key] = []
        */
       if (!_rcs[key].length) continue;
@@ -114,8 +124,25 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
           break;
       }
     }
-    console.log(_rcs, _ur);
+    if (_object.isEmpty(_ur)) return null; //if request has no change then return null as update payload
+    //@ts-ignore
+    _ur.__meta = {
+      type: ERequestTypes.Rest,
+    };
+    _ur.__ref = {
+      id: _request.__ref.id,
+      collectionId: _request.__ref.collectionId,
+    };
+    //@ts-ignore
+    _ur.__changes = { ..._rcs };
+    console.log(_ur);
     return _ur;
+  },
+  disposeRCS: () => {
+    set((s) => ({
+      originalRequest: _cloneDeep(s.request),
+      requestChangeState: _cloneDeep(initialSliceState.requestChangeState),
+    }));
   },
 });
 

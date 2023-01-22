@@ -1,3 +1,4 @@
+import isEqual from 'react-fast-compare';
 import { Rest } from '@firecamp/cloud-apis';
 import {
   IRequestFolder,
@@ -5,20 +6,28 @@ import {
   TId,
   ERequestTypes,
 } from '@firecamp/types';
+import { getOperationNames } from '../../services/GraphQLservice';
 import { TStoreSlice } from '../store.type';
+import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
 
 interface ICollection {
   isProgressing?: boolean;
   tdpInstance?: any;
   items?: Partial<IGraphQLPlayground & { __ref: { isItem?: boolean } }>[];
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
+  /**
+   * increate the number on each action/event happens within collection
+   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   */
+  __manualUpdates?: number;
 }
 
 interface ICollectionSlice {
   collection: ICollection;
-
+  getCollection: () => ICollection;
+  isCollectionEmpty: () => boolean;
   toggleProgressBar: (flag?: boolean) => void;
-  registerTDP: (instance: any) => void;
+  registerTDP: () => void;
   unRegisterTDP: () => void;
 
   initialiseCollection: (collection: ICollection) => void;
@@ -30,7 +39,7 @@ interface ICollectionSlice {
   addItem: (name: string) => Promise<any>;
 
   /** update playground */
-  updateItem: (updateOnlyName?: boolean) => Promise<any>;
+  updateItem: (name?: string) => Promise<any>;
 }
 
 const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
@@ -43,16 +52,42 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     tdpInstance: null,
     items: [],
     folders: [],
+    __manualUpdates: 0,
   },
 
+  getCollection: () => {
+    return get().collection;
+  },
+  isCollectionEmpty: () => {
+    const { folders, items } = get().collection;
+    return folders.length == 0 && items.length == 0;
+  },
   // register TreeDatProvider instance
-  registerTDP: (instance: any) => {
-    set((s) => ({ collection: { ...s.collection, tdpInstance: instance } }));
+  registerTDP: () => {
+    set((s) => {
+      const instance = new TreeDataProvider(
+        s.collection.folders,
+        s.collection.items
+      );
+      return {
+        collection: {
+          ...s.collection,
+          tdpInstance: instance,
+          __manualUpdates: ++s.collection.__manualUpdates,
+        },
+      };
+    });
   },
 
   // unregister TreeDatProvider instance
   unRegisterTDP: () => {
-    set((s) => ({ collection: { ...s.collection, tdpInstance: null } }));
+    set((s) => ({
+      collection: {
+        ...s.collection,
+        tdpInstance: null,
+        __manualUpdates: 0,
+      },
+    }));
   },
 
   // collection
@@ -63,6 +98,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         ...collection,
+        __manualUpdates: ++s.collection.__manualUpdates,
       },
       ui: {
         ...s.ui,
@@ -97,7 +133,11 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
           const items = s.collection.items.filter((i) => i.__ref.id != id);
           s.collection.tdpInstance?.deleteItem(id);
           return {
-            collection: { ...s.collection, items },
+            collection: {
+              ...s.collection,
+              items,
+              __manualUpdates: ++s.collection.__manualUpdates,
+            },
             ui: { ...s.ui, playgrounds: items?.length },
           };
         });
@@ -130,7 +170,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     const item = {
       name,
-      payload: plg.request.body,
+      payload: plg.request.value,
       __meta: plg.request.__meta,
       __ref: {
         requestId: state.request.__ref.id,
@@ -146,17 +186,22 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         const playgroundId = r.data.__ref.id;
         set((s) => {
           console.log(r.data);
-          const items = [...s.collection.items, r.data];
-          s.collection.tdpInstance?.addItem(r.data);
+          const newItem = { ...r.data, value: r.data.value };
+          const items = [...s.collection.items, newItem];
+          s.collection.tdpInstance?.addItem(newItem);
           return {
-            collection: { ...s.collection, items },
+            collection: {
+              ...s.collection,
+              items,
+              __manualUpdates: ++s.collection.__manualUpdates,
+            },
             ui: { ...s.ui, playgrounds: items?.length },
             playgrounds: {
               ...s.playgrounds,
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
-                request: r.data,
-                lastRequest: null,
+                request: newItem,
+                originalRequest: null,
               },
             },
             runtime: {
@@ -164,7 +209,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               activePlayground: playgroundId,
               playgroundTabs: s.runtime.playgroundTabs.map((t) =>
                 t.id == s.runtime.activePlayground
-                  ? { id: playgroundId, name: r.data.name }
+                  ? { id: playgroundId, name: newItem.name }
                   : t
               ),
               playgroundsMeta: {
@@ -172,6 +217,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
                 [playgroundId]: {
                   ...s.runtime.playgroundsMeta[playgroundId],
                   isSaved: true,
+                  operationNames: getOperationNames(plg.request.value).names,
                 },
               },
             },
@@ -197,7 +243,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     return res;
   },
 
-  updateItem: async (updateOnlyName?: boolean) => {
+  updateItem: async (name?: string) => {
     const state = get();
     if (!state.request?.__ref.id) return;
     const playgroundId = state.runtime.activePlayground;
@@ -207,40 +253,68 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       __ref: {
         id: plg.request.__ref.id,
         requestId: state.request.__ref.id,
+        requestType: ERequestTypes.GraphQL,
         collectionId: state.request.__ref.collectionId,
       },
     };
-    if (updateOnlyName) {
+
+    const { originalRequest: _oRequest, request: _request } = plg;
+
+    // @note: here name will be updated from rename prompt where other plg property will be updated by state value
+    // that is why we're passing name as fn prop and handling other plg info from the state
+    if (name && !isEqual(_oRequest.name, name)) {
       //@ts-ignore
-      item.name = plg.request.name;
-    } else {
+      item.name = name;
+    }
+    if (!isEqual(_oRequest.value, _request.value)) {
       //@ts-ignore
-      item.body = plg.request.body;
+      item.value = _request.value;
+    }
+    if (
+      _request.__meta &&
+      typeof _request.__meta.variables == 'string' &&
+      !isEqual(_oRequest.__meta.variables, _request.__meta.variables)
+    ) {
       //@ts-ignore
-      item.__meta = plg.request.__meta;
+      item.__meta = {
+        variables: _request.__meta.variables,
+      };
     }
 
+    console.log(item, 'item...');
     state.toggleProgressBar(true);
     const res = await Rest.request
       .updateItem(item.__ref.requestId, item.__ref.id, item)
       .then((r) => {
+        const updatedPlg = r.data;
         set((s) => {
           const items = s.collection.items.map((i) => {
-            if (i.__ref.id == r.data.__ref.id) return { ...i, ...r.data };
+            if (i.__ref.id == updatedPlg.__ref.id)
+              return { ...i, ...updatedPlg };
             return i;
           });
-          s.collection.tdpInstance?.updateItem(r.data);
+          s.collection.tdpInstance?.updateItem(updatedPlg);
           return {
-            collection: { ...s.collection, items },
+            collection: {
+              ...s.collection,
+              items,
+              __manualUpdates: ++s.collection.__manualUpdates,
+            },
             playgrounds: {
               ...s.playgrounds,
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
-                lastRequest: null,
+                request: { ...updatedPlg },
+                originalRequest: null,
               },
             },
             runtime: {
               ...s.runtime,
+              playgroundTabs: s.runtime.playgroundTabs.map((t) => {
+                if (t.id == updatedPlg.__ref.id)
+                  return { ...t, name: updatedPlg.name };
+                return t;
+              }),
               playgroundsMeta: {
                 ...s.runtime.playgroundsMeta,
                 [playgroundId]: {
@@ -255,9 +329,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       })
       .then((r) => {
         state.context.app.notify.success(
-          updateOnlyName
-            ? 'The playground name has been changed successfully'
-            : 'The playground has been updated successfully'
+          'The playground has been updated successfully'
         );
       })
       .catch((e) => {

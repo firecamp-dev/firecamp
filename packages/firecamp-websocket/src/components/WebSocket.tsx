@@ -1,11 +1,17 @@
 import { useEffect } from 'react';
-import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { _array, _object } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
+import { _array, _object } from '@firecamp/utils';
+import {
+  Container,
+  Column,
+  Row,
+  RootContainer,
+  Loader,
+} from '@firecamp/ui-kit';
 
-import { initialiseStoreFromRequest } from '../services/reqeust.service';
+import { initialiseStoreFromRequest } from '../services/request.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
@@ -15,13 +21,14 @@ import '../sass/ws.sass';
 import {
   createStore,
   useStore,
-  useStoreApi,
   StoreProvider,
   IStore,
+  IWebSocket,
 } from '../store';
 
 const WebSocket = ({ tab, platformContext }) => {
   const {
+    isFetchingRequest,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     initialise,
@@ -29,6 +36,7 @@ const WebSocket = ({ tab, platformContext }) => {
     setContext,
   } = useStore(
     (s: IStore) => ({
+      isFetchingRequest: s.ui.isFetchingRequest,
       connect: s.connect,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
@@ -77,10 +85,10 @@ const WebSocket = ({ tab, platformContext }) => {
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            const response = await platformContext.request.onFetch(
+            const request = await platformContext.request.fetch(
               tab.request.__ref.id
             );
-            _request = { ...response.data };
+            _request = { ...request };
           } catch (error) {
             console.error({
               api: 'fetch rest request',
@@ -89,11 +97,13 @@ const WebSocket = ({ tab, platformContext }) => {
             throw error;
           }
         }
-        const { collection, ...request } = _request;
+        const { collection, ...request } = _request as IWebSocket & {
+          collection: any;
+        };
         /** initialise ws store on tab load */
         initialise(request, tab.id);
         if (collection && !_object.isEmpty(collection))
-          initialiseCollection(collection);
+          setTimeout(() => initialiseCollection(collection));
         setIsFetchingReqFlag(false);
       } catch (e) {
         console.error(e);
@@ -104,8 +114,8 @@ const WebSocket = ({ tab, platformContext }) => {
 
   const handlePull = () => {};
 
-  // if(isFetchingRequest === true) return <Loader />;
-  console.log(tab, 'tab...');
+  if (isFetchingRequest === true) return <Loader />;
+  // console.log(tab, 'tab...');
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">

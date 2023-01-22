@@ -3,8 +3,8 @@ import createContext from 'zustand/context';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 import { IWebSocket, TId } from '@firecamp/types';
-import { initialiseStoreFromRequest } from '../services/reqeust.service';
-
+import { initialiseStoreFromRequest } from '../services/request.service';
+import { IStore, IStoreState } from './store.type';
 import {
   // request
   createRequestSlice,
@@ -28,13 +28,9 @@ import {
   // handle execution
   createHandleConnectionExecutor,
 
-  // pull
-  createPullActionSlice,
-
   // ui
   createUiSlice,
 } from './slices';
-import { IStore, IStoreState } from './store.type';
 
 const {
   Provider: StoreProvider,
@@ -65,7 +61,6 @@ const createStore = (initialState: IStoreState) =>
       ...createPlaygroundsSlice(set, get, initialState.playgrounds),
       ...createLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
-      ...createPullActionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
       ...createRequestChangeStateSlice(set, get),
     };

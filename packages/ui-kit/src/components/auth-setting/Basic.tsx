@@ -1,11 +1,11 @@
 import { FC, useReducer } from 'react';
 import { Input } from '@firecamp/ui-kit';
 import { IAuthBasic, EAuthTypes } from '@firecamp/types';
-import { authUiState } from './constants';
+import { authUiFormState } from './constants';
 
 const Basic: FC<IBasic> = ({ auth, onChange = () => {} }) => {
   const { Basic } = EAuthTypes;
-  const inputList = authUiState[Basic].inputList;
+  const inputList = authUiFormState[Basic].inputList;
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
@@ -24,23 +24,7 @@ const Basic: FC<IBasic> = ({ auth, onChange = () => {} }) => {
         };
     }
   };
-
   const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
-
-  const reducer = (
-    state: any,
-    action: { type: any; element: any; value: any }
-  ) => {
-    switch (action.type) {
-      case 'setDirty':
-        return {
-          ...state,
-          [action.element]: action.value,
-        };
-        break;
-    }
-  };
-
   const _handleChange = (e: any, id: string) => {
     e.preventDefault();
     const { value } = e.target;
@@ -48,7 +32,6 @@ const Basic: FC<IBasic> = ({ auth, onChange = () => {} }) => {
     onChange(Basic, { key: id, value });
     // console.log("value", value, id)
   };
-
   const _handleSubmit = (e: { preventDefault: () => any }) => {
     e && e.preventDefault();
   };

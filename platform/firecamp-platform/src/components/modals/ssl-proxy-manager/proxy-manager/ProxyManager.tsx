@@ -1,8 +1,7 @@
 import { FC, useState, useEffect, useRef } from 'react';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { nanoid as id } from 'nanoid';
 import { Button, Popover } from '@firecamp/ui-kit';
-
 import DomainList, { DomainBody } from './DomainList';
 
 import {
@@ -60,7 +59,7 @@ const ProxyManager: FC<any> = () => {
           proxyRef.current = proxy;
           let proxiesToSet = _generateProxyPayload(Array.from(proxy));
           // console.log({ proxiesToSet, proxyData });
-          if (!equal(proxiesToSet, proxyData)) {
+          if (!isEqual(proxiesToSet, proxyData)) {
             setProxyData(proxiesToSet);
             setInitialState(proxiesToSet);
           }
@@ -73,7 +72,7 @@ const ProxyManager: FC<any> = () => {
   useEffect(() => {
     if (proxyRef.current) {
       let proxiesToSet = _generateProxyPayload(Array.from(proxyRef.current));
-      if (!equal(proxiesToSet, proxyData)) {
+      if (!isEqual(proxiesToSet, proxyData)) {
         setProxyData(proxiesToSet);
         setInitialState(proxiesToSet);
       }

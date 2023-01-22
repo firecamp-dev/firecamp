@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import classnames from 'classnames';
 import {
   SecondaryTab,
@@ -33,8 +33,8 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
       setValue(row?.title || '');
       return;
     }
-    if (emitterArg?.payload && emitterArg?.__meta.type !== 'file') {
-      setValue(emitterArg?.payload || '');
+    if (emitterArg?.body && emitterArg?.__meta.type !== 'file') {
+      setValue(emitterArg?.body || '');
     } else {
       setValue(emitterArg?.name || '');
     }
@@ -175,7 +175,7 @@ const Footer = ({
         name: `Arg ${index + 1}`,
       };
     });
-    if (!equal(tabs, newTabs)) {
+    if (!isEqual(tabs, newTabs)) {
       setTabs(newTabs);
     }
   }, [args]);

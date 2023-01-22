@@ -5,5 +5,4 @@ export * from './body.slice';
 export * from './response.slice';
 export * from './runtime.slice';
 export * from './ui.slice';
-export * from './pull.slice';
 export * from './change.slice';

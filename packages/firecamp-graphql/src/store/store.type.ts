@@ -1,5 +1,5 @@
 import { GetState, SetState } from 'zustand';
-import { IGraphQL, IRestResponse, TId } from '@firecamp/types';
+import { IGraphQL, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import {
   IRequestSlice,
@@ -9,7 +9,6 @@ import {
   ICollectionSlice,
   IRuntime,
   IRuntimeSlice,
-  IPullSlice,
   IUi,
   IUiSlice,
   IRequestChangeStateSlice,
@@ -20,19 +19,12 @@ interface IStore
     IPlaygroundsSlice,
     IRuntimeSlice,
     ICollectionSlice,
-    IPullSlice,
     IUiSlice,
     IRequestChangeStateSlice {
   originalRequest?: IGraphQL;
   initialise: (_request: Partial<IGraphQL>, tabId: TId) => void;
   context?: any;
   setContext: (ctx: any) => void;
-  execute?: (
-    opsName: string,
-    query: string,
-    variables?: string
-  ) => Promise<IRestResponse>;
-  fetchIntrospectionSchema: () => Promise<void>;
 }
 interface IStoreState {
   request: IGraphQL;

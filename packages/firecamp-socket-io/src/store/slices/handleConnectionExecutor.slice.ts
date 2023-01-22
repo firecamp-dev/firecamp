@@ -169,9 +169,9 @@ const createHandleConnectionExecutor: TStoreSlice<
 
         // send emitter
         if (emitter?.__meta.ack) {
-          existingPlayground.executor.emitWithAck(emitter.name, emitter.body);
+          existingPlayground.executor.emitWithAck(emitter.name, emitter.value);
         } else {
-          existingPlayground.executor.emit(emitter.name, emitter.body);
+          existingPlayground.executor.emit(emitter.name, emitter.value);
         }
       } else {
         state.addErrorLog(connectionId, 'disconnected');

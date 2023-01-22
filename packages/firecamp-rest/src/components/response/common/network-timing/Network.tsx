@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Container, TabHeader, Column, Row } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import classnames from 'classnames';
 
 const Network = ({ times = [], network = [] }) => {
@@ -12,7 +12,7 @@ const Network = ({ times = [], network = [] }) => {
     const newTotal = times.filter(
       (t) => t.curlEvent === 'TOTAL' || t.curlEvent === 'REDIRECT'
     );
-    if (!equal(newTotal, total)) {
+    if (!isEqual(newTotal, total)) {
       setTotal(newTotal);
     }
   }, [times]);

@@ -24,8 +24,8 @@ const initConfig = {
     origin: 'origin'
   },
   message: {
-    name: '24/04/2020, 12:01:40',
-    body: 'hell wsv2 i update you',
+    name: 'Ws Message',
+    value: 'sending the first ws message',
     __meta: {
       type: 'arraybuffer',
       envelop: 'uint8array'

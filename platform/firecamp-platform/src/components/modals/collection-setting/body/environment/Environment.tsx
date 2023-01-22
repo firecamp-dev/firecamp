@@ -1,4 +1,8 @@
 import { FC, useEffect, useRef, useState } from 'react';
+import isEqual from 'react-fast-compare';
+import shallow from 'zustand/shallow';
+import { nanoid as id } from 'nanoid';
+import create from 'zustand';
 import {
   // Collection,
   Container,
@@ -6,10 +10,6 @@ import {
   Row,
   Resizable,
 } from '@firecamp/ui-kit';
-import shallow from 'zustand/shallow';
-import equal from 'deep-equal';
-import { nanoid as id } from 'nanoid';
-import create from 'zustand';
 
 import {
   constants as envConsts,
@@ -93,7 +93,7 @@ const Environment: FC<IEnvironment> = ({
       let envs = Utility.getEnvironments(
         environments[envType].environments || []
       );
-      if (!equal(envs, environmentCollection)) {
+      if (!isEqual(envs, environmentCollection)) {
         setEnvironmentCollection(envs);
       }
     } else {
@@ -172,7 +172,7 @@ const Environment: FC<IEnvironment> = ({
         ).find((env) => env.__ref.id === activeEnvCard.__ref.id);
 
         if (
-          !equal(newActiveEnv, activeEnvCard) &&
+          !isEqual(newActiveEnv, activeEnvCard) &&
           !isActiveEnvCardExistInCollection
         ) {
           setActiveEnvCard(newActiveEnv);
@@ -183,7 +183,7 @@ const Environment: FC<IEnvironment> = ({
           }
         } else if (
           newActiveEnv.__ref.id === activeEnvCard.__ref.id &&
-          !equal(newActiveEnv, activeEnvCard)
+          !isEqual(newActiveEnv, activeEnvCard)
         ) {
           setActiveEnvCard(newActiveEnv);
         }

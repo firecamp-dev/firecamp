@@ -9,17 +9,14 @@ import {
   IResponseSlice,
   IUi,
   IUiSlice,
-  IPullSlice,
   IRequestChangeStateSlice,
 } from './slices';
-import { IRestClientRequest } from '../types';
 
 interface IStore
   extends IRequestSlice,
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IPullSlice,
     IRequestChangeStateSlice {
   originalRequest?: IRest;
   context?: any;
@@ -28,7 +25,7 @@ interface IStore
 }
 
 interface IStoreState {
-  request?: IRestClientRequest;
+  request?: IRest;
   runtime?: IRuntime;
   response?: IRestResponse;
   ui?: IUi;

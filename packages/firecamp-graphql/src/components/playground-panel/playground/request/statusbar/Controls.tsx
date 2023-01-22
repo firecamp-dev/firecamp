@@ -7,7 +7,7 @@ import {
 const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
   //todo: need to refactor
   const tabId = 123; // todo: this will be received from tab __meta
-  const body = '';
+  const value = '';
   const prettifyQuery = (_) => {};
   const getOS = () => 'MacOS';
 
@@ -18,7 +18,7 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
   const [isResetConfirmOpen, toggleResetConfirmPopover] = useState(false);
 
   const _setNewQueryMessage = () => {
-    if (!body) {
+    if (!value) {
       setAddNewQueryMessage(``);
     } else {
       setAddNewQueryMessage(
@@ -31,7 +31,7 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
 
   useEffect(() => {
     _setNewQueryMessage();
-  }, [body]);
+  }, [value]);
 
   const _toggleResetConfirmPopover = (value) => {
     toggleResetConfirmPopover(value);
@@ -52,7 +52,7 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
 
   return (
     <div className="GraphQL-content-body-request-body-query-editor-container-save">
-      {!!body ? (
+      {!!value ? (
         <ConfirmationPopover
           id={`reset-playground-${tabId}`}
           isOpen={isResetConfirmOpen}
@@ -65,7 +65,7 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
               onClick={() =>
                 isQueryDirty ? _toggleResetConfirmPopover(true) : _onReset()
               }
-              disabled={!body ? true : false}
+              disabled={!value ? true : false}
               text="Reset"
             />
           }
@@ -79,27 +79,27 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
       ) : (
         ''
       )}
-      {!!body ? (
+      {!!value ? (
         <Button
           id={`prettify-${tabId}`}
           secondary
           sm // TODO: add class for exsmall
-          onClick={(_) => prettifyQuery(body)}
-          disabled={!body ? true : false}
+          onClick={(_) => prettifyQuery(value)}
+          disabled={!value ? true : false}
           text="Prettify"
           // tooltip={ getOS() === 'MacOS' ? 'shift + ⌘ + P' : 'shift + ctrl + P' } //todo: look thos type error
         />
       ) : (
         ''
       )}
-      {!!body && isQueryDirty ? (
+      {!!value && isQueryDirty ? (
         <Button
           id={`save-to-collection-${tabId}`}
           secondary
           sm // TODO: add class for exsmall
           onClick={(_) => _onSaveToCollection()}
           text="Save to collection"
-          disabled={!body ? true : false}
+          disabled={!value ? true : false}
         />
       ) : (
         ''

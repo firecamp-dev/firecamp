@@ -1,19 +1,18 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid } from 'nanoid';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import {
+  TId,
   EAuthTypes,
   ERestBodyTypes,
   IRest,
   EHttpMethod,
   ERequestTypes,
   EKeyValueTableRowType,
-  IUiAuth,
   EFirecampAgent,
-  IAuth,
-  TId,
   IRestBody,
+  IAuth,
   IOAuth2UiState,
 } from '@firecamp/types';
 import {
@@ -26,13 +25,13 @@ import {
 } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
 import { IStoreState, IUiRequestPanel } from '../store';
-import { ERequestPanelTabs, IRestClientRequest } from '../types';
+import { ERequestPanelTabs } from '../types';
 import { configState, RuntimeBodies } from '../constants';
 import { IAuthHeader } from './auth/types';
 import { Auth } from '.';
 
 export const prepareUIRequestPanelState = (
-  request: Partial<IRestClientRequest>
+  request: Partial<IRest>
 ): IUiRequestPanel => {
   let updatedUiStore: IUiRequestPanel = {};
 
@@ -55,7 +54,7 @@ export const prepareUIRequestPanelState = (
         }
         break;
       case 'headers':
-        let headers = request?.headers.length;
+        const headers = request?.headers.length;
         updatedUiStore = {
           ...updatedUiStore,
           // activeTab: ERequestPanelTabs.Headers,
@@ -65,8 +64,8 @@ export const prepareUIRequestPanelState = (
         break;
       case 'url':
         if (request['url']?.queryParams || request['url']?.pathParams) {
-          let queryParamsLength = request?.url?.queryParams?.length || 0;
-          let pathParamsLength = request?.url?.pathParams?.length || 0;
+          const queryParamsLength = request?.url?.queryParams?.length || 0;
+          const pathParamsLength = request?.url?.pathParams?.length || 0;
           updatedUiStore = {
             ...updatedUiStore,
             // activeTab: ERequestPanelTabs.Params,
@@ -82,12 +81,12 @@ export const prepareUIRequestPanelState = (
 
         updatedUiStore = {
           ...updatedUiStore,
-          // activeTab: ERequestPanelTabs.PrePostScripts,
+          // activeTab: ERequestPanelTabs.PreRequestScript,
           hasScripts,
         };
         break;
       case 'config':
-        let hasConfig = !equal(request.config, _cloneDeep(configState));
+        const hasConfig = !isEqual(request.config, _cloneDeep(configState));
         updatedUiStore = {
           ...updatedUiStore,
           // activeTab: ERequestPanelTabs.Config,
@@ -108,13 +107,14 @@ export const isRestBodyEmpty = (body: IRestBody): boolean => {
 /**
  * normalize the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
  */
-export const normalizeRequest = (
-  request: Partial<IRest>
-): IRestClientRequest => {
+export const normalizeRequest = (request: Partial<IRest>): IRest => {
   // prepare normalized request aka _nr
-  const _nr: IRestClientRequest = {
+  const _nr: IRest = {
     url: { raw: '', queryParams: [], pathParams: [] },
     method: EHttpMethod.GET,
+    body: { value: '', type: ERestBodyTypes.None },
+    //@ts-ignore
+    auth: { value: '', type: EAuthTypes.None },
     __meta: {
       name: '',
       description: '',
@@ -127,10 +127,10 @@ export const normalizeRequest = (
   const {
     url = _nr.url,
     method = _nr.method,
-    auth,
+    body = _nr.body,
+    auth = _nr.auth,
     headers,
     config,
-    body,
     scripts,
     __meta = _nr.__meta,
     __ref = _nr.__ref,
@@ -206,6 +206,7 @@ export const normalizeRequest = (
   if (!_object.isEmpty(auth)) {
     _nr.auth = { value: auth.value, type: auth.type };
   } else {
+    //@ts-ignore
     _nr.auth = { value: '', type: EAuthTypes.None };
   }
   // _nr.auth = !_object.isEmpty(auth)
@@ -229,7 +230,7 @@ export const normalizeRequest = (
     post: __meta.inheritScripts?.post || true,
     test: __meta.inheritScripts?.test || true,
   };
-  _nr.__meta.inheritedAuth = __meta.inheritedAuth;
+  // _nr.__meta.inheritedAuth = __meta.inheritedAuth;
 
   // normalize __ref
   _nr.__ref.id = __ref.id || nanoid();
@@ -247,9 +248,9 @@ export const initialiseStoreFromRequest = (
   _request: Partial<IRest>,
   tabId: TId
 ): IStoreState => {
-  const request: IRestClientRequest = normalizeRequest(_request);
+  const request: IRest = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
-  // console.log({ request });
+  console.log({ request });
 
   return {
     originalRequest: _cloneDeep(request) as IRest,
@@ -263,8 +264,8 @@ export const initialiseStoreFromRequest = (
       },
     },
     runtime: {
-      bodies: RuntimeBodies,
-      auths: _auth.defaultAuthState,
+      bodies: _cloneDeep(RuntimeBodies),
+      auths: _cloneDeep(_auth.defaultAuthState),
       authHeaders: [],
       inherit: {
         auth: {
@@ -284,69 +285,13 @@ export const initialiseStoreFromRequest = (
     },
   };
 };
-/**
- * Normalize variables at runtime (on send request)
- * Set and unset variables from scripts response and update variables to platform
- */
-export const normalizeVariables = (
-  existing: {
-    collection?: { [key: string]: any };
-    workspace: { [key: string]: any };
-  },
-  updated: {
-    workspace: {
-      variables: { [key: string]: any };
-      unsetVariables: string[];
-      name: string;
-      clearEnvironment: boolean;
-    };
-    collection?: {
-      variables: { [key: string]: any };
-      unsetVariables: string[];
-      name: string;
-      clearEnvironment: boolean;
-    };
-  }
-): Promise<{
-  collection?: { [key: string]: any };
-  workspace: { [key: string]: any };
-}> => {
-  // updated variables
-  let updatedVariables: {
-    collection?: { [key: string]: any };
-    workspace: { [key: string]: any };
-  } = existing;
-
-  ['workspace', 'collection'].forEach((scope) => {
-    // if clear environment is true then set variables as empty
-    if (updated[scope].clearEnvironment === true) {
-      updatedVariables[scope] = {};
-    } else {
-      // set variables, updated variables
-      updatedVariables[scope] = Object.assign(
-        updatedVariables[scope],
-        updated[scope].variables
-      );
-
-      // unset variables, removed variables
-      if (updated[scope].unsetVariables) {
-        updatedVariables[scope] = _object.omit(
-          updatedVariables[scope],
-          updated[scope].unsetVariables
-        );
-      }
-    }
-  });
-
-  return Promise.resolve(updatedVariables);
-};
 
 /**
- * Prepare normalize payload for send request.
+ * prepare normalize payload for send request.
  */
 export const normalizeSendRequestPayload = async (
-  request: IRestClientRequest,
-  originalRequest: IRestClientRequest
+  request: IRest,
+  originalRequest: IRest
 ) => {
   const _request: IRest = _object.pick(request, [
     'url',
@@ -391,13 +336,13 @@ export const normalizeSendRequestPayload = async (
         type: request.auth.type,
       };
     } else if (request.auth?.type === EAuthTypes.Inherit) {
-      const inheritedAuth = request.__meta.inheritedAuth;
-      if (inheritedAuth) {
-        _request.auth = {
-          value: inheritedAuth.value,
-          type: inheritedAuth.auth,
-        };
-      }
+      // const inheritedAuth = request.__meta.inheritedAuth;
+      // if (inheritedAuth) {
+      //   _request.auth = {
+      //     value: inheritedAuth.value,
+      //     type: inheritedAuth.auth,
+      //   };
+      // }
     }
     _request.__ref = { id: request.__ref.id, collectionId: '' };
     // console.log({ _request });
@@ -431,14 +376,11 @@ export const readFile = (file): Promise<string | ArrayBuffer> => {
 
 export const getAuthHeaders = async (
   request: IRest,
-  authType?: EAuthTypes
+  type?: EAuthTypes
 ): Promise<{ [key: string]: any } | IAuthHeader> => {
-  if (!authType) {
-    authType = request.auth?.type;
-  }
-  if (!authType) {
-    return Promise.resolve({});
-  } /* else if (authType === EAuthTypes.Inherit) {
+  if (!type || type == EAuthTypes.None) return Promise.resolve({});
+
+  /*  if (type === EAuthTypes.Inherit) {
     // TODO: add logic to fetch inherit auth
     // set inherit auth to runtimeSlice.inherit
     // update auth headers by inherit auth
@@ -449,13 +391,13 @@ export const getAuthHeaders = async (
 
   // @ts-ignore
   let inheritedAuth = request.__meta.inheritedAuth;
-  if (authType === EAuthTypes.Inherit && inheritedAuth) {
+  if (type === EAuthTypes.Inherit && inheritedAuth) {
     let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
     requestAuth = {
       value: normalizedAuth[inheritedAuth.type],
       type: inheritedAuth.type,
     };
-    authType = inheritedAuth.type;
+    type = inheritedAuth.type;
   }
 
   try {
@@ -475,7 +417,7 @@ export const getAuthHeaders = async (
     //   authvalue = OAuth2.grantTypes[OAuth2.activeGrantType];
     // }
 
-    const authService = new Auth(authType, authvalue, {
+    const authService = new Auth(type, authvalue, {
       url,
       method,
       body,
@@ -486,7 +428,7 @@ export const getAuthHeaders = async (
     const authHeaders = await authService.getHeader();
 
     // if OAuth2 then set headers with prefix Bearer and set to token
-    if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
+    if (type === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
       authHeaders['Authorization'] = `Bearer ${authHeaders['Authorization']}`;
       return Promise.resolve(authHeaders['Authorization']);
     }

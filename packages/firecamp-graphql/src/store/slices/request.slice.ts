@@ -1,14 +1,15 @@
-import { EHttpMethod, IHeader, IGraphQL, TId } from '@firecamp/types';
-import { TStoreSlice } from '../store.type';
-
+import { getIntrospectionQuery } from 'graphql';
 import {
-  IUrlSlice,
-  createUrlSlice,
-  // createBodySlice,
-  // IBodySlice,
-  // createAuthSlice,
-  // IAuthSlice,
-} from './index';
+  TId,
+  EHttpMethod,
+  IHeader,
+  IGraphQL,
+  IRestResponse,
+  ERestBodyTypes,
+  ERequestTypes,
+} from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
+import { IUrlSlice, createUrlSlice } from './index';
 
 const requestSliceKeys = [
   'url',
@@ -23,9 +24,14 @@ interface IRequestSlice extends IUrlSlice {
   request: IGraphQL;
   changeMethod: (method: EHttpMethod) => any;
   changeHeaders: (headers: IHeader[]) => any;
-  changeMeta: (__meta: object) => any;
-  // changeScripts: (scriptType: string, value: string) => any;
+  changeMeta: (__meta: Partial<IGraphQL['__meta']>) => any;
   changeConfig: (configKey: string, configValue: any) => any;
+  execute?: (
+    opsName: string,
+    query: string,
+    variables?: string
+  ) => Promise<IRestResponse>;
+  fetchIntrospectionSchema: () => Promise<void>;
   save: (tabId: TId) => void;
 }
 
@@ -69,22 +75,116 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     set((s) => ({ ...s, request: { ...s.request, config } }));
     state.equalityChecker({ config });
   },
-  changeMeta: (__meta: object) => {
+  changeMeta: (__meta) => {
     const state = get();
+    const updatedMeta = {
+      ...state.request.__meta,
+      ...__meta,
+    };
     set((s) => ({
-      request: { ...s.request, __meta: { ...s.request.__meta, ...__meta } },
+      request: { ...s.request, __meta: updatedMeta },
     }));
-    state.equalityChecker({ __meta });
+    state.equalityChecker({ __meta: updatedMeta });
+  },
+  execute: async (opsName: string, query?: string, variables?: string) => {
+    const state = get();
+    const {
+      request,
+      runtime: { activePlayground },
+    } = state;
+    if (!request.url?.raw) return;
+
+    //@ts-ignore
+    const _request: IRest = Object.assign(
+      {},
+      {
+        ...request,
+        body: {
+          value: { query, variables },
+          type: ERestBodyTypes.GraphQL,
+        },
+        __meta: {
+          ...request.__meta,
+          type: ERequestTypes.Rest,
+        },
+      }
+    );
+    // console.log(_request, 'request...');
+    // let response: IRestResponse = { statusCode: 0 };
+    state.setRequestRunningFlag(activePlayground, true);
+    return state.context.request
+      .execute(_request)
+      .then((r: IRestResponse) => {
+        state.setPlaygroundResponse(r);
+        return r;
+      })
+      .catch((e: IRestResponse) => {
+        // executor will never throw an error
+      })
+      .finally(() => {
+        state.setRequestRunningFlag(activePlayground, false);
+      });
+  },
+
+  fetchIntrospectionSchema: async () => {
+    const state = get();
+    const {
+      request,
+      runtime: { isFetchingIntrospection },
+    } = state;
+    if (isFetchingIntrospection) return;
+
+    const query = getIntrospectionQuery();
+    const _request = Object.assign(
+      {},
+      {
+        ...request,
+        __meta: request.__meta,
+        body: {
+          value: { query },
+          type: ERestBodyTypes.GraphQL,
+        },
+      }
+    );
+    state.setFetchIntrospectionFlag(true);
+    state.context.request
+      .execute(_request)
+      .then((r: { data: string }) => {
+        try {
+          const schema = JSON.parse(r.data).data;
+          state.setSchema(schema);
+        } catch (e) {}
+      })
+      .catch((e: any) => {
+        console.log(e, 'e...');
+      })
+      .finally(() => {
+        state.setFetchIntrospectionFlag(false);
+      });
   },
   save: (tabId) => {
     const state = get();
     if (!state.runtime.isRequestSaved) {
+      // save new request
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId, true);
+      state.context.request.save(_request, tabId, true).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
+      // update request
       const _request = state.preparePayloadForUpdateRequest();
-      state.context.request.save(_request, tabId);
+      if (!_request) {
+        state.context.app.notify.info(
+          "The request doesn't have any changes to be saved."
+        );
+        return null;
+      }
+      state.context.request.save(_request, tabId).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
     }
   },
 });

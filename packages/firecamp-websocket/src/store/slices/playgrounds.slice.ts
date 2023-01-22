@@ -1,4 +1,4 @@
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { IExecutor } from '@firecamp/ws-executor/dist/esm';
 import {
   TId,
@@ -7,15 +7,15 @@ import {
   ERequestTypes,
   ETypedArrayView,
 } from '@firecamp/types';
+import { _object } from '@firecamp/utils';
 
 import { EConnectionState } from '../../types';
-import { _object } from '@firecamp/utils';
 import { TStoreSlice } from '../store.type';
 
 const initialPlaygroundMessage = {
   name: '',
   path: '',
-  payload: '',
+  value: '',
   __meta: {
     type: EMessageBodyType.Text,
     // typedArrayView: ETypedArrayView.Int8Array,
@@ -46,7 +46,7 @@ interface IPlayground {
 }
 
 interface IPlaygrounds {
-  [key: TId]: IPlayground;
+  [key: string]: IPlayground;
 }
 
 interface IPlaygroundSlice {
@@ -116,7 +116,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       playgrounds: {
         ...s.playgrounds,
         [connectionId]: {
-          ...(s.playgrounds[connectionId] || {}),
+          ...s.playgrounds[connectionId],
           ...updates,
         },
       },
@@ -179,7 +179,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       updatedPlayground.message = { ...updatedPlayground.message, ...updates };
 
       if (
-        !equal(
+        !isEqual(
           _object.omit(existingPlayground.message, ['path']),
           _object.omit(updatedPlayground.message, ['path'])
         )

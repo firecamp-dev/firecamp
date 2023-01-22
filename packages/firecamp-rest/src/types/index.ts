@@ -1,5 +1,3 @@
-import { IUiAuth, IRest } from '@firecamp/types';
-
 export enum EReqChangeRootKeys {
   method = 'method',
   headers = 'headers',
@@ -31,7 +29,8 @@ export enum ERequestPanelTabs {
   Auths = 'Auths',
   Headers = 'Headers',
   Params = 'Params',
-  PrePostScripts = 'Pre/Post Scripts',
+  PreRequestScript = 'Pre-request Script',
+  Test = 'Test',
   Config = 'Config',
 }
 
@@ -47,8 +46,4 @@ export enum ERestConfigKeys {
   FollowLocation = 'followLocation',
   RejectUnauthorized = 'rejectUnauthorized',
   RequestTimeout = 'requestTimeout',
-}
-
-export interface IRestClientRequest extends Omit<IRest, 'auth'> {
-  auth?: IUiAuth;
 }

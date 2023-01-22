@@ -44,20 +44,17 @@ export default class ConfigGenerator {
       ],
       body: {
         type: 'application/json',
-        'application/json': {
-          type: 'application/json',
-          value: JSON.stringify({ query: getIntrospectionQuery() }),
-        },
+        value: JSON.stringify({ query: getIntrospectionQuery() }),
       },
       withCredentials: false,
       config: {
-        ORIGIN: '',
-        USERAGENT: '',
-        TIMEOUT_MS: 0,
-        REJECT_UNAUTHORIZED: false,
-        FOLLOWLOCATION: true,
-        MAXREDIRS: -1,
-        HTTP_VERSION: 'V2Tls',
+        origin: '',
+        useragent: '',
+        timeoutMs: 0,
+        rejectUnauthorized: false,
+        followLocation: true,
+        maxRedirs: -1,
+        httpVersion: 'V2Tls',
       },
     };
 

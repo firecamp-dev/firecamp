@@ -28,7 +28,7 @@ const DefaultHeaders = [
 
 const DefaultConnectionState = {
   id: id(),
-  name: 'Default',
+  name: 'Connection 1',
   isDefault: true,
   headers: DefaultHeaders,
   queryParams: [],

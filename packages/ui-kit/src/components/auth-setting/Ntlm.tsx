@@ -1,12 +1,12 @@
 import { FC, useReducer } from 'react';
 import { EAuthTypes } from '@firecamp/types';
 import { Input } from '@firecamp/ui-kit';
-import { authUiState } from './constants';
+import { authUiFormState } from './constants';
 
 const Ntlm: FC<INtlm> = ({ auth = {}, onChange = () => {} }) => {
-  const { Bearer, Ntlm } = EAuthTypes
-  const inputList = authUiState[Bearer].inputList;
-  const advancedInputList = authUiState[Bearer].inputList;
+  const { Bearer, Ntlm } = EAuthTypes;
+  const inputList = authUiFormState[Bearer].inputList;
+  const advancedInputList = authUiFormState[Bearer].inputList;
 
   let isDirtyState = {};
   (inputList || []).map((e) => {

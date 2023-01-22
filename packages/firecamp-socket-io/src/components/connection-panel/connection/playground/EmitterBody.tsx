@@ -9,7 +9,11 @@ import {
   Dropdown,
   Button,
 } from '@firecamp/ui-kit';
-import { EArgumentBodyType, EEditorLanguage, ISocketIOEmitter } from '@firecamp/types';
+import {
+  EArgumentBodyType,
+  EEditorLanguage,
+  ISocketIOEmitter,
+} from '@firecamp/types';
 import {
   ArgTypes,
   InitArg,
@@ -33,9 +37,9 @@ const EmitterBody = ({
   changeArgValue,
 }: IBody) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
-  const { payload, name } = plgEmitter;
-  const argument = payload[activeArgIndex];
-  console.log(payload, activeArgIndex, argument, 'argument');
+  const { value, name } = plgEmitter;
+  const argument = value[activeArgIndex];
+  console.log(value, activeArgIndex, argument, 'argument');
 
   const activeArgType = useMemo(() => {
     return (
@@ -87,7 +91,9 @@ const EmitterBody = ({
                 type.id
               }-${activeArgIndex}-${playgroundBody.length || 0}`}*/
               language={
-                bodyType === EArgumentBodyType.Json ? EEditorLanguage.Json : EEditorLanguage.FcText
+                bodyType === EArgumentBodyType.Json
+                  ? EEditorLanguage.Json
+                  : EEditorLanguage.FcText
               }
               value={argument.body || ''}
               onChange={({ target: { value } }) => {
@@ -173,7 +179,7 @@ const EmitterBody = ({
           <QuickSelection menus={[]} />
         </Container.Empty>
       ) : (
-        <div className='h-full'>
+        <div className="h-full">
           <Dropdown
             selected={activeArgType}
             isOpen={isBodyTypeDDOpen}

@@ -16,20 +16,20 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
   const updateCurrentQuery = (a: any) => {};
 
   const ctx_graphql_body = {
-    body: '',
+    value: '',
     current_query: '',
     clientSchema: {},
     schema: {},
   };
-  let { body, current_query, clientSchema, schema } = ctx_graphql_body;
-  let [editorValue, setEditorValue] = useState(body);
+  let { value, current_query, clientSchema, schema } = ctx_graphql_body;
+  let [editorValue, setEditorValue] = useState(value);
 
-  //when body/query will ge generated from explorer or other source like `Q|M|S` buttons then update them in playground
+  //when value/query will ge generated from explorer or other source like `Q|M|S` buttons then update them in playground
   useEffect(() => {
-    if (body != editorValue) {
-      setEditorValue(body);
+    if (value != editorValue) {
+      setEditorValue(value);
     }
-  }, [body]);
+  }, [value]);
 
   if (clientSchema) {
     clientSchemaRef.current = clientSchema;
@@ -88,16 +88,16 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
     }
   };
 
-  const _onUpdateCurrentQuery = (body) => {
+  const _onUpdateCurrentQuery = (plg) => {
     updateCurrentQuery({
-      name: body.name || '',
-      __meta: { type: body.__meta.type || EQueryTypes.Query },
+      name: plg.name || '',
+      __meta: { type: plg.__meta.type || EQueryTypes.Query },
     });
   };
 
   const _onCallGQLReuqest = () => {
     let queryObject = _onCursorGetCurrentOperation(editorValue);
-    // ctx_onSendRequest(queryObject.body, queryObject.__meta.variables);
+    // ctx_onSendRequest(queryObject.value, queryObject.__meta.variables);
   };
 
   const _onUpdateQuery = (q) => {

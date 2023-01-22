@@ -1,29 +1,31 @@
 import { useEffect } from 'react';
-import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
+import {
+  Container,
+  Row,
+  RootContainer,
+  Column,
+  Loader,
+} from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
 import { _array, _object } from '@firecamp/utils';
-
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
-import {
-  StoreProvider,
-  createStore,
-  useStore,
-  IStore,
-} from '../store';
 import { initialiseStoreFromRequest } from '../services/request.service';
+import { StoreProvider, createStore, useStore, IStore } from '../store';
 import '../sass/socket.sass';
 
 const Socket = ({ tab, platformContext }) => {
   const {
+    isFetchingRequest,
     initialise,
     initialiseCollection,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
     setContext,
   } = useStore((s: IStore) => ({
+    isFetchingRequest: s.ui.isFetchingRequest,
     initialise: s.initialise,
     initialiseCollection: s.initialiseCollection,
     setRequestSavedFlag: s.setRequestSavedFlag,
@@ -68,10 +70,10 @@ const Socket = ({ tab, platformContext }) => {
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            const response = await platformContext.request.onFetch(
+            const request = await platformContext.request.fetch(
               tab.request.__ref.id
             );
-            _request = response.data;
+            _request = { ...request };
           } catch (error) {
             console.error(error);
             throw error;
@@ -94,6 +96,7 @@ const Socket = ({ tab, platformContext }) => {
 
   const handlePull = () => {};
 
+  if (isFetchingRequest === true) return <Loader />;
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">

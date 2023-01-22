@@ -81,7 +81,9 @@ const createBodySlice: TStoreSlice<IBodySlice> = (set, get) => {
         (h: IHeader) => h.key?.trim().toLowerCase() !== 'content-type'
       );
 
-      if (type?.length) {
+      if (type == ERestBodyTypes.None) {
+        updatedHeaders = [...headersWithoutContentType];
+      } else if (contentType) {
         const bodyHeader: IHeader = {
           id: nanoid(),
           key: 'Content-Type',
@@ -91,8 +93,6 @@ const createBodySlice: TStoreSlice<IBodySlice> = (set, get) => {
           description: '',
         };
         updatedHeaders = [...headersWithoutContentType, bodyHeader];
-      } else if (contentType) {
-        updatedHeaders = [...headersWithoutContentType];
       }
       state.changeHeaders(updatedHeaders);
     },

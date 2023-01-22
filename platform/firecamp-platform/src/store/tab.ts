@@ -3,7 +3,6 @@ import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
 import { ERequestTypes, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-
 import { IRequestTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
@@ -21,6 +20,7 @@ interface ITabStore {
   orders: TId[];
 
   getActiveTab: () => TId;
+  getTab: (id: TId) => IRequestTab;
   reorder: (dragIndex: number, hoverIndex: number) => void;
   remove: (tbId: string) => void;
   changeMeta: (tab, __meta, request?: any) => void; //todo: define types...
@@ -66,10 +66,13 @@ const useTabStore = create<ITabStore>((set, get) => {
     getActiveTab: () => {
       return get().activeTab;
     },
+    getTab: (tabId) => {
+      return get().list[tabId];
+    },
     reorder: async (dragIndex, hoverIndex) => {
       set((s) => {
-        let orders = [...s.orders];
-        let dragTab = s.orders[dragIndex];
+        const orders = [...s.orders];
+        const dragTab = s.orders[dragIndex];
         if (
           dragIndex === undefined ||
           hoverIndex === undefined ||

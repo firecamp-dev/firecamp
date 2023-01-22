@@ -12,8 +12,8 @@ import { nanoid as id } from 'nanoid';
 
 import {
   initialPlaygroundMessage,
+  IStoreState,
   IUiRequestPanel,
-  IWebsocketStoreState,
 } from '../store';
 import { DefaultConnectionState, DefaultConfigState } from '../constants';
 import { EConnectionState, ERequestPanelTabs } from '../types';
@@ -88,84 +88,28 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   _nr.connections = connections.map(
     (connection: IWebSocketConnection) =>
       _object.mergeDeep(
-        DefaultConnectionState,
+        _cloneDeep(DefaultConnectionState),
         connection
       ) as IWebSocketConnection
   );
-  if (!_nr.connections?.length) _nr.connections = [DefaultConnectionState];
+  if (!_nr.connections?.length)
+    _nr.connections = [_cloneDeep(DefaultConnectionState)];
 
   // normalize config
-  _nr.config = _object.mergeDeep(DefaultConfigState, config || {});
+  _nr.config = _object.mergeDeep(_cloneDeep(DefaultConfigState), config || {});
   return _nr;
-};
-
-/**
- * Normalize variables at runtime (on send request)
- * Set and unset variables from scripts response and update variables to platform
- */
-export const normalizeVariables = (
-  existing: {
-    collection?: { [key: string]: any };
-    workspace: { [key: string]: any };
-  },
-  updated: {
-    workspace: {
-      variables: { [key: string]: any };
-      unsetVariables: string[];
-      name: string;
-      clearEnvironment: boolean;
-    };
-    collection?: {
-      variables: { [key: string]: any };
-      unsetVariables: string[];
-      name: string;
-      clearEnvironment: boolean;
-    };
-  }
-): Promise<{
-  collection?: { [key: string]: any };
-  workspace: { [key: string]: any };
-}> => {
-  // updated variables
-  let updatedVariables: {
-    collection?: { [key: string]: any };
-    workspace: { [key: string]: any };
-  } = existing;
-
-  ['workspace', 'collection'].forEach((scope) => {
-    // if clear environment is true then set variables as empty
-    if (updated[scope].clearEnvironment === true) {
-      updatedVariables[scope] = {};
-    } else {
-      // set variables, updated variables
-      updatedVariables[scope] = Object.assign(
-        updatedVariables[scope],
-        updated[scope].variables
-      );
-
-      // unset variables, removed variables
-      if (updated[scope].unsetVariables) {
-        updatedVariables[scope] = _object.omit(
-          updatedVariables[scope],
-          updated[scope].unsetVariables
-        );
-      }
-    }
-  });
-
-  return Promise.resolve(updatedVariables);
 };
 
 export const initialiseStoreFromRequest = (
   _request: Partial<IWebSocket>,
   tabId: TId
-): IWebsocketStoreState => {
+): IStoreState => {
   const request: IWebSocket = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(request);
 
   const defaultConnection =
     request.connections?.find((c) => c.isDefault === true) ||
-    DefaultConnectionState;
+    _cloneDeep(DefaultConnectionState);
   const playgroundId = defaultConnection.id;
 
   const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
