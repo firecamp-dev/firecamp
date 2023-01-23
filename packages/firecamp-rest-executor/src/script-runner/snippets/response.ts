@@ -19,7 +19,7 @@ export default {
         {
           id: 'size',
           name: 'size',
-          value: ['fc.response.size;]',
+          value: ['fc.response.size;'],
         },
         {
           id: 'statusCode',

@@ -65,7 +65,7 @@
     "@firecamp/socket.io": "workspace:*",
     "@firecamp/types": "^0.1.9",
     "@firecamp/ui-kit": "workspace:*",
-    "@firecamp/url": "^0.0.17",
+    "@firecamp/url": "0.0.18",
     "@firecamp/websocket": "workspace:*",
     "@sentry/browser": "7.28.1",
     "@sentry/tracing": "7.28.1",

@@ -45,7 +45,7 @@
     "@firecamp/rest-executor": "workspace:*",
     "@firecamp/types": "^0.1.9",
     "@firecamp/ui-kit": "workspace:*",
-    "@firecamp/url": "^0.0.17",
+    "@firecamp/url": "0.0.18",
     "@hapi/joi": "^17.1.1",
     "aws4": "^1.11.0",
     "chai-http": "^4.3.0",

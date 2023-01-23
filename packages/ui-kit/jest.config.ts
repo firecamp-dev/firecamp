@@ -18,7 +18,6 @@ const config: Config = {
   moduleNameMapper: {
      "\\.(css|sass|scss)$": "<rootDir>/__mocks__/styleMock.ts",
      "\\.(txt)$": "<rootDir>/../../node_modules/raw-loader",
-     "^uuid$": "uuid",
      "^nanoid(/(.*)|$)": "nanoid$1",
      "^monaco-editor": "<rootDir>/__mocks__/monacoMock.ts",
       "^@monaco-editor\/react": "<rootDir>/../../node_modules/@monaco-editor/react",
