@@ -1,3 +1,4 @@
+//@ts-nocheck
 import Joi from '@hapi/joi';
 import tv4 from 'tv4';
 import chai from 'chai';

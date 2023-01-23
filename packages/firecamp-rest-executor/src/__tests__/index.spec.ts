@@ -18,6 +18,8 @@ describe('rest executor', () => {
           pathParams: [],
         },
         method: EHttpMethod.GET,
+        preScripts: [],
+        postScripts: [],
         __meta: {
           name: '',
           type: ERequestTypes.Rest,
@@ -53,6 +55,8 @@ describe('rest executor', () => {
           value: JSON.stringify({ msg: 'Hi' }),
           type: ERestBodyTypes.Json,
         },
+        preScripts: [],
+        postScripts: [],
         __meta: {
           name: '',
           type: ERequestTypes.Rest,
@@ -84,6 +88,8 @@ describe('rest executor', () => {
         config: {
           rejectUnauthorized: false,
         },
+        preScripts: [],
+        postScripts: [],
         __meta: {
           name: '',
           type: ERequestTypes.Rest,
@@ -113,6 +119,8 @@ describe('rest executor', () => {
           config: {
             rejectUnauthorized: true,
           },
+          preScripts: [],
+          postScripts: [],
           __meta: {
             name: '',
             type: ERequestTypes.Rest,

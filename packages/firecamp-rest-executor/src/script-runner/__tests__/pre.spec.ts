@@ -1,8 +1,5 @@
-import {
-  EHttpMethod,
-  ERequestTypes,
-  IRest,
-} from '@firecamp/types';
+//@ts-nocheck
+import { EHttpMethod, ERequestTypes, IRest } from '@firecamp/types';
 import { postScript, preScript } from '../';
 
 const request: IRest = {

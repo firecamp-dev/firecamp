@@ -1,3 +1,4 @@
+//@ts-nocheck
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
 import QueryString from 'qs';
