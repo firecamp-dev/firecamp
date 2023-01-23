@@ -603,6 +603,7 @@ video {
     --req-graphql: #E535AB;
     --req-websocket: #FF7043;
     --req-socketio: #91BD5E;
+    --link: #0068bc;
 
     --app-background: #1B1A1A;
     --app-foreground: #cccccc;
@@ -1648,14 +1649,14 @@ video {
 .bg-popoverBackground {
 	background-color: var(--popover-background);
 }
+.bg-statusBarBackground2 {
+	background-color: var(--statusBar-background2);
+}
 .bg-statusBarBackground {
 	background-color: var(--statusBar-background);
 }
 .\!bg-tabActiveBackground {
 	background-color: var(--tab-activeBackground) !important;
-}
-.bg-statusBarBackground2 {
-	background-color: var(--statusBar-background2);
 }
 .\!bg-statusBarBackground2 {
 	background-color: var(--statusBar-background2) !important;
@@ -2053,6 +2054,9 @@ video {
 }
 .\!text-appForegroundInActive {
 	color: var(--app-foreground-inactive) !important;
+}
+.text-link {
+	color: var(--link);
 }
 .text-inputText {
 	color: var(--input-text);
