@@ -131,15 +131,17 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
   changeScripts: (scriptType: 'preScripts' | 'postScripts', value: string) => {
     //todo: will create enum for preScripts, postScripts
     const state = get();
-    const _script = {
-      ...state.request[scriptType][0],
-      value: value.split('\n'),
-    };
+    const _scripts = [
+      {
+        ...state.request[scriptType][0],
+        value: value.split('\n'),
+      },
+    ];
     const updatedUiRequestPanel = prepareUIRequestPanelState({
-      [scriptType]: _script,
+      [scriptType]: _scripts,
     });
     set((s) => ({
-      request: { ...s.request, [scriptType]: [_script] },
+      request: { ...s.request, [scriptType]: _scripts },
       ui: {
         ...s.ui,
         requestPanel: {
@@ -148,7 +150,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         },
       },
     }));
-    state.equalityChecker({ [scriptType]: [_script] });
+    state.equalityChecker({ [scriptType]: _scripts });
   },
   execute: async (
     variables: {
