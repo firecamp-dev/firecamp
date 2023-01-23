@@ -6,7 +6,6 @@ import { ERequestTypes, IRest } from '@firecamp/types';
 import { normalizeRequest } from '../../services/request.service';
 import {
   EReqChangeRootKeys,
-  EReqChangeScriptsKeys,
   EReqChangeMetaKeys,
   EReqChangeUrlKeys,
 } from '../../types';
@@ -14,7 +13,6 @@ import { TStoreSlice } from '../store.type';
 
 interface IRequestChangeState {
   url?: EReqChangeUrlKeys[];
-  scripts?: EReqChangeScriptsKeys[];
   __meta?: EReqChangeMetaKeys[];
   __root?: EReqChangeRootKeys[];
 }
@@ -62,6 +60,8 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
         case EReqChangeRootKeys.headers:
         case EReqChangeRootKeys.body:
         case EReqChangeRootKeys.auth:
+        case EReqChangeRootKeys.preScripts:
+        case EReqChangeRootKeys.postScripts:
           console.log(_request[key], request[key], key);
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
@@ -73,7 +73,6 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
           }
           break;
         case 'url':
-        case 'scripts':
         case '__meta':
           Object.keys(request[key]).forEach((k) => {
             if (!equal(_request[key][k], request[key][k])) {

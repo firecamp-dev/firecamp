@@ -10,7 +10,8 @@ interface IUiRequestPanel {
   hasAuth?: boolean;
   hasHeaders?: boolean;
   hasParams?: boolean;
-  hasScripts?: boolean;
+  hasPreScripts?: boolean;
+  hasPostScripts?: boolean;
   hasConfig?: boolean;
   headers?: number;
   params?: number;

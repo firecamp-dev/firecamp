@@ -1,4 +1,4 @@
-import { IHeader, IRestScripts, IAuth, TId, EAuthTypes } from '@firecamp/types';
+import { IHeader, IAuth, TId, EAuthTypes } from '@firecamp/types';
 import { _auth } from '@firecamp/utils';
 import { RuntimeBodies } from '../../constants';
 import { TStoreSlice } from '../store.type';
@@ -13,7 +13,7 @@ interface IRuntime {
       payload: IAuth;
       oauth2LastFetchedToken: string;
     };
-    script: IRestScripts;
+    script?: any; //TODO: will be used when we'll introduce the inherit script
   };
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;

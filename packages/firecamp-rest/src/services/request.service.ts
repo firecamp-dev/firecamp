@@ -14,6 +14,8 @@ import {
   IRestBody,
   IAuth,
   IOAuth2UiState,
+  EScriptLanguages,
+  EScriptTypes,
 } from '@firecamp/types';
 import {
   _object,
@@ -74,15 +76,20 @@ export const prepareUIRequestPanelState = (
           };
         }
         break;
-      case 'scripts':
-        let scripts = request.scripts;
-        let hasScripts =
-          !!scripts['pre'] || !!scripts['post'] || !!scripts['test'];
-
+      case 'preScripts':
+        let preScript = request?.preScripts[0]; //@note: currently considering the first script in the array as we'll only have one prerequest
+        let hasPreScripts = preScript && !!preScript.value?.join('').length;
         updatedUiStore = {
           ...updatedUiStore,
-          // activeTab: ERequestPanelTabs.PreRequestScript,
-          hasScripts,
+          hasPreScripts,
+        };
+        break;
+      case 'postScripts':
+        let postScript = request?.postScripts[0]; //@note: currently considering the first script in the array as we'll only have one prerequest
+        let hasPostScripts = postScript && !!postScript.value?.join('').length;
+        updatedUiStore = {
+          ...updatedUiStore,
+          hasPostScripts,
         };
         break;
       case 'config':
@@ -113,8 +120,23 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
     url: { raw: '', queryParams: [], pathParams: [] },
     method: EHttpMethod.GET,
     body: { value: '', type: ERestBodyTypes.None },
-    //@ts-ignore
     auth: { value: '', type: EAuthTypes.None },
+    preScripts: [
+      {
+        id: nanoid(),
+        value: [''],
+        type: EScriptTypes.PreRequest,
+        language: EScriptLanguages.JavaScript,
+      },
+    ],
+    postScripts: [
+      {
+        id: nanoid(),
+        value: [''],
+        type: EScriptTypes.Test,
+        language: EScriptLanguages.JavaScript,
+      },
+    ],
     __meta: {
       name: '',
       description: '',
@@ -131,7 +153,8 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
     auth = _nr.auth,
     headers,
     config,
-    scripts,
+    preScripts = _nr.preScripts,
+    postScripts = _nr.postScripts,
     __meta = _nr.__meta,
     __ref = _nr.__ref,
   } = request;
@@ -214,22 +237,28 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
   //   : _cloneDeep(_auth.defaultAuthState);
 
   // normalize scripts
-  _nr.scripts = {
-    pre: scripts?.pre || '',
-    post: scripts?.post || '',
-    test: scripts?.test || '',
-  };
+  if (preScripts?.length) {
+    _nr.preScripts.map((s) => ({
+      id: s.id,
+      value: s.value || [''],
+      type: s.type || EScriptTypes.PreRequest,
+      language: s.language || EScriptLanguages.JavaScript,
+    }));
+  }
+  if (postScripts?.length) {
+    _nr.postScripts.map((s) => ({
+      id: s.id,
+      value: s.value || [''],
+      type: s.type || EScriptTypes.Test,
+      language: s.language || EScriptLanguages.JavaScript,
+    }));
+  }
 
   // normalize __meta
   _nr.__meta.name = __meta.name || 'Untitled Request';
   _nr.__meta.description = __meta.description || '';
   _nr.__meta.version = '2.0.0';
   _nr.__meta.type = ERequestTypes.Rest;
-  _nr.__meta.inheritScripts = {
-    pre: __meta.inheritScripts?.pre || true,
-    post: __meta.inheritScripts?.post || true,
-    test: __meta.inheritScripts?.test || true,
-  };
   // _nr.__meta.inheritedAuth = __meta.inheritedAuth;
 
   // normalize __ref
@@ -270,13 +299,8 @@ export const initialiseStoreFromRequest = (
       inherit: {
         auth: {
           active: '',
-          payload: {},
+          payload: { value: '', type: EAuthTypes.None },
           oauth2LastFetchedToken: '',
-        },
-        script: {
-          pre: '',
-          post: '',
-          test: '',
         },
       },
       isRequestSaved: !!request.__ref.collectionId,
