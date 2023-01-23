@@ -14,7 +14,7 @@ const PreComp = ({ method = '', type = '' }) => {
         <div
           className={classNames(
             { '': method === EHttpMethod.GET },
-            `${method} text-xs font-bold`
+            `${method} text-xs font-bold tab-icon`
           )}
         >
           {method}
@@ -22,19 +22,19 @@ const PreComp = ({ method = '', type = '' }) => {
       );
     case ERequestTypes.GraphQL:
       return (
-        <div className="GRAPHQL text-xs font-bold w-5">
+        <div className="GRAPHQL text-xs font-bold w-5 tab-icon">
           <FcIconGraphQL size={20} />
         </div>
       );
     case ERequestTypes.SocketIO:
       return (
-        <div className="SOCKETIO text-xs font-bold w-5 invert">
+        <div className="SOCKETIO text-xs font-bold w-5 invert tab-icon">
           <FcIconSocketIoSquare size={24} />
         </div>
       );
     case ERequestTypes.WebSocket:
       return (
-        <div className="WEBSOCKET text-xs font-bold w-5 invert">
+        <div className="WEBSOCKET text-xs font-bold w-5 invert tab-icon">
           <FcIconWebSocket size={24} />
         </div>
       );
