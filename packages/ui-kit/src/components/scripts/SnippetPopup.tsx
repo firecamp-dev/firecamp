@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import { Button, Popover, EPopoverPosition } from '@firecamp/ui-kit';
-import { ISnippetPopup } from './interfaces/Scripts.interfaces';
+import { ISnippetPopup } from './interfaces/ScriptTab.interface';
 
 type TSnippet = {
   id: string | number;

@@ -81,7 +81,7 @@ export const prepareUIRequestPanelState = (
 
         updatedUiStore = {
           ...updatedUiStore,
-          // activeTab: ERequestPanelTabs.PrePostScripts,
+          // activeTab: ERequestPanelTabs.PreRequestScript,
           hasScripts,
         };
         break;
@@ -230,7 +230,7 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
     post: __meta.inheritScripts?.post || true,
     test: __meta.inheritScripts?.test || true,
   };
-  _nr.__meta.inheritedAuth = __meta.inheritedAuth;
+  // _nr.__meta.inheritedAuth = __meta.inheritedAuth;
 
   // normalize __ref
   _nr.__ref.id = __ref.id || nanoid();
@@ -264,8 +264,8 @@ export const initialiseStoreFromRequest = (
       },
     },
     runtime: {
-      bodies: RuntimeBodies,
-      auths: _auth.defaultAuthState,
+      bodies: _cloneDeep(RuntimeBodies),
+      auths: _cloneDeep(_auth.defaultAuthState),
       authHeaders: [],
       inherit: {
         auth: {
@@ -336,13 +336,13 @@ export const normalizeSendRequestPayload = async (
         type: request.auth.type,
       };
     } else if (request.auth?.type === EAuthTypes.Inherit) {
-      const inheritedAuth = request.__meta.inheritedAuth;
-      if (inheritedAuth) {
-        _request.auth = {
-          value: inheritedAuth.value,
-          type: inheritedAuth.auth,
-        };
-      }
+      // const inheritedAuth = request.__meta.inheritedAuth;
+      // if (inheritedAuth) {
+      //   _request.auth = {
+      //     value: inheritedAuth.value,
+      //     type: inheritedAuth.auth,
+      //   };
+      // }
     }
     _request.__ref = { id: request.__ref.id, collectionId: '' };
     // console.log({ _request });

@@ -31,9 +31,7 @@ const AuthTab = () => {
     if (!payload) return;
 
     let updates = auth[EAuthTypes.OAuth2];
-
     // console.log({ updated, payload, updates });
-
     if (updated === 'activeGrantType') {
       updates = Object.assign(updates, { activeGrantType: payload });
     }
@@ -46,14 +44,12 @@ const AuthTab = () => {
         ),
       });
     }
-
     changeAuth(EAuthTypes.OAuth2, updates);
     // console.log({ updates });
   };
 
   const _onSelectInheritAuth = () => {};
   const _openParentAuthModal = () => {};
-
   const _fetchTokenOnChangeOAuth2 = () => {
     resetAuthHeaders(EAuthTypes.OAuth2);
   };
@@ -68,9 +64,6 @@ const AuthTab = () => {
       fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
       fetchInheritedAuth={_onSelectInheritAuth}
       openParentAuthModal={_openParentAuthModal}
-      // inheritAuthMessage={
-      //   ctx_tabData?request.__meta?.isSaved ? '' : 'Please save request first'
-      // }
       oauth2LastToken={oauth2LastFetchedToken || ''}
     />
   );

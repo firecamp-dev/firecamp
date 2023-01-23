@@ -1,15 +1,13 @@
+import { IRequestItem } from '@firecamp/types/dist/common/request-item';
 import { Realtime, Rest } from '@firecamp/cloud-apis';
 import {
   TId,
   IRest,
-  IGraphQL,
   IRestResponse,
-  ISocketIO,
-  IWebSocket,
   EHttpMethod,
+  IRequestFolder,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
-import { IRequestTab } from '../../components/tabs/types';
 import { platformEmitter } from '../platform-emitter';
 import { promptSaveItem } from './prompt.service';
 import { prepareEventNameForRequestPull } from '../platform-emitter/events';
@@ -18,6 +16,7 @@ import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
 import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
+import { RE } from '../../types';
 import platformContext from '.';
 
 interface IPlatformRequestService {
@@ -27,11 +26,41 @@ interface IPlatformRequestService {
   // unsubscribe real-time request changes (pull-actions from server)
   unsubscribeChanges?: (requestId: TId) => void;
 
+  // fetch request from server by request id
+  fetch: (reqId: TId) => Promise<any>;
+
   // save and update request
   save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
 
-  // fetch request from server by request id
-  onFetch: (reqId: TId) => Promise<any>;
+  // request folders
+  createRequestFolderPrompt: (
+    folder: IRequestFolder,
+    tabId: TId
+  ) => Promise<IRequestFolder>;
+  createRequestFolder: (
+    folder: IRequestFolder,
+    tabId: TId
+  ) => Promise<IRequestFolder>;
+  updateRequestFolder: (
+    item: IRequestFolder,
+    tabId: TId
+  ) => Promise<IRequestFolder>;
+  deleteRequestFolder: (
+    folderId: TId,
+    requestId: TId,
+    tabId: TId
+  ) => Promise<any>;
+
+  // request items
+  createRequestItem: (
+    item: IRequestItem<any, any>,
+    tabId: TId
+  ) => Promise<IRequestItem<any, any>>;
+  updateRequestItem: (
+    item: Partial<IRequestItem<any, any>>,
+    tabId: TId
+  ) => Promise<IRequestItem<any, any>>;
+  deleteRequestItem: (itemId: TId, requestId: TId, tabId: TId) => Promise<any>;
 
   // get executor
   execute: (request: IRest) => Promise<IRestResponse>;
@@ -65,9 +94,12 @@ const request: IPlatformRequestService = {
     platformEmitter.off(prepareEventNameForRequestPull(requestId));
   },
 
-  /**
-   * save a new request or update the request changes
-   */
+  // fetch request by request id
+  fetch: async (reqId: TId) => {
+    return await Rest.request.findOne(reqId).then((res) => res.data);
+  },
+
+  /** save a new request or update the request changes */
   save: async (request: any, tabId: TId, isNew: boolean = false) => {
     if (!AppService.user.isLoggedIn()) {
       return AppService.modals.openSignIn();
@@ -185,9 +217,64 @@ const request: IPlatformRequestService = {
     }
   },
 
-  // fetch request from server by request id
-  onFetch: async (reqId: TId) => {
-    return await Rest.request.findOne(reqId);
+  createRequestFolderPrompt: async (folder, tabId) => {
+    return platformContext.window
+      .promptInput({
+        header: 'Create A New Folder',
+        lable: 'Folder Name',
+        placeholder: '',
+        texts: { btnOking: 'Creating...' },
+        value: folder.name,
+        validator: (val) => {
+          if (!val || val.length < 3) {
+            return {
+              isValid: false,
+              message: 'The folder name must have minimum 3 characters.',
+            };
+          }
+          const isValid = RE.NoSpecialCharacters.test(val);
+          return {
+            isValid,
+            message:
+              !isValid &&
+              'The folder name must not contain any special characters.',
+          };
+        },
+        executor: (name) => {
+          const _folder = { ...folder, name };
+          return request.createRequestFolder(_folder, '');
+        },
+        onError: (e) => {
+          platformContext.app.notify.alert(
+            e?.response?.data?.message || e.message
+          );
+        },
+      })
+      .then((res) => {
+        // console.log(res, 'createRequestFolder response);
+        return res;
+      });
+  },
+  createRequestFolder: async (folder, tabId) => {
+    return Rest.request
+      .createFolder(folder.__ref.requestId, folder)
+      .then((res) => res.data);
+  },
+  updateRequestFolder: async (folder, tabId) => {
+    return folder;
+  },
+  deleteRequestFolder: async (folderId, requestId, tabId) => {
+    return true;
+  },
+
+  createRequestItem: async (item, tabId) => {
+    return item;
+  },
+  updateRequestItem: async (item, tabId) => {
+    return item as IRequestItem<any, any>;
+  },
+  deleteRequestItem: async (itemId, requestId, tabId) => {
+    return true;
   },
 
   // execute request

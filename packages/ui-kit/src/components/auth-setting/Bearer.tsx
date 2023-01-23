@@ -1,17 +1,16 @@
 import { FC, useReducer } from 'react';
 import { Input } from '@firecamp/ui-kit';
 import { IAuthBearer, EAuthTypes } from '@firecamp/types'
-import { authUiState } from './constants';
+import { authUiFormState } from './constants';
 
 const Bearer: FC<IBearer> = ({ auth, onChange = () => {} }) => {
   const { Bearer} = EAuthTypes;
-  const inputList = authUiState[Bearer]['inputList'];
+  const inputList = authUiFormState[Bearer]['inputList'];
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
     isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
   });
-
   const _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
     switch (action.type) {
       case 'setDirty':
@@ -21,9 +20,7 @@ const Bearer: FC<IBearer> = ({ auth, onChange = () => {} }) => {
         };
     }
   };
-
   const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
-
   const _handleChange = (e: any, id: string) => {
     e.preventDefault();
     const value = e.target.value;
@@ -56,15 +53,8 @@ const Bearer: FC<IBearer> = ({ auth, onChange = () => {} }) => {
           placeholder={input.name || ''}
           value={auth?.[input.id as keyof IAuthBearer] || ''}
           error={isDirty[input.id] && errorMsg ? errorMsg : ''}
-          /* style={{
-            borderColor:
-              isDirty[input.id] && errorMsg
-                ? 'red'
-                : isDirty[input.id] && 'green',
-          }} */
           onChange={(e) => _handleChange(e, input.id)}
           isEditor={true}
-          /*onKeyDown={_onKeyDown}*/
         />
       );
     })}

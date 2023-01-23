@@ -52,7 +52,7 @@ interface ILog {
   title: string
   message: IMessage
   meta: {
-      uuid: string
+      id: string
       event: string
       timestamp: number
       type: "R" | "S" | "ACK" | "SYS"
@@ -63,7 +63,7 @@ interface ILog {
 
 // Receives the connection logs
 executor.logs((log: ILog) => {
-    // Render the log according to the connection UUID
+    // Render the log according to the connection id
 })
 ```
 

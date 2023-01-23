@@ -3,7 +3,7 @@ import {
   Container,
   Button,
   TabHeader,
-  ScriptsTabs,
+  ScriptTab,
 } from '@firecamp/ui-kit';
 import isEqual from 'react-fast-compare';
 import { cloneDeep } from 'lodash';
@@ -140,15 +140,11 @@ const Scripts = ({ module = {}, folderId = '' }) => {
     <Container className="with-divider h-full">
       <Container.Body>
         <Container className="pt-16 padding-wrapper">
-          <ScriptsTabs
+          <ScriptTab
             id={folderId}
             key={folderId}
-            scripts={scripts}
-            allowInherit={true}
-            inheritScript={inheritScript}
+            script={scripts}
             onChangeScript={_onChangeScript}
-            onClickInherit={_onSelectInherit}
-            openParentScriptsModal={_openParentScriptsModal}
           />
         </Container>
       </Container.Body>

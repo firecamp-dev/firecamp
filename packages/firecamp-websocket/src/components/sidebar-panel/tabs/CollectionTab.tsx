@@ -9,11 +9,17 @@ import treeRenderer from './collection-tree/treeItemRenderer';
 import { useStore, useStoreApi, IStore } from '../../../store';
 
 const CollectionTab = () => {
-  const { context, isRequestSaved, createFolder } = useStore(
+  const {
+    context,
+    isRequestSaved,
+    prepareCreateFolderPayload,
+    onCreateFolder,
+  } = useStore(
     (s: IStore) => ({
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
-      createFolder: s.createFolder,
+      prepareCreateFolderPayload: s.prepareCreateFolderPayload,
+      onCreateFolder: s.onCreateFolder,
     }),
     shallow
   );
@@ -25,36 +31,8 @@ const CollectionTab = () => {
         'Please save the websocket request first.'
       );
     }
-    context.window
-      .promptInput({
-        header: 'Create A New Folder',
-        lable: 'Folder Name',
-        placeholder: '',
-        texts: { btnOking: 'Creating...' },
-        value: '',
-        // validator: (val) => {
-        //   if (!val || val.length < 3) {
-        //     return {
-        //       isValid: false,
-        //       message: 'The folder name must have minimum 3 characters.',
-        //     };
-        //   }
-        //   const isValid = RE.NoSpecialCharacters.test(val);
-        //   return {
-        //     isValid,
-        //     message:
-        //       !isValid &&
-        //       'The folder name must not contain any special characters.',
-        //   };
-        // },
-        executor: (name) => createFolder(name, parentFolderId),
-        onError: (e) => {
-          context.app.notify.alert(e?.response?.data?.message || e.message);
-        },
-      })
-      .then((res) => {
-        // console.log(res, 1111);
-      });
+    const _folder = prepareCreateFolderPayload('', parentFolderId);
+    context.request.createRequestFolderPrompt(_folder).then(onCreateFolder);
   };
 
   return (

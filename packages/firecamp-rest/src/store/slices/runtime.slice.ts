@@ -1,4 +1,4 @@
-import { IHeader, IRestScripts, IAuth, TId } from '@firecamp/types';
+import { IHeader, IRestScripts, IAuth, TId, EAuthTypes } from '@firecamp/types';
 import { _auth } from '@firecamp/utils';
 import { RuntimeBodies } from '../../constants';
 import { TStoreSlice } from '../store.type';
@@ -23,7 +23,6 @@ interface IRuntime {
 
 interface IRuntimeSlice {
   runtime?: IRuntime;
-
   changeAuthHeaders?: (authHeaders: Array<IHeader>) => void;
   changeInherit?: (key: string, value: any) => void;
   setRequestRunningFlag: (flag: boolean) => void;
@@ -41,7 +40,7 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
     inherit: {
       auth: {
         active: '',
-        payload: {},
+        payload: { value: '', type: EAuthTypes.None },
         oauth2LastFetchedToken: '',
       },
       script: {

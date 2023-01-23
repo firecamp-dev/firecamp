@@ -23,7 +23,7 @@ interface ICollectionSlice {
   registerTDP: () => void;
   unRegisterTDP: () => void;
 
-  initialiseCollection: (collection: ICollection) => void; // TODO: rename API
+  initialiseCollection: (collection: ICollection, rootOrders?: TId[]) => void; // TODO: rename API
 
   // message
   getItem: (id: TId) => IWebSocketMessage | undefined;
@@ -32,7 +32,7 @@ interface ICollectionSlice {
 
   // folders
   getFolder: (id: TId) => IRequestFolder | undefined;
-  createFolder: (name: string, parentFolderId: TId) => void;
+  prepareCreateFolderPayload: (name: string, parentFolderId: TId) => void;
   deleteFolder: (id: TId) => void;
   onCreateFolder: (folder: IRequestFolder) => void;
 }
@@ -60,7 +60,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         ...s.request.__meta.fOrders,
         ...s.request.__meta.iOrders,
       ];
-      console.log(rootOrders, 'rootOrders...');
+      // console.log(rootOrders, 'rootOrders...');
       const instance = new TreeDataProvider(
         s.collection.folders,
         s.collection.items,
@@ -92,7 +92,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   },
 
   // collection
-  initialiseCollection: (collection: ICollection) => {
+  initialiseCollection: (collection: ICollection, rootOrders) => {
     // console.log(collection?.items?.length, 'collection?.items?.length...');
     const state = get();
     // console.log(state.request.__meta.fOrders, state.request.__meta.iOrders);
@@ -100,7 +100,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         ...collection,
-        __manualUpdates: 0,
+        __manualUpdates: ++s.collection.__manualUpdates,
       },
       ui: {
         ...s.ui,
@@ -110,7 +110,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     state.collection.tdpInstance?.init(
       collection.folders || [],
       collection.items || [],
-      [...state.request.__meta.fOrders, ...state.request.__meta.iOrders]
+      rootOrders || [
+        ...state.request.__meta.fOrders,
+        ...state.request.__meta.iOrders,
+      ]
     );
   },
 
@@ -149,7 +152,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
     return folder;
   },
-  createFolder: async (name: string, parentFolderId?: TId) => {
+  prepareCreateFolderPayload: (name: string, parentFolderId?: TId) => {
     const state = get();
     const _folder: IRequestFolder = {
       name,
@@ -163,34 +166,12 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       },
     };
     state.toggleProgressBar(true);
-    return Promise.resolve().then(() => {
-      state.onCreateFolder(_folder);
-    });
-    // const res = await Rest.requestFolder
-    //   .create(_folder)
-    //   .then((r) => {
-    //     state.onCreateFolder(r.data);
-    //     return r;
-    //   })
-    //   .finally(() => {
-    //     state.toggleProgressBar(false);
-    //   });
-    // return res;
+    return _folder;
   },
-  deleteFolder: (id: TId) => {
-    set((s) => {
-      const folders = s.collection.folders.filter((f) => f.__ref.id != id);
-      return {
-        collection: {
-          ...s.collection,
-          ...folders,
-          __manualUpdates: ++s.collection.__manualUpdates,
-        },
-      };
-    });
-  },
-
   onCreateFolder: (folder) => {
+    if (!folder) return;
+    const state = get();
+    state.toggleProgressBar(false);
     //@ts-ignore
     if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
     set((s) => {
@@ -211,6 +192,19 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         collection: {
           ...s.collection,
           folders: [...folders, folder],
+          __manualUpdates: ++s.collection.__manualUpdates,
+        },
+      };
+    });
+  },
+
+  deleteFolder: (id: TId) => {
+    set((s) => {
+      const folders = s.collection.folders.filter((f) => f.__ref.id != id);
+      return {
+        collection: {
+          ...s.collection,
+          ...folders,
           __manualUpdates: ++s.collection.__manualUpdates,
         },
       };

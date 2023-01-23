@@ -41,13 +41,10 @@
     "url": "git+https://github.com/firecamp-io/firecamp.git"
   },
   "keywords": [
-    "chrome",
-    "extension",
-    "react",
-    "redux",
-    "hot reload",
-    "webpack",
-    "boilerplate"
+    "api",
+    "rest-api",
+    "firecamp",
+    "api platform"
   ],
   "author": "Nishchit <dnishchit@gmail.com>",
   "license": " Apache-2.0 License",
@@ -81,7 +78,7 @@
     "eslint": "^8.29.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jest": "^26.6.0",
+    "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-jsx": "^0.1.0",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.5",
@@ -96,7 +93,6 @@
     "postcss-loader": "^6.2.1",
     "prettier": "^2.6.2",
     "react-addons-test-utils": "^15.0.2",
-    "remote-redux-devtools": "^0.5.16",
     "rimraf": "^3.0.2",
     "sass": "^1.51.0",
     "sass-loader": "^12.6.0",
@@ -117,7 +113,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
-    "@firecamp/url": "^0.0.17",
+    "@firecamp/url": "0.0.18",
     "@firecamp/utils": "0.0.12",
     "@react-icons/all-files": "^4.1.0",
     "autoprefixer": "^10.4.8",
@@ -125,8 +121,6 @@
     "faker": "^5.5.3",
     "match-sorter": "^6.3.1",
     "prettify-xml": "^1.2.0",
-    "pug-cli": "^1.0.0-alpha6",
-    "querystring": "^0.2.1",
     "react-file-drop": "^3.1.5"
   },
   "engines": {
