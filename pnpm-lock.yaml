@@ -150,7 +150,7 @@ importers:
   packages/firecamp-agent-manager:
     specifiers:
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@firecamp/utils': 0.0.12
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chai': ^4.3.1
@@ -181,7 +181,7 @@ importers:
       typescript: ^4.7.4
     dependencies:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       '@firecamp/utils': 0.0.12
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
@@ -271,7 +271,7 @@ importers:
 
   packages/firecamp-graphql:
     specifiers:
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': 0.0.18
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -306,7 +306,7 @@ importers:
       typedoc: ^0.23.8
       typescript: ^4.7.4
     dependencies:
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.18
       codemirror: 5.65.11
@@ -346,7 +346,7 @@ importers:
     specifiers:
       '@firecamp/curl-to-firecamp': ^0.0.10
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': 0.0.18
       '@hapi/joi': ^17.1.1
@@ -406,7 +406,7 @@ importers:
     dependencies:
       '@firecamp/curl-to-firecamp': 0.0.10
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.18
       '@hapi/joi': 17.1.1
@@ -467,7 +467,7 @@ importers:
 
   packages/firecamp-rest-executor:
     specifiers:
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@firecamp/url': 0.0.18
       '@hapi/joi': ^17.1.1
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -512,7 +512,7 @@ importers:
       typescript: ^4.7.4
       vm2: ^3.9.11
     dependencies:
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       '@firecamp/url': 0.0.18
       '@hapi/joi': 17.1.1
       ajv: 8.12.0
@@ -561,7 +561,7 @@ importers:
   packages/firecamp-socket-io:
     specifiers:
       '@firecamp/socket.io-executor': workspace:*
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': 0.0.18
       '@istanbuljs/nyc-config-typescript': ^1.0.1
@@ -602,7 +602,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/socket.io-executor': link:../firecamp-socket-io-executor
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.18
       classnames: 2.3.2
@@ -645,7 +645,7 @@ importers:
 
   packages/firecamp-socket-io-executor:
     specifiers:
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/jest': 29.2.4
       '@types/node': ^18.0.0
@@ -676,7 +676,7 @@ importers:
       typedoc: ^0.23.8
       typescript: ^4.7.4
     dependencies:
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       comment-json: 4.2.3
       mitt: 3.0.0
       socket.io-client-v2: /socket.io-client/2.4.0
@@ -710,7 +710,7 @@ importers:
 
   packages/firecamp-websocket:
     specifiers:
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': 0.0.18
       '@firecamp/ws-executor': workspace:*
@@ -751,7 +751,7 @@ importers:
       typescript: ^4.7.4
       zustand: 3.7.2
     dependencies:
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       '@firecamp/ui-kit': link:../ui-kit
       '@firecamp/url': 0.0.18
       '@firecamp/ws-executor': link:../firecamp-ws-executor
@@ -795,7 +795,7 @@ importers:
 
   packages/firecamp-ws-executor:
     specifiers:
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chrome': ^0.0.204
       '@types/jest': 29.2.4
@@ -826,7 +826,7 @@ importers:
       typescript: ^4.6.3
       ws: 8.11.0
     dependencies:
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       comment-json: 4.2.3
       mitt: 3.0.0
       nanoid: 3.3.4
@@ -863,7 +863,7 @@ importers:
       '@babel/cli': ^7.16.0
       '@babel/core': ^7.14.8
       '@babel/preset-env': ^7.19.4
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@firecamp/ui-kit': workspace:*
       '@monaco-editor/react': 4.4.5
       '@radix-ui/react-toast': ^1.0.0
@@ -931,7 +931,7 @@ importers:
       typescript: ^4.3.5
       vscode: ^1.1.37
     dependencies:
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       '@firecamp/ui-kit': 'link:'
       '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
       '@radix-ui/react-toast': 1.1.2_react-dom@17.0.2
@@ -1011,7 +1011,7 @@ importers:
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
       '@firecamp/socket.io': workspace:*
-      '@firecamp/types': ^0.1.9
+      '@firecamp/types': ^0.1.10
       '@firecamp/ui-kit': workspace:*
       '@firecamp/url': 0.0.18
       '@firecamp/websocket': workspace:*
@@ -1058,7 +1058,7 @@ importers:
       '@firecamp/graphql': link:../../packages/firecamp-graphql
       '@firecamp/rest': link:../../packages/firecamp-rest
       '@firecamp/socket.io': link:../../packages/firecamp-socket-io
-      '@firecamp/types': 0.1.9
+      '@firecamp/types': 0.1.10
       '@firecamp/ui-kit': link:../../packages/ui-kit
       '@firecamp/url': 0.0.18
       '@firecamp/websocket': link:../../packages/firecamp-websocket
@@ -3014,6 +3014,12 @@ packages:
   /@firecamp/types/0.0.9:
     resolution: {integrity: sha512-gg0m8euCydVmIMMyP4YBHXXs9XkbMdzHKfZo5h+8xRgog9a/ZpPhQdwL6nxNrdmA/hxjN35xUBgMcv92UKwFJQ==}
     engines: {node: '>=10'}
+    dev: false
+
+  /@firecamp/types/0.1.10:
+    resolution: {integrity: sha512-HtULGifInbIuE0LoN3XkUY7XKt+b8qHa3PIglF1Nox7JFus4rK4I58++qYN8ONV7QfUBbBaNwvYeZwRWhtVCsA==}
+    engines: {node: '>=10'}
+    requiresBuild: true
     dev: false
 
   /@firecamp/types/0.1.9:
@@ -13447,7 +13453,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.75.0_webpack-cli@4.10.0
+      webpack: 5.75.0
     dev: true
 
   /htmlparser2/3.10.1:

@@ -42,7 +42,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.9",
+    "@firecamp/types": "^0.1.10",
     "comment-json": "^4.1.1",
     "mitt": "^3.0.0",
     "nanoid": "3.3.4",
