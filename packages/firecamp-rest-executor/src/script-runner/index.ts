@@ -38,6 +38,23 @@ class Fc {
     this.environment = new Variables(envVars);
     this.collectionVariables = new Variables(collectionVars);
   }
+  public variables = {
+    get: (variableName: string) => {
+      /**
+       * variable find priorities
+       * 1. first find in collection variables
+       * 2. if not found then find in environnent variables
+       * 3. if not found then find in globals variables
+       */
+      let value = this.collectionVariables.get(variableName);
+      if (value === undefined) {
+        value = this.environment.get(variableName);
+      } else {
+        value = this.globals.get(variableName);
+      }
+      return value;
+    },
+  };
 }
 
 export const preScript: TPreScript = async (

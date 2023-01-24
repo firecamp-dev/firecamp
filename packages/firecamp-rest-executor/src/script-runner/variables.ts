@@ -16,7 +16,7 @@ export class Variables implements IVariables {
 
   get(variableName: string) {
     const variable = this.variables.find((v) => v.key == variableName);
-    if (!variable) return '';
+    if (!variable) return undefined;
     if (variable.type == 'text') return variable.value;
     else if (variable.type == 'number') return +variable.value;
     else if (variable.type == 'boolean')
