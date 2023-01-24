@@ -24,6 +24,6 @@ const config: Config.InitialOptions = {
         },
     },
     verbose: true,
-    testPathIgnorePatterns: ['scripts/test.ts']
+    testPathIgnorePatterns: []
 };
 export default config;

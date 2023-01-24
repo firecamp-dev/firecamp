@@ -1,6 +1,6 @@
-import { _object } from '@firecamp/utils';
 import { nanoid } from 'nanoid';
-import { EVariableType, TEnvVariable, TVariable } from './types';
+import { _object } from '@firecamp/utils';
+import { EVariableType, TVariable } from './types';
 
 export class Variables implements IVariables {
   private variables: TVariable[];
@@ -16,7 +16,7 @@ export class Variables implements IVariables {
 
   get(variableName: string | number) {
     const variable = this.variables.find((v) => v.key == variableName);
-    if (!variable) return;
+    if (!variable) return '';
     if (variable.type == 'text') return variable.value;
     else if (variable.type == 'number') return +variable.value;
     else if (variable.type == 'boolean') return !!variable.value;
@@ -58,6 +58,10 @@ export class Variables implements IVariables {
   clear() {
     this.variables = [];
     this.unsetVariables = [];
+  }
+
+  toJSON() {
+    return JSON.parse(JSON.stringify(this.variables, null, 4));
   }
 }
 
