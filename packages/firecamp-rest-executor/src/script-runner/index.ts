@@ -11,7 +11,13 @@ import { Response } from './response';
 import requestAssertionPlugin from './request/assertions';
 import responseAssertionPlugin from './response/assertions';
 import Runner from '../test-runner/runner';
-import { TEnvVariable, TPostScript, TPreScript, TTestScript } from './types';
+import {
+  TEnvVariable,
+  TPostScript,
+  TPreScript,
+  TTestScript,
+  TVariable,
+} from './types';
 
 export * from './types';
 export * from './snippets';
@@ -23,16 +29,24 @@ class Fc {
   globals: Variables;
   environment: Variables;
   collectionVariables: Variables;
-  constructor() {
-    this.globals = new Variables([]);
-    this.environment = new Variables([]);
-    this.collectionVariables = new Variables([]);
+  constructor(
+    globalVars: TVariable[] = [],
+    envVars: TVariable[] = [],
+    collectionVars: TVariable[] = []
+  ) {
+    this.globals = new Variables(globalVars);
+    this.environment = new Variables(envVars);
+    this.collectionVariables = new Variables(collectionVars);
   }
 }
 
 export const preScript: TPreScript = async (
   request: IRest,
-  variables: TEnvVariable
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
 ) => {
   const script: IScript | undefined = request.preScripts.find(
     (s) => s.type == EScriptTypes.PreRequest
@@ -42,12 +56,21 @@ export const preScript: TPreScript = async (
     const code = `(()=>{
             ${script.value.join('\n')};
             return {
-              fc
+              variables: {
+                globals: fc.globals.toJSON(),
+                environment: fc.environment.toJSON(),
+                collection: fc.collectionVariables.toJSON(),
+              },
+              result, // for testing purpose to return the value, let result = fc.globals.get('name')
             }
           })()`;
     return jsExecutor(code, {
       // request: new Request(request),
-      fc: new Fc(),
+      fc: new Fc(
+        variables.globals,
+        variables.environment,
+        variables.collection
+      ),
     });
   } catch (error) {
     console.info('%cpre-script sandbox error', 'color: red; font-size: 14px');

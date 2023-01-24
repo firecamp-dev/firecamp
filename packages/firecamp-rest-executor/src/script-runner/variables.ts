@@ -14,16 +14,18 @@ export class Variables implements IVariables {
     return !!this.variables.find((v) => v.key == variableName);
   }
 
-  get(variableName: string | number) {
+  get(variableName: string) {
     const variable = this.variables.find((v) => v.key == variableName);
     if (!variable) return '';
     if (variable.type == 'text') return variable.value;
     else if (variable.type == 'number') return +variable.value;
-    else if (variable.type == 'boolean') return !!variable.value;
+    else if (variable.type == 'boolean')
+      return variable.value == 'true' ? true : false;
     else return variable.value;
   }
 
   set(variableName: string, variableValue: string | number | boolean) {
+    if (!variableName) return;
     const variable = this.variables.find((v) => v.key == variableName);
     const varType: EVariableType | string = typeof variableValue;
     if (!['string', 'number', 'boolean'].includes(varType)) return;
@@ -70,7 +72,7 @@ export interface IVariables {
   has: (variableName: string | number) => boolean;
 
   /** return the variable value */
-  get: (variableName: string | number) => string | number | boolean | undefined;
+  get: (variableName: string) => string | number | boolean | undefined;
 
   /** set variable name and value */
   set: (variableName: string, variableValue: string | number | boolean) => void;

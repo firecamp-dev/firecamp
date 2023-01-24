@@ -7,8 +7,12 @@ export * from './response';
 export type TEnvVariable = { [key: string]: number | boolean | string };
 export type TPreScript = (
   request: IRest,
-  variables: TVariable
-) => Promise<{ request: IScriptRequest; fc: any }>;
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
+) => Promise<{ request?: IScriptRequest; [k: string]: any }>;
 export type TPostScript = (
   postScript: string,
   response: IRestResponse,
