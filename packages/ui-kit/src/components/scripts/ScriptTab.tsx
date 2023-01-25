@@ -78,7 +78,7 @@ const ScriptTab: FC<IScriptTab> = ({
           }}
         /></Column>
           <Resizable left={true} height="100%" minWidth={100} maxWidth={300} width={200} className="border-l border-appBorder">
-            <Column>
+            <Column className=" visible-scrollbar">
             <HelpPopUp
               isOpen={true}
               snippets={snippets}
