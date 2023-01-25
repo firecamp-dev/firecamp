@@ -23,7 +23,7 @@ const SnippetPopup: FC<ISnippetPopup> = ({
   if (!snippets?.length) return <></>;
   // console.log({ snippets });
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto visible-scrollbar">
           {snippets.map((snippet, i) => {
             return (
               <div key={`${i}-popup`}>
