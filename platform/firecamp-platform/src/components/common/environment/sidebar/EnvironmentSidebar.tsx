@@ -137,6 +137,51 @@ const EnvironmentSidebar: FC<any> = () => {
             );
           }}
         ></Pane>
+        <Pane
+          expanded={true}
+          bodyClassName={'!p-0'}
+          headerTitleRenderer={() => {
+            return <span className="font-bold">COLLECTION ENVIRONMENTS</span>;
+          }}
+          headerActionRenderer={() => {
+            return (
+              <ToolBar>
+                {/* <div>
+                  <VscRefresh className="cursor-pointer" size={16} onClick={()=> {}}/>
+                </div>
+                <div>
+                  <VscNewFolder className="cursor-pointer" size={16} onClick={()=>{}}/>
+                </div> */}
+              </ToolBar>
+            );
+          }}
+          bodyRenderer={({ expanded }) => {
+            return (
+              <UncontrolledTreeEnvironment
+                dataProvider={colEnvDataProvider.current}
+                getItemTitle={(item) => item.data?.name}
+                viewState={{}}
+                renderItemArrow={treeRenderer.renderItemArrow}
+                // renderItemTitle={treeRenderer.renderItemTitle}
+                renderItem={(props) =>
+                  treeRenderer.renderItem({
+                    ...props,
+                    openEnv: openColEnv,
+                    openCreateEnv: openCreateColEnv,
+                    deleteEnv,
+                  })
+                }
+              >
+                <Tree
+                  treeId="tree-1"
+                  rootItem="root"
+                  treeLabel="Tree Example"
+                  ref={treeRef}
+                />
+              </UncontrolledTreeEnvironment>
+            );
+          }}
+        ></Pane>
       </Container>
     </div>
   );

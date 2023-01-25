@@ -1,11 +1,22 @@
 import create from 'zustand';
 import { Rest } from '@firecamp/cloud-apis';
-import { IEnvironment, TId, EEnvironmentScope } from '@firecamp/types';
+import {
+  TId,
+  IEnvironment,
+  EEnvironmentScope,
+  IKeyValueTable,
+} from '@firecamp/types';
 import { useTabStore } from './tab';
 
 type TTabId = TId;
 type TColId = TId;
 type TEnvId = TId;
+
+interface IEnvironment_ {
+  name: string;
+  variables: IKeyValueTable[];
+  __ref: { id: TEnvId; createdBy: string };
+}
 
 const initialState = {
   tabColMap: {},
@@ -13,6 +24,36 @@ const initialState = {
   isEnvSidebarOpen: false,
   colEnvTdpInstance: null,
   envs: [],
+  environments: [
+    {
+      name: 'Development',
+      variables: [
+        {
+          id: '1',
+          key: 'name',
+          value: 'ramanujan',
+        },
+      ],
+      __ref: {
+        id: '123',
+        createdBy: '1',
+      },
+    },
+    {
+      name: 'Staging',
+      variables: [
+        {
+          id: '1',
+          key: 'name',
+          value: 'shrinivasan',
+        },
+      ],
+      __ref: {
+        id: '456',
+        createdBy: '1',
+      },
+    },
+  ],
 };
 
 type TCreateEnvPayload = {
@@ -29,6 +70,10 @@ export interface IEnvironmentStore {
   isProgressing?: boolean;
   colEnvTdpInstance: any;
   envs: IEnvironment[];
+  environments: IEnvironment_[];
+
+  registerTDP_: () => void;
+  unRegisterTDP_: () => void;
 
   registerTDP: (colEnvTdpInstance: any) => void;
   unRegisterTDP: () => void;
@@ -55,7 +100,6 @@ export interface IEnvironmentStore {
 
 export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   ...initialState,
-
   initialize: (envs: IEnvironment[] = []) => {
     const cEnvs = envs.filter(
       (e) => ['C', 'P'].includes(e.__meta.type) && e.__ref.collectionId
@@ -75,6 +119,18 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       };
     }, {});
     set({ envs, colEnvMap });
+  },
+
+  registerTDP_: () => {
+    const { envs } = get();
+    set((s) => ({
+      
+    }));
+  },
+
+  // unregister TreeDatProvider instance
+  unRegisterTDP_: () => {
+    set({ colEnvTdpInstance: null });
   },
 
   registerTDP: (colEnvTdpInstance) => {
