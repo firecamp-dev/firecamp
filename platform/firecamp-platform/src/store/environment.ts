@@ -222,7 +222,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const state = get();
     state.toggleProgressBar(true);
     const res = await Rest.environment
-      .fetch(envId)
+      ._fetch(envId)
       .then((r: any) => {
         const env = r.data;
         //TODO: set this newly fetched env in store later if feel need
@@ -238,7 +238,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const state = get();
     state.toggleProgressBar(true);
     const res = await Rest.environment
-      .create(_collection)
+      ._create(_collection)
       .then((r) => {
         set((s) => {
           if (r.data.__meta.type == EEnvironmentScope.Collection) {
@@ -258,7 +258,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const state = get();
     state.toggleProgressBar(true);
     const res = await Rest.environment
-      .update(envId, body)
+      ._update(envId, body)
       .then((r: any) => {
         const env = r.data;
         set((s) => {
@@ -280,7 +280,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const state = get();
     state.toggleProgressBar(true);
     return Rest.environment
-      .delete(envId)
+      ._delete(envId)
       .then((r) => {
         set((s) => {
           const env = s.envs.find((e) => e.__ref.id == envId);

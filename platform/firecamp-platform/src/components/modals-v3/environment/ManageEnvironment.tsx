@@ -57,7 +57,7 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
   useEffect(() => {
     setIsFetching(true);
     Rest.environment
-      .fetch(envId)
+      ._fetch(envId)
       .then((r) => {
         fetchEnvironment(envId).then((e) => {
           console.log(e, 'current env');
