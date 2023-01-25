@@ -5,7 +5,7 @@ import { IEnvironment } from '@firecamp/types';
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',
 }
-export class CollectionEnvDataProvider {
+export class EnvironmentDataProvider {
   private items: Record<TreeItemIndex, TreeItem>; //ExplicitDataSource;
   private rootChildren: string[];
   private emitter = mitt();

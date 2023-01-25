@@ -7,6 +7,9 @@ import {
   IKeyValueTable,
 } from '@firecamp/types';
 import { useTabStore } from './tab';
+import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
+import { CollectionEnvDataProvider } from '../components/common/environment/sidebar/tree/dataProvider';
+import { useWorkspaceStore } from './workspace';
 
 type TTabId = TId;
 type TColId = TId;
@@ -54,6 +57,7 @@ const initialState = {
       },
     },
   ],
+  envTdpInstance: null,
 };
 
 type TCreateEnvPayload = {
@@ -71,11 +75,12 @@ export interface IEnvironmentStore {
   colEnvTdpInstance: any;
   envs: IEnvironment[];
   environments: IEnvironment_[];
+  envTdpInstance: any;
 
   registerTDP_: () => void;
   unRegisterTDP_: () => void;
 
-  registerTDP: (colEnvTdpInstance: any) => void;
+  registerTDP: () => void;
   unRegisterTDP: () => void;
 
   initialize: (envs: IEnvironment[]) => void;
@@ -122,20 +127,23 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   registerTDP_: () => {
-    const { envs } = get();
-    set((s) => ({
-      
-    }));
+    const { environments } = get();
+    const envTdpInstance = new EnvironmentDataProvider(environments);
+    set((s) => ({ envTdpInstance }));
   },
 
   // unregister TreeDatProvider instance
   unRegisterTDP_: () => {
-    set({ colEnvTdpInstance: null });
+    set({ envTdpInstance: null });
   },
 
-  registerTDP: (colEnvTdpInstance) => {
+  registerTDP: () => {
     const { envs } = get();
-    colEnvTdpInstance?.init(envs);
+    const {
+      explorer: { collections },
+    } = useWorkspaceStore.getState();
+    const colEnvTdpInstance = new CollectionEnvDataProvider(collections);
+    colEnvTdpInstance.init(envs);
     set((s) => ({ colEnvTdpInstance }));
   },
 
