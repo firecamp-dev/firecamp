@@ -14,6 +14,8 @@ import treeRenderer_ from './tree_/itemRenderer';
 import platformContext from '../../../../services/platform-context';
 import { useWorkspaceStore } from '../../../../store/workspace';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
+import { platformEmitter } from '../../../../services/platform-emitter';
+import { EPlatformTabs } from '../../../../services/platform-emitter/events';
 
 const EnvironmentSidebar: FC<any> = () => {
   const treeRef = useRef();
@@ -68,7 +70,9 @@ const EnvironmentCollection = () => {
     registerTDP();
     return () => unRegisterTDP();
   }, []);
-  const openColEnv = () => {};
+  const openColEnv = () => {
+    platformEmitter.emit(EPlatformTabs.openNew, 'environment');
+  };
   const openCreateColEnv = () => {};
   const deleteEnv = () => {};
 

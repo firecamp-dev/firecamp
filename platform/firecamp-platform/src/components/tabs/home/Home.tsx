@@ -17,7 +17,7 @@ import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../services/platform-emitter/events';
 
 const Home: FC<any> = () => {
-  const _openTab = (type?: ERequestTypes) => {
+  const _openTab = (type?: ERequestTypes | 'environment') => {
     const allowed_app = [
       ERequestTypes.SocketIO,
       ERequestTypes.WebSocket,

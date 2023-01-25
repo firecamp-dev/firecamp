@@ -30,6 +30,7 @@ const SocketIOClient = lazy(() =>
 import { IRequestTabProps } from './types';
 import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
+import EnvironmentTab from '../common/environment/tabs/Environment';
 
 const TabContainerBodyRequest: FC<any> = ({ tab, index, activeTab }) => {
   if (!tab || index === -1) {
@@ -94,6 +95,7 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index, activeTab }) => {
       case 'md':
         return <MdTab {...tabProps} />;
       default:
+        return <EnvironmentTab {...tabProps} />;
         return <span>Default Request Tab</span>;
     }
   };

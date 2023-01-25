@@ -54,6 +54,7 @@ const TabHeaderContainer: FC = () => {
     return () => {
       emitter.off(EPlatformTabs.opened);
       emitter.off(EPlatformTabs.closed);
+      emitter.off(EPlatformTabs.changeState);
     };
   }, []);
 
