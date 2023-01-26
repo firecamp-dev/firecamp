@@ -1,61 +1,45 @@
 import create from 'zustand';
+import { nanoid } from 'nanoid';
 import { Rest } from '@firecamp/cloud-apis';
-import { TId, IEnv, IEnvironment, EEnvironmentScope } from '@firecamp/types';
-import { useTabStore } from './tab';
+import { TId, IEnv, IEnvironment } from '@firecamp/types';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
 import { CollectionEnvDataProvider } from '../components/common/environment/sidebar/tree/dataProvider';
 import { useWorkspaceStore } from './workspace';
 import platformContext from '../services/platform-context';
 import { RE } from '../types';
-import { nanoid } from 'nanoid';
 
-type TTabId = TId;
 type TColId = TId;
 type TEnvId = TId;
 
 const initialState = {
-  tabColMap: {},
-  colEnvMap: {},
+  activeEnvId: null,
+  activeEnvironment: { name: '', variables: [], __ref: { id: '' } },
   isEnvSidebarOpen: false,
   colEnvTdpInstance: null,
   envs: [],
   environments: [
-    {
-      name: 'Development',
-      variables: [
-        {
-          id: '1',
-          key: 'name',
-          value: 'ramanujan',
-        },
-      ],
-      __ref: {
-        id: '123',
-        createdBy: '1',
-      },
-    },
-    {
-      name: 'Staging',
-      variables: [
-        {
-          id: '1',
-          key: 'name',
-          value: 'shrinivasan',
-        },
-      ],
-      __ref: {
-        id: '456',
-        createdBy: '1',
-      },
-    },
+    // {
+    //   name: 'Development',
+    //   variables: [
+    //     {
+    //       id: '1',
+    //       key: 'name',
+    //       value: 'ramanujan',
+    //     },
+    //   ],
+    //   __ref: {
+    //     id: '123',
+    //     createdBy: '1',
+    //   },
+    // }
   ],
   envTdpInstance: null,
 };
 
 export interface IEnvironmentStore {
+  activeEnvId: TId;
+  activeEnvironment: IEnv;
   isEnvSidebarOpen: boolean;
-  tabColMap: { [tabId: TTabId]: TColId };
-  colEnvMap: { [colId: TColId]: TEnvId };
   isProgressing?: boolean;
   colEnvTdpInstance: any;
   /** @deprecated */
@@ -76,10 +60,8 @@ export interface IEnvironmentStore {
   toggleProgressBar: (flag?: boolean) => void;
 
   getCollectionEnvs: (collectionId: TColId) => any[];
-  getCollectionActiveEnv: (collectionId: TColId) => TEnvId;
-  getActiveTabEnv: () => IEnvironment | null;
 
-  setCurrentTabActiveEnv: (envId?: TEnvId) => void;
+  setActiveEnv: (envId?: TEnvId) => void;
   setEnvVariables: (envId: TEnvId, variables: object) => void;
 
   /** @deprecated */
@@ -102,28 +84,13 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   init: (envs: IEnv[] = []) => {
     set({ environments: envs });
+    const { envTdpInstance } = get();
+    envTdpInstance?.init(envs);
   },
 
   /** @deprecated */
   initialize: (envs: IEnvironment[] = []) => {
-    const cEnvs = envs.filter(
-      (e) => ['C', 'P'].includes(e.__meta.type) && e.__ref.collectionId
-    );
-    const colIds = cEnvs.map((e) => e.__ref.collectionId);
-    const colEnvMap = colIds.reduce((p, n) => {
-      let env = cEnvs.find(
-        (e) => e.__ref.collectionId == n && e.name == 'Development'
-      );
-      // id=f develoment env not found then find te first env for now
-      if (!env) {
-        env = cEnvs.find((e) => e.__ref.collectionId == n);
-      }
-      return {
-        ...p,
-        [n]: env.__ref.id,
-      };
-    }, {});
-    set({ envs, colEnvMap });
+    set({ envs });
   },
 
   registerTDP_: () => {
@@ -173,44 +140,8 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     return;
   },
 
-  setCurrentTabActiveEnv: (envId) => {
-    const tabStore = useTabStore.getState();
-    const tabId = tabStore.getActiveTab();
-    if (!tabId) return;
-    const state = get();
-    const collectionId = state.tabColMap[tabId];
-    if (!collectionId) return;
-    set((s) => {
-      if (!envId) {
-        const env = s.envs.find(
-          (e) => e.__ref.collectionId == collectionId && e.name == 'Development'
-        );
-        if (env) envId = env.__ref.id;
-      }
-      if (!envId) return s;
-      return {
-        colEnvMap: {
-          ...s.colEnvMap,
-          [collectionId]: envId,
-        },
-      };
-    });
-  },
-
-  getCollectionActiveEnv: (collectionId) => {
-    return get().colEnvMap[collectionId];
-  },
-
-  getActiveTabEnv: () => {
-    const tabStore = useTabStore.getState();
-    const tabId = tabStore.getActiveTab();
-    if (!tabId) return null;
-    const state = get();
-    const collectionId = state.tabColMap[tabId];
-    if (!collectionId) return null;
-    const envId = state.getCollectionActiveEnv(collectionId);
-    if (!envId) return null;
-    return state.envs.find((e) => e.__ref.id == envId);
+  setActiveEnv: (envId) => {
+    set({ activeEnvId: envId });
   },
 
   getCollectionEnvs: (collectionId) => {
@@ -236,10 +167,10 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   createEnvironmentPrompt: () => {
-    const { createEnvironment } = get();
     if (!platformContext.app.user.isLoggedIn()) {
       return platformContext.app.modals.openSignIn();
     }
+    const { createEnvironment } = get();
     platformContext.window
       .promptInput({
         header: 'Create New Environment',
@@ -284,13 +215,12 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   createEnvironment: async (env: IEnv) => {
     const state = get();
-    state._addEnv(env);
-    return 
     state.toggleProgressBar(true);
     const res = await Rest.environment
-      ._create(env)
+      .create(env)
       .then((r) => {
-        return r;
+        state._addEnv(r.data);
+        return env;
       })
       .finally(() => {
         state.toggleProgressBar(false);
@@ -329,9 +259,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
         set((s) => {
           const env = s.envs.find((e) => e.__ref.id == envId);
           if (env) {
-            if (env.__meta.type == EEnvironmentScope.Collection) {
-              s.colEnvTdpInstance?.removeEnvItem(envId);
-            }
+            s.colEnvTdpInstance?.removeEnvItem(envId);
           }
           const envs = s.envs.filter((e) => e.__ref.id != envId);
           return { envs };

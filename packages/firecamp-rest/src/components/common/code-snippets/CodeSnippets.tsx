@@ -17,10 +17,10 @@ const CodeSnippets = ({ tabId = '' }) => {
     useStoreApi().getState() as IStore;
   if (!context) return <></>;
   let envVariables = {};
-  const { env } = context.environment.getCurrentTabEnv(tabId);
-  if (env) {
-    envVariables = { ...(env.variable || {}) };
-  }
+  // const { env } = context.environment.getCurrentTabEnv(tabId);
+  // if (env) {
+  //   envVariables = { ...(env.variable || {}) };
+  // }
   const { isCodeSnippetOpen } = useStore(
     (s: IStore) => ({
       isCodeSnippetOpen: s.ui.isCodeSnippetOpen,

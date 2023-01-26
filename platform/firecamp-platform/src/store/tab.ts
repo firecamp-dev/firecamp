@@ -231,12 +231,6 @@ const useTabStore = create<ITabStore>((set, get) => {
           orders: _orders,
         });
 
-        /** -- set tabId and collectionId in tabColMap -- */
-        platformContext.environment.setTabCollection(
-          tId,
-          request.__ref.collectionId
-        );
-
         return [tab, _orders];
       },
 

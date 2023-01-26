@@ -76,12 +76,8 @@ const UrlBarContainer = ({ tab, collectionId = '' }) => {
     try {
       // do not execute if url is empty
       if (!url.raw) return;
-      const envVariables = { merged: {}, collection: {}, workspace: {} };
-      const { env: tabEnv } = context.environment.getCurrentTabEnv(tab.id);
-      if (tabEnv) {
-        envVariables.collection = { ...(tabEnv.variables || {}) };
-      }
-      const agent: EFirecampAgent = context.getFirecampAgent();
+  
+      // const agent: EFirecampAgent = context.getFirecampAgent();
       execute(_cloneDeep(envVariables), agent, _onChangeVariables);
     } catch (error) {
       console.error({ API: 'rest._onExecute' });

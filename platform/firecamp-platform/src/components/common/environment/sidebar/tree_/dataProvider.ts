@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 import { Disposable, TreeItem, TreeItemIndex } from '@firecamp/ui-kit/src/tree';
-import { IEnvironment } from '@firecamp/types';
+import { IEnv, TId } from '@firecamp/types';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',
@@ -40,7 +40,7 @@ export class EnvironmentDataProvider {
   }
 
   public async onRenameItem(
-    item: TreeItem<IEnvironment>,
+    item: TreeItem<Partial<IEnv>>,
     name: string
   ): Promise<void> {
     this.items = {
@@ -59,7 +59,7 @@ export class EnvironmentDataProvider {
   }
 
   // extra methods of provider
-  init(envs: IEnvironment[] = []) {
+  init(envs: Partial<IEnv[]> = []) {
     this.rootChildren = envs.map((c) => c.__ref.id);
     this.items = {
       root: {
@@ -83,7 +83,7 @@ export class EnvironmentDataProvider {
     });
   }
 
-  public addEnvItem(env: any) {
+  public addEnvItem(env: Partial<IEnv>) {
     const envId = env.__ref.id;
     this.items = {
       ...this.items,
@@ -94,10 +94,15 @@ export class EnvironmentDataProvider {
         data: { ...env },
       },
     };
+    this.rootChildren = [...this.rootChildren, envId];
+    this.items['root'].children = this.rootChildren;
     this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
+    console.log('12345', env);
   }
 
-  public removeEnvItem(envId: string) {
+  public removeEnvItem(envId: TId) {
+    this.rootChildren = this.rootChildren.filter(id=> id != envId)
+    this.items['root'].children = this.rootChildren;
     delete this.items[envId];
     this.items = { ...this.items };
     this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);

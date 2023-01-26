@@ -1,8 +1,8 @@
 const Helper = {
   generate: {
     environmentsDD: (environments = [], activeEnv = '') => {
-      let options = [],
-        selected;
+      const options = [{ id: null, name: 'No Environment' }];
+      let selected = { ...options[0] };
 
       if (environments?.length) {
         for (let value of environments) {

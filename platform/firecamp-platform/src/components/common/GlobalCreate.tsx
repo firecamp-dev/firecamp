@@ -50,20 +50,6 @@ const GlobalCreateDD = ({}) => {
       case EMenuOptions.Environment:
         const { createEnvironmentPrompt } = useEnvStore.getState();
         createEnvironmentPrompt();
-        return;
-        // const { tabId, collectionId } =
-        //   platformContext.environment.getCurrentTabEnv();
-        // if (!collectionId) {
-        //   const msg =
-        //     tabId == 'home'
-        //       ? 'Please open a saved request from the collection to create an environment of that collecction'
-        //       : 'The current tab request is not saved, please save it in the collection';
-        //   platformContext.app.notify.info(msg);
-        //   return;
-        // }
-        // platformContext.app.modals.openCreateEnvironment({
-        //   collectionId,
-        // });
         break;
       case EMenuOptions.ImportCollection:
         break;
