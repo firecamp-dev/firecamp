@@ -85,6 +85,7 @@ export { default as PrimitiveTable } from './components/table/primitive/Table';
 export { default as BasicTable } from './components/table/basic-table/BasicTable';
 export { default as MultipartTable } from './components/table/multipart-table/MultipartTable';
 export { default as LogTable } from './components/table/log-table/LogTable';
+export { default as EnvironmentTable } from './components/table/environment-table/EnvironmentTable';
 export type { ITable, TTableApi } from './components/table/primitive/Table';
 
 // Url

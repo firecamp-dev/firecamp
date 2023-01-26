@@ -15,7 +15,6 @@ export interface IRowCellMeta {
 
   key: string;
   value?: string;
-  file?: any;
 
   /**
    * Whether row is disable or not.

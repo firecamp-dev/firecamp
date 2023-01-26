@@ -1,15 +1,13 @@
-import { FC, useState, useMemo } from 'react';
-import classnames from 'classnames';
+import { FC, useState, useMemo, useEffect, memo } from 'react';
+import isEqual from 'react-fast-compare';
+import cx from 'classnames';
 import shallow from 'zustand/shallow';
 import { Dropdown, Button } from '@firecamp/ui-kit';
 import { TId } from '@firecamp/types';
 import Helper from './Helper';
 import { useEnvStore } from '../../../../store/environment';
 
-const EnvironmentDD: FC<IEnvironmentDD> = ({
-  onChange = () => {},
-  showFooter = true,
-}) => {
+const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
   const { environments, activeEnvId } = useEnvStore(
     (s) => ({
       environments: s.environments,
@@ -17,6 +15,9 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     }),
     shallow
   );
+  useEffect(() => {
+    console.log('rendering the first time');
+  }, []);
   const [isOpen, toggleOpen] = useState(false);
   const menu = useMemo(
     () => Helper.generate.environmentsDD(environments, activeEnvId),
@@ -52,7 +53,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
       <Dropdown.Handler>
         <Button
           text={title}
-          className={classnames(
+          className={cx(
             // { '!text-primaryColor': true }
             { '!text-info': true }
           )}
@@ -72,16 +73,8 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({
     </Dropdown>
   );
 };
-export default EnvironmentDD;
+export default memo(EnvironmentDD, (n, p) => !isEqual(n, p));
 
 interface IEnvironmentDD {
-  /** update action and payload */
-  //TODO: add and import interface from zustand store
-  onChange: (envId: string) => void;
-
-  /**
-   * whether want to show footer or not.
-   * footer contains menu to open environment modal
-   */
-  showFooter?: boolean;
+  onChange: (envId: TId) => void;
 }
