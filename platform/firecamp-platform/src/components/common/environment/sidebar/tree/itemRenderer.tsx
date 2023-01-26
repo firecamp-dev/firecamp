@@ -195,7 +195,7 @@ export default {
                 console.log(1234)
               }}/> */}
 
-            <Button
+            {/* <Button
               text={
                 item.data.__ref?.isCollection || item.data.__ref?.isWorkspace
                   ? 'Add Env'
@@ -217,7 +217,7 @@ export default {
               secondary
               ghost
               sm
-            />
+            /> */}
 
             {item.data.__ref.isEnvironment ? (
               <VscTrash

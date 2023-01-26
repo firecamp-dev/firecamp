@@ -1,25 +1,17 @@
 import create from 'zustand';
 import { Rest } from '@firecamp/cloud-apis';
-import {
-  TId,
-  IEnvironment,
-  EEnvironmentScope,
-  IKeyValueTable,
-} from '@firecamp/types';
+import { TId, IEnv, IEnvironment, EEnvironmentScope } from '@firecamp/types';
 import { useTabStore } from './tab';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
 import { CollectionEnvDataProvider } from '../components/common/environment/sidebar/tree/dataProvider';
 import { useWorkspaceStore } from './workspace';
+import platformContext from '../services/platform-context';
+import { RE } from '../types';
+import { nanoid } from 'nanoid';
 
 type TTabId = TId;
 type TColId = TId;
 type TEnvId = TId;
-
-interface IEnvironment_ {
-  name: string;
-  variables: IKeyValueTable[];
-  __ref: { id: TEnvId; createdBy: string };
-}
 
 const initialState = {
   tabColMap: {},
@@ -60,21 +52,15 @@ const initialState = {
   envTdpInstance: null,
 };
 
-type TCreateEnvPayload = {
-  name: string;
-  variables: { [k: string]: string };
-  __meta: { type: string; visibility?: number };
-  __ref: { workspaceId: string; collectionId?: string };
-};
-
 export interface IEnvironmentStore {
   isEnvSidebarOpen: boolean;
   tabColMap: { [tabId: TTabId]: TColId };
   colEnvMap: { [colId: TColId]: TEnvId };
   isProgressing?: boolean;
   colEnvTdpInstance: any;
+  /** @deprecated */
   envs: IEnvironment[];
-  environments: IEnvironment_[];
+  environments: IEnv[];
   envTdpInstance: any;
 
   registerTDP_: () => void;
@@ -83,6 +69,8 @@ export interface IEnvironmentStore {
   registerTDP: () => void;
   unRegisterTDP: () => void;
 
+  init: (envs: IEnv[]) => void;
+  /** @deprecated */
   initialize: (envs: IEnvironment[]) => void;
   toggleEnvSidebar: () => void;
   toggleProgressBar: (flag?: boolean) => void;
@@ -94,10 +82,16 @@ export interface IEnvironmentStore {
   setCurrentTabActiveEnv: (envId?: TEnvId) => void;
   setEnvVariables: (envId: TEnvId, variables: object) => void;
 
-  fetchEnvironment: (envId: TEnvId) => Promise<any>;
-  createEnvironment: (payload: TCreateEnvPayload) => Promise<any>;
+  /** @deprecated */
+  fetchColEnvironment: (envId: TEnvId) => Promise<any>;
+  createEnvironmentPrompt: () => void;
+  createEnvironment: (env: IEnv) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
   deleteEnvironment: (envId: TId) => Promise<any>;
+
+  _addEnv: (env: IEnv) => void;
+  _updateEnv: (env: IEnv) => void;
+  _deleteEnv: (envId: TId) => void;
 
   // common
   dispose: () => void;
@@ -105,6 +99,12 @@ export interface IEnvironmentStore {
 
 export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   ...initialState,
+
+  init: (envs: IEnv[] = []) => {
+    set({ environments: envs });
+  },
+
+  /** @deprecated */
   initialize: (envs: IEnvironment[] = []) => {
     const cEnvs = envs.filter(
       (e) => ['C', 'P'].includes(e.__meta.type) && e.__ref.collectionId
@@ -218,7 +218,8 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   // Environment
-  fetchEnvironment: async (envId: string) => {
+  /** @deprecated */
+  fetchColEnvironment: async (envId: string) => {
     const state = get();
     state.toggleProgressBar(true);
     const res = await Rest.environment
@@ -234,18 +235,61 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     return res;
   },
 
-  createEnvironment: async (_collection: TCreateEnvPayload) => {
+  createEnvironmentPrompt: () => {
+    const { createEnvironment } = get();
+    if (!platformContext.app.user.isLoggedIn()) {
+      return platformContext.app.modals.openSignIn();
+    }
+    platformContext.window
+      .promptInput({
+        header: 'Create New Environment',
+        lable: 'Environment Name',
+        placeholder: 'type environment name',
+        texts: { btnOking: 'Creating...' },
+        value: '',
+        validator: (val) => {
+          if (!val || val.length < 3) {
+            return {
+              isValid: false,
+              message: 'The environment name must have minimum 3 characters.',
+            };
+          }
+          const isValid = RE.NoSpecialCharacters.test(val);
+          return {
+            isValid,
+            message:
+              !isValid &&
+              'The environment name must not contain any special characters.',
+          };
+        },
+        executor: (name) => {
+          const { workspace } = useWorkspaceStore.getState();
+          return createEnvironment({
+            name,
+            description: '',
+            variables: [],
+            __ref: { id: nanoid(), workspaceId: workspace.__ref.id },
+          });
+        },
+        onError: (e) => {
+          platformContext.app.notify.alert(
+            e?.response?.data?.message || e.message
+          );
+        },
+      })
+      .then((res) => {
+        console.log(res, 1111);
+      });
+  },
+
+  createEnvironment: async (env: IEnv) => {
     const state = get();
+    state._addEnv(env);
+    return 
     state.toggleProgressBar(true);
     const res = await Rest.environment
-      ._create(_collection)
+      ._create(env)
       .then((r) => {
-        set((s) => {
-          if (r.data.__meta.type == EEnvironmentScope.Collection) {
-            s.colEnvTdpInstance?.addEnvItem(r.data);
-          }
-          return { envs: [...s.envs, r.data] };
-        });
         return r;
       })
       .finally(() => {
@@ -297,6 +341,36 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       .finally(() => {
         get().toggleProgressBar(false);
       });
+  },
+
+  _addEnv: (env) => {
+    set((s) => {
+      s.envTdpInstance?.addEnvItem(env);
+      return { environments: [...s.environments, env] };
+    });
+  },
+  _updateEnv: (env) => {
+    const { environments } = get();
+    const envs = environments.map((e) => {
+      if (e.__ref.id == env.__ref.id) {
+        return { ...e, ...env };
+      }
+      return e;
+    });
+    set((s) => {
+      s.envTdpInstance?.updateEnvItem(env);
+      return { environments: [...envs] };
+    });
+  },
+  _deleteEnv: (envId) => {
+    const { environments } = get();
+    const envs = environments.filter((e) => {
+      return e.__ref.id != envId;
+    });
+    set((s) => {
+      // s.envTdpInstance?.removeEnvItem(env);
+      return { environments: [...envs] };
+    });
   },
 
   // dispose whole store and reset to initial state

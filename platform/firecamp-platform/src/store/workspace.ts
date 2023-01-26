@@ -186,7 +186,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             });
 
             //TODO: set env from here atm, but improve this logic in future to fetch directly in Env store
-            useEnvStore.getState().initialize(environments);
+            const envStore = useEnvStore.getState();
+            envStore.initialize(environments);
+            envStore.init([]);
           }
         })
         .catch((e) => {
