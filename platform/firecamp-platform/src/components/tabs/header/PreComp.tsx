@@ -8,14 +8,15 @@ import {
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { FC } from 'react';
 
-const PreComp: FC<{ entity: { type: string; info: any } }> = ({ entity }) => {
-  const { type, info } = entity;
-
-  switch (type) {
+const PreComp: FC<{ entity: any; entityType: string }> = ({
+  entity,
+  entityType,
+}) => {
+  switch (entityType) {
     case 'request':
-      switch (info.type) {
+      switch (entity.__meta.type) {
         case ERequestTypes.Rest:
-          const method = info?.method || EHttpMethod.GET;
+          const method = entity?.method || EHttpMethod.GET;
           return (
             <div className={classNames(`${method} text-xs font-bold tab-icon`)}>
               {method}

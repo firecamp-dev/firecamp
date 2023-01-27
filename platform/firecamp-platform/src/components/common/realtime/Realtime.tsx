@@ -128,7 +128,7 @@ const RealtimeEventManager: FC<any> = () => {
         emitter.emit(EPlatformTabs.Opened, [
           {
             ...tab,
-            preComp: <PreComp entity={entity} />,
+            preComp: <PreComp entityType={__meta.type} entity={entity} />,
             dotIndicator: tab.__meta?.hasChange === true,
           },
           orders,
