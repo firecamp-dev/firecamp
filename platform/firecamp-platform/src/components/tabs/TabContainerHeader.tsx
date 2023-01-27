@@ -16,54 +16,56 @@ import platformContext from '../../services/platform-context';
 
 const TabHeaderContainer = () => {
   const tabApi = useRef({});
-  const { activeTab, getTab } = useTabStore(
+  const { activeTab, orders } = useTabStore(
     (s: ITabStore) => ({
       activeTab: s.activeTab,
-      getTab: s.getTab,
+      orders: s.orders,
     }),
     shallow
   );
   const {
     list: tabs,
-    orders,
+    // orders,
     changeActiveTab,
     changeOrders,
+    getTab,
   } = useTabStore.getState() as ITabStore;
+  console.log(orders, tabs, activeTab, 'orders.... ');
 
   useEffect(() => {
     // console.log(tabApi, 'tabApi..');
-    emitter.on(EPlatformTabs.opened, ([tab, orders]) => {
+    emitter.on(EPlatformTabs.Opened, ([tab, orders]) => {
       tabApi.current.add(tab);
     });
-    emitter.on(EPlatformTabs.closed, (tabId_s: TId | TId[]) => {
+    emitter.on(EPlatformTabs.Closed, (tabId_s: TId | TId[]) => {
       tabApi.current.close(tabId_s);
     });
     emitter.on(
-      EPlatformTabs.changeState,
+      EPlatformTabs.ChangeState,
       ([tabId, state]: [string, 'modified' | 'default']) => {
         tabApi.current.changeState(tabId, state);
       }
     );
     emitter.on(
-      EPlatformTabs.changeState,
+      EPlatformTabs.ChangeState,
       ([tabId, state]: [string, 'modified' | 'default']) => {
         tabApi.current.changeState(tabId, state);
       }
     );
     return () => {
-      emitter.off(EPlatformTabs.opened);
-      emitter.off(EPlatformTabs.closed);
-      emitter.off(EPlatformTabs.changeState);
+      emitter.off(EPlatformTabs.Opened);
+      emitter.off(EPlatformTabs.Closed);
+      emitter.off(EPlatformTabs.ChangeState);
     };
   }, []);
 
   const openNewTab = () => {
-    emitter.emit(EPlatformTabs.openNew);
+    emitter.emit(EPlatformTabs.Open);
   };
 
   const closeTab = (tabId) => {
     const tab = getTab(tabId);
-    if (!tab.__meta.hasChange) emitter.emit(EPlatformTabs.close, tabId);
+    if (!tab.__meta.hasChange) emitter.emit(EPlatformTabs.Close, tabId);
     else {
       platformContext.window.confirm({
         title:
@@ -74,7 +76,7 @@ const TabHeaderContainer = () => {
           btnConfirm: 'Ignore Changes & Close Request',
         },
         onConfirm: () => {
-          emitter.emit(EPlatformTabs.close, tabId);
+          emitter.emit(EPlatformTabs.Close, tabId);
         },
         onCancel: () => {},
         onClose: () => {},
@@ -91,25 +93,15 @@ const TabHeaderContainer = () => {
       <Row>
         <Column flex={1} overflow="auto" className="-mb-96 pb-96">
           <div className="flex z-30 relative">
-            <div
-              tabIndex={1}
-              className={classnames(
-                {
-                  'active text-tabForeground bg-tabActiveBackground !border-b-transparent':
-                    activeTab === 'home',
-                },
-                'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
-              )}
+            <HomeTabIcon
+              isActive={activeTab === 'home'}
               onClick={() => changeActiveTab('home')}
-            >
-              <VscHome size={20} />
-            </div>
+            />
             <Tabs
               list={tabs}
               orders={orders}
               activeTab={activeTab}
               ref={tabApi}
-              onSelect={changeActiveTab}
               withDivider={true}
               height={36}
               tabsVersion={2}
@@ -136,6 +128,7 @@ const TabHeaderContainer = () => {
               }
               reOrderable={true}
               onReorder={changeOrders}
+              onSelect={changeActiveTab}
             />
           </div>
         </Column>
@@ -149,3 +142,21 @@ const TabHeaderContainer = () => {
 };
 
 export default memo(TabHeaderContainer);
+
+const HomeTabIcon = ({ isActive, onClick }) => {
+  return (
+    <div
+      tabIndex={1}
+      className={classnames(
+        {
+          'active text-tabForeground bg-tabActiveBackground !border-b-transparent':
+            isActive,
+        },
+        'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
+      )}
+      onClick={onClick}
+    >
+      <VscHome size={20} />
+    </div>
+  );
+};

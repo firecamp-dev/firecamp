@@ -48,17 +48,15 @@ const Rest = ({ tab, platformContext }) => {
 
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
+    const reqeustId = tab.entity?.__ref?.id;
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.request.__ref?.id) {
-      platformContext.request.subscribeChanges(
-        tab.request.__ref.id,
-        handlePull
-      );
+    if (tab.__meta.isSaved && tab?.entity.__ref?.id) {
+      platformContext.request.subscribeChanges(reqeustId, handlePull);
     }
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && tab?.request?.__ref.id) {
-        platformContext.request.unsubscribeChanges(tab.request.__ref.id);
+      if (tab.__meta.isSaved && reqeustId) {
+        platformContext.request.unsubscribeChanges(reqeustId);
       }
     };
   }, []);
@@ -66,22 +64,18 @@ const Rest = ({ tab, platformContext }) => {
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
-        const isRequestSaved = !!tab?.request?.__ref?.id || false;
+        const reqeustId = tab.entity?.__ref?.id;
+        const isRequestSaved = !!reqeustId;
         // prepare a minimal request payload
         let _request: IRest = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            const request = await platformContext.request.fetch(
-              tab.request.__ref.id
-            );
+            const request = await platformContext.request.fetch(reqeustId);
             _request = { ...request };
           } catch (error) {
-            console.error({
-              API: 'fetch rest request',
-              error,
-            });
+            console.error(error, 'fetch rest request');
             throw error;
           }
         }
@@ -105,28 +99,33 @@ const Rest = ({ tab, platformContext }) => {
 
   if (isFetchingRequest === true) return <Loader />;
   return (
-    <>
-      <Container className="h-full with-divider" overflow="visible">
-        <UrlBarContainer
-          tab={tab}
-          collectionId={tab?.request?.__ref?.collectionId || ''}
-        />
-        <Container.Body>
-          <Row flex={1} className="with-divider h-full" overflow="auto">
-            <Request tab={tab} />
-            <Response />
-          </Row>
-          {/* <CodeSnippets tabId={tab.id} getPlatformEnvironments={() => {}} /> */}
-        </Container.Body>
-      </Container>
-    </>
+    <Container className="h-full with-divider" overflow="visible">
+      <UrlBarContainer tabId={tab.id} />
+      <Container.Body>
+        <Row flex={1} className="with-divider h-full" overflow="auto">
+          <Request tabId={tab.id} />
+          <Response />
+        </Row>
+        {/* <CodeSnippets tabId={tab.id} getPlatformEnvironments={() => {}} /> */}
+      </Container.Body>
+    </Container>
   );
 };
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {}, id } = tab;
-    const initState = initialiseStoreFromRequest(request, id);
+    const {
+      id: tabId,
+      entity,
+      // __meta: { entityid }
+    } = tab;
+    const request = {
+      url: entity.url,
+      method: entity.method,
+      __meta: entity.__meta,
+      __ref: entity.__ref,
+    };
+    const initState = initialiseStoreFromRequest(request, tabId);
     // console.log(initState);
     return (
       <StoreProvider createStore={() => createStore(initState)}>

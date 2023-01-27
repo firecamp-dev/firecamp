@@ -61,10 +61,12 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
     };
   }, [tab]);
 
-  const _renderRequestTab = (tab: IEntityTab) => {
-    switch (tab.entity?.type) {
+  const _renderRequestTab = (tab: IEntityTab<any>) => {
+    // console.log(tab.entity.__meta?.type, 'tab.entity.type');
+    switch (tab.__meta.entityType) {
       case 'request':
-        switch (tab.entity.info?.type) {
+        const type = tab.entity?.__meta?.type;
+        switch (type) {
           case ERequestTypes.Rest:
             return (
               <Suspense fallback={<Loader />}>
@@ -97,7 +99,7 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
             return <span>Default Request Tab</span>;
         }
         break;
-      case 'environemnt':
+      case 'environment':
         return <EnvironmentTab {...tabProps} />;
       default:
         return <>No Entity Tab Found</>;

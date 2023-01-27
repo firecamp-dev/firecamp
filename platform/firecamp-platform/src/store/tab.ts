@@ -27,9 +27,10 @@ interface ITabStore {
   changeActiveTab: (tabId: string) => void;
   changeRootKeys: (tabId: TId, updatedTab: Partial<IEntityTab>) => void;
   changeOrders: (orders: TId[]) => void;
-  open: {
-    entity: (entity: any) => [tab: IEntityTab, orders: TId[]];
-  };
+  open: (
+    entity: any,
+    entityMeta: { id: TId; type: 'request' | 'environment' }
+  ) => [tab: IEntityTab, orders: TId[]];
   close: {
     all: () => void;
     active: (tabId?: string) => void;
@@ -149,59 +150,56 @@ const useTabStore = create<ITabStore>((set, get) => {
       }));
     },
 
-    open: {
-      entity: ({ id, type, info }) => {
-        if (!type) return [null, null];
-        const { list, orders, activeTab, changeActiveTab, open } = get();
-        // if (!type) {
-        //   if (orders.length === 0) type = 'request';
-        //   else {
-        //     const tab =
-        //       activeTab === 'home'
-        //         ? list[orders[orders.length - 1]]
-        //         : list[activeTab];
-        //     type = tab?.entity.type;
-        //   }
-        // }
+    open: (entity, entityMeta) => {
+      debugger;
+      if (!entityMeta?.type) return [null, null];
+      const { list, orders, activeTab, changeActiveTab, open } = get();
+      // if (!type) {
+      //   if (orders.length === 0) type = 'request';
+      //   else {
+      //     const tab =
+      //       activeTab === 'home'
+      //         ? list[orders[orders.length - 1]]
+      //         : list[activeTab];
+      //     type = tab?.entity.type;
+      //   }
+      // }
 
-        const entity = {
-          id,
-          type,
-          info,
-        };
-
+      if (entityMeta?.id) {
         const tabAlreadyExists = Object.values(list).find(
-          (l) => l?.entity?.id == id
+          (l) => l?.__meta?.entityId == entityMeta.id
         );
-        // console.log(tabAlreadyExists);
         if (tabAlreadyExists) {
           changeActiveTab(tabAlreadyExists.id);
           return [null, null];
         }
+      }
 
-        const tabId = nanoid();
-        const tab: IEntityTab = {
-          id: tabId,
-          name: entity.info?.name || `untitled ${entity.type}`,
-          entity,
-          __meta: {
-            isSaved: !!entity.id,
-            hasChange: false,
-            isFresh: true,
-            isDeleted: false,
-            isHistoryTab: false,
-            revision: 1,
-          },
-        };
+      const tabId = nanoid();
+      const tab: IEntityTab<typeof entity> = {
+        id: tabId,
+        name:
+          entity.name || entity.__meta?.name || `untitled ${entityMeta.type}`,
+        entity,
+        __meta: {
+          entityId: entityMeta.id,
+          entityType: entityMeta.type,
+          isSaved: !!entity.id,
+          hasChange: false,
+          isFresh: true,
+          isDeleted: false,
+          isHistoryTab: false,
+          revision: 1,
+        },
+      };
 
-        const _orders = [...orders, tabId];
-        set({
-          list: { ...list, [tabId]: tab },
-          activeTab: tabId,
-          orders: _orders,
-        });
-        return [tab, _orders];
-      },
+      const _orders = [...orders, tabId];
+      set({
+        list: { ...list, [tabId]: tab },
+        activeTab: tabId,
+        orders: _orders,
+      });
+      return [tab, _orders];
     },
 
     close: {

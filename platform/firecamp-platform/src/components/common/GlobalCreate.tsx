@@ -41,7 +41,10 @@ const GlobalCreateDD = ({}) => {
   const onSelect = (option) => {
     switch (option.id) {
       case EMenuOptions.Request:
-        platformEmitter.emit(EPlatformTabs.openNew, 'rest');
+        platformEmitter.emit(EPlatformTabs.Open, [
+          {},
+          { entityId: '', entityType: 'request' },
+        ]);
         break;
       case EMenuOptions.Collection:
         const { createCollectionPrompt } = useWorkspaceStore.getState();

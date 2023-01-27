@@ -29,27 +29,25 @@ export interface IRequestTab extends ITab {
   };
 }
 
-export interface IEntityTab extends ITab {
-  entity: {
-    id: TId;
-    type: 'request' | 'environemnt';
-    /**
-     * minimal info or the intity, it'll help tab and newly opened request to show the minimal information on load
-     * for request
-     *  {
-     *     url?: IUrl;
-     *     method?: EHttpMethod;
-     *     __meta?: IMeta;
-     * }
-     */
-    info: any;
-  };
+export interface IEntityTab<E = any> extends ITab {
+  /**
+   * minimal info or the intity, it'll help tab and newly opened request to show the minimal information on load
+   * for request
+   *  {
+   *     url?: IUrl;
+   *     method?: EHttpMethod;
+   *     __meta?: IMeta;
+   * }
+   */
+  entity: Partial<E>;
   /** request meta */
   __meta?: IRequestTabMeta;
 }
 
 /** Tab meta */
 export interface IRequestTabMeta {
+  entityId: TId;
+  entityType: 'request' | 'environment';
   /**
    * Whether request tab is saved or not
    */

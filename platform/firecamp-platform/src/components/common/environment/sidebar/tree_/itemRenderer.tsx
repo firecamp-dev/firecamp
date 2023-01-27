@@ -169,7 +169,7 @@ export default {
                 // e.stopPropagation();
                 console.log(context);
                 context.focusItem();
-                openEnv(item.data.__ref?.workspaceId, item.data.__ref.id);
+                openEnv(item.data);
               }}
               transparent
               secondary

@@ -25,7 +25,7 @@ import ConfigTab from './tabs/ConfigTab';
 import { IStore, useStore } from '../../store';
 import { ERequestPanelTabs } from '../../types';
 
-const Request = ({ tab }) => {
+const Request = ({ tabId }) => {
   useHotkeys(`cmd+h`, (k, e) => console.log('This is the cmd+h', k, e));
   const {
     preScripts,
@@ -101,7 +101,7 @@ const Request = ({ tab }) => {
         console.log(preScripts, 'scripts in request');
         return (
           <ScriptTab
-            id={`preRequest-${tab?.id}`}
+            id={`preRequest-${tabId}`}
             script={preScripts[0].value.join('\n')}
             snippets={preScriptSnippets}
             onChangeScript={(val) => changeScripts('preScripts', val)}
@@ -111,7 +111,7 @@ const Request = ({ tab }) => {
         console.log(postScripts, 'scripts in request');
         return (
           <ScriptTab
-            id={`test-${tab?.id}`}
+            id={`test-${tabId}`}
             script={postScripts[0].value.join('\n')}
             snippets={postScriptSnippets}
             onChangeScript={(val) => changeScripts('postScripts', val)}
@@ -150,7 +150,6 @@ const Request = ({ tab }) => {
             list={tabs}
             activeTab={activeTab}
             onSelect={(tab: string) => {
-              // console.log(tab, 'tab...');
               changeUiActiveTab(tab);
             }}
             /* tabsClassName={
@@ -164,11 +163,11 @@ const Request = ({ tab }) => {
                 icon={<VscCode className="mr-2" size={12} />}
                 // TODO: Add class for tabs-with-bottom-border-right-section
                 onClick={_toggleCodeSnippet}
-                secondary
                 text="Code"
-                transparent={true}
-                ghost={true}
+                transparent
+                secondary
                 iconLeft
+                ghost
                 sm
               />
             )}

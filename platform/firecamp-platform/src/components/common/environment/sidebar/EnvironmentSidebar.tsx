@@ -70,8 +70,11 @@ const EnvironmentCollection = () => {
     registerTDP();
     return () => unRegisterTDP();
   }, []);
-  const openColEnv = () => {
-    platformEmitter.emit(EPlatformTabs.openNew, 'environment');
+  const openEnv = (env) => {
+    platformEmitter.emit(EPlatformTabs.Open, {
+      entity: { ...env },
+      __meta: { id: env.__ref.id, type: 'environment' },
+    });
   };
   const openCreateColEnv = () => {};
   const deleteEnv = () => {};
@@ -107,7 +110,7 @@ const EnvironmentCollection = () => {
             renderItem={(props) =>
               treeRenderer_.renderItem({
                 ...props,
-                openEnv: openColEnv,
+                openEnv: openEnv,
                 openCreateEnv: openCreateColEnv,
                 deleteEnv,
               })
