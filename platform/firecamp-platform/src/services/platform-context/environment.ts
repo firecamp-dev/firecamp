@@ -1,4 +1,4 @@
-import { EEditorLanguage, TId } from '@firecamp/types';
+import { EEditorLanguage, IEnv, TId } from '@firecamp/types';
 import _cloneDeep from 'lodash/cloneDeep';
 import {
   SetCompletionProvider,
@@ -6,8 +6,11 @@ import {
 } from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
 import { _object } from '@firecamp/utils';
 import { IEnvironmentStore, useEnvStore } from '../../store/environment';
+import { Rest } from '@firecamp/cloud-apis';
 
 export interface IPlatformEnvironmentService {
+  // fetch environment
+  fetch: (id: TId) => Promise<IEnv>;
 
   // set variables to monaco provider
   setVariablesToProvider: (variables: { [key: string]: any }) => void;
@@ -23,6 +26,9 @@ export interface IPlatformVariables {
 }
 
 const environment: IPlatformEnvironmentService = {
+  fetch: async (id: TId) => {
+    return await Rest.environment.fetch(id).then((res) => res.data);
+  },
 
   // set variables to editor provider
   setVariablesToProvider: (variables: { [key: string]: any }) => {

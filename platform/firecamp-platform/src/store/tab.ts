@@ -151,7 +151,6 @@ const useTabStore = create<ITabStore>((set, get) => {
     },
 
     open: (entity, entityMeta) => {
-      debugger;
       if (!entityMeta?.type) return [null, null];
       const { list, orders, activeTab, changeActiveTab, open } = get();
       // if (!type) {

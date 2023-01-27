@@ -130,8 +130,8 @@ const EnvironmentTable = ({
         columns={_columns}
         renderColumn={(c) => c.name}
         defaultRow={{
-          variable: 'variable name',
-          type: 'variable type',
+          variable: '',
+          // type: '',
           initialValue: '',
           currentValue: '',
         }}
