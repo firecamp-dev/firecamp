@@ -1,11 +1,9 @@
-import { ReactNode } from 'react';
 import {
   EFirecampAgent,
   EHttpMethod,
   IMeta,
   IUrl,
   IRef,
-  TId,
 } from '@firecamp/types';
 import { ITab } from '@firecamp/ui-kit';
 import {
@@ -70,14 +68,9 @@ export interface IRequestTabMeta {
  */
 
 export interface IRequestTabProps {
-  index: number;
   tab: IRequestTab;
-  activeTab?: TId;
 
   //v3 props
-  envVariables?: {
-    collectionEnvVariables: object;
-  };
   platformContext: {
     request: IPlatformRequestService;
     environment: IPlatformEnvironmentService;

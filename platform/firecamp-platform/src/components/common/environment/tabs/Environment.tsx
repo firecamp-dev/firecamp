@@ -1,15 +1,15 @@
 import { memo } from 'react';
 import isEqual from 'react-fast-compare';
+import _cloneDeep from 'lodash/cloneDeep';
+import _cleanDeep from 'clean-deep';
 import {
-  Container,
-  Row,
   RootContainer,
+  Container,
   Column,
+  Row,
   EnvironmentTable,
 } from '@firecamp/ui-kit';
 import { _array, _object } from '@firecamp/utils';
-import _cloneDeep from 'lodash/cloneDeep';
-import _cleanDeep from 'clean-deep';
 
 const EnvironmentTab = ({ tab, platformContext, activeTab }) => {
   // if(isFetchingRequest === true) return <Loader />;

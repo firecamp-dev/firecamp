@@ -32,12 +32,11 @@ import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 import EnvironmentTab from '../common/environment/tabs/Environment';
 
-const TabContainerBodyRequest: FC<any> = ({ tab, index, activeTab }) => {
+const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
   if (!tab || index === -1) {
     return <span />;
   }
   const { getFirecampAgent } = usePlatformStore.getState();
-  // const { changeActiveTab, close } = useTabStore.getState();
 
   if (
     [
@@ -53,8 +52,6 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index, activeTab }) => {
   const tabProps: IRequestTabProps = useMemo(() => {
     return {
       tab,
-      index: index,
-      activeTab: activeTab,
 
       //v3 props
       platformContext: {
@@ -62,7 +59,7 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index, activeTab }) => {
         getFirecampAgent,
       },
     };
-  }, [activeTab, tab]);
+  }, [tab]);
 
   const _renderRequestTab = (type) => {
     switch (type) {

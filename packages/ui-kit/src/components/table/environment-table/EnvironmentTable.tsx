@@ -132,8 +132,8 @@ const EnvironmentTable = ({
         defaultRow={{
           variable: 'variable name',
           type: 'variable type',
-          initial_value: '',
-          current_value: '',
+          initialValue: '',
+          currentValue: '',
         }}
         renderCell={renderCell}
         onChange={(rows) => {

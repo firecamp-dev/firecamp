@@ -14,7 +14,7 @@ import { ITabStore, useTabStore } from '../../store/tab';
 import GlobalCreateDD from '../common/GlobalCreate';
 import platformContext from '../../services/platform-context';
 
-const TabHeaderContainer: FC = () => {
+const TabHeaderContainer = () => {
   const tabApi = useRef({});
   const { activeTab, getTab } = useTabStore(
     (s: ITabStore) => ({
