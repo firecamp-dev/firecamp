@@ -27,7 +27,7 @@ const SocketIOClient = lazy(() =>
   }))
 );
 
-import { IRequestTabProps } from './types';
+import { IEntityTab, IRequestTabProps } from './types';
 import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 import EnvironmentTab from '../common/environment/tabs/Environment';
@@ -61,43 +61,50 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
     };
   }, [tab]);
 
-  const _renderRequestTab = (type) => {
-    switch (type) {
-      case ERequestTypes.Rest:
-        return (
-          <Suspense fallback={<Loader />}>
-            <Rest {...tabProps} />
-          </Suspense>
-        );
-      case ERequestTypes.GraphQL:
-        return (
-          <Suspense fallback={<Loader />}>
-            <GraphQL {...tabProps} />
-          </Suspense>
-        );
-      case ERequestTypes.SocketIO:
-        return (
-          <Suspense fallback={<Loader />}>
-            <SocketIOClient {...tabProps} />
-          </Suspense>
-        );
-      case ERequestTypes.WebSocket:
-        return (
-          <Suspense fallback={<Loader />}>
-            <WSClient {...tabProps} />
-          </Suspense>
-        );
-      case 'json':
-        return <JsonTab {...tabProps} />;
-      case 'md':
-        return <MdTab {...tabProps} />;
-      default:
+  const _renderRequestTab = (tab: IEntityTab) => {
+    switch (tab.entity?.type) {
+      case 'request':
+        switch (tab.entity.info?.type) {
+          case ERequestTypes.Rest:
+            return (
+              <Suspense fallback={<Loader />}>
+                <Rest {...tabProps} />
+              </Suspense>
+            );
+          case ERequestTypes.GraphQL:
+            return (
+              <Suspense fallback={<Loader />}>
+                <GraphQL {...tabProps} />
+              </Suspense>
+            );
+          case ERequestTypes.SocketIO:
+            return (
+              <Suspense fallback={<Loader />}>
+                <SocketIOClient {...tabProps} />
+              </Suspense>
+            );
+          case ERequestTypes.WebSocket:
+            return (
+              <Suspense fallback={<Loader />}>
+                <WSClient {...tabProps} />
+              </Suspense>
+            );
+          case 'json':
+            return <JsonTab {...tabProps} />;
+          case 'md':
+            return <MdTab {...tabProps} />;
+          default:
+            return <span>Default Request Tab</span>;
+        }
+        break;
+      case 'environemnt':
         return <EnvironmentTab {...tabProps} />;
-        return <span>Default Request Tab</span>;
+      default:
+        return <>No Entity Tab Found</>;
     }
   };
 
-  return _renderRequestTab(tab.type);
+  return _renderRequestTab(tab);
 };
 
 export default memo(TabContainerBodyRequest, (pp, np) => {

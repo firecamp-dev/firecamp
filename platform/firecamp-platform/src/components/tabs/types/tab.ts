@@ -4,6 +4,7 @@ import {
   IMeta,
   IUrl,
   IRef,
+  TId,
 } from '@firecamp/types';
 import { ITab } from '@firecamp/ui-kit';
 import {
@@ -28,9 +29,26 @@ export interface IRequestTab extends ITab {
   };
 }
 
-/**
- * Tab meta
- */
+export interface IEntityTab extends ITab {
+  entity: {
+    id: TId;
+    type: 'request' | 'environemnt';
+    /**
+     * minimal info or the intity, it'll help tab and newly opened request to show the minimal information on load
+     * for request
+     *  {
+     *     url?: IUrl;
+     *     method?: EHttpMethod;
+     *     __meta?: IMeta;
+     * }
+     */
+    info: any;
+  };
+  /** request meta */
+  __meta?: IRequestTabMeta;
+}
+
+/** Tab meta */
 export interface IRequestTabMeta {
   /**
    * Whether request tab is saved or not

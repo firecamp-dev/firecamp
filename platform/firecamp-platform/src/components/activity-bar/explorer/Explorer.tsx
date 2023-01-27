@@ -118,7 +118,17 @@ const Explorer: FC<any> = () => {
 
   const _openReqInTab = (request: any) => {
     console.log(`node`, request);
-    emitter.emit(EPlatformTabs.openSaved, request);
+    const entity = {
+      id: request?.__ref?.id,
+      type: 'request',
+      info: {
+        name: request.__meta?.name,
+        type: request.__meta?.type,
+        url: request.url,
+        method: request.method,
+      },
+    };
+    emitter.emit(EPlatformTabs.openSaved, entity);
   };
 
   const _onNodeSelect = (nodeIndexes: TreeItemIndex[]) => {

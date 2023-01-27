@@ -3,7 +3,7 @@ import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
 import { ERequestTypes, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-import { IRequestTab } from '../components/tabs/types';
+import { IEntityTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
 import platformContext from '../services/platform-context';
@@ -15,33 +15,20 @@ const initialState = {
 };
 
 interface ITabStore {
-  list: Record<TId, IRequestTab>;
+  list: Record<TId, IEntityTab>;
   activeTab: TId;
   orders: TId[];
 
   getActiveTab: () => TId;
-  getTab: (id: TId) => IRequestTab;
+  getTab: (id: TId) => IEntityTab;
   reorder: (dragIndex: number, hoverIndex: number) => void;
   remove: (tbId: string) => void;
   changeMeta: (tab, __meta, request?: any) => void; //todo: define types...
   changeActiveTab: (tabId: string) => void;
-  changeRootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => void;
+  changeRootKeys: (tabId: TId, updatedTab: Partial<IEntityTab>) => void;
   changeOrders: (orders: TId[]) => void;
   open: {
-    new: (
-      type?: string,
-      isActive?: boolean
-    ) => [tab: IRequestTab, orders: TId[]];
-    request: (
-      request: any,
-      options: {
-        setActive?: boolean;
-        isSaved?: boolean;
-        isHistoryTab?: boolean;
-        __ref?: any;
-      }
-    ) => [tab: IRequestTab, orders: TId[]];
-    saved: (request: any) => [tab: IRequestTab, orders: TId[]];
+    entity: (entity: any) => [tab: IEntityTab, orders: TId[]];
   };
   close: {
     all: () => void;
@@ -91,7 +78,6 @@ const useTabStore = create<ITabStore>((set, get) => {
         };
       });
     },
-
     remove: (tabId) => {
       set((s) => {
         // s.changeMeta(tabId, { isClosed: true });
@@ -114,7 +100,7 @@ const useTabStore = create<ITabStore>((set, get) => {
       });
     },
 
-    changeMeta: (tabId: TId, __meta: IRequestTab['__meta']) => {
+    changeMeta: (tabId: TId, __meta: IEntityTab['__meta']) => {
       const state = get();
       const tab = state.list[tabId];
       if (!tab?.__meta) return;
@@ -141,11 +127,10 @@ const useTabStore = create<ITabStore>((set, get) => {
     },
 
     changeActiveTab: (tabId) => {
-      set((s) => ({ activeTab: tabId }));
-      // tab.storeCacheTabsInDBWithDebounce();
+      set({ activeTab: tabId });
     },
 
-    changeRootKeys: (tabId: TId, updatedTab: Partial<IRequestTab>) => {
+    changeRootKeys: (tabId: TId, updatedTab: Partial<IEntityTab>) => {
       set((s) => {
         const list = {
           ...s.list,
@@ -165,102 +150,57 @@ const useTabStore = create<ITabStore>((set, get) => {
     },
 
     open: {
-      new: (type, isActive) => {
-        const { list, orders, activeTab } = get();
-        const tId = nanoid();
-        if (!type) {
-          if (orders.length === 0) type = ERequestTypes.Rest;
-          else {
-            let tab;
-            if (activeTab === 'home') {
-              tab = list[orders[orders.length - 1]];
-            } else {
-              tab = list[activeTab];
-            }
-            type = tab?.type;
-          }
-        }
-        const tab: IRequestTab = {
-          id: tId,
-          name: 'New Tab',
-          type: type || ERequestTypes.Rest,
-          __meta: {
-            isSaved: false,
-            hasChange: false,
-            isFresh: true,
-            isDeleted: false,
-            revision: 1,
-          },
+      entity: ({ id, type, info }) => {
+        if (!type) return [null, null];
+        const { list, orders, activeTab, changeActiveTab, open } = get();
+        // if (!type) {
+        //   if (orders.length === 0) type = 'request';
+        //   else {
+        //     const tab =
+        //       activeTab === 'home'
+        //         ? list[orders[orders.length - 1]]
+        //         : list[activeTab];
+        //     type = tab?.entity.type;
+        //   }
+        // }
+
+        const entity = {
+          id,
+          type,
+          info,
         };
 
-        const _list = { ...list, [tId]: tab };
-        const _orders = [...orders, tId];
-        set((s) => ({
-          list: _list,
-          activeTab: isActive == true ? tab.id : s.activeTab,
-          orders: _orders,
-        }));
-        return [tab, _orders];
-      },
-
-      request: (
-        request,
-        { setActive = false, isSaved = true, isHistoryTab = false, __ref = {} }
-      ) => {
-        const { list, orders, activeTab } = get();
-        const tId = nanoid();
-        const tab: IRequestTab = {
-          id: tId,
-          name: request?.__meta?.name || 'untitled request',
-          type: request.__meta.type,
-          request,
-          __meta: {
-            isSaved: isSaved,
-            hasChange: false,
-            isFresh: true,
-            revision: 1,
-            isDeleted: false,
-            isHistoryTab,
-          },
-        };
-
-        const _orders = [...orders, tId];
-        set({
-          list: { ...list, [tId]: tab },
-          activeTab: setActive == true ? tab.id : activeTab,
-          orders: _orders,
-        });
-
-        return [tab, _orders];
-      },
-
-      saved: ({ name, url, method, __meta, __ref }) => {
-        // Todo: need to improve this old structure
-        // note: above request is coming from explorer/tree item
-
-        const request = {
-          url,
-          method,
-          __meta,
-          __ref,
-        };
-
-        const { list, changeActiveTab, open } = get();
         const tabAlreadyExists = Object.values(list).find(
-          (l) => l?.request?.__ref?.id == request?.__ref?.id
+          (l) => l?.entity?.id == id
         );
         // console.log(tabAlreadyExists);
         if (tabAlreadyExists) {
           changeActiveTab(tabAlreadyExists.id);
           return [null, null];
         }
-        // console.log('in store...', request);
 
-        return open.request(request, {
-          setActive: true,
-          __ref: request.__ref,
-          isSaved: true,
+        const tabId = nanoid();
+        const tab: IEntityTab = {
+          id: tabId,
+          name: entity.info?.name || `untitled ${entity.type}`,
+          entity,
+          __meta: {
+            isSaved: !!entity.id,
+            hasChange: false,
+            isFresh: true,
+            isDeleted: false,
+            isHistoryTab: false,
+            revision: 1,
+          },
+        };
+
+        const _orders = [...orders, tabId];
+        set({
+          list: { ...list, [tabId]: tab },
+          activeTab: tabId,
+          orders: _orders,
         });
+        return [tab, _orders];
       },
     },
 

@@ -127,18 +127,23 @@ const RealtimeEventManager: FC<any> = () => {
       ]);
     });
 
-    emitter.on(EPlatformTabs.openSaved, (request: any) => {
-      const [ tab, orders ] = open.saved(request);
-      console.log(tab, "opened tab")
+    emitter.on(EPlatformTabs.openSaved, (entity: any) => {
+      const _entity = {
+        id: entity.id,
+        type: entity.type,
+        info: entity.info,
+      };
+      const [tab, orders] = open.entity(_entity);
+      console.log(tab, 'opened tab');
       if (!tab) return; // if request is already opened then retun value would be [ null, null]
-      emitter.emit(EPlatformTabs.opened, [{
-        ...tab,
-        name: tab.name || request.__meta.name,
-        preComp: (
-          <PreComp method={tab?.request?.method || ''} type={tab.type} />
-        ),
-        dotIndicator: tab.__meta?.hasChange === true,
-      }, orders]);
+      emitter.emit(EPlatformTabs.opened, [
+        {
+          ...tab,
+          preComp: <PreComp entity={entity} />,
+          dotIndicator: tab.__meta?.hasChange === true,
+        },
+        orders,
+      ]);
     });
 
     emitter.on(EPlatformTabs.close, (tabId_s: TId | TId[]) => {

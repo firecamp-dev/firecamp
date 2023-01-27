@@ -1,4 +1,4 @@
-import { FC, useEffect, memo, useRef } from 'react';
+import { useEffect, memo, useRef } from 'react';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
@@ -19,7 +19,6 @@ const TabHeaderContainer = () => {
   const { activeTab, getTab } = useTabStore(
     (s: ITabStore) => ({
       activeTab: s.activeTab,
-      // orders: s.orders
       getTab: s.getTab,
     }),
     shallow

@@ -11,9 +11,9 @@ import {
 } from '@firecamp/ui-kit';
 import { _array, _object } from '@firecamp/utils';
 
-const EnvironmentTab = ({ tab, platformContext, activeTab }) => {
+const EnvironmentTab = ({ tab, platformContext }) => {
   // if(isFetchingRequest === true) return <Loader />;
-  console.log(tab, platformContext, activeTab, 'tab...');
+  console.log(tab, platformContext, 'tab...');
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
