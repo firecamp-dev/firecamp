@@ -1,6 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
+import { Notes } from "@firecamp/ui-kit";
 import { EEnvironmentScope } from '@firecamp/types';
 import {
   Container,
@@ -197,10 +198,13 @@ const CollectionScopedEnvCollection = () => {
       bodyRenderer={({ expanded }) => {
         return (
           <>
-            <span>
+          <Notes description="
+              The collection scoped environments are deprecated, you can see the
+              collection environments here and create a new environment from it." />
+              <div className="text-sm !m-2 p-2 bg-focus1 !text-appForegroundInActive">
               The collection scoped environments are deprecated, you can see the
               collection environments here and create a new environment from it.
-            </span>
+              </div>
             <UncontrolledTreeEnvironment
               dataProvider={envTdpInstance}
               getItemTitle={(item) => item.data?.name}
