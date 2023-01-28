@@ -1,12 +1,12 @@
+import { FC } from 'react';
 import classNames from 'classnames';
+import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { EHttpMethod, ERequestTypes } from '@firecamp/types';
 import {
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
 } from '@firecamp/ui-kit';
-import { VscJson } from '@react-icons/all-files/vsc/VscJson';
-import { FC } from 'react';
 
 const PreComp: FC<{ entity: any; entityType: string }> = ({
   entity,

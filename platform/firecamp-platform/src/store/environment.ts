@@ -39,6 +39,8 @@ const initialState = {
 export interface IEnvironmentStore {
   activeEnvId: TId;
   activeEnvironment: IEnv;
+  remoteEnvironment?: IEnv,
+  localEnvironment?: IEnv,
   isEnvSidebarOpen: boolean;
   isProgressing?: boolean;
   colEnvTdpInstance: any;
