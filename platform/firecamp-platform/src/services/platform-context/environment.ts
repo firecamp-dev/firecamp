@@ -19,12 +19,6 @@ export interface IPlatformEnvironmentService {
 
   // set variables to monaco provider
   setVariablesToProvider: (variables: { [key: string]: any }) => void;
-
-  setVariables: (collection?: {
-    id?: TId;
-    environmentId: TId;
-    variables: { [key: string]: any };
-  }) => void;
 }
 
 const environment: IPlatformEnvironmentService = {
@@ -102,18 +96,6 @@ const environment: IPlatformEnvironmentService = {
     // json
     SetCompletionProvider(EEditorLanguage.Json, variables);
     SetHoverProvider(EEditorLanguage.Json, variables);
-  },
-
-  setVariables: (collection?: {
-    id: TId;
-    environmentId: TId;
-    variables: { [key: string]: any };
-  }) => {
-    const envStore: IEnvironmentStore = useEnvStore.getState();
-    // set collection environment
-    if (collection?.id && collection?.environmentId) {
-      envStore.setEnvVariables(collection.environmentId, collection.variables);
-    }
   },
 };
 

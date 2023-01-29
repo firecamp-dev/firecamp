@@ -10,7 +10,6 @@ const EnvironmentSelector = () => {
   const { environments, toggleEnvSidebar, setActiveEnv } = useEnvStore(
     (s: IEnvironmentStore) => ({
       environments: s.environments,
-      getCollectionEnvs: s.getCollectionEnvs,
       toggleEnvSidebar: s.toggleEnvSidebar,
       setActiveEnv: s.setActiveEnv,
     }),

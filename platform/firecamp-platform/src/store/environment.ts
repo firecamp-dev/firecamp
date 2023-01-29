@@ -1,5 +1,6 @@
 import create from 'zustand';
 import { nanoid } from 'nanoid';
+import _cloneDeep from 'lodash/cloneDeep';
 import { Rest } from '@firecamp/cloud-apis';
 import { TId, IEnv, IEnvironment } from '@firecamp/types';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
@@ -11,9 +12,13 @@ import { RE } from '../types';
 type TColId = TId;
 type TEnvId = TId;
 
+const EmptyEnv = { name: '', variables: [], __ref: { id: '' } };
+
 const initialState = {
   activeEnvId: null,
-  activeEnvironment: { name: '', variables: [], __ref: { id: '' } },
+  globalEnv: _cloneDeep({ ...EmptyEnv, name: 'Global' }),
+  remoteEnv: _cloneDeep(EmptyEnv),
+  localEnv: _cloneDeep(EmptyEnv),
   isEnvSidebarOpen: false,
   colEnvTdpInstance: null,
   envs: [],
@@ -38,9 +43,9 @@ const initialState = {
 
 export interface IEnvironmentStore {
   activeEnvId: TId;
-  activeEnvironment: IEnv;
-  remoteEnvironment?: IEnv,
-  localEnvironment?: IEnv,
+  globalEnv: IEnv;
+  remoteEnv: IEnv;
+  localEnv: IEnv;
   isEnvSidebarOpen: boolean;
   isProgressing?: boolean;
   colEnvTdpInstance: any;
@@ -52,7 +57,9 @@ export interface IEnvironmentStore {
   registerTDP_: () => void;
   unRegisterTDP_: () => void;
 
+  /** @deprecated */
   registerTDP: () => void;
+  /** @deprecated */
   unRegisterTDP: () => void;
 
   init: (envs: IEnv[]) => void;
@@ -61,10 +68,7 @@ export interface IEnvironmentStore {
   toggleEnvSidebar: () => void;
   toggleProgressBar: (flag?: boolean) => void;
 
-  getCollectionEnvs: (collectionId: TColId) => any[];
-
   setActiveEnv: (envId?: TEnvId) => void;
-  setEnvVariables: (envId: TEnvId, variables: object) => void;
 
   /** @deprecated */
   fetchColEnvironment: (envId: TEnvId) => Promise<any>;
@@ -129,25 +133,8 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     set({ isProgressing: flag });
   },
 
-  setEnvVariables: (envId, variables: object) => {
-    set((s) => {
-      const envs = s.envs.map((e) => {
-        if (e.__ref.id == envId) {
-          return { ...e, variables };
-        }
-        return e;
-      });
-      return { envs };
-    });
-    return;
-  },
-
   setActiveEnv: (envId) => {
     set({ activeEnvId: envId });
-  },
-
-  getCollectionEnvs: (collectionId) => {
-    return get().envs.filter((e) => e.__ref.collectionId == collectionId);
   },
 
   // Environment

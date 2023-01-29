@@ -74,22 +74,16 @@ const EnvSidebarContainer = () => {
 export { EnvSidebar, EnvSidebarContainer };
 
 const EnvVarPreview = () => {
-  const {
-    activeEnvId,
-    activeEnvironment,
-    environments,
-    updateEnvironment,
-    setActiveEnv,
-  } = useEnvStore(
-    (s) => ({
-      activeEnvId: s.activeEnvId,
-      activeEnvironment: s.activeEnvironment,
-      environments: s.environments,
-      updateEnvironment: s.updateEnvironment,
-      setActiveEnv: s.setActiveEnv,
-    }),
-    shallow
-  );
+  const { activeEnvId, environments, updateEnvironment, setActiveEnv } =
+    useEnvStore(
+      (s) => ({
+        activeEnvId: s.activeEnvId,
+        environments: s.environments,
+        updateEnvironment: s.updateEnvironment,
+        setActiveEnv: s.setActiveEnv,
+      }),
+      shallow
+    );
   const [variables, setVariables] = useState<string>('');
   const [isVarUpdated, setIsVarUpdated] = useState<boolean>(false);
 
@@ -97,8 +91,8 @@ const EnvVarPreview = () => {
   useEffect(() => {
     try {
       const vars = JSON.parse(variables || '{}');
-      const _isEqual = isEqual(vars, activeEnvironment.variables);
-      setIsVarUpdated(!_isEqual);
+      // const _isEqual = isEqual(vars, activeEnvironment.variables);
+      // setIsVarUpdated(!_isEqual);
     } catch (e) {
       console.log({ e });
     }
@@ -109,12 +103,12 @@ const EnvVarPreview = () => {
   };
 
   const onUndoChanges = () => {
-    let variablesString = JSON.stringify(
-      activeEnvironment.variables || [],
-      null,
-      2
-    );
-    setVariables(variablesString);
+    // let variablesString = JSON.stringify(
+    //   activeEnvironment.variables || [],
+    //   null,
+    //   2
+    // );
+    // setVariables(variablesString);
   };
 
   const onUpdate = async () => {
