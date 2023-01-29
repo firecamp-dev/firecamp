@@ -29,10 +29,6 @@ interface IRuntimeSlice {
   addPlaygroundTab: (playground: IPlaygroundTab) => void;
   changePlaygroundTab: (playgroundId: TId, updates: object) => void;
   deletePlaygroundTab: (playgroundId: TId) => void;
-  changeActiveEnvironment?: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => void;
   setRequestRunningFlag: (flag: boolean) => void;
   setRequestSavedFlag: (flag: boolean) => void;
 }

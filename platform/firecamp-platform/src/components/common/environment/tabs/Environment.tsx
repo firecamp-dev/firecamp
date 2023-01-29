@@ -123,9 +123,15 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         header: 'Rename Environment',
         lable: 'Environment Name',
         placeholder: '',
-        texts: { btnOking: 'Renaming...' },
+        texts: { btnOk: 'Rename', btnOking: 'Renaming...' },
         value: runtimeEnv.name,
         validator: (val) => {
+          if (val == runtimeEnv.name) {
+            return {
+              isValid: false,
+              message: 'The environment name is not changed yet.',
+            };
+          }
           if (!val || val.length < 3) {
             return {
               isValid: false,
@@ -160,7 +166,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         header: 'Delete Environment',
         lable: 'Please enter the name of Environment',
         placeholder: '',
-        texts: { btnOking: 'Renaming...' },
+        texts: { btnOk: 'Delete', btnOking: 'Deleting...' },
         value: '',
         executor: (name) => {
           if (name === runtimeEnv.name) {
