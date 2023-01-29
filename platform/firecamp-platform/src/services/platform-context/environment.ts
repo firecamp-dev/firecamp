@@ -44,7 +44,7 @@ const environment: IPlatformEnvironmentService = {
         id: rv.id,
         key: rv.key,
         initialValue: rv.value,
-        currentValue: lvs.find((lv) => lv.id == rv.id)?.value || '',
+        value: lvs.find((lv) => lv.id == rv.id)?.value || '',
         type: 'text',
       };
     });
@@ -69,7 +69,7 @@ const environment: IPlatformEnvironmentService = {
       lvs.push({
         id: v.id,
         key: v.key,
-        value: v.currentValue,
+        value: v.value,
         type: 'text',
       });
     });

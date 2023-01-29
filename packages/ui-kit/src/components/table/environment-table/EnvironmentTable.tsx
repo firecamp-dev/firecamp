@@ -27,8 +27,8 @@ const _columns = [
     width: '200px',
   },
   {
-    id: 'currentValue',
-    key: 'currentValue',
+    id: 'value',
+    key: 'value',
     name: 'Current Value',
     width: '200px',
     resizeWithContainer: true,
@@ -79,7 +79,7 @@ const EnvironmentTable = ({
       case 'variable':
       case 'type':
       case 'initialValue':
-      case 'currentValue':
+      case 'value':
         // return <></>
         // return (
         //   <input

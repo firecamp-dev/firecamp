@@ -15,12 +15,12 @@ const defaultData = [
     "variable": "variable-1",
     "type": "type-1",
     "initialValue": "initialValue",
-    "currentValue": "currentValue"
+    "value": "value"
 },{
   "variable": "variable-2",
   "type": "type-2",
   "initialValue": "initialValue-2",
-  "currentValue": "currentValue-2"
+  "value": "value-2"
 }
 ]
 const Template = ({...args}: IEnvironmentTable<any>) => {
