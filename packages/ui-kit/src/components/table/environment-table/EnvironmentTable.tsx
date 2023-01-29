@@ -18,7 +18,7 @@ import { IEnvironmentTable } from './EnvironmentTable.interfaces';
 
 const _columns = [
   { id: 'select', key: 'disable', name: '', width: '25px', fixedWidth: true },
-  { id: 'variable', key: 'variable', name: 'Variable', width: '200px' },
+  { id: 'variable', key: 'key', name: 'Variable', width: '200px' },
   //   { id: 'type', key: 'type', name: 'Type', width: '200px' },
   {
     id: 'initialValue',

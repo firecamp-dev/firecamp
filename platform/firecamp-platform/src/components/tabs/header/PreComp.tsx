@@ -43,14 +43,13 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
         default:
           return <span />;
       }
-      break;
+
     case 'environment':
       return (
         <div className="environment text-xs font-bold w-5 invert tab-icon">
           <VscJson size={20} />
         </div>
       );
-      break;
     default:
       return <></>;
   }

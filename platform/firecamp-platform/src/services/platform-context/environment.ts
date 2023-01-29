@@ -11,6 +11,11 @@ import { Rest } from '@firecamp/cloud-apis';
 export interface IPlatformEnvironmentService {
   // fetch environment
   fetch: (id: TId) => Promise<IEnv>;
+  update: (id: TId, env: Partial<IEnv>) => Promise<IEnv>;
+  delete: (id: TId) => Promise<IEnv>;
+
+  mergeEnvs: (remoteEnv: IEnv, localEnv: IEnv) => any; //return rnv with initialvalue/currentValue
+  splitEnvs: (runtimeEnv: any) => { remoteEnv: IEnv; localEnv: IEnv }; //return remoteEnv and localEnv from runtime env
 
   // set variables to monaco provider
   setVariablesToProvider: (variables: { [key: string]: any }) => void;
@@ -21,13 +26,63 @@ export interface IPlatformEnvironmentService {
     variables: { [key: string]: any };
   }) => void;
 }
-export interface IPlatformVariables {
-  collection: {};
-}
 
 const environment: IPlatformEnvironmentService = {
   fetch: async (id: TId) => {
-    return await Rest.environment.fetch(id).then((res) => res.data);
+    return Rest.environment.fetch(id).then((res) => res.data);
+  },
+
+  update: (id: TId, env: Partial<IEnv>) => {
+    return Rest.environment.update(id, env).then((res) => res.data);
+  },
+
+  delete: async (id: TId) => {
+    return Rest.environment.delete(id).then((res) => res.data);
+  },
+
+  /** merge remote and local env to prepare runtime env with initialValue and currentValue */
+  mergeEnvs: (remoteEnv: IEnv, localEnv: IEnv) => {
+    console.log('I am in the merge');
+    const { variables: rvs = [] } = remoteEnv;
+    const { variables: lvs = [] } = localEnv;
+    const vars = rvs.map((rv) => {
+      return {
+        id: rv.id,
+        key: rv.key,
+        initialValue: rv.value,
+        currentValue: lvs.find((lv) => lv.id == rv.id)?.value || '',
+        type: 'text',
+      };
+    });
+    return {
+      ...remoteEnv,
+      variables: vars,
+    };
+  },
+
+  /** split runtime env into remoteEnv and localEnv */
+  splitEnvs: (env) => {
+    const { variables = [] } = env;
+    let rvs = [];
+    let lvs = [];
+    variables.map((v) => {
+      rvs.push({
+        id: v.id,
+        key: v.key,
+        value: v.initialValue,
+        type: 'text',
+      });
+      lvs.push({
+        id: v.id,
+        key: v.key,
+        value: v.currentValue,
+        type: 'text',
+      });
+    });
+    return {
+      remoteEnv: { ...env, variables: [...rvs] },
+      localEnv: { ...env, variables: [...lvs] },
+    };
   },
 
   // set variables to editor provider

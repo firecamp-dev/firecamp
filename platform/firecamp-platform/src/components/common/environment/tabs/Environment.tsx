@@ -15,76 +15,47 @@ import {
 } from '@firecamp/ui-kit';
 import { _array, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
+import { RE } from '../../../../types';
 
-const mergeEnvs = (remoteEnv: IEnv, localEnv: IEnv) => {
-  const { variables: rvs = [] } = remoteEnv;
-  const { variables: lvs = [] } = localEnv;
-  const vars = rvs.map((rv) => {
-    return {
-      id: rv.id,
-      key: rv.key,
-      initialValue: rv.value,
-      currentValue: lvs.find((lv) => lv.id == rv.id)?.value || '',
-      type: 'text',
-    };
-  });
-  return {
-    ...remoteEnv,
-    variables: vars,
-  };
-};
-
-const splitEnvs = (env) => {
-  const { variables = [] } = env;
-  let rvs = [];
-  let lvs = [];
-  variables.reduce((v) => {
-    rvs.push({
-      id: v.id,
-      key: v.key,
-      value: v.initialValue,
-      type: 'text',
-    });
-    lvs.push({
-      id: v.id,
-      key: v.key,
-      value: v.currentValue,
-      type: 'text',
-    });
-  });
-  return {
-    remoteEnv: { ...env, variables: [...rvs] },
-    localEnv: { ...env, variables: [...lvs] },
-  };
-};
-
-const EnvironmentTab = ({ tab, platformContext }) => {
+const EnvironmentTab = ({ tab, platformContext: context }) => {
   const initEnv = _cloneDeep({ ...tab.entity, variables: [] });
   const originalEnvs = useRef({
-    /** env.variables will have the initialValue and currentValue (merge of remote & local) */
-    env: mergeEnvs(initEnv, initEnv),
+    /** runtimeEnv.variables will have the initialValue and currentValue (merge of remote & local)
+     * @note runtimeEnv.variables=[] thus we don;t need to manage initialValue andd currentValue at initialisation time
+     */
+    runtimeEnv: _cloneDeep(initEnv),
     remoteEnv: _cloneDeep(initEnv),
     localEnv: _cloneDeep(initEnv),
   });
-  const [env, setEnv] = useState<any>({ ...originalEnvs.current.env });
+  const [runtimeEnv, setEnv] = useState<any>({
+    ...originalEnvs.current.runtimeEnv,
+  });
   const [isFetchingEnv, setIsFetchingEnvFlag] = useState(false);
-  const [hasChange, setHasChangeFlag] = useState(true);
+  const [hasChange, setHasChangeFlag] = useState(false);
 
   useEffect(() => {
     const _fetch = async () => {
       const envId = tab.entity?.__ref?.id;
       setIsFetchingEnvFlag(true);
-      await platformContext.environment
+      await context.environment
         .fetch(envId)
         .then((remoteEnv) => {
           let localEnv =
-            JSON.parse(localStorage.getItem(`env/${env.__ref.id}`) || null) ||
-            initEnv;
-          const _env = mergeEnvs(remoteEnv, localEnv);
+            JSON.parse(
+              localStorage.getItem(`env/${runtimeEnv.__ref.id}`) || null
+            ) || initEnv;
+          const _runtimeEnv = context.environment.mergeEnvs(
+            remoteEnv,
+            localEnv
+          );
 
-          console.log(localEnv, _env);
-          originalEnvs.current = { env: _env, remoteEnv, localEnv };
-          setEnv({ ...originalEnvs.current.env });
+          console.log(localEnv, _runtimeEnv);
+          originalEnvs.current = {
+            runtimeEnv: _runtimeEnv,
+            remoteEnv,
+            localEnv,
+          };
+          setEnv({ ...originalEnvs.current.runtimeEnv });
         })
         .finally(() => {
           setIsFetchingEnvFlag(false);
@@ -94,8 +65,9 @@ const EnvironmentTab = ({ tab, platformContext }) => {
   }, []);
 
   const onChangeVariables = (vars) => {
+    console.log('in the onChange variables');
     const newEnv = {
-      ...env,
+      ...runtimeEnv,
       variables: vars,
     };
     setEnv(newEnv);
@@ -106,14 +78,37 @@ const EnvironmentTab = ({ tab, platformContext }) => {
       setHasChangeFlag(false);
     }
   };
-  const updateEnv = () => {
+  const update = () => {
+    let isRemoteNameChanged = false;
+    let isRemoteVarsChanged = false;
     const {
-      env: _oEnv,
+      runtimeEnv: _oEnv,
       remoteEnv: _oRemoteEnv,
       localEnv: _oLocalEnv,
     } = originalEnvs.current;
-    const { remoteEnv, localEnv } = splitEnvs(env);
+    const { remoteEnv, localEnv } = context.environment.splitEnvs(runtimeEnv);
 
+    //update remote env
+    if (!isEqual(remoteEnv.name, _oRemoteEnv.name)) isRemoteNameChanged = true;
+    if (!isEqual(remoteEnv.variables, _oRemoteEnv.variables))
+      isRemoteVarsChanged = true;
+    if (isRemoteNameChanged || isRemoteVarsChanged) {
+      const updatedEnv: Partial<IEnv> = { __ref: remoteEnv.__ref };
+      if (isRemoteNameChanged) updatedEnv.name = remoteEnv.name;
+      if (isRemoteVarsChanged) updatedEnv.variables = remoteEnv.variables;
+      context.environment
+        .update(updatedEnv.__ref.id, updatedEnv)
+        .then(() => {
+          context.app.notify.success('The environemnt changes are saved.');
+          originalEnvs.current = { runtimeEnv, remoteEnv, localEnv };
+        })
+        .catch((e) => {
+          console.log(e);
+          setHasChangeFlag(true);
+        });
+    }
+
+    // update local env
     if (!isEqual(localEnv, _oLocalEnv)) {
       localStorage.setItem(
         `env/${localEnv.__ref.id}`,
@@ -122,7 +117,75 @@ const EnvironmentTab = ({ tab, platformContext }) => {
     }
     setHasChangeFlag(false);
   };
+  const rename = () => {
+    context.window
+      .promptInput({
+        header: 'Rename Environment',
+        lable: 'Environment Name',
+        placeholder: '',
+        texts: { btnOking: 'Renaming...' },
+        value: runtimeEnv.name,
+        validator: (val) => {
+          if (!val || val.length < 3) {
+            return {
+              isValid: false,
+              message: 'The environment name must have minimum 3 characters.',
+            };
+          }
+          const isValid = RE.NoSpecialCharacters.test(val);
+          return {
+            isValid,
+            message:
+              !isValid &&
+              'The environment name must not contain any special characters.',
+          };
+        },
+        executor: (name) => {
+          const _env = { name, __ref: runtimeEnv.__ref };
+          return context.environment.update(_env.__ref.id, _env);
+        },
+        onError: (e) => {
+          context.app.notify.alert(e?.response?.data?.message || e.message);
+        },
+      })
+      .then((res) => {
+        context.app.notify.success('The environment name has been changed');
+        setEnv((s) => ({ ...s, name: res?.name }));
+        return res;
+      });
+  };
+  const _delete = () => {
+    context.window
+      .promptInput({
+        header: 'Delete Environment',
+        lable: 'Please enter the name of Environment',
+        placeholder: '',
+        texts: { btnOking: 'Renaming...' },
+        value: '',
+        executor: (name) => {
+          if (name === runtimeEnv.name) {
+            return context.environment.delete(runtimeEnv.__ref.id);
+          } else {
+            return Promise.reject(
+              new Error('The environment name is not matching.')
+            );
+          }
+        },
+        onError: (e) => {
+          context.app.notify.alert(e?.response?.data?.message || e.message);
+        },
+      })
+      .then((res) => {
+        context.app.notify.success(
+          'The environment has been deleted successfully'
+        );
+        localStorage.removeItem(`env/${runtimeEnv.__ref.id}`);
 
+        // TODO: close the current tab
+        // TODO: remove env from the explorer
+        return res;
+      });
+  };
   if (isFetchingEnv === true) return <Loader />;
   return (
     <RootContainer className="h-full w-full">
@@ -130,8 +193,10 @@ const EnvironmentTab = ({ tab, platformContext }) => {
         <Container.Header>
           <TabHeader className="height-ex-small bg-statusBarBackground2">
             <TabHeader.Left>
-              <div className="fc-urlbar-path flex text-lg">{env.name}</div>
-              <VscEdit size={12} />
+              <div className="fc-urlbar-path flex text-lg">
+                {runtimeEnv.name}
+              </div>
+              <VscEdit size={12} onClick={rename} className="pointer" />
             </TabHeader.Left>
             <TabHeader.Right>
               {/* <Button text="Save" primary sm /> */}
@@ -144,18 +209,18 @@ const EnvironmentTab = ({ tab, platformContext }) => {
             <Column>
               <Button
                 text="Save"
-                onClick={updateEnv}
+                onClick={update}
                 disabled={!hasChange}
                 primary
                 sm
               />
-              <Button text="Delete" secondary sm />
+              <Button text="Delete" onClick={_delete} secondary sm />
             </Column>
           </Row>
           <Row flex={1} overflow="auto" className="with-divider h-full">
             <Column>
               <EnvironmentTable
-                rows={env.variables}
+                rows={runtimeEnv.variables}
                 onChange={onChangeVariables}
               />
             </Column>
