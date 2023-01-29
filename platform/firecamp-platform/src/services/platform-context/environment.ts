@@ -5,8 +5,9 @@ import {
   SetHoverProvider,
 } from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
 import { _object } from '@firecamp/utils';
-import { IEnvironmentStore, useEnvStore } from '../../store/environment';
 import { Rest } from '@firecamp/cloud-apis';
+import { envService } from '../env.service';
+import { IEnvironmentStore, useEnvStore } from '../../store/environment';
 
 export interface IPlatformEnvironmentService {
   // fetch environment
@@ -14,8 +15,8 @@ export interface IPlatformEnvironmentService {
   update: (id: TId, env: Partial<IEnv>) => Promise<IEnv>;
   delete: (id: TId) => Promise<IEnv>;
 
-  mergeEnvs: (remoteEnv: IEnv, localEnv: IEnv) => any; //return rnv with initialvalue/currentValue
-  splitEnvs: (runtimeEnv: any) => { remoteEnv: IEnv; localEnv: IEnv }; //return remoteEnv and localEnv from runtime env
+  mergeEnvs: typeof envService.mergeEnvs; //return rnv with initialvalue/currentValue
+  splitEnvs: typeof envService.splitEnvs; //return remoteEnv and localEnv from runtime env
 
   // set variables to monaco provider
   setVariablesToProvider: (variables: { [key: string]: any }) => void;
@@ -34,50 +35,10 @@ const environment: IPlatformEnvironmentService = {
     return Rest.environment.delete(id).then((res) => res.data);
   },
 
-  /** merge remote and local env to prepare runtime env with initialValue and currentValue */
-  mergeEnvs: (remoteEnv: IEnv, localEnv: IEnv) => {
-    console.log('I am in the merge');
-    const { variables: rvs = [] } = remoteEnv;
-    const { variables: lvs = [] } = localEnv;
-    const vars = rvs.map((rv) => {
-      return {
-        id: rv.id,
-        key: rv.key,
-        initialValue: rv.value,
-        value: lvs.find((lv) => lv.id == rv.id)?.value || '',
-        type: 'text',
-      };
-    });
-    return {
-      ...remoteEnv,
-      variables: vars,
-    };
-  },
+  mergeEnvs: envService.mergeEnvs,
 
   /** split runtime env into remoteEnv and localEnv */
-  splitEnvs: (env) => {
-    const { variables = [] } = env;
-    let rvs = [];
-    let lvs = [];
-    variables.map((v) => {
-      rvs.push({
-        id: v.id,
-        key: v.key,
-        value: v.initialValue,
-        type: 'text',
-      });
-      lvs.push({
-        id: v.id,
-        key: v.key,
-        value: v.value,
-        type: 'text',
-      });
-    });
-    return {
-      remoteEnv: { ...env, variables: [...rvs] },
-      localEnv: { ...env, variables: [...lvs] },
-    };
-  },
+  splitEnvs: envService.splitEnvs,
 
   // set variables to editor provider
   setVariablesToProvider: (variables: { [key: string]: any }) => {

@@ -5,20 +5,15 @@ import { Rest } from '@firecamp/cloud-apis';
 import { TId, IEnv, IEnvironment } from '@firecamp/types';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
 import { CollectionEnvDataProvider } from '../components/common/environment/sidebar/tree/dataProvider';
-import { useWorkspaceStore } from './workspace';
 import platformContext from '../services/platform-context';
+import { useWorkspaceStore } from './workspace';
 import { RE } from '../types';
-
-type TColId = TId;
-type TEnvId = TId;
-
-const EmptyEnv = { name: '', variables: [], __ref: { id: '' } };
+import { envService, EmptyEnv, IRuntimeEnv } from '../services/env.service';
 
 const initialState = {
   activeEnvId: null,
   globalEnv: _cloneDeep({ ...EmptyEnv, name: 'Global' }),
-  remoteEnv: _cloneDeep(EmptyEnv),
-  localEnv: _cloneDeep(EmptyEnv),
+  activeEnv: _cloneDeep(EmptyEnv),
   isEnvSidebarOpen: false,
   colEnvTdpInstance: null,
   envs: [],
@@ -43,9 +38,8 @@ const initialState = {
 
 export interface IEnvironmentStore {
   activeEnvId: TId;
-  globalEnv: IEnv;
-  remoteEnv: IEnv;
-  localEnv: IEnv;
+  globalEnv: IRuntimeEnv;
+  activeEnv: IRuntimeEnv;
   isEnvSidebarOpen: boolean;
   isProgressing?: boolean;
   colEnvTdpInstance: any;
@@ -68,10 +62,10 @@ export interface IEnvironmentStore {
   toggleEnvSidebar: () => void;
   toggleProgressBar: (flag?: boolean) => void;
 
-  setActiveEnv: (envId?: TEnvId) => void;
+  setActiveEnv: (envId?: TId) => void;
 
   /** @deprecated */
-  fetchColEnvironment: (envId: TEnvId) => Promise<any>;
+  fetchColEnvironment: (envId: TId) => Promise<any>;
   createEnvironmentPrompt: () => void;
   createEnvironment: (env: IEnv) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
@@ -134,7 +128,18 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setActiveEnv: (envId) => {
-    set({ activeEnvId: envId });
+    const { environments } = get();
+    if (!envId) {
+      set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
+    } else {
+      const env = environments.find((e) => e.__ref.id == envId);
+      if (!env) {
+        set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
+      } else {
+        const _env = envService.prepareRuntimeEnvFromRemoteEnv(env);
+        set({ activeEnvId: envId, activeEnv: _env });
+      }
+    }
   },
 
   // Environment

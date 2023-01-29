@@ -16,7 +16,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
     shallow
   );
   useEffect(() => {
-    console.log('rendering the first time');
+    console.log('env selector rendering the first time');
   }, []);
   const [isOpen, toggleOpen] = useState(false);
   const menu = useMemo(
@@ -26,11 +26,9 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
   console.log(menu, 778899);
 
   const _onSelectEnv = (env: { id: string }) => {
-    //    console.log({ env });
+    console.log({ env });
     if (env === menu.selected) return;
-    if (env && env.id) {
-      onChange(env.id);
-    }
+    onChange(env.id);
   };
 
   const options = [
