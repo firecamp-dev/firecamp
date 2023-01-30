@@ -3,9 +3,6 @@ import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
 import { EEditorLanguage } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
-import MonacoFirecampLangInit, {
-  SetCompletionProvider,
-} from '../monaco/lang/init';
 import './sass/Editor.sass';
 
 const Editor: FC<IEditor> = ({
@@ -39,11 +36,6 @@ const Editor: FC<IEditor> = ({
   onCtrlShiftEnter = () => {},
 }) => {
   const editorIdRef = useRef('');
-  useEffect(() => {
-    MonacoFirecampLangInit();
-    SetCompletionProvider(EEditorLanguage.HeaderKey, { name: 'Nishchit' });
-  }, []);
-
   useEffect(() => {
     //@ts-ignore
     if (!window.editors) window.editors = new Map();

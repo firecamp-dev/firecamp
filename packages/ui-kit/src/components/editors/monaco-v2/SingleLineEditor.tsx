@@ -1,6 +1,7 @@
 import { FC, useEffect, useRef, memo, ReactNode } from 'react';
-import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
+import isEqual from 'react-fast-compare';
 import cx from 'classnames';
+import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import { EEditorLanguage } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
 
@@ -41,7 +42,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 }) => {
   const editorIdRef = useRef('');
   useEffect(() => {
-    console.log('this is re-rendering <SingleLineEditor />');
+    // console.log('this is re-rendering <SingleLineEditor />');
     //@ts-ignore
     if (!window.editors) window.editors = new Map();
     return () => {
@@ -278,8 +279,10 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 
   const options: EditorProps['options'] = {
     readOnly: false,
+    // fontFamily: 'lato',
     fontFamily: "'Open Sans', sans-serif",
     fontSize: 14,
+    fontWeight: 'normal',
     links: false,
     minimap: { enabled: false },
     matchBrackets: 'never',
@@ -295,9 +298,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     lineNumbersMinChars: 0,
     lineDecorationsWidth: 0,
     // wrappingColumn: 1,
-    // ...monacoOptions,
 
-    fontWeight: 'normal',
     wordWrap: 'off',
     overviewRulerLanes: 0,
     overviewRulerBorder: false,
@@ -339,6 +340,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 
     suggestOnTriggerCharacters: false,
     tabCompletion: 'off',
+    ...monacoOptions,
   };
 
   /** if 'readOnly' is not provided then consider 'disabled' */
@@ -407,4 +409,34 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   );
 };
 
-export default memo(SingleLineEditor);
+export default memo(SingleLineEditor, (p, n) => {
+  const pp = {
+    type: p.type,
+    name: p.name,
+    value: p.value,
+    disabled: p.disabled,
+    autoFocus: p.autoFocus,
+    language: p.language,
+    // monacoOptions: p.monacoOptions,
+    // placeholder: p.placeholder,
+    className: p.className,
+    style: p.style,
+    height: p.height,
+    path: p.path,
+  };
+  const np = {
+    type: n.type,
+    name: n.name,
+    value: n.value,
+    disabled: n.disabled,
+    autoFocus: n.autoFocus,
+    language: n.language,
+    // monacoOptions: n.monacoOptions,
+    // placeholder: n.placeholder,
+    className: n.className,
+    style: n.style,
+    height: n.height,
+    path: n.path,
+  };
+  return isEqual(pp, np);
+});
