@@ -1,11 +1,22 @@
-import { EKeyValueTableRowType, IEnv, TId } from '@firecamp/types';
 import _cloneDeep from 'lodash/cloneDeep';
+import jtParse from 'json-templates';
 import { _object } from '@firecamp/utils';
+import { Rest } from '@firecamp/cloud-apis';
+import {
+  SetCompletionProvider,
+  SetHoverProvider,
+} from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
+import {
+  EEditorLanguage,
+  EKeyValueTableRowType,
+  IEnv,
+  TId,
+} from '@firecamp/types';
 
 interface IRuntimeEnv extends IEnv {
   variables: {
     id: TId;
-    key: 'string';
+    key: string;
     initialValue: string;
     value: string;
     type: EKeyValueTableRowType;
@@ -13,6 +24,10 @@ interface IRuntimeEnv extends IEnv {
 }
 const EmptyEnv: IRuntimeEnv = { name: '', variables: [], __ref: { id: '' } };
 const envService = {
+  fetch: async (id: TId) => {
+    return Rest.environment.fetch(id).then((res) => res.data);
+  },
+
   /** merge remote and local env to prepare runtime env with initialValue and currentValue */
   mergeEnvs: (remoteEnv: IEnv, localEnv: IEnv): IRuntimeEnv => {
     console.log('I am in the merge');
@@ -24,7 +39,7 @@ const envService = {
         key: rv.key,
         initialValue: rv.value,
         value: lvs.find((lv) => lv.id == rv.id)?.value || '',
-        type: 'text',
+        type: EKeyValueTableRowType.Text,
       };
     });
     return {
@@ -33,7 +48,7 @@ const envService = {
     };
   },
 
-  /** split runtime env into remoteEnv and localEnv */
+  /** split runtimeEnv into remoteEnv and localEnv */
   splitEnvs: (env: IRuntimeEnv): { remoteEnv: IEnv; localEnv: IEnv } => {
     const { variables = [] } = env;
     let rvs = [];
@@ -65,6 +80,50 @@ const envService = {
     );
     if (!localEnv) localEnv = _cloneDeep(EmptyEnv);
     return envService.mergeEnvs(remoteEnv, localEnv);
+  },
+
+  /** prepare a pain vars object from runtimeEnv */
+  preparePlainVarsFromRuntimeEnv: (
+    runtimeEnv: IRuntimeEnv
+  ): { [k: string]: string } => {
+    if (!runtimeEnv?.variables?.length) return {};
+    return runtimeEnv.variables.reduce((p, n) => {
+      /** if currentValue(value) is exists then use it or else use initialValue*/
+      if (n.key) {
+        if (n.value) return { ...p, [n.key]: n.value };
+        else return { ...p, [n.key]: n.initialValue };
+      }
+      return p;
+    }, {});
+  },
+
+  /** apply variables in text or json object*/
+  applyVariables: <T extends string | { [k: string]: any }>(
+    variables: { [k: string]: any } = {},
+    source: T
+  ): T => {
+    const template = jtParse(source || '');
+    const res = template(variables);
+    return res;
+  },
+
+  // set variables to editor provider
+  setVariablesToProvider: (variables: { [key: string]: any }) => {
+    //fc-text
+    SetCompletionProvider(EEditorLanguage.FcText, variables);
+    SetHoverProvider(EEditorLanguage.FcText, variables);
+
+    // header key
+    SetCompletionProvider(EEditorLanguage.HeaderKey, variables);
+    SetHoverProvider(EEditorLanguage.HeaderKey, variables);
+
+    //header value
+    SetCompletionProvider(EEditorLanguage.HeaderValue, variables);
+    SetHoverProvider(EEditorLanguage.HeaderValue, variables);
+
+    // json
+    SetCompletionProvider(EEditorLanguage.Json, variables);
+    SetHoverProvider(EEditorLanguage.Json, variables);
   },
 };
 

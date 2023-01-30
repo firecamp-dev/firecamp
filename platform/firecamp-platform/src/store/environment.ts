@@ -63,6 +63,8 @@ export interface IEnvironmentStore {
   toggleProgressBar: (flag?: boolean) => void;
 
   setActiveEnv: (envId?: TId) => void;
+  /** prepare pain variables object, whchi can be used to apply in monaco editors and other usage like script */
+  preparePlainVariables: () => any;
 
   /** @deprecated */
   fetchColEnvironment: (envId: TId) => Promise<any>;
@@ -128,18 +130,49 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setActiveEnv: (envId) => {
-    const { environments } = get();
-    if (!envId) {
-      set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
-    } else {
-      const env = environments.find((e) => e.__ref.id == envId);
-      if (!env) {
-        set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
-      } else {
-        const _env = envService.prepareRuntimeEnvFromRemoteEnv(env);
-        set({ activeEnvId: envId, activeEnv: _env });
-      }
-    }
+    const { environments, preparePlainVariables } = get();
+    const setNoEnvironment = () =>
+      set({
+        activeEnvId: null,
+        activeEnv: _cloneDeep(EmptyEnv),
+      });
+
+    Promise.resolve(envId)
+      .then((eId) => {
+        if (!eId) setNoEnvironment();
+        return eId;
+      })
+      .then((eId) => {
+        if (!eId) return null;
+        // const env = environments.find((e) => e.__ref.id == envId);
+        return envService.fetch(envId);
+      })
+      .then((env) => {
+        if (!env) setNoEnvironment();
+        else {
+          const _env = envService.prepareRuntimeEnvFromRemoteEnv(env);
+          // console.log(_env, env, '_env');
+          set({ activeEnvId: envId, activeEnv: _env });
+        }
+        return env;
+      })
+      .catch((e) => {
+        console.log(e);
+        setNoEnvironment();
+      })
+      .finally(() => {
+        const vars = preparePlainVariables();
+        console.log('platform vars', vars);
+        envService.setVariablesToProvider(vars);
+      });
+  },
+
+  preparePlainVariables: () => {
+    const { globalEnv, activeEnv } = get();
+    const gPlainVars = envService.preparePlainVarsFromRuntimeEnv(globalEnv);
+    const ePlainVars = envService.preparePlainVarsFromRuntimeEnv(activeEnv);
+    // console.log(globalEnv, activeEnv, gPlainVars, ePlainVars);
+    return { ...gPlainVars, ...ePlainVars };
   },
 
   // Environment
