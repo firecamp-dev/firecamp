@@ -131,23 +131,40 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   setActiveEnv: (envId) => {
     const { environments, preparePlainVariables } = get();
-    if (!envId) {
-      set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
-    } else {
-      const env = environments.find((e) => e.__ref.id == envId);
-      if (env) {
-        const _env = envService.prepareRuntimeEnvFromRemoteEnv(env);
-        // console.log(_env, env, '_env');
-        set({ activeEnvId: envId, activeEnv: _env });
-      } else {
-        set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
-      }
-    }
+    const setNoEnvironment = () =>
+      set({
+        activeEnvId: null,
+        activeEnv: _cloneDeep(EmptyEnv),
+      });
 
-    setTimeout(() => {
-      const vars = preparePlainVariables();
-      console.log('platform vars', vars);
-    });
+    Promise.resolve(envId)
+      .then((eId) => {
+        if (!eId) setNoEnvironment();
+        return eId;
+      })
+      .then((eId) => {
+        if (!eId) return null;
+        // const env = environments.find((e) => e.__ref.id == envId);
+        return envService.fetch(envId);
+      })
+      .then((env) => {
+        if (!env) setNoEnvironment();
+        else {
+          const _env = envService.prepareRuntimeEnvFromRemoteEnv(env);
+          // console.log(_env, env, '_env');
+          set({ activeEnvId: envId, activeEnv: _env });
+        }
+        return env;
+      })
+      .catch((e) => {
+        console.log(e);
+        setNoEnvironment();
+      })
+      .finally(() => {
+        const vars = preparePlainVariables();
+        console.log('platform vars', vars);
+        envService.setVariablesToProvider(vars);
+      });
   },
 
   preparePlainVariables: () => {

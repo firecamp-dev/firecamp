@@ -164,7 +164,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
     context.window
       .promptInput({
         header: 'Delete Environment',
-        lable: 'Please enter the name of Environment',
+        lable: `Please enter the name \`${runtimeEnv.name}\``,
         placeholder: '',
         texts: { btnOk: 'Delete', btnOking: 'Deleting...' },
         value: '',
