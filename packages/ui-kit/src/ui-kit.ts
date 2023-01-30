@@ -74,6 +74,7 @@ export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CM
 
 export { default as Editor } from './components/editors/monaco-v2/Editor';
 export { default as SingleLineEditor } from './components/editors/monaco-v2/SingleLineEditor';
+export { default as EditorControlBar } from './components/editors/monaco-v2/EditorControlBar';
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';

@@ -1,6 +1,5 @@
 import { FC, useState, useEffect } from 'react';
 import shallow from 'zustand/shallow';
-import { ERestBodyTypes } from '@firecamp/types';
 import {
   Container,
   Dropdown,
@@ -9,20 +8,13 @@ import {
   Button,
   StatusBar,
   MultipartTable,
-  /* ToolBar, */
+  EditorControlBar,
 } from '@firecamp/ui-kit';
-/* 
-import { VscCode } from '@react-icons/all-files/vsc/VscCode';
-import { FaCopy } from '@react-icons/all-files/fa/FaCopy';
-import { VscWordWrap } from '@react-icons/all-files/vsc/VscWordWrap';
-import { VscFold } from '@react-icons/all-files/vsc/VscFold';
-import { VscClearAll } from '@react-icons/all-files/vsc/VscClearAll'; */
+import { ERestBodyTypes } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
-
 import GraphQLBody from './body/GraphQLBody';
 import BinaryBody from './body/BinaryBody';
 import NoBodyTab from './body/NoBodyTab';
-
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
 import { IStore, useStore } from '../../../store';
@@ -43,6 +35,7 @@ const BodyTab: FC<any> = () => {
     }),
     shallow
   );
+  const [editor, setEditor] = useState(null);
 
   console.log(body, 'body...');
 
@@ -53,6 +46,13 @@ const BodyTab: FC<any> = () => {
   }) => {
     if (body?.type == selectedType.id) return;
     changeBodyType(selectedType.id);
+    if (
+      ![ERestBodyTypes.Json, ERestBodyTypes.Xml, ERestBodyTypes.Text].includes(
+        selectedType.id
+      )
+    ) {
+      setEditor(null);
+    }
   };
 
   /**
@@ -106,14 +106,16 @@ const BodyTab: FC<any> = () => {
             value={body.value as string}
             language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
             onChange={({ target: { value } }) => changeBodyValue(value)}
-            controlsConfig={{ show: true }}
+            onLoad={(edt) => {
+              setEditor(edt);
+            }}
           />
         );
       case ERestBodyTypes.Binary:
         return <BinaryBody body={body || {}} onChange={changeBodyValue} />;
       case ERestBodyTypes.GraphQL:
         return <GraphQLBody body={body || {}} onChange={changeBodyValue} />;
-      case '':
+      case ERestBodyTypes.None:
         return <NoBodyTab selectBodyType={_selectBodyType} />;
       default:
         return <></>;
@@ -131,26 +133,13 @@ const BodyTab: FC<any> = () => {
               fetchOptions={() => _prepareRestBodyTypesOptions()}
             />
           </StatusBar.PrimaryRegion>
-          {/*     <StatusBar.SecondaryRegion>
-            <ToolBar>
-              <div>
-                <FaCopy size={16} />                                                    
-              </div>
-              <div>
-                <VscWordWrap size={16} />
-              </div>
-              <div>
-                <VscFold size={16} />
-              </div>
-              <div>
-                <VscCode size={16} />
-              </div>
-              <div>
-                <VscClearAll size={16} />
-              </div>
-            </ToolBar> */}
-          {/* //todo: removing add new Body components from here, you can take reference from old component of BodyTab to re-implement it */}
-          {/* </StatusBar.SecondaryRegion> */}
+          <StatusBar.SecondaryRegion>
+            <EditorControlBar
+              editor={editor}
+              language={bodyTypeNames[body.type]?.toLowerCase()}
+            />
+            {/* //todo: removing add new Body components from here, you can take reference from old component of BodyTab to re-implement it */}
+          </StatusBar.SecondaryRegion>
         </StatusBar>
       </Container.Header>
       <Container.Body>{_renderBodyTab()}</Container.Body>
