@@ -197,9 +197,9 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
         <Container.Header>
-          <TabHeader className="height-ex-small bg-statusBarBackground2">
+          <TabHeader className="height-ex-small bg-statusBarBackground2 !pl-3 !pr-3">
             <TabHeader.Left>
-              <div className="fc-urlbar-path flex text-lg">
+              <div className="fc-urlbar-path flex text-base">
                 {runtimeEnv.name}
               </div>
               <VscEdit size={12} onClick={rename} className="pointer" />
@@ -211,17 +211,15 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
           </TabHeader>
         </Container.Header>
         <Container.Body>
-          <Row>
-            <Column>
-              <Button
+          <Row className="justify-end pr-3 mt-2 -mb-1 ">
+            <Button
                 text="Save"
                 onClick={update}
                 disabled={!hasChange}
                 primary
                 sm
               />
-              <Button text="Delete" onClick={_delete} secondary sm />
-            </Column>
+              <Button text="Delete" onClick={_delete} secondary sm className="ml-2" />
           </Row>
           <Row flex={1} overflow="auto" className="with-divider h-full">
             <Column>
