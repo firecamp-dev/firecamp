@@ -68,6 +68,21 @@ const envService = {
     return envService.mergeEnvs(remoteEnv, localEnv);
   },
 
+  /** prepare a pain vars object from runtimeEnv */
+  preparePlainVarsFromRuntimeEnv: (
+    runtimeEnv: IRuntimeEnv
+  ): { [k: string]: string } => {
+    if (!runtimeEnv?.variables?.length) return {};
+    return runtimeEnv.variables.reduce((p, n) => {
+      /** if currentValue(value) is exists then use it or else use initialValue*/
+      if (n.key) {
+        if (n.value) return { ...p, [n.key]: n.value };
+        else return { ...p, [n.key]: n.initialValue };
+      }
+      return p;
+    }, {});
+  },
+
   /** apply variables in text or json object*/
   applyVariables: <T extends string | { [k: string]: any }>(
     variables: { [k: string]: any } = {},

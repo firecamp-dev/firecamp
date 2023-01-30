@@ -63,6 +63,8 @@ export interface IEnvironmentStore {
   toggleProgressBar: (flag?: boolean) => void;
 
   setActiveEnv: (envId?: TId) => void;
+  /** prepare pain variables object, whchi can be used to apply in monaco editors and other usage like script */
+  preparePlainVariables: () => any;
 
   /** @deprecated */
   fetchColEnvironment: (envId: TId) => Promise<any>;
@@ -128,18 +130,32 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setActiveEnv: (envId) => {
-    const { environments } = get();
+    const { environments, preparePlainVariables } = get();
     if (!envId) {
       set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
     } else {
       const env = environments.find((e) => e.__ref.id == envId);
-      if (!env) {
-        set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
-      } else {
+      if (env) {
         const _env = envService.prepareRuntimeEnvFromRemoteEnv(env);
+        // console.log(_env, env, '_env');
         set({ activeEnvId: envId, activeEnv: _env });
+      } else {
+        set({ activeEnvId: null, activeEnv: _cloneDeep(EmptyEnv) });
       }
     }
+
+    setTimeout(() => {
+      const vars = preparePlainVariables();
+      console.log('platform vars', vars);
+    });
+  },
+
+  preparePlainVariables: () => {
+    const { globalEnv, activeEnv } = get();
+    const gPlainVars = envService.preparePlainVarsFromRuntimeEnv(globalEnv);
+    const ePlainVars = envService.preparePlainVarsFromRuntimeEnv(activeEnv);
+    // console.log(globalEnv, activeEnv, gPlainVars, ePlainVars);
+    return { ...gPlainVars, ...ePlainVars };
   },
 
   // Environment
