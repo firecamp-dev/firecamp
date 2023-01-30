@@ -1,5 +1,6 @@
 import { EKeyValueTableRowType, IEnv, TId } from '@firecamp/types';
 import _cloneDeep from 'lodash/cloneDeep';
+import jtParse from 'json-templates';
 import { _object } from '@firecamp/utils';
 
 interface IRuntimeEnv extends IEnv {
@@ -33,7 +34,7 @@ const envService = {
     };
   },
 
-  /** split runtime env into remoteEnv and localEnv */
+  /** split runtimeEnv into remoteEnv and localEnv */
   splitEnvs: (env: IRuntimeEnv): { remoteEnv: IEnv; localEnv: IEnv } => {
     const { variables = [] } = env;
     let rvs = [];
@@ -65,6 +66,16 @@ const envService = {
     );
     if (!localEnv) localEnv = _cloneDeep(EmptyEnv);
     return envService.mergeEnvs(remoteEnv, localEnv);
+  },
+
+  /** apply variables in text or json object*/
+  applyVariables: <T extends string | { [k: string]: any }>(
+    variables: { [k: string]: any } = {},
+    source: T
+  ): T => {
+    const template = jtParse(source || '');
+    const res = template(variables);
+    return res;
   },
 };
 
