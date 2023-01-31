@@ -1,5 +1,11 @@
 import { FC, useEffect, useState } from 'react';
-import { SecondaryTab, Container, Editor, StatusBar } from '@firecamp/ui-kit';
+import {
+  SecondaryTab,
+  Container,
+  Editor,
+  StatusBar,
+  EditorControlBar,
+} from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 
@@ -170,6 +176,9 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
               }
             />
           </StatusBar.PrimaryRegion>
+          <StatusBar.SecondaryRegion>
+            <EditorControlBar editor={editorDOM} language={activeTab} />
+          </StatusBar.SecondaryRegion>
         </StatusBar>
       </Container.Header>
       <Container.Body overflow={'hidden'}>

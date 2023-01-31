@@ -138,7 +138,6 @@ const BodyTab: FC<any> = () => {
               editor={editor}
               language={bodyTypeNames[body.type]?.toLowerCase()}
             />
-            {/* //todo: removing add new Body components from here, you can take reference from old component of BodyTab to re-implement it */}
           </StatusBar.SecondaryRegion>
         </StatusBar>
       </Container.Header>
