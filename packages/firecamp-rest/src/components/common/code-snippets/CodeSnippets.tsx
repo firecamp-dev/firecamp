@@ -7,8 +7,8 @@ import shallow from 'zustand/shallow';
 import codeSnippet, {
   ESnippetTargets,
   TTargetClients,
-} from '../../../services/code-snippet';
-import targetsInfo from '../../../services/code-snippet/targets-info';
+} from '../../../services/code-snippet-deprecated';
+import targetsInfo from '../../../services/code-snippet-deprecated/targets-info';
 import { useStoreApi, useStore, IStore } from '../../../store';
 import { IRest } from '@firecamp/types';
 
