@@ -72,6 +72,7 @@ export const preScript: TPreScript = async (
   try {
     const code = `(()=>{
             ${script.value.join('\n')};
+            if(!result) var result;
             return {
               variables: {
                 globals: fc.globals.toJSON(),

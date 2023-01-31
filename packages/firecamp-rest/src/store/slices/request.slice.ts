@@ -41,12 +41,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   changeMeta: (__meta: Partial<IRest['__meta']>) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
-  execute(
-    variables: {
-      collection?: {};
-    },
-    fcAgent: EFirecampAgent
-  ): void;
+  execute(): void;
   save: (tabId: TId) => void;
 }
 
@@ -152,12 +147,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     }));
     state.equalityChecker({ [scriptType]: _scripts });
   },
-  execute: async (
-    variables: {
-      collection?: {};
-    },
-    fcAgent: EFirecampAgent
-  ) => {
+  execute: async () => {
     const state = get();
     try {
       // set response empty
@@ -165,10 +155,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
 
       // Check if request is running or not. stop running request if already true
       if (state.runtime.isRequestRunning === true) {
-        await state.context.request.cancelExecution(
-          state.request.__ref.id,
-          fcAgent
-        );
+        await state.context.request.cancelExecution(state.request.__ref.id);
         // set request running state as false
         state.setRequestRunningFlag(false);
         return;

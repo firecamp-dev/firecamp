@@ -280,9 +280,8 @@ const request: IPlatformRequestService = {
   // execute request
   execute: async (request: IRest) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
-    // const env = useEnvStore.getState().getActiveTabEnv();
-    // const vars = env ? env.variables : {};
-    // return executor.send(request, vars, agent);
+    const vars = useEnvStore.getState().preparePlainVariables();
+    return executor.send(request, vars, agent);
   },
 
   cancelExecution: (reqId: TId) => {

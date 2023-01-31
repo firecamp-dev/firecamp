@@ -65,6 +65,7 @@ const UrlBarContainer = ({ tabId }) => {
 
   const _onExecute = async () => {
     try {
+      execute();
     } catch (error) {}
   };
 
