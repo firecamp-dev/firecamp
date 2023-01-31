@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
-import { Container, Editor, Resizable,Row, Column } from '@firecamp/ui-kit';
+import { Container, Editor, Resizable, Row, Column } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 //@ts-ignore
 import ScriptDefs from './interfaces/Scripts.d.txt?raw';
 import { IScriptTab } from './interfaces/ScriptTab.interface';
 import HelpPopUp from './SnippetPopup';
-import {VscLinkExternal} from "@react-icons/all-files/vsc/VscLinkExternal";
+import { VscLinkExternal } from '@react-icons/all-files/vsc/VscLinkExternal';
 
 const ScriptTab: FC<IScriptTab> = ({
   id = '',
@@ -42,9 +42,14 @@ const ScriptTab: FC<IScriptTab> = ({
 
   return (
     <Container>
-      <Container.Body className='flex flex-col'>
+      <Container.Body className="flex flex-col">
         <div className="items-center p-1 text-sm bg-statusBarBackground2">
-          Pre-request script are written in Javascript and are run before the request is sent. Learn more about <a href="#" className='underline inline items-center cursor-pointer'>pre-request scripts <VscLinkExternal className='inline ml-1' size={12} /></a> 
+          Pre-request script are written in Javascript and are run before the
+          request is sent. Learn more about{' '}
+          <a href="#" className="underline inline items-center cursor-pointer">
+            pre-request scripts{' '}
+            <VscLinkExternal className="inline ml-1" size={12} />
+          </a>
           {/* {snippets ? (
             <HelpPopUp
               isOpen={isSnippetPopupOpen}
@@ -59,36 +64,44 @@ const ScriptTab: FC<IScriptTab> = ({
         {/* <div style={{ height: '100%' }}> */}
         <Row flex={1} overflow="auto">
           <Column flex={1}>
-          <Editor
-          autoFocus={true}
-          path={`scripts-${id}`}
-          id={`scripts-tab-${id}`}
-          value={script}
-          language={EEditorLanguage.TypeScript}
-          onLoad={(editor) => {
-            setEditorDOM(editor);
-          }}
-          onChange={({ target: { value } }) => {
-            // console.log('------- on change -------');
-            onChangeScript(value);
-          }}
-          addExtraLib={{
-            typeDefinition: ScriptDefs,
-            path: 'file:///node_modules/@firecamp/scripts/index.d.ts',
-          }}
-        /></Column>
-          <Resizable left={true} height="100%" minWidth={100} maxWidth={300} width={200} className="border-l border-appBorder">
-            <Column className="">
-            <HelpPopUp
-              isOpen={true}
-              snippets={snippets}
-              onClose={() => toggleSnippetPopup(!isSnippetPopupOpen)}
-              onAddScript={_onAddScriptFromSnippet}
+            <Editor
+              autoFocus={true}
+              path={`scripts-${id}`}
+              id={`scripts-tab-${id}`}
+              value={script}
+              language={EEditorLanguage.TypeScript}
+              onLoad={(editor) => {
+                setEditorDOM(editor);
+              }}
+              onChange={({ target: { value } }) => {
+                // console.log('------- on change -------');
+                onChangeScript(value);
+              }}
+              addExtraLib={{
+                typeDefinition: ScriptDefs,
+                path: 'file:///node_modules/@firecamp/scripts/index.d.ts',
+              }}
             />
+          </Column>
+          <Resizable
+            left={true}
+            height="100%"
+            minWidth={100}
+            maxWidth={300}
+            width={200}
+            className="border-l border-appBorder"
+          >
+            <Column className="">
+              <HelpPopUp
+                isOpen={true}
+                snippets={snippets}
+                onClose={() => toggleSnippetPopup(!isSnippetPopupOpen)}
+                onAddScript={_onAddScriptFromSnippet}
+              />
             </Column>
           </Resizable>
         </Row>
-        
+
         {/* </div> */}
       </Container.Body>
     </Container>

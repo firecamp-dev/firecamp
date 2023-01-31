@@ -63,15 +63,15 @@ const PlaygroundTab = () => {
   const [isSelectTypeDDOpen, toggleSelectTypeDD] = useState(false);
   //arraybuffer
   const [isTypedAVDDOpen, toggleSelectedEnvelopeOpen] = useState(false);
-  const [editorDOM, setEditorDOM] = useState({});
+  const [editor, setEditor] = useState(null);
 
   useEffect(() => {
-    // console.log(`editorDOM`, editorDOM)
-    if (editorDOM && editorDOM.commands) {
+    // console.log(`editor`, editor)
+    if (editor && editor.commands) {
       // console.log(`hellloooooo`)
       try {
         for (let cmd in EditorCommands) {
-          editorDOM.commands.addCommand({
+          editor.commands.addCommand({
             name: cmd,
             bindKey: EditorCommands[cmd].key,
             exec: (editor) => {
@@ -84,7 +84,7 @@ const PlaygroundTab = () => {
         console.log(`e`, e);
       }
     }
-  }, [editorDOM]);
+  }, [editor]);
 
   const envelopeDD = (
     Object.keys(ETypedArrayView) as Array<keyof typeof ETypedArrayView>
@@ -196,16 +196,8 @@ const PlaygroundTab = () => {
                 : EEditorLanguage.FcText
             }
             value={value}
-            controlsConfig={{
-              show:
-                activeType.id !== EMessagePayloadTypes.none &&
-                activeType.id !== EMessagePayloadTypes.file &&
-                typeof value === 'string',
-              position: 'down',
-              collapsed: true,
-            }}
             onLoad={(editor) => {
-              setEditorDOM(editor);
+              setEditor(editor);
             }}
             onChange={(e) => {
               if (message.value !== e.target.value) {
@@ -268,8 +260,8 @@ const PlaygroundTab = () => {
                 text={'Save'}
                 className="mr-1 hover:!bg-focus2"
                 onClick={() => promptSave()}
-                primary
                 transparent
+                primary
                 ghost
                 xs
               />

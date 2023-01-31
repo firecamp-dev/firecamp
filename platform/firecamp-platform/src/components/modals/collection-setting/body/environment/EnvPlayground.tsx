@@ -1,11 +1,6 @@
 import { FC, useEffect, useState, useRef } from 'react';
 import isEqual from 'react-fast-compare';
-import {
-  Container,
-  TabHeader,
-  Button,
-  Editor
-} from '@firecamp/ui-kit';
+import { Container, TabHeader, Button, Editor } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { EEditorLanguage } from '@firecamp/types';
 
@@ -178,9 +173,10 @@ const EnvPlayground: FC<IEnvPlayground> = ({
           onChange={({ target: { value } }) => {
             _updateVariables(value);
           }}
-          controlsConfig={{
-            show: true,
-          }}
+          onCtrlS={
+            (_) => {}
+            /* _onUpdate */
+          }
           monacoOptions={{
             name: 'Environment variables',
             width: '100%',
@@ -190,10 +186,6 @@ const EnvPlayground: FC<IEnvPlayground> = ({
             tabSize: 2,
             cursorStart: 1,
           }}
-          onCtrlS={
-            (_) => {}
-            /* _onUpdate */
-          }
         />
       </Container.Body>
       {_renderFooter()}

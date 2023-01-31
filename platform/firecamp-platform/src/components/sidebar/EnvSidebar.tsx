@@ -158,9 +158,6 @@ const EnvVarPreview = () => {
             onChangeVariable(e.target.value);
           }}
           onCtrlS={onUpdate}
-          controlsConfig={{
-            show: true,
-          }}
           monacoOptions={{
             wordWrap: 'off',
           }}

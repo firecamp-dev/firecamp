@@ -289,9 +289,6 @@ const SnippetModal = ({
                     language={editorMode || 'typescript'}
                     value={snippet}
                     disabled={true}
-                    // controlsConfig={{
-                    //   show: true,
-                    // }}
                     monacoOptions={{
                       name: 'emitter',
                       width: '100%',

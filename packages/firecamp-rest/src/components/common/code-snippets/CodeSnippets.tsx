@@ -159,7 +159,7 @@ const CodeSnippets = ({ tabId = '' }) => {
                       </div>
                     </div>
                   ) : (
-                    ''
+                    <></>
                   )}
 
                   <Editor
@@ -168,9 +168,6 @@ const CodeSnippets = ({ tabId = '' }) => {
                       activeClientTargetMap[activeTarget] || 'typescript'
                     }
                     disabled={true}
-                    controlsConfig={{
-                      show: true,
-                    }}
                     monacoOptions={{
                       // ref: ref,
                       // name: snippetLabel,

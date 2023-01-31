@@ -7,6 +7,7 @@ import {
   TabHeader,
   Column,
   Editor,
+  EditorControlBar,
 } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 import AckIcon from './AckIcon';
@@ -25,6 +26,7 @@ const emptyRow = {
 const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
   const [selectedArgIndex, setSelectedArgIndex] = useState(0);
   const [value, setValue] = useState('');
+  const [editor, setEditor] = useState(null);
   const _setArgIndex = (index = 0) => {
     setSelectedArgIndex(index);
     let emitterArg = row?.message?.[index] || null;
@@ -57,7 +59,9 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
   }, []);
 
   const language =
-    row?.message[selectedArgIndex]?.__meta.type === 'json' ? EEditorLanguage.Json : EEditorLanguage.Text;
+    row?.message[selectedArgIndex]?.__meta.type === 'json'
+      ? EEditorLanguage.Json
+      : EEditorLanguage.Text;
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
@@ -67,13 +71,14 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
             row={row || {}}
             emitterArg={row?.message?.[selectedArgIndex]}
           />
+          <EditorControlBar editor={editor} language={language} />
         </Container.Header>
         <Container.Body>
           <Editor
             language={language}
             value={value}
             disabled={true}
-            // controlsConfig={{ show: true, position: 'horizontal' }}
+            onLoad={(edt) => setEditor(edt)}
           />
         </Container.Body>
         {row.message && Array.isArray(row.message) ? (
@@ -85,7 +90,7 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
             />
           </Container.Footer>
         ) : (
-          ''
+          <></>
         )}
       </Container>
     </Column>

@@ -101,14 +101,14 @@ const BulkEditTable: FC<IBulkEditTable> = ({
           <Editor
             value={raw}
             language={EEditorLanguage.Text}
-            monacoOptions={{
-              style: { display: 'table-caption' },
-              height: '100px',
-            }}
             onChange={({ target: { value } }) => _setRaw(value)}
             placeholder={`
             key:value    (a new entry should be added to the line with the key, value separated by a ':')
             `}
+            monacoOptions={{
+              style: { display: 'table-caption' },
+              height: '100px',
+            }}
           />
         </div>
       )}

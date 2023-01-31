@@ -15,11 +15,6 @@ const Editor: FC<IEditor> = ({
   path,
   loading,
   addExtraLib,
-  // controlsConfig = {
-  //   show: false,
-  //   position: 'vertical',
-  //   collapsed: true,
-  // },
   placeholder = '',
   className = '',
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
