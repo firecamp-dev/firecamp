@@ -1,20 +1,20 @@
 import { IRowCellMeta } from '../basic-table/BasicTable.interfaces';
-import { ITableOptions } from '../primitive/table.interfaces';
+import { ITableOptions, ITableRows, TTableApi } from '../primitive/table.interfaces';
 
 export enum ERowType {
   Text = 'text',
   File = 'file',
 }
 
-export interface IMultipartIFT {
-  /** table rows */
-  rows: Array<IRowCellMeta>;
-
-  /** multipart table key to represent multipart value (Which key holds value). default key 'value' */
-  multipartKey?: string;
-
-  /** update table data */
-  onChange: (updates: Array<IRowCellMeta>) => void;
+export interface IMultipartTable<R> {
+  /** Rows to be rendered on table*/
+  rows?: R[];
+  /** To provide additional functions to the primitive table */
+  options?: ITableOptions;
+  /** To provide the updated rows on ever changed value*/
+  onChange: (rows: ITableRows) => any;
+  /** To provide the table reference */
+  onMount?: (tableApi: TTableApi) => any;
 }
 
 export interface IMultiPartInput {

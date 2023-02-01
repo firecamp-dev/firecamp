@@ -14,16 +14,14 @@ import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from '../primitive/Table';
 import { ITableRows, TRenderCell, TTableApi } from '../primitive/table.interfaces';
 
-import { IMultiPartInput, ERowType } from './MultipartTable.interfaces';
+import { IMultipartTable, IMultiPartInput, ERowType } from './MultipartTable.interfaces';
 
 const MultipartTable = ({
-  name = '',
-  multipartKey = 'value',
   rows = [],
   options = {},
   onChange = (rs: ITableRows) => {},
   onMount = (api: TTableApi) => {},
-}) => {
+}: IMultipartTable<any> ) => {
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
