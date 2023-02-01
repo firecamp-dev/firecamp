@@ -86,7 +86,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
     }
     console.log('_rcs', _rcs);
     const hasChange = !_object.isEmpty(_cleanDeep(_cloneDeep(_rcs)));
-    // console.log(state.context.request, state.runtime.tabId, hasChange);
+    console.log(state.context.tab, state.runtime.tabId, hasChange);
     state.context.tab.changeMeta(state.runtime.tabId, {
       hasChange,
     });

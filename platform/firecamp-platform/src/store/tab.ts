@@ -121,9 +121,9 @@ const useTabStore = create<ITabStore>((set, get) => {
       });
       // if __meta.hasChange will change then emit EPlatformTabs.changeState
       if (tab.__meta.hasChange === false && __meta.hasChange === true) {
-        platformEmitter.emit(EPlatformTabs.changeState, [tabId, 'modified']);
+        platformEmitter.emit(EPlatformTabs.ChangeState, [tabId, 'modified']);
       } else if (tab.__meta.hasChange === true && __meta.hasChange === false) {
-        platformEmitter.emit(EPlatformTabs.changeState, [tabId, 'default']);
+        platformEmitter.emit(EPlatformTabs.ChangeState, [tabId, 'default']);
       }
     },
 

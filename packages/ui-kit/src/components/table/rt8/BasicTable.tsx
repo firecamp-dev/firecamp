@@ -12,7 +12,6 @@ const BasicTable: FC<any> = ({
   disabled = false,
   title = '',
   onChange = () => {},
-  meta = { mode: {} },
 
   name,
   resizable,

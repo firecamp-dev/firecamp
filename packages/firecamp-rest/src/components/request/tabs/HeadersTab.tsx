@@ -29,14 +29,14 @@ const HeadersTab = () => {
           key={'headers'}
           rows={headers}
           title="Headers"
-          onChange={(data) => onHeaderChange(data)}
-          onMount={() => {}}
-          meta={{
-            mode: {
+          options={{
+            languages: {
               key: EEditorLanguage.HeaderKey,
               value: EEditorLanguage.HeaderValue,
             },
           }}
+          onChange={(data) => onHeaderChange(data)}
+          onMount={() => {}}
         />
 
         {
@@ -49,11 +49,10 @@ const HeadersTab = () => {
                 title="Headers derived from auth"
                 disable={true}
                 options={{
-                  mode: {
+                  languages: {
                     key: EEditorLanguage.HeaderKey,
                     value: EEditorLanguage.HeaderValue,
                   },
-                  language: EEditorLanguage.HeaderKey,
                 }}
               />
             </div>

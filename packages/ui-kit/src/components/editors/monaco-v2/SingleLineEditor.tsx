@@ -57,7 +57,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 
     editor.onDidFocusEditorWidget(() => {
       localStorage.setItem('currentEditor', editor.getId());
-      console.log(editor.getId(), 'Focus event triggered ');
+      // console.log(editor.getId(), 'Focus event triggered ');
     });
 
     /**
@@ -134,7 +134,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             const et = window.editors.get(mapKeys[nextIndex]);
             editor.setSelection(new monaco.Range(0, 0, 0, 0));
             if (et) {
-              console.log(et.getId(), 'tab');
+              // console.log(et.getId(), 'tab');
               evt.preventDefault();
               evt.stopPropagation();
               const range = et?.getModel()?.getFullModelRange();

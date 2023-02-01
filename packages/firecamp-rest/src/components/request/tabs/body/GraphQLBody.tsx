@@ -24,9 +24,7 @@ const GraphQLBody = ({ body, onChange }) => {
               onChange({ query, variables: value })
             }
             monacoOptions={{
-              // mode: "json",
               name: 'graphQLBodyVariables',
-              // value: variables,
               height: '30%',
             }}
           />
