@@ -1,4 +1,5 @@
 import { IRowCellMeta } from '../basic-table/BasicTable.interfaces';
+import { ITableOptions } from '../primitive/table.interfaces';
 
 export enum ERowType {
   Text = 'text',
@@ -33,4 +34,7 @@ export interface IMultiPartInput {
 
   /** on change row type one of ['text', 'file'] */
   onChangeRowType?: (type: ERowType) => void;
+  
+  /** Table options */
+  options?: ITableOptions
 }

@@ -1,4 +1,4 @@
-import { FC, memo, useEffect, useRef, useState } from 'react';
+import React, { FC, memo, useEffect, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
@@ -11,7 +11,8 @@ import { EEditorLanguage } from '@firecamp/types';
 import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
-import Table, { TTableApi } from '../primitive/Table';
+import Table from '../primitive/Table';
+import { ITableRows, TRenderCell, TTableApi } from '../primitive/table.interfaces';
 
 import { IMultiPartInput, ERowType } from './MultipartTable.interfaces';
 
@@ -20,8 +21,8 @@ const MultipartTable = ({
   multipartKey = 'value',
   rows = [],
   options = {},
-  onChange = (rs) => {},
-  onMount = (api) => {},
+  onChange = (rs: ITableRows) => {},
+  onMount = (api: TTableApi) => {},
 }) => {
   const apiRef = useRef<TTableApi>();
 
@@ -35,17 +36,10 @@ const MultipartTable = ({
       name: 'Description',
       width: '150px',
     },
-    { id: 'remove', key: '', name: '', width: 20 },
+    { id: 'remove', key: '', name: '', width: '20px' },
   ];
 
-  const handleDrag = (a) => {
-    console.log(a);
-  };
-  const handleDrop = (a) => {
-    console.log(a);
-  };
-
-  const renderCell = (
+  const renderCell: TRenderCell<any> = (
     column,
     cellValue,
     rowIndex,
@@ -62,7 +56,7 @@ const MultipartTable = ({
             <span
               draggable={true}
               onDragStart={(e) => {
-                handleDrag(row, rowIndex);
+                handleDrag(row);
               }}
               className="flex"
             >
@@ -160,8 +154,6 @@ const MultipartTable = ({
           description: '',
         }}
         renderCell={renderCell}
-        handleDrag={handleDrag}
-        handleDrop={handleDrop}
         options={options}
         onChange={(rows) => {
           // console.log(rows)
@@ -198,7 +190,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     row,
     value,
     onChange = (e = { target: { value: '' } }) => {},
-    onChangeFile = (e = { target: { file: null } }) => {},
+    onChangeFile = (e = { target: { file: null } as any}) => {},
     onChangeRowType = () => {},
     options,
   }) => {
@@ -213,12 +205,12 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     //   }
     // }, [value]);
 
-    const _onChangeTextInput = (e) => {
+    const _onChangeTextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       onChange({ target: { value } });
     };
 
-    const _onChangeFileInput = (e) => {
+    const _onChangeFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
       // console.log(e.target.files, 'e...');
       const file = e.target.files[0];
       onChangeFile({ target: { file } }); // It'll always be a single file
@@ -241,7 +233,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     console.log(row, 'row');
 
     return (
-      <div className="items-center">
+      <div className="flex items-center">
         {type == 'text' ? (
           <SingleLineEditor
             key={`${row.id}`}
@@ -249,7 +241,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
             className="without-border px-2"
             style={{
               position: 'absolute',
-              width: '100%',
+              width: 'calc(100% - 20px)',
               top: '2px',
               overflow: 'hidden',
               padding: '0px 4px',
@@ -276,14 +268,14 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
 
             <div
               key={`${row.id}-file-type`}
-              className="cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre"
+              className="cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre w-full"
               onClick={_onClick}
             >
               {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}
             </div>
           </>
         )}
-        <div className="absolute cursor-pointer" style={{ right: '5px', bottom: '-10px' }}>
+        <div className="cursor-pointer ml-auto pr-1 h-4">
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} />
           ) : (
