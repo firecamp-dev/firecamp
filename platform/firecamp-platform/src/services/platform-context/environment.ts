@@ -3,6 +3,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import { envService } from '../env.service';
+import { useEnvStore } from '../../store/environment';
 
 export interface IPlatformEnvironmentService {
   // fetch environment
@@ -18,7 +19,7 @@ const environment: IPlatformEnvironmentService = {
   fetch: envService.fetch,
 
   update: (id: TId, env: Partial<IEnv>) => {
-    return Rest.environment.update(id, env).then((res) => res.data);
+    return useEnvStore.getState()._updateEnvironment(id, env);
   },
 
   delete: async (id: TId) => {

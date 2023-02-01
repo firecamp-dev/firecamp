@@ -59,7 +59,7 @@ const EditorControlbar: FC<any> = ({ editor, language = 'json' }) => {
               const text = editor.getValue();
               // prettify json
               if (language === 'json') {
-                const value = JSON.stringify(JSON.parse(text), null, 4);
+                const value = JSON.stringify(JSON.parse(text), null, 8);
                 editor.setValue(value);
               }
               // prettify xml

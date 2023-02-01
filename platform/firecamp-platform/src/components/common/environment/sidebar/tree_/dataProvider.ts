@@ -97,11 +97,28 @@ export class EnvironmentDataProvider {
     this.rootChildren = [...this.rootChildren, envId];
     this.items['root'].children = this.rootChildren;
     this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    console.log('12345', env);
+  }
+
+  public updateEnvItem(env: Partial<IEnv>) {
+    const envId = env.__ref.id;
+    const {
+      variables: [], // ignore variables if present, we don't need it in the tree
+      ..._env
+    } = env;
+    this.items = {
+      ...this.items,
+      [envId]: {
+        index: envId,
+        children: [],
+        isFolder: false,
+        data: { ..._env },
+      },
+    };
+    this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
   }
 
   public removeEnvItem(envId: TId) {
-    this.rootChildren = this.rootChildren.filter(id=> id != envId)
+    this.rootChildren = this.rootChildren.filter((id) => id != envId);
     this.items['root'].children = this.rootChildren;
     delete this.items[envId];
     this.items = { ...this.items };

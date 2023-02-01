@@ -21,7 +21,7 @@ const Url: FC<IUrl> = ({
           height={21}
           type="text"
           placeholder={placeholder}
-          language={EEditorLanguage.Text}
+          language={EEditorLanguage.FcText}
           autoFocus={autoFocus}
           monacoOptions={{
             fontSize: 16,

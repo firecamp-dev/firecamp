@@ -66,6 +66,9 @@ export interface IEnvironmentStore {
   /** prepare pain variables object, whchi can be used to apply in monaco editors and other usage like script */
   preparePlainVariables: () => any;
 
+  /** apply current active env's variables in whole platform */
+  applyVariablesToPlatform: () => void;
+
   /** @deprecated */
   fetchColEnvironment: (envId: TId) => Promise<any>;
   createEnvironmentPrompt: () => void;
@@ -73,8 +76,10 @@ export interface IEnvironmentStore {
   updateEnvironment: (envId: string, body: any) => Promise<any>;
   deleteEnvironment: (envId: TId) => Promise<any>;
 
+  _updateEnvironment: (envId: TId, env: Partial<IEnv>) => Promise<IEnv>;
+
   _addEnv: (env: IEnv) => void;
-  _updateEnv: (env: IEnv) => void;
+  _updateEnvCb: (env: IEnv) => void;
   _deleteEnv: (envId: TId) => void;
 
   // common
@@ -130,7 +135,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setActiveEnv: (envId) => {
-    const { environments, preparePlainVariables } = get();
+    const { environments, applyVariablesToPlatform } = get();
     const setNoEnvironment = () =>
       set({
         activeEnvId: null,
@@ -161,9 +166,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
         setNoEnvironment();
       })
       .finally(() => {
-        const vars = preparePlainVariables();
-        console.log('platform vars', vars);
-        envService.setVariablesToProvider(vars);
+        applyVariablesToPlatform();
       });
   },
 
@@ -173,6 +176,13 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const ePlainVars = envService.preparePlainVarsFromRuntimeEnv(activeEnv);
     // console.log(globalEnv, activeEnv, gPlainVars, ePlainVars);
     return { ...gPlainVars, ...ePlainVars };
+  },
+
+  applyVariablesToPlatform: () => {
+    const state = get();
+    const vars = state.preparePlainVariables();
+    console.log('platform vars', vars);
+    envService.setVariablesToProvider(vars);
   },
 
   // Environment
@@ -298,14 +308,29 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       });
   },
 
+  _updateEnvironment: async (envId: TId, body: Partial<IEnv>) => {
+    const state = get();
+    state.toggleProgressBar(true);
+    const res = await envService
+      .update(envId, body)
+      .then((env: any) => {
+        state._updateEnvCb(env);
+        return env;
+      })
+      .finally(() => {
+        state.toggleProgressBar(false);
+      });
+    return res;
+  },
+
   _addEnv: (env) => {
     set((s) => {
       s.envTdpInstance?.addEnvItem(env);
       return { environments: [...s.environments, env] };
     });
   },
-  _updateEnv: (env) => {
-    const { environments } = get();
+  _updateEnvCb: (env) => {
+    const { environments, activeEnv } = get();
     const envs = environments.map((e) => {
       if (e.__ref.id == env.__ref.id) {
         return { ...e, ...env };
@@ -314,7 +339,21 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     });
     set((s) => {
       s.envTdpInstance?.updateEnvItem(env);
-      return { environments: [...envs] };
+      const aEnv =
+        activeEnv?.__ref.id == env.__ref.id
+          ? envService.prepareRuntimeEnvFromRemoteEnv(env)
+          : s.activeEnv;
+      return {
+        environments: [...envs],
+        activeEnv: aEnv,
+      };
+    });
+    // if the updated env is the active one then re apply. their vars to platform
+    new Promise((rs) => setTimeout(rs, 100)).then(() => {
+      if (activeEnv?.__ref.id == env.__ref.id) {
+        get().applyVariablesToPlatform();
+        console.log('updated the env vars');
+      }
     });
   },
   _deleteEnv: (envId) => {

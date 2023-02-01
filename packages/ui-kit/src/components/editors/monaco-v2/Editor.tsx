@@ -170,7 +170,7 @@ const Editor: FC<IEditor> = ({
   const options: EditorProps['options'] = {
     readOnly: false,
     fontFamily: "'Open Sans', sans-serif",
-    fontSize: 14,
+    fontSize: 15,
     links: false,
     lineNumbersMinChars: 5,
     overviewRulerLanes: 0,
@@ -195,6 +195,8 @@ const Editor: FC<IEditor> = ({
       showModules: false, // disables `globalThis`, but also disables user-defined modules suggestions.
     },
     suggestOnTriggerCharacters: false,
+    tabSize: 4,
+    renderWhitespace: false, // it'll show dot for white stpace
     wordBasedSuggestions: false,
     ...monacoOptions,
   };

@@ -28,6 +28,10 @@ const envService = {
     return Rest.environment.fetch(id).then((res) => res.data);
   },
 
+  update: (id: TId, env: Partial<IEnv>) => {
+    return Rest.environment.update(id, env).then((res) => res.data);
+  },
+
   /** merge remote and local env to prepare runtime env with initialValue and currentValue */
   mergeEnvs: (remoteEnv: IEnv, localEnv: IEnv): IRuntimeEnv => {
     console.log('I am in the merge');
