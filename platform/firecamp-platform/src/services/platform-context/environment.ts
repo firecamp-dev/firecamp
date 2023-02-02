@@ -11,7 +11,7 @@ export interface IPlatformEnvironmentService {
   update: (id: TId, env: Partial<IEnv>) => Promise<IEnv>;
   delete: (id: TId) => Promise<IEnv>;
 
-  mergeEnvs: typeof _env.mergeEnvs, ; //return rnv with initialValue/currentValue
+  mergeEnvs: typeof _env.mergeEnvs; //return rnv with initialValue/currentValue
   splitEnvs: typeof _env.splitEnvs; //return remoteEnv and localEnv from runtime env
 }
 

@@ -112,12 +112,20 @@ export const postScript: TPostScript = async (
             ${script.value.join('\n')};
             return {
               response,
-              environment
+              variables: {
+                globals: fc.globals.toJSON(),
+                environment: fc.environment.toJSON(),
+                collection: fc.collectionVariables.toJSON(),
+              },
             }
           })()`;
     return jsExecutor(_script, {
       response: new Response(response),
-      fc: new Fc(),
+      fc: new Fc(
+        variables.globals,
+        variables.environment,
+        variables.collection
+      ),
     });
   } catch (error) {
     console.info('%cpost-script sandbox error', 'color: red; font-size: 14px');
