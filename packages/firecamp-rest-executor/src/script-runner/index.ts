@@ -1,7 +1,14 @@
 import Joi from '@hapi/joi';
 import tv4 from 'tv4';
 import chai from 'chai';
-import { EScriptTypes, IRest, IRestResponse, IScript } from '@firecamp/types';
+import {
+  EScriptTypes,
+  IRest,
+  IRestResponse,
+  IScript,
+  TPlainObject,
+  TVariable,
+} from '@firecamp/types';
 import { _misc, _string } from '@firecamp/utils';
 
 import jsExecutor from './lib/js-executor';
@@ -11,13 +18,7 @@ import { Response } from './response';
 import requestAssertionPlugin from './request/assertions';
 import responseAssertionPlugin from './response/assertions';
 import Runner from '../test-runner/runner';
-import {
-  TEnvVariable,
-  TPostScript,
-  TPreScript,
-  TTestScript,
-  TVariable,
-} from './types';
+import { TPostScript, TPreScript, TTestScript } from './types';
 
 export * from './types';
 export * from './snippets';
@@ -43,7 +44,7 @@ class Fc {
       /**
        * variable find priorities
        * 1. first find in collection variables
-       * 2. if not found then find in environnent variables
+       * 2. if not found then find in environment variables
        * 3. if not found then find in globals variables
        */
       let value = this.collectionVariables.get(variableName);
@@ -60,9 +61,9 @@ class Fc {
 export const preScript: TPreScript = async (
   request: IRest,
   variables: {
-    globals: TVariable[];
+    globals?: TVariable[];
     environment: TVariable[];
-    collection: TVariable[];
+    collection?: TVariable[];
   }
 ) => {
   const script: IScript | undefined = request.preScripts.find(
@@ -100,7 +101,7 @@ export const preScript: TPreScript = async (
 export const postScript: TPostScript = async (
   script: string,
   response: IRestResponse,
-  variables: TEnvVariable
+  variables: TPlainObject
 ) => {
   if (!script) return {};
   try {
@@ -126,7 +127,7 @@ export const postScript: TPostScript = async (
 export const testScript: TTestScript = async (
   request: IRest,
   response: IRestResponse,
-  variables: TEnvVariable
+  variables: TPlainObject
 ) => {
   //@ts-ignore
   if (!request?.scripts?.test) return;

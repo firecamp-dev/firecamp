@@ -1,10 +1,9 @@
-import { IRest, IRestResponse, IScript } from '@firecamp/types';
+import { IRest, IRestResponse, IScript, TVariable } from '@firecamp/types';
 import { IScriptRequest } from './request';
 
 export * from './request';
 export * from './response';
 
-export type TEnvVariable = { [key: string]: number | boolean | string };
 export type TPreScript = (
   request: IRest,
   variables: {
@@ -21,20 +20,9 @@ export type TPostScript = (
 export type TTestScript = (
   scripts: IScript,
   response: IRestResponse,
-  variables: TVariable
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
 ) => Promise<any>;
-
-export enum EVariableType {
-  text = 'text',
-  number = 'number',
-  boolean = 'boolean',
-  secret = 'secret',
-}
-
-export type TVariable = {
-  id?: string;
-  key: string;
-  value: string;
-  type?: EVariableType;
-  disable?: boolean;
-};
