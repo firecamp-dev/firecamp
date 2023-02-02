@@ -1,4 +1,4 @@
-import { IRest, IRestResponse, TVariable } from '@firecamp/types';
+import { IRest, IRestResponse, TRuntimeVariable } from '@firecamp/types';
 
 export type TResponse = Partial<
   Omit<IRestResponse, 'error'> & {
@@ -15,9 +15,9 @@ export interface IRestExecutor {
   send(
     request: IRest,
     variables: {
-      globals: TVariable[];
-      environment: TVariable[];
-      collection: TVariable[];
+      globals: TRuntimeVariable[];
+      environment: TRuntimeVariable[];
+      collection: TRuntimeVariable[];
     }
   ): Promise<TResponse>;
 

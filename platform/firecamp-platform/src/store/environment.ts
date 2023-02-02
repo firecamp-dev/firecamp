@@ -2,14 +2,14 @@ import create from 'zustand';
 import { nanoid } from 'nanoid';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Rest } from '@firecamp/cloud-apis';
-import { TId, IEnv, IEnvironment } from '@firecamp/types';
+import { TId, IEnv, IEnvironment, TPlainObject, IRuntimeEnv } from '@firecamp/types';
+import { _env } from '@firecamp/utils';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
 import { CollectionEnvDataProvider } from '../components/common/environment/sidebar/tree/dataProvider';
 import platformContext from '../services/platform-context';
 import { useWorkspaceStore } from './workspace';
 import { RE } from '../types';
-import { envService, EmptyEnv, IRuntimeEnv } from '../services/env.service';
-import { _env } from '@firecamp/utils';
+import { envService, EmptyEnv } from '../services/env.service';
 
 const initialState = {
   activeEnvId: null,
@@ -64,8 +64,8 @@ export interface IEnvironmentStore {
   toggleProgressBar: (flag?: boolean) => void;
 
   setActiveEnv: (envId?: TId) => void;
-  /** prepare pain variables object, whchi can be used to apply in monaco editors and other usage like script */
-  preparePlainVariables: () => any;
+  /** prepare pain variables object, which can be used to apply in monaco editors and other usage like script */
+  preparePlainVariables: () => TPlainObject;
 
   /** apply current active env's variables in whole platform */
   applyVariablesToPlatform: () => void;
@@ -177,6 +177,9 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const gPlainVars = _env.preparePlainVarsFromRuntimeEnv(globalEnv);
     const ePlainVars = _env.preparePlainVarsFromRuntimeEnv(activeEnv);
     // console.log(globalEnv, activeEnv, gPlainVars, ePlainVars);
+
+    _env.splitEnvs(globalEnv);
+
     return { ...gPlainVars, ...ePlainVars };
   },
 

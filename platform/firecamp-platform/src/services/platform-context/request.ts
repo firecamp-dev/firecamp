@@ -6,6 +6,7 @@ import {
   IRestResponse,
   EHttpMethod,
   IRequestFolder,
+  TRuntimeVariable,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
 import { platformEmitter } from '../platform-emitter';
@@ -282,8 +283,17 @@ const request: IPlatformRequestService = {
   // execute request
   execute: async (request: IRest) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
-    const vars = useEnvStore.getState().preparePlainVariables();
-    return executor.send(request, vars, agent);
+    const { globalEnv, activeEnv } = useEnvStore.getState();
+    const variables: {
+      globals: TRuntimeVariable[];
+      environment: TRuntimeVariable[];
+      collection: TRuntimeVariable[];
+    } = {
+      globals: globalEnv.variables,
+      environment: activeEnv.variables,
+      collection: [],
+    };
+    return executor.send(request, variables, agent);
   },
 
   cancelExecution: (reqId: TId) => {

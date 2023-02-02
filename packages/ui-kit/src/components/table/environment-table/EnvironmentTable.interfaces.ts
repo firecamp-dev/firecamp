@@ -1,4 +1,4 @@
-import { EKeyValueTableRowType } from '@firecamp/types';
+import { EVariableType } from '@firecamp/types';
 import {
   ITableClasses,
   ITableOptions,
@@ -21,8 +21,8 @@ export interface IRowCellMeta {
    */
   disable?: boolean;
 
-  /** row data type one of  ['text', 'boolean', 'file'] */
-  type?: EKeyValueTableRowType;
+  /** row data type one of  EVariableType */
+  type?: EVariableType;
 
   /** row description */
   description?: string;

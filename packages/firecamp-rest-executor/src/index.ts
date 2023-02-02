@@ -2,10 +2,9 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
 import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
-import { IRest, IRestResponse, TVariable } from '@firecamp/types';
+import { IRest, IRestResponse, TRuntimeVariable } from '@firecamp/types';
 import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
-
 import parseBody from './helpers/body';
 import { IRestExecutor, TResponse } from './types';
 import * as scriptRunner from './script-runner';
@@ -133,9 +132,9 @@ export default class RestExecutor implements IRestExecutor {
   async send(
     fcRequest: IRest,
     variables: {
-      globals: TVariable[];
-      environment: TVariable[];
-      collection: TVariable[];
+      globals: TRuntimeVariable[];
+      environment: TRuntimeVariable[];
+      collection: TRuntimeVariable[];
     }
   ): Promise<TResponse> {
     console.log(fcRequest, variables, 2000000);
@@ -177,8 +176,13 @@ export default class RestExecutor implements IRestExecutor {
       })
       .then(({ fcRequest }) => {
         // apply variables to request
-        console.log(variables, 77777);
-        const request = _env.applyVariables(fcRequest, variables) as IRest;
+        const { globals, environment, collection } = variables;
+        const gVars = _env.preparePlainVarsFromRuntimeVariables(globals);
+        const eVars = _env.preparePlainVarsFromRuntimeVariables(environment);
+        const cVars = _env.preparePlainVarsFromRuntimeVariables(collection);
+        const plainVars = { ...gVars, ...eVars, ...cVars };
+        // console.log(variables, plainVars, 77777);
+        const request = _env.applyVariables(fcRequest, plainVars) as IRest;
         return request;
       })
       .then(async (request) => {
@@ -220,7 +224,7 @@ export default class RestExecutor implements IRestExecutor {
       .then(async (response) => {
         /** run post-script */
         // TODO: add inherit support
-        let postScriptRes = await scriptRunner.postScript(
+        const postScriptRes = await scriptRunner.postScript(
           fcRequest.postScripts,
           response,
           {

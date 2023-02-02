@@ -5,7 +5,7 @@ import {
   ERestBodyTypes,
   IRest,
   IRestResponse,
-  TVariable,
+  TRuntimeVariable
 } from '@firecamp/types';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
 import parseBody from '@firecamp/rest-executor/dist/esm/helpers/body';
@@ -23,9 +23,9 @@ const restExecutors: { [key: TId]: RestExecutor } = {};
 export const send = async (
   request: IRest,
   variables: {
-    globals: TVariable[];
-    environment: TVariable[];
-    collection: TVariable[];
+    globals: TRuntimeVariable[];
+    environment: TRuntimeVariable[];
+    collection: TRuntimeVariable[];
   },
   firecampAgent: EFirecampAgent
 ): Promise<IRestResponse> => {

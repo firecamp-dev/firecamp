@@ -5,22 +5,8 @@ import {
   SetCompletionProvider,
   SetHoverProvider,
 } from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
-import {
-  EEditorLanguage,
-  EKeyValueTableRowType,
-  IEnv,
-  TId,
-} from '@firecamp/types';
+import { EEditorLanguage, IEnv, IRuntimeEnv, TId } from '@firecamp/types';
 
-interface IRuntimeEnv extends IEnv {
-  variables: {
-    id: TId;
-    key: string;
-    initialValue: string;
-    value: string;
-    type: EKeyValueTableRowType;
-  }[];
-}
 const EmptyEnv: IRuntimeEnv = { name: '', variables: [], __ref: { id: '' } };
 const envService = {
   fetch: async (id: TId) => {
