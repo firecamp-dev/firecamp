@@ -3,12 +3,12 @@ import {
   ERequestTypes,
   EScriptLanguages,
   EScriptTypes,
+  EVariableType,
   IRest,
+  TVariable,
 } from '@firecamp/types';
 import {
-  EVariableType,
   preScript,
-  TVariable,
   // postScript
 } from '../';
 

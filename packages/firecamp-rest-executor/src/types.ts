@@ -1,4 +1,4 @@
-import { IRest, IRestResponse, TPlainObject, TVariable } from '@firecamp/types';
+import { IRest, IRestResponse, TVariable } from '@firecamp/types';
 
 export type TResponse = Partial<
   Omit<IRestResponse, 'error'> & {

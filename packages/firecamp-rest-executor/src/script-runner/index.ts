@@ -62,7 +62,7 @@ export const preScript: TPreScript = async (
   request: IRest,
   variables: {
     globals?: TVariable[];
-    environment: TVariable[];
+    environment?: TVariable[];
     collection?: TVariable[];
   }
 ) => {
@@ -99,14 +99,17 @@ export const preScript: TPreScript = async (
 };
 
 export const postScript: TPostScript = async (
-  script: string,
-  response: IRestResponse,
-  variables: TPlainObject
+  postScripts,
+  response,
+  variables
 ) => {
+  const script: IScript | undefined = postScripts.find(
+    (s) => s.type == EScriptTypes.Test
+  );
   if (!script) return {};
   try {
     const _script = `(()=>{
-            ${script};
+            ${script.value.join('\n')};
             return {
               response,
               environment

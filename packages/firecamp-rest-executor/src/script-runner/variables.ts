@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { _object } from '@firecamp/utils';
-import { EVariableType, TVariable } from './types';
+import { EVariableType, TVariable } from '@firecamp/types';
 
 export class Variables implements IVariables {
   private variables: TVariable[];

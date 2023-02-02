@@ -5,6 +5,7 @@ import {
   IRest,
   IRestResponse,
   TId,
+  TVariable,
 } from '@firecamp/types';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
 import parseBody from '@firecamp/rest-executor/dist/esm/helpers/body';
@@ -21,7 +22,11 @@ const restExecutors: { [key: TId]: RestExecutor } = {};
  */
 export const send = async (
   request: IRest,
-  vars: { [k: string]: any },
+  variables: {
+      globals?: TVariable[];
+      environment?: TVariable[];
+      collection?: TVariable[];
+    },
   firecampAgent: EFirecampAgent
 ): Promise<IRestResponse> => {
   switch (firecampAgent) {
@@ -33,7 +38,7 @@ export const send = async (
 
     case EFirecampAgent.Web:
       restExecutors[request.__ref.id] = new RestExecutor();
-      return await restExecutors[request.__ref.id].send(request, vars);
+      return await restExecutors[request.__ref.id].send(request, variables);
 
     case EFirecampAgent.Cloud:
       if (!_object.isEmpty(request?.body?.[ERestBodyTypes.FormData])) {

@@ -133,9 +133,9 @@ export default class RestExecutor implements IRestExecutor {
   async send(
     fcRequest: IRest,
     variables: {
-      globals?: TVariable[];
-      environment?: TVariable[];
-      collection?: TVariable[];
+      globals: TVariable[];
+      environment: TVariable[];
+      collection: TVariable[];
     }
   ): Promise<TResponse> {
     console.log(fcRequest, variables, 2000000);
@@ -221,9 +221,13 @@ export default class RestExecutor implements IRestExecutor {
         /** run post-script */
         // TODO: add inherit support
         let postScriptRes = await scriptRunner.postScript(
-          fcRequest.scripts?.post as string,
+          fcRequest.postScripts,
           response,
-          {}
+          {
+            globals: [],
+            environment: [],
+            collection: [],
+          }
         );
         // merge post script response with actual response
         if (postScriptRes?.response) {

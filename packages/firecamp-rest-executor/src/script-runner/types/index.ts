@@ -13,9 +13,13 @@ export type TPreScript = (
   }
 ) => Promise<{ request?: IScriptRequest; [k: string]: any }>;
 export type TPostScript = (
-  postScript: string,
+  postScripts: IRest['postScripts'],
   response: IRestResponse,
-  variables: TVariable
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
 ) => Promise<{ response: IRestResponse; environment: any }>;
 export type TTestScript = (
   scripts: IScript,

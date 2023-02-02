@@ -30,7 +30,11 @@ describe('rest executor', () => {
           collectionId: '',
         },
       },
-      {}
+      {
+        globals: [],
+        environment: [],
+        collection: [],
+      }
     );
 
     expect(response?.statusCode).toEqual(200);
@@ -67,7 +71,11 @@ describe('rest executor', () => {
           collectionId: '',
         },
       },
-      {}
+      {
+        globals: [],
+        environment: [],
+        collection: [],
+      }
     );
 
     expect(response?.statusCode).toEqual(201);
@@ -100,7 +108,11 @@ describe('rest executor', () => {
           collectionId: '',
         },
       },
-      {}
+      {
+        globals: [],
+        environment: [],
+        collection: [],
+      }
     );
 
     expect(response?.statusCode).toEqual(200);
@@ -131,7 +143,11 @@ describe('rest executor', () => {
             collectionId: '',
           },
         },
-        {}
+        {
+          globals: [],
+          environment: [],
+          collection: [],
+        }
       )
       .then(({ error }) => {
         expect(error?.message).toEqual('certificate has expired');
