@@ -63,7 +63,7 @@
     "@firecamp/graphql": "workspace:*",
     "@firecamp/rest": "workspace:*",
     "@firecamp/socket.io": "workspace:*",
-    "@firecamp/types": "^0.1.13",
+    "@firecamp/types": "^0.1.14",
     "@firecamp/ui-kit": "workspace:*",
     "@firecamp/url": "0.0.18",
     "@firecamp/websocket": "workspace:*",

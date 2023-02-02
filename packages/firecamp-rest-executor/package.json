@@ -40,7 +40,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.13",
+    "@firecamp/types": "^0.1.14",
     "@firecamp/url": "0.0.18",
     "@hapi/joi": "^17.1.1",
     "ajv": "^8.11.2",

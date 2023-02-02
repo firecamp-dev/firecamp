@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@firecamp/rest-executor": "workspace:*",
-    "@firecamp/types": "^0.1.13",
+    "@firecamp/types": "^0.1.14",
     "@firecamp/utils": "0.0.12"
   },
   "devDependencies": {
