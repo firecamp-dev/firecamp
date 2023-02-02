@@ -93,6 +93,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     set({ environments: envs });
     const { envTdpInstance } = get();
     envTdpInstance?.init(envs);
+    get().setActiveEnv(null);
   },
 
   /** @deprecated */

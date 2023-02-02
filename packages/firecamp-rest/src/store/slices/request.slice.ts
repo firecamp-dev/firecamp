@@ -1,12 +1,6 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
-import {
-  EFirecampAgent,
-  EHttpMethod,
-  IHeader,
-  IRest,
-  TId,
-} from '@firecamp/types';
+import { EHttpMethod, IHeader, IRest, TId } from '@firecamp/types';
 import { _clipboard } from '@firecamp/utils';
 import { _object } from '@firecamp/utils';
 import { prepareUIRequestPanelState } from '../../services/request.service';
@@ -168,7 +162,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       //   state.request
       // );
 
-      // console.log({ normalizedRequest, request });
+      console.log(state.request, 'state.request');
       // execute request
       await state.context.request
         .execute(state.request)
