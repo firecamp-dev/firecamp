@@ -2,7 +2,13 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
 import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
-import { IRest, IRestResponse, TRuntimeVariable } from '@firecamp/types';
+import {
+  EKeyValueTableRowType,
+  ERestBodyTypes,
+  IRest,
+  IRestResponse,
+  TRuntimeVariable,
+} from '@firecamp/types';
 import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 import parseBody from './helpers/body';
@@ -182,8 +188,29 @@ export default class RestExecutor implements IRestExecutor {
         const cVars = _env.preparePlainVarsFromRuntimeVariables(collection);
         const plainVars = { ...gVars, ...eVars, ...cVars };
         // console.log(variables, plainVars, 77777);
-        const request = _env.applyVariables(fcRequest, plainVars) as IRest;
-        return request;
+
+        /** if request body is multipart then
+         *  1. don't apply vars in whole request, it'll remove file object attached in form
+         *  2. instead apply vars in request except thee body
+         *  3. and then apply vars in body separately by taking care for file object in form (apply vars in each row)
+         */
+        if (fcRequest.body?.type == ERestBodyTypes.FormData) {
+          const { body, ...restRequest } = fcRequest;
+          //@ts-ignore ///TODO: check here to remove the type error
+          body.value = body.value.map((v) => {
+            const { file, ...row } = v;
+            v = _env.applyVariables(row, plainVars);
+            if (v.type == EKeyValueTableRowType.File) {
+              v.file = file;
+            }
+            return v;
+          });
+          const request = _env.applyVariables(restRequest, plainVars) as IRest;
+          return { ...request, body };
+        } else {
+          const request = _env.applyVariables(fcRequest, plainVars) as IRest;
+          return request;
+        }
       })
       .then(async (request) => {
         const axiosRequest: AxiosRequestConfig = await this._prepare(request);
@@ -212,7 +239,7 @@ export default class RestExecutor implements IRestExecutor {
             });
           }
           return Promise.resolve({
-            statutsCode: 0,
+            statusCode: 0,
             error: {
               message: e.message,
               code: e.code,
