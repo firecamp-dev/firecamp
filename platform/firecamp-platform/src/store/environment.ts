@@ -9,6 +9,7 @@ import platformContext from '../services/platform-context';
 import { useWorkspaceStore } from './workspace';
 import { RE } from '../types';
 import { envService, EmptyEnv, IRuntimeEnv } from '../services/env.service';
+import { _env } from '@firecamp/utils';
 
 const initialState = {
   activeEnvId: null,
@@ -156,9 +157,9 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       .then((env) => {
         if (!env) setNoEnvironment();
         else {
-          const _env = envService.prepareRuntimeEnvFromRemoteEnv(env);
+          const rEnv = _env.prepareRuntimeEnvFromRemoteEnv(env);
           // console.log(_env, env, '_env');
-          set({ activeEnvId: envId, activeEnv: _env });
+          set({ activeEnvId: envId, activeEnv: rEnv });
         }
         return env;
       })
@@ -173,8 +174,8 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   preparePlainVariables: () => {
     const { globalEnv, activeEnv } = get();
-    const gPlainVars = envService.preparePlainVarsFromRuntimeEnv(globalEnv);
-    const ePlainVars = envService.preparePlainVarsFromRuntimeEnv(activeEnv);
+    const gPlainVars = _env.preparePlainVarsFromRuntimeEnv(globalEnv);
+    const ePlainVars = _env.preparePlainVarsFromRuntimeEnv(activeEnv);
     // console.log(globalEnv, activeEnv, gPlainVars, ePlainVars);
     return { ...gPlainVars, ...ePlainVars };
   },
@@ -342,7 +343,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       s.envTdpInstance?.updateEnvItem(env);
       const aEnv =
         activeEnv?.__ref.id == env.__ref.id
-          ? envService.prepareRuntimeEnvFromRemoteEnv(env)
+          ? _env.prepareRuntimeEnvFromRemoteEnv(env)
           : s.activeEnv;
       return {
         environments: [...envs],

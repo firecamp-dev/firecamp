@@ -168,7 +168,7 @@ export default class RestExecutor implements IRestExecutor {
         }
         if (reqInstance) {
           // Merge script updated request with fc request
-          // note: reqInstance will have other methods too like addHeaders, but desctucting it will add only it's private properties like body, headers, url
+          // note: reqInstance will have other methods too like addHeaders, but destructing it will add only it's private properties like body, headers, url
           // TODO:  we can improve this later
           fcRequest = { ...fcRequest, ...reqInstance };
         }

@@ -61,9 +61,9 @@ class Fc {
 export const preScript: TPreScript = async (
   request: IRest,
   variables: {
-    globals?: TVariable[];
-    environment?: TVariable[];
-    collection?: TVariable[];
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
   }
 ) => {
   const script: IScript | undefined = request.preScripts.find(

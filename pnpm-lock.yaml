@@ -14,8 +14,8 @@ importers:
       '@babel/preset-typescript': ^7.16.7
       '@babel/register': ^7.0.0
       '@babel/runtime': ^7.15.4
-      '@firecamp/url': 0.0.18
-      '@firecamp/utils': 0.0.12
+      '@firecamp/url': 0.0.19
+      '@firecamp/utils': ^0.0.13
       '@react-icons/all-files': ^4.1.0
       autoprefixer: ^10.4.8
       babel-eslint: ^7.1.0
@@ -76,8 +76,8 @@ importers:
       worker-loader: ^3.0.8
     dependencies:
       '@babel/runtime': 7.20.13
-      '@firecamp/url': 0.0.18
-      '@firecamp/utils': 0.0.12
+      '@firecamp/url': 0.0.19
+      '@firecamp/utils': 0.0.13
       '@react-icons/all-files': 4.1.0
       autoprefixer: 10.4.13
       dotenv: 16.0.3
@@ -151,7 +151,7 @@ importers:
     specifiers:
       '@firecamp/rest-executor': workspace:*
       '@firecamp/types': ^0.1.14
-      '@firecamp/utils': 0.0.12
+      '@firecamp/utils': ^0.0.13
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chai': ^4.3.1
       '@types/chrome': 0.0.204
@@ -182,7 +182,7 @@ importers:
     dependencies:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
       '@firecamp/types': 0.1.14
-      '@firecamp/utils': 0.0.12
+      '@firecamp/utils': 0.0.13
     devDependencies:
       '@istanbuljs/nyc-config-typescript': 1.0.2_nyc@15.1.0
       '@types/chai': 4.3.4
@@ -273,7 +273,7 @@ importers:
     specifiers:
       '@firecamp/types': ^0.1.14
       '@firecamp/ui-kit': workspace:*
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
@@ -308,7 +308,7 @@ importers:
     dependencies:
       '@firecamp/types': 0.1.14
       '@firecamp/ui-kit': link:../ui-kit
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       codemirror: 5.65.11
       codemirror-graphql: 1.3.2_t5xgth6chaivosjn7w376kmbzm
       graphiql-explorer: 0.9.0_graphql@15.8.0
@@ -348,7 +348,7 @@ importers:
       '@firecamp/rest-executor': workspace:*
       '@firecamp/types': ^0.1.14
       '@firecamp/ui-kit': workspace:*
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@hapi/joi': ^17.1.1
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chrome': 0.0.204
@@ -408,7 +408,7 @@ importers:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
       '@firecamp/types': 0.1.14
       '@firecamp/ui-kit': link:../ui-kit
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@hapi/joi': 17.1.1
       aws4: 1.12.0
       chai-http: 4.3.0
@@ -468,7 +468,7 @@ importers:
   packages/firecamp-rest-executor:
     specifiers:
       '@firecamp/types': ^0.1.14
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@hapi/joi': ^17.1.1
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/chai': ^4.3.1
@@ -513,7 +513,7 @@ importers:
       vm2: ^3.9.11
     dependencies:
       '@firecamp/types': 0.1.14
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@hapi/joi': 17.1.1
       ajv: 8.12.0
       axios: 0.27.2
@@ -563,7 +563,7 @@ importers:
       '@firecamp/socket.io-executor': workspace:*
       '@firecamp/types': ^0.1.14
       '@firecamp/ui-kit': workspace:*
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
@@ -604,7 +604,7 @@ importers:
       '@firecamp/socket.io-executor': link:../firecamp-socket-io-executor
       '@firecamp/types': 0.1.14
       '@firecamp/ui-kit': link:../ui-kit
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       classnames: 2.3.2
       lodash: 4.17.21
       nanoid: 3.3.4
@@ -712,7 +712,7 @@ importers:
     specifiers:
       '@firecamp/types': ^0.1.14
       '@firecamp/ui-kit': workspace:*
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@firecamp/ws-executor': workspace:*
       '@istanbuljs/nyc-config-typescript': ^1.0.1
       '@types/jest': 29.2.4
@@ -753,7 +753,7 @@ importers:
     dependencies:
       '@firecamp/types': 0.1.14
       '@firecamp/ui-kit': link:../ui-kit
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@firecamp/ws-executor': link:../firecamp-ws-executor
       classnames: 2.3.2
       lodash: 4.17.21
@@ -1013,7 +1013,7 @@ importers:
       '@firecamp/socket.io': workspace:*
       '@firecamp/types': ^0.1.14
       '@firecamp/ui-kit': workspace:*
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@firecamp/websocket': workspace:*
       '@sentry/browser': 7.28.1
       '@sentry/tracing': 7.28.1
@@ -1060,7 +1060,7 @@ importers:
       '@firecamp/socket.io': link:../../packages/firecamp-socket-io
       '@firecamp/types': 0.1.14
       '@firecamp/ui-kit': link:../../packages/ui-kit
-      '@firecamp/url': 0.0.18
+      '@firecamp/url': 0.0.19
       '@firecamp/websocket': link:../../packages/firecamp-websocket
       '@sentry/browser': 7.28.1
       '@sentry/tracing': 7.28.1
@@ -3022,12 +3022,6 @@ packages:
     requiresBuild: true
     dev: false
 
-  /@firecamp/types/0.1.9:
-    resolution: {integrity: sha512-0nNn6gAhxOj1EQHSTPSlNZUUzGQ5eCSZcXfqUuaY5H4XfRWnKMz6/aICW/pisdnFSg3L/jIS/UEwryrhJkvTMQ==}
-    engines: {node: '>=10'}
-    requiresBuild: true
-    dev: false
-
   /@firecamp/url/0.0.12:
     resolution: {integrity: sha512-aUsKqL/B9i1hv1b9U7K/QRBgUPJFFmpuDYjZkyBTdryQdqxmwvYSuorF/WJrcE5vGqi/c1NqZ9duW+xT/bhS5A==}
     engines: {node: '>=10'}
@@ -3038,26 +3032,27 @@ packages:
       url-parse: 1.5.10
     dev: false
 
-  /@firecamp/url/0.0.18:
-    resolution: {integrity: sha512-PgTnleTiWZpDj2Obtw4u6QtaBD99R5yMLbxt6n1tL9fzYADP09VmmDCZ5morXyLY2K3nLvM0ShzqAhkHiJ/F+g==}
+  /@firecamp/url/0.0.19:
+    resolution: {integrity: sha512-JWI6oUIGCJPGtK1HQpOMAjW/0KkKBHqB7G9wz/HOp62qDj+j2LzNruoQhuSTGBXEPp0uk1daksPSCc+9+tzFIg==}
     engines: {node: '>=10'}
     dependencies:
-      '@firecamp/types': 0.1.9
-      '@firecamp/utils': 0.0.8
+      '@firecamp/types': 0.1.14
+      '@firecamp/utils': 0.0.13
       lodash: 4.17.21
       nanoid: 4.0.0
       url-parse: 1.5.10
     dev: false
 
-  /@firecamp/utils/0.0.12:
-    resolution: {integrity: sha512-UUGjL5Si6+w1zOc/enCX+e9ENJvMKu6JDfAjGJABRLiIY8wEyNCXiMfQvjLzsemeEZTxjnX+qoLhfovjy6U9yw==}
+  /@firecamp/utils/0.0.13:
+    resolution: {integrity: sha512-LVPmLC0+buphp7c0rZiq7Ef29pjMxftHw3MRMm9Pxu7NYFSmRI9xbY9J1P1rW9qOJQC9US93R1R8gkw34QAyPg==}
     engines: {node: '>=10'}
     dependencies:
       clean-deep: 3.4.0
       dedupe: 3.0.3
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       faker: 5.5.3
       is-electron: 2.2.1
+      json-templates: 4.2.0
       lodash: 4.17.21
       nanoid: 3.3.4
       object-path: 0.11.8
@@ -3070,7 +3065,7 @@ packages:
     dependencies:
       clean-deep: 3.4.0
       dedupe: 3.0.3
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       faker: 5.5.3
       is-electron: 2.2.1
       lodash: 4.17.21
@@ -3205,7 +3200,7 @@ packages:
     resolution: {integrity: sha512-IRE6GD47KwcqA09RIWrabKdHPiKDGgtAL31xDxbi/RjQMsr+lY+ppxmHwY0dUEV3qvvxZzoe5Hl0RXZJOjQNUg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       jest-message-util: 29.4.1
@@ -3312,7 +3307,7 @@ packages:
       '@jest/reporters': 29.3.1
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       ansi-escapes: 4.3.2
       chalk: 4.1.2
@@ -3356,7 +3351,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/fake-timers': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       jest-mock: 29.3.1
     dev: true
@@ -3418,12 +3413,12 @@ packages:
     resolution: {integrity: sha512-iHTL/XpnDlFki9Tq0Q1GGuVeQ8BHZGIYsvCO5eN/O/oJaRzofG9Xndd9HuSDBI/0ZS79pg0iwn07OMTQ7ngF2A==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@sinonjs/fake-timers': 9.1.2
       '@types/node': 18.11.18
       jest-message-util: 29.4.1
       jest-mock: 29.3.1
-      jest-util: 29.3.1
+      jest-util: 29.4.1
     dev: true
 
   /@jest/globals/28.1.3:
@@ -3443,7 +3438,7 @@ packages:
     dependencies:
       '@jest/environment': 29.3.1
       '@jest/expect': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       jest-mock: 29.3.1
     transitivePeerDependencies:
       - supports-color
@@ -3500,7 +3495,7 @@ packages:
       '@jest/console': 29.3.1
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@jridgewell/trace-mapping': 0.3.17
       '@types/node': 18.11.18
       chalk: 4.1.2
@@ -3578,7 +3573,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/console': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/istanbul-lib-coverage': 2.0.4
       collect-v8-coverage: 1.0.1
     dev: true
@@ -6080,14 +6075,14 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
     dev: true
 
   /@types/glob/8.0.1:
     resolution: {integrity: sha512-8bVUjXZvJacUFkJXHdyZ9iH1Eaj5V7I8c4NdH5sQJsdXkqT4CA5Dhb4yb4VE/3asyx4L9ayZr1NIhTsWHczmMw==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
     dev: true
 
   /@types/graceful-fs/4.1.6:
@@ -6243,7 +6238,7 @@ packages:
   /@types/node-fetch/2.6.2:
     resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
       form-data: 3.0.1
     dev: true
 
@@ -6410,7 +6405,7 @@ packages:
   /@types/webpack-sources/3.2.0:
     resolution: {integrity: sha512-Ft7YH3lEVRQ6ls8k4Ff1oB4jN6oy/XmU6tQISKdhfh+1mR+viZFphS6WL0IrtDOzvefmJg5a0s7ZQoRXwqTEFg==}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
       '@types/source-list-map': 0.1.2
       source-map: 0.7.4
     dev: true
@@ -6418,7 +6413,7 @@ packages:
   /@types/webpack/4.41.33:
     resolution: {integrity: sha512-PPajH64Ft2vWevkerISMtnZ8rTs4YmRbs+23c402J0INmxDKCrhZNvwZYtzx96gY2wAtXdrK1BS2fiC8MlLr3g==}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
       '@types/tapable': 1.0.8
       '@types/uglify-js': 3.17.1
       '@types/webpack-sources': 3.2.0
@@ -6999,14 +6994,6 @@ packages:
       acorn: ^8
     dependencies:
       acorn: 8.8.1
-    dev: true
-
-  /acorn-import-assertions/1.8.0_acorn@8.8.2:
-    resolution: {integrity: sha512-m7VZ3jwz4eK6A4Vtt8Ew1/mNbP24u0FhdyfA7fSvnJR6LMdfOYnmuIrrJAgrYfYJ10F/otaHTtrtrtmHdMNzEw==}
-    peerDependencies:
-      acorn: ^8
-    dependencies:
-      acorn: 8.8.2
     dev: true
 
   /acorn-jsx/5.3.2_acorn@7.4.1:
@@ -8401,7 +8388,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001446
+      caniuse-lite: 1.0.30001450
       electron-to-chromium: 1.4.284
       node-releases: 2.0.9
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -8696,10 +8683,10 @@ packages:
 
   /caniuse-lite/1.0.30001446:
     resolution: {integrity: sha512-fEoga4PrImGcwUUGEol/PoFCSBnSkA9drgdkxXkJLsUBOnJ8rs3zDv6ApqYXGQFOyMPsjh79naWhF4DAxbF8rw==}
+    dev: false
 
   /caniuse-lite/1.0.30001450:
     resolution: {integrity: sha512-qMBmvmQmFXaSxexkjjfMvD5rnDL0+m+dUMZKoDYsGG8iZN29RuYh9eRoMvKsT6uMAWlyUUGDEQGJJYjzCIO9ew==}
-    dev: true
 
   /capture-exit/2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
@@ -10412,8 +10399,8 @@ packages:
     engines: {node: '>=12.4.0'}
     dev: true
 
-  /deepmerge/4.2.2:
-    resolution: {integrity: sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==}
+  /deepmerge/4.3.0:
+    resolution: {integrity: sha512-z2wJZXrmeHdvYJp/Ux55wIjqo81G5Bp4c+oELTW+7ar6SogWHajt5a9gO3s3IDaGSAXjDk0vlQKN3rms8ab3og==}
     engines: {node: '>=0.10.0'}
 
   /default-browser-id/1.0.4:
@@ -12389,7 +12376,7 @@ packages:
       chalk: 4.1.2
       chokidar: 3.5.3
       cosmiconfig: 6.0.0
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       fs-extra: 9.1.0
       glob: 7.2.3
       memfs: 3.4.13
@@ -12420,7 +12407,7 @@ packages:
       chalk: 4.1.2
       chokidar: 3.5.3
       cosmiconfig: 6.0.0
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       fs-extra: 9.1.0
       glob: 7.2.3
       memfs: 3.4.13
@@ -12863,7 +12850,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.4
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -13536,7 +13523,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@4.10.0
     dev: true
 
   /htmlparser2/3.10.1:
@@ -14621,7 +14608,7 @@ packages:
       '@jest/environment': 29.3.1
       '@jest/expect': 29.3.1
       '@jest/test-result': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       co: 4.6.0
@@ -14737,7 +14724,7 @@ packages:
     dependencies:
       '@jest/core': 29.3.1
       '@jest/test-result': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.10
@@ -14771,7 +14758,7 @@ packages:
       babel-jest: 28.1.3_@babel+core@7.20.12
       chalk: 4.1.2
       ci-info: 3.7.1
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       glob: 7.2.3
       graceful-fs: 4.2.10
       jest-circus: 28.1.3
@@ -14810,7 +14797,7 @@ packages:
       babel-jest: 28.1.3_@babel+core@7.20.12
       chalk: 4.1.2
       ci-info: 3.7.1
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       glob: 7.2.3
       graceful-fs: 4.2.10
       jest-circus: 28.1.3
@@ -14850,7 +14837,7 @@ packages:
       babel-jest: 28.1.3_@babel+core@7.20.12
       chalk: 4.1.2
       ci-info: 3.7.1
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       glob: 7.2.3
       graceful-fs: 4.2.10
       jest-circus: 28.1.3
@@ -14889,7 +14876,7 @@ packages:
       babel-jest: 28.1.3_@babel+core@7.20.12
       chalk: 4.1.2
       ci-info: 3.7.1
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       glob: 7.2.3
       graceful-fs: 4.2.10
       jest-circus: 28.1.3
@@ -14924,11 +14911,11 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@jest/test-sequencer': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       babel-jest: 29.3.1_@babel+core@7.20.12
       chalk: 4.1.2
       ci-info: 3.7.1
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       glob: 7.2.3
       graceful-fs: 4.2.10
       jest-circus: 29.3.1
@@ -14962,12 +14949,12 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@jest/test-sequencer': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       babel-jest: 29.3.1_@babel+core@7.20.12
       chalk: 4.1.2
       ci-info: 3.7.1
-      deepmerge: 4.2.2
+      deepmerge: 4.3.0
       glob: 7.2.3
       graceful-fs: 4.2.10
       jest-circus: 29.3.1
@@ -15051,7 +15038,7 @@ packages:
     resolution: {integrity: sha512-qrZH7PmFB9rEzCSl00BWjZYuS1BSOH8lLuC0azQE9lQrAx3PWGKHTDudQiOSwIy5dGAJh7KA0ScYlCP7JxvFYA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       chalk: 4.1.2
       jest-get-type: 29.2.0
       jest-util: 29.4.1
@@ -15099,7 +15086,7 @@ packages:
     dependencies:
       '@jest/environment': 29.3.1
       '@jest/fake-timers': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       jest-mock: 29.3.1
       jest-util: 29.4.1
@@ -15219,7 +15206,7 @@ packages:
       chalk: 4.1.2
       jest-diff: 29.4.1
       jest-get-type: 29.2.0
-      pretty-format: 29.3.1
+      pretty-format: 29.4.1
     dev: true
 
   /jest-matcher-utils/29.4.1:
@@ -15257,7 +15244,7 @@ packages:
       chalk: 4.1.2
       graceful-fs: 4.2.10
       micromatch: 4.0.5
-      pretty-format: 29.3.1
+      pretty-format: 29.4.1
       slash: 3.0.0
       stack-utils: 2.0.6
     dev: true
@@ -15297,9 +15284,9 @@ packages:
     resolution: {integrity: sha512-H8/qFDtDVMFvFP4X8NuOT3XRDzOUTz+FeACjufHzsOIBAxivLqkB1PoLCaJx9iPPQ8dZThHPp/G3WRWyMgA3JA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
-      jest-util: 29.3.1
+      jest-util: 29.4.1
     dev: true
 
   /jest-playwright-preset/2.0.0_p6cmbkzcb73dhedp36nqclcfgm:
@@ -15467,7 +15454,7 @@ packages:
       '@jest/environment': 29.3.1
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       emittery: 0.13.1
@@ -15528,7 +15515,7 @@ packages:
       '@jest/source-map': 29.2.0
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       cjs-module-lexer: 1.2.2
@@ -15605,7 +15592,7 @@ packages:
       '@babel/types': 7.20.7
       '@jest/expect-utils': 29.4.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/babel__traverse': 7.18.3
       '@types/prettier': 2.7.2
       babel-preset-current-node-syntax: 1.0.1_@babel+core@7.20.12
@@ -15653,7 +15640,7 @@ packages:
     resolution: {integrity: sha512-7YOVZaiX7RJLv76ZfHt4nbNEzzTRiMW/IiOG7ZOKmTXmoGBxUDefgMAxQubu6WPVqP5zSzAdZG0FfLcC7HOIFQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       ci-info: 3.7.1
@@ -15689,7 +15676,7 @@ packages:
     resolution: {integrity: sha512-N9Lr3oYR2Mpzuelp1F8negJR3YE+L1ebk1rYA5qYo9TTY3f9OWdptLoNSPP9itOCBIRBqjt/S5XHlzYglLN67g==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       camelcase: 6.3.0
       chalk: 4.1.2
       jest-get-type: 29.2.0
@@ -15754,7 +15741,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -23309,9 +23296,9 @@ packages:
       '@webassemblyjs/ast': 1.11.1
       '@webassemblyjs/wasm-edit': 1.11.1
       '@webassemblyjs/wasm-parser': 1.11.1
-      acorn: 8.8.2
-      acorn-import-assertions: 1.8.0_acorn@8.8.2
-      browserslist: 4.21.5
+      acorn: 8.8.1
+      acorn-import-assertions: 1.8.0_acorn@8.8.1
+      browserslist: 4.21.4
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.12.0
       es-module-lexer: 0.9.3

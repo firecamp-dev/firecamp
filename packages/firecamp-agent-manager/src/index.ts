@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {
+  TId,
   EFirecampAgent,
   ERestBodyTypes,
   IRest,
   IRestResponse,
-  TId,
   TVariable,
 } from '@firecamp/types';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
@@ -23,10 +23,10 @@ const restExecutors: { [key: TId]: RestExecutor } = {};
 export const send = async (
   request: IRest,
   variables: {
-      globals?: TVariable[];
-      environment?: TVariable[];
-      collection?: TVariable[];
-    },
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  },
   firecampAgent: EFirecampAgent
 ): Promise<IRestResponse> => {
   switch (firecampAgent) {

@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@firecamp/types": "^0.1.14",
-    "@firecamp/url": "0.0.18",
+    "@firecamp/url": "0.0.19",
     "@hapi/joi": "^17.1.1",
     "ajv": "^8.11.2",
     "axios": "0.27.2",
