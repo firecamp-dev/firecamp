@@ -132,7 +132,8 @@ const request: IPlatformRequestService = {
             message = '';
           if (!value) message = 'The request name is required';
           if (!itemId)
-            message = 'Please select the colletion/folder to save the request.';
+            message =
+              'Please select the collection/folder to save the request.';
           else if (value.length < 3) {
             message = 'The request name must have min 3 characters';
           } else {
@@ -171,14 +172,15 @@ const request: IPlatformRequestService = {
         .then((_request) => {
           tabState.changeRootKeys(tabId, {
             name: _request.__meta?.name,
-            type: _request.__meta?.type || '',
-            request: {
+            entity: {
               url: _request.url,
               method: _request.method || EHttpMethod.POST,
               __meta: _request.__meta,
               __ref: _request.__ref,
             },
             __meta: {
+              entityId: _request.__ref.id,
+              entityType: 'request',
               isSaved: true,
               hasChange: false,
               isFresh: false,
@@ -221,7 +223,7 @@ const request: IPlatformRequestService = {
     return platformContext.window
       .promptInput({
         header: 'Create A New Folder',
-        lable: 'Folder Name',
+        label: 'Folder Name',
         placeholder: '',
         texts: { btnOking: 'Creating...' },
         value: folder.name,

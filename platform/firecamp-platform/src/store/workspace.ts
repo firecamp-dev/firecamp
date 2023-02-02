@@ -244,7 +244,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       platformContext.window
         .promptInput({
           header: 'Create New Collection',
-          lable: 'Collection Name',
+          label: 'Collection Name',
           placeholder: 'type collection name',
           texts: { btnOking: 'Creating...' },
           value: '',

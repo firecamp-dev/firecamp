@@ -164,7 +164,7 @@ const PlaygroundTab = () => {
     context.window
       .promptSaveItem({
         header: 'Save WebSocket Message',
-        lable: 'Message Title',
+        label: 'Message Title',
         placeholder: '',
         texts: { btnOk: 'Save', btnOking: 'Saving...' },
         value: '',

@@ -212,7 +212,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     platformContext.window
       .promptInput({
         header: 'Create New Environment',
-        lable: 'Environment Name',
+        label: 'Environment Name',
         placeholder: 'type environment name',
         texts: { btnOking: 'Creating...' },
         value: '',

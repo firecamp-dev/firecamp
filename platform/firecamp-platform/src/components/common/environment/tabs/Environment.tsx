@@ -121,7 +121,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
     context.window
       .promptInput({
         header: 'Rename Environment',
-        lable: 'Environment Name',
+        label: 'Environment Name',
         placeholder: '',
         texts: { btnOk: 'Rename', btnOking: 'Renaming...' },
         value: runtimeEnv.name,
@@ -164,7 +164,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
     context.window
       .promptInput({
         header: 'Delete Environment',
-        lable: `Please enter the name \`${runtimeEnv.name}\``,
+        label: `Please enter the name \`${runtimeEnv.name}\``,
         placeholder: '',
         texts: { btnOk: 'Delete', btnOking: 'Deleting...' },
         value: '',

@@ -10,7 +10,7 @@ const _texts: IPromptInput['texts'] = {
 
 export const PromptInput: FC<IPromptInput> = ({
   header,
-  lable = 'Name',
+  label = 'Name',
   placeholder,
   texts,
   value,
@@ -95,7 +95,7 @@ export const PromptInput: FC<IPromptInput> = ({
           <div className="mt-4">
             <Input
               autoFocus={true}
-              label={lable}
+              label={label}
               placeholder={placeholder}
               name={'prompInput'}
               value={state.value}

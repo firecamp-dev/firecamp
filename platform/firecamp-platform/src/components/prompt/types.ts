@@ -2,7 +2,7 @@ import { TId } from '@firecamp/types';
 
 export interface IPromptInput {
   header: string;
-  lable?: string;
+  label?: string;
   placeholder?: string;
   texts?: {
     btnOk?: string;
