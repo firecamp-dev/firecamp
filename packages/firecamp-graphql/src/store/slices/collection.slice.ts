@@ -201,7 +201,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
                 request: newItem,
-                originalRequest: null,
+                originalRequest: newItem,
               },
             },
             runtime: {
@@ -250,11 +250,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     const playgroundId = state.runtime.activePlayground;
     const plg = state.playgrounds[playgroundId];
 
-    const item = {
-      value: {
-        query: '',
-        variables: '',
-      },
+    const item: Partial<IGraphQLPlayground> = {
       __ref: {
         id: plg.request.__ref.id,
         requestId: state.request.__ref.id,
@@ -267,12 +263,12 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     // @note: here name will be updated from rename prompt where other plg property will be updated by state value
     // that is why we're passing name as fn prop and handling other plg info from the state
-    if (name && !isEqual(_oRequest.name, name)) {
-      //@ts-ignore
+    if (name && typeof name == 'string' && !isEqual(_oRequest.name, name)) {
       item.name = name;
     }
     if (!isEqual(_oRequest.value.query, _request.value.query)) {
       //@ts-ignore
+      if (!item.value) item.value = { query: '' };
       item.value.query = _request.value.query;
     }
     if (
@@ -280,10 +276,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       !isEqual(_oRequest.value.variables, _request.value.variables)
     ) {
       //@ts-ignore
-      item.value = {
-        query: item.value.query,
-        variables: _request.value.variables,
-      };
+      if (!item.value) item.value = { variables: '' };
+      item.value.variables = _request.value.variables;
     }
 
     console.log(item, 'item...');
@@ -310,7 +304,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
                 request: { ...updatedPlg },
-                originalRequest: null,
+                originalRequest: { ...updatedPlg },
               },
             },
             runtime: {

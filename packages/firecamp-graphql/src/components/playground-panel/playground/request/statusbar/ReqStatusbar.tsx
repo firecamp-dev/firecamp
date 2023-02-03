@@ -162,7 +162,7 @@ const ReqStatusBar = ({}) => {
               <Button
                 text="Save changes"
                 className="!border-0 hover:!bg-focus2"
-                onClick={updateItem}
+                onClick={(e) => updateItem()}
                 secondary
                 transparent
                 ghost

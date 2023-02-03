@@ -32,7 +32,7 @@ export interface IPlaygroundsSlice {
   playgrounds?: IPlaygrounds;
 
   addPlayground: () => void;
-  openPlayground: (plg: any) => void;
+  openPlayground: (plgId: TId) => void;
   removePlayground: (playgroundId: string) => void;
   changePlaygroundValue: (playgroundId: string, value: string) => void;
   changePlaygroundVariables: (playgroundId: string, variables: string) => void;
@@ -53,11 +53,10 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
         originalRequest: null,
         request: {
           __ref: { id: 'playground-1' },
-          value: 'query MyQuery {\n  __typename\n}',
-          // value: '{\n  __typename\n  company {\n    ceo\n    coo\n    cto\n    cto_propulsion\n    employees\n  }\n}\n',
+          value: { query: 'query MyQuery {\n  __typename\n}', variables: variables: `{ "key": "value" }`,},
+          // value: { query: '{\n  __typename\n  company {\n    ceo\n    coo\n    cto\n    cto_propulsion\n    employees\n  }\n}\n', variables: `{ "key": "value" }`,},
           __meta: {
             type: EGraphQLOperationType.Query,
-            variables: `{ "key": "value" }`,
           },
           name: 'Playground 1',
         },
