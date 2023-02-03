@@ -66,6 +66,7 @@ export const preScript: TPreScript = async (
     collection: TVariable[];
   }
 ) => {
+  if (!request?.preScripts?.length) return {};
   const script: IScript | undefined = request.preScripts.find(
     (s) => s.type == EScriptTypes.PreRequest
   );
@@ -103,6 +104,7 @@ export const postScript: TPostScript = async (
   response,
   variables
 ) => {
+  if (!postScripts?.length) return {};
   const script: IScript | undefined = postScripts.find(
     (s) => s.type == EScriptTypes.Test
   );

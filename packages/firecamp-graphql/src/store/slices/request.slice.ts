@@ -94,13 +94,20 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     } = state;
     if (!request.url?.raw) return;
 
+    let gVars = {};
+    try {
+      gVars = JSON.parse(variables);
+    } catch (e) {
+      gVars = {};
+    }
+
     //@ts-ignore
     const _request: IRest = Object.assign(
       {},
       {
         ...request,
         body: {
-          value: { query, variables },
+          value: { query, variables: gVars },
           type: ERestBodyTypes.GraphQL,
         },
         __meta: {
@@ -141,7 +148,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         ...request,
         __meta: request.__meta,
         body: {
-          value: { query },
+          value: { query, variables: {} },
           type: ERestBodyTypes.GraphQL,
         },
       }
