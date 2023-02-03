@@ -172,11 +172,11 @@ if (env === Environment.Production) {
       // Add library: electron
       cd('build/production');
       exec(
-        'export NODE_ENV=development && yarn install && yarn add_electron && export NODE_ENV=production'
+        'export NODE_ENV=development && pnpm install && pnpm add_electron && export NODE_ENV=production'
       );
 
       // Add library: electron-oauth-helper
-      exec('yarn add ../../../firecamp-forks/electron-oauth-helper -W');
+      exec('pnpm add ../../../firecamp-forks/electron-oauth-helper -W');
 
       // Prepare linux os 'AppImage' build
       if (process.env.AppFormat === AppFormat.AppImage) {

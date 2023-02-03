@@ -15,11 +15,11 @@
 
 ### <ins>Build</ins>
 
-- Run: `yarn build`
+- Run: `pnpm build`
 
 ### <ins>Run test case</ins>
 
-- Run: `yarn test`
+- Run: `pnpm test`
 
 ### <ins>Usage</ins>
 

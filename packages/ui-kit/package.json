@@ -27,12 +27,12 @@
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
     "test": "jest",
     "test-storybook": "test-storybook",
-    "start:storybook": "yarn test:generate-output && yarn storybook",
+    "start:storybook": "pnpm test:generate-output && pnpm storybook",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build:tailwind": "postcss src/scss/base.scss -o src/scss/tailwind.scss",
     "chromatic": "npx chromatic --project-token=4db217014cde004",
-    "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && yarn copy-files",
+    "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && yapnpmrn copy-files",
     "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.scss\" \"src/**/*.css\" dist/"
   },
   "bugs": {

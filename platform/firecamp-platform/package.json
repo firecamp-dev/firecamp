@@ -19,14 +19,14 @@
     "url": ""
   },
   "scripts": {
-    "build": "run-p 'build:*' && yarn copy-files",
+    "build": "run-p 'build:*' && pnpm copy-files",
     "build:main": "tsc -p tsconfig.json",
     "clean": "rimraf build/",
     "copy-files": "copyfiles -u 1 src/**/*.js src/**/*.css src/**/*.sass build/main",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "yarn build && npx jest --bail --silent --verbose",
+    "test": "pnpm build && npx jest --bail --silent --verbose",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
