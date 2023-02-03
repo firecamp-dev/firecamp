@@ -50,7 +50,7 @@ const GraphQL = ({ tab, platformContext }) => {
   useEffect(() => {
     const requestId = tab.entity?.__ref?.id;
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.entity.__ref?.id) {
+    if (tab.__meta.isSaved && requestId) {
       platformContext.request.subscribeChanges(requestId, handlePull);
     }
 
