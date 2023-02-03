@@ -48,15 +48,15 @@ const Rest = ({ tab, platformContext }) => {
 
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
-    const reqeustId = tab.entity?.__ref?.id;
+    const requestId = tab.entity?.__ref?.id;
     // subscribe request updates
     if (tab.__meta.isSaved && tab?.entity.__ref?.id) {
-      platformContext.request.subscribeChanges(reqeustId, handlePull);
+      platformContext.request.subscribeChanges(requestId, handlePull);
     }
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && reqeustId) {
-        platformContext.request.unsubscribeChanges(reqeustId);
+      if (tab.__meta.isSaved && requestId) {
+        platformContext.request.unsubscribeChanges(requestId);
       }
     };
   }, []);
@@ -64,22 +64,21 @@ const Rest = ({ tab, platformContext }) => {
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
-        const reqeustId = tab.entity?.__ref?.id;
-        const isRequestSaved = !!reqeustId;
+        const requestId = tab.entity?.__ref?.id;
+        const isRequestSaved = !!requestId;
         // prepare a minimal request payload
         let _request: IRest = normalizeRequest({});
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            const request = await platformContext.request.fetch(reqeustId);
+            const request = await platformContext.request.fetch(requestId);
             _request = { ...request };
           } catch (error) {
             console.error(error, 'fetch rest request');
             throw error;
           }
         }
-
         /** initialise rest store on tab load */
         initialise(_request, tab.id);
         setIsFetchingReqFlag(false);
@@ -117,7 +116,7 @@ const withStore = (WrappedComponent) => {
     const {
       id: tabId,
       entity,
-      // __meta: { entityid }
+      // __meta: { entityId }
     } = tab;
     const request = {
       url: entity.url,

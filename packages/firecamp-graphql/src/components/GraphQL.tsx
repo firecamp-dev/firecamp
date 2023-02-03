@@ -46,67 +46,61 @@ const GraphQL = ({ tab, platformContext }) => {
     setRequestSavedFlag(tab?.__meta?.isSaved);
   }, [tab?.__meta?.isSaved]);
 
-  /**
-   * Fetch request and Handle realtime changes of the Request
-   *
-   * fetch request and initialise stores and tab
-   * subscribe & unsubscribe request changes (pull-actions) on first mount and unmount
-   */
+  /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
-    fetchRequest();
-
+    const requestId = tab.entity?.__ref?.id;
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
-      platformContext.request.subscribeChanges(
-        tab.request.__ref.id,
-        handlePull
-      );
+    if (tab.__meta.isSaved && tab?.entity.__ref?.id) {
+      platformContext.request.subscribeChanges(requestId, handlePull);
     }
 
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
-        platformContext.request.unsubscribeChanges(tab.request.__ref.id);
+      if (tab.__meta.isSaved && requestId) {
+        platformContext.request.unsubscribeChanges(requestId);
       }
     };
   }, []);
 
-  const handlePull = async () => {};
-
-  const fetchRequest = async () => {
-    try {
-      const isRequestSaved = !!tab?.request?.__ref?.id || false;
-      // prepare a minimal request payload
-      let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the reuqest to prepare minimal request for tab
-      if (isRequestSaved === true) {
-        setIsFetchingReqFlag(true);
-        try {
-          const request = await platformContext.request.fetch(
-            tab.request.__ref.id
-          );
-          console.log(request, 'fetch request...');
-          _request = { ...request };
-        } catch (error) {
-          console.error({
-            API: 'fetch rest request',
-            error,
-          });
-          throw error;
+  /** fetch request and Handle realtime changes of the Request */
+  useEffect(() => {
+    const _fetchRequest = async () => {
+      try {
+        const requestId = tab.entity?.__ref?.id;
+        const isRequestSaved = !!requestId;
+        // prepare a minimal request payload
+        let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the request to prepare minimal request for tab
+        if (isRequestSaved === true) {
+          setIsFetchingReqFlag(true);
+          try {
+            const request = await platformContext.request.fetch(requestId);
+            console.log(request, 'fetch request...');
+            _request = { ...request };
+          } catch (error) {
+            console.error({
+              API: 'fetch rest request',
+              error,
+            });
+            throw error;
+          }
         }
+        const { collection, ...request } = _request;
+        /** initialise graphql store on tab load */
+        initialise(request, tab.id);
+        if (collection && !_object.isEmpty(collection))
+          initialiseCollection(collection);
+        setIsFetchingReqFlag(false);
+      } catch (error) {
+        console.error({
+          API: 'fetch and normalize rest request',
+          error,
+        });
       }
-      const { collection, ...request } = _request;
-      /** initialise graphql store on tab load */
-      initialise(request, tab.id);
-      if (collection && !_object.isEmpty(collection))
-        initialiseCollection(collection);
-      setIsFetchingReqFlag(false);
-    } catch (error) {
-      console.error({
-        API: 'fetch and normalize rest request',
-        error,
-      });
-    }
-  };
+    };
+    _fetchRequest();
+  }, []);
+
+  const handlePull = async () => {};
 
   if (isFetchingRequest === true) return <Loader />;
   return (

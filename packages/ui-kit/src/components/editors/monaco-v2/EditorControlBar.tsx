@@ -5,7 +5,7 @@ import { VscFold } from '@react-icons/all-files/vsc/VscFold';
 import { ToolBar, FcVscWand } from '@firecamp/ui-kit';
 import { _clipboard } from '@firecamp/utils';
 
-const EditorControlbar: FC<any> = ({ editor, language = 'json' }) => {
+const EditorControlBar: FC<any> = ({ editor, language = 'json' }) => {
   const [isWrapped, setIsWrapped] = useState(false);
   const [isFolded, setIsFolded] = useState(false);
   if (!editor) return <></>;
@@ -77,4 +77,4 @@ const EditorControlbar: FC<any> = ({ editor, language = 'json' }) => {
   );
 };
 
-export default EditorControlbar;
+export default EditorControlBar;
