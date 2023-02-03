@@ -49,7 +49,7 @@ const ReqStatusBar = ({}) => {
       context.app.notify.info('Please save the graphql request first.');
       return;
     }
-    const isQueryValid = await isValid(playground.request.value);
+    const isQueryValid = await isValid(playground.request.value.query);
     if (isQueryValid == false) {
       context.app.notify.alert('The playground query is not valid.');
       return;
@@ -85,7 +85,7 @@ const ReqStatusBar = ({}) => {
   };
 
   const _execute = async () => {
-    const isQueryValid = await isValid(playground.request.value);
+    const isQueryValid = await isValid(playground.request.value.query);
     console.log(isQueryValid, 'isQueryValid...');
     if (isQueryValid == false) {
       context.app.notify.alert('The playground query is not valid.');
@@ -93,8 +93,8 @@ const ReqStatusBar = ({}) => {
     }
     execute(
       currentOps.name,
-      playground.request.value,
-      playground.request.__meta.variables
+      playground.request.value.query,
+      playground.request.value.variables
     );
   };
 

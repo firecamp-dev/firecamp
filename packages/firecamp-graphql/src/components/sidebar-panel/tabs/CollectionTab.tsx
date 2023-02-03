@@ -27,7 +27,7 @@ const CollectionTab = () => {
         );
       }}
       bodyRenderer={({ expanded }) => {
-        return <Colelction />;
+        return <Collection />;
       }}
     />
   );
@@ -35,7 +35,7 @@ const CollectionTab = () => {
 
 export default CollectionTab;
 
-const Colelction = () => {
+const Collection = () => {
   const treeRef = useRef();
   const { tdpInstance } = useStore(
     (s: IStore) => ({

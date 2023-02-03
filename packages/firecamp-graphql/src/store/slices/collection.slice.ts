@@ -217,7 +217,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
                 [playgroundId]: {
                   ...s.runtime.playgroundsMeta[playgroundId],
                   isSaved: true,
-                  operationNames: getOperationNames(plg.request.value).names,
+                  operationNames: getOperationNames(plg.request.value.query)
+                    .names,
                 },
               },
             },
@@ -250,6 +251,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     const plg = state.playgrounds[playgroundId];
 
     const item = {
+      value: {
+        query: '',
+        variables: '',
+      },
       __ref: {
         id: plg.request.__ref.id,
         requestId: state.request.__ref.id,
@@ -266,18 +271,18 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       //@ts-ignore
       item.name = name;
     }
-    if (!isEqual(_oRequest.value, _request.value)) {
+    if (!isEqual(_oRequest.value.query, _request.value.query)) {
       //@ts-ignore
-      item.value = _request.value;
+      item.value.query = _request.value.query;
     }
     if (
-      _request.__meta &&
-      typeof _request.__meta.variables == 'string' &&
-      !isEqual(_oRequest.__meta.variables, _request.__meta.variables)
+      typeof _request.value.variables == 'string' &&
+      !isEqual(_oRequest.value.variables, _request.value.variables)
     ) {
       //@ts-ignore
-      item.__meta = {
-        variables: _request.__meta.variables,
+      item.value = {
+        query: item.value.query,
+        variables: _request.value.variables,
       };
     }
 

@@ -104,7 +104,7 @@ const QueryEditor = ({
   });
   const _onCallGQLRequest = (e) => {
     const queryObject = _onCursorGetCurrentOperation(e);
-    // ctx_onSendRequest(queryObject.value, queryObject.__meta.variables);
+    // ctx_onSendRequest(queryObject.value, queryObject.value.variables);
   };
 
   const _onUpdateCurrentQuery = (plg) => {
@@ -134,9 +134,12 @@ const QueryEditor = ({
 
         queryPayload = Object.assign(q, {
           name: q.name || _upperFirst[q.__meta.type],
+          value: {
+            query: q.value.query,
+            variables: q.value.variables,
+          },
           __meta: {
             type: EQueryTypes[_upperFirst(q.__meta.type)],
-            variables: q.__meta.variables,
           },
           variableToType: q.variableToType || {},
         });
