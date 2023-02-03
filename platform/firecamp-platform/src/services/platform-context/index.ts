@@ -17,7 +17,4 @@ export default {
 };
 
 export type { IPlatformRequestService } from './request';
-export type {
-  IPlatformEnvironmentService,
-  IPlatformVariables,
-} from './environment';
+export type { IPlatformEnvironmentService } from './environment';

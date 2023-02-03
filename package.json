@@ -41,13 +41,10 @@
     "url": "git+https://github.com/firecamp-io/firecamp.git"
   },
   "keywords": [
-    "chrome",
-    "extension",
-    "react",
-    "redux",
-    "hot reload",
-    "webpack",
-    "boilerplate"
+    "api",
+    "rest-api",
+    "firecamp",
+    "api platform"
   ],
   "author": "Nishchit <dnishchit@gmail.com>",
   "license": " Apache-2.0 License",
@@ -96,7 +93,6 @@
     "postcss-loader": "^6.2.1",
     "prettier": "^2.6.2",
     "react-addons-test-utils": "^15.0.2",
-    "remote-redux-devtools": "^0.5.16",
     "rimraf": "^3.0.2",
     "sass": "^1.51.0",
     "sass-loader": "^12.6.0",
@@ -117,8 +113,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
-    "@firecamp/url": "^0.0.17",
-    "@firecamp/utils": "0.0.12",
+    "@firecamp/url": "0.0.19",
+    "@firecamp/utils": "^0.0.14",
     "@react-icons/all-files": "^4.1.0",
     "autoprefixer": "^10.4.8",
     "dotenv": "^16.0.1",

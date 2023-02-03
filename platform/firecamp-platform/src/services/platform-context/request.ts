@@ -6,6 +6,7 @@ import {
   IRestResponse,
   EHttpMethod,
   IRequestFolder,
+  TRuntimeVariable,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
 import { platformEmitter } from '../platform-emitter';
@@ -132,7 +133,8 @@ const request: IPlatformRequestService = {
             message = '';
           if (!value) message = 'The request name is required';
           if (!itemId)
-            message = 'Please select the colletion/folder to save the request.';
+            message =
+              'Please select the collection/folder to save the request.';
           else if (value.length < 3) {
             message = 'The request name must have min 3 characters';
           } else {
@@ -171,14 +173,15 @@ const request: IPlatformRequestService = {
         .then((_request) => {
           tabState.changeRootKeys(tabId, {
             name: _request.__meta?.name,
-            type: _request.__meta?.type || '',
-            request: {
+            entity: {
               url: _request.url,
               method: _request.method || EHttpMethod.POST,
               __meta: _request.__meta,
               __ref: _request.__ref,
             },
             __meta: {
+              entityId: _request.__ref.id,
+              entityType: 'request',
               isSaved: true,
               hasChange: false,
               isFresh: false,
@@ -221,7 +224,7 @@ const request: IPlatformRequestService = {
     return platformContext.window
       .promptInput({
         header: 'Create A New Folder',
-        lable: 'Folder Name',
+        label: 'Folder Name',
         placeholder: '',
         texts: { btnOking: 'Creating...' },
         value: folder.name,
@@ -280,9 +283,17 @@ const request: IPlatformRequestService = {
   // execute request
   execute: async (request: IRest) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
-    const env = useEnvStore.getState().getActiveTabEnv();
-    const vars = env ? env.variables : {};
-    return executor.send(request, vars, agent);
+    const { globalEnv, activeEnv } = useEnvStore.getState();
+    const variables: {
+      globals: TRuntimeVariable[];
+      environment: TRuntimeVariable[];
+      collection: TRuntimeVariable[];
+    } = {
+      globals: globalEnv.variables,
+      environment: activeEnv.variables,
+      collection: [],
+    };
+    return executor.send(request, variables, agent);
   },
 
   cancelExecution: (reqId: TId) => {

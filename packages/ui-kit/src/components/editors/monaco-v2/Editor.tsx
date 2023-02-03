@@ -3,9 +3,6 @@ import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
 import { EEditorLanguage } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
-import MonacoFirecampLangInit, {
-  SetCompletionProvider,
-} from '../monaco/lang/init';
 import './sass/Editor.sass';
 
 const Editor: FC<IEditor> = ({
@@ -18,11 +15,6 @@ const Editor: FC<IEditor> = ({
   path,
   loading,
   addExtraLib,
-  // controlsConfig = {
-  //   show: false,
-  //   position: 'vertical',
-  //   collapsed: true,
-  // },
   placeholder = '',
   className = '',
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
@@ -39,11 +31,6 @@ const Editor: FC<IEditor> = ({
   onCtrlShiftEnter = () => {},
 }) => {
   const editorIdRef = useRef('');
-  useEffect(() => {
-    MonacoFirecampLangInit();
-    SetCompletionProvider(EEditorLanguage.HeaderKey, { name: 'Nishchit' });
-  }, []);
-
   useEffect(() => {
     //@ts-ignore
     if (!window.editors) window.editors = new Map();
@@ -183,7 +170,7 @@ const Editor: FC<IEditor> = ({
   const options: EditorProps['options'] = {
     readOnly: false,
     fontFamily: "'Open Sans', sans-serif",
-    fontSize: 14,
+    fontSize: 15,
     links: false,
     lineNumbersMinChars: 5,
     overviewRulerLanes: 0,
@@ -208,6 +195,8 @@ const Editor: FC<IEditor> = ({
       showModules: false, // disables `globalThis`, but also disables user-defined modules suggestions.
     },
     suggestOnTriggerCharacters: false,
+    tabSize: 4,
+    renderWhitespace: false, // it'll show dot for white stpace
     wordBasedSuggestions: false,
     ...monacoOptions,
   };

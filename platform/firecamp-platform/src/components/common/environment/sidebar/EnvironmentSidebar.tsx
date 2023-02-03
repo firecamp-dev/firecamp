@@ -1,6 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
+import { Notes } from "@firecamp/ui-kit";
 import { EEnvironmentScope } from '@firecamp/types';
 import {
   Container,
@@ -9,41 +10,25 @@ import {
   Pane,
   ToolBar,
 } from '@firecamp/ui-kit';
-import treeRenderer from './tree/treeItemRenderer';
-import { CollectionEnvDataProvider } from './tree/treeDataProvider';
+import treeRenderer from './tree/itemRenderer';
+import treeRenderer_ from './tree_/itemRenderer';
 import platformContext from '../../../../services/platform-context';
 import { useWorkspaceStore } from '../../../../store/workspace';
-import { useEnvStore } from '../../../../store/environment';
+import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
+import { platformEmitter } from '../../../../services/platform-emitter';
+import { EPlatformTabs } from '../../../../services/platform-emitter/events';
 
 const EnvironmentSidebar: FC<any> = () => {
   const treeRef = useRef();
   const {
     explorer: { collections },
   } = useWorkspaceStore((s) => ({ explorer: s.explorer }), shallow);
-  const { envs, deleteEnvironment, registerTDP, unRegisterTDP } = useEnvStore(
-    (s) => ({
-      envs: s.envs,
-      deleteEnvironment: s.deleteEnvironment,
-      registerTDP: s.registerTDP,
-      unRegisterTDP: s.unRegisterTDP,
-    }),
-    shallow
-  );
-
-  const colEnvDataProvider = useRef(new CollectionEnvDataProvider(collections));
-
-  //effect: register and unregister col/wrs env's treeDataProvider instance
-  useEffect(() => {
-    registerTDP(colEnvDataProvider.current);
-    return unRegisterTDP;
-  }, []);
-
+  const { envs } = useEnvStore.getState();
   const openCreateWrsEnv = (wrsId: string) => {
     platformContext.app.modals.openCreateEnvironment({
       scope: EEnvironmentScope.Workspace,
     });
   };
-
   const openWrsEnv = (wrsId: string, envId: string) => {
     platformContext.app.modals.openManageEnvironemnt({
       scope: EEnvironmentScope.Workspace,
@@ -52,12 +37,112 @@ const EnvironmentSidebar: FC<any> = () => {
     });
   };
 
-  const openCreateColEnv = (colId: string) => {
-    platformContext.app.modals.openCreateEnvironment({
-      scope: EEnvironmentScope.Collection,
-      collectionId: colId,
+  return (
+    <div className="w-full h-full flex flex-row explorer-wrapper">
+      <Container>
+        <ProgressBarContainer />
+        <EnvironmentCollection />
+        {envs?.length ? <CollectionScopedEnvCollection /> : <></>}
+      </Container>
+    </div>
+  );
+};
+
+export default EnvironmentSidebar;
+
+const ProgressBarContainer = () => {
+  let { isProgressing } = useWorkspaceStore((s) => ({
+    isProgressing: s.explorer.isProgressing,
+  }));
+
+  return <ProgressBar active={isProgressing} />;
+};
+
+const EnvironmentCollection = () => {
+  const treeRef = useRef();
+  const { envTdpInstance, registerTDP, unRegisterTDP } = useEnvStore(
+    (s: IEnvironmentStore) => ({
+      envTdpInstance: s.envTdpInstance,
+      registerTDP: s.registerTDP_,
+      unRegisterTDP: s.unRegisterTDP_,
+    })
+  );
+  useEffect(() => {
+    registerTDP();
+    return () => unRegisterTDP();
+  }, []);
+  const openEnv = (env) => {
+    platformEmitter.emit(EPlatformTabs.Open, {
+      entity: { ...env },
+      __meta: { id: env.__ref.id, type: 'environment' },
     });
   };
+  const openCreateColEnv = () => {};
+  const deleteEnv = () => {};
+
+  if (!envTdpInstance) return <></>;
+  return (
+    <Pane
+      expanded={true}
+      bodyClassName={'!p-0'}
+      headerTitleRenderer={() => {
+        return <span className="font-bold">ENVIRONMENTS</span>;
+      }}
+      headerActionRenderer={() => {
+        return (
+          <ToolBar>
+            {/* <div>
+            <VscRefresh className="cursor-pointer" size={16} onClick={()=> {}}/>
+          </div>
+          <div>
+            <VscNewFolder className="cursor-pointer" size={16} onClick={()=>{}}/>
+          </div> */}
+          </ToolBar>
+        );
+      }}
+      bodyRenderer={({ expanded }) => {
+        return (
+          <UncontrolledTreeEnvironment
+            dataProvider={envTdpInstance}
+            getItemTitle={(item) => item.data?.name}
+            viewState={{}}
+            renderItemArrow={treeRenderer_.renderItemArrow}
+            // renderItemTitle={treeRenderer_.renderItemTitle}
+            renderItem={(props) =>
+              treeRenderer_.renderItem({
+                ...props,
+                openEnv: openEnv,
+                openCreateEnv: openCreateColEnv,
+                deleteEnv,
+              })
+            }
+          >
+            <Tree
+              treeId="tree-1"
+              rootItem="root"
+              treeLabel="Tree Example"
+              ref={treeRef}
+            />
+          </UncontrolledTreeEnvironment>
+        );
+      }}
+    />
+  );
+};
+
+const CollectionScopedEnvCollection = () => {
+  const treeRef = useRef();
+  const { envTdpInstance, registerTDP, unRegisterTDP, deleteEnvironment } =
+    useEnvStore((s: IEnvironmentStore) => ({
+      envTdpInstance: s.colEnvTdpInstance,
+      registerTDP: s.registerTDP,
+      unRegisterTDP: s.unRegisterTDP,
+      deleteEnvironment: s.deleteEnvironment,
+    }));
+  useEffect(() => {
+    registerTDP();
+    return () => unRegisterTDP();
+  }, []);
 
   const openColEnv = (colId: string, envId: string) => {
     platformContext.app.modals.openManageEnvironemnt({
@@ -66,6 +151,8 @@ const EnvironmentSidebar: FC<any> = () => {
       envId,
     });
   };
+
+  const openCreateColEnv = () => {};
 
   const deleteEnv = (envId: string) => {
     platformContext.window
@@ -88,66 +175,61 @@ const EnvironmentSidebar: FC<any> = () => {
       });
   };
 
+  if (!envTdpInstance) return <></>;
   return (
-    <div className="w-full h-full flex flex-row explorer-wrapper">
-      <Container>
-        <ProgressBarContainer />
-        <Pane
-          expanded={true}
-          bodyClassName={'!p-0'}
-          headerTitleRenderer={() => {
-            return <span className="font-bold">COLLECTION ENVIRONMENTS</span>;
-          }}
-          headerActionRenderer={() => {
-            return (
-              <ToolBar>
-                {/* <div>
+    <Pane
+      expanded={false}
+      bodyClassName={'!p-0'}
+      headerTitleRenderer={() => {
+        return <span className="font-bold">COLLECTION ENVIRONMENTS</span>;
+      }}
+      headerActionRenderer={() => {
+        return (
+          <ToolBar>
+            {/* <div>
                   <VscRefresh className="cursor-pointer" size={16} onClick={()=> {}}/>
                 </div>
                 <div>
                   <VscNewFolder className="cursor-pointer" size={16} onClick={()=>{}}/>
                 </div> */}
-              </ToolBar>
-            );
-          }}
-          bodyRenderer={({ expanded }) => {
-            return (
-              <UncontrolledTreeEnvironment
-                dataProvider={colEnvDataProvider.current}
-                getItemTitle={(item) => item.data?.name}
-                viewState={{}}
-                renderItemArrow={treeRenderer.renderItemArrow}
-                // renderItemTitle={treeRenderer.renderItemTitle}
-                renderItem={(props) =>
-                  treeRenderer.renderItem({
-                    ...props,
-                    openEnv: openColEnv,
-                    openCreateEnv: openCreateColEnv,
-                    deleteEnv,
-                  })
-                }
-              >
-                <Tree
-                  treeId="tree-1"
-                  rootItem="root"
-                  treeLabel="Tree Example"
-                  ref={treeRef}
-                />
-              </UncontrolledTreeEnvironment>
-            );
-          }}
-        ></Pane>
-      </Container>
-    </div>
+          </ToolBar>
+        );
+      }}
+      bodyRenderer={({ expanded }) => {
+        return (
+          <>
+          <Notes description="
+              The collection scoped environments are deprecated, you can see the
+              collection environments here and create a new environment from it." />
+              <div className="text-sm !m-2 p-2 bg-focus1 !text-appForegroundInActive">
+              The collection scoped environments are deprecated, you can see the
+              collection environments here and create a new environment from it.
+              </div>
+            <UncontrolledTreeEnvironment
+              dataProvider={envTdpInstance}
+              getItemTitle={(item) => item.data?.name}
+              viewState={{}}
+              renderItemArrow={treeRenderer.renderItemArrow}
+              // renderItemTitle={treeRenderer.renderItemTitle}
+              renderItem={(props) =>
+                treeRenderer.renderItem({
+                  ...props,
+                  openEnv: openColEnv,
+                  openCreateEnv: openCreateColEnv,
+                  deleteEnv,
+                })
+              }
+            >
+              <Tree
+                treeId="tree-1"
+                rootItem="root"
+                treeLabel="Tree Example"
+                ref={treeRef}
+              />
+            </UncontrolledTreeEnvironment>
+          </>
+        );
+      }}
+    />
   );
-};
-
-export default EnvironmentSidebar;
-
-const ProgressBarContainer = () => {
-  let { isProgressing } = useWorkspaceStore((s) => ({
-    isProgressing: s.explorer.isProgressing,
-  }));
-
-  return <ProgressBar active={isProgressing} />;
 };

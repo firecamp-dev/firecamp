@@ -1,12 +1,7 @@
 // @ts-nocheck
 
 import { FC, useEffect, useState } from 'react';
-import {
-  Container,
-  TabHeader,
-  Button,
-  Editor,
-} from '@firecamp/ui-kit';
+import { Container, TabHeader, Button, Editor } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 
 const ImportRaw: FC<IImportRaw> = ({
@@ -42,9 +37,6 @@ const ImportRaw: FC<IImportRaw> = ({
           value={value}
           onLoad={(editor) => {
             editor.focus();
-          }}
-          controlsConfig={{
-            show: true,
           }}
           monacoOptions={{
             theme: 'kuroir',

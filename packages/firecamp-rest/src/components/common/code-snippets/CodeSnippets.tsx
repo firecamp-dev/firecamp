@@ -7,8 +7,8 @@ import shallow from 'zustand/shallow';
 import codeSnippet, {
   ESnippetTargets,
   TTargetClients,
-} from '../../../services/code-snippet';
-import targetsInfo from '../../../services/code-snippet/targets-info';
+} from '../../../services/code-snippet-deprecated';
+import targetsInfo from '../../../services/code-snippet-deprecated/targets-info';
 import { useStoreApi, useStore, IStore } from '../../../store';
 import { IRest } from '@firecamp/types';
 
@@ -17,10 +17,10 @@ const CodeSnippets = ({ tabId = '' }) => {
     useStoreApi().getState() as IStore;
   if (!context) return <></>;
   let envVariables = {};
-  const { env } = context.environment.getCurrentTabEnv(tabId);
-  if (env) {
-    envVariables = { ...(env.variable || {}) };
-  }
+  // const { env } = context.environment.getCurrentTabEnv(tabId);
+  // if (env) {
+  //   envVariables = { ...(env.variable || {}) };
+  // }
   const { isCodeSnippetOpen } = useStore(
     (s: IStore) => ({
       isCodeSnippetOpen: s.ui.isCodeSnippetOpen,
@@ -159,7 +159,7 @@ const CodeSnippets = ({ tabId = '' }) => {
                       </div>
                     </div>
                   ) : (
-                    ''
+                    <></>
                   )}
 
                   <Editor
@@ -168,9 +168,6 @@ const CodeSnippets = ({ tabId = '' }) => {
                       activeClientTargetMap[activeTarget] || 'typescript'
                     }
                     disabled={true}
-                    controlsConfig={{
-                      show: true,
-                    }}
                     monacoOptions={{
                       // ref: ref,
                       // name: snippetLabel,

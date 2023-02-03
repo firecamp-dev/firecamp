@@ -25,17 +25,19 @@ import ConfigTab from './tabs/ConfigTab';
 import { IStore, useStore } from '../../store';
 import { ERequestPanelTabs } from '../../types';
 
-const Request = ({ tab }) => {
+const Request = ({ tabId }) => {
   useHotkeys(`cmd+h`, (k, e) => console.log('This is the cmd+h', k, e));
   const {
-    scripts,
+    preScripts,
+    postScripts,
     requestPanel,
     changeScripts,
     changeUiActiveTab,
     toggleOpenCodeSnippet,
   } = useStore(
     (s: IStore) => ({
-      scripts: s.request.scripts,
+      preScripts: s.request.preScripts,
+      postScripts: s.request.postScripts,
       requestPanel: s.ui.requestPanel,
       changeScripts: s.changeScripts,
       changeUiActiveTab: s.changeUiActiveTab,
@@ -69,18 +71,18 @@ const Request = ({ tab }) => {
       {
         id: ERequestPanelTabs.PreRequestScript,
         name: ERequestPanelTabs.PreRequestScript,
-        dotIndicator: requestPanel.hasScripts,
+        dotIndicator: requestPanel.hasPreScripts,
       },
       {
-        id: ERequestPanelTabs.Test,
-        name: ERequestPanelTabs.Test,
-        dotIndicator: requestPanel.hasScripts,
+        id: ERequestPanelTabs.Tests,
+        name: ERequestPanelTabs.Tests,
+        dotIndicator: requestPanel.hasPostScripts,
       },
-      {
-        id: ERequestPanelTabs.Config,
-        name: ERequestPanelTabs.Config,
-        dotIndicator: requestPanel.hasConfig,
-      },
+      // {
+      //   id: ERequestPanelTabs.Config,
+      //   name: ERequestPanelTabs.Config,
+      //   dotIndicator: requestPanel.hasConfig,
+      // },
     ],
     [requestPanel]
   );
@@ -96,23 +98,23 @@ const Request = ({ tab }) => {
       case ERequestPanelTabs.Params:
         return <ParamsTab />;
       case ERequestPanelTabs.PreRequestScript:
-        console.log(scripts, 'scripts in request');
+        console.log(preScripts, 'scripts in request');
         return (
           <ScriptTab
-            id={`preRequest-${tab?.id}`}
-            script={scripts.pre}
+            id={`preRequest-${tabId}`}
+            script={preScripts[0].value.join('\n')}
             snippets={preScriptSnippets}
-            onChangeScript={(val) => changeScripts('pre', val)}
+            onChangeScript={(val) => changeScripts('preScripts', val)}
           />
         );
-      case ERequestPanelTabs.Test:
-        console.log(scripts, 'scripts in request');
+      case ERequestPanelTabs.Tests:
+        console.log(postScripts, 'scripts in request');
         return (
           <ScriptTab
-            id={`test-${tab?.id}`}
-            script={scripts.post}
+            id={`test-${tabId}`}
+            script={postScripts[0].value.join('\n')}
             snippets={postScriptSnippets}
-            onChangeScript={(val) => changeScripts('post', val)}
+            onChangeScript={(val) => changeScripts('postScripts', val)}
           />
         );
       case ERequestPanelTabs.Config:
@@ -148,7 +150,6 @@ const Request = ({ tab }) => {
             list={tabs}
             activeTab={activeTab}
             onSelect={(tab: string) => {
-              // console.log(tab, 'tab...');
               changeUiActiveTab(tab);
             }}
             /* tabsClassName={
@@ -162,11 +163,11 @@ const Request = ({ tab }) => {
                 icon={<VscCode className="mr-2" size={12} />}
                 // TODO: Add class for tabs-with-bottom-border-right-section
                 onClick={_toggleCodeSnippet}
-                secondary
                 text="Code"
-                transparent={true}
-                ghost={true}
+                transparent
+                secondary
                 iconLeft
+                ghost
                 sm
               />
             )}

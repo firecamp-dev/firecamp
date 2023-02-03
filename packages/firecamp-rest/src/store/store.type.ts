@@ -25,6 +25,7 @@ interface IStore
 }
 
 interface IStoreState {
+  originalRequest?: IRest;
   request?: IRest;
   runtime?: IRuntime;
   response?: IRestResponse;

@@ -167,6 +167,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
               collections = [],
               folders = [],
               requests = [],
+              envs = [],
               environments = [],
             } = res.data;
 
@@ -186,7 +187,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             });
 
             //TODO: set env from here atm, but improve this logic in future to fetch directly in Env store
-            useEnvStore.getState().initialize(environments);
+            const envStore = useEnvStore.getState();
+            envStore.initialize(envs);
+            envStore.init(environments);
           }
         })
         .catch((e) => {
@@ -241,7 +244,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       platformContext.window
         .promptInput({
           header: 'Create New Collection',
-          lable: 'Collection Name',
+          label: 'Collection Name',
           placeholder: 'type collection name',
           texts: { btnOking: 'Creating...' },
           value: '',

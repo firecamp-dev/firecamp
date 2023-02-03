@@ -41,8 +41,8 @@
   },
   "dependencies": {
     "@firecamp/rest-executor": "workspace:*",
-    "@firecamp/types": "^0.1.9",
-    "@firecamp/utils": "0.0.12"
+    "@firecamp/types": "^0.1.16",
+    "@firecamp/utils": "^0.0.14"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",

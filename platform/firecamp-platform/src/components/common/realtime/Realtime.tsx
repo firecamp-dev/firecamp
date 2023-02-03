@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Realtime } from '@firecamp/cloud-apis';
-import { TId } from '@firecamp/types';
+import { ERequestTypes, TId } from '@firecamp/types';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { useWorkspaceStore } from '../../../store/workspace';
 import {
@@ -112,43 +112,38 @@ const RealtimeEventManager: FC<any> = () => {
 
   // handle platform events
   useEffect(() => {
-    emitter.on(EPlatformTabs.openNew, (type: string) => {
-      const [tab, orders] = open.new(type, true);
-      emitter.emit(EPlatformTabs.opened, [
-        {
-          ...tab,
-          name: tab.name || tab.request.__meta.name,
-          preComp: (
-            <PreComp method={tab?.request?.method || ''} type={tab.type} />
-          ),
-          dotIndicator: tab.__meta?.hasChange === true,
-        },
-        orders,
-      ]);
-    });
+    emitter.on(
+      EPlatformTabs.Open,
+      (
+        { entity, __meta } = {
+          entity: { __meta: { type: ERequestTypes.Rest } },
+          __meta: { id: '', type: 'request' },
+        }
+      ) => {
+        // console.log(entity, __meta, 55555);
+        const [tab, orders] = open(entity, __meta);
+        // console.log(tab, 'opened tab');
+        if (!tab) return; // if request is already opened then retun value would be [ null, null]
 
-    emitter.on(EPlatformTabs.openSaved, (request: any) => {
-      const [ tab, orders ] = open.saved(request);
-      console.log(tab, "opened tab")
-      if (!tab) return; // if request is already opened then retun value would be [ null, null]
-      emitter.emit(EPlatformTabs.opened, [{
-        ...tab,
-        name: tab.name || request.__meta.name,
-        preComp: (
-          <PreComp method={tab?.request?.method || ''} type={tab.type} />
-        ),
-        dotIndicator: tab.__meta?.hasChange === true,
-      }, orders]);
-    });
+        emitter.emit(EPlatformTabs.Opened, [
+          {
+            ...tab,
+            preComp: <PreComp entityType={__meta.type} entity={entity} />,
+            dotIndicator: tab.__meta?.hasChange === true,
+          },
+          orders,
+        ]);
+      }
+    );
 
-    emitter.on(EPlatformTabs.close, (tabId_s: TId | TId[]) => {
+    emitter.on(EPlatformTabs.Close, (tabId_s: TId | TId[]) => {
       close.byIds(Array.isArray(tabId_s) ? tabId_s : [tabId_s]);
-      emitter.emit(EPlatformTabs.closed, tabId_s);
+      emitter.emit(EPlatformTabs.Closed, tabId_s);
     });
 
     return () => {
-      emitter.off(EPlatformTabs.openNew);
-      emitter.off(EPlatformTabs.openSaved);
+      emitter.off(EPlatformTabs.Open);
+      emitter.off(EPlatformTabs.Close);
     };
   }, []);
 

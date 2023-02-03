@@ -1,5 +1,4 @@
-import { IRest, IRestResponse } from '@firecamp/types';
-import { TEnvVariable } from './script-runner';
+import { IRest, IRestResponse, TRuntimeVariable } from '@firecamp/types';
 
 export type TResponse = Partial<
   Omit<IRestResponse, 'error'> & {
@@ -13,7 +12,14 @@ export interface IRestExecutor {
    * received from the server
    * @param request REST request want to send to the server
    */
-  send(request: IRest, variables?: TEnvVariable): Promise<TResponse>;
+  send(
+    request: IRest,
+    variables: {
+      globals: TRuntimeVariable[];
+      environment: TRuntimeVariable[];
+      collection: TRuntimeVariable[];
+    }
+  ): Promise<TResponse>;
 
   /**  cancel the request */
   cancel(): void;

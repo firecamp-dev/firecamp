@@ -17,7 +17,7 @@ import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../services/platform-emitter/events';
 
 const Home: FC<any> = () => {
-  const _openTab = (type?: ERequestTypes) => {
+  const _openTab = (type?: ERequestTypes | 'environment') => {
     const allowed_app = [
       ERequestTypes.SocketIO,
       ERequestTypes.WebSocket,
@@ -25,7 +25,10 @@ const Home: FC<any> = () => {
       ERequestTypes.GraphQL,
     ];
     // if (!allowed_app.includes(type))
-    emitter.emit(EPlatformTabs.openNew, type);
+    emitter.emit(EPlatformTabs.Open, {
+      entity: { __meta: { type } },
+      __meta: { id: '', type: 'request' },
+    });
   };
 
   return (
@@ -169,7 +172,9 @@ const Theme: FC<any> = () => {
       updateTheme(theme);
 
       //Set monaco editor theme
-      theme?.value?.mode == EThemeMode.Dark ? EEditorTheme.Dark : EEditorTheme.Lite;
+      theme?.value?.mode == EThemeMode.Dark
+        ? EEditorTheme.Dark
+        : EEditorTheme.Lite;
     } catch (error) {
       console.error(error);
     }

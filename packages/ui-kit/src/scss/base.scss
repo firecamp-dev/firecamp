@@ -31,6 +31,7 @@
     --req-graphql: #E535AB;
     --req-websocket: #FF7043;
     --req-socketio: #91BD5E;
+    --link: #0068bc;
 
     --app-background: #1B1A1A;
     --app-foreground: #cccccc;
@@ -314,43 +315,43 @@ tr:focus-visible{
 .explorer-wrapper {
   max-height: calc(100vh - 25px);
 }
-.GET{
+.GET:not(.tab-icon){
   color: var(--req-get);
 }
-.POST{
+.POST:not(.tab-icon){
   color: var(--req-post);
 }
-.PUT{
+.PUT:not(.tab-icon){
   color: var(--req-put);
 }
-.DELETE{
+.DELETE:not(.tab-icon){
   color: var(--req-delete);
 }
-.PATCH{
+.PATCH:not(.tab-icon){
   color: var(--req-patch);
 }
-.HEAD{
+.HEAD:not(.tab-icon){
   color: var(--req-head);
 }
-.OPTIONS{
+.OPTIONS:not(.tab-icon){
   color: var(--req-options);
 }
-.PURGE{
+.PURGE:not(.tab-icon){
   color: var(--req-purge);
 }
-.LINK{
+.LINK:not(.tab-icon){
   color: var(--req-link);
 }
-.UNLINK{
+.UNLINK:not(.tab-icon){
   color: var(--req-unlink);
 }
-.GRAPHQL{
+.GRAPHQL:not(.tab-icon){
   color: var(--req-graphql);
 }
-.WEBSOCKET{
+.WEBSOCKET:not(.tab-icon){
   color: var(--req-websocket);
 }
-.SOCKETIO{
+.SOCKETIO:not(.tab-icon){
   color: var(--req-socketio);
 }
 .hide-action:hover .action {

@@ -1,17 +1,24 @@
 import Joi from '@hapi/joi';
 import tv4 from 'tv4';
 import chai from 'chai';
-import { IRest, IRestResponse } from '@firecamp/types';
+import {
+  EScriptTypes,
+  IRest,
+  IRestResponse,
+  IScript,
+  TPlainObject,
+  TVariable,
+} from '@firecamp/types';
 import { _misc, _string } from '@firecamp/utils';
 
 import jsExecutor from './lib/js-executor';
-import { Environment } from './environment';
-import { Request } from './request';
+import { Variables } from './variables';
+// import { Request } from './request';
 import { Response } from './response';
 import requestAssertionPlugin from './request/assertions';
 import responseAssertionPlugin from './response/assertions';
-import { TEnvVariable, TPostScript, TPreScript, TTestScript } from './types';
 import Runner from '../test-runner/runner';
+import { TPostScript, TPreScript, TTestScript } from './types';
 
 export * from './types';
 export * from './snippets';
@@ -19,22 +26,70 @@ export * from './snippets';
 chai.use(requestAssertionPlugin);
 chai.use(responseAssertionPlugin);
 
+class Fc {
+  globals: Variables;
+  environment: Variables;
+  collectionVariables: Variables;
+  constructor(
+    globalVars: TVariable[] = [],
+    envVars: TVariable[] = [],
+    collectionVars: TVariable[] = []
+  ) {
+    this.globals = new Variables(globalVars);
+    this.environment = new Variables(envVars);
+    this.collectionVariables = new Variables(collectionVars);
+  }
+  public variables = {
+    get: (variableName: string) => {
+      /**
+       * variable find priorities
+       * 1. first find in collection variables
+       * 2. if not found then find in environment variables
+       * 3. if not found then find in globals variables
+       */
+      let value = this.collectionVariables.get(variableName);
+      if (value === undefined) {
+        value = this.environment.get(variableName);
+      } else {
+        value = this.globals.get(variableName);
+      }
+      return value;
+    },
+  };
+}
+
 export const preScript: TPreScript = async (
   request: IRest,
-  variables: TEnvVariable
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
 ) => {
-  if (!request?.scripts?.pre) return {};
+  const script: IScript | undefined = request.preScripts.find(
+    (s) => s.type == EScriptTypes.PreRequest
+  );
+  if (!script) return {};
   try {
-    const script = `(()=>{
-            ${request.scripts?.pre};
+    const code = `(()=>{
+            ${script.value.join('\n')};
+            if(!result) var result;
             return {
-              request,
-              environment
+              variables: {
+                globals: fc.globals.toJSON(),
+                environment: fc.environment.toJSON(),
+                collection: fc.collectionVariables.toJSON(),
+              },
+              result, // for testing purpose to return the value, let result = fc.globals.get('name')
             }
           })()`;
-    return jsExecutor(script, {
-      request: new Request(request),
-      environment: new Environment(variables),
+    return jsExecutor(code, {
+      // request: new Request(request),
+      fc: new Fc(
+        variables.globals,
+        variables.environment,
+        variables.collection
+      ),
     });
   } catch (error) {
     console.info('%cpre-script sandbox error', 'color: red; font-size: 14px');
@@ -44,22 +99,33 @@ export const preScript: TPreScript = async (
 };
 
 export const postScript: TPostScript = async (
-  script: string,
-  response: IRestResponse,
-  variables: TEnvVariable
+  postScripts,
+  response,
+  variables
 ) => {
+  const script: IScript | undefined = postScripts.find(
+    (s) => s.type == EScriptTypes.Test
+  );
   if (!script) return {};
   try {
     const _script = `(()=>{
-            ${script};
+            ${script.value.join('\n')};
             return {
               response,
-              environment
+              variables: {
+                globals: fc.globals.toJSON(),
+                environment: fc.environment.toJSON(),
+                collection: fc.collectionVariables.toJSON(),
+              },
             }
           })()`;
     return jsExecutor(_script, {
       response: new Response(response),
-      environment: new Environment(variables),
+      fc: new Fc(
+        variables.globals,
+        variables.environment,
+        variables.collection
+      ),
     });
   } catch (error) {
     console.info('%cpost-script sandbox error', 'color: red; font-size: 14px');
@@ -68,11 +134,13 @@ export const postScript: TPostScript = async (
   }
 };
 
+//@ts-ignore
 export const testScript: TTestScript = async (
   request: IRest,
   response: IRestResponse,
-  variables: TEnvVariable
+  variables: TPlainObject
 ) => {
+  //@ts-ignore
   if (!request?.scripts?.test) return;
 
   Object.defineProperty(request, 'to', {
@@ -88,11 +156,13 @@ export const testScript: TTestScript = async (
   });
 
   try {
+    //@ts-ignore
     const runner = new Runner(request.scripts.test as string);
     const result = await runner.run({
       Promise,
       request,
       response,
+      //@ts-ignore
       environment: new Environment(variables),
       tv4,
       Joi,

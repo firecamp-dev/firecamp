@@ -74,17 +74,18 @@ export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CM
 
 export { default as Editor } from './components/editors/monaco-v2/Editor';
 export { default as SingleLineEditor } from './components/editors/monaco-v2/SingleLineEditor';
+export { default as EditorControlBar } from './components/editors/monaco-v2/EditorControlBar';
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';
 export { default as BulkEditTable } from './components/table/bulk-edit-table/BulkEditTable';
-// export { default as BasicTableRT8 } from './components/table/rt8/BasicTable';
 
 //table v3
 export { default as PrimitiveTable } from './components/table/primitive/Table';
 export { default as BasicTable } from './components/table/basic-table/BasicTable';
 export { default as MultipartTable } from './components/table/multipart-table/MultipartTable';
 export { default as LogTable } from './components/table/log-table/LogTable';
+export { default as EnvironmentTable } from './components/table/environment-table/EnvironmentTable';
 export type { ITable, TTableApi } from './components/table/primitive/Table';
 
 // Url

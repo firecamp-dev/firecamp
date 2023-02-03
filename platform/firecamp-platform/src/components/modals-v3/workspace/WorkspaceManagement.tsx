@@ -204,7 +204,7 @@ const MembersTab = () => {
       .then(({ data }) => {
         const members = data.members?.map((m) => {
           return {
-            id: m.__ref.uuid || m.__ref.id,
+            id: m.__ref.id,
             name: m.name || m.username,
             email: m.email,
             role: m.w_relation.role,

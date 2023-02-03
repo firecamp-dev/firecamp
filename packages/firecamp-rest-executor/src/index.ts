@@ -2,14 +2,18 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
 import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
-import { IRest, IRestResponse } from '@firecamp/types';
+import {
+  EKeyValueTableRowType,
+  ERestBodyTypes,
+  IRest,
+  IRestResponse,
+  TRuntimeVariable,
+} from '@firecamp/types';
 import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
-
 import parseBody from './helpers/body';
 import { IRestExecutor, TResponse } from './types';
 import * as scriptRunner from './script-runner';
-import { TEnvVariable } from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
   private _controller: AbortController;
@@ -133,7 +137,11 @@ export default class RestExecutor implements IRestExecutor {
 
   async send(
     fcRequest: IRest,
-    variables: TEnvVariable = {}
+    variables: {
+      globals: TRuntimeVariable[];
+      environment: TRuntimeVariable[];
+      collection: TRuntimeVariable[];
+    }
   ): Promise<TResponse> {
     console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
@@ -165,7 +173,7 @@ export default class RestExecutor implements IRestExecutor {
         }
         if (reqInstance) {
           // Merge script updated request with fc request
-          // note: reqInstance will have other methods too like addHeaders, but desctucting it will add only it's private properties like body, headers, url
+          // note: reqInstance will have other methods too like addHeaders, but destructing it will add only it's private properties like body, headers, url
           // TODO:  we can improve this later
           fcRequest = { ...fcRequest, ...reqInstance };
         }
@@ -174,9 +182,35 @@ export default class RestExecutor implements IRestExecutor {
       })
       .then(({ fcRequest }) => {
         // apply variables to request
-        console.log(variables, 77777);
-        const request = _env.applyVariables(fcRequest, variables) as IRest;
-        return request;
+        const { globals, environment, collection } = variables;
+        const gVars = _env.preparePlainVarsFromRuntimeVariables(globals);
+        const eVars = _env.preparePlainVarsFromRuntimeVariables(environment);
+        const cVars = _env.preparePlainVarsFromRuntimeVariables(collection);
+        const plainVars = { ...gVars, ...eVars, ...cVars };
+        // console.log(variables, plainVars, 77777);
+
+        /** if request body is multipart then
+         *  1. don't apply vars in whole request, it'll remove file object attached in form
+         *  2. instead apply vars in request except thee body
+         *  3. and then apply vars in body separately by taking care for file object in form (apply vars in each row)
+         */
+        if (fcRequest.body?.type == ERestBodyTypes.FormData) {
+          const { body, ...restRequest } = fcRequest;
+          //@ts-ignore ///TODO: check here to remove the type error
+          body.value = body.value.map((v) => {
+            const { file, ...row } = v;
+            v = _env.applyVariables(row, plainVars);
+            if (v.type == EKeyValueTableRowType.File) {
+              v.file = file;
+            }
+            return v;
+          });
+          const request = _env.applyVariables(restRequest, plainVars) as IRest;
+          return { ...request, body };
+        } else {
+          const request = _env.applyVariables(fcRequest, plainVars) as IRest;
+          return request;
+        }
       })
       .then(async (request) => {
         const axiosRequest: AxiosRequestConfig = await this._prepare(request);
@@ -205,7 +239,7 @@ export default class RestExecutor implements IRestExecutor {
             });
           }
           return Promise.resolve({
-            statutsCode: 0,
+            statusCode: 0,
             error: {
               message: e.message,
               code: e.code,
@@ -217,10 +251,14 @@ export default class RestExecutor implements IRestExecutor {
       .then(async (response) => {
         /** run post-script */
         // TODO: add inherit support
-        let postScriptRes = await scriptRunner.postScript(
-          fcRequest.scripts?.post as string,
+        const postScriptRes = await scriptRunner.postScript(
+          fcRequest.postScripts,
           response,
-          {}
+          {
+            globals: [],
+            environment: [],
+            collection: [],
+          }
         );
         // merge post script response with actual response
         if (postScriptRes?.response) {

@@ -18,6 +18,8 @@ describe('rest executor', () => {
           pathParams: [],
         },
         method: EHttpMethod.GET,
+        preScripts: [],
+        postScripts: [],
         __meta: {
           name: '',
           type: ERequestTypes.Rest,
@@ -28,7 +30,11 @@ describe('rest executor', () => {
           collectionId: '',
         },
       },
-      {}
+      {
+        globals: [],
+        environment: [],
+        collection: [],
+      }
     );
 
     expect(response?.statusCode).toEqual(200);
@@ -53,6 +59,8 @@ describe('rest executor', () => {
           value: JSON.stringify({ msg: 'Hi' }),
           type: ERestBodyTypes.Json,
         },
+        preScripts: [],
+        postScripts: [],
         __meta: {
           name: '',
           type: ERequestTypes.Rest,
@@ -63,7 +71,11 @@ describe('rest executor', () => {
           collectionId: '',
         },
       },
-      {}
+      {
+        globals: [],
+        environment: [],
+        collection: [],
+      }
     );
 
     expect(response?.statusCode).toEqual(201);
@@ -84,6 +96,8 @@ describe('rest executor', () => {
         config: {
           rejectUnauthorized: false,
         },
+        preScripts: [],
+        postScripts: [],
         __meta: {
           name: '',
           type: ERequestTypes.Rest,
@@ -94,7 +108,11 @@ describe('rest executor', () => {
           collectionId: '',
         },
       },
-      {}
+      {
+        globals: [],
+        environment: [],
+        collection: [],
+      }
     );
 
     expect(response?.statusCode).toEqual(200);
@@ -113,6 +131,8 @@ describe('rest executor', () => {
           config: {
             rejectUnauthorized: true,
           },
+          preScripts: [],
+          postScripts: [],
           __meta: {
             name: '',
             type: ERequestTypes.Rest,
@@ -123,7 +143,11 @@ describe('rest executor', () => {
             collectionId: '',
           },
         },
-        {}
+        {
+          globals: [],
+          environment: [],
+          collection: [],
+        }
       )
       .then(({ error }) => {
         expect(error?.message).toEqual('certificate has expired');

@@ -23,21 +23,13 @@ const SnippetPopup: FC<ISnippetPopup> = ({
   if (!snippets?.length) return <></>;
   // console.log({ snippets });
   return (
-    <Popover
-      positions={[EPopoverPosition.Right]}
-      className="!p-0"
-      isOpen={isOpen}
-      onToggleOpen={() => {
-        onClose();
-      }}
-      content={
-        <div className="overflow-auto max-h-screen-third">
+    <div className="overflow-auto visible-scrollbar">
           {snippets.map((snippet, i) => {
             return (
               <div key={`${i}-popup`}>
                 {snippet?.name.length ? (
-                  <div className="bg-focus1 px-3 py-2 border-b border-appBorder">
-                    <div className="text-lg leading-6 font-semibold text-appForeground">
+                  <div className="bg-focus1 px-3 py-1 mb-2">
+                    <div className="text-base leading-6 font-semibold text-appForeground">
                       {snippet.name}
                     </div>
                   </div>
@@ -60,20 +52,6 @@ const SnippetPopup: FC<ISnippetPopup> = ({
             );
           })}
         </div>
-      }
-    >
-      <Popover.Handler>
-        <Button
-          icon={<VscInfo size={16} className="mr-1" />}
-          text="Snippet"
-          secondary
-          transparent
-          iconLeft
-          ghost
-          sm
-        />
-      </Popover.Handler>
-    </Popover>
   );
 };
 export default SnippetPopup;
@@ -81,12 +59,12 @@ export default SnippetPopup;
 const SnippetGroup: FC<any> = ({ group, index, onAddScript }) => {
   return (
     <div
-      className="pl-3 pr-0 py-2 border-b border-appBorder last:border-b-0"
+      className="pl-3 pr-0 pt-2 last:border-b-0"
       key={`${group.id}-${index}`}
     >
-      <div className="font-semibold">{group.name}</div>
+      <div className="font-semibold text-sm">{group.name}</div>
       <div>
-        <div className="mt-2 mb-1">
+        <div className="mt-1 mb-1 text-link">
           {group.snippets.map((snippet: TSnippet, i: number) => {
             return (
               <div

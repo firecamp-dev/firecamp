@@ -13,49 +13,16 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    // console.log( item.data.__ref, "arrow context");
-    if (item.data.__ref?.isCollection || item.data.__ref?.isWorkspace) {
-      return context.isExpanded ? (
-        <>
-          <VscTriangleDown
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.6'}
-          />
-          <AiTwotoneFolderOpen
-            className="mr-1 flex-none"
-            size={16}
-            opacity={'0.6'}
-          />
-        </>
-      ) : (
-        <>
-          <VscTriangleRight
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.6'}
-          />
-          <AiTwotoneFolder
-            className="mr-1 flex-none"
-            size={16}
-            opacity={'0.6'}
-          />
-        </>
-      );
-    } else if (item.data.__ref?.isEnvironment) {
-      return (
-        <>
-          {item.data.__meta.visibility == 2 ? (
-            <VscLock className="mr-0.5 flex-none" size={18} opacity={1} />
-          ) : (
-            <></>
-          )}
-          <VscJson className="mr-0.5 flex-none" size={18} opacity={1} />
-        </>
-      );
-    } else {
-      return <></>;
-    }
+    return <VscJson className="mr-0.5 flex-none" size={18} opacity={1} />;
+    return (
+      <>
+        {item.data.__meta.visibility == 2 ? (
+          <VscLock className="mr-0.5 flex-none" size={18} opacity={1} />
+        ) : (
+          <></>
+        )}
+      </>
+    );
   },
 
   renderItemTitle: ({ item, title, context, info }) => {
@@ -161,7 +128,7 @@ export default {
               { '!top-4': item.data.__ref.isRequest }
             )}
             style={{ left: `${renderDepthOffset * 2 - 3}px` }}
-          ></span>
+          />
           {arrow}
           <InteractiveComponent
             type={type}
@@ -179,8 +146,7 @@ export default {
             <span className="w-full overflow-hidden overflow-ellipsis items-center block">
               {title}
 
-              {item.data.__ref?.isCollection ||
-              item.data.__ref?.isWorkspace ? (
+              {item.data.__ref?.isCollection || item.data.__ref?.isWorkspace ? (
                 <span className={'text-sm'}>- {item.children?.length}</span>
               ) : (
                 <></>
@@ -196,22 +162,14 @@ export default {
               }}/> */}
 
             <Button
-              text={
-                item.data.__ref?.isCollection || item.data.__ref?.isWorkspace
-                  ? 'Add Env'
-                  : 'Open'
-              }
+              text={'Open'}
               className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
               onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                item.data.__ref?.isCollection || item.data.__ref?.isWorkspace
-                  ? openCreateEnv(item.index)
-                  : openEnv(
-                      item.data.__ref.collectionId ||
-                        item.data.__ref?.workspaceId,
-                      item.data.__ref.id
-                    );
+                // e.preventDefault();
+                // e.stopPropagation();
+                console.log(context);
+                context.focusItem();
+                openEnv(item.data);
               }}
               transparent
               secondary

@@ -1,12 +1,6 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
-import {
-  EFirecampAgent,
-  EHttpMethod,
-  IHeader,
-  IRest,
-  TId,
-} from '@firecamp/types';
+import { EHttpMethod, IHeader, IRest, TId } from '@firecamp/types';
 import { _clipboard } from '@firecamp/utils';
 import { _object } from '@firecamp/utils';
 import { prepareUIRequestPanelState } from '../../services/request.service';
@@ -41,12 +35,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   changeMeta: (__meta: Partial<IRest['__meta']>) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
-  execute(
-    variables: {
-      collection?: {};
-    },
-    fcAgent: EFirecampAgent
-  ): void;
+  execute(): void;
   save: (tabId: TId) => void;
 }
 
@@ -128,18 +117,20 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     }));
     state.equalityChecker({ __meta: updatedMeta });
   },
-  changeScripts: (scriptType: string, value: string) => {
-    //todo: will create enum for pre,post,test
+  changeScripts: (scriptType: 'preScripts' | 'postScripts', value: string) => {
+    //todo: will create enum for preScripts, postScripts
     const state = get();
-    const updatedScripts = {
-      ...state.request.scripts,
-      [scriptType]: value,
-    };
+    const _scripts = [
+      {
+        ...state.request[scriptType][0],
+        value: value.split('\n'),
+      },
+    ];
     const updatedUiRequestPanel = prepareUIRequestPanelState({
-      scripts: updatedScripts,
+      [scriptType]: _scripts,
     });
     set((s) => ({
-      request: { ...s.request, scripts: updatedScripts },
+      request: { ...s.request, [scriptType]: _scripts },
       ui: {
         ...s.ui,
         requestPanel: {
@@ -148,14 +139,9 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         },
       },
     }));
-    state.equalityChecker({ scripts: updatedScripts });
+    state.equalityChecker({ [scriptType]: _scripts });
   },
-  execute: async (
-    variables: {
-      collection?: {};
-    },
-    fcAgent: EFirecampAgent
-  ) => {
+  execute: async () => {
     const state = get();
     try {
       // set response empty
@@ -163,10 +149,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
 
       // Check if request is running or not. stop running request if already true
       if (state.runtime.isRequestRunning === true) {
-        await state.context.request.cancelExecution(
-          state.request.__ref.id,
-          fcAgent
-        );
+        await state.context.request.cancelExecution(state.request.__ref.id);
         // set request running state as false
         state.setRequestRunningFlag(false);
         return;
@@ -179,7 +162,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       //   state.request
       // );
 
-      // console.log({ normalizedRequest, request });
+      console.log(state.request, 'state.request');
       // execute request
       await state.context.request
         .execute(state.request)

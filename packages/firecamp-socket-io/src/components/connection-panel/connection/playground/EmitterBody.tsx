@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Editor,
   Input,
@@ -8,6 +8,7 @@ import {
   Checkbox,
   Dropdown,
   Button,
+  EditorControlBar,
 } from '@firecamp/ui-kit';
 import {
   EArgumentBodyType,
@@ -37,6 +38,7 @@ const EmitterBody = ({
   changeArgValue,
 }: IBody) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
+  const [editor, setEditor] = useState();
   const { value, name } = plgEmitter;
   const argument = value[activeArgIndex];
   console.log(value, activeArgIndex, argument, 'argument');
@@ -49,6 +51,16 @@ const EmitterBody = ({
       }
     );
   }, [argument.__meta.type]);
+
+  /** if Editor is not rendered then remove editor from state */
+  useEffect(() => {
+    const { Text, Json, ArrayBuffer, ArrayBufferView } = EArgumentBodyType;
+    if (
+      ![Text, Json, ArrayBuffer, ArrayBufferView].includes(activeArgType.id)
+    ) {
+      if (editor) setEditor(null);
+    }
+  }, [activeArgType.id]);
 
   const shortcutFns = {
     onCtrlS: () => {
@@ -99,13 +111,7 @@ const EmitterBody = ({
               onChange={({ target: { value } }) => {
                 if (argument.body !== value) changeArgValue(value);
               }}
-              // controlsConfig={{
-              //   show:
-              //     bodyType !== EArgumentBodyType.None &&
-              //     typeof playgroundBody === 'string' &&
-              //     bodyType !== EArgumentBodyType.file,
-              //   position: 'vertical'
-              // }}
+              onLoad={(edt) => setEditor(edt)}
               monacoOptions={{
                 name: 'Emitter',
                 width: '100%',
@@ -189,9 +195,9 @@ const EmitterBody = ({
               <Button
                 text={activeArgType.name}
                 transparent
-                ghost
                 withCaret
                 primary
+                ghost
                 sm
               />
             </Dropdown.Handler>
@@ -200,6 +206,7 @@ const EmitterBody = ({
               onSelect={(argType) => changeArgType(argType.id)}
             />
           </Dropdown>
+          <EditorControlBar editor={editor} />
           {_renderActiveBody(activeArgType.id)}
         </div>
       )}

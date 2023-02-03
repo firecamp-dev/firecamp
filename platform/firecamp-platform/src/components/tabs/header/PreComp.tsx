@@ -1,4 +1,6 @@
+import { FC } from 'react';
 import classNames from 'classnames';
+import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { EHttpMethod, ERequestTypes } from '@firecamp/types';
 import {
   FcIconGraphQL,
@@ -6,40 +8,50 @@ import {
   FcIconWebSocket,
 } from '@firecamp/ui-kit';
 
-const PreComp = ({ method = '', type = '' }) => {
-  switch (type) {
-    case ERequestTypes.Rest:
-      if (!method) method = EHttpMethod.GET;
+const PreComp: FC<{ entity: any; entityType: string }> = ({
+  entity,
+  entityType,
+}) => {
+  switch (entityType) {
+    case 'request':
+      switch (entity.__meta.type) {
+        case ERequestTypes.Rest:
+          const method = entity?.method || EHttpMethod.GET;
+          return (
+            <div className={classNames(`${method} text-xs font-bold tab-icon`)}>
+              {method}
+            </div>
+          );
+        case ERequestTypes.GraphQL:
+          return (
+            <div className="GRAPHQL text-xs font-bold w-5 tab-icon">
+              <FcIconGraphQL size={20} />
+            </div>
+          );
+        case ERequestTypes.SocketIO:
+          return (
+            <div className="SOCKETIO text-xs font-bold w-5 invert tab-icon">
+              <FcIconSocketIoSquare size={24} />
+            </div>
+          );
+        case ERequestTypes.WebSocket:
+          return (
+            <div className="WEBSOCKET text-xs font-bold w-5 invert tab-icon">
+              <FcIconWebSocket size={24} />
+            </div>
+          );
+        default:
+          return <span />;
+      }
+
+    case 'environment':
       return (
-        <div
-          className={classNames(
-            { '': method === EHttpMethod.GET },
-            `${method} text-xs font-bold`
-          )}
-        >
-          {method}
-        </div>
-      );
-    case ERequestTypes.GraphQL:
-      return (
-        <div className="GRAPHQL text-xs font-bold w-5">
-          <FcIconGraphQL size={20} />
-        </div>
-      );
-    case ERequestTypes.SocketIO:
-      return (
-        <div className="SOCKETIO text-xs font-bold w-5 invert">
-          <FcIconSocketIoSquare size={24} />
-        </div>
-      );
-    case ERequestTypes.WebSocket:
-      return (
-        <div className="WEBSOCKET text-xs font-bold w-5 invert">
-          <FcIconWebSocket size={24} />
+        <div className="environment text-xs font-bold w-5 invert tab-icon">
+          <VscJson size={20} />
         </div>
       );
     default:
-      return <span />;
+      return <></>;
   }
 };
 

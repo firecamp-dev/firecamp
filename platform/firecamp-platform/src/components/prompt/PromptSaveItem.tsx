@@ -20,7 +20,7 @@ const _texts: IPromptSaveItem['texts'] = {
 
 export const PromptSaveItem: FC<IPromptSaveItem> = ({
   header,
-  lable = 'Name',
+  label = 'Name',
   placeholder,
   texts,
   value,
@@ -105,7 +105,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
           <div className="mt-4">
             <Input
               autoFocus={true}
-              label={lable}
+              label={label}
               placeholder={placeholder}
               name={'prompInput'}
               value={state.inputValue}

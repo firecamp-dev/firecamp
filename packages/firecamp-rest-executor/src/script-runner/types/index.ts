@@ -1,16 +1,32 @@
-import { IRest, IRestResponse } from '@firecamp/types'
-import { IEnvironment } from './environment'
-import { IScriptRequest } from './request'
+import { IRest, IRestResponse, IScript, TVariable } from '@firecamp/types';
+import { IScriptRequest } from './request';
 
-export * from './environment'
-export * from './request'
-export * from './response'
+export * from './request';
+export * from './response';
 
-export type TEnvVariable = { [key: string]: number | boolean | string }
-export type TPreScript = (request: IRest, variables: TEnvVariable) => Promise<{ request: IScriptRequest, environment: IEnvironment }>
-export type TPostScript = (postScript: string, response: IRestResponse, variables: TEnvVariable) => Promise<{ response: IRestResponse, environment: IEnvironment }>
+export type TPreScript = (
+  request: IRest,
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
+) => Promise<{ request?: IScriptRequest; [k: string]: any }>;
+export type TPostScript = (
+  postScripts: IRest['postScripts'],
+  response: IRestResponse,
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
+) => Promise<{ response: IRestResponse; environment: any }>;
 export type TTestScript = (
-    request: IRest,
-    response: IRestResponse,
-    variables: TEnvVariable
-) => Promise<any>
+  scripts: IScript,
+  response: IRestResponse,
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
+) => Promise<any>;

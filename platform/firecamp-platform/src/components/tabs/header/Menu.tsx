@@ -140,7 +140,7 @@ const Menu: FC = () => {
   ];
 
   const openNewTab = (type) => {
-    emitter.emit(EPlatformTabs.openNew, type);
+    emitter.emit(EPlatformTabs.Open);
   };
 
   return (

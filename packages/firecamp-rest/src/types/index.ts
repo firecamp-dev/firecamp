@@ -4,6 +4,8 @@ export enum EReqChangeRootKeys {
   config = 'config',
   body = 'body',
   auth = 'auth',
+  preScripts = 'preScripts',
+  postScripts = 'postScripts',
 }
 
 export enum EReqChangeMetaKeys {
@@ -18,19 +20,13 @@ export enum EReqChangeUrlKeys {
   pathParams = 'pathParams',
 }
 
-export enum EReqChangeScriptsKeys {
-  pre = 'pre',
-  post = 'post',
-  test = 'test',
-}
-
 export enum ERequestPanelTabs {
   Body = 'Body',
   Auths = 'Auths',
   Headers = 'Headers',
   Params = 'Params',
   PreRequestScript = 'Pre-request Script',
-  Test = 'Test',
+  Tests = 'Tests',
   Config = 'Config',
 }
 

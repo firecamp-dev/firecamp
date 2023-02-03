@@ -1,111 +1,35 @@
-import { EEditorLanguage, IEnvironment, TId } from '@firecamp/types';
+import { IEnv, TId } from '@firecamp/types';
 import _cloneDeep from 'lodash/cloneDeep';
-import {
-  SetCompletionProvider,
-  SetHoverProvider,
-} from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
-import { _object } from '@firecamp/utils';
-
-import { IEnvironmentStore, useEnvStore } from '../../store/environment';
-import { useTabStore } from '../../store/tab';
+import { _object, _env } from '@firecamp/utils';
+import { Rest } from '@firecamp/cloud-apis';
+import { envService } from '../env.service';
+import { useEnvStore } from '../../store/environment';
 
 export interface IPlatformEnvironmentService {
-  // get current env of the tab
-  getCurrentTabEnv: () => {
-    tabId: TId;
-    collectionId?: TId;
-    envId?: TId;
-    env?: IEnvironment;
-  };
-  setTabCollection: (tabId: TId, collectionId: TId) => void;
+  // fetch environment
+  fetch: typeof envService.fetch;
+  update: (id: TId, env: Partial<IEnv>) => Promise<IEnv>;
+  delete: (id: TId) => Promise<IEnv>;
 
-  // set variables to monaco provider
-  setVariablesToProvider: (variables: { [key: string]: any }) => void;
-
-  setVariables: (collection?: {
-    id?: TId;
-    environmentId: TId;
-    variables: { [key: string]: any };
-  }) => void;
-}
-export interface IPlatformVariables {
-  collection: {};
+  mergeEnvs: typeof _env.mergeEnvs; //return rnv with initialValue/currentValue
+  splitEnvs: typeof _env.splitEnvs; //return remoteEnv and localEnv from runtime env
 }
 
 const environment: IPlatformEnvironmentService = {
-  getCurrentTabEnv: () => {
-    const { activeTab } = useTabStore.getState();
-    const { envs, tabColMap, colEnvMap } = useEnvStore.getState();
-    const collectionId = tabColMap[activeTab];
-    if (!collectionId) return { tabId: activeTab };
-    const envId = colEnvMap[collectionId];
-    if (!envId) return { tabId: activeTab, collectionId };
-    const env = envs.find(
-      (e) => e.__ref.collectionId == collectionId && e.__ref.id == envId
-    );
-    return {
-      tabId: activeTab,
-      collectionId,
-      envId,
-      env,
-    };
+  fetch: envService.fetch,
+
+  update: (id: TId, env: Partial<IEnv>) => {
+    return useEnvStore.getState()._updateEnvironment(id, env);
   },
 
-  setTabCollection: (tabId: TId, collectionId: TId) => {
-    const { getState, setState } = useEnvStore;
-    setState((s) => {
-      const env = s.envs.find(
-        (e) => e.__ref.collectionId == collectionId && e.name == 'Development'
-      );
-      const envId = env?.__ref.id;
-      console.log(tabId, collectionId, envId, 1111111);
-      if (!envId) return s;
-      // assign variables to monaco providers
-      environment.setVariablesToProvider(env.variables);
-
-      return {
-        tabColMap: {
-          ...s.tabColMap,
-          [tabId]: collectionId,
-        },
-        colEnvMap: {
-          ...s.colEnvMap,
-          [collectionId]: envId,
-        },
-      };
-    });
+  delete: async (id: TId) => {
+    return Rest.environment.delete(id).then((res) => res.data);
   },
 
-  // set variables to editor provider
-  setVariablesToProvider: (variables: { [key: string]: any }) => {
-    //fc-text
-    SetCompletionProvider(EEditorLanguage.FcText, variables);
-    SetHoverProvider(EEditorLanguage.FcText, variables);
+  mergeEnvs: _env.mergeEnvs,
 
-    // header key
-    SetCompletionProvider(EEditorLanguage.HeaderKey, variables);
-    SetHoverProvider(EEditorLanguage.HeaderKey, variables);
-
-    //header value
-    SetCompletionProvider(EEditorLanguage.HeaderValue, variables);
-    SetHoverProvider(EEditorLanguage.HeaderValue, variables);
-
-    // json
-    SetCompletionProvider(EEditorLanguage.Json, variables);
-    SetHoverProvider(EEditorLanguage.Json, variables);
-  },
-
-  setVariables: (collection?: {
-    id: TId;
-    environmentId: TId;
-    variables: { [key: string]: any };
-  }) => {
-    const envStore: IEnvironmentStore = useEnvStore.getState();
-    // set collection environment
-    if (collection?.id && collection?.environmentId) {
-      envStore.setEnvVariables(collection.environmentId, collection.variables);
-    }
-  },
+  /** split runtime env into remoteEnv and localEnv */
+  splitEnvs: _env.splitEnvs,
 };
 
 export { environment };

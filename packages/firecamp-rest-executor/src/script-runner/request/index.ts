@@ -2,9 +2,7 @@ import { EHttpMethod, IHeader, IRest, IRestBody, IUrl } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import { IScriptRequest } from '../types';
 
-/**
- * request script
- */
+/** request script */
 export class Request implements IScriptRequest {
   url: IUrl = { raw: '', pathParams: [], queryParams: [] };
   headers: IHeader[] = [];

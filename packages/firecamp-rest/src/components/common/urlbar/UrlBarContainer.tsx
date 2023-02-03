@@ -1,12 +1,12 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
-import { EHttpMethod, EFirecampAgent } from '@firecamp/types';
+import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
-const UrlBarContainer = ({ tab, collectionId = '' }) => {
+const UrlBarContainer = ({ tabId }) => {
   const {
     url,
     method,
@@ -57,35 +57,16 @@ const UrlBarContainer = ({ tab, collectionId = '' }) => {
 
   const _onSave = async () => {
     try {
-      save(tab.id);
+      save(tabId);
     } catch (e) {
       console.error(e);
     }
   };
 
-  const _onChangeVariables = (variables: { workspace: {}; collection: {} }) => {
-    const collectionUpdates = {
-      id: collectionId || '',
-      environmentId: collectionId,
-      variables: variables.collection,
-    };
-    context.environment.setVariables(collectionUpdates);
-  };
-
   const _onExecute = async () => {
     try {
-      // do not execute if url is empty
-      if (!url.raw) return;
-      const envVariables = { merged: {}, collection: {}, workspace: {} };
-      const { env: tabEnv } = context.environment.getCurrentTabEnv(tab.id);
-      if (tabEnv) {
-        envVariables.collection = { ...(tabEnv.variables || {}) };
-      }
-      const agent: EFirecampAgent = context.getFirecampAgent();
-      execute(_cloneDeep(envVariables), agent, _onChangeVariables);
-    } catch (error) {
-      console.error({ API: 'rest._onExecute' });
-    }
+      execute();
+    } catch (error) {}
   };
 
   return (
@@ -103,7 +84,7 @@ const UrlBarContainer = ({ tab, collectionId = '' }) => {
     >
       <UrlBar.Prefix>
         <HttpMethodDropDown
-          id={tab.id}
+          id={tabId}
           dropdownOptions={methods}
           selectedOption={(method || '').toUpperCase()}
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
@@ -111,7 +92,7 @@ const UrlBarContainer = ({ tab, collectionId = '' }) => {
       </UrlBar.Prefix>
       <UrlBar.Body>
         <Url
-          id={`url-${tab.id}`}
+          id={`url-${tabId}`}
           url={url?.raw || ''}
           placeholder={'http://'}
           onChangeURL={_handleUrlChange}
@@ -127,7 +108,7 @@ const UrlBarContainer = ({ tab, collectionId = '' }) => {
           sm
         />
         <Button
-          id={`save-request-${tab.id}`}
+          id={`save-request-${tabId}`}
           text="Save"
           onClick={_onSave}
           disabled={false}

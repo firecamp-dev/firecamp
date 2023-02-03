@@ -1,6 +1,13 @@
 import cx from 'classnames';
-import { Container, Column, TabHeader, Editor } from '@firecamp/ui-kit';
+import {
+  Container,
+  Column,
+  TabHeader,
+  Editor,
+  EditorControlBar,
+} from '@firecamp/ui-kit';
 import { ELogTypes } from '../../../types';
+import { useState } from 'react';
 
 const emptyRow = {
   title: '',
@@ -9,6 +16,7 @@ const emptyRow = {
 };
 
 const LogPreview = ({ row = emptyRow }) => {
+  const [editor, setEditor] = useState(null);
   if (!row?.message) row = emptyRow;
   const value =
     row.message?.__meta?.type !== 'file'
@@ -61,6 +69,8 @@ const LogPreview = ({ row = emptyRow }) => {
             <TabHeader.Right className="font-bold font-regular">
               {row.__meta?.timestamp &&
                 new Date(row.__meta?.timestamp).toLocaleTimeString()}
+
+              <EditorControlBar editor={editor} language={language} />
             </TabHeader.Right>
           </TabHeader>
         </Container.Header>
@@ -69,7 +79,7 @@ const LogPreview = ({ row = emptyRow }) => {
             language={language}
             value={'' + value}
             disabled={true}
-            // controlsConfig={{ show: true, position: 'horizontal' }}
+            onLoad={(edt) => setEditor(edt)}
           />
         </Container.Body>
       </Container>

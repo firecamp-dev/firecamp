@@ -186,7 +186,7 @@ const FlatTable: FC<ITable<any>> = ({
 
   return (
     <div
-      className={`w-full custom-scrollbar z-30 ${classes.container}`}
+      className={`w-full custom-scrollbar ${classes.container}`}
       ref={containerDivRef}
     >
       <table

@@ -31,7 +31,7 @@ type TModalMeta = {
 const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
   const { explorer } = useWorkspaceStore.getState();
   const { collections } = explorer;
-  const { fetchEnvironment, updateEnvironment } = useEnvStore.getState();
+  const { fetchColEnvironment, updateEnvironment } = useEnvStore.getState();
   const { envId, collectionId } = useModalStore.getState().__meta as TModalMeta;
 
   const [isFetching, setIsFetching] = useState(false);
@@ -57,9 +57,9 @@ const ManageEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
   useEffect(() => {
     setIsFetching(true);
     Rest.environment
-      .fetch(envId)
+      ._fetch(envId)
       .then((r) => {
-        fetchEnvironment(envId).then((e) => {
+        fetchColEnvironment(envId).then((e) => {
           console.log(e, 'current env');
           setEnv({
             ...e,

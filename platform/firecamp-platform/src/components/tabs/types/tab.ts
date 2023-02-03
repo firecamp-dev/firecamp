@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import {
   EFirecampAgent,
   EHttpMethod,
@@ -30,10 +29,25 @@ export interface IRequestTab extends ITab {
   };
 }
 
-/**
- * Tab meta
- */
+export interface IEntityTab<E = any> extends ITab {
+  /**
+   * minimal info or the intity, it'll help tab and newly opened request to show the minimal information on load
+   * for request
+   *  {
+   *     url?: IUrl;
+   *     method?: EHttpMethod;
+   *     __meta?: IMeta;
+   * }
+   */
+  entity: Partial<E>;
+  /** request meta */
+  __meta?: IRequestTabMeta;
+}
+
+/** Tab meta */
 export interface IRequestTabMeta {
+  entityId: TId;
+  entityType: 'request' | 'environment';
   /**
    * Whether request tab is saved or not
    */
@@ -70,14 +84,9 @@ export interface IRequestTabMeta {
  */
 
 export interface IRequestTabProps {
-  index: number;
   tab: IRequestTab;
-  activeTab?: TId;
 
   //v3 props
-  envVariables?: {
-    collectionEnvVariables: object;
-  };
   platformContext: {
     request: IPlatformRequestService;
     environment: IPlatformEnvironmentService;

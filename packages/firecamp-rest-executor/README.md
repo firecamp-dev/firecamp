@@ -1,6 +1,7 @@
 # REST-executor
 
 ### <ins>Pre-requisite</ins>
+
 - Node.js v16
 - Pre-script request only contains specific keys, so need to merge with actual one before send to the executor
 - Post-script response only contains specific keys, so need to merge with actual one before going to use
@@ -40,8 +41,8 @@ const response = await executor.send(request);
 // Set cookies
 
 // Run post script
-await executor.postScript(postScript: string, response: IRestResponse, variables: TEnvVariable);
+await executor.postScript(postScript: string, response: IRestResponse, variables: TPlainObject);
 
 // Run test script
-await executor.testScript(request: IRest, response: IRestResponse, variables: TEnvVariable);
+await executor.testScript(request: IRest, response: IRestResponse, variables: TPlainObject);
 ```

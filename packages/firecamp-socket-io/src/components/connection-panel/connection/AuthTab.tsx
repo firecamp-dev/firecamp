@@ -12,12 +12,6 @@ const AuthTab = ({
       id={`auth-${activeConnectionId}`}
       rows={auth || []}
       title={'Auth'}
-      // meta={{
-      //   mode: {
-      //     key: EEditorLanguage.HeaderKey,
-      //     value: EEditorLanguage.HeaderValue
-      //   }
-      // }}
     />
   );
 };

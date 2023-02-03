@@ -603,6 +603,7 @@ video {
     --req-graphql: #E535AB;
     --req-websocket: #FF7043;
     --req-socketio: #91BD5E;
+    --link: #0068bc;
 
     --app-background: #1B1A1A;
     --app-foreground: #cccccc;
@@ -892,9 +893,6 @@ video {
 .right-3 {
 	right: 0.75rem;
 }
-.-top-3 {
-	top: -0.75rem;
-}
 .-bottom-px {
 	bottom: -1px;
 }
@@ -1098,12 +1096,6 @@ video {
 .ml-auto {
 	margin-left: auto;
 }
-.mt-2 {
-	margin-top: 0.5rem;
-}
-.mt-3 {
-	margin-top: 0.75rem;
-}
 .-mr-1 {
 	margin-right: -0.25rem;
 }
@@ -1112,6 +1104,9 @@ video {
 }
 .-mb-2 {
 	margin-bottom: -0.5rem;
+}
+.mt-2 {
+	margin-top: 0.5rem;
 }
 .block {
 	display: block;
@@ -1284,9 +1279,6 @@ video {
 }
 .w-40 {
 	width: 10rem;
-}
-.w-80 {
-	width: 20rem;
 }
 .w-32 {
 	width: 8rem;
@@ -1657,14 +1649,14 @@ video {
 .bg-popoverBackground {
 	background-color: var(--popover-background);
 }
+.bg-statusBarBackground2 {
+	background-color: var(--statusBar-background2);
+}
 .bg-statusBarBackground {
 	background-color: var(--statusBar-background);
 }
 .\!bg-tabActiveBackground {
 	background-color: var(--tab-activeBackground) !important;
-}
-.bg-statusBarBackground2 {
-	background-color: var(--statusBar-background2);
 }
 .\!bg-statusBarBackground2 {
 	background-color: var(--statusBar-background2) !important;
@@ -1879,6 +1871,12 @@ video {
 .\!pt-4 {
 	padding-top: 1rem !important;
 }
+.\!pl-3 {
+	padding-left: 0.75rem !important;
+}
+.\!pr-3 {
+	padding-right: 0.75rem !important;
+}
 .pl-0 {
 	padding-left: 0px;
 }
@@ -1903,11 +1901,8 @@ video {
 .pl-3 {
 	padding-left: 0.75rem;
 }
-.pt-4 {
-	padding-top: 1rem;
-}
-.pb-2 {
-	padding-bottom: 0.5rem;
+.pt-2 {
+	padding-top: 0.5rem;
 }
 .pl-12 {
 	padding-left: 3rem;
@@ -2068,6 +2063,9 @@ video {
 }
 .\!text-appForegroundInActive {
 	color: var(--app-foreground-inactive) !important;
+}
+.text-link {
+	color: var(--link);
 }
 .text-inputText {
 	color: var(--input-text);
@@ -2495,43 +2493,43 @@ tr:focus-visible{
 .explorer-wrapper {
   max-height: calc(100vh - 25px);
 }
-.GET{
+.GET:not(.tab-icon){
   color: var(--req-get);
 }
-.POST{
+.POST:not(.tab-icon){
   color: var(--req-post);
 }
-.PUT{
+.PUT:not(.tab-icon){
   color: var(--req-put);
 }
-.DELETE{
+.DELETE:not(.tab-icon){
   color: var(--req-delete);
 }
-.PATCH{
+.PATCH:not(.tab-icon){
   color: var(--req-patch);
 }
-.HEAD{
+.HEAD:not(.tab-icon){
   color: var(--req-head);
 }
-.OPTIONS{
+.OPTIONS:not(.tab-icon){
   color: var(--req-options);
 }
-.PURGE{
+.PURGE:not(.tab-icon){
   color: var(--req-purge);
 }
-.LINK{
+.LINK:not(.tab-icon){
   color: var(--req-link);
 }
-.UNLINK{
+.UNLINK:not(.tab-icon){
   color: var(--req-unlink);
 }
-.GRAPHQL{
+.GRAPHQL:not(.tab-icon){
   color: var(--req-graphql);
 }
-.WEBSOCKET{
+.WEBSOCKET:not(.tab-icon){
   color: var(--req-websocket);
 }
-.SOCKETIO{
+.SOCKETIO:not(.tab-icon){
   color: var(--req-socketio);
 }
 .hide-action:hover .action {

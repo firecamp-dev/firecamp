@@ -1,5 +1,11 @@
 import { FC, useEffect, useState } from 'react';
-import { SecondaryTab, Container, Editor, StatusBar } from '@firecamp/ui-kit';
+import {
+  SecondaryTab,
+  Container,
+  Editor,
+  StatusBar,
+  EditorControlBar,
+} from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 
@@ -16,7 +22,7 @@ enum EActiveTab {
   None = '',
 }
 
-const getConentTypeFromHeadders = (headers: { [k: string]: string }) => {
+const getConentTypeFromHeaders = (headers: { [k: string]: string }) => {
   let ct: string;
   if (headers) {
     if (Object.keys(headers).includes(`content-type`))
@@ -56,7 +62,7 @@ const initialTabs = [
 
 const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
   console.log({ id, data, headers });
-  const contentType = getConentTypeFromHeadders(headers);
+  const contentType = getConentTypeFromHeaders(headers);
 
   let contentTypeKey = `content-type`;
   if (headers) {
@@ -72,7 +78,7 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
   const [activeTab, setActiveTab] = useState<EActiveTab>(
     getActiveTabFromHeaders(contentType)
   );
-  const [editorDOM, setEditorDOM] = useState<any>(null);
+  const [editor, setEditor] = useState<any>(null);
 
   // set response type by updated response headers. (by content type)
   useEffect(() => {
@@ -123,7 +129,7 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
             value={data}
             path={`${id}/response/body`}
             onLoad={(editor) => {
-              setEditorDOM(editor);
+              setEditor(editor);
               // editor.resize(true);
               editor.revealLine(1);
               editor.setPosition({ column: 1, lineNumber: 10 });
@@ -147,8 +153,8 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
     }
   };
 
-  if (editorDOM && editorDOM.editor) {
-    editorDOM.$onChangeWrapMode();
+  if (editor && editor.editor) {
+    editor.$onChangeWrapMode();
   }
 
   return (
@@ -170,6 +176,9 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
               }
             />
           </StatusBar.PrimaryRegion>
+          <StatusBar.SecondaryRegion>
+            <EditorControlBar editor={editor} language={activeTab} />
+          </StatusBar.SecondaryRegion>
         </StatusBar>
       </Container.Header>
       <Container.Body overflow={'hidden'}>

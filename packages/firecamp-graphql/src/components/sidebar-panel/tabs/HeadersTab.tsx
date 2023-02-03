@@ -18,12 +18,12 @@ const HeadersTab = () => {
       key={'headers'}
       rows={headers}
       title={'Headers'}
-      meta={{
-        mode: {
+      options={{
+        languages: {
           key: EEditorLanguage.HeaderKey,
           value: EEditorLanguage.HeaderValue,
         },
-        allowDescription: false,
+        hiddenColumns: ['description'],
       }}
     />
   );

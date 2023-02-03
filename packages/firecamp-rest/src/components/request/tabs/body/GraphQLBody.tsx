@@ -1,13 +1,7 @@
 import { EEditorLanguage } from '@firecamp/types';
-import {
-  Container,
-  Column,
-  Editor,
-  CMGQueryEditor,
-} from '@firecamp/ui-kit';
+import { Container, Column, Editor, CMGQueryEditor } from '@firecamp/ui-kit';
 
 const GraphQLBody = ({ body, onChange }) => {
-
   const { query = '', variables = '' } = body;
   return (
     <Container>
@@ -17,7 +11,7 @@ const GraphQLBody = ({ body, onChange }) => {
           <div className="flex-1 overflow-y-scroll">
             <CMGQueryEditor
               query={query}
-              onChangeQuery={(query) => onChange({ query, variables})}
+              onChangeQuery={(query) => onChange({ query, variables })}
             />
           </div>
         </Column>
@@ -25,14 +19,14 @@ const GraphQLBody = ({ body, onChange }) => {
           <div className="text-base px-1 py-2 bg-focus1">Query variables</div>
           <Editor
             value={variables}
-            language={EEditorLanguage.GraphQl}
+            language={EEditorLanguage.Json}
+            onChange={({ target: { value } }) =>
+              onChange({ query, variables: value })
+            }
             monacoOptions={{
-              // mode: "json",
               name: 'graphQLBodyVariables',
-              // value: variables,
               height: '30%',
             }}
-            onChange={({ target: { value } }) => onChange({ query, variables: value})}
           />
         </Column>
       </Container.Body>
