@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "REST request executor",
   "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "scripts": {
     "build": "run-p 'build:*'",

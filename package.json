@@ -47,7 +47,7 @@
     "api platform"
   ],
   "author": "Nishchit <dnishchit@gmail.com>",
-  "license": " Apache-2.0 License",
+  "license": "",
   "snap": true,
   "devDependencies": {
     "@babel/core": "^7.17.8",

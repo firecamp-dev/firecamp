@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Socket.io request executor for desktop and browser environment",
   "repository": "https://github.com/firecamp-io/firecamp/packages/executors/http-executor",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "scripts": {
     "build": "run-p 'build:*'",
@@ -12,7 +12,7 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "yarn clean && yarn build && npx jest --bail --verbose",
+    "test": "pnpm clean && pnpm build && npx jest --bail --verbose",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
