@@ -86,6 +86,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     }));
     state.equalityChecker({ __meta: updatedMeta });
   },
+
   execute: async (opsName: string, query?: string, variables?: string) => {
     const state = get();
     const {
@@ -132,7 +133,6 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         state.setRequestRunningFlag(activePlayground, false);
       });
   },
-
   fetchIntrospectionSchema: async () => {
     const state = get();
     const {

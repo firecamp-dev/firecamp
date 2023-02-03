@@ -64,7 +64,7 @@ const ReqStatusBar = ({}) => {
           if (!name) {
             return {
               isValid: false,
-              message: 'The playground name is reuquired',
+              message: 'The playground name is required',
             };
           } else if (name?.length <= 3) {
             return {

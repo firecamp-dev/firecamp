@@ -16,8 +16,8 @@ interface ICollection {
   items?: Partial<IGraphQLPlayground & { __ref: { isItem?: boolean } }>[];
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
   /**
-   * increate the number on each action/event happens within collection
-   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   * incase the number on each action/event happens within collection
+   * react component will not re-render when tdpInstance will change in store, at that time update __manualUpdates to re-render the compoenent
    */
   __manualUpdates?: number;
 }
@@ -170,7 +170,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     const item = {
       name,
-      payload: plg.request.value,
+      value: plg.request.value,
       __meta: plg.request.__meta,
       __ref: {
         requestId: state.request.__ref.id,
