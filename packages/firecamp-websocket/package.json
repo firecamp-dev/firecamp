@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "WebSocket GUI client for Firecamp",
   "main": "src/index.ts",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "scripts": {
     "build": "yarn clean && run-p 'build:*' && yarn copy-files",

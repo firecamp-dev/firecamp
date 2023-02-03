@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "REST request agent manager",
   "repository": "https://github.com/firecamp-io/firecamp",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "main": "src/index.ts",
   "scripts": {

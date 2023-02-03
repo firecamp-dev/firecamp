@@ -4,7 +4,7 @@
   "description": "Sandbox environment to run JS",
   "main": "src/index.ts",
   "repository": "https://github.com/firecamp-io/firecamp/packages-misc/url",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "scripts": {
     "build": "run-p 'build:*'",

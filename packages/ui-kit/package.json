@@ -9,7 +9,7 @@
   ],
   "author": "Nishchit Dhanani <dnishchit@gmail.com>",
   "homepage": "http://./dev/packages/ui-kit",
-  "license": "Apache-2.0",
+  "license": "",
   "main": "src/ui-kit.ts",
   "module": "src/ui-kit.ts",
   "directories": {

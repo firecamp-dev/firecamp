@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Socket.io request executor for desktop and browser environment",
   "repository": "https://github.com/firecamp-io/firecamp/packages/executors/http-executor",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "scripts": {
     "build": "run-p 'build:*'",
