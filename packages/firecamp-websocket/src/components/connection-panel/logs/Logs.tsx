@@ -85,21 +85,13 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
     }
   };
 
-  const _onRowClick = (rtRow) => {
-    let originalRowValue = rtRow.original;
-    setSelectedRow((ps) => ({
-      ...originalRowValue,
-      index: rtRow.index,
-    }));
-  };
-
   const _onResizeStop = (e, a, b, delta) => {
     console.log(e, 'event', delta);
     setTableHeight((ps) => ps + delta.height);
   };
 
   /**
-   * On Filter connection log, update dropdown value and store for connection
+   * on Filter connection log, update dropdown value and store for connection
    */
   const _onFilter = (filter = '') => {
     if (typeFilter !== filter) {
@@ -107,6 +99,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
     }
   };
 
+  // console.log('selectedRow', selectedRow);
   return (
     <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
       <FullScreen handle={handleFS}>
@@ -181,10 +174,13 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
               onLoad={(tApi) => {
                 logTableApiRef.current = tApi;
               }}
+              onFocusRow={(r) => {
+                setSelectedRow(r);
+              }}
             />
             <Resizable
               top={true}
-              height="100px"
+              height="250px"
               width="100%"
               maxHeight={400}
               minHeight={100}

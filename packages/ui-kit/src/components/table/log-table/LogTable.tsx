@@ -26,11 +26,11 @@ const _columns = [
 ];
 
 const LogTable = ({
-  name = '',
   rows = [],
   options = {},
   onChange = (rs: ITableRows) => {},
   onMount = (api: TTableApi) => {},
+  onFocusRow,
   classes = {},
 }: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
@@ -61,7 +61,12 @@ const LogTable = ({
         return __meta.event;
       case 'message':
         if (__meta.type == 'sys') {
-          return <span className="w-32 min-w-full block truncate" dangerouslySetInnerHTML={{ __html: title }} />;
+          return (
+            <span
+              className="w-32 min-w-full block truncate"
+              dangerouslySetInnerHTML={{ __html: title }}
+            />
+          );
         } else {
           return (
             <div className="w-32 min-w-full block truncate">
@@ -99,6 +104,7 @@ const LogTable = ({
           apiRef.current = tApi;
         }
       }}
+      onFocusRow={onFocusRow}
       options={options}
     />
   );

@@ -1,6 +1,8 @@
+import { memo } from 'react';
+import isEqual from 'react-fast-compare';
 import { LogTable as LTable } from '@firecamp/ui-kit';
 
-const LogTable = ({ onLoad }) => {
+const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
   return (
     <LTable
       classes={{
@@ -20,8 +22,16 @@ const LogTable = ({ onLoad }) => {
         onLoad(tApi);
         console.log(tApi);
       }}
+      onFocusRow={(r) => {
+        console.log(r, 'r.....');
+        onFocusRow(r);
+      }}
     />
   );
 };
 
-export default LogTable;
+export default memo(LogTable, (pp, np) => {
+  const { onLoad: olP, onFocusRow: ofrP, ...restPP } = pp;
+  const { onLoad: olN, onFocusRow: ofrN, ...restNP } = np;
+  return isEqual(restPP, restNP);
+});
