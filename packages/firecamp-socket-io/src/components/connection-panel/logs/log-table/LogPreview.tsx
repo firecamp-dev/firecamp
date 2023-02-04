@@ -189,7 +189,7 @@ const Footer = ({
     <SecondaryTab
       list={tabs}
       activeTab={selectedArgIndex.toString() || '0'}
-      isBgTransperant={true}
+      isBgTransparent={true}
       onSelect={setSelectedArgIndex}
     />
   );

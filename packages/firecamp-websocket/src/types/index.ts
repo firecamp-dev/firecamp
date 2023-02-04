@@ -52,12 +52,6 @@ export const EMessagePayloadTypes = {
   none: 'none',
 };
 
-export enum EPanel {
-  Request = 'REQUEST',
-  Response = 'RESPONSE',
-  All = 'ALL',
-}
-
 export enum ERequestPanelTabs {
   Collection = 'Collection',
   Playgrounds = 'Playgrounds',

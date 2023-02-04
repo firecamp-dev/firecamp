@@ -1,7 +1,6 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import shallow from 'zustand/shallow';
 import {
   Container,
@@ -13,7 +12,7 @@ import {
 } from '@firecamp/ui-kit';
 
 import LogTable from './LogTable';
-import { ELogTypes, EPanel } from '../../../types';
+import { ELogTypes } from '../../../types';
 import { IStore, useStore } from '../../../store';
 import LogPreview from './LogPreview';
 
@@ -23,7 +22,7 @@ const logTypes = {
   Receive: ELogTypes.Receive,
 };
 
-const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
+const Logs = () => {
   const {
     activePlayground,
     typeFilter,
@@ -36,7 +35,6 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
       typeFilter:
         s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
       logs: s.logs?.[s.runtime.activePlayground] || [],
-
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
       clearLogs: s.clearLogs,
     }),
@@ -76,15 +74,6 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
   };
 
   const handleFS = useFullScreenHandle();
-  const _setVisiblePanel = (e) => {
-    if (e) e.preventDefault;
-    if (visiblePanel === EPanel.Response) {
-      setVisiblePanel(EPanel.All);
-    } else {
-      setVisiblePanel(EPanel.Response);
-    }
-  };
-
   const _onResizeStop = (e, a, b, delta) => {
     console.log(e, 'event', delta);
     setTableHeight((ps) => ps + delta.height);
@@ -106,9 +95,6 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
         <Container>
           <Container.Header>
             <TabHeader className="height-small border-b border-appBorder padding-left-extra">
-              <div className="fc-btn-collapse v2">
-                <VscChevronRight onClick={_setVisiblePanel} />
-              </div>
               <TabHeader.Left>
                 <label className="m-0 text-sm font-bold whitespace-pre">
                   Event Logs
