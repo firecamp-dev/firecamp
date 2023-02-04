@@ -10,7 +10,6 @@ import {
   Button,
   Resizable,
 } from '@firecamp/ui-kit';
-
 import LogTable from './LogTable';
 import { ELogTypes } from '../../../types';
 import { IStore, useStore } from '../../../store';
@@ -65,6 +64,7 @@ const Logs = () => {
     //     ...__meta,
     //   };
     // });
+    console.log(filteredLogs, 'filteredLogs');
     logTableApiRef.current?.initialize(filteredLogs);
   }, [logs, typeFilter, activePlayground]);
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
+// import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
 import {
@@ -11,11 +11,9 @@ import {
   Button,
   Editor,
   Input,
-  // ConfirmationPopover,
   Popover,
   EPopoverPosition,
   StatusBar,
-  // EPopoverPosition,
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { EEditorLanguage, ETypedArrayView } from '@firecamp/types';
@@ -29,16 +27,21 @@ const PlaygroundTab = () => {
   const {
     context,
     collection,
-    __meta,
-    getActivePlayground,
+    playgrounds,
+    activePlayground,
+    playgroundTabs,
     changePlaygroundMessage,
     sendMessage,
   } = useStore(
     (s: IStore) => ({
       context: s.context,
       collection: s.collection,
-      __meta: s.request.__meta,
-      getActivePlayground: s.getActivePlayground,
+
+      playgrounds: s.playgrounds,
+      activePlayground: s.runtime.activePlayground,
+      playgroundTabs: s.runtime.playgroundTabs,
+
+      // __meta: s.request.__meta,
       changePlaygroundMessage: s.changePlaygroundMessage,
       setSelectedCollectionMessage: s.setSelectedCollectionMessage,
       sendMessage: s.sendMessage,
@@ -46,7 +49,8 @@ const PlaygroundTab = () => {
     shallow
   );
   const { folders } = collection;
-  const { activePlayground, playground, plgTab } = getActivePlayground();
+  const plgTab = playgroundTabs.find((p) => p.id == activePlayground);
+  const playground = playgrounds[activePlayground];
   const { message } = playground;
   const { value } = message;
 
@@ -105,11 +109,11 @@ const PlaygroundTab = () => {
   };
   const _onSendMessage = (e?: any) => {
     if (e) e.preventDefault();
-    sendMessage(activePlayground, message);
+    sendMessage(activePlayground);
   };
   const _addNewMessage = () => {};
   const _setToOriginal = () => {};
-  const _onSaveMessageFromPlygnd = () => {};
+  const _onSaveMessageFromPlg = () => {};
   const _editorShortCutsFns = async (command) => {
     if (!command) return;
     try {
@@ -119,12 +123,12 @@ const PlaygroundTab = () => {
           break;
 
         case EditorCommands.Save.command:
-          _onSaveMessageFromPlygnd();
+          _onSaveMessageFromPlg();
           break;
 
         case EditorCommands.SendAndSave.command:
           await _onSendMessage();
-          _onSaveMessageFromPlygnd();
+          _onSaveMessageFromPlg();
           break;
 
         case EditorCommands.SetToOriginal.command:
@@ -144,7 +148,7 @@ const PlaygroundTab = () => {
   };
   const shortcutFns = {
     onCtrlS: () => {
-      _onSaveMessageFromPlygnd();
+      _onSaveMessageFromPlg();
     },
     onCtrlEnter: async () => {
       _onSendMessage();
@@ -157,7 +161,7 @@ const PlaygroundTab = () => {
     },
     onCtrlShiftEnter: async () => {
       await _onSendMessage();
-      _onSaveMessageFromPlygnd();
+      _onSaveMessageFromPlg();
     },
   };
   const promptSave = () => {
@@ -207,9 +211,9 @@ const PlaygroundTab = () => {
               }
             }}
             monacoOptions={{
-              name: 'message',
+              name: 'playgroundMsg',
               width: '100%',
-              fontSize: 13,
+              fontSize: 14,
               highlightActiveLine: false,
               showLineNumbers: false,
               tabSize: 2,
@@ -321,18 +325,18 @@ const PlaygroundTab = () => {
               text="Save"
               icon={<VscFile size={12} className="ml-1" />}
               onClick={() => promptSave()}
-              xs
               secondary
               iconRight
+              xs
             /> */}
             <Button
+              text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
               onClick={_onSendMessage}
-              primary
               iconCenter
-              xs
-              text="Send"
               iconRight
+              primary
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

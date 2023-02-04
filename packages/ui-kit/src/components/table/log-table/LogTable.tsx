@@ -71,7 +71,7 @@ const LogTable = ({
           return (
             <div className="w-32 min-w-full block truncate">
               {__meta.type !== 'file'
-                ? message.body || ''
+                ? message.value || ''
                 : message.name || 'Sending File'}
             </div>
           );
