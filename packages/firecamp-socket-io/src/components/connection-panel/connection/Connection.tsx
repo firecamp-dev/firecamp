@@ -1,14 +1,13 @@
 import { useState, memo } from 'react';
-import { Column, Resizable, Tabs, Row } from '@firecamp/ui-kit';
-import classnames from 'classnames';
+import cx from 'classnames';
 import shallow from 'zustand/shallow';
+import { Column, Resizable, Tabs, Row } from '@firecamp/ui-kit';
 import ConfigTab from './ConfigTab';
 import HeadersTab from './HeadersTab';
 import ParamsTab from './ParamsTab';
 import AuthTab from './AuthTab';
 import PlaygroundTab from './PlaygroundTab';
 import Logs from '../logs/Logs';
-import { EPanel } from '../../../types';
 import { IStore, useStore } from '../../../store';
 
 const bodyTabs = [
@@ -34,7 +33,7 @@ const bodyTabs = [
   },
 ];
 
-const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
+const ConnectionTab = () => {
   const {
     activePlayground,
     connections,
@@ -126,8 +125,8 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         maxWidth="60%"
         minWidth="20%"
         left={true}
-        className={classnames(
-          { 'fc-collapsed': visiblePanel === EPanel.Response },
+        className={cx(
+          { 'fc-collapsed': false },
           'fc-collapsable'
         )}
       >
