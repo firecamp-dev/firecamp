@@ -9,6 +9,7 @@ import {
   Dropdown,
   Button,
   EditorControlBar,
+  TabHeader,
 } from '@firecamp/ui-kit';
 import {
   EArgumentBodyType,
@@ -38,7 +39,7 @@ const EmitterBody = ({
   changeArgValue,
 }: IBody) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
-  const [editor, setEditor] = useState();
+  const [editor, setEditor] = useState(null);
   const { value, name } = plgEmitter;
   const argument = value[activeArgIndex];
   console.log(value, activeArgIndex, argument, 'argument');
@@ -115,7 +116,7 @@ const EmitterBody = ({
               monacoOptions={{
                 name: 'Emitter',
                 width: '100%',
-                fontSize: 13,
+                fontSize: 14,
                 highlightActiveLine: false,
                 showLineNumbers: false,
                 tabSize: 2,
@@ -163,14 +164,14 @@ const EmitterBody = ({
           <Input
             autoFocus={true}
             type={'number'}
-            value={argument.body.toString()}
             name={'number'}
+            value={argument.body.toString()}
             min={0}
+            isEditor={true}
             onChange={(e) => {
               if (e) e.preventDefault();
               changeArgValue(e.target.value);
             }}
-            isEditor={true}
           />
         );
       default:
@@ -186,27 +187,33 @@ const EmitterBody = ({
         </Container.Empty>
       ) : (
         <div className="h-full">
-          <Dropdown
-            selected={activeArgType}
-            isOpen={isBodyTypeDDOpen}
-            onToggle={() => toggleBodyTypeDD(!isBodyTypeDDOpen)}
-          >
-            <Dropdown.Handler>
-              <Button
-                text={activeArgType.name}
-                transparent
-                withCaret
-                primary
-                ghost
-                sm
-              />
-            </Dropdown.Handler>
-            <Dropdown.Options
-              options={ArgTypes}
-              onSelect={(argType) => changeArgType(argType.id)}
-            />
-          </Dropdown>
-          <EditorControlBar editor={editor} />
+          <TabHeader>
+            <TabHeader.Left>
+              <Dropdown
+                selected={activeArgType}
+                isOpen={isBodyTypeDDOpen}
+                onToggle={() => toggleBodyTypeDD(!isBodyTypeDDOpen)}
+              >
+                <Dropdown.Handler>
+                  <Button
+                    text={activeArgType.name}
+                    transparent
+                    withCaret
+                    primary
+                    ghost
+                    sm
+                  />
+                </Dropdown.Handler>
+                <Dropdown.Options
+                  options={ArgTypes}
+                  onSelect={(argType) => changeArgType(argType.id)}
+                />
+              </Dropdown>
+            </TabHeader.Left>
+            <TabHeader.Right>
+              <EditorControlBar editor={editor} />
+            </TabHeader.Right>
+          </TabHeader>
           {_renderActiveBody(activeArgType.id)}
         </div>
       )}

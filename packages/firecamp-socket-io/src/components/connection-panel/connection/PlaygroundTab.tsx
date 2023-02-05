@@ -45,6 +45,8 @@ const EmitterPlayground = () => {
   );
   const { emitter: plgEmitter, activeArgIndex = 0 } = playground;
 
+  console.log('this is the payground')
+
   return (
     <Container>
       <BodyControls
@@ -52,7 +54,7 @@ const EmitterPlayground = () => {
         isSaveEmitterPopoverOpen={true}
         tabData={{ id: 123 }}
         activeType={{ id: 'text' }}
-        // editorCommands={EditorCommands}
+      // editorCommands={EditorCommands}
       />
       <Container.Header className="!px-2 !py-2">
         <Input
@@ -94,7 +96,7 @@ const EmitterPlayground = () => {
         <div className="border border-appBorder flex-1 flex flex-col">
           <EmitterArgTabs
             activeArgIndex={activeArgIndex}
-            totalTabs={plgEmitter.payload?.length}
+            totalTabs={plgEmitter.value?.length}
             selectArgTab={selectPlgArgTab}
             addArgTab={addPlgArgTab}
             removeArgTab={removePlgArgTab}

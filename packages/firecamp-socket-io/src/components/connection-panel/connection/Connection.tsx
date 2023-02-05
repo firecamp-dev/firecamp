@@ -16,16 +16,16 @@ const bodyTabs = [
     name: 'Playground',
   },
   {
-    id: 'config',
-    name: 'Config',
-  },
-  {
     id: 'headers',
     name: 'Headers',
   },
   {
     id: 'params',
     name: 'Params',
+  },
+  {
+    id: 'config',
+    name: 'Config',
   },
   {
     id: 'auth',
@@ -114,7 +114,7 @@ const ConnectionTab = () => {
             list={bodyTabs || []}
             activeTab={activeBodyTab || ''}
             onSelect={(tabId: string) => setActiveBodyTab(tabId)}
-            // tabsClassName="tabs-with-bottom-border-left-section"
+          // tabsClassName="tabs-with-bottom-border-left-section"
           />
         </div>
         {_renderBody()}
