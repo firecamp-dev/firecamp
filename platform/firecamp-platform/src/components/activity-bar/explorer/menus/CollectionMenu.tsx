@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Dropdown } from '@firecamp/ui-kit';
 import cx from 'classnames';
-
 import { VscNewFile } from '@react-icons/all-files/vsc/VscNewFile';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
@@ -10,6 +9,8 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { useWorkspaceStore } from '../../../../store/workspace';
 import { RE } from '../../../../types';
 import platformContext from '../../../../services/platform-context';
+import { platformEmitter } from '../../../../services/platform-emitter';
+import { EPlatformTabs } from '../../../../services/platform-emitter/events';
 
 enum EMenuType {
   Collection = 'collection',
@@ -104,6 +105,30 @@ const CollectionMenu = ({
     onClick: () => {},
   };
 
+  const openEnv = (env) => {};
+
+  const viewDetailMenu = {
+    prefix: () => (
+      <div className={cx('mr-1 text-lg')}>
+        <VscSettingsGear size={14} />
+      </div>
+    ),
+    name: 'View Details',
+    onClick: () => {
+      if (menuType == EMenuType.Collection) {
+        platformEmitter.emit(EPlatformTabs.Open, {
+          entity: {},
+          __meta: { id: collectionId, type: 'collection' },
+        });
+      } else if (menuType == EMenuType.Folder) {
+        platformContext.app.modals.openFolderSetting({
+          collectionId,
+          folderId,
+        });
+      }
+    },
+  };
+
   const settingMenu = {
     prefix: () => (
       <div className={cx('mr-1 text-lg')}>
@@ -153,10 +178,11 @@ const CollectionMenu = ({
   };
 
   const commonMenu = [
+    viewDetailMenu,
     renameMenu,
     addFolderMenu,
     // addRequestMenu,
-    settingMenu,
+    // settingMenu,
     deleteMenu,
   ];
   const requestMenu = [renameMenu, deleteMenu];

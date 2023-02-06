@@ -124,7 +124,7 @@ const Explorer: FC<any> = () => {
       __meta: request.__meta,
       __ref: request.__ref,
     };
-    console.log({ entityid: request.__ref?.id, entityType: 'request' });
+    console.log({ entityId: request.__ref?.id, entityType: 'request' });
     emitter.emit(EPlatformTabs.Open, {
       entity,
       __meta: { id: request.__ref?.id, type: 'request' },

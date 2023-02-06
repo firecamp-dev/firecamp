@@ -47,7 +47,7 @@ export interface IEntityTab<E = any> extends ITab {
 /** Tab meta */
 export interface IRequestTabMeta {
   entityId: TId;
-  entityType: 'request' | 'environment';
+  entityType: 'request' | 'environment' | 'collection';
   /**
    * Whether request tab is saved or not
    */

@@ -31,6 +31,7 @@ import { IEntityTab, IRequestTabProps } from './types';
 import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 import EnvironmentTab from '../common/environment/tabs/Environment';
+import CollectionTab from '../common/collection/CollectionTab';
 
 const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
   if (!tab || index === -1) {
@@ -101,6 +102,8 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
         break;
       case 'environment':
         return <EnvironmentTab {...tabProps} />;
+      case 'collection':
+        return <CollectionTab {...tabProps} />;
       default:
         return <>No Entity Tab Found</>;
     }
