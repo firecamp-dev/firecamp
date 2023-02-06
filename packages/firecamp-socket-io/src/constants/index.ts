@@ -37,7 +37,11 @@ export const ConnectionStatus = {
   RECONNECT_ERROR: 'reconnect_error',
   RECONNECT_FAILED: 'reconnect_failed',
 };
-export const VERSIONS = ['v2', 'v3', 'v4'];
+export const SIOVersionOptions = [
+  { name: 'SocketIO Client V2', version: ESocketIOClientVersion.v2 },
+  { name: 'SocketIO Client V3', version: ESocketIOClientVersion.v3 },
+  { name: 'SocketIO Client V4', version: ESocketIOClientVersion.v4 },
+];
 export const RESERVED_EMITTER_EVENTS = [
   'connect',
   'connect_error',

@@ -38,7 +38,6 @@ const EmitterBody = ({
   changeArgType,
   changeArgValue,
 }: IBody) => {
-  const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
   const [editor, setEditor] = useState(null);
   const { value, name } = plgEmitter;
   const argument = value[activeArgIndex];
@@ -96,7 +95,7 @@ const EmitterBody = ({
       case EArgumentBodyType.Json:
       case EArgumentBodyType.ArrayBuffer:
       case EArgumentBodyType.ArrayBufferView:
-        if (typeof argument.body === 'string') {
+        if (typeof argument.body?.toString === 'function') {
           return (
             <Editor
               autoFocus={autoFocus}
@@ -108,11 +107,13 @@ const EmitterBody = ({
                   ? EEditorLanguage.Json
                   : EEditorLanguage.FcText
               }
-              value={argument.body || ''}
+              value={argument.body?.toString() || ''}
               onChange={({ target: { value } }) => {
                 if (argument.body !== value) changeArgValue(value);
               }}
-              onLoad={(edt) => setEditor(edt)}
+              onLoad={(edt) => {
+                setEditor(edt);
+              }}
               monacoOptions={{
                 name: 'Emitter',
                 width: '100%',
@@ -126,7 +127,9 @@ const EmitterBody = ({
             />
           );
         } else {
-          return <QuickSelection menus={[]} />;
+          return (
+            <QuickSelectionMenus argTypes={ArgTypes} onClick={changeArgType} />
+          );
         }
       // case EArgumentBodyType.File:
       //   let fileName = '';
@@ -175,7 +178,9 @@ const EmitterBody = ({
           />
         );
       default:
-        return <QuickSelection menus={[]} />;
+        return (
+          <QuickSelectionMenus argTypes={ArgTypes} onClick={changeArgType} />
+        );
     }
   };
 
@@ -183,32 +188,16 @@ const EmitterBody = ({
     <Container.Body>
       {activeArgType.id === EArgumentBodyType.None ? (
         <Container.Empty>
-          <QuickSelection menus={[]} />
+          <QuickSelectionMenus argTypes={ArgTypes} onClick={changeArgType} />
         </Container.Empty>
       ) : (
         <div className="h-full">
           <TabHeader>
             <TabHeader.Left>
-              <Dropdown
-                selected={activeArgType}
-                isOpen={isBodyTypeDDOpen}
-                onToggle={() => toggleBodyTypeDD(!isBodyTypeDDOpen)}
-              >
-                <Dropdown.Handler>
-                  <Button
-                    text={activeArgType.name}
-                    transparent
-                    withCaret
-                    primary
-                    ghost
-                    sm
-                  />
-                </Dropdown.Handler>
-                <Dropdown.Options
-                  options={ArgTypes}
-                  onSelect={(argType) => changeArgType(argType.id)}
-                />
-              </Dropdown>
+              <ArgTypesDD
+                activeArgType={activeArgType}
+                changeArgType={changeArgType}
+              />
             </TabHeader.Left>
             <TabHeader.Right>
               <EditorControlBar editor={editor} />
@@ -222,3 +211,55 @@ const EmitterBody = ({
 };
 
 export default EmitterBody;
+
+const ArgTypesDD = ({ activeArgType, changeArgType }) => {
+  const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
+  return (
+    <Dropdown
+      selected={activeArgType}
+      isOpen={isBodyTypeDDOpen}
+      onToggle={() => toggleBodyTypeDD(!isBodyTypeDDOpen)}
+    >
+      <Dropdown.Handler>
+        <Button
+          text={activeArgType.name}
+          transparent
+          withCaret
+          primary
+          ghost
+          sm
+        />
+      </Dropdown.Handler>
+      <Dropdown.Options
+        options={ArgTypes}
+        onSelect={(argType) => changeArgType(argType.id)}
+      />
+    </Dropdown>
+  );
+};
+
+const QuickSelectionMenus = ({ argTypes = [], onClick = (id) => {} }) => {
+  const menus = useMemo(() => {
+    const items = [];
+    for (const k in argTypes) {
+      if (argTypes[k].id !== EArgumentBodyType.None) {
+        items.push({
+          id: argTypes[k].id,
+          name: argTypes[k].name,
+          onClick: () => {
+            onClick(argTypes[k].id);
+          },
+        });
+      }
+    }
+    return [
+      {
+        title: 'Select Argument Type',
+        items,
+        activeItem: EArgumentBodyType.None,
+      },
+    ];
+  }, []);
+
+  return <QuickSelection menus={menus} />;
+};

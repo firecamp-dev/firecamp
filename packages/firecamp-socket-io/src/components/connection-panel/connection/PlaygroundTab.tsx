@@ -45,7 +45,7 @@ const EmitterPlayground = () => {
   );
   const { emitter: plgEmitter, activeArgIndex = 0 } = playground;
 
-  console.log('this is the payground')
+  console.log('this is the payground');
 
   return (
     <Container>
@@ -54,20 +54,21 @@ const EmitterPlayground = () => {
         isSaveEmitterPopoverOpen={true}
         tabData={{ id: 123 }}
         activeType={{ id: 'text' }}
-      // editorCommands={EditorCommands}
+        // editorCommands={EditorCommands}
       />
       <Container.Header className="!px-2 !py-2">
         <Input
+          value={plgEmitter.name}
           autoFocus={true}
           placeholder="Type emitter name"
           label="Type Emitter Name"
           className="border-0"
-          value={plgEmitter.name}
+          wrapperClassName="!mb-0"
+          // ref={}
           onChange={(e) => {
             if (e) e.preventDefault();
             changePlgEmitterName(e.target.value);
           }}
-          wrapperClassName="!mb-0"
         />
       </Container.Header>
       <div className="px-2 pb-2 flex-1 flex flex-col">
