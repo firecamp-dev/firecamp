@@ -28,7 +28,7 @@ const CollectionTab = () => {
     if (typeof parentFolderId != 'string') parentFolderId = undefined;
     if (!isRequestSaved) {
       return context.app.notify.info(
-        'Please save the websocket request first.'
+        'Please save the socket.io request first.'
       );
     }
     const _folder = prepareCreateFolderPayload('', parentFolderId);
