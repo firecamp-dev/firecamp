@@ -11,7 +11,7 @@ import {
   SecondaryTab,
 } from '@firecamp/ui-kit';
 import { _array, _auth, _object } from '@firecamp/utils';
-import { ICollection, IFolder, TPlainObject } from '@firecamp/types';
+import { ICollection, IFolder } from '@firecamp/types';
 import {
   preScriptSnippets,
   postScriptSnippets,
@@ -93,7 +93,7 @@ const CollectionTab = ({ tab, platformContext: context }) => {
   }, [entityId, entityType]);
 
   const onChange = (key: string, value: any) => {
-    if (['auth', '__meta', 'scripts'].includes(key)) {
+    if (['auth', '__meta'].includes(key)) {
       setState((s) => ({
         ...s,
         entity: {
@@ -115,7 +115,7 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     }
   };
 
-  const onUpdate = async (updates: TPlainObject) => {
+  const onUpdate = async (updates: Partial<ICollection | IFolder>) => {
     if (state.isFetchingCollection) return;
 
     // console.log({ updates });
@@ -166,22 +166,33 @@ const CollectionTab = ({ tab, platformContext: context }) => {
         return (
           <Scripts
             entity={entity}
-            scripts={[]}
+            scripts={entity.preScripts}
             snippets={preScriptSnippets}
             isRequesting={isRequesting}
-            onChange={onChange} // onChangeScript={(val) => console.log('preScripts', val)}
-            onUpdate={onUpdate}
+            isScriptChanged={
+              !isEqual(originalEntity.preScripts, entity.preScripts)
+            }
+            onChange={(preScripts) => {
+              onChange('preScripts', preScripts);
+            }}
+            onUpdate={(preScripts) => onUpdate({ preScripts: preScripts })}
           />
         );
       case 'tests':
         return (
           <Scripts
             entity={entity}
-            scripts={[]}
+            scripts={entity.postScripts}
             snippets={postScriptSnippets}
             isRequesting={isRequesting}
-            onChange={onChange} // onChangeScript={(val) => console.log('preScripts', val)}
-            onUpdate={onUpdate}
+            isScriptChanged={
+              !isEqual(originalEntity.postScripts, entity.postScripts)
+            }
+            onChange={(postScripts) => {
+              // console.log(originalEntity.postScripts, postScripts);
+              onChange('postScripts', postScripts);
+            }}
+            onUpdate={(postScripts) => onUpdate({ postScripts: postScripts })}
           />
         );
 
@@ -190,7 +201,7 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     }
   };
 
-  if (isFetchingCollection === true || isUpdatingEntity) return <Loader />;
+  if (isFetchingCollection === true) return <Loader />;
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">

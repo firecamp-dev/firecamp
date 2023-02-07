@@ -222,12 +222,13 @@ const Editor: FC<IEditor> = ({
         path={path}
         key={path}
         loading={loading || <></>}
-        onChange={(value, e) =>
+        onChange={(value, e) => {
+          // console.log(value, 'native editor');
           onChange({
             preventDefault: () => {},
             target: { value },
-          })
-        }
+          });
+        }}
         onMount={(editor, monaco) => {
           if (language == 'typescript') {
             monaco.languages.typescript.typescriptDefaults.setCompilerOptions({

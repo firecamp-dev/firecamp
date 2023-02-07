@@ -1,46 +1,32 @@
-import { FC, useMemo } from 'react';
-import isEqual from 'react-fast-compare';
+import { FC } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Container, Button, TabHeader, ScriptTab } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { TId, IScript, ICollection, IFolder } from '@firecamp/types';
 
-const Scripts: FC<IScriptsSettingUi> = ({
+const Scripts: FC<IProps> = ({
   entity,
-  scripts: propScripts,
+  scripts,
   snippets,
   isRequesting = false,
-  onUpdate = () => {},
-  onChange = (key: string, value: any) => {},
+  isScriptChanged = false,
+  onUpdate = (scripts) => {},
+  onChange = (scripts) => {},
 }) => {
-  const itemId: TId = useMemo(() => entity?.__ref.id, [entity]);
-  const _onChangeScript = (type, script = '') => {
-    if (!type) return;
-    onChange('scripts', { [type]: script });
-  };
-  const _onUpdate = async (e) => {
-    if (e) e.preventDefault;
-    let updates: any = {},
-      updatedScripts = _object.difference(propScripts, entity.scripts) || {};
-    let updatedKeys = Object.keys(updatedScripts) || [];
-
-    updates['scripts'] = _object.pick(propScripts, updatedKeys);
-
-    try {
-      if (_object.size(updates.scripts)) {
-        onUpdate(updates);
-      }
-    } catch (error) {}
+  const entityId: TId = entity?.__ref.id;
+  const _onChange = (script: string) => {
+    const _scripts = [{ ...scripts[0], value: script.split('\n') }];
+    onChange(_scripts);
   };
 
   return (
     <Container className="with-divider h-full">
       <Container.Body>
         <ScriptTab
-          id={itemId}
-          script={''}
+          id={entityId}
+          script={scripts?.[0].value.join('\n') || ''}
           snippets={snippets}
-          onChangeScript={_onChangeScript}
+          onChangeScript={_onChange}
         />
       </Container.Body>
       <Container.Footer className="py-3">
@@ -56,8 +42,8 @@ const Scripts: FC<IScriptsSettingUi> = ({
             />
             <Button
               text={isRequesting ? 'Updating Scripts...' : 'Update Scripts'}
-              onClick={_onUpdate}
-              disabled={isEqual(propScripts, entity.scripts) || isRequesting}
+              onClick={() => onUpdate(scripts)}
+              disabled={!isScriptChanged || isRequesting}
               primary
               sm
             />
@@ -70,11 +56,12 @@ const Scripts: FC<IScriptsSettingUi> = ({
 
 export default Scripts;
 
-interface IScriptsSettingUi {
+interface IProps {
   entity: ICollection | IFolder;
   scripts: IScript[];
   isRequesting?: boolean;
+  isScriptChanged: boolean;
   snippets: any;
-  onUpdate: (updates: { [key: string]: string }) => void;
-  onChange: (key: string, value: any) => void;
+  onUpdate: (scripts: IScript[]) => void;
+  onChange: (scripts: IScript[]) => void;
 }
