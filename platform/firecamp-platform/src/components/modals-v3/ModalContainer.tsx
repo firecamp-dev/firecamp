@@ -25,9 +25,7 @@ import OrgManagement from './organization/OrgManagement';
 import WorkspaceManagement from './workspace/WorkspaceManagement';
 import SwitchWorkspace from './workspace/SwitchWorkspace';
 import CreateEnvironment from './environment/CreateEnvironment';
-import CollectionSetting from './collection/CollectionSetting';
 import ManageEnvironment from './environment/ManageEnvironment';
-import FolderSetting from './folder/FolderSetting';
 import EditRequest from './request/edit-request/EditRequest';
 
 export const ModalContainer = () => {
@@ -63,14 +61,6 @@ export const ModalContainer = () => {
         return <WorkspaceManagement isOpen={isOpen} onClose={close} />;
       case EPlatformModalTypes.SwitchWorkspace:
         return <SwitchWorkspace isOpen={isOpen} onClose={close} />;
-
-      // Collection
-      case EPlatformModalTypes.CollectionSetting:
-        return <CollectionSetting onClose={close} />;
-
-      // Folder
-      case EPlatformModalTypes.FolderSetting:
-        return <FolderSetting onClose={close} />;
 
       // Request
       case EPlatformModalTypes.EditRequest:

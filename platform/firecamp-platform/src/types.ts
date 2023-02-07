@@ -34,12 +34,6 @@ export enum EPlatformModalTypes {
   InviteMembers = 'inviteMembers',
   SwitchWorkspace = 'switchWorkspace',
 
-  // collection
-  CollectionSetting = 'collectionSetting',
-
-  // Folder
-  FolderSetting = 'folderSetting',
-
   // request
   EditRequest = 'editRequest',
 
@@ -82,12 +76,6 @@ export const EPlatformModalDefaultProps = {
     width: '440px',
     className: 'p-0 !pb-6',
   },
-
-  // collection
-  [EPlatformModalTypes.CollectionSetting]: { height: '650px', width: '500px' },
-
-  // folder
-  [EPlatformModalTypes.FolderSetting]: { height: '650px', width: '500px' },
 
   // request
   [EPlatformModalTypes.EditRequest]: { height: '600px', width: '450px' },

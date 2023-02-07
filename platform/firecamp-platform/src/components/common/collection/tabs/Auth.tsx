@@ -1,13 +1,12 @@
 import { FC, useMemo } from 'react';
 import isEqual from 'react-fast-compare';
-import { AuthSetting, Button, Container, TabHeader } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
-import { EAuthTypes, IAuth, TId } from '@firecamp/types';
+import { AuthSetting, Button, Container, TabHeader } from '@firecamp/ui-kit';
+import { EAuthTypes, IAuth, ICollection, IFolder, TId } from '@firecamp/types';
 import { _env, _object, _auth, _array } from '@firecamp/utils';
-import { EPlatformModalTypes } from '../../../../types';
 
 const Auth: FC<IAuthSettingUi> = ({
-  type = EPlatformModalTypes.CollectionSetting,
+  entityType = 'collection',
   entity,
   isRequesting = false,
   onUpdate = () => {},
@@ -137,7 +136,6 @@ const Auth: FC<IAuthSettingUi> = ({
             key={itemId}
             auth={auth || {}}
             activeAuth={auth.type || EAuthTypes.None || ''}
-            allowInherit={type === EPlatformModalTypes.FolderSetting}
             onChangeAuth={_onChangeAuth}
             onChangeActiveAuth={(activeAuth = EAuthTypes.None) => {
               onChange('meta', { activeAuthType: activeAuth });
@@ -186,10 +184,8 @@ const Auth: FC<IAuthSettingUi> = ({
 export default Auth;
 
 interface IAuthSettingUi {
-  type:
-    | EPlatformModalTypes.CollectionSetting
-    | EPlatformModalTypes.FolderSetting;
-
+  entityType: 'collection' | 'folder';
+  entity: ICollection | IFolder;
   auth: IAuth;
   activeAuthType: EAuthTypes;
   isRequesting?: boolean;

@@ -8,18 +8,16 @@ import {
   Container,
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
-
-import { EPlatformModalTypes } from '../../../../types';
+import { ICollection, IFolder } from '@firecamp/types';
 
 const EditInfo: FC<IEditInfoUi> = ({
-  type = EPlatformModalTypes.CollectionSetting,
-  name,
-  description,
+  entityType = 'collection',
   entity,
   isRequesting,
   onUpdate,
   onChange,
 }) => {
+  const { name, description } = entity;
   const [error, setError] = useState({ name: '' });
   const _handleChange = (e) => {
     if (e) e.preventDefault();
@@ -34,11 +32,7 @@ const EditInfo: FC<IEditInfoUi> = ({
 
     if (!name || name.length < 3) {
       setError({
-        name: `The ${
-          type === EPlatformModalTypes.CollectionSetting
-            ? 'collection'
-            : 'folder'
-        } name must have minimum 3 characters`,
+        name: `The name must have minimum 3 characters`,
       });
       return;
     }
@@ -74,9 +68,7 @@ const EditInfo: FC<IEditInfoUi> = ({
         <div className="p-6 flex-1 flex flex-col">
           <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
             {`UPDATE ${
-              type === EPlatformModalTypes.CollectionSetting
-                ? 'COLLECTION'
-                : 'FOLDER'
+              entityType === 'collection' ? 'COLLECTION' : 'FOLDER'
             } INFO`}
           </label>
           <div className="mt-8">
@@ -84,9 +76,7 @@ const EditInfo: FC<IEditInfoUi> = ({
               autoFocus={true}
               label="Name"
               placeholder={`${
-                type === EPlatformModalTypes.CollectionSetting
-                  ? 'Collection'
-                  : 'folder'
+                entityType === 'collection' ? 'Collection' : 'folder'
               } name`}
               name={'name'}
               defaultValue={name || ''}
@@ -152,11 +142,8 @@ const EditInfo: FC<IEditInfoUi> = ({
 export default EditInfo;
 
 interface IEditInfoUi {
-  type:
-    | EPlatformModalTypes.CollectionSetting
-    | EPlatformModalTypes.FolderSetting;
-  name: string;
-  description: string;
+  entityType: 'collection' | 'folder';
+  entity: ICollection | IFolder;
   isRequesting?: boolean;
   onUpdate: (updates: { [key: string]: string }) => void;
   onChange: (key: string, value: any) => void;

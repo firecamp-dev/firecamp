@@ -3,11 +3,9 @@ import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Container, Button, TabHeader, ScriptTab } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
-import { TId, IScript } from '@firecamp/types';
-import { EPlatformModalTypes } from '../../../../types';
+import { TId, IScript, ICollection, IFolder } from '@firecamp/types';
 
 const Scripts: FC<IScriptsSettingUi> = ({
-  type = EPlatformModalTypes.CollectionSetting,
   entity,
   scripts: propScripts,
   snippets,
@@ -73,12 +71,10 @@ const Scripts: FC<IScriptsSettingUi> = ({
 export default Scripts;
 
 interface IScriptsSettingUi {
-  type:
-    | EPlatformModalTypes.CollectionSetting
-    | EPlatformModalTypes.FolderSetting;
+  entity: ICollection | IFolder;
   scripts: IScript[];
   isRequesting?: boolean;
+  snippets: any;
   onUpdate: (updates: { [key: string]: string }) => void;
   onChange: (key: string, value: any) => void;
-  snippets: any;
 }

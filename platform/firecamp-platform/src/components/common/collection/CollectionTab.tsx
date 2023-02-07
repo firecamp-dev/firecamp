@@ -1,8 +1,7 @@
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import {
   RootContainer,
   Container,
@@ -12,17 +11,17 @@ import {
   SecondaryTab,
 } from '@firecamp/ui-kit';
 import { _array, _auth, _object } from '@firecamp/utils';
-import { ICollection, TPlainObject } from '@firecamp/types';
+import { ICollection, IFolder, TPlainObject } from '@firecamp/types';
 import {
   preScriptSnippets,
   postScriptSnippets,
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import { Rest } from '@firecamp/cloud-apis';
-import EditInfo from '../../modals-v3/settings/shared/EditInfo';
-import { EPlatformModalTypes } from '../../../types';
-import Auth from '../../modals-v3/settings/shared/Auth';
-import Scripts from '../../modals-v3/settings/shared/Scripts';
+import EditInfo from './tabs/EditInfo';
+import Auth from './tabs/Auth';
+import Scripts from './tabs/Scripts';
 
+type TEntity = ICollection | IFolder;
 enum ETabTypes {
   Info = 'info',
   Auth = 'auth',
@@ -31,32 +30,34 @@ enum ETabTypes {
 }
 
 type TCollectionTabState = {
-  originalCollection: ICollection;
-  collection: ICollection;
+  originalEntity: TEntity;
+  entity: TEntity;
   activeTab: ETabTypes;
   isFetchingCollection: boolean;
-  isUpdatingCollection: boolean;
+  isUpdatingEntity: boolean;
 };
 
 const CollectionTab = ({ tab, platformContext: context }) => {
-  const entity: ICollection = _cloneDeep({ ...tab.entity });
-  const collectionId = tab.__meta.entityId;
-  if (!collectionId) return <></>; //TODO: close tab and show error message here
+  const _entity: TEntity = _cloneDeep({ ...tab.entity });
+  const entityType = tab.__meta.entityType;
+  const entityId = tab.__meta.entityId;
+  if (!entityId) return <></>; //TODO: close tab and show error message here
+  if (!['collection', 'folder'].includes(entityType)) return <></>;
 
   const [state, setState] = useState<TCollectionTabState>({
-    originalCollection: entity,
-    collection: entity,
+    originalEntity: _entity,
+    entity: _entity,
     activeTab: ETabTypes.Info,
     isFetchingCollection: false,
-    isUpdatingCollection: false,
+    isUpdatingEntity: false,
   });
 
   const {
-    originalCollection,
-    collection,
+    originalEntity,
+    entity,
     activeTab,
     isFetchingCollection,
-    isUpdatingCollection,
+    isUpdatingEntity,
   } = state;
 
   const tabs = [
@@ -68,37 +69,37 @@ const CollectionTab = ({ tab, platformContext: context }) => {
 
   useEffect(() => {
     const _fetchCollection = async () => {
-      setState((s) => ({ ...s, isFetchingCollection: true }));
-      // fetch collection
-      await Rest.collection
-        .fetch(collectionId)
+      setState((s) => ({ ...s, isFetchingEntity: true }));
+      // fetch collection/folder
+      await Rest[entityType]
+        .fetch(entityId)
         .then((d) => d?.data || {})
         .then((c) => {
           // _collection.auth = _auth.normalizeToUi(_collection?.auth || {});
           setState((s) => ({
             ...s,
-            collection: c,
-            originalCollection: c,
+            entity: c,
+            originalEntity: c,
           }));
         })
         .catch((e) => {
           console.log({ e });
         })
         .finally(() => {
-          setState((s) => ({ ...s, isFetchingCollection: false }));
+          setState((s) => ({ ...s, isFetchingEntity: false }));
         });
     };
     _fetchCollection();
-  }, [collectionId]);
+  }, [entityId, entityType]);
 
   const onChange = (key: string, value: any) => {
     if (['auth', '__meta', 'scripts'].includes(key)) {
       setState((s) => ({
         ...s,
-        collection: {
-          ...s.collection,
+        entity: {
+          ...s.entity,
           [key]: {
-            ...(s.collection?.[key] || {}),
+            ...(s.entity?.[key] || {}),
             ...value,
           },
         },
@@ -106,8 +107,8 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     } else {
       setState((s) => ({
         ...s,
-        collection: {
-          ...s.collection,
+        entity: {
+          ...s.entity,
           [key]: value,
         },
       }));
@@ -118,42 +119,33 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     if (state.isFetchingCollection) return;
 
     // console.log({ updates });
-    setState((s) => ({ ...s, isUpdatingCollection: true }));
+    setState((s) => ({ ...s, isUpdatingEntity: true }));
 
-    await Rest.collection
-      .update(collectionId, updates)
+    await Rest[entityType]
+      .update(entityId, updates)
       .then(() => {
-        const collection = _object.mergeDeep(
-          state.collection,
-          updates
-        ) as ICollection;
+        const entity = _object.mergeDeep(state.entity, updates) as TEntity;
         setState((s) => ({
           ...s,
-          originalCollection: collection,
-          collection: collection,
+          originalEntity: entity,
+          entity,
         }));
       })
       .catch((e) => {
         console.log({ e });
       })
       .finally(() => {
-        setState((s) => ({ ...s, isUpdatingCollection: false }));
+        setState((s) => ({ ...s, isUpdatingEntity: false }));
       });
   };
 
-  const renderTab = (
-    collection: ICollection,
-    tabId: string,
-    isRequesting: boolean
-  ) => {
+  const renderTab = (entity: TEntity, tabId: string, isRequesting: boolean) => {
     switch (tabId) {
       case 'info':
         return (
           <EditInfo
-            type={EPlatformModalTypes.CollectionSetting}
-            entity={collection}
-            name={collection.name || ''}
-            description={collection.description || ''}
+            entityType={entityType}
+            entity={entity}
             isRequesting={isRequesting}
             onChange={onChange}
             onUpdate={onUpdate}
@@ -163,8 +155,8 @@ const CollectionTab = ({ tab, platformContext: context }) => {
       case 'auth':
         return (
           <Auth
-            type={EPlatformModalTypes.CollectionSetting}
-            entity={collection}
+            entityType={entityType}
+            entity={entity}
             onChange={onChange}
             onUpdate={onUpdate}
           />
@@ -173,8 +165,7 @@ const CollectionTab = ({ tab, platformContext: context }) => {
       case 'pre-request':
         return (
           <Scripts
-            type={EPlatformModalTypes.CollectionSetting}
-            entity={collection}
+            entity={entity}
             scripts={[]}
             snippets={preScriptSnippets}
             isRequesting={isRequesting}
@@ -185,8 +176,7 @@ const CollectionTab = ({ tab, platformContext: context }) => {
       case 'tests':
         return (
           <Scripts
-            type={EPlatformModalTypes.CollectionSetting}
-            entity={collection}
+            entity={entity}
             scripts={[]}
             snippets={postScriptSnippets}
             isRequesting={isRequesting}
@@ -200,17 +190,17 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     }
   };
 
-  if (isFetchingCollection === true || isUpdatingCollection) return <Loader />;
+  if (isFetchingCollection === true || isUpdatingEntity) return <Loader />;
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
-        <ProgressBar active={isFetchingCollection || isUpdatingCollection} />
+        <ProgressBar active={isFetchingCollection || isUpdatingEntity} />
         <Container className="with-divider">
           <Container.Header>
             <TabHeader className="height-ex-small bg-statusBarBackground2 !pl-3 !pr-3">
               <TabHeader.Left>
                 <div className="user-select flex text-base font-semibold">
-                  {originalCollection.name}
+                  {originalEntity.name}
                 </div>
                 {/* <VscEdit size={12} onClick={rename} className="pointer" /> */}
               </TabHeader.Left>
@@ -226,7 +216,7 @@ const CollectionTab = ({ tab, platformContext: context }) => {
                 setState((s) => ({ ...s, activeTab: tabId }));
               }}
             />
-            {renderTab(collection, activeTab, isUpdatingCollection)}
+            {renderTab(entity, activeTab, isUpdatingEntity)}
 
             {/* <Row flex={1} overflow="auto" className="with-divider h-full">
               <Column></Column>
@@ -237,5 +227,4 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     </RootContainer>
   );
 };
-
 export default memo(CollectionTab, (p, n) => !isEqual(p, n));
