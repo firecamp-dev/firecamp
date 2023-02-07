@@ -1,59 +1,46 @@
 import { FC, useMemo } from 'react';
 import isEqual from 'react-fast-compare';
-import {
-  AuthSetting,
-  Button,
-  Container,
-  TabHeader,
-} from '@firecamp/ui-kit';
+import { AuthSetting, Button, Container, TabHeader } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
-import { EAuthTypes, TId } from '@firecamp/types';
+import { EAuthTypes, IAuth, TId } from '@firecamp/types';
 import { _env, _object, _auth, _array } from '@firecamp/utils';
-import { IExplorerSettingsUi } from '../types';
 import { EPlatformModalTypes } from '../../../../types';
 
 const Auth: FC<IAuthSettingUi> = ({
   type = EPlatformModalTypes.CollectionSetting,
-  initialPayload,
-  auth: propAuth = {},
-  activeAuthType = EAuthTypes.None,
+  entity,
   isRequesting = false,
   onUpdate = () => {},
   onChange = (key: string, value: any) => {},
-  close = () => {},
 }) => {
-  let itemId: TId = useMemo(() => initialPayload?.__ref.id, [initialPayload]);
-
-  let _onChangeAuth = (type, payload) => {
+  const itemId: TId = useMemo(() => entity?.__ref.id, [entity]);
+  const { auth } = entity;
+  const _onChangeAuth = (type, payload) => {
     if (!type || !payload || !payload.key) return;
 
     onChange('auth', {
-      ...propAuth,
+      ...auth,
       [type]: {
-        ...propAuth[type],
+        ...auth[type],
         [payload.key]: payload.value || '',
       },
     });
   };
 
-  let _onChangeOAuth2Value = (updated = '', payload) => {
+  const _onChangeOAuth2Value = (updated = '', payload) => {
     // console.log({ updated, payload });
     if (updated === 'activeGrantTypeValue') {
       const { key, value } = payload;
-
-      let type = propAuth[EAuthTypes.OAuth2].activeGrantType;
+      const type = auth[EAuthTypes.OAuth2].activeGrantType;
 
       onChange('auth', {
-        ...propAuth,
-        [EAuthTypes.OAuth2]: Object.assign(propAuth[EAuthTypes.OAuth2], {
+        ...auth,
+        [EAuthTypes.OAuth2]: Object.assign(auth[EAuthTypes.OAuth2], {
           grantTypes: {
-            ...propAuth[EAuthTypes.OAuth2].grantTypes,
-            [type]: Object.assign(
-              propAuth[EAuthTypes.OAuth2].grantTypes[type],
-              {
-                [key]: value,
-              }
-            ),
+            ...auth[EAuthTypes.OAuth2].grantTypes,
+            [type]: Object.assign(auth[EAuthTypes.OAuth2].grantTypes[type], {
+              [key]: value,
+            }),
           },
         }),
       });
@@ -61,8 +48,8 @@ const Auth: FC<IAuthSettingUi> = ({
 
     if (updated === 'activeGrantType') {
       onChange('auth', {
-        ...propAuth,
-        [EAuthTypes.OAuth2]: Object.assign(propAuth[EAuthTypes.OAuth2], {
+        ...auth,
+        [EAuthTypes.OAuth2]: Object.assign(auth[EAuthTypes.OAuth2], {
           activeGrantType: payload,
         }),
       });
@@ -113,14 +100,14 @@ const Auth: FC<IAuthSettingUi> = ({
   let _onUpdate = async (e) => {
     if (e) e.preventDefault;
     let updates: any = {},
-      updatedAuth = _object.difference(propAuth, initialPayload.auth) || {};
+      updatedAuth = _object.difference(auth, entity.auth) || {};
     let updatedKeys = Object.keys(updatedAuth) || [];
     // console.log({ updatedKeys });
     if (!_array.isEmpty(updatedKeys))
-      updates['auth'] = _object.pick(propAuth, updatedKeys);
+      updates['auth'] = _object.pick(auth, updatedKeys);
 
     try {
-      if (activeAuthType !== initialPayload.__meta.activeAuthType) {
+      if (activeAuthType !== entity.__meta.activeAuthType) {
         updates = {
           ...updates,
           meta: { activeAuthType: activeAuthType },
@@ -148,8 +135,8 @@ const Auth: FC<IAuthSettingUi> = ({
         <Container className="p-2">
           <AuthSetting
             key={itemId}
-            auth={propAuth || {}}
-            activeAuth={activeAuthType || EAuthTypes.None || ''}
+            auth={auth || {}}
+            activeAuth={auth.type || EAuthTypes.None || ''}
             allowInherit={type === EPlatformModalTypes.FolderSetting}
             onChangeAuth={_onChangeAuth}
             onChangeActiveAuth={(activeAuth = EAuthTypes.None) => {
@@ -177,12 +164,12 @@ const Auth: FC<IAuthSettingUi> = ({
               disabled={
                 isEqual(
                   _cloneDeep({
-                    auth: propAuth,
-                    activeAuthType: activeAuthType,
+                    auth,
+                    activeAuthType: 'none',
                   }),
                   {
-                    auth: initialPayload.auth,
-                    activeAuthType: initialPayload.__meta.activeAuthType,
+                    auth: entity.auth,
+                    activeAuthType: entity.__meta.activeAuthType,
                   }
                 ) || isRequesting
               }
@@ -203,11 +190,9 @@ interface IAuthSettingUi {
     | EPlatformModalTypes.CollectionSetting
     | EPlatformModalTypes.FolderSetting;
 
-  auth: any //IUiAuth; //todo: define a proper type here
-  initialPayload: IExplorerSettingsUi;
+  auth: IAuth;
   activeAuthType: EAuthTypes;
   isRequesting?: boolean;
   onUpdate: (updates: { [key: string]: string }) => void;
   onChange: (key: string, value: any) => void;
-  close: () => void;
 }

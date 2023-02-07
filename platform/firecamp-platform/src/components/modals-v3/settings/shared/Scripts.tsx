@@ -3,23 +3,19 @@ import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Container, Button, TabHeader, ScriptTab } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
-import { TId, IRestScripts } from '@firecamp/types';
-
-import { IExplorerSettingsUi } from '../types';
+import { TId, IScript } from '@firecamp/types';
 import { EPlatformModalTypes } from '../../../../types';
 
 const Scripts: FC<IScriptsSettingUi> = ({
   type = EPlatformModalTypes.CollectionSetting,
-  initialPayload,
-  scripts: propScripts = '',
+  entity,
+  scripts: propScripts,
   snippets,
   isRequesting = false,
   onUpdate = () => {},
   onChange = (key: string, value: any) => {},
-  close = () => {},
 }) => {
-  const itemId: TId = useMemo(() => initialPayload?.__ref.id, [initialPayload]);
-
+  const itemId: TId = useMemo(() => entity?.__ref.id, [entity]);
   const _onChangeScript = (type, script = '') => {
     if (!type) return;
     onChange('scripts', { [type]: script });
@@ -27,8 +23,7 @@ const Scripts: FC<IScriptsSettingUi> = ({
   const _onUpdate = async (e) => {
     if (e) e.preventDefault;
     let updates: any = {},
-      updatedScripts =
-        _object.difference(propScripts, initialPayload.scripts) || {};
+      updatedScripts = _object.difference(propScripts, entity.scripts) || {};
     let updatedKeys = Object.keys(updatedScripts) || [];
 
     updates['scripts'] = _object.pick(propScripts, updatedKeys);
@@ -64,9 +59,7 @@ const Scripts: FC<IScriptsSettingUi> = ({
             <Button
               text={isRequesting ? 'Updating Scripts...' : 'Update Scripts'}
               onClick={_onUpdate}
-              disabled={
-                isEqual(propScripts, initialPayload.scripts) || isRequesting
-              }
+              disabled={isEqual(propScripts, entity.scripts) || isRequesting}
               primary
               sm
             />
@@ -83,11 +76,9 @@ interface IScriptsSettingUi {
   type:
     | EPlatformModalTypes.CollectionSetting
     | EPlatformModalTypes.FolderSetting;
-
-  initialPayload: IExplorerSettingsUi;
-  scripts: IRestScripts; //todo: define a proper type here
+  scripts: IScript[];
   isRequesting?: boolean;
   onUpdate: (updates: { [key: string]: string }) => void;
   onChange: (key: string, value: any) => void;
-  close: () => void;
+  snippets: any;
 }

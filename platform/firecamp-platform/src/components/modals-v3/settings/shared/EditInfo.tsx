@@ -8,20 +8,17 @@ import {
   Container,
 } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
-import { IExplorerSettingsUi } from '../types';
+
 import { EPlatformModalTypes } from '../../../../types';
 
 const EditInfo: FC<IEditInfoUi> = ({
   type = EPlatformModalTypes.CollectionSetting,
-
   name,
   description,
-
+  entity,
   isRequesting,
   onUpdate,
   onChange,
-  close,
-  initialPayload,
 }) => {
   const [error, setError] = useState({ name: '' });
   const _handleChange = (e) => {
@@ -50,8 +47,8 @@ const EditInfo: FC<IEditInfoUi> = ({
       _object.difference(
         { name, description },
         {
-          name: initialPayload.name,
-          description: initialPayload.description,
+          name: entity.name,
+          description: entity.description,
         }
       ) || {};
 
@@ -137,8 +134,8 @@ const EditInfo: FC<IEditInfoUi> = ({
               disabled={
                 isEqual(
                   {
-                    name: initialPayload.name,
-                    description: initialPayload.description,
+                    name: entity.name,
+                    description: entity.description,
                   },
                   { name, description }
                 ) || isRequesting
@@ -158,13 +155,9 @@ interface IEditInfoUi {
   type:
     | EPlatformModalTypes.CollectionSetting
     | EPlatformModalTypes.FolderSetting;
-  initialPayload: IExplorerSettingsUi;
-
   name: string;
   description: string;
-
   isRequesting?: boolean;
   onUpdate: (updates: { [key: string]: string }) => void;
   onChange: (key: string, value: any) => void;
-  close: () => void;
 }

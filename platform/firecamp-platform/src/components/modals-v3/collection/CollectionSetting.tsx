@@ -17,11 +17,9 @@ import { useModalStore } from '../../../store/modal';
 import Auth from '../settings/shared/Auth';
 import Scripts from '../settings/shared/Scripts';
 import EditInfo from '../settings/shared/EditInfo';
-import { ICollectionSettingUi } from '../settings/types';
-
 import { EPlatformModalTypes } from '../../../types';
 
-export const defaultCollection: ICollectionSettingUi = {
+export const defaultCollection = {
   name: '',
   description: '',
   scripts: {
@@ -151,11 +149,9 @@ const CollectionSetting: FC<IModal> = ({
         return (
           <Auth
             type={EPlatformModalTypes.CollectionSetting}
-            initialPayload={initialCollection}
             auth={collection.auth}
             activeAuthType={collection.__meta.activeAuthType}
             onChange={onChange}
-            close={onClose}
             onUpdate={onUpdate}
           />
         );
@@ -164,11 +160,9 @@ const CollectionSetting: FC<IModal> = ({
         return (
           <Scripts
             type={EPlatformModalTypes.CollectionSetting}
-            initialPayload={initialCollection}
             scripts={collection.scripts}
             isRequesting={isRequesting}
             onChange={onChange}
-            close={onClose}
             onUpdate={onUpdate}
           />
         );
