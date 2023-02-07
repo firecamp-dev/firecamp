@@ -60,7 +60,7 @@ const CollectionSetting: FC<IModal> = ({
     { name: 'Script', id: ETabTypes.Script },
   ];
 
-  let [activeTab, setActiveTab] = useState<ETabTypes>(ETabTypes.Edit);
+  const [activeTab, setActiveTab] = useState<ETabTypes>(ETabTypes.Edit);
 
   useEffect(() => {
     let _fetchCollection = async () => {

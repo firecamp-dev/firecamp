@@ -116,15 +116,23 @@ const CollectionMenu = ({
     name: 'View Details',
     onClick: () => {
       if (menuType == EMenuType.Collection) {
+        // platformContext.app.modals.openCollectionSetting({
+        //   collectionId,
+        // });
+
         platformEmitter.emit(EPlatformTabs.Open, {
           entity: {},
           __meta: { id: collectionId, type: 'collection' },
         });
       } else if (menuType == EMenuType.Folder) {
-        platformContext.app.modals.openFolderSetting({
-          collectionId,
-          folderId,
+        platformEmitter.emit(EPlatformTabs.Open, {
+          entity: {},
+          __meta: { id: collectionId, type: 'collection' },
         });
+        // platformContext.app.modals.openFolderSetting({
+        //   collectionId,
+        //   folderId,
+        // });
       }
     },
   };

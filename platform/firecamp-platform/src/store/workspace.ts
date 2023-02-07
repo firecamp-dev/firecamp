@@ -15,6 +15,8 @@ import {
 import { useEnvStore } from './environment';
 import platformContext from '../services/platform-context';
 import { RE } from '../types';
+import { platformEmitter } from '../services/platform-emitter';
+import { EPlatformTabs } from '../services/platform-emitter/events';
 
 const initialState = {
   workspace: {
@@ -63,6 +65,7 @@ export interface IWorkspaceStore {
   getWorkspaceId: () => TId;
 
   // collection
+  openCollectionTab: (collectionId: TId) => void;
   createCollectionPrompt: () => void;
   createCollection: (payload: { [k: string]: any }) => Promise<any>;
   updateCollection: (cId: string, payload: { [k: string]: any }) => void;
@@ -236,6 +239,18 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     // collection
+    openCollectionTab: (collectionId: TId) => {
+      const state = get();
+      const collection = state.explorer.collections?.find(
+        (c) => c.__ref.id == collectionId
+      );
+      if (collection) {
+        platformEmitter.emit(EPlatformTabs.Open, {
+          entity: collection,
+          __meta: { id: collectionId, type: 'collection' },
+        });
+      }
+    },
     createCollectionPrompt: () => {
       const { createCollection } = get();
       if (!platformContext.app.user.isLoggedIn()) {

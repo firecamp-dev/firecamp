@@ -24,16 +24,14 @@ const EditInfo: FC<IEditInfoUi> = ({
   initialPayload,
 }) => {
   const [error, setError] = useState({ name: '' });
-
-  let _handleChange = (e) => {
+  const _handleChange = (e) => {
     if (e) e.preventDefault();
     let { name, value } = e.target;
     if (name === 'name' && error.name) setError({ name: '' });
 
     onChange(name, value);
   };
-
-  let _onUpdate = async (e) => {
+  const _onUpdate = async (e) => {
     if (e) e.preventDefault;
     // console.log({ name });
 
@@ -43,7 +41,7 @@ const EditInfo: FC<IEditInfoUi> = ({
           type === EPlatformModalTypes.CollectionSetting
             ? 'collection'
             : 'folder'
-        } name must have minimun 3 characters`,
+        } name must have minimum 3 characters`,
       });
       return;
     }
@@ -75,70 +73,66 @@ const EditInfo: FC<IEditInfoUi> = ({
 
   return (
     <Container className="with-divider h-full">
-      <Container.Body>
-        <Container className="pt-16 padding-wrapper">
-          <div className="p-6 flex-1 flex flex-col">
-            <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
-              {`UPDATE ${
+      <Container.Body className="pt-16 padding-wrapper">
+        <div className="p-6 flex-1 flex flex-col">
+          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+            {`UPDATE ${
+              type === EPlatformModalTypes.CollectionSetting
+                ? 'COLLECTION'
+                : 'FOLDER'
+            } INFO`}
+          </label>
+          <div className="mt-8">
+            <Input
+              autoFocus={true}
+              label="Name"
+              placeholder={`${
                 type === EPlatformModalTypes.CollectionSetting
-                  ? 'COLLECTION'
-                  : 'FOLDER'
-              } INFO`}
-            </label>
-            <div className="mt-8">
-              <Input
-                autoFocus={true}
-                label="Name"
-                placeholder={`${
-                  type === EPlatformModalTypes.CollectionSetting
-                    ? 'Collection'
-                    : 'folder'
-                } name'`}
-                name={'name'}
-                defaultValue={name || ''}
-                onChange={_handleChange}
-                onKeyDown={() => {}}
-                onBlur={() => {}}
-                error={error.name}
-                // error={error.name}
-                // iconPosition="right"
-                // icon={<VscEdit />}
-              />
-            </div>
-
-            <TextArea
-              type="text"
-              minHeight="200px"
-              label="Description (optional)"
-              labelClassname="fc-input-label"
-              placeholder="Description"
-              note="Markdown supported in description"
-              name={'description'}
-              defaultValue={description || ''}
+                  ? 'Collection'
+                  : 'folder'
+              } name`}
+              name={'name'}
+              defaultValue={name || ''}
               onChange={_handleChange}
-              // disabled={true}
+              onKeyDown={() => {}}
+              onBlur={() => {}}
+              error={error.name}
+              // error={error.name}
               // iconPosition="right"
               // icon={<VscEdit />}
-              className="mb-auto"
             />
           </div>
-        </Container>
+
+          <TextArea
+            type="text"
+            minHeight="200px"
+            label="Description (optional)"
+            labelClassname="fc-input-label"
+            placeholder="Description"
+            note="Markdown supported in description"
+            name={'description'}
+            defaultValue={description || ''}
+            onChange={_handleChange}
+            // disabled={true}
+            // iconPosition="right"
+            // icon={<VscEdit />}
+            className="mb-auto"
+          />
+        </div>
       </Container.Body>
       <Container.Footer className="py-3">
         <TabHeader className="m-2">
           <TabHeader.Right>
             <Button
               text="Cancel"
-              secondary
-              transparent={true}
-              sm
               onClick={() => close()}
-              ghost={true}
+              transparent
+              secondary
+              ghost
+              sm
             />
             <Button
               text={isRequesting ? 'Updating Info...' : 'Update Info'}
-              primary
-              sm
               onClick={_onUpdate}
               disabled={
                 isEqual(
@@ -149,10 +143,12 @@ const EditInfo: FC<IEditInfoUi> = ({
                   { name, description }
                 ) || isRequesting
               }
+              primary
+              sm
             />
           </TabHeader.Right>
         </TabHeader>
-      </Container.Footer>{' '}
+      </Container.Footer>
     </Container>
   );
 };

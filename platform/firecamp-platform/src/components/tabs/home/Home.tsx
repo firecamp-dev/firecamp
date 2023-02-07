@@ -25,15 +25,15 @@ const Home: FC<any> = () => {
       ERequestTypes.GraphQL,
     ];
     // if (!allowed_app.includes(type))
-    // emitter.emit(EPlatformTabs.Open, {
-    //   entity: { __meta: { type } },
-    //   __meta: { id: '', type: 'request' },
-    // });
-
     emitter.emit(EPlatformTabs.Open, {
       entity: { __meta: { type } },
-      __meta: { id: '', type: 'collection' },
+      __meta: { id: '', type: 'request' },
     });
+
+    // emitter.emit(EPlatformTabs.Open, {
+    //   entity: { __meta: { type } },
+    //   __meta: { id: '', type: 'collection' },
+    // });
   };
 
   return (
