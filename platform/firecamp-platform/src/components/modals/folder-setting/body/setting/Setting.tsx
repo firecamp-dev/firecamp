@@ -157,7 +157,7 @@ const Setting: FC<ISetting> = ({
               minHeight="80px"
               label="Description"
               className="fc-input border-alt small"
-              labelClassname="fc-input-label"
+              labelClassName="fc-input-label"
               value={state.description}
               onChange={_handleChange}
             />
