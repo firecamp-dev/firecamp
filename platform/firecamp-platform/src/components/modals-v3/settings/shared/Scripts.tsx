@@ -1,12 +1,7 @@
 import { FC, useMemo } from 'react';
 import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
-import {
-  Container,
-  Button,
-  TabHeader,
-  ScriptTab,
-} from '@firecamp/ui-kit';
+import { Container, Button, TabHeader, ScriptTab } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { TId, IRestScripts } from '@firecamp/types';
 
@@ -15,23 +10,21 @@ import { EPlatformModalTypes } from '../../../../types';
 
 const Scripts: FC<IScriptsSettingUi> = ({
   type = EPlatformModalTypes.CollectionSetting,
-
   initialPayload,
-  scripts: propScripts = {},
-
+  scripts: propScripts = '',
+  snippets,
   isRequesting = false,
   onUpdate = () => {},
   onChange = (key: string, value: any) => {},
   close = () => {},
 }) => {
-  let itemId: TId = useMemo(() => initialPayload?.__ref.id, [initialPayload]);
+  const itemId: TId = useMemo(() => initialPayload?.__ref.id, [initialPayload]);
 
-  let _onChangeScript = (type, script = '') => {
+  const _onChangeScript = (type, script = '') => {
     if (!type) return;
     onChange('scripts', { [type]: script });
   };
-
-  let _onUpdate = async (e) => {
+  const _onUpdate = async (e) => {
     if (e) e.preventDefault;
     let updates: any = {},
       updatedScripts =
@@ -50,35 +43,32 @@ const Scripts: FC<IScriptsSettingUi> = ({
   return (
     <Container className="with-divider h-full">
       <Container.Body>
-        <Container className="p-4">
-          <ScriptTab
-            id={itemId}
-            key={itemId}
-            script={propScripts}
-            onChangeScript={_onChangeScript}
-          />
-        </Container>
+        <ScriptTab
+          id={itemId}
+          script={''}
+          snippets={snippets}
+          onChangeScript={_onChangeScript}
+        />
       </Container.Body>
       <Container.Footer className="py-3">
         <TabHeader className="m-2">
           <TabHeader.Right>
             <Button
               text="Cancel"
+              onClick={(e) => {}}
               secondary
-              transparent={true}
+              transparent
+              ghost
               sm
-              onClick={(e) => close()}
-              ghost={true}
             />
-
             <Button
               text={isRequesting ? 'Updating Scripts...' : 'Update Scripts'}
-              primary
-              sm
+              onClick={_onUpdate}
               disabled={
                 isEqual(propScripts, initialPayload.scripts) || isRequesting
               }
-              onClick={_onUpdate}
+              primary
+              sm
             />
           </TabHeader.Right>
         </TabHeader>

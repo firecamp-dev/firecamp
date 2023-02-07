@@ -1010,6 +1010,7 @@ importers:
       '@firecamp/cookie-manager': ^0.0.0
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
+      '@firecamp/rest-executor': workspace:*
       '@firecamp/socket.io': workspace:*
       '@firecamp/types': ^0.1.17
       '@firecamp/ui-kit': workspace:*
@@ -1057,6 +1058,7 @@ importers:
       '@firecamp/cookie-manager': link:../../packages/firecamp-cookie-manager
       '@firecamp/graphql': link:../../packages/firecamp-graphql
       '@firecamp/rest': link:../../packages/firecamp-rest
+      '@firecamp/rest-executor': link:../../packages/firecamp-rest-executor
       '@firecamp/socket.io': link:../../packages/firecamp-socket-io
       '@firecamp/types': 0.1.17
       '@firecamp/ui-kit': link:../../packages/ui-kit
@@ -3222,7 +3224,7 @@ packages:
     resolution: {integrity: sha512-IRE6GD47KwcqA09RIWrabKdHPiKDGgtAL31xDxbi/RjQMsr+lY+ppxmHwY0dUEV3qvvxZzoe5Hl0RXZJOjQNUg==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       jest-message-util: 29.4.1
@@ -3329,7 +3331,7 @@ packages:
       '@jest/reporters': 29.3.1
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       ansi-escapes: 4.3.2
       chalk: 4.1.2
@@ -3373,7 +3375,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/fake-timers': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       jest-mock: 29.3.1
     dev: true
@@ -3435,12 +3437,12 @@ packages:
     resolution: {integrity: sha512-iHTL/XpnDlFki9Tq0Q1GGuVeQ8BHZGIYsvCO5eN/O/oJaRzofG9Xndd9HuSDBI/0ZS79pg0iwn07OMTQ7ngF2A==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@sinonjs/fake-timers': 9.1.2
       '@types/node': 18.11.18
       jest-message-util: 29.4.1
       jest-mock: 29.3.1
-      jest-util: 29.3.1
+      jest-util: 29.4.1
     dev: true
 
   /@jest/globals/28.1.3:
@@ -3460,7 +3462,7 @@ packages:
     dependencies:
       '@jest/environment': 29.3.1
       '@jest/expect': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       jest-mock: 29.3.1
     transitivePeerDependencies:
       - supports-color
@@ -3517,7 +3519,7 @@ packages:
       '@jest/console': 29.3.1
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@jridgewell/trace-mapping': 0.3.17
       '@types/node': 18.11.18
       chalk: 4.1.2
@@ -3595,7 +3597,7 @@ packages:
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
       '@jest/console': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/istanbul-lib-coverage': 2.0.4
       collect-v8-coverage: 1.0.1
     dev: true
@@ -6097,14 +6099,14 @@ packages:
     resolution: {integrity: sha512-ZUxbzKl0IfJILTS6t7ip5fQQM/J3TJYubDm3nMbgubNNYS62eXeUpoLUC8/7fJNiFYHTrGPQn7hspDUzIHX3UA==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
     dev: true
 
   /@types/glob/8.0.1:
     resolution: {integrity: sha512-8bVUjXZvJacUFkJXHdyZ9iH1Eaj5V7I8c4NdH5sQJsdXkqT4CA5Dhb4yb4VE/3asyx4L9ayZr1NIhTsWHczmMw==}
     dependencies:
       '@types/minimatch': 5.1.2
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
     dev: true
 
   /@types/graceful-fs/4.1.6:
@@ -6260,7 +6262,7 @@ packages:
   /@types/node-fetch/2.6.2:
     resolution: {integrity: sha512-DHqhlq5jeESLy19TYhLakJ07kNumXWjcDdxXsLUMJZ6ue8VZJj4kLPQVE/2mdHh3xZziNF1xppu5lwmS53HR+A==}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
       form-data: 3.0.1
     dev: true
 
@@ -6427,7 +6429,7 @@ packages:
   /@types/webpack-sources/3.2.0:
     resolution: {integrity: sha512-Ft7YH3lEVRQ6ls8k4Ff1oB4jN6oy/XmU6tQISKdhfh+1mR+viZFphS6WL0IrtDOzvefmJg5a0s7ZQoRXwqTEFg==}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
       '@types/source-list-map': 0.1.2
       source-map: 0.7.4
     dev: true
@@ -6435,7 +6437,7 @@ packages:
   /@types/webpack/4.41.33:
     resolution: {integrity: sha512-PPajH64Ft2vWevkerISMtnZ8rTs4YmRbs+23c402J0INmxDKCrhZNvwZYtzx96gY2wAtXdrK1BS2fiC8MlLr3g==}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
       '@types/tapable': 1.0.8
       '@types/uglify-js': 3.17.1
       '@types/webpack-sources': 3.2.0
@@ -7016,14 +7018,6 @@ packages:
       acorn: ^8
     dependencies:
       acorn: 8.8.1
-    dev: true
-
-  /acorn-import-assertions/1.8.0_acorn@8.8.2:
-    resolution: {integrity: sha512-m7VZ3jwz4eK6A4Vtt8Ew1/mNbP24u0FhdyfA7fSvnJR6LMdfOYnmuIrrJAgrYfYJ10F/otaHTtrtrtmHdMNzEw==}
-    peerDependencies:
-      acorn: ^8
-    dependencies:
-      acorn: 8.8.2
     dev: true
 
   /acorn-jsx/5.3.2_acorn@7.4.1:
@@ -8418,7 +8412,7 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001446
+      caniuse-lite: 1.0.30001450
       electron-to-chromium: 1.4.285
       node-releases: 2.0.9
       update-browserslist-db: 1.0.10_browserslist@4.21.4
@@ -8713,10 +8707,10 @@ packages:
 
   /caniuse-lite/1.0.30001446:
     resolution: {integrity: sha512-fEoga4PrImGcwUUGEol/PoFCSBnSkA9drgdkxXkJLsUBOnJ8rs3zDv6ApqYXGQFOyMPsjh79naWhF4DAxbF8rw==}
+    dev: false
 
   /caniuse-lite/1.0.30001450:
     resolution: {integrity: sha512-qMBmvmQmFXaSxexkjjfMvD5rnDL0+m+dUMZKoDYsGG8iZN29RuYh9eRoMvKsT6uMAWlyUUGDEQGJJYjzCIO9ew==}
-    dev: true
 
   /capture-exit/2.0.0:
     resolution: {integrity: sha512-PiT/hQmTonHhl/HFGN+Lx3JJUznrVYJ3+AQsnthneZbvW7x+f08Tk7yLJTLEOUvBTbduLeeBkxEaYXUOUrRq6g==}
@@ -12880,7 +12874,7 @@ packages:
       fs.realpath: 1.0.0
       inflight: 1.0.6
       inherits: 2.0.4
-      minimatch: 3.0.4
+      minimatch: 3.1.2
       once: 1.4.0
       path-is-absolute: 1.0.1
     dev: false
@@ -13553,7 +13547,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@4.10.0
     dev: true
 
   /htmlparser2/3.10.1:
@@ -14638,7 +14632,7 @@ packages:
       '@jest/environment': 29.3.1
       '@jest/expect': 29.3.1
       '@jest/test-result': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       co: 4.6.0
@@ -14754,7 +14748,7 @@ packages:
     dependencies:
       '@jest/core': 29.3.1
       '@jest/test-result': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.10
@@ -14941,7 +14935,7 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@jest/test-sequencer': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       babel-jest: 29.3.1_@babel+core@7.20.12
       chalk: 4.1.2
       ci-info: 3.7.1
@@ -14979,7 +14973,7 @@ packages:
     dependencies:
       '@babel/core': 7.20.12
       '@jest/test-sequencer': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       babel-jest: 29.3.1_@babel+core@7.20.12
       chalk: 4.1.2
@@ -15068,7 +15062,7 @@ packages:
     resolution: {integrity: sha512-qrZH7PmFB9rEzCSl00BWjZYuS1BSOH8lLuC0azQE9lQrAx3PWGKHTDudQiOSwIy5dGAJh7KA0ScYlCP7JxvFYA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       chalk: 4.1.2
       jest-get-type: 29.2.0
       jest-util: 29.4.1
@@ -15116,7 +15110,7 @@ packages:
     dependencies:
       '@jest/environment': 29.3.1
       '@jest/fake-timers': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       jest-mock: 29.3.1
       jest-util: 29.4.1
@@ -15314,9 +15308,9 @@ packages:
     resolution: {integrity: sha512-H8/qFDtDVMFvFP4X8NuOT3XRDzOUTz+FeACjufHzsOIBAxivLqkB1PoLCaJx9iPPQ8dZThHPp/G3WRWyMgA3JA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
-      jest-util: 29.3.1
+      jest-util: 29.4.1
     dev: true
 
   /jest-playwright-preset/2.0.0_p6cmbkzcb73dhedp36nqclcfgm:
@@ -15484,7 +15478,7 @@ packages:
       '@jest/environment': 29.3.1
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       emittery: 0.13.1
@@ -15545,7 +15539,7 @@ packages:
       '@jest/source-map': 29.2.0
       '@jest/test-result': 29.3.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       cjs-module-lexer: 1.2.2
@@ -15622,7 +15616,7 @@ packages:
       '@babel/types': 7.20.7
       '@jest/expect-utils': 29.4.1
       '@jest/transform': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/babel__traverse': 7.18.3
       '@types/prettier': 2.7.2
       babel-preset-current-node-syntax: 1.0.1_@babel+core@7.20.12
@@ -15670,7 +15664,7 @@ packages:
     resolution: {integrity: sha512-7YOVZaiX7RJLv76ZfHt4nbNEzzTRiMW/IiOG7ZOKmTXmoGBxUDefgMAxQubu6WPVqP5zSzAdZG0FfLcC7HOIFQ==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       '@types/node': 18.11.18
       chalk: 4.1.2
       ci-info: 3.7.1
@@ -15706,7 +15700,7 @@ packages:
     resolution: {integrity: sha512-N9Lr3oYR2Mpzuelp1F8negJR3YE+L1ebk1rYA5qYo9TTY3f9OWdptLoNSPP9itOCBIRBqjt/S5XHlzYglLN67g==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.1
       camelcase: 6.3.0
       chalk: 4.1.2
       jest-get-type: 29.2.0
@@ -15771,7 +15765,7 @@ packages:
     resolution: {integrity: sha512-7vuh85V5cdDofPyxn58nrPjBktZo0u9x1g8WtjQol+jZDaE+fhN+cIvTj11GndBnMnyfrUOG1sZQxCdjKh+DKg==}
     engines: {node: '>= 10.13.0'}
     dependencies:
-      '@types/node': 16.18.11
+      '@types/node': 18.11.18
       merge-stream: 2.0.0
       supports-color: 8.1.1
     dev: true
@@ -23326,9 +23320,9 @@ packages:
       '@webassemblyjs/ast': 1.11.1
       '@webassemblyjs/wasm-edit': 1.11.1
       '@webassemblyjs/wasm-parser': 1.11.1
-      acorn: 8.8.2
-      acorn-import-assertions: 1.8.0_acorn@8.8.2
-      browserslist: 4.21.5
+      acorn: 8.8.1
+      acorn-import-assertions: 1.8.0_acorn@8.8.1
+      browserslist: 4.21.4
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.12.0
       es-module-lexer: 0.9.3

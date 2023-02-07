@@ -10,12 +10,15 @@ import {
   Row,
   Loader,
   TabHeader,
-  Button,
   ProgressBar,
   SecondaryTab,
 } from '@firecamp/ui-kit';
 import { _array, _auth, _object } from '@firecamp/utils';
 import { EAuthTypes } from '@firecamp/types';
+import {
+  preScriptSnippets,
+  postScriptSnippets,
+} from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import { ICollectionSettingUi } from '../../modals-v3/settings/types';
 import { Rest } from '@firecamp/cloud-apis';
 import EditInfo from '../../modals-v3/settings/shared/EditInfo';
@@ -162,15 +165,29 @@ const CollectionTab = ({ tab, platformContext: context }) => {
           />
         );
 
-      case 'script':
+      case 'pre-request':
         return (
           <Scripts
             type={EPlatformModalTypes.CollectionSetting}
             initialPayload={initialCollection}
-            scripts={collection.scripts}
+            scripts={''}
+            snippets={preScriptSnippets}
             isRequesting={isRequesting}
-            onChange={onChange}
-            close={() => {}}
+            // onChange={onChange}
+            // onChangeScript={(val) => console.log('preScripts', val)}
+            onUpdate={onUpdate}
+          />
+        );
+      case 'tests':
+        return (
+          <Scripts
+            type={EPlatformModalTypes.CollectionSetting}
+            initialPayload={initialCollection}
+            scripts={''}
+            snippets={postScriptSnippets}
+            isRequesting={isRequesting}
+            // onChange={onChange}
+            // onChangeScript={(val) => console.log('preScripts', val)}
             onUpdate={onUpdate}
           />
         );
