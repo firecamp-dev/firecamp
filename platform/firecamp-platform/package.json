@@ -64,7 +64,7 @@
     "@firecamp/rest": "workspace:*",
     "@firecamp/rest-executor": "workspace:*",
     "@firecamp/socket.io": "workspace:*",
-    "@firecamp/types": "^0.1.17",
+    "@firecamp/types": "^0.1.19",
     "@firecamp/ui-kit": "workspace:*",
     "@firecamp/url": "0.0.19",
     "@firecamp/websocket": "workspace:*",
