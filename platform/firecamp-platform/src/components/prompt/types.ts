@@ -7,7 +7,7 @@ export interface IPromptInput {
   texts?: {
     btnOk?: string;
     btnOking?: string;
-    btnCancle?: string;
+    btnCancel?: string;
   };
   value: string;
   onClose: Function;
