@@ -179,7 +179,7 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
 
       case 'pre-request':
         return (
-          <div className="m-6 border border-appBorder w-full">
+          <div className="m-6 border border-appBorder w-full flex-1 overflow-hidden">
           <Scripts
             entity={entity}
             scripts={entity.preScripts}
@@ -193,7 +193,7 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
         );
       case 'tests':
         return (
-          <div className="m-6 border border-appBorder w-full">
+          <div className="m-6 border border-appBorder flex-1 overflow-hidden">
           <Scripts
             entity={entity}
             scripts={entity.postScripts}

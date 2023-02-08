@@ -28,8 +28,8 @@ const SnippetPopup: FC<ISnippetPopup> = ({
             return (
               <div key={`${i}-popup`}>
                 {snippet?.name.length ? (
-                  <div className="bg-focus1 px-3 py-1 mb-2">
-                    <div className="text-base leading-6 font-semibold text-appForeground">
+                  <div className="bg-focus1 px-2">
+                    <div className="text-base leading-7 font-semibold text-appForeground">
                       {snippet.name}
                     </div>
                   </div>
