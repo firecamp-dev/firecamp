@@ -27,11 +27,11 @@ const SocketIOClient = lazy(() =>
   }))
 );
 
-import { IEntityTab, IRequestTabProps } from './types';
+import { ETabEntityTypes, IEntityTab, IRequestTabProps } from './types';
 import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 import EnvironmentTab from '../common/environment/tabs/Environment';
-import CollectionTab from '../common/collection/CollectionTab';
+import CollectionFolderEntityTab from '../common/collection/CollectionFolderEntityTab';
 
 const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
   if (!tab || index === -1) {
@@ -65,7 +65,7 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
   const _renderRequestTab = (tab: IEntityTab<any>) => {
     // console.log(tab.entity.__meta?.type, 'tab.entity.type');
     switch (tab.__meta.entityType) {
-      case 'request':
+      case ETabEntityTypes.Request:
         const type = tab.entity?.__meta?.type;
         switch (type) {
           case ERequestTypes.Rest:
@@ -100,10 +100,11 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
             return <span>Default Request Tab</span>;
         }
         break;
-      case 'environment':
+      case ETabEntityTypes.Environment:
         return <EnvironmentTab {...tabProps} />;
-      case 'collection':
-        return <CollectionTab {...tabProps} />;
+      case ETabEntityTypes.Collection:
+      case ETabEntityTypes.Folder:
+        return <CollectionFolderEntityTab {...tabProps} />;
       default:
         return <>No Entity Tab Found</>;
     }

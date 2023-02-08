@@ -29,7 +29,7 @@ enum ETabTypes {
   Tests = 'tests',
 }
 
-type TCollectionTabState = {
+type TState = {
   originalEntity: TEntity;
   entity: TEntity;
   activeTab: ETabTypes;
@@ -37,14 +37,14 @@ type TCollectionTabState = {
   isUpdatingEntity: boolean;
 };
 
-const CollectionTab = ({ tab, platformContext: context }) => {
+const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
   const _entity: TEntity = _cloneDeep({ ...tab.entity });
   const entityType = tab.__meta.entityType;
   const entityId = tab.__meta.entityId;
   if (!entityId) return <></>; //TODO: close tab and show error message here
   if (!['collection', 'folder'].includes(entityType)) return <></>;
 
-  const [state, setState] = useState<TCollectionTabState>({
+  const [state, setState] = useState<TState>({
     originalEntity: _entity,
     entity: _entity,
     activeTab: ETabTypes.Info,
@@ -61,7 +61,10 @@ const CollectionTab = ({ tab, platformContext: context }) => {
   } = state;
 
   const tabs = [
-    { name: 'Collection Info', id: ETabTypes.Info },
+    {
+      name: entityType == 'collection' ? 'Collection Info' : 'Folder Info',
+      id: ETabTypes.Info,
+    },
     { name: 'Auth', id: ETabTypes.Auth },
     { name: 'Pre-Request', id: ETabTypes.PreRequest },
     { name: 'Tests', id: ETabTypes.Tests },
@@ -123,7 +126,10 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     await Rest[entityType]
       .update(entityId, updates)
       .then(() => {
-        const entity = _object.mergeDeep(state.originalEntity, updates) as TEntity;
+        const entity = _object.mergeDeep(
+          state.originalEntity,
+          updates
+        ) as TEntity;
         setState((s) => ({
           ...s,
           originalEntity: entity,
@@ -237,4 +243,4 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     </RootContainer>
   );
 };
-export default memo(CollectionTab, (p, n) => !isEqual(p, n));
+export default memo(CollectionFolderEntityTab, (p, n) => !isEqual(p, n));

@@ -127,12 +127,8 @@ const CollectionMenu = ({
       } else if (menuType == EMenuType.Folder) {
         platformEmitter.emit(EPlatformTabs.Open, {
           entity: {},
-          __meta: { id: collectionId, type: 'collection' },
+          __meta: { id: folderId, type: 'folder' },
         });
-        // platformContext.app.modals.openFolderSetting({
-        //   collectionId,
-        //   folderId,
-        // });
       }
     },
   };

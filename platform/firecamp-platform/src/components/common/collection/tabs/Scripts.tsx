@@ -32,14 +32,14 @@ const Scripts: FC<IProps> = ({
       <Container.Footer className="py-3">
         <TabHeader className="m-2">
           <TabHeader.Right>
-            <Button
+            {/* <Button
               text="Cancel"
               onClick={(e) => {}}
               secondary
               transparent
               ghost
               sm
-            />
+            /> */}
             <Button
               text={isRequesting ? 'Updating Scripts...' : 'Update Scripts'}
               onClick={() => onUpdate(scripts)}

@@ -131,6 +131,13 @@ const Auth: FC<IAuthSettingUi> = ({
   return (
     <Container className="with-divider h-full">
       <Container.Body>
+        <div style={{ padding: '26px' }}> Coming Soon...</div>
+      </Container.Body>
+    </Container>
+  );
+  return (
+    <Container className="with-divider h-full">
+      <Container.Body>
         <Container className="p-2">
           <AuthSetting
             key={itemId}
@@ -148,14 +155,14 @@ const Auth: FC<IAuthSettingUi> = ({
       <Container.Footer className="py-3">
         <TabHeader className="m-2">
           <TabHeader.Right>
-            <Button
+            {/* <Button
               text="Cancel"
               onClick={(e) => close()}
               transparent
               secondary
               ghost
               sm
-            />
+            /> */}
 
             <Button
               text={isRequesting ? 'Updating Auth...' : 'Update Auth'}
