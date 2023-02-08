@@ -1,13 +1,17 @@
 import { EEditorLanguage } from '@firecamp/types';
-import { Container, Column, Editor, CMGQueryEditor } from '@firecamp/ui-kit';
+import { Container, Column, Editor, CMGQueryEditor, TabHeader, Resizable } from '@firecamp/ui-kit';
 
 const GraphQLBody = ({ body, onChange }) => {
   const { query = '', variables = '' } = body;
   return (
-    <Container>
+    <Container className='border-t border-appBorder'>
       <Container.Body className="flex flex-col">
         <Column flex={1}>
-          <div className="text-sm font-semibold px-3 py-1 bg-focus1">Query</div>
+          <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
+            <TabHeader.Left>
+            Query
+            </TabHeader.Left>
+          </TabHeader>
           <div className="flex-1 overflow-y-scroll">
             <CMGQueryEditor
               query={query}
@@ -15,8 +19,13 @@ const GraphQLBody = ({ body, onChange }) => {
             />
           </div>
         </Column>
+        <Resizable top={true} minHeight={100} maxHeight={500} height={320}>
         <Column flex={1}>
-          <div className="text-sm font-semibold px-3 py-1 bg-focus1 ">Query variables</div>
+        <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
+            <TabHeader.Left>
+            Query variables
+            </TabHeader.Left>
+          </TabHeader>
           <Editor
             value={variables}
             language={EEditorLanguage.Json}
@@ -29,6 +38,7 @@ const GraphQLBody = ({ body, onChange }) => {
             }}
           />
         </Column>
+        </Resizable>
       </Container.Body>
     </Container>
   );
