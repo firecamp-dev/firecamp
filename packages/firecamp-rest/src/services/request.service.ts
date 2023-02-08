@@ -238,6 +238,7 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
 
   // normalize scripts
   if (preScripts?.length) {
+    _nr.preScripts = [...preScripts];
     _nr.preScripts.map((s) => ({
       id: s.id,
       value: s.value || [''],
@@ -246,6 +247,7 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
     }));
   }
   if (postScripts?.length) {
+    _nr.postScripts = [...postScripts];
     _nr.postScripts.map((s) => ({
       id: s.id,
       value: s.value || [''],
