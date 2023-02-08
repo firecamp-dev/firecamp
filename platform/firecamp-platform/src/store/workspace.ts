@@ -75,6 +75,7 @@ export interface IWorkspaceStore {
   onDeleteCollection: (collection: TId | ICollection) => void;
 
   // folder
+  openFolderTab: (folderId: TId) => void;
   createFolder: (payload: { [k: string]: any }) => Promise<any>;
   updateFolder: (fId: string, payload: { [k: string]: any }) => void;
   deleteFolder: (fId: string) => void;
@@ -245,8 +246,9 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         (c) => c.__ref.id == collectionId
       );
       if (collection) {
+        const { name, description, __ref } = collection;
         platformEmitter.emit(EPlatformTabs.Open, {
-          entity: collection,
+          entity: { name, description, __ref },
           __meta: { id: collectionId, type: 'collection' },
         });
       }
@@ -393,11 +395,26 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     // folder
+    openFolderTab: (folderId: TId) => {
+      const state = get();
+      const folder = state.explorer.folders?.find(
+        (f) => f.__ref.id == folderId
+      );
+      if (folder) {
+        const { name, description, __ref } = folder;
+        platformEmitter.emit(EPlatformTabs.Open, {
+          entity: { name, description, __ref },
+          __meta: { id: folderId, type: 'folder' },
+        });
+      }
+    },
     createFolder: async (payload: IFolder) => {
       const state = get();
       const _folder: IFolder = {
         name: payload?.name,
         description: payload?.description,
+        preScripts: [],
+        postScripts: [],
         __meta: { fOrders: [], rOrders: [] },
         __ref: {
           id: nanoid(),

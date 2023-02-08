@@ -7,13 +7,16 @@ import {
   FcIconSocketIoSquare,
   FcIconWebSocket,
 } from '@firecamp/ui-kit';
+import { ETabEntityTypes } from '../types';
+import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
+import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 
 const PreComp: FC<{ entity: any; entityType: string }> = ({
   entity,
   entityType,
 }) => {
   switch (entityType) {
-    case 'request':
+    case ETabEntityTypes.Request:
       switch (entity.__meta.type) {
         case ERequestTypes.Rest:
           const method = entity?.method || EHttpMethod.GET;
@@ -44,10 +47,22 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
           return <span />;
       }
 
-    case 'environment':
+    case ETabEntityTypes.Environment:
       return (
         <div className="environment text-xs font-bold w-5 invert tab-icon">
           <VscJson size={20} />
+        </div>
+      );
+    case ETabEntityTypes.Collection:
+      return (
+        <div className="collection text-xs font-bold w-5 invert tab-icon">
+          <VscFolder size={20} />
+        </div>
+      );
+    case ETabEntityTypes.Folder:
+      return (
+        <div className="folder text-xs font-bold w-5 invert tab-icon">
+          <VscFolderOpened size={20} />
         </div>
       );
     default:

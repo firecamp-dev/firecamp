@@ -1,16 +1,14 @@
 import { useState } from 'react';
-import { Dropdown } from '@firecamp/ui-kit';
 import cx from 'classnames';
 import { VscNewFile } from '@react-icons/all-files/vsc/VscNewFile';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { Dropdown } from '@firecamp/ui-kit';
 import { useWorkspaceStore } from '../../../../store/workspace';
-import { RE } from '../../../../types';
 import platformContext from '../../../../services/platform-context';
-import { platformEmitter } from '../../../../services/platform-emitter';
-import { EPlatformTabs } from '../../../../services/platform-emitter/events';
+import { RE } from '../../../../types';
 
 enum EMenuType {
   Collection = 'collection',
@@ -25,8 +23,14 @@ const CollectionMenu = ({
   startRenaming,
   menuType,
 }) => {
-  const { createFolder, deleteCollection, deleteFolder, deleteRequest } =
-    useWorkspaceStore.getState();
+  const {
+    openCollectionTab,
+    openFolderTab,
+    createFolder,
+    deleteCollection,
+    deleteFolder,
+    deleteRequest,
+  } = useWorkspaceStore.getState();
   let [isMenuOpened, toggleMenu] = useState(false);
 
   const renameMenu = {
@@ -116,19 +120,9 @@ const CollectionMenu = ({
     name: 'View Details',
     onClick: () => {
       if (menuType == EMenuType.Collection) {
-        // platformContext.app.modals.openCollectionSetting({
-        //   collectionId,
-        // });
-
-        platformEmitter.emit(EPlatformTabs.Open, {
-          entity: {},
-          __meta: { id: collectionId, type: 'collection' },
-        });
+        openCollectionTab(collectionId);
       } else if (menuType == EMenuType.Folder) {
-        platformEmitter.emit(EPlatformTabs.Open, {
-          entity: {},
-          __meta: { id: folderId, type: 'folder' },
-        });
+        openFolderTab(folderId);
       }
     },
   };
