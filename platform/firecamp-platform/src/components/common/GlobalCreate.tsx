@@ -80,7 +80,7 @@ const GlobalCreateDD = ({}) => {
       >
         <Dropdown.Handler>
           <Button
-            text={'NEW'}
+            text={'Create'}
             className={classnames('!text-primaryColor')}
             withCaret
             transparent

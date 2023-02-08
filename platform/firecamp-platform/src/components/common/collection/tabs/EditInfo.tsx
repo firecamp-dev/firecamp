@@ -1,5 +1,4 @@
 import { FC, useState } from 'react';
-import isEqual from 'react-fast-compare';
 import {
   Input,
   TextArea,
@@ -10,10 +9,12 @@ import {
 import { _object } from '@firecamp/utils';
 import { ICollection, IFolder } from '@firecamp/types';
 
-const EditInfo: FC<IEditInfoUi> = ({
+const EditInfo: FC<IProps> = ({
   entityType = 'collection',
   entity,
   isRequesting,
+  isNameChanged,
+  isDescriptionChanged,
   onUpdate,
   onChange,
 }) => {
@@ -21,45 +22,21 @@ const EditInfo: FC<IEditInfoUi> = ({
   const [error, setError] = useState({ name: '' });
   const _handleChange = (e) => {
     if (e) e.preventDefault();
-    let { name, value } = e.target;
+    const { name, value } = e.target;
     if (name === 'name' && error.name) setError({ name: '' });
-
     onChange(name, value);
   };
   const _onUpdate = async (e) => {
     if (e) e.preventDefault;
-    // console.log({ name });
-
     if (!name || name.length < 3) {
-      setError({
-        name: `The name must have minimum 3 characters`,
-      });
+      setError({ name: `The name must have minimum 3 characters` });
       return;
     }
+    const updates: any = {};
+    if (isNameChanged) updates.name = name;
+    if (isDescriptionChanged) updates.description = description;
 
-    let updates: any =
-      _object.difference(
-        { name, description },
-        {
-          name: entity.name,
-          description: entity.description,
-        }
-      ) || {};
-
-    let updatedKeys = Object.keys(updates) || [];
-    updates = _object.pick({ name, description }, updatedKeys);
-
-    try {
-      if (_object.size(updates)) {
-        onUpdate(updates);
-      }
-    } catch (error) {
-      console.error({
-        error,
-        API: 'setting.editInfo',
-        updates,
-      });
-    }
+    if (updates.name || updates.description) onUpdate(updates);
   };
 
   return (
@@ -110,25 +87,19 @@ const EditInfo: FC<IEditInfoUi> = ({
       <Container.Footer className="py-3">
         <TabHeader className="m-2">
           <TabHeader.Right>
-            <Button
+            {/* <Button
               text="Cancel"
-              onClick={() => close()}
+              onClick={() => {}}
               transparent
               secondary
               ghost
               sm
-            />
+            /> */}
             <Button
               text={isRequesting ? 'Updating Info...' : 'Update Info'}
               onClick={_onUpdate}
               disabled={
-                isEqual(
-                  {
-                    name: entity.name,
-                    description: entity.description,
-                  },
-                  { name, description }
-                ) || isRequesting
+                (!isNameChanged && !isDescriptionChanged) || isRequesting
               }
               primary
               sm
@@ -141,10 +112,12 @@ const EditInfo: FC<IEditInfoUi> = ({
 };
 export default EditInfo;
 
-interface IEditInfoUi {
+interface IProps {
   entityType: 'collection' | 'folder';
   entity: ICollection | IFolder;
   isRequesting?: boolean;
+  isNameChanged: boolean;
+  isDescriptionChanged: boolean;
   onUpdate: (updates: { [key: string]: string }) => void;
   onChange: (key: string, value: any) => void;
 }

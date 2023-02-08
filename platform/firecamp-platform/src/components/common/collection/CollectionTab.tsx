@@ -33,7 +33,7 @@ type TCollectionTabState = {
   originalEntity: TEntity;
   entity: TEntity;
   activeTab: ETabTypes;
-  isFetchingCollection: boolean;
+  isFetchingEntity: boolean;
   isUpdatingEntity: boolean;
 };
 
@@ -48,15 +48,15 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     originalEntity: _entity,
     entity: _entity,
     activeTab: ETabTypes.Info,
-    isFetchingCollection: false,
+    isFetchingEntity: false,
     isUpdatingEntity: false,
   });
 
   const {
-    originalEntity,
+    originalEntity: _oEntity,
     entity,
     activeTab,
-    isFetchingCollection,
+    isFetchingEntity,
     isUpdatingEntity,
   } = state;
 
@@ -116,15 +116,14 @@ const CollectionTab = ({ tab, platformContext: context }) => {
   };
 
   const onUpdate = async (updates: Partial<ICollection | IFolder>) => {
-    if (state.isFetchingCollection) return;
-
+    if (state.isFetchingEntity) return;
     // console.log({ updates });
     setState((s) => ({ ...s, isUpdatingEntity: true }));
 
     await Rest[entityType]
       .update(entityId, updates)
       .then(() => {
-        const entity = _object.mergeDeep(state.entity, updates) as TEntity;
+        const entity = _object.mergeDeep(state.originalEntity, updates) as TEntity;
         setState((s) => ({
           ...s,
           originalEntity: entity,
@@ -147,6 +146,15 @@ const CollectionTab = ({ tab, platformContext: context }) => {
             entityType={entityType}
             entity={entity}
             isRequesting={isRequesting}
+            isNameChanged={
+              !isEqual({ name: entity.name }, { name: _oEntity.name })
+            }
+            isDescriptionChanged={
+              !isEqual(
+                { description: entity.description },
+                { description: _oEntity.description }
+              )
+            }
             onChange={onChange}
             onUpdate={onUpdate}
           />
@@ -169,12 +177,8 @@ const CollectionTab = ({ tab, platformContext: context }) => {
             scripts={entity.preScripts}
             snippets={preScriptSnippets}
             isRequesting={isRequesting}
-            isScriptChanged={
-              !isEqual(originalEntity.preScripts, entity.preScripts)
-            }
-            onChange={(preScripts) => {
-              onChange('preScripts', preScripts);
-            }}
+            isScriptChanged={!isEqual(_oEntity.preScripts, entity.preScripts)}
+            onChange={(preScripts) => onChange('preScripts', preScripts)}
             onUpdate={(preScripts) => onUpdate({ preScripts: preScripts })}
           />
         );
@@ -185,13 +189,8 @@ const CollectionTab = ({ tab, platformContext: context }) => {
             scripts={entity.postScripts}
             snippets={postScriptSnippets}
             isRequesting={isRequesting}
-            isScriptChanged={
-              !isEqual(originalEntity.postScripts, entity.postScripts)
-            }
-            onChange={(postScripts) => {
-              // console.log(originalEntity.postScripts, postScripts);
-              onChange('postScripts', postScripts);
-            }}
+            isScriptChanged={!isEqual(_oEntity.postScripts, entity.postScripts)}
+            onChange={(postScripts) => onChange('postScripts', postScripts)}
             onUpdate={(postScripts) => onUpdate({ postScripts: postScripts })}
           />
         );
@@ -201,17 +200,17 @@ const CollectionTab = ({ tab, platformContext: context }) => {
     }
   };
 
-  if (isFetchingCollection === true) return <Loader />;
+  if (isFetchingEntity === true) return <Loader />;
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
-        <ProgressBar active={isFetchingCollection || isUpdatingEntity} />
+        <ProgressBar active={isFetchingEntity || isUpdatingEntity} />
         <Container className="with-divider">
           <Container.Header>
             <TabHeader className="height-ex-small bg-statusBarBackground2 !pl-3 !pr-3">
               <TabHeader.Left>
                 <div className="user-select flex text-base font-semibold">
-                  {originalEntity.name}
+                  {_oEntity.name}
                 </div>
                 {/* <VscEdit size={12} onClick={rename} className="pointer" /> */}
               </TabHeader.Left>
