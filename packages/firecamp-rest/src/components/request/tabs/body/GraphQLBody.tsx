@@ -7,7 +7,7 @@ const GraphQLBody = ({ body, onChange }) => {
     <Container>
       <Container.Body className="flex flex-col">
         <Column flex={1}>
-          <div className="text-base px-1 py-2 bg-focus1">Query</div>
+          <div className="text-base px-3 py-1 bg-focus1">Query</div>
           <div className="flex-1 overflow-y-scroll">
             <CMGQueryEditor
               query={query}

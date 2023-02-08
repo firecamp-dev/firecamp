@@ -9,6 +9,7 @@ import {
   TabHeader,
   ProgressBar,
   SecondaryTab,
+  Row
 } from '@firecamp/ui-kit';
 import { _array, _auth, _object } from '@firecamp/utils';
 import { ICollection, IFolder } from '@firecamp/types';
@@ -178,6 +179,7 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
 
       case 'pre-request':
         return (
+          <div className="m-6 border border-appBorder w-full">
           <Scripts
             entity={entity}
             scripts={entity.preScripts}
@@ -187,9 +189,11 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
             onChange={(preScripts) => onChange('preScripts', preScripts)}
             onUpdate={(preScripts) => onUpdate({ preScripts: preScripts })}
           />
+          </div>
         );
       case 'tests':
         return (
+          <div className="m-6 border border-appBorder w-full">
           <Scripts
             entity={entity}
             scripts={entity.postScripts}
@@ -199,6 +203,7 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
             onChange={(postScripts) => onChange('postScripts', postScripts)}
             onUpdate={(postScripts) => onUpdate({ postScripts: postScripts })}
           />
+          </div>
         );
 
       default:
@@ -222,21 +227,20 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
               </TabHeader.Left>
             </TabHeader>
           </Container.Header>
-
           <Container.Body className="flex flex-col">
             <SecondaryTab
-              className="flex items-center p-4 w-full pb-0"
+              className="flex items-center px-4 pt-5 w-full pb-0"
               list={tabs}
               activeTab={activeTab}
               onSelect={(tabId: ETabTypes) => {
                 setState((s) => ({ ...s, activeTab: tabId }));
               }}
             />
-            {renderTab(entity, activeTab, isUpdatingEntity)}
 
-            {/* <Row flex={1} overflow="auto" className="with-divider h-full">
-              <Column></Column>
-            </Row> */}
+            <Row flex={1} overflow="auto" className="with-divider h-full">
+             
+            {renderTab(entity, activeTab, isUpdatingEntity)}
+            </Row>
           </Container.Body>
         </Container>
       </Container>

@@ -48,7 +48,7 @@ const EditInfo: FC<IProps> = ({
               entityType === 'collection' ? 'COLLECTION' : 'FOLDER'
             } INFO`}
           </label>
-          <div className="mt-8">
+          <div className="mt-4">
             <Input
               autoFocus={true}
               label="Name"

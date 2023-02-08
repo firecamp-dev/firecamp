@@ -221,7 +221,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
               />
               <Button text="Delete" onClick={_delete} secondary sm className="ml-2" />
           </Row>
-          <Row flex={1} overflow="auto" className="with-divider h-full">
+          <Row flex={1} overflow="auto" className="with-divider flex-1">
             <Column>
               <EnvironmentTable
                 rows={runtimeEnv.variables}

@@ -20,7 +20,7 @@ const Scripts: FC<IProps> = ({
   };
 
   return (
-    <Container className="with-divider h-full">
+    <Container className="with-divider h-full ">
       <Container.Body>
         <ScriptTab
           id={entityId}

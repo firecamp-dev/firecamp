@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Container, Editor, Resizable, Row, Column } from '@firecamp/ui-kit';
+import { Container, Editor, Resizable, Row, Column,Notes,TabHeader } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 //@ts-ignore
 import ScriptDefs from './interfaces/Scripts.d.txt?raw';
@@ -43,14 +43,17 @@ const ScriptTab: FC<IScriptTab> = ({
   return (
     <Container>
       <Container.Body className="flex flex-col">
-        <div className="items-center p-1 text-sm bg-statusBarBackground2">
-          Pre-request script are written in Javascript and are run before the
+        <TabHeader className="bg-statusBarBackground2">
+          <div className="text-sm">
+        Pre-request script are written in Javascript and are run before the
           request is sent. Learn more about{' '}
           <a href="#" className="underline inline items-center cursor-pointer">
             pre-request scripts{' '}
             <VscLinkExternal className="inline ml-1" size={12} />
           </a>
-          {/* {snippets ? (
+          </div>
+        </TabHeader>
+       {/* {snippets ? (
             <HelpPopUp
               isOpen={isSnippetPopupOpen}
               snippets={snippets}
@@ -60,7 +63,6 @@ const ScriptTab: FC<IScriptTab> = ({
           ) : (
             <></>
           )} */}
-        </div>
         {/* <div style={{ height: '100%' }}> */}
         <Row flex={1} overflow="auto">
           <Column flex={1}>
@@ -87,11 +89,11 @@ const ScriptTab: FC<IScriptTab> = ({
             left={true}
             height="100%"
             minWidth={100}
-            maxWidth={300}
-            width={200}
+            maxWidth={400}
+            width={240}
             className="border-l border-appBorder"
           >
-            <Column className="">
+            <Column className="overflow-auto visible-scrollbar">
               <HelpPopUp
                 isOpen={true}
                 snippets={snippets}
