@@ -13,7 +13,7 @@ import {
   TabHeader,
   Button,
 } from '@firecamp/ui-kit';
-import { _array, _object } from '@firecamp/utils';
+import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
 import { RE } from '../../../../types';
 
@@ -40,15 +40,8 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
       await context.environment
         .fetch(envId)
         .then((remoteEnv) => {
-          let localEnv =
-            JSON.parse(
-              localStorage.getItem(`env/${runtimeEnv.__ref.id}`) || null
-            ) || initEnv;
-          const _runtimeEnv = context.environment.mergeEnvs(
-            remoteEnv,
-            localEnv
-          );
-
+          const _runtimeEnv = _env.prepareRuntimeEnvFromRemoteEnv(remoteEnv);
+          const { localEnv } = _env.splitEnvs(_runtimeEnv);
           console.log(localEnv, _runtimeEnv);
           originalEnvs.current = {
             runtimeEnv: _runtimeEnv,
@@ -99,7 +92,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
       context.environment
         .update(updatedEnv.__ref.id, updatedEnv)
         .then(() => {
-          context.app.notify.success('The environemnt changes are saved.');
+          context.app.notify.success('The environment changes are saved.');
           originalEnvs.current = { runtimeEnv, remoteEnv, localEnv };
         })
         .catch((e) => {
@@ -213,13 +206,19 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         <Container.Body>
           <Row className="justify-end pr-3 mt-2 -mb-1 ">
             <Button
-                text="Save"
-                onClick={update}
-                disabled={!hasChange}
-                primary
-                sm
-              />
-              <Button text="Delete" onClick={_delete} secondary sm className="ml-2" />
+              text="Save"
+              onClick={update}
+              disabled={!hasChange}
+              primary
+              sm
+            />
+            <Button
+              className="ml-2"
+              text="Delete"
+              onClick={_delete}
+              secondary
+              sm
+            />
           </Row>
           <Row flex={1} overflow="auto" className="with-divider flex-1">
             <Column>

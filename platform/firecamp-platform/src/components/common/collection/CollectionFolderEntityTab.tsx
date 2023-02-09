@@ -165,10 +165,12 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
       .then(() => {
         const entity = _object.mergeDeep(state.originalEntity, {
           ...updates,
-          variables: _env.prepareRuntimeEnvFromRemoteEnv(
+          variables: _env.prepareRuntimeEnvFromRemoteEnv({
+            name: '',
             //@ts-ignore
-            updates.variables || []
-          ).variables,
+            variables: updates.variables || [],
+            __ref: { id: entityId },
+          }).variables,
         }) as TEntity;
         setState((s) => ({
           ...s,

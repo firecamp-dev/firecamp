@@ -114,7 +114,7 @@
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "@firecamp/url": "0.0.19",
-    "@firecamp/utils": "^0.0.14",
+    "@firecamp/utils": "^0.0.15",
     "@react-icons/all-files": "^4.1.0",
     "autoprefixer": "^10.4.8",
     "dotenv": "^16.0.1",
