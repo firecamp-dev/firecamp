@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
-import { Notes } from "@firecamp/ui-kit";
+import { Notes,Button } from "@firecamp/ui-kit";
 import { EEnvironmentScope } from '@firecamp/types';
 import {
   Container,
@@ -17,6 +17,7 @@ import { useWorkspaceStore } from '../../../../store/workspace';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { platformEmitter } from '../../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../../services/platform-emitter/events';
+import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 
 const EnvironmentSidebar: FC<any> = () => {
   const treeRef = useRef();
@@ -102,6 +103,24 @@ const EnvironmentCollection = () => {
       }}
       bodyRenderer={({ expanded }) => {
         return (
+          <div>
+            <div className="rct-tree-item-li focus:rct-tree-item-li-focused border-b border-appBorder" >
+            <div className="px-2 mt-14 mb-7 rct-tree-item-title-container focus:rct-tree-item-title-container-focused hover:rct-tree-item-title-container-focused !opacity-100">
+            <VscJson className="flex-none" size={18} opacity={1} />
+            <span className="w-full overflow-hidden overflow-ellipsis items-center block pl-1 text-base">Global</span>
+            <div className="flex ml-auto rct-tree-item-li-action items-center">
+        
+            <Button
+              text={'Open'}
+              className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
+              transparent
+              secondary
+              ghost
+              sm
+            />
+            </div>
+            </div>
+            </div>
           <UncontrolledTreeEnvironment
             dataProvider={envTdpInstance}
             getItemTitle={(item) => item.data?.name}
@@ -124,6 +143,7 @@ const EnvironmentCollection = () => {
               ref={treeRef}
             />
           </UncontrolledTreeEnvironment>
+          </div>
         );
       }}
     />
