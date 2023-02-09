@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
-import { Notes,Button } from "@firecamp/ui-kit";
+import { Notes, Button } from '@firecamp/ui-kit';
 import { EEnvironmentScope } from '@firecamp/types';
 import {
   Container,
@@ -18,6 +18,7 @@ import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { platformEmitter } from '../../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../../services/platform-emitter/events';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
+import { ETabEntityTypes } from '../../../tabs/types';
 
 const EnvironmentSidebar: FC<any> = () => {
   const treeRef = useRef();
@@ -75,7 +76,7 @@ const EnvironmentCollection = () => {
   const openEnv = (env) => {
     platformEmitter.emit(EPlatformTabs.Open, {
       entity: { ...env },
-      __meta: { id: env.__ref.id, type: 'environment' },
+      __meta: { id: env.__ref.id, type: ETabEntityTypes.Environment },
     });
   };
   const openCreateColEnv = () => {};
@@ -104,45 +105,29 @@ const EnvironmentCollection = () => {
       bodyRenderer={({ expanded }) => {
         return (
           <div>
-            <div className="rct-tree-item-li focus:rct-tree-item-li-focused border-b border-appBorder" >
-            <div className="px-2 mt-14 mb-7 rct-tree-item-title-container focus:rct-tree-item-title-container-focused hover:rct-tree-item-title-container-focused !opacity-100">
-            <VscJson className="flex-none" size={18} opacity={1} />
-            <span className="w-full overflow-hidden overflow-ellipsis items-center block pl-1 text-base">Global</span>
-            <div className="flex ml-auto rct-tree-item-li-action items-center">
-        
-            <Button
-              text={'Open'}
-              className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
-              transparent
-              secondary
-              ghost
-              sm
-            />
-            </div>
-            </div>
-            </div>
-          <UncontrolledTreeEnvironment
-            dataProvider={envTdpInstance}
-            getItemTitle={(item) => item.data?.name}
-            viewState={{}}
-            renderItemArrow={treeRenderer_.renderItemArrow}
-            // renderItemTitle={treeRenderer_.renderItemTitle}
-            renderItem={(props) =>
-              treeRenderer_.renderItem({
-                ...props,
-                openEnv: openEnv,
-                openCreateEnv: openCreateColEnv,
-                deleteEnv,
-              })
-            }
-          >
-            <Tree
-              treeId="tree-1"
-              rootItem="root"
-              treeLabel="Tree Example"
-              ref={treeRef}
-            />
-          </UncontrolledTreeEnvironment>
+            <Globals />
+            <UncontrolledTreeEnvironment
+              dataProvider={envTdpInstance}
+              getItemTitle={(item) => item.data?.name}
+              viewState={{}}
+              renderItemArrow={treeRenderer_.renderItemArrow}
+              // renderItemTitle={treeRenderer_.renderItemTitle}
+              renderItem={(props) =>
+                treeRenderer_.renderItem({
+                  ...props,
+                  openEnv: openEnv,
+                  openCreateEnv: openCreateColEnv,
+                  deleteEnv,
+                })
+              }
+            >
+              <Tree
+                treeId="tree-1"
+                rootItem="root"
+                treeLabel="Tree Example"
+                ref={treeRef}
+              />
+            </UncontrolledTreeEnvironment>
           </div>
         );
       }}
@@ -218,13 +203,15 @@ const CollectionScopedEnvCollection = () => {
       bodyRenderer={({ expanded }) => {
         return (
           <>
-          <Notes description="
+            <Notes
+              description="
               The collection scoped environments are deprecated, you can see the
-              collection environments here and create a new environment from it." />
-              <div className="text-sm !m-2 p-2 bg-focus1 !text-appForegroundInActive">
+              collection environments here and create a new environment from it."
+            />
+            <div className="text-sm !m-2 p-2 bg-focus1 !text-appForegroundInActive">
               The collection scoped environments are deprecated, you can see the
               collection environments here and create a new environment from it.
-              </div>
+            </div>
             <UncontrolledTreeEnvironment
               dataProvider={envTdpInstance}
               getItemTitle={(item) => item.data?.name}
@@ -251,5 +238,36 @@ const CollectionScopedEnvCollection = () => {
         );
       }}
     />
+  );
+};
+
+const Globals = () => {
+  const globalEnv = useEnvStore((s) => s.globalEnv, shallow);
+  const openEnv = (env) => {
+    platformEmitter.emit(EPlatformTabs.Open, {
+      entity: { ...env },
+      __meta: { id: env.__ref.id, type: ETabEntityTypes.Environment },
+    });
+  };
+  return (
+    <div className="rct-tree-item-li focus:rct-tree-item-li-focused border-b border-appBorder">
+      <div className="px-2 mt-14 mb-7 rct-tree-item-title-container focus:rct-tree-item-title-container-focused hover:rct-tree-item-title-container-focused !opacity-100 cursor-pointer">
+        <VscJson className="flex-none" size={18} opacity={1} />
+        <span className="w-full overflow-hidden overflow-ellipsis items-center block pl-1 text-base">
+          {globalEnv?.name}
+        </span>
+        <div className="flex ml-auto rct-tree-item-li-action items-center">
+          <Button
+            text={'Open'}
+            className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
+            onClick={() => openEnv(globalEnv)}
+            transparent
+            secondary
+            ghost
+            sm
+          />
+        </div>
+      </div>
+    </div>
   );
 };

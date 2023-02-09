@@ -2,7 +2,13 @@ import create from 'zustand';
 import { nanoid } from 'nanoid';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Rest } from '@firecamp/cloud-apis';
-import { TId, IEnv, IEnvironment, TPlainObject, IRuntimeEnv } from '@firecamp/types';
+import {
+  TId,
+  IEnv,
+  IEnvironment,
+  TPlainObject,
+  IRuntimeEnv,
+} from '@firecamp/types';
 import { _env } from '@firecamp/utils';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
 import { CollectionEnvDataProvider } from '../components/common/environment/sidebar/tree/dataProvider';
@@ -57,7 +63,7 @@ export interface IEnvironmentStore {
   /** @deprecated */
   unRegisterTDP: () => void;
 
-  init: (envs: IEnv[]) => void;
+  init: (envs: IEnv[], globalEnv: IEnv) => void;
   /** @deprecated */
   initialize: (envs: IEnvironment[]) => void;
   toggleEnvSidebar: () => void;
@@ -90,8 +96,8 @@ export interface IEnvironmentStore {
 export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   ...initialState,
 
-  init: (envs: IEnv[] = []) => {
-    set({ environments: envs });
+  init: (envs: IEnv[] = [], globalEnv: IEnv) => {
+    set({ environments: envs, globalEnv });
     const { envTdpInstance } = get();
     envTdpInstance?.init(envs);
     get().setActiveEnv(null);

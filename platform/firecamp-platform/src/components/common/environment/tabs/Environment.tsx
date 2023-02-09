@@ -212,13 +212,18 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
               primary
               sm
             />
-            <Button
-              className="ml-2"
-              text="Delete"
-              onClick={_delete}
-              secondary
-              sm
-            />
+
+            {runtimeEnv.__meta?.isGlobal ? (
+              <></>
+            ) : (
+              <Button
+                className="ml-2"
+                text="Delete"
+                onClick={_delete}
+                secondary
+                sm
+              />
+            )}
           </Row>
           <Row flex={1} overflow="auto" className="with-divider flex-1">
             <Column>
