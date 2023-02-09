@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import {
   Container,
@@ -6,20 +6,20 @@ import {
   TabHeader,
   EnvironmentTable,
 } from '@firecamp/ui-kit';
-import { TId, ICollection } from '@firecamp/types';
+import { ICollection } from '@firecamp/types';
 
 const Variables: FC<IProps> = ({
   entity,
   isRequesting = false,
-  isVariablesChanged = false,
+  isVarsChanged = false,
   onUpdate = (vars) => {},
   onChange = (vars) => {},
 }) => {
-  const [runtimeEnv, setRuntimeEnv] = useState(entity.variables);
+  console.log(entity.variables, 'in variables');
   return (
     <Container className="with-divider h-full ">
       <Container.Body>
-        <EnvironmentTable rows={[]} onChange={console.log} />
+        <EnvironmentTable rows={entity.variables} onChange={onChange} />
       </Container.Body>
       <Container.Footer className="py-3">
         <TabHeader className="m-2">
@@ -27,7 +27,7 @@ const Variables: FC<IProps> = ({
             <Button
               text={isRequesting ? 'Saving variables...' : 'Save Variables'}
               onClick={() => onUpdate(entity.variables)}
-              disabled={!isVariablesChanged || isRequesting}
+              disabled={!isVarsChanged || isRequesting}
               primary
               sm
             />
@@ -37,13 +37,12 @@ const Variables: FC<IProps> = ({
     </Container>
   );
 };
-
 export default Variables;
 
 interface IProps {
   entity: ICollection;
   isRequesting?: boolean;
-  isVariablesChanged: boolean;
+  isVarsChanged?: boolean;
   onUpdate: (variables: ICollection['variables']) => void;
   onChange: (variables: ICollection['variables']) => void;
 }

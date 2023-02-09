@@ -11,7 +11,7 @@ import {
   SecondaryTab,
   Row,
 } from '@firecamp/ui-kit';
-import { _array, _auth, _object } from '@firecamp/utils';
+import { _array, _auth, _env, _object } from '@firecamp/utils';
 import { ICollection, IFolder } from '@firecamp/types';
 import {
   preScriptSnippets,
@@ -85,6 +85,13 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
         .then((d) => d?.data || {})
         .then((c) => {
           // _collection.auth = _auth.normalizeToUi(_collection?.auth || {});
+          const originalEnv = _env.prepareRuntimeEnvFromRemoteEnv({
+            name: '',
+            variables: c.variables || [],
+            __ref: { id: c.__ref.id },
+          });
+          // assign runtime variables to replace remote variables
+          c.variables = originalEnv.variables;
           setState((s) => ({
             ...s,
             entity: c,
@@ -126,16 +133,43 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
 
   const onUpdate = async (updates: Partial<ICollection | IFolder>) => {
     if (state.isFetchingEntity) return;
-    // console.log({ updates });
+    console.log({ updates });
     setState((s) => ({ ...s, isUpdatingEntity: true }));
+
+    /**
+     * The update variables are runtime variable (initial/current(value) key format),
+     * we need to convert them in local and remote variable before updating it
+     */
+    //@ts-ignore
+    if (updates.variables) {
+      const { localEnv, remoteEnv } = _env.splitEnvs({
+        name: '',
+        //@ts-ignore
+        variables: updates.variables,
+        __ref: { id: '' },
+      });
+      localStorage.setItem(
+        `env/${entity.__ref.id}`,
+        JSON.stringify({
+          name: '',
+          variables: localEnv.variables,
+          __ref: { id: entity.__ref.id },
+        })
+      );
+      //@ts-ignore
+      updates.variables = _cloneDeep(remoteEnv.variables);
+    }
 
     await Rest[entityType]
       .update(entityId, updates)
       .then(() => {
-        const entity = _object.mergeDeep(
-          state.originalEntity,
-          updates
-        ) as TEntity;
+        const entity = _object.mergeDeep(state.originalEntity, {
+          ...updates,
+          variables: _env.prepareRuntimeEnvFromRemoteEnv(
+            //@ts-ignore
+            updates.variables || []
+          ).variables,
+        }) as TEntity;
         setState((s) => ({
           ...s,
           originalEntity: entity,
@@ -210,9 +244,10 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
       case ETabTypes.Variables:
         return (
           <Variables
-            entity={entity as ICollection} 
+            entity={entity as ICollection}
             isRequesting={isRequesting}
-            isVariablesChanged={!isEqual(_oEntity.variables, entity.variables)}
+            //@ts-ignore
+            isVarsChanged={!isEqual(_oEntity.variables, entity.variables)}
             onChange={(vars) => onChange('variables', vars)}
             onUpdate={(vars) => onUpdate({ variables: vars })}
           />

@@ -56,7 +56,7 @@ export interface IEnvironmentTable<R> {
   /** To provide additional functions to the primitive table */
   options?: ITableOptions;
   /** To provide the updated rows on ever changed value*/
-  onChange: (rows: ITableRows) => any;
+  onChange: (rows: R[]) => any;
   /** To provide the table reference */
   onMount?: (tableApi: TTableApi) => any;
   classes?: ITableClasses;
