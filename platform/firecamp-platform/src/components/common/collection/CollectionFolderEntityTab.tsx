@@ -9,7 +9,7 @@ import {
   TabHeader,
   ProgressBar,
   SecondaryTab,
-  Row
+  Row,
 } from '@firecamp/ui-kit';
 import { _array, _auth, _object } from '@firecamp/utils';
 import { ICollection, IFolder } from '@firecamp/types';
@@ -21,6 +21,7 @@ import { Rest } from '@firecamp/cloud-apis';
 import EditInfo from './tabs/EditInfo';
 import Auth from './tabs/Auth';
 import Scripts from './tabs/Scripts';
+import Variables from './tabs/Variables';
 
 type TEntity = ICollection | IFolder;
 enum ETabTypes {
@@ -28,6 +29,7 @@ enum ETabTypes {
   Auth = 'auth',
   PreRequest = 'pre-request',
   Tests = 'tests',
+  Variables = 'variables',
 }
 
 type TState = {
@@ -70,6 +72,9 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
     { name: 'Pre-Request', id: ETabTypes.PreRequest },
     { name: 'Tests', id: ETabTypes.Tests },
   ];
+  if (entityType == 'collection') {
+    tabs.push({ name: 'Variables', id: ETabTypes.Variables });
+  }
 
   useEffect(() => {
     const _fetchCollection = async () => {
@@ -147,7 +152,7 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
 
   const renderTab = (entity: TEntity, tabId: string, isRequesting: boolean) => {
     switch (tabId) {
-      case 'info':
+      case ETabTypes.Info:
         return (
           <EditInfo
             entityType={entityType}
@@ -167,7 +172,7 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
           />
         );
 
-      case 'auth':
+      case ETabTypes.Auth:
         return (
           <Auth
             entityType={entityType}
@@ -177,9 +182,8 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
           />
         );
 
-      case 'pre-request':
+      case ETabTypes.PreRequest:
         return (
-          <div className="m-6 border border-appBorder w-full flex-1 overflow-hidden">
           <Scripts
             entity={entity}
             scripts={entity.preScripts}
@@ -189,11 +193,9 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
             onChange={(preScripts) => onChange('preScripts', preScripts)}
             onUpdate={(preScripts) => onUpdate({ preScripts: preScripts })}
           />
-          </div>
         );
-      case 'tests':
+      case ETabTypes.Tests:
         return (
-          <div className="m-6 border border-appBorder flex-1 overflow-hidden">
           <Scripts
             entity={entity}
             scripts={entity.postScripts}
@@ -203,9 +205,18 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
             onChange={(postScripts) => onChange('postScripts', postScripts)}
             onUpdate={(postScripts) => onUpdate({ postScripts: postScripts })}
           />
-          </div>
         );
 
+      case ETabTypes.Variables:
+        return (
+          <Variables
+            entity={entity as ICollection} 
+            isRequesting={isRequesting}
+            isVariablesChanged={!isEqual(_oEntity.variables, entity.variables)}
+            onChange={(vars) => onChange('variables', vars)}
+            onUpdate={(vars) => onUpdate({ variables: vars })}
+          />
+        );
       default:
         return <></>;
     }
@@ -238,8 +249,9 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
             />
 
             <Row flex={1} overflow="auto" className="with-divider h-full">
-             
-            {renderTab(entity, activeTab, isUpdatingEntity)}
+              <div className="m-6 border border-appBorder flex-1 overflow-hidden">
+                {renderTab(entity, activeTab, isUpdatingEntity)}
+              </div>
             </Row>
           </Container.Body>
         </Container>
