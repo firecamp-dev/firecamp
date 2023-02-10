@@ -16,6 +16,7 @@ import {
 import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
 import { RE } from '../../../../types';
+import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 
 const EnvironmentTab = ({ tab, platformContext: context }) => {
   const initEnv = _cloneDeep({ ...tab.entity, variables: [] });
@@ -32,6 +33,8 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
   });
   const [isFetchingEnv, setIsFetchingEnvFlag] = useState(false);
   const [hasChange, setHasChangeFlag] = useState(false);
+
+  console.log(runtimeEnv, 'runtimeEnv');
 
   useEffect(() => {
     const _fetch = async () => {
@@ -192,6 +195,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         <Container.Header>
           <TabHeader className="height-ex-small bg-statusBarBackground2 !pl-3 !pr-3">
             <TabHeader.Left>
+              <VscJson size={18} />
               <div className="fc-urlbar-path flex text-base">
                 {runtimeEnv.name}
               </div>
@@ -228,6 +232,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
           <Row flex={1} overflow="auto" className="with-divider flex-1">
             <Column>
               <EnvironmentTable
+                title="Environment Variables"
                 rows={runtimeEnv.variables}
                 onChange={onChangeVariables}
               />
