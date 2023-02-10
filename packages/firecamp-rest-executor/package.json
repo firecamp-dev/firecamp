@@ -1,6 +1,6 @@
 {
   "name": "@firecamp/rest-executor",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "REST request executor",
   "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
   "license": "",
@@ -42,6 +42,7 @@
   "dependencies": {
     "@firecamp/types": "^0.1.20",
     "@firecamp/url": "0.0.20",
+    "@firecamp/utils": "^0.0.15",
     "@hapi/joi": "^17.1.1",
     "ajv": "^8.11.2",
     "axios": "0.27.2",
