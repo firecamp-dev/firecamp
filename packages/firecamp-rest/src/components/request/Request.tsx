@@ -5,6 +5,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import {
   preScriptSnippets,
   postScriptSnippets,
+  testScriptSnippets,
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import {
   AvailableOnElectron,
@@ -113,7 +114,7 @@ const Request = ({ tabId }) => {
           <ScriptTab
             id={`test-${tabId}`}
             script={postScripts[0].value.join('\n')}
-            snippets={postScriptSnippets}
+            snippets={testScriptSnippets}
             onChangeScript={(val) => changeScripts('postScripts', val)}
           />
         );
