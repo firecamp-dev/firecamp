@@ -16,7 +16,6 @@ export class Response implements IScriptResponse {
 
   constructor(response: IRestResponse) {
     Object.assign(this, response);
-
     this.headersList = _table.objectToTable(this.headers || {});
   }
 
@@ -31,5 +30,17 @@ export class Response implements IScriptResponse {
     } catch (error) {
       return error.message;
     }
+  }
+
+  toJSON() {
+    return {
+      headersList: this.headersList,
+      data: this.data,
+      duration: this.duration,
+      size: this.size,
+      statusCode: this.statusCode,
+      statusMessage: this.statusMessage,
+      headers: this.headers,
+    };
   }
 }

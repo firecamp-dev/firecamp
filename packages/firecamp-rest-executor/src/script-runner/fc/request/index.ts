@@ -45,7 +45,6 @@ export class Request implements IScriptRequest {
   }
   addQueryParam(queryName: string, queryValue: string): void {
     if (!Array.isArray(this.url.queryParams)) return;
-
     this.url.queryParams.push({
       key: queryName,
       value: queryValue,
@@ -80,5 +79,14 @@ export class Request implements IScriptRequest {
       queryParams[item.key] = item.value;
       return queryParams;
     }, {});
+  }
+
+  toJSON() {
+    return {
+      url: this.url,
+      headers: this.headers,
+      method: this.method,
+      body: this.body,
+    };
   }
 }

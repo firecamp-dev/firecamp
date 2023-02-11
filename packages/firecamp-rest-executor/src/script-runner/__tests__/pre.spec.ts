@@ -102,13 +102,13 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
     const expected = {
       name: globalsVars[0].value,
       age: +environmentVars[0].value, // must be number
-      isMathematician: !!collectionVars[0].value, // mustbe boolean
+      isMathematician: !!collectionVars[0].value, // must be boolean
     };
     expect(result).toMatchObject(expected);
   });
 
   it('fc.x.set(variableName, value)', async () => {
-    const expexted = {
+    const expected = {
       name: 'Srinivasa Ramanujan',
       age: 31,
       notMathematician: false,
@@ -118,8 +118,8 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
      * 2. then get values for assertion
      */
     const script = [
-      `fc.globals.set('name', '${expexted.name}')`,
-      `fc.environment.set('age', ${expexted.age})`,
+      `fc.globals.set('name', '${expected.name}')`,
+      `fc.environment.set('age', ${expected.age})`,
       `fc.collectionVariables.set('notMathematician', false)`,
       'let result = {}',
       'result.name = fc.globals.get("name")',
@@ -135,16 +135,25 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
         },
       ],
     };
-    const { result } = await preScript(__request, {
+    const { result, fc } = await preScript(__request, {
       globals: globalsVars,
       environment: environmentVars,
       collection: collectionVars,
     });
-    expect(result).toMatchObject(expexted);
+    expect(result).toMatchObject(expected);
+    expect(
+      fc.collectionVariables //.find((v) => v.key == 'notMathematician')
+    ).toEqual(
+      expect.objectContaining({
+        key: 'notMathematician',
+        value: 'false',
+        type: 'boolean',
+      })
+    );
   });
 
   it('fc.x.unset(variableName)', async () => {
-    const expexted = {
+    const expected = {
       name: '',
       age: '',
       isMathematician: '',
@@ -154,8 +163,8 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
      * 2. then get values for assertion
      */
     const script = [
-      `fc.globals.unset('name', '${expexted.name}')`,
-      `fc.environment.unset('age', ${expexted.age})`,
+      `fc.globals.unset('name', '${expected.name}')`,
+      `fc.environment.unset('age', ${expected.age})`,
       `fc.collectionVariables.unset('isMathematician', false)`,
       'let result = {}',
       'result.name = fc.globals.get("name")',
@@ -176,7 +185,7 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
       environment: environmentVars,
       collection: collectionVars,
     });
-    expect(result).toMatchObject(expexted);
+    expect(result).toMatchObject(expected);
   });
 
   // it('should set new header', () => {
