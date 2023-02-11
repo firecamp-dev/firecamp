@@ -12,11 +12,11 @@ import {
 import { _misc, _string } from '@firecamp/utils';
 
 import jsExecutor from './lib/js-executor';
-import { Variables } from './variables';
+import { Variables } from './fc/variables';
 // import { Request } from './request';
-import { Response } from './response';
-import requestAssertionPlugin from './request/assertions';
-import responseAssertionPlugin from './response/assertions';
+import { Response } from './fc/response';
+import requestAssertionPlugin from './fc/request/assertions';
+import responseAssertionPlugin from './fc/response/assertions';
 import Runner from '../test-runner/runner';
 import { TPostScript, TPreScript, TTestScript } from './types';
 

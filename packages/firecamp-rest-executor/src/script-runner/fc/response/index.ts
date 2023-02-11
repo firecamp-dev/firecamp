@@ -1,6 +1,6 @@
 import { IHeader, IRestResponse } from '@firecamp/types';
 import { _object, _string, _table } from '@firecamp/utils';
-import { IScriptResponse } from '../types/response';
+import { IScriptResponse } from '../../types/response';
 
 /**
  * response script
