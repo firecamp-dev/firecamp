@@ -8,14 +8,14 @@ import { Response } from './response';
 import { Variables } from './variables';
 
 export default class Fc implements IFc {
-  request;
-  response;
+  request: any;
+  response: any;
   globals: Variables;
   environment: Variables;
   collectionVariables: Variables;
   constructor(
-    request,
-    response,
+    request: any,
+    response: any,
     globalVars: TVariable[] = [],
     envVars: TVariable[] = [],
     collectionVars: TVariable[] = []
@@ -66,3 +66,7 @@ interface IFc {
   test: (testName: string, specFunction: Function) => void;
   expect: Chai.ExpectStatic;
 }
+
+const fc = new Fc({}, {}, [], [], [{ key: 'aa', value: 'qwqwqww' }]);
+
+console.log(typeof fc.toJSON().collectionVariables);

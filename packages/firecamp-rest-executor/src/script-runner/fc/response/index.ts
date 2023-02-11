@@ -10,7 +10,7 @@ export class Response implements IScriptResponse {
   data?: any;
   duration?: number | undefined;
   size?: number | undefined;
-  statusCode: number;
+  statusCode?: number;
   statusMessage?: string | undefined;
   headers?: { [key: string]: string } = {};
 
@@ -27,8 +27,8 @@ export class Response implements IScriptResponse {
     try {
       if (_object.isObject(this?.data)) return this.data;
       else if (!_string.isEmpty(this.data)) return JSON.parse(this.data);
-    } catch (error) {
-      return error.message;
+    } catch (e: any) {
+      return e.message;
     }
   }
 
