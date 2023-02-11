@@ -1,42 +1,31 @@
 import { FC, useState } from 'react';
-import { Container, Editor, Resizable, Row, Column,Notes,TabHeader } from '@firecamp/ui-kit';
+import {
+  Container,
+  Editor,
+  Resizable,
+  Row,
+  Column,
+  Notes,
+  TabHeader,
+} from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 //@ts-ignore
 import ScriptDefs from './interfaces/Scripts.d.txt?raw';
-import { IScriptTab } from './interfaces/ScriptTab.interface';
 import HelpPopUp from './SnippetPopup';
 import { VscLinkExternal } from '@react-icons/all-files/vsc/VscLinkExternal';
 
-const ScriptTab: FC<IScriptTab> = ({
+const ScriptTab: FC<IProps> = ({
   id = '',
   script,
   snippets,
   onChangeScript = (value) => {},
 }) => {
-  const [isSnippetPopupOpen, toggleSnippetPopup] = useState(false);
   const [editorDOM, setEditorDOM] = useState(null);
-
-  const _onAddScriptFromSnippet = async (script = '') => {
-    const _concateExisting = (_script = '', concateScript = false) => {
-      const existingScript = script;
-      let updatedScript = _script;
-
-      if (concateScript === true) {
-        updatedScript = existingScript
-          ? `${existingScript || ''}
-      ${_script || ''}`
-          : `${_script || ''}`;
-      }
-
-      onChangeScript(updatedScript);
-    };
-
+  const _onAddScriptFromSnippet = async (script: string[]) => {
     if (editorDOM && editorDOM !== null) {
-      await editorDOM.insertTextAtCurrentCursor(`\n${script}`);
+      await editorDOM.insertTextAtCurrentCursor(`\n${script.join('\n')}`);
       const scriptValue = await editorDOM.getValue();
-      _concateExisting(scriptValue, false);
-    } else {
-      _concateExisting(script, true);
+      onChangeScript(scriptValue);
     }
   };
 
@@ -45,25 +34,17 @@ const ScriptTab: FC<IScriptTab> = ({
       <Container.Body className="flex flex-col">
         <TabHeader className="bg-statusBarBackground2">
           <div className="text-sm">
-        Pre-request script are written in Javascript and are run before the
-          request is sent. Learn more about{' '}
-          <a href="#" className="underline inline items-center cursor-pointer">
-            pre-request scripts{' '}
-            <VscLinkExternal className="inline ml-1" size={12} />
-          </a>
+            Pre-request script are written in Javascript and are run before the
+            request is sent. Learn more about
+            <a
+              href="#"
+              className="underline inline items-center cursor-pointer"
+            >
+              pre-request scripts
+              <VscLinkExternal className="inline ml-1" size={12} />
+            </a>
           </div>
         </TabHeader>
-       {/* {snippets ? (
-            <HelpPopUp
-              isOpen={isSnippetPopupOpen}
-              snippets={snippets}
-              onClose={() => toggleSnippetPopup(!isSnippetPopupOpen)}
-              onAddScript={_onAddScriptFromSnippet}
-            />
-          ) : (
-            <></>
-          )} */}
-        {/* <div style={{ height: '100%' }}> */}
         <Row flex={1} overflow="auto">
           <Column flex={1}>
             <Editor
@@ -95,18 +76,28 @@ const ScriptTab: FC<IScriptTab> = ({
           >
             <Column className="overflow-auto visible-scrollbar">
               <HelpPopUp
-                isOpen={true}
                 snippets={snippets}
-                onClose={() => toggleSnippetPopup(!isSnippetPopupOpen)}
                 onAddScript={_onAddScriptFromSnippet}
               />
             </Column>
           </Resizable>
         </Row>
-
-        {/* </div> */}
       </Container.Body>
     </Container>
   );
 };
 export default ScriptTab;
+
+export interface IProps {
+  /** an unique identity to scripts tab */
+  id: string;
+
+  /** scripts payload object contains scripts in string format */
+  script: string;
+
+  /** script help snippets */
+  snippets: any;
+
+  /** Update script function passes script type and value to parent */
+  onChangeScript: (script: string) => void;
+}

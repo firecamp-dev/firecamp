@@ -1,7 +1,4 @@
 import { FC } from 'react';
-import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
-import { Button, Popover, EPopoverPosition } from '@firecamp/ui-kit';
-import { ISnippetPopup } from './interfaces/ScriptTab.interface';
 
 type TSnippet = {
   id: string | number;
@@ -14,47 +11,45 @@ type TSnippetGroup = {
   snippets: TSnippet[];
 };
 
-const SnippetPopup: FC<ISnippetPopup> = ({
+const SnippetPanel: FC<IProps> = ({
   snippets = [],
-  isOpen = false,
-  onClose = () => {},
   onAddScript = (snippet = '') => {},
 }) => {
   if (!snippets?.length) return <></>;
   // console.log({ snippets });
   return (
     <div className="overflow-auto visible-scrollbar">
-          {snippets.map((snippet, i) => {
-            return (
-              <div key={`${i}-popup`}>
-                {snippet?.name.length ? (
-                  <div className="bg-focus1 px-2">
-                    <div className="text-base leading-7 font-semibold text-appForeground">
-                      {snippet.name}
-                    </div>
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <div key={`${i}-snippet-group`}>
-                  {snippet.groups.map((g: TSnippetGroup, i: number) => {
-                    return (
-                      <SnippetGroup
-                        key={`${g.id} + ${i}`}
-                        index={i}
-                        group={g}
-                        onAddScript={onAddScript}
-                      />
-                    );
-                  })}
+      {snippets.map((snippet, i) => {
+        return (
+          <div key={`${i}-popup`}>
+            {snippet?.name.length ? (
+              <div className="bg-focus1 px-2">
+                <div className="text-base leading-7 font-semibold text-appForeground">
+                  {snippet.name}
                 </div>
               </div>
-            );
-          })}
-        </div>
+            ) : (
+              <></>
+            )}
+            <div key={`${i}-snippet-group`}>
+              {snippet.groups.map((g: TSnippetGroup, i: number) => {
+                return (
+                  <SnippetGroup
+                    key={`${g.id} + ${i}`}
+                    index={i}
+                    group={g}
+                    onAddScript={onAddScript}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 };
-export default SnippetPopup;
+export default SnippetPanel;
 
 const SnippetGroup: FC<any> = ({ group, index, onAddScript }) => {
   return (
@@ -85,3 +80,14 @@ const SnippetGroup: FC<any> = ({ group, index, onAddScript }) => {
     </div>
   );
 };
+
+export interface IProps {
+  /** script snippets */
+  snippets: any[];
+
+  /** popup title */
+  title?: string;
+
+  /** on add script, passes snippet (selected) to parent */
+  onAddScript: (value: string[]) => void;
+}

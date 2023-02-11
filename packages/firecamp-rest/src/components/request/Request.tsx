@@ -4,7 +4,6 @@ import shallow from 'zustand/shallow';
 import { useHotkeys } from 'react-hotkeys-hook';
 import {
   preScriptSnippets,
-  postScriptSnippets,
   testScriptSnippets,
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import {
