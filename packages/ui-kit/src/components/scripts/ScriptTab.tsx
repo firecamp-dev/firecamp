@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { VscLinkExternal } from '@react-icons/all-files/vsc/VscLinkExternal';
 import {
   Container,
   Editor,
@@ -12,7 +13,6 @@ import { EEditorLanguage } from '@firecamp/types';
 //@ts-ignore
 import ScriptDefs from './interfaces/Scripts.d.txt?raw';
 import HelpPopUp from './SnippetPopup';
-import { VscLinkExternal } from '@react-icons/all-files/vsc/VscLinkExternal';
 
 const ScriptTab: FC<IProps> = ({
   id = '',
