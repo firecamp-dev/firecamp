@@ -1,3 +1,4 @@
+import chai from 'chai';
 import { EHttpMethod, IHeader, IRest, IRestBody, IUrl } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import { IScriptRequest } from '../../types';
@@ -14,6 +15,11 @@ export class Request implements IScriptRequest {
     this.headers = request.headers || [];
     this.method = request.method || EHttpMethod.GET;
     this.body = request?.body;
+    Object.defineProperty(request, 'to', {
+      get() {
+        return chai.expect(this).to;
+      },
+    });
   }
 
   addHeader(headerName: string, headerValue: string): void {
@@ -91,7 +97,6 @@ export class Request implements IScriptRequest {
     };
   }
 }
-
 
 /**
  * pm compatible fc script request

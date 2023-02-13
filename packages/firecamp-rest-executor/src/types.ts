@@ -17,7 +17,7 @@ export interface IRestExecutor {
     variables: {
       globals: TRuntimeVariable[];
       environment: TRuntimeVariable[];
-      collection: TRuntimeVariable[];
+      collectionVariables: TRuntimeVariable[];
     }
   ): Promise<TResponse>;
 

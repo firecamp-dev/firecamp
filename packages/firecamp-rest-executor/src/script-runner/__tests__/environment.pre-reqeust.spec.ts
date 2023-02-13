@@ -5,7 +5,7 @@ import {
   EScriptTypes,
   EVariableType,
   IRest,
-  TVariable,
+  TRuntimeVariable,
 } from '@firecamp/types';
 import {
   preScript,
@@ -53,26 +53,29 @@ beforeAll(async () => {
 });
 
 describe('pre-script, x = globals | environment | collectionVariables', () => {
-  const globalsVars: TVariable[] = [
+  const globalsVars: TRuntimeVariable[] = [
     {
       id: 'g-1',
+      initialValue: '',
       key: 'name',
       value: 'Ramanujan',
       type: EVariableType.text,
     },
   ];
-  const environmentVars: TVariable[] = [
+  const environmentVars: TRuntimeVariable[] = [
     {
       id: 'e-1',
       key: 'age',
+      initialValue: '',
       value: '32',
       type: EVariableType.number,
     },
   ];
-  const collectionVars: TVariable[] = [
+  const collectionVars: TRuntimeVariable[] = [
     {
       id: 'c-1',
       key: 'isMathematician',
+      initialValue: '',
       value: 'true',
       type: EVariableType.boolean,
     },
@@ -97,7 +100,7 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
     const { result } = await preScript(__request, {
       globals: globalsVars,
       environment: environmentVars,
-      collection: collectionVars,
+      collectionVariables: collectionVars,
     });
     const expected = {
       name: globalsVars[0].value,
@@ -138,7 +141,7 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
     const { result, fc } = await preScript(__request, {
       globals: globalsVars,
       environment: environmentVars,
-      collection: collectionVars,
+      collectionVariables: collectionVars,
     });
     expect(result).toMatchObject(expected);
     expect(
@@ -183,7 +186,7 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
     const { result } = await preScript(__request, {
       globals: globalsVars,
       environment: environmentVars,
-      collection: collectionVars,
+      collectionVariables: collectionVars,
     });
     expect(result).toMatchObject(expected);
   });

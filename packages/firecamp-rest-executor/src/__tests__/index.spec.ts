@@ -33,7 +33,7 @@ describe('rest executor', () => {
       {
         globals: [],
         environment: [],
-        collection: [],
+        collectionVariables: [],
       }
     );
 
@@ -74,7 +74,7 @@ describe('rest executor', () => {
       {
         globals: [],
         environment: [],
-        collection: [],
+        collectionVariables: [],
       }
     );
 
@@ -111,7 +111,7 @@ describe('rest executor', () => {
       {
         globals: [],
         environment: [],
-        collection: [],
+        collectionVariables: [],
       }
     );
 
@@ -146,7 +146,7 @@ describe('rest executor', () => {
         {
           globals: [],
           environment: [],
-          collection: [],
+          collectionVariables: [],
         }
       )
       .then(({ error }) => {

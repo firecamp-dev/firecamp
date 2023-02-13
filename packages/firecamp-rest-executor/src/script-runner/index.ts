@@ -6,15 +6,14 @@ import {
   IRest,
   IRestResponse,
   IScript,
-  TVariable,
+  TRuntimeVariable,
 } from '@firecamp/types';
 import { _misc, _string } from '@firecamp/utils';
 import jsExecutor from './lib/js-executor';
-import { Response } from './fc/response';
 import requestAssertionPlugin from './fc/request/assertions';
 import responseAssertionPlugin from './fc/response/assertions';
 import Fc from './fc';
-import { TPostScript, TPreScript, TTestScript } from './types';
+import { TPreScript, TTestScript } from './types';
 
 export * from './types';
 export * from './snippets';
@@ -25,9 +24,9 @@ chai.use(responseAssertionPlugin);
 export const preScript: TPreScript = async (
   request: IRest,
   variables: {
-    globals: TVariable[];
-    environment: TVariable[];
-    collection: TVariable[];
+    globals: TRuntimeVariable[];
+    environment: TRuntimeVariable[];
+    collectionVariables: TRuntimeVariable[];
   }
 ) => {
   if (!request?.preScripts?.length) return {};
@@ -45,13 +44,7 @@ export const preScript: TPreScript = async (
           })()`;
     return jsExecutor(code, {
       // request: new Request(request),
-      fc: new Fc(
-        {},
-        {},
-        variables.globals,
-        variables.environment,
-        variables.collection
-      ),
+      fc: new Fc({}, {}, variables),
     });
   } catch (error) {
     console.info('%c pre-script sandbox error', 'color: red; font-size: 14px');
@@ -60,68 +53,16 @@ export const preScript: TPreScript = async (
   }
 };
 
-export const postScript: TPostScript = async (
-  postScripts,
-  response,
-  variables
-) => {
-  if (!postScripts?.length) return {};
-  const script: IScript | undefined = postScripts.find(
-    (s) => s.type == EScriptTypes.Test
-  );
-  if (!script) return {};
-  try {
-    const _script = `(()=>{
-            ${script.value.join('\n')};
-            return {
-              response,
-              variables: {
-                globals: fc.globals.toJSON(),
-                environment: fc.environment.toJSON(),
-                collection: fc.collectionVariables.toJSON(),
-              },
-            }
-          })()`;
-    return jsExecutor(_script, {
-      response: new Response(response),
-      fc: new Fc(
-        variables.globals,
-        variables.environment,
-        variables.collection
-      ),
-    });
-  } catch (error) {
-    console.info('%c post-script sandbox error', 'color: red; font-size: 14px');
-    console.info(error);
-    return Promise.reject(error.message);
-  }
-};
-
 export const testScript: TTestScript = async (
   request: IRest,
   response: IRestResponse,
-  variables: {
-    globals?: TVariable[];
-    environment?: TVariable[];
-    collection?: TVariable[];
-  } = {}
+  variables = { globals: [], environment: [], collectionVariables: [] }
 ) => {
   if (!request?.postScripts?.length) return {};
   const script: IScript | undefined = request.postScripts.find(
     (s) => s.type == EScriptTypes.Test
   );
   if (!script) return {};
-  const { globals = [], environment = [], collection = [] } = variables;
-  Object.defineProperty(request, 'to', {
-    get() {
-      return chai.expect(this).to;
-    },
-  });
-  Object.defineProperty(response, 'to', {
-    get() {
-      return chai.expect(this).to;
-    },
-  });
 
   try {
     const code = `(async()=>{
@@ -132,7 +73,7 @@ export const testScript: TTestScript = async (
             }
           })()`;
     return jsExecutor(code, {
-      fc: new Fc(request, response, globals, environment, collection),
+      fc: new Fc(request, response, variables),
     });
   } catch (e) {
     console.info('%c test-script sandbox error', 'color: red; font-size: 14px');

@@ -1,3 +1,4 @@
+import chai from 'chai';
 import { IHeader, IRestResponse } from '@firecamp/types';
 import { _object, _string, _table } from '@firecamp/utils';
 import { IScriptResponse } from '../../types/response';
@@ -15,6 +16,11 @@ export class Response implements IScriptResponse {
   constructor(response: IRestResponse) {
     Object.assign(this, response);
     this.headersList = _table.objectToTable(this.headers || {});
+    Object.defineProperty(response, 'to', {
+      get() {
+        return chai.expect(this).to;
+      },
+    });
   }
 
   text(): string {

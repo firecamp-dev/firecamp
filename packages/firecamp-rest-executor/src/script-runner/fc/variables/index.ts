@@ -1,12 +1,12 @@
 import { nanoid } from 'nanoid';
 import { _object } from '@firecamp/utils';
-import { EVariableType, TVariable } from '@firecamp/types';
+import { EVariableType, TRuntimeVariable } from '@firecamp/types';
 
 export class Variables implements IVariables {
-  private variables: TVariable[];
-  // private unsetVariables: TVariable[] = [];
+  private variables: TRuntimeVariable[];
+  // private unsetVariables: TRuntimeVariable[] = [];
 
-  constructor(variables: TVariable[]) {
+  constructor(variables: TRuntimeVariable[]) {
     this.variables = variables;
   }
 
@@ -44,7 +44,7 @@ export class Variables implements IVariables {
     } else {
       this.variables = [
         ...this.variables,
-        { id: nanoid(), key: variableName, value: '' + variableValue, type },
+        { id: nanoid(), key: variableName, initialValue: '', value: '' + variableValue, type },
       ];
     }
   }
