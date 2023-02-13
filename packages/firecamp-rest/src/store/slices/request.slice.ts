@@ -180,10 +180,21 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
           }
           return { response, variables, testResult };
         })
-        .then(async ({ response, variables, testResult }) => {
-          if (!response) return;
+        .then(async ({ response, variables, testResult, errors }) => {
+          if (response) {
+            set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
+          }
           // TODO: add cookies
-          set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
+          if (variables) {
+            // TODO: set variables changes in storage
+          }
+          if (testResult?.total) {
+            //TODO: show test result in the UI
+          }
+
+          if (errors) {
+            //TODO: show scripts errors in UI
+          }
           state.setRequestRunningFlag(false);
         })
         .catch((e) => {

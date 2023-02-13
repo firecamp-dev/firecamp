@@ -29,27 +29,32 @@ export const preScript: TPreScript = async (
     collectionVariables: TRuntimeVariable[];
   }
 ) => {
-  if (!request?.preScripts?.length) return {};
+  const fc = new Fc(request, {}, variables);
+  if (!request?.preScripts?.length) return { fc: fc.toJSON() };
   const script: IScript | undefined = request.preScripts.find(
     (s) => s.type == EScriptTypes.PreRequest
   );
-  if (!script) return {};
+  if (!script) return { fc: fc.toJSON() };
   const value = script.value.join('\n').trim();
-  const fc = new Fc(request, {}, variables);
   if (!value) return { fc: fc.toJSON() };
 
   try {
     const code = prepareCode(value);
-    return jsExecutor(code, {
-      fc: new Fc(request, {}, variables),
-    });
-  } catch (error) {
+    return await jsExecutor(code, { fc });
+  } catch (e) {
     console.info(
       '%c pre-request script sandbox error',
       'color: red; font-size: 14px'
     );
-    console.info(error);
-    return Promise.reject(error.message);
+    // console.info(e);
+    return Promise.resolve({
+      fc: fc.toJSON(),
+      error: {
+        name: e.name,
+        message: e.message,
+        // stack: e.stack,
+      },
+    });
   }
 };
 
@@ -58,21 +63,29 @@ export const testScript: TTestScript = async (
   response: IRestResponse,
   variables = { globals: [], environment: [], collectionVariables: [] }
 ) => {
-  if (!request?.postScripts?.length) return {};
+  const fc = new Fc(request, response, variables);
+  if (!request?.postScripts?.length) return { fc: fc.toJSON() };
   const script: IScript | undefined = request.postScripts.find(
     (s) => s.type == EScriptTypes.Test
   );
-  if (!script) return {};
+  if (!script) return { fc: fc.toJSON() };
   const value = script.value.join('\n').trim();
-  const fc = new Fc(request, response, variables);
   if (!value) return { fc: fc.toJSON() };
+
   try {
     const code = prepareCode(value);
-    return jsExecutor(code, { fc });
+    return await jsExecutor(code, { fc });
   } catch (e) {
     console.info('%c test-script sandbox error', 'color: red; font-size: 14px');
-    console.error('execute test script', e);
-    return Promise.reject(e.message);
+    // console.error('execute test script', e);
+    return Promise.resolve({
+      fc: fc.toJSON(),
+      error: {
+        name: e.name,
+        message: e.message,
+        // stack: e.stack,
+      },
+    });
   }
 };
 

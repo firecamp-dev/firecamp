@@ -160,7 +160,8 @@ export default class RestExecutor implements IRestExecutor {
     // TODO: Inherit script
     return scriptRunner
       .preScript(fcRequest, variables)
-      .then(({ fc }) => {
+      .then(({ fc, error }) => {
+        // console.log(error.name, error.message);
         const {
           request: _request,
           globals,
@@ -177,20 +178,28 @@ export default class RestExecutor implements IRestExecutor {
           // );
         }
 
-        console.log(_request, '..._request');
+        // console.log(_request, '..._request');
         if (_request) {
           // merge script updated request with fc request
           // note: _request will have other methods too like addHeaders, but destructing it will add only it's private properties like body, headers, url
           // TODO:  we can improve this later
           fcRequest = { ...fcRequest, ..._request };
         }
-        console.log(fc, fcRequest, '__fc pre-request script response');
+        // console.log(fc, fcRequest, '__fc pre-request script response');
+        const errors: any[] = [];
+        if (error) {
+          errors.push({
+            type: 'pre-request',
+            error,
+          });
+        }
         return {
           fcRequest,
           variables: { globals, environment, collectionVariables },
+          errors,
         };
       })
-      .then(({ fcRequest, variables }) => {
+      .then(({ fcRequest, variables, errors }) => {
         // apply variables to request
         const { globals, environment, collectionVariables } = variables;
         const gVars = _env.preparePlainVarsFromRuntimeVariables(globals);
@@ -217,13 +226,17 @@ export default class RestExecutor implements IRestExecutor {
             return v;
           });
           const request = _env.applyVariables(restRequest, plainVars) as IRest;
-          return { request: { ...request, body }, variables: variables };
+          return {
+            request: { ...request, body },
+            variables: variables,
+            errors,
+          };
         } else {
           const request = _env.applyVariables(fcRequest, plainVars) as IRest;
-          return { request, variables };
+          return { request, variables, errors };
         }
       })
-      .then(async ({ request, variables }) => {
+      .then(async ({ request, variables, errors }) => {
         const axiosRequest: AxiosRequestConfig = await this._prepare(request);
         try {
           // execute request
@@ -232,7 +245,11 @@ export default class RestExecutor implements IRestExecutor {
           const response = this._normalizeResponse(axiosResponse);
           // prepare timeline of request execution
           response.timeline = this._timeline(axiosRequest, axiosResponse);
-          return Promise.resolve({ response: { ...response }, variables });
+          return Promise.resolve({
+            response: { ...response },
+            variables,
+            errors,
+          });
         } catch (e) {
           console.error(e);
           if (!_object.isEmpty(e.response)) {
@@ -250,6 +267,7 @@ export default class RestExecutor implements IRestExecutor {
                 },
               },
               variables,
+              errors,
             });
           }
           return Promise.resolve({
@@ -262,13 +280,14 @@ export default class RestExecutor implements IRestExecutor {
               },
             },
             variables,
+            errors,
           });
         }
       })
-      .then(async ({ response, variables }) => {
+      .then(async ({ response, variables, errors }) => {
         /** run post-script */
         // TODO: add inherit support
-        const { fc } = await scriptRunner.testScript(
+        const { fc, error } = await scriptRunner.testScript(
           fcRequest,
           response,
           variables
@@ -292,10 +311,17 @@ export default class RestExecutor implements IRestExecutor {
           //   );
           // }
         }
+        if (error) {
+          errors.push({
+            type: 'test',
+            error,
+          });
+        }
         return {
           response,
           variables: { globals, environment, collectionVariables },
           testResult,
+          errors,
         };
       });
     // .then(() => {
