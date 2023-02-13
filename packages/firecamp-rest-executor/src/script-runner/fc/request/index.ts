@@ -91,3 +91,33 @@ export class Request implements IScriptRequest {
     };
   }
 }
+
+
+/**
+ * pm compatible fc script request
+ *  console.log('----- REQUEST -----')
+console.log('1. body', fc.request.body)
+console.log('2. certificate', fc.request.certificate)
+console.log('3. clone', fc.request.clone())
+console.log('4. describe', fc.request.describe())
+console.log('5. disabled', fc.request.disabled)
+console.log('6. findInParents', fc.request.findInParents)
+console.log('7. findSubstitutions', fc.request.findSubstitutions)
+console.log('8. forEachHeader', fc.request.forEachHeader)
+console.log('9. forEachParent', fc.request.forEachParent)
+console.log('10. getHeaders', fc.request.getHeaders())
+console.log('11. headers', fc.request.headers)
+console.log('12. id', fc.request.id)
+console.log('13. meta', fc.request.meta())
+console.log('14. method', fc.request.method)
+console.log('15. name', fc.request.name)
+console.log('16. parent()', fc.request.parent())
+console.log('17. proxy', fc.request.proxy)
+console.log('18. removeHeader()', fc.request.removeHeader)
+console.log('19. removeQueryParams()', fc.request.removeQueryParams)
+console.log('20. size()', fc.request.size())
+console.log('21. toJSON()', fc.request.toJSON())
+console.log('22. update()', fc.request.update)
+console.log('23. upsertHeader()', fc.request.upsertHeader)
+console.log('24. url', fc.request.url)
+ */
