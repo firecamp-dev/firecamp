@@ -34,20 +34,20 @@ export const preScript: TPreScript = async (
     (s) => s.type == EScriptTypes.PreRequest
   );
   if (!script) return {};
+  const value = script.value.join('\n').trim();
+  const fc = new Fc(request, {}, variables);
+  if (!value) return { fc: fc.toJSON() };
+
   try {
-    const code = `(()=>{
-            ${script.value.join('\n')};
-            return {
-              fc: fc.toJSON(),
-              result: typeof result === 'undefined'? null: result, // for testing purpose to return the value, let result = fc.globals.get('name')
-            }
-          })()`;
+    const code = prepareCode(value);
     return jsExecutor(code, {
-      // request: new Request(request),
-      fc: new Fc({}, {}, variables),
+      fc: new Fc(request, {}, variables),
     });
   } catch (error) {
-    console.info('%c pre-script sandbox error', 'color: red; font-size: 14px');
+    console.info(
+      '%c pre-request script sandbox error',
+      'color: red; font-size: 14px'
+    );
     console.info(error);
     return Promise.reject(error.message);
   }
@@ -63,21 +63,25 @@ export const testScript: TTestScript = async (
     (s) => s.type == EScriptTypes.Test
   );
   if (!script) return {};
-
+  const value = script.value.join('\n').trim();
+  const fc = new Fc(request, response, variables);
+  if (!value) return { fc: fc.toJSON() };
   try {
-    const code = `(async()=>{
-            await ${script.value.join('\n')};
-            return {
-              fc: fc.toJSON(),
-              result: typeof result === 'undefined'? null: result, // for testing purpose to return the value, let result = fc.globals.get('name')
-            }
-          })()`;
-    return jsExecutor(code, {
-      fc: new Fc(request, response, variables),
-    });
+    const code = prepareCode(value);
+    return jsExecutor(code, { fc });
   } catch (e) {
     console.info('%c test-script sandbox error', 'color: red; font-size: 14px');
     console.error('execute test script', e);
     return Promise.reject(e.message);
   }
+};
+
+const prepareCode = (value: string) => {
+  return `(()=>{
+            ${value}
+            return {
+              fc: fc.toJSON(),
+              result: typeof result === 'undefined'? null: result, // for testing purpose to return the value, let result = fc.globals.get('name')
+            }
+          })()`;
 };

@@ -162,7 +162,7 @@ export default class RestExecutor implements IRestExecutor {
       .preScript(fcRequest, variables)
       .then(({ fc }) => {
         const {
-          request: reqInstance,
+          request: _request,
           globals,
           environment,
           collectionVariables,
@@ -176,11 +176,13 @@ export default class RestExecutor implements IRestExecutor {
           //   preScriptResponse.environment
           // );
         }
-        if (reqInstance) {
+
+        console.log(_request, '..._request');
+        if (_request) {
           // merge script updated request with fc request
-          // note: reqInstance will have other methods too like addHeaders, but destructing it will add only it's private properties like body, headers, url
+          // note: _request will have other methods too like addHeaders, but destructing it will add only it's private properties like body, headers, url
           // TODO:  we can improve this later
-          fcRequest = { ...fcRequest, ...reqInstance };
+          fcRequest = { ...fcRequest, ..._request };
         }
         console.log(fc, fcRequest, '__fc pre-request script response');
         return {
@@ -266,14 +268,21 @@ export default class RestExecutor implements IRestExecutor {
       .then(async ({ response, variables }) => {
         /** run post-script */
         // TODO: add inherit support
-        const postScriptRes = await scriptRunner.testScript(
+        const { fc } = await scriptRunner.testScript(
           fcRequest,
           response,
           variables
         );
+        const {
+          response: _response = {},
+          globals,
+          environment,
+          collectionVariables,
+          testResult,
+        } = fc as any;
         // merge post script response with actual response
-        if (postScriptRes?.response) {
-          response = { ...response, ...postScriptRes.response };
+        if (fc?.response) {
+          response = { ...response, ..._response };
 
           // console.log({ postScriptResponse });
           // if (postScriptResponse.environment) {
@@ -283,7 +292,11 @@ export default class RestExecutor implements IRestExecutor {
           //   );
           // }
         }
-        return response;
+        return {
+          response,
+          variables: { globals, environment, collectionVariables },
+          testResult,
+        };
       });
     // .then(() => {
     //   try {

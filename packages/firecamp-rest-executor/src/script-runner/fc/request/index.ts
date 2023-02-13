@@ -15,12 +15,13 @@ export class Request implements IScriptRequest {
     this.headers = request.headers || [];
     this.method = request.method || EHttpMethod.GET;
     this.body = request?.body;
-    Object.defineProperty(request, 'to', {
-      get() {
-        return chai.expect(this).to;
-      },
-    });
   }
+
+  to = {
+    get() {
+      return chai.expect(this).to;
+    },
+  };
 
   addHeader(headerName: string, headerValue: string): void {
     this.headers.push({

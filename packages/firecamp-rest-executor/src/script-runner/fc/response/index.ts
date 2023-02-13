@@ -16,12 +16,13 @@ export class Response implements IScriptResponse {
   constructor(response: IRestResponse) {
     Object.assign(this, response);
     this.headersList = _table.objectToTable(this.headers || {});
-    Object.defineProperty(response, 'to', {
-      get() {
-        return chai.expect(this).to;
-      },
-    });
   }
+
+  to = {
+    get() {
+      return chai.expect(this).to;
+    },
+  };
 
   text(): string {
     return String(this?.data).valueOf();

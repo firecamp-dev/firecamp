@@ -25,7 +25,7 @@ export const send = async (
   variables: {
     globals: TRuntimeVariable[];
     environment: TRuntimeVariable[];
-    collection: TRuntimeVariable[];
+    collectionVariables: TRuntimeVariable[];
   },
   firecampAgent: EFirecampAgent
 ): Promise<IRestResponse> => {

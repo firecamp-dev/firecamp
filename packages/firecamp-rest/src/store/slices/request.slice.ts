@@ -166,8 +166,8 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       // execute request
       await state.context.request
         .execute(state.request)
-        .then((response) => {
-          console.log({ response: response });
+        .then(({ response, variables, testResult }) => {
+          console.log({ response, variables, testResult });
           if (response?.error) {
             const error = response.error;
             console.log(
@@ -178,9 +178,9 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
               9090
             );
           }
-          return response;
+          return { response, variables, testResult };
         })
-        .then(async (response) => {
+        .then(async ({ response, variables, testResult }) => {
           if (!response) return;
           // TODO: add cookies
           set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse

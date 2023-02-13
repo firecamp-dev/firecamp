@@ -19,6 +19,7 @@ import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
 import { RE } from '../../types';
 import platformContext from '.';
+import { ETabEntityTypes } from '../../components/tabs/types';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -181,7 +182,7 @@ const request: IPlatformRequestService = {
             },
             __meta: {
               entityId: _request.__ref.id,
-              entityType: 'request',
+              entityType: ETabEntityTypes.Request,
               isSaved: true,
               hasChange: false,
               isFresh: false,
@@ -287,11 +288,11 @@ const request: IPlatformRequestService = {
     const variables: {
       globals: TRuntimeVariable[];
       environment: TRuntimeVariable[];
-      collection: TRuntimeVariable[];
+      collectionVariables: TRuntimeVariable[];
     } = {
       globals: globalEnv.variables,
       environment: activeEnv.variables,
-      collection: [],
+      collectionVariables: [],
     };
     return executor.send(request, variables, agent);
   },

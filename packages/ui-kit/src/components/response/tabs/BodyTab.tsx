@@ -22,7 +22,7 @@ enum EActiveTab {
   None = '',
 }
 
-const getConentTypeFromHeaders = (headers: { [k: string]: string }) => {
+const getContentTypeFromHeaders = (headers: { [k: string]: string }) => {
   let ct: string;
   if (headers) {
     if (Object.keys(headers).includes(`content-type`))
@@ -61,8 +61,8 @@ const initialTabs = [
 ];
 
 const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
-  console.log({ id, data, headers });
-  const contentType = getConentTypeFromHeaders(headers);
+  // console.log({ id, data, headers }); //TODO: optimize it for rerendering
+  const contentType = getContentTypeFromHeaders(headers);
 
   let contentTypeKey = `content-type`;
   if (headers) {
