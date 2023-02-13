@@ -10,7 +10,7 @@ import {
 import {
   preScript,
   // postScript
-} from '../';
+} from '..';
 
 const request: IRest = {
   method: EHttpMethod.GET,
