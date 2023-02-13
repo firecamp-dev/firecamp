@@ -142,7 +142,7 @@ describe('pre-script, x = globals | environment | collectionVariables', () => {
     });
     expect(result).toMatchObject(expected);
     expect(
-      fc.collectionVariables //.find((v) => v.key == 'notMathematician')
+      fc.collectionVariables.find((v) => v.key == 'notMathematician')
     ).toEqual(
       expect.objectContaining({
         key: 'notMathematician',

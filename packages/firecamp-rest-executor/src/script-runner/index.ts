@@ -41,7 +41,7 @@ export const preScript: TPreScript = async (
     const code = `(()=>{
             ${script.value.join('\n')};
             return {
-              fc,
+              fc: fc.toJSON(),
               result: typeof result === 'undefined'? null: result, // for testing purpose to return the value, let result = fc.globals.get('name')
             }
           })()`;

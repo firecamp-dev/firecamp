@@ -67,6 +67,11 @@ interface IFc {
   expect: Chai.ExpectStatic;
 }
 
-const fc = new Fc({}, {}, [], [], [{ key: 'aa', value: 'qwqwqww' }]);
-
-console.log(typeof fc.toJSON().collectionVariables);
+/** example */
+// const fc = new Fc({}, {}, [], [], [{ key: 'name', value: 'Ramanujan' }]);
+// const { collectionVariables } = fc.toJSON();
+// console.log(
+//   typeof collectionVariables,
+//   collectionVariables,
+//   Array.isArray(collectionVariables)
+// );
