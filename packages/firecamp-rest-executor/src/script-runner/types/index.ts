@@ -1,4 +1,4 @@
-import { IRest, IRestResponse, IScript, TVariable } from '@firecamp/types';
+import { IRest, IRestResponse, TVariable } from '@firecamp/types';
 import { IScriptRequest } from './request';
 
 export * from './request';
@@ -22,7 +22,7 @@ export type TPostScript = (
   }
 ) => Promise<{ response: IRestResponse; environment: any }>;
 export type TTestScript = (
-  scripts: IScript,
+  request: IRest,
   response: IRestResponse,
   variables: {
     globals: TVariable[];

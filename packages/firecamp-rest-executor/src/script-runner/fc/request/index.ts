@@ -1,6 +1,6 @@
 import { EHttpMethod, IHeader, IRest, IRestBody, IUrl } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
-import { IScriptRequest } from '../types';
+import { IScriptRequest } from '../../types';
 
 /** request script */
 export class Request implements IScriptRequest {
@@ -30,10 +30,11 @@ export class Request implements IScriptRequest {
     }
   }
   getHeader(headerName: string): string {
-    return this.headers.find((header) => header.key === headerName)?.[0]?.value;
+    const h = this.headers.find((header) => header.key === headerName);
+    return h?.value || 'Ô';
   }
   getHeaders(): { [key: string]: string } {
-    return this.headers.reduce((headers, item) => {
+    return this.headers.reduce<any>((headers, item) => {
       headers[item.key] = item.value;
       return headers;
     }, {});
@@ -45,7 +46,6 @@ export class Request implements IScriptRequest {
   }
   addQueryParam(queryName: string, queryValue: string): void {
     if (!Array.isArray(this.url.queryParams)) return;
-
     this.url.queryParams.push({
       key: queryName,
       value: queryValue,
@@ -65,8 +65,8 @@ export class Request implements IScriptRequest {
   getQueryParam(queryName: string): string | undefined {
     if (!Array.isArray(this.url.queryParams)) return undefined;
 
-    return this.url.queryParams.find((query) => query.key === queryName)?.[0]
-      ?.value;
+    const q = this.url.queryParams.find((query) => query.key === queryName);
+    return q?.value || '';
   }
   removeQueryParam(...queryNames: string[]): void {
     this.url.queryParams = this.headers.filter(
@@ -76,9 +76,18 @@ export class Request implements IScriptRequest {
   getQueries(): { [key: string]: string } {
     if (!Array.isArray(this.url.queryParams)) return {};
 
-    return this.url.queryParams.reduce((queryParams, item) => {
-      queryParams[item.key] = item.value;
+    return this.url.queryParams.reduce<any>((queryParams, item) => {
+      queryParams[item?.key] = item.value;
       return queryParams;
     }, {});
+  }
+
+  toJSON() {
+    return {
+      url: this.url,
+      headers: this.headers,
+      method: this.method,
+      body: this.body,
+    };
   }
 }

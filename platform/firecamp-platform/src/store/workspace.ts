@@ -173,6 +173,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
               requests = [],
               envs = [],
               environments = [],
+              globalEnv,
             } = res.data;
 
             // console.log(res.data, "res.data wCollection...");
@@ -193,7 +194,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             //TODO: set env from here atm, but improve this logic in future to fetch directly in Env store
             const envStore = useEnvStore.getState();
             envStore.initialize(envs);
-            envStore.init(environments);
+            envStore.init(environments, globalEnv);
           }
         })
         .catch((e) => {

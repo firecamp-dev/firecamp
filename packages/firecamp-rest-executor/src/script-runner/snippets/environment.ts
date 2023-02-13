@@ -3,11 +3,22 @@ export default {
   name: 'Environment Snippets',
   groups: [
     {
+      id: 'common',
+      name: 'common',
+      snippets: [
+        {
+          id: 'getVariable',
+          name: 'Get a variable',
+          value: ['fc.variables.get("variable_key");'],
+        },
+      ],
+    },
+    {
       id: 'global',
       name: 'global variables',
       snippets: [
         {
-          id: 'getGlobalVaribale',
+          id: 'getGlobalVariable',
           name: 'Get a global variable',
           value: ['fc.globals.get("variable_key");'],
         },
@@ -20,11 +31,6 @@ export default {
           id: 'clearGlobalVariable',
           name: 'Clear a global variable',
           value: ['fc.globals.unset("variable_key");'],
-        },
-        {
-          id: 'getVariable',
-          name: 'Get a variable',
-          value: ['fc.variables.get("variable_key");'],
         },
         // {
         //   id: 'sendRequest',
@@ -65,7 +71,7 @@ export default {
       name: 'environment variables',
       snippets: [
         {
-          id: 'getEnvironemntVariable',
+          id: 'getEnvironmentVariable',
           name: 'Get an environment variable',
           value: ['fc.environment.get("variable_key");'],
         },

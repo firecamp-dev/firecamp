@@ -9,17 +9,17 @@ export default {
         {
           id: 'url',
           name: 'url',
-          value: 'request.url',
+          value: ['fc.request.url'],
         },
         {
           id: 'method',
           name: 'method',
-          value: 'request.method',
+          value: ['fc.request.method'],
         },
         {
           id: 'body',
           name: 'body',
-          value: 'request.body',
+          value: ['fc.request.body'],
         },
       ],
     },
@@ -30,33 +30,34 @@ export default {
         {
           id: 'addHeader',
           name: 'add header',
-          value: 'request.addHeader("headerName", "headerValue");',
+          value: ['fc.request.addHeader("headerName", "headerValue");'],
         },
         {
           id: 'updateHeader',
           name: 'update header',
-          value: 'request.updateHeader("headerName", "headerValue");',
+          value: ['fc.request.updateHeader("headerName", "headerValue");'],
         },
         {
           id: 'getHeader',
           name: 'get header',
-          value: 'request.getHeader("header_name");',
+          value: ['fc.request.getHeader("header_name");'],
         },
         {
           id: 'getHeaders',
           name: 'get headers object',
-          value: 'request.getHeaders();',
+          value: ['fc.request.getHeaders();'],
         },
         {
           id: 'getHeadersList',
           name: 'get headers list',
-          value: 'request.headers;',
+          value: ['fc.request.headers;'],
         },
         {
           id: 'removeHeader',
           name: 'remove header',
-          value:
-            'request.removeHeader("headerName1", "headerName2",...,"headerName-n");',
+          value: [
+            'fc.request.removeHeader("headerName1", "headerName2",...,"headerName-n");',
+          ],
         },
       ],
     },
@@ -67,28 +68,29 @@ export default {
         {
           id: 'addQuery',
           name: 'add query',
-          value: 'request.addQuery("queryName", "queryValue");',
+          value: ['fc.request.addQuery("queryName", "queryValue");'],
         },
         {
           id: 'updateQuery',
           name: 'update query',
-          value: 'request.updateQuery("queryName", "queryValue");',
+          value: ['fc.request.updateQuery("queryName", "queryValue");'],
         },
         {
           id: 'getQuery',
           name: 'get query',
-          value: 'request.getQuery("queryName");',
+          value: ['fc.request.getQuery("queryName");'],
         },
         {
           id: 'getQueries',
           name: 'get queries object',
-          value: 'request.getQueries();',
+          value: ['fc.request.getQueries();'],
         },
         {
           id: 'removeQuery',
           name: 'remove query',
-          value:
-            'request.removeQuery("queryName1", "queryName2",...,"queryName-n");',
+          value: [
+            'fc.request.removeQuery("queryName1", "queryName2",...,"queryName-n");',
+          ],
         },
       ],
     },

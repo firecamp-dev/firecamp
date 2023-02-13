@@ -4,7 +4,7 @@ import { EVariableType, TVariable } from '@firecamp/types';
 
 export class Variables implements IVariables {
   private variables: TVariable[];
-  private unsetVariables: TVariable[] = [];
+  // private unsetVariables: TVariable[] = [];
 
   constructor(variables: TVariable[]) {
     this.variables = variables;
@@ -16,7 +16,7 @@ export class Variables implements IVariables {
 
   get(variableName: string) {
     const variable = this.variables.find((v) => v.key == variableName);
-    if (!variable) return undefined;
+    if (!variable) return '';
     if (variable.type == 'text') return variable.value;
     else if (variable.type == 'number') return +variable.value;
     else if (variable.type == 'boolean')
@@ -50,20 +50,20 @@ export class Variables implements IVariables {
   }
 
   unset(variableName: string) {
-    const variable = this.variables.find((v) => v.key == variableName);
+    // const variable = this.variables.find((v) => v.key == variableName);
     this.variables = this.variables.filter((v) => {
       return v.key != variableName;
     });
-    if (variable) this.unsetVariables.push(variable);
+    // if (variable) this.unsetVariables.push(variable);
   }
 
   clear() {
     this.variables = [];
-    this.unsetVariables = [];
+    // this.unsetVariables = [];
   }
 
   toJSON() {
-    return JSON.parse(JSON.stringify(this.variables, null, 4));
+    return this.variables;
   }
 }
 

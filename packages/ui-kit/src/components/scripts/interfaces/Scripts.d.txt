@@ -1,4 +1,4 @@
-interface IScriptRequest {
+interface Request {
   /**
    * request URL
    */
@@ -70,4 +70,29 @@ interface IScriptRequest {
   getQueries: () => { [key: string]: string };
 }
 
-declare var request: IScriptRequest;
+interface Response {}
+
+interface Variables {
+  get: (key: string)=> any,
+  set: (key: string, value: string)=> void,
+  unset: (key: string)=> void,
+  clear: (key: string)=> void,
+}
+
+type Test = (testName: string, specFun: Function)=> void;
+
+interface Firecamp {
+  request: Request;
+  response: Response;
+  /** @deprecated: The cookies method is not implemented yet*/
+  cookies: any;
+  variables: Variables;
+  globals: Variables;
+  environment: Variables;
+  collectionVariables: Variables
+
+  test: Test;
+  expect: any;
+}
+
+declare var fc: Firecamp
