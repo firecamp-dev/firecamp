@@ -6,7 +6,6 @@ import {
   IRest,
   IRestResponse,
   IScript,
-  TPlainObject,
   TVariable,
 } from '@firecamp/types';
 import { _misc, _string } from '@firecamp/utils';
@@ -99,26 +98,53 @@ export const postScript: TPostScript = async (
   }
 };
 
-//@ts-ignore
 export const testScript: TTestScript = async (
   request: IRest,
   response: IRestResponse,
-  variables: TPlainObject
+  variables: {
+    globals: TVariable[];
+    environment: TVariable[];
+    collection: TVariable[];
+  }
 ) => {
-  //@ts-ignore
-  if (!request?.scripts?.test) return;
-
+  if (!request?.postScripts?.length) return {};
+  const script: IScript | undefined = request.postScripts.find(
+    (s) => s.type == EScriptTypes.Test
+  );
+  if (!script) return {};
   Object.defineProperty(request, 'to', {
     get() {
       return chai.expect(this).to;
     },
   });
-
   Object.defineProperty(response, 'to', {
     get() {
       return chai.expect(this).to;
     },
   });
+
+  try {
+    const code = `(async()=>{
+            await ${script.value.join('\n')};
+            return {
+              fc: fc.toJSON(),
+              result: typeof result === 'undefined'? null: result, // for testing purpose to return the value, let result = fc.globals.get('name')
+            }
+          })()`;
+    return jsExecutor(code, {
+      fc: new Fc(
+        request,
+        response,
+        variables.globals,
+        variables.environment,
+        variables.collection
+      ),
+    });
+  } catch (e) {
+    console.info('%c test-script sandbox error', 'color: red; font-size: 14px');
+    console.error('execute test script', e);
+    return Promise.reject(e.message);
+  }
 
   try {
     //@ts-ignore

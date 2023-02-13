@@ -6,6 +6,7 @@ import { _misc, _string } from '@firecamp/utils';
 import { Request } from './request';
 import { Response } from './response';
 import { Variables } from './variables';
+import { Test } from './tests';
 
 export default class Fc implements IFc {
   request: any;
@@ -13,6 +14,7 @@ export default class Fc implements IFc {
   globals: Variables;
   environment: Variables;
   collectionVariables: Variables;
+  private testManager = new Test();
   constructor(
     request: any,
     response: any,
@@ -43,7 +45,7 @@ export default class Fc implements IFc {
       return value;
     },
   };
-  public test = (testName: string, specFunction: Function) => {};
+  public test = this.testManager.test;
   public expect = chai.expect;
 
   public toJSON() {
@@ -53,6 +55,7 @@ export default class Fc implements IFc {
       globals: this.globals.toJSON(),
       environment: this.environment.toJSON(),
       collectionVariables: this.collectionVariables.toJSON(),
+      testResult: this.testManager.toJSON(),
     };
   }
 }
