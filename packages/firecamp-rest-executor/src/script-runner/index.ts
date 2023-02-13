@@ -1,5 +1,5 @@
-import Joi from '@hapi/joi';
-import tv4 from 'tv4';
+// import Joi from '@hapi/joi';
+// import tv4 from 'tv4';
 import chai from 'chai';
 import {
   EScriptTypes,
@@ -14,7 +14,6 @@ import { Response } from './fc/response';
 import requestAssertionPlugin from './fc/request/assertions';
 import responseAssertionPlugin from './fc/response/assertions';
 import Fc from './fc';
-import Runner from '../test-runner/runner';
 import { TPostScript, TPreScript, TTestScript } from './types';
 
 export * from './types';
@@ -102,16 +101,17 @@ export const testScript: TTestScript = async (
   request: IRest,
   response: IRestResponse,
   variables: {
-    globals: TVariable[];
-    environment: TVariable[];
-    collection: TVariable[];
-  }
+    globals?: TVariable[];
+    environment?: TVariable[];
+    collection?: TVariable[];
+  } = {}
 ) => {
   if (!request?.postScripts?.length) return {};
   const script: IScript | undefined = request.postScripts.find(
     (s) => s.type == EScriptTypes.Test
   );
   if (!script) return {};
+  const { globals = [], environment = [], collection = [] } = variables;
   Object.defineProperty(request, 'to', {
     get() {
       return chai.expect(this).to;
@@ -132,43 +132,11 @@ export const testScript: TTestScript = async (
             }
           })()`;
     return jsExecutor(code, {
-      fc: new Fc(
-        request,
-        response,
-        variables.globals,
-        variables.environment,
-        variables.collection
-      ),
+      fc: new Fc(request, response, globals, environment, collection),
     });
   } catch (e) {
     console.info('%c test-script sandbox error', 'color: red; font-size: 14px');
     console.error('execute test script', e);
     return Promise.reject(e.message);
-  }
-
-  try {
-    //@ts-ignore
-    const runner = new Runner(request.scripts.test as string);
-    const result = await runner.run({
-      Promise,
-      request,
-      response,
-      //@ts-ignore
-      environment: new Environment(variables),
-      tv4,
-      Joi,
-      console,
-    });
-    console.log(result, 'test-runner result');
-    return Promise.resolve(result);
-  } catch (error) {
-    console.info('%c test-script sandbox error', 'color: red; font-size: 14px');
-    console.info(error);
-    console.error({
-      API: 'execute test script',
-      error,
-    });
-
-    return Promise.reject(error.message);
   }
 };

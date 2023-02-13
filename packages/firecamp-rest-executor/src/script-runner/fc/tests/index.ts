@@ -24,9 +24,7 @@ export class Test implements ITest {
     this.result.tests.push(t);
   };
 
-  toJSON = () => {
-    return this.result;
-  };
+  toJSON = () => this.result;
 }
 
 export interface ITest {

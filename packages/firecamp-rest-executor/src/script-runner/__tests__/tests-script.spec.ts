@@ -5,10 +5,7 @@ import {
   EScriptTypes,
   IRest,
 } from '@firecamp/types';
-import {
-  // preScript,
-  testScript,
-} from '..';
+import { testScript } from '..';
 
 const request: IRest = {
   method: EHttpMethod.GET,
@@ -33,33 +30,61 @@ const request: IRest = {
 };
 
 describe('post[x]-script, x = tests', () => {
-  it('fc.test("name", fn)', async () => {
-    const script = [
-      `fc.test("Status code is 200", ()=> {`,
-      `    fc.expect(2).to.equal(20);`,
-      // `    fc.response.to.have.status(200);`,
-      `});`,
-    ];
-    const __request = {
-      ...request,
-      postScripts: [
-        {
-          ...request.postScripts[0],
-          value: script,
-        },
-      ],
-    };
-    const { fc } = await testScript(
-      __request,
-      {},
+  it('fc.expect - pass test', async () => {
+    const postScripts = [
       {
-        globals: [],
-        environment: [],
-        collection: [],
-      }
-    );
-    // const expected = {};
-    console.log(fc.testResult.tests[0].error);
-    expect(fc.testResult.failed).toBe(1);
+        ...request.postScripts[0],
+        value: [
+          `fc.test("Status code is 200", ()=> {`,
+          `    fc.expect(200).to.equal(200);`,
+          `});`,
+        ],
+      },
+    ];
+    const __request = { ...request, postScripts };
+    const { fc } = await testScript(__request, {});
+    const expected = {
+      passed: 1,
+      property: 'error',
+      name: 'Status code is 200',
+    };
+    expect(fc.testResult.passed).toBe(expected.passed);
+    expect(fc.testResult.tests[0]).not.toHaveProperty(expected.property);
+    expect(fc.testResult.tests[0].name).toMatch(expected.name);
+  });
+
+  it('fc.expect - fail test', async () => {
+    const postScripts = [
+      {
+        ...request.postScripts[0],
+        value: [
+          `fc.test("Status code is 200", ()=> {`,
+          `    fc.expect(2).to.equal(20);`,
+          `});`,
+        ],
+      },
+    ];
+    const __request = { ...request, postScripts };
+    const { fc } = await testScript(__request, {});
+    const expected = { failed: 1, property: 'error' };
+    expect(fc.testResult.failed).toBe(expected.failed);
+    expect(fc.testResult.tests[0]).toHaveProperty(expected.property);
+  });
+
+  it('fc.response.to.have.status(200) - pass test', async () => {
+    const postScripts = [
+      {
+        ...request.postScripts[0],
+        value: [
+          `fc.test("Status code is 200", ()=> {`,
+          `    fc.response.to.have.status(200);`,
+          `});`,
+        ],
+      },
+    ];
+    const __request = { ...request, postScripts };
+    const { fc } = await testScript(__request, {});
+    const expected = { passed: 1 };
+    expect(fc.testResult.failed).toBe(expected.passed);
   });
 });

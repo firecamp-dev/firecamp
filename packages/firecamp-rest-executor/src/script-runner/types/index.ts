@@ -24,9 +24,9 @@ export type TPostScript = (
 export type TTestScript = (
   request: IRest,
   response: IRestResponse,
-  variables: {
-    globals: TVariable[];
+  variables?: {
+    globals?: TVariable[];
     environment: TVariable[];
-    collection: TVariable[];
+    collection?: TVariable[];
   }
 ) => Promise<any>;
