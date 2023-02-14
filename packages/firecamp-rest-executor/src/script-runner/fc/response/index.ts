@@ -1,7 +1,7 @@
 import chai from 'chai';
 import { IHeader, IRestResponse } from '@firecamp/types';
 import { _object, _string, _table } from '@firecamp/utils';
-import { IScriptResponse } from '../../types/response';
+import { IScriptResponse } from './index.type';
 
 /** response script */
 export class Response implements IScriptResponse {

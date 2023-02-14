@@ -13,9 +13,7 @@ import jsExecutor from './lib/js-executor';
 import requestAssertionPlugin from './fc/request/assertions';
 import responseAssertionPlugin from './fc/response/assertions';
 import Fc from './fc';
-import { TPreScript, TTestScript } from './types';
 
-export * from './types';
 export * from './snippets';
 
 chai.use(requestAssertionPlugin);
@@ -98,3 +96,30 @@ const prepareCode = (value: string) => {
             }
           })()`;
 };
+
+export type TPreScript = (
+  request: IRest,
+  variables: {
+    globals: TRuntimeVariable[];
+    environment: TRuntimeVariable[];
+    collectionVariables: TRuntimeVariable[];
+  }
+) => Promise<{
+  fc: any;
+  error: { name: string; message: string };
+  result?: any;
+}>;
+
+export type TTestScript = (
+  request: IRest,
+  response: IRestResponse,
+  variables?: {
+    globals: TRuntimeVariable[];
+    environment: TRuntimeVariable[];
+    collectionVariables: TRuntimeVariable[];
+  }
+) => Promise<{
+  fc: any;
+  error: { name: string; message: string };
+  result?: any;
+}>;

@@ -1,7 +1,7 @@
 import chai from 'chai';
 import { EHttpMethod, IHeader, IRest, IRestBody, IUrl } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
-import { IScriptRequest } from '../../types';
+import { IScriptRequest } from './index.type';
 
 /** request script */
 export class Request implements IScriptRequest {
