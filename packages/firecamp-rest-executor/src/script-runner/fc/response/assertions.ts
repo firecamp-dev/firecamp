@@ -1,5 +1,5 @@
 import { _object } from '@firecamp/utils';
-// import Ajv from 'ajv';
+import Ajv from 'ajv';
 
 export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   const Assertion = chai.Assertion;
@@ -195,15 +195,20 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
     }
   );
 
-  //   utils.addMethod(Assertion.prototype, 'header', function (headerName: string) {
-  //       this.assert(
-  //           !_object.isEmpty(this._obj?.headers) && this._obj.headers?.[headerName],
-  //           `expecting request should have header ${headerName} but not found`,
-  //           `expecting request should not have header ${headerName}`,
-  //           headerName,
-  //           this._obj?.headers
-  //       )
-  //   })
+  utils.addMethod(
+    Assertion.prototype,
+    'header',
+    function (this: Chai.AssertionStatic, headerName: string) {
+      this.assert(
+        !_object.isEmpty(this._obj?.headers) &&
+          !!this._obj.headers.find((h) => h.key == headerName),
+        `expecting request should have header ${headerName} but not found`,
+        `expecting request should not have header ${headerName}`,
+        headerName,
+        this._obj?.headers
+      );
+    }
+  );
 
   utils.addMethod(
     Assertion.prototype,
@@ -228,25 +233,33 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
     }
   );
 
-  //   utils.addMethod(Assertion.prototype, 'jsonSchema', function (schema: any, options: any) {
-  //       const ajv = new Ajv(options)
-  //       const result = ajv.validate(schema, this._obj.json())
+  utils.addMethod(
+    Assertion.prototype,
+    'jsonSchema',
+    function (this: Chai.AssertionStatic, schema: any, options: any) {
+      const ajv = new Ajv(options);
+      const result = ajv.validate(schema, this._obj.json());
 
-  //       this.assert(
-  //           result && !ajv.errors,
-  //           `expected response data should validate with JSON schema but found errors: ${ajv.errorsText()}`,
-  //           'expected response data should not validate JSON schema',
-  //           this._obj.json()
-  //       )
-  //   })
+      this.assert(
+        result && !ajv.errors,
+        `expected response data should validate with JSON schema but found errors: ${ajv.errorsText()}`,
+        'expected response data should not validate JSON schema',
+        this._obj.json()
+      );
+    }
+  );
 
-  //   utils.addMethod(Assertion.prototype, 'code', function (code: number) {
-  //       this.assert(
-  //           !Number.isNaN(this._obj?.code) && this._obj?.code === code,
-  //           `expected response to have a status code ${code} but found ${this._obj?.code}`,
-  //           `expected response to not have a status code ${code}`,
-  //           code,
-  //           this._obj?.code
-  //       )
-  //   })
+  utils.addMethod(
+    Assertion.prototype,
+    'status',
+    function (this: Chai.AssertionStatic, code: number) {
+      this.assert(
+        !Number.isNaN(this._obj?.code) && this._obj?.code === code,
+        `expected response to have a status code ${code} but found ${this._obj?.code}`,
+        `expected response to not have a status code ${code}`,
+        code,
+        this._obj?.code
+      );
+    }
+  );
 }

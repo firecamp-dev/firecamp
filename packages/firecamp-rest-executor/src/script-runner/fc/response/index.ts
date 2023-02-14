@@ -129,4 +129,4 @@ console.log('28. responseTime', responseTime);
 
 // const rs = new Response({ code: 200 });
 // console.log(rs.to.have);
-// console.log(rs.to.be.ok);
+// console.log(rs.to.have.status(200));
