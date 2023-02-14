@@ -7,9 +7,14 @@ type TTestResult = {
   total?: number;
   tests?: { name: string; isPassed: boolean; error?: any }[];
 };
+type TScriptError = {
+  type: string;
+  error?: { name?: string; message?: string };
+};
 interface IResponseSlice {
   response: IRestResponse;
   testResult: TTestResult;
+  scriptErrors?: TScriptError[];
   initialiseResponse: (response: IRestResponse) => void;
   setTestResult: (testResult: TTestResult) => void;
 }
@@ -26,6 +31,7 @@ const emptyResponse: IRestResponse = {
 const createResponseSlice: TStoreSlice<IResponseSlice> = (set, get) => ({
   response: { code: 0 },
   testResult: {},
+  scriptErrors: [],
   initialiseResponse: (response: IRestResponse) => {
     set((s) => ({
       response: {

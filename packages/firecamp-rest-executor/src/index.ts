@@ -172,20 +172,9 @@ export default class RestExecutor implements IRestExecutor {
           environment,
           collectionVariables,
         } = fc as any;
-        if (environment) {
-          // updatedVariables = await normalizeVariables(
-          //   {
-          //     workspace: variables['workspace'],
-          //     collection: variables['collection'],
-          //   },
-          //   preScriptResponse.environment
-          // );
-        }
-
-        // console.log(_request, '..._request');
+        console.log(_request, '..._request');
         if (_request) {
           // merge script updated request with fc request
-          // note: _request will have other methods too like addHeaders, but destructing it will add only it's private properties like body, headers, url
           // TODO:  we can improve this later
           fcRequest = { ...fcRequest, ..._request };
         }
@@ -307,14 +296,6 @@ export default class RestExecutor implements IRestExecutor {
         // merge post script response with actual response
         if (fc?.response) {
           response = { ...response, ..._response };
-
-          // console.log({ postScriptResponse });
-          // if (postScriptResponse.environment) {
-          //   updatedVariables = await normalizeVariables(
-          //     updatedVariables,
-          //     postScriptResponse.environment
-          //   );
-          // }
         }
         if (error) {
           errors.push({
@@ -322,6 +303,7 @@ export default class RestExecutor implements IRestExecutor {
             error,
           });
         }
+        console.log(errors, 'scriptErrors...');
         return {
           response,
           variables: { globals, environment, collectionVariables },
@@ -329,17 +311,6 @@ export default class RestExecutor implements IRestExecutor {
           scriptErrors: errors,
         };
       });
-    // .then(() => {
-    //   try {
-    //     /** run test-script */
-    //     // TODO: add inherit support
-    //     testScriptResponse = await scriptRunner.testScript(request, response, vars)
-    //     );
-    //     if (testScriptResponse) {
-    //       response['testScriptResult'] = testScriptResponse;
-    //     }
-    //   } catch (error) {}
-    // });
   }
 
   cancel() {

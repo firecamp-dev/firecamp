@@ -21,6 +21,7 @@ interface IResTabs {
   id: TId;
   response: IRestResponse;
   testResult: any;
+  scriptErrors?: any[];
   error?: any;
   activeBodyTab: string;
   isRequestRunning: boolean;
@@ -31,6 +32,7 @@ const Tabs: FC<IResTabs> = ({
   id,
   response,
   testResult = {},
+  scriptErrors = [],
   error,
   activeBodyTab = EResponseTabs.Body,
   isRequestRunning,
@@ -121,7 +123,10 @@ const Tabs: FC<IResTabs> = ({
           )}
         />
       </Container.Header>
-      <Container.Body>{_renderTab(activeTab)}</Container.Body>
+      <Container.Body>
+        {_renderTab(activeTab)}
+        <ScriptErrors errors={scriptErrors} />
+      </Container.Body>
       {/* <Container.Footer>
         <CustomMessage message={'This is the error component'} />
       </Container.Footer> */}
@@ -130,3 +135,43 @@ const Tabs: FC<IResTabs> = ({
 };
 
 export default Tabs;
+
+const ScriptErrors = ({ errors = [] }) => {
+  console.log(errors, 'erros..... errors');
+  return (
+    <div className='absolute w-full bottom-0'>
+      {errors.map((e, i) => (
+        <ScriptErrorTable error={e} key={i} />
+      ))}
+    </div>
+  );
+};
+const ScriptErrorTable: FC<any> = ({ error }) => {
+  const {
+    type,
+    error: { name, message },
+  } = error;
+  return (
+    <div>
+      <div className="bg-focus4 p-1 text-base font-semibold">{type} script error</div>
+      <div className="table w-full  border-collapse ">
+        <div className="table-row  bg-appBackground2">
+          <div className="table-cell border border-appBorder p-1 text-sm font-semibold">
+            type
+          </div>
+          <div className="table-cell border border-appBorder  p-1 text-sm text-appForegroundInActive">
+            {name}
+          </div>
+        </div>
+        <div className="table-row bg-appBackground2">
+          <div className="table-cell border border-appBorder p-1 text-sm font-semibold">
+            message
+          </div>
+          <div className="table-cell border border-appBorder  p-1 text-sm text-appForegroundInActive">
+            {message}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

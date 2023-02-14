@@ -48,7 +48,14 @@ const TestResultTable = ({
     switch (column.id) {
       case 'status':
         return (
-          <div className="mx-2 text-base uppercase">
+          <div
+            className="absolute py-4 h-full top-0 left-0 text-center text-base uppercase"
+            style={{
+              paddingTop: '5px',
+              paddingLeft: '18px',
+              borderLeft: row.isPassed ? `4px solid green` : '4px solid red',
+            }}
+          >
             {row.isPassed ? 'PASS' : 'FAIL'}
           </div>
         );
@@ -60,44 +67,26 @@ const TestResultTable = ({
   };
 
   return (
-    <>
-      <Table
-        rows={rows}
-        columns={_columns}
-        renderColumn={(c) => c.name}
-        defaultRow={{
-          status: '',
-          name: '',
-        }}
-        renderCell={renderCell}
-        onChange={(rows) => {
-          onChange(rows);
-        }}
-        onMount={(tApi) => {
-          if (typeof onMount == 'function') {
-            onMount(tApi);
-            apiRef.current = tApi;
-          }
-        }}
-        options={options}
-      />
-
-      <div className="">
-        <Button
-          text="Add Row"
-          className="small transparent font-light without-border with-padding with-icon-left"
-          onClick={() => apiRef.current.addRow()}
-          icon={<VscAdd size={16} />}
-          disabled={
-            options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
-          }
-          transparent
-          primary
-          ghost
-          sm
-        />
-      </div>
-    </>
+    <Table
+      rows={rows}
+      columns={_columns}
+      renderColumn={(c) => c.name}
+      defaultRow={{
+        status: '',
+        name: '',
+      }}
+      renderCell={renderCell}
+      onChange={(rows) => {
+        onChange(rows);
+      }}
+      onMount={(tApi) => {
+        if (typeof onMount == 'function') {
+          onMount(tApi);
+          apiRef.current = tApi;
+        }
+      }}
+      options={options}
+    />
   );
 };
 
