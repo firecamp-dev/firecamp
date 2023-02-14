@@ -86,6 +86,7 @@ export { default as BasicTable } from './components/table/basic-table/BasicTable
 export { default as MultipartTable } from './components/table/multipart-table/MultipartTable';
 export { default as LogTable } from './components/table/log-table/LogTable';
 export { default as EnvironmentTable } from './components/table/environment-table/EnvironmentTable';
+export { default as TestResultTable } from './components/table/test-result-table/TestResultTable';
 export type { ITable, TTableApi } from './components/table/primitive/Table';
 
 // Url
