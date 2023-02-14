@@ -83,13 +83,13 @@ export default class RestExecutor implements IRestExecutor {
 
   private _normalizeResponse(axiosResponse: AxiosResponse): IRestResponse {
     return {
-      statusCode: axiosResponse.status,
-      statusMessage: axiosResponse.statusText,
-      data: axiosResponse.data,
-      headers: axiosResponse.headers || {},
-      //@ts-ignore
-      duration: axiosResponse?.config?.metadata?.duration || 0,
-      size: Number(axiosResponse?.headers?.['content-length']) || 0,
+      code: axiosResponse.status,
+      status: axiosResponse.statusText,
+      body: axiosResponse.data,
+      headers: _table.objectToTable(axiosResponse.headers || {}),
+      // @ts-ignore
+      responseTime: axiosResponse?.config?.metadata?.duration || 0,
+      responseSize: Number(axiosResponse?.headers?.['content-length']) || 0,
     };
   }
 

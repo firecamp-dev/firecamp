@@ -1,25 +1,3 @@
-import { IHeader, IRestResponse } from '@firecamp/types';
-
-/** response script instance */
-export interface IScriptResponse extends IRestResponse {
-  /**
-   * return the headers in a table format
-   */
-  headers: IHeader[];
-
-  /**
-   * return response body in a text format
-   */
-  text: () => string;
-
-  /**
-   * return response body in a JSON string
-   */
-  json: () => string;
-  
-  /** get response size object containing body, header and total */
-  size: () => { body: number; header: number; total: number };
-}
 
 /**
  * response.to.be.* assertions

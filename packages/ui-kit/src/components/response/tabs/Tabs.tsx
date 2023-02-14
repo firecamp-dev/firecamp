@@ -36,7 +36,7 @@ const Tabs: FC<IResTabs> = ({
 }) => {
   const {
     config,
-    data,
+    body,
     duration,
     size,
     statusCode,
@@ -45,7 +45,7 @@ const Tabs: FC<IResTabs> = ({
     cookies,
     // error,
     timeline,
-    testScriptResult,
+    testResult,
   } = response;
 
   const [tabs] = useState([
@@ -72,10 +72,10 @@ const Tabs: FC<IResTabs> = ({
   const _renderTab = (tab: string) => {
     switch (tab) {
       case EResponseTabs.Body:
-        if (error?.message && !response.data) {
+        if (error?.message && !response.body) {
           return <CustomMessage message={error.message} />;
         } else {
-          return <BodyTab id={id} data={data} headers={headers} />;
+          return <BodyTab id={id} body={body} headers={headers} />;
         }
       case EResponseTabs.Headers:
         return <HeaderTab headers={headers} />;
@@ -84,9 +84,9 @@ const Tabs: FC<IResTabs> = ({
       case EResponseTabs.Timeline:
         return <TimelineTab id={id} timeline={timeline} />;
       case EResponseTabs.TestResult:
-        return <TestScriptResult result={testScriptResult} />;
+        return <TestScriptResult result={testResult} />;
       default:
-        return <span />;
+        return <></>;
     }
   };
 
@@ -113,13 +113,7 @@ const Tabs: FC<IResTabs> = ({
           )}
         />
       </Container.Header>
-      <Container.Body>
-        {/* <div className="tab-content h-full"> */}
-        {/* <div className="tab-pane active h-full visible-scrollbar overflow-auto"> */}
-        {_renderTab(activeTab)}
-        {/* </div> */}
-        {/* </div> */}
-      </Container.Body>
+      <Container.Body>{_renderTab(activeTab)}</Container.Body>
       {/* <Container.Footer>
         <CustomMessage message={'This is the error component'} />
       </Container.Footer> */}

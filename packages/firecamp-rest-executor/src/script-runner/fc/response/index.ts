@@ -1,31 +1,26 @@
 import chai from 'chai';
 import { IHeader, IRestResponse } from '@firecamp/types';
-import { _object, _string, _table } from '@firecamp/utils';
-import { IScriptResponse } from './index.type';
+import { _array, _object, _string, _table } from '@firecamp/utils';
 
 /** response script */
-export class Response implements IScriptResponse {
-  // headersList: IHeader[] = [];
-  // headers?: { [key: string]: string } = {};
-  headers?: IHeader[] = [];
-  data?: any;
-  duration?: number | undefined;
-  responseSize?: number | undefined;
-  statusCode?: number;
-  statusMessage?: string;
-  cookies?: any[];
-
-  //aliases
-  /** @alias of statusCode */
-  code?: number;
-  /** @alias of statusMessage */
-  status?: string;
-  /** @alias of duration */
-  responseTime?: number | undefined;
+export class Response {
+  private body: any;
+  private headers: IHeader[];
+  private cookies: any[];
+  private code?: number;
+  private status: string;
+  private responseTime: number;
+  private responseSize: number;
 
   constructor(response: IRestResponse) {
-    Object.assign(this, response);
-    this.headers = _table.objectToTable(this.headers || {});
+    this.body = response.body || '';
+    this.headers = response.headers || [];
+    this.headers = response.cookies || [];
+    this.code = response.code;
+    this.status = response.status || '';
+    this.responseTime = response.responseTime || 0;
+    this.responseSize = response.responseSize || 0;
+    // this.headers = _table.objectToTable(this.headers || {});
   }
 
   to = {
@@ -34,15 +29,25 @@ export class Response implements IScriptResponse {
     },
   };
 
+  /** return response body in a text format */
   text(): string {
-    return String(this?.data).valueOf();
+    try {
+      if (_string.isString(this.body)) return this.body;
+      else if (!_object.isObject(this.body) || Array.isArray(this.body))
+        return JSON.stringify(this.body);
+      else return '';
+    } catch (e: any) {
+      return '';
+    }
   }
 
+  /** return response body in a JSON string */
   json(): any {
     try {
-      if (_object.isObject(this.data) || Array.isArray(this.data))
-        return this.data;
-      else if (!_string.isEmpty(this.data)) return JSON.parse(this.data);
+      if (_object.isObject(this.body) || Array.isArray(this.body))
+        return this.body;
+      else if (!_string.isEmpty(this.body)) return JSON.parse(this.body);
+      else return {};
     } catch (e: any) {
       // return e.message;
       return {};
@@ -60,35 +65,29 @@ export class Response implements IScriptResponse {
 
   reason(): string {
     // TODO: implement reason here
-    return this.statusMessage;
+    return this.status;
   }
 
-  size() {
+  /** get response size object containing body, header and total */
+  size(): { body: number; header: number; total: number } {
     // TODO: implement size here
     return {
-      body: 0,
-      header: 0,
-      total: 0,
+      body: this.responseSize,
+      header: 0, // TODO: need to implement
+      total: this.responseSize,
     };
   }
 
-  toJSON() {
+  toJSON(): IRestResponse {
     return {
-      id: '',
+      // id: '',
       headers: this.headers,
-      data: this.data,
-      duration: this.duration,
-      size: this.size,
-      statusCode: this.statusCode,
-      statusMessage: this.statusMessage,
+      body: this.body,
       // stream: {} //buffer,
       cookies: this.cookies,
-
-      //aliases
-      header: this.headers,
-      code: this.statusCode,
-      status: this.statusMessage,
-      responseTime: this.duration,
+      code: this.code,
+      status: this.status,
+      responseTime: this.responseTime,
       responseSize: this.responseSize,
     };
   }
