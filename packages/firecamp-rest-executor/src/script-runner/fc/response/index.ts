@@ -1,6 +1,7 @@
 import chai from 'chai';
 import { IHeader, IRestResponse } from '@firecamp/types';
 import { _array, _object, _string, _table } from '@firecamp/utils';
+import responseAssertionPlugin from './assertions';
 
 /** response script */
 export class Response {
@@ -11,23 +12,20 @@ export class Response {
   private status: string;
   private responseTime: number;
   private responseSize: number;
+  public to: any;
 
   constructor(response: IRestResponse) {
     this.body = response.body || '';
     this.headers = response.headers || [];
-    this.headers = response.cookies || [];
+    this.cookies = response.cookies || [];
     this.code = response.code;
     this.status = response.status || '';
     this.responseTime = response.responseTime || 0;
     this.responseSize = response.responseSize || 0;
     // this.headers = _table.objectToTable(this.headers || {});
+    chai.use(responseAssertionPlugin);
+    this.to = chai.expect(this).to;
   }
-
-  to = {
-    get() {
-      return chai.expect(this).to;
-    },
-  };
 
   /** return response body in a text format */
   text(): string {
@@ -128,3 +126,7 @@ console.log('26. tests', tests);
 console.log('27. responseCode', responseCode);
 console.log('28. responseTime', responseTime);
 */
+
+// const rs = new Response({ code: 200 });
+// console.log(rs.to.have);
+// console.log(rs.to.be.ok);
