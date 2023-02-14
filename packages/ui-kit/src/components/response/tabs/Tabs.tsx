@@ -37,11 +37,11 @@ const Tabs: FC<IResTabs> = ({
   const {
     config,
     body,
-    duration,
-    size,
-    statusCode,
-    statusMessage,
-    headers = {},
+    responseTime,
+    responseSize,
+    code,
+    status,
+    headers = [],
     cookies,
     // error,
     timeline,
@@ -105,10 +105,10 @@ const Tabs: FC<IResTabs> = ({
           postComp={() => (
             <ResponseMetaData
               isRequestRunning={isRequestRunning}
-              duration={duration}
-              size={size}
-              statusCode={statusCode}
-              statusMessage={statusMessage}
+              time={responseTime}
+              size={responseSize}
+              code={code}
+              status={status}
             />
           )}
         />

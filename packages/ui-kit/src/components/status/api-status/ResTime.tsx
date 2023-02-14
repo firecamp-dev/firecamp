@@ -3,10 +3,10 @@ import { IResTime } from './interfaces/ResTime.interfaces';
 
 const ResTime: FC<IResTime> = ({
   className = '',
-  duration: proDuration = '',
+  time: propTime = '',
   isRequestRunning = false,
 }) => {
-  let [duration, setDuration] = useState(proDuration);
+  let [time, setTime] = useState(propTime);
   let intervalId = useRef(null);
 
   let interval_span = 3;
@@ -16,7 +16,7 @@ const ResTime: FC<IResTime> = ({
     if (isRequestRunning) {
       interval = setInterval(() => {
         ms = ms + interval_span;
-        setDuration(++ms);
+        setTime(++ms);
       }, interval_span);
       intervalId.current = interval;
     } else {
@@ -24,23 +24,23 @@ const ResTime: FC<IResTime> = ({
         clearInterval(intervalId.current);
         intervalId.current = null;
       }
-      if (proDuration) {
+      if (propTime) {
         setTimeout(() => {
-          setDuration(proDuration);
+          setTime(propTime);
         });
       }
     }
 
     return () => {
-      setDuration(0);
+      setTime(0);
       clearInterval(interval);
     };
   }, [isRequestRunning]);
 
-  if (duration === undefined && !isRequestRunning) return <span />;
+  if (time === undefined && !isRequestRunning) return <span />;
   return (
     <div className={className ? className : 'mx-2 leading-5 whitespace-pre'}>
-      <span className="text-error text-xl">{duration || '0'}</span> ms
+      <span className="text-error text-xl">{time || '0'}</span> ms
     </div>
   );
 };

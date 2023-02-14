@@ -33,7 +33,7 @@ export default class RestExecutor implements IRestExecutor {
       res.config['metadata']['endTime'] = new Date();
       res.config['metadata'] = {
         ...res.config['metadata'],
-        get duration() {
+        get responseTime() {
           return this.endTime - this.startTime;
         },
       };
@@ -88,7 +88,7 @@ export default class RestExecutor implements IRestExecutor {
       body: axiosResponse.data,
       headers: _table.objectToTable(axiosResponse.headers || {}),
       // @ts-ignore
-      responseTime: axiosResponse?.config?.metadata?.duration || 0,
+      responseTime: axiosResponse?.config?.metadata?.responseTime || 0,
       responseSize: Number(axiosResponse?.headers?.['content-length']) || 0,
     };
   }

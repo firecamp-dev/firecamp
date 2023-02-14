@@ -7,16 +7,16 @@ interface IResponseSlice {
 }
 
 const emptyResponse = {
-  data: '',
-  duration: 0,
-  size: 0,
-  status: 0,
-  headers: {},
+  body: '',
+  responseTime: 0,
+  responseSize: 0,
+  status: '',
+  headers: [],
   timeline: '',
 };
 
 const createResponseSlice: TStoreSlice<IResponseSlice> = (set, get) => ({
-  response: { statusCode: 0 },
+  response: { code: 0 },
   initialiseResponse: (response: IRestResponse) => {
     set((s) => ({
       response: {

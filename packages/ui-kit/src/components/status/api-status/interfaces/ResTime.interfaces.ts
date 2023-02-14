@@ -12,5 +12,5 @@ export interface IResTime {
     /**
      * API response time
      */
-    duration: number
+    time: number
 }

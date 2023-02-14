@@ -11,7 +11,7 @@ const ResponseMetaData = () => {
     }),
     shallow
   );
-  const { duration, size, statusCode } = response || {};
+  const { responseTime, responseSize, statusCode } = response || {};
   const _getStatusObj = (statusCode) => {
     return (
       Statuses[statusCode] || { statusCode, color: 'gray', text: 'custom' }
@@ -54,8 +54,8 @@ const ResponseMetaData = () => {
           {..._getStatusObj(statusCode)}
           isRequestRunning={isRequestRunning}
         />
-        <ResTime duration={duration} isRequestRunning={isRequestRunning} />
-        <ResSize size={size} isRequestRunning={isRequestRunning} />
+        <ResTime time={responseTime} isRequestRunning={isRequestRunning} />
+        <ResSize size={responseSize} isRequestRunning={isRequestRunning} />
       </div>
     </div>
   );
