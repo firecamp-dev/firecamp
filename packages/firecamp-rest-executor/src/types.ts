@@ -1,11 +1,5 @@
 import { IRest, IRestResponse, TRuntimeVariable } from '@firecamp/types';
 
-export type TResponse = Partial<
-  Omit<IRestResponse, 'error'> & {
-    error?: { message?: string; code?: string | number; e?: any };
-  }
->;
-
 export interface IRestExecutor {
   /**
    * send the request to the server and return the response
@@ -19,7 +13,12 @@ export interface IRestExecutor {
       environment: TRuntimeVariable[];
       collectionVariables: TRuntimeVariable[];
     }
-  ): Promise<TResponse>;
+  ): Promise<{
+    response: IRestResponse;
+    variables: any;
+    testResult?: any;
+    scriptErrors?: any[];
+  }>;
 
   /**  cancel the request */
   cancel(): void;

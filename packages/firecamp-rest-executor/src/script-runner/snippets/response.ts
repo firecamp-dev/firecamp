@@ -18,13 +18,13 @@ export default {
         },
         {
           id: 'size',
-          name: 'size',
-          value: ['fc.response.size;'],
+          name: 'responseSize',
+          value: ['fc.response.responseSize;'],
         },
         {
-          id: 'statusCode',
+          id: 'code',
           name: 'status code',
-          value: ['fc.response.statusCode;'],
+          value: ['fc.response.code;'],
         },
         {
           id: 'statusMessage',

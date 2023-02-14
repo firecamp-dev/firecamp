@@ -1,26 +1,9 @@
+import { FC } from 'react';
 import cx from 'classnames';
 import { TestResultTable } from '@firecamp/ui-kit';
 
-const TestScriptResult = ({ result }) => {
+const TestScriptResult: FC<any> = ({ result }) => {
   console.log(result, 'TestScriptResult...');
-  return (
-    <TestResultTable
-      rows={[
-        {
-          isPassed: true,
-          name: 'Response time is less than 200ms',
-        },
-        {
-          isPassed: false,
-          name: 'Successful POST request',
-        },
-        {
-          isPassed: true,
-          name: 'Response code is less than 201',
-        },
-      ]}
-      onChange={() => {}}
-    />
-  );
+  return <TestResultTable rows={result.tests} onChange={() => {}} />;
 };
 export default TestScriptResult;

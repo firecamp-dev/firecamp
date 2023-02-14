@@ -46,7 +46,7 @@ beforeAll(async () => {
   //   //@ts-ignore
   //   request.postScripts || [],
   //   {
-  //     statusCode: 202,
+  //     code: 202,
   //   },
   //   {}
   // );

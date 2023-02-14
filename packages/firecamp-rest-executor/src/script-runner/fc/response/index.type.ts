@@ -91,7 +91,7 @@ export interface ToHaveAssertions {
   /**
    * response should have status code
    */
-  statusCode: (statusCode: number) => boolean;
+  code: (code: number) => boolean;
 }
 
 /**

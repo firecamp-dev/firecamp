@@ -12,7 +12,7 @@ import {
 import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 import parseBody from './helpers/body';
-import { IRestExecutor, TResponse } from './types';
+import { IRestExecutor } from './types';
 import * as scriptRunner from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
@@ -142,17 +142,21 @@ export default class RestExecutor implements IRestExecutor {
       environment: TRuntimeVariable[];
       collectionVariables: TRuntimeVariable[];
     }
-  ): Promise<TResponse | any> {
+  ) {
     console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
       return Promise.resolve({
-        statusCode: 0,
-        error: {
-          message,
-          code: 'INVALID REQUEST',
-          e: new Error(message),
+        response: {
+          body: '',
+          code: 0,
+          error: {
+            message,
+            code: 'INVALID REQUEST',
+            e: new Error(message),
+          },
         },
+        variables,
       });
     }
 
@@ -272,7 +276,8 @@ export default class RestExecutor implements IRestExecutor {
           }
           return Promise.resolve({
             response: {
-              statusCode: 0,
+              body: '',
+              code: 0,
               error: {
                 message: e.message,
                 code: e.code,
@@ -321,7 +326,7 @@ export default class RestExecutor implements IRestExecutor {
           response,
           variables: { globals, environment, collectionVariables },
           testResult,
-          errors,
+          scriptErrors: errors,
         };
       });
     // .then(() => {

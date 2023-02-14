@@ -8,6 +8,7 @@ import Tabs from './tabs/Tabs';
 interface IResponsePanel {
   id: TId;
   response: IRestResponse;
+  testResult: any,
   isRequestRunning?: boolean;
   docLink?: string;
   client?: string;
@@ -15,6 +16,7 @@ interface IResponsePanel {
 const Response: FC<IResponsePanel> = ({
   id,
   response,
+  testResult,
   isRequestRunning = false,
   docLink = '',
   client = '',
@@ -39,6 +41,7 @@ const Response: FC<IResponsePanel> = ({
               <Tabs
                 id={id}
                 response={response}
+                testResult={testResult}
                 isRequestRunning={isRequestRunning}
                 activeBodyTab={activeBodyTab}
                 onChangeActiveBodyTab={(tab) => {

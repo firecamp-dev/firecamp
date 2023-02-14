@@ -11,10 +11,10 @@ const ResponseMetaData = () => {
     }),
     shallow
   );
-  const { responseTime, responseSize, statusCode } = response || {};
-  const _getStatusObj = (statusCode) => {
+  const { responseTime, responseSize, code } = response || {};
+  const _getStatusObj = (code) => {
     return (
-      Statuses[statusCode] || { statusCode, color: 'gray', text: 'custom' }
+      Statuses[code] || { code, color: 'gray', text: 'custom' }
     );
   };
 
@@ -51,7 +51,7 @@ const ResponseMetaData = () => {
       )}ƒ
       <div>
         <ResStatus
-          {..._getStatusObj(statusCode)}
+          {..._getStatusObj(code)}
           isRequestRunning={isRequestRunning}
         />
         <ResTime time={responseTime} isRequestRunning={isRequestRunning} />

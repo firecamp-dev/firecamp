@@ -4,10 +4,11 @@ import shallow from 'zustand/shallow';
 import { IStore, useStore } from '../../store';
 
 const Response: FC<any> = () => {
-  const { requestId, response, isRequestRunning } = useStore(
+  const { requestId, response, testResult, isRequestRunning } = useStore(
     (s: IStore) => ({
       requestId: s.request.__ref?.id,
       response: s.response,
+      testResult: s.testResult,
       isRequestRunning: s.runtime.isRequestRunning,
     }),
     shallow
@@ -17,6 +18,7 @@ const Response: FC<any> = () => {
     <ResponsePanel
       id={requestId}
       response={response}
+      testResult={testResult}
       isRequestRunning={isRequestRunning}
       docLink={'https://doc.firecamp.io/http/a/sending-your-first-request/'}
       client={'Rest'}

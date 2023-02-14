@@ -6,121 +6,121 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
 
     utils.addProperty(Assertion.prototype, 'accepted', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode === 202,
-            `expected response to have a status code 202 but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code === 202,
+            `expected response to have a status code 202 but found ${this._obj?.code}`,
             `expected response to not have a status code 202`,
             202,
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'badRequest', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode === 202,
-            `expected response to have a status code 400 but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code === 202,
+            `expected response to have a status code 400 but found ${this._obj?.code}`,
             `expected response to not have a status code 400`,
             400,
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'clientError', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode > 399 && this._obj?.statusCode < 500,
-            `expected response to have a status code 4xx but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code > 399 && this._obj?.code < 500,
+            `expected response to have a status code 4xx but found ${this._obj?.code}`,
             `expected response to not have a status code 4xx`,
             '4xx',
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'forbidden', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode === 403,
-            `expected response to have a status code 403 but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code === 403,
+            `expected response to have a status code 403 but found ${this._obj?.code}`,
             `expected response to not have a status code 403`,
             403,
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'info', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode > 99 && this._obj?.statusCode < 200,
-            `expected response to have a status code 1xx but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code > 99 && this._obj?.code < 200,
+            `expected response to have a status code 1xx but found ${this._obj?.code}`,
             `expected response to not have a status code 1xx`,
             '1xx',
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'notFound', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode === 404,
-            `expected response to have a status code 404 but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code === 404,
+            `expected response to have a status code 404 but found ${this._obj?.code}`,
             `expected response to not have a status code 404`,
             404,
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'ok', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode === 200,
-            `expected response to have a status code 200 but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code === 200,
+            `expected response to have a status code 200 but found ${this._obj?.code}`,
             `expected response to not have a status code 200`,
             200,
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'rateLimited', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode === 429,
-            `expected response to have a status code 429 but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code === 429,
+            `expected response to have a status code 429 but found ${this._obj?.code}`,
             `expected response to not have a status code 429`,
             429,
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'redirection', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode > 299 && this._obj?.statusCode < 400,
-            `expected response to have a status code 3xx but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code > 299 && this._obj?.code < 400,
+            `expected response to have a status code 3xx but found ${this._obj?.code}`,
             `expected response to not have a status code 3xx`,
             '3xx',
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'redirection', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode > 499 && this._obj?.statusCode < 600,
-            `expected response to have a status code 5xx but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code > 499 && this._obj?.code < 600,
+            `expected response to have a status code 5xx but found ${this._obj?.code}`,
             `expected response to not have a status code 5xx`,
             '5xx',
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'redirection', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode > 199 && this._obj?.statusCode < 300,
-            `expected response to have a status code 2xx but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code > 199 && this._obj?.code < 300,
+            `expected response to have a status code 2xx but found ${this._obj?.code}`,
             `expected response to not have a status code 2xx`,
             '2xx',
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
     utils.addProperty(Assertion.prototype, 'rateLimited', function () {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode === 401,
-            `expected response to have a status code 401 but found ${this._obj?.statusCode}`,
+            !Number.isNaN(this._obj?.code) && this._obj?.code === 401,
+            `expected response to have a status code 401 but found ${this._obj?.code}`,
             `expected response to not have a status code 401`,
             401,
-            this._obj?.statusCode
+            this._obj?.code
         )
     })
 
@@ -174,13 +174,13 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
         )
     })
 
-    utils.addMethod(Assertion.prototype, 'statusCode', function (statusCode: number) {
+    utils.addMethod(Assertion.prototype, 'code', function (code: number) {
         this.assert(
-            !Number.isNaN(this._obj?.statusCode) && this._obj?.statusCode === statusCode,
-            `expected response to have a status code ${statusCode} but found ${this._obj?.statusCode}`,
-            `expected response to not have a status code ${statusCode}`,
-            statusCode,
-            this._obj?.statusCode
+            !Number.isNaN(this._obj?.code) && this._obj?.code === code,
+            `expected response to have a status code ${code} but found ${this._obj?.code}`,
+            `expected response to not have a status code ${code}`,
+            code,
+            this._obj?.code
         )
     })
 }

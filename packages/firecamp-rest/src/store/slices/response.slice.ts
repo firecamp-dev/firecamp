@@ -1,12 +1,20 @@
 import { IRestResponse } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 
+type TTestResult = {
+  pass?: number;
+  failed?: number;
+  total?: number;
+  tests?: { name: string; isPassed: boolean; error?: any }[];
+};
 interface IResponseSlice {
   response: IRestResponse;
+  testResult: TTestResult;
   initialiseResponse: (response: IRestResponse) => void;
+  setTestResult: (testResult: TTestResult) => void;
 }
 
-const emptyResponse = {
+const emptyResponse: IRestResponse = {
   body: '',
   responseTime: 0,
   responseSize: 0,
@@ -17,12 +25,18 @@ const emptyResponse = {
 
 const createResponseSlice: TStoreSlice<IResponseSlice> = (set, get) => ({
   response: { code: 0 },
+  testResult: {},
   initialiseResponse: (response: IRestResponse) => {
     set((s) => ({
       response: {
         ...emptyResponse,
         ...response,
       },
+    }));
+  },
+  setTestResult: (testResult) => {
+    set((s) => ({
+      testResult,
     }));
   },
 });

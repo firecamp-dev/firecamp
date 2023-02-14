@@ -222,9 +222,9 @@ export default {
           value: 'response.to.have.jsonSchema("schema");',
         },
         {
-          id: 'statusCode',
+          id: 'code',
           name: 'response should have status code',
-          value: 'response.to.have.statusCode();',
+          value: 'response.to.have.code(200);',
         },
       ],
     },

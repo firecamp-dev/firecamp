@@ -145,7 +145,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     const state = get();
     try {
       // set response empty
-      set({ response: { statusCode: 0 } });
+      set({ response: { code: 0 } });
 
       // Check if request is running or not. stop running request if already true
       if (state.runtime.isRequestRunning === true) {
@@ -182,14 +182,11 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         })
         .then(async ({ response, variables, testResult, errors }) => {
           if (response) {
-            set((s) => ({ response })); // TODO: check what to set/ response or testScriptResponse
+            set((s) => ({ response, testResult })); // TODO: check what to set/ response or testScriptResponse
           }
           // TODO: add cookies
           if (variables) {
             // TODO: set variables changes in storage
-          }
-          if (testResult?.total) {
-            //TODO: show test result in the UI
           }
 
           if (errors) {

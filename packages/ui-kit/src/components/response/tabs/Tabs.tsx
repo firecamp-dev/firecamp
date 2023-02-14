@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { _misc } from '@firecamp/utils';
-import { TId } from '@firecamp/types';
+import { IRestResponse, TId } from '@firecamp/types';
 import { CustomMessage, Container, Tabs as TabsUI } from '@firecamp/ui-kit';
 import BodyTab from './BodyTab';
 import HeaderTab from './HeaderTab';
@@ -19,7 +19,8 @@ enum EResponseTabs {
 
 interface IResTabs {
   id: TId;
-  response: any;
+  response: IRestResponse;
+  testResult: any;
   error?: any;
   activeBodyTab: string;
   isRequestRunning: boolean;
@@ -29,13 +30,13 @@ interface IResTabs {
 const Tabs: FC<IResTabs> = ({
   id,
   response,
+  testResult = {},
   error,
   activeBodyTab = EResponseTabs.Body,
   isRequestRunning,
   onChangeActiveBodyTab = (tab: string) => {},
 }) => {
   const {
-    config,
     body,
     responseTime,
     responseSize,
@@ -45,8 +46,9 @@ const Tabs: FC<IResTabs> = ({
     cookies,
     // error,
     timeline,
-    testResult,
   } = response;
+
+  const { total, passed, failed } = testResult || {};
 
   const [tabs] = useState([
     { name: EResponseTabs.Body, id: EResponseTabs.Body, count: 0 },
@@ -61,7 +63,13 @@ const Tabs: FC<IResTabs> = ({
       count: cookies?.length || 0,
     },
     { name: EResponseTabs.Timeline, id: EResponseTabs.Timeline, count: 0 },
-    { name: EResponseTabs.TestResult, id: EResponseTabs.TestResult },
+    {
+      name:
+        total > 0
+          ? `${EResponseTabs.TestResult} (${passed}/${total})`
+          : EResponseTabs.TestResult,
+      id: EResponseTabs.TestResult,
+    },
   ]);
   const [activeTab, setActiveTab] = useState<string>(
     activeBodyTab || EResponseTabs.Body

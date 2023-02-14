@@ -118,7 +118,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       }
     );
     // console.log(_request, 'request...');
-    // let response: IRestResponse = { statusCode: 0 };
+    // let response: IRestResponse = { code: 0 };
     state.setRequestRunningFlag(activePlayground, true);
     return state.context.request
       .execute(_request)
