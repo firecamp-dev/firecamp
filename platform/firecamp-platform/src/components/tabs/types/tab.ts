@@ -95,8 +95,9 @@ export interface IRequestTabProps {
 }
 
 export enum ETabEntityTypes {
-  Request = 'request',
   Environment = 'environment',
   Collection = 'collection',
   Folder = 'folder',
+  Request = 'request',
+  Import = 'import',
 }

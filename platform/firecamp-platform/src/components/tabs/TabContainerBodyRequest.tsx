@@ -32,6 +32,7 @@ import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 import EnvironmentTab from '../common/environment/tabs/Environment';
 import CollectionFolderEntityTab from '../common/collection/CollectionFolderEntityTab';
+import ImportTab from '../common/collection/ImportTab';
 
 const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
   if (!tab || index === -1) {
@@ -105,6 +106,8 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
       case ETabEntityTypes.Collection:
       case ETabEntityTypes.Folder:
         return <CollectionFolderEntityTab {...tabProps} />;
+      case ETabEntityTypes.Import:
+        return <ImportTab {...tabProps} />;
       default:
         return <>No Entity Tab Found</>;
     }

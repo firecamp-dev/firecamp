@@ -10,6 +10,7 @@ import {
 import { ETabEntityTypes } from '../types';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
+import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 
 const PreComp: FC<{ entity: any; entityType: string }> = ({
   entity,
@@ -63,6 +64,12 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
       return (
         <div className="folder text-xs font-bold w-5 invert tab-icon">
           <VscFolderOpened size={20} />
+        </div>
+      );
+    case ETabEntityTypes.Import:
+      return (
+        <div className="text-xs font-bold w-5 invert tab-icon">
+          <VscArrowDown size={20} />
         </div>
       );
     default:

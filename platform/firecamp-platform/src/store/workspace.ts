@@ -17,6 +17,7 @@ import platformContext from '../services/platform-context';
 import { RE } from '../types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
+import { ETabEntityTypes } from '../components/tabs/types';
 
 const initialState = {
   workspace: {
@@ -73,6 +74,7 @@ export interface IWorkspaceStore {
   onCreateCollection: (collection: ICollection) => void;
   onUpdateCollection: (collection: Partial<ICollection>) => void;
   onDeleteCollection: (collection: TId | ICollection) => void;
+  openImportTab: () => void;
 
   // folder
   openFolderTab: (folderId: TId) => void;
@@ -392,6 +394,12 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         };
         s.explorer.tdpInstance?.deleteCollectionItem(cId);
         return { workspace, explorer: { ...s.explorer, collections } };
+      });
+    },
+    openImportTab: () => {
+      platformEmitter.emit(EPlatformTabs.Open, {
+        entity: { name: 'Import API Collection', description: '' },
+        __meta: { id: 'import-api-collection', type: ETabEntityTypes.Import },
       });
     },
 
