@@ -1,5 +1,5 @@
 import chai from 'chai';
-import { EHttpMethod, IHeader, IRest, IRestBody, IUrl } from '@firecamp/types';
+import { EHttpMethod, IHeader, IRest, IRestBody, IUrl, TPlainObject } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import { IScriptRequest } from './index.type';
 
@@ -40,7 +40,7 @@ export class Request implements IScriptRequest {
     const h = this.headers.find((header) => header.key === headerName);
     return h?.value || 'Ô';
   }
-  getHeaders(): { [key: string]: string } {
+  getHeaders(): TPlainObject {
     return this.headers.reduce<any>((headers, item) => {
       headers[item.key] = item.value;
       return headers;
@@ -71,7 +71,6 @@ export class Request implements IScriptRequest {
   }
   getQueryParam(queryName: string): string | undefined {
     if (!Array.isArray(this.url.queryParams)) return undefined;
-
     const q = this.url.queryParams.find((query) => query.key === queryName);
     return q?.value || '';
   }

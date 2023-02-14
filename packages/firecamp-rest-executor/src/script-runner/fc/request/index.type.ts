@@ -1,4 +1,4 @@
-import { EHttpMethod, IHeader, IRestBody, IUrl } from '@firecamp/types';
+import { EHttpMethod, IHeader, IRestBody, IUrl, TPlainObject } from '@firecamp/types';
 
 /** request instance for script*/
 export interface IScriptRequest {
@@ -24,7 +24,7 @@ export interface IScriptRequest {
   getHeader: (headerName: string) => string;
 
   /** returns a js object, { [headerName]: headerValue,... } */
-  getHeaders: () => { [key: string]: string };
+  getHeaders: () => TPlainObject;
 
   /** remove the header */
   removeHeader: (...headerNames: string[]) => void;
