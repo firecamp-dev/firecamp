@@ -11,13 +11,11 @@ import {
 import { _misc, _string } from '@firecamp/utils';
 import jsExecutor from './lib/js-executor';
 import requestAssertionPlugin from './fc/request/assertions';
-import responseAssertionPlugin from './fc/response/assertions';
 import Fc from './fc';
 
 export * from './snippets';
 
 chai.use(requestAssertionPlugin);
-chai.use(responseAssertionPlugin);
 
 export const preScript: TPreScript = async (
   request: IRest,
@@ -38,7 +36,7 @@ export const preScript: TPreScript = async (
 
   try {
     const code = prepareCode(value);
-    return await jsExecutor(code, { fc });
+    return await jsExecutor(code, { fc, tests: [] });
   } catch (e) {
     console.info(
       '%c pre-request script sandbox error',
@@ -72,7 +70,12 @@ export const testScript: TTestScript = async (
 
   try {
     const code = prepareCode(value);
-    return await jsExecutor(code, { fc });
+    return await jsExecutor(code, {
+      fc,
+      responseCode: { code: response.code },
+      responseTime: response.responseTime,
+      tests: [],
+    });
   } catch (e) {
     console.info('%c test-script sandbox error', 'color: red; font-size: 14px');
     // console.error('execute test script', e);
@@ -90,6 +93,16 @@ export const testScript: TTestScript = async (
 const prepareCode = (value: string) => {
   return `(()=>{
             ${value}
+            for(let name in tests) { 
+              if(name){
+                const t = tests[name];
+                const r = typeof t == 'function'? t(): t;
+                const fn = ()=> {
+                  if(!r) throw Error('test is failing')
+                }
+                fc.test(name, fn)
+              }
+            }
             return {
               fc: fc.toJSON(),
               result: typeof result === 'undefined'? null: result, // for testing purpose to return the value, let result = fc.globals.get('name')
