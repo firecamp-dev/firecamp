@@ -13,7 +13,7 @@ import {
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
-import CodeSnippets from './common/code-snippets/CodeSnippets';
+// import CodeSnippets from './common/code-snippets/CodeSnippets';
 import { useStore, StoreProvider, createStore, IStore } from '../store';
 
 const Rest = ({ tab, platformContext }) => {
@@ -22,6 +22,7 @@ const Rest = ({ tab, platformContext }) => {
     initialise,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
+    setParentArtifacts,
     setContext,
   } = useStore(
     (s: IStore) => ({
@@ -32,6 +33,7 @@ const Rest = ({ tab, platformContext }) => {
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
+      setParentArtifacts: s.setParentArtifacts,
       setContext: s.setContext,
     }),
     shallow
@@ -63,30 +65,43 @@ const Rest = ({ tab, platformContext }) => {
 
   useEffect(() => {
     const _fetchRequest = async () => {
-      try {
-        const requestId = tab.entity?.__ref?.id;
-        const isRequestSaved = !!requestId;
-        // prepare a minimal request payload
-        let _request: IRest = normalizeRequest({});
+      const requestId = tab.entity?.__ref?.id;
+      const isRequestSaved = !!requestId;
+      // prepare a minimal request payload
+      let _request: IRest = normalizeRequest({});
 
-        if (isRequestSaved === true) {
-          setIsFetchingReqFlag(true);
-          try {
-            const request = await platformContext.request.fetch(requestId);
-            _request = { ...request };
-          } catch (error) {
-            console.error(error, 'fetch rest request');
-            throw error;
-          }
+      if (isRequestSaved === true) {
+        setIsFetchingReqFlag(true);
+        try {
+          const request = await platformContext.request.fetch(requestId);
+          _request = { ...request };
+        } catch (error) {
+          console.error(error, 'fetch rest request');
+          throw error;
         }
-        /** initialise rest store on tab load */
-        initialise(_request, tab.id);
-        setIsFetchingReqFlag(false);
-      } catch (e) {
-        console.error(e);
       }
+      /** initialise rest store on tab load */
+      initialise(_request, tab.id);
+      setIsFetchingReqFlag(false);
     };
     _fetchRequest();
+
+    const _fetchRequestParentArtifacts = async () => {
+      const requestId = tab.entity?.__ref?.id;
+      const isRequestSaved = !!requestId;
+      if (isRequestSaved === true) {
+        platformContext.request
+          .fetchParentArtifacts(requestId)
+          .then((res) => {
+            setParentArtifacts(res);
+            // console.log(res, 'artifacts');
+          })
+          .catch((e) => {
+            console.error(e, 'fetch rest request parent artifacts');
+          });
+      }
+    };
+    _fetchRequestParentArtifacts();
   }, []);
 
   /**

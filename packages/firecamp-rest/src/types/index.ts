@@ -11,7 +11,6 @@ export enum EReqChangeRootKeys {
 export enum EReqChangeMetaKeys {
   name = 'name',
   description = 'description',
-  inheritScripts = 'inheritScripts',
 }
 
 export enum EReqChangeUrlKeys {

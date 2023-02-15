@@ -261,7 +261,6 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
   _nr.__meta.description = __meta.description || '';
   _nr.__meta.version = '2.0.0';
   _nr.__meta.type = ERequestTypes.Rest;
-  // _nr.__meta.inheritedAuth = __meta.inheritedAuth;
 
   // normalize __ref
   _nr.__ref.id = __ref.id || nanoid();
@@ -298,11 +297,16 @@ export const initialiseStoreFromRequest = (
       bodies: _cloneDeep(RuntimeBodies),
       auths: _cloneDeep(_auth.defaultAuthState),
       authHeaders: [],
-      inherit: {
-        auth: {
-          active: '',
-          payload: { value: '', type: EAuthTypes.None },
-          oauth2LastFetchedToken: '',
+      parentArtifacts: {
+        collection: {
+          auth: { type: EAuthTypes.None, value: '' },
+          preScripts: [],
+          postScripts: [],
+        },
+        folder: {
+          auth: { type: EAuthTypes.None, value: '' },
+          preScripts: [],
+          postScripts: [],
         },
       },
       isRequestSaved: !!request.__ref.collectionId,
