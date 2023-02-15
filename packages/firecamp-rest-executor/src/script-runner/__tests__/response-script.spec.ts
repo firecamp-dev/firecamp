@@ -93,12 +93,10 @@ describe('post[x]-script, x = tests', () => {
   });
 
   it('chain: fc.response.to.have', () => {
-    const rBody = new Response({ body: { name: 'Ramanujan' } });
-
+    // const rBody = new Response({ body: { name: 'Ramanujan' } });
     // TODO: need to write tests
     // expect(rBody.to.have.body).toContainEqual({ name: 'Ramanujan' });
     // expect(rBody).toHaveProperty('to.have.body', { name: 'Ramanujan' });
-
     // expect(r401).toHaveProperty('to.have.header');
     // expect(r401).toHaveProperty('to.have.jsonBody');
     // expect(r401).toHaveProperty('to.have.jsonSchema');

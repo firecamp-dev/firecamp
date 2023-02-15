@@ -15,7 +15,7 @@ import { _array, _auth, _env, _object } from '@firecamp/utils';
 import { ICollection, IFolder } from '@firecamp/types';
 import {
   preScriptSnippets,
-  postScriptSnippets,
+  testScriptSnippets,
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import { Rest } from '@firecamp/cloud-apis';
 import EditInfo from './tabs/EditInfo';
@@ -235,7 +235,7 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
           <Scripts
             entity={entity}
             scripts={entity.postScripts}
-            snippets={postScriptSnippets}
+            snippets={testScriptSnippets}
             isRequesting={isRequesting}
             isScriptChanged={!isEqual(_oEntity.postScripts, entity.postScripts)}
             onChange={(postScripts) => onChange('postScripts', postScripts)}

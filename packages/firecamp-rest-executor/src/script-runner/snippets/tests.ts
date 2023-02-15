@@ -44,7 +44,7 @@ export default {
       snippets: [
         {
           id: 'test-1',
-          name: 'Response status: Code is 200',
+          name: 'status: Code is 200',
           value: [
             'fc.test("Status code is 200", ()=> {',
             '    fc.response.to.have.status(200);',
@@ -53,7 +53,25 @@ export default {
         },
         {
           id: 'test-2',
-          name: 'Response body: Contains string',
+          name: 'status: successful POST request',
+          value: [
+            'fc.test("Successful POST request", ()=> {',
+            '    fc.expect(fc.response.code).to.be.oneOf([201, 202]);',
+            '});',
+          ],
+        },
+        {
+          id: 'test-3',
+          name: 'status: code name has string',
+          value: [
+            'fc.test("Status code name has string", ()=> {',
+            '    fc.response.to.have.status("Created");',
+            '});',
+          ],
+        },
+        {
+          id: 'test-4',
+          name: 'body: Contains string',
           value: [
             'fc.test("Body matches string", ()=> {',
             '    fc.expect(fc.response.text()).to.include("string_you_want_to_search");',
@@ -61,8 +79,8 @@ export default {
           ],
         },
         {
-          id: 'test-3',
-          name: 'Response body: JSON value check',
+          id: 'test-5',
+          name: 'body: JSON value check',
           value: [
             'fc.test("Your test name", ()=> {',
             '    const jsonData = fc.response.json();',
@@ -71,8 +89,8 @@ export default {
           ],
         },
         {
-          id: 'test-4',
-          name: 'Response body: is equal to string',
+          id: 'test-6',
+          name: 'body: is equal to string',
           value: [
             'fc.test("Body is correct", ()=> {',
             '    fc.response.to.have.body("response_body_string");',
@@ -80,8 +98,8 @@ export default {
           ],
         },
         {
-          id: 'test-5',
-          name: 'Response headers: Content-Type header check',
+          id: 'test-7',
+          name: 'headers: Content-Type header check',
           value: [
             'fc.test("Content-Type is present", ()=> {',
             '    fc.response.to.have.header("Content-Type");',
@@ -89,29 +107,11 @@ export default {
           ],
         },
         {
-          id: 'test-6',
-          name: 'Response time: less than 200ms',
+          id: 'test-8',
+          name: 'time: less than 200ms',
           value: [
             'fc.test("Response time is less than 200ms", ()=> {',
             '    fc.expect(fc.response.responseTime).to.be.below(200);',
-            '});',
-          ],
-        },
-        {
-          id: 'test-7',
-          name: 'Response status: successful POST request',
-          value: [
-            'fc.test("Successful POST request", ()=> {',
-            '    fc.expect(fc.response.code).to.be.oneOf([201, 202]);',
-            '});',
-          ],
-        },
-        {
-          id: 'test-8',
-          name: 'Response status: code name has string',
-          value: [
-            'fc.test("Status code name has string", ()=> {',
-            '    fc.response.to.have.status("Created");',
             '});',
           ],
         },

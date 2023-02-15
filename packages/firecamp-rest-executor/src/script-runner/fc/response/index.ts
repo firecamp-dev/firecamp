@@ -38,7 +38,7 @@ export class Response {
     }
   }
 
-  /** return response body in a JSON string */
+  /** return response body in a JSON object */
   json(): any {
     try {
       if (_object.isObject(this.body) || Array.isArray(this.body))
