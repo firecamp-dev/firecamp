@@ -1,6 +1,6 @@
 {
   "name": "@firecamp/rest-executor",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "REST request executor",
   "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
   "license": "",
