@@ -1,6 +1,5 @@
 // import Joi from '@hapi/joi';
-// import tv4 from 'tv4';
-import chai from 'chai';
+import tv4 from 'tv4';
 import {
   EScriptTypes,
   IRest,
@@ -10,12 +9,9 @@ import {
 } from '@firecamp/types';
 import { _misc, _string } from '@firecamp/utils';
 import jsExecutor from './lib/js-executor';
-import requestAssertionPlugin from './fc/request/assertions';
 import Fc from './fc';
 
 export * from './snippets';
-
-chai.use(requestAssertionPlugin);
 
 export const preScript: TPreScript = async (
   request: IRest,
@@ -75,6 +71,7 @@ export const testScript: TTestScript = async (
       responseCode: { code: response.code },
       responseTime: response.responseTime,
       tests: [],
+      tv4,
     });
   } catch (e) {
     console.info('%c test-script sandbox error', 'color: red; font-size: 14px');

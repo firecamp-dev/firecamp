@@ -23,7 +23,7 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
     'badRequest',
     function (this: Chai.AssertionStatic) {
       this.assert(
-        !Number.isNaN(this._obj?.code) && this._obj?.code === 202,
+        !Number.isNaN(this._obj?.code) && this._obj?.code === 400,
         `expected response to have a status code 400 but found ${this._obj?.code}`,
         `expected response to not have a status code 400`,
         400,
@@ -138,7 +138,7 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
 
   utils.addProperty(
     Assertion.prototype,
-    'redirection',
+    'serverError',
     function (this: Chai.AssertionStatic) {
       this.assert(
         !Number.isNaN(this._obj?.code) &&
@@ -154,7 +154,7 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
 
   utils.addProperty(
     Assertion.prototype,
-    'redirection',
+    'success',
     function (this: Chai.AssertionStatic) {
       this.assert(
         !Number.isNaN(this._obj?.code) &&
@@ -170,7 +170,7 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
 
   utils.addProperty(
     Assertion.prototype,
-    'rateLimited',
+    'unauthorized',
     function (this: Chai.AssertionStatic) {
       this.assert(
         !Number.isNaN(this._obj?.code) && this._obj?.code === 401,
@@ -187,7 +187,7 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
     'body',
     function (this: Chai.AssertionStatic) {
       this.assert(
-        !_object.isEmpty(this._obj.data),
+        !_object.isEmpty(this._obj.body),
         `expecting request should have body but not found`,
         `expecting request should not have body`,
         this._obj?.body
@@ -217,7 +217,6 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
       const isJSON = (data: any) => {
         try {
           JSON.parse(data);
-
           return true;
         } catch (error) {
           return false;
@@ -239,7 +238,6 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
     function (this: Chai.AssertionStatic, schema: any, options: any) {
       const ajv = new Ajv(options);
       const result = ajv.validate(schema, this._obj.json());
-
       this.assert(
         result && !ajv.errors,
         `expected response data should validate with JSON schema but found errors: ${ajv.errorsText()}`,

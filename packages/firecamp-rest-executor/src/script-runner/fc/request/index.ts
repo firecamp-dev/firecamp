@@ -1,7 +1,15 @@
 import chai from 'chai';
-import { EHttpMethod, IHeader, IRest, IRestBody, IUrl, TPlainObject } from '@firecamp/types';
+import {
+  EHttpMethod,
+  IHeader,
+  IRest,
+  IRestBody,
+  IUrl,
+  TPlainObject,
+} from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import { IScriptRequest } from './index.type';
+import requestAssertionPlugin from './assertions'
 
 /** request script */
 export class Request implements IScriptRequest {
@@ -9,19 +17,16 @@ export class Request implements IScriptRequest {
   headers: IHeader[] = [];
   method: EHttpMethod | string;
   body?: IRestBody;
+  to: any;
 
   constructor(request: IRest) {
     this.url = { ...this.url, ...request.url };
     this.headers = request.headers || [];
     this.method = request.method || EHttpMethod.GET;
     this.body = request?.body;
+    chai.use(requestAssertionPlugin);
+    this.to = chai.expect(this).to;
   }
-
-  to = {
-    get() {
-      return chai.expect(this).to;
-    },
-  };
 
   addHeader(headerName: string, headerValue: string): void {
     this.headers.push({

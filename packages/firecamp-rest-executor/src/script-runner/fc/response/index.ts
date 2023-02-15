@@ -22,7 +22,6 @@ export class Response {
     this.status = response.status || '';
     this.responseTime = response.responseTime || 0;
     this.responseSize = response.responseSize || 0;
-    // this.headers = _table.objectToTable(this.headers || {});
     chai.use(responseAssertionPlugin);
     this.to = chai.expect(this).to;
   }
