@@ -42,7 +42,7 @@ const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
         </Resizable>
         <div className="">
           Value
-          <div className="response-headers-action1 flex float-right h-5">
+          {/* <div className="response-headers-action1 flex float-right h-5">
             <Button
               text="copy text"
               onClick={(e) => _copyAsText(headers)}
@@ -59,7 +59,7 @@ const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
               ghost
               sm
             />
-          </div>
+          </div> */}
         </div>
       </div>
 

@@ -7,14 +7,14 @@ import { Loader } from '@firecamp/ui-kit';
 import JsonTab from './requests/json/Request';
 import MdTab from './requests/markdown/Request';
 
-// import { Rest } from '@firecamp/rest';
+import { Rest } from '@firecamp/rest';
 // import { GraphQL } from '@firecamp/graphql';
 // import { WSClient } from '@firecamp/websocket';
 // import { SocketIOClient } from '@firecamp/socket.io';
 
-const Rest = lazy(() =>
-  import('@firecamp/rest').then((module) => ({ default: module.Rest }))
-);
+// const Rest = lazy(() =>
+//   import('@firecamp/rest').then((module) => ({ default: module.Rest }))
+// );
 const GraphQL = lazy(() =>
   import('@firecamp/graphql').then((module) => ({ default: module.GraphQL }))
 );
@@ -70,11 +70,12 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
         const type = tab.entity?.__meta?.type;
         switch (type) {
           case ERequestTypes.Rest:
-            return (
-              <Suspense fallback={<Loader />}>
-                <Rest {...tabProps} />
-              </Suspense>
-            );
+            return <Rest {...tabProps} />;
+          // return (
+          //   <Suspense fallback={<Loader />}>
+          //     <Rest {...tabProps} />
+          //   </Suspense>
+          // );
           case ERequestTypes.GraphQL:
             return (
               <Suspense fallback={<Loader />}>

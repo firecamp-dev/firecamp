@@ -8,10 +8,11 @@ import Helper from './Helper';
 import { useEnvStore } from '../../../../store/environment';
 
 const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
-  const { environments, activeEnvId } = useEnvStore(
+  const { environments, activeEnvId, createEnvironmentPrompt } = useEnvStore(
     (s) => ({
       environments: s.environments,
       activeEnvId: s.activeEnvId,
+      createEnvironmentPrompt: s.createEnvironmentPrompt,
     }),
     shallow
   );
@@ -28,13 +29,21 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
   const _onSelectEnv = (env: { id: string }) => {
     console.log({ env });
     if (env === menu.selected) return;
-    onChange(env.id);
+    if (env.id == 'fc-new-environment') {
+      createEnvironmentPrompt();
+    } else {
+      onChange(env.id);
+    }
   };
 
   const options = [
     {
-      header: 'Environments',
+      header: 'Select Environment',
       list: menu.options,
+    },
+    {
+      header: 'Create New',
+      list: [{ id: 'fc-new-environment', name: 'Create New Environment' }],
     },
   ];
 
