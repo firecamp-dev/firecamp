@@ -123,7 +123,7 @@ const Tabs: FC<IResTabs> = ({
           )}
         />
       </Container.Header>
-      <Container.Body>
+      <Container.Body className="flex flex-col">
         {_renderTab(activeTab)}
         <ScriptErrors errors={scriptErrors} />
       </Container.Body>
@@ -139,7 +139,7 @@ export default Tabs;
 const ScriptErrors = ({ errors = [] }) => {
   console.log(errors, 'erros..... errors');
   return (
-    <div className='absolute w-full bottom-0'>
+    <div className=' w-full bg-appBackground'>
       {errors.map((e, i) => (
         <ScriptErrorTable error={e} key={i} />
       ))}
