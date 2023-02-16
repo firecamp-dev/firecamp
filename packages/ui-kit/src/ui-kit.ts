@@ -73,8 +73,9 @@ export { CheckboxInGrid } from './components/checkbox/Checkbox';
 export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CMGQueryEditor';
 
 export { default as Editor } from './components/editors/monaco-v2/Editor';
-export { default as SingleLineEditor } from './components/editors/monaco-v2/SingleLineEditor';
 export { default as EditorControlBar } from './components/editors/monaco-v2/EditorControlBar';
+export { default as SingleLineEditor } from './components/editors/monaco-v2/SingleLineEditor';
+export * as EditorApi from './components/editors/monaco-v2/lang/init';
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';

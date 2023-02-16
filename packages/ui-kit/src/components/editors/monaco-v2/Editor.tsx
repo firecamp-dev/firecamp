@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
-import { EEditorLanguage } from '@firecamp/types';
+import { EEditorLanguage, EEditorTheme } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
 import './sass/Editor.sass';
 

@@ -6,10 +6,8 @@ import EditorLiteTheme from './themes/editor.theme-lite';
 import FirecampCompletionProvider from './editor.completion-provider';
 import FirecampHoverProvider from './editor.hover-provider';
 
-let monaco: Monaco;
-export default () => {
-  loader.init().then((_monaco) => {
-    monaco = _monaco;
+const init = () => {
+  loader.init().then((monaco) => {
     _registerLanguage(EEditorLanguage.FcText, EditorLangTextMonarch);
     _registerLanguage(EEditorLanguage.HeaderKey, EditorLangTextMonarch);
     _registerLanguage(EEditorLanguage.HeaderValue, EditorLangTextMonarch);
@@ -24,13 +22,20 @@ export default () => {
     });
   });
 };
+const setEditorTheme = (editorTheme: EEditorTheme) => {
+  loader.init().then((monaco) => {
+    monaco.editor.setTheme(editorTheme);
+  });
+};
 const _registerLanguage = (langId: string, langMonarch: any, cb = () => {}) => {
-  monaco.languages.register({ id: langId });
-  console.log(langId, 'lang before register');
-  monaco.languages.onLanguage(langId, () => {
-    monaco.languages.setMonarchTokensProvider(langId, langMonarch);
-    // console.log(langId, langMonarch, 'lang after registering');
-    cb();
+  loader.init().then((monaco) => {
+    monaco.languages.register({ id: langId });
+    console.log(langId, 'lang before register');
+    monaco.languages.onLanguage(langId, () => {
+      monaco.languages.setMonarchTokensProvider(langId, langMonarch);
+      // console.log(langId, langMonarch, 'lang after registering');
+      cb();
+    });
   });
 };
 
@@ -41,17 +46,19 @@ const SetCompletionProvider = (
   vars: { [k: string]: string }
 ) => {
   // console.log(_completionProviders, "_completionProviders");
-  if (
-    _completionProviders.has(lang) &&
-    typeof _completionProviders.get(lang).dispose == 'function'
-  ) {
-    _completionProviders.get(lang).dispose();
-  }
-  const _coProvider = monaco.languages.registerCompletionItemProvider(
-    lang,
-    FirecampCompletionProvider(vars)
-  );
-  _completionProviders.set(lang, _coProvider);
+  loader.init().then((monaco) => {
+    if (
+      _completionProviders.has(lang) &&
+      typeof _completionProviders.get(lang).dispose == 'function'
+    ) {
+      _completionProviders.get(lang).dispose();
+    }
+    const _coProvider = monaco.languages.registerCompletionItemProvider(
+      lang,
+      FirecampCompletionProvider(vars)
+    );
+    _completionProviders.set(lang, _coProvider);
+  });
 };
 
 const SetHoverProvider = (
@@ -59,18 +66,19 @@ const SetHoverProvider = (
   vars: { [k: string]: string }
 ) => {
   // console.log(_hoverProviders, "_hoverProviders");
+  loader.init().then((monaco) => {
+    if (
+      _hoverProviders.has(lang) &&
+      typeof _hoverProviders.get(lang).dispose == 'function'
+    ) {
+      _hoverProviders.get(lang).dispose();
+    }
 
-  if (
-    _hoverProviders.has(lang) &&
-    typeof _hoverProviders.get(lang).dispose == 'function'
-  ) {
-    _hoverProviders.get(lang).dispose();
-  }
-
-  const _hProvider = monaco.languages.registerHoverProvider(
-    lang,
-    FirecampHoverProvider(vars)
-  );
-  _hoverProviders.set(lang, _hProvider);
+    const _hProvider = monaco.languages.registerHoverProvider(
+      lang,
+      FirecampHoverProvider(vars)
+    );
+    _hoverProviders.set(lang, _hProvider);
+  });
 };
-export { SetCompletionProvider, SetHoverProvider };
+export { init, SetCompletionProvider, SetHoverProvider, setEditorTheme };

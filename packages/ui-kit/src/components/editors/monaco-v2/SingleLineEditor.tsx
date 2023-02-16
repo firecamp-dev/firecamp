@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, memo, ReactNode } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
-import { EEditorLanguage } from '@firecamp/types';
+import { EEditorLanguage, EEditorTheme } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
 
 type TSLEditor = {

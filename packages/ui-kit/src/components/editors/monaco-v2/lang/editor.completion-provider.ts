@@ -1,4 +1,4 @@
-import { EEditorLanguage } from '@firecamp/types';
+import { EEditorLanguage, TPlainObject } from '@firecamp/types';
 import { _env } from '@firecamp/utils';
 import * as monaco from 'monaco-editor';
 import { headers, contentTypes, charsets, encodings } from './headerList';
@@ -7,11 +7,6 @@ const mockVariables = _env.mockVariablesList.reduce((c, d) => {
   c[d.api.firecamp] = d.description;
   return c;
 }, {} as { [k: string]: any });
-
-let vars = {
-  name: 'Nishchit',
-  startup: 'Firecamp',
-};
 
 function createDependencyProposals(
   range: monaco.IRange,
@@ -125,7 +120,7 @@ function createDependencyProposals(
   ];
 }
 
-export default (variables = vars) => ({
+export default (variables: TPlainObject) => ({
   triggerCharacters: ['.', '{'],
   provideCompletionItems: (
     model: monaco.editor.IModel,
