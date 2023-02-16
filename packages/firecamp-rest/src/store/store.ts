@@ -15,6 +15,7 @@ import {
   createResponseSlice,
   createUiSlice,
   createRequestChangeStateSlice,
+  createExecutionSlice
 } from './slices/index';
 import { IStoreState, IStore } from './store.type';
 
@@ -57,6 +58,7 @@ const createStore = (initialState: IStoreState) =>
         },
       }),
       ...createRequestChangeStateSlice(set, get),
+      ...createExecutionSlice(set, get),
     };
   });
 

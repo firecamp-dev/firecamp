@@ -29,13 +29,11 @@ const requestSliceKeys = [
 interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   request: IRest;
   initialiseRequest: (request: IRest) => void;
-  initialiseRequestByKeyValue: (key: string, value: any) => void;
   changeMethod: (method: EHttpMethod) => any;
   changeHeaders: (headers: IHeader[]) => any;
   changeMeta: (__meta: Partial<IRest['__meta']>) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
-  execute(): void;
   save: (tabId: TId) => void;
 }
 
@@ -52,14 +50,6 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     // console.log({initReq: request});
     set((s) => ({
       request,
-    }));
-  },
-  initialiseRequestByKeyValue: (key: string, value: any) => {
-    set((s) => ({
-      request: {
-        ...s.request,
-        [key]: value,
-      },
     }));
   },
   changeMethod: (method: EHttpMethod) => {
@@ -140,66 +130,6 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       },
     }));
     state.equalityChecker({ [scriptType]: _scripts });
-  },
-  execute: async () => {
-    const state = get();
-    try {
-      // set response empty
-      set({ response: { code: 0 } });
-
-      // Check if request is running or not. stop running request if already true
-      if (state.runtime.isRequestRunning === true) {
-        await state.context.request.cancelExecution(state.request.__ref.id);
-        // set request running state as false
-        state.setRequestRunningFlag(false);
-        return;
-      }
-      state.setRequestRunningFlag(true);
-
-      // normalize request
-      // const normalizedRequest = await normalizeSendRequestPayload(
-      //   request,
-      //   state.request
-      // );
-
-      console.log(state.request, 'state.request');
-      // execute request
-      await state.context.request
-        .execute(state.request)
-        .then(({ response, variables, testResult, scriptErrors }) => {
-          console.log({ response, variables, testResult });
-          if (response?.error) {
-            const error = response.error;
-            console.log(
-              error.message,
-              error.code,
-              error.e.response,
-              error.e,
-              9090
-            );
-          }
-          return { response, variables, testResult, scriptErrors };
-        })
-        .then(async ({ response, variables, testResult, scriptErrors }) => {
-          if (response) {
-            set((s) => ({ response, testResult, scriptErrors })); // TODO: check what to set/ response or testScriptResponse
-          }
-          // TODO: add cookies
-          if (variables) {
-            // TODO: set variables changes in storage
-          }
-          state.setRequestRunningFlag(false);
-        })
-        .catch((e) => {
-          console.log(e.message, e.stack, e.response, e, 9090);
-        });
-    } catch (e) {
-      state.setRequestRunningFlag(false);
-      console.error({
-        api: 'execute',
-        e,
-      });
-    }
   },
   save: (tabId) => {
     const state = get();
