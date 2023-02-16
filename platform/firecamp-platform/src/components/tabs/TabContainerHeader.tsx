@@ -84,6 +84,7 @@ const TabHeaderContainer = () => {
     }
   };
 
+  console.log(activeTab);
   return (
     <Column
       overflow="visible"
