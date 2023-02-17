@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-require('dotenv').config();
+require('dotenv-vault-core').config();
 const { red, yellow } = require('colors');
 const semver = require('semver');
 require('shelljs/global');
@@ -158,11 +158,11 @@ if (env === Environment.Production) {
         process.env.appBundleId = 'com.firecamp.canary';
 
       // Copy release note and post build checks
-      cp(
-        '-R',
-        'packages/firecamp-desktop-app/public/release-notes.md',
-        'build/production'
-      );
+      // cp(
+      //   '-R',
+      //   'packages/firecamp-desktop-app/public/release-notes.md',
+      //   'build/production'
+      // );
 
       // Remove chrome extension app files
       rm('-rf', 'build/production/background.html');
@@ -170,13 +170,13 @@ if (env === Environment.Production) {
       rm('-rf', 'build/production/js/background.bundle.js');
 
       // Add library: electron
-      cd('build/production');
-      exec(
-        'export NODE_ENV=development && pnpm install && pnpm add_electron && export NODE_ENV=production'
-      );
+      // cd('build/production');
+      // exec(
+      //   'export NODE_ENV=development && pnpm install && pnpm add_electron && export NODE_ENV=production'
+      // );
 
       // Add library: electron-oauth-helper
-      exec('pnpm add ../../../firecamp-forks/electron-oauth-helper -W');
+      // exec('pnpm add ../../../firecamp-forks/electron-oauth-helper -W');
 
       // Prepare linux os 'AppImage' build
       if (process.env.AppFormat === AppFormat.AppImage) {
