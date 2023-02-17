@@ -65,16 +65,19 @@ const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
           queryVariablesAry = [];
 
         try {
-          queryVariablesAry = _table.objectToTable(q.__meta.variables);
+          queryVariablesAry = _table.objectToTable(q.value.variables);
         } catch (e) {
           console.log('e', e);
         }
 
         queryPayload = Object.assign(q, {
           name: q.name || _upperFirst[q.__meta.type],
+          value: {
+            query: q.value.query,
+            variables: queryVariablesAry || [],
+          },
           __meta: {
             type: EQueryTypes[_upperFirst(q.__meta.type)],
-            variables: queryVariablesAry || [],
           },
           variableToType: q.variableToType || {},
         });

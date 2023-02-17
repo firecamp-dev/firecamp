@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { EFirecampAgent, ERequestTypes } from '@firecamp/types';
+import { ERequestTypes } from '@firecamp/types';
 import { Dropdown } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
@@ -14,12 +14,12 @@ import {
 import getOs from '../../../services/get-os';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../services/platform-emitter/events';
-import { useTabStore } from '../../../store/tab';
+// import { useTabStore } from '../../../store/tab';
 
 let osName = getOs();
 
 const Menu: FC = () => {
-  const { close } = useTabStore.getState();
+  // const { close } = useTabStore.getState();
   const tabMenus = [
     {
       header: 'Create A Request',
@@ -28,7 +28,6 @@ const Menu: FC = () => {
           name: 'Rest',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              {/* <img src={'icon/png/icons-gray/http.png'} /> */}
               <FcIconGetSquare className="text-rest" size={24} />
             </div>
           ),
@@ -52,7 +51,6 @@ const Menu: FC = () => {
           name: 'WebSocket',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              {/* <img src={'icon/png/icons-gray/websocket.png'} /> */}
               <FcIconWebSocket className="text-websocket" size={24} />
             </div>
           ),
@@ -64,7 +62,6 @@ const Menu: FC = () => {
           name: 'SocketIO',
           prefix: () => (
             <div className={'dropdown-icon '}>
-              {/* <img src={'icon/png/icons-gray/socketio.png'} /> */}
               <FcIconSocketIoSquare className="text-socket" size={24} />
             </div>
           ),
@@ -74,7 +71,7 @@ const Menu: FC = () => {
         },
       ],
     },
-    {
+    /*{
       header: 'Tab options ',
       list: [
         {
@@ -115,7 +112,7 @@ const Menu: FC = () => {
             close.allSaved();
           },
         },
-        /* {   
+        {   
                 name: 'Close except active ',
                 shortcut: {
                   command:
@@ -134,13 +131,16 @@ const Menu: FC = () => {
                       : `⌘ + /`,
                   action: CLOSE_ALL_FRESH
                 }
-              } */
+              } 
       ],
-    },
+    }*/
   ];
 
   const openNewTab = (type) => {
-    emitter.emit(EPlatformTabs.Open);
+    emitter.emit(EPlatformTabs.Open, {
+      entity: { __meta: { type } },
+      __meta: { id: '', type: 'request' },
+    });
   };
 
   return (

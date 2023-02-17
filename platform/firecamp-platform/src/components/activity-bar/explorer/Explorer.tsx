@@ -27,6 +27,7 @@ import treeRenderer from './treeItemRenderer';
 import { RE } from '../../../types';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../services/platform-emitter/events';
+import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();
@@ -38,6 +39,7 @@ const Explorer: FC<any> = () => {
     fetchExplorer,
 
     createCollectionPrompt,
+    openImportTab,
     updateCollection,
     updateFolder,
     updateRequest,
@@ -54,6 +56,7 @@ const Explorer: FC<any> = () => {
       fetchExplorer: s.fetchExplorer,
 
       createCollectionPrompt: s.createCollectionPrompt,
+      openImportTab: s.openImportTab,
       updateCollection: s.updateCollection,
       updateFolder: s.updateFolder,
       updateRequest: s.updateRequest,
@@ -124,7 +127,7 @@ const Explorer: FC<any> = () => {
       __meta: request.__meta,
       __ref: request.__ref,
     };
-    console.log({ entityid: request.__ref?.id, entityType: 'request' });
+    console.log({ entityId: request.__ref?.id, entityType: 'request' });
     emitter.emit(EPlatformTabs.Open, {
       entity,
       __meta: { id: request.__ref?.id, type: 'request' },
@@ -266,6 +269,13 @@ const Explorer: FC<any> = () => {
                     className="cursor-pointer"
                     size={16}
                     onClick={createCollectionPrompt}
+                  />
+                </div>
+                <div>
+                  <VscArrowDown
+                    className="cursor-pointer"
+                    size={16}
+                    onClick={openImportTab}
                   />
                 </div>
                 {/* <div>

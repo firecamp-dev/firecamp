@@ -12,7 +12,7 @@ import {
 import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 import parseBody from './helpers/body';
-import { IRestExecutor, TResponse } from './types';
+import { IRestExecutor } from './types';
 import * as scriptRunner from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
@@ -33,7 +33,7 @@ export default class RestExecutor implements IRestExecutor {
       res.config['metadata']['endTime'] = new Date();
       res.config['metadata'] = {
         ...res.config['metadata'],
-        get duration() {
+        get responseTime() {
           return this.endTime - this.startTime;
         },
       };
@@ -67,7 +67,7 @@ export default class RestExecutor implements IRestExecutor {
     }
 
     if (typeof config.data === 'string') {
-      tl.push('\n-----------Request Data-----------\n');
+      tl.push('\n-----------   REQUEST DATA   -----------\n');
       tl.push(`> ${config.data}`);
     }
 
@@ -83,13 +83,13 @@ export default class RestExecutor implements IRestExecutor {
 
   private _normalizeResponse(axiosResponse: AxiosResponse): IRestResponse {
     return {
-      statusCode: axiosResponse.status,
-      statusMessage: axiosResponse.statusText,
-      data: axiosResponse.data,
-      headers: axiosResponse.headers || {},
-      //@ts-ignore
-      duration: axiosResponse?.config?.metadata?.duration || 0,
-      size: Number(axiosResponse?.headers?.['content-length']) || 0,
+      code: axiosResponse.status,
+      status: axiosResponse.statusText,
+      body: axiosResponse.data,
+      headers: _table.objectToTable(axiosResponse.headers || {}),
+      // @ts-ignore
+      responseTime: axiosResponse?.config?.metadata?.responseTime || 0,
+      responseSize: Number(axiosResponse?.headers?.['content-length']) || 0,
     };
   }
 
@@ -140,19 +140,23 @@ export default class RestExecutor implements IRestExecutor {
     variables: {
       globals: TRuntimeVariable[];
       environment: TRuntimeVariable[];
-      collection: TRuntimeVariable[];
+      collectionVariables: TRuntimeVariable[];
     }
-  ): Promise<TResponse> {
+  ) {
     console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
       return Promise.resolve({
-        statusCode: 0,
-        error: {
-          message,
-          code: 'INVALID REQUEST',
-          e: new Error(message),
+        response: {
+          body: '',
+          code: 0,
+          error: {
+            message,
+            code: 'INVALID REQUEST',
+            e: new Error(message),
+          },
         },
+        variables,
       });
     }
 
@@ -160,32 +164,41 @@ export default class RestExecutor implements IRestExecutor {
     // TODO: Inherit script
     return scriptRunner
       .preScript(fcRequest, variables)
-      .then((res) => {
-        const { request: reqInstance, environment } = res as any;
-        if (environment) {
-          // updatedVariables = await normalizeVariables(
-          //   {
-          //     workspace: variables['workspace'],
-          //     collection: variables['collection'],
-          //   },
-          //   preScriptResponse.environment
-          // );
-        }
-        if (reqInstance) {
-          // Merge script updated request with fc request
-          // note: reqInstance will have other methods too like addHeaders, but destructing it will add only it's private properties like body, headers, url
+      .then(({ fc, error }) => {
+        // console.log(error.name, error.message);
+        const {
+          request: _request,
+          globals,
+          environment,
+          collectionVariables,
+        } = fc as any;
+        console.log(_request, '..._request');
+        if (_request) {
+          // merge script updated request with fc request
           // TODO:  we can improve this later
-          fcRequest = { ...fcRequest, ...reqInstance };
+          fcRequest = { ...fcRequest, ..._request };
         }
-        console.log(res, fcRequest, '_____789458');
-        return { fcRequest };
+        // console.log(fc, fcRequest, '__fc pre-request script response');
+        const errors: any[] = [];
+        if (error) {
+          errors.push({
+            type: 'pre-request',
+            error,
+          });
+        }
+        return {
+          fcRequest,
+          variables: { globals, environment, collectionVariables },
+          errors,
+        };
       })
-      .then(({ fcRequest }) => {
+      .then(({ fcRequest, variables, errors }) => {
         // apply variables to request
-        const { globals, environment, collection } = variables;
+        const { globals, environment, collectionVariables } = variables;
         const gVars = _env.preparePlainVarsFromRuntimeVariables(globals);
         const eVars = _env.preparePlainVarsFromRuntimeVariables(environment);
-        const cVars = _env.preparePlainVarsFromRuntimeVariables(collection);
+        const cVars =
+          _env.preparePlainVarsFromRuntimeVariables(collectionVariables);
         const plainVars = { ...gVars, ...eVars, ...cVars };
         // console.log(variables, plainVars, 77777);
 
@@ -206,13 +219,17 @@ export default class RestExecutor implements IRestExecutor {
             return v;
           });
           const request = _env.applyVariables(restRequest, plainVars) as IRest;
-          return { ...request, body };
+          return {
+            request: { ...request, body },
+            variables: variables,
+            errors,
+          };
         } else {
           const request = _env.applyVariables(fcRequest, plainVars) as IRest;
-          return request;
+          return { request, variables, errors };
         }
       })
-      .then(async (request) => {
+      .then(async ({ request, variables, errors }) => {
         const axiosRequest: AxiosRequestConfig = await this._prepare(request);
         try {
           // execute request
@@ -221,7 +238,11 @@ export default class RestExecutor implements IRestExecutor {
           const response = this._normalizeResponse(axiosResponse);
           // prepare timeline of request execution
           response.timeline = this._timeline(axiosRequest, axiosResponse);
-          return Promise.resolve({ ...response });
+          return Promise.resolve({
+            response: { ...response },
+            variables,
+            errors,
+          });
         } catch (e) {
           console.error(e);
           if (!_object.isEmpty(e.response)) {
@@ -230,61 +251,66 @@ export default class RestExecutor implements IRestExecutor {
             // prepare timeline of request execution
             response.timeline = this._timeline(axiosRequest, e.response);
             return Promise.resolve({
-              ...response,
+              response: {
+                ...response,
+                error: {
+                  message: e.message,
+                  code: e.code,
+                  e,
+                },
+              },
+              variables,
+              errors,
+            });
+          }
+          return Promise.resolve({
+            response: {
+              body: '',
+              code: 0,
               error: {
                 message: e.message,
                 code: e.code,
                 e,
               },
-            });
-          }
-          return Promise.resolve({
-            statusCode: 0,
-            error: {
-              message: e.message,
-              code: e.code,
-              e,
             },
+            variables,
+            errors,
           });
         }
       })
-      .then(async (response) => {
+      .then(async ({ response, variables, errors }) => {
         /** run post-script */
         // TODO: add inherit support
-        const postScriptRes = await scriptRunner.postScript(
-          fcRequest.postScripts,
+        const { fc, error } = await scriptRunner.testScript(
+          fcRequest,
           response,
-          {
-            globals: [],
-            environment: [],
-            collection: [],
-          }
+          variables
         );
+        const {
+          response: _response = {},
+          globals,
+          environment,
+          collectionVariables,
+          testResult,
+        } = fc as any;
         // merge post script response with actual response
-        if (postScriptRes?.response) {
-          response = { ...response, ...postScriptRes.response };
-
-          // console.log({ postScriptResponse });
-          // if (postScriptResponse.environment) {
-          //   updatedVariables = await normalizeVariables(
-          //     updatedVariables,
-          //     postScriptResponse.environment
-          //   );
-          // }
+        if (fc?.response) {
+          response = { ...response, ..._response };
         }
-        return response;
+        if (error) {
+          errors.push({
+            type: 'test',
+            error,
+          });
+        }
+        console.log(errors, 'scriptErrors...');
+        return {
+          response,
+          variables: { globals, environment, collectionVariables },
+          testResult,
+          scriptErrors: errors,
+        };
       });
-    // .then(() => {
-    //   try {
-    //     /** run test-script */
-    //     // TODO: add inherit support
-    //     testScriptResponse = await scriptRunner.testScript(request, response, vars)
-    //     );
-    //     if (testScriptResponse) {
-    //       response['testScriptResult'] = testScriptResponse;
-    //     }
-    //   } catch (error) {}
-    // });
   }
 
   cancel() {

@@ -1,5 +1,6 @@
 import { EKeyValueTableRowType } from '@firecamp/types';
 import {
+  ITable,
   ITableClasses,
   ITableOptions,
   ITableRows,
@@ -49,16 +50,14 @@ export interface IColumnCellMeta {
   width?: number | string;
 }
 
-export interface IBasicTable<R> {
-  /** Title of the table, aka Header*/
+export interface IBasicTable<R>
+  extends Pick<
+    ITable<R>,
+    'rows' | 'options' | 'classes' | 'onChange' | 'onMount' | 'onFocusRow'
+  > {
+  /**
+   *  Title of the table, aka Header
+   *  TODO: @note: check this property if not in use then remove it
+   */
   title?: string;
-  /** Rows to be rendered on table*/
-  rows?: R[];
-  /** To provide additional functions to the primitive table */
-  options?: ITableOptions;
-  /** To provide the updated rows on ever changed value*/
-  onChange: (rows: ITableRows) => any;
-  /** To provide the table reference */
-  onMount?: (tableApi: TTableApi) => any;
-  classes?: ITableClasses;
 }

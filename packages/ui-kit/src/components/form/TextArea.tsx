@@ -14,7 +14,7 @@ const TextArea: FC<ITextArea> = ({
   value = '',
   defaultValue,
   label = '',
-  labelClassname = '',
+  labelClassName = '',
   note = '',
   minHeight = '',
   disabled= false,
@@ -34,7 +34,7 @@ const TextArea: FC<ITextArea> = ({
 
   return (
     <div className='flex flex-col mb-3 relative'>
-      {label != '' ? <label className={classNames(labelClassname,'text-appForeground text-sm mb-1 block')}>{label}</label> : ''}
+      {label != '' ? <label className={classNames(labelClassName,'text-appForeground text-sm mb-1 block')}>{label}</label> : ''}
       <div className="relative">
       <textarea
         name={name}

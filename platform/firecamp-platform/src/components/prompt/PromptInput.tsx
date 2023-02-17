@@ -5,7 +5,7 @@ import { IPromptInput } from './types';
 const _texts: IPromptInput['texts'] = {
   btnOk: 'Create',
   btnOking: 'Creating...',
-  btnCancle: 'Cancle',
+  btnCancel: 'Cancel',
 };
 
 export const PromptInput: FC<IPromptInput> = ({
@@ -108,7 +108,7 @@ export const PromptInput: FC<IPromptInput> = ({
           <TabHeader className="!px-0">
             <TabHeader.Right>
               <Button
-                text={texts?.btnCancle || `Cancel`}
+                text={texts?.btnCancel || `Cancel`}
                 onClick={_close}
                 secondary
                 transparent

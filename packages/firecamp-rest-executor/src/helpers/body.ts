@@ -68,7 +68,7 @@ export default async (body: IRestBody): Promise<any> => {
       return qs.stringify(_table.toObject(value as any[]));
 
     case ERestBodyTypes.GraphQL:
-      const { query = '', variables = '{}' } = value as TGraphQLBody;
+      const { query = '', variables = {} } = value as TGraphQLBody;
       return JSON.stringify({
         query: query,
         variables: variables,

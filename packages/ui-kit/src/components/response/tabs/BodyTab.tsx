@@ -22,7 +22,7 @@ enum EActiveTab {
   None = '',
 }
 
-const getConentTypeFromHeaders = (headers: { [k: string]: string }) => {
+const getContentTypeFromHeaders = (headers: { [k: string]: string }) => {
   let ct: string;
   if (headers) {
     if (Object.keys(headers).includes(`content-type`))
@@ -60,9 +60,9 @@ const initialTabs = [
   { name: 'No body found', id: 'nobodyfound' },
 ];
 
-const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
-  console.log({ id, data, headers });
-  const contentType = getConentTypeFromHeaders(headers);
+const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
+  // console.log({ id, body, headers }); //TODO: optimize it for rerendering
+  const contentType = getContentTypeFromHeaders(headers);
 
   let contentTypeKey = `content-type`;
   if (headers) {
@@ -86,7 +86,7 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
   }, [headers]);
 
   const prepareTabs = (headers: any) => {
-    const activeTab = _misc.isJSON(data)
+    const activeTab = _misc.isJSON(body)
       ? EActiveTab.Json
       : getActiveTabFromHeaders(headers?.[contentTypeKey]);
 
@@ -107,14 +107,14 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
     tab === 'octet_stream' ? 'json' : tab;
 
     switch (tab) {
-      case EActiveTab.Html: /** allow to show HTML response without checking data HTML valid or not */
+      case EActiveTab.Html: /** allow to show HTML response without checking body HTML valid or not */
       case EActiveTab.Xml:
       case EActiveTab.Json:
       case EActiveTab.Text:
       default:
         try {
           if (tab === 'json') {
-            data = JSON.stringify(JSON.parse(data), null, 4);
+            body = JSON.stringify(JSON.parse(body), null, 4);
           }
           if (tab === 'xml') {
             // prettify
@@ -126,7 +126,7 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
         return (
           <Editor
             language={tab}
-            value={data}
+            value={body}
             path={`${id}/response/body`}
             onLoad={(editor) => {
               setEditor(editor);
@@ -146,7 +146,7 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
         /** allow to show preview for HTML response without checking HTML data valid or not */
         return (
           <iframe
-            src={`data:text/html, ${encodeURIComponent(data)}`}
+            src={`data:text/html, ${encodeURIComponent(body)}`}
             style={{ height: '100%', width: '100%' }}
           />
         );
@@ -193,6 +193,6 @@ export default BodyTab;
 interface IBodyTab {
   id: TId;
   headers: any;
-  data?: string;
+  body?: string;
   error?: any;
 }

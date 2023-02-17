@@ -49,6 +49,7 @@ const FlatTable: FC<ITable<any>> = ({
   rows: propRows = [],
   defaultRow = {},
   onChange,
+  onFocusRow,
   onMount = (api) => {},
   showDefaultEmptyRows = true,
   options = {},
@@ -262,6 +263,7 @@ const FlatTable: FC<ITable<any>> = ({
                 onChangeCell={onChangeCell}
                 onFocus={(rowDom) => {
                   tableRowRef.current = rowDom;
+                  if (typeof onFocusRow == 'function') onFocusRow(row);
                 }}
                 onClick={(rowDom) => {
                   // console.log(rowDom);

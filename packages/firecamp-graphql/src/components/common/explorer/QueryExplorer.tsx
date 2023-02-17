@@ -50,7 +50,7 @@ const QueryExplorer = () => {
     <GraphiQLExplorer
       id={`query-explorer-${tabId}`}
       schema={clientSchema}
-      query={playground.request.value}
+      query={playground.request.value.query}
       onEdit={_onEdit}
       explorerIsOpen={true}
       onToggleExplorer={(_) => console.log()}

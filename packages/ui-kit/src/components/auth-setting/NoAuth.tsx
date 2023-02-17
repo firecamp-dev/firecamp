@@ -9,7 +9,6 @@ const NoAuth: FC<INoAuth> = ({
 }) => {
 
   const menus = useMemo(() => {
-
     const options = [];
     for (const k in authTypeList) {
       if (authTypeList[k].id !== EAuthTypes.None && authTypeList[k].enable) {

@@ -1,10 +1,7 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
-import {
-  SetCompletionProvider,
-  SetHoverProvider,
-} from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
+import { EditorApi } from '@firecamp/ui-kit';
 import { EEditorLanguage, IEnv, IRuntimeEnv, TId } from '@firecamp/types';
 
 const EmptyEnv: IRuntimeEnv = { name: '', variables: [], __ref: { id: '' } };
@@ -20,20 +17,20 @@ const envService = {
   // set variables to editor provider
   setVariablesToProvider: (variables: { [key: string]: any }) => {
     //fc-text
-    SetCompletionProvider(EEditorLanguage.FcText, variables);
-    SetHoverProvider(EEditorLanguage.FcText, variables);
+    EditorApi.SetCompletionProvider(EEditorLanguage.FcText, variables);
+    EditorApi.SetHoverProvider(EEditorLanguage.FcText, variables);
 
     // header key
-    SetCompletionProvider(EEditorLanguage.HeaderKey, variables);
-    SetHoverProvider(EEditorLanguage.HeaderKey, variables);
+    EditorApi.SetCompletionProvider(EEditorLanguage.HeaderKey, variables);
+    EditorApi.SetHoverProvider(EEditorLanguage.HeaderKey, variables);
 
     //header value
-    SetCompletionProvider(EEditorLanguage.HeaderValue, variables);
-    SetHoverProvider(EEditorLanguage.HeaderValue, variables);
+    EditorApi.SetCompletionProvider(EEditorLanguage.HeaderValue, variables);
+    EditorApi.SetHoverProvider(EEditorLanguage.HeaderValue, variables);
 
     // json
-    SetCompletionProvider(EEditorLanguage.Json, variables);
-    SetHoverProvider(EEditorLanguage.Json, variables);
+    EditorApi.SetCompletionProvider(EEditorLanguage.Json, variables);
+    EditorApi.SetHoverProvider(EEditorLanguage.Json, variables);
   },
 };
 

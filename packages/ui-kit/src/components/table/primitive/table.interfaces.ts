@@ -27,13 +27,14 @@ export interface ITable<R> {
   columns: IColumn[];
   renderColumn: (column: IColumn) => string | JSX.Element;
   renderCell: TRenderCell<R>;
-  onChange: (rows: R[]) => void;
   defaultRow?: R;
-  //@deprecated
-  onMount?: (tableApi: TTableApi) => void;
   showDefaultEmptyRows?: boolean;
   options?: ITableOptions;
   classes?: ITableClasses;
+  onChange: (rows: R[]) => void;
+  onFocusRow?: (row: R) => void;
+  //@deprecated
+  onMount?: (tableApi: TTableApi) => void;
 }
 
 export interface ITableClasses {

@@ -1,6 +1,6 @@
 {
   "name": "@firecamp/rest-executor",
-  "version": "1.0.3",
+  "version": "1.0.7",
   "description": "REST request executor",
   "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
   "license": "",
@@ -13,7 +13,7 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "pnpm clean && pnpm build && pnpm jest --bail --silent --verbose",
+    "test": "pnpm clean && pnpm build && pnpm jest --bail --silent=false --verbose",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
@@ -40,8 +40,9 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.16",
-    "@firecamp/url": "0.0.19",
+    "@firecamp/types": "^0.1.21",
+    "@firecamp/url": "0.0.20",
+    "@firecamp/utils": "^0.0.15",
     "@hapi/joi": "^17.1.1",
     "ajv": "^8.11.2",
     "axios": "0.27.2",

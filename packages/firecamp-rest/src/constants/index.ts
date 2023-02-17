@@ -4,7 +4,7 @@ import { ERestBodyTypes, IRestConfig } from '@firecamp/types';
 export const bodyTypeNames = {
   [ERestBodyTypes.FormData]: 'Multipart',
   [ERestBodyTypes.UrlEncoded]: 'Form URL Encode',
-  [ERestBodyTypes.GraphQL]: 'GraphQL Queries',
+  // [ERestBodyTypes.GraphQL]: 'GraphQL Queries',
   [ERestBodyTypes.Json]: 'Json',
   [ERestBodyTypes.Xml]: 'Xml',
   [ERestBodyTypes.Text]: 'Text',

@@ -72,7 +72,7 @@ const TabHeaderContainer = () => {
           'The request has changes which are not saved, You can forcefully close the request by ignorig the current changes.',
         message: '',
         texts: {
-          btnCancle: 'Cancle',
+          btnCancel: 'Cancel',
           btnConfirm: 'Ignore Changes & Close Request',
         },
         onConfirm: () => {
@@ -84,6 +84,7 @@ const TabHeaderContainer = () => {
     }
   };
 
+  console.log(activeTab);
   return (
     <Column
       overflow="visible"

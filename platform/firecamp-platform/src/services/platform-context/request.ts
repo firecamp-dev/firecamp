@@ -19,6 +19,7 @@ import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
 import { RE } from '../../types';
 import platformContext from '.';
+import { ETabEntityTypes } from '../../components/tabs/types';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -29,6 +30,9 @@ interface IPlatformRequestService {
 
   // fetch request from server by request id
   fetch: (reqId: TId) => Promise<any>;
+
+  // fetch request's parent artifacts
+  fetchParentArtifacts: (reqId: TId) => Promise<any>;
 
   // save and update request
   save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
@@ -98,6 +102,11 @@ const request: IPlatformRequestService = {
   // fetch request by request id
   fetch: async (reqId: TId) => {
     return await Rest.request.findOne(reqId).then((res) => res.data);
+  },
+
+  // fetch request's parent artifacts
+  fetchParentArtifacts: async (reqId: TId) => {
+    return await Rest.request.getParentArtifacts(reqId).then((res) => res.data);
   },
 
   /** save a new request or update the request changes */
@@ -181,7 +190,7 @@ const request: IPlatformRequestService = {
             },
             __meta: {
               entityId: _request.__ref.id,
-              entityType: 'request',
+              entityType: ETabEntityTypes.Request,
               isSaved: true,
               hasChange: false,
               isFresh: false,
@@ -287,11 +296,11 @@ const request: IPlatformRequestService = {
     const variables: {
       globals: TRuntimeVariable[];
       environment: TRuntimeVariable[];
-      collection: TRuntimeVariable[];
+      collectionVariables: TRuntimeVariable[];
     } = {
       globals: globalEnv.variables,
       environment: activeEnv.variables,
-      collection: [],
+      collectionVariables: [],
     };
     return executor.send(request, variables, agent);
   },

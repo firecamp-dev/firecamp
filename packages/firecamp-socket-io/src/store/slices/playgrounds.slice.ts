@@ -32,7 +32,7 @@ interface IPlaygrounds {
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
-  getActivePlayground: () => IPlayground;
+  // getActivePlayground: () => IPlayground;
   setPlgExecutor: (connectionId: TId, executor: any) => void;
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
   //arguments
@@ -333,7 +333,10 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   },
 
   //listeners
-  setPlaygroundListeners: (connectionId: TId, listeners: { [k: string]: boolean }) => {
+  setPlaygroundListeners: (
+    connectionId: TId,
+    listeners: { [k: string]: boolean }
+  ) => {
     const state = get();
     const existingPlayground = state.playgrounds?.[connectionId];
 

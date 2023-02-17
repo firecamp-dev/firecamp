@@ -44,17 +44,15 @@ const Socket = ({ tab, platformContext }) => {
 
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
+    const requestId = tab.entity?.__ref?.id;
     // subscribe request updates
-    if (tab.__meta.isSaved && tab?.request?.__ref?.id) {
-      platformContext.request.subscribeChanges(
-        tab.request.__ref.id,
-        handlePull
-      );
+    if (tab.__meta.isSaved && requestId) {
+      platformContext.request.subscribeChanges(requestId, handlePull);
     }
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && tab?.request?.__ref.id) {
-        platformContext.request.unsubscribeChanges(tab.request.__ref.id);
+      if (tab.__meta.isSaved && requestId) {
+        platformContext.request.unsubscribeChanges(requestId);
       }
     };
   }, []);
@@ -63,16 +61,15 @@ const Socket = ({ tab, platformContext }) => {
   useEffect(() => {
     const _fetchRequest = async () => {
       try {
-        const isRequestSaved = !!tab?.request?.__ref.id || false;
+        const requestId = tab.entity?.__ref?.id;
+        const isRequestSaved = !!requestId;
         // prepare a minimal request payload
         let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the reuqest to prepare minimal request for tab
 
         if (isRequestSaved === true) {
           setIsFetchingReqFlag(true);
           try {
-            const request = await platformContext.request.fetch(
-              tab.request.__ref.id
-            );
+            const request = await platformContext.request.fetch(requestId);
             _request = { ...request };
           } catch (error) {
             console.error(error);

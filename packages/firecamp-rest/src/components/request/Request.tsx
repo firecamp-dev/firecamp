@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow';
 import { useHotkeys } from 'react-hotkeys-hook';
 import {
   preScriptSnippets,
-  postScriptSnippets,
+  testScriptSnippets,
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import {
   AvailableOnElectron,
@@ -113,7 +113,7 @@ const Request = ({ tabId }) => {
           <ScriptTab
             id={`test-${tabId}`}
             script={postScripts[0].value.join('\n')}
-            snippets={postScriptSnippets}
+            snippets={testScriptSnippets}
             onChangeScript={(val) => changeScripts('postScripts', val)}
           />
         );
@@ -158,19 +158,19 @@ const Request = ({ tabId }) => {
           navItemClassName={
             activeTab === 'body' ? ' primary-tab-with-attached-statusbar' : ''
           } */
-            postComp={() => (
-              <Button
-                icon={<VscCode className="mr-2" size={12} />}
-                // TODO: Add class for tabs-with-bottom-border-right-section
-                onClick={_toggleCodeSnippet}
-                text="Code"
-                transparent
-                secondary
-                iconLeft
-                ghost
-                sm
-              />
-            )}
+            // postComp={() => (
+            //   <Button
+            //     icon={<VscCode className="mr-2" size={12} />}
+            //     // TODO: Add class for tabs-with-bottom-border-right-section
+            //     onClick={_toggleCodeSnippet}
+            //     text="Code"
+            //     transparent
+            //     secondary
+            //     iconLeft
+            //     ghost
+            //     sm
+            //   />
+            // )}
           />
         </Container.Header>
         <Container.Body

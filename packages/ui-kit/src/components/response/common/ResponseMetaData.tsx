@@ -3,21 +3,21 @@ import { ResStatus, ResSize, ResTime } from '@firecamp/ui-kit';
 
 const ResponseMetaData: FC<any> = ({
   isRequestRunning,
-  duration,
+  time,
   size,
-  statusCode ,
-  statusMessage
+  code ,
+  status
 }) => {
 
   return (
     <div className="flex flex-1 cursor-pointer">
       <div className="ml-auto flex text-appForegroundInActive text-sm leading-5">
         <ResStatus
-          statusCode={statusCode}
-          statusMessage={statusMessage}
+          code={code}
+          status={status}
           isRequestRunning={isRequestRunning}
         />
-        <ResTime duration={duration} isRequestRunning={isRequestRunning} />
+        <ResTime time={time} isRequestRunning={isRequestRunning} />
         <ResSize size={size} isRequestRunning={isRequestRunning} />
       </div>
     </div>

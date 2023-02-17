@@ -9,8 +9,8 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
   toolTip = '',
   onSelectItem = () => {},
 }) => {
-  let [isDropDownOpen, toggleDropDown] = useState(false);
-  let [options] = useState(
+  const [isDropDownOpen, toggleDropDown] = useState(false);
+  const [options] = useState(
     dropdownOptions?.map((o) => {
       return { name: o };
     })
@@ -35,10 +35,10 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
       <Dropdown.Handler>
         <Button
           text={selectedOption}
-          withCaret={true}
-          sm
           tooltip={!isDropDownOpen && toolTip ? toolTip : ''}
           secondary
+          withCaret
+          sm
         />
       </Dropdown.Handler>
       <Dropdown.Options
@@ -58,7 +58,7 @@ interface IHttpMethodDropDown {
   id: string;
 
   /**
-   * Custom styling clssname
+   * Custom styling class name
    */
   className?: string;
 

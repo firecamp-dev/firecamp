@@ -1,8 +1,3 @@
-export enum EPanel {
-  Request = 'Request',
-  Response = 'Response',
-  All = 'All',
-}
 
 export enum EEmitterPayloadTypes {
   Text = 'text',

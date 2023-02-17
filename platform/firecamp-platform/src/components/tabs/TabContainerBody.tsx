@@ -13,7 +13,7 @@ const TabContainerBody = () => {
   const { list: tabs, orders } = useTabStore.getState();
 
   return (
-    <Column flex={1} className="invisible-scrollbar">
+    <Column flex={1} className="invisible-scrollbar overflow-hidden">
       <div className={cx('fc-h-full invisible-scrollbar tab-content')}>
         <div
           className={cx('tab-pane', {

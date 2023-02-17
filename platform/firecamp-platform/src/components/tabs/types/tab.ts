@@ -31,7 +31,7 @@ export interface IRequestTab extends ITab {
 
 export interface IEntityTab<E = any> extends ITab {
   /**
-   * minimal info or the intity, it'll help tab and newly opened request to show the minimal information on load
+   * minimal info or the entity, it'll help tab and newly opened request to show the minimal information on load
    * for request
    *  {
    *     url?: IUrl;
@@ -47,7 +47,7 @@ export interface IEntityTab<E = any> extends ITab {
 /** Tab meta */
 export interface IRequestTabMeta {
   entityId: TId;
-  entityType: 'request' | 'environment';
+  entityType: ETabEntityTypes;
   /**
    * Whether request tab is saved or not
    */
@@ -92,4 +92,12 @@ export interface IRequestTabProps {
     environment: IPlatformEnvironmentService;
     getFirecampAgent: () => EFirecampAgent;
   };
+}
+
+export enum ETabEntityTypes {
+  Environment = 'environment',
+  Collection = 'collection',
+  Folder = 'folder',
+  Request = 'request',
+  Import = 'import',
 }

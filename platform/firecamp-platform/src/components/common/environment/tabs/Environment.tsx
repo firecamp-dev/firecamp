@@ -13,9 +13,10 @@ import {
   TabHeader,
   Button,
 } from '@firecamp/ui-kit';
-import { _array, _object } from '@firecamp/utils';
+import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
 import { RE } from '../../../../types';
+import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 
 const EnvironmentTab = ({ tab, platformContext: context }) => {
   const initEnv = _cloneDeep({ ...tab.entity, variables: [] });
@@ -33,6 +34,8 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
   const [isFetchingEnv, setIsFetchingEnvFlag] = useState(false);
   const [hasChange, setHasChangeFlag] = useState(false);
 
+  console.log(runtimeEnv, 'runtimeEnv');
+
   useEffect(() => {
     const _fetch = async () => {
       const envId = tab.entity?.__ref?.id;
@@ -40,15 +43,8 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
       await context.environment
         .fetch(envId)
         .then((remoteEnv) => {
-          let localEnv =
-            JSON.parse(
-              localStorage.getItem(`env/${runtimeEnv.__ref.id}`) || null
-            ) || initEnv;
-          const _runtimeEnv = context.environment.mergeEnvs(
-            remoteEnv,
-            localEnv
-          );
-
+          const _runtimeEnv = _env.prepareRuntimeEnvFromRemoteEnv(remoteEnv);
+          const { localEnv } = _env.splitEnvs(_runtimeEnv);
           console.log(localEnv, _runtimeEnv);
           originalEnvs.current = {
             runtimeEnv: _runtimeEnv,
@@ -99,7 +95,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
       context.environment
         .update(updatedEnv.__ref.id, updatedEnv)
         .then(() => {
-          context.app.notify.success('The environemnt changes are saved.');
+          context.app.notify.success('The environment changes are saved.');
           originalEnvs.current = { runtimeEnv, remoteEnv, localEnv };
         })
         .catch((e) => {
@@ -199,6 +195,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         <Container.Header>
           <TabHeader className="height-ex-small bg-statusBarBackground2 !pl-3 !pr-3">
             <TabHeader.Left>
+              <VscJson size={18} />
               <div className="fc-urlbar-path flex text-base">
                 {runtimeEnv.name}
               </div>
@@ -213,17 +210,29 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         <Container.Body>
           <Row className="justify-end pr-3 mt-2 -mb-1 ">
             <Button
-                text="Save"
-                onClick={update}
-                disabled={!hasChange}
-                primary
+              text="Save"
+              onClick={update}
+              disabled={!hasChange}
+              primary
+              sm
+            />
+
+            {runtimeEnv.__meta?.isGlobal ? (
+              <></>
+            ) : (
+              <Button
+                className="ml-2"
+                text="Delete"
+                onClick={_delete}
+                secondary
                 sm
               />
-              <Button text="Delete" onClick={_delete} secondary sm className="ml-2" />
+            )}
           </Row>
-          <Row flex={1} overflow="auto" className="with-divider h-full">
+          <Row flex={1} overflow="auto" className="with-divider flex-1">
             <Column>
               <EnvironmentTable
+                title="Environment Variables"
                 rows={runtimeEnv.variables}
                 onChange={onChangeVariables}
               />

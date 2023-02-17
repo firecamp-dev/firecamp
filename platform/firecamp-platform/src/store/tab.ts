@@ -1,12 +1,11 @@
 import create from 'zustand';
 import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
-import { ERequestTypes, TId } from '@firecamp/types';
+import { TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-import { IEntityTab } from '../components/tabs/types';
+import { ETabEntityTypes, IEntityTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
-import platformContext from '../services/platform-context';
 
 const initialState = {
   list: {},
@@ -29,7 +28,7 @@ interface ITabStore {
   changeOrders: (orders: TId[]) => void;
   open: (
     entity: any,
-    entityMeta: { id: TId; type: 'request' | 'environment' }
+    entityMeta: { id: TId; type: ETabEntityTypes }
   ) => [tab: IEntityTab, orders: TId[]];
   close: {
     all: () => void;

@@ -1,6 +1,12 @@
 import { FC, memo, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import { ProgressBar, Help, Container, Resizable } from '@firecamp/ui-kit';
+import {
+  ProgressBar,
+  Help,
+  Container,
+  Resizable,
+  Notes,
+} from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { IRestResponse, TId } from '@firecamp/types';
 import Tabs from './tabs/Tabs';
@@ -8,6 +14,8 @@ import Tabs from './tabs/Tabs';
 interface IResponsePanel {
   id: TId;
   response: IRestResponse;
+  testResult: any;
+  scriptErrors?: any[];
   isRequestRunning?: boolean;
   docLink?: string;
   client?: string;
@@ -15,6 +23,8 @@ interface IResponsePanel {
 const Response: FC<IResponsePanel> = ({
   id,
   response,
+  testResult,
+  scriptErrors,
   isRequestRunning = false,
   docLink = '',
   client = '',
@@ -39,6 +49,8 @@ const Response: FC<IResponsePanel> = ({
               <Tabs
                 id={id}
                 response={response}
+                testResult={testResult}
+                scriptErrors={scriptErrors}
                 isRequestRunning={isRequestRunning}
                 activeBodyTab={activeBodyTab}
                 onChangeActiveBodyTab={(tab) => {

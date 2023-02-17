@@ -12,19 +12,19 @@ export default {
           value: ['fc.response.data;'],
         },
         {
-          id: 'duration',
-          name: 'duration',
-          value: ['fc.response.duration;'],
+          id: 'response-time',
+          name: 'responseTime',
+          value: ['fc.response.responseTime;'],
         },
         {
           id: 'size',
-          name: 'size',
-          value: ['fc.response.size;'],
+          name: 'responseSize',
+          value: ['fc.response.responseSize;'],
         },
         {
-          id: 'statusCode',
+          id: 'code',
           name: 'status code',
-          value: ['fc.response.statusCode;'],
+          value: ['fc.response.code;'],
         },
         {
           id: 'statusMessage',

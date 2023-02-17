@@ -40,9 +40,9 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.16",
+    "@firecamp/types": "^0.1.21",
     "@firecamp/ui-kit": "workspace:*",
-    "@firecamp/url": "0.0.19",
+    "@firecamp/url": "0.0.20",
     "codemirror": "^5.63.0",
     "codemirror-graphql": "^1.0.2",
     "graphiql-explorer": "^0.9.0",

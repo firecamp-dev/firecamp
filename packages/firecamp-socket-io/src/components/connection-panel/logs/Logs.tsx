@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
+// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import shallow from 'zustand/shallow';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
@@ -16,7 +16,7 @@ import {
 import LogTable from './log-table/LogTable';
 import Listeners from './listeners/Listeners';
 import { useStore, IStore } from '../../../store';
-import { ELogTypes, EPanel } from '../../../types';
+import { ELogTypes } from '../../../types';
 import LogPreview from './log-table/LogPreview';
 
 const logTypes = {
@@ -25,7 +25,7 @@ const logTypes = {
   Receive: ELogTypes.Receive,
 };
 
-const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
+const Logs = () => {
   const {
     socketId,
     typeFilter,
@@ -47,15 +47,6 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
   );
 
   const handleFS = useFullScreenHandle();
-  const _setVisiblePanel = (e) => {
-    if (e) e.preventDefault;
-    if (visiblePanel === EPanel.Response) {
-      setVisiblePanel(EPanel.All);
-    } else {
-      setVisiblePanel(EPanel.Response);
-    }
-  };
-
   const logTableApiRef = useRef({});
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
@@ -88,14 +79,6 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
     setSelectedRow(null);
   };
 
-  const _onRowClick = (rtRow) => {
-    let originalRowValue = rtRow.original;
-    setSelectedRow((ps) => ({
-      ...originalRowValue,
-      index: rtRow.index,
-    }));
-  };
-
   const _onResizeStop = (e, a, b, delta) => {
     console.log(e, 'event', delta);
     setTableHeight((ps) => ps + delta.height);
@@ -118,7 +101,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
             <Container>
               <Container.Header className="with-divider">
                 <div className="fc-btn-collapse v2">
-                  <VscChevronRight onClick={_setVisiblePanel}/>
+                  {/* <VscChevronRight onClick={_setVisiblePanel}/> */}
                 </div>
                 <TabHeader className="height-small border-b border-appBorder padding-left-extra">
                   <TabHeader.Left>
@@ -142,14 +125,14 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
                           >
                             <Button
                               text={typeFilter || 'select log type'}
-                              transparent={true}
-                              ghost={true}
-                              withCaret={true}
                               tooltip={
                                 typeFilter
                                   ? `Log type: ${typeFilter || ''}`
                                   : ''
                               }
+                              transparent
+                              withCaret
+                              ghost
                               sm
                             />
                           </Dropdown.Handler>
@@ -212,18 +195,26 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (type) => {} }) => {
                   onLoad={(tApi) => {
                     logTableApiRef.current = tApi;
                   }}
+                  onFocusRow={(r) => {
+                    setSelectedRow(r);
+                  }}
                 />
-                <Resizable
-                  top={true}
-                  height="100px"
-                  width="100%"
-                  maxHeight={400}
-                  minHeight={100}
-                  onResizeStop={_onResizeStop}
-                  className="bg-focus-3"
-                >
-                  <LogPreview row={selectedRow} />
-                </Resizable>
+                {
+                  selectedRow ?
+                    <Resizable
+                      top={true}
+                      height="250px"
+                      width="100%"
+                      maxHeight={400}
+                      minHeight={50}
+                      onResizeStop={_onResizeStop}
+                      className="bg-focus-3"
+                    >
+                      <LogPreview row={selectedRow} />
+                    </Resizable>
+                    : <></>
+                }
+
               </Container.Body>
             </Container>
           </Column>

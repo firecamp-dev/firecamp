@@ -15,6 +15,9 @@ import {
 import { useEnvStore } from './environment';
 import platformContext from '../services/platform-context';
 import { RE } from '../types';
+import { platformEmitter } from '../services/platform-emitter';
+import { EPlatformTabs } from '../services/platform-emitter/events';
+import { ETabEntityTypes } from '../components/tabs/types';
 
 const initialState = {
   workspace: {
@@ -63,6 +66,7 @@ export interface IWorkspaceStore {
   getWorkspaceId: () => TId;
 
   // collection
+  openCollectionTab: (collectionId: TId) => void;
   createCollectionPrompt: () => void;
   createCollection: (payload: { [k: string]: any }) => Promise<any>;
   updateCollection: (cId: string, payload: { [k: string]: any }) => void;
@@ -70,8 +74,10 @@ export interface IWorkspaceStore {
   onCreateCollection: (collection: ICollection) => void;
   onUpdateCollection: (collection: Partial<ICollection>) => void;
   onDeleteCollection: (collection: TId | ICollection) => void;
+  openImportTab: () => void;
 
   // folder
+  openFolderTab: (folderId: TId) => void;
   createFolder: (payload: { [k: string]: any }) => Promise<any>;
   updateFolder: (fId: string, payload: { [k: string]: any }) => void;
   deleteFolder: (fId: string) => void;
@@ -169,6 +175,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
               requests = [],
               envs = [],
               environments = [],
+              globalEnv,
             } = res.data;
 
             // console.log(res.data, "res.data wCollection...");
@@ -189,7 +196,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
             //TODO: set env from here atm, but improve this logic in future to fetch directly in Env store
             const envStore = useEnvStore.getState();
             envStore.initialize(envs);
-            envStore.init(environments);
+            envStore.init(environments, globalEnv);
           }
         })
         .catch((e) => {
@@ -236,6 +243,19 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     // collection
+    openCollectionTab: (collectionId: TId) => {
+      const state = get();
+      const collection = state.explorer.collections?.find(
+        (c) => c.__ref.id == collectionId
+      );
+      if (collection) {
+        const { name, description, __ref } = collection;
+        platformEmitter.emit(EPlatformTabs.Open, {
+          entity: { name, description, __ref },
+          __meta: { id: collectionId, type: 'collection' },
+        });
+      }
+    },
     createCollectionPrompt: () => {
       const { createCollection } = get();
       if (!platformContext.app.user.isLoggedIn()) {
@@ -376,13 +396,34 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         return { workspace, explorer: { ...s.explorer, collections } };
       });
     },
+    openImportTab: () => {
+      platformEmitter.emit(EPlatformTabs.Open, {
+        entity: { name: 'Import API Collection', description: '' },
+        __meta: { id: 'import-api-collection', type: ETabEntityTypes.Import },
+      });
+    },
 
     // folder
+    openFolderTab: (folderId: TId) => {
+      const state = get();
+      const folder = state.explorer.folders?.find(
+        (f) => f.__ref.id == folderId
+      );
+      if (folder) {
+        const { name, description, __ref } = folder;
+        platformEmitter.emit(EPlatformTabs.Open, {
+          entity: { name, description, __ref },
+          __meta: { id: folderId, type: 'folder' },
+        });
+      }
+    },
     createFolder: async (payload: IFolder) => {
       const state = get();
       const _folder: IFolder = {
         name: payload?.name,
         description: payload?.description,
+        preScripts: [],
+        postScripts: [],
         __meta: { fOrders: [], rOrders: [] },
         __ref: {
           id: nanoid(),

@@ -52,11 +52,6 @@ interface IPlaygrounds {
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
-  getActivePlayground: () => {
-    activePlayground: TId;
-    playground: IPlayground;
-    plgTab: any; //IPlaygroundTab
-  };
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
   changePlayground: (connectionId: TId, updates: object) => void;
 
@@ -90,18 +85,6 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 ) => ({
   playgrounds: initialPlaygrounds,
 
-  getActivePlayground: () => {
-    const state = get();
-    const {
-      playgrounds,
-      runtime: { playgroundTabs, activePlayground },
-    } = state;
-    return {
-      activePlayground,
-      playground: playgrounds[activePlayground],
-      plgTab: playgroundTabs.find((p) => p.id == activePlayground),
-    };
-  },
   addPlayground: (connectionId: TId, playground: IPlayground) => {
     set((s) => ({
       playgrounds: {
@@ -171,35 +154,38 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     }
   },
   changePlaygroundMessage: async (connectionId: TId, updates: object) => {
+    console.log(updates, 'change plg');
     const state = get();
-    const existingPlayground = await state.playgrounds?.[connectionId];
+    const plg = await state.playgrounds?.[connectionId];
 
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = Object.assign({}, existingPlayground);
-      updatedPlayground.message = { ...updatedPlayground.message, ...updates };
+    if (plg?.id === connectionId) {
+      const newPlg = {
+        ...plg,
+        message: { ...plg.message, ...updates },
+      };
 
       if (
         !isEqual(
-          _object.omit(existingPlayground.message, ['path']),
-          _object.omit(updatedPlayground.message, ['path'])
+          _object.omit(plg.message, ['path']),
+          _object.omit(newPlg.message, ['path'])
         )
       ) {
         set((s) => ({
           playgrounds: {
             ...s.playgrounds,
-            [connectionId]: updatedPlayground,
+            [connectionId]: newPlg,
           },
         }));
         state.changePlaygroundTab(connectionId, {
           __meta: {
-            isSaved: !!updatedPlayground.message?.__ref?.id,
+            isSaved: !!newPlg.message?.__ref?.id,
             hasChange: true,
           },
         });
       } else {
         state.changePlaygroundTab(connectionId, {
           __meta: {
-            isSaved: !!updatedPlayground.message?.__ref?.id,
+            isSaved: !!newPlg.message?.__ref?.id,
             hasChange: false,
           },
         });

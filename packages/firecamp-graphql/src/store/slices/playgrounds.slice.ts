@@ -1,6 +1,7 @@
 import { IRestResponse, TId } from '@firecamp/types';
 import { EGraphQLOperationType, IGraphQLPlayground } from '@firecamp/types';
 import { _array, _object } from '@firecamp/utils';
+import isEqual from 'react-fast-compare';
 import { nanoid } from 'nanoid';
 
 import {
@@ -31,7 +32,7 @@ export interface IPlaygroundsSlice {
   playgrounds?: IPlaygrounds;
 
   addPlayground: () => void;
-  openPlayground: (plg: any) => void;
+  openPlayground: (plgId: TId) => void;
   removePlayground: (playgroundId: string) => void;
   changePlaygroundValue: (playgroundId: string, value: string) => void;
   changePlaygroundVariables: (playgroundId: string, variables: string) => void;
@@ -52,11 +53,10 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
         originalRequest: null,
         request: {
           __ref: { id: 'playground-1' },
-          value: 'query MyQuery {\n  __typename\n}',
-          // value: '{\n  __typename\n  company {\n    ceo\n    coo\n    cto\n    cto_propulsion\n    employees\n  }\n}\n',
+          value: { query: 'query MyQuery {\n  __typename\n}', variables: variables: `{ "key": "value" }`,},
+          // value: { query: '{\n  __typename\n  company {\n    ceo\n    coo\n    cto\n    cto_propulsion\n    employees\n  }\n}\n', variables: `{ "key": "value" }`,},
           __meta: {
             type: EGraphQLOperationType.Query,
-            variables: `{ "key": "value" }`,
           },
           name: 'Playground 1',
         },
@@ -74,8 +74,8 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
 
       const plg: IGraphQLPlayground = {
         name,
-        value: 'query MyQuery {\n  __typename\n}',
-        __meta: { type: EGraphQLOperationType.Query, variables: `{ }` },
+        value: { query: 'query MyQuery {\n  __typename\n}', variables: `{ }` },
+        __meta: { type: EGraphQLOperationType.Query },
         //@ts-ignore
         __ref: { id: playgroundId },
       };
@@ -95,7 +95,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
             ...s.runtime.playgroundsMeta,
             [playgroundId]: {
               isSaved: false,
-              operationNames: getOperationNames(plg.value).names,
+              operationNames: getOperationNames(plg.value.query).names,
             },
           },
           activePlayground: playgroundId,
@@ -112,12 +112,12 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
     ) as IGraphQLPlayground;
     if (!plg) return;
     // if variables is table like array from old version then convert then in JSON string
-    if (Array.isArray(plg.__meta?.variables)) {
-      const variables = plg.__meta?.variables.reduce((p, n) => {
+    if (Array.isArray(plg.value?.variables)) {
+      const variables = plg.value.variables.reduce((p, n) => {
         p[n.key] = n.value;
         return p;
       }, {});
-      plg.__meta.variables = JSON.stringify(variables, null, 4);
+      plg.value.variables = JSON.stringify(variables, null, 4);
     }
 
     set((s) => {
@@ -140,7 +140,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
               isSaved: true,
               hasChange: false,
               isRequestRunning: false,
-              operationNames: getOperationNames(plg.value).names,
+              operationNames: getOperationNames(plg.value.query).names,
             },
           };
 
@@ -198,18 +198,18 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
     });
   },
 
-  changePlaygroundValue: (playgroundId: string, value: string) => {
-    // console.log(getOperations(value), "getOperations");
-    let { names, error } = getOperationNames(value);
+  changePlaygroundValue: (playgroundId: string, queryValue: string) => {
+    // console.log(getOperations(queryValue), "getOperations");
+    let { names, error } = getOperationNames(queryValue);
     console.log(names, 'opsNames...');
-    // console.log(getPlaygroundName(value), "getPlaygroundName");
+    // console.log(getPlaygroundName(queryValue), "getPlaygroundName");
 
     set((s) => {
       const plg = s.playgrounds[playgroundId];
       let hasChange = false;
       const plgMeta = s.runtime.playgroundsMeta[playgroundId];
 
-      if (plg.originalRequest?.value != value && plgMeta.isSaved)
+      if (plg.originalRequest?.value.query != queryValue && plgMeta.isSaved)
         hasChange = true;
 
       return {
@@ -219,7 +219,10 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
             ...s.playgrounds[playgroundId],
             request: {
               ...plg.request,
-              value,
+              value: {
+                ...plg.request.value,
+                query: queryValue,
+              },
             },
           },
         },
@@ -242,7 +245,8 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
     set((s) => {
       const plg = s.playgrounds[playgroundId];
       let hasChange = false;
-      if (plg.originalRequest?.__meta.variables != variables) hasChange = true;
+      if (!isEqual(plg.originalRequest?.value.variables, variables))
+        hasChange = true;
 
       return {
         playgrounds: {
@@ -251,8 +255,8 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
             ...plg,
             request: {
               ...plg.request,
-              __meta: {
-                ...plg.request.__meta,
+              value: {
+                ...plg.request.value,
                 variables,
               },
             },
@@ -321,7 +325,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
   prepareRuntimeActivePlgName: () => {
     const state = get();
     const editorValue =
-      state.playgrounds[state.runtime.activePlayground]?.request?.value;
+      state.playgrounds[state.runtime.activePlayground]?.request?.value?.query;
     let name = getPlaygroundName(editorValue);
     return name;
   },

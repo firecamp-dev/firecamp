@@ -14,7 +14,7 @@ export interface ISecondaryTab {
     /**
      * Boolean value if you wnat to set tab background transpetant or not
      */
-    isBgTransperant?: boolean;
+    isBgTransparent?: boolean;
     /**
      * supportive components list
      */

@@ -1,15 +1,14 @@
 import { useState, useEffect, memo } from 'react';
+import classnames from 'classnames';
+import shallow from 'zustand/shallow';
 import {
   Container,
   Column,
   Resizable,
   Row,
-  // SecondaryTab,
   TabHeader,
   Tabs,
 } from '@firecamp/ui-kit';
-import classnames from 'classnames';
-import shallow from 'zustand/shallow';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 
@@ -19,8 +18,6 @@ import ParamsTab from './ParamsTab';
 
 import PlaygroundTab from './PlaygroundTab';
 import Logs from '../logs/Logs';
-import ConnectButton from '../../common/connection/ConnectButton';
-import { EPanel } from '../../../types';
 import { IStore, useStore } from '../../../store';
 
 const bodyTabs = [
@@ -38,7 +35,7 @@ const bodyTabs = [
   // },
 ];
 
-const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
+const ConnectionTab = () => {
   const {
     activePlayground,
     connections,
@@ -123,7 +120,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
                 list={bodyTabs || []}
                 activeTab={activeBodyTab || ''}
                 onSelect={onSelectBodyTab}
-                additionalComponent={<ConnectButton />}
               />
             </TabHeader>
           </Container.Header>
@@ -137,7 +133,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         minWidth="20%"
         left={true}
         className={classnames({
-          'fc-collapsed': visiblePanel === EPanel.Response,
+          'fc-collapsed': false,
         })}
       >
         <Logs key={activePlayground} />

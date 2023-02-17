@@ -1,17 +1,17 @@
 export interface IResStatus {
   /**
-   * Classname to show custom styling
+   * class name to show custom styling
    */
   className?: string;
 
   /**
    * HTTP response status code
    */
-  statusCode: number;
+  code: number;
   /**
    * HTTP response status message
    */
-  statusMessage?: string;
+  status?: string;
   /**
    * Boolean value whether request is running (requesting) or not
    */

@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
-import { EEditorLanguage } from '@firecamp/types';
+import { EEditorLanguage, EEditorTheme } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
 import './sass/Editor.sass';
 
@@ -222,12 +222,13 @@ const Editor: FC<IEditor> = ({
         path={path}
         key={path}
         loading={loading || <></>}
-        onChange={(value, e) =>
+        onChange={(value, e) => {
+          // console.log(value, 'native editor');
           onChange({
             preventDefault: () => {},
             target: { value },
-          })
-        }
+          });
+        }}
         onMount={(editor, monaco) => {
           if (language == 'typescript') {
             monaco.languages.typescript.typescriptDefaults.setCompilerOptions({

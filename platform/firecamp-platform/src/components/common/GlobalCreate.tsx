@@ -55,6 +55,8 @@ const GlobalCreateDD = ({}) => {
         createEnvironmentPrompt();
         break;
       case EMenuOptions.ImportCollection:
+        const { openImportTab } = useWorkspaceStore.getState();
+        openImportTab();
         break;
       case EMenuOptions.Workspace:
         platformContext.app.modals.openCreateWorkspace();
@@ -80,7 +82,7 @@ const GlobalCreateDD = ({}) => {
       >
         <Dropdown.Handler>
           <Button
-            text={'NEW'}
+            text={'Create'}
             className={classnames('!text-primaryColor')}
             withCaret
             transparent

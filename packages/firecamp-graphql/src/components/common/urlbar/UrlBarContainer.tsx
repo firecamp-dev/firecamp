@@ -64,7 +64,6 @@ const UrlBarContainer = ({ tab }) => {
 
   return (
     <UrlBar
-      environmentCard={<></>}
       nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {

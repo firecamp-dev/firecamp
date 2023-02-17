@@ -7,14 +7,14 @@ import { Loader } from '@firecamp/ui-kit';
 import JsonTab from './requests/json/Request';
 import MdTab from './requests/markdown/Request';
 
-// import { Rest } from '@firecamp/rest';
+import { Rest } from '@firecamp/rest';
 // import { GraphQL } from '@firecamp/graphql';
 // import { WSClient } from '@firecamp/websocket';
 // import { SocketIOClient } from '@firecamp/socket.io';
 
-const Rest = lazy(() =>
-  import('@firecamp/rest').then((module) => ({ default: module.Rest }))
-);
+// const Rest = lazy(() =>
+//   import('@firecamp/rest').then((module) => ({ default: module.Rest }))
+// );
 const GraphQL = lazy(() =>
   import('@firecamp/graphql').then((module) => ({ default: module.GraphQL }))
 );
@@ -27,10 +27,12 @@ const SocketIOClient = lazy(() =>
   }))
 );
 
-import { IEntityTab, IRequestTabProps } from './types';
+import { ETabEntityTypes, IEntityTab, IRequestTabProps } from './types';
 import pltContext from '../../services/platform-context';
 import { usePlatformStore } from '../../store/platform';
 import EnvironmentTab from '../common/environment/tabs/Environment';
+import CollectionFolderEntityTab from '../common/collection/CollectionFolderEntityTab';
+import ImportTab from '../common/collection/ImportTab';
 
 const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
   if (!tab || index === -1) {
@@ -64,15 +66,16 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
   const _renderRequestTab = (tab: IEntityTab<any>) => {
     // console.log(tab.entity.__meta?.type, 'tab.entity.type');
     switch (tab.__meta.entityType) {
-      case 'request':
+      case ETabEntityTypes.Request:
         const type = tab.entity?.__meta?.type;
         switch (type) {
           case ERequestTypes.Rest:
-            return (
-              <Suspense fallback={<Loader />}>
-                <Rest {...tabProps} />
-              </Suspense>
-            );
+            return <Rest {...tabProps} />;
+          // return (
+          //   <Suspense fallback={<Loader />}>
+          //     <Rest {...tabProps} />
+          //   </Suspense>
+          // );
           case ERequestTypes.GraphQL:
             return (
               <Suspense fallback={<Loader />}>
@@ -99,8 +102,13 @@ const TabContainerBodyRequest: FC<any> = ({ tab, index }) => {
             return <span>Default Request Tab</span>;
         }
         break;
-      case 'environment':
+      case ETabEntityTypes.Environment:
         return <EnvironmentTab {...tabProps} />;
+      case ETabEntityTypes.Collection:
+      case ETabEntityTypes.Folder:
+        return <CollectionFolderEntityTab {...tabProps} />;
+      case ETabEntityTypes.Import:
+        return <ImportTab {...tabProps} />;
       default:
         return <>No Entity Tab Found</>;
     }

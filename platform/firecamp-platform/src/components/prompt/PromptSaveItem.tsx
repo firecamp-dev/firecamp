@@ -15,7 +15,7 @@ import { IPromptSaveItem } from './types';
 const _texts: IPromptSaveItem['texts'] = {
   btnOk: 'Create',
   btnOking: 'Creating...',
-  btnCancle: 'Cancle',
+  btnCancel: 'Cancel',
 };
 
 export const PromptSaveItem: FC<IPromptSaveItem> = ({
@@ -128,7 +128,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
         <TabHeader className="!px-0">
           <TabHeader.Right>
             <Button
-              text={texts?.btnCancle || `Cancel`}
+              text={texts?.btnCancel || `Cancel`}
               onClick={_close}
               sm
               secondary

@@ -10,6 +10,7 @@ import {
   IUi,
   IUiSlice,
   IRequestChangeStateSlice,
+  IExecutionSlice
 } from './slices';
 
 interface IStore
@@ -17,7 +18,8 @@ interface IStore
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IRequestChangeStateSlice {
+    IRequestChangeStateSlice,
+    IExecutionSlice {
   originalRequest?: IRest;
   context?: any;
   setContext: (ctx: any) => void;

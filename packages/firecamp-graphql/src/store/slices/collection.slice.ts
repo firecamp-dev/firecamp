@@ -16,8 +16,8 @@ interface ICollection {
   items?: Partial<IGraphQLPlayground & { __ref: { isItem?: boolean } }>[];
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
   /**
-   * increate the number on each action/event happens within collection
-   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   * incase the number on each action/event happens within collection
+   * react component will not re-render when tdpInstance will change in store, at that time update __manualUpdates to re-render the compoenent
    */
   __manualUpdates?: number;
 }
@@ -170,7 +170,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     const item = {
       name,
-      payload: plg.request.value,
+      value: plg.request.value,
       __meta: plg.request.__meta,
       __ref: {
         requestId: state.request.__ref.id,
@@ -201,7 +201,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
                 request: newItem,
-                originalRequest: null,
+                originalRequest: newItem,
               },
             },
             runtime: {
@@ -217,7 +217,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
                 [playgroundId]: {
                   ...s.runtime.playgroundsMeta[playgroundId],
                   isSaved: true,
-                  operationNames: getOperationNames(plg.request.value).names,
+                  operationNames: getOperationNames(plg.request.value.query)
+                    .names,
                 },
               },
             },
@@ -249,7 +250,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     const playgroundId = state.runtime.activePlayground;
     const plg = state.playgrounds[playgroundId];
 
-    const item = {
+    const item: Partial<IGraphQLPlayground> = {
       __ref: {
         id: plg.request.__ref.id,
         requestId: state.request.__ref.id,
@@ -262,23 +263,21 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     // @note: here name will be updated from rename prompt where other plg property will be updated by state value
     // that is why we're passing name as fn prop and handling other plg info from the state
-    if (name && !isEqual(_oRequest.name, name)) {
-      //@ts-ignore
+    if (name && typeof name == 'string' && !isEqual(_oRequest.name, name)) {
       item.name = name;
     }
-    if (!isEqual(_oRequest.value, _request.value)) {
+    if (!isEqual(_oRequest.value.query, _request.value.query)) {
       //@ts-ignore
-      item.value = _request.value;
+      if (!item.value) item.value = { query: '' };
+      item.value.query = _request.value.query;
     }
     if (
-      _request.__meta &&
-      typeof _request.__meta.variables == 'string' &&
-      !isEqual(_oRequest.__meta.variables, _request.__meta.variables)
+      typeof _request.value.variables == 'string' &&
+      !isEqual(_oRequest.value.variables, _request.value.variables)
     ) {
       //@ts-ignore
-      item.__meta = {
-        variables: _request.__meta.variables,
-      };
+      if (!item.value) item.value = { variables: '' };
+      item.value.variables = _request.value.variables;
     }
 
     console.log(item, 'item...');
@@ -305,7 +304,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
                 request: { ...updatedPlg },
-                originalRequest: null,
+                originalRequest: { ...updatedPlg },
               },
             },
             runtime: {

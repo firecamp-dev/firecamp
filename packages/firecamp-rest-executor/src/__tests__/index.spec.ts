@@ -4,8 +4,7 @@ import RestExecutor from '../';
 describe('rest executor', () => {
   it('should send response successfully', async () => {
     const request = new RestExecutor();
-
-    const response = await request.send(
+    const { response } = await request.send(
       {
         url: {
           raw: 'https://jsonplaceholder.typicode.com/posts',
@@ -33,17 +32,15 @@ describe('rest executor', () => {
       {
         globals: [],
         environment: [],
-        collection: [],
+        collectionVariables: [],
       }
     );
-
-    expect(response?.statusCode).toEqual(200);
+    expect(response.code).toEqual(200);
   });
 
   it('should send body', async () => {
     const request = new RestExecutor();
-
-    const response = await request.send(
+    const { response } = await request.send(
       {
         url: {
           raw: 'https://jsonplaceholder.typicode.com/posts',
@@ -74,20 +71,18 @@ describe('rest executor', () => {
       {
         globals: [],
         environment: [],
-        collection: [],
+        collectionVariables: [],
       }
     );
-
-    expect(response?.statusCode).toEqual(201);
-    expect(response?.data).toEqual(
+    expect(response.code).toEqual(201);
+    expect(response.body).toEqual(
       JSON.stringify({ msg: 'Hi', id: 101 }, null, 2)
     );
   });
 
   it.skip('should allow to connect secure server', async () => {
     const request = new RestExecutor();
-
-    const response = await request.send(
+    const { response } = await request.send(
       {
         url: {
           raw: 'https://localhost:3002/api/http/methods',
@@ -111,11 +106,11 @@ describe('rest executor', () => {
       {
         globals: [],
         environment: [],
-        collection: [],
+        collectionVariables: [],
       }
     );
 
-    expect(response?.statusCode).toEqual(200);
+    expect(response.code).toEqual(200);
   });
 
   it.skip('should not allow to connect secure server', async () => {
@@ -146,10 +141,10 @@ describe('rest executor', () => {
         {
           globals: [],
           environment: [],
-          collection: [],
+          collectionVariables: [],
         }
       )
-      .then(({ error }) => {
+      .then(({ response: { error } }) => {
         expect(error?.message).toEqual('certificate has expired');
       });
   });
