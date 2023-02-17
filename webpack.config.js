@@ -1,5 +1,8 @@
-/* eslint-disable no-console */
+// /* eslint-disable no-console */
 require('dotenv').config();
+/* eslint-disable no-console */
+require('dotenv-vault-core').config();
+console.log(process.env.FIRECAMP_API_HOST, 'FIRECAMP_API_HOST'); // for debugging purposes. remove when ready.
 
 const webpack = require('webpack');
 const path = require('path');
