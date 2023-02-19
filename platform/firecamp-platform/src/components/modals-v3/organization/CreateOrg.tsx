@@ -83,8 +83,6 @@ const CreateOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
       }
     } catch (error) {
       setError((s) => ({ ...s, global: error.data?.message }));
-      // Re-authenticate user if accessToken expired
-      // await F.collab.reLogin(error);
     } finally {
       setFlagONCP(false);
     }

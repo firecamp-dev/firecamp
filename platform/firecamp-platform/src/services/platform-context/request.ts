@@ -76,7 +76,6 @@ const request: IPlatformRequestService = {
   // subscribe real-time request changes (pull-actions from server)
   subscribeChanges: (requestId: TId, handlePull: () => any) => {
     // TODO: manage user is logged in from store
-    // if (!F.userMeta.isLoggedIn) return;
 
     // console.log({ subscribeChanges: requestId });
 
@@ -90,7 +89,6 @@ const request: IPlatformRequestService = {
   // unsubscribe real-time request changes (pull-actions from server)
   unsubscribeChanges: (requestId: TId) => {
     // TODO: handle isLoggedIn
-    // if (!F.userMeta.isLoggedIn) return;
 
     // console.log({ unsubscribeChanges: requestId });
 
