@@ -5,7 +5,7 @@ import {
   ERestBodyTypes,
   IRest,
   IRestResponse,
-  TRuntimeVariable
+  TRuntimeVariable,
 } from '@firecamp/types';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
 import parseBody from '@firecamp/rest-executor/dist/esm/helpers/body';
@@ -13,6 +13,12 @@ import { _object } from '@firecamp/utils';
 import * as extension from './chrome';
 
 const restExecutors: { [key: TId]: RestExecutor } = {};
+
+type TVariablesExecutionArg = {
+  globals: TRuntimeVariable[];
+  environment: TRuntimeVariable[];
+  collectionVariables: TRuntimeVariable[];
+};
 
 /**
  *
@@ -22,45 +28,44 @@ const restExecutors: { [key: TId]: RestExecutor } = {};
  */
 export const send = async (
   request: IRest,
-  variables: {
-    globals: TRuntimeVariable[];
-    environment: TRuntimeVariable[];
-    collectionVariables: TRuntimeVariable[];
-  },
+  variables: TVariablesExecutionArg,
   firecampAgent: EFirecampAgent
-): Promise<IRestResponse> => {
+): Promise<{
+  response: IRestResponse;
+  variables: TVariablesExecutionArg;
+  testResult: any;
+  scriptErrors: any[];
+}> => {
   switch (firecampAgent) {
     case EFirecampAgent.Desktop:
-      return window.fc.restExecutor.send(request);
-
+      return window.fc.restExecutor.send(request, variables);
     case EFirecampAgent.Extension:
-      return extension.send(request);
-
+      return extension.send(request, variables);
     case EFirecampAgent.Web:
       restExecutors[request.__ref.id] = new RestExecutor();
       return await restExecutors[request.__ref.id].send(request, variables);
-
     case EFirecampAgent.Cloud:
-      if (!_object.isEmpty(request?.body?.[ERestBodyTypes.FormData])) {
-        const data = await parseBody(request?.body);
+      if (request.body?.type == ERestBodyTypes.FormData) {
+        const body = await parseBody(request.body);
         const response = await axios.post(
           `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute/multipart`,
-          data,
+          body,
           {
             headers: {
               request: JSON.stringify(request),
+              variables: JSON.stringify(variables),
               'content-type': ERestBodyTypes.FormData,
             },
           }
         );
         return response.data;
+      } else {
+        const response = await axios.post(
+          `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute`,
+          { request, variables }
+        );
+        return response.data;
       }
-
-      const response = await axios.post(
-        `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute`,
-        request
-      );
-      return response.data;
   }
 };
 
