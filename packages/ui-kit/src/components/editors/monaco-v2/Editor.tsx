@@ -207,6 +207,14 @@ const Editor: FC<IEditor> = ({
   }
 
   // console.log(value, language, 'language...');
+  /**
+   * @note: Editor will reset the default theme on render, 
+   *        so fetch previously set theme from localStorage and set to editor
+   */
+  let editorTheme: string = EEditorTheme.Dark;
+  if (localStorage) {
+    editorTheme = localStorage.getItem('editorTheme') || EEditorTheme.Lite;
+  }
 
   return (
     <div className={cx('relative h-full', className)}>
@@ -221,6 +229,7 @@ const Editor: FC<IEditor> = ({
         height={height}
         path={path}
         key={path}
+        theme={editorTheme}
         loading={loading || <></>}
         onChange={(value, e) => {
           // console.log(value, 'native editor');

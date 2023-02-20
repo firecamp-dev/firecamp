@@ -165,6 +165,7 @@ const Theme: FC<any> = () => {
       console.log(editorTheme, 'editorTheme');
 
       console.log(editorTheme);
+      localStorage.setItem('editorTheme', editorTheme);
       EditorApi.setEditorTheme(editorTheme);
     } catch (error) {
       console.log({ error });
