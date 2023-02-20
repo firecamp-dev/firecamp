@@ -7,12 +7,11 @@ import {
   ERestBodyTypes,
   IRest,
   IRestResponse,
-  TRuntimeVariable,
 } from '@firecamp/types';
 import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 import parseBody from './helpers/body';
-import { IRestExecutor } from './types';
+import { IRestExecutor, TVariableGroup } from './types';
 import * as scriptRunner from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
@@ -137,11 +136,7 @@ export default class RestExecutor implements IRestExecutor {
 
   async send(
     fcRequest: IRest,
-    variables: {
-      globals: TRuntimeVariable[];
-      environment: TRuntimeVariable[];
-      collectionVariables: TRuntimeVariable[];
-    }
+    variables: TVariableGroup
   ) {
     console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
