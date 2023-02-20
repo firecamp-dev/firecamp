@@ -33,9 +33,7 @@ const SignIn: FC<IModal> = () => {
           <hr className="border-t border-appBorder w-full" />
           <span className="text-xs text-appForegroundInActive bg-modalBackground absolute px-1">OR</span>
         </div> */}
-      </Modal.Body>
-      <Modal.Footer>
-        <div className="flex-col">
+          <div className="flex-col">
           <div className="text-sm mt-6 text-center">
             Not have an account?
             <a
@@ -76,7 +74,7 @@ const SignIn: FC<IModal> = () => {
             .
           </div>
         </div>
-      </Modal.Footer>
+      </Modal.Body>
     </>
   );
 };

@@ -151,8 +151,6 @@ const SignInWithEmail: FC<IModal> = () => {
             />
           </form>
         </div>
-      </Modal.Body>
-      <Modal.Footer>
         <div className="flex-col">
           <div className="text-sm mt-6 text-center">
             Not have an account?
@@ -194,6 +192,9 @@ const SignInWithEmail: FC<IModal> = () => {
             .
           </div>
         </div>
+      </Modal.Body>
+      <Modal.Footer>
+       
       </Modal.Footer>
     </>
   );

@@ -37,4 +37,6 @@ export interface IModal {
 
     height?: number | string;
     width?: number | string;
+
+    scrollbar?: boolean;
 }
