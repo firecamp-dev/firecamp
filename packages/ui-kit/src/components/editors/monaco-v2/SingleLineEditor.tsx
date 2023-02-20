@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, memo, ReactNode } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
-import { EEditorLanguage } from '@firecamp/types';
+import { EEditorLanguage, EEditorTheme } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
 
 type TSLEditor = {
@@ -356,6 +356,15 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
    */
   //  value = value.replace(/[\n\r]/g, '');
 
+  /**
+   * @note: Editor will reset the default theme on render,
+   *        so fetch previously set theme from localStorage and set to editor
+   */
+  let editorTheme: string = EEditorTheme.Dark;
+  if (localStorage) {
+    editorTheme = localStorage.getItem('editorTheme') || EEditorTheme.Lite;
+  }
+
   return (
     <>
       {placeholder && !value ? (
@@ -374,6 +383,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           height={height}
           path={path}
           key={path}
+          theme={editorTheme}
           loading={loading || <></>}
           onChange={(newValue) => {
             newValue = newValue.replace(/[\n\r]/g, '');

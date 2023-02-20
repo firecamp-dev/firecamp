@@ -84,7 +84,6 @@ const Rest = ({ tab, platformContext }) => {
       initialise(_request, tab.id);
       setIsFetchingReqFlag(false);
     };
-    _fetchRequest();
 
     const _fetchRequestParentArtifacts = async () => {
       const requestId = tab.entity?.__ref?.id;
@@ -101,7 +100,9 @@ const Rest = ({ tab, platformContext }) => {
           });
       }
     };
-    _fetchRequestParentArtifacts();
+    _fetchRequest().then(() => {
+      _fetchRequestParentArtifacts();
+    });
   }, []);
 
   /**

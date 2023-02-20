@@ -66,12 +66,6 @@ const TestResultTable = ({
   };
 
   return (
-    <div className="flex-1 overflow-auto visible-scrollbar">
-      <div className="flex text-sm px-3 pt-2 -mb-2">
-        <div className="mr-3"><label className="mr-1">Total:</label><span className="font-semibold">5</span></div>
-        <div className="mr-3"><label className="mr-1">Passed:</label><span  className="font-semibold text-success">3</span></div>
-        <div className="mr-3"><label className="mr-1">Failed:</label><span  className="font-semibold text-error">2</span></div>
-      </div>
     <Table
       rows={rows}
       columns={_columns}
@@ -92,7 +86,6 @@ const TestResultTable = ({
       }}
       options={options}
     />
-    </div>
   );
 };
 

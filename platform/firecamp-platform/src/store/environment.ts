@@ -96,11 +96,12 @@ export interface IEnvironmentStore {
 export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   ...initialState,
 
-  init: (envs: IEnv[] = [], globalEnv: IEnv) => {
+  init: (envs: IEnv[] = [], _globalEnv: IEnv) => {
+    const globalEnv = _env.prepareRuntimeEnvFromRemoteEnv(_globalEnv);
     set({ environments: envs, globalEnv });
-    const { envTdpInstance } = get();
+    const { envTdpInstance, setActiveEnv } = get();
     envTdpInstance?.init(envs);
-    get().setActiveEnv(null);
+    setActiveEnv(null);
   },
 
   /** @deprecated */

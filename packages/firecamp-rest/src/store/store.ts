@@ -5,7 +5,6 @@ import { TId, IRest } from '@firecamp/types';
 import { _object, _env, _array, _string } from '@firecamp/utils';
 import {
   prepareUIRequestPanelState,
-  normalizeSendRequestPayload,
   initialiseStoreFromRequest,
 } from '../services/request.service';
 import {
@@ -15,7 +14,7 @@ import {
   createResponseSlice,
   createUiSlice,
   createRequestChangeStateSlice,
-  createExecutionSlice
+  createExecutionSlice,
 } from './slices/index';
 import { IStoreState, IStore } from './store.type';
 

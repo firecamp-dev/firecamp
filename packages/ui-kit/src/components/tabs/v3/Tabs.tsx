@@ -6,6 +6,7 @@ import {
   useImperativeHandle,
   useRef,
   useState,
+  useEffect,
 } from 'react';
 import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
@@ -46,6 +47,11 @@ const Tabs: FC<ITabs> = forwardRef(
       activeTab: _activeTab,
       orders: _orders,
     });
+    useEffect(() => {
+      if (state.activeTab != _activeTab) {
+        setState((s) => ({ ...s, activeTab: _activeTab }));
+      }
+    }, [_activeTab]);
 
     useImperativeHandle(
       ref,
@@ -90,7 +96,10 @@ const Tabs: FC<ITabs> = forwardRef(
               return { tabs: s.tabs, orders, activeTab };
             });
           },
-          changeState: (tabId: TId, state: 'modified' | 'default' = 'default') => {
+          changeState: (
+            tabId: TId,
+            state: 'modified' | 'default' = 'default'
+          ) => {
             setState((s) => ({
               ...s,
               tabs: {
@@ -101,7 +110,7 @@ const Tabs: FC<ITabs> = forwardRef(
                 },
               },
             }));
-          }
+          },
         };
       },
       []
@@ -167,7 +176,7 @@ const Tabs: FC<ITabs> = forwardRef(
                 if (!tab) return <Fragment key={tabId} />;
                 return (
                   <Tab
-                  index={i}
+                    index={i}
                     id={tabId}
                     key={tabId}
                     name={tab.name}

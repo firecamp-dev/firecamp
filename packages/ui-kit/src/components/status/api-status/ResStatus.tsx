@@ -10,9 +10,14 @@ const ResStatus: FC<IResStatus> = ({
   isRequestRunning = false,
 }) => {
   if (isRequestRunning) return <span />;
+  let statusClass = "text-info";
+  if(code>199 && code <300) statusClass = 'text-success';
+  if(code>299 && code <399) statusClass = 'text-warning';
+  if(code>399 && code <600) statusClass = 'text-error';
+
   return (
     <div className={className ? className : 'mx-2 leading-5 whitespace-pre'}>
-      <span className={`text-warning text-xl status` + code}>
+      <span className={`${statusClass} text-xl`}>
         {code}
       </span>{' '}
       {status || Statuses[code]?.text || ''}

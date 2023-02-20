@@ -1,8 +1,7 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
-import * as monaco from 'monaco-editor';
 import shallow from 'zustand/shallow';
-import { Container } from '@firecamp/ui-kit';
+import { Container, EditorApi } from '@firecamp/ui-kit';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
   FcIconGetSquare,
@@ -161,11 +160,13 @@ const Theme: FC<any> = () => {
         theme?.color || 'orange'
       }`;
 
-      const monacoTheme =
+      const editorTheme =
         theme?.mode == EThemeMode.Dark ? EEditorTheme.Dark : EEditorTheme.Lite;
-      console.log(monacoTheme, 'monacoTheme');
-      // Set monaco editor theme
-      monaco.editor.setTheme(monacoTheme);
+      console.log(editorTheme, 'editorTheme');
+
+      console.log(editorTheme);
+      localStorage.setItem('editorTheme', editorTheme);
+      EditorApi.setEditorTheme(editorTheme);
     } catch (error) {
       console.log({ error });
     }
