@@ -1117,6 +1117,9 @@ video {
 .-mb-80 {
 	margin-bottom: -20rem;
 }
+.ml-8 {
+	margin-left: 2rem;
+}
 .-mb-2 {
 	margin-bottom: -0.5rem;
 }
@@ -1355,6 +1358,9 @@ video {
 }
 .resize {
 	resize: both;
+}
+.list-disc {
+	list-style-type: disc;
 }
 .flex-row {
 	flex-direction: row;
@@ -1895,6 +1901,12 @@ video {
 .pb-5 {
 	padding-bottom: 1.25rem;
 }
+.\!pl-4 {
+	padding-left: 1rem !important;
+}
+.\!pr-4 {
+	padding-right: 1rem !important;
+}
 .pl-0 {
 	padding-left: 0px;
 }
@@ -2362,6 +2374,9 @@ video {
 }
 .hover\:bg-tabHoverBackground:hover {
 	background-color: var(--tab-hoverBackground);
+}
+.hover\:\!pr-3:hover {
+	padding-right: 0.75rem !important;
 }
 .hover\:text-activityBarForeground:hover {
 	color: var(--activityBar-foreground);

@@ -40,3 +40,6 @@ export interface IModal {
 
     scrollbar?: boolean;
 }
+export interface IBody{
+    className?: string;
+}

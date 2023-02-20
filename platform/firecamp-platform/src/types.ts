@@ -85,12 +85,12 @@ export const EPlatformModalDefaultProps = {
   [EPlatformModalTypes.ManageEnvironment]: { height: '750px', width: '550px' },
 
   // auth
-  [EPlatformModalTypes.SignIn]: { width: '440px', className: 'p-8' },
-  [EPlatformModalTypes.SignInWithEmail]: { width: '440px', className: 'p-8' },
-  [EPlatformModalTypes.SignUp]: { width: '440px', className: 'p-8' },
+  [EPlatformModalTypes.SignIn]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.SignInWithEmail]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.SignUp]: { width: '440px', className: 'p-4' },
   [EPlatformModalTypes.RefreshToken]: { modalConfig: { closeOnEsc: false } },
-  [EPlatformModalTypes.ForgotPassword]: { width: '440px', className: 'p-8' },
-  [EPlatformModalTypes.ResetPassword]: { width: '440px', className: 'p-8' },
+  [EPlatformModalTypes.ForgotPassword]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.ResetPassword]: { width: '440px', className: 'p-4' },
 
   // user
   [EPlatformModalTypes.UserProfile]: {},

@@ -68,7 +68,12 @@ let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
 
 let Body: FC<IBody> = ({ id = '', children = '', className = '' }) => {
   return (
-    <Container.Body className={className || 'flex flex-col overflow-auto visible-scrollbar thin -m-4 !p-4'} id={id}>
+    <Container.Body
+    className={cx(
+      className,
+      'flex flex-col overflow-auto visible-scrollbar thin !p-4'
+    )}
+    id={id}>
       {children}
     </Container.Body>
   );
