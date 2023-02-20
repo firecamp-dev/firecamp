@@ -935,6 +935,9 @@ video {
 .m-6 {
 	margin: 1.5rem;
 }
+.-m-4 {
+	margin: -1rem;
+}
 .m-0 {
 	margin: 0px;
 }
@@ -1165,6 +1168,12 @@ video {
 .hidden {
 	display: none;
 }
+.h-96 {
+	height: 24rem;
+}
+.h-full {
+	height: 100%;
+}
 .h-12 {
 	height: 3rem;
 }
@@ -1183,9 +1192,6 @@ video {
 .h-4 {
 	height: 1rem;
 }
-.h-full {
-	height: 100%;
-}
 .h-5 {
 	height: 1.25rem;
 }
@@ -1197,9 +1203,6 @@ video {
 }
 .\!h-6 {
 	height: 1.5rem !important;
-}
-.h-96 {
-	height: 24rem;
 }
 .h-screen {
 	height: 100vh;
@@ -1237,6 +1240,9 @@ video {
 .min-h-0 {
 	min-height: 0px;
 }
+.w-full {
+	width: 100%;
+}
 .w-56 {
 	width: 14rem;
 }
@@ -1260,9 +1266,6 @@ video {
 }
 .w-12 {
 	width: 3rem;
-}
-.w-full {
-	width: 100%;
 }
 .w-max {
 	width: -moz-max-content;
@@ -1445,20 +1448,23 @@ video {
 .\!rounded-tl-none {
 	border-top-left-radius: 0px !important;
 }
+.border {
+	border-width: 1px;
+}
 .border-0 {
 	border-width: 0px;
 }
 .\!border-0 {
 	border-width: 0px !important;
 }
-.border {
-	border-width: 1px;
+.border-b {
+	border-bottom-width: 1px;
+}
+.border-l {
+	border-left-width: 1px;
 }
 .border-r {
 	border-right-width: 1px;
-}
-.border-b {
-	border-bottom-width: 1px;
 }
 .border-r-0 {
 	border-right-width: 0px;
@@ -1472,11 +1478,11 @@ video {
 .border-t {
 	border-top-width: 1px;
 }
-.border-l {
-	border-left-width: 1px;
-}
 .border-solid {
 	border-style: solid;
+}
+.border-appBorder {
+	border-color: var(--app-border);
 }
 .\!border-transparent {
 	border-color: #ffffff00 !important;
@@ -1528,9 +1534,6 @@ video {
 }
 .border-modalBorder {
 	border-color: var(--modal-border);
-}
-.border-appBorder {
-	border-color: var(--app-border);
 }
 .\!border-statusBarBorder {
 	border-color: var(--statusBar-border) !important;
@@ -1690,6 +1693,9 @@ video {
 }
 .p-4 {
 	padding: 1rem;
+}
+.\!p-4 {
+	padding: 1rem !important;
 }
 .p-2 {
 	padding: 0.5rem;
@@ -2879,7 +2885,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
-.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+.visible-scrollbar.thin::-webkit-scrollbar{
+  width: 4px !important;
+  display: none !important;
+}
+.visible-scrollbar.thin:hover::-webkit-scrollbar{
   width: 4px !important;
   display: block !important;
 }
