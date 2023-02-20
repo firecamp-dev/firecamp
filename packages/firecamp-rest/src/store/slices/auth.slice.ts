@@ -45,9 +45,9 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
   changeAuth: (type: EAuthTypes, changes: { key: string; value: any }) => {
     const state = get();
     const { key, value } = changes;
-    const auth: Partial<IAuth> = {
+    const auth: IAuth = {
       type,
-      // value: {},
+      value: '',
     };
 
     // for auth type oauth2 whole auth payload will be there in updates instead update key value pair
@@ -55,7 +55,10 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
       //@ts-ignore
       auth.value = { ...changes };
     } else {
-      auth.value = { ...state.request.auth.value, [key]: value };
+      auth.value = {
+        ...state.request.auth.value,
+        [key]: value,
+      } as IAuth['value'];
     }
 
     set((s) => ({

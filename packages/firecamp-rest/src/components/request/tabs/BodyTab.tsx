@@ -37,7 +37,7 @@ const BodyTab: FC<any> = () => {
   );
   const [editor, setEditor] = useState(null);
 
-  console.log(body, 'body...');
+  // console.log(body, 'body...');
 
   //when user elect the body type from the dropdown, follow these
   const _selectBodyType = (selectedType: {
@@ -158,7 +158,7 @@ const BodyTypeDropDown: FC<any> = ({
 
   useEffect(() => {
     setOptions(fetchOptions());
-    console.log(fetchOptions(), 'fetch options');
+    // console.log(fetchOptions(), 'fetch options');
   }, []);
 
   /**

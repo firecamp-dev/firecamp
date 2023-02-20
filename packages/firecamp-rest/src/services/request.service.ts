@@ -13,9 +13,10 @@ import {
   EFirecampAgent,
   IRestBody,
   IAuth,
-  IOAuth2UiState,
+  // IOAuth2UiState,
   EScriptLanguages,
   EScriptTypes,
+  IAuthBearer,
 } from '@firecamp/types';
 import {
   _object,
@@ -226,12 +227,10 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
   }
 
   // normalize auth
-  if (!_object.isEmpty(auth)) {
-    _nr.auth = { value: auth.value, type: auth.type };
-  } else {
-    //@ts-ignore
-    _nr.auth = { value: '', type: EAuthTypes.None };
-  }
+  _nr.auth = normalizeAuth(auth);
+  console.log(_nr.auth, '_nr.auth');
+
+  console.log(_nr.auth, '_nr.auth');
   // _nr.auth = !_object.isEmpty(auth)
   //   ? (_auth.normalizeToUi(auth) as IUiAuth)
   //   : _cloneDeep(_auth.defaultAuthState);
@@ -295,7 +294,10 @@ export const initialiseStoreFromRequest = (
     },
     runtime: {
       bodies: _cloneDeep(RuntimeBodies),
-      auths: _cloneDeep(_auth.defaultAuthState),
+      auths: {
+        ..._cloneDeep(_auth.defaultAuthState),
+        [request.auth.type]: request.auth.value,
+      },
       authHeaders: [],
       parentArtifacts: {
         collection: {
@@ -469,4 +471,26 @@ export const getAuthHeaders = async (
     console.error(e);
     return Promise.reject({});
   }
+};
+
+/**
+ * normalize the auth payload for request
+ * some optional keys might be missing in the payload so normalization will fill all those missing and required keys
+ */
+export const normalizeAuth = (
+  auth: IAuth = { type: EAuthTypes.None, value: '' }
+): IAuth => {
+  const { type } = auth;
+  if (!type) return { type: EAuthTypes.None, value: '' };
+  if (auth.type == EAuthTypes.Bearer) {
+    const value = auth.value as IAuthBearer;
+    return {
+      type: auth.type,
+      value: {
+        prefix: value?.prefix || '',
+        token: value?.token || '',
+      },
+    };
+  }
+  return auth;
 };
