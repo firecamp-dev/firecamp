@@ -4,7 +4,7 @@ import shallow from 'zustand/shallow';
 import ConnectButton from '../connection/ConnectButton';
 import { IStore, useStore } from '../../../store';
 
-const UrlBarContainer = ({ tab, onPasteCurl = (curl: string) => {} }) => {
+const UrlBarContainer = ({ tab }) => {
   const { url, displayUrl, changeUrl, save } = useStore(
     (s: IStore) => ({
       url: s.request.url,

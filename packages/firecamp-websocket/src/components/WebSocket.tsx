@@ -115,10 +115,7 @@ const WebSocket = ({ tab, platformContext }) => {
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
-        <UrlBarContainer
-          tab={tab}
-          // onPasteCurl={onPasteCurl}
-        />
+        <UrlBarContainer tab={tab} />
         <Container.Body>
           <Row flex={1} overflow="auto" className="with-divider h-full">
             <SidebarPanel />
