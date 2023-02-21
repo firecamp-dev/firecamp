@@ -26,11 +26,6 @@ interface IRequestSlice extends IUrlSlice {
   changeHeaders: (headers: IHeader[]) => any;
   changeMeta: (__meta: Partial<IGraphQL['__meta']>) => any;
   changeConfig: (configKey: string, configValue: any) => any;
-  execute?: (
-    opsName: string,
-    query: string,
-    variables?: string
-  ) => Promise<IRestResponse>;
   fetchIntrospectionSchema: () => Promise<void>;
   save: (tabId: TId) => void;
 }
@@ -85,53 +80,6 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       request: { ...s.request, __meta: updatedMeta },
     }));
     state.equalityChecker({ __meta: updatedMeta });
-  },
-
-  execute: async (opsName: string, query?: string, variables?: string) => {
-    const state = get();
-    const {
-      request,
-      runtime: { activePlayground },
-    } = state;
-    if (!request.url?.raw) return;
-
-    let gVars = {};
-    try {
-      gVars = JSON.parse(variables);
-    } catch (e) {
-      gVars = {};
-    }
-
-    //@ts-ignore
-    const _request: IRest = Object.assign(
-      {},
-      {
-        ...request,
-        body: {
-          value: { query, variables: gVars },
-          type: ERestBodyTypes.GraphQL,
-        },
-        __meta: {
-          ...request.__meta,
-          type: ERequestTypes.Rest,
-        },
-      }
-    );
-    // console.log(_request, 'request...');
-    // let response: IRestResponse = { code: 0 };
-    state.setRequestRunningFlag(activePlayground, true);
-    return state.context.request
-      .execute(_request)
-      .then((r: IRestResponse) => {
-        state.setPlaygroundResponse(r);
-        return r;
-      })
-      .catch((e: IRestResponse) => {
-        // executor will never throw an error
-      })
-      .finally(() => {
-        state.setRequestRunningFlag(activePlayground, false);
-      });
   },
   fetchIntrospectionSchema: async () => {
     const state = get();

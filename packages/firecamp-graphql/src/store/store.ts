@@ -11,6 +11,7 @@ import {
   createRuntimeSlice,
   createUiSlice,
   createRequestChangeStateSlice,
+  createExecutionSlice,
 } from './slices';
 import { IStore, IStoreState } from './store.type';
 
@@ -33,6 +34,7 @@ const createStore = (initialState: IStoreState) =>
       ...createCollectionSlice(set, get),
       ...createUiSlice(set, get, initialState.ui),
       ...createRequestChangeStateSlice(set, get),
+      ...createExecutionSlice(set, get),
 
       initialise: (_request: Partial<IGraphQL>, tabId: TId) => {
         const initState = initialiseStoreFromRequest(_request, tabId);

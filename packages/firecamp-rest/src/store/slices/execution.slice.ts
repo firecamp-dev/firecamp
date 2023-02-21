@@ -160,59 +160,39 @@ const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
   },
   execute: async () => {
     const state = get();
-    try {
-      // set response empty
-      set({ response: { code: 0 } });
+    // set response empty
+    set({ response: { code: 0 } });
 
-      // Check if request is running or not. stop running request if already true
-      if (state.runtime.isRequestRunning === true) {
-        await state.context.request.cancelExecution(state.request.__ref.id);
-        // set request running state as false
-        state.setRequestRunningFlag(false);
-        return;
-      }
-      state.setRequestRunningFlag(true);
-
-
-      const finalRequest = state.prepareRequestForExecution();
-      console.log(finalRequest, '...finalRequest');
-      // execute request
-      await state.context.request
-        .execute(finalRequest)
-        .then(({ response, variables, testResult, scriptErrors }) => {
-          console.log({ response, variables, testResult });
-          if (response?.error) {
-            const error = response.error;
-            console.log(
-              error.message,
-              error.code,
-              error.e.response,
-              error.e,
-              9090
-            );
-          }
-          return { response, variables, testResult, scriptErrors };
-        })
-        .then(async ({ response, variables, testResult, scriptErrors }) => {
-          if (response) {
-            set((s) => ({ response, testResult, scriptErrors })); // TODO: check what to set/ response or testScriptResponse
-          }
-          // TODO: add cookies
-          if (variables) {
-            // TODO: set variables changes in storage
-          }
-          state.setRequestRunningFlag(false);
-        })
-        .catch((e) => {
-          console.log(e.message, e.stack, e.response, e, 9090);
-        });
-    } catch (e) {
+    // Check if request is running or not. stop running request if already true
+    if (state.runtime.isRequestRunning === true) {
+      await state.context.request.cancelExecution(state.request.__ref.id);
+      // set request running state as false
       state.setRequestRunningFlag(false);
-      console.error({
-        api: 'execute',
-        e,
-      });
+      return;
     }
+    state.setRequestRunningFlag(true);
+
+    const finalRequest = state.prepareRequestForExecution();
+    // console.log(finalRequest, '...finalRequest');
+    // execute request
+    await state.context.request
+      .execute(finalRequest)
+      .then(({ response, variables, testResult, scriptErrors }) => {
+        console.log({ response, variables, testResult });
+        if (response?.error) {
+          const error = response.error;
+          console.log(error.message, error.code, error.e.response, error.e);
+        }
+        if (response) {
+          set((s) => ({ response, testResult, scriptErrors })); // TODO: check what to set/ response or testScriptResponse
+        }
+      })
+      .catch((e) => {
+        console.log(e.message, e.stack, e.response, e, 9090);
+      })
+      .finally(() => {
+        state.setRequestRunningFlag(false);
+      });
   },
 });
 
