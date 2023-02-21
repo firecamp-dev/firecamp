@@ -153,6 +153,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         state.context.app.notify.alert(
           'You can not paste the CURL snippet onto the saved request, please open a new empty request tab instead.'
         );
+        // console.log(url, 787798789);
         state.changeUrl({ ...url, raw: url.raw.replace(snippet, '') });
         return;
       } else {
