@@ -150,12 +150,8 @@ const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
             <span>Unable to reach server</span>
             </div>
             <div className="text-base text-appForegroundInActive">
-              <ul className="ml-8 list-disc">
-                <li className="mb-2">
-                  <label className="font-semibold block text-appForegroundActive">The Server's response may be missing CORS headers</label>
-                  <span>To verify open developer tools and check the console for any CORS related error message like, "Cros Origin Request Blocked", If that in the case contact your system administartor and add <b className="text-appForeground">https://insider.firecamp.dev</b> to your server's allow list.</span>
-                  <a  className="font-semibold block !text-info">Learn more about enabling CORS</a>
-                </li>
+              <ul className="ml-8 list-decimal">
+                
                 <li className="mb-2">
                   <span>Server may not be reachable at the provided endpoint.</span>
                 </li>
@@ -163,6 +159,26 @@ const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
                 <li className="mb-2">
                   <span>Is the server currently running?</span>
                 </li>
+
+                <li className="mb-2">
+                  <label className="font-semibold block text-appForegroundActive">The Server's response may be missing CORS headers</label>
+                  <span>To verify open developer tools and check the console for any CORS related error message like, "Cros Origin Request Blocked", If that in the case contact your system administartor and add <b className="text-appForeground">https://insider.firecamp.dev</b> to your server's allow list.</span>
+                  <a  className="font-semibold block !text-info">Learn more about enabling CORS</a>
+                  <div>
+                  <ul className="ml-8 list-disc mt-2">
+                
+                <li className="mb-2">
+                  <span>Server may not be reachable at the provided endpoint.</span>
+                </li>
+
+                <li className="mb-2">
+                  <span>Is the server currently running?</span>
+                </li>
+                
+              </ul>
+                  </div>
+                </li>
+
               </ul>
             </div>
             </div>

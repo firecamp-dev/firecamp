@@ -917,4 +917,8 @@ body .ace_editor .ace_scrollbar{
   font-weight: 800;
   background: var(--focus-level-2);
 }
+
+.primary-table .mtk1,.primary-table th{
+  color: var(--tab-foreground-inactive) !important;
+}
 /*-----------table 2 css end --------*/

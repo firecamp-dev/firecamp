@@ -1120,11 +1120,11 @@ video {
 .ml-8 {
 	margin-left: 2rem;
 }
-.-mb-2 {
-	margin-bottom: -0.5rem;
-}
 .mt-2 {
 	margin-top: 0.5rem;
+}
+.-mb-2 {
+	margin-bottom: -0.5rem;
 }
 .block {
 	display: block;
@@ -1361,6 +1361,9 @@ video {
 }
 .list-disc {
 	list-style-type: disc;
+}
+.list-decimal {
+	list-style-type: decimal;
 }
 .flex-row {
 	flex-direction: row;
@@ -3133,5 +3136,9 @@ body .ace_editor .ace_scrollbar{
   padding: 4px 8px;
   font-weight: 800;
   background: var(--focus-level-2);
+}
+
+.primary-table .mtk1,.primary-table th{
+  color: var(--tab-foreground-inactive) !important;
 }
 /*-----------table 2 css end --------*/
