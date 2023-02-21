@@ -18,7 +18,7 @@ const UrlBarContainer = ({ tabId }) => {
     changeUrl,
     changeMethod,
     execute,
-    onPasteCurl,
+    setRequestFromCurl,
     save,
   } = useStore(
     (s: IStore) => ({
@@ -32,7 +32,7 @@ const UrlBarContainer = ({ tabId }) => {
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
-      onPasteCurl: s.onPasteCurl,
+      setRequestFromCurl: s.setRequestFromCurl,
       save: s.save,
     }),
     shallow
@@ -52,7 +52,7 @@ const UrlBarContainer = ({ tabId }) => {
 
   const _onPaste = (paste, edt: any) => {
     if (!paste) return;
-    onPasteCurl(paste);
+    setRequestFromCurl(paste);
   };
 
   const _onSave = async () => {
