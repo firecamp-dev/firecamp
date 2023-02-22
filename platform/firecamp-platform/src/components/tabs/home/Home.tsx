@@ -9,13 +9,13 @@ import {
   FcIconSocketIoSquare,
   FcIconWebSocket,
 } from '@firecamp/ui-kit';
-
 import { usePlatformStore } from '../../../store/platform';
+import { useTabStore } from '../../../store/tab';
 import { EThemeColor, EThemeMode } from '../../../types';
-import { platformEmitter as emitter } from '../../../services/platform-emitter';
-import { EPlatformTabs } from '../../../services/platform-emitter/events';
+import { ETabEntityTypes } from '../types';
 
 const Home: FC<any> = () => {
+  const { open: openTab } = useTabStore.getState();
   const _openTab = (type?: ERequestTypes | 'environment') => {
     const allowed_app = [
       ERequestTypes.SocketIO,
@@ -24,15 +24,7 @@ const Home: FC<any> = () => {
       ERequestTypes.GraphQL,
     ];
     // if (!allowed_app.includes(type))
-    emitter.emit(EPlatformTabs.Open, {
-      entity: { __meta: { type } },
-      __meta: { id: '', type: 'request' },
-    });
-
-    // emitter.emit(EPlatformTabs.Open, {
-    //   entity: { __meta: { type } },
-    //   __meta: { id: '', type: 'collection' },
-    // });
+    openTab({ __meta: { type } }, { id: '', type: ETabEntityTypes.Request });
   };
 
   return (

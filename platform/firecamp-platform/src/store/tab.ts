@@ -1,11 +1,12 @@
 import create from 'zustand';
 import _reject from 'lodash/reject';
 import { nanoid } from 'nanoid';
-import { TId } from '@firecamp/types';
+import { ERequestTypes, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 import { ETabEntityTypes, IEntityTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
+import PreComp from '../components/tabs/header/PreComp';
 
 const initialState = {
   list: {},
@@ -144,13 +145,15 @@ const useTabStore = create<ITabStore>((set, get) => {
     },
 
     changeOrders: (orders) => {
-      set((s) => ({
-        orders,
-      }));
+      set((s) => ({ orders }));
     },
 
-    open: (entity, entityMeta) => {
+    open: (
+      entity = { __meta: { type: ERequestTypes.Rest } },
+      entityMeta = { id: '', type: ETabEntityTypes.Request }
+    ) => {
       if (!entityMeta?.type) return [null, null];
+      if (!entity.__meta) entity.__meta = { type: ERequestTypes.Rest };
       const { list, orders, activeTab, changeActiveTab, open } = get();
       // if (!type) {
       //   if (orders.length === 0) type = 'request';
@@ -197,6 +200,15 @@ const useTabStore = create<ITabStore>((set, get) => {
         activeTab: tabId,
         orders: _orders,
       });
+
+      platformEmitter.emit(EPlatformTabs.Opened, [
+        {
+          ...tab,
+          dotIndicator: tab.__meta?.hasChange === true,
+        },
+        _orders,
+        [entity, entityMeta],
+      ]);
       return [tab, _orders];
     },
 

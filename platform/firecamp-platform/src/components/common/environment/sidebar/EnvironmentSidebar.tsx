@@ -19,6 +19,7 @@ import { platformEmitter } from '../../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../../services/platform-emitter/events';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { ETabEntityTypes } from '../../../tabs/types';
+import { useTabStore } from '../../../../store/tab';
 
 const EnvironmentSidebar: FC<any> = () => {
   const treeRef = useRef();
@@ -62,6 +63,7 @@ const ProgressBarContainer = () => {
 
 const EnvironmentCollection = () => {
   const treeRef = useRef();
+  const { open: openTab } = useTabStore.getState();
   const { envTdpInstance, registerTDP, unRegisterTDP } = useEnvStore(
     (s: IEnvironmentStore) => ({
       envTdpInstance: s.envTdpInstance,
@@ -74,10 +76,10 @@ const EnvironmentCollection = () => {
     return () => unRegisterTDP();
   }, []);
   const openEnv = (env) => {
-    platformEmitter.emit(EPlatformTabs.Open, {
-      entity: { ...env },
-      __meta: { id: env.__ref.id, type: ETabEntityTypes.Environment },
-    });
+    openTab(
+      { ...env },
+      { id: env.__ref.id, type: ETabEntityTypes.Environment }
+    );
   };
   const openCreateColEnv = () => {};
   const deleteEnv = () => {};
@@ -243,11 +245,12 @@ const CollectionScopedEnvCollection = () => {
 
 const Globals = () => {
   const globalEnv = useEnvStore((s) => s.globalEnv, shallow);
+  const { open: openTab } = useTabStore.getState();
   const openEnv = (env) => {
-    platformEmitter.emit(EPlatformTabs.Open, {
-      entity: { ...env },
-      __meta: { id: env.__ref.id, type: ETabEntityTypes.Environment },
-    });
+    openTab(
+      { ...env },
+      { id: env.__ref.id, type: ETabEntityTypes.Environment }
+    );
   };
   return (
     <div className="rct-tree-item-li focus:rct-tree-item-li-focused border-b border-appBorder">
