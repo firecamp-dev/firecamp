@@ -8,6 +8,7 @@ import {
   IEnvironment,
   TPlainObject,
   IRuntimeEnv,
+  TRuntimeVariable,
 } from '@firecamp/types';
 import { _env } from '@firecamp/utils';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
@@ -92,6 +93,17 @@ export interface IEnvironmentStore {
   _deleteEnv: (envId: TId) => void;
 
   // common
+
+  /** set env in localStorage */
+  setLocalEnv: (localEnv: IEnv) => void;
+  setVarsInLocalFromExecutorResponse: (
+    resVars: {
+      globals: TRuntimeVariable[];
+      environment: TRuntimeVariable[];
+      collectionVariables: TRuntimeVariable[];
+    },
+    collectionId: TId
+  ) => void;
   dispose: () => void;
 }
 
@@ -103,7 +115,12 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     set({ environments: envs, globalEnv });
     const { envTdpInstance, setActiveEnv } = get();
     envTdpInstance?.init(envs);
-    setActiveEnv(null);
+
+    let activeEnv = null;
+    if (window?.localStorage) {
+      activeEnv = localStorage.getItem('activeEnv');
+    }
+    setActiveEnv(activeEnv);
   },
 
   /** @deprecated */
@@ -146,12 +163,16 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setActiveEnv: (envId) => {
-    const { environments, applyVariablesToPlatform } = get();
+    const { applyVariablesToPlatform } = get();
     const setNoEnvironment = () =>
       set({
         activeEnvId: null,
         activeEnv: _cloneDeep(EmptyEnv),
       });
+
+    if (window?.localStorage) {
+      localStorage.setItem('activeEnv', envId);
+    }
 
     Promise.resolve(envId)
       .then((eId) => {
@@ -186,9 +207,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const gPlainVars = _env.preparePlainVarsFromRuntimeEnv(globalEnv);
     const ePlainVars = _env.preparePlainVarsFromRuntimeEnv(activeEnv);
     // console.log(globalEnv, activeEnv, gPlainVars, ePlainVars);
-
     _env.splitEnvs(globalEnv);
-
     return { ...gPlainVars, ...ePlainVars };
   },
 
@@ -383,6 +402,50 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     });
   },
 
+  setLocalEnv: (localEnv) => {
+    if (!localEnv?.__ref?.id) return;
+    if (window?.localStorage) {
+      window.localStorage.setItem(
+        `env/${localEnv.__ref.id}`,
+        JSON.stringify(localEnv)
+      );
+    }
+  },
+  setVarsInLocalFromExecutorResponse: (variables, collectionId) => {
+    const { setLocalEnv, applyVariablesToPlatform, activeEnv, globalEnv } =
+      get();
+    const { globals, environment, collectionVariables } = variables;
+    if (globals?.length) {
+      const { localEnv } = _env.splitEnvs({
+        ...globalEnv,
+        //@ts-ignore
+        variables: globals,
+      });
+      setLocalEnv(localEnv);
+    }
+    if (environment?.length) {
+      const { localEnv } = _env.splitEnvs({
+        name: activeEnv?.name,
+        //@ts-ignore
+        variables: environment,
+        __ref: activeEnv?.__ref,
+      });
+      setLocalEnv(localEnv);
+    }
+    if (collectionVariables?.length && collectionId) {
+      const { localEnv } = _env.splitEnvs({
+        name: '',
+        //@ts-ignore
+        variables: collectionVariables,
+        __ref: { id: collectionId },
+      });
+      setLocalEnv(localEnv);
+    }
+
+    setTimeout(() => {
+      applyVariablesToPlatform();
+    });
+  },
   // dispose whole store and reset to initial state
   dispose: () => set({ ...initialState }),
 }));

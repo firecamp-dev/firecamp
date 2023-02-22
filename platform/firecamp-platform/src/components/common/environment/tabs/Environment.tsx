@@ -17,8 +17,10 @@ import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
 import { RE } from '../../../../types';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
+import { useEnvStore } from '../../../../store/environment';
 
 const EnvironmentTab = ({ tab, platformContext: context }) => {
+  const { setLocalEnv } = useEnvStore.getState();
   const initEnv = _cloneDeep({ ...tab.entity, variables: [] });
   const originalEnvs = useRef({
     /** runtimeEnv.variables will have the initialValue and currentValue (merge of remote & local)
@@ -106,10 +108,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
 
     // update local env
     if (!isEqual(localEnv, _oLocalEnv)) {
-      localStorage.setItem(
-        `env/${localEnv.__ref.id}`,
-        JSON.stringify(localEnv)
-      );
+      setLocalEnv(localEnv);
     }
     setHasChangeFlag(false);
   };
@@ -181,7 +180,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         context.app.notify.success(
           'The environment has been deleted successfully'
         );
-        localStorage.removeItem(`env/${runtimeEnv.__ref.id}`);
+        window.localStorage.removeItem(`env/${runtimeEnv.__ref.id}`);
 
         // TODO: close the current tab
         // TODO: remove env from the explorer

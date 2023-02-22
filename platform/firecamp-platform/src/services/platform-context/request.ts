@@ -306,7 +306,11 @@ const request: IPlatformRequestService = {
       collectionVariables: [],
     };
     return executor.send(request, variables, agent).then((result) => {
-      //TODO: save variable changes in the local
+      const { setVarsInLocalFromExecutorResponse } = useEnvStore.getState();
+      setVarsInLocalFromExecutorResponse(
+        variables,
+        request.__ref?.collectionId
+      );
       return result;
     });
   },
