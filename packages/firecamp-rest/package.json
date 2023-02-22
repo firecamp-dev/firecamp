@@ -3,17 +3,17 @@
   "version": "0.0.0",
   "description": "REST API Client for Firecamp",
   "main": "src/index.ts",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "scripts": {
-    "build": "yarn clean && run-p 'build:*' && yarn copy-files",
+    "build": "pnpm clean && run-p 'build:*' && pnpm copy-files",
     "build:main": "tsc -p tsconfig.json",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.css\" dist/",
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "yarn build && npx jest --bail --silent --verbose",
+    "test": "pnpm build && npx jest --bail --silent --verbose",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
@@ -41,9 +41,11 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/curl-to-firecamp": "^0.0.10",
-    "@firecamp/types": "^0.0.18",
-    "@firecamp/url": "^0.0.17",
+    "@firecamp/curl-to-firecamp": "^1.0.1",
+    "@firecamp/rest-executor": "workspace:*",
+    "@firecamp/types": "^0.1.21",
+    "@firecamp/ui-kit": "workspace:*",
+    "@firecamp/url": "0.0.20",
     "@hapi/joi": "^17.1.1",
     "aws4": "^1.11.0",
     "chai-http": "^4.3.0",
@@ -53,7 +55,6 @@
     "codemirror-graphql": "^1.0.2",
     "comment-json": "^4.1.1",
     "debounce-promise": "^3.1.2",
-    "deep-equal": "^2.0.3",
     "fuzzysort": "^1.1.4",
     "graphql": "^15.6.0",
     "hawk": "^9.0.0",
@@ -71,10 +72,10 @@
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",
-    "@types/chrome": "0.0.193",
+    "@types/chrome": "0.0.204",
     "@types/har-format": "^1.2.8",
     "@types/httpsnippet": "^1.23.1",
-    "@types/jest": "27.5.0",
+    "@types/jest": "29.2.4",
     "@types/lodash": "^4.14.175",
     "@types/md5": "^2.3.2",
     "@types/node": "^16.4.3",
@@ -84,12 +85,12 @@
     "codecov": "^3.5.0",
     "cspell": "^4.1.0",
     "cz-conventional-changelog": "^3.3.0",
-    "eslint": "^7.8.0",
+    "eslint": "^8.29.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-eslint-comments": "^3.2.0",
     "eslint-plugin-functional": "^4.2.1",
     "eslint-plugin-import": "^2.22.0",
-    "gh-pages": "^3.1.0",
+    "gh-pages": "^4.0.0",
     "httpsnippet": "^2.0.0",
     "jest": "^28.1.3",
     "npm-run-all": "^4.1.5",
@@ -115,11 +116,6 @@
     "LICENSE",
     "README.md"
   ],
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
   "prettier": {
     "singleQuote": true
   },

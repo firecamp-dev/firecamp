@@ -1,13 +1,13 @@
-import { Button } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
+import { Button } from '@firecamp/ui-kit';
 
 import { EConnectionState } from '../../../types';
-import { ISocketStore, useSocketStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const ConnectionButton = () => {
-  let { connectionState, activePlayground, connect, disconnect } =
-    useSocketStore(
-      (s: ISocketStore) => ({
+  const { connectionState, activePlayground, connect, disconnect } =
+    useStore(
+      (s: IStore) => ({
         connectionState:
           s.playgrounds[s.runtime.activePlayground]?.connectionState,
         activePlayground: s.runtime.activePlayground,
@@ -17,7 +17,7 @@ const ConnectionButton = () => {
       shallow
     );
 
-  let _renderConnectionButton = () => {
+  const _renderConnectionButton = () => {
     switch (connectionState) {
       case EConnectionState.Open:
       case EConnectionState.Connecting:

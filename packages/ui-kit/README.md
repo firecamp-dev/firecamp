@@ -13,15 +13,15 @@ import uiKit from 'ui-kit';
 # Run
 Run Storybook:
 ```
-yarn storybook
+pnpm storybook
 ```
 Run Jest:
 ```
-yarn test
+pnpm test
 ```
 Storybook with Jest:
 ```
-yarn start:storybook
+pnpm start:storybook
 ```
 
 By default, a server at [localhost:6006](http://localhost:6006/) is started.

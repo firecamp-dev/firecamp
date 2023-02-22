@@ -1,15 +1,14 @@
 import { useRef, useEffect } from 'react';
-
 import MD from 'markdown-it';
-import { Column } from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
-
-const md = new MD();
 import { UnControlled as CodeMirror } from 'react-codemirror2';
-
+import _upperFirst from 'lodash/upperFirst';
 // import { parse as GraphQLParse } from "graphql";
 import { print } from 'graphql/language/printer';
 import { parse as GraphQLParse } from 'graphql/language/parser';
+import { buildClientSchema } from 'graphql';
+import { _misc } from '@firecamp/utils';
+import { Column } from '@firecamp/ui-kit';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/fold/foldgutter';
@@ -52,19 +51,12 @@ import '../sass/CM-Main.css';
 import getQueryFacts, {
   getCurrentOperation,
 } from '../../../../../services/GraphQLservice';
-
-import {
-  QUERY_TYPES,
-  STRINGS_QUERY_TYPES,
-} from '../../../../../constants/constants';
-
 import Controls from '../statusbar/Controls';
-
-import { useGraphQLStore } from '../../../../../store';
-import { buildClientSchema } from 'graphql';
-import { _misc } from '@firecamp/utils';
+import { useStore } from '../../../../../store';
+import { EQueryTypes } from '../../../../../types';
 
 const AUTO_COMPLETE_AFTER_KEY = /^[a-zA-Z0-9_@(]$/;
+const md = new MD();
 
 const QueryEditor = ({
   value = '',
@@ -72,28 +64,29 @@ const QueryEditor = ({
   isQueryDirty,
   toggleQueryDirty,
 }) => {
-  let { schema } = useGraphQLStore(
+  const { schema } = useStore(
     (s: any) => ({ schema: s.runtime.schema }),
     shallow
   );
 
-  let clientSchemaRef = useRef({});
-  let editorRef = useRef<any>({});
+  const clientSchemaRef = useRef({});
+  const editorRef = useRef<any>({});
 
-  let clientSchema = schema ? buildClientSchema(schema) : null;
+  const clientSchema = schema ? buildClientSchema(schema) : null;
 
   //when value/query will ge generated from explorer or other source like `Q|M|S` buttons then update them in playground
   useEffect(() => {
-    let currentCursor = editorRef.current.getCursor();
-    if (value != editorRef?.current?.getValue()) {
-      // console.log(editorRef?.current, "editorRef?.current")
-      editorRef?.current?.setValue(value || '');
+    const currentCursor = editorRef.current.getCursor();
+    if (value != editorRef.current?.getValue()) {
+      // console.log(editorRef.current, "editorRef?.current")
+      editorRef.current?.setValue(value || '');
 
       //the cursor always set to first line after .setValue, so need to set prev cursor position after setting value
       editorRef.current?.focus();
       editorRef.current?.setCursor(currentCursor);
       editorRef.current?.scrollIntoView(
-        { line: currentCursor.line + 5, char: currentCursor.ch },
+        // { line: currentCursor.line + 5, char: currentCursor.ch },
+        { line: currentCursor.line, char: currentCursor.ch },
         20
       );
       // console.log(currentCursor)
@@ -104,33 +97,31 @@ const QueryEditor = ({
     clientSchemaRef.current = clientSchema;
   }
 
-  let updateCurrentQuery = (_) => {};
-
-  let _onUpdateQuery = _misc.debounce(400, (q) => {
+  const updateCurrentQuery = (_) => {};
+  const _onUpdateQuery = _misc.debounce(400, (q) => {
     onChange(q);
     // toggleQueryDirty(true);
   });
-
-  let _onCallGQLRequest = (e) => {
-    let queryObject = _onCursorGetCurrentOperation(e);
-    // ctx_onSendRequest(queryObject.body, queryObject.meta.variables);
+  const _onCallGQLRequest = (e) => {
+    const queryObject = _onCursorGetCurrentOperation(e);
+    // ctx_onSendRequest(queryObject.value, queryObject.value.variables);
   };
 
-  let _onUpdateCurrentQuery = (body) => {
+  const _onUpdateCurrentQuery = (plg) => {
     updateCurrentQuery({
-      name: body.name || '',
-      meta: { type: body.meta.type || QUERY_TYPES.QUERY },
+      name: plg.name || '',
+      __meta: { type: plg.__meta.type || EQueryTypes.Query },
     });
   };
 
-  let _onCursorGetCurrentOperation = (e, currentQuery = {}) => {
+  const _onCursorGetCurrentOperation = (e, currentQuery = {}) => {
     // console.log(`clientSchema`, clientSchema);
     try {
       // console.log(`currentQuery`, currentQuery);
       // debugger;
-      let currentOperation = getCurrentOperation(e, currentQuery),
-        operation: any = {},
-        queryPayload = {};
+      let currentOperation = getCurrentOperation(e, currentQuery);
+      let operation: any = {};
+      let queryPayload = {};
 
       operation = getQueryFacts(
         clientSchemaRef.current || {},
@@ -142,10 +133,13 @@ const QueryEditor = ({
         let q = operation.operations[0];
 
         queryPayload = Object.assign(q, {
-          name: q.name || STRINGS_QUERY_TYPES[q.meta.type.toUpperCase()],
-          meta: {
-            type: QUERY_TYPES[q.meta.type.toUpperCase()],
-            variables: q.meta.variables,
+          name: q.name || _upperFirst[q.__meta.type],
+          value: {
+            query: q.value.query,
+            variables: q.value.variables,
+          },
+          __meta: {
+            type: EQueryTypes[_upperFirst(q.__meta.type)],
           },
           variableToType: q.variableToType || {},
         });
@@ -189,9 +183,7 @@ ${print(GraphQLParse(`query MyQuery{__typename }`))}`;
           matchBrackets: true,
           showCursorWhenSelecting: true,
           readOnly: false,
-          foldGutter: {
-            minFoldSize: 4,
-          },
+          foldGutter: true,
           // lint: true,
           lint: {
             schema: clientSchema,

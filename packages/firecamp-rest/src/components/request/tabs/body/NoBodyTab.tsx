@@ -4,16 +4,16 @@ import { ERestBodyTypes } from '@firecamp/types';
 
 import { bodyTypeNames } from '../../../../constants';
 
-const NoBodyTab = ({ selectBodyType = ({ id: ERestBodyTypes }) => {} }) => {
+const NoBodyTab = ({ selectBodyType }) => {
   const menus = useMemo(() => {
     let bodyTypes = [];
     for (let type in bodyTypeNames) {
-      if (type !== ERestBodyTypes.NoBody) {
+      if (type) {
         bodyTypes.push({
           id: bodyTypeNames[type],
           name: bodyTypeNames[type],
           onClick: () => {
-            selectBodyType({ id: type });
+            selectBodyType({ id: type }); //ERestBodyTypes
           },
         });
       }
@@ -22,7 +22,7 @@ const NoBodyTab = ({ selectBodyType = ({ id: ERestBodyTypes }) => {} }) => {
       {
         title: 'Quick body type selection',
         items: bodyTypes,
-        active_item: ERestBodyTypes.NoBody,
+        activeItem: '',
       },
     ];
   }, []);

@@ -4,7 +4,15 @@ declare global {
   interface Window {
     fc: {
       restExecutor: {
-        send(request: IRest): Promise<IRestResponse>;
+        send(
+          request: IRest,
+          variables: any
+        ): Promise<{
+          response: IRestResponse;
+          variables: any;
+          testResult: any;
+          scriptErrors: any[];
+        }>;
         cancel(requestId: string): void;
       };
     };

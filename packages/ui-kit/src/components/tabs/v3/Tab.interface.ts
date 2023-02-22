@@ -56,6 +56,8 @@ export interface ITab {
   height?: number;
   tabVersion?: number;
   tabIndex?: number;
+
+  hasStatusbar?: boolean,
 }
 
 /** Tab close icon configuration to set icon position, visibility, click event, and disabled property */

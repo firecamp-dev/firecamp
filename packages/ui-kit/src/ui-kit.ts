@@ -18,6 +18,9 @@ export { default as RootContainer } from './components/grid/RootContainer';
 export { default as Container } from './components/grid/Container';
 export { default as Resizable } from './components/grid/Resizable';
 
+//Icons
+export * from './components/icons';
+
 // Input
 export { default as Input } from './components/input/Input';
 export { default as FileInput } from './components/input/FileInput';
@@ -70,18 +73,21 @@ export { CheckboxInGrid } from './components/checkbox/Checkbox';
 export { default as CMGQueryEditor } from './components/editors/cm-gql-editor/CMGQueryEditor';
 
 export { default as Editor } from './components/editors/monaco-v2/Editor';
+export { default as EditorControlBar } from './components/editors/monaco-v2/EditorControlBar';
 export { default as SingleLineEditor } from './components/editors/monaco-v2/SingleLineEditor';
+export * as EditorApi from './components/editors/monaco-v2/lang/init';
 
 // Tables
 export { default as ReactTable } from './components/table/react-table/ReactTable';
 export { default as BulkEditTable } from './components/table/bulk-edit-table/BulkEditTable';
-// export { default as BasicTableRT8 } from './components/table/rt8/BasicTable';
 
 //table v3
 export { default as PrimitiveTable } from './components/table/primitive/Table';
 export { default as BasicTable } from './components/table/basic-table/BasicTable';
 export { default as MultipartTable } from './components/table/multipart-table/MultipartTable';
 export { default as LogTable } from './components/table/log-table/LogTable';
+export { default as EnvironmentTable } from './components/table/environment-table/EnvironmentTable';
+export { default as TestResultTable } from './components/table/test-result-table/TestResultTable';
 export type { ITable, TTableApi } from './components/table/primitive/Table';
 
 // Url
@@ -97,7 +103,7 @@ export { default as ConfirmationPopover } from './components/popover/Confirmatio
 export { default as Toast } from './components/toast/Toast';
 
 // scripts
-export { default as ScriptsTabs } from './components/scripts/ScriptsTabs';
+export { default as ScriptTab } from './components/scripts/ScriptTab';
 
 // response
 export { default as Response } from './components/response/Response';

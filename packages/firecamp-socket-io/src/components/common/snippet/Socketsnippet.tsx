@@ -19,13 +19,12 @@ const SnippetModal = ({
   isOpen = false,
   activeMessage = '',
   listeners = [],
-  onClose = () => {},
+  onClose = (bool) => {},
 }) => {
-  let generateRequestConfig = () => {};
+  const generateRequestConfig = () => {};
+  const config = useMemo(() => generateRequestConfig(), []);
 
-  let config = useMemo(() => generateRequestConfig(), []);
-
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     tabs: [
       {
         id: 'cpp',
@@ -74,7 +73,7 @@ const SnippetModal = ({
     editorMode: 'javascript',
   });
 
-  let [collection, setCollection] =
+  const [collection, setCollection] =
     useState();
     // prepare(
     //   prop_collection.directories || [],
@@ -121,7 +120,7 @@ const SnippetModal = ({
     // setCollection(collection);
   }, [prop_collection.directories, prop_collection.emitters]);
 
-  let _setActiveTab = (tab) => {
+  const _setActiveTab = (tab) => {
     let foundTab = state.tabs.find((t) => t.id === tab),
       mode = 'typescript';
     if (foundTab) {
@@ -135,7 +134,7 @@ const SnippetModal = ({
     });
   };
 
-  let _setActiveMessage = (focusedNode) => {
+  const _setActiveMessage = (focusedNode) => {
     // focusedNode._addChild();
     // console.log(focusedNode);
     // return;
@@ -174,7 +173,7 @@ const SnippetModal = ({
   //     .catch((er) => console.log(er));
   // };
 
-  let { tabs, activeTab, snippet, editorMode } = state;
+  const { tabs, activeTab, snippet, editorMode } = state;
 
   return (
     <Modal open={isOpen} onClose={() => onClose(false)}>
@@ -290,9 +289,6 @@ const SnippetModal = ({
                     language={editorMode || 'typescript'}
                     value={snippet}
                     disabled={true}
-                    // controlsConfig={{
-                    //   show: true,
-                    // }}
                     monacoOptions={{
                       name: 'emitter',
                       width: '100%',

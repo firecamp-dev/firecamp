@@ -1,118 +1,29 @@
 import { Button, Url, UrlBar } from '@firecamp/ui-kit';
 import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
-import { TId } from '@firecamp/types';
-
-import {
-  IPushPayload,
-  IWebsocketStore,
-  useWebsocketStore,
-} from '../../../store/index';
 import ConnectButton from '../connection/ConnectButton';
+import { IStore, useStore } from '../../../store';
 
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  postComponents,
-  onSaveRequest = (pushAction /* : IPushPayload */, tabId: string) => {},
-  platformContext,
-  onPasteCurl = (curl: string) => {},
-}) => {
-  const { EnvironmentWidget } = postComponents;
-
-  const {
-    url,
-    displayUrl,
-    activeEnvironments,
-    isRequestSaved,
-
-    changeUrl,
-    changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+const UrlBarContainer = ({ tab }) => {
+  const { url, displayUrl, changeUrl, save } = useStore(
+    (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
-      activeEnvironments: s.runtime.activeEnvironments,
-      isRequestSaved: s.runtime.isRequestSaved,
-
       changeUrl: s.changeUrl,
-      changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-      setPushActionEmpty: s.setPushActionEmpty,
+      save: s.save,
     }),
     shallow
   );
 
-  // console.log({ pushAction });
-
-  // const { SaveButton, EnvironmentVariCard } = ctx_additionalComponents;
-
-  /*   const _onSave = async (savedRequestData: {
-    name: string;
-    description: string;
-    collectionId: TId;
-    folderId: TId;
-  }) => {
-    try {
-      // console.log({ savedRequestData });
-
-      const pushPayload: IPushPayload = await prepareRequestInsertPushPayload({
-        name: savedRequestData.name,
-        description: savedRequestData.description,
-        collectionId: savedRequestData.collectionId,
-        folderId: savedRequestData.folder_id,
-      });
-      console.log({ pushPayload });
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.websocket',
-        error,
-      });
-    }
-  };
-
-  const _onUpdate = async () => {
-    try {
-      const pushPayload: IPushPayload = await prepareRequestUpdatePushPayload();
-      // console.log({ pushPayload });
-
-      await onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'update.websocket',
-        error,
-      });
-    }
-  }; */
-
   const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
-      if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
-      }
-
-      // console.log({ pushPayload });
-      setPushActionEmpty();
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      save(tab.id);
+    } catch (e) {
+      console.error(e);
     }
   };
 
-  const _onUpdateURL = (e) => {
+  const _onUpdateUrl = (e) => {
     e.preventDefault();
     const value = e.target.value;
     const proxyUrl = { ...url, queryParams: [], pathParams: [] };
@@ -121,33 +32,16 @@ const UrlBarContainer = ({
   };
 
   return (
-    <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`websocket-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
-      nodePath={``}
-    >
+    <UrlBar environmentCard={<></>} nodePath={``}>
       <UrlBar.Prefix>
-        <Button text={'Websocket'} secondary sm />
+        <Button text={'WebSocket'} secondary sm />
       </UrlBar.Prefix>
       <UrlBar.Body>
         <Url
           id={`url-${tab.id}`}
           url={displayUrl}
           placeholder={'ws://'}
-          onChangeURL={_onUpdateURL}
+          onChangeURL={_onUpdateUrl}
           // onEnter={_onExecute}
           // onPaste={_onPaste}
         />

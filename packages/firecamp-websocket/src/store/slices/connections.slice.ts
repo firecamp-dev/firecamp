@@ -1,11 +1,6 @@
-import {
-  IWebSocketConnection,
-  TId,
-  EPushActionType,
-  IQueryParam,
-} from '@firecamp/types';
+import { IWebSocketConnection, TId, IQueryParam } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { IWebsocketStore } from '../websocket.store';
+import { TStoreSlice } from '../store.type';
 
 interface IConnectionsSlice {
   addConnection: (connection: IWebSocketConnection) => void;
@@ -14,7 +9,7 @@ interface IConnectionsSlice {
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => void;
 }
 
-const createConnectionSlice = (set, get): IConnectionsSlice => ({
+const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
   addConnection: (connection: IWebSocketConnection) => {
     const state = get();
     const updatedConnections = [...state.request.connections, connection];
@@ -25,17 +20,13 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
         connections: updatedConnections,
       },
     }));
-    state.prepareRequestConnectionsPushAction(
-      connection.id,
-      EPushActionType.Insert
-    );
   },
   updateConnection: (connectionId: TId, key: string, value: any) => {
     //if connection id not provided, queryParams has dedicated change fn below
     if (!connectionId || !key || key == 'queryParams') return;
 
     const state = get();
-    let { displayUrl } = state.runtime;
+    const { displayUrl } = state.runtime;
     const { connections } = state.request;
 
     const _connections = connections.map((c) => {
@@ -59,16 +50,9 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       request: { ...s.request, connections: _connections },
       runtime: { ...s.runtime, displayUrl },
     }));
-
-    // state.prepareRequestConnectionsPushAction(
-    //   connectionId,
-    //   EPushActionType.Update,
-    //   state.last?.request?.connections[connectionIndex],
-    //   updatedConnection
-    // );
   },
   removeConnection: (connectionId: TId) => {
-    const state = get() as IWebsocketStore;
+    const state = get();
     const {
       request: { connections },
       runtime: { _dnp },
@@ -102,10 +86,6 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
           },
         },
       }));
-      state.prepareRequestConnectionsPushAction(
-        connectionId,
-        EPushActionType.Delete
-      );
     }
   },
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {
@@ -121,13 +101,11 @@ const createConnectionSlice = (set, get): IConnectionsSlice => ({
       }
       return c;
     });
-
     set((s) => ({
       request: { ...s.request, connections: _connections },
       runtime: { ...s.runtime, displayUrl },
     }));
-
-    console.log(state.equalityChecker(qps, 'queryParams'));
+    state.equalityChecker({ connections });
   },
 });
 

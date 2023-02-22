@@ -9,8 +9,8 @@ export * from './collection.slice';
 // runtime
 export * from './runtime.slice';
 export * from './playgrounds.slice';
-export * from './connectionsLogs.slice';
+export * from './logs.slice';
 
 export * from './ui.slice';
-export * from './pushAction/pushAction.slice';
 export * from './handleConnectionExecutor.slice';
+export * from './change.slice';

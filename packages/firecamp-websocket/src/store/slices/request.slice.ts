@@ -1,16 +1,17 @@
-import { IWebSocket } from '@firecamp/types';
-
+import { IWebSocket, TId } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 import {
   IUrlSlice,
   createUrlSlice,
   IConnectionsSlice,
   createConnectionSlice,
-} from '../index';
+} from './';
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: IWebSocket;
   changeMeta: (key: string, value: any) => void;
   changeConfig: (key: string, value: any) => void;
+  save: (tabId: TId) => void;
 }
 
 const requestSliceKeys: string[] = [
@@ -21,11 +22,11 @@ const requestSliceKeys: string[] = [
   '__ref',
 ];
 
-const createRequestSlice = (
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
   set,
   get,
   initialRequest: IWebSocket
-): IRequestSlice => ({
+) => ({
   request: initialRequest,
 
   // url
@@ -33,31 +34,47 @@ const createRequestSlice = (
   ...createConnectionSlice(set, get),
 
   changeMeta: (key: string, value: any) => {
-    let lastMeta = get()?.last?.request.meta;
-    let updatedMeta = {
-      ...(get()?.request.meta || {}),
+    const state = get();
+    const __meta = {
+      ...state.request.__meta,
       [key]: value,
     };
     set((s) => ({
-      ...s,
-      request: { ...s.request, meta: updatedMeta },
+      request: { ...s.request, __meta },
     }));
-
-    // Prepare push action for meta
-    get()?.prepareMetaPushAction(lastMeta, updatedMeta);
+    state.equalityChecker({ __meta });
   },
   changeConfig: (key: string, value: any) => {
     const state = get();
-    const lastConfig = state.last?.request.config;
-    const updatedConfig = {
-      ...(get()?.request.config || {}),
+    const config = {
+      ...(state.request.config || {}),
       [key]: value,
     };
-
-    set((s) => ({ ...s, request: { ...s.request, config: updatedConfig } }));
-
-    // Prepare push action for config in _root
-    state.prepareRootPushAction({ config: lastConfig }, updatedConfig);
+    set((s) => ({ request: { ...s.request, config } }));
+    state.equalityChecker({ config });
+  },
+  save: (tabId) => {
+    const state = get();
+    if (!state.runtime.isRequestSaved) {
+      const _request = state.preparePayloadForSaveRequest();
+      state.context.request.save(_request, tabId, true).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
+      // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
+    } else {
+      const _request = state.preparePayloadForUpdateRequest();
+      if (!_request) {
+        state.context.app.notify.info(
+          "The request doesn't have any changes to be saved."
+        );
+        return null;
+      }
+      state.context.request.save(_request, tabId).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
+    }
   },
 });
 

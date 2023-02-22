@@ -1,13 +1,14 @@
+import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
+import { nanoid as id } from 'nanoid';
 import {
   ERequestTypes,
   ISocketIOConnection,
   ISocketIO,
   ESocketIOClientVersion,
+  TId,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
-import _cleanDeep from 'clean-deep';
-import _cloneDeep from 'lodash/cloneDeep';
-import { nanoid as id } from 'nanoid';
 import { _object, _array, _string } from '@firecamp/utils';
 import {
   RequestConnection,
@@ -33,7 +34,7 @@ const getPathFromUrl = (url: string) => {
 /** normalize the socket.io request */
 export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   const _nr: ISocketIO = {
-    //ws url will only have { raw: ""} but in ui we need actual url object IUrl
+    //socket.io url will only have { raw: ""} but in ui we need actual url object IUrl
     //@ts-ignore
     url: { raw: '', queryParams: [], pathParams: [] },
     config: {
@@ -86,7 +87,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   _nr.__ref.createdBy = __ref.createdBy || '';
   _nr.__ref.updatedBy = __ref.updatedBy || '';
 
-  // normalize _meta
+  // normalize connections
   _nr.connections = [];
   _nr.connections = connections.map(
     (connection: ISocketIOConnection) =>
@@ -100,7 +101,8 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
 };
 
 export const initialiseStoreFromRequest = (
-  _request: Partial<ISocketIO>
+  _request: Partial<ISocketIO>,
+  tabId: TId
 ): ISocket => {
   const request: ISocketIO = normalizeRequest(_request);
   const defaultConnection =
@@ -119,18 +121,15 @@ export const initialiseStoreFromRequest = (
         {
           id: defaultConnection.id,
           name: defaultConnection.name,
-          meta: {
+          __meta: {
             isSaved: false,
             hasChange: false,
           },
         },
       ],
-      activeEnvironments: {
-        workspace: '',
-        collection: '',
-      },
       isRequestRunning: false,
       isRequestSaved: !!request.__ref.collectionId,
+      tabId,
     },
     playgrounds: {
       // add logic for init playgrounds by connections
@@ -144,9 +143,10 @@ export const initialiseStoreFromRequest = (
         emitter: InitPlayground,
         selectedCollectionEmitter: '',
         listeners: {},
+        activeArgIndex: 0,
       },
     },
-    connectionsLogs: {
+    logs: {
       [playgroundId]: [],
     },
     ui: {

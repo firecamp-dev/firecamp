@@ -1,4 +1,17 @@
-import { IRest, IRestResponse } from '@firecamp/types';
+import { IRest, IRestResponse, TRuntimeVariable } from '@firecamp/types';
+
+export type TVariableGroup = {
+  globals: TRuntimeVariable[];
+  environment: TRuntimeVariable[];
+  collectionVariables: TRuntimeVariable[];
+};
+
+export type TRestExecutionResponse = {
+  response: IRestResponse;
+  variables: TVariableGroup;
+  testResult?: any;
+  scriptErrors?: any[];
+};
 
 export interface IRestExecutor {
   /**
@@ -6,7 +19,10 @@ export interface IRestExecutor {
    * received from the server
    * @param request REST request want to send to the server
    */
-  send(request: IRest): Promise<IRestResponse>;
+  send(
+    request: IRest,
+    variables: TVariableGroup
+  ): Promise<TRestExecutionResponse>;
 
   /**  cancel the request */
   cancel(): void;

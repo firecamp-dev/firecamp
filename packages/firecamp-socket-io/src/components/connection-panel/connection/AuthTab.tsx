@@ -11,13 +11,7 @@ const AuthTab = ({
       key={`auth-${activeConnectionId}`}
       id={`auth-${activeConnectionId}`}
       rows={auth || []}
-      title={'auth'}
-      // meta={{
-      //   mode: {
-      //     key: 'ife-header-key',
-      //     value: 'ife-header-value'
-      //   }
-      // }}
+      title={'Auth'}
     />
   );
 };

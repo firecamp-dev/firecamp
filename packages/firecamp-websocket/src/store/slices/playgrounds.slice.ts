@@ -1,6 +1,5 @@
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import { IExecutor } from '@firecamp/ws-executor/dist/esm';
-
 import {
   TId,
   IWebSocketMessage,
@@ -8,16 +7,18 @@ import {
   ERequestTypes,
   ETypedArrayView,
 } from '@firecamp/types';
+import { _object } from '@firecamp/utils';
 
 import { EConnectionState } from '../../types';
-import { _object } from '@firecamp/utils';
+import { TStoreSlice } from '../store.type';
 
 const initialPlaygroundMessage = {
   name: '',
-  payload: '',
+  path: '',
+  value: '',
   __meta: {
     type: EMessageBodyType.Text,
-    typedArrayView: ETypedArrayView.Int8Array,
+    // typedArrayView: ETypedArrayView.Int8Array,
   },
   __ref: {
     id: '',
@@ -25,7 +26,6 @@ const initialPlaygroundMessage = {
     requestId: '',
     requestType: ERequestTypes.WebSocket,
   },
-  path: '',
 };
 
 interface IMessage extends IWebSocketMessage {
@@ -46,13 +46,12 @@ interface IPlayground {
 }
 
 interface IPlaygrounds {
-  [key: TId]: IPlayground;
+  [key: string]: IPlayground;
 }
 
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
-  getPlayground: (connectionId: TId) => void;
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
   changePlayground: (connectionId: TId, updates: object) => void;
 
@@ -79,19 +78,15 @@ interface IPlaygroundSlice {
   deleteExecutor: (connectionId: TId) => void;
 }
 
-const createPlaygroundsSlice = (
+const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   set,
   get,
   initialPlaygrounds: IPlaygrounds
-): IPlaygroundSlice => ({
+) => ({
   playgrounds: initialPlaygrounds,
 
-  getPlayground: (connectionId: TId) => {
-    return get().playgrounds?.[connectionId];
-  },
   addPlayground: (connectionId: TId, playground: IPlayground) => {
     set((s) => ({
-      ...s,
       playgrounds: {
         ...s.playgrounds,
         [connectionId]: playground,
@@ -101,11 +96,10 @@ const createPlaygroundsSlice = (
 
   changePlayground: (connectionId: TId, updates: object) => {
     set((s) => ({
-      ...s,
       playgrounds: {
         ...s.playgrounds,
         [connectionId]: {
-          ...(s.playgrounds[connectionId] || {}),
+          ...s.playgrounds[connectionId],
           ...updates,
         },
       },
@@ -119,7 +113,6 @@ const createPlaygroundsSlice = (
     const plg = get().playgrounds?.[connectionId];
     if (plg?.id === connectionId) {
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: {
@@ -138,9 +131,7 @@ const createPlaygroundsSlice = (
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.logFilters = { type: updates.type };
-
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -154,9 +145,7 @@ const createPlaygroundsSlice = (
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.message = message;
-
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -165,36 +154,38 @@ const createPlaygroundsSlice = (
     }
   },
   changePlaygroundMessage: async (connectionId: TId, updates: object) => {
+    console.log(updates, 'change plg');
     const state = get();
-    const existingPlayground = await state.playgrounds?.[connectionId];
+    const plg = await state.playgrounds?.[connectionId];
 
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = Object.assign({}, existingPlayground);
-      updatedPlayground.message = { ...updatedPlayground.message, ...updates };
+    if (plg?.id === connectionId) {
+      const newPlg = {
+        ...plg,
+        message: { ...plg.message, ...updates },
+      };
 
       if (
-        !equal(
-          _object.omit(existingPlayground.message, ['path']),
-          _object.omit(updatedPlayground.message, ['path'])
+        !isEqual(
+          _object.omit(plg.message, ['path']),
+          _object.omit(newPlg.message, ['path'])
         )
       ) {
         set((s) => ({
-          ...s,
           playgrounds: {
             ...s.playgrounds,
-            [connectionId]: updatedPlayground,
+            [connectionId]: newPlg,
           },
         }));
         state.changePlaygroundTab(connectionId, {
           __meta: {
-            isSaved: !!updatedPlayground.message?.__ref?.id,
+            isSaved: !!newPlg.message?.__ref?.id,
             hasChange: true,
           },
         });
       } else {
         state.changePlaygroundTab(connectionId, {
           __meta: {
-            isSaved: !!updatedPlayground.message?.__ref?.id,
+            isSaved: !!newPlg.message?.__ref?.id,
             hasChange: false,
           },
         });
@@ -208,7 +199,6 @@ const createPlaygroundsSlice = (
       updatedPlayground.message = initialPlaygroundMessage;
 
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -225,9 +215,7 @@ const createPlaygroundsSlice = (
     if (existingPlayground && existingPlayground?.id === connectionId) {
       let updatedPlayground = existingPlayground;
       updatedPlayground.selectedCollectionMessage = messageId;
-
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,
@@ -245,7 +233,6 @@ const createPlaygroundsSlice = (
     const existingPlayground = state.playgrounds?.[connectionId];
     if (existingPlayground && existingPlayground?.id === connectionId) {
       set((s) => ({
-        ...s,
         playgrounds: s.playgrounds?.filter((c) => c.id != connectionId),
       }));
     }
@@ -258,7 +245,6 @@ const createPlaygroundsSlice = (
       updatedPlayground.executor = {};
 
       set((s) => ({
-        ...s,
         playgrounds: {
           ...s.playgrounds,
           [connectionId]: updatedPlayground,

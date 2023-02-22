@@ -25,7 +25,7 @@ const TitlePlacement = ({
 }: {
   name: string;
   isPreview: boolean;
-}) => <div className={cx('title flex-1', { italic: isPreview })}>{name}</div>;
+}) => <div className={cx('title', { italic: isPreview })}>{name}</div>;
 
 const CloseIconPlacement = ({
   id = '',
@@ -77,7 +77,7 @@ const Tab: FC<ITab> = ({
   height,
   dotIndicator,
   tabVersion,
-
+  hasStatusbar = true,
   onTabDragStart,
   onTabDrop,
   ...tabProps
@@ -106,6 +106,9 @@ const Tab: FC<ITab> = ({
         'whitespace-pre',
         'relative',
         { tabVersion },
+        {'after:!bg-statusBarBackground2': hasStatusbar && isActive } ,
+        {'after:!bg-tabActiveBackground': !hasStatusbar && isActive },
+        {'!bg-statusBarBackground2': hasStatusbar && isActive },
         className
       )}
       onClick={(e) => onSelect(id, index, e)}
@@ -120,6 +123,7 @@ const Tab: FC<ITab> = ({
           { 'bg-tabBackground2': tabVersion == 2 },
           { 'bg-statusBarBackground2': tabVersion == 2 && isActive },
           { 'bg-tabBackground': tabVersion == 1 },
+          {'!bg-statusBarBackground2': hasStatusbar && isActive },
           'fc-tab',
           'hover:bg-tabHoverBackground',
           'flex',
@@ -135,7 +139,7 @@ const Tab: FC<ITab> = ({
         <TopBorderPlacement
           show={borderMeta?.placementForActive === 'top' && isActive}
         />
-        <div className="fc-tab-content flex flex-1 items-center">
+        <div className="fc-tab-content flex flex-1 items-center justify-center">
           {preComp ? (
             <div className="flex items-center pr-1.5">{preComp}</div>
           ) : (

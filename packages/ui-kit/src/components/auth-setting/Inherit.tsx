@@ -29,19 +29,12 @@ const Inherit: FC<IInherit> = ({
 export default Inherit;
 
 interface IInherit {
-
-  /**
-   * Current module/ element's parent name
-   */
+  /** current module/ element's parent name */
   parentName: string
 
-  /**
-   * Open parent auth setting modal
-   */
+  /** open parent auth setting modal */
   openParentAuthModal: () => void
 
-  /**
-   * Inherit auth message
-   */
+  /** inherit auth message */
   message: string
 }

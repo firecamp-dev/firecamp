@@ -2,6 +2,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object, _array } from '@firecamp/utils';
 import { ERequestPanelTabs } from '../../types';
+import { TStoreSlice } from '../store.type';
 
 interface IUiRequestPanel {
   activeTab?: string;
@@ -10,37 +11,29 @@ interface IUiRequestPanel {
   headers?: number;
   queries?: number;
 }
-
 interface IUi {
   isFetchingRequest: boolean;
   requestPanel: IUiRequestPanel;
 }
 interface IUiSlice {
   ui: IUi;
-
   initializeUi: (ui: IUi) => void;
   changeUiActiveTab: (tabName: string) => void;
   setIsFetchingReqFlag: (flag: boolean) => void;
   setUIRequestPanelState?: (uiRequestPanel: { [key: string]: any }) => void;
 }
-
-const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
+const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi) => ({
   ui: initialUi || {
     isFetchingRequest: false,
     requestPanel: {
       activeTab: ERequestPanelTabs.Playgrounds,
     },
   },
-
   initializeUi: (ui: IUi) => {
-    set((s) => ({
-      ...s,
-      ui,
-    }));
+    set((s) => ({ ui }));
   },
   changeUiActiveTab: (tabName: string) => {
     set((s) => ({
-      ...s,
       ui: {
         ...s.ui,
         requestPanel: {
@@ -52,15 +45,12 @@ const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
   },
   setIsFetchingReqFlag: (flag: boolean) => {
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
-
     set((s) => ({
-      ...s,
       ui: { ...s.ui, isFetchingRequest: flag },
     }));
   },
   setUIRequestPanelState: (uiRequestPanel: { [key: string]: any }) => {
     set((s) => ({
-      ...s,
       ui: {
         ...s.ui,
         requestPanel: {
@@ -71,5 +61,4 @@ const createUiSlice = (set, get, initialUi: IUi): IUiSlice => ({
     }));
   },
 });
-
 export { createUiSlice, IUiSlice, IUi, IUiRequestPanel };

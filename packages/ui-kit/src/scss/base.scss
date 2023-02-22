@@ -4,7 +4,7 @@
 @tailwind screens;
 
 @import url(../components/split-view/SplitView.scss);
-@import url(collection.scss);
+/* @import url(collection.scss); */
 @import url('https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap');
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
@@ -31,6 +31,7 @@
     --req-graphql: #E535AB;
     --req-websocket: #FF7043;
     --req-socketio: #91BD5E;
+    --link: #0068bc;
 
     --app-background: #1B1A1A;
     --app-foreground: #cccccc;
@@ -46,8 +47,8 @@
     --app-background-secondary: #252526;
 
     --tab-background: var(--app-background);
-    --tab-foreground: #ffffff;
-    --tab-foreground-inactive: #cccccc;
+    --tab-foreground: #bbb;
+    --tab-foreground-inactive: #ffffff80;
     --tab-border: var(--app-border);
     --tab-hoverBackground: #1B1A1A;
     --tab-activeBackground: var(--statusBar-background2);
@@ -241,6 +242,9 @@ body{
 .icon{
   font-family: 'icomoon' !important;
 }
+.text-ellipsis{
+  text-overflow: ellipsis !important;
+}
 a,a:hover{
   color: inherit !important
 }
@@ -311,43 +315,43 @@ tr:focus-visible{
 .explorer-wrapper {
   max-height: calc(100vh - 25px);
 }
-.GET{
+.GET:not(.tab-icon){
   color: var(--req-get);
 }
-.POST{
+.POST:not(.tab-icon){
   color: var(--req-post);
 }
-.PUT{
+.PUT:not(.tab-icon){
   color: var(--req-put);
 }
-.DELETE{
+.DELETE:not(.tab-icon){
   color: var(--req-delete);
 }
-.PATCH{
+.PATCH:not(.tab-icon){
   color: var(--req-patch);
 }
-.HEAD{
+.HEAD:not(.tab-icon){
   color: var(--req-head);
 }
-.OPTIONS{
+.OPTIONS:not(.tab-icon){
   color: var(--req-options);
 }
-.PURGE{
+.PURGE:not(.tab-icon){
   color: var(--req-purge);
 }
-.LINK{
+.LINK:not(.tab-icon){
   color: var(--req-link);
 }
-.UNLINK{
+.UNLINK:not(.tab-icon){
   color: var(--req-unlink);
 }
-.GRAPHQL{
+.GRAPHQL:not(.tab-icon){
   color: var(--req-graphql);
 }
-.WEBSOCKET{
+.WEBSOCKET:not(.tab-icon){
   color: var(--req-websocket);
 }
-.SOCKETIO{
+.SOCKETIO:not(.tab-icon){
   color: var(--req-socketio);
 }
 .hide-action:hover .action {
@@ -529,7 +533,7 @@ tr:focus-visible{
 }
 .fc-btn-collapse.v2 {
   left: -1px;
-  min-height: 32px !important;
+  min-height: 33px !important;
 }
 .fc-collapsed{
   width: 0px !important;
@@ -542,6 +546,43 @@ tr:focus-visible{
 .fc-collapsed > .fc-collapse-btn-v3{
   display: block !important 
 } 
+.fc-collapsed > *:not(.fc-collapse-btn),
+.fc-collapsed.fc-collapsed-v3 > *:not(.fc-collapse-btn-v3) {
+  display: none;
+}
+.fc-collapsed > .fc-collapse-btn-v3 {
+  display: block !important;
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 {
+  display: flex;
+  flex-direction: column-reverse;
+  position: absolute;
+  left: 0px;
+  width: 32px !important;
+  border-left: 1px solid var(--appBorder);
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-left {
+  position: absolute;
+  transform: rotate(90deg);
+  left: -23px;
+  top: 54px;
+}
+.fc-collapsable > .fc-collapse-btn-v3 {
+  display: none;
+}
+.fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-right {
+  top: 6px;
+  position: absolute;
+  font-size: 20px;
+  left: 6px;
+  transform: rotate(180deg);
+}
+.fc-collapsed-v3 {
+    width: 32px !important;
+}
+.fc-col-resizer.fc-collapsed.fc-collapsed-v3.fc-collapsable.left {
+    border-left: 1px solid var(--app-border) !important;
+}
 .fc-collapsed > .fc-collapse-btn, .fc-collapsed ~ div .fc-collapse-btn{
   transform: rotate(180deg);
 }
@@ -646,6 +687,15 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
+.visible-scrollbar.thin::-webkit-scrollbar{
+  width: 4px !important;
+  display: none !important;
+}
+.visible-scrollbar.thin:hover::-webkit-scrollbar{
+  width: 4px !important;
+  display: block !important;
+}
+
 .visible-scrollbar ::-webkit-scrollbar-track{
   background: transparent;
 }
@@ -866,5 +916,9 @@ body .ace_editor .ace_scrollbar{
   padding: 4px 8px;
   font-weight: 800;
   background: var(--focus-level-2);
+}
+
+.primary-table .mtk1,.primary-table th{
+  color: var(--tab-foreground-inactive) !important;
 }
 /*-----------table 2 css end --------*/

@@ -1,27 +1,20 @@
-//@ts-nocheck
 import { FC, useEffect, useRef } from 'react';
 import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
 import cx from 'classnames';
+import { EEditorLanguage, EEditorTheme } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
-import MonacoFirecampLangInit, {
-  SetCompletionProvider,
-} from '../monaco/lang/init';
 import './sass/Editor.sass';
 
 const Editor: FC<IEditor> = ({
   value,
   disabled = false,
   autoFocus = false,
-  language = 'json',
+  language = EEditorLanguage.Json,
   monacoOptions = {},
   height,
   path,
+  loading,
   addExtraLib,
-  // controlsConfig = {
-  //   show: false,
-  //   position: 'vertical',
-  //   collapsed: true,
-  // },
   placeholder = '',
   className = '',
   onChange = () => {}, // similar DOM event, e = { preventDefault, target }
@@ -38,13 +31,6 @@ const Editor: FC<IEditor> = ({
   onCtrlShiftEnter = () => {},
 }) => {
   const editorIdRef = useRef('');
-  useEffect(() => {
-    MonacoFirecampLangInit(() => {
-      SetCompletionProvider('ife-header-key', { name: 'Nishchit' });
-    });
-    
-  }, []);
-
   useEffect(() => {
     //@ts-ignore
     if (!window.editors) window.editors = new Map();
@@ -75,7 +61,10 @@ const Editor: FC<IEditor> = ({
 
     onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
     onFocus && editor.onDidFocusEditorText(() => onFocus(editor));
-    onPaste && editor.onDidPaste(() => onPaste(editor));
+    onPaste &&
+      editor.onDidPaste((l) => {
+        onPaste(editor.getModel().getValueInRange(l.range), editor);
+      });
 
     editor.onKeyDown((evt: any) => {
       switch (evt.keyCode) {
@@ -181,7 +170,7 @@ const Editor: FC<IEditor> = ({
   const options: EditorProps['options'] = {
     readOnly: false,
     fontFamily: "'Open Sans', sans-serif",
-    fontSize: 14,
+    fontSize: 15,
     links: false,
     lineNumbersMinChars: 5,
     overviewRulerLanes: 0,
@@ -206,6 +195,8 @@ const Editor: FC<IEditor> = ({
       showModules: false, // disables `globalThis`, but also disables user-defined modules suggestions.
     },
     suggestOnTriggerCharacters: false,
+    tabSize: 4,
+    renderWhitespace: false, // it'll show dot for white stpace
     wordBasedSuggestions: false,
     ...monacoOptions,
   };
@@ -216,6 +207,14 @@ const Editor: FC<IEditor> = ({
   }
 
   // console.log(value, language, 'language...');
+  /**
+   * @note: Editor will reset the default theme on render, 
+   *        so fetch previously set theme from localStorage and set to editor
+   */
+  let editorTheme: string = EEditorTheme.Dark;
+  if (localStorage) {
+    editorTheme = localStorage.getItem('editorTheme') || EEditorTheme.Lite;
+  }
 
   return (
     <div className={cx('relative h-full', className)}>
@@ -231,12 +230,15 @@ const Editor: FC<IEditor> = ({
         height={height}
         path={path}
         key={path}
-        onChange={(value, e) =>
+        theme={editorTheme}
+        loading={loading || <></>}
+        onChange={(value, e) => {
+          // console.log(value, 'native editor');
           onChange({
             preventDefault: () => {},
             target: { value },
-          })
-        }
+          });
+        }}
         onMount={(editor, monaco) => {
           if (language == 'typescript') {
             monaco.languages.typescript.typescriptDefaults.setCompilerOptions({

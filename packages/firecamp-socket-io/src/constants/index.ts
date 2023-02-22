@@ -9,10 +9,6 @@ import {
 import { nanoid } from 'nanoid';
 import { EConnectionState } from '../types';
 
-export const LOG_CUSTOM_EVENTS = {
-  LISTEN_ON: 'L_ON',
-  LISTEN_OFF: 'L_OFF',
-};
 export const SYSTEM_LOGS = {
   clearAll: `chatboard  cleared `,
   onConnecting: `Socket has been  created . The connection is not yet open.`,
@@ -28,17 +24,6 @@ export const SYSTEM_LOGS = {
   listenOff: `you have listen off `,
 };
 
-export const PANEL = {
-  REQUEST: 'REQUEST',
-  RESPONSE: 'RESPONSE',
-  ALL: 'ALL',
-};
-
-export const CustomLogTypes = {
-  LISTEN_ON: 'L_ON',
-  LISTEN_OFF: 'L_OFF',
-};
-
 export const ConnectionStatus = {
   CONNECTING: 'connecting',
   CONNECT: 'connect',
@@ -52,7 +37,11 @@ export const ConnectionStatus = {
   RECONNECT_ERROR: 'reconnect_error',
   RECONNECT_FAILED: 'reconnect_failed',
 };
-export const VERSIONS = ['v2', 'v3', 'v4'];
+export const SIOVersionOptions = [
+  { name: 'SocketIO Client V2', version: ESocketIOClientVersion.v2 },
+  { name: 'SocketIO Client V3', version: ESocketIOClientVersion.v3 },
+  { name: 'SocketIO Client V4', version: ESocketIOClientVersion.v4 },
+];
 export const RESERVED_EMITTER_EVENTS = [
   'connect',
   'connect_error',
@@ -86,25 +75,24 @@ export const DefaultRequestConfig: ISocketIOConfig = {
 export const ResponseCollection = {
   id: '',
   name: '',
-  meta: {
-    state: EConnectionState.Ideal,
-    socketId: '',
-  },
   listeners: {},
   logFilters: {
     type: '',
     event: '',
   },
+  __meta: {
+    state: EConnectionState.Ideal,
+    socketId: '',
+  },
 };
 export const InitPlayground = {
   name: '',
-  path: '',
-  body: [
+  value: [
     {
       body: '',
       __meta: {
         type: EArgumentBodyType.Text,
-        typedArrayView: ETypedArrayView.Int8Array,
+        // typedArrayView: ETypedArrayView.Int8Array,
       },
     },
   ],
@@ -121,22 +109,24 @@ export const InitPlayground = {
   },
 };
 export const InitArg = {
-  meta: {
+  body: '',
+  __meta: {
     type: EArgumentBodyType.Text,
     typedArrayView: ETypedArrayView.Int8Array,
   },
-  body: '',
 };
 export const InitLog = {
   title: '',
   message: '',
-  meta: {
-    id: '',
+  __meta: {
     event: '',
     timestamp: '',
     type: '',
     color: '',
     ackRef: '',
+  },
+  __ref: {
+    id: nanoid(),
   },
 };
 export const EditorCommands = {
@@ -208,8 +198,9 @@ export const ArgTypes = [
   },
   {
     id: EArgumentBodyType.Json,
-    name: 'JSON',
+    name: 'Json',
   },
+  /*
   {
     id: EArgumentBodyType.File,
     name: 'File',
@@ -221,7 +212,7 @@ export const ArgTypes = [
   {
     id: EArgumentBodyType.ArrayBufferView,
     name: 'Array buffer view',
-  },
+  }, */
   {
     id: EArgumentBodyType.Number,
     name: 'Number',
@@ -231,11 +222,11 @@ export const ArgTypes = [
     name: 'Boolean',
   },
   {
-    id: EArgumentBodyType.NoBody,
-    name: 'No body',
+    id: EArgumentBodyType.None,
+    name: 'None',
   },
 ];
-export const EnvelopeTypes = [
+export const TypedArrayViews = [
   'Int8Array',
   'Uint8Array',
   'Uint8ClampedArray',

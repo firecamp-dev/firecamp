@@ -8,7 +8,7 @@ import {
   Row,
   Resizable,
   Tabs,
-  Editor
+  Editor,
 } from '@firecamp/ui-kit';
 // import FCSnippet from '@firecamp/code-snippets'
 // import MessageNode from './MessageNode';
@@ -21,16 +21,16 @@ const initConfig = {
     headers: { limit: 10 },
     handshakeTimeout: 1,
     protocolVersion: 2,
-    origin: 'origin'
+    origin: 'origin',
   },
   message: {
-    name: '24/04/2020, 12:01:40',
-    body: 'hell wsv2 i update you',
-    meta: {
+    name: 'Ws Message',
+    value: 'sending the first ws message',
+    __meta: {
       type: 'arraybuffer',
-      envelop: 'uint8array'
-    }
-  }
+      envelop: 'uint8array',
+    },
+  },
 };
 
 const SnippetModal = ({
@@ -38,84 +38,80 @@ const SnippetModal = ({
   meta,
   isOpen = false,
   activeMessage = '',
-  onClose = _ => {}
+  onClose = (_) => {},
 }) => {
-  // let {
-  //   ctx_wsFns: { generateRequestConfig }
-  // } = useContext(WebsocketContext);
-  let generateRequestConfig = ()=> {};
+  const generateRequestConfig = () => {};
 
-  let [state, setState] = useState({
+  const [state, setState] = useState({
     tabs: [
       {
         id: 'cpp',
         name: 'C++',
-        mode: 'c_cpp'
+        mode: 'c_cpp',
       },
       {
         id: 'c#',
         name: 'C#',
-        mode: 'csharp'
+        mode: 'csharp',
       },
       {
         id: 'dart',
         name: 'Dart',
-        mode: 'dart'
+        mode: 'dart',
       },
       {
         id: 'go',
         name: 'Go',
-        mode: 'golang'
+        mode: 'golang',
       },
       {
         id: 'java',
         name: 'Java',
-        mode: 'java'
+        mode: 'java',
       },
       {
         id: 'javascript',
         name: 'JavaScript',
-        mode: 'javascript'
+        mode: 'javascript',
       },
       {
         id: 'node',
         name: 'Node',
-        mode: 'javascript'
+        mode: 'javascript',
       },
       {
         id: 'objectivec',
         name: 'Objective-C',
-        mode: 'objectivec'
+        mode: 'objectivec',
       },
       {
         id: 'python',
         name: 'Python',
-        mode: 'python'
+        mode: 'python',
       },
       {
         id: 'swift',
         name: 'Swift',
-        mode: 'swift'
+        mode: 'swift',
       },
       {
         id: 'ruby',
         name: 'Ruby',
-        mode: 'ruby'
-      }
+        mode: 'ruby',
+      },
     ],
     activeTab: 'javascript',
     snippet: '',
     activeMessage: null,
-    editorMode: 'javascript'
+    editorMode: 'javascript',
   });
-
-  let [collection, setCollection] = useState(
-    // prepare(
-    //   prop_collection.directories || [],
-    //   prop_collection.messages || [],
-    //   meta
-    // ).collection
-  );
+  const [editor, setEditor] = useState();
+  const [collection, setCollection] = useState();
+  // prepare(
+  //   prop_collection.directories || [],
+  //   prop_collection.messages || [],
+  //   meta
+  // ).collection
 
   useEffect(() => {
     if (
@@ -125,7 +121,7 @@ const SnippetModal = ({
     ) {
       setState({
         ...state,
-        activeMessage: prop_collection.messages[0]
+        activeMessage: prop_collection.messages[0],
       });
     }
   }, []);
@@ -145,37 +141,36 @@ const SnippetModal = ({
     // setCollection(collection);
   }, [prop_collection.directories, prop_collection.messages]);
 
-  let _setActiveTab = tab => {
-    let foundTab = state.tabs.find(t => t.id === tab),
-      mode = 'typescript';
+  const _setActiveTab = (tab) => {
+    const foundTab = state.tabs.find((t) => t.id === tab);
+    let mode = 'typescript';
     if (foundTab) {
       mode = foundTab.mode;
     }
-
-    setState({
-      ...state,
+    setState((s) => ({
+      ...s,
       activeTab: tab,
-      editorMode: mode
-    });
+      editorMode: mode,
+    }));
   };
 
-  let _setActiveMessage = focusedNode => {
+  const _setActiveMessage = (focusedNode) => {
     // focusedNode._addChild();
     // console.log(focusedNode);
     // return;
 
     if (focusedNode.children) return;
-    setState({
+    setState((s) => ({
       ...state,
-      activeMessage: focusedNode
-    });
+      activeMessage: focusedNode,
+    }));
   };
 
-  // let _getSnippet = async (message, aTab) => {
+  // const _getSnippet = async (message, aTab) => {
   //   if (!message || !aTab) return;
 
-  //   let config = (await generateRequestConfig()) || initConfig;
-  //   let fcs = new FCSnippet(
+  //   const config = (await generateRequestConfig()) || initConfig;
+  //   const fcs = new FCSnippet(
   //     Object.assign({}, config, { message }),
   //     'websocketv2',
   //     aTab.toLowerCase()
@@ -192,13 +187,13 @@ const SnippetModal = ({
   //     .catch(er => console.log(er));
   // };
 
-  let { tabs, activeTab, snippet, editorMode } = state;
+  const { tabs, activeTab, snippet, editorMode } = state;
 
   return (
     <Modal open={isOpen} onClose={() => onClose(false)}>
       <Container className="fc-modal">
         <Container.Header className="fc-modal-head" key="head">
-          Websocket Code Snippet
+          WebSocket Code Snippet
         </Container.Header>
         <Row
           className="with-divider fc-h-full fc-modal-body without-padding fc-modal-body-row"
@@ -220,7 +215,7 @@ const SnippetModal = ({
                   <TabHeader className={'small'}>Message Collection</TabHeader>
                 </Container.Header>
                 <Container.Body>
-                 {/*  <Collection
+                  {/*  <Collection
                     overflow={'auto'}
                     data={collection}
                     primaryKey={'id'}
@@ -279,9 +274,7 @@ const SnippetModal = ({
                     value={snippet}
                     language={editorMode || 'typescript'}
                     disabled={true}
-                    // controlsConfig={{
-                    //   show: true
-                    // }}
+                    onLoad={(edt) => setEditor(edt)}
                     monacoOptions={{
                       name: 'message',
                       width: '100%',
@@ -289,7 +282,7 @@ const SnippetModal = ({
                       highlightActiveLine: false,
                       showLineNumbers: false,
                       tabSize: 2,
-                      cursorStart: 1
+                      cursorStart: 1,
                     }}
                   />
                 </Container.Body>

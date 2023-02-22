@@ -1,11 +1,15 @@
 import { TId } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 
 interface IPlaygroundTab {
   id: string;
   name: string;
-  meta?: {
+  __meta: {
+    /** isSaved and hasChange will not be in use for now, it is for multi connection tabs purpose */
     isSaved?: boolean;
     hasChange?: boolean;
+    isEmitterSaved?: boolean;
+    hasEmitterChanged?: boolean;
   };
 }
 
@@ -13,12 +17,9 @@ interface IRuntime {
   displayUrl: string;
   playgroundTabs?: IPlaygroundTab[];
   activePlayground?: TId;
-  activeEnvironments?: {
-    workspace: TId;
-    collection: TId;
-  };
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
+  tabId?: TId;
 }
 
 interface IRuntimeSlice {
@@ -28,27 +29,18 @@ interface IRuntimeSlice {
   addPlaygroundTab: (playground: IPlaygroundTab) => void;
   changePlaygroundTab: (playgroundId: TId, updates: object) => void;
   deletePlaygroundTab: (playgroundId: TId) => void;
-  changeActiveEnvironment?: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => void;
-  setActiveEnvironments?: (updates: {
-    workspace: TId;
-    collection: TId;
-  }) => void;
   setRequestRunningFlag: (flag: boolean) => void;
   setRequestSavedFlag: (flag: boolean) => void;
 }
 
-const createRuntimeSlice = (
+const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   set,
   get,
   initialRuntime: IRuntime
-): IRuntimeSlice => ({
+) => ({
   runtime: {
     playgroundTabs: [],
     activePlayground: '',
-    activeEnvironments: { collection: '', workspace: '' },
     isRequestRunning: false,
     isRequestSaved: false,
     ...initialRuntime,
@@ -56,7 +48,6 @@ const createRuntimeSlice = (
 
   setActivePlayground: (playgroundId: TId) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         activePlayground: playgroundId,
@@ -65,7 +56,6 @@ const createRuntimeSlice = (
   },
   addPlaygroundTab: (playground: IPlaygroundTab) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         playgroundTabs: [...s.runtime.playgroundTabs, playground],
@@ -73,12 +63,12 @@ const createRuntimeSlice = (
     }));
   },
   changePlaygroundTab: (playgroundId: TId, updates: object) => {
-    let existingTabIndex = get()?.runtime.playgroundTabs.findIndex(
+    const state = get();
+    const existingTabIndex = state.runtime.playgroundTabs.findIndex(
       (tab) => tab.id === playgroundId
     );
     if (existingTabIndex !== -1) {
       set((s) => ({
-        ...s,
         runtime: {
           ...s.runtime,
           playgroundTabs: [
@@ -94,12 +84,12 @@ const createRuntimeSlice = (
     }
   },
   deletePlaygroundTab: (playgroundId: TId) => {
-    let existingTabIndex = get()?.runtime.playgroundTabs.findIndex(
+    const state = get();
+    const existingTabIndex = state.runtime.playgroundTabs.findIndex(
       (tab) => tab.id === playgroundId
     );
     if (existingTabIndex !== -1) {
       set((s) => ({
-        ...s,
         runtime: {
           ...s.runtime,
           playgroundTabs: [
@@ -110,37 +100,8 @@ const createRuntimeSlice = (
       }));
     }
   },
-  changeActiveEnvironment: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => {
-    // console.log({ scope, environmentId });
-
-    set((s) => ({
-      ...s,
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: {
-          ...s.runtime.activeEnvironments,
-          [scope]: environmentId,
-        },
-      },
-    }));
-  },
-  setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
-    console.log({ updates });
-
-    set((s) => ({
-      ...s,
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: updates,
-      },
-    }));
-  },
   setRequestRunningFlag: (flag: boolean) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         isRequestRunning: flag,
@@ -149,7 +110,6 @@ const createRuntimeSlice = (
   },
   setRequestSavedFlag: (flag: boolean) => {
     set((s) => ({
-      ...s,
       runtime: {
         ...s.runtime,
         isRequestSaved: flag,

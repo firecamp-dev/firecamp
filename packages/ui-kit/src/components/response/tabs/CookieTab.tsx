@@ -22,8 +22,6 @@ const CookieTab: FC<{cookies: any}> = ({ cookies }) => {
     // ctx_copyToClipboard(cookiesStr);
   };
 
-  console.log(Resizable, "Resizable...");
-
   return (
     <div className=" striped response-cookies-table">
       <div className="">
@@ -46,7 +44,7 @@ const CookieTab: FC<{cookies: any}> = ({ cookies }) => {
 
         <div className="">
           Value
-          <div className="response-headers-action1 flex float-right h-5">
+          {/* <div className="response-headers-action1 flex float-right h-5">
             <CopyButton
               id={`copy-button-response-text`}
               text="Copy text"
@@ -61,7 +59,7 @@ const CookieTab: FC<{cookies: any}> = ({ cookies }) => {
               onCopy={() => _copyAsJson(cookies)}
               text="Copy JSON"
             />
-          </div>
+          </div> */}
         </div>
       </div>
 

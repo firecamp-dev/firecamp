@@ -1,27 +1,25 @@
 import { FC, useReducer } from 'react';
-import {
-  Button,
-  Dropdown,
- 
-  
-  Input,
-} from '@firecamp/ui-kit';
+import { Button, Dropdown, Input } from '@firecamp/ui-kit';
 import { IAuthDigest, EAuthTypes } from '@firecamp/types';
-import { typePayload } from './constants';
+import { authUiFormState } from './constants';
 
-const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
-  const inputList = typePayload[EAuthTypes.Digest].inputList;
-  const advancedInputList = typePayload[EAuthTypes.Digest].advancedInputList;
-  const algorithmList = (
-    typePayload?.[EAuthTypes.Digest].algorithmList || []
-  ).map((i) => ({ name: i }));
+const Digest: FC<IDigest> = ({
+  auth = { username: '', password: '' },
+  onChange = () => {},
+}) => {
+  const { Digest } = EAuthTypes;
+  const inputList = authUiFormState[Digest].inputList;
+  const advancedInputList = authUiFormState[Digest].advancedInputList;
+  const algorithmList = (authUiFormState[Digest].algorithmList || []).map(
+    (i) => ({ name: i })
+  );
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
     isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
   });
 
-  let reducer = (
+  const reducer = (
     state: any,
     action: { type: any; element: any; value: any }
   ) => {
@@ -34,26 +32,26 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
     }
   };
 
-  let [isDirty, setIsDirty] = useReducer(reducer, isDirtyState);
+  const [isDirty, setIsDirty] = useReducer(reducer, isDirtyState);
 
-  let _handleChange = (e: any, id: string) => {
+  const _handleChange = (e: any, id: string) => {
     e.preventDefault();
-    let value = e.target.value;
+    const value = e.target.value;
     if (id === 'username' || id === 'password') {
       setIsDirty({ type: 'setDirty', element: id, value: true });
     }
-    onChange(EAuthTypes.Digest, { key: id, value });
+    onChange(Digest, { key: id, value });
     // console.log("value", value, id)
   };
 
-  let _handleSubmit = (e: { preventDefault: () => any }) => {
+  const _handleSubmit = (e: { preventDefault: () => any }) => {
     e && e.preventDefault();
   };
 
-  let _onSelectAlgorithm = (algorithm: string) => {
+  const _onSelectAlgorithm = (algorithm: string) => {
     if (!algorithm) return;
 
-    onChange(EAuthTypes.Digest, {
+    onChange(Digest, {
       key: 'algorithm',
       value: algorithm,
     });
@@ -63,7 +61,10 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
     <form className="fc-form grid" onSubmit={_handleSubmit}>
       {(inputList || []).map((input, i) => {
         let errorMsg = '';
-        if (isDirty[input.id] && !auth?.[input.id as keyof IAuthDigest]?.length) {
+        if (
+          isDirty[input.id] &&
+          !auth?.[input.id as keyof IAuthDigest]?.length
+        ) {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
@@ -97,7 +98,7 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
 
       <label className="fc-form-field-group">
         Advanced
-        <span>(optional)</span>
+        <span>optional</span>
       </label>
       <div className="form-group">
         <label>Algorithm:</label>
@@ -106,12 +107,7 @@ const Digest: FC<IDigest> = ({ auth = {}, onChange = () => {} }) => {
           selected={auth['algorithm'] || 'MD5'} //defalut "MD5"
         >
           <Dropdown.Handler>
-            <Button
-              text={auth['algorithm'] || 'MD5'}
-              sm
-              secondary
-              withCaret={true}
-            />
+            <Button text={auth['algorithm'] || 'MD5'} secondary withCaret sm />
           </Dropdown.Handler>
           <Dropdown.Options
             options={algorithmList}

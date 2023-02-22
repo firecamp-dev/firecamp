@@ -1,115 +1,138 @@
-import { IRest, IRestResponse } from '@firecamp/types';
-import { _misc, _string } from '@firecamp/utils';
-import Joi from '@hapi/joi';
+// import Joi from '@hapi/joi';
 import tv4 from 'tv4';
-import chai from 'chai';
-
+import {
+  EScriptTypes,
+  IRest,
+  IRestResponse,
+  IScript,
+  TRuntimeVariable,
+} from '@firecamp/types';
+import { _misc, _string } from '@firecamp/utils';
 import jsExecutor from './lib/js-executor';
-import { Environment } from './environment';
-import { Request } from './request';
-import { Response } from './response';
-import requestAssertionPlugin from './request/assertions';
-import responseAssertionPlugin from './response/assertions';
-import { TEnvVariable, TPostScript, TPreScript, TTestScript } from './types';
-import Runner from '../test-runner/runner';
+import Fc from './fc';
 
-export * from './types';
 export * from './snippets';
-
-chai.use(requestAssertionPlugin);
-chai.use(responseAssertionPlugin);
 
 export const preScript: TPreScript = async (
   request: IRest,
-  variables: TEnvVariable
-) => {
-  try {
-    const script = `(()=>{
-            ${request.scripts?.pre};
-            return {
-              request,
-              environment
-            }
-          })()`;
-
-    return jsExecutor(script, {
-      request: new Request(request),
-      environment: new Environment(variables),
-    });
-  } catch (error) {
-    console.info('%cpre-script sandbox error', 'color: red; font-size: 14px');
-    console.info(error);
-
-    return Promise.reject(error.message);
+  variables: {
+    globals: TRuntimeVariable[];
+    environment: TRuntimeVariable[];
+    collectionVariables: TRuntimeVariable[];
   }
-};
-
-export const postScript: TPostScript = async (
-  postScript: string,
-  response: IRestResponse,
-  variables: TEnvVariable
 ) => {
+  const fc = new Fc(request, {}, variables);
+  if (!request?.preScripts?.length) return { fc: fc.toJSON() };
+  const script: IScript | undefined = request.preScripts.find(
+    (s) => s.type == EScriptTypes.PreRequest
+  );
+  if (!script) return { fc: fc.toJSON() };
+  const value = script.value.join('\n').trim();
+  if (!value) return { fc: fc.toJSON() };
+
   try {
-    const script = `(()=>{
-            ${postScript};
-            return {
-              response,
-              environment
-            }
-          })()`;
-
-    return jsExecutor(script, {
-      response: new Response(response),
-      environment: new Environment(variables),
+    const code = prepareCode(value);
+    return await jsExecutor(code, { fc, tests: [] });
+  } catch (e) {
+    console.info(
+      '%c pre-request script sandbox error',
+      'color: red; font-size: 14px'
+    );
+    // console.info(e);
+    return Promise.resolve({
+      fc: fc.toJSON(),
+      error: {
+        name: e.name,
+        message: e.message,
+        // stack: e.stack,
+      },
     });
-  } catch (error) {
-    console.info('%cpost-script sandbox error', 'color: red; font-size: 14px');
-    console.info(error);
-
-    return Promise.reject(error.message);
   }
 };
 
 export const testScript: TTestScript = async (
   request: IRest,
   response: IRestResponse,
-  variables: TEnvVariable
+  variables = { globals: [], environment: [], collectionVariables: [] }
 ) => {
-  if (!request?.scripts?.test) return;
-
-  Object.defineProperty(request, 'to', {
-    get() {
-      return chai.expect(this).to;
-    },
-  });
-
-  Object.defineProperty(response, 'to', {
-    get() {
-      return chai.expect(this).to;
-    },
-  });
+  const fc = new Fc(request, response, variables);
+  if (!request?.postScripts?.length) return { fc: fc.toJSON() };
+  const script: IScript | undefined = request.postScripts.find(
+    (s) => s.type == EScriptTypes.Test
+  );
+  if (!script) return { fc: fc.toJSON() };
+  const value = script.value.join('\n').trim();
+  if (!value) return { fc: fc.toJSON() };
 
   try {
-    const runner = new Runner(request.scripts.test as string);
-    const result = await runner.run({
-      Promise,
-      request,
-      response,
-      environment: new Environment(variables),
+    const code = prepareCode(value);
+    return await jsExecutor(code, {
+      fc,
+      responseCode: { code: response.code },
+      responseTime: response.responseTime,
+      tests: [],
       tv4,
-      Joi,
-      console,
     });
-    console.log(result, 'test-runner result');
-    return Promise.resolve(result);
-  } catch (error) {
-    console.info('%ctest-script sandbox error', 'color: red; font-size: 14px');
-    console.info(error);
-    console.error({
-      API: 'execute test script',
-      error,
+  } catch (e) {
+    console.info('%c test-script sandbox error', 'color: red; font-size: 14px');
+    // console.error('execute test script', e);
+    return Promise.resolve({
+      fc: fc.toJSON(),
+      error: {
+        name: e.name,
+        message: e.message,
+        // stack: e.stack,
+      },
     });
-
-    return Promise.reject(error.message);
   }
 };
+
+const prepareCode = (value: string) => {
+  return `(()=>{
+            ${value}
+            for(let name in tests) { 
+              if(name){
+                const t = tests[name];
+                const r = typeof t == 'function'? t(): t;
+                const fn = ()=> {
+                  if(!r) throw Error('test is failing')
+                }
+                fc.test(name, fn)
+              }
+            }
+            return {
+              fc: fc.toJSON(),
+              result: typeof result === 'undefined'? null: result, // for testing purpose to return the value, let result = fc.globals.get('name')
+            }
+          })()`;
+};
+
+export type TPreScript = (
+  request: IRest,
+  variables: {
+    globals: TRuntimeVariable[];
+    environment: TRuntimeVariable[];
+    collectionVariables: TRuntimeVariable[];
+  }
+) => Promise<{
+  fc: any;
+  error: { name: string; message: string };
+  result?: any;
+}>;
+
+export type TTestScript = (
+  request: IRest,
+  response: IRestResponse,
+  variables?: {
+    globals: TRuntimeVariable[];
+    environment: TRuntimeVariable[];
+    collectionVariables: TRuntimeVariable[];
+  }
+) => Promise<{
+  fc: any;
+  error: { name: string; message: string };
+  result?: any;
+}>;
+
+
+console.log()

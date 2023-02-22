@@ -37,4 +37,9 @@ export interface IModal {
 
     height?: number | string;
     width?: number | string;
+
+    scrollbar?: boolean;
+}
+export interface IBody{
+    className?: string;
 }

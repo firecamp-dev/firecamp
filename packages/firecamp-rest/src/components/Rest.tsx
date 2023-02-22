@@ -1,83 +1,39 @@
 import { memo, useEffect } from 'react';
-
-import { nanoid as id } from 'nanoid';
-import _url from '@firecamp/url';
-import { Container, Row, Loader } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
-import {
-  EAuthTypes,
-  ERestBodyTypes,
-  EHttpMethod,
-  EPushActionType,
-  ERequestTypes,
-  IRest,
-} from '@firecamp/types';
-
 import shallow from 'zustand/shallow';
-
+import { Container, Row, Loader } from '@firecamp/ui-kit';
+import { IRest } from '@firecamp/types';
+import _url from '@firecamp/url';
+import { _misc, _object, _table, _auth } from '@firecamp/utils';
+import {
+  initialiseStoreFromRequest,
+  normalizeRequest,
+} from '../services/request.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import Request from './request/Request';
 import Response from './response/Response';
-import CodeSnippets from './common/code-snippets/CodeSnippets';
+// import CodeSnippets from './common/code-snippets/CodeSnippets';
+import { useStore, StoreProvider, createStore, IStore } from '../store';
 
-import { configState, bodyState } from '../constants';
-import { ERequestPanelTabs, IRestClientRequest } from '../types';
-import { RestContext } from './Rest.context';
-
-import {
-  useRestStore,
-  RestStoreProvider,
-  createRestStore,
-  useRestStoreApi,
-  IPushAction,
-  IPushPayload,
-  emptyPushAction,
-  IRestStore,
-} from '../store';
-
-import { _misc, _object, _table, _auth } from '@firecamp/utils';
-import {
-  getAuthHeaders,
-  normalizeRequest,
-  prepareUIRequestPanelState,
-} from '../services/rest-service';
-
-const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
-  const restStoreApi: any = useRestStoreApi();
-
+const Rest = ({ tab, platformContext }) => {
   const {
     isFetchingRequest,
     initialise,
-    changeAuthHeaders,
-    changeUrl,
-    setActiveEnvironments,
-    changeAuth,
-    changeMeta,
     setRequestSavedFlag,
     setIsFetchingReqFlag,
-    setOAuth2LastFetchedToken,
-    getMergedRequestByPullAction,
-    prepareRequestUpdatePushAction,
-    setLast,
+    setParentArtifacts,
     setContext,
-  } = useRestStore(
-    (s: IRestStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
       changeAuthHeaders: s.changeAuthHeaders,
       changeMeta: s.changeMeta,
-      changeUrl: s.changeUrl,
       setIsFetchingReqFlag: s.setIsFetchingReqFlag,
-      setActiveEnvironments: s.setActiveEnvironments,
-      changeAuth: s.changeAuth,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
-      getMergedRequestByPullAction: s.getMergedRequestByPullAction,
-      prepareRequestUpdatePushAction: s.prepareRequestUpdatePushAction,
-      setLast: s.setLast,
+      setParentArtifacts: s.setParentArtifacts,
       setContext: s.setContext,
     }),
     shallow
@@ -88,58 +44,65 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
     setContext(platformContext);
   }, []);
 
-  /**
-   * Environments on tab load
-   */
   useEffect(() => {
-    if (activeTab === tab.id) {
-      // existing active environments in to runtime
-      let activeEnvironments =
-        restStoreApi?.getState()?.runtime?.activeEnvironments;
+    setRequestSavedFlag(tab.__meta?.isSaved);
+  }, [tab?.__meta?.isSaved]);
 
-      // set active environments to platform
-      if (activeEnvironments && !!activeEnvironments.workspace) {
-        console.log({ activeEnvironments });
-
-        platformContext.environment.setActiveEnvironments({
-          activeEnvironments: {
-            workspace: activeEnvironments.workspace,
-            collection: activeEnvironments.collection || '',
-          },
-          collectionId: tab?.request?._meta?.collection_id || '',
-        });
-      }
-
-      // subscribe environment updates
-      platformContext.environment.subscribeChanges(
-        tab.id,
-        handlePlatformEnvironmentChanges
-      );
-    }
-  }, [activeTab]);
-
+  /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
-    setRequestSavedFlag(tab?.meta?.isSaved);
-  }, [tab?.meta?.isSaved]);
-
-  /**
-   * Subscribe/ unsubscribe request changes (pull-actions)
-   */
-  useEffect(() => {
+    const requestId = tab.entity?.__ref?.id;
     // subscribe request updates
-    if (tab.meta.isSaved && tab?.request?._meta?.id) {
-      platformContext.request.subscribeChanges(
-        tab.request._meta.id,
-        handlePull
-      );
+    if (tab.__meta.isSaved && tab?.entity.__ref?.id) {
+      platformContext.request.subscribeChanges(requestId, handlePull);
     }
-
     // unsubscribe request updates
     return () => {
-      if (tab.meta.isSaved && tab?.request?._meta.id) {
-        platformContext.request.unsubscribeChanges(tab.request._meta.id);
+      if (tab.__meta.isSaved && requestId) {
+        platformContext.request.unsubscribeChanges(requestId);
       }
     };
+  }, []);
+
+  useEffect(() => {
+    const _fetchRequest = async () => {
+      const requestId = tab.entity?.__ref?.id;
+      const isRequestSaved = !!requestId;
+      // prepare a minimal request payload
+      let _request: IRest = normalizeRequest({});
+
+      if (isRequestSaved === true) {
+        setIsFetchingReqFlag(true);
+        try {
+          const request = await platformContext.request.fetch(requestId);
+          _request = { ...request };
+        } catch (error) {
+          console.error(error, 'fetch rest request');
+          throw error;
+        }
+      }
+      /** initialise rest store on tab load */
+      initialise(_request, tab.id);
+      setIsFetchingReqFlag(false);
+    };
+
+    const _fetchRequestParentArtifacts = async () => {
+      const requestId = tab.entity?.__ref?.id;
+      const isRequestSaved = !!requestId;
+      if (isRequestSaved === true) {
+        platformContext.request
+          .fetchParentArtifacts(requestId)
+          .then((res) => {
+            setParentArtifacts(res);
+            // console.log(res, 'artifacts');
+          })
+          .catch((e) => {
+            console.error(e, 'fetch rest request parent artifacts');
+          });
+      }
+    };
+    _fetchRequest().then(() => {
+      _fetchRequestParentArtifacts();
+    });
   }, []);
 
   /**
@@ -147,429 +110,45 @@ const Rest = ({ tab, platformContext, activeTab, platformComponents }) => {
    * 1. initialise/ merge request
    * 2. Generate pull action
    */
-  const handlePull = async (pullActions: IPushPayload[]) => {
-    try {
-      let pullPayload = pullActions[0];
-
-      // console.log({ pullPayload });
-
-      let last = restStoreApi.getState().last;
-      let mergedPullAndLastRequest = _object.mergeDeep(
-        _cloneDeep(last.request),
-        _object.omit(pullPayload, ['_action'])
-      );
-
-      // merged request payload: merged existing request and pull payload request
-      let updatedRequest = await getMergedRequestByPullAction(pullPayload);
-
-      updatedRequest = normalizeRequest(updatedRequest, true);
-
-      // set last value by pull action and request
-      setLast({
-        ...last,
-        request: mergedPullAndLastRequest,
-        pushAction: pullPayload._action.keys || {},
-      });
-
-      // console.log({ req: restStoreApi.getState().request });
-
-      // console.log({
-      //   'updatedRequest on pull': updatedRequest,
-      //   mergedPullAndLastRequest,
-      // });
-
-      // get push action payload
-      let pushAction = await prepareRequestUpdatePushAction(updatedRequest);
-      // console.log({ 'pushAction on pull': pushAction });
-
-      // initialise request with updated request and push action
-      initialiseRequest(updatedRequest, true, pushAction, true, false);
-    } catch (error) {
-      console.error({
-        API: 'rest.handlePull',
-        error,
-      });
-    }
-  };
-
-  useEffect(() => {
-    const _fetchRequest = async () => {
-      try {
-        const isRequestSaved = !!tab?.request?._meta?.id || false;
-        let requestToNormalize: IRest = {
-          method: EHttpMethod.GET,
-          __meta: {
-            name: '',
-            version: '2.0.0',
-            type: ERequestTypes.Rest,
-            activeBodyType: ERestBodyTypes.NoBody,
-          },
-          __ref: { id: '', collectionId: '' },
-        };
-
-        if (isRequestSaved === true) {
-          setIsFetchingReqFlag(true);
-          try {
-            const response = await platformContext.request.onFetch(
-              tab.request._meta.id
-            );
-            requestToNormalize = response.data;
-          } catch (error) {
-            console.error({
-              API: 'fetch rest request',
-              error,
-            });
-            throw error;
-          }
-        }
-
-        initialiseRequest(
-          requestToNormalize,
-          isRequestSaved,
-          _cloneDeep(emptyPushAction),
-          false,
-          true
-        );
-      } catch (error) {
-        console.error({
-          API: 'fetch and normalize rest request',
-          error,
-        });
-
-        // TODO: close tab and show error popup
-      }
-    };
-    _fetchRequest();
-  }, []);
-
-  /**
-   * initialiseRequest: normalize request and initialise in store on tab load and manage pull
-   */
-  const initialiseRequest = async (
-    requestToNormalize: IRest,
-    isRequestSaved: boolean,
-    pushAction?: IPushAction,
-    hasPull?: boolean,
-    isFresh?: boolean
-  ) => {
-    let request: IRestClientRequest = normalizeRequest(
-      requestToNormalize,
-      isRequestSaved
-    );
-
-    let requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
-    // console.log({ request });
-    let uiActiveTab = hasPull
-      ? restStoreApi.getState().ui?.requestPanel?.activeTab ||
-        ERequestPanelTabs.Body
-      : ERequestPanelTabs.Body;
-
-    initialise(
-      {
-        request,
-        ui: {
-          ...restStoreApi.getState().ui,
-          requestPanel: {
-            ...requestPanel,
-            activeTab: uiActiveTab,
-          },
-        },
-        pushAction: pushAction
-          ? pushAction
-          : restStoreApi.getState().pushAction,
-      },
-      isFresh
-    );
-    setIsFetchingReqFlag(false);
-    // Update auth type, generate auth headers
-    updateActiveAuth(request.__meta.activeAuthType);
-  };
-
-  const resetAuthHeaders = async (authType: EAuthTypes) => {
-    try {
-      if (authType !== EAuthTypes.Inherit) {
-        let authHeaders = await getAuthHeaders(
-          restStoreApi.getState()?.request,
-          authType
-        );
-
-        if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
-          authHeaders[
-            'Authorization'
-          ] = `Bearer ${authHeaders['Authorization']}`;
-          setOAuth2LastFetchedToken(authHeaders['Authorization']);
-        }
-
-        // prepare auth headers array
-        const headersAry = _table.objectToTable(authHeaders) || [];
-        // console.log({ headersAry });
-
-        changeAuthHeaders(headersAry);
-      } else {
-        changeAuthHeaders([]);
-      }
-    } catch (error) {
-      console.log({ API: 'rest.getAuthHeaders', error });
-    }
-  };
-
-  const updateActiveAuth = (authType: EAuthTypes) => {
-    // console.log({authType});
-
-    changeMeta({ activeAuthType: authType });
-    resetAuthHeaders(authType);
-  };
-
-  const updateAuthValue = (
-    authType: EAuthTypes,
-    updates: { key: string; value: any }
-  ) => {
-    if (!authType) return;
-
-    // update store
-    changeAuth(authType, updates);
-
-    resetAuthHeaders(authType);
-  };
-
-  /**
-   * on paste url, call CurlToFirecamp(curl).transform() and set resultant request data to state
-   * @param curl: <type: string>
-   */
-  const onPasteCurl = async (curlString: string) => {
-    // return if no curl or request is already saved
-    if (!curlString) return;
-
-    let { url } = restStoreApi.getState()?.request;
-
-    let curl = curlString;
-
-    /**
-     * If not same existing url and curlString, do set substring of url
-     * i.e: url= 'https://' and curlString= 'https://', do not set substring of curlString
-     */
-    if (
-      url.raw !== curlString &&
-      curlString.substring(0, (url.raw || '').length) !== url.raw
-    ) {
-      // Set Trimmed/ substring of curlString with the length of current state URL
-      curl = curlString.substring((url.raw || '').length) || '';
-    }
-
-    if (
-      url.raw === curlString.substring(0, (url.raw || '').length) &&
-      curl !== curlString
-    ) {
-      // TODO: check usage
-      // _update_request_config_fns._onChangeURLbar('raw_url', curl);
-    } else {
-      curl = curlString;
-    }
-
-    if (curl.substring(0, 4) !== 'curl') {
-      return;
-    }
-
-    // Reset url and return is request is saved as data can not be replaced in saved request
-    if (tab?.meta?.isSaved) {
-      /*  firecampFunctions.notification.alert(
-         'You can not paste the CURL snippet into the saved request, please open a new empty request tab instead.',
-         {    
-           labels: { success: 'curl request' }
-         }
-       ); */
-
-      changeUrl(url);
-      return;
-    }
-
-    try {
-      let curlRequest = new CurlToFirecamp(curl?.trim() || '').transform();
-      console.log({ curlRequest });
-
-      initialiseRequest(curlRequest, false, emptyPushAction, false, true);
-    } catch (error) {
-      console.error({
-        API: 'Rest _onPasteCurl',
-        curl,
-        error,
-      });
-    }
-  };
-
-  // console.log({ isFetchingRequest })
-
-  const onSave = (pushPayload: IPushPayload, tabId) => {
-    // console.log({ pushPayload });
-
-    if (!pushPayload._action || !pushPayload._action.item_id) return;
-    if (pushPayload._action.type === EPushActionType.Insert) {
-      platformContext.request.subscribeChanges(
-        pushPayload._action.item_id,
-        handlePull
-      );
-    }
-
-    platformContext.request.onSave(pushPayload, tabId);
-  };
-
-  // handle updates for environments from platform
-  const handlePlatformEnvironmentChanges = (platformActiveEnvironments) => {
-    // console.log({ platformActiveEnvironments });
-
-    if (!platformActiveEnvironments) return;
-    let activeEnvironments = restStoreApi.getState().runtime.activeEnvironments;
-
-    if (
-      platformActiveEnvironments.workspace &&
-      !equal(platformActiveEnvironments, activeEnvironments)
-    ) {
-      setActiveEnvironments(platformActiveEnvironments);
-    }
-  };
+  const handlePull = async () => {};
 
   if (isFetchingRequest === true) return <Loader />;
-
   return (
-    <RestContext.Provider
-      value={{
-        // auth
-        ctx_resetAuthHeaders: resetAuthHeaders,
-        ctx_updateAuthValue: updateAuthValue,
-        ctx_updateActiveAuth: updateActiveAuth,
-      }}
-    >
-      <Container className="h-full with-divider" overflow="visible">
-        <UrlBarContainer
-          tab={tab}
-          collectionId={tab?.request?._meta?.collection_id || ''}
-          postComponents={platformComponents}
-          onSaveRequest={onSave}
-          platformContext={platformContext}
-          onPasteCurl={onPasteCurl}
-        />
-        <Container.Body>
-          <Row flex={1} className="with-divider h-full" overflow="auto">
-            <Request
-              tab={tab}
-              getFirecampAgent={platformContext.getFirecampAgent}
-            />
-            <Response />
-          </Row>
-          <CodeSnippets
-            tabId={tab.id}
-            getPlatformEnvironments={
-              platformContext.environment.getVariablesByTabId
-            }
-          />
-        </Container.Body>
-      </Container>
-      {tab.meta.isSaved && (
-        <TabChangesDetector
-          onChangeRequestTab={platformContext.request.onChangeRequestTab}
-          tabId={tab.id}
-          tabMeta={tab.meta}
-        />
-      )}
-    </RestContext.Provider>
+    <Container className="h-full with-divider" overflow="visible">
+      <UrlBarContainer tabId={tab.id} />
+      <Container.Body>
+        <Row flex={1} className="with-divider h-full" overflow="auto">
+          <Request tabId={tab.id} />
+          <Response />
+        </Row>
+        {/* <CodeSnippets tabId={tab.id} getPlatformEnvironments={() => {}} /> */}
+      </Container.Body>
+    </Container>
   );
 };
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    let { request = {} } = tab;
-    // console.log({ request });
-
-    let initReqPayload: any = {
-      request: {
-        url: request.url || {
-          raw: '' /*  'https://jsonplaceholder.typicode.com/todos/1' */,
-        },
-        method: request?.method || EHttpMethod.GET,
-        headers: request?.headers || [],
-        config: request.config || configState,
-        scripts: {
-          pre: '',
-          post: '',
-          test: '',
-        },
-        meta: request.meta || {
-          active_body_type: ERestBodyTypes.NoBody,
-          activeAuthType: EAuthTypes.Inherit,
-          inherit_scripts: {
-            pre: true,
-            post: true,
-            test: true,
-          },
-        },
-        body: bodyState,
-        auth: request.auth || _cloneDeep(_auth.defaultAuthState),
-        _meta: {
-          id: id(),
-        },
-      },
-      ui: {
-        isFetchingRequest: false,
-        isCodeSnippetOpen: false,
-        requestPanel: {
-          activeTab: ERequestPanelTabs.Body,
-        },
-      },
-      runtime: {
-        auth_headers: [],
-        inherit: {
-          auth: {
-            active: '',
-            payload: {},
-            oauth2_last_fetched_token: '',
-          },
-          script: {
-            pre: '',
-            post: '',
-            test: '',
-          },
-        },
-        isRequestSaved: tab?.meta?.isSaved,
-        oauth2_last_fetched_token: '',
-      },
+    const {
+      id: tabId,
+      entity,
+      // __meta: { entityId }
+    } = tab;
+    const request = {
+      url: entity.url,
+      method: entity.method,
+      __meta: entity.__meta,
+      __ref: entity.__ref,
     };
-
+    const initState = initialiseStoreFromRequest(request, tabId);
+    // console.log(initState);
     return (
-      <RestStoreProvider createStore={() => createRestStore(initReqPayload)}>
+      <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />
-      </RestStoreProvider>
+      </StoreProvider>
     );
   };
 
   return MyComponent;
 };
-
-const TabChangesDetector = ({ tabId, tabMeta, onChangeRequestTab }) => {
-  let { pushAction } = useRestStore(
-    (s: any) => ({
-      pushAction: s.pushAction,
-    }),
-    shallow
-  );
-
-  useEffect(() => {
-    if (tabMeta.isSaved) {
-      // console.log({ pushAction });
-
-      // Check if push action empty or not
-      let isTabDirty = !_object.isEmpty(
-        _cleanDeep(_cloneDeep(pushAction || {})) || {}
-      );
-      // console.log({ pushAction });
-
-      // Update tab meta if existing tab.meta.hasChange is not same as isTabDirty
-      if (tabMeta.hasChange !== isTabDirty) {
-        onChangeRequestTab(tabId, { hasChange: isTabDirty });
-      }
-    }
-  }, [pushAction]);
-
-  return <></>;
-};
-
 export default withStore(memo(Rest));

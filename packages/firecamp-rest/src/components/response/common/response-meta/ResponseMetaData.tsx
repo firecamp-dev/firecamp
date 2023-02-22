@@ -1,24 +1,20 @@
 import shallow from 'zustand/shallow';
-
-import Statuses from '../../../common/responseStatus.json';
-
 import { ResStatus, ResSize, ResTime } from '@firecamp/ui-kit';
-import { IRestStore, useRestStore } from '../../../../store';
+import Statuses from '../../../common/responseStatus.json';
+import { IStore, useStore } from '../../../../store';
 
 const ResponseMetaData = () => {
-  let { response, isRequestRunning } = useRestStore(
-    (s: IRestStore) => ({
+  const { response, isRequestRunning } = useStore(
+    (s: IStore) => ({
       response: s.response,
       isRequestRunning: s.runtime.isRequestRunning,
     }),
     shallow
   );
-
-  let { duration, size, statusCode } = response || {};
-
-  let _getStatusObj = (statusCode) => {
+  const { responseTime, responseSize, code } = response || {};
+  const _getStatusObj = (code) => {
     return (
-      Statuses[statusCode] || { statusCode, color: 'gray', text: 'custom' }
+      Statuses[code] || { code, color: 'gray', text: 'custom' }
     );
   };
 
@@ -41,25 +37,25 @@ const ResponseMetaData = () => {
   }
 
   return (
-    <div className="fc-response-header-stats">
+    <div>
       {/* <div>Response</div> */}
       {response && contentType && contentType.length ? (
         <div
-          className="fc-response-header-stats-type whitespace-nowrap text-xs text-primaryColor w-fit overflow-hidden ml-4 overflow-ellipsis"
+          className="whitespace-nowrap text-xs text-primaryColor w-fit overflow-hidden ml-4 overflow-ellipsis"
           style={{ fontSize: '11px' }}
         >
           {contentType}
         </div>
       ) : (
-        ''
-      )}
-      <div className="fc-response-header-stats-results">
+        <></>
+      )}ƒ
+      <div>
         <ResStatus
-          {..._getStatusObj(statusCode)}
+          {..._getStatusObj(code)}
           isRequestRunning={isRequestRunning}
         />
-        <ResTime duration={duration} isRequestRunning={isRequestRunning} />
-        <ResSize size={size} isRequestRunning={isRequestRunning} />
+        <ResTime time={responseTime} isRequestRunning={isRequestRunning} />
+        <ResSize size={responseSize} isRequestRunning={isRequestRunning} />
       </div>
     </div>
   );

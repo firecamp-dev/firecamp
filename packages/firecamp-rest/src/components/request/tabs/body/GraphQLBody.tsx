@@ -1,51 +1,44 @@
-import { ERestBodyTypes } from '@firecamp/types';
-
-import {
-  Container,
-  Column,
-  Editor,
-  CMGQueryEditor,
-} from '@firecamp/ui-kit';
+import { EEditorLanguage } from '@firecamp/types';
+import { Container, Column, Editor, CMGQueryEditor, TabHeader, Resizable } from '@firecamp/ui-kit';
 
 const GraphQLBody = ({ body, onChange }) => {
-  let { value = '', variables = '' } = body;
-
-  let _onChangeVariables = (value) => {
-    // console.log("update", key, value)
-
-    onChange(ERestBodyTypes.GraphQL, value, 'variables');
-  };
-
-  let _onChangeQuery = (value) => {
-    onChange(ERestBodyTypes.GraphQL, value);
-  };
-
+  const { query = '', variables = '' } = body;
   return (
-    <Container>
+    <Container className='border-t border-appBorder'>
       <Container.Body className="flex flex-col">
         <Column flex={1}>
-          <div className="text-base px-1 py-2 bg-focus1">Query</div>
+          <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
+            <TabHeader.Left>
+            Query
+            </TabHeader.Left>
+          </TabHeader>
           <div className="flex-1 overflow-y-scroll">
             <CMGQueryEditor
-              query={value}
-              onChangeQuery={(value) => _onChangeQuery(value)}
+              query={query}
+              onChangeQuery={(query) => onChange({ query, variables })}
             />
           </div>
         </Column>
+        <Resizable top={true} minHeight={100} maxHeight={500} height={320}>
         <Column flex={1}>
-          <div className="text-base px-1 py-2 bg-focus1">Query variables</div>
+        <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
+            <TabHeader.Left>
+            Query variables
+            </TabHeader.Left>
+          </TabHeader>
           <Editor
             value={variables}
-            language={'json'}
+            language={EEditorLanguage.Json}
+            onChange={({ target: { value } }) =>
+              onChange({ query, variables: value })
+            }
             monacoOptions={{
-              // mode: "json",
               name: 'graphQLBodyVariables',
-              // value: variables,
               height: '30%',
             }}
-            onChange={({ target: { value } }) => _onChangeVariables(value)}
           />
         </Column>
+        </Resizable>
       </Container.Body>
     </Container>
   );

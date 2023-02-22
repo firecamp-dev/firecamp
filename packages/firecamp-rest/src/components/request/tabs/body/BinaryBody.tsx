@@ -1,17 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';
-import { ERestBodyTypes } from '@firecamp/types';
 import { FileDrop } from 'react-file-drop';
-
-import {
-  Container,
-  Button,
-} from '@firecamp/ui-kit';
+import { Container, Button } from '@firecamp/ui-kit';
 
 const BinaryTab = ({ body, onChange }) => {
   const inputEle = useRef(null);
-  // console.log({ body });
-
   const [fileName, setFileName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -20,17 +13,13 @@ const BinaryTab = ({ body, onChange }) => {
     // console.log("file body--> component did mount");
 
     const _setFileName = async () => {
-      // console.log({ body });
-
-      let text: string = body?.value?.name || '';
-
+      const text: string = body?.value?.name || '';
       if (fileName !== text) {
         setFileName(text);
       }
     };
     setErrorMsg('');
     setButtonDisabled(false);
-
     _setFileName();
   }, [body]);
 
@@ -52,7 +41,7 @@ const BinaryTab = ({ body, onChange }) => {
       // _import(raw_text);
       setErrorMsg('');
       setButtonDisabled(false);
-      _onChangeBinaryBodyValue(file);
+      onChange(file);
     }
   };
 
@@ -71,12 +60,8 @@ const BinaryTab = ({ body, onChange }) => {
 
       setErrorMsg('');
       setButtonDisabled(false);
-      _onChangeBinaryBodyValue(file);
+      onChange(file);
     }
-  };
-
-  const _onChangeBinaryBodyValue = (text) => {
-    onChange(ERestBodyTypes.Binary, text);
   };
 
   return (
@@ -91,11 +76,11 @@ const BinaryTab = ({ body, onChange }) => {
             <Button
               onClick={_onButtonClick}
               icon={<AiOutlineUpload className="mr-2" size={16} />}
+              text="Drop File Here"
+              disabled={isButtonDisabled}
               secondary
               iconLeft
               sm
-              text="Drop File Here"
-              disabled={isButtonDisabled}
             />
           )}
 

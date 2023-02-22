@@ -1,3 +1,4 @@
+import { TId } from '@firecamp/types';
 import { ITab } from './Tab.interface';
 
 /** Tabs props */
@@ -46,7 +47,7 @@ export interface ITabs {
   /**
    * A callback function to call when tab is being clicked/ selected
    */
-  onSelect?: (id: string | number, index: number, event: any) => void;
+  onSelect?: (id: TId, index?: number, event?: any) => void;
   /**
    * A callback function to call when tab is being re-ordered
    */

@@ -16,7 +16,7 @@ export interface IAuthHeader {
 
 export interface IExtra {
   url?: IUrl;
-  method?: EHttpMethod;
+  method?: EHttpMethod | string;
   body?: any;
   agent?: EFirecampAgent;
   headers?: object;

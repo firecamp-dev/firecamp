@@ -74,13 +74,13 @@ export default class Executor implements IExecutor {
 
       this.#emitLog(log, ELogEvents.onConnecting);
 
-      if (firecampAgent === EFirecampAgent.desktop) {
+      if (firecampAgent === EFirecampAgent.Desktop) {
         this.#socket.on('pong', async (arg) => {
           log = this.#log(
             'Pong',
             {
-              payload: arg.toString(),
-              meta: { type: 'text', typedArrayView: '' },
+              value: arg.toString(),
+              __meta: { type: 'text', typedArrayView: '' },
             },
             {
               type: ELogTypes.Receive,
@@ -93,12 +93,12 @@ export default class Executor implements IExecutor {
           log = this.#log(
             'On Upgrade',
             {
-              payload: `// On Upgrade receive headers \n ${JSON.stringify(
+              value: `// On Upgrade receive headers \n ${JSON.stringify(
                 response.headers,
                 null,
                 4
               )}`,
-              meta: { type: 'json', typedArrayView: '' },
+              __meta: { type: 'json', typedArrayView: '' },
             },
             {
               type: ELogTypes.Receive,
@@ -110,8 +110,8 @@ export default class Executor implements IExecutor {
           log = this.#log(
             ELogTypes.Upgrade,
             {
-              payload: response.headers,
-              meta: { type: 'json', typedArrayView: '' },
+              value: response.headers,
+              __meta: { type: 'json', typedArrayView: '' },
             },
             {
               type: ELogTypes.Upgrade,
@@ -128,17 +128,21 @@ export default class Executor implements IExecutor {
           this.#connected = true;
 
           title = ConnectionStatus[event.target.readyState].description;
-          log = this.#log(title, '', {
-            event: ConnectionStatus[event.target.readyState].state,
-            type: ELogTypes.System,
-            color: ELogColors.Success,
-          });
+          log = this.#log(
+            title,
+            {},
+            {
+              event: ConnectionStatus[event.target.readyState].state,
+              type: ELogTypes.System,
+              color: ELogColors.Success,
+            }
+          );
           this.#emitLog(log, ELogEvents.onOpen);
           this.#emitLog(log);
 
           // Start pinging if ping enable
           if (
-            firecampAgent === EFirecampAgent.desktop &&
+            firecampAgent == EFirecampAgent.Desktop &&
             clientOptions &&
             clientOptions.ping &&
             clientOptions.pingInterval
@@ -163,9 +167,9 @@ export default class Executor implements IExecutor {
       };
 
       this.#socket.onmessage = async (event: any) => {
-        const body = await bodyParser.parseReceivedMessage(event.data);
+        const message = await bodyParser.parseReceivedMessage(event.data);
 
-        log = this.#log('Message Received', body, {
+        log = this.#log('Message Received', message, {
           type: ELogTypes.Receive,
         });
 
@@ -180,7 +184,6 @@ export default class Executor implements IExecutor {
         else {
           log.__meta['length'] = event?.data?.length;
         }
-
         this.#emitLog(log);
       };
 
@@ -342,7 +345,7 @@ export default class Executor implements IExecutor {
   async send(message: Partial<IWebSocketMessage>): Promise<void> {
     if (message?.__meta) {
       const log = this.#log('Message Sent', message, { type: ELogTypes.Send });
-      const body = await bodyParser.parseMessage(message);
+      const msg = await bodyParser.parseMessage(message);
       if (
         [
           EMessageBodyType.ArrayBuffer,
@@ -351,11 +354,11 @@ export default class Executor implements IExecutor {
         ].includes(message.__meta.type)
       )
         log.__meta.length = Object.values(
-          this.#calculateMessageSize(body?.byteLength)
+          this.#calculateMessageSize(msg?.byteLength)
         ).join(' ');
-      else log.__meta['length'] = body?.length;
+      else log.__meta['length'] = msg?.length;
       this.#emitLog(log);
-      this.#socket.send(body);
+      this.#socket.send(msg);
     } else {
       const log = this.#log('Message Sent', '', { type: ELogTypes.Send });
       this.#emitLog(log);
@@ -477,8 +480,7 @@ export default class Executor implements IExecutor {
   #log(title: string, message: any, __meta: any): ILog {
     if (!__meta.timestamp) __meta.timestamp = Date.now();
 
-    // In normal EMIT/LISTEN event name will be a title so assign that
-    // same title as event in meta as standard usage at frontend if needed
+    /** the event name in ws will be the same as 'title' to match the standard with socket.io event */
     if (!__meta.event) __meta.event = title;
     const __ref = { id: '' };
     if (__meta.type) {

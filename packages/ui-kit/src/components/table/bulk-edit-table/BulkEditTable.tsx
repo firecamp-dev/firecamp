@@ -1,7 +1,12 @@
 import { FC, useState, useEffect } from 'react';
+import isEqual from 'react-fast-compare';
 import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui-kit';
 import { _table } from '@firecamp/utils';
-import equal from 'deep-equal';
+import { EEditorLanguage } from '@firecamp/types';
+// import { default as TabHeader } from '../tab-header/TabHeader';
+// import { default as Button } from '../buttons/Button';
+// import { default as BasicTable } from './BasicTable';
+// import { default as Editor } from '../editors/monaco-v2/Editor';
 
 import { IBulkEditTable } from './BulkEditTable.interfaces';
 
@@ -28,7 +33,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
         const tableToString = _table.toText([...rows]);
         // console.log({raw, tableToString});
 
-        if (!equal(raw, tableToString)) {
+        if (!isEqual(raw, tableToString)) {
           setRaw(tableToString);
         }
       }
@@ -53,7 +58,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
   };
 
   const _onChangeRows = (newRows: any[] = []) => {
-    if (!equal(newRows, rows)) {
+    if (!isEqual(newRows, rows)) {
       // console.log({ newRows, rows });
 
       onChange(newRows);
@@ -84,10 +89,10 @@ const BulkEditTable: FC<IBulkEditTable> = ({
       </TabHeader>
       {mode === modes.Table ? (
         <BasicTable
-          onChange={_onChangeRows}
+          title={title}
           rows={rows}
-          name={title}
           options={options}
+          onChange={_onChangeRows}
           // disabled={disabled}
           onMount={onMount}
         />
@@ -95,15 +100,15 @@ const BulkEditTable: FC<IBulkEditTable> = ({
         <div className="h-28 pt-3">
           <Editor
             value={raw}
-            language="text"
-            monacoOptions={{
-              style: { display: 'table-caption' },
-              height: '100px',
-            }}
+            language={EEditorLanguage.Text}
             onChange={({ target: { value } }) => _setRaw(value)}
             placeholder={`
             key:value    (a new entry should be added to the line with the key, value separated by a ':')
             `}
+            monacoOptions={{
+              style: { display: 'table-caption' },
+              height: '100px',
+            }}
           />
         </div>
       )}

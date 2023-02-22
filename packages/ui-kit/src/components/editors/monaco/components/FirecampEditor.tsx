@@ -1,15 +1,15 @@
 import { FC, useRef, useState, useEffect } from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import ReactTooltip from 'react-tooltip';
-
 import classnames from 'classnames';
 // import formatXML from 'prettify-xml';
 import _cloneDeep from 'lodash/cloneDeep';
-
-import '../sass/FirecampEditor.sass';
+import { _array, _clipboard } from '@firecamp/utils';
+import { EEditorLanguage } from '@firecamp/types';
 
 import { IFirecampEditor } from './FirecampEditor.interfaces';
-import { _array, _clipboard } from '@firecamp/utils';
+import '../sass/FirecampEditor.sass';
+
 // setupQueryEditor(buildClientSchema(schema));
 
 const FirecampEditor: FC<IFirecampEditor> = ({
@@ -18,7 +18,7 @@ const FirecampEditor: FC<IFirecampEditor> = ({
     height = '100%',
     width = 'auto',
     theme,
-    language = 'json',
+    language = EEditorLanguage.Json,
     value = '',
     placeholder = '',
     // useTabStops= true,

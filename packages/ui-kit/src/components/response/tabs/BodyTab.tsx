@@ -4,210 +4,198 @@ import {
   Container,
   Editor,
   StatusBar,
+  EditorControlBar,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-import { TId } from '@firecamp/types'
+import { TId } from '@firecamp/types';
 
-const BodyTab: FC<IBodyTab> = ({ id, data, headers }) => {
-  let initialTabs = [
-    { name: 'JSON', id: 'json' },
-    /* { name: "XML", id: "xml" },
-     { name: "HTML", id: "html" },*/
-    { name: 'TEXT', id: 'text' },
-  ];
+import {IoMdCloseCircle} from '@react-icons/all-files/io/IoMdCloseCircle';
 
-  let ContentType = `content-type`;
+enum EActiveTab {
+  Json = 'json',
+  Xml = 'xml',
+  Text = 'text',
+  Binary = 'binary',
+  Image = 'image',
+  // html/preview
+  Html = 'html',
+  Preview = 'preview',
+  // none when error exists
+  None = '',
+}
 
+const getContentTypeFromHeaders = (headers: { [k: string]: string }) => {
+  let ct: string;
   if (headers) {
-    if (Object.keys(headers).includes(`content-type`)) {
-      ContentType = `content-type`;
-    } else if (Object.keys(headers).includes(`Content-Type`)) {
-      ContentType = `Content-Type`;
-    } else {
-      ContentType = `content-type`;
+    if (Object.keys(headers).includes(`content-type`))
+      ct = headers[`content-type`];
+    else if (Object.keys(headers).includes(`Content-Type`))
+      ct = headers[`Content-Type`];
+    else ct = headers[`content-type`];
+
+    if (ct?.includes(';')) {
+      const newContentType = ct.split(';');
+      if (newContentType && newContentType.length) ct = newContentType[0];
     }
   }
+  return ct;
+};
 
-  let _getResponseType = (type: string) => {
-    // console.log({ type });
+const getActiveTabFromHeaders = (contentType: string = '') => {
+  if (!contentType) return EActiveTab.None;
+  let at = EActiveTab.None;
+  if (contentType.includes(EActiveTab.Json)) at = EActiveTab.Json;
+  else if (contentType.includes('xml')) at = EActiveTab.Xml;
+  else if (contentType.includes('html')) at = EActiveTab.Html;
+  else if (contentType.includes('binary')) at = EActiveTab.Binary;
+  else if (contentType === 'text/plain') at = EActiveTab.Text;
+  else if (contentType.includes(EActiveTab.Image)) at = EActiveTab.Image;
+  else at = EActiveTab.None;
+  return at;
+};
 
-    if (!type) {
-      type = 'text';
+const initialTabs = [
+  { name: 'JSON', id: 'json' },
+  /* { name: "XML", id: "xml" },
+   { name: "HTML", id: "html" },*/
+  { name: 'TEXT', id: 'text' },
+  { name: 'No body found', id: 'nobodyfound' },
+];
+
+const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
+  // console.log({ id, body, headers }); //TODO: optimize it for rerendering
+  const contentType = getContentTypeFromHeaders(headers);
+
+  let contentTypeKey = `content-type`;
+  if (headers) {
+    if (headers?.['content-type']) {
+      contentTypeKey = `content-type`;
+    } else if (headers?.['Content-Type']) {
+      contentTypeKey = `Content-Type`;
+    } else {
+      contentTypeKey = `content-type`;
     }
-
-    let contentType = type;
-
-    let responseType = 'json';
-    if (contentType.includes('json')) responseType = 'json';
-    else if (contentType.includes('xml')) responseType = 'xml';
-    else if (contentType.includes('html')) responseType = 'html';
-    else if (contentType.includes('binary')) responseType = 'binary';
-    else if (contentType === 'text/plain') responseType = 'text';
-    else if (contentType.includes('image')) responseType = 'image';
-    else responseType = 'text';
-    // console.log({ responseType });
-
-    return responseType;
-  };
-  let [tabs, setTabs] = useState(initialTabs);
-  let [responseType, setResponseType] = useState(
-    headers ? _getResponseType(headers[ContentType]) : 'JSON'
+  }
+  const [tabs, setTabs] = useState(initialTabs);
+  const [activeTab, setActiveTab] = useState<EActiveTab>(
+    getActiveTabFromHeaders(contentType)
   );
-  let [activeTab, setActiveTab] = useState(
-    responseType ? responseType.toLocaleLowerCase() : 'json'
-  );
-  let [editorDOM, setEditorDOM] = useState<any>(null);
+  const [editor, setEditor] = useState<any>(null);
 
-  // Set response type by updated response headers. (by content type)
+  // set response type by updated response headers. (by content type)
   useEffect(() => {
-    _setResponseType(headers);
+    prepareTabs(headers);
   }, [headers]);
 
-  let _setResponseType = (headers: any) => {
-    // console.log("responsePayload", responsePayload);
-    let type = _misc.isJSON(data)
-      ? 'json'
-      : headers && headers[ContentType]
-      ? _getResponseType(headers[ContentType])
-      : 'text';
-    setResponseType(type);
-    type === 'html' ? setActiveTab('preview') : setActiveTab(type);
-    // console.log("type detected", type);
-    let newTabs = [];
-    if (['json', 'xml', 'binary', 'html', 'text', 'image'].includes(type)) {
-      if (type === 'html' /*&& isHTML(data)*/) {
-        newTabs = [
-          { name: 'Preview', id: 'preview' },
-          { name: 'HTML', id: 'html' },
-        ];
-      } else if (['json', 'xml', 'binary'].includes(type)) {
-        if (type === 'json') {
-          newTabs = [{ name: 'JSON', id: 'json' }];
-        } else {
-          newTabs = [
-            { name: type.toUpperCase(), id: type },
-            { name: 'TEXT', id: 'text' },
-          ];
-        }
-      } else {
-        newTabs = [{ name: type.toUpperCase(), id: type }];
-      }
-    } else {
-      newTabs = [{ name: type.toUpperCase(), id: type }];
+  const prepareTabs = (headers: any) => {
+    const activeTab = _misc.isJSON(body)
+      ? EActiveTab.Json
+      : getActiveTabFromHeaders(headers?.[contentTypeKey]);
+
+    /** 'json', 'xml', 'binary', 'html', 'text', 'image' */
+    let newTabs: { name: string; id: EActiveTab }[] = [
+      { name: activeTab.toUpperCase(), id: activeTab },
+    ];
+    if (activeTab === EActiveTab.Html) {
+      newTabs = [{ name: 'Preview', id: EActiveTab.Preview }, ...newTabs];
     }
     setTabs(newTabs);
+    setActiveTab(activeTab == EActiveTab.Html ? EActiveTab.Preview : activeTab);
   };
-  // console.log({ responseType, activeTab, tabs });
 
-  let _renderTabBody = (tab: string) => {
+  const _renderTabBody = (tab: string) => {
     // setTimeout(this._editorFoldAll, 2000)
     // console.log("tab", tab);
     tab === 'octet_stream' ? 'json' : tab;
 
     switch (tab) {
-      case 'xml':
-      case 'json':
-      case 'text':
+      case EActiveTab.Html: /** allow to show HTML response without checking body HTML valid or not */
+      case EActiveTab.Xml:
+      case EActiveTab.Json:
+      case EActiveTab.Text:
+      default:
         try {
           if (tab === 'json') {
-            // data = DataConverter.prettify.json(data);
-            data = JSON.stringify(JSON.parse(data), null, 4)
+            body = JSON.stringify(JSON.parse(body), null, 4);
           }
           if (tab === 'xml') {
-            // data = DataConverter.prettify.xml(data);
+            // prettify
           }
         } catch (e) {
           console.log(`e`, e);
         }
 
-        let cursorStart = 1;
-
         return (
           <Editor
             language={tab}
-            value={data}
-            path={`${id}/response/timeline`}
+            value={body}
+            path={`${id}/response/body`}
             onLoad={(editor) => {
-              setEditorDOM(editor);
+              setEditor(editor);
               // editor.resize(true);
               editor.revealLine(1);
               editor.setPosition({ column: 1, lineNumber: 10 });
             }}
-            // controlsConfig={{
-            //   show: activeTab !== 'preview',
-            // }}
             disabled={true}
             monacoOptions={{
               name: `response`,
             }}
           />
         );
-      case 'html':
-        /**
-         * Allow to show HTML response without checking data HTML valid or not
-         */
+      case EActiveTab.None:
         return (
-          <Editor
-            disabled={true}
-            language={tab}
-            value={data}
-            onLoad={(editor) => {
-              setEditorDOM(editor);
-            }}
-            monacoOptions={{
-              name: `response`,
-            }}
-          />
-        );
+          <div className="p-3">
+            <div className='text-error flex items-center text-base font-semibold mb-2 mt-1'>
+            <IoMdCloseCircle className="mr-1" />
+            <span>Unable to reach server</span>
+            </div>
+            <div className="text-base text-appForegroundInActive">
+              <ul className="ml-8 list-decimal">
+                
+                <li className="mb-2">
+                  <span>Server may not be reachable at the provided endpoint.</span>
+                </li>
 
-        break;
-      case 'preview':
-        /**
-         * Allow to show preview for HTML response without checking HTML data valid or not
-         */
+                <li className="mb-2">
+                  <span>Is the server currently running?</span>
+                </li>
 
+                <li className="mb-2">
+                  <label className="font-semibold block text-appForegroundActive">The Server's response may be missing CORS headers</label>
+                  <span>To verify open developer tools and check the console for any CORS related error message like, "Cros Origin Request Blocked", If that in the case contact your system administartor and add <b className="text-appForeground">https://insider.firecamp.dev</b> to your server's allow list.</span>
+                  <a  className="font-semibold block !text-info">Learn more about enabling CORS</a>
+                  <div>
+                  <ul className="ml-8 list-disc mt-2">
+                
+                <li className="mb-2">
+                  <span>Server may not be reachable at the provided endpoint.</span>
+                </li>
+
+                <li className="mb-2">
+                  <span>Is the server currently running?</span>
+                </li>
+                
+              </ul>
+                  </div>
+                </li>
+
+              </ul>
+            </div>
+            </div>
+          );
+      case EActiveTab.Preview:
+        /** allow to show preview for HTML response without checking HTML data valid or not */
         return (
           <iframe
-            src={`data:text/html, ${encodeURIComponent(data)}`}
+            src={`data:text/html, ${encodeURIComponent(body)}`}
             style={{ height: '100%', width: '100%' }}
-          />
-        );
-        break;
-      default:
-        return (
-          <Editor
-            disabled={true}
-            language={tab}
-            value={data}
-            onLoad={(editor) => {
-              setEditorDOM(editor);
-            }}
-            monacoOptions={{
-              name: `response`,
-            }}
           />
         );
     }
   };
 
-  // console.log("editorDOM: ", editorDOM);
-  if (editorDOM && editorDOM.editor) {
-    editorDOM.$onChangeWrapMode();
-  }
-
-  let contentType = '';
-  if (headers) {
-    if (Object.keys(headers).includes(`content-type`))
-      contentType = headers[`content-type`];
-    else if (Object.keys(headers).includes(`Content-Type`))
-      contentType = headers[`Content-Type`];
-    else contentType = headers[`content-type`];
-
-    if (contentType && contentType.includes(';')) {
-      let newContentType = contentType.split(';');
-      if (newContentType && newContentType.length)
-        contentType = newContentType[0];
-    }
+  if (editor && editor.editor) {
+    editor.$onChangeWrapMode();
   }
 
   return (
@@ -219,21 +207,19 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers }) => {
               className="flex items-center"
               list={tabs}
               activeTab={activeTab}
-              onSelect={(tab) => setActiveTab(tab)}
+              onSelect={(tab: EActiveTab) => setActiveTab(tab)}
               additionalComponent={
                 contentType && contentType.length ? (
-                  <div
-                    className="fc-response-header-stats-type"
-                    style={{ fontSize: '11px' }}
-                  >
-                    {contentType}
-                  </div>
+                  <div style={{ fontSize: '11px' }}>{contentType}</div>
                 ) : (
-                  ''
+                  <></>
                 )
               }
             />
           </StatusBar.PrimaryRegion>
+          <StatusBar.SecondaryRegion>
+            <EditorControlBar editor={editor} language={activeTab} />
+          </StatusBar.SecondaryRegion>
         </StatusBar>
       </Container.Header>
       <Container.Body overflow={'hidden'}>
@@ -246,7 +232,8 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers }) => {
 export default BodyTab;
 
 interface IBodyTab {
-  id: TId,
-  data?: string;
+  id: TId;
   headers: any;
+  body?: string;
+  error?: any;
 }

@@ -1,18 +1,28 @@
 import { FC, useState } from 'react';
+import { _misc } from '@firecamp/utils';
+import { IRestResponse, TId } from '@firecamp/types';
 import { CustomMessage, Container, Tabs as TabsUI } from '@firecamp/ui-kit';
-
 import BodyTab from './BodyTab';
 import HeaderTab from './HeaderTab';
 import CookieTab from './CookieTab';
 import TimelineTab from './TimelineTab';
 import TestScriptResult from './TestScriptResult';
 import ResponseMetaData from '../common/ResponseMetaData';
-import { _misc } from '@firecamp/utils';
-import { TId } from '@firecamp/types';
+
+enum EResponseTabs {
+  Body = 'Body',
+  Headers = 'Headers',
+  Cookie = 'Cookie',
+  Timeline = 'Timeline',
+  TestResult = 'Test Result',
+}
 
 interface IResTabs {
   id: TId;
-  response: any;
+  response: IRestResponse;
+  testResult: any;
+  scriptErrors?: any[];
+  error?: any;
   activeBodyTab: string;
   isRequestRunning: boolean;
   onChangeActiveBodyTab: (tab: string) => void;
@@ -21,77 +31,79 @@ interface IResTabs {
 const Tabs: FC<IResTabs> = ({
   id,
   response,
-  activeBodyTab = 'body',
+  testResult = {},
+  scriptErrors = [],
+  error,
+  activeBodyTab = EResponseTabs.Body,
   isRequestRunning,
   onChangeActiveBodyTab = (tab: string) => {},
 }) => {
-  let {
-    config,
-    data,
-    duration,
-    size,
-    statusCode,
-    statusMessage,
-    headers,
+  const {
+    body,
+    responseTime,
+    responseSize,
+    code,
+    status,
+    headers = [],
     cookies,
     // error,
     timeline,
-    testScriptResult,
   } = response;
 
+  const { total, passed, failed } = testResult || {};
+
   const [tabs] = useState([
-    { name: 'Body', id: 'body', count: 0 },
-    { name: 'Headers', id: 'headers', count: headers?.length || 0 },
-    { name: 'Cookies', id: 'cookies', count: cookies?.length || 0 },
-    { name: 'Timeline', id: 'timeline', count: 0 },
-    { name: 'Test result', id: 'test_result' },
+    { name: EResponseTabs.Body, id: EResponseTabs.Body, count: 0 },
+    {
+      name: EResponseTabs.Headers,
+      id: EResponseTabs.Headers,
+      count: Object.keys(headers).length || 0,
+    },
+    {
+      name: EResponseTabs.Cookie,
+      id: EResponseTabs.Cookie,
+      count: cookies?.length || 0,
+    },
+    { name: EResponseTabs.Timeline, id: EResponseTabs.Timeline, count: 0 },
+    {
+      name:
+        total > 0
+          ? `${EResponseTabs.TestResult} (${passed}/${total})`
+          : EResponseTabs.TestResult,
+      id: EResponseTabs.TestResult,
+    },
   ]);
-  let [activeTab, setActiveTab] = useState<string>(activeBodyTab || 'body');
+  const [activeTab, setActiveTab] = useState<string>(
+    activeBodyTab || EResponseTabs.Body
+  );
 
-  // console.log({ response });
+  // console.log({ response, error });
 
-  let _renderTab = (tab: string) => {
-    console.log('tab', tab);
+  const _renderTab = (tab: string) => {
     switch (tab) {
-      case 'body':
-        if (!!response.error && !!response.data) {
-          return (
-            <Container>
-              <Container.Body>
-                <BodyTab id={id} data={data} headers={headers} />
-              </Container.Body>
-              <Container.Footer>
-                <CustomMessage message={response.error || ''} />
-              </Container.Footer>
-            </Container>
-          );
-        } else if (!response.data && !!response.error) {
-          return <CustomMessage message={response.error || ''} />;
+      case EResponseTabs.Body:
+        if (error?.message && !response.body) {
+          return <CustomMessage message={error.message} />;
         } else {
-          return <BodyTab id={id} data={data} headers={headers} />;
+          return <BodyTab id={id} body={body} headers={headers} />;
         }
-        break;
-      case 'headers':
+      case EResponseTabs.Headers:
         return <HeaderTab headers={headers} />;
-        break;
-      case 'cookies':
+      case EResponseTabs.Cookie:
         return <CookieTab cookies={cookies} />;
-        break;
-      case 'timeline':
+      case EResponseTabs.Timeline:
         return <TimelineTab id={id} timeline={timeline} />;
-        break;
-      case 'test_result':
-        return <TestScriptResult result={testScriptResult} />;
+      case EResponseTabs.TestResult:
+        return <TestScriptResult result={testResult} />;
       default:
-        return <span />;
+        return <></>;
     }
   };
 
-  let _updateActiveTab = (tab: string) => {
+  const _updateActiveTab = (tab: string) => {
     setActiveTab(tab);
     onChangeActiveBodyTab(tab);
   };
-  // console.log({ response });
 
   return (
     <Container>
@@ -103,35 +115,63 @@ const Tabs: FC<IResTabs> = ({
           postComp={() => (
             <ResponseMetaData
               isRequestRunning={isRequestRunning}
-              duration={duration}
-              size={size}
-              statusCode={statusCode}
-              statusMessage={statusMessage}
+              time={responseTime}
+              size={responseSize}
+              code={code}
+              status={status}
             />
           )}
         />
       </Container.Header>
-      <Container.Body>
-        <div
-          className="tab-content h-full"
-          // activeTab={activeTab}
-        >
-          <div
-            className="tab-pane active h-full visible-scrollbar overflow-auto"
-            // tabId={activeTab}
-          >
-            {isRequestRunning === true &&
-            response.error &&
-            response.error.message ? (
-              <CustomMessage message={response.error?.message || ''} />
-            ) : (
-              _renderTab(activeTab)
-            )}
-          </div>
-        </div>
+      <Container.Body className="flex flex-col">
+        {_renderTab(activeTab)}
+        <ScriptErrors errors={scriptErrors} />
       </Container.Body>
+      {/* <Container.Footer>
+        <CustomMessage message={'This is the error component'} />
+      </Container.Footer> */}
     </Container>
   );
 };
 
 export default Tabs;
+
+const ScriptErrors = ({ errors = [] }) => {
+  console.log(errors, 'erros..... errors');
+  return (
+    <div className=' w-full bg-appBackground'>
+      {errors.map((e, i) => (
+        <ScriptErrorTable error={e} key={i} />
+      ))}
+    </div>
+  );
+};
+const ScriptErrorTable: FC<any> = ({ error }) => {
+  const {
+    type,
+    error: { name, message },
+  } = error;
+  return (
+    <div>
+      <div className="bg-focus4 p-1 text-base font-semibold">{type} script error</div>
+      <div className="table w-full  border-collapse ">
+        <div className="table-row  bg-appBackground2">
+          <div className="table-cell border border-appBorder p-1 text-sm font-semibold">
+            type
+          </div>
+          <div className="table-cell border border-appBorder  p-1 text-sm text-appForegroundInActive">
+            {name}
+          </div>
+        </div>
+        <div className="table-row bg-appBackground2">
+          <div className="table-cell border border-appBorder p-1 text-sm font-semibold">
+            message
+          </div>
+          <div className="table-cell border border-appBorder  p-1 text-sm text-appForegroundInActive">
+            {message}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

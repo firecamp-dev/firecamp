@@ -9,7 +9,7 @@
   ],
   "author": "Nishchit Dhanani <dnishchit@gmail.com>",
   "homepage": "http://./dev/packages/ui-kit",
-  "license": "Apache-2.0",
+  "license": "",
   "main": "src/ui-kit.ts",
   "module": "src/ui-kit.ts",
   "directories": {
@@ -27,12 +27,12 @@
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
     "test": "jest",
     "test-storybook": "test-storybook",
-    "start:storybook": "yarn test:generate-output && yarn storybook",
+    "start:storybook": "pnpm test:generate-output && pnpm storybook",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build:tailwind": "postcss src/scss/base.scss -o src/scss/tailwind.scss",
     "chromatic": "npx chromatic --project-token=4db217014cde004",
-    "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && yarn copy-files",
+    "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && yapnpmrn copy-files",
     "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.scss\" \"src/**/*.css\" dist/"
   },
   "bugs": {
@@ -57,12 +57,12 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "12.1.2",
     "@types/codemirror": "^5.60.5",
-    "@types/deep-equal": "^1.0.1",
     "@types/markdown-it": "^12.2.3",
-    "@types/react": "^17.0.14",
+    "@types/react": "^17.0.2",
+    "@types/react-dom": "^17.0.2",
     "@types/react-table": "^7.7.10",
     "babel-jest": "^29.1.2",
-    "babel-loader": "^8.2.2",
+    "babel-loader": "^9.1.0",
     "babel-preset-react-app": "^10.0.0",
     "chromatic": "^6.7.0",
     "copyfiles": "^2.4.1",
@@ -83,14 +83,14 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@firecamp/types": "^0.0.18",
+    "@firecamp/types": "^0.1.21",
+    "@firecamp/ui-kit": "workspace:*",
     "@monaco-editor/react": "4.4.5",
     "@radix-ui/react-toast": "^1.0.0",
     "@szhsin/react-menu": "^2.3.2",
     "@tanstack/react-table": "^8.6.0",
     "autoprefixer": "^10",
     "classnames": "^2.3.1",
-    "deep-equal": "^2.0.5",
     "firecamp-treeview": "^0.0.1-0",
     "fuzzysort": "^2.0.1",
     "markdown-it": "^13.0.1",
@@ -100,7 +100,7 @@
     "prettify-xml": "^1.2.0",
     "re-resizable": "^6.9.9",
     "react-codemirror2": "^7.2.1",
-    "react-complex-tree": "^1.1.11",
+    "react-complex-tree": "^2.0.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-full-screen": "^0.3.1-0",
     "react-hook-form": "^6.8.1",
@@ -113,8 +113,8 @@
     "vscode": "^1.1.37"
   },
   "peerDependencies": {
-    "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0"
   },
   "babel": {
     "presets": [

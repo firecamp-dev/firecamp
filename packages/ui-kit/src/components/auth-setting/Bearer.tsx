@@ -1,19 +1,17 @@
 import { FC, useReducer } from 'react';
-
-
 import { Input } from '@firecamp/ui-kit';
-import { typePayload } from './constants';
 import { IAuthBearer, EAuthTypes } from '@firecamp/types'
+import { authUiFormState } from './constants';
 
-const Bearer: FC<IBearer> = ({ auth = {}, onChange = () => {} }) => {
-  const inputList = typePayload[EAuthTypes.Bearer]['inputList'];
+const Bearer: FC<IBearer> = ({ auth, onChange = () => {} }) => {
+  const { Bearer} = EAuthTypes;
+  const inputList = authUiFormState[Bearer]['inputList'];
 
   let isDirtyState = {};
   (inputList || []).map((e) => {
     isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
   });
-
-  let _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
+  const _setDirty = (state: any, action: { type: any; element: any; value: any; }) => {
     switch (action.type) {
       case 'setDirty':
         return {
@@ -22,16 +20,14 @@ const Bearer: FC<IBearer> = ({ auth = {}, onChange = () => {} }) => {
         };
     }
   };
-
-  let [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
-
-  let _handleChange = (e: any, id: string) => {
+  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const _handleChange = (e: any, id: string) => {
     e.preventDefault();
-    let value = e.target.value;
-    onChange(EAuthTypes.Bearer, { key: id, value });
+    const value = e.target.value;
+    onChange(Bearer, { key: id, value });
   };
 
-  let _handleSubmit = (e: { preventDefault: () => any; }) => {
+  const _handleSubmit = (e: { preventDefault: () => any; }) => {
     e && e.preventDefault();
   };
 
@@ -57,15 +53,8 @@ const Bearer: FC<IBearer> = ({ auth = {}, onChange = () => {} }) => {
           placeholder={input.name || ''}
           value={auth?.[input.id as keyof IAuthBearer] || ''}
           error={isDirty[input.id] && errorMsg ? errorMsg : ''}
-          /* style={{
-            borderColor:
-              isDirty[input.id] && errorMsg
-                ? 'red'
-                : isDirty[input.id] && 'green',
-          }} */
           onChange={(e) => _handleChange(e, input.id)}
           isEditor={true}
-          /*onKeyDown={_onKeyDown}*/
         />
       );
     })}

@@ -1,5 +1,5 @@
-import { ISocketIO } from '@firecamp/types';
-
+import { ISocketIO, TId } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 import {
   IUrlSlice,
   createUrlSlice,
@@ -9,86 +9,68 @@ import {
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
-
-  initialiseRequest: (request: ISocketIO) => void;
-  setRequestKey: (key: string, value: any) => void;
   changeListeners: (listeners: Array<string>) => void;
   changeMeta: (key: string, value: any) => void;
   changeConfig: (key: string, value: any) => void;
+  save: (tabId: TId) => void;
 }
 
-const requestSliceKeys = ['url', 'connections', 'config', 'meta', '_meta'];
+const requestSliceKeys = ['url', 'connections', 'config', '__meta', '__ref'];
 
-const createRequestSlice = (
+const createRequestSlice: TStoreSlice<IRequestSlice> = (
   set,
   get,
   initialRequest: ISocketIO
-): IRequestSlice => ({
+) => ({
   request: initialRequest,
 
   //url
   ...createUrlSlice(set, get),
   ...createConnectionSlice(set, get),
 
-  initialiseRequest: (request: ISocketIO) => {
-    set((s) => ({
-      ...s,
-      request,
-    }));
-  },
-
-  setRequestKey: (key: string, value: any) => {
-    set((s) => ({
-      ...s,
-      request: {
-        ...s.request,
-        [key]: value,
-      },
-    }));
-  },
   changeListeners: (listeners: Array<string>) => {
-    let lastListeners = get()?.last?.request.listeners;
-
+    const state = get();
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         listeners,
       },
     }));
-
     // update config
-    get()?.changeMeta('onConnectListeners', listeners);
-
-    // prepare _root push action
-    get()?.prepareRootPushAction({ listeners: lastListeners }, { listeners });
+    state.changeMeta('onConnectListeners', listeners);
+    // state.equalityChecker({ listeners });
   },
 
   changeMeta: (key: string, value: any) => {
-    let lastMeta = get()?.last?.request.meta;
-    let updatedMeta = {
-      ...(get()?.request.meta || {}),
+    const state = get();
+    const __meta = {
+      ...state.request.__meta,
       [key]: value,
     };
     set((s) => ({
-      ...s,
-      request: { ...s.request, meta: updatedMeta },
+      request: { ...s.request, __meta },
     }));
-
-    // Prepare push action for meta
-    get()?.prepareMetaPushAction(lastMeta, updatedMeta);
+    state.equalityChecker({ __meta });
   },
   changeConfig: (key: string, value: any) => {
-    let lastConfig = get()?.last?.request.config;
-    let updatedConfig = {
-      ...(get()?.request.config || {}),
+    const state = get();
+    const config = {
+      ...(state.request.config || {}),
       [key]: value,
     };
-
-    set((s) => ({ ...s, request: { ...s.request, config: updatedConfig } }));
-
-    // Prepare push action for config in _root
-    get()?.prepareRequestConfigPushAction(lastConfig, updatedConfig);
+    set((s) => ({ request: { ...s.request, config } }));
+    state.equalityChecker({ config });
+  },
+  save: (tabId) => {
+    const state = get();
+    if (!state.runtime.isRequestSaved) {
+      const _request = state.preparePayloadForSaveRequest();
+      state.context.request.save(_request, tabId, true);
+      // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
+    } else {
+      const _request = state.preparePayloadForUpdateRequest();
+      state.context.request.update(_request, tabId);
+    }
   },
 });
 

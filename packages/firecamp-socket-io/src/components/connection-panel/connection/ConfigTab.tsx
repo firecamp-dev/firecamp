@@ -5,11 +5,11 @@ import {
   Input,
 } from '@firecamp/ui-kit';
 
-const INPUT_TYPES = {
-  text: 'text',
-  boolean: 'boolean',
-  number: 'number',
-  dropdown: 'dropdown',
+enum EInputTypes {
+  Text= 'text',
+  Boolean= 'boolean',
+  Number= 'number',
+  Dropdown= 'dropdown',
 };
 
 /**
@@ -28,33 +28,33 @@ const INPUT_TYPES = {
 const connectionInputs = [
   {
     name: 'forceNew',
-    type: INPUT_TYPES.boolean,
+    type: EInputTypes.Boolean,
     labelFor: 'Force new',
     label: 'Force new',
   },
   {
     name: 'namespace',
-    type: INPUT_TYPES.text,
+    type: EInputTypes.Text,
     labelFor: 'Namespace',
     label: 'Namespace',
   },
   {
     name: 'path',
-    type: INPUT_TYPES.text,
+    type: EInputTypes.Text,
     labelFor: 'Path',
     label: 'Path',
     placeholder: '',
   },
   {
     name: 'ping',
-    type: INPUT_TYPES.boolean,
+    type: EInputTypes.Boolean,
     labelFor: 'Ping',
     label: 'Ping',
     placeholder: '',
   },
   {
     name: 'pingInterval',
-    type: INPUT_TYPES.number,
+    type: EInputTypes.Number,
     labelFor: 'Ping interval',
     label: 'Ping interval',
     placeholder: '',
@@ -72,7 +72,7 @@ const ConfigTab = ({
       isChecked: connection['transports']
         ? connection['transports'].websocket
         : false,
-      label: 'Websocket',
+      label: 'WebSocket',
       showLabel: true,
       disabled: false,
     },
@@ -106,8 +106,8 @@ const ConfigTab = ({
     if (!type) return <span />;
 
     switch (type) {
-      case INPUT_TYPES.text:
-      case INPUT_TYPES.number:
+      case EInputTypes.Text:
+      case EInputTypes.Number:
         let isDisabled = false;
         if (name === 'pingInterval') {
           isDisabled = !connection['ping'];
@@ -130,13 +130,13 @@ const ConfigTab = ({
                 _onChange(name, value);
               }
             }}
-            // min={type === INPUT_TYPES.number ? 0 : ''}
+            // min={type === EInputTypes.number ? 0 : ''}
             isEditor={true}
           />
         );
         break;
 
-      case INPUT_TYPES.boolean:
+      case EInputTypes.Boolean:
         return (
           <CheckboxInGrid
             key={`${name}-${index}`}

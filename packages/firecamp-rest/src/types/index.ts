@@ -1,36 +1,22 @@
-import { IUiAuth, IRest } from '@firecamp/types';
-
-export enum EPushAction_rootKeys {
+export enum EReqChangeRootKeys {
   method = 'method',
   headers = 'headers',
   config = 'config',
+  body = 'body',
+  auth = 'auth',
+  preScripts = 'preScripts',
+  postScripts = 'postScripts',
 }
 
-export enum EPushActionMetaKeys {
+export enum EReqChangeMetaKeys {
   name = 'name',
   description = 'description',
-  active_body_type = 'active_body_type',
-  active_auth_type = 'active_auth_type',
-  inherit_scripts = 'inherit_scripts',
 }
 
-export enum EPushActionUrlKeys {
+export enum EReqChangeUrlKeys {
   raw = 'raw',
-  query_params = 'query_params',
-  path_params = 'path_params',
-}
-
-export enum EPushActionScriptsKeys {
-  pre = 'pre',
-  post = 'post',
-  test = 'test',
-}
-
-export enum EPushAction_metaKeys {
-  collection_id = 'collection_id',
-  folder_id = 'folder_id',
-  updated_at = 'updated_at',
-  updated_by = 'updated_by',
+  queryParams = 'queryParams',
+  pathParams = 'pathParams',
 }
 
 export enum ERequestPanelTabs {
@@ -38,17 +24,21 @@ export enum ERequestPanelTabs {
   Auths = 'Auths',
   Headers = 'Headers',
   Params = 'Params',
-  Scripts = 'Scripts',
+  PreRequestScript = 'Pre-request Script',
+  Tests = 'Tests',
   Config = 'Config',
 }
 
-export enum ERestConfigKeys {
-  MaxRedirects = 'max_redirects',
-  FollowLocation = 'follow_location',
-  RejectUnauthorized = 'reject_unauthorized',
-  RequestTimeout = 'request_timeout',
+export enum EResponsePanelTabs {
+  Body = 'Body',
+  Headers = 'Headers',
+  Cookies = 'Cookies',
+  TestResult = 'TestResult',
 }
 
-export interface IRestClientRequest extends Omit<IRest, 'auth'> {
-  auth?: IUiAuth;
+export enum ERestConfigKeys {
+  MaxRedirects = 'maxRedirects',
+  FollowLocation = 'followLocation',
+  RejectUnauthorized = 'rejectUnauthorized',
+  RequestTimeout = 'requestTimeout',
 }

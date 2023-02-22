@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import {
   Container,
   BulkEditTable,
@@ -7,16 +7,15 @@ import {
 } from '@firecamp/ui-kit';
 import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
-
-import { useRestStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const ParamsTab = () => {
   const tableApi = useRef<TTableApi>();
-  const { query_params, path_params, changeQueryParams, changePathParams } =
-    useRestStore(
-      (s: any) => ({
-        query_params: s.request.url?.query_params || [],
-        path_params: s.request.url?.path_params || [],
+  const { queryParams, pathParams, changeQueryParams, changePathParams } =
+    useStore(
+      (s: IStore) => ({
+        queryParams: s.request.url?.queryParams || [],
+        pathParams: s.request.url?.pathParams || [],
         changeQueryParams: s.changeQueryParams,
         changePathParams: s.changePathParams,
       }),
@@ -25,27 +24,27 @@ const ParamsTab = () => {
 
   // useEffect(() => {
   // const tRows = tableApi.current.getRows();
-  // console.log(tRows, query_params, tRows == query_params, ' query_params...');
-  // tableApi.current.initialize(query_params);
-  // }, [query_params]);
+  // console.log(tRows, queryParams, tRows == queryParams, ' queryParams...');
+  // tableApi.current.initialize(queryParams);
+  // }, [queryParams]);
 
   return (
     <Container>
       <Container.Body className="flex flex-col">
         <BulkEditTable
           key={'queryParams'}
-          title="Query params"
-          rows={query_params || []}
+          title="Query Params"
+          rows={queryParams || []}
           onChange={(data) => {
             // console.log({ data });
             changeQueryParams(data);
           }}
           onMount={(tApi) => (tableApi.current = tApi)}
         />
-        {!_array.isEmpty(path_params) ? (
+        {!_array.isEmpty(pathParams) ? (
           <div className="pt-14">
             <BasicTable
-              rows={path_params || []}
+              rows={pathParams || []}
               key={'pathParams'}
               title="Path params"
               options={{
@@ -55,25 +54,9 @@ const ParamsTab = () => {
                 allowSort: false,
               }}
               onChange={(data) => {
-                // _onChangeParamsValue(data, PATH_PARAMS);
                 changePathParams(data);
               }}
             />
-            {/* <BasicTable
-              onChange={(data) => {
-                // _onChangeParamsValue(data, PATH_PARAMS);
-                changePathParams(data);
-              }}
-              key={'pathParams'}
-              rows={path_params || []}
-              title="Path params"
-              options={{
-                disabledColumns: ['key', 'disable'],
-                allowRowRemove: false,
-                allowRowAdd: false,
-                allowSort: false,
-              }}
-            /> */}
           </div>
         ) : (
           <></>

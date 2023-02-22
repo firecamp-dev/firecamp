@@ -1,0 +1,29 @@
+{
+  "url": {
+    "raw": "",
+    "queryParams": [],
+    "pathParams": []
+  },
+  "headers": [
+    {
+      "key": "content-type",
+      "value": "application/json"
+    }
+  ],
+  "method": "POST",
+  "body": {
+    "text": {
+      "value": "{\"msg\":\"Hi, there\"}"
+    }
+  },
+  "__meta": {
+    "name": "Untitled Request",
+    "type": "rest",
+    "version": "2.0.0",
+    "activeBodyType": "application/json"
+  },
+  "__ref": {
+    "id": "",
+    "collectionId": ""
+  }
+}

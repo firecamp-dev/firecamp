@@ -1,292 +1,240 @@
+import { nanoid } from 'nanoid';
 import {
+  TId,
   ISocketIOEmitter,
   IRequestFolder,
-  TId,
-  EPushActionType,
+  EArgumentBodyType,
 } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
+import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
 
 interface ICollection {
-  emitters?: Array<ISocketIOEmitter>;
-  directories?: Array<IRequestFolder>;
+  isProgressing?: boolean;
+  tdpInstance?: any;
+  items?: Partial<ISocketIOEmitter & { __ref: { isItem?: boolean } }>[];
+  folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
+  /**
+   * increate the number on each action/event happens within collection
+   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   */
+  __manualUpdates?: number;
 }
 
 interface ICollectionSlice {
   collection: ICollection;
-
-  initialiseConnection: (collection: ICollection) => void; // TODO: rename API
-  updateCollection: (
-    key: string,
-    value: Array<ISocketIOEmitter> | Array<IRequestFolder>
-  ) => void;
+  isCollectionEmpty: () => boolean;
+  toggleProgressBar: (flag?: boolean) => void;
+  registerTDP: () => void;
+  unRegisterTDP: () => void;
+  initialiseCollection: (collection: ICollection) => void;
 
   // emitter
-  getEmitter: (
-    id: TId
-  ) => { emitter: ISocketIOEmitter; emitterIndex: number } | undefined;
-  addEmitter: (emitter: ISocketIOEmitter) => void;
-  changeEmitter: (id: TId, updates: { key: string; value: any }) => void;
-  deleteEmitter: (id: TId) => void;
-  setEmitter: (id: TId, emitterToSet: ISocketIOEmitter) => void; // TODO: check usage
+  getItem: (id: TId) => ISocketIOEmitter;
+  addItem: (obj: { name: string; label?: string }, folderId: TId) => void;
+  deleteItem: (id: TId) => void;
 
-  // directories
-  getDirectory: (
-    id: TId
-  ) => { directory: IRequestFolder; directoryIndex: number } | undefined;
-  addDirectory: (directory: IRequestFolder) => void;
-  changeDirectory: (id: TId, updates: { key: string; value: any }) => void;
-  deleteDirectory: (id: TId) => void;
+  // folders
+  getFolder: (id: TId) => IRequestFolder;
+  prepareCreateFolderPayload: (name: string, parentFolderId: TId) => void;
+  deleteFolder: (id: TId) => void;
+  onCreateFolder: (folder: IRequestFolder) => void;
 }
 
-const createCollectionSlice = (
+const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   set,
   get,
   initialCollection: ICollection
-): ICollectionSlice => ({
+) => ({
   collection: initialCollection || {
-    emitters: [],
-    directories: [],
+    folders: [],
+    items: [],
+  },
+
+  isCollectionEmpty: () => {
+    const { folders, items } = get().collection;
+    return folders.length == 0 && items.length == 0;
+  },
+
+  // register TreeDatProvider instance
+  // register TreeDatProvider instance
+  registerTDP: () => {
+    set((s) => {
+      const rootOrders = [
+        ...s.request.__meta.fOrders,
+        ...s.request.__meta.iOrders,
+      ];
+      console.log(rootOrders, 'rootOrders... registerTDP');
+      const instance = new TreeDataProvider(
+        s.collection.folders,
+        s.collection.items,
+        rootOrders
+      );
+      return {
+        collection: {
+          ...s.collection,
+          tdpInstance: instance,
+          __manualUpdates: ++s.collection.__manualUpdates,
+        },
+      };
+    });
+  },
+
+  // unregister TreeDatProvider instance
+  unRegisterTDP: () => {
+    set((s) => ({ collection: { ...s.collection, tdpInstance: null } }));
+  },
+
+  toggleProgressBar: (flag?: boolean) => {
+    set((s) => ({
+      collection: {
+        ...s.collection,
+        isProgressing: !s.collection.isProgressing,
+      },
+    }));
   },
 
   // collection
-  initialiseConnection: (collection: ICollection) => {},
-  updateCollection: (
-    key: string,
-    value: Array<ISocketIOEmitter> | Array<IRequestFolder>
-  ) => {
+  initialiseCollection: (collection: ICollection) => {
+    // console.log(collection?.items?.length, 'collection?.items?.length...');
+    const state = get();
     set((s) => ({
-      ...s,
       collection: {
         ...s.collection,
-        [key]: value,
+        ...collection,
+      },
+      ui: {
+        ...s.ui,
+        playgrounds: collection?.items?.length,
       },
     }));
+    const rootOrders = [
+      ...state.request.__meta.fOrders,
+      ...state.request.__meta.iOrders,
+    ];
+    console.log(rootOrders, 'rootOrders... initialiseCollection');
+    state.collection.tdpInstance?.init(
+      collection.folders || [],
+      collection.items || [],
+      rootOrders
+    );
   },
 
   // emitter
-
-  getEmitter: (id: TId, getLast = false) => {
-    // existing emitters
-    let emitters = getLast
-      ? get()?.last?.collection?.emitters
-      : get().collection?.emitters;
-
-    // emitter index
-    let emitterIndex = emitters.findIndex(
-      (emitter) => emitter?._meta?.id === id
-    );
-
-    // If emitter found then update in store
-    if (emitterIndex !== -1) {
-      return { emitter: emitters[emitterIndex], emitterIndex };
-    }
-
-    return undefined;
+  getItem: (id: TId) => {
+    const state = get();
+    const item = state.collection.items.find((i) => i.__ref?.id === id);
+    return item;
   },
-  addEmitter: (emitter: ISocketIOEmitter) => {
-    if (!emitter?._meta?.id) return;
+  addItem: ({ name, label }, folderId?: TId) => {
+    const state = get();
+    const {
+      runtime: { activePlayground },
+      playgrounds,
+    } = state;
+    const emitter = playgrounds[activePlayground]?.emitter;
+
+    const item = {
+      name,
+      value: emitter.value,
+      __meta: { ...emitter.__meta, label },
+      __ref: {
+        ...emitter.__ref,
+        id: nanoid(),
+        folderId,
+      },
+    };
 
     set((s) => ({
-      ...s,
       collection: {
         ...s.collection,
-        emitters: [...s.collection.emitters, emitter],
+        items: [...s.collection.items, item],
       },
     }));
 
-    // Prepare push action for insert emitter
-    get()?.prepareCollectionEmittersPushAction(
-      emitter?._meta?.id,
-      EPushActionType.Insert
-    );
-  },
-  changeEmitter: (id: TId, updates: { key: string; value: any }) => {
-    let emitterDetails = get().getEmitter(id);
-
-    // If emitter found then update in store
-    if (
-      emitterDetails &&
-      emitterDetails.emitter &&
-      emitterDetails.emitterIndex !== -1
-    ) {
-      let { key, value } = updates;
-      let { emitter, emitterIndex } = emitterDetails;
-      let updatedEmitter = Object.assign({}, emitter, {
-        [key]: value,
-      });
-
-      set((s) => ({
-        ...s,
-        collection: {
-          ...s.collection,
-          emitters: [
-            ...s.collection.emitters.slice(0, emitterIndex),
-            updatedEmitter,
-            ...s.collection.emitters.slice(emitterIndex + 1),
-          ],
-        },
-      }));
-
-      let lastEmitter = get().getEmitter(id, true);
-      // Prepare push action for update emitter
-      get()?.prepareCollectionEmittersPushAction(
-        id,
-        EPushActionType.Update,
-        lastEmitter,
-        updatedEmitter
-      );
-    }
-  },
-  deleteEmitter: (id: TId) => {
-    let emitterDetails = get().getEmitter(id);
-
-    // If emitter found then update in store
-    if (emitterDetails && emitterDetails.emitterIndex !== -1) {
-      set((s) => ({
-        ...s,
-        collection: {
-          ...s.collection,
-          emitters: [
-            ...s.collection.emitters.slice(0, emitterDetails.emitterIndex),
-            ...s.collection.emitters.slice(emitterDetails.emitterIndex + 1),
-          ],
-        },
-      }));
-      // Prepare push action for delete emitter
-      get()?.prepareCollectionEmittersPushAction(id, EPushActionType.Delete);
-    }
-  },
-  setEmitter: (id: TId, emitterToSet: ISocketIOEmitter) => {
-    let emitterDetails = get().getEmitter(id);
-
-    // If emitter found then update in store
-    if (
-      emitterDetails &&
-      emitterDetails.emitter &&
-      emitterDetails.emitterIndex !== -1
-    ) {
-      let { emitter, emitterIndex } = emitterDetails;
-      let updatedEmitter = Object.assign({}, emitter, emitterToSet);
-
-      set((s) => ({
-        ...s,
-        collection: {
-          ...s.collection,
-          emitters: [
-            ...s.collection.emitters.slice(0, emitterIndex),
-            updatedEmitter,
-            ...s.collection.emitters.slice(emitterIndex + 1),
-          ],
-        },
-      }));
-
-      let lastEmitter = get().getEmitter(id, true);
-      // Prepare push action for update emitter
-      get()?.prepareCollectionEmittersPushAction(
-        id,
-        EPushActionType.Update,
-        lastEmitter,
-        updatedEmitter
-      );
-    }
-  },
-
-  // directories
-  getDirectory: (id: TId, getLast = false) => {
-    // existing directories
-    let directories = getLast
-      ? get()?.last?.collection?.directories
-      : get().collection?.directories;
-
-    // directory index
-    let directoryIndex = directories.findIndex(
-      (directory: IRequestFolder) => directory?._meta?.id === id
-    );
-
-    // If directory found then update in store
-    if (directoryIndex !== -1) {
-      return { directory: directories[directoryIndex], directoryIndex };
-    }
-
-    return undefined;
-  },
-  addDirectory: (directory: IRequestFolder) => {
-    if (!directory?._meta?.id) return;
-
-    set((s) => ({
-      ...s,
-      collection: {
-        ...s.collection,
-        directories: [...s.collection.directories, directory],
+    state.changePlaygroundTab(activePlayground, {
+      __meta: {
+        isSaved: true,
+        hasChange: false,
       },
-    }));
+    });
 
-    // Prepare push action for insert emitter
-    get()?.prepareCollectionDirectoriesPushAction(
-      directory?._meta?.id,
-      EPushActionType.Insert
-    );
+    // TODO: Update parent orders on add emitter
+    // TODO: check update playground emitter
+    // TODO: check update active emitter
+    // TODO: update request
   },
-  changeDirectory: (id: TId, updates: { key: string; value: any }) => {
-    let directoryDetails = get().getDirectory(id);
-
-    // If directory found then update in store
-    if (
-      directoryDetails &&
-      directoryDetails.directory &&
-      directoryDetails.directoryIndex !== -1
-    ) {
-      let { key, value } = updates;
-      let { directory, directoryIndex } = directoryDetails;
-      let updatedDirectory = Object.assign({}, directory, {
-        [key]: value,
-      });
-
-      set((s) => ({
-        ...s,
+  deleteItem: (id: TId) => {
+    set((s) => {
+      const items = s.collection.items.filter((i) => i.__ref.id != id);
+      return {
         collection: {
           ...s.collection,
-          directories: [
-            ...s.collection.directories.slice(0, directoryIndex),
-            updatedDirectory,
-            ...s.collection.directories.slice(directoryIndex + 1),
-          ],
+          ...items,
         },
-      }));
-
-      let lastDirectory = get().getDirectory(id, true);
-      // Prepare push action for update emitter
-      get()?.prepareCollectionDirectoriesPushAction(
-        id,
-        EPushActionType.Update,
-        lastDirectory,
-        updatedDirectory
-      );
-    }
+      };
+    });
   },
-  deleteDirectory: (id: TId) => {
-    let directoryDetails = get().getDirectory(id);
 
-    // If directory found then update in store
-    if (directoryDetails && directoryDetails.directoryIndex !== -1) {
-      set((s) => ({
-        ...s,
+  // folders
+  getFolder: (id: TId) => {
+    const state = get();
+    const folder = state.collection.folders.find((f) => f.__ref?.id === id);
+    return folder;
+  },
+  prepareCreateFolderPayload: (name: string, parentFolderId?: TId) => {
+    const state = get();
+    const _folder: IRequestFolder = {
+      name,
+      __meta: { fOrders: [], iOrders: [] },
+      __ref: {
+        id: nanoid(),
+        requestId: state.request.__ref.id,
+        requestType: state.request.__meta.type,
+        collectionId: state.request.__ref.collectionId,
+        folderId: parentFolderId,
+      },
+    };
+    state.toggleProgressBar(true);
+    return _folder;
+  },
+
+  onCreateFolder: (folder) => {
+    //@ts-ignore
+    if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
+    set((s) => {
+      s.collection.tdpInstance?.addFolder(folder);
+      const { request } = s;
+      const { folders } = s.collection;
+      if (folder.__ref.folderId) {
+        folders.map((f) => {
+          if (f.__ref.id == folder.__ref.folderId) {
+            f.__meta.fOrders.push(folder.__ref.id);
+          }
+        });
+      } else {
+        request.__meta.fOrders = [...request.__meta.fOrders, folder.__ref.id];
+      }
+      return {
+        request,
         collection: {
           ...s.collection,
-          directories: [
-            ...s.collection.directories.slice(
-              0,
-              directoryDetails.directoryIndex
-            ),
-            ...s.collection.directories.slice(
-              directoryDetails.directoryIndex + 1
-            ),
-          ],
+          folders: [...folders, folder],
+          __manualUpdates: ++s.collection.__manualUpdates,
         },
-      }));
+      };
+    });
+  },
 
-      // Prepare push action for delete directory
-      get()?.prepareCollectionDirectoriesPushAction(id, EPushActionType.Delete);
-    }
+  deleteFolder: (id: TId) => {
+    set((s) => {
+      const folders = s.collection.folders.filter((f) => f.__ref.id != id);
+      return {
+        collection: {
+          ...s.collection,
+          ...folders,
+        },
+      };
+    });
   },
 });
 

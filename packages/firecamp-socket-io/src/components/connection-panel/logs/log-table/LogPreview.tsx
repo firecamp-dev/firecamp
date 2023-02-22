@@ -1,39 +1,49 @@
-import { useState, useEffect } from 'react';
-import equal from 'deep-equal';
+import { useState, useEffect, FC } from 'react';
+import isEqual from 'react-fast-compare';
 import classnames from 'classnames';
-
 import {
   SecondaryTab,
   Container,
   TabHeader,
   Column,
   Editor,
+  EditorControlBar,
 } from '@firecamp/ui-kit';
+import { EEditorLanguage } from '@firecamp/types';
 import AckIcon from './AckIcon';
+import { ELogColors, ELogTypes, ILog } from '@firecamp/socket.io-executor/dist/esm';
 
-const LogPreview = ({
-  selectedConnection = '',
-  row = {},
-  setSelectedRow = (_) => {},
-}) => {
-  let [selectedArgIndex, setSelectedArgIndex] = useState(0);
+const emptyRow: ILog = {
+  title: '',
+  message: {
+    value: [],
+    __meta: {}
+  },
+  __meta: { ackRef: false, event: '', type: ELogTypes.System, color: ELogColors.Warning, timestamp: new Date().valueOf() },
+  __ref: { id: '' }
+};
 
+const LogPreview = ({ row = emptyRow }) => {
+  if (!row) return <></>
+  console.log(row, '...... preview ......')
+  const [selectedArgIndex, setSelectedArgIndex] = useState(0);
+  const [value, setValue] = useState<string | number | boolean>('');
+  const [editor, setEditor] = useState(null);
   const _setArgIndex = (index = 0) => {
     setSelectedArgIndex(index);
-    let emitterArg = row?.message?.[index] || null;
-
+    const emitterArg = row.message?.value?.[index] || null;
     if (!emitterArg) {
       setValue(row?.title || '');
       return;
     }
-    if (emitterArg?.payload && emitterArg?.meta?.type !== 'file') {
-      setValue(emitterArg?.payload || '');
+    if (emitterArg.body && emitterArg.__meta.type !== 'file') {
+      setValue(emitterArg.body || '');
     } else {
-      setValue(emitterArg?.name || '');
+      //@ts-ignore
+      setValue(emitterArg.name || '');
     }
   };
-
-  let [value, setValue] = useState('');
+  if (!row?.message && !row.title) row = emptyRow;
 
   /**
    * On row update, set argument index to zero as row can have number of arguments.
@@ -44,14 +54,12 @@ const LogPreview = ({
     _setArgIndex(0);
   }, [row]);
 
-  useEffect(() => {
-    return () => {
-      setSelectedRow({});
-    };
-  }, []);
-
   const language =
-    row?.message?.[selectedArgIndex]?.meta?.type === 'json' ? 'json' : 'text';
+    row.message[selectedArgIndex]?.__meta.type === 'json'
+      ? EEditorLanguage.Json
+      : EEditorLanguage.Text;
+
+  console.log(row, 'in preivew...')
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
@@ -59,15 +67,16 @@ const LogPreview = ({
         <Container.Header className="bg-focus2">
           <Header
             row={row || {}}
-          emitterArg={row?.message?.[selectedArgIndex]}
+            emitterArg={row?.message?.[selectedArgIndex]}
+            postComponent={<EditorControlBar editor={editor} language={language} />}
           />
         </Container.Header>
         <Container.Body>
           <Editor
             language={language}
-            value={value}
+            value={value?.toString() || ''}
             disabled={true}
-            // controlsConfig={{ show: true, position: 'horizontal' }}
+            onLoad={(edt) => setEditor(edt)}
           />
         </Container.Body>
         {row.message && Array.isArray(row.message) ? (
@@ -79,7 +88,7 @@ const LogPreview = ({
             />
           </Container.Footer>
         ) : (
-          ''
+          <></>
         )}
       </Container>
     </Column>
@@ -88,71 +97,73 @@ const LogPreview = ({
 
 export default LogPreview;
 
-const Header = ({ row = {}, emitterArg = {} }) => {
-  // console.log(`row`, row)
+const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
+
+  const isEventSent = row.__meta.type == ELogTypes.Send;
+  const isEventReceived = row.__meta.type == ELogTypes.Receive;
+  const isEventFromSystem = row.__meta.type == ELogTypes.System;
+  const isEventAck = row.__meta.type == ELogTypes.Ack;
   return (
     <TabHeader
-      className={classnames(
-        row.meta ? row.meta.color || '' : '',
-        'height-ex-small'
-      )}
+      className={classnames(row.__meta?.color || '', 'height-ex-small')}
     >
       <TabHeader.Left className="font-bold font-base">
-        {row && row.meta
-          ? [
-              row.meta.type !== 'ACK' ? (
-                <span
-                  key={'event-icon'}
-                  className={classnames(
-                    'td-icon',
-                    { 'iconv2-to-server-icon': row.meta.type == 'S' },
-                    { 'iconv2-from-server-icon': row.meta.type == 'R' },
-                    { 'icon-disk': row.meta.type == 'SYS' },
-                    { 'icon-disk': row.meta.type == 'SYS' }
-                  )}
-                ></span>
-              ) : (
-                <AckIcon />
-              ),
-              <span className="font-sm" key="event-name">
-                {row.meta.event}
-              </span>,
-              row.meta.type !== 'SYS' ? (
-                <div
-                  className="font-xs text-appForegroundInActive whitespace-pre"
-                  key={'event-id'}
-                >
-                  {row.meta.id || ''}
-                </div>
-              ) : (
-                <></>
-              ),
-            ]
-          : <></>}
+        {row && row.__meta ? (
+          [
+            row.__meta.type !== isEventAck ? (
+              <span
+                key={'event-icon'}
+                className={classnames(
+                  'td-icon',
+                  { 'iconv2-to-server-icon': isEventSent },
+                  { 'iconv2-from-server-icon': isEventReceived },
+                  { 'icon-disk': isEventFromSystem }
+                )}
+              />
+            ) : (
+              <AckIcon />
+            ),
+            <span className="font-sm" key="event-name">
+              {row.__meta.event}
+            </span>,
+            row.__meta.type !== isEventFromSystem ? (
+              <div
+                className="font-xs text-appForegroundInActive whitespace-pre"
+                key={'event-id'}
+              >
+                {row.__ref.id || ''}
+              </div>
+            ) : (
+              <></>
+            ),
+          ]
+        ) : (
+          <></>
+        )}
       </TabHeader.Left>
       <TabHeader.Right className="font-xs text-appForegroundInActive whitespace-pre">
         <span className="font-sm">
-          {emitterArg?.meta?.length
-            ? `Length: ${emitterArg?.meta?.length}`
-            : ''}
+          {emitterArg?.__meta?.length
+            ? `Length: ${emitterArg?.__meta.length}`
+            : <></>}
         </span>
 
         <div className="font-sm">
-          {row?.meta?.timestamp
-            ? `Time: ${new Date(row?.meta?.timestamp).toLocaleTimeString()}`
-            : ''}
+          {row?.__meta?.timestamp
+            ? `Time: ${new Date(row?.__meta.timestamp).toLocaleTimeString()}`
+            : <></>}
         </div>
+        {postComponent}
       </TabHeader.Right>
     </TabHeader>
   );
 };
-
 const Footer = ({
   args = [],
   selectedArgIndex = 0,
-  setSelectedArgIndex = () => {},
+  setSelectedArgIndex = () => { },
 }) => {
-  let [tabs, setTabs] = useState(
+  const [tabs, setTabs] = useState(
     args.map((arg, index) => {
       return {
         id: index,
@@ -162,14 +173,13 @@ const Footer = ({
   );
 
   useEffect(() => {
-    let newTabs = args.map((arg, index) => {
+    const newTabs = args.map((arg, index) => {
       return {
         id: index,
         name: `Arg ${index + 1}`,
       };
     });
-
-    if (!equal(tabs, newTabs)) {
+    if (!isEqual(tabs, newTabs)) {
       setTabs(newTabs);
     }
   }, [args]);
@@ -177,8 +187,8 @@ const Footer = ({
   return (
     <SecondaryTab
       list={tabs}
-      activeTab={selectedArgIndex.toString() || "0"}
-      isBgTransperant={true}
+      activeTab={selectedArgIndex.toString() || '0'}
+      isBgTransparent={true}
       onSelect={setSelectedArgIndex}
     />
   );

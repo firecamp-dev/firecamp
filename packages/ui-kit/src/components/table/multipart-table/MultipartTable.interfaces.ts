@@ -1,30 +1,24 @@
 import { IRowCellMeta } from '../basic-table/BasicTable.interfaces';
-import { ITableOptions, TTableApi } from '../primitive/table.interfaces';
+import {
+  ITableOptions,
+  ITableRows,
+  TTableApi,
+} from '../primitive/table.interfaces';
 
 export enum ERowType {
   Text = 'text',
   File = 'file',
 }
 
-export interface IMultipartIFT {
-  /** table rows */
-  rows: Array<IRowCellMeta>;
-
-  /** multipart table key to represent multipart value (Which key holds value). default key 'value' */
-  multipartKey?: string;
-
-  /** */
-  name?: string;
-
-  /** table options */
+export interface IMultipartTable<R> {
+  /** Rows to be rendered on table*/
+  rows?: R[];
+  /** To provide additional functions to the primitive table */
   options?: ITableOptions;
-
-  /** updated table values */
-  onChange: (updatedRows: Array<IRowCellMeta>) => void;
-
-  /** on mount table callback to expose table api */
-  onMount?: (tApi: TTableApi) => void;
-
+  /** To provide the updated rows on ever changed value*/
+  onChange: (rows: ITableRows) => any;
+  /** To provide the table reference */
+  onMount?: (tableApi: TTableApi) => any;
 }
 
 export interface IMultiPartInput {
@@ -36,9 +30,6 @@ export interface IMultiPartInput {
   /** row value */
   value: string | number | boolean | object;
 
-    /** table options */
-  options?: ITableOptions;
-
   /** on change text input value*/
   onChange?: (evt: object) => void;
 
@@ -47,4 +38,7 @@ export interface IMultiPartInput {
 
   /** on change row type one of ['text', 'file'] */
   onChangeRowType?: (type: ERowType) => void;
+
+  /** Table options */
+  options?: ITableOptions;
 }

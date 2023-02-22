@@ -1,70 +1,42 @@
-import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import _cloneDeep from 'lodash/cloneDeep';
-
-import { EHttpMethod, TId, EFirecampAgent } from '@firecamp/types';
-import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
-
-import { IPushPayload, IRestStore, useRestStore } from '../../../store';
+import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
+import { EHttpMethod } from '@firecamp/types';
+import _url from '@firecamp/url';
+import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
-
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  postComponents,
-  onSaveRequest = (pushAction: IPushPayload, tabId: string) => {},
-  platformContext,
-  onPasteCurl = (curl: string) => {},
-}) => {
-  const { EnvironmentWidget } = postComponents;
-
+const UrlBarContainer = ({ tabId }) => {
   const {
     url,
     method,
-    meta,
-    _meta,
-    activeEnvironments,
+    __meta,
+    __ref,
     isRequestRunning,
     isRequestSaved,
     context,
-
     changeUrl,
     changeMethod,
-
     execute,
-    changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
-
-    // pushAction,
-  } = useRestStore(
-    (s: IRestStore) => ({
+    setRequestFromCurl,
+    save,
+  } = useStore(
+    (s: IStore) => ({
       url: s.request.url,
       method: s.request.method,
-      meta: s.request.meta,
-      _meta: s.request._meta,
-      activeEnvironments: s.runtime.activeEnvironments,
+      __meta: s.request.__meta,
+      __ref: s.request.__ref,
       isRequestRunning: s.runtime.isRequestRunning,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
-
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
-
-      changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-      setPushActionEmpty: s.setPushActionEmpty,
-      // pushAction: s.pushAction,
+      setRequestFromCurl: s.setRequestFromCurl,
+      save: s.save,
     }),
     shallow
   );
-  /* useEffect(()=>{console.log({url});
-},[url]) */
-  // console.log({ pushAction })
 
   const _handleUrlChange = (e: {
     preventDefault: () => void;
@@ -72,113 +44,50 @@ const UrlBarContainer = ({
   }) => {
     e.preventDefault();
     const value = e.target.value;
+    if (value.startsWith('curl')) return;
 
     const urlObject = _url.updateByRaw({ ...url, raw: value });
-    // console.log(urlObject, "urlObject... in url bar")
+    // console.log(urlObject, 'urlObject... in url bar');
     changeUrl(urlObject);
   };
 
-  const _onPaste = (edt: any) => {
-    if (!edt) return;
-    const curl = edt.getValue();
-    if (curl) {
-      onPasteCurl(curl);
+  const _onPaste = (snippet: string, edt: any) => {
+    if (!snippet) return;
+    if (snippet?.trim().startsWith('curl')) {
+      setRequestFromCurl(snippet);
     }
   };
 
   const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
-      if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
-      }
-
-      // console.log({ pushPayload });
-      setPushActionEmpty();
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      save(tabId);
+    } catch (e) {
+      console.error(e);
     }
-  };
-
-  const _onChangeVariables = (variables: { workspace: {}; collection: {} }) => {
-    // console.log({ variables });
-
-    const workspaceUpdates = {
-      environmentId: activeEnvironments.workspace,
-      variables: variables.workspace,
-    };
-
-    const collectionUpdates = {
-      id: collectionId || '',
-      environmentId: activeEnvironments.collection,
-      variables: variables.collection,
-    };
-
-    platformContext.environment.setVariables(
-      workspaceUpdates,
-      collectionUpdates
-    );
   };
 
   const _onExecute = async () => {
     try {
-      // Do not execute if url is empty
-      if (!url.raw) return;
-
-      const envVariables = await platformContext.environment.getVariablesByTabId(
-        tab.id
-      );
-      // console.log({ envVariables });
-
-      const agent: EFirecampAgent = platformContext.getFirecampAgent();
-
-      execute(_cloneDeep(envVariables), agent, _onChangeVariables);
-    } catch (error) {
-      console.error({ API: 'rest._onExecute' });
-    }
+      execute();
+    } catch (error) {}
   };
-
-  // console.log({ activeEnvironments, collectionId });
-  // console.log({ isRequestSaved });
 
   return (
     <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`http-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
-      nodePath={meta.name}
+      nodePath={__meta.name}
       showEditIcon={isRequestSaved}
       onEditClick={() => {
-        context.appService.modals.openEditRequest({
-          name: meta.name,
-          description: meta.description,
-          collection_id: _meta.collection_id,
-          request_id: _meta.id,
+        context.app.modals.openEditRequest({
+          name: __meta.name,
+          description: __meta.description,
+          collectionId: __ref.collectionId,
+          requestId: __ref.id,
         });
       }}
     >
       <UrlBar.Prefix>
         <HttpMethodDropDown
-          id={tab.id}
+          id={tabId}
           dropdownOptions={methods}
           selectedOption={(method || '').toUpperCase()}
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
@@ -186,7 +95,7 @@ const UrlBarContainer = ({
       </UrlBar.Prefix>
       <UrlBar.Body>
         <Url
-          id={`url-${tab.id}`}
+          id={`url-${tabId}`}
           url={url?.raw || ''}
           placeholder={'http://'}
           onChangeURL={_handleUrlChange}
@@ -196,31 +105,19 @@ const UrlBarContainer = ({
       </UrlBar.Body>
       <UrlBar.Suffix>
         <Button
+          text={isRequestRunning === true ? `Cancel` : `Send`}
+          onClick={_onExecute}
           primary
           sm
-          onClick={_onExecute}
-          text={isRequestRunning === true ? `Stop` : `Send`}
         />
         <Button
-          id={`save-request-${tab.id}`}
+          id={`save-request-${tabId}`}
+          text="Save"
+          onClick={_onSave}
+          disabled={false}
           secondary
           sm
-          text="Save"
-          disabled={false}
-          onClick={_onSave}
         />
-
-        {/* <SavePopover                               
-          onFirstTimeSave={_onSave}
-          onSaveCallback={_onUpdate}
-          tabMeta={tab.meta}
-          tabId={tab.id}
-          meta={{
-            formTitle: 'Rest Request',
-            namePlaceholder: 'Title',
-            descPlaceholder: 'Description',
-          }}
-        /> */}
       </UrlBar.Suffix>
     </UrlBar>
   );

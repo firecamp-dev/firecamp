@@ -1,7 +1,5 @@
 import { IUrl, IQueryParam } from '@firecamp/types';
-
-// TODO: check for path params
-
+import { TStoreSlice } from '../store.type';
 interface IUrlSlice {
   changeUrl: (urlObj: any) => void;
   changeQueryParams: (queryParams: IQueryParam[]) => void;
@@ -11,8 +9,9 @@ const getPathFromUrl = (url: string) => {
   return url.split(/[?#]/)[0];
 };
 
-const createUrlSlice = (set, get): IUrlSlice => ({
+const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
   changeUrl: (urlObj: IUrl) => {
+    const state = get();
     const url = { raw: getPathFromUrl(urlObj.raw) };
     set((s) => {
       const { activePlayground } = s.runtime;
@@ -23,22 +22,20 @@ const createUrlSlice = (set, get): IUrlSlice => ({
         return c;
       });
       return {
-        ...s,
         request: { ...s.request, url, connections },
         runtime: { ...s.runtime, displayUrl: urlObj.raw },
       };
     });
-
-    // state.prepareUrlPushAction(lastUrl, updatedUrl);
+    state.equalityChecker({ url });
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
+    const state = get();
+    const url = { ...state.request.url, queryParams };
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
-        url: { ...s.request.url, queryParams },
+        url,
       },
-
       // manage ui state
       ui: {
         ...s.ui,
@@ -48,11 +45,7 @@ const createUrlSlice = (set, get): IUrlSlice => ({
         },
       },
     }));
-
-    // Prepare push action for url
-    get()?.prepareUrlPushAction(get()?.last?.request.url, {
-      queryParams: queryParams,
-    });
+    state.equalityChecker({ url });
   },
 });
 

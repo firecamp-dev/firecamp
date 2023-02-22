@@ -1,9 +1,10 @@
+import { useRef } from 'react';
+import cx from 'classnames';
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import { useRef } from 'react';
-import cx from 'classnames';
+import { EEditorLanguage } from '@firecamp/types';
 import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
@@ -14,22 +15,23 @@ import {
   TTableApi,
 } from '../primitive/table.interfaces';
 import { IBasicTable } from './BasicTable.interfaces';
+
 const _columns = [
   { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
-  { id: 'key', key: 'key', name: 'Key', width: '100px' },
-  { id: 'value', key: 'value', name: 'Value', width: '100px' },
+  { id: 'key', key: 'key', name: 'Key', width: '150px' },
+  { id: 'value', key: 'value', name: 'Value', width: '150px' },
   {
     id: 'description',
     key: 'description',
     name: 'Description',
-    width: '150px',
+    width: '100px',
     resizeWithContainer: true,
   },
   { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
 ];
 
 const BasicTable = ({
-  name = '',
+  title = '',
   rows = [],
   options = {},
   onChange = (rs: ITableRows) => {},
@@ -92,7 +94,9 @@ const BasicTable = ({
         return (
           <SingleLineEditor
             path={`${row.id}_${column.id}`}
-            language={'ife-header-key'}
+            language={
+              options?.languages?.[column.key] || EEditorLanguage.FcText
+            }
             className="without-border px-2"
             style={{
               position: 'absolute',
@@ -104,7 +108,9 @@ const BasicTable = ({
             type="text"
             value={cellValue}
             height={21}
-            onChange={(e: any) => onChange(column.key, e.target.value, e)}
+            onChange={(e) => {
+              onChange(column.key, e.target.value, e);
+            }}
             // loading={<>{cellValue}</>}
             // loading={
             //   <input

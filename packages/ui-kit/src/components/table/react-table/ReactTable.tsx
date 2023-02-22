@@ -10,12 +10,12 @@ import {
   useGlobalFilter,
   useAsyncDebounce
 } from 'react-table';
-import './ReactTable.sass';
-import { FixedSizeList } from 'react-window';
-import scrollbarWidth from './scrollbarWidth';
 import classnames from 'classnames';
 // A great library for fuzzy filtering/sorting items
 import { matchSorter } from 'match-sorter';
+import './ReactTable.sass';
+import { FixedSizeList } from 'react-window';
+import scrollbarWidth from './scrollbarWidth';
 
 import { IHeadLessTable, IReactTable } from "./ReactTable.interfaces"
 

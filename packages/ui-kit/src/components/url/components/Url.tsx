@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Column, Row, SingleLineEditor } from '@firecamp/ui-kit';
-import { IFELanguages } from '@firecamp/ui-kit/src/components/editors/monaco/lang/IFE.constants';
+import { EEditorLanguage } from '@firecamp/types';
 
 const Url: FC<IUrl> = ({
   id = '',
@@ -12,22 +12,22 @@ const Url: FC<IUrl> = ({
   autoFocus = true,
 }) => {
   return (
-    <Row className="fc-urlbar">
+    <Row className="">
       <Column flex={1}>
         <SingleLineEditor
           key={id}
           path={id}
           value={url}
-          language={IFELanguages.TEXT}
-          autoFocus={autoFocus}
-          placeholder={placeholder}
-          monacoOptions={{
-            fontSize: 16,
-            fontWeight: 600,
-          }}
-          className="without-border without-padding"
           height={21}
           type="text"
+          placeholder={placeholder}
+          language={EEditorLanguage.FcText}
+          autoFocus={autoFocus}
+          monacoOptions={{
+            fontSize: 16,
+            fontWeight: '500',
+          }}
+          className="without-border without-padding"
           onChange={onChangeURL}
           onEnter={onEnter}
           onPaste={onPaste}
@@ -59,7 +59,7 @@ interface IUrl {
   onEnter?: () => void;
 
   /** on paste */
-  onPaste?: (edt: any) => void;
+  onPaste?: (paste: string, edt: any) => void;
 
   /** auto focus url input*/
   autoFocus?: boolean;

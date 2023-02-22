@@ -2,19 +2,42 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
 import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
-import { ERestBodyTypes, IRest, IRestResponse } from '@firecamp/types';
-import { _array, _object, _table } from '@firecamp/utils';
+import {
+  EKeyValueTableRowType,
+  ERestBodyTypes,
+  IRest,
+  IRestResponse,
+} from '@firecamp/types';
+import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
-
 import parseBody from './helpers/body';
-import { IRestExecutor } from './types';
-export * from './script-runner';
+import { IRestExecutor, TVariableGroup } from './types';
+import * as scriptRunner from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
   private _controller: AbortController;
 
   constructor() {
     this._controller = new AbortController();
+    // note the request start time
+    axios.interceptors.request.use((request) => {
+      request['metadata'] = {
+        startTime: new Date(),
+      };
+      return request;
+    });
+
+    // note the request finished time
+    axios.interceptors.response.use((res) => {
+      res.config['metadata']['endTime'] = new Date();
+      res.config['metadata'] = {
+        ...res.config['metadata'],
+        get responseTime() {
+          return this.endTime - this.startTime;
+        },
+      };
+      return res;
+    });
   }
 
   private _timeline(
@@ -23,12 +46,7 @@ export default class RestExecutor implements IRestExecutor {
   ): string {
     const tl: string[] = [];
 
-    /**
-     * Return the key:value string
-     * @param object
-     * @param prefix
-     * @returns
-     */
+    /** return the key:value string */
     const objectToText = (object = {}, prefix: string) =>
       Object.keys(object).reduce(
         (prev, key) => `${prev + prefix + ' ' + key}:${object[key]}\n`,
@@ -37,50 +55,49 @@ export default class RestExecutor implements IRestExecutor {
 
     const { status, statusText, config, headers } = response;
 
-    tl.push('\n----------------General----------------\n');
+    tl.push('\n-----------   GENERAL  -----------\n');
     tl.push(`# Request URL:  ${config.url}`);
     tl.push(`# Request Method: ${config.method}`);
     tl.push(`# Status Code: ${status} ${statusText}`);
 
     if (!_object.isEmpty(request.headers || {})) {
-      tl.push('\n-----------Request Headers-----------\n');
+      tl.push('\n-----------   REQUEST HEADERS   -----------\n');
       tl.push(objectToText(request.headers, '>'));
     }
 
     if (typeof config.data === 'string') {
-      tl.push('\n-----------Request Data-----------\n');
+      tl.push('\n-----------   REQUEST DATA   -----------\n');
       tl.push(`> ${config.data}`);
     }
 
-    tl.push(`\n-----------Response Headers-----------\n`);
+    tl.push(`\n-----------   RESPONSE HEADERS   -----------\n`);
     tl.push(objectToText(headers, '<'));
 
     if (typeof response.data === 'string') {
-      tl.push('\n-----------Response Data-----------\n');
+      tl.push('\n-----------   RESPONSE DATA   -----------\n');
       tl.push(`> ${response.data}`);
     }
-
     return tl.join('\n');
   }
 
   private _normalizeResponse(axiosResponse: AxiosResponse): IRestResponse {
     return {
-      statusCode: axiosResponse.status,
-      statusMessage: axiosResponse.statusText,
-      data: axiosResponse.data,
-      headers: axiosResponse.headers,
-      //@ts-ignore
-      duration: axiosResponse?.config?.metadata?.duration || 0,
-      size: Number(axiosResponse?.headers?.['content-length']) || 0,
+      code: axiosResponse.status,
+      status: axiosResponse.statusText,
+      body: axiosResponse.data,
+      headers: _table.objectToTable(axiosResponse.headers || {}),
+      // @ts-ignore
+      responseTime: axiosResponse?.config?.metadata?.responseTime || 0,
+      responseSize: Number(axiosResponse?.headers?.['content-length']) || 0,
     };
   }
 
   /**
-   * Return axios request config generated from Firecamp REST request
+   * return axios request config generated from Firecamp REST request
    * @param request: IRest
    */
   private async _prepare(request: IRest): Promise<AxiosRequestConfig> {
-    const { __meta, body, config, headers, url } = request;
+    const { body, config, headers, url } = request;
 
     const axiosRequest: AxiosRequestConfig = {
       url: _url.normalize(url?.raw || '', ['http', 'https']),
@@ -90,15 +107,15 @@ export default class RestExecutor implements IRestExecutor {
       // TODO: Supported in browser
       httpsAgent: new HTTPS.Agent({ rejectUnauthorized: false }),
       signal: this._controller.signal,
-      timeout: config?.request_timeout,
-      maxRedirects: config?.max_redirects,
+      timeout: config?.requestTimeout,
+      maxRedirects: config?.maxRedirects,
       transformResponse: (response) => response,
     };
 
     // disable SSL validation default
     if (isNode) {
       axiosRequest.httpsAgent = new HTTPS.Agent({
-        rejectUnauthorized: config?.reject_unauthorized,
+        rejectUnauthorized: config?.rejectUnauthorized,
       });
     }
 
@@ -111,69 +128,184 @@ export default class RestExecutor implements IRestExecutor {
 
     // TODO: Check sending file without serialize in desktop environment
     // parse body payload
-    axiosRequest.data = await parseBody(
-      body || {},
-      __meta.activeBodyType || ERestBodyTypes.NoBody
-    );
-
+    if (body?.value) {
+      axiosRequest.data = await parseBody(body);
+    }
     return axiosRequest;
   }
 
-  async send(request: IRest): Promise<IRestResponse> {
-    let axiosRequest: AxiosRequestConfig = {};
-
-    try {
-      if (_object.isEmpty(request))
-        return Promise.reject(new Error('Invalid request payload'));
-
-      axiosRequest = await this._prepare(request);
-
-      // note the request start time
-      axios.interceptors.request.use((request) => {
-        request['metadata'] = {
-          startTime: new Date(),
-        };
-        return request;
-      });
-
-      // note the request finished time
-      axios.interceptors.response.use((res) => {
-        res.config['metadata']['endTime'] = new Date();
-        res.config['metadata'] = {
-          ...res.config['metadata'],
-          get duration() {
-            return this.endTime - this.startTime;
+  async send(
+    fcRequest: IRest,
+    variables: TVariableGroup
+  ) {
+    console.log(fcRequest, variables, 2000000);
+    if (_object.isEmpty(fcRequest)) {
+      const message: string = 'invalid request payload';
+      return Promise.resolve({
+        response: {
+          body: '',
+          code: 0,
+          error: {
+            message,
+            code: 'INVALID REQUEST',
+            e: new Error(message),
           },
-        };
-        return res;
+        },
+        variables,
       });
-
-      // execute request
-      const axiosResponse = await axios(axiosRequest);
-
-      // normalize response according to Firecamp REST request's response
-      const response = this._normalizeResponse(axiosResponse);
-
-      // prepare timeline of request execution
-      response['timeline'] = this._timeline(axiosRequest, axiosResponse);
-
-      return Promise.resolve(response);
-    } catch (error) {
-      console.error(error);
-      if (!_object.isEmpty(error.response)) {
-        const response = this._normalizeResponse(error.response);
-
-        if (!error?.response?.config && error?.config) {
-          error.response.config = error.config;
-        }
-
-        // prepare timeline of request execution
-        response['timeline'] = this._timeline(axiosRequest, error.response);
-
-        return Promise.reject(response);
-      }
-      return Promise.reject(error.message);
     }
+
+    /** run pre script */
+    // TODO: Inherit script
+    return scriptRunner
+      .preScript(fcRequest, variables)
+      .then(({ fc, error }) => {
+        // console.log(error.name, error.message);
+        const {
+          request: _request,
+          globals,
+          environment,
+          collectionVariables,
+        } = fc as any;
+        console.log(_request, '..._request');
+        if (_request) {
+          // merge script updated request with fc request
+          // TODO:  we can improve this later
+          fcRequest = { ...fcRequest, ..._request };
+        }
+        // console.log(fc, fcRequest, '__fc pre-request script response');
+        const errors: any[] = [];
+        if (error) {
+          errors.push({
+            type: 'pre-request',
+            error,
+          });
+        }
+        return {
+          fcRequest,
+          variables: { globals, environment, collectionVariables },
+          errors,
+        };
+      })
+      .then(({ fcRequest, variables, errors }) => {
+        // apply variables to request
+        const { globals, environment, collectionVariables } = variables;
+        const gVars = _env.preparePlainVarsFromRuntimeVariables(globals);
+        const eVars = _env.preparePlainVarsFromRuntimeVariables(environment);
+        const cVars =
+          _env.preparePlainVarsFromRuntimeVariables(collectionVariables);
+        const plainVars = { ...gVars, ...eVars, ...cVars };
+        // console.log(variables, plainVars, 77777);
+
+        /** if request body is multipart then
+         *  1. don't apply vars in whole request, it'll remove file object attached in form
+         *  2. instead apply vars in request except thee body
+         *  3. and then apply vars in body separately by taking care for file object in form (apply vars in each row)
+         */
+        if (fcRequest.body?.type == ERestBodyTypes.FormData) {
+          const { body, ...restRequest } = fcRequest;
+          //@ts-ignore ///TODO: check here to remove the type error
+          body.value = body.value.map((v) => {
+            const { file, ...row } = v;
+            v = _env.applyVariables(row, plainVars);
+            if (v.type == EKeyValueTableRowType.File) {
+              v.file = file;
+            }
+            return v;
+          });
+          const request = _env.applyVariables(restRequest, plainVars) as IRest;
+          return {
+            request: { ...request, body },
+            variables: variables,
+            errors,
+          };
+        } else {
+          const request = _env.applyVariables(fcRequest, plainVars) as IRest;
+          return { request, variables, errors };
+        }
+      })
+      .then(async ({ request, variables, errors }) => {
+        const axiosRequest: AxiosRequestConfig = await this._prepare(request);
+        try {
+          // execute request
+          const axiosResponse = await axios(axiosRequest);
+          // normalize response according to Firecamp REST request's response
+          const response = this._normalizeResponse(axiosResponse);
+          // prepare timeline of request execution
+          response.timeline = this._timeline(axiosRequest, axiosResponse);
+          return Promise.resolve({
+            response: { ...response },
+            variables,
+            errors,
+          });
+        } catch (e) {
+          console.error(e);
+          if (!_object.isEmpty(e.response)) {
+            const response = this._normalizeResponse(e.response);
+            if (!e.response?.config && e.config) e.response.config = e.config;
+            // prepare timeline of request execution
+            response.timeline = this._timeline(axiosRequest, e.response);
+            return Promise.resolve({
+              response: {
+                ...response,
+                error: {
+                  message: e.message,
+                  code: e.code,
+                  e,
+                },
+              },
+              variables,
+              errors,
+            });
+          }
+          return Promise.resolve({
+            response: {
+              body: '',
+              code: 0,
+              error: {
+                message: e.message,
+                code: e.code,
+                e,
+              },
+            },
+            variables,
+            errors,
+          });
+        }
+      })
+      .then(async ({ response, variables, errors }) => {
+        /** run post-script */
+        // TODO: add inherit support
+        const { fc, error } = await scriptRunner.testScript(
+          fcRequest,
+          response,
+          variables
+        );
+        const {
+          response: _response = {},
+          globals,
+          environment,
+          collectionVariables,
+          testResult,
+        } = fc as any;
+        // merge post script response with actual response
+        if (fc?.response) {
+          response = { ...response, ..._response };
+        }
+        if (error) {
+          errors.push({
+            type: 'test',
+            error,
+          });
+        }
+        console.log(errors, 'scriptErrors...');
+        return {
+          response,
+          variables: { globals, environment, collectionVariables },
+          testResult,
+          scriptErrors: errors,
+        };
+      });
   }
 
   cancel() {

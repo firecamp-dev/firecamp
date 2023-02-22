@@ -1,74 +1,29 @@
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
+import { Url, UrlBar, Button, Dropdown } from '@firecamp/ui-kit';
+import ConnectionButton from '../connection/ConnectButton';
+import { SIOVersionOptions } from '../../../constants';
+import { IStore, useStore } from '../../../store';
+import { FC, useState } from 'react';
 
-import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
-import { VERSIONS } from '../../../constants/index';
-
-import { IPushPayload, ISocketStore, useSocketStore } from '../../../store';
-import { TId } from '@firecamp/types';
-import ConnectionButton from '../connection/ConnectButton'
-
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  postComponents,
-  onSaveRequest = (pushAction, tabId: string) => {},
-  platformContext,
-}) => {
-  const { EnvironmentWidget } = postComponents;
-
-  const {
-    url,
-    displayUrl,
-    version,
-    activeEnvironments,
-    isRequestSaved,
-
-    changeUrl,
-    changeConfig,
-    changeActiveEnvironment,
-    prepareRequestInsertPushPayload,
-    prepareRequestUpdatePushPayload,
-    setPushActionEmpty,
-  } = useSocketStore(
-    (s: ISocketStore) => ({
+const UrlBarContainer = ({ tab }) => {
+  const { url, displayUrl, version, changeUrl, changeConfig, save } = useStore(
+    (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
-      activeEnvironments: s.runtime.activeEnvironments,
-      isRequestSaved: s.runtime.isRequestSaved,
-
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
-      changeActiveEnvironment: s.changeActiveEnvironment,
-      prepareRequestInsertPushPayload: s.prepareRequestInsertPushPayload,
-      prepareRequestUpdatePushPayload: s.prepareRequestUpdatePushPayload,
-      setPushActionEmpty: s.setPushActionEmpty,
-
-      // pushAction: s.pushAction,
+      save: s.save,
     }),
     shallow
   );
-  // console.log({pushAction});
 
   const _onSave = async () => {
     try {
-      let pushPayload: IPushPayload;
-      if (!isRequestSaved) {
-        pushPayload = await prepareRequestInsertPushPayload();
-      } else {
-        pushPayload = await prepareRequestUpdatePushPayload();
-      }
-
-      // console.log({ pushPayload });
-      setPushActionEmpty();
-
-      onSaveRequest(pushPayload, tab.id);
-    } catch (error) {
-      console.error({
-        API: 'insert.rest',
-        error,
-      });
+      save(tab.id);
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -93,31 +48,13 @@ const UrlBarContainer = ({
   }
 
   return (
-    <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`socket-io-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
-      nodePath={''}
-    >
+    <UrlBar nodePath={''}>
       <UrlBar.Prefix>
-        <HttpMethodDropDown
+        <SIOVersionDropDown
           id={tab.id}
-          dropdownOptions={VERSIONS}
-          selectedOption={version}
-          toolTip={versionToolTip}
-          onSelectItem={(version) => changeConfig('version', version)}
+          options={SIOVersionOptions}
+          selectedOption={SIOVersionOptions.find((v) => v.version == version)}
+          onSelectItem={(v) => changeConfig('version', v.version)}
         />
       </UrlBar.Prefix>
       <UrlBar.Body>
@@ -144,3 +81,27 @@ const UrlBarContainer = ({
 };
 
 export default UrlBarContainer;
+
+const SIOVersionDropDown: FC<any> = ({
+  id = '',
+  className = '',
+  options = [{ name: '', version: '' }],
+  selectedOption = { name: '', version: '' },
+  onSelectItem = (option) => {},
+}) => {
+  const [isDropDownOpen, toggleDropDown] = useState(false);
+  return (
+    <Dropdown
+      id={id}
+      className={className}
+      isOpen={isDropDownOpen}
+      selected={selectedOption}
+      onToggle={toggleDropDown}
+    >
+      <Dropdown.Handler>
+        <Button text={selectedOption.name} secondary withCaret sm />
+      </Dropdown.Handler>
+      <Dropdown.Options options={options} onSelect={(o) => onSelectItem(o)} />
+    </Dropdown>
+  );
+};

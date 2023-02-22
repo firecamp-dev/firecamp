@@ -2,7 +2,7 @@ import { Container, TabHeader, CheckboxInGrid, Input } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 import OnConnectListeners from './OnConnectListeners';
-import { useSocketStore } from '../../store';
+import { useStore } from '../../store';
 
 const INPUT_TYPES = {
   text: 'text',
@@ -23,7 +23,7 @@ let config_inputs = [
     type: INPUT_TYPES.boolean,
     labelFor: 'Reject unauthorized',
     label: 'Reject unauthorized',
-    isDisabled: _misc.firecampAgent() !== EFirecampAgent.desktop,
+    isDisabled: _misc.firecampAgent() !== EFirecampAgent.Desktop,
   },
   {
     name: 'timeout',
@@ -62,7 +62,7 @@ let config_inputs = [
 ];
 
 const Config = ({ config = {}, listeners = [] }) => {
-  let { config, changeConfig } = useSocketStore((s) => ({
+  let { config, changeConfig } = useStore((s) => ({
     config: s.request.config,
     changeConfig: s.changeConfig,
   }));
@@ -145,7 +145,7 @@ const Config = ({ config = {}, listeners = [] }) => {
             disabled={isDisabled}
             onToggleCheck={() => _onChange(name, !config[name])}
             note={
-              _misc.firecampAgent() !== EFirecampAgent.desktop &&
+              _misc.firecampAgent() !== EFirecampAgent.Desktop &&
               name === 'rejectUnauthorized'
                 ? 'Desktop only feature'
                 : ''

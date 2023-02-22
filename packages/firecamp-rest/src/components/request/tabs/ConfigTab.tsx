@@ -1,14 +1,13 @@
 import shallow from 'zustand/shallow';
-
 import { Container, CheckboxInGrid, Input } from '@firecamp/ui-kit';
-import { useRestStore } from '../../../store';
+import { useStore } from '../../../store';
 import { ERestConfigKeys } from '../../../types';
 
 const { MaxRedirects, FollowLocation, RejectUnauthorized, RequestTimeout } =
   ERestConfigKeys;
 
 const ConfigTab = () => {
-  let [config, changeConfig] = useRestStore(
+  const [config, changeConfig] = useStore(
     (s: any) => [s.request.config, s.changeConfig],
     shallow
   );

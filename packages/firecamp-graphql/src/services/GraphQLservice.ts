@@ -54,9 +54,11 @@ export default function getQueryFacts(schema, documentStr) {
     operationList.push(def);
     operations.push({
       name: def.name ? def.name.value : undefined,
-      body: print(def),
-      meta: {
+      value: {
+        query: print(def),
         variables: def.variables,
+      },
+      __meta: {
         variableToType: def.variableToType,
         type: def.operation || 'query',
       },
@@ -70,15 +72,14 @@ export default function getQueryFacts(schema, documentStr) {
   };
 }
 
-export const isValid = async (queryStr: string): Promise<boolean>=> {
+export const isValid = async (queryStr: string): Promise<boolean> => {
   try {
     parse(queryStr);
     return Promise.resolve(true);
-  }
-  catch(e) {
+  } catch (e) {
     return Promise.resolve(false);
   }
-}
+};
 
 export const getOperations = (queryStr: string) => {
   if (!queryStr) {
@@ -130,7 +131,7 @@ export const getPlaygroundName = (value: string) => {
 /**
  * Get current operation from the editor cursor position or from given default query
  * @param editor
- * @param defaultOperation  { name, meta:{type}}
+ * @param defaultOperation  { name, __meta:{type}}
  * @returns {*}
  */
 export const getCurrentOperation = (editor, defaultOperation) => {
@@ -152,7 +153,7 @@ export const getCurrentOperation = (editor, defaultOperation) => {
     currentOperation = operations.find((o) => {
       //Todo: later we change it, Here if empty query started with only { company }, then we're considering q_typw="Q" and name="Query"
       return (
-        o.operation == mapping[defaultOperation.meta.type] &&
+        o.operation == mapping[defaultOperation.__meta.type] &&
         ((o.name || {}).value || 'Query') == defaultOperation.name
       );
     });
@@ -229,5 +230,6 @@ export const prettifyQueryString = (value: string) => {
     return query;
   } catch (e) {
     console.log(`e`, e);
+    return value;
   }
 };

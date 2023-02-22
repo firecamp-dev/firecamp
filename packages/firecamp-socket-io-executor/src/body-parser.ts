@@ -68,7 +68,7 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
     for await (const arg of args) {
       if (typeof arg !== 'undefined') {
         if (
-          _misc.firecampAgent() === EFirecampAgent.desktop &&
+          _misc.firecampAgent() == EFirecampAgent.Desktop &&
           Buffer.isBuffer(arg) &&
           arg.length > 0
         ) {

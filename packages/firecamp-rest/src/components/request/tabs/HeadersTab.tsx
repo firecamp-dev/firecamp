@@ -1,15 +1,14 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
-
-import {  BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
-
-import { useRestStore } from '../../../store';
+import { EEditorLanguage } from '@firecamp/types';
+import { BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
+import { IStore, useStore } from '../../../store';
 
 const HeadersTab = () => {
-  let { headers, auth_headers, changeHeaders } = useRestStore(
-    (s: any) => ({
+  const { headers, authHeaders, changeHeaders } = useStore(
+    (s: IStore) => ({
       headers: s.request.headers,
-      auth_headers: s.runtime.auth_headers,
+      authHeaders: s.runtime.authHeaders,
       changeHeaders: s.changeHeaders,
     }),
     shallow
@@ -19,7 +18,7 @@ const HeadersTab = () => {
     console.log('1. re-rendering the header tabs');
   }, [headers]);
 
-  let onHeaderChange = (headers) => {
+  const onHeaderChange = (headers) => {
     changeHeaders(headers);
   };
 
@@ -30,40 +29,30 @@ const HeadersTab = () => {
           key={'headers'}
           rows={headers}
           title="Headers"
-          onChange={(data) => onHeaderChange(data)}
-          onMount={() => {}}
-          meta={{
-            mode: {
-              key: 'ife-header-key',
-              value: 'ife-header-value',
+          options={{
+            languages: {
+              key: EEditorLanguage.HeaderKey,
+              value: EEditorLanguage.HeaderValue,
             },
           }}
+          onChange={(data) => onHeaderChange(data)}
+          onMount={() => {}}
         />
-        {/* <SingleLineEditor type="text" path="a" value="123" />
-        <SingleLineEditor type="text" path="b" value="qwqe" />
-        <SingleLineEditor type="text" path="c" value="66666666" />
-        <SingleLineEditor type="text" path="d" value="fgfgfg" />
-        <SingleLineEditor type="text" path="e" value="tytytyty" />
-        <SingleLineEditor type="text" path="f" value="bbbb" /> */}
-
-        {/* <BasicTable resizable={true} /> */}
 
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
-          auth_headers && auth_headers.length ? (
+          authHeaders && authHeaders.length ? (
             <div className="pt-14">
               <BasicTable
-                key={'auth_headers'}
-                rows={auth_headers}
+                key={'authHeaders'}
+                rows={authHeaders}
                 title="Headers derived from auth"
                 disable={true}
                 options={{
-                  mode: {
-                    key: 'ife-header-key',
-                    value: 'ife-header-value',
+                  languages: {
+                    key: EEditorLanguage.HeaderKey,
+                    value: EEditorLanguage.HeaderValue,
                   },
-                  language: 'ife-header-key',
-                  allowDescription: false,
                 }}
               />
             </div>

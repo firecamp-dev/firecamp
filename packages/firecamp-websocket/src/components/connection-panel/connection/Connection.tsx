@@ -1,15 +1,14 @@
 import { useState, useEffect, memo } from 'react';
+import classnames from 'classnames';
+import shallow from 'zustand/shallow';
 import {
   Container,
   Column,
   Resizable,
   Row,
-  // SecondaryTab,
   TabHeader,
   Tabs,
 } from '@firecamp/ui-kit';
-import classnames from 'classnames';
-import shallow from 'zustand/shallow';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 
@@ -19,33 +18,31 @@ import ParamsTab from './ParamsTab';
 
 import PlaygroundTab from './PlaygroundTab';
 import Logs from '../logs/Logs';
-import ConnectButton from '../../common/connection/ConnectButton';
-import { EPanel } from '../../../types';
-import { IWebsocketStore, useWebsocketStore } from '../../../store';
+import { IStore, useStore } from '../../../store';
 
 const bodyTabs = [
-  // {
-  //   id: 'config',
-  //   name: 'Config',
-  // },
-  {
-    id: 'params',
-    name: 'Params',
-  },
   {
     id: 'playground',
     name: 'Playground',
   },
+  {
+    id: 'params',
+    name: 'Params',
+  },
+  // {
+  //   id: 'config',
+  //   name: 'Config',
+  // },
 ];
 
-const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
+const ConnectionTab = () => {
   const {
     activePlayground,
     connections,
     updateConnection,
     changeConQueryParams,
-  } = useWebsocketStore(
-    (s: IWebsocketStore) => ({
+  } = useStore(
+    (s: IStore) => ({
       activePlayground: s.runtime.activePlayground,
       connections: s.request.connections,
       updateConnection: s.updateConnection,
@@ -57,7 +54,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
   const [activeBodyTab, onSelectBodyTab] = useState('playground');
 
   useEffect(() => {
-    if (_misc.firecampAgent() === EFirecampAgent.desktop) {
+    if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       bodyTabs.push({
         id: 'headers',
         name: 'Headers',
@@ -111,7 +108,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
     }
   };
 
-
   return (
     <Row flex={1} overflow="auto" className=" with-divider h-full">
       <Column className="h-full">
@@ -124,7 +120,6 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
                 list={bodyTabs || []}
                 activeTab={activeBodyTab || ''}
                 onSelect={onSelectBodyTab}
-                additionalComponent={<ConnectButton />}
               />
             </TabHeader>
           </Container.Header>
@@ -138,7 +133,7 @@ const ConnectionTab = ({ tabData = {}, visiblePanel = '' }) => {
         minWidth="20%"
         left={true}
         className={classnames({
-          'fc-collapsed': visiblePanel === EPanel.Response,
+          'fc-collapsed': false,
         })}
       >
         <Logs key={activePlayground} />

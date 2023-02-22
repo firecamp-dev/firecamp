@@ -1,68 +1,101 @@
 import { useState } from 'react';
-import {
-  Button,
- 
-  
-  Dropdown,
-  StatusBar,
-  ToolBar
-} from '@firecamp/ui-kit';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-
-import SavePlayground from './SavePlayground';
+import { Button, Dropdown, StatusBar, ToolBar } from '@firecamp/ui-kit';
 import EditPlaygroundName from './EditPlaygroundName';
-
-import { useGraphQLStore } from '../../../../../store';
+import { IStore, useStore } from '../../../../../store';
 import { isValid } from '../../../../../services/GraphQLservice';
 
 const ReqStatusBar = ({}) => {
-  let {
+  const {
     context,
+    isRequestSaved,
     playground,
     playgroundMeta,
     undoPlaygroundChanges,
     updateItem,
     setPlaygroundOperation,
     execute,
-  } = useGraphQLStore(
-    (s: any) => ({
+    getPlgNameSuggestion,
+    savePlg,
+  } = useStore(
+    (s: IStore) => ({
       context: s.context,
+      isRequestSaved: s.runtime.isRequestSaved,
       playground: s.playgrounds[s.runtime.activePlayground],
       playgroundMeta: s.runtime.playgroundsMeta[s.runtime.activePlayground],
       undoPlaygroundChanges: s.undoPlaygroundChanges,
       updateItem: s.updateItem,
       setPlaygroundOperation: s.setPlaygroundOperation,
       execute: s.execute,
+      getPlgNameSuggestion: s.prepareRuntimeActivePlgName,
+      savePlg: s.addItem,
     }),
     shallow
   );
   const [isOpen, toggleOpen] = useState(false);
 
-  const plgOperations = playgroundMeta.operationNames.map((n) => ({ name: n })); //[{ name: 'MyCompany', meta: { type: 'q' } }];
-  const currentOps = playgroundMeta.activeOperation? { name: playgroundMeta.activeOperation }: plgOperations[0];
+  const plgOperations = playgroundMeta.operationNames.map((n) => ({ name: n })); //[{ name: 'MyCompany', __meta: { type: 'q' } }];
+  const currentOps = playgroundMeta.activeOperation
+    ? { name: playgroundMeta.activeOperation }
+    : plgOperations[0];
 
-  const onSelectOperation = (operation: { name: string}) => {
-    setPlaygroundOperation(operation.name, playground.request._meta.id);
+  const onSelectOperation = (operation: { name: string }) => {
+    setPlaygroundOperation(operation.name, playground.request.__ref.id);
   };
 
-  const savePlg = async() => {
-    const isQueryValid = await isValid(playground.request.body);
-    if(isQueryValid == false) {
-      context.appService.notify.alert("The playground query is not valid.")
+  const _savePlg = async () => {
+    if (!isRequestSaved) {
+      context.app.notify.info('Please save the graphql request first.');
       return;
     }
-    execute(currentOps.name, playground.request.body, playground.request.meta.variables);
+    const isQueryValid = await isValid(playground.request.value.query);
+    if (isQueryValid == false) {
+      context.app.notify.alert('The playground query is not valid.');
+      return;
+    }
+    const plgName = getPlgNameSuggestion();
+    context.window
+      .promptInput({
+        header: 'SAVE PLAYGROUND',
+        value: plgName,
+        validator: (value) => {
+          const name = value.trim();
+          if (!name) {
+            return {
+              isValid: false,
+              message: 'The playground name is required',
+            };
+          } else if (name?.length <= 3) {
+            return {
+              isValid: false,
+              message: 'The playground name must have minimum 3 characters',
+            };
+          } else {
+            return { isValid: true, message: '' };
+          }
+        },
+        executor: (plgName) => {
+          return savePlg(plgName);
+        },
+      })
+      .then((res) => {
+        // console.log(res)
+      });
   };
 
   const _execute = async () => {
-    const isQueryValid = await isValid(playground.request.body);
-    console.log(isQueryValid, "isQueryValid...")
-    if(isQueryValid == false) {
-      context.appService.notify.alert("The playground query is not valid.")
+    const isQueryValid = await isValid(playground.request.value.query);
+    console.log(isQueryValid, 'isQueryValid...');
+    if (isQueryValid == false) {
+      context.app.notify.alert('The playground query is not valid.');
       return;
     }
-    execute(currentOps.name, playground.request.body, playground.request.meta.variables);
+    execute(
+      currentOps.name,
+      playground.request.value.query,
+      playground.request.value.variables
+    );
   };
 
   return (
@@ -73,9 +106,8 @@ const ReqStatusBar = ({}) => {
           {/* root */}
           {/* <VscChevronRight /> */}
           ./{playground.request.name}
-          
           <ToolBar className="ml-2 visible">
-              { playgroundMeta.isSaved? <EditPlaygroundName/>: <></> }
+            {playgroundMeta.isSaved ? <EditPlaygroundName /> : <></>}
           </ToolBar>
         </div>
         <div className="flex ml-auto mr-1">
@@ -118,29 +150,41 @@ const ReqStatusBar = ({}) => {
             <>
               <Button
                 text="Undo changes"
-                secondary
-                xs
-                ghost={true}
-                transparent={true}
                 className="!border-0 hover:!bg-focus2"
                 onClick={() =>
-                  undoPlaygroundChanges(playground.request?._meta.id)
+                  undoPlaygroundChanges(playground.request?.__ref.id)
                 }
+                secondary
+                transparent
+                ghost
+                xs
               />
               <Button
                 text="Save changes"
-                secondary
-                xs
-                ghost={true}
-                transparent={true}
                 className="!border-0 hover:!bg-focus2"
-                onClick={updateItem}
+                onClick={(e) => updateItem()}
+                secondary
+                transparent
+                ghost
+                xs
               />
             </>
           ) : (
             <></>
           )}
-          {!playgroundMeta.isSaved ? <SavePlayground isOpen={false} /> : <></>}
+          {!playgroundMeta.isSaved ? (
+            <Button
+              text="Save playground"
+              className="!border-0 hover:!bg-focus2"
+              onClick={_savePlg}
+              transparent
+              secondary
+              ghost
+              xs
+            />
+          ) : (
+            <></>
+          )}
         </StatusBar.SecondaryRegion>
       </StatusBar>
     </>

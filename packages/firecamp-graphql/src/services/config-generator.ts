@@ -1,10 +1,11 @@
-// @ts-nocheck
 import { getIntrospectionQuery } from 'graphql';
 
 import {
   BodyParser,
   ConfigGenerator as _ConfigGenerator,
+  //@ts-ignore
 } from '@firecamp/rest/src/services';
+import { IRestResponse } from '@firecamp/types';
 
 const configGenerator = new _ConfigGenerator();
 const bodyParser = new BodyParser();
@@ -44,20 +45,17 @@ export default class ConfigGenerator {
       ],
       body: {
         type: 'application/json',
-        'application/json': {
-          type: 'application/json',
-          value: JSON.stringify({ query: getIntrospectionQuery() }),
-        },
+        value: JSON.stringify({ query: getIntrospectionQuery() }),
       },
       withCredentials: false,
       config: {
-        ORIGIN: '',
-        USERAGENT: '',
-        TIMEOUT_MS: 0,
-        REJECT_UNAUTHORIZED: false,
-        FOLLOWLOCATION: true,
-        MAXREDIRS: -1,
-        HTTP_VERSION: 'V2Tls',
+        origin: '',
+        useragent: '',
+        timeoutMs: 0,
+        rejectUnauthorized: false,
+        followLocation: true,
+        maxRedirs: -1,
+        httpVersion: 'V2Tls',
       },
     };
 
@@ -91,15 +89,15 @@ export default class ConfigGenerator {
     return httpRequestData;
   }
 
-  prepareResponse(response = {}) {
-    response.data = bodyParser.parseResponseBody(response.data);
+  prepareResponse(response: IRestResponse = {}) {
+    response.body = bodyParser.parseResponseBody(response.body);
 
     return {
-      data: response.data || '',
-      duration: response.duration || 0,
-      size: response.size || '',
+      body: response.body || '',
+      responseTime: response.responseTime || 0,
+      responseSize: response.responseSize || '',
       status: response.status || 0,
-      headers: response.headers || {},
+      headers: response.headers || [],
       cookies: response.cookies || [],
       error: response.error || '',
       timeline: response.timeline || '',
