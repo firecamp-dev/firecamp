@@ -6,7 +6,6 @@ import { EEnvironmentScope } from '@firecamp/types';
 import {
   Container,
   ProgressBar,
-  TabHeader,
   Pane,
   ToolBar,
 } from '@firecamp/ui-kit';
@@ -15,17 +14,12 @@ import treeRenderer_ from './tree_/itemRenderer';
 import platformContext from '../../../../services/platform-context';
 import { useWorkspaceStore } from '../../../../store/workspace';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
-import { platformEmitter } from '../../../../services/platform-emitter';
-import { EPlatformTabs } from '../../../../services/platform-emitter/events';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { ETabEntityTypes } from '../../../tabs/types';
 import { useTabStore } from '../../../../store/tab';
 
 const EnvironmentSidebar: FC<any> = () => {
-  const treeRef = useRef();
-  const {
-    explorer: { collections },
-  } = useWorkspaceStore((s) => ({ explorer: s.explorer }), shallow);
+
   const { envs } = useEnvStore.getState();
   const openCreateWrsEnv = (wrsId: string) => {
     platformContext.app.modals.openCreateEnvironment({
@@ -77,7 +71,7 @@ const EnvironmentCollection = () => {
   }, []);
   const openEnv = (env) => {
     openTab(
-      { ...env },
+      env,
       { id: env.__ref.id, type: ETabEntityTypes.Environment }
     );
   };

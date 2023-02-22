@@ -16,6 +16,8 @@ import platformContext from '../services/platform-context';
 import { useWorkspaceStore } from './workspace';
 import { RE } from '../types';
 import { envService, EmptyEnv } from '../services/env.service';
+import { useTabStore } from './tab';
+import { ETabEntityTypes } from '../components/tabs/types';
 
 const initialState = {
   activeEnvId: null,
@@ -257,8 +259,10 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
           );
         },
       })
-      .then((res) => {
-        console.log(res, 1111);
+      .then((env) => {
+        const { open: openTab } = useTabStore.getState();
+        openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
+        // console.log(env, 1111);
       });
   },
 
