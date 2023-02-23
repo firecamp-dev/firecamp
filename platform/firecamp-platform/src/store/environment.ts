@@ -85,6 +85,7 @@ export interface IEnvironmentStore {
   createEnvironment: (env: IEnv) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
   deleteEnvironment: (envId: TId) => Promise<any>;
+  deleteEnvironmentPrompt: (env: IEnv | IRuntimeEnv) => Promise<any>;
 
   _updateEnvironment: (envId: TId, env: Partial<IEnv>) => Promise<IEnv>;
 
@@ -164,14 +165,14 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
 
   setActiveEnv: (envId) => {
     const { applyVariablesToPlatform } = get();
-    const setNoEnvironment = () =>
+    const setNoEnvironment = () => {
       set({
         activeEnvId: null,
         activeEnv: _cloneDeep(EmptyEnv),
       });
-
+    };
     if (window?.localStorage) {
-      localStorage.setItem('activeEnv', envId);
+      localStorage.setItem('activeEnv', envId || ''); //if null then it'll save string 'null' thus put empty ''
     }
 
     Promise.resolve(envId)
@@ -343,6 +344,47 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       });
   },
 
+  deleteEnvironmentPrompt: (env: IEnv | IRuntimeEnv) => {
+    const state = get();
+    return platformContext.window
+      .promptInput({
+        header: 'Delete Environment',
+        label: `Please enter the name \`${env.name}\``,
+        placeholder: '',
+        texts: { btnOk: 'Delete', btnOking: 'Deleting...' },
+        value: '',
+        executor: (name) => {
+          if (name === env.name) {
+            return platformContext.environment.delete(env.__ref.id);
+          } else {
+            return Promise.reject(
+              new Error('The environment name is not matching.')
+            );
+          }
+        },
+        onError: (e) => {
+          platformContext.app.notify.alert(
+            e?.response?.data?.message || e.message
+          );
+        },
+      })
+      .then((res) => {
+        platformContext.app.notify.success(
+          'The environment has been deleted successfully'
+        );
+        if (window?.localStorage) {
+          window.localStorage.removeItem(`env/${env.__ref.id}`);
+        }
+
+        // if deleted env is active env then set "no environment"
+        if (state.activeEnv?.__ref.id == env.__ref.id) {
+          state.setActiveEnv(null);
+        }
+        state._deleteEnv(env.__ref.id);
+        return res;
+      });
+  },
+
   _updateEnvironment: async (envId: TId, body: Partial<IEnv>) => {
     const state = get();
     state.toggleProgressBar(true);
@@ -397,7 +439,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       return e.__ref.id != envId;
     });
     set((s) => {
-      // s.envTdpInstance?.removeEnvItem(env);
+      s.envTdpInstance?.removeEnvItem(envId);
       return { environments: [...envs] };
     });
   },

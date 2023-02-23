@@ -6,7 +6,6 @@ import { _object } from '@firecamp/utils';
 import { ETabEntityTypes, IEntityTab } from '../components/tabs/types';
 import { platformEmitter } from '../services/platform-emitter';
 import { EPlatformTabs } from '../services/platform-emitter/events';
-import PreComp from '../components/tabs/header/PreComp';
 
 const initialState = {
   list: {},
@@ -93,6 +92,7 @@ const useTabStore = create<ITabStore>((set, get) => {
             : s.activeTab;
 
         delete s.list[tabId];
+        platformEmitter.emit(EPlatformTabs.Closed, tabId);
         return {
           list: { ...s.list },
           activeTab,

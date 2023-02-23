@@ -1,14 +1,10 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
+import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
 import { Notes, Button } from '@firecamp/ui-kit';
 import { EEnvironmentScope } from '@firecamp/types';
-import {
-  Container,
-  ProgressBar,
-  Pane,
-  ToolBar,
-} from '@firecamp/ui-kit';
+import { Container, ProgressBar, Pane, ToolBar } from '@firecamp/ui-kit';
 import treeRenderer from './tree/itemRenderer';
 import treeRenderer_ from './tree_/itemRenderer';
 import platformContext from '../../../../services/platform-context';
@@ -19,7 +15,6 @@ import { ETabEntityTypes } from '../../../tabs/types';
 import { useTabStore } from '../../../../store/tab';
 
 const EnvironmentSidebar: FC<any> = () => {
-
   const { envs } = useEnvStore.getState();
   const openCreateWrsEnv = (wrsId: string) => {
     platformContext.app.modals.openCreateEnvironment({
@@ -58,11 +53,12 @@ const ProgressBarContainer = () => {
 const EnvironmentCollection = () => {
   const treeRef = useRef();
   const { open: openTab } = useTabStore.getState();
-  const { envTdpInstance, registerTDP, unRegisterTDP } = useEnvStore(
+  const { envTdpInstance, registerTDP, unRegisterTDP, createEnv } = useEnvStore(
     (s: IEnvironmentStore) => ({
       envTdpInstance: s.envTdpInstance,
       registerTDP: s.registerTDP_,
       unRegisterTDP: s.unRegisterTDP_,
+      createEnv: s.createEnvironmentPrompt,
     })
   );
   useEffect(() => {
@@ -70,10 +66,7 @@ const EnvironmentCollection = () => {
     return () => unRegisterTDP();
   }, []);
   const openEnv = (env) => {
-    openTab(
-      env,
-      { id: env.__ref.id, type: ETabEntityTypes.Environment }
-    );
+    openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
   };
   const openCreateColEnv = () => {};
   const deleteEnv = () => {};
@@ -89,12 +82,13 @@ const EnvironmentCollection = () => {
       headerActionRenderer={() => {
         return (
           <ToolBar>
-            {/* <div>
-            <VscRefresh className="cursor-pointer" size={16} onClick={()=> {}}/>
-          </div>
-          <div>
-            <VscNewFolder className="cursor-pointer" size={16} onClick={()=>{}}/>
-          </div> */}
+            <div>
+              <VscAdd
+                className="cursor-pointer"
+                size={16}
+                onClick={() => createEnv()}
+              />
+            </div>
           </ToolBar>
         );
       }}
