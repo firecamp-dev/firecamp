@@ -7,7 +7,7 @@ import { IEditor } from './Editor.interface';
 
 type TSLEditor = {
   name?: string;
-  type: 'text' | 'number';
+  type: 'strin' | 'number';
   loading?: ReactNode;
   style?: object;
 };

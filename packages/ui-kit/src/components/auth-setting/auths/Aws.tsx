@@ -1,38 +1,24 @@
-import { FC, useReducer } from 'react';
+import { FC, useState } from 'react';
 import { Input } from '@firecamp/ui-kit';
-import { IAuthAws4, EAuthTypes } from '@firecamp/types';
-import { authUiFormState } from './constants';
+import { IAuthAws4, EAuthTypes, TPlainObject } from '@firecamp/types';
+import { authUiFormState } from '../constants';
+import { setInputType } from '../service';
 
 const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
   const { Aws4 } = EAuthTypes;
   const inputList = authUiFormState[Aws4].inputList;
   const advancedInputList = authUiFormState[Aws4].advancedInputList;
 
-  let isDirtyState = {};
-  (inputList || []).map((e) => {
-    isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
-  });
-
-  const _setDirty = (
-    state: any,
-    action: { type: any; element: any; value: any }
-  ) => {
-    switch (action.type) {
-      case 'setDirty':
-        return {
-          ...state,
-          [action.element]: action.value,
-        };
-    }
-  };
-  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
+    inputList.reduce((p, n) => {
+      return { ...p, [n.id]: false };
+    }, {})
+  );
 
   const _handleChange = (e: any, id: string) => {
     e.preventDefault();
     const value = e.target.value;
-    if (((inputList || []).map((e) => e.id) || []).includes(id)) {
-      setIsDirty({ type: 'setDirty', element: id, value: true });
-    }
+    setDirtyInputs((s) => ({ ...s, [id]: true }));
     onChange(Aws4, { key: id, value });
   };
 
@@ -42,9 +28,12 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
 
   return (
     <form className="fc-form grid" onSubmit={_handleSubmit}>
-      {(inputList || []).map((input, i) => {
+      {inputList.map((input, i) => {
         let errorMsg = '';
-        if (isDirty[input.id] && !auth?.[input.id as keyof IAuthAws4]?.length) {
+        if (
+          dirtyInputs[input.id] &&
+          !auth?.[input.id as keyof IAuthAws4]?.length
+        ) {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
@@ -52,25 +41,13 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
             key={i}
             autoFocus={i === 0}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
             value={auth?.[input.id as keyof IAuthAws4] || ''}
             error={errorMsg}
-            /* style={{
-            borderColor:
-              isDirty[input.id] && errorMsg
-                ? 'red'
-                : isDirty[input.id] && 'green',
-          }} */
             onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
+            isEditor
           />
         );
       })}
@@ -78,23 +55,17 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
         Advanced
         <span>optional</span>
       </label>
-      {(advancedInputList || []).map((input, i) => {
+      {advancedInputList.map((input, i) => {
         return (
           <Input
             key={i}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
             value={auth?.[input.id as keyof IAuthAws4] || ''}
             onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
+            isEditor
           />
         );
       })}

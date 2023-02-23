@@ -58,6 +58,9 @@ export interface IInput {
    */
   registerMeta?: object;
 
+  /** place components at post position to the input */
+  postComponents?: JSX.Element[];
+
   /**
    * Define the function to be executed on onChange event of Input
    */
