@@ -1,10 +1,7 @@
 import { FC, useState } from 'react';
 import { VscSearch } from '@react-icons/all-files/vsc/VscSearch';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
-
 import { Button, Input } from '@firecamp/ui-kit';
-
-import ReactTooltip from 'react-tooltip';
 import './SwitchWorkspacePanel.scss';
 
 const SwitchWorkspacePanel: FC<any> = ({ className = '' }) => {
@@ -82,7 +79,6 @@ const WorkspaceCard: FC<any> = () => {
             >
               M
             </div>
-            <ReactTooltip id="1" place="top" effect="float" />
           </div>
           <div>
             <div
@@ -92,7 +88,6 @@ const WorkspaceCard: FC<any> = () => {
             >
               M
             </div>
-            <ReactTooltip id="2" place="top" effect="float" />
           </div>
           <div>
             <div
@@ -102,7 +97,6 @@ const WorkspaceCard: FC<any> = () => {
             >
               M
             </div>
-            <ReactTooltip id="3" place="top" effect="float" />
           </div>
           <div>
             <div
@@ -112,7 +106,6 @@ const WorkspaceCard: FC<any> = () => {
             >
               M
             </div>
-            <ReactTooltip id="4" place="top" effect="float" />
           </div>
           <div
             data-tip="Tooltip text"
@@ -121,7 +114,6 @@ const WorkspaceCard: FC<any> = () => {
           >
             +25
           </div>
-          <ReactTooltip id="5" place="top" effect="float" />
         </div>
       </div>
     </div>
