@@ -43,6 +43,7 @@ export const send = async (
       return extension.send(request, variables);
     case EFirecampAgent.Web:
       restExecutors[request.__ref.id] = new RestExecutor();
+      //@ts-ignore
       return await restExecutors[request.__ref.id].send(request, variables);
     case EFirecampAgent.Cloud:
       if (request.body?.type == ERestBodyTypes.FormData) {
