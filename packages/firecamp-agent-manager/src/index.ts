@@ -48,7 +48,7 @@ export const send = async (
       if (request.body?.type == ERestBodyTypes.FormData) {
         const body = await parseBody(request.body);
         const response = await axios.post(
-          `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute/multipart`,
+          `${process.env.FIRECAMP_CLOUD_AGENT}/api/execute/multipart`,
           body,
           {
             headers: {
@@ -61,7 +61,7 @@ export const send = async (
         return response.data;
       } else {
         const response = await axios.post(
-          `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute`,
+          `${process.env.FIRECAMP_CLOUD_AGENT}/api/execute`,
           { request, variables }
         );
         return response.data;
@@ -92,7 +92,7 @@ export const cancel = async (
       return;
     case EFirecampAgent.Cloud:
       const response = await axios.get(
-        `${process.env.FIRECAMP_PROXY_API_HOST}/api/cancel/${requestId}`
+        `${process.env.FIRECAMP_CLOUD_AGENT}/api/cancel/${requestId}`
       );
 
       return response.data;
