@@ -1,40 +1,25 @@
-import { FC, useState, useReducer } from 'react';
+import { FC, useState } from 'react';
 import { Dropdown, Input } from '@firecamp/ui-kit';
-import { EAuthTypes } from '@firecamp/types';
-import { authUiFormState } from './constants';
+import { EAuthTypes, TPlainObject } from '@firecamp/types';
+import { authUiFormState } from '../constants';
+import { setInputType } from '../service';
 
 const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
   const { Hawk } = EAuthTypes;
   const algorithmList = authUiFormState[Hawk].algorithmList as [];
   const inputList = authUiFormState[Hawk].inputList;
   const advancedInputList = authUiFormState[Hawk].advancedInputList;
-
-  let isDirtyState = {};
-  (inputList || []).map((e) => {
-    isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
-  });
-
-  const _setDirty = (
-    state: any,
-    action: { type: any; element: any; value: any }
-  ) => {
-    switch (action.type) {
-      case 'setDirty':
-        return {
-          ...state,
-          [action.element]: action.value,
-        };
-    }
-  };
-
-  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
-  const [isDDOpen, toggleDD] = useState(false);
+  const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
+    inputList.reduce((p, n) => {
+      return { ...p, [n.id]: false };
+    }, {})
+  );
 
   const _handleChange = (e: any, id: string) => {
     e.preventDefault();
     const value = e.target.value;
-    if (((inputList || []).map((e) => e.id) || []).includes(id)) {
-      setIsDirty({ type: 'setDirty', element: id, value: true });
+    if ((inputList.map((e) => e.id) || []).includes(id)) {
+      setDirtyInputs((s) => ({ ...s, [id]: true }));
     }
     onChange(Hawk, { key: id, value });
     // console.log("value", value, id)
@@ -54,10 +39,10 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
 
   return (
     <form className="fc-form grid" onSubmit={_handleSubmit}>
-      {(inputList || []).map((input, i) => {
+      {inputList.map((input, i) => {
         // console.log('isDirty', isDirty, "errorMsg", errorMsg)
         let errorMsg = '';
-        if (isDirty[input.id] && !auth?.[input.id]?.length) {
+        if (dirtyInputs[input.id] && !auth?.[input.id]?.length) {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
@@ -65,25 +50,13 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
             key={i}
             autoFocus={i === 0}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
             value={auth?.[input.id] || ''}
             error={errorMsg}
-            /* style={{
-            borderColor:
-              isDirty[input.id] && errorMsg
-                ? 'red'
-                : isDirty[input.id] && 'green',
-          }} */
             onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
+            isEditor
           />
         );
       })}
@@ -91,23 +64,17 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
         Advanced
         <span>optional</span>
       </label>
-      {(advancedInputList || []).map((input, i) => {
+      {advancedInputList.map((input, i) => {
         return (
           <Input
             key={i}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
             value={auth?.[input.id] || ''}
             onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
+            isEditor
           />
         );
       })}

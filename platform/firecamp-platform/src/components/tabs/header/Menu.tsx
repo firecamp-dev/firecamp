@@ -3,23 +3,19 @@ import { ERequestTypes } from '@firecamp/types';
 import { Dropdown } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
-
 import {
   FcIconGetSquare,
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
 } from '@firecamp/ui-kit';
-
 import getOs from '../../../services/get-os';
-import { platformEmitter as emitter } from '../../../services/platform-emitter';
-import { EPlatformTabs } from '../../../services/platform-emitter/events';
-// import { useTabStore } from '../../../store/tab';
-
+import { useTabStore } from '../../../store/tab';
+import { ETabEntityTypes } from '../types';
 let osName = getOs();
 
 const Menu: FC = () => {
-  // const { close } = useTabStore.getState();
+  const { open: openTab } = useTabStore.getState();
   const tabMenus = [
     {
       header: 'Create A Request',
@@ -135,12 +131,8 @@ const Menu: FC = () => {
       ],
     }*/
   ];
-
   const openNewTab = (type) => {
-    emitter.emit(EPlatformTabs.Open, {
-      entity: { __meta: { type } },
-      __meta: { id: '', type: 'request' },
-    });
+    openTab({ __meta: { type } }, { id: '', type: ETabEntityTypes.Request });
   };
 
   return (

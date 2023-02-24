@@ -1,7 +1,8 @@
-import { FC, useState, useReducer } from 'react';
+import { FC, useState } from 'react';
 import { Button, Dropdown, Input, CheckboxInGrid } from '@firecamp/ui-kit';
-import { IOAuth1, EAuthTypes } from '@firecamp/types';
-import { authUiFormState } from './constants';
+import { IOAuth1, EAuthTypes, TPlainObject } from '@firecamp/types';
+import { authUiFormState } from '../constants';
+import { setInputType } from '../service';
 
 const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
   const { OAuth1 } = EAuthTypes;
@@ -11,29 +12,18 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
   const inputList = authUiFormState[OAuth1].inputList;
   const advancedInputList = authUiFormState[OAuth1].advancedInputList;
 
-  let isDirtyState = {};
-  (inputList || []).map((e) => {
-    isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
-  });
-
-  const _setDirty = (state: any, action: any) => {
-    switch (action.type) {
-      case 'setDirty':
-        return {
-          ...state,
-          [action.element]: action.value,
-        };
-    }
-  };
-
-  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
+    inputList.reduce((p, n) => {
+      return { ...p, [n.id]: false };
+    }, {})
+  );
   const [isDDOpen, toggleDD] = useState(false);
 
   const _handleChange = (e: any, id: string) => {
     e.preventDefault();
     const value = e.target.value;
-    if (((inputList || []).map((e) => e.id) || []).includes(id)) {
-      setIsDirty({ type: 'setDirty', element: id, value: true });
+    if ((inputList.map((e) => e.id) || []).includes(id)) {
+      setDirtyInputs((s) => ({ ...s, [id]: true }));
     }
     onChange(OAuth1, { key: id, value });
   };
@@ -53,9 +43,12 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
 
   return (
     <form className="fc-form grid" onSubmit={_handleSubmit}>
-      {(inputList || []).map((input: { [key: string]: any }, i) => {
+      {inputList.map((input: { [key: string]: any }, i) => {
         let errorMsg = '';
-        if (isDirty[input.id] && !auth?.[input.id as keyof IOAuth1]?.length) {
+        if (
+          dirtyInputs[input.id] &&
+          !auth?.[input.id as keyof IOAuth1]?.length
+        ) {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
@@ -63,25 +56,13 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
             key={i}
             autoFocus={i === 0}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
             value={auth?.[input.id as keyof IOAuth1] || ''}
             error={errorMsg}
-            /* style={{
-            borderColor:
-              isDirty[input.id] && errorMsg
-                ? 'red'
-                : isDirty[input.id] && 'green',
-          }} */
             onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
+            isEditor
           />
         );
       })}
@@ -91,16 +72,15 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
       </label>
       <div className="form-group">
         <label>Signature Method:</label>
-
         <Dropdown
           selected={auth['signatureMethod'] || 'HMAC-SHA1'} //defalut "HMAC-SHA1"
         >
           <Dropdown.Handler>
             <Button
               text={auth['signatureMethod'] || 'HMAC-SHA1'}
-              sm
               secondary
-              withCaret={true}
+              withCaret
+              sm
             />
           </Dropdown.Handler>
           <Dropdown.Options
@@ -126,23 +106,17 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
       ''
     )} */}
 
-      {(advancedInputList || []).map((input, i) => {
+      {advancedInputList.map((input, i) => {
         return (
           <Input
             key={i}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
             value={auth?.[input.id as keyof IOAuth1] || ''}
             onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
+            isEditor
           />
         );
       })}

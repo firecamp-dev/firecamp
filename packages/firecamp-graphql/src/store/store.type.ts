@@ -12,6 +12,7 @@ import {
   IUi,
   IUiSlice,
   IRequestChangeStateSlice,
+  IExecutionSlice
 } from './slices';
 
 interface IStore
@@ -20,7 +21,8 @@ interface IStore
     IRuntimeSlice,
     ICollectionSlice,
     IUiSlice,
-    IRequestChangeStateSlice {
+    IRequestChangeStateSlice,
+    IExecutionSlice {
   originalRequest?: IGraphQL;
   initialise: (_request: Partial<IGraphQL>, tabId: TId) => void;
   context?: any;

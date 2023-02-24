@@ -1,5 +1,4 @@
 import { FC, useMemo } from 'react';
-
 import { Container, QuickSelection } from '@firecamp/ui-kit';
 import { EAuthTypes } from '@firecamp/types';
 
@@ -44,6 +43,6 @@ interface INoAuth {
   /** update active auth */
   onChangeActiveAuth: (authType: EAuthTypes) => void;
 
-  /** suth types */
+  /** auth types */
   authTypeList: any;
 }

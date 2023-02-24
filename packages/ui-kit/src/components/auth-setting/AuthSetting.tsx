@@ -1,4 +1,4 @@
-import { FC, useState, useEffect, useReducer } from 'react';
+import { FC, useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
 import isEqual from 'react-fast-compare';
 import { _misc, _object } from '@firecamp/utils';
@@ -24,9 +24,9 @@ import {
   OAuth2,
   NoAuth,
   Inherit,
-} from './index';
+} from './auths';
 import { authTypeList } from './constants';
-import { IAuthSetting } from './interfaces/AuthSetting.interfaces';
+import { IAuthSetting } from './interfaces/AuthSetting.interface';
 
 const AuthSetting: FC<IAuthSetting> = ({
   authUiState,
@@ -45,7 +45,7 @@ const AuthSetting: FC<IAuthSetting> = ({
     ? [...authTypeList]
     : authTypeList.filter((a) => a.id !== EAuthTypes.Inherit);
 
-  /** to generate payload with auth types for which who's belongs to inpux box input */
+  /** to generate payload with auth types for which who's belongs to input box input */
   let authTypesKeys: any = {};
   for (let k in authUiState) {
     let keys: any[] = [];
@@ -69,21 +69,6 @@ const AuthSetting: FC<IAuthSetting> = ({
     action: { type: any; value: any }
   ) => {
     switch (action.type) {
-      case 'toggleAuthTypesDD':
-        return {
-          ...state,
-          isAuthTypesDDOpen: !state.isAuthTypesDDOpen,
-        };
-        break;
-      case 'setActiveAuthType':
-        if (action.value !== state.activeAuthType) {
-          return {
-            ...state,
-            activeAuthType: action.value,
-          };
-        } else {
-          return state;
-        }
       case 'authTypes':
         return {
           ...state,
@@ -98,21 +83,21 @@ const AuthSetting: FC<IAuthSetting> = ({
     activeAuthType: _authTypeList.find((type) => type.id === activeAuth),
     authTypes: _authTypeList,
   };
-
-  const [state, setState] = useReducer(reducer, initialState);
-  const [inheitedAuth, setInheitedAuth] = useState({ parentName: '' });
+  const [state, setState] = useState(initialState);
+  const [inheritedAuth, setInheritedAuth] = useState({ parentName: '' });
   const { isAuthTypesDDOpen, activeAuthType, authTypes } = state;
 
   useEffect(() => {
-    setState({
-      type: 'setActiveAuthType',
-      value: _authTypeList.find((type) => type.id === activeAuth),
-    });
+    setState((s) => ({
+      ...s,
+      activeAuthType: _authTypeList.find((type) => type.id === activeAuth),
+    }));
+
     const _fetchInherit = async () => {
       if (activeAuth === EAuthTypes.Inherit) {
         let inherited = await fetchInheritedAuth();
-        if (inherited && inherited !== inheitedAuth) {
-          setInheitedAuth(inherited);
+        if (inherited && inherited !== inheritedAuth) {
+          setInheritedAuth(inherited);
         }
       }
     };
@@ -125,9 +110,9 @@ const AuthSetting: FC<IAuthSetting> = ({
       if (
         authData &&
         authType === EAuthTypes.Inherit &&
-        !isEqual(authData, inheitedAuth)
+        !isEqual(authData, inheritedAuth)
       ) {
-        setInheitedAuth(authData);
+        setInheritedAuth(authData);
       }
     } catch (error) {
       console.error({ error });
@@ -213,7 +198,7 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
         return (
           <Inherit
             openParentAuthModal={openParentAuthModal}
-            parentName={inheitedAuth?.parentName || ''}
+            parentName={inheritedAuth?.parentName || ''}
             message={inheritAuthMessage}
           />
         );
@@ -221,7 +206,7 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
         return allowInherit ? (
           <Inherit
             openParentAuthModal={openParentAuthModal}
-            parentName={inheitedAuth?.parentName || ''}
+            parentName={inheritedAuth?.parentName || ''}
             message={inheritAuthMessage}
           />
         ) : (
@@ -234,14 +219,18 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
   };
 
   const _onToggleAuthTypesDD = () => {
-    setState({
-      type: 'toggleAuthTypesDD',
-      value: !state.isAuthTypesDDOpen,
-    });
+    setState((s) => ({
+      ...s,
+      isAuthTypesDDOpen: !state.isAuthTypesDDOpen,
+    }));
   };
 
-  const _onSelectAuthType = (element: { id: EAuthTypes }) => {
-    setState({ type: 'setActiveAuthType', value: element });
+  const _onSelectAuthType = (element: {
+    id: EAuthTypes;
+    name: string;
+    enable: boolean;
+  }) => {
+    setState((s) => ({ ...s, activeAuthType: element }));
     _onchangeActiveAuth(element.id);
   };
 

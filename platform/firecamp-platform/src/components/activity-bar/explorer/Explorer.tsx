@@ -4,6 +4,7 @@ import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 // import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
+import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import {
   InteractionMode,
   Tree,
@@ -20,14 +21,14 @@ import {
   Empty,
   Button,
 } from '@firecamp/ui-kit';
-
-import { useWorkspaceStore } from '../../../store/workspace';
 import { WorkspaceCollectionsProvider } from './WorkspaceCollectionsProvider';
 import treeRenderer from './treeItemRenderer';
 import { RE } from '../../../types';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { EPlatformTabs } from '../../../services/platform-emitter/events';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
+import { useWorkspaceStore } from '../../../store/workspace';
+import { useTabStore } from '../../../store/tab';
+import { ETabEntityTypes } from '../../tabs/types';
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();
@@ -78,6 +79,7 @@ const Explorer: FC<any> = () => {
     registerTDP,
     unRegisterTDP,
   } = useWorkspaceStore.getState();
+  const { open: openTab } = useTabStore.getState();
 
   // console.log(explorer, "explorer")
 
@@ -127,11 +129,8 @@ const Explorer: FC<any> = () => {
       __meta: request.__meta,
       __ref: request.__ref,
     };
-    console.log({ entityId: request.__ref?.id, entityType: 'request' });
-    emitter.emit(EPlatformTabs.Open, {
-      entity,
-      __meta: { id: request.__ref?.id, type: 'request' },
-    });
+    // console.log({ entityId: request.__ref?.id, entityType: 'request' });
+    openTab(entity, { id: request.__ref?.id, type: ETabEntityTypes.Request });
   };
 
   const _onNodeSelect = (nodeIndexes: TreeItemIndex[]) => {

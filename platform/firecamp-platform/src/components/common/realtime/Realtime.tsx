@@ -9,6 +9,7 @@ import {
 } from '../../../services/platform-emitter/events';
 import { useTabStore } from '../../../store/tab';
 import PreComp from '../../tabs/header/PreComp';
+import { ETabEntityTypes } from '../../tabs/types';
 
 const RealtimeEventManager: FC<any> = () => {
   const { open, close } = useTabStore.getState();
@@ -112,37 +113,11 @@ const RealtimeEventManager: FC<any> = () => {
 
   // handle platform events
   useEffect(() => {
-    emitter.on(
-      EPlatformTabs.Open,
-      (
-        { entity, __meta } = {
-          entity: { __meta: { type: ERequestTypes.Rest } },
-          __meta: { id: '', type: 'request' },
-        }
-      ) => {
-        // console.log(entity, __meta, 55555);
-        const [tab, orders] = open(entity, __meta);
-        // console.log(tab, 'opened tab');
-        if (!tab) return; // if request is already opened then retun value would be [ null, null]
-
-        emitter.emit(EPlatformTabs.Opened, [
-          {
-            ...tab,
-            preComp: <PreComp entityType={__meta.type} entity={entity} />,
-            dotIndicator: tab.__meta?.hasChange === true,
-          },
-          orders,
-        ]);
-      }
-    );
-
     emitter.on(EPlatformTabs.Close, (tabId_s: TId | TId[]) => {
       close.byIds(Array.isArray(tabId_s) ? tabId_s : [tabId_s]);
       emitter.emit(EPlatformTabs.Closed, tabId_s);
     });
-
     return () => {
-      emitter.off(EPlatformTabs.Open);
       emitter.off(EPlatformTabs.Close);
     };
   }, []);

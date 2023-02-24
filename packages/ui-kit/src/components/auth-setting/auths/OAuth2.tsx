@@ -1,27 +1,8 @@
-import { FC, useState, useReducer, useEffect, Key } from 'react';
+import { FC, useState, useEffect, Key } from 'react';
 import { Dropdown, Button, Input } from '@firecamp/ui-kit';
-import { EAuthTypes, IUiOAuth2 } from '@firecamp/types';
-import { authUiFormState } from './constants';
-
-const _setDirty = (
-  state: any,
-  action: { type: any; element?: any; value: any }
-) => {
-  switch (action.type) {
-    case 'setDirty':
-      return {
-        ...state,
-        [action.element]: action.value,
-      };
-
-    case 'setInitial':
-      return {
-        ...state,
-        ...action.value,
-      };
-      break;
-  }
-};
+import { EAuthTypes, IUiOAuth2, TPlainObject } from '@firecamp/types';
+import { authUiFormState } from '../constants';
+import { setInputType } from '../service';
 
 const OAuth2: FC<IOAuth2Comp> = ({
   auth,
@@ -37,24 +18,23 @@ const OAuth2: FC<IOAuth2Comp> = ({
   const advancedInputList =
     grantTypesPayloads?.[activeGrantType].advancedInputList;
 
-  let isDirtyState = {};
-  (inputList || []).map((e: { id: any }) => {
-    isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
-  });
-
-  const [isDirty, setIsDirty] = useReducer(_setDirty, isDirtyState);
+  const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
+    inputList.reduce((p, n) => {
+      return { ...p, [n.id]: false };
+    }, {})
+  );
   const [isDDOpen, toggleDD] = useState(false);
 
   useEffect(() => {
-    setIsDirty({ type: 'setInitial', value: isDirtyState });
+    setDirtyInputs({}); //TODO: check this later
   }, [activeGrantType]);
 
   const _handleChange = (e: any, id: any) => {
     e.preventDefault();
     // console.log("id", id);
     const value = e.target.value;
-    if (((inputList || []).map((e: { id: any }) => e.id) || []).includes(id)) {
-      setIsDirty({ type: 'setDirty', element: id, value: true });
+    if ((inputList.map((e: { id: any }) => e.id) || []).includes(id)) {
+      setDirtyInputs((s) => ({ ...s, [id]: true }));
     }
     onChangeOAuth2Value('activeGrantTypeValue', { key: id, value });
   };
@@ -91,9 +71,9 @@ const OAuth2: FC<IOAuth2Comp> = ({
                 grantTypesOptions.find((t) => t.id === activeGrantType)?.name ||
                 ''
               }
-              sm
               secondary
-              withCaret={true}
+              withCaret
+              sm
             />
           </Dropdown.Handler>
           <Dropdown.Options
@@ -102,10 +82,10 @@ const OAuth2: FC<IOAuth2Comp> = ({
           />
         </Dropdown>
       </div>
-      {inputList.map((input: { [key: string]: string }, i) => {
+      {inputList.map((input: { [key: string]: string }, i: number) => {
         let errorMsg = '';
         if (
-          isDirty[input.id] &&
+          dirtyInputs[input.id] &&
           !grantTypes[activeGrantType][input.id]?.length
         ) {
           errorMsg = `${input.name} can not be empty`;
@@ -115,29 +95,17 @@ const OAuth2: FC<IOAuth2Comp> = ({
             key={i}
             autoFocus={i === 0}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
             value={grantTypes[activeGrantType]?.[input.id] || ''}
             error={errorMsg}
-            /* style={{
-            borderColor:
-              isDirty[input.id] && errorMsg
-                ? 'red'
-                : isDirty[input.id] && 'green',
-          }} */
             onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
+            isEditor
           />
         );
       })}
-      <label className="fc-form-field-group">
+      <label className="fc-form-field-group m-5">
         Advanced
         <span>optional</span>
       </label>
@@ -146,17 +114,11 @@ const OAuth2: FC<IOAuth2Comp> = ({
           <Input
             key={i}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             value={grantTypes[activeGrantType]?.[input.id] || ''}
             onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
+            isEditor
           />
         );
       })}
@@ -164,8 +126,8 @@ const OAuth2: FC<IOAuth2Comp> = ({
       <div className="form-group">
         <Button
           text="Fetch Token"
-          primary
           onClick={() => _fetchTokenOnChangeOAuth2()}
+          primary
         />
       </div>
 
@@ -175,7 +137,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
         type={'text'}
         value={oauth2LastToken || ''}
         disabled={true}
-        isEditor={true}
+        isEditor
       />
     </form>
   );

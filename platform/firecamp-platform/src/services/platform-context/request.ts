@@ -68,7 +68,12 @@ interface IPlatformRequestService {
   deleteRequestItem: (itemId: TId, requestId: TId, tabId: TId) => Promise<any>;
 
   // get executor
-  execute: (request: IRest) => Promise<IRestResponse>;
+  execute: (request: IRest) => Promise<{
+    response: IRestResponse;
+    variables: any;
+    scriptErrors: any[];
+    testResult: any;
+  }>;
   cancelExecution: (reqId: TId) => Promise<any>;
 }
 
@@ -300,7 +305,14 @@ const request: IPlatformRequestService = {
       environment: activeEnv.variables,
       collectionVariables: [],
     };
-    return executor.send(request, variables, agent);
+    return executor.send(request, variables, agent).then((result) => {
+      const { setVarsInLocalFromExecutorResponse } = useEnvStore.getState();
+      setVarsInLocalFromExecutorResponse(
+        variables,
+        request.__ref?.collectionId
+      );
+      return result;
+    });
   },
 
   cancelExecution: (reqId: TId) => {

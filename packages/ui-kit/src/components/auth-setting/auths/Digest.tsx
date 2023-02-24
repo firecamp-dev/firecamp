@@ -1,7 +1,8 @@
-import { FC, useReducer } from 'react';
+import { FC, useState } from 'react';
 import { Button, Dropdown, Input } from '@firecamp/ui-kit';
-import { IAuthDigest, EAuthTypes } from '@firecamp/types';
-import { authUiFormState } from './constants';
+import { IAuthDigest, EAuthTypes, TPlainObject } from '@firecamp/types';
+import { authUiFormState } from '../constants';
+import { setInputType } from '../service';
 
 const Digest: FC<IDigest> = ({
   auth = { username: '', password: '' },
@@ -14,31 +15,17 @@ const Digest: FC<IDigest> = ({
     (i) => ({ name: i })
   );
 
-  let isDirtyState = {};
-  (inputList || []).map((e) => {
-    isDirtyState = Object.assign(isDirtyState, { [e.id]: false });
-  });
-
-  const reducer = (
-    state: any,
-    action: { type: any; element: any; value: any }
-  ) => {
-    switch (action.type) {
-      case 'setDirty':
-        return {
-          ...state,
-          [action.element]: action.value,
-        };
-    }
-  };
-
-  const [isDirty, setIsDirty] = useReducer(reducer, isDirtyState);
+  const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
+    inputList.reduce((p, n) => {
+      return { ...p, [n.id]: false };
+    }, {})
+  );
 
   const _handleChange = (e: any, id: string) => {
     e.preventDefault();
     const value = e.target.value;
     if (id === 'username' || id === 'password') {
-      setIsDirty({ type: 'setDirty', element: id, value: true });
+      setDirtyInputs((s) => ({ ...s, [id]: true }));
     }
     onChange(Digest, { key: id, value });
     // console.log("value", value, id)
@@ -50,7 +37,6 @@ const Digest: FC<IDigest> = ({
 
   const _onSelectAlgorithm = (algorithm: string) => {
     if (!algorithm) return;
-
     onChange(Digest, {
       key: 'algorithm',
       value: algorithm,
@@ -62,7 +48,7 @@ const Digest: FC<IDigest> = ({
       {(inputList || []).map((input, i) => {
         let errorMsg = '';
         if (
-          isDirty[input.id] &&
+          dirtyInputs[input.id] &&
           !auth?.[input.id as keyof IAuthDigest]?.length
         ) {
           errorMsg = `${input.name} can not be empty`;
@@ -72,23 +58,11 @@ const Digest: FC<IDigest> = ({
             key={i}
             autoFocus={i === 0}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.name}
             value={auth?.[input.id as keyof IAuthDigest] || ''}
             error={errorMsg}
-            /* style={{
-            borderColor:
-              isDirty[input.id] && errorMsg
-                ? 'red'
-                : isDirty[input.id] && 'green',
-          }} */
             onChange={(e) => _handleChange(e, input.id)}
             isEditor={true}
             // onKeyDown={_onKeyDown}
@@ -96,7 +70,7 @@ const Digest: FC<IDigest> = ({
         );
       })}
 
-      <label className="fc-form-field-group">
+      <label className="fc-form-field-group m-5">
         Advanced
         <span>optional</span>
       </label>
@@ -122,13 +96,7 @@ const Digest: FC<IDigest> = ({
           <Input
             key={i}
             label={input.name}
-            type={
-              input.id === 'password'
-                ? 'password'
-                : input.id === 'timestamp'
-                ? 'number'
-                : 'text'
-            }
+            type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
             value={auth?.[input.id as keyof IAuthDigest] || ''}

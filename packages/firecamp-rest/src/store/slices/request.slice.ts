@@ -1,5 +1,6 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
+import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
 import { EHttpMethod, IHeader, IRest, TId } from '@firecamp/types';
 import { _clipboard } from '@firecamp/utils';
 import { _object } from '@firecamp/utils';
@@ -34,6 +35,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   changeMeta: (__meta: Partial<IRest['__meta']>) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
+  setRequestFromCurl: (snippet: string) => void;
   save: (tabId: TId) => void;
 }
 
@@ -130,6 +132,60 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       },
     }));
     state.equalityChecker({ [scriptType]: _scripts });
+  },
+
+  /** setup the request configuration in firecamp on CURL request paste */
+  setRequestFromCurl: async (snippet: string = '') => {
+    // return if no curl or request is already saved
+    if (!snippet) return;
+    const state = get();
+    const {
+      request: { url },
+      request,
+    } = state;
+    const isCurlSnippet = snippet.startsWith('curl');
+    // console.log({ snippet, isCurlSnippet });
+    if (!isCurlSnippet) {
+      state.changeUrl({ ...url, raw: snippet });
+    } else {
+      // if request is saved then simply update the url with old value, ignore paste curl
+      if (request.__ref?.collectionId) {
+        state.context.app.notify.alert(
+          'You can not paste the CURL snippet onto the saved request, please open a new empty request tab instead.'
+        );
+        // console.log(url, 787798789);
+        state.changeUrl({ ...url, raw: url.raw.replace(snippet, '') });
+        return;
+      } else {
+        try {
+          const curlRequest = new CurlToFirecamp(snippet.trim()).transform();
+          let { url, body, headers, config } = curlRequest;
+          // only set url, body, headers, config request in state
+          const newRequest = {
+            ...request,
+            url,
+            body,
+            headers,
+            config,
+          };
+          const updatedUiRequestPanel = prepareUIRequestPanelState(newRequest);
+          set((s) => ({
+            request: newRequest,
+            ui: {
+              ...s.ui,
+              requestPanel: {
+                ...s.ui.requestPanel,
+                ...updatedUiRequestPanel,
+              },
+            },
+          }));
+          console.log({ curlRequest });
+        } catch (e) {
+          state.context.app.notify.alert('The CURL snippet is not valid');
+          console.error(e);
+        }
+      }
+    }
   },
   save: (tabId) => {
     const state = get();

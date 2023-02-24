@@ -18,7 +18,7 @@ const UrlBarContainer = ({ tabId }) => {
     changeUrl,
     changeMethod,
     execute,
-    onPasteCurl,
+    setRequestFromCurl,
     save,
   } = useStore(
     (s: IStore) => ({
@@ -32,7 +32,7 @@ const UrlBarContainer = ({ tabId }) => {
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
-      onPasteCurl: s.onPasteCurl,
+      setRequestFromCurl: s.setRequestFromCurl,
       save: s.save,
     }),
     shallow
@@ -44,15 +44,18 @@ const UrlBarContainer = ({ tabId }) => {
   }) => {
     e.preventDefault();
     const value = e.target.value;
+    if (value.startsWith('curl')) return;
 
     const urlObject = _url.updateByRaw({ ...url, raw: value });
-    // console.log(urlObject, "urlObject... in url bar")
+    // console.log(urlObject, 'urlObject... in url bar');
     changeUrl(urlObject);
   };
 
-  const _onPaste = (paste, edt: any) => {
-    if (!paste) return;
-    onPasteCurl(paste);
+  const _onPaste = (snippet: string, edt: any) => {
+    if (!snippet) return;
+    if (snippet?.trim().startsWith('curl')) {
+      setRequestFromCurl(snippet);
+    }
   };
 
   const _onSave = async () => {
