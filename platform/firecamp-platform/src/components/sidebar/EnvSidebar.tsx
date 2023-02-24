@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
+import { IoMdCopy } from '@react-icons/all-files/io/IoMdCopy';
 import classnames from 'classnames';
 import isEqual from 'react-fast-compare';
 import shallow from 'zustand/shallow';
@@ -9,6 +10,7 @@ import {
   Editor,
   TabHeader,
   Button,
+  Notes
 } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 import EnvironmentDD from '../common/environment/selector/EnvironmentDD';
@@ -39,7 +41,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
       <Container>
         <Container.Header className="flex !p-2 bg-focus1">
           <div className="flex-1 mr-2 text-base p-2 font-bold">
-            Active Environments
+            Variables
           </div>
           <div
             className="ml-auto flex-none text-base flex justify-center items-center cursor-pointer"
@@ -49,12 +51,72 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col">
-          {!!activeEnvId ? <EnvVarPreview /> : <></>}
+          {/* {!!activeEnvId ? <EnvVarPreview /> : <></>} */}
+          <div>
+          <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+          Active Environment
+          </div>
+          <div className="table text-sm border-collapse w-full m-3">
+            <div className="table-row">
+              <label className="px-3 py-1 table-cell border border-appBorder" >
+                <div className="flex items-center"> <span>airtable_base</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+              </div>
+              </label>
+              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">add your airtable base</span>
+            </div>
+            <div className="table-row">
+              <label className="px-3 py-1 table-cell border border-appBorder">
+              <div className="flex items-center"> <span>airtable_key</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+                </div>
+              </label>
+              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">add your airtable key</span>
+            </div>
+            <div className="table-row">
+              <label className="px-3 py-1 table-cell border border-appBorder">
+              <div className="flex items-center"> <span>airtable_token</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+                </div>
+                </label>
+              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder" >add your airtable token</span>
+            </div>
+          </div>
+          </div>
+          <div>
+          <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+          Global Variables
+          </div>
+          <div className="table text-sm border-collapse w-full m-3">
+            <div className="table-row">
+              <label className="px-3 py-1 table-cell border border-appBorder" >
+                <div className="flex items-center"> <span>airtable_base</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+              </div>
+              </label>
+              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">add your airtable base</span>
+            </div>
+            <div className="table-row">
+              <label className="px-3 py-1 table-cell border border-appBorder">
+              <div className="flex items-center"> <span>airtable_key</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+                </div>
+              </label>
+              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">add your airtable key</span>
+            </div>
+            <div className="table-row">
+              <label className="px-3 py-1 table-cell border border-appBorder">
+              <div className="flex items-center"> <span>airtable_token</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+                </div>
+                </label>
+              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder" >add your airtable token</span>
+            </div>
+          </div>
+          </div>
         </Container.Body>
-        <Container.Footer className="text-sm !p-1 bg-focus3">
-          <ol>
-            <li>- use variable with {'{{variableName}}'} </li>
-          </ol>
+        <Container.Footer className="text-sm">
+          <Notes title="Use Variables to reuse values and protect sensitive data" description="Store sensitive data in variable type secret to keep its values masked on the screens. Work with current value of variable to prevent sharing sensitive values with your team" />
         </Container.Footer>
       </Container>
     </Resizable>

@@ -3141,4 +3141,11 @@ body .ace_editor .ace_scrollbar{
 .primary-table .mtk1,.primary-table th{
   color: var(--tab-foreground-inactive) !important;
 }
+
+.table-cell .table-action{
+  visibility: hidden;
+}
+.table-cell:hover .table-action{
+  visibility: visible;
+}
 /*-----------table 2 css end --------*/
