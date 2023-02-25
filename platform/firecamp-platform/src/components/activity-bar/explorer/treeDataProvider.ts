@@ -25,7 +25,7 @@ type TTreeItemData = {
 
 //@ts-ignore
 const _uniq = (arr: string[]) => [...new Set(arr)];
-export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
+export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
   private items: any[]; //ExplicitDataSource;
   private rootOrders: TreeItemIndex[];
   // private onDidChangeTreeDataEmitter = new EventEmitter<TreeItemIndex[]>();
@@ -175,12 +175,14 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
   }
 
   // extra methods of provider
-  init(
+  async init(
     collections: any[] = [],
     folders: any[] = [],
     requests: any[] = [],
     rootOrders: string[] = []
   ) {
+    // await this.dispose();
+
     this.items = [
       ...collections.map((i) => ({
         ...i,
@@ -192,11 +194,19 @@ export class WorkspaceCollectionsProvider<T = any> implements TreeDataProvider {
         __ref: { ...i.__ref, isRequest: true },
       })),
     ];
+    // console.log(this.items);
     this.rootOrders = rootOrders;
-    setTimeout(() => {
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    });
+    this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
   }
+
+  // dispose() {
+  //   this.items = [];
+  //   this.items.length = 0;
+  //   this.rootOrders = [];
+  //   this.rootOrders.length = 0;
+  //   this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
+  //   return Promise.resolve();
+  // }
 
   public addCollectionItem(item: any) {
     this.items.push({ ...item, __ref: { ...item.__ref, isCollection: true } });
