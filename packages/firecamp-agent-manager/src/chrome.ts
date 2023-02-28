@@ -46,7 +46,13 @@ export const send = (
         requestId: request.__ref.id,
       },
       (result: ExtResponse) => {
-        if (result?.response) return resolve({ response: result.response, variables: result.variables });
+        if (result?.response)
+          return resolve({
+            response: result.response,
+            variables: result.variables,
+            scriptErrors: result.scriptErrors,
+            testResult: result.testResult,
+          });
         if (result?.error) return reject(result.error);
 
         // reject if found any error in message passing

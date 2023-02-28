@@ -1,4 +1,3 @@
-//@ts-nocheck
 import React, { FC } from 'react';
 import cx from 'classnames';
 import { SingleLineEditor } from '@firecamp/ui-kit';
@@ -6,6 +5,7 @@ import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 
 import { IInput } from './interfaces/input.interfaces';
 import './InputBox.sass';
+import { EEditorLanguage } from '@firecamp/types';
 
 const Input: FC<IInput> = React.forwardRef(
   (
@@ -20,7 +20,7 @@ const Input: FC<IInput> = React.forwardRef(
       icon = '',
       iconPosition = 'left',
       registerMeta = {},
-      useformRef = () => {},
+      useformRef,
       name = '',
       label = '',
       error = '',
@@ -37,7 +37,7 @@ const Input: FC<IInput> = React.forwardRef(
     },
     ref
   ) => {
-    // TODO: discuss 'useformRef' prop
+    // TODO: review/discuss 'useformRef' prop
 
     let hasIconLeft = icon && iconPosition == 'left';
     let hasIconRight = icon && iconPosition == 'right';
@@ -83,7 +83,7 @@ const Input: FC<IInput> = React.forwardRef(
         )}
         {isEditor === false ? (
           <div
-            className={cx('w-full relative', { flex: postComponents != '' })}
+            className={cx('w-full relative', { flex: postComponents?.length })}
           >
             <input
               {...domProps}
@@ -117,7 +117,7 @@ const Input: FC<IInput> = React.forwardRef(
             >
               {icon}
             </span>
-            {postComponents || ''}
+            {postComponents || <></>}
             {error && <ErrorMessage error={error} />}
             {note && <Note note={note} />}
           </div>
@@ -125,18 +125,18 @@ const Input: FC<IInput> = React.forwardRef(
           <div>
             <SingleLineEditor
               id={id}
+              className={cx('border px-2 py-1 border-inputBorder', className)}
               autoFocus={autoFocus}
-              type={type}
+              type={type == 'number' ? 'number' : 'text'}
               value={value}
               name={name}
               disabled={disabled}
-              className={className}
+              height="21px"
+              language={EEditorLanguage.FcText}
               onChange={onChange}
               onBlur={onBlur}
               onFocus={onFocus}
-              onKeyDown={onKeyDown}
-              height="21px"
-              className="border px-2 py-1 border-inputBorder"
+              // onKeyDown={onKeyDown}
             />
             {postComponents || ''}
             {error && <ErrorMessage error={error} />}
@@ -150,7 +150,7 @@ const Input: FC<IInput> = React.forwardRef(
 
 export default Input;
 
-const ErrorMessage = ({ error = '', className }) => {
+const ErrorMessage: FC<{ error: string | JSX.Element }> = ({ error }) => {
   return (
     <div className={cx('text-sm font-light text-error block absolute')}>
       {error}

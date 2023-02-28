@@ -10,7 +10,6 @@ import { useTabStore } from '../store/tab';
 import { useEnvStore } from '../store/environment';
 import { useModalStore } from '../store/modal';
 import { platformEmitter } from './platform-emitter';
-import { prepareEventNameForRequestPull } from './platform-emitter/events';
 
 const userService = {
   isLoggedIn: () => {

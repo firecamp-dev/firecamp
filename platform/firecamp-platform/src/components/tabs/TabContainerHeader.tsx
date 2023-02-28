@@ -13,6 +13,8 @@ import { EPlatformTabs } from '../../services/platform-emitter/events';
 import { ITabStore, useTabStore } from '../../store/tab';
 import GlobalCreateDD from '../common/GlobalCreate';
 import platformContext from '../../services/platform-context';
+import PreComp from './header/PreComp';
+import { ETabEntityTypes } from './types';
 
 const TabHeaderContainer = () => {
   const tabApi = useRef({});
@@ -29,12 +31,14 @@ const TabHeaderContainer = () => {
     changeActiveTab,
     changeOrders,
     getTab,
+    open,
   } = useTabStore.getState() as ITabStore;
   console.log(orders, tabs, activeTab, 'orders.... ');
 
   useEffect(() => {
     // console.log(tabApi, 'tabApi..');
-    emitter.on(EPlatformTabs.Opened, ([tab, orders]) => {
+    emitter.on(EPlatformTabs.Opened, ([tab, orders, [entity, entityMeta]]) => {
+      tab.preComp = <PreComp entityType={entityMeta.type} entity={entity} />;
       tabApi.current.add(tab);
     });
     emitter.on(EPlatformTabs.Closed, (tabId_s: TId | TId[]) => {
@@ -60,7 +64,7 @@ const TabHeaderContainer = () => {
   }, []);
 
   const openNewTab = () => {
-    emitter.emit(EPlatformTabs.Open);
+    open({}, {id: '', type: ETabEntityTypes.Request})
   };
 
   const closeTab = (tabId) => {

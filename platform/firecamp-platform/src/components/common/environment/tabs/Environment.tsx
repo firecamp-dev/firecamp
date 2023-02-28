@@ -12,13 +12,18 @@ import {
   Loader,
   TabHeader,
   Button,
+  Notes,
 } from '@firecamp/ui-kit';
 import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
 import { RE } from '../../../../types';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
+import { useEnvStore } from '../../../../store/environment';
+import { useTabStore } from '../../../../store/tab';
 
 const EnvironmentTab = ({ tab, platformContext: context }) => {
+  const { close } = useTabStore.getState();
+  const { setLocalEnv, deleteEnvironmentPrompt } = useEnvStore.getState();
   const initEnv = _cloneDeep({ ...tab.entity, variables: [] });
   const originalEnvs = useRef({
     /** runtimeEnv.variables will have the initialValue and currentValue (merge of remote & local)
@@ -106,10 +111,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
 
     // update local env
     if (!isEqual(localEnv, _oLocalEnv)) {
-      localStorage.setItem(
-        `env/${localEnv.__ref.id}`,
-        JSON.stringify(localEnv)
-      );
+      setLocalEnv(localEnv);
     }
     setHasChangeFlag(false);
   };
@@ -157,36 +159,9 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
       });
   };
   const _delete = () => {
-    context.window
-      .promptInput({
-        header: 'Delete Environment',
-        label: `Please enter the name \`${runtimeEnv.name}\``,
-        placeholder: '',
-        texts: { btnOk: 'Delete', btnOking: 'Deleting...' },
-        value: '',
-        executor: (name) => {
-          if (name === runtimeEnv.name) {
-            return context.environment.delete(runtimeEnv.__ref.id);
-          } else {
-            return Promise.reject(
-              new Error('The environment name is not matching.')
-            );
-          }
-        },
-        onError: (e) => {
-          context.app.notify.alert(e?.response?.data?.message || e.message);
-        },
-      })
-      .then((res) => {
-        context.app.notify.success(
-          'The environment has been deleted successfully'
-        );
-        localStorage.removeItem(`env/${runtimeEnv.__ref.id}`);
-
-        // TODO: close the current tab
-        // TODO: remove env from the explorer
-        return res;
-      });
+    deleteEnvironmentPrompt(runtimeEnv).then((res) => {
+      close.active(tab.id);
+    });
   };
   if (isFetchingEnv === true) return <Loader />;
   return (
@@ -239,6 +214,10 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
             </Column>
           </Row>
         </Container.Body>
+        <Container.Footer>
+          <Notes className="!m-2" type="info" title="What is the Initial Value?" description="In variables, the Initial value is a variable's value which will be cloud-synced and shared with your team. The variable with `initial value` can be set in collection, environment, and Globals"/>
+          <Notes className="!m-2"  type="info" title="What is Current Value ?" description="The `current value` is used while sending the request in Firecamp. This value is never synced to the cloud. If left untouched, the current value automatically assumes the `Initial Value`"/>
+        </Container.Footer>
       </Container>
     </RootContainer>
   );

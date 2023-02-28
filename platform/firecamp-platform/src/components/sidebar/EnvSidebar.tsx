@@ -1,5 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
+import { IoMdCopy } from '@react-icons/all-files/io/IoMdCopy';
 import classnames from 'classnames';
 import isEqual from 'react-fast-compare';
 import shallow from 'zustand/shallow';
@@ -9,6 +10,7 @@ import {
   Editor,
   TabHeader,
   Button,
+  Notes,
 } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 import EnvironmentDD from '../common/environment/selector/EnvironmentDD';
@@ -38,9 +40,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
     >
       <Container>
         <Container.Header className="flex !p-2 bg-focus1">
-          <div className="flex-1 mr-2 text-base p-2 font-bold">
-            Active Environments
-          </div>
+          <div className="flex-1 mr-2 text-base p-2 font-bold">Variables</div>
           <div
             className="ml-auto flex-none text-base flex justify-center items-center cursor-pointer"
             onClick={toggleEnvSidebar}
@@ -49,12 +49,26 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col">
-          {!!activeEnvId ? <EnvVarPreview /> : <></>}
+          {/* {!!activeEnvId ? <EnvVarPreview /> : <></>} */}
+          <div>
+            <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+              Active Environment
+            </div>
+
+            <EnvPreviewTable />
+          </div>
+          <div>
+            <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+              Global Variables
+            </div>
+            <EnvPreviewTable />
+          </div>
         </Container.Body>
-        <Container.Footer className="text-sm !p-1 bg-focus3">
-          <ol>
-            <li>- use variable with {'{{variableName}}'} </li>
-          </ol>
+        <Container.Footer className="text-sm">
+          <Notes
+            title="Use Variables to reuse values in Firecamp"
+            description="use {{variable_name}} anywhere in the Firecamp to use its value"
+          />
         </Container.Footer>
       </Container>
     </Resizable>
@@ -189,6 +203,40 @@ const EnvVarPreview = () => {
           <></>
         )}
       </div>
+    </div>
+  );
+};
+
+const EnvPreviewTable: FC<any> = ({
+  variables = [
+    {
+      key: 'name',
+      value: 'Ramanujan',
+    },
+    {
+      key: 'description',
+      value:
+        'Srinivasa Ramanujan FRS was an Indian mathematician. Though he had almost no formal training in pure mathematics, he made substantial contributions to mathematical analysis, number theory, infinite series, and continued fractions, including solutions to mathematical problems then considered unsolvable',
+    },
+  ],
+}) => {
+  return (
+    <div className="table text-sm border-collapse w-full m-3">
+      {variables.map((v, i) => {
+        return (
+          <div className="table-row" key={i}>
+            <label className="px-3 py-1 table-cell border border-appBorder">
+              <div className="flex items-center">
+                <span>{v.key}</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+              </div>
+            </label>
+            <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">
+              {v.value}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };

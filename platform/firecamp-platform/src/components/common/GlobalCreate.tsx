@@ -6,6 +6,9 @@ import { platformEmitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
 import { useWorkspaceStore } from '../../store/workspace';
 import { useEnvStore } from '../../store/environment';
+import { useTabStore } from '../../store/tab';
+import { ERequestTypes } from '@firecamp/types';
+import { ETabEntityTypes } from '../tabs/types';
 
 enum EMenuOptions {
   Request = 'request',
@@ -38,13 +41,11 @@ const options = [
 
 const GlobalCreateDD = ({}) => {
   const [isOpen, toggleOpen] = useState(false);
+  const { open } = useTabStore.getState();
   const onSelect = (option) => {
     switch (option.id) {
       case EMenuOptions.Request:
-        platformEmitter.emit(EPlatformTabs.Open, [
-          {},
-          { entityId: '', entityType: 'request' },
-        ]);
+        open({}, { id: '', type: ETabEntityTypes.Request });
         break;
       case EMenuOptions.Collection:
         const { createCollectionPrompt } = useWorkspaceStore.getState();

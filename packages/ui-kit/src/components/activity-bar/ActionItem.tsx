@@ -1,22 +1,16 @@
 import { useEffect, FC } from 'react';
 import cx from 'classnames';
-import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
-import ReactTooltip from 'react-tooltip';
-
+import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 
 const ActionItem: FC<IActionItem> = ({
   id = '',
   className = '',
   style = {},
   active = false,
-  onClick = () => { },
+  onClick = () => {},
   icon = '',
-  tooltip = ''
+  tooltip = '',
 }) => {
-
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  });
 
   return (
     <div tabIndex={1} className={cx('h-12 flex justify-center items-center cursor-pointer relative text-2xl action-item',
@@ -24,21 +18,21 @@ const ActionItem: FC<IActionItem> = ({
       { 'before:block before:z-0 before:content-[""] before:absolute before:top-0 before:bottom-0 before:left-0 before:w-0.5 before:bg-activityBarActiveBorder text-activityBarForeground bg-activityBarActiveBackground': active == true },
       className)
     } style={style} onClick={onClick} data-tip={tooltip}
-      data-for={id}>
+    data-for={id}>
 
       {!!icon
         ? icon
         : <VscAccount
-          /*title="Account"
-            size={24}*/
-          tabIndex={-1}
-          data-tip={tooltip}
-          data-for={id}
+            /*title="Account"
+              size={24}*/
+            tabIndex={-1}
+            data-tip={tooltip}
+            data-for={id}
         />}
 
       {/* @ts-ignore */}
       <ReactTooltip
-        data-delay-hide='10000'
+      data-delay-hide='10000'
         id={id}
         className="bg-appForegroundInActive"
         place="right"
@@ -47,41 +41,41 @@ const ActionItem: FC<IActionItem> = ({
   );
 };
 
-export default ActionItem
+export default ActionItem;
 
 ActionItem.defaultProps = {
   id: null,
   className: null,
   active: false,
   icon: '',
-  tooltip: ''
+  tooltip: '',
 };
 
 export interface IActionItem {
   /**
- * Is this the principal call to action on the page?
- */
-  id?: string,
+   * Is this the principal call to action on the page?
+   */
+  id?: string;
   /**
    * Add class name to show custom styling
    */
-  className?: string,
+  className?: string;
   /**
    * apply css styles
    */
-  style?: any,
+  style?: any;
   /**
    * to show if item active
    */
-  active: boolean,
+  active: boolean;
   /**
    * To show icon for action
    */
-  icon: string,
+  icon: string;
   /**
    * Add a tooltip
    */
-  tooltip: string,
+  tooltip: string;
 
-  onClick: () => void
+  onClick: () => void;
 }

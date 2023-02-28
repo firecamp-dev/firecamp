@@ -22,6 +22,7 @@ import EditInfo from './tabs/EditInfo';
 import Auth from './tabs/Auth';
 import Scripts from './tabs/Scripts';
 import Variables from './tabs/Variables';
+import { useEnvStore } from '../../../store/environment';
 
 type TEntity = ICollection | IFolder;
 enum ETabTypes {
@@ -148,14 +149,12 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
         variables: updates.variables,
         __ref: { id: '' },
       });
-      localStorage.setItem(
-        `env/${entity.__ref.id}`,
-        JSON.stringify({
-          name: '',
-          variables: localEnv.variables,
-          __ref: { id: entity.__ref.id },
-        })
-      );
+      const { setLocalEnv } = useEnvStore.getState();
+      setLocalEnv({
+        ...localEnv,
+        __ref: { id: entity.__ref.id },
+      });
+
       //@ts-ignore
       updates.variables = _cloneDeep(remoteEnv.variables);
     }

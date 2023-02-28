@@ -96,7 +96,7 @@ if (env === Environment.Development) exports.output.clean = true;
 exports.env = {
   NODE_ENV: JSON.stringify(process.env.NODE_ENV),
   FIRECAMP_API_HOST: JSON.stringify(process.env.FIRECAMP_API_HOST),
-  FIRECAMP_PROXY_API_HOST: JSON.stringify(process.env.FIRECAMP_PROXY_API_HOST),
+  FIRECAMP_CLOUD_AGENT: JSON.stringify(process.env.FIRECAMP_CLOUD_AGENT),
   FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(
     process.env.FIRECAMP_EXTENSION_AGENT_ID
   ),

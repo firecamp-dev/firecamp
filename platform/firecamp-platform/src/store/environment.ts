@@ -8,6 +8,7 @@ import {
   IEnvironment,
   TPlainObject,
   IRuntimeEnv,
+  TRuntimeVariable,
 } from '@firecamp/types';
 import { _env } from '@firecamp/utils';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
@@ -16,6 +17,8 @@ import platformContext from '../services/platform-context';
 import { useWorkspaceStore } from './workspace';
 import { RE } from '../types';
 import { envService, EmptyEnv } from '../services/env.service';
+import { useTabStore } from './tab';
+import { ETabEntityTypes } from '../components/tabs/types';
 
 const initialState = {
   activeEnvId: null,
@@ -82,6 +85,7 @@ export interface IEnvironmentStore {
   createEnvironment: (env: IEnv) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
   deleteEnvironment: (envId: TId) => Promise<any>;
+  deleteEnvironmentPrompt: (env: IEnv | IRuntimeEnv) => Promise<any>;
 
   _updateEnvironment: (envId: TId, env: Partial<IEnv>) => Promise<IEnv>;
 
@@ -90,6 +94,17 @@ export interface IEnvironmentStore {
   _deleteEnv: (envId: TId) => void;
 
   // common
+
+  /** set env in localStorage */
+  setLocalEnv: (localEnv: IEnv) => void;
+  setVarsInLocalFromExecutorResponse: (
+    resVars: {
+      globals: TRuntimeVariable[];
+      environment: TRuntimeVariable[];
+      collectionVariables: TRuntimeVariable[];
+    },
+    collectionId: TId
+  ) => void;
   dispose: () => void;
 }
 
@@ -101,7 +116,12 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     set({ environments: envs, globalEnv });
     const { envTdpInstance, setActiveEnv } = get();
     envTdpInstance?.init(envs);
-    setActiveEnv(null);
+
+    let activeEnv = null;
+    if (window?.localStorage) {
+      activeEnv = localStorage.getItem('activeEnv');
+    }
+    setActiveEnv(activeEnv);
   },
 
   /** @deprecated */
@@ -144,12 +164,16 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
   },
 
   setActiveEnv: (envId) => {
-    const { environments, applyVariablesToPlatform } = get();
-    const setNoEnvironment = () =>
+    const { applyVariablesToPlatform } = get();
+    const setNoEnvironment = () => {
       set({
         activeEnvId: null,
         activeEnv: _cloneDeep(EmptyEnv),
       });
+    };
+    if (window?.localStorage) {
+      localStorage.setItem('activeEnv', envId || ''); //if null then it'll save string 'null' thus put empty ''
+    }
 
     Promise.resolve(envId)
       .then((eId) => {
@@ -184,9 +208,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const gPlainVars = _env.preparePlainVarsFromRuntimeEnv(globalEnv);
     const ePlainVars = _env.preparePlainVarsFromRuntimeEnv(activeEnv);
     // console.log(globalEnv, activeEnv, gPlainVars, ePlainVars);
-
     _env.splitEnvs(globalEnv);
-
     return { ...gPlainVars, ...ePlainVars };
   },
 
@@ -257,8 +279,10 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
           );
         },
       })
-      .then((res) => {
-        console.log(res, 1111);
+      .then((env) => {
+        const { open: openTab } = useTabStore.getState();
+        openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
+        // console.log(env, 1111);
       });
   },
 
@@ -320,6 +344,47 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       });
   },
 
+  deleteEnvironmentPrompt: (env: IEnv | IRuntimeEnv) => {
+    const state = get();
+    return platformContext.window
+      .promptInput({
+        header: 'Delete Environment',
+        label: `Please enter the name \`${env.name}\``,
+        placeholder: '',
+        texts: { btnOk: 'Delete', btnOking: 'Deleting...' },
+        value: '',
+        executor: (name) => {
+          if (name === env.name) {
+            return platformContext.environment.delete(env.__ref.id);
+          } else {
+            return Promise.reject(
+              new Error('The environment name is not matching.')
+            );
+          }
+        },
+        onError: (e) => {
+          platformContext.app.notify.alert(
+            e?.response?.data?.message || e.message
+          );
+        },
+      })
+      .then((res) => {
+        platformContext.app.notify.success(
+          'The environment has been deleted successfully'
+        );
+        if (window?.localStorage) {
+          window.localStorage.removeItem(`env/${env.__ref.id}`);
+        }
+
+        // if deleted env is active env then set "no environment"
+        if (state.activeEnv?.__ref.id == env.__ref.id) {
+          state.setActiveEnv(null);
+        }
+        state._deleteEnv(env.__ref.id);
+        return res;
+      });
+  },
+
   _updateEnvironment: async (envId: TId, body: Partial<IEnv>) => {
     const state = get();
     state.toggleProgressBar(true);
@@ -374,11 +439,55 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       return e.__ref.id != envId;
     });
     set((s) => {
-      // s.envTdpInstance?.removeEnvItem(env);
+      s.envTdpInstance?.removeEnvItem(envId);
       return { environments: [...envs] };
     });
   },
 
+  setLocalEnv: (localEnv) => {
+    if (!localEnv?.__ref?.id) return;
+    if (window?.localStorage) {
+      window.localStorage.setItem(
+        `env/${localEnv.__ref.id}`,
+        JSON.stringify(localEnv)
+      );
+    }
+  },
+  setVarsInLocalFromExecutorResponse: (variables, collectionId) => {
+    const { setLocalEnv, applyVariablesToPlatform, activeEnv, globalEnv } =
+      get();
+    const { globals, environment, collectionVariables } = variables;
+    if (globals?.length) {
+      const { localEnv } = _env.splitEnvs({
+        ...globalEnv,
+        //@ts-ignore
+        variables: globals,
+      });
+      setLocalEnv(localEnv);
+    }
+    if (environment?.length) {
+      const { localEnv } = _env.splitEnvs({
+        name: activeEnv?.name,
+        //@ts-ignore
+        variables: environment,
+        __ref: activeEnv?.__ref,
+      });
+      setLocalEnv(localEnv);
+    }
+    if (collectionVariables?.length && collectionId) {
+      const { localEnv } = _env.splitEnvs({
+        name: '',
+        //@ts-ignore
+        variables: collectionVariables,
+        __ref: { id: collectionId },
+      });
+      setLocalEnv(localEnv);
+    }
+
+    setTimeout(() => {
+      applyVariablesToPlatform();
+    });
+  },
   // dispose whole store and reset to initial state
   dispose: () => set({ ...initialState }),
 }));

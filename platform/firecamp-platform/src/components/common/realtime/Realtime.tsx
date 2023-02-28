@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { Realtime } from '@firecamp/cloud-apis';
-import { ERequestTypes, TId } from '@firecamp/types';
+import { TId } from '@firecamp/types';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
 import { useWorkspaceStore } from '../../../store/workspace';
 import {
@@ -8,7 +8,11 @@ import {
   prepareEventNameForRequestPull,
 } from '../../../services/platform-emitter/events';
 import { useTabStore } from '../../../store/tab';
-import PreComp from '../../tabs/header/PreComp';
+
+import {
+  EWorkspaceEventTypes,
+  TWorkspaceEvent,
+} from '@firecamp/cloud-apis/dist/realtime';
 
 const RealtimeEventManager: FC<any> = () => {
   const { open, close } = useTabStore.getState();
@@ -44,65 +48,54 @@ const RealtimeEventManager: FC<any> = () => {
 
   /** handle realtime explorer changes */
   useEffect(() => {
-    const onExplorerItemInsert = ({ type, payload }) => {
-      console.log(type, payload);
+    const onWorkspaceChanges = (event: TWorkspaceEvent) => {
+      const { type, value } = event;
+      console.log(type, value, 7777777);
       switch (type) {
-        case 'collection':
-          onCreateCollection(payload);
+        case EWorkspaceEventTypes.CollectionCreated:
+          onCreateCollection(value);
           break;
-        case 'folder':
-          onCreateFolder(payload);
+        case EWorkspaceEventTypes.CollectionUpdated:
+          onUpdateCollection(value);
           break;
-        case 'request':
-          onCreateRequest(payload);
+        case EWorkspaceEventTypes.CollectionDeleted:
+          onDeleteCollection(value);
           break;
-      }
-    };
-    const onExplorerItemUpdate = ({ type, payload }) => {
-      console.log(type, payload);
-      switch (type) {
-        case 'collection':
-          onUpdateCollection(payload);
+
+        case EWorkspaceEventTypes.FolderCreated:
+          onCreateFolder(value);
           break;
-        case 'folder':
-          onUpdateFolder(payload);
+        case EWorkspaceEventTypes.FolderUpdated:
+          onUpdateFolder(value);
           break;
-        case 'request':
-          onUpdateRequest(payload);
+        case EWorkspaceEventTypes.FolderDeleted:
+          onDeleteFolder(value);
           break;
-      }
-    };
-    const onExplorerItemDelete = ({ type, payload }) => {
-      console.log(type, payload);
-      switch (type) {
-        case 'collection':
-          onDeleteCollection(payload);
+
+        case EWorkspaceEventTypes.RequestCreated:
+          onCreateRequest(value);
           break;
-        case 'folder':
-          onDeleteFolder(payload);
+        case EWorkspaceEventTypes.RequestUpdated:
+          onUpdateRequest(value);
           break;
-        case 'request':
-          onDeleteRequest(payload);
+        case EWorkspaceEventTypes.RequestDeleted:
+          onDeleteRequest(value);
           break;
       }
     };
 
-    const listenExplorerChanges = () => {
+    const listenToWorkspaceChanges = () => {
       console.log('socket:connected');
-      Realtime.listenExplorerItemInsert(onExplorerItemInsert);
-      Realtime.listenExplorerItemUpdate(onExplorerItemUpdate);
-      Realtime.listenExplorerItemDelete(onExplorerItemDelete);
+      Realtime.listenToWorkspaceChanges(onWorkspaceChanges);
     };
 
-    const listenOffExplorerChanges = () => {
+    const listenOffWorkspaceChanges = () => {
       console.log('socket:disconnected');
-      Realtime.listenOffExplorerItemInsert();
-      Realtime.listenOffExplorerItemUpdate();
-      Realtime.listenOffExplorerItemDelete();
+      Realtime.listenOffWorkspaceChanges();
     };
 
-    emitter.on('socket.connected', listenExplorerChanges);
-    emitter.on('socket.disconnected', listenOffExplorerChanges);
+    emitter.on('socket.connected', listenToWorkspaceChanges);
+    emitter.on('socket.disconnected', listenOffWorkspaceChanges);
 
     return () => {
       emitter.off('socket.connected');
@@ -112,37 +105,11 @@ const RealtimeEventManager: FC<any> = () => {
 
   // handle platform events
   useEffect(() => {
-    emitter.on(
-      EPlatformTabs.Open,
-      (
-        { entity, __meta } = {
-          entity: { __meta: { type: ERequestTypes.Rest } },
-          __meta: { id: '', type: 'request' },
-        }
-      ) => {
-        // console.log(entity, __meta, 55555);
-        const [tab, orders] = open(entity, __meta);
-        // console.log(tab, 'opened tab');
-        if (!tab) return; // if request is already opened then retun value would be [ null, null]
-
-        emitter.emit(EPlatformTabs.Opened, [
-          {
-            ...tab,
-            preComp: <PreComp entityType={__meta.type} entity={entity} />,
-            dotIndicator: tab.__meta?.hasChange === true,
-          },
-          orders,
-        ]);
-      }
-    );
-
     emitter.on(EPlatformTabs.Close, (tabId_s: TId | TId[]) => {
       close.byIds(Array.isArray(tabId_s) ? tabId_s : [tabId_s]);
       emitter.emit(EPlatformTabs.Closed, tabId_s);
     });
-
     return () => {
-      emitter.off(EPlatformTabs.Open);
       emitter.off(EPlatformTabs.Close);
     };
   }, []);

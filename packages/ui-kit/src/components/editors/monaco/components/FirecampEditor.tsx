@@ -1,6 +1,5 @@
 import { FC, useRef, useState, useEffect } from 'react';
 import MonacoEditor from 'react-monaco-editor';
-import ReactTooltip from 'react-tooltip';
 import classnames from 'classnames';
 // import formatXML from 'prettify-xml';
 import _cloneDeep from 'lodash/cloneDeep';
@@ -477,10 +476,6 @@ const Ctrl: FC<ICtrl> = ({
       }
     }, 2000);
   };
-
-  useEffect(() => {
-    ReactTooltip.rebuild();
-  });
 
   return (
     <div

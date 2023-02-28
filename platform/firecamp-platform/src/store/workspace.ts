@@ -15,9 +15,8 @@ import {
 import { useEnvStore } from './environment';
 import platformContext from '../services/platform-context';
 import { RE } from '../types';
-import { platformEmitter } from '../services/platform-emitter';
-import { EPlatformTabs } from '../services/platform-emitter/events';
 import { ETabEntityTypes } from '../components/tabs/types';
+import { useTabStore } from './tab';
 
 const initialState = {
   workspace: {
@@ -250,10 +249,11 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       );
       if (collection) {
         const { name, description, __ref } = collection;
-        platformEmitter.emit(EPlatformTabs.Open, {
-          entity: { name, description, __ref },
-          __meta: { id: collectionId, type: 'collection' },
-        });
+        const { open } = useTabStore.getState();
+        open(
+          { name, description, __ref },
+          { id: collectionId, type: ETabEntityTypes.Collection }
+        );
       }
     },
     createCollectionPrompt: () => {
@@ -397,10 +397,11 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       });
     },
     openImportTab: () => {
-      platformEmitter.emit(EPlatformTabs.Open, {
-        entity: { name: 'Import API Collection', description: '' },
-        __meta: { id: 'import-api-collection', type: ETabEntityTypes.Import },
-      });
+      const { open } = useTabStore.getState();
+      open(
+        { name: 'Import API Collection', description: '' },
+        { id: 'import-api-collection', type: ETabEntityTypes.Import }
+      );
     },
 
     // folder
@@ -411,10 +412,11 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       );
       if (folder) {
         const { name, description, __ref } = folder;
-        platformEmitter.emit(EPlatformTabs.Open, {
-          entity: { name, description, __ref },
-          __meta: { id: folderId, type: 'folder' },
-        });
+        const { open } = useTabStore.getState();
+        open(
+          { name, description, __ref },
+          { id: folderId, type: ETabEntityTypes.Folder }
+        );
       }
     },
     createFolder: async (payload: IFolder) => {
