@@ -5,22 +5,25 @@ import { Meta } from '@storybook/addon-docs';
 ## **Container**
 	
 Container : To create a similar pattern view for contents.
-- It consists of sub-section for displaying header, body, footer and empty.
+- Consists of sub-section like :
+  - header
+  - body
+  - footer
+  - empty
 - Any of the section can be used individually as well.
 
 #### **Component Usage**: 
-We are using flex based Row layout having contents in vertical direction <br/>
 
-| Section |        Description|
+Use `Container` as wrapper to use single/multiple sub sections  <br/>
+Container is a flex based Row having contents in flex-direction as Column <br/>
+
+| Component |        Description|
 |----|----|
-|Container   	|       Wrapper for the view which takes height & width of its parent|
+|Container   	|       Wrapper for the view which takes height & width of its parent component|
 |Head   |      	section for the header having height of its content|
 |Body	|		section for the body that fills the available space of the container|
 |Footer	|		section for the footer having height of its content|
-|Empty	|		section for the displaying empty details section|
-
-- **Component Usage**:  
-  - Use `<Container>` as wrapper to use its sub sections
+|Empty	|		section for the displaying empty block|
 
 #### **Best Practices**:
 
