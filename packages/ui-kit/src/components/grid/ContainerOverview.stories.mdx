@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/addon-docs';
+
+<Meta title="UI-Kit/Grid/ContainerOverview" />
+
+## **Container**
+	
+Container : To create a similar pattern view for contents.
+- It consists of sub-section for displaying header, body, footer and empty.
+- Any of the section can be used individually as well.
+
+#### **Component Usage**: 
+We are using flex based Row layout having contents in vertical direction <br/>
+
+| Section |        Description|
+|----|----|
+|Container   	|       Wrapper for the view which takes height & width of its parent|
+|Head   |      	section for the header having height of its content|
+|Body	|		section for the body that fills the available space of the container|
+|Footer	|		section for the footer having height of its content|
+|Empty	|		section for the displaying empty details section|
+
+- **Component Usage**:  
+  - Use `<Container>` as wrapper to use its sub sections
+
+#### **Best Practices**:
+
+Do: 
+```
+<Container>
+    <Container.Header>
+		Header Section
+    </Container.Header>
+    <Container.Body>
+		<component> Body Section </component>
+    </Container.Body>
+    <Container.Footer>
+		Footer Section
+    </Container.Footer>
+</Container>
+```
+
+#### **Future Improvements:**
+
+- Can be updated with props to specify usage with header & footer components
+- For Example: with Status bar in header section

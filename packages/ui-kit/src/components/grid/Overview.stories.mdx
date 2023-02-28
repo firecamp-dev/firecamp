@@ -3,22 +3,54 @@ import { Meta } from '@storybook/addon-docs';
 <Meta title="UI-Kit/Grid/Overview" />
 
 ## **Grid**
-
+	
 To create the layout for page in proper structure for easy maintenance.
 
-#### **Component Properties**: 
-We are using flex based Row-Columns.
-- If you want full height row you can use  h-full  class
-- If you want vertical columns you can use  flex-col  class in parent row
-- If you want horizontal columns (like rows) you can use  flex-row  class in parent row
-- For columns you can pass  flex as a prop  to set width or height of column, if parent have flex-col it will set width for column and if parent have flex-row it will set height of column
-- You can pass overflow - ‘auto, hidden, visible’ as a prop in the column.
-- By default scrollbar is hidden, if you want to show it you have to pass   visible-scrollbar  class (it will only work with overflow-auto)
+#### **Component Usage**: 
+We are using flex based Row-Columns layout. <br/>
+
+|(Row) Classname |        Usage|
+|----|----|
+|h-full    	|       for row full screen height|
+|flex-col   |      	for vertical sections|
+|flex-row	|		for horizontal sections|
+
+|(Column) Prop | Usage|
+|----|----|
+|flex			|	Prop to be true to set specific width or height of column, if parent have flex-col it will set width for column and if parent have flex-row it will set height of column
+|overflow		|	`auto, hidden, visible` as a prop in the column.	|	
+|scrollbar		|	By default scrollbar is hidden. To show scrollbar you have to pass `visible-scrollbar` class (it will only work with overflow-auto)|
 
 #### **Component Related**:
 
-- RootContainer
-- Resizable
+> Layout is created with : RootContainer, Row, Column.
+
+> Resizable
+
+- To create the resizable component within layout.
+- We are using `re-resizable` package for displaying resizable component.
+- Resizable Component can be created in both horizontal & vertical direction
+
+| Direction | Usage |
+| ---- | ---- |
+| horizontal | component can be resized from left, right, or both. Need to specify width [minWidth, width, maxWidth] along with default height of 100%
+| vertical | component can be resized from top, bottom, or both. Need to specify height [minHeight, height, maxHeight] along with default width of 100%
+
+- **Component Usage**:  
+  - Use `<RootContainer>` as wrapper, in case need to define layout with specific width & height
+
+- **Best Practices**:
+  - Always nest Resizable component in ```<Row></Row>```
+  - Always nest content as direct child in ```<Column></Column>``` for Resizable
+
+Do: 
+```
+<Row>
+    <Resizable top={true} minHeight={100} maxHeight={500} height={320}>
+		<Column> In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content. Lorem ipsum may be used as a placeholder before final copy is available. Wikipedia </Column>
+	</Resizable>
+</Row>
+```
 
 #### **Component Dependencies**:
 
