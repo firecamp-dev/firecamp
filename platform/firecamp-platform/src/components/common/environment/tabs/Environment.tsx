@@ -12,6 +12,7 @@ import {
   Loader,
   TabHeader,
   Button,
+  Notes,
 } from '@firecamp/ui-kit';
 import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
@@ -213,6 +214,10 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
             </Column>
           </Row>
         </Container.Body>
+        <Container.Footer>
+          <Notes className="!m-2" type="info" title="What is the Initial Value?" description="In variables, the Initial value is a variable's value which will be cloud-synced and shared with your team. The variable with `initial value` can be set in collection, environment, and Globals"/>
+          <Notes className="!m-2"  type="info" title="What is Current Value ?" description="The `current value` is used while sending the request in Firecamp. This value is never synced to the cloud. If left untouched, the current value automatically assumes the `Initial Value`"/>
+        </Container.Footer>
       </Container>
     </RootContainer>
   );

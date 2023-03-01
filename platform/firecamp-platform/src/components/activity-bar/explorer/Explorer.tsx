@@ -21,11 +21,9 @@ import {
   Empty,
   Button,
 } from '@firecamp/ui-kit';
-import { WorkspaceCollectionsProvider } from './WorkspaceCollectionsProvider';
+import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
 import { RE } from '../../../types';
-import { platformEmitter as emitter } from '../../../services/platform-emitter';
-import { EPlatformTabs } from '../../../services/platform-emitter/events';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useTabStore } from '../../../store/tab';
 import { ETabEntityTypes } from '../../tabs/types';
@@ -85,7 +83,7 @@ const Explorer: FC<any> = () => {
 
   // console.log(folders, "folders....")
   const dataProvider = useRef(
-    new WorkspaceCollectionsProvider(
+    new CollectionExplorerProvider(
       collections,
       folders,
       requests,

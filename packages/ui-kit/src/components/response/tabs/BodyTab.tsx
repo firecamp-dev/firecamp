@@ -143,7 +143,7 @@ const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
           />
         );
       case EActiveTab.None:
-        return <CorsError />
+        return <CorsError />;
 
       case EActiveTab.Preview:
         /** allow to show preview for HTML response without checking HTML data valid or not */
@@ -200,12 +200,10 @@ interface IBodyTab {
   error?: any;
 }
 
-
 const CorsError = () => {
-
   return (
     <div className="p-3">
-      <div className='text-error flex items-center text-base font-semibold mb-2 mt-1'>
+      <div className="text-error flex items-center text-base font-semibold mb-2 mt-1">
         <IoMdCloseCircle className="mr-1" />
         <span>Unable to reach server</span>
       </div>
@@ -218,16 +216,40 @@ const CorsError = () => {
             <span>Is the server currently running?</span>
           </li>
           <li className="mb-2">
-            <label className="font-semibold block text-appForegroundActive">The Server's response may be missing CORS headers</label>
-            <span>To verify open developer tools and check the console for any CORS related error message like, "Cors Origin Request Blocked".</span>
+            <label className="font-semibold block text-appForegroundActive">
+              The Server's response may be missing CORS headers
+            </label>
+            <span>
+              To verify open developer tools and check the console for any CORS
+              related error message like, "Cors Origin Request Blocked".
+              Possible solutions are
+            </span>
             <div>
               <ul className="ml-8 list-disc mt-2">
-                <li className='mv-2'>
-                  <span> If that in the case contact your system administrator and add <b className="text-appForeground">https://insiders.firecamp.dev</b> to your server's allow list.</span>
-                  <a className="font-semibold block !text-info">Learn more about enabling CORS</a>
+                <li className="mv-2">
+                  <span>
+                    {`Contact your system administrator and add `}
+                    <b className="text-appForeground contents">
+                      https://firecamp.dev
+                    </b>
+                    {` to your server's allow list.`}
+                  </span>
+                  <a
+                    className="font-semibold block !text-info cursor-pointer"
+                    href="https://enable-cors.org/server.html"
+                    target="_blank"
+                  >
+                    Learn more about enabling CORS.
+                  </a>
                 </li>
                 <li className="mb-2">
-                  <span>Change Browser Agent to <a className="font-semibold block !text-info">Cloud Agent</a>.</span>
+                  <span>
+                    {`Or change Firecamp Agent from Browser agent to `}
+                    <a className="font-semibold block !text-info contents">
+                      Cloud Agent
+                    </a>
+                    .
+                  </span>
                 </li>
               </ul>
             </div>
@@ -235,5 +257,5 @@ const CorsError = () => {
         </ul>
       </div>
     </div>
-  )
-}
+  );
+};

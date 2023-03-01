@@ -15,8 +15,6 @@ import {
 import { useEnvStore } from './environment';
 import platformContext from '../services/platform-context';
 import { RE } from '../types';
-import { platformEmitter } from '../services/platform-emitter';
-import { EPlatformTabs } from '../services/platform-emitter/events';
 import { ETabEntityTypes } from '../components/tabs/types';
 import { useTabStore } from './tab';
 
