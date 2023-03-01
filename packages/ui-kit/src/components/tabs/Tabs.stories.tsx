@@ -20,7 +20,7 @@ const demoArgs = [
 ]
 
 export default {
-    title: "UI-Kit/Tabs",
+    title: "UI-Kit/Tab",
     component: Tabs,
     argTypes: {
         className: ""

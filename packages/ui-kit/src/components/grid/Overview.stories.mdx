@@ -1,56 +1,31 @@
 import { Meta } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
 
 <Meta title="UI-Kit/Grid/Overview" />
 
 ## **Grid**
-	
+
 To create the layout for page in proper structure for easy maintenance.
 
-#### **Component Usage**: 
+#### **Component Usage**:
+
 We are using flex based Row-Columns layout. <br/>
 
-|(Row) Classname |        Usage|
-|----|----|
-|h-full    	|       for row full screen height|
-|flex-col   |      	for vertical sections|
-|flex-row	|		for horizontal sections|
+| (Row) Classname | Usage                      |
+| --------------- | -------------------------- |
+| h-full          | for row full screen height |
+| flex-col        | for vertical sections      |
+| flex-row        | for horizontal sections    |
 
-|(Column) Prop | Usage|
-|----|----|
-|flex			|	Prop to be true to set specific width or height of column, if parent have flex-col it will set width for column and if parent have flex-row it will set height of column
-|overflow		|	`auto, hidden, visible` as a prop in the column.	|	
-|scrollbar		|	By default scrollbar is hidden. To show scrollbar you have to pass `visible-scrollbar` class (it will only work with overflow-auto)|
+| (Column) Prop           | Usage                                                                                                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| flex                    | Prop to be true to set specific width or height of column, if parent have flex-col it will set width for column and if parent have flex-row it will set height of column |
+| overflow                | `auto, hidden, visible` as a prop in the column.                                                                                                                         |
+| scrollbar (in progress) | By default scrollbar is hidden. To show scrollbar you have to pass `visible-scrollbar` class (it will only work with overflow-auto)                                      |
 
 #### **Component Related**:
 
 > Layout is created with : RootContainer, Row, Column.
-
-> Resizable
-
-- To create the resizable component within layout.
-- We are using `re-resizable` package for displaying resizable component.
-- Resizable Component can be created in both horizontal & vertical direction
-
-| Direction | Usage |
-| ---- | ---- |
-| horizontal | component can be resized from left, right, or both. Need to specify width [minWidth, width, maxWidth] along with default height of 100%
-| vertical | component can be resized from top, bottom, or both. Need to specify height [minHeight, height, maxHeight] along with default width of 100%
-
-- **Component Usage**:  
-  - Use `<RootContainer>` as wrapper, in case need to define layout with specific width & height
-
-- **Best Practices**:
-  - Always nest Resizable component in ```<Row></Row>```
-  - Always nest content as direct child in ```<Column></Column>``` for Resizable
-
-Do: 
-```
-<Row>
-    <Resizable top={true} minHeight={100} maxHeight={500} height={320}>
-		<Column> In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document </Column>
-	</Resizable>
-</Row>
-```
 
 #### **Component Dependencies**:
 
@@ -58,9 +33,9 @@ Do:
 
 #### **Best Practices**:
 
-- Always nest ```<Column></Column>``` in ```<Row></Row>```
+- Always nest `<Column></Column>` in `<Row></Row>`
 
-Do: 
+Do:
 
 ```
 <Row>
@@ -79,6 +54,7 @@ Do:
 	</Column>
 </Row>
 ```
+
 Avoid:
 
 ```
@@ -105,6 +81,25 @@ Avoid:
 </Row>
 ```
 
+#### **Examples**:
+
+- <LinkTo
+    kind="ui-kit-grid--layout-with-nested-column"
+    className="!text-primaryColor"
+  >
+    Nested Column Example
+  </LinkTo>
+
 #### **References**:
 
-- <a className="!text-primaryColor" href="https://tailwindcss.com/docs/flex" target="_blank">Tailwind Flex</a>
+- <a
+    className="!text-primaryColor"
+    href="https://tailwindcss.com/docs/flex"
+    target="_blank"
+  >
+    Tailwind Flex
+  </a>
+
+#### **Future Improvements:**
+
+- Need to add prop (scrollbar) & update its current usage
