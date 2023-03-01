@@ -222,7 +222,6 @@ const CorsError = () => {
             <span>To verify open developer tools and check the console for any CORS related error message like, "Cors Origin Request Blocked".</span>
             <div>
               <ul className="ml-8 list-disc mt-2">
-                Possible solutions are
                 <li className='mv-2'>
                   <span> If that in the case contact your system administrator and add <b className="text-appForeground">https://insiders.firecamp.dev</b> to your server's allow list.</span>
                   <a className="font-semibold block !text-info">Learn more about enabling CORS</a>
