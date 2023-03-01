@@ -3,7 +3,7 @@ import { default as Tab } from './Tab';
 import { VscJson } from "@react-icons/all-files/vsc/VscJson";
 
 export default {
-    title: "UI-Kit/Tabs",
+    title: "UI-Kit/Tab",
     component: Tab,
     argTypes: {
         className: ""
