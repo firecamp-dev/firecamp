@@ -48,20 +48,23 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
             <VscClose size={16} />
           </div>
         </Container.Header>
-        <Container.Body className="flex flex-col">
+        <Container.Body className="flex flex-col overflow-visible">
           {/* {!!activeEnvId ? <EnvVarPreview /> : <></>} */}
-          <div>
-            <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+          <div className="flex-1 flex flex-col overflow-auto">
+            <div className="text-sm px-2 py-1 font-bold border-b border-appBorder bg-focus2">
               Active Environment
             </div>
-
-            <EnvPreviewTable />
+            <div className="flex-1 overflow-auto visible-scrollbar">
+              <EnvPreviewTable />
+            </div>
           </div>
-          <div>
-            <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+          <div className="flex-1 flex flex-col overflow-auto">
+            <div className="text-sm px-2 py-1 font-bold border-b border-appBorder bg-focus2">
               Global Variables
             </div>
-            <EnvPreviewTable />
+            <div className="flex-1 overflow-auto visible-scrollbar">
+              <EnvPreviewTable />
+            </div>
           </div>
         </Container.Body>
         <Container.Footer className="text-sm">
@@ -221,7 +224,7 @@ const EnvPreviewTable: FC<any> = ({
   ],
 }) => {
   return (
-    <div className="table text-sm border-collapse w-full m-3">
+    <div className="table text-sm border-collapse border-0 w-full m-3 border-b border-appBorder">
       {variables.map((v, i) => {
         return (
           <div className="table-row" key={i}>
