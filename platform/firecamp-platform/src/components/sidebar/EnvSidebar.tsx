@@ -10,7 +10,7 @@ import {
   Editor,
   TabHeader,
   Button,
-  Notes
+  Notes,
 } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 import EnvironmentDD from '../common/environment/selector/EnvironmentDD';
@@ -40,9 +40,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
     >
       <Container>
         <Container.Header className="flex !p-2 bg-focus1">
-          <div className="flex-1 mr-2 text-base p-2 font-bold">
-            Variables
-          </div>
+          <div className="flex-1 mr-2 text-base p-2 font-bold">Variables</div>
           <div
             className="ml-auto flex-none text-base flex justify-center items-center cursor-pointer"
             onClick={toggleEnvSidebar}
@@ -53,70 +51,24 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
         <Container.Body className="flex flex-col">
           {/* {!!activeEnvId ? <EnvVarPreview /> : <></>} */}
           <div>
-          <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
-          Active Environment
-          </div>
-          <div className="table text-sm border-collapse w-full m-3">
-            <div className="table-row">
-              <label className="px-3 py-1 table-cell border border-appBorder" >
-                <div className="flex items-center"> <span>airtable_base</span>
-                <IoMdCopy className="table-action ml-2 cursor-pointer" />
-              </div>
-              </label>
-              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">add your airtable base</span>
+            <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+              Active Environment
             </div>
-            <div className="table-row">
-              <label className="px-3 py-1 table-cell border border-appBorder">
-              <div className="flex items-center"> <span>airtable_key</span>
-                <IoMdCopy className="table-action ml-2 cursor-pointer" />
-                </div>
-              </label>
-              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">add your airtable key</span>
-            </div>
-            <div className="table-row">
-              <label className="px-3 py-1 table-cell border border-appBorder">
-              <div className="flex items-center"> <span>airtable_token</span>
-                <IoMdCopy className="table-action ml-2 cursor-pointer" />
-                </div>
-                </label>
-              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder" >add your airtable token</span>
-            </div>
-          </div>
+
+            <EnvPreviewTable />
           </div>
           <div>
-          <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
-          Global Variables
-          </div>
-          <div className="table text-sm border-collapse w-full m-3">
-            <div className="table-row">
-              <label className="px-3 py-1 table-cell border border-appBorder" >
-                <div className="flex items-center"> <span>airtable_base</span>
-                <IoMdCopy className="table-action ml-2 cursor-pointer" />
-              </div>
-              </label>
-              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">add your airtable base</span>
+            <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+              Global Variables
             </div>
-            <div className="table-row">
-              <label className="px-3 py-1 table-cell border border-appBorder">
-              <div className="flex items-center"> <span>airtable_key</span>
-                <IoMdCopy className="table-action ml-2 cursor-pointer" />
-                </div>
-              </label>
-              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">add your airtable key</span>
-            </div>
-            <div className="table-row">
-              <label className="px-3 py-1 table-cell border border-appBorder">
-              <div className="flex items-center"> <span>airtable_token</span>
-                <IoMdCopy className="table-action ml-2 cursor-pointer" />
-                </div>
-                </label>
-              <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder" >add your airtable token</span>
-            </div>
-          </div>
+            <EnvPreviewTable />
           </div>
         </Container.Body>
         <Container.Footer className="text-sm">
-          <Notes title="Use Variables to reuse values and protect sensitive data" description="Store sensitive data in variable type secret to keep its values masked on the screens. Work with current value of variable to prevent sharing sensitive values with your team" />
+          <Notes
+            title="Use Variables to reuse values in Firecamp"
+            description="use {{variable_name}} anywhere in the Firecamp to use its value"
+          />
         </Container.Footer>
       </Container>
     </Resizable>
@@ -251,6 +203,40 @@ const EnvVarPreview = () => {
           <></>
         )}
       </div>
+    </div>
+  );
+};
+
+const EnvPreviewTable: FC<any> = ({
+  variables = [
+    {
+      key: 'name',
+      value: 'Ramanujan',
+    },
+    {
+      key: 'description',
+      value:
+        'Srinivasa Ramanujan FRS was an Indian mathematician. Though he had almost no formal training in pure mathematics, he made substantial contributions to mathematical analysis, number theory, infinite series, and continued fractions, including solutions to mathematical problems then considered unsolvable',
+    },
+  ],
+}) => {
+  return (
+    <div className="table text-sm border-collapse w-full m-3">
+      {variables.map((v, i) => {
+        return (
+          <div className="table-row" key={i}>
+            <label className="px-3 py-1 table-cell border border-appBorder">
+              <div className="flex items-center">
+                <span>{v.key}</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+              </div>
+            </label>
+            <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">
+              {v.value}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };
