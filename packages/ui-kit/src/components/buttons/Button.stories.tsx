@@ -1,5 +1,5 @@
-//@ts-nocheck
 import Button from './Button';
+import { IButton } from "./interfaces/Button.interfaces";
 import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
 
 export default {
@@ -14,7 +14,7 @@ export default {
   }
 };
 
-const Template = (args) => <Button {...args} />;
+const Template = (args: IButton) => <Button {...args} />;
 
 export const ButtonDemo = Template.bind({});
 ButtonDemo.args = {

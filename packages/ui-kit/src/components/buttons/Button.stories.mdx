@@ -1,0 +1,49 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
+import Button from './Button';
+
+<Meta title="UI-Kit/Button/Overview" />
+
+## **Button**
+
+- Button consists of sub elements like:
+  - icon
+  - text
+  - caret icon at the end
+
+#### **Component Usage**:
+
+Button consists of props for various sizes :
+
+| Prop | Preview                            |
+| ---- | ---------------------------------- |
+| xs   | <Button xs text="Button" primary/> |
+| sm   | <Button sm text="Button" primary/> |
+| md   | <Button md text="Button" primary/> |
+| lg   | <Button lg text="Button" primary/> |
+
+Button has different placement for icons :
+
+| Prop       | Preview                                                                                   |
+| ---------- | ----------------------------------------------------------------------------------------- |
+| iconLeft   | <Button md text="Button" primary iconLeft icon={<VscMenu title="Account" size={16}/>} />  |
+| iconCenter | <Button md text="Button" primary iconCenter icon={<VscMenu title="Account" size={16}/>}/> |
+| iconRight  | <Button md text="Button" primary iconRight icon={<VscMenu title="Account" size={16}/>}/>  |
+
+Button versions :
+
+| Prop        | Preview                                                  |
+| ----------- | -------------------------------------------------------- |
+| primary     | <Button md text="Button" primary />                      |
+| secondary   | <Button md text="Button" secondary/>                     |
+| danger      | <Button md text="Button" danger transparent/>            |
+| disabled    | <Button md text="Button" primary disabled />             |
+| withCaret   | <Button md text="Button" primary withCaret/>             |
+| transparent | <Button md text="Button" primary withCaret transparent/> |
+| ghost       | <Button md text="Button" primary ghost/>                 |
+
+- #### **Examples**:
+- <LinkTo kind="ui-kit-button--button-demo" className="!text-primaryColor">
+    More Button Example
+  </LinkTo>
