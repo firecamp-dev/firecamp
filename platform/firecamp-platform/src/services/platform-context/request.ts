@@ -171,7 +171,7 @@ const request: IPlatformRequestService = {
           const folderId = item.__ref.collectionId ? item.__ref.id : undefined;
           console.log(item, 'res...');
           _request.__meta.name = value;
-          _request.__meta.description = '0;';
+          _request.__meta.description = '';
           _request.__ref.collectionId = collectionId;
           if (folderId) _request.__ref.folderId = folderId;
           const { data } = await Rest.request.create(_request);
