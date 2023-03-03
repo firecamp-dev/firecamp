@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import { EEditorLanguage } from '@firecamp/types';
-import { BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
+import {
+  BulkEditTable,
+  Container,
+  BasicTable,
+  TabHeader,
+} from '@firecamp/ui-kit';
 import { IStore, useStore } from '../../../store';
 
 const HeadersTab = () => {
@@ -41,19 +46,51 @@ const HeadersTab = () => {
 
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
-          authHeaders && authHeaders.length ? (
+          true || (authHeaders && authHeaders.length) ? (
             <div className="pt-14">
+              <TabHeader className="-mb-2">
+                <TabHeader.Left>
+                  <span className="">{'Headers derived from auth'}</span>
+                </TabHeader.Left>
+              </TabHeader>
+
               <BasicTable
                 key={'authHeaders'}
+                columns={[
+                  {
+                    id: 'select',
+                    key: 'disable',
+                    name: '',
+                    width: '40px',
+                    fixedWidth: true,
+                  },
+                  { id: 'key', key: 'key', name: 'Key', width: '150px' },
+                  {
+                    id: 'value',
+                    key: 'value',
+                    name: 'Value',
+                    width: '150px',
+                    resizeWithContainer: true,
+                  },
+                  {
+                    id: 'remove',
+                    key: '',
+                    name: '',
+                    width: '20px',
+                    fixedWidth: true,
+                  },
+                ]}
                 rows={authHeaders}
                 title="Headers derived from auth"
-                disable={true}
                 options={{
+                  hideRowAdd: true,
+                  disabledColumns: ['key', 'value'],
                   languages: {
                     key: EEditorLanguage.HeaderKey,
                     value: EEditorLanguage.HeaderValue,
                   },
                 }}
+                onChange={() => {}}
               />
             </div>
           ) : (
