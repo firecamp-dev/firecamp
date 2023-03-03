@@ -44,44 +44,41 @@ const HeadersTab = () => {
           onMount={() => {}}
         />
 
-        {
-          // ctx_tabData.type //todo: implement this auth header feature later after migration
-          true || (authHeaders && authHeaders.length) ? (
-            <div className="pt-14">
-              <TabHeader className="-mb-2">
-                <TabHeader.Left>
-                  <span className="">{'Headers derived from auth'}</span>
-                </TabHeader.Left>
-              </TabHeader>
+        {authHeaders?.length ? (
+          <div className="pt-14">
+            <TabHeader className="-mb-2">
+              <TabHeader.Left>
+                <span className="">{'Headers derived from auth'}</span>
+              </TabHeader.Left>
+            </TabHeader>
 
-              <BasicTable
-                key={'authHeaders'}
-                columns={[
-                  { id: 'key', key: 'key', name: 'Key', width: '150px' },
-                  {
-                    id: 'value',
-                    key: 'value',
-                    name: 'Value',
-                    width: '150px',
-                    resizeWithContainer: true,
-                  }
-                ]}
-                rows={authHeaders}
-                options={{
-                  hideRowAdd: true,
-                  disabledColumns: ['key', 'value'],
-                  languages: {
-                    key: EEditorLanguage.HeaderKey,
-                    value: EEditorLanguage.HeaderValue,
-                  },
-                }}
-                onChange={() => {}}
-              />
-            </div>
-          ) : (
-            <></>
-          )
-        }
+            <BasicTable
+              key={'authHeaders'}
+              columns={[
+                { id: 'key', key: 'key', name: 'Key', width: '150px' },
+                {
+                  id: 'value',
+                  key: 'value',
+                  name: 'Value',
+                  width: '150px',
+                  resizeWithContainer: true,
+                },
+              ]}
+              rows={authHeaders}
+              options={{
+                hideRowAdd: true,
+                disabledColumns: ['key', 'value'],
+                languages: {
+                  key: EEditorLanguage.HeaderKey,
+                  value: EEditorLanguage.HeaderValue,
+                },
+              }}
+              onChange={() => {}}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
       </Container.Body>
     </Container>
   );
