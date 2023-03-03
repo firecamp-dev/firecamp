@@ -57,13 +57,6 @@ const HeadersTab = () => {
               <BasicTable
                 key={'authHeaders'}
                 columns={[
-                  {
-                    id: 'select',
-                    key: 'disable',
-                    name: '',
-                    width: '40px',
-                    fixedWidth: true,
-                  },
                   { id: 'key', key: 'key', name: 'Key', width: '150px' },
                   {
                     id: 'value',
@@ -71,17 +64,9 @@ const HeadersTab = () => {
                     name: 'Value',
                     width: '150px',
                     resizeWithContainer: true,
-                  },
-                  {
-                    id: 'remove',
-                    key: '',
-                    name: '',
-                    width: '20px',
-                    fixedWidth: true,
-                  },
+                  }
                 ]}
                 rows={authHeaders}
-                title="Headers derived from auth"
                 options={{
                   hideRowAdd: true,
                   disabledColumns: ['key', 'value'],
