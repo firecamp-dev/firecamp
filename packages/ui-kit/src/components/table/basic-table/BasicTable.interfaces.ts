@@ -1,5 +1,6 @@
 import { EKeyValueTableRowType } from '@firecamp/types';
 import {
+  IColumn,
   ITable,
   ITableClasses,
   ITableOptions,
@@ -60,4 +61,5 @@ export interface IBasicTable<R>
    *  TODO: @note: check this property if not in use then remove it
    */
   title?: string;
+  columns?: IColumn[];
 }
