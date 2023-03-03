@@ -1,4 +1,3 @@
-import { IRequestItem } from '@firecamp/types/dist/common/request-item';
 import { Realtime, Rest } from '@firecamp/cloud-apis';
 import {
   TId,
@@ -6,6 +5,7 @@ import {
   IRestResponse,
   EHttpMethod,
   IRequestFolder,
+  IRequestItem,
   TRuntimeVariable,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
@@ -57,6 +57,11 @@ interface IPlatformRequestService {
   ) => Promise<any>;
 
   // request items
+  createRequestItemPrompt: (
+    item: IRequestItem<any, any>,
+    collection: { items: any[]; rootOrders: TId[] },
+    tabId: TId
+  ) => Promise<IRequestItem<any, any>>;
   createRequestItem: (
     item: IRequestItem<any, any>,
     tabId: TId
@@ -282,8 +287,42 @@ const request: IPlatformRequestService = {
     return true;
   },
 
+  createRequestItemPrompt: async (item, collection, tabId) => {
+    return platformContext.window
+      .promptSaveItem({
+        header: 'Save WebSocket Message',
+        label: 'Message Title',
+        placeholder: '',
+        texts: { btnOk: 'Save', btnOking: 'Saving...' },
+        value: '',
+        collection,
+        executor: ({ value, itemId }) => {
+          const _item = {
+            ...item,
+            name: value,
+            __ref: {
+              ...item.__ref,
+              folderId: itemId,
+            },
+          };
+          return request.createRequestItem(_item, '');
+        },
+        onError: (e) => {
+          platformContext.app.notify.alert(
+            e?.response?.data?.message || e.message
+          );
+        },
+      })
+      .then((res) => {
+        console.log(res, 1111);
+        return res;
+      });
+  },
+
   createRequestItem: async (item, tabId) => {
-    return item;
+    return Rest.request
+      .createItem(item.__ref.requestId, item)
+      .then((res) => res.data);
   },
   updateRequestItem: async (item, tabId) => {
     return item as IRequestItem<any, any>;

@@ -12,6 +12,7 @@ enum ETreeEventTypes {
 }
 type TTreeItemData = {
   name: string;
+  value: string;
   __ref: {
     id: string;
     collectionId?: string;
@@ -47,7 +48,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       return Promise.resolve({
         index: 'root',
         canMove: true,
-        data: { name: 'Root', __ref: { id: 'root' } },
+        data: { name: 'Root', value: '', __ref: { id: 'root' } },
         canRename: false,
         isFolder: true,
         children: this.rootOrders,
@@ -66,6 +67,8 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
 
     const treeItem: TTreeItemData = {
       name: item.name,
+      //@ts-ignore
+      value: item.value,
       __ref: {
         id: item.__ref.id,
         isFolder: item.__ref.isFolder,
