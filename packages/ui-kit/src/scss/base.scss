@@ -928,4 +928,21 @@ body .ace_editor .ace_scrollbar{
 .table-cell:hover .table-action{
   visibility: visible;
 }
+
+
+.table.border-0 .table-row:first-child .table-cell {
+  border-top: none;
+}
+
+.table.border-0 .table-row:last-child .table-cell {
+  border-bottom: none;
+}
+
+.table.border-0 .table-row .table-cell:first-child {
+  border-left: none;
+}
+
+.table.border-0 .table-row .table-cell:last-child {
+  border-right: none;
+}
 /*-----------table 2 css end --------*/
