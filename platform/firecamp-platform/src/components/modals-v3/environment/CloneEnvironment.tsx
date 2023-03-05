@@ -1,5 +1,4 @@
 import { FC, useEffect, useState } from 'react';
-import { Rest } from '@firecamp/cloud-apis';
 import {
   Input,
   TabHeader,
@@ -21,6 +20,8 @@ import { useModalStore } from '../../../store/modal';
 import { useEnvStore } from '../../../store/environment';
 import { RE } from '../../../types';
 import platformContext from '../../../services/platform-context';
+import { ETabEntityTypes } from '../../tabs/types';
+import { useTabStore } from '../../../store/tab';
 
 type TModalMeta = {
   workspaceId: string;
@@ -29,14 +30,16 @@ type TModalMeta = {
 };
 
 const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
+  const { open: openTab } = useTabStore.getState();
   const { explorer } = useWorkspaceStore.getState();
   const { collections } = explorer;
-  const { fetchColEnvironment, updateEnvironment } = useEnvStore.getState();
+  const { fetchColEnvironment, cloneEnvironment } = useEnvStore.getState();
   const { envId, collectionId } = useModalStore.getState().__meta as TModalMeta;
 
   const [isFetching, setIsFetching] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
-  const [error, setError] = useState({ name: '', variables: '' });
+  const [name, setName] = useState('');
+  const [error, setError] = useState({ name: '' });
 
   if (!collectionId) {
     onClose();
@@ -50,23 +53,20 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
     name: '',
     description: '',
     variables: JSON.stringify({}, null, 4),
-    __meta: { type: EEnvironmentScope.Collection, visibility: 2 },
   });
 
   //load environment
   useEffect(() => {
     setIsFetching(true);
-    Rest.environment
-      ._fetch(envId)
-      .then((r) => {
-        fetchColEnvironment(envId).then((e) => {
-          console.log(e, 'current env');
-          setEnv({
-            ...e,
-            variables: JSON.stringify(e.variables || {}, null, 4),
-          });
-          setIsFetching(false);
+    fetchColEnvironment(envId)
+      .then((e) => {
+        console.log(e, 'current env');
+        setEnv({
+          ...e,
+          variables: JSON.stringify(e.variables || {}, null, 4),
         });
+        setName(e.name);
+        setIsFetching(false);
       })
       .catch((e) => {
         platformContext.app.notify.alert(
@@ -76,54 +76,36 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       });
   }, []);
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    if (error.name || error.variables) setError({ name: '', variables: '' });
-    setEnv((c) => ({ ...c, [name]: value }));
-  };
-
-  const onVariableEditorChange = (e) => {
+  const onChangeName = (e) => {
     const { value } = e.target;
-    if (error.name || error.variables) setError({ name: '', variables: '' });
-    setEnv((c) => ({ ...c, variables: value }));
+    if (error.name) setError({ name: '' });
+    setName(value);
   };
 
   const onCreate = () => {
     if (isRequesting) return;
-    const name = env.name.trim();
-    if (!name || name.length < 3) {
+    const _name = name.trim();
+    if (!_name || _name.length < 3) {
       setError({
         name: 'The environment name must have minimum 3 characters',
-        variables: '',
       });
       return;
     }
-    if (!RE.NoSpecialCharacters.test(name)) {
+    if (!RE.NoSpecialCharacters.test(_name)) {
       setError({
         name: 'The environment name must not contain any special characters.',
-        variables: '',
       });
       return;
     }
 
-    let variables;
-    try {
-      variables = JSON.parse(env.variables);
-    } catch (e) {
-      console.log(e);
-      setError({ name: '', variables: 'The variables are invalid' });
-      return;
-    }
-
-    const _env: Partial<IEnvironment> = { name, variables, __meta: env.__meta };
-
-    console.log(_env, '_env');
+    console.log(_name, 'clone env name');
 
     setIsRequesting(true);
-    updateEnvironment(envId, _env)
-      .then((r) => {
-        console.log(r, 'r...... update env');
+    cloneEnvironment(envId, name)
+      .then((env) => {
+        // console.log(r, 'r...... update env');
         setTimeout(() => platformContext.app.modals.close());
+        openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
@@ -189,8 +171,8 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               label="Enter New Name For Cloned Environment"
               placeholder="new name for cloned environment"
               name={'name'}
-              value={env.name}
-              onChange={onChange}
+              value={name}
+              onChange={onChangeName}
               onKeyDown={() => {}}
               onBlur={() => {}}
               error={error.name}
@@ -231,7 +213,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
             <Editor
               language={EEditorLanguage.Json}
               value={env.variables}
-              onChange={onVariableEditorChange}
+              onChange={() => {}}
               readOnly={true}
               disabled={true}
               height={'280px'}
@@ -247,9 +229,6 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               }}
               className="!h-80"
             />
-            <div className="text-sm font-light text-error block absolute">
-              {error.variables}
-            </div>
           </div>
         </div>
         <div className="!px-6 py-4">
