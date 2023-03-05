@@ -1,4 +1,5 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { Rest } from '@firecamp/cloud-apis';
 import {
   Input,
   TabHeader,
@@ -7,60 +8,84 @@ import {
   IModal,
   ProgressBar,
   Editor,
-  CheckboxGroup,
 } from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
-import { EEditorLanguage, EEnvironmentScope } from '@firecamp/types';
+import {
+  IEnvironment,
+  EEnvironmentScope,
+  EEditorLanguage,
+} from '@firecamp/types';
 
-import { RE } from '../../../types';
-import platformContext from '../../../services/platform-context';
-import { useEnvStore } from '../../../store/environment';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useModalStore } from '../../../store/modal';
+import { useEnvStore } from '../../../store/environment';
+import { RE } from '../../../types';
+import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
-  scope: EEnvironmentScope;
+  workspaceId: string;
   collectionId?: string;
+  envId: string;
 };
 
-const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
-  const { workspace, explorer } = useWorkspaceStore.getState();
+const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
+  const { explorer } = useWorkspaceStore.getState();
   const { collections } = explorer;
-  const createEnvironment = useEnvStore.getState().createEnvironment;
-  let { collectionId } = useModalStore.getState().__meta as TModalMeta;
+  const { fetchColEnvironment, updateEnvironment } = useEnvStore.getState();
+  const { envId, collectionId } = useModalStore.getState().__meta as TModalMeta;
+
+  const [isFetching, setIsFetching] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
+  const [error, setError] = useState({ name: '', variables: '' });
+
   if (!collectionId) {
     onClose();
     return <></>;
   }
+
   const collection = collections.find((c) => c.__ref.id == collectionId);
-  // console.log(collection, 'collection....');
+  console.log(collection, 'collection....');
 
   const [env, setEnv] = useState({
     name: '',
-    variables: JSON.stringify({ variable_key: 'value' }, null, 4),
-    __meta: { type: EEnvironmentScope.Collection, visibility: 1 },
+    description: '',
+    variables: JSON.stringify({}, null, 4),
+    __meta: { type: EEnvironmentScope.Collection, visibility: 2 },
   });
 
-  const [isRequesting, setIsRequesting] = useState(false);
-  const [error, setError] = useState({ name: '', variables: '' });
+  //load environment
+  useEffect(() => {
+    setIsFetching(true);
+    Rest.environment
+      ._fetch(envId)
+      .then((r) => {
+        fetchColEnvironment(envId).then((e) => {
+          console.log(e, 'current env');
+          setEnv({
+            ...e,
+            variables: JSON.stringify(e.variables || {}, null, 4),
+          });
+          setIsFetching(false);
+        });
+      })
+      .catch((e) => {
+        platformContext.app.notify.alert(
+          e.response?.data?.message || e.message
+        );
+        console.log(e);
+      });
+  }, []);
 
-  const onChange = (e: { target: { name: any; value: any } }) => {
+  const onChange = (e) => {
     const { name, value } = e.target;
     if (error.name || error.variables) setError({ name: '', variables: '' });
     setEnv((c) => ({ ...c, [name]: value }));
   };
 
-  const onVariableEditorChange = (e: { target: { value: any } }) => {
+  const onVariableEditorChange = (e) => {
     const { value } = e.target;
     if (error.name || error.variables) setError({ name: '', variables: '' });
     setEnv((c) => ({ ...c, variables: value }));
-  };
-
-  const onChangeVisibility = (value: { private: boolean }) => {
-    setEnv((s) => ({
-      ...s,
-      __meta: { ...s.__meta, visibility: value.private == true ? 2 : 1 },
-    }));
   };
 
   const onCreate = () => {
@@ -81,7 +106,7 @@ const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       return;
     }
 
-    let variables: any;
+    let variables;
     try {
       variables = JSON.parse(env.variables);
     } catch (e) {
@@ -90,20 +115,15 @@ const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       return;
     }
 
-    const _env = {
-      name,
-      variables,
-      __meta: env.__meta,
-      __ref: { workspaceId: workspace.__ref.id, collectionId },
-    };
+    const _env: Partial<IEnvironment> = { name, variables, __meta: env.__meta };
 
     console.log(_env, '_env');
 
     setIsRequesting(true);
-    createEnvironment(_env)
+    updateEnvironment(envId, _env)
       .then((r) => {
-        console.log(r, 'r......');
-        platformContext.app.modals.close();
+        console.log(r, 'r...... update env');
+        setTimeout(() => platformContext.app.modals.close());
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
@@ -116,36 +136,30 @@ const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       });
   };
 
-  const visibility = [
-    {
-      id: 'public',
-      isChecked: env.__meta.visibility == 1,
-      label: 'Public',
-      showLabel: true,
-      disabled: false,
-    },
-    {
-      id: 'private',
-      isChecked: env.__meta.visibility == 2,
-      label: 'Private',
-      showLabel: true,
-      disabled: false,
-    },
-  ];
+  if (isFetching) {
+    return (
+      <Modal.Body>
+        <ProgressBar active={isRequesting} />
+        <div className="flex items-center justify-center h-full w-full">
+          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2 text-center">
+            Fetching...
+          </label>
+        </div>
+      </Modal.Body>
+    );
+  }
+
   return (
     <>
       <Modal.Header className="with-divider">
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
-          Create Environment
+          Clone Environment
         </div>
       </Modal.Header>
-      <Modal.Body className="flex flex-col">
+      <Modal.Body>
         <ProgressBar active={isRequesting} />
-        <div className="p-6 flex-1 overflow-auto">
-          {/* <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
-            ENTER A NEW ENVIRONMENT INFO
-          </label> */}
-          <div className="mt-4">
+        <div className="p-6">
+          <div className="">
             <div className="items-center mb-4">
               <label
                 className="text-appForeground text-sm block mb-1"
@@ -157,10 +171,23 @@ const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
                 {collection?.name}
               </label>
             </div>
+
+            <div className="items-center mb-4">
+              <label
+                className="text-appForeground text-sm block mb-1"
+                htmlFor="envBane"
+              >
+                Environment Name
+              </label>
+              <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
+                {env.name}
+              </label>
+            </div>
+
             <Input
               autoFocus={true}
-              label="Environment name"
-              placeholder="type env name"
+              label="Enter New Name For Cloned Environment"
+              placeholder="new name for cloned environment"
               name={'name'}
               value={env.name}
               onChange={onChange}
@@ -172,24 +199,23 @@ const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
             />
           </div>
 
-          <div className="">
+          {/* <div className="">
             <label
               className="text-appForeground text-sm mb-1 block"
               htmlFor="variables"
             >
               Visibility
             </label>
-            <CheckboxGroup
-              showLabel={false}
-              list={visibility}
-              onToggleCheck={onChangeVisibility}
-            />
+            <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+              {env.__meta.visibility == 2 ? 'Private' : 'Public'}
+            </label>
+
             <span className="text-sm font-normal text-appForegroundInActive block mt-1">
               {env.__meta.visibility == 2
                 ? 'This environment is private and will only be accessible to you'
                 : 'This environment is public and will be accessible to all members of the workspace'}
             </span>
-          </div>
+          </div> */}
 
           <div className="mt-4">
             <label
@@ -206,13 +232,18 @@ const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               language={EEditorLanguage.Json}
               value={env.variables}
               onChange={onVariableEditorChange}
+              readOnly={true}
+              disabled={true}
+              height={'280px'}
               monacoOptions={{
                 extraEditorClassName: `border border-inputBorder rounded-sm p-2 leading-5 
                   outline-none placeholder-inputPlaceholder 
                   text-base focus:bg-inputFocusBackground w-full
                   bg-inputBackground`,
                 fontSize: '14px',
-                height: '300px',
+                height: '250px',
+                wordWrap: 'off',
+                readOnly: true,
               }}
               className="!h-80"
             />
@@ -233,7 +264,7 @@ const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
                 sm
               />
               <Button
-                text={isRequesting ? 'Creating...' : 'Create'}
+                text={isRequesting ? 'Cloning...' : 'Clone Environment'}
                 onClick={onCreate}
                 disabled={isRequesting}
                 primary
@@ -247,4 +278,4 @@ const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
   );
 };
 
-export default CreateEnvironment;
+export default CloneEnvironment;
