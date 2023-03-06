@@ -5,9 +5,9 @@ import LinkTo from '@storybook/addon-links/react';
 
 ## **Tabs**
 
-To create view for single tab.
+To create view for list with single/multiple tab.
 
-- Is used in multiple locations [ within tab header, body tab headers, and so ]
+- Is used in multiple locations [ within tab header, body tab headers, and so. ]
 
 #### **Component Usage**:
 
@@ -17,7 +17,7 @@ To create view for single tab.
 #### **Best Practices**:
 
 - For preComp, postComp, suffix - create functional component
-- Example: ```() => <div>Icon</div>```
+- Example: `() => <div>Icon</div>`
 
 Do:
 
@@ -29,50 +29,34 @@ Do:
             show: true,
             onClick: (i, id) => removePlayground(id),
           }}
-      suffixComp={() => {
-            return (
-              <Button
-                text="suffix btn"
-                secondary
-                iconLeft
-                sm
-                transparent={true}
-                ghost={true}
-              />
-            );
-          }}
-      preComp={() => {
-            return (
-              <Button
-                text="preFix btn"
-                secondary
-                iconLeft
-                sm
-                transparent={true}
-                ghost={true}
-              />
-            );
-          }}
-      postComp={() => {
-            return (
-              <Button
-                text="postFix btn"
-                secondary
-                iconLeft
-                sm
-                transparent={true}
-                ghost={true}
-              />
-            );
-          }}
-        />
+      suffixComp={() => <Button text="suffix btn" sm />}
+      preComp={() => <Button text="preFix btn" sm/>}
+      postComp={() => <Button text="postFix btn" sm/>} />
 ```
 
 #### **Examples**:
 
+- <LinkTo kind="ui-kit-tabs--tabs-demo" className="!text-primaryColor">
+    Tabs Example
+  </LinkTo>
 - <LinkTo
-    kind="ui-kit-tabs--tabs-demo"
+    kind="ui-kit-tabs--tabs-demo-left-comp"
     className="!text-primaryColor"
   >
-    Tabs Example
+    Tabs Example with preComp
+  </LinkTo>
+- <LinkTo
+    kind="ui-kit-tabs--tabs-demo-right-comp"
+    className="!text-primaryColor"
+  >
+    Tabs Example with postComp
+  </LinkTo>
+- <LinkTo kind="ui-kit-tabs--tab-with-scrollbar" className="!text-primaryColor">
+    Tabs Example with scrollbar
+  </LinkTo>
+
+#### **References**:
+
+- Update single tab from the list : <LinkTo kind="ui-kit-tab-overview--page" className="!text-primaryColor">
+  Refer Example
   </LinkTo>

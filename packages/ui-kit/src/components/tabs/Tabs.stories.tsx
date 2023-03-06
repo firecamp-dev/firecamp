@@ -1,15 +1,11 @@
-import { VscJson } from '@react-icons/all-files/vsc/VscJson';
-
 import { default as Tabs } from './Tabs';
 import { default as Button } from '../buttons/Button';
-import { MenuBarDemo } from '../activity-bar/MenuBar.stories';
 import { useState } from 'react';
 
 const demoArgs = [
   {
     id: 'body',
     name: 'Body',
-    icon: <VscJson />,
   },
   {
     id: 'auth',
@@ -59,13 +55,13 @@ TabsDemo.args = {
 export const TabsDemoLeftComp = Template.bind({});
 TabsDemoLeftComp.args = {
   list: demoArgs,
-  preComp: () => <Button text="Sample Button" primary />,
+  preComp: () => <Button text="Sample Prefix Button" primary sm/>,
 };
 
 export const TabsDemoRightComp = Template.bind({});
 TabsDemoRightComp.args = {
   list: demoArgs,
-  postComp: () => <MenuBarDemo />,
+  postComp: () =>  <Button text="Sample Postfix Button" primary sm/>,
 };
 
 export const TabWithScrollbar = () => {

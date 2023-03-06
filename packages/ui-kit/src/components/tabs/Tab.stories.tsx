@@ -1,5 +1,5 @@
-//@ts-nocheck
 import { default as Tab } from './Tab';
+import { ITab } from './interfaces/Tab.interface';
 import { VscJson } from "@react-icons/all-files/vsc/VscJson";
 
 export default {
@@ -10,7 +10,7 @@ export default {
     }
 };
 
-const Template = (args) =>
+const Template = (args: ITab) =>
     <div className="bg-activityBarBackground text-activityBarForeground flex items-top h-32">
         <div className="border-r !border-inputBorder p-12">
             SideBar

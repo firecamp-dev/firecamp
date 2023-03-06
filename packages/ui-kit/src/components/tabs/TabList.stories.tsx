@@ -5,7 +5,7 @@ import { VscEllipsis } from "@react-icons/all-files/vsc/VscEllipsis";
 import { VscDiff } from "@react-icons/all-files/vsc/VscDiff";
 
 export default {
-    title: "UI-Kit/Tabs",
+    title: "UI-Kit/Tab",
     component: Tab,
     argTypes: {
         className: ""
