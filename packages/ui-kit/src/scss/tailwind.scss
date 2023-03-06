@@ -860,6 +860,12 @@ video {
 .bottom-0 {
 	bottom: 0px;
 }
+.-left-2 {
+	left: -0.5rem;
+}
+.-top-2 {
+	top: -0.5rem;
+}
 .\!top-4 {
 	top: 1rem !important;
 }
@@ -895,9 +901,6 @@ video {
 }
 .-bottom-px {
 	bottom: -1px;
-}
-.-top-2 {
-	top: -0.5rem;
 }
 .left-1 {
 	left: 0.25rem;
@@ -1963,6 +1966,9 @@ video {
 }
 .text-right {
 	text-align: right;
+}
+.align-middle {
+	vertical-align: middle;
 }
 .font-sans {
 	font-family: sans-serif;
