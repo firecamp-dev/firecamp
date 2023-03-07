@@ -20,7 +20,6 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
         connections: updatedConnections,
       },
     }));
-    // state.prepareRequestConnectionsPushAction(connection.id, 'i');
   },
   updateConnection: (connectionId: TId, key: string, value: any) => {
     //if connection id not provided, queryParams has dedicated change fn below
@@ -51,13 +50,6 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
       request: { ...s.request, connections: _connections },
       runtime: { ...s.runtime, displayUrl },
     }));
-
-    // state.prepareRequestConnectionsPushAction(
-    //   connectionId,
-    //   'u,
-    //   state.last?.request?.connections[connectionIndex],
-    //   updatedConnection
-    // );
   },
   removeConnection: (connectionId: TId) => {
     const state = get();
@@ -94,7 +86,6 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
           },
         },
       }));
-      // state.prepareRequestConnectionsPushAction(connectionId, 'd');
     }
   },
   changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {
@@ -110,13 +101,11 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
       }
       return c;
     });
-
     set((s) => ({
       request: { ...s.request, connections: _connections },
       runtime: { ...s.runtime, displayUrl },
     }));
-
-    // console.log(state.equalityChecker(qps, 'queryParams'));
+    state.equalityChecker({ connections });
   },
 });
 

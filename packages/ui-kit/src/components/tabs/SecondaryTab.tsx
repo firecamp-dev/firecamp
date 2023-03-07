@@ -52,7 +52,7 @@ const SecondaryTab: FC<ISecondaryTab> = ({
   className = '',
   list = [],
   activeTab = '',
-  isBgTransperant = false,
+  isBgTransparent = false,
   components = { button: '', controls: '' },
   additionalComponent = '',
   onSelect = () => {},
@@ -64,7 +64,7 @@ const SecondaryTab: FC<ISecondaryTab> = ({
       <div
         className={classnames(
           {
-            'flex text-base items-center py-1 bg-transparent ': isBgTransperant,
+            'flex text-base items-center py-1 bg-transparent ': isBgTransparent,
           },
           'flex text-base items-center w-full' ,
           className

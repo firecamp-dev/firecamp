@@ -15,7 +15,7 @@ const Variables = () => {
   return (
     <Editor
       language={EEditorLanguage.Json}
-      value={playground?.request?.__meta?.variables || `{ }`}
+      value={playground?.request?.value?.variables || `{ }`}
       onChange={(e) => {
         changeVariables(playground.request.__ref.id, e.target.value);
       }}

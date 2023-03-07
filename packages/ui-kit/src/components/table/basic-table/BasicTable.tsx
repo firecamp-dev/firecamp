@@ -18,13 +18,13 @@ import { IBasicTable } from './BasicTable.interfaces';
 
 const _columns = [
   { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
-  { id: 'key', key: 'key', name: 'Key', width: '100px' },
-  { id: 'value', key: 'value', name: 'Value', width: '100px' },
+  { id: 'key', key: 'key', name: 'Key', width: '150px' },
+  { id: 'value', key: 'value', name: 'Value', width: '150px' },
   {
     id: 'description',
     key: 'description',
     name: 'Description',
-    width: '150px',
+    width: '100px',
     resizeWithContainer: true,
   },
   { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
@@ -94,7 +94,9 @@ const BasicTable = ({
         return (
           <SingleLineEditor
             path={`${row.id}_${column.id}`}
-            language={EEditorLanguage.HeaderKey}
+            language={
+              options?.languages?.[column.key] || EEditorLanguage.FcText
+            }
             className="without-border px-2"
             style={{
               position: 'absolute',
@@ -106,7 +108,9 @@ const BasicTable = ({
             type="text"
             value={cellValue}
             height={21}
-            onChange={(e: any) => onChange(column.key, e.target.value, e)}
+            onChange={(e) => {
+              onChange(column.key, e.target.value, e);
+            }}
             // loading={<>{cellValue}</>}
             // loading={
             //   <input

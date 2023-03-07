@@ -1,16 +1,8 @@
-import { FC, useState, useEffect, useRef } from 'react';
-import {
-  AuthSetting,
-  Container,
-  TabHeader,
-  Button,
- 
-  
-} from '@firecamp/ui-kit';
-import equal from 'deep-equal';
-
-import { Auth as AuthService } from '@firecamp/rest/src/services';
+import { FC, useState, useEffect } from 'react';
+import isEqual from 'react-fast-compare';
 import { cloneDeep } from 'lodash';
+import { AuthSetting, Container, TabHeader, Button } from '@firecamp/ui-kit';
+import { Auth as AuthService } from '@firecamp/rest/src/services';
 import { EAuthTypes } from '@firecamp/types';
 
 import { _env, _object } from '@firecamp/utils';
@@ -20,15 +12,13 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
 
   let [initialAuthDetails, setInitialAuthDetails] = useState({
     auth: project?.auth || {},
-    activeAuthType:
-      project?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+    activeAuthType: project?.__meta?.activeAuthType || EAuthTypes.None || '',
     oauth2LastFetchedToken: project?._dnp?.oauth2LastFetchedToken || '',
   });
   let [authDetails, setAuthDetails] = useState(
     cloneDeep({
       auth: project?.auth || {},
-      activeAuthType:
-        project?.__meta?.activeAuthType || EAuthTypes.NoAuth || '',
+      activeAuthType: project?.__meta?.activeAuthType || EAuthTypes.None || '',
       oauth2LastFetchedToken: project?._dnp?.oauth2LastFetchedToken || '',
     })
   );
@@ -40,18 +30,18 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
       try {
         let updatedAuthDetails = {};
         // console.log({ project, authDetails });
-        if (project?.auth && !equal(project.auth, authDetails.auth)) {
+        if (project?.auth && !isEqual(project.auth, authDetails.auth)) {
           updatedAuthDetails.auth = project.auth;
         }
         if (
           project?.__meta?.activeAuthType &&
-          !equal(project?.__meta?.activeAuthType, authDetails.activeAuthType)
+          !isEqual(project?.__meta?.activeAuthType, authDetails.activeAuthType)
         ) {
           updatedAuthDetails.activeAuthType = project.__meta.activeAuthType;
         }
         if (
           project?._dnp?.oauth2LastFetchedToken &&
-          !equal(
+          !isEqual(
             project?._dnp?.oauth2LastFetchedToken,
             authDetails.oauth2LastFetchedToken
           )
@@ -120,9 +110,7 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
     let stateUpdates = {};
 
     try {
-      if (
-        initialAuthDetails.activeAuthType !== authDetails.activeAuthType
-      ) {
+      if (initialAuthDetails.activeAuthType !== authDetails.activeAuthType) {
         updates = {
           ...updates,
           meta: { activeAuthType: authDetails.activeAuthType },
@@ -262,7 +250,7 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
         <Container className="pt-16 padding-wrapper">
           <AuthSetting
             auth={authDetails.auth || {}}
-            activeAuth={authDetails.activeAuthType || EAuthTypes.NoAuth || ''}
+            activeAuth={authDetails.activeAuthType || EAuthTypes.None || ''}
             allowInherit={false}
             onChangeAuth={_onChangeAuth}
             onChangeActiveAuth={_onchangeActiveAuth}
@@ -279,7 +267,7 @@ const Auth: FC<IAuth> = ({ project = {}, collectionId = '' }) => {
               text="Update"
               primary
               sm
-              disabled={equal(cloneDeep(initialAuthDetails), authDetails)}
+              disabled={isEqual(cloneDeep(initialAuthDetails), authDetails)}
               onClick={_onUpdate}
             />
           </TabHeader.Right>

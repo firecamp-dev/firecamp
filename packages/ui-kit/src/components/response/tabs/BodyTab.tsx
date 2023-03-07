@@ -1,7 +1,15 @@
 import { FC, useEffect, useState } from 'react';
-import { SecondaryTab, Container, Editor, StatusBar } from '@firecamp/ui-kit';
+import {
+  SecondaryTab,
+  Container,
+  Editor,
+  StatusBar,
+  EditorControlBar,
+} from '@firecamp/ui-kit';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
+
+import { IoMdCloseCircle } from '@react-icons/all-files/io/IoMdCloseCircle';
 
 enum EActiveTab {
   Json = 'json',
@@ -16,7 +24,7 @@ enum EActiveTab {
   None = '',
 }
 
-const getConentTypeFromHeadders = (headers: { [k: string]: string }) => {
+const getContentTypeFromHeaders = (headers: { [k: string]: string }) => {
   let ct: string;
   if (headers) {
     if (Object.keys(headers).includes(`content-type`))
@@ -54,9 +62,9 @@ const initialTabs = [
   { name: 'No body found', id: 'nobodyfound' },
 ];
 
-const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
-  console.log({ id, data, headers });
-  const contentType = getConentTypeFromHeadders(headers);
+const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
+  // console.log({ id, body, headers }); //TODO: optimize it for rerendering
+  const contentType = getContentTypeFromHeaders(headers);
 
   let contentTypeKey = `content-type`;
   if (headers) {
@@ -72,7 +80,7 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
   const [activeTab, setActiveTab] = useState<EActiveTab>(
     getActiveTabFromHeaders(contentType)
   );
-  const [editorDOM, setEditorDOM] = useState<any>(null);
+  const [editor, setEditor] = useState<any>(null);
 
   // set response type by updated response headers. (by content type)
   useEffect(() => {
@@ -80,7 +88,7 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
   }, [headers]);
 
   const prepareTabs = (headers: any) => {
-    const activeTab = _misc.isJSON(data)
+    const activeTab = _misc.isJSON(body)
       ? EActiveTab.Json
       : getActiveTabFromHeaders(headers?.[contentTypeKey]);
 
@@ -101,14 +109,14 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
     tab === 'octet_stream' ? 'json' : tab;
 
     switch (tab) {
-      case EActiveTab.Html: /** allow to show HTML response without checking data HTML valid or not */
+      case EActiveTab.Html: /** allow to show HTML response without checking body HTML valid or not */
       case EActiveTab.Xml:
       case EActiveTab.Json:
       case EActiveTab.Text:
       default:
         try {
           if (tab === 'json') {
-            data = JSON.stringify(JSON.parse(data), null, 4);
+            body = JSON.stringify(JSON.parse(body), null, 4);
           }
           if (tab === 'xml') {
             // prettify
@@ -120,10 +128,10 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
         return (
           <Editor
             language={tab}
-            value={data}
+            value={body}
             path={`${id}/response/body`}
             onLoad={(editor) => {
-              setEditorDOM(editor);
+              setEditor(editor);
               // editor.resize(true);
               editor.revealLine(1);
               editor.setPosition({ column: 1, lineNumber: 10 });
@@ -135,20 +143,21 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
           />
         );
       case EActiveTab.None:
-        return 'no body found';
+        return <CorsError />;
+
       case EActiveTab.Preview:
         /** allow to show preview for HTML response without checking HTML data valid or not */
         return (
           <iframe
-            src={`data:text/html, ${encodeURIComponent(data)}`}
+            src={`data:text/html, ${encodeURIComponent(body)}`}
             style={{ height: '100%', width: '100%' }}
           />
         );
     }
   };
 
-  if (editorDOM && editorDOM.editor) {
-    editorDOM.$onChangeWrapMode();
+  if (editor && editor.editor) {
+    editor.$onChangeWrapMode();
   }
 
   return (
@@ -170,6 +179,9 @@ const BodyTab: FC<IBodyTab> = ({ id, data, headers = {}, error }) => {
               }
             />
           </StatusBar.PrimaryRegion>
+          <StatusBar.SecondaryRegion>
+            <EditorControlBar editor={editor} language={activeTab} />
+          </StatusBar.SecondaryRegion>
         </StatusBar>
       </Container.Header>
       <Container.Body overflow={'hidden'}>
@@ -184,6 +196,66 @@ export default BodyTab;
 interface IBodyTab {
   id: TId;
   headers: any;
-  data?: string;
+  body?: string;
   error?: any;
 }
+
+const CorsError = () => {
+  return (
+    <div className="p-3">
+      <div className="text-error flex items-center text-base font-semibold mb-2 mt-1">
+        <IoMdCloseCircle className="mr-1" />
+        <span>Unable to reach server</span>
+      </div>
+      <div className="text-base text-appForegroundInActive">
+        <ul className="ml-8 list-decimal">
+          <li className="mb-2">
+            <span>Server may not be reachable at the provided endpoint.</span>
+          </li>
+          <li className="mb-2">
+            <span>Is the server currently running?</span>
+          </li>
+          <li className="mb-2">
+            <label className="font-semibold block text-appForegroundActive">
+              The Server's response may be missing CORS headers
+            </label>
+            <span>
+              To verify open developer tools and check the console for any CORS
+              related error message like, "Cors Origin Request Blocked".
+              Possible solutions are
+            </span>
+            <div>
+              <ul className="ml-8 list-disc mt-2">
+                <li className="mv-2">
+                  <span>
+                    {`Contact your system administrator and add `}
+                    <b className="text-appForeground contents">
+                      https://firecamp.dev
+                    </b>
+                    {` to your server's allow list.`}
+                  </span>
+                  <a
+                    className="font-semibold block !text-info cursor-pointer"
+                    href="https://enable-cors.org/server.html"
+                    target="_blank"
+                  >
+                    Learn more about enabling CORS.
+                  </a>
+                </li>
+                <li className="mb-2">
+                  <span>
+                    {`Or change Firecamp Agent from Browser agent to `}
+                    <a className="font-semibold block !text-info contents">
+                      Cloud Agent
+                    </a>
+                    .
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  );
+};

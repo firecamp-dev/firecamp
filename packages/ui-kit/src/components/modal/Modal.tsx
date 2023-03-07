@@ -71,7 +71,12 @@ let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
 // `id`: is not being updated on the element
 let Body: FC<IBody> = ({ id = '', children = '', className = '' }) => {
   return (
-    <Container.Body className={className || 'flex flex-col overflow-auto visible-scrollbar thin'} id={id}>
+    <Container.Body
+    className={cx(
+      className,
+      'flex flex-col overflow-auto visible-scrollbar thin !p-4'
+    )}
+    id={id}>
       {children}
     </Container.Body>
   );

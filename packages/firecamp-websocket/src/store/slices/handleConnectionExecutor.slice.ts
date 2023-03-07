@@ -11,7 +11,7 @@ import { TStoreSlice } from '../store.type';
 interface IHandleConnectionExecutorSlice {
   connect: (connectionId: TId) => void;
   disconnect: (connectionId: TId, code?: number, reason?: string) => void;
-  sendMessage: (connectionId: TId, message: IWebSocketMessage) => void;
+  sendMessage: (connectionId: TId) => void;
 }
 
 const createHandleConnectionExecutor: TStoreSlice<
@@ -125,7 +125,7 @@ const createHandleConnectionExecutor: TStoreSlice<
     }
   },
 
-  sendMessage: (connectionId: TId, message: IWebSocketMessage) => {
+  sendMessage: (connectionId: TId) => {
     try {
       /**
        * TODOs:
@@ -133,28 +133,23 @@ const createHandleConnectionExecutor: TStoreSlice<
        * 2. history
        */
       const state = get();
-      const existingPlayground: IPlayground = state.playgrounds?.[connectionId];
+      const plg: IPlayground = state.playgrounds[connectionId];
       if (
-        existingPlayground &&
-        existingPlayground?.id === connectionId &&
-        existingPlayground.executor &&
-        existingPlayground.connectionState === EConnectionState.Open
+        plg &&
+        plg?.id === connectionId &&
+        plg.executor &&
+        plg.connectionState === EConnectionState.Open
       ) {
         // TODO: check if connection open or not. if not then executor will send log with error message
-
-        message = _object.omit(message, ['path']) as IWebSocketMessage;
-        console.log({ message }, 'send message');
+        const { message } = plg;
+        const _message = _object.omit(message, ['path']) as IWebSocketMessage;
+        console.log({ _message }, 'send message');
 
         // send message
-        existingPlayground.executor.send(message);
+        plg.executor.send(_message);
       }
-    } catch (error) {
-      console.info({
-        API: 'websocket.send',
-        connectionId,
-        message,
-        error,
-      });
+    } catch (e) {
+      console.error({ action: 'websocket.send', e });
     }
   },
 });

@@ -1,6 +1,5 @@
 import { FC, useState, useEffect } from 'react';
 import shallow from 'zustand/shallow';
-import { ERestBodyTypes } from '@firecamp/types';
 import {
   Container,
   Dropdown,
@@ -9,20 +8,13 @@ import {
   Button,
   StatusBar,
   MultipartTable,
-  /* ToolBar, */
+  EditorControlBar,
 } from '@firecamp/ui-kit';
-/* 
-import { VscCode } from '@react-icons/all-files/vsc/VscCode';
-import { FaCopy } from '@react-icons/all-files/fa/FaCopy';
-import { VscWordWrap } from '@react-icons/all-files/vsc/VscWordWrap';
-import { VscFold } from '@react-icons/all-files/vsc/VscFold';
-import { VscClearAll } from '@react-icons/all-files/vsc/VscClearAll'; */
+import { ERestBodyTypes } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
-
 import GraphQLBody from './body/GraphQLBody';
 import BinaryBody from './body/BinaryBody';
 import NoBodyTab from './body/NoBodyTab';
-
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
 import { IStore, useStore } from '../../../store';
@@ -39,12 +31,13 @@ const BodyTab: FC<any> = () => {
       body: s.request.body,
       changeBodyValue: s.changeBodyValue,
       changeBodyType: s.changeBodyType,
-      changeHeaders: s.changeHeaders
+      changeHeaders: s.changeHeaders,
     }),
     shallow
   );
+  const [editor, setEditor] = useState(null);
 
-  console.log(body, 'body...');
+  // console.log(body, 'body...');
 
   //when user elect the body type from the dropdown, follow these
   const _selectBodyType = (selectedType: {
@@ -53,6 +46,13 @@ const BodyTab: FC<any> = () => {
   }) => {
     if (body?.type == selectedType.id) return;
     changeBodyType(selectedType.id);
+    if (
+      ![ERestBodyTypes.Json, ERestBodyTypes.Xml, ERestBodyTypes.Text].includes(
+        selectedType.id
+      )
+    ) {
+      setEditor(null);
+    }
   };
 
   /**
@@ -61,9 +61,7 @@ const BodyTab: FC<any> = () => {
   const _prepareRestBodyTypesOptions = () => {
     const isEmptyAPIBody = isRestBodyEmpty(body || {});
     // console.log({ isEmptyAPIBody });
-
     const updatedBodyTypes = Object.values(bodyTypesDDValues);
-
     if (isEmptyAPIBody) {
       updatedBodyTypes.map((type, i) => {
         return Object.assign(type, {
@@ -76,61 +74,52 @@ const BodyTab: FC<any> = () => {
         });
       });
     }
-
     return updatedBodyTypes;
   };
 
   const _renderBodyTab = () => {
-    if (body?.type) {
-      switch (body.type) {
-        case '':
-          return <NoBodyTab selectBodyType={_selectBodyType} />;
-        case ERestBodyTypes.FormData:
-          return (
-            <MultipartTable
-              onChange={changeBodyValue}
-              rows={body.value || []}
-            />
-          );
-          break;
-        case ERestBodyTypes.UrlEncoded:
-          return (
-            <BasicTable
-              title=""
-              onChange={changeBodyValue}
-              rows={body.value || []}
-            />
-          );
-          break;
-        case ERestBodyTypes.Json:
-        case ERestBodyTypes.Xml:
-        case 'application/text':
-        case ERestBodyTypes.Text:
-          return (
-            <Editor
-              autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
-              value={body.value as string}
-              language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
-              onChange={({ target: { value } }) => changeBodyValue(value)}
-              controlsConfig={{ show: true }}
-            />
-          );
-          break;
-        case ERestBodyTypes.Binary:
-          return <BinaryBody body={body || {}} onChange={changeBodyValue} />;
-          break;
-        case ERestBodyTypes.GraphQL:
-          return <GraphQLBody body={body || {}} onChange={changeBodyValue} />;
-          break;
-        case '':
-          return <NoBodyTab selectBodyType={_selectBodyType} />;
-          break;
-        default:
-          return '';
-          break;
-      }
+    if (!body?.type) return <></>;
+    switch (body.type) {
+      case ERestBodyTypes.None:
+        return <NoBodyTab selectBodyType={_selectBodyType} />;
+      case ERestBodyTypes.FormData:
+        return (
+          <MultipartTable onChange={changeBodyValue} rows={body.value || []} />
+        );
+        break;
+      case ERestBodyTypes.UrlEncoded:
+        return (
+          <BasicTable
+            title=""
+            onChange={changeBodyValue}
+            rows={body.value || []}
+          />
+        );
+        break;
+      case ERestBodyTypes.Json:
+      case ERestBodyTypes.Xml:
+      case 'application/text':
+      case ERestBodyTypes.Text:
+        return (
+          <Editor
+            autoFocus={false} //todo: previously autoFocus={!propReq.raw_url}
+            value={body.value as string}
+            language={bodyTypeNames[body.type]?.toLowerCase() || 'json'} //json//xml
+            onChange={({ target: { value } }) => changeBodyValue(value)}
+            onLoad={(edt) => {
+              setEditor(edt);
+            }}
+          />
+        );
+      case ERestBodyTypes.Binary:
+        return <BinaryBody body={body || {}} onChange={changeBodyValue} />;
+      case ERestBodyTypes.GraphQL:
+        return <GraphQLBody body={body || {}} onChange={changeBodyValue} />;
+      case ERestBodyTypes.None:
+        return <NoBodyTab selectBodyType={_selectBodyType} />;
+      default:
+        return <></>;
     }
-    return <></>;
   };
 
   return (
@@ -144,29 +133,15 @@ const BodyTab: FC<any> = () => {
               fetchOptions={() => _prepareRestBodyTypesOptions()}
             />
           </StatusBar.PrimaryRegion>
-          {/*     <StatusBar.SecondaryRegion>
-            <ToolBar>
-              <div>
-                <FaCopy size={16} />                                                    
-              </div>
-              <div>
-                <VscWordWrap size={16} />
-              </div>
-              <div>
-                <VscFold size={16} />
-              </div>
-              <div>
-                <VscCode size={16} />
-              </div>
-              <div>
-                <VscClearAll size={16} />
-              </div>
-            </ToolBar> */}
-          {/* //todo: removing add new Body components from here, you can take reference from old component of BodyTab to re-implement it */}
-          {/* </StatusBar.SecondaryRegion> */}
+          <StatusBar.SecondaryRegion>
+            <EditorControlBar
+              editor={editor}
+              language={bodyTypeNames[body.type]?.toLowerCase()}
+            />
+          </StatusBar.SecondaryRegion>
         </StatusBar>
       </Container.Header>
-      <Container.Body>{_renderBodyTab()}</Container.Body>
+      <Container.Body className='visible-scrollbar'>{_renderBodyTab()}</Container.Body>
     </Container>
   );
 };
@@ -183,7 +158,7 @@ const BodyTypeDropDown: FC<any> = ({
 
   useEffect(() => {
     setOptions(fetchOptions());
-    console.log(fetchOptions(), 'fetch options');
+    // console.log(fetchOptions(), 'fetch options');
   }, []);
 
   /**
@@ -206,11 +181,11 @@ const BodyTypeDropDown: FC<any> = ({
       detach={false}
       isOpen={isOpen}
       onToggle={_onToggleOpen}
-      selected={selectedOption || ''}
+      selected={selectedOption || 'None'}
     >
       <Dropdown.Handler>
         <Button
-          text={selectedOption || 'No Body'}
+          text={selectedOption || 'None'}
           className="font-bold"
           withCaret
           transparent

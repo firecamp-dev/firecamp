@@ -1,94 +1,98 @@
 export default {
-    id: 'request_snippets',
-    name: 'Request Snippets',
-    snippets: [
+  id: 'requestSnippets',
+  name: 'Request Snippets',
+  groups: [
+    {
+      id: 'common',
+      name: 'Common',
+      snippets: [
         {
-            id: 'common',
-            name: 'Common',
-            snippets: [
-                {
-                    id: 'url',
-                    name: 'url',
-                    snippet: 'request.url'
-                },
-                {
-                    id: 'method',
-                    name: 'method',
-                    snippet: 'request.method'
-                },
-                {
-                    id: 'body',
-                    name: 'body',
-                    snippet: 'request.body'
-                }
-            ]
+          id: 'url',
+          name: 'url',
+          value: ['fc.request.url'],
         },
         {
-            id: "header",
-            name: "Header",
-            snippets: [
-                {
-                    id: 'add_header',
-                    name: 'add header',
-                    snippet: 'request.addHeader("headerName", "headerValue");'
-                },
-                {
-                    id: 'update_header',
-                    name: 'update header',
-                    snippet: 'request.updateHeader("headerName", "headerValue");'
-                },
-                {
-                    id: 'get_header',
-                    name: 'get header',
-                    snippet: 'request.getHeader("header_name");'
-                },
-                {
-                    id: 'get_headers',
-                    name: 'get headers object',
-                    snippet: 'request.getHeaders();'
-                },
-                {
-                    id: 'get_headers_list',
-                    name: 'get headers list',
-                    snippet: 'request.headers;'
-                },
-                {
-                    id: 'remove_header',
-                    name: 'remove header',
-                    snippet: 'request.removeHeader("headerName1", "headerName2",...,"headerName-n");'
-                }
-            ]
+          id: 'method',
+          name: 'method',
+          value: ['fc.request.method'],
         },
         {
-            id: "query",
-            name: "Query",
-            snippets: [
-                {
-                    id: 'add_query',
-                    name: 'add query',
-                    snippet: 'request.addQuery("queryName", "queryValue");'
-                },
-                {
-                    id: 'update_query',
-                    name: 'update query',
-                    snippet: 'request.updateQuery("queryName", "queryValue");'
-                },
-                {
-                    id: 'get_query',
-                    name: 'get query',
-                    snippet: 'request.getQuery("queryName");'
-                },
-                {
-                    id: 'get_queries',
-                    name: 'get queries object',
-                    snippet: 'request.getQueries();'
-                },
-                {
-                    id: 'remove_query',
-                    name: 'remove query',
-                    snippet: 'request.removeQuery("queryName1", "queryName2",...,"queryName-n");'
-                }
-            ]
-        }
-    ]
-}
+          id: 'body',
+          name: 'body',
+          value: ['fc.request.body'],
+        },
+      ],
+    },
+    {
+      id: 'header',
+      name: 'Header',
+      snippets: [
+        {
+          id: 'addHeader',
+          name: 'add header',
+          value: ['fc.request.addHeader("headerName", "headerValue");'],
+        },
+        {
+          id: 'updateHeader',
+          name: 'update header',
+          value: ['fc.request.updateHeader("headerName", "headerValue");'],
+        },
+        {
+          id: 'getHeader',
+          name: 'get header',
+          value: ['fc.request.getHeader("header_name");'],
+        },
+        {
+          id: 'getHeaders',
+          name: 'get headers object',
+          value: ['fc.request.getHeaders();'],
+        },
+        {
+          id: 'getHeadersList',
+          name: 'get headers list',
+          value: ['fc.request.headers;'],
+        },
+        {
+          id: 'removeHeader',
+          name: 'remove header',
+          value: [
+            'fc.request.removeHeader("headerName1", "headerName2",...,"headerName-n");',
+          ],
+        },
+      ],
+    },
+    {
+      id: 'query',
+      name: 'Query',
+      snippets: [
+        {
+          id: 'addQuery',
+          name: 'add query',
+          value: ['fc.request.addQuery("queryName", "queryValue");'],
+        },
+        {
+          id: 'updateQuery',
+          name: 'update query',
+          value: ['fc.request.updateQuery("queryName", "queryValue");'],
+        },
+        {
+          id: 'getQuery',
+          name: 'get query',
+          value: ['fc.request.getQuery("queryName");'],
+        },
+        {
+          id: 'getQueries',
+          name: 'get queries object',
+          value: ['fc.request.getQueries();'],
+        },
+        {
+          id: 'removeQuery',
+          name: 'remove query',
+          value: [
+            'fc.request.removeQuery("queryName1", "queryName2",...,"queryName-n");',
+          ],
+        },
+      ],
+    },
+  ],
+};

@@ -1,14 +1,12 @@
 import { useState } from 'react';
+import isEqual from 'react-fast-compare';
+import { cloneDeep } from 'lodash';
 import {
   Container,
   Button,
- 
-  
   TabHeader,
-  ScriptsTabs,
+  ScriptTab,
 } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
-import { cloneDeep } from 'lodash';
 import { _object } from '@firecamp/utils';
 
 const Scripts = ({ project = {}, collectionId = '' }) => {
@@ -52,12 +50,11 @@ const Scripts = ({ project = {}, collectionId = '' }) => {
     <Container className="with-divider h-full">
       <Container.Body>
         <Container className="pt-16 padding-wrapper">
-          <ScriptsTabs
+          <ScriptTab
             id={collectionId}
             key={collectionId}
-            scripts={scripts}
+            script={scripts}
             onChangeScript={_onChangeScript}
-            allowInherit={false}
           />
         </Container>
       </Container.Body>
@@ -68,7 +65,7 @@ const Scripts = ({ project = {}, collectionId = '' }) => {
               text="Update"
               primary
               sm
-              disabled={equal(cloneDeep(project?.scripts), scripts)}
+              disabled={isEqual(cloneDeep(project?.scripts), scripts)}
               onClick={_onUpdate}
             />
           </TabHeader.Right>

@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import { Dropdown } from '@firecamp/ui-kit';
 import cx from 'classnames';
-
 import { VscNewFile } from '@react-icons/all-files/vsc/VscNewFile';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { Dropdown } from '@firecamp/ui-kit';
 import { useWorkspaceStore } from '../../../../store/workspace';
-import { RE } from '../../../../types';
 import platformContext from '../../../../services/platform-context';
+import { RE } from '../../../../types';
 
 enum EMenuType {
   Collection = 'collection',
@@ -24,8 +23,14 @@ const CollectionMenu = ({
   startRenaming,
   menuType,
 }) => {
-  const { createFolder, deleteCollection, deleteFolder, deleteRequest } =
-    useWorkspaceStore.getState();
+  const {
+    openCollectionTab,
+    openFolderTab,
+    createFolder,
+    deleteCollection,
+    deleteFolder,
+    deleteRequest,
+  } = useWorkspaceStore.getState();
   let [isMenuOpened, toggleMenu] = useState(false);
 
   const renameMenu = {
@@ -55,7 +60,7 @@ const CollectionMenu = ({
       platformContext.window
         .promptInput({
           header: 'Create New Folder',
-          lable: 'Folder Name',
+          label: 'Folder Name',
           placeholder: 'type folder name',
           texts: { btnOking: 'Creating...' },
           value: '',
@@ -102,6 +107,24 @@ const CollectionMenu = ({
     ),
     name: 'Add Request',
     onClick: () => {},
+  };
+
+  const openEnv = (env) => {};
+
+  const viewDetailMenu = {
+    prefix: () => (
+      <div className={cx('mr-1 text-lg')}>
+        <VscSettingsGear size={14} />
+      </div>
+    ),
+    name: 'View Details',
+    onClick: () => {
+      if (menuType == EMenuType.Collection) {
+        openCollectionTab(collectionId);
+      } else if (menuType == EMenuType.Folder) {
+        openFolderTab(folderId);
+      }
+    },
   };
 
   const settingMenu = {
@@ -153,10 +176,11 @@ const CollectionMenu = ({
   };
 
   const commonMenu = [
+    viewDetailMenu,
     renameMenu,
     addFolderMenu,
     // addRequestMenu,
-    settingMenu,
+    // settingMenu,
     deleteMenu,
   ];
   const requestMenu = [renameMenu, deleteMenu];

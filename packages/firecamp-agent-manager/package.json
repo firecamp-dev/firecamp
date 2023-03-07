@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "REST request agent manager",
   "repository": "https://github.com/firecamp-io/firecamp",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "main": "src/index.ts",
   "scripts": {
@@ -13,7 +13,7 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "yarn clean && yarn build && npx jest --bail --silent --verbose",
+    "test": "pnpm clean && pnpm build && npx jest --bail --silent --verbose",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
@@ -41,8 +41,8 @@
   },
   "dependencies": {
     "@firecamp/rest-executor": "workspace:*",
-    "@firecamp/types": "^0.1.5",
-    "@firecamp/utils": "^0.0.11"
+    "@firecamp/types": "^0.1.21",
+    "@firecamp/utils": "^0.0.17"
   },
   "devDependencies": {
     "@istanbuljs/nyc-config-typescript": "^1.0.1",

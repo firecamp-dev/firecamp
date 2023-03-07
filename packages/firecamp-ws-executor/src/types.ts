@@ -45,8 +45,8 @@ export interface ILog {
 
 // WebSocket received message
 export interface IWebSocketResponseMessage {
-  body: any;
-  meta: {
+  value: string;
+  __meta: {
     type: EMessageBodyType;
     typedArrayView?: ETypedArrayView;
   };

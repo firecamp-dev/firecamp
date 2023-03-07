@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import equal from 'deep-equal';
+import { useState, useEffect, FC } from 'react';
+import isEqual from 'react-fast-compare';
 import classnames from 'classnames';
 import {
   SecondaryTab,
@@ -7,39 +7,43 @@ import {
   TabHeader,
   Column,
   Editor,
+  EditorControlBar,
 } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 import AckIcon from './AckIcon';
+import { ELogColors, ELogTypes, ILog } from '@firecamp/socket.io-executor/dist/esm';
 
-const emptyRow = {
-  message: [
-    {
-      __meta: {
-        type: '',
-      },
-    },
-  ],
-  __meta: { id: '', type: '', color: '', timestamp: '' },
+const emptyRow: ILog = {
+  title: '',
+  message: {
+    value: [],
+    __meta: {}
+  },
+  __meta: { ackRef: false, event: '', type: ELogTypes.System, color: ELogColors.Warning, timestamp: new Date().valueOf() },
+  __ref: { id: '' }
 };
 
-const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
+const LogPreview = ({ row = emptyRow }) => {
+  if (!row) return <></>
+  console.log(row, '...... preview ......')
   const [selectedArgIndex, setSelectedArgIndex] = useState(0);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState<string | number | boolean>('');
+  const [editor, setEditor] = useState(null);
   const _setArgIndex = (index = 0) => {
     setSelectedArgIndex(index);
-    let emitterArg = row?.message?.[index] || null;
-
+    const emitterArg = row.message?.value?.[index] || null;
     if (!emitterArg) {
       setValue(row?.title || '');
       return;
     }
-    if (emitterArg?.payload && emitterArg?.__meta.type !== 'file') {
-      setValue(emitterArg?.payload || '');
+    if (emitterArg.body && emitterArg.__meta.type !== 'file') {
+      setValue(emitterArg.body || '');
     } else {
-      setValue(emitterArg?.name || '');
+      //@ts-ignore
+      setValue(emitterArg.name || '');
     }
   };
-  if (!row?.message) row = emptyRow;
+  if (!row?.message && !row.title) row = emptyRow;
 
   /**
    * On row update, set argument index to zero as row can have number of arguments.
@@ -50,14 +54,12 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
     _setArgIndex(0);
   }, [row]);
 
-  useEffect(() => {
-    return () => {
-      setSelectedRow({});
-    };
-  }, []);
-
   const language =
-    row?.message[selectedArgIndex]?.__meta.type === 'json' ? EEditorLanguage.Json : EEditorLanguage.Text;
+    row.message[selectedArgIndex]?.__meta.type === 'json'
+      ? EEditorLanguage.Json
+      : EEditorLanguage.Text;
+
+  console.log(row, 'in preivew...')
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
@@ -66,14 +68,15 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
           <Header
             row={row || {}}
             emitterArg={row?.message?.[selectedArgIndex]}
+            postComponent={<EditorControlBar editor={editor} language={language} />}
           />
         </Container.Header>
         <Container.Body>
           <Editor
             language={language}
-            value={value}
+            value={value?.toString() || ''}
             disabled={true}
-            // controlsConfig={{ show: true, position: 'horizontal' }}
+            onLoad={(edt) => setEditor(edt)}
           />
         </Container.Body>
         {row.message && Array.isArray(row.message) ? (
@@ -85,7 +88,7 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
             />
           </Container.Footer>
         ) : (
-          ''
+          <></>
         )}
       </Container>
     </Column>
@@ -94,41 +97,41 @@ const LogPreview = ({ row = emptyRow, setSelectedRow = (_) => {} }) => {
 
 export default LogPreview;
 
-const Header = ({ row = {}, emitterArg = {} }: any) => {
-  // console.log(`row`, row)
+const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
+
+  const isEventSent = row.__meta.type == ELogTypes.Send;
+  const isEventReceived = row.__meta.type == ELogTypes.Receive;
+  const isEventFromSystem = row.__meta.type == ELogTypes.System;
+  const isEventAck = row.__meta.type == ELogTypes.Ack;
   return (
     <TabHeader
-      className={classnames(
-        row.__meta ? row.__meta.color || '' : '',
-        'height-ex-small'
-      )}
+      className={classnames(row.__meta?.color || '', 'height-ex-small')}
     >
       <TabHeader.Left className="font-bold font-base">
         {row && row.__meta ? (
           [
-            row.__meta.type !== 'ACK' ? (
+            row.__meta.type !== isEventAck ? (
               <span
                 key={'event-icon'}
                 className={classnames(
                   'td-icon',
-                  { 'iconv2-to-server-icon': row.__meta.type == 'S' },
-                  { 'iconv2-from-server-icon': row.__meta.type == 'R' },
-                  { 'icon-disk': row.__meta.type == 'SYS' },
-                  { 'icon-disk': row.__meta.type == 'SYS' }
+                  { 'iconv2-to-server-icon': isEventSent },
+                  { 'iconv2-from-server-icon': isEventReceived },
+                  { 'icon-disk': isEventFromSystem }
                 )}
-              ></span>
+              />
             ) : (
               <AckIcon />
             ),
             <span className="font-sm" key="event-name">
               {row.__meta.event}
             </span>,
-            row.__meta.type !== 'SYS' ? (
+            row.__meta.type !== isEventFromSystem ? (
               <div
                 className="font-xs text-appForegroundInActive whitespace-pre"
                 key={'event-id'}
               >
-                {row.__meta.id || ''}
+                {row.__ref.id || ''}
               </div>
             ) : (
               <></>
@@ -142,14 +145,15 @@ const Header = ({ row = {}, emitterArg = {} }: any) => {
         <span className="font-sm">
           {emitterArg?.__meta?.length
             ? `Length: ${emitterArg?.__meta.length}`
-            : ''}
+            : <></>}
         </span>
 
         <div className="font-sm">
           {row?.__meta?.timestamp
             ? `Time: ${new Date(row?.__meta.timestamp).toLocaleTimeString()}`
-            : ''}
+            : <></>}
         </div>
+        {postComponent}
       </TabHeader.Right>
     </TabHeader>
   );
@@ -157,7 +161,7 @@ const Header = ({ row = {}, emitterArg = {} }: any) => {
 const Footer = ({
   args = [],
   selectedArgIndex = 0,
-  setSelectedArgIndex = () => {},
+  setSelectedArgIndex = () => { },
 }) => {
   const [tabs, setTabs] = useState(
     args.map((arg, index) => {
@@ -175,7 +179,7 @@ const Footer = ({
         name: `Arg ${index + 1}`,
       };
     });
-    if (!equal(tabs, newTabs)) {
+    if (!isEqual(tabs, newTabs)) {
       setTabs(newTabs);
     }
   }, [args]);
@@ -184,7 +188,7 @@ const Footer = ({
     <SecondaryTab
       list={tabs}
       activeTab={selectedArgIndex.toString() || '0'}
-      isBgTransperant={true}
+      isBgTransparent={true}
       onSelect={setSelectedArgIndex}
     />
   );

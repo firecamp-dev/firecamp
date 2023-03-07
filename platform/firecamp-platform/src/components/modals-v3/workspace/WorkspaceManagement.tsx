@@ -150,7 +150,7 @@ const EditInfoTab: FC<any> = ({
         type="text"
         minHeight="200px"
         label="Description (optional)"
-        labelClassname="fc-input-label"
+        labelClassName="fc-input-label"
         placeholder="Description"
         note="Markdown supported in description"
         name={'description'}
@@ -204,7 +204,7 @@ const MembersTab = () => {
       .then(({ data }) => {
         const members = data.members?.map((m) => {
           return {
-            id: m.__ref.uuid || m.__ref.id,
+            id: m.__ref.id,
             name: m.name || m.username,
             email: m.email,
             role: m.w_relation.role,

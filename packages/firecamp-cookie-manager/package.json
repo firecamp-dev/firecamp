@@ -4,7 +4,7 @@
   "description": "Sandbox environment to run JS",
   "main": "src/index.ts",
   "repository": "https://github.com/firecamp-io/firecamp/packages-misc/url",
-  "license": "Apache-2.0",
+  "license": "",
   "keywords": [],
   "scripts": {
     "build": "run-p 'build:*'",
@@ -13,7 +13,7 @@
     "fix": "run-s fix:*",
     "fix:prettier": "prettier \"src/**/*.ts\" --write",
     "fix:lint": "eslint src --ext .ts --fix",
-    "test": "yarn build && npx jest --bail --silent --verbose",
+    "test": "pnpm build && npx jest --bail --silent --verbose",
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",

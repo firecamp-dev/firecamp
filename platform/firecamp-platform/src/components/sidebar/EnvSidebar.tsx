@@ -1,7 +1,8 @@
-import { FC, useState, useEffect, useMemo, useRef } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
+import { IoMdCopy } from '@react-icons/all-files/io/IoMdCopy';
 import classnames from 'classnames';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import shallow from 'zustand/shallow';
 import {
   Resizable,
@@ -9,53 +10,21 @@ import {
   Editor,
   TabHeader,
   Button,
+  Notes,
 } from '@firecamp/ui-kit';
-import {
-  EEditorLanguage,
-  EEnvironmentScope,
-  IEnvironment,
-} from '@firecamp/types';
-
+import { EEditorLanguage } from '@firecamp/types';
 import EnvironmentDD from '../common/environment/selector/EnvironmentDD';
-import pltContext from '../../services/platform-context';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
-import { useTabStore } from '../../store/tab';
 import platformContext from '../../services/platform-context';
 
 const EnvSidebar: FC<any> = ({ expanded }) => {
-  const {
-    colEnvMap,
-
-    toggleEnvSidebar,
-  } = useEnvStore(
+  const { activeEnvId, toggleEnvSidebar } = useEnvStore(
     (s: IEnvironmentStore) => ({
-      colEnvMap: s.colEnvMap,
+      activeEnvId: s.activeEnvId,
       toggleEnvSidebar: s.toggleEnvSidebar,
     }),
     shallow
   );
-
-  const { tab, activeTab } = useTabStore(
-    (s: any) => ({
-      tab: s.list[s.activeTab] || {},
-      activeTab: s.activeTab,
-    }),
-    shallow
-  );
-
-  const [activeCollectionEnv, setActiveCollectionEnv] = useState('');
-
-  /** if active tab change then set current active tab's envs in sidebar*/
-  useEffect(() => {
-    let collectionId = tab?.request?.__ref?.collectionId;
-    // console.log({ collectionId });
-    if (tab?.__meta?.isSaved && collectionId) {
-      setActiveCollectionEnv(colEnvMap[collectionId] || '');
-    } else {
-      /** is request is not saved then don't set collection scoped env */
-      setActiveCollectionEnv('');
-    }
-  }, [tab, activeTab, colEnvMap]);
 
   return (
     <Resizable
@@ -71,9 +40,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
     >
       <Container>
         <Container.Header className="flex !p-2 bg-focus1">
-          <div className="flex-1 mr-2 text-base p-2 font-bold">
-            Active Environments
-          </div>
+          <div className="flex-1 mr-2 text-base p-2 font-bold">Variables</div>
           <div
             className="ml-auto flex-none text-base flex justify-center items-center cursor-pointer"
             onClick={toggleEnvSidebar}
@@ -82,32 +49,26 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col">
-          {/* <EnvVarPreview
-            key={`env-preview-${EEnvironmentScope.Workspace}`}
-            scope={EEnvironmentScope.Workspace}
-            activeEnvId={activeTabWrsEnv}
-            activeTab={activeTab}
-          /> */}
-          {!!activeCollectionEnv ? (
-            <EnvVarPreview
-              key={`env-preview-${EEnvironmentScope.Collection}`}
-              scope={EEnvironmentScope.Collection}
-              activeEnvId={activeCollectionEnv}
-              activeTab={activeTab}
-              collectionId={tab?.request?.__ref?.collectionId}
-            />
-          ) : (
-            <></>
-          )}
+          {/* {!!activeEnvId ? <EnvVarPreview /> : <></>} */}
+          <div>
+            <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+              Active Environment
+            </div>
+
+            <EnvPreviewTable />
+          </div>
+          <div>
+            <div className="flex-1 text-sm px-2 py-1 font-bold border-b border-appBorder">
+              Global Variables
+            </div>
+            <EnvPreviewTable />
+          </div>
         </Container.Body>
-        <Container.Footer className="text-sm !p-1 bg-focus3">
-          <ol>
-            <li>1. use variable with {'{{variableName}}'} </li>
-            <li>
-              2. If variables have the same name, the collection environment
-              will take precedence over the workspace environment
-            </li>
-          </ol>
+        <Container.Footer className="text-sm">
+          <Notes
+            title="Use Variables to reuse values in Firecamp"
+            description="use {{variable_name}} anywhere in the Firecamp to use its value"
+          />
         </Container.Footer>
       </Container>
     </Resizable>
@@ -126,83 +87,42 @@ const EnvSidebarContainer = () => {
 };
 export { EnvSidebar, EnvSidebarContainer };
 
-const EnvVarPreview: FC<IEnvVarPreview> = ({
-  scope = EEnvironmentScope.Workspace,
-  activeEnvId = '',
-  collectionId = '',
-  activeTab = '',
-}) => {
-  const {
-    updateEnvironment,
-    getCollectionEnvs,
-    setCurrentTabActiveEnv,
-  } = useEnvStore(
-    (s) => ({
-      updateEnvironment: s.updateEnvironment,
-      getCollectionEnvs: s.getCollectionEnvs,
-      setCurrentTabActiveEnv: s.setCurrentTabActiveEnv,
-    }),
-    shallow
-  );
-
-  const envs = useMemo(
-    () =>
-      scope == EEnvironmentScope.Workspace
-        ? []
-        : getCollectionEnvs(collectionId),
-    [activeEnvId, collectionId, activeTab]
-  );
-
-  // console.log({ activeEnvId, collectionId, activeTab, scope, envs });
-
-  const activeEnv = useRef<IEnvironment>(
-    envs.find((env) => env.__ref.id === activeEnvId)
-  );
+const EnvVarPreview = () => {
+  const { activeEnvId, environments, updateEnvironment, setActiveEnv } =
+    useEnvStore(
+      (s) => ({
+        activeEnvId: s.activeEnvId,
+        environments: s.environments,
+        updateEnvironment: s.updateEnvironment,
+        setActiveEnv: s.setActiveEnv,
+      }),
+      shallow
+    );
   const [variables, setVariables] = useState<string>('');
   const [isVarUpdated, setIsVarUpdated] = useState<boolean>(false);
-
-  // if env/variables change from outer side then update them into the currently opened sidebar
-  useEffect(() => {
-    activeEnv.current = envs.find((env) => env.__ref.id === activeEnvId);
-    try {
-      if (!activeEnv.current) return;
-      const variablesString = JSON.stringify(
-        activeEnv.current.variables || {},
-        null,
-        2
-      );
-
-      if (variablesString !== variables) {
-        // console.log({ variablesString })
-        setVariables(variablesString);
-      }
-    } catch (error) {
-      console.log({ error });
-    }
-  }, [envs, activeEnvId, collectionId, activeTab]);
 
   /** if variables changed then show save/undo buttons */
   useEffect(() => {
     try {
       const vars = JSON.parse(variables || '{}');
-      const isEqual = equal(vars, activeEnv.current.variables);
-      setIsVarUpdated(!isEqual);
+      // const _isEqual = isEqual(vars, activeEnvironment.variables);
+      // setIsVarUpdated(!_isEqual);
     } catch (e) {
       console.log({ e });
     }
-  }, [variables, envs]);
+  }, [variables, environments]);
 
   const onChangeVariable = (variables: string) => {
     setVariables(variables); // even if the payload is not a JSON, still it needs to be render in Editor
   };
 
   const onUndoChanges = () => {
-    let variablesString = JSON.stringify(
-      activeEnv.current.variables || {},
-      null,
-      2
-    );
-    setVariables(variablesString);
+    // let variablesString = JSON.stringify(
+    //   activeEnvironment.variables || [],
+    //   null,
+    //   2
+    // );
+    // setVariables(variablesString);
   };
 
   const onUpdate = async () => {
@@ -222,9 +142,7 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   };
 
   const _setActiveEnv = (envId) => {
-    if (scope === EEnvironmentScope.Collection) {
-      setCurrentTabActiveEnv(envId);
-    }
+    setActiveEnv(envId);
     // get environment changes and emit to request tab
     // pltContext.environment.setVarsToProvidersAndEmitEnvsToTa();
   };
@@ -234,17 +152,12 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
       <div className="border-b border-t border-appBorder flex">
         <TabHeader className="height-ex-small">
           <TabHeader.Left className="text-base font-normal">
-            Scope:{' '}
-            {scope == EEnvironmentScope.Workspace ? 'Workspace' : 'Collection'}
+            Environments
           </TabHeader.Left>
           <TabHeader.Right className="env-popover-nested">
             <EnvironmentDD
-              key={`${scope}-env-dd-${activeEnvId}`}
-              activeEnv={activeEnvId}
-              environments={envs}
+              key={`env-dd-${activeEnvId}`}
               onChange={_setActiveEnv}
-              scope={scope}
-              collectionId={collectionId}
             />
           </TabHeader.Right>
         </TabHeader>
@@ -259,9 +172,6 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
             onChangeVariable(e.target.value);
           }}
           onCtrlS={onUpdate}
-          controlsConfig={{
-            show: true,
-          }}
           monacoOptions={{
             wordWrap: 'off',
           }}
@@ -297,9 +207,36 @@ const EnvVarPreview: FC<IEnvVarPreview> = ({
   );
 };
 
-interface IEnvVarPreview {
-  activeEnvId: string;
-  collectionId?: string;
-  scope: EEnvironmentScope;
-  activeTab?: string;
-}
+const EnvPreviewTable: FC<any> = ({
+  variables = [
+    {
+      key: 'name',
+      value: 'Ramanujan',
+    },
+    {
+      key: 'description',
+      value:
+        'Srinivasa Ramanujan FRS was an Indian mathematician. Though he had almost no formal training in pure mathematics, he made substantial contributions to mathematical analysis, number theory, infinite series, and continued fractions, including solutions to mathematical problems then considered unsolvable',
+    },
+  ],
+}) => {
+  return (
+    <div className="table text-sm border-collapse w-full m-3">
+      {variables.map((v, i) => {
+        return (
+          <div className="table-row" key={i}>
+            <label className="px-3 py-1 table-cell border border-appBorder">
+              <div className="flex items-center">
+                <span>{v.key}</span>
+                <IoMdCopy className="table-action ml-2 cursor-pointer" />
+              </div>
+            </label>
+            <span className="px-3 py-1 text-appForegroundInActive table-cell border border-appBorder">
+              {v.value}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+};

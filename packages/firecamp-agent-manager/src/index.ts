@@ -1,10 +1,11 @@
 import axios from 'axios';
 import {
+  TId,
   EFirecampAgent,
   ERestBodyTypes,
   IRest,
   IRestResponse,
-  TId,
+  TRuntimeVariable,
 } from '@firecamp/types';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
 import parseBody from '@firecamp/rest-executor/dist/esm/helpers/body';
@@ -12,6 +13,12 @@ import { _object } from '@firecamp/utils';
 import * as extension from './chrome';
 
 const restExecutors: { [key: TId]: RestExecutor } = {};
+
+type TVariablesExecutionArg = {
+  globals: TRuntimeVariable[];
+  environment: TRuntimeVariable[];
+  collectionVariables: TRuntimeVariable[];
+};
 
 /**
  *
@@ -21,40 +28,45 @@ const restExecutors: { [key: TId]: RestExecutor } = {};
  */
 export const send = async (
   request: IRest,
+  variables: TVariablesExecutionArg,
   firecampAgent: EFirecampAgent
-): Promise<IRestResponse> => {
+): Promise<{
+  response: IRestResponse;
+  variables: TVariablesExecutionArg;
+  testResult: any;
+  scriptErrors: any[];
+}> => {
   switch (firecampAgent) {
     case EFirecampAgent.Desktop:
-      return window.fc.restExecutor.send(request);
-
+      return window.fc.restExecutor.send(request, variables);
     case EFirecampAgent.Extension:
-      return extension.send(request);
-
+      return extension.send(request, variables);
     case EFirecampAgent.Web:
       restExecutors[request.__ref.id] = new RestExecutor();
-      return await restExecutors[request.__ref.id].send(request);
-
+      //@ts-ignore
+      return await restExecutors[request.__ref.id].send(request, variables);
     case EFirecampAgent.Cloud:
-      if (!_object.isEmpty(request?.body?.[ERestBodyTypes.FormData])) {
-        const data = await parseBody(request?.body);
+      if (request.body?.type == ERestBodyTypes.FormData) {
+        const body = await parseBody(request.body);
         const response = await axios.post(
-          `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute/multipart`,
-          data,
+          `${process.env.FIRECAMP_CLOUD_AGENT}/api/execute/multipart`,
+          body,
           {
             headers: {
               request: JSON.stringify(request),
+              variables: JSON.stringify(variables),
               'content-type': ERestBodyTypes.FormData,
             },
           }
         );
         return response.data;
+      } else {
+        const response = await axios.post(
+          `${process.env.FIRECAMP_CLOUD_AGENT}/api/execute`,
+          { request, variables }
+        );
+        return response.data;
       }
-
-      const response = await axios.post(
-        `${process.env.FIRECAMP_PROXY_API_HOST}/api/execute`,
-        request
-      );
-      return response.data;
   }
 };
 
@@ -81,7 +93,7 @@ export const cancel = async (
       return;
     case EFirecampAgent.Cloud:
       const response = await axios.get(
-        `${process.env.FIRECAMP_PROXY_API_HOST}/api/cancel/${requestId}`
+        `${process.env.FIRECAMP_CLOUD_AGENT}/api/cancel/${requestId}`
       );
 
       return response.data;

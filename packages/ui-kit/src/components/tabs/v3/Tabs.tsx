@@ -6,6 +6,7 @@ import {
   useImperativeHandle,
   useRef,
   useState,
+  useEffect,
 } from 'react';
 import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
@@ -46,6 +47,11 @@ const Tabs: FC<ITabs> = forwardRef(
       activeTab: _activeTab,
       orders: _orders,
     });
+    useEffect(() => {
+      if (state.activeTab != _activeTab) {
+        setState((s) => ({ ...s, activeTab: _activeTab }));
+      }
+    }, [_activeTab]);
 
     useImperativeHandle(
       ref,
@@ -90,7 +96,10 @@ const Tabs: FC<ITabs> = forwardRef(
               return { tabs: s.tabs, orders, activeTab };
             });
           },
-          changeState: (tabId: TId, state: 'modified' | 'default' = 'default') => {
+          changeState: (
+            tabId: TId,
+            state: 'modified' | 'default' = 'default'
+          ) => {
             setState((s) => ({
               ...s,
               tabs: {
@@ -101,7 +110,7 @@ const Tabs: FC<ITabs> = forwardRef(
                 },
               },
             }));
-          }
+          },
         };
       },
       []
@@ -167,11 +176,11 @@ const Tabs: FC<ITabs> = forwardRef(
                 if (!tab) return <Fragment key={tabId} />;
                 return (
                   <Tab
-                    key={tabId}
                     index={i}
                     id={tabId}
-                    draggable={reOrderable}
-                    tabVersion={tabsVersion}
+                    key={tabId}
+                    name={tab.name}
+                    height={height}
                     className={cx(
                       'border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
                       {
@@ -204,12 +213,12 @@ const Tabs: FC<ITabs> = forwardRef(
                       { 'bg-transparent text-base': tabsVersion == 1 },
                       { 'bg-tabBackground2 text-sm': tabsVersion == 2 }
                     )}
-                    name={tab.name}
+                    draggable={reOrderable}
+                    tabVersion={tabsVersion}
                     closeTabIconMeta={closeTabIconMeta}
                     borderMeta={tabBorderMeta}
                     isActive={tabId == state.activeTab}
                     onSelect={_onSelect}
-                    height={height}
                     onTabDragStart={onDragStart}
                     onTabDrop={onDrop}
                     {...tab}

@@ -1,34 +1,15 @@
-import { FC, useMemo } from 'react';
 import shallow from 'zustand/shallow';
-import { Button, Column } from '@firecamp/ui-kit';
-import { TId } from '@firecamp/types';
+import { Column } from '@firecamp/ui-kit';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
-
 import EnvironmentDD from './EnvironmentDD';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
-import { ITabStore, useTabStore } from '../../../../store/tab';
 
-const EnvironmentSelecctor = () => {
-  const {
-    tabColMap,
-    colEnvMap,
-    getCollectionEnvs,
-    setCurrentTabActiveEnv,
-    toggleEnvSidebar,
-  } = useEnvStore(
+const EnvironmentSelector = () => {
+  const { toggleEnvSidebar, setActiveEnv } = useEnvStore(
     (s: IEnvironmentStore) => ({
-      tabColMap: s.tabColMap,
-      colEnvMap: s.colEnvMap,
-      getCollectionEnvs: s.getCollectionEnvs,
-      setCurrentTabActiveEnv: s.setCurrentTabActiveEnv,
       toggleEnvSidebar: s.toggleEnvSidebar,
-    }),
-    shallow
-  );
-  const { activeTab } = useTabStore(
-    (s: ITabStore) => ({
-      activeTab: s.activeTab,
+      setActiveEnv: s.setActiveEnv,
     }),
     shallow
   );
@@ -39,22 +20,7 @@ const EnvironmentSelecctor = () => {
     shallow
   );
 
-  const { envId, envs, colId } = useMemo(() => {
-    const colId = tabColMap[activeTab];
-    const envs = !colId ? [] : getCollectionEnvs(colId);
-    const envId = colEnvMap[colId];
-    return { envs, envId, colId };
-  }, [activeTab]);
-
-  console.log(envId, envs, colId, colEnvMap, 4445445);
-
-  const setActiveEnv = (envId: TId) => {
-    setCurrentTabActiveEnv(envId);
-    // onCollectionActiveEnvChange(collectionId, envId);
-  };
-
   if (isGuest === true) return <></>;
-  if (!colId || !envId) return <></>;
   return (
     <Column
       overflow="visible"
@@ -63,10 +29,9 @@ const EnvironmentSelecctor = () => {
       <div className="!ml-auto !mr-1 w-fit flex items-center">
         <EnvironmentDD
           key={`collection-env-selector`}
-          activeCollectionId={colId}
-          activeEnvId={envId}
-          environments={envs}
-          onChange={setActiveEnv}
+          onChange={(envId) => {
+            setActiveEnv(envId);
+          }}
         />
         <span
           key={'toggle-env-button'}
@@ -79,4 +44,4 @@ const EnvironmentSelecctor = () => {
     </Column>
   );
 };
-export default EnvironmentSelecctor;
+export default EnvironmentSelector;

@@ -1,9 +1,10 @@
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
-import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
+import { Url, UrlBar, Button, Dropdown } from '@firecamp/ui-kit';
 import ConnectionButton from '../connection/ConnectButton';
-import { VERSIONS } from '../../../constants';
+import { SIOVersionOptions } from '../../../constants';
 import { IStore, useStore } from '../../../store';
+import { FC, useState } from 'react';
 
 const UrlBarContainer = ({ tab }) => {
   const { url, displayUrl, version, changeUrl, changeConfig, save } = useStore(
@@ -47,14 +48,13 @@ const UrlBarContainer = ({ tab }) => {
   }
 
   return (
-    <UrlBar environmentCard={<></>} nodePath={''}>
+    <UrlBar nodePath={''}>
       <UrlBar.Prefix>
-        <HttpMethodDropDown
+        <SIOVersionDropDown
           id={tab.id}
-          dropdownOptions={VERSIONS}
-          selectedOption={version}
-          toolTip={versionToolTip}
-          onSelectItem={(version) => changeConfig('version', version)}
+          options={SIOVersionOptions}
+          selectedOption={SIOVersionOptions.find((v) => v.version == version)}
+          onSelectItem={(v) => changeConfig('version', v.version)}
         />
       </UrlBar.Prefix>
       <UrlBar.Body>
@@ -81,3 +81,27 @@ const UrlBarContainer = ({ tab }) => {
 };
 
 export default UrlBarContainer;
+
+const SIOVersionDropDown: FC<any> = ({
+  id = '',
+  className = '',
+  options = [{ name: '', version: '' }],
+  selectedOption = { name: '', version: '' },
+  onSelectItem = (option) => {},
+}) => {
+  const [isDropDownOpen, toggleDropDown] = useState(false);
+  return (
+    <Dropdown
+      id={id}
+      className={className}
+      isOpen={isDropDownOpen}
+      selected={selectedOption}
+      onToggle={toggleDropDown}
+    >
+      <Dropdown.Handler>
+        <Button text={selectedOption.name} secondary withCaret sm />
+      </Dropdown.Handler>
+      <Dropdown.Options options={options} onSelect={(o) => onSelectItem(o)} />
+    </Dropdown>
+  );
+};

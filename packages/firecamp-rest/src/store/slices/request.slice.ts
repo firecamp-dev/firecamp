@@ -1,10 +1,10 @@
-import { EHttpMethod, IHeader, TId } from '@firecamp/types';
-import { _clipboard } from '@firecamp/utils';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
+import { CurlToFirecamp } from '@firecamp/curl-to-firecamp';
+import { EHttpMethod, IHeader, IRest, TId } from '@firecamp/types';
+import { _clipboard } from '@firecamp/utils';
 import { _object } from '@firecamp/utils';
 import { prepareUIRequestPanelState } from '../../services/request.service';
-import { IRestClientRequest } from '../../types';
 import { TStoreSlice } from '../store.type';
 import {
   IUrlSlice,
@@ -28,38 +28,30 @@ const requestSliceKeys = [
 ];
 
 interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
-  request: IRestClientRequest;
-  initialiseRequest: (request: IRestClientRequest) => void;
-  initialiseRequestByKeyValue: (key: string, value: any) => void;
+  request: IRest;
+  initialiseRequest: (request: IRest) => void;
   changeMethod: (method: EHttpMethod) => any;
   changeHeaders: (headers: IHeader[]) => any;
-  changeMeta: (__meta: any) => any;
+  changeMeta: (__meta: Partial<IRest['__meta']>) => any;
   changeScripts: (scriptType: string, value: string) => any;
   changeConfig: (configKey: string, configValue: any) => any;
+  setRequestFromCurl: (snippet: string) => void;
   save: (tabId: TId) => void;
 }
 
 const createRequestSlice: TStoreSlice<IRequestSlice> = (
   set,
   get,
-  initialRequest: IRestClientRequest
+  initialRequest: IRest
 ) => ({
   request: initialRequest,
   ...createUrlSlice(set, get),
   ...createBodySlice(set, get, initialRequest.body),
   ...createAuthSlice(set, get),
-  initialiseRequest: (request: IRestClientRequest) => {
+  initialiseRequest: (request: IRest) => {
     // console.log({initReq: request});
     set((s) => ({
       request,
-    }));
-  },
-  initialiseRequestByKeyValue: (key: string, value: any) => {
-    set((s) => ({
-      request: {
-        ...s.request,
-        [key]: value,
-      },
     }));
   },
   changeMethod: (method: EHttpMethod) => {
@@ -112,33 +104,25 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       ...state.request.__meta,
       ...__meta,
     };
-    const updatedUiRequestPanel = prepareUIRequestPanelState({
-      __meta: updatedMeta,
-    });
     set((s) => ({
       request: { ...s.request, __meta: updatedMeta },
-      ui: {
-        ...s.ui,
-        requestPanel: {
-          ...s.ui.requestPanel,
-          ...updatedUiRequestPanel,
-        },
-      },
     }));
     state.equalityChecker({ __meta: updatedMeta });
   },
-  changeScripts: (scriptType: string, value: string) => {
-    //todo: will create enum for pre,post,test
+  changeScripts: (scriptType: 'preScripts' | 'postScripts', value: string) => {
+    //todo: will create enum for preScripts, postScripts
     const state = get();
-    const updatedScripts = {
-      ...state.request.scripts,
-      [scriptType]: value,
-    };
+    const _scripts = [
+      {
+        ...state.request[scriptType][0],
+        value: value.split('\n'),
+      },
+    ];
     const updatedUiRequestPanel = prepareUIRequestPanelState({
-      scripts: updatedScripts,
+      [scriptType]: _scripts,
     });
     set((s) => ({
-      request: { ...s.request, scripts: updatedScripts },
+      request: { ...s.request, [scriptType]: _scripts },
       ui: {
         ...s.ui,
         requestPanel: {
@@ -147,17 +131,85 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         },
       },
     }));
-    state.equalityChecker({ scripts: updatedScripts });
+    state.equalityChecker({ [scriptType]: _scripts });
+  },
+
+  /** setup the request configuration in firecamp on CURL request paste */
+  setRequestFromCurl: async (snippet: string = '') => {
+    // return if no curl or request is already saved
+    if (!snippet) return;
+    const state = get();
+    const {
+      request: { url },
+      request,
+    } = state;
+    const isCurlSnippet = snippet.startsWith('curl');
+    // console.log({ snippet, isCurlSnippet });
+    if (!isCurlSnippet) {
+      state.changeUrl({ ...url, raw: snippet });
+    } else {
+      // if request is saved then simply update the url with old value, ignore paste curl
+      if (request.__ref?.collectionId) {
+        state.context.app.notify.alert(
+          'You can not paste the CURL snippet onto the saved request, please open a new empty request tab instead.'
+        );
+        // console.log(url, 787798789);
+        state.changeUrl({ ...url, raw: url.raw.replace(snippet, '') });
+        return;
+      } else {
+        try {
+          const curlRequest = new CurlToFirecamp(snippet.trim()).transform();
+          let { url, body, headers, config } = curlRequest;
+          // only set url, body, headers, config request in state
+          const newRequest = {
+            ...request,
+            url,
+            body,
+            headers,
+            config,
+          };
+          const updatedUiRequestPanel = prepareUIRequestPanelState(newRequest);
+          set((s) => ({
+            request: newRequest,
+            ui: {
+              ...s.ui,
+              requestPanel: {
+                ...s.ui.requestPanel,
+                ...updatedUiRequestPanel,
+              },
+            },
+          }));
+          console.log({ curlRequest });
+        } catch (e) {
+          state.context.app.notify.alert('The CURL snippet is not valid');
+          console.error(e);
+        }
+      }
+    }
   },
   save: (tabId) => {
     const state = get();
     if (!state.runtime.isRequestSaved) {
+      // save new request
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId, true).then(console.log);
+      state.context.request.save(_request, tabId, true).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
+      // update request
       const _request = state.preparePayloadForUpdateRequest();
-      state.context.request.save(_request, tabId);
+      if (!_request) {
+        state.context.app.notify.info(
+          "The request doesn't have any changes to be saved."
+        );
+        return null;
+      }
+      state.context.request.save(_request, tabId).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
     }
   },
 });

@@ -2,10 +2,9 @@ import { FC } from 'react';
 import { Button } from '@firecamp/ui-kit';
 import _toPairs from 'lodash/toPairs';
 import { Resizable } from 're-resizable';
+import { IHeader } from '@firecamp/types';
 
-const HeaderTab: FC<{ headers: any }> = ({ headers = {} }) => {
-  const pairs = _toPairs(headers);
-
+const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
   // const _headersToString = (headers: any = {}) => {
   //   console.log('headers', headers);
   //   return Object.keys(headers).reduce(
@@ -14,11 +13,11 @@ const HeaderTab: FC<{ headers: any }> = ({ headers = {} }) => {
   //   );
   // };
 
-  let _copyAsText = (hds: any) => {
+  const _copyAsText = (hds: any) => {
     // ctx_copyToClipboard(_headersToString(hds));
   };
 
-  let _copyAsJson = (json: any) => {
+  const _copyAsJson = (json: any) => {
     // ctx_copyToClipboard(JSON.stringify(json, null, 4));
   };
 
@@ -43,37 +42,35 @@ const HeaderTab: FC<{ headers: any }> = ({ headers = {} }) => {
         </Resizable>
         <div className="">
           Value
-          <div className="response-headers-action1 flex float-right h-5">
+          {/* <div className="response-headers-action1 flex float-right h-5">
             <Button
-              secondary
-              transparent={true}
-              sm
-              ghost={true}
               text="copy text"
               onClick={(e) => _copyAsText(headers)}
+              transparent
+              secondary
+              ghost
+              sm
             />
             <Button
-              secondary
-              transparent={true}
-              sm
-              ghost={true}
               text="copy json"
               onClick={(e) => _copyAsJson(headers)}
+              transparent
+              secondary
+              ghost
+              sm
             />
-          </div>
+          </div> */}
         </div>
       </div>
 
-      {pairs
-        ? pairs.map((p, i) => {
-            return (
-              <div className="" key={i}>
-                <div className="">{p[0]}</div>
-                <div className="">{p[1]}</div>
-              </div>
-            );
-          })
-        : ''}
+      {headers.map((h: any, i: number) => {
+        return (
+          <div className="" key={i}>
+            <div className="">{h.key}</div>
+            <div className="">{h.value}</div>
+          </div>
+        );
+      })}
     </div>
   );
 };

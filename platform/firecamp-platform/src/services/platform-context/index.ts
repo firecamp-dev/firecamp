@@ -1,4 +1,5 @@
 import { request } from './request';
+import { tab } from './tab';
 import { confirm, promptInput, promptSaveItem } from './prompt.service';
 import AppService from '../app.service';
 import { environment } from './environment';
@@ -6,6 +7,7 @@ import { environment } from './environment';
 export default {
   app: AppService,
   request,
+  tab,
   environment,
   window: {
     confirm,
@@ -15,7 +17,4 @@ export default {
 };
 
 export type { IPlatformRequestService } from './request';
-export type {
-  IPlatformEnvironmentService,
-  IPlatformVariables,
-} from './environment';
+export type { IPlatformEnvironmentService } from './environment';

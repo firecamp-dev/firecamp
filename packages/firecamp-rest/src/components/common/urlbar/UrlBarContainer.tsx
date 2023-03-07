@@ -1,18 +1,12 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
-import { EHttpMethod, EFirecampAgent } from '@firecamp/types';
+import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
-
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  onPasteCurl = (curl: string) => {},
-}) => {
-
+const UrlBarContainer = ({ tabId }) => {
   const {
     url,
     method,
@@ -24,6 +18,7 @@ const UrlBarContainer = ({
     changeUrl,
     changeMethod,
     execute,
+    setRequestFromCurl,
     save,
   } = useStore(
     (s: IStore) => ({
@@ -37,6 +32,7 @@ const UrlBarContainer = ({
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
+      setRequestFromCurl: s.setRequestFromCurl,
       save: s.save,
     }),
     shallow
@@ -48,57 +44,32 @@ const UrlBarContainer = ({
   }) => {
     e.preventDefault();
     const value = e.target.value;
+    if (value.startsWith('curl')) return;
 
     const urlObject = _url.updateByRaw({ ...url, raw: value });
-    // console.log(urlObject, "urlObject... in url bar")
+    // console.log(urlObject, 'urlObject... in url bar');
     changeUrl(urlObject);
   };
 
-  const _onPaste = (edt: any) => {
-    if (!edt) return;
-    const curl = edt.getValue();
-    if (curl) {
-      onPasteCurl(curl);
+  const _onPaste = (snippet: string, edt: any) => {
+    if (!snippet) return;
+    if (snippet?.trim().startsWith('curl')) {
+      setRequestFromCurl(snippet);
     }
   };
 
   const _onSave = async () => {
     try {
-      save(tab.id);
+      save(tabId);
     } catch (e) {
       console.error(e);
     }
   };
 
-  const _onChangeVariables = (variables: { workspace: {}; collection: {} }) => {
-    // console.log({ variables });
-
-    const collectionUpdates = {
-      id: collectionId || '',
-      environmentId: collectionId,
-      variables: variables.collection,
-    };
-
-    context.environment.setVariables(collectionUpdates);
-  };
-
   const _onExecute = async () => {
     try {
-      // do not execute if url is empty
-      if (!url.raw) return;
-
-      const envVariables = {merged: {}, collection: {}, workspace: {}}
-      const { env: tabEnv } = context.environment.getCurrentTabEnv(
-        tab.id
-      );
-      if(tabEnv) {
-        envVariables.collection = { ...(tabEnv.variables|| {}) };
-      }
-      const agent: EFirecampAgent = context.getFirecampAgent();
-      execute(_cloneDeep(envVariables), agent, _onChangeVariables);
-    } catch (error) {
-      console.error({ API: 'rest._onExecute' });
-    }
+      execute();
+    } catch (error) {}
   };
 
   return (
@@ -116,7 +87,7 @@ const UrlBarContainer = ({
     >
       <UrlBar.Prefix>
         <HttpMethodDropDown
-          id={tab.id}
+          id={tabId}
           dropdownOptions={methods}
           selectedOption={(method || '').toUpperCase()}
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
@@ -124,7 +95,7 @@ const UrlBarContainer = ({
       </UrlBar.Prefix>
       <UrlBar.Body>
         <Url
-          id={`url-${tab.id}`}
+          id={`url-${tabId}`}
           url={url?.raw || ''}
           placeholder={'http://'}
           onChangeURL={_handleUrlChange}
@@ -134,18 +105,18 @@ const UrlBarContainer = ({
       </UrlBar.Body>
       <UrlBar.Suffix>
         <Button
+          text={isRequestRunning === true ? `Cancel` : `Send`}
+          onClick={_onExecute}
           primary
           sm
-          onClick={_onExecute}
-          text={isRequestRunning === true ? `Stop` : `Send`}
         />
         <Button
-          id={`save-request-${tab.id}`}
+          id={`save-request-${tabId}`}
+          text="Save"
+          onClick={_onSave}
+          disabled={false}
           secondary
           sm
-          text="Save"
-          disabled={false}
-          onClick={_onSave}
         />
       </UrlBar.Suffix>
     </UrlBar>

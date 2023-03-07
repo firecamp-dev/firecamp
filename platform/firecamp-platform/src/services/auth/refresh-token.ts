@@ -59,13 +59,13 @@ export default async ({
 
     if ([200, 201].includes(response.status)) {
       // Fetch existing user from DB
-      // const user = await F.db.firecamp.fetch('user')
+      // const user = await db.firecamp.fetch('user')
       // if (user) {
       //     // Update accessTokenfrom response
       //     user.accessToken = response?.data?.accessToken
 
       //     // Update user in DB
-      //     await F.db.firecamp.update('user', user)
+      //     update('user', user)
       // }
 
       // Re-initialize the app

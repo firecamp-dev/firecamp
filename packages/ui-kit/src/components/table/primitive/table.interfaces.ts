@@ -1,3 +1,4 @@
+import { EEditorLanguage } from '@firecamp/types';
 import { FocusEventHandler, MouseEventHandler, ReactNode } from 'react';
 
 /** Table options */
@@ -14,24 +15,26 @@ export interface ITableOptions {
   /** a boolean value whether allow to sort rows or not */
   allowSort?: boolean;
 
-  /** Table view/ mode language */
-  mode?: string | { key: string; value: string };
+  /** columns added in this array will not be shown/rendered but remain hidden */
+  hiddenColumns?: string[];
 
-  language?: string;
+  /** column editor language  */
+  languages?: { [columnKey: string]: EEditorLanguage };
 }
 
 export interface ITable<R> {
   rows?: R[];
-  columns: Array<IColumn>;
+  columns: IColumn[];
   renderColumn: (column: IColumn) => string | JSX.Element;
   renderCell: TRenderCell<R>;
-  onChange: (rows: R[]) => void;
   defaultRow?: R;
-  //@deprecated
-  onMount?: (tableApi: TTableApi) => void;
   showDefaultEmptyRows?: boolean;
   options?: ITableOptions;
   classes?: ITableClasses;
+  onChange: (rows: R[]) => void;
+  onFocusRow?: (row: R) => void;
+  //@deprecated
+  onMount?: (tableApi: TTableApi) => void;
 }
 
 export interface ITableClasses {

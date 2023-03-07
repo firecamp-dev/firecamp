@@ -34,12 +34,6 @@ export enum EPlatformModalTypes {
   InviteMembers = 'inviteMembers',
   SwitchWorkspace = 'switchWorkspace',
 
-  // collection
-  CollectionSetting = 'collectionSetting',
-
-  // Folder
-  FolderSetting = 'folderSetting',
-
   // request
   EditRequest = 'editRequest',
 
@@ -83,12 +77,6 @@ export const EPlatformModalDefaultProps = {
     className: 'p-0 !pb-6',
   },
 
-  // collection
-  [EPlatformModalTypes.CollectionSetting]: { height: '650px', width: '500px' },
-
-  // folder
-  [EPlatformModalTypes.FolderSetting]: { height: '650px', width: '500px' },
-
   // request
   [EPlatformModalTypes.EditRequest]: { height: '600px', width: '450px' },
 
@@ -97,12 +85,12 @@ export const EPlatformModalDefaultProps = {
   [EPlatformModalTypes.ManageEnvironment]: { height: '750px', width: '550px' },
 
   // auth
-  [EPlatformModalTypes.SignIn]: { width: '440px', className: 'p-8' },
-  [EPlatformModalTypes.SignInWithEmail]: { width: '440px', className: 'p-8' },
-  [EPlatformModalTypes.SignUp]: { width: '440px', className: 'p-8' },
+  [EPlatformModalTypes.SignIn]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.SignInWithEmail]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.SignUp]: { width: '440px', className: 'p-4' },
   [EPlatformModalTypes.RefreshToken]: { modalConfig: { closeOnEsc: false } },
-  [EPlatformModalTypes.ForgotPassword]: { width: '440px', className: 'p-8' },
-  [EPlatformModalTypes.ResetPassword]: { width: '440px', className: 'p-8' },
+  [EPlatformModalTypes.ForgotPassword]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.ResetPassword]: { width: '440px', className: 'p-4' },
 
   // user
   [EPlatformModalTypes.UserProfile]: {},

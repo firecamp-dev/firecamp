@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
+import { EEditorLanguage } from '@firecamp/types';
 import { BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
 import { IStore, useStore } from '../../../store';
-import { EEditorLanguage } from '@firecamp/types';
 
 const HeadersTab = () => {
   const { headers, authHeaders, changeHeaders } = useStore(
@@ -29,23 +29,15 @@ const HeadersTab = () => {
           key={'headers'}
           rows={headers}
           title="Headers"
-          onChange={(data) => onHeaderChange(data)}
-          onMount={() => {}}
-          meta={{
-            mode: {
+          options={{
+            languages: {
               key: EEditorLanguage.HeaderKey,
               value: EEditorLanguage.HeaderValue,
             },
           }}
+          onChange={(data) => onHeaderChange(data)}
+          onMount={() => {}}
         />
-        {/* <SingleLineEditor type="text" path="a" value="123" />
-        <SingleLineEditor type="text" path="b" value="qwqe" />
-        <SingleLineEditor type="text" path="c" value="66666666" />
-        <SingleLineEditor type="text" path="d" value="fgfgfg" />
-        <SingleLineEditor type="text" path="e" value="tytytyty" />
-        <SingleLineEditor type="text" path="f" value="bbbb" /> */}
-
-        {/* <BasicTable resizable={true} /> */}
 
         {
           // ctx_tabData.type //todo: implement this auth header feature later after migration
@@ -57,11 +49,10 @@ const HeadersTab = () => {
                 title="Headers derived from auth"
                 disable={true}
                 options={{
-                  mode: {
+                  languages: {
                     key: EEditorLanguage.HeaderKey,
                     value: EEditorLanguage.HeaderValue,
                   },
-                  language: EEditorLanguage.HeaderKey,
                 }}
               />
             </div>

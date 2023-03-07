@@ -1,6 +1,5 @@
-//@ts-nocheck
-import { FC, memo, useEffect, useRef, useState } from 'react';
-import equals from 'deep-equal';
+import React, { FC, memo, useEffect, useRef, useState } from 'react';
+import isEqual from 'react-fast-compare';
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';
@@ -12,19 +11,17 @@ import { EEditorLanguage } from '@firecamp/types';
 import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
-import Table, { TTableApi } from '../primitive/Table';
+import Table from '../primitive/Table';
+import { ITableRows, TRenderCell, TTableApi } from '../primitive/table.interfaces';
 
-import { IMultipartIFT, IMultiPartInput, ERowType } from './MultipartTable.interfaces';
-import { TRenderCell } from '../primitive/table.interfaces';
+import { IMultipartTable, IMultiPartInput, ERowType } from './MultipartTable.interfaces';
 
-const MultipartTable: FC<IMultipartIFT> = ({
-  name = '', //unused prop
-  multipartKey = 'value',   //unused prop
+const MultipartTable = ({
   rows = [],
   options = {},
-  onChange = () => {},
-  onMount = () => {},
-}) => {
+  onChange = (rs: ITableRows) => {},
+  onMount = (api: TTableApi) => {},
+}: IMultipartTable<any> ) => {
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
@@ -38,7 +35,7 @@ const MultipartTable: FC<IMultipartIFT> = ({
       width: '150px',
       resizeWithContainer: true,
     },
-    { id: 'remove', key: '', name: '', width: '20px', fixedWidth: true },
+    { id: 'remove', key: '', name: '', width: '20px' },
   ];
 
   const renderCell: TRenderCell<any> = (
@@ -192,7 +189,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     row,
     value,
     onChange = (e = { target: { value: '' } }) => {},
-    onChangeFile = (e = { target: { file: null } }) => {},
+    onChangeFile = (e = { target: { file: null } as any}) => {},
     onChangeRowType = () => {},
     options,
   }) => {
@@ -207,12 +204,12 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     //   }
     // }, [value]);
 
-    const _onChangeTextInput = (e: Event & { target: HTMLInputElement }) => {
+    const _onChangeTextInput = (e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       onChange({ target: { value } });
     };
 
-    const _onChangeFileInput = (e: Event & { target: HTMLInputElement }) => {
+    const _onChangeFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
       // console.log(e.target.files, 'e...');
       const file = e.target.files[0];
       onChangeFile({ target: { file } }); // It'll always be a single file
@@ -235,7 +232,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     console.log(row, 'row');
 
     return (
-      <div className="items-center">
+      <div className="flex items-center">
         {type == 'text' ? (
           <SingleLineEditor
             key={`${row.id}`}
@@ -243,7 +240,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
             className="without-border px-2"
             style={{
               position: 'absolute',
-              width: '100%',
+              width: 'calc(100% - 20px)',
               top: '2px',
               overflow: 'hidden',
               padding: '0px 4px',
@@ -270,14 +267,14 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
 
             <div
               key={`${row.id}-file-type`}
-              className="cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre mr-1"
+              className="cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre w-full mr-1"
               onClick={_onClick}
             >
               {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}
             </div>
           </>
         )}
-        <div className="absolute cursor-pointer right-0 bottom-0 pr-1">
+        <div className="cursor-pointer ml-auto pr-1 h-4">
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} title='IconTextSize' />
           ) : (
@@ -288,6 +285,6 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     );
   },
   (p, n) => {
-    return equals(p.row, n.row) && equals(p.value, n.value);
+    return isEqual(p.row, n.row) && isEqual(p.value, n.value);
   }
 );

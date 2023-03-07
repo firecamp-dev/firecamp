@@ -132,7 +132,7 @@ export interface IOption {
  */
 export interface IItem {
   /**
-   * optinal option id
+   * optional option id
    */
   id?: TId;
   /**

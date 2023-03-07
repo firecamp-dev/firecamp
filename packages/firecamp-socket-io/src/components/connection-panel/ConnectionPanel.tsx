@@ -5,7 +5,7 @@ import shallow from 'zustand/shallow';
 import Connection from './connection/Connection';
 import { IStore, useStore } from '../../store';
 
-const ConnectionPanel = ({ visiblePanel = '' }) => {
+const ConnectionPanel = () => {
   const {
     activePlayground,
     playgroundTabs,

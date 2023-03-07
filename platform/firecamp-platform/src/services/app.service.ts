@@ -1,17 +1,15 @@
 import CloudApiGlobal, { Realtime, Rest } from '@firecamp/cloud-apis';
-
+import { IOrganization, IWorkspace } from '@firecamp/types';
 import notification from './notification';
 import modalService from './modals';
 import { useUserStore } from '../store/user';
 import { useWorkspaceStore } from '../store/workspace';
 import { ECloudApiHeaders } from '../types';
-import { IOrganization, IWorkspace } from '@firecamp/types';
 import { usePlatformStore } from '../store/platform';
 import { useTabStore } from '../store/tab';
 import { useEnvStore } from '../store/environment';
 import { useModalStore } from '../store/modal';
 import { platformEmitter } from './platform-emitter';
-import { prepareEventNameForRequestPull } from './platform-emitter/events';
 
 const userService = {
   isLoggedIn: () => {
@@ -48,7 +46,7 @@ const initApp = async () => {
   CloudApiGlobal.setHost(process.env.FIRECAMP_API_HOST);
 
   // TODO: Fetch client id from the local DB
-  const client = localStorage.getItem('cid') || 123;
+  const client = localStorage.getItem('clientId') || 123;
 
   // Set clientId
   if (client) {
@@ -123,7 +121,7 @@ const initApp = async () => {
 
   // TODO: Load cookie into cookie-jar
   // if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
-  //     const allCookies = await F.db.cookie.fetchAll()
+  //     const allCookies = await cookie.fetchAll()
   //     F.cookieManager.addCookies(allCookies)
   // }
 
@@ -133,13 +131,16 @@ const initApp = async () => {
   // TODO: Initialize preferences
   // await F.appStore.Preferences.init()
 };
-
 const initUser = (user: any) => {
   const { setUser } = useUserStore.getState();
   setUser(user);
 };
 const initWorkspace = (workspace: IWorkspace) => {
-  if (localStorage) localStorage.setItem('workspace', workspace?.__ref?.id);
+  const wrsId = workspace?.__ref?.id;
+  if (wrsId) {
+    if (localStorage) localStorage.setItem('workspace', wrsId);
+    CloudApiGlobal.setGlobalHeader([ECloudApiHeaders.WorkspaceId], wrsId);
+  }
   const { setWorkspace } = useWorkspaceStore.getState();
   setWorkspace(workspace);
 };

@@ -2,15 +2,12 @@ import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Modal, IModal, Button, Input } from '@firecamp/ui-kit';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
-
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
 import { EProvider } from '../../../services/auth/types';
 import platformContext from '../../../services/platform-context';
 
-/**
- * User Sign in
- */
+/** User Sign in */
 const SignInWithEmail: FC<IModal> = () => {
   const form = useForm();
   const [isRequesting, setFlagIsRequesting] = useState(false);
@@ -33,7 +30,7 @@ const SignInWithEmail: FC<IModal> = () => {
         // console.log(response.accessToken, response.user, response.workspace, "sign in response")
 
         localStorage.setItem('token', response.__meta.accessToken);
-        // localStorage.setItem('workspace', res.response.workspace.__ref.id); //handled at initWorkspace fn
+        localStorage.setItem('workspace', response.workspace.__ref.id); //handled at initWorkspace fn
         platformContext.app.initApp();
         platformContext.app.modals.close();
         platformContext.app.notify.success(`You have signed in successfully`, {
@@ -42,9 +39,12 @@ const SignInWithEmail: FC<IModal> = () => {
       })
       .catch((e) => {
         // console.log(e.response)
-        platformContext.app.notify.alert(e.response?.data?.message || e.message, {
-          labels: { alert: 'error!' },
-        });
+        platformContext.app.notify.alert(
+          e.response?.data?.message || e.message,
+          {
+            labels: { alert: 'error!' },
+          }
+        );
       })
       .finally(() => {
         setFlagIsRequesting(false);
@@ -151,8 +151,6 @@ const SignInWithEmail: FC<IModal> = () => {
             />
           </form>
         </div>
-      </Modal.Body>
-      <Modal.Footer>
         <div className="flex-col">
           <div className="text-sm mt-6 text-center">
             Not have an account?
@@ -194,6 +192,9 @@ const SignInWithEmail: FC<IModal> = () => {
             .
           </div>
         </div>
+      </Modal.Body>
+      <Modal.Footer>
+       
       </Modal.Footer>
     </>
   );

@@ -1,8 +1,7 @@
 // @ts-nocheck
 import { FC, useState, useEffect } from 'react';
-
+import isEqual from 'react-fast-compare';
 import { Modal, Row, Tabs, Container } from '@firecamp/ui-kit';
-import equal from 'deep-equal';
 
 import SettingBody from './body/SettingBody';
 import './FolderSetting.sass';
@@ -32,7 +31,7 @@ const FolderSetting: FC<IFolderSetting> = ({
     try {
       // let fetchedModule = await F.db.module.populate(folderId);
       // console.log({ fetchedModule });
-      // if (!equal(module, fetchedModule)) {
+      // if (!isEqual(module, fetchedModule)) {
       //   setModule(fetchedModule);
       // }
     } catch (error) {

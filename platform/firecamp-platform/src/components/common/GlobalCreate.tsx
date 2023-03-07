@@ -5,6 +5,10 @@ import platformContext from '../../services/platform-context';
 import { platformEmitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
 import { useWorkspaceStore } from '../../store/workspace';
+import { useEnvStore } from '../../store/environment';
+import { useTabStore } from '../../store/tab';
+import { ERequestTypes } from '@firecamp/types';
+import { ETabEntityTypes } from '../tabs/types';
 
 enum EMenuOptions {
   Request = 'request',
@@ -37,31 +41,23 @@ const options = [
 
 const GlobalCreateDD = ({}) => {
   const [isOpen, toggleOpen] = useState(false);
+  const { open } = useTabStore.getState();
   const onSelect = (option) => {
     switch (option.id) {
       case EMenuOptions.Request:
-        platformEmitter.emit(EPlatformTabs.openNew, 'rest');
+        open({}, { id: '', type: ETabEntityTypes.Request });
         break;
       case EMenuOptions.Collection:
         const { createCollectionPrompt } = useWorkspaceStore.getState();
         createCollectionPrompt();
         break;
       case EMenuOptions.Environment:
-        const { tabId, collectionId } =
-          platformContext.environment.getCurrentTabEnv();
-        if (!collectionId) {
-          const msg =
-            tabId == 'home'
-              ? 'Please open a saved request from the collection to create an environment of that collecction'
-              : 'The current tab request is not saved, please save it in the collection';
-          platformContext.app.notify.info(msg);
-          return;
-        }
-        platformContext.app.modals.openCreateEnvironment({
-          collectionId,
-        });
+        const { createEnvironmentPrompt } = useEnvStore.getState();
+        createEnvironmentPrompt();
         break;
       case EMenuOptions.ImportCollection:
+        const { openImportTab } = useWorkspaceStore.getState();
+        openImportTab();
         break;
       case EMenuOptions.Workspace:
         platformContext.app.modals.openCreateWorkspace();
@@ -87,7 +83,7 @@ const GlobalCreateDD = ({}) => {
       >
         <Dropdown.Handler>
           <Button
-            text={'NEW'}
+            text={'Create'}
             className={classnames('!text-primaryColor')}
             withCaret
             transparent

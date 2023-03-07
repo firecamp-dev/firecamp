@@ -6,7 +6,7 @@ import { IPromptInput, IPromptSaveItem } from '../../components/prompt/types';
 
 type TPropKeys =
   | 'header'
-  | 'lable'
+  | 'label'
   | 'placeholder'
   | 'texts'
   | 'value'

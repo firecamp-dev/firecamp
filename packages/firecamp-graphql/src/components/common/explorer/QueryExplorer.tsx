@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import GraphiQLExplorer from 'graphiql-explorer';
-import equal from 'deep-equal';
 import shallow from 'zustand/shallow';
 import { buildClientSchema } from 'graphql';
 
@@ -37,9 +36,9 @@ const QueryExplorer = () => {
 
   useEffect(() => {}, []);
 
-  let _onEdit = (body) => {
-    console.log({ body });
-    changePlaygroundValue(activePlayground, body);
+  let _onEdit = (value) => {
+    console.log({ value });
+    changePlaygroundValue(activePlayground, value);
     // debugger;
     // setCurrentQueryPayload(queryPayload);
     // mergeSingleQueryToQueries(queryPayload);
@@ -51,7 +50,7 @@ const QueryExplorer = () => {
     <GraphiQLExplorer
       id={`query-explorer-${tabId}`}
       schema={clientSchema}
-      query={playground.request.body}
+      query={playground.request.value.query}
       onEdit={_onEdit}
       explorerIsOpen={true}
       onToggleExplorer={(_) => console.log()}

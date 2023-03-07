@@ -1,13 +1,13 @@
-//@ts-nocheck
 import { FC, useEffect, useRef, memo, ReactNode } from 'react';
-import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
+import isEqual from 'react-fast-compare';
 import cx from 'classnames';
-import { EEditorLanguage } from '@firecamp/types';
+import MonacoEditor, { OnMount, EditorProps } from '@monaco-editor/react';
+import { EEditorLanguage, EEditorTheme } from '@firecamp/types';
 import { IEditor } from './Editor.interface';
 
 type TSLEditor = {
   name?: string;
-  type: 'text' | 'number';
+  type: 'strin' | 'number';
   loading?: ReactNode;
   style?: object;
 };
@@ -42,7 +42,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 }) => {
   const editorIdRef = useRef('');
   useEffect(() => {
-    console.log('this is re-rendering <SingleLineEditor />');
+    // console.log('this is re-rendering <SingleLineEditor />');
     //@ts-ignore
     if (!window.editors) window.editors = new Map();
     return () => {
@@ -57,7 +57,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 
     editor.onDidFocusEditorWidget(() => {
       localStorage.setItem('currentEditor', editor.getId());
-      console.log(editor.getId(), 'Focus event triggered ');
+      // console.log(editor.getId(), 'Focus event triggered ');
     });
 
     /**
@@ -82,7 +82,10 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 
     onBlur && editor.onDidBlurEditorText(() => onBlur(editor));
     onFocus && editor.onDidFocusEditorText(() => onFocus(editor));
-    onPaste && editor.onDidPaste(() => onPaste(editor));
+    onPaste &&
+      editor.onDidPaste((l) => {
+        onPaste(editor.getModel().getValueInRange(l.range), editor);
+      });
 
     editor.onKeyDown((evt: any) => {
       switch (evt.keyCode) {
@@ -131,7 +134,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             const et = window.editors.get(mapKeys[nextIndex]);
             editor.setSelection(new monaco.Range(0, 0, 0, 0));
             if (et) {
-              console.log(et.getId(), 'tab');
+              // console.log(et.getId(), 'tab');
               evt.preventDefault();
               evt.stopPropagation();
               const range = et?.getModel()?.getFullModelRange();
@@ -276,8 +279,10 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 
   const options: EditorProps['options'] = {
     readOnly: false,
+    // fontFamily: 'lato',
     fontFamily: "'Open Sans', sans-serif",
     fontSize: 14,
+    fontWeight: 'normal',
     links: false,
     minimap: { enabled: false },
     matchBrackets: 'never',
@@ -293,9 +298,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     lineNumbersMinChars: 0,
     lineDecorationsWidth: 0,
     // wrappingColumn: 1,
-    // ...monacoOptions,
 
-    fontWeight: 'normal',
     wordWrap: 'off',
     overviewRulerLanes: 0,
     overviewRulerBorder: false,
@@ -337,6 +340,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
 
     suggestOnTriggerCharacters: false,
     tabCompletion: 'off',
+    ...monacoOptions,
   };
 
   /** if 'readOnly' is not provided then consider 'disabled' */
@@ -351,6 +355,15 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
    * 2. Convert multiline string in to single line
    */
   //  value = value.replace(/[\n\r]/g, '');
+
+  /**
+   * @note: Editor will reset the default theme on render,
+   *        so fetch previously set theme from localStorage and set to editor
+   */
+  let editorTheme: string = EEditorTheme.Dark;
+  if (localStorage) {
+    editorTheme = localStorage.getItem('editorTheme') || EEditorTheme.Lite;
+  }
 
   return (
     <>
@@ -370,6 +383,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
           height={height}
           path={path}
           key={path}
+          theme={editorTheme}
           loading={loading || <></>}
           onChange={(newValue) => {
             newValue = newValue.replace(/[\n\r]/g, '');
@@ -405,4 +419,34 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   );
 };
 
-export default memo(SingleLineEditor);
+export default memo(SingleLineEditor, (p, n) => {
+  const pp = {
+    type: p.type,
+    name: p.name,
+    value: p.value,
+    disabled: p.disabled,
+    autoFocus: p.autoFocus,
+    language: p.language,
+    // monacoOptions: p.monacoOptions,
+    // placeholder: p.placeholder,
+    className: p.className,
+    style: p.style,
+    height: p.height,
+    path: p.path,
+  };
+  const np = {
+    type: n.type,
+    name: n.name,
+    value: n.value,
+    disabled: n.disabled,
+    autoFocus: n.autoFocus,
+    language: n.language,
+    // monacoOptions: n.monacoOptions,
+    // placeholder: n.placeholder,
+    className: n.className,
+    style: n.style,
+    height: n.height,
+    path: n.path,
+  };
+  return isEqual(pp, np);
+});

@@ -5,7 +5,7 @@ import { TStoreSlice } from '../store.type';
 const emptyLog = {
   title: '',
   message: {
-    payload: '',
+    value: '',
     __meta: {
       type: EMessageBodyType.Text,
       typedArrayView: '',
@@ -24,7 +24,7 @@ const emptyLog = {
 };
 
 interface ILogs {
-  [key: TId]: ILog[];
+  [key: string]: ILog[];
 }
 
 interface ILogsSlice {

@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
 import { _array, _misc, _object } from '@firecamp/utils';
 import {
@@ -74,6 +74,13 @@ const Table: FC<ITable<any>> = ({
     orders: string[];
   }>(prepareTableInitState(rows, showDefaultEmptyRows, defaultRow));
   useTableResize(tableRef);
+
+  const _columns = useMemo(() => {
+    if (options?.hiddenColumns?.length) {
+      return columns.filter((c) => !options.hiddenColumns.includes(c.key));
+    }
+    return columns;
+  }, [columns, options]);
 
   const containerDivRef = useRef<HTMLTableElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -214,7 +221,7 @@ const Table: FC<ITable<any>> = ({
 
   return (
     <div
-      className={`w-full custom-scrollbar z-30 ${classes.container}`}
+      className={`w-full custom-scrollbar ${classes.container}`}
       ref={containerDivRef}
     >
       <table
@@ -226,7 +233,7 @@ const Table: FC<ITable<any>> = ({
           <Tr
             className={`border text-base text-left font-semibold bg-focus2 ${classes.theadTr}`}
           >
-            {columns.map((c, i) => {
+            {_columns.map((c, i) => {
               return (
                 <Th
                   className={classes.th}
@@ -257,7 +264,7 @@ const Table: FC<ITable<any>> = ({
             return (
               <TableRow
                 classes={{ tr: classes.tr, td: classes.td }}
-                columns={columns}
+                columns={_columns}
                 index={i}
                 row={_state.rows[rId]}
                 tableApi={tableApi}

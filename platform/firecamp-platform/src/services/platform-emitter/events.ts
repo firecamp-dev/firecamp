@@ -33,14 +33,12 @@ export enum PlatformEnvironmentEvents {
 }
 
 export enum EPlatformTabs {
-  openNew = 'platform/tabs.openNew',
-  openRequest = 'platform/tabs.openRequest',
-  openSaved = 'platform/tabs.openSaved',
-  close = 'platform/tabs.close',
+  Open = 'platform/tabs.open',
+  Close = 'platform/tabs.close',
 
-  opened = 'platform/tabs.opened',
-  closed = 'platform/tabs.closed',
-  changeState = 'platform/tabs.changeState',
+  Opened = 'platform/tabs.opened',
+  Closed = 'platform/tabs.closed',
+  ChangeState = 'platform/tabs.changeState',
 }
 
 export const prepareEventNameForRequestPull = (reqId: TId) => `pull/r/${reqId}`;

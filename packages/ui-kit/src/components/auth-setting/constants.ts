@@ -1,6 +1,6 @@
 import { EAuthTypes } from '@firecamp/types';
 
-const authUiState = {
+const authUiFormState = {
   [EAuthTypes.Basic]: {
     inputList: [
       {
@@ -339,18 +339,18 @@ const authUiState = {
 };
 
 const authTypeList = [
-  { name: 'No Auth', id: EAuthTypes.NoAuth, enable: true },
+  { name: 'None', id: EAuthTypes.None, enable: true },
   { name: 'Inherit', id: EAuthTypes.Inherit, enable: true },
   { name: 'Bearer', id: EAuthTypes.Bearer, enable: true },
   { name: 'Basic', id: EAuthTypes.Basic, enable: true },
   { name: 'Digest', id: EAuthTypes.Digest, enable: true },
   { name: 'OAuth 1', id: EAuthTypes.OAuth1, enable: true },
-  { name: 'OAuth 2', id: EAuthTypes.OAuth2, enable: false },
-  { name: 'Hawk', id: EAuthTypes.Hawk, enable: false },
+  // { name: 'OAuth 2', id: EAuthTypes.OAuth2, enable: false },
+  // { name: 'Hawk', id: EAuthTypes.Hawk, enable: false },
   { name: 'AWS', id: EAuthTypes.Aws4, enable: true },
-  { name: 'NTLM', id: EAuthTypes.Ntlm, enable: false },
-  { name: 'Atlassian', id: EAuthTypes.Atlassian, enable: false },
-  { name: 'Netrc', id: EAuthTypes.Nertc, enable: false },
+  // { name: 'NTLM', id: EAuthTypes.Ntlm, enable: false },
+  // { name: 'Atlassian', id: EAuthTypes.Atlassian, enable: false },
+  // { name: 'Netrc', id: EAuthTypes.Nertc, enable: false },
 ];
 
-export { authUiState, authTypeList };
+export { authUiFormState, authTypeList };

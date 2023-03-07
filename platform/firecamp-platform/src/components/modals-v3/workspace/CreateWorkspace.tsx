@@ -85,7 +85,6 @@ const CreateWorkspace: FC<IModal> = ({
     } catch (error) {
       setError((s) => ({ ...s, global: error.data.message }));
       // Re-authenticate user if accessToken expired
-      // await F.collab.reLogin(error);
     } finally {
       setFlagWNCP(false);
     }
@@ -226,7 +225,7 @@ const CreateWorkspace: FC<IModal> = ({
             type="text"
             minHeight="200px"
             label="Description (optional)"
-            labelClassname="fc-input-label"
+            labelClassName="fc-input-label"
             placeholder="Description"
             note="Markdown supported in description"
             name={'description'}

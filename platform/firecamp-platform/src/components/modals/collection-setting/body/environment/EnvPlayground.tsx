@@ -1,11 +1,6 @@
 import { FC, useEffect, useState, useRef } from 'react';
-import {
-  Container,
-  TabHeader,
-  Button,
-  Editor
-} from '@firecamp/ui-kit';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
+import { Container, TabHeader, Button, Editor } from '@firecamp/ui-kit';
 import { _object } from '@firecamp/utils';
 import { EEditorLanguage } from '@firecamp/types';
 
@@ -54,7 +49,7 @@ const EnvPlayground: FC<IEnvPlayground> = ({
   let _updateActiveEnvCache = (updates = new Map(), activeenvId) => {
     let updatedActiveEnvCache = updates?.get?.(activeenvId || '') || {};
     if (
-      !equal(updatedActiveEnvCache, activeEnvCache) &&
+      !isEqual(updatedActiveEnvCache, activeEnvCache) &&
       !_object.isEmpty(updatedActiveEnvCache)
     ) {
       setActiveEnvCache(updatedActiveEnvCache);
@@ -112,8 +107,8 @@ const EnvPlayground: FC<IEnvPlayground> = ({
         ? JSON.parse(activeEnv.body || '{}')
         : {};
       if (
-        !equal(parsedEnvBody, parsedEnvCardBody) ||
-        !equal(activeEnv.body, activeEnvCache.body)
+        !isEqual(parsedEnvBody, parsedEnvCardBody) ||
+        !isEqual(activeEnv.body, activeEnvCache.body)
       )
         isUndoButtonDisabled = false;
     } catch (e) {}
@@ -123,8 +118,8 @@ const EnvPlayground: FC<IEnvPlayground> = ({
       _object.isObject(parsedEnvBody) &&
       activeEnv &&
       activeEnvCache &&
-      (!equal(parsedEnvBody, parsedEnvCardBody) ||
-        !equal(activeEnv.body, activeEnvCache.body))
+      (!isEqual(parsedEnvBody, parsedEnvCardBody) ||
+        !isEqual(activeEnv.body, activeEnvCache.body))
     ) {
       isUpdatedButtonDisabled = false;
     }
@@ -178,9 +173,10 @@ const EnvPlayground: FC<IEnvPlayground> = ({
           onChange={({ target: { value } }) => {
             _updateVariables(value);
           }}
-          controlsConfig={{
-            show: true,
-          }}
+          onCtrlS={
+            (_) => {}
+            /* _onUpdate */
+          }
           monacoOptions={{
             name: 'Environment variables',
             width: '100%',
@@ -190,10 +186,6 @@ const EnvPlayground: FC<IEnvPlayground> = ({
             tabSize: 2,
             cursorStart: 1,
           }}
-          onCtrlS={
-            (_) => {}
-            /* _onUpdate */
-          }
         />
       </Container.Body>
       {_renderFooter()}

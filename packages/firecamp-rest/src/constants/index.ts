@@ -4,7 +4,7 @@ import { ERestBodyTypes, IRestConfig } from '@firecamp/types';
 export const bodyTypeNames = {
   [ERestBodyTypes.FormData]: 'Multipart',
   [ERestBodyTypes.UrlEncoded]: 'Form URL Encode',
-  [ERestBodyTypes.GraphQL]: 'GraphQL Queries',
+  // [ERestBodyTypes.GraphQL]: 'GraphQL Queries',
   [ERestBodyTypes.Json]: 'Json',
   [ERestBodyTypes.Xml]: 'Xml',
   [ERestBodyTypes.Text]: 'Text',
@@ -55,8 +55,8 @@ export const bodyTypesDDValues = {
         id: ERestBodyTypes.Binary,
       },
       {
-        name: 'No Body',
-        id: '',
+        name: 'None',
+        id: ERestBodyTypes.None,
         isEmpty: true,
       },
     ],
@@ -65,6 +65,7 @@ export const bodyTypesDDValues = {
 
 // empty body state
 export const RuntimeBodies = {
+  [ERestBodyTypes.None]: '',
   [ERestBodyTypes.FormData]: [],
   [ERestBodyTypes.UrlEncoded]: [],
   [ERestBodyTypes.GraphQL]: { query: '', variables: '' },

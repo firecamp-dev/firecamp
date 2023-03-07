@@ -1,6 +1,6 @@
 /// <reference path="../node_modules/@types/chrome/index.d.ts"/>
 
-import { EFirecampAgent, IRest, IRestResponse, TId } from '@firecamp/types';
+import { IRest, IRestResponse, TId } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
 
@@ -16,6 +16,9 @@ enum EReqEvent {
 type ExtResponse = {
   error: any;
   response: IRestResponse;
+  variables: any;
+  testResult: any;
+  scriptErrors: any[];
 };
 
 /**
@@ -25,7 +28,15 @@ type ExtResponse = {
  * #reference https://developer.chrome.com/docs/extensions/mv3/messaging/#external-webpage
  * @returns returns the Rest request execution response
  */
-export const send = (request: IRest): Promise<IRestResponse> => {
+export const send = (
+  request: IRest,
+  variables: any
+): Promise<{
+  response: IRestResponse;
+  variables: any;
+  testResult: any;
+  scriptErrors: any[];
+}> => {
   return new Promise((resolve, reject) => {
     chrome.runtime.sendMessage(
       process.env.FIRECAMP_EXTENSION_AGENT_ID,
@@ -35,7 +46,13 @@ export const send = (request: IRest): Promise<IRestResponse> => {
         requestId: request.__ref.id,
       },
       (result: ExtResponse) => {
-        if (result?.response) return resolve(result.response);
+        if (result?.response)
+          return resolve({
+            response: result.response,
+            variables: result.variables,
+            scriptErrors: result.scriptErrors,
+            testResult: result.testResult,
+          });
         if (result?.error) return reject(result.error);
 
         // reject if found any error in message passing

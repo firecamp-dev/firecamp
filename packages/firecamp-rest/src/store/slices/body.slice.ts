@@ -1,5 +1,4 @@
 import {
-  IRestBody,
   ERestBodyTypes,
   IHeader,
   EKeyValueTableRowType,
@@ -13,24 +12,18 @@ interface IBodySlice {
   changeBodyType: (bodyType: ERestBodyTypes) => void;
   updateHeadersOnBodyTypeChange: (type: ERestBodyTypes) => void;
 }
-const createBodySlice: TStoreSlice<IBodySlice> = (
-  set,
-  get,
-  initialBody: IRestBody
-) => {
+const createBodySlice: TStoreSlice<IBodySlice> = (set, get) => {
   return {
     // change the value of active body, example, write the json or multipart table
     changeBodyValue: (value: any) => {
       const state = get();
-      const {
-        body: { type },
-      } = state.request;
-      const reqBody = { type, value };
+      const { type } = state.request.body;
+      const body = { value, type };
       set((s) => {
         return {
           request: {
             ...s.request,
-            body: reqBody,
+            body,
           },
           runtime: {
             ...s.runtime,
@@ -41,20 +34,29 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
           },
         };
       });
-      state.equalityChecker({ body: reqBody });
+      state.equalityChecker({ body });
     },
     changeBodyType: (type: ERestBodyTypes) => {
+      const state = get();
+      const body = { value: state.runtime.bodies[type], type };
       set((s) => {
-        const runtimeBodies = s.runtime.bodies;
-        const reqBody = { value: runtimeBodies[type], type };
-        s.updateHeadersOnBodyTypeChange(type);
         return {
           request: {
             ...s.request,
-            body: reqBody,
+            body,
+          },
+          ui: {
+            ...s.ui,
+            requestPanel: {
+              ...s.ui.requestPanel,
+              hasBody: type != ERestBodyTypes.None,
+            },
           },
         };
       });
+      // @note: only update headers after body type changed
+      state.updateHeadersOnBodyTypeChange(type);
+      state.equalityChecker({ body });
     },
     updateHeadersOnBodyTypeChange: (type: ERestBodyTypes) => {
       const state = get();
@@ -75,13 +77,13 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
           break;
       }
 
-      // TODO: check without method for array object
-      const headersWithoutContentType: IHeader[] = _array.without(
-        headers,
+      const headersWithoutContentType: IHeader[] = updatedHeaders.filter(
         (h: IHeader) => h.key?.trim().toLowerCase() !== 'content-type'
-      ) as unknown as IHeader[];
+      );
 
-      if (type?.length) {
+      if (type == ERestBodyTypes.None) {
+        updatedHeaders = [...headersWithoutContentType];
+      } else if (contentType) {
         const bodyHeader: IHeader = {
           id: nanoid(),
           key: 'Content-Type',
@@ -91,8 +93,6 @@ const createBodySlice: TStoreSlice<IBodySlice> = (
           description: '',
         };
         updatedHeaders = [...headersWithoutContentType, bodyHeader];
-      } else if (contentType) {
-        updatedHeaders = [...headersWithoutContentType];
       }
       state.changeHeaders(updatedHeaders);
     },

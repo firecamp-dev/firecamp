@@ -80,6 +80,7 @@ module.exports = {
       rest: 'var(--req-link)',
       socket: 'var(--req-socketio)',
       websocket: 'var(--req-socketio)',
+      link: 'var(--link)',
     },
     extend: {
       keyframes: {

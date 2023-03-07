@@ -28,7 +28,7 @@ const Notes: FC<INotes> = ({
         ''
       )}
       <div className="text-appForegroundInActive">
-        {title != '' ? <div className="mb-2 font-semibold	">{title}</div> : ''}
+        {title != '' ? <div className="mb-2 font-semibold	text-appForeground">{title}</div> : ''}
         {description != '' ? (
           <div
             className="description"

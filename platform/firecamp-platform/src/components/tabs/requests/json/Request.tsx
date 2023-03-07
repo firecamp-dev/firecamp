@@ -5,7 +5,7 @@ import _cleanDeep from 'clean-deep';
 import { _array, _object } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
 
-const Request = ({ tab, platformContext, activeTab }) => {
+const Request = ({ tab, platformContext }) => {
   // if(isFetchingRequest === true) return <Loader />;
   console.log(tab, 'tab...');
   return (

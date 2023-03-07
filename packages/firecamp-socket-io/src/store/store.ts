@@ -2,7 +2,9 @@ import create from 'zustand';
 import createContext from 'zustand/context';
 import _cloneDeep from 'lodash/cloneDeep';
 import { ISocketIO, TId } from '@firecamp/types';
-
+import { _object } from '@firecamp/utils';
+import { initialiseStoreFromRequest } from '../services/request.service';
+import { ISocket, IStore } from './store.type';
 import {
   // request
   createRequestSlice,
@@ -29,9 +31,6 @@ import {
   // ui
   createUiSlice,
 } from './slices';
-import { _object } from '@firecamp/utils';
-import { initialiseStoreFromRequest } from '../services/request.service';
-import { ISocket, IStore } from './store.type';
 
 const {
   Provider: StoreProvider,

@@ -1,20 +1,26 @@
-import { IHeader, IRestScripts, IAuth, TId } from '@firecamp/types';
+import { IHeader, IAuth, TId, IScript } from '@firecamp/types';
 import { _auth } from '@firecamp/utils';
 import { RuntimeBodies } from '../../constants';
 import { TStoreSlice } from '../store.type';
+
+type TParentArtifacts = {
+  collection: {
+    auth?: IAuth;
+    preScripts?: IScript[];
+    postScripts?: IScript[];
+  };
+  folder: {
+    auth?: IAuth;
+    preScripts?: IScript[];
+    postScripts?: IScript[];
+  };
+};
 
 interface IRuntime {
   bodies: typeof RuntimeBodies;
   auths: typeof _auth.defaultAuthState;
   authHeaders?: IHeader[];
-  inherit?: {
-    auth: {
-      active: string;
-      payload: IAuth;
-      oauth2LastFetchedToken: string;
-    };
-    script: IRestScripts;
-  };
+  parentArtifacts: TParentArtifacts;
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
   oauth2LastFetchedToken: string;
@@ -23,9 +29,8 @@ interface IRuntime {
 
 interface IRuntimeSlice {
   runtime?: IRuntime;
-
   changeAuthHeaders?: (authHeaders: Array<IHeader>) => void;
-  changeInherit?: (key: string, value: any) => void;
+  setParentArtifacts: (artifacts: TParentArtifacts) => void;
   setRequestRunningFlag: (flag: boolean) => void;
   setRequestSavedFlag: (flag: boolean) => void;
   setOAuth2LastFetchedToken: (token: string) => void;
@@ -38,18 +43,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
 ) => ({
   runtime: {
     authHeaders: [],
-    inherit: {
-      auth: {
-        active: '',
-        payload: {},
-        oauth2LastFetchedToken: '',
-      },
-      script: {
-        pre: '',
-        post: '',
-        test: '',
-      },
-    },
     isRequestRunning: false,
     oauth2LastFetchedToken: '',
     ...initialRuntimeState,
@@ -75,17 +68,16 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
       },
     }));
   },
-  changeInherit: (key: string, value: any) => {
+
+  setParentArtifacts: (artifacts) => {
     set((s) => ({
       runtime: {
         ...s.runtime,
-        inherit: {
-          ...s.runtime.inherit,
-          [key]: value,
-        },
+        parentArtifacts: artifacts,
       },
     }));
   },
+
   setRequestRunningFlag: (flag: boolean) => {
     set((s) => ({
       runtime: {

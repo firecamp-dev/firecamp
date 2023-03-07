@@ -11,26 +11,22 @@ export default {
   argTypes: {},
 };
 
-const Template = ({...args}: IBasicTable<any>) => {
-  return (
-    <BasicTable
-    {...args}
-    />
-  );
+const Template = ({ ...args }: IBasicTable<any>) => {
+  return <BasicTable {...args} />;
 };
 
 export const EmptyRow = Template.bind({});
 EmptyRow.args = {
   rows: [],
   onChange: (value: ITableRows) => console.log(`change event`, value),
-  onMount: (value: TTableApi) => console.log(`mount event`, value)
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
 };
 
 export const BasicTableData = Template.bind({});
 BasicTableData.args = {
   rows: defaultData,
   onChange: (value: ITableRows) => console.log(`change event`, value),
-  onMount: (value: TTableApi) => console.log(`mount event`, value)
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
 };
 
 export const DisableColumns = Template.bind({});
@@ -39,8 +35,8 @@ DisableColumns.args = {
   onChange: (value: ITableRows) => console.log(`change event`, value),
   onMount: (value: TTableApi) => console.log(`mount event`, value),
   options: {
-    disabledColumns: ["disable", "value"],
-  }
+    disabledColumns: ['disable', 'value'],
+  },
 };
 
 export const DisableNewRow = Template.bind({});
@@ -50,7 +46,7 @@ DisableNewRow.args = {
   onMount: (value: TTableApi) => console.log(`mount event`, value),
   options: {
     allowRowAdd: false,
-  }
+  },
 };
 
 export const DisableRemoveRow = Template.bind({});
@@ -60,7 +56,7 @@ DisableRemoveRow.args = {
   onMount: (value: TTableApi) => console.log(`mount event`, value),
   options: {
     allowRowRemove: false,
-  }
+  },
 };
 
 export const DisableSortRow = Template.bind({});
@@ -70,5 +66,5 @@ DisableSortRow.args = {
   onMount: (value: TTableApi) => console.log(`mount event`, value),
   options: {
     allowSort: false,
-  }
+  },
 };

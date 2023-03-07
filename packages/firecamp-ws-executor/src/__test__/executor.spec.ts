@@ -45,14 +45,14 @@ describe.skip('Message passing', () => {
   it('should pass the message via connection', (done) => {
     executor1.logs((log: ILog) => {
       if (log.__meta.type === ELogTypes.Send) {
-        expect(log.message.body).toEqual('hi');
+        expect(log.message.value).toEqual('hi');
         done();
       }
     });
 
     executor1.send({
       name: '',
-      body: 'hi',
+      value: 'hi',
       __meta: { type: EMessageBodyType.Text },
       __ref: {
         id: nanoid(),

@@ -6,18 +6,25 @@ import {
   EArgumentBodyType,
 } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
+import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
 
 interface ICollection {
   isProgressing?: boolean;
   tdpInstance?: any;
   items?: Partial<ISocketIOEmitter & { __ref: { isItem?: boolean } }>[];
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
+  /**
+   * increate the number on each action/event happens within collection
+   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   */
+  __manualUpdates?: number;
 }
 
 interface ICollectionSlice {
   collection: ICollection;
+  isCollectionEmpty: () => boolean;
   toggleProgressBar: (flag?: boolean) => void;
-  registerTDP: (instance: any) => void;
+  registerTDP: () => void;
   unRegisterTDP: () => void;
   initialiseCollection: (collection: ICollection) => void;
 
@@ -28,7 +35,7 @@ interface ICollectionSlice {
 
   // folders
   getFolder: (id: TId) => IRequestFolder;
-  createFolder: (name: string, parentFolderId: TId) => void;
+  prepareCreateFolderPayload: (name: string, parentFolderId: TId) => void;
   deleteFolder: (id: TId) => void;
   onCreateFolder: (folder: IRequestFolder) => void;
 }
@@ -43,9 +50,33 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     items: [],
   },
 
+  isCollectionEmpty: () => {
+    const { folders, items } = get().collection;
+    return folders.length == 0 && items.length == 0;
+  },
+
   // register TreeDatProvider instance
-  registerTDP: (instance: any) => {
-    set((s) => ({ collection: { ...s.collection, tdpInstance: instance } }));
+  // register TreeDatProvider instance
+  registerTDP: () => {
+    set((s) => {
+      const rootOrders = [
+        ...s.request.__meta.fOrders,
+        ...s.request.__meta.iOrders,
+      ];
+      console.log(rootOrders, 'rootOrders... registerTDP');
+      const instance = new TreeDataProvider(
+        s.collection.folders,
+        s.collection.items,
+        rootOrders
+      );
+      return {
+        collection: {
+          ...s.collection,
+          tdpInstance: instance,
+          __manualUpdates: ++s.collection.__manualUpdates,
+        },
+      };
+    });
   },
 
   // unregister TreeDatProvider instance
@@ -76,10 +107,15 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         playgrounds: collection?.items?.length,
       },
     }));
+    const rootOrders = [
+      ...state.request.__meta.fOrders,
+      ...state.request.__meta.iOrders,
+    ];
+    console.log(rootOrders, 'rootOrders... initialiseCollection');
     state.collection.tdpInstance?.init(
       collection.folders || [],
       collection.items || [],
-      [...state.request.__meta.fOrders, ...state.request.__meta.iOrders]
+      rootOrders
     );
   },
 
@@ -96,17 +132,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       playgrounds,
     } = state;
     const emitter = playgrounds[activePlayground]?.emitter;
-    if (
-      [EArgumentBodyType.NoBody, EArgumentBodyType.File].includes(
-        emitter.__meta.type
-      )
-    ) {
-      return;
-    }
 
     const item = {
-      ...emitter,
       name,
+      value: emitter.value,
       __meta: { ...emitter.__meta, label },
       __ref: {
         ...emitter.__ref,
@@ -147,12 +176,12 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   },
 
   // folders
-  getFolder: (id: TId, getLast = false) => {
+  getFolder: (id: TId) => {
     const state = get();
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
     return folder;
   },
-  createFolder: async (name: string, parentFolderId?: TId) => {
+  prepareCreateFolderPayload: (name: string, parentFolderId?: TId) => {
     const state = get();
     const _folder: IRequestFolder = {
       name,
@@ -166,30 +195,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       },
     };
     state.toggleProgressBar(true);
-    return Promise.resolve().then(() => {
-      state.onCreateFolder(_folder);
-    });
-    // const res = await Rest.requestFolder
-    //   .create(_folder)
-    //   .then((r) => {
-    //     state.onCreateFolder(r.data);
-    //     return r;
-    //   })
-    //   .finally(() => {
-    //     state.toggleProgressBar(false);
-    //   });
-    // return res;
-  },
-  deleteFolder: (id: TId) => {
-    set((s) => {
-      const folders = s.collection.folders.filter((f) => f.__ref.id != id);
-      return {
-        collection: {
-          ...s.collection,
-          ...folders,
-        },
-      };
-    });
+    return _folder;
   },
 
   onCreateFolder: (folder) => {
@@ -197,6 +203,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
     set((s) => {
       s.collection.tdpInstance?.addFolder(folder);
+      const { request } = s;
       const { folders } = s.collection;
       if (folder.__ref.folderId) {
         folders.map((f) => {
@@ -205,12 +212,26 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
           }
         });
       } else {
-        // TODO: add root folder id in request.__meta.fOrders
+        request.__meta.fOrders = [...request.__meta.fOrders, folder.__ref.id];
       }
       return {
+        request,
         collection: {
           ...s.collection,
           folders: [...folders, folder],
+          __manualUpdates: ++s.collection.__manualUpdates,
+        },
+      };
+    });
+  },
+
+  deleteFolder: (id: TId) => {
+    set((s) => {
+      const folders = s.collection.folders.filter((f) => f.__ref.id != id);
+      return {
+        collection: {
+          ...s.collection,
+          ...folders,
         },
       };
     });

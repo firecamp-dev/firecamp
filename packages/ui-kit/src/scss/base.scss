@@ -31,6 +31,7 @@
     --req-graphql: #E535AB;
     --req-websocket: #FF7043;
     --req-socketio: #91BD5E;
+    --link: #0068bc;
 
     --app-background: #1B1A1A;
     --app-foreground: #cccccc;
@@ -316,43 +317,43 @@ tr:focus-visible{
 .explorer-wrapper {
   max-height: calc(100vh - 25px);
 }
-.GET{
+.GET:not(.tab-icon){
   color: var(--req-get);
 }
-.POST{
+.POST:not(.tab-icon){
   color: var(--req-post);
 }
-.PUT{
+.PUT:not(.tab-icon){
   color: var(--req-put);
 }
-.DELETE{
+.DELETE:not(.tab-icon){
   color: var(--req-delete);
 }
-.PATCH{
+.PATCH:not(.tab-icon){
   color: var(--req-patch);
 }
-.HEAD{
+.HEAD:not(.tab-icon){
   color: var(--req-head);
 }
-.OPTIONS{
+.OPTIONS:not(.tab-icon){
   color: var(--req-options);
 }
-.PURGE{
+.PURGE:not(.tab-icon){
   color: var(--req-purge);
 }
-.LINK{
+.LINK:not(.tab-icon){
   color: var(--req-link);
 }
-.UNLINK{
+.UNLINK:not(.tab-icon){
   color: var(--req-unlink);
 }
-.GRAPHQL{
+.GRAPHQL:not(.tab-icon){
   color: var(--req-graphql);
 }
-.WEBSOCKET{
+.WEBSOCKET:not(.tab-icon){
   color: var(--req-websocket);
 }
-.SOCKETIO{
+.SOCKETIO:not(.tab-icon){
   color: var(--req-socketio);
 }
 .hide-action:hover .action {
@@ -688,7 +689,11 @@ tr:focus-visible{
   width: 8px !important;
   display: block !important;
 }
-.visible-scrollbar.thin::-webkit-scrollbar,.visible-scrollbar.thin:hover::-webkit-scrollbar{
+.visible-scrollbar.thin::-webkit-scrollbar{
+  width: 4px !important;
+  display: none !important;
+}
+.visible-scrollbar.thin:hover::-webkit-scrollbar{
   width: 4px !important;
   display: block !important;
 }
@@ -913,5 +918,16 @@ body .ace_editor .ace_scrollbar{
   padding: 4px 8px;
   font-weight: 800;
   background: var(--focus-level-2);
+}
+
+.primary-table .mtk1,.primary-table th{
+  color: var(--tab-foreground-inactive) !important;
+}
+
+.table-cell .table-action{
+  visibility: hidden;
+}
+.table-cell:hover .table-action{
+  visibility: visible;
 }
 /*-----------table 2 css end --------*/
