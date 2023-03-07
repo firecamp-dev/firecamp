@@ -68,7 +68,7 @@
     "circular-dependency-plugin": "^5.2.0",
     "colors": "^1.4.0",
     "compression-webpack-plugin": "^10.0.0",
-    "copy-webpack-plugin": "^10.2.4",
+    "copy-webpack-plugin": "^11.0.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
     "crx": "^3.0.3",
