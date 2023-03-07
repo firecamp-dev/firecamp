@@ -32,7 +32,7 @@
     "build-storybook": "build-storybook",
     "build:tailwind": "postcss src/scss/base.scss -o src/scss/tailwind.scss",
     "chromatic": "npx chromatic --project-token=4db217014cde004",
-    "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && yapnpmrn copy-files",
+    "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && pnpm copy-files",
     "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.scss\" \"src/**/*.css\" dist/"
   },
   "bugs": {
@@ -87,6 +87,7 @@
     "@firecamp/ui-kit": "workspace:*",
     "@monaco-editor/react": "4.4.5",
     "@radix-ui/react-scroll-area": "^1.0.2",
+    "@radix-ui/react-dropdown-menu": "^2.0.1",
     "@radix-ui/react-toast": "^1.0.0",
     "@szhsin/react-menu": "^2.3.2",
     "@tanstack/react-table": "^8.6.0",
@@ -117,7 +118,13 @@
   },
   "babel": {
     "presets": [
-      "@babel/preset-env"
+      "@babel/preset-env",
+      [
+        "react-app",
+        {
+          "absoluteRuntime": false
+        }
+      ]
     ]
   }
 }

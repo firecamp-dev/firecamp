@@ -48,7 +48,7 @@ const CloseIconPlacement = ({
         </div>
       ) : (
         <div className="fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor">
-          <VscClose size={14} onClick={(e) => onClick(e)} />
+          <VscClose size={14} onClick={(e) => onClick(e)} title={"IconClose"}/>
         </div>
       )}
     </div>
@@ -197,13 +197,15 @@ const Tab: FC<ITab> = ({
           )}
         </div>
         <CloseIconPlacement
-          id={`close-icon-${id}`}
+          id={`close-ic-${id}`}
           state={state}
           onClick={(e: any) => {
             //to stop firing the onSelect event
             //when user click on the close icon the tab should not call onSelect fn
             e.preventDefault();
             e.stopPropagation();
+            //validate the disabled value for close icon
+            !closeTabIconMeta?.disabled && 
             closeTabIconMeta?.onClick(index, id, e);
           }}
           show={closeTabIconMeta?.show}

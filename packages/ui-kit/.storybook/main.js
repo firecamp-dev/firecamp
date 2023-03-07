@@ -52,6 +52,11 @@ module.exports = {
         __dirname,
         '../../firecamp-rest-executor/dist/esm/script-runner/snippets/index.js'
       ),
+      'react-hook-form': path.join(
+        __dirname,
+        '../../../node_modules/react-hook-form'
+      ),
+
       // "https": path.join(__dirname, "../../../node_modules/@types/node/https.d.ts"),
       // "fs": path.join(__dirname, "../../../node_modules/@types/node/ts4.8/fs.d.ts")
       // "react/jsx-dev-runtime": path.join(__dirname, "../../../node_modules/react/jsx-dev-runtime.js"),

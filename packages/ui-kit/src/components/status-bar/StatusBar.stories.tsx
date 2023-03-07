@@ -1,4 +1,3 @@
-//@ts-nocheck
 import { default as StatusBar } from './StatusBar';
 import { VscTwitter } from "@react-icons/all-files/vsc/VscTwitter";
 import { VscGithubInverted } from "@react-icons/all-files/vsc/VscGithubInverted";
@@ -19,8 +18,8 @@ export default {
     }
 };
 
-const Template = (args) =>
-    <StatusBar {...args} >
+const Template = (args: any) =>
+    <StatusBar {...args}  className= "border-t focus-outer2">
         <StatusBar.PrimaryRegion>
             {args?.primaryRegion() || ''}
         </StatusBar.PrimaryRegion>

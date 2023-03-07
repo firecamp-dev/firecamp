@@ -23,7 +23,7 @@ const Dropdown: FC<IDropdown> & {
   detach = true,
   className = '',
   children = '',
-  selected = '', //TODO: check usage and deprecate if not needed
+  selected = '', //TODO: check usage and deprecate if not needed - used to highlight (via bold font) the selected option name from the list
 }) => {
   let [isOpen, toggleIsOpen] = useState(false);
   const ref = useRef(null);

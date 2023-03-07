@@ -1,4 +1,4 @@
-//@ts-nocheck
+import { useState } from "react";
 import { VscGithub } from "@react-icons/all-files/vsc/VscGithub";
 import { VscLock } from "@react-icons/all-files/vsc/VscLock";
 import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
@@ -18,8 +18,12 @@ export default {
     }
 };
 
-const Template = (args) => <div className="bg-appBackground h-screen w-screen block">
-    <Modal {...args} >
+const Template = (args: any) => {
+    let [isOpen, toggleOpen] = useState(true);
+
+return <div className="bg-appBackground h-screen w-screen block">
+    <Button text="Open Modal"  onClick={() => toggleOpen(true)}/>
+    <Modal {...args} isOpen={isOpen} onClose={() => toggleOpen(false)}>
         <Modal.Header >
             {args?.header() || ''}
         </Modal.Header>
@@ -30,7 +34,7 @@ const Template = (args) => <div className="bg-appBackground h-screen w-screen bl
             {args?.footer() || ''}
         </Modal.Footer>
     </Modal>
-</div>;
+</div>};
 
 export const SessionExpireDemo = Template.bind({});
 SessionExpireDemo.args = {
@@ -58,7 +62,7 @@ const SignUpBody = () => {
                     <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
                 </FormGroup>
                 <a className="cursor-pointer text-appForeground block pb-6 text-right text-sm">Forgot Password?</a>
-                <Button color="primary" text="sign in" fullWidth={true} size="md" />
+                <Button primary={true} text="sign in" fullWidth={true} md={true} />
             </div>
             <hr className="border-modalBorder -ml-8 -mr-8 mb-6 mt-6" />
             <div className="">

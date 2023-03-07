@@ -104,6 +104,9 @@ module.exports = {
         serif: ['ui-serif'],
         mono: ['ui-monospace'],
       },
+      boxShadow: {
+        popoverBoxshadow: 'var(--popoverBoxshadow)',
+      }
     },
   },
   variants: {

@@ -76,6 +76,7 @@ const Tabs: FC<ITabs> = ({
       )}
       id={id}
       tabIndex={tabIndex}
+      data-testid={"tabs-container"}
     >
       {preComp && (
         <div
@@ -160,7 +161,7 @@ const Tabs: FC<ITabs> = ({
                   }
                 }}
               >
-                <VscAdd className="flex" size={16} />
+                <VscAdd className="flex" size={16} title="IconAdd"/>
               </div>
             )}
           </div>

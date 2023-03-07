@@ -35,7 +35,6 @@ const Menu: FC = () => {
           name: 'GraphQL',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              {/* <img src={'icon/png/icons-gray/graphql.png'} /> */}
               {<FcIconGraphQL className="text-graphql" size={24} />}
             </div>
           ),

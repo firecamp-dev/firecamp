@@ -18,7 +18,7 @@ export interface ICopyButton {
     /**
      * Content to show in button  
      */
-    children?: []
+    children?: any[]
     /**
      * Do you want to show animation on click button?
      */

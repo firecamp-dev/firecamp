@@ -22,7 +22,7 @@ const Notes: FC<INotes> = ({
     >
       {showicon == true ? (
         <div className="text-md mr-3 icon">
-          <span className="iconv2-info-icon"></span>
+          <span className="icv2-info-icon"></span>
         </div>
       ) : (
         ''

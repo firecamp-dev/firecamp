@@ -109,6 +109,7 @@ export interface IOption {
   list?: Array<IItem>;
 
   //----------- If no header is there ----------
+  id?: string;
   name?: string;
   /**
    * Boolean value whether option disabled or not
@@ -180,4 +181,111 @@ export interface IHeaderMeta {
    * Header's post component/ text
    */
   postfix?: () => JSX.Element | JSX.Element[];
+}
+
+// Dropdown V2
+export interface IDropdownV2 {
+  /**
+   * To display arrow shown at the begin of container
+   */
+  showOptionArrow?: boolean,
+  /**
+   * Element to be shown to preview the dropdown
+   */
+  handleRenderer: () => JSX.Element;
+  /**
+   * list of options
+   */
+  option: Array<IOptionsV2>;
+  /**
+   * function on selection
+   */
+  onSelect: (option?: any, event?: any) => any,
+  /**
+   * classname for the options wrapper
+   */
+  optionContainerClassName?: string,
+  /**
+   * displaying static default styles [1-default, 2-focus border]
+   */
+  displayDefaultOptionClassName?: number,
+  /**
+   * Wrapper classname for handler element
+   */
+  className?: string,
+  /**
+   * To disable the selection option
+   */
+  disabled?: boolean
+}
+export interface IOptionsV2 {
+   /**
+   * Option text for preview
+   */
+  selectedElement?: string;
+
+  /**
+   * Option items nested
+   */
+  list?: Array<IOptionsV2>;
+
+  /**
+   * to display a separator line at the bottom of current option item
+   */
+  showSeparator?: boolean;
+
+  id?: string;
+  name?: string;
+  className?: string;
+  onSelect?: (option?: any, event?: any) => any;
+  /**
+   * displaying static default styles [1-default, 2-focus border]
+   */
+  displayDefaultOptionClassName?: number;
+  /**
+   * Boolean value whether option disabled or not
+   */
+  disabled?: boolean;
+  /**
+   * Option's pre component/ text
+   */
+  prefix?: () => JSX.Element | JSX.Element[];
+  /**
+   * Option's post component/ text
+   */
+  postfix?: () => JSX.Element | JSX.Element[];
+  /**
+   * classname for nested container wrapper
+   */
+  optionContainerClassName?: string;
+}
+export interface IItemV2 {
+  /**
+   * Option item name
+   */
+  text: string;
+  /**
+   * Item's pre component/ text
+   */
+  prefix?: () => JSX.Element | JSX.Element[];
+  /**
+   * Item's post component/ text
+   */
+  postfix?: () => JSX.Element | JSX.Element[];
+  /**
+   * Boolean value whether option disabled or not
+   */
+  disabled?: boolean;
+  /**
+   * Item classname to have custom css
+   */
+  className?: string;
+  /**
+   * A function to call onClick/ select option from menu
+   */
+  onClick?: (option?: any, e?: any) => void;
+  /**
+   * to show/hide default item styles
+   */
+  defaultItemClass?: boolean
 }

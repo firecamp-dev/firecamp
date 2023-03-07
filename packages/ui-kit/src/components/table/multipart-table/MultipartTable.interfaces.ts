@@ -30,6 +30,9 @@ export interface IMultiPartInput {
   /** row value */
   value: string | number | boolean | object;
 
+  /** table options */
+  options?: ITableOptions;
+
   /** on change text input value*/
   onChange?: (evt: object) => void;
 
@@ -38,7 +41,4 @@ export interface IMultiPartInput {
 
   /** on change row type one of ['text', 'file'] */
   onChangeRowType?: (type: ERowType) => void;
-
-  /** Table options */
-  options?: ITableOptions;
 }

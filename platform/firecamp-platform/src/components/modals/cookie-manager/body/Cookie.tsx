@@ -36,7 +36,7 @@ const Cookie: FC<ICookieComp> = ({ cookie = {}, cookieFns = () => {} }) => {
 
         <ConfirmationPopover
           id={`remove-cookie-${cookie.__ref.id}`}
-          handler={<span className="iconv2-delete-v2-icon"></span>}
+          handler={<span className="icv2-delete-v2-icon"></span>}
           title="Are you sure remove?"
           _meta={{
             showDeleteIcon: false,

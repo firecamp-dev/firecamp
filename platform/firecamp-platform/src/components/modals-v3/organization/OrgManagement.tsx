@@ -48,7 +48,6 @@ const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
     <>
       <Modal.Header>
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium  border-b border-appBorder ">
-          {/* <span className="iconv2-setting-icon mr-2"/> */}
           Organization Management
         </div>
       </Modal.Header>

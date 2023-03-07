@@ -44,12 +44,12 @@ const PlaygroundPanel = () => {
               <Button
                 text="add playground"
                 icon={<VscAdd className="mr-2" size={12} />}
-                secondary
-                iconLeft
-                sm
                 transparent={true}
                 onClick={() => addPlayground()}
-                ghost={true}
+                secondary
+                iconLeft
+                ghost
+                sm
               />
             );
           }}

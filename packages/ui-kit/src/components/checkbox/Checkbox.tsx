@@ -21,7 +21,7 @@ const Checkbox: FC<ICheckbox> = ({
     <div className={cx(className, 'flex')} tabIndex={tabIndex}>
       <label
         className={cx('fc-custom-checkbox !flex items-center mb-0 ', {
-          'w-4': label == '',
+          'w-4': !showLabel,
         })}
         onClick={(e) => {
           if (e) {
@@ -59,6 +59,7 @@ const Checkbox: FC<ICheckbox> = ({
           {isChecked ? (
             <VscCheck
               size={12}
+              title={"IconCheck"}
               className="text-primaryColor absolute"
             />
           ) : (
@@ -73,7 +74,7 @@ const Checkbox: FC<ICheckbox> = ({
       </label>
       {!!note ? (
         <div className="fc-input-note">
-          <span className="iconv2-info-icon" />
+          <span className="icv2-info-icon" />
           {note}
         </div>
       ) : (

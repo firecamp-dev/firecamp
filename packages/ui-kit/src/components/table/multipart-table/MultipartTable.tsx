@@ -170,7 +170,7 @@ const MultipartTable = ({
         <Button
           onClick={() => apiRef.current.addRow()}
           text="Add Row"
-          className="small transparent font-light without-border with-padding with-icon-left"
+          className="small transparent font-light without-border with-padding with-ic-left"
           icon={<VscAdd size={16} />}
           primary
           sm
@@ -267,7 +267,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
 
             <div
               key={`${row.id}-file-type`}
-              className="cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre w-full"
+              className="cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre w-full mr-1"
               onClick={_onClick}
             >
               {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}

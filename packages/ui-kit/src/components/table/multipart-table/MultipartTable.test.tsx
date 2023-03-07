@@ -1,16 +1,36 @@
 import { render, screen, waitFor, waitForElementToBeRemoved, within } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { BasicDataWithDefaultRows } from "./MultipartTable.stories";
+
+import MultipartTable from "./MultipartTable";
+import { IMultipartIFT } from "./MultipartTable.interfaces";
+import { ITableRows, TTableApi } from "../primitive/table.interfaces";
+
 import { _array } from '@firecamp/utils';
 import ResizeObserver from "../../../../__mocks__/ResizeObserver";
 import { click } from "../../../../__mocks__/eventMock";
-import { _columns } from "../../../../__mocks__/testData";
+import { defaultData, _columns } from "../../../../__mocks__/testData";
 
 window.ResizeObserver = ResizeObserver;
 
+const Template = ({...args}: IMultipartIFT) => {
+  return (
+    <MultipartTable
+    {...args}
+    />
+  );
+};
+const BasicDataWithDefaultRowsArgs = {
+  rows: defaultData,
+  disabled: false,
+  title: 'Table Title',
+  options: { },
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value)
+};
+
 describe("Table : ", () => {
 
-  const mountTableComponent = () => render(<BasicDataWithDefaultRows {...BasicDataWithDefaultRows.args} />);
+  const mountTableComponent = () => render(<Template {...BasicDataWithDefaultRowsArgs} />);
 
   const getRenderedTable = () => screen.queryByRole('table');
   const getTableBody = () => screen.getAllByRole('rowgroup');

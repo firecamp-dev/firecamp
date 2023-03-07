@@ -1,15 +1,41 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import { WithTableOptions } from "./BulkEditTable.stories";
+
+import BulkEditTable from "./BulkEditTable";
+import { IBulkEditTable } from "./BulkEditTable.interfaces";
+import { ITableRows, TTableApi } from "../primitive/table.interfaces";
+
 import { _array } from '@firecamp/utils';
 import ResizeObserver from "../../../../__mocks__/ResizeObserver";
 import { click } from "../../../../__mocks__/eventMock";
+import { defaultData } from "../../../../__mocks__/testData";
 
 window.ResizeObserver = ResizeObserver;
 
+
+const Template = ({...args}: IBulkEditTable) => {
+  return (
+    <BulkEditTable
+    {...args}
+    />
+  );
+};
+const WithTableOptionsArgs = {
+  rows: defaultData,
+  title: 'Table Title',
+  options: { 
+    disabledColumns: ["key"],
+    allowRowRemove: true,
+    allowRowAdd: true,
+    allowSort: true
+  },
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value)
+};
+
 describe("Table : ", () => {
 
-  const mountTableComponent = () => render(<WithTableOptions {...WithTableOptions.args} />);
+  const mountTableComponent = () => render(<Template {...WithTableOptionsArgs} />);
 
   const getRenderedTable = () => screen.queryByRole('table');
 
@@ -19,8 +45,8 @@ describe("Table : ", () => {
     //validate the table title if not empty
     let headerDiv = container.getElementsByClassName("fc-tab-panel-header")[0];
     let titleElement = headerDiv.getElementsByTagName("span")[0];
-    if (WithTableOptions.args.title !== "") {
-      expect(titleElement.textContent).toBe(WithTableOptions.args.title);
+    if (WithTableOptionsArgs.title !== "") {
+      expect(titleElement.textContent).toBe(WithTableOptionsArgs.title);
     }
 
     //At initial time buttonelement text should be "Bulk Edit";
@@ -45,15 +71,13 @@ describe("Table : ", () => {
 
     let editorWrapper = container.getElementsByClassName('firecamp-editor__placeholder')[0]?.parentElement;
     expect(editorWrapper).toBeInTheDocument();
+  
     // let editor = await screen.findAllByTestId('monaco-editor');
-    // console.log(`editorWrapper`, editor)
-
-    // debug the elements rendered on the screen & validate the editor on the screen
     // screen.debug();  
+    // // debug the elements rendered on the screen & validate the editor on the screen
     // await waitFor(() => {
-    // let editor = screen.queryByTestId('monaco-editor');
-    // console.log(`editorWrapper`, editor);
-    // expect(editor).toBeInTheDocument();
+    //   let editor = screen.queryByTestId('monaco-editor');
+    //   expect(editor).toBeInTheDocument();
     // })
 
 

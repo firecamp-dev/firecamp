@@ -98,10 +98,10 @@ const UrlBarContainer = ({ tab }) => {
           onClick={_toggleGraphqlDoc}
           icon={<FaFile fontSize={16} />}
           id={`open-schema-doc-${tab.id}`}
-          tooltip={'open schema doc'}
-          sm
+          tooltip={'open schema doc'}          
           iconCenter
           secondary
+          sm
         />
 
         <Button
@@ -109,9 +109,9 @@ const UrlBarContainer = ({ tab }) => {
           onClick={fetchIntrospectionSchema}
           id={`refresh-schema-${tab.id}`}
           tooltip={'refresh schema'}
-          sm
           iconLeft
           primary
+          sm
         />
         <Button
           id={`save-request-${tab.id}`}
