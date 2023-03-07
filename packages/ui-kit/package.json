@@ -86,6 +86,7 @@
     "@firecamp/types": "^0.1.21",
     "@firecamp/ui-kit": "workspace:*",
     "@monaco-editor/react": "4.4.5",
+    "@radix-ui/react-scroll-area": "^1.0.2",
     "@radix-ui/react-toast": "^1.0.0",
     "@szhsin/react-menu": "^2.3.2",
     "@tanstack/react-table": "^8.6.0",
