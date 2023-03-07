@@ -89,15 +89,11 @@ const Table: FC<ITable<any>> = ({
   useEffect(() => {
     if (!containerDivRef.current) return () => {};
     const resizeObserver = new ResizeObserver(() => {
-      if (containerDivRef?.current)
-        setContainerWidth(containerDivRef.current?.clientWidth);
+      setContainerWidth(containerDivRef.current?.clientWidth);
     });
     resizeObserver.observe(containerDivRef.current);
-    return () => {
-      if (containerDivRef?.current) containerDivRef.current = null;
-      return resizeObserver.disconnect();
-    };
-  }, [containerDivRef.current]);
+    return () => resizeObserver.disconnect();
+  }, []);
 
   useEffect(() => {
     onMount(tableApi);

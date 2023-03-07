@@ -61,7 +61,9 @@ const mouseUp = async (element:HTMLElement) => {
 }
 
 /* Click Event */
-const click = async (element: HTMLElement) => {
-    await fireEvent.click(element);
-}
-export { dragAndDrop, dropAndMove, mouseDrop, mouseUp, click };
+const click = (element: HTMLElement) => fireEvent.click(element);
+
+/* Input Type Event */
+const change = (element: HTMLElement, value: string) => fireEvent.change(element, {target: {value}});
+
+export { dragAndDrop, dropAndMove, mouseDrop, mouseUp, click, change };

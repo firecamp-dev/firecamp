@@ -3,19 +3,18 @@ import { VscJson } from "@react-icons/all-files/vsc/VscJson";
 
 import { default as Tabs } from './Tabs';
 import { default as Button } from '../buttons/Button';
-import { MenuBarDemo } from '../activity-bar/MenuBar.stories';
 
 const demoArgs = [
     {
         id: 'body',
-        title: 'Body',
+        name: 'Body',
         icon: <VscJson />
     }, {
         id: 'auth',
-        title: 'Auth'
+        name: 'Auth'
     }, {
         id: 'header',
-        title: 'Header'
+        name: 'Header'
     }
 ]
 
@@ -56,5 +55,5 @@ TabsDemoLeftComp.args = {
 export const TabsDemoRightComp = Template.bind({});
 TabsDemoRightComp.args = {
     tabslist: demoArgs,
-    rightComp: () => <MenuBarDemo />
+    rightComp: () => <Button text="Sample Button" color="primary" />
 };

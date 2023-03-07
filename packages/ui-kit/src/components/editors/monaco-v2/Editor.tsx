@@ -222,6 +222,7 @@ const Editor: FC<IEditor> = ({
         <div>{!value ? placeholder || '' : ''}</div>
       </div>
       <MonacoEditor
+        data-testid="monaco-editor"
         language={language}
         defaultValue={value}
         value={value}
@@ -251,6 +252,7 @@ const Editor: FC<IEditor> = ({
           }
 
           // https://www.anycodings.com/1questions/1773746/how-do-i-insert-text-into-a-monaco-editor
+          //@ts-ignore
           editor.insertTextAtCurrentCursor = (text: any) => {
             let p = editor.getPosition();
             editor.executeEdits('', [

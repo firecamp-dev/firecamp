@@ -1,6 +1,7 @@
 import { useEffect, FC } from 'react';
 import cx from 'classnames';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
+// import ReactTooltip from 'react-tooltip';
 
 const ActionItem: FC<IActionItem> = ({
   id = '',
@@ -43,6 +44,13 @@ const ActionItem: FC<IActionItem> = ({
           data-for={id}
         />
       )}
+       {/* @ts-ignore
+       <ReactTooltip
+        data-delay-hide='10000'
+        id={id}
+        className="bg-appForegroundInActive"
+        place="right"
+        effect="float" /> */}
     </div>
   );
 };

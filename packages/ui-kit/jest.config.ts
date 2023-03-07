@@ -21,6 +21,8 @@ const config: Config = {
      "^nanoid(/(.*)|$)": "nanoid$1",
      "^monaco-editor": "<rootDir>/__mocks__/monacoMock.ts",
       "^@monaco-editor\/react": "<rootDir>/../../node_modules/@monaco-editor/react",
+      "@firecamp/rest-executor/dist/esm": "<rootDir>/../firecamp-rest-executor/dist/esm/index.d.ts"
+    // "@firecamp/rest-executor/dist/esm": "<rootDir>/../firecamp-rest-executor/dist/esm/script-runner/snippets/index"
   },
 };
 

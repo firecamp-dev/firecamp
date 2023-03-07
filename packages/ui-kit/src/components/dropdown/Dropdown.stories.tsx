@@ -16,7 +16,7 @@ const Template = (args) => {
   let [selected, setSelected] = useState('API style')
 
   return (
-    <Dropdown selected={'GraphQL'}>
+    <Dropdown selected={selected}>
       <Dropdown.Handler>
         <Button text={selected} color='primary' size='sm' uppercase={true} withCaret={true} />
       </Dropdown.Handler>

@@ -31,7 +31,7 @@ const CompositeBar: FC<ICompositeBar> = ({
   activeItem = '',
   onClickItem = () => { } }) => {
   return (
-    <div className="composite-bar">
+    <div className="composite-bar" data-testid="activitybar-composite-bar">
       <ActionItems items={items} activeItem={activeItem}
         onClickItem={onClickItem} />
     </div>
@@ -40,7 +40,7 @@ const CompositeBar: FC<ICompositeBar> = ({
 
 const ActionBar: FC<IActionBar> = ({ items = [], onClickItem = () => { } }) => {
   return (
-    <div className="action-bar mt-auto">
+    <div className="action-bar mt-auto" data-testid="activitybar-action-bar">
       <ActionItems items={items} onClickItem={onClickItem} />
     </div>
   )

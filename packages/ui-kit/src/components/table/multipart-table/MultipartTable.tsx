@@ -25,14 +25,15 @@ const MultipartTable = ({
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
-    { id: 'select', key: 'disable', name: '', width: '40px' },
+    { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
     { id: 'key', key: 'key', name: 'Key', width: '100px' },
-    { id: 'value', key: 'value', name: 'Value', width: '250px' },
+    { id: 'value', key: 'value', name: 'Value', width: '100px' },
     {
       id: 'description',
       key: 'description',
       name: 'Description',
       width: '150px',
+      resizeWithContainer: true,
     },
     { id: 'remove', key: '', name: '', width: '20px' },
   ];
@@ -266,7 +267,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
 
             <div
               key={`${row.id}-file-type`}
-              className="cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre w-full"
+              className="cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre w-full mr-1"
               onClick={_onClick}
             >
               {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}
@@ -275,9 +276,9 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
         )}
         <div className="cursor-pointer ml-auto pr-1 h-4">
           {type == 'text' ? (
-            <VscTextSize onClick={_changeType} />
+            <VscTextSize onClick={_changeType} title='IconTextSize' />
           ) : (
-            <VscFile onClick={_changeType} />
+            <VscFile onClick={_changeType} title='IconFile' />
           )}
         </div>
       </div>

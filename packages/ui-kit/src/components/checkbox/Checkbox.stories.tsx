@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { useState } from 'react';
 import Checkbox from './Checkbox';
 
 export default {
@@ -11,7 +12,6 @@ export default {
 };
 
 const Template = (args) => <div className="bg-activityBarActiveBackground text-activityBarForeground"><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /></div>;
-
 
 export const CheckBoxPrimary = Template.bind({});
 CheckBoxPrimary.args = { label: 'CheckBoxPrimary', color: 'primary', labelPlacing: 'right', isChecked: false };
