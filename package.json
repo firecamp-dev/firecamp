@@ -90,7 +90,7 @@
     "jest-css-modules-transform": "^4.4.2",
     "lint-staged": "^13.1.2",
     "node-polyfill-webpack-plugin": "^2.0.0",
-    "postcss-loader": "^6.2.1",
+    "postcss-loader": "^7.0.2",
     "prettier": "^2.6.2",
     "react-addons-test-utils": "^15.0.2",
     "rimraf": "^3.0.2",
