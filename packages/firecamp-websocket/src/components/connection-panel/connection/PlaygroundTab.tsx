@@ -489,7 +489,7 @@ const ShortcutsPopover = ({ id }) => {
       positions={[EPopoverPosition.Right]}
     >
       <Popover.Handler id={`info-popover-${id}`}>
-        <i className="iconv2-info-icon font-base"></i>
+        <i className="icv2-info-icon font-base"></i>
       </Popover.Handler>
     </Popover>
   );

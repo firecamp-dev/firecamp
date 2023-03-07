@@ -14,7 +14,7 @@ const BodyControls = ({
   tabId = '',
   path = '',
   showClearPlaygroundButton = false,
-  addNewEmitter = () => {},
+  addNewEmitter = () => { },
 }) => {
   const _renderKeyboardShortcutInfo = () => {
     // console.log(`showClearPlaygroundButton`,showClearPlaygroundButton)
@@ -36,12 +36,10 @@ const BodyControls = ({
                 {
                   return (
                     <div className="flex" key={i}>
-                      <div className="flex-1 pr-4 pl-2">{`${
-                        val.name || ''
-                      }`}</div>
-                      <div className="ml-auto pr-2">{`${
-                        val.view ? val.view['win'] : ''
-                      }`}</div>
+                      <div className="flex-1 pr-4 pl-2">{`${val.name || ''
+                        }`}</div>
+                      <div className="ml-auto pr-2">{`${val.view ? val.view['win'] : ''
+                        }`}</div>
                     </div>
                   );
                 }
@@ -58,12 +56,10 @@ const BodyControls = ({
                 {
                   return (
                     <div className="flex" key={i}>
-                      <div className="flex-1 pr-4 pl-2 font-semibold">{`${
-                        val.name || ''
-                      }`}</div>
-                      <div className="pr-2 ml-auto">{`${
-                        val.view ? val.view['mac'] : ''
-                      }`}</div>
+                      <div className="flex-1 pr-4 pl-2 font-semibold">{`${val.name || ''
+                        }`}</div>
+                      <div className="pr-2 ml-auto">{`${val.view ? val.view['mac'] : ''
+                        }`}</div>
                     </div>
                   );
                 }
@@ -127,7 +123,7 @@ const BodyControls = ({
             }
           >
             <Popover.Handler id={`info-popover-${tabId}`}>
-              <i className="iconv2-info-icon font-base"></i>
+              info icon {/* TODO: add info icon here */}
             </Popover.Handler>
           </Popover>
         </StatusBar.SecondaryRegion>

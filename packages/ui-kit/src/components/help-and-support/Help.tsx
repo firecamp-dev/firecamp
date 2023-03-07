@@ -89,9 +89,7 @@ const Help: FC<IHelp> = ({ docLink = '', client = 'http' }) => {
           return (
             <div className=" text-appForegroundInActive flex items-center mb-2 text-xl" key={`help-${client}-${index}`}>
               <div className="pr-1 flex items-center justify-center">
-                {/* <img src={help.image || 'icon/png/document-icon-2.png'} /> */}
                 {help.image}
-
               </div>
               {_renderLink(help.id)}
             </div>

@@ -110,7 +110,7 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
       <div className="">
         <form onSubmit={handleSubmit(_onSubmit)}>
           <div className="fc-input-label flex align-center  text-appForegroundInActive ">
-            <span className="iconv2-info-icon" />
+            {/* // TODO: icon: add info icon */}
             <span>{user.email || ''}</span>
           </div>
           <div className="form-group relative">

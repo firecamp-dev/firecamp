@@ -312,7 +312,7 @@ const CookieManager: FC<ICookieManager> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} modalClass="setting-modal">
       <Modal.Header className="fc-modal-head">
-        <span className="iconv2-cookie-icon"></span>
+        <span className="icv2-cookie-icon"></span>
         Cookie Manager
       </Modal.Header>
       <Modal.Body>

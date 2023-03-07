@@ -1,6 +1,6 @@
 import { TabHeader } from '@firecamp/ui-kit';
 
-const Head = ({ toggleCollapsed = (bool) => {} }) => {
+const Head = ({ toggleCollapsed = (bool) => { } }) => {
   return (
     <TabHeader
       className="fc-collapse-btn-v3"
@@ -14,7 +14,7 @@ const Head = ({ toggleCollapsed = (bool) => {} }) => {
         </div>
       </TabHeader.Left>
       <TabHeader.Right>
-        <div className="icon-caret cursor-pointer"></div>
+        arrow {/* // TODO: add arrow icon here  */}
       </TabHeader.Right>
     </TabHeader>
   );

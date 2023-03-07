@@ -2860,7 +2860,7 @@ tr:focus-visible{
 .fc-collapsed > .fc-collapse-btn.fc-collapse-btn-v2 > span, .fc-collapsed ~ div .fc-collapse-btn.fc-collapse-btn-v2 > span{
   transform: rotate(180deg) !important;
 }
-.fc-collapse-btn-v2.fc-collapse-btn>span.icon-caret:before{
+.fc-collapse-btn-v2.fc-collapse-btn>span.ic-caret:before{
   transform: rotate(180deg);
   display: block;
 }

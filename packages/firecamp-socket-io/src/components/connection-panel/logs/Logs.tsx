@@ -148,7 +148,7 @@ const Logs = () => {
                       {typeFilter ? (
                         <div className="pl-1 w-4">
                           <span
-                            className="text-base  iconv2-remove-icon"
+                            className="text-base icv2-remove-icon"
                             onClick={() => _onFilter('')}
                           />
                         </div>

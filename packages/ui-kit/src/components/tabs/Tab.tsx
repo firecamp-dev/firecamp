@@ -197,7 +197,7 @@ const Tab: FC<ITab> = ({
           )}
         </div>
         <CloseIconPlacement
-          id={`close-icon-${id}`}
+          id={`close-ic-${id}`}
           state={state}
           onClick={(e: any) => {
             //to stop firing the onSelect event

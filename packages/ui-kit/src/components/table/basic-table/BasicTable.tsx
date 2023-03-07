@@ -180,7 +180,7 @@ const BasicTable = ({
         <Button
           onClick={() => apiRef.current.addRow()}
           text="Add Row"
-          className="small transparent font-light without-border with-padding with-icon-left"
+          className="small transparent font-light without-border with-padding with-ic-left"
           icon={<VscAdd size={16} />}
           primary
           sm

@@ -106,7 +106,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
                   <div key={index} className="fc-active-listner">
                     {listener || ''}
                     <span
-                      className="remove iconv2-close-icon"
+                      className="remove icv2-close-icon"
                       onClick={() => _onDelete(listener)}
                     ></span>
                   </div>
@@ -120,7 +120,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
           </div>
         </div>
         <div className="flex items-center">
-          <span className="iconv2-info-icon note-icon mr-2"></span>
+          <span className="icv2-info-icon note-icon mr-2"></span>
           Events start listening on connection open
         </div>
       </Container.Header>

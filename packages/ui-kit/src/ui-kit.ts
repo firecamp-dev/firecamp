@@ -78,7 +78,6 @@ export { default as SingleLineEditor } from './components/editors/monaco-v2/Sing
 export * as EditorApi from './components/editors/monaco-v2/lang/init';
 
 // Tables
-export { default as ReactTable } from './components/table/react-table/ReactTable';
 export { default as BulkEditTable } from './components/table/bulk-edit-table/BulkEditTable';
 
 //table v3

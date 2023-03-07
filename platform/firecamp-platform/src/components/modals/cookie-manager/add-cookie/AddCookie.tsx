@@ -248,7 +248,7 @@ const AddCookie: FC<IAddCookie> = ({
     >
       <Popover.Handler id={popoverID}>
         {mutation === true ? (
-          <span className="iconv2-edit-icon"></span>
+          <span className="icv2-edit-icon"></span>
         ) : (
           <Button
             // TODO: add color="primary-alt"

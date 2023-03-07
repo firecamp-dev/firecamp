@@ -7,7 +7,7 @@ const DocButton: FC<IDocButton> = ({
   target = '_blank',
   className = 'transparent without-padding small',
   showIcon = true,
-  iconClassName = 'icon-info-24px-1 font-base',
+  iconClassName = 'ic-info-24px-1 font-base',
   style = {}
 }) => {
   return (

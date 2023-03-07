@@ -124,7 +124,7 @@ describe("Checkbox component : ", () => {
         //1. validate the note div wrapper when note is provided in the args
         if (CUSTOM_NOTE.length > 0) {
             expect(CheckboxNoteDivWrapper).toHaveClass("fc-input-note");
-            expect(CheckboxNoteDivWrapper.firstElementChild).toHaveClass("iconv2-info-icon");
+            expect(CheckboxNoteDivWrapper.firstElementChild).toHaveClass("icv2-info-icon");
             expect(CheckboxNoteDivWrapper.textContent).toBe(CUSTOM_NOTE);
         }
         unmount();

@@ -38,7 +38,6 @@ const ConnectionPanel = () => {
   };
 
   const _toggleDeleteConnection = (index, id) => {
-    // dom onClick event for close-icon-${id} where id is connection id
   };
 
   const _onSelectConnectionTab = (id) => {

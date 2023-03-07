@@ -16,7 +16,7 @@ const CustomDocButtonArgs = {
   link: 'https://firecamp.io/',
   className: 'p-3',
   showIcon: false,
-  iconClassName: 'icon-info-24px-1 font-base',
+  iconClassName: 'ic-info-24px-1 font-base',
   style: {
     background: "coral"
   },

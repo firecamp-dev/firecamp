@@ -74,7 +74,7 @@ const Checkbox: FC<ICheckbox> = ({
       </label>
       {!!note ? (
         <div className="fc-input-note">
-          <span className="iconv2-info-icon" />
+          <span className="icv2-info-icon" />
           {note}
         </div>
       ) : (
