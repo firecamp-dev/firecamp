@@ -947,6 +947,9 @@ video {
 .m-5 {
 	margin: 1.25rem;
 }
+.m-5 {
+	margin: 1.25rem;
+}
 .m-auto {
 	margin: auto;
 }
@@ -1616,9 +1619,6 @@ video {
 .bg-activityBarActiveBackground {
 	background-color: var(--activityBar-activeBackground);
 }
-.bg-appForegroundInActive {
-	background-color: var(--app-foreground-inactive);
-}
 .bg-focus3 {
 	background-color: var(--focus-level-3);
 }
@@ -2033,6 +2033,9 @@ video {
 .text-xl {
 	font-size: 18px;
 }
+.text-xl {
+	font-size: 18px;
+}
 .font-normal {
 	font-weight: 400;
 }
@@ -2110,6 +2113,9 @@ video {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
+.text-appForeground {
+	color: var(--app-foreground);
+}
 .text-danger {
 	color: var(--danger);
 }
@@ -2121,6 +2127,9 @@ video {
 }
 .text-statusBarForeground {
 	color: var(--statusBar-foreground);
+}
+.text-appForegroundInActive {
+	color: var(--app-foreground-inactive);
 }
 .text-websocket {
 	color: var(--req-socketio);
@@ -3201,5 +3210,22 @@ body .ace_editor .ace_scrollbar{
 }
 .table-cell:hover .table-action{
   visibility: visible;
+}
+
+
+.table.border-0 .table-row:first-child .table-cell {
+  border-top: none;
+}
+
+.table.border-0 .table-row:last-child .table-cell {
+  border-bottom: none;
+}
+
+.table.border-0 .table-row .table-cell:first-child {
+  border-left: none;
+}
+
+.table.border-0 .table-row .table-cell:last-child {
+  border-right: none;
 }
 /*-----------table 2 css end --------*/

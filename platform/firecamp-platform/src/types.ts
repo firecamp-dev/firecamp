@@ -38,8 +38,7 @@ export enum EPlatformModalTypes {
   EditRequest = 'editRequest',
 
   // environment
-  CreateEnvironment = 'createEnvironment',
-  ManageEnvironment = 'manageEnvironment',
+  CloneEnvironment = 'cloneEnvironment',
 
   // auth
   SignIn = 'signIn',
@@ -81,8 +80,8 @@ export const EPlatformModalDefaultProps = {
   [EPlatformModalTypes.EditRequest]: { height: '600px', width: '450px' },
 
   // environment
-  [EPlatformModalTypes.CreateEnvironment]: { height: '750px', width: '500px' },
-  [EPlatformModalTypes.ManageEnvironment]: { height: '750px', width: '550px' },
+
+  [EPlatformModalTypes.CloneEnvironment]: { height: '750px', width: '500px' },
 
   // auth
   [EPlatformModalTypes.SignIn]: { width: '440px', className: 'p-4' },

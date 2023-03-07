@@ -16,19 +16,6 @@ import { useTabStore } from '../../../../store/tab';
 
 const EnvironmentSidebar: FC<any> = () => {
   const { envs } = useEnvStore.getState();
-  const openCreateWrsEnv = (wrsId: string) => {
-    platformContext.app.modals.openCreateEnvironment({
-      scope: EEnvironmentScope.Workspace,
-    });
-  };
-  const openWrsEnv = (wrsId: string, envId: string) => {
-    platformContext.app.modals.openManageEnvironemnt({
-      scope: EEnvironmentScope.Workspace,
-      workspaceId: wrsId,
-      envId,
-    });
-  };
-
   return (
     <div className="w-full h-full flex flex-row explorer-wrapper">
       <Container>
@@ -140,7 +127,7 @@ const CollectionScopedEnvCollection = () => {
   }, []);
 
   const openColEnv = (colId: string, envId: string) => {
-    platformContext.app.modals.openManageEnvironemnt({
+    platformContext.app.modals.openCloneEnvironment({
       scope: EEnvironmentScope.Collection,
       collectionId: colId,
       envId,
@@ -194,14 +181,11 @@ const CollectionScopedEnvCollection = () => {
         return (
           <>
             <Notes
+              type="danger"
               description="
-              The collection scoped environments are deprecated, you can see the
-              collection environments here and create a new environment from it."
+              The collection scoped environments are deprecated now, you can clone them
+              from here to create a new environment for your own use."
             />
-            <div className="text-sm !m-2 p-2 bg-focus1 !text-appForegroundInActive">
-              The collection scoped environments are deprecated, you can see the
-              collection environments here and create a new environment from it.
-            </div>
             <UncontrolledTreeEnvironment
               dataProvider={envTdpInstance}
               getItemTitle={(item) => item.data?.name}

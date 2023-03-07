@@ -81,13 +81,8 @@ const modalService = {
   },
 
   // Environment
-  openManageEnvironemnt: (meta?: any) => {
-    open(EPlatformModalTypes.ManageEnvironment, meta);
-  },
-  openCreateEnvironment: (meta?: any) => {
-    const { isGuest } = useUserStore.getState();
-    if (isGuest) return modalService.openSignIn();
-    open(EPlatformModalTypes.CreateEnvironment, meta);
+  openCloneEnvironment: (meta?: any) => {
+    open(EPlatformModalTypes.CloneEnvironment, meta);
   },
 
   // Organization

@@ -179,8 +179,7 @@ export default {
             <span className="w-full overflow-hidden overflow-ellipsis items-center block">
               {title}
 
-              {item.data.__ref?.isCollection ||
-              item.data.__ref?.isWorkspace ? (
+              {item.data.__ref?.isCollection || item.data.__ref?.isWorkspace ? (
                 <span className={'text-sm'}>- {item.children?.length}</span>
               ) : (
                 <></>
@@ -195,31 +194,31 @@ export default {
                 console.log(1234)
               }}/> */}
 
-            {/* <Button
-              text={
-                item.data.__ref?.isCollection || item.data.__ref?.isWorkspace
-                  ? 'Add Env'
-                  : 'Open'
-              }
-              className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                item.data.__ref?.isCollection || item.data.__ref?.isWorkspace
-                  ? openCreateEnv(item.index)
-                  : openEnv(
-                      item.data.__ref.collectionId ||
-                        item.data.__ref?.workspaceId,
-                      item.data.__ref.id
-                    );
-              }}
-              transparent
-              secondary
-              ghost
-              sm
-            /> */}
-
             {item.data.__ref.isEnvironment ? (
+              <Button
+                text={'Clone'}
+                className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  item.data.__ref?.isCollection || item.data.__ref?.isWorkspace
+                    ? () => {} //openCreateEnv(item.index)
+                    : openEnv(
+                        item.data.__ref.collectionId ||
+                          item.data.__ref?.workspaceId,
+                        item.data.__ref.id
+                      );
+                }}
+                transparent
+                secondary
+                ghost
+                sm
+              />
+            ) : (
+              <></>
+            )}
+
+            {/* {item.data.__ref.isEnvironment ? (
               <VscTrash
                 className="ml-1 cursor-pointer"
                 size={14}
@@ -229,7 +228,7 @@ export default {
               />
             ) : (
               <></>
-            )}
+            )} */}
           </div>
         </div>
         {children}

@@ -32,10 +32,11 @@ const _columns = [
 
 const BasicTable = ({
   title = '',
+  columns,
   rows = [],
   options = {},
-  onChange = (rs: ITableRows) => {},
-  onMount = (api: TTableApi) => {},
+  onChange = (rs: ITableRows) => { },
+  onMount = (api: TTableApi) => { },
 }: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
 
@@ -153,7 +154,7 @@ const BasicTable = ({
     <>
       <Table
         rows={rows}
-        columns={_columns}
+        columns={columns ?? _columns}
         renderColumn={(c) => c.name}
         defaultRow={{
           key: '',
@@ -176,21 +177,23 @@ const BasicTable = ({
         options={options}
       />
 
-      <div className="">
-        <Button
-          onClick={() => apiRef.current.addRow()}
-          text="Add Row"
-          className="small transparent font-light without-border with-padding with-ic-left"
-          icon={<VscAdd size={16} />}
-          primary
-          sm
-          transparent
-          ghost
-          disabled={
-            options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
-          }
-        />
-      </div>
+      {!options?.hideRowAdd && (
+        <div className="">
+          <Button
+            onClick={() => apiRef.current.addRow()}
+            text="Add Row"
+            className="small transparent font-light without-border with-padding with-icon-left"
+            icon={<VscAdd size={16} />}
+            disabled={
+              options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
+            }
+            transparent
+            primary
+            ghost
+            sm
+          />
+        </div>
+      )}
     </>
   );
 };
