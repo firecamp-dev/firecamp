@@ -71,7 +71,6 @@
     "copy-webpack-plugin": "^11.0.0",
     "copyfiles": "^2.4.1",
     "cross-env": "^7.0.3",
-    "crx": "^3.0.3",
     "css-loader": "^6.7.1",
     "css-modules-require-hook": "^4.2.3",
     "electron": "19.0.0",
