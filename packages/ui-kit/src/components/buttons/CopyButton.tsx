@@ -31,13 +31,13 @@ const CopyButton: FC<ICopyButton> = ({
  };
 
  return (
-   <div className={cx('fc-copy bg-gray-800', className)} data-testid="copy-button" id={id}>
+   <div className={cx('fc-copy bg-gray-800 relative', className)} data-testid="copy-button" id={id}>
      {text && showText ? text : ''}
-     {animation && showCopied ? <span>Copied!</span> : ''}
+     {animation && showCopied ? <span className="absolute left-2 -top-2">Copied!</span> : ''}
      {children && children.length ? (
        children
      ) : (
-      <FaCopy fontSize={16} onClick={_onClickCopy} className="align-baseline" title='IconCopy'/>
+      <FaCopy fontSize={12} onClick={_onClickCopy} className="align-baseline text-appForegroundInActive" title='IconCopy'/>
      )}
    </div>
  );
