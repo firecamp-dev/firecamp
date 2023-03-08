@@ -30,7 +30,7 @@ const Url: FC<IUrl> = ({
             <UrlBar.Body>
                 <UrlEditor
                     id={id}
-                    url={url?.raw || ''}
+                    url={url || ''}
                     placeholder={placeholder}
                     onChangeURL={onChange}
                     onEnter={onEnter}
@@ -48,17 +48,17 @@ export default Url;
 
 interface IUrl {
     id: string,
-    url: any,
+    url: string,
     path?: string,
     placeholder?: string,
     isRequestSaved?: boolean,
     prefixComponent?: JSX.Element | JSX.Element[],
     suffixComponent?: JSX.Element | JSX.Element[],
-    onEnter: () => {},
     onChange: (e: {
         preventDefault: () => void;
         target: { value: any };
     }) => void,
+    onEnter?: () => {},
     onPaste?: (snippet: string, edt: any) => void,
     promptRenameRequest?: () => void
 }

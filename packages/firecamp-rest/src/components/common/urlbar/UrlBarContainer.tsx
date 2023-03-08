@@ -78,7 +78,7 @@ const UrlBarContainer = ({ tabId }) => {
       path={__meta.name}
       placeholder={'http://'}
       isRequestSaved={isRequestSaved}
-      url={url}
+      url={url.raw}
       onChange={_handleUrlChange}
       onPaste={_onPaste}
       onEnter={_onExecute}
@@ -90,24 +90,29 @@ const UrlBarContainer = ({ tabId }) => {
           requestId: __ref.id,
         });
       }}
-      prefixComponent={<HttpMethodDropDown
-        id={tabId}
-        dropdownOptions={methods}
-        selectedOption={(method || '').toUpperCase()}
-        onSelectItem={(m: EHttpMethod) => changeMethod(m)} />}
+      prefixComponent={
+        <HttpMethodDropDown
+          id={tabId}
+          dropdownOptions={methods}
+          selectedOption={(method || '').toUpperCase()}
+          onSelectItem={(m: EHttpMethod) => changeMethod(m)}
+        />
+      }
       suffixComponent={<>
         <Button
           text={isRequestRunning === true ? `Cancel` : `Send`}
           onClick={_onExecute}
           primary
-          sm />
+          sm
+        />
         <Button
           id={`save-request-${tabId}`}
           text="Save"
           onClick={_onSave}
           disabled={false}
           secondary
-          sm />
+          sm
+        />
       </>}
     />
   )
