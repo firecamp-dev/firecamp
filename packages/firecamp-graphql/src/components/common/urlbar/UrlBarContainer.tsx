@@ -3,7 +3,7 @@ import { FaFile } from '@react-icons/all-files/fa/FaFile';
 import shallow from 'zustand/shallow';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { Button, Url, UrlBar, HttpMethodDropDown } from '@firecamp/ui-kit';
+import { Button, Url, HttpMethodDropDown } from '@firecamp/ui-kit';
 import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
@@ -62,11 +62,18 @@ const UrlBarContainer = ({ tab }) => {
     }
   };
 
+
   return (
-    <UrlBar
-      nodePath={__meta.name}
-      showEditIcon={isRequestSaved}
-      onEditClick={() => {
+    <Url
+      id={`url-${tab.id}`}
+      path={__meta.name}
+      placeholder={'http://'}
+      isRequestSaved={isRequestSaved}
+      url={url.raw}
+      onChange={_handleUrlChange}
+      // onPaste={_onPaste}
+      onEnter={fetchIntrospectionSchema}
+      promptRenameRequest={() => {
         context.app.modals.openEditRequest({
           name: __meta.name,
           description: __meta.description,
@@ -74,36 +81,25 @@ const UrlBarContainer = ({ tab }) => {
           requestId: __ref.id,
         });
       }}
-    >
-      <UrlBar.Prefix className="">
+      prefixComponent={
         <HttpMethodDropDown
           id={tab.id}
-          className={'urlbar-input-type select-box'}
+          className={'urlbar-input-type select-box'} //TODO: check this class is needed or not
           dropdownOptions={methods}
           selectedOption={(method || '').toUpperCase()}
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
-      </UrlBar.Prefix>
-      <UrlBar.Body>
-        <Url
-          id={`url-${tab.id}`}
-          url={url.raw || ''}
-          onChangeURL={_handleUrlChange}
-          onEnter={fetchIntrospectionSchema}
-          placeholder={'http://'}
-        />
-      </UrlBar.Body>
-      <UrlBar.Suffix>
+      }
+      suffixComponent={<>
         <Button
           onClick={_toggleGraphqlDoc}
           icon={<FaFile fontSize={16} />}
           id={`open-schema-doc-${tab.id}`}
-          tooltip={'open schema doc'}          
+          tooltip={'open schema doc'}
           iconCenter
           secondary
           sm
         />
-
         <Button
           icon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
           onClick={fetchIntrospectionSchema}
@@ -121,9 +117,9 @@ const UrlBarContainer = ({ tab }) => {
           secondary
           sm
         />
-      </UrlBar.Suffix>
-    </UrlBar>
-  );
+      </>}
+    />
+  )
 };
 
 export default UrlBarContainer;

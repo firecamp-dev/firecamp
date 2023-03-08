@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Column, Row, SingleLineEditor } from '@firecamp/ui-kit';
 import { EEditorLanguage } from '@firecamp/types';
 
-const Url: FC<IUrl> = ({
+const UrlEditor: FC<IUrlEditor> = ({
   id = '',
   placeholder = '',
   url,
@@ -37,9 +37,9 @@ const Url: FC<IUrl> = ({
   );
 };
 
-export default Url;
+export default UrlEditor;
 
-interface IUrl {
+interface IUrlEditor {
   /** identifier */
   id: string;
 

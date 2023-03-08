@@ -1,6 +1,6 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
-import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
+import { Url, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { IStore, useStore } from '../../../store';
@@ -69,14 +69,20 @@ const UrlBarContainer = ({ tabId }) => {
   const _onExecute = async () => {
     try {
       execute();
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
-    <UrlBar
-      nodePath={__meta.name}
-      showEditIcon={isRequestSaved}
-      onEditClick={() => {
+    <Url
+      id={tabId}
+      path={__meta.name}
+      placeholder={'http://'}
+      isRequestSaved={isRequestSaved}
+      url={url.raw}
+      onChange={_handleUrlChange}
+      onPaste={_onPaste}
+      onEnter={_onExecute}
+      promptRenameRequest={() => {
         context.app.modals.openEditRequest({
           name: __meta.name,
           description: __meta.description,
@@ -84,26 +90,15 @@ const UrlBarContainer = ({ tabId }) => {
           requestId: __ref.id,
         });
       }}
-    >
-      <UrlBar.Prefix>
+      prefixComponent={
         <HttpMethodDropDown
           id={tabId}
           dropdownOptions={methods}
           selectedOption={(method || '').toUpperCase()}
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
-      </UrlBar.Prefix>
-      <UrlBar.Body>
-        <Url
-          id={`url-${tabId}`}
-          url={url?.raw || ''}
-          placeholder={'http://'}
-          onChangeURL={_handleUrlChange}
-          onEnter={_onExecute}
-          onPaste={_onPaste}
-        />
-      </UrlBar.Body>
-      <UrlBar.Suffix>
+      }
+      suffixComponent={<>
         <Button
           text={isRequestRunning === true ? `Cancel` : `Send`}
           onClick={_onExecute}
@@ -118,9 +113,9 @@ const UrlBarContainer = ({ tabId }) => {
           secondary
           sm
         />
-      </UrlBar.Suffix>
-    </UrlBar>
-  );
+      </>}
+    />
+  )
 };
 
 export default UrlBarContainer;
