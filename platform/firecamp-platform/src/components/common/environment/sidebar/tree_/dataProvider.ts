@@ -1,5 +1,5 @@
 import mitt from 'mitt';
-import { Disposable, TreeItem, TreeItemIndex } from '@firecamp/ui-kit/src/tree';
+import { Disposable, TreeItem, TreeItemIndex } from '@firecamp/ui/src/tree';
 import { IEnv, TId } from '@firecamp/types';
 
 enum ETreeEventTypes {

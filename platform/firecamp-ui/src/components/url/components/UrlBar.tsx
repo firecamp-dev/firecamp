@@ -8,7 +8,7 @@ import {
   RootContainer,
   ToolBar,
   Container,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import './UrlBar.scss';
 
 const UrlBar: FC<IUrlBar> & {

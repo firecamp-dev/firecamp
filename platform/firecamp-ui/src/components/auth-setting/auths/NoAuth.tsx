@@ -1,5 +1,5 @@
 import { FC, useMemo } from 'react';
-import { Container, QuickSelection } from '@firecamp/ui-kit';
+import { Container, QuickSelection } from '@firecamp/ui';
 import { EAuthTypes } from '@firecamp/types';
 
 const NoAuth: FC<INoAuth> = ({

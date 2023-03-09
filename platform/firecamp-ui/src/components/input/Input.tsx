@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import cx from 'classnames';
-import { SingleLineEditor } from '@firecamp/ui-kit';
+import { SingleLineEditor } from '@firecamp/ui';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 
 import { IInput } from './interfaces/input.interfaces';

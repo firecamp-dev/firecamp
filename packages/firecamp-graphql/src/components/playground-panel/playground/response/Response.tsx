@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow';
-import { Response as ResponsePanel } from '@firecamp/ui-kit';
+import { Response as ResponsePanel } from '@firecamp/ui';
 import { IStore, useStore } from '../../../../store';
 
 const Response = () => {

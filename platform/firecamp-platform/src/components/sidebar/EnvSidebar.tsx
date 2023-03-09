@@ -11,7 +11,7 @@ import {
   TabHeader,
   Button,
   Notes,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import EnvironmentDD from '../common/environment/selector/EnvironmentDD';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';

@@ -1,10 +1,10 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
-import { Notes, Button } from '@firecamp/ui-kit';
+import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
+import { Notes, Button } from '@firecamp/ui';
 import { EEnvironmentScope } from '@firecamp/types';
-import { Container, ProgressBar, Pane, ToolBar } from '@firecamp/ui-kit';
+import { Container, ProgressBar, Pane, ToolBar } from '@firecamp/ui';
 import treeRenderer from './tree/itemRenderer';
 import treeRenderer_ from './tree_/itemRenderer';
 import platformContext from '../../../../services/platform-context';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Input, Popover } from '@firecamp/ui-kit';
+import { Button, Input, Popover } from '@firecamp/ui';
 
 const CloseConnection = ({
   buttonId = 'close',

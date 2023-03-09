@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { FC, useMemo } from 'react';
 
-import { CopyButton, ConfirmationPopover } from '@firecamp/ui-kit';
+import { CopyButton, ConfirmationPopover } from '@firecamp/ui';
 import { ICookie } from '@firecamp/types';
 import AddCookie from '../add-cookie/AddCookie';
 

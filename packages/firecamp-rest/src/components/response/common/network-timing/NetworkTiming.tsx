@@ -1,4 +1,4 @@
-import { Container, Row, ResStatus, Popover } from '@firecamp/ui-kit';
+import { Container, Row, ResStatus, Popover } from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import ResponseMetaData from '../response-meta/ResponseMetaData';

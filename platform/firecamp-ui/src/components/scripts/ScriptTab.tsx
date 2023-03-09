@@ -8,7 +8,7 @@ import {
   Column,
   Notes,
   TabHeader,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 //@ts-ignore
 import ScriptDefs from './interfaces/Scripts.d.txt?raw';

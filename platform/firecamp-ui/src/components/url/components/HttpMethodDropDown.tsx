@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Dropdown, Button } from '@firecamp/ui-kit';
+import { Dropdown, Button } from '@firecamp/ui';
 
 const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
   id = '',

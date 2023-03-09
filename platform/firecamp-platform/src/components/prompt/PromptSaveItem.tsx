@@ -6,8 +6,8 @@ import {
   Modal,
   ProgressBar,
   TabHeader,
-} from '@firecamp/ui-kit';
-import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui';
+import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { TreeDataProvider } from './tree/dataProvider';
 import treeRenderer from './tree/itemRenderer';
 import { IPromptSaveItem } from './types';

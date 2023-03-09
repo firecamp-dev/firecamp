@@ -1,4 +1,4 @@
-import { BulkEditTable } from '@firecamp/ui-kit';
+import { BulkEditTable } from '@firecamp/ui';
 const ParamsTab = ({
   params = [],
   activeConnectionId = '',

@@ -3,7 +3,7 @@ import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
 import { ERequestTypes } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-import { Loader } from '@firecamp/ui-kit';
+import { Loader } from '@firecamp/ui';
 import JsonTab from './requests/json/Request';
 import MdTab from './requests/markdown/Request';
 

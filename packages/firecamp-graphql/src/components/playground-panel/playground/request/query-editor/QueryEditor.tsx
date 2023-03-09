@@ -8,7 +8,7 @@ import { print } from 'graphql/language/printer';
 import { parse as GraphQLParse } from 'graphql/language/parser';
 import { buildClientSchema } from 'graphql';
 import { _misc } from '@firecamp/utils';
-import { Column } from '@firecamp/ui-kit';
+import { Column } from '@firecamp/ui';
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/fold/foldgutter';

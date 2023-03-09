@@ -5,7 +5,7 @@ import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { Button } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui';
 
 export default {
   renderItemArrow: ({ item, context }) => {

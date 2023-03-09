@@ -1,5 +1,5 @@
 {
-  "name": "@firecamp/ui-kit",
+  "name": "@firecamp/ui",
   "version": "0.0.1",
   "private": true,
   "description": "Firecamp component library",
@@ -84,7 +84,7 @@
   },
   "dependencies": {
     "@firecamp/types": "^0.1.21",
-    "@firecamp/ui-kit": "workspace:*",
+    "@firecamp/ui": "workspace:*",
     "@monaco-editor/react": "4.4.5",
     "@radix-ui/react-scroll-area": "^1.0.2",
     "@radix-ui/react-dropdown-menu": "^2.0.1",

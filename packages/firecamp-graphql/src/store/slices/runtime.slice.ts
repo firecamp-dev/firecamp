@@ -1,5 +1,5 @@
 import { TId } from '@firecamp/types';
-import { ITab } from '@firecamp/ui-kit/src/components/tabs/interfaces/Tab.interface';
+import { ITab } from '@firecamp/ui/src/components/tabs/interfaces/Tab.interface';
 import { TStoreSlice } from '../store.type';
 
 interface IPlaygroundMeta {

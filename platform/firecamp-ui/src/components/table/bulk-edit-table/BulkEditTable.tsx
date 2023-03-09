@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import isEqual from 'react-fast-compare';
-import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui-kit';
+import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui';
 import { _table } from '@firecamp/utils';
 import { EEditorLanguage } from '@firecamp/types';
 // import { default as TabHeader } from '../tab-header/TabHeader';

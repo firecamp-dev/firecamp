@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import { EEditorLanguage } from '@firecamp/types';
-import { BulkEditTable, Container, BasicTable } from '@firecamp/ui-kit';
+import { BulkEditTable, Container, BasicTable } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const HeadersTab = () => {

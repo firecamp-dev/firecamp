@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Input } from '@firecamp/ui-kit';
+import { Input } from '@firecamp/ui';
 
 const Atlassion = () => {
   const initialState = {

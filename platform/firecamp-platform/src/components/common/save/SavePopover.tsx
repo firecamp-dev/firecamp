@@ -5,8 +5,8 @@ import {
   TextArea,
   Popover,
   Container,
-} from '@firecamp/ui-kit';
-import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui';
+import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 
 import { useWorkspaceStore } from '../../../store/workspace';
 import { CollectionDataProvider } from './collection/CollectionDataProvider';

@@ -14,7 +14,7 @@ import {
   Popover,
   EPopoverPosition,
   StatusBar,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import { EEditorLanguage, ETypedArrayView } from '@firecamp/types';
 import MessageTypeDropDown from './playground/MessageTypeDropDown';

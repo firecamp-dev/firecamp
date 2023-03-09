@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { _misc } from '@firecamp/utils';
 import { IRestResponse, TId } from '@firecamp/types';
-import { CustomMessage, Container, Tabs as TabsUI } from '@firecamp/ui-kit';
+import { CustomMessage, Container, Tabs as TabsUI } from '@firecamp/ui';
 import BodyTab from './BodyTab';
 import HeaderTab from './HeaderTab';
 import CookieTab from './CookieTab';

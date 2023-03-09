@@ -9,7 +9,7 @@ import {
   Dropdown,
   Button,
   Container,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 
 import {
   // Atlassion,

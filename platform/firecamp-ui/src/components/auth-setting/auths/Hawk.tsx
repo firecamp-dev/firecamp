@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Dropdown, Input } from '@firecamp/ui-kit';
+import { Dropdown, Input } from '@firecamp/ui';
 import { EAuthTypes, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';

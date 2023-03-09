@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Container, TabHeader, Column, Row } from '@firecamp/ui-kit';
+import { Container, TabHeader, Column, Row } from '@firecamp/ui';
 import isEqual from 'react-fast-compare';
 import classnames from 'classnames';
 

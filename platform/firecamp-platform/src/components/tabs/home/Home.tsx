@@ -1,14 +1,14 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import { Container, EditorApi } from '@firecamp/ui-kit';
+import { Container, EditorApi } from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
   FcIconGetSquare,
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { usePlatformStore } from '../../../store/platform';
 import { useTabStore } from '../../../store/tab';
 import { EThemeColor, EThemeMode } from '../../../types';

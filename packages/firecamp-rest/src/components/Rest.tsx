@@ -2,7 +2,7 @@ import { memo, useEffect } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import shallow from 'zustand/shallow';
-import { Container, Row, Loader } from '@firecamp/ui-kit';
+import { Container, Row, Loader } from '@firecamp/ui';
 import { IRest } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { _misc, _object, _table, _auth } from '@firecamp/utils';

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useState, useEffect } from 'react';
-import { Button, Popover } from '@firecamp/ui-kit';
+import { Button, Popover } from '@firecamp/ui';
 import classnames from 'classnames';
 
 import { IConfirmationPopover } from './interfaces/ConfirmationPopover.interfaces';

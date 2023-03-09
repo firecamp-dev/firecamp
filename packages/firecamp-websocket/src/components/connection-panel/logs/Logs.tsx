@@ -9,7 +9,7 @@ import {
   Dropdown,
   Button,
   Resizable,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import LogTable from './LogTable';
 import { ELogTypes } from '../../../types';
 import { IStore, useStore } from '../../../store';

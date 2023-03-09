@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { FallbackProps } from 'react-error-boundary';
-import { Modal } from '@firecamp/ui-kit';
+import { Modal } from '@firecamp/ui';
 
 import './ErrorPopup.sass';
 

@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Modal, IModal, Button, Input } from '@firecamp/ui-kit';
+import { Modal, IModal, Button, Input } from '@firecamp/ui';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Column, Row, SingleLineEditor } from '@firecamp/ui-kit';
+import { Column, Row, SingleLineEditor } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 
 const Url: FC<IUrl> = ({

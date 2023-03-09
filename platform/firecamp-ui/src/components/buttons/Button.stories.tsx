@@ -3,7 +3,7 @@ import { IButton } from "./interfaces/Button.interfaces";
 import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
 
 export default {
-  title: "UI-Kit/Button/main",
+  title: "UI-Kit/Button",
   component: Button,
   argTypes: {
     id: {control: 'text' },

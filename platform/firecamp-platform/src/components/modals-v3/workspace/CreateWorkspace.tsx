@@ -7,7 +7,7 @@ import {
   Modal,
   IModal,
   Alert,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';

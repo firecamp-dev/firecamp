@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
-import { Container, Button, TabHeader, ScriptTab } from '@firecamp/ui-kit';
+import { Container, Button, TabHeader, ScriptTab } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import { TId, IScript, ICollection, IFolder } from '@firecamp/types';
 

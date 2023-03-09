@@ -1,6 +1,6 @@
 import { memo } from 'react';
 import isEqual from 'react-fast-compare';
-import { LogTable as LTable } from '@firecamp/ui-kit';
+import { LogTable as LTable } from '@firecamp/ui';
 
 const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
   return (

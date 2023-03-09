@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import cx from 'classnames';
-import { TestResultTable } from '@firecamp/ui-kit';
+import { TestResultTable } from '@firecamp/ui';
 
 const TestScriptResult: FC<any> = ({ result }) => {
   // console.log(result, 'TestScriptResult...');

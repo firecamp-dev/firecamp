@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Resizable, SecondaryTab } from '@firecamp/ui-kit';
+import { Container, Resizable, SecondaryTab } from '@firecamp/ui';
 import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 
 import Variables from './Variables';

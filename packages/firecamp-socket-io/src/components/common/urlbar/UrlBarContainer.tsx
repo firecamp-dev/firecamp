@@ -1,6 +1,6 @@
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
-import { Url, UrlBar, Button, Dropdown } from '@firecamp/ui-kit';
+import { Url, UrlBar, Button, Dropdown } from '@firecamp/ui';
 import ConnectionButton from '../connection/ConnectButton';
 import { SIOVersionOptions } from '../../../constants';
 import { IStore, useStore } from '../../../store';

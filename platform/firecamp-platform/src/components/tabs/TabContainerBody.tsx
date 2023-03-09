@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import { Column } from '@firecamp/ui-kit';
+import { Column } from '@firecamp/ui';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
 import { ErrorBoundary } from 'react-error-boundary';

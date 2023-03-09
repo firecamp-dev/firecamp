@@ -6,7 +6,7 @@ import {
   Container,
   Resizable,
   Notes,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import { IRestResponse, TId } from '@firecamp/types';
 import Tabs from './tabs/Tabs';

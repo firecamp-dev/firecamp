@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { CopyButton, Resizable } from '@firecamp/ui-kit';
+import { CopyButton, Resizable } from '@firecamp/ui';
 
 const CookieTab: FC<{cookies: any}> = ({ cookies }) => {
   

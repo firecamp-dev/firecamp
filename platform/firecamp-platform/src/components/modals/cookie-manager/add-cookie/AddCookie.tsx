@@ -7,7 +7,7 @@ import {
   Button,
   Input,
   Popover,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { ICookie } from '@firecamp/types';
 import { _date } from '@firecamp/utils';
 import Constants from '../Constants';

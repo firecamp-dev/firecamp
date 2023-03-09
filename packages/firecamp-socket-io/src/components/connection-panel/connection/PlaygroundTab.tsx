@@ -9,7 +9,7 @@ import {
   Button,
   TabHeader,
   Checkbox,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 
 import BodyControls from './playground/BodyControls';

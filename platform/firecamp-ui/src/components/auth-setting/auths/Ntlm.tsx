@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { EAuthTypes, TPlainObject } from '@firecamp/types';
-import { Input } from '@firecamp/ui-kit';
+import { Input } from '@firecamp/ui';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
 

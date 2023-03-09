@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Modal, IModal, Button } from '@firecamp/ui-kit';
+import { Modal, IModal, Button } from '@firecamp/ui';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 
 import _auth from '../../../services/auth';

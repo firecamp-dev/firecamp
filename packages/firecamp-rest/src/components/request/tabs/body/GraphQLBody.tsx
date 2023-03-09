@@ -1,5 +1,5 @@
 import { EEditorLanguage } from '@firecamp/types';
-import { Container, Column, Editor, CMGQueryEditor, TabHeader, Resizable } from '@firecamp/ui-kit';
+import { Container, Column, Editor, CMGQueryEditor, TabHeader, Resizable } from '@firecamp/ui';
 
 const GraphQLBody = ({ body, onChange }) => {
   const { query = '', variables = '' } = body;

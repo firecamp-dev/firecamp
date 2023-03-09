@@ -1,7 +1,7 @@
 import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
-import { AuthSetting } from '@firecamp/ui-kit';
+import { AuthSetting } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const AuthTab = () => {

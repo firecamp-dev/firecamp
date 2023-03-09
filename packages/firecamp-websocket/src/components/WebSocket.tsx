@@ -9,7 +9,7 @@ import {
   Row,
   RootContainer,
   Loader,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { initialiseStoreFromRequest } from '../services/request.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';

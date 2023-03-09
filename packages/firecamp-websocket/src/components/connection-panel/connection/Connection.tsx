@@ -8,7 +8,7 @@ import {
   Row,
   TabHeader,
   Tabs,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 

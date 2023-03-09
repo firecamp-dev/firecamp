@@ -6,7 +6,7 @@ import {
   TabHeader,
   Editor,
   EditorControlBar,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { ELogTypes } from '../../../types';
 
 const emptyRow = {

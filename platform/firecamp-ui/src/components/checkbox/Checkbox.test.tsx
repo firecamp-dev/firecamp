@@ -2,7 +2,7 @@ import { useState } from "react";
 import "@testing-library/jest-dom";
 import { render, screen, waitFor } from "@testing-library/react";
 import { click } from "../../../__mocks__/eventMock";
-// import { Checkbox } from "@firecamp/ui-kit";
+// import { Checkbox } from "@firecamp/ui";
 import Checkbox from './Checkbox';
 import { ICheckbox } from './interfaces/Checkbox.interfaces';
 

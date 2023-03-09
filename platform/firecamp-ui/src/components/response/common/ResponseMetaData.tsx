@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { ResStatus, ResSize, ResTime } from '@firecamp/ui-kit';
+import { ResStatus, ResSize, ResTime } from '@firecamp/ui';
 
 const ResponseMetaData: FC<any> = ({
   isRequestRunning,

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui';
 import _toPairs from 'lodash/toPairs';
 import { Resizable } from 're-resizable';
 import { IHeader } from '@firecamp/types';

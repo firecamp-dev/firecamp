@@ -2,7 +2,7 @@ import { FC, useState, useMemo, useEffect, memo } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import { Dropdown, Button } from '@firecamp/ui-kit';
+import { Dropdown, Button } from '@firecamp/ui';
 import { TId } from '@firecamp/types';
 import Helper from './Helper';
 import { useEnvStore } from '../../../../store/environment';

@@ -8,7 +8,7 @@ import {
   ProgressBar,
   Editor,
   CheckboxGroup,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { EEditorLanguage, EEnvironmentScope } from '@firecamp/types';
 

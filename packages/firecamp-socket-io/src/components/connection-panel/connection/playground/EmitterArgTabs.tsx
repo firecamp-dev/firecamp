@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Tabs } from '@firecamp/ui-kit';
+import { Tabs } from '@firecamp/ui';
 
 interface IEmitterArgTabs {
   totalTabs: number;

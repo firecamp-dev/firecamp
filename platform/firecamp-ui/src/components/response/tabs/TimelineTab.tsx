@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Editor } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 
 const TimelineTab: FC<{ id: string; timeline: string }> = ({

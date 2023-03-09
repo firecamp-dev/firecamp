@@ -6,7 +6,7 @@ import {
   TabHeader,
   Button,
   Column,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import List from './List';
 import { IStore, useStore } from '../../../../store';
 
