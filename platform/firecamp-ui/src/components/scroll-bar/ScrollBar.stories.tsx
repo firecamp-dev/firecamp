@@ -9,117 +9,35 @@ export default {
 };
 
 export const Demo = () => (
-  <ScrollBar className="w-[200px] h-[200px]" noWrap>
+  <ScrollBar>
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Tags</div>
       <hr />
       {[
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10',
-        '11',
-        '12',
-        '13',
-        '14',
-        '15',
-        '16',
-        '17',
-        '18',
-        '19',
-        '20',
+        'TAGS 1',
+        'TAGS 2',
+        'TAGS 3',
+        'TAGS 4',
+        'TAGS 5',
+        'TAGS 6',
+        'TAGS 7',
+        'TAGS 1.0',
+        'TAGS 2.0',
+        'TAGS 3.0',
+        'TAGS 4.0',
+        'TAGS 5.0',
+        'TAGS 6.0',
+        'TAGS 7.0',
+        'TAGS 1.1',
+        'TAGS 2.1',
+        'TAGS 3.1',
+        'TAGS 4.1',
+        'TAGS 5.1',
+        'TAGS 6.1',
+        'TAGS 7.1',
       ].map((tag) => (
         <div className="text-sm mt-2 pt-3" key={tag}>
-          {tag}. &nbsp; "In publishing and graphic design, Lorem ipsum is a
-          placeholder text commonly used to demonstrate the visual form of a
-          document or a typeface without relying on meaningful content. " "In
-          publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. "
-        </div>
-      ))}
-    </div>
-  </ScrollBar>
-);
-export const VerticalScroll = () => (
-  <ScrollBar className=" h-[200px]">
-    <div style={{ padding: '15px 20px' }}>
-      <div className="text-lg font-medium">Tags</div>
-      <hr />
-      {[
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10',
-        '11',
-        '12',
-        '13',
-        '14',
-        '15',
-        '16',
-        '17',
-        '18',
-        '19',
-        '20',
-      ].map((tag) => (
-        <div className="text-sm mt-2 pt-3" key={tag}>
-          {tag}. &nbsp; "In publishing and graphic design, Lorem ipsum is a
-          placeholder text commonly used to demonstrate the visual form of a
-          document or a typeface without relying on meaningful content. " "In
-          publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. "
-        </div>
-      ))}
-    </div>
-  </ScrollBar>
-);
-export const HorizontalScroll = () => (
-  <ScrollBar className=" w-[200px] h-[50vh]" noWrap>
-    <div style={{ padding: '15px 20px' }}>
-      <div className="text-lg font-medium">Tags</div>
-      <hr />
-      {[
-        '1',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '10',
-        '11',
-        '12',
-        '13',
-        '14',
-        '15',
-        '16',
-        '17',
-        '18',
-        '19',
-        '20',
-      ].map((tag) => (
-        <div className="text-sm mt-2 pt-3" key={tag}>
-          {tag}. &nbsp; "In publishing and graphic design, Lorem ipsum is a
-          placeholder text commonly used to demonstrate the visual form of a
-          document or a typeface without relying on meaningful content. " "In
-          publishing and graphic design, Lorem ipsum is a placeholder text
-          commonly used to demonstrate the visual form of a document or a
-          typeface without relying on meaningful content. "
+          {tag}
         </div>
       ))}
     </div>
