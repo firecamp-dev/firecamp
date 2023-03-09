@@ -1,6 +1,6 @@
 import Button from './Button';
+import { IButton } from "./interfaces/Button.interfaces";
 import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
-import { IButton } from './interfaces/Button.interfaces';
 
 export default {
   title: "UI-Kit/Button/main",

@@ -977,13 +977,13 @@ video {
 	margin-top: 1rem;
 	margin-bottom: 1rem;
 }
-.mx-0 {
-	margin-left: 0px;
-	margin-right: 0px;
-}
 .mx-2 {
 	margin-left: 0.5rem;
 	margin-right: 0.5rem;
+}
+.mx-0 {
+	margin-left: 0px;
+	margin-right: 0px;
 }
 .\!mb-0 {
 	margin-bottom: 0px !important;
@@ -1123,6 +1123,9 @@ video {
 .mt-6 {
 	margin-top: 1.5rem;
 }
+.mt-2 {
+	margin-top: 0.5rem;
+}
 .-mr-1 {
 	margin-right: -0.25rem;
 }
@@ -1131,9 +1134,6 @@ video {
 }
 .ml-8 {
 	margin-left: 2rem;
-}
-.mt-2 {
-	margin-top: 0.5rem;
 }
 .-mb-2 {
 	margin-bottom: -0.5rem;
@@ -1228,6 +1228,9 @@ video {
 .h-0 {
 	height: 0px;
 }
+.h-\[225px\] {
+	height: 225px;
+}
 .h-32 {
 	height: 8rem;
 }
@@ -1304,14 +1307,17 @@ video {
 .\!w-full {
 	width: 100% !important;
 }
-.w-16 {
-	width: 4rem;
-}
 .w-screen {
 	width: 100vw;
 }
+.w-16 {
+	width: 4rem;
+}
 .w-40 {
 	width: 10rem;
+}
+.w-\[200px\] {
+	width: 200px;
 }
 .w-32 {
 	width: 8rem;
@@ -1370,6 +1376,11 @@ video {
 }
 .cursor-default {
 	cursor: default;
+}
+.select-none {
+	-webkit-user-select: none;
+	   -moz-user-select: none;
+	        user-select: none;
 }
 .resize-none {
 	resize: none;
@@ -1511,6 +1522,9 @@ video {
 .border-solid {
 	border-style: solid;
 }
+.border-dashed {
+	border-style: dashed;
+}
 .border-appBorder {
 	border-color: var(--app-border);
 }
@@ -1558,6 +1572,9 @@ video {
 }
 .\!border-inputBorder {
 	border-color: var(--input-border) !important;
+}
+.border-appBackground {
+	border-color: var(--app-background);
 }
 .border-inputBorder {
 	border-color: var(--input-border);
@@ -1682,17 +1699,27 @@ video {
 .bg-inputBackground {
 	background-color: var(--input-background);
 }
+.bg-focus1 {
+	background-color: var(--focus-level-1);
+}
+.bg-focus4 {
+	background-color: var(--focus-level-4);
+}
 .bg-focusColor {
 	background-color: #ffffff1a;
 }
 .bg-modalBackground {
 	background-color: var(--modal-background);
 }
-.bg-focus1 {
-	background-color: var(--focus-level-1);
-}
 .bg-statusBarBackground2 {
 	background-color: var(--statusBar-background2);
+}
+.bg-primaryColorText {
+	--tw-bg-opacity: 1;
+	background-color: rgba(255, 255, 255, var(--tw-bg-opacity));
+}
+.bg-activityBarBorder {
+	background-color: var(--activityBar-border);
 }
 .bg-statusBarBackground {
 	background-color: var(--statusBar-background);
@@ -1705,9 +1732,6 @@ video {
 }
 .bg-tabBackground {
 	background-color: var(--tab-background);
-}
-.bg-focus4 {
-	background-color: var(--focus-level-4);
 }
 .\!p-0 {
 	padding: 0px !important;
@@ -1733,14 +1757,17 @@ video {
 .\!p-4 {
 	padding: 1rem !important;
 }
+.p-12 {
+	padding: 3rem;
+}
 .p-1\.5 {
 	padding: 0.375rem;
 }
 .p-8 {
 	padding: 2rem;
 }
-.p-12 {
-	padding: 3rem;
+.p-0\.5 {
+	padding: 0.125rem;
 }
 .p-0 {
 	padding: 0px;
@@ -1962,6 +1989,9 @@ video {
 .pb-6 {
 	padding-bottom: 1.5rem;
 }
+.pr-4 {
+	padding-right: 1rem;
+}
 .\!pl-9 {
 	padding-left: 2.25rem !important;
 }
@@ -1985,9 +2015,6 @@ video {
 }
 .pb-80 {
 	padding-bottom: 20rem;
-}
-.pr-4 {
-	padding-right: 1rem;
 }
 .text-left {
 	text-align: left;
@@ -2210,6 +2237,10 @@ video {
 	--tw-shadow: var(--popoverBoxshadow) !important;
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
+.shadow-sm {
+	--tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
 .outline-none {
 	outline: 2px solid transparent;
 	outline-offset: 2px;
@@ -2230,6 +2261,9 @@ video {
 	transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	transition-duration: 150ms;
+}
+.ease-out {
+	transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
 .before\:absolute::before {
 	content: "";
@@ -2421,6 +2455,9 @@ video {
 }
 .hover\:bg-inputFocusBackground:hover {
 	background-color: var(--inputFocus-background);
+}
+.hover\:bg-focus2:hover {
+	background-color: var(--focus-level-2);
 }
 .hover\:bg-focusColor:hover {
 	background-color: #ffffff1a;

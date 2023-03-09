@@ -1,18 +1,21 @@
-import React from "react";
-import type {Config} from 'jest';
+import React from 'react';
+import type { Config } from 'jest';
 
 global.React = React;
 
-const esModules = ["nanoid"].join("|");
+const esModules = ['nanoid'].join('|');
 
 const config: Config = {
-  testEnvironment: "jsdom",
+  testEnvironment: 'jsdom',
   preset: 'ts-jest',
   transform: {
-    '^.+\\.(ts|tsx)?$': ['ts-jest',   {
+    '^.+\\.(ts|tsx)?$': [
+      'ts-jest',
+      {
         babelConfig: true,
-      }],
-          "^.+\\.(js|jsx)$": "babel-jest"
+      },
+    ],
+    '^.+\\.(js|jsx)$': 'babel-jest',
   },
   transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   moduleNameMapper: {
@@ -20,7 +23,7 @@ const config: Config = {
      "\\.(txt)$": "<rootDir>/../../node_modules/raw-loader",
      "^nanoid(/(.*)|$)": "nanoid$1",
      "^monaco-editor": "<rootDir>/__mocks__/monacoMock.ts",
-      "^@monaco-editor\/react": "<rootDir>/../../node_modules/@monaco-editor/react",
+      "^@monaco-editor/react": "<rootDir>/../../node_modules/@monaco-editor/react",
       "@firecamp/rest-executor/dist/esm": "<rootDir>/../firecamp-rest-executor/dist/esm/index.d.ts"
     // "@firecamp/rest-executor/dist/esm": "<rootDir>/../firecamp-rest-executor/dist/esm/script-runner/snippets/index"
   },

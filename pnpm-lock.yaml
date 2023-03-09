@@ -778,6 +778,7 @@ importers:
       '@firecamp/types': ^0.1.21
       '@firecamp/ui-kit': workspace:*
       '@monaco-editor/react': 4.4.5
+      '@radix-ui/react-scroll-area': ^1.0.2
       '@radix-ui/react-dropdown-menu': ^2.0.1
       '@radix-ui/react-toast': ^1.0.0
       '@storybook/addon-actions': ^6.5.10
@@ -845,6 +846,7 @@ importers:
       '@firecamp/types': 0.1.21
       '@firecamp/ui-kit': 'link:'
       '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
+      '@radix-ui/react-scroll-area': 1.0.2_react-dom@17.0.2
       '@radix-ui/react-dropdown-menu': 2.0.1_uswwk7ohkq5gkv2wqm32sjldim
       '@radix-ui/react-toast': 1.1.2_react-dom@17.0.2
       '@szhsin/react-menu': 2.3.4_react-dom@17.0.2
@@ -3809,6 +3811,12 @@ packages:
     resolution: {integrity: sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==}
     dev: true
 
+  /@radix-ui/number/1.0.0:
+    resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==}
+    dependencies:
+      '@babel/runtime': 7.20.13
+    dev: false
+
   /@radix-ui/primitive/1.0.0:
     resolution: {integrity: sha512-3e7rn8FDMin4CgeL7Z/49smCA3rFYY3Ha2rUQ7HRWFadS5iCRw08ZgVT1LaNTCNqgvrUiyczLflrVrF0SRQtNA==}
     dependencies:
@@ -4010,6 +4018,25 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.13
       '@radix-ui/react-slot': 1.0.1
+      react-dom: 17.0.2
+    dev: false
+
+  /@radix-ui/react-scroll-area/1.0.2_react-dom@17.0.2:
+    resolution: {integrity: sha512-k8VseTxI26kcKJaX0HPwkvlNBPTs56JRdYzcZ/vzrNUkDlvXBy8sMc7WvCpYzZkHgb+hd72VW9MqkqecGtuNgg==}
+    peerDependencies:
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    dependencies:
+      '@babel/runtime': 7.20.13
+      '@radix-ui/number': 1.0.0
+      '@radix-ui/primitive': 1.0.0
+      '@radix-ui/react-compose-refs': 1.0.0
+      '@radix-ui/react-context': 1.0.0
+      '@radix-ui/react-direction': 1.0.0
+      '@radix-ui/react-presence': 1.0.0_react-dom@17.0.2
+      '@radix-ui/react-primitive': 1.0.1_react-dom@17.0.2
+      '@radix-ui/react-use-callback-ref': 1.0.0
+      '@radix-ui/react-use-layout-effect': 1.0.0
       react-dom: 17.0.2
     dev: false
 
