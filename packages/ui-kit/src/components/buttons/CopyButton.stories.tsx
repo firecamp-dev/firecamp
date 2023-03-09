@@ -1,6 +1,6 @@
 import Button from './CopyButton';
 import { ICopyButton } from "./interfaces/CopyButton.interfaces"
-import '../../../public/assets/sass/_icons.sass';
+
 export default {
   title: "UI-Kit/CopyButton",
   component: Button,
