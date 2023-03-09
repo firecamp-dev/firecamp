@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import _upperFirst from 'lodash/upperFirst';
 import { print } from 'graphql/language/printer';
-import { Container, Column, Editor } from '@firecamp/ui-kit';
+import { Container, Column, Editor } from '@firecamp/ui';
 import { _table } from '@firecamp/utils';
 import getQueryFacts, {
   getCurrentOperation,

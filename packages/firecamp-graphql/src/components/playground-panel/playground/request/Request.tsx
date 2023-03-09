@@ -4,7 +4,7 @@ import {
   Container,
   Column,
   Resizable,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import ReqStatusbar from './statusbar/ReqStatusbar';
 // import QueryEditorMonaco from './query-editor/QueryEditor.monaco';
 import QueryEditor from './query-editor/QueryEditor';

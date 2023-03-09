@@ -5,7 +5,7 @@ import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import { Dropdown } from '@firecamp/ui-kit';
+import { Dropdown } from '@firecamp/ui';
 import { useWorkspaceStore } from '../../../../store/workspace';
 import platformContext from '../../../../services/platform-context';
 import { RE } from '../../../../types';

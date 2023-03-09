@@ -252,7 +252,7 @@ importers:
   packages/firecamp-graphql:
     specifiers:
       '@firecamp/types': ^0.1.21
-      '@firecamp/ui-kit': workspace:*
+      '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
@@ -282,7 +282,7 @@ importers:
       typescript: ^4.7.4
     dependencies:
       '@firecamp/types': 0.1.21
-      '@firecamp/ui-kit': link:../ui-kit
+      '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
       codemirror: 5.65.11
       codemirror-graphql: 1.3.2_t5xgth6chaivosjn7w376kmbzm
@@ -317,7 +317,7 @@ importers:
       '@firecamp/curl-to-firecamp': ^1.0.1
       '@firecamp/rest-executor': workspace:*
       '@firecamp/types': ^0.1.21
-      '@firecamp/ui-kit': workspace:*
+      '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@hapi/joi': ^17.1.1
       '@types/chrome': 0.0.204
@@ -372,7 +372,7 @@ importers:
       '@firecamp/curl-to-firecamp': 1.0.1_nanoid@3.3.4
       '@firecamp/rest-executor': link:../firecamp-rest-executor
       '@firecamp/types': 0.1.21
-      '@firecamp/ui-kit': link:../ui-kit
+      '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
       '@hapi/joi': 17.1.1
       aws4: 1.12.0
@@ -514,7 +514,7 @@ importers:
     specifiers:
       '@firecamp/socket.io-executor': workspace:*
       '@firecamp/types': ^0.1.21
-      '@firecamp/ui-kit': workspace:*
+      '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
@@ -550,7 +550,7 @@ importers:
     dependencies:
       '@firecamp/socket.io-executor': link:../firecamp-socket-io-executor
       '@firecamp/types': 0.1.21
-      '@firecamp/ui-kit': link:../ui-kit
+      '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
       classnames: 2.3.2
       lodash: 4.17.21
@@ -643,7 +643,7 @@ importers:
   packages/firecamp-websocket:
     specifiers:
       '@firecamp/types': ^0.1.21
-      '@firecamp/ui-kit': workspace:*
+      '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@firecamp/ws-executor': workspace:*
       '@types/jest': 29.2.4
@@ -679,7 +679,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/types': 0.1.21
-      '@firecamp/ui-kit': link:../ui-kit
+      '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
       '@firecamp/ws-executor': link:../firecamp-ws-executor
       classnames: 2.3.2
@@ -770,16 +770,111 @@ importers:
       typedoc: 0.23.24_typescript@4.9.4
       typescript: 4.9.4
 
-  packages/ui-kit:
+  platform/firecamp-platform:
+    specifiers:
+      '@firecamp/agent-manager': workspace:*
+      '@firecamp/cloud-apis': ^0.1.12
+      '@firecamp/cookie-manager': ^0.0.0
+      '@firecamp/graphql': workspace:*
+      '@firecamp/rest': workspace:*
+      '@firecamp/rest-executor': workspace:*
+      '@firecamp/socket.io': workspace:*
+      '@firecamp/types': ^0.1.21
+      '@firecamp/ui': workspace:*
+      '@firecamp/url': 0.0.20
+      '@firecamp/websocket': workspace:*
+      '@sentry/browser': 7.28.1
+      '@sentry/tracing': 7.28.1
+      '@types/chrome': ^0.0.204
+      '@types/react-dom': ^17.0.13
+      awesome-notifications: 3.1.3
+      classnames: ^2.1.3
+      clean-deep: ^3.0.2
+      deepdash: ^5.3.9
+      faker: ^4.1.0
+      fuzzysort: ^2.0.1
+      javascript-stringify: ^2.0.0
+      js-yaml: ^4.1.0
+      json-templates: ^4.2.0
+      markdown-it: ^13.0.1
+      marked: ^0.7.0
+      mitt: ^3.0.0
+      nanoid: 3.3.4
+      prettify-xml: ^1.2.0
+      prop-types: ^15.6.2
+      re-resizable: ^4.7.1
+      react: 17.0.2
+      react-dom: 17.0.2
+      react-error-boundary: ^3.1.4
+      react-file-drop: ^3.1.5
+      react-ga: ^3.1.2
+      react-hook-form: ^6.8.1
+      react-hotkeys-hook: ^3.3.1
+      react-responsive-modal: ^6.2.0
+      redux: ^3.2.1
+      safer-eval: ^1.3.5
+      validator: ^10.11.0
+      xml-js: ^1.6.9
+      xmljson: ^0.2.0
+      zustand: 3.7.2
+    dependencies:
+      '@firecamp/agent-manager': link:../../packages/firecamp-agent-manager
+      '@firecamp/cloud-apis': 0.1.12
+      '@firecamp/cookie-manager': link:../../packages/firecamp-cookie-manager
+      '@firecamp/graphql': link:../../packages/firecamp-graphql
+      '@firecamp/rest': link:../../packages/firecamp-rest
+      '@firecamp/rest-executor': link:../../packages/firecamp-rest-executor
+      '@firecamp/socket.io': link:../../packages/firecamp-socket-io
+      '@firecamp/types': 0.1.21
+      '@firecamp/ui': link:../firecamp-ui
+      '@firecamp/url': 0.0.20
+      '@firecamp/websocket': link:../../packages/firecamp-websocket
+      '@sentry/browser': 7.28.1
+      '@sentry/tracing': 7.28.1
+      awesome-notifications: 3.1.3
+      classnames: 2.3.2
+      clean-deep: 3.4.0
+      deepdash: 5.3.9
+      faker: 4.1.0
+      fuzzysort: 2.0.4
+      javascript-stringify: 2.1.0
+      js-yaml: 4.1.0
+      json-templates: 4.2.0
+      markdown-it: 13.0.1
+      marked: 0.7.0
+      mitt: 3.0.0
+      nanoid: 3.3.4
+      prettify-xml: 1.2.0
+      prop-types: 15.8.1
+      re-resizable: 4.11.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      react-error-boundary: 3.1.4_react@17.0.2
+      react-file-drop: 3.1.6
+      react-ga: 3.3.1_at7mkepldmzoo6silmqc5bca74
+      react-hook-form: 6.15.8_react@17.0.2
+      react-hotkeys-hook: 3.4.7_sfoxds7t5ydpegc3knd667wn6m
+      react-responsive-modal: 6.4.1_sfoxds7t5ydpegc3knd667wn6m
+      redux: 3.7.2
+      safer-eval: 1.3.6
+      validator: 10.11.0
+      xml-js: 1.6.11
+      xmljson: 0.2.0
+      zustand: 3.7.2_react@17.0.2
+    devDependencies:
+      '@types/chrome': 0.0.204
+      '@types/react-dom': 17.0.18
+
+  platform/firecamp-ui:
     specifiers:
       '@babel/cli': ^7.16.0
       '@babel/core': ^7.14.8
       '@babel/preset-env': ^7.19.4
       '@firecamp/types': ^0.1.21
-      '@firecamp/ui-kit': workspace:*
+      '@firecamp/ui': workspace:*
       '@monaco-editor/react': 4.4.5
-      '@radix-ui/react-scroll-area': ^1.0.2
       '@radix-ui/react-dropdown-menu': ^2.0.1
+      '@radix-ui/react-scroll-area': ^1.0.2
       '@radix-ui/react-toast': ^1.0.0
       '@storybook/addon-actions': ^6.5.10
       '@storybook/addon-essentials': ^6.5.10
@@ -844,10 +939,10 @@ importers:
       vscode: ^1.1.37
     dependencies:
       '@firecamp/types': 0.1.21
-      '@firecamp/ui-kit': 'link:'
+      '@firecamp/ui': 'link:'
       '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
-      '@radix-ui/react-scroll-area': 1.0.2_react-dom@17.0.2
       '@radix-ui/react-dropdown-menu': 2.0.1_uswwk7ohkq5gkv2wqm32sjldim
+      '@radix-ui/react-scroll-area': 1.0.2_react-dom@17.0.2
       '@radix-ui/react-toast': 1.1.2_react-dom@17.0.2
       '@szhsin/react-menu': 2.3.4_react-dom@17.0.2
       '@tanstack/react-table': 8.7.6_react-dom@17.0.2
@@ -1563,7 +1658,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.20.2
       '@babel/plugin-syntax-object-rest-spread': 7.8.3_@babel+core@7.12.9
       '@babel/plugin-transform-parameters': 7.20.7_@babel+core@7.12.9
     dev: true
@@ -2738,7 +2833,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.20.13
       '@types/react': 17.0.53
-      clsx: 1.1.0
+      clsx: 1.2.1
       focus-lock: 0.8.1
       react-dom: 17.0.2
       react-merge-refs: 1.1.0
@@ -4021,25 +4116,6 @@ packages:
       react-dom: 17.0.2
     dev: false
 
-  /@radix-ui/react-scroll-area/1.0.2_react-dom@17.0.2:
-    resolution: {integrity: sha512-k8VseTxI26kcKJaX0HPwkvlNBPTs56JRdYzcZ/vzrNUkDlvXBy8sMc7WvCpYzZkHgb+hd72VW9MqkqecGtuNgg==}
-    peerDependencies:
-      react: ^16.8 || ^17.0 || ^18.0
-      react-dom: ^16.8 || ^17.0 || ^18.0
-    dependencies:
-      '@babel/runtime': 7.20.13
-      '@radix-ui/number': 1.0.0
-      '@radix-ui/primitive': 1.0.0
-      '@radix-ui/react-compose-refs': 1.0.0
-      '@radix-ui/react-context': 1.0.0
-      '@radix-ui/react-direction': 1.0.0
-      '@radix-ui/react-presence': 1.0.0_react-dom@17.0.2
-      '@radix-ui/react-primitive': 1.0.1_react-dom@17.0.2
-      '@radix-ui/react-use-callback-ref': 1.0.0
-      '@radix-ui/react-use-layout-effect': 1.0.0
-      react-dom: 17.0.2
-    dev: false
-
   /@radix-ui/react-roving-focus/1.0.1_react-dom@17.0.2:
     resolution: {integrity: sha512-TB76u5TIxKpqMpUAuYH2VqMhHYKa+4Vs1NHygo/llLvlffN6mLVsFhz0AnSFlSBAvTBYVHYAkHAyEt7x1gPJOA==}
     peerDependencies:
@@ -4056,6 +4132,25 @@ packages:
       '@radix-ui/react-primitive': 1.0.1_react-dom@17.0.2
       '@radix-ui/react-use-callback-ref': 1.0.0
       '@radix-ui/react-use-controllable-state': 1.0.0
+      react-dom: 17.0.2
+    dev: false
+
+  /@radix-ui/react-scroll-area/1.0.2_react-dom@17.0.2:
+    resolution: {integrity: sha512-k8VseTxI26kcKJaX0HPwkvlNBPTs56JRdYzcZ/vzrNUkDlvXBy8sMc7WvCpYzZkHgb+hd72VW9MqkqecGtuNgg==}
+    peerDependencies:
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    dependencies:
+      '@babel/runtime': 7.20.13
+      '@radix-ui/number': 1.0.0
+      '@radix-ui/primitive': 1.0.0
+      '@radix-ui/react-compose-refs': 1.0.0
+      '@radix-ui/react-context': 1.0.0
+      '@radix-ui/react-direction': 1.0.0
+      '@radix-ui/react-presence': 1.0.0_react-dom@17.0.2
+      '@radix-ui/react-primitive': 1.0.1_react-dom@17.0.2
+      '@radix-ui/react-use-callback-ref': 1.0.0
+      '@radix-ui/react-use-layout-effect': 1.0.0
       react-dom: 17.0.2
     dev: false
 
@@ -4865,7 +4960,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@storybook/store': 6.5.15_react-dom@17.0.2
       '@storybook/theming': 6.5.15_react-dom@17.0.2
-      '@types/node': 16.18.11
+      '@types/node': 16.18.12
       babel-loader: 8.3.0_la66t7xldg4uecmyawueag5wkm
       babel-plugin-named-exports-order: 0.0.2
       browser-assert: 1.2.1
@@ -5401,7 +5496,7 @@ packages:
       '@storybook/node-logger': 6.5.15
       '@storybook/theming': 6.5.15_react-dom@17.0.2
       '@storybook/ui': 6.5.15_react-dom@17.0.2
-      '@types/node': 16.18.11
+      '@types/node': 16.18.12
       babel-loader: 8.3.0_la66t7xldg4uecmyawueag5wkm
       case-sensitive-paths-webpack-plugin: 2.4.0
       chalk: 4.1.2
@@ -5562,7 +5657,7 @@ packages:
       '@storybook/semver': 7.3.2
       '@storybook/store': 6.5.15_react-dom@17.0.2
       '@types/estree': 0.0.51
-      '@types/node': 16.18.11
+      '@types/node': 16.18.12
       '@types/webpack-env': 1.18.0
       acorn: 7.4.1
       acorn-jsx: 5.3.2_acorn@7.4.1
@@ -9066,7 +9161,6 @@ packages:
   /clsx/1.2.1:
     resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
     engines: {node: '>=6'}
-    dev: false
 
   /co/4.6.0:
     resolution: {integrity: sha512-QVb0dM5HvG+uaxitm8wONl7jltx8dqhfU33DcqtOZcLSVIKSDDLDi7+0LbAKiyI8hD9u42m2YxXSkMGWThaecQ==}
@@ -14764,11 +14858,11 @@ packages:
     dependencies:
       '@jest/environment': 29.3.1
       '@jest/fake-timers': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.3
       '@types/jsdom': 20.0.1
-      '@types/node': 18.11.18
+      '@types/node': 18.14.1
       jest-mock: 29.3.1
-      jest-util: 29.3.1
+      jest-util: 29.4.3
       jsdom: 20.0.3
     transitivePeerDependencies:
       - bufferutil
@@ -15139,7 +15233,7 @@ packages:
       '@jest/test-result': 28.1.3
       '@jest/transform': 28.1.3
       '@jest/types': 28.1.3
-      '@types/node': 18.13.0
+      '@types/node': 18.14.1
       chalk: 4.1.2
       emittery: 0.10.2
       graceful-fs: 4.2.10
@@ -15549,7 +15643,7 @@ packages:
         optional: true
     dependencies:
       '@jest/core': 29.3.1
-      '@jest/types': 29.3.1
+      '@jest/types': 29.4.3
       import-local: 3.1.0
       jest-cli: 29.3.1
     transitivePeerDependencies:
@@ -21272,6 +21366,7 @@ packages:
 
   /trim/0.0.1:
     resolution: {integrity: sha512-YzQV+TZg4AxpKxaTHK3c3D+kRDCGVEE7LemdlQZoQXn0iennk10RsIoY6ikzAqJTc9Xjl9C1/waHom/J86ziAQ==}
+    deprecated: Use String.prototype.trim() instead
     dev: true
 
   /trough/1.0.5:
@@ -21342,7 +21437,7 @@ packages:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       jest: 29.3.1
-      jest-util: 29.3.1
+      jest-util: 29.4.3
       json5: 2.2.3
       lodash.memoize: 4.1.2
       make-error: 1.3.6
@@ -21396,6 +21491,38 @@ packages:
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
+
+  /ts-node/10.9.1_fwhrdah3qt2b7otyggpxt7mmz4:
+    resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
+    hasBin: true
+    peerDependencies:
+      '@swc/core': '>=1.2.50'
+      '@swc/wasm': '>=1.2.50'
+      '@types/node': '*'
+      typescript: '>=2.7'
+    peerDependenciesMeta:
+      '@swc/core':
+        optional: true
+      '@swc/wasm':
+        optional: true
+    dependencies:
+      '@cspotcode/source-map-support': 0.8.1
+      '@tsconfig/node10': 1.0.9
+      '@tsconfig/node12': 1.0.11
+      '@tsconfig/node14': 1.0.3
+      '@tsconfig/node16': 1.0.3
+      '@types/node': 18.14.1
+      acorn: 8.8.1
+      acorn-walk: 8.2.0
+      arg: 4.1.3
+      create-require: 1.1.1
+      diff: 4.0.2
+      make-error: 1.3.6
+      typescript: 4.9.4
+      v8-compile-cache-lib: 3.0.1
+      yn: 3.1.1
+    dev: true
+    optional: true
 
   /ts-node/10.9.1_qacynw5b4krdzzrloasmebsynu:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}

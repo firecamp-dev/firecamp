@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
-import { Button, Container, Tabs } from '@firecamp/ui-kit';
+import { Button, Container, Tabs } from '@firecamp/ui';
 import Playground from './playground/Playground';
 import { useStore, IStore } from '../../store';
 

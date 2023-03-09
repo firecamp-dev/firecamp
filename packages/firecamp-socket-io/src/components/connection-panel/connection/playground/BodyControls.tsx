@@ -7,7 +7,7 @@ import {
   EPopoverPosition,
   StatusBar,
   TabHeader,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { EditorCommands } from '../../../../constants';
 
 const BodyControls = ({

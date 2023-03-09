@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import classnames from 'classnames';
-import { Dropdown, Button } from '@firecamp/ui-kit';
+import { Dropdown, Button } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
 import { platformEmitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';

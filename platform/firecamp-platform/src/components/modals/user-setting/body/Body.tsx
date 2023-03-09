@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Column } from '@firecamp/ui-kit';
+import { Column } from '@firecamp/ui';
 
 import MyAccount from './user/MyAccount';
 import Notification from './notification/Notification';

@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow';
-import { ResStatus, ResSize, ResTime } from '@firecamp/ui-kit';
+import { ResStatus, ResSize, ResTime } from '@firecamp/ui';
 import Statuses from '../../../common/responseStatus.json';
 import { IStore, useStore } from '../../../../store';
 

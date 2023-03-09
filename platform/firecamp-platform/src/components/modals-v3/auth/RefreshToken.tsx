@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import shallow from 'zustand/shallow';
 import { useForm } from 'react-hook-form';
-import { Modal, IModal, Button, Input } from '@firecamp/ui-kit';
+import { Modal, IModal, Button, Input } from '@firecamp/ui';
 import { VscLock } from '@react-icons/all-files/vsc/VscLock';
 
 import GithubGoogleAuth from './GithubGoogleAuth';

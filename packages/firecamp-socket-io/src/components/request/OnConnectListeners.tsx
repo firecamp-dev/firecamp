@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Button, Input } from '@firecamp/ui-kit';
+import { Container, Button, Input } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 import { _array } from '@firecamp/utils';
 import { IStore, useStore } from '../../store';

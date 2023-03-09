@@ -6,7 +6,7 @@ import {
  
   
   Input,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import '../../UserSetting.sass';
 import validator from 'validator';
 

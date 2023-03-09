@@ -8,7 +8,7 @@ import '../sass/_index.sass';
 
 import { FC, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Row, RootContainer, EditorApi } from '@firecamp/ui-kit';
+import { Row, RootContainer, EditorApi } from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 

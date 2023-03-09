@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { EFirecampAgent } from '@firecamp/types';
-import { StatusBar } from '@firecamp/ui-kit';
+import { StatusBar } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 
 import SwitchWorkspacePanel from './SwitchWorkspacePanel';

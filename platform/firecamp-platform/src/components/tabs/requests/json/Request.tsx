@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Container, Row, RootContainer, Column } from '@firecamp/ui-kit';
+import { Container, Row, RootContainer, Column } from '@firecamp/ui';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import { _array, _object } from '@firecamp/utils';

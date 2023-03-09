@@ -8,7 +8,7 @@ import {
   Column,
   Editor,
   EditorControlBar,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import AckIcon from './AckIcon';
 import { ELogColors, ELogTypes, ILog } from '@firecamp/socket.io-executor/dist/esm';

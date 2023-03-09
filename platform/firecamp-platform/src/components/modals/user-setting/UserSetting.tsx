@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Modal, Tabs, Container } from '@firecamp/ui-kit';
+import { Modal, Tabs, Container } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 
 import Header from './Header';

@@ -6,7 +6,7 @@ import {
   Container,
   BasicTable,
   TabHeader,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const HeadersTab = () => {

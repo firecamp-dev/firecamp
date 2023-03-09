@@ -1,4 +1,4 @@
-import { Button, Container, ProgressBar } from '@firecamp/ui-kit';
+import { Button, Container, ProgressBar } from '@firecamp/ui';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import QueryExplorer from '../../common/explorer/QueryExplorer';
 import { IStore, useStore } from '../../../store';

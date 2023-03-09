@@ -2,7 +2,7 @@ import cx from 'classnames';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 // import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { Button, FcIconGraphQL, ToolBar } from '@firecamp/ui-kit';
+import { Button, FcIconGraphQL, ToolBar } from '@firecamp/ui';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {

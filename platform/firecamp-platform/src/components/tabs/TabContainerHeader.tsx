@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import shallow from 'zustand/shallow';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
-import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
+import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 import EnvironmentSelector from '../common/environment/selector/EnvironmentSelector';

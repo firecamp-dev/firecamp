@@ -1,7 +1,7 @@
 import { FC, useMemo } from 'react';
 import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
-import { AuthSetting, Button, Container, TabHeader,Notes } from '@firecamp/ui-kit';
+import { AuthSetting, Button, Container, TabHeader,Notes } from '@firecamp/ui';
 import { EAuthTypes, IAuth, ICollection, IFolder, TId } from '@firecamp/types';
 import { _env, _object, _auth, _array } from '@firecamp/utils';
 

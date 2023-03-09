@@ -1,4 +1,4 @@
-import { Button, Dropdown } from '@firecamp/ui-kit';
+import { Button, Dropdown } from '@firecamp/ui';
 
 const MessageTypeDropDown = ({
   options,

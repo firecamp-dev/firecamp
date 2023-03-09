@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Container, QuickSelection } from '@firecamp/ui-kit';
+import { Container, QuickSelection } from '@firecamp/ui';
 import { ERestBodyTypes } from '@firecamp/types';
 
 import { bodyTypeNames } from '../../../../constants';

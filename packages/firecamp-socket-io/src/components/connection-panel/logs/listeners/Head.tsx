@@ -1,4 +1,4 @@
-import { TabHeader } from '@firecamp/ui-kit';
+import { TabHeader } from '@firecamp/ui';
 
 const Head = ({ toggleCollapsed = (bool) => { } }) => {
   return (

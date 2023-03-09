@@ -13,7 +13,7 @@ import {
   Container,
   ScriptTab,
   Tabs,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 

@@ -12,7 +12,7 @@ import {
   Dropdown,
   Button,
   Resizable,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import LogTable from './log-table/LogTable';
 import Listeners from './listeners/Listeners';
 import { useStore, IStore } from '../../../store';

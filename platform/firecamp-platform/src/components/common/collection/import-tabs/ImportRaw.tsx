@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
-import { Container, Button, TabHeader, Editor } from '@firecamp/ui-kit';
+import { Container, Button, TabHeader, Editor } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 
 const ImportRaw: FC<IProps> = ({

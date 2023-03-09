@@ -11,7 +11,7 @@ import {
   IModal,
   Alert,
   SecondaryTab,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';

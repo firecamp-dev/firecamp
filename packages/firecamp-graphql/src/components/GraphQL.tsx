@@ -3,7 +3,7 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { _object } from '@firecamp/utils';
-import { Container, Row, Column, Loader } from '@firecamp/ui-kit';
+import { Container, Row, Column, Loader } from '@firecamp/ui';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import PlaygroundPanel from './playground-panel/PlaygroundPanel';

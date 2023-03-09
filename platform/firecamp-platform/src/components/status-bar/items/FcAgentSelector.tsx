@@ -11,7 +11,7 @@ import {
   
   Checkbox,
   // SwitchButton,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { IPlatformStore, usePlatformStore } from '../../../store/platform';
 
 const agentNamesMap = {

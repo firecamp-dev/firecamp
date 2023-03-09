@@ -3,7 +3,7 @@ import {
   CheckboxGroup,
   CheckboxInGrid,
   Input,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 
 enum EInputTypes {
   Text= 'text',

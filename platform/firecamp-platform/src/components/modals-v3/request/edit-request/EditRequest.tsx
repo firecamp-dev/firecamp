@@ -7,7 +7,7 @@ import {
   Modal,
   IModal,
   ProgressBar,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 import { useModalStore } from '../../../../store/modal';

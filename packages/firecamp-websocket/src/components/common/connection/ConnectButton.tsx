@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 import CloseConnection from './CloseConnection';
 import { EConnectionState } from '../../../types';

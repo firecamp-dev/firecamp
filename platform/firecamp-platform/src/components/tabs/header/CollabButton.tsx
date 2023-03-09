@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button, Column } from '@firecamp/ui-kit';
+import { Button, Column } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 import { AiOutlineUsergroupAdd } from '@react-icons/all-files/ai/AiOutlineUsergroupAdd';
 import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';

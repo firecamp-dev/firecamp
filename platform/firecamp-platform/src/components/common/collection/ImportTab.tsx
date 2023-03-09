@@ -10,7 +10,7 @@ import {
   ProgressBar,
   SecondaryTab,
   Row,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _array, _auth, _env, _object } from '@firecamp/utils';
 import ImportRaw from './import-tabs/ImportRaw';
 

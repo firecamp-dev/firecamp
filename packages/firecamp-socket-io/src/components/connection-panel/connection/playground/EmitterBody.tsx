@@ -10,7 +10,7 @@ import {
   Button,
   EditorControlBar,
   TabHeader,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import {
   EArgumentBodyType,
   EEditorLanguage,

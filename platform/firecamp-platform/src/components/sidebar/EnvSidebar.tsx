@@ -7,7 +7,7 @@ import {
   Container,
   Notes,
   CopyButton,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 
 const EnvSidebar: FC<any> = ({ expanded }) => {

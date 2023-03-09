@@ -1,4 +1,4 @@
-import { Container, TabHeader, CheckboxInGrid, Input } from '@firecamp/ui-kit';
+import { Container, TabHeader, CheckboxInGrid, Input } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 import OnConnectListeners from './OnConnectListeners';

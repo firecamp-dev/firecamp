@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import { Resizable } from '@firecamp/ui-kit';
+import { Resizable } from '@firecamp/ui';
 
 import Head from './Head';
 import Body from './Body';

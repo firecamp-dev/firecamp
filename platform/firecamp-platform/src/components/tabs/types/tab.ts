@@ -6,7 +6,7 @@ import {
   IRef,
   TId,
 } from '@firecamp/types';
-import { ITab } from '@firecamp/ui-kit';
+import { ITab } from '@firecamp/ui';
 import {
   IPlatformRequestService,
   IPlatformEnvironmentService,

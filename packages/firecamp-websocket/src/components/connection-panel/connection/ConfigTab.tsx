@@ -1,4 +1,4 @@
-import { Input, Container, Notes, CheckboxInGrid } from '@firecamp/ui-kit';
+import { Input, Container, Notes, CheckboxInGrid } from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 

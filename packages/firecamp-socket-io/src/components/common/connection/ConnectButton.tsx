@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow';
-import { Button } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui';
 
 import { EConnectionState } from '../../../types';
 import { IStore, useStore } from '../../../store';

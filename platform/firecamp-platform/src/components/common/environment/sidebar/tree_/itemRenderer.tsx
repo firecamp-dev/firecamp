@@ -8,7 +8,7 @@ import { VscLock } from '@react-icons/all-files/vsc/VscLock';
 import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
 import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
-import { Button } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {

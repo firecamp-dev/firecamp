@@ -13,7 +13,7 @@ import {
   TTableApi,
   Dropdown,
   ProgressBar,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';

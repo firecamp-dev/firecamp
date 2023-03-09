@@ -11,7 +11,7 @@ import {
   TreeItem,
   TreeItemIndex,
   UncontrolledTreeEnvironment,
-} from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui/src/tree';
 import { ERequestTypes } from '@firecamp/types';
 import {
   Container,
@@ -20,7 +20,7 @@ import {
   ToolBar,
   Empty,
   Button,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
 import { RE } from '../../../types';
