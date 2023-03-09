@@ -24,8 +24,7 @@ import Invite from './workspace/Invite';
 import OrgManagement from './organization/OrgManagement';
 import WorkspaceManagement from './workspace/WorkspaceManagement';
 import SwitchWorkspace from './workspace/SwitchWorkspace';
-import CreateEnvironment from './environment/CreateEnvironment';
-import ManageEnvironment from './environment/ManageEnvironment';
+import CloneEnvironment from './environment/CloneEnvironment';
 import EditRequest from './request/edit-request/EditRequest';
 
 export const ModalContainer = () => {
@@ -67,10 +66,8 @@ export const ModalContainer = () => {
         return <EditRequest onClose={close} />;
 
       // Environment
-      case EPlatformModalTypes.CreateEnvironment:
-        return <CreateEnvironment onClose={close} />;
-      case EPlatformModalTypes.ManageEnvironment:
-        return <ManageEnvironment onClose={close} />;
+      case EPlatformModalTypes.CloneEnvironment:
+        return <CloneEnvironment onClose={close} />;
 
       // User
       // case EPlatformModalTypes.UserProfile: return <UserProfile isOpen={isOpen} onClose={close} />;

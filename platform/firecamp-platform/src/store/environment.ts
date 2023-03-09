@@ -85,6 +85,7 @@ export interface IEnvironmentStore {
   createEnvironment: (env: IEnv) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
   deleteEnvironment: (envId: TId) => Promise<any>;
+  cloneEnvironment: (envId: string, envNewName: string) => Promise<any>;
   deleteEnvironmentPrompt: (env: IEnv | IRuntimeEnv) => Promise<any>;
 
   _updateEnvironment: (envId: TId, env: Partial<IEnv>) => Promise<IEnv>;
@@ -338,6 +339,20 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
           return { envs };
         });
         return r;
+      })
+      .finally(() => {
+        get().toggleProgressBar(false);
+      });
+  },
+
+  cloneEnvironment: (envId: string, envNewName: string) => {
+    const state = get();
+    state.toggleProgressBar(true);
+    return Rest.environment
+      .cloneFromBeta(envId, envNewName)
+      .then((r) => {
+        state._addEnv(r.data);
+        return r.data;
       })
       .finally(() => {
         get().toggleProgressBar(false);

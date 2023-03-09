@@ -1,5 +1,10 @@
 import { nanoid } from 'nanoid';
-import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
+import {
+  TId,
+  IWebSocketMessage,
+  IRequestFolder,
+  EMessageBodyType,
+} from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
 
@@ -9,8 +14,8 @@ interface ICollection {
   items?: Partial<IWebSocketMessage & { __ref: { isItem?: boolean } }>[];
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
   /**
-   * increate the number on each action/event happens within collection
-   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   * in create the number on each action/event happens within collection
+   * react component will not re-render when tdpInstance will change in store, at that time update __manualUpdates to re-render the component
    */
   __manualUpdates?: number;
 }
@@ -27,6 +32,11 @@ interface ICollectionSlice {
 
   // message
   getItem: (id: TId) => IWebSocketMessage | undefined;
+  prepareCreateItemPayload: (
+    name: string,
+    parentFolderId?: TId
+  ) => IWebSocketMessage;
+  promptSaveItem: () => void;
   addItem: (message: IWebSocketMessage) => void;
   deleteItem: (id: TId) => void;
 
@@ -121,10 +131,56 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   getItem: (id: TId) => {
     const state = get();
     const item = state.collection.items.find((i) => i.__ref?.id === id);
-    return item;
+    return item as IWebSocketMessage;
+  },
+  prepareCreateItemPayload: (name: string, parentFolderId?: TId) => {
+    const state = get();
+    const {
+      playgrounds,
+      runtime: { activePlayground },
+    } = state;
+    const playground = playgrounds[activePlayground];
+    const _item: IWebSocketMessage = {
+      name,
+      value: playground.message.value,
+      __meta: {
+        type: playground.message.__meta.type,
+      },
+      __ref: {
+        id: nanoid(),
+        requestId: state.request.__ref.id,
+        requestType: state.request.__meta.type,
+        collectionId: state.request.__ref.collectionId,
+        folderId: parentFolderId,
+      },
+    };
+    // state.toggleProgressBar(true);
+    console.log(_item, 'prepare the item');
+    return _item;
+  },
+  promptSaveItem: () => {
+    const state = get();
+    const { folders } = state.collection;
+    const { fOrders: folderRootOrders } = state.request.__meta;
+
+    // name and folderId will be added from prompt
+    const item = state.prepareCreateItemPayload('', '');
+
+    state.context.request
+      .createRequestItemPrompt(item, {
+        items: folders,
+        rootOrders: folderRootOrders,
+      })
+      .then((res) => {
+        console.log(res, 1111);
+        state.addItem(res);
+      });
   },
   addItem: (item: IWebSocketMessage) => {
+    const state = get();
+    const { tdpInstance } = state.collection;
     if (!item.__ref?.id) return;
+    if (tdpInstance) tdpInstance.addItem(item);
     set((s) => ({
       collection: {
         ...s.collection,
@@ -150,7 +206,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   getFolder: (id: TId) => {
     const state = get();
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
-    return folder;
+    return folder as IRequestFolder;
   },
   prepareCreateFolderPayload: (name: string, parentFolderId?: TId) => {
     const state = get();

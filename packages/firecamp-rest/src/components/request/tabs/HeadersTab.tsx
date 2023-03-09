@@ -1,7 +1,12 @@
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import { EEditorLanguage } from '@firecamp/types';
-import { BulkEditTable, Container, BasicTable } from '@firecamp/ui';
+import {
+  BulkEditTable,
+  Container,
+  BasicTable,
+  TabHeader,
+} from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const HeadersTab = () => {
@@ -39,27 +44,41 @@ const HeadersTab = () => {
           onMount={() => {}}
         />
 
-        {
-          // ctx_tabData.type //todo: implement this auth header feature later after migration
-          authHeaders && authHeaders.length ? (
-            <div className="pt-14">
-              <BasicTable
-                key={'authHeaders'}
-                rows={authHeaders}
-                title="Headers derived from auth"
-                disable={true}
-                options={{
-                  languages: {
-                    key: EEditorLanguage.HeaderKey,
-                    value: EEditorLanguage.HeaderValue,
-                  },
-                }}
-              />
-            </div>
-          ) : (
-            <></>
-          )
-        }
+        {authHeaders?.length ? (
+          <div className="pt-14">
+            <TabHeader className="-mb-2">
+              <TabHeader.Left>
+                <span className="">{'Headers derived from auth'}</span>
+              </TabHeader.Left>
+            </TabHeader>
+
+            <BasicTable
+              key={'authHeaders'}
+              columns={[
+                { id: 'key', key: 'key', name: 'Key', width: '150px' },
+                {
+                  id: 'value',
+                  key: 'value',
+                  name: 'Value',
+                  width: '150px',
+                  resizeWithContainer: true,
+                },
+              ]}
+              rows={authHeaders}
+              options={{
+                hideRowAdd: true,
+                disabledColumns: ['key', 'value'],
+                languages: {
+                  key: EEditorLanguage.HeaderKey,
+                  value: EEditorLanguage.HeaderValue,
+                },
+              }}
+              onChange={() => {}}
+            />
+          </div>
+        ) : (
+          <></>
+        )}
       </Container.Body>
     </Container>
   );

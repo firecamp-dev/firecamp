@@ -1,4 +1,4 @@
-import { Button, Url, UrlBar } from '@firecamp/ui';
+import { Button, Url } from '@firecamp/ui';
 import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
 import ConnectButton from '../connection/ConnectButton';
@@ -32,21 +32,25 @@ const UrlBarContainer = ({ tab }) => {
   };
 
   return (
-    <UrlBar environmentCard={<></>} nodePath={``}>
-      <UrlBar.Prefix>
-        <Button text={'WebSocket'} secondary sm />
-      </UrlBar.Prefix>
-      <UrlBar.Body>
-        <Url
-          id={`url-${tab.id}`}
-          url={displayUrl}
-          placeholder={'ws://'}
-          onChangeURL={_onUpdateUrl}
-          // onEnter={_onExecute}
-          // onPaste={_onPaste}
-        />
-      </UrlBar.Body>
-      <UrlBar.Suffix>
+    <Url
+      id={tab.id}
+      // path={__meta.name}
+      placeholder={'ws://'}
+      // isRequestSaved={isRequestSaved}
+      url={displayUrl}
+      onChange={_onUpdateUrl}
+      // onPaste={_onPaste}
+      // onEnter={_onExecute}
+      promptRenameRequest={() => {
+        // context.app.modals.openEditRequest({
+        //   name: __meta.name,
+        //   description: __meta.description,
+        //   collectionId: __ref.collectionId,
+        //   requestId: __ref.id,
+        // });
+      }}
+      prefixComponent={<Button text={'WebSocket'} secondary sm />}
+      suffixComponent={<>
         <ConnectButton sm={true} />
         <Button
           id={`save-request-${tab.id}`}
@@ -56,9 +60,9 @@ const UrlBarContainer = ({ tab }) => {
           secondary
           sm
         />
-      </UrlBar.Suffix>
-    </UrlBar>
-  );
+      </>}
+    />
+  )
 };
 
 export default UrlBarContainer;

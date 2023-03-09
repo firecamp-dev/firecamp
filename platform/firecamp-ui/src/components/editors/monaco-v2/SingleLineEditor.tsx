@@ -280,7 +280,8 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   const options: EditorProps['options'] = {
     readOnly: false,
     // fontFamily: 'lato',
-    fontFamily: "'Open Sans', sans-serif",
+    // fontFamily: "'Open Sans', sans-serif",
+    fontFamily: `"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue",sans-serif`,
     fontSize: 14,
     fontWeight: 'normal',
     links: false,

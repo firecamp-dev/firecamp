@@ -12,7 +12,7 @@ import {
   Row,
 } from '@firecamp/ui';
 import { _array, _auth, _env, _object } from '@firecamp/utils';
-import { ICollection, IFolder } from '@firecamp/types';
+import { EAuthTypes, IAuth, ICollection, IFolder } from '@firecamp/types';
 import {
   preScriptSnippets,
   testScriptSnippets,
@@ -23,6 +23,7 @@ import Auth from './tabs/Auth';
 import Scripts from './tabs/Scripts';
 import Variables from './tabs/Variables';
 import { useEnvStore } from '../../../store/environment';
+import AuthTab from './tabs/AuthTab';
 
 type TEntity = ICollection | IFolder;
 enum ETabTypes {
@@ -39,6 +40,8 @@ type TState = {
   activeTab: ETabTypes;
   isFetchingEntity: boolean;
   isUpdatingEntity: boolean;
+  activeAuthType: EAuthTypes;
+  runtimeAuth: any;
 };
 
 const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
@@ -54,6 +57,8 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
     activeTab: ETabTypes.Info,
     isFetchingEntity: false,
     isUpdatingEntity: false,
+    activeAuthType: EAuthTypes.None,
+    runtimeAuth: _cloneDeep(_auth.defaultAuthState),
   });
 
   const {
@@ -93,10 +98,13 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
           });
           // assign runtime variables to replace remote variables
           c.variables = originalEnv.variables;
+          if (!c.auth) c.auth = { type: EAuthTypes.None, value: '' };
           setState((s) => ({
             ...s,
             entity: c,
             originalEntity: c,
+            activeAuthType: c.auth?.type || EAuthTypes.None,
+            runtimeAuth: { ...s.runtimeAuth, [c.auth.type]: c.auth.value },
           }));
         })
         .catch((e) => {
@@ -110,17 +118,21 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
   }, [entityId, entityType]);
 
   const onChange = (key: string, value: any) => {
-    if (['auth', '__meta'].includes(key)) {
-      setState((s) => ({
-        ...s,
-        entity: {
-          ...s.entity,
-          [key]: {
-            ...(s.entity?.[key] || {}),
-            ...value,
+    if (['__meta'].includes(key)) {
+      //TODO: check there, I think it's not needed
+      setState((s) => {
+        let _s = {
+          ...s,
+          entity: {
+            ...s.entity,
+            [key]: {
+              ...(s.entity?.[key] || {}),
+              ...value,
+            },
           },
-        },
-      }));
+        };
+        return _s;
+      });
     } else {
       setState((s) => ({
         ...s,
@@ -130,6 +142,47 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
         },
       }));
     }
+  };
+
+  const changeAuth = (
+    type: EAuthTypes,
+    changes: { key: string; value: any }
+  ) => {
+    const { key, value } = changes;
+    const auth: IAuth = {
+      type,
+      value: '',
+    };
+
+    console.log(auth, type, changes);
+
+    setState((s) => {
+      // for auth type oauth2 whole auth payload will be there in updates instead update key value pair
+      if (type === EAuthTypes.OAuth2) {
+        //@ts-ignore
+        auth.value = { ...changes };
+      } else {
+        auth.value = {
+          ...s.entity.auth.value,
+          [key]: value,
+        } as IAuth['value'];
+      }
+
+      return {
+        ...s,
+        entity: {
+          ...s.entity,
+          auth,
+        },
+        runtimeAuth: {
+          ...s.runtimeAuth,
+          [auth.type]: auth.value,
+        },
+      };
+    });
+
+    // state.resetAuthHeaders(auth.type);
+    // state.equalityChecker({ auth });
   };
 
   const onUpdate = async (updates: Partial<ICollection | IFolder>) => {
@@ -209,11 +262,17 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
 
       case ETabTypes.Auth:
         return (
-          <Auth
-            entityType={entityType}
-            entity={entity}
-            onChange={onChange}
-            onUpdate={onUpdate}
+          <AuthTab
+            type={state.activeAuthType}
+            auth={state.entity.auth}
+            authUiState={state.runtimeAuth}
+            isRequesting={isRequesting}
+            isAuthChanged={!isEqual(_oEntity.auth, entity.auth)}
+            onChangeAuth={changeAuth}
+            onChangeAuthType={(type) => {
+              setState((s) => ({ ...s, activeAuthType: type }));
+            }}
+            onUpdate={() => {}}
           />
         );
 

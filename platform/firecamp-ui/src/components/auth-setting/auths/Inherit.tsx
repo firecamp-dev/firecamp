@@ -16,10 +16,9 @@ const Inherit: FC<IInherit> = ({
           // target="_blank"
           onClick={openParentAuthModal}
         >
-          {' '}
-          {message ||
+          {/* {message ||
             `click here to view auth inherited from ${parentName || 'parent'
-            }`}{' '}
+            }`} */}
         </div>
       </div>
     </div>

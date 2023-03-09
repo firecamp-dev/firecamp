@@ -12,6 +12,9 @@ export interface ITableOptions {
   /** a boolean value whether allow to add new row or not */
   allowRowAdd?: boolean;
 
+  /** a boolean value whether allow to add new row or not */
+  hideRowAdd?: boolean;
+
   /** a boolean value whether allow to sort rows or not */
   allowSort?: boolean;
 
