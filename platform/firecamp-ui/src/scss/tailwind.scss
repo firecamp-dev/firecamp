@@ -863,6 +863,12 @@ video {
 .bottom-0 {
 	bottom: 0px;
 }
+.left-2 {
+	left: 0.5rem;
+}
+.-top-2 {
+	top: -0.5rem;
+}
 .\!top-4 {
 	top: 1rem !important;
 }
@@ -881,9 +887,6 @@ video {
 .top-3 {
 	top: 0.75rem;
 }
-.left-2 {
-	left: 0.5rem;
-}
 .right-2 {
 	right: 0.5rem;
 }
@@ -898,9 +901,6 @@ video {
 }
 .-bottom-px {
 	bottom: -1px;
-}
-.-top-2 {
-	top: -0.5rem;
 }
 .left-1 {
 	left: 0.25rem;
@@ -943,9 +943,6 @@ video {
 }
 .m-0 {
 	margin: 0px;
-}
-.m-5 {
-	margin: 1.25rem;
 }
 .m-5 {
 	margin: 1.25rem;
@@ -1228,8 +1225,11 @@ video {
 .h-0 {
 	height: 0px;
 }
-.h-\[225px\] {
-	height: 225px;
+.h-\[200px\] {
+	height: 200px;
+}
+.h-\[50vh\] {
+	height: 50vh;
 }
 .h-32 {
 	height: 8rem;
@@ -1358,9 +1358,6 @@ video {
 .flex-1 {
 	flex: 1 1 0%;
 }
-.flex-grow {
-	flex-grow: 1;
-}
 .border-collapse {
 	border-collapse: collapse;
 }
@@ -1458,6 +1455,9 @@ video {
 }
 .overflow-ellipsis {
 	text-overflow: ellipsis;
+}
+.whitespace-nowrap {
+	white-space: nowrap;
 }
 .whitespace-pre {
 	white-space: pre;
@@ -1635,6 +1635,9 @@ video {
 }
 .bg-activityBarActiveBackground {
 	background-color: var(--activityBar-activeBackground);
+}
+.bg-appForegroundInActive {
+	background-color: var(--app-foreground-inactive);
 }
 .bg-focus3 {
 	background-color: var(--focus-level-3);
@@ -2060,9 +2063,6 @@ video {
 .text-xl {
 	font-size: 18px;
 }
-.text-xl {
-	font-size: 18px;
-}
 .font-normal {
 	font-weight: 400;
 }
@@ -2140,23 +2140,17 @@ video {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
-.text-appForeground {
-	color: var(--app-foreground);
-}
 .text-danger {
 	color: var(--danger);
+}
+.text-appForegroundInActive {
+	color: var(--app-foreground-inactive);
 }
 .text-popoverForeground {
 	color: var(--popover-foreground);
 }
-.text-appForegroundInActive {
-	color: var(--app-foreground-inactive);
-}
 .text-statusBarForeground {
 	color: var(--statusBar-foreground);
-}
-.text-appForegroundInActive {
-	color: var(--app-foreground-inactive);
 }
 .text-websocket {
 	color: var(--req-socketio);
@@ -2237,8 +2231,8 @@ video {
 	--tw-shadow: var(--popoverBoxshadow) !important;
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
-.shadow-sm {
-	--tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+.shadow-md {
+	--tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .outline-none {
