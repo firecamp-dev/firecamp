@@ -1,0 +1,35 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
+import Button from './CopyButton';
+
+<Meta title="UI-Kit/CopyButton/Overview" />
+
+## **Copy Button**
+
+- Copy button can be used with following sub components
+  - text
+  - custom component
+
+#### **Component Usage**
+
+- We can add text before the copy button icon
+- We can show/hide text preview `copied` based on click event
+- On adding custom component, the copy functionality gets disabled.
+
+Copy Button Preview
+
+| Version | Preview |
+| ---- | ---------------------------------- |
+| default | <Button showText={false}/> |
+| with text | <Button text="Copy Button" showText={true}/> |
+| custom component | <Button>[<p>Custom Component</p>]</Button> |
+
+#### **Examples**:
+
+- <LinkTo
+    kind="ui-kit-copybutton--copy-button-with-text-preview"
+    className="!text-primaryColor"
+  >
+    Copy Button Example
+  </LinkTo>

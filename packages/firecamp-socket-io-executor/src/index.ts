@@ -137,8 +137,8 @@ export default class Executor implements IExecutorInterface {
           eventName,
           [
             {
-              body: 'Pinging',
-              meta: {
+              value: 'Pinging',
+              __meta: {
                 type: 'text',
                 typedArrayView: '',
               },
@@ -517,7 +517,7 @@ export default class Executor implements IExecutorInterface {
           'PING',
           [
             {
-              payload: 'Pinging',
+              value: 'Pinging',
               __meta: {
                 type: 'text',
                 typedArrayView: '',

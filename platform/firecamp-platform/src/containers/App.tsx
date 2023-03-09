@@ -8,8 +8,7 @@ import '../sass/_index.sass';
 
 import { FC, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Row, RootContainer } from '@firecamp/ui-kit';
-import MonacoFirecampLangInit from '@firecamp/ui-kit/src/components/editors/monaco/lang/init';
+import { Row, RootContainer, EditorApi } from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
@@ -25,16 +24,9 @@ import RealtimeEventManager from '../components/common/realtime/Realtime';
 import platformContext from '../services/platform-context';
 
 // Initialise Firecamp languages settings
-MonacoFirecampLangInit();
+EditorApi.init();
 
 const App: FC<any> = () => {
-  // let { isEnvSidebarOpen } = useEnvStore(
-  //   (s: IEnvironmentStore) => ({
-  //     isEnvSidebarOpen: s.isEnvSidebarOpen,
-  //   }),
-  //   shallow
-  // );
-
   // useMonacoWorkers();
 
   useEffect(() => {

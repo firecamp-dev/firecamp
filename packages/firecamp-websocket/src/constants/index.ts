@@ -28,7 +28,7 @@ const DefaultHeaders = [
 
 const DefaultConnectionState = {
   id: id(),
-  name: 'Default',
+  name: 'Connection 1',
   isDefault: true,
   headers: DefaultHeaders,
   queryParams: [],
@@ -264,8 +264,8 @@ const MessageTypeDropDownList = [
     name: 'Array buffer view',
   },*/
   // {
-  //   id: 'noBody',
-  //   name: 'No body',
+  //   id: 'none',
+  //   name: 'None',
   // },
 ];
 

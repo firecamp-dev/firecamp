@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';
 import { FileDrop } from 'react-file-drop';
-import { Container, Button } from '@firecamp/ui-kit';
+import { Container, Button } from '@firecamp/ui';
 
 const BinaryTab = ({ body, onChange }) => {
   const inputEle = useRef(null);
@@ -76,11 +76,11 @@ const BinaryTab = ({ body, onChange }) => {
             <Button
               onClick={_onButtonClick}
               icon={<AiOutlineUpload className="mr-2" size={16} />}
+              text="Drop File Here"
+              disabled={isButtonDisabled}
               secondary
               iconLeft
               sm
-              text="Drop File Here"
-              disabled={isButtonDisabled}
             />
           )}
 

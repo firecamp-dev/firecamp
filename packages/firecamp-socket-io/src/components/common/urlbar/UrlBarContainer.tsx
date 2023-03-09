@@ -1,36 +1,20 @@
+import { FC, useState } from 'react';
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
-import { TId } from '@firecamp/types';
-import { Url, UrlBar, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
-import ConnectionButton from '../connection/ConnectButton'
-import { VERSIONS } from '../../../constants';
+import { Url, Button, Dropdown } from '@firecamp/ui';
+import ConnectionButton from '../connection/ConnectButton';
+import { SIOVersionOptions } from '../../../constants';
 import { IStore, useStore } from '../../../store';
 
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  postComponents,
-}) => {
-  const { EnvironmentWidget } = postComponents;
-  const {
-    url,
-    displayUrl,
-    version,
-    activeEnvironments,
-    changeUrl,
-    changeConfig,
-    changeActiveEnvironment,
-    save
-  } = useStore(
+const UrlBarContainer = ({ tab }) => {
+  const { url, displayUrl, version, changeUrl, changeConfig, save } = useStore(
     (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
-      activeEnvironments: s.runtime.activeEnvironments,
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
-      changeActiveEnvironment: s.changeActiveEnvironment,
-      save: s.save
+      save: s.save,
     }),
     shallow
   );
@@ -64,42 +48,30 @@ const UrlBarContainer = ({
   }
 
   return (
-    <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`socket-io-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
-      nodePath={''}
-    >
-      <UrlBar.Prefix>
-        <HttpMethodDropDown
-          id={tab.id}
-          dropdownOptions={VERSIONS}
-          selectedOption={version}
-          toolTip={versionToolTip}
-          onSelectItem={(version) => changeConfig('version', version)}
-        />
-      </UrlBar.Prefix>
-      <UrlBar.Body>
-        <Url
-          id={`url-${tab.id}`}
-          url={displayUrl || ''}
-          placeholder={'http://'}
-          onChangeURL={_handleUrlChange}
-        />
-      </UrlBar.Body>
-      <UrlBar.Suffix>
+    <Url
+      id={`url-${tab.id}`}
+      // path={__meta.name}
+      placeholder={'http://'}
+      // isRequestSaved={isRequestSaved}
+      url={displayUrl}
+      onChange={_handleUrlChange}
+      // onPaste={_onPaste}
+      // onEnter={_onExecute}
+      promptRenameRequest={() => {
+        // context.app.modals.openEditRequest({
+        //   name: __meta.name,
+        //   description: __meta.description,
+        //   collectionId: __ref.collectionId,
+        //   requestId: __ref.id,
+        // });
+      }}
+      prefixComponent={<SIOVersionDropDown
+        id={tab.id}
+        options={SIOVersionOptions}
+        selectedOption={SIOVersionOptions.find((v) => v.version == version)}
+        onSelectItem={(v) => changeConfig('version', v.version)}
+      />}
+      suffixComponent={<>
         <ConnectionButton />
         <Button
           id={`save-request-${tab.id}`}
@@ -109,9 +81,33 @@ const UrlBarContainer = ({
           secondary
           sm
         />
-      </UrlBar.Suffix>
-    </UrlBar>
-  );
+      </>}
+    />
+  )
 };
 
 export default UrlBarContainer;
+
+const SIOVersionDropDown: FC<any> = ({
+  id = '',
+  className = '',
+  options = [{ name: '', version: '' }],
+  selectedOption = { name: '', version: '' },
+  onSelectItem = (option) => { },
+}) => {
+  const [isDropDownOpen, toggleDropDown] = useState(false);
+  return (
+    <Dropdown
+      id={id}
+      className={className}
+      isOpen={isDropDownOpen}
+      selected={selectedOption}
+      onToggle={toggleDropDown}
+    >
+      <Dropdown.Handler>
+        <Button text={selectedOption.name} secondary withCaret sm />
+      </Dropdown.Handler>
+      <Dropdown.Options options={options} onSelect={(o) => onSelectItem(o)} />
+    </Dropdown>
+  );
+};

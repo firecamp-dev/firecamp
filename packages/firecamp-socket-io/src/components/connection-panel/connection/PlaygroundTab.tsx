@@ -9,7 +9,7 @@ import {
   Button,
   TabHeader,
   Checkbox,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 
 import BodyControls from './playground/BodyControls';
@@ -45,6 +45,8 @@ const EmitterPlayground = () => {
   );
   const { emitter: plgEmitter, activeArgIndex = 0 } = playground;
 
+  console.log('this is the payground');
+
   return (
     <Container>
       <BodyControls
@@ -56,16 +58,17 @@ const EmitterPlayground = () => {
       />
       <Container.Header className="!px-2 !py-2">
         <Input
+          value={plgEmitter.name}
           autoFocus={true}
           placeholder="Type emitter name"
           label="Type Emitter Name"
           className="border-0"
-          value={plgEmitter.name}
+          wrapperClassName="!mb-0"
+          // ref={}
           onChange={(e) => {
             if (e) e.preventDefault();
             changePlgEmitterName(e.target.value);
           }}
-          wrapperClassName="!mb-0"
         />
       </Container.Header>
       <div className="px-2 pb-2 flex-1 flex flex-col">
@@ -94,7 +97,7 @@ const EmitterPlayground = () => {
         <div className="border border-appBorder flex-1 flex flex-col">
           <EmitterArgTabs
             activeArgIndex={activeArgIndex}
-            totalTabs={plgEmitter.payload?.length}
+            totalTabs={plgEmitter.value?.length}
             selectArgTab={selectPlgArgTab}
             addArgTab={addPlgArgTab}
             removeArgTab={removePlgArgTab}

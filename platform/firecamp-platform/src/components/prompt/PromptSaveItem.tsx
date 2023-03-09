@@ -6,8 +6,8 @@ import {
   Modal,
   ProgressBar,
   TabHeader,
-} from '@firecamp/ui-kit';
-import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui';
+import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { TreeDataProvider } from './tree/dataProvider';
 import treeRenderer from './tree/itemRenderer';
 import { IPromptSaveItem } from './types';
@@ -15,12 +15,12 @@ import { IPromptSaveItem } from './types';
 const _texts: IPromptSaveItem['texts'] = {
   btnOk: 'Create',
   btnOking: 'Creating...',
-  btnCancle: 'Cancle',
+  btnCancel: 'Cancel',
 };
 
 export const PromptSaveItem: FC<IPromptSaveItem> = ({
   header,
-  lable = 'Name',
+  label = 'Name',
   placeholder,
   texts,
   value,
@@ -105,7 +105,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
           <div className="mt-4">
             <Input
               autoFocus={true}
-              label={lable}
+              label={label}
               placeholder={placeholder}
               name={'prompInput'}
               value={state.inputValue}
@@ -128,7 +128,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
         <TabHeader className="!px-0">
           <TabHeader.Right>
             <Button
-              text={texts?.btnCancle || `Cancel`}
+              text={texts?.btnCancel || `Cancel`}
               onClick={_close}
               sm
               secondary

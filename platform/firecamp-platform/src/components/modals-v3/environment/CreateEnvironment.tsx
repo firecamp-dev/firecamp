@@ -8,39 +8,37 @@ import {
   ProgressBar,
   Editor,
   CheckboxGroup,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { EEditorLanguage, EEnvironmentScope } from '@firecamp/types';
 
+import { RE } from '../../../types';
+import platformContext from '../../../services/platform-context';
 import { useEnvStore } from '../../../store/environment';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useModalStore } from '../../../store/modal';
-import { RE } from '../../../types'
-import platformContext from '../../../services/platform-context';
 
 type TModalMeta = {
   scope: EEnvironmentScope;
   collectionId?: string;
 };
 
-const CreateEnvironment: FC<IModal> = ({
-  isOpen = false,
-  onClose = () => {},
-}) => {
+const CreateEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
   const { workspace, explorer } = useWorkspaceStore.getState();
   const { collections } = explorer;
   const createEnvironment = useEnvStore.getState().createEnvironment;
-  const { scope, collectionId } = useModalStore.getState().meta as TModalMeta;
-  let collection: any;
-  if (scope == EEnvironmentScope.Collection) {
-    collection = collections.find((c) => c.__ref.id == collectionId);
-    console.log(collection, 'collection....');
+  let { collectionId } = useModalStore.getState().__meta as TModalMeta;
+  if (!collectionId) {
+    onClose();
+    return <></>;
   }
+  const collection = collections.find((c) => c.__ref.id == collectionId);
+  // console.log(collection, 'collection....');
 
   const [env, setEnv] = useState({
     name: '',
     variables: JSON.stringify({ variable_key: 'value' }, null, 4),
-    __meta: { type: scope, visibility: 1 },
+    __meta: { type: EEnvironmentScope.Collection, visibility: 1 },
   });
 
   const [isRequesting, setIsRequesting] = useState(false);
@@ -61,7 +59,7 @@ const CreateEnvironment: FC<IModal> = ({
   const onChangeVisibility = (value: { private: boolean }) => {
     setEnv((s) => ({
       ...s,
-      meta: { ...s.__meta, visibility: value.private == true ? 2 : 1 },
+      __meta: { ...s.__meta, visibility: value.private == true ? 2 : 1 },
     }));
   };
 
@@ -96,12 +94,8 @@ const CreateEnvironment: FC<IModal> = ({
       name,
       variables,
       __meta: env.__meta,
-      __ref: { workspaceId: workspace.__ref.id },
+      __ref: { workspaceId: workspace.__ref.id, collectionId },
     };
-    if (scope == EEnvironmentScope.Collection) {
-      //@ts-ignore
-      _env.__ref.collectionId = collectionId;
-    }
 
     console.log(_env, '_env');
 
@@ -113,7 +107,9 @@ const CreateEnvironment: FC<IModal> = ({
       })
       .catch((e) => {
         console.log(e.response, e.response?.data);
-        platformContext.app.notify.alert(e?.response?.data?.message || e.message);
+        platformContext.app.notify.alert(
+          e?.response?.data?.message || e.message
+        );
       })
       .finally(() => {
         setIsRequesting(false);
@@ -155,37 +151,16 @@ const CreateEnvironment: FC<IModal> = ({
                 className="text-appForeground text-sm block mb-1"
                 htmlFor="envBane"
               >
-                Scope:{' '}
-                {scope == EEnvironmentScope.Collection
-                  ? 'Collection'
-                  : 'Workspace'}
+                Collection Name
               </label>
               <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
-                {scope == EEnvironmentScope.Collection
-                  ? collection?.name
-                  : workspace?.name}
+                {collection?.name}
               </label>
-              {/* <Dropdown
-                isOpen={false}
-                id="envName"
-              >
-                <Dropdown.Handler>
-                  <Button
-                    text="Environment"
-                    xs
-                    className="font-bold"
-                    withCaret={true}
-                    secondary
-                  />
-                </Dropdown.Handler>
-                <Dropdown.Options
-                />
-              </Dropdown> */}
             </div>
             <Input
               autoFocus={true}
-              label="Name"
-              placeholder="Environment name"
+              label="Environment name"
+              placeholder="type env name"
               name={'name'}
               value={env.name}
               onChange={onChange}
@@ -251,18 +226,18 @@ const CreateEnvironment: FC<IModal> = ({
             <TabHeader.Right>
               <Button
                 text="Cancel"
-                secondary
-                transparent={true}
-                sm
                 onClick={(e) => onClose()}
-                ghost={true}
+                secondary
+                transparent
+                ghost
+                sm
               />
               <Button
                 text={isRequesting ? 'Creating...' : 'Create'}
-                primary
-                sm
                 onClick={onCreate}
                 disabled={isRequesting}
+                primary
+                sm
               />
             </TabHeader.Right>
           </TabHeader>

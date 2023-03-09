@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import { Button, Dropdown, StatusBar, ToolBar } from '@firecamp/ui-kit';
+import { Button, Dropdown, StatusBar, ToolBar } from '@firecamp/ui';
 import EditPlaygroundName from './EditPlaygroundName';
 import { IStore, useStore } from '../../../../../store';
 import { isValid } from '../../../../../services/GraphQLservice';
@@ -49,7 +49,7 @@ const ReqStatusBar = ({}) => {
       context.app.notify.info('Please save the graphql request first.');
       return;
     }
-    const isQueryValid = await isValid(playground.request.body);
+    const isQueryValid = await isValid(playground.request.value.query);
     if (isQueryValid == false) {
       context.app.notify.alert('The playground query is not valid.');
       return;
@@ -64,7 +64,7 @@ const ReqStatusBar = ({}) => {
           if (!name) {
             return {
               isValid: false,
-              message: 'The playground name is reuquired',
+              message: 'The playground name is required',
             };
           } else if (name?.length <= 3) {
             return {
@@ -85,7 +85,7 @@ const ReqStatusBar = ({}) => {
   };
 
   const _execute = async () => {
-    const isQueryValid = await isValid(playground.request.body);
+    const isQueryValid = await isValid(playground.request.value.query);
     console.log(isQueryValid, 'isQueryValid...');
     if (isQueryValid == false) {
       context.app.notify.alert('The playground query is not valid.');
@@ -93,8 +93,8 @@ const ReqStatusBar = ({}) => {
     }
     execute(
       currentOps.name,
-      playground.request.body,
-      playground.request.__meta.variables
+      playground.request.value.query,
+      playground.request.value.variables
     );
   };
 
@@ -135,9 +135,9 @@ const ReqStatusBar = ({}) => {
             sm
             // TODO: add class opacity and square
             icon={<IoSendSharp />}
-            iconLeft
             onClick={_execute}
             className="!rounded-bl-none !rounded-tl-none"
+            iconLeft
             // disabled={_object.isEmpty(getPlaygroundQueries())}
           />
         </div>
@@ -162,7 +162,7 @@ const ReqStatusBar = ({}) => {
               <Button
                 text="Save changes"
                 className="!border-0 hover:!bg-focus2"
-                onClick={updateItem}
+                onClick={(e) => updateItem()}
                 secondary
                 transparent
                 ghost

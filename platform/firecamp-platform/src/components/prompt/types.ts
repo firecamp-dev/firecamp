@@ -2,12 +2,12 @@ import { TId } from '@firecamp/types';
 
 export interface IPromptInput {
   header: string;
-  lable?: string;
+  label?: string;
   placeholder?: string;
   texts?: {
     btnOk?: string;
     btnOking?: string;
-    btnCancle?: string;
+    btnCancel?: string;
   };
   value: string;
   onClose: Function;

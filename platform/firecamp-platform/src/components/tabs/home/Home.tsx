@@ -1,27 +1,22 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
-import * as monaco from 'monaco-editor';
 import shallow from 'zustand/shallow';
-import { Container } from '@firecamp/ui-kit';
+import { Container, EditorApi } from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
   FcIconGetSquare,
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
-} from '@firecamp/ui-kit';
-
+} from '@firecamp/ui';
 import { usePlatformStore } from '../../../store/platform';
+import { useTabStore } from '../../../store/tab';
 import { EThemeColor, EThemeMode } from '../../../types';
-import { platformEmitter as emitter } from '../../../services/platform-emitter';
-import { EPlatformTabs } from '../../../services/platform-emitter/events';
+import { ETabEntityTypes } from '../types';
 
 const Home: FC<any> = () => {
-  useEffect(() => {
-    // F?.reactGA?.pageview?.('home');
-  }, []);
-
-  const _openTab = (type?: ERequestTypes) => {
+  const { open: openTab } = useTabStore.getState();
+  const _openTab = (type?: ERequestTypes | 'environment') => {
     const allowed_app = [
       ERequestTypes.SocketIO,
       ERequestTypes.WebSocket,
@@ -29,7 +24,7 @@ const Home: FC<any> = () => {
       ERequestTypes.GraphQL,
     ];
     // if (!allowed_app.includes(type))
-    emitter.emit(EPlatformTabs.openNew, type);
+    openTab({ __meta: { type } }, { id: '', type: ETabEntityTypes.Request });
   };
 
   return (
@@ -157,11 +152,13 @@ const Theme: FC<any> = () => {
         theme?.color || 'orange'
       }`;
 
-      const monacoTheme =
+      const editorTheme =
         theme?.mode == EThemeMode.Dark ? EEditorTheme.Dark : EEditorTheme.Lite;
-      console.log(monacoTheme, 'monacoTheme');
-      // Set monaco editor theme
-      monaco.editor.setTheme(monacoTheme);
+      console.log(editorTheme, 'editorTheme');
+
+      console.log(editorTheme);
+      localStorage.setItem('editorTheme', editorTheme);
+      EditorApi.setEditorTheme(editorTheme);
     } catch (error) {
       console.log({ error });
     }
@@ -173,7 +170,9 @@ const Theme: FC<any> = () => {
       updateTheme(theme);
 
       //Set monaco editor theme
-      theme?.value?.mode == EThemeMode.Dark ? EEditorTheme.Dark : EEditorTheme.Lite;
+      theme?.value?.mode == EThemeMode.Dark
+        ? EEditorTheme.Dark
+        : EEditorTheme.Lite;
     } catch (error) {
       console.error(error);
     }

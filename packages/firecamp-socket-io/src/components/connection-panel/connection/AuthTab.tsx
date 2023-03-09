@@ -1,4 +1,4 @@
-import { BulkEditTable } from '@firecamp/ui-kit';
+import { BulkEditTable } from '@firecamp/ui';
 
 const AuthTab = ({
   auth = [],
@@ -12,12 +12,6 @@ const AuthTab = ({
       id={`auth-${activeConnectionId}`}
       rows={auth || []}
       title={'Auth'}
-      // meta={{
-      //   mode: {
-      //     key: EEditorLanguage.HeaderKey,
-      //     value: EEditorLanguage.HeaderValue
-      //   }
-      // }}
     />
   );
 };

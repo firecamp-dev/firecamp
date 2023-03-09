@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Container, Notes } from '@firecamp/ui-kit';
+import { Container, Notes } from '@firecamp/ui';
 import '../../UserSetting.sass';
 
 const Notification: FC<any> = ({}) => {

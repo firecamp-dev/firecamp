@@ -1,20 +1,22 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid } from 'nanoid';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import {
+  TId,
   EAuthTypes,
   ERestBodyTypes,
   IRest,
   EHttpMethod,
   ERequestTypes,
   EKeyValueTableRowType,
-  IUiAuth,
   EFirecampAgent,
-  IAuth,
-  TId,
   IRestBody,
-  IOAuth2UiState,
+  IAuth,
+  // IOAuth2UiState,
+  EScriptLanguages,
+  EScriptTypes,
+  IAuthBearer,
 } from '@firecamp/types';
 import {
   _object,
@@ -26,20 +28,20 @@ import {
 } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
 import { IStoreState, IUiRequestPanel } from '../store';
-import { ERequestPanelTabs, IRestClientRequest } from '../types';
+import { ERequestPanelTabs } from '../types';
 import { configState, RuntimeBodies } from '../constants';
 import { IAuthHeader } from './auth/types';
 import { Auth } from '.';
 
 export const prepareUIRequestPanelState = (
-  request: Partial<IRestClientRequest>
+  request: Partial<IRest>
 ): IUiRequestPanel => {
   let updatedUiStore: IUiRequestPanel = {};
 
   for (let key in request) {
     switch (key) {
       case 'auth':
-        if (request.auth?.type) {
+        if (request.auth?.type != 'none') {
           updatedUiStore = {
             ...updatedUiStore,
             hasAuth: true,
@@ -47,7 +49,7 @@ export const prepareUIRequestPanelState = (
         }
         break;
       case 'body':
-        if (request.body?.type) {
+        if (request.body.type != 'none') {
           updatedUiStore = {
             ...updatedUiStore,
             hasBody: true,
@@ -55,7 +57,7 @@ export const prepareUIRequestPanelState = (
         }
         break;
       case 'headers':
-        let headers = request?.headers.length;
+        const headers = request?.headers.length;
         updatedUiStore = {
           ...updatedUiStore,
           // activeTab: ERequestPanelTabs.Headers,
@@ -65,8 +67,8 @@ export const prepareUIRequestPanelState = (
         break;
       case 'url':
         if (request['url']?.queryParams || request['url']?.pathParams) {
-          let queryParamsLength = request?.url?.queryParams?.length || 0;
-          let pathParamsLength = request?.url?.pathParams?.length || 0;
+          const queryParamsLength = request?.url?.queryParams?.length || 0;
+          const pathParamsLength = request?.url?.pathParams?.length || 0;
           updatedUiStore = {
             ...updatedUiStore,
             // activeTab: ERequestPanelTabs.Params,
@@ -75,19 +77,24 @@ export const prepareUIRequestPanelState = (
           };
         }
         break;
-      case 'scripts':
-        let scripts = request.scripts;
-        let hasScripts =
-          !!scripts['pre'] || !!scripts['post'] || !!scripts['test'];
-
+      case 'preScripts':
+        let preScript = request?.preScripts[0]; //@note: currently considering the first script in the array as we'll only have one prerequest
+        let hasPreScripts = preScript && !!preScript.value?.join('').length;
         updatedUiStore = {
           ...updatedUiStore,
-          // activeTab: ERequestPanelTabs.Scripts,
-          hasScripts,
+          hasPreScripts,
+        };
+        break;
+      case 'postScripts':
+        let postScript = request?.postScripts[0]; //@note: currently considering the first script in the array as we'll only have one prerequest
+        let hasPostScripts = postScript && !!postScript.value?.join('').length;
+        updatedUiStore = {
+          ...updatedUiStore,
+          hasPostScripts,
         };
         break;
       case 'config':
-        let hasConfig = !equal(request.config, _cloneDeep(configState));
+        const hasConfig = !isEqual(request.config, _cloneDeep(configState));
         updatedUiStore = {
           ...updatedUiStore,
           // activeTab: ERequestPanelTabs.Config,
@@ -108,13 +115,29 @@ export const isRestBodyEmpty = (body: IRestBody): boolean => {
 /**
  * normalize the request with all required fields/keys, It'll add missing keys of the request or remove any extra keys if exists.
  */
-export const normalizeRequest = (
-  request: Partial<IRest>
-): IRestClientRequest => {
+export const normalizeRequest = (request: Partial<IRest>): IRest => {
   // prepare normalized request aka _nr
-  const _nr: IRestClientRequest = {
+  const _nr: IRest = {
     url: { raw: '', queryParams: [], pathParams: [] },
     method: EHttpMethod.GET,
+    body: { value: '', type: ERestBodyTypes.None },
+    auth: { value: '', type: EAuthTypes.None },
+    preScripts: [
+      {
+        id: nanoid(),
+        value: [''],
+        type: EScriptTypes.PreRequest,
+        language: EScriptLanguages.JavaScript,
+      },
+    ],
+    postScripts: [
+      {
+        id: nanoid(),
+        value: [''],
+        type: EScriptTypes.Test,
+        language: EScriptLanguages.JavaScript,
+      },
+    ],
     __meta: {
       name: '',
       description: '',
@@ -127,11 +150,12 @@ export const normalizeRequest = (
   const {
     url = _nr.url,
     method = _nr.method,
-    auth,
+    body = _nr.body,
+    auth = _nr.auth,
     headers,
     config,
-    body,
-    scripts,
+    preScripts = _nr.preScripts,
+    postScripts = _nr.postScripts,
     __meta = _nr.__meta,
     __ref = _nr.__ref,
   } = request;
@@ -198,34 +222,44 @@ export const normalizeRequest = (
   // normalize body
   if (!_object.isEmpty(body)) {
     _nr.body = { value: body.value, type: body.type };
+  } else {
+    _nr.body = { value: '', type: ERestBodyTypes.None };
   }
 
   // normalize auth
-  if (!_object.isEmpty(auth)) {
-    _nr.auth = { value: auth.value, type: auth.type };
-  }
+  _nr.auth = normalizeAuth(auth);
+  console.log(_nr.auth, '_nr.auth');
+
+  console.log(_nr.auth, '_nr.auth');
   // _nr.auth = !_object.isEmpty(auth)
   //   ? (_auth.normalizeToUi(auth) as IUiAuth)
   //   : _cloneDeep(_auth.defaultAuthState);
 
   // normalize scripts
-  _nr.scripts = {
-    pre: scripts?.pre || '',
-    post: scripts?.post || '',
-    test: scripts?.test || '',
-  };
+  if (preScripts?.length) {
+    _nr.preScripts = [...preScripts];
+    _nr.preScripts.map((s) => ({
+      id: s.id,
+      value: s.value || [''],
+      type: s.type || EScriptTypes.PreRequest,
+      language: s.language || EScriptLanguages.JavaScript,
+    }));
+  }
+  if (postScripts?.length) {
+    _nr.postScripts = [...postScripts];
+    _nr.postScripts.map((s) => ({
+      id: s.id,
+      value: s.value || [''],
+      type: s.type || EScriptTypes.Test,
+      language: s.language || EScriptLanguages.JavaScript,
+    }));
+  }
 
   // normalize __meta
   _nr.__meta.name = __meta.name || 'Untitled Request';
   _nr.__meta.description = __meta.description || '';
   _nr.__meta.version = '2.0.0';
   _nr.__meta.type = ERequestTypes.Rest;
-  _nr.__meta.inheritScripts = {
-    pre: __meta.inheritScripts?.pre || true,
-    post: __meta.inheritScripts?.post || true,
-    test: __meta.inheritScripts?.test || true,
-  };
-  _nr.__meta.inheritedAuth = __meta.inheritedAuth;
 
   // normalize __ref
   _nr.__ref.id = __ref.id || nanoid();
@@ -243,11 +277,12 @@ export const initialiseStoreFromRequest = (
   _request: Partial<IRest>,
   tabId: TId
 ): IStoreState => {
-  const request: IRestClientRequest = normalizeRequest(_request);
+  const request: IRest = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
-  // console.log({ request });
+  console.log({ request });
 
   return {
+    originalRequest: _cloneDeep(request) as IRest,
     request,
     ui: {
       isFetchingRequest: false,
@@ -258,24 +293,23 @@ export const initialiseStoreFromRequest = (
       },
     },
     runtime: {
-      bodies: RuntimeBodies,
-      auths: _auth.defaultAuthState,
-      authHeaders: [],
-      inherit: {
-        auth: {
-          active: '',
-          payload: {},
-          oauth2LastFetchedToken: '',
-        },
-        script: {
-          pre: '',
-          post: '',
-          test: '',
-        },
+      bodies: _cloneDeep(RuntimeBodies),
+      auths: {
+        ..._cloneDeep(_auth.defaultAuthState),
+        [request.auth.type]: request.auth.value,
       },
-      activeEnvironments: {
-        collection: '',
-        workspace: '',
+      authHeaders: [],
+      parentArtifacts: {
+        collection: {
+          auth: { type: EAuthTypes.None, value: '' },
+          preScripts: [],
+          postScripts: [],
+        },
+        folder: {
+          auth: { type: EAuthTypes.None, value: '' },
+          preScripts: [],
+          postScripts: [],
+        },
       },
       isRequestSaved: !!request.__ref.collectionId,
       oauth2LastFetchedToken: '',
@@ -283,73 +317,18 @@ export const initialiseStoreFromRequest = (
     },
   };
 };
-/**
- * Normalize variables at runtime (on send request)
- * Set and unset variables from scripts response and update variables to platform
- */
-export const normalizeVariables = (
-  existing: {
-    collection?: { [key: string]: any };
-    workspace: { [key: string]: any };
-  },
-  updated: {
-    workspace: {
-      variables: { [key: string]: any };
-      unsetVariables: string[];
-      name: string;
-      clearEnvironment: boolean;
-    };
-    collection?: {
-      variables: { [key: string]: any };
-      unsetVariables: string[];
-      name: string;
-      clearEnvironment: boolean;
-    };
-  }
-): Promise<{
-  collection?: { [key: string]: any };
-  workspace: { [key: string]: any };
-}> => {
-  // updated variables
-  let updatedVariables: {
-    collection?: { [key: string]: any };
-    workspace: { [key: string]: any };
-  } = existing;
-
-  ['workspace', 'collection'].forEach((scope) => {
-    // if clear environment is true then set variables as empty
-    if (updated[scope].clearEnvironment === true) {
-      updatedVariables[scope] = {};
-    } else {
-      // set variables, updated variables
-      updatedVariables[scope] = Object.assign(
-        updatedVariables[scope],
-        updated[scope].variables
-      );
-
-      // unset variables, removed variables
-      if (updated[scope].unsetVariables) {
-        updatedVariables[scope] = _object.omit(
-          updatedVariables[scope],
-          updated[scope].unsetVariables
-        );
-      }
-    }
-  });
-
-  return Promise.resolve(updatedVariables);
-};
 
 /**
- * Prepare normalize payload for send request.
+ * prepare normalize payload for send request.
  */
 export const normalizeSendRequestPayload = async (
-  request: IRestClientRequest,
-  originalRequest: IRestClientRequest
+  request: IRest,
+  originalRequest: IRest
 ) => {
-  let sendRequestPayload: IRest = _object.pick(request, [
+  const _request: IRest = _object.pick(request, [
     'url',
     'method',
+    'body',
     'config',
     'headers',
     '__meta',
@@ -358,25 +337,15 @@ export const normalizeSendRequestPayload = async (
 
   try {
     // Send active body payload
-    if (!request.body?.type) {
-      sendRequestPayload.body = {
-        value: request.body.value,
-        type: request.body.type,
+    if (request.body?.type) {
+      _request.body = {
+        value: request.body?.value,
+        type: request.body?.type,
       };
 
-      if (request.body?.type === ERestBodyTypes.FormData) {
-        // add file entry value after parse env. variable in body
-        if (!_array.isEmpty(request.body?.value as any[])) {
-          sendRequestPayload.body.value = request.body.value.map(
-            (item, index) => {
-              if (item.type === EKeyValueTableRowType.File) {
-                item.value = originalRequest.body.value[index].value;
-              }
-              return item;
-            }
-          );
-        }
-      } else if (
+      //TODO: handle multipart formdata
+
+      if (
         request.body.type === ERestBodyTypes.Binary &&
         originalRequest.body.value
       ) {
@@ -388,39 +357,39 @@ export const normalizeSendRequestPayload = async (
           .catch((e) => {
             return '';
           });
-        sendRequestPayload.body.value = text;
+        _request.body.value = text;
       }
     }
 
     // Send active auth payload
     if (request.auth?.type !== EAuthTypes.Inherit) {
-      sendRequestPayload.auth = {
+      _request.auth = {
         value: request.auth.value,
         type: request.auth.type,
       };
     } else if (request.auth?.type === EAuthTypes.Inherit) {
-      const inheritedAuth = request.__meta.inheritedAuth;
-      if (inheritedAuth) {
-        sendRequestPayload.auth = {
-          value: inheritedAuth.value,
-          type: inheritedAuth.auth,
-        };
-      }
+      // const inheritedAuth = request.__meta.inheritedAuth;
+      // if (inheritedAuth) {
+      //   _request.auth = {
+      //     value: inheritedAuth.value,
+      //     type: inheritedAuth.auth,
+      //   };
+      // }
     }
-    sendRequestPayload.__ref = { id: request.__ref.id, collectionId: '' };
-    // console.log({ sendRequestPayload });
+    _request.__ref = { id: request.__ref.id, collectionId: '' };
+    // console.log({ _request });
 
     //  merge headers and auth headers
     const authHeaders = await getAuthHeaders(request, request.auth?.type);
     const headersAry = _table.objectToTable(authHeaders) || [];
     // console.log({ headersAry, request });
 
-    sendRequestPayload.headers = [...request.headers, ...headersAry];
+    _request.headers = [...request.headers, ...headersAry];
   } catch (error) {
     console.log({ normalizeSendRequestPayload: error });
   }
 
-  return Promise.resolve(sendRequestPayload);
+  return Promise.resolve(_request);
 };
 
 /**
@@ -439,14 +408,11 @@ export const readFile = (file): Promise<string | ArrayBuffer> => {
 
 export const getAuthHeaders = async (
   request: IRest,
-  authType?: EAuthTypes
+  type?: EAuthTypes
 ): Promise<{ [key: string]: any } | IAuthHeader> => {
-  if (!authType) {
-    authType = request.auth?.type;
-  }
-  if (!authType) {
-    return Promise.resolve({});
-  } /* else if (authType === EAuthTypes.Inherit) {
+  if (!type || type == EAuthTypes.None) return Promise.resolve({});
+
+  /*  if (type === EAuthTypes.Inherit) {
     // TODO: add logic to fetch inherit auth
     // set inherit auth to runtimeSlice.inherit
     // update auth headers by inherit auth
@@ -457,13 +423,13 @@ export const getAuthHeaders = async (
 
   // @ts-ignore
   let inheritedAuth = request.__meta.inheritedAuth;
-  if (authType === EAuthTypes.Inherit && inheritedAuth) {
+  if (type === EAuthTypes.Inherit && inheritedAuth) {
     let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
     requestAuth = {
       value: normalizedAuth[inheritedAuth.type],
       type: inheritedAuth.type,
     };
-    authType = inheritedAuth.type;
+    type = inheritedAuth.type;
   }
 
   try {
@@ -483,7 +449,7 @@ export const getAuthHeaders = async (
     //   authvalue = OAuth2.grantTypes[OAuth2.activeGrantType];
     // }
 
-    const authService = new Auth(authType, authvalue, {
+    const authService = new Auth(type, authvalue, {
       url,
       method,
       body,
@@ -494,7 +460,7 @@ export const getAuthHeaders = async (
     const authHeaders = await authService.getHeader();
 
     // if OAuth2 then set headers with prefix Bearer and set to token
-    if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
+    if (type === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
       authHeaders['Authorization'] = `Bearer ${authHeaders['Authorization']}`;
       return Promise.resolve(authHeaders['Authorization']);
     }
@@ -505,4 +471,26 @@ export const getAuthHeaders = async (
     console.error(e);
     return Promise.reject({});
   }
+};
+
+/**
+ * normalize the auth payload for request
+ * some optional keys might be missing in the payload so normalization will fill all those missing and required keys
+ */
+export const normalizeAuth = (
+  auth: IAuth = { type: EAuthTypes.None, value: '' }
+): IAuth => {
+  const { type } = auth;
+  if (!type) return { type: EAuthTypes.None, value: '' };
+  if (auth.type == EAuthTypes.Bearer) {
+    const value = auth.value as IAuthBearer;
+    return {
+      type: auth.type,
+      value: {
+        prefix: value?.prefix || '',
+        token: value?.token || '',
+      },
+    };
+  }
+  return auth;
 };

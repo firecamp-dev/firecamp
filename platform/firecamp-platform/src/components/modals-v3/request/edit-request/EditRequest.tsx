@@ -7,7 +7,7 @@ import {
   Modal,
   IModal,
   ProgressBar,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
 import { useModalStore } from '../../../../store/modal';
@@ -99,7 +99,7 @@ const EditRequest: FC<IModal> = ({
             type="text"
             minHeight="200px"
             label="Description (optional)"
-            labelClassname="fc-input-label"
+            labelClassName="fc-input-label"
             placeholder="Description"
             note="Markdown supported in description"
             name={'description'}

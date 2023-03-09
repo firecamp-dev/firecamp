@@ -1,4 +1,4 @@
-import { Button } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui';
 
 const URLSampleButton = ({ buttonText = 'Sample' }) => {
   return (

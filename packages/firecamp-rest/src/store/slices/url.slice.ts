@@ -1,6 +1,6 @@
-import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
-import _url from '@firecamp/url';
 import _cloneDeep from 'lodash/cloneDeep';
+import _url from '@firecamp/url';
+import { IUrl, IQueryParam, IPathParam } from '@firecamp/types';
 import { prepareUIRequestPanelState } from '../../services/request.service';
 import { TStoreSlice } from '../store.type';
 
@@ -63,7 +63,6 @@ const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
       ...state.request.url,
       pathParams: pathParams,
     });
-
     const updatedUiRequestPanel = prepareUIRequestPanelState({
       url: { pathParams: pathParams, raw: url.raw },
     });

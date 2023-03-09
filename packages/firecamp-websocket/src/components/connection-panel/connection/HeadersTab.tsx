@@ -1,4 +1,5 @@
-import { BulkEditTable } from '@firecamp/ui-kit';
+import { EEditorLanguage } from '@firecamp/types';
+import { BulkEditTable } from '@firecamp/ui';
 
 const HeadersTab = ({
   headers = [],
@@ -15,12 +16,12 @@ const HeadersTab = ({
       id={`headers-${activeConnectionId}`}
       rows={headers || []}
       title={'headers'}
-      // meta={{
-      //   mode: {
-      //     key: EEditorLanguage.HeaderKey,
-      //     value: EEditorLanguage.HeaderValue,
-      //   },
-      // }}
+      options={{
+        languages: {
+          key: EEditorLanguage.HeaderKey,
+          value: EEditorLanguage.HeaderValue,
+        },
+      }}
     />
   );
 };

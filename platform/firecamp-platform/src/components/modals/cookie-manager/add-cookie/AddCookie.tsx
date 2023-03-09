@@ -1,19 +1,17 @@
 import { FC, useState, useEffect } from 'react';
+import isEqual from 'react-fast-compare';
+import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import {
   Container,
   TabHeader,
   Button,
   Input,
   Popover,
-} from '@firecamp/ui-kit';
-import equal from 'deep-equal';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-
-import Constants from '../Constants';
+} from '@firecamp/ui';
 import { ICookie } from '@firecamp/types';
-
-import { ICookieFns } from '../CookieManager';
 import { _date } from '@firecamp/utils';
+import Constants from '../Constants';
+import { ICookieFns } from '../CookieManager';
 
 const { COOKIE_PARAMS } = Constants;
 
@@ -115,7 +113,7 @@ const AddCookie: FC<IAddCookie> = ({
       // console.log(`UPDATED result`, result);
       let updatedElements = [];
       COOKIE_PARAMS.map((element, index) => {
-        if (!equal(propCookie[element.id], cookieElements[element.id])) {
+        if (!isEqual(propCookie[element.id], cookieElements[element.id])) {
           updatedElements.push(element.id);
         }
       });
@@ -250,7 +248,7 @@ const AddCookie: FC<IAddCookie> = ({
     >
       <Popover.Handler id={popoverID}>
         {mutation === true ? (
-          <span className="iconv2-edit-icon"></span>
+          <span className="icv2-edit-icon"></span>
         ) : (
           <Button
             // TODO: add color="primary-alt"

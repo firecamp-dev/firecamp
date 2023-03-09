@@ -1,11 +1,11 @@
 import { useState, memo } from 'react';
-import { Container, Checkbox, Input, Tabs, Popover } from '@firecamp/ui-kit';
+import { Container, Checkbox, Input, Tabs, Popover } from '@firecamp/ui';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
 import Connection from './connection/Connection';
 import { IStore, useStore } from '../../store';
 
-const ConnectionPanel = ({ visiblePanel = '' }) => {
+const ConnectionPanel = () => {
   const {
     activePlayground,
     playgroundTabs,
@@ -31,7 +31,7 @@ const ConnectionPanel = ({ visiblePanel = '' }) => {
     }
   };
   const _toggleDeleteConnection = (index, id) => {
-    // dom onClick event for close-icon-${id} wjere id is connection id
+    
   };
   const _onSelectConnectionTab = (id) => {
     setActivePlayground(id);

@@ -1,4 +1,4 @@
-import { Input, Container, TabHeader, CheckboxInGrid } from '@firecamp/ui-kit';
+import { Input, Container, TabHeader, CheckboxInGrid } from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import { EWebsocketConfigKeys } from '../../../types';

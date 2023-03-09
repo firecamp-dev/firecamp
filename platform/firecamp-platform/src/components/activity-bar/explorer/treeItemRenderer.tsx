@@ -12,7 +12,7 @@ import {
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { ERequestTypes } from '@firecamp/types';
 
 export default {

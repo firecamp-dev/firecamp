@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
-import { Button, Container, Tabs } from '@firecamp/ui-kit';
+import { Button, Container, Tabs } from '@firecamp/ui';
 import Playground from './playground/Playground';
 import { useStore, IStore } from '../../store';
 
@@ -44,12 +44,12 @@ const PlaygroundPanel = () => {
               <Button
                 text="add playground"
                 icon={<VscAdd className="mr-2" size={12} />}
-                secondary
-                iconLeft
-                sm
                 transparent={true}
                 onClick={() => addPlayground()}
-                ghost={true}
+                secondary
+                iconLeft
+                ghost
+                sm
               />
             );
           }}

@@ -1,4 +1,4 @@
-import { Container, Column, Resizable } from '@firecamp/ui-kit';
+import { Container, Column, Resizable } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 import CollectionTab from './tabs/CollectionTab';
 import { IStore, useStore } from '../../store';

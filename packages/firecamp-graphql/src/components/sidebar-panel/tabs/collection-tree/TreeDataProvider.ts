@@ -5,7 +5,7 @@ import {
   TreeDataProvider as ITreeDataProvider,
   TreeItem,
   TreeItemIndex,
-} from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui/src/tree';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',
@@ -31,9 +31,7 @@ type TFolderItem = Partial<IRequestFolder & TItemExtraRef>;
 type TItem = Partial<IGraphQLPlayground & TItemExtraRef>;
 type TCItem = TFolderItem | TItem;
 
-export class TreeDataProvider<T = TTreeItemData>
-  implements ITreeDataProvider
-{
+export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
   private items: Array<TCItem>;
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
@@ -55,11 +53,8 @@ export class TreeDataProvider<T = TTreeItemData>
         children: this.rootOrders,
       });
     }
-
     const item = this.items.find((i) => i.__ref?.id == itemId);
-
     // console.log(this.items, itemId);
-
     const treeItem: TTreeItemData = {
       name: item.name,
       __ref: {
@@ -160,17 +155,18 @@ export class TreeDataProvider<T = TTreeItemData>
     this.items = this.items.map((itm: TItem) => {
       if (itm.__ref.id == item.__ref.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
-        return {
+        const i = {
           ...itm,
           ...item,
           __ref: { ...itm.__ref, ...item.__ref, isItem: true },
         };
+        // console.log(i, '...iiiiii');
       }
       return itm;
     });
 
     if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
+      // console.log('shaking the root...', this.rootOrders);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);

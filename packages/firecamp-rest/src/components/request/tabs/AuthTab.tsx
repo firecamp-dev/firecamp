@@ -1,7 +1,7 @@
 import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
-import { AuthSetting } from '@firecamp/ui-kit';
+import { AuthSetting } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const AuthTab = () => {
@@ -31,15 +31,12 @@ const AuthTab = () => {
     if (!payload) return;
 
     let updates = auth[EAuthTypes.OAuth2];
-
     // console.log({ updated, payload, updates });
-
     if (updated === 'activeGrantType') {
       updates = Object.assign(updates, { activeGrantType: payload });
     }
     if (updated === 'activeGrantTypeValue' && 'grantTypes' in updates) {
       const { key, value } = payload;
-
       updates['grantTypes'] = Object.assign(updates['grantTypes'], {
         [updates.activeGrantType]: Object.assign(
           updates['grantTypes'][updates.activeGrantType],
@@ -47,14 +44,12 @@ const AuthTab = () => {
         ),
       });
     }
-
     changeAuth(EAuthTypes.OAuth2, updates);
     // console.log({ updates });
   };
 
   const _onSelectInheritAuth = () => {};
   const _openParentAuthModal = () => {};
-
   const _fetchTokenOnChangeOAuth2 = () => {
     resetAuthHeaders(EAuthTypes.OAuth2);
   };
@@ -69,9 +64,6 @@ const AuthTab = () => {
       fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
       fetchInheritedAuth={_onSelectInheritAuth}
       openParentAuthModal={_openParentAuthModal}
-      // inheritAuthMessage={
-      //   ctx_tabData?request.__meta?.isSaved ? '' : 'Please save request first'
-      // }
       oauth2LastToken={oauth2LastFetchedToken || ''}
     />
   );

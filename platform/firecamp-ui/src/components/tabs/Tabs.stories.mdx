@@ -1,0 +1,62 @@
+import { Meta } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+
+<Meta title="UI-Kit/Tabs/Overview" />
+
+## **Tabs**
+
+To create view for list with single/multiple tab.
+
+- Is used in multiple locations [ within tab header, body tab headers, and so. ]
+
+#### **Component Usage**:
+
+- Tabs can be updated with component on preComp(start) and postComp(end)
+- Horizontal scroll will be enabled by default if tabs rendered exceed the available width
+
+#### **Best Practices**:
+
+- For preComp, postComp, suffix - create functional component
+- Example: `() => <div>Icon</div>`
+
+Do:
+
+```
+ <Tabs list={[]}
+       activeTab={activeTab}
+        onSelect={() => {}}
+        closeTabIconMeta={{
+            show: true,
+            onClick: (i, id) => removePlayground(id),
+          }}
+      suffixComp={() => <Button text="suffix btn" sm />}
+      preComp={() => <Button text="preFix btn" sm/>}
+      postComp={() => <Button text="postFix btn" sm/>} />
+```
+
+#### **Examples**:
+
+- <LinkTo kind="ui-kit-tabs--tabs-demo" className="!text-primaryColor">
+    Tabs Example
+  </LinkTo>
+- <LinkTo
+    kind="ui-kit-tabs--tabs-demo-left-comp"
+    className="!text-primaryColor"
+  >
+    Tabs Example with preComp
+  </LinkTo>
+- <LinkTo
+    kind="ui-kit-tabs--tabs-demo-right-comp"
+    className="!text-primaryColor"
+  >
+    Tabs Example with postComp
+  </LinkTo>
+- <LinkTo kind="ui-kit-tabs--tab-with-scrollbar" className="!text-primaryColor">
+    Tabs Example with scrollbar
+  </LinkTo>
+
+#### **References**:
+
+- Update single tab from the list : <LinkTo kind="ui-kit-tab-overview--page" className="!text-primaryColor">
+  Refer Example
+  </LinkTo>

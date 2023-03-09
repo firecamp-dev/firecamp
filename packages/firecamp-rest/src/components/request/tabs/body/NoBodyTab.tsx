@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
-import { Container, QuickSelection } from '@firecamp/ui-kit';
+import { Container, QuickSelection } from '@firecamp/ui';
 import { ERestBodyTypes } from '@firecamp/types';
 
 import { bodyTypeNames } from '../../../../constants';
 
-const NoBodyTab = ({ selectBodyType = ({ id: ERestBodyTypes }) => {} }) => {
+const NoBodyTab = ({ selectBodyType }) => {
   const menus = useMemo(() => {
     let bodyTypes = [];
     for (let type in bodyTypeNames) {
@@ -13,7 +13,7 @@ const NoBodyTab = ({ selectBodyType = ({ id: ERestBodyTypes }) => {} }) => {
           id: bodyTypeNames[type],
           name: bodyTypeNames[type],
           onClick: () => {
-            selectBodyType({ id: type });
+            selectBodyType({ id: type }); //ERestBodyTypes
           },
         });
       }
@@ -22,7 +22,7 @@ const NoBodyTab = ({ selectBodyType = ({ id: ERestBodyTypes }) => {} }) => {
       {
         title: 'Quick body type selection',
         items: bodyTypes,
-        activeItem: "",
+        activeItem: '',
       },
     ];
   }, []);

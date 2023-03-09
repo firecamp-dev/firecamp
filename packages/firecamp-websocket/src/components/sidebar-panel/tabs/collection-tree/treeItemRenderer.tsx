@@ -5,7 +5,7 @@ import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { Button } from '@firecamp/ui-kit';
+import { Button } from '@firecamp/ui';
 
 export default {
   renderItemArrow: ({ item, context }) => {
@@ -89,27 +89,28 @@ export default {
     const renderDepthOffset = 8;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
+    const isFolder = item.data.__ref.isFolder;
+    const isItem = item.data.__ref.isItem;
+    console.log(item.data, 'item.data....');
     // TODO have only root li component create all the classes
-    const style = item.isFolder ? {
-      paddingLeft: `${
-        (depth + 1) * renderDepthOffset + depth * renderDepthOffset
-      }px`,
-    } : {
-      marginLeft: `${
-        ((((depth+1) * 2) * renderDepthOffset) - 4)
-      }px`,
-      paddingLeft: `${
-        renderDepthOffset
-      }px`,
-    }
+    const style = isFolder //item.isFolder
+      ? {
+          paddingLeft: `${
+            (depth + 1) * renderDepthOffset + depth * renderDepthOffset
+          }px`,
+        }
+      : {
+          marginLeft: `${(depth + 1) * 2 * renderDepthOffset - 4}px`,
+          paddingLeft: `${renderDepthOffset}px`,
+        };
     return (
       <li
         {...(context.itemContainerWithChildrenProps as any)}
         className={cx(
           'relative',
-          { 'message-node': !item.isFolder },
+          { 'message-node': !isFolder },
           'rct-tree-item-li',
-          { 'rct-tree-item-li-isFolder': item.isFolder },
+          { 'rct-tree-item-li-isFolder': isFolder },
           { 'rct-tree-item-li-selected': context.isSelected },
           { 'rct-tree-item-li-expanded': context.isExpanded },
           { 'rct-tree-item-li-focused': context.isFocused },
@@ -123,7 +124,7 @@ export default {
           className={cx(
             'pr-2 mr-1 border border-appBorder',
             'rct-tree-item-title-container opacity-80',
-            { 'rct-tree-item-title-container-isFolder': item.isFolder },
+            { 'rct-tree-item-title-container-isFolder': isFolder },
             {
               'rct-tree-item-title-container-selected !opacity-100':
                 context.isSelected,
@@ -146,38 +147,42 @@ export default {
             }
           )}
         >
-          {context.isExpanded && item.isFolder && (
+          {context.isExpanded && isFolder && (
             <span
               className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
             ></span>
           )}
-          {item.isFolder && (
-           <span
-           className={cx(
-             'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-             { '!top-4': item.data.__ref.isRequest },
-           )}
-           style={{ left: `${renderDepthOffset * (depth + (depth - 1)) + 6 }px` }}
-         ></span>
-          )}
-          {!item.isFolder && (
+          {isFolder && (
             <span
-            className={cx(
-              'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
-              { '!top-4': item.data.__ref.isRequest },
-            )}
-            style={{ left: `${renderDepthOffset * (depth + (depth - 1)) + 6 }px` }}
-          ></span>
+              className={cx(
+                'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
+                { '!top-4': item.data.__ref.isRequest }
+              )}
+              style={{
+                left: `${renderDepthOffset * (depth + (depth - 1)) + 6}px`,
+              }}
+            ></span>
           )}
-          
+          {!isFolder && (
+            <span
+              className={cx(
+                'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
+                { '!top-4': item.data.__ref.isRequest }
+              )}
+              style={{
+                left: `${renderDepthOffset * (depth + (depth - 1)) + 6}px`,
+              }}
+            ></span>
+          )}
+
           {arrow}
           <InteractiveComponent
             type={type}
             {...(context.interactiveElementProps as any)}
             className={cx(
               'whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button !h-fit	!block',
-              { 'rct-tree-item-button-isFolder': item.isFolder },
+              { 'rct-tree-item-button-isFolder': isFolder },
               { 'rct-tree-item-button-selected': context.isSelected },
               { 'rct-tree-item-button-expanded': context.isExpanded },
               { 'rct-tree-item-button-focused': context.isFocused },
@@ -193,16 +198,19 @@ export default {
               <div>
                 <div className="w-full overflow-hidden overflow-ellipsis items-center block">
                   {title}
-                  <span className="bg-focus2 text-xs px-1 !mx-1">{'tag'}</span>
+                  {/* <span className="bg-focus2 text-xs px-1 !mx-1">{'tag'}</span> */}
                 </div>
-                <div className="text-sm appForegroundInActive">
-                  {'{ "name": "Firecamp}'}
+                <div
+                  className="text-sm appForegroundInActive"
+                  style={{ maxHeight: '70px' }}
+                >
+                  {item.data.value}
                 </div>
               </div>
             )}
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
-            {item.data.__ref.isItem ? (
+            {isItem ? (
               <Button
                 text={'Open'}
                 className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"

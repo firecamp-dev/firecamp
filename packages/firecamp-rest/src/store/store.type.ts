@@ -1,5 +1,5 @@
 import { GetState, SetState } from 'zustand';
-import { EFirecampAgent, IRest, IRestResponse, TId } from '@firecamp/types';
+import { IRest, IRestResponse, TId } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
 
 import {
@@ -9,43 +9,26 @@ import {
   IResponseSlice,
   IUi,
   IUiSlice,
-  IPullSlice,
   IRequestChangeStateSlice,
+  IExecutionSlice
 } from './slices';
-import { IRestClientRequest } from '../types';
 
 interface IStore
   extends IRequestSlice,
     IRuntimeSlice,
     IResponseSlice,
     IUiSlice,
-    IPullSlice,
-    IRequestChangeStateSlice {
+    IRequestChangeStateSlice,
+    IExecutionSlice {
   originalRequest?: IRest;
   context?: any;
   setContext: (ctx: any) => void;
   initialise: (request: IRest, tabId: TId) => void;
-  execute(
-    variables: {
-      merged: {};
-      workspace: {};
-      collection?: {};
-    },
-    fcAgent: EFirecampAgent,
-    onChangeVariables: TOnChangeVariables
-  ): void;
 }
 
-type TOnChangeVariables = ({
-  workspace,
-  collection,
-}: {
-  workspace: { [key: string]: any };
-  collection?: { [key: string]: any };
-}) => void;
-
 interface IStoreState {
-  request?: IRestClientRequest;
+  originalRequest?: IRest;
+  request?: IRest;
   runtime?: IRuntime;
   response?: IRestResponse;
   ui?: IUi;
@@ -57,4 +40,4 @@ type TStoreSlice<T> = (
   ...k: any
 ) => T;
 
-export { IStoreState, IStore, TStoreSlice, TOnChangeVariables };
+export { IStoreState, IStore, TStoreSlice };

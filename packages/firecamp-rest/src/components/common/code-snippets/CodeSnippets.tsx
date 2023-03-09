@@ -1,20 +1,26 @@
 import { useEffect, useState, useMemo } from 'react';
 import classnames from 'classnames';
-import { Editor, Container, Tabs, Modal } from '@firecamp/ui-kit';
+import { Editor, Container, Tabs, Modal } from '@firecamp/ui';
 import { _env } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
 
 import codeSnippet, {
   ESnippetTargets,
   TTargetClients,
-} from '../../../services/code-snippet';
-import targetsInfo from '../../../services/code-snippet/targets-info';
+} from '../../../services/code-snippet-deprecated';
+import targetsInfo from '../../../services/code-snippet-deprecated/targets-info';
 import { useStoreApi, useStore, IStore } from '../../../store';
+import { IRest } from '@firecamp/types';
 
-const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
-  let { request, toggleOpenCodeSnippet } =
+const CodeSnippets = ({ tabId = '' }) => {
+  const { request, context, toggleOpenCodeSnippet } =
     useStoreApi().getState() as IStore;
-  const envVariables = getPlatformEnvironments(tabId);
+  if (!context) return <></>;
+  let envVariables = {};
+  // const { env } = context.environment.getCurrentTabEnv(tabId);
+  // if (env) {
+  //   envVariables = { ...(env.variable || {}) };
+  // }
   const { isCodeSnippetOpen } = useStore(
     (s: IStore) => ({
       isCodeSnippetOpen: s.ui.isCodeSnippetOpen,
@@ -31,7 +37,7 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
   const [activeTarget, setActiveTarget] = useState('');
 
   // Snippets and generated tabs
-  let tabs = useMemo(() => {
+  const tabs = useMemo(() => {
     return targetsInfo.map((t) => {
       return {
         id: t.target,
@@ -55,7 +61,10 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
   const [snippetCode, setSnippetCode] = useState('');
 
   /** set active tab/ target and client*/
-  const _onSelectTab = async (tab: ESnippetTargets, client?: TTargetClients) => {
+  const _onSelectTab = async (
+    tab: ESnippetTargets,
+    client?: TTargetClients
+  ) => {
     // set active tab
     if (tab !== activeTarget) {
       setActiveTarget(tab);
@@ -78,10 +87,10 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
     }
 
     // Parse variables
-    request = _env.applyVariables(request, envVariables.mergedEnvVariables);
+    const _request = _env.applyVariables(request, envVariables) as IRest;
 
     // get code snippet by active target and client
-    let newSnippetCode = codeSnippet(request, tab, client);
+    let newSnippetCode = codeSnippet(_request, tab, client);
     if (snippetCode !== newSnippetCode) {
       // set code snippet text
       setSnippetCode(newSnippetCode);
@@ -150,7 +159,7 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
                       </div>
                     </div>
                   ) : (
-                    ''
+                    <></>
                   )}
 
                   <Editor
@@ -159,9 +168,6 @@ const CodeSnippets = ({ tabId = '', getPlatformEnvironments }) => {
                       activeClientTargetMap[activeTarget] || 'typescript'
                     }
                     disabled={true}
-                    controlsConfig={{
-                      show: true,
-                    }}
                     monacoOptions={{
                       // ref: ref,
                       // name: snippetLabel,

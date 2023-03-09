@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow';
-import { Modal } from '@firecamp/ui-kit';
+import { Modal } from '@firecamp/ui';
 // import Environment from '../modals/environment/Environment';
 // import WorkspaceSetting from '../modals/workspace-setting/WorkspaceSetting';
 // import SSLnProxyManager from '../modals/ssl-proxy-manager/SSLnProxyManager';
@@ -24,10 +24,7 @@ import Invite from './workspace/Invite';
 import OrgManagement from './organization/OrgManagement';
 import WorkspaceManagement from './workspace/WorkspaceManagement';
 import SwitchWorkspace from './workspace/SwitchWorkspace';
-import CreateEnvironment from './environment/CreateEnvironment';
-import CollectionSetting from './collection/CollectionSetting';
-import ManageEnvironment from './environment/ManageEnvironment';
-import FolderSetting from './folder/FolderSetting';
+import CloneEnvironment from './environment/CloneEnvironment';
 import EditRequest from './request/edit-request/EditRequest';
 
 export const ModalContainer = () => {
@@ -64,23 +61,13 @@ export const ModalContainer = () => {
       case EPlatformModalTypes.SwitchWorkspace:
         return <SwitchWorkspace isOpen={isOpen} onClose={close} />;
 
-      // Collection
-      case EPlatformModalTypes.CollectionSetting:
-        return <CollectionSetting onClose={close} />;
-
-      // Folder
-      case EPlatformModalTypes.FolderSetting:
-        return <FolderSetting onClose={close} />;
-
       // Request
       case EPlatformModalTypes.EditRequest:
         return <EditRequest onClose={close} />;
 
       // Environment
-      case EPlatformModalTypes.CreateEnvironment:
-        return <CreateEnvironment onClose={close} />;
-      case EPlatformModalTypes.ManageEnvironment:
-        return <ManageEnvironment onClose={close} />;
+      case EPlatformModalTypes.CloneEnvironment:
+        return <CloneEnvironment onClose={close} />;
 
       // User
       // case EPlatformModalTypes.UserProfile: return <UserProfile isOpen={isOpen} onClose={close} />;

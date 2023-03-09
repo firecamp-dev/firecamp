@@ -1,16 +1,16 @@
 import { FC, useState } from 'react';
-import { Button, Modal, TabHeader } from '@firecamp/ui-kit';
+import { Button, Modal, TabHeader } from '@firecamp/ui';
 
 const _texts: IConfirm['texts'] = {
   btnConfirm: 'Create',
-  btnCancle: 'Cancle',
+  btnCancel: 'Cancel',
 };
 
 const ConfirmationModal: FC<IConfirm> = ({
   title = '',
   message = '',
   texts = {
-    btnCancle: 'Cancle',
+    btnCancel: 'Cancel',
     btnConfirm: 'Confirm',
   },
   onConfirm = () => {},
@@ -47,7 +47,7 @@ const ConfirmationModal: FC<IConfirm> = ({
           <TabHeader className="!px-0">
             <TabHeader.Right>
               <Button
-                text={texts?.btnCancle || `Cancel`}
+                text={texts?.btnCancel || `Cancel`}
                 onClick={_close}
                 secondary
                 sm
@@ -79,7 +79,7 @@ export interface IConfirm {
   /** btn texts */
   texts?: {
     btnConfirm?: string;
-    btnCancle?: string;
+    btnCancel?: string;
   };
 
   /** show a specific note in eye caching note box */

@@ -1,69 +1,94 @@
-import { FC, useEffect, memo, useRef } from 'react';
+import { useEffect, memo, useRef } from 'react';
 import classnames from 'classnames';
-import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui-kit';
-import { _misc } from '@firecamp/utils';
+import shallow from 'zustand/shallow';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscHome } from '@react-icons/all-files/vsc/VscHome';
-import shallow from 'zustand/shallow';
+import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui';
+import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
-
+import EnvironmentSelector from '../common/environment/selector/EnvironmentSelector';
 import Menu from './header/Menu';
-import CollabButton from './header/CollabButton';
-import { ITabStore, useTabStore } from '../../store/tab';
-
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
+import { ITabStore, useTabStore } from '../../store/tab';
+import GlobalCreateDD from '../common/GlobalCreate';
+import platformContext from '../../services/platform-context';
+import PreComp from './header/PreComp';
+import { ETabEntityTypes } from './types';
 
-const TabHeaderContainer: FC = () => {
+const TabHeaderContainer = () => {
   const tabApi = useRef({});
-  const { activeTab } = useTabStore(
+  const { activeTab, orders } = useTabStore(
     (s: ITabStore) => ({
       activeTab: s.activeTab,
-      // orders: s.orders
+      orders: s.orders,
     }),
     shallow
   );
   const {
     list: tabs,
-    orders,
+    // orders,
     changeActiveTab,
     changeOrders,
+    getTab,
+    open,
   } = useTabStore.getState() as ITabStore;
+  console.log(orders, tabs, activeTab, 'orders.... ');
 
   useEffect(() => {
     // console.log(tabApi, 'tabApi..');
-    emitter.on(EPlatformTabs.opened, ([tab, orders]) => {
+    emitter.on(EPlatformTabs.Opened, ([tab, orders, [entity, entityMeta]]) => {
+      tab.preComp = <PreComp entityType={entityMeta.type} entity={entity} />;
       tabApi.current.add(tab);
     });
-    emitter.on(EPlatformTabs.closed, (tabId_s: TId | TId[]) => {
+    emitter.on(EPlatformTabs.Closed, (tabId_s: TId | TId[]) => {
       tabApi.current.close(tabId_s);
     });
     emitter.on(
-      EPlatformTabs.changeState,
+      EPlatformTabs.ChangeState,
       ([tabId, state]: [string, 'modified' | 'default']) => {
         tabApi.current.changeState(tabId, state);
       }
     );
     emitter.on(
-      EPlatformTabs.changeState,
+      EPlatformTabs.ChangeState,
       ([tabId, state]: [string, 'modified' | 'default']) => {
         tabApi.current.changeState(tabId, state);
       }
     );
     return () => {
-      emitter.off(EPlatformTabs.opened);
-      emitter.off(EPlatformTabs.closed);
-      emitter.off(EPlatformTabs.showDotIndicator);
-      emitter.off(EPlatformTabs.hideDotIndicator);
+      emitter.off(EPlatformTabs.Opened);
+      emitter.off(EPlatformTabs.Closed);
+      emitter.off(EPlatformTabs.ChangeState);
     };
   }, []);
 
   const openNewTab = () => {
-    emitter.emit(EPlatformTabs.openNew);
+    open({}, {id: '', type: ETabEntityTypes.Request})
   };
 
-  // console.log(tabs, orders, 'orders... 12');
+  const closeTab = (tabId) => {
+    const tab = getTab(tabId);
+    if (!tab.__meta.hasChange) emitter.emit(EPlatformTabs.Close, tabId);
+    else {
+      platformContext.window.confirm({
+        title:
+          'The request has changes which are not saved, You can forcefully close the request by ignorig the current changes.',
+        message: '',
+        texts: {
+          btnCancel: 'Cancel',
+          btnConfirm: 'Ignore Changes & Close Request',
+        },
+        onConfirm: () => {
+          emitter.emit(EPlatformTabs.Close, tabId);
+        },
+        onCancel: () => {},
+        onClose: () => {},
+      });
+    }
+  };
 
+  console.log(activeTab);
   return (
     <Column
       overflow="visible"
@@ -73,31 +98,21 @@ const TabHeaderContainer: FC = () => {
       <Row>
         <Column flex={1} overflow="auto" className="-mb-96 pb-96">
           <div className="flex z-30 relative">
-            <div
-              tabIndex={1}
-              className={classnames(
-                {
-                  'active text-tabForeground bg-tabActiveBackground !border-b-transparent':
-                    activeTab === 'home',
-                },
-                'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
-              )}
+            <HomeTabIcon
+              isActive={activeTab === 'home'}
               onClick={() => changeActiveTab('home')}
-            >
-              <VscHome size={20} />
-            </div>
+            />
             <Tabs
               list={tabs}
               orders={orders}
               activeTab={activeTab}
               ref={tabApi}
-              onSelect={changeActiveTab}
               withDivider={true}
               height={36}
               tabsVersion={2}
               closeTabIconMeta={{
                 show: true,
-                onClick: (id) => emitter.emit(EPlatformTabs.close, id),
+                onClick: closeTab,
               }}
               tabIndex={-1}
               focus={false}
@@ -118,13 +133,35 @@ const TabHeaderContainer: FC = () => {
               }
               reOrderable={true}
               onReorder={changeOrders}
+              onSelect={changeActiveTab}
             />
           </div>
         </Column>
-        <CollabButton />
+        <div className="-mb-96 pb-96 flex">
+          <EnvironmentSelector />
+          <GlobalCreateDD />
+        </div>
       </Row>
     </Column>
   );
 };
 
 export default memo(TabHeaderContainer);
+
+const HomeTabIcon = ({ isActive, onClick }) => {
+  return (
+    <div
+      tabIndex={1}
+      className={classnames(
+        {
+          'active text-tabForeground bg-tabActiveBackground !border-b-transparent':
+            isActive,
+        },
+        'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
+      )}
+      onClick={onClick}
+    >
+      <VscHome size={20} />
+    </div>
+  );
+};

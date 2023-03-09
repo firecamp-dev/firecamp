@@ -18,35 +18,36 @@ interface IAuthSlice {
   changeAuth: (type: EAuthTypes, updates: { key: string; value: any }) => void;
   resetAuthHeaders: (authType: EAuthTypes) => void;
 }
-
 type TAuth = IAuthBasic | IAuthBearer | IAuthDigest | IOAuth1 | IOAuth2UiState;
 
 const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
   changeAuthType: (type: EAuthTypes) => {
     const state = get();
-    let { request, runtime } = state;
-    let auth: Partial<IAuth> | undefined = { type };
-    if (!type) {
-      // if type is NoBody ('') then  remove the auth from request
-      delete request.auth;
-      auth = undefined;
-    } else {
-      auth = {
-        type,
-        value: runtime.auths[type],
+    const auth: IAuth = { value: state.runtime.auths[type], type };
+    set((s) => {
+      return {
+        request: {
+          ...s.request,
+          auth,
+        },
+        ui: {
+          ...s.ui,
+          requestPanel: {
+            ...s.ui.requestPanel,
+            hasAuth: type != EAuthTypes.None,
+          },
+        },
       };
-      request = { ...request, auth };
-    }
-    set({ request });
+    });
     state.resetAuthHeaders(type);
     state.equalityChecker({ auth });
   },
   changeAuth: (type: EAuthTypes, changes: { key: string; value: any }) => {
     const state = get();
     const { key, value } = changes;
-    let auth: Partial<IAuth> = {
+    const auth: IAuth = {
       type,
-      // value: {},
+      value: '',
     };
 
     // for auth type oauth2 whole auth payload will be there in updates instead update key value pair
@@ -54,7 +55,10 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
       //@ts-ignore
       auth.value = { ...changes };
     } else {
-      auth.value = { ...state.request.auth.value, [key]: value };
+      auth.value = {
+        ...state.request.auth.value,
+        [key]: value,
+      } as IAuth['value'];
     }
 
     set((s) => ({
@@ -73,15 +77,15 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
     state.resetAuthHeaders(auth.type);
     state.equalityChecker({ auth });
   },
-  resetAuthHeaders: async (authType: EAuthTypes) => {
+  resetAuthHeaders: async (type: EAuthTypes) => {
     const state = get();
     try {
-      if (authType == EAuthTypes.Inherit) {
+      if (type == EAuthTypes.Inherit) {
         state.changeAuthHeaders([]);
         return;
       }
-      const authHeaders = await getAuthHeaders(state.request, authType);
-      if (authType === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
+      const authHeaders = await getAuthHeaders(state.request, type);
+      if (type === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
         authHeaders['Authorization'] = `Bearer ${authHeaders['Authorization']}`;
         state.setOAuth2LastFetchedToken(authHeaders['Authorization']);
       }

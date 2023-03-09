@@ -1,7 +1,6 @@
 import { memo, useEffect, useRef, useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import shallow from 'zustand/shallow';
 import {
   Container,
@@ -10,10 +9,9 @@ import {
   Dropdown,
   Button,
   Resizable,
-} from '@firecamp/ui-kit';
-
+} from '@firecamp/ui';
 import LogTable from './LogTable';
-import { ELogTypes, EPanel } from '../../../types';
+import { ELogTypes } from '../../../types';
 import { IStore, useStore } from '../../../store';
 import LogPreview from './LogPreview';
 
@@ -23,7 +21,7 @@ const logTypes = {
   Receive: ELogTypes.Receive,
 };
 
-const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
+const Logs = () => {
   const {
     activePlayground,
     typeFilter,
@@ -36,7 +34,6 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
       typeFilter:
         s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
       logs: s.logs?.[s.runtime.activePlayground] || [],
-
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
       clearLogs: s.clearLogs,
     }),
@@ -67,6 +64,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
     //     ...__meta,
     //   };
     // });
+    console.log(filteredLogs, 'filteredLogs');
     logTableApiRef.current?.initialize(filteredLogs);
   }, [logs, typeFilter, activePlayground]);
 
@@ -76,30 +74,13 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
   };
 
   const handleFS = useFullScreenHandle();
-  const _setVisiblePanel = (e) => {
-    if (e) e.preventDefault;
-    if (visiblePanel === EPanel.Response) {
-      setVisiblePanel(EPanel.All);
-    } else {
-      setVisiblePanel(EPanel.Response);
-    }
-  };
-
-  const _onRowClick = (rtRow) => {
-    let originalRowValue = rtRow.original;
-    setSelectedRow((ps) => ({
-      ...originalRowValue,
-      index: rtRow.index,
-    }));
-  };
-
   const _onResizeStop = (e, a, b, delta) => {
     console.log(e, 'event', delta);
     setTableHeight((ps) => ps + delta.height);
   };
 
   /**
-   * On Filter connection log, update dropdown value and store for connection
+   * on Filter connection log, update dropdown value and store for connection
    */
   const _onFilter = (filter = '') => {
     if (typeFilter !== filter) {
@@ -107,15 +88,13 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
     }
   };
 
+  // console.log('selectedRow', selectedRow);
   return (
     <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
       <FullScreen handle={handleFS}>
         <Container>
           <Container.Header>
             <TabHeader className="height-small border-b border-appBorder padding-left-extra">
-              <div className="fc-btn-collapse v2">
-                <VscChevronRight onClick={_setVisiblePanel} />
-              </div>
               <TabHeader.Left>
                 <label className="m-0 text-sm font-bold whitespace-pre">
                   Event Logs
@@ -158,7 +137,7 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
                   {typeFilter ? (
                     <div className="pl-1 w-4">
                       <span
-                        className="text-base  iconv2-remove-icon"
+                        className="text-base  icv2-remove-icon"
                         onClick={() => _onFilter('')}
                       />
                     </div>
@@ -181,10 +160,13 @@ const Logs = ({ visiblePanel = '', setVisiblePanel = (_) => {} }) => {
               onLoad={(tApi) => {
                 logTableApiRef.current = tApi;
               }}
+              onFocusRow={(r) => {
+                setSelectedRow(r);
+              }}
             />
             <Resizable
               top={true}
-              height="100px"
+              height="250px"
               width="100%"
               maxHeight={400}
               minHeight={100}

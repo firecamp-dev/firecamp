@@ -1,10 +1,11 @@
 import { FC } from 'react';
-import { Button, Column } from '@firecamp/ui-kit';
+import { Button, Column } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 import { AiOutlineUsergroupAdd } from '@react-icons/all-files/ai/AiOutlineUsergroupAdd';
 import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 
+import platformContext from '../../../services/platform-context';
 import { EUserRolesWorkspace } from '../../../types';
 import { useUserStore } from '../../../store/user';
 import { usePlatformStore, EPlatformScope } from '../../../store/platform';
@@ -19,11 +20,11 @@ const CollabButton: FC<any> = () => {
         <Button
           text="save my workspace"
           icon={<AiOutlineUpload className="mr-2 toggle-arrow" size={16} />}
+          onClick={(e) => platformContext.app.modals.openSignIn()}
           secondary
           iconLeft
-          onClick={(e) => platformContext.app.modals.openSignIn()}
+          transparent
           sm
-          transparent={true}
         />
       );
     } else if (platformScope == EPlatformScope.Person) {
@@ -31,11 +32,11 @@ const CollabButton: FC<any> = () => {
         <Button
           text="create organization"
           icon={<VscAdd className="mr-2 toggle-arrow" size={12} />}
+          onClick={(e) => platformContext.app.modals.openCreateOrg()}
           secondary
           iconLeft
+          transparent
           sm
-          transparent={true}
-          onClick={(e) => platformContext.app.modals.openCreateOrg()}
         />
       );
     } else if (
@@ -48,11 +49,11 @@ const CollabButton: FC<any> = () => {
           icon={
             <AiOutlineUsergroupAdd className="ml-2 toggle-arrow" size={12} />
           }
+          onClick={(e) => platformContext.app.modals.openInviteMembers()}
           secondary
           iconLeft
+          transparent
           sm
-          onClick={(e) => platformContext.app.modals.openInviteMembers()}
-          transparent={true}
         />
       );
     } else return <></>;

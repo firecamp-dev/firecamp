@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+
+<Meta title="UI-Kit/Grid/Resizable/Overview" />
+
+## **Resizable**
+
+To create the layout for page in proper structure for easy maintenance.
+
+- To create the resizable component within layout.
+- We are using `re-resizable` package for displaying resizable component.
+- Resizable Component can be created in both horizontal & vertical direction
+
+#### **Component Usage**:
+
+| Direction  | Usage                                                                                                                                      |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| horizontal | component can be resized from left, right, or both. Need to specify width [minWidth, width, maxWidth] along with default height of 100%    |
+| vertical   | component can be resized from top, bottom, or both. Need to specify height [minHeight, height, maxHeight] along with default width of 100% |
+
+Use `<RootContainer>` as wrapper, in case need to define layout with specific width & height
+
+**Best Practices**:
+
+- Always nest Resizable component in `<Row></Row>`
+- Always nest content as direct child in `<Column></Column>` for Resizable
+
+Do:
+
+```
+<Row>
+    <Resizable top={true} minHeight={100} maxHeight={500} height={320}>
+		<Column> In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document </Column>
+	</Resizable>
+</Row>
+```
+
+- #### **Examples**:
+- <LinkTo
+    kind="ui-kit-grid-resizable--resizable-container"
+    className="!text-primaryColor"
+  >
+    Resizer Example
+  </LinkTo>

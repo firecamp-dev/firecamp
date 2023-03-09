@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import {
   EFirecampAgent,
   EHttpMethod,
@@ -7,7 +6,7 @@ import {
   IRef,
   TId,
 } from '@firecamp/types';
-import { ITab } from '@firecamp/ui-kit';
+import { ITab } from '@firecamp/ui';
 import {
   IPlatformRequestService,
   IPlatformEnvironmentService,
@@ -30,10 +29,25 @@ export interface IRequestTab extends ITab {
   };
 }
 
-/**
- * Tab meta
- */
+export interface IEntityTab<E = any> extends ITab {
+  /**
+   * minimal info or the entity, it'll help tab and newly opened request to show the minimal information on load
+   * for request
+   *  {
+   *     url?: IUrl;
+   *     method?: EHttpMethod;
+   *     __meta?: IMeta;
+   * }
+   */
+  entity: Partial<E>;
+  /** request meta */
+  __meta?: IRequestTabMeta;
+}
+
+/** Tab meta */
 export interface IRequestTabMeta {
+  entityId: TId;
+  entityType: ETabEntityTypes;
   /**
    * Whether request tab is saved or not
    */
@@ -70,22 +84,20 @@ export interface IRequestTabMeta {
  */
 
 export interface IRequestTabProps {
-  index: number;
   tab: IRequestTab;
-  activeTab?: TId;
 
   //v3 props
-  platformComponents: {
-    EnvironmentWidget: ReactNode;
-  };
-  envVariables?: {
-    mergedEnvVariables: object;
-    collectionEnvVariables: object;
-    workspaceEnvVariables: object;
-  };
   platformContext: {
     request: IPlatformRequestService;
     environment: IPlatformEnvironmentService;
     getFirecampAgent: () => EFirecampAgent;
   };
+}
+
+export enum ETabEntityTypes {
+  Environment = 'environment',
+  Collection = 'collection',
+  Folder = 'folder',
+  Request = 'request',
+  Import = 'import',
 }

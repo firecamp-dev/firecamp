@@ -4,7 +4,7 @@ import {
   Container,
   Column,
   Resizable,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import ReqStatusbar from './statusbar/ReqStatusbar';
 // import QueryEditorMonaco from './query-editor/QueryEditor.monaco';
 import QueryEditor from './query-editor/QueryEditor';
@@ -36,7 +36,7 @@ const Request = () => {
           <QueryEditor
             isQueryDirty={isQueryDirty}
             toggleQueryDirty={toggleQueryDirty}
-            value={playground.request.body}
+            value={playground.request.value.query}
             onChange={(v) => onChangeEditor(v)}
           />
           {/* <QueryEditorMonaco

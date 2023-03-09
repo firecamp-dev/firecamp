@@ -1,12 +1,10 @@
-import { FC, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FC } from 'react';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import shallow from 'zustand/shallow';
-import { Popover, Input } from '@firecamp/ui-kit';
 import { IStore, useStore } from '../../../../../store';
 
 const EditPlaygroundName: FC<any> = ({}) => {
-  const { isRequestSaved, updatePlg, playground } = useStore(
+  const { context, isRequestSaved, updatePlg, playground } = useStore(
     (s: IStore) => ({
       context: s.context,
       isRequestSaved: s.runtime.isRequestSaved,
@@ -17,104 +15,37 @@ const EditPlaygroundName: FC<any> = ({}) => {
     shallow
   );
 
-  const [isOpen, toggleOpen] = useState(false);
-  const [name, setName] = useState('');
-  const [nameError, setNameError] = useState('');
-  const inputRef = useRef<HTMLInputElement>();
-  const { register, handleSubmit, errors } = useForm();
-
-  //focus input on popver open
-  useEffect(() => {
-    setTimeout(() => {
-      if (isOpen == true) {
-        inputRef.current?.focus();
-        setName(playground.request.name);
-
-        // suggest plg name
-        // const plgName = getPlgNameSuggestion();
-        // if (plgName) setName(plgName);
-      }
-    });
-  }, [isOpen]);
-
-  const _submitName = ({ name = '' }) => {
-    name = name.trim();
-    console.log(name, 'name....');
-    if (!name) {
-      setNameError('Invalid name');
-      return;
-    }
-    if (name?.length <= 3) {
-      setNameError('playground name must have min 3 characters');
-      return;
-    }
-
-    updatePlg(true);
-    toggleOpen(false);
-    // save playground
-    // toggleClose
+  const _rename = () => {
+    if (!isRequestSaved) return;
+    context.window
+      .promptInput({
+        header: 'Update Playground Info',
+        value: playground.request?.name,
+        texts: { 'btnOk': 'Update'},
+        validator: (value) => {
+          const name = value.trim();
+          if (!name) {
+            return {
+              isValid: false,
+              message: 'The playground name is reuquired',
+            };
+          } else if (name?.length <= 3) {
+            return {
+              isValid: false,
+              message: 'The playground name must have minimum 3 characters',
+            };
+          } else {
+            return { isValid: true, message: '' };
+          }
+        },
+        executor: (plgName) => {
+          return updatePlg(plgName);
+        },
+      })
+      .then((res) => {
+        // console.log(res)
+      });
   };
-
-  return (
-    <Popover
-      detach={false}
-      isOpen={isOpen}
-      onToggleOpen={(open) => {
-        toggleOpen(open);
-        if (!open) {
-          setNameError('');
-        } else {
-          // onOpen(collectionId);
-        }
-      }}
-      content={
-        <div className="p-2">
-          <form onSubmit={handleSubmit(_submitName)}>
-            <div className="text-sm font-bold mb-1 text-appForegroundActive opacity-70">
-              type playground name
-            </div>
-            <Input
-              value={name}
-              autoFocus={true}
-              type="text"
-              placeholder="name..."
-              wrapperClassName="!mb-2"
-              style={{ width: '300px' }}
-              name="name"
-              ref={(ref) => {
-                inputRef.current = ref;
-                register({
-                  required: true,
-                  maxLength: 100,
-                  // minLength: 1
-                })(ref);
-              }}
-              onChange={(e) => {
-                setName(e.target.value);
-                if (nameError && nameError.length) {
-                  setNameError('');
-                }
-              }}
-            />
-            {errors['name'] || nameError ? (
-              <div className="text-xs font-light text-error">
-                {nameError || ''}
-              </div>
-            ) : (
-              ''
-            )}
-            <div className="text-xs text-appForeground opacity-50">{`> hit enter to save playground`}</div>
-          </form>
-        </div>
-      }
-    >
-      <Popover.Handler
-        id={`edit-playground-${123}`}
-        className="font-bold cursor-pointer font-base pl-16 pb-0"
-      >
-        <VscEdit size={12} />
-      </Popover.Handler>
-    </Popover>
-  );
+  return <VscEdit size={12} onClick={_rename} />;
 };
 export default EditPlaygroundName;

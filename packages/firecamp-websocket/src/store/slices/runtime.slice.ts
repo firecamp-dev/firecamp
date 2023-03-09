@@ -17,10 +17,6 @@ interface IRuntime {
   displayUrl: string;
   playgroundTabs?: IPlaygroundTab[];
   activePlayground?: TId;
-  activeEnvironments?: {
-    workspace: TId;
-    collection: TId;
-  };
   isRequestSaved?: boolean;
   _dnp?: { [k: string]: any };
   tabId?: TId;
@@ -33,14 +29,6 @@ interface IRuntimeSlice {
   addPlaygroundTab: (playground: IPlaygroundTab) => void;
   changePlaygroundTab: (playgroundId: TId, updates: object) => void;
   deletePlaygroundTab: (playgroundId: TId) => void;
-  changeActiveEnvironment?: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => void;
-  setActiveEnvironments?: (updates: {
-    workspace: TId;
-    collection: TId;
-  }) => void;
   setRequestSavedFlag: (flag: boolean) => void;
 }
 
@@ -102,28 +90,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
         },
       }));
     }
-  },
-  changeActiveEnvironment: (
-    scope: 'collection' | 'workspace',
-    environmentId: TId
-  ) => {
-    set((s) => ({
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: {
-          ...s.runtime.activeEnvironments,
-          [scope]: environmentId,
-        },
-      },
-    }));
-  },
-  setActiveEnvironments: (updates: { workspace: TId; collection: TId }) => {
-    set((s) => ({
-      runtime: {
-        ...s.runtime,
-        activeEnvironments: updates,
-      },
-    }));
   },
   setRequestSavedFlag: (flag: boolean) => {
     set((s) => ({

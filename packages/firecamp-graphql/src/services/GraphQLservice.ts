@@ -54,9 +54,11 @@ export default function getQueryFacts(schema, documentStr) {
     operationList.push(def);
     operations.push({
       name: def.name ? def.name.value : undefined,
-      body: print(def),
-      __meta: {
+      value: {
+        query: print(def),
         variables: def.variables,
+      },
+      __meta: {
         variableToType: def.variableToType,
         type: def.operation || 'query',
       },
@@ -228,5 +230,6 @@ export const prettifyQueryString = (value: string) => {
     return query;
   } catch (e) {
     console.log(`e`, e);
+    return value;
   }
 };

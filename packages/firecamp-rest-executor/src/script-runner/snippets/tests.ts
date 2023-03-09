@@ -1,131 +1,230 @@
 export default {
   id: 'tests',
-  name: 'tests',
-  snippets: [
+  name: 'TestCases Snippets',
+  groups: [
+    // {
+    //   id: 'requestTests',
+    //   name: 'request tests',
+    //   snippets: [
+    //     {
+    //       id: 'url',
+    //       name: 'should have request URL same',
+    //       value: ['request.to.have.url(urlObject);'],
+    //     },
+    //     {
+    //       id: 'method',
+    //       name: 'should have request method same',
+    //       value: ['request.to.have.method("methodName");'],
+    //     },
+    //     {
+    //       id: 'query',
+    //       name: 'should have query',
+    //       value: ['request.to.have.query("queryName");'],
+    //     },
+    //     {
+    //       id: 'header',
+    //       name: 'should have header',
+    //       value: ['request.to.have.header("headerName");'],
+    //     },
+    //     {
+    //       id: 'body',
+    //       name: 'should have body set',
+    //       value: ['request.to.have.body();'],
+    //     },
+    //     {
+    //       id: 'body',
+    //       name: 'should have body of content type',
+    //       value: ['request.to.have.body("contentType");'],
+    //     },
+    //   ],
+    // },
     {
-      id: 'request_tests',
-      name: 'request tests',
-      snippets: [
-        {
-          id: 'url',
-          name: 'should have request URL same',
-          snippet: 'request.to.have.url(urlObject);',
-        },
-        {
-          id: 'method',
-          name: 'should have request method same',
-          snippet: 'request.to.have.method("methodName");',
-        },
-        {
-          id: 'query',
-          name: 'should have query',
-          snippet: 'request.to.have.query("queryName");',
-        },
-        {
-          id: 'header',
-          name: 'should have header',
-          snippet: 'request.to.have.header("headerName");',
-        },
-        {
-          id: 'body',
-          name: 'should have body set',
-          snippet: 'request.to.have.body();',
-        },
-        {
-          id: 'body',
-          name: 'should have body of content type',
-          snippet: 'request.to.have.body("contentType");',
-        },
-      ],
-    },
-    {
-      id: 'response_tests',
+      id: 'responseTests',
       name: 'response tests',
       snippets: [
         {
+          id: 'test-1',
+          name: 'status: Code is 200',
+          value: [
+            'fc.test("Status code is 200", ()=> {',
+            '    fc.response.to.have.status(200);',
+            '});',
+          ],
+        },
+        {
+          id: 'test-2',
+          name: 'status: successful POST request',
+          value: [
+            'fc.test("Successful POST request", ()=> {',
+            '    fc.expect(fc.response.code).to.be.oneOf([201, 202]);',
+            '});',
+          ],
+        },
+        {
+          id: 'test-3',
+          name: 'status: code name has string',
+          value: [
+            'fc.test("Status code name has string", ()=> {',
+            '    fc.response.to.have.status("Created");',
+            '});',
+          ],
+        },
+        {
+          id: 'test-4',
+          name: 'body: Contains string',
+          value: [
+            'fc.test("Body matches string", ()=> {',
+            '    fc.expect(fc.response.text()).to.include("string_you_want_to_search");',
+            '});',
+          ],
+        },
+        {
+          id: 'test-5',
+          name: 'body: JSON value check',
+          value: [
+            'fc.test("Your test name", ()=> {',
+            '    const jsonData = fc.response.json();',
+            '    fc.expect(jsonData.value).to.eql(100);',
+            '});',
+          ],
+        },
+        {
+          id: 'test-6',
+          name: 'body: is equal to string',
+          value: [
+            'fc.test("Body is correct", ()=> {',
+            '    fc.response.to.have.body("response_body_string");',
+            '});',
+          ],
+        },
+        {
+          id: 'test-7',
+          name: 'headers: Content-Type header check',
+          value: [
+            'fc.test("Content-Type is present", ()=> {',
+            '    fc.response.to.have.header("Content-Type");',
+            '});',
+          ],
+        },
+        {
+          id: 'test-8',
+          name: 'time: less than 200ms',
+          value: [
+            'fc.test("Response time is less than 200ms", ()=> {',
+            '    fc.expect(fc.response.responseTime).to.be.below(200);',
+            '});',
+          ],
+        },
+        // {
+        //   id: 'test-9',
+        //   name: 'Response body: Convert XML body to JSON Object',
+        //   value: ['let jsonObject = xml2Json(responseBody);'],
+        // },
+        // {
+        //   id: 'test-10',
+        //   name: 'Use tiny validator for JSON data',
+        //   value: [
+        //     'let schema = {',
+        //     '  "items": {',
+        //     '    "type": "boolean"',
+        //     '  }',
+        //     '};',
+        //     '',
+        //     'let data1 = [true, false];',
+        //     'let data2 = [true, 888];',
+        //     '',
+        //     "fc.test('Schema is valid', ()=> {",
+        //     '  fc.expect(tv4.validate(data1, schema)).to.be.true;',
+        //     '  fc.expect(tv4.validate(data2, schema)).to.be.true;',
+        //     '});',
+        //   ],
+        // },
+      ],
+      _snippets: [
+        {
           id: 'accepted',
           name: 'status code must be 202',
-          snippet: 'response.to.be.accepted;',
+          value: 'response.to.be.accepted;',
         },
         {
           id: 'badRequest',
           name: 'status code must be 400',
-          snippet: 'response.to.be.badRequest;',
+          value: 'response.to.be.badRequest;',
         },
         {
           id: 'clientError',
           name: 'checks stats code between 400 and 500',
-          snippet: 'response.to.be.clientError;',
+          value: 'response.to.be.clientError;',
         },
         {
           id: 'forbidden',
           name: 'status code should be 403',
-          snippet: 'response.to.be.forbidden;',
+          value: 'response.to.be.forbidden;',
         },
         {
           id: 'info',
           name: 'checks status code between 100 and 200',
-          snippet: 'response.to.be.info;',
+          value: 'response.to.be.info;',
         },
         {
           id: 'notFound',
           name: 'status code should be 404',
-          snippet: 'response.to.be.notFound;',
+          value: 'response.to.be.notFound;',
         },
         {
           id: 'ok',
           name: 'status code should be 200',
-          snippet: 'response.to.be.ok;',
+          value: 'response.to.be.ok;',
         },
         {
           id: 'rateLimited',
           name: 'status code should be 429',
-          snippet: 'response.to.be.rateLimited;',
+          value: 'response.to.be.rateLimited;',
         },
         {
           id: 'redirection',
           name: 'status code should between 299 and 400',
-          snippet: 'response.to.be.redirection;',
+          value: 'response.to.be.redirection;',
         },
         {
           id: 'serverError',
           name: 'status code should between 499 and 600',
-          snippet: 'response.to.be.serverError;',
+          value: 'response.to.be.serverError;',
         },
         {
           id: 'success',
           name: 'status code should between 199 and 300',
-          snippet: 'response.to.be.success;',
+          value: 'response.to.be.success;',
         },
         {
           id: 'unauthorized',
           name: 'status code should be 401',
-          snippet: 'response.to.be.unauthorized;',
+          value: 'response.to.be.unauthorized;',
         },
         {
           id: 'body',
           name: 'response should have body',
-          snippet: 'response.to.have.body();',
+          value: 'response.to.have.body();',
         },
         {
           id: 'header',
           name: 'response should have header',
-          snippet: 'response.to.have.header("headerName");',
+          value: 'response.to.have.header("headerName");',
         },
         {
-          id: 'json_body',
+          id: 'jsonBody',
           name: 'response should have json body',
-          snippet: 'response.to.have.jsonBody();',
+          value: 'response.to.have.jsonBody();',
         },
         {
-          id: 'json_schema',
+          id: 'jsonSchema',
           name: 'response should match json schema',
-          snippet: 'response.to.have.jsonSchema("schema");',
+          value: 'response.to.have.jsonSchema("schema");',
         },
         {
-          id: 'status_code',
+          id: 'code',
           name: 'response should have status code',
-          snippet: 'response.to.have.statusCode();',
+          value: 'response.to.have.code(200);',
         },
       ],
     },

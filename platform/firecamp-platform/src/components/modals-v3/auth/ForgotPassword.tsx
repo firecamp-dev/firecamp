@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Modal, Button, Input, IModal } from '@firecamp/ui-kit';
+import { Modal, Button, Input, IModal } from '@firecamp/ui';
 import _auth from '../../../services/auth';
 import platformContext from '../../../services/platform-context';
 /**

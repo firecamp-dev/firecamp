@@ -1,41 +1,44 @@
 import { EEditorLanguage } from '@firecamp/types';
-import {
-  Container,
-  Column,
-  Editor,
-  CMGQueryEditor,
-} from '@firecamp/ui-kit';
+import { Container, Column, Editor, CMGQueryEditor, TabHeader, Resizable } from '@firecamp/ui';
 
 const GraphQLBody = ({ body, onChange }) => {
-
   const { query = '', variables = '' } = body;
-
   return (
-    <Container>
+    <Container className='border-t border-appBorder'>
       <Container.Body className="flex flex-col">
         <Column flex={1}>
-          <div className="text-base px-1 py-2 bg-focus1">Query</div>
+          <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
+            <TabHeader.Left>
+            Query
+            </TabHeader.Left>
+          </TabHeader>
           <div className="flex-1 overflow-y-scroll">
             <CMGQueryEditor
               query={query}
-              onChangeQuery={(query) => onChange({ query, variables})}
+              onChangeQuery={(query) => onChange({ query, variables })}
             />
           </div>
         </Column>
+        <Resizable top={true} minHeight={100} maxHeight={500} height={320}>
         <Column flex={1}>
-          <div className="text-base px-1 py-2 bg-focus1">Query variables</div>
+        <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
+            <TabHeader.Left>
+            Query variables
+            </TabHeader.Left>
+          </TabHeader>
           <Editor
             value={variables}
-            language={EEditorLanguage.GraphQl}
+            language={EEditorLanguage.Json}
+            onChange={({ target: { value } }) =>
+              onChange({ query, variables: value })
+            }
             monacoOptions={{
-              // mode: "json",
               name: 'graphQLBodyVariables',
-              // value: variables,
               height: '30%',
             }}
-            onChange={({ target: { value } }) => onchange({ query, variables: value})}
           />
         </Column>
+        </Resizable>
       </Container.Body>
     </Container>
   );

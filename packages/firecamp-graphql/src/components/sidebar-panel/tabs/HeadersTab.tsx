@@ -1,5 +1,5 @@
 import { EEditorLanguage } from '@firecamp/types';
-import { BulkEditTable } from '@firecamp/ui-kit';
+import { BulkEditTable } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 import { IStore, useStore } from '../../../store';
 
@@ -18,12 +18,12 @@ const HeadersTab = () => {
       key={'headers'}
       rows={headers}
       title={'Headers'}
-      meta={{
-        mode: {
+      options={{
+        languages: {
           key: EEditorLanguage.HeaderKey,
           value: EEditorLanguage.HeaderValue,
         },
-        allowDescription: false,
+        hiddenColumns: ['description'],
       }}
     />
   );

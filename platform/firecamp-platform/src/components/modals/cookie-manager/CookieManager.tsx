@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { nanoid as id } from 'nanoid';
-import { AvailableOnElectron, Modal, Row } from '@firecamp/ui-kit';
+import { AvailableOnElectron, Modal, Row } from '@firecamp/ui';
 import { _array, _misc, _object } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
 import Sidebar from './sidebar/Sidebar';
@@ -312,7 +312,7 @@ const CookieManager: FC<ICookieManager> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} modalClass="setting-modal">
       <Modal.Header className="fc-modal-head">
-        <span className="iconv2-cookie-icon"></span>
+        <span className="icv2-cookie-icon"></span>
         Cookie Manager
       </Modal.Header>
       <Modal.Body>

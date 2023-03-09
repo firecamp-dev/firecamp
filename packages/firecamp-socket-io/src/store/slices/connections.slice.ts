@@ -1,5 +1,5 @@
 import { ISocketIOConnection, TId, IQueryParam } from '@firecamp/types';
-import equal from 'deep-equal';
+import isEqual from 'react-fast-compare';
 import _url from '@firecamp/url';
 import { TStoreSlice } from '../store.type';
 
@@ -72,7 +72,7 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
       });
     }
 
-    if (equal(updatedConnection, connections[connectionIndex])) return;
+    if (isEqual(updatedConnection, connections[connectionIndex])) return;
     set((s) => ({
       request: {
         ...s.request,

@@ -1,7 +1,7 @@
 export default {
-  id: 'response snippets',
-  name: 'response snippets',
-  snippets: [
+  id: 'responseSnippets',
+  name: 'Response Snippets',
+  groups: [
     {
       id: 'common',
       name: 'Common',
@@ -9,47 +9,47 @@ export default {
         {
           id: 'data',
           name: 'data',
-          snippet: 'response.data;',
+          value: ['fc.response.data;'],
         },
         {
-          id: 'duration',
-          name: 'duration',
-          snippet: 'response.duration;',
+          id: 'response-time',
+          name: 'responseTime',
+          value: ['fc.response.responseTime;'],
         },
         {
           id: 'size',
-          name: 'size',
-          snippet: 'response.size;',
+          name: 'responseSize',
+          value: ['fc.response.responseSize;'],
         },
         {
-          id: 'status_code',
+          id: 'code',
           name: 'status code',
-          snippet: 'response.statusCode;',
+          value: ['fc.response.code;'],
         },
         {
-          id: 'status_message',
+          id: 'statusMessage',
           name: 'status message',
-          snippet: 'response.statusMessage;',
+          value: ['fc.response.statusMessage;'],
         },
         {
           id: 'headers',
           name: 'headers',
-          snippet: 'response.headers;',
+          value: ['fc.response.headers;'],
         },
         {
-          id: 'headers_list',
+          id: 'headersList',
           name: 'headers list',
-          snippet: 'response.headersList;',
+          value: ['fc.response.headersList;'],
         },
         {
-          id: 'body_in_text',
-          name: 'get body as a text',
-          snippet: 'response.text();',
+          id: 'bodyInText',
+          name: 'get response body as a text',
+          value: ['fc.response.text();'],
         },
         {
-          id: 'body_in_json',
-          name: 'get body as a json',
-          snippet: 'response.json();',
+          id: 'bodyInJson',
+          name: 'get response body as a json',
+          value: ['fc.response.json();'],
         },
       ],
     },

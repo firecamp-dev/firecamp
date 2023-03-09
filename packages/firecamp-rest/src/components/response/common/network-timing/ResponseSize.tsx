@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Container, TabHeader, Column, Row } from '@firecamp/ui-kit';
+import { Container, TabHeader, Column, Row } from '@firecamp/ui';
 
 const ResponseSize = ({ size = {} }) => {
   return (

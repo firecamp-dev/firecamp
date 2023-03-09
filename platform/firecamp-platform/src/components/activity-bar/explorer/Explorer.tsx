@@ -4,13 +4,14 @@ import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 // import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
+import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import {
   InteractionMode,
   Tree,
   TreeItem,
   TreeItemIndex,
   UncontrolledTreeEnvironment,
-} from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui/src/tree';
 import { ERequestTypes } from '@firecamp/types';
 import {
   Container,
@@ -19,15 +20,13 @@ import {
   ToolBar,
   Empty,
   Button,
-} from '@firecamp/ui-kit';
-
-import { useWorkspaceStore } from '../../../store/workspace';
-import { WorkspaceCollectionsProvider } from './WorkspaceCollectionsProvider';
+} from '@firecamp/ui';
+import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
 import { RE } from '../../../types';
-import { platformEmitter as emitter } from '../../../services/platform-emitter';
-import { EPlatformTabs } from '../../../services/platform-emitter/events';
-import pltContext from '../../../services/platform-context';
+import { useWorkspaceStore } from '../../../store/workspace';
+import { useTabStore } from '../../../store/tab';
+import { ETabEntityTypes } from '../../tabs/types';
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();
@@ -38,7 +37,8 @@ const Explorer: FC<any> = () => {
     explorer,
     fetchExplorer,
 
-    createCollection,
+    createCollectionPrompt,
+    openImportTab,
     updateCollection,
     updateFolder,
     updateRequest,
@@ -54,7 +54,8 @@ const Explorer: FC<any> = () => {
       explorer: s.explorer,
       fetchExplorer: s.fetchExplorer,
 
-      createCollection: s.createCollection,
+      createCollectionPrompt: s.createCollectionPrompt,
+      openImportTab: s.openImportTab,
       updateCollection: s.updateCollection,
       updateFolder: s.updateFolder,
       updateRequest: s.updateRequest,
@@ -76,12 +77,13 @@ const Explorer: FC<any> = () => {
     registerTDP,
     unRegisterTDP,
   } = useWorkspaceStore.getState();
+  const { open: openTab } = useTabStore.getState();
 
   // console.log(explorer, "explorer")
 
   // console.log(folders, "folders....")
   const dataProvider = useRef(
-    new WorkspaceCollectionsProvider(
+    new CollectionExplorerProvider(
       collections,
       folders,
       requests,
@@ -119,7 +121,14 @@ const Explorer: FC<any> = () => {
 
   const _openReqInTab = (request: any) => {
     console.log(`node`, request);
-    emitter.emit(EPlatformTabs.openSaved, request);
+    const entity = {
+      url: request.url,
+      method: request.method,
+      __meta: request.__meta,
+      __ref: request.__ref,
+    };
+    // console.log({ entityId: request.__ref?.id, entityType: 'request' });
+    openTab(entity, { id: request.__ref?.id, type: ETabEntityTypes.Request });
   };
 
   const _onNodeSelect = (nodeIndexes: TreeItemIndex[]) => {
@@ -143,42 +152,6 @@ const Explorer: FC<any> = () => {
       // console.log({ nodeItem });
       _openReqInTab(nodeItem);
     }
-  };
-
-  const _createCollectionPrompt = async () => {
-    if (!pltContext.app.user.isLoggedIn()) {
-      return pltContext.app.modals.openSignIn();
-    }
-    pltContext.window
-      .promptInput({
-        header: 'Create New Collection',
-        lable: 'Collection Name',
-        placeholder: 'type collection name',
-        texts: { btnOking: 'Creating...' },
-        value: '',
-        validator: (val) => {
-          if (!val || val.length < 3) {
-            return {
-              isValid: false,
-              message: 'The collection name must have minimum 3 characters.',
-            };
-          }
-          const isValid = RE.NoSpecialCharacters.test(val);
-          return {
-            isValid,
-            message:
-              !isValid &&
-              'The collection name must not contain any special characters.',
-          };
-        },
-        executor: (name) => createCollection({ name, description: '' }),
-        onError: (e) => {
-          pltContext.app.notify.alert(e?.response?.data?.message || e.message);
-        },
-      })
-      .then((res) => {
-        // console.log(res, 1111);
-      });
   };
 
   const canDropAt = useCallback(
@@ -292,7 +265,14 @@ const Explorer: FC<any> = () => {
                   <VscNewFolder
                     className="cursor-pointer"
                     size={16}
-                    onClick={_createCollectionPrompt}
+                    onClick={createCollectionPrompt}
+                  />
+                </div>
+                <div>
+                  <VscArrowDown
+                    className="cursor-pointer"
+                    size={16}
+                    onClick={openImportTab}
                   />
                 </div>
                 {/* <div>
@@ -315,7 +295,7 @@ const Explorer: FC<any> = () => {
                     sm
                     primary
                     className="mx-auto mb-6"
-                    onClick={_createCollectionPrompt}
+                    onClick={createCollectionPrompt}
                   />
                 </div>
               );

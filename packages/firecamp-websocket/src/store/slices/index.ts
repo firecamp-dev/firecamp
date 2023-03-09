@@ -14,5 +14,4 @@ export * from './ui.slice';
 
 // export * from "./slices/ui.slice"
 export * from './handleConnectionExecutor.slice';
-export * from './pull.slice';
 export * from './change.slice';

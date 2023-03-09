@@ -2,12 +2,12 @@ import cx from 'classnames';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 // import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { Button, ToolBar,  } from '@firecamp/ui-kit';
+import { Button, FcIconGraphQL, ToolBar } from '@firecamp/ui';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    return <small>Plg.</small>;
+    return <FcIconGraphQL size={24}/>;
     // return item.isFolder ? (
     //   context.isExpanded ? (
     //     <VscChevronDown size={20} />
@@ -137,8 +137,7 @@ export default {
             <span className="w-full overflow-hidden overflow-ellipsis items-center block">
               {title}
 
-              {item.data.__ref?.isCollection ||
-              item.data.__ref?.isWorkspace ? (
+              {item.data.__ref?.isCollection || item.data.__ref?.isWorkspace ? (
                 <span className={'text-sm'}>- {item.children?.length}</span>
               ) : (
                 <></>

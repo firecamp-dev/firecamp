@@ -1,32 +1,15 @@
-import { Button, Url, UrlBar } from '@firecamp/ui-kit';
+import { Button, Url } from '@firecamp/ui';
 import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
-import { TId } from '@firecamp/types';
 import ConnectButton from '../connection/ConnectButton';
 import { IStore, useStore } from '../../../store';
 
-const UrlBarContainer = ({
-  tab,
-  collectionId = '',
-  postComponents,
-  onPasteCurl = (curl: string) => {},
-}) => {
-  const { EnvironmentWidget } = postComponents;
-
-  const {
-    url,
-    displayUrl,
-    activeEnvironments,
-    changeUrl,
-    changeActiveEnvironment,
-    save,
-  } = useStore(
+const UrlBarContainer = ({ tab }) => {
+  const { url, displayUrl, changeUrl, save } = useStore(
     (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
-      activeEnvironments: s.runtime.activeEnvironments,
       changeUrl: s.changeUrl,
-      changeActiveEnvironment: s.changeActiveEnvironment,
       save: s.save,
     }),
     shallow
@@ -49,38 +32,25 @@ const UrlBarContainer = ({
   };
 
   return (
-    <UrlBar
-      environmentCard={
-        <EnvironmentWidget
-          key={tab.id}
-          previewId={`websocket-env-variables-${tab.id}`}
-          collectionId={collectionId}
-          collectionActiveEnv={activeEnvironments.collection}
-          workspaceActiveEnv={activeEnvironments.workspace}
-          onCollectionActiveEnvChange={(collectionId: TId, envId: TId) => {
-            changeActiveEnvironment('collection', envId);
-          }}
-          onWorkspaceActiveEnvChange={(envId: TId) => {
-            changeActiveEnvironment('workspace', envId);
-          }}
-        />
-      }
-      nodePath={``}
-    >
-      <UrlBar.Prefix>
-        <Button text={'WebSocket'} secondary sm />
-      </UrlBar.Prefix>
-      <UrlBar.Body>
-        <Url
-          id={`url-${tab.id}`}
-          url={displayUrl}
-          placeholder={'ws://'}
-          onChangeURL={_onUpdateUrl}
-          // onEnter={_onExecute}
-          // onPaste={_onPaste}
-        />
-      </UrlBar.Body>
-      <UrlBar.Suffix>
+    <Url
+      id={tab.id}
+      // path={__meta.name}
+      placeholder={'ws://'}
+      // isRequestSaved={isRequestSaved}
+      url={displayUrl}
+      onChange={_onUpdateUrl}
+      // onPaste={_onPaste}
+      // onEnter={_onExecute}
+      promptRenameRequest={() => {
+        // context.app.modals.openEditRequest({
+        //   name: __meta.name,
+        //   description: __meta.description,
+        //   collectionId: __ref.collectionId,
+        //   requestId: __ref.id,
+        // });
+      }}
+      prefixComponent={<Button text={'WebSocket'} secondary sm />}
+      suffixComponent={<>
         <ConnectButton sm={true} />
         <Button
           id={`save-request-${tab.id}`}
@@ -90,9 +60,9 @@ const UrlBarContainer = ({
           secondary
           sm
         />
-      </UrlBar.Suffix>
-    </UrlBar>
-  );
+      </>}
+    />
+  )
 };
 
 export default UrlBarContainer;

@@ -5,13 +5,14 @@ import {
   TreeDataProvider as ITreeDataProvider,
   TreeItem,
   TreeItemIndex,
-} from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui/src/tree';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',
 }
 type TTreeItemData = {
   name: string;
+  value: string;
   __ref: {
     id: string;
     collectionId?: string;
@@ -47,7 +48,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       return Promise.resolve({
         index: 'root',
         canMove: true,
-        data: { name: 'Root', __ref: { id: 'root' } },
+        data: { name: 'Root', value: '', __ref: { id: 'root' } },
         canRename: false,
         isFolder: true,
         children: this.rootOrders,
@@ -57,9 +58,17 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     const item = this.items.find((i) => i.__ref?.id == itemId);
 
     // console.log(this.items, itemId);
+    if (!item) {
+      return Promise.resolve({
+        index: null,
+        data: null,
+      });
+    }
 
     const treeItem: TTreeItemData = {
       name: item.name,
+      //@ts-ignore
+      value: item.value,
       __ref: {
         id: item.__ref.id,
         isFolder: item.__ref.isFolder,
@@ -184,5 +193,9 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     } else {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
+  }
+
+  public isEmpty() {
+    return !this.items.length;
   }
 }

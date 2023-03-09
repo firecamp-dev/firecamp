@@ -7,7 +7,7 @@ import {
   Row,
   Resizable,
   // Collection
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import classnames from 'classnames';
 
 import AddCookie from '../add-cookie/AddCookie';

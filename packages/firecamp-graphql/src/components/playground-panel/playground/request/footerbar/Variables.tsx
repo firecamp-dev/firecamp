@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow';
-import { Editor } from '@firecamp/ui-kit';
+import { Editor } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import { IStore, useStore } from '../../../../../store';
 
@@ -15,7 +15,7 @@ const Variables = () => {
   return (
     <Editor
       language={EEditorLanguage.Json}
-      value={playground?.request?.__meta?.variables || `{ }`}
+      value={playground?.request?.value?.variables || `{ }`}
       onChange={(e) => {
         changeVariables(playground.request.__ref.id, e.target.value);
       }}

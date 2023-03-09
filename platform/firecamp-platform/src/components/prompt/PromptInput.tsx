@@ -1,16 +1,16 @@
 import { FC, useState } from 'react';
-import { Button, Input, Modal, ProgressBar, TabHeader } from '@firecamp/ui-kit';
+import { Button, Input, Modal, ProgressBar, TabHeader } from '@firecamp/ui';
 import { IPromptInput } from './types';
 
 const _texts: IPromptInput['texts'] = {
   btnOk: 'Create',
   btnOking: 'Creating...',
-  btnCancle: 'Cancle',
+  btnCancel: 'Cancel',
 };
 
 export const PromptInput: FC<IPromptInput> = ({
   header,
-  lable = 'Name',
+  label = 'Name',
   placeholder,
   texts,
   value,
@@ -95,7 +95,7 @@ export const PromptInput: FC<IPromptInput> = ({
           <div className="mt-4">
             <Input
               autoFocus={true}
-              label={lable}
+              label={label}
               placeholder={placeholder}
               name={'prompInput'}
               value={state.value}
@@ -108,7 +108,7 @@ export const PromptInput: FC<IPromptInput> = ({
           <TabHeader className="!px-0">
             <TabHeader.Right>
               <Button
-                text={texts?.btnCancle || `Cancel`}
+                text={texts?.btnCancel || `Cancel`}
                 onClick={_close}
                 secondary
                 transparent

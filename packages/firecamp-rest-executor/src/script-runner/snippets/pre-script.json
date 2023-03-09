@@ -198,24 +198,6 @@
             "title": "Unset collection single/multiple variables",
             "snippet": "env.collection.unsetVariables(\"var1_name\", \"var2_name\", ...);",
             "example": "env.collection.unsetVariables(\"port\", \"host\");"
-          },
-          {
-            "id": "set_workspace_single_variable",
-            "title": "Set active workspace single variable",
-            "snippet": "env.workspace.setVariable(\"var_name\", \"var_value\");",
-            "example": "env.workspace.setVariable(\"host\", \"localhost\");"
-          },
-          {
-            "id": "set_workspace_multiple_variables",
-            "title": "Set workspace multiple variables",
-            "snippet": "env.workspace.setVariables({ object });",
-            "example": "env.workspace.setVariables({\n  host: \"localhost\",\n  port: \"3000\"\n});"
-          },
-          {
-            "id": "unset_workspace_single_or_multiple_variables",
-            "title": "Unset workspace single/multiple variables",
-            "snippet": "env.workspace.unsetVariables(\"var1_name\", \"var2_name\", ...);",
-            "example": "env.workspace.unsetVariables(\"port\", \"host\");"
           }
         ]
       }

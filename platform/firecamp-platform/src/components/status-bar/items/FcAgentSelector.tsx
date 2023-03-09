@@ -11,7 +11,7 @@ import {
   
   Checkbox,
   // SwitchButton,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { IPlatformStore, usePlatformStore } from '../../../store/platform';
 
 const agentNamesMap = {
@@ -64,24 +64,24 @@ const FcAgentSelector: FC<any> = () => {
           />
 
           <AgentItem
-            name={agentNamesMap[EFirecampAgent.Extension]}
+            name={`${agentNamesMap[EFirecampAgent.Extension]} (Coming Soon...)`}
             className={`mb-2`}
             isSelected={agent == EFirecampAgent.Extension}
             disabled={!isExtAgentInstalled}
             description={`Send rest requests via Firecamp's browser extension.`}
             onSelect={() => _onSelectAgent(EFirecampAgent.Extension)}
           >
-            {
+            {/* {
               !isExtAgentInstalled
                 ? (
                   <Button
                     text="Download Firecamp Extension"
-                    md
-                    primary
                     className="!w-full !min-w-full mt-2 mb-4"
+                    primary
+                    md
                   />
                 ) : <></>
-            }
+            } */}
           </AgentItem>
 
           <AgentItem

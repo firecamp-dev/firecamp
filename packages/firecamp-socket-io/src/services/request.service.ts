@@ -1,3 +1,6 @@
+import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
+import { nanoid as id } from 'nanoid';
 import {
   ERequestTypes,
   ISocketIOConnection,
@@ -6,9 +9,6 @@ import {
   TId,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
-import _cleanDeep from 'clean-deep';
-import _cloneDeep from 'lodash/cloneDeep';
-import { nanoid as id } from 'nanoid';
 import { _object, _array, _string } from '@firecamp/utils';
 import {
   RequestConnection,
@@ -127,10 +127,6 @@ export const initialiseStoreFromRequest = (
           },
         },
       ],
-      activeEnvironments: {
-        workspace: '',
-        collection: '',
-      },
       isRequestRunning: false,
       isRequestSaved: !!request.__ref.collectionId,
       tabId,

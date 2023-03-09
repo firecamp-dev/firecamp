@@ -193,7 +193,7 @@ API use to stop emitting the data on particular interval
 
 **Options**
 
-- eventUUID
+- eventID
 
 **Syntax**
 
@@ -205,7 +205,7 @@ const interval = 4000
 // With interval
 io.emitWithAck('test', args, interval)
 
-io.clearInterval(eventUUID)
+io.clearInterval(eventID)
 ```
 
 ## **clearIntervals**
@@ -238,10 +238,10 @@ io.clearIntervals()
   title: 'Title of the Log card',
   message: 'Message to display in Log card.',
   meta: {
-    uuid,
+    id,
     event,
     timestamp,
-    type: ["R", "S", "ACK"],
+    type: ["r", "d", "ack"],
     color: ["success", "danger"],
     ackRef
   }
