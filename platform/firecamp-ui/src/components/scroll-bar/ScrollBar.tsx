@@ -4,12 +4,12 @@ import classnames from 'classnames';
 const ScrollBar = ({ children = <></>, className = '', noWrap = false }) => (
   <ScrollArea.Root
     className={classnames(
-      'rounded overflow-hidden shadow-md bg-primaryColorText',
+      'overflow-hidden ',
       {'whitespace-nowrap': noWrap },
       className
     )}
     style={{ '--scrollbar-size': '10px' }}
-   type="always"
+    // type="always"
   >
     <ScrollArea.Viewport className={classnames('w-full h-full')}>
       {children}
