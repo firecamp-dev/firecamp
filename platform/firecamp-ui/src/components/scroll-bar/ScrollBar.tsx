@@ -1,15 +1,28 @@
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import classnames from 'classnames';
 
-const ScrollBar = ({ children = <></>, className = '', noWrap = false }) => (
+const SCROLLBAR_VERSION = {
+  V1: 'V1',
+  V2: 'V2',
+};
+const ScrollBar = ({
+  children = <></>,
+  className = '',
+  noWrap = false,
+  width = '',
+  height = '',
+  layout = SCROLLBAR_VERSION.V1,
+}) => (
   <ScrollArea.Root
     className={classnames(
       'overflow-hidden ',
-      {'whitespace-nowrap': noWrap },
+      { 'whitespace-nowrap': noWrap },
+      width,
+      height,
       className
     )}
     style={{ '--scrollbar-size': '10px' }}
-    // type="always"
+    type="always"
   >
     <ScrollArea.Viewport className={classnames('w-full h-full')}>
       {children}
@@ -17,9 +30,17 @@ const ScrollBar = ({ children = <></>, className = '', noWrap = false }) => (
 
     {/* horizontal scrollbar */}
     <ScrollArea.Scrollbar
-      className="flex flex-col select-none p-0.5 touch-none
-      bg-activityBarBorder
-       hover:bg-focus2"
+      className={classnames(
+        'flex flex-col select-none touch-none p-0.5 ',
+        {
+          'bg-activityBarBorder hover:bg-focus2':
+            layout === SCROLLBAR_VERSION.V1,
+        },
+        {
+          'p-0 bg-transparent':
+            layout === SCROLLBAR_VERSION.V2,
+        }
+      )}
       orientation="horizontal"
       style={{
         height: 'var(--scrollbar-size)',
@@ -27,14 +48,22 @@ const ScrollBar = ({ children = <></>, className = '', noWrap = false }) => (
         transition: 'background 160ms ease-out',
       }}
     >
-      <ScrollArea.Thumb className="flex-1 bg-appBackground" />
+      <ScrollArea.Thumb className="flex-1 bg-appForegroundInActive" />
     </ScrollArea.Scrollbar>
 
     {/* vertical scrollbar */}
     <ScrollArea.Scrollbar
-      className="flex select-none p-0.5 touch-none
-      bg-activityBarBorder
-      hover:bg-focus2"
+      className={classnames(
+        'flex select-none touch-none p-0.5',
+        {
+          'bg-activityBarBorder hover:bg-focus2':
+            layout === SCROLLBAR_VERSION.V1,
+        },
+        {
+          'p-0 bg-transparent':
+            layout === SCROLLBAR_VERSION.V2,
+        }
+      )}
       orientation="vertical"
       style={{
         width: 'var(--scrollbar-size)',
@@ -42,11 +71,10 @@ const ScrollBar = ({ children = <></>, className = '', noWrap = false }) => (
         transition: 'background 160ms ease-out',
       }}
     >
-      <ScrollArea.Thumb className="flex-1 bg-appBackground" />
+      <ScrollArea.Thumb className="flex-1 bg-appForegroundInActive" />
     </ScrollArea.Scrollbar>
 
-
-    <ScrollArea.Corner className="bg-focus2" />
+    <ScrollArea.Corner className="bg-transparent" />
   </ScrollArea.Root>
 );
 export default ScrollBar;

@@ -15,7 +15,7 @@ export const Demo = () => (
     noWrap
   >
     <div style={{ padding: '15px 20px' }}>
-      <div className="text-lg font-medium">Tags</div>
+      <div className="text-lg font-medium">Content Heading</div>
       <hr />
       {[
         '1',
@@ -51,10 +51,11 @@ export const Demo = () => (
     </div>
   </ScrollBar>
 );
+
 export const VerticalScroll = () => (
   <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]">
     <div style={{ padding: '15px 20px' }}>
-      <div className="text-lg font-medium">Tags</div>
+      <div className="text-lg font-medium">Content Heading</div>
       <hr />
       {[
         '1',
@@ -90,10 +91,11 @@ export const VerticalScroll = () => (
     </div>
   </ScrollBar>
 );
+
 export const HorizontalScroll = () => (
   <ScrollBar className="rounded shadow-md bg-primaryColorText h-[50vh]" noWrap>
     <div style={{ padding: '15px 20px' }}>
-      <div className="text-lg font-medium">Tags</div>
+      <div className="text-lg font-medium">Content Heading</div>
       <hr />
       {['1', '2', '3'].map((tag) => (
         <div className="text-sm mt-2 pt-3" key={tag}>
@@ -108,11 +110,58 @@ export const HorizontalScroll = () => (
     </div>
   </ScrollBar>
 );
+
 export const ScrollBarWithModal = () => (
   <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]">
     <div style={{ padding: '15px 20px' }}>
       <ForgetPasswordForm />
       <br />
+    </div>
+  </ScrollBar>
+);
+
+export const VSCodeExample = () => (
+  <ScrollBar
+    className=" rounded shadow-md bg-primaryColorText "
+    width="w-[200px]"
+    height="h-[200px]"
+    noWrap
+    layout='V2'
+  >
+    <div style={{ padding: '15px 20px' }}>
+      <div className="text-lg font-medium">Content Heading</div>
+      <hr />
+      {[
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+      ].map((tag) => (
+        <div className="text-sm mt-2 pt-3" key={tag}>
+          {tag}. &nbsp; "In publishing and graphic design, Lorem ipsum is a
+          placeholder text commonly used to demonstrate the visual form of a
+          document or a typeface without relying on meaningful content. " "In
+          publishing and graphic design, Lorem ipsum is a placeholder text
+          commonly used to demonstrate the visual form of a document or a
+          typeface without relying on meaningful content. "
+        </div>
+      ))}
     </div>
   </ScrollBar>
 );
