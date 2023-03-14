@@ -1556,7 +1556,7 @@ video {
 	border-color: var(--app-secondary) !important;
 }
 .\!border-danger {
-	border-color: var(--danger) !important;
+	border-color: var(--error) !important;
 }
 .border-primaryColor {
 	border-color: var(--app-primary);
@@ -1679,7 +1679,7 @@ video {
 	background-color: var(--app-secondary);
 }
 .bg-danger {
-	background-color: var(--danger);
+	background-color: var(--error);
 }
 .bg-popoverBackground {
 	background-color: var(--popover-background);
@@ -2141,7 +2141,7 @@ video {
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
 .text-danger {
-	color: var(--danger);
+	color: var(--error);
 }
 .text-appForegroundInActive {
 	color: var(--app-foreground-inactive);

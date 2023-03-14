@@ -2,7 +2,7 @@
 import SplitView from './SplitView';
 
 export default {
-    title: "UI-Kit/SpitView",
+    title: "UI-Kit/ComingSoon/SpitView",
     component: SplitView,
     argTypes: {
         text: "Firecamp",
