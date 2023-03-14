@@ -1,5 +1,6 @@
-import ScrollBar from './ScrollBar';
+import ScrollBar, { SCROLLBAR_LAYOUT } from './ScrollBar';
 import { ForgetPasswordForm } from '../form/Form.stories';
+import { Tabs } from '@firecamp/ui';
 
 export default {
   title: 'UI-Kit/ScrollBar',
@@ -126,7 +127,8 @@ export const VSCodeExample = () => (
     width="w-[200px]"
     height="h-[200px]"
     noWrap
-    layout='V2'
+    withCorner={false}
+    layout="V2"
   >
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
@@ -164,4 +166,40 @@ export const VSCodeExample = () => (
       ))}
     </div>
   </ScrollBar>
+);
+
+export const RequestTabExample = () => (
+  <div className='p-3 border'>
+    <ScrollBar
+      className="shadow-md bg-primaryColorText "
+      width="w-[200px]"
+      layout={SCROLLBAR_LAYOUT.HORIZONTAL}>
+      <Tabs
+        list={[
+          {
+            id: 'body',
+            name: 'Body',
+          },
+          {
+            id: 'auth',
+            name: 'Auth',
+          },
+          {
+            id: 'header',
+            name: 'Header',
+          },
+          {
+            id: 'param',
+            name: 'Param',
+          },
+          {
+            id: 'scripts',
+            name: 'Scripts',
+          },
+        ]}
+        activeTab={'header'}
+        onSelect={() => {}}
+      />
+    </ScrollBar>
+  </div>
 );

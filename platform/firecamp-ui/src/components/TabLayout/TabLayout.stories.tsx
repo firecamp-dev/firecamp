@@ -4,7 +4,7 @@ import Resizable from "../grid/Resizable";
 import  RootContainer from "../grid/Resizable";
 
 export default {
-  title: "UI-Kit/TabLayout",
+  title: "UI-Kit/Grid",
   component: RootContainer,
   subComponent: Row, Column, Resizable,
   argTypes: {
