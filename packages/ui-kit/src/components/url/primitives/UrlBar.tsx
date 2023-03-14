@@ -122,7 +122,7 @@ interface IPrefix {
   children: JSX.Element | JSX.Element[];
 
   /**
-   * Extra styling classname
+   * Extra styling class name
    */
   className?: string;
 }
@@ -137,7 +137,7 @@ interface IBody {
   children: JSX.Element | JSX.Element[];
 
   /**
-   * Extra styling classname
+   * Extra styling class name
    */
   className?: string;
 }
@@ -152,7 +152,7 @@ interface ISuffix {
   children: JSX.Element | JSX.Element[];
 
   /**
-   * Extra styling classname
+   * Extra styling class name
    */
   className?: string;
 }

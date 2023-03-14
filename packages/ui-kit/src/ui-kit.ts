@@ -91,9 +91,10 @@ export { default as TestResultTable } from './components/table/test-result-table
 export type { ITable, TTableApi } from './components/table/primitive/Table';
 
 // Url
-export { default as Url } from './components/url/components/Url';
-export { default as HttpMethodDropDown } from './components/url/components/HttpMethodDropDown';
-export { default as UrlBar } from './components/url/components/UrlBar';
+export { default as HttpMethodDropDown } from './components/url/primitives/HttpMethodDropDown';
+export { default as UrlBar } from './components/url/primitives/UrlBar';
+export { default as UrlEditor } from './components/url/primitives/UrlEditor';
+export { default as Url } from './components/url/Url';
 
 // Popover
 export { default as Popover } from './components/popover/Popover';
