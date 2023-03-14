@@ -13,6 +13,7 @@ import {
 } from '@firecamp/ui';
 import { _array, _auth, _env, _object } from '@firecamp/utils';
 import ImportRaw from './import-tabs/ImportRaw';
+import ImportDropZone from './import-tabs/ImportDrop';
 
 enum ETabTypes {
   ImportRaw = 'import-raw',
@@ -21,35 +22,29 @@ enum ETabTypes {
 type TState = {
   raw: string;
   activeTab: ETabTypes;
-  isFetchingEntity: boolean;
-  isUpdatingEntity: boolean;
+  isImporting: boolean;
 };
 
 const ImportTab = ({ tab, platformContext: context }) => {
-  const entity = _cloneDeep({ ...tab.entity });
-  const entityType = tab.__meta.entityType;
+
   const entityId = tab.__meta.entityId;
   if (!entityId) return <></>;
 
   const [state, setState] = useState<TState>({
     raw: '',
     activeTab: ETabTypes.ImportRaw,
-    isFetchingEntity: false,
-    isUpdatingEntity: false,
+    isImporting: false,
   });
 
-  const {
-    activeTab,
-    // isFetchingEntity,
-    // isUpdatingEntity,
-  } = state;
+  const { activeTab, isImporting } = state;
 
   const tabs = [
     { name: 'Import Raw', id: ETabTypes.ImportRaw },
     { name: 'Import File', id: ETabTypes.ImportFile },
   ];
 
-  // if (isFetchingEntity === true) return <Loader />;
+
+  if (isImporting === true) return <Loader />;
   return (
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
@@ -80,11 +75,9 @@ const ImportTab = ({ tab, platformContext: context }) => {
                     raw={state.raw}
                     id={entityId}
                     onChange={(raw) => setState((s) => ({ ...s, raw }))}
-                    onImport={(raw) => {}}
+                    onImport={(raw) => { }}
                   />
-                ) : (
-                  <>Coming Soon...</>
-                )}
+                ) : <ImportDropZone context={context} tabId={tab.id} isImporting={isImporting} />}
               </div>
             </Row>
           </Container.Body>
