@@ -120,8 +120,7 @@
     "dotenv-vault-core": "^0.7.0",
     "faker": "^5.5.3",
     "match-sorter": "^6.3.1",
-    "prettify-xml": "^1.2.0",
-    "react-file-drop": "^3.1.5"
+    "prettify-xml": "^1.2.0"
   },
   "engines": {
     "node": ">=16",
