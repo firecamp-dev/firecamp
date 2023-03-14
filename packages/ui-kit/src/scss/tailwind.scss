@@ -1527,7 +1527,7 @@ video {
 	border-color: var(--app-secondary) !important;
 }
 .\!border-danger {
-	border-color: var(--danger) !important;
+	border-color: var(--error) !important;
 }
 .border-primaryColor {
 	border-color: var(--app-primary);
@@ -1641,7 +1641,7 @@ video {
 	background-color: var(--app-secondary);
 }
 .bg-danger {
-	background-color: var(--danger);
+	background-color: var(--error);
 }
 .bg-appBorder {
 	background-color: var(--app-border);
@@ -2080,7 +2080,7 @@ video {
 	color: var(--app-foreground);
 }
 .text-danger {
-	color: var(--danger);
+	color: var(--error);
 }
 .text-appForegroundInActive {
 	color: var(--app-foreground-inactive);

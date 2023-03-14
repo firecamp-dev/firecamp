@@ -54,7 +54,7 @@ module.exports = {
       focusBorder: 'var(--focus-border)',
 
       warning: 'var(--warning)',
-      danger: 'var(--danger)',
+      danger: 'var(--error)',
       info: 'var(--info)',
       success: 'var(--success)',
 
