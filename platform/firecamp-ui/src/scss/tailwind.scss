@@ -863,6 +863,12 @@ video {
 .bottom-0 {
 	bottom: 0px;
 }
+.left-2 {
+	left: 0.5rem;
+}
+.-top-2 {
+	top: -0.5rem;
+}
 .\!top-4 {
 	top: 1rem !important;
 }
@@ -881,9 +887,6 @@ video {
 .top-3 {
 	top: 0.75rem;
 }
-.left-2 {
-	left: 0.5rem;
-}
 .right-2 {
 	right: 0.5rem;
 }
@@ -898,9 +901,6 @@ video {
 }
 .-bottom-px {
 	bottom: -1px;
-}
-.-top-2 {
-	top: -0.5rem;
 }
 .left-1 {
 	left: 0.25rem;
@@ -943,9 +943,6 @@ video {
 }
 .m-0 {
 	margin: 0px;
-}
-.m-5 {
-	margin: 1.25rem;
 }
 .m-5 {
 	margin: 1.25rem;
@@ -1310,9 +1307,6 @@ video {
 .w-screen {
 	width: 100vw;
 }
-.w-16 {
-	width: 4rem;
-}
 .w-40 {
 	width: 10rem;
 }
@@ -1357,9 +1351,6 @@ video {
 }
 .flex-1 {
 	flex: 1 1 0%;
-}
-.flex-grow {
-	flex-grow: 1;
 }
 .border-collapse {
 	border-collapse: collapse;
@@ -1635,6 +1626,9 @@ video {
 }
 .bg-activityBarActiveBackground {
 	background-color: var(--activityBar-activeBackground);
+}
+.bg-appForegroundInActive {
+	background-color: var(--app-foreground-inactive);
 }
 .bg-focus3 {
 	background-color: var(--focus-level-3);
@@ -2060,9 +2054,6 @@ video {
 .text-xl {
 	font-size: 18px;
 }
-.text-xl {
-	font-size: 18px;
-}
 .font-normal {
 	font-weight: 400;
 }
@@ -2140,23 +2131,17 @@ video {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
-.text-appForeground {
-	color: var(--app-foreground);
-}
 .text-danger {
 	color: var(--danger);
+}
+.text-appForegroundInActive {
+	color: var(--app-foreground-inactive);
 }
 .text-popoverForeground {
 	color: var(--popover-foreground);
 }
-.text-appForegroundInActive {
-	color: var(--app-foreground-inactive);
-}
 .text-statusBarForeground {
 	color: var(--statusBar-foreground);
-}
-.text-appForegroundInActive {
-	color: var(--app-foreground-inactive);
 }
 .text-websocket {
 	color: var(--req-socketio);
@@ -3266,3 +3251,12 @@ body .ace_editor .ace_scrollbar{
   border-right: none;
 }
 /*-----------table 2 css end --------*/
+
+.dropzone-wrapper > .dropzone{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

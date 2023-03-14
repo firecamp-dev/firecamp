@@ -43,15 +43,15 @@ const ImportDropZone: FC<{
   }
 
   return (
-    <div className="full-width">
-      <div {...getRootProps({ className: 'dropzone' })}>
+    <div className="h-full w-full dropzone-wrapper" >
+      <div className="test123"  {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         {isImporting ? (
           <h1>'Importing the API collection...'</h1>
         ) : (
           <>
-            <h1>DROP API COLLECTION HERE</h1>
-            <span>Firecamp, Postman formats are supported</span>
+            <h1 className="text-base text-appForeground font-semibold">DROP API COLLECTION HERE</h1>
+            <span className="text-sm text-appForegroundInActive">Firecamp, Postman formats are supported</span>
           </>
         )}
       </div>
