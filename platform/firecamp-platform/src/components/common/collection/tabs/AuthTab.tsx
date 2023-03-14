@@ -1,5 +1,5 @@
 import _compact from 'lodash/compact';
-import { AuthSetting, Button, Container, TabHeader } from '@firecamp/ui-kit';
+import { AuthSetting, Button, Container, TabHeader } from '@firecamp/ui';
 
 const AuthTab = ({
   type,
