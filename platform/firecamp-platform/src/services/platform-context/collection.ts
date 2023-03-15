@@ -1,4 +1,5 @@
 import { Rest } from '@firecamp/cloud-apis';
+import { useWorkspaceStore } from '../../store/workspace';
 
 interface IPlatformCollectionService {
   // request items
@@ -7,8 +8,12 @@ interface IPlatformCollectionService {
 
 const collection: IPlatformCollectionService = {
   import: async (collectionPayload: any) => {
-    //@ts-ignore TODO: change return type to AxiosResponse instead of { flag: boolean }
-    return Rest.collection.import(collectionPayload).then((res) => res.data);
+    return Rest.collection.import(collectionPayload).then((res) => {
+      // after successful collection import, re-fetch the explorer artifacts
+      useWorkspaceStore.getState().fetchExplorer();
+      //@ts-ignore TODO: change return type to AxiosResponse instead of { flag: boolean }
+      return res.data;
+    });
   },
 };
 
