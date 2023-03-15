@@ -240,6 +240,10 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
           originalEntity: entity,
           entity,
         }));
+
+        context.app.notify.success(
+          `The ${entityType} has been saved successfully!`
+        );
       })
       .catch((e) => {
         console.log({ e });
@@ -281,7 +285,9 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
             isAuthChanged={!isEqual(_oEntity.auth, entity.auth)}
             onChangeAuth={changeAuth}
             onChangeAuthType={changeAuthType}
-            onUpdate={console.log}
+            onUpdate={(auth) => {
+              onUpdate({ auth });
+            }}
           />
         );
 
