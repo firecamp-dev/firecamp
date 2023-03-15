@@ -4,7 +4,7 @@ import {
   Button,
   ProgressBar,
   IModal,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { Rest } from '@firecamp/cloud-apis';
 import { usePlatformStore } from '../../../store/platform';
 import platformContext from '../../../services/platform-context';

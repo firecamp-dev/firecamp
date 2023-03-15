@@ -87,7 +87,7 @@ const Listener = ({
         </div>
       </div>
       <div className="fc-listners-list-item-action" onClick={_onRemove}>
-        <span className="icon-close"></span>
+        Close {/* TODO: close icon here  */}
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import {
   TabHeader,
   Button,
   Container,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import { ICollection, IFolder } from '@firecamp/types';
 

@@ -5,7 +5,7 @@ import {
   RootContainer,
   Column,
   Loader,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
 import { _array, _object } from '@firecamp/utils';

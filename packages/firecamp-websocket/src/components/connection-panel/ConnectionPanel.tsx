@@ -6,7 +6,7 @@ import {
   Button,
   Tabs,
   Popover,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
 import Connection from './connection/Connection';
@@ -38,7 +38,6 @@ const ConnectionPanel = () => {
   };
 
   const _toggleDeleteConnection = (index, id) => {
-    // dom onClick event for close-icon-${id} where id is connection id
   };
 
   const _onSelectConnectionTab = (id) => {

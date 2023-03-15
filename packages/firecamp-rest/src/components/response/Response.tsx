@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Response as ResponsePanel } from '@firecamp/ui-kit';
+import { Response as ResponsePanel } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 import { IStore, useStore } from '../../store';
 

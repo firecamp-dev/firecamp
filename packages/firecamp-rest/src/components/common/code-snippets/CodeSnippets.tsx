@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import classnames from 'classnames';
-import { Editor, Container, Tabs, Modal } from '@firecamp/ui-kit';
+import { Editor, Container, Tabs, Modal } from '@firecamp/ui';
 import { _env } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
 

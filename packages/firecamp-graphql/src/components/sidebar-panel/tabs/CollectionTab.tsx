@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
-import { Pane, ToolBar, Empty } from '@firecamp/ui-kit';
+import { Pane, ToolBar, Empty } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
-import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui-kit/src/tree';
+import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { IStore, useStore, useStoreApi } from '../../../store';
 

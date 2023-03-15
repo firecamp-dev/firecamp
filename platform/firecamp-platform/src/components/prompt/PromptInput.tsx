@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Button, Input, Modal, ProgressBar, TabHeader } from '@firecamp/ui-kit';
+import { Button, Input, Modal, ProgressBar, TabHeader } from '@firecamp/ui';
 import { IPromptInput } from './types';
 
 const _texts: IPromptInput['texts'] = {

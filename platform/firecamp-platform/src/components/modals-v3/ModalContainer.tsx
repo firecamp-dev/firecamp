@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow';
-import { Modal } from '@firecamp/ui-kit';
+import { Modal } from '@firecamp/ui';
 // import Environment from '../modals/environment/Environment';
 // import WorkspaceSetting from '../modals/workspace-setting/WorkspaceSetting';
 // import SSLnProxyManager from '../modals/ssl-proxy-manager/SSLnProxyManager';

@@ -36,7 +36,7 @@
     "@firecamp/curl-to-firecamp": "^1.0.1",
     "@firecamp/rest-executor": "workspace:*",
     "@firecamp/types": "^0.1.21",
-    "@firecamp/ui-kit": "workspace:*",
+    "@firecamp/ui": "workspace:*",
     "@firecamp/url": "0.0.20",
     "@hapi/joi": "^17.1.1",
     "aws4": "^1.11.0",

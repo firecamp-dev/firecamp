@@ -1,0 +1,105 @@
+import { Meta } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+
+<Meta title="UI-Kit/Grid/Overview" />
+
+## **Grid**
+
+To create the layout for page in proper structure for easy maintenance.
+
+#### **Component Usage**:
+
+We are using flex based Row-Columns layout. <br/>
+
+| (Row) Classname | Usage                      |
+| --------------- | -------------------------- |
+| h-full          | for row full screen height |
+| flex-col        | for vertical sections      |
+| flex-row        | for horizontal sections    |
+
+| (Column) Prop           | Usage                                                                                                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| flex                    | Prop to be true to set specific width or height of column, if parent have flex-col it will set width for column and if parent have flex-row it will set height of column |
+| overflow                | `auto, hidden, visible` as a prop in the column.                                                                                                                         |
+| scrollbar (in progress) | By default scrollbar is hidden. To show scrollbar you have to pass `visible-scrollbar` class (it will only work with overflow-auto)                                      |
+
+#### **Component Related**:
+
+> Layout is created with : RootContainer, Row, Column.
+
+#### **Component Dependencies**:
+
+- Use tailwind classes for flex to generate any layout you want.
+
+#### **Best Practices**:
+
+- Always nest `<Column></Column>` in `<Row></Row>`
+
+Do:
+
+```
+<Row>
+	<Column>
+	Loream ipsum unde omnis iste natus error sit voluptatem accusantium.
+	</Column>
+	<Column>
+		<Row>
+			<Column>
+				Loream ipsum unde omnis iste natus error sit.
+			</Column>
+      <Column>
+				Loream ipsum unde omnis iste natus error sit.
+			</Column>
+		</Row>
+	</Column>
+</Row>
+```
+
+Avoid:
+
+```
+<Row>
+  <Row>
+    Do not nest unnecessary Rows
+  </Row>
+</Row>
+```
+
+```
+<Row>
+	<Column>
+		<Column>
+			Do not nest unnecessary Rows
+		</Column>
+	<Column>
+</Row>
+```
+
+```
+<Row>
+	Do not place any component directly in Row, use Column inside a Row.
+</Row>
+```
+
+#### **Examples**:
+
+- <LinkTo
+    kind="ui-kit-grid--layout-with-nested-column"
+    className="!text-primaryColor"
+  >
+    Nested Column Example
+  </LinkTo>
+
+#### **References**:
+
+- <a
+    className="!text-primaryColor"
+    href="https://tailwindcss.com/docs/flex"
+    target="_blank"
+  >
+    Tailwind Flex
+  </a>
+
+#### **Future Improvements:**
+
+- Need to add prop (scrollbar) & update its current usage

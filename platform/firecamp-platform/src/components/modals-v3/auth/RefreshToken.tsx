@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import shallow from 'zustand/shallow';
 import { useForm } from 'react-hook-form';
-import { Modal, IModal, Button, Input } from '@firecamp/ui-kit';
+import { Modal, IModal, Button, Input } from '@firecamp/ui';
 import { VscLock } from '@react-icons/all-files/vsc/VscLock';
 
 import GithubGoogleAuth from './GithubGoogleAuth';
@@ -110,7 +110,7 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
       <div className="">
         <form onSubmit={handleSubmit(_onSubmit)}>
           <div className="fc-input-label flex align-center  text-appForegroundInActive ">
-            <span className="iconv2-info-icon" />
+            {/* // TODO: icon: add info icon */}
             <span>{user.email || ''}</span>
           </div>
           <div className="form-group relative">

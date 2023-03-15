@@ -1,7 +1,7 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
-import { EditorApi } from '@firecamp/ui-kit';
+import { EditorApi } from '@firecamp/ui';
 import { EEditorLanguage, IEnv, IRuntimeEnv, TId } from '@firecamp/types';
 
 const EmptyEnv: IRuntimeEnv = { name: '', variables: [], __ref: { id: '' } };

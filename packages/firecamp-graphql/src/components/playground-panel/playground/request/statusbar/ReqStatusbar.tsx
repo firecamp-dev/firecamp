@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import { Button, Dropdown, StatusBar, ToolBar } from '@firecamp/ui-kit';
+import { Button, Dropdown, StatusBar, ToolBar } from '@firecamp/ui';
 import EditPlaygroundName from './EditPlaygroundName';
 import { IStore, useStore } from '../../../../../store';
 import { isValid } from '../../../../../services/GraphQLservice';
@@ -135,9 +135,9 @@ const ReqStatusBar = ({}) => {
             sm
             // TODO: add class opacity and square
             icon={<IoSendSharp />}
-            iconLeft
             onClick={_execute}
             className="!rounded-bl-none !rounded-tl-none"
+            iconLeft
             // disabled={_object.isEmpty(getPlaygroundQueries())}
           />
         </div>

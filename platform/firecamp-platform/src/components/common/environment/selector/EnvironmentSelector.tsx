@@ -1,5 +1,5 @@
 import shallow from 'zustand/shallow';
-import { Column } from '@firecamp/ui-kit';
+import { Column } from '@firecamp/ui';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import EnvironmentDD from './EnvironmentDD';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';

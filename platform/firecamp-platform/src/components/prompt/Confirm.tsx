@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Button, Modal, TabHeader } from '@firecamp/ui-kit';
+import { Button, Modal, TabHeader } from '@firecamp/ui';
 
 const _texts: IConfirm['texts'] = {
   btnConfirm: 'Create',

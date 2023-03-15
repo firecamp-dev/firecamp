@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+
+<Meta title="UI-Kit/Grid/Container/Overview" />
+
+## **Container**
+
+Container : To create a similar pattern view for contents.
+
+- Consists of sub-section like :
+  - header
+  - body
+  - footer
+  - empty
+- Any of the section can be used individually as well.
+
+#### **Component Usage**:
+
+Use `Container` as wrapper to use single/multiple sub sections <br/>
+Container is a flex based Row having contents in flex-direction as Column <br/>
+
+| Component | Description                                                             |
+| --------- | ----------------------------------------------------------------------- |
+| Container | Wrapper for the view which takes height & width of its parent component |
+| Head      | section for the header having height of its content                     |
+| Body      | section for the body having the height of its content                   |
+| Footer    | section for the footer having height of its content                     |
+| Empty     | section for the displaying empty block                                  |
+
+#### **Best Practices**:
+
+Do:
+
+```
+<Container>
+    <Container.Header>
+		Header Section
+    </Container.Header>
+    <Container.Body>
+		<component> Body Section </component>
+    </Container.Body>
+    <Container.Footer>
+		Footer Section
+    </Container.Footer>
+</Container>
+```
+
+- #### **Examples**:
+- <LinkTo
+    kind="ui-kit-grid-container--container-template"
+    className="!text-primaryColor"
+  >
+    Container Example
+  </LinkTo>
+
+#### **Future Improvements:**
+
+- Can be updated with props to specify usage with header & footer components
+- For Example: with Status bar in header section

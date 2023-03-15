@@ -5,7 +5,7 @@ import {
   Button,
   TabHeader,
   EnvironmentTable,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { ICollection } from '@firecamp/types';
 
 const Variables: FC<IProps> = ({

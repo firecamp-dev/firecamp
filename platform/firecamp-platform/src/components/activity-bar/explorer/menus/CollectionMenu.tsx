@@ -5,7 +5,7 @@ import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import { Dropdown } from '@firecamp/ui-kit';
+import { Dropdown } from '@firecamp/ui';
 import { useWorkspaceStore } from '../../../../store/workspace';
 import platformContext from '../../../../services/platform-context';
 import { RE } from '../../../../types';
@@ -191,27 +191,12 @@ const CollectionMenu = ({
         detach={false}
         onToggle={(value) => toggleMenu(value)}
       >
-        <Dropdown.Handler className="transparent icon-more without-border without-padding fc-button" />
+        <Dropdown.Handler className="transparent ic-more without-border without-padding fc-button" />
         <Dropdown.Options
           className="bg-main"
           options={menuType == EMenuType.Request ? requestMenu : commonMenu}
         />
       </Dropdown>
-      {/* {
-          isAddRequestPoOpen ?
-            <Suspense fallback={<>...</>}>
-              <AddRequest
-                id={`add-folder-${123}`}
-                isOpen={isAddRequestPoOpen}
-                meta={{
-                  collectionId,
-                  folderId
-                }}
-                onClose={() => toggleAddRequestPo(false)}
-              />
-            </Suspense>
-           :<></>
-        } */}
     </>
   );
 };

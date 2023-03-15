@@ -4,7 +4,7 @@ import {
   BulkEditTable,
   TTableApi,
   BasicTable,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
 import { IStore, useStore } from '../../../store';

@@ -4,7 +4,7 @@ import {
   TreeDataProvider,
   TreeItem,
   TreeItemIndex,
-} from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui/src/tree';
 import { useWorkspaceStore } from '../../../store/workspace';
 
 enum ETreeEventTypes {

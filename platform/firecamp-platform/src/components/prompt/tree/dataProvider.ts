@@ -6,7 +6,7 @@ import {
   TreeDataProvider as _TreeDataProvider,
   TreeItem,
   TreeItemIndex,
-} from '@firecamp/ui-kit/src/tree';
+} from '@firecamp/ui/src/tree';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',

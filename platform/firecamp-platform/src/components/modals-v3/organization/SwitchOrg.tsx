@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Modal, Button, ProgressBar, IModal } from '@firecamp/ui-kit';
+import { Modal, Button, ProgressBar, IModal } from '@firecamp/ui';
 import { Rest } from '@firecamp/cloud-apis';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { usePlatformStore } from '../../../store/platform';

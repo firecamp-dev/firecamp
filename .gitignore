@@ -14,8 +14,10 @@ update.xml
 package-lock.json
 *.lock
 
+pnpm-lock.yaml
+
 !packages-executors/http-executor/src/src/cacert.pem
-!packages/ui-kit/src/declarations.d.ts
+!platform/firecamp-ui/src/declarations.d.ts
 
 # Logs
 *.log

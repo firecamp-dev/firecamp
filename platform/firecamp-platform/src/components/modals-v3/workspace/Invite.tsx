@@ -9,7 +9,7 @@ import {
   PrimitiveTable,
   TTableApi,
   SecondaryTab,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 // import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';

@@ -3,7 +3,7 @@ import { FaFile } from '@react-icons/all-files/fa/FaFile';
 import shallow from 'zustand/shallow';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { Button, Url, HttpMethodDropDown } from '@firecamp/ui-kit';
+import { Button, Url, UrlBar, HttpMethodDropDown } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);

@@ -13,7 +13,7 @@ import {
   TabHeader,
   Button,
   Notes,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
 import { RE } from '../../../../types';

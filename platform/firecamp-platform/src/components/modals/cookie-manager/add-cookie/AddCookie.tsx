@@ -7,7 +7,7 @@ import {
   Button,
   Input,
   Popover,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { ICookie } from '@firecamp/types';
 import { _date } from '@firecamp/utils';
 import Constants from '../Constants';
@@ -248,7 +248,7 @@ const AddCookie: FC<IAddCookie> = ({
     >
       <Popover.Handler id={popoverID}>
         {mutation === true ? (
-          <span className="iconv2-edit-icon"></span>
+          <span className="icv2-edit-icon"></span>
         ) : (
           <Button
             // TODO: add color="primary-alt"

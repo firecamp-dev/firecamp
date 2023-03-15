@@ -9,7 +9,7 @@ import {
   StatusBar,
   MultipartTable,
   EditorControlBar,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { ERestBodyTypes } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import GraphQLBody from './body/GraphQLBody';

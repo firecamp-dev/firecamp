@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
-import { Row, RootContainer, Column } from '@firecamp/ui-kit';
+import { Row, RootContainer, Column } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import { _misc } from '@firecamp/utils';
 

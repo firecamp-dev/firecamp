@@ -6,7 +6,7 @@ import {
   TabHeader,
   Button,
   Column,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import List from './List';
 import { IStore, useStore } from '../../../../store';
 
@@ -35,12 +35,7 @@ const Body = ({ toggleCollapsed = (bool) => {} }) => {
               </div>
             </TabHeader.Left>
             <TabHeader.Right>
-              <div
-                className="icon-caret cursor-pointer"
-                onClick={() => {
-                  toggleCollapsed(true);
-                }}
-              ></div>
+                arrow {/* // TODO: add arrow icon here  toggleCollapsed(true); */}
             </TabHeader.Right>
           </TabHeader>
         </Container.Header>

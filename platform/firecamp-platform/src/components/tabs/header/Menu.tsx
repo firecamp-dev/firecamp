@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { ERequestTypes } from '@firecamp/types';
-import { Dropdown } from '@firecamp/ui-kit';
+import { Dropdown } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 import {
@@ -8,7 +8,7 @@ import {
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import getOs from '../../../services/get-os';
 import { useTabStore } from '../../../store/tab';
 import { ETabEntityTypes } from '../types';
@@ -35,7 +35,6 @@ const Menu: FC = () => {
           name: 'GraphQL',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              {/* <img src={'icon/png/icons-gray/graphql.png'} /> */}
               {<FcIconGraphQL className="text-graphql" size={24} />}
             </div>
           ),

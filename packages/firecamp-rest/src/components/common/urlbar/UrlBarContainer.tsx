@@ -1,6 +1,6 @@
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
-import { Url, HttpMethodDropDown, Button } from '@firecamp/ui-kit';
+import { Url, HttpMethodDropDown, Button } from '@firecamp/ui';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { IStore, useStore } from '../../../store';

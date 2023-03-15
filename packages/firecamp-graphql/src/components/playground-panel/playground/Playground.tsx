@@ -1,4 +1,4 @@
-import { Container } from '@firecamp/ui-kit';
+import { Container } from '@firecamp/ui';
 import Request from './request/Request';
 import Response from './response/Response';
 

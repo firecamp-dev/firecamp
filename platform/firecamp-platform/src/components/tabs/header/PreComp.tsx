@@ -6,7 +6,7 @@ import {
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { ETabEntityTypes } from '../types';
 import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';

@@ -6,7 +6,7 @@ import {
   TabHeader,
   Editor,
   EditorControlBar,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { ELogTypes } from '../../../types';
 
 const emptyRow = {
@@ -41,9 +41,9 @@ const LogPreview = ({ row = emptyRow }) => {
                     key={'event-icon'}
                     className={cx(
                       'td-icon',
-                      { 'iconv2-to-server-icon': isEventSent },
-                      { 'iconv2-from-server-icon': isEventReceived },
-                      { 'icon-disk': isEventFromSystem }
+                      { 'icv2-to-server-icon': isEventSent },
+                      { 'icv2-from-server-icon': isEventReceived },
+                      { 'ic-disk': isEventFromSystem }
                     )}
                   />
 

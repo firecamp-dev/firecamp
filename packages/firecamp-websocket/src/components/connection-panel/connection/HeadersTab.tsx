@@ -1,5 +1,5 @@
 import { EEditorLanguage } from '@firecamp/types';
-import { BulkEditTable } from '@firecamp/ui-kit';
+import { BulkEditTable } from '@firecamp/ui';
 
 const HeadersTab = ({
   headers = [],

@@ -11,7 +11,7 @@ import {
   Column,
   Input,
   Popover,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 
 import Cookie from './Cookie';
 import { ICookie } from '@firecamp/types';

@@ -1,5 +1,5 @@
 import _compact from 'lodash/compact';
-import { Popover, EPopoverPosition } from '@firecamp/ui-kit';
+import { Popover, EPopoverPosition } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 
 const EditorCommands = {
