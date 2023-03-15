@@ -7,7 +7,6 @@ import {
   Container,
   Loader,
   TabHeader,
-  ProgressBar,
   SecondaryTab,
   Row,
 } from '@firecamp/ui';
@@ -94,7 +93,7 @@ const ImportTab = ({ tab, platformContext: context }) => {
                     raw={state.raw}
                     id={entityId}
                     onChange={(raw) => setState((s) => ({ ...s, raw }))}
-                    importCollection={importCollection}
+                    importCollection={() => importCollection(state.raw)}
                   />
                 ) : (
                   <ImportDropZone
