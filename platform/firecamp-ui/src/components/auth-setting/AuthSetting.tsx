@@ -46,23 +46,23 @@ const AuthSetting: FC<IAuthSetting> = ({
     : authTypeList.filter((a) => a.id !== EAuthTypes.Inherit);
 
   /** to generate payload with auth types for which who's belongs to input box input */
-  let authTypesKeys: any = {};
-  for (let k in authUiState) {
-    let keys: any[] = [];
-    //@ts-ignore
-    const authUi = authUiState[k];
-    if (authUi.inputList) {
-      authUi.inputList.map((i: { id: any }) => {
-        keys.push(i.id || '');
-      });
-    }
-    if (authUi.advancedInputList) {
-      authUi.advancedInputList.map((i: { id: any }) => {
-        keys.push(i.id || '');
-      });
-    }
-    authTypesKeys = Object.assign({}, authTypesKeys, { [k]: keys });
-  }
+  // let authTypesKeys: any = {};
+  // for (let k in authUiState) {
+  //   let keys: any[] = [];
+  //   //@ts-ignore
+  //   const authUi = authUiState[k];
+  //   if (authUi.inputList) {
+  //     authUi.inputList.map((i: { id: any }) => {
+  //       keys.push(i.id || '');
+  //     });
+  //   }
+  //   if (authUi.advancedInputList) {
+  //     authUi.advancedInputList.map((i: { id: any }) => {
+  //       keys.push(i.id || '');
+  //     });
+  //   }
+  //   authTypesKeys = Object.assign({}, authTypesKeys, { [k]: keys });
+  // }
 
   const reducer = (
     state: { isAuthTypesDDOpen: any; activeAuthType: any; authTypes: any },

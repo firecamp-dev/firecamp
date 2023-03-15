@@ -482,15 +482,23 @@ export const normalizeAuth = (
 ): IAuth => {
   const { type } = auth;
   if (!type) return { type: EAuthTypes.None, value: '' };
-  if (auth.type == EAuthTypes.Bearer) {
-    const value = auth.value as IAuthBearer;
-    return {
-      type: auth.type,
-      value: {
-        prefix: value?.prefix || '',
-        token: value?.token || '',
-      },
-    };
+
+  switch (auth.type) {
+    case EAuthTypes.Bearer:
+      const value = auth.value as IAuthBearer;
+      return {
+        type: auth.type,
+        value: {
+          prefix: value?.prefix || '',
+          token: value?.token || '',
+        },
+      };
+    case EAuthTypes.Inherit:
+      return {
+        type: EAuthTypes.Inherit,
+        value: '',
+      };
+    default:
+      return auth;
   }
-  return auth;
 };
