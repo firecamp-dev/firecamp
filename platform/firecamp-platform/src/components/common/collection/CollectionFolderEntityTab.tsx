@@ -185,6 +185,17 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
     // state.equalityChecker({ auth });
   };
 
+  const changeAuthType = (type: EAuthTypes) => {
+    setState((s) => ({
+      ...s,
+      activeAuthType: type,
+      entity: {
+        ...s.entity,
+        auth: { type, value: s.runtimeAuth[type] },
+      },
+    }));
+  };
+
   const onUpdate = async (updates: Partial<ICollection | IFolder>) => {
     if (state.isFetchingEntity) return;
     console.log({ updates });
@@ -269,10 +280,8 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
             isRequesting={isRequesting}
             isAuthChanged={!isEqual(_oEntity.auth, entity.auth)}
             onChangeAuth={changeAuth}
-            onChangeAuthType={(type) => {
-              setState((s) => ({ ...s, activeAuthType: type }));
-            }}
-            onUpdate={() => {}}
+            onChangeAuthType={changeAuthType}
+            onUpdate={console.log}
           />
         );
 
