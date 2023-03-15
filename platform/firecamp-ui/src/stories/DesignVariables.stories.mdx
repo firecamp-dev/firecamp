@@ -1,0 +1,33 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs';
+
+<Meta title="Design/Design Variables" />
+
+## **CSS Design Variable:**
+
+- We have two themes defined
+  - theme-dark
+  - theme-light
+- Default theme is `theme-dark`
+
+- In each theme, we are having 2 primary colors defined
+  - primary-orange
+  - primary-green
+- Default primary color is `primary-orange`
+
+- To apply theme, theme & primary color is required to be defined `<body>` tag classname
+
+- Same color variables are required to be defined for both themes
+
+# Dark color scheme
+
+<div classname="theme-dark">
+  <ColorPalette>
+    {[{ name: '--req-get', value: '#66BB6A' }].map((item, index) => (
+      <ColorItem
+        key={`dark-theme-color-${index}`}
+        title={item.name}
+        colors={{ value: item.value }}
+      />
+    ))}
+  </ColorPalette>
+</div>

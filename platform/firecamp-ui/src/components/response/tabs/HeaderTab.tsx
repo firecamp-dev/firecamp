@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button } from '@firecamp/ui';
+import { BasicTable, Button } from '@firecamp/ui';
 import _toPairs from 'lodash/toPairs';
 import { Resizable } from 're-resizable';
 import { IHeader } from '@firecamp/types';
@@ -71,6 +71,26 @@ const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
           </div>
         );
       })}
+
+      <BasicTable
+              columns={[
+                { id: 'key', key: 'key', name: 'Key', width: '50%' },
+                {
+                  id: 'value',
+                  key: 'value',
+                  name: 'Value',
+                  width: '50%',
+                  resizeWithContainer: true,
+                },
+              ]}
+              rows={headers}
+              options={{
+                hideRowAdd: true,
+                disabledColumns: ['key', 'value'],
+                
+              }}
+              onChange={() => {}}
+            />
     </div>
   );
 };
