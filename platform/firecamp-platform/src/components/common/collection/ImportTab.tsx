@@ -49,8 +49,13 @@ const ImportTab = ({ tab, platformContext: context }) => {
         .import(payload)
         .then((res) => {
           console.log(res, 'import response');
-          //TODO: close the tab
           setState((s) => ({ ...s, isImporting: false }));
+          context.app.notify.success(
+            'You have successfully imported the collection'
+          );
+          setTimeout(() => {
+            context.tab.close(tab.id);
+          }, 100);
         })
         .catch((e) => {
           console.log(e.response);
