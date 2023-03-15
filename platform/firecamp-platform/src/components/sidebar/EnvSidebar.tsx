@@ -8,7 +8,7 @@ import {
   Notes,
   CopyButton,
   Button,
-} from '@firecamp/ui-kit';
+} from '@firecamp/ui';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import {VscEdit} from '@react-icons/all-files/vsc/VscEdit';
 
