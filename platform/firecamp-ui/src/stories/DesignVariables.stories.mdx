@@ -1,4 +1,5 @@
 import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs';
+import { DARK_THEME_VAR, LIGHT_THEME_VAR } from '../../__mocks__/testData';
 
 <Meta title="Design/Design Variables" />
 
@@ -18,16 +19,56 @@ import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs';
 
 - Same color variables are required to be defined for both themes
 
+- Example of body tag classname : `<body className="theme-dark primary-orange"/>`
+
+### Initial Values
+
+- In both themes, the image with color (black & white) is updated using `filter` css property
+- using `.invert` classname to the parent element.
+
+| Dark theme          | Light theme        |
+| ------------------- | ------------------ |
+| filter: invert(0.8) | filter: invert(0); |
+
+- For `<body>`, initial values defined below:
+
+| Property                           | value                                       |
+| ---------------------------------- | ------------------------------------------- |
+| Body background color & text color | @apply bg-appBackground text-appForeground; |
+| height                             | 100vh                                       |
+| width                              | 100vw                                       |
+| margin                             | 0px                                         |
+| padding                            | 0px                                         |
+| -moz-user-select                   | none                                        |
+| -webkit-user-select                | none                                        |
+| -ms-user-select                    | none                                        |
+| user-select                        | none                                        |
+| -o-user-select                     | none                                        |
+| background                         | var(--app-background)                       |
+| color                              | var(--app-foreground)                       |
+| font-weight                        | 400                                         |
+| font-family                        | var(--font-family)                          |
+
 # Dark color scheme
 
 <div classname="theme-dark">
   <ColorPalette>
-    {[{ name: '--req-get', value: '#66BB6A' }].map((item, index) => (
-      <ColorItem
-        key={`dark-theme-color-${index}`}
-        title={item.name}
-        colors={{ value: item.value }}
-      />
-    ))}
+    {Object.entries(DARK_THEME_VAR).map((token, i) => {
+      return (
+        <ColorItem key={i} title={token[0]} colors={{ value: token[1] }} />
+      );
+    })}
+  </ColorPalette>
+</div>
+
+# Light color scheme
+
+<div classname="theme-dark">
+  <ColorPalette>
+    {Object.entries(LIGHT_THEME_VAR).map((token, i) => {
+      return (
+        <ColorItem key={i} title={token[0]} colors={{ value: token[1] }} />
+      );
+    })}
   </ColorPalette>
 </div>
