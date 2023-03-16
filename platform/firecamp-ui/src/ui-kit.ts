@@ -55,7 +55,7 @@ export { default as ResTime } from './components/status/api-status/ResTime';
 export { default as ProgressBar } from './components/progress-bar/ProgressBar';
 
 // Auth setting
-export { default as AuthSetting } from './components/auth-setting/AuthSetting';
+export { default as AuthPanel } from './components/auth-panel/AuthPanel';
 
 export { CheckboxInGrid } from './components/checkbox/Checkbox';
 

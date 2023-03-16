@@ -4,6 +4,7 @@ import { VscNewFile } from '@react-icons/all-files/vsc/VscNewFile';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
+import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { Dropdown } from '@firecamp/ui';
 import { useWorkspaceStore } from '../../../../store/workspace';
@@ -191,7 +192,9 @@ const CollectionMenu = ({
         detach={false}
         onToggle={(value) => toggleMenu(value)}
       >
-        <Dropdown.Handler className="transparent ic-more without-border without-padding fc-button" />
+        <Dropdown.Handler className="transparent without-border without-padding fc-button">
+          <VscEllipsis/>
+        </Dropdown.Handler>
         <Dropdown.Options
           className="bg-main"
           options={menuType == EMenuType.Request ? requestMenu : commonMenu}

@@ -19,7 +19,6 @@ import {
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import { Rest } from '@firecamp/cloud-apis';
 import EditInfo from './tabs/EditInfo';
-import Auth from './tabs/Auth';
 import Scripts from './tabs/Scripts';
 import Variables from './tabs/Variables';
 import { useEnvStore } from '../../../store/environment';
@@ -185,6 +184,17 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
     // state.equalityChecker({ auth });
   };
 
+  const changeAuthType = (type: EAuthTypes) => {
+    setState((s) => ({
+      ...s,
+      activeAuthType: type,
+      entity: {
+        ...s.entity,
+        auth: { type, value: s.runtimeAuth[type] },
+      },
+    }));
+  };
+
   const onUpdate = async (updates: Partial<ICollection | IFolder>) => {
     if (state.isFetchingEntity) return;
     console.log({ updates });
@@ -229,6 +239,10 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
           originalEntity: entity,
           entity,
         }));
+
+        context.app.notify.success(
+          `The ${entityType} has been saved successfully!`
+        );
       })
       .catch((e) => {
         console.log({ e });
@@ -264,15 +278,14 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
         return (
           <AuthTab
             type={state.activeAuthType}
-            auth={state.entity.auth}
-            authUiState={state.runtimeAuth}
+            value={state.runtimeAuth[state.activeAuthType]}
             isRequesting={isRequesting}
             isAuthChanged={!isEqual(_oEntity.auth, entity.auth)}
             onChangeAuth={changeAuth}
-            onChangeAuthType={(type) => {
-              setState((s) => ({ ...s, activeAuthType: type }));
+            onChangeAuthType={changeAuthType}
+            onUpdate={() => {
+              onUpdate({ auth: state.entity.auth });
             }}
-            onUpdate={() => {}}
           />
         );
 

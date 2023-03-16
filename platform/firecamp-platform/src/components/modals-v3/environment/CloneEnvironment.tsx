@@ -140,7 +140,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       </Modal.Header>
       <Modal.Body>
         <ProgressBar active={isRequesting} />
-        <div className="p-6">
+        <div className="p-4">
           <div className="">
             <div className="items-center mb-4">
               <label
@@ -231,8 +231,8 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
             />
           </div>
         </div>
-        <div className="!px-6 py-4">
-          <TabHeader className="p-0">
+        <div className="p-4">
+          <TabHeader className="!p-0">
             <TabHeader.Right>
               <Button
                 text="Cancel"

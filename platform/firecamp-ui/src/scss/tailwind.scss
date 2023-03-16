@@ -866,6 +866,9 @@ video {
 .left-2 {
 	left: 0.5rem;
 }
+.-left-2 {
+	left: -0.5rem;
+}
 .-top-2 {
 	top: -0.5rem;
 }
@@ -1547,7 +1550,7 @@ video {
 	border-color: var(--app-secondary) !important;
 }
 .\!border-danger {
-	border-color: var(--danger) !important;
+	border-color: var(--error) !important;
 }
 .border-primaryColor {
 	border-color: var(--app-primary);
@@ -1670,7 +1673,7 @@ video {
 	background-color: var(--app-secondary);
 }
 .bg-danger {
-	background-color: var(--danger);
+	background-color: var(--error);
 }
 .bg-popoverBackground {
 	background-color: var(--popover-background);
@@ -2022,6 +2025,9 @@ video {
 .align-baseline {
 	vertical-align: baseline;
 }
+.align-middle {
+	vertical-align: middle;
+}
 .font-sans {
 	font-family: sans-serif;
 }
@@ -2132,7 +2138,7 @@ video {
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
 .text-danger {
-	color: var(--danger);
+	color: var(--error);
 }
 .text-appForegroundInActive {
 	color: var(--app-foreground-inactive);

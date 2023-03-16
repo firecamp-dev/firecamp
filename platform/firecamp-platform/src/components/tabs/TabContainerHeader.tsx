@@ -73,7 +73,7 @@ const TabHeaderContainer = () => {
     else {
       platformContext.window.confirm({
         title:
-          'The request has changes which are not saved, You can forcefully close the request by ignorig the current changes.',
+          'Changes to this request are not saved; you may forcefully close it by ignoring the changes.',
         message: '',
         texts: {
           btnCancel: 'Cancel',
