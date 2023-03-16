@@ -10,7 +10,10 @@ import {
   IOAuth2UiState,
 } from '@firecamp/types';
 import { _object, _table } from '@firecamp/utils';
-import { getAuthHeaders } from '../../services/request.service';
+import {
+  getAuthHeaders,
+  getInheritedAuthFromParent,
+} from '../../services/request.service';
 import { TStoreSlice } from '../store.type';
 
 interface IAuthSlice {
@@ -80,11 +83,15 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
   resetAuthHeaders: async (type: EAuthTypes) => {
     const state = get();
     try {
-      if (type == EAuthTypes.Inherit) {
-        state.changeAuthHeaders([]);
-        return;
-      }
-      const authHeaders = await getAuthHeaders(state.request, type);
+      const parentAuth =
+        type == EAuthTypes.Inherit
+          ? getInheritedAuthFromParent(state.runtime.parentArtifacts)
+          : null;
+      const authHeaders = await getAuthHeaders(
+        state.request,
+        type,
+        parentAuth?.auth // value can be null
+      );
       if (type === EAuthTypes.OAuth2 && authHeaders['Authorization']) {
         authHeaders['Authorization'] = `Bearer ${authHeaders['Authorization']}`;
         state.setOAuth2LastFetchedToken(authHeaders['Authorization']);

@@ -863,6 +863,12 @@ video {
 .bottom-0 {
 	bottom: 0px;
 }
+.-left-2 {
+	left: -0.5rem;
+}
+.-top-2 {
+	top: -0.5rem;
+}
 .\!top-4 {
 	top: 1rem !important;
 }
@@ -898,9 +904,6 @@ video {
 }
 .-bottom-px {
 	bottom: -1px;
-}
-.-top-2 {
-	top: -0.5rem;
 }
 .left-1 {
 	left: 0.25rem;
@@ -943,9 +946,6 @@ video {
 }
 .m-0 {
 	margin: 0px;
-}
-.m-5 {
-	margin: 1.25rem;
 }
 .m-5 {
 	margin: 1.25rem;
@@ -1358,9 +1358,6 @@ video {
 .flex-1 {
 	flex: 1 1 0%;
 }
-.flex-grow {
-	flex-grow: 1;
-}
 .border-collapse {
 	border-collapse: collapse;
 }
@@ -1556,7 +1553,7 @@ video {
 	border-color: var(--app-secondary) !important;
 }
 .\!border-danger {
-	border-color: var(--danger) !important;
+	border-color: var(--error) !important;
 }
 .border-primaryColor {
 	border-color: var(--app-primary);
@@ -1636,6 +1633,9 @@ video {
 .bg-activityBarActiveBackground {
 	background-color: var(--activityBar-activeBackground);
 }
+.bg-appForegroundInActive {
+	background-color: var(--app-foreground-inactive);
+}
 .bg-focus3 {
 	background-color: var(--focus-level-3);
 }
@@ -1676,7 +1676,7 @@ video {
 	background-color: var(--app-secondary);
 }
 .bg-danger {
-	background-color: var(--danger);
+	background-color: var(--error);
 }
 .bg-popoverBackground {
 	background-color: var(--popover-background);
@@ -2028,6 +2028,9 @@ video {
 .align-baseline {
 	vertical-align: baseline;
 }
+.align-middle {
+	vertical-align: middle;
+}
 .font-sans {
 	font-family: sans-serif;
 }
@@ -2056,9 +2059,6 @@ video {
 }
 .text-xs {
 	font-size: 10px;
-}
-.text-xl {
-	font-size: 18px;
 }
 .text-xl {
 	font-size: 18px;
@@ -2140,23 +2140,17 @@ video {
 	--tw-text-opacity: 1;
 	color: rgba(255, 255, 255, var(--tw-text-opacity));
 }
-.text-appForeground {
-	color: var(--app-foreground);
-}
 .text-danger {
-	color: var(--danger);
+	color: var(--error);
+}
+.text-appForegroundInActive {
+	color: var(--app-foreground-inactive);
 }
 .text-popoverForeground {
 	color: var(--popover-foreground);
 }
-.text-appForegroundInActive {
-	color: var(--app-foreground-inactive);
-}
 .text-statusBarForeground {
 	color: var(--statusBar-foreground);
-}
-.text-appForegroundInActive {
-	color: var(--app-foreground-inactive);
 }
 .text-websocket {
 	color: var(--req-socketio);

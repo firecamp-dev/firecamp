@@ -28,4 +28,5 @@ export type TAuth =
   | IAuthBearer
   | IAuthDigest
   | IOAuth1
-  | IOAuth2;
+  | IOAuth2
+  | '';

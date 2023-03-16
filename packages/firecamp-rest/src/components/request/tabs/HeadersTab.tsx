@@ -1,19 +1,15 @@
 import { useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import { EEditorLanguage } from '@firecamp/types';
-import {
-  BulkEditTable,
-  Container,
-  BasicTable,
-  TabHeader,
-} from '@firecamp/ui';
+import { BulkEditTable, Container, BasicTable, TabHeader } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const HeadersTab = () => {
-  const { headers, authHeaders, changeHeaders } = useStore(
+  const { headers, authHeaders, runtime, changeHeaders } = useStore(
     (s: IStore) => ({
       headers: s.request.headers,
       authHeaders: s.runtime.authHeaders,
+      runtime: s.runtime,
       changeHeaders: s.changeHeaders,
     }),
     shallow
