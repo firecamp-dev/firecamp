@@ -64,19 +64,6 @@ const AuthSetting: FC<IAuthSetting> = ({
   //   authTypesKeys = Object.assign({}, authTypesKeys, { [k]: keys });
   // }
 
-  const reducer = (
-    state: { isAuthTypesDDOpen: any; activeAuthType: any; authTypes: any },
-    action: { type: any; value: any }
-  ) => {
-    switch (action.type) {
-      case 'authTypes':
-        return {
-          ...state,
-          authTypes: action.value,
-        };
-        break;
-    }
-  };
 
   const initialState = {
     isAuthTypesDDOpen: false,

@@ -230,7 +230,6 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
   _nr.auth = normalizeAuth(auth);
   console.log(_nr.auth, '_nr.auth');
 
-  console.log(_nr.auth, '_nr.auth');
   // _nr.auth = !_object.isEmpty(auth)
   //   ? (_auth.normalizeToUi(auth) as IUiAuth)
   //   : _cloneDeep(_auth.defaultAuthState);
@@ -319,80 +318,6 @@ export const initialiseStoreFromRequest = (
 };
 
 /**
- * prepare normalize payload for send request.
- */
-export const normalizeSendRequestPayload = async (
-  request: IRest,
-  originalRequest: IRest
-) => {
-  const _request: IRest = _object.pick(request, [
-    'url',
-    'method',
-    'body',
-    'config',
-    'headers',
-    '__meta',
-    '__ref',
-  ]) as IRest;
-
-  try {
-    // Send active body payload
-    if (request.body?.type) {
-      _request.body = {
-        value: request.body?.value,
-        type: request.body?.type,
-      };
-
-      //TODO: handle multipart formdata
-
-      if (
-        request.body.type === ERestBodyTypes.Binary &&
-        originalRequest.body.value
-      ) {
-        // handle binary body payload
-        let text: string | ArrayBuffer = await readFile(
-          originalRequest.body.value
-        )
-          .then((r) => r)
-          .catch((e) => {
-            return '';
-          });
-        _request.body.value = text;
-      }
-    }
-
-    // Send active auth payload
-    if (request.auth?.type !== EAuthTypes.Inherit) {
-      _request.auth = {
-        value: request.auth.value,
-        type: request.auth.type,
-      };
-    } else if (request.auth?.type === EAuthTypes.Inherit) {
-      // const inheritedAuth = request.__meta.inheritedAuth;
-      // if (inheritedAuth) {
-      //   _request.auth = {
-      //     value: inheritedAuth.value,
-      //     type: inheritedAuth.auth,
-      //   };
-      // }
-    }
-    _request.__ref = { id: request.__ref.id, collectionId: '' };
-    // console.log({ _request });
-
-    //  merge headers and auth headers
-    const authHeaders = await getAuthHeaders(request, request.auth?.type);
-    const headersAry = _table.objectToTable(authHeaders) || [];
-    // console.log({ headersAry, request });
-
-    _request.headers = [...request.headers, ...headersAry];
-  } catch (error) {
-    console.log({ normalizeSendRequestPayload: error });
-  }
-
-  return Promise.resolve(_request);
-};
-
-/**
  *  Read binary file return file text
  */
 export const readFile = (file): Promise<string | ArrayBuffer> => {
@@ -408,29 +333,21 @@ export const readFile = (file): Promise<string | ArrayBuffer> => {
 
 export const getAuthHeaders = async (
   request: IRest,
-  type?: EAuthTypes
+  authType?: EAuthTypes,
+  parentAuth?: IAuth
 ): Promise<{ [key: string]: any } | IAuthHeader> => {
-  if (!type || type == EAuthTypes.None) return Promise.resolve({});
-
-  /*  if (type === EAuthTypes.Inherit) {
-    // TODO: add logic to fetch inherit auth
-    // set inherit auth to runtimeSlice.inherit
-    // update auth headers by inherit auth
-  } */
-
   const { url, method, body, headers, auth } = request;
-  let requestAuth = Object.assign({}, auth);
+  let requestAuth: IAuth = { type: EAuthTypes.None, value: '' };
 
-  // @ts-ignore
-  let inheritedAuth = request.__meta.inheritedAuth;
-  if (type === EAuthTypes.Inherit && inheritedAuth) {
-    let normalizedAuth = _auth.normalizeToUi(inheritedAuth.payload);
-    requestAuth = {
-      value: normalizedAuth[inheritedAuth.type],
-      type: inheritedAuth.type,
-    };
-    type = inheritedAuth.type;
+  if (authType === EAuthTypes.Inherit) {
+    if (!parentAuth?.type) return {};
+    // let normalizedAuth = _auth.normalizeToUi(parentAuth.auth);
+    requestAuth = { type: parentAuth.type, value: parentAuth.value };
+  } else {
+    requestAuth = { type: auth.type, value: auth.value };
   }
+  // console.log({ requestAuth }, 'from parent auth');
+  if (requestAuth.type == EAuthTypes.None) return Promise.resolve({});
 
   try {
     const agent =
@@ -440,16 +357,15 @@ export const getAuthHeaders = async (
 
     // console.log({ extraParams, requestAuth });
 
-    let authvalue = requestAuth.value;
-    // console.log({ authvalue });
+    const { type, value } = requestAuth;
 
     // manage OAuth2 payload // TODO: fix Auth2 later
     // if (auth?.type === EAuthTypes.OAuth2) {
     //   const OAuth2 = requestAuth.value as IOAuth2UiState;
-    //   authvalue = OAuth2.grantTypes[OAuth2.activeGrantType];
+    //   value = OAuth2.grantTypes[OAuth2.activeGrantType];
     // }
 
-    const authService = new Auth(type, authvalue, {
+    const authService = new Auth(type, value, {
       url,
       method,
       body,
@@ -500,5 +416,23 @@ export const normalizeAuth = (
       };
     default:
       return auth;
+  }
+};
+
+/** Get inherited auth from the parent artifact */
+export const getInheritedAuthFromParent = (
+  parentArtifacts: any
+): null | {
+  entityType: 'collection' | 'folder';
+  auth: IAuth;
+} => {
+  const { collection = {}, folder = {} } = parentArtifacts;
+
+  if (folder?.auth?.type) {
+    return { entityType: 'folder', auth: folder.auth };
+  } else if (collection?.auth?.type) {
+    return { entityType: 'collection', auth: collection.auth };
+  } else {
+    return null;
   }
 };
