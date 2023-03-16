@@ -866,6 +866,9 @@ video {
 .left-2 {
 	left: 0.5rem;
 }
+.-left-2 {
+	left: -0.5rem;
+}
 .-top-2 {
 	top: -0.5rem;
 }
@@ -1309,9 +1312,6 @@ video {
 }
 .w-screen {
 	width: 100vw;
-}
-.w-16 {
-	width: 4rem;
 }
 .w-40 {
 	width: 10rem;
@@ -2035,6 +2035,9 @@ video {
 }
 .align-baseline {
 	vertical-align: baseline;
+}
+.align-middle {
+	vertical-align: middle;
 }
 .font-sans {
 	font-family: sans-serif;
@@ -3265,3 +3268,12 @@ body .ace_editor .ace_scrollbar{
   border-right: none;
 }
 /*-----------table 2 css end --------*/
+
+.dropzone-wrapper > .dropzone{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}

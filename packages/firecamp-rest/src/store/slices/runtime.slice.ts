@@ -19,7 +19,7 @@ type TParentArtifacts = {
 interface IRuntime {
   bodies: typeof RuntimeBodies;
   auths: typeof _auth.defaultAuthState;
-  authHeaders?: IHeader[];
+  authHeaders?: IHeader[]; // auth headers will be generated from the auth config or from parent (collection/folder) auth if type. is inherit
   parentArtifacts: TParentArtifacts;
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
@@ -49,7 +49,8 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   },
 
   changeAuthHeaders: (authHeaders: Array<IHeader>) => {
-    const headersLength = get().request.headers?.length + authHeaders.length;
+    const { request } = get();
+    const headersLength = request.headers?.length + authHeaders.length;
     const updatedUiRequestPanel = {
       hasHeaders: headersLength ? true : false,
       headers: headersLength,
@@ -76,6 +77,8 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
         parentArtifacts: artifacts,
       },
     }));
+    const { request, resetAuthHeaders } = get();
+    if (request.auth?.type) resetAuthHeaders(request.auth.type);
   },
 
   setRequestRunningFlag: (flag: boolean) => {

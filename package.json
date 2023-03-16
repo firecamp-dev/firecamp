@@ -59,7 +59,7 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@babel/register": "^7.0.0",
-    "babel-eslint": "^7.1.0",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^9.1.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "babel-plugin-transform-remove-console": "^6.9.4",
@@ -73,7 +73,7 @@
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "css-modules-require-hook": "^4.2.3",
-    "electron": "19.0.0",
+    "electron": "23.1.4",
     "eslint": "^8.29.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.22.0",
@@ -113,15 +113,14 @@
   "dependencies": {
     "@babel/runtime": "^7.15.4",
     "@firecamp/url": "0.0.20",
-    "@firecamp/utils": "^0.0.17",
+    "@firecamp/utils": "^0.0.18",
     "@react-icons/all-files": "^4.1.0",
     "autoprefixer": "^10.4.8",
     "dotenv": "^16.0.1",
     "dotenv-vault-core": "^0.7.0",
     "faker": "^5.5.3",
     "match-sorter": "^6.3.1",
-    "prettify-xml": "^1.2.0",
-    "react-file-drop": "^3.1.5"
+    "prettify-xml": "^1.2.0"
   },
   "engines": {
     "node": ">=16",
