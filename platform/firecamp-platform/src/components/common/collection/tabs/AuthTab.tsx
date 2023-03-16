@@ -3,8 +3,7 @@ import { AuthSetting, Button, Container, TabHeader } from '@firecamp/ui';
 
 const AuthTab = ({
   type,
-  auth,
-  authUiState,
+  value,
   isRequesting,
   isAuthChanged,
   onChangeAuth,
@@ -32,26 +31,22 @@ const AuthTab = ({
   //   // console.log({ updates });
   // };
 
-  const _onSelectInheritAuth = () => {};
-  const _openParentAuthModal = () => {};
   const _fetchTokenOnChangeOAuth2 = () => {
     // resetAuthHeaders(EAuthTypes.OAuth2);
   };
   const _noop = () => {};
-  console.log(authUiState)
+  console.log(value);
   return (
     <Container className="with-divider h-full">
       <Container.Body>
         <AuthSetting
           allowInherit={false}
-          authUiState={authUiState} //{runtimeAuths}
-          activeAuth={type}
-          onChangeActiveAuth={onChangeAuthType} //{changeAuthType}
-          onChangeAuth={onChangeAuth} //{changeAuth}
-          onChangeOAuth2Value={_noop} //{_updateOAuth2}
-          fetchTokenOnChangeOAuth2={_noop} //{_fetchTokenOnChangeOAuth2}
-          fetchInheritedAuth={_noop} //{_onSelectInheritAuth}
-          openParentAuthModal={_noop} //{_openParentAuthModal}
+          value={value}
+          activeAuthType={type}
+          onChangeAuthType={onChangeAuthType}
+          onChangeAuthValue={onChangeAuth}
+          onChangeOAuth2Value={_noop}
+          fetchTokenOnChangeOAuth2={_noop}
           oauth2LastToken={''} //{oauth2LastFetchedToken || ''}
         />
       </Container.Body>
@@ -60,7 +55,9 @@ const AuthTab = ({
           <TabHeader.Right>
             <Button
               text={isRequesting ? 'Saving Auth...' : 'Save Auth Changes'}
-              onClick={() => onUpdate(auth)}
+              onClick={() => {
+                onUpdate();
+              }}
               disabled={!isAuthChanged || isRequesting}
               primary
               sm

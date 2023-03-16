@@ -2,7 +2,16 @@ import { FC, useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
 import isEqual from 'react-fast-compare';
 import { _misc, _object } from '@firecamp/utils';
-import { EFirecampAgent, EAuthTypes } from '@firecamp/types';
+import {
+  EFirecampAgent,
+  EAuthTypes,
+  IAuthBearer,
+  IAuthAws4,
+  IOAuth1,
+  IAuthDigest,
+  IAuthBasic,
+  IAuth,
+} from '@firecamp/types';
 import {
   AvailableOnElectron,
   Notes,
@@ -26,17 +35,14 @@ import {
   Inherit,
 } from './auths';
 import { authTypeList } from './constants';
-import { IAuthSetting } from './interfaces/AuthSetting.interface';
 
-const AuthSetting: FC<IAuthSetting> = ({
-  authUiState,
-  activeAuth = '',
+const AuthSetting: FC<IProps> = ({
+  value,
+  activeAuthType = EAuthTypes.None,
   allowInherit = true,
-  inheritAuthMessage = '',
-  onChangeAuth = () => {},
-  onChangeActiveAuth = () => {},
+  onChangeAuthType = () => {},
+  onChangeAuthValue = () => {},
   onChangeOAuth2Value = () => {},
-  openParentAuthModal = () => {},
   fetchTokenOnChangeOAuth2 = (authPayload: any) => {},
   fetchInheritedAuth = () => {},
   oauth2LastToken = '',
@@ -45,106 +51,50 @@ const AuthSetting: FC<IAuthSetting> = ({
     ? [...authTypeList]
     : authTypeList.filter((a) => a.id !== EAuthTypes.Inherit);
 
-  /** to generate payload with auth types for which who's belongs to input box input */
-  // let authTypesKeys: any = {};
-  // for (let k in authUiState) {
-  //   let keys: any[] = [];
-  //   //@ts-ignore
-  //   const authUi = authUiState[k];
-  //   if (authUi.inputList) {
-  //     authUi.inputList.map((i: { id: any }) => {
-  //       keys.push(i.id || '');
-  //     });
-  //   }
-  //   if (authUi.advancedInputList) {
-  //     authUi.advancedInputList.map((i: { id: any }) => {
-  //       keys.push(i.id || '');
-  //     });
-  //   }
-  //   authTypesKeys = Object.assign({}, authTypesKeys, { [k]: keys });
-  // }
-
-
   const initialState = {
     isAuthTypesDDOpen: false,
-    activeAuthType: _authTypeList.find((type) => type.id === activeAuth),
+    authTypeMeta: _authTypeList.find((type) => type.id === activeAuthType),
     authTypes: _authTypeList,
   };
   const [state, setState] = useState(initialState);
   const [inheritedAuth, setInheritedAuth] = useState({ parentName: '' });
-  const { isAuthTypesDDOpen, activeAuthType, authTypes } = state;
+  const { isAuthTypesDDOpen, authTypeMeta, authTypes } = state;
 
   useEffect(() => {
     setState((s) => ({
       ...s,
-      activeAuthType: _authTypeList.find((type) => type.id === activeAuth),
+      activeAuthType: _authTypeList.find((type) => type.id === activeAuthType),
     }));
-
-    const _fetchInherit = async () => {
-      if (activeAuth === EAuthTypes.Inherit) {
-        let inherited = await fetchInheritedAuth();
-        if (inherited && inherited !== inheritedAuth) {
-          setInheritedAuth(inherited);
-        }
-      }
-    };
-    _fetchInherit();
-  }, [activeAuth]);
-
-  const _onchangeActiveAuth = async (authType: EAuthTypes) => {
-    try {
-      const authData = await onChangeActiveAuth(authType);
-      if (
-        authData &&
-        authType === EAuthTypes.Inherit &&
-        !isEqual(authData, inheritedAuth)
-      ) {
-        setInheritedAuth(authData);
-      }
-    } catch (error) {
-      console.error({ error });
-    }
-  };
+  }, [activeAuthType]);
 
   const _renderTabBody = () => {
-    switch (activeAuth) {
+    switch (activeAuthType) {
       case EAuthTypes.None:
         return (
           <NoAuth
-            onChangeActiveAuth={_onchangeActiveAuth}
+            onChangeAuthType={onChangeAuthType}
             authTypeList={_authTypeList}
           />
         );
       case EAuthTypes.Bearer:
         return (
-          <Bearer
-            auth={authUiState[EAuthTypes.Bearer]}
-            onChange={onChangeAuth}
-          />
+          <Bearer auth={value as IAuthBearer} onChange={onChangeAuthValue} />
         );
       case EAuthTypes.Basic:
         return (
-          <Basic auth={authUiState[EAuthTypes.Basic]} onChange={onChangeAuth} />
+          <Basic auth={value as IAuthBasic} onChange={onChangeAuthValue} />
         );
       case EAuthTypes.Digest:
         return (
-          <Digest
-            auth={authUiState[EAuthTypes.Digest]}
-            onChange={onChangeAuth}
-          />
+          <Digest auth={value as IAuthDigest} onChange={onChangeAuthValue} />
         );
       case EAuthTypes.OAuth1:
-        return (
-          <OAuth1
-            auth={authUiState[EAuthTypes.OAuth1]}
-            onChange={onChangeAuth}
-          />
-        );
+        return <OAuth1 auth={value as IOAuth1} onChange={onChangeAuthValue} />;
       case EAuthTypes.OAuth2:
         if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
           return (
             <OAuth2
-              auth={authUiState[EAuthTypes.OAuth2]}
+              auth={value}
               oauth2LastToken={oauth2LastToken}
               onChangeOAuth2Value={onChangeOAuth2Value}
               fetchTokenOnChangeOAuth2={fetchTokenOnChangeOAuth2}
@@ -155,11 +105,9 @@ const AuthSetting: FC<IAuthSetting> = ({
         }
       case EAuthTypes.Hawk:
         return <></>;
-      // <Hawk auth={authUiState[EAuthTypes.Hawk]} onChange={onChangeAuth} />;
+      // <Hawk auth={value} onChange={onChangeAuth} />;
       case EAuthTypes.Aws4:
-        return (
-          <Aws auth={authUiState[EAuthTypes.Aws4]} onChange={onChangeAuth} />
-        );
+        return <Aws auth={value as IAuthAws4} onChange={onChangeAuthValue} />;
       case EAuthTypes.Ntlm:
         return (
           <div className="p-3">
@@ -174,7 +122,7 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
       /* case EAuthTypes.Atlassian:
         return (
           <Atlassion
-            auth={authUiState[EAuthTypes.Atlassian]}
+            auth={value}
             onChange={onChangeAuth}
           />
         );*/
@@ -182,23 +130,13 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
         return <Netrc />;
         break;
       case EAuthTypes.Inherit:
-        return (
-          <Inherit
-            openParentAuthModal={openParentAuthModal}
-            parentName={inheritedAuth?.parentName || ''}
-            message={inheritAuthMessage}
-          />
-        );
+        return <Inherit />;
       default:
         return allowInherit ? (
-          <Inherit
-            openParentAuthModal={openParentAuthModal}
-            parentName={inheritedAuth?.parentName || ''}
-            message={inheritAuthMessage}
-          />
+          <Inherit />
         ) : (
           <NoAuth
-            onChangeActiveAuth={_onchangeActiveAuth}
+            onChangeAuthType={onChangeAuthType}
             authTypeList={_authTypeList}
           />
         );
@@ -218,7 +156,7 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
     enable: boolean;
   }) => {
     setState((s) => ({ ...s, activeAuthType: element }));
-    _onchangeActiveAuth(element.id);
+    onChangeAuthType(element.id);
   };
 
   return (
@@ -228,12 +166,12 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
           <Dropdown
             isOpen={isAuthTypesDDOpen}
             // style={{ width: '115px' }}
-            selected={activeAuthType?.name || ''}
+            selected={authTypeMeta?.name || ''}
             onToggle={() => _onToggleAuthTypesDD()}
           >
             <Dropdown.Handler>
               <Button
-                text={activeAuthType?.name || ''}
+                text={authTypeMeta?.name || ''}
                 className="font-bold"
                 transparent
                 withCaret
@@ -257,3 +195,50 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
 };
 
 export default AuthSetting;
+
+export interface IProps {
+  /**
+   * auth value
+   */
+  value: IAuth['value'];
+
+  /**
+   * active auth among all auth
+   */
+  activeAuthType: string;
+
+  /**
+   * a boolean value to state whether you want to allow to inherit auth from parent or not
+   */
+  allowInherit?: boolean;
+
+  /**
+   * passes updated auth value in to parent component
+   */
+  onChangeAuthValue: (
+    authType: EAuthTypes,
+    updates: { key: string; value: any } | any
+  ) => void;
+
+  /**
+   * update active auth value
+   */
+  onChangeAuthType: (authType: EAuthTypes) => Promise<any> | any;
+
+  /**
+   * update auth value for auth type OAuth2
+   */
+  onChangeOAuth2Value: (key: string, updates: any) => void;
+
+  /**
+   * fetch OAuth2 token
+   */
+  fetchTokenOnChangeOAuth2?: (options: any) => void;
+
+  /**
+   * fetch inherited auth from parent
+   */
+  fetchInheritedAuth?: () => Promise<any> | any;
+
+  oauth2LastToken?: string;
+}

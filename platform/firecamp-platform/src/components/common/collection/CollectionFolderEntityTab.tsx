@@ -19,7 +19,6 @@ import {
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import { Rest } from '@firecamp/cloud-apis';
 import EditInfo from './tabs/EditInfo';
-import Auth from './tabs/Auth';
 import Scripts from './tabs/Scripts';
 import Variables from './tabs/Variables';
 import { useEnvStore } from '../../../store/environment';
@@ -279,14 +278,13 @@ const CollectionFolderEntityTab = ({ tab, platformContext: context }) => {
         return (
           <AuthTab
             type={state.activeAuthType}
-            auth={state.entity.auth}
-            authUiState={state.runtimeAuth}
+            value={state.runtimeAuth[state.activeAuthType]}
             isRequesting={isRequesting}
             isAuthChanged={!isEqual(_oEntity.auth, entity.auth)}
             onChangeAuth={changeAuth}
             onChangeAuthType={changeAuthType}
-            onUpdate={(auth) => {
-              onUpdate({ auth });
+            onUpdate={() => {
+              onUpdate({ auth: state.entity.auth });
             }}
           />
         );

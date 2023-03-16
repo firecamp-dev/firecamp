@@ -49,21 +49,19 @@ const AuthTab = () => {
   };
 
   const _onSelectInheritAuth = () => {};
-  const _openParentAuthModal = () => {};
   const _fetchTokenOnChangeOAuth2 = () => {
     resetAuthHeaders(EAuthTypes.OAuth2);
   };
 
   return (
     <AuthSetting
-      authUiState={runtimeAuths}
-      activeAuth={type}
-      onChangeActiveAuth={changeAuthType}
-      onChangeAuth={changeAuth}
+      value={runtimeAuths[type]}
+      activeAuthType={type}
+      onChangeAuthType={changeAuthType}
+      onChangeAuthValue={changeAuth}
       onChangeOAuth2Value={_updateOAuth2}
       fetchTokenOnChangeOAuth2={_fetchTokenOnChangeOAuth2}
       fetchInheritedAuth={_onSelectInheritAuth}
-      openParentAuthModal={_openParentAuthModal}
       oauth2LastToken={oauth2LastFetchedToken || ''}
     />
   );
