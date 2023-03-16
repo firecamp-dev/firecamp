@@ -77,6 +77,8 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
         parentArtifacts: artifacts,
       },
     }));
+    const { request, resetAuthHeaders } = get();
+    if (request.auth?.type) resetAuthHeaders(request.auth.type);
   },
 
   setRequestRunningFlag: (flag: boolean) => {
