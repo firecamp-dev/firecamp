@@ -8,9 +8,10 @@ import {
   Notes,
   CopyButton,
   Button,
+  PlainTable,
 } from '@firecamp/ui';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
-import {VscEdit} from '@react-icons/all-files/vsc/VscEdit';
+import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 
 const EnvSidebar: FC<any> = ({ expanded }) => {
   const { activeEnv, globalEnv, toggleEnvSidebar } = useEnvStore(
@@ -77,7 +78,6 @@ const EnvSidebarContainer = () => {
 };
 export { EnvSidebar, EnvSidebarContainer };
 
-
 const EnvPreviewTable: FC<any> = ({ title, name, variables }) => {
   variables = variables.filter((v) => v.key); //only show those rows which has key
   return (
@@ -92,8 +92,8 @@ const EnvPreviewTable: FC<any> = ({ title, name, variables }) => {
           <></>
         )}
         <div className="flex items-center ml-auto">
-        <Button text="Edit" secondary xs />   
-        <VscEdit className="table-action ml-2 cursor-pointer" />
+          <Button text="Edit" secondary xs />
+          <VscEdit className="table-action ml-2 cursor-pointer" />
         </div>
       </div>
       <div className="flex-1 overflow-auto visible-scrollbar">
@@ -112,13 +112,32 @@ const EnvPreviewTable: FC<any> = ({ title, name, variables }) => {
                 </label>
                 <div className="px-3 py-1 table-cell border border-appBorder">
                   <div className="flex flex-row w-full items-center">
-                  <span className="flex-1">{v.value || v.initialValue}</span>
+                    <span className="flex-1">{v.value || v.initialValue}</span>
                   </div>
                 </div>
               </div>
             );
           })}
         </div>
+
+        {variables.length > 0 && (
+          <PlainTable
+            columns={[
+              { id: 'key', key: 'key', name: 'Key', width: '120px' },
+              {
+                id: 'value',
+                key: 'initialValue',
+                name: 'Value',
+                width: '200px',
+                resizeWithContainer: true,
+              },
+            ]}
+            classes={{ theadTr: 'hidden', table: '!m-0 !min-w-full' }}
+            rows={variables}
+            onChange={() => {}}
+            onMount={() => {}}
+          />
+        )}
       </div>
     </div>
   );
