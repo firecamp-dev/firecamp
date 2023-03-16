@@ -1,5 +1,5 @@
 import _compact from 'lodash/compact';
-import { AuthSetting, Button, Container, TabHeader } from '@firecamp/ui';
+import { AuthPanel, Button, Container, TabHeader } from '@firecamp/ui';
 
 const AuthTab = ({
   type,
@@ -39,7 +39,7 @@ const AuthTab = ({
   return (
     <Container className="with-divider h-full">
       <Container.Body>
-        <AuthSetting
+        <AuthPanel
           allowInherit={false}
           value={value}
           activeAuthType={type}

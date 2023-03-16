@@ -1,7 +1,7 @@
 import _compact from 'lodash/compact';
 import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
-import { AuthSetting } from '@firecamp/ui';
+import { AuthPanel } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const AuthTab = () => {
@@ -54,7 +54,7 @@ const AuthTab = () => {
   };
 
   return (
-    <AuthSetting
+    <AuthPanel
       value={runtimeAuths[type]}
       activeAuthType={type}
       onChangeAuthType={changeAuthType}

@@ -36,7 +36,7 @@ import {
 } from './auths';
 import { authTypeList } from './constants';
 
-const AuthSetting: FC<IProps> = ({
+const AuthPanel: FC<IProps> = ({
   value,
   activeAuthType = EAuthTypes.None,
   allowInherit = true,
@@ -194,7 +194,7 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
   );
 };
 
-export default AuthSetting;
+export default AuthPanel;
 
 export interface IProps {
   /**
