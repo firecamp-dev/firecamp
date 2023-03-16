@@ -6,16 +6,17 @@ import { _object } from '@firecamp/utils';
 const ImportRaw: FC<IProps> = ({
   id,
   raw,
-  isRequesting = false,
-  onImport = (raw) => {},
+  isImporting = false,
+  importCollection = (raw) => {},
   onChange = (raw) => {},
 }) => {
   return (
     <Container className="with-divider h-full ">
       <Container.Body>
         <Editor
-          value={raw}
           id={id}
+          placeholder={'Paste your raw collection here'}
+          value={raw}
           onChange={(e) => {
             const {
               target: { value },
@@ -27,20 +28,12 @@ const ImportRaw: FC<IProps> = ({
       <Container.Footer className="py-3">
         <TabHeader className="m-2">
           <TabHeader.Right>
-            {/* <Button
-              text="Cancel"
-              onClick={(e) => {}}
-              secondary
-              transparent
-              ghost
-              sm
-            /> */}
             <Button
               text={
-                isRequesting ? 'Importing Collection...' : 'Import Collection'
+                isImporting ? 'Importing Collection...' : 'Import Collection'
               }
-              onClick={() => onImport(raw)}
-              disabled={isRequesting}
+              onClick={importCollection}
+              disabled={isImporting}
               primary
               sm
             />
@@ -56,7 +49,7 @@ export default ImportRaw;
 interface IProps {
   id: string;
   raw: string;
-  isRequesting?: boolean;
-  onImport: (raw: string) => void;
+  isImporting?: boolean;
+  importCollection: (raw: string) => void;
   onChange: (raw: string) => void;
 }
