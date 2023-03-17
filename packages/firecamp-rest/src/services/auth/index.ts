@@ -27,14 +27,12 @@ export default class Auth {
 
   async authorize(): Promise<void> {
     switch (this.authType) {
-      case EAuthTypes.Aws4:
-        this.aws4AuthHeaders = aws4(this.credentials as IAuthAws4, this.extra);
-        break;
       case EAuthTypes.Basic:
         this.authHeader = basic(this.credentials as IAuthBasic);
         break;
       case EAuthTypes.Bearer:
         this.authHeader = bearer(this.credentials as IAuthBearer);
+        console.log(this.authHeader, 'this.authHeader...');
         break;
       case EAuthTypes.Digest:
         this.authHeader = digest(
@@ -47,6 +45,9 @@ export default class Auth {
         break;
       case EAuthTypes.OAuth2:
         this.authHeader = await oauth2(this.credentials as IOAuth2, this.extra);
+        break;
+      case EAuthTypes.Aws4:
+        this.aws4AuthHeaders = aws4(this.credentials as IAuthAws4, this.extra);
         break;
 
       default:
