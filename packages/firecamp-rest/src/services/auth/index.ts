@@ -32,7 +32,6 @@ export default class Auth {
         break;
       case EAuthTypes.Bearer:
         this.authHeader = bearer(this.credentials as IAuthBearer);
-        console.log(this.authHeader, 'this.authHeader...');
         break;
       case EAuthTypes.Digest:
         this.authHeader = digest(
