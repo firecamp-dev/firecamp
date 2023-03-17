@@ -1,0 +1,27 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs';
+import { DARK_THEME_VAR, LIGHT_THEME_VAR } from '../../__mocks__/testData';
+
+<Meta title="Design/Design Css Classes" />
+
+## **CSS Classes:**
+
+- We have defined specific classes listed below:
+
+\*TCE - TAILWIND CLASS EXISTS
+
+| Classname                                            | Description                                                               |
+| ---------------------------------------------------- | ------------------------------------------------------------------------- |
+| .invert                                              | Add to parent element of image/icon to update image color [black & white] |
+| .theme-light.primary-green,.theme-dark.primary-green | to update the app primary color                                           |
+| .theme-dark .drag-icon                               | to invert the icon color in dark theme                                    |
+| .icon                                                | to add font family `icomoon`                                              |
+| .text-ellipsis [TCE]                                 | to update text overflow to ellipsis                                       |
+| a,a:hover                                            | to inherit the text color                                                 |
+| button:disabled,button[disabled]                     | to update opacity for all disabled button using pseudo class selector     |
+| hr                                                   | to update the app border color in horizontal line                         |
+| .fullscreen [TCE]                                    | to update the height to 100%                                              |
+| .h-fit [TCE]                                         | to update the height to fit the content                                   |
+| .!h-fit [TCE]                                        | to update the height to fit the content with more importance              |
+| \*:focus-visible                                     | to add box shadow & remove outline on every element with focus-visible    |
+| \*:focus                                             | to remove outline on every element with focus                             |
+| ::placeholder                                        | to update the placeholder color                                           |

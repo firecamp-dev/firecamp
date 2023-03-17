@@ -18,7 +18,6 @@ const Template = ({ ...args }: IPlainTable<any>) => {
 export const TablePreview = Template.bind({});
 TablePreview.args = {
   columns: [
-    { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
     { id: 'key', key: 'key', name: 'Key', width: '50%' },
     {
       id: 'value',
@@ -29,22 +28,18 @@ TablePreview.args = {
     },
   ],
   rows: defaultData,
-  onChange: (value: ITableRows) => console.log(`change event`, value),
-  onMount: (value: TTableApi) => console.log(`mount event`, value),
 };
-export const WithoutHeader = Template.bind({});
-WithoutHeader.args = {
+export const EnvironmentTable = Template.bind({});
+EnvironmentTable.args = {
   columns: [
-    { id: 'key', key: 'key', name: 'Key', width: '50%' },
+    { id: 'key', key: 'key', name: 'Variable Name', width: '50%' },
     {
       id: 'value',
       key: 'value',
-      name: 'Value',
+      name: 'Variable Value',
       width: '50%',
     },
   ],
   rows: defaultData,
-  classes: { theadTr: 'hidden' },
-  onChange: (value: ITableRows) => console.log(`change event`, value),
-  onMount: (value: TTableApi) => console.log(`mount event`, value),
+  // classes: { theadTr: 'hidden' },
 };

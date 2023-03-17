@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { BasicTable, Button } from '@firecamp/ui';
+import { BasicTable, Button, PlainTable } from '@firecamp/ui';
 import _toPairs from 'lodash/toPairs';
 import { Resizable } from 're-resizable';
 import { IHeader } from '@firecamp/types';
@@ -21,6 +21,27 @@ const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
     // ctx_copyToClipboard(JSON.stringify(json, null, 4));
   };
 
+  return (
+    <PlainTable
+      columns={[
+        { id: 'key', key: 'key', name: 'Name', width: '150px' },
+        {
+          id: 'value',
+          key: 'value',
+          name: 'Value',
+          width: '150px',
+          resizeWithContainer: true,
+        },
+      ]}
+      classes={{
+        table: '!m-0 !min-w-full',
+        td: 'text-appForegroundInActive',
+      }}
+      rows={headers}
+      onChange={() => {}}
+      onMount={() => {}}
+    />
+  );
   return (
     <div className=" striped response-headers-table">
       <div className="">
@@ -71,26 +92,6 @@ const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
           </div>
         );
       })}
-
-      <BasicTable
-              columns={[
-                { id: 'key', key: 'key', name: 'Key', width: '50%' },
-                {
-                  id: 'value',
-                  key: 'value',
-                  name: 'Value',
-                  width: '50%',
-                  resizeWithContainer: true,
-                },
-              ]}
-              rows={headers}
-              options={{
-                hideRowAdd: true,
-                disabledColumns: ['key', 'value'],
-                
-              }}
-              onChange={() => {}}
-            />
     </div>
   );
 };

@@ -82,7 +82,7 @@ const EnvPreviewTable: FC<any> = ({ title, name, variables }) => {
   variables = variables.filter((v) => v.key); //only show those rows which has key
   return (
     <div className="flex-1 flex flex-col overflow-auto">
-      <div className="text-sm px-2 py-1 font-bold border-b border-appBorder bg-focus2 flex items-center flex-row">
+      <div className="text-base px-2 py-1 font-bold border-b border-appBorder bg-focus2 flex items-center flex-row">
         {title}{' '}
         {name ? (
           <>
@@ -97,42 +97,20 @@ const EnvPreviewTable: FC<any> = ({ title, name, variables }) => {
         </div>
       </div>
       <div className="flex-1 overflow-auto visible-scrollbar">
-        <div className="table text-sm border-collapse border-0 w-full m-3 border-b border-appBorder">
-          {variables.map((v, i) => {
-            return (
-              <div className="table-row" key={i}>
-                <label className="px-3 py-1 table-cell border border-appBorder w-32 font-semibold opacity-80 align-middle	">
-                  <div className="flex items-center flex-row w-full">
-                    <span className="flex-1">{v.key}</span>
-                    <CopyButton
-                      className="table-action ml-2 cursor-pointer"
-                      text={v.key}
-                    />
-                  </div>
-                </label>
-                <div className="px-3 py-1 table-cell border border-appBorder">
-                  <div className="flex flex-row w-full items-center">
-                    <span className="flex-1">{v.value || v.initialValue}</span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
 
         {variables.length > 0 && (
           <PlainTable
             columns={[
-              { id: 'key', key: 'key', name: 'Key', width: '120px' },
+              { id: 'key', key: 'key', name: 'Variable Name', width: '120px' },
               {
                 id: 'value',
                 key: 'initialValue',
-                name: 'Value',
+                name: 'Variable Value',
                 width: '200px',
                 resizeWithContainer: true,
               },
             ]}
-            classes={{ theadTr: 'hidden', table: '!m-0 !min-w-full' }}
+            classes={{  table: '!m-0 !min-w-full' }}
             rows={variables}
             onChange={() => {}}
             onMount={() => {}}
