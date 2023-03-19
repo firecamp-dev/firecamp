@@ -60,10 +60,12 @@ const GlobalCreateDD = ({}) => {
         openImportTab();
         break;
       case EMenuOptions.Workspace:
-        platformContext.app.modals.openCreateWorkspace();
+        platformContext.platform.createWorkspacePrompt();
+        // platformContext.app.modals.openCreateWorkspace();
         break;
       case EMenuOptions.Organization:
-        platformContext.app.modals.openCreateOrg();
+        platformContext.platform.createOrganizationPrompt();
+        // platformContext.app.modals.openCreateOrg();
         break;
       case EMenuOptions.InviteMembers:
         platformContext.app.modals.openInviteMembers();
