@@ -1,3 +1,4 @@
+import { confirm } from './prompt.service';
 import { useWorkspaceStore } from '../../store/workspace';
 import { RE } from '../../types';
 import platformContext from '.';
@@ -42,6 +43,14 @@ const platform = {
       })
       .then((res) => {
         // console.log(res, 1111);
+        confirm({
+          title: 'Do you want to switch to the newly created workspace?',
+          texts: {
+            btnConfirm: 'Yes, switch to the workspace.',
+          },
+        }).then((isConfirmed) => {
+          if (isConfirmed) console.log(true);
+        });
       });
   },
 
@@ -84,6 +93,14 @@ const platform = {
       })
       .then((res) => {
         // console.log(res, 1111);
+        confirm({
+          title: 'Do you want to switch to the newly created workspace?',
+          texts: {
+            btnConfirm: 'Yes, switch to the workspace.',
+          },
+        }).then((isConfirmed) => {
+          if (isConfirmed) console.log(true);
+        });
       });
   },
 };
