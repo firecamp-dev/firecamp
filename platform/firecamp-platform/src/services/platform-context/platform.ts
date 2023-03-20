@@ -1,11 +1,12 @@
+import { nanoid } from 'nanoid';
 import { confirm } from './prompt.service';
 import { RE } from '../../types';
-import platformContext from '.';
-import { useWorkspaceStore } from '../../store/workspace';
-import { useEnvStore } from '../../store/environment';
-import { nanoid } from 'nanoid';
 import { useTabStore } from '../../store/tab';
 import { ETabEntityTypes } from '../../components/tabs/types';
+import { useWorkspaceStore } from '../../store/workspace';
+import { useEnvStore } from '../../store/environment';
+import { usePlatformStore } from '../../store/platform';
+import platformContext from '.';
 
 const platform = {
   /** open a create workspace prompt */
@@ -37,7 +38,8 @@ const platform = {
           };
         },
         executor: (name) => {
-          return createWrs({ name, orgId: '21456' });
+          const { organization } = usePlatformStore.getState();
+          return createWrs({ name, orgId: organization?.__ref.id });
         },
         onError: (e) => {
           platformContext.app.notify.alert(
@@ -45,15 +47,19 @@ const platform = {
           );
         },
       })
-      .then((res) => {
-        // console.log(res, 1111);
+      .then((wrs) => {
+        platformContext.app.notify.success(
+          'The workspace is created successfully.'
+        );
         confirm({
           title: 'Do you want to switch to the newly created workspace?',
           texts: {
             btnConfirm: 'Yes, switch to the workspace.',
           },
         }).then((isConfirmed) => {
-          if (isConfirmed) console.log(true);
+          if (isConfirmed) {
+            platformContext.app.switchWorkspace(wrs);
+          }
         });
       });
   },
@@ -96,14 +102,18 @@ const platform = {
         },
       })
       .then((res) => {
-        // console.log(res, 1111);
+        platformContext.app.notify.success(
+          'The organization is created successfully with default workspace named `Main Workspace`'
+        );
         confirm({
           title: 'Do you want to switch to the newly created workspace?',
           texts: {
             btnConfirm: 'Yes, switch to the workspace.',
           },
         }).then((isConfirmed) => {
-          if (isConfirmed) console.log(true);
+          if (isConfirmed) {
+            platformContext.app.switchWorkspace(res.workspace, res.org);
+          }
         });
       });
   },
