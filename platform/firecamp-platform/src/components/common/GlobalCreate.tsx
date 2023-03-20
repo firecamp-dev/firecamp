@@ -48,8 +48,7 @@ const GlobalCreateDD = ({}) => {
         open({}, { id: '', type: ETabEntityTypes.Request });
         break;
       case EMenuOptions.Collection:
-        const { createCollectionPrompt } = useWorkspaceStore.getState();
-        createCollectionPrompt();
+        platformContext.platform.createCollectionPrompt();
         break;
       case EMenuOptions.Environment:
         const { createEnvironmentPrompt } = useEnvStore.getState();

@@ -66,7 +66,6 @@ export interface IWorkspaceStore {
 
   // collection
   openCollectionTab: (collectionId: TId) => void;
-  createCollectionPrompt: () => void;
   createCollection: (payload: { [k: string]: any }) => Promise<any>;
   updateCollection: (cId: string, payload: { [k: string]: any }) => void;
   deleteCollection: (cId: string) => void;
@@ -256,44 +255,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         );
       }
     },
-    createCollectionPrompt: () => {
-      const { createCollection } = get();
-      if (!platformContext.app.user.isLoggedIn()) {
-        return platformContext.app.modals.openSignIn();
-      }
-      platformContext.window
-        .promptInput({
-          header: 'Create New Collection',
-          label: 'Collection Name',
-          placeholder: 'type collection name',
-          texts: { btnOking: 'Creating...' },
-          value: '',
-          validator: (val) => {
-            if (!val || val.length < 3) {
-              return {
-                isValid: false,
-                message: 'The collection name must have minimum 3 characters.',
-              };
-            }
-            const isValid = RE.NoSpecialCharacters.test(val);
-            return {
-              isValid,
-              message:
-                !isValid &&
-                'The collection name must not contain any special characters.',
-            };
-          },
-          executor: (name) => createCollection({ name, description: '' }),
-          onError: (e) => {
-            platformContext.app.notify.alert(
-              e?.response?.data?.message || e.message
-            );
-          },
-        })
-        .then((res) => {
-          // console.log(res, 1111);
-        });
-    },
+
     createCollection: async (payload: { [k: string]: any }) => {
       const state = get();
       const _collection = {
