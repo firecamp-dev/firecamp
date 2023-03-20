@@ -51,8 +51,7 @@ const GlobalCreateDD = ({}) => {
         platformContext.platform.createCollectionPrompt();
         break;
       case EMenuOptions.Environment:
-        const { createEnvironmentPrompt } = useEnvStore.getState();
-        createEnvironmentPrompt();
+        platformContext.platform.createEnvironmentPrompt();
         break;
       case EMenuOptions.ImportCollection:
         const { openImportTab } = useWorkspaceStore.getState();

@@ -2,6 +2,10 @@ import { confirm } from './prompt.service';
 import { RE } from '../../types';
 import platformContext from '.';
 import { useWorkspaceStore } from '../../store/workspace';
+import { useEnvStore } from '../../store/environment';
+import { nanoid } from 'nanoid';
+import { useTabStore } from '../../store/tab';
+import { ETabEntityTypes } from '../../components/tabs/types';
 
 const platform = {
   /** open a create workspace prompt */
@@ -141,6 +145,56 @@ const platform = {
       })
       .then((res) => {
         // console.log(res, 1111);
+      });
+  },
+
+  /** open a create environment prompt */
+  createEnvironmentPrompt: () => {
+    if (!platformContext.app.user.isLoggedIn()) {
+      return platformContext.app.modals.openSignIn();
+    }
+    const { createEnvironment } = useEnvStore.getState();
+    platformContext.window
+      .promptInput({
+        header: 'Create New Environment',
+        label: 'Environment Name',
+        placeholder: 'type environment name',
+        texts: { btnOking: 'Creating...' },
+        value: '',
+        validator: (val) => {
+          if (!val || val.length < 3) {
+            return {
+              isValid: false,
+              message: 'The environment name must have minimum 3 characters.',
+            };
+          }
+          const isValid = RE.NoSpecialCharacters.test(val);
+          return {
+            isValid,
+            message:
+              !isValid &&
+              'The environment name must not contain any special characters.',
+          };
+        },
+        executor: (name) => {
+          const { workspace } = useWorkspaceStore.getState();
+          return createEnvironment({
+            name,
+            description: '',
+            variables: [],
+            __ref: { id: nanoid(), workspaceId: workspace.__ref.id },
+          });
+        },
+        onError: (e) => {
+          platformContext.app.notify.alert(
+            e?.response?.data?.message || e.message
+          );
+        },
+      })
+      .then((env) => {
+        const { open: openTab } = useTabStore.getState();
+        openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
+        // console.log(env, 1111);
       });
   },
 };
