@@ -1,12 +1,12 @@
 import { confirm } from './prompt.service';
-import { useWorkspaceStore } from '../../store/workspace';
 import { RE } from '../../types';
 import platformContext from '.';
+import { useWorkspaceStore } from '../../store/workspace';
 
 const platform = {
   /** open a create workspace prompt */
   createWorkspacePrompt: async () => {
-    const { createCollection } = useWorkspaceStore.getState();
+    const { create: createWrs } = useWorkspaceStore.getState();
     if (!platformContext.app.user.isLoggedIn()) {
       return platformContext.app.modals.openSignIn();
     }
@@ -18,10 +18,10 @@ const platform = {
         texts: { btnOking: 'Creating...' },
         value: '',
         validator: (val) => {
-          if (!val || val.length < 3) {
+          if (!val || val.length < 4) {
             return {
               isValid: false,
-              message: 'The workspace name must have minimum 3 characters.',
+              message: 'The workspace name must have minimum 4 characters.',
             };
           }
           const isValid = RE.NoSpecialCharacters.test(val);
@@ -32,9 +32,9 @@ const platform = {
               'The workspace name must not contain any special characters.',
           };
         },
-        // executor: (name) => {
-        //   // createCollection({ name, description: '' })
-        // },
+        executor: (name) => {
+          return createWrs({ name, orgId: '21456' });
+        },
         onError: (e) => {
           platformContext.app.notify.alert(
             e?.response?.data?.message || e.message
@@ -56,7 +56,7 @@ const platform = {
 
   /** open a create workspace prompt */
   createOrganizationPrompt: async () => {
-    const { createCollection } = useWorkspaceStore.getState();
+    const { createOrg } = useWorkspaceStore.getState();
     if (!platformContext.app.user.isLoggedIn()) {
       return platformContext.app.modals.openSignIn();
     }
@@ -68,10 +68,10 @@ const platform = {
         texts: { btnOking: 'Creating...' },
         value: '',
         validator: (val) => {
-          if (!val || val.length < 3) {
+          if (!val || val.length < 4) {
             return {
               isValid: false,
-              message: 'The org name must have minimum 3 characters.',
+              message: 'The org name must have minimum 4 characters.',
             };
           }
           const isValid = RE.NoSpecialCharacters.test(val);
@@ -82,9 +82,9 @@ const platform = {
               'The org name must not contain any special characters.',
           };
         },
-        // executor: (name) => {
-        //   // createCollection({ name, description: '' })
-        // },
+        executor: (name) => {
+          return createOrg({ name });
+        },
         onError: (e) => {
           platformContext.app.notify.alert(
             e?.response?.data?.message || e.message

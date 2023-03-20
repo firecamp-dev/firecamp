@@ -212,7 +212,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     // create a new workspace #v3
     // if `orgId` is presented then It'll be an organizational wrs or else personal
     create: async (payload: TCreateWrsPayload) => {
-      return Rest.workspace.createV3(payload);
+      return Rest.workspace.create(payload).then((res) => res.data);
     },
 
     // check the workspace name is available or not
@@ -679,7 +679,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     //organization
     // create a new workspace #v3
     createOrg: async (payload: TCreateOrgPayload) => {
-      return Rest.organization.create(payload);
+      return Rest.organization.create(payload).then((res) => res.data);
     },
     // check the org name is available or not
     checkOrgNameAvailability: (name: string) => {
@@ -843,9 +843,5 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
   }))
 );
 
-type TCreateOrgPayload = { name: string; defaultWorkspaceName: string };
-type TCreateWrsPayload = {
-  name: string;
-  description?: string;
-  __ref?: { orgId: string };
-};
+type TCreateOrgPayload = { name: string };
+type TCreateWrsPayload = { name: string; orgId: string };
