@@ -14,7 +14,7 @@ import {
 
 import { useEnvStore } from './environment';
 import platformContext from '../services/platform-context';
-import { RE } from '../types';
+import { EUserRolesWorkspace, RE } from '../types';
 import { ETabEntityTypes } from '../components/tabs/types';
 import { useTabStore } from './tab';
 
@@ -112,6 +112,12 @@ export interface IWorkspaceStore {
     requestId: TId,
     to: { collectionId: string; folderId?: string }
   ) => Promise<any>;
+
+  // invitations
+  inviteMembers: (payload: {
+    role: EUserRolesWorkspace;
+    members: { name: string; email: string }[];
+  }) => Promise<any>;
 
   // common
   dispose: () => void;
@@ -787,6 +793,19 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
           state.toggleProgressBar(false);
         });
       return res;
+    },
+
+    //invitation
+    inviteMembers: (payload) => {
+      const { workspace } = get();
+      return Rest.workspace
+        .inviteMembers(workspace.__ref.id, payload)
+        .then((res) => res.data)
+        .catch((e) => {
+          platformContext.app.notify.alert(
+            e.response?.data?.message || e.message
+          );
+        });
     },
 
     // dispose whole store and reset to initial state

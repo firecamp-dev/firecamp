@@ -771,7 +771,7 @@ importers:
   platform/firecamp-platform:
     specifiers:
       '@firecamp/agent-manager': workspace:*
-      '@firecamp/cloud-apis': ^0.1.15
+      '@firecamp/cloud-apis': ^0.1.16
       '@firecamp/cookie-manager': ^0.0.0
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
@@ -817,7 +817,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/agent-manager': link:../../packages/firecamp-agent-manager
-      '@firecamp/cloud-apis': 0.1.15
+      '@firecamp/cloud-apis': 0.1.16
       '@firecamp/cookie-manager': link:../../packages/firecamp-cookie-manager
       '@firecamp/graphql': link:../../packages/firecamp-graphql
       '@firecamp/rest': link:../../packages/firecamp-rest
@@ -2828,8 +2828,8 @@ packages:
       - supports-color
     dev: true
 
-  /@firecamp/cloud-apis/0.1.15:
-    resolution: {integrity: sha512-ObJK7UoQ93LWR2GncmXvQfp+RVQd4zkOzztGM25IPCGd8pEoGR/CxY+8k6ti2PSW4UQOMU+3+OCrYoafYr/wJQ==}
+  /@firecamp/cloud-apis/0.1.16:
+    resolution: {integrity: sha512-ICWPLW0n0vS/9hvRHizSv5/J6o8BNW0Zf9tqwROC5MBjpCJlxjBhhlnMRCR0M5ePLBnx+l3rMJv7SwKguYLyGA==}
     engines: {node: '>=10'}
     dependencies:
       axios: 0.21.4

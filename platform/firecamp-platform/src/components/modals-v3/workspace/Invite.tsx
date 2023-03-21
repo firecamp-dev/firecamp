@@ -1,31 +1,36 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import {
   Modal,
   IModal,
   Button,
   TabHeader,
   Dropdown,
-  TTableApi,
   SecondaryTab,
   Editor,
   Notes,
 } from '@firecamp/ui';
+import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace, ERegex } from '../../../types';
 import './workspace.scss';
+import { useWorkspaceStore } from '../../../store/workspace';
 
-import { EEditorLanguage } from '@firecamp/types';
+interface IMember {
+  name: string;
+  email: string;
+}
 
 enum EInviteMemberTabs {
   NewMembers = 'new_members',
   ExistingMembers = 'existing_members',
 }
 const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
-  // const inviteUrl = "http://firecame.com/codebasics/invitemember";
+  const { inviteMembers } = useWorkspaceStore.getState();
+  const [iInProgress, setIInProgress] = useState(false);
+  const [newMemberEditorValue, setMemberNewEditorValue] = useState('');
   const [activeTab, setActiveTab] = useState<EInviteMemberTabs>(
     EInviteMemberTabs.NewMembers
   );
-
   const tabs = [
     { name: 'Invite New Members', id: EInviteMemberTabs.NewMembers },
     {
@@ -34,6 +39,9 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
     },
   ];
 
+  const sendInvitation = (members) => {
+    inviteMembers({ role: 2, members });
+  };
   return (
     <>
       <Modal.Header className="border-b border-appBorder">
@@ -64,7 +72,12 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             onSelect={(tabId: EInviteMemberTabs) => setActiveTab(tabId)}
           />
           {activeTab == EInviteMemberTabs.NewMembers ? (
-            <InviteNewMembers />
+            <InviteNewMembers
+              value={newMemberEditorValue}
+              onChange={setMemberNewEditorValue}
+              invitingInProgress={iInProgress}
+              sendInvitation={sendInvitation}
+            />
           ) : (
             <InviteExistingMembers />
           )}
@@ -75,9 +88,23 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 };
 export default Invite;
 
-const InviteNewMembers = () => {
-  const [invalidEntries, setInvalidEntries] = useState([]);
-  const tableApi = useRef<TTableApi>(null);
+const InviteNewMembers = ({
+  value,
+  onChange = (_) => {},
+  sendInvitation = (_) => {},
+  invitingInProgress = false,
+}) => {
+  const [error, setError] = useState<IMember[]>([]);
+
+  const inviteMembers = useCallback(() => {
+    const { success, error } = parseMembersFromEditorValue(value);
+    console.log(success, error);
+    if (error?.length) {
+      setError(error);
+    } else {
+      sendInvitation(success);
+    }
+  }, [value]);
 
   return (
     <>
@@ -98,22 +125,22 @@ const InviteNewMembers = () => {
         `}
         />
         <Editor
-          value=""
-          onChange={console.log}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           language={EEditorLanguage.Text}
           monacoOptions={{
-            fontFamily: 'inter, System-ui'
+            fontFamily: 'inter, System-ui',
           }}
         />
       </div>
 
-      {invalidEntries?.length ? (
+      {error?.length ? (
         <div className="mb-2 text-error">
           Invalid Emails
           <ul>
-            {invalidEntries.map((e, i) => (
+            {error.map((e, i) => (
               <li key={i}>
-                {e.index + 1}. {e.email}
+                {i + 1}. {e.email}
               </li>
             ))}
           </ul>
@@ -133,10 +160,13 @@ const InviteNewMembers = () => {
         </TabHeader.Left>
         <TabHeader.Right>
           <Button
-            text="Send Invitation"
+            text={
+              invitingInProgress ? 'Sending invitation...' : 'Send Invitation'
+            }
+            disabled={invitingInProgress}
+            onClick={inviteMembers}
             primary
             sm
-            onClick={() => onInviteMembers()}
           />
         </TabHeader.Right>
       </TabHeader>
@@ -185,4 +215,38 @@ const RoleDD: FC<{
 
 const InviteExistingMembers = () => {
   return <span>To be designed..</span>;
+};
+
+interface IMemberParseResult {
+  success: IMember[];
+  error: IMember[];
+}
+
+const parseMembersFromEditorValue = (value: string): IMemberParseResult => {
+  const inputLines = value.trim().split('\n');
+  const successResult: IMember[] = [];
+  const errorResult: IMember[] = [];
+  const successEmails: Set<string> = new Set();
+
+  inputLines.forEach((line) => {
+    const [name, email] = line.split(',').map((s) => s.trim());
+    if (!isValidEmail(email)) {
+      errorResult.push({ name, email });
+      return;
+    }
+    if (successEmails.has(email)) return;
+    successEmails.add(email);
+    successResult.push({ name, email });
+  });
+  const success = successResult.map((obj) => ({
+    name: obj.name,
+    email: obj.email,
+  }));
+  return { success, error: errorResult };
+};
+
+const isValidEmail = (email: string): boolean => {
+  // TODO: use standard email validation regex here
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
 };
