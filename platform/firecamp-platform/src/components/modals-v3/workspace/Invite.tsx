@@ -8,6 +8,7 @@ import {
   SecondaryTab,
   Editor,
   Notes,
+  Container,
 } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
@@ -107,13 +108,13 @@ const InviteNewMembers = ({
   }, [value]);
 
   return (
-    <>
-      <div className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+    <Container className="gap-2">
+      <Container.Header className="text-sm font-semibold leading-3 text-appForegroundInActive uppercase">
         {/* Send invitation to your team members to join the workspace */}
         Use comma separated name and email. use multiple lines to invite in
         bulk.
-      </div>
-      <div className="flex-1 overflow-auto mb-2 visible-scrollbar">
+      </Container.Header>
+      <Container.Body className="invisible-scrollbar">
         <Notes
           description={`example:<br>
         --------
@@ -125,6 +126,7 @@ const InviteNewMembers = ({
         `}
         />
         <Editor
+          className="border border-appBorder h-64"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           language={EEditorLanguage.Text}
@@ -132,45 +134,46 @@ const InviteNewMembers = ({
             fontFamily: 'inter, System-ui',
           }}
         />
-      </div>
 
-      {error?.length ? (
-        <div className="mb-2 text-error">
-          Invalid Emails
-          <ul>
-            {error.map((e, i) => (
-              <li key={i}>
-                {i + 1}. {e.email}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : (
-        <></>
-      )}
-
-      <TabHeader className="p-0">
-        <TabHeader.Left>
-          <div className="flex items-center">
-            <RoleDD
-              role={EUserRolesWorkspace.Collaborator}
-              onSelect={console.log}
-            />
+        {error?.length ? (
+          <div className="mb-2 text-error">
+            Invalid Emails
+            <ul>
+              {error.map((e, i) => (
+                <li key={i}>
+                  {i + 1}. {e.email}
+                </li>
+              ))}
+            </ul>
           </div>
-        </TabHeader.Left>
-        <TabHeader.Right>
-          <Button
-            text={
-              invitingInProgress ? 'Sending invitation...' : 'Send Invitation'
-            }
-            disabled={invitingInProgress}
-            onClick={inviteMembers}
-            primary
-            sm
-          />
-        </TabHeader.Right>
-      </TabHeader>
-    </>
+        ) : (
+          <></>
+        )}
+      </Container.Body>
+      <Container.Footer>
+        <TabHeader className="!p-0">
+          <TabHeader.Left>
+            <div className="flex items-center">
+              <RoleDD
+                role={EUserRolesWorkspace.Collaborator}
+                onSelect={console.log}
+              />
+            </div>
+          </TabHeader.Left>
+          <TabHeader.Right>
+            <Button
+              text={
+                invitingInProgress ? 'Sending invitation...' : 'Send Invitation'
+              }
+              disabled={invitingInProgress}
+              onClick={inviteMembers}
+              primary
+              sm
+            />
+          </TabHeader.Right>
+        </TabHeader>
+      </Container.Footer>
+    </Container>
   );
 };
 

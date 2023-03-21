@@ -863,9 +863,6 @@ video {
 .bottom-0 {
 	bottom: 0px;
 }
-.left-2 {
-	left: 0.5rem;
-}
 .-left-2 {
 	left: -0.5rem;
 }
@@ -889,6 +886,9 @@ video {
 }
 .top-3 {
 	top: 0.75rem;
+}
+.left-2 {
+	left: 0.5rem;
 }
 .right-2 {
 	right: 0.5rem;
@@ -1213,14 +1213,17 @@ video {
 .h-5 {
 	height: 1.25rem;
 }
+.\!h-6 {
+	height: 1.5rem !important;
+}
+.h-64 {
+	height: 16rem;
+}
 .h-80 {
 	height: 20rem;
 }
 .\!h-80 {
 	height: 20rem !important;
-}
-.\!h-6 {
-	height: 1.5rem !important;
 }
 .h-screen {
 	height: 100vh;
@@ -1252,11 +1255,11 @@ video {
 .max-h-56 {
 	max-height: 14rem;
 }
-.max-h-52 {
-	max-height: 13rem;
-}
 .max-h-48 {
 	max-height: 12rem;
+}
+.max-h-52 {
+	max-height: 13rem;
 }
 .min-h-0 {
 	min-height: 0px;
@@ -1944,11 +1947,11 @@ video {
 .pt-14 {
 	padding-top: 3.5rem;
 }
-.pl-0\.5 {
-	padding-left: 0.125rem;
-}
 .pr-0\.5 {
 	padding-right: 0.125rem;
+}
+.pl-0\.5 {
+	padding-left: 0.125rem;
 }
 .\!pr-0 {
 	padding-right: 0px !important;
@@ -1977,11 +1980,11 @@ video {
 .\!pr-4 {
 	padding-right: 1rem !important;
 }
-.pl-0 {
-	padding-left: 0px;
-}
 .pr-0 {
 	padding-right: 0px;
+}
+.pl-0 {
+	padding-left: 0px;
 }
 .pb-6 {
 	padding-bottom: 1.5rem;
@@ -2149,11 +2152,11 @@ video {
 .text-statusBarForeground {
 	color: var(--statusBar-foreground);
 }
-.text-websocket {
-	color: var(--req-socketio);
-}
 .text-rest {
 	color: var(--req-link);
+}
+.text-websocket {
+	color: var(--req-socketio);
 }
 .text-graphql {
 	color: var(--req-graphql);
@@ -2438,11 +2441,11 @@ video {
 .hover\:\!bg-focus1:hover {
 	background-color: var(--focus-level-1) !important;
 }
-.hover\:bg-focusBorder:hover {
-	background-color: var(--focus-border);
-}
 .hover\:\!bg-focus2:hover {
 	background-color: var(--focus-level-2) !important;
+}
+.hover\:bg-focusBorder:hover {
+	background-color: var(--focus-border);
 }
 .hover\:bg-inputFocusBackground:hover {
 	background-color: var(--inputFocus-background);
@@ -3263,6 +3266,5 @@ body .ace_editor .ace_scrollbar{
   width: 100%;
   height: 100%;
   align-items: center;
-  justify-content: center;
   flex-direction: column;
 }
