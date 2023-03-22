@@ -80,7 +80,7 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               <div className="flex items-center">
                 <RoleDD
                   role={selectedRole}
-                  onSelect={(val: number) => updateSelectedRole(val)}
+                  onSelect={(val: any) => updateSelectedRole(val.name)}
                 />
               </div>
               <InviteNewMembers
@@ -91,7 +91,10 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               />
             </>
           ) : (
-            <InviteExistingMembers />
+            <InviteExistingMembers
+              invitingInProgress={iInProgress}
+              sendInvitation={sendInvitation}
+            />
           )}
         </div>
       </Modal.Body>
@@ -120,7 +123,7 @@ const InviteNewMembers = ({
 
   return (
     <Container className="gap-2">
-      <Container.Header className="text-sm font-semibold leading-3 text-appForegroundInActive uppercase">
+      <Container.Header className="text-sm font-semibold leading-3 text-appForegroundInActive">
         {/* Send invitation to your team members to join the workspace */}
         Use comma separated name and email. use multiple lines to invite in
         bulk.{' '}
@@ -131,10 +134,12 @@ const InviteNewMembers = ({
             />
           }
         >
-          <Popover.Handler>See Example</Popover.Handler>
+          <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ">
+            See Example
+          </Popover.Handler>
         </Popover>
       </Container.Header>
-      <Container.Body className="invisible-scrollbar">
+      <Container.Body className="invisible-scrollbar w-[32rem]">
         <Editor
           className="border border-appBorder h-80"
           value={value}
@@ -176,33 +181,31 @@ const InviteNewMembers = ({
   );
 };
 
+const RoleOptions = [
+  {
+    id: 'selectRole',
+    name: 'select role',
+    disabled: true,
+    className:
+      '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
+  },
+  {
+    id: 'Admin',
+    name: 'Admin',
+    className:
+      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+  },
+  {
+    id: 'Collaborator',
+    name: 'Collaborator',
+    className:
+      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+  },
+];
 const RoleDD: FC<{
   role: EUserRolesWorkspace;
   onSelect: (role: EUserRolesWorkspace) => void;
 }> = ({ role, onSelect }) => {
-  
-  const options = [
-    {
-      id: 'selectRole',
-      name: 'select role',
-      disabled: true,
-      className:
-        '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
-    },
-    {
-      id: 'Admin',
-      name: 'Admin',
-      className:
-        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-    },
-    {
-      id: 'Collaborator',
-      name: 'Collaborator',
-      className:
-        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-    },
-  ];
-
   const _onSelect = (option, e) => {
     onSelect(
       option == 'Admin'
@@ -213,7 +216,7 @@ const RoleDD: FC<{
   const roleText = role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator';
   return (
     <>
-      <div>
+      <div className="pb-3">
         <label className="text-base">Invite members as </label>
 
         <DropdownV2
@@ -229,14 +232,15 @@ const RoleDD: FC<{
           )}
           displayDefaultOptionClassName={2}
           optionContainerClassName={'w-36 bg-popoverBackground z-[1000]'}
-          option={options}
+          option={RoleOptions}
           onSelect={_onSelect}
         />
       </div>
 
       <a
         href="/"
-        className="text-appForeground hover:text-modalActiveForeground cursor-pointer text-base ml-auto"
+        className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ml-auto pb-3"
+        target="_blank"
       >
         learn more
       </a>
@@ -244,8 +248,102 @@ const RoleDD: FC<{
   );
 };
 
-const InviteExistingMembers = () => {
-  return <span>To be designed..</span>;
+const InviteExistingMembers = ({
+  sendInvitation = (_) => {},
+  invitingInProgress = false,
+}) => {
+  const [user, updateUser] = useState();
+  const [role, updateRole] = useState();
+  const UserOptions = [
+    {
+      id: 1,
+      name: 'User 1',
+      className:
+        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+    },
+    {
+      id: 2,
+      name: 'User 2',
+      className:
+        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+    },
+    {
+      id: 3,
+      name: 'User 3',
+      className:
+        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+    },
+    {
+      id: 4,
+      name: 'User 4',
+      className:
+        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+    },
+  ];
+
+  const inviteMembers = () => {
+    console.log(`send existing member invitation`, { user, role });
+    // sendInvitation({user, role});
+  };
+
+  return (
+    <Container className="gap-2">
+      <Container.Header className="text-sm font-semibold leading-3 text-appForegroundInActive">
+        Send invitation to your team members to join the workspace
+      </Container.Header>
+      <Container.Body className="invisible-scrollbar w-[32rem] h-80">
+        <div className="flex justify-between pb-3">
+          <label className="text-base">Select User</label>
+          <DropdownV2
+            handleRenderer={() => (
+              <Button
+                text={user || 'Select User'}
+                className="font-bold hover:!bg-focus1"
+                withCaret
+                transparent
+                ghost
+                sm
+              />
+            )}
+            displayDefaultOptionClassName={2}
+            optionContainerClassName={'w-36 bg-popoverBackground z-[1000]'}
+            option={UserOptions}
+            onSelect={(val) => updateUser(val.name)}
+          />
+        </div>
+
+        <div className="flex justify-between pb-3">
+          <label className="text-base">Select Role </label>
+          <DropdownV2
+            handleRenderer={() => (
+              <Button
+                text={role || 'Select role'}
+                className="font-bold hover:!bg-focus1"
+                withCaret
+                transparent
+                ghost
+                sm
+              />
+            )}
+            displayDefaultOptionClassName={2}
+            optionContainerClassName={'w-36 bg-popoverBackground z-[1000]'}
+            option={RoleOptions.slice(1)}
+            onSelect={(val) => updateRole(val.name)}
+          />
+        </div>
+      </Container.Body>
+      <Container.Footer>
+        <Button
+          className="ml-auto"
+          text={'Send Invitation'}
+          disabled={invitingInProgress}
+          onClick={inviteMembers}
+          primary
+          sm
+        />
+      </Container.Footer>
+    </Container>
+  );
 };
 
 interface IMemberParseResult {

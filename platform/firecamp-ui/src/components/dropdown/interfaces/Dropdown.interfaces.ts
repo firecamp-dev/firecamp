@@ -188,7 +188,7 @@ export interface IDropdownV2 {
   /**
    * To display arrow shown at the begin of container
    */
-  showOptionArrow?: boolean,
+  showOptionArrow?: boolean;
   /**
    * Element to be shown to preview the dropdown
    */
@@ -200,26 +200,26 @@ export interface IDropdownV2 {
   /**
    * function on selection
    */
-  onSelect: (option?: any, event?: any) => any,
+  onSelect: (option?: any, event?: any) => any;
   /**
    * classname for the options wrapper
    */
-  optionContainerClassName?: string,
+  optionContainerClassName?: string;
   /**
    * displaying static default styles [1-default, 2-focus border]
    */
-  displayDefaultOptionClassName?: number,
+  displayDefaultOptionClassName?: number;
   /**
    * Wrapper classname for handler element
    */
-  className?: string,
+  className?: string;
   /**
    * To disable the selection option
    */
-  disabled?: boolean
+  disabled?: boolean;
 }
 export interface IOptionsV2 {
-   /**
+  /**
    * Option text for preview
    */
   selectedElement?: string;
@@ -234,7 +234,7 @@ export interface IOptionsV2 {
    */
   showSeparator?: boolean;
 
-  id?: string;
+  id?: string | number;
   name?: string;
   className?: string;
   onSelect?: (option?: any, event?: any) => any;
@@ -287,5 +287,5 @@ export interface IItemV2 {
   /**
    * to show/hide default item styles
    */
-  defaultItemClass?: boolean
+  defaultItemClass?: boolean;
 }

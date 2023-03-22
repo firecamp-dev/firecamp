@@ -1307,6 +1307,9 @@ video {
 .w-14 {
 	width: 3.5rem;
 }
+.w-\[32rem\] {
+	width: 32rem;
+}
 .\!w-full {
 	width: 100% !important;
 }
@@ -2164,8 +2167,8 @@ video {
 .\!text-primaryColor {
 	color: var(--app-primary) !important;
 }
-.\!text-info {
-	color: var(--info) !important;
+.\!text-link {
+	color: var(--link) !important;
 }
 .\!text-appForegroundInActive {
 	color: var(--app-foreground-inactive) !important;
@@ -2190,6 +2193,9 @@ video {
 }
 .text-tabForeground {
 	color: var(--tab-foreground);
+}
+.\!text-info {
+	color: var(--info) !important;
 }
 .underline {
 	text-decoration: underline;
@@ -2472,6 +2478,9 @@ video {
 .hover\:text-statusBarForegroundActive:hover {
 	color: var(--statusBar-foreground-active);
 }
+.hover\:\!text-link:hover {
+	color: var(--link) !important;
+}
 .hover\:text-appForegroundActive:hover {
 	color: var(--app-foreground-active);
 }
@@ -2483,6 +2492,9 @@ video {
 }
 .hover\:text-appForeground:hover {
 	color: var(--app-foreground);
+}
+.hover\:underline:hover {
+	text-decoration: underline;
 }
 .hover\:opacity-100:hover {
 	opacity: 1;

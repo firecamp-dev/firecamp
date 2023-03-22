@@ -15,6 +15,8 @@ const DEFAULT_STYLES = {
     optionItem: 'flex items-center text-appForeground px-2',
     separator: 'my-1 bg-appForeground opacity-50'
 }
+
+// DropDownV2 is used in Invite Popup
 const DropDownV2 = ({
     showOptionArrow = false, handleRenderer, option, onSelect, optionContainerClassName = "",
     displayDefaultOptionClassName = 0, className = '', disabled = false
@@ -58,7 +60,7 @@ const DropDownV2 = ({
                                 prefix={item.prefix}
                                 postfix={item.postfix}
                                 disabled={item.disabled}
-                                onClick={() => onSelect(item.name)} />
+                                onClick={() => onSelect(item)} />
                             {item.showSeparator && <Separator />}
                         </Fragment>
                     })

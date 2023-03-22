@@ -113,7 +113,7 @@ export const DropDownv2Example = () => {
       }
 
     ]}
-    onSelect={(value) => setSelected(value)}
+    onSelect={(value) => setSelected(value.name)}
     optionContainerClassName={"ml-2"}
     showOptionArrow={true}
   />
@@ -196,7 +196,7 @@ export const BodyTabExample = () => {
         className: STYLES.bodyTabItem
       }
     ] as IOptionsV2[]}
-    onSelect={(value) => setSelected(value)}
+    onSelect={(value) => setSelected(value.name)}
     displayDefaultOptionClassName={2}
     optionContainerClassName={STYLES.bodyTabOptionContainer}
   />
@@ -258,7 +258,7 @@ export const EmitterBodyExample = () => {
         className: STYLES.emitterTabItem
       }
     ] as IOptionsV2[]}
-    onSelect={(value) => setSelected(value)}
+    onSelect={(value) => setSelected(value.name)}
     optionContainerClassName={STYLES.emitterBodyOptionContainer}
   />
 };
@@ -296,7 +296,7 @@ export const LogsExample = () => {
         className: STYLES.logTabItem
       }
     ]}
-    onSelect={(value) => setSelected(value)}
+    onSelect={(value) => setSelected(value.name)}
     optionContainerClassName={STYLES.logOptionContainer}
 
   />
@@ -327,7 +327,7 @@ export const ReqStatusBarExample = () => {
           className: STYLES.reqStatusBarTabItem
         },
       ]}
-      onSelect={(value) => setSelected(value)}
+      onSelect={(value) => setSelected(value.name)}
       optionContainerClassName={STYLES.reqStatusBarOptionContainer}
     />
     <Button
@@ -403,7 +403,7 @@ export const StatusBarExample = () => {
               ),
             }
           ]}
-          onSelect={(value) => setUserSelected(value)}
+          onSelect={(value) => setUserSelected(value.name)}
           optionContainerClassName={STYLES.statusBarOptionContainer}
           displayDefaultOptionClassName={2}
         />
@@ -472,7 +472,7 @@ export const StatusBarExample = () => {
               ),
             }
           ]}
-          onSelect={(value) => setSelected(value)}
+          onSelect={(value) => setSelected(value.name)}
           optionContainerClassName={STYLES.statusBarOptionContainer}
           displayDefaultOptionClassName={2}
         />
