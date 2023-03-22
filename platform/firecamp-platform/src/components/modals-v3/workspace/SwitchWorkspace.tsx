@@ -1,10 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import {
-  Modal,
-  Button,
-  ProgressBar,
-  IModal,
-} from '@firecamp/ui';
+import { Modal, Button, ProgressBar, IModal } from '@firecamp/ui';
 import { Rest } from '@firecamp/cloud-apis';
 import { usePlatformStore } from '../../../store/platform';
 import platformContext from '../../../services/platform-context';
@@ -14,18 +9,19 @@ const SwitchWorkspace: FC<IModal> = ({
   isOpen = false,
   onClose = () => {},
 }) => {
-  const { unsetSwitchingOrg } = usePlatformStore((s) => ({
+  const { switchingOrg, unsetSwitchingOrg } = usePlatformStore((s) => ({
     unsetSwitchingOrg: s.unsetSwitchingOrg,
+    switchingOrg: s.switchingOrg,
   }));
   const [isFetchingWrs, setFetchWrsFlag] = useState(false);
   const [workspaces, setWorkspaces] = useState([]);
 
   useEffect(() => {
-    if (!isOpen) return ()=> {};
+    if (!isOpen) return () => {};
     const orgId = localStorage.getItem('switchToOrg');
     setFetchWrsFlag(true);
     Rest.organization
-      .getMyWorkspacesOfOrg(orgId)
+      .getMyWorkspacesOfOrg(orgId || 'personal') //if not set org then fetch personal workspaces
       .then(({ data: _wrs = [] }) => {
         console.log(_wrs, 'response...');
         setWorkspaces(_wrs);
@@ -57,7 +53,7 @@ const SwitchWorkspace: FC<IModal> = ({
               <div className="p-4">
                 <div className="text-sm">
                   <label className="font-semibold text-appForegroundInActive block">
-                    16 Pixel
+                    {switchingOrg?.name}
                   </label>
                   <label className="font-semibold text-appForeground uppercase block">
                     Please select workspace to switch
@@ -154,12 +150,7 @@ const NoWrsFoundMessage = ({ close = () => {} }) => {
           You're not belonging to any workspaces of this organization.
         </span>
       </div>
-      <Button
-        text="Close"
-        sm
-        primary
-        onClick={close}
-      />
+      <Button text="Close" sm primary onClick={close} />
     </div>
   );
 };

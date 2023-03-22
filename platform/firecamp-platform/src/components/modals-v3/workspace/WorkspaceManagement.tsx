@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import {
   Input,
   TextArea,
@@ -21,6 +21,7 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EUserRolesWorkspace } from '../../../types';
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';
 import './workspace.scss';
+import platformContext from '../../../services/platform-context';
 
 enum ETabTypes {
   Edit = 'edit',
@@ -28,7 +29,7 @@ enum ETabTypes {
 }
 const WorkspaceManagement: FC<IModal> = ({
   isOpen = false,
-  onClose = () => {},
+  onClose = () => { },
 }) => {
   let { workspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
     workspace: s.workspace,
@@ -55,14 +56,14 @@ const WorkspaceManagement: FC<IModal> = ({
     if (isRequesting) return;
     const name = wrs.name.trim();
     if (!name || name.length < 3) {
-      setError({ name: 'The worksapce name must have minimun 3 characters' });
+      setError({ name: 'The workspace name must have minimum 4 characters' });
       return;
     }
     const _wrs = { name, description: wrs?.description?.trim() };
 
     setIsRequesting(true);
 
-    Rest.workspace.setTimeout(() => {
+    setTimeout(() => {
       setIsRequesting(false);
     }, 5000);
     // TODO: workspace  update API call
@@ -137,12 +138,12 @@ const EditInfoTab: FC<any> = ({
           name={'name'}
           defaultValue={workspace.name || ''}
           onChange={onChange}
-          onKeyDown={() => {}}
-          onBlur={() => {}}
+          onKeyDown={() => { }}
+          onBlur={() => { }}
           error={error.name}
-          // error={error.name}
-          // iconPosition="right"
-          // icon={<VscEdit />}
+        // error={error.name}
+        // iconPosition="right"
+        // icon={<VscEdit />}
         />
       </div>
 
@@ -165,18 +166,18 @@ const EditInfoTab: FC<any> = ({
         <TabHeader.Right>
           <Button
             text="Cancel"
-            secondary
-            transparent={true}
-            sm
             onClick={(e) => close(e)}
-            ghost={true}
+            transparent
+            secondary
+            ghost
+            sm
           />
           <Button
             text={isRequesting ? 'Updating...' : 'Update'}
-            primary
-            sm
             onClick={onSubmit}
             disabled={isRequesting}
+            primary
+            sm
           />
         </TabHeader.Right>
       </TabHeader>
@@ -283,20 +284,20 @@ const MembersTab = () => {
       <ProgressBar active={isRequesting} />
       <PrimitiveTable
         columns={columns}
-        apiRef={tableApi}
+        showDefaultEmptyRows={false}
         renderColumn={(c) => c.name}
         renderCell={renderCell}
         onChange={console.log}
-        showDefaultEmptyRows={false}
+        onMount={(api) => tableApi.current = api}
       />
 
       <TabHeader>
         <TabHeader.Left>
           <Button
             text={'Invite Members'}
+            onClick={() => platformContext.app.modals.openInviteMembers()}
             primary
             sm
-            onClick={() => platformContext.app.modals.openInviteMembers()}
           />
         </TabHeader.Left>
       </TabHeader>
@@ -327,11 +328,11 @@ const RoleDD: FC<{
       <Dropdown.Handler>
         <Button
           text={role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator'}
-          sm
-          ghost={true}
-          transparent={true}
-          withCaret={true}
           className="ml-2"
+          transparent
+          withCaret
+          ghost
+          sm
         />
       </Dropdown.Handler>
       <Dropdown.Options

@@ -14,7 +14,7 @@ import {
 
 import { useEnvStore } from './environment';
 import platformContext from '../services/platform-context';
-import { RE } from '../types';
+import { EUserRolesWorkspace, RE } from '../types';
 import { ETabEntityTypes } from '../components/tabs/types';
 import { useTabStore } from './tab';
 
@@ -66,7 +66,6 @@ export interface IWorkspaceStore {
 
   // collection
   openCollectionTab: (collectionId: TId) => void;
-  createCollectionPrompt: () => void;
   createCollection: (payload: { [k: string]: any }) => Promise<any>;
   updateCollection: (cId: string, payload: { [k: string]: any }) => void;
   deleteCollection: (cId: string) => void;
@@ -113,6 +112,12 @@ export interface IWorkspaceStore {
     requestId: TId,
     to: { collectionId: string; folderId?: string }
   ) => Promise<any>;
+
+  // invitations
+  inviteMembers: (payload: {
+    role: EUserRolesWorkspace;
+    members: { name: string; email: string }[];
+  }) => Promise<any>;
 
   // common
   dispose: () => void;
@@ -212,7 +217,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     // create a new workspace #v3
     // if `orgId` is presented then It'll be an organizational wrs or else personal
     create: async (payload: TCreateWrsPayload) => {
-      return Rest.workspace.createV3(payload);
+      return Rest.workspace.create(payload).then((res) => res.data);
     },
 
     // check the workspace name is available or not
@@ -256,44 +261,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
         );
       }
     },
-    createCollectionPrompt: () => {
-      const { createCollection } = get();
-      if (!platformContext.app.user.isLoggedIn()) {
-        return platformContext.app.modals.openSignIn();
-      }
-      platformContext.window
-        .promptInput({
-          header: 'Create New Collection',
-          label: 'Collection Name',
-          placeholder: 'type collection name',
-          texts: { btnOking: 'Creating...' },
-          value: '',
-          validator: (val) => {
-            if (!val || val.length < 3) {
-              return {
-                isValid: false,
-                message: 'The collection name must have minimum 3 characters.',
-              };
-            }
-            const isValid = RE.NoSpecialCharacters.test(val);
-            return {
-              isValid,
-              message:
-                !isValid &&
-                'The collection name must not contain any special characters.',
-            };
-          },
-          executor: (name) => createCollection({ name, description: '' }),
-          onError: (e) => {
-            platformContext.app.notify.alert(
-              e?.response?.data?.message || e.message
-            );
-          },
-        })
-        .then((res) => {
-          // console.log(res, 1111);
-        });
-    },
+
     createCollection: async (payload: { [k: string]: any }) => {
       const state = get();
       const _collection = {
@@ -679,7 +647,7 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     //organization
     // create a new workspace #v3
     createOrg: async (payload: TCreateOrgPayload) => {
-      return Rest.organization.create(payload);
+      return Rest.organization.create(payload).then((res) => res.data);
     },
     // check the org name is available or not
     checkOrgNameAvailability: (name: string) => {
@@ -827,6 +795,19 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       return res;
     },
 
+    //invitation
+    inviteMembers: (payload) => {
+      const { workspace } = get();
+      return Rest.workspace
+        .inviteMembers(workspace.__ref.id, payload)
+        .then((res) => res.data)
+        .catch((e) => {
+          platformContext.app.notify.alert(
+            e.response?.data?.message || e.message
+          );
+        });
+    },
+
     // dispose whole store and reset to initial state
     dispose: () => {
       set((s) => {
@@ -843,9 +824,5 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
   }))
 );
 
-type TCreateOrgPayload = { name: string; defaultWorkspaceName: string };
-type TCreateWrsPayload = {
-  name: string;
-  description?: string;
-  __ref?: { orgId: string };
-};
+type TCreateOrgPayload = { name: string };
+type TCreateWrsPayload = { name: string; orgId: string };

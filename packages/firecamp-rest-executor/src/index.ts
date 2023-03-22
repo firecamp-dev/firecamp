@@ -155,8 +155,6 @@ export default class RestExecutor implements IRestExecutor {
       });
     }
 
-    /** run pre script */
-    // TODO: Inherit script
     return scriptRunner
       .preScript(fcRequest, variables)
       .then(({ fc, error }) => {
@@ -275,7 +273,6 @@ export default class RestExecutor implements IRestExecutor {
       })
       .then(async ({ response, variables, errors }) => {
         /** run post-script */
-        // TODO: add inherit support
         const { fc, error } = await scriptRunner.testScript(
           fcRequest,
           response,

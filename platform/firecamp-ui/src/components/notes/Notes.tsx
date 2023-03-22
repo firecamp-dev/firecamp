@@ -1,18 +1,16 @@
 import { FC } from 'react';
 import classnames from 'classnames';
-
-import { INotes } from './interfaces/Notes.interfaces';
 import './Notes.scss';
 
 /**
  * Firecamp note to show important updates, feature information
  */
-const Notes: FC<INotes> = ({
+const Notes: FC<IProps> = ({
   title = '',
   description = '',
-  showicon = true,
+  showIcon = true,
   type = 'info',
-  withpadding = false,
+  withPadding = false,
   className = '',
 }) => {
   return (
@@ -20,11 +18,11 @@ const Notes: FC<INotes> = ({
       className={classnames(
         'fc-common-notes text-sm flex items-center p-3 bg-focus1 border-l-2 border-solid border-transparent',
         type,
-        { 'p-4': withpadding },
+        { 'p-4': withPadding },
         className
       )}
     >
-      {showicon == true ? (
+      {showIcon == true ? (
         <div className="text-md mr-3 icon">
           <span className="icv2-info-icon"></span>
         </div>
@@ -51,3 +49,28 @@ const Notes: FC<INotes> = ({
 };
 
 export default Notes;
+
+interface IProps {
+  /**
+   * Title to show the purpose of note
+   */
+  title?: string;
+  /**
+   * Note brief description
+   */
+  description?: string;
+
+  className?: string;
+  /**
+   * Boolean value whether you want to show note icon or not
+   */
+  showIcon?: boolean;
+  /**
+   * Note type ['info']
+   */
+  type?: 'info' | 'warning' | 'danger' | 'success';
+  /**
+   * Boolean value whether you want to have padding in style
+   */
+  withPadding?: boolean;
+}

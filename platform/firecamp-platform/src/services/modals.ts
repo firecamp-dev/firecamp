@@ -55,20 +55,6 @@ const modalService = {
     open(EPlatformModalTypes.InviteMembers);
   },
 
-  // Collection
-  openCollectionSetting: (meta?: any) => {
-    const { isGuest } = useUserStore.getState();
-    if (isGuest) return modalService.openSignIn();
-    open(EPlatformModalTypes.CollectionSetting, meta);
-  },
-
-  // Folder
-  openFolderSetting: (meta: any) => {
-    const { isGuest } = useUserStore.getState();
-    if (isGuest) return modalService.openSignIn();
-    open(EPlatformModalTypes.FolderSetting, meta);
-  },
-
   // Request
   openSaveRequest: () => {
     const { isGuest } = useUserStore.getState();

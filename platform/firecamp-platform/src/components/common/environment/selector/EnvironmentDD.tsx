@@ -6,16 +6,17 @@ import { Dropdown, Button } from '@firecamp/ui';
 import { TId } from '@firecamp/types';
 import Helper from './Helper';
 import { useEnvStore } from '../../../../store/environment';
+import platformContext from '../../../../services/platform-context';
 
 const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
-  const { environments, activeEnvId, createEnvironmentPrompt } = useEnvStore(
+  const { environments, activeEnvId } = useEnvStore(
     (s) => ({
       environments: s.environments,
       activeEnvId: s.activeEnvId,
-      createEnvironmentPrompt: s.createEnvironmentPrompt,
     }),
     shallow
   );
+  const { createEnvironmentPrompt } = platformContext.platform;
   useEffect(() => {
     console.log('env selector rendering the first time');
   }, []);

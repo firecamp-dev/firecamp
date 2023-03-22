@@ -40,14 +40,14 @@ const ProgressBarContainer = () => {
 const EnvironmentCollection = () => {
   const treeRef = useRef();
   const { open: openTab } = useTabStore.getState();
-  const { envTdpInstance, registerTDP, unRegisterTDP, createEnv } = useEnvStore(
+  const { envTdpInstance, registerTDP, unRegisterTDP } = useEnvStore(
     (s: IEnvironmentStore) => ({
       envTdpInstance: s.envTdpInstance,
       registerTDP: s.registerTDP_,
       unRegisterTDP: s.unRegisterTDP_,
-      createEnv: s.createEnvironmentPrompt,
     })
   );
+  const { createEnvironmentPrompt } = platformContext.platform;
   useEffect(() => {
     registerTDP();
     return () => unRegisterTDP();
@@ -73,7 +73,7 @@ const EnvironmentCollection = () => {
               <VscAdd
                 className="cursor-pointer"
                 size={16}
-                onClick={() => createEnv()}
+                onClick={() => createEnvironmentPrompt()}
               />
             </div>
           </ToolBar>
