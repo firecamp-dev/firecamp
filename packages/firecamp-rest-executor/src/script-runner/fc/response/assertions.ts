@@ -1,5 +1,7 @@
-import { _object } from '@firecamp/utils';
 import Ajv from 'ajv';
+import getValue from 'get-value';
+import isEqual from 'react-fast-compare';
+import { _object } from '@firecamp/utils';
 
 export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   const Assertion = chai.Assertion;
@@ -213,18 +215,9 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   utils.addMethod(
     Assertion.prototype,
     'jsonBody',
-    function (this: Chai.AssertionStatic) {
-      const isJSON = (data: any) => {
-        try {
-          JSON.parse(data);
-          return true;
-        } catch (error) {
-          return false;
-        }
-      };
-
+    function (this: Chai.AssertionStatic, path: string, value: any) {
       this.assert(
-        isJSON(this._obj?.body),
+        isEqual(getValue(path, this._obj?.body), value),
         'expected response should have JSON data but not found',
         'expected response should not have JSON data',
         this._obj?.body
