@@ -9,6 +9,7 @@ import {
   Notes,
   Container,
   Popover,
+  FormGroup,
 } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
@@ -257,27 +258,27 @@ const InviteExistingMembers = ({
   const UserOptions = [
     {
       id: 1,
-      name: 'User 1',
+      name: 'Shreya',
       className:
-        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+        ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
     },
     {
       id: 2,
-      name: 'User 2',
+      name: 'Nishchit',
       className:
-        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+        ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
     },
     {
       id: 3,
-      name: 'User 3',
+      name: 'Radhika',
       className:
-        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+        ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
     },
     {
       id: 4,
-      name: 'User 4',
+      name: 'Charmi',
       className:
-        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+        ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
     },
   ];
 
@@ -288,49 +289,52 @@ const InviteExistingMembers = ({
 
   return (
     <Container className="gap-2">
-      <Container.Header className="text-sm font-semibold leading-3 text-appForegroundInActive">
-        Send invitation to your team members to join the workspace
+      <Container.Header className="text-base text-center font-semibold leading-3 text-appForegroundInActive p-6">
+      Invite your team colleagues to join the workspace.
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem] h-80">
-        <div className="flex justify-between pb-3">
-          <label className="text-base">Select User</label>
+        <FormGroup label="Invite members from your organisation">
           <DropdownV2
             handleRenderer={() => (
               <Button
-                text={user || 'Select User'}
-                className="font-bold hover:!bg-focus1"
+                text={user || 'Select member'}
+                className="hover:!bg-focus1 border border-appBorder justify-between"
                 withCaret
                 transparent
                 ghost
-                sm
+                md
+                fullWidth
               />
             )}
             displayDefaultOptionClassName={2}
-            optionContainerClassName={'w-36 bg-popoverBackground z-[1000]'}
+            className="block"
+            optionContainerClassName={
+              'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
+            }
             option={UserOptions}
             onSelect={(val) => updateUser(val.name)}
           />
-        </div>
-
-        <div className="flex justify-between pb-3">
-          <label className="text-base">Select Role </label>
+        </FormGroup>
+        <FormGroup label="Assign role for selected member">
           <DropdownV2
             handleRenderer={() => (
               <Button
                 text={role || 'Select role'}
-                className="font-bold hover:!bg-focus1"
+                className="hover:!bg-focus1 border border-appBorder justify-between"
                 withCaret
                 transparent
+                fullWidth
                 ghost
-                sm
+                md
               />
             )}
             displayDefaultOptionClassName={2}
-            optionContainerClassName={'w-36 bg-popoverBackground z-[1000]'}
+            optionContainerClassName={'w-[32rem] bg-popoverBackground z-[1000] -mt-1'}
             option={RoleOptions.slice(1)}
+            className="block"
             onSelect={(val) => updateRole(val.name)}
           />
-        </div>
+        </FormGroup>
       </Container.Body>
       <Container.Footer>
         <Button
