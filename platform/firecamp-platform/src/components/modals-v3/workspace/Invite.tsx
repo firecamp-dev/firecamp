@@ -3,12 +3,12 @@ import {
   Modal,
   IModal,
   Button,
-  TabHeader,
-  Dropdown,
+  DropdownV2,
   SecondaryTab,
   Editor,
   Notes,
   Container,
+  Popover,
 } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
@@ -31,6 +31,9 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   const [newMemberEditorValue, setMemberNewEditorValue] = useState('');
   const [activeTab, setActiveTab] = useState<EInviteMemberTabs>(
     EInviteMemberTabs.NewMembers
+  );
+  const [selectedRole, updateSelectedRole] = useState(
+    EUserRolesWorkspace.Collaborator
   );
   const tabs = [
     { name: 'Invite New Members', id: EInviteMemberTabs.NewMembers },
@@ -73,12 +76,20 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             onSelect={(tabId: EInviteMemberTabs) => setActiveTab(tabId)}
           />
           {activeTab == EInviteMemberTabs.NewMembers ? (
-            <InviteNewMembers
-              value={newMemberEditorValue}
-              onChange={setMemberNewEditorValue}
-              invitingInProgress={iInProgress}
-              sendInvitation={sendInvitation}
-            />
+            <>
+              <div className="flex items-center">
+                <RoleDD
+                  role={selectedRole}
+                  onSelect={(val: number) => updateSelectedRole(val)}
+                />
+              </div>
+              <InviteNewMembers
+                value={newMemberEditorValue}
+                onChange={setMemberNewEditorValue}
+                invitingInProgress={iInProgress}
+                sendInvitation={sendInvitation}
+              />
+            </>
           ) : (
             <InviteExistingMembers />
           )}
@@ -112,21 +123,20 @@ const InviteNewMembers = ({
       <Container.Header className="text-sm font-semibold leading-3 text-appForegroundInActive uppercase">
         {/* Send invitation to your team members to join the workspace */}
         Use comma separated name and email. use multiple lines to invite in
-        bulk.
+        bulk.{' '}
+        <Popover
+          content={
+            <Notes
+              description={`Alice, alice@me.com <br> Bobr, bobr@me.com <br>`}
+            />
+          }
+        >
+          <Popover.Handler>See Example</Popover.Handler>
+        </Popover>
       </Container.Header>
       <Container.Body className="invisible-scrollbar">
-        <Notes
-          description={`example:<br>
-        --------
-        <br>
-        Alice, alice@me.com
-        <br>
-        Bobr, bobr@me,com
-        <br>
-        `}
-        />
         <Editor
-          className="border border-appBorder h-64"
+          className="border border-appBorder h-80"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           language={EEditorLanguage.Text}
@@ -151,27 +161,16 @@ const InviteNewMembers = ({
         )}
       </Container.Body>
       <Container.Footer>
-        <TabHeader className="!p-0">
-          <TabHeader.Left>
-            <div className="flex items-center">
-              <RoleDD
-                role={EUserRolesWorkspace.Collaborator}
-                onSelect={console.log}
-              />
-            </div>
-          </TabHeader.Left>
-          <TabHeader.Right>
-            <Button
-              text={
-                invitingInProgress ? 'Sending invitation...' : 'Send Invitation'
-              }
-              disabled={invitingInProgress}
-              onClick={inviteMembers}
-              primary
-              sm
-            />
-          </TabHeader.Right>
-        </TabHeader>
+        <Button
+          className="ml-auto"
+          text={
+            invitingInProgress ? 'Sending invitation...' : 'Send Invitation'
+          }
+          disabled={invitingInProgress}
+          onClick={inviteMembers}
+          primary
+          sm
+        />
       </Container.Footer>
     </Container>
   );
@@ -181,38 +180,67 @@ const RoleDD: FC<{
   role: EUserRolesWorkspace;
   onSelect: (role: EUserRolesWorkspace) => void;
 }> = ({ role, onSelect }) => {
+  
   const options = [
     {
-      header: 'select role',
-      list: [{ name: 'Admin' }, { name: 'Collaborator' }],
+      id: 'selectRole',
+      name: 'select role',
+      disabled: true,
+      className:
+        '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
+    },
+    {
+      id: 'Admin',
+      name: 'Admin',
+      className:
+        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+    },
+    {
+      id: 'Collaborator',
+      name: 'Collaborator',
+      className:
+        'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
     },
   ];
 
   const _onSelect = (option, e) => {
     onSelect(
-      option.name == 'Admin'
+      option == 'Admin'
         ? EUserRolesWorkspace.Admin
         : EUserRolesWorkspace.Collaborator
     );
   };
   const roleText = role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator';
   return (
-    <Dropdown>
-      <Dropdown.Handler>
-        <Button
-          text={`Invite members as ${roleText}`}
-          className="ml-2"
-          transparent
-          withCaret
-          sm
+    <>
+      <div>
+        <label className="text-base">Invite members as </label>
+
+        <DropdownV2
+          handleRenderer={() => (
+            <Button
+              text={roleText}
+              className="font-bold hover:!bg-focus1"
+              withCaret
+              transparent
+              ghost
+              sm
+            />
+          )}
+          displayDefaultOptionClassName={2}
+          optionContainerClassName={'w-36 bg-popoverBackground z-[1000]'}
+          option={options}
+          onSelect={_onSelect}
         />
-      </Dropdown.Handler>
-      <Dropdown.Options
-        options={options}
-        selected={role == EUserRolesWorkspace.Owner ? 'Admin' : 'Collaborator'}
-        onSelect={_onSelect}
-      />
-    </Dropdown>
+      </div>
+
+      <a
+        href="/"
+        className="text-appForeground hover:text-modalActiveForeground cursor-pointer text-base ml-auto"
+      >
+        learn more
+      </a>
+    </>
   );
 };
 

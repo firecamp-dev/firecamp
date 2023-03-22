@@ -7,7 +7,7 @@ const ExtraCss = () => {
       className={`
        theme-light
        w-2 w-5 w-6 w-9 w-14 w-56 w-60 w-96 !w-auto !w-full 
-       h-5 h-6 !h-6 h-8 h-9 h-10 h-64 h-80 !h-80 !h-fit
+       h-5 h-6 !h-6 h-8 h-9 h-10 h-80 !h-80 !h-fit
        !min-w-full max-w-sm
        min-h-0 max-h-4 max-h-48 max-h-52 max-h-56
        after:opacity-10 opacity-20 opacity-30 opacity-50 opacity-70 opacity-80 opacity-100 !opacity-100
@@ -22,7 +22,7 @@ const ExtraCss = () => {
        float-right
        text-2xl text-5xl !text-base !text-appForegroundActive text-rest text-websocket text-graphql !text-primaryColor !text-info !text-appForegroundInActive !text-ellipsis text-link 
        font-normal font-light !font-regular hover:text-appForegroundActive
-       z-20 z-30  
+       z-20 z-30 z-[1000]
        flex-none flex-2 
        !filter-none  
        transform-none 

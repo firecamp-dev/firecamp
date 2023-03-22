@@ -917,6 +917,9 @@ video {
 .z-10 {
 	z-index: 10;
 }
+.z-\[1000\] {
+	z-index: 1000;
+}
 .z-50 {
 	z-index: 50;
 }
@@ -1215,9 +1218,6 @@ video {
 }
 .\!h-6 {
 	height: 1.5rem !important;
-}
-.h-64 {
-	height: 16rem;
 }
 .h-80 {
 	height: 20rem;
