@@ -216,6 +216,9 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
     Assertion.prototype,
     'jsonBody',
     function (this: Chai.AssertionStatic, path: string, value: any) {
+      console.log('1=>', this._obj?.body, path, value);
+      console.log('2=>', getValue(this._obj?.body, path));
+      console.log('3=>', isEqual(getValue(this._obj?.body, path), value));
       this.assert(
         isEqual(getValue(path, this._obj?.body), value),
         'expected response should have JSON data but not found',

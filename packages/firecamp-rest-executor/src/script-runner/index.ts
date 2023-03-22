@@ -133,6 +133,3 @@ export type TTestScript = (
   error: { name: string; message: string };
   result?: any;
 }>;
-
-
-console.log()
