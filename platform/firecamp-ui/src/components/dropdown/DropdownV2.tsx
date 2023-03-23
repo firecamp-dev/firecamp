@@ -33,6 +33,7 @@ const DropDownV2 = ({
             <DropdownMenu.Content className={cx(
                 { [DEFAULT_STYLES.optionContainerDefault1]: displayDefaultOptionClassName === 1 },
                 { [DEFAULT_STYLES.optionContainerDefault2]: displayDefaultOptionClassName === 2 },
+                {"d-none border-0": option.length === 0},
                 optionContainerClassName)}
                 sideOffset={5}>
 

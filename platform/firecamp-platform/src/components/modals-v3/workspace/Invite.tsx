@@ -1,4 +1,5 @@
-import { FC, useCallback, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
+import cx from 'classnames';
 import {
   Modal,
   IModal,
@@ -11,6 +12,7 @@ import {
   Popover,
   FormGroup,
 } from '@firecamp/ui';
+import { Rest } from '@firecamp/cloud-apis';
 import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace, ERegex } from '../../../types';
@@ -26,6 +28,48 @@ enum EInviteMemberTabs {
   NewMembers = 'new_members',
   ExistingMembers = 'existing_members',
 }
+
+const DUMMY_USER_DATA = [
+  {
+    id: 1,
+    name: 'Shreya',
+  },
+  {
+    id: 2,
+    name: 'Nishchit',
+  },
+  {
+    id: 3,
+    name: 'Radhika',
+  },
+  {
+    id: 4,
+    name: 'Charmi',
+  },
+];
+
+const RoleOptions = [
+  {
+    id: 'selectRole',
+    name: 'select role',
+    disabled: true,
+    className:
+      '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
+  },
+  {
+    id: EUserRolesWorkspace.Admin,
+    name: 'Admin',
+    className:
+      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+  },
+  {
+    id: EUserRolesWorkspace.Collaborator,
+    name: 'Collaborator',
+    className:
+      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+  },
+];
+
 const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   const { inviteMembers } = useWorkspaceStore.getState();
   const [iInProgress, setIInProgress] = useState(false);
@@ -33,9 +77,14 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   const [activeTab, setActiveTab] = useState<EInviteMemberTabs>(
     EInviteMemberTabs.NewMembers
   );
-  const [selectedRole, updateSelectedRole] = useState(
-    EUserRolesWorkspace.Collaborator
-  );
+  const [selectedRole, updateSelectedRole] = useState({
+    name: 'Collaborator',
+    id: EUserRolesWorkspace.Collaborator,
+  });
+
+  const [isRequesting, setIsRequesting] = useState(false);
+  const [existingMemberList, updateExistingMemberList] = useState([]);
+
   const tabs = [
     { name: 'Invite New Members', id: EInviteMemberTabs.NewMembers },
     {
@@ -44,9 +93,36 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
     },
   ];
 
-  const sendInvitation = (members) => {
-    inviteMembers({ role: 2, members });
+  useEffect(() => {
+    if (
+      activeTab === EInviteMemberTabs.ExistingMembers &&
+      existingMemberList.length === 0
+    ) {
+      // setIsRequesting(true);
+      // Rest.organization.getMembers(orgId).then((data) => {
+      console.log(`api will be called...`);
+      const members = DUMMY_USER_DATA.map((m) => {
+        return {
+          id: m.id,
+          name: m.name,
+          className:
+            ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+        };
+      });
+      updateExistingMemberList(members);
+      // }).catch(console.log)
+      //   .finally(() => setIsRequesting(false));
+    }
+  }, [activeTab]);
+
+  // send new / existing member invitation
+  const sendInvitation = (mDetails, eMember = false) => {
+    if (eMember) return console.log(`invite existing member`, mDetails);
+
+    console.log(`invite new member`, mDetails); //{members, role}
+    // inviteMembers({ role: 2, members });
   };
+
   return (
     <>
       <Modal.Header className="border-b border-appBorder">
@@ -56,20 +132,6 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
       </Modal.Header>
       <Modal.Body>
         <div className="p-4 h-full flex flex-col">
-          {/* <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
-            use the link for add people in to workspace
-          </label>
-          <div className="flex border !border-inputBorder rounded-sm leading-5 outline-none placeholder-inputPlaceholder focus:bg-inputFocusBackground w-fit px-3 py-1 bg-focus1">
-            <span className="block mr-2">
-              http://firecame.com/codebasics/invitemember
-            </span>
-            <CopyButton text={inviteUrl} />
-          </div>
-          <div className="flex items-center text-appForegroundInActive my-5">
-            <span>OR</span>
-            <hr className="flex-1 ml-2"></hr>
-          </div> */}
-
           <SecondaryTab
             className="flex items-center pb-6 -ml-2"
             list={tabs}
@@ -77,22 +139,17 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             onSelect={(tabId: EInviteMemberTabs) => setActiveTab(tabId)}
           />
           {activeTab == EInviteMemberTabs.NewMembers ? (
-            <>
-              <div className="flex items-center">
-                <RoleDD
-                  role={selectedRole}
-                  onSelect={(val: any) => updateSelectedRole(val.name)}
-                />
-              </div>
-              <InviteNewMembers
-                value={newMemberEditorValue}
-                onChange={setMemberNewEditorValue}
-                invitingInProgress={iInProgress}
-                sendInvitation={sendInvitation}
-              />
-            </>
+            <InviteNewMembers
+              value={newMemberEditorValue}
+              onChange={setMemberNewEditorValue}
+              memberRole={selectedRole}
+              updateMemberRole={updateSelectedRole}
+              invitingInProgress={iInProgress}
+              sendInvitation={sendInvitation}
+            />
           ) : (
             <InviteExistingMembers
+              memberList={existingMemberList}
               invitingInProgress={iInProgress}
               sendInvitation={sendInvitation}
             />
@@ -107,6 +164,8 @@ export default Invite;
 const InviteNewMembers = ({
   value,
   onChange = (_) => {},
+  memberRole,
+  updateMemberRole = (_) => {},
   sendInvitation = (_) => {},
   invitingInProgress = false,
 }) => {
@@ -118,27 +177,33 @@ const InviteNewMembers = ({
     if (error?.length) {
       setError(error);
     } else {
-      sendInvitation(success);
+      sendInvitation({ members: success, role: memberRole.id });
     }
-  }, [value]);
+  }, [value, memberRole]);
 
   return (
-    <Container className="gap-2">
-      <Container.Header className="text-sm font-semibold leading-3 text-appForegroundInActive">
-        {/* Send invitation to your team members to join the workspace */}
-        Use comma separated name and email. use multiple lines to invite in
-        bulk.{' '}
-        <Popover
-          content={
-            <Notes
-              description={`Alice, alice@me.com <br> Bobr, bobr@me.com <br>`}
-            />
-          }
-        >
-          <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ">
-            See Example
-          </Popover.Handler>
-        </Popover>
+    <Container className="gap-2 invisible-scrollbar">
+      <Container.Header>
+        <RoleDD
+          role={memberRole.name}
+          onSelect={({ name, id }) => updateMemberRole({ name, id })}
+        />
+        <div className="text-sm font-semibold leading-3 text-appForegroundInActive">
+          {/* Send invitation to your team members to join the workspace */}
+          Use comma separated name and email. use multiple lines to invite in
+          bulk.{' '}
+          <Popover
+            content={
+              <Notes
+                description={`Alice, alice@me.com <br> Bobr, bobr@me.com <br>`}
+              />
+            }
+          >
+            <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ">
+              See Example
+            </Popover.Handler>
+          </Popover>
+        </div>
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
         <Editor
@@ -182,48 +247,25 @@ const InviteNewMembers = ({
   );
 };
 
-const RoleOptions = [
-  {
-    id: 'selectRole',
-    name: 'select role',
-    disabled: true,
-    className:
-      '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
-  },
-  {
-    id: 'Admin',
-    name: 'Admin',
-    className:
-      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-  },
-  {
-    id: 'Collaborator',
-    name: 'Collaborator',
-    className:
-      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-  },
-];
 const RoleDD: FC<{
-  role: EUserRolesWorkspace;
-  onSelect: (role: EUserRolesWorkspace) => void;
+  role: string;
+  onSelect: (role: { name: string; id: number }) => void;
 }> = ({ role, onSelect }) => {
-  const _onSelect = (option, e) => {
-    onSelect(
-      option == 'Admin'
-        ? EUserRolesWorkspace.Admin
-        : EUserRolesWorkspace.Collaborator
-    );
+  const _onSelect = (option) => {
+    onSelect({ name: option.name, id: option.id });
   };
-  const roleText = role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator';
+  // const roleText = role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator';
   return (
-    <>
-      <div className="pb-3">
-        <label className="text-base">Invite members as </label>
+    <div className="flex items-center pb-3">
+      <div>
+        <label className="text-base text-appForeground">
+          Invite members as{' '}
+        </label>
 
         <DropdownV2
           handleRenderer={() => (
             <Button
-              text={roleText}
+              text={role}
               className="font-bold hover:!bg-focus1"
               withCaret
               transparent
@@ -240,70 +282,56 @@ const RoleDD: FC<{
 
       <a
         href="/"
-        className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ml-auto pb-3"
+        className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ml-auto"
         target="_blank"
       >
         learn more
       </a>
-    </>
+    </div>
   );
 };
 
 const InviteExistingMembers = ({
-  sendInvitation = (_) => {},
+  memberList = [],
+  sendInvitation = (_details, status) => {},
   invitingInProgress = false,
 }) => {
-  const [user, updateUser] = useState();
-  const [role, updateRole] = useState();
-  const UserOptions = [
-    {
-      id: 1,
-      name: 'Shreya',
-      className:
-        ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-    },
-    {
-      id: 2,
-      name: 'Nishchit',
-      className:
-        ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-    },
-    {
-      id: 3,
-      name: 'Radhika',
-      className:
-        ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-    },
-    {
-      id: 4,
-      name: 'Charmi',
-      className:
-        ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-    },
-  ];
+  const [user, updateUser] = useState({ name: '', error: false });
+  const [role, updateRole] = useState({
+    name: '',
+    id: undefined,
+    error: false,
+  });
 
   const inviteMembers = () => {
-    console.log(`send existing member invitation`, { user, role });
-    // sendInvitation({user, role});
+    if (!user.name.length)
+      return updateUser((detail) => ({ ...detail, error: true }));
+    if (!role.id) return updateRole((detail) => ({ ...detail, error: true }));
+
+    sendInvitation({ members: user.name, role: role.id }, true);
   };
 
   return (
     <Container className="gap-2">
-      <Container.Header className="text-base text-center font-semibold leading-3 text-appForegroundInActive p-6">
-      Invite your team colleagues to join the workspace.
+      <Container.Header className="text-base font-semibold leading-3 text-appForegroundInActive p-6">
+        Invite your team colleagues to join the workspace.
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem] h-80">
         <FormGroup label="Invite members from your organisation">
           <DropdownV2
             handleRenderer={() => (
               <Button
-                text={user || 'Select member'}
-                className="hover:!bg-focus1 border border-appBorder justify-between"
+                text={user.name || 'Select member'}
+                className={cx(
+                  'hover:!bg-focus1 border border-appBorder justify-between',
+                  { 'border-error': user.error }
+                )}
                 withCaret
                 transparent
                 ghost
                 md
                 fullWidth
+                disabled={memberList.length === 0}
               />
             )}
             displayDefaultOptionClassName={2}
@@ -311,16 +339,19 @@ const InviteExistingMembers = ({
             optionContainerClassName={
               'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
             }
-            option={UserOptions}
-            onSelect={(val) => updateUser(val.name)}
+            option={memberList}
+            onSelect={(val) => updateUser({ name: val.name, error: false })}
           />
         </FormGroup>
         <FormGroup label="Assign role for selected member">
           <DropdownV2
             handleRenderer={() => (
               <Button
-                text={role || 'Select role'}
-                className="hover:!bg-focus1 border border-appBorder justify-between"
+                text={role.name || 'Select role'}
+                className={cx(
+                  'hover:!bg-focus1 border border-appBorder justify-between',
+                  { 'border-error': role.error }
+                )}
                 withCaret
                 transparent
                 fullWidth
@@ -329,10 +360,12 @@ const InviteExistingMembers = ({
               />
             )}
             displayDefaultOptionClassName={2}
-            optionContainerClassName={'w-[32rem] bg-popoverBackground z-[1000] -mt-1'}
+            optionContainerClassName={
+              'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
+            }
             option={RoleOptions.slice(1)}
             className="block"
-            onSelect={(val) => updateRole(val.name)}
+            onSelect={({ name, id }) => updateRole({ name, id, error: false })}
           />
         </FormGroup>
       </Container.Body>
@@ -340,7 +373,7 @@ const InviteExistingMembers = ({
         <Button
           className="ml-auto"
           text={'Send Invitation'}
-          disabled={invitingInProgress}
+          disabled={user.error || role.error || invitingInProgress}
           onClick={inviteMembers}
           primary
           sm
