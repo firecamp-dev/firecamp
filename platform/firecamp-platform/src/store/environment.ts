@@ -81,7 +81,6 @@ export interface IEnvironmentStore {
 
   /** @deprecated */
   fetchColEnvironment: (envId: TId) => Promise<any>;
-  createEnvironmentPrompt: () => void;
   createEnvironment: (env: IEnv) => Promise<any>;
   updateEnvironment: (envId: string, body: any) => Promise<any>;
   deleteEnvironment: (envId: TId) => Promise<any>;
@@ -236,55 +235,6 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
         state.toggleProgressBar(false);
       });
     return res;
-  },
-
-  createEnvironmentPrompt: () => {
-    if (!platformContext.app.user.isLoggedIn()) {
-      return platformContext.app.modals.openSignIn();
-    }
-    const { createEnvironment } = get();
-    platformContext.window
-      .promptInput({
-        header: 'Create New Environment',
-        label: 'Environment Name',
-        placeholder: 'type environment name',
-        texts: { btnOking: 'Creating...' },
-        value: '',
-        validator: (val) => {
-          if (!val || val.length < 3) {
-            return {
-              isValid: false,
-              message: 'The environment name must have minimum 3 characters.',
-            };
-          }
-          const isValid = RE.NoSpecialCharacters.test(val);
-          return {
-            isValid,
-            message:
-              !isValid &&
-              'The environment name must not contain any special characters.',
-          };
-        },
-        executor: (name) => {
-          const { workspace } = useWorkspaceStore.getState();
-          return createEnvironment({
-            name,
-            description: '',
-            variables: [],
-            __ref: { id: nanoid(), workspaceId: workspace.__ref.id },
-          });
-        },
-        onError: (e) => {
-          platformContext.app.notify.alert(
-            e?.response?.data?.message || e.message
-          );
-        },
-      })
-      .then((env) => {
-        const { open: openTab } = useTabStore.getState();
-        openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
-        // console.log(env, 1111);
-      });
   },
 
   createEnvironment: async (env: IEnv) => {

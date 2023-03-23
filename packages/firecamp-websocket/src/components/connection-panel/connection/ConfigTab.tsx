@@ -104,7 +104,7 @@ const Config = ({ config = {}, onUpdate }) => {
           type="info"
           title="Desktop only feature"
           description="Please download desktop app to access this feature"
-          withpadding={true}
+          withPadding={true}
         />
       ) : (
         <></>

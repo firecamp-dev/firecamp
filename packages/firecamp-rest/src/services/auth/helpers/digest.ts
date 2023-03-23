@@ -17,30 +17,46 @@ export default (
     qop,
   } = credentials;
 
+  const MD5_SESS = 'MD5-sess';
   const md5 = (string: string) =>
     crypto.createHash('md5').update(string).digest('hex');
-  const HA1 =
-    algorithm?.toLocaleLowerCase() === 'MD5-sess'
-      ? md5(
-          md5(`${username}:${realm}:${password}`) + `:${nonce}:${clientNonce}`
-        )
-      : md5(`${username}:${realm}:${password}`);
 
-  // TODO: How to manage qop = auth-int
-  const HA2 = md5(`${method || EHttpMethod.GET}:${url.raw}`);
-
-  // TODO: How to manage qop = auth-int
-  const response = md5(`${HA1}:${nonce}:${HA2}`);
-  const authDetails = [
+  const AUTH_DETAILS = [
     `username="${username}"`,
     `realm="${realm}"`,
     `nonce="${nonce}"`,
     `uri="${url.raw}"`,
     `qop=${qop}`,
-    `nc=${nonceCount}`,
+    `nc=${nonceCount.toString().padStart(8, '0')}`,
     `cnonce="${clientNonce}"`,
-    `response="${response}"`,
+    `response=""`, //@note: response must be at index 7
     `opaque="${opaque}"`,
   ];
-  return `Digest ${authDetails.join(',')}`;
+
+  const HA1 =
+    algorithm === MD5_SESS
+      ? md5(
+          `${md5(
+            `${username}:${realm}:${password}`
+          )}:${nonce}:${clientNonce}:${md5(
+            `${username}:${realm}:${password}:${nonce}:${clientNonce}`
+          )}`
+        )
+      : md5(`${username}:${realm}:${password}`);
+
+  const HA2 =
+    qop === 'auth-int'
+      ? md5(`${method}:${url.raw}:${md5('')}`)
+      : md5(`${method}:${url.raw}`);
+
+  const response = md5(
+    `${HA1}:${nonce}:${nonceCount
+      .toString()
+      .padStart(8, '0')}:${clientNonce}:${qop}:${HA2}`
+  );
+
+  const updatedAuthDetails = [...AUTH_DETAILS];
+  updatedAuthDetails[7] = `response="${response}"`;
+
+  return `Digest ${updatedAuthDetails.join(',')}`;
 };

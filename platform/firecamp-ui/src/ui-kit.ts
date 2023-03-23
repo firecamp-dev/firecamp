@@ -6,6 +6,7 @@ export { default as Checkbox } from './components/checkbox/Checkbox';
 export { default as CheckboxGroup } from './components/checkbox/CheckboxGroup';
 
 export { default as Dropdown } from './components/dropdown/Dropdown';
+export { default as DropdownV2 } from './components/dropdown/DropdownV2';
 export { default as Scrollbar } from './components/scroll-bar/ScrollBar';
 
 export { default as FormGroup } from './components/form/FormGroup';

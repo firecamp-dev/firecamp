@@ -1,76 +1,75 @@
-import crypto from 'crypto';
-import OAuth from 'oauth-1.0a';
+import CryptoJS from 'crypto-js';
 import { IOAuth1, EOAuth1Signature } from '@firecamp/types';
 import { IExtra } from '../types';
 
 export default (credentials: IOAuth1, extra: IExtra): string => {
-  const {
+  let {
     consumerKey,
     consumerSecret,
     tokenKey,
     tokenSecret,
-    callbackUrl,
-    nonce,
-    realm,
     signatureMethod,
     timestamp,
+    nonce,
+    callbackUrl,
+    realm,
     verifier,
-    version,
+    version = '1.0',
   } = credentials;
 
+  nonce =
+    nonce || CryptoJS.lib.WordArray.random(16).toString(CryptoJS.enc.Base64);
+  timestamp = timestamp || Math.floor(+timestamp / 1000).toString();
   const { method, url } = extra;
 
-  const hashFunction = (signatureMethod: EOAuth1Signature): any => {
-    switch (signatureMethod) {
-      case EOAuth1Signature.hmacSHA1:
-        return (baseString: string, key: string) =>
-          crypto.createHmac('sha1', key).update(baseString).digest('base64');
-
-      case EOAuth1Signature.hmacSHA256:
-        return (baseString: string, key: string) =>
-          crypto.createHmac('sha256', key).update(baseString).digest('base64');
-
-      case EOAuth1Signature.plaintext:
-        return (baseString: string) => baseString;
-
-      default:
-        return '';
-    }
+  const oauth: any = {
+    oauth_callback: callbackUrl,
+    oauth_consumer_key: consumerKey,
+    oauth_nonce: nonce,
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_timestamp: parseInt((Date.now() / 1000).toString()),
+    oauth_token: tokenKey,
+    oauth_version: version,
+    realm,
+    oauth_verifier: verifier,
   };
 
-  const oauth = new OAuth({
-    consumer: {
-      key: consumerKey,
-      secret: consumerSecret,
-    },
-    signature_method: signatureMethod,
-    version: version,
-    hash_function: hashFunction(signatureMethod),
-    realm: realm || null,
-  });
+  const baseString = [
+    method.toUpperCase(),
+    url.raw,
+    Object.keys(oauth)
+      .sort()
+      .map((key) => `${key}=${encodeURIComponent(oauth[key])}`)
+      .join('&'),
+  ]
+    .map(encodeURIComponent)
+    .join('&');
 
-  const requestData = {
-    url: url.raw,
-    method,
-    data: {
-      oauth_callback: callbackUrl || '',
-      oauth_timestamp: timestamp || '',
-      oauth_nonce: nonce || '',
-      oauth_verifier: verifier || '',
-    },
-  };
+  const signingKey = `${encodeURIComponent(
+    consumerSecret
+  )}&${encodeURIComponent(tokenSecret)}`;
 
-  const token: { key: string; secret: string } = {
-    key: tokenKey,
-    secret: tokenSecret,
-  };
+  let signature: string;
+  if (signatureMethod === EOAuth1Signature.hmacSHA1) {
+    signature = CryptoJS.HmacSHA1(baseString, signingKey).toString(
+      CryptoJS.enc.Base64
+    );
+  } else if (signatureMethod === EOAuth1Signature.hmacSHA256) {
+    signature = CryptoJS.HmacSHA256(baseString, signingKey).toString(
+      CryptoJS.enc.Base64
+    );
+  } else if (signatureMethod === EOAuth1Signature.plaintext) {
+    signature = signingKey;
+  } else {
+    throw new Error(`Unsupported signature method: ${signatureMethod}`);
+  }
 
-  const data = oauth.authorize(requestData, token);
-  const authInfo = oauth.toHeader(data).Authorization;
+  oauth.oauth_signature = signature;
 
-  // TODO: Review before remove
-  // authInfo = authInfo.replace(/%7B%7B/g, '{{')
-  // authInfo = authInfo.replace(/%7D%7D/g, '}}')
+  const header = `OAuth ${Object.keys(oauth)
+    .sort()
+    .map((key) => `${key}="${encodeURIComponent(oauth[key])}"`)
+    .join(', ')}`;
 
-  return authInfo;
+  return header;
 };

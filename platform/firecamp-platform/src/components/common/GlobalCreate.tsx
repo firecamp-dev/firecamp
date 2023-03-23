@@ -48,22 +48,22 @@ const GlobalCreateDD = ({}) => {
         open({}, { id: '', type: ETabEntityTypes.Request });
         break;
       case EMenuOptions.Collection:
-        const { createCollectionPrompt } = useWorkspaceStore.getState();
-        createCollectionPrompt();
+        platformContext.platform.createCollectionPrompt();
         break;
       case EMenuOptions.Environment:
-        const { createEnvironmentPrompt } = useEnvStore.getState();
-        createEnvironmentPrompt();
+        platformContext.platform.createEnvironmentPrompt();
         break;
       case EMenuOptions.ImportCollection:
         const { openImportTab } = useWorkspaceStore.getState();
         openImportTab();
         break;
       case EMenuOptions.Workspace:
-        platformContext.app.modals.openCreateWorkspace();
+        platformContext.platform.createWorkspacePrompt();
+        // platformContext.app.modals.openCreateWorkspace();
         break;
       case EMenuOptions.Organization:
-        platformContext.app.modals.openCreateOrg();
+        platformContext.platform.createOrganizationPrompt();
+        // platformContext.app.modals.openCreateOrg();
         break;
       case EMenuOptions.InviteMembers:
         platformContext.app.modals.openInviteMembers();

@@ -23,21 +23,22 @@ import {
 } from '@firecamp/ui';
 import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
-import { RE } from '../../../types';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useTabStore } from '../../../store/tab';
 import { ETabEntityTypes } from '../../tabs/types';
+import { RE } from '../../../types';
+import platformContext from '../../../services/platform-context';
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();
   const treeRef = useRef();
+  const { createCollectionPrompt } = platformContext.platform;
 
   const {
     workspace,
     explorer,
     fetchExplorer,
 
-    createCollectionPrompt,
     openImportTab,
     updateCollection,
     updateFolder,
@@ -54,7 +55,6 @@ const Explorer: FC<any> = () => {
       explorer: s.explorer,
       fetchExplorer: s.fetchExplorer,
 
-      createCollectionPrompt: s.createCollectionPrompt,
       openImportTab: s.openImportTab,
       updateCollection: s.updateCollection,
       updateFolder: s.updateFolder,
@@ -292,10 +292,10 @@ const Explorer: FC<any> = () => {
                   />
                   <Button
                     text="Create Collection"
-                    sm
-                    primary
                     className="mx-auto mb-6"
                     onClick={createCollectionPrompt}
+                    primary
+                    sm
                   />
                 </div>
               );
