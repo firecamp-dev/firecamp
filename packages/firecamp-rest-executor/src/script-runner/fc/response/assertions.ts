@@ -212,18 +212,27 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
     }
   );
 
+  /**
+   * fc.response.to.have.jsonBody
+   * @example
+     fc.test("response body has json with userId", function () {
+          fc.response.to.have.jsonBody('userId', 1)
+            .and.have.jsonBody('name', 'Ramanujam')
+    });
+   */
   utils.addMethod(
     Assertion.prototype,
     'jsonBody',
     function (this: Chai.AssertionStatic, path: string, value: any) {
-      console.log('1=>', this._obj?.body, path, value);
-      console.log('2=>', getValue(this._obj?.body, path));
-      console.log('3=>', isEqual(getValue(this._obj?.body, path), value));
+      let body = {};
+      try {
+        body = JSON.parse(this._obj.body);
+      } catch (e) {}
       this.assert(
-        isEqual(getValue(path, this._obj?.body), value),
+        isEqual(getValue(body, path), value),
         'expected response should have JSON data but not found',
         'expected response should not have JSON data',
-        this._obj?.body
+        body
       );
     }
   );
