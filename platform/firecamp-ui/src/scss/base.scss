@@ -81,7 +81,6 @@
     --popoverBoxshadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
 
     --focus-border: #007acc;
-    --error: #f00;
 
     --modal-background: #262626;
     --modal-foreground: #9C9C9C;
@@ -150,8 +149,7 @@
     --activityBar-inactiveForeground: #57606a;
     --activityBar-activeBackground: var(--focus-level-2);
     --activityBar-activeBorder: var(--app-primary);
-    //todo check duplicate value
-    --activityBar-border: #333333;
+    
     --activityBar-border: #dddddd;
     --activityBarBadge-foreground: #FFFFFF;
     --activityBarBadge-background: #09A1EDl;
@@ -175,8 +173,6 @@
     
 
     --focus-border: #007acc;
-    //Todo check duplicate error value in both theme
-    --error: #f00;
 
     --modal-background: #f5f5f5;
     --modal-foreground: #2a2a2a;
