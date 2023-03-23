@@ -773,7 +773,7 @@ importers:
   platform/firecamp-platform:
     specifiers:
       '@firecamp/agent-manager': workspace:*
-      '@firecamp/cloud-apis': ^0.1.16
+      '@firecamp/cloud-apis': ^0.1.17
       '@firecamp/cookie-manager': ^0.0.0
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
@@ -819,7 +819,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/agent-manager': link:../../packages/firecamp-agent-manager
-      '@firecamp/cloud-apis': 0.1.16
+      '@firecamp/cloud-apis': 0.1.17
       '@firecamp/cookie-manager': link:../../packages/firecamp-cookie-manager
       '@firecamp/graphql': link:../../packages/firecamp-graphql
       '@firecamp/rest': link:../../packages/firecamp-rest
@@ -2830,8 +2830,8 @@ packages:
       - supports-color
     dev: true
 
-  /@firecamp/cloud-apis/0.1.16:
-    resolution: {integrity: sha512-ICWPLW0n0vS/9hvRHizSv5/J6o8BNW0Zf9tqwROC5MBjpCJlxjBhhlnMRCR0M5ePLBnx+l3rMJv7SwKguYLyGA==}
+  /@firecamp/cloud-apis/0.1.17:
+    resolution: {integrity: sha512-07yfmZzABX4BtUS1stQBZT1DoT/m6+qZk2ItpTQ+XpBTnXL8ePGSKKpqYBxppkJ5jTUauVFFCBl9GqwFdm/NcQ==}
     engines: {node: '>=10'}
     dependencies:
       axios: 0.21.4
@@ -20942,7 +20942,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.1
-      webpack: 5.75.0_webpack-cli@5.0.1
+      webpack: 5.75.0
     dev: true
 
   /terser/4.8.1:
