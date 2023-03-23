@@ -1,5 +1,5 @@
+import { useState } from 'react';
 import Editor from './Editor';
-import SingleLineEditor from './SingleLineEditor'
 
 export default {
   title: "UI-Kit/Editor",
@@ -8,7 +8,13 @@ export default {
   }
 };
 
-const EditorTemplate = (args: any) => <Editor {...args} />;
+const EditorTemplate = ({value,...args}) => {
+  const [editorValue, updateEditorValue] = useState(value)
+  return (<Editor {...args} value={editorValue} onChange={(e) => updateEditorValue(e.target.value) } />)};
 
 export const EditorComponent = EditorTemplate.bind({});
-EditorComponent.args = {};
+EditorComponent.args = {
+  value: 'single line editor',
+  className: 'border',
+  height:"100%"
+};

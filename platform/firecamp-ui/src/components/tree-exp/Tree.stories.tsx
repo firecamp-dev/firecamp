@@ -3,7 +3,7 @@ import { FirecampTreeView, TreeDataProvider } from 'firecamp-treeview';
 import { aNodeWithIdTreeDataProvider } from "./dataProvider";
 
 export default {
-  title: "UI-Kit/FirecampTreeView",
+  title: "UI-Kit/ComingSoon/FirecampTreeView",
   component: FirecampTreeView,
   argTypes: {
     // treeDataProvider: aNodeWithIdTreeDataProvider(),

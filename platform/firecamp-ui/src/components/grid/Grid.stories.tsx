@@ -5,7 +5,7 @@ import RootContainer from './RootContainer';
 import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
 
 export default {
-  title: "UI-Kit/Grid",
+  title: "UI-Kit/Grid/Layout",
   component: Row,
   subcomponent: Column,
   subcomponent: RootContainer,
