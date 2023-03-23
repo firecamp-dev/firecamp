@@ -31,7 +31,7 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.21",
+    "@firecamp/types": "^0.1.22",
     "@firecamp/ui": "workspace:*",
     "@firecamp/url": "0.0.20",
     "codemirror": "^5.63.0",

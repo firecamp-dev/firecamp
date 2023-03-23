@@ -148,7 +148,7 @@ importers:
   packages/firecamp-agent-manager:
     specifiers:
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@firecamp/utils': ^0.0.18
       '@types/chai': ^4.3.1
       '@types/chrome': 0.0.204
@@ -174,7 +174,7 @@ importers:
       typescript: ^4.7.4
     dependencies:
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       '@firecamp/utils': 0.0.18
     devDependencies:
       '@types/chai': 4.3.4
@@ -249,7 +249,7 @@ importers:
 
   packages/firecamp-graphql:
     specifiers:
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@types/jest': 29.2.4
@@ -279,7 +279,7 @@ importers:
       typedoc: ^0.23.8
       typescript: ^4.7.4
     dependencies:
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
       codemirror: 5.65.11
@@ -314,7 +314,7 @@ importers:
     specifiers:
       '@firecamp/curl-to-firecamp': ^1.0.1
       '@firecamp/rest-executor': workspace:*
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@hapi/joi': ^17.1.1
@@ -369,7 +369,7 @@ importers:
     dependencies:
       '@firecamp/curl-to-firecamp': 1.0.1_nanoid@3.3.4
       '@firecamp/rest-executor': link:../firecamp-rest-executor
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
       '@hapi/joi': 17.1.1
@@ -425,7 +425,7 @@ importers:
 
   packages/firecamp-rest-executor:
     specifiers:
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@firecamp/url': 0.0.20
       '@firecamp/utils': ^0.0.15
       '@hapi/joi': ^17.1.1
@@ -467,7 +467,7 @@ importers:
       typescript: ^4.7.4
       vm2: ^3.9.11
     dependencies:
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       '@firecamp/url': 0.0.20
       '@firecamp/utils': 0.0.15
       '@hapi/joi': 17.1.1
@@ -513,7 +513,7 @@ importers:
   packages/firecamp-socket-io:
     specifiers:
       '@firecamp/socket.io-executor': workspace:*
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@types/jest': 29.2.4
@@ -549,7 +549,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/socket.io-executor': link:../firecamp-socket-io-executor
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
       classnames: 2.3.2
@@ -587,7 +587,7 @@ importers:
 
   packages/firecamp-socket-io-executor:
     specifiers:
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@types/jest': 29.2.4
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
@@ -613,7 +613,7 @@ importers:
       typedoc: ^0.23.8
       typescript: ^4.7.4
     dependencies:
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       comment-json: 4.2.3
       mitt: 3.0.0
       socket.io-client-v2: /socket.io-client/2.4.0
@@ -642,7 +642,7 @@ importers:
 
   packages/firecamp-websocket:
     specifiers:
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@firecamp/ws-executor': workspace:*
@@ -678,7 +678,7 @@ importers:
       typescript: ^4.7.4
       zustand: 3.7.2
     dependencies:
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
       '@firecamp/ws-executor': link:../firecamp-ws-executor
@@ -717,7 +717,7 @@ importers:
 
   packages/firecamp-ws-executor:
     specifiers:
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@types/chrome': ^0.0.204
       '@types/jest': 29.2.4
       '@types/node': ^18.0.0
@@ -743,7 +743,7 @@ importers:
       typescript: ^4.6.3
       ws: 8.11.0
     dependencies:
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       comment-json: 4.2.3
       mitt: 3.0.0
       nanoid: 3.3.4
@@ -779,7 +779,7 @@ importers:
       '@firecamp/rest': workspace:*
       '@firecamp/rest-executor': workspace:*
       '@firecamp/socket.io': workspace:*
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
       '@firecamp/websocket': workspace:*
@@ -825,7 +825,7 @@ importers:
       '@firecamp/rest': link:../../packages/firecamp-rest
       '@firecamp/rest-executor': link:../../packages/firecamp-rest-executor
       '@firecamp/socket.io': link:../../packages/firecamp-socket-io
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       '@firecamp/ui': link:../firecamp-ui
       '@firecamp/url': 0.0.20
       '@firecamp/websocket': link:../../packages/firecamp-websocket
@@ -870,7 +870,7 @@ importers:
       '@babel/cli': ^7.16.0
       '@babel/core': ^7.14.8
       '@babel/preset-env': ^7.19.4
-      '@firecamp/types': ^0.1.21
+      '@firecamp/types': ^0.1.22
       '@firecamp/ui': workspace:*
       '@monaco-editor/react': 4.4.5
       '@radix-ui/react-dropdown-menu': ^2.0.1
@@ -938,7 +938,7 @@ importers:
       typescript: ^4.3.5
       vscode: ^1.1.37
     dependencies:
-      '@firecamp/types': 0.1.21
+      '@firecamp/types': 0.1.22
       '@firecamp/ui': 'link:'
       '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
       '@radix-ui/react-dropdown-menu': 2.0.1_uswwk7ohkq5gkv2wqm32sjldim
@@ -2864,6 +2864,12 @@ packages:
 
   /@firecamp/types/0.1.21:
     resolution: {integrity: sha512-dWnRsyrELcf3dwRdQHWofUhBHLibGh+Z6Jr9odMzUdY+PUn5fCQ4hNinP7sYAG2QvlqylKaKjn79n+r+ZtF6qg==}
+    engines: {node: '>=10'}
+    requiresBuild: true
+    dev: false
+
+  /@firecamp/types/0.1.22:
+    resolution: {integrity: sha512-fCMjLQKLq1vo5wNoN8Y5V2O+x0AnP24sRWVw3LDrDCEsMoQkIv66DMqUS4mQ2pPyDysGZz85AROURmJGcms3dQ==}
     engines: {node: '>=10'}
     requiresBuild: true
     dev: false
