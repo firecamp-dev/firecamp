@@ -18,8 +18,8 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
   );
   const { createEnvironmentPrompt } = platformContext.platform;
   useEffect(() => {
-    console.log('env selector rendering the first time');
-  }, []);
+    console.log('env selector rendering the first time', environments);
+  }, [environments]);
   const [isOpen, toggleOpen] = useState(false);
   const menu = useMemo(
     () => Helper.generate.environmentsDD(environments, activeEnvId),
@@ -33,6 +33,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
     if (env.id == 'fc-new-environment') {
       createEnvironmentPrompt();
     } else {
+      console.log(env, 'selected env...')
       onChange(env.id);
     }
   };

@@ -6,7 +6,7 @@ import {
   EHttpMethod,
   IRequestFolder,
   IRequestItem,
-  TRuntimeVariable,
+  IVariableGroup,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
 import { platformEmitter } from '../platform-emitter';
@@ -335,11 +335,7 @@ const request: IPlatformRequestService = {
   execute: async (request: IRest) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
     const { globalEnv, activeEnv } = useEnvStore.getState();
-    const variables: {
-      globals: TRuntimeVariable[];
-      environment: TRuntimeVariable[];
-      collectionVariables: TRuntimeVariable[];
-    } = {
+    const variables: IVariableGroup = {
       globals: globalEnv.variables,
       environment: activeEnv.variables,
       collectionVariables: [],

@@ -5,7 +5,7 @@ import {
   ERestBodyTypes,
   IRest,
   IRestResponse,
-  TRuntimeVariable,
+  IVariableGroup,
 } from '@firecamp/types';
 import RestExecutor from '@firecamp/rest-executor/dist/esm';
 import parseBody from '@firecamp/rest-executor/dist/esm/helpers/body';
@@ -14,11 +14,6 @@ import * as extension from './chrome';
 
 const restExecutors: { [key: TId]: RestExecutor } = {};
 
-type TVariablesExecutionArg = {
-  globals: TRuntimeVariable[];
-  environment: TRuntimeVariable[];
-  collectionVariables: TRuntimeVariable[];
-};
 
 /**
  *
@@ -28,11 +23,11 @@ type TVariablesExecutionArg = {
  */
 export const send = async (
   request: IRest,
-  variables: TVariablesExecutionArg,
+  variables: IVariableGroup,
   firecampAgent: EFirecampAgent
 ): Promise<{
   response: IRestResponse;
-  variables: TVariablesExecutionArg;
+  variables: IVariableGroup;
   testResult: any;
   scriptErrors: any[];
 }> => {

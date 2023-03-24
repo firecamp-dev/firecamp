@@ -5,7 +5,7 @@ import {
   IRest,
   IRestResponse,
   IScript,
-  TRuntimeVariable,
+  IVariableGroup,
 } from '@firecamp/types';
 import { _misc, _string } from '@firecamp/utils';
 import jsExecutor from './lib/js-executor';
@@ -15,11 +15,7 @@ export * from './snippets';
 
 export const preScript: TPreScript = async (
   request: IRest,
-  variables: {
-    globals: TRuntimeVariable[];
-    environment: TRuntimeVariable[];
-    collectionVariables: TRuntimeVariable[];
-  }
+  variables: IVariableGroup
 ) => {
   const fc = new Fc(request, {}, variables);
   if (!request?.preScripts?.length) return { fc: fc.toJSON() };
@@ -109,11 +105,7 @@ const prepareCode = (value: string) => {
 
 export type TPreScript = (
   request: IRest,
-  variables: {
-    globals: TRuntimeVariable[];
-    environment: TRuntimeVariable[];
-    collectionVariables: TRuntimeVariable[];
-  }
+  variables: IVariableGroup
 ) => Promise<{
   fc: any;
   error: { name: string; message: string };
@@ -123,11 +115,7 @@ export type TPreScript = (
 export type TTestScript = (
   request: IRest,
   response: IRestResponse,
-  variables?: {
-    globals: TRuntimeVariable[];
-    environment: TRuntimeVariable[];
-    collectionVariables: TRuntimeVariable[];
-  }
+  variables?: IVariableGroup
 ) => Promise<{
   fc: any;
   error: { name: string; message: string };
