@@ -167,7 +167,6 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
       localStorage.setItem('activeEnv', envId || ''); //if null then it'll save string 'null' thus put empty ''
     }
 
-    console.log(envId, '....... in store');
     Promise.resolve(envId)
       .then((eId) => {
         if (!eId) setNoEnvironment();

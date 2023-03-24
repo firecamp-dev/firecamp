@@ -20,7 +20,7 @@ import SignUp from './auth/SignUp';
 import SwitchOrg from './organization/SwitchOrg';
 import CreateOrg from './organization/CreateOrg';
 import CreateWorkspace from './workspace/CreateWorkspace';
-import Invite from './workspace/Invite';
+import InviteMembers from './workspace/invite-members/InviteMembers';
 import OrgManagement from './organization/OrgManagement';
 import WorkspaceManagement from './workspace/WorkspaceManagement';
 import SwitchWorkspace from './workspace/SwitchWorkspace';
@@ -55,7 +55,7 @@ export const ModalContainer = () => {
       case EPlatformModalTypes.CreateWorkspace:
         return <CreateWorkspace isOpen={isOpen} onClose={close} />;
       case EPlatformModalTypes.InviteMembers:
-        return <Invite isOpen={isOpen} onClose={close} />;
+        return <InviteMembers isOpen={isOpen} onClose={close} />;
       case EPlatformModalTypes.WorkspaceManagement:
         return <WorkspaceManagement isOpen={isOpen} onClose={close} />;
       case EPlatformModalTypes.SwitchWorkspace:
