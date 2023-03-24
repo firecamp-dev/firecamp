@@ -114,10 +114,15 @@ export interface IWorkspaceStore {
   ) => Promise<any>;
 
   // invitations
-  inviteMembers: (payload: {
+  inviteNonOrgMembers: (payload: {
     role: EUserRolesWorkspace;
     members: { name: string; email: string }[];
   }) => Promise<any>;
+
+  // invitations
+  inviteOrgMembers: (
+    members: { id: string; name: string; role: number }[]
+  ) => Promise<any>;
 
   // common
   dispose: () => void;
@@ -796,10 +801,24 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     //invitation
-    inviteMembers: (payload) => {
+    /** invite non org members */
+    inviteNonOrgMembers: (payload) => {
       const { workspace } = get();
       return Rest.workspace
-        .inviteMembers(workspace.__ref.id, payload)
+        .inviteNonOrgMembers(workspace.__ref.id, payload)
+        .then((res) => res.data)
+        .catch((e) => {
+          platformContext.app.notify.alert(
+            e.response?.data?.message || e.message
+          );
+        });
+    },
+
+    /** invite org members */
+    inviteOrgMembers: (members) => {
+      const { workspace } = get();
+      return Rest.workspace
+        .inviteOrgMembers(workspace.__ref.id, { members })
         .then((res) => res.data)
         .catch((e) => {
           platformContext.app.notify.alert(

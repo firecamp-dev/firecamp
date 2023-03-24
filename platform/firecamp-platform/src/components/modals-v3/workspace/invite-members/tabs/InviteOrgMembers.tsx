@@ -12,13 +12,6 @@ import { EUserRolesWorkspace } from '../../../../../types';
 
 const RoleOptions = [
   {
-    id: 'selectRole',
-    name: 'select role',
-    disabled: true,
-    className:
-      '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
-  },
-  {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
     className:
@@ -34,25 +27,23 @@ const RoleOptions = [
 
 const InviteOrgMembers = ({
   members = [],
-  sendInvitation = (_details, status) => {},
-  invitingInProgress = false,
+  sendInvitation = (member) => {},
+  isInvitingMembers = false,
   isFetchingMembers = false,
 }) => {
-  const [user, setUser] = useState({ name: '', error: false });
-  const [role, setRole] = useState({
+  const [user, setUser] = useState({
+    id: null,
     name: '',
-    id: undefined,
-    error: false,
+    email: '',
+    role: EUserRolesWorkspace.Collaborator,
   });
 
-  const inviteMembers = () => {
-    if (!user.name.length)
-      return setUser((detail) => ({ ...detail, error: true }));
-    if (!role.id) return setRole((detail) => ({ ...detail, error: true }));
-
-    sendInvitation({ members: user.name, role: role.id }, true);
+  const inviteMember = () => {
+    if (!user.id || !user.email || !user.role) return;
+    sendInvitation(user);
   };
 
+  const role = RoleOptions.find((r) => r.id == user.role);
   return (
     <Container className="gap-2">
       <Container.Header className="text-base font-semibold leading-3 text-appForegroundInActive p-6">
@@ -70,7 +61,7 @@ const InviteOrgMembers = ({
                   text={user.name || 'Select member'}
                   className={cx(
                     'hover:!bg-focus1 border border-appBorder justify-between',
-                    { 'border-error': user.error }
+                    { 'border-error': !user.name }
                   )}
                   disabled={members.length === 0}
                   transparent
@@ -88,7 +79,14 @@ const InviteOrgMembers = ({
               'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
             }
             option={members}
-            onSelect={(val) => setUser({ name: val.name, error: false })}
+            onSelect={(member) =>
+              setUser((u) => ({
+                ...u,
+                id: member.id,
+                name: member.name,
+                email: member.email,
+              }))
+            }
           />
         </FormGroup>
         <FormGroup label="Assign role for selected member">
@@ -97,8 +95,7 @@ const InviteOrgMembers = ({
               <Button
                 text={role.name || 'Select role'}
                 className={cx(
-                  'hover:!bg-focus1 border border-appBorder justify-between',
-                  { 'border-error': role.error }
+                  'hover:!bg-focus1 border border-appBorder justify-between'
                 )}
                 withCaret
                 transparent
@@ -113,7 +110,7 @@ const InviteOrgMembers = ({
             }
             option={RoleOptions.slice(1)}
             className="block"
-            onSelect={({ name, id }) => setRole({ name, id, error: false })}
+            onSelect={({ name, id }) => setUser((u) => ({ ...u, role: id }))}
           />
         </FormGroup>
       </Container.Body>
@@ -121,8 +118,8 @@ const InviteOrgMembers = ({
         <Button
           className="ml-auto"
           text={'Send Invitation'}
-          disabled={user.error || role.error || invitingInProgress}
-          onClick={inviteMembers}
+          disabled={!user.name || !user.role || isInvitingMembers}
+          onClick={inviteMember}
           primary
           sm
         />

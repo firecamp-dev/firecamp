@@ -38,14 +38,13 @@ const RoleOptions = [
   },
 ];
 
-
 const InviteNonOrgMembers = ({
   value,
   onChange = (_) => {},
   memberRole,
   updateMemberRole = (_) => {},
   sendInvitation = (_) => {},
-  invitingInProgress = false,
+  isInvitingMembers = false,
 }) => {
   const [error, setError] = useState<IMember[]>([]);
 
@@ -111,10 +110,8 @@ const InviteNonOrgMembers = ({
       <Container.Footer>
         <Button
           className="ml-auto"
-          text={
-            invitingInProgress ? 'Sending invitation...' : 'Send Invitation'
-          }
-          disabled={invitingInProgress}
+          text={isInvitingMembers ? 'Sending invitation...' : 'Send Invitation'}
+          disabled={isInvitingMembers}
           onClick={inviteMembers}
           primary
           sm
