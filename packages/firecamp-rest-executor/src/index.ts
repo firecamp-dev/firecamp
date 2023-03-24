@@ -13,6 +13,7 @@ import _url from '@firecamp/url';
 import parseBody from './helpers/body';
 import { IRestExecutor, TVariableGroup } from './types';
 import * as scriptRunner from './script-runner';
+import { satisfies } from 'semver';
 
 export default class RestExecutor implements IRestExecutor {
   private _controller: AbortController;
@@ -134,10 +135,7 @@ export default class RestExecutor implements IRestExecutor {
     return axiosRequest;
   }
 
-  async send(
-    fcRequest: IRest,
-    variables: TVariableGroup
-  ) {
+  async send(fcRequest: IRest, variables: TVariableGroup) {
     console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
@@ -205,20 +203,23 @@ export default class RestExecutor implements IRestExecutor {
           //@ts-ignore ///TODO: check here to remove the type error
           body.value = body.value.map((v) => {
             const { file, ...row } = v;
-            v = _env.applyVariables(row, plainVars);
+            v = _env.applyVariablesInSource(plainVars, row);
             if (v.type == EKeyValueTableRowType.File) {
               v.file = file;
             }
             return v;
           });
-          const request = _env.applyVariables(restRequest, plainVars) as IRest;
+          const request = _env.applyVariablesInSource<any>(
+            plainVars,
+            restRequest
+          ) satisfies IRest;
           return {
             request: { ...request, body },
             variables: variables,
             errors,
           };
         } else {
-          const request = _env.applyVariables(fcRequest, plainVars) as IRest;
+          const request = _env.applyVariablesInSource<any>(plainVars, fcRequest) as IRest;
           return { request, variables, errors };
         }
       })
