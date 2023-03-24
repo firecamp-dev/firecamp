@@ -34,7 +34,7 @@
   "dependencies": {
     "@firecamp/rest-executor": "workspace:*",
     "@firecamp/types": "^0.1.23",
-    "@firecamp/utils": "^0.0.18"
+    "@firecamp/utils": "^0.0.19"
   },
   "devDependencies": {
     "@types/chai": "^4.3.1",

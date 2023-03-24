@@ -49,7 +49,7 @@ export const preScript: TPreScript = async (
 export const testScript: TTestScript = async (
   request: IRest,
   response: IRestResponse,
-  variables = { globals: [], environment: [], collectionVariables: [] }
+  variables: IVariableGroup = { globals: [], environment: [], collectionVariables: [] }
 ) => {
   const fc = new Fc(request, response, variables);
   if (!request?.postScripts?.length) return { fc: fc.toJSON() };

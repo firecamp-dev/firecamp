@@ -185,12 +185,8 @@ export default class RestExecutor implements IRestExecutor {
       })
       .then(({ fcRequest, variables, errors }) => {
         // apply variables to request
-        const { globals, environment, collectionVariables } = variables;
-        const gVars = _env.preparePlainVarsFromRuntimeVariables(globals);
-        const eVars = _env.preparePlainVarsFromRuntimeVariables(environment);
-        const cVars =
-          _env.preparePlainVarsFromRuntimeVariables(collectionVariables);
-        const plainVars = { ...gVars, ...eVars, ...cVars };
+        // const { globals, environment, collectionVariables } = variables;
+        const plainVars = _env.preparePlainVarsFromVariableGroup(variables);
         // console.log(variables, plainVars, 77777);
 
         /** if request body is multipart then
