@@ -106,7 +106,7 @@ module.exports = {
       },
       boxShadow: {
         popoverBoxshadow: 'var(--popoverBoxshadow)',
-      }
+      },
     },
   },
   variants: {

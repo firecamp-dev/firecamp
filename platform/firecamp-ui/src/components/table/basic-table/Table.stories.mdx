@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+
+<Meta title="UI-Kit/Table/Overview" />
+
+## **Table**
+
+Table : To create custom table, in which primitive/Table is core component
+
+#### **Component Usage**:
+
+To use exisitng BasicTable component
+
+- Create columns[ ] for table & provide as prop to <BasicTable/>
+
+To create a individual table component
+
+- Create columns[ ] for table
+- Create function to renderCell for table rows
+
+| Column Prop         | Description                                                       |
+| ------------------- | ----------------------------------------------------------------- |
+| fixedWidth          | to prevent the resizing of the column                             |
+| width               | to provide the minimum width for table column                     |
+| resizeWithContainer | to define (only one) column to fill all available space of parent |
+
+#### **Best Practices**:
+
+For each column in columns[ ]:
+
+- id
+- key
+- name
+- width
+- fixedWidth
+- resizeWithContainer
+
+Function to render table cell:
+
+```
+const renderCell = (column, cellValue, ...props[TRenderCell]) => {
+    switch(column.id){
+        case "col1":
+        return <div>cellValue</div>
+    }
+}
+```
+
+- #### **Examples**:
+- <LinkTo
+    kind="ui-kit-table-basictable--empty-row"
+    className="!text-primaryColor"
+  >
+    Table Examples
+  </LinkTo>

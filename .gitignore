@@ -19,6 +19,8 @@ pnpm-lock.yaml
 !packages-executors/http-executor/src/src/cacert.pem
 !platform/firecamp-ui/src/declarations.d.ts
 
+.jest-test-results.json
+
 # Logs
 *.log
 npm-debug.log*

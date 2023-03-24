@@ -1,4 +1,6 @@
-import ScrollBar from './ScrollBar';
+import ScrollBar, { SCROLLBAR_LAYOUT } from './ScrollBar';
+import { ForgetPasswordForm } from '../form/Form.stories';
+import { Tabs } from '@firecamp/ui';
 
 export default {
   title: 'UI-Kit/ScrollBar',
@@ -9,37 +11,195 @@ export default {
 };
 
 export const Demo = () => (
-  <ScrollBar>
+  <ScrollBar
+    className=" rounded shadow-md bg-primaryColorText w-[200px] h-[200px]"
+    noWrap
+  >
     <div style={{ padding: '15px 20px' }}>
-      <div className="text-lg font-medium">Tags</div>
+      <div className="text-lg font-medium">Content Heading</div>
       <hr />
       {[
-        'TAGS 1',
-        'TAGS 2',
-        'TAGS 3',
-        'TAGS 4',
-        'TAGS 5',
-        'TAGS 6',
-        'TAGS 7',
-        'TAGS 1.0',
-        'TAGS 2.0',
-        'TAGS 3.0',
-        'TAGS 4.0',
-        'TAGS 5.0',
-        'TAGS 6.0',
-        'TAGS 7.0',
-        'TAGS 1.1',
-        'TAGS 2.1',
-        'TAGS 3.1',
-        'TAGS 4.1',
-        'TAGS 5.1',
-        'TAGS 6.1',
-        'TAGS 7.1',
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
       ].map((tag) => (
         <div className="text-sm mt-2 pt-3" key={tag}>
-          {tag}
+          {tag}. &nbsp; "In publishing and graphic design, Lorem ipsum is a
+          placeholder text commonly used to demonstrate the visual form of a
+          document or a typeface without relying on meaningful content. " "In
+          publishing and graphic design, Lorem ipsum is a placeholder text
+          commonly used to demonstrate the visual form of a document or a
+          typeface without relying on meaningful content. "
         </div>
       ))}
     </div>
   </ScrollBar>
+);
+
+export const VerticalScroll = () => (
+  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]">
+    <div style={{ padding: '15px 20px' }}>
+      <div className="text-lg font-medium">Content Heading</div>
+      <hr />
+      {[
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+      ].map((tag) => (
+        <div className="text-sm mt-2 pt-3" key={tag}>
+          {tag}. &nbsp; "In publishing and graphic design, Lorem ipsum is a
+          placeholder text commonly used to demonstrate the visual form of a
+          document or a typeface without relying on meaningful content. " "In
+          publishing and graphic design, Lorem ipsum is a placeholder text
+          commonly used to demonstrate the visual form of a document or a
+          typeface without relying on meaningful content. "
+        </div>
+      ))}
+    </div>
+  </ScrollBar>
+);
+
+export const HorizontalScroll = () => (
+  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[50vh]" noWrap>
+    <div style={{ padding: '15px 20px' }}>
+      <div className="text-lg font-medium">Content Heading</div>
+      <hr />
+      {['1', '2', '3'].map((tag) => (
+        <div className="text-sm mt-2 pt-3" key={tag}>
+          {tag}. &nbsp; "In publishing and graphic design, Lorem ipsum is a
+          placeholder text commonly used to demonstrate the visual form of a
+          document or a typeface without relying on meaningful content. " "In
+          publishing and graphic design, Lorem ipsum is a placeholder text
+          commonly used to demonstrate the visual form of a document or a
+          typeface without relying on meaningful content. "
+        </div>
+      ))}
+    </div>
+  </ScrollBar>
+);
+
+export const ScrollBarWithModal = () => (
+  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]">
+    <div style={{ padding: '15px 20px' }}>
+      <ForgetPasswordForm />
+      <br />
+    </div>
+  </ScrollBar>
+);
+
+export const VSCodeExample = () => (
+  <ScrollBar
+    className=" rounded shadow-md bg-primaryColorText "
+    width="w-[200px]"
+    height="h-[200px]"
+    noWrap
+    withCorner={false}
+    layout="V2"
+  >
+    <div style={{ padding: '15px 20px' }}>
+      <div className="text-lg font-medium">Content Heading</div>
+      <hr />
+      {[
+        '1',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+      ].map((tag) => (
+        <div className="text-sm mt-2 pt-3" key={tag}>
+          {tag}. &nbsp; "In publishing and graphic design, Lorem ipsum is a
+          placeholder text commonly used to demonstrate the visual form of a
+          document or a typeface without relying on meaningful content. " "In
+          publishing and graphic design, Lorem ipsum is a placeholder text
+          commonly used to demonstrate the visual form of a document or a
+          typeface without relying on meaningful content. "
+        </div>
+      ))}
+    </div>
+  </ScrollBar>
+);
+
+export const RequestTabExample = () => (
+  <div className='p-3 border'>
+    <ScrollBar
+      className="shadow-md bg-primaryColorText "
+      width="w-[200px]"
+      layout={SCROLLBAR_LAYOUT.HORIZONTAL}>
+      <Tabs
+        list={[
+          {
+            id: 'body',
+            name: 'Body',
+          },
+          {
+            id: 'auth',
+            name: 'Auth',
+          },
+          {
+            id: 'header',
+            name: 'Header',
+          },
+          {
+            id: 'param',
+            name: 'Param',
+          },
+          {
+            id: 'scripts',
+            name: 'Scripts',
+          },
+        ]}
+        activeTab={'header'}
+        onSelect={() => {}}
+      />
+    </ScrollBar>
+  </div>
 );

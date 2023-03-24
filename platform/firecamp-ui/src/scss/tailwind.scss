@@ -1231,8 +1231,11 @@ video {
 .h-0 {
 	height: 0px;
 }
-.h-\[225px\] {
-	height: 225px;
+.h-\[200px\] {
+	height: 200px;
+}
+.h-\[50vh\] {
+	height: 50vh;
 }
 .h-32 {
 	height: 8rem;
@@ -1382,6 +1385,11 @@ video {
 	   -moz-user-select: none;
 	        user-select: none;
 }
+.select-text {
+	-webkit-user-select: text;
+	   -moz-user-select: text;
+	        user-select: text;
+}
 .resize-none {
 	resize: none;
 }
@@ -1458,6 +1466,9 @@ video {
 }
 .overflow-ellipsis {
 	text-overflow: ellipsis;
+}
+.whitespace-nowrap {
+	white-space: nowrap;
 }
 .whitespace-pre {
 	white-space: pre;
@@ -2237,8 +2248,8 @@ video {
 	--tw-shadow: var(--popoverBoxshadow) !important;
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
-.shadow-sm {
-	--tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+.shadow-md {
+	--tw-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .outline-none {

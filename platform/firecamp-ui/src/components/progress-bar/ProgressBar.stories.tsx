@@ -11,3 +11,9 @@ const TemplateContainer = (args) => <div className="w-96"><ProgressBar {...args}
 
 export const ProgressBarDemo = TemplateContainer.bind({});
 ProgressBarDemo.args = { className: ' '};
+
+export const ProgressBarActive = TemplateContainer.bind({});
+ProgressBarActive.args = { active: true};
+
+export const ProgressBarShortActive = TemplateContainer.bind({});
+ProgressBarShortActive.args = { active: true, short: true};

@@ -7,6 +7,7 @@ export { default as CheckboxGroup } from './components/checkbox/CheckboxGroup';
 
 export { default as Dropdown } from './components/dropdown/Dropdown';
 export { default as DropdownV2 } from './components/dropdown/DropdownV2';
+export { default as Scrollbar } from './components/scroll-bar/ScrollBar';
 
 export { default as FormGroup } from './components/form/FormGroup';
 export { default as SwitchButton } from './components/form/SwitchButton';
@@ -82,6 +83,7 @@ export { default as BulkEditTable } from './components/table/bulk-edit-table/Bul
 
 //table v3
 export { default as PrimitiveTable } from './components/table/primitive/Table';
+export { default as PlainTable } from './components/table/plain-table/PlainTable';
 export { default as BasicTable } from './components/table/basic-table/BasicTable';
 export { default as MultipartTable } from './components/table/multipart-table/MultipartTable';
 export { default as LogTable } from './components/table/log-table/LogTable';

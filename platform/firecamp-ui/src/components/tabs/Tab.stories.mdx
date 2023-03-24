@@ -1,5 +1,7 @@
 import { Meta } from '@storybook/addon-docs';
 import LinkTo from '@storybook/addon-links/react';
+import Tab from './Tab';
+import { IoNotificationsOutline } from '@react-icons/all-files/io5/IoNotificationsOutline';
 
 <Meta title="UI-Kit/Tab/Overview" />
 
@@ -10,14 +12,23 @@ View for single tab in list.
 #### **Component Usage**:
 
 - Single Tab can contain elements like
-  - Close Icon 
+
+  - Close Icon
   - Count
+  - With Icon
 
 - Used within TabList component.
 
-- Todo : Example for contain element
+| Version   | Preview                                                                        |
+| --------- | ------------------------------------------------------------------------------ |
+| active    | <Tab name='Sample Tab' isActive/>                                              |
+| count     | <Tab name='Sample Tab' count="5"/>                                             |
+| with icon | <Tab name='Sample Tab' count="5" preComp={() => <IoNotificationsOutline />} /> |
 
 #### **References**:
 
-Update single tab from the list : 
-<LinkTo kind="ui-kit-tab--tab-default" className="!text-primaryColor">Refer Example</LinkTo>
+Update single tab from the list :
+
+<LinkTo kind="ui-kit-tab--tab-default" className="!text-primaryColor">
+  Refer Example
+</LinkTo>

@@ -1,7 +1,7 @@
 import { default as Tab } from './Tab';
 import { ITab } from './interfaces/Tab.interface';
 import { VscJson } from "@react-icons/all-files/vsc/VscJson";
-
+import { IoNotificationsOutline } from '@react-icons/all-files/io5/IoNotificationsOutline';
 export default {
     title: "UI-Kit/Tab",
     component: Tab,
@@ -71,3 +71,7 @@ TabPreview.args = { title: 'Sample Tab', preComp: () => <VscJson title="Account"
 
 export const TabModified = Template.bind({});
 TabModified.args = { title: 'Sample Tab', preComp: () => <VscJson title="Account" size={16} />, state: 'modified' };
+
+export const TabWithIcon = Template.bind({});
+TabWithIcon.args = { id: 'body',
+name: 'Sample Tab', preComp: () => <IoNotificationsOutline/> };
