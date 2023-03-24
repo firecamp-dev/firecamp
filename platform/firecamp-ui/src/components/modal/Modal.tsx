@@ -1,18 +1,18 @@
-import { FC } from "react";
+import { FC } from 'react';
 import cx from 'classnames';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import ResponsiveModal from 'react-responsive-modal';
 import 'react-responsive-modal/styles.css';
 import './Modal.scss';
 
-import { Container, Row } from '../../ui-kit'
+import { Container, Row } from '../../ui-kit';
 
-import { IModal, IHeader, IBody, IFooter } from "./interfaces/Modal.interface"
+import { IModal, IHeader, IBody, IFooter } from './interfaces/Modal.interface';
 
 const Modal: FC<IModal> & {
-  Header: FC<IHeader>,
-  Body: FC<IBody>,
-  Footer: FC<IFooter>
+  Header: FC<IHeader>;
+  Body: FC<IBody>;
+  Footer: FC<IFooter>;
 } = ({
   id = '',
   showCloseIcon = true,
@@ -20,12 +20,11 @@ const Modal: FC<IModal> & {
   className = '',
   modalClass = '',
   modalConfig = {},
-  onClose = () => { },
+  onClose = () => {},
   children = '',
   height,
   width,
 }) => {
-
   return (
     <ResponsiveModal
       open={isOpen}
@@ -33,18 +32,18 @@ const Modal: FC<IModal> & {
         onClose();
       }}
       center
-      closeIcon={(<VscClose size={20} className="cursor-pointer z-50" />)}
+      closeIcon={<VscClose size={20} className="cursor-pointer z-50" />}
       {...modalConfig}
     >
-        <div
-          className={cx(
-            className,
-            'max-w-screen-md min-w-screen-md bg-modalBackground text-appForeground w-full relative z-9999 max-h-modal flex fc-modal-wrapper h-full'
-          )}
-          style={{ height: height, width: width }}
-          id={id}
-        >
-          {/* {showCloseIcon ? (
+      <div
+        className={cx(
+          className,
+          'max-w-screen-md min-w-screen-md bg-modalBackground text-appForeground w-full relative z-9999 max-h-modal flex fc-modal-wrapper h-full'
+        )}
+        style={{ height: height, width: width }}
+        id={id}
+      >
+        {/* {showCloseIcon ? (
             <VscClose
               size={20}
               className="absolute top-3 right-3 cursor-pointer z-50"
@@ -53,11 +52,11 @@ const Modal: FC<IModal> & {
               }}
             />
           ) : <></>} */}
-            {children}
-        </div>
+        {children}
+      </div>
     </ResponsiveModal>
-  )
-}
+  );
+};
 
 // `id`: is not being updated on the element
 let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
@@ -69,14 +68,19 @@ let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
 };
 
 // `id`: is not being updated on the element
-let Body: FC<IBody> = ({ id = '', children = '', className = '' }) => {
+let Body: FC<IBody> = ({
+  id = '',
+  children = '',
+  className = '',
+  scrollbar = true,
+}) => {
   return (
     <Container.Body
-    className={cx(
-      className,
-      'flex flex-col overflow-auto visible-scrollbar thin !p-4'
-    )}
-    id={id}>
+      className={cx(className, 'flex flex-col overflow-auto thin !p-4', {
+        'visible-scrollbar': scrollbar,
+      })}
+      id={id}
+    >
       {children}
     </Container.Body>
   );

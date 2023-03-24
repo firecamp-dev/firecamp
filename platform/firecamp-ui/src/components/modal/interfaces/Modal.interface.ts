@@ -51,6 +51,7 @@ export interface IBody {
   id?: string;
   children?: any;
   className?: string;
+  scrollbar?: boolean;
 }
 
 export interface IFooter {

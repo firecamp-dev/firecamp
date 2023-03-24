@@ -656,7 +656,6 @@ video {
     --popoverBoxshadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
 
     --focus-border: #007acc;
-    --error: #f00;
 
     --modal-background: #262626;
     --modal-foreground: #9C9C9C;
@@ -725,7 +724,7 @@ video {
     --activityBar-inactiveForeground: #57606a;
     --activityBar-activeBackground: var(--focus-level-2);
     --activityBar-activeBorder: var(--app-primary);
-    --activityBar-border: #333333;
+    
     --activityBar-border: #dddddd;
     --activityBarBadge-foreground: #FFFFFF;
     --activityBarBadge-background: #09A1EDl;
@@ -749,7 +748,6 @@ video {
     
 
     --focus-border: #007acc;
-    --error: #f00;
 
     --modal-background: #f5f5f5;
     --modal-foreground: #2a2a2a;
@@ -883,6 +881,9 @@ video {
 }
 .top-12 {
 	top: 3rem;
+}
+.top-auto {
+	top: auto;
 }
 .top-3 {
 	top: 0.75rem;
@@ -2178,14 +2179,14 @@ video {
 .\!text-primaryColor {
 	color: var(--app-primary) !important;
 }
-.\!text-link {
-	color: var(--link) !important;
-}
 .\!text-appForegroundInActive {
 	color: var(--app-foreground-inactive) !important;
 }
 .text-link {
 	color: var(--link);
+}
+.\!text-link {
+	color: var(--link) !important;
 }
 .text-inputText {
 	color: var(--input-text);

@@ -11,6 +11,7 @@ import {
   Container,
   Popover,
   FormGroup,
+  ProgressBar,
 } from '@firecamp/ui';
 import { Rest } from '@firecamp/cloud-apis';
 import { EEditorLanguage } from '@firecamp/types';
@@ -98,7 +99,7 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
       activeTab === EInviteMemberTabs.ExistingMembers &&
       existingMemberList.length === 0
     ) {
-      // setIsRequesting(true);
+      setIsRequesting(true);
       // Rest.organization.getMembers(orgId).then((data) => {
       console.log(`api will be called...`);
       const members = DUMMY_USER_DATA.map((m) => {
@@ -112,6 +113,8 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
       updateExistingMemberList(members);
       // }).catch(console.log)
       //   .finally(() => setIsRequesting(false));
+
+      setTimeout(() => setIsRequesting(false), 5000);
     }
   }, [activeTab]);
 
@@ -130,8 +133,8 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
           INVITE MEMBERS IN WORKSPACE
         </div>
       </Modal.Header>
-      <Modal.Body>
-        <div className="p-4 h-full flex flex-col">
+      <Modal.Body scrollbar={false}>
+        <div className="p-4 h-fit flex flex-col">
           <SecondaryTab
             className="flex items-center pb-6 -ml-2"
             list={tabs}
@@ -152,6 +155,7 @@ const Invite: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               memberList={existingMemberList}
               invitingInProgress={iInProgress}
               sendInvitation={sendInvitation}
+              requestingList={isRequesting}
             />
           )}
         </div>
@@ -217,16 +221,15 @@ const InviteNewMembers = ({
         />
 
         {error?.length ? (
-          <div className="mb-2 text-error">
-            Invalid Emails
-            <ul>
-              {error.map((e, i) => (
-                <li key={i}>
-                  {i + 1}. {e.email}
-                </li>
-              ))}
-            </ul>
-          </div>
+          <ul className="text-error border px-2">
+            The following email address(es) are not valid
+            {error.map((e, i) => (
+              <li key={i}>
+                {i + 1}. {e.email}
+                {i + 1 !== error.length ? ', ' : ''}
+              </li>
+            ))}
+          </ul>
         ) : (
           <></>
         )}
@@ -295,6 +298,7 @@ const InviteExistingMembers = ({
   memberList = [],
   sendInvitation = (_details, status) => {},
   invitingInProgress = false,
+  requestingList = false,
 }) => {
   const [user, updateUser] = useState({ name: '', error: false });
   const [role, updateRole] = useState({
@@ -317,22 +321,28 @@ const InviteExistingMembers = ({
         Invite your team colleagues to join the workspace.
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem] h-80">
-        <FormGroup label="Invite members from your organisation">
+        <FormGroup
+          label="Invite members from your organisation"
+          className="relative"
+        >
           <DropdownV2
             handleRenderer={() => (
-              <Button
-                text={user.name || 'Select member'}
-                className={cx(
-                  'hover:!bg-focus1 border border-appBorder justify-between',
-                  { 'border-error': user.error }
-                )}
-                withCaret
-                transparent
-                ghost
-                md
-                fullWidth
-                disabled={memberList.length === 0}
-              />
+              <div className="relative">
+                <Button
+                  text={user.name || 'Select member'}
+                  className={cx(
+                    'hover:!bg-focus1 border border-appBorder justify-between',
+                    { 'border-error': user.error }
+                  )}
+                  disabled={memberList.length === 0}
+                  transparent
+                  withCaret
+                  fullWidth
+                  ghost
+                  md
+                />
+                <ProgressBar className="top-auto" active={requestingList} />
+              </div>
             )}
             displayDefaultOptionClassName={2}
             className="block"
