@@ -8,7 +8,7 @@ import Helper from './Helper';
 import { useEnvStore } from '../../../../store/environment';
 import platformContext from '../../../../services/platform-context';
 
-const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
+const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => { } }) => {
   const { environments, activeEnvId } = useEnvStore(
     (s) => ({
       environments: s.environments,
@@ -18,14 +18,14 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
   );
   const { createEnvironmentPrompt } = platformContext.platform;
   useEffect(() => {
-    console.log('env selector rendering the first time', environments);
-  }, [environments]);
+    // console.log('env selector rendering the first time');
+  }, []);
   const [isOpen, toggleOpen] = useState(false);
   const menu = useMemo(
     () => Helper.generate.environmentsDD(environments, activeEnvId),
     [environments, activeEnvId]
   );
-  console.log(menu, 778899);
+  // console.log(menu, 778899);
 
   const _onSelectEnv = (env: { id: string }) => {
     console.log({ env });
@@ -33,7 +33,6 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
     if (env.id == 'fc-new-environment') {
       createEnvironmentPrompt();
     } else {
-      console.log(env, 'selected env...')
       onChange(env.id);
     }
   };
