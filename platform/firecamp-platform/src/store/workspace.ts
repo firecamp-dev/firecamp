@@ -806,7 +806,12 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const { workspace } = get();
       return Rest.workspace
         .inviteNonOrgMembers(workspace.__ref.id, payload)
-        .then((res) => res.data)
+        .then((res) => {
+          platformContext.app.notify.success(
+            'The invitation(s) has been sent successfully'
+          );
+          return res.data;
+        })
         .catch((e) => {
           platformContext.app.notify.alert(
             e.response?.data?.message || e.message
@@ -819,7 +824,12 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
       const { workspace } = get();
       return Rest.workspace
         .inviteOrgMembers(workspace.__ref.id, { members })
-        .then((res) => res.data)
+        .then((res) => {
+          platformContext.app.notify.success(
+            'The invitation has been sent successfully'
+          );
+          return res.data;
+        })
         .catch((e) => {
           platformContext.app.notify.alert(
             e.response?.data?.message || e.message

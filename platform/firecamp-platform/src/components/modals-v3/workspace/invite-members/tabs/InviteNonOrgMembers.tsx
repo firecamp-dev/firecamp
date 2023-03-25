@@ -10,6 +10,7 @@ import {
 import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace } from '../../../../../types';
+import { useWorkspaceStore } from '../../../../../store/workspace';
 
 interface IMember {
   name: string;
@@ -17,13 +18,6 @@ interface IMember {
 }
 
 const RoleOptions = [
-  {
-    id: 'selectRole',
-    name: 'select role',
-    disabled: true,
-    className:
-      '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
-  },
   {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
@@ -38,37 +32,36 @@ const RoleOptions = [
   },
 ];
 
-const InviteNonOrgMembers = ({
-  value,
-  onChange = (_) => {},
-  memberRole,
-  updateMemberRole = (_) => {},
-  sendInvitation = (_) => {},
-  isInvitingMembers = false,
-}) => {
+const InviteNonOrgMembers = ({ state, onChange }) => {
+  const { inviteNonOrgMembers } = useWorkspaceStore.getState();
   const [error, setError] = useState<IMember[]>([]);
+  const [isInvitingMembers, setInvitingFlag] = useState(false);
+  const { value, role } = state;
 
   const inviteMembers = useCallback(() => {
     const { success, error } = parseMembersFromEditorValue(value);
     console.log(success, error);
     if (error?.length) {
       setError(error);
+      setInvitingFlag(false);
     } else {
-      sendInvitation({ members: success, role: memberRole.id });
+      inviteNonOrgMembers({ role, members: success }).finally(() => {
+        setInvitingFlag(false);
+      });
     }
-  }, [value, memberRole]);
+  }, [value, role]);
 
+  const _role = RoleOptions.find((r) => r.id == role);
   return (
     <Container className="gap-2 invisible-scrollbar">
       <Container.Header>
         <RoleDD
-          role={memberRole.name}
-          onSelect={({ name, id }) => updateMemberRole({ name, id })}
+          role={_role}
+          onSelect={({ name, id }) => onChange({ role: id })}
         />
         <div className="text-sm font-semibold leading-3 text-appForegroundInActive">
-          {/* Send invitation to your team members to join the workspace */}
           Use comma separated name and email. use multiple lines to invite in
-          bulk.{' '}
+          bulk.
           <Popover
             content={
               <Notes
@@ -86,7 +79,7 @@ const InviteNonOrgMembers = ({
         <Editor
           className="border border-appBorder h-80"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={(e) => onChange({ value: e.target.value })}
           language={EEditorLanguage.Text}
           monacoOptions={{
             fontFamily: 'inter, System-ui',
@@ -124,7 +117,7 @@ const InviteNonOrgMembers = ({
 export default InviteNonOrgMembers;
 
 const RoleDD: FC<{
-  role: string;
+  role: { name: string; id: number };
   onSelect: (role: { name: string; id: number }) => void;
 }> = ({ role, onSelect }) => {
   const _onSelect = (option) => {
@@ -141,7 +134,7 @@ const RoleDD: FC<{
         <DropdownV2
           handleRenderer={() => (
             <Button
-              text={role}
+              text={role.name}
               className="font-bold hover:!bg-focus1"
               withCaret
               transparent
@@ -157,11 +150,11 @@ const RoleDD: FC<{
       </div>
 
       <a
-        href="/"
+        href="#"
         className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ml-auto"
         target="_blank"
       >
-        learn more
+        learn more about roles
       </a>
     </div>
   );

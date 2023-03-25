@@ -5,9 +5,7 @@ import { Rest } from '@firecamp/cloud-apis';
 import InviteNonOrgMembers from './tabs/InviteNonOrgMembers';
 import InviteOrgMembers from './tabs/InviteOrgMembers';
 import { EUserRolesWorkspace } from '../../../../types';
-import { useWorkspaceStore } from '../../../../store/workspace';
 import { EPlatformScope, usePlatformStore } from '../../../../store/platform';
-// import './workspace.scss';
 
 enum EInviteMemberTabs {
   NewMembers = 'newMembers',
@@ -15,20 +13,35 @@ enum EInviteMemberTabs {
 }
 
 const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
-  const { inviteNonOrgMembers, inviteOrgMembers } =
-    useWorkspaceStore.getState();
-  const [isInvitingMembers, setIsInvitingMembers] = useState(false);
-  const [newMemberEditorValue, setMemberNewEditorValue] = useState('');
+  const [isFetchingMembers, setIsFetchingMembers] = useState(false);
+  const [orgMembers, setOrgMembers] = useState([]);
+
+  const [nonOrgTabState, setNonOrgTabState] = useState<{
+    role: EUserRolesWorkspace;
+    value: string;
+  }>({ role: EUserRolesWorkspace.Collaborator, value: '' });
+  const [orgTabState, setOrgTabState] = useState<{
+    id: string;
+    name: string;
+    email: string;
+    role: EUserRolesWorkspace;
+  }>({
+    id: '',
+    name: '',
+    email: '',
+    role: EUserRolesWorkspace.Collaborator,
+  });
+
+  const changeNonOrgTabState = (state) => {
+    setNonOrgTabState((s) => ({ ...s, ...state }));
+  };
+  const changeOrgTabState = (state) => {
+    setOrgTabState((s) => ({ ...s, ...state }));
+  };
+
   const [activeTab, setActiveTab] = useState<EInviteMemberTabs>(
     EInviteMemberTabs.NewMembers
   );
-  const [selectedRole, updateSelectedRole] = useState({
-    name: 'Collaborator',
-    id: EUserRolesWorkspace.Collaborator,
-  });
-
-  const [isFetchingMembers, setIsFetchingMembers] = useState(false);
-  const [orgMembers, setOrgMembers] = useState([]);
 
   const tabs = [
     { name: 'Invite New Members', id: EInviteMemberTabs.NewMembers },
@@ -68,16 +81,6 @@ const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
     }
   }, [activeTab]);
 
-  // send new / existing member invitation
-  const sendInvitation = (member: {
-    id: string;
-    name: string;
-    email: string;
-    role: EUserRolesWorkspace;
-  }) => {
-    inviteOrgMembers([member]);
-  };
-
   return (
     <>
       <Modal.Header className="border-b border-appBorder">
@@ -95,19 +98,15 @@ const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
           />
           {activeTab == EInviteMemberTabs.NewMembers ? (
             <InviteNonOrgMembers
-              value={newMemberEditorValue}
-              onChange={setMemberNewEditorValue}
-              memberRole={selectedRole}
-              updateMemberRole={updateSelectedRole}
-              isInvitingMembers={isInvitingMembers}
-              sendInvitation={sendInvitation}
+              state={nonOrgTabState}
+              onChange={changeNonOrgTabState}
             />
           ) : (
             <InviteOrgMembers
+              state={orgTabState}
               members={orgMembers}
-              isInvitingMembers={isInvitingMembers}
               isFetchingMembers={isFetchingMembers}
-              sendInvitation={sendInvitation}
+              onChange={changeOrgTabState}
             />
           )}
         </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { FC, useCallback, useState } from 'react';
 import cx from 'classnames';
 import {
   Button,
@@ -9,6 +9,7 @@ import {
 } from '@firecamp/ui';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace } from '../../../../../types';
+import { useWorkspaceStore } from '../../../../../store/workspace';
 
 const RoleOptions = [
   {
@@ -25,25 +26,25 @@ const RoleOptions = [
   },
 ];
 
-const InviteOrgMembers = ({
+const InviteOrgMembers: FC<IProps> = ({
+  state: member,
   members = [],
-  sendInvitation = (member) => {},
-  isInvitingMembers = false,
   isFetchingMembers = false,
+  onChange,
 }) => {
-  const [user, setUser] = useState({
-    id: null,
-    name: '',
-    email: '',
-    role: EUserRolesWorkspace.Collaborator,
-  });
+  const { inviteOrgMembers } = useWorkspaceStore.getState();
+  const [isInvitingMembers, setInvitingFlag] = useState(false);
 
-  const inviteMember = () => {
-    if (!user.id || !user.email || !user.role) return;
-    sendInvitation(user);
-  };
+  // send new / existing member invitation
+  const sendInvitation = useCallback(() => {
+    if (!member.id || !member.email || !member.role) return;
+    setInvitingFlag(true);
+    inviteOrgMembers([member]).finally(() => {
+      setInvitingFlag(false);
+    });
+  }, [member]);
 
-  const role = RoleOptions.find((r) => r.id == user.role);
+  const _role = RoleOptions.find((r) => r.id == member.role);
   return (
     <Container className="gap-2">
       <Container.Header className="text-base font-semibold leading-3 text-appForegroundInActive p-6">
@@ -58,10 +59,10 @@ const InviteOrgMembers = ({
             handleRenderer={() => (
               <div className="relative">
                 <Button
-                  text={user.name || 'Select member'}
+                  text={member.name || 'Select member'}
                   className={cx(
-                    'hover:!bg-focus1 border border-appBorder justify-between',
-                    { 'border-error': !user.name }
+                    'hover:!bg-focus1 border border-appBorder justify-between'
+                    // { 'border-error': !member.name }
                   )}
                   disabled={members.length === 0}
                   transparent
@@ -79,21 +80,14 @@ const InviteOrgMembers = ({
               'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
             }
             option={members}
-            onSelect={(member) =>
-              setUser((u) => ({
-                ...u,
-                id: member.id,
-                name: member.name,
-                email: member.email,
-              }))
-            }
+            onSelect={(m) => onChange({ ...member, ...m })}
           />
         </FormGroup>
         <FormGroup label="Assign role for selected member">
           <DropdownV2
             handleRenderer={() => (
               <Button
-                text={role.name || 'Select role'}
+                text={_role.name || 'Select role'}
                 className={cx(
                   'hover:!bg-focus1 border border-appBorder justify-between'
                 )}
@@ -108,9 +102,9 @@ const InviteOrgMembers = ({
             optionContainerClassName={
               'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
             }
-            option={RoleOptions.slice(1)}
+            option={RoleOptions}
             className="block"
-            onSelect={({ name, id }) => setUser((u) => ({ ...u, role: id }))}
+            onSelect={({ name, id }) => onChange({ ...member, role: id })}
           />
         </FormGroup>
       </Container.Body>
@@ -118,8 +112,8 @@ const InviteOrgMembers = ({
         <Button
           className="ml-auto"
           text={'Send Invitation'}
-          disabled={!user.name || !user.role || isInvitingMembers}
-          onClick={inviteMember}
+          disabled={!member.name || !member.role || isInvitingMembers}
+          onClick={sendInvitation}
           primary
           sm
         />
@@ -129,3 +123,16 @@ const InviteOrgMembers = ({
 };
 
 export default InviteOrgMembers;
+
+type TMember = {
+  id: string;
+  name: string;
+  email: string;
+  role: EUserRolesWorkspace;
+};
+interface IProps {
+  state: TMember;
+  members: { id: string; name: string; email: string }[];
+  isFetchingMembers: boolean;
+  onChange: Function;
+}
