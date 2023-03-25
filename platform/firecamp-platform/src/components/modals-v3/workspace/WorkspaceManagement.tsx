@@ -17,11 +17,10 @@ import {
 import { _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-
-import { EUserRolesWorkspace } from '../../../types';
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';
-import './workspace.scss';
+import { EUserRolesWorkspace } from '../../../types';
 import platformContext from '../../../services/platform-context';
+import './workspace.scss';
 
 enum ETabTypes {
   Edit = 'edit',
@@ -29,7 +28,7 @@ enum ETabTypes {
 }
 const WorkspaceManagement: FC<IModal> = ({
   isOpen = false,
-  onClose = () => { },
+  onClose = () => {},
 }) => {
   let { workspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
     workspace: s.workspace,
@@ -138,12 +137,12 @@ const EditInfoTab: FC<any> = ({
           name={'name'}
           defaultValue={workspace.name || ''}
           onChange={onChange}
-          onKeyDown={() => { }}
-          onBlur={() => { }}
+          onKeyDown={() => {}}
+          onBlur={() => {}}
           error={error.name}
-        // error={error.name}
-        // iconPosition="right"
-        // icon={<VscEdit />}
+          // error={error.name}
+          // iconPosition="right"
+          // icon={<VscEdit />}
         />
       </div>
 
@@ -279,16 +278,16 @@ const MembersTab = () => {
     }
   };
 
+  if (isRequesting) <ProgressBar active={isRequesting} />;
   return (
     <div className="p-6  flex-1 flex flex-col">
-      <ProgressBar active={isRequesting} />
       <PrimitiveTable
         columns={columns}
-        showDefaultEmptyRows={false}
+        showDefaultEmptyRows={true}
         renderColumn={(c) => c.name}
         renderCell={renderCell}
         onChange={console.log}
-        onMount={(api) => tableApi.current = api}
+        onMount={(api) => (tableApi.current = api)}
       />
 
       <TabHeader>
