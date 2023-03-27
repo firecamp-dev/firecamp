@@ -16,6 +16,8 @@ const DEFAULT_STYLES = {
     separator: 'my-1 bg-appForeground opacity-50'
 }
 
+//TODO: use enum in place const
+
 // DropDownV2 is used in Invite Popup
 const DropDownV2 = ({
     showOptionArrow = false, handleRenderer, options, onSelect, 

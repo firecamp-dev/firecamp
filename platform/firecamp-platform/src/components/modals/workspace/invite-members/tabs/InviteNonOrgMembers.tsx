@@ -7,6 +7,7 @@ import {
   Container,
   Popover,
 } from '@firecamp/ui';
+import RolesCallout from '../RolesCallout';
 import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace } from '../../../../../types';
@@ -59,6 +60,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
           role={_role}
           onSelect={({ name, id }) => onChange({ role: id })}
         />
+        <RolesCallout role={_role.id}/>
         <div className="text-sm font-semibold leading-3 text-appForegroundInActive">
           Use comma separated name and email. use multiple lines to invite in
           bulk.
@@ -77,7 +79,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
         <Editor
-          className="border border-appBorder h-80"
+          className="border border-appBorder h-48"
           value={value}
           onChange={(e) => onChange({ value: e.target.value })}
           language={EEditorLanguage.Text}
