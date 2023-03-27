@@ -264,23 +264,24 @@ const Table: FC<ITable<any>> = ({
           </Tr>
         </THead>
         <TBody className={classes.tbody}>
-          {_state.orders.map((rId: string, i: number) => {
-            return (
-              <TableRow
-                classes={{ tr: classes.tr, td: classes.td }}
-                columns={_columns}
-                index={i}
-                row={_state.rows[rId]}
-                tableApi={tableApi}
-                renderCell={renderCell}
-                onChangeCell={onChangeCell}
-                key={rId}
-                handleDrag={handleDrag}
-                handleDrop={handleDrop}
-                options={options}
-              />
-            );
-          })}
+          {!_array.isEmpty(rows) &&
+            _state.orders.map((rId: string, i: number) => {
+              return (
+                <TableRow
+                  classes={{ tr: classes.tr, td: classes.td }}
+                  columns={_columns}
+                  index={i}
+                  row={_state.rows[rId]}
+                  tableApi={tableApi}
+                  renderCell={renderCell}
+                  onChangeCell={onChangeCell}
+                  key={rId}
+                  handleDrag={handleDrag}
+                  handleDrop={handleDrop}
+                  options={options}
+                />
+              );
+            })}
         </TBody>
       </table>
     </div>
