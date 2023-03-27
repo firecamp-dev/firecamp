@@ -6,8 +6,8 @@ import {
   Container,
   FormGroup,
   ProgressBar,
-  Notes,
 } from '@firecamp/ui';
+import RolesCallout from '../RolesCallout';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace } from '../../../../../types';
 import { useWorkspaceStore } from '../../../../../store/workspace';
@@ -18,30 +18,13 @@ const RoleOptions = [
     name: 'Admin',
     className:
       'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-    description: `
-    1. Can Rename Workspace <br/>
-    2. Can Manage Members = Invite Members, Remove Members <br/>
-    3. Can Manage Collection - Create/Update/Delete/View Collections and Their child components like Folder, Requests, etc.
-    `,
   },
   {
     id: EUserRolesWorkspace.Collaborator,
     name: 'Collaborator',
     className:
       'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-    description: `
-    1. Can Manage Collection <br/>
-      - Create/Update/Delete/View Collections and Their child component like Folder, Requests, etc.
-    2. Can not Rename. Update, Delete Workspace
-    `,
   },
-  // {
-  //   name: 'Viewer (Coming soon)',
-  //   description: `
-  //   1. Can only view Workspace, Collections, and Their child component like Folder, Requests, etc. <br/>
-  //   2. Can not perform any actions like Create, Update, or Delete for any components.
-  //   `,
-  // },
 ];
 
 const InviteOrgMembers: FC<IProps> = ({
@@ -125,17 +108,18 @@ const InviteOrgMembers: FC<IProps> = ({
             onSelect={({ name, id }) => onChange({ ...member, role: id })}
           />
         </FormGroup>
-
-        <Notes
-          title={_role.name}
-          description={_role.description}
-          className={'mb-6'}
-        />
-
+        <RolesCallout role={_role.id} />
       </Container.Body>
-      <Container.Footer>
+      <Container.Footer className="flex items-center">
+        <a
+          className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2"
+          target="_blank"
+          href="#"
+        >
+          Open Workspace Management
+        </a>
         <Button
-          className="ml-auto"
+          className="ml-auto inline"
           text={'Send Invitation'}
           disabled={!member.name || !member.role || isInvitingMembers}
           onClick={sendInvitation}

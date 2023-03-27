@@ -81,6 +81,7 @@ const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
     }
   }, [activeTab]);
 
+  console.log(`role-member`, nonOrgTabState, orgTabState);
   return (
     <>
       <Modal.Header className="border-b border-appBorder">

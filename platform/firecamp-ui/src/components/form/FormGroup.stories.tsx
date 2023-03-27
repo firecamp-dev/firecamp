@@ -4,7 +4,6 @@ import DropDownV2 from '../dropdown/DropdownV2';
 import Input from '../input/Input';
 import FormGroup from './FormGroup';
 import { IFormGroup } from './interfaces/FormGroup.interfaces';
-import { IFormGroup } from './interfaces/FormGroup.interfaces';
 
 export default {
   title: 'UI-Kit/FormGroup',
@@ -12,21 +11,12 @@ export default {
   argTypes: {
     label: 'Firecamp',
   },
-  title: 'UI-Kit/FormGroup',
-  component: FormGroup,
-  argTypes: {
-    label: 'Firecamp',
-  },
 };
 
-const Template = (args: IFormGroup: IFormGroup) => (
-  (
+const Template = (args: IFormGroup) => (
   <div className="bg-activityBarActiveBackground p-4 w-96">
-    
     <FormGroup {...args} />
-  
   </div>
-)
 );
 
 export const InputDemo = Template.bind({});
