@@ -87,7 +87,7 @@ const PlaygroundTab = () => {
     }
   }, [editor]);
 
-  const envelopeDD = (
+  const typedArrayViewOptions = (
     Object.keys(ETypedArrayView) as Array<keyof typeof ETypedArrayView>
   ).map((e) => {
     return {
@@ -238,7 +238,7 @@ const PlaygroundTab = () => {
         <StatusBar className="bg-statusBarBackground2 px-1">
           <StatusBar.PrimaryRegion>
             <div className="collection-path" data-tip={message.path}>
-              {message.path || `./`}
+              {message.path || `./New Folder/Second Folder/Hello`}
             </div>
           </StatusBar.PrimaryRegion>
           <StatusBar.SecondaryRegion>
@@ -287,7 +287,7 @@ const PlaygroundTab = () => {
             ].includes(activeType.id) ? (
               <TypedArrayViewDropDown
                 isOpen={isTypedAVDDOpen}
-                options={envelopeDD}
+                options={typedArrayViewOptions}
                 selectedOption={message.__meta.typedArrayView}
                 onSelect={(tav) => {
                   changePlaygroundMessage(activePlayground, {

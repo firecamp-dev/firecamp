@@ -2,7 +2,6 @@ import { FC } from 'react';
 import shallow from 'zustand/shallow';
 import { Dropdown } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
-
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
 import { VscSignOut } from '@react-icons/all-files/vsc/VscSignOut';
@@ -10,7 +9,6 @@ import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 // import { CgFormatSlash } from '@react-icons/all-files/cg/CgFormatSlash';
-
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useUserStore } from '../../../store/user';
 import { usePlatformStore, EPlatformScope } from '../../../store/platform';
@@ -127,7 +125,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
           },
         },
         {
-          name: 'Switch to Peronal Workspace',
+          name: 'Switch to Personal Workspace',
           postfix: () => (
             <div className={'ml-2 text-primaryColor'}>
               <VscRemote size={14} />
@@ -140,7 +138,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
           },
         },
         {
-          name: 'Signout',
+          name: 'Sign out',
           postfix: () => (
             <div className={'ml-2 text-primaryColor'}>
               <VscSignOut size={14} />

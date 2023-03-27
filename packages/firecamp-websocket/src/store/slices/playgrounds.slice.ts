@@ -142,13 +142,14 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 
   setPlaygroundMessage: (connectionId: TId, message: IMessage) => {
     const existingPlayground = get().playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.message = message;
+    if (existingPlayground?.id === connectionId) {
       set((s) => ({
         playgrounds: {
           ...s.playgrounds,
-          [connectionId]: updatedPlayground,
+          [connectionId]: {
+            ...existingPlayground,
+            message,
+          },
         },
       }));
     }
@@ -225,29 +226,34 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   },
 
   deletePlayground: (connectionId: TId) => {
-    const state = get();
-    const playgroundsCount = Object.keys(state.playgrounds)?.length;
+    const { playgrounds } = get();
+    const playgroundsCount = Object.keys(playgrounds)?.length;
 
     // Do not allow to remove playground if only one exists
     if (playgroundsCount === 1) return;
-    const existingPlayground = state.playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      set((s) => ({
-        playgrounds: s.playgrounds?.filter((c) => c.id != connectionId),
-      }));
+    const existingPlayground = playgrounds[connectionId];
+    if (existingPlayground?.id === connectionId) {
+      set((s) => {
+        delete s.playgrounds[connectionId];
+        const { [connectionId]: plg, ...plgs } = s.playgrounds;
+        return {
+          playgrounds: plgs,
+        };
+      });
     }
   },
 
   deleteExecutor: (connectionId: TId) => {
-    let existingPlayground = get().playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.executor = {};
-
+    const { playgrounds } = get();
+    let existingPlayground = playgrounds?.[connectionId];
+    if (existingPlayground?.id === connectionId) {
       set((s) => ({
         playgrounds: {
           ...s.playgrounds,
-          [connectionId]: updatedPlayground,
+          [connectionId]: {
+            ...existingPlayground,
+            executor: null,
+          },
         },
       }));
     }
