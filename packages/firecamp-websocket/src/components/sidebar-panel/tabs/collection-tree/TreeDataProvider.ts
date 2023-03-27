@@ -72,6 +72,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       __ref: {
         id: item.__ref.id,
         isFolder: item.__ref.isFolder,
+        isItem: item.__ref.isItem,
         collectionId: item.__ref?.collectionId,
       },
     };
@@ -136,6 +137,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     // this.rootOrders = this.items
     //   .filter((i) => !i.__ref.folderId)
     //   .map((i) => i.__ref.id);
+    console.log(this.items, 'initial time this.item');
     this.rootOrders = rootOrders;
   }
 

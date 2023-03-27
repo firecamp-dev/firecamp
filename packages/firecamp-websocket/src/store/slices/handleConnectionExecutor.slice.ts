@@ -90,7 +90,7 @@ const createHandleConnectionExecutor: TStoreSlice<
       executor.connect();
 
       // set executor in to playground
-      state.changePlayground(connectionId, { executor });
+      state.setPlaygroundExecutor(connectionId, executor);
     } catch (error) {
       console.info({
         API: 'websocket.connect',

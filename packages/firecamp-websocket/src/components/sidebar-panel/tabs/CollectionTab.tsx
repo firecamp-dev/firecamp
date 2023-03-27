@@ -77,7 +77,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
     shallow
   );
   const {
-    // openPlayground,
+    openMessageInPlayground,
     registerTDP,
     unRegisterTDP,
     deleteItem,
@@ -89,12 +89,6 @@ const Collection = ({ openCreateFolderPrompt }) => {
     return unRegisterTDP;
   }, []);
 
-  const openPlg = (plgId) => {
-    // get a fresh copy of state
-    // const item = items.find((i) => i.__ref.id == plgId);
-    // console.log(item, 1100099);
-    // openPlayground(plgId);
-  };
   const deletePlg = (plgId: string) => {
     context.window
       .confirm({
@@ -122,7 +116,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
         <></>
       )}
 
-      {/* even if the collection is empty, the tree must be initialised with tdp.
+      {/* even if the collection is empty, the tree must be initialized with tdp.
         however it'll not show anything but when new item'll get added/created then tree will pop up the entry  */}
       <UncontrolledTreeEnvironment
         canRename={true}
@@ -144,7 +138,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
         renderItem={(props) =>
           treeRenderer.renderItem({
             ...props,
-            openPlg,
+            openMessageInPlg: openMessageInPlayground,
             deletePlg,
             createFolder: openCreateFolderPrompt,
           })

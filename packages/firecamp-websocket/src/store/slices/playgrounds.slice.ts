@@ -14,7 +14,6 @@ import { TStoreSlice } from '../store.type';
 
 const initialPlaygroundMessage = {
   name: '',
-  path: '',
   value: '',
   __meta: {
     type: EMessageBodyType.Text,
@@ -28,9 +27,7 @@ const initialPlaygroundMessage = {
   },
 };
 
-interface IMessage extends IWebSocketMessage {
-  path: string;
-}
+interface IMessage extends IWebSocketMessage {}
 
 // TODO: add key for active_message from collection
 
@@ -41,7 +38,7 @@ interface IPlayground {
     type: string;
   };
   message: IMessage;
-  selectedCollectionMessage: TId | string;
+  selectedMessageId: TId | string;
   executor?: IExecutor;
 }
 
@@ -53,8 +50,8 @@ interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
-  changePlayground: (connectionId: TId, updates: object) => void;
-
+  setPlaygroundExecutor: (connectionId: TId, executor: any) => void;
+  deleteExecutor: (connectionId: TId) => void;
   changePlaygroundConnectionState: (
     connectionId: TId,
     connectionState: EConnectionState
@@ -63,19 +60,10 @@ interface IPlaygroundSlice {
     connectionId: TId,
     updates: { type: string }
   ) => void;
-
-  setPlaygroundMessage: (connectionId: TId, message: IMessage) => void;
-  changePlaygroundMessage: (connectionId: TId, updates: object) => void;
-  resetPlaygroundMessage: (connectionId: TId) => void;
-
-  setSelectedCollectionMessage: (
-    connectionId: TId,
-    messageId: TId | string
-  ) => void;
-
+  openMessageInPlayground: (msgId: TId) => void;
+  changePlaygroundMessage: (updates: object) => void;
+  resetPlaygroundMessage: () => void;
   deletePlayground: (connectionId: TId) => void;
-
-  deleteExecutor: (connectionId: TId) => void;
 }
 
 const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
@@ -94,16 +82,24 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     }));
   },
 
-  changePlayground: (connectionId: TId, updates: object) => {
+  setPlaygroundExecutor: (connectionId: TId, executor) => {
     set((s) => ({
       playgrounds: {
         ...s.playgrounds,
         [connectionId]: {
           ...s.playgrounds[connectionId],
-          ...updates,
+          executor,
         },
       },
     }));
+  },
+
+  deleteExecutor: (connectionId: TId) => {
+    const state = get();
+    let existingPlayground = state.playgrounds?.[connectionId];
+    if (existingPlayground?.id === connectionId) {
+      state.setPlaygroundExecutor(connectionId, null);
+    }
   },
 
   changePlaygroundConnectionState: (
@@ -140,24 +136,39 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     }
   },
 
-  setPlaygroundMessage: (connectionId: TId, message: IMessage) => {
-    const existingPlayground = get().playgrounds?.[connectionId];
-    if (existingPlayground?.id === connectionId) {
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: {
-            ...existingPlayground,
-            message,
-          },
+  openMessageInPlayground: (msgId: TId) => {
+    const {
+      runtime: { activePlayground: connectionId },
+      collection: { items },
+      playgrounds,
+    } = get();
+
+    //@ts-ignore TODO: fix type here later
+    const item: IMessage = items.find((i) => i.__ref.id == msgId);
+    // console.log(item, 1100099);
+
+    const existingPlayground = playgrounds?.[connectionId];
+    if (!existingPlayground) return;
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [connectionId]: {
+          ...existingPlayground,
+          message: item,
+          selectedMessageId: msgId,
         },
-      }));
-    }
+      },
+    }));
   },
-  changePlaygroundMessage: async (connectionId: TId, updates: object) => {
+  changePlaygroundMessage: async (updates: object) => {
+    const {
+      runtime: { activePlayground: connectionId },
+      playgrounds,
+      changePlaygroundTab,
+    } = get();
+
     console.log(updates, 'change plg');
-    const state = get();
-    const plg = await state.playgrounds?.[connectionId];
+    const plg = playgrounds[connectionId];
 
     if (plg?.id === connectionId) {
       const newPlg = {
@@ -165,26 +176,21 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         message: { ...plg.message, ...updates },
       };
 
-      if (
-        !isEqual(
-          _object.omit(plg.message, ['path']),
-          _object.omit(newPlg.message, ['path'])
-        )
-      ) {
+      if (!isEqual(plg.message, newPlg.message)) {
         set((s) => ({
           playgrounds: {
             ...s.playgrounds,
             [connectionId]: newPlg,
           },
         }));
-        state.changePlaygroundTab(connectionId, {
+        changePlaygroundTab(connectionId, {
           __meta: {
             isSaved: !!newPlg.message?.__ref?.id,
             hasChange: true,
           },
         });
       } else {
-        state.changePlaygroundTab(connectionId, {
+        changePlaygroundTab(connectionId, {
           __meta: {
             isSaved: !!newPlg.message?.__ref?.id,
             hasChange: false,
@@ -193,36 +199,23 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       }
     }
   },
-  resetPlaygroundMessage: (connectionId: TId) => {
-    const existingPlayground = get().playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.message = initialPlaygroundMessage;
+  resetPlaygroundMessage: () => {
+    const {
+      runtime: { activePlayground: connectionId },
+      playgrounds,
+    } = get();
 
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: updatedPlayground,
+    const existingPlayground = playgrounds[connectionId];
+    if (existingPlayground?.id != connectionId) return;
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [connectionId]: {
+          ...existingPlayground,
+          message: initialPlaygroundMessage,
         },
-      }));
-    }
-  },
-
-  setSelectedCollectionMessage: (
-    connectionId: TId,
-    messageId: TId | string
-  ) => {
-    const existingPlayground = get().playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.selectedCollectionMessage = messageId;
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: updatedPlayground,
-        },
-      }));
-    }
+      },
+    }));
   },
 
   deletePlayground: (connectionId: TId) => {
@@ -240,22 +233,6 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
           playgrounds: plgs,
         };
       });
-    }
-  },
-
-  deleteExecutor: (connectionId: TId) => {
-    const { playgrounds } = get();
-    let existingPlayground = playgrounds?.[connectionId];
-    if (existingPlayground?.id === connectionId) {
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: {
-            ...existingPlayground,
-            executor: null,
-          },
-        },
-      }));
     }
   },
 });

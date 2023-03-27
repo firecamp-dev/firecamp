@@ -11,7 +11,7 @@ export default {
   renderItemArrow: ({ item, context }) => {
     // console.log(item, 'arrow context');
     if (item.data?.__ref?.isItem) {
-      return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
+      // return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <>
@@ -81,7 +81,7 @@ export default {
     context,
     arrow,
     info,
-    openPlg,
+    openMessageInPlg,
     deletePlg,
     createFolder,
   }) => {
@@ -217,12 +217,12 @@ export default {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  openPlg(item.data.__ref.id);
+                  openMessageInPlg(item.data.__ref.id);
                 }}
-                xs
+                transparent
                 secondary
                 ghost
-                transparent
+                xs
               />
             ) : (
               <></>
@@ -231,11 +231,11 @@ export default {
             {item.data.__ref.isFolder ? (
               <VscAdd
                 className="ml-1 cursor-pointer"
+                tabIndex={2}
                 size={14}
                 onClick={() => {
                   createFolder(item.index);
                 }}
-                tabIndex={2}
               />
             ) : (
               <></>

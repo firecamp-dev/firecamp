@@ -41,7 +41,6 @@ const PlaygroundTab = () => {
 
       // __meta: s.request.__meta,
       changePlaygroundMessage: s.changePlaygroundMessage,
-      setSelectedCollectionMessage: s.setSelectedCollectionMessage,
       sendMessage: s.sendMessage,
     }),
     shallow
@@ -188,7 +187,7 @@ const PlaygroundTab = () => {
             }}
             onChange={(e) => {
               if (message.value !== e.target.value) {
-                changePlaygroundMessage(activePlayground, {
+                changePlaygroundMessage({
                   value: e.target.value,
                 });
               }
@@ -218,7 +217,7 @@ const PlaygroundTab = () => {
               path={''}
               name={fileName}
               onSelectFile={(e) => {
-                changePlaygroundMessage(activePlayground, {
+                changePlaygroundMessage({
                   value: e.target.files[0],
                 });
               }}
@@ -290,7 +289,7 @@ const PlaygroundTab = () => {
                 options={typedArrayViewOptions}
                 selectedOption={message.__meta.typedArrayView}
                 onSelect={(tav) => {
-                  changePlaygroundMessage(activePlayground, {
+                  changePlaygroundMessage({
                     __meta: {
                       ...message.__meta,
                       typedArrayView: tav.id,
