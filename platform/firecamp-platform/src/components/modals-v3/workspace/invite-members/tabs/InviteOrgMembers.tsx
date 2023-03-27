@@ -6,6 +6,7 @@ import {
   Container,
   FormGroup,
   ProgressBar,
+  Notes,
 } from '@firecamp/ui';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace } from '../../../../../types';
@@ -17,13 +18,30 @@ const RoleOptions = [
     name: 'Admin',
     className:
       'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+    description: `
+    1. Can Rename Workspace <br/>
+    2. Can Manage Members = Invite Members, Remove Members <br/>
+    3. Can Manage Collection - Create/Update/Delete/View Collections and Their child components like Folder, Requests, etc.
+    `,
   },
   {
     id: EUserRolesWorkspace.Collaborator,
     name: 'Collaborator',
     className:
       'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+    description: `
+    1. Can Manage Collection <br/>
+      - Create/Update/Delete/View Collections and Their child component like Folder, Requests, etc.
+    2. Can not Rename. Update, Delete Workspace
+    `,
   },
+  // {
+  //   name: 'Viewer (Coming soon)',
+  //   description: `
+  //   1. Can only view Workspace, Collections, and Their child component like Folder, Requests, etc. <br/>
+  //   2. Can not perform any actions like Create, Update, or Delete for any components.
+  //   `,
+  // },
 ];
 
 const InviteOrgMembers: FC<IProps> = ({
@@ -79,7 +97,7 @@ const InviteOrgMembers: FC<IProps> = ({
             optionContainerClassName={
               'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
             }
-            option={members}
+            options={members}
             onSelect={(m) => onChange({ ...member, ...m })}
           />
         </FormGroup>
@@ -102,11 +120,18 @@ const InviteOrgMembers: FC<IProps> = ({
             optionContainerClassName={
               'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
             }
-            option={RoleOptions}
+            options={RoleOptions}
             className="block"
             onSelect={({ name, id }) => onChange({ ...member, role: id })}
           />
         </FormGroup>
+
+        <Notes
+          title={_role.name}
+          description={_role.description}
+          className={'mb-6'}
+        />
+
       </Container.Body>
       <Container.Footer>
         <Button

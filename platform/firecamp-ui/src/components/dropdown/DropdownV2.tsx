@@ -18,8 +18,9 @@ const DEFAULT_STYLES = {
 
 // DropDownV2 is used in Invite Popup
 const DropDownV2 = ({
-    showOptionArrow = false, handleRenderer, option, onSelect, optionContainerClassName = "",
-    displayDefaultOptionClassName = 0, className = '', disabled = false
+    showOptionArrow = false, handleRenderer, options, onSelect, 
+    displayDefaultOptionClassName = 0,  disabled = false,
+    optionContainerClassName = "",className = '',
 }: IDropdownV2) => {
 
     return (<DropdownMenu.Root>
@@ -33,12 +34,12 @@ const DropDownV2 = ({
             <DropdownMenu.Content className={cx(
                 { [DEFAULT_STYLES.optionContainerDefault1]: displayDefaultOptionClassName === 1 },
                 { [DEFAULT_STYLES.optionContainerDefault2]: displayDefaultOptionClassName === 2 },
-                {"d-none border-0": option.length === 0},
+                {"d-none border-0": options.length === 0},
                 optionContainerClassName)}
                 sideOffset={5}>
 
                 {
-                    option.map((item) => {
+                    options.map((item) => {
                         if (item.list !== undefined) {
                             return <Fragment key={item.id}>
                                 <DropDownNested className={item.className}

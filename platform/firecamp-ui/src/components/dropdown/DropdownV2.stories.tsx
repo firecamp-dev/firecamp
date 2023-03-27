@@ -30,7 +30,7 @@ export const DropDownv2Example = () => {
   return <DropDownV2
     displayDefaultOptionClassName={1}
     handleRenderer={() => <Button id={"button"} text={selected} primary sm className='rounded p-2' uppercase={true} withCaret={true} />}
-    option={[
+    options={[
       {
         id: '1',
         name: 'Rest',
@@ -151,7 +151,7 @@ export const BodyTabExample = () => {
       xs
       primary
     />}
-    option={[
+    options={[
 
       {
         id: 'FormAndQueryHeader',
@@ -216,7 +216,7 @@ export const EmitterBodyExample = () => {
       sm
       primary
     />}
-    option={[
+    options={[
       {
         id: 'Text',
         name: 'Text',
@@ -279,7 +279,7 @@ export const LogsExample = () => {
       withCaret
       sm
     />}
-    option={[
+    options={[
       {
         id: 'system',
         name: 'System',
@@ -315,7 +315,7 @@ export const ReqStatusBarExample = () => {
         xs
         className='leading-6 !rounded-br-none !rounded-tr-none'
       />}
-      option={[
+      options={[
         {
           id: 'my_query',
           name: 'MyQuery',
@@ -366,7 +366,7 @@ export const StatusBarExample = () => {
               {userSelected}
             </span>
           }
-          option={[
+          options={[
             {
               id: 'heading',
               name: 'Guest',
@@ -415,7 +415,7 @@ export const StatusBarExample = () => {
               {selected}
             </span>
           }
-          option={[
+          options={[
             {
               id: 'heading',
               name: 'FC Team',

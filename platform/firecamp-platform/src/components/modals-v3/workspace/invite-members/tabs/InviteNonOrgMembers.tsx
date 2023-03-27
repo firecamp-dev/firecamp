@@ -144,7 +144,7 @@ const RoleDD: FC<{
           )}
           displayDefaultOptionClassName={2}
           optionContainerClassName={'w-36 bg-popoverBackground z-[1000]'}
-          option={RoleOptions}
+          options={RoleOptions}
           onSelect={_onSelect}
         />
       </div>

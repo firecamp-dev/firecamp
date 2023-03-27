@@ -59,7 +59,7 @@ const DropdownElement = () => {
           fullWidth
         />
       )}
-      option={[
+      options={[
         {
           id: '1',
           name: 'Rest',

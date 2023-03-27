@@ -196,7 +196,7 @@ export interface IDropdownV2 {
   /**
    * list of options
    */
-  option: Array<IOptionsV2>;
+  options: Array<IOptionsV2>;
   /**
    * function on selection
    */
@@ -213,6 +213,11 @@ export interface IDropdownV2 {
    * Wrapper classname for handler element
    */
   className?: string;
+  // className: {
+  //   trigger?: string;
+  //   option?: string;
+  //   optionContainer?: string;
+  // };
   /**
    * To disable the selection option
    */
