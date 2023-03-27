@@ -8,7 +8,6 @@ import { Modal } from '@firecamp/ui';
 // import FolderSetting from '../modals/folder-setting/FolderSetting';
 // import CookieManager from '../modals/cookie-manager/CookieManager';
 // import RefreshToken from '../common/auth/RefreshToken';
-// import UserSetting from '../modals/user-setting/UserSetting';
 import { useModalStore } from '../../store/modal';
 import { EPlatformModalDefaultProps, EPlatformModalTypes } from '../../types';
 import ForgotPassword from './auth/ForgotPassword';
