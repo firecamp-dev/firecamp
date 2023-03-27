@@ -17,7 +17,7 @@ import Analytics from '../components/common/Analytics';
 import SidebarContainer from '../components/containers/SidebarContainer';
 import TabsContainer from '../components/containers/TabsContainer';
 import StatusBarContainer from '../components/status-bar/StatusBarContainer';
-import { ModalContainer } from '../components/modals-v3/ModalContainer';
+import { ModalContainer } from '../components/modals/ModalContainer';
 import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 import RealtimeEventManager from '../components/common/realtime/Realtime';
