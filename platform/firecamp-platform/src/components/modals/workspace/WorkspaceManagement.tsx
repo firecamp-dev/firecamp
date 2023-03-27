@@ -283,7 +283,8 @@ const MembersTab = () => {
     <div className="p-6  flex-1 flex flex-col">
       <PrimitiveTable
         columns={columns}
-        showDefaultEmptyRows={true}
+        rows={[]}
+        showDefaultEmptyRows={false}
         renderColumn={(c) => c.name}
         renderCell={renderCell}
         onChange={console.log}
