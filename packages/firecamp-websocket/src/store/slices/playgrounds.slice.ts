@@ -48,7 +48,6 @@ interface IPlaygrounds {
 
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
-
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
   setPlaygroundExecutor: (connectionId: TId, executor: any) => void;
   deleteExecutor: (connectionId: TId) => void;
@@ -141,6 +140,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       runtime: { activePlayground: connectionId },
       collection: { items },
       playgrounds,
+      changePlaygroundTab,
     } = get();
 
     //@ts-ignore TODO: fix type here later
@@ -159,50 +159,50 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         },
       },
     }));
+    changePlaygroundTab(connectionId, {
+      __meta: {
+        isSaved: true,
+        hasChange: false,
+      },
+    });
   },
-  changePlaygroundMessage: async (updates: object) => {
+  changePlaygroundMessage: async (updates) => {
     const {
+      collection: { items },
       runtime: { activePlayground: connectionId },
       playgrounds,
       changePlaygroundTab,
     } = get();
-
-    console.log(updates, 'change plg');
+    // console.log(updates, 'change plg');
     const plg = playgrounds[connectionId];
+    if (plg?.id != connectionId) return;
 
-    if (plg?.id === connectionId) {
-      const newPlg = {
-        ...plg,
-        message: { ...plg.message, ...updates },
-      };
+    const newPlg = {
+      ...plg,
+      message: { ...plg.message, ...updates },
+    };
 
-      if (!isEqual(plg.message, newPlg.message)) {
-        set((s) => ({
-          playgrounds: {
-            ...s.playgrounds,
-            [connectionId]: newPlg,
-          },
-        }));
-        changePlaygroundTab(connectionId, {
-          __meta: {
-            isSaved: !!newPlg.message?.__ref?.id,
-            hasChange: true,
-          },
-        });
-      } else {
-        changePlaygroundTab(connectionId, {
-          __meta: {
-            isSaved: !!newPlg.message?.__ref?.id,
-            hasChange: false,
-          },
-        });
-      }
-    }
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [connectionId]: newPlg,
+      },
+    }));
+
+    const originalMsg = items.find((i) => i.__ref.id == plg.message?.__ref?.id);
+    const isMsgChanged = !isEqual(originalMsg, newPlg.message);
+    changePlaygroundTab(connectionId, {
+      __meta: {
+        isSaved: !!newPlg.message.__ref?.id,
+        hasChange: isMsgChanged,
+      },
+    });
   },
   resetPlaygroundMessage: () => {
     const {
       runtime: { activePlayground: connectionId },
       playgrounds,
+      changePlaygroundTab,
     } = get();
 
     const existingPlayground = playgrounds[connectionId];
@@ -213,16 +213,22 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         [connectionId]: {
           ...existingPlayground,
           message: initialPlaygroundMessage,
+          selectedMessageId: null,
         },
       },
     }));
+    changePlaygroundTab(connectionId, {
+      __meta: {
+        isSaved: false,
+        hasChange: false,
+      },
+    });
   },
 
   deletePlayground: (connectionId: TId) => {
     const { playgrounds } = get();
     const playgroundsCount = Object.keys(playgrounds)?.length;
-
-    // Do not allow to remove playground if only one exists
+    // do not allow to remove playground if only one exists
     if (playgroundsCount === 1) return;
     const existingPlayground = playgrounds[connectionId];
     if (existingPlayground?.id === connectionId) {
