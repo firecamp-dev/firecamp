@@ -325,10 +325,12 @@ const request: IPlatformRequestService = {
       .then((res) => res.data);
   },
   updateRequestItem: async (item, tabId) => {
-    return item as IRequestItem<any, any>;
+    return Rest.request
+      .updateItem(item.__ref.requestId, item.__ref.id, item)
+      .then((res) => res.data);
   },
-  deleteRequestItem: async (itemId, requestId, tabId) => {
-    return true;
+  deleteRequestItem: async (requestId, itemId, tabId) => {
+    return Rest.request.deleteItem(requestId, itemId).then((res) => res.data);
   },
 
   // execute request

@@ -190,15 +190,13 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     }));
 
     const originalMsg = items.find((i) => i.__ref.id == plg.message?.__ref?.id);
-    if (originalMsg) {
-      const isMsgChanged = !isEqual(originalMsg, newPlg.message);
-      changePlaygroundTab(connectionId, {
-        __meta: {
-          isSaved: true,
-          hasChange: isMsgChanged,
-        },
-      });
-    }
+    const isMsgChanged = !isEqual(originalMsg, newPlg.message);
+    changePlaygroundTab(connectionId, {
+      __meta: {
+        isSaved: !!newPlg.message.__ref?.id,
+        hasChange: isMsgChanged,
+      },
+    });
   },
   resetPlaygroundMessage: () => {
     const {

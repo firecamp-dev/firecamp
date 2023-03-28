@@ -5,9 +5,9 @@ import {
   IRequestFolder,
   EMessageBodyType,
 } from '@firecamp/types';
+import { itemPathFinder } from '@firecamp/utils/dist/misc';
 import { TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
-import { itemPathFinder } from '@firecamp/utils/dist/misc';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -39,7 +39,9 @@ interface ICollectionSlice {
     parentFolderId?: TId
   ) => IWebSocketMessage;
   promptSaveItem: () => void;
-  addItem: (message: IWebSocketMessage) => void;
+  onAddItem: (message: IWebSocketMessage) => void;
+  updateItem: () => void;
+  onUpdateItem: (message: IWebSocketMessage) => void;
   deleteItem: (id: TId) => void;
 
   // folders
@@ -183,10 +185,11 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       })
       .then((res) => {
         console.log(res, 1111);
-        state.addItem(res);
+        state.onAddItem(res);
+        state.openMessageInPlayground(res.__ref.id);
       });
   },
-  addItem: (item: IWebSocketMessage) => {
+  onAddItem: (item: IWebSocketMessage) => {
     const state = get();
     const { tdpInstance } = state.collection;
     if (!item.__ref?.id) return;
@@ -195,6 +198,44 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         items: [...s.collection.items, item],
+        __manualUpdates: ++s.collection.__manualUpdates,
+      },
+    }));
+  },
+  updateItem: () => {
+    const {
+      context,
+      onUpdateItem,
+      runtime: { activePlayground },
+      playgrounds,
+    } = get();
+    const item = playgrounds[activePlayground].message;
+    const _item = {
+      name: item.name,
+      value: item.value,
+      __meta: item.__meta,
+      __ref: item.__ref,
+    };
+    context.request.updateRequestItem(_item).then((res) => {
+      console.log(res, 'update request item...');
+      onUpdateItem(_item);
+    });
+  },
+  onUpdateItem: (item) => {
+    const state = get();
+    const { tdpInstance } = state.collection;
+    if (!item.__ref?.id) return;
+    if (tdpInstance) tdpInstance.updateItem(item);
+    const items = state.collection.items.map((i) => {
+      if (item.__ref.id == i.__ref.id) {
+        return { ...i, ...item };
+      }
+      return i;
+    });
+    set((s) => ({
+      collection: {
+        ...s.collection,
+        items,
         __manualUpdates: ++s.collection.__manualUpdates,
       },
     }));

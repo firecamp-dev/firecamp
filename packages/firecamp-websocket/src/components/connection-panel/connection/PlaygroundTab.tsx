@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import _compact from 'lodash/compact';
-// import { VscFile } from '@react-icons/all-files/vsc/VscFile';
+import isEqual from 'react-fast-compare';
+import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
 import {
@@ -22,8 +23,6 @@ import { MessageTypeDropDownList } from '../../../constants';
 import ShortcutsPopover, {
   EditorCommands,
 } from './playground/ShortcutsPopover';
-import isEqual from 'react-fast-compare';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 
 const PlaygroundTab = () => {
   const {
@@ -32,6 +31,7 @@ const PlaygroundTab = () => {
     activePlayground,
     playgroundTabs,
     promptSaveItem,
+    updateItem,
     changePlaygroundMessage,
     resetPlaygroundMessage,
     sendMessage,
@@ -42,6 +42,7 @@ const PlaygroundTab = () => {
       activePlayground: s.runtime.activePlayground,
       playgroundTabs: s.runtime.playgroundTabs,
       promptSaveItem: s.promptSaveItem,
+      updateItem: s.updateItem,
       // __meta: s.request.__meta,
       changePlaygroundMessage: s.changePlaygroundMessage,
       resetPlaygroundMessage: s.resetPlaygroundMessage,
@@ -54,7 +55,7 @@ const PlaygroundTab = () => {
   const { message } = playground;
   const { value } = message;
 
-  console.log(playground, plgTab, 'playground');
+  // console.log(playground, plgTab, 'playground');
   if (!activePlayground || !message.__meta) {
     return <></>;
   }
@@ -109,9 +110,19 @@ const PlaygroundTab = () => {
   };
   const _addNewMessage = () => {
     resetPlaygroundMessage();
+    editor?.focus();
   };
   const _setToOriginal = () => {};
-  const _onSaveMessageFromPlg = () => {};
+  const _saveMessage = () => {
+    const { isSaved } = plgTab.__meta;
+    console.log(plgTab.__meta, "__meta....F")
+    if (isSaved) {
+      updateItem();
+    } else {
+      promptSaveItem();
+    }
+  };
+
   const _editorShortCutsFns = async (command) => {
     if (!command) return;
     try {
@@ -121,12 +132,12 @@ const PlaygroundTab = () => {
           break;
 
         case EditorCommands.Save.command:
-          _onSaveMessageFromPlg();
+          _saveMessage();
           break;
 
         case EditorCommands.SendAndSave.command:
           await _onSendMessage();
-          _onSaveMessageFromPlg();
+          _saveMessage();
           break;
 
         case EditorCommands.SetToOriginal.command:
@@ -146,7 +157,7 @@ const PlaygroundTab = () => {
   };
   const shortcutFns = {
     onCtrlS: () => {
-      _onSaveMessageFromPlg();
+      _saveMessage();
     },
     onCtrlEnter: async () => {
       _onSendMessage();
@@ -159,13 +170,11 @@ const PlaygroundTab = () => {
     },
     onCtrlShiftEnter: async () => {
       await _onSendMessage();
-      _onSaveMessageFromPlg();
+      _saveMessage();
     },
   };
-
   const _renderActiveBody = (type) => {
     if (!type || !type.id) return <span />;
-
     // console.log(message);
     switch (type.id) {
       case EMessagePayloadTypes.text:
@@ -231,8 +240,10 @@ const PlaygroundTab = () => {
     }
   };
 
-  const isMessageSaved = plgTab.__meta.isSaved;
-  const isMessageChanged = plgTab.__meta.hasChange;
+  const isMsgSaved = plgTab.__meta.isSaved;
+  const isMsgChanged = plgTab.__meta.hasChange;
+  const showSaveButton =
+    (isMsgSaved && isMsgChanged) || (!isMsgSaved && isMsgChanged && value);
 
   return (
     <Container className="h-full">
@@ -244,11 +255,11 @@ const PlaygroundTab = () => {
             </div>
           </StatusBar.PrimaryRegion>
           <StatusBar.SecondaryRegion>
-            {/* {!isMessageSaved || isMessageChanged ? (
+            {/* {!isMsgSaved || isMsgChanged ? (
               <Button
                 text={'Save'}
                 className="mr-1 hover:!bg-focus2"
-                onClick={() => promptSaveItem()}
+                onClick={_saveMessage}
                 transparent
                 primary
                 ghost
@@ -257,7 +268,7 @@ const PlaygroundTab = () => {
             ) : (
               <></>
             )} */}
-            {isMessageSaved ? (
+            {isMsgSaved ? (
               <Button
                 id={`confirm-popover-handler-${playground.id}`}
                 key="newMsgButton"
@@ -314,11 +325,11 @@ const PlaygroundTab = () => {
             )}
           </TabHeader.Left>
           <TabHeader.Right>
-            {(!isMessageSaved || isMessageChanged) && value ? (
+            {showSaveButton ? (
               <Button
                 text="Save"
                 icon={<VscFile size={12} className="ml-1" />}
-                onClick={() => promptSaveItem()}
+                onClick={_saveMessage}
                 secondary
                 iconRight
                 xs
