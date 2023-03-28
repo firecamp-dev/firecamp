@@ -140,6 +140,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       runtime: { activePlayground: connectionId },
       collection: { items },
       playgrounds,
+      changePlaygroundTab,
     } = get();
 
     //@ts-ignore TODO: fix type here later
@@ -158,6 +159,12 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         },
       },
     }));
+    changePlaygroundTab(connectionId, {
+      __meta: {
+        isSaved: true,
+        hasChange: false,
+      },
+    });
   },
   changePlaygroundMessage: async (updates) => {
     const {
@@ -197,6 +204,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     const {
       runtime: { activePlayground: connectionId },
       playgrounds,
+      changePlaygroundTab,
     } = get();
 
     const existingPlayground = playgrounds[connectionId];
@@ -207,9 +215,16 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         [connectionId]: {
           ...existingPlayground,
           message: initialPlaygroundMessage,
+          selectedMessageId: null,
         },
       },
     }));
+    changePlaygroundTab(connectionId, {
+      __meta: {
+        isSaved: false,
+        hasChange: false,
+      },
+    });
   },
 
   deletePlayground: (connectionId: TId) => {

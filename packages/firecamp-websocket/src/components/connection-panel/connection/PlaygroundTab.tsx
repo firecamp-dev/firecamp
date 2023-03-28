@@ -17,12 +17,13 @@ import { EEditorLanguage, ETypedArrayView } from '@firecamp/types';
 import MessageTypeDropDown from './playground/MessageTypeDropDown';
 import TypedArrayViewDropDown from './playground/TypedArrayViewDropDown';
 import { EMessagePayloadTypes } from '../../../types';
-import { useStore, initialPlaygroundMessage, IStore } from '../../../store';
+import { useStore, IStore } from '../../../store';
 import { MessageTypeDropDownList } from '../../../constants';
 import ShortcutsPopover, {
   EditorCommands,
 } from './playground/ShortcutsPopover';
 import isEqual from 'react-fast-compare';
+import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 
 const PlaygroundTab = () => {
   const {
@@ -32,6 +33,7 @@ const PlaygroundTab = () => {
     playgroundTabs,
     promptSaveItem,
     changePlaygroundMessage,
+    resetPlaygroundMessage,
     sendMessage,
   } = useStore(
     (s: IStore) => ({
@@ -42,6 +44,7 @@ const PlaygroundTab = () => {
       promptSaveItem: s.promptSaveItem,
       // __meta: s.request.__meta,
       changePlaygroundMessage: s.changePlaygroundMessage,
+      resetPlaygroundMessage: s.resetPlaygroundMessage,
       sendMessage: s.sendMessage,
     }),
     shallow
@@ -60,10 +63,6 @@ const PlaygroundTab = () => {
   }, [message.__ref.id]);
 
   // manage type dropdown
-  const [activeType, setActiveType] = useState({
-    id: EMessagePayloadTypes.text,
-    name: 'Text',
-  });
   const [typedArrayViewOptions] = useState(
     (Object.keys(ETypedArrayView) as Array<keyof typeof ETypedArrayView>).map(
       (e) => {
@@ -74,18 +73,9 @@ const PlaygroundTab = () => {
       }
     )
   );
-  useEffect(() => {
-    let type = MessageTypeDropDownList.find(
-      (t) => t.id === message.__meta.type
-    );
-    if (!type) {
-      type = {
-        id: EMessagePayloadTypes.text,
-        name: 'Text',
-      };
-    }
-    setActiveType(type);
-  }, [message.__ref.id]);
+  const activeType = MessageTypeDropDownList.find(
+    (t) => t.id === message.__meta.type
+  );
 
   const [isSelectTypeDDOpen, toggleSelectTypeDD] = useState(false);
   //arraybuffer
@@ -113,17 +103,13 @@ const PlaygroundTab = () => {
     }
   }, [editor]);
 
-  const _onSelectBodyType = (type) => {
-    // console.log(type, 'type...');
-    if (!type?.id) return;
-    setActiveType((ps) => type);
-    toggleSelectTypeDD(false);
-  };
   const _onSendMessage = (e?: any) => {
     if (e) e.preventDefault();
     sendMessage(activePlayground);
   };
-  const _addNewMessage = () => {};
+  const _addNewMessage = () => {
+    resetPlaygroundMessage();
+  };
   const _setToOriginal = () => {};
   const _onSaveMessageFromPlg = () => {};
   const _editorShortCutsFns = async (command) => {
@@ -258,7 +244,7 @@ const PlaygroundTab = () => {
             </div>
           </StatusBar.PrimaryRegion>
           <StatusBar.SecondaryRegion>
-            {!isMessageSaved || isMessageChanged ? (
+            {/* {!isMessageSaved || isMessageChanged ? (
               <Button
                 text={'Save'}
                 className="mr-1 hover:!bg-focus2"
@@ -270,12 +256,13 @@ const PlaygroundTab = () => {
               />
             ) : (
               <></>
-            )}
+            )} */}
             {isMessageSaved ? (
               <Button
                 id={`confirm-popover-handler-${playground.id}`}
                 key="newMsgButton"
                 text={'+ New Message'}
+                onClick={_addNewMessage}
                 ghost
                 sm
               />
@@ -294,7 +281,14 @@ const PlaygroundTab = () => {
               options={MessageTypeDropDownList}
               isOpen={isSelectTypeDDOpen}
               onToggle={() => toggleSelectTypeDD(!isSelectTypeDDOpen)}
-              onSelect={_onSelectBodyType}
+              onSelect={(t) => {
+                changePlaygroundMessage({
+                  __meta: {
+                    ...message.__meta,
+                    type: t.id,
+                  },
+                });
+              }}
             />
 
             {[
@@ -320,14 +314,18 @@ const PlaygroundTab = () => {
             )}
           </TabHeader.Left>
           <TabHeader.Right>
-            {/* <Button
-              text="Save"
-              icon={<VscFile size={12} className="ml-1" />}
-              onClick={() => promptSaveItem()}
-              secondary
-              iconRight
-              xs
-            /> */}
+            {(!isMessageSaved || isMessageChanged) && value ? (
+              <Button
+                text="Save"
+                icon={<VscFile size={12} className="ml-1" />}
+                onClick={() => promptSaveItem()}
+                secondary
+                iconRight
+                xs
+              />
+            ) : (
+              <></>
+            )}
             <Button
               text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
