@@ -185,6 +185,7 @@ export interface IHeaderMeta {
 
 // Dropdown V2
 export interface IDropdownV2 {
+  classes?: {};
   /**
    * To display arrow shown at the begin of container
    */
