@@ -29,7 +29,7 @@ const prepareTableInitState = (
   if (_array.isEmpty(rows)) {
     const row1Id = nanoid();
     const row2Id = nanoid();
-    _orders.push(row1Id, row2Id);
+    if (showDefaultEmptyRows) _orders.push(row1Id, row2Id);
     _rows = showDefaultEmptyRows
       ? {
           [row1Id]: { id: row1Id, ...defaultRow },
@@ -90,7 +90,7 @@ const Table: FC<ITable<any>> = ({
     if (!containerDivRef.current) return () => {};
     const resizeObserver = new ResizeObserver(() => {
       if (containerDivRef?.current)
-          setContainerWidth(containerDivRef.current?.clientWidth);
+        setContainerWidth(containerDivRef.current?.clientWidth);
     });
     resizeObserver.observe(containerDivRef.current);
     return () => {
@@ -264,24 +264,23 @@ const Table: FC<ITable<any>> = ({
           </Tr>
         </THead>
         <TBody className={classes.tbody}>
-          {!_array.isEmpty(rows) &&
-            _state.orders.map((rId: string, i: number) => {
-              return (
-                <TableRow
-                  classes={{ tr: classes.tr, td: classes.td }}
-                  columns={_columns}
-                  index={i}
-                  row={_state.rows[rId]}
-                  tableApi={tableApi}
-                  renderCell={renderCell}
-                  onChangeCell={onChangeCell}
-                  key={rId}
-                  handleDrag={handleDrag}
-                  handleDrop={handleDrop}
-                  options={options}
-                />
-              );
-            })}
+          {_state.orders.map((rId: string, i: number) => {
+            return (
+              <TableRow
+                classes={{ tr: classes.tr, td: classes.td }}
+                columns={_columns}
+                index={i}
+                row={_state.rows[rId]}
+                tableApi={tableApi}
+                renderCell={renderCell}
+                onChangeCell={onChangeCell}
+                key={rId}
+                handleDrag={handleDrag}
+                handleDrop={handleDrop}
+                options={options}
+              />
+            );
+          })}
         </TBody>
       </table>
     </div>

@@ -188,7 +188,7 @@ const columns = [
   { id: 'index', name: 'No.', key: 'index', width: '30px' },
   { id: 'name', name: 'Name', key: 'name', width: '250px' },
   { id: 'email', name: 'Email', key: 'email', width: '300px' },
-  { id: 'role', name: 'Role', key: 'role' },
+  { id: 'role', name: 'Role', key: 'role', width: '50px' },
   { id: 'action', name: '', key: '', width: '50px' },
 ];
 
