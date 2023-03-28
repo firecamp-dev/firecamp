@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import _compact from 'lodash/compact';
 // import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
@@ -22,9 +22,11 @@ import { MessageTypeDropDownList } from '../../../constants';
 import ShortcutsPopover, {
   EditorCommands,
 } from './playground/ShortcutsPopover';
+import isEqual from 'react-fast-compare';
 
 const PlaygroundTab = () => {
   const {
+    getItemPath,
     playgrounds,
     activePlayground,
     playgroundTabs,
@@ -33,12 +35,11 @@ const PlaygroundTab = () => {
     sendMessage,
   } = useStore(
     (s: IStore) => ({
+      getItemPath: s.getItemPath,
       playgrounds: s.playgrounds,
       activePlayground: s.runtime.activePlayground,
       playgroundTabs: s.runtime.playgroundTabs,
-
       promptSaveItem: s.promptSaveItem,
-
       // __meta: s.request.__meta,
       changePlaygroundMessage: s.changePlaygroundMessage,
       sendMessage: s.sendMessage,
@@ -54,12 +55,38 @@ const PlaygroundTab = () => {
   if (!activePlayground || !message.__meta) {
     return <></>;
   }
-  const [activeType, setActiveType] = useState(
-    MessageTypeDropDownList.find((t) => t.id === message.__meta.type) || {
-      id: EMessagePayloadTypes.none,
-      name: 'None',
-    }
+  const messagePath = useMemo(() => {
+    return getItemPath(message.__ref.id);
+  }, [message.__ref.id]);
+
+  // manage type dropdown
+  const [activeType, setActiveType] = useState({
+    id: EMessagePayloadTypes.text,
+    name: 'Text',
+  });
+  const [typedArrayViewOptions] = useState(
+    (Object.keys(ETypedArrayView) as Array<keyof typeof ETypedArrayView>).map(
+      (e) => {
+        return {
+          id: e,
+          name: e,
+        };
+      }
+    )
   );
+  useEffect(() => {
+    let type = MessageTypeDropDownList.find(
+      (t) => t.id === message.__meta.type
+    );
+    if (!type) {
+      type = {
+        id: EMessagePayloadTypes.text,
+        name: 'Text',
+      };
+    }
+    setActiveType(type);
+  }, [message.__ref.id]);
+
   const [isSelectTypeDDOpen, toggleSelectTypeDD] = useState(false);
   //arraybuffer
   const [isTypedAVDDOpen, toggleSelectedEnvelopeOpen] = useState(false);
@@ -86,21 +113,10 @@ const PlaygroundTab = () => {
     }
   }, [editor]);
 
-  const typedArrayViewOptions = (
-    Object.keys(ETypedArrayView) as Array<keyof typeof ETypedArrayView>
-  ).map((e) => {
-    return {
-      id: e,
-      name: e,
-    };
-  });
-
   const _onSelectBodyType = (type) => {
-    console.log(type, 'type...');
+    // console.log(type, 'type...');
     if (!type?.id) return;
-    setActiveType((ps) => {
-      return type;
-    });
+    setActiveType((ps) => type);
     toggleSelectTypeDD(false);
   };
   const _onSendMessage = (e?: any) => {
@@ -160,9 +176,7 @@ const PlaygroundTab = () => {
       _onSaveMessageFromPlg();
     },
   };
-  const promptSave = () => {
-    promptSaveItem();
-  };
+
   const _renderActiveBody = (type) => {
     if (!type || !type.id) return <span />;
 
@@ -186,7 +200,7 @@ const PlaygroundTab = () => {
               setEditor(editor);
             }}
             onChange={(e) => {
-              if (message.value !== e.target.value) {
+              if (!isEqual(value, e.target.value)) {
                 changePlaygroundMessage({
                   value: e.target.value,
                 });
@@ -231,21 +245,24 @@ const PlaygroundTab = () => {
     }
   };
 
+  const isMessageSaved = plgTab.__meta.isSaved;
+  const isMessageChanged = plgTab.__meta.hasChange;
+
   return (
     <Container className="h-full">
       <Container.Header>
         <StatusBar className="bg-statusBarBackground2 px-1">
           <StatusBar.PrimaryRegion>
-            <div className="collection-path" data-tip={message.path}>
-              {message.path || `./New Folder/Second Folder/Hello`}
+            <div className="collection-path" data-tip={messagePath}>
+              {`./${messagePath}`}
             </div>
           </StatusBar.PrimaryRegion>
           <StatusBar.SecondaryRegion>
-            {!plgTab.__meta.isSaved ? (
+            {!isMessageSaved || isMessageChanged ? (
               <Button
                 text={'Save'}
                 className="mr-1 hover:!bg-focus2"
-                onClick={() => promptSave()}
+                onClick={() => promptSaveItem()}
                 transparent
                 primary
                 ghost
@@ -254,13 +271,13 @@ const PlaygroundTab = () => {
             ) : (
               <></>
             )}
-            {plgTab.__meta.isSaved && plgTab.__meta.hasChange ? (
+            {isMessageSaved ? (
               <Button
                 id={`confirm-popover-handler-${playground.id}`}
-                key="new_msg_button"
+                key="newMsgButton"
                 text={'+ New Message'}
-                sm
                 ghost
+                sm
               />
             ) : (
               <></>
@@ -306,7 +323,7 @@ const PlaygroundTab = () => {
             {/* <Button
               text="Save"
               icon={<VscFile size={12} className="ml-1" />}
-              onClick={() => promptSave()}
+              onClick={() => promptSaveItem()}
               secondary
               iconRight
               xs

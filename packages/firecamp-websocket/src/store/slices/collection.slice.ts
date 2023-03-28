@@ -7,6 +7,7 @@ import {
 } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
+import { itemPathFinder } from '@firecamp/utils/dist/misc';
 
 interface ICollection {
   isProgressing?: boolean;
@@ -23,6 +24,7 @@ interface ICollection {
 interface ICollectionSlice {
   collection: ICollection;
   isCollectionEmpty: () => boolean;
+  getItemPath: (itemId: TId) => string;
 
   toggleProgressBar: (flag?: boolean) => void;
   registerTDP: () => void;
@@ -61,6 +63,14 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   isCollectionEmpty: () => {
     const { folders, items } = get().collection;
     return folders.length == 0 && items.length == 0;
+  },
+
+  getItemPath: (itemId: TId) => {
+    const {
+      collection: { items, folders },
+    } = get();
+    const { path } = itemPathFinder([...folders, ...items], itemId);
+    return path;
   },
 
   // register TreeDatProvider instance
