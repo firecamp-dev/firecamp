@@ -81,6 +81,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
     registerTDP,
     unRegisterTDP,
     deleteItem,
+    deleteFolder,
     isCollectionEmpty,
   } = useStoreApi().getState() as IStore;
 
@@ -89,16 +90,29 @@ const Collection = ({ openCreateFolderPrompt }) => {
     return unRegisterTDP;
   }, []);
 
-  const deletePlg = (plgId: string) => {
+  const _deleteFolder = (id: string) => {
     context.window
       .confirm({
-        title: 'Are you sure to delete the playground?',
+        title: 'Are you sure to delete the Folder?',
         texts: {
           btnConfirm: 'Yes, delete it.',
         },
       })
-      .then((isConfirmed) => {
-        if (isConfirmed) deleteItem(plgId);
+      .then((yes) => {
+        if (yes) deleteFolder(id);
+      });
+  };
+
+  const deleteMsg = (msgId: string) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the message?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((yes) => {
+        if (yes) deleteItem(msgId);
       });
   };
 
@@ -139,8 +153,9 @@ const Collection = ({ openCreateFolderPrompt }) => {
           treeRenderer.renderItem({
             ...props,
             openMessageInPlg: openMessageInPlayground,
-            deletePlg,
             createFolder: openCreateFolderPrompt,
+            deleteFolder: _deleteFolder,
+            deleteMsg,
           })
         }
       >

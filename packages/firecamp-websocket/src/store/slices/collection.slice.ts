@@ -43,12 +43,14 @@ interface ICollectionSlice {
   updateItem: () => void;
   onUpdateItem: (message: IWebSocketMessage) => void;
   deleteItem: (id: TId) => void;
+  onDeleteItem: (id: TId) => void;
 
   // folders
   getFolder: (id: TId) => IRequestFolder | undefined;
   prepareCreateFolderPayload: (name: string, parentFolderId: TId) => void;
-  deleteFolder: (id: TId) => void;
   onCreateFolder: (folder: IRequestFolder) => void;
+  deleteFolder: (id: TId) => void;
+  onDeleteFolder: (id: TId) => void;
 }
 
 const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
@@ -139,7 +141,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     );
   },
 
-  // message
+  // message/item
   getItem: (id: TId) => {
     const state = get();
     const item = state.collection.items.find((i) => i.__ref?.id === id);
@@ -189,11 +191,12 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         state.openMessageInPlayground(res.__ref.id);
       });
   },
+  
   onAddItem: (item: IWebSocketMessage) => {
     const state = get();
     const { tdpInstance } = state.collection;
     if (!item.__ref?.id) return;
-    if (tdpInstance) tdpInstance.addItem(item);
+    tdpInstance?.addItem(item);
     set((s) => ({
       collection: {
         ...s.collection,
@@ -225,7 +228,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     const state = get();
     const { tdpInstance } = state.collection;
     if (!item.__ref?.id) return;
-    if (tdpInstance) tdpInstance.updateItem(item);
+    tdpInstance?.update(item);
     const items = state.collection.items.map((i) => {
       if (item.__ref.id == i.__ref.id) {
         return { ...i, ...item };
@@ -241,16 +244,32 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     }));
   },
   deleteItem: (id: TId) => {
+    const {
+      context,
+      onDeleteItem,
+      collection: { items },
+    } = get();
+    const item = items.find((i) => i.__ref.id == id);
+    if (!item) return;
+    const requestId = item.__ref.requestId;
+    context.request.deleteRequestItem(requestId, id).then((res) => {
+      console.log(res, 'delete request item...');
+      onDeleteItem(id);
+    });
+  },
+  onDeleteItem: (id: TId) => {
     set((s) => {
       const items = s.collection.items.filter((i) => i.__ref.id != id);
+      s.collection.tdpInstance?.delete(id);
       return {
         collection: {
           ...s.collection,
-          ...items,
+          items,
           __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
     });
+    // TODO: if item/message is opened in the playground then reset the playgroundF
   },
 
   // folders
@@ -306,16 +325,33 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   },
 
   deleteFolder: (id: TId) => {
+    const {
+      context,
+      onDeleteFolder,
+      collection: { folders },
+    } = get();
+    const folder = folders.find((i) => i.__ref.id == id);
+    if (!folder) return;
+    const requestId = folder.__ref.requestId;
+    context.request.deleteRequestFolder(requestId, id).then((res) => {
+      console.log(res, 'delete request folder...');
+      onDeleteFolder(id);
+    });
+  },
+
+  onDeleteFolder: (id: TId) => {
     set((s) => {
       const folders = s.collection.folders.filter((f) => f.__ref.id != id);
+      s.collection.tdpInstance?.delete(id);
       return {
         collection: {
           ...s.collection,
-          ...folders,
+          folders,
           __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
     });
+    //TODO: if any of the messages belonging tot he folder is opened in playground then reset the playground
   },
 });
 

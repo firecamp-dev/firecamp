@@ -283,8 +283,10 @@ const request: IPlatformRequestService = {
   updateRequestFolder: async (folder, tabId) => {
     return folder;
   },
-  deleteRequestFolder: async (folderId, requestId, tabId) => {
-    return true;
+  deleteRequestFolder: async (requestId, folderId, tabId) => {
+    return Rest.request
+      .deleteFolder(requestId, folderId)
+      .then((res) => res.data);
   },
 
   createRequestItemPrompt: async (item, collection, tabId) => {

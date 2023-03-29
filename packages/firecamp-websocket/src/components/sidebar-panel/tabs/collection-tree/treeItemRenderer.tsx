@@ -82,16 +82,17 @@ export default {
     arrow,
     info,
     openMessageInPlg,
-    deletePlg,
     createFolder,
+    deleteFolder,
+    deleteMsg,
   }) => {
-    console.log({ title });
+    // console.log({ title });
     const renderDepthOffset = 8;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
     const isFolder = item.data.__ref.isFolder;
     const isItem = item.data.__ref.isItem;
-    console.log(item.data, 'item.data....');
+    // console.log(item.data, 'item.data....');
     // TODO have only root li component create all the classes
     const style = isFolder //item.isFolder
       ? {
@@ -245,7 +246,8 @@ export default {
               className="ml-1 cursor-pointer"
               size={14}
               onClick={() => {
-                deletePlg(item.index);
+                if (item.data.__ref.isFolder) deleteFolder(item.index);
+                else deleteMsg(item.index);
               }}
               tabIndex={2}
             />

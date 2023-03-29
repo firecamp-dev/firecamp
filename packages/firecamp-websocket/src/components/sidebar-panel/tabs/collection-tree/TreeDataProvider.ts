@@ -142,7 +142,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
   }
 
   // extra methods of provider
-  public addFolder(item: TFolderItem) {
+  private add(item: TFolderItem | TItem) {
     this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
     if (!item.__ref.folderId) {
       this.rootOrders.push(item.__ref.id);
@@ -151,30 +151,27 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
   }
-
+  public addFolder(item: TFolderItem) {
+    this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
+    this.add(item);
+  }
   public addItem(item: TItem) {
     this.items.push({ ...item, __ref: { ...item.__ref, isItem: true } });
-    if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
-    }
+    this.add(item);
   }
 
-  public updateItem(item: TItem) {
+  public update(item: TItem) {
     this.items = this.items.map((itm: TItem) => {
       if (itm.__ref.id == item.__ref.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
         return {
           ...itm,
           ...item,
-          __ref: { ...itm.__ref, ...item.__ref, isItem: true },
+          __ref: { ...itm.__ref, ...item.__ref }, //make sure that isFolder and isItem must be there on __ref
         };
       }
       return itm;
     });
-
     if (!item.__ref.folderId) {
       this.rootOrders.push(item.__ref.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
@@ -182,11 +179,9 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
   }
-
-  public deleteItem(id: TId) {
+  public delete(id: TId) {
     const item = this.items.find((i) => i.__ref.id == id);
-
-    console.log(id, item);
+    // console.log(id, item);
     if (!item) return;
     this.items = this.items.filter((i) => i.__ref.id != id);
     if (!item.__ref.folderId) {
