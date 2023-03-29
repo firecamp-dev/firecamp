@@ -13,6 +13,7 @@ import {
   TTableApi,
   Dropdown,
   ProgressBar,
+  DropdownV2,
 } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
@@ -101,7 +102,7 @@ const WorkspaceManagement: FC<IModal> = ({
         <Container className="with-divider">
           <Container.Body className="flex flex-col">
             <SecondaryTab
-              className="flex items-center p-4 w-full pb-0"
+              className="flex items-center py-3 w-full"
               list={tabs}
               activeTab={activeTab}
               onSelect={(tabId: ETabTypes) => setActiveTab(tabId)}
@@ -185,35 +186,77 @@ const EditInfoTab: FC<any> = ({
 };
 
 const columns = [
-  { id: 'index', name: 'No.', key: 'index', width: '30px' },
-  { id: 'name', name: 'Name', key: 'name', width: '250px' },
-  { id: 'email', name: 'Email', key: 'email', width: '300px' },
+  { id: 'index', name: 'No.', key: 'index', width: '20px' },
+  { id: 'name', name: 'Name', key: 'name', width: '100px' },
+  {
+    id: 'email',
+    name: 'Email',
+    key: 'email',
+    resizeWithContainer: true,
+    width: '180px',
+  },
   { id: 'role', name: 'Role', key: 'role', width: '50px' },
-  { id: 'action', name: '', key: '', width: '50px' },
+  { id: 'action', name: '', key: '', width: '20px' },
 ];
 
+const RoleOptions = [
+  {
+    id: 'RoleHeader',
+    name: 'SELECT ROLE',
+    disabled: true,
+    headerList: [
+      {
+        id: EUserRolesWorkspace.Owner,
+        name: 'Owner',
+      },
+      {
+        id: EUserRolesWorkspace.Admin,
+        name: 'Admin',
+      },
+      {
+        id: EUserRolesWorkspace.Collaborator,
+        name: 'Collaborator',
+      },
+    ],
+  },
+];
 const MembersTab = () => {
   const [isRequesting, setIsRequesting] = useState(false);
   const workspace = useWorkspaceStore.getState().workspace;
   const tableApi = useRef<TTableApi>(null);
 
   useEffect(() => {
-    setIsRequesting(true);
-    Rest.workspace
-      .getMembers(workspace.__ref.id)
-      .then(({ data }) => {
-        const members = data.members?.map((m) => {
-          return {
-            id: m.__ref.id,
-            name: m.name || m.username,
-            email: m.email,
-            role: m.w_relation.role,
-          };
-        });
-        tableApi.current.initialize(members);
-      })
-      .catch(console.log)
-      .finally(() => setIsRequesting(false));
+    // setIsRequesting(true);
+    // Rest.workspace
+    //   .getMembers(workspace.__ref.id)
+    //   .then(({ data }) => {
+    //     const members = data.members?.map((m, i) => {
+    //       return {
+    //         id: m.__ref?.id ?? i,
+    //         name: m.name || m.username,
+    //         email: m.email,
+    //         role: m.w_relation.role,
+    //       };
+    //     });
+    //     tableApi.current.initialize(members);
+    //   })
+    //   .catch(console.log)
+    //   .finally(() => setIsRequesting(false));
+
+    tableApi.current.initialize([
+      {
+        email: 'dnishchit@gmail.com',
+        id: 'OQDf0vmSCk-gTs39sQ6by',
+        name: 'nishchit14',
+        role: 1,
+      },
+      {
+        email: 'dnishchit1@gmail.com',
+        id: 'OQDf0vmSCk-gTs39sQ6by1',
+        name: 'nishchit141',
+        role: 2,
+      },
+    ]);
   }, []);
 
   const onRemoveMember = (row) => {
@@ -228,11 +271,14 @@ const MembersTab = () => {
   };
 
   const onChangeRole = (row) => {
+    const sureToAssignRole = confirm(
+      `Are you sure you want to give  ${row.name} ${row.role.name} access?`
+    );
+
     // TODO: call API
     // Rest.workspace.
-
-    // console.log(row, "...")
-    tableApi.current.setRow(row);
+    if (sureToAssignRole)
+      tableApi.current.setRow({ ...row, role: row.role.id });
   };
 
   const renderCell = (column, cellValue, rowIndex, row, tableApi, onChange) => {
@@ -251,14 +297,10 @@ const MembersTab = () => {
       case 'role':
         return (
           <div style={{ padding: 5 }}>
-            {row.role == 1 ? (
-              'Owner'
-            ) : (
-              <RoleDD
-                role={row.role}
-                onSelect={(role) => onChangeRole({ ...row, role })}
-              />
-            )}
+            <RoleDD
+              role={row.role}
+              onSelect={(role) => onChangeRole({ ...row, role })}
+            />
           </div>
         );
         break;
@@ -280,66 +322,60 @@ const MembersTab = () => {
 
   if (isRequesting) <ProgressBar active={isRequesting} />;
   return (
-    <div className="p-6  flex-1 flex flex-col">
-      <PrimitiveTable
-        columns={columns}
-        rows={[]}
-        showDefaultEmptyRows={false}
-        renderColumn={(c) => c.name}
-        renderCell={renderCell}
-        onChange={console.log}
-        onMount={(api) => (tableApi.current = api)}
-      />
-
-      <TabHeader>
-        <TabHeader.Left>
-          <Button
-            text={'Invite Members'}
-            onClick={() => platformContext.app.modals.openInviteMembers()}
-            primary
-            sm
-          />
-        </TabHeader.Left>
-      </TabHeader>
-    </div>
+    <Container className="gap-2">
+      <Container.Body className='pt-2'>
+        <PrimitiveTable
+          classes={{ table: '!m-0' }}
+          columns={columns}
+          rows={[]}
+          showDefaultEmptyRows={false}
+          renderColumn={(c) => c.name}
+          renderCell={renderCell}
+          onChange={console.log}
+          onMount={(api) => (tableApi.current = api)}
+        />
+      </Container.Body>
+      <Container.Footer>
+        <Button
+          text={'Invite new member'}
+          onClick={() => platformContext.app.modals.openInviteMembers()}
+          className="ml-auto"
+          primary
+          sm
+        />
+      </Container.Footer>
+    </Container>
   );
 };
 
 const RoleDD: FC<{
-  role: EUserRolesWorkspace;
-  onSelect: (role: EUserRolesWorkspace) => void;
+  role: number;
+  onSelect: (role: { name: string; id: number }) => void;
 }> = ({ role, onSelect }) => {
-  const options = [
-    {
-      header: 'select role',
-      list: [{ name: 'Admin' }, { name: 'Collaborator' }],
-    },
-  ];
+  const _role = RoleOptions[0].headerList.find((r) => r.id == role);
 
-  const _onSelect = (option, e) => {
-    onSelect(
-      option.name == 'Admin'
-        ? EUserRolesWorkspace.Admin
-        : EUserRolesWorkspace.Collaborator
-    );
-  };
   return (
-    <Dropdown>
-      <Dropdown.Handler>
+    <DropdownV2
+      handleRenderer={() => (
         <Button
-          text={role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator'}
-          className="ml-2"
-          transparent
+          text={_role.name}
+          className="hover:!bg-focus1 ml-2"
           withCaret
+          transparent
           ghost
           sm
         />
-      </Dropdown.Handler>
-      <Dropdown.Options
-        options={options}
-        selected={role == EUserRolesWorkspace.Owner ? 'Admin' : 'Collaborator'}
-        onSelect={_onSelect}
-      />
-    </Dropdown>
+      )}
+      disabled={role === EUserRolesWorkspace.Owner}
+      classes={{
+        options: 'w-36 bg-popoverBackground z-[1000]',
+        header:
+          '!pb-1 !pt-3 !px-5 !text-xs text-activityBarInactiveForeground font-medium relative font-sans leading-3',
+        headerListItem:
+          'py-1 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-4 focus-visible:!shadow-none',
+      }}
+      options={RoleOptions}
+      onSelect={onSelect}
+    />
   );
 };

@@ -1935,14 +1935,14 @@ video {
 .\!pl-2 {
 	padding-left: 0.5rem !important;
 }
+.pl-1 {
+	padding-left: 0.25rem;
+}
 .\!pb-2 {
 	padding-bottom: 0.5rem !important;
 }
 .\!pt-\[0\.2rem\] {
 	padding-top: 0.2rem !important;
-}
-.pl-1 {
-	padding-left: 0.25rem;
 }
 .pr-2 {
 	padding-right: 0.5rem;
@@ -2247,6 +2247,10 @@ video {
 }
 .opacity-60 {
 	opacity: 0.6;
+}
+.shadow {
+	--tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .\!shadow-popoverBoxshadow {
 	--tw-shadow: var(--popoverBoxshadow) !important;

@@ -199,7 +199,7 @@ const Table: FC<ITable<any>> = ({
           ...st,
           rows: {
             ...st.rows,
-            [row.id]: { ...defaultRow, id: row.id },
+            [row.id]: { ...st.rows[row.id], ...row },
           },
         };
         _onChangeTable(state);
