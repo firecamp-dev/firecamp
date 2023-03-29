@@ -67,8 +67,6 @@ const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               id: m.__ref.id,
               name: m.name || m.username || m.email,
               email: m.email,
-              className:
-                ' px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
             };
           });
           setOrgMembers(members);

@@ -22,14 +22,10 @@ const RoleOptions = [
   {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
-    className:
-      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
   },
   {
     id: EUserRolesWorkspace.Collaborator,
     name: 'Collaborator',
-    className:
-      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
   },
 ];
 
@@ -144,8 +140,10 @@ const RoleDD: FC<{
               sm
             />
           )}
-          displayDefaultOptionClassName={2}
-          optionContainerClassName={'w-36 bg-popoverBackground z-[1000]'}
+          classes={{
+            options:'w-36 bg-popoverBackground z-[1000]',
+            item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+          }}
           options={RoleOptions}
           onSelect={_onSelect}
         />

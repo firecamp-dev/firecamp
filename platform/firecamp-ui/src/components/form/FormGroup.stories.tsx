@@ -36,7 +36,6 @@ const DropdownElement = () => {
 
   return (
     <DropDownV2
-      displayDefaultOptionClassName={1}
       handleRenderer={() => (
         <Button
           id={'button'}
@@ -68,7 +67,6 @@ const DropdownElement = () => {
         },
       ]}
       onSelect={(value) => setSelected(value.name)}
-      optionContainerClassName={'ml-2'}
       showOptionArrow={true}
     />
   );

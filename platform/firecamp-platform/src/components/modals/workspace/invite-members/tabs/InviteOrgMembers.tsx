@@ -15,15 +15,11 @@ import { useWorkspaceStore } from '../../../../../store/workspace';
 const RoleOptions = [
   {
     id: EUserRolesWorkspace.Admin,
-    name: 'Admin',
-    className:
-      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+    name: 'Admin',  
   },
   {
     id: EUserRolesWorkspace.Collaborator,
     name: 'Collaborator',
-    className:
-      'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
   },
 ];
 
@@ -75,11 +71,11 @@ const InviteOrgMembers: FC<IProps> = ({
                 <ProgressBar className="top-auto" active={isFetchingMembers} />
               </div>
             )}
-            displayDefaultOptionClassName={2}
-            className="block"
-            optionContainerClassName={
-              'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
-            }
+            classes={{
+              trigger: 'block',
+              options: 'w-[32rem] bg-popoverBackground z-[1000] -mt-1',
+              item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+            }}
             options={members}
             onSelect={(m) => onChange({ ...member, ...m })}
           />
@@ -99,12 +95,12 @@ const InviteOrgMembers: FC<IProps> = ({
                 md
               />
             )}
-            displayDefaultOptionClassName={2}
-            optionContainerClassName={
-              'w-[32rem] bg-popoverBackground z-[1000] -mt-1'
-            }
             options={RoleOptions}
-            className="block"
+            classes={{
+              trigger: 'block',
+              options: 'w-[32rem] bg-popoverBackground z-[1000] -mt-1',
+              item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none'
+            }}
             onSelect={({ name, id }) => onChange({ ...member, role: id })}
           />
         </FormGroup>
@@ -112,7 +108,7 @@ const InviteOrgMembers: FC<IProps> = ({
       </Container.Body>
       <Container.Footer className="flex items-center">
         <a
-          className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2"
+          className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
           target="_blank"
           href="#"
         >
