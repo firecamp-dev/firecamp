@@ -191,7 +191,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         state.openMessageInPlayground(res.__ref.id);
       });
   },
-  
+
   onAddItem: (item: IWebSocketMessage) => {
     const state = get();
     const { tdpInstance } = state.collection;
@@ -226,9 +226,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   },
   onUpdateItem: (item) => {
     const state = get();
-    const { tdpInstance } = state.collection;
     if (!item.__ref?.id) return;
-    tdpInstance?.update(item);
+    state.collection.tdpInstance?.updateItem(item);
     const items = state.collection.items.map((i) => {
       if (item.__ref.id == i.__ref.id) {
         return { ...i, ...item };
@@ -242,6 +241,21 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         __manualUpdates: ++s.collection.__manualUpdates,
       },
     }));
+
+    const {
+      playgrounds,
+      runtime: { activePlayground },
+      changePlaygroundTab,
+    } = state;
+    const message = playgrounds[activePlayground]?.message;
+    if (message?.__ref.id == item.__ref.id) {
+      changePlaygroundTab(activePlayground, {
+        __meta: {
+          isSaved: true,
+          hasChange: false,
+        },
+      });
+    }
   },
   deleteItem: (id: TId) => {
     const {
@@ -323,7 +337,6 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       };
     });
   },
-
   deleteFolder: (id: TId) => {
     const {
       context,
@@ -338,7 +351,6 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       onDeleteFolder(id);
     });
   },
-
   onDeleteFolder: (id: TId) => {
     set((s) => {
       const folders = s.collection.folders.filter((f) => f.__ref.id != id);
