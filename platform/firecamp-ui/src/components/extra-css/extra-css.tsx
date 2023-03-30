@@ -5,7 +5,7 @@ const ExtraCss = () => {
   return (
     <div
       className={`
-       theme-light
+       theme-light animate-slideUpAndFade
        w-2 w-5 w-6 w-9 w-14 w-56 w-60 w-96 w-[32rem] !w-auto !w-full 
        h-5 h-6 !h-6 h-8 h-9 h-10 h-48 h-80 !h-80 !h-fit
        !min-w-full max-w-sm

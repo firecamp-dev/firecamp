@@ -1308,6 +1308,9 @@ video {
 .w-36 {
 	width: 9rem;
 }
+.w-\[200px\] {
+	width: 200px;
+}
 .w-2 {
 	width: 0.5rem;
 }
@@ -1325,9 +1328,6 @@ video {
 }
 .w-40 {
 	width: 10rem;
-}
-.w-\[200px\] {
-	width: 200px;
 }
 .w-32 {
 	width: 8rem;
@@ -1377,6 +1377,21 @@ video {
 }
 .transform-none {
 	transform: none;
+}
+@keyframes slideUpAndFade {
+
+	from {
+		opacity: 0;
+		transform: translateY(2px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+.animate-slideUpAndFade {
+	animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .cursor-pointer {
 	cursor: pointer;
@@ -1929,6 +1944,9 @@ video {
 .pr-1 {
 	padding-right: 0.25rem;
 }
+.\!pb-2 {
+	padding-bottom: 0.5rem !important;
+}
 .pl-3 {
 	padding-left: 0.75rem;
 }
@@ -1937,9 +1955,6 @@ video {
 }
 .pl-1 {
 	padding-left: 0.25rem;
-}
-.\!pb-2 {
-	padding-bottom: 0.5rem !important;
 }
 .\!pt-\[0\.2rem\] {
 	padding-top: 0.2rem !important;
@@ -3298,4 +3313,12 @@ body .ace_editor .ace_scrollbar{
   height: 100%;
   align-items: center;
   flex-direction: column;
+}
+
+.DropdownMenuContent[data-side='bottom']{
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+
+  animation-name: slideUpAndFade;
 }

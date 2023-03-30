@@ -67,6 +67,7 @@ const DropDownV2 = ({
               <DropdownMenu.Portal>
                 <DropdownMenu.SubContent
                   className={cx(
+                    'DropdownMenuContent',
                     { [DEFAULT_STYLES.roundedContainer]: classes.rounded },
                     { [DEFAULT_STYLES.squaredContainer]: !classes.rounded },
                     { [DEFAULT_STYLES.shadowContainer]: classes.shadow },
@@ -139,6 +140,7 @@ const DropDownV2 = ({
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           className={cx(
+            'DropdownMenuContent',
             { [DEFAULT_STYLES.roundedContainer]: classes.rounded },
             { [DEFAULT_STYLES.squaredContainer]: !classes.rounded },
             { [DEFAULT_STYLES.shadowContainer]: classes.shadow },
