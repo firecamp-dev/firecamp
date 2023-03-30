@@ -66,7 +66,7 @@ export const EPlatformModalDefaultProps = {
   // workspace
   [EPlatformModalTypes.WorkspaceManagement]: {
     height: '650px',
-    width: '500px',
+    width: '550px',
   },
   [EPlatformModalTypes.InviteMembers]: { height: '700px' },
   [EPlatformModalTypes.SwitchWorkspace]: {

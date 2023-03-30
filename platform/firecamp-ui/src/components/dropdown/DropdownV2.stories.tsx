@@ -188,6 +188,81 @@ export const BodyTabExample = () => {
     />
   );
 };
+export const CreateMenuExample = () => {
+  const [selected, setSelected] = useState('');
+
+  return (
+    <DropDownV2
+      handleRenderer={() => (
+        <Button
+          text={selected || 'Create'}
+          className="font-bold hover:!bg-focus1"
+          withCaret
+          transparent
+          ghost
+          xs
+          primary
+        />
+      )}
+      options={
+        [
+          {
+            id: 'CreateNewHeader',
+            name: 'Create New',
+            disabled: true,
+            headerList: [
+              {
+                id: 'request',
+                name: 'Request',
+              },
+              {
+                id: 'collection',
+                name: 'Collection',
+              },
+              {
+                id: 'environment',
+                name: 'Environment',
+              },
+              {
+                id: 'importCollection',
+                name: 'Import Collection',
+                showSeparator: true,
+              },
+            ],
+          },
+          {
+            id: 'CreateNewByAdminHeader',
+            name: 'Create New (By Admin)',
+            disabled: true,
+            headerList: [
+              {
+                id: 'workspace',
+                name: 'Workspace',
+              },
+              {
+                id: 'organization',
+                name: 'Organization',
+              },
+              {
+                id: 'inviteMembers',
+                name: 'Invite Members',
+              },
+            ],
+          },
+        ] as IOptionsV2[]
+      }
+      onSelect={(value: any) => setSelected(value.name)}
+      classes={{
+        rounded: false,
+        options: 'w-[200px] bg-popoverBackground !pb-2',
+        header:
+          '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans ',
+        headerListItem:
+          '!px-5 text-sm uppercase hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+      }}
+    />
+  );
+};
 
 export const EmitterBodyExample = () => {
   const [selected, setSelected] = useState('Text');
