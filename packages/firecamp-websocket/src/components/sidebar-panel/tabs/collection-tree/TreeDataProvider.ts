@@ -122,8 +122,18 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     };
   }
 
-  public async onRenameItem(item: TreeItem<any>, name: string): Promise<void> {
-    //todo: implement
+  public async onRenameItem(
+    { data: item }: TreeItem<any>,
+    name: string
+  ): Promise<void> {
+    this.items = this.items.map((itm: TCItem) => {
+      if (itm.__ref.id == item.__ref.id) {
+        const i: TCItem = { ...itm, name };
+        return i;
+      }
+      return itm;
+    });
+    return Promise.resolve();
   }
 
   public init(folders: TFolderItem[], items: TItem[], rootOrders: string[]) {
@@ -161,7 +171,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
   }
 
   private update(item: TCItem, isFolder: boolean = false) {
-    const items = this.items.map((itm: TCItem) => {
+    this.items = this.items.map((itm: TCItem) => {
       if (itm.__ref.id == item.__ref.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
         //@ts-ignore
@@ -180,7 +190,6 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       }
       return itm;
     });
-    this.items = [...items];
 
     //TODO: update is not reflecting in tree ui, need to fix it
     if (!item.__ref.folderId) {

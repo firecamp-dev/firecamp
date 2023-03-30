@@ -59,7 +59,6 @@ const GlobalCreateDD = ({}) => {
         break;
       case EMenuOptions.Workspace:
         platformContext.platform.createWorkspacePrompt();
-        // platformContext.app.modals.openCreateWorkspace();
         break;
       case EMenuOptions.Organization:
         platformContext.platform.createOrganizationPrompt();

@@ -34,11 +34,6 @@ const modalService = {
   },
 
   // Workspace
-  openCreateWorkspace: () => {
-    const { isGuest } = useUserStore.getState();
-    if (isGuest) return modalService.openSignIn();
-    open(EPlatformModalTypes.CreateWorkspace);
-  },
   openWorkspaceManagement: () => {
     const { isGuest } = useUserStore.getState();
     if (isGuest) return modalService.openSignIn();

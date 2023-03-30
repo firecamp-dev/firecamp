@@ -7,11 +7,9 @@ import {
   Button,
   Modal,
   IModal,
-  Alert,
   SecondaryTab,
   PrimitiveTable,
   TTableApi,
-  Dropdown,
   ProgressBar,
   DropdownV2,
 } from '@firecamp/ui';
@@ -43,8 +41,7 @@ const WorkspaceManagement: FC<IModal> = ({
     { name: 'Edit', id: ETabTypes.Edit },
     { name: 'Members', id: ETabTypes.Members },
   ];
-
-  let [activeTab, setActiveTab] = useState<ETabTypes>(ETabTypes.Edit);
+  const [activeTab, setActiveTab] = useState<ETabTypes>(ETabTypes.Edit);
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -61,11 +58,6 @@ const WorkspaceManagement: FC<IModal> = ({
     }
     const _wrs = { name, description: wrs?.description?.trim() };
 
-    setIsRequesting(true);
-
-    setTimeout(() => {
-      setIsRequesting(false);
-    }, 5000);
     // TODO: workspace  update API call
   };
 
@@ -226,59 +218,93 @@ const MembersTab = () => {
   const tableApi = useRef<TTableApi>(null);
 
   useEffect(() => {
-    // setIsRequesting(true);
-    // Rest.workspace
-    //   .getMembers(workspace.__ref.id)
-    //   .then(({ data }) => {
-    //     const members = data.members?.map((m, i) => {
-    //       return {
-    //         id: m.__ref?.id ?? i,
-    //         name: m.name || m.username,
-    //         email: m.email,
-    //         role: m.w_relation.role,
-    //       };
-    //     });
-    //     tableApi.current.initialize(members);
-    //   })
-    //   .catch(console.log)
-    //   .finally(() => setIsRequesting(false));
-
-    tableApi.current.initialize([
-      {
-        email: 'dnishchit@gmail.com',
-        id: 'OQDf0vmSCk-gTs39sQ6by',
-        name: 'nishchit14',
-        role: 1,
-      },
-      {
-        email: 'dnishchit1@gmail.com',
-        id: 'OQDf0vmSCk-gTs39sQ6by1',
-        name: 'nishchit141',
-        role: 2,
-      },
-    ]);
+    setIsRequesting(true);
+    Rest.workspace
+      .getMembers(workspace.__ref.id)
+      .then((res) => res.data)
+      .then(({ members = [], invited }) => {
+        members.map((m, i) => {
+          return {
+            id: m.__ref?.id ?? i,
+            name: m.name || m.username,
+            email: m.email,
+            role: m.role,
+          };
+        });
+        tableApi.current.initialize([
+          ...members,
+          {
+            email: 'charmi@jsbot.io',
+            id: 'OQDf0vmSCk-gTs39sQ6by',
+            name: 'Charmi',
+            role: 1,
+          },
+          {
+            email: 'dnishchit1@gmail.com',
+            id: 'OQDf0vmSCk-gTs39sQ6by1',
+            name: 'nishchit14',
+            role: 2,
+          },
+        ]);
+      })
+      .catch(console.log)
+      .finally(() => setIsRequesting(false));
   }, []);
 
   const onRemoveMember = (row) => {
-    const sureToRemove = confirm(
-      'Are you sure to remove this user from the workspace?'
-    );
-    if (sureToRemove) {
-      // TODO: add remove api
-      tableApi.current.removeRow(row.id);
-    }
-    console.log(row);
+    platformContext.window.confirm({
+      title: `You're sure to remove ${row.role.name} from the workspace?`,
+      message: '',
+      texts: {
+        btnCancel: 'Cancel',
+        btnConfirm: 'Yes, remove the member.',
+      },
+      onConfirm: () => {
+        Rest.workspace
+          .removeMember(workspace.__ref.id, row.id)
+          .then(() => {
+            tableApi.current.removeRow(row.id);
+            platformContext.app.notify.success(
+              'The member has been removed successfully.'
+            );
+          })
+          .catch((e) => {
+            platformContext.app.notify.alert(
+              e.response?.data.message || e.message
+            );
+          });
+      },
+      onCancel: () => {},
+      onClose: () => {},
+    });
   };
 
   const onChangeRole = (row) => {
-    const sureToAssignRole = confirm(
-      `Are you sure you want to give  ${row.name} ${row.role.name} access?`
-    );
-
-    // TODO: call API
-    // Rest.workspace.
-    if (sureToAssignRole)
-      tableApi.current.setRow({ ...row, role: row.role.id });
+    platformContext.window.confirm({
+      title: `Please conform, You're assigning  ${row.role.name} role to ${row.name}, right?`,
+      message: '',
+      texts: {
+        btnCancel: 'Cancel',
+        btnConfirm: 'Yes, change the role.',
+      },
+      onConfirm: () => {
+        Rest.workspace
+          .changeMemberRole(workspace.__ref.id, row.id, row.role)
+          .then(() => {
+            tableApi.current.setRow({ ...row, role: row.role.id });
+            platformContext.app.notify.success(
+              "The member's role has been changed successfully."
+            );
+          })
+          .catch((e) => {
+            platformContext.app.notify.alert(
+              e.response?.data.message || e.message
+            );
+          });
+      },
+      onCancel: () => {},
+      onClose: () => {},
+    });
   };
 
   const renderCell = (column, cellValue, rowIndex, row, tableApi, onChange) => {
@@ -288,15 +314,15 @@ const MembersTab = () => {
         break;
       case 'name':
         // return value;
-        return <div style={{ padding: 5 }}>{cellValue}</div>;
+        return <div style={{ padding: 4 }}>{cellValue}</div>;
         break;
       case 'email':
         // return value;
-        return <div style={{ padding: 5 }}>{cellValue}</div>;
+        return <div style={{ padding: 4 }}>{cellValue}</div>;
         break;
       case 'role':
         return (
-          <div style={{ padding: 5 }}>
+          <div style={{ padding: 4 }}>
             <RoleDD
               role={row.role}
               onSelect={(role) => onChangeRole({ ...row, role })}
@@ -323,7 +349,7 @@ const MembersTab = () => {
   if (isRequesting) <ProgressBar active={isRequesting} />;
   return (
     <Container className="gap-2">
-      <Container.Body className='pt-2'>
+      <Container.Body className="pt-2">
         <PrimitiveTable
           classes={{ table: '!m-0' }}
           columns={columns}
