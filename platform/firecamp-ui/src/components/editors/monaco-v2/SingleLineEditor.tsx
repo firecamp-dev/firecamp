@@ -340,6 +340,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     fixedOverflowWidgets: true,
 
     suggestOnTriggerCharacters: false,
+    quickSuggestions: false, 
     tabCompletion: 'off',
     ...monacoOptions,
   };

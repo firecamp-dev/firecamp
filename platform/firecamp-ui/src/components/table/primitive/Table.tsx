@@ -29,7 +29,7 @@ const prepareTableInitState = (
   if (_array.isEmpty(rows)) {
     const row1Id = nanoid();
     const row2Id = nanoid();
-    _orders.push(row1Id, row2Id);
+    if (showDefaultEmptyRows) _orders.push(row1Id, row2Id);
     _rows = showDefaultEmptyRows
       ? {
           [row1Id]: { id: row1Id, ...defaultRow },
@@ -90,7 +90,7 @@ const Table: FC<ITable<any>> = ({
     if (!containerDivRef.current) return () => {};
     const resizeObserver = new ResizeObserver(() => {
       if (containerDivRef?.current)
-          setContainerWidth(containerDivRef.current?.clientWidth);
+        setContainerWidth(containerDivRef.current?.clientWidth);
     });
     resizeObserver.observe(containerDivRef.current);
     return () => {
@@ -199,7 +199,7 @@ const Table: FC<ITable<any>> = ({
           ...st,
           rows: {
             ...st.rows,
-            [row.id]: { ...defaultRow, id: row.id },
+            [row.id]: { ...st.rows[row.id], ...row },
           },
         };
         _onChangeTable(state);

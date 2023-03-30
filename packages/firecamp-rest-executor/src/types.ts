@@ -1,14 +1,12 @@
-import { IRest, IRestResponse, TRuntimeVariable } from '@firecamp/types';
-
-export type TVariableGroup = {
-  globals: TRuntimeVariable[];
-  environment: TRuntimeVariable[];
-  collectionVariables: TRuntimeVariable[];
-};
+import {
+  IRest,
+  IRestResponse,
+  IVariableGroup,
+} from '@firecamp/types';
 
 export type TRestExecutionResponse = {
   response: IRestResponse;
-  variables: TVariableGroup;
+  variables: IVariableGroup;
   testResult?: any;
   scriptErrors?: any[];
 };
@@ -21,7 +19,7 @@ export interface IRestExecutor {
    */
   send(
     request: IRest,
-    variables: TVariableGroup
+    variables: IVariableGroup
   ): Promise<TRestExecutionResponse>;
 
   /**  cancel the request */

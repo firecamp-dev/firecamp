@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import Button from '../buttons/Button';
+import DropDownV2 from '../dropdown/DropdownV2';
 import Input from '../input/Input';
 import FormGroup from './FormGroup';
 import { IFormGroup } from './interfaces/FormGroup.interfaces';
@@ -20,4 +23,56 @@ export const InputDemo = Template.bind({});
 InputDemo.args = {
   label: 'Label',
   children: [<Input placeholder="Sample Input" />],
+};
+
+export const FromGroupCheckBoxDemo = Template.bind({});
+FromGroupCheckBoxDemo.args = {
+  label: 'Label',
+  children: [<Input placeholder="Sample Input" />],
+};
+
+const DropdownElement = () => {
+  const [selected, setSelected] = useState('API style');
+
+  return (
+    <DropDownV2
+      handleRenderer={() => (
+        <Button
+          id={'button'}
+          text={selected}
+          transparent
+          sm
+          className="rounded p-2"
+          uppercase={true}
+          withCaret={true}
+          fullWidth
+        />
+      )}
+      options={[
+        {
+          id: '1',
+          name: 'Rest',
+        },
+        {
+          id: '2',
+          name: 'GraphQL',
+        },
+        {
+          id: '3',
+          name: 'Socket.io',
+        },
+        {
+          id: '4',
+          name: 'Websocket',
+        },
+      ]}
+      onSelect={(value) => setSelected(value.name)}
+      showOptionArrow={true}
+    />
+  );
+};
+export const FromGroupDropdownDemo = Template.bind({});
+FromGroupDropdownDemo.args = {
+  label: 'Label',
+  children: <DropdownElement />,
 };

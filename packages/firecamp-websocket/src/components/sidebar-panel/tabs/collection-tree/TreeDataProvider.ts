@@ -72,6 +72,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       __ref: {
         id: item.__ref.id,
         isFolder: item.__ref.isFolder,
+        isItem: item.__ref.isItem,
         collectionId: item.__ref?.collectionId,
       },
     };
@@ -121,8 +122,18 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     };
   }
 
-  public async onRenameItem(item: TreeItem<any>, name: string): Promise<void> {
-    //todo: implement
+  public async onRenameItem(
+    { data: item }: TreeItem<any>,
+    name: string
+  ): Promise<void> {
+    this.items = this.items.map((itm: TCItem) => {
+      if (itm.__ref.id == item.__ref.id) {
+        const i: TCItem = { ...itm, name };
+        return i;
+      }
+      return itm;
+    });
+    return Promise.resolve();
   }
 
   public init(folders: TFolderItem[], items: TItem[], rootOrders: string[]) {
@@ -136,55 +147,66 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
     // this.rootOrders = this.items
     //   .filter((i) => !i.__ref.folderId)
     //   .map((i) => i.__ref.id);
+    console.log(this.items, 'initial time this.item');
     this.rootOrders = rootOrders;
   }
 
   // extra methods of provider
+  private add(item: TFolderItem | TItem) {
+    this.items.push(item);
+    if (!item.__ref.folderId) {
+      this.rootOrders.push(item.__ref.id);
+      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
+    } else {
+      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
+    }
+  }
   public addFolder(item: TFolderItem) {
     this.items.push({ ...item, __ref: { ...item.__ref, isFolder: true } });
-    if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
-    }
+    this.add(item);
   }
-
   public addItem(item: TItem) {
     this.items.push({ ...item, __ref: { ...item.__ref, isItem: true } });
-    if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
-    }
+    this.add(item);
   }
 
-  public updateItem(item: TItem) {
-    this.items = this.items.map((itm: TItem) => {
+  private update(item: TCItem, isFolder: boolean = false) {
+    this.items = this.items.map((itm: TCItem) => {
       if (itm.__ref.id == item.__ref.id) {
         // if only name is updated then even this will work, or full payload. just merging updated item with previous item
-        return {
+        //@ts-ignore
+        const i: TCItem = {
           ...itm,
           ...item,
-          __ref: { ...itm.__ref, ...item.__ref, isItem: true },
+          __ref: {
+            ...itm.__ref,
+            ...item.__ref,
+          },
         };
+        if (isFolder) i.__ref.isFolder = true;
+        else i.__ref.isItem = true;
+        // console.log(i, 555558585858);
+        return i;
       }
       return itm;
     });
 
+    //TODO: update is not reflecting in tree ui, need to fix it
     if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
       this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
     }
   }
-
-  public deleteItem(id: TId) {
+  public updateFolder(item: TFolderItem) {
+    this.update(item, true);
+  }
+  public updateItem(item: TItem) {
+    this.update(item, false);
+  }
+  public delete(id: TId) {
     const item = this.items.find((i) => i.__ref.id == id);
-
-    console.log(id, item);
+    // console.log(id, item);
     if (!item) return;
     this.items = this.items.filter((i) => i.__ref.id != id);
     if (!item.__ref.folderId) {

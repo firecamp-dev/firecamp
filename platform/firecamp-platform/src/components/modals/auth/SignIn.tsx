@@ -15,7 +15,7 @@ const SignIn: FC<IModal> = () => {
       <Modal.Body>
         <img className="mx-auto w-12 mb-6" src={'img/fire-icon.png'} />
         <div className="text-xl mb-6 w-full text-center font-semibold">
-          Sign in to firecamp
+          Sign in to Firecamp
         </div>
         <div className="">
           <GithubGoogleAuth />
@@ -33,12 +33,12 @@ const SignIn: FC<IModal> = () => {
           <hr className="border-t border-appBorder w-full" />
           <span className="text-xs text-appForegroundInActive bg-modalBackground absolute px-1">OR</span>
         </div> */}
-          <div className="flex-col">
+        <div className="flex-col">
           <div className="text-sm mt-6 text-center">
             Not have an account?
             <a
               href="#"
-              id="signup"
+              id="sign-up"
               className="font-bold underline"
               onClick={(e) => {
                 if (e) e.preventDefault();
@@ -46,7 +46,6 @@ const SignIn: FC<IModal> = () => {
               }}
               tabIndex={1}
             >
-              {' '}
               Sign Up
             </a>
           </div>
@@ -58,9 +57,8 @@ const SignIn: FC<IModal> = () => {
               className="font-bold underline"
               target={'_blank'}
             >
-              {' '}
               Term of Service
-            </a>{' '}
+            </a>
             and
             <a
               href="https://firecamp.io/legals/privacy-policy/"
@@ -68,7 +66,6 @@ const SignIn: FC<IModal> = () => {
               className="font-bold underline"
               target={'_blank'}
             >
-              {' '}
               Privacy Policy
             </a>
             .

@@ -6,7 +6,7 @@ import {
   EHttpMethod,
   IRequestFolder,
   IRequestItem,
-  TRuntimeVariable,
+  IVariableGroup,
 } from '@firecamp/types';
 import * as executor from '@firecamp/agent-manager';
 import { platformEmitter } from '../platform-emitter';
@@ -283,8 +283,10 @@ const request: IPlatformRequestService = {
   updateRequestFolder: async (folder, tabId) => {
     return folder;
   },
-  deleteRequestFolder: async (folderId, requestId, tabId) => {
-    return true;
+  deleteRequestFolder: async (requestId, folderId, tabId) => {
+    return Rest.request
+      .deleteFolder(requestId, folderId)
+      .then((res) => res.data);
   },
 
   createRequestItemPrompt: async (item, collection, tabId) => {
@@ -325,21 +327,19 @@ const request: IPlatformRequestService = {
       .then((res) => res.data);
   },
   updateRequestItem: async (item, tabId) => {
-    return item as IRequestItem<any, any>;
+    return Rest.request
+      .updateItem(item.__ref.requestId, item.__ref.id, item)
+      .then((res) => res.data);
   },
-  deleteRequestItem: async (itemId, requestId, tabId) => {
-    return true;
+  deleteRequestItem: async (requestId, itemId, tabId) => {
+    return Rest.request.deleteItem(requestId, itemId).then((res) => res.data);
   },
 
   // execute request
   execute: async (request: IRest) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
     const { globalEnv, activeEnv } = useEnvStore.getState();
-    const variables: {
-      globals: TRuntimeVariable[];
-      environment: TRuntimeVariable[];
-      collectionVariables: TRuntimeVariable[];
-    } = {
+    const variables: IVariableGroup = {
       globals: globalEnv.variables,
       environment: activeEnv.variables,
       collectionVariables: [],

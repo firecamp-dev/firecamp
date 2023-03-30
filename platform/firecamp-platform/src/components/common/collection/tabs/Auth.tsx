@@ -73,7 +73,7 @@ const Auth: FC<IAuthSettingUi> = ({
 
       if (Object.keys(oauth2Options).length) {
         await _getAuthHeaders
-          .getOAuth2Token(_env.applyVariables(oauth2Options, mergedVars))
+          .getOAuth2Token(_env.applyVariablesInSource<any>(mergedVars, oauth2Options))
           .then(async token => {
             console.log({ token });
 

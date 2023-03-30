@@ -656,7 +656,6 @@ video {
     --popoverBoxshadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
 
     --focus-border: #007acc;
-    --error: #f00;
 
     --modal-background: #262626;
     --modal-foreground: #9C9C9C;
@@ -725,7 +724,7 @@ video {
     --activityBar-inactiveForeground: #57606a;
     --activityBar-activeBackground: var(--focus-level-2);
     --activityBar-activeBorder: var(--app-primary);
-    --activityBar-border: #333333;
+    
     --activityBar-border: #dddddd;
     --activityBarBadge-foreground: #FFFFFF;
     --activityBarBadge-background: #09A1EDl;
@@ -749,7 +748,6 @@ video {
     
 
     --focus-border: #007acc;
-    --error: #f00;
 
     --modal-background: #f5f5f5;
     --modal-foreground: #2a2a2a;
@@ -883,6 +881,9 @@ video {
 }
 .top-12 {
 	top: 3rem;
+}
+.top-auto {
+	top: auto;
 }
 .top-3 {
 	top: 0.75rem;
@@ -1063,6 +1064,9 @@ video {
 .mb-1 {
 	margin-bottom: 0.25rem;
 }
+.mb-3 {
+	margin-bottom: 0.75rem;
+}
 .-ml-2 {
 	margin-left: -0.5rem;
 }
@@ -1104,9 +1108,6 @@ video {
 }
 .mt-5 {
 	margin-top: 1.25rem;
-}
-.mb-3 {
-	margin-bottom: 0.75rem;
 }
 .mt-4 {
 	margin-top: 1rem;
@@ -1219,6 +1220,9 @@ video {
 .\!h-6 {
 	height: 1.5rem !important;
 }
+.h-48 {
+	height: 12rem;
+}
 .h-80 {
 	height: 20rem;
 }
@@ -1304,11 +1308,17 @@ video {
 .w-36 {
 	width: 9rem;
 }
+.w-\[200px\] {
+	width: 200px;
+}
 .w-2 {
 	width: 0.5rem;
 }
 .w-14 {
 	width: 3.5rem;
+}
+.w-\[32rem\] {
+	width: 32rem;
 }
 .\!w-full {
 	width: 100% !important;
@@ -1318,9 +1328,6 @@ video {
 }
 .w-40 {
 	width: 10rem;
-}
-.w-\[200px\] {
-	width: 200px;
 }
 .w-32 {
 	width: 8rem;
@@ -1370,6 +1377,21 @@ video {
 }
 .transform-none {
 	transform: none;
+}
+@keyframes slideUpAndFade {
+
+	from {
+		opacity: 0;
+		transform: translateY(2px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+.animate-slideUpAndFade {
+	animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .cursor-pointer {
 	cursor: pointer;
@@ -1922,20 +1944,20 @@ video {
 .pr-1 {
 	padding-right: 0.25rem;
 }
+.\!pb-2 {
+	padding-bottom: 0.5rem !important;
+}
 .pl-3 {
 	padding-left: 0.75rem;
 }
 .\!pl-2 {
 	padding-left: 0.5rem !important;
 }
-.\!pb-2 {
-	padding-bottom: 0.5rem !important;
+.pl-1 {
+	padding-left: 0.25rem;
 }
 .\!pt-\[0\.2rem\] {
 	padding-top: 0.2rem !important;
-}
-.pl-1 {
-	padding-left: 0.25rem;
 }
 .pr-2 {
 	padding-right: 0.5rem;
@@ -2175,14 +2197,14 @@ video {
 .\!text-primaryColor {
 	color: var(--app-primary) !important;
 }
-.\!text-info {
-	color: var(--info) !important;
-}
 .\!text-appForegroundInActive {
 	color: var(--app-foreground-inactive) !important;
 }
 .text-link {
 	color: var(--link);
+}
+.\!text-link {
+	color: var(--link) !important;
 }
 .text-inputText {
 	color: var(--input-text);
@@ -2201,6 +2223,9 @@ video {
 }
 .text-tabForeground {
 	color: var(--tab-foreground);
+}
+.\!text-info {
+	color: var(--info) !important;
 }
 .underline {
 	text-decoration: underline;
@@ -2237,6 +2262,10 @@ video {
 }
 .opacity-60 {
 	opacity: 0.6;
+}
+.shadow {
+	--tw-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .\!shadow-popoverBoxshadow {
 	--tw-shadow: var(--popoverBoxshadow) !important;
@@ -2483,6 +2512,9 @@ video {
 .hover\:text-statusBarForegroundActive:hover {
 	color: var(--statusBar-foreground-active);
 }
+.hover\:\!text-link:hover {
+	color: var(--link) !important;
+}
 .hover\:text-appForegroundActive:hover {
 	color: var(--app-foreground-active);
 }
@@ -2494,6 +2526,9 @@ video {
 }
 .hover\:text-appForeground:hover {
 	color: var(--app-foreground);
+}
+.hover\:underline:hover {
+	text-decoration: underline;
 }
 .hover\:opacity-100:hover {
 	opacity: 1;
@@ -3278,4 +3313,12 @@ body .ace_editor .ace_scrollbar{
   height: 100%;
   align-items: center;
   flex-direction: column;
+}
+
+.DropdownMenuContent[data-side='bottom']{
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+
+  animation-name: slideUpAndFade;
 }

@@ -195,8 +195,9 @@ const Editor: FC<IEditor> = ({
       showModules: false, // disables `globalThis`, but also disables user-defined modules suggestions.
     },
     suggestOnTriggerCharacters: false,
+    quickSuggestions: false,
     tabSize: 4,
-    renderWhitespace: false, // it'll show dot for white stpace
+    renderWhitespace: false, // it'll show dot for white space
     wordBasedSuggestions: false,
     ...monacoOptions,
   };
@@ -208,7 +209,7 @@ const Editor: FC<IEditor> = ({
 
   // console.log(value, language, 'language...');
   /**
-   * @note: Editor will reset the default theme on render, 
+   * @note: Editor will reset the default theme on render,
    *        so fetch previously set theme from localStorage and set to editor
    */
   let editorTheme: string = EEditorTheme.Dark;

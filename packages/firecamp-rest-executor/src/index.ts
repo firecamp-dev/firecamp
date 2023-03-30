@@ -7,11 +7,12 @@ import {
   ERestBodyTypes,
   IRest,
   IRestResponse,
+  IVariableGroup,
 } from '@firecamp/types';
 import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 import parseBody from './helpers/body';
-import { IRestExecutor, TVariableGroup } from './types';
+import { IRestExecutor } from './types';
 import * as scriptRunner from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
@@ -134,10 +135,7 @@ export default class RestExecutor implements IRestExecutor {
     return axiosRequest;
   }
 
-  async send(
-    fcRequest: IRest,
-    variables: TVariableGroup
-  ) {
+  async send(fcRequest: IRest, variables: IVariableGroup) {
     console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
@@ -187,12 +185,8 @@ export default class RestExecutor implements IRestExecutor {
       })
       .then(({ fcRequest, variables, errors }) => {
         // apply variables to request
-        const { globals, environment, collectionVariables } = variables;
-        const gVars = _env.preparePlainVarsFromRuntimeVariables(globals);
-        const eVars = _env.preparePlainVarsFromRuntimeVariables(environment);
-        const cVars =
-          _env.preparePlainVarsFromRuntimeVariables(collectionVariables);
-        const plainVars = { ...gVars, ...eVars, ...cVars };
+        // const { globals, environment, collectionVariables } = variables;
+        const plainVars = _env.preparePlainVarsFromVariableGroup(variables);
         // console.log(variables, plainVars, 77777);
 
         /** if request body is multipart then
@@ -205,20 +199,26 @@ export default class RestExecutor implements IRestExecutor {
           //@ts-ignore ///TODO: check here to remove the type error
           body.value = body.value.map((v) => {
             const { file, ...row } = v;
-            v = _env.applyVariables(row, plainVars);
+            v = _env.applyVariablesInSource(plainVars, row);
             if (v.type == EKeyValueTableRowType.File) {
               v.file = file;
             }
             return v;
           });
-          const request = _env.applyVariables(restRequest, plainVars) as IRest;
+          const request = _env.applyVariablesInSource<any>(
+            plainVars,
+            restRequest
+          ) as IRest;
           return {
             request: { ...request, body },
             variables: variables,
             errors,
           };
         } else {
-          const request = _env.applyVariables(fcRequest, plainVars) as IRest;
+          const request = _env.applyVariablesInSource<any>(
+            plainVars,
+            fcRequest
+          ) as IRest;
           return { request, variables, errors };
         }
       })

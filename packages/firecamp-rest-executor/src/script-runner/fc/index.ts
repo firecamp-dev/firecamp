@@ -1,7 +1,7 @@
 // import Joi from '@hapi/joi';
 // import tv4 from 'tv4';
 import chai from 'chai';
-import { TRuntimeVariable } from '@firecamp/types';
+import { IVariableGroup } from '@firecamp/types';
 import { _misc, _string } from '@firecamp/utils';
 import { Request } from './request';
 import { Response } from './response';
@@ -15,7 +15,7 @@ export default class Fc implements IFc {
   environment: Variables;
   collectionVariables: Variables;
   private testManager = new Test();
-  constructor(request: any, response: any, variables: TVariables) {
+  constructor(request: any, response: any, variables: IVariableGroup) {
     const {
       globals = [],
       environment = [],
@@ -68,11 +68,6 @@ interface IFc {
   test: (testName: string, specFunction: Function) => void;
   expect: Chai.ExpectStatic;
 }
-type TVariables = {
-  globals: TRuntimeVariable[];
-  environment: TRuntimeVariable[];
-  collectionVariables: TRuntimeVariable[];
-};
 
 /** example */
 // const fc = new Fc({}, {}, [], [], [{ key: 'name', value: 'Ramanujan' }]);

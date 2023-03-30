@@ -11,6 +11,7 @@ import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { TreeDataProvider } from './tree/dataProvider';
 import treeRenderer from './tree/itemRenderer';
 import { IPromptSaveItem } from './types';
+import { itemPathFinder } from '@firecamp/utils/dist/misc';
 
 const _texts: IPromptSaveItem['texts'] = {
   btnOk: 'Create',
@@ -162,22 +163,9 @@ const PathSelector: FC<{
   const onItemSelect = (itemIds: string[], treeId: string) => {
     if (!itemIds?.length) return;
     const itemId = itemIds[0];
-    setPath(pathFinder(itemId));
+    const { path } = itemPathFinder(items, itemId);
+    setPath(path);
     onSelect(itemId);
-  };
-  const pathFinder = (itemId: string) => {
-    const findPath = (iId: string, path: string = '') => {
-      const item = items.find((i) => i.__ref.id == iId);
-      if (!item) return path;
-      const pId = item.__ref.folderId || item.__ref.collectionId;
-      const _path = path ? `${item.name}/${path}` : `${item.name}`;
-      if (!pId) {
-        return _path;
-      } else {
-        return findPath(pId, _path);
-      }
-    };
-    return findPath(itemId);
   };
 
   return (

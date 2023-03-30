@@ -21,7 +21,6 @@
     "check-integration-tests": "run-s check-integration-test:*",
     "diff-integration-tests": "mkdir -p diff && rm -rf diff/test && cp -r test diff/test && rm -rf diff/test/test-*/.git && cd diff && git init --quiet && git add -A && git commit --quiet --no-verify --allow-empty -m 'WIP' && echo '\\n\\nCommitted most recent integration test output in the \"diff\" directory. Review the changes with \"cd diff && git diff HEAD\" or your preferred git diff viewer.'",
     "watch:build": "tsc -p tsconfig.json -w",
-   
     "doc": "run-s doc:html && open-cli build/docs/index.html",
     "doc:html": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out build/docs",
     "doc:json": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --json build/docs/typedoc.json",
@@ -34,8 +33,8 @@
   },
   "dependencies": {
     "@firecamp/rest-executor": "workspace:*",
-    "@firecamp/types": "^0.1.21",
-    "@firecamp/utils": "^0.0.18"
+    "@firecamp/types": "^0.1.23",
+    "@firecamp/utils": "^0.0.20"
   },
   "devDependencies": {
     "@types/chai": "^4.3.1",

@@ -7,8 +7,6 @@ import shallow from 'zustand/shallow';
 import {
   Popover,
   Button,
- 
-  
   Checkbox,
   // SwitchButton,
 } from '@firecamp/ui';

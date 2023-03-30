@@ -77,10 +77,11 @@ const Collection = ({ openCreateFolderPrompt }) => {
     shallow
   );
   const {
-    // openPlayground,
+    openMessageInPlayground,
     registerTDP,
     unRegisterTDP,
     deleteItem,
+    deleteFolder,
     isCollectionEmpty,
   } = useStoreApi().getState() as IStore;
 
@@ -89,22 +90,29 @@ const Collection = ({ openCreateFolderPrompt }) => {
     return unRegisterTDP;
   }, []);
 
-  const openPlg = (plgId) => {
-    // get a fresh copy of state
-    // const item = items.find((i) => i.__ref.id == plgId);
-    // console.log(item, 1100099);
-    // openPlayground(plgId);
-  };
-  const deletePlg = (plgId: string) => {
+  const _deleteFolder = (id: string) => {
     context.window
       .confirm({
-        title: 'Are you sure to delete the playground?',
+        title: 'Are you sure to delete the Folder?',
         texts: {
           btnConfirm: 'Yes, delete it.',
         },
       })
-      .then((isConfirmed) => {
-        if (isConfirmed) deleteItem(plgId);
+      .then((yes) => {
+        if (yes) deleteFolder(id);
+      });
+  };
+
+  const deleteMsg = (msgId: string) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the message?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((yes) => {
+        if (yes) deleteItem(msgId);
       });
   };
 
@@ -122,7 +130,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
         <></>
       )}
 
-      {/* even if the collection is empty, the tree must be initialised with tdp.
+      {/* even if the collection is empty, the tree must be initialized with tdp.
         however it'll not show anything but when new item'll get added/created then tree will pop up the entry  */}
       <UncontrolledTreeEnvironment
         canRename={true}
@@ -144,9 +152,10 @@ const Collection = ({ openCreateFolderPrompt }) => {
         renderItem={(props) =>
           treeRenderer.renderItem({
             ...props,
-            openPlg,
-            deletePlg,
+            openMessageInPlg: openMessageInPlayground,
             createFolder: openCreateFolderPrompt,
+            deleteFolder: _deleteFolder,
+            deleteMsg,
           })
         }
       >

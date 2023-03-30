@@ -29,7 +29,6 @@ export enum EPlatformModalTypes {
   SwitchOrg = 'switchOrg',
 
   // workspace
-  CreateWorkspace = 'createWorkspace',
   WorkspaceManagement = 'workspaceManagement',
   InviteMembers = 'inviteMembers',
   SwitchWorkspace = 'switchWorkspace',
@@ -65,10 +64,9 @@ export const EPlatformModalDefaultProps = {
   [EPlatformModalTypes.SwitchOrg]: { width: '440px', className: 'p-0 !pb-6' },
 
   // workspace
-  [EPlatformModalTypes.CreateWorkspace]: { height: '80vh', width: '600px' },
   [EPlatformModalTypes.WorkspaceManagement]: {
     height: '650px',
-    width: '500px',
+    width: '550px',
   },
   [EPlatformModalTypes.InviteMembers]: { height: '700px' },
   [EPlatformModalTypes.SwitchWorkspace]: {

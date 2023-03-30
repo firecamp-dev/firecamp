@@ -66,7 +66,7 @@ const SignInWithEmail: FC<IModal> = () => {
       <Modal.Body>
         <img className="mx-auto w-12 mb-6" src={'img/fire-icon.png'} />
         <div className="text-xl mb-6 w-full text-center font-semibold">
-          Sign in to firecamp
+          Sign in to Firecamp
         </div>
         <div className="">
           <GithubGoogleAuth />
@@ -193,9 +193,7 @@ const SignInWithEmail: FC<IModal> = () => {
           </div>
         </div>
       </Modal.Body>
-      <Modal.Footer>
-       
-      </Modal.Footer>
+      <Modal.Footer></Modal.Footer>
     </>
   );
 };

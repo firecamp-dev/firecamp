@@ -1,5 +1,7 @@
-import { _object } from '@firecamp/utils';
 import Ajv from 'ajv';
+import getValue from 'get-value';
+import isEqual from 'react-fast-compare';
+import { _object } from '@firecamp/utils';
 
 export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
   const Assertion = chai.Assertion;
@@ -210,24 +212,27 @@ export default function (chai: Chai.ChaiStatic, utils: Chai.ChaiUtils) {
     }
   );
 
+  /**
+   * fc.response.to.have.jsonBody
+   * @example
+     fc.test("response body has json with userId", function () {
+          fc.response.to.have.jsonBody('userId', 1)
+            .and.have.jsonBody('name', 'Ramanujam')
+    });
+   */
   utils.addMethod(
     Assertion.prototype,
     'jsonBody',
-    function (this: Chai.AssertionStatic) {
-      const isJSON = (data: any) => {
-        try {
-          JSON.parse(data);
-          return true;
-        } catch (error) {
-          return false;
-        }
-      };
-
+    function (this: Chai.AssertionStatic, path: string, value: any) {
+      let body = {};
+      try {
+        body = JSON.parse(this._obj.body);
+      } catch (e) {}
       this.assert(
-        isJSON(this._obj?.body),
+        isEqual(getValue(body, path), value),
         'expected response should have JSON data but not found',
         'expected response should not have JSON data',
-        this._obj?.body
+        body
       );
     }
   );

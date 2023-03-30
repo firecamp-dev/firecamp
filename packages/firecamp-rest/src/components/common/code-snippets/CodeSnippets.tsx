@@ -1,8 +1,9 @@
 import { useEffect, useState, useMemo } from 'react';
 import classnames from 'classnames';
+import shallow from 'zustand/shallow';
 import { Editor, Container, Tabs, Modal } from '@firecamp/ui';
 import { _env } from '@firecamp/utils';
-import shallow from 'zustand/shallow';
+import { IRest } from '@firecamp/types';
 
 import codeSnippet, {
   ESnippetTargets,
@@ -10,7 +11,6 @@ import codeSnippet, {
 } from '../../../services/code-snippet-deprecated';
 import targetsInfo from '../../../services/code-snippet-deprecated/targets-info';
 import { useStoreApi, useStore, IStore } from '../../../store';
-import { IRest } from '@firecamp/types';
 
 const CodeSnippets = ({ tabId = '' }) => {
   const { request, context, toggleOpenCodeSnippet } =
@@ -53,7 +53,7 @@ const CodeSnippets = ({ tabId = '' }) => {
 
   useEffect(() => {
     const initTarget: ESnippetTargets = targetsInfo[0]
-        .target as ESnippetTargets,
+      .target as ESnippetTargets,
       initClient: TTargetClients = targetsInfo[0].clients[0] as TTargetClients;
     _onSelectTab(initTarget, initClient);
   }, []);
@@ -87,7 +87,7 @@ const CodeSnippets = ({ tabId = '' }) => {
     }
 
     // Parse variables
-    const _request = _env.applyVariables(request, envVariables) as IRest;
+    const _request = _env.applyVariablesInSource<any>(envVariables, request) as IRest;
 
     // get code snippet by active target and client
     let newSnippetCode = codeSnippet(_request, tab, client);

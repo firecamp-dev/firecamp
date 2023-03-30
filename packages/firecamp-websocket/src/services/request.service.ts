@@ -1,14 +1,14 @@
+import { nanoid } from 'nanoid';
+import _cleanDeep from 'clean-deep';
+import _cloneDeep from 'lodash/cloneDeep';
 import {
+  TId,
   IWebSocket,
   ERequestTypes,
   IWebSocketConnection,
-  TId,
 } from '@firecamp/types';
 import { _object, _array, _string } from '@firecamp/utils';
 import _url from '@firecamp/url';
-import _cleanDeep from 'clean-deep';
-import _cloneDeep from 'lodash/cloneDeep';
-import { nanoid as id } from 'nanoid';
 
 import {
   initialPlaygroundMessage,
@@ -25,7 +25,7 @@ const getPathFromUrl = (url: string) => {
 export const prepareUIRequestPanelState = (
   request: Partial<IWebSocket>
 ): IUiRequestPanel => {
-  let updatedUiStore: IUiRequestPanel = {};
+  const updatedUiStore: IUiRequestPanel = {};
 
   // TODO: add logic form collection queries
 
@@ -75,7 +75,7 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   _nr.__meta.version = '2.0.0'; /* ERestRequestVersion.V1; */ // TODO: check version
 
   // normalize __ref
-  _nr.__ref.id = __ref.id || id();
+  _nr.__ref.id = __ref.id || nanoid();
   _nr.__ref.collectionId = __ref.collectionId;
   _nr.__ref.folderId = __ref.folderId;
   _nr.__ref.createdAt = __ref.createdAt || new Date().valueOf();
@@ -127,7 +127,7 @@ export const initialiseStoreFromRequest = (
           type: '',
         },
         message: initialPlaygroundMessage,
-        selectedCollectionMessage: '',
+        selectedMessageId: '',
       },
     },
     runtime: {

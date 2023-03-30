@@ -1,5 +1,4 @@
 import create from 'zustand';
-import { nanoid } from 'nanoid';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Rest } from '@firecamp/cloud-apis';
 import {
@@ -8,17 +7,14 @@ import {
   IEnvironment,
   TPlainObject,
   IRuntimeEnv,
-  TRuntimeVariable,
+  IVariableGroup,
 } from '@firecamp/types';
 import { _env } from '@firecamp/utils';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
 import { CollectionEnvDataProvider } from '../components/common/environment/sidebar/tree/dataProvider';
 import platformContext from '../services/platform-context';
 import { useWorkspaceStore } from './workspace';
-import { RE } from '../types';
 import { envService, EmptyEnv } from '../services/env.service';
-import { useTabStore } from './tab';
-import { ETabEntityTypes } from '../components/tabs/types';
 
 const initialState = {
   activeEnvId: null,
@@ -98,11 +94,7 @@ export interface IEnvironmentStore {
   /** set env in localStorage */
   setLocalEnv: (localEnv: IEnv) => void;
   setVarsInLocalFromExecutorResponse: (
-    resVars: {
-      globals: TRuntimeVariable[];
-      environment: TRuntimeVariable[];
-      collectionVariables: TRuntimeVariable[];
-    },
+    resVars: IVariableGroup,
     collectionId: TId
   ) => void;
   dispose: () => void;

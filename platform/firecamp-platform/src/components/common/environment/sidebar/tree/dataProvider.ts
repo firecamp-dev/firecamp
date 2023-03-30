@@ -1,6 +1,6 @@
 import mitt from 'mitt';
 import { Disposable, TreeItem, TreeItemIndex } from '@firecamp/ui/src/tree';
-import { IEnvironment, EEnvironmentScope } from '@firecamp/types';
+import { IEnvironment } from '@firecamp/types';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',

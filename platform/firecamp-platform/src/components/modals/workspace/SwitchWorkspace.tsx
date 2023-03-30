@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from 'react';
 import { Modal, Button, ProgressBar, IModal } from '@firecamp/ui';
 import { Rest } from '@firecamp/cloud-apis';
-import { usePlatformStore } from '../../../store/platform';
 import platformContext from '../../../services/platform-context';
+import { usePlatformStore } from '../../../store/platform';
 import './workspace.scss';
 
 const SwitchWorkspace: FC<IModal> = ({
@@ -118,14 +118,14 @@ const WorkspaceCard = ({ workspace, onClick }) => {
             Switch
           </div>
         </div>
-        <div className="flex mt-2">
+        {/* <div className="flex mt-2">
           <div className="flex-1 text-base">
             Members-
             <span className="text-appForegroundInActive text-sm">
               {workspace?.members?.length}
             </span>
-          </div>
-          {/* <div className="ml-auto">
+          </div> */}
+        {/* <div className="ml-auto">
             <div className="flex text-xs">
               <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-appBorder -ml-1">1</div>
               <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-appBorder -ml-1">2</div>
@@ -133,7 +133,7 @@ const WorkspaceCard = ({ workspace, onClick }) => {
               <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-appBorder -ml-1">25+</div>
             </div>
           </div> */}
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );
