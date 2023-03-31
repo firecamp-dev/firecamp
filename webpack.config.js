@@ -63,7 +63,7 @@ exports.common = {
   resolve: {
     extensions: ['*', '.mjs', '.js', '.json', '.jsx', '.ts', '.tsx', '.svg'],
     alias: {
-      faker: path.resolve('./node_modules/faker'),
+      // faker: path.resolve('./node_modules/faker'),
       react: path.resolve('./node_modules/react'),
       'react-dom': path.resolve('./node_modules/react-dom'),
       lodash: path.resolve('./node_modules/lodash'),

@@ -42,7 +42,6 @@ importers:
       eslint-plugin-jsx: ^0.1.0
       eslint-plugin-jsx-a11y: ^6.3.1
       eslint-plugin-react: ^7.20.5
-      faker: ^5.5.3
       file-loader: ^6.2.0
       html-webpack-plugin: ^5.5.0
       husky: ^8.0.1
@@ -81,7 +80,6 @@ importers:
       autoprefixer: 10.4.13
       dotenv: 16.0.3
       dotenv-vault-core: 0.7.0
-      faker: 5.5.3
       match-sorter: 6.3.1
       prettify-xml: 1.2.0
     devDependencies:
@@ -791,7 +789,6 @@ importers:
       classnames: ^2.1.3
       clean-deep: ^3.0.2
       deepdash: ^5.3.9
-      faker: ^4.1.0
       fuzzysort: ^2.0.1
       javascript-stringify: ^2.0.0
       js-yaml: ^4.1.0
@@ -832,7 +829,6 @@ importers:
       classnames: 2.3.2
       clean-deep: 3.4.0
       deepdash: 5.3.9
-      faker: 4.1.0
       fuzzysort: 2.0.4
       javascript-stringify: 2.1.0
       js-yaml: 4.1.0
@@ -11733,10 +11729,6 @@ packages:
       - supports-color
     dev: true
 
-  /faker/4.1.0:
-    resolution: {integrity: sha512-ILKg69P6y/D8/wSmDXw35Ly0re8QzQ8pMfBCflsGiZG2ZjMUNLYNexA6lz5pkmJlepVdsiDFUxYAzPQ9/+iGLA==}
-    dev: false
-
   /faker/5.5.3:
     resolution: {integrity: sha512-wLTv2a28wjUyWkbnX7u/ABZBkUkIF2fCd73V6P2oFqEGEktDfzWx4UxrSqtPRw0xPRAcjeAOIiJWqZm3pP4u3g==}
     dev: false
@@ -21015,7 +21007,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.1
-      webpack: 5.75.0
+      webpack: 5.75.0_webpack-cli@5.0.1
     dev: true
 
   /terser/4.8.1:
