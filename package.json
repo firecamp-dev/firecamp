@@ -111,15 +111,9 @@
     "worker-loader": "^3.0.8"
   },
   "dependencies": {
-    "@babel/runtime": "^7.15.4",
-    "@firecamp/url": "0.0.20",
-    "@firecamp/utils": "^0.0.20",
     "@react-icons/all-files": "^4.1.0",
-    "autoprefixer": "^10.4.8",
     "dotenv": "^16.0.1",
-    "dotenv-vault-core": "^0.7.0",
-    "match-sorter": "^6.3.1",
-    "prettify-xml": "^1.2.0"
+    "dotenv-vault-core": "^0.7.0"
   },
   "engines": {
     "node": ">=16",

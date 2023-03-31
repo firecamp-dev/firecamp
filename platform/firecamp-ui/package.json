@@ -85,6 +85,7 @@
   "dependencies": {
     "@firecamp/types": "^0.1.23",
     "@firecamp/ui": "workspace:*",
+    "@firecamp/utils": "^0.0.20",
     "@monaco-editor/react": "4.4.5",
     "@radix-ui/react-dropdown-menu": "^2.0.1",
     "@radix-ui/react-scroll-area": "^1.0.2",

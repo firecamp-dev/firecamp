@@ -13,11 +13,7 @@ importers:
       '@babel/preset-react': ^7.16.7
       '@babel/preset-typescript': ^7.16.7
       '@babel/register': ^7.0.0
-      '@babel/runtime': ^7.15.4
-      '@firecamp/url': 0.0.20
-      '@firecamp/utils': ^0.0.20
       '@react-icons/all-files': ^4.1.0
-      autoprefixer: ^10.4.8
       babel-eslint: ^10.1.0
       babel-loader: ^9.1.0
       babel-plugin-add-module-exports: ^1.0.4
@@ -49,11 +45,9 @@ importers:
       jest-css-modules: ^2.1.0
       jest-css-modules-transform: ^4.4.2
       lint-staged: ^13.1.2
-      match-sorter: ^6.3.1
       node-polyfill-webpack-plugin: ^2.0.0
       postcss-loader: ^7.0.2
       prettier: ^2.6.2
-      prettify-xml: ^1.2.0
       react-addons-test-utils: ^15.0.2
       rimraf: ^4.3.1
       sass: ^1.51.0
@@ -73,15 +67,9 @@ importers:
       webpack-httpolyglot-server: ^0.3.0
       worker-loader: ^3.0.8
     dependencies:
-      '@babel/runtime': 7.20.13
-      '@firecamp/url': 0.0.20
-      '@firecamp/utils': 0.0.20
       '@react-icons/all-files': 4.1.0
-      autoprefixer: 10.4.13
       dotenv: 16.0.3
       dotenv-vault-core: 0.7.0
-      match-sorter: 6.3.1
-      prettify-xml: 1.2.0
     devDependencies:
       '@babel/core': 7.20.12
       '@babel/eslint-parser': 7.19.1_2je5tsgpdnpnp4f5qs5fqust6m
@@ -250,6 +238,7 @@ importers:
       '@firecamp/types': ^0.1.23
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': ^0.0.20
       '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
       '@types/node': ^18.0.0
@@ -270,7 +259,6 @@ importers:
       npm-run-all: ^4.1.5
       open-cli: ^6.0.1
       prettier: ^2.1.1
-      react-ga: ^3.1.2
       standard-version: ^9.0.0
       ts-jest: ^28.0.7
       ts-node: ^10.9.1
@@ -280,12 +268,12 @@ importers:
       '@firecamp/types': 0.1.23
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': 0.0.20
       codemirror: 5.65.11
       codemirror-graphql: 1.3.2_t5xgth6chaivosjn7w376kmbzm
       graphiql-explorer: 0.9.0_graphql@15.8.0
       graphql: 15.8.0
       lodash: 4.17.21
-      react-ga: 3.3.1
     devDependencies:
       '@types/jest': 29.2.4
       '@types/lodash': 4.14.191
@@ -315,6 +303,7 @@ importers:
       '@firecamp/types': ^0.1.23
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': ^0.0.20
       '@hapi/joi': ^17.1.1
       '@types/chrome': 0.0.204
       '@types/har-format': ^1.2.8
@@ -370,6 +359,7 @@ importers:
       '@firecamp/types': 0.1.23
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': 0.0.20
       '@hapi/joi': 17.1.1
       aws4: 1.12.0
       chai-http: 4.3.0
@@ -514,6 +504,7 @@ importers:
       '@firecamp/types': ^0.1.23
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': ^0.0.20
       '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
       '@types/node': ^18.0.0
@@ -550,6 +541,7 @@ importers:
       '@firecamp/types': 0.1.23
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': 0.0.20
       classnames: 2.3.2
       lodash: 4.17.21
       nanoid: 3.3.4
@@ -586,6 +578,7 @@ importers:
   packages/firecamp-socket-io-executor:
     specifiers:
       '@firecamp/types': ^0.1.23
+      '@firecamp/utils': ^0.0.20
       '@types/jest': 29.2.4
       '@types/node': ^18.0.0
       '@typescript-eslint/eslint-plugin': ^5.35.1
@@ -612,6 +605,7 @@ importers:
       typescript: ^4.7.4
     dependencies:
       '@firecamp/types': 0.1.23
+      '@firecamp/utils': 0.0.20
       comment-json: 4.2.3
       mitt: 3.0.0
       socket.io-client-v2: /socket.io-client/2.4.0
@@ -643,6 +637,7 @@ importers:
       '@firecamp/types': ^0.1.23
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': ^0.0.20
       '@firecamp/ws-executor': workspace:*
       '@types/jest': 29.2.4
       '@types/lodash': ^4.14.175
@@ -679,6 +674,7 @@ importers:
       '@firecamp/types': 0.1.23
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': 0.0.20
       '@firecamp/ws-executor': link:../firecamp-ws-executor
       classnames: 2.3.2
       lodash: 4.17.21
@@ -716,6 +712,7 @@ importers:
   packages/firecamp-ws-executor:
     specifiers:
       '@firecamp/types': ^0.1.23
+      '@firecamp/utils': ^0.0.20
       '@types/chrome': ^0.0.204
       '@types/jest': 29.2.4
       '@types/node': ^18.0.0
@@ -742,6 +739,7 @@ importers:
       ws: 8.11.0
     dependencies:
       '@firecamp/types': 0.1.23
+      '@firecamp/utils': 0.0.20
       comment-json: 4.2.3
       mitt: 3.0.0
       nanoid: 3.3.4
@@ -780,6 +778,7 @@ importers:
       '@firecamp/types': ^0.1.23
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': ^0.0.20
       '@firecamp/websocket': workspace:*
       '@sentry/browser': 7.28.1
       '@sentry/tracing': 7.28.1
@@ -796,7 +795,6 @@ importers:
       markdown-it: ^13.0.1
       mitt: ^3.0.0
       nanoid: 3.3.4
-      prettify-xml: ^1.2.0
       prop-types: ^15.6.2
       re-resizable: ^4.7.1
       react: 17.0.2
@@ -822,6 +820,7 @@ importers:
       '@firecamp/types': 0.1.23
       '@firecamp/ui': link:../firecamp-ui
       '@firecamp/url': 0.0.20
+      '@firecamp/utils': 0.0.20
       '@firecamp/websocket': link:../../packages/firecamp-websocket
       '@sentry/browser': 7.28.1
       '@sentry/tracing': 7.28.1
@@ -836,7 +835,6 @@ importers:
       markdown-it: 13.0.1
       mitt: 3.0.0
       nanoid: 3.3.4
-      prettify-xml: 1.2.0
       prop-types: 15.8.1
       re-resizable: 4.11.0
       react: 17.0.2
@@ -862,6 +860,7 @@ importers:
       '@babel/preset-env': ^7.19.4
       '@firecamp/types': ^0.1.23
       '@firecamp/ui': workspace:*
+      '@firecamp/utils': ^0.0.20
       '@monaco-editor/react': 4.4.5
       '@radix-ui/react-dropdown-menu': ^2.0.1
       '@radix-ui/react-scroll-area': ^1.0.2
@@ -930,6 +929,7 @@ importers:
     dependencies:
       '@firecamp/types': 0.1.23
       '@firecamp/ui': 'link:'
+      '@firecamp/utils': 0.0.20
       '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
       '@radix-ui/react-dropdown-menu': 2.0.1_uswwk7ohkq5gkv2wqm32sjldim
       '@radix-ui/react-scroll-area': 1.0.3_react-dom@17.0.2
@@ -7665,21 +7665,6 @@ packages:
   /attr-accept/2.2.2:
     resolution: {integrity: sha512-7prDjvt9HmqiZ0cl5CRjtS84sEyhsHP2coDkaZKRKVfCDo9s7iw7ChVmar78Gu9pC4SoR/28wFu/G5JJhTnqEg==}
     engines: {node: '>=4'}
-    dev: false
-
-  /autoprefixer/10.4.13:
-    resolution: {integrity: sha512-49vKpMqcZYsJjwotvt4+h/BCjJVnhGwcLpDt5xkcaOG3eLrG/HUYLagrihYsQ+qrIBgIzX1Rw7a6L8I/ZA1Atg==}
-    engines: {node: ^10 || ^12 || >=14}
-    hasBin: true
-    peerDependencies:
-      postcss: ^8.1.0
-    dependencies:
-      browserslist: 4.21.5
-      caniuse-lite: 1.0.30001457
-      fraction.js: 4.2.0
-      normalize-range: 0.1.2
-      picocolors: 1.0.0
-      postcss-value-parser: 4.2.0
     dev: false
 
   /autoprefixer/10.4.13_postcss@8.4.21:
@@ -16292,13 +16277,6 @@ packages:
     hasBin: true
     dev: true
 
-  /match-sorter/6.3.1:
-    resolution: {integrity: sha512-mxybbo3pPNuA+ZuCUhm5bwNkXrJTbsk5VWbR5wiwz/GC6LIiegBGn2w3O08UG/jdbYLinw51fSQ5xNU1U3MgBw==}
-    dependencies:
-      '@babel/runtime': 7.20.13
-      remove-accents: 0.4.2
-    dev: false
-
   /matcher/3.0.0:
     resolution: {integrity: sha512-OkeDaAZ/bQCxeFAozM55PKcKU0yJMPGifLwV4Qgjitu+5MoAfSQN4lsLJeXZ1b8w0x+/Emda6MZgXS1jvsapng==}
     engines: {node: '>=10'}
@@ -18699,13 +18677,6 @@ packages:
       fscreen: 1.2.0
     dev: false
 
-  /react-ga/3.3.1:
-    resolution: {integrity: sha512-4Vc0W5EvXAXUN/wWyxvsAKDLLgtJ3oLmhYYssx+YzphJpejtOst6cbIHCIyF50Fdxuf5DDKqRYny24yJ2y7GFQ==}
-    peerDependencies:
-      prop-types: ^15.6.0
-      react: ^15.6.2 || ^16.0 || ^17 || ^18
-    dev: false
-
   /react-ga/3.3.1_at7mkepldmzoo6silmqc5bca74:
     resolution: {integrity: sha512-4Vc0W5EvXAXUN/wWyxvsAKDLLgtJ3oLmhYYssx+YzphJpejtOst6cbIHCIyF50Fdxuf5DDKqRYny24yJ2y7GFQ==}
     peerDependencies:
@@ -19282,10 +19253,6 @@ packages:
     dependencies:
       mdast-squeeze-paragraphs: 4.0.0
     dev: true
-
-  /remove-accents/0.4.2:
-    resolution: {integrity: sha512-7pXIJqJOq5tFgG1A2Zxti3Ht8jJF337m4sowbuHsW30ZnkQFnDzy9qBNhgzX8ZLW4+UBcXiiR7SwR6pokHsxiA==}
-    dev: false
 
   /remove-trailing-separator/1.1.0:
     resolution: {integrity: sha512-/hS+Y0u3aOfIETiaiirUFwDBDzmXPvO+jAfKTitUngIPzdKc6Z0LoFjM/CK5PL4C+eKwHohlHAb6H0VFfmmUsw==}
@@ -21007,7 +20974,7 @@ packages:
       schema-utils: 3.1.1
       serialize-javascript: 6.0.1
       terser: 5.16.1
-      webpack: 5.75.0_webpack-cli@5.0.1
+      webpack: 5.75.0
     dev: true
 
   /terser/4.8.1:
