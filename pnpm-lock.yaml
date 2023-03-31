@@ -25,7 +25,7 @@ importers:
       babel-preset-react-optimize: ^1.0.1
       chai: ^3.5.0
       circular-dependency-plugin: ^5.2.0
-      colors: ^1.4.0
+      colors: 1.4.0
       compression-webpack-plugin: ^10.0.0
       copy-webpack-plugin: ^11.0.0
       copyfiles: ^2.4.1
@@ -797,7 +797,6 @@ importers:
       js-yaml: ^4.1.0
       json-templates: ^4.2.0
       markdown-it: ^13.0.1
-      marked: ^0.7.0
       mitt: ^3.0.0
       nanoid: 3.3.4
       prettify-xml: ^1.2.0
@@ -841,7 +840,6 @@ importers:
       js-yaml: 4.1.0
       json-templates: 4.2.0
       markdown-it: 13.0.1
-      marked: 0.7.0
       mitt: 3.0.0
       nanoid: 3.3.4
       prettify-xml: 1.2.0
@@ -16303,12 +16301,6 @@ packages:
       linkify-it: 4.0.1
       mdurl: 1.0.1
       uc.micro: 1.0.6
-    dev: false
-
-  /marked/0.7.0:
-    resolution: {integrity: sha512-c+yYdCZJQrsRjTPhUx7VKkApw9bwDkNbHUKo1ovgcfDjb2kc8rLuRbIFyXL5WOEUwzSSKo3IXpph2K6DqB/KZg==}
-    engines: {node: '>=0.10.0'}
-    hasBin: true
     dev: false
 
   /marked/4.2.12:
