@@ -40,7 +40,7 @@ const CollectionPane = () => {
       expanded={true}
       bodyClassName={'!p-0'}
       headerTitleRenderer={() => {
-        return <span>Emitter Collection</span>;
+        return <span>EMITTER COLLECTION</span>;
       }}
       headerActionRenderer={() => {
         return (

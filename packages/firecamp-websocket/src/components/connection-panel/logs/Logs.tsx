@@ -40,7 +40,7 @@ const Logs = () => {
     shallow
   );
 
-  const logTableApiRef = useRef({});
+  const logTableApiRef = useRef(null);
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
 
@@ -101,81 +101,83 @@ const Logs = () => {
                 </label>
               </TabHeader.Left>
               <TabHeader.Right>
-                <label className="m-0 text-sm font-bold whitespace-pre">
-                  Filter:
-                </label>
-                <div className="flex items-center">
-                  {/* <label className="m-0 text-base font-bold">Type</label> */}
-                  <span>
-                    <Dropdown
-                      selected={typeFilter || 'select log type'}
-                      className="fc-dropdown-fixwidth"
-                    >
-                      <Dropdown.Handler
-                        id={`websocket-response-log-${activePlayground}-filter-event`}
+                {logs?.length ? (
+                  <>
+                    <label className="m-0 text-sm font-bold whitespace-pre">
+                      Filter:
+                    </label>
+                    <div className="flex items-center">
+                      <Dropdown
+                        selected={typeFilter || 'select log type'}
+                        className="fc-dropdown-fixwidth"
                       >
-                        <Button
-                          text={typeFilter || 'select log type'}
-                          transparent={true}
-                          ghost={true}
-                          withCaret={true}
-                          tooltip={
-                            typeFilter ? `Log type: ${typeFilter || ''}` : ''
-                          }
-                          sm
+                        <Dropdown.Handler
+                          id={`websocket-response-log-${activePlayground}-filter-event`}
+                        >
+                          <Button
+                            text={typeFilter || 'select log type'}
+                            transparent={true}
+                            ghost={true}
+                            withCaret={true}
+                            tooltip={
+                              typeFilter ? `Log type: ${typeFilter || ''}` : ''
+                            }
+                            sm
+                          />
+                        </Dropdown.Handler>
+                        <Dropdown.Options
+                          options={Object.keys(logTypes).map((o) => ({
+                            name: o,
+                          }))}
+                          onSelect={(type) => _onFilter(type?.name)}
                         />
-                      </Dropdown.Handler>
-                      <Dropdown.Options
-                        options={Object.keys(logTypes).map((o) => ({
-                          name: o,
-                        }))}
-                        onSelect={(type) => _onFilter(type?.name)}
-                      />
-                    </Dropdown>
-                  </span>
-
-                  {typeFilter ? (
-                    <div className="pl-1 w-4">
-                      <span
-                        className="text-base  icv2-remove-icon"
-                        onClick={() => _onFilter('')}
-                      />
+                      </Dropdown>
                     </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+
+                <div className="flex">
+                  {logs?.length ? (
+                    <VscCircleSlash
+                      className="cursor-pointer"
+                      title="clear logs"
+                      onClick={_onClearAllMessages}
+                    />
                   ) : (
                     <></>
                   )}
                 </div>
-                <div className="flex">
-                  <VscCircleSlash
-                    className="cursor-pointer"
-                    title="clear logs"
-                    onClick={_onClearAllMessages}
-                  />
-                </div>
               </TabHeader.Right>
             </TabHeader>
           </Container.Header>
-          <Container.Body overflow="hidden" className="flex flex-col">
-            <LogTable
-              onLoad={(tApi) => {
-                logTableApiRef.current = tApi;
-              }}
-              onFocusRow={(r) => {
-                setSelectedRow(r);
-              }}
-            />
-            <Resizable
-              top={true}
-              height="250px"
-              width="100%"
-              maxHeight={400}
-              minHeight={100}
-              onResizeStop={_onResizeStop}
-              className="bg-focus-3"
-            >
-              <LogPreview row={selectedRow} />
-            </Resizable>
-          </Container.Body>
+
+          {logs?.length ? (
+            <Container.Body overflow="hidden" className="flex flex-col">
+              <LogTable
+                onLoad={(tApi) => {
+                  logTableApiRef.current = tApi;
+                }}
+                onFocusRow={(r) => {
+                  setSelectedRow(r);
+                }}
+              />
+              <Resizable
+                top={true}
+                height="250px"
+                width="100%"
+                maxHeight={400}
+                minHeight={100}
+                onResizeStop={_onResizeStop}
+                className="bg-focus-3"
+              >
+                <LogPreview row={selectedRow} />
+              </Resizable>
+            </Container.Body>
+          ) : (
+            <></>
+          )}
         </Container>
       </FullScreen>
     </Column>

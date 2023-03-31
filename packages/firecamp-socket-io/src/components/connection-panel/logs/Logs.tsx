@@ -46,7 +46,7 @@ const Logs = () => {
   );
 
   const handleFS = useFullScreenHandle();
-  const logTableApiRef = useRef({});
+  const logTableApiRef = useRef(null);
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
 
@@ -114,7 +114,7 @@ const Logs = () => {
                     </label> */}
                     <div className="flex items-center">
                       {/* <label className="m-0 text-base font-bold">Type</label> */}
-                      <span>
+                      {logs?.length ? (
                         <Dropdown
                           selected={typeFilter || 'select log type'}
                           className="fc-dropdown-fixwidth"
@@ -142,25 +142,20 @@ const Logs = () => {
                             onSelect={(type) => _onFilter(type?.name)}
                           />
                         </Dropdown>
-                      </span>
-
-                      {typeFilter ? (
-                        <div className="pl-1 w-4">
-                          <span
-                            className="text-base icv2-remove-icon"
-                            onClick={() => _onFilter('')}
-                          />
-                        </div>
                       ) : (
                         <></>
                       )}
                     </div>
                     <div className="flex">
-                      <VscCircleSlash
-                        className="cursor-pointer"
-                        title="clear logs"
-                        onClick={_onClearAllMessages}
-                      />
+                      {logs?.length ? (
+                        <VscCircleSlash
+                          className="cursor-pointer"
+                          title="clear logs"
+                          onClick={_onClearAllMessages}
+                        />
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </TabHeader.Right>
                 </TabHeader>
@@ -190,14 +185,19 @@ const Logs = () => {
                 </TabHeader>
               </Container.Header>
               <Container.Body overflow="hidden" className="flex flex-col">
-                <LogTable
-                  onLoad={(tApi) => {
-                    logTableApiRef.current = tApi;
-                  }}
-                  onFocusRow={(r) => {
-                    setSelectedRow(r);
-                  }}
-                />
+                {logs?.length ? (
+                  <LogTable
+                    onLoad={(tApi) => {
+                      logTableApiRef.current = tApi;
+                    }}
+                    onFocusRow={(r) => {
+                      setSelectedRow(r);
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
+
                 {selectedRow ? (
                   <Resizable
                     top={true}

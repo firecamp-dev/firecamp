@@ -22,7 +22,7 @@ const LogTable = ({ onLoad, onFocusRow = (r) => { } }) => {
         onLoad(tApi);
       }}
       onFocusRow={(r) => {
-        console.log(r, 'r.....');
+        // console.log(r, 'r.....');
         onFocusRow(r);
       }}
     />

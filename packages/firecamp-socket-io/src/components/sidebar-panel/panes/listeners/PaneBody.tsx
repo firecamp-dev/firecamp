@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import shallow from 'zustand/shallow';
-import { Input, Container, TabHeader, Button, Column } from '@firecamp/ui';
+import {
+  Checkbox,
+  Input,
+  Container,
+  TabHeader,
+  Button,
+  Column,
+} from '@firecamp/ui';
 import { IStore, useStore } from '../../../../store';
 
 const PaneBody = () => {
@@ -10,6 +17,7 @@ const PaneBody = () => {
         updatePlaygroundListenersValue: s.updatePlayground,
         listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
         activePlayground: s.runtime.activePlayground,
+        deletePlaygroundListener: s.deletePlaygroundListener,
       }),
       shallow
     );
@@ -18,16 +26,39 @@ const PaneBody = () => {
     message: true,
     event: true,
     'request:updated': true,
+    message1: true,
+    eventq: true,
+    'requestw:updated': true,
+    messagew: true,
+    evente: true,
+    'requeest:updated': true,
+    messagee: true,
+    eventr: true,
+    'requestr:updated': true,
+    'reqdueest:updated': true,
+    messsagee: true,
+    evenftr: true,
+    'reqsuestr:updated': true,
   };
 
   return (
     <Column>
-      <Container className="with-divider">
-        <Container.Header className="p-2">
+      <Container>
+        <Container.Header>
           <AddListener activePlayground={activePlayground} />
         </Container.Header>
         <Container.Body>
-          <List listeners={listeners} activePlayground={activePlayground} />
+          {Object.keys(listeners).map((listener, index) => {
+            return (
+              <Listener
+                id={'' + index}
+                key={index}
+                activePlayground={activePlayground}
+                name={listener || ''}
+                value={listeners[listener] || false}
+              />
+            );
+          })}
         </Container.Body>
         <Container.Footer>
           <TabHeader>
@@ -38,7 +69,9 @@ const PaneBody = () => {
                 onClick={() => {
                   updatePlaygroundListenersValue(activePlayground, false);
                 }}
+                transparent
                 secondary
+                ghost
                 xs
               />
               <Button
@@ -47,7 +80,9 @@ const PaneBody = () => {
                 onClick={() => {
                   updatePlaygroundListenersValue(activePlayground, true);
                 }}
+                transparent
                 secondary
+                ghost
                 xs
               />
             </TabHeader.Right>
@@ -119,35 +154,7 @@ const AddListener = ({ activePlayground = '' }) => {
     />
   );
 };
-const List = ({ listeners = {}, activePlayground = '' }) => {
-  const { deletePlaygroundListener } = useStore(
-    (s) => ({
-      deletePlaygroundListener,
-    }),
-    shallow
-  );
-  const removeListener = (name) => {
-    if (!name) return;
-    deletePlaygroundListener(activePlayground, name);
-  };
 
-  return (
-    <div className="fc-listeners-list">
-      {Object.keys(listeners).map((listener, index) => {
-        return (
-          <Listener
-            id={index}
-            key={index}
-            activePlayground={activePlayground}
-            name={listener || ''}
-            value={listeners[listener] || false}
-            removeListener={(name) => removeListener(name)}
-          />
-        );
-      })}
-    </div>
-  );
-};
 const Listener = ({
   id = '',
   activePlayground = '',
@@ -177,31 +184,20 @@ const Listener = ({
   };
 
   return (
-    <div className="fc-listeners-list-item flex text-sm justify-center items-center relative px-2 py-0.5">
+    <div className="fc-listeners-list-item flex justify-center items-center relative px-2 py-0.5">
       <div
-        className="flex-1 overflow-hidden overflow-ellipsis "
+        className="flex-1 overflow-hidden overflow-ellipsis text-base"
         data-tip={name}
         id={`${uniqueId}-name`}
       >
         {name}
       </div>
-      <div>
-        <div className="toggleWrapper small">
-          <input
-            className="switch"
-            type="checkbox"
-            name={uniqueId}
-            id={uniqueId}
-            checked={value}
-            onChange={_onToggleListen}
-          />
-          <label htmlFor={uniqueId} className="toggle">
-            <span className="toggle__handler" />
-          </label>
-        </div>
-      </div>
-      <div className="fc-listeners-list-item-action" onClick={_onRemove}>
-        Close {/* TODO: close icon here  */}
+      <div className="small">
+        <Checkbox
+          id={uniqueId}
+          isChecked={value}
+          onToggleCheck={_onToggleListen}
+        />
       </div>
     </div>
   );

@@ -1,17 +1,14 @@
-//@ts-nocheck
-import { FC, useRef, forwardRef } from 'react';
-import { ISwitchButton } from "./interfaces/SwitchButton.interfaces"
-import './SwitchButton.sass'
+import { FC, useRef, forwardRef, useImperativeHandle } from 'react';
+import { ISwitchButton } from './interfaces/SwitchButton.interfaces';
+import './SwitchButton.sass';
 
-
-/**
- * Switch/ toggle button 
- */
+/** Switch/ toggle button */
 const SwitchButton: FC<ISwitchButton> = forwardRef(
-  ({ id, checked = true, onChange = () => { } }, ref) => {
-    let fRef = useRef(ref);
+  ({ id, checked = true, onChange = (bool: boolean) => {} }, ref) => {
+    const innerRef = useRef<HTMLDivElement>(null);
+    useImperativeHandle(ref, () => innerRef.current);
     return (
-      <div className="fc-switch" ref={fRef}>
+      <div className="fc-switch" ref={innerRef}>
         <div className="toggleWrapper">
           <input
             className="switch"
@@ -30,4 +27,3 @@ const SwitchButton: FC<ISwitchButton> = forwardRef(
 );
 
 export default SwitchButton;
-

@@ -8,7 +8,7 @@ const ListenerPane = () => {
       expanded={true}
       bodyClassName={'!p-0'}
       headerTitleRenderer={() => {
-        return <span>Listeners</span>;
+        return <span>LISTENERS</span>;
       }}
       headerActionRenderer={() => {
         return <></>;

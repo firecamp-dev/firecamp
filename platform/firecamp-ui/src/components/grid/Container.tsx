@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { FC } from "react";
 import Column from './Column';
 import Row from './Row';

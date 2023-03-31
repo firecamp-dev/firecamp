@@ -49,7 +49,7 @@ describe("Table : ", () => {
       expect(titleElement.textContent).toBe(WithTableOptionsArgs.title);
     }
 
-    //At initial time buttonelement text should be "Bulk Edit";
+    //At initial time button element text should be "Bulk Edit";
     let buttonElement = screen.getByText("Bulk Edit");
     expect(buttonElement).toBeInTheDocument();
 
