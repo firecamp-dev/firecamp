@@ -3,12 +3,12 @@ import shallow from 'zustand/shallow';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
-import { Pane, ToolBar, Empty, Container } from '@firecamp/ui';
+import { Pane, ToolBar, Empty } from '@firecamp/ui';
 import { TId } from '@firecamp/types';
-import treeRenderer from './collection-tree/treeItemRenderer';
-import { IStore, useStore, useStoreApi } from '../../../store';
+import treeRenderer from './treeItemRenderer';
+import { IStore, useStore, useStoreApi } from '../../../../store';
 
-const CollectionTab = () => {
+const CollectionPane = () => {
   const {
     context,
     isRequestSaved,
@@ -36,40 +36,35 @@ const CollectionTab = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-row explorer-wrapper">
-      <Container>
-        <ListenerPane />
-        <Pane
-          expanded={true}
-          bodyClassName={'!p-0'}
-          headerTitleRenderer={() => {
-            return <span>Emitter Collection</span>;
-          }}
-          headerActionRenderer={() => {
-            return (
-              <ToolBar>
-                <div className="action">
-                  <VscRefresh size={14} className="mr-2 cursor-pointer" />
-                </div>
-                <div>
-                  <VscNewFolder
-                    size={14}
-                    className="cursor-pointer"
-                    onClick={() => _createFolderPrompt()}
-                  />
-                </div>
-              </ToolBar>
-            );
-          }}
-          bodyRenderer={({ expanded }) => {
-            return <Collection openCreateFolderPrompt={_createFolderPrompt} />;
-          }}
-        />
-      </Container>
-    </div>
+    <Pane
+      expanded={true}
+      bodyClassName={'!p-0'}
+      headerTitleRenderer={() => {
+        return <span>Emitter Collection</span>;
+      }}
+      headerActionRenderer={() => {
+        return (
+          <ToolBar>
+            <div className="action">
+              <VscRefresh size={14} className="mr-2 cursor-pointer" />
+            </div>
+            <div>
+              <VscNewFolder
+                size={14}
+                className="cursor-pointer"
+                onClick={() => _createFolderPrompt()}
+              />
+            </div>
+          </ToolBar>
+        );
+      }}
+      bodyRenderer={({ expanded }) => {
+        return <Collection openCreateFolderPrompt={_createFolderPrompt} />;
+      }}
+    />
   );
 };
-export default CollectionTab;
+export default CollectionPane;
 
 const Collection = ({ openCreateFolderPrompt }) => {
   const treeRef = useRef();
@@ -163,23 +158,5 @@ const Collection = ({ openCreateFolderPrompt }) => {
         />
       </UncontrolledTreeEnvironment>
     </>
-  );
-};
-
-const ListenerPane = () => {
-  return (
-    <Pane
-      expanded={true}
-      bodyClassName={'!p-0'}
-      headerTitleRenderer={() => {
-        return <span>Listeners</span>;
-      }}
-      headerActionRenderer={() => {
-        return <></>;
-      }}
-      bodyRenderer={({ expanded }) => {
-        return <>Listeners Panel</>;
-      }}
-    />
   );
 };

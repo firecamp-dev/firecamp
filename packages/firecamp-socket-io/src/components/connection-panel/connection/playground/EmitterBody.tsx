@@ -112,6 +112,7 @@ const EmitterBody = ({
                 if (argument.body !== value) changeArgValue(value);
               }}
               onLoad={(edt) => {
+                console.log(' Monaco Editor is loaded...');
                 setEditor(edt);
               }}
               monacoOptions={{
@@ -123,14 +124,14 @@ const EmitterBody = ({
                 tabSize: 2,
                 cursorStart: 1,
               }}
-              {...shortcutFns}
             />
           );
-        } else {
-          return (
-            <QuickSelectionMenus argTypes={ArgTypes} onClick={changeArgType} />
-          );
-        }
+        } else return <></>;
+      // else {
+      //   return (
+      //     <QuickSelectionMenus argTypes={ArgTypes} onClick={changeArgType} />
+      //   );
+      // }
       // case EArgumentBodyType.File:
       //   let fileName = '';
       //   return (
@@ -169,8 +170,8 @@ const EmitterBody = ({
             type={'number'}
             name={'number'}
             value={argument.body.toString()}
-            min={0}
             isEditor={true}
+            min={0}
             onChange={(e) => {
               if (e) e.preventDefault();
               changeArgValue(e.target.value);
@@ -178,20 +179,15 @@ const EmitterBody = ({
           />
         );
       default:
-        return (
-          <QuickSelectionMenus argTypes={ArgTypes} onClick={changeArgType} />
-        );
+        return <></>;
+      // return <QuickSelectionMenus argTypes={ArgTypes} onClick={changeArgType} />
     }
   };
 
   return (
     <Container.Body>
-      {activeArgType.id === EArgumentBodyType.None ? (
-        <Container.Empty>
-          <QuickSelectionMenus argTypes={ArgTypes} onClick={changeArgType} />
-        </Container.Empty>
-      ) : (
-        <div className="h-full">
+      <Container className="h-full">
+        <Container.Header>
           <TabHeader>
             <TabHeader.Left>
               <ArgTypesDD
@@ -203,9 +199,11 @@ const EmitterBody = ({
               <EditorControlBar editor={editor} />
             </TabHeader.Right>
           </TabHeader>
+        </Container.Header>
+        <Container.Body className="!mt-0">
           {_renderActiveBody(activeArgType.id)}
-        </div>
-      )}
+        </Container.Body>
+      </Container>
     </Container.Body>
   );
 };

@@ -14,10 +14,9 @@ import {
   Resizable,
 } from '@firecamp/ui';
 import LogTable from './log-table/LogTable';
-import Listeners from './listeners/Listeners';
+import LogPreview from './log-table/LogPreview';
 import { useStore, IStore } from '../../../store';
 import { ELogTypes } from '../../../types';
-import LogPreview from './log-table/LogPreview';
 
 const logTypes = {
   System: ELogTypes.System,
@@ -103,7 +102,7 @@ const Logs = () => {
                 <div className="fc-btn-collapse v2">
                   {/* <VscChevronRight onClick={_setVisiblePanel}/> */}
                 </div>
-                <TabHeader className="height-small border-b border-appBorder padding-left-extra">
+                <TabHeader className="height-small border-b border-appBorder">
                   <TabHeader.Left>
                     <label className="m-0 text-sm font-bold whitespace-pre">
                       Event Logs
@@ -199,26 +198,24 @@ const Logs = () => {
                     setSelectedRow(r);
                   }}
                 />
-                {
-                  selectedRow ?
-                    <Resizable
-                      top={true}
-                      height="250px"
-                      width="100%"
-                      maxHeight={400}
-                      minHeight={50}
-                      onResizeStop={_onResizeStop}
-                      className="bg-focus-3"
-                    >
-                      <LogPreview row={selectedRow} />
-                    </Resizable>
-                    : <></>
-                }
-
+                {selectedRow ? (
+                  <Resizable
+                    top={true}
+                    height="250px"
+                    width="100%"
+                    maxHeight={400}
+                    minHeight={50}
+                    onResizeStop={_onResizeStop}
+                    className="bg-focus-3"
+                  >
+                    <LogPreview row={selectedRow} />
+                  </Resizable>
+                ) : (
+                  <></>
+                )}
               </Container.Body>
             </Container>
           </Column>
-          <Listeners />
         </Row>
       </FullScreen>
     </Column>

@@ -1,16 +1,13 @@
-
-/*------listner css start----------*/
-
-.fc-listners-list-item:hover {
+.fc-listeners-list-item:hover {
     background-color: var(--focus-level-3);
 }
   
-.fc-listners-list-item:hover > .fc-listners-list-item-action{
+.fc-listeners-list-item:hover > .fc-listeners-list-item-action {
     visibility: visible;
     display: flex;
 }
   
-.fc-listners-list-item-action{
+.fc-listeners-list-item-action {
     position: absolute;
     right: 0px;
     font-size: 12px;
@@ -18,5 +15,3 @@
     right: 2px;   
     visibility: hidden ;
 }
-  
-  /*------listner css start----------*/  

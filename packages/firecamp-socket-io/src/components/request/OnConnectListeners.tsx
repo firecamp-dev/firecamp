@@ -74,7 +74,7 @@ const OnConnectListeners = ({ listeners = [], onConnectListeners = [] }) => {
   return (
     <Container>
       <Container.Header className="fc-listner-popover-header">
-        <div className="fc-active-listners-list">
+        <div className="fc-active-listeners-list">
           <div className="fc-active-listner-title">On Connect Listeners</div>
           <div className="flex first-expanded form-group m-8">
             <Input
