@@ -62,7 +62,6 @@ const GlobalCreateDD = ({}) => {
         break;
       case EMenuOptions.Organization:
         platformContext.platform.createOrganizationPrompt();
-        // platformContext.app.modals.openCreateOrg();
         break;
       case EMenuOptions.InviteMembers:
         platformContext.app.modals.openInviteMembers();

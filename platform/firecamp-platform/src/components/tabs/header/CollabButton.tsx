@@ -32,7 +32,7 @@ const CollabButton: FC<any> = () => {
         <Button
           text="create organization"
           icon={<VscAdd className="mr-2 toggle-arrow" size={12} />}
-          onClick={(e) => platformContext.app.modals.openCreateOrg()}
+          onClick={(e) => platformContext.platform.createOrganizationPrompt();}
           secondary
           iconLeft
           transparent

@@ -115,7 +115,7 @@ const NoOrgFoundMessage = () => {
         text="Create Organization"
         sm
         primary
-        onClick={() => platformContext.app.modals.openCreateOrg()}
+        onClick={() => platformContext.platform.createOrganizationPrompt()}
       />
     </div>
   );
