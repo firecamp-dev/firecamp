@@ -32,7 +32,14 @@ const createStore = (initialState: IStoreState) =>
       setContext: (ctx: any) => set({ context: ctx }),
       initialise: (request: Partial<IRest>, tabId: TId) => {
         const state = get();
-        const initState = initialiseStoreFromRequest(request, tabId);
+        const requestId = request.__ref?.id;
+        const requestPath = requestId
+          ? state.context?.request.getPath(requestId)
+          : { path: '', items: [] };
+        const initState = initialiseStoreFromRequest(request, {
+          tabId,
+          requestPath,
+        });
         // console.log(initState, 'initState');
         set((s) => ({
           ...s,

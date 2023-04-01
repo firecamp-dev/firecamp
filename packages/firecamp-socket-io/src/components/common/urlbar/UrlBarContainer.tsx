@@ -7,11 +7,20 @@ import { SIOVersionOptions } from '../../../constants';
 import { IStore, useStore } from '../../../store';
 
 const UrlBarContainer = ({ tab }) => {
-  const { url, displayUrl, version, changeUrl, changeConfig, save } = useStore(
+  const {
+    url,
+    displayUrl,
+    version,
+    requestPath,
+    changeUrl,
+    changeConfig,
+    save,
+  } = useStore(
     (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
+      requestPath: s.runtime.requestPath,
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
       save: s.save,
@@ -50,7 +59,7 @@ const UrlBarContainer = ({ tab }) => {
   return (
     <Url
       id={`url-${tab.id}`}
-      // path={__meta.name}
+      path={requestPath?.path || 'Untitled Request'}
       placeholder={'http://'}
       // isRequestSaved={isRequestSaved}
       url={displayUrl}
@@ -65,25 +74,29 @@ const UrlBarContainer = ({ tab }) => {
         //   requestId: __ref.id,
         // });
       }}
-      prefixComponent={<SIOVersionDropDown
-        id={tab.id}
-        options={SIOVersionOptions}
-        selectedOption={SIOVersionOptions.find((v) => v.version == version)}
-        onSelectItem={(v) => changeConfig('version', v.version)}
-      />}
-      suffixComponent={<>
-        <ConnectionButton />
-        <Button
-          id={`save-request-${tab.id}`}
-          text="Save"
-          disabled={false}
-          onClick={_onSave}
-          secondary
-          sm
+      prefixComponent={
+        <SIOVersionDropDown
+          id={tab.id}
+          options={SIOVersionOptions}
+          selectedOption={SIOVersionOptions.find((v) => v.version == version)}
+          onSelectItem={(v) => changeConfig('version', v.version)}
         />
-      </>}
+      }
+      suffixComponent={
+        <>
+          <ConnectionButton />
+          <Button
+            id={`save-request-${tab.id}`}
+            text="Save"
+            disabled={false}
+            onClick={_onSave}
+            secondary
+            sm
+          />
+        </>
+      }
     />
-  )
+  );
 };
 
 export default UrlBarContainer;
@@ -93,7 +106,7 @@ const SIOVersionDropDown: FC<any> = ({
   className = '',
   options = [{ name: '', version: '' }],
   selectedOption = { name: '', version: '' },
-  onSelectItem = (option) => { },
+  onSelectItem = (option) => {},
 }) => {
   const [isDropDownOpen, toggleDropDown] = useState(false);
   return (

@@ -1,4 +1,4 @@
-import { TId } from '@firecamp/types';
+import { TId, TRequestPath } from '@firecamp/types';
 import { ITab } from '@firecamp/ui/src/components/tabs/interfaces/Tab.interface';
 import { TStoreSlice } from '../store.type';
 
@@ -34,6 +34,7 @@ interface IRuntime {
 
   /** true if fetch introspections under progress */
   isFetchingIntrospection?: boolean;
+  requestPath?: TRequestPath;
   tabId: TId;
 }
 

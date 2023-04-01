@@ -43,7 +43,15 @@ const createStore = (initialState: IStoreState) =>
     return {
       setContext: (ctx: any) => set({ context: ctx }),
       initialise: async (request: Partial<IWebSocket>, tabId: TId) => {
-        const initState = initialiseStoreFromRequest(request, tabId);
+        const state = get();
+        const requestId = request.__ref?.id;
+        const requestPath = requestId
+          ? state.context?.request.getPath(requestId)
+          : { path: '', items: [] };
+        const initState = initialiseStoreFromRequest(request, {
+          tabId,
+          requestPath,
+        });
         // console.log(initState.request, 'initState.request');
         set((s) => ({
           ...s,

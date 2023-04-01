@@ -32,9 +32,9 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.23",
+    "@firecamp/types": "^0.1.24",
     "@firecamp/url": "0.0.20",
-    "@firecamp/utils": "^0.0.20",
+    "@firecamp/utils": "^0.0.21",
     "@hapi/joi": "^17.1.1",
     "ajv": "^8.11.2",
     "axios": "0.27.2",

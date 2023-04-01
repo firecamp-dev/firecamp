@@ -34,8 +34,8 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.23",
-    "@firecamp/utils": "^0.0.20",
+    "@firecamp/types": "^0.1.24",
+    "@firecamp/utils": "^0.0.21",
     "comment-json": "^4.1.1",
     "mitt": "^3.0.0",
     "nanoid": "3.3.4",

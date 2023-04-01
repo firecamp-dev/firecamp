@@ -8,6 +8,7 @@ import {
   IRequestItem,
   IVariableGroup,
 } from '@firecamp/types';
+import { _misc } from '@firecamp/utils';
 import * as executor from '@firecamp/agent-manager';
 import { platformEmitter } from '../platform-emitter';
 import { promptSaveItem } from './prompt.service';
@@ -17,9 +18,9 @@ import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
 import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
+import { ETabEntityTypes } from '../../components/tabs/types';
 import { RE } from '../../types';
 import platformContext from '.';
-import { ETabEntityTypes } from '../../components/tabs/types';
 
 interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
@@ -33,6 +34,15 @@ interface IPlatformRequestService {
 
   // fetch request's parent artifacts
   fetchParentArtifacts: (reqId: TId) => Promise<any>;
+
+  // fetch request path from explorer
+  getPath: (reqId: TId) => {
+    path: string;
+    items: {
+      id: string;
+      name: string;
+    }[];
+  };
 
   // save and update request
   save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
@@ -110,6 +120,17 @@ const request: IPlatformRequestService = {
   // fetch request by request id
   fetch: async (reqId: TId) => {
     return await Rest.request.findOne(reqId).then((res) => res.data);
+  },
+
+  // fetch request by request id
+  getPath: (reqId) => {
+    const {
+      explorer: { collections, folders, requests },
+    } = useWorkspaceStore.getState();
+    return _misc.itemPathFinder(
+      [...collections, ...folders, ...requests],
+      reqId
+    );
   },
 
   // fetch request's parent artifacts

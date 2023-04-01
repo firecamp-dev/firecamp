@@ -6,6 +6,7 @@ import {
   IWebSocket,
   ERequestTypes,
   IWebSocketConnection,
+  TRequestPath,
 } from '@firecamp/types';
 import { _object, _array, _string } from '@firecamp/utils';
 import _url from '@firecamp/url';
@@ -102,7 +103,10 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
 
 export const initialiseStoreFromRequest = (
   _request: Partial<IWebSocket>,
-  tabId: TId
+  __meta?: {
+    tabId?: TId;
+    requestPath?: TRequestPath;
+  }
 ): IStoreState => {
   const request: IWebSocket = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(request);
@@ -145,7 +149,8 @@ export const initialiseStoreFromRequest = (
       }),
       _dnp: {},
       isRequestSaved: !!request.__ref.collectionId,
-      tabId,
+      tabId: __meta?.tabId,
+      requestPath: __meta?.requestPath,
     },
     ui: {
       // ...state.ui,

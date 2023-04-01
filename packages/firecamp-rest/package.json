@@ -35,10 +35,10 @@
   "dependencies": {
     "@firecamp/curl-to-firecamp": "^1.0.1",
     "@firecamp/rest-executor": "workspace:*",
-    "@firecamp/types": "^0.1.23",
+    "@firecamp/types": "^0.1.24",
     "@firecamp/ui": "workspace:*",
     "@firecamp/url": "0.0.20",
-    "@firecamp/utils": "^0.0.20",
+    "@firecamp/utils": "^0.0.21",
     "@hapi/joi": "^17.1.1",
     "aws4": "^1.11.0",
     "chai-http": "^4.3.0",

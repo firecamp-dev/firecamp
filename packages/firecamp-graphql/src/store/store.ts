@@ -37,7 +37,15 @@ const createStore = (initialState: IStoreState) =>
       ...createExecutionSlice(set, get),
 
       initialise: (_request: Partial<IGraphQL>, tabId: TId) => {
-        const initState = initialiseStoreFromRequest(_request, tabId);
+        const state = get();
+        const requestId = _request.__ref?.id;
+        const requestPath = requestId
+          ? state.context?.request.getPath(requestId)
+          : { path: '', items: [] };
+        const initState = initialiseStoreFromRequest(_request, {
+          tabId,
+          requestPath,
+        });
         // console.log(initState, 'initState');
         set((s) => ({
           ...s,

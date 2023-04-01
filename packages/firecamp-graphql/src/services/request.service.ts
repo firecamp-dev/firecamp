@@ -7,6 +7,7 @@ import {
   EHttpMethod,
   ERequestTypes,
   EKeyValueTableRowType,
+  TRequestPath,
 } from '@firecamp/types';
 import { _object, _array, _string } from '@firecamp/utils';
 import { isValidRow } from '@firecamp/utils/dist/table';
@@ -122,7 +123,10 @@ export const normalizeRequest = (request: Partial<IGraphQL>): IGraphQL => {
 
 export const initialiseStoreFromRequest = (
   _request: Partial<IGraphQL>,
-  tabId: TId
+  __meta?: {
+    tabId?: TId;
+    requestPath?: TRequestPath;
+  }
 ): IStoreState => {
   const request = normalizeRequest(_request);
   const uiState = prepareUiState(_cloneDeep(request));
@@ -138,7 +142,8 @@ export const initialiseStoreFromRequest = (
       isFetchingIntrospection: false,
       isRequestSaved: !!request.__ref.collectionId,
       schema: null,
-      tabId,
+      tabId: __meta?.tabId,
+      requestPath: __meta?.requestPath,
     },
     ui: {
       hasHeaders: false,

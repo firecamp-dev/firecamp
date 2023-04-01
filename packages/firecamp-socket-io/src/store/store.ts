@@ -44,7 +44,15 @@ const createStore = (initialState: ISocket) =>
       __manualUpdates: 0,
       setContext: (ctx: any) => set({ context: ctx }),
       initialise: (request: Partial<ISocketIO>, tabId: TId) => {
-        const initState = initialiseStoreFromRequest(request, tabId);
+        const state = get();
+        const requestId = request.__ref?.id;
+        const requestPath = requestId
+          ? state.context?.request.getPath(requestId)
+          : { path: '', items: [] };
+        const initState = initialiseStoreFromRequest(request, {
+          tabId,
+          requestPath,
+        });
         set((s) => ({
           ...s, // do not remove this, we need the previously set state here so.
           ...initState,

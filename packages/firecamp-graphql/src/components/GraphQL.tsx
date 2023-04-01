@@ -121,8 +121,19 @@ const GraphQL = ({ tab, platformContext }) => {
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {}, id } = tab;
-    const initState = initialiseStoreFromRequest(request, id);
+    const {
+      id: tabId,
+      entity,
+      // __meta: { entityId }
+    } = tab;
+    const request = {
+      url: entity.url,
+      method: entity.method,
+      __meta: entity.__meta,
+      __ref: entity.__ref,
+    };
+
+    const initState = initialiseStoreFromRequest(request, { tabId });
     // console.log(tab, 'tab.....', initState)
     return (
       <StoreProvider createStore={() => createStore(initState)}>

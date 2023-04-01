@@ -12,6 +12,7 @@ const UrlBarContainer = ({ tabId }) => {
     method,
     __meta,
     __ref,
+    requestPath,
     isRequestRunning,
     isRequestSaved,
     context,
@@ -26,6 +27,7 @@ const UrlBarContainer = ({ tabId }) => {
       method: s.request.method,
       __meta: s.request.__meta,
       __ref: s.request.__ref,
+      requestPath: s.runtime.requestPath,
       isRequestRunning: s.runtime.isRequestRunning,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
@@ -69,13 +71,13 @@ const UrlBarContainer = ({ tabId }) => {
   const _onExecute = async () => {
     try {
       execute();
-    } catch (error) { }
+    } catch (error) {}
   };
 
   return (
     <Url
       id={tabId}
-      path={__meta.name}
+      path={requestPath?.path || 'Untitled Request'}
       placeholder={'http://'}
       isRequestSaved={isRequestSaved}
       url={url.raw}
@@ -98,24 +100,26 @@ const UrlBarContainer = ({ tabId }) => {
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
       }
-      suffixComponent={<>
-        <Button
-          text={isRequestRunning === true ? `Cancel` : `Send`}
-          onClick={_onExecute}
-          primary
-          sm
-        />
-        <Button
-          id={`save-request-${tabId}`}
-          text="Save"
-          onClick={_onSave}
-          disabled={false}
-          secondary
-          sm
-        />
-      </>}
+      suffixComponent={
+        <>
+          <Button
+            text={isRequestRunning === true ? `Cancel` : `Send`}
+            onClick={_onExecute}
+            primary
+            sm
+          />
+          <Button
+            id={`save-request-${tabId}`}
+            text="Save"
+            onClick={_onSave}
+            disabled={false}
+            secondary
+            sm
+          />
+        </>
+      }
     />
-  )
+  );
 };
 
 export default UrlBarContainer;
