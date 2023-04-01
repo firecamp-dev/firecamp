@@ -24,7 +24,6 @@ export enum EPlatformModalTypes {
   None = 'none', // Ideal type which represents no opened modal at all
 
   // organization
-  CreateOrg = 'createOrg',
   OrgManagement = 'orgManagement',
   SwitchOrg = 'switchOrg',
 
@@ -59,7 +58,6 @@ export enum EPlatformModalTypes {
 
 export const EPlatformModalDefaultProps = {
   // organization
-  [EPlatformModalTypes.CreateOrg]: { height: '50vh', width: '600px' },
   [EPlatformModalTypes.OrgManagement]: { height: '80vh', width: '600px' },
   [EPlatformModalTypes.SwitchOrg]: { width: '440px', className: 'p-0 !pb-6' },
 

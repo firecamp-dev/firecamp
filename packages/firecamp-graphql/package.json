@@ -31,10 +31,10 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.23",
+    "@firecamp/types": "^0.1.24",
     "@firecamp/ui": "workspace:*",
     "@firecamp/url": "0.0.20",
-    "@firecamp/utils": "^0.0.20",
+    "@firecamp/utils": "^0.0.21",
     "codemirror": "^5.63.0",
     "codemirror-graphql": "^1.0.2",
     "graphiql-explorer": "^0.9.0",

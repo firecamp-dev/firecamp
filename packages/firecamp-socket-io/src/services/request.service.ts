@@ -7,6 +7,7 @@ import {
   ISocketIO,
   ESocketIOClientVersion,
   TId,
+  TRequestPath,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { _object, _array, _string } from '@firecamp/utils';
@@ -102,7 +103,10 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
 
 export const initialiseStoreFromRequest = (
   _request: Partial<ISocketIO>,
-  tabId: TId
+  __meta?: {
+    tabId?: TId;
+    requestPath?: TRequestPath;
+  }
 ): ISocket => {
   const request: ISocketIO = normalizeRequest(_request);
   const defaultConnection =
@@ -129,7 +133,8 @@ export const initialiseStoreFromRequest = (
       ],
       isRequestRunning: false,
       isRequestSaved: !!request.__ref.collectionId,
-      tabId,
+      tabId: __meta?.tabId,
+      requestPath: __meta?.requestPath,
     },
     playgrounds: {
       // add logic for init playgrounds by connections

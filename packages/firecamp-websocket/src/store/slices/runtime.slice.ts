@@ -1,4 +1,4 @@
-import { TId } from '@firecamp/types';
+import { TId, TRequestPath } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 
 interface IPlaygroundTab {
@@ -16,7 +16,8 @@ interface IRuntime {
   activePlayground?: TId;
   isRequestSaved?: boolean;
   _dnp?: { [k: string]: any };
-  tabId?: TId;
+  requestPath?: TRequestPath;
+  tabId: TId;
 }
 
 interface IRuntimeSlice {

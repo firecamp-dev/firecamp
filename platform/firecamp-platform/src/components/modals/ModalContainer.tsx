@@ -13,7 +13,6 @@ import SignIn from './auth/SignIn';
 import SignInWithEmail from './auth/SignInWithEmail';
 import SignUp from './auth/SignUp';
 import SwitchOrg from './organization/SwitchOrg';
-import CreateOrg from './organization/CreateOrg';
 import InviteMembers from './workspace/invite-members/InviteMembers';
 import OrgManagement from './organization/OrgManagement';
 import WorkspaceManagement from './workspace/WorkspaceManagement';
@@ -38,8 +37,6 @@ export const ModalContainer = () => {
         return <></>;
 
       // Organization
-      case EPlatformModalTypes.CreateOrg:
-        return <CreateOrg isOpen={isOpen} onClose={close} />;
       case EPlatformModalTypes.OrgManagement:
         return <OrgManagement isOpen={isOpen} onClose={close} />;
       case EPlatformModalTypes.SwitchOrg:
@@ -96,10 +93,6 @@ export const ModalContainer = () => {
     <Modal isOpen={isOpen} onClose={close} {...modalProps}>
       <>
         {/* Organization */}
-        <CreateOrg
-          isOpen={modalType == EPlatformModalTypes.CreateOrg && isOpen}
-          onClose={close}
-        />
         <OrgManagement
           isOpen={modalType == EPlatformModalTypes.OrgManagement && isOpen}
           onClose={close}

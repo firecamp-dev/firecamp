@@ -1,4 +1,5 @@
 import { useState, memo } from 'react';
+import shallow from 'zustand/shallow';
 import {
   Container,
   Checkbox,
@@ -8,22 +9,19 @@ import {
   Popover,
 } from '@firecamp/ui';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import shallow from 'zustand/shallow';
 import Connection from './connection/Connection';
 import { IStore, useStore } from '../../store';
 
 const ConnectionPanel = () => {
-  const { activePlayground, playgroundTabs, setActivePlayground } =
-    useStore(
-      (s: IStore) => ({
-        config: s.request.config,
-        activePlayground: s.runtime.activePlayground,
-        playgroundTabs: s.runtime.playgroundTabs,
-
-        setActivePlayground: s.setActivePlayground,
-      }),
-      shallow
-    );
+  const { activePlayground, playgroundTabs, setActivePlayground } = useStore(
+    (s: IStore) => ({
+      config: s.request.config,
+      activePlayground: s.runtime.activePlayground,
+      playgroundTabs: s.runtime.playgroundTabs,
+      setActivePlayground: s.setActivePlayground,
+    }),
+    shallow
+  );
 
   const [isAddConnPopoverOpen, toggleConnPopover] = useState(false);
 
@@ -37,8 +35,7 @@ const ConnectionPanel = () => {
     }
   };
 
-  const _toggleDeleteConnection = (index, id) => {
-  };
+  const _toggleDeleteConnection = (index, id) => {};
 
   const _onSelectConnectionTab = (id) => {
     setActivePlayground(id);

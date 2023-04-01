@@ -115,7 +115,7 @@ const PlaygroundTab = () => {
   const _setToOriginal = () => {};
   const _saveMessage = () => {
     const { isSaved } = plgTab.__meta;
-    console.log(plgTab.__meta, "__meta....F")
+    console.log(plgTab.__meta, '__meta....F');
     if (isSaved) {
       updateItem();
     } else {
@@ -350,13 +350,7 @@ const PlaygroundTab = () => {
         </TabHeader>
       </Container.Header>
       <Container.Body className="!mt-0">
-        {activeType.id === EMessagePayloadTypes.none ? (
-          <Container.Empty>
-            {/* <QuickSelection menus={quickSelectionMenus} /> //TODO: manage it later if feel need */}
-          </Container.Empty>
-        ) : (
-          _renderActiveBody(activeType)
-        )}
+        {_renderActiveBody(activeType)}
       </Container.Body>
     </Container>
   );

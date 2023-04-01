@@ -6,7 +6,7 @@ import {
   EArgumentBodyType,
 } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
-import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
+import { TreeDataProvider } from '../../components/sidebar-panel/panes/collection-tree/TreeDataProvider';
 
 interface ICollection {
   isProgressing?: boolean;

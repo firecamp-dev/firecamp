@@ -110,7 +110,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            platformContext.app.modals.openCreateOrg();
+            platformContext.platform.createOrganizationPrompt();
           },
         },
         {
@@ -281,7 +281,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
           onClick: () => {
-            platformContext.app.modals.openCreateOrg();
+            platformContext.platform.createOrganizationPrompt();
           },
         },
         {

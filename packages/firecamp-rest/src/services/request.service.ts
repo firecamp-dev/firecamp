@@ -17,6 +17,7 @@ import {
   EScriptLanguages,
   EScriptTypes,
   IAuthBearer,
+  TRequestPath,
 } from '@firecamp/types';
 import {
   _object,
@@ -274,7 +275,10 @@ export const normalizeRequest = (request: Partial<IRest>): IRest => {
 
 export const initialiseStoreFromRequest = (
   _request: Partial<IRest>,
-  tabId: TId
+  __meta?: {
+    tabId?: TId;
+    requestPath?: TRequestPath;
+  }
 ): IStoreState => {
   const request: IRest = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
@@ -312,7 +316,8 @@ export const initialiseStoreFromRequest = (
       },
       isRequestSaved: !!request.__ref.collectionId,
       oauth2LastFetchedToken: '',
-      tabId,
+      tabId: __meta?.tabId,
+      requestPath: __meta?.requestPath,
     },
   };
 };

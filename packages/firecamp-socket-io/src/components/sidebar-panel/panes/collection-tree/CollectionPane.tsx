@@ -4,11 +4,11 @@ import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui';
-import treeRenderer from './collection-tree/treeItemRenderer';
-import { IStore, useStore, useStoreApi } from '../../../store';
 import { TId } from '@firecamp/types';
+import treeRenderer from './treeItemRenderer';
+import { IStore, useStore, useStoreApi } from '../../../../store';
 
-const CollectionTab = () => {
+const CollectionPane = () => {
   const {
     context,
     isRequestSaved,
@@ -34,12 +34,13 @@ const CollectionTab = () => {
     const _folder = prepareCreateFolderPayload('', parentFolderId);
     context.request.createRequestFolderPrompt(_folder).then(onCreateFolder);
   };
+
   return (
     <Pane
       expanded={true}
       bodyClassName={'!p-0'}
       headerTitleRenderer={() => {
-        return <span>Emitter Collection</span>;
+        return <span>EMITTER COLLECTION</span>;
       }}
       headerActionRenderer={() => {
         return (
@@ -63,7 +64,7 @@ const CollectionTab = () => {
     />
   );
 };
-export default CollectionTab;
+export default CollectionPane;
 
 const Collection = ({ openCreateFolderPrompt }) => {
   const treeRef = useRef();

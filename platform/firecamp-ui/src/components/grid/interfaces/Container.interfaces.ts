@@ -48,6 +48,7 @@ export interface IFooter {
    * Add class name to show custom styling
    */
   className?: string;
+  flex?: string;
 }
 
 export interface IEmpty {

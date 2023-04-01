@@ -1,7 +1,9 @@
-import { Container, Column, Resizable } from '@firecamp/ui';
 import shallow from 'zustand/shallow';
-import CollectionTab from './tabs/CollectionTab';
+import { Container, Column, Resizable } from '@firecamp/ui';
+import CollectionTab from './panes/collection-tree/CollectionPane';
 import { useStore, IStore } from '../../store';
+import ListenerPane from './panes/listeners/ListenerPane';
+import CollectionPane from './panes/collection-tree/CollectionPane';
 
 export enum ESidebarTabs {
   Collection = 'Collection',
@@ -19,41 +21,6 @@ const SidebarPanel = () => {
     shallow
   );
 
-  // console.log(playgrounds, 'playgrounds... counts');
-
-  // const tabs = useMemo(
-  //   () => [
-  //     {
-  //       id: ESidebarTabs.Collection,
-  //       name: ESidebarTabs.Collection,
-  //       // count: playgrounds,
-  //     },
-  //     {
-  //       id: ESidebarTabs.Config,
-  //       name: ESidebarTabs.Config,
-  //     },
-  //   ],
-  //   []
-  // );
-
-  // const _setActiveTab = (tab) => {
-  //   if (tab) {
-  //     // console.log(`tab`, tab);
-  //     changeUiActiveTab(tab);
-  //   }
-  // };
-
-  const _getRender = (tab) => {
-    switch (tab) {
-      case ESidebarTabs.Collection:
-        return <CollectionTab />;
-      case ESidebarTabs.Config:
-      // return <HeadersTab />;
-      default:
-        return <></>;
-    }
-  };
-
   return (
     <Resizable
       right={true}
@@ -64,21 +31,17 @@ const SidebarPanel = () => {
     >
       <Column>
         <Container className="w-full">
-          {/* <Container.Header className="z-20">
-            <Tabs
-              list={tabs}
-              activeTab={activeTab}
-              className="w-full"
-              onSelect={_setActiveTab}
-              equalWidth={true}
-            />
-          </Container.Header> */}
           <Container.Body>
             <div
               id={activeTab}
               className="invisible-scrollbar tab-content h-full"
             >
-              {_getRender(activeTab)}
+              <div className="w-full h-full flex flex-row explorer-wrapper">
+                <Container>
+                  <ListenerPane />
+                  <CollectionPane />
+                </Container>
+              </div>
             </div>
           </Container.Body>
         </Container>

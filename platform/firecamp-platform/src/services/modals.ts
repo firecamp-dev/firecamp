@@ -67,11 +67,6 @@ const modalService = {
   },
 
   // Organization
-  openCreateOrg: () => {
-    const { isGuest } = useUserStore.getState();
-    if (isGuest) return modalService.openSignIn();
-    open(EPlatformModalTypes.CreateOrg);
-  },
   openOrgManagement: () => {
     const { isGuest } = useUserStore.getState();
     if (isGuest) return modalService.openSignIn();

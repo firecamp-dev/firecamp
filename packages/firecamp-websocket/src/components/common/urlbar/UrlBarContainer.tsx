@@ -5,10 +5,11 @@ import ConnectButton from '../connection/ConnectButton';
 import { IStore, useStore } from '../../../store';
 
 const UrlBarContainer = ({ tab }) => {
-  const { url, displayUrl, changeUrl, save } = useStore(
+  const { url, displayUrl, requestPath, changeUrl, save } = useStore(
     (s: IStore) => ({
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
+      requestPath: s.runtime.requestPath,
       changeUrl: s.changeUrl,
       save: s.save,
     }),
@@ -34,7 +35,7 @@ const UrlBarContainer = ({ tab }) => {
   return (
     <Url
       id={tab.id}
-      // path={__meta.name}
+      path={requestPath?.path || 'Untitled Request'}
       placeholder={'ws://'}
       // isRequestSaved={isRequestSaved}
       url={displayUrl}
@@ -50,19 +51,21 @@ const UrlBarContainer = ({ tab }) => {
         // });
       }}
       prefixComponent={<Button text={'WebSocket'} secondary sm />}
-      suffixComponent={<>
-        <ConnectButton sm={true} />
-        <Button
-          id={`save-request-${tab.id}`}
-          text="Save"
-          disabled={false}
-          onClick={_onSave}
-          secondary
-          sm
-        />
-      </>}
+      suffixComponent={
+        <>
+          <ConnectButton sm={true} />
+          <Button
+            id={`save-request-${tab.id}`}
+            text="Save"
+            disabled={false}
+            onClick={_onSave}
+            secondary
+            sm
+          />
+        </>
+      }
     />
-  )
+  );
 };
 
 export default UrlBarContainer;

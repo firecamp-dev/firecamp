@@ -1,11 +1,5 @@
 import { useEffect } from 'react';
-import {
-  Container,
-  Row,
-  RootContainer,
-  Column,
-  Loader,
-} from '@firecamp/ui';
+import { Container, Row, RootContainer, Column, Loader } from '@firecamp/ui';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
 import { _array, _object } from '@firecamp/utils';
@@ -113,8 +107,17 @@ const Socket = ({ tab, platformContext }) => {
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {}, id } = tab;
-    const initState = initialiseStoreFromRequest(request, id);
+    const {
+      id: tabId,
+      entity,
+      // __meta: { entityId }
+    } = tab;
+    const request = {
+      url: entity.url,
+      __meta: entity.__meta,
+      __ref: entity.__ref,
+    };
+    const initState = initialiseStoreFromRequest(request, { tabId });
     return (
       <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />

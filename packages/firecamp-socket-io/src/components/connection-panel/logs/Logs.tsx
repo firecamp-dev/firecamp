@@ -14,10 +14,9 @@ import {
   Resizable,
 } from '@firecamp/ui';
 import LogTable from './log-table/LogTable';
-import Listeners from './listeners/Listeners';
+import LogPreview from './log-table/LogPreview';
 import { useStore, IStore } from '../../../store';
 import { ELogTypes } from '../../../types';
-import LogPreview from './log-table/LogPreview';
 
 const logTypes = {
   System: ELogTypes.System,
@@ -47,7 +46,7 @@ const Logs = () => {
   );
 
   const handleFS = useFullScreenHandle();
-  const logTableApiRef = useRef({});
+  const logTableApiRef = useRef(null);
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
 
@@ -103,7 +102,7 @@ const Logs = () => {
                 <div className="fc-btn-collapse v2">
                   {/* <VscChevronRight onClick={_setVisiblePanel}/> */}
                 </div>
-                <TabHeader className="height-small border-b border-appBorder padding-left-extra">
+                <TabHeader className="height-small border-b border-appBorder">
                   <TabHeader.Left>
                     <label className="m-0 text-sm font-bold whitespace-pre">
                       Event Logs
@@ -115,7 +114,7 @@ const Logs = () => {
                     </label> */}
                     <div className="flex items-center">
                       {/* <label className="m-0 text-base font-bold">Type</label> */}
-                      <span>
+                      {logs?.length ? (
                         <Dropdown
                           selected={typeFilter || 'select log type'}
                           className="fc-dropdown-fixwidth"
@@ -143,25 +142,20 @@ const Logs = () => {
                             onSelect={(type) => _onFilter(type?.name)}
                           />
                         </Dropdown>
-                      </span>
-
-                      {typeFilter ? (
-                        <div className="pl-1 w-4">
-                          <span
-                            className="text-base icv2-remove-icon"
-                            onClick={() => _onFilter('')}
-                          />
-                        </div>
                       ) : (
                         <></>
                       )}
                     </div>
                     <div className="flex">
-                      <VscCircleSlash
-                        className="cursor-pointer"
-                        title="clear logs"
-                        onClick={_onClearAllMessages}
-                      />
+                      {logs?.length ? (
+                        <VscCircleSlash
+                          className="cursor-pointer"
+                          title="clear logs"
+                          onClick={_onClearAllMessages}
+                        />
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   </TabHeader.Right>
                 </TabHeader>
@@ -191,34 +185,37 @@ const Logs = () => {
                 </TabHeader>
               </Container.Header>
               <Container.Body overflow="hidden" className="flex flex-col">
-                <LogTable
-                  onLoad={(tApi) => {
-                    logTableApiRef.current = tApi;
-                  }}
-                  onFocusRow={(r) => {
-                    setSelectedRow(r);
-                  }}
-                />
-                {
-                  selectedRow ?
-                    <Resizable
-                      top={true}
-                      height="250px"
-                      width="100%"
-                      maxHeight={400}
-                      minHeight={50}
-                      onResizeStop={_onResizeStop}
-                      className="bg-focus-3"
-                    >
-                      <LogPreview row={selectedRow} />
-                    </Resizable>
-                    : <></>
-                }
+                {logs?.length ? (
+                  <LogTable
+                    onLoad={(tApi) => {
+                      logTableApiRef.current = tApi;
+                    }}
+                    onFocusRow={(r) => {
+                      setSelectedRow(r);
+                    }}
+                  />
+                ) : (
+                  <></>
+                )}
 
+                {selectedRow ? (
+                  <Resizable
+                    top={true}
+                    height="250px"
+                    width="100%"
+                    maxHeight={400}
+                    minHeight={50}
+                    onResizeStop={_onResizeStop}
+                    className="bg-focus-3"
+                  >
+                    <LogPreview row={selectedRow} />
+                  </Resizable>
+                ) : (
+                  <></>
+                )}
               </Container.Body>
             </Container>
           </Column>
-          <Listeners />
         </Row>
       </FullScreen>
     </Column>

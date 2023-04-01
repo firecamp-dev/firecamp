@@ -140,7 +140,7 @@ const withStore = (WrappedComponent) => {
       __meta: entity.__meta,
       __ref: entity.__ref,
     };
-    const initState = initialiseStoreFromRequest(request, tabId);
+    const initState = initialiseStoreFromRequest(request, { tabId });
     // console.log(initState);
     return (
       <StoreProvider createStore={() => createStore(initState)}>

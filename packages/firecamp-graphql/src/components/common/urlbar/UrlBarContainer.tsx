@@ -14,6 +14,7 @@ const UrlBarContainer = ({ tab }) => {
     method,
     __meta,
     __ref,
+    requestPath,
     isRequestSaved,
     context,
     changeUrl,
@@ -27,6 +28,7 @@ const UrlBarContainer = ({ tab }) => {
       method: s.request.method,
       __meta: s.request.__meta,
       __ref: s.request.__ref,
+      requestPath: s.runtime.requestPath,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
       changeUrl: s.changeUrl,
@@ -62,11 +64,10 @@ const UrlBarContainer = ({ tab }) => {
     }
   };
 
-
   return (
     <Url
       id={`url-${tab.id}`}
-      path={__meta.name}
+      path={requestPath?.path || 'Untitled Request'}
       placeholder={'http://'}
       isRequestSaved={isRequestSaved}
       url={url.raw}
@@ -90,36 +91,38 @@ const UrlBarContainer = ({ tab }) => {
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
       }
-      suffixComponent={<>
-        <Button
-          onClick={_toggleGraphqlDoc}
-          icon={<FaFile fontSize={16} />}
-          id={`open-schema-doc-${tab.id}`}
-          tooltip={'open schema doc'}
-          iconCenter
-          secondary
-          sm
-        />
-        <Button
-          icon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
-          onClick={fetchIntrospectionSchema}
-          id={`refresh-schema-${tab.id}`}
-          tooltip={'refresh schema'}
-          iconLeft
-          primary
-          sm
-        />
-        <Button
-          id={`save-request-${tab.id}`}
-          text="Save"
-          onClick={_onSave}
-          disabled={false}
-          secondary
-          sm
-        />
-      </>}
+      suffixComponent={
+        <>
+          <Button
+            onClick={_toggleGraphqlDoc}
+            icon={<FaFile fontSize={16} />}
+            id={`open-schema-doc-${tab.id}`}
+            tooltip={'open schema doc'}
+            iconCenter
+            secondary
+            sm
+          />
+          <Button
+            icon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
+            onClick={fetchIntrospectionSchema}
+            id={`refresh-schema-${tab.id}`}
+            tooltip={'refresh schema'}
+            iconLeft
+            primary
+            sm
+          />
+          <Button
+            id={`save-request-${tab.id}`}
+            text="Save"
+            onClick={_onSave}
+            disabled={false}
+            secondary
+            sm
+          />
+        </>
+      }
     />
-  )
+  );
 };
 
 export default UrlBarContainer;

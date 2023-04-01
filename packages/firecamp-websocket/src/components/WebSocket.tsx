@@ -3,13 +3,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import shallow from 'zustand/shallow';
 import { _array, _object } from '@firecamp/utils';
-import {
-  Container,
-  Column,
-  Row,
-  RootContainer,
-  Loader,
-} from '@firecamp/ui';
+import { Container, Column, Row, RootContainer, Loader } from '@firecamp/ui';
 import { initialiseStoreFromRequest } from '../services/request.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
@@ -131,8 +125,17 @@ const WebSocket = ({ tab, platformContext }) => {
 
 const withStore = (WrappedComponent) => {
   const MyComponent = ({ tab, ...props }) => {
-    const { request = {}, id } = tab;
-    const initState = initialiseStoreFromRequest(request, id);
+    const {
+      id: tabId,
+      entity,
+      // __meta: { entityId }
+    } = tab;
+    const request = {
+      url: entity.url,
+      __meta: entity.__meta,
+      __ref: entity.__ref,
+    };
+    const initState = initialiseStoreFromRequest(request, { tabId });
     return (
       <StoreProvider createStore={() => createStore(initState)}>
         <WrappedComponent tab={tab} {...props} />

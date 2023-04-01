@@ -1,4 +1,4 @@
-import { IHeader, IAuth, TId, IScript } from '@firecamp/types';
+import { IHeader, IAuth, TId, IScript, TRequestPath } from '@firecamp/types';
 import { _auth } from '@firecamp/utils';
 import { RuntimeBodies } from '../../constants';
 import { TStoreSlice } from '../store.type';
@@ -24,6 +24,7 @@ interface IRuntime {
   isRequestRunning?: boolean;
   isRequestSaved?: boolean;
   oauth2LastFetchedToken: string;
+  requestPath?: TRequestPath;
   tabId: TId;
 }
 
