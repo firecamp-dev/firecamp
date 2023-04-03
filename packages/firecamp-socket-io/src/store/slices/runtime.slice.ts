@@ -26,6 +26,7 @@ interface IRuntime {
 interface IRuntimeSlice {
   runtime?: IRuntime;
 
+  getActiveConnectionId: () => TId;
   setActivePlayground: (playgroundId: TId) => void;
   addPlaygroundTab: (playground: IPlaygroundTab) => void;
   changePlaygroundTab: (playgroundId: TId, updates: object) => void;
@@ -45,6 +46,10 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
     isRequestRunning: false,
     isRequestSaved: false,
     ...initialRuntime,
+  },
+
+  getActiveConnectionId: () => {
+    return get().runtime.activePlayground;
   },
 
   setActivePlayground: (playgroundId: TId) => {

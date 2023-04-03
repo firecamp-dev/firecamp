@@ -69,7 +69,10 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
       const _request = state.preparePayloadForUpdateRequest();
-      state.context.request.update(_request, tabId);
+      state.context.request.save(_request, tabId).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
     }
   },
 });

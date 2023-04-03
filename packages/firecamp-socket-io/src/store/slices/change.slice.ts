@@ -29,7 +29,7 @@ interface IRequestChangeStateSlice {
   disposeRCS: () => void;
 }
 
-//@note; always use _cloneDeep at its usage otherrwise it's value will be manipulate at global scope
+//@note; always use _cloneDeep at its usage other wise it's value will be manipulate at global scope
 const initialSliceState = {
   requestChangeState: {
     url: [],

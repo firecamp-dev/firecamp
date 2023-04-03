@@ -43,13 +43,12 @@ const createHandleConnectionExecutor: TStoreSlice<
      * 2. Manager ssl n proxy logic
      */
     const state = get();
-    const { activePlayground } = state.runtime;
     // to avoid DOM e event
     if (!connectionId || typeof connectionId != 'string')
-      connectionId = activePlayground;
+      connectionId = state.getActiveConnectionId();
 
     const { playgrounds } = state;
-    const connectionState = playgrounds[activePlayground].connectionState;
+    const connectionState = playgrounds[connectionId].connectionState;
     if (
       ![EConnectionState.Ideal, EConnectionState.Closed].includes(
         connectionState
@@ -134,11 +133,11 @@ const createHandleConnectionExecutor: TStoreSlice<
 
   disconnect: (connectionId: TId) => {
     const state = get();
-    const {
-      playgrounds,
-      runtime: { activePlayground },
-    } = state;
-    const connectionState = playgrounds[activePlayground].connectionState;
+    const { playgrounds } = state;
+    // to avoid DOM e event
+    if (!connectionId || typeof connectionId != 'string')
+      connectionId = state.getActiveConnectionId();
+    const connectionState = playgrounds[connectionId].connectionState;
     if (
       ![EConnectionState.Connecting, EConnectionState.Open].includes(
         connectionState
@@ -146,9 +145,6 @@ const createHandleConnectionExecutor: TStoreSlice<
     ) {
       return;
     }
-    // to avoid DOM e event
-    if (!connectionId || typeof connectionId != 'string')
-      connectionId = activePlayground;
 
     try {
       const existingPlayground = state.getPlayground(connectionId);

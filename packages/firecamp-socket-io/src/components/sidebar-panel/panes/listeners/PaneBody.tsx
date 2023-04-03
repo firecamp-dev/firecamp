@@ -8,19 +8,17 @@ import {
   Button,
   Column,
 } from '@firecamp/ui';
-import { IStore, useStore } from '../../../../store';
+import { IStore, useStore, useStoreApi } from '../../../../store';
 
 const PaneBody = () => {
-  let { listeners, activePlayground, updatePlaygroundListenersValue } =
-    useStore(
-      (s: IStore) => ({
-        updatePlaygroundListenersValue: s.updatePlayground,
-        listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
-        activePlayground: s.runtime.activePlayground,
-        deletePlaygroundListener: s.deletePlaygroundListener,
-      }),
-      shallow
-    );
+  let { listeners, activePlayground, toggleAllListeners } = useStore(
+    (s: IStore) => ({
+      toggleAllListeners: s.toggleAllListeners,
+      listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
+      activePlayground: s.runtime.activePlayground,
+    }),
+    shallow
+  );
 
   listeners = {
     message: true,
@@ -45,7 +43,7 @@ const PaneBody = () => {
     <Column>
       <Container>
         <Container.Header>
-          <AddListener activePlayground={activePlayground} />
+          <AddListener />
         </Container.Header>
         <Container.Body>
           {Object.keys(listeners).map((listener, index) => {
@@ -53,7 +51,6 @@ const PaneBody = () => {
               <Listener
                 id={'' + index}
                 key={index}
-                activePlayground={activePlayground}
                 name={listener || ''}
                 value={listeners[listener] || false}
               />
@@ -67,7 +64,7 @@ const PaneBody = () => {
                 key={`listener-off-all-${activePlayground}`}
                 text="Listen off all"
                 onClick={() => {
-                  updatePlaygroundListenersValue(activePlayground, false);
+                  toggleAllListeners(false);
                 }}
                 transparent
                 secondary
@@ -78,7 +75,7 @@ const PaneBody = () => {
                 key={`listener-on-all-${activePlayground}`}
                 text="Listen all"
                 onClick={() => {
-                  updatePlaygroundListenersValue(activePlayground, true);
+                  toggleAllListeners(true);
                 }}
                 transparent
                 secondary
@@ -95,13 +92,8 @@ const PaneBody = () => {
 };
 export default PaneBody;
 
-const AddListener = ({ activePlayground = '' }) => {
-  const { updatePlaygroundListener } = useStore(
-    (s: IStore) => ({
-      updatePlaygroundListener: s.updatePlaygroundListener,
-    }),
-    shallow
-  );
+const AddListener = () => {
+  const { toggleListener } = useStoreApi().getState() as IStore;
 
   const [listenerName, setListenerName] = useState('');
 
@@ -121,11 +113,9 @@ const AddListener = ({ activePlayground = '' }) => {
 
   const _onAddListener = (e) => {
     if (e) e.preventDefault();
-
     const listener = listenerName.trim();
     if (!listener) return;
-
-    updatePlaygroundListener(activePlayground, listener, false);
+    toggleListener(false, listener);
     setListenerName('');
   };
 
@@ -155,36 +145,23 @@ const AddListener = ({ activePlayground = '' }) => {
   );
 };
 
-const Listener = ({
-  id = '',
-  activePlayground = '',
-  name = 'Listener',
-  value = false,
-}) => {
-  const { updatePlaygroundListener, deletePlaygroundListener } = useStore(
-    (s) => ({
-      updatePlaygroundListener: s.updatePlaygroundListener,
-      deletePlaygroundListener: s.deletePlaygroundListener,
-    })
-  );
+const Listener = ({ id = '', name = 'Listener', value = false }) => {
+  const { toggleListener, deleteListener, getActiveConnectionId } =
+    useStoreApi().getState() as IStore;
 
-  const uniqueId = `${activePlayground}-${id}-listen`;
+  const uniqueId = `${getActiveConnectionId()}-${id}-listen`;
 
-  const _onToggleListen = (event) => {
-    updatePlaygroundListener(
-      activePlayground,
-      name,
-      event?.target?.checked || false
-    );
+  const _onToggleListen = (e) => {
+    toggleListener(e?.target?.checked || false, name);
   };
 
   const _onRemove = (event) => {
     if (event) event.preventDefault();
-    deletePlaygroundListener(activePlayground, name);
+    deleteListener(name);
   };
 
   return (
-    <div className="fc-listeners-list-item flex justify-center items-center relative px-2 py-0.5">
+    <div className="flex justify-center items-center relative px-2 py-0.5">
       <div
         className="flex-1 overflow-hidden overflow-ellipsis text-base"
         data-tip={name}
