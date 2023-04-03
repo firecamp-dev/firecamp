@@ -11,6 +11,7 @@ export { default as Scrollbar } from './components/scroll-bar/ScrollBar';
 
 export { default as FormField } from './components/form/FormField';
 export { default as SwitchButton } from './components/form/SwitchButton';
+export { default as SwitchButtonV2 } from './components/form/SwitchButtonV2';
 export { default as TextArea } from './components/form/TextArea';
 
 export { default as Row } from './components/grid/Row';

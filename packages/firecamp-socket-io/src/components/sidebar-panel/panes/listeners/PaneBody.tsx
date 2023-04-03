@@ -7,11 +7,12 @@ import {
   TabHeader,
   Button,
   Column,
+  SwitchButtonV2,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
 
 const PaneBody = () => {
-  let { listeners, activePlayground, toggleAllListeners } = useStore(
+  const { listeners, activePlayground, toggleAllListeners } = useStore(
     (s: IStore) => ({
       toggleAllListeners: s.toggleAllListeners,
       listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
@@ -19,25 +20,6 @@ const PaneBody = () => {
     }),
     shallow
   );
-
-  listeners = {
-    message: true,
-    event: true,
-    'request:updated': true,
-    message1: true,
-    eventq: true,
-    'requestw:updated': true,
-    messagew: true,
-    evente: true,
-    'requeest:updated': true,
-    messagee: true,
-    eventr: true,
-    'requestr:updated': true,
-    'reqdueest:updated': true,
-    messsagee: true,
-    evenftr: true,
-    'reqsuestr:updated': true,
-  };
 
   return (
     <Column>
@@ -94,9 +76,7 @@ export default PaneBody;
 
 const AddListener = () => {
   const { toggleListener } = useStoreApi().getState() as IStore;
-
   const [listenerName, setListenerName] = useState('');
-
   const _handleInputChange = (e) => {
     if (e) {
       e.preventDefault();
@@ -104,7 +84,6 @@ const AddListener = () => {
       setListenerName(value);
     }
   };
-
   const _handleKeyDown = (e) => {
     if (e && e.key === 'Enter') {
       _onAddListener(e);
@@ -170,6 +149,7 @@ const Listener = ({ id = '', name = 'Listener', value = false }) => {
         {name}
       </div>
       <div className="small">
+        {/* <SwitchButtonV2/> */}
         <Checkbox
           id={uniqueId}
           isChecked={value}
