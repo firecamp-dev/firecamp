@@ -12,6 +12,7 @@ import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace } from '../../../../../types';
 import { useWorkspaceStore } from '../../../../../store/workspace';
+import platformContext from '../../../../../services/platform-context';
 
 interface IMember {
   name: string;
@@ -98,7 +99,18 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
           <></>
         )}
       </Container.Body>
-      <Container.Footer>
+      <Container.Footer className="flex items-center">
+      <a
+          className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
+          target="_blank"
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            platformContext.app.modals.openWorkspaceManagement();
+          }}
+        >
+          Open Workspace Management
+        </a>
         <Button
           className="ml-auto"
           text={isInvitingMembers ? 'Sending invitation...' : 'Send Invitation'}

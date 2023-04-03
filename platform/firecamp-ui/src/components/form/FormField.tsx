@@ -3,10 +3,9 @@ import { FC } from "react";
 import cx from 'classnames';
 //import '../../scss/tailwind.scss';
 
-import { IFormGroup } from "./interfaces/FormGroup.interfaces"
+import { IFormField } from "./interfaces/FormField.interfaces"
 
-// TODO: update name & usage as FormField
-const FormGroup: FC<IFormGroup> = ({
+const FormField: FC<IFormField> = ({
     id = '',
     className = '',
     label = '',
@@ -22,4 +21,4 @@ const FormGroup: FC<IFormGroup> = ({
         </div>
     );
 };
-export default FormGroup
+export default FormField
