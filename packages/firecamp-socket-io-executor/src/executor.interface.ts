@@ -1,10 +1,11 @@
-import { IEmitterArgument, ELogEvents, ILog } from './types';
 import {
   ICertificate,
   ISocketIOConfig,
   ISocketIOConnection,
+  ISocketIOEmitter,
   IUrl,
 } from '@firecamp/types';
+import { ELogEvents, ILog } from './types';
 
 export interface TExecutorOptions {
   io: any;
@@ -66,7 +67,7 @@ export interface IExecutorInterface {
    */
   prepareEmitPayload(
     eventName: string,
-    args: Array<IEmitterArgument>
+    args: ISocketIOEmitter['value']
   ): Promise<any>;
 
   /**
@@ -75,7 +76,7 @@ export interface IExecutorInterface {
    * @param eventName
    * @param args
    */
-  emit(eventName: string, args: Array<IEmitterArgument>): Promise<void>;
+  emit(eventName: string, args: ISocketIOEmitter['value']): Promise<void>;
 
   /**
    * Emit the arguments over the socket on specified event
@@ -84,7 +85,10 @@ export interface IExecutorInterface {
    * @param eventName
    * @param args
    */
-  emitWithAck(eventName: string, args: Array<IEmitterArgument>): Promise<void>;
+  emitWithAck(
+    eventName: string,
+    args: ISocketIOEmitter['value']
+  ): Promise<void>;
 
   /**
    * Start ping to the Socket.IO server

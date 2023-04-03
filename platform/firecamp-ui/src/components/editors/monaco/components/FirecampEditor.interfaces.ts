@@ -6,9 +6,9 @@ export interface IFirecampEditor {
   options?: IOptions
 
   /**
-   * Editor contols config
+   * Editor controls config
    */
-  controlsConfig?: IcontrolsConfig
+  controlsConfig?: IControlsConfig
 
   /**
    * On change editor string
@@ -77,7 +77,7 @@ export interface IOptions {
   monacoOptions?: any // TODO: add interface
 }
 
-export interface IcontrolsConfig {
+export interface IControlsConfig {
 
   /**
    * A boolean value whether controls are visible or not

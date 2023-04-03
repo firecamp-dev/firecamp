@@ -1,15 +1,18 @@
 import mitt from 'mitt';
-import { ESocketIOClientVersion, EFirecampAgent } from '@firecamp/types';
+import {
+  ESocketIOClientVersion,
+  EFirecampAgent,
+  ISocketIOEmitter,
+  EArgumentBodyType,
+} from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import * as bodyParser from './body-parser';
 import {
   CustomLogTypes,
   EConnectionStatus,
-  EArgumentType,
   ELogEvents,
   ELogTypes,
   ELogColors,
-  IEmitterArgument,
   ILog,
 } from './types';
 import { IExecutorInterface, TExecutorOptions } from './executor.interface';
@@ -176,9 +179,9 @@ export default class Executor implements IExecutorInterface {
           });
           if (
             [
-              EArgumentType.ArrayBuffer,
-              EArgumentType.ArrayBufferView,
-              EArgumentType.File,
+              EArgumentBodyType.ArrayBuffer,
+              EArgumentBodyType.ArrayBufferView,
+              EArgumentBodyType.File,
             ].includes(body[index].meta.type)
           )
             log.message[index].meta.length = Object.values(
@@ -330,7 +333,7 @@ export default class Executor implements IExecutorInterface {
 
   async prepareEmitPayload(
     eventName: string,
-    args: Array<IEmitterArgument>
+    args: ISocketIOEmitter['value']
   ): Promise<any> {
     let log: any;
 
@@ -351,15 +354,16 @@ export default class Executor implements IExecutorInterface {
         }
       );
 
+  //@ts-ignore //TODO: check type here
     const body = await bodyParser.parseEmitterArguments(args);
 
     args.forEach((arg, index) => {
       if (
         [
-          EArgumentType.ArrayBuffer,
-          EArgumentType.ArrayBufferView,
-          EArgumentType.File,
-        ].includes(arg.meta.type)
+          EArgumentBodyType.ArrayBuffer,
+          EArgumentBodyType.ArrayBufferView,
+          EArgumentBodyType.File,
+        ].includes(arg.__meta.type)
       )
         log.message[index].meta.length = Object.values(
           this.calculateMessageSize(body[index]?.byteLength)
@@ -372,7 +376,10 @@ export default class Executor implements IExecutorInterface {
     return { event: eventName, body, logId: log.meta.id };
   }
 
-  async emit(eventName: string, args: Array<IEmitterArgument>): Promise<void> {
+  async emit(
+    eventName: string,
+    args: ISocketIOEmitter['value']
+  ): Promise<void> {
     try {
       const { event, body } = await this.prepareEmitPayload(eventName, args);
 
@@ -401,7 +408,7 @@ export default class Executor implements IExecutorInterface {
 
   async emitWithAck(
     eventName: string,
-    args: Array<IEmitterArgument>
+    args: ISocketIOEmitter['value']
   ): Promise<void> {
     try {
       const { event, body, logId } = await this.prepareEmitPayload(

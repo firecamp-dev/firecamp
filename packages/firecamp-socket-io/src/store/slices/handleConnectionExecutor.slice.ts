@@ -121,7 +121,7 @@ const createHandleConnectionExecutor: TStoreSlice<
       state.setPlgExecutor(connectionId, executor);
 
       // listen to on connect listener
-      state.listenOnConnect(connectionId);
+      // state.listenOnConnect(connectionId);
     } catch (error) {
       console.info({
         API: 'socket.connect',
@@ -179,32 +179,28 @@ const createHandleConnectionExecutor: TStoreSlice<
        * 2. history
        */
 
-      const existingPlayground = state.getPlayground(connectionId);
+      const playground = state.getPlayground(connectionId);
       if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
+        playground?.connectionState === EConnectionState.Open &&
+        playground.executor
       ) {
         // TODO: check if connection open or not. if not then executor will send log with error emitter
 
-        emitter = _object.omit(emitter, ['path']);
-        // console.log({ emitter });
-
         // send emitter
         if (emitter?.__meta.ack) {
-          existingPlayground.executor.emitWithAck(emitter.name, emitter.value);
+          playground.executor.emitWithAck(emitter.name, emitter.value);
         } else {
-          existingPlayground.executor.emit(emitter.name, emitter.value);
+          playground.executor.emit(emitter.name, emitter.value);
         }
       } else {
         state.addErrorLog(connectionId, 'disconnected');
       }
-    } catch (error) {
+    } catch (e) {
       console.info({
         API: 'socket.send',
         connectionId,
         emitter,
-        error,
+        e,
       });
     }
   },
