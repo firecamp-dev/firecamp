@@ -21,7 +21,7 @@ const Template = ({ checked, ...args }: ISwitchButton) => {
   );
 };
 
-export const SwitchButtonV2Demo = Template.bind({});
-SwitchButtonV2Demo.args = {
+export const SwitchButtonDemo = Template.bind({});
+SwitchButtonDemo.args = {
   checked: true,
 };

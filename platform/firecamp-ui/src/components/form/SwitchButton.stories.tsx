@@ -2,7 +2,7 @@ import { ISwitchButton } from './interfaces/SwitchButton.interfaces';
 import SwitchButton from './SwitchButton';
 
 export default {
-  title: 'UI-Kit/FormGroup',
+  title: 'UI-Kit/FormElement/SwitchButton',
   component: SwitchButton,
   argTypes: {
     label: 'Firecamp',

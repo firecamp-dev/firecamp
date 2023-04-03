@@ -2,7 +2,7 @@
 import TextArea from './TextArea';
 
 export default {
-    title: "UI-Kit/FormGroup",
+    title: "UI-Kit/FormElement",
     component: TextArea,
     argTypes: {
         label: "Firecamp"
