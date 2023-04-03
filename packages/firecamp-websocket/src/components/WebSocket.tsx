@@ -8,7 +8,6 @@ import { initialiseStoreFromRequest } from '../services/request.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
-import '../sass/ws.sass';
 
 // store
 import {
