@@ -1229,6 +1229,9 @@ video {
 .\!h-80 {
 	height: 20rem !important;
 }
+.h-7 {
+	height: 1.75rem;
+}
 .h-screen {
 	height: 100vh;
 }
@@ -1252,9 +1255,6 @@ video {
 }
 .h-28 {
 	height: 7rem;
-}
-.h-7 {
-	height: 1.75rem;
 }
 .max-h-4 {
 	max-height: 1rem;
@@ -1373,6 +1373,9 @@ video {
 }
 .rotate-90 {
 	--tw-rotate: 90deg;
+	transform: var(--tw-transform);
+}
+.transform {
 	transform: var(--tw-transform);
 }
 .transform-none {
@@ -2295,6 +2298,9 @@ video {
 	transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
 	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	transition-duration: 150ms;
+}
+.duration-100 {
+	transition-duration: 100ms;
 }
 .ease-out {
 	transition-timing-function: cubic-bezier(0, 0, 0.2, 1);

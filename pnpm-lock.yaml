@@ -864,6 +864,7 @@ importers:
       '@monaco-editor/react': 4.4.5
       '@radix-ui/react-dropdown-menu': ^2.0.1
       '@radix-ui/react-scroll-area': ^1.0.2
+      '@radix-ui/react-switch': ^1.0.2
       '@radix-ui/react-toast': ^1.0.0
       '@storybook/addon-actions': ^6.5.10
       '@storybook/addon-essentials': ^6.5.10
@@ -933,6 +934,7 @@ importers:
       '@monaco-editor/react': 4.4.5_3fm4er4v6u3lnlq66fhkchucru
       '@radix-ui/react-dropdown-menu': 2.0.1_uswwk7ohkq5gkv2wqm32sjldim
       '@radix-ui/react-scroll-area': 1.0.3_react-dom@17.0.2
+      '@radix-ui/react-switch': 1.0.2_react-dom@17.0.2
       '@radix-ui/react-toast': 1.1.2_react-dom@17.0.2
       '@szhsin/react-menu': 2.3.4_react-dom@17.0.2
       '@tanstack/react-table': 8.7.6_react-dom@17.0.2
@@ -4073,6 +4075,23 @@ packages:
       '@radix-ui/react-compose-refs': 1.0.0
     dev: false
 
+  /@radix-ui/react-switch/1.0.2_react-dom@17.0.2:
+    resolution: {integrity: sha512-BcG/LKehxt36NXG0wPnoCitIfSMtU9Xo7BmythYA1PAMLtsMvW7kALfBzmduQoHTWcKr0AVcFyh0gChBUp9TiQ==}
+    peerDependencies:
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    dependencies:
+      '@babel/runtime': 7.20.13
+      '@radix-ui/primitive': 1.0.0
+      '@radix-ui/react-compose-refs': 1.0.0
+      '@radix-ui/react-context': 1.0.0
+      '@radix-ui/react-primitive': 1.0.2_react-dom@17.0.2
+      '@radix-ui/react-use-controllable-state': 1.0.0
+      '@radix-ui/react-use-previous': 1.0.0
+      '@radix-ui/react-use-size': 1.0.0
+      react-dom: 17.0.2
+    dev: false
+
   /@radix-ui/react-toast/1.1.2_react-dom@17.0.2:
     resolution: {integrity: sha512-Kpr4BBYoP0O5A1UeDBmao87UnCMNdAKGNioQH5JzEm6OYTUVGhuDRbOwoZxPwOZ6vsjJHeIpdUrwbiHEB65CCw==}
     peerDependencies:
@@ -4123,6 +4142,14 @@ packages:
 
   /@radix-ui/react-use-layout-effect/1.0.0:
     resolution: {integrity: sha512-6Tpkq+R6LOlmQb1R5NNETLG0B4YP0wc+klfXafpUCj6JGyaUc8il7/kUZ7m59rGbXGczE9Bs+iz2qloqsZBduQ==}
+    peerDependencies:
+      react: ^16.8 || ^17.0 || ^18.0
+    dependencies:
+      '@babel/runtime': 7.20.13
+    dev: false
+
+  /@radix-ui/react-use-previous/1.0.0:
+    resolution: {integrity: sha512-RG2K8z/K7InnOKpq6YLDmT49HGjNmrK+fr82UCVKT2sW0GYfVnYp4wZWBooT/EYfQ5faA9uIjvsuMMhH61rheg==}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
@@ -13189,7 +13216,7 @@ packages:
       lodash: 4.17.21
       pretty-error: 4.0.0
       tapable: 2.2.1
-      webpack: 5.75.0_webpack-cli@5.0.1
+      webpack: 5.75.0
     dev: true
 
   /htmlparser2/3.10.1:
