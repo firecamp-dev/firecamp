@@ -11,7 +11,12 @@ const UrlBarContainer = ({ tab }) => {
     url,
     displayUrl,
     version,
+    __meta,
+    __ref,
     requestPath,
+    isRequestSaved,
+    context,
+    connect,
     changeUrl,
     changeConfig,
     save,
@@ -20,9 +25,14 @@ const UrlBarContainer = ({ tab }) => {
       url: s.request.url,
       displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
+      __meta: s.request.__meta,
+      __ref: s.request.__ref,
       requestPath: s.runtime.requestPath,
+      isRequestSaved: s.runtime.isRequestSaved,
+      context: s.context,
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
+      connect: s.connect,
       save: s.save,
     }),
     shallow
@@ -61,18 +71,18 @@ const UrlBarContainer = ({ tab }) => {
       id={`url-${tab.id}`}
       path={requestPath?.path || 'Untitled Request'}
       placeholder={'http://'}
-      // isRequestSaved={isRequestSaved}
+      isRequestSaved={isRequestSaved}
       url={displayUrl}
       onChange={_handleUrlChange}
       // onPaste={_onPaste}
-      // onEnter={_onExecute}
+      onEnter={connect}
       promptRenameRequest={() => {
-        // context.app.modals.openEditRequest({
-        //   name: __meta.name,
-        //   description: __meta.description,
-        //   collectionId: __ref.collectionId,
-        //   requestId: __ref.id,
-        // });
+        context.app.modals.openEditRequest({
+          name: __meta.name,
+          description: __meta.description,
+          collectionId: __ref.collectionId,
+          requestId: __ref.id,
+        });
       }}
       prefixComponent={
         <SIOVersionDropDown

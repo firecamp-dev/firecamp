@@ -7,12 +7,12 @@ import { _misc, _object } from '@firecamp/utils';
 import v2 from 'socket.io-client-v2';
 import v3 from 'socket.io-client-v3';
 import v4 from 'socket.io-client-v4';
-import { EConnectionState } from '../../types';
 import { TStoreSlice } from '../store.type';
+import { EConnectionState } from '../../types';
 
 interface IHandleConnectionExecutorSlice {
-  connect: (connectionId: TId) => void;
-  disconnect: (connectionId: TId, code?: number, reason?: string) => void;
+  connect: (connectionId?: TId) => void;
+  disconnect: (connectionId?: TId, code?: number, reason?: string) => void;
   sendMessage: (connectionId: TId, emitter: ISocketIOEmitter) => void;
   togglePingConnection: (
     connectionId: TId,
@@ -36,15 +36,27 @@ interface IHandleConnectionExecutorSlice {
 const createHandleConnectionExecutor: TStoreSlice<
   IHandleConnectionExecutorSlice
 > = (set, get) => ({
-  connect: (connectionId: TId) => {
+  connect: (connectionId) => {
     /**
      * TOODs:
      * 1. Manage and parse environment variables
      * 2. Manager ssl n proxy logic
      */
-
-    if (!connectionId) return;
     const state = get();
+    const { activePlayground } = state.runtime;
+    // to avoid DOM e event
+    if (!connectionId || typeof connectionId != 'string')
+      connectionId = activePlayground;
+
+    const { playgrounds } = state;
+    const connectionState = playgrounds[activePlayground].connectionState;
+    if (
+      ![EConnectionState.Ideal, EConnectionState.Closed].includes(
+        connectionState
+      )
+    ) {
+      return;
+    }
 
     try {
       const url = state.request?.url,
@@ -54,7 +66,6 @@ const createHandleConnectionExecutor: TStoreSlice<
         );
 
       if (!connection || !url.raw) return;
-
       const options: TExecutorOptions = {
         io: {
           v2,
@@ -121,8 +132,24 @@ const createHandleConnectionExecutor: TStoreSlice<
     }
   },
 
-  disconnect: (connectionId: TId, code: number, reason: string) => {
+  disconnect: (connectionId: TId) => {
     const state = get();
+    const {
+      playgrounds,
+      runtime: { activePlayground },
+    } = state;
+    const connectionState = playgrounds[activePlayground].connectionState;
+    if (
+      ![EConnectionState.Connecting, EConnectionState.Open].includes(
+        connectionState
+      )
+    ) {
+      return;
+    }
+    // to avoid DOM e event
+    if (!connectionId || typeof connectionId != 'string')
+      connectionId = activePlayground;
+
     try {
       const existingPlayground = state.getPlayground(connectionId);
       if (
@@ -131,7 +158,7 @@ const createHandleConnectionExecutor: TStoreSlice<
         existingPlayground.executor
       ) {
         // disconnect
-        existingPlayground.executor?.close(code, reason);
+        existingPlayground.executor?.close();
 
         // set empty executor
         state.deleteExecutor(connectionId);

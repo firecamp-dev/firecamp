@@ -6,10 +6,6 @@ import { InitPlayground } from '../../constants';
 import { EConnectionState } from '../../types';
 import { TStoreSlice } from '../store.type';
 
-interface IEmitter extends ISocketIOEmitter {
-  path: string;
-}
-
 interface IPlayground {
   id: TId;
   connectionState: EConnectionState;
@@ -17,7 +13,7 @@ interface IPlayground {
     type: string;
     event: string;
   };
-  emitter: IEmitter;
+  emitter: ISocketIOEmitter;
   selectedCollectionEmitter: TId;
   executor?: IExecutorInterface;
   listeners?: { [key: string]: boolean };
@@ -32,7 +28,7 @@ interface IPlaygrounds {
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
-  // getActivePlayground: () => IPlayground;
+  getPlayground: (connectionId?: TId) => IPlayground;
   setPlgExecutor: (connectionId: TId, executor: any) => void;
   addPlayground: (connectionId: TId, playground: IPlayground) => void;
   //arguments
@@ -84,9 +80,13 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 ) => ({
   playgrounds: initialPlaygrounds,
 
-  getActivePlayground: () => {
+  getPlayground: (connectionId?: TId) => {
     const state = get();
-    return state.playgrounds[state.runtime.activePlayground];
+    const {
+      runtime: { activePlayground },
+      playgrounds,
+    } = state;
+    return playgrounds[connectionId || activePlayground];
   },
   setPlgExecutor: (connectionId: TId, executor: any) => {
     set((s) => ({
