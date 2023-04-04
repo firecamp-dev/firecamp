@@ -16,16 +16,39 @@ export interface TExecutorOptions {
 }
 
 export interface IExecutorInterface {
-  /**
-   * Prepare message log
-   *
-   * @param title - Title of the Log
-   * @param message - Message to display in Log .
-   *          when type belongs to [ R, S, ACK ], It's [ { payload, meta: { type, typedArrayView } } ]
-   *          when type belongs to [SYS], it's STRING (empty "")
-   * @param meta
-   */
-  log(title: string, message: any, meta: any): ILog;
+  log: {
+    /**
+     * Prepare log
+     *
+     * @param title - Title of the Log
+     * @param message - Message to display in Log .
+     *          when type belongs to [ R, S, ACK ], It's [ { payload, meta: { type, typedArrayView } } ]
+     *          when type belongs to [SYS], it's STRING (empty "")
+     * @param __meta
+     */
+    prepare: (title: string, message: any, __meta: any) => ILog;
+    success: (
+      event: string,
+      title: string,
+      value: any,
+      type: string,
+      __meta?: any
+    ) => ILog;
+    danger: (
+      event: string,
+      title: string,
+      value: any,
+      type: string,
+      __meta?: any
+    ) => ILog;
+    warning: (
+      event: string,
+      title: string,
+      value: any,
+      type: string,
+      __meta?: any
+    ) => ILog;
+  };
 
   /**
    * Add listener on socket
