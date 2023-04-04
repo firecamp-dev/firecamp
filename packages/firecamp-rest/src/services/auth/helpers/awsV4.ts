@@ -1,8 +1,8 @@
 import aws from 'aws4';
-import { IAuthAws4 } from '@firecamp/types';
+import { IAuthAwsV4 } from '@firecamp/types';
 import { IExtra } from '../types';
 
-export default (credentials: IAuthAws4, extra: IExtra): object => {
+export default (credentials: IAuthAwsV4, extra: IExtra): object => {
   if (typeof extra.body === 'object') extra.body = '';
   if (
     !extra.headers ||

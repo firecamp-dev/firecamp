@@ -1,4 +1,4 @@
-export { default as aws4 } from './aws4';
+export { default as awsV4 } from './awsV4';
 export { default as basic } from './basic';
 export { default as bearer } from './bearer';
 export { default as digest } from './digest';

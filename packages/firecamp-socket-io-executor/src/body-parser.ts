@@ -10,7 +10,7 @@ import { _buffer, _misc } from '@firecamp/utils';
  * Function which accept Firecamp request
  * emitter arguments and return actual arguments which
  * will sent over the socket
- 
+
  */
 export const parseEmitterArguments = async (
   args: ISocketIOEmitter['value'][]

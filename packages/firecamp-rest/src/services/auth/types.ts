@@ -1,6 +1,6 @@
 import {
   EHttpMethod,
-  IAuthAws4,
+  IAuthAwsV4,
   IAuthBasic,
   IAuthBearer,
   IAuthDigest,
@@ -23,7 +23,7 @@ export interface IExtra {
 }
 
 export type TAuth =
-  | IAuthAws4
+  | IAuthAwsV4
   | IAuthBasic
   | IAuthBearer
   | IAuthDigest

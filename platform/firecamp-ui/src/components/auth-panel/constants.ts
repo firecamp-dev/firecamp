@@ -288,7 +288,7 @@ const authUiFormState = {
     ],
     algorithmList: ['SHA256', 'SHA1'],
   },
-  [EAuthTypes.Aws4]: {
+  [EAuthTypes.AwsV4]: {
     inputList: [
       {
         id: 'accessKey',
@@ -347,7 +347,7 @@ const authTypeList = [
   { name: 'OAuth 1', id: EAuthTypes.OAuth1, enable: true },
   // { name: 'OAuth 2', id: EAuthTypes.OAuth2, enable: false },
   // { name: 'Hawk', id: EAuthTypes.Hawk, enable: false },
-  { name: 'AWS', id: EAuthTypes.Aws4, enable: true },
+  { name: 'AWS', id: EAuthTypes.AwsV4, enable: true },
   // { name: 'NTLM', id: EAuthTypes.Ntlm, enable: false },
   // { name: 'Atlassian', id: EAuthTypes.Atlassian, enable: false },
   // { name: 'Netrc', id: EAuthTypes.Nertc, enable: false },
