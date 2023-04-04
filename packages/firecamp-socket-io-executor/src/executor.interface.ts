@@ -1,9 +1,9 @@
 import {
+  IUrl,
   ICertificate,
   ISocketIOConfig,
   ISocketIOConnection,
   ISocketIOEmitter,
-  IUrl,
 } from '@firecamp/types';
 import { ELogEvents, ILog } from './types';
 
@@ -11,7 +11,7 @@ export interface TExecutorOptions {
   io: any;
   url: IUrl;
   connection: ISocketIOConnection;
-  config?: ISocketIOConfig;
+  config: ISocketIOConfig;
   certificates?: ICertificate[];
 }
 
@@ -19,8 +19,8 @@ export interface IExecutorInterface {
   /**
    * Prepare message log
    *
-   * @param title - Title of the Log card
-   * @param message - Message to display in Log card.
+   * @param title - Title of the Log
+   * @param message - Message to display in Log .
    *          when type belongs to [ R, S, ACK ], It's [ { payload, meta: { type, typedArrayView } } ]
    *          when type belongs to [SYS], it's STRING (empty "")
    * @param meta

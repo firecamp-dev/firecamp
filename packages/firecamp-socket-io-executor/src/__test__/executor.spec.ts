@@ -4,7 +4,7 @@ import v4 from 'socket.io-client-v4';
 import { nanoid } from 'nanoid';
 import { ESocketIOClientVersion } from '@firecamp/types';
 
-import Executor from '../';
+import Executor from '../executor';
 import { IExecutorInterface } from '../executor.interface';
 
 let connection: IExecutorInterface;

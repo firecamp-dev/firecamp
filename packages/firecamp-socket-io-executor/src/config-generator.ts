@@ -5,65 +5,71 @@ import {
   ICertificate,
   ISocketIOConfig,
   ISocketIOConnection,
+  TPlainObject,
 } from '@firecamp/types';
 import { _string, _table } from '@firecamp/utils';
 import SSLManager from './certificate-manager';
 import { TExecutorOptions } from './executor.interface';
 
 export default class ConfigGenerator {
-  address: string;
-  config: ISocketIOConfig;
-  clientOptions: Partial<ManagerOptions & SocketOptions> & {
+  private parsedUrl: string = '';
+  private clientOptions: Partial<ManagerOptions & SocketOptions> & {
     ping: boolean;
     pingInterval: number;
     version: ESocketIOClientVersion;
-  };
-  connection: ISocketIOConnection;
-  certificates: ICertificate[] = [];
-
-  constructor(options: TExecutorOptions) {
-    this.address = options.url.raw;
-    this.config = options.config || {};
-    this.connection = options.connection;
-    this.clientOptions = {
-      forceNew: false,
-      path: '',
-      transports: [],
-      transportOptions: {
-        polling: {
-          extraHeaders: {},
-        },
+  } = {
+    forceNew: false,
+    path: '',
+    transports: [],
+    transportOptions: {
+      polling: {
+        extraHeaders: {},
       },
-      query: {},
-      reconnection: false,
-      reconnectionAttempts: 3,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-      rejectUnauthorized: false,
-      timeout: 20000,
-      ping: false,
-      pingInterval: 3000,
-      // option which indicate the version of the socket.io-client
-      // library going to use at the time of connection
-      version: ESocketIOClientVersion.v4,
-    };
-    this.certificates = options.certificates || [];
+    },
+    query: {},
+    reconnection: false,
+    reconnectionAttempts: 3,
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000,
+    rejectUnauthorized: false,
+    timeout: 20000,
+    ping: false,
+    pingInterval: 3000,
+    // option which indicate the version of the socket.io-client
+    // library going to use at the time of connection
+    version: ESocketIOClientVersion.v4,
+  };
+
+  constructor({
+    url,
+    config,
+    connection,
+    certificates = [],
+  }: TExecutorOptions) {
+    this.checkBooleanValues(config);
+    this.checkNumberValues(config);
+    this.setHeaders(connection);
+    this.setQueryParams(connection);
+    this.setAuth(config, connection);
+    this.setTransports(connection);
+    this.setConnectionConfig(config, connection);
+    this.setPingInfo(connection);
+
+    this.parsedUrl =
+      _url.normalize(url.raw, ['http', 'ws']) + connection.namespace;
+    this.setCACertificate(certificates || [], this.parsedUrl);
   }
 
-  checkBooleanValues() {
+  private checkBooleanValues(config: ISocketIOConfig) {
     const keys = ['rejectUnauthorized', 'reconnection'];
-
     keys.map((key) => {
-      if (
-        this.config.hasOwnProperty(key) &&
-        typeof this.config[key] === 'boolean'
-      ) {
-        this.clientOptions[key] = this.config[key];
+      if (config.hasOwnProperty(key) && typeof config[key] === 'boolean') {
+        this.clientOptions[key] = config[key];
       }
     });
   }
 
-  checkNumberValues() {
+  private checkNumberValues(config: ISocketIOConfig) {
     const keys = [
       'timeout',
       'reconnectionAttempts',
@@ -72,79 +78,62 @@ export default class ConfigGenerator {
     ];
 
     keys.map((key) => {
-      if (this.config[key] && !isNaN(this.config[key])) {
-        this.clientOptions[key] = this.config[key];
+      if (config[key] && !isNaN(config[key])) {
+        this.clientOptions[key] = config[key];
       }
     });
   }
 
-  setClientConfig() {
-    this.checkBooleanValues();
-    this.checkNumberValues();
-  }
-
-  setHeaders() {
-    const headers = _table.toObject(this.connection.headers);
-
+  private setHeaders(connection: ISocketIOConnection) {
+    const headers = _table.toObject(connection.headers || []) as TPlainObject;
     Object.assign(
-      this.clientOptions.transportOptions['polling'].extraHeaders,
+      this.clientOptions.transportOptions?.['polling'].extraHeaders,
       headers
     );
   }
 
-  setQueryParams() {
-    this.clientOptions.query = _table.toObject(this.connection.queryParams);
+  private setQueryParams(connection: ISocketIOConnection) {
+    this.clientOptions.query = _table.toObject(connection.queryParams || []);
   }
 
   // Set auth if socket.io-client lib. version >= 3.0.0
-  setAuth() {
+  private setAuth(config: ISocketIOConfig, connection) {
     if (
       [ESocketIOClientVersion.v3, ESocketIOClientVersion.v4].includes(
-        this.config.version
+        config.version || ESocketIOClientVersion.v4
       )
     )
-      this.clientOptions.auth = _table.toObject(this.connection.auth);
+      this.clientOptions.auth = _table.toObject(connection.auth || []);
   }
 
-  setTransports() {
-    if (this.connection?.transports?.polling) {
-      this.clientOptions.transports.push('polling');
+  private setTransports(connection: ISocketIOConnection) {
+    if (connection?.transports?.polling) {
+      this.clientOptions.transports?.push('polling');
     }
-    if (this.connection?.transports?.websocket) {
-      this.clientOptions.transports.push('websocket');
+    if (connection?.transports?.websocket) {
+      this.clientOptions.transports?.push('websocket');
     }
   }
 
-  setConnectionConfig() {
-    if (
-      this.connection.namespace &&
-      !_string.isEmpty(this.connection.namespace)
-    ) {
-      this.connection.namespace = this.connection.namespace;
-    } else this.connection.namespace = '';
+  private setConnectionConfig(config: ISocketIOConfig, connection) {
+    if (!_string.isEmpty(connection.namespace)) {
+      connection.namespace = connection.namespace;
+    } else connection.namespace = '';
 
-    if (
-      this.connection.forceNew &&
-      typeof this.connection.forceNew === 'boolean'
-    ) {
-      this.clientOptions.forceNew = this.connection.forceNew;
+    if (typeof connection.forceNew === 'boolean') {
+      this.clientOptions.forceNew = connection.forceNew;
     }
 
-    if (this.connection.path && !_string.isEmpty(this.connection.path))
-      this.clientOptions.path = this.connection.path;
+    if (!_string.isEmpty(connection.path || ''))
+      this.clientOptions.path = connection.path;
 
-    if (this.config.version && !_string.isEmpty(this.config.version))
-      this.clientOptions.version = this.config.version;
+    if (!_string.isEmpty(config.version || ''))
+      this.clientOptions.version = config.version || ESocketIOClientVersion.v4;
   }
 
-  setCACertificate(url) {
-    if (
-      this.certificates &&
-      Array.isArray(this.certificates) &&
-      this.certificates.length > 0
-    ) {
-      const certificate = SSLManager(this.certificates, url);
-
+  private setCACertificate(certificates: ICertificate[], url: string) {
+    if (certificates?.length) {
+      const certificate = SSLManager(certificates, url);
       if (certificate) {
         try {
           // @ts-ignore
@@ -156,27 +145,14 @@ export default class ConfigGenerator {
     }
   }
 
-  setPingInfo() {
-    this.clientOptions.ping = this.connection.ping || false;
-    this.clientOptions.pingInterval = this.connection.pingInterval || 3000;
+  private setPingInfo({ ping, pingInterval }: ISocketIOConnection) {
+    this.clientOptions.ping = ping || false;
+    this.clientOptions.pingInterval = pingInterval || 3000;
   }
 
-  prepare() {
-    this.setClientConfig();
-    this.setHeaders();
-    this.setQueryParams();
-    this.setAuth();
-    this.setTransports();
-    this.setConnectionConfig();
-    this.setPingInfo();
-
-    const parsedURL =
-      _url.normalize(this.address, ['http', 'ws']) + this.connection.namespace;
-
-    this.setCACertificate(parsedURL);
-
+  public prepare() {
     return {
-      address: parsedURL,
+      address: this.parsedUrl,
       clientOptions: this.clientOptions,
     };
   }
