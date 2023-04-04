@@ -9,7 +9,6 @@ import {
 
 interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   request: ISocketIO;
-  changeListeners: (listeners: Array<string>) => void;
   changeMeta: (key: string, value: any) => void;
   changeConfig: (key: string, value: any) => void;
   save: (tabId: TId) => void;
@@ -27,19 +26,6 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
   //url
   ...createUrlSlice(set, get),
   ...createConnectionSlice(set, get),
-
-  changeListeners: (listeners: Array<string>) => {
-    const state = get();
-    set((s) => ({
-      request: {
-        ...s.request,
-        listeners,
-      },
-    }));
-    // update config
-    state.changeMeta('onConnectListeners', listeners);
-    // state.equalityChecker({ listeners });
-  },
 
   changeMeta: (key: string, value: any) => {
     const state = get();
@@ -69,7 +55,10 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
       const _request = state.preparePayloadForUpdateRequest();
-      state.context.request.update(_request, tabId);
+      state.context.request.save(_request, tabId).then(() => {
+        //reset the rcs state
+        state.disposeRCS();
+      });
     }
   },
 });

@@ -99,9 +99,6 @@ const Logs = () => {
           <Column overflow="auto" className="h-full">
             <Container>
               <Container.Header className="with-divider">
-                <div className="fc-btn-collapse v2">
-                  {/* <VscChevronRight onClick={_setVisiblePanel}/> */}
-                </div>
                 <TabHeader className="height-small border-b border-appBorder">
                   <TabHeader.Left>
                     <label className="m-0 text-sm font-bold whitespace-pre">

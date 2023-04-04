@@ -8,7 +8,6 @@ import ConnectionPanel from './connection-panel/ConnectionPanel';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import { initialiseStoreFromRequest } from '../services/request.service';
 import { StoreProvider, createStore, useStore, IStore } from '../store';
-import '../sass/socket.sass';
 
 const Socket = ({ tab, platformContext }) => {
   const {

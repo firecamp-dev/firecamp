@@ -1,21 +1,18 @@
 import shallow from 'zustand/shallow';
 import { Button } from '@firecamp/ui';
-
 import { EConnectionState } from '../../../types';
 import { IStore, useStore } from '../../../store';
 
 const ConnectionButton = () => {
-  const { connectionState, activePlayground, connect, disconnect } =
-    useStore(
-      (s: IStore) => ({
-        connectionState:
-          s.playgrounds[s.runtime.activePlayground]?.connectionState,
-        activePlayground: s.runtime.activePlayground,
-        connect: s.connect,
-        disconnect: s.disconnect,
-      }),
-      shallow
-    );
+  const { connectionState, connect, disconnect } = useStore(
+    (s: IStore) => ({
+      connectionState:
+        s.playgrounds[s.runtime.activePlayground]?.connectionState,
+      connect: s.connect,
+      disconnect: s.disconnect,
+    }),
+    shallow
+  );
 
   const _renderConnectionButton = () => {
     switch (connectionState) {
@@ -28,47 +25,23 @@ const ConnectionButton = () => {
                 ? 'Connecting'
                 : 'Disconnect'
             }
-            onClick={() => {
-              disconnect(activePlayground);
-            }}
+            onClick={disconnect}
+            iconLeft
             primary
             sm
-            iconLeft
           />
         );
         break;
       case EConnectionState.Closing:
-        return (
-          <Button
-            text="Connect"
-            onClick={() => connect(activePlayground)}
-            primary
-            sm
-            iconLeft
-          />
-        );
+        return <Button text="Connect" onClick={connect} iconLeft primary sm />;
         break;
       case EConnectionState.Closed:
         return (
-          <Button
-            text="Disconnected"
-            onClick={() => connect(activePlayground)}
-            primary
-            sm
-            iconLeft
-          />
+          <Button text="Disconnected" onClick={connect} iconLeft primary sm />
         );
         break;
       default:
-        return (
-          <Button
-            text="Connect"
-            onClick={() => connect(activePlayground)}
-            primary
-            sm
-            iconLeft
-          />
-        );
+        return <Button text="Connect" onClick={connect} iconLeft primary sm />;
     }
   };
 

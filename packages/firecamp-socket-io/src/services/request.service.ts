@@ -2,11 +2,11 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import { nanoid as id } from 'nanoid';
 import {
+  TId,
   ERequestTypes,
   ISocketIOConnection,
   ISocketIO,
   ESocketIOClientVersion,
-  TId,
   TRequestPath,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
@@ -25,13 +25,6 @@ const getPathFromUrl = (url: string) => {
   return url.split(/[?#]/)[0];
 };
 
-// export const prepareUIRequestPanelState = (
-//   request: Partial<IWebSocket>
-// ): IUiRequestPanel => {
-//   const updatedUiStore: IUiRequestPanel = {};
-//   return updatedUiStore;
-// };
-
 /** normalize the socket.io request */
 export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   const _nr: ISocketIO = {
@@ -49,6 +42,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
       onConnectListeners: [],
     },
     connections: [],
+    listeners: [],
     __meta: {
       name: '',
       type: ERequestTypes.SocketIO,
@@ -60,6 +54,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   const {
     url,
     connections = _nr.connections,
+    listeners,
     config = _nr.config,
     __meta = _nr.__meta,
     __ref = _nr.__ref,
@@ -95,6 +90,9 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
       _object.mergeDeep(RequestConnection, connection) as ISocketIOConnection
   );
   if (!_nr.connections?.length) _nr.connections = [RequestConnection];
+
+  // normalize listeners
+  _nr.listeners = listeners;
 
   // normalize config
   _nr.config = _object.mergeDeep(DefaultRequestConfig, config);
@@ -147,7 +145,7 @@ export const initialiseStoreFromRequest = (
         },
         emitter: InitPlayground,
         selectedCollectionEmitter: '',
-        listeners: {},
+        activeListeners: [],
         activeArgIndex: 0,
       },
     },

@@ -7,12 +7,12 @@ import { _misc, _object } from '@firecamp/utils';
 import v2 from 'socket.io-client-v2';
 import v3 from 'socket.io-client-v3';
 import v4 from 'socket.io-client-v4';
-import { EConnectionState } from '../../types';
 import { TStoreSlice } from '../store.type';
+import { EConnectionState } from '../../types';
 
 interface IHandleConnectionExecutorSlice {
-  connect: (connectionId: TId) => void;
-  disconnect: (connectionId: TId, code?: number, reason?: string) => void;
+  connect: (connectionId?: TId) => void;
+  disconnect: (connectionId?: TId, code?: number, reason?: string) => void;
   sendMessage: (connectionId: TId, emitter: ISocketIOEmitter) => void;
   togglePingConnection: (
     connectionId: TId,
@@ -36,15 +36,26 @@ interface IHandleConnectionExecutorSlice {
 const createHandleConnectionExecutor: TStoreSlice<
   IHandleConnectionExecutorSlice
 > = (set, get) => ({
-  connect: (connectionId: TId) => {
+  connect: (connectionId) => {
     /**
      * TOODs:
      * 1. Manage and parse environment variables
      * 2. Manager ssl n proxy logic
      */
-
-    if (!connectionId) return;
     const state = get();
+    // to avoid DOM e event
+    if (!connectionId || typeof connectionId != 'string')
+      connectionId = state.getActiveConnectionId();
+
+    const { playgrounds } = state;
+    const connectionState = playgrounds[connectionId].connectionState;
+    if (
+      ![EConnectionState.Ideal, EConnectionState.Closed].includes(
+        connectionState
+      )
+    ) {
+      return;
+    }
 
     try {
       const url = state.request?.url,
@@ -54,7 +65,6 @@ const createHandleConnectionExecutor: TStoreSlice<
         );
 
       if (!connection || !url.raw) return;
-
       const options: TExecutorOptions = {
         io: {
           v2,
@@ -111,7 +121,7 @@ const createHandleConnectionExecutor: TStoreSlice<
       state.setPlgExecutor(connectionId, executor);
 
       // listen to on connect listener
-      state.listenOnConnect(connectionId);
+      // state.listenOnConnect(connectionId);
     } catch (error) {
       console.info({
         API: 'socket.connect',
@@ -121,8 +131,21 @@ const createHandleConnectionExecutor: TStoreSlice<
     }
   },
 
-  disconnect: (connectionId: TId, code: number, reason: string) => {
+  disconnect: (connectionId: TId) => {
     const state = get();
+    const { playgrounds } = state;
+    // to avoid DOM e event
+    if (!connectionId || typeof connectionId != 'string')
+      connectionId = state.getActiveConnectionId();
+    const connectionState = playgrounds[connectionId].connectionState;
+    if (
+      ![EConnectionState.Connecting, EConnectionState.Open].includes(
+        connectionState
+      )
+    ) {
+      return;
+    }
+
     try {
       const existingPlayground = state.getPlayground(connectionId);
       if (
@@ -131,7 +154,7 @@ const createHandleConnectionExecutor: TStoreSlice<
         existingPlayground.executor
       ) {
         // disconnect
-        existingPlayground.executor?.close(code, reason);
+        existingPlayground.executor?.close();
 
         // set empty executor
         state.deleteExecutor(connectionId);
@@ -156,32 +179,28 @@ const createHandleConnectionExecutor: TStoreSlice<
        * 2. history
        */
 
-      const existingPlayground = state.getPlayground(connectionId);
+      const playground = state.getPlayground(connectionId);
       if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
+        playground?.connectionState === EConnectionState.Open &&
+        playground.executor
       ) {
         // TODO: check if connection open or not. if not then executor will send log with error emitter
 
-        emitter = _object.omit(emitter, ['path']);
-        // console.log({ emitter });
-
         // send emitter
         if (emitter?.__meta.ack) {
-          existingPlayground.executor.emitWithAck(emitter.name, emitter.value);
+          playground.executor.emitWithAck(emitter.name, emitter.value);
         } else {
-          existingPlayground.executor.emit(emitter.name, emitter.value);
+          playground.executor.emit(emitter.name, emitter.value);
         }
       } else {
         state.addErrorLog(connectionId, 'disconnected');
       }
-    } catch (error) {
+    } catch (e) {
       console.info({
         API: 'socket.send',
         connectionId,
         emitter,
-        error,
+        e,
       });
     }
   },

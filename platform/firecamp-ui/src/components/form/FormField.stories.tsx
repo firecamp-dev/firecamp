@@ -2,20 +2,20 @@ import { useState } from 'react';
 import Button from '../buttons/Button';
 import DropDownV2 from '../dropdown/DropdownV2';
 import Input from '../input/Input';
-import FormGroup from './FormGroup';
-import { IFormGroup } from './interfaces/FormGroup.interfaces';
+import FormField from './FormField';
+import { IFormField } from './interfaces/FormField.interfaces';
 
 export default {
-  title: 'UI-Kit/FormGroup',
-  component: FormGroup,
+  title: 'UI-Kit/FormField',
+  component: FormField,
   argTypes: {
     label: 'Firecamp',
   },
 };
 
-const Template = (args: IFormGroup) => (
+const Template = (args: IFormField) => (
   <div className="bg-activityBarActiveBackground p-4 w-96">
-    <FormGroup {...args} />
+    <FormField {...args} />
   </div>
 );
 

@@ -6,7 +6,7 @@ import { GrGoogle } from "@react-icons/all-files/gr/GrGoogle";
 
 import { default as Modal } from './Modal';
 import { default as Button } from '../buttons/Button';
-import { default as FormGroup } from '../form/FormGroup';
+import { default as FormField } from '../form/FormField';
 import { default as Input } from '../input/Input';
 
 export default {
@@ -70,15 +70,15 @@ const SignUpBody = () => {
             </div>
             <hr className="border-modalBorder -ml-8 -mr-8 mb-6" />
             <div className="">
-                <FormGroup label="Username or E-mail" >
+                <FormField label="Username or E-mail" >
                     <Input
                         placeholder='Username or E-mail'
                         iconPosition='left'
                         icon={<VscAccount title="Account" size={16} />} />
-                </FormGroup>
-                <FormGroup label="password">
+                </FormField>
+                <FormField label="password">
                     <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
-                </FormGroup>
+                </FormField>
                 <Button primary={true} text="sign in" fullWidth={true} md={true} />
                 <a className="cursor-pointer text-appForeground block pb-6 text-right text-sm -mt-4">Already have an account? Sign In</a>
             </div>

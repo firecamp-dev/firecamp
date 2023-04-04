@@ -1,4 +1,4 @@
-import { IcontrolsConfig } from './FirecampEditor.interfaces';
+import { IControlsConfig } from './FirecampEditor.interfaces';
 
 export interface IMultiLineIFE {
   id?: string | number;
@@ -28,7 +28,7 @@ export interface IMultiLineIFE {
    */
   monacoOptions?: any;
 
-  controlsConfig?: IcontrolsConfig;
+  controlsConfig?: IControlsConfig;
 
   /**
    * Editor placeholder

@@ -175,7 +175,7 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
           onMount={(api) => (tableApi.current = api)}
         />
       </Container.Body>
-      <Container.Footer>
+      <Container.Footer className="flex items-center">
         <a
           className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
           target="_blank"

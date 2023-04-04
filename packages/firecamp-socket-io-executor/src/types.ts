@@ -1,4 +1,4 @@
-import { TId, ETypedArrayView, ISocketIOEmitter } from '@firecamp/types';
+import { TId, ISocketIOEmitter } from '@firecamp/types';
 
 export enum ELogTypes {
   Send = 's',
@@ -38,16 +38,6 @@ export interface ILog {
   };
 }
 
-export enum EArgumentType {
-  Boolean = 'boolean',
-  Number = 'number',
-  Text = 'text',
-  Json = 'json',
-  File = 'file',
-  ArrayBuffer = 'arraybuffer',
-  ArrayBufferView = 'arraybufferview',
-}
-
 export enum CustomLogTypes {
   ListenOn = 'L_ON',
   ListenOff = 'L_OFF',
@@ -57,20 +47,6 @@ export enum EClientVersion {
   v2 = 'v2',
   v3 = 'v3',
   v4 = 'v3',
-}
-
-export interface IEmitterArgument {
-  payload: any;
-  meta: {
-    type: EArgumentType;
-    typedArrayView: '' | ETypedArrayView;
-  };
-}
-
-// Socket.IO message payload for Firecamp request
-export interface IEmitter {
-  name: string; // Emitter name,
-  body: Array<IEmitterArgument>;
 }
 
 export enum EConnectionStatus {

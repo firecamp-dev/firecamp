@@ -4,13 +4,14 @@ import {
   Button,
   DropdownV2,
   Container,
-  FormGroup,
+  FormField,
   ProgressBar,
 } from '@firecamp/ui';
 import RolesCallout from '../RolesCallout';
 import { _array, _misc } from '@firecamp/utils';
 import { EUserRolesWorkspace } from '../../../../../types';
 import { useWorkspaceStore } from '../../../../../store/workspace';
+import platformContext from '../../../../../services/platform-context';
 
 const RoleOptions = [
   {
@@ -48,7 +49,7 @@ const InviteOrgMembers: FC<IProps> = ({
         Invite your team colleagues to join the workspace.
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem] h-80">
-        <FormGroup
+        <FormField
           label="Invite member from your organization"
           className="relative"
         >
@@ -79,8 +80,8 @@ const InviteOrgMembers: FC<IProps> = ({
             options={members}
             onSelect={(m) => onChange({ ...member, ...m })}
           />
-        </FormGroup>
-        <FormGroup label="Assign role for selected member">
+        </FormField>
+        <FormField label="Assign role for selected member">
           <DropdownV2
             handleRenderer={() => (
               <Button
@@ -103,7 +104,7 @@ const InviteOrgMembers: FC<IProps> = ({
             }}
             onSelect={({ name, id }) => onChange({ ...member, role: id })}
           />
-        </FormGroup>
+        </FormField>
         <RolesCallout role={_role.id} />
       </Container.Body>
       <Container.Footer className="flex items-center">
@@ -111,6 +112,10 @@ const InviteOrgMembers: FC<IProps> = ({
           className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
           target="_blank"
           href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            platformContext.app.modals.openWorkspaceManagement();
+          }}
         >
           Open Workspace Management
         </a>

@@ -9,8 +9,9 @@ export { default as Dropdown } from './components/dropdown/Dropdown';
 export { default as DropdownV2 } from './components/dropdown/DropdownV2';
 export { default as Scrollbar } from './components/scroll-bar/ScrollBar';
 
-export { default as FormGroup } from './components/form/FormGroup';
+export { default as FormField } from './components/form/FormField';
 export { default as SwitchButton } from './components/form/SwitchButton';
+export { default as SwitchButtonV2 } from './components/form/SwitchButtonV2';
 export { default as TextArea } from './components/form/TextArea';
 
 export { default as Row } from './components/grid/Row';

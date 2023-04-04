@@ -6,7 +6,7 @@ import { GrGoogle } from "@react-icons/all-files/gr/GrGoogle";
 
 import { default as Modal } from './Modal';
 import { default as Button } from '../buttons/Button';
-import { default as FormGroup } from '../form/FormGroup';
+import { default as FormField } from '../form/FormField';
 import { default as Input } from '../input/Input';
 
 
@@ -54,13 +54,13 @@ const SignUpBody = () => {
         <div>
             <div className="" >
                 <div className="text-center w-full text-sm mb-5">Sign in again to continue</div>
-                <FormGroup label="Username or E-mail" >
+                <FormField label="Username or E-mail" >
                     <VscAccount title="Account" size={16} />
                     <Input value="dnishchit@gmail.com" />
-                </FormGroup>
-                <FormGroup label="password" >
+                </FormField>
+                <FormField label="password" >
                     <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
-                </FormGroup>
+                </FormField>
                 <a className="cursor-pointer text-appForeground block pb-6 text-right text-sm">Forgot Password?</a>
                 <Button primary={true} text="sign in" fullWidth={true} md={true} />
             </div>
