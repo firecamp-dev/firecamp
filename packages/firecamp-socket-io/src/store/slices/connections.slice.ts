@@ -5,9 +5,9 @@ import { TStoreSlice } from '../store.type';
 
 interface IConnectionsSlice {
   addConnection: (connection: ISocketIOConnection) => void;
-  updateConnection: (connectionId: TId, key: string, value: any) => void;
-  removeConnection: (connectionId: TId) => void;
-  changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => void;
+  updateConnection: (key: string, value: any) => void;
+  removeConnection: () => void;
+  changeConQueryParams: (qps: IQueryParam[]) => void;
 }
 
 const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
@@ -22,49 +22,31 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
     }));
     // state.prepareRequestConnectionsPushAction(connection.id, 'i');
   },
-  updateConnection: (connectionId: TId, key: string, value: any) => {
+  updateConnection: (key: string, value: any) => {
     const state = get();
+    const conId = state.getActiveConnectionId();
     console.log({ key, value });
 
     //If connection id not provided
-    if (!connectionId || !key) return;
+    if (!key) return;
 
     const { connections } = state.request;
-
     //If connection not found
-    const connectionIndex = connections.findIndex((c) => c.id === connectionId);
+    const connectionIndex = connections.findIndex((c) => c.id === conId);
     if (connectionIndex === -1) return;
 
     //Update connection
-    let updatedConnection = Object.assign({}, connections[connectionIndex], {
+    const updatedConnection = Object.assign({}, connections[connectionIndex], {
       [key]: value,
     });
 
     // Ping on/off
     if (key === 'ping') {
       if (value) {
-        state.togglePingConnection(
-          connectionId,
-          true,
-          updatedConnection?.pingInterval
-        );
+        state.togglePingConnection(true, updatedConnection?.pingInterval);
       } else {
-        state.togglePingConnection(connectionId, false);
+        state.togglePingConnection(false, 3000);
       }
-    }
-
-    /**
-     * TODO:
-     * 1. Update ping/ ping interval call ping on/ off method
-     */
-
-    if (key === 'config') {
-      // Note: here for config update, value will be an object that holds updated key value pair from config
-      // Example: value = { pingInterval: 10}
-
-      updatedConnection = Object.assign({}, connections[connectionIndex], {
-        [key]: Object.assign({}, connections[connectionIndex]?.config, value),
-      });
     } else if (key === 'queryParams') {
       state.changeUrl({
         raw: state.request.url?.raw,
@@ -83,58 +65,37 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
         ],
       },
     }));
-
-    // state.prepareRequestConnectionsPushAction(
-    //   connectionId,
-    //   'u',
-    //   state.last?.request?.connections[connectionIndex],
-    //   updatedConnection
-    // );
   },
-  removeConnection: (connectionId: TId) => {
+  removeConnection: () => {
     const state = get();
+    const conId = state.getActiveConnectionId();
     const {
       request: { connections },
-      runtime: { _dnp },
     } = state;
 
-    const removeConnIndex = connections.findIndex(
-      (conn) => conn.id === connectionId
-    );
+    const removeConnIndex = connections.findIndex((conn) => conn.id === conId);
     if (removeConnIndex !== -1) {
       const resultConnections = [
         ...connections.slice(0, removeConnIndex),
         ...connections.slice(removeConnIndex + 1),
       ];
-      let newActiveConnection = _dnp.runtime_activeConnection;
-
-      if (connectionId === _dnp.runtime_activeConnection) {
-        newActiveConnection = connections.find((c) => c.isDefault);
-      }
 
       set((s) => ({
         request: {
           ...s.request,
           connections: resultConnections,
         },
-        runtime: {
-          ...s.runtime,
-          _dnp: {
-            ...s.runtime._dnp,
-            runtimeActiveConnection: newActiveConnection,
-          },
-        },
       }));
-      // state.prepareRequestConnectionsPushAction(connectionId, 'd');
     }
   },
-  changeConQueryParams: (connectionId: TId, qps: IQueryParam[]) => {
-    if (!connectionId) return;
+  changeConQueryParams: (qps: IQueryParam[]) => {
     const state = get();
+    const conId = state.getActiveConnectionId();
     let { displayUrl } = state.runtime;
     const { connections } = state.request;
+
     const _connections = connections.map((c) => {
-      if (c.id == connectionId) {
+      if (c.id == conId) {
         c.queryParams = qps;
         const newUrl = _url.updateByQuery(state.request.url, c.queryParams);
         displayUrl = newUrl.raw;

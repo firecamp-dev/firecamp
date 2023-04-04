@@ -40,6 +40,7 @@ const EmitterPlayground = () => {
       changePlgArgValue: s.changePlgArgValue,
       changePlgEmitterName: s.changePlgEmitterName,
       changePlgEmitterAck: s.changePlgEmitterAck,
+      e: s.sendMessage
     }),
     shallow
   );

@@ -88,7 +88,7 @@ const Logs = () => {
    */
   const _onFilter = (filter = '') => {
     if (typeFilter !== filter) {
-      changePlaygroundLogFilters(activePlayground, { type: filter });
+      changePlaygroundLogFilters({ type: filter });
     }
   };
 

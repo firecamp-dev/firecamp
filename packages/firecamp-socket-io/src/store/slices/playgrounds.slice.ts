@@ -8,9 +8,9 @@ import {
   ISocketIOListener,
   TId,
 } from '@firecamp/types';
+import { TStoreSlice } from '../store.type';
 import { InitPlayground } from '../../constants';
 import { EConnectionState } from '../../types';
-import { TStoreSlice } from '../store.type';
 
 interface IPlayground {
   id: TId;
@@ -34,9 +34,8 @@ interface IPlaygrounds {
 interface IPlaygroundSlice {
   playgrounds: IPlaygrounds;
 
-  getPlayground: (connectionId?: TId) => IPlayground;
-  setPlgExecutor: (connectionId: TId, executor: any) => void;
-  addPlayground: (connectionId: TId, playground: IPlayground) => void;
+  getPlayground: () => IPlayground;
+  setPlgExecutor: (executor: any) => void;
   //arguments
   selectPlgArgTab: (index: number) => void;
   addPlgArgTab: () => void;
@@ -46,30 +45,17 @@ interface IPlaygroundSlice {
   changePlgEmitterName: (name: string) => void;
   changePlgEmitterAck: (value: boolean) => void;
 
-  changePlaygroundConnectionState: (
-    connectionId: TId,
-    connectionState: EConnectionState
-  ) => void;
-  changePlaygroundLogFilters: (
-    connectionId: TId,
-    updates: { type: string }
-  ) => void;
-  resetPlaygroundEmitter: (connectionId: TId) => void;
+  changePlaygroundConnectionState: (connectionState: EConnectionState) => void;
+  changePlaygroundLogFilters: (updates: { type: string }) => void;
+  resetPlaygroundEmitter: () => void;
 
-  setSelectedCollectionEmitter: (
-    connectionId: TId,
-    emitterId: TId | string
-  ) => void;
-  deleteExecutor: (connectionId: TId) => void;
+  setSelectedCollectionEmitter: (emitterId: TId | string) => void;
+  deleteExecutor: () => void;
 
   addListener: (listener: ISocketIOListener) => void;
-  deleteListener: (listener: ISocketIOListener, connectionId?: TId) => void;
-  toggleListener: (
-    bool: boolean,
-    listener: ISocketIOListener,
-    connectionId?: TId
-  ) => void;
-  toggleAllListeners: (bool: boolean, connectionId?: TId) => void;
+  deleteListener: (listener: ISocketIOListener) => void;
+  toggleListener: (bool: boolean, listener: ISocketIOListener) => void;
+  toggleAllListeners: (bool: boolean) => void;
 }
 
 const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
@@ -79,37 +65,29 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 ) => ({
   playgrounds: initialPlaygrounds,
 
-  getPlayground: (connectionId?: TId) => {
+  getPlayground: () => {
     const state = get();
     const {
       runtime: { activePlayground },
       playgrounds,
     } = state;
-    return playgrounds[connectionId || activePlayground];
+    return playgrounds[activePlayground];
   },
-  setPlgExecutor: (connectionId: TId, executor: any) => {
+  setPlgExecutor: (executor: any) => {
+    const conId = get().getActiveConnectionId();
     set((s) => ({
       playgrounds: {
         ...s.playgrounds,
-        [connectionId]: {
-          ...s.playgrounds[connectionId],
+        [conId]: {
+          ...s.playgrounds[conId],
           executor,
         },
-      },
-    }));
-  },
-  addPlayground: (connectionId: TId, playground: IPlayground) => {
-    set((s) => ({
-      playgrounds: {
-        ...s.playgrounds,
-        [connectionId]: playground,
       },
     }));
   },
 
   // emitter and arguments
   selectPlgArgTab: (index: number) => {
-    console.log(index, 789789);
     set((s) => {
       const plg = s.playgrounds[s.runtime.activePlayground];
       return {
@@ -235,39 +213,34 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   },
 
   // connection and logs
-  changePlaygroundConnectionState: (
-    connectionId: TId,
-    connectionState: EConnectionState
-  ) => {
+  changePlaygroundConnectionState: (connectionState: EConnectionState) => {
     const state = get();
-    const existingPlayground = state.playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.connectionState = connectionState;
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: updatedPlayground,
+    const playground = state.getPlayground();
+    const conId = state.getActiveConnectionId();
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [conId]: {
+          ...playground,
+          connectionState,
         },
-      }));
-    }
+      },
+    }));
   },
-  changePlaygroundLogFilters: (
-    connectionId: TId,
-    updates: { type: string }
-  ) => {
+  changePlaygroundLogFilters: (updates: { type: string }) => {
     const state = get();
-    const existingPlayground = state.playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.logFilters = { type: updates.type, event: '' };
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: updatedPlayground,
+    const playground = state.getPlayground();
+    const conId = state.getActiveConnectionId();
+
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [conId]: {
+          ...playground,
+          logFilters: { type: updates.type, event: '' },
         },
-      }));
-    }
+      },
+    }));
   },
 
   //emitter
@@ -283,68 +256,40 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       };
     });
   },
-  setSelectedCollectionEmitter: (
-    connectionId: TId,
-    emitterId: TId | string
-  ) => {
+  setSelectedCollectionEmitter: (emitterId: TId) => {
     const state = get();
-    const existingPlayground = state.playgrounds?.[connectionId];
-    if (existingPlayground && existingPlayground?.id === connectionId) {
-      let updatedPlayground = existingPlayground;
-      updatedPlayground.selectedCollectionEmitter = emitterId;
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: updatedPlayground,
-        },
-      }));
-    }
-  },
-
-  deleteExecutor: (connectionId: TId) => {
-    const state = get();
-    const playground = state.getPlayground[connectionId];
-    if (playground?.id === connectionId) {
-      // listen off/ remove all listeners
-      state.removeAllListenersFromExecutor(connectionId);
-      set((s) => ({
-        playgrounds: {
-          ...s.playgrounds,
-          [connectionId]: {
-            ...playground,
-            executor: null,
-          },
-        },
-      }));
-    }
-  },
-
-  //listeners
-  toggleListener: (bool, listener, connectionId) => {
-    const state = get();
-    connectionId = connectionId || state.getActiveConnectionId();
-    const playground = state.playgrounds[connectionId];
-    if (playground?.id !== connectionId) return;
-    let activeListeners = [];
-
-    if (bool) {
-      activeListeners.push(listener.id);
-      state.addListenerToExecutor(connectionId, listener.name);
-    } else {
-      activeListeners = activeListeners.filter((l) => l != listener.id);
-      state.removeListenerFromExecutor(connectionId, listener.name);
-    }
+    const playground = state.getPlayground();
+    const conId = state.getActiveConnectionId();
 
     set((s) => ({
       playgrounds: {
         ...s.playgrounds,
-        [connectionId]: {
+        [conId]: {
           ...playground,
-          activeListeners,
+          selectedCollectionEmitter: emitterId,
         },
       },
     }));
   },
+
+  deleteExecutor: () => {
+    const state = get();
+    const playground = state.getPlayground();
+    const conId = state.getActiveConnectionId();
+    // listen off/ remove all listeners
+    state.removeAllListenersFromExecutor();
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [conId]: {
+          ...playground,
+          executor: null,
+        },
+      },
+    }));
+  },
+
+  //listeners
   addListener: (listener) => {
     const { name } = listener;
     const l = { id: nanoid(), name, description: '' };
@@ -356,11 +301,10 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       },
     }));
   },
-  deleteListener: (listener, connectionId) => {
+  deleteListener: (listener) => {
     const state = get();
-    connectionId = connectionId || state.getActiveConnectionId();
-    const playground = state.playgrounds[connectionId];
-    if (playground?.id !== connectionId) return;
+    const conId = state.getActiveConnectionId();
+    const playground = state.getPlayground();
 
     const {
       request: { listeners },
@@ -371,7 +315,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     );
 
     // remove listener from executor/ listen off
-    state.removeListenerFromExecutor(connectionId, listener.name);
+    state.removeListenersFromExecutor(listener.name);
 
     // update slice
     set((s) => ({
@@ -381,19 +325,50 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       },
       playgrounds: {
         ...s.playgrounds,
-        [connectionId]: {
+        [conId]: {
           ...playground,
           activeListeners,
         },
       },
     }));
   },
-  toggleAllListeners: (bool, connectionId) => {
+  toggleListener: (bool, listener) => {
     const state = get();
-    connectionId = connectionId || state.getActiveConnectionId();
-    const playground = state.playgrounds[connectionId];
-    if (playground?.id !== connectionId) return;
+    const conId = state.getActiveConnectionId();
+    const playground = state.getPlayground();
+    let activeListeners = [];
+    if (playground.connectionState !== EConnectionState.Open) {
+      state.context.app.notify.alert('The connection is not open.');
+      return;
+    }
 
+    if (bool) {
+      activeListeners.push(listener.id);
+      state.addListenersToExecutor(listener.name);
+    } else {
+      activeListeners = activeListeners.filter((l) => l != listener.id);
+      state.removeListenersFromExecutor(listener.name);
+    }
+
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [conId]: {
+          ...playground,
+          activeListeners,
+        },
+      },
+    }));
+  },
+  toggleAllListeners: (bool) => {
+    const state = get();
+    const conId = state.getActiveConnectionId();
+    const playground = state.getPlayground();
+
+    if (playground.connectionState !== EConnectionState.Open) {
+      state.context.app.notify.alert('The connection is not open.');
+      return;
+    }
     const {
       request: { listeners },
     } = state;
@@ -402,15 +377,15 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     if (bool === true) {
       const lNames = listeners.map((l) => l.name);
       activeLIds = listeners.map((l) => l.id);
-      state.addListenersToExecutor(connectionId, lNames);
+      state.addListenersToExecutor(lNames);
     } else {
-      state.removeAllListenersFromExecutor(connectionId);
+      state.removeAllListenersFromExecutor();
     }
 
     set((s) => ({
       playgrounds: {
         ...s.playgrounds,
-        [connectionId]: {
+        [conId]: {
           ...playground,
           activeListeners: activeLIds,
         },
