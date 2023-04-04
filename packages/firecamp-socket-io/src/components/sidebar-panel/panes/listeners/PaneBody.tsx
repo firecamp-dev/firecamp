@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import shallow from 'zustand/shallow';
 import {
   Checkbox,
@@ -10,16 +10,20 @@ import {
   SwitchButtonV2,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
+import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 const PaneBody = () => {
-  const { listeners, activePlayground, toggleAllListeners } = useStore(
-    (s: IStore) => ({
-      toggleAllListeners: s.toggleAllListeners,
-      listeners: s.playgrounds[s.runtime.activePlayground]?.listeners,
-      activePlayground: s.runtime.activePlayground,
-    }),
-    shallow
-  );
+  const { listeners, activeListeners, activePlayground, toggleAllListeners } =
+    useStore(
+      (s: IStore) => ({
+        listeners: s.request.listeners,
+        activeListeners:
+          s.playgrounds[s.runtime.activePlayground]?.activeListeners,
+        toggleAllListeners: s.toggleAllListeners,
+        activePlayground: s.runtime.activePlayground,
+      }),
+      shallow
+    );
 
   return (
     <Column>
@@ -27,47 +31,51 @@ const PaneBody = () => {
         <Container.Header>
           <AddListener />
         </Container.Header>
-        <Container.Body>
-          {Object.keys(listeners).map((listener, index) => {
-            return (
-              <Listener
-                id={'' + index}
-                key={index}
-                name={listener || ''}
-                value={listeners[listener] || false}
-              />
-            );
-          })}
-        </Container.Body>
-        <Container.Footer>
-          <TabHeader>
-            <TabHeader.Right>
-              <Button
-                key={`listener-off-all-${activePlayground}`}
-                text="Listen off all"
-                onClick={() => {
-                  toggleAllListeners(false);
-                }}
-                transparent
-                secondary
-                ghost
-                xs
-              />
-              <Button
-                key={`listener-on-all-${activePlayground}`}
-                text="Listen all"
-                onClick={() => {
-                  toggleAllListeners(true);
-                }}
-                transparent
-                secondary
-                ghost
-                xs
-              />
-            </TabHeader.Right>
-          </TabHeader>
-          <div className="flex p-2"></div>
-        </Container.Footer>
+        {listeners?.length ? (
+          <>
+            <Container.Body>
+              {listeners.map((listener, index) => {
+                return (
+                  <Listener
+                    listener={listener}
+                    isActive={activeListeners.includes(listener.id)}
+                  />
+                );
+              })}
+            </Container.Body>
+            <Container.Footer>
+              <TabHeader>
+                <TabHeader.Right>
+                  <Button
+                    key={`listener-off-all-${activePlayground}`}
+                    text="Listen off all"
+                    onClick={() => {
+                      toggleAllListeners(false);
+                    }}
+                    transparent
+                    secondary
+                    ghost
+                    xs
+                  />
+                  <Button
+                    key={`listener-on-all-${activePlayground}`}
+                    text="Listen all"
+                    onClick={() => {
+                      toggleAllListeners(true);
+                    }}
+                    transparent
+                    secondary
+                    ghost
+                    xs
+                  />
+                </TabHeader.Right>
+              </TabHeader>
+              <div className="flex p-2"></div>
+            </Container.Footer>
+          </>
+        ) : (
+          <></>
+        )}
       </Container>
     </Column>
   );
@@ -75,7 +83,7 @@ const PaneBody = () => {
 export default PaneBody;
 
 const AddListener = () => {
-  const { toggleListener } = useStoreApi().getState() as IStore;
+  const { toggleListener, addListener } = useStoreApi().getState() as IStore;
   const [listenerName, setListenerName] = useState('');
   const _handleInputChange = (e) => {
     if (e) {
@@ -92,9 +100,9 @@ const AddListener = () => {
 
   const _onAddListener = (e) => {
     if (e) e.preventDefault();
-    const listener = listenerName.trim();
-    if (!listener) return;
-    toggleListener(false, listener);
+    const name = listenerName.trim();
+    if (!name) return;
+    addListener({ id: '', name });
     setListenerName('');
   };
 
@@ -124,27 +132,19 @@ const AddListener = () => {
   );
 };
 
-const Listener = ({ id = '', name = 'Listener', value = false }) => {
+const Listener = ({ listener, isActive }) => {
   const { toggleListener, deleteListener, getActiveConnectionId } =
     useStoreApi().getState() as IStore;
 
+  const { id, name } = listener;
   const uniqueId = `${getActiveConnectionId()}-${id}-listen`;
-
-  const _onToggleListen = (e) => {
-    toggleListener(e?.target?.checked || false, name);
-  };
-
-  const _onRemove = (event) => {
-    if (event) event.preventDefault();
-    deleteListener(name);
-  };
 
   return (
     <div className="flex justify-center items-center relative px-2 py-0.5">
       <div
         className="flex-1 overflow-hidden overflow-ellipsis text-base"
         data-tip={name}
-        id={`${uniqueId}-name`}
+        id={`${uniqueId}-listener`}
       >
         {name}
       </div>
@@ -152,8 +152,15 @@ const Listener = ({ id = '', name = 'Listener', value = false }) => {
         {/* <SwitchButtonV2/> */}
         <Checkbox
           id={uniqueId}
-          isChecked={value}
-          onToggleCheck={_onToggleListen}
+          isChecked={isActive}
+          onToggleCheck={(l, v) => {
+            toggleListener(v, listener);
+          }}
+        />
+        <VscTrash
+          onClick={() => {
+            deleteListener(listener);
+          }}
         />
       </div>
     </div>

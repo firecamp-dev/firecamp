@@ -92,7 +92,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   if (!_nr.connections?.length) _nr.connections = [RequestConnection];
 
   // normalize listeners
-  _nr.listeners = listeners;
+  if (Array.isArray(listeners)) _nr.listeners = listeners;
 
   // normalize config
   _nr.config = _object.mergeDeep(DefaultRequestConfig, config);

@@ -1,3 +1,4 @@
+import { nanoid } from 'nanoid';
 import _deepClone from 'lodash/clone';
 import { IExecutorInterface } from '@firecamp/socket.io-executor/dist/esm';
 import { _object } from '@firecamp/utils';
@@ -61,6 +62,7 @@ interface IPlaygroundSlice {
   ) => void;
   deleteExecutor: (connectionId: TId) => void;
 
+  addListener: (listener: ISocketIOListener) => void;
   deleteListener: (listener: ISocketIOListener, connectionId?: TId) => void;
   toggleListener: (
     bool: boolean,
@@ -343,7 +345,18 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       },
     }));
   },
-  deleteListener: (listener: ISocketIOListener, connectionId?: TId) => {
+  addListener: (listener) => {
+    const { name } = listener;
+    const l = { id: nanoid(), name, description: '' };
+    set((s) => ({
+      ...s,
+      request: {
+        ...s.request,
+        listeners: [...s.request.listeners, l],
+      },
+    }));
+  },
+  deleteListener: (listener, connectionId) => {
     const state = get();
     connectionId = connectionId || state.getActiveConnectionId();
     const playground = state.playgrounds[connectionId];
