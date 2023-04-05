@@ -28,7 +28,7 @@ const ExtraCss = () => {
        transform-none 
        !capitalize underline truncate
        leading-4  leading-7 
-       overflow-ellipsis !overflow-y-auto !overflow-hidden overflow-x-auto 
+       text-ellipsis !overflow-y-auto !overflow-hidden overflow-x-auto 
        align-middle
        list-disc list-decimal`}
     ></div>
