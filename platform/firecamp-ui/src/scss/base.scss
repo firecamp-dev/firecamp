@@ -954,11 +954,3 @@ body .ace_editor .ace_scrollbar{
   align-items: center;
   flex-direction: column;
 }
-
-.DropdownMenuContent[data-side='bottom']{
-  animation-duration: 400ms;
-  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
-
-  animation-name: slideUpAndFade;
-}
