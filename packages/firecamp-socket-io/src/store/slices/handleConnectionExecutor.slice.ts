@@ -2,7 +2,7 @@ import Executor, {
   IExecutorInterface,
   TExecutorOptions,
 } from '@firecamp/socket.io-executor/dist/esm';
-import { TId, ISocketIOEmitter, EFirecampAgent } from '@firecamp/types';
+import { ISocketIOEmitter, EFirecampAgent } from '@firecamp/types';
 import { _misc, _object } from '@firecamp/utils';
 import v2 from 'socket.io-client-v2';
 import v3 from 'socket.io-client-v3';
@@ -132,6 +132,8 @@ const createHandleConnectionExecutor: TStoreSlice<
        */
 
       const playground = state.getPlayground();
+
+      console.log(emitter, 111222333444);
       if (
         playground?.connectionState === EConnectionState.Open &&
         playground.executor

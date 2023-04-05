@@ -1,15 +1,3 @@
-
-export enum EEmitterPayloadTypes {
-  Text = 'text',
-  Json = 'json',
-  File = 'file',
-  ArrayBuffer = 'arraybuffer',
-  ArrayBufferView = 'arraybufferview',
-  Number = 'number',
-  Boolean = 'boolean',
-  None = 'none',
-}
-
 export enum EConnectionState {
   Ideal = -1,
   Connecting = 0,
@@ -59,16 +47,5 @@ export enum EReqChangeConfigKeys {
 export enum EReqChangeRootKeys {
   headers = 'headers',
   config = 'config',
-}
-
-export enum ICommitActionConnectionUpdate_root {
-  namespace = 'namespace',
-  path = 'path',
-  ping = 'ping',
-  forceNew = 'forceNew',
-  pingInterval = 'pingInterval',
-  transports = 'transports',
-  headers = 'headers',
-  queryParams = 'queryParams',
-  auth = 'auth',
+  listeners = 'listeners',
 }

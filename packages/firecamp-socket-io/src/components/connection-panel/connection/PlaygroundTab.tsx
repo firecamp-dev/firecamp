@@ -3,13 +3,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _merge from 'lodash/merge';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import {
-  Container,
-  Input,
-  Button,
-  TabHeader,
-  Checkbox,
-} from '@firecamp/ui';
+import { Container, Input, Button, TabHeader, Checkbox } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 
 import BodyControls from './playground/BodyControls';
@@ -28,6 +22,7 @@ const EmitterPlayground = () => {
     changePlgArgValue,
     changePlgEmitterName,
     changePlgEmitterAck,
+    emit,
   } = useStore(
     (s: IStore) => ({
       playground: s.playgrounds[s.runtime.activePlayground],
@@ -40,7 +35,7 @@ const EmitterPlayground = () => {
       changePlgArgValue: s.changePlgArgValue,
       changePlgEmitterName: s.changePlgEmitterName,
       changePlgEmitterAck: s.changePlgEmitterAck,
-      e: s.sendMessage
+      emit: s.sendMessage,
     }),
     shallow
   );
@@ -88,8 +83,9 @@ const EmitterPlayground = () => {
             <Button
               text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
-              primary
+              onClick={() => emit(plgEmitter)}
               iconRight
+              primary
               xs
             />
           </TabHeader.Right>
