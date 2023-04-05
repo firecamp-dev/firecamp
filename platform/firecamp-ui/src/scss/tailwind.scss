@@ -2523,6 +2523,9 @@ video {
 .hover\:\!pr-3:hover {
 	padding-right: 0.75rem !important;
 }
+.hover\:pr-1:hover {
+	padding-right: 0.25rem;
+}
 .hover\:text-activityBarForeground:hover {
 	color: var(--activityBar-foreground);
 }

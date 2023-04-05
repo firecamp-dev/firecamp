@@ -32,7 +32,8 @@ const PaneBody = () => {
         </Container.Header>
         {listeners?.length ? (
           <>
-            <Container.Body className='visible-scrollbar'>
+            <Container.Body className='visible-scrollbar thin'>
+              <div className='px-2 hover:pr-1'>
               {listeners.map((listener, index) => {
                 return (
                   <Listener
@@ -42,6 +43,7 @@ const PaneBody = () => {
                   />
                 );
               })}
+              </div>
             </Container.Body>
 
             {listeners?.length > 1 ? (
@@ -143,7 +145,7 @@ const Listener = ({ listener, isActive }) => {
   const { id, name } = listener;
   const uniqueId = `${getActiveConnectionId()}-${id}-listen`;
   return (
-    <div className="flex justify-center items-center relative px-2 py-0.5 group hover:bg-focus2">
+    <div className="flex justify-center items-center relative px-2 py-0.5 group hover:bg-focus2 rounded">
       <div
         className="flex-1 overflow-hidden overflow-ellipsis text-base"
         data-tip={name}
