@@ -8,6 +8,7 @@ import {
   Button,
   Column,
   SwitchButtonV2,
+  Scrollbar,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
 
@@ -25,23 +26,42 @@ const PaneBody = () => {
     );
 
   return (
-    <Column className='h-full'>
+    <Column className="h-full">
       <Container>
         <Container.Header>
           <AddListener />
         </Container.Header>
         {listeners?.length ? (
           <>
-            <Container.Body className='visible-scrollbar'>
-              {listeners.map((listener, index) => {
-                return (
-                  <Listener
-                    key={index}
-                    listener={listener}
-                    isActive={activeListeners.includes(listener.id)}
-                  />
-                );
-              })}
+            {/* <Container.Body className="visible-scrollbar thin">
+              <div className="px-2 hover:pr-1">
+                {listeners.map((listener, index) => {
+                  return (
+                    <Listener
+                      key={index}
+                      listener={listener}
+                      isActive={activeListeners.includes(listener.id)}
+                    />
+                  );
+                })}
+              </div>
+            </Container.Body> */}
+
+            {/* with radix scrollbar */}
+            <Container.Body>
+              <Scrollbar height="h-full">
+                <>
+                  {listeners.map((listener, index) => {
+                    return (
+                      <Listener
+                        key={index}
+                        listener={listener}
+                        isActive={activeListeners.includes(listener.id)}
+                      />
+                    );
+                  })}
+                </>
+              </Scrollbar>
             </Container.Body>
 
             {listeners?.length > 1 ? (
@@ -108,6 +128,16 @@ const AddListener = () => {
     const name = listenerName.trim();
     if (!name) return;
     addListener({ id: '', name });
+    
+    //TODO: remove after testing
+    addListener({ id: '', name: name+1 });
+    addListener({ id: '', name: name+2 });
+    addListener({ id: '', name: name+3 });
+    addListener({ id: '', name: name+4 });
+    addListener({ id: '', name: name+5 });
+    addListener({ id: '', name: name+6 });
+    addListener({ id: '', name: name+7 });
+    
     setListenerName('');
   };
 
