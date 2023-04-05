@@ -15,8 +15,8 @@ const _columns = [
   { id: 'type', key: 'type', name: 'Type', width: '40px', fixedWidth: true },
   { id: 'event', key: 'event', name: 'Event', width: '100px' },
   {
-    id: 'message',
-    key: 'message',
+    id: 'value',
+    key: 'value',
     name: 'Message',
     width: '150px',
     resizeWithContainer: true,
@@ -46,7 +46,9 @@ const LogTable = ({
     options
   ) => {
     // console.log(row, cellValue, column, 'cellValue');
-    const { title = '', message = {}, __meta = {}, __ref = {} } = row;
+    const { title = '', value = {}, __meta = {}, __ref = {} } = row;
+
+    console.log('in log table', value, 787897);
     switch (column.id) {
       case 'type':
         if (__meta.type == 'r') {
@@ -59,7 +61,7 @@ const LogTable = ({
         return <></>;
       case 'event':
         return __meta.event;
-      case 'message':
+      case 'value':
         if (__meta.type == 'sys') {
           return (
             <span
@@ -70,9 +72,7 @@ const LogTable = ({
         } else {
           return (
             <div className="w-32 min-w-full block truncate">
-              {__meta.type !== 'file'
-                ? message.value || ''
-                : message.name || 'Sending File'}
+              {__meta.type !== 'file' ? value?.[0]?.value || '' : 'Sending File'}
             </div>
           );
         }

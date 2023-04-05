@@ -3,7 +3,7 @@ import {
   ESocketIOClientVersion,
   EFirecampAgent,
   ISocketIOEmitter,
-  EArgumentBodyType,
+  TId,
 } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import * as bodyParser from './body-parser';
@@ -77,7 +77,7 @@ export default class Executor implements IExecutorInterface {
   }
 
   log = {
-    prepare: (title: string, message: any, __meta: any): ILog => {
+    prepare: (title: string, value: any, __meta: any): ILog => {
       if (!__meta.timestamp) __meta.timestamp = Date.now();
 
       // In normal EMIT/LISTEN event name will be a title so assign that
@@ -109,7 +109,7 @@ export default class Executor implements IExecutorInterface {
       }
       return {
         title,
-        message,
+        value,
         __meta,
         __ref,
       };
@@ -135,7 +135,7 @@ export default class Executor implements IExecutorInterface {
 
     // TODO: Parse eventName via env. variable
     const title = `Listening to event: ${eventName}`;
-    const log = this.log.success(ListenOn, title, '', System);
+    const log = this.log.success(ListenOn, title, [], System);
     this.emitLog(log);
 
     // @deprecated in socket.io-client@3.0.0
@@ -145,10 +145,7 @@ export default class Executor implements IExecutorInterface {
         const value = [
           {
             value: 'Pinging',
-            __meta: {
-              type: 'text',
-              typedArrayView: '',
-            },
+            type: 'text',
           },
         ];
         const log = this.log.success(eventName, eventName, value, Receive);
@@ -163,7 +160,7 @@ export default class Executor implements IExecutorInterface {
         body.push({
           payload: '',
         });
-      log.message = body;
+      log.value = body;
 
       // Calculate the length of the argument and add into the log
       args.forEach((arg, index) => {
@@ -173,17 +170,18 @@ export default class Executor implements IExecutorInterface {
         //   byteLength: arg?.byteLength,
         //   length: arg.length,
         // });
-        if (
-          [
-            EArgumentBodyType.ArrayBuffer,
-            EArgumentBodyType.ArrayBufferView,
-            EArgumentBodyType.File,
-          ].includes(body[index].meta.type)
-        )
-          log.message[index].meta.length = Object.values(
-            this.calculateMessageSize(arg?.byteLength)
-          ).join(' ');
-        else log.message[index].meta.length = arg?.length;
+        // TODO: manage it precisely
+        // if (
+        //   [
+        //     EArgumentBodyType.ArrayBuffer,
+        //     EArgumentBodyType.ArrayBufferView,
+        //     EArgumentBodyType.File,
+        //   ].includes(body[index].meta.type)
+        // )
+        //   log.value[index].__meta.length = Object.values(
+        //     this.calculateMessageSize(arg?.byteLength)
+        //   ).join(' ');
+        // else log.value[index].__meta.length = arg?.length;
       });
 
       this.emitLog(log);
@@ -320,33 +318,16 @@ export default class Executor implements IExecutorInterface {
 
   async prepareEmitPayload(
     eventName: string,
-    args: ISocketIOEmitter['value']
-  ): Promise<any> {
-    let log: any;
-
-    if (args?.length > 0)
-      log = this.log.success(eventName, eventName, args, Send);
-    else log = this.log.success(eventName, eventName, [{ payload: '' }], Send);
-
-    //@ts-ignore //TODO: check type here
+    args: ISocketIOEmitter['value'] = []
+  ): Promise<{ event: string; body: any[]; logId?: TId }> {
+    const argsForLog = (args || []).map((a) => ({
+      value: a.body,
+      type: a.__meta.type,
+    }));
+    const log = this.log.success(eventName, eventName, argsForLog, Send);
     const body = await bodyParser.parseEmitterArguments(args);
-
-    args.forEach((arg, index) => {
-      if (
-        [
-          EArgumentBodyType.ArrayBuffer,
-          EArgumentBodyType.ArrayBufferView,
-          EArgumentBodyType.File,
-        ].includes(arg.__meta.type)
-      )
-        log.message[index].meta.length = Object.values(
-          //@ts-ignore
-          this.calculateMessageSize(body[index]?.byteLength)
-        ).join(' ');
-      else log.message[index].meta.length = body[index]?.body.toString().length;
-    });
     this.emitLog(log);
-    return { event: eventName, body, logId: log.meta.id };
+    return { event: eventName, body, logId: log.__ref.id };
   }
 
   async emit(
@@ -355,9 +336,8 @@ export default class Executor implements IExecutorInterface {
   ): Promise<void> {
     try {
       const { event, body } = await this.prepareEmitPayload(eventName, args);
-
       if (event === 'message') {
-        // Send args with socket.send if event = message
+        // send args with socket.send if event = message
         // @reference: https://socket.io/docs/client-api/#socket-send-%E2%80%A6args-ack
         if (body?.length > 0) this.socket.send(...body);
         else this.socket.send();
@@ -445,7 +425,7 @@ export default class Executor implements IExecutorInterface {
     } catch (error) {
       const title =
         typeof error === 'string' ? error : error.message || SocketError;
-      const log = this.log.danger(SocketError, title, '', System);
+      const log = this.log.danger(SocketError, title, [], System);
       this.emitLog(log);
     }
   }
@@ -472,10 +452,7 @@ export default class Executor implements IExecutorInterface {
         const value = [
           {
             value: 'Pinging',
-            __meta: {
-              type: 'text',
-              typedArrayView: '',
-            },
+            type: 'text',
           },
         ];
         const log = this.log.success('PING', 'PING', value, Send);
@@ -486,10 +463,7 @@ export default class Executor implements IExecutorInterface {
             const value = [
               {
                 payload: 'Pinging',
-                meta: {
-                  type: 'text',
-                  typedArrayView: '',
-                },
+                type: 'text',
               },
             ];
             const log = this.log.success('PONG', 'PONG', value, Receive);
@@ -560,7 +534,7 @@ export default class Executor implements IExecutorInterface {
       // Fired upon a connection timeout.
       this.socket.io.on(ConnectTimeout, (timeout: number) => {
         const title = `Connection timeout(${timeout})`;
-        const log = this.log.danger(ConnectTimeout, title, '', System);
+        const log = this.log.danger(ConnectTimeout, title, [], System);
         this.emitLog(log);
       });
 
@@ -568,14 +542,14 @@ export default class Executor implements IExecutorInterface {
       // Fired upon a connection error.
       this.socket.io.on(SocketError, (error: Error) => {
         const title = error instanceof Error ? error.message : error;
-        const log = this.log.danger(SocketError, title, '', System);
+        const log = this.log.danger(SocketError, title, [], System);
         this.emitLog(log);
       });
 
       // Fired upon disconnection.
       this.socket.on(Disconnect, (reason: string) => {
         const title = reason;
-        const log = this.log.danger(Disconnect, title, '', System);
+        const log = this.log.danger(Disconnect, title, [], System);
 
         if (this.#pinging) this.stopPinging();
         this.emitLog(log, ELogEvents.onClose);
@@ -597,7 +571,7 @@ export default class Executor implements IExecutorInterface {
       // Fired upon an attempt to reconnect.
       this.socket.io.on(ReconnectAttempt, (attemptNumber) => {
         const title = `Attempt number(${attemptNumber})`;
-        const log = this.log.warning(ReconnectAttempt, title, '', System);
+        const log = this.log.warning(ReconnectAttempt, title, [], System);
         this.emitLog(log);
       });
 
@@ -605,7 +579,7 @@ export default class Executor implements IExecutorInterface {
       // Fired upon an attempt to reconnect.
       this.socket.io.on(Reconnecting, (attemptNumber) => {
         const title = `Attempt number(${attemptNumber})`;
-        const log = this.log.warning(Reconnecting, title, '', System);
+        const log = this.log.warning(Reconnecting, title, [], System);
         this.emitLog(log, ELogEvents.onConnecting);
         this.emitLog(log);
       });
@@ -614,7 +588,7 @@ export default class Executor implements IExecutorInterface {
       // Fired upon a reconnection attempt error.
       this.socket.io.on(ReconnectError, (error) => {
         const title = error instanceof Error ? error.message : error;
-        const log = this.log.danger(ReconnectError, title, '', System);
+        const log = this.log.danger(ReconnectError, title, [], System);
         this.emitLog(log);
       });
 
@@ -623,7 +597,7 @@ export default class Executor implements IExecutorInterface {
       this.socket.io.on(ReconnectFailed, () => {
         const title =
           "The client couldn't reconnect within reconnection attempts";
-        const log = this.log.danger(ReconnectFailed, title, '', System);
+        const log = this.log.danger(ReconnectFailed, title, [], System);
         this.emitLog(log);
         this.unsubscribe();
       });
@@ -632,7 +606,7 @@ export default class Executor implements IExecutorInterface {
     } catch (error) {
       const title =
         error instanceof Error ? error.message : error || SocketError;
-      const log = this.log.danger(SocketError, title, '', System);
+      const log = this.log.danger(SocketError, title, [], System);
       this.emitLog(log);
       this.unsubscribe();
     }
@@ -643,7 +617,7 @@ export default class Executor implements IExecutorInterface {
     if (this.socket.connected) this.socket.disconnect();
 
     // send the log
-    const log = this.log.danger(Disconnect, Disconnect, '', System);
+    const log = this.log.danger(Disconnect, Disconnect, [], System);
     this.emitLog(log);
     this.unsubscribe();
   }

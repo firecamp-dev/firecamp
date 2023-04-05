@@ -1,4 +1,4 @@
-import { TId, ISocketIOEmitter } from '@firecamp/types';
+import { TId } from '@firecamp/types';
 
 export enum ELogTypes {
   Send = 's',
@@ -24,7 +24,7 @@ export enum ELogColors {
 // SocketIo log
 export interface ILog {
   title: string;
-  message: Omit<ISocketIOEmitter, 'name' | '__ref'>;
+  value: { value: string; type: string }[];
   __meta: {
     event: string;
     timestamp: number;

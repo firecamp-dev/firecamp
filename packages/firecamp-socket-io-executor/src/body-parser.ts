@@ -13,12 +13,9 @@ export const parseEmitterArguments = async (
   const result: any[] = [];
   for (const { __meta, body } of args) {
     switch (__meta.type) {
+      case EArgumentBodyType.File:
       case EArgumentBodyType.Number:
-        result.push(body);
-        break;
       case EArgumentBodyType.Boolean:
-        result.push(body);
-        break;
       case EArgumentBodyType.Text:
         result.push(body);
         break;
@@ -28,9 +25,6 @@ export const parseEmitterArguments = async (
         } catch (e) {
           console.log(e); //TODO: handle it to show an error
         }
-        break;
-      case EArgumentBodyType.File:
-        result.push(body);
         break;
       case EArgumentBodyType.ArrayBuffer:
         result.push(
