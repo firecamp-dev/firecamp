@@ -37,6 +37,7 @@ const PaneBody = () => {
               {listeners.map((listener, index) => {
                 return (
                   <Listener
+                    key={index}
                     listener={listener}
                     isActive={activeListeners.includes(listener.id)}
                   />
@@ -117,7 +118,7 @@ const AddListener = () => {
       value={listenerName}
       onChange={_handleInputChange}
       onKeyDown={_handleKeyDown}
-      wrapperClassName="!mb-0"
+      wrapperClassName="!mb-0 p-2"
       postComponents={[
         <Button
           key={'listener-add-button'}
@@ -140,7 +141,7 @@ const Listener = ({ listener, isActive }) => {
   const uniqueId = `${getActiveConnectionId()}-${id}-listen`;
 
   return (
-    <div className="flex justify-center items-center relative px-2 py-0.5">
+    <div className="flex justify-center items-center relative px-2 py-0.5 group hover:bg-focus2">
       <div
         className="flex-1 overflow-hidden overflow-ellipsis text-base"
         data-tip={name}
@@ -148,21 +149,26 @@ const Listener = ({ listener, isActive }) => {
       >
         {name}
       </div>
-      <div className="small">
-        {/* <SwitchButtonV2/> */}
-        <Checkbox
+
+      <SwitchButtonV2
+        xs
+        checked={isActive}
+        onChange={(v) => toggleListener(v, listener)}
+        className="ml-1"
+      />
+      {/* <Checkbox
           id={uniqueId}
           isChecked={isActive}
           onToggleCheck={(l, v) => {
             toggleListener(v, listener);
           }}
-        />
-        <VscTrash
-          onClick={() => {
-            deleteListener(listener);
-          }}
-        />
-      </div>
+        /> */}
+      <VscTrash
+        className="h-0 ml-1 group-hover:h-auto cursor-pointer"
+        onClick={() => {
+          deleteListener(listener);
+        }}
+      />
     </div>
   );
 };

@@ -7,7 +7,7 @@ const ExtraCss = () => {
       className={`
        theme-light animate-slideUpAndFade
        w-2 w-5 w-6 w-9 w-14 w-56 w-60 w-96 w-[32rem] !w-auto !w-full 
-       h-5 h-6 !h-6 h-8 h-9 h-10 h-48 h-80 !h-80 !h-fit
+       h-0 h-5 h-6 !h-6 h-8 h-9 h-10 h-48 h-80 !h-80 !h-fit group-hover:h-auto
        !min-w-full max-w-sm
        min-h-0 max-h-4 max-h-48 max-h-52 max-h-56
        after:opacity-10 opacity-20 opacity-30 opacity-50 opacity-70 opacity-80 opacity-100 !opacity-100
@@ -30,6 +30,7 @@ const ExtraCss = () => {
        leading-4  leading-7 
        overflow-ellipsis !overflow-y-auto !overflow-hidden overflow-x-auto 
        align-middle
+       group
        list-disc list-decimal`}
     ></div>
   );

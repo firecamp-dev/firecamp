@@ -89,7 +89,6 @@ const EmitterPlayground = () => {
               text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
               primary
-              iconCenter
               iconRight
               xs
             />

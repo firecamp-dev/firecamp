@@ -1,4 +1,5 @@
 export interface ISwitchButton {
+  className?: string;
   /**
    * Unique identifier for Button.
    */
@@ -11,4 +12,8 @@ export interface ISwitchButton {
    * Function to return switch button boolean state.
    */
   onChange: (value: boolean) => void;
+  xs?: boolean;
+  sm?: boolean;
+  md?: boolean;
+  lg?: boolean;
 }
