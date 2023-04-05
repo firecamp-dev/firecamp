@@ -11,14 +11,16 @@ const SwitchButtonV2: FC<ISwitchButton> = ({
   md,
   sm,
   lg,
-  className
+  className,
 }) => {
   return (
     <Switch.Root
       checked={checked}
       onCheckedChange={onChange}
       className={cx(
-        'rounded-2xl bg-appForeground shadow-md',
+        'rounded-2xl shadow-md',
+        { 'bg-appForeground': !checked },
+        { 'bg-primaryColor': checked },
         { 'w-5 h-[10px]': xs },
         { 'w-10 h-5': sm },
         { 'w-[60px] h-[30px]': md },
