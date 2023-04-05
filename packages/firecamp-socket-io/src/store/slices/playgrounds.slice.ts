@@ -291,10 +291,19 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 
   //listeners
   addListener: (listener) => {
-    const { name } = listener;
-    const l = { id: nanoid(), name, description: '' };
+    const {
+      request: { listeners },
+      context,
+    } = get();
+    const l = { id: nanoid(), name: listener.name, description: '' };
+    const listenerExists = listeners.find((l) => l.name == listener.name);
+    if (listenerExists) {
+      context.app.notify.warning(
+        'The listener with same name is already exists'
+      );
+      return;
+    }
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
         listeners: [...s.request.listeners, l],
