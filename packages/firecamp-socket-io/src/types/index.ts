@@ -1,14 +1,3 @@
-export enum EEmitterPayloadTypes {
-  Text = 'text',
-  Json = 'json',
-  File = 'file',
-  ArrayBuffer = 'arraybuffer',
-  ArrayBufferView = 'arraybufferview',
-  Number = 'number',
-  Boolean = 'boolean',
-  None = 'none',
-}
-
 export enum EConnectionState {
   Ideal = -1,
   Connecting = 0,
