@@ -114,7 +114,7 @@ const AddListener = () => {
       name="status"
       id="status"
       placeholder="Listener name"
-      className="!rounded-br-none !rounded-tr-none"
+      className="!rounded-br-none !rounded-tr-none !p-1"
       value={listenerName}
       onChange={_handleInputChange}
       onKeyDown={_handleKeyDown}
@@ -126,7 +126,7 @@ const AddListener = () => {
           className="!rounded-bl-none !rounded-tl-none"
           onClick={_onAddListener}
           secondary
-          sm
+          xs
         />,
       ]}
     />
