@@ -336,14 +336,14 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     const state = get();
     const conId = state.getActiveConnectionId();
     const playground = state.getPlayground();
-    let activeListeners = [];
+    let { activeListeners } = playground;
     if (playground.connectionState !== EConnectionState.Open) {
       state.context.app.notify.alert('The connection is not open.');
       return;
     }
 
     if (bool) {
-      activeListeners.push(listener.id);
+      activeListeners = [...activeListeners, listener.id];
       state.addListenersToExecutor(listener.name);
     } else {
       activeListeners = activeListeners.filter((l) => l != listener.id);

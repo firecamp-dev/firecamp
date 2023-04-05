@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import shallow from 'zustand/shallow';
+import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import {
-  Checkbox,
   Input,
   Container,
   TabHeader,
@@ -10,7 +10,6 @@ import {
   SwitchButtonV2,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 const PaneBody = () => {
   const { listeners, activeListeners, activePlayground, toggleAllListeners } =
@@ -84,7 +83,7 @@ const PaneBody = () => {
 export default PaneBody;
 
 const AddListener = () => {
-  const { toggleListener, addListener } = useStoreApi().getState() as IStore;
+  const { addListener } = useStoreApi().getState() as IStore;
   const [listenerName, setListenerName] = useState('');
   const _handleInputChange = (e) => {
     if (e) {
@@ -136,10 +135,8 @@ const AddListener = () => {
 const Listener = ({ listener, isActive }) => {
   const { toggleListener, deleteListener, getActiveConnectionId } =
     useStoreApi().getState() as IStore;
-
   const { id, name } = listener;
   const uniqueId = `${getActiveConnectionId()}-${id}-listen`;
-
   return (
     <div className="flex justify-center items-center relative px-2 py-0.5 group hover:bg-focus2">
       <div
@@ -150,24 +147,17 @@ const Listener = ({ listener, isActive }) => {
         {name}
       </div>
 
-      <SwitchButtonV2
-        xs
-        checked={isActive}
-        onChange={(v) => toggleListener(v, listener)}
-        className="ml-1"
-      />
-      {/* <Checkbox
-          id={uniqueId}
-          isChecked={isActive}
-          onToggleCheck={(l, v) => {
-            toggleListener(v, listener);
-          }}
-        /> */}
       <VscTrash
         className="h-0 ml-1 group-hover:h-auto cursor-pointer"
         onClick={() => {
           deleteListener(listener);
         }}
+      />
+      <SwitchButtonV2
+        xs
+        checked={isActive}
+        onChange={(v) => toggleListener(v, listener)}
+        className="ml-1"
       />
     </div>
   );
