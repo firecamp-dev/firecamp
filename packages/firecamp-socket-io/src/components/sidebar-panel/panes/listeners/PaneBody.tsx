@@ -25,14 +25,14 @@ const PaneBody = () => {
     );
 
   return (
-    <Column>
+    <Column className='h-full'>
       <Container>
         <Container.Header>
           <AddListener />
         </Container.Header>
         {listeners?.length ? (
           <>
-            <Container.Body>
+            <Container.Body className='visible-scrollbar'>
               {listeners.map((listener, index) => {
                 return (
                   <Listener
@@ -70,7 +70,7 @@ const PaneBody = () => {
                   />
                 </TabHeader.Right>
               </TabHeader>
-              <div className="flex p-2"></div>
+              {/* <div className="flex p-2"></div> */}
             </Container.Footer>
           </>
         ) : (
