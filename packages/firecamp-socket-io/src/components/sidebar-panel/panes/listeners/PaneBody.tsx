@@ -43,35 +43,40 @@ const PaneBody = () => {
                 );
               })}
             </Container.Body>
-            <Container.Footer>
-              <TabHeader>
-                <TabHeader.Right>
-                  <Button
-                    key={`listener-off-all-${activePlayground}`}
-                    text="Listen off all"
-                    onClick={() => {
-                      toggleAllListeners(false);
-                    }}
-                    transparent
-                    secondary
-                    ghost
-                    xs
-                  />
-                  <Button
-                    key={`listener-on-all-${activePlayground}`}
-                    text="Listen all"
-                    onClick={() => {
-                      toggleAllListeners(true);
-                    }}
-                    transparent
-                    secondary
-                    ghost
-                    xs
-                  />
-                </TabHeader.Right>
-              </TabHeader>
-              {/* <div className="flex p-2"></div> */}
-            </Container.Footer>
+
+            {listeners?.length > 1 ? (
+              <Container.Footer>
+                <TabHeader>
+                  <TabHeader.Right>
+                    <Button
+                      key={`listener-off-all-${activePlayground}`}
+                      text="Listen off all"
+                      onClick={() => {
+                        toggleAllListeners(false);
+                      }}
+                      transparent
+                      secondary
+                      ghost
+                      xs
+                    />
+                    <Button
+                      key={`listener-on-all-${activePlayground}`}
+                      text="Listen all"
+                      onClick={() => {
+                        toggleAllListeners(true);
+                      }}
+                      transparent
+                      secondary
+                      ghost
+                      xs
+                    />
+                  </TabHeader.Right>
+                </TabHeader>
+                {/* <div className="flex p-2"></div> */}
+              </Container.Footer>
+            ) : (
+              <></>
+            )}
           </>
         ) : (
           <></>

@@ -20,7 +20,7 @@ const ExtraCss = () => {
        px-14 py-20 py-4 px-8 !p-0 !p-1 py-0.5 !px-6  pt-0.5 p-6 pr-3 pb-96 !pt-2 !px-3 !pb-3 !pb-1 !pt-3 !pb-2 !py-3 px-10 px-16  pb-4  pb-3  !pb-6 pl-4  !pb-0  pt-14  py-6 pr-0.5 !px-0 pl-0.5 !pr-0 pb-0 !py-0 !px-2  !py-2 	!pt-4 px-0.5  !pl-3 !pr-3 pt-5  pb-5  !p-4 !pl-4 !pr-4  hover:!pr-3 
        -left-8 top-4  bottom-6  !top-4 top-5 top-1 right-4 top-12 after:top-0 after:left-0 after:bottom-0 after:right-0 top-auto	
        float-right
-       text-2xl text-5xl !text-base !text-appForegroundActive text-rest text-websocket text-graphql !text-primaryColor !text-appForegroundInActive !text-ellipsis text-link hover:underline !text-link hover:!text-link
+       text-2xl text-5xl !text-base !text-appForegroundActive text-rest text-graphql !text-primaryColor !text-appForegroundInActive !text-ellipsis text-link hover:underline !text-link hover:!text-link
        font-normal font-light !font-regular hover:text-appForegroundActive
        z-20 z-30 z-[1000]
        flex-none flex-2 
