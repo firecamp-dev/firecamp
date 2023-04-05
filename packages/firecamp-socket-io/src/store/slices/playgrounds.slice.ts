@@ -291,24 +291,27 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 
   //listeners
   addListener: (listener) => {
+    const state = get();
     const {
-      request: { listeners },
+      request: { listeners: rListeners },
       context,
-    } = get();
+    } = state;
     const l = { id: nanoid(), name: listener.name, description: '' };
-    const listenerExists = listeners.find((l) => l.name == listener.name);
+    const listenerExists = rListeners.find((l) => l.name == listener.name);
     if (listenerExists) {
       context.app.notify.warning(
         'The listener with same name is already exists'
       );
       return;
     }
+    const listeners = [...rListeners, l];
     set((s) => ({
       request: {
         ...s.request,
-        listeners: [...s.request.listeners, l],
+        listeners,
       },
     }));
+    state.equalityChecker({ listeners });
   },
   deleteListener: (listener) => {
     const state = get();
@@ -316,9 +319,9 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     const playground = state.getPlayground();
 
     const {
-      request: { listeners },
+      request: { listeners: rListeners },
     } = state;
-    const _listeners = listeners.filter((l) => l.id != listener.id);
+    const listeners = rListeners.filter((l) => l.id != listener.id);
     const activeListeners = playground.activeListeners.filter(
       (l) => l != listener.id
     );
@@ -330,7 +333,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     set((s) => ({
       request: {
         ...s.request,
-        listeners: _listeners,
+        listeners,
       },
       playgrounds: {
         ...s.playgrounds,
@@ -340,6 +343,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         },
       },
     }));
+    state.equalityChecker({ listeners });
   },
   toggleListener: (bool, listener) => {
     const state = get();

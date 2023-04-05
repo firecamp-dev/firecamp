@@ -1,4 +1,3 @@
-
 export enum EEmitterPayloadTypes {
   Text = 'text',
   Json = 'json',
@@ -59,16 +58,5 @@ export enum EReqChangeConfigKeys {
 export enum EReqChangeRootKeys {
   headers = 'headers',
   config = 'config',
-}
-
-export enum ICommitActionConnectionUpdate_root {
-  namespace = 'namespace',
-  path = 'path',
-  ping = 'ping',
-  forceNew = 'forceNew',
-  pingInterval = 'pingInterval',
-  transports = 'transports',
-  headers = 'headers',
-  queryParams = 'queryParams',
-  auth = 'auth',
+  listeners = 'listeners',
 }
