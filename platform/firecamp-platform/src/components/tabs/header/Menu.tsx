@@ -46,7 +46,7 @@ const Menu: FC = () => {
           name: 'WebSocket',
           prefix: () => (
             <div className={'dropdown-icon'}>
-              <FcIconWebSocket className="text-websocket" size={24} />
+              <FcIconWebSocket className="" size={24} />
             </div>
           ),
           onClick: () => {
