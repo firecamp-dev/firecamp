@@ -1061,6 +1061,12 @@ video {
   height: -moz-fit-content !important;
   height: fit-content !important;
 }
+.\!h-full {
+  height: 100% !important;
+}
+.\!h-screen {
+  height: 100vh !important;
+}
 .h-0 {
   height: 0px;
 }
@@ -1114,6 +1120,10 @@ video {
 }
 .h-\[50vh\] {
   height: 50vh;
+}
+.h-fit {
+  height: -moz-fit-content;
+  height: fit-content;
 }
 .h-full {
   height: 100%;
@@ -2502,10 +2512,6 @@ body {
   font-family: 'icomoon' !important;
 }
 
-.text-ellipsis{
-  text-overflow: ellipsis !important;
-}
-
 a,a:hover{
   color: inherit !important
 }
@@ -2515,17 +2521,6 @@ button[disabled] {
 }
 hr{
   border-color: var(--app-border)
-}
-.fullscreen{
-  height: 100%;
-}
-.h-fit{
-  height: -moz-fit-content;
-  height: fit-content;
-}
-.\!h-fit{
-  height: -moz-fit-content !important;
-  height: fit-content !important;
 }
 *:focus-visible{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
@@ -2567,10 +2562,6 @@ tr:focus-visible{
   margin-bottom: 0.5rem;
   font-size: 12px;
   color: var(--error);
-}
-.w-fit {
-  width: -moz-fit-content;
-  width: fit-content;
 }
 .pt-half{
   padding-top: 2px;
@@ -2640,14 +2631,6 @@ tr:focus-visible{
 *.bg-appBackground2
 .fc-col {
     background: var(--app-background-secondary)
-}
- 
-.fc-h-screen {
-  height: 100vh !important
-}
-  
-.fc-h-full {
-  height: 100% !important
 }
 
 .react-tiny-popover-container{

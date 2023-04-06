@@ -69,7 +69,7 @@ const TabsContainer: FC<any> = () => {
   return (
     <Column flex="1" overflow="auto">
       <RootContainer className="fc-tabs">
-        <Row className="flex-col fc-h-screen" overflow="auto">
+        <Row className="flex-col fc-h-screen !h-screen" overflow="auto">
           <TabContainerHeader />
           <TabContainerBody />
         </Row>

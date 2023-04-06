@@ -215,10 +215,6 @@ body{
   font-family: 'icomoon' !important;
 }
 
-.text-ellipsis{
-  text-overflow: ellipsis !important;
-}
-
 a,a:hover{
   color: inherit !important
 }
@@ -228,15 +224,6 @@ button[disabled]{
 }
 hr{
   border-color: var(--app-border)
-}
-.fullscreen{
-  height: 100%;
-}
-.h-fit{
-  height: fit-content;
-}
-.\!h-fit{
-  height: fit-content !important;
 }
 *:focus-visible{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
@@ -272,9 +259,6 @@ tr:focus-visible{
 }
 .fc-error{
   @apply text-error text-sm mb-2
-}
-.w-fit {
-  width: fit-content;
 }
 .pt-half{
   padding-top: 2px;
@@ -344,14 +328,6 @@ tr:focus-visible{
 *.bg-appBackground2
 .fc-col {
     background: var(--app-background-secondary)
-}
- 
-.fc-h-screen {
-  height: 100vh !important
-}
-  
-.fc-h-full {
-  height: 100% !important
 }
 
 .react-tiny-popover-container{
