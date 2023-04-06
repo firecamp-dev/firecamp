@@ -11,6 +11,9 @@ import { ILog, ELogEvents, ELogTypes, ELogColors } from './types';
 import { TExecutorOptions, IExecutor } from './executor.interface';
 import ConfigGenerator from './config-generator';
 
+const { Danger, Success } = ELogColors;
+const { Receive, Send, System, Upgrade } = ELogTypes;
+
 // Fetch the app agent
 const firecampAgent: EFirecampAgent = _misc.firecampAgent();
 
@@ -60,65 +63,41 @@ export default class Executor implements IExecutor {
 
     try {
       this.#socket = new this.#WebSocket(address, protocols, clientOptions);
-
-      let title: string = ConnectionStatus[0].description;
-      let log: ILog = this.#log(
+      const title: string = ConnectionStatus[0].description;
+      const log: ILog = this.#log.success(
+        ConnectionStatus[0].state,
         title,
-        {},
-        {
-          event: ConnectionStatus[0].state,
-          type: ELogTypes.System,
-          color: ELogColors.Success,
-        }
+        System
       );
-
       this.#emitLog(log, ELogEvents.onConnecting);
 
       if (firecampAgent === EFirecampAgent.Desktop) {
         this.#socket.on('pong', async (arg) => {
-          log = this.#log(
-            'Pong',
-            {
-              value: arg.toString(),
-              __meta: { type: 'text', typedArrayView: '' },
-            },
-            {
-              type: ELogTypes.Receive,
-            }
-          );
+          const log = this.#log.success('Pong', '', Receive, {
+            value: arg.toString(),
+            __meta: { type: 'text', typedArrayView: '' },
+          });
           this.#emitLog(log);
         });
 
         this.#socket.on('upgrade', (response) => {
-          log = this.#log(
-            'On Upgrade',
-            {
-              value: `// On Upgrade receive headers \n ${JSON.stringify(
-                response.headers,
-                null,
-                4
-              )}`,
-              __meta: { type: 'json', typedArrayView: '' },
-            },
-            {
-              type: ELogTypes.Receive,
-            }
-          );
+          const value = `// On Upgrade receive headers \n ${JSON.stringify(
+            response.headers,
+            null,
+            4
+          )}`;
+          const log = this.#log.success('On Upgrade', value, Receive, {
+            value,
+            __meta: { type: 'json' },
+          });
           this.#emitLog(log);
 
           // Send log to set cookie
-          log = this.#log(
-            ELogTypes.Upgrade,
-            {
-              value: response.headers,
-              __meta: { type: 'json', typedArrayView: '' },
-            },
-            {
-              type: ELogTypes.Upgrade,
-            }
-          );
-
-          this.#emitLog(log);
+          const logH = this.#log.success(Upgrade, '', Upgrade, {
+            value: response.headers,
+            __meta: { type: 'json' },
+          });
+          this.#emitLog(logH);
         });
       }
 
@@ -127,15 +106,11 @@ export default class Executor implements IExecutor {
         if (event.target.readyState === 1) {
           this.#connected = true;
 
-          title = ConnectionStatus[event.target.readyState].description;
-          log = this.#log(
+          const title = ConnectionStatus[event.target.readyState].description;
+          const log = this.#log.success(
+            ConnectionStatus[event.target.readyState].state,
             title,
-            {},
-            {
-              event: ConnectionStatus[event.target.readyState].state,
-              type: ELogTypes.System,
-              color: ELogColors.Success,
-            }
+            System
           );
           this.#emitLog(log, ELogEvents.onOpen);
           this.#emitLog(log);
@@ -151,16 +126,11 @@ export default class Executor implements IExecutor {
           }
         } else {
           this.#connected = false;
-
-          title = ConnectionStatus[event.target.readyState].description;
-          log = this.#log(
+          const title = ConnectionStatus[event.target.readyState].description;
+          const log = this.#log.success(
+            ConnectionStatus[event.target.readyState].state,
             title,
-            {},
-            {
-              event: ConnectionStatus[event.target.readyState].state,
-              type: ELogTypes.System,
-              color: ELogColors.Success,
-            }
+            System
           );
           this.#emitLog(log);
         }
@@ -168,11 +138,7 @@ export default class Executor implements IExecutor {
 
       this.#socket.onmessage = async (event: any) => {
         const message = await bodyParser.parseReceivedMessage(event.data);
-
-        log = this.#log('Message Received', message, {
-          type: ELogTypes.Receive,
-        });
-
+        const log = this.#log.success('', 'Message Received', Receive, message);
         if (
           (firecampAgent && Buffer.isBuffer(event?.data)) ||
           (event?.data instanceof ArrayBuffer && event?.data.byteLength > 0) ||
@@ -191,6 +157,7 @@ export default class Executor implements IExecutor {
       this.#socket.onclose = (event: any) => {
         this.#connected = false;
 
+        let title: string;
         if (event.target.readyState === 3 && event.wasClean) {
           if (!event.reason) {
             title = `${event.code}: ${
@@ -199,19 +166,12 @@ export default class Executor implements IExecutor {
           } else {
             title = `${event.code}: ${event.reason}`;
           }
-
-          log = this.#log(
+          const log = this.#log.danger(
+            ConnectionStatus[4].state,
             title,
-            {},
-            {
-              event: ConnectionStatus[4].state,
-              type: ELogTypes.System,
-              color: ELogColors.Danger,
-            }
+            System
           );
-
           if (this.#pinging) this.stopPinging();
-
           this.#emitLog(log, ELogEvents.onClose);
           this.#emitLog(log);
           this.#unsubscribe();
@@ -223,29 +183,20 @@ export default class Executor implements IExecutor {
           } else {
             title = `${event.code}: ${event.reason}`;
           }
-
-          log = this.#log(
+          const log = this.#log.danger(
+            ConnectionStatus[event.target.readyState].state,
             title,
-            {},
-            {
-              event: ConnectionStatus[event.target.readyState].state,
-              type: ELogTypes.System,
-              color: ELogColors.Danger,
-            }
+            System
           );
           this.#emitLog(log, ELogEvents.onClose);
           this.#emitLog(log);
 
           if (this.#connection.reconnect.enable) {
-            title = ConnectionStatus[6].description;
-            log = this.#log(
+            const title = ConnectionStatus[6].description;
+            const log = this.#log.danger(
+              ConnectionStatus[6].state,
               title,
-              {},
-              {
-                event: ConnectionStatus[6].state,
-                type: ELogTypes.System,
-                color: ELogColors.Danger,
-              }
+              System
             );
             this.#emitLog(log, ELogEvents.onOpen);
             this.#reconnect();
@@ -256,39 +207,20 @@ export default class Executor implements IExecutor {
       // An event listener to be called when an error occurs.
       this.#socket.onerror = (event: any) => {
         this.#connected = false;
-
-        title = `${ConnectionStatus[5].state}: ${
+        const title = `${ConnectionStatus[5].state}: ${
           event.message || ConnectionStatus[5].description
         }`;
-        log = this.#log(
-          title,
-          {},
-          {
-            event: ConnectionStatus[5].state,
-            type: ELogTypes.System,
-            color: ELogColors.Danger,
-          }
-        );
+        const log = this.#log.danger(ConnectionStatus[5].state, title, System);
         this.#emitLog(log, ELogEvents.onConnecting);
         this.#emitLog(log);
       };
-
       return this;
-    } catch (error) {
+    } catch (e) {
       this.#connected = false;
-
       const title = `${ConnectionStatus[5].state}: ${
-        error.message || ConnectionStatus[5].description
+        e.message || ConnectionStatus[5].description
       }`;
-      const log = this.#log(
-        title,
-        {},
-        {
-          event: ConnectionStatus[5].state,
-          type: ELogTypes.System,
-          color: ELogColors.Danger,
-        }
-      );
+      const log = this.#log.danger(ConnectionStatus[5].state, title, System);
       this.#emitLog(log);
     }
   }
@@ -323,13 +255,11 @@ export default class Executor implements IExecutor {
 
   #unsubscribe(): void {
     this.#connected = false;
-
     this.#eventEmitter.all.clear();
   }
 
   disconnect(code: number, reason?: string): void {
     this.#connected = false;
-
     if (!code) this.#socket.close(1000, StatusCodes[1000].description);
     else this.#socket.close(code, reason);
   }
@@ -344,7 +274,7 @@ export default class Executor implements IExecutor {
 
   async send(message: Partial<IWebSocketMessage>): Promise<void> {
     if (message?.__meta) {
-      const log = this.#log('Message Sent', message, { type: ELogTypes.Send });
+      const log = this.#log.success('', 'Message Sent', Send, message);
       const msg = await bodyParser.parseMessage(message);
       if (
         [
@@ -360,7 +290,7 @@ export default class Executor implements IExecutor {
       this.#emitLog(log);
       this.#socket.send(msg);
     } else {
-      const log = this.#log('Message Sent', '', { type: ELogTypes.Send });
+      const log = this.#log.success('', 'Message Sent', Send);
       this.#emitLog(log);
       this.#socket.send();
     }
@@ -368,55 +298,26 @@ export default class Executor implements IExecutor {
 
   ping(interval: number): void {
     if (!this.#connected) return;
-
     this.#pinging = true;
-
-    let log = this.#log('Pinging', [], {
-      type: ELogTypes.System,
-      color: ELogColors.Success,
-    });
-
+    const log = this.#log.success('Pinging', '', Success);
     this.#emitLog(log);
-
     if (interval) {
       this.#intervals.PING = setInterval(() => {
-        log = this.#log(
-          'Ping',
-          { meta: { type: 'text', typedArrayView: '' }, payload: 'Pinging' },
-          {
-            type: ELogTypes.Send,
-          }
-        );
-
+        const log = this.#log.success('', 'Ping', Send, '');
         this.#emitLog(log);
-
         this.#socket.ping('Pinging');
       }, interval);
     } else {
-      log = this.#log(
-        'Ping',
-        { meta: { type: 'text', typedArrayView: '' }, payload: 'Pinging' },
-        {
-          type: ELogTypes.Send,
-        }
-      );
-
+      const log = this.#log.success('', 'Ping', Send);
       this.#emitLog(log);
-
       this.#socket.ping('Pinging');
     }
   }
 
   stopPinging(): void {
-    const log = this.#log('Pinging Stopped', [], {
-      type: ELogTypes.System,
-      color: ELogColors.Danger,
-    });
-
+    const log = this.#log.danger('', 'Pinging Stopped', System);
     this.#emitLog(log);
-
     this.#pinging = false;
-
     clearInterval(this.#intervals.PING);
   }
 
@@ -427,7 +328,6 @@ export default class Executor implements IExecutor {
    */
   #calculateMessageSize(size: number): { value: any; unit: string } {
     let finalSize: { value: any; unit: string };
-
     if (typeof size === 'number') {
       if (size < 1024) {
         finalSize = {
@@ -450,10 +350,8 @@ export default class Executor implements IExecutor {
           unit: 'Gb',
         };
       }
-
       if (finalSize.value) {
         finalSize.value = finalSize.value.toFixed(2);
-
         if (
           typeof finalSize.value === 'string' &&
           finalSize.value.includes('.00')
@@ -466,44 +364,66 @@ export default class Executor implements IExecutor {
       }
     } else {
       size = Number(size);
-
       if (isNaN(size)) {
         finalSize = { value: size, unit: '-' };
       } else {
         finalSize = { value: size, unit: 'B' };
       }
     }
-
     return finalSize;
   }
 
-  #log(title: string, message: any, __meta: any): ILog {
-    if (!__meta.timestamp) __meta.timestamp = Date.now();
-
-    /** the event name in ws will be the same as 'title' to match the standard with socket.io event */
-    if (!__meta.event) __meta.event = title;
-    const __ref = { id: '' };
-    if (__meta.type) {
-      switch (__meta.type) {
-        case ELogTypes.Send:
-          __ref.id = `${ELogTypes.Send}-${++this.#sentLogCount}`;
-          break;
-        case ELogTypes.Receive:
-          __ref.id = `${ELogTypes.Receive}-${++this.#receivedLogCount}`;
-          break;
-        default:
-          __ref.id = `${ELogTypes.System}-${++this.#systemLogCount}`;
-          break;
+  #log = {
+    prepare: (title: string, message: any, __meta: any): ILog => {
+      if (!__meta.timestamp) __meta.timestamp = Date.now();
+      /** the event name in ws will be the same as 'title' to match the standard with socket.io event */
+      if (!__meta.event) __meta.event = title;
+      const __ref = { id: '' };
+      if (__meta.type) {
+        switch (__meta.type) {
+          case Send:
+            __ref.id = `${ELogTypes.Send}-${++this.#sentLogCount}`;
+            break;
+          case Receive:
+            __ref.id = `${ELogTypes.Receive}-${++this.#receivedLogCount}`;
+            break;
+          default:
+            __ref.id = `${ELogTypes.System}-${++this.#systemLogCount}`;
+            break;
+        }
       }
-    }
-
-    return {
-      title,
-      message,
-      __meta,
-      __ref,
-    };
-  }
+      return {
+        title,
+        message,
+        __meta,
+        __ref,
+      };
+    },
+    success: (
+      event: string,
+      title: string,
+      type: any,
+      message: any = null
+    ): ILog => {
+      return this.#log.prepare(title, message, {
+        event,
+        type,
+        color: Success,
+      });
+    },
+    danger: (
+      event: string,
+      title: string,
+      type: any,
+      message: any = null
+    ): ILog => {
+      return this.#log.prepare(title, message, {
+        event,
+        type,
+        color: Danger,
+      });
+    },
+  };
 
   #emitLog(log: ILog, event = ELogEvents.common): void {
     this.#eventEmitter.emit(`${this.#connectionId}-${event}`, log);
@@ -511,42 +431,17 @@ export default class Executor implements IExecutor {
 
   #reconnect(): void {
     const { attempts, timeout } = this.#connection.reconnect;
-
-    let title;
-    let log;
-
     if (attempts) {
-      title = ConnectionStatus[7].description;
-
-      log = this.#log(
-        title,
-        {},
-        {
-          event: ConnectionStatus[7].state,
-          type: ELogTypes.System,
-          color: ELogColors.Danger,
-        }
-      );
-
+      const title = ConnectionStatus[7].description;
+      const log = this.#log.danger(ConnectionStatus[7].state, title, System);
       this.#emitLog(log, ELogEvents.onConnecting);
-
       setTimeout(() => {
         this.connect();
         this.#connection.reconnect.attempts--;
       }, timeout);
     } else {
-      title = ConnectionStatus[9].description;
-
-      log = this.#log(
-        title,
-        {},
-        {
-          event: ConnectionStatus[9].state,
-          type: ELogTypes.System,
-          color: ELogColors.Danger,
-        }
-      );
-
+      const title = ConnectionStatus[9].description;
+      const log = this.#log.danger(ConnectionStatus[9].state, title, System);
       this.#emitLog(log);
     }
   }
