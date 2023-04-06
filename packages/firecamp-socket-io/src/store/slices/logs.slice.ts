@@ -46,7 +46,7 @@ const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
       set((s) => ({
         logs: {
           ...s.logs,
-          [conId]: [log],
+          [conId]: [{ ...emptyLog, ...log }],
         },
       }));
     }
@@ -60,6 +60,7 @@ const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
         ...emptyLog.__meta,
         type: ELogTypes.System,
         color: ELogColors.Danger,
+        event: '-'
       },
       __ref: { id: '' },
     };

@@ -128,16 +128,6 @@ const AddListener = () => {
     const name = listenerName.trim();
     if (!name) return;
     addListener({ id: '', name });
-    
-    //TODO: remove after testing
-    addListener({ id: '', name: name+1 });
-    addListener({ id: '', name: name+2 });
-    addListener({ id: '', name: name+3 });
-    addListener({ id: '', name: name+4 });
-    addListener({ id: '', name: name+5 });
-    addListener({ id: '', name: name+6 });
-    addListener({ id: '', name: name+7 });
-    
     setListenerName('');
   };
 

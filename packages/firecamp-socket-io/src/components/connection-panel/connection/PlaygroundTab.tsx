@@ -5,7 +5,6 @@ import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { Container, Input, Button, TabHeader, Checkbox } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
-
 import BodyControls from './playground/BodyControls';
 import EmitterArgTabs from './playground/EmitterArgTabs';
 import EmitterBody from './playground/EmitterBody';
@@ -35,7 +34,7 @@ const EmitterPlayground = () => {
       changePlgArgValue: s.changePlgArgValue,
       changePlgEmitterName: s.changePlgEmitterName,
       changePlgEmitterAck: s.changePlgEmitterAck,
-      emit: s.sendMessage,
+      emit: s.emit,
     }),
     shallow
   );

@@ -138,8 +138,10 @@ export default class Executor implements IExecutorInterface {
     const log = this.log.success(ListenOn, title, [], System);
     this.emitLog(log);
 
-    // @deprecated in socket.io-client@3.0.0
-    // Fired when a pong is received from the server.
+    /**
+     * @deprecated in socket.io-client@3.0.0
+     * Fired when a pong is received from the server.
+     */
     if (eventName === 'PONG') {
       this.socket.on(eventName, () => {
         const value = [
@@ -153,37 +155,11 @@ export default class Executor implements IExecutorInterface {
       });
       return;
     }
+
     this.socket.on(eventName, async (...args: Array<any>) => {
       const log = this.log.success(eventName, eventName, [], Receive);
-      const body = await bodyParser.parseListenerData(args);
-      if (body?.length === 0)
-        body.push({
-          payload: '',
-        });
-      log.value = body;
-
-      // Calculate the length of the argument and add into the log
-      args.forEach((arg, index) => {
-        // console.log({
-        //   arg,
-        //   type: typeof arg,
-        //   byteLength: arg?.byteLength,
-        //   length: arg.length,
-        // });
-        // TODO: manage it precisely
-        // if (
-        //   [
-        //     EArgumentBodyType.ArrayBuffer,
-        //     EArgumentBodyType.ArrayBufferView,
-        //     EArgumentBodyType.File,
-        //   ].includes(body[index].meta.type)
-        // )
-        //   log.value[index].__meta.length = Object.values(
-        //     this.calculateMessageSize(arg?.byteLength)
-        //   ).join(' ');
-        // else log.value[index].__meta.length = arg?.length;
-      });
-
+      const value = await bodyParser.parseListenerData(args);
+      log.value = value;
       this.emitLog(log);
     });
   }
@@ -245,7 +221,7 @@ export default class Executor implements IExecutorInterface {
     return finalSize;
   }
 
-  addListeners(eventNames: Array<string>): void {
+  addListeners(eventNames: string[]): void {
     eventNames.map((event) => {
       this.addListener(event);
     });
@@ -261,7 +237,7 @@ export default class Executor implements IExecutorInterface {
     this.#activeListeners.delete(eventName);
   }
 
-  removeListeners(eventNames: Array<string> = []): void {
+  removeListeners(eventNames: string[] = []): void {
     if (Array.isArray(eventNames)) {
       for (let i = 0; i < eventNames.length; i += 1) {
         this.removeListener(eventNames[i]);

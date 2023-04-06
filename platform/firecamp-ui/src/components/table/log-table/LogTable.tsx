@@ -48,7 +48,7 @@ const LogTable = ({
     // console.log(row, cellValue, column, 'cellValue');
     const { title = '', value = {}, __meta = {}, __ref = {} } = row;
 
-    console.log('in log table', value, 787897);
+    // console.log('in log table', value, 787897);
     switch (column.id) {
       case 'type':
         if (__meta.type == 'r') {

@@ -13,7 +13,7 @@ import { EConnectionState } from '../../types';
 interface IHandleConnectionExecutorSlice {
   connect: () => void;
   disconnect: (code?: number, reason?: string) => void;
-  sendMessage: (emitter: ISocketIOEmitter) => void;
+  emit: (emitter: ISocketIOEmitter) => void;
   togglePingConnection: (pinging: boolean, interval: number) => void;
   addListenersToExecutor: (eventNames: string | string[]) => void;
   removeListenersFromExecutor: (eventNames?: string | string[]) => void;
@@ -108,7 +108,7 @@ const createHandleConnectionExecutor: TStoreSlice<
         playground.connectionState
       )
     ) {
-      state.addErrorLog('disconnected');
+      state.addErrorLog('The connection is not open');
       return;
     }
 
@@ -122,32 +122,27 @@ const createHandleConnectionExecutor: TStoreSlice<
     }
   },
 
-  sendMessage: (emitter: ISocketIOEmitter) => {
+  emit: (emitter: ISocketIOEmitter) => {
     const state = get();
     try {
       /**
        * TODOs:
        * 1. Manage and parse environment variables
-       * 2. history
        */
 
       const playground = state.getPlayground();
-
-      console.log(emitter, 111222333444);
       if (
-        playground?.connectionState === EConnectionState.Open &&
-        playground.executor
+        playground?.connectionState != EConnectionState.Open ||
+        !playground.executor
       ) {
-        // TODO: check if connection open or not. if not then executor will send log with error emitter
-
-        // send emitter
-        if (emitter?.__meta.ack) {
-          playground.executor.emitWithAck(emitter.name, emitter.value);
-        } else {
-          playground.executor.emit(emitter.name, emitter.value);
-        }
+        state.addErrorLog('The connection is not open');
+        return;
+      }
+      // send emitter
+      if (emitter?.__meta.ack) {
+        playground.executor.emitWithAck(emitter.name, emitter.value);
       } else {
-        state.addErrorLog('disconnected');
+        playground.executor.emit(emitter.name, emitter.value);
       }
     } catch (e) {
       console.info(e);
@@ -158,15 +153,15 @@ const createHandleConnectionExecutor: TStoreSlice<
     const state = get();
     try {
       const playground = state.getPlayground();
-      if (playground?.connectionState === EConnectionState.Open) {
-        if (pinging) {
-          // ping
-          playground.executor?.ping(interval);
-        } else {
-          playground.executor?.stopPinging();
-        }
+      if (playground?.connectionState != EConnectionState.Open) {
+        state.addErrorLog('The connection is not open');
+        return;
+      }
+      if (pinging) {
+        // ping
+        playground.executor?.ping(interval);
       } else {
-        state.addErrorLog('disconnected');
+        playground.executor?.stopPinging();
       }
     } catch (e) {
       console.info(e);
@@ -177,12 +172,12 @@ const createHandleConnectionExecutor: TStoreSlice<
     const state = get();
     try {
       const playground = state.getPlayground();
-      if (playground?.connectionState === EConnectionState.Open) {
-        const names = Array.isArray(eventNames) ? eventNames : [eventNames];
-        playground.executor?.addListeners(names);
-      } else {
-        state.addErrorLog('disconnected');
+      if (playground?.connectionState != EConnectionState.Open) {
+        state.addErrorLog('The connection is not open');
+        return;
       }
+      const names = Array.isArray(eventNames) ? eventNames : [eventNames];
+      playground.executor?.addListeners(names);
     } catch (e) {
       console.info(e);
     }
@@ -192,12 +187,12 @@ const createHandleConnectionExecutor: TStoreSlice<
     const state = get();
     try {
       const playground = state.getPlayground();
-      if (playground?.connectionState === EConnectionState.Open) {
-        const names = Array.isArray(eventNames) ? eventNames : [eventNames];
-        playground.executor?.removeListeners(names);
-      } else {
-        state.addErrorLog('disconnected');
+      if (playground?.connectionState != EConnectionState.Open) {
+        state.addErrorLog('The connection is not open');
+        return;
       }
+      const names = Array.isArray(eventNames) ? eventNames : [eventNames];
+      playground.executor?.removeListeners(names);
     } catch (e) {
       console.info(e);
     }
@@ -206,11 +201,11 @@ const createHandleConnectionExecutor: TStoreSlice<
     const state = get();
     try {
       const playground = state.getPlayground();
-      if (playground?.connectionState === EConnectionState.Open) {
-        playground.executor?.removeAllListeners();
-      } else {
-        state.addErrorLog('disconnected');
+      if (playground?.connectionState != EConnectionState.Open) {
+        state.addErrorLog('The connection is not open');
+        return;
       }
+      playground.executor?.removeAllListeners();
     } catch (e) {
       console.info(e);
     }
