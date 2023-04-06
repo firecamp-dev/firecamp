@@ -116,12 +116,12 @@ const Logs = () => {
                         >
                           <Button
                             text={typeFilter || 'select log type'}
-                            transparent={true}
-                            ghost={true}
-                            withCaret={true}
                             tooltip={
                               typeFilter ? `Log type: ${typeFilter || ''}` : ''
                             }
+                            transparent
+                            withCaret
+                            ghost
                             sm
                           />
                         </Dropdown.Handler>
