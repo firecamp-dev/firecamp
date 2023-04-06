@@ -45,10 +45,10 @@ const EmitterPlayground = () => {
   return (
     <Container>
       <BodyControls
-        emitter={plgEmitter}
-        isSaveEmitterPopoverOpen={true}
-        tabData={{ id: 123 }}
-        activeType={{ id: 'text' }}
+        // emitter={plgEmitter}
+        // isSaveEmitterPopoverOpen={true}
+        // tabData={{ id: 123 }}
+        // activeType={{ id: 'text' }}
         // editorCommands={EditorCommands}
       />
       <Container.Header className="!px-2 !py-2">
