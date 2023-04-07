@@ -122,6 +122,19 @@ const DARK_THEME_VAR = {
   '--focus-level-4': 'rgba(var(--color), 0.18)',
 
   '--collection-text': '#cccccc',
+
+  '--cm-property': '#ce9178',
+  '--cm-keyword': '#9cdcfe',
+  '--cm-def': '#b5cea8',
+  '--cm-attribute': '#9cdcfe',
+  '--cm-number': '#ab843b',
+  '--cm-punctuation': '#9e9d9d',
+  '--cm-ws': '#9e9d9d',
+  '--ace-variable': '#70AFD3',
+  '--ace-string': '#E69B6F',
+  '--ace-constant': '#a31515',
+  '--selectd': '#ffffff17',
+  '--cm-string': '#b5cea8',
 };
 
 const LIGHT_THEME_VAR = {
@@ -192,6 +205,19 @@ const LIGHT_THEME_VAR = {
   '--focus-level-4': 'rgba(var(--color), 0.18)',
 
   '--collection-text': '#333333',
+
+  '--cm-property': '#0451a5',
+  '--cm-keyword': '#a31515',
+  '--cm-def': '#098658',
+  '--cm-attribute': '#a31515',
+  '--cm-number': '#ab843b',
+  '--cm-punctuation': '#9e9d9d',
+  '--cm-ws': '#9e9d9d',
+  '--ace-variable': '#70AFD3',
+  '--ace-string': '#E69B6F',
+  '--ace-constant': '#a31515',
+  '--selectd': '#00000017',
+  '--cm-string': '#098658',
 };
 
 export { defaultData, _columns, DARK_THEME_VAR, LIGHT_THEME_VAR };

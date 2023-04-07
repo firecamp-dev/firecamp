@@ -16,6 +16,9 @@ import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs';
 | a,a:hover                                                                                                     | to inherit the text color                                                                |
 | button:disabled,button[disabled]                                                                              | to update opacity for all disabled button using pseudo class selector                    |
 | hr                                                                                                            | to update the app border color in horizontal line                                        |
+| .fullscreen                                                                                                   | to update the height to 100%                                                             |
+| .fc-h-screen                                                                                                  | to update the height to the content with more importance to full screen height           |
+| .fc-h-full                                                                                                    | to update the height to 100% with more importance                                        |
 | .max-h-screen-third                                                                                           | to update the max height upto 1/3 of the screen height                                   |
 | .explorer-wrapper                                                                                             | to update the max height for the wrapper div                                             |
 | \*:focus-visible                                                                                              | to add box shadow & remove outline on every element with focus-visible                   |
@@ -146,3 +149,31 @@ import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs';
 | .visible-scrollbar.thin:hover::-webkit-scrollbar                                               | to update the display of scrollbar on hover                                                      |
 | .visible-scrollbar ::-webkit-scrollbar-track                                                   | to update the scrollbar track with transparent background                                        |
 | .visible-scrollbar ::-webkit-scrollbar-thumb                                                   | to update the background color for scrollbar handle with more importance & set the border radius |
+
+| Classname [editor]                     | Description                                                           |
+| -------------------------------------- | --------------------------------------------------------------------- |
+| .ace_editor                            | to update the editor's initial styles                                 |
+| .ace_gutter .ace_gutter-active-line    | to update the background color for active line                        |
+| .ace_marker-layer .ace_active-line     | to update the background color for active line                        |
+| .ace_gutter                            | to update the background color as transparent                         |
+| .ace-kuroir .ace_cursor                | to update the color as foreground color                               |
+| .ace_gutter-layer                      | to set the min height                                                 |
+| body .ace_editor .ace_scrollbar        | display scrollbar visibility as block                                 |
+| .ace_variable                          | to update the color from design variable with more importance         |
+| .ace_string                            | to update the color from design variable with more importance         |
+| .ace_constant                          | to update the color from design variable with more importance         |
+| .fc-modal .ace_editor                  | to update the background color from modal                             |
+| .CodeMirror                            | to update height & background color for the code text editor          |
+| .CodeMirror-gutters                    | to update the background color for codemirror-gutters                 |
+| .CodeMirror pre                        | to update the font property for pre element nested in codemirror      |
+| .react-codemirror2 [TCE]               | to update the height as 100%                                          |
+| .CodeMirror-sizer                      | to update the left margin with more importance                        |
+| .CodeMirror-selected                   | to update the background color for selected view with more importance |
+| .cm-property                           | to update the color from design variable with more importance         |
+| .cm-keyword                            | to update the color from design variable with more importance         |
+| .cm-def                                | to update the color from design variable with more importance         |
+| .cm-attribute                          | to update the color from design variable with more importance         |
+| .cm-number                             | to update the color from design variable with more importance         |
+| .cm-string                             | to update the color from design variable with more importance         |
+| .cm-punctuation, .ace_paren, .ace_line | to update the color from design variable with more importance         |
+| .cm-ws                                 | to update the color from design variable with more importance         |

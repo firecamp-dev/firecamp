@@ -466,6 +466,19 @@ video {
 
     --collection-text: #cccccc;
 
+    --cm-property: #ce9178;
+	  --cm-keyword: #9cdcfe;
+	  --cm-def: #b5cea8;
+	  --cm-attribute: #9cdcfe;
+	  --cm-number: #ab843b;
+	  --cm-punctuation: #9e9d9d;
+	  --cm-ws: #9e9d9d;
+	  --ace-variable: #70AFD3;
+	  --ace-string: #E69B6F;
+	  --ace-constant: #a31515;
+	  --selectd: #ffffff17;
+	  --cm-string: #b5cea8;
+
     .invert img {
       filter: invert(0.8);
     }
@@ -544,6 +557,19 @@ video {
     --focus-level-4: rgba(var(--color), 0.18);
 
     --collection-text: #333333;
+
+    --cm-property: #0451a5;
+	  --cm-keyword: #a31515;
+  	--cm-def: #098658;
+	  --cm-attribute: #a31515;
+  	--cm-number: #ab843b;
+	  --cm-punctuation: #9e9d9d;
+	  --cm-ws: #9e9d9d;
+	  --ace-variable: #70AFD3;
+	  --ace-string: #E69B6F;
+	  --ace-constant: #a31515;
+	  --selectd: #00000017;
+	  --cm-string: #098658;
 
     .invert img {
       filter: invert(0);
@@ -2522,6 +2548,9 @@ button[disabled] {
 hr{
   border-color: var(--app-border)
 }
+.fullscreen{
+  height: 100%;
+}
 *:focus-visible{
   box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
   outline: none ;
@@ -2632,7 +2661,12 @@ tr:focus-visible{
 .fc-col {
     background: var(--app-background-secondary)
 }
-
+.fc-h-screen {
+  height: 100vh !important
+}
+.fc-h-full {
+  height: 100% !important
+}
 .react-tiny-popover-container{
   z-index: 9999 !important;
 }
@@ -2961,6 +2995,62 @@ tr:focus-visible{
 
 /*---------scrollbar css end----------*/
 
+/*-------editor css starts---------*/
+
+.ace_editor{
+  background-color: var(--editor-background) !important;
+  color: var(--app-foreground);
+  min-height: 100%;
+  box-shadow: none !important;
+}
+
+.ace_gutter .ace_gutter-active-line{
+  background-color: var(--focus-level-1) !important;
+}
+
+.ace_marker-layer .ace_active-line{
+  background-color: var(--focus-level-1) !important;
+}
+
+.ace_gutter{
+  background-color: transparent !important;
+  color: var(--app-foreground) !important;
+}
+
+.ace-kuroir .ace_cursor{
+  color: var(--app-foreground) !important;
+}
+
+.ace_gutter-layer{
+  min-height: 100% !important;
+}
+body .ace_editor .ace_scrollbar{
+  display: block;
+}
+
+.fc-modal .ace_editor{
+  background-color: inherit !important;
+}
+
+.CodeMirror{
+  background-color: var(--app-background) !important;
+  height: 100% !important;
+}
+
+.CodeMirror-gutters{
+  background-color: transparent !important;
+}
+
+.CodeMirror pre{
+  font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
+
+.react-codemirror2{
+  height: 100%;
+}
+
+/*-------editor css end---------*/
+
 /*----------other css  start--------*/
   
   .fc-empty {
@@ -2983,6 +3073,10 @@ tr:focus-visible{
   .fc-empty.center-block {
     display: flex;
   }
+
+  .CodeMirror-sizer {
+    margin-left: 39px !important
+  }
   
   .request-tab-wrapper {
     width: calc(100% - 40px);
@@ -2998,6 +3092,60 @@ tr:focus-visible{
   * // }
   */
 /*----------other css  end--------*/ 
+
+/*---code mirror css starts -------*/
+
+.cm-property {
+	color: var(--cm-property) !important
+}
+
+.cm-keyword {
+	color: var(--cm-keyword) !important
+}
+
+.cm-def {
+	color: var(--cm-def) !important
+}
+
+.cm-attribute {
+	color: var(--cm-attribute) !important
+}
+
+.cm-number {
+	color: var(--cm-number) !important
+}
+
+.cm-string {
+	color: var(--cm-string) !important
+}
+
+.CodeMirror-selected {
+	background: var(--selectd) !important
+}
+
+.ace_variable {
+	color: var(--ace-variable) !important
+}
+
+.ace_string {
+	color: var(--ace-string) !important
+}
+
+.ace_constant {
+	color: var(--ace-constant) !important
+}
+
+.cm-punctuation,
+.ace_paren,
+.ace_line {
+	color: var(--cm-punctuation)
+}
+
+.cm-ws {
+	color: var(--cm-ws)
+}
+
+/*---code mirror css ends----------*/
 
 .expandable-right-pane{
   transform: scaleX(0);
