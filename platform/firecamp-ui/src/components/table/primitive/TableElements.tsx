@@ -47,7 +47,7 @@ const TableRow: FC<IRow<any>> = ({
       {columns.map((c: IColumn, i: number) => {
         return (
           <Td
-            className={classes.td}
+            className={cx(classes.td, {'hidden': options.hiddenColumns.includes(c.key)})}
             key={i}
             style={{ width: c.width }}
             row={row}
@@ -116,6 +116,7 @@ const Th: FC<TTh> = ({
   style = {},
   additionalProp = {},
 }) => {
+  console.log(`table-header-`, className)
   return (
     <th
       className={cx('p-1 border border-appBorder', className)}
