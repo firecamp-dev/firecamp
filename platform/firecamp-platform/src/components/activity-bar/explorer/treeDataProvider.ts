@@ -222,7 +222,7 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
       }
       return i;
     });
-    this.emitter.emit(ETreeEventTypes.itemChanged, ['root', item.__ref.id]);
+    this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.id]);
   }
 
   public deleteCollectionItem(itemId: string) {
@@ -295,8 +295,8 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
       }
       return i;
     });
-    const parentId = item.__ref.folderId || item.__ref.collectionId;
-    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId, item.__ref.id]);
+    // const parentId = item.__ref.folderId || item.__ref.collectionId;
+    this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.id]);
   }
 
   public deleteRequestItem(itemId: string) {
