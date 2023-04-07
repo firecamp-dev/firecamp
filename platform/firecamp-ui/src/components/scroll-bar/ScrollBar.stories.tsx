@@ -174,7 +174,7 @@ export const RequestTabExample = () => (
     <ScrollBar
       className="shadow-md bg-primaryColorText "
       width="w-[200px]"
-      layout={EScrollbarLayout.HORIZONTAL}>
+      layout={EScrollbarLayout.Horizontal}>
       <Tabs
         list={[
           {
