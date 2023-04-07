@@ -37,7 +37,7 @@ const Button: FC<IButton> = ({
                     'uppercase': uppercase,
                     'w-max': !fullWidth,
                     'border': !ghost,
-                    'text-sm py-0 px-1': xs,
+                    'text-sm py-0 px-1 leading-5': xs,
                     'text-sm py-1 px-2': sm,
                     'text-base py-2 px-4': md,
                     'text-lg py-3 px-6': lg,
