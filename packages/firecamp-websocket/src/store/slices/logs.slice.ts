@@ -1,21 +1,18 @@
 import { TId, EMessageBodyType } from '@firecamp/types';
-import { ILog } from '@firecamp/ws-executor/dist/esm';
+import { ELogColors, ELogTypes, ILog } from '@firecamp/ws-executor/dist/esm';
 import { TStoreSlice } from '../store.type';
 
-const emptyLog = {
+const emptyLog: ILog = {
   title: '',
-  message: {
+  value: {
     value: '',
-    __meta: {
-      type: EMessageBodyType.Text,
-      typedArrayView: '',
-    },
+    type: EMessageBodyType.Text,
   },
   __meta: {
     event: '',
     timestamp: new Date().getTime(),
-    type: '',
-    color: '',
+    type: ELogTypes.System,
+    color: ELogColors.Success,
     ackRef: '',
   },
   __ref: {

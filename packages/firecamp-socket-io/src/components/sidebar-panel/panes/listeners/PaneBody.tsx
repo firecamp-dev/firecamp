@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import shallow from 'zustand/shallow';
+import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import {
-  Checkbox,
   Input,
   Container,
   TabHeader,
   Button,
   Column,
   SwitchButtonV2,
+  Scrollbar,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 const PaneBody = () => {
   const { listeners, activeListeners, activePlayground, toggleAllListeners } =
@@ -26,52 +26,77 @@ const PaneBody = () => {
     );
 
   return (
-    <Column>
+    <Column className="h-full">
       <Container>
         <Container.Header>
           <AddListener />
         </Container.Header>
         {listeners?.length ? (
           <>
+            {/* <Container.Body className="visible-scrollbar thin">
+              <div className="px-2 hover:pr-1">
+                {listeners.map((listener, index) => {
+                  return (
+                    <Listener
+                      key={index}
+                      listener={listener}
+                      isActive={activeListeners.includes(listener.id)}
+                    />
+                  );
+                })}
+              </div>
+            </Container.Body> */}
+
+            {/* with radix scrollbar */}
             <Container.Body>
-              {listeners.map((listener, index) => {
-                return (
-                  <Listener
-                    listener={listener}
-                    isActive={activeListeners.includes(listener.id)}
-                  />
-                );
-              })}
+              <Scrollbar height="h-full">
+                <>
+                  {listeners.map((listener, index) => {
+                    return (
+                      <Listener
+                        key={index}
+                        listener={listener}
+                        isActive={activeListeners.includes(listener.id)}
+                      />
+                    );
+                  })}
+                </>
+              </Scrollbar>
             </Container.Body>
-            <Container.Footer>
-              <TabHeader>
-                <TabHeader.Right>
-                  <Button
-                    key={`listener-off-all-${activePlayground}`}
-                    text="Listen off all"
-                    onClick={() => {
-                      toggleAllListeners(false);
-                    }}
-                    transparent
-                    secondary
-                    ghost
-                    xs
-                  />
-                  <Button
-                    key={`listener-on-all-${activePlayground}`}
-                    text="Listen all"
-                    onClick={() => {
-                      toggleAllListeners(true);
-                    }}
-                    transparent
-                    secondary
-                    ghost
-                    xs
-                  />
-                </TabHeader.Right>
-              </TabHeader>
-              <div className="flex p-2"></div>
-            </Container.Footer>
+
+            {listeners?.length > 1 ? (
+              <Container.Footer>
+                <TabHeader>
+                  <TabHeader.Right>
+                    <Button
+                      key={`listener-off-all-${activePlayground}`}
+                      text="Listen off all"
+                      onClick={() => {
+                        toggleAllListeners(false);
+                      }}
+                      transparent
+                      secondary
+                      ghost
+                      xs
+                    />
+                    <Button
+                      key={`listener-on-all-${activePlayground}`}
+                      text="Listen all"
+                      onClick={() => {
+                        toggleAllListeners(true);
+                      }}
+                      transparent
+                      secondary
+                      ghost
+                      xs
+                    />
+                  </TabHeader.Right>
+                </TabHeader>
+                {/* <div className="flex p-2"></div> */}
+              </Container.Footer>
+            ) : (
+              <></>
+            )}
           </>
         ) : (
           <></>
@@ -83,7 +108,7 @@ const PaneBody = () => {
 export default PaneBody;
 
 const AddListener = () => {
-  const { toggleListener, addListener } = useStoreApi().getState() as IStore;
+  const { addListener } = useStoreApi().getState() as IStore;
   const [listenerName, setListenerName] = useState('');
   const _handleInputChange = (e) => {
     if (e) {
@@ -113,11 +138,11 @@ const AddListener = () => {
       name="status"
       id="status"
       placeholder="Listener name"
-      className="!rounded-br-none !rounded-tr-none"
+      className="!rounded-br-none !rounded-tr-none !p-1"
       value={listenerName}
       onChange={_handleInputChange}
       onKeyDown={_handleKeyDown}
-      wrapperClassName="!mb-0"
+      wrapperClassName="!mb-0 p-2"
       postComponents={[
         <Button
           key={'listener-add-button'}
@@ -125,7 +150,7 @@ const AddListener = () => {
           className="!rounded-bl-none !rounded-tl-none"
           onClick={_onAddListener}
           secondary
-          sm
+          xs
         />,
       ]}
     />
@@ -135,12 +160,10 @@ const AddListener = () => {
 const Listener = ({ listener, isActive }) => {
   const { toggleListener, deleteListener, getActiveConnectionId } =
     useStoreApi().getState() as IStore;
-
   const { id, name } = listener;
   const uniqueId = `${getActiveConnectionId()}-${id}-listen`;
-
   return (
-    <div className="flex justify-center items-center relative px-2 py-0.5">
+    <div className="flex justify-center items-center relative px-2 py-0.5 group hover:bg-focus2">
       <div
         className="flex-1 overflow-hidden overflow-ellipsis text-base"
         data-tip={name}
@@ -148,21 +171,19 @@ const Listener = ({ listener, isActive }) => {
       >
         {name}
       </div>
-      <div className="small">
-        {/* <SwitchButtonV2/> */}
-        <Checkbox
-          id={uniqueId}
-          isChecked={isActive}
-          onToggleCheck={(l, v) => {
-            toggleListener(v, listener);
-          }}
-        />
-        <VscTrash
-          onClick={() => {
-            deleteListener(listener);
-          }}
-        />
-      </div>
+
+      <VscTrash
+        className="h-0 ml-1 group-hover:h-auto cursor-pointer"
+        onClick={() => {
+          deleteListener(listener);
+        }}
+      />
+      <SwitchButtonV2
+        xs
+        checked={isActive}
+        onChange={(v) => toggleListener(v, listener)}
+        className="ml-1"
+      />
     </div>
   );
 };

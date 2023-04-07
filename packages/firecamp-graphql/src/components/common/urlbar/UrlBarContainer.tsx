@@ -98,7 +98,6 @@ const UrlBarContainer = ({ tab }) => {
             icon={<FaFile fontSize={16} />}
             id={`open-schema-doc-${tab.id}`}
             tooltip={'open schema doc'}
-            iconCenter
             secondary
             sm
           />

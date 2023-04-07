@@ -190,13 +190,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       }
       return itm;
     });
-
-    //TODO: update is not reflecting in tree ui, need to fix it
-    if (!item.__ref.folderId) {
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
-    }
+    this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.id]);
   }
   public updateFolder(item: TFolderItem) {
     this.update(item, true);

@@ -1,21 +1,11 @@
-import { TId, ERequestTypes } from '@firecamp/types';
+import { EArgumentBodyType, TId } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
-import { InitPlayground } from '../../constants';
 import { ELogColors, ELogTypes } from '../../types';
 import { TStoreSlice } from '../store.type';
 
 const emptyLog = {
   title: '',
-  message: {
-    name: '',
-    payload: InitPlayground,
-    __ref: {
-      id: '',
-      collectionId: '',
-      requestId: '',
-      requestType: ERequestTypes.SocketIO,
-    },
-  },
+  value: [{ value: '', type: EArgumentBodyType.Text }],
   __meta: {
     event: '',
     timestamp: 0,
@@ -56,7 +46,7 @@ const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
       set((s) => ({
         logs: {
           ...s.logs,
-          [conId]: [log],
+          [conId]: [{ ...emptyLog, ...log }],
         },
       }));
     }
@@ -70,7 +60,9 @@ const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
         ...emptyLog.__meta,
         type: ELogTypes.System,
         color: ELogColors.Danger,
+        event: '-'
       },
+      __ref: { id: '' },
     };
     state.addLog(log);
   },

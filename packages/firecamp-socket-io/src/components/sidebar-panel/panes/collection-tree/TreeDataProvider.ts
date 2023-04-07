@@ -166,13 +166,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       }
       return itm;
     });
-
-    if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
-      this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
-    } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
-    }
+    this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.id]);
   }
 
   public deleteItem(id: TId) {

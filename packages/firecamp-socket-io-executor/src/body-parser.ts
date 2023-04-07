@@ -5,6 +5,7 @@ import {
   EArgumentBodyType,
 } from '@firecamp/types';
 import { _buffer, _misc } from '@firecamp/utils';
+import { ILog } from './types';
 
 /** parse emitter arguments and return args ready to be sent over socket connection */
 export const parseEmitterArguments = async (
@@ -13,12 +14,9 @@ export const parseEmitterArguments = async (
   const result: any[] = [];
   for (const { __meta, body } of args) {
     switch (__meta.type) {
+      case EArgumentBodyType.File:
       case EArgumentBodyType.Number:
-        result.push(body);
-        break;
       case EArgumentBodyType.Boolean:
-        result.push(body);
-        break;
       case EArgumentBodyType.Text:
         result.push(body);
         break;
@@ -28,9 +26,6 @@ export const parseEmitterArguments = async (
         } catch (e) {
           console.log(e); //TODO: handle it to show an error
         }
-        break;
-      case EArgumentBodyType.File:
-        result.push(body);
         break;
       case EArgumentBodyType.ArrayBuffer:
         result.push(
@@ -58,18 +53,17 @@ export const parseEmitterArguments = async (
  * Parse arguments received from the socket connection and
  * convert them into the Firecamp request emitter arguments
  */
-export const parseListenerData = async (args: Array<any>): Promise<any> => {
+export const parseListenerData = async (
+  args: Array<any>
+): Promise<ILog['value']> => {
   const result: Array<any> = [];
 
   try {
     for await (const arg of args) {
       if (typeof arg == 'undefined') {
         result.push({
-          body: '',
-          __meta: {
-            type: EArgumentBodyType.Text,
-            typedArrayView: '',
-          },
+          value: '',
+          type: EArgumentBodyType.Text,
         });
       } else if (
         _misc.firecampAgent() == EFirecampAgent.Desktop &&
@@ -78,74 +72,52 @@ export const parseListenerData = async (args: Array<any>): Promise<any> => {
       ) {
         const body = _buffer.bufferToStr(arg, ETypedArrayView.Uint8Array, true);
         result.push({
-          body,
-          __meta: {
-            type: EArgumentBodyType.ArrayBuffer,
-            typedArrayView: ETypedArrayView.Uint8Array,
-          },
+          value: body,
+          type: EArgumentBodyType.ArrayBuffer,
         });
       } else if (typeof arg === 'number') {
         result.push({
-          body: arg,
-          __meta: {
-            type: EArgumentBodyType.Number,
-            typedArrayView: '',
-          },
+          value: arg,
+          type: EArgumentBodyType.Number,
         });
       } else if (typeof arg === 'boolean') {
         result.push({
-          body: arg,
-          __meta: {
-            type: EArgumentBodyType.Boolean,
-            typedArrayView: '',
-          },
+          value: arg,
+          type: EArgumentBodyType.Boolean,
         });
       } else if (typeof arg === 'string') {
         try {
           const json = JSON.stringify(JSON.parse(arg), null, 4);
           result.push({
-            body: json,
-            __meta: {
-              type: EArgumentBodyType.Json,
-              typedArrayView: '',
-            },
+            value: json,
+            type: EArgumentBodyType.Json,
           });
         } catch (e) {
           result.push({
-            body: arg,
-            __meta: {
-              type: EArgumentBodyType.Text,
-              typedArrayView: '',
-            },
+            value: arg,
+            type: EArgumentBodyType.Text,
           });
         }
       } else if (arg instanceof ArrayBuffer && arg.byteLength > 0) {
         const body = _buffer.bufferToStr(arg, ETypedArrayView.Uint8Array);
 
         result.push({
-          body,
-          __meta: {
-            type: EArgumentBodyType.ArrayBuffer,
-            typedArrayView: ETypedArrayView.Uint8Array,
-          },
+          value: body,
+          type: EArgumentBodyType.ArrayBuffer,
+          typedArrayView: ETypedArrayView.Uint8Array,
         });
       } else if (arg instanceof Blob) {
         const body = await arg.text();
         result.push({
-          body,
-          __meta: {
-            type: EArgumentBodyType.ArrayBuffer,
-            typedArrayView: ETypedArrayView.Uint8Array,
-          },
+          value: body,
+          type: EArgumentBodyType.ArrayBuffer,
+          typedArrayView: ETypedArrayView.Uint8Array,
         });
       } else if (typeof arg === 'object') {
         const body = JSON.stringify(arg, null, 4);
         result.push({
-          body,
-          meta: {
-            type: EArgumentBodyType.Json,
-            typedArrayView: '',
-          },
+          value: body,
+          type: EArgumentBodyType.Json,
         });
       }
     }

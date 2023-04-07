@@ -1,4 +1,3 @@
-import Editor from './Editor';
 import SingleLineEditor from './SingleLineEditor'
 
 export default {

@@ -341,7 +341,6 @@ const PlaygroundTab = () => {
               text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
               onClick={_onSendMessage}
-              iconCenter
               iconRight
               primary
               xs

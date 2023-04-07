@@ -291,15 +291,27 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 
   //listeners
   addListener: (listener) => {
-    const { name } = listener;
-    const l = { id: nanoid(), name, description: '' };
+    const state = get();
+    const {
+      request: { listeners: rListeners },
+      context,
+    } = state;
+    const l = { id: nanoid(), name: listener.name, description: '' };
+    const listenerExists = rListeners.find((l) => l.name == listener.name);
+    if (listenerExists) {
+      context.app.notify.warning(
+        'The listener with same name is already exists'
+      );
+      return;
+    }
+    const listeners = [...rListeners, l];
     set((s) => ({
-      ...s,
       request: {
         ...s.request,
-        listeners: [...s.request.listeners, l],
+        listeners,
       },
     }));
+    state.equalityChecker({ listeners });
   },
   deleteListener: (listener) => {
     const state = get();
@@ -307,9 +319,9 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     const playground = state.getPlayground();
 
     const {
-      request: { listeners },
+      request: { listeners: rListeners },
     } = state;
-    const _listeners = listeners.filter((l) => l.id != listener.id);
+    const listeners = rListeners.filter((l) => l.id != listener.id);
     const activeListeners = playground.activeListeners.filter(
       (l) => l != listener.id
     );
@@ -321,7 +333,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     set((s) => ({
       request: {
         ...s.request,
-        listeners: _listeners,
+        listeners,
       },
       playgrounds: {
         ...s.playgrounds,
@@ -331,19 +343,20 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         },
       },
     }));
+    state.equalityChecker({ listeners });
   },
   toggleListener: (bool, listener) => {
     const state = get();
     const conId = state.getActiveConnectionId();
     const playground = state.getPlayground();
-    let activeListeners = [];
+    let { activeListeners } = playground;
     if (playground.connectionState !== EConnectionState.Open) {
       state.context.app.notify.alert('The connection is not open.');
       return;
     }
 
     if (bool) {
-      activeListeners.push(listener.id);
+      activeListeners = [...activeListeners, listener.id];
       state.addListenersToExecutor(listener.name);
     } else {
       activeListeners = activeListeners.filter((l) => l != listener.id);
