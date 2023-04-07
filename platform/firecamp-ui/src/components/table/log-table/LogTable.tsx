@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import { _array } from '@firecamp/utils';
 import { VscArrowUp } from '@react-icons/all-files/vsc/VscArrowUp';
 import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
@@ -11,19 +11,9 @@ import {
 } from '../primitive/table.interfaces';
 import { IBasicTable } from '../basic-table/BasicTable.interfaces';
 
-const _columns = [
-  { id: 'type', key: 'type', name: 'Type', width: '40px', fixedWidth: true },
-  { id: 'event', key: 'event', name: 'Event', width: '100px' },
-  {
-    id: 'value',
-    key: 'value',
-    name: 'Message',
-    width: '150px',
-    resizeWithContainer: true,
-  },
-  { id: 'length', key: 'length', name: 'Length', width: '100px' },
-  { id: 'time', key: 'time', name: 'Time', width: '80px' },
-];
+type TProps = {
+  titleRenderer?: (log: any) => React.ReactChild;
+};
 
 const LogTable = ({
   rows = [],
@@ -32,8 +22,30 @@ const LogTable = ({
   onMount = (api: TTableApi) => {},
   onFocusRow,
   classes = {},
-}: IBasicTable<any>) => {
+  titleRenderer = (log: any) => log?.value?.value || log?.title, // @note: default title renderer as set for WS logs
+}: IBasicTable<any> & TProps) => {
   const apiRef = useRef<TTableApi>();
+  const _columns = useMemo(() => {
+    return [
+      {
+        id: 'type',
+        key: 'type',
+        name: 'Type',
+        width: '40px',
+        fixedWidth: true,
+      },
+      { id: 'event', key: 'event', name: 'Event', width: '100px' },
+      {
+        id: 'value',
+        key: 'value',
+        name: 'Message',
+        width: '150px',
+        resizeWithContainer: true,
+      },
+      { id: 'length', key: 'length', name: 'Length', width: '100px' },
+      { id: 'time', key: 'time', name: 'Time', width: '80px' },
+    ];
+  }, []);
 
   const renderCell: TRenderCell<any> = (
     column,
@@ -47,6 +59,7 @@ const LogTable = ({
   ) => {
     // console.log(row, cellValue, column, 'cellValue');
     const { title = '', value = {}, __meta = {}, __ref = {} } = row;
+    const _title = titleRenderer(row);
 
     // console.log('in log table', value, 787897);
     switch (column.id) {
@@ -66,13 +79,13 @@ const LogTable = ({
           return (
             <span
               className="w-32 min-w-full block truncate"
-              dangerouslySetInnerHTML={{ __html: title }}
+              dangerouslySetInnerHTML={{ __html: _title as string }}
             />
           );
         } else {
           return (
             <div className="w-32 min-w-full block truncate">
-              {__meta.type !== 'file' ? value?.[0]?.value || '' : 'Sending File'}
+              {__meta.type !== 'file' ? _title : 'Sending File'}
             </div>
           );
         }
@@ -95,7 +108,6 @@ const LogTable = ({
       defaultRow={{}}
       renderCell={renderCell}
       onChange={(rows) => {
-        // console.log(rows)
         onChange(rows);
       }}
       onMount={(tApi) => {
@@ -106,6 +118,7 @@ const LogTable = ({
       }}
       onFocusRow={onFocusRow}
       options={options}
+      showDefaultEmptyRows={false}
     />
   );
 };

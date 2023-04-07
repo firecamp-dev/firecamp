@@ -1,9 +1,4 @@
-import {
-  ETypedArrayView,
-  EMessageBodyType,
-  IWebSocketMessage,
-  TId,
-} from '@firecamp/types';
+import { EMessageBodyType, ETypedArrayView, TId } from '@firecamp/types';
 
 export enum ELogColors {
   Success = 'success',
@@ -28,26 +23,21 @@ export enum ELogEvents {
 // WebSocket log
 export interface ILog {
   title: string;
-  message: Omit<IWebSocketMessage, 'name' | '__ref'>;
+  value: {
+    value: string;
+    type: EMessageBodyType;
+    typedArrayView?: ETypedArrayView;
+  };
   __meta: {
     event: string;
-    timestamp: number;
     type: ELogTypes;
     color: ELogColors;
     ackRef: any;
-    // Message length
+    // message length
     length?: string;
+    timestamp: number;
   };
   __ref: {
     id: TId;
-  };
-}
-
-// WebSocket received message
-export interface IWebSocketResponseMessage {
-  value: string;
-  __meta: {
-    type: EMessageBodyType;
-    typedArrayView?: ETypedArrayView;
   };
 }

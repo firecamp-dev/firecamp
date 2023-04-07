@@ -5,6 +5,7 @@ import {
   EArgumentBodyType,
 } from '@firecamp/types';
 import { _buffer, _misc } from '@firecamp/utils';
+import { ILog } from './types';
 
 /** parse emitter arguments and return args ready to be sent over socket connection */
 export const parseEmitterArguments = async (
@@ -52,7 +53,9 @@ export const parseEmitterArguments = async (
  * Parse arguments received from the socket connection and
  * convert them into the Firecamp request emitter arguments
  */
-export const parseListenerData = async (args: Array<any>): Promise<any> => {
+export const parseListenerData = async (
+  args: Array<any>
+): Promise<ILog['value']> => {
   const result: Array<any> = [];
 
   try {

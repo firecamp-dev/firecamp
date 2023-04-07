@@ -45,7 +45,7 @@ describe.skip('Message passing', () => {
   it('should pass the message via connection', (done) => {
     executor1.logs((log: ILog) => {
       if (log.__meta.type === ELogTypes.Send) {
-        expect(log.message.value).toEqual('hi');
+        expect(log.value.value).toEqual('hi');
         done();
       }
     });

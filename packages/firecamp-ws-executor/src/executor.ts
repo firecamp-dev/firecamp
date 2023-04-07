@@ -75,7 +75,7 @@ export default class Executor implements IExecutor {
         this.#socket.on('pong', async (arg) => {
           const log = this.#log.success('Pong', '', Receive, {
             value: arg.toString(),
-            __meta: { type: 'text', typedArrayView: '' },
+            type: EMessageBodyType.Text,
           });
           this.#emitLog(log);
         });
@@ -88,14 +88,14 @@ export default class Executor implements IExecutor {
           )}`;
           const log = this.#log.success('On Upgrade', value, Receive, {
             value,
-            __meta: { type: 'json' },
+            type: EMessageBodyType.Json,
           });
           this.#emitLog(log);
 
           // Send log to set cookie
           const logH = this.#log.success(Upgrade, '', Upgrade, {
             value: response.headers,
-            __meta: { type: 'json' },
+            type: EMessageBodyType.Json,
           });
           this.#emitLog(logH);
         });
@@ -138,18 +138,16 @@ export default class Executor implements IExecutor {
 
       this.#socket.onmessage = async (event: any) => {
         const message = await bodyParser.parseReceivedMessage(event.data);
-        const log = this.#log.success('', 'Message Received', Receive, message);
+        const log = this.#log.success('Message Received', '', Receive, message);
         if (
           (firecampAgent && Buffer.isBuffer(event?.data)) ||
           (event?.data instanceof ArrayBuffer && event?.data.byteLength > 0) ||
           event?.data instanceof Blob
         )
-          log.__meta['length'] = Object.values(
+          log.__meta.length = Object.values(
             this.#calculateMessageSize(event?.data?.byteLength)
           ).join(' ');
-        else {
-          log.__meta['length'] = event?.data?.length;
-        }
+        else log.__meta.length = event?.data?.length;
         this.#emitLog(log);
       };
 
@@ -274,7 +272,12 @@ export default class Executor implements IExecutor {
 
   async send(message: Partial<IWebSocketMessage>): Promise<void> {
     if (message?.__meta) {
-      const log = this.#log.success('', 'Message Sent', Send, message);
+      const value: ILog['value'] = {
+        value: message.value || '',
+        type: message.__meta.type,
+        typedArrayView: message.__meta.typedArrayView,
+      };
+      const log = this.#log.success('Message Sent', '', Send, value);
       const msg = await bodyParser.parseMessage(message);
       if (
         [
@@ -284,13 +287,13 @@ export default class Executor implements IExecutor {
         ].includes(message.__meta.type)
       )
         log.__meta.length = Object.values(
-          this.#calculateMessageSize(msg?.byteLength)
+          this.#calculateMessageSize((msg as ArrayBuffer)?.byteLength)
         ).join(' ');
-      else log.__meta['length'] = msg?.length;
+      else log.__meta.length = (msg as string)?.length.toString();
       this.#emitLog(log);
       this.#socket.send(msg);
     } else {
-      const log = this.#log.success('', 'Message Sent', Send);
+      const log = this.#log.success('Message Sent', '', Send);
       this.#emitLog(log);
       this.#socket.send();
     }
@@ -303,12 +306,12 @@ export default class Executor implements IExecutor {
     this.#emitLog(log);
     if (interval) {
       this.#intervals.PING = setInterval(() => {
-        const log = this.#log.success('', 'Ping', Send, '');
+        const log = this.#log.success('Ping', '', Send);
         this.#emitLog(log);
         this.#socket.ping('Pinging');
       }, interval);
     } else {
-      const log = this.#log.success('', 'Ping', Send);
+      const log = this.#log.success('Ping', '', Send);
       this.#emitLog(log);
       this.#socket.ping('Pinging');
     }
@@ -374,10 +377,12 @@ export default class Executor implements IExecutor {
   }
 
   #log = {
-    prepare: (title: string, message: any, __meta: any): ILog => {
+    prepare: (
+      title: string,
+      __meta: any,
+      value: ILog['value'] = { value: '', type: EMessageBodyType.Text }
+    ): ILog => {
       if (!__meta.timestamp) __meta.timestamp = Date.now();
-      /** the event name in ws will be the same as 'title' to match the standard with socket.io event */
-      if (!__meta.event) __meta.event = title;
       const __ref = { id: '' };
       if (__meta.type) {
         switch (__meta.type) {
@@ -394,7 +399,7 @@ export default class Executor implements IExecutor {
       }
       return {
         title,
-        message,
+        value,
         __meta,
         __ref,
       };
@@ -403,25 +408,33 @@ export default class Executor implements IExecutor {
       event: string,
       title: string,
       type: any,
-      message: any = null
+      value?: ILog['value']
     ): ILog => {
-      return this.#log.prepare(title, message, {
-        event,
-        type,
-        color: Success,
-      });
+      return this.#log.prepare(
+        title,
+        {
+          event,
+          type,
+          color: Success,
+        },
+        value
+      );
     },
     danger: (
       event: string,
       title: string,
       type: any,
-      message: any = null
+      value?: ILog['value']
     ): ILog => {
-      return this.#log.prepare(title, message, {
-        event,
-        type,
-        color: Danger,
-      });
+      return this.#log.prepare(
+        title,
+        {
+          event,
+          type,
+          color: Danger,
+        },
+        value
+      );
     },
   };
 

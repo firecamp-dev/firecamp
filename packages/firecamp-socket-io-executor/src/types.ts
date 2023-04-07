@@ -1,4 +1,4 @@
-import { TId } from '@firecamp/types';
+import { EArgumentBodyType, ETypedArrayView, TId } from '@firecamp/types';
 
 export enum ELogTypes {
   Send = 's',
@@ -24,7 +24,11 @@ export enum ELogColors {
 // SocketIo log
 export interface ILog {
   title: string;
-  value: { value: string; type: string }[];
+  value: {
+    value: string;
+    type: EArgumentBodyType;
+    typedArrayView?: ETypedArrayView;
+  }[];
   __meta: {
     event: string;
     timestamp: number;

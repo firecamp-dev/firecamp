@@ -4,6 +4,7 @@ import {
   EFirecampAgent,
   ISocketIOEmitter,
   TId,
+  EArgumentBodyType,
 } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import * as bodyParser from './body-parser';
@@ -77,29 +78,26 @@ export default class Executor implements IExecutorInterface {
   }
 
   log = {
-    prepare: (title: string, __meta: any, value: any): ILog => {
+    prepare: (title: string, __meta: any, value: ILog['value']): ILog => {
       if (!__meta.timestamp) __meta.timestamp = Date.now();
 
-      // In normal EMIT/LISTEN event name will be a title so assign that
-      // same title as event in meta as standard usage at frontend if needed
-      if (!__meta.event) __meta.event = title;
       const __ref = { id: '' };
       if (__meta.type) {
         switch (__meta.type) {
           case ELogTypes.Send:
             const sCount = ++this.#sentLogCount;
-            __ref.id = `${ELogTypes.Send}-${sCount}`;
-            title = `Emit on: ${title}, ID: ${sCount}`;
+            __ref.id = `e-${sCount}`;
+            title = `Emitter Name: ${title}, Log Id: ${__ref.id}`;
             break;
           case ELogTypes.Receive:
             const rCount = ++this.#receivedLogCount;
-            __ref.id = `${ELogTypes.Receive}-${rCount}`;
-            title = `Listen on: ${title}, ID: ${rCount}`;
+            __ref.id = `l-${rCount}`;
+            title = `Listener Name: ${title}, Log Id: ${__ref.id}`;
             break;
           case ELogTypes.Ack:
             const aCount = __meta.id;
-            __ref.id = `${ELogTypes.Ack}-${aCount}`;
-            title = `Ack on: ${title}, ID: ${aCount}`;
+            __ref.id = `ack-${aCount}`;
+            title = `Ack of Emitter: ${title}, Log Id: ${__ref.id}`;
             break;
           default:
             const sysCount = ++this.#systemLogCount;
@@ -114,16 +112,34 @@ export default class Executor implements IExecutorInterface {
         __ref,
       };
     },
-    success: (event, title, type, __meta = {}, value = []): ILog => {
-      const meta = { ...__meta, type, color: ELogColors.Success, event };
+    success: (
+      event,
+      title,
+      type,
+      value: ILog['value'] = [],
+      id?: string
+    ): ILog => {
+      const meta = { id, type, color: ELogColors.Success, event };
       return this.log.prepare(title, meta, value);
     },
-    danger: (event, title, type, __meta = {}, value = []): ILog => {
-      const meta = { ...__meta, type, color: ELogColors.Danger, event };
+    danger: (
+      event,
+      title,
+      type,
+      value: ILog['value'] = [],
+      id?: string
+    ): ILog => {
+      const meta = { id, type, color: ELogColors.Danger, event };
       return this.log.prepare(title, meta, value);
     },
-    warning: (event, title, type, __meta = {}, value = []): ILog => {
-      const meta = { ...__meta, type, color: ELogColors.Warning, event };
+    warning: (
+      event,
+      title,
+      type,
+      value: ILog['value'] = [],
+      id?: string
+    ): ILog => {
+      const meta = { id, type, color: ELogColors.Warning, event };
       return this.log.prepare(title, meta, value);
     },
   };
@@ -147,10 +163,10 @@ export default class Executor implements IExecutorInterface {
         const value = [
           {
             value: 'Pinging',
-            type: 'text',
+            type: EArgumentBodyType.Text,
           },
         ];
-        const log = this.log.success(eventName, eventName, value, Receive);
+        const log = this.log.success(eventName, eventName, Receive, value);
         this.emitLog(log);
       });
       return;
@@ -299,9 +315,11 @@ export default class Executor implements IExecutorInterface {
     const argsForLog = (args || []).map((a) => ({
       value: a.body,
       type: a.__meta.type,
-    }));
+    })) as ILog['value'];
     const log = this.log.success(eventName, eventName, Send, argsForLog);
     const body = await bodyParser.parseEmitterArguments(args);
+
+    console.log(argsForLog, log, body, 99987);
     this.emitLog(log);
     return { event: eventName, body, logId: log.__ref.id };
   }
@@ -346,40 +364,17 @@ export default class Executor implements IExecutorInterface {
         if (body?.length > 0) {
           this.socket.send(...body, async (...ackArgs: Array<any>) => {
             const ackBody = await bodyParser.parseListenerData(ackArgs);
-
             if (ackBody?.length === 0)
-              ackBody.push({
-                payload: '',
-              });
-
-            const ackLog = this.log.success(
-              event,
-              event,
-              Ack,
-              {
-                id: logId,
-              },
-              ackBody
-            );
-
+              ackBody.push({ value: '', type: EArgumentBodyType.Text });
+            const ackLog = this.log.success(event, event, Ack, ackBody, logId);
             this.emitLog(ackLog);
           });
         } else {
           this.socket.send(async (...ackArgs: Array<any>) => {
             const ackBody = await bodyParser.parseListenerData(ackArgs);
             if (ackBody?.length === 0)
-              ackBody.push({
-                payload: '',
-              });
-            const ackLog = this.log.success(
-              event,
-              event,
-              Ack,
-              {
-                id: logId,
-              },
-              ackBody
-            );
+              ackBody.push({ value: '', type: EArgumentBodyType.Text });
+            const ackLog = this.log.success(event, event, Ack, ackBody, logId);
             this.emitLog(ackLog);
           });
         }
@@ -388,36 +383,16 @@ export default class Executor implements IExecutorInterface {
           this.socket.emit(event, ...body, async (...ackArgs: Array<any>) => {
             const ackBody = await bodyParser.parseListenerData(ackArgs);
             if (ackBody?.length === 0)
-              ackBody.push({
-                payload: '',
-              });
-            const ackLog = this.log.success(
-              event,
-              event,
-              Ack,
-              {
-                id: logId,
-              },
-              ackBody
-            );
+              ackBody.push({ value: '', type: EArgumentBodyType.Text });
+            const ackLog = this.log.success(event, event, Ack, ackBody, logId);
             this.emitLog(ackLog);
           });
         } else {
           this.socket.emit(event, async (...ackArgs: Array<any>) => {
             const ackBody = await bodyParser.parseListenerData(ackArgs);
             if (ackBody?.length === 0)
-              ackBody.push({
-                payload: '',
-              });
-            const ackLog = this.log.success(
-              event,
-              event,
-              Ack,
-              {
-                id: logId,
-              },
-              ackBody
-            );
+              ackBody.push({ value: '', type: EArgumentBodyType.Text });
+            const ackLog = this.log.success(event, event, Ack, ackBody, logId);
             this.emitLog(ackLog);
           });
         }
@@ -451,7 +426,7 @@ export default class Executor implements IExecutorInterface {
         const value = [
           {
             value: 'Pinging',
-            type: 'text',
+            type: EArgumentBodyType.Text,
           },
         ];
         const log = this.log.success('PING', 'PING', Send, value);
@@ -461,8 +436,8 @@ export default class Executor implements IExecutorInterface {
           this.socket.emit('PING', () => {
             const value = [
               {
-                payload: 'Pinging',
-                type: 'text',
+                value: 'Pinging',
+                type: EArgumentBodyType.Text,
               },
             ];
             const log = this.log.success('PONG', 'PONG', Receive, value);
@@ -507,11 +482,9 @@ export default class Executor implements IExecutorInterface {
       this.socket.on(Connect, () => {
         const title = 'Socket connected successfully';
         const log = this.log.success(Connect, title, System);
-
         this.emitLog(log, ELogEvents.onOpen);
         this.emitLog(log);
-
-        // Start pinging if ping enable
+        // start pinging if ping enable
         if (
           firecampAgent == EFirecampAgent.Desktop &&
           clientOptions &&

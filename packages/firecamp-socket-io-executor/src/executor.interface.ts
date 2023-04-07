@@ -30,23 +30,23 @@ export interface IExecutorInterface {
     success: (
       event: string,
       title: string,
-      value: any,
       type: string,
-      __meta?: any
+      value: any,
+      id?: string
     ) => ILog;
     danger: (
       event: string,
       title: string,
-      value: any,
       type: string,
-      __meta?: any
+      value: any,
+      id?: string
     ) => ILog;
     warning: (
       event: string,
       title: string,
-      value: any,
       type: string,
-      __meta?: any
+      value: any,
+      id?: string
     ) => ILog;
   };
 

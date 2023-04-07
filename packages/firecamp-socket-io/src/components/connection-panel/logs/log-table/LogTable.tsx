@@ -2,7 +2,7 @@ import { memo } from 'react';
 import isEqual from 'react-fast-compare';
 import { LogTable as LTable } from '@firecamp/ui';
 
-const LogTable = ({ onLoad, onFocusRow = (r) => { } }) => {
+const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
   return (
     <LTable
       classes={{
@@ -15,6 +15,8 @@ const LogTable = ({ onLoad, onFocusRow = (r) => { } }) => {
         tr: 'hover:!bg-focus1 focus:!bg-primaryColorOpacity  !border-0',
       }}
       rows={[]}
+      options={{ hiddenColumns: ['length'] }}
+      titleRenderer={(log) => log?.value?.[0]?.value || log?.title || ''}
       onChange={(rows) => {
         console.log(rows, 'log table change');
       }}

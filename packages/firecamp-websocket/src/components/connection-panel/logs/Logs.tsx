@@ -11,9 +11,9 @@ import {
   Resizable,
 } from '@firecamp/ui';
 import LogTable from './LogTable';
+import LogPreview from './LogPreview';
 import { ELogTypes } from '../../../types';
 import { IStore, useStore } from '../../../store';
-import LogPreview from './LogPreview';
 
 const logTypes = {
   System: ELogTypes.System,
@@ -64,7 +64,7 @@ const Logs = () => {
     //     ...__meta,
     //   };
     // });
-    console.log(filteredLogs, 'filteredLogs');
+    // console.log(filteredLogs, 'filteredLogs');
     logTableApiRef.current?.initialize(filteredLogs);
   }, [logs, typeFilter, activePlayground]);
 
