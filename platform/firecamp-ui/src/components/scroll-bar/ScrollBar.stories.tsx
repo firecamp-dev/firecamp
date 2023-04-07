@@ -1,4 +1,4 @@
-import ScrollBar, { SCROLLBAR_LAYOUT } from './ScrollBar';
+import ScrollBar, { EScrollbarLayout } from './ScrollBar';
 import { ForgetPasswordForm } from '../form/Form.stories';
 import { Tabs } from '@firecamp/ui';
 
@@ -14,7 +14,7 @@ export const Demo = () => (
   <ScrollBar
     className=" rounded shadow-md bg-primaryColorText w-[200px] h-[200px]"
     noWrap
-    layout={SCROLLBAR_LAYOUT.V1}
+    layout={EScrollbarLayout.V1}
   >
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
@@ -55,7 +55,7 @@ export const Demo = () => (
 );
 
 export const VerticalScroll = () => (
-  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]" layout={SCROLLBAR_LAYOUT.V1}>
+  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]" layout={EScrollbarLayout.V1}>
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
       <hr />
@@ -95,7 +95,7 @@ export const VerticalScroll = () => (
 );
 
 export const HorizontalScroll = () => (
-  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[50vh]" noWrap layout={SCROLLBAR_LAYOUT.V1}>
+  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[50vh]" noWrap layout={EScrollbarLayout.V1}>
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
       <hr />
@@ -114,7 +114,7 @@ export const HorizontalScroll = () => (
 );
 
 export const ScrollBarWithModal = () => (
-  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]" layout={SCROLLBAR_LAYOUT.V1}>
+  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]" layout={EScrollbarLayout.V1}>
     <div style={{ padding: '15px 20px' }}>
       <ForgetPasswordForm />
       <br />
@@ -129,7 +129,7 @@ export const VSCodeExample = () => (
     height="h-[200px]"
     noWrap
     withCorner={false}
-    layout={SCROLLBAR_LAYOUT.V2}
+    layout={EScrollbarLayout.V2}
   >
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
@@ -174,7 +174,7 @@ export const RequestTabExample = () => (
     <ScrollBar
       className="shadow-md bg-primaryColorText "
       width="w-[200px]"
-      layout={SCROLLBAR_LAYOUT.HORIZONTAL}>
+      layout={EScrollbarLayout.HORIZONTAL}>
       <Tabs
         list={[
           {

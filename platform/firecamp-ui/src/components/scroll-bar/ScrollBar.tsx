@@ -1,7 +1,7 @@
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import cx from 'classnames';
 
-export enum SCROLLBAR_LAYOUT {
+export enum EScrollbarLayout {
   DEFAULT = 'DEFAULT',
   V1 = 'V1',
   V2 = 'V2',
@@ -14,7 +14,7 @@ const ScrollBar = ({
   noWrap = false,
   width = '',
   height = '',
-  layout = SCROLLBAR_LAYOUT.DEFAULT,
+  layout = EScrollbarLayout.DEFAULT,
   withCorner = true,
 }) => (
   <ScrollArea.Root
@@ -26,7 +26,7 @@ const ScrollBar = ({
       className
     )}
     style={{
-      '--scrollbar-size': layout === SCROLLBAR_LAYOUT.DEFAULT ? '4px' : '8px',
+      '--scrollbar-size': layout === EScrollbarLayout.DEFAULT ? '4px' : '8px',
     }}
     type="hover"
   >
@@ -40,13 +40,13 @@ const ScrollBar = ({
         'flex flex-col select-none touch-none p-0.5 ',
         {
           'bg-activityBarBorder hover:bg-focus2':
-            layout === SCROLLBAR_LAYOUT.V1,
+            layout === EScrollbarLayout.V1,
         },
         {
-          'p-0 bg-transparent': layout === SCROLLBAR_LAYOUT.V2,
+          'p-0 bg-transparent': layout === EScrollbarLayout.V2,
         },
         {
-          'p-0 bg-transparent': layout === SCROLLBAR_LAYOUT.DEFAULT,
+          'p-0 bg-transparent': layout === EScrollbarLayout.DEFAULT,
         }
       )}
       orientation="horizontal"
@@ -58,25 +58,25 @@ const ScrollBar = ({
     >
       <ScrollArea.Thumb
         className={cx('flex-1 bg-appForegroundInActive', {
-          rounded: layout === SCROLLBAR_LAYOUT.HORIZONTAL,
+          rounded: layout === EScrollbarLayout.HORIZONTAL,
         })}
       />
     </ScrollArea.Scrollbar>
 
     {/* vertical scrollbar */}
-    {layout !== SCROLLBAR_LAYOUT.HORIZONTAL && (
+    {layout !== EScrollbarLayout.HORIZONTAL && (
       <ScrollArea.Scrollbar
         className={cx(
           'flex select-none touch-none p-0.5',
           {
             'bg-activityBarBorder hover:bg-focus2':
-              layout === SCROLLBAR_LAYOUT.V1,
+              layout === EScrollbarLayout.V1,
           },
           {
-            'p-0 bg-transparent': layout === SCROLLBAR_LAYOUT.V2,
+            'p-0 bg-transparent': layout === EScrollbarLayout.V2,
           },
           {
-            'p-0 bg-transparent': layout === SCROLLBAR_LAYOUT.DEFAULT,
+            'p-0 bg-transparent': layout === EScrollbarLayout.DEFAULT,
           }
         )}
         orientation="vertical"
@@ -90,10 +90,10 @@ const ScrollBar = ({
           className={cx(
             'flex-1',
             {
-              'bg-appForegroundInActive': layout !== SCROLLBAR_LAYOUT.DEFAULT,
+              'bg-appForegroundInActive': layout !== EScrollbarLayout.DEFAULT,
             },
             {
-              'bg-appBorder rounded-2xl': layout === SCROLLBAR_LAYOUT.DEFAULT,
+              'bg-appBorder rounded-2xl': layout === EScrollbarLayout.DEFAULT,
             }
           )}
         />
