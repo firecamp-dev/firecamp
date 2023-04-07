@@ -20,7 +20,7 @@ interface IPlayground {
     event: string;
   };
   emitter: ISocketIOEmitter;
-  selectedCollectionEmitter: TId;
+  selectedEmitterId: TId;
   executor?: IExecutorInterface;
   activeListeners: TId[];
   socketId?: string;
@@ -36,6 +36,8 @@ interface IPlaygroundSlice {
 
   getPlayground: () => IPlayground;
   setPlgExecutor: (executor: any) => void;
+  openEmitterInPlayground: (emitterId: TId) => void;
+
   //arguments
   selectPlgArgTab: (index: number) => void;
   addPlgArgTab: () => void;
@@ -49,7 +51,6 @@ interface IPlaygroundSlice {
   changePlaygroundLogFilters: (updates: { type: string }) => void;
   resetPlaygroundEmitter: () => void;
 
-  setSelectedCollectionEmitter: (emitterId: TId | string) => void;
   deleteExecutor: () => void;
 
   addListener: (listener: ISocketIOListener) => void;
@@ -86,10 +87,40 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     }));
   },
 
+  openEmitterInPlayground: (emitterId: TId) => {
+    const {
+      runtime: { activePlayground: connectionId },
+      collection: { items },
+      getPlayground,
+      changePlaygroundTab,
+    } = get();
+
+    //@ts-ignore TODO: fix type here later
+    const item: ISocketIOEmitter = items.find((i) => i.__ref.id == msgId);
+    const playground = getPlayground();
+    if (!playground) return;
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [connectionId]: {
+          ...playground,
+          emitter: item,
+          selectedEmitterId: emitterId,
+        },
+      },
+    }));
+    changePlaygroundTab(connectionId, {
+      __meta: {
+        isSaved: true,
+        hasChange: false,
+      },
+    });
+  },
+
   // emitter and arguments
   selectPlgArgTab: (index: number) => {
     set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
+      const plg = s.getPlayground();
       return {
         playgrounds: {
           ...s.playgrounds,
@@ -105,7 +136,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   addPlgArgTab: () => {
     set((s) => {
       const { activePlayground } = s.runtime;
-      const plg = s.playgrounds[activePlayground];
+      const plg = s.getPlayground();
       if (!plg.emitter.value?.length) plg.emitter.value = [];
       plg.emitter.value = [
         ...plg.emitter.value,
@@ -133,7 +164,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     if (index == 0) return;
     set((s) => {
       const { activePlayground } = s.runtime;
-      const plg = s.playgrounds[activePlayground];
+      const plg = s.getPlayground();
       if (!plg.emitter.value?.length) plg.emitter.value = [];
       plg.emitter.value = [
         ...plg.emitter.value.slice(0, index),
@@ -154,7 +185,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   },
   changePlgArgType: (type: EArgumentBodyType) => {
     set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
+      const plg = s.getPlayground();
       const { activeArgIndex } = plg;
       plg.emitter.value[activeArgIndex].__meta.type = type;
       return {
@@ -168,7 +199,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   },
   changePlgArgValue: (value: string | number | boolean) => {
     set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
+      const plg = s.getPlayground();
       const { activeArgIndex } = plg;
       plg.emitter.value[activeArgIndex].body = value;
       return {
@@ -182,7 +213,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   },
   changePlgEmitterName: (name: string) => {
     set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
+      const plg = s.getPlayground();
       return {
         playgrounds: {
           ...s.playgrounds,
@@ -200,7 +231,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   },
   changePlgEmitterAck: (ack: boolean) => {
     set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
+      const plg = s.getPlayground();
       plg.emitter.__meta.ack = ack;
       return {
         playgrounds: {
@@ -246,7 +277,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
   //emitter
   resetPlaygroundEmitter: () => {
     set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
+      const plg = s.getPlayground();
       plg.emitter = _deepClone(InitPlayground) as ISocketIOEmitter;
       return {
         playgrounds: {
@@ -255,21 +286,6 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         },
       };
     });
-  },
-  setSelectedCollectionEmitter: (emitterId: TId) => {
-    const state = get();
-    const playground = state.getPlayground();
-    const conId = state.getActiveConnectionId();
-
-    set((s) => ({
-      playgrounds: {
-        ...s.playgrounds,
-        [conId]: {
-          ...playground,
-          selectedCollectionEmitter: emitterId,
-        },
-      },
-    }));
   },
 
   deleteExecutor: () => {

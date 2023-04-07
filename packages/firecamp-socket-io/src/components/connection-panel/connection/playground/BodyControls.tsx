@@ -9,6 +9,7 @@ import {
   TabHeader,
 } from '@firecamp/ui';
 import { EditorCommands } from '../../../../constants';
+import { IStore, useStoreApi } from '../../../../store';
 
 const BodyControls = ({
   tabId = '',
@@ -16,6 +17,7 @@ const BodyControls = ({
   showClearPlaygroundButton = true,
   addNewEmitter = () => {},
 }) => {
+  const { promptSaveItem } = useStoreApi().getState() as IStore;
   return (
     <Container.Header>
       <StatusBar className="bg-statusBarBackground2 px-1">
@@ -25,6 +27,14 @@ const BodyControls = ({
           </div>
         </StatusBar.PrimaryRegion>
         <StatusBar.SecondaryRegion>
+          <Button
+            id={`btn-${tabId}`}
+            key="save_button"
+            text={'Save Emitter'}
+            onClick={promptSaveItem}
+            secondary
+            xs
+          />
           {showClearPlaygroundButton === true ? (
             <ConfirmationPopover
               id={tabId}
@@ -49,24 +59,6 @@ const BodyControls = ({
           ) : (
             <></>
           )}
-
-          <Button
-            id={`btn-${tabId}`}
-            key="save_button"
-            text={'Save'}
-            secondary
-            xs
-          />
-          <Button
-            id={`btn-${tabId}`}
-            key="save_button"
-            text={'Save'}
-            transparent
-            ghost
-            xs
-          />
-          <Button text="Send" onClick={() => {}} primary xs />
-
           {/* <ShortcutsInfo tabId={tabId} /> */}
         </StatusBar.SecondaryRegion>
       </StatusBar>

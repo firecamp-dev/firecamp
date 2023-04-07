@@ -157,18 +157,23 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   },
   promptSaveItem: () => {
     const state = get();
+    if (!state.runtime.isRequestSaved) {
+      state.context.app.notify.info('Please save the socket.io request first.');
+      return;
+    }
+    // label and folderId will be added from prompt
+    const item = state.prepareCreateItemPayload('', '');
+    if (!item.name) return;
     const { folders } = state.collection;
     const { fOrders: folderRootOrders } = state.request.__meta;
 
-    // name and folderId will be added from prompt
-    const item = state.prepareCreateItemPayload('', '');
     state.context.request
       .createRequestItemPrompt(
         item,
         { items: folders, rootOrders: folderRootOrders },
         {
           header: 'Create Emitter',
-          label: `Label name for the emitter ${item.name}`,
+          label: `Type Label for the emitter - "${item.name}"`,
         }
       )
       .then((res) => {
