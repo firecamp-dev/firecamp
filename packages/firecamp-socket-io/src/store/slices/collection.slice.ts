@@ -1,10 +1,5 @@
 import { nanoid } from 'nanoid';
-import {
-  TId,
-  ISocketIOEmitter,
-  IRequestFolder,
-  EArgumentBodyType,
-} from '@firecamp/types';
+import { TId, ISocketIOEmitter, IRequestFolder } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/panes/collection-tree/TreeDataProvider';
 
@@ -14,8 +9,8 @@ interface ICollection {
   items?: Partial<ISocketIOEmitter & { __ref: { isItem?: boolean } }>[];
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
   /**
-   * increate the number on each action/event happens within collection
-   * react component will not re-render when tdpIntance will change in store, at that time update __manualUpdates to re-render the compoenent
+   * in create the number on each action/event happens within collection
+   * react component will not re-render when tdpInstance will change in store, at that time update __manualUpdates to re-render the component
    */
   __manualUpdates?: number;
 }
@@ -29,9 +24,17 @@ interface ICollectionSlice {
   initialiseCollection: (collection: ICollection) => void;
 
   // emitter
-  getItem: (id: TId) => ISocketIOEmitter;
-  addItem: (obj: { name: string; label?: string }, folderId: TId) => void;
+  getItem: (id: TId) => ISocketIOEmitter | any;
+  prepareCreateItemPayload: (
+    label?: string,
+    folderId?: TId
+  ) => ISocketIOEmitter;
+  promptSaveItem: () => void;
+  onAddItem: (message: ISocketIOEmitter) => void;
+  updateItem: () => void;
+  onUpdateItem: (message: ISocketIOEmitter) => void;
   deleteItem: (id: TId) => void;
+  onDeleteItem: (id: TId) => void;
 
   // folders
   getFolder: (id: TId) => IRequestFolder;
@@ -123,63 +126,157 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   getItem: (id: TId) => {
     const state = get();
     const item = state.collection.items.find((i) => i.__ref?.id === id);
-    return item;
+    return item as ISocketIOEmitter;
   },
-  addItem: ({ name, label }, folderId?: TId) => {
+  prepareCreateItemPayload: (label, folderId?: TId) => {
     const state = get();
     const {
-      runtime: { activePlayground },
       playgrounds,
+      runtime: { activePlayground },
     } = state;
     const emitter = playgrounds[activePlayground]?.emitter;
-
-    const item = {
-      name,
+    const _item: ISocketIOEmitter = {
+      name: emitter.name,
       value: emitter.value,
-      __meta: { ...emitter.__meta, label },
+      __meta: {
+        ...emitter.__meta,
+        label,
+      },
       __ref: {
         ...emitter.__ref,
         id: nanoid(),
+        requestId: state.request.__ref.id,
+        requestType: state.request.__meta.type,
+        collectionId: state.request.__ref.collectionId,
         folderId,
       },
     };
+    // state.toggleProgressBar(true);
+    console.log(_item, 'prepare the item');
+    return _item;
+  },
+  promptSaveItem: () => {
+    const state = get();
+    const { folders } = state.collection;
+    const { fOrders: folderRootOrders } = state.request.__meta;
 
+    // name and folderId will be added from prompt
+    const item = state.prepareCreateItemPayload('', '');
+    state.context.request
+      .createRequestItemPrompt(
+        item,
+        { items: folders, rootOrders: folderRootOrders },
+        {
+          header: 'Create Emitter',
+          label: `Label name for the emitter ${item.name}`,
+        }
+      )
+      .then((res) => {
+        console.log(res, 1111);
+        state.onAddItem(res);
+        // state.openEmitterInPlayground(res.__ref.id);
+      });
+  },
+  onAddItem: (item: ISocketIOEmitter) => {
+    const state = get();
+    const { tdpInstance } = state.collection;
+    if (!item.__ref?.id) return;
+    tdpInstance?.addItem(item);
     set((s) => ({
       collection: {
         ...s.collection,
         items: [...s.collection.items, item],
+        __manualUpdates: ++s.collection.__manualUpdates,
+      },
+    }));
+  },
+  updateItem: () => {
+    const {
+      context,
+      onUpdateItem,
+      runtime: { activePlayground },
+      playgrounds,
+    } = get();
+    const item = playgrounds[activePlayground].emitter;
+    const _item = {
+      name: item.name,
+      value: item.value,
+      __meta: item.__meta,
+      __ref: item.__ref,
+    };
+    context.request.updateRequestItem(_item).then((res) => {
+      console.log(res, 'update request item...');
+      onUpdateItem(_item);
+    });
+  },
+  onUpdateItem: (item) => {
+    const state = get();
+    if (!item.__ref?.id) return;
+    state.collection.tdpInstance?.updateItem(item);
+    const items = state.collection.items.map((i) => {
+      if (item.__ref.id == i.__ref.id) {
+        return { ...i, ...item };
+      }
+      return i;
+    });
+    set((s) => ({
+      collection: {
+        ...s.collection,
+        items,
+        __manualUpdates: ++s.collection.__manualUpdates,
       },
     }));
 
-    state.changePlaygroundTab(activePlayground, {
-      __meta: {
-        isSaved: true,
-        hasChange: false,
-      },
-    });
-
-    // TODO: Update parent orders on add emitter
-    // TODO: check update playground emitter
-    // TODO: check update active emitter
-    // TODO: update request
+    const {
+      playgrounds,
+      runtime: { activePlayground },
+      changePlaygroundTab,
+    } = state;
+    const emitter = playgrounds[activePlayground]?.emitter;
+    if (emitter?.__ref.id == item.__ref.id) {
+      changePlaygroundTab(activePlayground, {
+        __meta: {
+          isSaved: true,
+          hasChange: false,
+        },
+      });
+    }
   },
+
   deleteItem: (id: TId) => {
+    const {
+      context,
+      onDeleteItem,
+      collection: { items },
+    } = get();
+    const item = items.find((i) => i.__ref.id == id);
+    if (!item) return;
+    const requestId = item.__ref.requestId;
+    context.request.deleteRequestItem(requestId, id).then((res) => {
+      console.log(res, 'delete request item...');
+      onDeleteItem(id);
+    });
+  },
+  onDeleteItem: (id: TId) => {
     set((s) => {
       const items = s.collection.items.filter((i) => i.__ref.id != id);
+      s.collection.tdpInstance?.delete(id);
       return {
         collection: {
           ...s.collection,
-          ...items,
+          items,
+          __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
     });
+    // TODO: if item/message is opened in the playground then reset the playgroundF
   },
 
   // folders
   getFolder: (id: TId) => {
     const state = get();
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
-    return folder;
+    return folder as IRequestFolder;
   },
   prepareCreateFolderPayload: (name: string, parentFolderId?: TId) => {
     const state = get();
