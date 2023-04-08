@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import { itemPathFinder } from '@firecamp/utils/dist/misc';
 import { TId, ISocketIOEmitter, IRequestFolder } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/panes/collection-tree/TreeDataProvider';
@@ -18,6 +19,7 @@ interface ICollection {
 interface ICollectionSlice {
   collection: ICollection;
   isCollectionEmpty: () => boolean;
+  getItemPath: (itemId: TId) => string;
   toggleProgressBar: (flag?: boolean) => void;
   registerTDP: () => void;
   unRegisterTDP: () => void;
@@ -58,7 +60,14 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     return folders.length == 0 && items.length == 0;
   },
 
-  // register TreeDatProvider instance
+  getItemPath: (itemId: TId) => {
+    const {
+      collection: { items, folders },
+    } = get();
+    const { path } = itemPathFinder([...folders, ...items], itemId);
+    return path;
+  },
+
   // register TreeDatProvider instance
   registerTDP: () => {
     set((s) => {

@@ -10,6 +10,7 @@ import {
 } from '@firecamp/ui';
 import { EditorCommands } from '../../../../constants';
 import { IStore, useStoreApi } from '../../../../store';
+import { useMemo } from 'react';
 
 const BodyControls = ({
   tabId = '',
@@ -17,13 +18,19 @@ const BodyControls = ({
   showClearPlaygroundButton = true,
   addNewEmitter = () => {},
 }) => {
-  const { promptSaveItem } = useStoreApi().getState() as IStore;
+  const { promptSaveItem, getItemPath, getPlayground } =
+    useStoreApi().getState() as IStore;
+  const plg = getPlayground();
+  const emitterPath = useMemo(() => {
+    return getItemPath(plg.selectedEmitterId);
+  }, [plg.selectedEmitterId]);
+
   return (
     <Container.Header>
       <StatusBar className="bg-statusBarBackground2 px-1">
         <StatusBar.PrimaryRegion>
           <div data-tip={path} className="collection-path">
-            {path || `./`}
+            {`./${emitterPath}`}
           </div>
         </StatusBar.PrimaryRegion>
         <StatusBar.SecondaryRegion>

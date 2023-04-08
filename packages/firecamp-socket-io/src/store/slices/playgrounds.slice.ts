@@ -96,7 +96,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     } = get();
 
     //@ts-ignore TODO: fix type here later
-    const item: ISocketIOEmitter = items.find((i) => i.__ref.id == msgId);
+    const item: ISocketIOEmitter = items.find((i) => i.__ref.id == emitterId);
     const playground = getPlayground();
     if (!playground) return;
     set((s) => ({

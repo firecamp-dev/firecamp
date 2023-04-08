@@ -77,7 +77,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
     shallow
   );
   const {
-    // openPlayground,
+    openEmitterInPlayground,
     registerTDP,
     unRegisterTDP,
     deleteItem,
@@ -91,12 +91,6 @@ const Collection = ({ openCreateFolderPrompt }) => {
     return unRegisterTDP;
   }, []);
 
-  const openPlg = (plgId) => {
-    // get a fresh copy of state
-    // const item = items.find((i) => i.__ref.id == plgId);
-    // console.log(item, 1100099);
-    // openPlayground(item);
-  };
   const deletePlg = (plgId: string) => {
     context.window
       .confirm({
@@ -144,7 +138,10 @@ const Collection = ({ openCreateFolderPrompt }) => {
         renderItem={(props) =>
           treeRenderer.renderItem({
             ...props,
-            openPlg,
+            openEmitterInPlg: (emtId) => {
+              props.context.focusItem();
+              openEmitterInPlayground(emtId);
+            },
             deletePlg,
             createFolder: openCreateFolderPrompt,
           })

@@ -152,7 +152,10 @@ const Collection = ({ openCreateFolderPrompt }) => {
         renderItem={(props) =>
           treeRenderer.renderItem({
             ...props,
-            openMessageInPlg: openMessageInPlayground,
+            openMessageInPlg: (msgId) => {
+              props.context.focusItem();
+              openMessageInPlayground(msgId);
+            },
             createFolder: openCreateFolderPrompt,
             deleteFolder: _deleteFolder,
             deleteMsg,

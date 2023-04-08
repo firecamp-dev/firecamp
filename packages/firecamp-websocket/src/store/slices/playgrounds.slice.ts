@@ -8,7 +8,6 @@ import {
   ETypedArrayView,
 } from '@firecamp/types';
 import { _object } from '@firecamp/utils';
-
 import { EConnectionState } from '../../types';
 import { TStoreSlice } from '../store.type';
 

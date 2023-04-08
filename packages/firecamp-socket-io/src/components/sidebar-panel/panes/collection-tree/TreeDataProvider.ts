@@ -12,6 +12,7 @@ enum ETreeEventTypes {
 }
 type TTreeItemData = {
   name: string;
+  __meta?: any;
   __ref: {
     id: string;
     collectionId?: string;
@@ -32,7 +33,7 @@ type TItem = Partial<ISocketIOEmitter & TItemExtra_meta>;
 type TCItem = TFolderItem | TItem;
 
 export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
-  private items: Array<TCItem>;
+  private items: TCItem[];
   private rootOrders: TreeItemIndex[];
   private emitter = mitt();
 
@@ -47,7 +48,11 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
       return Promise.resolve({
         index: 'root',
         canMove: true,
-        data: { name: 'Root', __ref: { id: 'root' } },
+        data: {
+          name: 'Root',
+          __meta: { label: 'root' },
+          __ref: { id: 'root' },
+        },
         canRename: false,
         isFolder: true,
         children: this.rootOrders,
@@ -60,10 +65,13 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
 
     const treeItem: TTreeItemData = {
       name: item.name,
+      //@ts-ignore
+      __meta: { label: item.__meta?.label },
       __ref: {
         id: item.__ref.id,
-        isFolder: item.__ref.isFolder,
         collectionId: item.__ref?.collectionId,
+        isFolder: item.__ref.isFolder,
+        isItem: item.__ref.isItem,
       },
     };
 
@@ -124,7 +132,11 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
         ...i,
         __ref: { ...i.__ref, isFolder: true },
       })),
-      ...items.map((i) => ({ ...i, __ref: { ...i.__ref, isItem: true } })),
+      ...items.map((i) => ({
+        ...i,
+        __meta: { label: i.__meta?.label },
+        __ref: { ...i.__ref, isItem: true },
+      })),
     ];
     // if (!rootOrders?.length) {
     rootOrders = this.items
