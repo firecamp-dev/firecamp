@@ -1,8 +1,7 @@
+import { useMemo } from 'react';
 import {
   Container,
   Button,
-  Input,
-  ConfirmationPopover,
   Popover,
   EPopoverPosition,
   StatusBar,
@@ -10,20 +9,17 @@ import {
 } from '@firecamp/ui';
 import { EditorCommands } from '../../../../constants';
 import { IStore, useStoreApi } from '../../../../store';
-import { useMemo } from 'react';
 
-const BodyControls = ({
-  tabId = '',
-  path = '',
-  showClearPlaygroundButton = true,
-  addNewEmitter = () => {},
-}) => {
-  const { promptSaveItem, getItemPath, getPlayground } =
+const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
+  const { promptSaveItem, getItemPath, getPlayground, resetPlaygroundEmitter } =
     useStoreApi().getState() as IStore;
   const plg = getPlayground();
   const emitterPath = useMemo(() => {
     return getItemPath(plg.selectedEmitterId);
   }, [plg.selectedEmitterId]);
+
+  const showNewEmitterBtn = !!plg.emitter?.__ref?.id;
+  const showSaveEmitterBtn = plg.playgroundHasChanges;
 
   return (
     <Container.Header>
@@ -34,44 +30,38 @@ const BodyControls = ({
           </div>
         </StatusBar.PrimaryRegion>
         <StatusBar.SecondaryRegion>
-          <Button
-            id={`btn-${tabId}`}
-            key="save_button"
-            text={'Save Emitter'}
-            onClick={promptSaveItem}
-            secondary
-            xs
-          />
-          {showClearPlaygroundButton === true ? (
-            <ConfirmationPopover
-              id={tabId}
-              handler={
-                <Button
-                  id={`confirm-popover-handler-${tabId}`}
-                  key="new_msg_button"
-                  text={'+ New Emitter'}
-                  transparent
-                  ghost
-                  sm
-                />
-              }
-              title="Are you sure to reset playground and add new emitter?"
-              _meta={{
-                showDeleteIcon: false,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-              }}
-              onConfirm={addNewEmitter}
-            />
-          ) : (
-            <></>
-          )}
           {/* <ShortcutsInfo tabId={tabId} /> */}
         </StatusBar.SecondaryRegion>
       </StatusBar>
       <TabHeader className="padding-small height-small collection-path-wrapper">
         <TabHeader.Left></TabHeader.Left>
-        <TabHeader.Right></TabHeader.Right>
+        <TabHeader.Right>
+          {showNewEmitterBtn === true ? (
+            <Button
+              id={`reset-plg-emitter-${tabId}`}
+              key="new_msg_button"
+              text={'+ New Emitter'}
+              onClick={resetPlaygroundEmitter}
+              transparent
+              ghost
+              sm
+            />
+          ) : (
+            <></>
+          )}
+          {showSaveEmitterBtn ? (
+            <Button
+              id={`btn-${tabId}`}
+              key="save_button"
+              text={'Save Emitter'}
+              onClick={promptSaveItem}
+              secondary
+              xs
+            />
+          ) : (
+            <></>
+          )}
+        </TabHeader.Right>
       </TabHeader>
     </Container.Header>
   );
