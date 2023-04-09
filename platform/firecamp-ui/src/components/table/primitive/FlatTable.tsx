@@ -225,7 +225,7 @@ const FlatTable: FC<ITable<any>> = ({
             {columns.map((c, i) => {
               return (
                 <Th
-                  className={cx(classes.th, {'hidden': options.hiddenColumns.includes(c.key)})}
+                  className={cx(classes.th, {'hidden': options?.hiddenColumns?.includes(c.key)})}
                   style={{
                     width: c.resizeWithContainer ? '100%' : parseInt(c.width),
                     minWidth:
