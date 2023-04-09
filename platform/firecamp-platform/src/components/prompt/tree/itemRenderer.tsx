@@ -138,7 +138,7 @@ export default {
             type={type}
             {...(context.interactiveElementProps as any)}
             className={cx(
-              'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button',
+              'pl-1 whitespace-pre overflow-hidden text-ellipsis rct-tree-item-button',
               { 'rct-tree-item-button-isFolder': item.isFolder },
               { 'rct-tree-item-button-selected': context.isSelected },
               { 'rct-tree-item-button-expanded': context.isExpanded },
@@ -147,7 +147,7 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <span className="w-full overflow-hidden overflow-ellipsis items-center block">
+            <span className="w-full overflow-hidden text-ellipsis items-center block">
               {title}
             </span>
           </InteractiveComponent>
