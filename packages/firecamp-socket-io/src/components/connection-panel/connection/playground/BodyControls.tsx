@@ -11,14 +11,25 @@ import { EditorCommands } from '../../../../constants';
 import { IStore, useStoreApi } from '../../../../store';
 
 const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
-  const { promptSaveItem, getItemPath, getPlayground, resetPlaygroundEmitter } =
-    useStoreApi().getState() as IStore;
+  const {
+    promptSaveItem,
+    updateItem,
+    getItemPath,
+    getPlayground,
+    resetPlaygroundEmitter,
+  } = useStoreApi().getState() as IStore;
   const plg = getPlayground();
   const emitterPath = useMemo(() => {
     return getItemPath(plg.selectedEmitterId);
   }, [plg.selectedEmitterId]);
 
-  const showNewEmitterBtn = !!plg.emitter?.__ref?.id;
+  const isEmitterSaved = !!plg.emitter.__ref.id;
+  const saveEmitter = () => {
+    if (isEmitterSaved) updateItem();
+    else promptSaveItem();
+  };
+
+  const showNewEmitterBtn = !!isEmitterSaved;
   const showSaveEmitterBtn = plg.playgroundHasChanges;
 
   return (
@@ -53,8 +64,8 @@ const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
             <Button
               id={`btn-${tabId}`}
               key="save_button"
-              text={'Save Emitter'}
-              onClick={promptSaveItem}
+              text={isEmitterSaved?'Save Emitter Changes': 'Save Emitter'}
+              onClick={saveEmitter}
               secondary
               xs
             />

@@ -83,7 +83,8 @@ export default {
     arrow,
     info,
     openEmitterInPlg,
-    deletePlg,
+    deleteFolder,
+    deleteEmitter,
     createFolder,
   }) => {
     const renderDepthOffset = 8;
@@ -218,7 +219,8 @@ export default {
               className="ml-1 cursor-pointer"
               size={14}
               onClick={() => {
-                deletePlg(item.index);
+                if (item.isFolder) deleteFolder(item.index);
+                else deleteEmitter(item.index);
               }}
             />
           </div>

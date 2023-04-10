@@ -80,6 +80,7 @@ const Collection = ({ openCreateFolderPrompt }) => {
     openEmitterInPlayground,
     registerTDP,
     unRegisterTDP,
+    deleteFolder,
     deleteItem,
     isCollectionEmpty,
   } = useStoreApi().getState() as IStore;
@@ -91,16 +92,29 @@ const Collection = ({ openCreateFolderPrompt }) => {
     return unRegisterTDP;
   }, []);
 
-  const deletePlg = (plgId: string) => {
+  const _deleteFolder = (id: string) => {
     context.window
       .confirm({
-        title: 'Are you sure to delete the playground?',
+        title: 'Are you sure to delete the Folder?',
         texts: {
           btnConfirm: 'Yes, delete it.',
         },
       })
-      .then((isConfirmed) => {
-        if (isConfirmed) deleteItem(plgId);
+      .then((yes) => {
+        if (yes) deleteFolder(id);
+      });
+  };
+
+  const deleteEmitter = (emtId: string) => {
+    context.window
+      .confirm({
+        title: 'Are you sure to delete the emitter?',
+        texts: {
+          btnConfirm: 'Yes, delete it.',
+        },
+      })
+      .then((yes) => {
+        if (yes) deleteItem(emtId);
       });
   };
 
@@ -142,7 +156,8 @@ const Collection = ({ openCreateFolderPrompt }) => {
               props.context.focusItem();
               openEmitterInPlayground(emtId);
             },
-            deletePlg,
+            deleteFolder: _deleteFolder,
+            deleteEmitter,
             createFolder: openCreateFolderPrompt,
           })
         }

@@ -42,6 +42,8 @@ interface ICollectionSlice {
   getFolder: (id: TId) => IRequestFolder;
   prepareCreateFolderPayload: (name: string, parentFolderId: TId) => void;
   deleteFolder: (id: TId) => void;
+  onDeleteFolder: (id: TId) => void;
+
   onCreateFolder: (folder: IRequestFolder) => void;
 }
 
@@ -205,13 +207,9 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     }));
   },
   updateItem: () => {
-    const {
-      context,
-      onUpdateItem,
-      runtime: { activePlayground },
-      playgrounds,
-    } = get();
-    const item = playgrounds[activePlayground].emitter;
+    const { context, onUpdateItem, getPlayground } = get();
+    const plg = getPlayground();
+    const item = plg.emitter;
     const _item = {
       name: item.name,
       value: item.value,
@@ -255,6 +253,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         },
       });
     }
+    state.checkPlaygroundEquality();
   },
 
   deleteItem: (id: TId) => {
@@ -274,7 +273,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   onDeleteItem: (id: TId) => {
     set((s) => {
       const items = s.collection.items.filter((i) => i.__ref.id != id);
-      s.collection.tdpInstance?.delete(id);
+      s.collection.tdpInstance?.deleteItem(id);
       return {
         collection: {
           ...s.collection,
@@ -337,15 +336,32 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   },
 
   deleteFolder: (id: TId) => {
+    const {
+      context,
+      onDeleteFolder,
+      collection: { folders },
+    } = get();
+    const folder = folders.find((i) => i.__ref.id == id);
+    if (!folder) return;
+    const requestId = folder.__ref.requestId;
+    context.request.deleteRequestFolder(requestId, id).then((res) => {
+      console.log(res, 'delete request folder...');
+      onDeleteFolder(id);
+    });
+  },
+  onDeleteFolder: (id: TId) => {
     set((s) => {
       const folders = s.collection.folders.filter((f) => f.__ref.id != id);
+      s.collection.tdpInstance?.deleteItem(id);
       return {
         collection: {
           ...s.collection,
-          ...folders,
+          folders,
+          __manualUpdates: ++s.collection.__manualUpdates,
         },
       };
     });
+    //TODO: if any of the messages belonging tot he folder is opened in playground then reset the playground
   },
 });
 
