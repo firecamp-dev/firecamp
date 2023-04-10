@@ -1,12 +1,13 @@
 import { nanoid } from 'nanoid';
+import equal from 'react-fast-compare';
 import _deepClone from 'lodash/clone';
 import { IExecutorInterface } from '@firecamp/socket.io-executor/dist/esm';
 import { _object } from '@firecamp/utils';
 import {
+  TId,
   EArgumentBodyType,
   ISocketIOEmitter,
   ISocketIOListener,
-  TId,
 } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { InitPlayground } from '../../constants';
@@ -20,7 +21,8 @@ interface IPlayground {
     event: string;
   };
   emitter: ISocketIOEmitter;
-  selectedCollectionEmitter: TId;
+  playgroundHasChanges: boolean;
+  selectedEmitterId: TId;
   executor?: IExecutorInterface;
   activeListeners: TId[];
   socketId?: string;
@@ -36,6 +38,8 @@ interface IPlaygroundSlice {
 
   getPlayground: () => IPlayground;
   setPlgExecutor: (executor: any) => void;
+  openEmitterInPlayground: (emitterId: TId) => void;
+
   //arguments
   selectPlgArgTab: (index: number) => void;
   addPlgArgTab: () => void;
@@ -47,9 +51,9 @@ interface IPlaygroundSlice {
 
   changePlaygroundConnectionState: (connectionState: EConnectionState) => void;
   changePlaygroundLogFilters: (updates: { type: string }) => void;
+  checkPlaygroundEquality: () => void;
   resetPlaygroundEmitter: () => void;
 
-  setSelectedCollectionEmitter: (emitterId: TId | string) => void;
   deleteExecutor: () => void;
 
   addListener: (listener: ISocketIOListener) => void;
@@ -71,7 +75,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       runtime: { activePlayground },
       playgrounds,
     } = state;
-    return playgrounds[activePlayground];
+    return { ...playgrounds[activePlayground] };
   },
   setPlgExecutor: (executor: any) => {
     const conId = get().getActiveConnectionId();
@@ -86,10 +90,61 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     }));
   },
 
+  openEmitterInPlayground: (emitterId: TId) => {
+    const {
+      context,
+      runtime: { activePlayground: connectionId },
+      collection: { items },
+      getPlayground,
+      changePlaygroundTab,
+    } = get();
+
+    //@ts-ignore TODO: fix type here later
+    const item: ISocketIOEmitter = items.find((i) => i.__ref.id == emitterId);
+    const playground = getPlayground();
+    if (!playground) return;
+
+    const openEmitterInPlg = () => {
+      set((s) => ({
+        playgrounds: {
+          ...s.playgrounds,
+          [connectionId]: {
+            ...playground,
+            emitter: item,
+            playgroundHasChanges: false,
+            selectedEmitterId: emitterId,
+          },
+        },
+      }));
+      changePlaygroundTab(connectionId, {
+        __meta: {
+          isSaved: true,
+          hasChange: false,
+        },
+      });
+    };
+    if (!playground.playgroundHasChanges) {
+      openEmitterInPlg();
+      return;
+    }
+
+    context.window
+      .confirm({
+        title:
+          'The current emitter has unsaved changes. Do you want to continue without saving them?',
+        texts: {
+          btnConfirm: 'Yes, open it.',
+        },
+      })
+      .then((s) => {
+        openEmitterInPlg();
+      });
+  },
+
   // emitter and arguments
   selectPlgArgTab: (index: number) => {
     set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
+      const plg = s.getPlayground();
       return {
         playgrounds: {
           ...s.playgrounds,
@@ -103,86 +158,104 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     });
   },
   addPlgArgTab: () => {
-    set((s) => {
-      const { activePlayground } = s.runtime;
-      const plg = s.playgrounds[activePlayground];
-      if (!plg.emitter.value?.length) plg.emitter.value = [];
-      plg.emitter.value = [
-        ...plg.emitter.value,
-        {
-          body: '',
-          __meta: {
-            type: EArgumentBodyType.Text,
-          },
+    const state = get();
+    const { activePlayground } = state.runtime;
+    const plg = state.getPlayground();
+    if (!plg.emitter.value?.length) plg.emitter.value = [];
+    const value = [
+      ...plg.emitter.value,
+      {
+        body: '',
+        __meta: {
+          type: EArgumentBodyType.Text,
         },
-      ];
-      // console.log(plg.emitter.payload, 'emitter.payload ...555');
-      return {
-        playgrounds: {
-          ...s.playgrounds,
-          [activePlayground]: {
-            ...plg,
-            activeArgIndex: plg.emitter.value.length - 1,
-          },
+      },
+    ];
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [activePlayground]: {
+          ...plg,
+          emitter: { ...plg.emitter, value },
+          activeArgIndex: plg.emitter.value.length - 1,
         },
-        __manualUpdates: ++s.__manualUpdates,
-      };
-    });
+      },
+      __manualUpdates: ++s.__manualUpdates,
+    }));
+    state.checkPlaygroundEquality();
   },
   removePlgArgTab: (index: number) => {
     if (index == 0) return;
+    const state = get();
+    const { activePlayground } = state.runtime;
+    const plg = state.getPlayground();
+    if (!plg.emitter.value?.length) plg.emitter.value = [];
+    const value = [
+      ...plg.emitter.value.slice(0, index),
+      ...plg.emitter.value.slice(index + 1),
+    ];
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [activePlayground]: {
+          ...plg,
+          emitter: { ...plg.emitter, value },
+          activeArgIndex: index - 1,
+        },
+      },
+      __manualUpdates: ++s.__manualUpdates,
+    }));
+    state.checkPlaygroundEquality();
+  },
+  changePlgArgType: (type: EArgumentBodyType) => {
+    const state = get();
+    const plg = state.getPlayground();
+    const { activeArgIndex } = plg;
+    const value = plg.emitter.value.map((v, i) => {
+      if (i == activeArgIndex) {
+        return { ...v, __meta: { ...v.__meta, type } };
+      }
+      return v;
+    });
     set((s) => {
-      const { activePlayground } = s.runtime;
-      const plg = s.playgrounds[activePlayground];
-      if (!plg.emitter.value?.length) plg.emitter.value = [];
-      plg.emitter.value = [
-        ...plg.emitter.value.slice(0, index),
-        ...plg.emitter.value.slice(index + 1),
-      ];
-
       return {
         playgrounds: {
           ...s.playgrounds,
-          [activePlayground]: {
+          [s.runtime.activePlayground]: {
             ...plg,
-            activeArgIndex: index - 1,
+            emitter: { ...plg.emitter, value },
           },
         },
         __manualUpdates: ++s.__manualUpdates,
       };
     });
   },
-  changePlgArgType: (type: EArgumentBodyType) => {
-    set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
-      const { activeArgIndex } = plg;
-      plg.emitter.value[activeArgIndex].__meta.type = type;
-      return {
-        playgrounds: {
-          ...s.playgrounds,
-          [s.runtime.activePlayground]: plg,
-        },
-        __manualUpdates: ++s.__manualUpdates,
-      };
+  changePlgArgValue: (body: string | number | boolean) => {
+    const state = get();
+    const plg = state.getPlayground();
+    const { activeArgIndex } = plg;
+    const value = plg.emitter.value.map((v, i) => {
+      if (i == activeArgIndex) {
+        return { ...v, body };
+      }
+      return v;
     });
-  },
-  changePlgArgValue: (value: string | number | boolean) => {
-    set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
-      const { activeArgIndex } = plg;
-      plg.emitter.value[activeArgIndex].body = value;
-      return {
-        playgrounds: {
-          ...s.playgrounds,
-          [s.runtime.activePlayground]: plg,
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [s.runtime.activePlayground]: {
+          ...plg,
+          emitter: { ...plg.emitter, value },
         },
-        __manualUpdates: ++s.__manualUpdates,
-      };
-    });
+      },
+      __manualUpdates: ++s.__manualUpdates,
+    }));
+    state.checkPlaygroundEquality();
   },
   changePlgEmitterName: (name: string) => {
+    const state = get();
+    const plg = state.getPlayground();
     set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
       return {
         playgrounds: {
           ...s.playgrounds,
@@ -197,19 +270,22 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         __manualUpdates: ++s.__manualUpdates,
       };
     });
+    state.checkPlaygroundEquality();
   },
   changePlgEmitterAck: (ack: boolean) => {
-    set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
-      plg.emitter.__meta.ack = ack;
-      return {
-        playgrounds: {
-          ...s.playgrounds,
-          [s.runtime.activePlayground]: plg,
+    const state = get();
+    const plg = state.getPlayground();
+    set((s) => ({
+      playgrounds: {
+        ...s.playgrounds,
+        [s.runtime.activePlayground]: {
+          ...plg,
+          emitter: { ...plg.emitter, __meta: { ...plg.emitter.__meta, ack } },
         },
-        __manualUpdates: ++s.__manualUpdates,
-      };
-    });
+      },
+      __manualUpdates: ++s.__manualUpdates,
+    }));
+    state.checkPlaygroundEquality();
   },
 
   // connection and logs
@@ -242,34 +318,63 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
       },
     }));
   },
+  checkPlaygroundEquality: () => {
+    const {
+      getPlayground,
+      collection: { items },
+    } = get();
+    const plg = getPlayground();
+    const originalEmitter =
+      items.find((i) => i.__ref.id == plg.emitter.__ref.id) ||
+      (_deepClone(InitPlayground) as ISocketIOEmitter);
 
-  //emitter
-  resetPlaygroundEmitter: () => {
-    set((s) => {
-      const plg = s.playgrounds[s.runtime.activePlayground];
-      plg.emitter = _deepClone(InitPlayground) as ISocketIOEmitter;
-      return {
-        playgrounds: {
-          ...s.playgrounds,
-          [s.runtime.activePlayground]: plg,
-        },
-      };
-    });
-  },
-  setSelectedCollectionEmitter: (emitterId: TId) => {
-    const state = get();
-    const playground = state.getPlayground();
-    const conId = state.getActiveConnectionId();
-
+    // console.log(originalEmitter, plg.emitter, 'comparing...');
+    const hasChanges = !equal(originalEmitter, plg.emitter);
     set((s) => ({
       playgrounds: {
-        ...s.playgrounds,
-        [conId]: {
-          ...playground,
-          selectedCollectionEmitter: emitterId,
+        [s.runtime.activePlayground]: {
+          ...s.playgrounds[s.runtime.activePlayground],
+          playgroundHasChanges: hasChanges,
         },
       },
     }));
+  },
+
+  //emitter
+  resetPlaygroundEmitter: () => {
+    const resetPlg = () => {
+      set((s) => {
+        const { activePlayground } = s.runtime;
+        return {
+          playgrounds: {
+            ...s.playgrounds,
+            [activePlayground]: {
+              ...s.playgrounds[activePlayground],
+              emitter: _deepClone(InitPlayground) as ISocketIOEmitter,
+              playgroundHasChanges: false,
+              selectedEmitterId: '',
+            },
+          },
+        };
+      });
+    };
+
+    const state = get();
+    const plg = state.getPlayground();
+    if (!plg.playgroundHasChanges) resetPlg();
+    else {
+      state.context.window
+        .confirm({
+          title:
+            'The current emitter has unsaved changes. Do you want to continue without saving them?',
+          texts: {
+            btnConfirm: 'Yes, reset it.',
+          },
+        })
+        .then((s) => {
+          resetPlg();
+        });
+    }
   },
 
   deleteExecutor: () => {

@@ -117,7 +117,7 @@ export const InitArg = {
 };
 export const InitLog = {
   title: '',
-  message: '',
+  value: [{ value: '', type: EArgumentBodyType.Text }],
   __meta: {
     event: '',
     timestamp: '',

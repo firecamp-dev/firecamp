@@ -144,7 +144,7 @@ export const initialiseStoreFromRequest = (
           event: '',
         },
         emitter: InitPlayground,
-        selectedCollectionEmitter: '',
+        selectedEmitterId: '',
         activeListeners: [],
         activeArgIndex: 0,
       },

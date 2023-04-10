@@ -77,7 +77,7 @@ const Table: FC<ITable<any>> = ({
 
   const _columns = useMemo(() => {
     if (options?.hiddenColumns?.length) {
-      return columns.filter((c) => !options.hiddenColumns.includes(c.key));
+      return columns.filter((c) => !options?.hiddenColumns?.includes(c.key));
     }
     return columns;
   }, [columns, options]);

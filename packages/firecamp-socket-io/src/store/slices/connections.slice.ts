@@ -1,4 +1,4 @@
-import { ISocketIOConnection, TId, IQueryParam } from '@firecamp/types';
+import { ISocketIOConnection, IQueryParam } from '@firecamp/types';
 import isEqual from 'react-fast-compare';
 import _url from '@firecamp/url';
 import { TStoreSlice } from '../store.type';

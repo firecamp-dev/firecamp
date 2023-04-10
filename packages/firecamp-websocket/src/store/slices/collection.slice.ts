@@ -158,7 +158,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       name,
       value: playground.message.value,
       __meta: {
-        type: playground.message.__meta.type,
+        ...playground.message.__meta,
       },
       __ref: {
         id: nanoid(),
@@ -290,7 +290,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   getFolder: (id: TId) => {
     const state = get();
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
-    return folder as IRequestFolder;
+    return folder;
   },
   prepareCreateFolderPayload: (name: string, parentFolderId?: TId) => {
     const state = get();
@@ -354,7 +354,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   onDeleteFolder: (id: TId) => {
     set((s) => {
       const folders = s.collection.folders.filter((f) => f.__ref.id != id);
-      s.collection.tdpInstance?.delete(id);
+      s.collection.tdpInstance?.deleteItem(id);
       return {
         collection: {
           ...s.collection,

@@ -40,12 +40,10 @@ const EmitterPlayground = () => {
   );
   const { emitter: plgEmitter, activeArgIndex = 0 } = playground;
 
-  console.log('this is the payground');
-
+  console.log('this is the playground');
   return (
     <Container>
       <BodyControls
-        // emitter={plgEmitter}
         // isSaveEmitterPopoverOpen={true}
         // tabData={{ id: 123 }}
         // activeType={{ id: 'text' }}
