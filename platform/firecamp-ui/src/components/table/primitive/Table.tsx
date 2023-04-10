@@ -14,6 +14,7 @@ import './table.sass';
 
 const defaultOptions: ITableOptions = {
   disabledColumns: [],
+  hiddenColumns: [],
   allowRowRemove: true,
   allowRowAdd: true,
   allowSort: true,

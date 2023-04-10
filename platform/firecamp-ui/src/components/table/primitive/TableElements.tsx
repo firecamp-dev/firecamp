@@ -116,7 +116,7 @@ const Th: FC<TTh> = ({
   style = {},
   additionalProp = {},
 }) => {
-  console.log(`table-header-`, className)
+
   return (
     <th
       className={cx('p-1 border border-appBorder', className)}
