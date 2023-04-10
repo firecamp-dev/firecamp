@@ -66,7 +66,7 @@ const createStore = (initialState: IStoreState) =>
       ),
       ...createRuntimeSlice(set, get, initialState.runtime),
       ...createCollectionSlice(set, get, initialState.collection),
-      ...createPlaygroundsSlice(set, get, initialState.playgrounds),
+      ...createPlaygroundsSlice(set, get, initialState.playground),
       ...createLogsSlice(set, get),
       ...createHandleConnectionExecutor(set, get),
       ...createUiSlice(set, get, initialState.ui),

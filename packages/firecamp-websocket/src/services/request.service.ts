@@ -45,7 +45,6 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
     //ws url will only have { raw: ""} but in ui we need actual url object IUrl
     //@ts-ignore
     url: { raw: '', queryParams: [], pathParams: [] },
-    connections: [],
     __meta: {
       name: '',
       type: ERequestTypes.WebSocket,
@@ -56,7 +55,7 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
 
   const {
     url,
-    connections = _nr.connections,
+    connection = _cloneDeep(DefaultConnectionState),
     config = {},
     __meta = _nr.__meta,
     __ref = _nr.__ref,
@@ -85,16 +84,10 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   _nr.__ref.updatedBy = __ref.updatedBy || '';
 
   // normalize connections
-  _nr.connections = [];
-  _nr.connections = connections.map(
-    (connection: IWebSocketConnection) =>
-      _object.mergeDeep(
-        _cloneDeep(DefaultConnectionState),
-        connection
-      ) as IWebSocketConnection
-  );
-  if (!_nr.connections?.length)
-    _nr.connections = [_cloneDeep(DefaultConnectionState)];
+  _nr.connection = _object.mergeDeep(
+    _cloneDeep(DefaultConnectionState),
+    connection
+  ) as IWebSocketConnection;
 
   // normalize config
   _nr.config = _object.mergeDeep(_cloneDeep(DefaultConfigState), config || {});
@@ -112,42 +105,23 @@ export const initialiseStoreFromRequest = (
   const requestPanel = prepareUIRequestPanelState(request);
 
   const defaultConnection =
-    request.connections?.find((c) => c.isDefault === true) ||
-    _cloneDeep(DefaultConnectionState);
+    request.connection || _cloneDeep(DefaultConnectionState);
   const playgroundId = defaultConnection.id;
 
   const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
-  const displayUrl = url.raw;
-  // console.log(url, displayUrl, 'url...');
 
   return {
-    request,
-    playgrounds: {
-      // add logic for init playgrounds by connections
-      [playgroundId]: {
-        id: playgroundId,
-        connectionState: EConnectionState.Ideal,
-        logFilters: {
-          type: '',
-        },
-        message: initialPlaygroundMessage,
-        selectedMessageId: '',
+    request: { ...request, url },
+    playground: {
+      id: playgroundId,
+      connectionState: EConnectionState.Ideal,
+      logFilters: {
+        type: '',
       },
+      message: initialPlaygroundMessage,
+      selectedMessageId: '',
     },
     runtime: {
-      displayUrl,
-      activePlayground: playgroundId,
-      playgroundTabs: request.connections.map((c) => {
-        return {
-          id: c.id,
-          name: c.name,
-          __meta: {
-            isSaved: true,
-            hasChange: false,
-          },
-        };
-      }),
-      _dnp: {},
       isRequestSaved: !!request.__ref.collectionId,
       tabId: __meta?.tabId,
       requestPath: __meta?.requestPath,
@@ -160,8 +134,6 @@ export const initialiseStoreFromRequest = (
       },
       isFetchingRequest: false,
     },
-    logs: {
-      [playgroundId]: [],
-    },
+    logs: [],
   };
 };

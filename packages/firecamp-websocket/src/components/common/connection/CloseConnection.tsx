@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Button, Input, Popover } from '@firecamp/ui';
 
 const CloseConnection = ({
+  id,
   buttonId = 'close',
-  activePlayground = '',
   closeManually = true,
   onClose,
   sm,
@@ -59,7 +59,7 @@ const CloseConnection = ({
     const _status = status.trim();
     if (status.length && !hasValidStatus) return;
 
-    onClose(activePlayground, Number(_status), reason);
+    onClose(Number(_status), reason);
     // this._toggleCloseDD()
     setState({
       status: '',
@@ -75,7 +75,7 @@ const CloseConnection = ({
     if (e) e.preventDefault();
   };
 
-  const popoverId = `close-${activePlayground}`;
+  const popoverId = `close-${id}`;
   // console.log(`hasValidStatus`, hasValidStatus, isStatusDirty);
   return (
     <Popover

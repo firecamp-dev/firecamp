@@ -8,26 +8,23 @@ import { IStore, useStore } from '../../../store';
 const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
   if (!props.hasOwnProperty('sm')) props.xs = true;
   const { sm, xs } = props;
-  const { connectionState, activePlayground, connect, disconnect } =
-    useStore(
-      (s: IStore) => ({
-        connectionState:
-          s.playgrounds[s.runtime.activePlayground]?.connectionState,
-        playgrounds: s.playgrounds,
-        activePlayground: s.runtime.activePlayground,
-        connect: s.connect,
-        disconnect: s.disconnect,
-      }),
-      shallow
-    );
+  const { tabId, connectionState, connect, disconnect } = useStore(
+    (s: IStore) => ({
+      tabId: s.runtime.tabId,
+      connectionState: s.playground.connectionState,
+      connect: s.connect,
+      disconnect: s.disconnect,
+    }),
+    shallow
+  );
 
   const _renderConnectionButton = () => {
     switch (connectionState) {
       case EConnectionState.Open:
         return (
           <CloseConnection
-            buttonId={`close-connection-${activePlayground}`}
-            activePlayground={activePlayground}
+            buttonId={`close-connection-${tabId}`}
+            id={tabId}
             onClose={disconnect}
             sm={sm}
             xs={xs}
@@ -39,12 +36,12 @@ const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
           <Button
             text="Connecting"
             onClick={(_) => {
-              disconnect(activePlayground);
+              disconnect();
             }}
+            iconLeft
             primary
             sm={sm}
             xs={xs}
-            iconLeft
           />
         );
         break;
@@ -55,7 +52,7 @@ const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
         return (
           <Button
             text="Disconnected"
-            onClick={(_) => connect(activePlayground)}
+            onClick={(_) => connect()}
             primary
             sm={sm}
             xs={xs}
@@ -67,11 +64,11 @@ const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
         return (
           <Button
             text="Connect"
-            onClick={(_) => connect(activePlayground)}
+            onClick={(_) => connect()}
+            iconLeft
             primary
             sm={sm}
             xs={xs}
-            iconLeft
           />
         );
     }

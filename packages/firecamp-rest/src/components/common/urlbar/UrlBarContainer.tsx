@@ -6,8 +6,9 @@ import _url from '@firecamp/url';
 import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
-const UrlBarContainer = ({ tabId }) => {
+const UrlBarContainer = () => {
   const {
+    tabId,
     url,
     method,
     __meta,
@@ -23,6 +24,7 @@ const UrlBarContainer = ({ tabId }) => {
     save,
   } = useStore(
     (s: IStore) => ({
+      tabId: s.runtime.tabId,
       url: s.request.url,
       method: s.request.method,
       __meta: s.request.__meta,

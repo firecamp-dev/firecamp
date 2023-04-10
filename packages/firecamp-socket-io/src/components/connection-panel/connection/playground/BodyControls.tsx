@@ -41,7 +41,7 @@ const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
           </div>
         </StatusBar.PrimaryRegion>
         <StatusBar.SecondaryRegion>
-          {/* <ShortcutsInfo tabId={tabId} /> */}
+          {/* <ShortcutsInfo tidabId={tabId} /> */}
         </StatusBar.SecondaryRegion>
       </StatusBar>
       <TabHeader className="padding-small height-small collection-path-wrapper">

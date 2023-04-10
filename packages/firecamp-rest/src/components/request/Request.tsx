@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import { VscCode } from '@react-icons/all-files/vsc/VscCode';
 import shallow from 'zustand/shallow';
 import { useHotkeys } from 'react-hotkeys-hook';
 import {
@@ -8,7 +7,6 @@ import {
 } from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
 import {
   AvailableOnElectron,
-  Button,
   Column,
   Container,
   ScriptTab,
@@ -25,9 +23,10 @@ import ConfigTab from './tabs/ConfigTab';
 import { IStore, useStore } from '../../store';
 import { ERequestPanelTabs } from '../../types';
 
-const Request = ({ tabId }) => {
+const Request = () => {
   useHotkeys(`cmd+h`, (k, e) => console.log('This is the cmd+h', k, e));
   const {
+    tabId,
     preScripts,
     postScripts,
     requestPanel,
@@ -36,6 +35,7 @@ const Request = ({ tabId }) => {
     toggleOpenCodeSnippet,
   } = useStore(
     (s: IStore) => ({
+      tabId: s.runtime.tabId,
       preScripts: s.request.preScripts,
       postScripts: s.request.postScripts,
       requestPanel: s.ui.requestPanel,
@@ -45,6 +45,7 @@ const Request = ({ tabId }) => {
     }),
     shallow
   );
+  if (!tabId) return <></>;
   const { activeTab } = requestPanel;
   const tabs = useMemo(
     () => [
