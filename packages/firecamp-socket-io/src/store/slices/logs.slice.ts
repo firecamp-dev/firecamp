@@ -15,41 +15,20 @@ const emptyLog = {
   },
 };
 
-interface ILogs {
-  [key: TId]: ILog[];
-}
-
 interface ILogsSlice {
-  logs: ILogs;
+  logs: ILog[];
   addLog: (log: ILog) => void;
   addErrorLog: (message: string) => void;
   clearLogs: () => void;
 }
 
 const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
-  logs: {},
+  logs: [],
 
   addLog: (log: ILog) => {
-    // console.log({ log });
-    const state = get();
-    const conId = state.getActiveConnectionId();
-    const logs = state.logs;
-    if (conId in logs) {
-      const cLogs = logs[conId];
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [conId]: [...cLogs, { ...emptyLog, ...log }],
-        },
-      }));
-    } else {
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [conId]: [{ ...emptyLog, ...log }],
-        },
-      }));
-    }
+    set((s) => ({
+      logs: [...s.logs, { ...emptyLog, ...log }],
+    }));
   },
   addErrorLog: (message: string) => {
     const state = get();
@@ -60,25 +39,15 @@ const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
         ...emptyLog.__meta,
         type: ELogTypes.System,
         color: ELogColors.Danger,
-        event: '-'
+        event: '-',
       },
       __ref: { id: '' },
     };
     state.addLog(log);
   },
   clearLogs: () => {
-    const state = get();
-    const conId = state.getActiveConnectionId();
-    const logs = state.logs;
-    if (conId in logs) {
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [conId]: [],
-        },
-      }));
-    }
+    set((s) => ({ logs: [] }));
   },
 });
 
-export { emptyLog, ILogs, ILogsSlice, createLogsSlice };
+export { emptyLog, ILog, ILogsSlice, createLogsSlice };

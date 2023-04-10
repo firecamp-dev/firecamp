@@ -10,11 +10,11 @@ import {
   ICollection,
   ICollectionSlice,
   // playground
-  IPlaygrounds,
+  IPlayground,
   IPlaygroundSlice,
   // connections logs
   ILogsSlice,
-  ILogs,
+  ILog,
   // req changes
   IRequestChangeStateSlice,
   // execute slice
@@ -28,8 +28,8 @@ interface ISocket {
   request?: ISocketIO;
   collection?: ICollection;
   runtime?: IRuntime;
-  playgrounds?: IPlaygrounds;
-  logs?: ILogs;
+  playground?: IPlayground;
+  logs?: ILog[];
   ui?: IUi;
 }
 interface IStore

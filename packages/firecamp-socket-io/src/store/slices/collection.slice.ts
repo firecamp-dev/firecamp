@@ -142,10 +142,9 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   prepareCreateItemPayload: (label, folderId?: TId) => {
     const state = get();
     const {
-      playgrounds,
-      runtime: { activePlayground },
+      playground: { emitter },
     } = state;
-    const emitter = playgrounds[activePlayground]?.emitter;
+
     const _item: ISocketIOEmitter = {
       name: emitter.name,
       value: emitter.value,
@@ -207,9 +206,11 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     }));
   },
   updateItem: () => {
-    const { context, onUpdateItem, getPlayground } = get();
-    const plg = getPlayground();
-    const item = plg.emitter;
+    const {
+      context,
+      onUpdateItem,
+      playground: { emitter: item },
+    } = get();
     const _item = {
       name: item.name,
       value: item.value,
@@ -238,21 +239,6 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         __manualUpdates: ++s.collection.__manualUpdates,
       },
     }));
-
-    const {
-      playgrounds,
-      runtime: { activePlayground },
-      changePlaygroundTab,
-    } = state;
-    const emitter = playgrounds[activePlayground]?.emitter;
-    if (emitter?.__ref.id == item.__ref.id) {
-      changePlaygroundTab(activePlayground, {
-        __meta: {
-          isSaved: true,
-          hasChange: false,
-        },
-      });
-    }
     state.checkPlaygroundEquality();
   },
 

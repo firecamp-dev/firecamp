@@ -8,17 +8,17 @@ import {
   TabHeader,
 } from '@firecamp/ui';
 import { EditorCommands } from '../../../../constants';
-import { IStore, useStoreApi } from '../../../../store';
+import { IStore, useStore, useStoreApi } from '../../../../store';
 
 const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
+  const plg = useStore((s: IStore) => s.playground);
   const {
     promptSaveItem,
     updateItem,
     getItemPath,
-    getPlayground,
     resetPlaygroundEmitter,
   } = useStoreApi().getState() as IStore;
-  const plg = getPlayground();
+
   const emitterPath = useMemo(() => {
     return getItemPath(plg.selectedEmitterId);
   }, [plg.selectedEmitterId]);
@@ -64,7 +64,7 @@ const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
             <Button
               id={`btn-${tabId}`}
               key="save_button"
-              text={isEmitterSaved?'Save Emitter Changes': 'Save Emitter'}
+              text={isEmitterSaved ? 'Save Emitter Changes' : 'Save Emitter'}
               onClick={saveEmitter}
               secondary
               xs

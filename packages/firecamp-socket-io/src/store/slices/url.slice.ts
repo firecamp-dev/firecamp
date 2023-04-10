@@ -13,19 +13,7 @@ const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
   changeUrl: (urlObj: IUrl) => {
     const state = get();
     const url = { raw: getPathFromUrl(urlObj.raw) };
-    set((s) => {
-      const { activePlayground } = s.runtime;
-      const connections = s.request.connections.map((c) => {
-        if (c.id == activePlayground) {
-          c.queryParams = urlObj.queryParams;
-        }
-        return c;
-      });
-      return {
-        request: { ...s.request, url, connections },
-        runtime: { ...s.runtime, displayUrl: urlObj.raw },
-      };
-    });
+    set((s) => ({ request: { ...s.request, url } }));
     state.equalityChecker({ url });
   },
   changeQueryParams: (queryParams: IQueryParam[]) => {
