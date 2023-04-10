@@ -12,7 +12,7 @@ import {
   // playground
   IPlayground,
   IPlaygroundSlice,
-  // connections logs
+  // connection logs
   ILogsSlice,
   ILog,
   // req changes

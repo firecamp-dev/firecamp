@@ -56,7 +56,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
     for (let key in request) {
       switch (key) {
         case EReqChangeRootKeys.config:
-        case EReqChangeRootKeys.connections:
+        case EReqChangeRootKeys.connection:
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {

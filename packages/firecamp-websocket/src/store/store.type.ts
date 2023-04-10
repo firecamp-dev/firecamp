@@ -17,7 +17,7 @@ import {
   IPlayground,
   IPlaygroundSlice,
 
-  // connections logs
+  // connection logs
   ILogsSlice,
   ILog,
 

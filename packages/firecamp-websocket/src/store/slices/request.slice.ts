@@ -16,7 +16,7 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
 
 const requestSliceKeys: string[] = [
   'url',
-  'connections',
+  'connection',
   'config',
   '__meta',
   '__ref',

@@ -14,7 +14,7 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   save: (tabId: TId) => void;
 }
 
-const requestSliceKeys = ['url', 'connections', 'config', '__meta', '__ref'];
+const requestSliceKeys = ['url', 'connection', 'config', '__meta', '__ref'];
 
 const createRequestSlice: TStoreSlice<IRequestSlice> = (
   set,

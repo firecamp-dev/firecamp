@@ -83,7 +83,7 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   _nr.__ref.createdBy = __ref.createdBy || '';
   _nr.__ref.updatedBy = __ref.updatedBy || '';
 
-  // normalize connections
+  // normalize connection
   _nr.connection = _object.mergeDeep(
     _cloneDeep(DefaultConnectionState),
     connection

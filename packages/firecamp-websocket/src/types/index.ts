@@ -74,7 +74,7 @@ export enum EWebsocketConfigKeys {
 // request changes
 export enum EReqChangeRootKeys {
   config = 'config',
-  connections = 'connections', //queryParams and headers will be in connection
+  connection = 'connection', //queryParams and headers will be in connection
 }
 
 export enum EReqChangeMetaKeys {

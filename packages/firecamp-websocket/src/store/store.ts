@@ -19,7 +19,7 @@ import {
   // playground
   createPlaygroundsSlice,
 
-  // connections logs
+  // connection logs
   createLogsSlice,
 
   // request changes
