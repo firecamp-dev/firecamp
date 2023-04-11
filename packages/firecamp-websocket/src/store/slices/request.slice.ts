@@ -12,6 +12,9 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   changeMeta: (key: string, value: any) => void;
   changeConfig: (key: string, value: any) => void;
   save: (tabId: TId) => void;
+
+  /** prepare the request path after request save (add/update) */
+  onRequestSave: (requestId: TId) => void;
 }
 
 const requestSliceKeys: string[] = [
@@ -60,8 +63,9 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       state.context.request.save(_request, tabId, true).then(() => {
         //reset the rcs state
         state.disposeRCS();
+        state.onRequestSave(_request.__ref.id);
       });
-      // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
+      // TODO: // state.context.request.subscribeChanges(_request.__ref.id, fn);
     } else {
       const _request = state.preparePayloadForUpdateRequest();
       if (!_request) {
@@ -73,8 +77,22 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       state.context.request.save(_request, tabId).then(() => {
         //reset the rcs state
         state.disposeRCS();
+        state.onRequestSave(_request.__ref.id);
       });
     }
+  },
+  onRequestSave: (requestId) => {
+    const state = get();
+    const requestPath = requestId
+      ? state.context?.request.getPath(requestId)
+      : { path: '', items: [] };
+
+    set((s) => ({
+      runtime: {
+        ...s.runtime,
+        requestPath,
+      },
+    }));
   },
 });
 
