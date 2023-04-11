@@ -1,11 +1,8 @@
 import isEqual from 'react-fast-compare';
-import { IQueryParam } from '@firecamp/types';
-import _url from '@firecamp/url';
 import { TStoreSlice } from '../store.type';
 
 interface IConnectionsSlice {
   updateConnection: (key: string, value: any) => void;
-  changeConQueryParams: (qps: IQueryParam[]) => void;
 }
 
 const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
@@ -40,20 +37,6 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
       request: {
         ...s.request,
         connection: { ...updatedConnection },
-      },
-    }));
-  },
-
-  changeConQueryParams: (qps: IQueryParam[]) => {
-    const state = get();
-    const { connection } = state.request;
-    const newUrl = _url.updateByQuery(state.request.url, qps);
-
-    set((s) => ({
-      request: {
-        ...s.request,
-        url: newUrl,
-        connection: { ...connection, queryParams: qps },
       },
     }));
   },

@@ -34,64 +34,21 @@ const bodyTabs = [
 ];
 
 const ConnectionPanel = () => {
-  const { tabId, connection, updateConnection, changeConQueryParams } =
-    useStore(
-      (s: IStore) => ({
-        tabId: s.runtime.tabId,
-        connection: s.request.connection,
-        updateConnection: s.updateConnection,
-        changeConQueryParams: s.changeConQueryParams,
-      }),
-      shallow
-    );
+  const tabId = useStore((s: IStore) => s.runtime.tabId, shallow);
   const [activeBodyTab, setActiveBodyTab] = useState('playground');
-
-  const _onChangeConfig = (key, value) => {
-    updateConnection(key, value);
-  };
-
-  const _onChangeHeaders = (headers = []) => {
-    updateConnection('headers', headers);
-  };
-
-  const _onChangeAuth = (auth = []) => {
-    updateConnection('auth', auth);
-  };
 
   const _renderBody = () => {
     switch (activeBodyTab) {
       case 'playground':
         return <PlaygroundTab key={tabId} />;
       case 'config':
-        return (
-          <ConfigTab
-            key={tabId}
-            connection={connection || {}}
-            onUpdate={_onChangeConfig}
-          />
-        );
+        return <ConfigTab id={tabId} />;
       case 'headers':
-        return (
-          <HeadersTab
-            key={tabId}
-            headers={connection?.headers || []}
-            onUpdate={_onChangeHeaders}
-          />
-        );
+        return <HeadersTab id={tabId} />;
       case 'params':
-        return (
-          <ParamsTab
-            params={connection?.queryParams || []}
-            onUpdate={(qps) => changeConQueryParams(qps)}
-          />
-        );
+        return <ParamsTab id={tabId} />;
       case 'auth':
-        return (
-          <AuthTab
-            auth={connection?.auth || []}
-            onUpdate={_onChangeAuth}
-          />
-        );
+        return <AuthTab id={tabId} />;
       default:
         return <PlaygroundTab />;
     }

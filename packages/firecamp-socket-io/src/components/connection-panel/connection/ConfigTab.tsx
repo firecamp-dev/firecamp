@@ -1,16 +1,13 @@
-import {
-  Container,
-  CheckboxGroup,
-  CheckboxInGrid,
-  Input,
-} from '@firecamp/ui';
+import { Container, CheckboxGroup, CheckboxInGrid, Input } from '@firecamp/ui';
+import { IStore, useStore } from '../../../store';
+import shallow from 'zustand/shallow';
 
 enum EInputTypes {
-  Text= 'text',
-  Boolean= 'boolean',
-  Number= 'number',
-  Dropdown= 'dropdown',
-};
+  Text = 'text',
+  Boolean = 'boolean',
+  Number = 'number',
+  Dropdown = 'dropdown',
+}
 
 /**
  * "forceNew": false,
@@ -61,11 +58,18 @@ const connectionInputs = [
   },
 ];
 
-const ConfigTab = ({
-  connection = {},
-  requestConfig = {},
-  onUpdate = (key, value) => {},
-}) => {
+const ConfigTab = ({ id = '' }) => {
+  const { connection, updateConnection } = useStore(
+    (s: IStore) => ({
+      connection: s.request.connection,
+      updateConnection: s.updateConnection,
+    }),
+    shallow
+  );
+  const _onChange = (name, value) => {
+    if (!name) return;
+    updateConnection(name, value);
+  };
   const transportCheckBoxes = [
     {
       id: 'websocket',
@@ -86,14 +90,6 @@ const ConfigTab = ({
       disabled: false,
     },
   ];
-
-  const _onChange = (name, value) => {
-    if (!name) return;
-    // console.log(`name`, name, value);
-
-    onUpdate(name, value);
-  };
-
   const _renderElement = (element, index = 1) => {
     let {
       name,
@@ -153,11 +149,9 @@ const ConfigTab = ({
         return <span />;
     }
   };
-
   const _handleSubmit = (e) => {
     e && e.preventDefault();
   };
-
   const _handleTransportsCheckBox = (value = {}) => {
     let transports = Object.assign({}, connection['transports'] || {}, value);
     _onChange('transports', transports);
