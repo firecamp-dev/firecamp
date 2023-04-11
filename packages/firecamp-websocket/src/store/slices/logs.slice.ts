@@ -39,4 +39,4 @@ const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
   },
 });
 
-export { emptyLog, ILog, ILogsSlice, createLogsSlice };
+export { emptyLog, ILogsSlice, createLogsSlice };

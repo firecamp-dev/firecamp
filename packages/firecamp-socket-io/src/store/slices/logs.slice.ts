@@ -1,4 +1,4 @@
-import { EArgumentBodyType, TId } from '@firecamp/types';
+import { EArgumentBodyType } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
 import { ELogColors, ELogTypes } from '../../types';
 import { TStoreSlice } from '../store.type';
@@ -50,4 +50,4 @@ const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
   },
 });
 
-export { emptyLog, ILog, ILogsSlice, createLogsSlice };
+export { emptyLog, ILogsSlice, createLogsSlice };
