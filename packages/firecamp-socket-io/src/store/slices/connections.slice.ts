@@ -8,7 +8,7 @@ interface IConnectionsSlice {
 const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
   updateConnection: (key: string, value: any) => {
     const state = get();
-    console.log({ key, value });
+    // console.log({ key, value });
 
     //If connection id not provided
     if (!key) return;
@@ -39,6 +39,7 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
         connection: { ...updatedConnection },
       },
     }));
+    state.equalityChecker({ connection });
   },
 });
 

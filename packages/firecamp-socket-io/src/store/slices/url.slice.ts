@@ -21,7 +21,6 @@ const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
     const state = get();
     const { connection } = state.request;
     const newUrl = _url.updateByQuery(state.request.url, qps);
-    const url = { ...state.request.url, qps };
     set((s) => ({
       request: {
         ...s.request,
@@ -37,7 +36,7 @@ const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
         },
       },
     }));
-    state.equalityChecker({ url });
+    state.equalityChecker({ url: newUrl });
   },
 });
 

@@ -45,7 +45,7 @@ export enum EReqChangeConfigKeys {
 }
 
 export enum EReqChangeRootKeys {
-  headers = 'headers',
   config = 'config',
   listeners = 'listeners',
+  connection = 'connection',
 }
