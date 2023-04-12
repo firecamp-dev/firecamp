@@ -1,24 +1,87 @@
+import { useMemo } from 'react';
 import {
   Container,
   Button,
-  Input,
-  ConfirmationPopover,
   Popover,
   EPopoverPosition,
   StatusBar,
   TabHeader,
 } from '@firecamp/ui';
 import { EditorCommands } from '../../../../constants';
+import { IStore, useStore, useStoreApi } from '../../../../store';
 
-const BodyControls = ({
-  tabId = '',
-  path = '',
-  showClearPlaygroundButton = false,
-  addNewEmitter = () => { },
-}) => {
+const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
+  const plg = useStore((s: IStore) => s.playground);
+  const {
+    promptSaveItem,
+    updateItem,
+    getItemPath,
+    resetPlaygroundEmitter,
+  } = useStoreApi().getState() as IStore;
+
+  const emitterPath = useMemo(() => {
+    return getItemPath(plg.selectedEmitterId);
+  }, [plg.selectedEmitterId]);
+
+  const isEmitterSaved = !!plg.emitter.__ref.id;
+  const saveEmitter = () => {
+    if (isEmitterSaved) updateItem();
+    else promptSaveItem();
+  };
+
+  const showNewEmitterBtn = !!isEmitterSaved;
+  const showSaveEmitterBtn = plg.playgroundHasChanges;
+
+  return (
+    <Container.Header>
+      <StatusBar className="bg-statusBarBackground2 px-1">
+        <StatusBar.PrimaryRegion>
+          <div data-tip={path} className="collection-path">
+            {`./${emitterPath}`}
+          </div>
+        </StatusBar.PrimaryRegion>
+        <StatusBar.SecondaryRegion>
+          {/* <ShortcutsInfo tidabId={tabId} /> */}
+        </StatusBar.SecondaryRegion>
+      </StatusBar>
+      <TabHeader className="padding-small height-small collection-path-wrapper">
+        <TabHeader.Left></TabHeader.Left>
+        <TabHeader.Right>
+          {showNewEmitterBtn === true ? (
+            <Button
+              id={`reset-plg-emitter-${tabId}`}
+              key="new_msg_button"
+              text={'+ New Emitter'}
+              onClick={resetPlaygroundEmitter}
+              transparent
+              ghost
+              sm
+            />
+          ) : (
+            <></>
+          )}
+          {showSaveEmitterBtn ? (
+            <Button
+              id={`btn-${tabId}`}
+              key="save_button"
+              text={isEmitterSaved ? 'Save Emitter Changes' : 'Save Emitter'}
+              onClick={saveEmitter}
+              secondary
+              xs
+            />
+          ) : (
+            <></>
+          )}
+        </TabHeader.Right>
+      </TabHeader>
+    </Container.Header>
+  );
+};
+export default BodyControls;
+
+const ShortcutsInfo = ({ tabId }) => {
   const _renderKeyboardShortcutInfo = () => {
     // console.log(`showClearPlaygroundButton`,showClearPlaygroundButton)
-
     try {
       let OSName = '';
       if (navigator.appVersion.indexOf('Win') != -1) OSName = 'Windows';
@@ -36,17 +99,18 @@ const BodyControls = ({
                 {
                   return (
                     <div className="flex" key={i}>
-                      <div className="flex-1 pr-4 pl-2">{`${val.name || ''
-                        }`}</div>
-                      <div className="ml-auto pr-2">{`${val.view ? val.view['win'] : ''
-                        }`}</div>
+                      <div className="flex-1 pr-4 pl-2">{`${
+                        val.name || ''
+                      }`}</div>
+                      <div className="ml-auto pr-2">{`${
+                        val.view ? val.view['win'] : ''
+                      }`}</div>
                     </div>
                   );
                 }
               })}
             </div>
           );
-
           break;
 
         case 'MacOS':
@@ -56,10 +120,12 @@ const BodyControls = ({
                 {
                   return (
                     <div className="flex" key={i}>
-                      <div className="flex-1 pr-4 pl-2 font-semibold">{`${val.name || ''
-                        }`}</div>
-                      <div className="pr-2 ml-auto">{`${val.view ? val.view['mac'] : ''
-                        }`}</div>
+                      <div className="flex-1 pr-4 pl-2 font-semibold">{`${
+                        val.name || ''
+                      }`}</div>
+                      <div className="pr-2 ml-auto">{`${
+                        val.view ? val.view['mac'] : ''
+                      }`}</div>
                     </div>
                   );
                 }
@@ -71,7 +137,6 @@ const BodyControls = ({
         default:
           return '';
       }
-
       return 'Body';
     } catch (e) {
       return '';
@@ -79,64 +144,20 @@ const BodyControls = ({
   };
 
   return (
-    <Container.Header>
-      <StatusBar className="bg-statusBarBackground2 px-1">
-        <StatusBar.PrimaryRegion>
-          <div data-tip={path} className="collection-path">
-            {path || `./`}
+    <Popover
+      positions={[EPopoverPosition.Right]}
+      content={
+        <div className="w-48">
+          <div className="text-sm font-bold mb-1 text-appForegroundActive opacity-70 px-2 pt-2 pb-2 border-b border-appBorder">
+            Shortcuts
           </div>
-        </StatusBar.PrimaryRegion>
-        <StatusBar.SecondaryRegion>
-          {showClearPlaygroundButton === true ? (
-            <ConfirmationPopover
-              id={tabId}
-              handler={
-                <Button
-                  id={`confirm-popover-handler-${tabId}`}
-                  key="new_msg_button"
-                  text={'+ New Emitter'}
-                  ghost
-                  transparent
-                  sm
-                />
-              }
-              title="Are you sure to reset playground and add new emitter?"
-              _meta={{
-                showDeleteIcon: false,
-                confirmButtonText: 'Yes',
-                cancelButtonText: 'No',
-              }}
-              onConfirm={addNewEmitter}
-            />
-          ) : (
-            ''
-          )}
-          <Popover
-            positions={[EPopoverPosition.Right]}
-            content={
-              <div className="w-48">
-                <div className="text-sm font-bold mb-1 text-appForegroundActive opacity-70 px-2 pt-2 pb-2 border-b border-appBorder">
-                  Shortcuts
-                </div>
-                {_renderKeyboardShortcutInfo()}
-              </div>
-            }
-          >
-            <Popover.Handler id={`info-popover-${tabId}`}>
-              info icon {/* TODO: add info icon here */}
-            </Popover.Handler>
-          </Popover>
-        </StatusBar.SecondaryRegion>
-      </StatusBar>
-      {/* <TabHeader className="padding-small height-small collection-path-wrapper">
-        <TabHeader.Left>
-          
-        </TabHeader.Left>
-        <TabHeader.Right>
-          
-        </TabHeader.Right>
-      </TabHeader> */}
-    </Container.Header>
+          {_renderKeyboardShortcutInfo()}
+        </div>
+      }
+    >
+      <Popover.Handler id={`info-popover-${tabId}`}>
+        info icon {/* TODO: add info icon here */}
+      </Popover.Handler>
+    </Popover>
   );
 };
-export default BodyControls;

@@ -6,7 +6,7 @@ import {
   EFirecampAgent,
   EAuthTypes,
   IAuthBearer,
-  IAuthAws4,
+  IAuthAwsV4,
   IOAuth1,
   IAuthDigest,
   IAuthBasic,
@@ -106,8 +106,8 @@ const AuthPanel: FC<IProps> = ({
       case EAuthTypes.Hawk:
         return <></>;
       // <Hawk auth={value} onChange={onChangeAuth} />;
-      case EAuthTypes.Aws4:
-        return <Aws auth={value as IAuthAws4} onChange={onChangeAuthValue} />;
+      case EAuthTypes.AwsV4:
+        return <Aws auth={value as IAuthAwsV4} onChange={onChangeAuthValue} />;
       case EAuthTypes.Ntlm:
         return (
           <div className="p-3">

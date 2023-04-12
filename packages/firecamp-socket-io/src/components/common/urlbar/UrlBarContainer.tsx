@@ -9,7 +9,6 @@ import { IStore, useStore } from '../../../store';
 const UrlBarContainer = ({ tab }) => {
   const {
     url,
-    displayUrl,
     version,
     __meta,
     __ref,
@@ -23,7 +22,6 @@ const UrlBarContainer = ({ tab }) => {
   } = useStore(
     (s: IStore) => ({
       url: s.request.url,
-      displayUrl: s.runtime.displayUrl,
       version: s.request.config.version,
       __meta: s.request.__meta,
       __ref: s.request.__ref,
@@ -72,7 +70,7 @@ const UrlBarContainer = ({ tab }) => {
       path={requestPath?.path || 'Untitled Request'}
       placeholder={'http://'}
       isRequestSaved={isRequestSaved}
-      url={displayUrl}
+      url={url.raw}
       onChange={_handleUrlChange}
       // onPaste={_onPaste}
       onEnter={connect}

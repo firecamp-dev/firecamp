@@ -10,7 +10,6 @@ import { nanoid } from 'nanoid';
 import { EConnectionState } from '../types';
 
 export const SYSTEM_LOGS = {
-  clearAll: `chatboard  cleared `,
   onConnecting: `Socket has been  created . The connection is not yet open.`,
   onConnect: `The connection is  open  and ready to communicate.`,
   onDisconnecting: `The connection is in the process of  closing .`,
@@ -117,7 +116,7 @@ export const InitArg = {
 };
 export const InitLog = {
   title: '',
-  message: '',
+  value: [{ value: '', type: EArgumentBodyType.Text }],
   __meta: {
     event: '',
     timestamp: '',

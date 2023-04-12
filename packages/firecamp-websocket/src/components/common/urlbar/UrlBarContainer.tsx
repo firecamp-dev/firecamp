@@ -1,14 +1,13 @@
-import { Button, Url } from '@firecamp/ui';
-import _url from '@firecamp/url';
 import shallow from 'zustand/shallow';
+import _url from '@firecamp/url';
+import { Button, Url } from '@firecamp/ui';
 import ConnectButton from '../connection/ConnectButton';
 import { IStore, useStore } from '../../../store';
 
 const UrlBarContainer = ({ tab }) => {
-  const { url, displayUrl, requestPath, changeUrl, save } = useStore(
+  const { url, requestPath, changeUrl, save } = useStore(
     (s: IStore) => ({
       url: s.request.url,
-      displayUrl: s.runtime.displayUrl,
       requestPath: s.runtime.requestPath,
       changeUrl: s.changeUrl,
       save: s.save,
@@ -38,7 +37,7 @@ const UrlBarContainer = ({ tab }) => {
       path={requestPath?.path || 'Untitled Request'}
       placeholder={'ws://'}
       // isRequestSaved={isRequestSaved}
-      url={displayUrl}
+      url={url.raw}
       onChange={_onUpdateUrl}
       // onPaste={_onPaste}
       // onEnter={_onExecute}

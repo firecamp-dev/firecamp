@@ -1,10 +1,5 @@
 import { nanoid } from 'nanoid';
-import {
-  TId,
-  IWebSocketMessage,
-  IRequestFolder,
-  EMessageBodyType,
-} from '@firecamp/types';
+import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
 import { itemPathFinder } from '@firecamp/utils/dist/misc';
 import { TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
@@ -149,16 +144,12 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   },
   prepareCreateItemPayload: (name: string, parentFolderId?: TId) => {
     const state = get();
-    const {
-      playgrounds,
-      runtime: { activePlayground },
-    } = state;
-    const playground = playgrounds[activePlayground];
+    const { playground } = state;
     const _item: IWebSocketMessage = {
       name,
       value: playground.message.value,
       __meta: {
-        type: playground.message.__meta.type,
+        ...playground.message.__meta,
       },
       __ref: {
         id: nanoid(),
@@ -206,13 +197,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     }));
   },
   updateItem: () => {
-    const {
-      context,
-      onUpdateItem,
-      runtime: { activePlayground },
-      playgrounds,
-    } = get();
-    const item = playgrounds[activePlayground].message;
+    const { context, onUpdateItem, playground } = get();
+    const item = playground.message;
     const _item = {
       name: item.name,
       value: item.value,
@@ -241,21 +227,6 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         __manualUpdates: ++s.collection.__manualUpdates,
       },
     }));
-
-    const {
-      playgrounds,
-      runtime: { activePlayground },
-      changePlaygroundTab,
-    } = state;
-    const message = playgrounds[activePlayground]?.message;
-    if (message?.__ref.id == item.__ref.id) {
-      changePlaygroundTab(activePlayground, {
-        __meta: {
-          isSaved: true,
-          hasChange: false,
-        },
-      });
-    }
   },
   deleteItem: (id: TId) => {
     const {
@@ -290,7 +261,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   getFolder: (id: TId) => {
     const state = get();
     const folder = state.collection.folders.find((f) => f.__ref?.id === id);
-    return folder as IRequestFolder;
+    return folder;
   },
   prepareCreateFolderPayload: (name: string, parentFolderId?: TId) => {
     const state = get();
@@ -354,7 +325,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   onDeleteFolder: (id: TId) => {
     set((s) => {
       const folders = s.collection.folders.filter((f) => f.__ref.id != id);
-      s.collection.tdpInstance?.delete(id);
+      s.collection.tdpInstance?.deleteItem(id);
       return {
         collection: {
           ...s.collection,

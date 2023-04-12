@@ -1,6 +1,6 @@
+/** @note: not in use for nowF */
 export default (certificates, requestURL) => {
   let certificatePath;
-
   if (Array.isArray(certificates) && certificates.length > 0) {
     for (const certificate of certificates) {
       if (
@@ -9,13 +9,10 @@ export default (certificates, requestURL) => {
         requestURL.includes(certificate.meta.host)
       ) {
         certificatePath = certificate.meta.file_path;
-
         break;
       }
     }
   }
-
-  console.log(certificatePath);
-
+  // console.log(certificatePath);
   return certificatePath;
 };

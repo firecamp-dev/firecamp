@@ -84,7 +84,7 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@firecamp/types": "^0.1.26",
+    "@firecamp/types": "^0.2.1",
     "@firecamp/ui": "workspace:*",
     "@firecamp/utils": "^0.0.21",
     "@monaco-editor/react": "4.4.5",

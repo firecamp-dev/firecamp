@@ -15,7 +15,7 @@ beforeAll(() => {
     WebSocket: _WebSocket,
     certificates: [],
     config: localServerRequest.config,
-    connection: localServerRequest.connections[0],
+    connection: localServerRequest.connection,
   });
 
   executor2 = new Executor({
@@ -23,7 +23,7 @@ beforeAll(() => {
     WebSocket: _WebSocket,
     certificates: [],
     config: secureServerRequest.config,
-    connection: secureServerRequest.connections[0],
+    connection: secureServerRequest.connection,
   });
 });
 
@@ -45,7 +45,7 @@ describe.skip('Message passing', () => {
   it('should pass the message via connection', (done) => {
     executor1.logs((log: ILog) => {
       if (log.__meta.type === ELogTypes.Send) {
-        expect(log.message.value).toEqual('hi');
+        expect(log.value.value).toEqual('hi');
         done();
       }
     });

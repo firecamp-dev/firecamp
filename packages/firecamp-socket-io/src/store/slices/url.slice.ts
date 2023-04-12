@@ -1,3 +1,4 @@
+import _url from '@firecamp/url';
 import { IUrl, IQueryParam } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 interface IUrlSlice {
@@ -13,39 +14,29 @@ const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
   changeUrl: (urlObj: IUrl) => {
     const state = get();
     const url = { raw: getPathFromUrl(urlObj.raw) };
-    set((s) => {
-      const { activePlayground } = s.runtime;
-      const connections = s.request.connections.map((c) => {
-        if (c.id == activePlayground) {
-          c.queryParams = urlObj.queryParams;
-        }
-        return c;
-      });
-      return {
-        request: { ...s.request, url, connections },
-        runtime: { ...s.runtime, displayUrl: urlObj.raw },
-      };
-    });
+    set((s) => ({ request: { ...s.request, url } }));
     state.equalityChecker({ url });
   },
-  changeQueryParams: (queryParams: IQueryParam[]) => {
+  changeQueryParams: (qps: IQueryParam[]) => {
     const state = get();
-    const url = { ...state.request.url, queryParams };
+    const { connection } = state.request;
+    const newUrl = _url.updateByQuery(state.request.url, qps);
     set((s) => ({
       request: {
         ...s.request,
-        url,
+        url: newUrl,
+        connection: { ...connection, queryParams: qps },
       },
       // manage ui state
       ui: {
         ...s.ui,
         requestPanel: {
           ...s.ui.requestPanel,
-          hasParams: queryParams.length !== 0,
+          hasParams: qps.length !== 0,
         },
       },
     }));
-    state.equalityChecker({ url });
+    state.equalityChecker({ url: newUrl });
   },
 });
 

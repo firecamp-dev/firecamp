@@ -1,4 +1,4 @@
-import { TId, ISocketIOEmitter } from '@firecamp/types';
+import { EArgumentBodyType, ETypedArrayView, TId } from '@firecamp/types';
 
 export enum ELogTypes {
   Send = 's',
@@ -24,7 +24,11 @@ export enum ELogColors {
 // SocketIo log
 export interface ILog {
   title: string;
-  message: Omit<ISocketIOEmitter, 'name' | '__ref'>;
+  value: {
+    value: string;
+    type: EArgumentBodyType;
+    typedArrayView?: ETypedArrayView;
+  }[];
   __meta: {
     event: string;
     timestamp: number;
@@ -39,14 +43,8 @@ export interface ILog {
 }
 
 export enum CustomLogTypes {
-  ListenOn = 'L_ON',
-  ListenOff = 'L_OFF',
-}
-
-export enum EClientVersion {
-  v2 = 'v2',
-  v3 = 'v3',
-  v4 = 'v3',
+  ListenOn = 'Listening to',
+  ListenOff = 'Listening off',
 }
 
 export enum EConnectionStatus {

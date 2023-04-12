@@ -39,6 +39,16 @@ DisableColumns.args = {
   },
 };
 
+export const HiddenColumns = Template.bind({});
+HiddenColumns.args = {
+  rows: defaultData,
+  onChange: (value: ITableRows) => console.log(`change event`, value),
+  onMount: (value: TTableApi) => console.log(`mount event`, value),
+  options: {
+    hiddenColumns: [ 'value'],
+  },
+};
+
 export const DisableNewRow = Template.bind({});
 DisableNewRow.args = {
   rows: defaultData,

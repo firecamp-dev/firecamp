@@ -11,18 +11,18 @@ import { ELogTypes } from '../../../types';
 
 const emptyRow = {
   title: '',
-  message: { name: '', value: '', __meta: { type: '' } },
+  value: { value: '', type: '' },
   __meta: { id: '', event: '', type: '', color: '', timestamp: '' },
 };
 
 const LogPreview = ({ row = emptyRow }) => {
-  if (!row?.message && !row?.title) row = emptyRow;
+  if (!row?.value && !row?.title) row = emptyRow;
   const [editor, setEditor] = useState(null);
   const value =
-    row.message?.__meta?.type !== 'file'
-      ? row?.message?.value || row.title || ''
-      : row?.message?.name || 'Sending File';
-  const language = row?.message?.__meta?.type === 'json' ? 'json' : 'text';
+    row.value?.type !== 'file'
+      ? row?.value?.value || row.title || ''
+      : 'Sending File';
+  const language = row?.value?.type === 'json' ? 'json' : 'text';
 
   // console.log(row, 'in preview');
 

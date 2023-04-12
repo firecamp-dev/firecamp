@@ -5,10 +5,10 @@ import {
   EFirecampAgent,
 } from '@firecamp/types';
 import { _buffer, _misc } from '@firecamp/utils';
-import { IWebSocketResponseMessage } from './types';
+import { ILog } from './types';
 
 /**
- * Function which accept Firecamp request
+ * function which accept Firecamp request
  * message and return actual message which
  * will sent over the socket
  *
@@ -21,14 +21,12 @@ export const parseMessage = ({
     type: EMessageBodyType.Text,
     typedArrayView: ETypedArrayView.Default,
   },
-}: Partial<IWebSocketMessage>): any => {
+}: Partial<IWebSocketMessage>): string | ArrayBuffer => {
   switch (__meta.type) {
     case EMessageBodyType.Text:
-      return value;
     case EMessageBodyType.Json:
-      return value;
     case EMessageBodyType.File:
-      return value;
+      return value as string;
     case EMessageBodyType.ArrayBuffer:
       return _buffer.strToBuffer(
         value as string,
@@ -50,7 +48,7 @@ export const parseMessage = ({
  */
 export const parseReceivedMessage = async (
   arg: any
-): Promise<IWebSocketResponseMessage> => {
+): Promise<ILog['value']> => {
   let value: string;
   try {
     if (arg) {
@@ -67,60 +65,46 @@ export const parseReceivedMessage = async (
 
         return {
           value,
-          __meta: {
-            type: EMessageBodyType.ArrayBuffer,
-            typedArrayView: ETypedArrayView.Uint8Array,
-          },
+          type: EMessageBodyType.ArrayBuffer,
+          typedArrayView: ETypedArrayView.Uint8Array,
         };
       } else if (typeof arg === 'string') {
         try {
           return {
             value: JSON.stringify(JSON.parse(arg), null, 4),
-            __meta: {
-              type: EMessageBodyType.Json,
-            },
+            type: EMessageBodyType.Json,
           };
         } catch (error) {
           return {
             value: arg,
-            __meta: {
-              type: EMessageBodyType.Text,
-            },
+            type: EMessageBodyType.Text,
           };
         }
       } else if (arg instanceof ArrayBuffer && arg.byteLength > 0) {
         value = _buffer.bufferToStr(arg, ETypedArrayView.Uint8Array);
         return {
           value,
-          __meta: {
-            type: EMessageBodyType.ArrayBuffer,
-            typedArrayView: ETypedArrayView.Uint8Array,
-          },
+          type: EMessageBodyType.ArrayBuffer,
+          typedArrayView: ETypedArrayView.Uint8Array,
         };
       } else if (arg instanceof Blob) {
         value = await arg.text();
         return {
           value,
-          __meta: {
-            type: EMessageBodyType.ArrayBuffer,
-            typedArrayView: ETypedArrayView.Uint8Array,
-          },
+          type: EMessageBodyType.ArrayBuffer,
+          typedArrayView: ETypedArrayView.Uint8Array,
         };
       } else if (typeof arg === 'object') {
         value = JSON.stringify(arg, null, 4);
         return {
           value,
-          __meta: {
-            type: EMessageBodyType.Json,
-          },
+          type: EMessageBodyType.Json,
         };
       }
     } else {
       return {
         value: '',
-        __meta: {
-          type: EMessageBodyType.Text,
-        },
+        type: EMessageBodyType.Text,
       };
     }
   } catch (e) {
@@ -128,8 +112,6 @@ export const parseReceivedMessage = async (
   }
   return {
     value: '',
-    __meta: {
-      type: EMessageBodyType.Text,
-    },
+    type: EMessageBodyType.Text,
   };
 };

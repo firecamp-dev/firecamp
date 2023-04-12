@@ -1,26 +1,31 @@
+import shallow from 'zustand/shallow';
 import { EEditorLanguage } from '@firecamp/types';
 import { BulkEditTable } from '@firecamp/ui';
+import { IStore, useStore } from '../../../store';
 
-const HeadersTab = ({
-  headers = [],
-  activeConnectionId = '',
-  onUpdate = (data) => {},
-}) => {
+const HeadersTab = ({ id = '' }) => {
+  const { headers, updateConnection } = useStore(
+    (s: IStore) => ({
+      headers: s.request.connection.headers,
+      updateConnection: s.updateConnection,
+    }),
+    shallow
+  );
+
   return (
     <BulkEditTable
-      onChange={(data) => {
-        // console.log(`headers updated`, data);
-        onUpdate(data);
-      }}
-      key={`headers-${activeConnectionId}`}
-      id={`headers-${activeConnectionId}`}
-      rows={headers || []}
       title={'Headers'}
+      key={`headers-${id}`}
+      id={`headers-${id}`}
+      rows={headers || []}
       options={{
         languages: {
           key: EEditorLanguage.HeaderKey,
           value: EEditorLanguage.HeaderValue,
         },
+      }}
+      onChange={(headers) => {
+        updateConnection('headers', headers);
       }}
     />
   );

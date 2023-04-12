@@ -70,7 +70,7 @@ interface IPlatformRequestService {
   createRequestItemPrompt: (
     item: IRequestItem<any, any>,
     collection: { items: any[]; rootOrders: TId[] },
-    tabId: TId
+    options: { header: string; label: string }
   ) => Promise<IRequestItem<any, any>>;
   createRequestItem: (
     item: IRequestItem<any, any>,
@@ -310,11 +310,11 @@ const request: IPlatformRequestService = {
       .then((res) => res.data);
   },
 
-  createRequestItemPrompt: async (item, collection, tabId) => {
+  createRequestItemPrompt: async (item, collection, { header, label }) => {
     return platformContext.window
       .promptSaveItem({
-        header: 'Save WebSocket Message',
-        label: 'Message Title',
+        header: header || 'Save WebSocket Message',
+        label: label || 'Message Title',
         placeholder: '',
         texts: { btnOk: 'Save', btnOking: 'Saving...' },
         value: '',

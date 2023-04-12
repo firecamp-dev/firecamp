@@ -77,7 +77,7 @@ module.exports = {
       graphql: 'var(--req-graphql)',
       rest: 'var(--req-link)',
       socket: 'var(--req-socketio)',
-      websocket: 'var(--req-socketio)',
+      websocket: 'var(--req-websocket)',
       link: 'var(--link)',
     },
     extend: {

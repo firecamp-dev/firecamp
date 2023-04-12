@@ -31,7 +31,7 @@ export default {
         case ERequestTypes.GraphQL:
           return <FcIconGraphQL className="text-graphql" size={24} />;
         case ERequestTypes.WebSocket:
-          return <FcIconWebSocket className="text-websocket" size={24} />;
+          return <FcIconWebSocket className="" size={24} />;
         case ERequestTypes.SocketIO:
           return <FcIconSocketIoSquare className="text-socket" size={24} />;
         default:

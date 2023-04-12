@@ -2,7 +2,7 @@ import Executor, {
   IExecutorInterface,
   TExecutorOptions,
 } from '@firecamp/socket.io-executor/dist/esm';
-import { TId, ISocketIOEmitter, EFirecampAgent } from '@firecamp/types';
+import { ISocketIOEmitter, EFirecampAgent } from '@firecamp/types';
 import { _misc, _object } from '@firecamp/utils';
 import v2 from 'socket.io-client-v2';
 import v3 from 'socket.io-client-v3';
@@ -11,59 +11,37 @@ import { TStoreSlice } from '../store.type';
 import { EConnectionState } from '../../types';
 
 interface IHandleConnectionExecutorSlice {
-  connect: (connectionId?: TId) => void;
-  disconnect: (connectionId?: TId, code?: number, reason?: string) => void;
-  sendMessage: (connectionId: TId, emitter: ISocketIOEmitter) => void;
-  togglePingConnection: (
-    connectionId: TId,
-    pinging: boolean,
-    interval: number
-  ) => void;
-  addListenerToExecutor: (connectionId: TId, eventName: string) => void;
-  addListenersToExecutor: (
-    connectionId: TId,
-    eventNames: Array<string>
-  ) => void;
-  removeListenerFromExecutor: (connectionId: TId, eventName: string) => void;
-  removeListenersFromExecutor: (
-    connectionId: TId,
-    eventNames?: Array<string>
-  ) => void;
-  removeAllListenersFromExecutor: (connectionId: TId) => void;
-  changeListenerToAllExecutors: (eventName: string, listen: boolean) => void;
+  connect: () => void;
+  disconnect: (code?: number, reason?: string) => void;
+  emit: (emitter: ISocketIOEmitter) => void;
+  togglePingConnection: (pinging: boolean, interval: number) => void;
+  addListenersToExecutor: (eventNames: string | string[]) => void;
+  removeListenersFromExecutor: (eventNames?: string | string[]) => void;
+  removeAllListenersFromExecutor: () => void;
 }
 
 const createHandleConnectionExecutor: TStoreSlice<
   IHandleConnectionExecutorSlice
 > = (set, get) => ({
-  connect: (connectionId) => {
+  connect: () => {
     /**
      * TOODs:
      * 1. Manage and parse environment variables
      * 2. Manager ssl n proxy logic
      */
     const state = get();
-    // to avoid DOM e event
-    if (!connectionId || typeof connectionId != 'string')
-      connectionId = state.getActiveConnectionId();
+    const { playground } = state;
 
-    const { playgrounds } = state;
-    const connectionState = playgrounds[connectionId].connectionState;
     if (
       ![EConnectionState.Ideal, EConnectionState.Closed].includes(
-        connectionState
+        playground.connectionState
       )
     ) {
       return;
     }
 
     try {
-      const url = state.request?.url,
-        config = state.request?.config,
-        connection = state.request?.connections.find(
-          (c) => c.id === connectionId
-        );
-
+      const { url, config, connection } = state.request;
       if (!connection || !url.raw) return;
       const options: TExecutorOptions = {
         io: {
@@ -84,26 +62,17 @@ const createHandleConnectionExecutor: TStoreSlice<
 
       // on open
       executor.onOpen(() => {
-        state.changePlaygroundConnectionState(
-          connectionId,
-          EConnectionState.Open
-        );
+        state.changePlaygroundConnectionState(EConnectionState.Open);
       });
 
       // on close
       executor.onClose(() => {
-        state.changePlaygroundConnectionState(
-          connectionId,
-          EConnectionState.Closed
-        );
+        state.changePlaygroundConnectionState(EConnectionState.Closed);
       });
 
       // on reconnect
       executor.onConnecting(() => {
-        state.changePlaygroundConnectionState(
-          connectionId,
-          EConnectionState.Connecting
-        );
+        state.changePlaygroundConnectionState(EConnectionState.Connecting);
       });
 
       // get logs
@@ -111,265 +80,127 @@ const createHandleConnectionExecutor: TStoreSlice<
         console.log({ log });
 
         if (!log) return;
-        state.addLog(connectionId, log);
+        state.addLog(log);
       });
 
       // connect
       executor.connect();
 
       // set executor in to playground
-      state.setPlgExecutor(connectionId, executor);
+      state.setPlgExecutor(executor);
 
       // listen to on connect listener
-      // state.listenOnConnect(connectionId);
-    } catch (error) {
-      console.info({
-        API: 'socket.connect',
-        connectionId,
-        error,
-      });
+      // state.listenOnConnect();
+    } catch (e) {
+      console.info(e);
     }
   },
 
-  disconnect: (connectionId: TId) => {
+  disconnect: () => {
     const state = get();
-    const { playgrounds } = state;
-    // to avoid DOM e event
-    if (!connectionId || typeof connectionId != 'string')
-      connectionId = state.getActiveConnectionId();
-    const connectionState = playgrounds[connectionId].connectionState;
+    const { playground } = state;
     if (
       ![EConnectionState.Connecting, EConnectionState.Open].includes(
-        connectionState
+        playground.connectionState
       )
     ) {
+      state.addErrorLog('The connection is not open');
       return;
     }
 
     try {
-      const existingPlayground = state.getPlayground(connectionId);
-      if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
-      ) {
-        // disconnect
-        existingPlayground.executor?.close();
-
-        // set empty executor
-        state.deleteExecutor(connectionId);
-      } else {
-        state.addErrorLog(connectionId, 'disconnected');
-      }
-    } catch (error) {
-      console.info({
-        API: 'socket.disconnect',
-        connectionId,
-        error,
-      });
+      // disconnect
+      playground.executor?.close();
+      // set empty executor
+      state.deleteExecutor();
+    } catch (e) {
+      console.info(e);
     }
   },
 
-  sendMessage: (connectionId: TId, emitter: ISocketIOEmitter) => {
+  emit: (emitter: ISocketIOEmitter) => {
     const state = get();
     try {
       /**
        * TODOs:
        * 1. Manage and parse environment variables
-       * 2. history
        */
 
-      const playground = state.getPlayground(connectionId);
-      if (
-        playground?.connectionState === EConnectionState.Open &&
-        playground.executor
-      ) {
-        // TODO: check if connection open or not. if not then executor will send log with error emitter
-
-        // send emitter
-        if (emitter?.__meta.ack) {
-          playground.executor.emitWithAck(emitter.name, emitter.value);
-        } else {
-          playground.executor.emit(emitter.name, emitter.value);
-        }
+      const { connectionState, emitter, executor } = state.playground;
+      if (connectionState != EConnectionState.Open || !executor) {
+        state.addErrorLog('The connection is not open');
+        return;
+      }
+      // send emitter
+      if (emitter?.__meta.ack) {
+        executor.emitWithAck(emitter.name, emitter.value);
       } else {
-        state.addErrorLog(connectionId, 'disconnected');
+        executor.emit(emitter.name, emitter.value);
       }
     } catch (e) {
-      console.info({
-        API: 'socket.send',
-        connectionId,
-        emitter,
-        e,
-      });
+      console.info(e);
     }
   },
 
-  togglePingConnection: (
-    connectionId: TId,
-    pinging: true,
-    interval: number
-  ) => {
+  togglePingConnection: (pinging: true, interval: number) => {
     const state = get();
     try {
-      const existingPlayground = state.getPlayground(connectionId);
-      if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
-      ) {
-        if (pinging) {
-          // ping
-          existingPlayground.executor?.ping(interval);
-        } else {
-          existingPlayground.executor?.stopPinging();
-        }
-      } else {
-        state.addErrorLog(connectionId, 'disconnected');
+      const { connectionState, executor } = state.playground;
+      if (connectionState != EConnectionState.Open) {
+        state.addErrorLog('The connection is not open');
+        return;
       }
-    } catch (error) {
-      console.info({
-        API: 'socket.ping',
-        connectionId,
-        error,
-      });
+      if (pinging) {
+        // ping
+        executor?.ping(interval);
+      } else {
+        executor?.stopPinging();
+      }
+    } catch (e) {
+      console.info(e);
     }
   },
-  addListenerToExecutor: (connectionId: TId, eventName: string) => {
-    const state = get();
-    try {
-      const existingPlayground = state.getPlayground(connectionId);
-      if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
-      ) {
-        existingPlayground.executor?.addListener(eventName);
-      } else {
-        state.addErrorLog(connectionId, 'disconnected');
-      }
-    } catch (error) {
-      console.info({
-        API: 'socket.addListener',
-        connectionId,
-        error,
-      });
-    }
-  },
-  addListenersToExecutor: (connectionId: TId, eventNames: Array<string>) => {
-    const state = get();
-    try {
-      const existingPlayground = state.getPlayground(connectionId);
-      if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
-      ) {
-        existingPlayground.executor?.addListeners(eventNames);
-      } else {
-        state.addErrorLog(connectionId, 'disconnected');
-      }
-    } catch (error) {
-      console.info({
-        API: 'socket.addListeners',
-        connectionId,
-        error,
-      });
-    }
-  },
-  removeListenerFromExecutor: (connectionId: TId, eventName: string) => {
-    const state = get();
-    try {
-      const existingPlayground = state.getPlayground(connectionId);
-      if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
-      ) {
-        existingPlayground.executor?.removeListener(eventName);
-      } else {
-        state.addErrorLog(connectionId, 'disconnected');
-      }
-    } catch (error) {
-      console.info({
-        API: 'socket.removeListener',
-        connectionId,
-        error,
-      });
-    }
-  },
-  removeListenersFromExecutor: (
-    connectionId: TId,
-    eventNames?: Array<string>
-  ) => {
-    const state = get();
-    try {
-      const existingPlayground = state.getPlayground(connectionId);
-      if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
-      ) {
-        existingPlayground.executor?.removeListeners(eventNames);
-      } else {
-        state.addErrorLog(connectionId, 'disconnected');
-      }
-    } catch (error) {
-      console.info({
-        API: 'socket.removeListeners',
-        connectionId,
-        error,
-      });
-    }
-  },
-  removeAllListenersFromExecutor: (connectionId: TId) => {
-    const state = get();
-    try {
-      const existingPlayground = state.getPlayground(connectionId);
-      if (
-        existingPlayground &&
-        existingPlayground?.connectionState === EConnectionState.Open &&
-        existingPlayground.executor
-      ) {
-        existingPlayground.executor?.removeAllListeners();
-      } else {
-        state.addErrorLog(connectionId, 'disconnected');
-      }
-    } catch (error) {
-      console.info({
-        API: 'socket.removeAllListeners',
-        connectionId,
-        error,
-      });
-    }
-  },
-  changeListenerToAllExecutors: (eventName: string, listen: boolean) => {
-    const state = get();
-    const existingPlaygrounds = state.playgrounds;
 
-    for (let connectionId in existingPlaygrounds) {
-      try {
-        const existingPlayground = existingPlaygrounds[connectionId];
-        if (
-          existingPlayground &&
-          existingPlayground?.connectionState === EConnectionState.Open &&
-          existingPlayground.executor
-        ) {
-          if (listen) {
-            existingPlayground.executor?.addListener(eventName);
-          } else {
-            existingPlayground.executor?.removeListener(eventName);
-          }
-        } else {
-          state.addErrorLog(connectionId, 'disconnected');
-        }
-      } catch (error) {
-        console.info({
-          API: 'socket.changeListenerToAllExecutors',
-          connectionId,
-          error,
-        });
+  addListenersToExecutor: (eventNames: string | string[]) => {
+    const state = get();
+    try {
+      const { connectionState, executor } = state.playground;
+      if (connectionState != EConnectionState.Open) {
+        state.addErrorLog('The connection is not open');
+        return;
       }
+      const names = Array.isArray(eventNames) ? eventNames : [eventNames];
+      executor?.addListeners(names);
+    } catch (e) {
+      console.info(e);
+    }
+  },
+
+  removeListenersFromExecutor: (eventNames) => {
+    const state = get();
+    try {
+      const { connectionState, executor } = state.playground;
+      if (connectionState != EConnectionState.Open) {
+        state.addErrorLog('The connection is not open');
+        return;
+      }
+      const names = Array.isArray(eventNames) ? eventNames : [eventNames];
+      executor?.removeListeners(names);
+    } catch (e) {
+      console.info(e);
+    }
+  },
+  removeAllListenersFromExecutor: () => {
+    const state = get();
+    try {
+      const { connectionState, executor } = state.playground;
+      if (connectionState != EConnectionState.Open) {
+        state.addErrorLog('The connection is not open');
+        return;
+      }
+      executor?.removeAllListeners();
+    } catch (e) {
+      console.info(e);
     }
   },
 });

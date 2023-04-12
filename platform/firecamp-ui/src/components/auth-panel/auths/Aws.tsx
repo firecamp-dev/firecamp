@@ -1,13 +1,13 @@
 import { FC, useState } from 'react';
 import { Input } from '@firecamp/ui';
-import { IAuthAws4, EAuthTypes, TPlainObject } from '@firecamp/types';
+import { IAuthAwsV4, EAuthTypes, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
 
 const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
-  const { Aws4 } = EAuthTypes;
-  const inputList = authUiFormState[Aws4].inputList;
-  const advancedInputList = authUiFormState[Aws4].advancedInputList;
+  const { AwsV4 } = EAuthTypes;
+  const inputList = authUiFormState[AwsV4].inputList;
+  const advancedInputList = authUiFormState[AwsV4].advancedInputList;
 
   const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
     inputList.reduce((p, n) => {
@@ -19,7 +19,7 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
     e.preventDefault();
     const value = e.target.value;
     setDirtyInputs((s) => ({ ...s, [id]: true }));
-    onChange(Aws4, { key: id, value });
+    onChange(AwsV4, { key: id, value });
   };
 
   const _handleSubmit = (e: { preventDefault: () => any }) => {
@@ -32,7 +32,7 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
         let errorMsg = '';
         if (
           dirtyInputs[input.id] &&
-          !auth?.[input.id as keyof IAuthAws4]?.length
+          !auth?.[input.id as keyof IAuthAwsV4]?.length
         ) {
           errorMsg = `${input.name} can not be empty`;
         }
@@ -44,7 +44,7 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
             type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
-            value={auth?.[input.id as keyof IAuthAws4] || ''}
+            value={auth?.[input.id as keyof IAuthAwsV4] || ''}
             error={errorMsg}
             onChange={(e) => _handleChange(e, input.id)}
             isEditor
@@ -63,7 +63,7 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
             type={setInputType(input.id)}
             placeholder={input.name}
             name={input.id}
-            value={auth?.[input.id as keyof IAuthAws4] || ''}
+            value={auth?.[input.id as keyof IAuthAwsV4] || ''}
             onChange={(e) => _handleChange(e, input.id)}
             isEditor
           />
@@ -76,9 +76,9 @@ const Aws: FC<IAws> = ({ auth, onChange = () => {} }) => {
 export default Aws;
 
 interface IAws {
-  auth: IAuthAws4;
+  auth: IAuthAwsV4;
   onChange: (
-    authType: EAuthTypes.Aws4,
+    authType: EAuthTypes.AwsV4,
     updates: { key: string; value: any }
   ) => void;
 }

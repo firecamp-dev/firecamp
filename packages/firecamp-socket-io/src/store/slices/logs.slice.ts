@@ -1,21 +1,11 @@
-import { TId, ERequestTypes } from '@firecamp/types';
+import { EArgumentBodyType } from '@firecamp/types';
 import { ILog } from '@firecamp/socket.io-executor/dist/esm';
-import { InitPlayground } from '../../constants';
 import { ELogColors, ELogTypes } from '../../types';
 import { TStoreSlice } from '../store.type';
 
 const emptyLog = {
   title: '',
-  message: {
-    name: '',
-    payload: InitPlayground,
-    __ref: {
-      id: '',
-      collectionId: '',
-      requestId: '',
-      requestType: ERequestTypes.SocketIO,
-    },
-  },
+  value: [{ value: '', type: EArgumentBodyType.Text }],
   __meta: {
     event: '',
     timestamp: 0,
@@ -25,42 +15,22 @@ const emptyLog = {
   },
 };
 
-interface ILogs {
-  [key: TId]: ILog[];
-}
-
 interface ILogsSlice {
-  logs: ILogs;
-  addLog: (connectionId: TId, log: ILog) => void;
-  addErrorLog: (connectionId: TId, message: string) => void;
-  clearLogs: (connectionId: TId) => void;
+  logs: ILog[];
+  addLog: (log: ILog) => void;
+  addErrorLog: (message: string) => void;
+  clearLogs: () => void;
 }
 
 const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
-  logs: {},
+  logs: [],
 
-  addLog: (connectionId: TId, log: ILog) => {
-    // console.log({ log });
-    const state = get();
-    const logs = state.logs;
-    if (connectionId in logs) {
-      const cLogs = logs[connectionId];
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [connectionId]: [...cLogs, { ...emptyLog, ...log }],
-        },
-      }));
-    } else {
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [connectionId]: [log],
-        },
-      }));
-    }
+  addLog: (log: ILog) => {
+    set((s) => ({
+      logs: [...s.logs, { ...emptyLog, ...log }],
+    }));
   },
-  addErrorLog: (connectionId: TId, message: string) => {
+  addErrorLog: (message: string) => {
     const state = get();
     const log = {
       ...emptyLog,
@@ -69,22 +39,15 @@ const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
         ...emptyLog.__meta,
         type: ELogTypes.System,
         color: ELogColors.Danger,
+        event: '-',
       },
+      __ref: { id: '' },
     };
-    state.addLog(connectionId, log);
+    state.addLog(log);
   },
-  clearLogs: (connectionId: TId) => {
-    const state = get();
-    const logs = state.logs;
-    if (connectionId in logs) {
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [connectionId]: [],
-        },
-      }));
-    }
+  clearLogs: () => {
+    set((s) => ({ logs: [] }));
   },
 });
 
-export { emptyLog, ILogs, ILogsSlice, createLogsSlice };
+export { emptyLog, ILogsSlice, createLogsSlice };

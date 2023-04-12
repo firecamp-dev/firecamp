@@ -9,41 +9,53 @@ import {
   Editor,
   EditorControlBar,
 } from '@firecamp/ui';
-import { EEditorLanguage } from '@firecamp/types';
+import { EArgumentBodyType, EEditorLanguage } from '@firecamp/types';
 import AckIcon from './AckIcon';
-import { ELogColors, ELogTypes, ILog } from '@firecamp/socket.io-executor/dist/esm';
+import {
+  ELogColors,
+  ELogTypes,
+  ILog,
+} from '@firecamp/socket.io-executor/dist/esm';
 
 const emptyRow: ILog = {
   title: '',
-  message: {
-    value: [],
-    __meta: {}
+  value: [
+    {
+      value: '',
+      type: EArgumentBodyType.Text,
+    },
+  ],
+  __meta: {
+    ackRef: false,
+    event: '',
+    type: ELogTypes.System,
+    color: ELogColors.Warning,
+    timestamp: new Date().valueOf(),
   },
-  __meta: { ackRef: false, event: '', type: ELogTypes.System, color: ELogColors.Warning, timestamp: new Date().valueOf() },
-  __ref: { id: '' }
+  __ref: { id: '' },
 };
 
 const LogPreview = ({ row = emptyRow }) => {
-  if (!row) return <></>
-  console.log(row, '...... preview ......')
+  if (!row) return <></>;
+  console.log(row, '...... preview ......');
   const [selectedArgIndex, setSelectedArgIndex] = useState(0);
   const [value, setValue] = useState<string | number | boolean>('');
   const [editor, setEditor] = useState(null);
   const _setArgIndex = (index = 0) => {
     setSelectedArgIndex(index);
-    const emitterArg = row.message?.value?.[index] || null;
+    const emitterArg = row?.value?.[index] || null;
     if (!emitterArg) {
       setValue(row?.title || '');
       return;
     }
-    if (emitterArg.body && emitterArg.__meta.type !== 'file') {
-      setValue(emitterArg.body || '');
+    if (emitterArg.type !== 'file') {
+      setValue(emitterArg.value || '');
     } else {
       //@ts-ignore
       setValue(emitterArg.name || '');
     }
   };
-  if (!row?.message && !row.title) row = emptyRow;
+  if (!row?.value && !row.title) row = emptyRow;
 
   /**
    * On row update, set argument index to zero as row can have number of arguments.
@@ -55,11 +67,11 @@ const LogPreview = ({ row = emptyRow }) => {
   }, [row]);
 
   const language =
-    row.message[selectedArgIndex]?.__meta.type === 'json'
+    row.value[selectedArgIndex]?.type === 'json'
       ? EEditorLanguage.Json
       : EEditorLanguage.Text;
 
-  console.log(row, 'in preivew...')
+  console.log(row, 'in preview...');
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
@@ -67,8 +79,10 @@ const LogPreview = ({ row = emptyRow }) => {
         <Container.Header className="bg-focus2">
           <Header
             row={row || {}}
-            emitterArg={row?.message?.[selectedArgIndex]}
-            postComponent={<EditorControlBar editor={editor} language={language} />}
+            emitterArg={row?.value?.[selectedArgIndex]}
+            postComponent={
+              <EditorControlBar editor={editor} language={language} />
+            }
           />
         </Container.Header>
         <Container.Body>
@@ -79,10 +93,10 @@ const LogPreview = ({ row = emptyRow }) => {
             onLoad={(edt) => setEditor(edt)}
           />
         </Container.Body>
-        {row.message && Array.isArray(row.message) ? (
+        {Array.isArray(row?.value) ? (
           <Container.Footer>
             <Footer
-              args={row.message || []}
+              args={row.value || []}
               setSelectedArgIndex={_setArgIndex}
               selectedArgIndex={selectedArgIndex}
             />
@@ -98,7 +112,6 @@ const LogPreview = ({ row = emptyRow }) => {
 export default LogPreview;
 
 const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
-
   const isEventSent = row.__meta.type == ELogTypes.Send;
   const isEventReceived = row.__meta.type == ELogTypes.Receive;
   const isEventFromSystem = row.__meta.type == ELogTypes.System;
@@ -142,16 +155,18 @@ const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
         )}
       </TabHeader.Left>
       <TabHeader.Right className="font-xs text-appForegroundInActive whitespace-pre">
-        <span className="font-sm">
+        {/* <span className="font-sm">
           {emitterArg?.__meta?.length
             ? `Length: ${emitterArg?.__meta.length}`
             : <></>}
-        </span>
+        </span> */}
 
         <div className="font-sm">
-          {row?.__meta?.timestamp
-            ? `Time: ${new Date(row?.__meta.timestamp).toLocaleTimeString()}`
-            : <></>}
+          {row?.__meta?.timestamp ? (
+            `Time: ${new Date(row?.__meta.timestamp).toLocaleTimeString()}`
+          ) : (
+            <></>
+          )}
         </div>
         {postComponent}
       </TabHeader.Right>
@@ -161,7 +176,7 @@ const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
 const Footer = ({
   args = [],
   selectedArgIndex = 0,
-  setSelectedArgIndex = () => { },
+  setSelectedArgIndex = () => {},
 }) => {
   const [tabs, setTabs] = useState(
     args.map((arg, index) => {

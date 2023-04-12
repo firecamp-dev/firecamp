@@ -97,34 +97,12 @@ const electronSideConfig = [
   },
 ];
 
-const Config = ({ connections = [], config = {} }) => {
+const Config = ({ config = {} }) => {
   const onChangeConfig = (a, b) => {}; //todo: use zustand store here
 
   if (!config) {
     return <span />;
   }
-
-  /*  const connection_menu = [],
-     default_connection_name = "";
- 
-   if (connections) {
-     connections.map(con => {
-       connection_menu = [
-         ...connection_menu,
-         {
-           id: con.id,
-           name: con.name
-         }
-       ];
-     });
- 
-     default_connection_name = connections.find(
-       conn => conn.id === config["default_connection"]
-     )
-       ? connections.find(conn => conn.id === config["default_connection"])
-         .name
-       : "Default";
-   } */
 
    const _onChange = (name, value) => {
     if (!name) return;

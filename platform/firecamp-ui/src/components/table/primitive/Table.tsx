@@ -14,6 +14,7 @@ import './table.sass';
 
 const defaultOptions: ITableOptions = {
   disabledColumns: [],
+  hiddenColumns: [],
   allowRowRemove: true,
   allowRowAdd: true,
   allowSort: true,
@@ -77,7 +78,7 @@ const Table: FC<ITable<any>> = ({
 
   const _columns = useMemo(() => {
     if (options?.hiddenColumns?.length) {
-      return columns.filter((c) => !options.hiddenColumns.includes(c.key));
+      return columns.filter((c) => !options?.hiddenColumns?.includes(c.key));
     }
     return columns;
   }, [columns, options]);

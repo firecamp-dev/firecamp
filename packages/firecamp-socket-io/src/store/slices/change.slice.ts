@@ -29,7 +29,7 @@ interface IRequestChangeStateSlice {
   disposeRCS: () => void;
 }
 
-//@note; always use _cloneDeep at its usage other wise it's value will be manipulate at global scope
+//@note; always use _cloneDeep at its usage other wise it's value will be manipulated at global scope reference
 const initialSliceState = {
   requestChangeState: {
     url: [],
@@ -54,8 +54,10 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
 
     for (let key in request) {
       switch (key) {
+        case EReqChangeRootKeys.connection:
         case EReqChangeRootKeys.config:
-        case EReqChangeRootKeys.headers:
+        case EReqChangeRootKeys.listeners:
+          // console.log(_request[key], request[key], 88888);
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {

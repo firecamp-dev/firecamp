@@ -28,6 +28,8 @@ interface IRequestSlice extends IUrlSlice {
   changeConfig: (configKey: string, configValue: any) => any;
   fetchIntrospectionSchema: () => Promise<void>;
   save: (tabId: TId) => void;
+  /** prepare the request path after request save (add/update) */
+  onRequestSave: (requestId: TId) => void;
 }
 
 const createRequestSlice: TStoreSlice<IRequestSlice> = (
@@ -125,6 +127,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       state.context.request.save(_request, tabId, true).then(() => {
         //reset the rcs state
         state.disposeRCS();
+        state.onRequestSave(_request.__ref.id);
       });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
@@ -139,8 +142,22 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       state.context.request.save(_request, tabId).then(() => {
         //reset the rcs state
         state.disposeRCS();
+        state.onRequestSave(_request.__ref.id);
       });
     }
+  },
+  onRequestSave: (requestId) => {
+    const state = get();
+    const requestPath = requestId
+      ? state.context?.request.getPath(requestId)
+      : { path: '', items: [] };
+
+    set((s) => ({
+      runtime: {
+        ...s.runtime,
+        requestPath,
+      },
+    }));
   },
 });
 

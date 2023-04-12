@@ -3,15 +3,8 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _merge from 'lodash/merge';
 import shallow from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import {
-  Container,
-  Input,
-  Button,
-  TabHeader,
-  Checkbox,
-} from '@firecamp/ui';
+import { Container, Input, Button, TabHeader, Checkbox } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
-
 import BodyControls from './playground/BodyControls';
 import EmitterArgTabs from './playground/EmitterArgTabs';
 import EmitterBody from './playground/EmitterBody';
@@ -28,9 +21,10 @@ const EmitterPlayground = () => {
     changePlgArgValue,
     changePlgEmitterName,
     changePlgEmitterAck,
+    emit,
   } = useStore(
     (s: IStore) => ({
-      playground: s.playgrounds[s.runtime.activePlayground],
+      playground: s.playground,
       __meta: s.request.__meta,
       __manualUpdates: s.__manualUpdates,
       changePlgArgType: s.changePlgArgType,
@@ -40,21 +34,20 @@ const EmitterPlayground = () => {
       changePlgArgValue: s.changePlgArgValue,
       changePlgEmitterName: s.changePlgEmitterName,
       changePlgEmitterAck: s.changePlgEmitterAck,
+      emit: s.emit,
     }),
     shallow
   );
   const { emitter: plgEmitter, activeArgIndex = 0 } = playground;
 
-  console.log('this is the payground');
-
+  // console.log('this is the playground');
   return (
     <Container>
       <BodyControls
-        emitter={plgEmitter}
-        isSaveEmitterPopoverOpen={true}
-        tabData={{ id: 123 }}
-        activeType={{ id: 'text' }}
-        // editorCommands={EditorCommands}
+      // isSaveEmitterPopoverOpen={true}
+      // tabData={{ id: 123 }}
+      // activeType={{ id: 'text' }}
+      // editorCommands={EditorCommands}
       />
       <Container.Header className="!px-2 !py-2">
         <Input
@@ -87,9 +80,9 @@ const EmitterPlayground = () => {
             <Button
               text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
-              primary
-              iconCenter
+              onClick={() => emit(plgEmitter)}
               iconRight
+              primary
               xs
             />
           </TabHeader.Right>

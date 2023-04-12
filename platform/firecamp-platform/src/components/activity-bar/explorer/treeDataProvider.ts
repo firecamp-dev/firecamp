@@ -222,7 +222,7 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
       }
       return i;
     });
-    this.emitter.emit(ETreeEventTypes.itemChanged, ['root', item.__ref.id]);
+    this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.id]);
   }
 
   public deleteCollectionItem(itemId: string) {
@@ -270,7 +270,6 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
         }
         return i;
       });
-
     this.emitter.emit(ETreeEventTypes.itemChanged, [parentId]);
   }
 
@@ -278,7 +277,7 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
     this.items.push({ ...item, __ref: { ...item.__ref, isRequest: true } });
     const parentId = item.__ref.folderId || item.__ref.collectionId;
     this.items.map((i) => {
-      if (item.__ref.folderId && i.__ref.id == parentId) {
+      if (i.__ref.id == parentId) {
         i.__meta.rOrders.push(item.__ref.id);
       }
       return i;
@@ -289,14 +288,15 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
   public updateRequestItem(item: any) {
     this.items = this.items.map((i) => {
       if (item.__ref.id == i.__ref.id) {
+        if (item.method) i.method = item.method;
         if (item.__meta?.name) i.__meta.name = item.__meta.name;
         if (item.__meta?.description)
           i.__meta.description = item.__meta.description;
       }
       return i;
     });
-    const parentId = item.__ref.folderId || item.__ref.collectionId;
-    this.emitter.emit(ETreeEventTypes.itemChanged, [parentId, item.__ref.id]);
+    // const parentId = item.__ref.folderId || item.__ref.collectionId;
+    this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.id]);
   }
 
   public deleteRequestItem(itemId: string) {

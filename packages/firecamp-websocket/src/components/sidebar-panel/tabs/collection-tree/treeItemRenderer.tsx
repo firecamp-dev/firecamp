@@ -176,7 +176,6 @@ export default {
               }}
             ></span>
           )}
-
           {arrow}
           <InteractiveComponent
             type={type}

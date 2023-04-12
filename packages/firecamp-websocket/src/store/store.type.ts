@@ -14,12 +14,12 @@ import {
   ICollectionSlice,
 
   // playground
-  IPlaygrounds,
+  IPlayground,
   IPlaygroundSlice,
 
-  // connections logs
+  // connection logs
   ILogsSlice,
-  ILogs,
+  ILog,
 
   // request changes
   IRequestChangeStateSlice,
@@ -50,8 +50,8 @@ interface IStoreState {
   request?: IWebSocket;
   collection?: ICollection;
   runtime?: IRuntime;
-  playgrounds?: IPlaygrounds;
-  logs?: ILogs;
+  playground?: IPlayground;
+  logs?: ILog[];
   ui?: IUi;
 }
 type TStoreSlice<T> = (

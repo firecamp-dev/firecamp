@@ -12,7 +12,7 @@ export default {
     console.log(item, 'arrow context');
 
     if (item.data?.__ref?.isItem) {
-      return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
+      // return <div className={cx('collection_leaf-node-type pl-2')}>Emt.</div>;
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <>
@@ -82,13 +82,15 @@ export default {
     context,
     arrow,
     info,
-    openPlg,
-    deletePlg,
+    openEmitterInPlg,
+    deleteFolder,
+    deleteEmitter,
     createFolder,
   }) => {
     const renderDepthOffset = 8;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
+
     // TODO have only root li component create all the classes
     return (
       <li
@@ -155,7 +157,7 @@ export default {
             type={type}
             {...(context.interactiveElementProps as any)}
             className={cx(
-              'pl-1 whitespace-pre overflow-hidden text-ellipsis rct-tree-item-button',
+              'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button !h-fit !block',
               { 'rct-tree-item-button-isFolder': item.isFolder },
               { 'rct-tree-item-button-selected': context.isSelected },
               { 'rct-tree-item-button-expanded': context.isExpanded },
@@ -170,10 +172,12 @@ export default {
               </span>
             ) : (
               <div>
-                <div className="w-full overflow-hidden text-ellipsis items-center block">
+                <div className="w-full overflow-hidden overflow-ellipsis items-center block text-secondaryColor">
                   {title}
-                  <span className="bg-focus2 text-xs px-1 !mx-1">{'tag'}</span>
                 </div>
+                {/* <div className="bg-focus2- text-sm overflow-ellipsis">
+                  {item.data.__meta?.label} Firecamp Label
+                </div> */}
                 <div className="text-sm appForegroundInActive">
                   {'{ "name": "Firecamp}'}
                 </div>
@@ -188,25 +192,24 @@ export default {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  openPlg(item.data.__ref.id);
+                  openEmitterInPlg(item.data.__ref.id);
                 }}
-                xs
+                transparent
                 secondary
                 ghost
-                transparent
+                xs
               />
             ) : (
               <></>
             )}
-
             {item.data.__ref.isFolder ? (
               <VscAdd
                 className="ml-1 cursor-pointer"
+                tabIndex={2}
                 size={14}
                 onClick={() => {
                   createFolder(item.index);
                 }}
-                tabIndex={2}
               />
             ) : (
               <></>
@@ -216,7 +219,8 @@ export default {
               className="ml-1 cursor-pointer"
               size={14}
               onClick={() => {
-                deletePlg(item.index);
+                if (item.isFolder) deleteFolder(item.index);
+                else deleteEmitter(item.index);
               }}
             />
           </div>

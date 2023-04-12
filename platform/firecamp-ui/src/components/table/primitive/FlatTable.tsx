@@ -1,5 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { nanoid } from 'nanoid';
+import cx from 'classnames';
 import { _array, _misc, _object } from '@firecamp/utils';
 import {
   ITable,
@@ -14,6 +15,7 @@ import './table.sass';
 
 const defaultOptions: ITableOptions = {
   disabledColumns: [],
+  hiddenColumns: [],
   allowRowRemove: true,
   allowRowAdd: true,
   allowSort: true,
@@ -223,7 +225,7 @@ const FlatTable: FC<ITable<any>> = ({
             {columns.map((c, i) => {
               return (
                 <Th
-                  className={classes.th}
+                  className={cx(classes.th, {'hidden': options?.hiddenColumns?.includes(c.key)})}
                   style={{
                     width: c.resizeWithContainer ? '100%' : parseInt(c.width),
                     minWidth:

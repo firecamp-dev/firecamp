@@ -1,20 +1,19 @@
+import ws from 'ws';
 import {
   ICertificate,
   IWebSocketConfig,
   IWebSocketConnection,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
-import ws from 'ws';
 import { _array, _string, _table } from '@firecamp/utils';
-
 import fetchCertificates from './ssl-manager';
 import { ClientOptions, EClientOptionsDefaultValues } from './constants';
 import { TExecutorOptions } from './executor.interface';
 
 export default class ConfigGenerator {
-  address: string;
-  protocols?: string | string[];
-  clientOptions: ws.ClientOptions & {
+  private address: string;
+  private protocols?: string | string[];
+  private clientOptions: ws.ClientOptions & {
     ping?: boolean;
     pingInterval?: number;
     /** default: false */
@@ -24,12 +23,14 @@ export default class ConfigGenerator {
     /** default: 3 */
     reconnectAttempts?: number;
   };
-  connection: IWebSocketConnection;
-  certificates: ICertificate[];
-  config: IWebSocketConfig;
-  constructor({ url, config, connection, certificates }: TExecutorOptions) {
+  constructor({
+    url,
+    config = {},
+    connection,
+    certificates,
+  }: TExecutorOptions) {
     this.address = _url.updateByQuery(url, connection.queryParams || []).raw;
-    this.protocols = [];
+    this.protocols = config.protocols || [];
     this.clientOptions = {
       headers: {},
       perMessageDeflate: false,
@@ -42,12 +43,16 @@ export default class ConfigGenerator {
       maxPayload: 0,
       maxRedirects: 10,
     };
-    this.config = config || {};
-    this.connection = connection;
-    this.certificates = certificates;
+    this.checkBooleanValues(config);
+    this.checkBooleanValues(config);
+    this.checkStringValues(config);
+    this.checkNumberValues(config);
+    this.setHeaders(connection);
+    this.setPingInfo(connection);
+    this.setCACertificate(config, certificates);
   }
 
-  checkBooleanValues() {
+  private checkBooleanValues(config: IWebSocketConfig) {
     const keys = [
       ClientOptions.reconnect,
       ClientOptions.perMessageDeflate,
@@ -56,30 +61,26 @@ export default class ConfigGenerator {
     ];
 
     keys.map((key) => {
-      if (
-        this.config.hasOwnProperty(key) &&
-        typeof this.config[key] === 'boolean'
-      ) {
-        this.clientOptions[key] = this.config[key];
+      if (config.hasOwnProperty(key) && typeof config[key] === 'boolean') {
+        this.clientOptions[key] = config[key];
       } else this.clientOptions[key] = EClientOptionsDefaultValues[key];
     });
   }
 
-  checkStringValues() {
+  private checkStringValues(config: IWebSocketConfig) {
     const keys = [
       ClientOptions.ca,
       ClientOptions.origin,
       ClientOptions.maxPayload,
     ];
-
     keys.map((key) => {
-      if (key in this.config && !_string.isEmpty(this.config[key])) {
-        this.clientOptions[key] = this.config[key];
+      if (key in config && !_string.isEmpty(config[key])) {
+        this.clientOptions[key] = config[key];
       } else this.clientOptions[key] = EClientOptionsDefaultValues[key];
     });
   }
 
-  checkNumberValues() {
+  private checkNumberValues(config: IWebSocketConfig) {
     const keys = [
       ClientOptions.reconnectAttempts,
       ClientOptions.reconnectTimeout,
@@ -90,28 +91,24 @@ export default class ConfigGenerator {
     ];
 
     keys.map((key) => {
-      if (key in this.config && !isNaN(this.config[key])) {
-        this.clientOptions[key] = Number(this.config[key]);
+      if (key in config && !isNaN(config[key])) {
+        this.clientOptions[key] = Number(config[key]);
       } else this.clientOptions[key] = EClientOptionsDefaultValues[key];
     });
   }
 
-  setClientConfig() {
-    this.protocols = this.config.protocols;
-    this.checkBooleanValues();
-    this.checkStringValues();
-    this.checkNumberValues();
-  }
-
-  setHeaders() {
-    if (this.connection.headers && !_array.isEmpty(this.connection.headers)) {
-      this.clientOptions.headers = _table.toObject(this.connection.headers);
+  private setHeaders(connection: IWebSocketConnection) {
+    if (connection.headers && !_array.isEmpty(connection.headers)) {
+      this.clientOptions.headers = _table.toObject(connection.headers);
     }
   }
 
-  setCACertificate() {
-    if (this.config.rejectUnauthorized) {
-      const certificate = fetchCertificates(this.certificates, this.address);
+  private setCACertificate(
+    config: IWebSocketConfig,
+    certificates: ICertificate[]
+  ) {
+    if (config.rejectUnauthorized) {
+      const certificate = fetchCertificates(certificates, this.address);
 
       if (certificate) {
         try {
@@ -123,22 +120,17 @@ export default class ConfigGenerator {
     }
   }
 
-  setPingInfo() {
-    this.clientOptions.ping = this.connection.config?.ping || false;
-    this.clientOptions.pingInterval =
-      this.connection.config?.pingInterval || 3000;
+  private setPingInfo(connection: IWebSocketConnection) {
+    this.clientOptions.ping = connection?.ping || false;
+    this.clientOptions.pingInterval = connection?.pingInterval || 3000;
   }
 
   prepare() {
-    this.setClientConfig();
-    this.setHeaders();
-    this.setPingInfo();
-    this.setCACertificate();
     const normalizedUrl = _url.normalize(this.address, ['http', 'ws']);
     // console.log(normalizedUrl);
     return {
       address: normalizedUrl,
-      protocols: this.config.protocols,
+      protocols: this.protocols,
       clientOptions: this.clientOptions,
     };
   }

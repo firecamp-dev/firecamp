@@ -11,9 +11,9 @@ import {
   Resizable,
 } from '@firecamp/ui';
 import LogTable from './LogTable';
+import LogPreview from './LogPreview';
 import { ELogTypes } from '../../../types';
 import { IStore, useStore } from '../../../store';
-import LogPreview from './LogPreview';
 
 const logTypes = {
   System: ELogTypes.System,
@@ -22,23 +22,17 @@ const logTypes = {
 };
 
 const Logs = () => {
-  const {
-    activePlayground,
-    typeFilter,
-    logs,
-    changePlaygroundLogFilters,
-    clearLogs,
-  } = useStore(
-    (s: IStore) => ({
-      activePlayground: s.runtime.activePlayground,
-      typeFilter:
-        s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
-      logs: s.logs?.[s.runtime.activePlayground] || [],
-      changePlaygroundLogFilters: s.changePlaygroundLogFilters,
-      clearLogs: s.clearLogs,
-    }),
-    shallow
-  );
+  const { tabId, typeFilter, logs, changePlaygroundLogFilters, clearLogs } =
+    useStore(
+      (s: IStore) => ({
+        tabId: s.runtime.tabId,
+        typeFilter: s.playground.logFilters?.type || '',
+        logs: s.logs || [],
+        changePlaygroundLogFilters: s.changePlaygroundLogFilters,
+        clearLogs: s.clearLogs,
+      }),
+      shallow
+    );
 
   const logTableApiRef = useRef(null);
   const [tableHeight, setTableHeight] = useState(465);
@@ -64,12 +58,12 @@ const Logs = () => {
     //     ...__meta,
     //   };
     // });
-    console.log(filteredLogs, 'filteredLogs');
+    // console.log(filteredLogs, 'filteredLogs');
     logTableApiRef.current?.initialize(filteredLogs);
-  }, [logs, typeFilter, activePlayground]);
+  }, [logs, typeFilter]);
 
   const _onClearAllMessages = () => {
-    clearLogs(activePlayground);
+    clearLogs();
     setSelectedRow(null);
   };
 
@@ -84,7 +78,7 @@ const Logs = () => {
    */
   const _onFilter = (filter = '') => {
     if (typeFilter !== filter) {
-      changePlaygroundLogFilters(activePlayground, { type: filter });
+      changePlaygroundLogFilters({ type: filter });
     }
   };
 
@@ -112,16 +106,16 @@ const Logs = () => {
                         className="fc-dropdown-fixwidth"
                       >
                         <Dropdown.Handler
-                          id={`websocket-response-log-${activePlayground}-filter-event`}
+                          id={`websocket-response-log-${tabId}-filter-event`}
                         >
                           <Button
                             text={typeFilter || 'select log type'}
-                            transparent={true}
-                            ghost={true}
-                            withCaret={true}
                             tooltip={
                               typeFilter ? `Log type: ${typeFilter || ''}` : ''
                             }
+                            transparent
+                            withCaret
+                            ghost
                             sm
                           />
                         </Dropdown.Handler>

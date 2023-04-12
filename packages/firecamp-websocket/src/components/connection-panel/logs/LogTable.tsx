@@ -15,6 +15,7 @@ const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
         tr: 'hover:!bg-focus1 focus:!bg-primaryColorOpacity  !border-0',
       }}
       rows={[]}
+      titleRenderer={(log) => log?.value?.value || log?.title}
       onChange={(rows) => {
         console.log(rows, 'log table change');
       }}
@@ -23,7 +24,6 @@ const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
         console.log(tApi);
       }}
       onFocusRow={(r) => {
-        // console.log(r, 'r.....');
         onFocusRow(r);
       }}
     />

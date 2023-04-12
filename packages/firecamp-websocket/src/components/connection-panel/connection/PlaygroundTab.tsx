@@ -27,9 +27,7 @@ import ShortcutsPopover, {
 const PlaygroundTab = () => {
   const {
     getItemPath,
-    playgrounds,
-    activePlayground,
-    playgroundTabs,
+    playground,
     promptSaveItem,
     updateItem,
     changePlaygroundMessage,
@@ -38,9 +36,7 @@ const PlaygroundTab = () => {
   } = useStore(
     (s: IStore) => ({
       getItemPath: s.getItemPath,
-      playgrounds: s.playgrounds,
-      activePlayground: s.runtime.activePlayground,
-      playgroundTabs: s.runtime.playgroundTabs,
+      playground: s.playground,
       promptSaveItem: s.promptSaveItem,
       updateItem: s.updateItem,
       // __meta: s.request.__meta,
@@ -50,13 +46,12 @@ const PlaygroundTab = () => {
     }),
     shallow
   );
-  const plgTab = playgroundTabs.find((p) => p.id == activePlayground);
-  const playground = playgrounds[activePlayground];
+
   const { message } = playground;
   const { value } = message;
 
   // console.log(playground, plgTab, 'playground');
-  if (!activePlayground || !message.__meta) {
+  if (!message.__meta) {
     return <></>;
   }
   const messagePath = useMemo(() => {
@@ -106,7 +101,7 @@ const PlaygroundTab = () => {
 
   const _onSendMessage = (e?: any) => {
     if (e) e.preventDefault();
-    sendMessage(activePlayground);
+    sendMessage();
   };
   const _addNewMessage = () => {
     resetPlaygroundMessage();
@@ -114,8 +109,8 @@ const PlaygroundTab = () => {
   };
   const _setToOriginal = () => {};
   const _saveMessage = () => {
-    const { isSaved } = plgTab.__meta;
-    console.log(plgTab.__meta, '__meta....F');
+    const isSaved = false; //TODO: Fix it here
+
     if (isSaved) {
       updateItem();
     } else {
@@ -240,8 +235,8 @@ const PlaygroundTab = () => {
     }
   };
 
-  const isMsgSaved = plgTab.__meta.isSaved;
-  const isMsgChanged = plgTab.__meta.hasChange;
+  const isMsgSaved = false; //plgTab.__meta.isSaved;
+  const isMsgChanged = false; //plgTab.__meta.hasChange;
   const showSaveButton =
     (isMsgSaved && isMsgChanged) || (!isMsgSaved && isMsgChanged && value);
 
@@ -341,7 +336,6 @@ const PlaygroundTab = () => {
               text="Send"
               icon={<IoSendSharp size={12} className="ml-1" />}
               onClick={_onSendMessage}
-              iconCenter
               iconRight
               primary
               xs
