@@ -19,7 +19,22 @@ import {
 import { ISocket } from '../store';
 import { EConnectionState } from '../types';
 
-// import { IUiRequestPanel } from '../store/slices';
+/**
+ * prepare the connection panel ui state from the existing request/connection information
+ * and return the state.
+ */
+export const prepareConnectionPanelUiState = (request: Partial<ISocketIO>) => {
+  const cPanelUi = {
+    headers: 0,
+    params: 0,
+    auth: 0,
+  };
+  const { url, connection } = request;
+  if (connection?.headers) cPanelUi.headers = connection.headers?.length || 0;
+  if (connection?.auth) cPanelUi.auth = connection.auth?.length || 0;
+  if (url) cPanelUi.params = request.url.queryParms?.length || 0;
+  return cPanelUi;
+};
 
 const getPathFromUrl = (url: string) => {
   return url.split(/[?#]/)[0];
@@ -110,10 +125,11 @@ export const initialiseStoreFromRequest = (
   if (!request.connection) request.connection = _cloneDeep(RequestConnection);
   request.url = _url.updateByQuery(request.url, request.connection.queryParams);
 
+  const cPanelUi = prepareConnectionPanelUiState(request);
+
   return {
     request,
     runtime: {
-      isRequestRunning: false,
       isRequestSaved: !!request.__ref.collectionId,
       tabId: __meta?.tabId,
       requestPath: __meta?.requestPath,
@@ -133,6 +149,7 @@ export const initialiseStoreFromRequest = (
     logs: [],
     ui: {
       isFetchingRequest: false,
+      connectionPanel: cPanelUi,
     },
   };
 };

@@ -1,7 +1,13 @@
+import { ISocketIO } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 
 export interface IUi {
   isFetchingRequest: boolean;
+  connectionPanel?: {
+    headers?: number;
+    params?: number;
+    auth?: number;
+  };
 }
 
 export interface IUiSlice {
@@ -15,12 +21,12 @@ export const createUiSlice: TStoreSlice<IUiSlice> = (
   get,
   initialUi: IUi
 ) => ({
-  ui: initialUi || { isFetchingRequest: false },
+  ui: initialUi,
   initializeUi: (ui: IUi) => {
-    set((s) => ({ ui }));
+    set((s) => ({ ui: { ...s.ui, ...ui } }));
   },
   setIsFetchingReqFlag: (flag: boolean) => {
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
     set((s) => ({ ui: { ...s.ui, isFetchingRequest: flag } }));
-  },
+  }
 });
