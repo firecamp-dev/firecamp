@@ -1,7 +1,13 @@
 import { TStoreSlice } from '../store.type';
 
+export interface IUiConnectionPanel {
+  headers?: number;
+  params?: number;
+  auth?: number;
+}
 export interface IUi {
   isFetchingRequest: boolean;
+  connectionPanel?: IUiConnectionPanel;
 }
 
 export interface IUiSlice {
@@ -15,9 +21,9 @@ export const createUiSlice: TStoreSlice<IUiSlice> = (
   get,
   initialUi: IUi
 ) => ({
-  ui: initialUi || { isFetchingRequest: false },
+  ui: initialUi,
   initializeUi: (ui: IUi) => {
-    set((s) => ({ ui }));
+    set((s) => ({ ui: { ...s.ui, ...ui } }));
   },
   setIsFetchingReqFlag: (flag: boolean) => {
     if (flag === undefined) flag = !get().ui.isFetchingRequest;

@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, memo, useMemo } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
 import { Column, Resizable, Tabs, Row } from '@firecamp/ui';
@@ -10,32 +10,46 @@ import PlaygroundTab from './connection/PlaygroundTab';
 import Logs from './logs/Logs';
 import { IStore, useStore } from '../../store';
 
-const bodyTabs = [
-  {
-    id: 'playground',
-    name: 'Playground',
-  },
-  {
-    id: 'headers',
-    name: 'Headers',
-  },
-  {
-    id: 'params',
-    name: 'Params',
-  },
-  {
-    id: 'config',
-    name: 'Config',
-  },
-  {
-    id: 'auth',
-    name: 'Auth',
-  },
-];
-
 const ConnectionPanel = () => {
-  const tabId = useStore((s: IStore) => s.runtime.tabId, shallow);
+  const { tabId, cPanelUi, playgroundHasChange } = useStore(
+    (s: IStore) => ({
+      tabId: s.runtime.tabId,
+      cPanelUi: s.ui.connectionPanel,
+      playgroundHasChange: s.playground.playgroundHasChanges,
+    }),
+    shallow
+  );
   const [activeBodyTab, setActiveBodyTab] = useState('playground');
+
+  const bodyTabs = useMemo(
+    () => [
+      {
+        id: 'playground',
+        name: 'Playground',
+        dotIndicator: playgroundHasChange,
+      },
+      {
+        id: 'headers',
+        name: 'Headers',
+        count: cPanelUi.headers,
+      },
+      {
+        id: 'params',
+        name: 'Params',
+        count: cPanelUi.params,
+      },
+      {
+        id: 'config',
+        name: 'Config',
+      },
+      {
+        id: 'auth',
+        name: 'Auth',
+        count: cPanelUi.auth,
+      },
+    ],
+    [cPanelUi, playgroundHasChange]
+  );
 
   const _renderBody = () => {
     switch (activeBodyTab) {

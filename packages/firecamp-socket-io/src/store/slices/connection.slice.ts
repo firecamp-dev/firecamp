@@ -1,4 +1,4 @@
-import isEqual from 'react-fast-compare';
+import { prepareConnectionPanelUiState } from '../../services/request.service';
 import { TStoreSlice } from '../store.type';
 
 interface IConnectionsSlice {
@@ -32,12 +32,15 @@ const createConnectionSlice: TStoreSlice<IConnectionsSlice> = (set, get) => ({
       });
     }
 
-    if (isEqual(updatedConnection, connection)) return;
+    // if (isEqual(updatedConnection, connection)) return;
+    const _request = {
+      ...state.request,
+      connection: { ...connection, [key]: value },
+    };
+    const cPanelUi = prepareConnectionPanelUiState(_request);
     set((s) => ({
-      request: {
-        ...s.request,
-        connection: { ...updatedConnection },
-      },
+      request: _request,
+      ui: { ...s.ui, connectionPanel: cPanelUi },
     }));
     state.equalityChecker({ connection });
   },

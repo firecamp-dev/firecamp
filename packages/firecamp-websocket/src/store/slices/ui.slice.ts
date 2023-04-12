@@ -4,16 +4,14 @@ import { _object, _array } from '@firecamp/utils';
 import { ERequestPanelTabs } from '../../types';
 import { TStoreSlice } from '../store.type';
 
-interface IUiRequestPanel {
+interface IUiConnectionPanel {
   activeTab?: string;
-  hasHeaders?: boolean;
-  hasQueries?: boolean;
   headers?: number;
-  queries?: number;
+  params?: number;
 }
 interface IUi {
   isFetchingRequest: boolean;
-  requestPanel: IUiRequestPanel;
+  connectionPanel: IUiConnectionPanel;
 }
 interface IUiSlice {
   ui: IUi;
@@ -25,7 +23,7 @@ interface IUiSlice {
 const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi) => ({
   ui: initialUi || {
     isFetchingRequest: false,
-    requestPanel: {
+    connectionPanel: {
       activeTab: ERequestPanelTabs.Playgrounds,
     },
   },
@@ -36,8 +34,8 @@ const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi) => ({
     set((s) => ({
       ui: {
         ...s.ui,
-        requestPanel: {
-          ...s.ui.requestPanel,
+        connectionPanel: {
+          ...s.ui.connectionPanel,
           activeTab: tabName,
         },
       },
@@ -49,16 +47,16 @@ const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi) => ({
       ui: { ...s.ui, isFetchingRequest: flag },
     }));
   },
-  setUIRequestPanelState: (uiRequestPanel: { [key: string]: any }) => {
+  setUIRequestPanelState: (cPanelUi: { [key: string]: any }) => {
     set((s) => ({
       ui: {
         ...s.ui,
-        requestPanel: {
-          ...s.ui.requestPanel,
-          ...uiRequestPanel,
+        connectionPanel: {
+          ...s.ui.connectionPanel,
+          ...cPanelUi,
         },
       },
     }));
   },
 });
-export { createUiSlice, IUiSlice, IUi, IUiRequestPanel };
+export { createUiSlice, IUiSlice, IUi, IUiConnectionPanel };

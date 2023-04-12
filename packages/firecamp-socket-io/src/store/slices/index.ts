@@ -1,6 +1,6 @@
 // request
 export * from './request.slice';
-export * from './connections.slice';
+export * from './connection.slice';
 export * from './url.slice';
 
 // collection
