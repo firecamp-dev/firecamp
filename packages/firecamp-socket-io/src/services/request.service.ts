@@ -16,14 +16,16 @@ import {
   DefaultRequestConfig,
   InitPlayground,
 } from '../constants';
-import { ISocket } from '../store';
+import { ISocket, IUiConnectionPanel } from '../store';
 import { EConnectionState } from '../types';
 
 /**
  * prepare the connection panel ui state from the existing request/connection information
  * and return the state.
  */
-export const prepareConnectionPanelUiState = (request: Partial<ISocketIO>) => {
+export const prepareConnectionPanelUiState = (
+  request: Partial<ISocketIO>
+): IUiConnectionPanel => {
   const cPanelUi = {
     headers: 0,
     params: 0,

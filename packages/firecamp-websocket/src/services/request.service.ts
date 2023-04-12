@@ -14,7 +14,7 @@ import _url from '@firecamp/url';
 import {
   initialPlaygroundMessage,
   IStoreState,
-  IUiRequestPanel,
+  IUiConnectionPanel,
 } from '../store';
 import { DefaultConnectionState, DefaultConfigState } from '../constants';
 import { EConnectionState, ERequestPanelTabs } from '../types';
@@ -23,20 +23,19 @@ const getPathFromUrl = (url: string) => {
   return url.split(/[?#]/)[0];
 };
 
-export const prepareUIRequestPanelState = (
-  request: Partial<IWebSocket>
-): IUiRequestPanel => {
-  const updatedUiStore: IUiRequestPanel = {};
-
-  // TODO: add logic form collection queries
-
-  for (let key in request) {
-    switch (key) {
-      default:
-      // do nothing
-    }
-  }
-  return updatedUiStore;
+/**
+ * prepare the connection panel ui state from the existing request/connection information
+ * and return the state.
+ */
+export const prepareConnectionPanelUiState = (request: Partial<IWebSocket>): IUiConnectionPanel => {
+  const cPanelUi = {
+    headers: 0,
+    params: 0,
+  };
+  const { url, connection } = request;
+  if (connection?.headers) cPanelUi.headers = connection.headers?.length || 0;
+  if (url) cPanelUi.params = request.url.queryParms?.length || 0;
+  return cPanelUi;
 };
 
 /** normalize the websocket request */
@@ -102,16 +101,15 @@ export const initialiseStoreFromRequest = (
   }
 ): IStoreState => {
   const request: IWebSocket = normalizeRequest(_request);
-  const requestPanel = prepareUIRequestPanelState(request);
-
   const defaultConnection =
     request.connection || _cloneDeep(DefaultConnectionState);
   const playgroundId = defaultConnection.id;
-
   const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
+  const newRequest = { ...request, url };
+  const cPanelUi = prepareConnectionPanelUiState(_request);
 
   return {
-    request: { ...request, url },
+    request: newRequest,
     playground: {
       id: playgroundId,
       connectionState: EConnectionState.Ideal,
@@ -128,9 +126,9 @@ export const initialiseStoreFromRequest = (
     },
     ui: {
       // ...state.ui,
-      requestPanel: {
-        ...requestPanel,
+      connectionPanel: {
         activeTab: ERequestPanelTabs.Playgrounds, //uiActiveTab,
+        ...cPanelUi,
       },
       isFetchingRequest: false,
     },

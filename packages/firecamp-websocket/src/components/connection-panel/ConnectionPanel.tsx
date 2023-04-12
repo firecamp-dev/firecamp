@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { useState, useEffect, memo, useMemo } from 'react';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
 import {
@@ -20,35 +20,40 @@ import PlaygroundTab from './connection/PlaygroundTab';
 import Logs from './logs/Logs';
 import { IStore, useStore } from '../../store';
 
-const bodyTabs = [
-  {
-    id: 'playground',
-    name: 'Playground',
-  },
-  {
-    id: 'params',
-    name: 'Params',
-  },
-  // {
-  //   id: 'config',
-  //   name: 'Config',
-  // },
-];
-
 const ConnectionPanel = () => {
-  const { tabId, connection, updateConnection, changeConQueryParams } =
+  const { tabId, connection, cPanelUi, updateConnection, changeQueryParams } =
     useStore(
       (s: IStore) => ({
         tabId: s.runtime.tabId,
         connection: s.request.connection,
         updateConnection: s.updateConnection,
-        changeConQueryParams: s.changeConQueryParams,
+        changeQueryParams: s.changeQueryParams,
+        cPanelUi: s.ui.connectionPanel,
       }),
       shallow
     );
   const [activeBodyTab, onSelectBodyTab] = useState('playground');
 
+  const bodyTabs = useMemo(() => {
+    return [
+      {
+        id: 'playground',
+        name: 'Playground',
+      },
+      {
+        id: 'params',
+        name: 'Params',
+        count: cPanelUi.params,
+      },
+      // {
+      //   id: 'config',
+      //   name: 'Config',
+      // },
+    ];
+  }, []);
+
   useEffect(() => {
+    //toto: fix this logic later
     if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
       bodyTabs.push({
         id: 'headers',
@@ -74,7 +79,10 @@ const ConnectionPanel = () => {
         return (
           <Config
             key={tabId}
-            config={connection?.config || {}}
+            config={{
+              ping: connection.ping,
+              pingInterval: connection.pingInterval,
+            }}
             onUpdate={_onChangeConfig}
           />
         );
@@ -94,7 +102,7 @@ const ConnectionPanel = () => {
           <ParamsTab
             params={connection?.queryParams || []}
             id={tabId}
-            onUpdate={(qps) => changeConQueryParams(qps)}
+            onUpdate={(qps) => changeQueryParams(qps)}
           />
         );
 
