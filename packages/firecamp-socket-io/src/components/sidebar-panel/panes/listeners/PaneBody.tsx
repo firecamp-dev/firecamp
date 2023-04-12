@@ -166,7 +166,7 @@ const Listener = ({ listener, isActive }) => {
   return (
     <div className="flex justify-center items-center relative px-2 py-0.5 group hover:bg-focus2">
       <div
-        className="flex-1 overflow-hidden overflow-ellipsis text-base"
+        className="flex-1 overflow-hidden text-ellipsis text-base"
         data-tip={name}
         id={`${uniqueId}-listener`}
       >

@@ -6,8 +6,9 @@ const ExtraCss = () => {
     <div
       className={`
        theme-light animate-slideUpAndFade
-       w-2 w-5 w-6 w-9 w-14 w-56 w-60 w-96 w-[32rem] !w-auto !w-full 
-       h-0 h-5 h-6 !h-6 h-8 h-9 h-10 h-48 h-80 !h-80 !h-fit group-hover:h-auto
+       w-2 w-5 w-6 w-9 w-14 w-56 w-60 w-96 w-[32rem] !w-auto !w-full w-fit
+       h-0 h-5 h-6 !h-6 h-8 h-9 h-10 h-48 !h-48 h-80 !h-80 h-fit !h-fit h-full !h-full !h-screen group-hover:h-auto
+
        !min-w-full max-w-sm
        min-h-0 max-h-4 max-h-48 max-h-52 max-h-56
        after:opacity-10 opacity-20 opacity-30 opacity-50 opacity-70 opacity-80 opacity-100 !opacity-100
@@ -20,7 +21,7 @@ const ExtraCss = () => {
        px-14 py-20 py-4 px-8 !p-0 !p-1 py-0.5 !px-6  pt-0.5 p-6 pr-3 pb-96 !pt-2 !px-3 !pb-3 !pb-1 !pt-3 !pb-2 !py-3 px-10 px-16  pb-4  pb-3  !pb-6 pl-4  !pb-0  pt-14  py-6 pr-0.5 !px-0 pl-0.5 !pr-0 pb-0 !py-0 !px-2  !py-2 	!pt-4 px-0.5  !pl-3 !pr-3 pt-5  pb-5  !p-4 !pl-4 !pr-4  hover:!pr-3 hover:pr-1
        -left-8 top-4  bottom-6  !top-4 top-5 top-1 right-4 top-12 after:top-0 after:left-0 after:bottom-0 after:right-0 top-auto	
        float-right
-       text-2xl text-5xl !text-base !text-appForegroundActive text-rest text-graphql !text-primaryColor !text-appForegroundInActive !text-ellipsis text-link hover:underline !text-link hover:!text-link
+       text-2xl text-5xl !text-base !text-appForegroundActive text-rest text-graphql text-websocket !text-primaryColor !text-appForegroundInActive text-ellipsis !text-ellipsis text-link !text-link hover:underline hover:!text-link
        font-normal font-light !font-regular hover:text-appForegroundActive
        z-20 z-30 z-[1000]
        flex-none flex-2 
@@ -28,7 +29,7 @@ const ExtraCss = () => {
        transform-none 
        !capitalize underline truncate
        leading-4  leading-7 
-       overflow-ellipsis !overflow-y-auto !overflow-hidden overflow-x-auto 
+       !overflow-y-auto !overflow-hidden overflow-x-auto 
        align-middle
        group
        list-disc list-decimal`}

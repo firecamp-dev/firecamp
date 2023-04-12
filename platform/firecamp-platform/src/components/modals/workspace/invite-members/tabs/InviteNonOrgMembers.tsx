@@ -76,7 +76,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
         <Editor
-          className="border border-appBorder h-48"
+          className="border border-appBorder !h-48"
           value={value}
           onChange={(e) => onChange({ value: e.target.value })}
           language={EEditorLanguage.Text}

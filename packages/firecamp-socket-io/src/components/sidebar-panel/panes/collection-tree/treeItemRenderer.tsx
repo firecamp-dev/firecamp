@@ -167,7 +167,7 @@ export default {
             )}
           >
             {item.data.__ref.isFolder ? (
-              <span className="w-full overflow-hidden overflow-ellipsis items-center block">
+              <span className="w-full overflow-hidden text-ellipsis items-center block">
                 {title}
               </span>
             ) : (

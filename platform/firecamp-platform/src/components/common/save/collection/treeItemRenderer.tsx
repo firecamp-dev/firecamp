@@ -135,7 +135,7 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <span className="w-full overflow-hidden overflow-ellipsis">
+            <span className="w-full overflow-hidden text-ellipsis">
               {title}
             </span>
           </InteractiveComponent>

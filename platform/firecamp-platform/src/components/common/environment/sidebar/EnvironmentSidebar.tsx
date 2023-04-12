@@ -228,7 +228,7 @@ const Globals = () => {
     <div className="rct-tree-item-li focus:rct-tree-item-li-focused border-b border-appBorder">
       <div className="px-2 mt-5 mb-1 rct-tree-item-title-container focus:rct-tree-item-title-container-focused hover:rct-tree-item-title-container-focused !opacity-100 cursor-pointer">
         <VscJson className="flex-none" size={18} opacity={1} />
-        <span className="w-full overflow-hidden overflow-ellipsis items-center block pl-1 text-base">
+        <span className="w-full overflow-hidden text-ellipsis items-center block pl-1 text-base">
           {globalEnv?.name}
         </span>
         <div className="flex ml-auto rct-tree-item-li-action items-center">

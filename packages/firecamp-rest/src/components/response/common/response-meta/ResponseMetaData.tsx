@@ -41,7 +41,7 @@ const ResponseMetaData = () => {
       {/* <div>Response</div> */}
       {response && contentType && contentType.length ? (
         <div
-          className="whitespace-nowrap text-xs text-primaryColor w-fit overflow-hidden ml-4 overflow-ellipsis"
+          className="whitespace-nowrap text-xs text-primaryColor w-fit overflow-hidden ml-4 text-ellipsis"
           style={{ fontSize: '11px' }}
         >
           {contentType}
