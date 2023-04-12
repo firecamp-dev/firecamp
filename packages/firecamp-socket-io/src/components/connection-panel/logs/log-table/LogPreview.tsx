@@ -9,24 +9,35 @@ import {
   Editor,
   EditorControlBar,
 } from '@firecamp/ui';
-import { EEditorLanguage } from '@firecamp/types';
+import { EArgumentBodyType, EEditorLanguage } from '@firecamp/types';
 import AckIcon from './AckIcon';
-import { ELogColors, ELogTypes, ILog } from '@firecamp/socket.io-executor/dist/esm';
+import {
+  ELogColors,
+  ELogTypes,
+  ILog,
+} from '@firecamp/socket.io-executor/dist/esm';
 
 const emptyRow: ILog = {
-
   title: '',
-  value: [{
-    value: '',
-    type: 'text'
-  }],
-  __meta: { ackRef: false, event: '', type: ELogTypes.System, color: ELogColors.Warning, timestamp: new Date().valueOf() },
-  __ref: { id: '' }
+  value: [
+    {
+      value: '',
+      type: EArgumentBodyType.Text,
+    },
+  ],
+  __meta: {
+    ackRef: false,
+    event: '',
+    type: ELogTypes.System,
+    color: ELogColors.Warning,
+    timestamp: new Date().valueOf(),
+  },
+  __ref: { id: '' },
 };
 
 const LogPreview = ({ row = emptyRow }) => {
-  if (!row) return <></>
-  console.log(row, '...... preview ......')
+  if (!row) return <></>;
+  console.log(row, '...... preview ......');
   const [selectedArgIndex, setSelectedArgIndex] = useState(0);
   const [value, setValue] = useState<string | number | boolean>('');
   const [editor, setEditor] = useState(null);
@@ -60,7 +71,7 @@ const LogPreview = ({ row = emptyRow }) => {
       ? EEditorLanguage.Json
       : EEditorLanguage.Text;
 
-  console.log(row, 'in preview...')
+  console.log(row, 'in preview...');
 
   return (
     <Column flex={1} minHeight={100} overflow="auto">
@@ -69,7 +80,9 @@ const LogPreview = ({ row = emptyRow }) => {
           <Header
             row={row || {}}
             emitterArg={row?.value?.[selectedArgIndex]}
-            postComponent={<EditorControlBar editor={editor} language={language} />}
+            postComponent={
+              <EditorControlBar editor={editor} language={language} />
+            }
           />
         </Container.Header>
         <Container.Body>
@@ -99,7 +112,6 @@ const LogPreview = ({ row = emptyRow }) => {
 export default LogPreview;
 
 const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
-
   const isEventSent = row.__meta.type == ELogTypes.Send;
   const isEventReceived = row.__meta.type == ELogTypes.Receive;
   const isEventFromSystem = row.__meta.type == ELogTypes.System;
@@ -150,9 +162,11 @@ const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
         </span> */}
 
         <div className="font-sm">
-          {row?.__meta?.timestamp
-            ? `Time: ${new Date(row?.__meta.timestamp).toLocaleTimeString()}`
-            : <></>}
+          {row?.__meta?.timestamp ? (
+            `Time: ${new Date(row?.__meta.timestamp).toLocaleTimeString()}`
+          ) : (
+            <></>
+          )}
         </div>
         {postComponent}
       </TabHeader.Right>
@@ -162,7 +176,7 @@ const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
 const Footer = ({
   args = [],
   selectedArgIndex = 0,
-  setSelectedArgIndex = () => { },
+  setSelectedArgIndex = () => {},
 }) => {
   const [tabs, setTabs] = useState(
     args.map((arg, index) => {

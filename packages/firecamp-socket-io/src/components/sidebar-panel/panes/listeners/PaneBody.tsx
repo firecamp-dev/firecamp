@@ -13,17 +13,15 @@ import {
 import { IStore, useStore, useStoreApi } from '../../../../store';
 
 const PaneBody = () => {
-  const { listeners, activeListeners, activePlayground, toggleAllListeners } =
-    useStore(
-      (s: IStore) => ({
-        listeners: s.request.listeners,
-        activeListeners:
-          s.playgrounds[s.runtime.activePlayground]?.activeListeners,
-        toggleAllListeners: s.toggleAllListeners,
-        activePlayground: s.runtime.activePlayground,
-      }),
-      shallow
-    );
+  const { tabId, listeners, activeListeners, toggleAllListeners } = useStore(
+    (s: IStore) => ({
+      tabId: s.runtime.tabId,
+      listeners: s.request.listeners,
+      activeListeners: s.playground.activeListeners,
+      toggleAllListeners: s.toggleAllListeners,
+    }),
+    shallow
+  );
 
   return (
     <Column className="h-full">
@@ -69,7 +67,7 @@ const PaneBody = () => {
                 <TabHeader>
                   <TabHeader.Right>
                     <Button
-                      key={`listener-off-all-${activePlayground}`}
+                      key={`listener-off-all-${tabId}`}
                       text="Listen off all"
                       onClick={() => {
                         toggleAllListeners(false);
@@ -80,7 +78,7 @@ const PaneBody = () => {
                       xs
                     />
                     <Button
-                      key={`listener-on-all-${activePlayground}`}
+                      key={`listener-on-all-${tabId}`}
                       text="Listen all"
                       onClick={() => {
                         toggleAllListeners(true);
@@ -158,10 +156,13 @@ const AddListener = () => {
 };
 
 const Listener = ({ listener, isActive }) => {
-  const { toggleListener, deleteListener, getActiveConnectionId } =
-    useStoreApi().getState() as IStore;
+  const {
+    toggleListener,
+    deleteListener,
+    runtime: { tabId },
+  } = useStoreApi().getState() as IStore;
   const { id, name } = listener;
-  const uniqueId = `${getActiveConnectionId()}-${id}-listen`;
+  const uniqueId = `${tabId}-${id}-listen`;
   return (
     <div className="flex justify-center items-center relative px-2 py-0.5 group hover:bg-focus2">
       <div

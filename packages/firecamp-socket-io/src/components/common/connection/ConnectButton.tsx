@@ -6,8 +6,7 @@ import { IStore, useStore } from '../../../store';
 const ConnectionButton = () => {
   const { connectionState, connect, disconnect } = useStore(
     (s: IStore) => ({
-      connectionState:
-        s.playgrounds[s.runtime.activePlayground]?.connectionState,
+      connectionState: s.playground.connectionState,
       connect: s.connect,
       disconnect: s.disconnect,
     }),

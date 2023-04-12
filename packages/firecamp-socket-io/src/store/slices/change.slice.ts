@@ -54,9 +54,10 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
 
     for (let key in request) {
       switch (key) {
+        case EReqChangeRootKeys.connection:
         case EReqChangeRootKeys.config:
-        case EReqChangeRootKeys.headers:
         case EReqChangeRootKeys.listeners:
+          // console.log(_request[key], request[key], 88888);
           if (!equal(_request[key], request[key])) {
             if (!_rcs.__root.includes(key)) _rcs.__root.push(key);
           } else {

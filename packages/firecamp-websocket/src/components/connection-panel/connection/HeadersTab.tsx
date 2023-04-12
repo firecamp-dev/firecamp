@@ -2,8 +2,8 @@ import { EEditorLanguage } from '@firecamp/types';
 import { BulkEditTable } from '@firecamp/ui';
 
 const HeadersTab = ({
+  id,
   headers = [],
-  activeConnectionId = '',
   onUpdate = (data) => {},
 }) => {
   return (
@@ -12,8 +12,8 @@ const HeadersTab = ({
         // console.log(`headers updated`, data);
         onUpdate(data);
       }}
-      key={`headers-${activeConnectionId}`}
-      id={`headers-${activeConnectionId}`}
+      key={`headers-${id}`}
+      id={`headers-${id}`}
       rows={headers || []}
       title={'headers'}
       options={{

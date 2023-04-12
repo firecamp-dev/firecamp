@@ -24,7 +24,7 @@ const EmitterPlayground = () => {
     emit,
   } = useStore(
     (s: IStore) => ({
-      playground: s.playgrounds[s.runtime.activePlayground],
+      playground: s.playground,
       __meta: s.request.__meta,
       __manualUpdates: s.__manualUpdates,
       changePlgArgType: s.changePlgArgType,
@@ -40,14 +40,14 @@ const EmitterPlayground = () => {
   );
   const { emitter: plgEmitter, activeArgIndex = 0 } = playground;
 
-  console.log('this is the playground');
+  // console.log('this is the playground');
   return (
     <Container>
       <BodyControls
-        // isSaveEmitterPopoverOpen={true}
-        // tabData={{ id: 123 }}
-        // activeType={{ id: 'text' }}
-        // editorCommands={EditorCommands}
+      // isSaveEmitterPopoverOpen={true}
+      // tabData={{ id: 123 }}
+      // activeType={{ id: 'text' }}
+      // editorCommands={EditorCommands}
       />
       <Container.Header className="!px-2 !py-2">
         <Input

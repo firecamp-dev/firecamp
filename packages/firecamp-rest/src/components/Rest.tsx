@@ -115,13 +115,13 @@ const Rest = ({ tab, platformContext }) => {
   if (isFetchingRequest === true) return <Loader />;
   return (
     <Container className="h-full with-divider" overflow="visible">
-      <UrlBarContainer tabId={tab.id} />
+      <UrlBarContainer />
       <Container.Body>
         <Row flex={1} className="with-divider h-full" overflow="auto">
-          <Request tabId={tab.id} />
+          <Request />
           <Response />
         </Row>
-        {/* <CodeSnippets tabId={tab.id} getPlatformEnvironments={() => {}} /> */}
+        {/* <CodeSnippets  getPlatformEnvironments={() => {}} /> */}
       </Container.Body>
     </Container>
   );

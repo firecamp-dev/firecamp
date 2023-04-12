@@ -26,19 +26,18 @@ const logTypes = {
 
 const Logs = () => {
   const {
+    tabId,
     socketId,
     typeFilter,
     logs,
-    activePlayground,
     clearLogs,
     changePlaygroundLogFilters,
   } = useStore(
     (s: IStore) => ({
-      socketId: s.playgrounds[s.runtime.activePlayground]?.socketId,
-      activePlayground: s.runtime.activePlayground,
-      typeFilter:
-        s.playgrounds?.[s.runtime.activePlayground]?.logFilters?.type || '',
-      logs: s.logs?.[s.runtime.activePlayground] || [],
+      tabId: s.runtime.tabId,
+      socketId: s.playground.socketId,
+      typeFilter: s.playground.logFilters?.type || '',
+      logs: s.logs || [],
       clearLogs: s.clearLogs,
       changePlaygroundLogFilters: s.changePlaygroundLogFilters,
     }),
@@ -71,10 +70,10 @@ const Logs = () => {
     //   };
     // });
     logTableApiRef.current?.initialize(filteredLogs);
-  }, [logs, typeFilter, activePlayground]);
+  }, [logs, typeFilter]);
 
   const _onClearAllMessages = () => {
-    clearLogs(activePlayground);
+    clearLogs();
     setSelectedRow(null);
   };
 
@@ -117,7 +116,7 @@ const Logs = () => {
                           className="fc-dropdown-fixwidth"
                         >
                           <Dropdown.Handler
-                            id={`websocket-response-log-${activePlayground}-filter-event`}
+                            id={`websocket-response-log-${tabId}-filter-event`}
                           >
                             <Button
                               text={typeFilter || 'select log type'}
@@ -161,15 +160,13 @@ const Logs = () => {
                     <div className="fc-tab-panel-info whitespace-pre">
                       {socketId ? (
                         [
-                          <label key={`label-${activePlayground}`}>
-                            Connection id:
-                          </label>,
-                          <span key={`socket-id-${activePlayground}`}>
+                          <label key={`label-${tabId}`}>Connection id:</label>,
+                          <span key={`socket-id-${tabId}`}>
                             {socketId || '-'}
                           </span>,
                           <CopyButton
-                            id={activePlayground}
-                            key={`copy-socketId-${activePlayground}`}
+                            id={tabId}
+                            key={`copy-socketId-${tabId}`}
                             text={socketId || ''}
                           />,
                         ]

@@ -41,7 +41,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
       version: ESocketIOClientVersion.v4,
       onConnectListeners: [],
     },
-    connections: [],
+    connection: _cloneDeep(RequestConnection),
     listeners: [],
     __meta: {
       name: '',
@@ -53,7 +53,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
 
   const {
     url,
-    connections = _nr.connections,
+    connection = _nr.connection,
     listeners,
     config = _nr.config,
     __meta = _nr.__meta,
@@ -83,13 +83,13 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   _nr.__ref.createdBy = __ref.createdBy || '';
   _nr.__ref.updatedBy = __ref.updatedBy || '';
 
-  // normalize connections
-  _nr.connections = [];
-  _nr.connections = connections.map(
-    (connection: ISocketIOConnection) =>
-      _object.mergeDeep(RequestConnection, connection) as ISocketIOConnection
-  );
-  if (!_nr.connections?.length) _nr.connections = [RequestConnection];
+  // normalize connection
+  _nr.connection = {} as ISocketIOConnection;
+  _nr.connection = _object.mergeDeep(
+    RequestConnection,
+    connection
+  ) as ISocketIOConnection;
+  if (!_nr.connection) _nr.connection = _cloneDeep(RequestConnection);
 
   // normalize listeners
   if (Array.isArray(listeners)) _nr.listeners = listeners;
@@ -107,51 +107,30 @@ export const initialiseStoreFromRequest = (
   }
 ): ISocket => {
   const request: ISocketIO = normalizeRequest(_request);
-  const defaultConnection =
-    request.connections?.find((c) => c.isDefault === true) || RequestConnection;
-  const playgroundId = defaultConnection.id;
-
-  const url = _url.updateByQuery(request.url, defaultConnection.queryParams);
-  const displayUrl = url.raw;
+  if (!request.connection) request.connection = _cloneDeep(RequestConnection);
+  request.url = _url.updateByQuery(request.url, request.connection.queryParams);
 
   return {
     request,
     runtime: {
-      displayUrl,
-      activePlayground: defaultConnection.id,
-      playgroundTabs: [
-        {
-          id: defaultConnection.id,
-          name: defaultConnection.name,
-          __meta: {
-            isSaved: false,
-            hasChange: false,
-          },
-        },
-      ],
       isRequestRunning: false,
       isRequestSaved: !!request.__ref.collectionId,
       tabId: __meta?.tabId,
       requestPath: __meta?.requestPath,
     },
-    playgrounds: {
-      // add logic for init playgrounds by connections
-      [defaultConnection.id]: {
-        id: defaultConnection.id,
-        connectionState: EConnectionState.Ideal,
-        logFilters: {
-          type: '',
-          event: '',
-        },
-        emitter: InitPlayground,
-        selectedEmitterId: '',
-        activeListeners: [],
-        activeArgIndex: 0,
+    playground: {
+      connectionState: EConnectionState.Ideal,
+      logFilters: {
+        type: '',
+        event: '',
       },
+      emitter: InitPlayground,
+      selectedEmitterId: '',
+      activeListeners: [],
+      activeArgIndex: 0,
+      playgroundHasChanges: false,
     },
-    logs: {
-      [playgroundId]: [],
-    },
+    logs: [],
     ui: {
       isFetchingRequest: false,
     },

@@ -1,10 +1,10 @@
+import ws from 'ws';
 import {
   ICertificate,
   IWebSocketConfig,
   IWebSocketConnection,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
-import ws from 'ws';
 import { _array, _string, _table } from '@firecamp/utils';
 import fetchCertificates from './ssl-manager';
 import { ClientOptions, EClientOptionsDefaultValues } from './constants';
@@ -103,7 +103,10 @@ export default class ConfigGenerator {
     }
   }
 
-  private setCACertificate(config: IWebSocketConfig, certificates: ICertificate[]) {
+  private setCACertificate(
+    config: IWebSocketConfig,
+    certificates: ICertificate[]
+  ) {
     if (config.rejectUnauthorized) {
       const certificate = fetchCertificates(certificates, this.address);
 
@@ -118,8 +121,8 @@ export default class ConfigGenerator {
   }
 
   private setPingInfo(connection: IWebSocketConnection) {
-    this.clientOptions.ping = connection.config?.ping || false;
-    this.clientOptions.pingInterval = connection.config?.pingInterval || 3000;
+    this.clientOptions.ping = connection?.ping || false;
+    this.clientOptions.pingInterval = connection?.pingInterval || 3000;
   }
 
   prepare() {

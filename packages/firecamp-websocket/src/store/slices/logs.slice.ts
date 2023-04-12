@@ -1,4 +1,4 @@
-import { TId, EMessageBodyType } from '@firecamp/types';
+import { EMessageBodyType } from '@firecamp/types';
 import { ELogColors, ELogTypes, ILog } from '@firecamp/ws-executor/dist/esm';
 import { TStoreSlice } from '../store.type';
 
@@ -20,50 +20,23 @@ const emptyLog: ILog = {
   },
 };
 
-interface ILogs {
-  [key: string]: ILog[];
-}
-
 interface ILogsSlice {
-  logs: ILogs;
-  addLog: (connectionId: TId, log: ILog) => void;
-  clearLogs: (connectionId: TId) => void;
+  logs: ILog[];
+  addLog: (log: ILog) => void;
+  clearLogs: () => void;
 }
 
 const createLogsSlice: TStoreSlice<ILogsSlice> = (set, get) => ({
-  logs: {},
-  addLog: (connectionId: TId, log: ILog) => {
+  logs: [],
+  addLog: (log: ILog) => {
     // console.log({ log });
-    const { logs } = get();
-    console.log(logs, 12324);
-    if (connectionId in logs) {
-      const cLogs = logs[connectionId];
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [connectionId]: [...cLogs, { ...emptyLog, ...log }],
-        },
-      }));
-    } else {
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [connectionId]: [log],
-        },
-      }));
-    }
+    set((s) => ({
+      logs: [...s.logs, { ...emptyLog, ...log }],
+    }));
   },
-  clearLogs: (connectionId: TId) => {
-    const logs = get()?.logs;
-    if (connectionId in logs) {
-      set((s) => ({
-        logs: {
-          ...s.logs,
-          [connectionId]: [],
-        },
-      }));
-    }
+  clearLogs: () => {
+    set((s) => ({ logs: [] }));
   },
 });
 
-export { emptyLog, ILogs, ILogsSlice, createLogsSlice };
+export { emptyLog, ILogsSlice, createLogsSlice };
