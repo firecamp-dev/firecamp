@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
 import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
+import * as scriptRunner from '@firecamp/scripts/dist/esm';
 import {
   EKeyValueTableRowType,
   ERestBodyTypes,
@@ -13,7 +14,6 @@ import { _env, _array, _object, _table } from '@firecamp/utils';
 import _url from '@firecamp/url';
 import parseBody from './helpers/body';
 import { IRestExecutor } from './types';
-import * as scriptRunner from './script-runner';
 
 export default class RestExecutor implements IRestExecutor {
   private _controller: AbortController;

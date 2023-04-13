@@ -2,7 +2,6 @@ import { FC } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import UrlEditor from './primitives/UrlEditor';
 import UrlBar from './primitives/UrlBar';
-import _url from '@firecamp/url';
 
 const Url: FC<IUrl> = ({
   id,
