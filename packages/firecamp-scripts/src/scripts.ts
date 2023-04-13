@@ -1,4 +1,3 @@
-// import Joi from '@hapi/joi';
 import tv4 from 'tv4';
 import {
   EScriptTypes,
@@ -10,8 +9,6 @@ import {
 import { _misc, _string } from '@firecamp/utils';
 import jsExecutor from './lib/js-executor';
 import Fc from './fc';
-
-export * from './snippets';
 
 export const preScript: TPreScript = async (
   request: IRest,
@@ -49,7 +46,11 @@ export const preScript: TPreScript = async (
 export const testScript: TTestScript = async (
   request: IRest,
   response: IRestResponse,
-  variables: IVariableGroup = { globals: [], environment: [], collectionVariables: [] }
+  variables: IVariableGroup = {
+    globals: [],
+    environment: [],
+    collectionVariables: [],
+  }
 ) => {
   const fc = new Fc(request, response, variables);
   if (!request?.postScripts?.length) return { fc: fc.toJSON() };
