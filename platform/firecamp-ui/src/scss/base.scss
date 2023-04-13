@@ -114,10 +114,6 @@
 	  --selectd: #ffffff17;
 	  --cm-string: #b5cea8;
 
-    .invert img {
-      filter: invert(0.8);
-    }
-
   }
   .theme-light.primary-green,.theme-dark.primary-green{
     --app-primary: #2daf57 !important;
@@ -205,11 +201,14 @@
 	  --ace-constant: #a31515;
 	  --selectd: #00000017;
 	  --cm-string: #098658;
+    
+  }
 
-    .invert img {
-      filter: invert(0);
-    }
-
+  .invert img {
+    filter: invert(0.8);
+  }
+  .theme-light .invert img {
+    filter: invert(0);
   }
 }
 
