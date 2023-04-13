@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "ESNext",
+    "outDir": "dist/cjs",
+    "rootDir": "src",
+    "moduleResolution": "node",
+    "module": "CommonJS",
+    "declaration": true,
+    "inlineSourceMap": true,
+    "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
+    "resolveJsonModule": true /* Include modules imported with .json extension. */,
+    "noUnusedLocals": true /* Report errors on unused locals. */,
+    "noUnusedParameters": false /* Report errors on unused parameters. */,
+    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
+    /* Debugging Options */
+    "traceResolution": false /* Report module resolution log messages. */,
+    "listEmittedFiles": false /* Print names of generated files part of the compilation. */,
+    "listFiles": false /* Print names of files part of the compilation. */,
+    "pretty": true /* Stylize errors and messages using color and context. */,
+    "types": [
+      "node",
+      "@types/jest",
+      "jest",
+      "@types/chrome",
+      "chrome",
+      "mocha"
+    ],
+    "typeRoots": ["node_modules/@types", "node_modules/@firecamp/types"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules/**"],
+  "compileOnSave": false
+}

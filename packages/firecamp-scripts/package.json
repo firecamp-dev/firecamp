@@ -1,9 +1,8 @@
 {
-  "name": "@firecamp/rest-executor",
-  "version": "1.0.8",
-  "description": "REST request executor",
+  "name": "@firecamp/scripts",
+  "version": "0.0.1",
+  "description": "Firecamp Scripts Library",
   "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
-  "license": "",
   "keywords": [],
   "scripts": {
     "build": "run-p 'build:*'",
@@ -17,22 +16,14 @@
     "test:lint": "eslint src --ext .ts",
     "test:prettier": "prettier \"src/**/*.ts\" --list-different",
     "test:spelling": "cspell \"{README.md,.github/*.md,src/**/*.ts}\"",
-    "check-cli": "run-s test diff-integration-tests check-integration-tests",
     "check-integration-tests": "run-s check-integration-test:*",
-    "diff-integration-tests": "mkdir -p diff && rm -rf diff/test && cp -r test diff/test && rm -rf diff/test/test-*/.git && cd diff && git init --quiet && git add -A && git commit --quiet --no-verify --allow-empty -m 'WIP' && echo '\\n\\nCommitted most recent integration test output in the \"diff\" directory. Review the changes with \"cd diff && git diff HEAD\" or your preferred git diff viewer.'",
     "watch:build": "tsc -p tsconfig.json -w",
-    "doc": "run-s doc:html && open-cli build/docs/index.html",
-    "doc:html": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --out build/docs",
-    "doc:json": "typedoc src/ --exclude **/*.spec.ts --target ES6 --mode file --json build/docs/typedoc.json",
-    "version": "standard-version",
-    "reset-hard": "git clean -dfx && git reset --hard && npm i",
-    "prepare-release": "run-s reset-hard test cov:check doc:html version doc:publish"
+    "version": "standard-version"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "dependencies": {
-    "@firecamp/scripts": "workspace:*",
     "@firecamp/types": "^0.2.1",
     "@firecamp/url": "0.0.20",
     "@firecamp/utils": "^0.0.21",
