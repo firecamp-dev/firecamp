@@ -177,10 +177,16 @@ const useTabStore = create<ITabStore>((set, get) => {
       }
 
       const tabId = nanoid();
+      let name =
+        entity.name || entity.__meta?.name || `untitled ${entityMeta.type}`;
+      if (entityMeta.type == ETabEntityTypes.Collection) {
+        name = `Collection: ${name}`;
+      } else if (entityMeta.type == ETabEntityTypes.Folder) {
+        name = `Folder: ${name}`;
+      }
       const tab: IEntityTab<typeof entity> = {
         id: tabId,
-        name:
-          entity.name || entity.__meta?.name || `untitled ${entityMeta.type}`,
+        name,
         entity,
         __meta: {
           entityId: entityMeta.id,
