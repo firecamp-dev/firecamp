@@ -5,15 +5,19 @@ import ConnectButton from '../connection/ConnectButton';
 import { IStore, useStore } from '../../../store';
 
 const UrlBarContainer = ({ tab }) => {
-  const { url, requestPath, changeUrl, save } = useStore(
-    (s: IStore) => ({
-      url: s.request.url,
-      requestPath: s.runtime.requestPath,
-      changeUrl: s.changeUrl,
-      save: s.save,
-    }),
-    shallow
-  );
+  const { context, url, __meta, __ref, requestPath, changeUrl, save } =
+    useStore(
+      (s: IStore) => ({
+        context: s.context,
+        url: s.request.url,
+        __meta: s.request.__meta,
+        __ref: s.request.__ref,
+        requestPath: s.runtime.requestPath,
+        changeUrl: s.changeUrl,
+        save: s.save,
+      }),
+      shallow
+    );
 
   const _onSave = async () => {
     try {
@@ -42,12 +46,13 @@ const UrlBarContainer = ({ tab }) => {
       // onPaste={_onPaste}
       // onEnter={_onExecute}
       promptRenameRequest={() => {
-        // context.app.modals.openEditRequest({
-        //   name: __meta.name,
-        //   description: __meta.description,
-        //   collectionId: __ref.collectionId,
-        //   requestId: __ref.id,
-        // });
+        context.app.modals.openEditRequest({
+          name: __meta.name,
+          description: __meta.description,
+          collectionId: __ref.collectionId,
+          requestId: __ref.id,
+          requestType: __meta.type,
+        });
       }}
       prefixComponent={<Button text={'WebSocket'} secondary sm />}
       suffixComponent={

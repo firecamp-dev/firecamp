@@ -45,7 +45,7 @@ interface IPlatformRequestService {
   };
 
   // save and update request
-  save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
+  save: (request: any, tabId?: TId, isNew?: boolean) => Promise<any>;
 
   // request folders
   createRequestFolderPrompt: (
@@ -209,6 +209,7 @@ const request: IPlatformRequestService = {
           return _request;
         })
         .then((_request) => {
+          if (!tabId) return _request;
           tabState.changeRootKeys(tabId, {
             name: _request.__meta?.name,
             entity: {
@@ -243,6 +244,7 @@ const request: IPlatformRequestService = {
           return res.data;
         })
         .then((request) => {
+          if (!tabId) return request;
           // update tab meta on save request
           tabState.changeMeta(tabId, {
             isSaved: true,

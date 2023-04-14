@@ -92,6 +92,7 @@ const UrlBarContainer = () => {
           description: __meta.description,
           collectionId: __ref.collectionId,
           requestId: __ref.id,
+          requestType: __meta.type
         });
       }}
       prefixComponent={
