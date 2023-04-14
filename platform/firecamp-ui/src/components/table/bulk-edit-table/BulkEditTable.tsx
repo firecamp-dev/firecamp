@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import isEqual from 'react-fast-compare';
 import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui';
-import { _table } from '@firecamp/utils';
+import { _misc, _table } from '@firecamp/utils';
 import { EEditorLanguage } from '@firecamp/types';
 // import { default as TabHeader } from '../tab-header/TabHeader';
 // import { default as Button } from '../buttons/Button';
@@ -43,8 +43,6 @@ const BulkEditTable: FC<IBulkEditTable> = ({
   }, [rows, mode]);
 
   const _setRaw = (editorString: string) => {
-    setRaw(editorString);
-
     try {
       if (editorString.length) {
         const tableArray = [..._table.textToTable(editorString)];
@@ -64,6 +62,16 @@ const BulkEditTable: FC<IBulkEditTable> = ({
       onChange(newRows);
     }
   };
+  
+  // Solution-2  add debounce to render table row data or track end-points to render data like newline
+  // const debounceUpdateTableRow = _misc.debounce(200, _setRaw);
+  
+  const _handleEditorValue = (editorString: string) => {
+    setRaw(editorString);
+
+    // Solution-2 uncomment below code to update the table values
+    // debounceUpdateTableRow(editorString)
+  }
 
   return (
     <div>
@@ -83,6 +91,8 @@ const BulkEditTable: FC<IBulkEditTable> = ({
             sm
             onClick={() => {
               setMode(mode === modes.Table ? modes.Raw : modes.Table);
+              // Solution-1 render raw data to table data only when required
+              if(mode === modes.Raw) _setRaw(raw);
             }}
           />
         </TabHeader.Right>
@@ -101,7 +111,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
           <Editor
             value={raw}
             language={EEditorLanguage.Text}
-            onChange={({ target: { value } }) => _setRaw(value)}
+            onChange={({ target: { value } }) => _handleEditorValue(value)}
             placeholder={`
             key:value    (a new entry should be added to the line with the key, value separated by a ':')
             `}
