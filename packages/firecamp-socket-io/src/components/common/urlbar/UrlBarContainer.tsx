@@ -6,8 +6,9 @@ import ConnectionButton from '../connection/ConnectButton';
 import { SIOVersionOptions } from '../../../constants';
 import { IStore, useStore } from '../../../store';
 
-const UrlBarContainer = ({ tab }) => {
+const UrlBarContainer = () => {
   const {
+    tabId,
     url,
     version,
     __meta,
@@ -18,9 +19,9 @@ const UrlBarContainer = ({ tab }) => {
     connect,
     changeUrl,
     changeConfig,
-    save,
   } = useStore(
     (s: IStore) => ({
+      tabId: s.runtime.tabId,
       url: s.request.url,
       version: s.request.config.version,
       __meta: s.request.__meta,
@@ -31,18 +32,9 @@ const UrlBarContainer = ({ tab }) => {
       changeUrl: s.changeUrl,
       changeConfig: s.changeConfig,
       connect: s.connect,
-      save: s.save,
     }),
     shallow
   );
-
-  const _onSave = async () => {
-    try {
-      save(tab.id);
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const _handleUrlChange = (e: {
     preventDefault: () => void;
@@ -66,7 +58,7 @@ const UrlBarContainer = ({ tab }) => {
 
   return (
     <Url
-      id={`url-${tab.id}`}
+      id={`url-${tabId}`}
       path={requestPath?.path || 'Untitled Request'}
       placeholder={'http://'}
       isRequestSaved={isRequestSaved}
@@ -80,29 +72,18 @@ const UrlBarContainer = ({ tab }) => {
           description: __meta.description,
           collectionId: __ref.collectionId,
           requestId: __ref.id,
+          requestType: __meta.type,
         });
       }}
       prefixComponent={
         <SIOVersionDropDown
-          id={tab.id}
+          id={tabId}
           options={SIOVersionOptions}
           selectedOption={SIOVersionOptions.find((v) => v.version == version)}
           onSelectItem={(v) => changeConfig('version', v.version)}
         />
       }
-      suffixComponent={
-        <>
-          <ConnectionButton />
-          <Button
-            id={`save-request-${tab.id}`}
-            text="Save"
-            disabled={false}
-            onClick={_onSave}
-            secondary
-            sm
-          />
-        </>
-      }
+      suffixComponent={<PrefixButtons />}
     />
   );
 };
@@ -130,5 +111,39 @@ const SIOVersionDropDown: FC<any> = ({
       </Dropdown.Handler>
       <Dropdown.Options options={options} onSelect={(o) => onSelectItem(o)} />
     </Dropdown>
+  );
+};
+
+const PrefixButtons = () => {
+  const { tabId, isUpdatingRequest, save } = useStore(
+    (s: IStore) => ({
+      tabId: s.runtime.tabId,
+      isUpdatingRequest: s.ui.isUpdatingRequest,
+      save: s.save,
+    }),
+    shallow
+  );
+
+  const _onSave = async () => {
+    try {
+      save(tabId);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // const isSaveBtnDisabled = isRequestSaved ? !requestHasChanges : false;
+  return (
+    <>
+      <ConnectionButton />
+      <Button
+        id={`save-request-${tabId}`}
+        text={isUpdatingRequest ? 'Saving...' : 'Save'}
+        disabled={false} // isSaveBtnDisabled
+        onClick={_onSave}
+        secondary
+        sm
+      />
+    </>
   );
 };

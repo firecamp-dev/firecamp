@@ -42,7 +42,6 @@ const Explorer: FC<any> = () => {
     openImportTab,
     updateCollection,
     updateFolder,
-    updateRequest,
     moveRequest,
     moveFolder,
 
@@ -58,7 +57,6 @@ const Explorer: FC<any> = () => {
       openImportTab: s.openImportTab,
       updateCollection: s.updateCollection,
       updateFolder: s.updateFolder,
-      updateRequest: s.updateRequest,
 
       moveRequest: s.moveRequest,
       moveFolder: s.moveFolder,
@@ -105,13 +103,29 @@ const Explorer: FC<any> = () => {
       return false;
     }
 
+    // console.log(item, 'request item...');
     let res: any;
     try {
       if (item.__ref.isCollection)
         res = updateCollection(item.__ref.id, { name });
       if (item.__ref.isFolder) res = updateFolder(item.__ref.id, { name });
-      if (item.__ref.isRequest)
-        res = updateRequest(item.__ref.id, { __meta: { name } });
+      if (item.__ref.isRequest) {
+        res = await platformContext.request.save(
+          {
+            __meta: {
+              name,
+              type: item.__meta.type,
+            },
+            __ref: {
+              id: item.__ref.id,
+              collectionId: item.__ref.collectionId,
+              folderId: item.__ref.folderId,
+            },
+            __changes: { __meta: ['name'] },
+          },
+          ''
+        );
+      }
     } catch (e) {
       //TODO: undo renaming using treeRef
     } finally {

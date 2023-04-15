@@ -1,5 +1,13 @@
 import { useEffect } from 'react';
-import { Container, Row, RootContainer, Column, Loader } from '@firecamp/ui';
+import shallow from 'zustand/shallow';
+import {
+  Container,
+  Row,
+  RootContainer,
+  Column,
+  Loader,
+  ProgressBar,
+} from '@firecamp/ui';
 import _cloneDeep from 'lodash/cloneDeep';
 import _url from '@firecamp/url';
 import { _array, _object } from '@firecamp/utils';
@@ -15,16 +23,19 @@ const Socket = ({ tab, platformContext }) => {
     initialise,
     initialiseCollection,
     setRequestSavedFlag,
-    setIsFetchingReqFlag,
+    toggleFetchingReqFlag,
     setContext,
-  } = useStore((s: IStore) => ({
-    isFetchingRequest: s.ui.isFetchingRequest,
-    initialise: s.initialise,
-    initialiseCollection: s.initialiseCollection,
-    setRequestSavedFlag: s.setRequestSavedFlag,
-    setIsFetchingReqFlag: s.setIsFetchingReqFlag,
-    setContext: s.setContext,
-  }));
+  } = useStore(
+    (s: IStore) => ({
+      isFetchingRequest: s.ui.isFetchingRequest,
+      initialise: s.initialise,
+      initialiseCollection: s.initialiseCollection,
+      setRequestSavedFlag: s.setRequestSavedFlag,
+      toggleFetchingReqFlag: s.toggleFetchingReqFlag,
+      setContext: s.setContext,
+    }),
+    shallow
+  );
 
   //set context to store
   useEffect(() => {
@@ -60,7 +71,7 @@ const Socket = ({ tab, platformContext }) => {
         let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the reuqest to prepare minimal request for tab
 
         if (isRequestSaved === true) {
-          setIsFetchingReqFlag(true);
+          toggleFetchingReqFlag(true);
           try {
             const request = await platformContext.request.fetch(requestId);
             _request = { ...request };
@@ -74,7 +85,7 @@ const Socket = ({ tab, platformContext }) => {
         initialise(request, tab.id);
         if (collection && !_object.isEmpty(collection))
           initialiseCollection(collection);
-        setIsFetchingReqFlag(false);
+        toggleFetchingReqFlag(false);
       } catch (e) {
         console.error(e);
 
@@ -89,8 +100,9 @@ const Socket = ({ tab, platformContext }) => {
   if (isFetchingRequest === true) return <Loader />;
   return (
     <RootContainer className="h-full w-full">
+      <RootProgressBar />
       <Container className="h-full with-divider">
-        <UrlBarContainer tab={tab} />
+        <UrlBarContainer />
         <Container.Body>
           <Row flex={1} overflow="auto" className="with-divider h-full">
             <SidebarPanel />
@@ -126,3 +138,13 @@ const withStore = (WrappedComponent) => {
   return MyComponent;
 };
 export default withStore(Socket);
+
+const RootProgressBar = () => {
+  const { isUpdatingRequest } = useStore(
+    (s: IStore) => ({
+      isUpdatingRequest: s.ui.isUpdatingRequest,
+    }),
+    shallow
+  );
+  return <ProgressBar active={isUpdatingRequest} />;
+};

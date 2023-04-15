@@ -53,7 +53,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
     const { request } = get();
     const headersLength = request.headers?.length + authHeaders.length;
     const updatedUiRequestPanel = {
-      hasHeaders: headersLength ? true : false,
       headers: headersLength,
     };
     set((s) => ({

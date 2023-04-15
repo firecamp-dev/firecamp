@@ -17,6 +17,7 @@ interface IRequestChangeState {
 }
 
 interface IRequestChangeStateSlice {
+  requestHasChanges?: boolean;
   requestChangeState?: IRequestChangeState;
   equalityChecker: (request: Partial<IGraphQL>) => void;
   preparePayloadForSaveRequest: () => IGraphQL;
@@ -46,11 +47,12 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
     const state = get();
     const {
       originalRequest: _request,
-      requestChangeState: _rcs,
+      requestChangeState,
       runtime: { isRequestSaved },
     } = state;
     if (!isRequestSaved) return;
 
+    const _rcs = _cloneDeep(requestChangeState);
     for (let key in request) {
       switch (key) {
         case EReqChangeRootKeys.method:
@@ -82,6 +84,10 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
     state.context.tab.changeMeta(state.runtime.tabId, {
       hasChange,
     });
+    set((s) => ({
+      requestChangeState: _rcs,
+      requestHasChanges: hasChange,
+    }));
   },
   preparePayloadForSaveRequest: () => {
     const state = get();
@@ -128,6 +134,7 @@ const createRequestChangeStateSlice: TStoreSlice<IRequestChangeStateSlice> = (
     set((s) => ({
       originalRequest: _cloneDeep(s.request),
       requestChangeState: _cloneDeep(initialSliceState.requestChangeState),
+      requestHasChanges: false,
     }));
   },
 });

@@ -63,7 +63,6 @@ export const prepareUIRequestPanelState = (
           ...updatedUiStore,
           // activeTab: ERequestPanelTabs.Headers,
           headers,
-          hasHeaders: headers !== 0,
         };
         break;
       case 'url':
@@ -74,7 +73,6 @@ export const prepareUIRequestPanelState = (
             ...updatedUiStore,
             // activeTab: ERequestPanelTabs.Params,
             params: queryParamsLength + pathParamsLength,
-            hasParams: queryParamsLength !== 0 || pathParamsLength !== 0,
           };
         }
         break;

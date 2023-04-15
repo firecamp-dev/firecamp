@@ -11,13 +11,15 @@ interface IUiConnectionPanel {
 }
 interface IUi {
   isFetchingRequest: boolean;
+  isUpdatingRequest?: boolean;
   connectionPanel: IUiConnectionPanel;
 }
 interface IUiSlice {
   ui: IUi;
   initializeUi: (ui: IUi) => void;
   changeUiActiveTab: (tabName: string) => void;
-  setIsFetchingReqFlag: (flag: boolean) => void;
+  toggleFetchingReqFlag: (flag: boolean) => void;
+  toggleUpdatingReqFlag: (flag: boolean) => void;
   setUIRequestPanelState?: (uiRequestPanel: { [key: string]: any }) => void;
 }
 const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi) => ({
@@ -41,10 +43,16 @@ const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi) => ({
       },
     }));
   },
-  setIsFetchingReqFlag: (flag: boolean) => {
+  toggleFetchingReqFlag: (flag: boolean) => {
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
     set((s) => ({
       ui: { ...s.ui, isFetchingRequest: flag },
+    }));
+  },
+  toggleUpdatingReqFlag: (flag: boolean) => {
+    if (flag === undefined) flag = !get().ui.isUpdatingRequest;
+    set((s) => ({
+      ui: { ...s.ui, isUpdatingRequest: flag },
     }));
   },
   setUIRequestPanelState: (cPanelUi: { [key: string]: any }) => {
