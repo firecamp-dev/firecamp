@@ -130,6 +130,12 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
+      if (!state.requestHasChanges) {
+        state.context.app.notify.info(
+          "The request doesn't have any changes to be saved."
+        );
+        return null;
+      }
       // update request
       const _request = state.preparePayloadForUpdateRequest();
       state.toggleUpdatingReqFlag(true);
