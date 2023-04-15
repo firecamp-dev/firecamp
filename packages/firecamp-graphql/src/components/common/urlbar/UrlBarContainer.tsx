@@ -3,13 +3,14 @@ import { FaFile } from '@react-icons/all-files/fa/FaFile';
 import shallow from 'zustand/shallow';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { Button, Url, UrlBar, HttpMethodDropDown } from '@firecamp/ui';
+import { Button, Url, HttpMethodDropDown } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
 
 const methods = Object.values(EHttpMethod);
 
-const UrlBarContainer = ({ tab }) => {
+const UrlBarContainer = () => {
   const {
+    tabId,
     url,
     method,
     __meta,
@@ -22,6 +23,7 @@ const UrlBarContainer = ({ tab }) => {
     fetchIntrospectionSchema,
   } = useStore(
     (s: IStore) => ({
+      tabId: s.runtime.tabId,
       url: s.request.url,
       method: s.request.method,
       __meta: s.request.__meta,
@@ -45,7 +47,7 @@ const UrlBarContainer = ({ tab }) => {
 
   return (
     <Url
-      id={`url-${tab.id}`}
+      id={`url-${tabId}`}
       path={requestPath?.path || 'Untitled Request'}
       placeholder={'http://'}
       isRequestSaved={isRequestSaved}
@@ -64,7 +66,7 @@ const UrlBarContainer = ({ tab }) => {
       }}
       prefixComponent={
         <HttpMethodDropDown
-          id={tab.id}
+          id={tabId}
           className={'select-box'} //TODO: check this class is needed or not
           dropdownOptions={methods}
           selectedOption={(method || '').toUpperCase()}

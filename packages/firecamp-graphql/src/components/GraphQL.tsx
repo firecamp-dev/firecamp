@@ -114,7 +114,7 @@ const GraphQL = ({ tab, platformContext }) => {
     <RootContainer className="h-full w-full">
       <RootProgressBar />
       <Container className="h-full with-divider">
-        <UrlBarContainer tab={tab} />
+        <UrlBarContainer />
         <Container.Body>
           <Row flex={1} overflow="auto" className="with-divider h-full">
             <SidebarPanel />

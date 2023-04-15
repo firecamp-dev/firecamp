@@ -4,18 +4,20 @@ import { Button, Url } from '@firecamp/ui';
 import ConnectButton from '../connection/ConnectButton';
 import { IStore, useStore } from '../../../store';
 
-const UrlBarContainer = ({ tab }) => {
-  const { context, url, __meta, __ref, requestPath, changeUrl } = useStore(
-    (s: IStore) => ({
-      context: s.context,
-      url: s.request.url,
-      __meta: s.request.__meta,
-      __ref: s.request.__ref,
-      requestPath: s.runtime.requestPath,
-      changeUrl: s.changeUrl,
-    }),
-    shallow
-  );
+const UrlBarContainer = () => {
+  const { tabId, context, url, __meta, __ref, requestPath, changeUrl } =
+    useStore(
+      (s: IStore) => ({
+        tabId: s.runtime.tabId,
+        context: s.context,
+        url: s.request.url,
+        __meta: s.request.__meta,
+        __ref: s.request.__ref,
+        requestPath: s.runtime.requestPath,
+        changeUrl: s.changeUrl,
+      }),
+      shallow
+    );
 
   const _onUpdateUrl = (e) => {
     e.preventDefault();
@@ -27,7 +29,7 @@ const UrlBarContainer = ({ tab }) => {
 
   return (
     <Url
-      id={tab.id}
+      id={tabId}
       path={requestPath?.path || 'Untitled Request'}
       placeholder={'ws://'}
       // isRequestSaved={isRequestSaved}
