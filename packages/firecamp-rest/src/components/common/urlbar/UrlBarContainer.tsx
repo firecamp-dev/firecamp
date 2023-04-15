@@ -14,14 +14,12 @@ const UrlBarContainer = () => {
     __meta,
     __ref,
     requestPath,
-    isRequestRunning,
     isRequestSaved,
     context,
     changeUrl,
     changeMethod,
     execute,
     setRequestFromCurl,
-    save,
   } = useStore(
     (s: IStore) => ({
       tabId: s.runtime.tabId,
@@ -30,14 +28,12 @@ const UrlBarContainer = () => {
       __meta: s.request.__meta,
       __ref: s.request.__ref,
       requestPath: s.runtime.requestPath,
-      isRequestRunning: s.runtime.isRequestRunning,
       isRequestSaved: s.runtime.isRequestSaved,
       context: s.context,
       changeUrl: s.changeUrl,
       changeMethod: s.changeMethod,
       execute: s.execute,
       setRequestFromCurl: s.setRequestFromCurl,
-      save: s.save,
     }),
     shallow
   );
@@ -59,14 +55,6 @@ const UrlBarContainer = () => {
     if (!snippet) return;
     if (snippet?.trim().startsWith('curl')) {
       setRequestFromCurl(snippet);
-    }
-  };
-
-  const _onSave = async () => {
-    try {
-      save(tabId);
-    } catch (e) {
-      console.error(e);
     }
   };
 
@@ -92,7 +80,7 @@ const UrlBarContainer = () => {
           description: __meta.description,
           collectionId: __ref.collectionId,
           requestId: __ref.id,
-          requestType: __meta.type
+          requestType: __meta.type,
         });
       }}
       prefixComponent={
@@ -103,26 +91,66 @@ const UrlBarContainer = () => {
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
       }
-      suffixComponent={
-        <>
-          <Button
-            text={isRequestRunning === true ? `Cancel` : `Send`}
-            onClick={_onExecute}
-            primary
-            sm
-          />
-          <Button
-            id={`save-request-${tabId}`}
-            text="Save"
-            onClick={_onSave}
-            disabled={false}
-            secondary
-            sm
-          />
-        </>
-      }
+      suffixComponent={<PrefixButtons />}
     />
   );
 };
 
 export default UrlBarContainer;
+
+const PrefixButtons = () => {
+  const {
+    tabId,
+    isRequestRunning,
+    isRequestSaved,
+    isUpdatingRequest,
+    requestHasChanges,
+    execute,
+    save,
+  } = useStore(
+    (s: IStore) => ({
+      tabId: s.runtime.tabId,
+      isRequestRunning: s.runtime.isRequestRunning,
+      isRequestSaved: s.runtime.isRequestSaved,
+      isUpdatingRequest: s.ui.isUpdatingRequest,
+      requestHasChanges: s.requestHasChanges,
+      execute: s.execute,
+      save: s.save,
+    }),
+    shallow
+  );
+
+  const _onSave = async () => {
+    try {
+      save(tabId);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const _onExecute = async () => {
+    try {
+      execute();
+    } catch (error) {}
+  };
+
+  // const isSaveBtnDisabled = isRequestSaved ? !requestHasChanges : false;
+  return (
+    <>
+      <Button
+        text={isRequestRunning === true ? `Cancel` : `Send`}
+        onClick={_onExecute}
+        primary
+        sm
+      />
+      <Button
+        id={`save-request-${tabId}`}
+        text={isUpdatingRequest ? 'Saving...' : 'Save'}
+        onClick={_onSave}
+        disabled={false} //isSaveBtnDisabled
+        secondary
+        sm
+      />
+    </>
+  );
+};
