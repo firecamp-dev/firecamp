@@ -3,7 +3,14 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import shallow from 'zustand/shallow';
 import { _array, _object } from '@firecamp/utils';
-import { Container, Column, Row, RootContainer, Loader, ProgressBar } from '@firecamp/ui';
+import {
+  Container,
+  Column,
+  Row,
+  RootContainer,
+  Loader,
+  ProgressBar,
+} from '@firecamp/ui';
 import { initialiseStoreFromRequest } from '../services/request.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
@@ -51,16 +58,17 @@ const WebSocket = ({ tab, platformContext }) => {
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     const requestId = tab.entity?.__ref?.id;
+    let unsubscribe: Function = () => {};
     // subscribe request updates
     if (tab.__meta.isSaved && requestId) {
-      platformContext.request.subscribeChanges(requestId, handlePull);
+      unsubscribe = platformContext.request.subscribeChanges(
+        requestId,
+        handlePull
+      );
     }
-
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && requestId) {
-        platformContext.request.unsubscribeChanges(requestId);
-      }
+      unsubscribe();
     };
   }, []);
 
@@ -107,7 +115,7 @@ const WebSocket = ({ tab, platformContext }) => {
   // console.log(tab, 'tab...');
   return (
     <RootContainer className="h-full w-full">
-      <RootProgressBar/>
+      <RootProgressBar />
       <Container className="h-full with-divider">
         <UrlBarContainer />
         <Container.Body>

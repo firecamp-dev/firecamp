@@ -26,9 +26,6 @@ interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
   subscribeChanges?: (requestId: TId, handlePull: () => any) => void;
 
-  // unsubscribe real-time request changes (pull-actions from server)
-  unsubscribeChanges?: (requestId: TId) => void;
-
   // fetch request from server by request id
   fetch: (reqId: TId) => Promise<any>;
 
@@ -102,19 +99,18 @@ const request: IPlatformRequestService = {
     // Subscribe request changes
     Realtime.subscribeRequest(requestId);
 
+    const evtName = prepareEventNameForRequestPull(requestId);
     // listen/ subscribe updates
-    platformEmitter.on(prepareEventNameForRequestPull(requestId), handlePull);
-  },
+    platformEmitter.on(evtName, handlePull);
 
-  // unsubscribe real-time request changes (pull-actions from server)
-  unsubscribeChanges: (requestId: TId) => {
-    // TODO: handle isLoggedIn
+    // unsubscribe real-time request changes
+    return () => {
+      // TODO: handle isLoggedIn
 
-    // console.log({ unsubscribeChanges: requestId });
-
-    // unsubscribe request changes
-    // Realtime.unsubscribeRequest(requestId); // TODO: add socket API
-    platformEmitter.off(prepareEventNameForRequestPull(requestId));
+      // unsubscribe request changes
+      // Realtime.unsubscribeRequest(requestId); // TODO: add socket API
+      platformEmitter.off(prepareEventNameForRequestPull(requestId));
+    };
   },
 
   // fetch request by request id
