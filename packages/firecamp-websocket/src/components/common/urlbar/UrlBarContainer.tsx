@@ -5,27 +5,17 @@ import ConnectButton from '../connection/ConnectButton';
 import { IStore, useStore } from '../../../store';
 
 const UrlBarContainer = ({ tab }) => {
-  const { context, url, __meta, __ref, requestPath, changeUrl, save } =
-    useStore(
-      (s: IStore) => ({
-        context: s.context,
-        url: s.request.url,
-        __meta: s.request.__meta,
-        __ref: s.request.__ref,
-        requestPath: s.runtime.requestPath,
-        changeUrl: s.changeUrl,
-        save: s.save,
-      }),
-      shallow
-    );
-
-  const _onSave = async () => {
-    try {
-      save(tab.id);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  const { context, url, __meta, __ref, requestPath, changeUrl } = useStore(
+    (s: IStore) => ({
+      context: s.context,
+      url: s.request.url,
+      __meta: s.request.__meta,
+      __ref: s.request.__ref,
+      requestPath: s.runtime.requestPath,
+      changeUrl: s.changeUrl,
+    }),
+    shallow
+  );
 
   const _onUpdateUrl = (e) => {
     e.preventDefault();
@@ -55,21 +45,44 @@ const UrlBarContainer = ({ tab }) => {
         });
       }}
       prefixComponent={<Button text={'WebSocket'} secondary sm />}
-      suffixComponent={
-        <>
-          <ConnectButton sm={true} />
-          <Button
-            id={`save-request-${tab.id}`}
-            text="Save"
-            disabled={false}
-            onClick={_onSave}
-            secondary
-            sm
-          />
-        </>
-      }
+      suffixComponent={<PrefixButtons />}
     />
   );
 };
-
 export default UrlBarContainer;
+
+const PrefixButtons = () => {
+  const { tabId, isUpdatingRequest, save } = useStore(
+    (s: IStore) => ({
+      tabId: s.runtime.tabId,
+      isRequestSaved: s.runtime.isRequestSaved,
+      isUpdatingRequest: s.ui.isUpdatingRequest,
+      requestHasChanges: s.requestHasChanges,
+      save: s.save,
+    }),
+    shallow
+  );
+
+  const _onSave = async () => {
+    try {
+      save(tabId);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // const isSaveBtnDisabled = isRequestSaved ? !requestHasChanges : false;
+  return (
+    <>
+      <ConnectButton sm={true} />
+      <Button
+        id={`save-request-${tabId}`}
+        text={isUpdatingRequest ? 'Saving...' : 'Save'}
+        disabled={false} //isSaveBtnDisabled
+        onClick={_onSave}
+        secondary
+        sm
+      />
+    </>
+  );
+};
