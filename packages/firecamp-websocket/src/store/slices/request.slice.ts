@@ -74,11 +74,17 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         );
         return null;
       }
-      state.context.request.save(_request, tabId).then(() => {
-        //reset the rcs state
-        state.disposeRCS();
-        state.onRequestSave(_request.__ref.id);
-      });
+      state.toggleUpdatingReqFlag(true);
+      state.context.request
+        .save(_request, tabId)
+        .then(() => {
+          //reset the rcs state
+          state.disposeRCS();
+          state.onRequestSave(_request.__ref.id);
+        })
+        .finally(() => {
+          state.toggleUpdatingReqFlag(false);
+        });
     }
   },
   onRequestSave: (requestId) => {

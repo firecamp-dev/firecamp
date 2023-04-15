@@ -2,7 +2,13 @@ import { memo, useEffect } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import shallow from 'zustand/shallow';
-import { Container, Row, Loader } from '@firecamp/ui';
+import {
+  Container,
+  Row,
+  Loader,
+  ProgressBar,
+  RootContainer,
+} from '@firecamp/ui';
 import { IRest } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { _misc, _object, _table, _auth } from '@firecamp/utils';
@@ -21,7 +27,7 @@ const Rest = ({ tab, platformContext }) => {
     isFetchingRequest,
     initialise,
     setRequestSavedFlag,
-    setIsFetchingReqFlag,
+    toggleFetchingReqFlag,
     setParentArtifacts,
     setContext,
   } = useStore(
@@ -30,7 +36,7 @@ const Rest = ({ tab, platformContext }) => {
       initialise: s.initialise,
       changeAuthHeaders: s.changeAuthHeaders,
       changeMeta: s.changeMeta,
-      setIsFetchingReqFlag: s.setIsFetchingReqFlag,
+      toggleFetchingReqFlag: s.toggleFetchingReqFlag,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setOAuth2LastFetchedToken: s.setOAuth2LastFetchedToken,
       setParentArtifacts: s.setParentArtifacts,
@@ -71,7 +77,7 @@ const Rest = ({ tab, platformContext }) => {
       let _request: IRest = normalizeRequest({});
 
       if (isRequestSaved === true) {
-        setIsFetchingReqFlag(true);
+        toggleFetchingReqFlag(true);
         try {
           const request = await platformContext.request.fetch(requestId);
           _request = { ...request };
@@ -82,7 +88,7 @@ const Rest = ({ tab, platformContext }) => {
       }
       /** initialise rest store on tab load */
       initialise(_request, tab.id);
-      setIsFetchingReqFlag(false);
+      toggleFetchingReqFlag(false);
     };
 
     const _fetchRequestParentArtifacts = async () => {
@@ -114,16 +120,19 @@ const Rest = ({ tab, platformContext }) => {
 
   if (isFetchingRequest === true) return <Loader />;
   return (
-    <Container className="h-full with-divider" overflow="visible">
-      <UrlBarContainer />
-      <Container.Body>
-        <Row flex={1} className="with-divider h-full" overflow="auto">
-          <Request />
-          <Response />
-        </Row>
-        {/* <CodeSnippets  getPlatformEnvironments={() => {}} /> */}
-      </Container.Body>
-    </Container>
+    <RootContainer className="h-full w-full">
+      <RootProgressBar />
+      <Container className="h-full with-divider">
+        <UrlBarContainer />
+        <Container.Body>
+          <Row flex={1} className="with-divider h-full" overflow="auto">
+            <Request />
+            <Response />
+          </Row>
+          {/* <CodeSnippets  getPlatformEnvironments={() => {}} /> */}
+        </Container.Body>
+      </Container>
+    </RootContainer>
   );
 };
 
@@ -152,3 +161,13 @@ const withStore = (WrappedComponent) => {
   return MyComponent;
 };
 export default withStore(memo(Rest));
+
+const RootProgressBar = () => {
+  const { isUpdatingRequest } = useStore(
+    (s: IStore) => ({
+      isUpdatingRequest: s.ui.isUpdatingRequest,
+    }),
+    shallow
+  );
+  return <ProgressBar active={isUpdatingRequest} />;
+};

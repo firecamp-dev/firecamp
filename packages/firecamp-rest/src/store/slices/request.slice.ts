@@ -67,7 +67,6 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     const state = get();
     const headerCount = state.runtime.authHeaders?.length + headers.length;
     const updatedUiRequestPanel = {
-      hasHeaders: headerCount ? true : false,
       headers: headerCount,
     };
     set((s) => ({
@@ -209,11 +208,17 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         );
         return null;
       }
-      state.context.request.save(_request, tabId).then(() => {
-        //reset the rcs state
-        state.disposeRCS();
-        state.onRequestSave(_request.__ref.id);
-      });
+      state.toggleUpdatingReqFlag(true);
+      state.context.request
+        .save(_request, tabId)
+        .then(() => {
+          //reset the rcs state
+          state.disposeRCS();
+          state.onRequestSave(_request.__ref.id);
+        })
+        .finally(() => {
+          state.toggleUpdatingReqFlag(false);
+        });
     }
   },
   onRequestSave: (requestId) => {
