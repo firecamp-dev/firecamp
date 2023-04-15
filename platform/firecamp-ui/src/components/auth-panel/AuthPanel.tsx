@@ -52,18 +52,16 @@ const AuthPanel: FC<IProps> = ({
     : authTypeList.filter((a) => a.id !== EAuthTypes.Inherit);
 
   const initialState = {
-    isAuthTypesDDOpen: false,
-    authTypeMeta: _authTypeList.find((type) => type.id === activeAuthType),
+    activeAuth: _authTypeList.find((type) => type.id === activeAuthType),
     authTypes: _authTypeList,
   };
   const [state, setState] = useState(initialState);
-  const [inheritedAuth, setInheritedAuth] = useState({ parentName: '' });
-  const { isAuthTypesDDOpen, authTypeMeta, authTypes } = state;
+  // const [inheritedAuth, setInheritedAuth] = useState({ parentName: '' });
 
   useEffect(() => {
     setState((s) => ({
       ...s,
-      activeAuthType: _authTypeList.find((type) => type.id === activeAuthType),
+      activeAuth: _authTypeList.find((type) => type.id === activeAuthType),
     }));
   }, [activeAuthType]);
 
@@ -143,49 +141,18 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
     }
   };
 
-  const _onToggleAuthTypesDD = () => {
-    setState((s) => ({
-      ...s,
-      isAuthTypesDDOpen: !state.isAuthTypesDDOpen,
-    }));
-  };
-
-  const _onSelectAuthType = (element: {
-    id: EAuthTypes;
-    name: string;
-    enable: boolean;
-  }) => {
-    setState((s) => ({ ...s, activeAuthType: element }));
-    onChangeAuthType(element.id);
-  };
-
   return (
     <Container>
       <Container.Header>
-        <div className="tab-pane-body-header flex items-center px-3 py-1 relative z-10">
-          <Dropdown
-            isOpen={isAuthTypesDDOpen}
-            // style={{ width: '115px' }}
-            selected={authTypeMeta?.name || ''}
-            onToggle={() => _onToggleAuthTypesDD()}
-          >
-            <Dropdown.Handler>
-              <Button
-                text={authTypeMeta?.name || ''}
-                className="font-bold"
-                transparent
-                withCaret
-                primary
-                ghost
-                xs
-              />
-            </Dropdown.Handler>
-            <Dropdown.Options
-              options={authTypes}
-              onSelect={(element) => _onSelectAuthType(element)}
-            />
-          </Dropdown>
-        </div>
+        <AuthTypesDD
+          types={state.authTypes}
+          name={state.activeAuth?.name}
+          onSelect={(element: {
+            id: EAuthTypes;
+            name: string;
+            enable: boolean;
+          }) => onChangeAuthType(element.id)}
+        />
       </Container.Header>
       <Container.Body>
         <div className="p-4 max-w-xl">{_renderTabBody()}</div>
@@ -195,6 +162,34 @@ Github </a>, <a href="https://twitter.com/FirecampHQ" target="_blank">Twitter</a
 };
 
 export default AuthPanel;
+
+const AuthTypesDD: FC<any> = ({ types, name, onSelect }) => {
+  const [isOpen, toggleDD] = useState(false);
+
+  return (
+    <div className="tab-pane-body-header flex items-center px-3 py-1 relative z-10">
+      <Dropdown
+        isOpen={isOpen}
+        // style={{ width: '115px' }}
+        selected={name || ''}
+        onToggle={() => toggleDD(!isOpen)}
+      >
+        <Dropdown.Handler>
+          <Button
+            text={name || ''}
+            className="font-bold"
+            transparent
+            withCaret
+            primary
+            ghost
+            xs
+          />
+        </Dropdown.Handler>
+        <Dropdown.Options options={types} onSelect={onSelect} />
+      </Dropdown>
+    </div>
+  );
+};
 
 export interface IProps {
   /**
