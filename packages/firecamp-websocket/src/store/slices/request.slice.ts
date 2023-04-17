@@ -67,6 +67,12 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, fn);
     } else {
+      if (!state.requestHasChanges) {
+        state.context.app.notify.info(
+          "The request doesn't have any changes to be saved."
+        );
+        return null;
+      }
       const _request = state.preparePayloadForUpdateRequest();
       if (!_request) {
         state.context.app.notify.info(
@@ -74,11 +80,17 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         );
         return null;
       }
-      state.context.request.save(_request, tabId).then(() => {
-        //reset the rcs state
-        state.disposeRCS();
-        state.onRequestSave(_request.__ref.id);
-      });
+      state.toggleUpdatingReqFlag(true);
+      state.context.request
+        .save(_request, tabId)
+        .then(() => {
+          //reset the rcs state
+          state.disposeRCS();
+          state.onRequestSave(_request.__ref.id);
+        })
+        .finally(() => {
+          state.toggleUpdatingReqFlag(false);
+        });
     }
   },
   onRequestSave: (requestId) => {

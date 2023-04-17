@@ -7,13 +7,15 @@ export interface IUiConnectionPanel {
 }
 export interface IUi {
   isFetchingRequest: boolean;
+  isUpdatingRequest?: boolean;
   connectionPanel?: IUiConnectionPanel;
 }
 
 export interface IUiSlice {
   ui: IUi;
   initializeUi: (ui: IUi) => void;
-  setIsFetchingReqFlag: (flag: boolean) => void;
+  toggleFetchingReqFlag: (flag: boolean) => void;
+  toggleUpdatingReqFlag: (flag: boolean) => void;
 }
 
 export const createUiSlice: TStoreSlice<IUiSlice> = (
@@ -25,8 +27,12 @@ export const createUiSlice: TStoreSlice<IUiSlice> = (
   initializeUi: (ui: IUi) => {
     set((s) => ({ ui: { ...s.ui, ...ui } }));
   },
-  setIsFetchingReqFlag: (flag: boolean) => {
+  toggleFetchingReqFlag: (flag: boolean) => {
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
     set((s) => ({ ui: { ...s.ui, isFetchingRequest: flag } }));
+  },
+  toggleUpdatingReqFlag: (flag: boolean) => {
+    if (flag === undefined) flag = !get().ui.isUpdatingRequest;
+    set((s) => ({ ui: { ...s.ui, isUpdatingRequest: flag } }));
   },
 });

@@ -23,7 +23,6 @@ export const prepareUiState = (request: Partial<IGraphQL>): Partial<IUi> => {
     updatedUiStore = {
       ...updatedUiStore,
       headers,
-      hasHeaders: !!headers,
     };
   }
   return updatedUiStore;
@@ -146,7 +145,6 @@ export const initialiseStoreFromRequest = (
       requestPath: __meta?.requestPath,
     },
     ui: {
-      hasHeaders: false,
       headers: 0,
       isFetchingRequest: false,
       sidebarActiveTab: ESidebarTabs.Collection,

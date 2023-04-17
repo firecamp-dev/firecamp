@@ -21,7 +21,7 @@ interface ICollectionSlice {
   isCollectionEmpty: () => boolean;
   getItemPath: (itemId: TId) => string;
 
-  toggleProgressBar: (flag?: boolean) => void;
+  toggleColProgressBar: (flag?: boolean) => void;
   registerTDP: () => void;
   unRegisterTDP: () => void;
 
@@ -100,7 +100,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     set((s) => ({ collection: { ...s.collection, tdpInstance: null } }));
   },
 
-  toggleProgressBar: (flag?: boolean) => {
+  toggleColProgressBar: (flag?: boolean) => {
     set((s) => ({
       collection: {
         ...s.collection,
@@ -159,7 +159,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         folderId: parentFolderId,
       },
     };
-    // state.toggleProgressBar(true);
+    // state.toggleColProgressBar(true);
     console.log(_item, 'prepare the item');
     return _item;
   },
@@ -276,13 +276,13 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         folderId: parentFolderId,
       },
     };
-    state.toggleProgressBar(true);
+    state.toggleColProgressBar(true);
     return _folder;
   },
   onCreateFolder: (folder) => {
     if (!folder) return;
     const state = get();
-    state.toggleProgressBar(false);
+    state.toggleColProgressBar(false);
     //@ts-ignore
     if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
     set((s) => {

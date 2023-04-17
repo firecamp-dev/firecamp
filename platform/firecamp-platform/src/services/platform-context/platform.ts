@@ -1,11 +1,13 @@
 import { nanoid } from 'nanoid';
-import { confirm } from './prompt.service';
+import { TId } from '@firecamp/types';
 import { RE } from '../../types';
 import { useTabStore } from '../../store/tab';
 import { ETabEntityTypes } from '../../components/tabs/types';
 import { useWorkspaceStore } from '../../store/workspace';
 import { useEnvStore } from '../../store/environment';
 import { usePlatformStore } from '../../store/platform';
+import { platformEmitter } from '../platform-emitter';
+import { confirm } from './prompt.service';
 import platformContext from '.';
 
 const platform = {
@@ -206,6 +208,14 @@ const platform = {
         openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
         // console.log(env, 1111);
       });
+  },
+
+  subscribeEntityChanges: (reqId: TId, cb) => {
+    const evtName = `tab:entity:changes:${reqId}`;
+    platformEmitter.on(evtName, cb);
+    return () => {
+      platformEmitter.off(evtName);
+    };
   },
 };
 

@@ -3,7 +3,14 @@ import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import shallow from 'zustand/shallow';
 import { _array, _object } from '@firecamp/utils';
-import { Container, Column, Row, RootContainer, Loader } from '@firecamp/ui';
+import {
+  Container,
+  Column,
+  Row,
+  RootContainer,
+  Loader,
+  ProgressBar,
+} from '@firecamp/ui';
 import { initialiseStoreFromRequest } from '../services/request.service';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import ConnectionPanel from './connection-panel/ConnectionPanel';
@@ -22,7 +29,7 @@ const WebSocket = ({ tab, platformContext }) => {
   const {
     isFetchingRequest,
     setRequestSavedFlag,
-    setIsFetchingReqFlag,
+    toggleFetchingReqFlag,
     initialise,
     initialiseCollection,
     setContext,
@@ -31,7 +38,7 @@ const WebSocket = ({ tab, platformContext }) => {
       isFetchingRequest: s.ui.isFetchingRequest,
       connect: s.connect,
       setRequestSavedFlag: s.setRequestSavedFlag,
-      setIsFetchingReqFlag: s.setIsFetchingReqFlag,
+      toggleFetchingReqFlag: s.toggleFetchingReqFlag,
       initialise: s.initialise,
       initialiseCollection: s.initialiseCollection,
       setContext: s.setContext,
@@ -51,16 +58,17 @@ const WebSocket = ({ tab, platformContext }) => {
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     const requestId = tab.entity?.__ref?.id;
+    let unsubscribe: Function = () => {};
     // subscribe request updates
     if (tab.__meta.isSaved && requestId) {
-      platformContext.request.subscribeChanges(requestId, handlePull);
+      unsubscribe = platformContext.request.subscribeChanges(
+        requestId,
+        handlePull
+      );
     }
-
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && requestId) {
-        platformContext.request.unsubscribeChanges(requestId);
-      }
+      unsubscribe();
     };
   }, []);
 
@@ -74,7 +82,7 @@ const WebSocket = ({ tab, platformContext }) => {
         let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the reuqest to prepare minimal request for tab
 
         if (isRequestSaved === true) {
-          setIsFetchingReqFlag(true);
+          toggleFetchingReqFlag(true);
           try {
             const request = await platformContext.request.fetch(requestId);
             _request = { ...request };
@@ -93,7 +101,7 @@ const WebSocket = ({ tab, platformContext }) => {
         initialise(request, tab.id);
         if (collection && !_object.isEmpty(collection))
           setTimeout(() => initialiseCollection(collection));
-        setIsFetchingReqFlag(false);
+        toggleFetchingReqFlag(false);
       } catch (e) {
         console.error(e);
       }
@@ -107,8 +115,9 @@ const WebSocket = ({ tab, platformContext }) => {
   // console.log(tab, 'tab...');
   return (
     <RootContainer className="h-full w-full">
+      <RootProgressBar />
       <Container className="h-full with-divider">
-        <UrlBarContainer tab={tab} />
+        <UrlBarContainer />
         <Container.Body>
           <Row flex={1} overflow="auto" className="with-divider h-full">
             <SidebarPanel />
@@ -144,5 +153,14 @@ const withStore = (WrappedComponent) => {
 
   return MyComponent;
 };
-
 export default withStore(WebSocket);
+
+const RootProgressBar = () => {
+  const { isUpdatingRequest } = useStore(
+    (s: IStore) => ({
+      isUpdatingRequest: s.ui.isUpdatingRequest,
+    }),
+    shallow
+  );
+  return <ProgressBar active={isUpdatingRequest} />;
+};

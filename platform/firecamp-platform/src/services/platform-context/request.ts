@@ -26,9 +26,6 @@ interface IPlatformRequestService {
   // subscribe real-time request changes (pull-actions from server)
   subscribeChanges?: (requestId: TId, handlePull: () => any) => void;
 
-  // unsubscribe real-time request changes (pull-actions from server)
-  unsubscribeChanges?: (requestId: TId) => void;
-
   // fetch request from server by request id
   fetch: (reqId: TId) => Promise<any>;
 
@@ -45,7 +42,7 @@ interface IPlatformRequestService {
   };
 
   // save and update request
-  save: (request: any, tabId: TId, isNew?: boolean) => Promise<any>;
+  save: (request: any, tabId?: TId, isNew?: boolean) => Promise<any>;
 
   // request folders
   createRequestFolderPrompt: (
@@ -102,19 +99,18 @@ const request: IPlatformRequestService = {
     // Subscribe request changes
     Realtime.subscribeRequest(requestId);
 
+    const evtName = prepareEventNameForRequestPull(requestId);
     // listen/ subscribe updates
-    platformEmitter.on(prepareEventNameForRequestPull(requestId), handlePull);
-  },
+    platformEmitter.on(evtName, handlePull);
 
-  // unsubscribe real-time request changes (pull-actions from server)
-  unsubscribeChanges: (requestId: TId) => {
-    // TODO: handle isLoggedIn
+    // unsubscribe real-time request changes
+    return () => {
+      // TODO: handle isLoggedIn
 
-    // console.log({ unsubscribeChanges: requestId });
-
-    // unsubscribe request changes
-    // Realtime.unsubscribeRequest(requestId); // TODO: add socket API
-    platformEmitter.off(prepareEventNameForRequestPull(requestId));
+      // unsubscribe request changes
+      // Realtime.unsubscribeRequest(requestId); // TODO: add socket API
+      platformEmitter.off(prepareEventNameForRequestPull(requestId));
+    };
   },
 
   // fetch request by request id
@@ -209,6 +205,7 @@ const request: IPlatformRequestService = {
           return _request;
         })
         .then((_request) => {
+          if (!tabId) return _request;
           tabState.changeRootKeys(tabId, {
             name: _request.__meta?.name,
             entity: {
@@ -243,6 +240,7 @@ const request: IPlatformRequestService = {
           return res.data;
         })
         .then((request) => {
+          if (!tabId) return request;
           // update tab meta on save request
           tabState.changeMeta(tabId, {
             isSaved: true,

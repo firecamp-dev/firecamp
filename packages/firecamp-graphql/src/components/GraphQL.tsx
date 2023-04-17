@@ -3,7 +3,14 @@ import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import shallow from 'zustand/shallow';
 import { _object } from '@firecamp/utils';
-import { Container, Row, Column, Loader } from '@firecamp/ui';
+import {
+  Container,
+  Row,
+  Column,
+  Loader,
+  ProgressBar,
+  RootContainer,
+} from '@firecamp/ui';
 import SidebarPanel from './sidebar-panel/SidebarPanel';
 import UrlBarContainer from './common/urlbar/UrlBarContainer';
 import PlaygroundPanel from './playground-panel/PlaygroundPanel';
@@ -21,14 +28,14 @@ const GraphQL = ({ tab, platformContext }) => {
     isFetchingRequest,
     initialise,
     setRequestSavedFlag,
-    setIsFetchingReqFlag,
+    toggleFetchingReqFlag,
     setContext,
     initialiseCollection,
   } = useStore(
     (s: IStore) => ({
       isFetchingRequest: s.ui.isFetchingRequest,
       initialise: s.initialise,
-      setIsFetchingReqFlag: s.setIsFetchingReqFlag,
+      toggleFetchingReqFlag: s.toggleFetchingReqFlag,
       setRequestSavedFlag: s.setRequestSavedFlag,
       setContext: s.setContext,
       initialiseCollection: s.initialiseCollection,
@@ -49,16 +56,18 @@ const GraphQL = ({ tab, platformContext }) => {
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     const requestId = tab.entity?.__ref?.id;
+    let unsubscribe: Function = () => {};
     // subscribe request updates
     if (tab.__meta.isSaved && requestId) {
-      platformContext.request.subscribeChanges(requestId, handlePull);
+      unsubscribe = platformContext.request.subscribeChanges(
+        requestId,
+        handlePull
+      );
     }
 
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && requestId) {
-        platformContext.request.unsubscribeChanges(requestId);
-      }
+      unsubscribe();
     };
   }, []);
 
@@ -71,7 +80,7 @@ const GraphQL = ({ tab, platformContext }) => {
         // prepare a minimal request payload
         let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the request to prepare minimal request for tab
         if (isRequestSaved === true) {
-          setIsFetchingReqFlag(true);
+          toggleFetchingReqFlag(true);
           try {
             const request = await platformContext.request.fetch(requestId);
             console.log(request, 'fetch request...');
@@ -89,7 +98,7 @@ const GraphQL = ({ tab, platformContext }) => {
         initialise(request, tab.id);
         if (collection && !_object.isEmpty(collection))
           initialiseCollection(collection);
-        setIsFetchingReqFlag(false);
+        toggleFetchingReqFlag(false);
       } catch (error) {
         console.error({
           API: 'fetch and normalize rest request',
@@ -104,18 +113,21 @@ const GraphQL = ({ tab, platformContext }) => {
 
   if (isFetchingRequest === true) return <Loader />;
   return (
-    <Container className="h-full w-full with-divider" overflow="visible">
-      <UrlBarContainer tab={tab} />
-      <Container.Body>
-        <Row flex={1} overflow="auto" className="with-divider h-full">
-          <SidebarPanel />
-          <Column>
-            <PlaygroundPanel />
-          </Column>
-          <DocWrapper />
-        </Row>
-      </Container.Body>
-    </Container>
+    <RootContainer className="h-full w-full">
+      <RootProgressBar />
+      <Container className="h-full with-divider">
+        <UrlBarContainer />
+        <Container.Body>
+          <Row flex={1} overflow="auto" className="with-divider h-full">
+            <SidebarPanel />
+            <Column>
+              <PlaygroundPanel />
+            </Column>
+            <DocWrapper />
+          </Row>
+        </Container.Body>
+      </Container>
+    </RootContainer>
   );
 };
 
@@ -144,3 +156,13 @@ const withStore = (WrappedComponent) => {
   return MyComponent;
 };
 export default withStore(GraphQL);
+
+const RootProgressBar = () => {
+  const { isUpdatingRequest } = useStore(
+    (s: IStore) => ({
+      isUpdatingRequest: s.ui.isUpdatingRequest,
+    }),
+    shallow
+  );
+  return <ProgressBar active={isUpdatingRequest} />;
+};
