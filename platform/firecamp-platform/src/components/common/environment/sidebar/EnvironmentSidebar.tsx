@@ -12,7 +12,6 @@ import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { ETabEntityTypes } from '../../../tabs/types';
 import { useTabStore } from '../../../../store/tab';
-import { useExplorerStore } from '../../../../store/explorer';
 
 const EnvironmentSidebar: FC<any> = () => {
   const { envs } = useEnvStore.getState();
@@ -30,10 +29,12 @@ const EnvironmentSidebar: FC<any> = () => {
 export default EnvironmentSidebar;
 
 const ProgressBarContainer = () => {
-  let { isProgressing } = useExplorerStore((s) => ({
-    isProgressing: s.explorer.isProgressing,
-  }));
-
+  const { isProgressing } = useEnvStore(
+    (s) => ({
+      isProgressing: s.isProgressing,
+    }),
+    shallow
+  );
   return <ProgressBar active={isProgressing} />;
 };
 
