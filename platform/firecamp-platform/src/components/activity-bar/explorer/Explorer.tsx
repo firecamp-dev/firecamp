@@ -28,39 +28,37 @@ import { useTabStore } from '../../../store/tab';
 import { ETabEntityTypes } from '../../tabs/types';
 import { RE } from '../../../types';
 import platformContext from '../../../services/platform-context';
+import { useExplorerStore } from '../../../store/explorer';
 
 const Explorer: FC<any> = () => {
   const environmentRef = useRef();
   const treeRef = useRef();
   const { createCollectionPrompt } = platformContext.platform;
 
+  const { workspace } = useWorkspaceStore(
+    (s) => ({
+      workspace: s.workspace,
+    }),
+    shallow
+  );
   const {
-    workspace,
     explorer,
     fetchExplorer,
-
-    openImportTab,
     updateCollection,
     updateFolder,
     moveRequest,
     moveFolder,
-
     deleteCollection,
     deleteFolder,
     deleteRequest,
-  } = useWorkspaceStore(
+  } = useExplorerStore(
     (s) => ({
-      workspace: s.workspace,
       explorer: s.explorer,
       fetchExplorer: s.fetchExplorer,
-
-      openImportTab: s.openImportTab,
       updateCollection: s.updateCollection,
       updateFolder: s.updateFolder,
-
       moveRequest: s.moveRequest,
       moveFolder: s.moveFolder,
-
       deleteCollection: s.deleteCollection,
       deleteFolder: s.deleteFolder,
       deleteRequest: s.deleteRequest,
@@ -74,8 +72,9 @@ const Explorer: FC<any> = () => {
     // explorer: { collections, folders, requests },
     registerTDP,
     unRegisterTDP,
-  } = useWorkspaceStore.getState();
+  } = useExplorerStore.getState();
   const { open: openTab } = useTabStore.getState();
+  const { openImportTab } = useWorkspaceStore.getState();
 
   // console.log(explorer, "explorer")
 
@@ -430,7 +429,7 @@ const Explorer: FC<any> = () => {
 export default Explorer;
 
 const ProgressBarContainer = () => {
-  const { isProgressing } = useWorkspaceStore((s) => ({
+  const { isProgressing } = useExplorerStore((s) => ({
     isProgressing: s.explorer.isProgressing,
   }));
   return <ProgressBar active={isProgressing} />;

@@ -8,11 +8,11 @@ import { Container, ProgressBar, Pane, ToolBar } from '@firecamp/ui';
 import treeRenderer from './tree/itemRenderer';
 import treeRenderer_ from './tree_/itemRenderer';
 import platformContext from '../../../../services/platform-context';
-import { useWorkspaceStore } from '../../../../store/workspace';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { ETabEntityTypes } from '../../../tabs/types';
 import { useTabStore } from '../../../../store/tab';
+import { useExplorerStore } from '../../../../store/explorer';
 
 const EnvironmentSidebar: FC<any> = () => {
   const { envs } = useEnvStore.getState();
@@ -30,7 +30,7 @@ const EnvironmentSidebar: FC<any> = () => {
 export default EnvironmentSidebar;
 
 const ProgressBarContainer = () => {
-  let { isProgressing } = useWorkspaceStore((s) => ({
+  let { isProgressing } = useExplorerStore((s) => ({
     isProgressing: s.explorer.isProgressing,
   }));
 

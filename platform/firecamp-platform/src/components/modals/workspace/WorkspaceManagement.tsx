@@ -5,13 +5,10 @@ import {
   IModal,
   SecondaryTab,
   ProgressBar,
-  TabHeader,
-  Button,
 } from '@firecamp/ui';
 import { _array, _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';
-import platformContext from '../../../services/platform-context';
 import './workspace.scss';
 import EditInfoTab from './tabs/EditInfoTab';
 import MembersTab from './tabs/MembersTab';

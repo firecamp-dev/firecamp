@@ -1,18 +1,17 @@
 import { FC, useEffect } from 'react';
 import { Realtime } from '@firecamp/cloud-apis';
 import { TId } from '@firecamp/types';
+import {
+  EWorkspaceEventTypes,
+  TWorkspaceEvent,
+} from '@firecamp/cloud-apis/dist/realtime';
 import { platformEmitter as emitter } from '../../../services/platform-emitter';
-import { useWorkspaceStore } from '../../../store/workspace';
 import {
   EPlatformTabs,
   prepareEventNameForRequestPull,
 } from '../../../services/platform-emitter/events';
 import { useTabStore } from '../../../store/tab';
-
-import {
-  EWorkspaceEventTypes,
-  TWorkspaceEvent,
-} from '@firecamp/cloud-apis/dist/realtime';
+import { useExplorerStore } from '../../../store/explorer';
 
 const RealtimeEventManager: FC<any> = () => {
   const { open, close } = useTabStore.getState();
@@ -27,7 +26,7 @@ const RealtimeEventManager: FC<any> = () => {
     onCreateRequest,
     onUpdateRequest,
     onDeleteRequest,
-  } = useWorkspaceStore.getState();
+  } = useExplorerStore.getState();
 
   /** handle realtime request changes */
   useEffect(() => {

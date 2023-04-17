@@ -5,7 +5,7 @@ import {
   TreeItem,
   TreeItemIndex,
 } from '@firecamp/ui/src/tree';
-import { useWorkspaceStore } from '../../../store/workspace';
+import { useExplorerStore } from '../../../store/explorer';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',
@@ -102,7 +102,7 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
       changeWorkspaceMetaOrders,
       changeCollectionMetaOrders,
       changeFolderMetaOrders,
-    } = useWorkspaceStore.getState();
+    } = useExplorerStore.getState();
 
     if (itemId == 'root') {
       this.rootOrders = newChildren;

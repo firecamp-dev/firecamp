@@ -16,6 +16,7 @@ import { prepareEventNameForRequestPull } from '../platform-emitter/events';
 import AppService from '../app.service';
 import { useTabStore } from '../../store/tab';
 import { useWorkspaceStore } from '../../store/workspace';
+import { useExplorerStore } from '../../store/explorer';
 import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
 import { ETabEntityTypes } from '../../components/tabs/types';
@@ -122,7 +123,7 @@ const request: IPlatformRequestService = {
   getPath: (reqId) => {
     const {
       explorer: { collections, folders, requests },
-    } = useWorkspaceStore.getState();
+    } = useExplorerStore.getState();
     return _misc.itemPathFinder(
       [...collections, ...folders, ...requests],
       reqId
@@ -139,12 +140,13 @@ const request: IPlatformRequestService = {
     if (!AppService.user.isLoggedIn()) {
       return AppService.modals.openSignIn();
     }
-    const { onNewRequestCreate, workspace } = useWorkspaceStore.getState();
+    const { workspace } = useWorkspaceStore.getState();
+    const { onNewRequestCreate } = useExplorerStore.getState();
     const tabState = useTabStore.getState();
 
     const {
       explorer: { collections, folders },
-    } = useWorkspaceStore.getState();
+    } = useExplorerStore.getState();
     const _request = {
       ...request,
       __ref: {
