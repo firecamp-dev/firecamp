@@ -97,17 +97,6 @@ export interface IWorkspaceStore {
     to: { collectionId: string; folderId?: string }
   ) => Promise<any>;
 
-  // invitations
-  inviteNonOrgMembers: (payload: {
-    role: EUserRolesWorkspace;
-    members: { name: string; email: string }[];
-  }) => Promise<any>;
-
-  // invitations
-  inviteOrgMembers: (
-    members: { id: string; name: string; role: number }[]
-  ) => Promise<any>;
-
   // common
   dispose: () => void;
 }
@@ -722,42 +711,6 @@ export const useExplorerStore = create<IWorkspaceStore>(
       return res;
     },
 
-    //invitation
-    /** invite non org members */
-    inviteNonOrgMembers: (payload) => {
-      const { workspace } = useWorkspaceStore.getState();
-      return Rest.workspace
-        .inviteNonOrgMembers(workspace.__ref.id, payload)
-        .then((res) => {
-          platformContext.app.notify.success(
-            'The invitation(s) has been sent successfully'
-          );
-          return res.data;
-        })
-        .catch((e) => {
-          platformContext.app.notify.alert(
-            e.response?.data?.message || e.message
-          );
-        });
-    },
-
-    /** invite org members */
-    inviteOrgMembers: (members) => {
-      const { workspace } = useWorkspaceStore.getState();
-      return Rest.workspace
-        .inviteOrgMembers(workspace.__ref.id, { members })
-        .then((res) => {
-          platformContext.app.notify.success(
-            'The invitation has been sent successfully'
-          );
-          return res.data;
-        })
-        .catch((e) => {
-          platformContext.app.notify.alert(
-            e.response?.data?.message || e.message
-          );
-        });
-    },
 
     // dispose whole store and reset to initial state
     dispose: () => {
