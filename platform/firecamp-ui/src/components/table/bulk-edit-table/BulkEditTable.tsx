@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import isEqual from 'react-fast-compare';
 import { TabHeader, Button, BasicTable, Editor } from '@firecamp/ui';
-import { _table } from '@firecamp/utils';
+import { _misc, _table } from '@firecamp/utils';
 import { EEditorLanguage } from '@firecamp/types';
 // import { default as TabHeader } from '../tab-header/TabHeader';
 // import { default as Button } from '../buttons/Button';
@@ -43,8 +43,6 @@ const BulkEditTable: FC<IBulkEditTable> = ({
   }, [rows, mode]);
 
   const _setRaw = (editorString: string) => {
-    setRaw(editorString);
-
     try {
       if (editorString.length) {
         const tableArray = [..._table.textToTable(editorString)];
@@ -64,6 +62,13 @@ const BulkEditTable: FC<IBulkEditTable> = ({
       onChange(newRows);
     }
   };
+  
+  // added debounce to render table row data
+  const debounceUpdateTableRow = _misc.debounce(800, _setRaw);
+  
+  const _handleEditorValue = (editorString: string) => {
+    debounceUpdateTableRow(editorString)
+  }
 
   return (
     <div>
@@ -101,7 +106,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
           <Editor
             value={raw}
             language={EEditorLanguage.Text}
-            onChange={({ target: { value } }) => _setRaw(value)}
+            onChange={({ target: { value } }) => _handleEditorValue(value)}
             placeholder={`
             key:value    (a new entry should be added to the line with the key, value separated by a ':')
             `}
