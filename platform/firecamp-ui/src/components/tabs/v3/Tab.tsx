@@ -123,6 +123,7 @@ const Tab: FC<ITab> = ({
           { 'bg-tabBackground2': tabVersion == 2 },
           { 'bg-statusBarBackground2': tabVersion == 2 && isActive },
           { 'bg-tabBackground': tabVersion == 1 },
+          // {'!bg-tabActiveBackground': tabVersion !== 2 && isActive },
           {'!bg-statusBarBackground2': hasStatusbar && isActive },
           'fc-tab',
           'hover:bg-tabHoverBackground',
