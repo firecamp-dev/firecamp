@@ -57,15 +57,17 @@ const Rest = ({ tab, platformContext }) => {
   /** subscribe/ unsubscribe request changes (pull-actions) */
   useEffect(() => {
     const requestId = tab.entity?.__ref?.id;
+    let unsubscribe: Function = () => {};
     // subscribe request updates
     if (tab.__meta.isSaved && tab?.entity.__ref?.id) {
-      platformContext.request.subscribeChanges(requestId, handlePull);
+      unsubscribe = platformContext.request.subscribeChanges(
+        requestId,
+        handlePull
+      );
     }
     // unsubscribe request updates
     return () => {
-      if (tab.__meta.isSaved && requestId) {
-        platformContext.request.unsubscribeChanges(requestId);
-      }
+      unsubscribe();
     };
   }, []);
 
