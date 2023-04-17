@@ -63,14 +63,11 @@ const BulkEditTable: FC<IBulkEditTable> = ({
     }
   };
   
-  // Solution-2  add debounce to render table row data or track end-points to render data like newline
-  // const debounceUpdateTableRow = _misc.debounce(200, _setRaw);
+  // added debounce to render table row data
+  const debounceUpdateTableRow = _misc.debounce(800, _setRaw);
   
   const _handleEditorValue = (editorString: string) => {
-    setRaw(editorString);
-
-    // Solution-2 uncomment below code to update the table values
-    // debounceUpdateTableRow(editorString)
+    debounceUpdateTableRow(editorString)
   }
 
   return (
@@ -91,8 +88,6 @@ const BulkEditTable: FC<IBulkEditTable> = ({
             sm
             onClick={() => {
               setMode(mode === modes.Table ? modes.Raw : modes.Table);
-              // Solution-1 render raw data to table data only when required
-              if(mode === modes.Raw) _setRaw(raw);
             }}
           />
         </TabHeader.Right>
