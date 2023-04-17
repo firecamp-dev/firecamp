@@ -26,7 +26,7 @@ interface ICollectionSlice {
   collection: ICollection;
   getCollection: () => ICollection;
   isCollectionEmpty: () => boolean;
-  toggleProgressBar: (flag?: boolean) => void;
+  toggleColProgressBar: (flag?: boolean) => void;
   registerTDP: () => void;
   unRegisterTDP: () => void;
 
@@ -111,7 +111,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     );
   },
 
-  toggleProgressBar: (flag?: boolean) => {
+  toggleColProgressBar: (flag?: boolean) => {
     set((s) => ({
       collection: {
         ...s.collection,
@@ -125,7 +125,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     const state = get();
     // console.log(state)
     if (!state.request?.__ref.id) return;
-    state.toggleProgressBar(true);
+    state.toggleColProgressBar(true);
     const res = await Rest.request
       .deleteItem(state.request.__ref.id, id)
       .then((r) => {
@@ -156,7 +156,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         state.context.app.notify.alert(e.response?.data.message || e.message);
       })
       .finally(() => {
-        state.toggleProgressBar(false);
+        state.toggleColProgressBar(false);
       });
     return res;
   },
@@ -179,7 +179,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       },
     };
 
-    state.toggleProgressBar(true);
+    state.toggleColProgressBar(true);
     const res = await Rest.request
       .createItem(state.request.__ref.id, item)
       .then((r) => {
@@ -239,7 +239,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         state.context.app.notify.alert(e.response?.data.message || e.message);
       })
       .finally(() => {
-        state.toggleProgressBar(false);
+        state.toggleColProgressBar(false);
       });
     return res;
   },
@@ -281,7 +281,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     }
 
     console.log(item, 'item...');
-    state.toggleProgressBar(true);
+    state.toggleColProgressBar(true);
     const res = await Rest.request
       .updateItem(item.__ref.requestId, item.__ref.id, item)
       .then((r) => {
@@ -339,7 +339,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         state.context.app.notify.alert(e.response?.data.message || e.message);
       })
       .finally(() => {
-        state.toggleProgressBar(false);
+        state.toggleColProgressBar(false);
       });
     return res;
   },

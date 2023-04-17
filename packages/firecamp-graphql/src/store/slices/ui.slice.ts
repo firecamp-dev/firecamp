@@ -6,18 +6,23 @@ import { TStoreSlice } from '../store.type';
 
 interface IUi {
   isFetchingRequest: boolean; //TODO: rename it
+  isUpdatingRequest?: boolean;
   sidebarActiveTab?: ESidebarTabs;
-  hasHeaders?: boolean;
   headers?: number;
   playgrounds?: number; //TODO; use it later to show count in collection tab
 }
 interface IUiSlice {
   ui: IUi;
   changeUiActiveTab: (tab: string) => void;
-  setIsFetchingReqFlag: (flag: boolean) => void;
+  toggleFetchingReqFlag: (flag: boolean) => void;
+  toggleUpdatingReqFlag: (flag: boolean) => void;
 }
 
-const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi): IUiSlice => ({
+const createUiSlice: TStoreSlice<IUiSlice> = (
+  set,
+  get,
+  initialUi: IUi
+): IUiSlice => ({
   ui: initialUi || {
     isFetchingRequest: false,
     sidebarActiveTab: ESidebarTabs.Explorer,
@@ -30,11 +35,16 @@ const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi): IUiSlic
       },
     }));
   },
-  setIsFetchingReqFlag: (flag: boolean) => {
+  toggleFetchingReqFlag: (flag: boolean) => {
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
-
     set((s) => ({
       ui: { ...s.ui, isFetchingRequest: flag },
+    }));
+  },
+  toggleUpdatingReqFlag: (flag: boolean) => {
+    if (flag === undefined) flag = !get().ui.isUpdatingRequest;
+    set((s) => ({
+      ui: { ...s.ui, isUpdatingRequest: flag },
     }));
   },
 });

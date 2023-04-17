@@ -90,7 +90,6 @@ export interface IWorkspaceStore {
   // request
   onNewRequestCreate: (request: any) => void;
   createRequest: (payload: { [k: string]: any }) => void;
-  updateRequest: (rId: string, payload: { [k: string]: any }) => Promise<any>;
   deleteRequest: (rId: TId) => void;
 
   // change orders
@@ -558,25 +557,6 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
           return r;
         })
         .catch((e) => {})
-        .finally(() => {
-          state.toggleProgressBar(false);
-        });
-      return res;
-    },
-    updateRequest: async (rId: string, payload: { [k: string]: any }) => {
-      const state = get();
-      state.toggleProgressBar(true);
-      const res = await Rest.request
-        .update(rId, payload)
-        .then((r) => {
-          state.onUpdateRequest(payload);
-          return r;
-        })
-        .catch((e) => {
-          if (e.message == 'Network Error') {
-            //TODO: show error notification
-          }
-        })
         .finally(() => {
           state.toggleProgressBar(false);
         });

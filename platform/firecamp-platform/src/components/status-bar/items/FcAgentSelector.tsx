@@ -3,7 +3,6 @@ import cx from 'classnames';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import { EFirecampAgent } from '@firecamp/types';
 import shallow from 'zustand/shallow';
-
 import {
   Popover,
   Button,

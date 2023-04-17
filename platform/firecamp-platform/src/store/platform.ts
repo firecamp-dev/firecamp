@@ -13,10 +13,10 @@ let firecampAgent: EFirecampAgent = localStorage.getItem(
   'firecampAgent'
 ) as EFirecampAgent;
 
-console.log(firecampAgent, 'firecampAgent...');
+// console.log(firecampAgent, 'firecampAgent...');
 if (!firecampAgent) {
   const agent = _misc.firecampAgent();
-  firecampAgent = agent === EFirecampAgent.Web ? EFirecampAgent.Cloud : agent;
+  firecampAgent = agent === EFirecampAgent.Web ? EFirecampAgent.Web : agent;
 }
 
 const initialState = {

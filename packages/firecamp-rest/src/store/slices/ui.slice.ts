@@ -8,8 +8,6 @@ interface IUiRequestPanel {
   activeTab?: string;
   hasBody?: boolean;
   hasAuth?: boolean;
-  hasHeaders?: boolean;
-  hasParams?: boolean;
   hasPreScripts?: boolean;
   hasPostScripts?: boolean;
   hasConfig?: boolean;
@@ -18,6 +16,7 @@ interface IUiRequestPanel {
 }
 interface IUi {
   isFetchingRequest: boolean;
+  isUpdatingRequest?: boolean;
   isCodeSnippetOpen?: boolean;
   requestPanel: IUiRequestPanel;
 }
@@ -25,7 +24,8 @@ interface IUiSlice {
   ui: IUi;
   initializeUi: (ui: IUi) => void;
   changeUiActiveTab: (tabName: string) => void;
-  setIsFetchingReqFlag: (flag: boolean) => void;
+  toggleFetchingReqFlag: (flag: boolean) => void;
+  toggleUpdatingReqFlag: (flag: boolean) => void;
   setUIRequestPanelState?: (uiRequestPanel: { [key: string]: any }) => void;
   toggleOpenCodeSnippet?: (isOpen?: boolean) => void;
 }
@@ -52,9 +52,13 @@ const createUiSlice: TStoreSlice<IUiSlice> = (set, get, initialUi: IUi) => ({
       },
     }));
   },
-  setIsFetchingReqFlag: (flag: boolean) => {
+  toggleFetchingReqFlag: (flag: boolean) => {
     if (flag === undefined) flag = !get().ui.isFetchingRequest;
     set((s) => ({ ui: { ...s.ui, isFetchingRequest: flag } }));
+  },
+  toggleUpdatingReqFlag: (flag: boolean) => {
+    if (flag === undefined) flag = !get().ui.isUpdatingRequest;
+    set((s) => ({ ui: { ...s.ui, isUpdatingRequest: flag } }));
   },
   setUIRequestPanelState: (uiRequestPanel: { [key: string]: any }) => {
     set((s) => ({

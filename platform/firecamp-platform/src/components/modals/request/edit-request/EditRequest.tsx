@@ -9,11 +9,19 @@ import {
   ProgressBar,
 } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
-import { TId } from '@firecamp/types';
+import { ERequestTypes, TId } from '@firecamp/types';
 import { useModalStore } from '../../../../store/modal';
-import { useWorkspaceStore } from '../../../../store/workspace'
+import platformContext from '../../../../services/platform-context';
+import { useWorkspaceStore } from '../../../../store/workspace';
 
-type TModalMeta = { name: string, description: string, requestId: TId, collectionId: TId, folderId?: TId };
+type TModalMeta = {
+  name: string;
+  description: string;
+  requestType: ERequestTypes;
+  requestId: TId;
+  collectionId: TId;
+  folderId?: TId;
+};
 
 const EditRequest: FC<IModal> = ({
   isOpen = false,
@@ -21,11 +29,11 @@ const EditRequest: FC<IModal> = ({
   height = '732px',
   width = '500px',
 }) => {
-
-  const { name, description, requestId, collectionId, folderId  } = useModalStore.getState().__meta as TModalMeta;
+  const { name, description, requestId, requestType, collectionId, folderId } =
+    useModalStore.getState().__meta as TModalMeta;
   const [request, setRequest] = useState({
     name,
-    description
+    description,
   });
   const [isRequesting, setIsRequesting] = useState(false);
   const [error, setError] = useState({ name: '' });
@@ -47,21 +55,28 @@ const EditRequest: FC<IModal> = ({
       __meta: {
         name,
         description: request?.description?.trim(),
+        type: requestType,
       },
       __ref: {
         id: requestId,
         collectionId,
-        folderId
-      }
+        folderId,
+      },
+      __changes: { __meta: ['name', 'description'] },
     };
 
     setIsRequesting(true);
-    const {  updateRequest } = useWorkspaceStore.getState()
-    updateRequest(requestId, _request)
-      .then((res)=> {
+    platformContext.request
+      .save(_request)
+      .then((res) => {
         platformContext.app.modals.close();
+        const { onUpdateRequest } = useWorkspaceStore.getState();
+        onUpdateRequest({
+          __meta: { name, description },
+          __ref: { id: requestId },
+        });
       })
-      .finally(()=> {
+      .finally(() => {
         setIsRequesting(false);
       });
   };
@@ -72,8 +87,8 @@ const EditRequest: FC<IModal> = ({
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium display-block">
           {/* Update Request Info */}
           <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mt-2">
-              Update Request Info
-            </label>
+            Update Request Info
+          </label>
         </div>
       </Modal.Header>
       <Modal.Body>

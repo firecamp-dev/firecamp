@@ -51,25 +51,25 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
     case ETabEntityTypes.Environment:
       return (
         <div className="environment text-xs font-bold w-5 invert tab-icon">
-          <VscJson size={20} />
+          <VscJson size={16} />
         </div>
       );
     case ETabEntityTypes.Collection:
       return (
         <div className="collection text-xs font-bold w-5 invert tab-icon">
-          <VscFolder size={20} />
+          <VscFolder size={16} />
         </div>
       );
     case ETabEntityTypes.Folder:
       return (
         <div className="folder text-xs font-bold w-5 invert tab-icon">
-          <VscFolderOpened size={20} />
+          <VscFolderOpened size={16} />
         </div>
       );
     case ETabEntityTypes.Import:
       return (
         <div className="text-xs font-bold w-5 invert tab-icon">
-          <VscArrowDown size={20} />
+          <VscArrowDown size={16} />
         </div>
       );
     default:

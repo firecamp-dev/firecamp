@@ -20,7 +20,7 @@ interface ICollectionSlice {
   collection: ICollection;
   isCollectionEmpty: () => boolean;
   getItemPath: (itemId: TId) => string;
-  toggleProgressBar: (flag?: boolean) => void;
+  toggleColProgressBar: (flag?: boolean) => void;
   registerTDP: () => void;
   unRegisterTDP: () => void;
   initialiseCollection: (collection: ICollection) => void;
@@ -98,7 +98,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     set((s) => ({ collection: { ...s.collection, tdpInstance: null } }));
   },
 
-  toggleProgressBar: (flag?: boolean) => {
+  toggleColProgressBar: (flag?: boolean) => {
     set((s) => ({
       collection: {
         ...s.collection,
@@ -161,7 +161,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         folderId,
       },
     };
-    // state.toggleProgressBar(true);
+    // state.toggleColProgressBar(true);
     console.log(_item, 'prepare the item');
     return _item;
   },
@@ -290,7 +290,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         folderId: parentFolderId,
       },
     };
-    state.toggleProgressBar(true);
+    state.toggleColProgressBar(true);
     return _folder;
   },
 
