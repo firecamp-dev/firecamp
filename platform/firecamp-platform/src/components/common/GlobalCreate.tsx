@@ -2,12 +2,8 @@ import { useState } from 'react';
 import classnames from 'classnames';
 import { Dropdown, Button } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
-import { platformEmitter } from '../../services/platform-emitter';
-import { EPlatformTabs } from '../../services/platform-emitter/events';
 import { useWorkspaceStore } from '../../store/workspace';
-import { useEnvStore } from '../../store/environment';
 import { useTabStore } from '../../store/tab';
-import { ERequestTypes } from '@firecamp/types';
 import { ETabEntityTypes } from '../tabs/types';
 
 enum EMenuOptions {

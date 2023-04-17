@@ -10,6 +10,7 @@ import { useTabStore } from '../store/tab';
 import { useEnvStore } from '../store/environment';
 import { useModalStore } from '../store/modal';
 import { platformEmitter } from './platform-emitter';
+import { useExplorerStore } from '../store/explorer';
 
 const userService = {
   isLoggedIn: () => {
@@ -26,7 +27,7 @@ const switchWorkspace = async (wrs: IWorkspace, organization?: IOrganization) =>
   const user = useUserStore.getState().user;
   const platform = usePlatformStore.getState();
   const org = organization || platform.switchingOrg || platform.organization;
-  const { fetchExplorer } = useWorkspaceStore.getState();
+  const { fetchExplorer } = useExplorerStore.getState();
 
   // dispose all stores
   AppService.disposeStores();
@@ -42,7 +43,7 @@ const switchWorkspace = async (wrs: IWorkspace, organization?: IOrganization) =>
 
 //initialize app flow on first load, after login and after signup
 const initApp = async () => {
-  const { fetchExplorer } = useWorkspaceStore.getState();
+  const { fetchExplorer } = useExplorerStore.getState();
   CloudApiGlobal.setHost(process.env.FIRECAMP_API_HOST);
 
   // TODO: Fetch client id from the local DB

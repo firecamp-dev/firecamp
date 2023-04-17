@@ -4,6 +4,7 @@ import { RE } from '../../types';
 import { useTabStore } from '../../store/tab';
 import { ETabEntityTypes } from '../../components/tabs/types';
 import { useWorkspaceStore } from '../../store/workspace';
+import { useExplorerStore } from '../../store/explorer';
 import { useEnvStore } from '../../store/environment';
 import { usePlatformStore } from '../../store/platform';
 import { platformEmitter } from '../platform-emitter';
@@ -122,7 +123,7 @@ const platform = {
 
   /** open a create collection prompt */
   createCollectionPrompt: () => {
-    const { createCollection } = useWorkspaceStore.getState();
+    const { createCollection } = useExplorerStore.getState();
     if (!platformContext.app.user.isLoggedIn()) {
       return platformContext.app.modals.openSignIn();
     }

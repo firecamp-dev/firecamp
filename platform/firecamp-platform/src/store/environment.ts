@@ -13,7 +13,7 @@ import { _env } from '@firecamp/utils';
 import { EnvironmentDataProvider } from '../components/common/environment/sidebar/tree_/dataProvider';
 import { CollectionEnvDataProvider } from '../components/common/environment/sidebar/tree/dataProvider';
 import platformContext from '../services/platform-context';
-import { useWorkspaceStore } from './workspace';
+import { useExplorerStore } from './explorer';
 import { envService, EmptyEnv } from '../services/env.service';
 
 const initialState = {
@@ -136,7 +136,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const { envs } = get();
     const {
       explorer: { collections },
-    } = useWorkspaceStore.getState();
+    } = useExplorerStore.getState();
     const colEnvTdpInstance = new CollectionEnvDataProvider(collections);
     colEnvTdpInstance.init(envs);
     set((s) => ({ colEnvTdpInstance }));

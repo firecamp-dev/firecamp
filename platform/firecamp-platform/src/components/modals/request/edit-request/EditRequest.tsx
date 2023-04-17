@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 import {
   Input,
   TextArea,
@@ -12,7 +12,7 @@ import { _misc } from '@firecamp/utils';
 import { ERequestTypes, TId } from '@firecamp/types';
 import { useModalStore } from '../../../../store/modal';
 import platformContext from '../../../../services/platform-context';
-import { useWorkspaceStore } from '../../../../store/workspace';
+import { useExplorerStore } from '../../../../store/explorer';
 
 type TModalMeta = {
   name: string;
@@ -70,7 +70,7 @@ const EditRequest: FC<IModal> = ({
       .save(_request)
       .then((res) => {
         platformContext.app.modals.close();
-        const { onUpdateRequest } = useWorkspaceStore.getState();
+        const { onUpdateRequest } = useExplorerStore.getState();
         onUpdateRequest({
           __meta: { name, description },
           __ref: { id: requestId },
@@ -132,18 +132,18 @@ const EditRequest: FC<IModal> = ({
           <TabHeader.Right>
             <Button
               text="Cancel"
-              secondary
-              transparent={true}
-              sm
               onClick={(e) => onClose()}
-              ghost={true}
+              transparent
+              secondary
+              ghost
+              sm
             />
             <Button
               text={isRequesting ? 'Updating...' : 'Update'}
-              primary
-              sm
               onClick={onUpdate}
               disabled={isRequesting}
+              primary
+              sm
             />
           </TabHeader.Right>
         </TabHeader>

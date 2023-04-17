@@ -7,9 +7,9 @@ import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { Dropdown } from '@firecamp/ui';
-import { useWorkspaceStore } from '../../../../store/workspace';
 import platformContext from '../../../../services/platform-context';
 import { RE } from '../../../../types';
+import { useExplorerStore } from '../../../../store/explorer';
 
 enum EMenuType {
   Collection = 'collection',
@@ -31,7 +31,7 @@ const CollectionMenu = ({
     deleteCollection,
     deleteFolder,
     deleteRequest,
-  } = useWorkspaceStore.getState();
+  } = useExplorerStore.getState();
   let [isMenuOpened, toggleMenu] = useState(false);
 
   const renameMenu = {
@@ -124,25 +124,6 @@ const CollectionMenu = ({
         openCollectionTab(collectionId);
       } else if (menuType == EMenuType.Folder) {
         openFolderTab(folderId);
-      }
-    },
-  };
-
-  const settingMenu = {
-    prefix: () => (
-      <div className={cx('mr-1 text-lg')}>
-        <VscSettingsGear size={14} />
-      </div>
-    ),
-    name: 'Setting',
-    onClick: () => {
-      if (menuType == EMenuType.Collection) {
-        platformContext.app.modals.openCollectionSetting({ collectionId });
-      } else if (menuType == EMenuType.Folder) {
-        platformContext.app.modals.openFolderSetting({
-          collectionId,
-          folderId,
-        });
       }
     },
   };

@@ -9,13 +9,8 @@ import {
   Editor,
 } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
-import {
-  IEnvironment,
-  EEnvironmentScope,
-  EEditorLanguage,
-} from '@firecamp/types';
-
-import { useWorkspaceStore } from '../../../store/workspace';
+import { EEditorLanguage } from '@firecamp/types';
+import { useExplorerStore } from '../../../store/explorer';
 import { useModalStore } from '../../../store/modal';
 import { useEnvStore } from '../../../store/environment';
 import { RE } from '../../../types';
@@ -31,7 +26,7 @@ type TModalMeta = {
 
 const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
   const { open: openTab } = useTabStore.getState();
-  const { explorer } = useWorkspaceStore.getState();
+  const { explorer } = useExplorerStore.getState();
   const { collections } = explorer;
   const { fetchColEnvironment, cloneEnvironment } = useEnvStore.getState();
   const { envId, collectionId } = useModalStore.getState().__meta as TModalMeta;

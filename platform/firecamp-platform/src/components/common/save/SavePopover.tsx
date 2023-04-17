@@ -7,8 +7,7 @@ import {
   Container,
 } from '@firecamp/ui';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
-
-import { useWorkspaceStore } from '../../../store/workspace';
+import { useExplorerStore } from '../../../store/explorer';
 import { CollectionDataProvider } from './collection/CollectionDataProvider';
 import treeRenderer from './collection/treeItemRenderer';
 import { IRequestTab } from '../../tabs/types/tab';
@@ -261,7 +260,7 @@ export interface ISavePopover {
   /**
    * Request tab meta
    */
-  tabMeta: IRequestTab['meta'];
+  tabMeta: IRequestTab['__meta'];
 
   /**
    * Save modal meta
@@ -328,7 +327,7 @@ interface ISaveForm {
 const PathSelector: FC<{ onSelect: (_: any) => void }> = ({ onSelect }) => {
   let {
     explorer: { collections, folders },
-  } = useWorkspaceStore.getState();
+  } = useExplorerStore.getState();
 
   const dataProvider = useRef(new CollectionDataProvider(collections, folders));
 
