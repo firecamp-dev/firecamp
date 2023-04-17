@@ -235,6 +235,17 @@ const Editor: FC<IEditor> = ({
         loading={loading || <></>}
         onChange={(value, e) => {
           // console.log(value, 'native editor');
+
+          // update the placeholder visibility in case of value
+          let placeholder = document.querySelector(
+            '.firecamp-editor__placeholder'
+          ) as HTMLElement | null;
+          if (!value) {
+            placeholder!.style.display = 'block';
+          } else {
+            placeholder!.style.display = 'none';
+          }
+          
           onChange({
             preventDefault: () => {},
             target: { value },
