@@ -341,7 +341,7 @@ const Explorer: FC<any> = () => {
                        */
                       onClick: (e) => {
                         //avoid multi select
-                        // console.log(item, actions, renderFlags)
+                        // console.log(item, actions, renderFlags);
                         if (item.isFolder) actions.toggleExpandedState();
                         if (!renderFlags.isFocused) actions.focusItem();
                         else actions.selectItem();
@@ -375,6 +375,7 @@ const Explorer: FC<any> = () => {
                     console.log(a, 'onStartRenamingItem');
                   }}
                   onRenameItem={_onRenameItem}
+                  // onPrimaryAction={console.log}
                   onSelectItems={_onNodeSelect}
                   onRegisterTree={(...a) => console.log(a, 'on register tree')}
                   onDrop={onDrop}
