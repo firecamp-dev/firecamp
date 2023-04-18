@@ -48,7 +48,7 @@ export interface IWorkspaceStore {
   checkOrgNameAvailability: (name: string) => Promise<any>;
 
   // workspace
-  fetchExplorer: (wId?: string) => void;
+  fetchExplorer: (wId?: TId) => void;
 
   // collection
   openCollectionTab: (collectionId: TId) => void;
@@ -132,11 +132,12 @@ export const useExplorerStore = create<IWorkspaceStore>(
     },
 
     // fetch remote collections of workspace... replacement of fetchAndSetAll
-    fetchExplorer: async (workspaceId?: string) => {
+    fetchExplorer: async (workspaceId) => {
       const state = get();
 
       state.toggleProgressBar(true);
-      const wId = workspaceId;
+      const wId =
+        workspaceId || useWorkspaceStore.getState().workspace.__ref.id;
       await Rest.workspace
         .fetchWorkspaceArtifacts(wId)
         .then((res: any) => {
@@ -305,7 +306,6 @@ export const useExplorerStore = create<IWorkspaceStore>(
         return { explorer: { ...s.explorer, collections } };
       });
     },
-
 
     // folder
     openFolderTab: (folderId: TId) => {
@@ -693,6 +693,8 @@ export const useExplorerStore = create<IWorkspaceStore>(
     ) => {
       const state = get();
       state.toggleProgressBar(true);
+
+      // console.log(requestId, to, 'move request...')
       const res = await Rest.request
         .move(requestId, to)
         .then(() => {
@@ -710,7 +712,6 @@ export const useExplorerStore = create<IWorkspaceStore>(
         });
       return res;
     },
-
 
     // dispose whole store and reset to initial state
     dispose: () => {

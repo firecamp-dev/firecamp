@@ -1,5 +1,4 @@
 import { memo, useEffect, useRef, useState } from 'react';
-import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import shallow from 'zustand/shallow';
 import {
@@ -67,7 +66,6 @@ const Logs = () => {
     setSelectedRow(null);
   };
 
-  const handleFS = useFullScreenHandle();
   const _onResizeStop = (e, a, b, delta) => {
     console.log(e, 'event', delta);
     setTableHeight((ps) => ps + delta.height);
@@ -85,95 +83,93 @@ const Logs = () => {
   // console.log('selectedRow', selectedRow);
   return (
     <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
-      <FullScreen handle={handleFS}>
-        <Container>
-          <Container.Header>
-            <TabHeader className="height-small border-b border-appBorder">
-              <TabHeader.Left>
-                <label className="m-0 text-sm font-bold whitespace-pre">
-                  Event Logs
-                </label>
-              </TabHeader.Left>
-              <TabHeader.Right>
-                {logs?.length ? (
-                  <>
-                    <label className="m-0 text-sm font-bold whitespace-pre">
-                      Filter:
-                    </label>
-                    <div className="flex items-center">
-                      <Dropdown
-                        selected={typeFilter || 'select log type'}
-                        className="fc-dropdown-fixwidth"
+      <Container>
+        <Container.Header>
+          <TabHeader className="height-small border-b border-appBorder">
+            <TabHeader.Left>
+              <label className="m-0 text-sm font-bold whitespace-pre">
+                Event Logs
+              </label>
+            </TabHeader.Left>
+            <TabHeader.Right>
+              {logs?.length ? (
+                <>
+                  <label className="m-0 text-sm font-bold whitespace-pre">
+                    Filter:
+                  </label>
+                  <div className="flex items-center">
+                    <Dropdown
+                      selected={typeFilter || 'select log type'}
+                      className="fc-dropdown-fixwidth"
+                    >
+                      <Dropdown.Handler
+                        id={`websocket-response-log-${tabId}-filter-event`}
                       >
-                        <Dropdown.Handler
-                          id={`websocket-response-log-${tabId}-filter-event`}
-                        >
-                          <Button
-                            text={typeFilter || 'select log type'}
-                            tooltip={
-                              typeFilter ? `Log type: ${typeFilter || ''}` : ''
-                            }
-                            transparent
-                            withCaret
-                            ghost
-                            sm
-                          />
-                        </Dropdown.Handler>
-                        <Dropdown.Options
-                          options={Object.keys(logTypes).map((o) => ({
-                            name: o,
-                          }))}
-                          onSelect={(type) => _onFilter(type?.name)}
+                        <Button
+                          text={typeFilter || 'select log type'}
+                          tooltip={
+                            typeFilter ? `Log type: ${typeFilter || ''}` : ''
+                          }
+                          transparent
+                          withCaret
+                          ghost
+                          sm
                         />
-                      </Dropdown>
-                    </div>
-                  </>
+                      </Dropdown.Handler>
+                      <Dropdown.Options
+                        options={Object.keys(logTypes).map((o) => ({
+                          name: o,
+                        }))}
+                        onSelect={(type) => _onFilter(type?.name)}
+                      />
+                    </Dropdown>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+
+              <div className="flex">
+                {logs?.length ? (
+                  <VscCircleSlash
+                    className="cursor-pointer"
+                    title="clear logs"
+                    onClick={_onClearAllMessages}
+                  />
                 ) : (
                   <></>
                 )}
+              </div>
+            </TabHeader.Right>
+          </TabHeader>
+        </Container.Header>
 
-                <div className="flex">
-                  {logs?.length ? (
-                    <VscCircleSlash
-                      className="cursor-pointer"
-                      title="clear logs"
-                      onClick={_onClearAllMessages}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                </div>
-              </TabHeader.Right>
-            </TabHeader>
-          </Container.Header>
-
-          {logs?.length ? (
-            <Container.Body overflow="hidden" className="flex flex-col">
-              <LogTable
-                onLoad={(tApi) => {
-                  logTableApiRef.current = tApi;
-                }}
-                onFocusRow={(r) => {
-                  setSelectedRow(r);
-                }}
-              />
-              <Resizable
-                top={true}
-                height="250px"
-                width="100%"
-                maxHeight={400}
-                minHeight={100}
-                onResizeStop={_onResizeStop}
-                className="bg-focus-3"
-              >
-                <LogPreview row={selectedRow} />
-              </Resizable>
-            </Container.Body>
-          ) : (
-            <></>
-          )}
-        </Container>
-      </FullScreen>
+        {logs?.length ? (
+          <Container.Body overflow="hidden" className="flex flex-col">
+            <LogTable
+              onLoad={(tApi) => {
+                logTableApiRef.current = tApi;
+              }}
+              onFocusRow={(r) => {
+                setSelectedRow(r);
+              }}
+            />
+            <Resizable
+              top={true}
+              height="250px"
+              width="100%"
+              maxHeight={400}
+              minHeight={100}
+              onResizeStop={_onResizeStop}
+              className="bg-focus-3"
+            >
+              <LogPreview row={selectedRow} />
+            </Resizable>
+          </Container.Body>
+        ) : (
+          <></>
+        )}
+      </Container>
     </Column>
   );
 };

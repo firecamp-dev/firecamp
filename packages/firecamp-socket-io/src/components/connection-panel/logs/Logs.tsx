@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 // import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import shallow from 'zustand/shallow';
-import { FullScreen, useFullScreenHandle } from 'react-full-screen';
 import {
   Container,
   TabHeader,
@@ -44,7 +43,6 @@ const Logs = () => {
     shallow
   );
 
-  const handleFS = useFullScreenHandle();
   const logTableApiRef = useRef(null);
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
@@ -93,125 +91,121 @@ const Logs = () => {
 
   return (
     <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
-      <FullScreen handle={handleFS}>
-        <Row className="with-divider h-full" flex={1}>
-          <Column overflow="auto" className="h-full">
-            <Container>
-              <Container.Header className="with-divider">
-                <TabHeader className="height-small border-b border-appBorder">
-                  <TabHeader.Left>
-                    <label className="m-0 text-sm font-bold whitespace-pre">
-                      Event Logs
-                    </label>
-                  </TabHeader.Left>
-                  <TabHeader.Right>
-                    {/* <label className="m-0 text-sm font-bold whitespace-pre">
+      <Row className="with-divider h-full" flex={1}>
+        <Column overflow="auto" className="h-full">
+          <Container>
+            <Container.Header className="with-divider">
+              <TabHeader className="height-small border-b border-appBorder">
+                <TabHeader.Left>
+                  <label className="m-0 text-sm font-bold whitespace-pre">
+                    Event Logs
+                  </label>
+                </TabHeader.Left>
+                <TabHeader.Right>
+                  {/* <label className="m-0 text-sm font-bold whitespace-pre">
                       Filter:
                     </label> */}
-                    <div className="flex items-center">
-                      {/* <label className="m-0 text-base font-bold">Type</label> */}
-                      {logs?.length ? (
-                        <Dropdown
-                          selected={typeFilter || 'select log type'}
-                          className="fc-dropdown-fixwidth"
+                  <div className="flex items-center">
+                    {/* <label className="m-0 text-base font-bold">Type</label> */}
+                    {logs?.length ? (
+                      <Dropdown
+                        selected={typeFilter || 'select log type'}
+                        className="fc-dropdown-fixwidth"
+                      >
+                        <Dropdown.Handler
+                          id={`websocket-response-log-${tabId}-filter-event`}
                         >
-                          <Dropdown.Handler
-                            id={`websocket-response-log-${tabId}-filter-event`}
-                          >
-                            <Button
-                              text={typeFilter || 'select log type'}
-                              tooltip={
-                                typeFilter
-                                  ? `Log type: ${typeFilter || ''}`
-                                  : ''
-                              }
-                              transparent
-                              withCaret
-                              ghost
-                              sm
-                            />
-                          </Dropdown.Handler>
-                          <Dropdown.Options
-                            options={Object.keys(logTypes)?.map((o) => ({
-                              name: o,
-                            }))}
-                            onSelect={(type) => _onFilter(type?.name)}
+                          <Button
+                            text={typeFilter || 'select log type'}
+                            tooltip={
+                              typeFilter ? `Log type: ${typeFilter || ''}` : ''
+                            }
+                            transparent
+                            withCaret
+                            ghost
+                            sm
                           />
-                        </Dropdown>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                    <div className="flex">
-                      {logs?.length ? (
-                        <VscCircleSlash
-                          className="cursor-pointer"
-                          title="clear logs"
-                          onClick={_onClearAllMessages}
+                        </Dropdown.Handler>
+                        <Dropdown.Options
+                          options={Object.keys(logTypes)?.map((o) => ({
+                            name: o,
+                          }))}
+                          onSelect={(type) => _onFilter(type?.name)}
                         />
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </TabHeader.Right>
-                </TabHeader>
-                <TabHeader className="height-small">
-                  <TabHeader.Left>
-                    <div className="fc-tab-panel-info whitespace-pre">
-                      {socketId ? (
-                        [
-                          <label key={`label-${tabId}`}>Connection id:</label>,
-                          <span key={`socket-id-${tabId}`}>
-                            {socketId || '-'}
-                          </span>,
-                          <CopyButton
-                            id={tabId}
-                            key={`copy-socketId-${tabId}`}
-                            text={socketId || ''}
-                          />,
-                        ]
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </TabHeader.Left>
-                  <TabHeader.Right></TabHeader.Right>
-                </TabHeader>
-              </Container.Header>
-              <Container.Body overflow="hidden" className="flex flex-col">
-                {logs?.length ? (
-                  <LogTable
-                    onLoad={(tApi) => {
-                      logTableApiRef.current = tApi;
-                    }}
-                    onFocusRow={(r) => {
-                      setSelectedRow(r);
-                    }}
-                  />
-                ) : (
-                  <></>
-                )}
+                      </Dropdown>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                  <div className="flex">
+                    {logs?.length ? (
+                      <VscCircleSlash
+                        className="cursor-pointer"
+                        title="clear logs"
+                        onClick={_onClearAllMessages}
+                      />
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </TabHeader.Right>
+              </TabHeader>
+              <TabHeader className="height-small">
+                <TabHeader.Left>
+                  <div className="fc-tab-panel-info whitespace-pre">
+                    {socketId ? (
+                      [
+                        <label key={`label-${tabId}`}>Connection id:</label>,
+                        <span key={`socket-id-${tabId}`}>
+                          {socketId || '-'}
+                        </span>,
+                        <CopyButton
+                          id={tabId}
+                          key={`copy-socketId-${tabId}`}
+                          text={socketId || ''}
+                        />,
+                      ]
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                </TabHeader.Left>
+                <TabHeader.Right></TabHeader.Right>
+              </TabHeader>
+            </Container.Header>
+            <Container.Body overflow="hidden" className="flex flex-col">
+              {logs?.length ? (
+                <LogTable
+                  onLoad={(tApi) => {
+                    logTableApiRef.current = tApi;
+                  }}
+                  onFocusRow={(r) => {
+                    setSelectedRow(r);
+                  }}
+                />
+              ) : (
+                <></>
+              )}
 
-                {selectedRow ? (
-                  <Resizable
-                    top={true}
-                    height="250px"
-                    width="100%"
-                    maxHeight={400}
-                    minHeight={50}
-                    onResizeStop={_onResizeStop}
-                    className="bg-focus-3"
-                  >
-                    <LogPreview row={selectedRow} />
-                  </Resizable>
-                ) : (
-                  <></>
-                )}
-              </Container.Body>
-            </Container>
-          </Column>
-        </Row>
-      </FullScreen>
+              {selectedRow ? (
+                <Resizable
+                  top={true}
+                  height="250px"
+                  width="100%"
+                  maxHeight={400}
+                  minHeight={50}
+                  onResizeStop={_onResizeStop}
+                  className="bg-focus-3"
+                >
+                  <LogPreview row={selectedRow} />
+                </Resizable>
+              ) : (
+                <></>
+              )}
+            </Container.Body>
+          </Container>
+        </Column>
+      </Row>
     </Column>
   );
 };
