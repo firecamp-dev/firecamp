@@ -4,7 +4,7 @@ import { useHotkeys } from 'react-hotkeys-hook';
 import {
   preScriptSnippets,
   testScriptSnippets,
-} from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
+} from '@firecamp/scripts/dist/esm/snippets';
 import {
   AvailableOnElectron,
   Column,

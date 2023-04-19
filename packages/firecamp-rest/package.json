@@ -34,6 +34,7 @@
   "dependencies": {
     "@firecamp/curl-to-firecamp": "^1.0.1",
     "@firecamp/rest-executor": "workspace:*",
+    "@firecamp/scripts": "workspace:*",
     "@firecamp/types": "^0.2.1",
     "@firecamp/ui": "workspace:*",
     "@firecamp/url": "0.0.20",

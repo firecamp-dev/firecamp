@@ -16,7 +16,7 @@ import { EAuthTypes, IAuth, ICollection, IFolder } from '@firecamp/types';
 import {
   preScriptSnippets,
   testScriptSnippets,
-} from '@firecamp/rest-executor/dist/esm/script-runner/snippets';
+} from '@firecamp/scripts/dist/esm/snippets';
 import { Rest } from '@firecamp/cloud-apis';
 import EditInfo from './tabs/EditInfo';
 import Scripts from './tabs/Scripts';
