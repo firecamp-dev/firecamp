@@ -8,7 +8,6 @@ import {
 } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
-
 import { IoMdCloseCircle } from '@react-icons/all-files/io/IoMdCloseCircle';
 
 enum EActiveTab {
@@ -67,19 +66,17 @@ const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
   const contentType = getContentTypeFromHeaders(headers);
 
   let contentTypeKey = `content-type`;
-  if (headers) {
-    if (headers?.['content-type']) {
-      contentTypeKey = `content-type`;
-    } else if (headers?.['Content-Type']) {
-      contentTypeKey = `Content-Type`;
-    } else {
-      contentTypeKey = `content-type`;
-    }
-  }
+  if (headers?.['Content-Type']) contentTypeKey = 'Content-Type';
+
   const [tabs, setTabs] = useState(initialTabs);
-  const [activeTab, setActiveTab] = useState<EActiveTab>(
-    getActiveTabFromHeaders(contentType)
-  );
+  const [activeTab, setActiveTab] = useState<EActiveTab>();
+  useEffect(() => {
+    let activeTab = getActiveTabFromHeaders(contentType);
+    if (!activeTab) {
+
+    }
+     setActiveTab(activeTab);
+  }, [contentType]);
   const [editor, setEditor] = useState<any>(null);
 
   // set response type by updated response headers. (by content type)
@@ -105,7 +102,7 @@ const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
 
   const _renderTabBody = (tab: string) => {
     // setTimeout(this._editorFoldAll, 2000)
-    // console.log("tab", tab);
+    console.log('tab', tab);
     tab === 'octet_stream' ? 'json' : tab;
 
     switch (tab) {
@@ -155,7 +152,6 @@ const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
         );
     }
   };
-
   if (editor && editor.editor) {
     editor.$onChangeWrapMode();
   }
