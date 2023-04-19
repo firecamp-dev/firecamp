@@ -98,15 +98,15 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
   ): Promise<void> {
     // this.items[itemId].children = newChildren;
 
-    const {
-      changeWorkspaceMetaOrders,
-      changeCollectionMetaOrders,
-      changeFolderMetaOrders,
-    } = useExplorerStore.getState();
+    // const {
+    //   changeWorkspaceMetaOrders,
+    //   changeCollectionMetaOrders,
+    //   changeFolderMetaOrders,
+    // } = useExplorerStore.getState();
 
     if (itemId == 'root') {
       this.rootOrders = newChildren;
-      changeWorkspaceMetaOrders(newChildren as string[]);
+      // changeWorkspaceMetaOrders(newChildren as string[]);
     } else {
       // split new children into fOrders and rOrders
       const { fOrders, rOrders } = newChildren.reduce(
@@ -124,13 +124,13 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
       this.items = this.items.map((i) => {
         if (i.__ref.id == itemId) {
           if (i.__ref.isCollection)
-            changeCollectionMetaOrders(itemId as string, {
-              fOrders,
-              rOrders,
-            });
-          if (i.__ref.isFolder)
-            changeFolderMetaOrders(itemId as string, { fOrders, rOrders });
-          return { ...i, __meta: { ...i.__meta, fOrders, rOrders } };
+            if (i.__ref.isFolder)
+              // changeCollectionMetaOrders(itemId as string, {
+              //   fOrders,
+              //   rOrders,
+              // });
+              // changeFolderMetaOrders(itemId as string, { fOrders, rOrders });
+              return { ...i, __meta: { ...i.__meta, fOrders, rOrders } };
         }
         return i;
       });
