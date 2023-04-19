@@ -304,6 +304,7 @@ importers:
     specifiers:
       '@firecamp/curl-to-firecamp': ^1.0.1
       '@firecamp/rest-executor': workspace:*
+      '@firecamp/scripts': workspace:*
       '@firecamp/types': ^0.2.1
       '@firecamp/ui': workspace:*
       '@firecamp/url': 0.0.20
@@ -362,6 +363,7 @@ importers:
     dependencies:
       '@firecamp/curl-to-firecamp': 1.0.1_nanoid@3.3.4
       '@firecamp/rest-executor': link:../firecamp-rest-executor
+      '@firecamp/scripts': link:../firecamp-scripts
       '@firecamp/types': 0.2.1
       '@firecamp/ui': link:../../platform/firecamp-ui
       '@firecamp/url': 0.0.20
@@ -875,6 +877,7 @@ importers:
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
       '@firecamp/rest-executor': workspace:*
+      '@firecamp/scripts': workspace:*
       '@firecamp/socket.io': workspace:*
       '@firecamp/types': ^0.2.1
       '@firecamp/ui': workspace:*
@@ -917,6 +920,7 @@ importers:
       '@firecamp/graphql': link:../../packages/firecamp-graphql
       '@firecamp/rest': link:../../packages/firecamp-rest
       '@firecamp/rest-executor': link:../../packages/firecamp-rest-executor
+      '@firecamp/scripts': link:../../packages/firecamp-scripts
       '@firecamp/socket.io': link:../../packages/firecamp-socket-io
       '@firecamp/types': 0.2.1
       '@firecamp/ui': link:../firecamp-ui
