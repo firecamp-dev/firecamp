@@ -1,12 +1,6 @@
 import { FC, memo, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import {
-  ProgressBar,
-  Help,
-  Container,
-  Resizable,
-  Notes,
-} from '@firecamp/ui';
+import { ProgressBar, Help, Container, Resizable, Notes } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import { IRestResponse, TId } from '@firecamp/types';
 import Tabs from './tabs/Tabs';
@@ -30,6 +24,7 @@ const Response: FC<IResponsePanel> = ({
   client = '',
 }) => {
   const [activeBodyTab, setActiveBodyTab] = useState('Body');
+  console.log('response in', response);
   return (
     <Resizable
       width={'50%'}

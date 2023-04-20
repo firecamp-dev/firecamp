@@ -7,8 +7,7 @@ import {
   EditorControlBar,
 } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
-import { TId } from '@firecamp/types';
-
+import { IHeader, TId, TPlainObject } from '@firecamp/types';
 import { IoMdCloseCircle } from '@react-icons/all-files/io/IoMdCloseCircle';
 
 enum EActiveTab {
@@ -24,21 +23,12 @@ enum EActiveTab {
   None = '',
 }
 
-const getContentTypeFromHeaders = (headers: { [k: string]: string }) => {
-  let ct: string;
-  if (headers) {
-    if (Object.keys(headers).includes(`content-type`))
-      ct = headers[`content-type`];
-    else if (Object.keys(headers).includes(`Content-Type`))
-      ct = headers[`Content-Type`];
-    else ct = headers[`content-type`];
-
-    if (ct?.includes(';')) {
-      const newContentType = ct.split(';');
-      if (newContentType && newContentType.length) ct = newContentType[0];
-    }
-  }
-  return ct;
+const getContentTypeFromHeaders = (headers: IHeader[]) => {
+  const h = headers.find((h) => {
+    return ['content-type', 'Content-Type'].includes(h.key);
+  });
+  if (!h) return '';
+  return h.value.includes(';') ? h.value.split(';')[0] : h.value;
 };
 
 const getActiveTabFromHeaders = (contentType: string = '') => {
@@ -56,8 +46,8 @@ const getActiveTabFromHeaders = (contentType: string = '') => {
 
 const initialTabs = [
   { name: 'JSON', id: 'json' },
-  /* { name: "XML", id: "xml" },
-   { name: "HTML", id: "html" },*/
+  /* { name: "XML", id: "xml" },*/
+  { name: 'HTML', id: 'html' },
   { name: 'TEXT', id: 'text' },
   { name: 'No body found', id: 'nobodyfound' },
 ];
@@ -65,32 +55,23 @@ const initialTabs = [
 const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
   // console.log({ id, body, headers }); //TODO: optimize it for rerendering
   const contentType = getContentTypeFromHeaders(headers);
-
-  let contentTypeKey = `content-type`;
-  if (headers) {
-    if (headers?.['content-type']) {
-      contentTypeKey = `content-type`;
-    } else if (headers?.['Content-Type']) {
-      contentTypeKey = `Content-Type`;
-    } else {
-      contentTypeKey = `content-type`;
-    }
-  }
-  const [tabs, setTabs] = useState(initialTabs);
-  const [activeTab, setActiveTab] = useState<EActiveTab>(
-    getActiveTabFromHeaders(contentType)
-  );
   const [editor, setEditor] = useState<any>(null);
+  const [tabs, setTabs] = useState(initialTabs);
+  const [activeTab, setActiveTab] = useState<EActiveTab>();
+  useEffect(() => {
+    const activeTab = getActiveTabFromHeaders(contentType);
+    if (!activeTab) setActiveTab(activeTab);
+  }, [contentType]);
 
   // set response type by updated response headers. (by content type)
   useEffect(() => {
-    prepareTabs(headers);
-  }, [headers]);
+    prepareTabs();
+  }, [contentType, body]);
 
-  const prepareTabs = (headers: any) => {
-    const activeTab = _misc.isJSON(body)
+  const prepareTabs = () => {
+    const activeTab = _misc.isJSON.strict(body)
       ? EActiveTab.Json
-      : getActiveTabFromHeaders(headers?.[contentTypeKey]);
+      : getActiveTabFromHeaders(contentType);
 
     /** 'json', 'xml', 'binary', 'html', 'text', 'image' */
     let newTabs: { name: string; id: EActiveTab }[] = [
@@ -105,7 +86,7 @@ const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
 
   const _renderTabBody = (tab: string) => {
     // setTimeout(this._editorFoldAll, 2000)
-    // console.log("tab", tab);
+    // console.log('tab', tab);
     tab === 'octet_stream' ? 'json' : tab;
 
     switch (tab) {
@@ -155,7 +136,6 @@ const BodyTab: FC<IBodyTab> = ({ id, body, headers = {}, error }) => {
         );
     }
   };
-
   if (editor && editor.editor) {
     editor.$onChangeWrapMode();
   }

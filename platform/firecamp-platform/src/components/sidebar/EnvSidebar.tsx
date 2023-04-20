@@ -12,6 +12,8 @@ import {
 } from '@firecamp/ui';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
+import { useTabStore } from '../../store/tab';
+import { ETabEntityTypes } from '../tabs/types';
 
 const EnvSidebar: FC<any> = ({ expanded }) => {
   const { activeEnv, globalEnv, toggleEnvSidebar } = useEnvStore(
@@ -23,6 +25,12 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
     }),
     shallow
   );
+  const { open: openTab } = useTabStore.getState();
+  const openEnv = (env) => {
+    openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
+  };
+
+  console.log(activeEnv, 'activeEnv...');
   return (
     <Resizable
       width={'400'}
@@ -48,12 +56,23 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col overflow-visible">
+          {activeEnv.__ref.id ? (
+            <EnvPreviewTable
+              envId={activeEnv.__ref.id}
+              name={activeEnv.name}
+              variables={activeEnv.variables}
+              title={'Active Environment'}
+              onOpen={() => openEnv(activeEnv)}
+            />
+          ) : (
+            <></>
+          )}
           <EnvPreviewTable
-            name={activeEnv.name}
-            variables={activeEnv.variables}
-            title={'Active Environment'}
+            envId={globalEnv.__ref.id}
+            variables={globalEnv.variables}
+            title={'Globals'}
+            onOpen={() => openEnv(globalEnv)}
           />
-          <EnvPreviewTable variables={globalEnv.variables} title={'Globals'} />
         </Container.Body>
         <Container.Footer className="text-sm">
           <Notes
@@ -78,7 +97,13 @@ const EnvSidebarContainer = () => {
 };
 export { EnvSidebar, EnvSidebarContainer };
 
-const EnvPreviewTable: FC<any> = ({ title, name, variables }) => {
+const EnvPreviewTable: FC<any> = ({
+  envId,
+  title,
+  name,
+  variables,
+  onOpen,
+}) => {
   variables = variables.filter((v) => v.key); //only show those rows which has key
   return (
     <div className="flex-1 flex flex-col overflow-auto">
@@ -92,12 +117,11 @@ const EnvPreviewTable: FC<any> = ({ title, name, variables }) => {
           <></>
         )}
         <div className="flex items-center ml-auto">
-          <Button text="Edit" secondary xs />
-          <VscEdit className="table-action ml-2 cursor-pointer" />
+          {envId ? <Button text="Open" onClick={onOpen} secondary xs /> : <></>}
+          {/* <VscEdit className="table-action ml-2 cursor-pointer" /> */}
         </div>
       </div>
       <div className="flex-1 overflow-auto visible-scrollbar">
-
         {variables.length > 0 && (
           <PlainTable
             columns={[
@@ -110,10 +134,8 @@ const EnvPreviewTable: FC<any> = ({ title, name, variables }) => {
                 resizeWithContainer: true,
               },
             ]}
-            classes={{  table: '!m-0 !min-w-full' }}
+            classes={{ table: '!m-0 !min-w-full' }}
             rows={variables}
-            onChange={() => {}}
-            onMount={() => {}}
           />
         )}
       </div>
