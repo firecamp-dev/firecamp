@@ -1,12 +1,8 @@
-import { getIntrospectionQuery } from 'graphql';
 import {
   TId,
   EHttpMethod,
   IHeader,
   IGraphQL,
-  IRestResponse,
-  ERestBodyTypes,
-  ERequestTypes,
 } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { IUrlSlice, createUrlSlice } from './index';
@@ -26,7 +22,6 @@ interface IRequestSlice extends IUrlSlice {
   changeHeaders: (headers: IHeader[]) => any;
   changeMeta: (__meta: Partial<IGraphQL['__meta']>) => any;
   changeConfig: (configKey: string, configValue: any) => any;
-  fetchIntrospectionSchema: () => Promise<void>;
   save: (tabId: TId) => void;
   /** prepare the request path after request save (add/update) */
   onRequestSave: (requestId: TId) => void;
@@ -81,42 +76,6 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       request: { ...s.request, __meta: updatedMeta },
     }));
     state.equalityChecker({ __meta: updatedMeta });
-  },
-  fetchIntrospectionSchema: async () => {
-    const state = get();
-    const {
-      request,
-      runtime: { isFetchingIntrospection },
-    } = state;
-    if (isFetchingIntrospection) return;
-
-    const query = getIntrospectionQuery();
-    const _request = Object.assign(
-      {},
-      {
-        ...request,
-        __meta: request.__meta,
-        body: {
-          value: { query, variables: {} },
-          type: ERestBodyTypes.GraphQL,
-        },
-      }
-    );
-    state.setFetchIntrospectionFlag(true);
-    state.context.request
-      .execute(_request)
-      .then((r: { data: string }) => {
-        try {
-          const schema = JSON.parse(r.data).data;
-          state.setSchema(schema);
-        } catch (e) {}
-      })
-      .catch((e: any) => {
-        console.log(e, 'e...');
-      })
-      .finally(() => {
-        state.setFetchIntrospectionFlag(false);
-      });
   },
   save: (tabId) => {
     const state = get();

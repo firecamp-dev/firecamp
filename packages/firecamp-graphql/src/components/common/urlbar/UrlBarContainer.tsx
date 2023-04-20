@@ -85,40 +85,24 @@ const PrefixButtons = () => {
     tabId,
     isUpdatingRequest,
     fetchIntrospectionSchema,
-    // toggleDoc,
+    toggleDoc,
     save,
   } = useStore(
     (s: IStore) => ({
       tabId: s.runtime.tabId,
       isUpdatingRequest: s.ui.isUpdatingRequest,
       fetchIntrospectionSchema: s.fetchIntrospectionSchema,
-      // toggleDoc: s.toggleDoc,
+      toggleDoc: s.toggleDoc,
       save: s.save,
     }),
     shallow
   );
 
-  const schema = {};
-  const _toggleGraphqlDoc = () => {
-    // if (url?.raw?.length && (!schema || !Object.keys(schema).length)) {
-    //   fetchIntrospectionSchema();
-    // }
-    // toggleDoc(true);
-  };
-
-  const _onSave = async () => {
-    try {
-      save(tabId);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   // const isSaveBtnDisabled = isRequestSaved ? !requestHasChanges : false;
   return (
     <>
       <Button
-        onClick={_toggleGraphqlDoc}
+        onClick={() => toggleDoc(true)}
         icon={<FaFile fontSize={16} />}
         id={`open-schema-doc-${tabId}`}
         tooltip={'open schema doc'}
@@ -137,7 +121,7 @@ const PrefixButtons = () => {
       <Button
         id={`save-request-${tabId}`}
         text={isUpdatingRequest ? 'Saving...' : 'Save'}
-        onClick={_onSave}
+        onClick={() => save(tabId)}
         disabled={false} //isSaveBtnDisabled
         secondary
         sm

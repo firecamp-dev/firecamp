@@ -1,19 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import GraphiQLExplorer from 'graphiql-explorer';
 import shallow from 'zustand/shallow';
 import { buildClientSchema } from 'graphql';
-
-import { useStore } from '../../../store';
-import { isEmpty } from 'lodash';
-
+import { _object } from '@firecamp/utils';
+import { IStore, useStore } from '../../../store';
 import './QueryExplorer.scss';
-
 // import getQueryFacts from '../../../services/GraphQLservice';
 
 const QueryExplorer = () => {
-  let { playground, activePlayground, schema, changePlaygroundValue } =
+  const { tabId, playground, activePlayground, schema, changePlaygroundValue } =
     useStore(
-      (s: any) => ({
+      (s: IStore) => ({
+        tabId: s.runtime.tabId,
         schema: s.runtime.schema,
         activePlayground: s.runtime.activePlayground,
         playground: s.playgrounds[s.runtime.activePlayground],
@@ -22,21 +20,15 @@ const QueryExplorer = () => {
       shallow
     );
 
-  let [clientSchema, setClientSchema] = useState({});
+  const [clientSchema, setClientSchema] = useState({});
 
   useEffect(() => {
+    console.log('schema changed', schema);
     schema && setClientSchema(buildClientSchema(schema));
   }, [schema]);
+  console.log(clientSchema, 'clientSchema...');
 
-  let tabId = 123;
-
-  // console.log(clientSchema, "clientSchema...")
-
-  let mergeSingleQueryToQueries = (_) => {};
-
-  useEffect(() => {}, []);
-
-  let _onEdit = (value) => {
+  const _onEdit = (value) => {
     console.log({ value });
     changePlaygroundValue(activePlayground, value);
     // debugger;
@@ -44,7 +36,7 @@ const QueryExplorer = () => {
     // mergeSingleQueryToQueries(queryPayload);
   };
 
-  if (isEmpty(clientSchema)) return <></>;
+  if (_object.isEmpty(clientSchema)) return <></>;
 
   return (
     <GraphiQLExplorer
@@ -123,4 +115,4 @@ const QueryExplorer = () => {
   );
 };
 
-export default QueryExplorer;
+export default memo(QueryExplorer);

@@ -1,6 +1,7 @@
 import { TId, TRequestPath } from '@firecamp/types';
 import { ITab } from '@firecamp/ui/src/components/tabs/interfaces/Tab.interface';
 import { TStoreSlice } from '../store.type';
+import { _object } from '@firecamp/utils';
 
 interface IPlaygroundMeta {
   // name: string, // if the playground is saved then this will be the same name of it, if not saved then this will be auto generated from the query.
@@ -105,11 +106,25 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   },
 
   setSchema: (schema: any) => {
+    console.log('setting the schema...', schema, 666);
     set((s) => ({ runtime: { ...s.runtime, schema } }));
   },
 
   toggleDoc: (flag: boolean) => {
-    set((s) => ({ runtime: { ...s.runtime, isDocOpened: flag } }));
+    const state = get();
+    const {
+      request: { url },
+      runtime: { schema },
+    } = state;
+    if (_object.isEmpty(schema) && flag == true) {
+      if (url?.raw?.length) {
+        state.fetchIntrospectionSchema().then(() => {
+          set((s) => ({ runtime: { ...s.runtime, isDocOpened: flag } }));
+        });
+      }
+    } else {
+      set((s) => ({ runtime: { ...s.runtime, isDocOpened: flag } }));
+    }
   },
   setRequestSavedFlag: (flag: boolean) => {
     set((s) => ({

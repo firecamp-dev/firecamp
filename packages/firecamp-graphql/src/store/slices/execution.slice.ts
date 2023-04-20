@@ -1,3 +1,4 @@
+import { getIntrospectionQuery } from 'graphql';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
 import {
@@ -11,6 +12,7 @@ import { _object } from '@firecamp/utils';
 import { TStoreSlice } from '../store.type';
 
 interface IExecutionSlice {
+  fetchIntrospectionSchema: () => Promise<void>;
   /**
    * return final request for execution,
    *
@@ -22,6 +24,46 @@ interface IExecutionSlice {
 }
 
 const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
+  fetchIntrospectionSchema: async () => {
+    console.log('fetching introspection', 111);
+    const state = get();
+    const {
+      request,
+      runtime: { isFetchingIntrospection },
+    } = state;
+    if (isFetchingIntrospection) return;
+
+    const query = getIntrospectionQuery();
+    const _request = Object.assign(
+      {},
+      {
+        ...request,
+        __meta: request.__meta,
+        body: {
+          value: { query, variables: {} },
+          type: ERestBodyTypes.GraphQL,
+        },
+      }
+    );
+    state.setFetchIntrospectionFlag(true);
+    state.context.request
+      .execute(_request)
+      .then(({ response }) => {
+        try {
+          const schema = JSON.parse(response.body).data;
+          console.log('fetched schema', schema, 555);
+          state.setSchema(schema);
+        } catch (e) {
+          console.log(e);
+        }
+      })
+      .catch((e: any) => {
+        console.log(e, 'e...');
+      })
+      .finally(() => {
+        state.setFetchIntrospectionFlag(false);
+      });
+  },
   prepareRequestForExecution: (query, variables) => {
     const { request } = get();
     let gVars = {};
