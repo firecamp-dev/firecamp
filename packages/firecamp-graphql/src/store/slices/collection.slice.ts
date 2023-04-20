@@ -36,7 +36,7 @@ interface ICollectionSlice {
   deleteItem: (id: TId) => Promise<any>;
 
   /** add/save playground */
-  addItem: (name: string) => Promise<any>;
+  addItem: (name: string, plgId?: TId) => Promise<any>;
 
   /** update playground */
   updateItem: (name?: string) => Promise<any>;
@@ -161,12 +161,13 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     return res;
   },
 
-  addItem: async (name: string) => {
+  addItem: async (name: string, plgId?: TId) => {
     const state = get();
     // console.log(state)
     if (!name) return;
     if (!state.request?.__ref.id) return;
-    const plg = state.playgrounds[state.runtime.activePlayground];
+    plgId = plgId || state.runtime.activePlayground;
+    const plg = state.playgrounds[plgId];
 
     const item = {
       name,

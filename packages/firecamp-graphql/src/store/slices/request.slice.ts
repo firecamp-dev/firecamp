@@ -1,9 +1,4 @@
-import {
-  TId,
-  EHttpMethod,
-  IHeader,
-  IGraphQL,
-} from '@firecamp/types';
+import { TId, EHttpMethod, IHeader, IGraphQL } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { IUrlSlice, createUrlSlice } from './index';
 
@@ -82,11 +77,21 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     if (!state.runtime.isRequestSaved) {
       // save new request
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId, true).then(() => {
-        //reset the rcs state
-        state.disposeRCS();
-        state.onRequestSave(_request.__ref.id);
-      });
+      state.context.request
+        .save(_request, tabId, true)
+        .then(() => {
+          //reset the rcs state
+          state.disposeRCS();
+          state.onRequestSave(_request.__ref.id);
+        })
+        .then(() => {
+          setTimeout(() => {
+            for (var pId in state.playgrounds) {
+              const plg = state.playgrounds[pId];
+              state.addItem(plg.request.name, pId);
+            }
+          });
+        });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
       if (!state.requestHasChanges) {
