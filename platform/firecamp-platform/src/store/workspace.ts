@@ -106,8 +106,11 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     /** invite non org members */
     inviteNonOrgMembers: (payload) => {
       const { workspace } = get();
-      return Rest.workspace
-        .inviteNonOrgMembers(workspace.__ref.id, payload)
+      return Rest.invitation
+        .inviteNonOrgMembers({
+          workspaceId: workspace.__ref.id,
+          ...payload,
+        })
         .then((res) => {
           platformContext.app.notify.success(
             'The invitation(s) has been sent successfully'
@@ -124,8 +127,8 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     /** invite org members */
     inviteOrgMembers: (members) => {
       const { workspace } = get();
-      return Rest.workspace
-        .inviteOrgMembers(workspace.__ref.id, { members })
+      return Rest.invitation
+        .inviteOrgMembers({ workspaceId: workspace.__ref.id, members })
         .then((res) => {
           platformContext.app.notify.success(
             'The invitation has been sent successfully'
