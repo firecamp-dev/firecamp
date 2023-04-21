@@ -364,27 +364,34 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     });
   },
   _updateEnvCb: (env) => {
-    const { environments, activeEnv } = get();
-    const envs = environments.map((e) => {
-      if (e.__ref.id == env.__ref.id) {
-        return { ...e, ...env };
-      }
-      return e;
-    });
-    set((s) => {
-      s.envTdpInstance?.updateEnvItem(env);
-      const aEnv =
-        activeEnv?.__ref.id == env.__ref.id
-          ? _env.prepareRuntimeEnvFromRemoteEnv(env)
-          : s.activeEnv;
-      return {
-        environments: [...envs],
-        activeEnv: aEnv,
-      };
-    });
+    const { globalEnv, environments, activeEnv } = get();
+    if (globalEnv.__ref.id == env.__ref.id && env.__meta.isGlobal === true) {
+      const gEnv = _env.prepareRuntimeEnvFromRemoteEnv(env);
+      set((s) => ({
+        globalEnv: gEnv,
+      }));
+    } else {
+      const envs = environments.map((e) => {
+        if (e.__ref.id == env.__ref.id) {
+          return { ...e, ...env };
+        }
+        return e;
+      });
+      set((s) => {
+        s.envTdpInstance?.updateEnvItem(env);
+        const aEnv =
+          activeEnv?.__ref.id == env.__ref.id
+            ? _env.prepareRuntimeEnvFromRemoteEnv(env)
+            : s.activeEnv;
+        return {
+          environments: [...envs],
+          activeEnv: aEnv,
+        };
+      });
+    }
     // if the updated env is the active one then re apply. their vars to platform
     new Promise((rs) => setTimeout(rs, 100)).then(() => {
-      if (activeEnv?.__ref.id == env.__ref.id) {
+      if (activeEnv?.__ref.id == env.__ref.id || env.__meta.isGlobal === true) {
         get().applyVariablesToPlatform();
         console.log('updated the env vars');
       }

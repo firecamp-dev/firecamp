@@ -3,6 +3,7 @@ import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
+import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import {
   RootContainer,
   Container,
@@ -17,7 +18,6 @@ import {
 import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
 import { RE } from '../../../../types';
-import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { useEnvStore } from '../../../../store/environment';
 import { useTabStore } from '../../../../store/tab';
 
@@ -36,10 +36,10 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
   const [runtimeEnv, setEnv] = useState<any>({
     ...originalEnvs.current.runtimeEnv,
   });
-  const [isFetchingEnv, setIsFetchingEnvFlag] = useState(false);
+  const [isFetchingEnv, setIsFetchingEnvFlag] = useState(true);
   const [hasChange, setHasChangeFlag] = useState(false);
 
-  console.log(runtimeEnv, 'runtimeEnv');
+  // console.log(runtimeEnv, 'runtimeEnv');
 
   useEffect(() => {
     const _fetch = async () => {
@@ -163,6 +163,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
       close.active(tab.id);
     });
   };
+
   if (isFetchingEnv === true) return <Loader />;
   return (
     <RootContainer className="h-full w-full">
@@ -222,5 +223,4 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
     </RootContainer>
   );
 };
-
 export default memo(EnvironmentTab, (p, n) => !isEqual(p, n));
