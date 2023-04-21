@@ -49,7 +49,7 @@ const ExplorerTab = () => {
           <QueryExplorer />
         </div>
       </Container.Body>
-      <Container.Footer>
+      {/* <Container.Footer>
         <div className="flex flex-row p-1">
           <span className="whitespace-pre text-base flex-1 flex justify-left items-center">
             add new
@@ -68,7 +68,7 @@ const ExplorerTab = () => {
             );
           })}
         </div>
-      </Container.Footer>
+      </Container.Footer> */}
     </Container>
   );
 };

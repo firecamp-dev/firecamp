@@ -44,8 +44,8 @@ const PlaygroundPanel = () => {
               <Button
                 text="add playground"
                 icon={<VscAdd className="mr-2" size={12} />}
-                transparent={true}
                 onClick={() => addPlayground()}
+                transparent
                 secondary
                 iconLeft
                 ghost
