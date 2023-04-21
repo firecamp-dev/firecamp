@@ -79,7 +79,6 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
       __ref: { id: playgroundId },
     };
 
-    console.log(plg, 'second render....');
     set((s) => {
       return {
         playgrounds: {
