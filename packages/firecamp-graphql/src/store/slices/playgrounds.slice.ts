@@ -30,7 +30,6 @@ export interface IPlaygrounds {
 
 export interface IPlaygroundsSlice {
   playgrounds?: IPlaygrounds;
-
   addPlayground: () => void;
   openPlayground: (plgId: TId) => void;
   removePlayground: (playgroundId: string) => void;
@@ -67,19 +66,21 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
   playgrounds: {}, //dummyPlayground,
 
   addPlayground: () => {
+
+    const state = get();
+    const playgroundId = nanoid();
+    const plgsCount = state.runtime?.playgroundTabs?.length;
+    const name = `playground-${plgsCount + 1}`;
+    const plg: IGraphQLPlayground = {
+      name,
+      value: { query: 'query MyQuery {\n  __typename\n}', variables: `{ }` },
+      __meta: {},
+      //@ts-ignore
+      __ref: { id: playgroundId },
+    };
+
+    console.log(plg, 'second render....');
     set((s) => {
-      const playgroundId = nanoid();
-      const plgsCount = s.runtime?.playgroundTabs?.length;
-      const name = `playground-${plgsCount + 1}`;
-
-      const plg: IGraphQLPlayground = {
-        name,
-        value: { query: 'query MyQuery {\n  __typename\n}', variables: `{ }` },
-        __meta: { type: EGraphQLOperationType.Query },
-        //@ts-ignore
-        __ref: { id: playgroundId },
-      };
-
       return {
         playgrounds: {
           ...s.playgrounds,
@@ -99,6 +100,7 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
             },
           },
           activePlayground: playgroundId,
+        
         },
       };
     });

@@ -1,32 +1,24 @@
-import { useEffect } from 'react';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import shallow from 'zustand/shallow';
 import { Button, Container, Tabs } from '@firecamp/ui';
 import Playground from './playground/Playground';
-import { useStore, IStore } from '../../store';
+import { useStore, IStore, useStoreApi } from '../../store';
 
 const PlaygroundPanel = () => {
   const {
     playgroundTabs,
     activePlayground,
     setActivePlayground,
-    addPlayground,
     removePlayground,
   } = useStore(
     (s: IStore) => ({
       playgroundTabs: s.runtime.playgroundTabs,
       activePlayground: s.runtime.activePlayground,
       setActivePlayground: s.setActivePlayground,
-      addPlayground: s.addPlayground,
       removePlayground: s.removePlayground,
     }),
     shallow
   );
-
-  /** if no playgrounds then add new playground on first render */
-  useEffect(() => {
-    if (!playgroundTabs?.length) addPlayground();
-  }, []);
 
   return (
     <Container>
@@ -40,18 +32,7 @@ const PlaygroundPanel = () => {
             onClick: (i, id) => removePlayground(id),
           }}
           suffixComp={() => {
-            return (
-              <Button
-                text="add playground"
-                icon={<VscAdd className="mr-2" size={12} />}
-                onClick={() => addPlayground()}
-                transparent
-                secondary
-                iconLeft
-                ghost
-                sm
-              />
-            );
+            return <TabsSuffixComp />;
           }}
         />
       </Container.Header>
@@ -67,3 +48,19 @@ const PlaygroundPanel = () => {
 };
 
 export default PlaygroundPanel;
+
+const TabsSuffixComp = () => {
+  const { addPlayground } = useStoreApi().getState() as IStore;
+  return (
+    <Button
+      text="add playground"
+      icon={<VscAdd className="mr-2" size={12} />}
+      onClick={() => addPlayground()}
+      transparent
+      secondary
+      iconLeft
+      ghost
+      sm
+    />
+  );
+};
