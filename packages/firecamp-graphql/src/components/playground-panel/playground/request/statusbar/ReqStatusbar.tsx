@@ -86,7 +86,7 @@ const ReqStatusBar = ({}) => {
 
   const _execute = async () => {
     const isQueryValid = await isValid(playground.request.value.query);
-    console.log(isQueryValid, 'isQueryValid...');
+    // console.log(isQueryValid, 'isQueryValid...');
     if (isQueryValid == false) {
       context.app.notify.alert('The playground query is not valid.');
       return;

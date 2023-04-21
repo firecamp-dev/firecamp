@@ -26,7 +26,7 @@ class MonacoAPI {
 }
 
 const initContribution = () => {
-  console.log(LANGUAGE_ID, 'LANGUAGE_ID...');
+  // console.log(LANGUAGE_ID, 'LANGUAGE_ID...');
   monaco.languages.register({
     id: LANGUAGE_ID,
     extensions: ['.graphql', '.gql'],
@@ -38,7 +38,7 @@ const initContribution = () => {
     return import('monaco-graphql/esm/graphqlMode');
   };
   monaco.languages.onLanguage(LANGUAGE_ID, async () => {
-    console.log(LANGUAGE_ID, 'LANGUAGE_ID...');
+    // console.log(LANGUAGE_ID, 'LANGUAGE_ID...');
     debugger;
     const graphqlMode = await getMode();
     graphqlMode.setupMode(api);

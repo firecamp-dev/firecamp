@@ -27,8 +27,8 @@ const initialState = {
   isGuest: true,
   user: {
     name: 'Guest',
-    username: 'guest',
-    email: 'guest@firecamp.com',
+    username: 'Guest',
+    email: 'guest@firecamp.dev',
   },
 };
 

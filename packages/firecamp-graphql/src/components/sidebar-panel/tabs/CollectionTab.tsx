@@ -72,7 +72,7 @@ const Collection = () => {
         },
       })
       .then((s) => {
-        console.log(plgId, 'plgId...');
+        // console.log(plgId, 'plgId...');
         deleteItem(plgId);
       });
   };

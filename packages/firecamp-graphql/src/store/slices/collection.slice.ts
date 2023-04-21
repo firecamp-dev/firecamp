@@ -35,8 +35,10 @@ interface ICollectionSlice {
   /** delete playground */
   deleteItem: (id: TId) => Promise<any>;
 
-  /** add/save playground */
-  addItem: (name: string, plgId?: TId) => Promise<any>;
+  /** add/save playground
+   * if addSilently is true then don't show the success message after item add
+   */
+  addItem: (name: string, plgId?: TId, addSilently?: boolean) => Promise<any>;
 
   /** update playground */
   updateItem: (name?: string) => Promise<any>;
@@ -92,7 +94,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
   // collection
   initialiseCollection: (collection: ICollection) => {
-    console.log(collection?.items?.length, 'collection?.items?.length...');
+    // console.log(collection?.items?.length, 'collection?.items?.length...');
     const state = get();
     set((s) => ({
       collection: {
@@ -161,7 +163,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     return res;
   },
 
-  addItem: async (name: string, plgId?: TId) => {
+  addItem: async (name: string, plgId?: TId, addSilently = false) => {
     const state = get();
     // console.log(state)
     if (!name) return;
@@ -228,6 +230,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         // return r;
       })
       .then((r) => {
+        if (addSilently == true) return;
         state.context.app.notify.success(
           'The playground has been saved successfully'
         );
@@ -281,7 +284,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       item.value.variables = _request.value.variables;
     }
 
-    console.log(item, 'item...');
+    // console.log(item, 'item...');
     state.toggleColProgressBar(true);
     const res = await Rest.request
       .updateItem(item.__ref.requestId, item.__ref.id, item)

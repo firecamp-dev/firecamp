@@ -23,13 +23,11 @@ const QueryExplorer = () => {
   const [clientSchema, setClientSchema] = useState({});
 
   useEffect(() => {
-    console.log('schema changed', schema);
     schema && setClientSchema(buildClientSchema(schema));
   }, [schema]);
-  console.log(clientSchema, 'clientSchema...');
 
   const _onEdit = (value) => {
-    console.log({ value });
+    // console.log({ value });
     changePlaygroundValue(activePlayground, value);
     // debugger;
     // setCurrentQueryPayload(queryPayload);
@@ -37,6 +35,7 @@ const QueryExplorer = () => {
   };
 
   if (_object.isEmpty(clientSchema)) return <></>;
+  if (!playground?.request) return <></>;
 
   return (
     <GraphiQLExplorer

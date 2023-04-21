@@ -20,7 +20,7 @@ const SidebarPanel = () => {
       shallow
     );
 
-  console.log(playgrounds, 'playgrounds... counts');
+  // console.log(playgrounds, 'playgrounds... counts');
 
   const tabs = useMemo(
     () => [

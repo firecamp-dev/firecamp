@@ -169,8 +169,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
 
   public deleteItem(id: TId) {
     const item = this.items.find((i) => i.__ref.id == id);
-
-    console.log(id, item);
+    // console.log(id, item);
     if (!item) return;
     this.items = this.items.filter((i) => i.__ref.id != id);
     if (!item.__ref.folderId) {

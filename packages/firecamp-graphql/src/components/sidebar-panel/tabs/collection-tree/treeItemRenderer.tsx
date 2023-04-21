@@ -149,7 +149,6 @@ export default {
                 e.preventDefault()
                 e.stopPropagation()
                 openEnv(item.index);
-                console.log(1234)
               }}/> */}
 
             <Button

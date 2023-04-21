@@ -25,7 +25,6 @@ interface IExecutionSlice {
 
 const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
   fetchIntrospectionSchema: async () => {
-    console.log('fetching introspection', 111);
     const state = get();
     const {
       request,
@@ -51,7 +50,6 @@ const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
       .then(({ response }) => {
         try {
           const schema = JSON.parse(response.body).data;
-          console.log('fetched schema', schema, 555);
           state.setSchema(schema);
         } catch (e) {
           console.log(e);
@@ -59,6 +57,9 @@ const createExecutionSlice: TStoreSlice<IExecutionSlice> = (set, get) => ({
       })
       .catch((e: any) => {
         console.log(e, 'e...');
+        state.context.app.notify.alert(
+          e.message || 'Failed to fetch introspection schema'
+        );
       })
       .finally(() => {
         state.setFetchIntrospectionFlag(false);

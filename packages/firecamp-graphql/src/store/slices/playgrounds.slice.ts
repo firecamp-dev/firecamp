@@ -178,12 +178,12 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
         }
       }
 
-      console.log(
-        activePlayground,
-        s.playgrounds,
-        playgroundId,
-        's.playgrounds, playgroundId'
-      );
+      // console.log(
+      //   activePlayground,
+      //   s.playgrounds,
+      //   playgroundId,
+      //   's.playgrounds, playgroundId'
+      // );
 
       return {
         runtime: {

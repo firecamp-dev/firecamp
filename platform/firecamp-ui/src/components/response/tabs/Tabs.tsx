@@ -59,11 +59,11 @@ const Tabs: FC<IResTabs> = ({
       id: EResponseTabs.Headers,
       count: Object.keys(headers).length || 0,
     },
-    {
-      name: EResponseTabs.Cookie,
-      id: EResponseTabs.Cookie,
-      count: cookies?.length || 0,
-    },
+    // {
+    //   name: EResponseTabs.Cookie,
+    //   id: EResponseTabs.Cookie,
+    //   count: cookies?.length || 0,
+    // },
     { name: EResponseTabs.Timeline, id: EResponseTabs.Timeline, count: 0 },
     {
       name:

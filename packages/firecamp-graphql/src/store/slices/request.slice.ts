@@ -1,4 +1,4 @@
-import { TId, EHttpMethod, IHeader, IGraphQL } from '@firecamp/types';
+import { TId, EHttpMethod, IHeader, IGraphQL, IRest } from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { IUrlSlice, createUrlSlice } from './index';
 
@@ -19,7 +19,7 @@ interface IRequestSlice extends IUrlSlice {
   changeConfig: (configKey: string, configValue: any) => any;
   save: (tabId: TId) => void;
   /** prepare the request path after request save (add/update) */
-  onRequestSave: (requestId: TId) => void;
+  onRequestSave: (__requestRef: Partial<IRest['__ref']>) => void;
 }
 
 const createRequestSlice: TStoreSlice<IRequestSlice> = (
@@ -79,16 +79,16 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       const _request = state.preparePayloadForSaveRequest();
       state.context.request
         .save(_request, tabId, true)
-        .then(() => {
+        .then(({ __ref }) => {
           //reset the rcs state
           state.disposeRCS();
-          state.onRequestSave(_request.__ref.id);
+          state.onRequestSave(__ref);
         })
         .then(() => {
           setTimeout(() => {
             for (var pId in state.playgrounds) {
               const plg = state.playgrounds[pId];
-              state.addItem(plg.request.name, pId);
+              state.addItem(plg.request.name, pId, true);
             }
           });
         });
@@ -114,20 +114,24 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         .then(() => {
           //reset the rcs state
           state.disposeRCS();
-          state.onRequestSave(_request.__ref.id);
+          state.onRequestSave(_request.__ref);
         })
         .finally(() => {
           state.toggleUpdatingReqFlag(false);
         });
     }
   },
-  onRequestSave: (requestId) => {
+  onRequestSave: (__requestRef) => {
     const state = get();
-    const requestPath = requestId
-      ? state.context?.request.getPath(requestId)
+    const { id } = __requestRef;
+    const requestPath = id
+      ? state.context?.request.getPath(id)
       : { path: '', items: [] };
-
     set((s) => ({
+      request: {
+        ...s.request,
+        __ref: { ...s.request.__ref, ...__requestRef },
+      },
       runtime: {
         ...s.runtime,
         requestPath,

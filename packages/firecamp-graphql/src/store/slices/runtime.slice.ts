@@ -106,7 +106,6 @@ const createRuntimeSlice: TStoreSlice<IRuntimeSlice> = (
   },
 
   setSchema: (schema: any) => {
-    console.log('setting the schema...', schema, 666);
     set((s) => ({ runtime: { ...s.runtime, schema } }));
   },
 

@@ -52,6 +52,9 @@ const createStore = (initialState: IStoreState) =>
           ...initState,
           originalRequest: _cloneDeep(initState.request) as IGraphQL,
         }));
+
+        // if request has url then fetch introspection on the state initialization
+        if (_request.url?.raw?.length) state.fetchIntrospectionSchema();
       },
       setContext: (ctx: any) => set({ context: ctx }),
     };
