@@ -161,6 +161,7 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
           __ref: { ...itm.__ref, ...item.__ref, isItem: true },
         };
         // console.log(i, '...iiiiii');
+        return i;
       }
       return itm;
     });
