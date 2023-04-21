@@ -31,7 +31,6 @@ const DefaultConnectionState = {
   name: 'Connection 1',
   isDefault: true,
   headers: DefaultHeaders,
-  queryParams: [],
   config: {
     ping: false,
     pingInterval: 3000,

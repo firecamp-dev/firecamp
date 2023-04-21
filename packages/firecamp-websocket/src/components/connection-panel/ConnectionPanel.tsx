@@ -11,27 +11,23 @@ import {
 } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { EFirecampAgent } from '@firecamp/types';
-
 import Config from './connection/ConfigTab';
 import HeadersTab from './connection/HeadersTab';
 import ParamsTab from './connection/ParamsTab';
-
 import PlaygroundTab from './connection/PlaygroundTab';
 import Logs from './logs/Logs';
 import { IStore, useStore } from '../../store';
 
 const ConnectionPanel = () => {
-  const { tabId, connection, cPanelUi, updateConnection, changeQueryParams } =
-    useStore(
-      (s: IStore) => ({
-        tabId: s.runtime.tabId,
-        connection: s.request.connection,
-        updateConnection: s.updateConnection,
-        changeQueryParams: s.changeQueryParams,
-        cPanelUi: s.ui.connectionPanel,
-      }),
-      shallow
-    );
+  const { tabId, connection, cPanelUi, updateConnection } = useStore(
+    (s: IStore) => ({
+      tabId: s.runtime.tabId,
+      connection: s.request.connection,
+      updateConnection: s.updateConnection,
+      cPanelUi: s.ui.connectionPanel,
+    }),
+    shallow
+  );
   const [activeBodyTab, onSelectBodyTab] = useState('playground');
 
   const bodyTabs = useMemo(() => {
@@ -50,7 +46,7 @@ const ConnectionPanel = () => {
       //   name: 'Config',
       // },
     ];
-  }, []);
+  }, [cPanelUi.params]);
 
   useEffect(() => {
     //toto: fix this logic later
@@ -64,10 +60,6 @@ const ConnectionPanel = () => {
 
   const _onChangeConfig = (key, value) => {
     updateConnection('config', { [key]: value });
-  };
-
-  const _onChangeHeaders = (headers = []) => {
-    updateConnection('headers', headers);
   };
 
   const _renderBody = () => {
@@ -88,23 +80,10 @@ const ConnectionPanel = () => {
         );
 
       case 'headers':
-        return (
-          <HeadersTab
-            key={tabId}
-            headers={connection?.headers || []}
-            id={tabId}
-            onUpdate={_onChangeHeaders}
-          />
-        );
+        return <HeadersTab />;
 
       case 'params':
-        return (
-          <ParamsTab
-            params={connection?.queryParams || []}
-            id={tabId}
-            onUpdate={(qps) => changeQueryParams(qps)}
-          />
-        );
+        return <ParamsTab />;
 
       default:
         return <PlaygroundTab />;

@@ -47,6 +47,7 @@ interface IStore
   initialise: (request: Partial<IWebSocket>, tabId: TId) => void;
 }
 interface IStoreState {
+  originalRequest?: IWebSocket;
   request?: IWebSocket;
   collection?: ICollection;
   runtime?: IRuntime;
