@@ -65,34 +65,36 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   } = request;
 
   //normalize url
-  _nr.url = {
-    raw: url.raw || '',
-    queryParams: url.queryParams || [],
-    pathParams: url.pathParams || [],
-  };
-  if (!_array.isEmpty(_nr.url.queryParams)) {
-    const queryParams = [];
-    if (!url.queryParams?.length) url.queryParams = [];
-    url.queryParams.map((qp) => {
-      // add default key: `type: text`
-      qp.id = nanoid();
-      qp.type = EKeyValueTableRowType.Text;
-      qp.value = qp.value || '';
-      if (isValidRow(qp)) queryParams.push(qp);
-    });
-    _nr.url.queryParams = queryParams;
-  }
-  if (!_array.isEmpty(_nr.url.pathParams)) {
-    const pathParams = [];
-    if (!url.pathParams?.length) url.pathParams = [];
-    url.pathParams.map((pp) => {
-      // add default key: `type: text`
-      pp.id = nanoid();
-      pp.type = EKeyValueTableRowType.Text;
-      pp.value = pp.value || '';
-      if (isValidRow(pp)) pathParams.push(pp);
-    });
-    _nr.url.pathParams = pathParams;
+  if (url) {
+    _nr.url = {
+      raw: url.raw || '',
+      queryParams: url.queryParams || [],
+      pathParams: url.pathParams || [],
+    };
+    if (!_array.isEmpty(_nr.url.queryParams)) {
+      const queryParams = [];
+      if (!url.queryParams?.length) url.queryParams = [];
+      url.queryParams.map((qp) => {
+        // add default key: `type: text`
+        qp.id = nanoid();
+        qp.type = EKeyValueTableRowType.Text;
+        qp.value = qp.value || '';
+        if (isValidRow(qp)) queryParams.push(qp);
+      });
+      _nr.url.queryParams = queryParams;
+    }
+    if (!_array.isEmpty(_nr.url.pathParams)) {
+      const pathParams = [];
+      if (!url.pathParams?.length) url.pathParams = [];
+      url.pathParams.map((pp) => {
+        // add default key: `type: text`
+        pp.id = nanoid();
+        pp.type = EKeyValueTableRowType.Text;
+        pp.value = pp.value || '';
+        if (isValidRow(pp)) pathParams.push(pp);
+      });
+      _nr.url.pathParams = pathParams;
+    }
   }
 
   // normalize __meta
