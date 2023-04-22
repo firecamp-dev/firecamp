@@ -85,4 +85,6 @@ export enum EReqChangeMetaKeys {
 }
 export enum EReqChangeUrlKeys {
   raw = 'raw',
+  queryParams = 'queryParams',
+  pathParams = 'pathParams',
 }

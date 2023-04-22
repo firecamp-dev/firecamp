@@ -11,6 +11,7 @@ import {
   EKeyValueTableRowType,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
+import { isValidRow } from '@firecamp/utils/dist/table';
 import { _object, _array, _string } from '@firecamp/utils';
 import {
   RequestConnection,
@@ -19,7 +20,6 @@ import {
 } from '../constants';
 import { ISocket, IUiConnectionPanel } from '../store';
 import { EConnectionState } from '../types';
-import { isValidRow } from '@firecamp/utils/dist/table';
 
 /**
  * prepare the connection panel ui state from the existing request/connection information

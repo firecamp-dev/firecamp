@@ -31,10 +31,8 @@ const DefaultConnectionState = {
   name: 'Connection 1',
   isDefault: true,
   headers: DefaultHeaders,
-  config: {
-    ping: false,
-    pingInterval: 3000,
-  },
+  ping: false,
+  pingInterval: 3000,
 };
 
 const ConnectionStates = {
@@ -176,14 +174,7 @@ const CloseConnStatusCode = {
 };
 
 const KeysOnSaveRequest = {
-  REQUEST: [
-    'url',
-    'config',
-    'scripts',
-    'connection',
-    '__meta',
-    '__ref',
-  ],
+  REQUEST: ['url', 'config', 'scripts', 'connection', '__meta', '__ref'],
   KEYS: ['message_collection'],
 };
 
