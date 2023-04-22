@@ -65,7 +65,7 @@ export const normalizeRequest = (request: Partial<IWebSocket>): IWebSocket => {
   } = request;
 
   //normalize url
-  if (url) {
+  if (url?.raw) {
     _nr.url = {
       raw: url.raw || '',
       queryParams: url.queryParams || [],

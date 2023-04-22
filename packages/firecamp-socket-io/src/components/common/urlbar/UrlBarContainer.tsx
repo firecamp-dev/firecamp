@@ -42,8 +42,7 @@ const UrlBarContainer = () => {
   }) => {
     e.preventDefault();
     const value = e.target.value;
-    const proxyUrl = { ...url, queryParams: [], pathParams: [] };
-    const urlObject = _url.updateByRaw({ ...proxyUrl, raw: value });
+    const urlObject = _url.updateByRaw({ ...url, raw: value });
     changeUrl(urlObject);
   };
 
