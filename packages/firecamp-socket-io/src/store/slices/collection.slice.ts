@@ -56,11 +56,11 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   collection: initialCollection || {
     folders: [],
     items: [],
+    __manualUpdates: 0,
   },
 
   isCollectionEmpty: () => {
     const { folders, items } = get().collection;
-    debugger;
     return folders.length == 0 && items.length == 0;
   },
 
@@ -117,6 +117,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       collection: {
         ...s.collection,
         ...collection,
+        __manualUpdates: ++s.collection.__manualUpdates,
       },
       ui: {
         ...s.ui,

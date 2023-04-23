@@ -94,7 +94,6 @@ const Collection = ({ openCreateFolderPrompt }) => {
 
   if (!tdpInstance) return <></>;
   const isEmpty = isCollectionEmpty();
-  console.log(isEmpty, 'isEmpty');
   return (
     <>
       {isEmpty ? (
