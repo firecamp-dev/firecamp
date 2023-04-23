@@ -41,6 +41,7 @@ interface ICollectionSlice {
   // folders
   getFolder: (id: TId) => IRequestFolder;
   prepareCreateFolderPayload: (name: string, parentFolderId: TId) => void;
+  promptCreateFolder: (parentFolderId?: TId) => void;
   deleteFolder: (id: TId) => void;
   onDeleteFolder: (id: TId) => void;
 
@@ -59,6 +60,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
   isCollectionEmpty: () => {
     const { folders, items } = get().collection;
+    debugger;
     return folders.length == 0 && items.length == 0;
   },
 
@@ -77,7 +79,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         ...s.request.__meta.fOrders,
         ...s.request.__meta.iOrders,
       ];
-      console.log(rootOrders, 'rootOrders... registerTDP');
+      // console.log(rootOrders, 'rootOrders... registerTDP');
       const instance = new TreeDataProvider(
         s.collection.folders,
         s.collection.items,
@@ -259,7 +261,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   onDeleteItem: (id: TId) => {
     set((s) => {
       const items = s.collection.items.filter((i) => i.__ref.id != id);
-      s.collection.tdpInstance?.deleteItem(id);
+      s.collection.tdpInstance?.delete(id);
       return {
         collection: {
           ...s.collection,
@@ -292,6 +294,23 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     };
     state.toggleColProgressBar(true);
     return _folder;
+  },
+
+  promptCreateFolder: async (parentFolderId?: TId) => {
+    if (typeof parentFolderId != 'string') parentFolderId = undefined;
+    const {
+      context,
+      runtime: { isRequestSaved },
+      prepareCreateFolderPayload,
+      onCreateFolder,
+    } = get();
+    if (!isRequestSaved) {
+      return context.app.notify.info(
+        'Please save the socket.io request first.'
+      );
+    }
+    const _folder = prepareCreateFolderPayload('', parentFolderId);
+    context.request.createRequestFolderPrompt(_folder).then(onCreateFolder);
   },
 
   onCreateFolder: (folder) => {
