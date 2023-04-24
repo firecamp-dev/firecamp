@@ -13,9 +13,7 @@ const ResponseMetaData = () => {
   );
   const { responseTime, responseSize, code } = response || {};
   const _getStatusObj = (code) => {
-    return (
-      Statuses[code] || { code, color: 'gray', text: 'custom' }
-    );
+    return Statuses[code] || { code, color: 'gray', text: 'custom' };
   };
 
   let contentType = '';
@@ -48,7 +46,8 @@ const ResponseMetaData = () => {
         </div>
       ) : (
         <></>
-      )}ƒ
+      )}
+      ƒ
       <div>
         <ResStatus
           {..._getStatusObj(code)}

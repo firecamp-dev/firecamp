@@ -1,14 +1,14 @@
-import { Cookie, CookieJar } from 'tough-cookie'
-import { getSetCookieHeader } from './helper'
-import { ICookieToStore } from './types'
+import { Cookie, CookieJar } from 'tough-cookie';
+import { getSetCookieHeader } from './helper';
+import { ICookieToStore } from './types';
 
 export default class CookieManager {
-  cookieJar: CookieJar
+  cookieJar: CookieJar;
 
   constructor() {
-    this.cookieJar = new CookieJar()
-    this.cookieJar['allowSpecialUseDomain'] = true
-    this.cookieJar['rejectPublicSuffixes'] = false
+    this.cookieJar = new CookieJar();
+    this.cookieJar['allowSpecialUseDomain'] = true;
+    this.cookieJar['rejectPublicSuffixes'] = false;
   }
 
   /**
@@ -17,9 +17,11 @@ export default class CookieManager {
    * @returns {string}
    */
   prepareCookieString(cookie: any): string {
-    return `${cookie.key}=${cookie.value}; Expires=${cookie.expires}; Domain=${cookie.domain
-      }; Path=${cookie.path}; ${cookie.secure ? 'Secure' : ''}; ${cookie.httpOnly ? 'HttpOnly' : ''
-      }`
+    return `${cookie.key}=${cookie.value}; Expires=${cookie.expires}; Domain=${
+      cookie.domain
+    }; Path=${cookie.path}; ${cookie.secure ? 'Secure' : ''}; ${
+      cookie.httpOnly ? 'HttpOnly' : ''
+    }`;
   }
 
   /**
@@ -28,17 +30,17 @@ export default class CookieManager {
    * @returns {undefined|Cookie}
    */
   parse(cookie: string): ICookieToStore {
-    if (typeof cookie === 'object') cookie = this.prepareCookieString(cookie)
+    if (typeof cookie === 'object') cookie = this.prepareCookieString(cookie);
 
-    const parsedCookie = Cookie.parse(cookie)
-    const raw = Cookie.fromJSON(parsedCookie).toString()
+    const parsedCookie = Cookie.parse(cookie);
+    const raw = Cookie.fromJSON(parsedCookie).toString();
 
     return {
       raw,
       key: parsedCookie.key,
       domain: parsedCookie.cdomain(),
       path: parsedCookie.path,
-    }
+    };
   }
 
   /**
@@ -47,16 +49,19 @@ export default class CookieManager {
    * @param {String} requestURL require to add domain in the cookie if not exist
    * @returns {Array} cookies
    */
-  parseHeaders(headers: string[] = [], requestURL: string): ICookieToStore[] | any {
+  parseHeaders(
+    headers: string[] = [],
+    requestURL: string
+  ): ICookieToStore[] | any {
     try {
-      const setCookieHeader = getSetCookieHeader(headers)
-      const cookies: ICookieToStore[] = []
+      const setCookieHeader = getSetCookieHeader(headers);
+      const cookies: ICookieToStore[] = [];
 
       if (setCookieHeader) {
         setCookieHeader.map((cookie: string) => {
-          let raw: string
+          let raw: string;
 
-          const parsedCookie = Cookie.parse(cookie)
+          const parsedCookie = Cookie.parse(cookie);
 
           if (
             typeof parsedCookie === 'object' &&
@@ -66,22 +71,22 @@ export default class CookieManager {
             requestURL.length > 0
           ) {
             try {
-              const parsedURL = new URL(requestURL)
+              const parsedURL = new URL(requestURL);
 
               if (
                 typeof parsedURL === 'object' &&
                 typeof parsedURL.hostname === 'string' &&
                 parsedURL.hostname.length > 0
               ) {
-                parsedCookie.domain = parsedURL.hostname
+                parsedCookie.domain = parsedURL.hostname;
 
-                raw = Cookie.fromJSON(parsedCookie).toString()
-              } else return
+                raw = Cookie.fromJSON(parsedCookie).toString();
+              } else return;
             } catch (error) {
-              console.error(error)
+              console.error(error);
             }
           } else {
-            raw = Cookie.fromJSON(parsedCookie).toString()
+            raw = Cookie.fromJSON(parsedCookie).toString();
           }
 
           cookies.push({
@@ -89,15 +94,15 @@ export default class CookieManager {
             key: parsedCookie.key,
             domain: parsedCookie.cdomain(),
             path: parsedCookie.path,
-          })
-        })
+          });
+        });
 
-        return cookies
+        return cookies;
       }
 
-      return []
+      return [];
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
 
@@ -110,11 +115,16 @@ export default class CookieManager {
    */
   getCookie(domain: string, path: string, key: string): Promise<Cookie> {
     return new Promise((resolve, reject) => {
-      this.cookieJar['store'].findCookie(domain, path, key, (error: Error, cookie: Cookie) => {
-        if (error) reject(error)
-        resolve(cookie)
-      })
-    })
+      this.cookieJar['store'].findCookie(
+        domain,
+        path,
+        key,
+        (error: Error, cookie: Cookie) => {
+          if (error) reject(error);
+          resolve(cookie);
+        }
+      );
+    });
   }
 
   /**
@@ -125,19 +135,19 @@ export default class CookieManager {
   getCookies(url = '') {
     return new Promise((resolve, reject) => {
       this.cookieJar.getCookies(url, (error, cookies) => {
-        if (error) reject(error)
-        resolve(cookies.join('; '))
-      })
-    })
+        if (error) reject(error);
+        resolve(cookies.join('; '));
+      });
+    });
   }
 
   getEachCookie(url = ''): Promise<Cookie[]> {
     return new Promise((resolve, reject) => {
       this.cookieJar.getCookies(url, (error, cookies) => {
-        if (error) reject(error)
-        resolve(cookies)
-      })
-    })
+        if (error) reject(error);
+        resolve(cookies);
+      });
+    });
   }
 
   /**
@@ -146,11 +156,14 @@ export default class CookieManager {
    */
   addCookie(cookie: ICookieToStore): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.cookieJar['store'].putCookie(Cookie.parse(cookie.raw), (error: Error) => {
-        if (error) reject(error)
-        resolve()
-      })
-    })
+      this.cookieJar['store'].putCookie(
+        Cookie.parse(cookie.raw),
+        (error: Error) => {
+          if (error) reject(error);
+          resolve();
+        }
+      );
+    });
   }
 
   /**
@@ -160,12 +173,15 @@ export default class CookieManager {
   addCookies(cookies: ICookieToStore[]): Promise<void> {
     return new Promise(async (resolve, reject) => {
       cookies.map((cookie) => {
-        this.cookieJar['store'].putCookie(Cookie.parse(cookie.raw), (error: Error) => {
-          if (error) reject(error)
-        })
-      })
-      resolve()
-    })
+        this.cookieJar['store'].putCookie(
+          Cookie.parse(cookie.raw),
+          (error: Error) => {
+            if (error) reject(error);
+          }
+        );
+      });
+      resolve();
+    });
   }
 
   /**
@@ -173,19 +189,22 @@ export default class CookieManager {
    * @param {Array} cookies
    * @param {String} url
    */
-  addCookiesByDomain(cookies: ICookieToStore[] = [], url: string = ''): Promise<void> {
+  addCookiesByDomain(
+    cookies: ICookieToStore[] = [],
+    url: string = ''
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       cookies.map((cookie) => {
         this.cookieJar.setCookie(
           Cookie.parse(cookie.raw),
           url,
           (error, cookie) => {
-            if (error) reject(error)
+            if (error) reject(error);
           }
-        )
-      })
-      resolve()
-    })
+        );
+      });
+      resolve();
+    });
   }
 
   /**
@@ -194,17 +213,20 @@ export default class CookieManager {
    * @param {String} newCookie
    * @returns {Promise<void>}
    */
-  updateCookie(oldCookie: string = '', newCookie: ICookieToStore): Promise<void> {
+  updateCookie(
+    oldCookie: string = '',
+    newCookie: ICookieToStore
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
       this.cookieJar['store'].updateCookie(
         oldCookie,
         Cookie.parse(newCookie.raw),
         (error: Error) => {
-          if (error) reject(error)
-          resolve()
+          if (error) reject(error);
+          resolve();
         }
-      )
-    })
+      );
+    });
   }
 
   /**
@@ -214,13 +236,22 @@ export default class CookieManager {
    * @param {String} key
    * @returns {Promise<unknown>}
    */
-  removeCookie(domain: string = '', path: string = '', key: string = ''): Promise<void> {
+  removeCookie(
+    domain: string = '',
+    path: string = '',
+    key: string = ''
+  ): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.cookieJar['store'].removeCookie(domain, path, key, (error: Error) => {
-        if (error) reject(error)
-        resolve()
-      })
-    })
+      this.cookieJar['store'].removeCookie(
+        domain,
+        path,
+        key,
+        (error: Error) => {
+          if (error) reject(error);
+          resolve();
+        }
+      );
+    });
   }
 
   /**
@@ -232,10 +263,10 @@ export default class CookieManager {
   removeCookies(domain: string = '', path: string = ''): Promise<void> {
     return new Promise((resolve, reject) => {
       this.cookieJar['store'].removeCookies(domain, path, (error: Error) => {
-        if (error) reject(error)
-        resolve()
-      })
-    })
+        if (error) reject(error);
+        resolve();
+      });
+    });
   }
 
   /**
@@ -245,10 +276,10 @@ export default class CookieManager {
   removeAllCookies(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.cookieJar['store'].removeAllCookies((error: Error) => {
-        if (error) reject(error)
-        resolve()
-      })
-    })
+        if (error) reject(error);
+        resolve();
+      });
+    });
   }
 
   /**
@@ -257,7 +288,7 @@ export default class CookieManager {
    * @returns {string} cookie
    */
   cookieToString(cookie: string): string {
-    return Cookie.fromJSON(Cookie.parse(cookie)).toString()
+    return Cookie.fromJSON(Cookie.parse(cookie)).toString();
   }
 
   /**
@@ -266,6 +297,6 @@ export default class CookieManager {
    * @returns {Object} cookie in JSON
    */
   cookieToJSON(cookie: string): any {
-    return Cookie.parse(cookie).toJSON() || {}
+    return Cookie.parse(cookie).toJSON() || {};
   }
-};
+}

@@ -1,15 +1,15 @@
-export {}
+export {};
 
 declare global {
   interface Window {
-    nodeBuffer: any
+    nodeBuffer: any;
     fc: {
       buffer: {
-        isBuffer(arg: any): any
-      }
+        isBuffer(arg: any): any;
+      };
       file: {
-        read(filePath: string): any
-      },
-    }
+        read(filePath: string): any;
+      };
+    };
   }
 }

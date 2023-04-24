@@ -1,10 +1,5 @@
 import { useRef } from 'react';
-import {
-  Container,
-  BulkEditTable,
-  TTableApi,
-  BasicTable,
-} from '@firecamp/ui';
+import { Container, BulkEditTable, TTableApi, BasicTable } from '@firecamp/ui';
 import { _array } from '@firecamp/utils';
 import shallow from 'zustand/shallow';
 import { IStore, useStore } from '../../../store';

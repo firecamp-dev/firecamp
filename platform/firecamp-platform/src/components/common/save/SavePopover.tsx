@@ -1,11 +1,5 @@
 import { FC, useCallback, useRef, useState } from 'react';
-import {
-  Button,
-  Input,
-  TextArea,
-  Popover,
-  Container,
-} from '@firecamp/ui';
+import { Button, Input, TextArea, Popover, Container } from '@firecamp/ui';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { useExplorerStore } from '../../../store/explorer';
 import { CollectionDataProvider } from './collection/CollectionDataProvider';

@@ -104,7 +104,7 @@ const Config = ({ config = {} }) => {
     return <span />;
   }
 
-   const _onChange = (name, value) => {
+  const _onChange = (name, value) => {
     if (!name) return;
 
     if (name === EWebsocketConfigKeys.Protocols) {

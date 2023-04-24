@@ -53,7 +53,7 @@ const CodeSnippets = ({ tabId = '' }) => {
 
   useEffect(() => {
     const initTarget: ESnippetTargets = targetsInfo[0]
-      .target as ESnippetTargets,
+        .target as ESnippetTargets,
       initClient: TTargetClients = targetsInfo[0].clients[0] as TTargetClients;
     _onSelectTab(initTarget, initClient);
   }, []);
@@ -87,7 +87,10 @@ const CodeSnippets = ({ tabId = '' }) => {
     }
 
     // Parse variables
-    const _request = _env.applyVariablesInSource<any>(envVariables, request) as IRest;
+    const _request = _env.applyVariablesInSource<any>(
+      envVariables,
+      request
+    ) as IRest;
 
     // get code snippet by active target and client
     let newSnippetCode = codeSnippet(_request, tab, client);

@@ -10,7 +10,7 @@ import {
   IUi,
   IUiSlice,
   IRequestChangeStateSlice,
-  IExecutionSlice
+  IExecutionSlice,
 } from './slices';
 
 interface IStore

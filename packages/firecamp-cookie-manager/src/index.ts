@@ -1,1 +1,1 @@
-export { default as CookieManager } from './lib'
+export { default as CookieManager } from './lib';

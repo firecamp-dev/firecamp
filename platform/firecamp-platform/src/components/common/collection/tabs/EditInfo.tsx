@@ -1,11 +1,5 @@
 import { FC, useState } from 'react';
-import {
-  Input,
-  TextArea,
-  TabHeader,
-  Button,
-  Container,
-} from '@firecamp/ui';
+import { Input, TextArea, TabHeader, Button, Container } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import { ICollection, IFolder } from '@firecamp/types';
 

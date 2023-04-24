@@ -57,7 +57,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
           role={_role}
           onSelect={({ name, id }) => onChange({ role: id })}
         />
-        <RolesCallout role={_role.id}/>
+        <RolesCallout role={_role.id} />
         <div className="text-sm font-semibold leading-3 text-appForegroundInActive">
           Use comma separated name and email. use multiple lines to invite in
           bulk.
@@ -100,7 +100,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
         )}
       </Container.Body>
       <Container.Footer className="flex items-center">
-      <a
+        <a
           className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
           target="_blank"
           href="#"
@@ -153,7 +153,7 @@ const RoleDD: FC<{
             />
           )}
           classes={{
-            options:'w-36 bg-popoverBackground z-[1000]',
+            options: 'w-36 bg-popoverBackground z-[1000]',
             item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
           }}
           options={RoleOptions}

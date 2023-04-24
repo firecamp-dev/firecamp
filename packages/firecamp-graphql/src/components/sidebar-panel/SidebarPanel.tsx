@@ -9,16 +9,15 @@ import { IStore, useStore } from '../../store';
 import { ESidebarTabs } from '../../types';
 
 const SidebarPanel = () => {
-  const { activeTab, headers, playgrounds, changeUiActiveTab } =
-    useStore(
-      (s: IStore) => ({
-        activeTab: s.ui.sidebarActiveTab,
-        headers: s.ui.headers,
-        playgrounds: s.ui.playgrounds,
-        changeUiActiveTab: s.changeUiActiveTab,
-      }),
-      shallow
-    );
+  const { activeTab, headers, playgrounds, changeUiActiveTab } = useStore(
+    (s: IStore) => ({
+      activeTab: s.ui.sidebarActiveTab,
+      headers: s.ui.headers,
+      playgrounds: s.ui.playgrounds,
+      changeUiActiveTab: s.changeUiActiveTab,
+    }),
+    shallow
+  );
 
   // console.log(playgrounds, 'playgrounds... counts');
 

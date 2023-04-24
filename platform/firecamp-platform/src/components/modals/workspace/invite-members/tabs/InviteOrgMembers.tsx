@@ -16,7 +16,7 @@ import platformContext from '../../../../../services/platform-context';
 const RoleOptions = [
   {
     id: EUserRolesWorkspace.Admin,
-    name: 'Admin',  
+    name: 'Admin',
   },
   {
     id: EUserRolesWorkspace.Collaborator,
@@ -100,7 +100,7 @@ const InviteOrgMembers: FC<IProps> = ({
             classes={{
               trigger: 'block',
               options: 'w-[32rem] bg-popoverBackground z-[1000] -mt-1',
-              item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none'
+              item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
             }}
             onSelect={({ name, id }) => onChange({ ...member, role: id })}
           />

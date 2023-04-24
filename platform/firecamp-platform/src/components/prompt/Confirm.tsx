@@ -37,7 +37,12 @@ const ConfirmationModal: FC<IConfirm> = ({
   texts = { ..._texts, ...texts };
 
   return (
-    <Modal isOpen={state.isOpen} onClose={_close} width={'400px'} className="min-h-0">
+    <Modal
+      isOpen={state.isOpen}
+      onClose={_close}
+      width={'400px'}
+      className="min-h-0"
+    >
       <Modal.Body>
         <div className="px-2 py-4">
           <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">

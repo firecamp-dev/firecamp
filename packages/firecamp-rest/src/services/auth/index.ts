@@ -46,7 +46,10 @@ export default class Auth {
         this.authHeader = await oauth2(this.credentials as IOAuth2, this.extra);
         break;
       case EAuthTypes.AwsV4:
-        this.aws4AuthHeaders = awsV4(this.credentials as IAuthAwsV4, this.extra);
+        this.aws4AuthHeaders = awsV4(
+          this.credentials as IAuthAwsV4,
+          this.extra
+        );
         break;
 
       default:

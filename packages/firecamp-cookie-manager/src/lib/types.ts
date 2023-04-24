@@ -1,6 +1,6 @@
 export interface ICookieToStore {
-    raw: string
-    key: string
-    domain: string
-    path: string
+  raw: string;
+  key: string;
+  domain: string;
+  path: string;
 }

@@ -173,16 +173,13 @@ export default {
             'rct-tree-item-title-container',
             { 'rct-tree-item-title-container-isFolder': item.isFolder },
             {
-              'rct-tree-item-title-container-selected':
-                context.isSelected,
+              'rct-tree-item-title-container-selected': context.isSelected,
             },
             {
-              'rct-tree-item-title-container-expanded':
-                context.isExpanded,
+              'rct-tree-item-title-container-expanded': context.isExpanded,
             },
             {
-              'rct-tree-item-title-container-focused':
-                context.isFocused,
+              'rct-tree-item-title-container-focused': context.isFocused,
             },
             {
               'rct-tree-item-title-container-dragging-over':
@@ -221,24 +218,21 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            <span 
-             className={cx(
-              'pr-2',
-              'w-full overflow-hidden text-ellipsis opacity-80',
-              {
-                '!opacity-100':
-                  context.isSelected,
-              },
-              {
-                '!opacity-100':
-                  context.isExpanded,
-              },
-              {
-                '!opacity-100':
-                  context.isFocused,
-              },
+            <span
+              className={cx(
+                'pr-2',
+                'w-full overflow-hidden text-ellipsis opacity-80',
+                {
+                  '!opacity-100': context.isSelected,
+                },
+                {
+                  '!opacity-100': context.isExpanded,
+                },
+                {
+                  '!opacity-100': context.isFocused,
+                }
               )}
-              >
+            >
               {title}
             </span>
           </InteractiveComponent>

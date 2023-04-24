@@ -38,9 +38,12 @@ const SignUp: FC<IModal> = () => {
       })
       .catch((e) => {
         // console.log(e.response)
-        platformContext.app.notify.alert(e.response?.data?.message || e.message, {
-          labels: { alert: 'error!' },
-        });
+        platformContext.app.notify.alert(
+          e.response?.data?.message || e.message,
+          {
+            labels: { alert: 'error!' },
+          }
+        );
       })
       .finally(() => {
         setFlagIsRequesting(false);

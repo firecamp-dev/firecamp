@@ -66,7 +66,6 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
   playgrounds: {}, //dummyPlayground,
 
   addPlayground: () => {
-
     const state = get();
     const playgroundId = nanoid();
     const plgsCount = state.runtime?.playgroundTabs?.length;
@@ -99,7 +98,6 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
             },
           },
           activePlayground: playgroundId,
-        
         },
       };
     });

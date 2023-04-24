@@ -21,7 +21,7 @@ const EditPlaygroundName: FC<any> = ({}) => {
       .promptInput({
         header: 'Update Playground Info',
         value: playground.request?.name,
-        texts: { 'btnOk': 'Update'},
+        texts: { btnOk: 'Update' },
         validator: (value) => {
           const name = value.trim();
           if (!name) {

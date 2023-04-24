@@ -44,7 +44,13 @@ export class Variables implements IVariables {
     } else {
       this.variables = [
         ...this.variables,
-        { id: nanoid(), key: variableName, initialValue: '', value: '' + variableValue, type },
+        {
+          id: nanoid(),
+          key: variableName,
+          initialValue: '',
+          value: '' + variableValue,
+          type,
+        },
       ];
     }
   }

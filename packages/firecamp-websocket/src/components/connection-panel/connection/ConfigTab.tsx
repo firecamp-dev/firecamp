@@ -3,10 +3,10 @@ import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
 enum EInputTypes {
-  Text='text',
-  Boolean= 'boolean',
-  Number= 'number',
-};
+  Text = 'text',
+  Boolean = 'boolean',
+  Number = 'number',
+}
 
 const configInputs = [
   {

@@ -33,7 +33,8 @@ const Home: FC<any> = () => {
         <div className="text-2xl mb-8 font-normal">
           Welcome To Firecamp!
           <span className="block text-base font-light text-appForegroundInActive">
-          This campsite is designed for you, giving you the power to do what you love with APIs.
+            This campsite is designed for you, giving you the power to do what
+            you love with APIs.
           </span>
         </div>
       </Container.Header>

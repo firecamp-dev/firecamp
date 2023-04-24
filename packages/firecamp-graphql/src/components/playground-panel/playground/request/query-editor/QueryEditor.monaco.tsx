@@ -6,7 +6,7 @@ import { _table } from '@firecamp/utils';
 import getQueryFacts, {
   getCurrentOperation,
 } from '../../../../../services/GraphQLservice';
-import { EQueryTypes } from '../../../../../types'
+import { EQueryTypes } from '../../../../../types';
 
 const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {
   const clientSchemaRef = useRef({});

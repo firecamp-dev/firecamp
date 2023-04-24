@@ -7,7 +7,7 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    return <FcIconGraphQL size={24}/>;
+    return <FcIconGraphQL size={24} />;
     // return item.isFolder ? (
     //   context.isExpanded ? (
     //     <VscChevronDown size={20} />

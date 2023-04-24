@@ -9,7 +9,7 @@ import {
 } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import { IScriptRequest } from './index.type';
-import requestAssertionPlugin from './assertions'
+import requestAssertionPlugin from './assertions';
 
 /** request script */
 export class Request implements IScriptRequest {

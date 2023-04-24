@@ -1,4 +1,10 @@
-import { EHttpMethod, IHeader, IRestBody, IUrl, TPlainObject } from '@firecamp/types';
+import {
+  EHttpMethod,
+  IHeader,
+  IRestBody,
+  IUrl,
+  TPlainObject,
+} from '@firecamp/types';
 
 /** request instance for script*/
 export interface IScriptRequest {

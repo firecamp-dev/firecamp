@@ -1,11 +1,6 @@
 import { FC } from 'react';
 import _cloneDeep from 'lodash/cloneDeep';
-import {
-  Container,
-  Button,
-  TabHeader,
-  EnvironmentTable,
-} from '@firecamp/ui';
+import { Container, Button, TabHeader, EnvironmentTable } from '@firecamp/ui';
 import { ICollection } from '@firecamp/types';
 
 const Variables: FC<IProps> = ({

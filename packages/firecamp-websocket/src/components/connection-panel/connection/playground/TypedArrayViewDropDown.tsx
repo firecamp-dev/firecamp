@@ -23,10 +23,7 @@ const TypedArrayViewDropDown = ({
           ghost
         />
       </Dropdown.Handler>
-      <Dropdown.Options
-        options={options}
-        onSelect={onSelect}
-      />
+      <Dropdown.Options options={options} onSelect={onSelect} />
     </Dropdown>
   );
 };
