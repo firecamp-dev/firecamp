@@ -56,7 +56,7 @@ export const PromptInput: FC<IPromptInput> = ({
           })
           .catch((e) => {
             if (typeof onError == 'function') {
-              console.error(e)
+              console.error(e);
               onError(e);
             }
             setState((s) => ({
@@ -72,13 +72,13 @@ export const PromptInput: FC<IPromptInput> = ({
       }
     }
   };
-  const _onKeyDown = (e)=> {
-    if(e.key == 'Enter') {
-      _onClickOk(e)
+  const _onKeyDown = (e) => {
+    if (e.key == 'Enter') {
+      _onClickOk(e);
     }
-  }
+  };
   texts = { ..._texts, ...texts };
-  
+
   return (
     <Modal
       isOpen={state.isOpen}

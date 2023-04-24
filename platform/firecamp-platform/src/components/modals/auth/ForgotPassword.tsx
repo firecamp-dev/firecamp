@@ -25,16 +25,22 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
           });
           platformContext.app.modals.openResetPassword();
         } else {
-          platformContext.app.notify.alert(`Failed to send token, please try again!`, {
-            labels: { alert: 'Forgot password' },
-          });
+          platformContext.app.notify.alert(
+            `Failed to send token, please try again!`,
+            {
+              labels: { alert: 'Forgot password' },
+            }
+          );
         }
       })
       .catch((e) => {
         console.log(e);
-        platformContext.app.notify.alert(e.response?.data?.message || e.message, {
-          labels: { alert: 'error' },
-        });
+        platformContext.app.notify.alert(
+          e.response?.data?.message || e.message,
+          {
+            labels: { alert: 'error' },
+          }
+        );
       })
       .finally(() => {
         setFlagIsRequesting(false);

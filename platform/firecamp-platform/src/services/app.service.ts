@@ -23,7 +23,10 @@ const userService = {
 
 // switch to another workspace
 // org will be switching org or current org
-const switchWorkspace = async (wrs: IWorkspace, organization?: IOrganization) => {
+const switchWorkspace = async (
+  wrs: IWorkspace,
+  organization?: IOrganization
+) => {
   const user = useUserStore.getState().user;
   const platform = usePlatformStore.getState();
   const org = organization || platform.switchingOrg || platform.organization;

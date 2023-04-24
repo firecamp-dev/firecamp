@@ -1,8 +1,4 @@
-import {
-  IRest,
-  IRestResponse,
-  IVariableGroup,
-} from '@firecamp/types';
+import { IRest, IRestResponse, IVariableGroup } from '@firecamp/types';
 
 export type TRestExecutionResponse = {
   response: IRestResponse;

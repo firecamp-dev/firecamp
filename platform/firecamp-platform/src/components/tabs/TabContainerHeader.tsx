@@ -64,7 +64,7 @@ const TabHeaderContainer = () => {
   }, []);
 
   const openNewTab = () => {
-    open({}, {id: '', type: ETabEntityTypes.Request})
+    open({}, { id: '', type: ETabEntityTypes.Request });
   };
 
   const closeTab = (tabId) => {

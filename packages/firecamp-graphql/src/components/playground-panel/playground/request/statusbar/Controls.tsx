@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Button,
-  ConfirmationPopover,
-} from '@firecamp/ui';
+import { Button, ConfirmationPopover } from '@firecamp/ui';
 
 const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
   //todo: need to refactor

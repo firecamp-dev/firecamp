@@ -174,7 +174,7 @@ const CollectionMenu = ({
         onToggle={(value) => toggleMenu(value)}
       >
         <Dropdown.Handler className="transparent without-border without-padding fc-button">
-          <VscEllipsis/>
+          <VscEllipsis />
         </Dropdown.Handler>
         <Dropdown.Options
           className="bg-main"

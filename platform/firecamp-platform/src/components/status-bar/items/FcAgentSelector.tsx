@@ -18,13 +18,17 @@ const agentNamesMap = {
 };
 
 const FcAgentSelector: FC<any> = () => {
-  
-  const { agent, isExtAgentInstalled, changeFirecampAgent, checkExtAgentInstalled } = usePlatformStore(
+  const {
+    agent,
+    isExtAgentInstalled,
+    changeFirecampAgent,
+    checkExtAgentInstalled,
+  } = usePlatformStore(
     (s: IPlatformStore) => ({
       agent: s.__meta.agent,
       isExtAgentInstalled: s.__meta.isExtAgentInstalled,
       changeFirecampAgent: s.changeFirecampAgent,
-      checkExtAgentInstalled: s.checkExtAgentInstalled
+      checkExtAgentInstalled: s.checkExtAgentInstalled,
     }),
     shallow
   );
@@ -91,7 +95,10 @@ const FcAgentSelector: FC<any> = () => {
       }
     >
       <Popover.Handler>
-        <div className="flex items-center" onClick={()=> checkExtAgentInstalled()}>
+        <div
+          className="flex items-center"
+          onClick={() => checkExtAgentInstalled()}
+        >
           <VscInfo size={14} className="mr-1 text-primaryColor" />
           {agentNamesMap[agent]}
         </div>
@@ -108,7 +115,7 @@ const AgentItem: FC<IAgentItem> = ({
   className,
   description,
   isSelected,
-  disabled= false,
+  disabled = false,
   onSelect = () => {},
 }) => {
   return (
@@ -116,7 +123,7 @@ const AgentItem: FC<IAgentItem> = ({
       className={cx(className, 'text-base text-appForeground flex items-start')}
     >
       <div className="pt-half" onClick={onSelect}>
-        <Checkbox isChecked={isSelected} id={name} disabled={disabled}/>
+        <Checkbox isChecked={isSelected} id={name} disabled={disabled} />
       </div>
       <div className="font-semibold ml-2">
         <label className="cursor-pointer" htmlFor={name}>
@@ -137,7 +144,7 @@ interface IAgentItem {
   name: string;
   className?: string;
   isSelected: boolean;
-  disabled?: boolean,
+  disabled?: boolean;
   description?: string;
   onSelect: () => void;
 }

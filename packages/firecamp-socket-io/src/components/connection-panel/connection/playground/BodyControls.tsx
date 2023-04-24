@@ -12,12 +12,8 @@ import { IStore, useStore, useStoreApi } from '../../../../store';
 
 const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
   const plg = useStore((s: IStore) => s.playground);
-  const {
-    promptSaveItem,
-    updateItem,
-    getItemPath,
-    resetPlaygroundEmitter,
-  } = useStoreApi().getState() as IStore;
+  const { promptSaveItem, updateItem, getItemPath, resetPlaygroundEmitter } =
+    useStoreApi().getState() as IStore;
 
   const emitterPath = useMemo(() => {
     return getItemPath(plg.selectedEmitterId);

@@ -141,7 +141,9 @@ const BodyTab: FC<any> = () => {
           </StatusBar.SecondaryRegion>
         </StatusBar>
       </Container.Header>
-      <Container.Body className='visible-scrollbar'>{_renderBodyTab()}</Container.Body>
+      <Container.Body className="visible-scrollbar">
+        {_renderBodyTab()}
+      </Container.Body>
     </Container>
   );
 };

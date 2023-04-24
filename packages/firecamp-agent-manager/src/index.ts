@@ -14,7 +14,6 @@ import * as extension from './chrome';
 
 const restExecutors: { [key: TId]: RestExecutor } = {};
 
-
 /**
  *
  * @param request REST request which will be sent to the executor
