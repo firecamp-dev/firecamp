@@ -14,18 +14,6 @@ module.exports = async () => {
     const buildPath = path.join(`${__dirname}/../build/${env}`);
     // copy project assets and generate config.
     const directoryPaths = [path.join(`${__dirname}/../build`), buildPath];
-    if (env === Environment.Development) {
-      directoryPaths.push(
-        path.join(`${__dirname}/../build/${env}/build-scripts`)
-      );
-    }
-    if (env === Environment.Production) {
-      directoryPaths.push(
-        path.join(`${__dirname}/../build/${env}/build-scripts`),
-        path.join(`${__dirname}/../build/${env}/services`),
-        path.join(`${__dirname}/../build/${env}/packages-executors`)
-      );
-    }
 
     // Remove build before start bundle
     rm('-rf', buildPath);
