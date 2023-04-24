@@ -14,7 +14,7 @@ const getPathFromUrl = (url: string) => {
 const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
   changeUrl: (urlObj: IUrl) => {
     const state = get();
-    const url = { raw: getPathFromUrl(urlObj.raw) };
+    const url = { ...state.request.url, ...urlObj };
     const _request = { ...state.request, url };
     const cPanelUi = prepareConnectionPanelUiState(_request);
     set((s) => ({
@@ -25,12 +25,10 @@ const createUrlSlice: TStoreSlice<IUrlSlice> = (set, get) => ({
   },
   changeQueryParams: (qps: IQueryParam[]) => {
     const state = get();
-    const { connection } = state.request;
     const newUrl = _url.updateByQuery(state.request.url, qps);
     const _request = {
       ...state.request,
       url: newUrl,
-      connection: { ...connection, queryParams: qps },
     };
     const cPanelUi = prepareConnectionPanelUiState(_request);
     set((s) => ({

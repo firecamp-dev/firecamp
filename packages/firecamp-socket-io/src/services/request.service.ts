@@ -1,6 +1,6 @@
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
-import { nanoid as id } from 'nanoid';
+import { nanoid } from 'nanoid';
 import {
   TId,
   ERequestTypes,
@@ -8,8 +8,10 @@ import {
   ISocketIO,
   ESocketIOClientVersion,
   TRequestPath,
+  EKeyValueTableRowType,
 } from '@firecamp/types';
 import _url from '@firecamp/url';
+import { isValidRow } from '@firecamp/utils/dist/table';
 import { _object, _array, _string } from '@firecamp/utils';
 import {
   RequestConnection,
@@ -34,7 +36,7 @@ export const prepareConnectionPanelUiState = (
   const { url, connection } = request;
   if (connection?.headers) cPanelUi.headers = connection.headers?.length || 0;
   if (connection?.auth) cPanelUi.auth = connection.auth?.length || 0;
-  if (url) cPanelUi.params = request.url.queryParms?.length || 0;
+  if (url) cPanelUi.params = request.url.queryParams?.length || 0;
   return cPanelUi;
 };
 
@@ -80,7 +82,35 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   //normalize url
   //normalize url
   if (url?.raw) {
-    _nr.url.raw = getPathFromUrl(url.raw);
+    _nr.url = {
+      raw: url.raw || '',
+      queryParams: url.queryParams || [],
+      pathParams: url.pathParams || [],
+    };
+    if (!_array.isEmpty(_nr.url.queryParams)) {
+      const queryParams = [];
+      if (!url.queryParams?.length) url.queryParams = [];
+      url.queryParams.map((qp) => {
+        // add default key: `type: text`
+        qp.id = nanoid();
+        qp.type = EKeyValueTableRowType.Text;
+        qp.value = qp.value || '';
+        if (isValidRow(qp)) queryParams.push(qp);
+      });
+      _nr.url.queryParams = queryParams;
+    }
+    if (!_array.isEmpty(_nr.url.pathParams)) {
+      const pathParams = [];
+      if (!url.pathParams?.length) url.pathParams = [];
+      url.pathParams.map((pp) => {
+        // add default key: `type: text`
+        pp.id = nanoid();
+        pp.type = EKeyValueTableRowType.Text;
+        pp.value = pp.value || '';
+        if (isValidRow(pp)) pathParams.push(pp);
+      });
+      _nr.url.pathParams = pathParams;
+    }
   }
 
   // normalize __meta
@@ -92,7 +122,7 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
   _nr.__meta.version = '2.0.0';
 
   // normalize __ref
-  _nr.__ref.id = __ref.id || id();
+  _nr.__ref.id = __ref.id || nanoid();
   _nr.__ref.collectionId = __ref.collectionId;
   _nr.__ref.folderId = __ref.folderId;
   _nr.__ref.createdAt = __ref.createdAt || new Date().valueOf();

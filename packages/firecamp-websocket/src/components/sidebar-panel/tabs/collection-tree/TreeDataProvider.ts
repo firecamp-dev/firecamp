@@ -153,12 +153,33 @@ export class TreeDataProvider<T = TTreeItemData> implements ITreeDataProvider {
 
   // extra methods of provider
   private add(item: TFolderItem | TItem) {
-    this.items.push(item);
-    if (!item.__ref.folderId) {
-      this.rootOrders.push(item.__ref.id);
+    const itemId = item.__ref.id;
+    const parentFolderId = item.__ref.folderId;
+    const isFolder = item.__ref.isFolder;
+    if (!parentFolderId) {
+      this.rootOrders.push(itemId);
       this.emitter.emit(ETreeEventTypes.itemChanged, ['root']);
     } else {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [item.__ref.folderId]);
+      this.items = this.items.map((i) => {
+        if (i.__ref.id == parentFolderId) {
+          const {
+            //@ts-ignore
+            __meta: { fOrders = [], iOrders = [] },
+          } = i;
+          const _fOrders = isFolder ? [...fOrders, itemId] : fOrders;
+          const _iOrders = isFolder ? iOrders : [...iOrders, itemId];
+          return {
+            ...i,
+            __meta: {
+              ...i.__meta,
+              fOrders: _fOrders,
+              iOrders: _iOrders,
+            },
+          };
+        }
+        return i;
+      });
+      this.emitter.emit(ETreeEventTypes.itemChanged, [parentFolderId]);
     }
   }
   public addFolder(item: TFolderItem) {

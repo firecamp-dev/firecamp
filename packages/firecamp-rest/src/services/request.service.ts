@@ -280,7 +280,6 @@ export const initialiseStoreFromRequest = (
 ): IStoreState => {
   const request: IRest = normalizeRequest(_request);
   const requestPanel = prepareUIRequestPanelState(_cloneDeep(request));
-  console.log({ request });
 
   return {
     originalRequest: _cloneDeep(request) as IRest,

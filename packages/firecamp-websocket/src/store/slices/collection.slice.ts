@@ -43,6 +43,7 @@ interface ICollectionSlice {
   // folders
   getFolder: (id: TId) => IRequestFolder | undefined;
   prepareCreateFolderPayload: (name: string, parentFolderId: TId) => void;
+  promptCreateFolder: (parentFolderId?: TId) => void;
   onCreateFolder: (folder: IRequestFolder) => void;
   deleteFolder: (id: TId) => void;
   onDeleteFolder: (id: TId) => void;
@@ -279,25 +280,41 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     state.toggleColProgressBar(true);
     return _folder;
   },
+  promptCreateFolder: async (parentFolderId) => {
+    if (typeof parentFolderId != 'string') parentFolderId = undefined;
+    const {
+      context,
+      runtime: { isRequestSaved },
+      prepareCreateFolderPayload,
+      onCreateFolder,
+    } = get();
+    if (!isRequestSaved) {
+      return context.app.notify.info(
+        'Please save the websocket request first.'
+      );
+    }
+    const _folder = prepareCreateFolderPayload('', parentFolderId);
+    context.request.createRequestFolderPrompt(_folder).then(onCreateFolder);
+  },
   onCreateFolder: (folder) => {
     if (!folder) return;
     const state = get();
     state.toggleColProgressBar(false);
-    //@ts-ignore
-    if (folder.__meta?.type) folder.__meta.type = 'F'; // TODO: remove it later after migration dir=>F
+    state.collection.tdpInstance?.addFolder(folder);
+    const {
+      request,
+      collection: { folders },
+    } = state;
+    if (folder.__ref.folderId) {
+      folders.map((f) => {
+        if (f.__ref.id == folder.__ref.folderId) {
+          f.__meta.fOrders.push(folder.__ref.id);
+        }
+      });
+    } else {
+      request.__meta.fOrders = [...request.__meta.fOrders, folder.__ref.id];
+    }
     set((s) => {
-      s.collection.tdpInstance?.addFolder(folder);
-      const { request } = s;
-      const { folders } = s.collection;
-      if (folder.__ref.folderId) {
-        folders.map((f) => {
-          if (f.__ref.id == folder.__ref.folderId) {
-            f.__meta.fOrders.push(folder.__ref.id);
-          }
-        });
-      } else {
-        request.__meta.fOrders = [...request.__meta.fOrders, folder.__ref.id];
-      }
       return {
         request,
         collection: {

@@ -64,8 +64,6 @@ export const RequestConnection: ISocketIOConnection = {
   headers: [],
   queryParams: [],
   auth: [],
-  //@ts-ignore
-  listeners: {},
 };
 export const DefaultRequestConfig: ISocketIOConfig = {
   version: ESocketIOClientVersion.v4,

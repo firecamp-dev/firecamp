@@ -4,37 +4,11 @@ import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui';
-import { TId } from '@firecamp/types';
-import treeRenderer from './treeItemRenderer';
 import { IStore, useStore, useStoreApi } from '../../../../store';
+import treeRenderer from './treeItemRenderer';
 
 const CollectionPane = () => {
-  const {
-    context,
-    isRequestSaved,
-    prepareCreateFolderPayload,
-    onCreateFolder,
-  } = useStore(
-    (s: IStore) => ({
-      context: s.context,
-      isRequestSaved: s.runtime.isRequestSaved,
-      prepareCreateFolderPayload: s.prepareCreateFolderPayload,
-      onCreateFolder: s.onCreateFolder,
-    }),
-    shallow
-  );
-
-  const _createFolderPrompt = async (parentFolderId?: TId) => {
-    if (typeof parentFolderId != 'string') parentFolderId = undefined;
-    if (!isRequestSaved) {
-      return context.app.notify.info(
-        'Please save the socket.io request first.'
-      );
-    }
-    const _folder = prepareCreateFolderPayload('', parentFolderId);
-    context.request.createRequestFolderPrompt(_folder).then(onCreateFolder);
-  };
-
+  const { promptCreateFolder } = useStoreApi().getState() as IStore;
   return (
     <Pane
       expanded={true}
@@ -52,14 +26,14 @@ const CollectionPane = () => {
               <VscNewFolder
                 size={14}
                 className="cursor-pointer"
-                onClick={() => _createFolderPrompt()}
+                onClick={() => promptCreateFolder()}
               />
             </div>
           </ToolBar>
         );
       }}
       bodyRenderer={({ expanded }) => {
-        return <Collection openCreateFolderPrompt={_createFolderPrompt} />;
+        return <Collection openCreateFolderPrompt={promptCreateFolder} />;
       }}
     />
   );
@@ -119,9 +93,10 @@ const Collection = ({ openCreateFolderPrompt }) => {
   };
 
   if (!tdpInstance) return <></>;
+  const isEmpty = isCollectionEmpty();
   return (
     <>
-      {isCollectionEmpty() ? (
+      {isEmpty ? (
         <div className="items-center">
           <Empty
             // icon={<VscFolder size="40" />}
@@ -163,9 +138,9 @@ const Collection = ({ openCreateFolderPrompt }) => {
         }
       >
         <Tree
-          treeId="fc-environment-tree"
+          treeId="fc-emitter-collection-tree"
           rootItem="root"
-          treeLabel="WebSocket Message Collection"
+          treeLabel="SocketIO Emitter Collection"
           ref={treeRef}
         />
       </UncontrolledTreeEnvironment>
