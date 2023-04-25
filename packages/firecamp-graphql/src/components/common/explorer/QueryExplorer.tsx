@@ -8,14 +8,14 @@ import './QueryExplorer.scss';
 // import getQueryFacts from '../../../services/GraphQLservice';
 
 const QueryExplorer = () => {
-  const { tabId, playground, activePlayground, schema, changePlaygroundValue } =
+  const { tabId, playground, activePlayground, schema, changePlgValueFromExplorer } =
     useStore(
       (s: IStore) => ({
         tabId: s.runtime.tabId,
         schema: s.runtime.schema,
         activePlayground: s.runtime.activePlayground,
         playground: s.playgrounds[s.runtime.activePlayground],
-        changePlaygroundValue: s.changePlaygroundValue,
+        changePlgValueFromExplorer: s.changePlgValueFromExplorer,
       }),
       shallow
     );
@@ -28,20 +28,22 @@ const QueryExplorer = () => {
 
   const _onEdit = (value) => {
     // console.log({ value });
-    changePlaygroundValue(activePlayground, value);
+    changePlgValueFromExplorer(activePlayground, value);
     // debugger;
     // setCurrentQueryPayload(queryPayload);
     // mergeSingleQueryToQueries(queryPayload);
   };
 
   if (_object.isEmpty(clientSchema)) return <></>;
-  if (!playground?.request) return <></>;
+  // if (!playground?.request) return <></>;
+
+  const query = playground?.request?.value.query; //@note: when no playground open then it's value is null
 
   return (
     <GraphiQLExplorer
       id={`query-explorer-${tabId}`}
       schema={clientSchema}
-      query={playground.request.value.query}
+      query={query}
       onEdit={_onEdit}
       explorerIsOpen={true}
       onToggleExplorer={(_) => console.log()}

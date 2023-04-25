@@ -30,9 +30,10 @@ export interface IPlaygrounds {
 
 export interface IPlaygroundsSlice {
   playgrounds?: IPlaygrounds;
-  addPlayground: () => void;
+  addPlayground: (defaultValue?: string) => void;
   openPlayground: (plgId: TId) => void;
   removePlayground: (playgroundId: string) => void;
+  changePlgValueFromExplorer: (playgroundId: string, value: string) => void;
   changePlaygroundValue: (playgroundId: string, value: string) => void;
   changePlaygroundVariables: (playgroundId: string, variables: string) => void;
   setPlaygroundOperation: (opName: string, playgroundId?: TId) => void;
@@ -65,14 +66,15 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
    */
   playgrounds: {}, //dummyPlayground,
 
-  addPlayground: () => {
+  addPlayground: (defaultValue) => {
     const state = get();
     const playgroundId = nanoid();
     const plgsCount = state.runtime?.playgroundTabs?.length;
     const name = `playground-${plgsCount + 1}`;
+    const query = defaultValue || 'query MyQuery {\n  __typename\n}';
     const plg: IGraphQLPlayground = {
       name,
-      value: { query: 'query MyQuery {\n  __typename\n}', variables: `{ }` },
+      value: { query, variables: `{ }` },
       __meta: {},
       //@ts-ignore
       __ref: { id: playgroundId },
@@ -197,20 +199,31 @@ export const createPlaygroundsSlice: TStoreSlice<IPlaygroundsSlice> = (
     });
   },
 
+  changePlgValueFromExplorer: (playgroundId: string, queryValue: string) => {
+    const state = get();
+    // if no playground is active/open then open new plg with default value
+    if (!playgroundId || !state.playgrounds[playgroundId]) {
+      state.addPlayground(queryValue);
+    } else {
+      state.changePlaygroundValue(playgroundId, queryValue);
+    }
+  },
+
   changePlaygroundValue: (playgroundId: string, queryValue: string) => {
+    const state = get();
     // console.log(getOperations(queryValue), "getOperations");
-    let { names, error } = getOperationNames(queryValue);
+    const { names, error } = getOperationNames(queryValue);
     console.log(names, 'opsNames...');
     // console.log(getPlaygroundName(queryValue), "getPlaygroundName");
 
+    const plg = state.playgrounds[playgroundId];
+    let hasChange = false;
+    const plgMeta = state.runtime.playgroundsMeta[playgroundId];
+
+    if (plg.originalRequest?.value.query != queryValue && plgMeta.isSaved)
+      hasChange = true;
+
     set((s) => {
-      const plg = s.playgrounds[playgroundId];
-      let hasChange = false;
-      const plgMeta = s.runtime.playgroundsMeta[playgroundId];
-
-      if (plg.originalRequest?.value.query != queryValue && plgMeta.isSaved)
-        hasChange = true;
-
       return {
         playgrounds: {
           ...s.playgrounds,
