@@ -89,6 +89,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     set((s) => ({
       runtime: {
         ...s.runtime,
+        isRequestSaved: true,
         requestPath,
       },
     }));
