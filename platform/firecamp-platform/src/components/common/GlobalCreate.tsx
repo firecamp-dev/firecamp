@@ -14,6 +14,8 @@ enum EMenuOptions {
   Workspace = 'workspace',
   Organization = 'organization',
   InviteMembers = 'invite-members',
+  SwitchOrg = 'switch-org',
+  SwitchWorkspace = 'switch-workspace',
 }
 const options = [
   {
@@ -31,6 +33,13 @@ const options = [
       { id: EMenuOptions.Workspace, name: 'WORKSPACE' },
       { id: EMenuOptions.Organization, name: 'ORGANIZATION' },
       { id: EMenuOptions.InviteMembers, name: 'INVITE MEMBERS' },
+    ],
+  },
+  {
+    header: 'SWITCH',
+    list: [
+      { id: EMenuOptions.SwitchOrg, name: 'SWITCH ORGANIZATION' },
+      { id: EMenuOptions.SwitchWorkspace, name: 'SWITCH WORKSPACE' },
     ],
   },
 ];
@@ -61,6 +70,12 @@ const GlobalCreateDD = ({}) => {
         break;
       case EMenuOptions.InviteMembers:
         platformContext.app.modals.openInviteMembers();
+        break;
+      case EMenuOptions.SwitchOrg:
+        platformContext.app.modals.openSwitchOrg();
+        break;
+      case EMenuOptions.SwitchWorkspace:
+        platformContext.app.modals.openSwitchWorkspace();
         break;
     }
   };

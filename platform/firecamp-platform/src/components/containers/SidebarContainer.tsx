@@ -75,30 +75,30 @@ const compositeBarItems = [
 ];
 
 const actionBarItems = [
-  {
-    id: EActivityBarItems.SslNProxy,
-    icon: (
-      <VscLock
-        data-tip={`SSL and proxy (${scPrefix} ⇧ P)`}
-        data-for={EActivityBarItems.SslNProxy}
-        tabIndex={-1}
-      />
-    ),
-    text: `SSL and proxy (${scPrefix} ⇧ P)`,
-    item: EActivityBarItems.SslNProxy,
-  },
-  {
-    id: EActivityBarItems.Cookie,
-    icon: (
-      <BiCookie
-        data-tip={`Cookie (${scPrefix} ⇧ O)`}
-        data-for={EActivityBarItems.Cookie}
-        tabIndex={-1}
-      />
-    ),
-    text: `Cookie (${scPrefix} ⇧ O)`,
-    item: EActivityBarItems.Cookie,
-  },
+  // {
+  //   id: EActivityBarItems.SslNProxy,
+  //   icon: (
+  //     <VscLock
+  //       data-tip={`SSL and proxy (${scPrefix} ⇧ P)`}
+  //       data-for={EActivityBarItems.SslNProxy}
+  //       tabIndex={-1}
+  //     />
+  //   ),
+  //   text: `SSL and proxy (${scPrefix} ⇧ P)`,
+  //   item: EActivityBarItems.SslNProxy,
+  // },
+  // {
+  //   id: EActivityBarItems.Cookie,
+  //   icon: (
+  //     <BiCookie
+  //       data-tip={`Cookie (${scPrefix} ⇧ O)`}
+  //       data-for={EActivityBarItems.Cookie}
+  //       tabIndex={-1}
+  //     />
+  //   ),
+  //   text: `Cookie (${scPrefix} ⇧ O)`,
+  //   item: EActivityBarItems.Cookie,
+  // },
   {
     id: EActivityBarItems.User,
     icon: (
