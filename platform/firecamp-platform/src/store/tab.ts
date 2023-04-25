@@ -362,7 +362,13 @@ const useTabStore = create<ITabStore>((set, get) => {
     },
 
     // dispose whole store and reset to initial state
-    dispose: () => set({ ...initialState }),
+    dispose: () => {
+      const state = get();
+      state.orders.map((tabId) =>
+        platformEmitter.emit(EPlatformTabs.Closed, tabId)
+      );
+      set({ ...initialState });
+    },
   };
 });
 export { ITabStore, useTabStore };
