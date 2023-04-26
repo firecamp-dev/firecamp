@@ -3,7 +3,7 @@ import Executor, {
   TExecutorOptions,
 } from '@firecamp/ws-executor/dist/esm';
 import { IWebSocketMessage, EFirecampAgent } from '@firecamp/types';
-import { _misc, _object } from '@firecamp/utils';
+import { _env, _misc, _object } from '@firecamp/utils';
 import { EConnectionState } from '../../types';
 import { TStoreSlice } from '../store.type';
 
@@ -25,7 +25,6 @@ const createHandleConnectionExecutor: TStoreSlice<
 
     try {
       const state = get();
-      console.log(state, '123456789');
       const { url, config, connection } = state.request;
 
       // console.log(connection, url);
@@ -39,13 +38,16 @@ const createHandleConnectionExecutor: TStoreSlice<
         certificates: [], // TODO: add ssl certs
       };
 
+      const vars = state.context.environment.getPlainVariables();
+      const _ops = _env.applyVariablesInSource(vars, options);
+
       const executor: IExecutor =
         _misc.firecampAgent() === EFirecampAgent.Desktop
           ? // @ts-ignore
-            window.fc.websocket(options)
-          : new Executor(options);
+            window.fc.websocket(_ops)
+          : new Executor(_ops);
 
-      console.log(_misc.firecampAgent(), executor);
+      // console.log(_misc.firecampAgent(), executor);
 
       // on open
       executor.onOpen(() => {
@@ -121,10 +123,12 @@ const createHandleConnectionExecutor: TStoreSlice<
         // TODO: check if connection open or not. if not then executor will send log with error message
         const { message } = playground;
         const _message = _object.omit(message, ['path']) as IWebSocketMessage;
-        console.log({ _message }, 'send message');
+        // console.log({ _message }, 'send message');
 
+        const vars = state.context.environment.getPlainVariables();
+        const _msg = _env.applyVariablesInSource(vars, _message);
         // send message
-        playground.executor.send(_message);
+        playground.executor.send(_msg);
       }
     } catch (e) {
       console.error({ action: 'websocket.send', e });

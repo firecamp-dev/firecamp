@@ -359,18 +359,10 @@ const request: IPlatformRequestService = {
   // execute request
   execute: async (request: IRest) => {
     const agent = usePlatformStore.getState().getFirecampAgent();
-    const { globalEnv, activeEnv } = useEnvStore.getState();
-    const variables: IVariableGroup = {
-      globals: globalEnv.variables,
-      environment: activeEnv.variables,
-      collectionVariables: [],
-    };
-    return executor.send(request, variables, agent).then((result) => {
+    const varGroup = platformContext.environment.getVariableGroup();
+    return executor.send(request, varGroup, agent).then((result) => {
       const { setVarsInLocalFromExecutorResponse } = useEnvStore.getState();
-      setVarsInLocalFromExecutorResponse(
-        variables,
-        request.__ref?.collectionId
-      );
+      setVarsInLocalFromExecutorResponse(varGroup, request.__ref?.collectionId);
       return result;
     });
   },

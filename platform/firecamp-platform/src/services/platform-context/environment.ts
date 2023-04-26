@@ -1,4 +1,4 @@
-import { IEnv, TId } from '@firecamp/types';
+import { IEnv, IVariableGroup, TId, TPlainObject } from '@firecamp/types';
 import _cloneDeep from 'lodash/cloneDeep';
 import { _object, _env } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
@@ -13,6 +13,8 @@ export interface IPlatformEnvironmentService {
 
   mergeEnvs: typeof _env.mergeEnvs; //return rnv with initialValue/currentValue
   splitEnvs: typeof _env.splitEnvs; //return remoteEnv and localEnv from runtime env
+  getVariableGroup: () => IVariableGroup;
+  getPlainVariables: () => TPlainObject;
 }
 
 const environment: IPlatformEnvironmentService = {
@@ -30,6 +32,24 @@ const environment: IPlatformEnvironmentService = {
 
   /** split runtime env into remoteEnv and localEnv */
   splitEnvs: _env.splitEnvs,
+
+  getVariableGroup: () => {
+    const { globalEnv, activeEnv } = useEnvStore.getState();
+    const varGroup: IVariableGroup = {
+      globals: globalEnv.variables,
+      environment: activeEnv.variables,
+      collectionVariables: [],
+      __meta: {
+        collectionName: '',
+        environmentName: activeEnv.name,
+      },
+    };
+    return varGroup;
+  },
+
+  getPlainVariables: () => {
+    return useEnvStore.getState().preparePlainVariables();
+  },
 };
 
 export { environment };

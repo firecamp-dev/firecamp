@@ -3,7 +3,7 @@ import Executor, {
   TExecutorOptions,
 } from '@firecamp/socket.io-executor/dist/esm';
 import { ISocketIOEmitter, EFirecampAgent } from '@firecamp/types';
-import { _misc, _object } from '@firecamp/utils';
+import { _env, _misc, _object } from '@firecamp/utils';
 import v2 from 'socket.io-client-v2';
 import v3 from 'socket.io-client-v3';
 import v4 from 'socket.io-client-v4';
@@ -55,10 +55,13 @@ const createHandleConnectionExecutor: TStoreSlice<
         certificates: [], // TODO: add ssl certs
       };
 
+      const vars = state.context.environment.getPlainVariables();
+      const _ops = _env.applyVariablesInSource(vars, options);
+
       const executor: IExecutorInterface =
         _misc.firecampAgent() === EFirecampAgent.Desktop
-          ? window.fc.io(options)
-          : new Executor(options);
+          ? window.fc.io(_ops)
+          : new Executor(_ops);
 
       // on open
       executor.onOpen(() => {
@@ -131,11 +134,16 @@ const createHandleConnectionExecutor: TStoreSlice<
         state.addErrorLog('The connection is not open');
         return;
       }
+
+      const vars = state.context.environment.getPlainVariables();
+      const emtName = _env.applyVariablesInSource(vars, emitter.name);
+      const emtValue = _env.applyVariablesInSource(vars, emitter.value);
+
       // send emitter
       if (emitter?.__meta.ack) {
-        executor.emitWithAck(emitter.name, emitter.value);
+        executor.emitWithAck(emtName, emtValue);
       } else {
-        executor.emit(emitter.name, emitter.value);
+        executor.emit(emtName, emtValue);
       }
     } catch (e) {
       console.info(e);

@@ -1,12 +1,12 @@
 import mitt from 'mitt';
 import {
+  TId,
   ESocketIOClientVersion,
   EFirecampAgent,
   ISocketIOEmitter,
-  TId,
   EArgumentBodyType,
 } from '@firecamp/types';
-import { _misc } from '@firecamp/utils';
+import { _env, _misc } from '@firecamp/utils';
 import * as bodyParser from './body-parser';
 import {
   ILog,
@@ -48,7 +48,6 @@ export default class Executor implements IExecutorInterface {
   #sentLogCount: number;
   #receivedLogCount: number;
   #systemLogCount: number;
-  #connectionId: string;
   #connection: any;
   eventEmitter: any;
   #pinging: boolean;
@@ -66,7 +65,6 @@ export default class Executor implements IExecutorInterface {
     this.#sentLogCount = 0;
     this.#receivedLogCount = 0;
     this.#systemLogCount = 0;
-    this.#connectionId = options.connection.id;
     this.eventEmitter = mitt();
 
     const { address, clientOptions } = new ConfigGenerator(options).prepare();
@@ -277,35 +275,23 @@ export default class Executor implements IExecutorInterface {
   }
 
   emitLog(log: ILog, event = ELogEvents.common): void {
-    this.eventEmitter.emit(`${this.#connectionId}-${event}`, log);
+    this.eventEmitter.emit(event, log);
   }
 
   onOpen(cb: (log: ILog) => void): void {
-    this.eventEmitter.on(
-      `${this.#connectionId}-${ELogEvents.onOpen}`,
-      (log: ILog) => cb(log)
-    );
+    this.eventEmitter.on(ELogEvents.onOpen, (log: ILog) => cb(log));
   }
 
   onClose(cb: (log: ILog) => void): void {
-    this.eventEmitter.on(
-      `${this.#connectionId}-${ELogEvents.onClose}`,
-      (log: ILog) => cb(log)
-    );
+    this.eventEmitter.on(ELogEvents.onClose, (log: ILog) => cb(log));
   }
 
   onConnecting(cb: (log: ILog) => void): void {
-    this.eventEmitter.on(
-      `${this.#connectionId}-${ELogEvents.onConnecting}`,
-      (log: ILog) => cb(log)
-    );
+    this.eventEmitter.on(ELogEvents.onConnecting, (log: ILog) => cb(log));
   }
 
   logs(cb: (log: ILog) => void): void {
-    this.eventEmitter.on(
-      `${this.#connectionId}-${ELogEvents.common}`,
-      (log: ILog) => cb(log)
-    );
+    this.eventEmitter.on(ELogEvents.common, (log: ILog) => cb(log));
   }
 
   async prepareEmitPayload(
