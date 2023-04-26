@@ -135,6 +135,7 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
       runtime: {
         ...s.runtime,
         requestPath,
+        isRequestSaved: true,
       },
     }));
   },

@@ -342,7 +342,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
   onDeleteFolder: (id: TId) => {
     set((s) => {
       const folders = s.collection.folders.filter((f) => f.__ref.id != id);
-      s.collection.tdpInstance?.deleteItem(id);
+      s.collection.tdpInstance?.delete(id);
       return {
         collection: {
           ...s.collection,
