@@ -870,7 +870,7 @@ importers:
   platform/firecamp-platform:
     specifiers:
       '@firecamp/agent-manager': workspace:*
-      '@firecamp/cloud-apis': ^0.2.2
+      '@firecamp/cloud-apis': ^0.2.3
       '@firecamp/cookie-manager': ^0.0.0
       '@firecamp/graphql': workspace:*
       '@firecamp/rest': workspace:*
@@ -913,7 +913,7 @@ importers:
       zustand: 3.7.2
     dependencies:
       '@firecamp/agent-manager': link:../../packages/firecamp-agent-manager
-      '@firecamp/cloud-apis': 0.2.2
+      '@firecamp/cloud-apis': 0.2.3
       '@firecamp/cookie-manager': link:../../packages/firecamp-cookie-manager
       '@firecamp/graphql': link:../../packages/firecamp-graphql
       '@firecamp/rest': link:../../packages/firecamp-rest
@@ -2928,8 +2928,8 @@ packages:
       - supports-color
     dev: true
 
-  /@firecamp/cloud-apis/0.2.2:
-    resolution: {integrity: sha512-L+YxNycsP5y0QhwazioaIiUE4Ylz0vKI+e3YfRITSZTfz/E6RDDma4QRtY1MdoZze/UiMM79V2M123/xWBC93Q==}
+  /@firecamp/cloud-apis/0.2.3:
+    resolution: {integrity: sha512-Fz+wyazosCfsb1MnAsFG0mPlKYl02b9lR7Ahzob4R56f6Fkf1RuP2ScyDCrP7JKbNEYrC1IywN5+pruRNvuS1Q==}
     engines: {node: '>=10'}
     dependencies:
       axios: 0.21.4
@@ -12393,7 +12393,7 @@ packages:
     resolution: {integrity: sha512-oWb1Z6mkHIskLzEJ/XWX0srkpkTQ7vaopMQkyaEIoq0fmtFVxOthb8cCxeT+p3ynTdkk/RZwbgG4brR5BeWECw==}
     engines: {node: '>= 4.0'}
     os: [darwin]
-    deprecated: fsevents 1 will break on node v14+ and could be using insecure binaries. Upgrade to fsevents 2.
+    deprecated: The v1 package contains DANGEROUS / INSECURE binaries. Upgrade to safe fsevents v2
     requiresBuild: true
     dependencies:
       bindings: 1.5.0

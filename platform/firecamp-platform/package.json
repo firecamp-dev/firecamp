@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "@firecamp/agent-manager": "workspace:*",
-    "@firecamp/cloud-apis": "^0.2.2",
+    "@firecamp/cloud-apis": "^0.2.3",
     "@firecamp/cookie-manager": "^0.0.0",
     "@firecamp/graphql": "workspace:*",
     "@firecamp/rest": "workspace:*",

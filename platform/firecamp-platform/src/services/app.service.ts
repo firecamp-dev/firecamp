@@ -93,7 +93,7 @@ const initApp = async () => {
       try {
         Realtime.connect({
           endpoint: process.env.FIRECAMP_API_HOST,
-          token: t,
+          auth: { token: t, workspace: wrsId },
           userId: user.__ref.id,
         })
           .onConnect(async (socketId) => {
