@@ -18,6 +18,11 @@ interface IMember {
   name: string;
   email: string;
 }
+interface IMemberDetailError {
+  name: string;
+  email: string;
+  message: string;
+}
 
 const RoleOptions = [
   {
@@ -32,7 +37,7 @@ const RoleOptions = [
 
 const InviteNonOrgMembers = ({ state, onChange }) => {
   const { inviteNonOrgMembers } = useWorkspaceStore.getState();
-  const [error, setError] = useState<IMember[]>([]);
+  const [error, setError] = useState<IMemberDetailError[]>([]);
   const [isInvitingMembers, setInvitingFlag] = useState(false);
   const { value, role } = state;
 
@@ -77,6 +82,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
       <Container.Body className="invisible-scrollbar w-[32rem]">
         <Editor
           className="border border-appBorder !h-48"
+          placeholder="Alice, alice@mail.com"
           value={value}
           onChange={(e) => onChange({ value: e.target.value })}
           language={EEditorLanguage.Text}
@@ -86,12 +92,14 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
         />
 
         {error?.length ? (
-          <ul className="text-error border px-2">
-            The following email address(es) are not valid
+          <ul className="text-error border px-2 py-1 text-base">
+            please review below error
             {error.map((e, i) => (
               <li key={i}>
-                {i + 1}. {e.email}
-                {i + 1 !== error.length ? ', ' : ''}
+                <span className="text-appForeground">
+                  {e.message}
+                  {i + 1 !== error.length ? ', ' : ''}
+                </span>
               </li>
             ))}
           </ul>
@@ -174,19 +182,41 @@ const RoleDD: FC<{
 
 interface IMemberParseResult {
   success: IMember[];
-  error: IMember[];
+  error: IMemberDetailError[];
 }
 
 const parseMembersFromEditorValue = (value: string): IMemberParseResult => {
-  const inputLines = value.trim().split('\n');
+  const inputLines = value.split('\n');
   const successResult: IMember[] = [];
-  const errorResult: IMember[] = [];
+  const errorResult: IMemberDetailError[] = [];
   const successEmails: Set<string> = new Set();
 
-  inputLines.forEach((line) => {
+  inputLines.forEach((line, index) => {
     const [name, email] = line.split(',').map((s) => s.trim());
-    if (!isValidEmail(email)) {
-      errorResult.push({ name, email });
+    const emailValid = isValidEmail(email);
+
+    if (name.length === 0 || !emailValid) {
+      let errorIndex = index + 1,
+        nameError = '',
+        emailError = '';
+
+      if (name.length === 0) {
+        nameError = `please add name ${emailValid ? '' : ' & '} `;
+        if (!emailValid)
+          emailError = email?.length > 0 ? ' check email address ' : ' email ';
+      } else {
+        if (!emailValid)
+          emailError =
+            email?.length > 0
+              ? ' please check email address '
+              : ' please add email address';
+      }
+
+      errorResult.push({
+        name,
+        email,
+        message: `Line ${errorIndex} : ${nameError} ${emailError} `,
+      });
       return;
     }
     if (successEmails.has(email)) return;
