@@ -1,7 +1,12 @@
 import { nanoid } from 'nanoid';
-import { TId, IWebSocketMessage, IRequestFolder } from '@firecamp/types';
+import {
+  TId,
+  IWebSocketMessage,
+  IRequestFolder,
+  ERequestTypes,
+} from '@firecamp/types';
 import { itemPathFinder } from '@firecamp/utils/dist/misc';
-import { TStoreSlice } from '../store.type';
+import { IStore, TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
 
 interface ICollection {
@@ -34,6 +39,7 @@ interface ICollectionSlice {
     parentFolderId?: TId
   ) => IWebSocketMessage;
   promptSaveItem: () => void;
+  addItem: (addSilently?: boolean) => void;
   onAddItem: (message: IWebSocketMessage) => void;
   updateItem: () => void;
   onUpdateItem: (message: IWebSocketMessage) => void;
@@ -184,6 +190,62 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       });
   },
 
+  addItem: async (addSilently = false) => {
+    const state = get();
+    const plg = state.playground;
+    if (!plg.message.value) return;
+
+    const item: IWebSocketMessage = {
+      name: 'Message',
+      value: plg.message.value,
+      __meta: plg.message.__meta,
+      __ref: {
+        id: nanoid(),
+        requestId: state.request.__ref.id,
+        requestType: ERequestTypes.WebSocket,
+        collectionId: state.request.__ref.collectionId,
+      },
+    };
+
+    await state.context.request
+      .createRequestItem(item)
+      .then((_item) => {
+        set((s: IStore) => {
+          console.log(_item);
+          const newItem = { ..._item, value: _item.value };
+          const items = [...s.collection.items, newItem];
+          s.collection.tdpInstance?.addItem(newItem);
+          return {
+            collection: {
+              ...s.collection,
+              items,
+              __manualUpdates: ++s.collection.__manualUpdates,
+            },
+            playground: {
+              ...s.playground,
+              message: newItem,
+            },
+          };
+        });
+        // return r;
+      })
+      .then((r) => {
+        if (addSilently == true) return;
+        state.context.app.notify.success(
+          'The message has been saved successfully'
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+        if (e.message == 'Network Error') {
+          //TODO: show error notification
+        }
+        state.context.app.notify.alert(e.response?.data.message || e.message);
+      })
+      .finally(() => {
+        state.toggleColProgressBar(false);
+      });
+  },
   onAddItem: (item: IWebSocketMessage) => {
     const state = get();
     const { tdpInstance } = state.collection;
