@@ -92,12 +92,14 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
         />
 
         {error?.length ? (
-          <ul className="text-websocket border px-2 py-1 text-base">
-            The following detail(s) are not valid
+          <ul className="text-error border px-2 py-1 text-base">
+            please review below error
             {error.map((e, i) => (
               <li key={i}>
-                {e.message}
-                {i + 1 !== error.length ? ', ' : ''}
+                <span className="text-appForeground">
+                  {e.message}
+                  {i + 1 !== error.length ? ', ' : ''}
+                </span>
               </li>
             ))}
           </ul>
@@ -184,7 +186,7 @@ interface IMemberParseResult {
 }
 
 const parseMembersFromEditorValue = (value: string): IMemberParseResult => {
-  const inputLines = value.trim().split('\n');
+  const inputLines = value.split('\n');
   const successResult: IMember[] = [];
   const errorResult: IMemberDetailError[] = [];
   const successEmails: Set<string> = new Set();

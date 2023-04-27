@@ -241,9 +241,10 @@ const SidebarContainer: FC<any> = () => {
    */
   const _setActiveItem = async (selected) => {
     if (!selected?.id) return;
-    else if (selected.item == EActivityBarItems.User)
+    else if (selected.item == EActivityBarItems.User) {
+      window.open('https://console.firecamp.dev/profile');
       platformContext.app.modals.openSaveRequest(); // openUserProfile();
-    else if (selected.item == EActivityBarItems.Settings)
+    } else if (selected.item == EActivityBarItems.Settings)
       platformContext.app.modals.openWorkspaceManagement();
     else if (selected.item == EActivityBarItems.SslNProxy)
       platformContext.app.modals.openWorkspaceManagement();
