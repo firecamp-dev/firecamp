@@ -1,5 +1,11 @@
 import { nanoid as id } from 'nanoid';
-import { EKeyValueTableRowType, IWebSocketConfig } from '@firecamp/types';
+import {
+  EKeyValueTableRowType,
+  EMessageBodyType,
+  ERequestTypes,
+  IWebSocketConfig,
+  IWebSocketMessage,
+} from '@firecamp/types';
 import { EConnectionState, EMessagePayloadTypes } from '../types';
 
 const DefaultHeaders = [
@@ -181,13 +187,10 @@ const KeysOnSaveRequest = {
 const DefaultRequestConnection = {
   id: '',
   headers: DefaultHeaders || [],
-  queryParams: [],
   isDefault: false,
   name: '',
-  config: {
-    ping: false,
-    pingInterval: 0,
-  },
+  ping: false,
+  pingInterval: 0,
 };
 const ResponseConnection = {
   id: '',
@@ -212,6 +215,20 @@ const InitLog = {
     type: '',
     color: '',
     ackRef: '',
+  },
+};
+
+const InitPlayground: IWebSocketMessage = {
+  name: '',
+  value: '',
+  __meta: {
+    type: EMessageBodyType.Text,
+  },
+  __ref: {
+    id: '',
+    collectionId: '',
+    requestId: '',
+    requestType: ERequestTypes.WebSocket,
   },
 };
 
@@ -267,6 +284,7 @@ export {
   ConnectionCloseEventsWithReason,
   DefaultRequestConnection,
   ResponseConnection,
+  InitPlayground,
   InitLog,
   DefaultConfigState,
   MessageTypeDropDownList,

@@ -186,7 +186,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       .then((res) => {
         console.log(res, 1111);
         state.onAddItem(res);
-        state.openMessageInPlayground(res.__ref.id);
+        state.openMessageInPlayground(res.__ref.id, true);
       });
   },
 
@@ -227,9 +227,10 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
             },
           };
         });
-        // return r;
+        return _item;
       })
-      .then((r) => {
+      .then((_item) => {
+        state.openMessageInPlayground(_item.__ref.id, true);
         if (addSilently == true) return;
         state.context.app.notify.success(
           'The message has been saved successfully'

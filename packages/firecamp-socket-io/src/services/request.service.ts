@@ -132,17 +132,20 @@ export const normalizeRequest = (request: Partial<ISocketIO>): ISocketIO => {
 
   // normalize connection
   _nr.connection = {} as ISocketIOConnection;
-  _nr.connection = _object.mergeDeep(
-    RequestConnection,
-    connection
-  ) as ISocketIOConnection;
-  if (!_nr.connection) _nr.connection = _cloneDeep(RequestConnection);
+  if (_object.isEmpty(connection)) {
+    _nr.connection = _cloneDeep(RequestConnection);
+  } else {
+    _nr.connection = _object.mergeDeep(
+      _cloneDeep(RequestConnection),
+      connection
+    ) as ISocketIOConnection;
+  }
 
   // normalize listeners
   if (Array.isArray(listeners)) _nr.listeners = listeners;
 
   // normalize config
-  _nr.config = _object.mergeDeep(DefaultRequestConfig, config);
+  _nr.config = _cloneDeep(_object.mergeDeep(DefaultRequestConfig, config));
   return _nr;
 };
 

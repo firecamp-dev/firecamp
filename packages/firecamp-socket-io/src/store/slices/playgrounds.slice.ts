@@ -31,7 +31,7 @@ interface IPlayground {
 interface IPlaygroundSlice {
   playground: IPlayground;
   setPlgExecutor: (executor: any) => void;
-  openEmitterInPlayground: (emitterId: TId) => void;
+  openEmitterInPlayground: (emitterId: TId, forceFully?: boolean) => void;
 
   //arguments
   selectPlgArgTab: (index: number) => void;
@@ -71,7 +71,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     }));
   },
 
-  openEmitterInPlayground: (emitterId: TId) => {
+  openEmitterInPlayground: (emitterId: TId, forceFully = false) => {
     const {
       context,
       playground,
@@ -91,7 +91,7 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
         },
       }));
     };
-    if (!playground.playgroundHasChanges) {
+    if (!playground.playgroundHasChanges || forceFully === true) {
       openEmitterInPlg();
       return;
     }
