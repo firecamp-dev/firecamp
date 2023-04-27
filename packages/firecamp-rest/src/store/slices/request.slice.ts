@@ -38,7 +38,7 @@ interface IRequestSlice extends IUrlSlice, IBodySlice, IAuthSlice {
   setRequestFromCurl: (snippet: string) => void;
   save: (tabId: TId) => void;
   /** prepare the request path after request save (add/update) */
-  onRequestSave: (requestId: TId) => void;
+  onRequestSave: (__requestRef: IRest['__ref']) => void;
 }
 
 const createRequestSlice: TStoreSlice<IRequestSlice> = (
@@ -193,10 +193,10 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     if (!state.runtime.isRequestSaved) {
       // save new request
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId, true).then(() => {
+      state.context.request.save(_request, tabId, true).then(({ __ref }) => {
         //reset the rcs state
         state.disposeRCS();
-        state.onRequestSave(_request.__ref.id);
+        state.onRequestSave(__ref);
       });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, handlePull);
     } else {
@@ -220,20 +220,25 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         .then(() => {
           //reset the rcs state
           state.disposeRCS();
-          state.onRequestSave(_request.__ref.id);
+          state.onRequestSave(_request.__ref);
         })
         .finally(() => {
           state.toggleUpdatingReqFlag(false);
         });
     }
   },
-  onRequestSave: (requestId) => {
+  onRequestSave: (__requestRef) => {
     const state = get();
-    const requestPath = requestId
-      ? state.context?.request.getPath(requestId)
+    const { id } = __requestRef;
+    const requestPath = id
+      ? state.context?.request.getPath(id)
       : { path: '', items: [] };
 
     set((s) => ({
+      request: {
+        ...s.request,
+        __ref: { ...s.request.__ref, __requestRef },
+      },
       runtime: {
         ...s.runtime,
         requestPath,

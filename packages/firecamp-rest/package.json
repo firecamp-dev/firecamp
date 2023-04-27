@@ -38,7 +38,7 @@
     "@firecamp/types": "^0.2.2",
     "@firecamp/ui": "workspace:*",
     "@firecamp/url": "0.0.20",
-    "@firecamp/utils": "^0.0.21",
+    "@firecamp/utils": "^0.0.24",
     "@hapi/joi": "^17.1.1",
     "aws4": "^1.11.0",
     "chai-http": "^4.3.0",
