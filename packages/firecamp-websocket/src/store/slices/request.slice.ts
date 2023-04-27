@@ -14,7 +14,7 @@ interface IRequestSlice extends IUrlSlice, IConnectionsSlice {
   save: (tabId: TId) => void;
 
   /** prepare the request path after request save (add/update) */
-  onRequestSave: (requestId: TId) => void;
+  onRequestSave: (__requestRef: IWebSocket['__ref']) => void;
 }
 
 const requestSliceKeys: string[] = [
@@ -60,11 +60,21 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
     const state = get();
     if (!state.runtime.isRequestSaved) {
       const _request = state.preparePayloadForSaveRequest();
-      state.context.request.save(_request, tabId, true).then(() => {
-        //reset the rcs state
-        state.disposeRCS();
-        state.onRequestSave(_request.__ref.id);
-      });
+      state.context.request
+        .save(_request, tabId, true)
+        .then(({ __ref }) => {
+          //reset the rcs state
+          state.disposeRCS();
+          state.onRequestSave(__ref);
+        })
+        .then(() => {
+          setTimeout(() => {
+            const plg = state.playground;
+            if (plg.message.value) {
+              state.addItem(true);
+            }
+          });
+        });
       // TODO: // state.context.request.subscribeChanges(_request.__ref.id, fn);
     } else {
       if (!state.requestHasChanges) {
@@ -86,20 +96,25 @@ const createRequestSlice: TStoreSlice<IRequestSlice> = (
         .then(() => {
           //reset the rcs state
           state.disposeRCS();
-          state.onRequestSave(_request.__ref.id);
+          state.onRequestSave(_request.__ref);
         })
         .finally(() => {
           state.toggleUpdatingReqFlag(false);
         });
     }
   },
-  onRequestSave: (requestId) => {
+  onRequestSave: (__requestRef) => {
     const state = get();
-    const requestPath = requestId
-      ? state.context?.request.getPath(requestId)
+    const { id } = __requestRef;
+    const requestPath = id
+      ? state.context?.request.getPath(id)
       : { path: '', items: [] };
 
     set((s) => ({
+      request: {
+        ...s.request,
+        __ref: { ...s.request.__ref, ...__requestRef },
+      },
       runtime: {
         ...s.runtime,
         isRequestSaved: true,

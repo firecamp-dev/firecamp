@@ -128,9 +128,9 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     // console.log(state)
     if (!state.request?.__ref.id) return;
     state.toggleColProgressBar(true);
-    const res = await Rest.request
-      .deleteItem(state.request.__ref.id, id)
-      .then((r) => {
+    const res = await state.context.request
+      .deleteRequestItem(state.request.__ref.id, id)
+      .then(() => {
         set((s) => {
           const items = s.collection.items.filter((i) => i.__ref.id != id);
           s.collection.tdpInstance?.deleteItem(id);
@@ -145,7 +145,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         });
         // return r;
       })
-      .then((r) => {
+      .then(() => {
         state.context.app.notify.success(
           'The playground has been deleted successfully'
         );
@@ -183,8 +183,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     };
 
     state.toggleColProgressBar(true);
-    const res = await Rest.request
-      .createItem(state.request.__ref.id, item)
+    const res = await state.context.request
+      .createRequestItem(item)
       .then((r) => {
         const playgroundId = r.data.__ref.id;
         set((s) => {
@@ -286,10 +286,9 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
 
     // console.log(item, 'item...');
     state.toggleColProgressBar(true);
-    const res = await Rest.request
-      .updateItem(item.__ref.requestId, item.__ref.id, item)
-      .then((r) => {
-        const updatedPlg = r.data;
+    const res = await state.context.request
+      .updateRequestItem(item)
+      .then((updatedPlg) => {
         set((s) => {
           const items = s.collection.items.map((i) => {
             if (i.__ref.id == updatedPlg.__ref.id)
@@ -328,9 +327,9 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
             },
           };
         });
-        return r;
+        return updatedPlg;
       })
-      .then((r) => {
+      .then(() => {
         state.context.app.notify.success(
           'The playground has been updated successfully'
         );

@@ -11,11 +11,11 @@ import Logs from './logs/Logs';
 import { IStore, useStore } from '../../store';
 
 const ConnectionPanel = () => {
-  const { tabId, cPanelUi, playgroundHasChange } = useStore(
+  const { tabId, cPanelUi, playgroundHasChanges } = useStore(
     (s: IStore) => ({
       tabId: s.runtime.tabId,
       cPanelUi: s.ui.connectionPanel,
-      playgroundHasChange: s.playground.playgroundHasChanges,
+      playgroundHasChanges: s.playground.playgroundHasChanges,
     }),
     shallow
   );
@@ -26,7 +26,7 @@ const ConnectionPanel = () => {
       {
         id: 'playground',
         name: 'Playground',
-        dotIndicator: playgroundHasChange,
+        dotIndicator: playgroundHasChanges,
       },
       {
         id: 'headers',
@@ -48,7 +48,7 @@ const ConnectionPanel = () => {
         count: cPanelUi.auth,
       },
     ],
-    [cPanelUi, playgroundHasChange]
+    [cPanelUi, playgroundHasChanges]
   );
 
   const _renderBody = () => {

@@ -19,12 +19,19 @@ import Logs from './logs/Logs';
 import { IStore, useStore } from '../../store';
 
 const ConnectionPanel = () => {
-  const { tabId, connection, cPanelUi, updateConnection } = useStore(
+  const {
+    tabId,
+    connection,
+    cPanelUi,
+    playgroundHasChanges,
+    updateConnection,
+  } = useStore(
     (s: IStore) => ({
       tabId: s.runtime.tabId,
       connection: s.request.connection,
       updateConnection: s.updateConnection,
       cPanelUi: s.ui.connectionPanel,
+      playgroundHasChanges: s.playground.playgroundHasChanges,
     }),
     shallow
   );
@@ -35,6 +42,7 @@ const ConnectionPanel = () => {
       {
         id: 'playground',
         name: 'Playground',
+        dotIndicator: playgroundHasChanges,
       },
       {
         id: 'params',
@@ -46,15 +54,12 @@ const ConnectionPanel = () => {
       //   name: 'Config',
       // },
     ];
-  }, [cPanelUi.params]);
+  }, [cPanelUi.params, playgroundHasChanges]);
 
   useEffect(() => {
-    //toto: fix this logic later
+    //TODO: fix this logic later
     if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
-      bodyTabs.push({
-        id: 'headers',
-        name: 'Headers',
-      });
+      // bodyTabs.push({ id: 'headers', name: 'Headers' });
     }
   }, []);
 

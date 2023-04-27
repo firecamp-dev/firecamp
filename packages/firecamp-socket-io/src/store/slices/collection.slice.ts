@@ -1,6 +1,11 @@
 import { nanoid } from 'nanoid';
 import { itemPathFinder } from '@firecamp/utils/dist/misc';
-import { TId, ISocketIOEmitter, IRequestFolder } from '@firecamp/types';
+import {
+  TId,
+  ISocketIOEmitter,
+  IRequestFolder,
+  ERequestTypes,
+} from '@firecamp/types';
 import { TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/panes/collection-tree/TreeDataProvider';
 
@@ -192,7 +197,65 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       .then((res) => {
         console.log(res, 1111);
         state.onAddItem(res);
-        // state.openEmitterInPlayground(res.__ref.id);
+        state.openEmitterInPlayground(res.__ref.id, true);
+      });
+  },
+
+  addItem: async (addSilently = false) => {
+    const state = get();
+    const { emitter } = state.playground;
+    if (!emitter.name) return;
+
+    const item: ISocketIOEmitter = {
+      name: emitter.name,
+      value: emitter.value,
+      __meta: emitter.__meta,
+      __ref: {
+        id: nanoid(),
+        requestId: state.request.__ref.id,
+        requestType: ERequestTypes.SocketIO,
+        collectionId: state.request.__ref.collectionId,
+      },
+    };
+
+    await state.context.request
+      .createRequestItem(item)
+      .then((_item) => {
+        set((s) => {
+          console.log(_item);
+          const newItem = { ..._item, value: _item.value };
+          const items = [...s.collection.items, newItem];
+          s.collection.tdpInstance?.addItem(newItem);
+          return {
+            collection: {
+              ...s.collection,
+              items,
+              __manualUpdates: ++s.collection.__manualUpdates,
+            },
+            playground: {
+              ...s.playground,
+              emitter: newItem,
+            },
+          };
+        });
+        return _item;
+      })
+      .then((_item) => {
+        state.openEmitterInPlayground(_item.__ref.id, true);
+        if (addSilently == true) return;
+        state.context.app.notify.success(
+          'The message has been saved successfully'
+        );
+      })
+      .catch((e) => {
+        console.log(e);
+        if (e.message == 'Network Error') {
+          //TODO: show error notification
+        }
+        state.context.app.notify.alert(e.response?.data.message || e.message);
+      })
+      .finally(() => {
+        state.toggleColProgressBar(false);
       });
   },
   onAddItem: (item: ISocketIOEmitter) => {
