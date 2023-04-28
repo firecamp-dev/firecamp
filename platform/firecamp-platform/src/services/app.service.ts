@@ -120,20 +120,6 @@ const initApp = async () => {
         console.log(e, 'error while connecting the socket');
       }
     });
-
-  // const wrsId = localStorage.getItem('workspace');
-
-  // TODO: Load cookie into cookie-jar
-  // if (_misc.firecampAgent() === EFirecampAgent.Desktop) {
-  //     const allCookies = await cookie.fetchAll()
-  //     F.cookieManager.addCookies(allCookies)
-  // }
-
-  // Set app info #v3
-  // await F.appStore.platform.updateAppInfo()
-
-  // TODO: Initialize preferences
-  // await F.appStore.Preferences.init()
 };
 const initUser = (user: any) => {
   const { setUser } = useUserStore.getState();
@@ -154,14 +140,11 @@ const initOrg = (org: IOrganization) => {
 };
 const disposeStores = () => {
   useWorkspaceStore.getState().dispose();
+  useExplorerStore.getState().dispose();
   usePlatformStore.getState().dispose();
   useUserStore.getState().dispose();
   useModalStore.getState().dispose();
-
-  // TODO: make sure that all tabs are closed
   useTabStore.getState().dispose();
-
-  // TODO: manage the guest env while disposing
   useEnvStore.getState().dispose();
 };
 
@@ -171,7 +154,6 @@ const logout = () => {
   Rest.auth
     .logout()
     .then((res) => {
-      // TODO: reset stores, user, workspace, platform etc.
       localStorage.removeItem('token');
       AppService.disposeStores();
       CloudApiGlobal.removeGlobalHeaders([

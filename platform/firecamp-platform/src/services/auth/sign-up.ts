@@ -27,11 +27,12 @@ export default async ({
       response: response.data,
       provider: EProvider.LOCAL,
     });
-  } catch (error) {
-    return Promise.reject({
-      message: error?.data?.message
-        ? `Failed to sign-up for your account: ${error.data.message || '-'}`
-        : 'Failed to sign-up for your account',
-    });
+  } catch (e) {
+    let message = e?.response?.data?.message || e.message;
+    if (!message) {
+      console.log(e.response, e);
+      message = 'Failed to sign up for your account';
+    }
+    return Promise.reject({ message });
   }
 };
