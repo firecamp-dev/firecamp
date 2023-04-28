@@ -182,7 +182,7 @@ const Tabs: FC<ITabs> = forwardRef(
                     name={tab.name}
                     height={height}
                     className={cx(
-                      'border-r border-l border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
+                      'last-of-type:border-r-tabBorder border-r border-l border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
                       {'border-r-transparent border-l-transparent': tabId !== state.activeTab},
                       {
                         "active text-tabForeground before:block before:content-[''] before:absolute before:bg-primaryColor before:h-0.5 before:-top-px before:-inset-x-px after:block after:content-[''] after:absolute after:bg-statusBarBackground2 after:h-px after:-bottom-px after:inset-x-0 border-r-tabBorder border-l-tabBorder":

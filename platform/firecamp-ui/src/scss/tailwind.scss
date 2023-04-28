@@ -2409,6 +2409,9 @@ video {
 .last\:border-b-0:last-child {
   border-bottom-width: 0px;
 }
+.last-of-type\:border-r-tabBorder:last-of-type {
+  border-right-color: var(--tab-border);
+}
 .hover\:border-focusBorder:hover {
   border-color: var(--focus-border);
 }
