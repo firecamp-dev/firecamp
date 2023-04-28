@@ -119,11 +119,11 @@ const Tab: FC<ITab> = ({
     >
       <div
         className={cx(
-          { 'active !bg-tabActiveBackground': isActive },
+          { 'active ': isActive },
           { 'bg-tabBackground2': tabVersion == 2 },
           { 'bg-statusBarBackground2': tabVersion == 2 && isActive },
           { 'bg-tabBackground': tabVersion == 1 },
-          // {'!bg-tabActiveBackground': tabVersion !== 2 && isActive },
+          {'!bg-tabActiveBackground': !hasStatusbar && isActive },
           {'!bg-statusBarBackground2': hasStatusbar && isActive },
           'fc-tab',
           'hover:bg-tabHoverBackground',

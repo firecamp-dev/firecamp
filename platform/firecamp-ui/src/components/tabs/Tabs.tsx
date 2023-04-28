@@ -105,7 +105,8 @@ const Tabs: FC<ITabs> = ({
                   tabVersion={tabsVersion}
                   hasStatusbar={true}
                   className={cx(
-                    'border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
+                    'border-r border-l border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
+                    {'border-r-transparent border-l-transparent ': tab?.id != activeTab},
                     {
                       "active text-tabForeground before:block before:content-[''] before:absolute before:bg-primaryColor before:h-0.5 before:-top-px before:-inset-x-px after:block after:content-[''] after:absolute after:bg-statusBarBackground2 after:h-px after:-bottom-px after:inset-x-0 border-r-tabBorder border-l-tabBorder":
                         tab?.id == activeTab,
