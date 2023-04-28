@@ -64,21 +64,21 @@ export default async (
       //   });
       // } else
       //   return Promise.reject({
-      //     message: 'Failed to sign-in into your account',
+      //     message: 'Failed to login into your account',
       //   });
 
       default:
         console.log(provider);
         return Promise.reject({
-          message: 'Failed to sign-in into your account',
+          message: 'Failed to login into your account',
         });
     }
   } catch (e) {
     console.log(e, 'e....');
     return Promise.reject({
       message: e?.data?.message
-        ? `Failed to sign-in into your account: ${e.data.message || '-'}`
-        : 'Failed to sign-in into your account',
+        ? `Failed to login into your account: ${e.data.message || '-'}`
+        : 'Failed to login into your account',
     });
   }
 };

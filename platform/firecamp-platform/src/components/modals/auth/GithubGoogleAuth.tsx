@@ -1,3 +1,4 @@
+// @deprecated
 import { FC, useState } from 'react';
 import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
 import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
