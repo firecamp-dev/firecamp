@@ -19,22 +19,13 @@ const IdentityPage = () => {
     if (errorDescription) setError(errorDescription);
     if (code) {
       CloudApiGlobal.setHost(process.env.FIRECAMP_API_HOST);
-      const client = localStorage.getItem('cid') || 123;
-
-      // Set clientId
-      if (client) {
-        // Set client id and app version into cloud-api headers
-        CloudApiGlobal.setGlobalHeaders({
-          [ECloudApiHeaders.ClientId]: client,
-          [ECloudApiHeaders.AppVersion]: process.env.APP_VERSION || '',
-        });
-      }
-
+      // Set  app version into cloud-api headers
+      CloudApiGlobal.setGlobalHeaders({
+        [ECloudApiHeaders.AppVersion]: process.env.APP_VERSION || '',
+      });
       Rest.auth
         .viaGithub(code)
         .then((rs) => {
-          // TODO: move it to cookie based auth
-          localStorage.setItem('token', rs.data.__meta.accessToken);
           localStorage.setItem(
             'authSuccessMessage',
             "You're signed in successfully."
