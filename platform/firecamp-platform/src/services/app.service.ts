@@ -49,24 +49,16 @@ const initApp = async () => {
   const { fetchExplorer } = useExplorerStore.getState();
   CloudApiGlobal.setHost(process.env.FIRECAMP_API_HOST);
 
-  // TODO: Fetch client id from the local DB
-  const client = localStorage.getItem('clientId') || 123;
-
-  // Set clientId
-  if (client) {
-    // Set client id and app version into cloud-api headers
-    CloudApiGlobal.setGlobalHeaders({
-      [ECloudApiHeaders.ClientId]: client,
-      [ECloudApiHeaders.AppVersion]: process.env.APP_VERSION || '',
-    });
-  }
+  // Set client id and app version into cloud-api headers
+  CloudApiGlobal.setGlobalHeaders({
+    [ECloudApiHeaders.AppVersion]: process.env.APP_VERSION || '',
+  });
 
   //1/ check if user is logged in or not
-  const t = localStorage.getItem('token');
   const wrsId = localStorage.getItem('workspace');
-  if (!t) return AppService.modals.openSignIn();
+  // if (!t) return AppService.modals.openSignIn();
   CloudApiGlobal.setGlobalHeaders({
-    [ECloudApiHeaders.Authorization]: `Bearer ${t}`,
+    // [ECloudApiHeaders.Authorization]: `Bearer ${t}`,
     [ECloudApiHeaders.WorkspaceId]: wrsId,
   });
   Rest.auth
@@ -93,7 +85,10 @@ const initApp = async () => {
       try {
         Realtime.connect({
           endpoint: process.env.FIRECAMP_API_HOST,
-          auth: { token: t, workspace: wrsId },
+          auth: {
+            // token: t,
+            workspace: wrsId,
+          },
           userId: user.__ref.id,
         })
           .onConnect(async (socketId) => {
@@ -154,7 +149,6 @@ const logout = () => {
   Rest.auth
     .logout()
     .then((res) => {
-      localStorage.removeItem('token');
       AppService.disposeStores();
       CloudApiGlobal.removeGlobalHeaders([
         ECloudApiHeaders.Authorization,
