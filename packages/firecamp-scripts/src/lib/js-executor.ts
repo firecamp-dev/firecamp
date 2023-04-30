@@ -7,10 +7,12 @@ export default (code: string, options: vm.Context): Promise<any> => {
       const { flag, blacklist } = sanitizeCode(code);
       if (flag === false) {
         if (blacklist?.length == 1)
-          throw Error(`${blacklist[0]} is not defined.`);
+          throw Error(
+            `${blacklist[0]} keyword is restricted, you can choose other for sandbox security reason.`
+          );
         else
           throw Error(
-            `Following methods/keywords are not allowed for security reason${blacklist?.join(
+            `Following keywords are restricted for sandbox security reason, ${blacklist?.join(
               ', '
             )}`
           );

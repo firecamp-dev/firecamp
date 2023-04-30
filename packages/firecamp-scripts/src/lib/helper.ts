@@ -1,5 +1,4 @@
 const browserGlobals: string[] = [
-  'alert',
   'Audio',
   'Blob',
   'CSS',
@@ -37,6 +36,9 @@ const browserGlobals: string[] = [
   'IndexedDB',
   'WebSQL',
   'Worker',
+  'alert',
+  'prompt',
+  'confirm',
 ];
 
 const sanitizeCode = (
