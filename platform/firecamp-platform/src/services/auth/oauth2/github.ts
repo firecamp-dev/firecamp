@@ -19,7 +19,6 @@ export const authorize = async (): Promise<string> => {
       // Web flow
       const redirectUrl =
         location.origin + '/identity.html?redirect=' + location.href;
-      alert(redirectUrl);
       const url = `${GITHUB_CONFIG.AUTH_URL}?client_id=${
         GITHUB_CONFIG.CLIENT_ID
       }&redirect_uri=${redirectUrl}&scope=${GITHUB_CONFIG.SCOPE.join(',')}`;
