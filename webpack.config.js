@@ -122,12 +122,14 @@ exports.env = {
 
 exports.plugins = [
   new HtmlWebpackPlugin({
-    inject: false,
+    inject: true,
+    chunks: ['index'],
     filename: 'index.html',
     template: 'templates/index.html',
   }),
   new HtmlWebpackPlugin({
-    inject: false,
+    inject: true,
+    chunks: ['identity'],
     filename: 'identity.html',
     template: 'templates/identity.html',
   }),
