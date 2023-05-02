@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import { Container, EditorApi } from '@firecamp/ui';
+import { Container, EditorApi, Row, Column } from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
   FcIconGetSquare,
@@ -28,49 +28,56 @@ const Home: FC<any> = () => {
   };
 
   return (
-    <Container className="px-14 py-20" overflow="visible">
-      <Container.Header>
-        <div className="text-2xl mb-8 font-normal">
-          Welcome To Firecamp!
-          <span className="block text-base font-light text-appForegroundInActive">
-            This campsite is designed for you, giving you the power to do what
-            you love with APIs.
-          </span>
-        </div>
-      </Container.Header>
-      <Container.Body overflow="visible">
-        <div className="mb-8">
-          <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
-            Popular Requests
-          </div>
-          <div className="flex-col border-b border-appBorder pb-4 w-fit flex-none">
-            <RequestItem
-              label="Create Rest API"
-              icon={<FcIconGetSquare size={50} />}
-              openRequest={() => _openTab(ERequestTypes.Rest)}
-            />
-            <RequestItem
-              label="Create GraphQL Playground"
-              icon={<FcIconGraphQL size={24} />}
-              openRequest={() => _openTab(ERequestTypes.GraphQL)}
-            />
-            <RequestItem
-              label="Create WebSocket Playground"
-              icon={<FcIconWebSocket size={24} />}
-              openRequest={() => _openTab(ERequestTypes.WebSocket)}
-              hasInvertIcon={true}
-            />
-            <RequestItem
-              label="Create SocketIO Playground"
-              icon={<FcIconSocketIoSquare size={24} />}
-              openRequest={() => _openTab(ERequestTypes.SocketIO)}
-              hasInvertIcon={true}
-            />
-          </div>
-        </div>
-        <Theme />
-      </Container.Body>
-    </Container>
+    <Row flex={1} overflow="auto" className="h-full">
+      <Column>
+        <Container className="px-14 py-20" overflow="visible">
+          <Container.Header>
+            <div className="text-2xl mb-8 font-normal">
+              Welcome To Firecamp!
+              <span className="block text-base font-light text-appForegroundInActive">
+                This campsite is designed for you, giving you the power to do
+                what you love with APIs.
+              </span>
+            </div>
+          </Container.Header>
+          <Container.Body overflow="visible">
+            <div className="mb-8">
+              <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
+                Popular Requests
+              </div>
+              <div className="flex-col border-b border-appBorder pb-4 w-fit flex-none">
+                <RequestItem
+                  label="Create Rest API"
+                  icon={<FcIconGetSquare size={50} />}
+                  openRequest={() => _openTab(ERequestTypes.Rest)}
+                />
+                <RequestItem
+                  label="Create GraphQL Playground"
+                  icon={<FcIconGraphQL size={24} />}
+                  openRequest={() => _openTab(ERequestTypes.GraphQL)}
+                />
+                <RequestItem
+                  label="Create WebSocket Playground"
+                  icon={<FcIconWebSocket size={24} />}
+                  openRequest={() => _openTab(ERequestTypes.WebSocket)}
+                  hasInvertIcon={true}
+                />
+                <RequestItem
+                  label="Create SocketIO Playground"
+                  icon={<FcIconSocketIoSquare size={24} />}
+                  openRequest={() => _openTab(ERequestTypes.SocketIO)}
+                  hasInvertIcon={true}
+                />
+              </div>
+            </div>
+            <Theme />
+          </Container.Body>
+        </Container>
+      </Column>
+      <Column className="p-8 px-8">
+        <InviteInfo />
+      </Column>
+    </Row>
   );
 };
 
@@ -225,3 +232,37 @@ interface IRequestItem {
   /** Open request tab */
   openRequest: () => void;
 }
+
+const InviteInfo = ({ organisation = true }) => {
+  return (
+    <div className="flex flex-col border border-appBorder shadow-md p-4">
+      <p className={'text-base font-semibold mb-2 mt-1'}>
+        {organisation
+          ? "You're in the `My Workspace` workspace of the `Firecamp` organization."
+          : `You're right now in your personal workspace`}
+      </p>
+
+      {organisation ? (
+        <p className="text-base text-appForegroundInActive mb-2">
+          You can invite your team/colleagues to this workspace to work
+          collaboratively.
+        </p>
+      ) : (
+        <p className="text-base text-appForegroundInActive mb-2">
+          The personal workspace is not meant to work collaboratively, for now,
+          you can create an organization and invite your team/colleagues to work
+          collaboratively.
+        </p>
+      )}
+
+      <a
+        className="text-base font-semibold inline-block !text-info cursor-pointer mb-2"
+        href=""
+      >
+        {organisation
+          ? 'create an organization'
+          : 'invite your team/colleagues'}
+      </a>
+    </div>
+  );
+};
