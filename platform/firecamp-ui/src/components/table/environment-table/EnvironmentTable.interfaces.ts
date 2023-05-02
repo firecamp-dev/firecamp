@@ -9,7 +9,7 @@ import {
 /** Table row cell interface */
 export interface IRowCellMeta {
   /**
-   * Row's unique identity
+   * Row's unique id
    */
   id?: string;
 
