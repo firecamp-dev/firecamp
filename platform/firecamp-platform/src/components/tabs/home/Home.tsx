@@ -28,19 +28,19 @@ const Home: FC<any> = () => {
   };
 
   return (
-    <Row flex={1} overflow="auto" className="h-full">
-      <Column>
-        <Container className="px-14 py-20" overflow="visible">
-          <Container.Header>
-            <div className="text-2xl mb-8 font-normal">
-              Welcome To Firecamp!
-              <span className="block text-base font-light text-appForegroundInActive">
-                This campsite is designed for you, giving you the power to do
-                what you love with APIs.
-              </span>
-            </div>
-          </Container.Header>
-          <Container.Body overflow="visible">
+    <Container className="px-14 py-20" overflow="visible">
+      <Container.Header>
+        <div className="text-2xl mb-8 font-normal">
+          Welcome To Firecamp!
+          <span className="block text-base font-light text-appForegroundInActive">
+            This campsite is designed for you, giving you the power to do what
+            you love with APIs.
+          </span>
+        </div>
+      </Container.Header>
+      <Container.Body overflow="visible">
+        <Row flex={1} overflow="auto" className="h-full">
+          <Column>
             <div className="mb-8">
               <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
                 Popular Requests
@@ -71,13 +71,14 @@ const Home: FC<any> = () => {
               </div>
             </div>
             <Theme />
-          </Container.Body>
-        </Container>
-      </Column>
-      <Column className="p-8 px-8">
-        <InviteInfo />
-      </Column>
-    </Row>
+          </Column>
+
+          <Column>
+            <InviteInfo />
+          </Column>
+        </Row>
+      </Container.Body>
+    </Container>
   );
 };
 
@@ -233,12 +234,12 @@ interface IRequestItem {
   openRequest: () => void;
 }
 
-const InviteInfo = ({ organisation = true }) => {
+const InviteInfo = ({ organisation = true, info = {workspace: 'My Workspace', organisation: 'Firecamp'} }) => {
   return (
-    <div className="flex flex-col border border-appBorder shadow-md p-4">
+    <div className="flex flex-col border border-appBorder rounded-sm p-4 m-auto">
       <p className={'text-base font-semibold mb-2 mt-1'}>
         {organisation
-          ? "You're in the `My Workspace` workspace of the `Firecamp` organization."
+          ? `You're in the ${info.workspace} workspace of the ${info.organisation} organization.`
           : `You're right now in your personal workspace`}
       </p>
 
