@@ -22,10 +22,10 @@ exports.common = {
       __dirname,
       './platform/firecamp-platform/src/containers/index.tsx'
     ),
-    // identity: path.join(
-    //   __dirname,
-    //   './platform/firecamp-platform/src/containers/identity.tsx'
-    // ),
+    identity: path.join(
+      __dirname,
+      './platform/firecamp-platform/src/containers/identity.tsx'
+    ),
   },
   optimization: {
     nodeEnv: process.env.NODE_ENV,
@@ -122,9 +122,14 @@ exports.env = {
 
 exports.plugins = [
   new HtmlWebpackPlugin({
-    inject: true,
-    filename: '[name].html',
+    inject: false,
+    filename: 'index.html',
     template: 'templates/index.html',
+  }),
+  new HtmlWebpackPlugin({
+    inject: false,
+    filename: 'identity.html',
+    template: 'templates/identity.html',
   }),
   new NodePolyfillPlugin(),
   new webpack.ProgressPlugin({

@@ -53,7 +53,7 @@ export default HttpMethodDropDown;
 
 interface IHttpMethodDropDown {
   /**
-   * Dropdown unique identity
+   * Dropdown unique id
    */
   id: string;
 

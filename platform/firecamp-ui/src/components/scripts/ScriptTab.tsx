@@ -89,7 +89,7 @@ const ScriptTab: FC<IProps> = ({
 export default ScriptTab;
 
 export interface IProps {
-  /** an unique identity to scripts tab */
+  /** an unique id to scripts tab */
   id: string;
 
   /** scripts payload object contains scripts in string format */

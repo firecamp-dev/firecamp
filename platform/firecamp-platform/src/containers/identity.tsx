@@ -1,7 +1,7 @@
+import { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import * as Sentry from '@sentry/browser';
 import { Integrations } from '@sentry/tracing';
-import { useEffect, useState } from 'react';
 import CloudApiGlobal, { Rest } from '@firecamp/cloud-apis';
 import { ECloudApiHeaders } from '../types';
 

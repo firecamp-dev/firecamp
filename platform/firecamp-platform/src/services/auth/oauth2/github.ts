@@ -17,7 +17,8 @@ export const authorize = async (): Promise<string> => {
     // Execute following logic when using chrome extension
     else {
       // Web flow
-      const redirectUrl = GITHUB_CONFIG.REDIRECT_URL;
+      const redirectUrl =
+        location.origin + '/identity.html?redirect=' + location.href;
       const url = `${GITHUB_CONFIG.AUTH_URL}?client_id=${
         GITHUB_CONFIG.CLIENT_ID
       }&redirect_uri=${redirectUrl}&scope=${GITHUB_CONFIG.SCOPE.join(',')}`;

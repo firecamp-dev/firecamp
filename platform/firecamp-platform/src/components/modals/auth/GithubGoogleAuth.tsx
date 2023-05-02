@@ -1,4 +1,3 @@
-// @deprecated
 import { FC, useState } from 'react';
 import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
 import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
@@ -8,10 +7,10 @@ import { Button } from '@firecamp/ui';
 import { EProvider } from '../../../services/auth/types';
 
 const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
-  let [disableSignInWithGoogleButton, setDisableSignInWithGoogleButton] =
+  const [disableSignInWithGoogleButton, setDisableSignInWithGoogleButton] =
     useState(false);
 
-  let [disableSignInWithGitHubButton, setDisableSignInWithGitHubButton] =
+  const [disableSignInWithGitHubButton, setDisableSignInWithGitHubButton] =
     useState(false);
 
   const _initApp = async (response, provider) => {
@@ -59,7 +58,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
       });
   };
 
-  let _googleOAuth = (e: { preventDefault: () => void }) => {
+  const _googleOAuth = (e: { preventDefault: () => void }) => {
     if (e) e.preventDefault();
     console.log(disableSignInWithGoogleButton, 'disableSignInWithGoogleButton');
     if (!!disableSignInWithGoogleButton) return Promise.reject('');

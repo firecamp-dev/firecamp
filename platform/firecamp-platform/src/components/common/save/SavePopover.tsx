@@ -266,7 +266,7 @@ export interface ISavePopover {
   };
 
   /**
-   * Request tab unique identity
+   * Request tab unique id
    */
   tabId: string;
 
