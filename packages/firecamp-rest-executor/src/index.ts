@@ -111,6 +111,7 @@ export default class RestExecutor implements IRestExecutor {
       timeout: config?.requestTimeout,
       maxRedirects: config?.maxRedirects,
       transformResponse: (response) => response,
+      withCredentials: true,
     };
 
     // disable SSL validation default
