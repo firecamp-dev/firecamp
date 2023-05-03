@@ -45,11 +45,11 @@ export default {
     } else if (item.data.__ref?.isEnvironment) {
       return (
         <>
-          {item.data.__meta.visibility == 2 ? (
+          {/* {item.data.__meta.visibility == 2 ? (
             <VscLock className="mr-0.5 flex-none" size={18} opacity={1} />
           ) : (
             <></>
-          )}
+          )} */}
           <VscJson className="mr-0.5 flex-none" size={18} opacity={1} />
         </>
       );
