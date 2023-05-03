@@ -68,8 +68,11 @@ export const usePlatformStore = create<IPlatformStore>((set, get) => ({
   },
 
   setOrg: (org: Partial<IOrganization>) => {
-    if (!org || !org.__ref?.id) return;
-    set({ scope: EPlatformScope.Organization, organization: org });
+    if (!org || !org.__ref?.id) {
+      set({ scope: EPlatformScope.Person, organization: null });
+    } else {
+      set({ scope: EPlatformScope.Organization, organization: org });
+    }
   },
 
   setSwitchingOrg: (org: Partial<IOrganization>) => {

@@ -9,6 +9,7 @@ import {
   FcIconSocketIoSquare,
   FcIconWebSocket,
 } from '@firecamp/ui';
+import { CalloutSection } from './HomeCalloutSection';
 import { usePlatformStore } from '../../../store/platform';
 import { useTabStore } from '../../../store/tab';
 import { EThemeColor, EThemeMode } from '../../../types';
@@ -74,7 +75,7 @@ const Home: FC<any> = () => {
           </Column>
 
           <Column>
-            <InviteInfo />
+            <CalloutSection />
           </Column>
         </Row>
       </Container.Body>
@@ -233,37 +234,3 @@ interface IRequestItem {
   /** Open request tab */
   openRequest: () => void;
 }
-
-const InviteInfo = ({ organisation = true, info = {workspace: 'My Workspace', organisation: 'Firecamp'} }) => {
-  return (
-    <div className="flex flex-col border border-appBorder rounded-sm p-4 m-auto">
-      <p className={'text-base font-semibold mb-2 mt-1'}>
-        {organisation
-          ? `You're in the ${info.workspace} workspace of the ${info.organisation} organization.`
-          : `You're right now in your personal workspace`}
-      </p>
-
-      {organisation ? (
-        <p className="text-base text-appForegroundInActive mb-2">
-          You can invite your team/colleagues to this workspace to work
-          collaboratively.
-        </p>
-      ) : (
-        <p className="text-base text-appForegroundInActive mb-2">
-          The personal workspace is not meant to work collaboratively, for now,
-          you can create an organization and invite your team/colleagues to work
-          collaboratively.
-        </p>
-      )}
-
-      <a
-        className="text-base font-semibold inline-block !text-info cursor-pointer mb-2"
-        href=""
-      >
-        {organisation
-          ? 'create an organization'
-          : 'invite your team/colleagues'}
-      </a>
-    </div>
-  );
-};
