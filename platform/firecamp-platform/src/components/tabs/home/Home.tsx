@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import { Container, EditorApi } from '@firecamp/ui';
+import { Container, EditorApi, Row, Column } from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
   FcIconGetSquare,
@@ -9,6 +9,7 @@ import {
   FcIconSocketIoSquare,
   FcIconWebSocket,
 } from '@firecamp/ui';
+import { CalloutSection } from './HomeCalloutSection';
 import { usePlatformStore } from '../../../store/platform';
 import { useTabStore } from '../../../store/tab';
 import { EThemeColor, EThemeMode } from '../../../types';
@@ -39,36 +40,44 @@ const Home: FC<any> = () => {
         </div>
       </Container.Header>
       <Container.Body overflow="visible">
-        <div className="mb-8">
-          <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
-            Popular Requests
-          </div>
-          <div className="flex-col border-b border-appBorder pb-4 w-fit flex-none">
-            <RequestItem
-              label="Create Rest API"
-              icon={<FcIconGetSquare size={50} />}
-              openRequest={() => _openTab(ERequestTypes.Rest)}
-            />
-            <RequestItem
-              label="Create GraphQL Playground"
-              icon={<FcIconGraphQL size={24} />}
-              openRequest={() => _openTab(ERequestTypes.GraphQL)}
-            />
-            <RequestItem
-              label="Create WebSocket Playground"
-              icon={<FcIconWebSocket size={24} />}
-              openRequest={() => _openTab(ERequestTypes.WebSocket)}
-              hasInvertIcon={true}
-            />
-            <RequestItem
-              label="Create SocketIO Playground"
-              icon={<FcIconSocketIoSquare size={24} />}
-              openRequest={() => _openTab(ERequestTypes.SocketIO)}
-              hasInvertIcon={true}
-            />
-          </div>
-        </div>
-        <Theme />
+        <Row flex={1} overflow="auto" className="h-full">
+          <Column>
+            <div className="mb-8">
+              <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
+                Popular Requests
+              </div>
+              <div className="flex-col border-b border-appBorder pb-4 w-fit flex-none">
+                <RequestItem
+                  label="Create Rest API"
+                  icon={<FcIconGetSquare size={50} />}
+                  openRequest={() => _openTab(ERequestTypes.Rest)}
+                />
+                <RequestItem
+                  label="Create GraphQL Playground"
+                  icon={<FcIconGraphQL size={24} />}
+                  openRequest={() => _openTab(ERequestTypes.GraphQL)}
+                />
+                <RequestItem
+                  label="Create WebSocket Playground"
+                  icon={<FcIconWebSocket size={24} />}
+                  openRequest={() => _openTab(ERequestTypes.WebSocket)}
+                  hasInvertIcon={true}
+                />
+                <RequestItem
+                  label="Create SocketIO Playground"
+                  icon={<FcIconSocketIoSquare size={24} />}
+                  openRequest={() => _openTab(ERequestTypes.SocketIO)}
+                  hasInvertIcon={true}
+                />
+              </div>
+            </div>
+            <Theme />
+          </Column>
+
+          <Column>
+            <CalloutSection />
+          </Column>
+        </Row>
       </Container.Body>
     </Container>
   );
