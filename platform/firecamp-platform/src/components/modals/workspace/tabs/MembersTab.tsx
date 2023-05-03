@@ -56,9 +56,9 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
 
   useEffect(() => {
     if (!_array.isEmpty(members)) {
-      let memberList = members.map((m, i) => {
+      const memberList = members.map((m, i) => {
         return {
-          id: m.__ref?.id ?? i,
+          id: m.id,
           name: m.name || m.username,
           email: m.email,
           role: m.role,
@@ -106,7 +106,7 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
       },
       onConfirm: () => {
         Rest.workspace
-          .changeMemberRole(workspace.__ref.id, row.id, row.role)
+          .changeMemberRole(workspace.__ref.id, row.id, row.role.id)
           .then(() => {
             tableApi.current.setRow({ ...row, role: row.role.id });
             platformContext.app.notify.success(
@@ -198,6 +198,7 @@ const RoleDD: FC<{
   onSelect: (role: { name: string; id: number }) => void;
 }> = ({ role, onSelect }) => {
   const _role = RoleOptions[0].headerList.find((r) => r.id == role);
+  if (!_role) return <></>;
 
   return (
     <DropdownV2
