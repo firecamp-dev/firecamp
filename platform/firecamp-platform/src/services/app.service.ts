@@ -63,7 +63,7 @@ const initApp = async () => {
     [ECloudApiHeaders.WorkspaceId]: wrsId,
   });
   Rest.auth
-    .me(wrsId)
+    .session(wrsId)
     .then(async (res) => {
       const { user, workspace, org } = res.data;
       AppService.initUser(user);
