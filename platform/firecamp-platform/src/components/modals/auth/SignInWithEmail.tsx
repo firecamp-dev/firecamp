@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Modal, IModal, Button, Input } from '@firecamp/ui';
+import { Modal, IModal, Button, Input, FcLogo } from '@firecamp/ui';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
@@ -11,7 +11,8 @@ import platformContext from '../../../services/platform-context';
 const SignInWithEmail: FC<IModal> = () => {
   const form = useForm();
   const [isRequesting, setFlagIsRequesting] = useState(false);
-  let {
+  const [showPassword, toggleShowPassword] = useState(false);
+  const {
     handleSubmit,
     formState: { errors },
   } = form;
@@ -21,7 +22,7 @@ const SignInWithEmail: FC<IModal> = () => {
     e
   ) => {
     if (isRequesting) return;
-    let { username, password } = payload;
+    const { username, password } = payload;
 
     setFlagIsRequesting(true);
     _auth
@@ -62,7 +63,10 @@ const SignInWithEmail: FC<IModal> = () => {
   return (
     <>
       <Modal.Body>
-        <img className="mx-auto w-12 mb-6" src={'img/fire-icon.png'} />
+        {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
+        <div className="mb-4">
+          <FcLogo className="mx-auto w-14" size={80} />
+        </div>
         <div className="text-xl mb-6 w-full text-center font-semibold">
           Sign in to Firecamp
         </div>
@@ -85,7 +89,7 @@ const SignInWithEmail: FC<IModal> = () => {
               key={'username'}
               name={'username'}
               id={'username'}
-              label="email"
+              label="Email or Username"
               type="text"
               registerMeta={{
                 required: true,
@@ -108,15 +112,23 @@ const SignInWithEmail: FC<IModal> = () => {
               key={'password'}
               name={'password'}
               id={'password'}
-              type={'password'}
-              label="password"
+              type={showPassword ? 'text' : 'password'}
+              label="Password"
               registerMeta={{
                 required: true,
                 maxLength: 50,
                 minLength: 8,
               }}
               iconPosition="right"
-              icon={<VscEye title="password" size={16} />}
+              icon={
+                <VscEye
+                  title="password"
+                  size={16}
+                  onClick={() => {
+                    toggleShowPassword(!showPassword);
+                  }}
+                />
+              }
               useformRef={form}
               onKeyDown={_onKeyDown}
               error={

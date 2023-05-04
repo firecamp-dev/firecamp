@@ -26,7 +26,16 @@ const CalloutSection = () => {
     shallow
   );
 
-  if (isGuest) return <></>;
+  if (isGuest) {
+    return (
+      <CalloutBox
+        title={"You're using Firecamp as Guest"}
+        description={`Test various API requests and experience the power of our platform. However, to take advantage of all our features, sign up for a full account. You'll be able to create collections, save requests, and collaborate with your team. Sign in now to unleash the full potential of API Campsite!`}
+        actionText={'sign in to firecamp'}
+        action={() => platformContext.app.modals.openSignIn()}
+      />
+    );
+  }
 
   if (scope == EPlatformScope.Person) {
     return (

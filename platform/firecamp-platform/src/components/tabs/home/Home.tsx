@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import { Container, EditorApi, Row, Column } from '@firecamp/ui';
+import { Container, EditorApi, Row, Column, FcLogo } from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
   FcIconGetSquare,
@@ -14,8 +14,16 @@ import { usePlatformStore } from '../../../store/platform';
 import { useTabStore } from '../../../store/tab';
 import { EThemeColor, EThemeMode } from '../../../types';
 import { ETabEntityTypes } from '../types';
+import { useUserStore } from '../../../store/user';
 
 const Home: FC<any> = () => {
+  const { user, isGuest } = useUserStore(
+    (s) => ({
+      user: s.user,
+      isGuest: s.isGuest,
+    }),
+    shallow
+  );
   const { open: openTab } = useTabStore.getState();
   const _openTab = (type?: ERequestTypes | 'environment') => {
     const allowed_app = [
@@ -28,11 +36,15 @@ const Home: FC<any> = () => {
     openTab({ __meta: { type } }, { id: '', type: ETabEntityTypes.Request });
   };
 
+  const greetingsTo = isGuest ? 'Friend' : user.name || 'Friend';
   return (
     <Container className="px-14 py-20" overflow="visible">
       <Container.Header>
+        <div className="mb-3">
+          <FcLogo className="w-14" size={80} />
+        </div>
         <div className="text-2xl mb-8 font-normal">
-          Welcome To Firecamp!
+          Hey {greetingsTo}, Welcome To Firecamp!
           <span className="block text-base font-light text-appForegroundInActive">
             This campsite is designed for you, giving you the power to do what
             you love with APIs.

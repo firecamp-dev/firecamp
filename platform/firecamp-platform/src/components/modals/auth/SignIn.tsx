@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Modal, IModal, Button } from '@firecamp/ui';
+import { Modal, IModal, Button, FcLogo } from '@firecamp/ui';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 
 import _auth from '../../../services/auth';
@@ -13,7 +13,10 @@ const SignIn: FC<IModal> = () => {
   return (
     <>
       <Modal.Body>
-        <img className="mx-auto w-12 mb-6" src={'img/fire-icon.png'} />
+        {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
+        <div className="mb-4">
+          <FcLogo className="mx-auto w-14" size={80} />
+        </div>
         <div className="text-xl mb-6 w-full text-center font-semibold">
           Sign in to Firecamp
         </div>

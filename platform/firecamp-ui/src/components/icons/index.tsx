@@ -160,7 +160,12 @@ const FcIconPostSquare: FC<IconBaseProps> = (props) => {
 const FcVscWand: FC<IconBaseProps> = (props) => {
   return GenIcon({
     tag: 'svg',
-    attr: { viewBox: '0 0 16 16', fill: 'currentColor', stroke: 'currentColor', strokeWidth: "0" },
+    attr: {
+      viewBox: '0 0 16 16',
+      fill: 'currentColor',
+      stroke: 'currentColor',
+      strokeWidth: '0',
+    },
     child: [
       {
         tag: 'path',
@@ -176,6 +181,50 @@ const FcVscWand: FC<IconBaseProps> = (props) => {
   })(props);
 };
 
+const FcLogo: FC<IconBaseProps> = (props) => {
+  return GenIcon({
+    tag: 'svg',
+    attr: {
+      viewBox: '0 0 24 24',
+      fill: 'currentColor',
+      stroke: 'currentColor',
+      strokeWidth: '0',
+    },
+    child: [
+      {
+        tag: 'path',
+        attr: {
+          fillRule: 'evenodd',
+          clipRule: 'evenodd',
+          d: 'M0.1,2.2C0.1,1,1,0,2.2,0h19.6C23,0,24,1,24,2.2v19.6c0,1.2-1,2.2-2.2,2.2H2.2c-1.2,0-2.2-1-2.2-2.2V2.2z',
+          fill: 'currentColor',
+        },
+        child: [],
+      },
+      {
+        tag: 'path',
+        attr: {
+          fillRule: 'evenodd',
+          clipRule: 'evenodd',
+          d: 'M19,19h-4.3l-0.9-2.2l-0.6,1.5l-1.3-3.5l-1.3,3.5l-0.6-1.5L9.3,19H4.8L12,6.7L19,19z',
+          fill: '#FFE5BF',
+        },
+        child: [],
+      },
+      {
+        tag: 'path',
+        attr: {
+          fillRule: 'evenodd',
+          clipRule: 'evenodd',
+          d: 'M16.8,7.9c0.9,0,1.6-0.7,1.6-1.6s-0.7-1.6-1.6-1.6c-0.9,0-1.6,0.7-1.6,1.6S15.9,7.9,16.8,7.9z',
+          fill: '#ED9155',
+        },
+        child: [],
+      },
+    ],
+  })(props);
+};
+
 export {
   FcIconGraphQL,
   FcIconSocketIo,
@@ -183,5 +232,6 @@ export {
   FcIconWebSocket,
   FcIconGetSquare,
   FcIconPostSquare,
-  FcVscWand
+  FcVscWand,
+  FcLogo,
 };
