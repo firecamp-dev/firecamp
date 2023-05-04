@@ -2,5 +2,6 @@ packages:
   # include packages in sub-folders (e.g. apps/ and packages/)
   - 'packages/**'
   - 'platform/**'
+  - 'playgrounds/**'
   # if required, exclude some directories
   - '!**/test/**'
