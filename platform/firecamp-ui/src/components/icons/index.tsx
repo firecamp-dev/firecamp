@@ -197,7 +197,7 @@ const FcLogo: FC<IconBaseProps> = (props) => {
           fillRule: 'evenodd',
           clipRule: 'evenodd',
           d: 'M0.1,2.2C0.1,1,1,0,2.2,0h19.6C23,0,24,1,24,2.2v19.6c0,1.2-1,2.2-2.2,2.2H2.2c-1.2,0-2.2-1-2.2-2.2V2.2z',
-          fill: 'currentColor',
+          fill: '#000',
         },
         child: [],
       },

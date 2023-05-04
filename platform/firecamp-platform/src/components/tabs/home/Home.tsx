@@ -36,7 +36,7 @@ const Home: FC<any> = () => {
     openTab({ __meta: { type } }, { id: '', type: ETabEntityTypes.Request });
   };
 
-  const greetingsTo = isGuest ? 'Friend' : user.name || 'Friend';
+  const greetingsTo = isGuest ? 'Friend' : user?.name?.split(' ')[0] || 'Friend';
   return (
     <Container className="px-14 py-20" overflow="visible">
       <Container.Header>
