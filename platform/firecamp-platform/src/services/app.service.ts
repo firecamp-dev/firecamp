@@ -37,7 +37,8 @@ const switchWorkspace = async (
 
   AppService.initUser(user);
   AppService.initWorkspace(wrs);
-  AppService.initOrg(org as IOrganization);
+  const isPersonal = !wrs.__ref.orgId;
+  AppService.initOrg(isPersonal ? null : (org as IOrganization));
 
   AppService.notify.success(`You have switched to ${wrs.name}`);
   await fetchExplorer(wrs.__ref.id);
@@ -62,7 +63,7 @@ const initApp = async () => {
     [ECloudApiHeaders.WorkspaceId]: wrsId,
   });
   Rest.auth
-    .me(wrsId)
+    .session(wrsId)
     .then(async (res) => {
       const { user, workspace, org } = res.data;
       AppService.initUser(user);

@@ -20,7 +20,7 @@ const CollectionPane = () => {
         return (
           <ToolBar>
             <div className="action">
-              <VscRefresh size={14} className="mr-2 cursor-pointer" />
+              {/* <VscRefresh size={14} className="mr-2 cursor-pointer" /> */}
             </div>
             <div>
               <VscNewFolder

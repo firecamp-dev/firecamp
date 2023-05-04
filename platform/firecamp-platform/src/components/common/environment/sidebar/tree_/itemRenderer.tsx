@@ -2,11 +2,11 @@ import cx from 'classnames';
 // import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 // import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 // import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
-import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { VscLock } from '@react-icons/all-files/vsc/VscLock';
-import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
-import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
+// import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
+// import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+// import { VscLock } from '@react-icons/all-files/vsc/VscLock';
+// import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
+// import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { Button } from '@firecamp/ui';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
@@ -14,15 +14,15 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 export default {
   renderItemArrow: ({ item, context }) => {
     return <VscJson className="mr-0.5 flex-none" size={18} opacity={1} />;
-    return (
-      <>
-        {item.data.__meta.visibility == 2 ? (
-          <VscLock className="mr-0.5 flex-none" size={18} opacity={1} />
-        ) : (
-          <></>
-        )}
-      </>
-    );
+    // return (
+    //   <>
+    //     {item.data.__meta.visibility == 2 ? (
+    //       <VscLock className="mr-0.5 flex-none" size={18} opacity={1} />
+    //     ) : (
+    //       <></>
+    //     )}
+    //   </>
+    // );
   },
 
   renderItemTitle: ({ item, title, context, info }) => {

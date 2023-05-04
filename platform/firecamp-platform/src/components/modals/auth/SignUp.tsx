@@ -14,7 +14,7 @@ const SignUp: FC<IModal> = () => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
 
   const form = useForm();
-  let { handleSubmit, errors } = form;
+  const { handleSubmit, errors } = form;
 
   const _onSignUp = async (payload: {
     username: string;
@@ -22,11 +22,23 @@ const SignUp: FC<IModal> = () => {
     password: string;
   }) => {
     if (isRequesting) return;
-    let { username, email, password } = payload;
+    const { username, email, password } = payload;
+    const _username = username.trim();
+    if (_username.length < 6) {
+      platformContext.app.notify.alert(
+        `Username must have minimum 6 characters`
+      );
+      return;
+    }
+    if (/\S/.test(_username)) {
+      platformContext.app.notify.alert(`Username is not valid`);
+      return;
+    }
+    const _email = email.trim();
 
     setFlagIsRequesting(true);
     _auth
-      .signUp({ username, email, password })
+      .signUp({ username: _username, email: _email, password })
       .then((res) => {
         console.log(res);
         platformContext.app.initApp();
@@ -77,7 +89,7 @@ const SignUp: FC<IModal> = () => {
               key={'username'}
               name={'username'}
               id={'username'}
-              label="User Name"
+              label="Username"
               type="text"
               registerMeta={{
                 required: true,

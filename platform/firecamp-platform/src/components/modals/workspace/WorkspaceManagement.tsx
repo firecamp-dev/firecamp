@@ -9,9 +9,9 @@ import {
 import { _array, _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';
-import './workspace.scss';
 import EditInfoTab from './tabs/EditInfoTab';
 import MembersTab from './tabs/MembersTab';
+import './workspace.scss';
 
 enum ETabTypes {
   Edit = 'edit',
@@ -27,7 +27,7 @@ const WorkspaceManagement: FC<IModal> = ({
 
   const [wrs, setWrs] = useState(workspace);
   const [isRequesting, setIsRequesting] = useState(false);
-  const [orgMembers, setOrgMembers] = useState([]);
+  const [wrsMembers, setWrsMembers] = useState([]);
   const [isFetchingMembers, setIsFetchingMembers] = useState(false);
   const [error, setError] = useState({ name: '' });
   const [activeTab, setActiveTab] = useState<ETabTypes>(ETabTypes.Edit);
@@ -37,15 +37,15 @@ const WorkspaceManagement: FC<IModal> = ({
     { name: 'Members', id: ETabTypes.Members },
   ];
 
-  /** fetch org members to be invited on second tab activated, only fetch once */
+  /** fetch wrs members to be shown on second tab activated, only fetch once */
   useEffect(() => {
-    if (activeTab === ETabTypes.Members && orgMembers.length === 0) {
+    if (activeTab === ETabTypes.Members && wrsMembers.length === 0) {
       setIsFetchingMembers(true);
       Rest.workspace
         .getMembers(workspace.__ref.id)
         .then((res) => res.data)
         .then(({ members = [], invited }) => {
-          let memberList = members.map((m, i) => {
+          const memberList = members.map((m, i) => {
             return {
               id: m.__ref?.id ?? i,
               name: m.name || m.username,
@@ -53,7 +53,7 @@ const WorkspaceManagement: FC<IModal> = ({
               role: m.role,
             };
           });
-          setOrgMembers(memberList);
+          setWrsMembers(memberList);
         })
         .finally(() => setIsFetchingMembers(false));
     }
@@ -94,7 +94,7 @@ const WorkspaceManagement: FC<IModal> = ({
       case 'members':
         return (
           <MembersTab
-            members={orgMembers}
+            members={wrsMembers}
             isFetchingMembers={isFetchingMembers}
           />
         );
