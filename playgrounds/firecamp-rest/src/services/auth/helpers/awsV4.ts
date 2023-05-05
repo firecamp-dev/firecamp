@@ -11,17 +11,16 @@ export default (credentials: IAuthAwsV4, extra: IExtra): object => {
   ) {
     extra.headers['Content-Type'] = 'application/x-www-form-urlencoded';
   }
-  aws.sign(credentials, {
+  const value = Object.assign({}, credentials);
+  aws.sign(value, {
     accessKeyId: credentials.accessKey,
     secretAccessKey: credentials.secretKey,
   });
-  const authHeaders = credentials['headers'];
-  if (!Array.isArray(authHeaders)) {
-    // Convert header value into string if type is not string
-    for (const header in authHeaders) {
-      if (typeof authHeaders[header] !== 'string')
-        authHeaders[header] = String(authHeaders[header]);
-    }
+  const authHeaders = value['headers'];
+  // Convert header value into string if type is not string
+  for (const header in authHeaders) {
+    if (typeof authHeaders[header] !== 'string')
+      authHeaders[header] = String(authHeaders[header]);
   }
   return authHeaders;
 };

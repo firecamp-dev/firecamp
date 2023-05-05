@@ -32,7 +32,7 @@ const SignUp: FC<IModal> = () => {
       return;
     }
     if (/\S/.test(_username)) {
-      platformContext.app.notify.alert(`Username is not valid`);
+      platformContext.app.notify.alert(`The username name must not be containing any spaces`);
       return;
     }
     const _email = email.trim();

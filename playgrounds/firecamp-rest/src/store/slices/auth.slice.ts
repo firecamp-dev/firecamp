@@ -82,13 +82,15 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
   },
   resetAuthHeaders: async (type: EAuthTypes) => {
     const state = get();
+    const { request, runtime } = state;
     try {
       const parentAuth =
         type == EAuthTypes.Inherit
-          ? getInheritedAuthFromParent(state.runtime.parentArtifacts)
+          ? getInheritedAuthFromParent(runtime.parentArtifacts)
           : null;
+
       const authHeaders = await getAuthHeaders(
-        state.request,
+        request,
         type,
         parentAuth?.auth // value can be null
       );
@@ -98,10 +100,9 @@ const createAuthSlice: TStoreSlice<IAuthSlice> = (set, get) => ({
       }
 
       // prepare auth headers array
-      const headersAry = _table.objectToTable(authHeaders) || [];
-      // console.log({ headersAry });
-
-      state.changeAuthHeaders(headersAry);
+      const headers = _table.objectToTable(authHeaders) || [];
+      // console.log({ headers });
+      state.changeAuthHeaders(headers);
     } catch (error) {
       console.log({ api: 'rest.getAuthHeaders', error });
     }

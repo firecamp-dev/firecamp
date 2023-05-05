@@ -47,11 +47,10 @@ export default class Auth {
         break;
       case EAuthTypes.AwsV4:
         this.aws4AuthHeaders = awsV4(
-          this.credentials as IAuthAwsV4,
+          Object.assign({}, this.credentials) as IAuthAwsV4,
           this.extra
         );
         break;
-
       default:
         return Promise.reject('Invalid auth type');
     }
