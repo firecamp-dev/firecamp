@@ -223,9 +223,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
       .then((_item) => {
         set((s) => {
           console.log(_item);
-          const newItem = { ..._item, value: _item.value };
-          const items = [...s.collection.items, newItem];
-          s.collection.tdpInstance?.addItem(newItem);
+          const items = [...s.collection.items, _item];
+          s.collection.tdpInstance?.addItem(_item);
           return {
             collection: {
               ...s.collection,
@@ -234,7 +233,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
             },
             playground: {
               ...s.playground,
-              emitter: newItem,
+              emitter: _item,
             },
           };
         });

@@ -92,7 +92,7 @@ const Collection = () => {
         <></>
       )}
 
-      {/* even if the collection is empty, the tree must be initialised with tdp.
+      {/* even if the collection is empty, the tree must be initialized with tdp.
         however it'll not show anything but when new item'll get added/created then tree will pop up the entry  */}
       <UncontrolledTreeEnvironment
         canRename={false}
@@ -107,12 +107,16 @@ const Collection = () => {
         onStartRenamingItem={(a) => {
           // console.log(a, 'onStartRenamingItem');
         }}
-        // onSelectItems={onSelectItems}
+        // onSelectItems={(ids) => {}}
         getItemTitle={(item) => item.data?.name}
         viewState={{}}
         renderItemArrow={treeRenderer.renderItemArrow}
         renderItem={(props) =>
-          treeRenderer.renderItem({ ...props, openPlg, deletePlg })
+          treeRenderer.renderItem({
+            ...props,
+            openPlg,
+            deletePlg,
+          })
         }
       >
         <Tree

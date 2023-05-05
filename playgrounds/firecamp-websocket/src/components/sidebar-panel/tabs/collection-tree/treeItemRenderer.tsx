@@ -214,9 +214,11 @@ export default {
               <Button
                 text={'Open'}
                 className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
+                {...context.interactiveElementProps}
                 onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
+                  // e.preventDefault();
+                  // e.stopPropagation();
+                  context.focusItem(item.data.__ref.id);
                   openMessageInPlg(item.data.__ref.id);
                 }}
                 transparent

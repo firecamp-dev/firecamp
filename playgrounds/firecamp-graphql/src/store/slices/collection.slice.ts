@@ -185,13 +185,11 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     state.toggleColProgressBar(true);
     const res = await state.context.request
       .createRequestItem(item)
-      .then((r) => {
-        const playgroundId = r.data.__ref.id;
+      .then((_item) => {
+        const playgroundId = _item.__ref.id;
         set((s) => {
-          console.log(r.data);
-          const newItem = { ...r.data, value: r.data.value };
-          const items = [...s.collection.items, newItem];
-          s.collection.tdpInstance?.addItem(newItem);
+          const items = [...s.collection.items, _item];
+          s.collection.tdpInstance?.addItem(_item);
           return {
             collection: {
               ...s.collection,
@@ -203,8 +201,8 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               ...s.playgrounds,
               [playgroundId]: {
                 ...s.playgrounds[playgroundId],
-                request: newItem,
-                originalRequest: newItem,
+                request: _item,
+                originalRequest: _item,
               },
             },
             runtime: {
@@ -212,7 +210,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
               activePlayground: playgroundId,
               playgroundTabs: s.runtime.playgroundTabs.map((t) =>
                 t.id == s.runtime.activePlayground
-                  ? { id: playgroundId, name: newItem.name }
+                  ? { id: playgroundId, name: _item.name }
                   : t
               ),
               playgroundsMeta: {

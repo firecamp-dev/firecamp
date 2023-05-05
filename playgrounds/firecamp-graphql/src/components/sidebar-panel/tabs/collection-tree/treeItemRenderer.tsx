@@ -7,7 +7,11 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    return <FcIconGraphQL size={24} />;
+    return (
+      <div className="w-6">
+        <FcIconGraphQL size={24} />
+      </div>
+    );
     // return item.isFolder ? (
     //   context.isExpanded ? (
     //     <VscChevronDown size={20} />
@@ -144,7 +148,7 @@ export default {
               )}
             </span>
           </InteractiveComponent>
-          <div className="flex ml-auto rct-tree-item-li-action items-center">
+          <div className="flex ml-auto rct-tree-item-li-action items-center absolute right-0">
             {/* <VscJson size={14} className="ml-1" onClick={(e)=> {
                 e.preventDefault()
                 e.stopPropagation()
@@ -153,16 +157,18 @@ export default {
 
             <Button
               text={'Open'}
-              xs
               className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
-              ghost={true}
-              transparent={true}
-              secondary
+              {...context.interactiveElementProps}
               onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
+                // e.preventDefault();
+                // e.stopPropagation();
+                context.focusItem(item.data.__ref.id);
                 openPlg(item.data.__ref.id);
               }}
+              transparent
+              secondary
+              ghost
+              xs
             />
 
             <VscTrash

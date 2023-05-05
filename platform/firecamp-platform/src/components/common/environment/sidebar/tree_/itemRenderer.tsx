@@ -164,11 +164,11 @@ export default {
             <Button
               text={'Open'}
               className="hover:!bg-focus2 ml-1 !text-appForegroundInActive !py-0"
+              {...context.interactiveElementProps}
               onClick={(e) => {
                 // e.preventDefault();
                 // e.stopPropagation();
-                console.log(context);
-                context.focusItem();
+                context.focusItem(item.data.__ref.id);
                 openEnv(item.data);
               }}
               transparent
