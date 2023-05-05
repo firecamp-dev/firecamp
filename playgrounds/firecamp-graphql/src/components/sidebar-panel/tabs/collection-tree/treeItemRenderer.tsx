@@ -1,6 +1,6 @@
 import cx from 'classnames';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
+// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
+// import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 // import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { Button, FcIconGraphQL, ToolBar } from '@firecamp/ui';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
@@ -160,8 +160,8 @@ export default {
               className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
               {...context.interactiveElementProps}
               onClick={(e) => {
-                // e.preventDefault();
-                // e.stopPropagation();
+                e.preventDefault();
+                e.stopPropagation();
                 context.focusItem(item.data.__ref.id);
                 openPlg(item.data.__ref.id);
               }}
