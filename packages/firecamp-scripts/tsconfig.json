@@ -1,5 +1,5 @@
 {
-    "include": ["src"],
+    "include": ["src/*.ts", "src/**/*.ts"],
     "compilerOptions": {
         "target": "ESNext",
         "lib": [
@@ -9,7 +9,7 @@
         "declarationDir": "dist",
         "module": "esnext",
         "moduleResolution": "node",
-        "composite": true,
+        "composite": false,
         "allowSyntheticDefaultImports": true
     }
 }
