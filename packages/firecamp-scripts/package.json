@@ -10,7 +10,7 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "tsup src --target esnext --dts",
+    "build": "tsup",
     "build-old": "run-p 'build:*'",
     "build:main": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "clean": "rimraf dist/",
