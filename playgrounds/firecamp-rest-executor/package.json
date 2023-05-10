@@ -5,7 +5,10 @@
   "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
   "license": "",
   "keywords": [],
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
   "scripts": {
     "build:old": "run-p 'build:*'",
     "build": "tsup src --target esnext --dts",
