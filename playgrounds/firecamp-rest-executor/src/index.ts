@@ -2,7 +2,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
 import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
-import * as scriptRunner from '@firecamp/scripts/dist/esm';
+import * as scriptRunner from '@firecamp/scripts';
 import {
   EKeyValueTableRowType,
   ERestBodyTypes,

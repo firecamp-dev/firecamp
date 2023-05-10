@@ -8,3 +8,7 @@ src/**.js
 coverage
 *.log
 !src/declarations.d.ts
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

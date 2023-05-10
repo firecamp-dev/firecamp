@@ -1,12 +1,14 @@
 {
   "name": "@firecamp/rest-executor",
-  "version": "1.0.9",
+  "version": "1.0.12",
   "description": "REST request executor",
   "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
   "license": "",
   "keywords": [],
+  "main": "dist/index.js",
   "scripts": {
-    "build": "run-p 'build:*'",
+    "build:old": "run-p 'build:*'",
+    "build": "tsup src --target esnext --dts",
     "build:main": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -u 1 src/**/*.pem dist/esm && copyfiles -u 1 src/**/*.pem dist/cjs",
@@ -32,7 +34,6 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@firecamp/scripts": "workspace:*",
     "@firecamp/types": "^0.2.2",
     "@firecamp/url": "0.0.20",
     "@firecamp/utils": "^0.0.24",
@@ -52,6 +53,7 @@
     "vm2": "^3.9.11"
   },
   "devDependencies": {
+    "@firecamp/scripts": "workspace:*",
     "@types/chai": "^4.3.1",
     "@types/chrome": "^0.0.204",
     "@types/jest": "^29.2.4",
@@ -75,7 +77,9 @@
     "ts-jest": "^28.0.7",
     "ts-node": "^10.9.1",
     "typedoc": "^0.23.8",
-    "typescript": "^4.7.4"
+    "typescript": "^4.7.4",
+    "tsup": "^6.5.0",
+    "turbo": "^1.7.0"
   },
   "files": [
     "dist",
