@@ -1089,9 +1089,6 @@ importers:
 
   playgrounds/firecamp-rest-executor:
     dependencies:
-      '@firecamp/scripts':
-        specifier: workspace:*
-        version: link:../../packages/firecamp-scripts
       '@firecamp/types':
         specifier: ^0.2.2
         version: 0.2.2
@@ -1144,6 +1141,9 @@ importers:
         specifier: ^3.9.11
         version: 3.9.13
     devDependencies:
+      '@firecamp/scripts':
+        specifier: workspace:*
+        version: link:../../packages/firecamp-scripts
       '@types/chai':
         specifier: ^4.3.1
         version: 4.3.4
