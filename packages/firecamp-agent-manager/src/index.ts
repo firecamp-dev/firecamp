@@ -7,8 +7,8 @@ import {
   IRestResponse,
   IVariableGroup,
 } from '@firecamp/types';
-import RestExecutor from '@firecamp/rest-executor/dist/esm';
-import parseBody from '@firecamp/rest-executor/dist/esm/helpers/body';
+import RestExecutor from '@firecamp/rest-executor';
+import parseBody from '@firecamp/rest-executor/dist/helpers/body';
 import { _object } from '@firecamp/utils';
 import * as extension from './chrome';
 

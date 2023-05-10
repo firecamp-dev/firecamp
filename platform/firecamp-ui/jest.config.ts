@@ -19,12 +19,14 @@ const config: Config = {
   },
   transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   moduleNameMapper: {
-     "\\.(css|sass|scss)$": "<rootDir>/__mocks__/styleMock.ts",
-     "\\.(txt)$": "<rootDir>/../../node_modules/raw-loader",
-     "^nanoid(/(.*)|$)": "nanoid$1",
-     "^monaco-editor": "<rootDir>/__mocks__/monacoMock.ts",
-      "^@monaco-editor/react": "<rootDir>/../../node_modules/@monaco-editor/react",
-      "@firecamp/rest-executor/dist/esm": "<rootDir>/../firecamp-rest-executor/dist/esm/index.d.ts"
+    '\\.(css|sass|scss)$': '<rootDir>/__mocks__/styleMock.ts',
+    '\\.(txt)$': '<rootDir>/../../node_modules/raw-loader',
+    '^nanoid(/(.*)|$)': 'nanoid$1',
+    '^monaco-editor': '<rootDir>/__mocks__/monacoMock.ts',
+    '^@monaco-editor/react':
+      '<rootDir>/../../node_modules/@monaco-editor/react',
+    '@firecamp/rest-executor/dist/esm':
+      '<rootDir>/../firecamp-rest-executor/dist/esm/index.d.ts',
     // "@firecamp/rest-executor/dist/esm": "<rootDir>/../firecamp-rest-executor/dist/esm/script-runner/snippets/index"
   },
 };

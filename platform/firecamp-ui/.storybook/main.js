@@ -50,7 +50,7 @@ module.exports = {
       ...config.resolve.alias,
       '@firecamp/rest-executor/dist/esm': path.join(
         __dirname,
-        '../../firecamp-rest-executor/dist/esm/script-runner/snippets/index.js'
+        '../../firecamp-scripts/snippets/index.js'
       ),
       'react-hook-form': path.join(
         __dirname,
