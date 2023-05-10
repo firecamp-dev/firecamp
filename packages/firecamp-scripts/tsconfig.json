@@ -8,6 +8,7 @@
         "declarationDir": "dist",
         "module": "esnext",
         "moduleResolution": "node",
-        "composite": true
+        "composite": true,
+        "allowSyntheticDefaultImports": true
     }
 }
