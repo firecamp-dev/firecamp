@@ -11,9 +11,8 @@
         "esModuleInterop": false,
         "allowSyntheticDefaultImports": true
     },
-    "references": [
-        {
-            "path": "../../packages/firecamp-scripts/tsconfig.esm.json"
-        }
-    ]
+    // "references": [
+    //     { "path": "../../packages/firecamp-scripts/tsconfig.esm.json" },
+    //     { "path": "../../packages/firecamp-scripts/tsconfig.cjs.json" }
+    // ]
 }
