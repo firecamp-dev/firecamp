@@ -10,6 +10,6 @@
         "module": "esnext",
         "moduleResolution": "node",
         "esModuleInterop": false,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
     }
 }

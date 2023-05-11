@@ -1,17 +1,20 @@
 {
   "name": "@firecamp/rest-executor",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "description": "REST request executor",
   "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
   "keywords": [],
-  "main": "dist/index.cjs",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "type": "module",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "license": "AGPLV3",
   "scripts": {
     "build:old": "run-p 'build:*'",
-    "build": "tsup src --target esnext --dts",
+    "build": "tsup",
     "build:main": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "clean": "rimraf dist/",
     "copy-files": "copyfiles -u 1 src/**/*.pem dist/esm && copyfiles -u 1 src/**/*.pem dist/cjs",
