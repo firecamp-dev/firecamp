@@ -8,11 +8,12 @@
         "declarationDir": "dist",
         "module": "esnext",
         "moduleResolution": "node",
+        "esModuleInterop": false,
         "allowSyntheticDefaultImports": true
     },
     "references": [
         {
-            "path": "../../packages/firecamp-scripts"
+            "path": "../../packages/firecamp-scripts/tsconfig.esm.json"
         }
     ]
 }

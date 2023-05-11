@@ -27,9 +27,10 @@
       "chrome",
       "mocha"
     ],
-    "typeRoots": ["node_modules/@types", "node_modules/@firecamp/types"]
+    "typeRoots": ["node_modules/@types", "node_modules/@firecamp/types"],
+    "composite": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules/**"],
-  "compileOnSave": false
+  "compileOnSave": false,
 }

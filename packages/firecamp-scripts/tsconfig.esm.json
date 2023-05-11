@@ -42,7 +42,8 @@
       "chrome",
       "mocha"
     ],
-    "typeRoots": ["node_modules/@types", "node_modules/@firecamp/types"]
+    "typeRoots": ["node_modules/@types", "node_modules/@firecamp/types"],
+    "composite": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules/**"],

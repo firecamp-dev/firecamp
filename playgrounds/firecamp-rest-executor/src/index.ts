@@ -11,9 +11,12 @@ import {
   IVariableGroup,
 } from '@firecamp/types';
 import { _env, _array, _object, _table } from '@firecamp/utils';
-import _url from '@firecamp/url';
+import __url from '@firecamp/url';
 import parseBody from './helpers/body';
 import { IRestExecutor } from './types';
+
+//@ts-ignore //TODO: research in depth about url esm module, it's import value in console is { default: {...}, __esModule: true }
+const _url = __url.default || __url;
 
 export default class RestExecutor implements IRestExecutor {
   private _controller: AbortController;
@@ -100,6 +103,7 @@ export default class RestExecutor implements IRestExecutor {
   private async _prepare(request: IRest): Promise<AxiosRequestConfig> {
     const { body, config, headers, url } = request;
 
+    // console.log(_url, 777);
     const axiosRequest: AxiosRequestConfig = {
       url: _url.normalize(url?.raw || '', ['http', 'https']),
       params: QueryString.stringify(_table.toObject(url?.queryParams || [])),
