@@ -151,6 +151,18 @@ const logout = () => {
   Rest.auth
     .logout()
     .then((res) => {
+      localStorage.removeItem('socketId');
+      localStorage.removeItem('switchToOrg');
+      localStorage.removeItem('workspace');
+      localStorage.removeItem('org');
+      localStorage.removeItem('activeEnv');
+      /**
+       * remove local values of env. //TODO: need to finalize the feature flow whether to remove or not.
+          Object.keys(localStorage)
+            .filter((x) => x.startsWith('env/'))
+            .forEach((x) => localStorage.removeItem(x));
+       */
+
       AppService.disposeStores();
       CloudApiGlobal.removeGlobalHeaders([
         ECloudApiHeaders.Authorization,
