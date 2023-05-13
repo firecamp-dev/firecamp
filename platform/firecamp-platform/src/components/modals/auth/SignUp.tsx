@@ -31,9 +31,9 @@ const SignUp: FC<IModal> = () => {
       );
       return;
     }
-    if (/\S/.test(_username)) {
+    if (/^[a-zA-Z0-9\_]{6,20}$/.test(_username) == false) {
       platformContext.app.notify.alert(
-        `The username name must not be containing any spaces`
+        `The username name must not be containing any spaces or special characters. The range should be from 6 to 20 characters`
       );
       return;
     }

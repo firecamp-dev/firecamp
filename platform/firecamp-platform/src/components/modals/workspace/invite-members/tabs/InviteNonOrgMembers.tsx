@@ -10,6 +10,7 @@ import {
 import RolesCallout from '../RolesCallout';
 import { EEditorLanguage } from '@firecamp/types';
 import { _array, _misc } from '@firecamp/utils';
+import { Regex } from '../../../../../constants';
 import { EUserRolesWorkspace } from '../../../../../types';
 import { useWorkspaceStore } from '../../../../../store/workspace';
 import platformContext from '../../../../../services/platform-context';
@@ -232,6 +233,6 @@ const parseMembersFromEditorValue = (value: string): IMemberParseResult => {
 
 const isValidEmail = (email: string): boolean => {
   // TODO: use standard email validation regex here
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailRegex.test(email);
+  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return Regex.Email.test(email);
 };

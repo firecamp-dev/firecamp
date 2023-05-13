@@ -20,7 +20,7 @@ import { useExplorerStore } from '../../store/explorer';
 import { usePlatformStore } from '../../store/platform';
 import { useEnvStore } from '../../store/environment';
 import { ETabEntityTypes } from '../../components/tabs/types';
-import { RE } from '../../types';
+import { Regex } from '../../constants';
 import platformContext from '.';
 
 interface IPlatformRequestService {
@@ -273,7 +273,7 @@ const request: IPlatformRequestService = {
               message: 'The folder name must have minimum 3 characters.',
             };
           }
-          const isValid = RE.NoSpecialCharacters.test(val);
+          const isValid = Regex.FolderName.test(val);
           return {
             isValid,
             message:

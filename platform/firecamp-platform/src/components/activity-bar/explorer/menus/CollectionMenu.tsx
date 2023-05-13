@@ -7,8 +7,8 @@ import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { Dropdown } from '@firecamp/ui';
+import { Regex } from '../../../../constants';
 import platformContext from '../../../../services/platform-context';
-import { RE } from '../../../../types';
 import { useExplorerStore } from '../../../../store/explorer';
 
 enum EMenuType {
@@ -72,12 +72,12 @@ const CollectionMenu = ({
                 message: 'The folder name must have minimum 3 characters.',
               };
             }
-            const isValid = RE.NoSpecialCharacters.test(val);
+            const isValid = Regex.FolderName.test(val);
             return {
               isValid,
               message:
                 !isValid &&
-                'The folder name must not contain any special characters.',
+                'The folder name must not contain special characters.',
             };
           },
           executor: (name) => {

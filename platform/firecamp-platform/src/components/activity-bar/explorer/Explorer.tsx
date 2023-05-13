@@ -23,10 +23,10 @@ import {
 } from '@firecamp/ui';
 import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
+import { Regex } from '../../../constants';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useTabStore } from '../../../store/tab';
 import { ETabEntityTypes } from '../../tabs/types';
-import { RE } from '../../../types';
 import platformContext from '../../../services/platform-context';
 import { useExplorerStore } from '../../../store/explorer';
 
@@ -96,7 +96,7 @@ const Explorer: FC<any> = () => {
 
   const _onRenameItem = async (treeItem: TreeItem, name: string) => {
     let { data: item } = treeItem;
-    const isNotValid = !RE.CollectionName.test(name);
+    const isNotValid = !Regex.CollectionName.test(name);
     if (!name || isNotValid) {
       //TODO: undo renaming using treeRef
       return false;

@@ -14,7 +14,6 @@ import {
 
 import { useEnvStore } from './environment';
 import platformContext from '../services/platform-context';
-import { EUserRolesWorkspace, RE } from '../types';
 import { ETabEntityTypes } from '../components/tabs/types';
 import { useTabStore } from './tab';
 import { useWorkspaceStore } from './workspace';

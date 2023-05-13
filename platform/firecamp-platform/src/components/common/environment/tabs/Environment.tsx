@@ -17,7 +17,7 @@ import {
 } from '@firecamp/ui';
 import { _array, _env, _object } from '@firecamp/utils';
 import { IEnv } from '@firecamp/types';
-import { RE } from '../../../../types';
+import { Regex } from '../../../../constants';
 import { useEnvStore } from '../../../../store/environment';
 import { useTabStore } from '../../../../store/tab';
 
@@ -136,7 +136,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
               message: 'The environment name must have minimum 3 characters.',
             };
           }
-          const isValid = RE.NoSpecialCharacters.test(val);
+          const isValid = Regex.EnvironmentName.test(val);
           return {
             isValid,
             message:

@@ -13,7 +13,7 @@ import { EEditorLanguage } from '@firecamp/types';
 import { useExplorerStore } from '../../../store/explorer';
 import { useModalStore } from '../../../store/modal';
 import { useEnvStore } from '../../../store/environment';
-import { RE } from '../../../types';
+import { Regex } from '../../../constants';
 import platformContext from '../../../services/platform-context';
 import { ETabEntityTypes } from '../../tabs/types';
 import { useTabStore } from '../../../store/tab';
@@ -86,7 +86,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       });
       return;
     }
-    if (!RE.NoSpecialCharacters.test(_name)) {
+    if (!Regex.EnvironmentName.test(_name)) {
       setError({
         name: 'The environment name must not contain any special characters.',
       });

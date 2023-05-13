@@ -1,1 +1,1 @@
-export * as Preferences from './preferences';
+export { Regex } from './regex';

@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { TId } from '@firecamp/types';
-import { RE } from '../../types';
+import { Regex } from '../../constants';
 import { useTabStore } from '../../store/tab';
 import { ETabEntityTypes } from '../../components/tabs/types';
 import { useWorkspaceStore } from '../../store/workspace';
@@ -32,12 +32,12 @@ const platform = {
               message: 'The workspace name must have minimum 4 characters.',
             };
           }
-          const isValid = RE.NoSpecialCharacters.test(val);
+          const isValid = Regex.WorkspaceName.test(val);
           return {
             isValid,
             message:
               !isValid &&
-              'The workspace name must not contain any special characters.',
+              'The workspace name must not contain any spaces or special characters.',
           };
         },
         executor: (name) => {
@@ -87,12 +87,12 @@ const platform = {
               message: 'The org name must have minimum 4 characters.',
             };
           }
-          const isValid = RE.NoSpecialCharacters.test(val);
+          const isValid = Regex.OrgName.test(val);
           return {
             isValid,
             message:
               !isValid &&
-              'The org name must not contain any special characters.',
+              'The org name must not contain any spaces or special characters.',
           };
         },
         executor: (name) => {
@@ -141,7 +141,7 @@ const platform = {
               message: 'The collection name must have minimum 4 characters.',
             };
           }
-          const isValid = RE.NoSpecialCharacters.test(val);
+          const isValid = Regex.CollectionName.test(val);
           return {
             isValid,
             message:
@@ -181,7 +181,7 @@ const platform = {
               message: 'The environment name must have minimum 3 characters.',
             };
           }
-          const isValid = RE.NoSpecialCharacters.test(val);
+          const isValid = Regex.EnvironmentName.test(val);
           return {
             isValid,
             message:

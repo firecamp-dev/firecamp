@@ -105,23 +105,6 @@ export enum ECloudApiHeaders {
   AppVersion = 'X-App-Version',
 }
 
-export enum ERegex {
-  //@ref= https://stackabuse.com/validate-email-addresses-with-regular-expressions-in-javascript/
-  Email = "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])",
-}
-
-export const RE = {
-  /**
-   * don't allow any special character
-   * @ref:  https://stackoverflow.com/a/23127284
-   * allows: colName, colName_, _colNmae, col_name
-   * not allow" colName. , colName?, colName/@ or any special character in the name
-   */
-  CollectionName: /^(?![\s\S]*[^\w -]+)[\s\S]*?$/im,
-  // TODO: later merged both regex in one CollectionName & NoSpecialCharacters
-  NoSpecialCharacters: /^(?![\s\S]*[^\w -]+)[\s\S]*?$/im,
-};
-
 export enum EThemeMode {
   Light = 'light',
   Dark = 'dark',
