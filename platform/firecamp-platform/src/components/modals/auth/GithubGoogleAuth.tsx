@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
-import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
+// import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
 
 import _auth from '../../../services/auth';
 import { Button } from '@firecamp/ui';
@@ -17,18 +17,6 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
     try {
       // Close auth modal on Sign In success
       onClose();
-
-      // Initialize user information
-      // await F.notification.asyncBlock(
-      //   _auth.postSignIn({
-      //     response,
-      //     provider
-      //   }),
-      //   null,
-      //   'Failed to initialize',
-      //   'Initializing'
-      // );
-
       return Promise.resolve();
     } catch (error) {
       return Promise.reject({
@@ -47,6 +35,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
     _auth
       .signIn(EProvider.GITHUB)
       .then(async ({ response, provider }) => {
+        // Note: It'll never reach here as It'll redirect to the identity page after git auth
         console.log(response, 'response....');
         await _initApp(response, provider);
       })

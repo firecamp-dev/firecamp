@@ -32,7 +32,9 @@ const SignUp: FC<IModal> = () => {
       return;
     }
     if (/\S/.test(_username)) {
-      platformContext.app.notify.alert(`The username name must not be containing any spaces`);
+      platformContext.app.notify.alert(
+        `The username name must not be containing any spaces`
+      );
       return;
     }
     const _email = email.trim();
@@ -40,8 +42,9 @@ const SignUp: FC<IModal> = () => {
     setFlagIsRequesting(true);
     _auth
       .signUp({ username: _username, email: _email, password })
-      .then((res) => {
-        console.log(res);
+      .then(({ response }) => {
+        // console.log(res);
+        localStorage.setItem('socketId', response?.__meta?.accessToken);
         platformContext.app.initApp();
         platformContext.app.notify.success(`You have signed up successfully`, {
           labels: { alert: 'success' },

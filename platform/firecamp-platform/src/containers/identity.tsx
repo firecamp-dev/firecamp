@@ -25,14 +25,15 @@ const IdentityPage = () => {
       });
       Rest.auth
         .viaGithub(code)
-        .then((rs) => {
+        .then(({ data }) => {
+          localStorage.setItem('socketId', data.__meta.accessToken);
           localStorage.setItem(
             'authSuccessMessage',
             "You're signed in successfully."
           );
           //@ts-ignore
           window.location = '/'; //redirect to the main app
-          console.log(rs, 12345);
+          // console.log(data, 12345);
         })
         .catch((e) => {
           setError(e.response?.data?.message || e.message);

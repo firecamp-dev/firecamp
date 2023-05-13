@@ -55,11 +55,12 @@ const initApp = async () => {
     [ECloudApiHeaders.AppVersion]: process.env.APP_VERSION || '',
   });
 
+  const socketId = localStorage.getItem('socketId');
+
   //1/ check if user is logged in or not
   const wrsId = localStorage.getItem('workspace');
-  // if (!t) return AppService.modals.openSignIn();
+  if (!socketId) return AppService.modals.openSignIn();
   CloudApiGlobal.setGlobalHeaders({
-    // [ECloudApiHeaders.Authorization]: `Bearer ${t}`,
     [ECloudApiHeaders.WorkspaceId]: wrsId,
   });
   Rest.auth
@@ -87,7 +88,7 @@ const initApp = async () => {
         Realtime.connect({
           endpoint: process.env.FIRECAMP_API_HOST,
           auth: {
-            // token: t,
+            token: socketId,
             workspace: wrsId,
           },
           userId: user.__ref.id,
