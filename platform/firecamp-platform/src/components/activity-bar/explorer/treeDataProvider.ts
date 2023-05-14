@@ -98,15 +98,13 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
   ): Promise<void> {
     // this.items[itemId].children = newChildren;
 
-    // const {
-    //   changeWorkspaceMetaOrders,
-    //   changeCollectionMetaOrders,
-    //   changeFolderMetaOrders,
-    // } = useExplorerStore.getState();
+    const {
+      changeWorkspaceMetaOrders,
+    } = useExplorerStore.getState();
 
     if (itemId == 'root') {
       this.rootOrders = newChildren;
-      // changeWorkspaceMetaOrders(newChildren as string[]);
+      changeWorkspaceMetaOrders(newChildren as string[]);
     } else {
       // split new children into fOrders and rOrders
       const { fOrders, rOrders } = newChildren.reduce(

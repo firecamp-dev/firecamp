@@ -31,7 +31,7 @@ import platformContext from '../../../services/platform-context';
 import { useExplorerStore } from '../../../store/explorer';
 
 const Explorer: FC<any> = () => {
-  const environmentRef = useRef();
+  const explorerTreeRef = useRef();
   const treeRef = useRef();
   const { createCollectionPrompt } = platformContext.platform;
 
@@ -48,6 +48,8 @@ const Explorer: FC<any> = () => {
     updateFolder,
     moveRequest,
     moveFolder,
+    changeCollectionMetaOrders,
+    changeFolderMetaOrders,
     deleteCollection,
     deleteFolder,
     deleteRequest,
@@ -59,6 +61,8 @@ const Explorer: FC<any> = () => {
       updateFolder: s.updateFolder,
       moveRequest: s.moveRequest,
       moveFolder: s.moveFolder,
+      changeCollectionMetaOrders: s.changeCollectionMetaOrders,
+      changeFolderMetaOrders: s.changeFolderMetaOrders,
       deleteCollection: s.deleteCollection,
       deleteFolder: s.deleteFolder,
       deleteRequest: s.deleteRequest,
@@ -220,35 +224,80 @@ const Explorer: FC<any> = () => {
     [collections, folders]
   );
 
+  const _moveItem = (item, moveTo, itemType: 'request' | 'folder') => {
+    if (itemType == 'folder') {
+      // moveFolder(item.__ref.id, moveTo);
+      console.log('moving the folder');
+    } else if (itemType == 'request') {
+      // moveRequest(item.__ref.id, moveTo);
+      console.log('moving the request');
+    } else {
+    }
+  };
+
   const onDrop = (items, target) => {
     console.log(items, target, 'onDrop');
     const item = items[0].data;
-    const { childIndex = 0, parentItem, targetItem } = target;
+    const { childIndex = 0, depth, parentItem, targetItem } = target;
 
     if (item.__ref.isCollection) return;
 
-    // if both exists then item is moving to collection/folder or just reordering
-    if (parentItem && targetItem) {
-      const payload: { collectionId: string; folderId?: string } = {
-        collectionId: '',
-      };
-      const tCollection = collections.find((i) => i.__ref.id == targetItem);
-      if (tCollection) {
-        payload.collectionId = tCollection.__ref.id;
+    /**
+     * item is reordering within same parent
+     * item is being reordered in collection or in folder or moving across folder but within collection
+     *
+     * 1. no target means item is not being dropped onto folder
+     *    1.1 either it is being reordering within collection
+     *    1.2 either it is being reordering within folder
+     *    1.3 either it is being moved to folder but dropped in-between items
+     */
+    if (!targetItem) {
+      const moveToParent =
+        collections.find((i) => i.__ref.id == parentItem) ||
+        folders.find((i) => i.__ref.id == parentItem);
+      const isParentFolder = !!moveToParent.__ref.collectionId;
+      if (isParentFolder) {
+        if (item.__ref.folderId == moveToParent.__ref.id) {
+          // TODO: reorder within folders
+          console.log('reorder within folders', explorerTreeRef);
+          // changeFolderMetaOrders({});
+        } else {
+          // TODO: move item to folder within collection
+          console.log('move item to folder within collection', explorerTreeRef);
+          // _moveItem()
+        }
       } else {
-        const tFolder = folders.find((i) => i.__ref.id == targetItem);
-        if (tFolder) {
-          payload.collectionId = tFolder.__ref.collectionId;
-          payload.folderId = tFolder.__ref.id;
+        if (item.__ref.folderId) {
+          // TODO: moving item to collection root
+          console.log('move item to collection root', explorerTreeRef);
+          // _moveItem()
+        } else {
+          // TODO: reorder within collection
+          console.log('reorder within collection', explorerTreeRef);
+          // changeCollectionMetaOrders({})
         }
       }
+    } else {
+      /**
+       * if both exists then item is moving to collection/folder
+       * Item is being dropped on item, here it'll be dropped on folder or collection
+       */
 
-      if (item.__ref.isFolder) {
-        moveFolder(item.__ref.id, payload);
-      } else if (item.__ref.isRequest) {
-        moveRequest(item.__ref.id, payload);
-      } else {
+      const moveTo: { collectionId: string; folderId?: string } = {
+        collectionId: '',
+      };
+      const _targetCollection = collections.find(
+        (i) => i.__ref.id == targetItem
+      );
+      if (_targetCollection) moveTo.collectionId = _targetCollection.__ref.id;
+      else {
+        const _targetFolder = folders.find((i) => i.__ref.id == targetItem);
+        if (_targetFolder) {
+          moveTo.collectionId = _targetFolder.__ref.collectionId;
+          moveTo.folderId = _targetFolder.__ref.id;
+        }
       }
+      _moveItem(item, moveTo, item.__ref.isFolder ? 'folder' : 'request');
     }
   };
 
@@ -317,7 +366,7 @@ const Explorer: FC<any> = () => {
             return (
               <>
                 <UncontrolledTreeEnvironment
-                  ref={environmentRef}
+                  ref={explorerTreeRef}
                   keyboardBindings={{
                     // primaryAction: ['f3'],
                     renameItem: ['enter', 'f2'],
