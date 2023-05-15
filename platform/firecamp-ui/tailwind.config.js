@@ -23,7 +23,7 @@ module.exports = {
       tabForeground: 'var(--tab-foreground)',
       tabForegroundInactive: 'var(--tab-foreground-inactive)',
       tabBorder: 'var(--tab-border)',
-      tabHoverBackground: 'var(--tab-hoverBackground)',
+      tabHoverBackground: 'var(--tab-background-hover)',
       tabActiveBackground: 'var(--tab-background-active)',
 
       statusBarBackground: 'var(--statusBar-background)',
@@ -64,7 +64,7 @@ module.exports = {
       secondaryBG: '#333333',
       secondaryText: '#ffffff',
       primaryColor: 'var(--app-primary)',
-      primaryColorOpacity: 'var(--app-primary-with-opacity)',
+      primaryColorOpacity: 'var(--app-primary-withOpacity)',
       primaryColorText: '#ffffff',
       secondaryColor: 'var(--app-secondary)',
       secondaryColorText: '#ffffff',

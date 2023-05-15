@@ -38,7 +38,7 @@
     --app-foreground-active: #fff;
     --app-foreground-inactive: #777777;
     --app-primary: #D48332;
-    --app-primary-with-opacity: #d483328a;
+    --app-primary-withOpacity: #d483328a;
     --app-secondary: #3c3c3c;
     --app-border: #414141;
     --app-focus: #5E8FED;
@@ -50,7 +50,7 @@
     --tab-foreground: #bbb;
     --tab-foreground-inactive: #ffffff80;
     --tab-border: var(--app-border);
-    --tab-hoverBackground: #1B1A1A;
+    --tab-background-hover: #1B1A1A;
     --tab-background-active: var(--statusBar-background-active);
     --tab-background-activeColor: #2d2c2c;
 
@@ -136,7 +136,7 @@
     --tab-foreground: #24292f;
     --tab-foreground-inactive: #333333;
     --tab-border: var(--app-border);
-    --tab-hoverBackground: #fafbfc;
+    --tab-background-hover: #fafbfc;
     --tab-background-active: #fafbfc;
     --tab-background-activeColor: #f5f5f5;
 
