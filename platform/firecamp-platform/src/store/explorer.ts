@@ -78,13 +78,17 @@ export interface IWorkspaceStore {
 
   // change orders
   changeWorkspaceMetaOrders: (orders: TId[]) => Promise<any>;
-  changeCollectionMetaOrders: (
-    id: TId,
-    payload: { fOrders?: TId[]; rOrders?: TId[] }
+  changeCollectionChildrenPosition: (
+    colId: TId,
+    itemId: TId,
+    position: number,
+    itemType: 'request' | 'folder'
   ) => Promise<any>;
-  changeFolderMetaOrders: (
-    id: TId,
-    payload: { fOrders?: TId[]; rOrders?: TId[] }
+  changeFolderChildrenPosition: (
+    folId: TId,
+    itemId: TId,
+    position: number,
+    itemType: 'request' | 'folder'
   ) => Promise<any>;
 
   moveFolder: (
@@ -597,23 +601,28 @@ export const useExplorerStore = create<IWorkspaceStore>(
     },
 
     /** change folder and requests orders in collection */
-    changeCollectionMetaOrders: async (id, { fOrders, rOrders }) => {
+    changeCollectionChildrenPosition: async (
+      colId,
+      itemId,
+      position,
+      itemType
+    ) => {
       const state = get();
       state.toggleProgressBar(true);
       const res = await Rest.collection
-        .changeMetaOrders(id, fOrders, rOrders)
+        .changeChildrenPosition(colId, itemId, position, itemType)
         .then(() => {
-          set((s) => {
-            const { collections } = s.explorer;
-            collections.map((c) => {
-              if (c.__ref.id == id) {
-                if (Array.isArray(fOrders)) c.__meta.fOrders = fOrders;
-                if (Array.isArray(rOrders)) c.__meta.rOrders = rOrders;
-              }
-              return c;
-            });
-            return { explorer: { ...s.explorer, collections } };
-          });
+          // set((s) => {
+          //   const { collections } = s.explorer;
+          //   collections.map((c) => {
+          //     if (c.__ref.id == colId) {
+          //       if (Array.isArray(fOrders)) c.__meta.fOrders = fOrders;
+          //       if (Array.isArray(rOrders)) c.__meta.rOrders = rOrders;
+          //     }
+          //     return c;
+          //   });
+          //   return { explorer: { ...s.explorer, collections } };
+          // });
         })
         .catch((e) => {
           if (e.message == 'Network Error') {
@@ -629,23 +638,23 @@ export const useExplorerStore = create<IWorkspaceStore>(
     },
 
     /** change folder and requests orders in folder */
-    changeFolderMetaOrders: async (id, { fOrders, rOrders }) => {
+    changeFolderChildrenPosition: async (colId, itemId, position, itemType) => {
       const state = get();
       state.toggleProgressBar(true);
       const res = await Rest.folder
-        .changeMetaOrders(id, fOrders, rOrders)
+        .changeChildrenPosition(colId, itemId, position, itemType)
         .then(() => {
-          set((s) => {
-            const { folders } = s.explorer;
-            folders.map((f) => {
-              if (f.__ref.id == id) {
-                if (Array.isArray(fOrders)) f.__meta.fOrders = fOrders;
-                if (Array.isArray(rOrders)) f.__meta.rOrders = rOrders;
-              }
-              return f;
-            });
-            return { explorer: { ...s.explorer, folders } };
-          });
+          // set((s) => {
+          //   const { folders } = s.explorer;
+          //   folders.map((f) => {
+          //     if (f.__ref.id == id) {
+          //       if (Array.isArray(fOrders)) f.__meta.fOrders = fOrders;
+          //       if (Array.isArray(rOrders)) f.__meta.rOrders = rOrders;
+          //     }
+          //     return f;
+          //   });
+          //   return { explorer: { ...s.explorer, folders } };
+          // });
         })
         .catch((e) => {
           if (e.message == 'Network Error') {

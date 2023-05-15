@@ -48,8 +48,8 @@ const Explorer: FC<any> = () => {
     updateFolder,
     moveRequest,
     moveFolder,
-    changeCollectionMetaOrders,
-    changeFolderMetaOrders,
+    changeCollectionChildrenPosition,
+    changeFolderChildrenPosition,
     deleteCollection,
     deleteFolder,
     deleteRequest,
@@ -61,8 +61,8 @@ const Explorer: FC<any> = () => {
       updateFolder: s.updateFolder,
       moveRequest: s.moveRequest,
       moveFolder: s.moveFolder,
-      changeCollectionMetaOrders: s.changeCollectionMetaOrders,
-      changeFolderMetaOrders: s.changeFolderMetaOrders,
+      changeCollectionChildrenPosition: s.changeCollectionChildrenPosition,
+      changeFolderChildrenPosition: s.changeFolderChildrenPosition,
       deleteCollection: s.deleteCollection,
       deleteFolder: s.deleteFolder,
       deleteRequest: s.deleteRequest,
@@ -258,9 +258,14 @@ const Explorer: FC<any> = () => {
       const isParentFolder = !!moveToParent.__ref.collectionId;
       if (isParentFolder) {
         if (item.__ref.folderId == moveToParent.__ref.id) {
-          // TODO: reorder within folders
-          console.log('reorder within folders', explorerTreeRef);
-          // changeFolderMetaOrders({});
+          // reorder within folders
+          console.log('reorder within folders'); //, explorerTreeRef);
+          changeFolderChildrenPosition(
+            moveToParent.__ref.id,
+            item.__ref.id,
+            childIndex,
+            item.__ref.isRequest ? 'request' : 'folder'
+          );
         } else {
           // TODO: move item to folder within collection
           console.log('move item to folder within collection', explorerTreeRef);
@@ -272,9 +277,14 @@ const Explorer: FC<any> = () => {
           console.log('move item to collection root', explorerTreeRef);
           // _moveItem()
         } else {
-          // TODO: reorder within collection
-          console.log('reorder within collection', explorerTreeRef);
-          // changeCollectionMetaOrders({})
+          // reorder within collection
+          console.log('reorder within collection');
+          changeCollectionChildrenPosition(
+            parentItem,
+            item.__ref.id,
+            childIndex,
+            item.__ref.isRequest ? 'request' : 'folder'
+          );
         }
       }
     } else {
