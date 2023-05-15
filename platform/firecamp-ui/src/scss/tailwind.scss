@@ -416,41 +416,41 @@ video {
     --tab-foreground-inactive: #ffffff80;
     --tab-border: var(--app-border);
     --tab-hoverBackground: #1B1A1A;
-    --tab-activeBackground: var(--statusBar-background2);
-    --tab-background2: #2d2c2c;
+    --tab-background-active: var(--statusBar-background-active);
+    --tab-background-activeColor: #2d2c2c;
 
     --activityBar-background: #333333;
     --activityBar-foreground: #FFFFFF;
-    --activityBar-inactiveForeground: #ffffff66;
-    --activityBar-activeBackground: var(--focus-level-2);
-    --activityBar-activeBorder: var(--app-primary);
+    --activityBar-foreground-inactive: #ffffff66;
+    --activityBar-background-active: var(--focus-level-2);
+    --activityBar-border-active: var(--app-primary);
     --activityBar-border: #333333;
     --activityBarBadge-foreground: #FFFFFF;
-    --activityBarBadge-background: #09A1EDl;
+    --activityBarBadge-background: #09A1ED;
 
     --statusBar-background: var(--app-background);
     --statusBar-foreground: var(--app-foreground);
     --statusBar-foreground-active: var(--app-foreground-active);
     --statusBar-border: #7777773d;
-    --statusBar-background2: #252526;
+    --statusBar-background-active: #252526;
 
     --input-border: var(--app-border);
     --input-placeholder: #777777;
     --input-text: #FFFFFF;
-    --inputFocus-background: #1A191C;
+    --input-background-focus: #1A191C;
     --input-background: var(--app-background);
 
     --popover-background: #2e2e30;
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
-    --popoverBoxshadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
+    --popover-shadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
 
     --focus-border: #007acc;
 
     --modal-background: #262626;
     --modal-foreground: #9C9C9C;
-    --modal-activeForeground: #FFFFFF;
-    --modal-boxshadow: #00000059;
+    --modal-foreground-active: #FFFFFF;
+    --modal-shadow: #00000059;
     --modal-border: #2b2b2b;
 
     --error: #ed4849;
@@ -476,7 +476,7 @@ video {
 	  --ace-variable: #70AFD3;
 	  --ace-string: #E69B6F;
 	  --ace-constant: #a31515;
-	  --selectd: #ffffff17;
+	  --selected: #ffffff17;
 	  --cm-string: #b5cea8;
 
   }
@@ -502,43 +502,43 @@ video {
     --tab-foreground-inactive: #333333;
     --tab-border: var(--app-border);
     --tab-hoverBackground: #fafbfc;
-    --tab-activeBackground: #fafbfc;
-    --tab-background2: #f5f5f5;
+    --tab-background-active: #fafbfc;
+    --tab-background-activeColor: #f5f5f5;
 
     --activityBar-background: #f5f5f5;
     --activityBar-foreground: #24292f;
-    --activityBar-inactiveForeground: #57606a;
-    --activityBar-activeBackground: var(--focus-level-2);
-    --activityBar-activeBorder: var(--app-primary);
+    --activityBar-foreground-inactive: #57606a;
+    --activityBar-background-active: var(--focus-level-2);
+    --activityBar-border-active: var(--app-primary);
     
     --activityBar-border: #dddddd;
     --activityBarBadge-foreground: #FFFFFF;
-    --activityBarBadge-background: #09A1EDl;
+    --activityBarBadge-background: #09A1ED;
 
     --statusBar-background: var(--app-background);
     --statusBar-foreground: var(--app-foreground);
     --statusBar-foreground-active: var(--app-foreground-active);
     --statusBar-border: var(--app-border);
-    --statusBar-background2: #ececec;
+    --statusBar-background-active: #ececec;
 
     --input-border: var(--app-border);
     --input-placeholder: #808080;
     --input-text: #222222;
-    --inputFocus-background: #ffffff;
+    --input-background-focus: #ffffff;
     --input-background: rgba(var(--color), 0.06);
 
     --popover-background: #ffffff;
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
-    --popoverBoxshadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
+    --popover-shadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
     
 
     --focus-border: #007acc;
 
     --modal-background: #f5f5f5;
     --modal-foreground: #2a2a2a;
-    --modal-activeForeground: #222222;
-    --modal-boxshadow: #afafaf59;
+    --modal-foreground-active: #222222;
+    --modal-shadow: #afafaf59;
     --modal-border: #dddddd;
 
     --error: #ed4849;
@@ -564,7 +564,7 @@ video {
 	  --ace-variable: #70AFD3;
 	  --ace-string: #E69B6F;
 	  --ace-constant: #a31515;
-	  --selectd: #00000017;
+	  --selected: #00000017;
 	  --cm-string: #098658;
     
   }
@@ -1603,16 +1603,16 @@ video {
   background-color: #ffffff1a !important;
 }
 .\!bg-statusBarBackground2 {
-  background-color: var(--statusBar-background2) !important;
+  background-color: var(--statusBar-background-active) !important;
 }
 .\!bg-tabActiveBackground {
-  background-color: var(--tab-activeBackground) !important;
+  background-color: var(--tab-background-active) !important;
 }
 .\!bg-transparent {
   background-color: #ffffff00 !important;
 }
 .bg-activityBarActiveBackground {
-  background-color: var(--activityBar-activeBackground);
+  background-color: var(--activityBar-background-active);
 }
 .bg-activityBarBackground {
   background-color: var(--activityBar-background);
@@ -1682,7 +1682,7 @@ video {
   background-color: var(--statusBar-background);
 }
 .bg-statusBarBackground2 {
-  background-color: var(--statusBar-background2);
+  background-color: var(--statusBar-background-active);
 }
 .bg-success {
   background-color: var(--success);
@@ -1691,7 +1691,7 @@ video {
   background-color: var(--tab-background);
 }
 .bg-tabBackground2 {
-  background-color: var(--tab-background2);
+  background-color: var(--tab-background-activeColor);
 }
 .bg-transparent {
   background-color: #ffffff00;
@@ -2087,7 +2087,7 @@ video {
   color: var(--activityBar-foreground);
 }
 .text-activityBarInactiveForeground {
-  color: var(--activityBar-inactiveForeground);
+  color: var(--activityBar-foreground-inactive);
 }
 .text-appForeground {
   color: var(--app-foreground);
@@ -2120,7 +2120,7 @@ video {
   color: var(--link);
 }
 .text-modalActiveForeground {
-  color: var(--modal-activeForeground);
+  color: var(--modal-foreground-active);
 }
 .text-popoverForeground {
   color: var(--popover-foreground);
@@ -2197,8 +2197,8 @@ video {
   opacity: 0.8;
 }
 .\!shadow-popoverBoxshadow {
-  --tw-shadow: var(--popoverBoxshadow) !important;
-  --tw-shadow-colored: var(--popoverBoxshadow) !important;
+  --tw-shadow: var(--popover-shadow) !important;
+  --tw-shadow-colored: var(--popover-shadow) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .shadow {
@@ -2212,7 +2212,7 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .\!shadow-popoverBoxshadow {
-  --tw-shadow-color: var(--popoverBoxshadow) !important;
+  --tw-shadow-color: var(--popover-shadow) !important;
   --tw-shadow: var(--tw-shadow-colored) !important;
 }
 .outline-none {
@@ -2293,7 +2293,7 @@ video {
 }
 .before\:bg-activityBarActiveBorder::before {
   content: var(--tw-content);
-  background-color: var(--activityBar-activeBorder);
+  background-color: var(--activityBar-border-active);
 }
 .before\:bg-primaryColor::before {
   content: var(--tw-content);
@@ -2370,15 +2370,15 @@ video {
 }
 .after\:\!bg-statusBarBackground2::after {
   content: var(--tw-content);
-  background-color: var(--statusBar-background2) !important;
+  background-color: var(--statusBar-background-active) !important;
 }
 .after\:\!bg-tabActiveBackground::after {
   content: var(--tw-content);
-  background-color: var(--tab-activeBackground) !important;
+  background-color: var(--tab-background-active) !important;
 }
 .after\:bg-statusBarBackground2::after {
   content: var(--tw-content);
-  background-color: var(--statusBar-background2);
+  background-color: var(--statusBar-background-active);
 }
 .after\:opacity-10::after {
   content: var(--tw-content);
@@ -2440,7 +2440,7 @@ video {
   background-color: #ffffff1a;
 }
 .hover\:bg-inputFocusBackground:hover {
-  background-color: var(--inputFocus-background);
+  background-color: var(--input-background-focus);
 }
 .hover\:bg-primaryColor:hover {
   background-color: var(--app-primary);
@@ -2467,7 +2467,7 @@ video {
   color: var(--app-foreground-active);
 }
 .hover\:text-modalActiveForeground:hover {
-  color: var(--modal-activeForeground);
+  color: var(--modal-foreground-active);
 }
 .hover\:text-primaryColor:hover {
   color: var(--app-primary);
@@ -2493,7 +2493,7 @@ video {
   background-color: var(--app-primary-with-opacity) !important;
 }
 .focus\:bg-inputFocusBackground:focus {
-  background-color: var(--inputFocus-background);
+  background-color: var(--input-background-focus);
 }
 .focus-visible\:\!bg-focus1:focus-visible {
   background-color: var(--focus-level-1) !important;
@@ -2504,10 +2504,10 @@ video {
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
 .focus-visible\:\!shadow-popoverBoxshadow:focus-visible {
-  --tw-shadow: var(--popoverBoxshadow) !important;
-  --tw-shadow-colored: var(--popoverBoxshadow) !important;
+  --tw-shadow: var(--popover-shadow) !important;
+  --tw-shadow-colored: var(--popover-shadow) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
-  --tw-shadow-color: var(--popoverBoxshadow) !important;
+  --tw-shadow-color: var(--popover-shadow) !important;
   --tw-shadow: var(--tw-shadow-colored) !important;
 }
 .group:hover .group-hover\:h-auto {
@@ -2673,7 +2673,7 @@ tr:focus-visible{
   max-height: 75vh;
 }
 .popover-boxshadow{
-  box-shadow: var(--popoverBoxshadow);
+  box-shadow: var(--popover-shadow);
 }  
 *.bg-appBackground2
 ,
@@ -3142,7 +3142,7 @@ body .ace_editor .ace_scrollbar{
 }
 
 .CodeMirror-selected {
-	background: var(--selectd) !important
+	background: var(--selected) !important
 }
 
 .ace_variable {
