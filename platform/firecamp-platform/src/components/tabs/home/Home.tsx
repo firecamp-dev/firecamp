@@ -1,6 +1,7 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
+import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import { Container, EditorApi, Row, Column, FcLogo } from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
@@ -15,6 +16,7 @@ import { useTabStore } from '../../../store/tab';
 import { EThemeColor, EThemeMode } from '../../../types';
 import { ETabEntityTypes } from '../types';
 import { useUserStore } from '../../../store/user';
+import { useWorkspaceStore } from '../../../store/workspace';
 
 const Home: FC<any> = () => {
   const { user, isGuest } = useUserStore(
@@ -25,6 +27,8 @@ const Home: FC<any> = () => {
     shallow
   );
   const { open: openTab } = useTabStore.getState();
+  const { openImportTab } = useWorkspaceStore.getState();
+
   const _openTab = (type?: ERequestTypes | 'environment') => {
     const allowed_app = [
       ERequestTypes.SocketIO,
@@ -36,7 +40,9 @@ const Home: FC<any> = () => {
     openTab({ __meta: { type } }, { id: '', type: ETabEntityTypes.Request });
   };
 
-  const greetingsTo = isGuest ? 'Friend' : user?.name?.split(' ')[0] || 'Friend';
+  const greetingsTo = isGuest
+    ? 'Friend'
+    : user?.name?.split(' ')[0] || 'Friend';
   return (
     <Container className="px-14 py-20" overflow="visible">
       <Container.Header>
@@ -58,7 +64,7 @@ const Home: FC<any> = () => {
               <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
                 Popular Requests
               </div>
-              <div className="flex-col border-b border-appBorder pb-4 w-fit flex-none">
+              <div className="flex-col border-b border-appBorder w-fit flex-none">
                 <RequestItem
                   label="Create Rest API"
                   icon={<FcIconGetSquare size={50} />}
@@ -80,6 +86,12 @@ const Home: FC<any> = () => {
                   icon={<FcIconSocketIoSquare size={24} />}
                   openRequest={() => _openTab(ERequestTypes.SocketIO)}
                   hasInvertIcon={true}
+                />
+                <hr className='pb-4'/>
+                <RequestItem
+                  label="Import Collection"
+                  icon={<VscArrowDown size={16} />}
+                  openRequest={openImportTab}
                 />
               </div>
             </div>
