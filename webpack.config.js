@@ -126,12 +126,14 @@ exports.plugins = [
     chunks: ['index'],
     filename: 'index.html',
     template: 'templates/index.html',
+    favicon: 'templates/favicon.png',
   }),
   new HtmlWebpackPlugin({
     inject: true,
     chunks: ['identity'],
     filename: 'identity.html',
     template: 'templates/identity.html',
+    favicon: 'templates/favicon.png',
   }),
   new NodePolyfillPlugin(),
   new webpack.ProgressPlugin({

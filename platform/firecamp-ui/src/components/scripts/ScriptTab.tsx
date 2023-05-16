@@ -35,14 +35,15 @@ const ScriptTab: FC<IProps> = ({
         <TabHeader className="bg-statusBarBackground2">
           <div className="text-sm">
             Pre-request script are written in Javascript and are run before the
-            request is sent. Learn more about
+            request is sent.
+            {/* Learn more about
             <a
               href="#"
               className="underline inline items-center cursor-pointer"
             >
               pre-request scripts
               <VscLinkExternal className="inline ml-1" size={12} />
-            </a>
+            </a> */}
           </div>
         </TabHeader>
         <Row flex={1} overflow="auto">
