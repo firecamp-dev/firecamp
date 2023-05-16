@@ -309,7 +309,7 @@
     padding: 8px 24px 6px 34px;
     width: calc(100% - 16px);
     margin-top: 16px;
-    background-color: var(--inputFocus-background);
+    background-color: var(--input-background-focus);
     color: var(--inputFocus-foreground);
     border: 1px solid var(--input-border);
 }

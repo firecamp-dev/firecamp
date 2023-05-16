@@ -15,10 +15,10 @@
         color: var(--popover-foreground);
     }
     .szh-menu{
-      box-shadow: var(--modal-boxshadow) 0px 0px 8px 2px;
+      box-shadow: var(--modal-shadow) 0px 0px 8px 2px;
     }
     .szh-menu:focus{
-      box-shadow: var(--modal-boxshadow) 0px 0px 8px 2px !important;
+      box-shadow: var(--modal-shadow) 0px 0px 8px 2px !important;
       border: 1px solid var(--focus-border)
     }
     .szh-menu.szh-menu--state-open{
@@ -35,7 +35,7 @@
         color: var(--app-foreground-active);
     }
     .szh-menu__item--disabled{
-        color: var(--activityBar-inactiveForeground);
+        color: var(--activityBar-foreground-inactive);
     }
     .szh-menu-container{
       margin: 0px !important
