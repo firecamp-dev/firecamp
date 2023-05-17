@@ -67,7 +67,10 @@ We are bringing the VS code philosophy to Firecamp to solve this critical proble
 Firecamp is Multi-protocol API platform, which offers end-to-end testing and development of Rest, GraphQL, WebSocket, and many other APIs.
 We support major API specifications and protocols, which allows for seamless API testing, API documentation, and smoother collaboration between backend, frontend, and mobile teams.
 
-🚀 *Together, let's elevate the way we test, develop, and conquer APIs!*
+## What's Next? 
+We are thrilled to announce that the launch of Firecamp OpenSource is just around the corner. Stay tuned for future updates!
+
+ *Together, let's elevate the way we test, develop, and conquer APIs!* 🚀
 
 
 
