@@ -30,15 +30,15 @@ const ImportTab = ({ tab, platformContext: context }) => {
 
   const [state, setState] = useState<TState>({
     raw: '',
-    activeTab: ETabTypes.ImportRaw,
+    activeTab: ETabTypes.ImportFile,
     isImporting: false,
   });
 
   const { activeTab, isImporting } = state;
 
   const tabs = [
-    { name: 'Import Raw', id: ETabTypes.ImportRaw },
     { name: 'Import File', id: ETabTypes.ImportFile },
+    { name: 'Import Raw', id: ETabTypes.ImportRaw },
   ];
 
   const importCollection = (collection: string) => {
