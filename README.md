@@ -33,16 +33,16 @@ We give you a broad range of features that will help you build APIs faster than 
 ## Dedicated GUI playground for each API protocol
 
 :cherry_blossom: **HTTP playground**
-It's the light-weight, IntelliSense, and the next-generation testing client to give the most delightful collaborative experience while building APIs in a team.
+  > It's the light-weight, IntelliSense, and the next-generation testing client to give the most delightful collaborative experience while building APIs in a team.
 
 :sunflower: **GraphQL playground**
-Perform GraphQL operations with a seamless experience. Prepare, Share, and Export your Query Collection collaboratively with your team.
+  > Perform GraphQL operations with a seamless experience. Prepare, Share, and Export your Query Collection collaboratively with your team.
 
 :hibiscus: **WebSocket playground**
-Debug bidirectional connection visually with WebSocket GUI client more precisely now. The only GUI client to test, debug, and visualize real-time or event-driven messages collaboratively.
+  > Debug bidirectional connection visually with WebSocket GUI client more precisely now. The only GUI client to test, debug, and visualize real-time or event-driven messages collaboratively.
 
 :maple_leaf: **SocketIo playground**
-Monitor each emitters’ and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
+  > Monitor each emitters’ and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
 
 ## Roadmap 
 - Firecamp CLI
@@ -50,6 +50,7 @@ Monitor each emitters’ and listener’s events visually over a bi-directional 
 - Proxy
 - SSL
 - History
+- AI
 
 ## Getting the most of Firecamp
 📙 Documentation
