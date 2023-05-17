@@ -2,7 +2,7 @@
 
 
 [![Firecamp Discord](https://badgen.net/discord/members/8hRaqhK)](https://discord.gg/8hRaqhK)
-[![Twitter: Firecamp](https://img.shields.io/twitter/follow/firecamphq.svg?style=social)](https://twitter.com/firecampdev)
+[![Twitter: Firecamp](https://img.shields.io/twitter/follow/firecampdev.svg?style=social)](https://twitter.com/firecampdev)
 
 # Firecamp is a Multi-protocol API development platform, for developers.
 
