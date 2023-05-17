@@ -22,7 +22,7 @@ We give you a broad range of features that will help you build APIs faster than 
 
 - **Account**:  Create your Firecamp account with Github, Google, and Email and sync your data across devices and the cloud.
 
-- **Collection**: Collect and organise your APIs through the “collect and folder” feature.
+- **Collection**: Collect and organise your APIs through the “collection and folder” feature.
 
 - **Workspace and team collaboration**: Firecamp allows you to create personal and team workspaces according to your needs. You can create a team workspace and collaborate with unlimited team members for better API development flow.
 
@@ -53,7 +53,7 @@ We give you a broad range of features that will help you build APIs faster than 
 - AI
 
 ## Getting the most of Firecamp
-📙 Documentation
+📙 [Documentation](https://firecamp.io/docs)
 
 See the Firecamp doc for in-depth walk-throughs on functionality. Join our [Discord server](https://discord.gg/8hRaqhK) if you need help, want to chat, or are thinking of a new feature. We're here.
 
