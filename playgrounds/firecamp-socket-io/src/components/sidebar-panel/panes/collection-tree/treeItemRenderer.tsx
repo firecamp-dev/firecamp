@@ -6,6 +6,7 @@ import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { Button } from '@firecamp/ui';
+import { ISocketIOEmitter } from '@firecamp/types';
 
 export default {
   renderItemArrow: ({ item, context }) => {
@@ -91,6 +92,8 @@ export default {
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
 
+    const { argsCount, previewText } = getEmitterArgPreview(item)
+
     // TODO have only root li component create all the classes
     return (
       <li
@@ -109,9 +112,8 @@ export default {
         <div
           {...(context.itemContainerWithoutChildrenProps as any)}
           style={{
-            paddingLeft: `${
-              (depth + 1) * renderDepthOffset + depth * renderDepthOffset
-            }px`,
+            paddingLeft: `${(depth + 1) * renderDepthOffset + depth * renderDepthOffset
+              }px`,
           }}
           className={cx(
             'pr-2',
@@ -173,13 +175,13 @@ export default {
             ) : (
               <div>
                 <div className="w-full overflow-hidden overflow-ellipsis items-center block text-secondaryColor">
-                  {title}
+                  {title} 
                 </div>
                 {/* <div className="bg-focus2- text-sm overflow-ellipsis">
                   {item.data.__meta?.label} Firecamp Label
                 </div> */}
                 <div className="text-sm appForegroundInActive">
-                  {'{ "name": "Firecamp}'}
+                  {previewText || ""}
                 </div>
               </div>
             )}
@@ -232,3 +234,13 @@ export default {
     );
   },
 };
+
+
+const getEmitterArgPreview = (item: ISocketIOEmitter) => {
+
+  const { name, value } = item;
+  const argsCount = value?.length || 0
+  const arg = argsCount ? value[0] : { body: "" };
+  const body = "" + arg.body;
+  return { argsCount, previewText: body }
+}
