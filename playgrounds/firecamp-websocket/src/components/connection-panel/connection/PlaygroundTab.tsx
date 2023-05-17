@@ -109,7 +109,7 @@ const PlaygroundTab = () => {
   };
   const _setToOriginal = () => {};
   const _saveMessage = () => {
-    const isSaved = false; //TODO: Fix it here
+    const isSaved = !!playground.message.__ref.id;
 
     if (isSaved) {
       updateItem();
@@ -235,10 +235,9 @@ const PlaygroundTab = () => {
     }
   };
 
-  const isMsgSaved = false; //plgTab.__meta.isSaved;
+  const isMsgSaved = !!playground.message.__ref.id;
   const isMsgChanged = false; //plgTab.__meta.hasChange;
-  const showSaveButton =
-    (isMsgSaved && isMsgChanged) || (!isMsgSaved && isMsgChanged && value);
+  const showSaveButton = playground.playgroundHasChanges;
 
   return (
     <Container className="h-full">
