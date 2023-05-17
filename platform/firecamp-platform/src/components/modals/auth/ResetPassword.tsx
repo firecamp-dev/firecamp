@@ -10,6 +10,8 @@ import platformContext from '../../../services/platform-context';
  */
 const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
+  const [showPassword, toggleShowPassword] = useState(false);
+
   const form = useForm();
   let { handleSubmit, errors } = form;
 
@@ -102,10 +104,18 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               placeholder="Enter password"
               key={'password'}
               name={'password'}
-              type={'password'}
+              type={showPassword ? 'text' : 'password'}
               label="Password"
               iconPosition="right"
-              icon={<VscEye title="password" size={16} />}
+              icon={
+                <VscEye
+                  title="password"
+                  size={16}
+                  onClick={() => {
+                    toggleShowPassword(!showPassword);
+                  }}
+                />
+              }
               registerMeta={{
                 required: true,
                 maxLength: 50,

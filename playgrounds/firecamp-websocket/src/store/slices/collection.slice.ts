@@ -179,10 +179,14 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
     const item = state.prepareCreateItemPayload('', '');
 
     state.context.request
-      .createRequestItemPrompt(item, {
-        items: folders,
-        rootOrders: folderRootOrders,
-      })
+      .createRequestItemPrompt(
+        item,
+        {
+          items: folders,
+          rootOrders: folderRootOrders,
+        },
+        {}
+      )
       .then((res) => {
         console.log(res, 1111);
         state.onAddItem(res);
@@ -290,6 +294,7 @@ const createCollectionSlice: TStoreSlice<ICollectionSlice> = (
         __manualUpdates: ++s.collection.__manualUpdates,
       },
     }));
+    state.checkPlaygroundEquality();
   },
   deleteItem: (id: TId) => {
     const {
