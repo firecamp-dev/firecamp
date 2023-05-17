@@ -26,7 +26,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/firecamp-io/firecamp.git"
+    "url": "git+https://github.com/firecampdev/firecamp.git"
   },
   "keywords": [
     "api",
@@ -107,7 +107,7 @@
     "pnpm": ">=7"
   },
   "bugs": {
-    "url": "https://github.com/firecamp.io/firecamp/issues"
+    "url": "https://github.com/firecampdev/firecamp/issues"
   },
   "jest": {
     "moduleNameMapper": {

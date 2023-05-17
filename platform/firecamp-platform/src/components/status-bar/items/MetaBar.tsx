@@ -38,7 +38,7 @@ const MetaBar: FC<any> = () => {
       )}
       <a
         className="flex items-center mr-2"
-        href={'https://github.com/firecamp-io/firecamp'}
+        href={'https://github.com/firecampdev/firecamp'}
         target="_blank"
         data-tip="GitHub"
       >
@@ -50,7 +50,7 @@ const MetaBar: FC<any> = () => {
       <a
         className="flex items-center mr-2 "
         href={
-          'https://twitter.com/intent/tweet?screen_name=FirecampHQ&ref_src=twsrc%5Etfw'
+          'https://twitter.com/intent/tweet?screen_name=Firecampdev&ref_src=twsrc%5Etfw'
         }
         target="_blank"
         data-tip="Follow us @FirecampHQ"

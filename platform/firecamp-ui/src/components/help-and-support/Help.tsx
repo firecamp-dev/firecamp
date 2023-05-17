@@ -21,7 +21,7 @@ const helpDesks = {
   [HELPDESK_TYPES.GITHUB]: {
     id: HELPDESK_TYPES.GITHUB,
     name: 'GitHub',
-    link: 'https://github.com/firecamp-io/firecamp/issues/new',
+    link: 'https://github.com/firecampdev/firecamp/issues/new',
     image:  <VscGithubInverted size={24} />
   },
   [HELPDESK_TYPES.JOIN_DISCORD]: {
