@@ -37,7 +37,7 @@ const InviteOrgMembers: FC<IProps> = ({
   const sendInvitation = useCallback(() => {
     if (!member.id || !member.email || !member.role) return;
     setInvitingFlag(true);
-    inviteOrgMembers([member]).finally(() => {
+    inviteOrgMembers([{id: member.id, name: member.name, email: member.email}], member.role).finally(() => {
       setInvitingFlag(false);
     });
   }, [member]);
