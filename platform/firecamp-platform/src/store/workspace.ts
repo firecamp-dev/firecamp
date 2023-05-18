@@ -43,7 +43,8 @@ export interface IWorkspaceStore {
 
   // invitations
   inviteOrgMembers: (
-    members: { id: string; name: string; role: number }[]
+    members: { id: string; name: string; email: string }[],
+    role: number
   ) => Promise<any>;
 
   openImportTab: () => void;
@@ -125,10 +126,10 @@ export const useWorkspaceStore = create<IWorkspaceStore>(
     },
 
     /** invite org members */
-    inviteOrgMembers: (members) => {
+    inviteOrgMembers: (members, role) => {
       const { workspace } = get();
       return Rest.invitation
-        .inviteOrgMembers({ workspaceId: workspace.__ref.id, members })
+        .inviteOrgMembers({ workspaceId: workspace.__ref.id, members, role })
         .then((res) => {
           platformContext.app.notify.success(
             'The invitation has been sent successfully'
