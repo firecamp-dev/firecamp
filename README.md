@@ -68,7 +68,7 @@ Firecamp is Multi-protocol API platform, which offers end-to-end testing and dev
 We support major API specifications and protocols, which allows for seamless API testing, API documentation, and smoother collaboration between backend, frontend, and mobile teams.
 
 ## What's Next? 
-We are thrilled to announce that the launch of Firecamp OpenSource is just around the corner. Stay tuned for future updates!
+**OpenSource**, We are excited to announce it, Firecamp Open Source will be released soon. Keep watching this repo for further updates.
 
  *Together, let's elevate the way we test, develop, and conquer APIs!* 🚀
 
