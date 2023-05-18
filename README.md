@@ -1,4 +1,4 @@
-![Github cover](https://github.com/firecamp-io/firecamp-oss-phase-2/blob/c1c4f0b6ed8cb061f6d778a58c8c9755c92e78a6/templates/github-cover.png)
+![FirecampCoverImage](.github/github-cover.png)
 
 
 [![Firecamp Discord](https://badgen.net/discord/members/8hRaqhK)](https://discord.gg/8hRaqhK)
