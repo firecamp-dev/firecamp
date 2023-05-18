@@ -47,7 +47,7 @@ export const TabListFinal = (args) =>
                     </div>
                 </div>
             </div>
-            <div className="p-12 bg-appBackground">Tab Content</div>
+            <div className="p-12 bg-app-background">Tab Content</div>
         </div>
     </div>;
     

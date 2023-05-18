@@ -291,7 +291,7 @@ const SidebarContainer: FC<any> = () => {
           maxWidth={'600'}
           className={cx({ closed: false })}
         >
-          <Column className="bg-appBackground2 border-r border-appBorder">
+          <Column className="bg-app-background-secondary border-r border-appBorder">
             {_renderSidebar()}
           </Column>
         </Resizable>

@@ -139,7 +139,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
           <div className="">
             <div className="items-center mb-4">
               <label
-                className="text-appForeground text-sm block mb-1"
+                className="text-app-foreground text-sm block mb-1"
                 htmlFor="envBane"
               >
                 Collection Name
@@ -151,7 +151,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
 
             <div className="items-center mb-4">
               <label
-                className="text-appForeground text-sm block mb-1"
+                className="text-app-foreground text-sm block mb-1"
                 htmlFor="envBane"
               >
                 Environment Name
@@ -178,7 +178,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
 
           {/* <div className="">
             <label
-              className="text-appForeground text-sm mb-1 block"
+              className="text-app-foreground text-sm mb-1 block"
               htmlFor="variables"
             >
               Visibility
@@ -196,7 +196,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
 
           <div className="mt-4">
             <label
-              className="text-appForeground text-sm mb-1 block"
+              className="text-app-foreground text-sm mb-1 block"
               htmlFor="variables"
             >
               Variables

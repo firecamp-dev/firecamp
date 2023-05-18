@@ -170,7 +170,7 @@ const PathSelector: FC<{
 
   return (
     <Container className="max-h-48 mb-14 !h-fit">
-      <label className="text-appForeground text-sm mb-1 block">Save at</label>
+      <label className="text-app-foreground text-sm mb-1 block">Save at</label>
       <div className="border border-appBorder">
         <Container.Body className="save-modal-collection pane-body  visible-scrollbar overflow-visible">
           <UncontrolledTreeEnvironment

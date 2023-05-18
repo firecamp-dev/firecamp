@@ -90,7 +90,7 @@ const Logs = () => {
   };
 
   return (
-    <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
+    <Column flex={1} className="h-full bg-app-background-secondary" overflow="auto">
       <Row className="with-divider h-full" flex={1}>
         <Column overflow="auto" className="h-full">
           <Container>

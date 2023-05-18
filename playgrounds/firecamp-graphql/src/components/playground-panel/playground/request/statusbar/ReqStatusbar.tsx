@@ -124,7 +124,7 @@ const ReqStatusBar = ({}) => {
             <Dropdown.Options
               options={plgOperations || []}
               // displayKey="name"
-              className={'without-arrow width-full bg-appBackground2'}
+              className={'without-arrow width-full bg-app-background-secondary'}
               emptyMessage="No queries"
               onSelect={onSelectOperation}
             ></Dropdown.Options>

@@ -24,7 +24,7 @@ CopyButtonWithText.args = {
 
 export const CopyButtonWithoutText = Template.bind({});
 CopyButtonWithoutText.args = { 
-  className: 'border p-3 bg-appBackground2',
+  className: 'border p-3 bg-app-background-secondary',
   text: 'Copy Button Text' ,
   showText: false,
   showCopied: true,

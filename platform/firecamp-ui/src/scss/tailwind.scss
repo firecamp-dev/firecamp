@@ -1512,14 +1512,14 @@ video {
 .border-activityBarBorder {
   border-color: var(--activityBar-border);
 }
-.border-appBackground {
+.border-app-background {
   border-color: var(--app-background);
+}
+.border-app-foreground {
+  border-color: var(--app-foreground);
 }
 .border-appBorder {
   border-color: var(--app-border);
-}
-.border-appForeground {
-  border-color: var(--app-foreground);
 }
 .border-appForegroundInActive {
   border-color: var(--app-foreground-inactive);
@@ -1593,7 +1593,7 @@ video {
 .border-r-transparent {
   border-right-color: #ffffff00;
 }
-.\!bg-appBackground2 {
+.\!bg-app-background-secondary {
   background-color: var(--app-background-secondary) !important;
 }
 .\!bg-focus2 {
@@ -1620,17 +1620,17 @@ video {
 .bg-activityBarBorder {
   background-color: var(--activityBar-border);
 }
-.bg-appBackground {
+.bg-app-background {
   background-color: var(--app-background);
 }
-.bg-appBackground2 {
+.bg-app-background-secondary {
   background-color: var(--app-background-secondary);
+}
+.bg-app-foreground {
+  background-color: var(--app-foreground);
 }
 .bg-appBorder {
   background-color: var(--app-border);
-}
-.bg-appForeground {
-  background-color: var(--app-foreground);
 }
 .bg-appForegroundInActive {
   background-color: var(--app-foreground-inactive);
@@ -2089,7 +2089,7 @@ video {
 .text-activityBarInactiveForeground {
   color: var(--activityBar-foreground-inactive);
 }
-.text-appForeground {
+.text-app-foreground {
   color: var(--app-foreground);
 }
 .text-appForegroundActive {
@@ -2460,7 +2460,7 @@ video {
 .hover\:text-activityBarForeground:hover {
   color: var(--activityBar-foreground);
 }
-.hover\:text-appForeground:hover {
+.hover\:text-app-foreground:hover {
   color: var(--app-foreground);
 }
 .hover\:text-appForegroundActive:hover {
@@ -2675,11 +2675,11 @@ tr:focus-visible{
 .popover-boxshadow{
   box-shadow: var(--popover-shadow);
 }  
-*.bg-appBackground2
+*.bg-app-background-secondary
 ,
-*.bg-appBackground2
+*.bg-app-background-secondary
  .fc-col,
-*.bg-appBackground2
+*.bg-app-background-secondary
 .fc-col {
     background: var(--app-background-secondary)
 }

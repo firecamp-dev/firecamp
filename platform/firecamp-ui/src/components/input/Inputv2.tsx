@@ -49,7 +49,7 @@ export const Input= React.forwardRef<HTMLInputElement, IInput2>(
       >
         {label !== '' && (
           <label
-            className="text-appForeground text-sm mb-1 block"
+            className="text-app-foreground text-sm mb-1 block"
             htmlFor={label}
           >
             {label}
@@ -110,7 +110,7 @@ const ErrorMessage = ({ error = '' }: IErrorMessage) => {
 
 const Note = ({ note = '' }: INote) => {
   return (
-    <div className="text-xs text-appForeground  flex items-center">
+    <div className="text-xs text-app-foreground  flex items-center">
       <VscInfo title='info-icon'/>
       {note}
     </div>

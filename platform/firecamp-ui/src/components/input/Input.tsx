@@ -64,7 +64,7 @@ const Input: FC<IInput> = React.forwardRef(
       >
         {label !== '' && (
           <label
-            className="text-appForeground text-sm mb-1 block"
+            className="text-app-foreground text-sm mb-1 block"
             htmlFor={label}
           >
             {label}
@@ -160,7 +160,7 @@ const ErrorMessage: FC<{ error: string | JSX.Element }> = ({ error }) => {
 
 const Note = ({ note = '' }) => {
   return (
-    <div className="text-xs text-appForeground  flex items-center">
+    <div className="text-xs text-app-foreground  flex items-center">
       <VscInfo />
       {note}
     </div>

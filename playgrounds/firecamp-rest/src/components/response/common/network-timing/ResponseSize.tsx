@@ -50,7 +50,7 @@ const Size = ({ sizes = [], index = 0 }) => {
 
   return (
     <Container className="with-divider">
-      <Container.Header className="bg-appBackground2">
+      <Container.Header className="bg-app-background-secondary">
         <TabHeader
           id={`${totalSize.curlParameter}-size`}
           className="height-ex-small  fc-network-header"

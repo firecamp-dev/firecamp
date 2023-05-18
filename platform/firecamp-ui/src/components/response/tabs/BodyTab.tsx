@@ -209,7 +209,7 @@ const CorsError = () => {
                 <li className="mv-2">
                   <span>
                     {`Contact your system administrator and add `}
-                    <b className="text-appForeground contents">
+                    <b className="text-app-foreground contents">
                       https://firecamp.dev
                     </b>
                     {` to your server's allow list.`}

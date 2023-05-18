@@ -46,7 +46,7 @@ const Button: FC<IButton> = ({
                     'text-secondaryColorText bg-danger !border-danger': danger && !transparent,
                     'text-primaryColor !border-primaryColor hover:bg-primaryColor': primary && transparent,
                     'hover:text-primaryColorText': primary && transparent && !ghost,
-                    'text-appForeground !border-secondaryColor': secondary && transparent,
+                    'text-app-foreground !border-secondaryColor': secondary && transparent,
                     'text-danger !border-danger': danger && transparent,
                     'bg-transparent': transparent == true,
                     'flex-row': iconLeft,

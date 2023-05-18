@@ -85,8 +85,8 @@
 
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div {
 	border-bottom: 1px solid var(--appBorder) !important;
-	background: var(--appBackground);
-	color: var(--appForeground) !important;
+	background: var(--app-background);
+	color: var(--app-foreground) !important;
 	margin-bottom: 0px !important;
 	padding-bottom: 0px !important
 }
@@ -111,7 +111,7 @@
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root div>div.graphiql-explorer-node span>input,
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root div>div.graphiql-explorer-node+div span>input {
 	margin-right: 8px;
-	background-color: var(--appBackground)
+	background-color: var(--app-background)
 }
 
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div>div.graphiql-explorer-node>span>span,

@@ -362,7 +362,7 @@ export const LogsExample = () => {
         shadow: true,
         options:
           'w-36 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow border-0',
-        item: '!p-1 !pl-2 text-sm leading-4 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
+        item: '!p-1 !pl-2 text-sm leading-4 text-app-foreground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
       }}
     />
   );
@@ -399,7 +399,7 @@ export const ReqStatusBarExample = () => {
           shadow: true,
           options:
             'ml-1 w-36 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow border-0',
-          item: '!p-1 !pl-2 text-sm leading-4 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
+          item: '!p-1 !pl-2 text-sm leading-4 text-app-foreground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
         }}
       />
       <Button
@@ -484,9 +484,9 @@ export const StatusBarExample = () => {
               options:
                 'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
               header:
-                'flex items-center text-appForeground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
+                'flex items-center text-app-foreground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
               headerListItem:
-                '!py-1 !px-3 text-sm leading-6 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
+                '!py-1 !px-3 text-sm leading-6 text-app-foreground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
             }}
           />
           <VscChevronRight size={14} className="mt-0.5" />
@@ -561,9 +561,9 @@ export const StatusBarExample = () => {
               options:
                 'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
               header:
-                'flex items-center text-appForeground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
+                'flex items-center text-app-foreground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
               headerListItem:
-                '!py-1 !px-3 text-sm leading-6 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
+                '!py-1 !px-3 text-sm leading-6 text-app-foreground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
             }}
           />
         </div>

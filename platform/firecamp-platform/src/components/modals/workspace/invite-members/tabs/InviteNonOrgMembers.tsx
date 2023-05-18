@@ -97,7 +97,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
             please review below error
             {error.map((e, i) => (
               <li key={i}>
-                <span className="text-appForeground">
+                <span className="text-app-foreground">
                   {e.message}
                   {i + 1 !== error.length ? ', ' : ''}
                 </span>
@@ -146,7 +146,7 @@ const RoleDD: FC<{
   return (
     <div className="flex items-center pb-3">
       <div>
-        <label className="text-base text-appForeground">
+        <label className="text-base text-app-foreground">
           Invite members as{' '}
         </label>
 

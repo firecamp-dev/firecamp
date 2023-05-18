@@ -2,9 +2,9 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
   theme: {
     colors: {
-      appBackground: 'var(--app-background)',
-      appBackground2: 'var(--app-background-secondary)',
-      appForeground: 'var(--app-foreground)',
+      'app-background': 'var(--app-background)',
+      'app-background-secondary': 'var(--app-background-secondary)',
+      'app-foreground': 'var(--app-foreground)',
       appForegroundActive: 'var(--app-foreground-active)',
       appForegroundInActive: 'var(--app-foreground-inactive)',
       appBorder: 'var(--app-border)',

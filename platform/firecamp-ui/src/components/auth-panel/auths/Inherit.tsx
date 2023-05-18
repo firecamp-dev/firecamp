@@ -2,7 +2,7 @@ import { FC } from 'react';
 
 const Inherit: FC<IProps> = ({}) => {
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-appForeground">
+    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-app-foreground">
       <div className="flex flex-col opacity-50">
         <div key={'text-appForegroundInActive flex items-center mb-2 text-xl'}>
           Auth is inherited from parent.

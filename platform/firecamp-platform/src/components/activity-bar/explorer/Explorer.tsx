@@ -473,7 +473,7 @@ const Explorer: FC<any> = () => {
               </div>
             ) : (
               <div className="text-sm text-appForegroundInActive text-center mb-1">
-                <span className="text-appForeground text-base block mb-2">
+                <span className="text-app-foreground text-base block mb-2">
                   Create your first API collection!
                 </span>
                 You don't have any API collection in this workspace.

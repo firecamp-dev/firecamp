@@ -41,7 +41,7 @@ const FileInput: FC<IFileInput> = ({
       {!path || !path.length ? (
         <label
           htmlFor="file_path"
-          className=" bg-focus3 p-2 rounded-sm mb-2 text-appForeground px-2 py-1 w-fit cursor-pointer flex flex-row items-center"
+          className=" bg-focus3 p-2 rounded-sm mb-2 text-app-foreground px-2 py-1 w-fit cursor-pointer flex flex-row items-center"
           onClick={_onClick}
         >
 

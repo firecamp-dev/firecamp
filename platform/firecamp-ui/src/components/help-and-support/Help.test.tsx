@@ -15,7 +15,7 @@ describe("Help & Support component", () => {
         const HelpComponentDiv = container.firstElementChild;
 
         //validating wrapper component class name
-        expect(HelpComponentDiv).toHaveClass('absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-appForeground');
+        expect(HelpComponentDiv).toHaveClass('absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-app-foreground');
 
         //validating links wrapper class name
         const linkWrapper = HelpComponentDiv.firstElementChild;

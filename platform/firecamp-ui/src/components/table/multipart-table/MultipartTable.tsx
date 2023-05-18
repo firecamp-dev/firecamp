@@ -116,7 +116,7 @@ const MultipartTable = ({
             // loading={
             //   <input
             //     value={cellValue}
-            //     className="bg-transparent text-base text-appForeground font-sans"
+            //     className="bg-transparent text-base text-app-foreground font-sans"
             //     readOnly
             //   />
             // }

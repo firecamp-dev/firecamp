@@ -55,7 +55,7 @@ const App: FC<any> = () => {
       <RootContainer
         flex={1}
         overflow="auto"
-        className="h-screen w-screen bg-appBackground text-appForeground"
+        className="h-screen w-screen bg-app-background text-app-foreground"
       >
         <Row flex={1}>
           <SidebarContainer />

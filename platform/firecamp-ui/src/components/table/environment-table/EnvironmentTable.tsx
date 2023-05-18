@@ -84,7 +84,7 @@ const EnvironmentTable = ({
         // return (
         //   <input
         //     value={cellValue}
-        //     className="bg-transparent text-base text-appForeground font-sans"
+        //     className="bg-transparent text-base text-app-foreground font-sans"
         //     onChange={(e: any) => onChange(column.key, e.target.value, e)}
         //   />
         // );

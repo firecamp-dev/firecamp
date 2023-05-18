@@ -135,7 +135,7 @@ describe("Input component: ", () => {
         //validate the label text & its styles
         let labelElement = InputWrapper.firstElementChild;
         expect(labelElement.textContent).toBe(InputProps.label);
-        expect(labelElement.className).toBe("text-appForeground text-sm mb-1 block");
+        expect(labelElement.className).toBe("text-app-foreground text-sm mb-1 block");
 
     });
 
@@ -192,7 +192,7 @@ describe("Input component: ", () => {
 
         //validate the note message to be rendered along with defined styles & info icon
         let NoteElement = InputElement.parentElement.lastElementChild;
-        expect(NoteElement).toHaveClass("text-xs text-appForeground  flex items-center")
+        expect(NoteElement).toHaveClass("text-xs text-app-foreground  flex items-center")
         expect(NoteElement.textContent).toBe('info-icon' + NoteMessage);
     });
 

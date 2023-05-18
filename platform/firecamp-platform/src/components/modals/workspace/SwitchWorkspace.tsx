@@ -55,7 +55,7 @@ const SwitchWorkspace: FC<IModal> = ({
                   <label className="font-semibold text-appForegroundInActive block">
                     {switchingOrg?.name}
                   </label>
-                  <label className="font-semibold text-appForeground uppercase block">
+                  <label className="font-semibold text-app-foreground uppercase block">
                     Please select workspace to switch
                   </label>
                   <span className="block font-normal text-appForegroundInActive">
@@ -143,7 +143,7 @@ const NoWrsFoundMessage = ({ close = () => {} }) => {
   return (
     <div className="p-8 h-36 flex flex-col justify-center items-center">
       <div className="text-sm max-w-xs mx-auto text-center px-10 pt-4">
-        <label className="font-semibold text-appForeground uppercase">
+        <label className="font-semibold text-app-foreground uppercase">
           No Workspaces Found
         </label>
         <span className="block font-normal text-appForegroundInActive">
@@ -159,7 +159,7 @@ const FetchingWrs = () => {
   return (
     <div className="p-8 h-36 flex flex-col justify-center items-center">
       <div className="text-sm max-w-xs mx-auto text-center px-10 pt-4">
-        <label className="font-semibold text-appForeground uppercase">
+        <label className="font-semibold text-app-foreground uppercase">
           Fetching Your Workspaces ...
         </label>
       </div>

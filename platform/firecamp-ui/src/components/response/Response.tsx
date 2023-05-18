@@ -31,7 +31,7 @@ const Response: FC<IResponsePanel> = ({
       height="100%"
       left={true}
       maxWidth={900}
-      className="bg-appBackground2"
+      className="bg-app-background-secondary"
       minWidth={400}
     >
       <Container>

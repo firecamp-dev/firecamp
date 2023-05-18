@@ -21,7 +21,7 @@ export default {
 const Template = (args: any) => {
     let [isOpen, toggleOpen] = useState(true);
 
-return <div className="bg-appBackground h-screen w-screen block">
+return <div className="bg-app-background h-screen w-screen block">
     <Button text="Open Modal"  onClick={() => toggleOpen(true)}/>
     <Modal {...args} isOpen={isOpen} onClose={() => toggleOpen(false)}>
         <Modal.Header >
@@ -61,14 +61,14 @@ const SignUpBody = () => {
                 <FormField label="password" >
                     <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
                 </FormField>
-                <a className="cursor-pointer text-appForeground block pb-6 text-right text-sm">Forgot Password?</a>
+                <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm">Forgot Password?</a>
                 <Button primary={true} text="sign in" fullWidth={true} md={true} />
             </div>
             <hr className="border-modalBorder -ml-8 -mr-8 mb-6 mt-6" />
             <div className="">
 
-                <a href="#" className="text-appForeground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <VscGithub size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">github</span></a>
-                <a href="#" className="text-appForeground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <GrGoogle size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">google</span></a>
+                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <VscGithub size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">github</span></a>
+                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <GrGoogle size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">google</span></a>
 
             </div>
         </div>

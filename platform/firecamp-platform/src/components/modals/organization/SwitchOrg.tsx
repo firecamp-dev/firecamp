@@ -43,7 +43,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             <>
               <div className="p-4">
                 <div className="text-sm">
-                  <label className="font-semibold text-appForeground uppercase">
+                  <label className="font-semibold text-app-foreground uppercase">
                     Please select organization to switch
                   </label>
                   <span className="block font-normal text-appForegroundInActive">
@@ -103,7 +103,7 @@ const NoOrgFoundMessage = () => {
   return (
     <div className="p-8 h-36 flex flex-col justify-center items-center">
       <div className="text-sm max-w-xs mx-auto text-center px-10 pt-4">
-        <label className="font-semibold text-appForeground uppercase">
+        <label className="font-semibold text-app-foreground uppercase">
           No Organization Found
         </label>
         <span className="block font-normal text-appForegroundInActive">
@@ -125,7 +125,7 @@ const FetchingOrgs = () => {
   return (
     <div className="p-8 h-36 flex flex-col justify-center items-center">
       <div className="text-sm max-w-xs mx-auto text-center px-10 pt-4">
-        <label className="font-semibold text-appForeground uppercase">
+        <label className="font-semibold text-app-foreground uppercase">
           Fetching Your Organizations...
         </label>
       </div>

@@ -88,7 +88,7 @@ const BasicTable = ({
         // return (
         //   <input
         //     value={cellValue}
-        //     className="bg-transparent text-base text-appForeground font-sans"
+        //     className="bg-transparent text-base text-app-foreground font-sans"
         //     onChange={(e: any) => onChange(column.key, e.target.value, e)}
         //   />
         // );
@@ -116,7 +116,7 @@ const BasicTable = ({
             // loading={
             //   <input
             //     value={cellValue}
-            //     className="bg-transparent text-base text-appForeground font-sans"
+            //     className="bg-transparent text-base text-app-foreground font-sans"
             //     readOnly
             //   />
             // }
@@ -128,7 +128,7 @@ const BasicTable = ({
       //   return (
       //     <input
       //       value={cellValue}
-      //       className="bg-transparent text-base text-appForeground font-sans"
+      //       className="bg-transparent text-base text-app-foreground font-sans"
       //       onChange={(e: any) => onChange(column.key, e.target.value, e)}
       //     />
       //   );

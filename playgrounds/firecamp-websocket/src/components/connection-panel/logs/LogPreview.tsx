@@ -30,7 +30,7 @@ const LogPreview = ({ row = emptyRow }) => {
   const isEventReceived = row.__meta.type == ELogTypes.Receive;
   const isEventFromSystem = row.__meta.type == ELogTypes.System;
   return (
-    <Column minHeight={100} className="bg-appBackground2" height={'100%'}>
+    <Column minHeight={100} className="bg-app-background-secondary" height={'100%'}>
       <Container className="bg-focus2">
         <Container.Header className="bg-focus2">
           <TabHeader className={cx(row.__meta?.color || '', 'height-ex-small')}>

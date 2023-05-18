@@ -39,7 +39,7 @@ describe("Button : " , () => {
 
     let button = screen.getByRole('button', { name: SecondaryButtonArgs.text });
     if(SecondaryButtonArgs.transparent){
-      expect(button).toHaveClass('text-appForeground !border-secondaryColor'); 
+      expect(button).toHaveClass('text-app-foreground !border-secondaryColor'); 
     }else if(!SecondaryButtonArgs.transparent){
       expect(button).toHaveClass('text-secondaryColorText bg-secondaryColor !border-secondaryColor'); 
     }
@@ -67,7 +67,7 @@ describe("Button : " , () => {
       if(!TransparentButtonArgs.ghost)
         expect(button).toHaveClass('hover:text-primaryColorText');
     }else if(TransparentButtonArgs.secondary){
-      expect(button).toHaveClass('text-appForeground !border-secondaryColor'); 
+      expect(button).toHaveClass('text-app-foreground !border-secondaryColor'); 
     }else if(TransparentButtonArgs.danger){
       expect(button).toHaveClass('text-danger !border-danger'); 
     }
