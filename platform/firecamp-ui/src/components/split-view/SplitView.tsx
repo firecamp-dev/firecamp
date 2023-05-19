@@ -133,13 +133,13 @@ const SplitViewItem = forwardRef((props, ref) => {
                     reflexOptions={{
                         flex: 0.2,
                         threshold: 100,
-                        className: "right-pane bg-primaryColor h-full text-primaryColorText p-4",
+                        className: "right-pane bg-primaryColor h-full text-primary-colorText p-4",
                         collapsedClassName: "right-pane-handler"
                     }}
                     renderCollapsedComp={({ innerRef }) => {
                         return (
                             <div className="pane-content bg-primaryColor h-full flex justify-center" ref={innerRef}>
-                                <button onClick={_ => { }} className="pane-content bg-primaryColor h-full text-primaryColorText flex align-center flex-col items-center">
+                                <button onClick={_ => { }} className="pane-content bg-primaryColor h-full text-primary-colorText flex align-center flex-col items-center">
                                     <VscChevronLeft
                                         title="Account"
                                         size={16}

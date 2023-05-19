@@ -74,7 +74,7 @@ const InviteOrgMembers: FC<IProps> = ({
             )}
             classes={{
               trigger: 'block',
-              options: 'w-[32rem] bg-popoverBackground z-[1000] -mt-1',
+              options: 'w-[32rem] bg-popover-background z-[1000] -mt-1',
               item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
             }}
             options={members}
@@ -99,7 +99,7 @@ const InviteOrgMembers: FC<IProps> = ({
             options={RoleOptions}
             classes={{
               trigger: 'block',
-              options: 'w-[32rem] bg-popoverBackground z-[1000] -mt-1',
+              options: 'w-[32rem] bg-popover-background z-[1000] -mt-1',
               item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
             }}
             onSelect={({ name, id }) => onChange({ ...member, role: id })}

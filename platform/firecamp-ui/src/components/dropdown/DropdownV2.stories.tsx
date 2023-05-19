@@ -179,7 +179,7 @@ export const BodyTabExample = () => {
       onSelect={(value: any) => setSelected(value.name)}
       classes={{
         rounded: false,
-        options: 'w-36 bg-popoverBackground',
+        options: 'w-36 bg-popover-background',
         header:
           '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
         headerListItem:
@@ -254,7 +254,7 @@ export const CreateMenuExample = () => {
       onSelect={(value: any) => setSelected(value.name)}
       classes={{
         rounded: false,
-        options: 'w-[200px] bg-popoverBackground !pb-2',
+        options: 'w-[200px] bg-popover-background !pb-2',
         header:
           '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans ',
         headerListItem:
@@ -320,8 +320,8 @@ export const EmitterBodyExample = () => {
       classes={{
         rounded: false,
         shadow: true,
-        options: 'w-fit ml-2 bg-popoverBackground border-0',
-        item: 'pl-3 text-popoverForeground text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+        options: 'w-fit ml-2 bg-popover-background border-0',
+        item: 'pl-3 text-popover-foreground text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
       }}
     />
   );
@@ -361,7 +361,7 @@ export const LogsExample = () => {
         rounded: false,
         shadow: true,
         options:
-          'w-36 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow border-0',
+          'w-36 -mt-1 bg-popover-background !shadow-popover-shadow focus-visible:!shadow-popover-shadow border-0',
         item: '!p-1 !pl-2 text-sm leading-4 text-app-foreground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
       }}
     />
@@ -398,7 +398,7 @@ export const ReqStatusBarExample = () => {
           rounded: false,
           shadow: true,
           options:
-            'ml-1 w-36 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow border-0',
+            'ml-1 w-36 -mt-1 bg-popover-background !shadow-popover-shadow focus-visible:!shadow-popover-shadow border-0',
           item: '!p-1 !pl-2 text-sm leading-4 text-app-foreground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none',
         }}
       />
@@ -424,7 +424,7 @@ export const StatusBarExample = () => {
       <StatusBar.PrimaryRegion>
         <div
           tabIndex={1}
-          className="bg-primaryColor text-primaryColorText w-fit px-3 flex items-center"
+          className="bg-primaryColor text-primary-colorText w-fit px-3 flex items-center"
           id={'status-bar-firecamp-version'}
           data-tip={`Firecamp`}
         >
@@ -482,7 +482,7 @@ export const StatusBarExample = () => {
               rounded: false,
               shadow: true,
               options:
-                'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
+                'ml-1 w-fit !pb-2 -mt-1 bg-popover-background !shadow-popover-shadow focus-visible:!shadow-popover-shadow',
               header:
                 'flex items-center text-app-foreground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
               headerListItem:
@@ -559,7 +559,7 @@ export const StatusBarExample = () => {
               rounded: false,
               shadow: true,
               options:
-                'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
+                'ml-1 w-fit !pb-2 -mt-1 bg-popover-background !shadow-popover-shadow focus-visible:!shadow-popover-shadow',
               header:
                 'flex items-center text-app-foreground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
               headerListItem:
@@ -573,19 +573,19 @@ export const StatusBarExample = () => {
           <a className="flex items-center pr-2 " href="#">
             <VscTwitter
               size={12}
-              className="text-statusBarForeground hover:text-statusBarForegroundActive"
+              className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />
           </a>
           <a className="flex items-center pr-2" href="#">
             <VscGithubInverted
               size={12}
-              className="text-statusBarForeground hover:text-statusBarForegroundActive"
+              className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />
           </a>
           <a className="flex items-center pr-2" href="#">
             <VscFile
               size={12}
-              className="text-statusBarForeground hover:text-statusBarForegroundActive"
+              className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />
           </a>
         </div>

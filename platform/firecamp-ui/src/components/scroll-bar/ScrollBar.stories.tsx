@@ -12,7 +12,7 @@ export default {
 
 export const Demo = () => (
   <ScrollBar
-    className=" rounded shadow-md bg-primaryColorText w-[200px] h-[200px]"
+    className=" rounded shadow-md bg-primary-colorText w-[200px] h-[200px]"
     noWrap
     layout={EScrollbarLayout.V1}
   >
@@ -55,7 +55,7 @@ export const Demo = () => (
 );
 
 export const VerticalScroll = () => (
-  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]" layout={EScrollbarLayout.V1}>
+  <ScrollBar className="rounded shadow-md bg-primary-colorText h-[200px]" layout={EScrollbarLayout.V1}>
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
       <hr />
@@ -95,7 +95,7 @@ export const VerticalScroll = () => (
 );
 
 export const HorizontalScroll = () => (
-  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[50vh]" noWrap layout={EScrollbarLayout.V1}>
+  <ScrollBar className="rounded shadow-md bg-primary-colorText h-[50vh]" noWrap layout={EScrollbarLayout.V1}>
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
       <hr />
@@ -114,7 +114,7 @@ export const HorizontalScroll = () => (
 );
 
 export const ScrollBarWithModal = () => (
-  <ScrollBar className="rounded shadow-md bg-primaryColorText h-[200px]" layout={EScrollbarLayout.V1}>
+  <ScrollBar className="rounded shadow-md bg-primary-colorText h-[200px]" layout={EScrollbarLayout.V1}>
     <div style={{ padding: '15px 20px' }}>
       <ForgetPasswordForm />
       <br />
@@ -124,7 +124,7 @@ export const ScrollBarWithModal = () => (
 
 export const VSCodeExample = () => (
   <ScrollBar
-    className=" rounded shadow-md bg-primaryColorText "
+    className=" rounded shadow-md bg-primary-colorText "
     width="w-[200px]"
     height="h-[200px]"
     noWrap
@@ -172,7 +172,7 @@ export const VSCodeExample = () => (
 export const RequestTabExample = () => (
   <div className='p-3 border'>
     <ScrollBar
-      className="shadow-md bg-primaryColorText "
+      className="shadow-md bg-primary-colorText "
       width="w-[200px]"
       layout={EScrollbarLayout.Horizontal}>
       <Tabs

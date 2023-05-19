@@ -12,7 +12,7 @@ export default {
 
 const Template = (args: ITab) =>
     <div className="bg-activityBar-background text-activityBar-foreground flex items-top h-32">
-        <div className="border-r !border-inputBorder p-12">
+        <div className="border-r !border-input-border p-12">
             SideBar
         </div>
         <div className="flex-1">

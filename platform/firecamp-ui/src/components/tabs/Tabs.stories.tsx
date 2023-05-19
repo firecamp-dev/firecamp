@@ -35,7 +35,7 @@ export default {
 
 const Template = (args: any) => (
   <div className="bg-activityBar-background text-activityBar-foreground flex items-top h-screen">
-    <div className="border-r border-inputBorder p-12">SideBar</div>
+    <div className="border-r border-input-border p-12">SideBar</div>
     <div className="flex-1">
       <Tabs {...args} />
       <div className="p-12">Tab Content</div>
@@ -69,7 +69,7 @@ export const TabWithScrollbar = () => {
 
   return (
     <div className="bg-activityBar-background text-activityBar-foreground flex items-top h-screen">
-      <div className="border-r border-inputBorder p-12">SideBar</div>
+      <div className="border-r border-input-border p-12">SideBar</div>
       <div className="flex-1">
         <div className="border-b h-12"></div>
         <div className="p-6 w-56">

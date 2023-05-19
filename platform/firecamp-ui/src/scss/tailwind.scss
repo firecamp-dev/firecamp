@@ -1491,7 +1491,7 @@ video {
 .\!border-danger {
   border-color: var(--error) !important;
 }
-.\!border-inputBorder {
+.\!border-input-border {
   border-color: var(--input-border) !important;
 }
 .\!border-primaryColor {
@@ -1500,7 +1500,7 @@ video {
 .\!border-secondaryColor {
   border-color: var(--app-secondary) !important;
 }
-.\!border-statusBarBorder {
+.\!border-statusBar-border {
   border-color: var(--statusBar-border) !important;
 }
 .\!border-tab-border {
@@ -1533,10 +1533,10 @@ video {
 .border-info {
   border-color: var(--info);
 }
-.border-inputBorder {
+.border-input-border {
   border-color: var(--input-border);
 }
-.border-modalBorder {
+.border-modal-border {
   border-color: var(--modal-border);
 }
 .border-primaryColor {
@@ -1554,22 +1554,22 @@ video {
 .border-warning {
   border-color: var(--warning);
 }
-.\!border-b-popoverBackground {
+.\!border-b-popover-background {
   border-bottom-color: var(--popover-background) !important;
 }
 .\!border-b-transparent {
   border-bottom-color: #ffffff00 !important;
 }
-.\!border-l-popoverBackground {
+.\!border-l-popover-background {
   border-left-color: var(--popover-background) !important;
 }
 .\!border-l-transparent {
   border-left-color: #ffffff00 !important;
 }
-.\!border-r-popoverBackground {
+.\!border-r-popover-background {
   border-right-color: var(--popover-background) !important;
 }
-.\!border-t-popoverBackground {
+.\!border-t-popover-background {
   border-top-color: var(--popover-background) !important;
 }
 .\!border-t-transparent {
@@ -1659,26 +1659,26 @@ video {
 .bg-info {
   background-color: var(--info);
 }
-.bg-inputBackground {
+.bg-input-background {
   background-color: var(--input-background);
 }
-.bg-modalBackground {
+.bg-modal-background {
   background-color: var(--modal-background);
 }
-.bg-popoverBackground {
+.bg-popover-background {
   background-color: var(--popover-background);
+}
+.bg-primary-colorText {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 .bg-primaryColor {
   background-color: var(--app-primary);
 }
-.bg-primaryColorText {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
 .bg-secondaryColor {
   background-color: var(--app-secondary);
 }
-.bg-statusBarBackground {
+.bg-statusBar-background {
   background-color: var(--statusBar-background);
 }
 .bg-statusBar-background-active {
@@ -2110,27 +2110,27 @@ video {
 .text-info {
   color: var(--info);
 }
-.text-inputPlaceholder {
+.text-input-placeholder {
   color: var(--input-placeholder);
 }
-.text-inputText {
+.text-input-text {
   color: var(--input-text);
 }
 .text-link {
   color: var(--link);
 }
-.text-modalActiveForeground {
+.text-modal-foreground-active {
   color: var(--modal-foreground-active);
 }
-.text-popoverForeground {
+.text-popover-foreground {
   color: var(--popover-foreground);
+}
+.text-primary-colorText {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .text-primaryColor {
   color: var(--app-primary);
-}
-.text-primaryColorText {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .text-rest {
   color: var(--req-link);
@@ -2139,7 +2139,7 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-.text-statusBarForeground {
+.text-statusBar-foreground {
   color: var(--statusBar-foreground);
 }
 .text-success {
@@ -2163,10 +2163,10 @@ video {
 .underline {
   text-decoration-line: underline;
 }
-.placeholder-inputPlaceholder::-moz-placeholder {
+.placeholder-input-placeholder::-moz-placeholder {
   color: var(--input-placeholder);
 }
-.placeholder-inputPlaceholder::placeholder {
+.placeholder-input-placeholder::placeholder {
   color: var(--input-placeholder);
 }
 .\!opacity-100 {
@@ -2196,7 +2196,7 @@ video {
 .opacity-80 {
   opacity: 0.8;
 }
-.\!shadow-popoverBoxshadow {
+.\!shadow-popover-shadow {
   --tw-shadow: var(--popover-shadow) !important;
   --tw-shadow-colored: var(--popover-shadow) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -2211,7 +2211,7 @@ video {
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.\!shadow-popoverBoxshadow {
+.\!shadow-popover-shadow {
   --tw-shadow-color: var(--popover-shadow) !important;
   --tw-shadow: var(--tw-shadow-colored) !important;
 }
@@ -2439,7 +2439,7 @@ video {
 .hover\:bg-focusColor:hover {
   background-color: #ffffff1a;
 }
-.hover\:bg-inputFocusBackground:hover {
+.hover\:bg-input-background-focus:hover {
   background-color: var(--input-background-focus);
 }
 .hover\:bg-primaryColor:hover {
@@ -2466,17 +2466,17 @@ video {
 .hover\:text-app-foreground-active:hover {
   color: var(--app-foreground-active);
 }
-.hover\:text-modalActiveForeground:hover {
+.hover\:text-modal-foreground-active:hover {
   color: var(--modal-foreground-active);
+}
+.hover\:text-primary-colorText:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .hover\:text-primaryColor:hover {
   color: var(--app-primary);
 }
-.hover\:text-primaryColorText:hover {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-}
-.hover\:text-statusBarForegroundActive:hover {
+.hover\:text-statusBar-foreground-active:hover {
   color: var(--statusBar-foreground-active);
 }
 .hover\:underline:hover {
@@ -2492,7 +2492,7 @@ video {
 .focus\:\!bg-primaryColorOpacity:focus {
   background-color: var(--app-primary-withOpacity) !important;
 }
-.focus\:bg-inputFocusBackground:focus {
+.focus\:bg-input-background-focus:focus {
   background-color: var(--input-background-focus);
 }
 .focus-visible\:\!bg-focus1:focus-visible {
@@ -2503,7 +2503,7 @@ video {
   --tw-shadow-colored: 0 0 #0000 !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
-.focus-visible\:\!shadow-popoverBoxshadow:focus-visible {
+.focus-visible\:\!shadow-popover-shadow:focus-visible {
   --tw-shadow: var(--popover-shadow) !important;
   --tw-shadow-colored: var(--popover-shadow) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;

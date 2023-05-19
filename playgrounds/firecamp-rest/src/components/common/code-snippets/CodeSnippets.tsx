@@ -110,7 +110,7 @@ const CodeSnippets = ({ tabId = '' }) => {
       width="768px"
     >
       <Modal.Header className="border-app-border border-b">
-        <div className="text-modalActiveForeground text-lg px-6 py-3 ">
+        <div className="text-modal-foreground-active text-lg px-6 py-3 ">
           {'Rest code snippet'}
         </div>
       </Modal.Header>

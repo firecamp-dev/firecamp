@@ -38,7 +38,7 @@ const TextArea: FC<ITextArea> = ({
       <div className="relative">
       <textarea
         name={name}
-        className={classNames(className,'!border-inputBorder focus:bg-inputFocusBackground text-base p-2 text-inputText border resize-none rounded-sm bg-inputBackground w-full')}
+        className={classNames(className,'!border-input-border focus:bg-input-background-focus text-base p-2 text-input-text border resize-none rounded-sm bg-input-background w-full')}
         placeholder={placeholder}
         {...valueProps}
         onChange={onChange}

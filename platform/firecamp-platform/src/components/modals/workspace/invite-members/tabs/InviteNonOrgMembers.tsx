@@ -162,7 +162,7 @@ const RoleDD: FC<{
             />
           )}
           classes={{
-            options: 'w-36 bg-popoverBackground z-[1000]',
+            options: 'w-36 bg-popover-background z-[1000]',
             item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
           }}
           options={RoleOptions}

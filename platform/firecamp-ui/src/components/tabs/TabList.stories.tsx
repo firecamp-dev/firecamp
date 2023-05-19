@@ -19,7 +19,7 @@ const Template = (args) =>
 
 export const TabListFinal = (args) =>
     <div className="bg-activityBar-background text-activityBar-foreground flex items-top">
-        <div className="border-r border-inputBorder p-12">
+        <div className="border-r border-input-border p-12">
             SideBar
         </div>
         <div className="flex-1 overflow-hidden">

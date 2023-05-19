@@ -104,7 +104,7 @@ const WorkspaceCard: FC<any> = () => {
           <div
             data-tip="Tooltip text"
             data-for="5"
-            className="w-6 h-6 border border-app-foreground text-primaryColorText bg-primaryColor text-xs flex justify-center items-center rounded-full -ml-2"
+            className="w-6 h-6 border border-app-foreground text-primary-colorText bg-primaryColor text-xs flex justify-center items-center rounded-full -ml-2"
           >
             +25
           </div>

@@ -10,7 +10,7 @@ const DEFAULT_STYLES = {
   roundedContainer: 'rounded bg-app-background border border-app-foreground',
   squaredContainer: 'border border-focusBorder focus-visible:!shadow-none',
   shadowContainer:
-    '!shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
+    '!shadow-popover-shadow focus-visible:!shadow-popover-shadow',
   nestedOptionTrigger: 'flex items-center',
   optionItem: 'flex items-center text-app-foreground px-2',
   separator: 'my-1 bg-app-foreground opacity-50',

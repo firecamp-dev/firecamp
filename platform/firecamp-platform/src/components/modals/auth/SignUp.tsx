@@ -82,7 +82,7 @@ const SignUp: FC<IModal> = () => {
         </div>
         <div className="mb-6 mt-6 flex justify-center items-center">
           <hr className="border-t border-app-border w-full" />
-          <span className="text-xs text-app-foreground-inactive bg-modalBackground absolute px-1">
+          <span className="text-xs text-app-foreground-inactive bg-modal-background absolute px-1">
             OR
           </span>
         </div>

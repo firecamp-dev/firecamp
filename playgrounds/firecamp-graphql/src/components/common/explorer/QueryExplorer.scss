@@ -22,7 +22,7 @@
 .graphiql-explorer-graphql-arguments input[type=text] {
 	min-width: 60px;
 	padding-left: 4px;
-	background: var(--inputBackground);
+	background: var(--input-background);
 	color: var(--inputForground)
 }
 
@@ -53,7 +53,7 @@
 }
 
 .graphiql-operation-title-bar>span>input:first-child {
-	background: var(--inputBackground);
+	background: var(--input-background);
 	color: var(--inputForground) !important;
 	pointer-events: none
 }

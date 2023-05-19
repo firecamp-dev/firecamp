@@ -213,10 +213,10 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               disabled={true}
               height={'280px'}
               monacoOptions={{
-                extraEditorClassName: `border border-inputBorder rounded-sm p-2 leading-5 
-                  outline-none placeholder-inputPlaceholder 
-                  text-base focus:bg-inputFocusBackground w-full
-                  bg-inputBackground`,
+                extraEditorClassName: `border border-input-border rounded-sm p-2 leading-5 
+                  outline-none placeholder-input-placeholder 
+                  text-base focus:bg-input-background-focus w-full
+                  bg-input-background`,
                 fontSize: '14px',
                 height: '250px',
                 wordWrap: 'off',

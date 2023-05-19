@@ -214,7 +214,7 @@ const RoleDD: FC<{
       )}
       disabled={role === EUserRolesWorkspace.Owner}
       classes={{
-        options: 'w-36 bg-popoverBackground z-[1000]',
+        options: 'w-36 bg-popover-background z-[1000]',
         header:
           '!pb-1 !pt-3 !px-5 !text-xs text-activityBar-foreground-inactive font-medium relative font-sans leading-3',
         headerListItem:

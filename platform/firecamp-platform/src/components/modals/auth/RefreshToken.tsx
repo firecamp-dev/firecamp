@@ -106,7 +106,7 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
           ''
         )}
       </div>
-      <hr className="border-modalBorder -ml-8 -mr-8 mb-6" />
+      <hr className="border-modal-border -ml-8 -mr-8 mb-6" />
       <div className="">
         <form onSubmit={handleSubmit(_onSubmit)}>
           <div className="fc-input-label flex align-center  text-app-foreground-inactive ">

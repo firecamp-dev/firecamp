@@ -29,7 +29,7 @@ describe("StatusBar component", () => {
         let SecondaryRegion = StatusBarWrapper.lastElementChild;
 
         //validate the wrapper component attributes
-        expect(StatusBarWrapper).toHaveClass('className bg-statusBarBackground text-statusBarForeground !border-statusBarBorder text-base flex leading-6');
+        expect(StatusBarWrapper).toHaveClass('className bg-statusBar-background text-statusBar-foreground !border-statusBar-border text-base flex leading-6');
         expect(StatusBarWrapper.id).toBe("status-bar-wrapper");
         expect(Number(StatusBarWrapper.getAttribute('tabindex'))).toBe(1);
 

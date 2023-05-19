@@ -43,7 +43,7 @@ export const Input= React.forwardRef<HTMLInputElement, IInput2>(
     return (
       <div
         className={cx(
-          'relative items-center text-inputText text-sm w-full mb-5',
+          'relative items-center text-input-text text-sm w-full mb-5',
           wrapperClassName
         )}
       >
@@ -67,7 +67,7 @@ export const Input= React.forwardRef<HTMLInputElement, IInput2>(
             name={name}
             type={type}
             className={cx(
-              'border !border-inputBorder rounded-sm p-2 leading-5 outline-none placeholder-inputPlaceholder text-base focus:bg-inputFocusBackground w-full bg-inputBackground',
+              'border !border-input-border rounded-sm p-2 leading-5 outline-none placeholder-input-placeholder text-base focus:bg-input-background-focus w-full bg-input-background',
               { '!pl-9': hasIconLeft },
               { '!pr-9': hasIconRight },
               className
