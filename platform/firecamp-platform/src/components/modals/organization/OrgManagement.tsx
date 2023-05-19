@@ -40,7 +40,7 @@ const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   return (
     <>
       <Modal.Header>
-        <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium  border-b border-appBorder ">
+        <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium  border-b border-app-border ">
           Organization Management
         </div>
       </Modal.Header>
@@ -53,7 +53,7 @@ const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
         />
         {renderTab(activeTab)}
       </Modal.Body>
-      <Modal.Footer className="!py-3 border-t border-appBorder ">
+      <Modal.Footer className="!py-3 border-t border-app-border ">
         <TabHeader>
           <TabHeader.Right>
             <Button
@@ -87,7 +87,7 @@ const EditInfoTab: FC<any> = () => {
 
   return (
     <div className="p-6">
-      <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+      <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
         ADD NEW WORKSPACE INFO
       </label>
       <div className="mt-8">

@@ -12,7 +12,7 @@ const EditInfoTab: FC<any> = ({
 }) => {
   return (
     <div className="py-6 px-3 flex-1 flex flex-col">
-      <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+      <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
         UPDATE WORKSPACE INFO
       </label>
       <div>

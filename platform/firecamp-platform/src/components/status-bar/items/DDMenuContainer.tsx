@@ -160,12 +160,12 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
         className="type-4"
         headerMeta={{
           postfix: () => (
-            <div className="text-sm text-appForegroundInActive font-light leading-3  ">
+            <div className="text-sm text-app-foreground-inactive font-light leading-3  ">
               User
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-app-foreground-active !font-base !capitalize !px-3 !pt-1 !pb-2"
       />
     </Dropdown>
   );
@@ -241,12 +241,12 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
         className="type-4"
         headerMeta={{
           postfix: () => (
-            <div className="text-sm text-appForegroundInActive font-light leading-3  ">
+            <div className="text-sm text-app-foreground-inactive font-light leading-3  ">
               Workspace
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-app-foreground-active !font-base !capitalize !px-3 !pt-1 !pb-2"
       />
     </Dropdown>
   );
@@ -310,12 +310,12 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
         className="type-4"
         headerMeta={{
           postfix: () => (
-            <div className="text-sm text-appForegroundInActive font-light leading-3  ">
+            <div className="text-sm text-app-foreground-inactive font-light leading-3  ">
               Organization
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-app-foreground-active !font-base !capitalize !px-3 !pt-1 !pb-2"
       />
     </Dropdown>
   );

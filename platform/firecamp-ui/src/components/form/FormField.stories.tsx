@@ -14,7 +14,7 @@ export default {
 };
 
 const Template = (args: IFormField) => (
-  <div className="bg-activityBarActiveBackground p-4 w-96">
+  <div className="bg-activityBar-background-active p-4 w-96">
     <FormField {...args} />
   </div>
 );

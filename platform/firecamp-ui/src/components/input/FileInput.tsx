@@ -34,7 +34,7 @@ const FileInput: FC<IFileInput> = ({
         onChange={_onSelectFile}
       />
       {(!path || !path.length) && name && name.length ? (
-        <div className="text-base text-appForegroundInActive">{name}</div> /*this path is not visible when upload file */
+        <div className="text-base text-app-foreground-inactive">{name}</div> /*this path is not visible when upload file */
       ) : (
         ''
       )}

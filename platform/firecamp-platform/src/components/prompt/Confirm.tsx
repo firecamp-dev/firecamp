@@ -45,7 +45,7 @@ const ConfirmationModal: FC<IConfirm> = ({
     >
       <Modal.Body>
         <div className="px-2 py-4">
-          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
             {`CONFIRMATION Required.`}
           </label>
           <div className="my-4">{title}</div>

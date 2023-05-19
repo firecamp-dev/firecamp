@@ -29,7 +29,7 @@ const Notes: FC<IProps> = ({
       ) : (
         <></>
       )}
-      <div className="text-appForegroundInActive">
+      <div className="text-app-foreground-inactive">
         {title != '' ? (
           <div className="mb-2 font-semibold	text-app-foreground">{title}</div>
         ) : (

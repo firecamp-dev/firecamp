@@ -19,11 +19,11 @@ const ActionItem: FC<IActionItem> = ({
       className={cx(
         'h-12 flex justify-center items-center cursor-pointer relative text-2xl action-item',
         {
-          'text-activityBarInactiveForeground hover:text-activityBarForeground':
+          'text-activityBar-foreground-inactive hover:text-activityBar-foreground':
             active == false,
         },
         {
-          'before:block before:z-0 before:content-[""] before:absolute before:top-0 before:bottom-0 before:left-0 before:w-0.5 before:bg-activityBarActiveBorder text-activityBarForeground bg-activityBarActiveBackground':
+          'before:block before:z-0 before:content-[""] before:absolute before:top-0 before:bottom-0 before:left-0 before:w-0.5 before:bg-activityBar-border-active text-activityBar-foreground bg-activityBar-background-active':
             active == true,
         },
         className
@@ -48,7 +48,7 @@ const ActionItem: FC<IActionItem> = ({
        <ReactTooltip
         data-delay-hide='10000'
         id={id}
-        className="bg-appForegroundInActive"
+        className="bg-app-foreground-inactive"
         place="right"
         effect="float" /> */}
     </div>

@@ -102,7 +102,7 @@ const ReqStatusBar = ({}) => {
     <>
       <StatusBar className="fc-statusbar large">
         {/* <StatusBar.PrimaryRegion> */}
-        <div className="flex items-center whitespace-pre overflow-hidden text-ellipsis text-appForegroundInActive">
+        <div className="flex items-center whitespace-pre overflow-hidden text-ellipsis text-app-foreground-inactive">
           {/* root */}
           {/* <VscChevronRight /> */}
           ./{playground.request.name}

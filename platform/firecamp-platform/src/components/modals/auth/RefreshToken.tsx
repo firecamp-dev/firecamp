@@ -109,7 +109,7 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
       <hr className="border-modalBorder -ml-8 -mr-8 mb-6" />
       <div className="">
         <form onSubmit={handleSubmit(_onSubmit)}>
-          <div className="fc-input-label flex align-center  text-appForegroundInActive ">
+          <div className="fc-input-label flex align-center  text-app-foreground-inactive ">
             {/* // TODO: icon: add info icon */}
             <span>{user.email || ''}</span>
           </div>

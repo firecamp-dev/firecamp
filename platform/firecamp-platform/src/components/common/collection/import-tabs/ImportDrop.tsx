@@ -52,7 +52,7 @@ const ImportDropZone: FC<{
             : 'DROP API COLLECTION HERE'}
         </h1>
         {!isImporting ? (
-          <span className="text-sm text-appForegroundInActive">
+          <span className="text-sm text-app-foreground-inactive">
             Firecamp, Postman formats are supported
           </span>
         ) : (

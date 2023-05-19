@@ -56,7 +56,7 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
         <div className="text-xl mb-2 w-full text-center font-semibold">
           Enter your Email Address
         </div>
-        <div className="text-sm text-appForegroundInActive max-w-xs mx-auto mb-6 text-center px-16">
+        <div className="text-sm text-app-foreground-inactive max-w-xs mx-auto mb-6 text-center px-16">
           You’ll get the password recovery token in your inbox.
         </div>
       </Modal.Header>

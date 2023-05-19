@@ -64,7 +64,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
           onSelect={({ name, id }) => onChange({ role: id })}
         />
         <RolesCallout role={_role.id} />
-        <div className="text-sm font-semibold leading-3 text-appForegroundInActive">
+        <div className="text-sm font-semibold leading-3 text-app-foreground-inactive">
           Use comma separated name and email. use multiple lines to invite in
           bulk.
           <Popover
@@ -82,7 +82,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
         <Editor
-          className="border border-appBorder !h-48"
+          className="border border-app-border !h-48"
           placeholder="Alice, alice@mail.com"
           value={value}
           onChange={(e) => onChange({ value: e.target.value })}

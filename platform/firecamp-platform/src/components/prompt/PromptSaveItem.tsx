@@ -97,7 +97,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
     >
       <ProgressBar active={state.isExecuting} />
       <Modal.Header>
-        <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
           {header || `THIS IS A HEADER PLACE`}
         </label>
       </Modal.Header>
@@ -171,7 +171,7 @@ const PathSelector: FC<{
   return (
     <Container className="max-h-48 mb-14 !h-fit">
       <label className="text-app-foreground text-sm mb-1 block">Save at</label>
-      <div className="border border-appBorder">
+      <div className="border border-app-border">
         <Container.Body className="save-modal-collection pane-body  visible-scrollbar overflow-visible">
           <UncontrolledTreeEnvironment
             keyboardBindings={{
@@ -201,7 +201,7 @@ const PathSelector: FC<{
             />
           </UncontrolledTreeEnvironment>
         </Container.Body>
-        <Container.Header className="bg-focus2 !p-1 text-appForegroundInActive leading-3 whitespace-pre text-ellipsis !overflow-hidden text-sm">
+        <Container.Header className="bg-focus2 !p-1 text-app-foreground-inactive leading-3 whitespace-pre text-ellipsis !overflow-hidden text-sm">
           {`./${path}`}
         </Container.Header>
       </div>

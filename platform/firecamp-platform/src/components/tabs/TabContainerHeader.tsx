@@ -92,7 +92,7 @@ const TabHeaderContainer = () => {
   return (
     <Column
       overflow="visible"
-      className="bg-tabBackground2 focus-outer"
+      className="bg-tab-background-activeColor focus-outer"
       tabIndex={1}
     >
       <Row>
@@ -121,7 +121,7 @@ const TabHeaderContainer = () => {
                 <div className="flex -ml-1 h-full">
                   <div
                     tabIndex={1}
-                    className="w-9 flex items-center justify-center cursor-pointer bg-tabBackground2 text-tabForegroundInactive border-r  border-tabBorder relative"
+                    className="w-9 flex items-center justify-center cursor-pointer bg-tab-background-activeColor text-tab-foreground-inactive border-r  border-tab-border relative"
                     onClick={(e) => openNewTab()}
                   >
                     <a>
@@ -154,10 +154,10 @@ const HomeTabIcon = ({ isActive, onClick }) => {
       tabIndex={1}
       className={classnames(
         {
-          'active text-tabForeground bg-tabActiveBackground !border-b-transparent':
+          'active text-tab-foreground bg-tab-background-active !border-b-transparent':
             isActive,
         },
-        'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'
+        'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tab-background-activeColor text-tab-foreground-inactive border-r border-tab-border flex-none'
       )}
       onClick={onClick}
     >

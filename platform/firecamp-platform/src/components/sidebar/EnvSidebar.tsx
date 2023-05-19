@@ -39,7 +39,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
       minWidth={'250'}
       maxWidth={'600'}
       className={classnames(
-        '!absolute border-l border-appBorder bg-activityBarBackground top-0 right-0 bottom-0 z-30 expandable-right-pane',
+        '!absolute border-l border-app-border bg-activityBar-background top-0 right-0 bottom-0 z-30 expandable-right-pane',
         { expanded: expanded }
       )}
     >
@@ -107,7 +107,7 @@ const EnvPreviewTable: FC<any> = ({
   variables = variables.filter((v) => v.key); //only show those rows which has key
   return (
     <div className="flex-1 flex flex-col overflow-auto">
-      <div className="text-base px-2 py-1 font-bold border-b border-appBorder bg-focus2 flex items-center flex-row">
+      <div className="text-base px-2 py-1 font-bold border-b border-app-border bg-focus2 flex items-center flex-row">
         {title}{' '}
         {name ? (
           <>

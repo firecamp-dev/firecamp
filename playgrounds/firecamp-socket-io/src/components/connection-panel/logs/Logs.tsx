@@ -95,7 +95,7 @@ const Logs = () => {
         <Column overflow="auto" className="h-full">
           <Container>
             <Container.Header className="with-divider">
-              <TabHeader className="height-small border-b border-appBorder">
+              <TabHeader className="height-small border-b border-app-border">
                 <TabHeader.Left>
                   <label className="m-0 text-sm font-bold whitespace-pre">
                     Event Logs

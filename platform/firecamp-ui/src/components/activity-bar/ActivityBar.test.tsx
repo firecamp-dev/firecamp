@@ -56,7 +56,7 @@ describe("ActivityBar component", () => {
         const ActionBar = screen.getByTestId('activitybar-action-bar');
 
         //validate the wrapper component attributes
-        expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBarBackground text-activityBarForeground flex flex-col  border-r border-activityBarBorder');
+        expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBar-background text-activityBar-foreground flex flex-col  border-r border-activityBar-border');
         expect(ActivityBarWrapper.id).toBe("activity-bar-container");
         expect(ActivityBarWrapper).toHaveStyle({ 'max-width': '200px' })
 
@@ -85,7 +85,7 @@ describe("ActivityBar component", () => {
         const CompositeBar = screen.getByTestId('activitybar-composite-bar');
 
         //validate the wrapper component attributes
-        expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBarBackground text-activityBarForeground flex flex-col  border-r border-activityBarBorder');
+        expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBar-background text-activityBar-foreground flex flex-col  border-r border-activityBar-border');
         expect(ActivityBarWrapper.id).toBe("activity-bar-container");
         expect(ActivityBarWrapper).toHaveStyle({ 'max-width': '200px' })
 
@@ -111,7 +111,7 @@ describe("ActivityBar component", () => {
         const ActionBar = screen.getByTestId('activitybar-action-bar');
 
         //validate the wrapper component attributes
-        expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBarBackground text-activityBarForeground flex flex-col  border-r border-activityBarBorder');
+        expect(ActivityBarWrapper).toHaveClass('activity-bar-classname activitybar focus-outer2 w-12 bg-activityBar-background text-activityBar-foreground flex flex-col  border-r border-activityBar-border');
         expect(ActivityBarWrapper.id).toBe("activity-bar-container");
         expect(ActivityBarWrapper).toHaveStyle({ 'max-width': '200px' })
 

@@ -127,7 +127,7 @@ const ShortcutsPopover = ({ id }) => {
     <Popover
       content={
         <div className="w-48">
-          <div className="text-sm font-bold mb-1 text-appForegroundActive opacity-70 px-2 pt-2 pb-2 border-b border-appBorder">
+          <div className="text-sm font-bold mb-1 text-app-foreground-active opacity-70 px-2 pt-2 pb-2 border-b border-app-border">
             Shortcuts
           </div>
           {_renderKeyboardShortcutInfo()}

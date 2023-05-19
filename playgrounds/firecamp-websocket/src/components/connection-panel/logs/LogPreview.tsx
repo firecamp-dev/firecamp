@@ -53,7 +53,7 @@ const LogPreview = ({ row = emptyRow }) => {
 
                   {isEventFromSystem ? (
                     <div
-                      className="font-xs  text-appForegroundInActive "
+                      className="font-xs  text-app-foreground-inactive "
                       key={'event-id'}
                     >
                       {row.__meta.id || ''}

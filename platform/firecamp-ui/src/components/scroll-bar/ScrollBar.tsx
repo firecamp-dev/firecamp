@@ -39,7 +39,7 @@ const ScrollBar = ({
       className={cx(
         'flex flex-col select-none touch-none p-0.5 ',
         {
-          'bg-activityBarBorder hover:bg-focus2':
+          'bg-activityBar-border hover:bg-focus2':
             layout === EScrollbarLayout.V1,
         },
         {
@@ -57,7 +57,7 @@ const ScrollBar = ({
       }}
     >
       <ScrollArea.Thumb
-        className={cx('flex-1 bg-appForegroundInActive', {
+        className={cx('flex-1 bg-app-foreground-inactive', {
           rounded: layout === EScrollbarLayout.Horizontal,
         })}
       />
@@ -69,7 +69,7 @@ const ScrollBar = ({
         className={cx(
           'flex select-none touch-none p-0.5',
           {
-            'bg-activityBarBorder hover:bg-focus2':
+            'bg-activityBar-border hover:bg-focus2':
               layout === EScrollbarLayout.V1,
           },
           {
@@ -90,10 +90,10 @@ const ScrollBar = ({
           className={cx(
             'flex-1',
             {
-              'bg-appForegroundInActive': layout !== EScrollbarLayout.Default,
+              'bg-app-foreground-inactive': layout !== EScrollbarLayout.Default,
             },
             {
-              'bg-appBorder rounded-2xl': layout === EScrollbarLayout.Default,
+              'bg-app-border rounded-2xl': layout === EScrollbarLayout.Default,
             }
           )}
         />

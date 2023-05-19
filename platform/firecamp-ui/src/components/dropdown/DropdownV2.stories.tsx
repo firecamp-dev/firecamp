@@ -448,7 +448,7 @@ export const StatusBarExample = () => {
                     <br />
                     <div
                       className={
-                        'text-sm font-light leading-3 text-appForegroundInActive'
+                        'text-sm font-light leading-3 text-app-foreground-inactive'
                       }
                     >
                       User
@@ -505,7 +505,7 @@ export const StatusBarExample = () => {
                     <br />
                     <div
                       className={
-                        'text-sm font-light leading-3 text-appForegroundInActive'
+                        'text-sm font-light leading-3 text-app-foreground-inactive'
                       }
                     >
                       Workspace

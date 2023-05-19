@@ -187,7 +187,7 @@ const CorsError = () => {
         <IoMdCloseCircle className="mr-1" />
         <span>Unable to reach server</span>
       </div>
-      <div className="text-base text-appForegroundInActive">
+      <div className="text-base text-app-foreground-inactive">
         <ul className="ml-8 list-decimal">
           <li className="mb-2">
             <span>Server may not be reachable at the provided endpoint.</span>
@@ -196,7 +196,7 @@ const CorsError = () => {
             <span>Is the server currently running?</span>
           </li>
           <li className="mb-2">
-            <label className="font-semibold block text-appForegroundActive">
+            <label className="font-semibold block text-app-foreground-active">
               The Server's response may be missing CORS headers
             </label>
             <span>

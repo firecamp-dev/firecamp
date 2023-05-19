@@ -6,7 +6,7 @@ const Loader: FC<{ message?: string }> = ({ message = 'Loading' }) => {
   return (
     <>
       <ProgressBar active={true} />
-      <div className="flex w-full items-center text-appForegroundInActive loader">
+      <div className="flex w-full items-center text-app-foreground-inactive loader">
         {message}
         <span className="wave-loader overflow-hidden">...</span>
       </div>

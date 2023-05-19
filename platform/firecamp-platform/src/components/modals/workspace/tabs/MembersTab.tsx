@@ -216,7 +216,7 @@ const RoleDD: FC<{
       classes={{
         options: 'w-36 bg-popoverBackground z-[1000]',
         header:
-          '!pb-1 !pt-3 !px-5 !text-xs text-activityBarInactiveForeground font-medium relative font-sans leading-3',
+          '!pb-1 !pt-3 !px-5 !text-xs text-activityBar-foreground-inactive font-medium relative font-sans leading-3',
         headerListItem:
           'py-1 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-4 focus-visible:!shadow-none',
       }}

@@ -87,7 +87,7 @@ const EmitterPlayground = () => {
             />
           </TabHeader.Right>
         </TabHeader>
-        <div className="border border-appBorder flex-1 flex flex-col">
+        <div className="border border-app-border flex-1 flex flex-col">
           <EmitterArgTabs
             activeArgIndex={activeArgIndex}
             totalTabs={plgEmitter.value?.length}

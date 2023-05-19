@@ -64,7 +64,7 @@ const Size = ({ sizes = [], index = 0 }) => {
           </TabHeader.Right>
         </TabHeader>
       </Container.Header>
-      <Container.Body className="border-b border-appBorder">
+      <Container.Body className="border-b border-app-border">
         {sizes && Array.isArray(sizes)
           ? (sizes || [])
               .filter(

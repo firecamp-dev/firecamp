@@ -156,18 +156,18 @@ const ScriptErrorTable: FC<any> = ({ error }) => {
       <div className="bg-focus4 p-1 text-base font-semibold">{type} script error</div>
       <div className="table w-full  border-collapse ">
         <div className="table-row  bg-app-background-secondary">
-          <div className="table-cell border border-appBorder p-1 text-sm font-semibold">
+          <div className="table-cell border border-app-border p-1 text-sm font-semibold">
             type
           </div>
-          <div className="table-cell border border-appBorder  p-1 text-sm text-appForegroundInActive">
+          <div className="table-cell border border-app-border  p-1 text-sm text-app-foreground-inactive">
             {name}
           </div>
         </div>
         <div className="table-row bg-app-background-secondary">
-          <div className="table-cell border border-appBorder p-1 text-sm font-semibold">
+          <div className="table-cell border border-app-border p-1 text-sm font-semibold">
             message
           </div>
-          <div className="table-cell border border-appBorder  p-1 text-sm text-appForegroundInActive">
+          <div className="table-cell border border-app-border  p-1 text-sm text-app-foreground-inactive">
             {message}
           </div>
         </div>

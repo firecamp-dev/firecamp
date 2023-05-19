@@ -75,12 +75,12 @@ const SignInWithEmail: FC<IModal> = () => {
           <GithubGoogleAuth />
         </div>
         <div className="mb-8 mt-8 flex justify-center items-center">
-          <hr className="border-t border-appBorder w-full" />
-          <span className="text-xs text-appForegroundInActive bg-modalBackground absolute px-1">
+          <hr className="border-t border-app-border w-full" />
+          <span className="text-xs text-app-foreground-inactive bg-modalBackground absolute px-1">
             OR
           </span>
         </div>
-        <div className="text-sm text-appForegroundInActive max-w-xs mx-auto mb-6 text-center px-16">
+        <div className="text-sm text-app-foreground-inactive max-w-xs mx-auto mb-6 text-center px-16">
           Welcome back! enter your email and password below to sign in.
         </div>
         <div className="">
@@ -179,7 +179,7 @@ const SignInWithEmail: FC<IModal> = () => {
               Sign Up
             </a>
           </div>
-          <div className="text-sm mt-6 text-center text-appForegroundInActive">
+          <div className="text-sm mt-6 text-center text-app-foreground-inactive">
             By moving forward, you acknowledge that you have read and accept the
             <a
               href="https://firecamp.io/legals/privacy-policy/"

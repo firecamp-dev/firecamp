@@ -34,7 +34,7 @@ export default {
 };
 
 const Template = (args: any) => (
-  <div className="bg-activityBarBackground text-activityBarForeground flex items-top h-screen">
+  <div className="bg-activityBar-background text-activityBar-foreground flex items-top h-screen">
     <div className="border-r border-inputBorder p-12">SideBar</div>
     <div className="flex-1">
       <Tabs {...args} />
@@ -68,7 +68,7 @@ export const TabWithScrollbar = () => {
   const [activeTab, updateActiveTab] = useState(demoArgs[0].id);
 
   return (
-    <div className="bg-activityBarBackground text-activityBarForeground flex items-top h-screen">
+    <div className="bg-activityBar-background text-activityBar-foreground flex items-top h-screen">
       <div className="border-r border-inputBorder p-12">SideBar</div>
       <div className="flex-1">
         <div className="border-b h-12"></div>

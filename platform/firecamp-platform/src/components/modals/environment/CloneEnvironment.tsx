@@ -118,7 +118,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       <Modal.Body>
         <ProgressBar active={isRequesting} />
         <div className="flex items-center justify-center h-full w-full">
-          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2 text-center">
+          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2 text-center">
             Fetching...
           </label>
         </div>
@@ -144,7 +144,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               >
                 Collection Name
               </label>
-              <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
+              <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive w-full relative mb-2">
                 {collection?.name}
               </label>
             </div>
@@ -156,7 +156,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               >
                 Environment Name
               </label>
-              <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
+              <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive w-full relative mb-2">
                 {env.name}
               </label>
             </div>
@@ -183,11 +183,11 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
             >
               Visibility
             </label>
-            <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+            <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
               {env.__meta.visibility == 2 ? 'Private' : 'Public'}
             </label>
 
-            <span className="text-sm font-normal text-appForegroundInActive block mt-1">
+            <span className="text-sm font-normal text-app-foreground-inactive block mt-1">
               {env.__meta.visibility == 2
                 ? 'This environment is private and will only be accessible to you'
                 : 'This environment is public and will be accessible to all members of the workspace'}
@@ -201,7 +201,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
             >
               Variables
             </label>
-            <span className="text-sm font-normal text-appForegroundInActive block mt-1">
+            <span className="text-sm font-normal text-app-foreground-inactive block mt-1">
               Variables will be valid JSON in key-value pair. ex.{' '}
               {`{ "host": "https://myapi.com" }`}
             </span>

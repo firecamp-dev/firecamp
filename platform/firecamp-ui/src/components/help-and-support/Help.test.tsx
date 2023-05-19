@@ -25,7 +25,7 @@ describe("Help & Support component", () => {
         const allLink = screen.getAllByRole('link');
         expect(allLink).toHaveLength(3);
 
-        expect(allLink[0].parentElement).toHaveClass('text-appForegroundInActive flex items-center mb-2 text-xl')
+        expect(allLink[0].parentElement).toHaveClass('text-app-foreground-inactive flex items-center mb-2 text-xl')
     });
 
     test("validating the default links ", () => {
@@ -43,7 +43,7 @@ describe("Help & Support component", () => {
 
         const allLink = screen.getAllByRole('link');
         expect(allLink[0]).toHaveAttribute('href', HelpComponentArgs.docLink);
-        expect(allLink[0]).toHaveClass('text-appForegroundInActive');
+        expect(allLink[0]).toHaveClass('text-app-foreground-inactive');
     });
 
     test("validating the dynamic title to raise a new github issue", () => {
@@ -51,7 +51,7 @@ describe("Help & Support component", () => {
 
         const allLink = screen.getAllByRole('link');
         expect(allLink[1]).toHaveAttribute('href', `https://github.com/firecamp-io/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${HelpComponentArgs.client}]%20Title%20or%20Feature%20request`);
-        expect(allLink[1]).toHaveClass('text-appForegroundInActive');
+        expect(allLink[1]).toHaveClass('text-app-foreground-inactive');
 
     });
 

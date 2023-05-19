@@ -10,7 +10,7 @@ export default {
     }
 };
 
-const Template = (args) =><div className="bg-activityBarBackground p-4 w-96"> <FileInput {...args} /></div>;
+const Template = (args) =><div className="bg-activityBar-background p-4 w-96"> <FileInput {...args} /></div>;
 
 export const FileInputDemo = Template.bind({});
 FileInputDemo.args = {placeholder: 'Sample Button', value: ''};

@@ -230,7 +230,7 @@ const Table: FC<ITable<any>> = ({
       ref={containerDivRef}
     >
       <table
-        className={`primary-table border border-appBorder mb-4 w-auto ${classes.table}`}
+        className={`primary-table border border-app-border mb-4 w-auto ${classes.table}`}
         style={{ minWidth: '450px' }}
         ref={tableRef}
       >

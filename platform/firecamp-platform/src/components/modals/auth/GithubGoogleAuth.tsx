@@ -122,7 +122,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
       />
       {/* <a
         href="#"
-        className="text-app-foreground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"
+        className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"
         onClick={_githubOAuth}
       >
         <VscGithub size={20} className="mr-2" />
@@ -131,7 +131,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
       </a>
       <a
         href="#"
-        className="text-app-foreground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"
+        className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"
         onClick={_googleOAuth}
       >
         <GrGoogle size={20} className="mr-2" />

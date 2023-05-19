@@ -51,7 +51,7 @@ const Home: FC<any> = () => {
         </div>
         <div className="text-2xl mb-8 font-normal">
           Hey {greetingsTo}, Welcome To Firecamp!
-          <span className="block text-base font-light text-appForegroundInActive">
+          <span className="block text-base font-light text-app-foreground-inactive">
             This campsite is designed for you, giving you the power to do what
             you love with APIs.
           </span>
@@ -61,10 +61,10 @@ const Home: FC<any> = () => {
         <Row flex={1} overflow="auto" className="h-full">
           <Column>
             <div className="mb-8">
-              <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
+              <div className="block text-base uppercase font-semibold text-app-foreground-inactive mb-6">
                 Popular Requests
               </div>
-              <div className="flex-col border-b border-appBorder w-fit flex-none">
+              <div className="flex-col border-b border-app-border w-fit flex-none">
                 <RequestItem
                   label="Create Rest API"
                   icon={<FcIconGetSquare size={50} />}
@@ -118,7 +118,7 @@ const RequestItem: FC<IRequestItem> = ({
   return (
     <div
       className={cx(
-        'flex text-sm mr-4 items-center mb-4  text-appForegroundInActive cursor-pointer hover:text-appForegroundActive',
+        'flex text-sm mr-4 items-center mb-4  text-app-foreground-inactive cursor-pointer hover:text-app-foreground-active',
         {
           invert: hasInvertIcon,
         }
@@ -213,7 +213,7 @@ const Theme: FC<any> = () => {
 
   return (
     <div className="fc-theme-wrapper">
-      <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-6">
+      <div className="block text-base uppercase font-semibold text-app-foreground-inactive mb-6">
         Themes
       </div>
       <div className="flex">

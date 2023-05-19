@@ -81,7 +81,7 @@ const GlobalCreateDD = ({}) => {
   };
 
   return (
-    <div className="border-l border-b border-tabBorder flex items-center pl-1">
+    <div className="border-l border-b border-tab-border flex items-center pl-1">
       <Dropdown
         detach={false}
         isOpen={isOpen}

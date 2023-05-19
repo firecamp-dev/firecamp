@@ -123,7 +123,7 @@ export default {
           {...(context.itemContainerWithoutChildrenProps as any)}
           style={style}
           className={cx(
-            'pr-2 mr-1 border border-appBorder',
+            'pr-2 mr-1 border border-app-border',
             'rct-tree-item-title-container opacity-80',
             { 'rct-tree-item-title-container-isFolder': isFolder },
             {
@@ -150,14 +150,14 @@ export default {
         >
           {context.isExpanded && isFolder && (
             <span
-              className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
+              className="rct-tree-line absolute top-5 bottom-0 border-r border-app-foreground-inactive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
             ></span>
           )}
           {isFolder && (
             <span
               className={cx(
-                'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
+                'rct-tree-line horizontal absolute top-3 h-px bg-app-foreground-inactive z-10 w-2 opacity-50',
                 { '!top-4': item.data.__ref.isRequest }
               )}
               style={{
@@ -168,7 +168,7 @@ export default {
           {!isFolder && (
             <span
               className={cx(
-                'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
+                'rct-tree-line horizontal absolute top-3 h-px bg-app-foreground-inactive z-10 w-2 opacity-50',
                 { '!top-4': item.data.__ref.isRequest }
               )}
               style={{
@@ -201,7 +201,7 @@ export default {
                   {/* <span className="bg-focus2 text-xs px-1 !mx-1">{'tag'}</span> */}
                 </div>
                 <div
-                  className="text-sm appForegroundInActive"
+                  className="text-sm app-foreground-inactive"
                   style={{ maxHeight: '70px' }}
                 >
                   {item.data.value}
@@ -213,7 +213,7 @@ export default {
             {isItem ? (
               <Button
                 text={'Open'}
-                className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
+                className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive"
                 {...context.interactiveElementProps}
                 onClick={(e) => {
                   // e.preventDefault();

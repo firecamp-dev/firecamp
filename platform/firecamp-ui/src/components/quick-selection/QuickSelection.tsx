@@ -12,10 +12,10 @@ const QuickSelection: FC<IQuickSelection> = ({ menus = [] }) => {
         const { title, items = [], activeItem } = menu;
         return (
           <div className="mb-4 p-2 relative z-0" key={i}>
-            <div className="w-fit text-appForegroundInActive bg-app-background text-base ml-2 px-1 absolute z-10 top-0">
+            <div className="w-fit text-app-foreground-inactive bg-app-background text-base ml-2 px-1 absolute z-10 top-0">
               {title}
             </div>
-            <div className="pb-1 pt-3 px-1 flex items-center border-t border-l border-r border-appBorder flex-wrap">
+            <div className="pb-1 pt-3 px-1 flex items-center border-t border-l border-r border-app-border flex-wrap">
               {items.map((item: any, k: number) => (
                 <Item {...item} activeItem={activeItem} key={k} />
               ))}

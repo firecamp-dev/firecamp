@@ -45,7 +45,7 @@ const InviteOrgMembers: FC<IProps> = ({
   const _role = RoleOptions.find((r) => r.id == member.role);
   return (
     <Container className="gap-2">
-      <Container.Header className="text-base font-semibold leading-3 text-appForegroundInActive p-6">
+      <Container.Header className="text-base font-semibold leading-3 text-app-foreground-inactive p-6">
         Invite your team colleagues to join the workspace.
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem] h-80">
@@ -59,7 +59,7 @@ const InviteOrgMembers: FC<IProps> = ({
                 <Button
                   text={member.name || 'Select member'}
                   className={cx(
-                    'hover:!bg-focus1 border border-appBorder justify-between'
+                    'hover:!bg-focus1 border border-app-border justify-between'
                     // { 'border-error': !member.name }
                   )}
                   disabled={members.length === 0}
@@ -87,7 +87,7 @@ const InviteOrgMembers: FC<IProps> = ({
               <Button
                 text={_role.name || 'Select role'}
                 className={cx(
-                  'hover:!bg-focus1 border border-appBorder justify-between'
+                  'hover:!bg-focus1 border border-app-border justify-between'
                 )}
                 withCaret
                 transparent

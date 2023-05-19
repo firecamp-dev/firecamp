@@ -65,8 +65,8 @@ const SignUpBody = () => {
         <div>
             <div className="" >
                 <div className="text-center w-full mb-5">new to firecamp? <a className="text-primaryColor cursor-pointer">sign up</a></div>
-                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <VscGithub size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">github</span></a>
-                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <GrGoogle size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">google</span></a>
+                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <VscGithub size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">github</span></a>
+                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <GrGoogle size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">google</span></a>
             </div>
             <hr className="border-modalBorder -ml-8 -mr-8 mb-6" />
             <div className="">

@@ -24,7 +24,7 @@ const EnvironmentSelector = () => {
   return (
     <Column
       overflow="visible"
-      className="fc-tab-header-right  border-b border-tabBorder flex-none bg-transparent w-36 flex items-center justify-end pr-1 border-l pl-1"
+      className="fc-tab-header-right  border-b border-tab-border flex-none bg-transparent w-36 flex items-center justify-end pr-1 border-l pl-1"
     >
       <div className="!ml-auto !mr-1 w-fit flex items-center">
         <EnvironmentDD

@@ -81,12 +81,12 @@ const SignUp: FC<IModal> = () => {
           <GithubGoogleAuth />
         </div>
         <div className="mb-6 mt-6 flex justify-center items-center">
-          <hr className="border-t border-appBorder w-full" />
-          <span className="text-xs text-appForegroundInActive bg-modalBackground absolute px-1">
+          <hr className="border-t border-app-border w-full" />
+          <span className="text-xs text-app-foreground-inactive bg-modalBackground absolute px-1">
             OR
           </span>
         </div>
-        <div className="text-sm text-appForegroundInActive max-w-xs mx-auto mb-6 text-center px-16">
+        <div className="text-sm text-app-foreground-inactive max-w-xs mx-auto mb-6 text-center px-16">
           Give us some of your information to get free access to Firecamp
         </div>
         <div className="">
@@ -191,7 +191,7 @@ const SignUp: FC<IModal> = () => {
               Sign In
             </a>
           </div>
-          <div className="text-sm mt-6 text-center text-appForegroundInActive">
+          <div className="text-sm mt-6 text-center text-app-foreground-inactive">
             By moving forward, you acknowledge that you have read and accept the
             <a
               href="https://firecamp.io/legals/privacy-policy/"

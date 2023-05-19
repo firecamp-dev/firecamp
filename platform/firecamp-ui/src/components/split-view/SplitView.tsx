@@ -81,14 +81,14 @@ const SplitViewItem = forwardRef((props, ref) => {
                     reflexOptions={{
                         flex: 0.2,
                         threshold: 100,
-                        className: "left-pane bg-activityBarBackground text-activityBarForeground h-full p-4",
+                        className: "left-pane bg-activityBar-background text-activityBar-foreground h-full p-4",
                         collapsedClassName: "left-pane-handler"
                     }}
                     renderCollapsedComp={({ innerRef }) => {
                         return (
-                            <div className="pane-content bg-activityBarBackground h-full flex justify-center" ref={innerRef}>
+                            <div className="pane-content bg-activityBar-background h-full flex justify-center" ref={innerRef}>
                                 <button onClick={_ => { }}
-                                    className="pane-content bg-activityBarBackground h-full text-activityBarForeground flex align-center flex-col items-center">
+                                    className="pane-content bg-activityBar-background h-full text-activityBar-foreground flex align-center flex-col items-center">
                                     <VscChevronRight
                                         title="Account"
                                         size={16}

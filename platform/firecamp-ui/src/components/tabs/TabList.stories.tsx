@@ -18,12 +18,12 @@ const Template = (args) =>
 
 
 export const TabListFinal = (args) =>
-    <div className="bg-activityBarBackground text-activityBarForeground flex items-top">
+    <div className="bg-activityBar-background text-activityBar-foreground flex items-top">
         <div className="border-r border-inputBorder p-12">
             SideBar
         </div>
         <div className="flex-1 overflow-hidden">
-            <div className="flex border-b border-tabBorder">
+            <div className="flex border-b border-tab-border">
             <div className="flex flex-1 overflow-auto	pb-80	-mb-80">
                 <Tab title="tab1" icon={<VscJson title="Account" size={16}/>} state="default" />
                 <Tab title="tab2" icon={<VscJson title="Account" size={16}/>} state="modified" />

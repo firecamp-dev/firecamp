@@ -62,7 +62,7 @@ describe("Tabs component : ", () => {
         const TabsContainer = screen.getByTestId('tabs-container');
 
         //Default class name
-        expect(TabsContainer).toHaveClass('flex text-base !border-tabBorder !border-t-transparent');
+        expect(TabsContainer).toHaveClass('flex text-base !border-tab-border !border-t-transparent');
         //Custom class name
         expect(TabsContainer).toHaveClass(TabArgs.className);
 
@@ -71,7 +71,7 @@ describe("Tabs component : ", () => {
 
         //tab default styles
         const TabListScroller = TabsContainer.firstElementChild.firstElementChild.firstElementChild;
-        expect(TabListScroller).toHaveClass('flex border-b border-tabBorder items-start');
+        expect(TabListScroller).toHaveClass('flex border-b border-tab-border items-start');
         expect(TabListScroller).toHaveStyle(`height: ${TabArgs.height}px`);
 
         expect(TabListScroller.childElementCount).toBe(TAB_LIST.length);
@@ -79,7 +79,7 @@ describe("Tabs component : ", () => {
         // validate tab initial props
         const TabItem = TabListScroller.firstElementChild;
         expect(TabItem.textContent).toBe(TAB_LIST[0].name);
-        expect(TabItem).toHaveClass(`border-r border-l border-r-transparent border-l-transparent border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0 after:block text-tabForegroundInactive after:content-[''] after:absolute after:h-px after:w-0.5 after:-left-0.5 after:-bottom-px after:border-t after:border-tabBorder bg-transparent text-base`)
+        expect(TabItem).toHaveClass(`border-r border-l border-r-transparent border-l-transparent border-tab-border border-b-tab-border border-b relative cursor-pointer first:border-l-0 after:block text-tab-foreground-inactive after:content-[''] after:absolute after:h-px after:w-0.5 after:-left-0.5 after:-bottom-px after:border-t after:border-tab-border bg-transparent text-base`)
 
     });
 
@@ -109,14 +109,14 @@ describe("Tabs component : ", () => {
         const TabsContainer = screen.getByTestId('tabs-container');
         expect(TabsContainer.childElementCount).toBe(2);
 
-        expect(preComponentWrapper).toHaveClass('flex items-center pr-2 border-b border-tabBorder border-r');
-        expect(preComponentWrapper).toHaveClass('bg-tabBackground');
+        expect(preComponentWrapper).toHaveClass('flex items-center pr-2 border-b border-tab-border border-r');
+        expect(preComponentWrapper).toHaveClass('bg-tab-background');
         unmount();
 
         //should render component with tab-version-2
         render(<Template {...TabArgs} tabsVersion={2} preComp={() => <div data-testid="pre-comp-tab">Initial Component</div>} />);
         preComponentWrapper = screen.getByTestId('pre-comp-tab').parentElement;
-        expect(preComponentWrapper).toHaveClass('bg-tabBackground2');
+        expect(preComponentWrapper).toHaveClass('bg-tab-background-activeColor');
     });
 
     test("should render component after the tab list scroller", () => {
@@ -126,7 +126,7 @@ describe("Tabs component : ", () => {
         const TabsContainer = screen.getByTestId('tabs-container');
         expect(TabsContainer.childElementCount).toBe(2);
 
-        expect(postComponentWrapper).toHaveClass('flex items-center pr-2 border-b border-tabBorder');
+        expect(postComponentWrapper).toHaveClass('flex items-center pr-2 border-b border-tab-border');
         expect(postComponentWrapper).toHaveClass('bg-transparent');
 
     });
@@ -140,7 +140,7 @@ describe("Tabs component : ", () => {
         const TabsContainer = screen.getByTestId('tabs-container');
         expect(TabsContainer.childElementCount).toBe(3);
 
-        expect(suffixComponentWrapper).toHaveClass('flex-1 flex pl-1 items-center pr-2 border-b border-tabBorder');
+        expect(suffixComponentWrapper).toHaveClass('flex-1 flex pl-1 items-center pr-2 border-b border-tab-border');
         expect(suffixComponentWrapper).toHaveClass('bg-transparent');
 
     });

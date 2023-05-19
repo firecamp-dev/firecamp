@@ -242,7 +242,7 @@ const PlaygroundTab = () => {
   return (
     <Container className="h-full">
       <Container.Header>
-        <StatusBar className="bg-statusBarBackground2 px-1">
+        <StatusBar className="bg-statusBar-background-active px-1">
           <StatusBar.PrimaryRegion>
             <div className="collection-path" data-tip={messagePath}>
               {`./${messagePath}`}
