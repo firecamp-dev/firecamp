@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import HTTPS from 'https';
-import QueryString from 'qs';
+// import QueryString from 'qs';
 import { isNode } from 'browser-or-node';
 import * as scriptRunner from '@firecamp/scripts';
 import {
@@ -102,11 +102,16 @@ export default class RestExecutor implements IRestExecutor {
    */
   private async _prepare(request: IRest): Promise<AxiosRequestConfig> {
     const { body, config, headers, url } = request;
-
-    // console.log(_url, 777);
+    const nUrl = _url.normalize(url?.raw || '', ['http', 'https']);
+    // console.log(nUrl, 777);
     const axiosRequest: AxiosRequestConfig = {
-      url: _url.normalize(url?.raw || '', ['http', 'https']),
-      params: QueryString.stringify(_table.toObject(url?.queryParams || [])),
+      url: nUrl,
+      /**
+       * Must be a plain object or a URLSearchParams object
+       * NOTE: params that are null or undefined are not rendered in the URL.
+       * @note: params will be always there in the raw url, so no need to pass it explicitly here. It's adding duplicate params again which can be cause an error from API servers
+       */
+      // params: _table.toObject(url?.queryParams || []),
       method: request.method,
       headers: _table.toObject(headers || []),
       // TODO: Supported in browser
@@ -141,7 +146,7 @@ export default class RestExecutor implements IRestExecutor {
   }
 
   async send(fcRequest: IRest, variables: IVariableGroup) {
-    console.log(fcRequest, variables, 2000000);
+    // console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
       return Promise.resolve({
@@ -168,7 +173,7 @@ export default class RestExecutor implements IRestExecutor {
           environment,
           collectionVariables,
         } = fc as any;
-        console.log(_request, '..._request');
+        // console.log(_request, '..._request');
         if (_request) {
           // merge script updated request with fc request
           // TODO:  we can improve this later
