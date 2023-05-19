@@ -55,7 +55,7 @@ const Help: FC<IHelp> = ({ docLink = '', client = 'http' }) => {
             className="text-appForegroundInActive"
             href={
               client
-                ? `https://github.com/firecamp-io/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${client}]%20Title%20or%20Feature%20request`
+                ? `https://github.com/firecampdev/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${client}]%20Title%20or%20Feature%20request`
                 : helpDesks[type]
                 ? helpDesks[type].link
                 : ''
