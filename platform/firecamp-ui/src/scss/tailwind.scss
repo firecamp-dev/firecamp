@@ -1668,12 +1668,12 @@ video {
 .bg-popover-background {
   background-color: var(--popover-background);
 }
-.bg-primary-colorText {
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
 .bg-primaryColor {
   background-color: var(--app-primary);
+}
+.bg-primaryColor-text {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 .bg-secondaryColor {
   background-color: var(--app-secondary);
@@ -2125,17 +2125,17 @@ video {
 .text-popover-foreground {
   color: var(--popover-foreground);
 }
-.text-primary-colorText {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-}
 .text-primaryColor {
   color: var(--app-primary);
+}
+.text-primaryColor-text {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .text-rest {
   color: var(--req-link);
 }
-.text-secondaryColorText {
+.text-secondaryColor-text {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
@@ -2469,12 +2469,12 @@ video {
 .hover\:text-modal-foreground-active:hover {
   color: var(--modal-foreground-active);
 }
-.hover\:text-primary-colorText:hover {
-  --tw-text-opacity: 1;
-  color: rgb(255 255 255 / var(--tw-text-opacity));
-}
 .hover\:text-primaryColor:hover {
   color: var(--app-primary);
+}
+.hover\:text-primaryColor-text:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .hover\:text-statusBar-foreground-active:hover {
   color: var(--statusBar-foreground-active);
@@ -2489,7 +2489,7 @@ video {
   content: var(--tw-content);
   background-color: var(--focus-border);
 }
-.focus\:\!bg-primaryColorOpacity:focus {
+.focus\:\!bg-primaryColor-withOpacity:focus {
   background-color: var(--app-primary-withOpacity) !important;
 }
 .focus\:bg-input-background-focus:focus {

@@ -50,8 +50,6 @@ module.exports = {
       'modal-border': 'var(--modal-border)',
       'modal-shadow': 'var(--modal-shadow)',
 
-      focusBorder: 'var(--focus-border)',
-
       warning: 'var(--warning)',
       danger: 'var(--error)',
       info: 'var(--info)',
@@ -61,15 +59,14 @@ module.exports = {
       focus2: 'var(--focus-level-2)',
       focus3: 'var(--focus-level-3)',
       focus4: 'var(--focus-level-4)',
-
-      secondaryBG: '#333333',
-      secondaryText: '#ffffff',
-      primaryColor: 'var(--app-primary)',
-      primaryColorOpacity: 'var(--app-primary-withOpacity)',
-      'primary-colorText': '#ffffff',
-      secondaryColor: 'var(--app-secondary)',
-      secondaryColorText: '#ffffff',
+      focusBorder: 'var(--focus-border)',
       focusColor: '#ffffff1a',
+
+      primaryColor: 'var(--app-primary)',
+      'primaryColor-withOpacity': 'var(--app-primary-withOpacity)',
+      'primaryColor-text': '#ffffff',
+      secondaryColor: 'var(--app-secondary)',
+      'secondaryColor-text': '#ffffff',
 
       transparent: '#ffffff00',
 

@@ -25,10 +25,10 @@ describe("Button : " , () => {
     if(PrimaryButtonArgs.transparent){
       expect(button).toHaveClass('text-primaryColor !border-primaryColor hover:bg-primaryColor'); 
       if(!PrimaryButtonArgs.ghost){
-        expect(button).toHaveClass('text-primary-colorText bg-primaryColor !border-primaryColor'); 
+        expect(button).toHaveClass('text-primaryColor-text bg-primaryColor !border-primaryColor'); 
       }
     }else if(!PrimaryButtonArgs.transparent){
-      expect(button).toHaveClass('text-primary-colorText bg-primaryColor !border-primaryColor'); 
+      expect(button).toHaveClass('text-primaryColor-text bg-primaryColor !border-primaryColor'); 
     }
     
   });
@@ -41,7 +41,7 @@ describe("Button : " , () => {
     if(SecondaryButtonArgs.transparent){
       expect(button).toHaveClass('text-app-foreground !border-secondaryColor'); 
     }else if(!SecondaryButtonArgs.transparent){
-      expect(button).toHaveClass('text-secondaryColorText bg-secondaryColor !border-secondaryColor'); 
+      expect(button).toHaveClass('text-secondaryColor-text bg-secondaryColor !border-secondaryColor'); 
     }
   });
 
@@ -53,7 +53,7 @@ describe("Button : " , () => {
     if(DangerButtonArgs.transparent){
       expect(button).toHaveClass('text-danger !border-danger'); 
     }else if(!DangerButtonArgs.transparent){
-      expect(button).toHaveClass('text-secondaryColorText bg-danger !border-danger'); 
+      expect(button).toHaveClass('text-secondaryColor-text bg-danger !border-danger'); 
     }
   });
   
@@ -65,7 +65,7 @@ describe("Button : " , () => {
     if(TransparentButtonArgs.primary){
       expect(button).toHaveClass('text-primaryColor !border-primaryColor hover:bg-primaryColor');
       if(!TransparentButtonArgs.ghost)
-        expect(button).toHaveClass('hover:text-primary-colorText');
+        expect(button).toHaveClass('hover:text-primaryColor-text');
     }else if(TransparentButtonArgs.secondary){
       expect(button).toHaveClass('text-app-foreground !border-secondaryColor'); 
     }else if(TransparentButtonArgs.danger){
@@ -79,7 +79,7 @@ describe("Button : " , () => {
     render(<Template {...GhostButtonArgs}/>);
 
     let button = screen.getByRole('button', { name: GhostButtonArgs.text });
-    expect(button).not.toHaveClass('border hover:text-primary-colorText'); 
+    expect(button).not.toHaveClass('border hover:text-primaryColor-text'); 
     expect(button).toHaveClass('hover:!bg-focusColor'); 
   });
 

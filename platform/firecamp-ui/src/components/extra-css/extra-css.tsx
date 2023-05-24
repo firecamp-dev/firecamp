@@ -12,7 +12,7 @@ const ExtraCss = () => {
        !min-w-full max-w-sm
        min-h-0 max-h-4 max-h-48 max-h-52 max-h-56
        after:opacity-10 opacity-20 opacity-30 opacity-50 opacity-70 opacity-80 opacity-100 !opacity-100
-       bg-app-border !bg-transparent bg-focus2 !bg-focus2 hover:!bg-focus2 bg-app-background-secondary bg-tab-background-activeColor bg-focus3 hover:bg-focusBorder hover:after:bg-focusBorder first:border-t-0 !bg-app-background-secondary  hover:!bg-focus1 focus:!bg-primaryColorOpacity
+       bg-app-border !bg-transparent bg-focus2 !bg-focus2 hover:!bg-focus2 bg-app-background-secondary bg-tab-background-activeColor bg-focus3 hover:bg-focusBorder hover:after:bg-focusBorder first:border-t-0 !bg-app-background-secondary  hover:!bg-focus1 focus:!bg-primaryColor-withOpacity
        !border-0  border-0 border-r border-r-app-border border-app-foreground-inactive !border-transparent !border-b-transparent hover:border-focusBorder first:border-l-0 last-of-type:border-r-tab-border
        rounded-full !rounded-br-none	!rounded-tr-none !rounded-bl-none !rounded-tl-none !rounded-none rounded-2xl
        items-baseline 

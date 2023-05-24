@@ -424,7 +424,7 @@ export const StatusBarExample = () => {
       <StatusBar.PrimaryRegion>
         <div
           tabIndex={1}
-          className="bg-primaryColor text-primary-colorText w-fit px-3 flex items-center"
+          className="bg-primaryColor text-primaryColor-text w-fit px-3 flex items-center"
           id={'status-bar-firecamp-version'}
           data-tip={`Firecamp`}
         >

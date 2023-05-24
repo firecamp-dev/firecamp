@@ -12,7 +12,7 @@ const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
         thead: 'sticky top-0 !bg-app-background-secondary z-10',
         container: 'h-full !overflow-y-auto -mt-px visible-scrollbar thick',
         theadTr: '!border-0 !bg-app-background-secondary',
-        tr: 'hover:!bg-focus1 focus:!bg-primaryColorOpacity  !border-0',
+        tr: 'hover:!bg-focus1 focus:!bg-primaryColor-withOpacity  !border-0',
       }}
       rows={[]}
       titleRenderer={(log) => log?.value?.value || log?.title}
