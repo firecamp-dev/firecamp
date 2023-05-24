@@ -10,12 +10,12 @@ module.exports = {
       'app-border': 'var(--app-border)',
 
       'activityBar-background': 'var(--activityBar-background)',
+      'activityBar-background-active': 'var(--activityBar-background-active)',
+      'activityBar-border': 'var(--activityBar-border)',
+      'activityBar-border-active': 'var(--activityBar-border-active)',
       'activityBar-foreground': 'var(--activityBar-foreground)',
       'activityBar-foreground-inactive':
         'var(--activityBar-foreground-inactive)',
-      'activityBar-background-active': 'var(--activityBar-background-active)',
-      'activityBar-border-active': 'var(--activityBar-border-active)',
-      'activityBar-border': 'var(--activityBar-border)',
       'activityBarBadge-foreground': 'var(--activityBarBadge-foreground)',
       'activityBarBadge-background': 'var(--activityBarBadge-background)',
 
@@ -33,11 +33,11 @@ module.exports = {
       'statusBar-foreground': 'var(--statusBar-foreground)',
       'statusBar-foreground-active': 'var(--statusBar-foreground-active)',
 
+      'input-background': 'var(--input-background)',
+      'input-background-focus': 'var(--input-background-focus)',
       'input-border': 'var(--input-border)',
       'input-placeholder': 'var(--input-placeholder)',
       'input-text': 'var(--input-text)',
-      'input-background-focus': 'var(--input-background-focus)',
-      'input-background': 'var(--input-background)',
 
       'popover-background': 'var(--popover-background)',
       'popover-foreground': 'var(--popover-foreground)',
