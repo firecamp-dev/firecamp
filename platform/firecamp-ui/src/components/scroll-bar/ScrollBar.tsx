@@ -6,6 +6,7 @@ export enum EScrollbarLayout {
   V1 = 'v1',
   V2 = 'v2',
   Horizontal = 'horizontal',
+  Vertical = 'vertical',
   Thin = 'thin',
 }
 const ScrollBar = ({
@@ -94,6 +95,9 @@ const ScrollBar = ({
             },
             {
               'bg-appBorder rounded-2xl': layout === EScrollbarLayout.Default,
+            },
+            {
+              'rounded' : layout === EScrollbarLayout.Vertical
             }
           )}
         />

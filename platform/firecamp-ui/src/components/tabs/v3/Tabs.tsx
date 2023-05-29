@@ -15,6 +15,8 @@ import { TId } from '@firecamp/types';
 import Tab from './Tab';
 import { ITabs } from './Tabs.interface';
 import { EActiveBorderPosition, ITab } from './Tab.interface';
+import { Scrollbar } from '../../../ui-kit';
+import { EScrollbarLayout } from '../../scroll-bar/ScrollBar';
 
 const Tabs: FC<ITabs> = forwardRef(
   (
@@ -164,7 +166,11 @@ const Tabs: FC<ITabs> = forwardRef(
         tabIndex={tabIndex}
       >
         <PreComponent preComp={preComp} tabsVersion={tabsVersion} />
-        <div className={cx('custom-scrollbar', { 'flex-1': !suffixComp })}>
+        {/* <div className={cx('custom-scrollbar', { 'flex-1': !suffixComp })}> */}
+        <Scrollbar className={cx('-custom-scrollbar', { 'flex-1': !suffixComp })}
+        layout={EScrollbarLayout.Horizontal}
+        noWrap>
+
           <div className="border-b border-tabBorder" style={{ height: height }}>
             <div
               className="flex border-b border-tabBorder items-start"
@@ -242,7 +248,8 @@ const Tabs: FC<ITabs> = forwardRef(
               )}
             </div>
           </div>
-        </div>
+          </Scrollbar>
+        {/* </div> */}
         <SuffixComponent suffixComp={suffixComp} tabsVersion={tabsVersion} />
         <PostComponent postComp={postComp} />
       </div>

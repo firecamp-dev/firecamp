@@ -20,6 +20,7 @@ import {
   ToolBar,
   Empty,
   Button,
+  Scrollbar,
 } from '@firecamp/ui';
 import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
@@ -29,6 +30,7 @@ import { useTabStore } from '../../../store/tab';
 import { ETabEntityTypes } from '../../tabs/types';
 import platformContext from '../../../services/platform-context';
 import { useExplorerStore } from '../../../store/explorer';
+import { EScrollbarLayout } from '@firecamp/ui/src/components/scroll-bar/ScrollBar';
 
 const Explorer: FC<any> = () => {
   const explorerTreeRef = useRef();
@@ -375,6 +377,7 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
+              {/* <Scrollbar layout={EScrollbarLayout.Vertical} height='h-full'> */}
                 <UncontrolledTreeEnvironment
                   ref={explorerTreeRef}
                   keyboardBindings={{
@@ -452,6 +455,7 @@ const Explorer: FC<any> = () => {
                     ref={treeRef}
                   />
                 </UncontrolledTreeEnvironment>
+              {/* </Scrollbar> */}
               </>
             );
           }}
