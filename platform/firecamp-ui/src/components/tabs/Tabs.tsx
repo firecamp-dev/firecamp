@@ -3,6 +3,8 @@ import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import Tab from './Tab';
 import { ITabs } from './interfaces/Tabs.interfaces';
+import { Scrollbar } from '../../ui-kit';
+import { EScrollbarLayout } from '../scroll-bar/ScrollBar';
 
 const Tabs: FC<ITabs> = ({
   id = '',
@@ -76,7 +78,7 @@ const Tabs: FC<ITabs> = ({
       )}
       id={id}
       tabIndex={tabIndex}
-      data-testid={"tabs-container"}
+      data-testid={'tabs-container'}
     >
       {preComp && (
         <div
@@ -89,7 +91,12 @@ const Tabs: FC<ITabs> = ({
           {preComp()}
         </div>
       )}
-      <div className={cx('custom-scrollbar', { 'flex-1': !suffixComp })}>
+
+      <Scrollbar
+        className={cx({ 'flex-1': !suffixComp })}
+        layout={EScrollbarLayout.Horizontal}
+        noWrap
+      >
         <div className="border-b border-tabBorder" style={{ height: height }}>
           <div
             className="flex border-b border-tabBorder items-start"
@@ -106,7 +113,10 @@ const Tabs: FC<ITabs> = ({
                   hasStatusbar={true}
                   className={cx(
                     'border-r border-l border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
-                    {'border-r-transparent border-l-transparent ': tab?.id != activeTab},
+                    {
+                      'border-r-transparent border-l-transparent ':
+                        tab?.id != activeTab,
+                    },
                     {
                       "active text-tabForeground before:block before:content-[''] before:absolute before:bg-primaryColor before:h-0.5 before:-top-px before:-inset-x-px after:block after:content-[''] after:absolute after:bg-statusBarBackground2 after:h-px after:-bottom-px after:inset-x-0 border-r-tabBorder border-l-tabBorder":
                         tab?.id == activeTab,
@@ -126,7 +136,7 @@ const Tabs: FC<ITabs> = ({
                     {
                       'flex-1 text-center': equalWidth,
                     },
-                   
+
                     { 'bg-transparent text-base': tabsVersion == 1 },
                     { 'bg-tabBackground2 text-sm': tabsVersion == 2 }
                   )}
@@ -162,13 +172,14 @@ const Tabs: FC<ITabs> = ({
                   }
                 }}
               >
-                <VscAdd className="flex" size={16} title="IconAdd"/>
+                <VscAdd className="flex" size={16} title="IconAdd" />
               </div>
             )}
           </div>
           {/* </SimpleBar> */}
         </div>
-      </div>
+      </Scrollbar>
+
       {suffixComp && (
         <div
           className={cx(

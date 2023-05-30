@@ -377,7 +377,7 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
-              {/* <Scrollbar layout={EScrollbarLayout.Vertical} height='h-full'> */}
+              <Scrollbar layout={EScrollbarLayout.Vertical} height='h-full'>
                 <UncontrolledTreeEnvironment
                   ref={explorerTreeRef}
                   keyboardBindings={{
@@ -455,7 +455,7 @@ const Explorer: FC<any> = () => {
                     ref={treeRef}
                   />
                 </UncontrolledTreeEnvironment>
-              {/* </Scrollbar> */}
+              </Scrollbar>
               </>
             );
           }}

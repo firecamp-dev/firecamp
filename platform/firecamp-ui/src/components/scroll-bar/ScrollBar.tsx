@@ -31,7 +31,7 @@ const ScrollBar = ({
     }}
     type="hover"
   >
-    <ScrollArea.Viewport className={cx('w-full h-full')}>
+    <ScrollArea.Viewport className={cx('w-full h-full [&>div]:!block')}>
       {children}
     </ScrollArea.Viewport>
 
@@ -58,7 +58,7 @@ const ScrollBar = ({
       }}
     >
       <ScrollArea.Thumb
-        className={cx('flex-1 bg-appForegroundInActive', {
+        className={cx('flex-1 bg-focus4', {
           rounded: layout === EScrollbarLayout.Horizontal,
         })}
       />
@@ -91,13 +91,13 @@ const ScrollBar = ({
           className={cx(
             'flex-1',
             {
-              'bg-appForegroundInActive': layout !== EScrollbarLayout.Default,
+              'bg-focus4': layout !== EScrollbarLayout.Default,
             },
             {
               'bg-appBorder rounded-2xl': layout === EScrollbarLayout.Default,
             },
             {
-              'rounded' : layout === EScrollbarLayout.Vertical
+              'bg-focus4 rounded' : layout === EScrollbarLayout.Vertical
             }
           )}
         />
