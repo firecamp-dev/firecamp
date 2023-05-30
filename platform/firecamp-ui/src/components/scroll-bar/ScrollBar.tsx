@@ -5,15 +5,14 @@ const ScrollBar = ({
   children = <></>,
   className = '',
   noWrap = false,
-  withCorner = true,
+  withCorner = false,
   transparent = false,
   fullWidth = false,
   fullHeight = false,
-  rounded = true,
 }) => (
   <ScrollArea.Root
     className={cx(
-      'overflow-hidden ',
+      'overflow-hidden',
       { 'whitespace-nowrap': noWrap },
       { 'w-full': fullWidth },
       { 'h-full': fullHeight },
@@ -26,7 +25,7 @@ const ScrollBar = ({
   >
     {/**
      * TODO: update classname `[&>div]:!block` when issue is resolved
-     * ref: https://github.com/radix-ui/primitives/issues/926#issuecomment-1447283516
+     * @ref: https://github.com/radix-ui/primitives/issues/926#issuecomment-1447283516
      */}
     <ScrollArea.Viewport className={cx('w-full h-full [&>div]:!block')}>
       {children}
@@ -51,9 +50,7 @@ const ScrollBar = ({
       }}
     >
       <ScrollArea.Thumb
-        className={cx('flex-1 bg-focus4', {
-          rounded: rounded,
-        })}
+        className={cx('flex-1 bg-focus4 rounded')}
       />
     </ScrollArea.Scrollbar>
 
@@ -76,9 +73,7 @@ const ScrollBar = ({
       }}
     >
       <ScrollArea.Thumb
-        className={cx('flex-1 bg-focus4', {
-          rounded: rounded,
-        })}
+        className={cx('flex-1 bg-focus4 rounded')}
       />
     </ScrollArea.Scrollbar>
 

@@ -13,7 +13,6 @@ export default {
 export const Demo = () => (
   <ScrollBar
     className=" rounded shadow-md bg-primaryColorText w-[200px] h-[200px]"
-    transparent={false}
     noWrap
   >
     <div style={{ padding: '15px 20px' }}>
@@ -57,7 +56,6 @@ export const Demo = () => (
 export const VerticalScroll = () => (
   <ScrollBar
     className="rounded shadow-md bg-primaryColorText h-[200px]"
-    transparent={false}
   >
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
@@ -100,7 +98,6 @@ export const VerticalScroll = () => (
 export const HorizontalScroll = () => (
   <ScrollBar
     className="rounded shadow-md bg-primaryColorText h-[50vh]"
-    transparent={false}
     noWrap
   >
     <div style={{ padding: '15px 20px' }}>
@@ -123,7 +120,6 @@ export const HorizontalScroll = () => (
 export const ScrollBarWithModal = () => (
   <ScrollBar
     className="rounded shadow-md bg-primaryColorText h-[200px]"
-    transparent={false}
   >
     <div style={{ padding: '15px 20px' }}>
       <ForgetPasswordForm />
@@ -135,8 +131,6 @@ export const ScrollBarWithModal = () => (
 export const VSCodeExample = () => (
   <ScrollBar
     className=" rounded shadow-md bg-primaryColorText w-[200px] h-[200px]"
-    withCorner={false}
-    rounded={false}
     transparent
     noWrap
   >

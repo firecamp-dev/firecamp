@@ -376,7 +376,7 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
-              <Scrollbar transparent fullHeight rounded>
+              <Scrollbar transparent fullHeight>
                 <UncontrolledTreeEnvironment
                   ref={explorerTreeRef}
                   keyboardBindings={{
