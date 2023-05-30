@@ -11,12 +11,11 @@ import {
 import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { TId } from '@firecamp/types';
+import { Scrollbar } from '@firecamp/ui';
 
 import Tab from './Tab';
 import { ITabs } from './Tabs.interface';
 import { EActiveBorderPosition, ITab } from './Tab.interface';
-import { Scrollbar } from '../../../ui-kit';
-import { EScrollbarLayout } from '../../scroll-bar/ScrollBar';
 
 const Tabs: FC<ITabs> = forwardRef(
   (
@@ -169,7 +168,7 @@ const Tabs: FC<ITabs> = forwardRef(
 
         <Scrollbar
           className={cx({ 'flex-1': !suffixComp })}
-          layout={EScrollbarLayout.Horizontal}
+          transparent
           noWrap
         >
           <div className="border-b border-tabBorder" style={{ height: height }}>

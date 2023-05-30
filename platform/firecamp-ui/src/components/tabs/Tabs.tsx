@@ -1,10 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { Scrollbar } from '@firecamp/ui';
 import Tab from './Tab';
 import { ITabs } from './interfaces/Tabs.interfaces';
-import { Scrollbar } from '../../ui-kit';
-import { EScrollbarLayout } from '../scroll-bar/ScrollBar';
 
 const Tabs: FC<ITabs> = ({
   id = '',
@@ -93,8 +92,8 @@ const Tabs: FC<ITabs> = ({
       )}
 
       <Scrollbar
-        className={cx({ 'flex-1': !suffixComp })}
-        layout={EScrollbarLayout.Horizontal}
+        className={cx({ 'flex-1 ': !suffixComp })}
+        transparent
         noWrap
       >
         <div className="border-b border-tabBorder" style={{ height: height }}>
