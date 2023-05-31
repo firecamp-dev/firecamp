@@ -2528,6 +2528,9 @@ video {
 .data-\[side\=\'bottom\'\]\:animate-slideUpAndFade[data-side='bottom'] {
   animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
+.\[\&\>div\]\:\!block>div {
+  display: block !important;
+}
 
 @import url(../components/split-view/SplitView.scss);
 /* @import url(collection.scss); */

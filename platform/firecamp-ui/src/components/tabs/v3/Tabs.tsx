@@ -11,6 +11,7 @@ import {
 import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { TId } from '@firecamp/types';
+import { ScrollBar } from '@firecamp/ui';
 
 import Tab from './Tab';
 import { ITabs } from './Tabs.interface';
@@ -164,7 +165,12 @@ const Tabs: FC<ITabs> = forwardRef(
         tabIndex={tabIndex}
       >
         <PreComponent preComp={preComp} tabsVersion={tabsVersion} />
-        <div className={cx('custom-scrollbar', { 'flex-1': !suffixComp })}>
+
+        <ScrollBar
+          className={cx({ 'flex-1': !suffixComp })}
+          transparent
+          noWrap
+        >
           <div className="border-b border-tabBorder" style={{ height: height }}>
             <div
               className="flex border-b border-tabBorder items-start"
@@ -183,7 +189,10 @@ const Tabs: FC<ITabs> = forwardRef(
                     height={height}
                     className={cx(
                       'last-of-type:border-r-tabBorder border-r border-l border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
-                      {'border-r-transparent border-l-transparent': tabId !== state.activeTab},
+                      {
+                        'border-r-transparent border-l-transparent':
+                          tabId !== state.activeTab,
+                      },
                       {
                         "active text-tabForeground before:block before:content-[''] before:absolute before:bg-primaryColor before:h-0.5 before:-top-px before:-inset-x-px after:block after:content-[''] after:absolute after:bg-statusBarBackground2 after:h-px after:-bottom-px after:inset-x-0 border-r-tabBorder border-l-tabBorder":
                           tabId == state.activeTab,
@@ -242,7 +251,8 @@ const Tabs: FC<ITabs> = forwardRef(
               )}
             </div>
           </div>
-        </div>
+        </ScrollBar>
+
         <SuffixComponent suffixComp={suffixComp} tabsVersion={tabsVersion} />
         <PostComponent postComp={postComp} />
       </div>
