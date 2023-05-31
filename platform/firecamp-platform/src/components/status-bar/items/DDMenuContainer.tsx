@@ -165,7 +165,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pb-2"
       />
     </Dropdown>
   );
@@ -246,7 +246,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pb-2"
       />
     </Dropdown>
   );
@@ -315,7 +315,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pb-2"
       />
     </Dropdown>
   );

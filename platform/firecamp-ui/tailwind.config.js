@@ -1,5 +1,9 @@
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'],
+  content: [
+    '../firecamp-platform/src/**/*.{js,jsx,ts,tsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
+    './public/index.html',
+  ],
   theme: {
     colors: {
       appBackground: 'var(--app-background)',

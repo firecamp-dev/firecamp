@@ -13,7 +13,7 @@ export default {
     console.log(item, 'arrow context');
 
     if (item.data?.__ref?.isItem) {
-      // return <div className={cx('collection_leaf-node-type pl-2')}>Emt.</div>;
+      // return <div className={cx('collection_leaf-node-type')}>Emt.</div>;
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <>

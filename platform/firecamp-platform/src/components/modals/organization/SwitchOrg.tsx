@@ -56,7 +56,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               <div className="pl-4 pb-4 pr-2  overflow-auto visible-scrollbar h-80 mr-2">
                 {orgs.map((org, i) => (
                   <div
-                    className="card relative flex items-center p-2 mb-2 text-base font-semibold border border-appBorder cursor-pointer hover:border-focusBorder  after:content-['_↗']  after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
+                    className="card relative flex items-center p-2 mb-2 text-base font-semibold border border-appBorder cursor-pointer hover:border-focusBorder after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
                     key={org.__ref.id}
                   >
                     <a
@@ -72,7 +72,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
                     </a>
                     <VscChevronRight
                       size={14}
-                      className="text-focusBorder bg-focusBorder border-focusBorder action"
+                      className=" border-focusBorder action"
                     />
                   </div>
                 ))}
@@ -101,8 +101,8 @@ export default SwitchOrg;
 
 const NoOrgFoundMessage = () => {
   return (
-    <div className="p-8 h-36 flex flex-col justify-center items-center">
-      <div className="text-sm max-w-xs mx-auto text-center px-10 pt-4">
+    <div className="p-8 flex flex-col justify-center items-center">
+      <div className="text-sm max-w-xs mx-auto text-center px-10">
         <label className="font-semibold text-appForeground uppercase">
           No Organization Found
         </label>
@@ -123,8 +123,8 @@ const NoOrgFoundMessage = () => {
 
 const FetchingOrgs = () => {
   return (
-    <div className="p-8 h-36 flex flex-col justify-center items-center">
-      <div className="text-sm max-w-xs mx-auto text-center px-10 pt-4">
+    <div className="p-8 flex flex-col justify-center items-center">
+      <div className="text-sm max-w-xs mx-auto text-center px-10">
         <label className="font-semibold text-appForeground uppercase">
           Fetching Your Organizations...
         </label>

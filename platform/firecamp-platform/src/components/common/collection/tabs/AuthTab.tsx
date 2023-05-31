@@ -51,7 +51,7 @@ const AuthTab = ({
         />
       </Container.Body>
       <Container.Footer className="py-3">
-        <TabHeader className="m-2">
+        <TabHeader>
           <TabHeader.Right>
             <Button
               text={isRequesting ? 'Saving Auth...' : 'Save Auth Changes'}

@@ -13,11 +13,11 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {
   renderItemArrow: ({ item, context }) => {
-    return <VscJson className="mr-0.5 flex-none" size={18} opacity={1} />;
+    return <VscJson className=" flex-none" size={18} opacity={1} />;
     // return (
     //   <>
     //     {item.data.__meta.visibility == 2 ? (
-    //       <VscLock className="mr-0.5 flex-none" size={18} opacity={1} />
+    //       <VscLock className="flex-none" size={18} opacity={1} />
     //     ) : (
     //       <></>
     //     )}

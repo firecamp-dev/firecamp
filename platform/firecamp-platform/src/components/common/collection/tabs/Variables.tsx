@@ -17,7 +17,7 @@ const Variables: FC<IProps> = ({
         <EnvironmentTable rows={entity.variables} onChange={onChange} />
       </Container.Body>
       <Container.Footer className="py-3">
-        <TabHeader className="m-2">
+        <TabHeader>
           <TabHeader.Right>
             <Button
               text={isRequesting ? 'Saving variables...' : 'Save Variables'}
