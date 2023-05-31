@@ -1,6 +1,5 @@
-import ScrollBar from './ScrollBar';
+import { Tabs, ScrollBar } from '@firecamp/ui';
 import { ForgetPasswordForm } from '../form/Form.stories';
-import { Tabs } from '@firecamp/ui';
 
 export default {
   title: 'UI-Kit/ScrollBar',

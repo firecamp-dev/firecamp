@@ -20,7 +20,7 @@ import {
   ToolBar,
   Empty,
   Button,
-  Scrollbar,
+  ScrollBar,
 } from '@firecamp/ui';
 import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
@@ -376,7 +376,7 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
-              <Scrollbar transparent fullHeight>
+              <ScrollBar transparent fullHeight>
                 <UncontrolledTreeEnvironment
                   ref={explorerTreeRef}
                   keyboardBindings={{
@@ -454,7 +454,7 @@ const Explorer: FC<any> = () => {
                     ref={treeRef}
                   />
                 </UncontrolledTreeEnvironment>
-              </Scrollbar>
+              </ScrollBar>
               </>
             );
           }}

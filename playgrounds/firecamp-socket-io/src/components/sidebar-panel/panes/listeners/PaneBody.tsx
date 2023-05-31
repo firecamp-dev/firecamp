@@ -8,7 +8,7 @@ import {
   Button,
   Column,
   SwitchButtonV2,
-  Scrollbar,
+  ScrollBar,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
 
@@ -47,7 +47,7 @@ const PaneBody = () => {
 
             {/* with radix scrollbar */}
             <Container.Body>
-              <Scrollbar fullHeight>
+              <ScrollBar fullHeight>
                 <>
                   {listeners.map((listener, index) => {
                     return (
@@ -59,7 +59,7 @@ const PaneBody = () => {
                     );
                   })}
                 </>
-              </Scrollbar>
+              </ScrollBar>
             </Container.Body>
 
             {listeners?.length > 1 ? (

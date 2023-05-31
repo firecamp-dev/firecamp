@@ -11,7 +11,7 @@ import {
 import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { TId } from '@firecamp/types';
-import { Scrollbar } from '@firecamp/ui';
+import { ScrollBar } from '@firecamp/ui';
 
 import Tab from './Tab';
 import { ITabs } from './Tabs.interface';
@@ -166,7 +166,7 @@ const Tabs: FC<ITabs> = forwardRef(
       >
         <PreComponent preComp={preComp} tabsVersion={tabsVersion} />
 
-        <Scrollbar
+        <ScrollBar
           className={cx({ 'flex-1': !suffixComp })}
           transparent
           noWrap
@@ -251,7 +251,7 @@ const Tabs: FC<ITabs> = forwardRef(
               )}
             </div>
           </div>
-        </Scrollbar>
+        </ScrollBar>
 
         <SuffixComponent suffixComp={suffixComp} tabsVersion={tabsVersion} />
         <PostComponent postComp={postComp} />
