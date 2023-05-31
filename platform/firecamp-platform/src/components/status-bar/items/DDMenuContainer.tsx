@@ -152,7 +152,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
 
   return (
     <Dropdown>
-      <Dropdown.Handler tabIndex={1} className="flex items-center invert">
+      <Dropdown.Handler tabIndex={1} className="flex items-center">
         {title}
       </Dropdown.Handler>
       <Dropdown.Options
@@ -233,7 +233,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
 
   return (
     <Dropdown>
-      <Dropdown.Handler tabIndex={1} className="flex items-center invert">
+      <Dropdown.Handler tabIndex={1} className="flex items-center">
         {title}
       </Dropdown.Handler>
       <Dropdown.Options
@@ -302,7 +302,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
 
   return (
     <Dropdown>
-      <Dropdown.Handler tabIndex={1} className="flex items-center invert">
+      <Dropdown.Handler tabIndex={1} className="flex items-center">
         {title}
       </Dropdown.Handler>
       <Dropdown.Options
