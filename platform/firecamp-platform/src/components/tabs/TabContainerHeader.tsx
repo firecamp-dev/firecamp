@@ -116,7 +116,7 @@ const TabHeaderContainer = () => {
               }}
               tabIndex={-1}
               focus={false}
-              className="flex-1 overflow-x-auto overflow-y-visible visible-scrollbar fc-tab-main -mb-1 pb-1"
+              className="flex-1 overflow-x-auto visible-scrollbar fc-tab-main -mb-1 pb-1"
               suffixComp={
                 <div className="flex -ml-1 h-full">
                   <div
@@ -154,7 +154,7 @@ const HomeTabIcon = ({ isActive, onClick }) => {
       tabIndex={1}
       className={classnames(
         {
-          'active text-tabForeground bg-tabActiveBackground !border-b-transparent':
+          'active text-tabForeground !border-b-transparent':
             isActive,
         },
         'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tabBackground2 text-tabForegroundInactive border-r border-tabBorder flex-none'

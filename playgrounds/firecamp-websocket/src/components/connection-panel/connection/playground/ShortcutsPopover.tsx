@@ -78,12 +78,12 @@ const ShortcutsPopover = ({ id }) => {
         case 'UNIX':
         case 'Linux':
           return (
-            <div className="pb-2">
+            <div>
               {Object.values(EditorCommands).map((val, i) => {
                 {
                   return (
                     <div className="flex" key={i}>
-                      <div className="pl-2 pr-4 flex-1 font-semibold">{`${
+                      <div className=" pr-4 flex-1 font-semibold">{`${
                         val.name || ''
                       }`}</div>
                       <div className="ml-auto pr-2">{`${
@@ -97,12 +97,12 @@ const ShortcutsPopover = ({ id }) => {
           );
         case 'MacOS':
           return (
-            <div className="pb-2">
+            <div>
               {Object.values(EditorCommands).map((val, i) => {
                 {
                   return (
                     <div className="flex" key={i}>
-                      <div className="pl-2 pr-4 flex-1 font-semibold">{`${
+                      <div className=" pr-4 flex-1 font-semibold">{`${
                         val.name || ''
                       }`}</div>
                       <div className="ml-auto pr-2">{`${
@@ -126,8 +126,8 @@ const ShortcutsPopover = ({ id }) => {
   return (
     <Popover
       content={
-        <div className="w-48">
-          <div className="text-sm font-bold mb-1 text-appForegroundActive opacity-70 px-2 pt-2 pb-2 border-b border-appBorder">
+        <div>
+          <div className="text-sm font-bold mb-1 text-appForegroundActive opacity-70 px-2 pt-2 border-b border-appBorder">
             Shortcuts
           </div>
           {_renderKeyboardShortcutInfo()}

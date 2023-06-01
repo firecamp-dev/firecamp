@@ -46,11 +46,11 @@ export default {
       return (
         <>
           {/* {item.data.__meta.visibility == 2 ? (
-            <VscLock className="mr-0.5 flex-none" size={18} opacity={1} />
+            <VscLock className=" flex-none" size={18} opacity={1} />
           ) : (
             <></>
           )} */}
-          <VscJson className="mr-0.5 flex-none" size={18} opacity={1} />
+          <VscJson className=" flex-none" size={18} opacity={1} />
         </>
       );
     } else {

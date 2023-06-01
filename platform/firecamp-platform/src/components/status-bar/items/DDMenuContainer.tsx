@@ -152,7 +152,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
 
   return (
     <Dropdown>
-      <Dropdown.Handler tabIndex={1} className="flex items-center invert">
+      <Dropdown.Handler tabIndex={1} className="flex items-center">
         {title}
       </Dropdown.Handler>
       <Dropdown.Options
@@ -165,7 +165,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pb-2"
       />
     </Dropdown>
   );
@@ -233,7 +233,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
 
   return (
     <Dropdown>
-      <Dropdown.Handler tabIndex={1} className="flex items-center invert">
+      <Dropdown.Handler tabIndex={1} className="flex items-center">
         {title}
       </Dropdown.Handler>
       <Dropdown.Options
@@ -246,7 +246,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pb-2"
       />
     </Dropdown>
   );
@@ -302,7 +302,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
 
   return (
     <Dropdown>
-      <Dropdown.Handler tabIndex={1} className="flex items-center invert">
+      <Dropdown.Handler tabIndex={1} className="flex items-center">
         {title}
       </Dropdown.Handler>
       <Dropdown.Options
@@ -315,7 +315,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
             </div>
           ),
         }}
-        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pt-1 !pb-2"
+        headerClassName="!bg-focus2 !text-base !text-appForegroundActive !font-base !capitalize !px-3 !pb-2"
       />
     </Dropdown>
   );

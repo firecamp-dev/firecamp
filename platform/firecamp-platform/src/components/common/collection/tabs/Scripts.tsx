@@ -30,7 +30,7 @@ const Scripts: FC<IProps> = ({
         />
       </Container.Body>
       <Container.Footer className="py-3">
-        <TabHeader className="m-2">
+        <TabHeader>
           <TabHeader.Right>
             {/* <Button
               text="Cancel"

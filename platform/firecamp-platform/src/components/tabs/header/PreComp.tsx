@@ -34,13 +34,13 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
           );
         case ERequestTypes.SocketIO:
           return (
-            <div className="SOCKETIO text-xs font-bold w-5 invert tab-icon">
+            <div className="SOCKETIO text-xs font-bold w-5 tab-icon">
               <FcIconSocketIoSquare size={24} />
             </div>
           );
         case ERequestTypes.WebSocket:
           return (
-            <div className="WEBSOCKET text-xs font-bold w-5 invert tab-icon">
+            <div className="WEBSOCKET text-xs font-bold w-5 tab-icon">
               <FcIconWebSocket size={24} />
             </div>
           );
@@ -50,25 +50,25 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
 
     case ETabEntityTypes.Environment:
       return (
-        <div className="environment text-xs font-bold w-5 invert tab-icon">
+        <div className="environment text-xs font-bold w-5 tab-icon">
           <VscJson size={16} />
         </div>
       );
     case ETabEntityTypes.Collection:
       return (
-        <div className="collection text-xs font-bold w-5 invert tab-icon">
+        <div className="collection text-xs font-bold w-5 tab-icon">
           <VscFolder size={16} />
         </div>
       );
     case ETabEntityTypes.Folder:
       return (
-        <div className="folder text-xs font-bold w-5 invert tab-icon">
+        <div className="folder text-xs font-bold w-5 tab-icon">
           <VscFolderOpened size={16} />
         </div>
       );
     case ETabEntityTypes.Import:
       return (
-        <div className="text-xs font-bold w-5 invert tab-icon">
+        <div className="text-xs font-bold w-5 tab-icon">
           <VscArrowDown size={16} />
         </div>
       );
