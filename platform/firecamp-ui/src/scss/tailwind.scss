@@ -764,17 +764,8 @@ video {
 .right-3 {
   right: 0.75rem;
 }
-.right-4 {
-  right: 1rem;
-}
 .top-0 {
   top: 0px;
-}
-.top-1 {
-  top: 0.25rem;
-}
-.top-12 {
-  top: 3rem;
 }
 .top-2 {
   top: 0.5rem;
@@ -815,14 +806,8 @@ video {
 .\!m-0 {
   margin: 0px !important;
 }
-.\!m-1 {
-  margin: 0.25rem !important;
-}
 .\!m-2 {
   margin: 0.5rem !important;
-}
-.-m-4 {
-  margin: -1rem;
 }
 .m-0 {
   margin: 0px;
@@ -866,13 +851,6 @@ video {
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
-}
-.my-5 {
-  margin-top: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-.\!-mb-1 {
-  margin-bottom: -0.25rem !important;
 }
 .\!mb-0 {
   margin-bottom: 0px !important;
@@ -949,9 +927,6 @@ video {
 .mb-6 {
   margin-bottom: 1.5rem;
 }
-.mb-7 {
-  margin-bottom: 1.75rem;
-}
 .mb-8 {
   margin-bottom: 2rem;
 }
@@ -1000,9 +975,6 @@ video {
 .mt-1 {
   margin-top: 0.25rem;
 }
-.mt-14 {
-  margin-top: 3.5rem;
-}
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -1039,9 +1011,6 @@ video {
 .flex {
   display: flex;
 }
-.\!table {
-  display: table !important;
-}
 .table {
   display: table;
 }
@@ -1050,12 +1019,6 @@ video {
 }
 .table-cell {
   display: table-cell;
-}
-.table-header-group {
-  display: table-header-group;
-}
-.table-row-group {
-  display: table-row-group;
 }
 .table-row {
   display: table-row;
@@ -1082,12 +1045,6 @@ video {
   height: -moz-fit-content !important;
   height: fit-content !important;
 }
-.\!h-full {
-  height: 100% !important;
-}
-.\!h-screen {
-  height: 100vh !important;
-}
 .h-0 {
   height: 0px;
 }
@@ -1111,9 +1068,6 @@ video {
 }
 .h-4 {
   height: 1rem;
-}
-.h-48 {
-  height: 12rem;
 }
 .h-5 {
   height: 1.25rem;
@@ -1166,9 +1120,6 @@ video {
 }
 .max-h-48 {
   max-height: 12rem;
-}
-.max-h-52 {
-  max-height: 13rem;
 }
 .max-h-56 {
   max-height: 14rem;
@@ -1410,9 +1361,6 @@ video {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.\!text-ellipsis {
-  text-overflow: ellipsis !important;
-}
 .text-ellipsis {
   text-overflow: ellipsis;
 }
@@ -1608,9 +1556,6 @@ video {
 .\!bg-tabActiveBackground {
   background-color: var(--tab-background-active) !important;
 }
-.\!bg-transparent {
-  background-color: #ffffff00 !important;
-}
 .bg-activityBarActiveBackground {
   background-color: var(--activityBar-background-active);
 }
@@ -1778,10 +1723,6 @@ video {
   padding-left: 0px;
   padding-right: 0px;
 }
-.px-0\.5 {
-  padding-left: 0.125rem;
-  padding-right: 0.125rem;
-}
 .px-1 {
   padding-left: 0.25rem;
   padding-right: 0.25rem;
@@ -1871,20 +1812,11 @@ video {
 .\!pl-3 {
   padding-left: 0.75rem !important;
 }
-.\!pl-4 {
-  padding-left: 1rem !important;
-}
 .\!pl-9 {
   padding-left: 2.25rem !important;
 }
-.\!pr-0 {
-  padding-right: 0px !important;
-}
 .\!pr-3 {
   padding-right: 0.75rem !important;
-}
-.\!pr-4 {
-  padding-right: 1rem !important;
 }
 .\!pr-9 {
   padding-right: 2.25rem !important;
@@ -1913,9 +1845,6 @@ video {
 .pb-4 {
   padding-bottom: 1rem;
 }
-.pb-5 {
-  padding-bottom: 1.25rem;
-}
 .pb-6 {
   padding-bottom: 1.5rem;
 }
@@ -1927,9 +1856,6 @@ video {
 }
 .pl-0 {
   padding-left: 0px;
-}
-.pl-0\.5 {
-  padding-left: 0.125rem;
 }
 .pl-1 {
   padding-left: 0.25rem;
@@ -1945,9 +1871,6 @@ video {
 }
 .pr-0 {
   padding-right: 0px;
-}
-.pr-0\.5 {
-  padding-right: 0.125rem;
 }
 .pr-1 {
   padding-right: 0.25rem;
@@ -1993,9 +1916,6 @@ video {
 }
 .align-baseline {
   vertical-align: baseline;
-}
-.align-middle {
-  vertical-align: middle;
 }
 .font-sans {
   font-family: sans-serif;
@@ -2156,9 +2076,6 @@ video {
 }
 .text-warning {
   color: var(--warning);
-}
-.text-websocket {
-  color: var(--req-websocket);
 }
 .underline {
   text-decoration-line: underline;
@@ -2433,9 +2350,6 @@ video {
 .hover\:bg-focus2:hover {
   background-color: var(--focus-level-2);
 }
-.hover\:bg-focusBorder:hover {
-  background-color: var(--focus-border);
-}
 .hover\:bg-focusColor:hover {
   background-color: #ffffff1a;
 }
@@ -2447,9 +2361,6 @@ video {
 }
 .hover\:bg-tabHoverBackground:hover {
   background-color: var(--tab-background-hover);
-}
-.hover\:\!pr-3:hover {
-  padding-right: 0.75rem !important;
 }
 .hover\:pr-1:hover {
   padding-right: 0.25rem;

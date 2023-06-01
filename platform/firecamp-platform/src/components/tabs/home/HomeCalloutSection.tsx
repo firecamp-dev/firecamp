@@ -73,7 +73,7 @@ const CalloutBox = ({
       <p className="text-base text-appForegroundInActive mb-2">{description}</p>
       <a
         href=""
-        className="text-base font-semibold inline-block !text-info cursor-pointer mb-2"
+        className="text-base font-semibold !text-info cursor-pointer mb-2"
         onClick={(e) => {
           e.preventDefault();
           action();

@@ -57,7 +57,7 @@ const Menu: FC = () => {
           name: 'SocketIO',
           prefix: () => (
             <div className={'dropdown-icon '}>
-              <FcIconSocketIoSquare className="text-socket" size={24} />
+              <FcIconSocketIoSquare className="" size={24} />
             </div>
           ),
           onClick: () => {

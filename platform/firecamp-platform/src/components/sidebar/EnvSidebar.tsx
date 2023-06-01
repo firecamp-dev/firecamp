@@ -44,7 +44,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
       )}
     >
       <Container>
-        <Container.Header className="flex !p-2 bg-focus1">
+        <Container.Header className="flex bg-focus1">
           <div className="flex-1 mr-2 text-base p-2 font-bold">
             Variables Preview
           </div>

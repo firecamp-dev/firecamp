@@ -35,7 +35,7 @@ const EditInfo: FC<IProps> = ({
 
   return (
     <Container className="with-divider h-full">
-      <Container.Body className="pt-16 padding-wrapper">
+      <Container.Body className="padding-wrapper">
         <div className="p-6 flex-1 flex flex-col">
           <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
             {`UPDATE ${
@@ -74,12 +74,11 @@ const EditInfo: FC<IProps> = ({
             // disabled={true}
             // iconPosition="right"
             // icon={<VscEdit />}
-            className="mb-auto"
           />
         </div>
       </Container.Body>
       <Container.Footer className="py-3">
-        <TabHeader className="m-2">
+        <TabHeader>
           <TabHeader.Right>
             {/* <Button
               text="Cancel"

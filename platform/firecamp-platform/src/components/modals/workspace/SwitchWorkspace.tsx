@@ -104,10 +104,10 @@ const WorkspaceCard = ({ workspace, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="card relative flex items-center p-3 mb-2 text-base border border-appBorder cursor-pointer hover:border-focusBorder  after:content-['_↗']  after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
+      className="card relative flex items-center p-3 mb-2 text-base border border-appBorder cursor-pointer hover:border-focusBorder  after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
     >
       <div className="z-10 w-full">
-        <div className="flex border-b border-appBorder pb-2 items-center">
+        <div className="flex border-b border-appBorder items-center">
           <div className="font-semibold flex-1 text-base">
             {workspace.name}
             <span className="text-appForegroundInActive font-normal block text-xs uppercase">
@@ -141,8 +141,8 @@ const WorkspaceCard = ({ workspace, onClick }) => {
 
 const NoWrsFoundMessage = ({ close = () => {} }) => {
   return (
-    <div className="p-8 h-36 flex flex-col justify-center items-center">
-      <div className="text-sm max-w-xs mx-auto text-center px-10 pt-4">
+    <div className="p-8 flex flex-col justify-center items-center">
+      <div className="text-sm max-w-xs mx-auto text-center px-10">
         <label className="font-semibold text-appForeground uppercase">
           No Workspaces Found
         </label>
@@ -157,8 +157,8 @@ const NoWrsFoundMessage = ({ close = () => {} }) => {
 
 const FetchingWrs = () => {
   return (
-    <div className="p-8 h-36 flex flex-col justify-center items-center">
-      <div className="text-sm max-w-xs mx-auto text-center px-10 pt-4">
+    <div className="p-8 flex flex-col justify-center items-center">
+      <div className="text-sm max-w-xs mx-auto text-center px-10">
         <label className="font-semibold text-appForeground uppercase">
           Fetching Your Workspaces ...
         </label>

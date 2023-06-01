@@ -17,7 +17,7 @@ const GraphQLBody = ({ body, onChange }) => {
           <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
             <TabHeader.Left>Query</TabHeader.Left>
           </TabHeader>
-          <div className="flex-1 overflow-y-scroll">
+          <div className="flex-1">
             <CMGQueryEditor
               query={query}
               onChangeQuery={(query) => onChange({ query, variables })}
