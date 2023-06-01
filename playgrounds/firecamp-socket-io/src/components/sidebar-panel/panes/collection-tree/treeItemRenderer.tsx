@@ -160,7 +160,7 @@ export default {
             type={type}
             {...(context.interactiveElementProps as any)}
             className={cx(
-              'pl-1 whitespace-pre overflow-hidden overflow-ellipsis rct-tree-item-button !h-fit !block',
+              'pl-1 whitespace-pre overflow-hidden text-ellipsis rct-tree-item-button !h-fit !block',
               { 'rct-tree-item-button-isFolder': item.isFolder },
               { 'rct-tree-item-button-selected': context.isSelected },
               { 'rct-tree-item-button-expanded': context.isExpanded },
@@ -175,10 +175,10 @@ export default {
               </span>
             ) : (
               <div>
-                <div className="w-full overflow-hidden overflow-ellipsis items-center block text-secondaryColor">
+                <div className="w-full overflow-hidden text-ellipsis items-center block">
                   {title}
                 </div>
-                {/* <div className="bg-focus2- text-sm overflow-ellipsis">
+                {/* <div className="bg-focus2- text-sm text-ellipsis">
                   {item.data.__meta?.label} Firecamp Label
                 </div> */}
                 <div className="text-sm appForegroundInActive">

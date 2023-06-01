@@ -126,7 +126,7 @@ const ShortcutsPopover = ({ id }) => {
   return (
     <Popover
       content={
-        <div className="w-48">
+        <div>
           <div className="text-sm font-bold mb-1 text-appForegroundActive opacity-70 px-2 pt-2 border-b border-appBorder">
             Shortcuts
           </div>

@@ -1,5 +1,12 @@
 module.exports = {
   content: [
+    '../../playgrounds/firecamp-graphql/src/**/*.{js,jsx,ts,tsx}',
+    '../../playgrounds/firecamp-rest/src/**/*.{js,jsx,ts,tsx}',
+    '../../playgrounds/firecamp-rest-executor/src/**/*.{js,jsx,ts,tsx}',
+    '../../playgrounds/firecamp-socket-io/src/**/*.{js,jsx,ts,tsx}',
+    '../../playgrounds/firecamp-socket-io-executor/src/**/*.{js,jsx,ts,tsx}',
+    '../../playgrounds/firecamp-websocket/src/**/*.{js,jsx,ts,tsx}',
+    '../../playgrounds/firecamp-ws-executor/src/**/*.{js,jsx,ts,tsx}',
     '../firecamp-platform/src/**/*.{js,jsx,ts,tsx}',
     './src/**/*.{js,jsx,ts,tsx}',
     './public/index.html',
