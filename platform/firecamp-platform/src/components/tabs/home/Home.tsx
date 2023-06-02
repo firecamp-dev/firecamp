@@ -87,7 +87,7 @@ const Home: FC<any> = () => {
                   openRequest={() => _openTab(ERequestTypes.SocketIO)}
                   hasInvertIcon={true}
                 />
-                <hr className='pb-4'/>
+                <hr className="pb-4" />
                 <RequestItem
                   label="Import Collection"
                   icon={<VscArrowDown size={16} />}
@@ -112,16 +112,13 @@ export default Home;
 const RequestItem: FC<IRequestItem> = ({
   label,
   icon,
-  hasInvertIcon = false,
+  hasInvertIcon = false, //TODO : removed classname
   openRequest = () => {},
 }) => {
   return (
     <div
       className={cx(
-        'flex text-sm mr-4 items-center mb-4  text-app-foreground-inactive cursor-pointer hover:text-app-foreground-active',
-        {
-          invert: hasInvertIcon,
-        }
+        'flex text-sm mr-4 items-center mb-4  text-app-foreground-inactive cursor-pointer hover:text-app-foreground-active'
       )}
       onClick={openRequest}
     >

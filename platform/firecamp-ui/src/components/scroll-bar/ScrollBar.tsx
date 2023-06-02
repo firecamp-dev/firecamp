@@ -1,36 +1,33 @@
 import * as ScrollArea from '@radix-ui/react-scroll-area';
 import cx from 'classnames';
 
-export enum EScrollbarLayout {
-  Default = 'default',
-  V1 = 'v1',
-  V2 = 'v2',
-  Horizontal = 'horizontal',
-  Thin = 'thin',
-}
 const ScrollBar = ({
   children = <></>,
   className = '',
   noWrap = false,
-  width = '',
-  height = '',
-  layout = EScrollbarLayout.Default,
-  withCorner = true,
+  withCorner = false,
+  transparent = false,
+  fullWidth = false,
+  fullHeight = false,
 }) => (
   <ScrollArea.Root
     className={cx(
-      'overflow-hidden ',
+      'overflow-hidden',
       { 'whitespace-nowrap': noWrap },
-      width,
-      height,
+      { 'w-full': fullWidth },
+      { 'h-full': fullHeight },
       className
     )}
     style={{
-      '--scrollbar-size': layout === EScrollbarLayout.Default ? '4px' : '8px',
+      '--scrollbar-size': '8px',
     }}
     type="hover"
   >
-    <ScrollArea.Viewport className={cx('w-full h-full')}>
+    {/**
+     * TODO: update classname `[&>div]:!block` when issue is resolved
+     * @ref: https://github.com/radix-ui/primitives/issues/926#issuecomment-1447283516
+     */}
+    <ScrollArea.Viewport className={cx('w-full h-full [&>div]:!block')}>
       {children}
     </ScrollArea.Viewport>
 
@@ -39,14 +36,10 @@ const ScrollBar = ({
       className={cx(
         'flex flex-col select-none touch-none p-0.5 ',
         {
-          'bg-activityBar-border hover:bg-focus2':
-            layout === EScrollbarLayout.V1,
+          'bg-activityBar-border hover:bg-focus2': !transparent,
         },
         {
-          'p-0 bg-transparent': layout === EScrollbarLayout.V2,
-        },
-        {
-          'p-0 bg-transparent': layout === EScrollbarLayout.Default,
+          'p-0 bg-transparent': transparent,
         }
       )}
       orientation="horizontal"
@@ -57,48 +50,32 @@ const ScrollBar = ({
       }}
     >
       <ScrollArea.Thumb
-        className={cx('flex-1 bg-app-foreground-inactive', {
-          rounded: layout === EScrollbarLayout.Horizontal,
-        })}
+        className={cx('flex-1 bg-focus4 rounded')}
       />
     </ScrollArea.Scrollbar>
 
     {/* vertical scrollbar */}
-    {layout !== EScrollbarLayout.Horizontal && (
-      <ScrollArea.Scrollbar
-        className={cx(
-          'flex select-none touch-none p-0.5',
-          {
-            'bg-activityBar-border hover:bg-focus2':
-              layout === EScrollbarLayout.V1,
-          },
-          {
-            'p-0 bg-transparent': layout === EScrollbarLayout.V2,
-          },
-          {
-            'p-0 bg-transparent': layout === EScrollbarLayout.Default,
-          }
-        )}
-        orientation="vertical"
-        style={{
-          width: 'var(--scrollbar-size)',
-          touchAction: 'none',
-          transition: 'background 160ms ease-out',
-        }}
-      >
-        <ScrollArea.Thumb
-          className={cx(
-            'flex-1',
-            {
-              'bg-app-foreground-inactive': layout !== EScrollbarLayout.Default,
-            },
-            {
-              'bg-app-border rounded-2xl': layout === EScrollbarLayout.Default,
-            }
-          )}
-        />
-      </ScrollArea.Scrollbar>
-    )}
+    <ScrollArea.Scrollbar
+      className={cx(
+        'flex select-none touch-none p-0.5',
+        {
+          'bg-activityBar-border hover:bg-focus2': !transparent,
+        },
+        {
+          'p-0 bg-transparent': transparent,
+        }
+      )}
+      orientation="vertical"
+      style={{
+        width: 'var(--scrollbar-size)',
+        touchAction: 'none',
+        transition: 'background 160ms ease-out',
+      }}
+    >
+      <ScrollArea.Thumb
+        className={cx('flex-1 bg-focus4 rounded')}
+      />
+    </ScrollArea.Scrollbar>
 
     {withCorner && <ScrollArea.Corner className="bg-transparent" />}
   </ScrollArea.Root>

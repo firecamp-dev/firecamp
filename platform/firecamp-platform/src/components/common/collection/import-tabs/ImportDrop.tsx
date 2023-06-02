@@ -46,7 +46,7 @@ const ImportDropZone: FC<{
     <div className="h-full w-full dropzone-wrapper">
       <div {...getRootProps({ className: 'dropzone cursor-pointer ' })}>
         <input {...getInputProps()} />
-        <h1 className="text-base text-app-foreground font-semibold mt-32">
+        <h1 className="text-base text-app-foreground font-semibold">
           {isImporting
             ? 'Importing the API collection...'
             : 'DROP API COLLECTION HERE'}

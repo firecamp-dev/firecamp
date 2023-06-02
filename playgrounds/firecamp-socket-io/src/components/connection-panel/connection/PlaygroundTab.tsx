@@ -64,7 +64,7 @@ const EmitterPlayground = () => {
           }}
         />
       </Container.Header>
-      <div className="px-2 pb-2 flex-1 flex flex-col">
+      <div className="px-2 flex-1 flex flex-col">
         <TabHeader className="height-small !px-0">
           <TabHeader.Left>
             <span className="text-app-foreground text-sm block">

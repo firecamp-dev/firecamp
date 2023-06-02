@@ -45,7 +45,6 @@ const EditInfoTab: FC<any> = ({
         // disabled={true}
         // iconPosition="right"
         // icon={<VscEdit />}
-        className="mb-auto"
       />
       <TabHeader className="!px-0">
         <TabHeader.Left>

@@ -11,7 +11,7 @@ export default {
   renderItemArrow: ({ item, context }) => {
     // console.log(item, 'arrow context');
     if (item.data?.__ref?.isItem) {
-      // return <div className={cx('collection_leaf-node-type pl-2')}>Msg.</div>;
+      // return <div className={cx('collection_leaf-node-type')}>Msg.</div>;
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <>

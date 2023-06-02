@@ -24,7 +24,7 @@ export default {
         case ERequestTypes.Rest:
           const text = method.toUpperCase();
           return (
-            <div className={cx(text, 'collection_leaf-node-type pl-2')}>
+            <div className={cx(text, 'collection_leaf-node-type')}>
               {text}
             </div>
           );
@@ -33,7 +33,7 @@ export default {
         case ERequestTypes.WebSocket:
           return <FcIconWebSocket className="" size={24} />;
         case ERequestTypes.SocketIO:
-          return <FcIconSocketIoSquare className="text-socket" size={24} />;
+          return <FcIconSocketIoSquare className="" size={24} />;
         default:
           return <></>;
       }

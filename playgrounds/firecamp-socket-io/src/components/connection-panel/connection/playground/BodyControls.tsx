@@ -90,12 +90,12 @@ const ShortcutsInfo = ({ tabId }) => {
         case 'UNIX':
         case 'Linux':
           return (
-            <div className="pb-2">
+            <div>
               {Object.values(EditorCommands).map((val, i) => {
                 {
                   return (
                     <div className="flex" key={i}>
-                      <div className="flex-1 pr-4 pl-2">{`${
+                      <div className="flex-1 pr-4 ">{`${
                         val.name || ''
                       }`}</div>
                       <div className="ml-auto pr-2">{`${
@@ -111,12 +111,12 @@ const ShortcutsInfo = ({ tabId }) => {
 
         case 'MacOS':
           return (
-            <div className="pb-2">
+            <div>
               {Object.values(EditorCommands).map((val, i) => {
                 {
                   return (
                     <div className="flex" key={i}>
-                      <div className="flex-1 pr-4 pl-2 font-semibold">{`${
+                      <div className="flex-1 pr-4 font-semibold">{`${
                         val.name || ''
                       }`}</div>
                       <div className="pr-2 ml-auto">{`${
@@ -143,8 +143,8 @@ const ShortcutsInfo = ({ tabId }) => {
     <Popover
       positions={[EPopoverPosition.Right]}
       content={
-        <div className="w-48">
-          <div className="text-sm font-bold mb-1 text-app-foreground-active opacity-70 px-2 pt-2 pb-2 border-b border-app-border">
+        <div>
+          <div className="text-sm font-bold mb-1 text-app-foreground-active opacity-70 px-2 pt-2 border-b border-app-border">
             Shortcuts
           </div>
           {_renderKeyboardShortcutInfo()}
