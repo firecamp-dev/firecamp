@@ -1,9 +1,9 @@
 .CodeMirror-info {
-  background: var(--appSecondry);
+  background: var(--app-background-secondary);
   border-radius: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
   box-sizing: border-box;
-  color: var(--appSecondryForeground);
+  color: var(--app-foreground);
   font-family:
           system,
           -apple-system,
