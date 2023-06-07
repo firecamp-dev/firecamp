@@ -35,8 +35,8 @@ const BasicTable = ({
   columns,
   rows = [],
   options = {},
-  onChange = (rs: ITableRows) => { },
-  onMount = (api: TTableApi) => { },
+  onChange = (rs: ITableRows) => {},
+  onMount = (api: TTableApi) => {},
 }: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
 
@@ -83,7 +83,7 @@ const BasicTable = ({
         break;
       case 'key':
       case 'value':
-      case 'description':
+        // case 'description':
         // return <></>
         // return (
         //   <input
@@ -124,15 +124,21 @@ const BasicTable = ({
           />
         );
         break;
-      // case 'description':
-      //   return (
-      //     <input
-      //       value={cellValue}
-      //       className="bg-transparent text-base text-appForeground font-sans"
-      //       onChange={(e: any) => onChange(column.key, e.target.value, e)}
-      //     />
-      //   );
-      //   break;
+      case 'description':
+        return (
+          <div className="relative h-full w-full overflow-hidden">
+            <input
+              value={cellValue}
+              className="bg-transparent px-1 text-base text-tabForegroundInactive focus:!border-none focus-visible:!border-none absolute w-full top-0.5 h-[21px]
+              leading-[19px] "
+              style={{
+                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif'
+              }}
+              onChange={(e: any) => onChange(column.key, e.target.value, e)}
+            />
+          </div>
+        );
+        break;
       case 'remove':
         if (!options.allowRowRemove) return <></>;
         return (

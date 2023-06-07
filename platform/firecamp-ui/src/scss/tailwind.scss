@@ -767,6 +767,9 @@ video {
 .top-0 {
   top: 0px;
 }
+.top-0\.5 {
+  top: 0.125rem;
+}
 .top-2 {
   top: 0.5rem;
 }
@@ -1095,6 +1098,9 @@ video {
 }
 .h-\[200px\] {
   height: 200px;
+}
+.h-\[21px\] {
+  height: 21px;
 }
 .h-\[30px\] {
   height: 30px;
@@ -1988,6 +1994,9 @@ video {
 .leading-7 {
   line-height: 1.75rem;
 }
+.leading-\[19px\] {
+  line-height: 19px;
+}
 .\!text-appForegroundActive {
   color: var(--app-foreground-active) !important;
 }
@@ -2400,11 +2409,17 @@ video {
   content: var(--tw-content);
   background-color: var(--focus-border);
 }
+.focus\:\!border-none:focus {
+  border-style: none !important;
+}
 .focus\:\!bg-primaryColorOpacity:focus {
   background-color: var(--app-primary-withOpacity) !important;
 }
 .focus\:bg-inputFocusBackground:focus {
   background-color: var(--input-background-focus);
+}
+.focus-visible\:\!border-none:focus-visible {
+  border-style: none !important;
 }
 .focus-visible\:\!bg-focus1:focus-visible {
   background-color: var(--focus-level-1) !important;
