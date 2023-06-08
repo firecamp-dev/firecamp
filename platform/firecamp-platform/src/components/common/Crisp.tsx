@@ -12,7 +12,7 @@ export default () => {
       if (!isCrispLoaded && clientId) {
         window.$crisp = [];
         window.CRISP_TOKEN_ID = clientId;
-        window.CRISP_WEBSITE_ID = process.env.CRISP_WEBSITE_ID;
+        window.CRISP_WEBSITE_ID = process.env.CRISP_FIRECAMP_DEV;
         (() => {
           const d = document;
           const s: any = d.createElement('script');
