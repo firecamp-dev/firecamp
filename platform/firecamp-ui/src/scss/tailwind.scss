@@ -767,9 +767,6 @@ video {
 .top-0 {
   top: 0px;
 }
-.top-0\.5 {
-  top: 0.125rem;
-}
 .top-2 {
   top: 0.5rem;
 }
@@ -1439,6 +1436,9 @@ video {
 .border-dashed {
   border-style: dashed;
 }
+.\!border-none {
+  border-style: none !important;
+}
 .\!border-appBorder {
   border-color: var(--app-border) !important;
 }
@@ -1993,9 +1993,6 @@ video {
 }
 .leading-7 {
   line-height: 1.75rem;
-}
-.leading-\[19px\] {
-  line-height: 19px;
 }
 .\!text-appForegroundActive {
   color: var(--app-foreground-active) !important;

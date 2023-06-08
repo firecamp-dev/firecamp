@@ -5,6 +5,7 @@ import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EEditorLanguage } from '@firecamp/types';
+import { Input } from '@firecamp/ui';
 import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
@@ -126,17 +127,12 @@ const BasicTable = ({
         break;
       case 'description':
         return (
-          <div className="relative h-full w-full overflow-hidden">
-            <input
-              value={cellValue}
-              className="bg-transparent px-1 text-base text-tabForegroundInactive focus:!border-none focus-visible:!border-none absolute w-full top-0.5 h-[21px]
-              leading-[19px] "
-              style={{
-                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif'
-              }}
-              onChange={(e: any) => onChange(column.key, e.target.value, e)}
-            />
-          </div>
+          <Input
+            value={cellValue}
+            className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px] font-sans"
+            wrapperClassName="!mb-0"
+            onChange={(e: any) => onChange(column.key, e.target.value, e)}
+          />
         );
         break;
       case 'remove':
