@@ -130,7 +130,12 @@ const Table: FC<ITable<any>> = ({
         ...st,
         orders: [...orders],
       };
-      _onChangeTable(state);
+
+      // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+      setTimeout(() => {
+        _onChangeTable(state);
+      });
+
       return state;
     });
   };
@@ -154,7 +159,12 @@ const Table: FC<ITable<any>> = ({
           [rowId]: { ...st.rows[rowId], [cellKey]: cellValue },
         },
       };
-      _onChangeTable(state);
+
+      // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+      setTimeout(() => {
+        _onChangeTable(state);
+      });
+
       return state;
     });
   };
@@ -188,8 +198,12 @@ const Table: FC<ITable<any>> = ({
             [id]: { ...defaultRow, id },
           },
         };
+        // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+        setTimeout(() => {
+          _onChangeTable(state);
+        });
+
         // currently not firing on change event on new empty row insertion
-        _onChangeTable(state);
         return state;
       });
     },
@@ -203,12 +217,17 @@ const Table: FC<ITable<any>> = ({
             [row.id]: { ...st.rows[row.id], ...row },
           },
         };
-        _onChangeTable(state);
+        // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+        setTimeout(() => {
+          _onChangeTable(state);
+        });
+
         return state;
       });
     },
     removeRow: (rowId: string | number) => {
       if (!options.allowRowRemove) return;
+
       _setState((st) => {
         if (!st.rows[rowId]) return st;
         const { rows } = st;
@@ -218,7 +237,11 @@ const Table: FC<ITable<any>> = ({
           orders: st.orders.filter((id: string) => id != rowId),
           rows,
         };
-        _onChangeTable(state);
+        // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+        setTimeout(() => {
+          _onChangeTable(state);
+        });
+
         return state;
       });
     },

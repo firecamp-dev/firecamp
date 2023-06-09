@@ -1060,9 +1060,6 @@ video {
 .h-2 {
   height: 0.5rem;
 }
-.h-28 {
-  height: 7rem;
-}
 .h-32 {
   height: 8rem;
 }
@@ -1096,11 +1093,17 @@ video {
 .h-\[200px\] {
   height: 200px;
 }
+.h-\[21px\] {
+  height: 21px;
+}
 .h-\[30px\] {
   height: 30px;
 }
 .h-\[50vh\] {
   height: 50vh;
+}
+.h-\[70vh\] {
+  height: 70vh;
 }
 .h-fit {
   height: -moz-fit-content;
@@ -1432,6 +1435,9 @@ video {
 }
 .border-dashed {
   border-style: dashed;
+}
+.\!border-none {
+  border-style: none !important;
 }
 .\!border-appBorder {
   border-color: var(--app-border) !important;
@@ -2400,11 +2406,17 @@ video {
   content: var(--tw-content);
   background-color: var(--focus-border);
 }
+.focus\:\!border-none:focus {
+  border-style: none !important;
+}
 .focus\:\!bg-primaryColorOpacity:focus {
   background-color: var(--app-primary-withOpacity) !important;
 }
 .focus\:bg-inputFocusBackground:focus {
   background-color: var(--input-background-focus);
+}
+.focus-visible\:\!border-none:focus-visible {
+  border-style: none !important;
 }
 .focus-visible\:\!bg-focus1:focus-visible {
   background-color: var(--focus-level-1) !important;

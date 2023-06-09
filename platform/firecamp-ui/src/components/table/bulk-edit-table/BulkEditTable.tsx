@@ -102,7 +102,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
           onMount={onMount}
         />
       ) : (
-        <div className="h-28 pt-3">
+        <div className="h-[70vh] pt-3">
           <Editor
             value={raw}
             language={EEditorLanguage.Text}

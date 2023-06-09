@@ -5,6 +5,7 @@ import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EEditorLanguage } from '@firecamp/types';
+import { Input } from '@firecamp/ui';
 import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
@@ -35,8 +36,8 @@ const BasicTable = ({
   columns,
   rows = [],
   options = {},
-  onChange = (rs: ITableRows) => { },
-  onMount = (api: TTableApi) => { },
+  onChange = (rs: ITableRows) => {},
+  onMount = (api: TTableApi) => {},
 }: IBasicTable<any>) => {
   const apiRef = useRef<TTableApi>();
 
@@ -83,7 +84,7 @@ const BasicTable = ({
         break;
       case 'key':
       case 'value':
-      case 'description':
+        // case 'description':
         // return <></>
         // return (
         //   <input
@@ -124,15 +125,16 @@ const BasicTable = ({
           />
         );
         break;
-      // case 'description':
-      //   return (
-      //     <input
-      //       value={cellValue}
-      //       className="bg-transparent text-base text-appForeground font-sans"
-      //       onChange={(e: any) => onChange(column.key, e.target.value, e)}
-      //     />
-      //   );
-      //   break;
+      case 'description':
+        return (
+          <Input
+            value={cellValue}
+            className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px] font-sans"
+            wrapperClassName="!mb-0"
+            onChange={(e: any) => onChange(column.key, e.target.value, e)}
+          />
+        );
+        break;
       case 'remove':
         if (!options.allowRowRemove) return <></>;
         return (
