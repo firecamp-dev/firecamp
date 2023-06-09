@@ -116,7 +116,6 @@ const Table: FC<ITable<any>> = ({
   };
 
   const handleDrop = (row: any) => {
-    let updatedState = {};
     _setState((st) => {
       const dragIndex = st.orders.findIndex(
         (id: string) => id == rowBeingDragRef.current.id
@@ -132,10 +131,13 @@ const Table: FC<ITable<any>> = ({
         orders: [...orders],
       };
 
-      updatedState = state;
+      // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+      setTimeout(() => {
+        _onChangeTable(state);
+      });
+
       return state;
     });
-    _onChangeTable(updatedState);
   };
 
   const _onChangeTable = (state: TPlainObject) => {
@@ -149,7 +151,6 @@ const Table: FC<ITable<any>> = ({
     rowId: string,
     e: any
   ) => {
-    let updatedState = {};
     _setState((st) => {
       const state = {
         ...st,
@@ -158,10 +159,14 @@ const Table: FC<ITable<any>> = ({
           [rowId]: { ...st.rows[rowId], [cellKey]: cellValue },
         },
       };
-      updatedState = state;
+
+      // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+      setTimeout(() => {
+        _onChangeTable(state);
+      });
+
       return state;
     });
-    _onChangeTable(updatedState);
   };
 
   const getRows = () => {
@@ -185,7 +190,6 @@ const Table: FC<ITable<any>> = ({
     addRow: () => {
       if (!options.allowRowAdd) return;
       const id = nanoid();
-      let updatedState = {};
       _setState((st) => {
         const state = {
           orders: [...st.orders, id],
@@ -194,15 +198,17 @@ const Table: FC<ITable<any>> = ({
             [id]: { ...defaultRow, id },
           },
         };
-        updatedState = state;
+        // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+        setTimeout(() => {
+          _onChangeTable(state);
+        });
+
         // currently not firing on change event on new empty row insertion
         return state;
       });
-      _onChangeTable(updatedState);
     },
     setRow: (row: any) => {
       if (!row?.id) return;
-      let updatedState = {};
       _setState((st) => {
         const state = {
           ...st,
@@ -211,14 +217,17 @@ const Table: FC<ITable<any>> = ({
             [row.id]: { ...st.rows[row.id], ...row },
           },
         };
-        updatedState = state;
+        // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+        setTimeout(() => {
+          _onChangeTable(state);
+        });
+
         return state;
       });
-      _onChangeTable(updatedState);
     },
     removeRow: (rowId: string | number) => {
       if (!options.allowRowRemove) return;
-      let updatedState = {};
+
       _setState((st) => {
         if (!st.rows[rowId]) return st;
         const { rows } = st;
@@ -228,10 +237,13 @@ const Table: FC<ITable<any>> = ({
           orders: st.orders.filter((id: string) => id != rowId),
           rows,
         };
-        updatedState = state;
+        // Timeout added to complete current state update, before running the onChange method for parent component (which triggers the render).
+        setTimeout(() => {
+          _onChangeTable(state);
+        });
+
         return state;
       });
-      _onChangeTable(updatedState);
     },
   };
 
