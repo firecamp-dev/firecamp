@@ -1,6 +1,5 @@
 import { Args, Command, Flags } from '@oclif/core'
-import { loadJsonFile } from 'load-json-file';
-import * as fs from 'fs'
+import * as fs from 'fs-extra'
 import * as path from 'path'
 
 export default class Run extends Command {
@@ -29,15 +28,14 @@ export default class Run extends Command {
       return
     }
     const _fp = path.join(__dirname, file)
-
-    try {
-      const collection = JSON.parse(fs.readFileSync(_fp, { encoding: 'utf-8' }));
-      //TODO: validate the collection json
-      // if(collection)
-      this.logJson(collection);
-    }
-    catch (e) {
-      this.error('The collection file is not valid')
-    }
+    fs.readJson(_fp)
+      .then(collection => {
+        this.logJson(collection);
+      })
+      .catch(e => {
+        if (e.code == 'ENOENT') this.logToStderr(`error: file not exist at ${_fp}`)
+        // console.error(e)
+        else this.logToStderr('error: The collection file is not valid')
+      })
   }
 }
