@@ -1,0 +1,661 @@
+{
+    "collection": {
+        "name": "Firecamp Rest Echo Server",
+        "description": "",
+        "__meta": {
+            "fOrders": [
+                "XhxIp8mLGmdJXMqYnWmco",
+                "3rgDbnq2rIFQMaWDfYJUL"
+            ],
+            "rOrders": [
+                "i6F9xE_XY-1adwy7LpKE1"
+            ]
+        },
+        "auth": {
+            "type": "none",
+            "value": ""
+        },
+        "__ref": {
+            "id": "cL3ze24R_u627MVJxSxXC"
+        },
+        "preScripts": [
+            {
+                "id": "I_ruyKS-1xLMd5dX7s68V",
+                "type": "prerequest",
+                "value": [
+                    ""
+                ],
+                "language": "text/javascript"
+            }
+        ],
+        "postScripts": [
+            {
+                "id": "OMchgtFBVRltVbfq4QuWo",
+                "type": "test",
+                "value": [
+                    ""
+                ],
+                "language": "text/javascript"
+            }
+        ]
+    },
+    "folders": [
+        {
+            "name": "Request Methods",
+            "description": "",
+            "__meta": {
+                "fOrders": [],
+                "rOrders": [
+                    "_Bn-GP3p0pIEIoQz9ZD8n",
+                    "WuqU6nWPRWiOGdHyRJBSv",
+                    "weaQ3LoGEnWO7fmwVhntG",
+                    "hGQ4RoBTwYaEMHPSCEOad",
+                    "UFP6T36MM_jdlRPsYh-WY"
+                ]
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "__ref": {
+                "id": "XhxIp8mLGmdJXMqYnWmco"
+            },
+            "preScripts": [
+                {
+                    "id": "FC2l4wgjiMSaI-0cE316A",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "BI8bbq7RhuHmpzhebndz9",
+                    "type": "test",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ]
+        },
+        {
+            "name": "Headers",
+            "description": "",
+            "__meta": {
+                "fOrders": [],
+                "rOrders": [
+                    "hiC5HQhUxMDiMph-u877D",
+                    "ssQMM3qjWFPLbr6vRjylT"
+                ]
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "__ref": {
+                "id": "3rgDbnq2rIFQMaWDfYJUL"
+            },
+            "preScripts": [
+                {
+                    "id": "kD1pMNeMIj6r7jugA_P-Q",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "fiwMtn5nQNv8MBA4fYQol",
+                    "type": "test",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ]
+        }
+    ],
+    "requests": [
+        {
+            "url": {
+                "raw": "http://localhost:3000/get?foo1=bar1&foo2=bar2",
+                "queryParams": [
+                    {
+                        "id": "RRMgDmGWwOa9ZwpijZiWj",
+                        "key": "foo1",
+                        "value": "bar1",
+                        "type": "text"
+                    },
+                    {
+                        "id": "FhvTGiXwTPf6V2PKcgdkq",
+                        "key": "foo2",
+                        "value": "bar2",
+                        "type": "text"
+                    }
+                ],
+                "pathParams": []
+            },
+            "method": "GET",
+            "headers": [],
+            "body": {
+                "type": "none",
+                "value": ""
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "preScripts": [
+                {
+                    "id": "uFY46hx7i07o1XTNDMf3g",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "6sNaqQkVd6ILXJnXz7Zdr",
+                    "type": "test",
+                    "value": [
+                        "fc.test(\"response is ok\", function () {",
+                        "    fc.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "fc.test(\"response body has json with request queries\", function () {",
+                        "    fc.response.to.have.jsonBody('args.foo1', 'bar1')",
+                        "        .and.have.jsonBody('args.foo2', 'bar2');",
+                        "});",
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "__meta": {
+                "name": "GET Request",
+                "description": "",
+                "type": "rest",
+                "version": "2.0.0"
+            },
+            "__ref": {
+                "id": "i6F9xE_XY-1adwy7LpKE1"
+            }
+        },
+        {
+            "url": {
+                "raw": "http://localhost:3000/post",
+                "queryParams": [],
+                "pathParams": []
+            },
+            "method": "POST",
+            "headers": [
+                {
+                    "id": "wO_YuyvjMp6cUZV6ztUfk",
+                    "key": "Content-Type",
+                    "value": "text/plain",
+                    "type": "text",
+                    "disable": false,
+                    "description": ""
+                }
+            ],
+            "body": {
+                "type": "none",
+                "value": ""
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "preScripts": [
+                {
+                    "id": "dihrVLBbpmmaSyQ_qMzB8",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "zPO7MO19Sl3Gtkk8IK_kk",
+                    "type": "test",
+                    "value": [
+                        "fc.test(\"response is ok\", function () {",
+                        "    fc.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "fc.test(\"response body has json with request body\", function () {",
+                        "    fc.response.to.have.jsonBody('data', ",
+                        "        'This is expected to be sent back as part of response body.');",
+                        "});"
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "__meta": {
+                "name": "Post Raw Request",
+                "description": "",
+                "type": "rest",
+                "version": "2.0.0"
+            },
+            "__ref": {
+                "id": "_Bn-GP3p0pIEIoQz9ZD8n",
+                "folderId": "XhxIp8mLGmdJXMqYnWmco"
+            }
+        },
+        {
+            "url": {
+                "raw": "http://localhost:3000/post",
+                "queryParams": [],
+                "pathParams": []
+            },
+            "method": "POST",
+            "headers": [
+                {
+                    "id": "MLzleI77Dd4rAtBKRQoqy",
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded",
+                    "type": "text",
+                    "disable": false,
+                    "description": ""
+                }
+            ],
+            "body": {
+                "type": "none",
+                "value": ""
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "preScripts": [
+                {
+                    "id": "JfhNGIki5BzFG3Uz0TBo9",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "mjv3h0Ora4pE6dkWkklkr",
+                    "type": "test",
+                    "value": [
+                        "fc.test(\"response is ok\", function () {",
+                        "    fc.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "fc.test(\"response body has json with form data\", function () {",
+                        "    fc.response.to.have.jsonBody('form.foo1', 'bar1')",
+                        "        .and.have.jsonBody('form.foo2', 'bar2');",
+                        "});",
+                        "\n",
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "__meta": {
+                "name": "Post Form Request",
+                "description": "",
+                "type": "rest",
+                "version": "2.0.0"
+            },
+            "__ref": {
+                "id": "WuqU6nWPRWiOGdHyRJBSv",
+                "folderId": "XhxIp8mLGmdJXMqYnWmco"
+            }
+        },
+        {
+            "url": {
+                "raw": "http://localhost:3000/put",
+                "queryParams": [],
+                "pathParams": []
+            },
+            "method": "PUT",
+            "headers": [
+                {
+                    "id": "mvWvv3imkD0dLRUvO3gId",
+                    "key": "Content-Type",
+                    "value": "text/plain",
+                    "type": "text",
+                    "disable": false,
+                    "description": ""
+                }
+            ],
+            "body": {
+                "type": "none",
+                "value": ""
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "preScripts": [
+                {
+                    "id": "mOy-mRUTpqMpXQ6BhVi28",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "0DZX2UbDzpVY-ZeqcKU2o",
+                    "type": "test",
+                    "value": [
+                        "fc.test(\"response is ok\", function () {",
+                        "    fc.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "fc.test(\"response body has json with form data\", function () {",
+                        "    fc.response.to.have.jsonBody('data', ",
+                        "        'This is expected to be sent back as part of response body.');",
+                        "});",
+                        "\n",
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "__meta": {
+                "name": "Put Request",
+                "description": "",
+                "type": "rest",
+                "version": "2.0.0"
+            },
+            "__ref": {
+                "id": "weaQ3LoGEnWO7fmwVhntG",
+                "folderId": "XhxIp8mLGmdJXMqYnWmco"
+            }
+        },
+        {
+            "url": {
+                "raw": "http://localhost:3000/patch",
+                "queryParams": [],
+                "pathParams": []
+            },
+            "method": "PATCH",
+            "headers": [
+                {
+                    "id": "D_mboNfoVJzlcFIM92zwC",
+                    "key": "Content-Type",
+                    "value": "text/plain",
+                    "type": "text",
+                    "disable": false,
+                    "description": ""
+                }
+            ],
+            "body": {
+                "type": "none",
+                "value": ""
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "preScripts": [
+                {
+                    "id": "5TOwcI4NNHgcmx-53L5t7",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "CiDVs22AxyFL4uEmfSHvv",
+                    "type": "test",
+                    "value": [
+                        "fc.test(\"response is ok\", function () {",
+                        "    fc.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "fc.test(\"response body has json with form data\", function () {",
+                        "    fc.response.to.have.jsonBody('data', ",
+                        "        'This is expected to be sent back as part of response body.');",
+                        "});",
+                        "\n",
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "__meta": {
+                "name": "Patch Request",
+                "description": "",
+                "type": "rest",
+                "version": "2.0.0"
+            },
+            "__ref": {
+                "id": "hGQ4RoBTwYaEMHPSCEOad",
+                "folderId": "XhxIp8mLGmdJXMqYnWmco"
+            }
+        },
+        {
+            "url": {
+                "raw": "http://localhost:3000/delete",
+                "queryParams": [],
+                "pathParams": []
+            },
+            "method": "DELETE",
+            "headers": [
+                {
+                    "id": "h5AG7toGGTK2ctS6hv8Us",
+                    "key": "Content-Type",
+                    "value": "text/plain",
+                    "type": "text",
+                    "disable": false,
+                    "description": ""
+                }
+            ],
+            "body": {
+                "type": "none",
+                "value": ""
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "preScripts": [
+                {
+                    "id": "8REH-aSWuiD_0O6xlXPX5",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "QvRKEIbAyOfjVSW1r6IOP",
+                    "type": "test",
+                    "value": [
+                        "fc.test(\"response is ok\", function () {",
+                        "    fc.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "fc.test(\"response body has json with form data\", function () {",
+                        "    fc.response.to.have.jsonBody('data', ",
+                        "        'This is expected to be sent back as part of response body.');",
+                        "});",
+                        "\n",
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "__meta": {
+                "name": "Delete Request",
+                "description": "",
+                "type": "rest",
+                "version": "2.0.0"
+            },
+            "__ref": {
+                "id": "UFP6T36MM_jdlRPsYh-WY",
+                "folderId": "XhxIp8mLGmdJXMqYnWmco"
+            }
+        },
+        {
+            "url": {
+                "raw": "http://localhost:3000/headers",
+                "queryParams": [],
+                "pathParams": []
+            },
+            "method": "GET",
+            "headers": [
+                {
+                    "id": "onmQ-MNwJkkd5CzVkI4-b",
+                    "key": "my-sample-header",
+                    "value": "Lorem ipsum dolor sit amet",
+                    "disable": false,
+                    "type": "text",
+                    "description": ""
+                }
+            ],
+            "body": {
+                "type": "none",
+                "value": ""
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "preScripts": [
+                {
+                    "id": "HVIPA_bFuDNYiEEHc3F8c",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "8jc01makQ4Fv25ruTWoqG",
+                    "type": "test",
+                    "value": [
+                        "fc.test(\"response is ok\", function () {",
+                        "    fc.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "// we check to ensire that the headers we sent as request is returned as part of",
+                        "// the response body. if you change the request headers, make sure to add them",
+                        "// to the tests here",
+                        "fc.test(\"sample request header should be returned in response body\", function () {",
+                        "    fc.response.to.have.jsonBody('headers.my-sample-header', 'Lorem ipsum dolor sit amet');",
+                        "});",
+                        "\n",
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "__meta": {
+                "name": "Request Headers",
+                "description": "",
+                "type": "rest",
+                "version": "2.0.0"
+            },
+            "__ref": {
+                "id": "hiC5HQhUxMDiMph-u877D",
+                "folderId": "3rgDbnq2rIFQMaWDfYJUL"
+            }
+        },
+        {
+            "url": {
+                "raw": "http://localhost:3000/response-headers?foo1=bar1&foo2=bar2",
+                "queryParams": [
+                    {
+                        "id": "xvtytGecy3qo1_HvWM1s5",
+                        "key": "foo1",
+                        "value": "bar1",
+                        "type": "text"
+                    },
+                    {
+                        "id": "4cqDJCDUb37C4zNosS_yE",
+                        "key": "foo2",
+                        "value": "bar2",
+                        "type": "text"
+                    }
+                ],
+                "pathParams": []
+            },
+            "method": "GET",
+            "headers": [],
+            "body": {
+                "type": "none",
+                "value": ""
+            },
+            "auth": {
+                "type": "none",
+                "value": ""
+            },
+            "preScripts": [
+                {
+                    "id": "fimMMAYY90gy2v_DMG80R",
+                    "type": "prerequest",
+                    "value": [
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "postScripts": [
+                {
+                    "id": "2D-E2Vw7652-gHrjb-z5T",
+                    "type": "test",
+                    "value": [
+                        "fc.test(\"response is ok\", function () {",
+                        "    fc.response.to.have.status(200);",
+                        "});",
+                        "",
+                        "fc.test(\"response has the headers sent as part of request query\", function () {",
+                        "    fc.response.to.have.header('foo1', 'bar1')",
+                        "        .and.have.header('foo2', 'bar2');",
+                        "});",
+                        "",
+                        "fc.test(\"sample request param should be returned in response body\", function () {",
+                        "    fc.response.to.have.jsonBody('foo1', 'bar1')",
+                        "        .and.have.jsonBody('foo2', 'bar2');",
+                        "});",
+                        "\n",
+                        ""
+                    ],
+                    "language": "text/javascript"
+                }
+            ],
+            "__meta": {
+                "name": "Response Headers",
+                "description": "",
+                "type": "rest",
+                "version": "2.0.0"
+            },
+            "__ref": {
+                "id": "ssQMM3qjWFPLbr6vRjylT",
+                "folderId": "3rgDbnq2rIFQMaWDfYJUL"
+            }
+        }
+    ],
+    "__meta": {
+        "version": "1.0.0-rc.0",
+        "exportId": "",
+        "exporterId": "12"
+    }
+}
