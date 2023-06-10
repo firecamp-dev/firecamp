@@ -1,12 +1,72 @@
 {
   "name": "firecamp-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "version": "0.0.0",
+  "description": "Firecamp CLI Application",
+  "author": "Nishchit Dhanani @Nishchit14",
+  "bin": {
+    "firecamp": "./bin/run"
   },
-  "keywords": [],
-  "author": "Nishchit Dhanani <dnishchit@gmail.com>",
-  "license": "AGPLv3"
+  "homepage": "https://github.com/FirecampDev/Firecamp",
+  "license": "AGPLv3",
+  "main": "dist/index.js",
+  "repository": "FirecampDev/Firecamp",
+  "files": [
+    "/bin",
+    "/dist",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "dependencies": {
+    "@oclif/core": "^2.8.5",
+    "@oclif/plugin-help": "^5.2.9",
+    "@oclif/plugin-plugins": "^2.4.7"
+  },
+  "devDependencies": {
+    "@oclif/test": "^2.3.22",
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^16.18.35",
+    "chai": "^4.3.7",
+    "eslint": "^7.32.0",
+    "eslint-config-oclif": "^4.0.0",
+    "eslint-config-oclif-typescript": "^1.0.3",
+    "mocha": "^9.2.2",
+    "oclif": "^3.9.0",
+    "shx": "^0.3.4",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.5.3",
+    "typescript": "^4.9.5"
+  },
+  "oclif": {
+    "bin": "firecamp",
+    "dirname": "firecamp",
+    "commands": "./dist/commands",
+    "plugins": [
+      "@oclif/plugin-help",
+      "@oclif/plugin-plugins"
+    ],
+    "topicSeparator": " ",
+    "topics": {
+      "hello": {
+        "description": "Say hello to the world and others"
+      }
+    }
+  },
+  "scripts": {
+    "build": "shx rm -rf dist && tsc -b",
+    "lint": "eslint . --ext .ts --config .eslintrc",
+    "postpack": "shx rm -f oclif.manifest.json",
+    "posttest": "pnpm run lint",
+    "prepack": "pnpm run build && oclif manifest && oclif readme",
+    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif readme && git add README.md"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "bugs": "https://github.com/FirecampDev/Firecamp/issues",
+  "keywords": [
+    "oclif"
+  ],
+  "types": "dist/index.d.ts"
 }
