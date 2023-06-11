@@ -7,7 +7,7 @@
     "firecamp": "./bin/run"
   },
   "homepage": "https://github.com/FirecampDev/Firecamp",
-  "license": "AGPLv3",
+  "license": "",
   "main": "dist/index.js",
   "repository": "FirecampDev/Firecamp",
   "files": [
