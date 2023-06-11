@@ -1,7 +1,12 @@
 import { Args, Command, Flags } from '@oclif/core'
 import * as fs from 'fs-extra'
 import * as path from 'path'
+import Runner from '@firecamp/collection-runner'
 
+/**
+ * Run command example
+ * ./bin/dev run ../../test/data/FirecampRestEchoServer.firecamp_collection.json
+ */
 export default class Run extends Command {
   static description = 'describe the command here'
 
@@ -30,11 +35,13 @@ export default class Run extends Command {
     const _fp = path.join(__dirname, file)
     fs.readJson(_fp)
       .then(collection => {
-        this.logJson(collection);
+        // this.logJson(collection);
+        const runner = new Runner(collection, {})
+        runner.run();
       })
       .catch(e => {
+        console.error(e)
         if (e.code == 'ENOENT') this.logToStderr(`error: file not exist at ${_fp}`)
-        // console.error(e)
         else this.logToStderr('error: The collection file is not valid')
       })
   }

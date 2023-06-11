@@ -17,6 +17,7 @@
     "/oclif.manifest.json"
   ],
   "dependencies": {
+    "@firecamp/collection-runner": "workspace:*",
     "@oclif/core": "^2.8.5",
     "@oclif/plugin-help": "^5.2.9",
     "@oclif/plugin-plugins": "^2.4.7",

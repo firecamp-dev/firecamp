@@ -28,6 +28,8 @@ export default class Runner {
 
     async run() {
 
+    console.log('I am into the Runner...')
+
         try { this.validate() } catch (e) { throw e }
 
         /**
