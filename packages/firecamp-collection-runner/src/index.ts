@@ -1,4 +1,5 @@
 import { TId } from "@firecamp/types";
+import RestExecutor from '@firecamp/rest-executor';
 
 
 export default class Runner {
@@ -67,8 +68,7 @@ export default class Runner {
         try { this.validate() } catch (e) { throw e }
         this.prepareRequestExecutionOrder();
 
-        const { collection, folders, requests } = this.collection
-        const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = collection
+        const { requests } = this.collection
         /**
          * 1. prepare the request execution orders
          * 2. manage the queue of executed requests
@@ -77,6 +77,16 @@ export default class Runner {
 
         const executedRequestQueue = new Set();
         const currentRequestInExecution: TId = '';
+
+        const executor = new RestExecutor();
+        const it = this.requestOrdersForExecution.values();
+        const requestId = it.next().value;
+        const request = requests.find(r => r.__ref.id == requestId);
+        console.log(request, 'request payload', requestId)
+
+        const res = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+        //@ts-ignore
+        console.log(res.testResult, 'response')
 
         console.log(this.requestOrdersForExecution, 'requestOrdersForExecution')
     }

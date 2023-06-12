@@ -1,9 +1,10 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var __defProp = Object.defineProperty;
+"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
+var _restexecutor = require('@firecamp/rest-executor'); var _restexecutor2 = _interopRequireDefault(_restexecutor);
 class Runner {
   constructor(collection, options) {
     __publicField(this, "collection");
@@ -69,10 +70,16 @@ class Runner {
       throw e;
     }
     this.prepareRequestExecutionOrder();
-    const { collection, folders, requests } = this.collection;
-    const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = collection;
+    const { requests } = this.collection;
     const executedRequestQueue = /* @__PURE__ */ new Set();
     const currentRequestInExecution = "";
+    const executor = new (0, _restexecutor2.default)();
+    const it = this.requestOrdersForExecution.values();
+    const requestId = it.next().value;
+    const request = requests.find((r) => r.__ref.id == requestId);
+    console.log(request, "request payload", requestId);
+    const res = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+    console.log(res.testResult, "response");
     console.log(this.requestOrdersForExecution, "requestOrdersForExecution");
   }
 }

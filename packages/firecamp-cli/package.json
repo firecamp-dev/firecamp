@@ -21,7 +21,8 @@
     "@oclif/core": "^2.8.5",
     "@oclif/plugin-help": "^5.2.9",
     "@oclif/plugin-plugins": "^2.4.7",
-    "fs-extra": "^11.1.1"
+    "fs-extra": "^11.1.1",
+    "react-fast-compare": "^3.2.2"
   },
   "devDependencies": {
     "@oclif/test": "^2.3.22",

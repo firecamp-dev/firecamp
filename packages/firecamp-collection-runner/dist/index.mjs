@@ -4,6 +4,7 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
+import RestExecutor from "@firecamp/rest-executor";
 class Runner {
   constructor(collection, options) {
     __publicField(this, "collection");
@@ -69,10 +70,16 @@ class Runner {
       throw e;
     }
     this.prepareRequestExecutionOrder();
-    const { collection, folders, requests } = this.collection;
-    const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = collection;
+    const { requests } = this.collection;
     const executedRequestQueue = /* @__PURE__ */ new Set();
     const currentRequestInExecution = "";
+    const executor = new RestExecutor();
+    const it = this.requestOrdersForExecution.values();
+    const requestId = it.next().value;
+    const request = requests.find((r) => r.__ref.id == requestId);
+    console.log(request, "request payload", requestId);
+    const res = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+    console.log(res.testResult, "response");
     console.log(this.requestOrdersForExecution, "requestOrdersForExecution");
   }
 }
