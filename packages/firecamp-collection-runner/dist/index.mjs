@@ -8,8 +8,10 @@ class Runner {
   constructor(collection, options) {
     __publicField(this, "collection");
     __publicField(this, "options");
+    __publicField(this, "requestOrdersForExecution");
     this.collection = collection;
     this.options = options;
+    this.requestOrdersForExecution = /* @__PURE__ */ new Set();
   }
   /**
    * validate that the collection format is valid
@@ -30,6 +32,35 @@ class Runner {
       throw new Error("The collection's request items format is invalid");
     return true;
   }
+  /**
+   * prepare an Set of request execution order
+   */
+  prepareRequestExecutionOrder() {
+    const { collection, folders } = this.collection;
+    const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = collection;
+    const extractRequestIdsFromFolder = (fId, requestIds = []) => {
+      const folder = folders.find((f) => f.__ref.id == fId);
+      if (!folder)
+        return requestIds;
+      if (folder.__meta.fOrders?.length) {
+        const rIds = folder.__meta.fOrders.map((fId2) => extractRequestIdsFromFolder(fId2, requestIds));
+        requestIds = [...requestIds, ...rIds];
+      }
+      if (folder.__meta.rOrders?.length) {
+        requestIds = [...requestIds, ...folder.__meta.rOrders];
+      }
+      return requestIds;
+    };
+    if (Array.isArray(rootFolderIds)) {
+      rootFolderIds.map((fId) => {
+        const requestIds = extractRequestIdsFromFolder(fId);
+        requestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
+      });
+    }
+    if (Array.isArray(rootRequestIds)) {
+      rootRequestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
+    }
+  }
   async run() {
     console.log("I am into the Runner...");
     try {
@@ -37,14 +68,12 @@ class Runner {
     } catch (e) {
       throw e;
     }
-    const requestOrdersForExecution = /* @__PURE__ */ new Set();
+    this.prepareRequestExecutionOrder();
+    const { collection, folders, requests } = this.collection;
+    const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = collection;
     const executedRequestQueue = /* @__PURE__ */ new Set();
     const currentRequestInExecution = "";
-    const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = this.collection;
-    if (Array.isArray(rootFolderIds)) {
-      rootFolderIds.forEach((folderId) => {
-      });
-    }
+    console.log(this.requestOrdersForExecution, "requestOrdersForExecution");
   }
 }
 export {

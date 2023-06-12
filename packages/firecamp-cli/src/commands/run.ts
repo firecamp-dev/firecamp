@@ -8,7 +8,7 @@ import Runner from '@firecamp/collection-runner'
  * ./bin/dev run ../../test/data/FirecampRestEchoServer.firecamp_collection.json
  */
 export default class Run extends Command {
-  static description = 'describe the command here'
+  static description = 'Run Firecamp Collection'
 
   static examples = [
     '<%= config.bin %> <%= command.id %>',

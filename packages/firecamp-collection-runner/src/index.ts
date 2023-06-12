@@ -1,13 +1,15 @@
-import { TId, TObject } from "@firecamp/types";
+import { TId } from "@firecamp/types";
 
 
 export default class Runner {
 
-    collection: any;
-    options: any;
+    private collection: any;
+    private options: any;
+    private requestOrdersForExecution: Set<TId>;
     constructor(collection, options) {
         this.collection = collection;
         this.options = options;
+        this.requestOrdersForExecution = new Set();
     }
 
     /**
@@ -26,26 +28,56 @@ export default class Runner {
         return true;
     }
 
+    /**
+     * prepare an Set of request execution order
+     */
+    private prepareRequestExecutionOrder() {
+        const { collection, folders } = this.collection
+        const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = collection
+
+        const extractRequestIdsFromFolder = (fId: TId, requestIds: TId[] = []) => {
+            const folder = folders.find(f => f.__ref.id == fId);
+            if (!folder) return requestIds;
+            if (folder.__meta.fOrders?.length) {
+                const rIds = folder.__meta.fOrders.map(fId => extractRequestIdsFromFolder(fId, requestIds))
+                requestIds = [...requestIds, ...rIds]
+            }
+            if (folder.__meta.rOrders?.length) {
+                requestIds = [...requestIds, ...folder.__meta.rOrders]
+            }
+            return requestIds;
+        }
+
+        if (Array.isArray(rootFolderIds)) {
+            rootFolderIds.map(fId => {
+                const requestIds = extractRequestIdsFromFolder(fId)
+                // console.log(requestIds, fId)
+                requestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
+            });
+        }
+        if (Array.isArray(rootRequestIds)) {
+            rootRequestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
+        }
+    }
+
     async run() {
 
-    console.log('I am into the Runner...')
+        console.log('I am into the Runner...')
 
         try { this.validate() } catch (e) { throw e }
+        this.prepareRequestExecutionOrder();
 
+        const { collection, folders, requests } = this.collection
+        const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = collection
         /**
          * 1. prepare the request execution orders
          * 2. manage the queue of executed requests
          */
 
-        const requestOrdersForExecution = new Set();
+
         const executedRequestQueue = new Set();
         const currentRequestInExecution: TId = '';
 
-        const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = this.collection
-        if (Array.isArray(rootFolderIds)) {
-            rootFolderIds.forEach(folderId => {
-
-            })
-        }
+        console.log(this.requestOrdersForExecution, 'requestOrdersForExecution')
     }
 }

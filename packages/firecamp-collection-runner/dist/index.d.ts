@@ -1,6 +1,7 @@
 declare class Runner {
-    collection: any;
-    options: any;
+    private collection;
+    private options;
+    private requestOrdersForExecution;
     constructor(collection: any, options: any);
     /**
      * validate that the collection format is valid
@@ -10,6 +11,10 @@ declare class Runner {
      * @returns boolean
      */
     private validate;
+    /**
+     * prepare an Set of request execution order
+     */
+    private prepareRequestExecutionOrder;
     run(): Promise<void>;
 }
 
