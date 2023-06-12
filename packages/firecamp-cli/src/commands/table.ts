@@ -11,8 +11,15 @@ export default class Users extends Command {
         const { flags } = await this.parse(Users)
         // const { data: users } = await axios.get('https://jsonplaceholder.typicode.com/users')
 
+        const _header = (h: string) => chalk.hex('#079fb3')(h);
         var table = new Table({
-            head: ['method', 'api', 'status', 'pass', 'fail'],
+            head: [
+                _header('method'),
+                _header('api'),
+                _header('status'),
+                _header('pass'),
+                _header('fail')
+            ],
             // colWidths: [100, 400, 200, 150, 150 ],
             wordWrap: true,
             chars: {
