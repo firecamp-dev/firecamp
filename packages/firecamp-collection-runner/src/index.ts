@@ -7,10 +7,15 @@ export default class Runner {
     private collection: any;
     private options: any;
     private requestOrdersForExecution: Set<TId>;
+    private executedRequestQueue: Set<TId>;
+    private currentRequestInExecution: TId;
+    private testResults: any = [];
     constructor(collection, options) {
         this.collection = collection;
         this.options = options;
         this.requestOrdersForExecution = new Set();
+        this.executedRequestQueue = new Set();
+        this.currentRequestInExecution = '';
     }
 
     /**
@@ -61,33 +66,42 @@ export default class Runner {
         }
     }
 
-    async run() {
+    private async executeRequest(requestId: TId) {
+        const { requests } = this.collection;
+        const executor = new RestExecutor();
 
-        console.log('I am into the Runner...')
+        const request = requests.find(r => r.__ref.id == requestId);
+        const response = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+        return { request, response };
+    }
+
+    private async startExecution() {
+
+        try {
+            const { value: requestId, done } = this.requestOrdersForExecution.values().next();
+            this.currentRequestInExecution = requestId;
+            const res = await this.executeRequest(requestId);
+            this.testResults.push(res);
+            this.executedRequestQueue.add(requestId);
+            this.requestOrdersForExecution.delete(requestId);
+            if (!done) await this.startExecution();
+        }
+        catch (error) {
+            // console.error(`Error fetching info for request ID ${requestId}:`, error);
+            // await this.startExecution(); // Retry fetching info for the remaining IDs even if an error occurred
+        }
+
+    }
+
+    async run() {
 
         try { this.validate() } catch (e) { throw e }
         this.prepareRequestExecutionOrder();
 
-        const { requests } = this.collection
-        /**
-         * 1. prepare the request execution orders
-         * 2. manage the queue of executed requests
-         */
+        // start collection runner
+        await this.startExecution();
+        // stop collection runner
 
-
-        const executedRequestQueue = new Set();
-        const currentRequestInExecution: TId = '';
-
-        const executor = new RestExecutor();
-        const it = this.requestOrdersForExecution.values();
-        const requestId = it.next().value;
-        const request = requests.find(r => r.__ref.id == requestId);
-        console.log(request, 'request payload', requestId)
-
-        const res = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
-        //@ts-ignore
-        console.log(res.testResult, 'response')
-
-        console.log(this.requestOrdersForExecution, 'requestOrdersForExecution')
+        return this.testResults;
     }
 }

@@ -10,9 +10,14 @@ class Runner {
     __publicField(this, "collection");
     __publicField(this, "options");
     __publicField(this, "requestOrdersForExecution");
+    __publicField(this, "executedRequestQueue");
+    __publicField(this, "currentRequestInExecution");
+    __publicField(this, "testResults", []);
     this.collection = collection;
     this.options = options;
     this.requestOrdersForExecution = /* @__PURE__ */ new Set();
+    this.executedRequestQueue = /* @__PURE__ */ new Set();
+    this.currentRequestInExecution = "";
   }
   /**
    * validate that the collection format is valid
@@ -62,6 +67,24 @@ class Runner {
       rootRequestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
     }
   }
+  async executeRequest(requestId) {
+    const { requests } = this.collection;
+    const executor = new (0, _restexecutor2.default)();
+    const request = requests.find((r) => r.__ref.id == requestId);
+    const res = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+    return res;
+  }
+  async executeRequestRecursively() {
+    const { value: requestId, done } = this.requestOrdersForExecution.values().next();
+    this.currentRequestInExecution = requestId;
+    const res = await this.executeRequest(requestId);
+    const { testResult } = res;
+    this.testResults.push(testResult);
+    this.executedRequestQueue.add(requestId);
+    this.requestOrdersForExecution.delete(requestId);
+    if (!done)
+      await this.executeRequestRecursively();
+  }
   async run() {
     console.log("I am into the Runner...");
     try {
@@ -70,17 +93,8 @@ class Runner {
       throw e;
     }
     this.prepareRequestExecutionOrder();
-    const { requests } = this.collection;
-    const executedRequestQueue = /* @__PURE__ */ new Set();
-    const currentRequestInExecution = "";
-    const executor = new (0, _restexecutor2.default)();
-    const it = this.requestOrdersForExecution.values();
-    const requestId = it.next().value;
-    const request = requests.find((r) => r.__ref.id == requestId);
-    console.log(request, "request payload", requestId);
-    const res = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
-    console.log(res.testResult, "response");
-    console.log(this.requestOrdersForExecution, "requestOrdersForExecution");
+    await this.executeRequestRecursively();
+    return this.testResults;
   }
 }
 

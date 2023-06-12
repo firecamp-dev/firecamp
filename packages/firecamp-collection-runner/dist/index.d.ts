@@ -2,6 +2,9 @@ declare class Runner {
     private collection;
     private options;
     private requestOrdersForExecution;
+    private executedRequestQueue;
+    private currentRequestInExecution;
+    private testResults;
     constructor(collection: any, options: any);
     /**
      * validate that the collection format is valid
@@ -15,7 +18,9 @@ declare class Runner {
      * prepare an Set of request execution order
      */
     private prepareRequestExecutionOrder;
-    run(): Promise<void>;
+    private executeRequest;
+    private executeRequestRecursively;
+    run(): Promise<any>;
 }
 
 export { Runner as default };
