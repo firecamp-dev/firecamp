@@ -35,6 +35,9 @@ importers:
       listr2:
         specifier: ^6.6.0
         version: 6.6.0
+      load-json-file:
+        specifier: ^7.0.1
+        version: 7.0.1
       ora:
         specifier: ^6.3.1
         version: 6.3.1
@@ -6893,6 +6896,11 @@ packages:
       pify: 4.0.1
       strip-bom: 3.0.0
       type-fest: 0.3.1
+    dev: false
+
+  /load-json-file@7.0.1:
+    resolution: {integrity: sha512-Gnxj3ev3mB5TkVBGad0JM6dmLiQL+o0t23JPBZ9sd+yvSLk05mFoqKBw5N8gbbkU4TNXyqCgIrl/VM17OgUIgQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dev: false
 
   /load-tsconfig@0.2.5:

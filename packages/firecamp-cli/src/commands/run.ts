@@ -1,6 +1,5 @@
 import { Args, Command, Flags } from '@oclif/core'
-import * as fs from 'fs-extra'
-import * as path from 'path'
+import { loadJsonFile } from 'load-json-file';
 import Runner from '@firecamp/collection-runner'
 
 /**
@@ -32,19 +31,22 @@ export default class Run extends Command {
       this.logToStderr('error: The collection path is missing')
       return
     }
-    const _fp = path.join(__dirname, file)
-    fs.readJson(_fp)
+    // const __dirname = dirname(fileURLToPath(file));
+    // const _fp = path.join(__dirname, file)
+    const _filepath = new URL(`../../${file}`, import.meta.url).pathname
+    loadJsonFile(_filepath)
       .then(collection => {
         // this.logJson(collection);
         const runner = new Runner(collection, {})
         return runner.run();
       })
       .then(testResults => {
-        this.logJson(testResults)
+        console.log(testResults)
+        // this.logJson(testResults)
       })
       .catch(e => {
         console.error(e)
-        if (e.code == 'ENOENT') this.logToStderr(`error: file not exist at ${_fp}`)
+        if (e.code == 'ENOENT') this.logToStderr(`error: file not exist at ${_filepath}`)
         else this.logToStderr('error: The collection file is not valid')
       })
   }
