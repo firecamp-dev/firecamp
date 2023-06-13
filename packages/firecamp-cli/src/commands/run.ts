@@ -37,9 +37,7 @@ export default class Run extends Command {
       .then(collection => {
         // this.logJson(collection);
         const runner = new Runner(collection, {})
-        return runner.run((e: { name: string, payload: any }) => {
-
-        });
+        return runner.run();
       })
       .then(testResults => {
         this.logJson(testResults)

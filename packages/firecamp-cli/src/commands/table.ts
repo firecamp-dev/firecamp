@@ -1,15 +1,27 @@
 import { Command, ux } from '@oclif/core'
-import * as chalk from 'chalk';
-import * as Table from 'cli-table3';
+import chalk from 'chalk';
+import Table from 'cli-table3';
+import ora from 'ora';
+import boxen from 'boxen';
 
 export default class Users extends Command {
-    static flags = {
+    static flags = {}
 
-    }
 
     async run() {
         const { flags } = await this.parse(Users)
         // const { data: users } = await axios.get('https://jsonplaceholder.typicode.com/users')
+
+        console.log(boxen('unicorn', {padding: 1}));
+
+        const spinner = ora(`Loading ${chalk.red('unicorns')}`).start();
+        const spinner1 = ora(`  Test one`).start();
+        const spinner2 = ora(`  Test 2`).start();
+        spinner.succeed()
+        spinner1.indent = 4
+        spinner1.succeed()
+        spinner2.indent = 4
+        spinner2.fail()
 
         const _header = (h: string) => chalk.hex('#079fb3')(h);
         var table = new Table({
@@ -36,7 +48,7 @@ export default class Users extends Command {
             [chalk.red('DELETE'), chalk.blue('https://localhost:300/api/post'), '200', 3, 2]
         );
 
-        console.log(table.toString());
+        this.log(table.toString());
 
         // console.log(chalk.blue('Hello') + ' World' + chalk.red('!'));
 

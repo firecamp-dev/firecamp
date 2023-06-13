@@ -19,7 +19,7 @@ declare class Runner {
      */
     private prepareRequestExecutionOrder;
     private executeRequest;
-    private executeRequestRecursively;
+    private startExecution;
     run(): Promise<any>;
 }
 

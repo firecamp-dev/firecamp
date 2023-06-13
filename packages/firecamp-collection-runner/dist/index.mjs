@@ -71,29 +71,30 @@ class Runner {
     const { requests } = this.collection;
     const executor = new RestExecutor();
     const request = requests.find((r) => r.__ref.id == requestId);
-    const res = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
-    return res;
+    const response = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+    return { request, response };
   }
-  async executeRequestRecursively() {
-    const { value: requestId, done } = this.requestOrdersForExecution.values().next();
-    this.currentRequestInExecution = requestId;
-    const res = await this.executeRequest(requestId);
-    const { testResult } = res;
-    this.testResults.push(testResult);
-    this.executedRequestQueue.add(requestId);
-    this.requestOrdersForExecution.delete(requestId);
-    if (!done)
-      await this.executeRequestRecursively();
+  async startExecution() {
+    try {
+      const { value: requestId, done } = this.requestOrdersForExecution.values().next();
+      this.currentRequestInExecution = requestId;
+      const res = await this.executeRequest(requestId);
+      this.testResults.push(res);
+      this.executedRequestQueue.add(requestId);
+      this.requestOrdersForExecution.delete(requestId);
+      if (!done)
+        await this.startExecution();
+    } catch (error) {
+    }
   }
   async run() {
-    console.log("I am into the Runner...");
     try {
       this.validate();
     } catch (e) {
       throw e;
     }
     this.prepareRequestExecutionOrder();
-    await this.executeRequestRecursively();
+    await this.startExecution();
     return this.testResults;
   }
 }

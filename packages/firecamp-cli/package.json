@@ -4,11 +4,12 @@
   "description": "Firecamp CLI Application",
   "author": "Nishchit Dhanani @Nishchit14",
   "bin": {
-    "firecamp": "./bin/run"
+    "firecamp": "./bin/run.js"
   },
+  "type": "module",
   "homepage": "https://github.com/FirecampDev/Firecamp",
   "license": "",
-  "main": "dist/index.js",
+  "exports": "./dist/index.js",
   "repository": "FirecampDev/Firecamp",
   "files": [
     "/bin",
@@ -21,9 +22,11 @@
     "@oclif/core": "^2.8.5",
     "@oclif/plugin-help": "^5.2.9",
     "@oclif/plugin-plugins": "^2.4.7",
+    "boxen": "^7.1.0",
     "chalk": "^4.1.2",
     "cli-table3": "^0.6.3",
     "fs-extra": "^11.1.1",
+    "ora": "^6.3.1",
     "react-fast-compare": "^3.2.2"
   },
   "devDependencies": {
@@ -68,7 +71,7 @@
     "version": "oclif readme && git add README.md"
   },
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=16"
   },
   "bugs": "https://github.com/FirecampDev/Firecamp/issues",
   "keywords": [
