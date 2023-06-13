@@ -29,6 +29,9 @@ importers:
       cli-table3:
         specifier: ^0.6.3
         version: 0.6.3
+      figlet:
+        specifier: ^1.6.0
+        version: 1.6.0
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
@@ -51,6 +54,9 @@ importers:
       '@types/chai':
         specifier: ^4.3.5
         version: 4.3.5
+      '@types/figlet':
+        specifier: ^1.5.6
+        version: 1.5.6
       '@types/fs-extra':
         specifier: ^11.0.1
         version: 11.0.1
@@ -2053,6 +2059,10 @@ packages:
 
   /@types/expect@1.20.4:
     resolution: {integrity: sha512-Q5Vn3yjTDyCMV50TB6VRIbQNxSE4OmZR86VSbGaNpfUolm0iePBB4KdEEHmxoY5sT2+2DIvXW0rvMDP2nHZ4Mg==}
+    dev: true
+
+  /@types/figlet@1.5.6:
+    resolution: {integrity: sha512-AOdn9cKJGXpqfHeif16xeGMwWefB4nsOyxkdRMpc+PEP3nUxzu3psJfIqhjrCNW4Sejt5i6rISWmEwK0sw03mA==}
     dev: true
 
   /@types/filesystem@0.0.32:
@@ -5022,6 +5032,12 @@ packages:
     dependencies:
       bser: 2.1.1
     dev: true
+
+  /figlet@1.6.0:
+    resolution: {integrity: sha512-31EQGhCEITv6+hi2ORRPyn3bulaV9Fl4xOdR169cBzH/n1UqcxsiSB/noo6SJdD7Kfb1Ljit+IgR1USvF/XbdA==}
+    engines: {node: '>= 0.4.0'}
+    hasBin: true
+    dev: false
 
   /figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}

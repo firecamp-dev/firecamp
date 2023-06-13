@@ -1,5 +1,6 @@
 import { Args, Command, Flags } from '@oclif/core'
 import { loadJsonFile } from 'load-json-file';
+import figlet from 'figlet'
 import Runner from '@firecamp/collection-runner'
 
 /**
@@ -31,8 +32,10 @@ export default class Run extends Command {
       this.logToStderr('error: The collection path is missing')
       return
     }
-    // const __dirname = dirname(fileURLToPath(file));
-    // const _fp = path.join(__dirname, file)
+    this.log(figlet.textSync("Firecamp"))
+
+    return
+
     const _filepath = new URL(`../../${file}`, import.meta.url).pathname
     loadJsonFile(_filepath)
       .then(collection => {
