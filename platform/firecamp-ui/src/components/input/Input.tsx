@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, Ref } from 'react';
 import cx from 'classnames';
 import { SingleLineEditor } from '@firecamp/ui';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
@@ -7,7 +7,7 @@ import { IInput } from './interfaces/input.interfaces';
 import './InputBox.sass';
 import { EEditorLanguage } from '@firecamp/types';
 
-const Input: FC<IInput> = React.forwardRef(
+const Input = React.forwardRef(
   (
     {
       id = '',
@@ -34,8 +34,8 @@ const Input: FC<IInput> = React.forwardRef(
       onBlur = () => { },
       onFocus = () => { },
       ...domProps
-    },
-    ref
+    }: IInput,
+    ref: Ref<HTMLInputElement>
   ) => {
     // TODO: review/discuss 'useformRef' prop
 

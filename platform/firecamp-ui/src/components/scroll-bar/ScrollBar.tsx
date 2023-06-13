@@ -20,7 +20,7 @@ const ScrollBar = ({
     )}
     style={{
       '--scrollbar-size': '8px',
-    }}
+    } as React.CSSProperties}
     type="hover"
   >
     {/**
