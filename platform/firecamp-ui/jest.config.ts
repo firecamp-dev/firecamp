@@ -20,6 +20,8 @@ const config: Config = {
   transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   moduleNameMapper: {
     '^uuid$': require.resolve('uuid'),
+    '@react-icons/all-files/lib/esm':
+      '<rootDir>/../../node_modules/@react-icons/all-files',
     '\\.(css|sass|scss)$': '<rootDir>/__mocks__/styleMock.ts',
     '\\.(txt)$': '<rootDir>/../../node_modules/raw-loader',
     '^nanoid(/(.*)|$)': 'nanoid$1',
