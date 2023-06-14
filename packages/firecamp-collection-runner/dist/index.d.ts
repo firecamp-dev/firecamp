@@ -26,9 +26,8 @@ declare class Runner {
      */
     private prepareRequestExecutionOrder;
     private executeRequest;
-    private startExecution;
-    private _emit;
-    private on;
+    private start;
+    private exposeOnlyOn;
     run(): {
         on: (evt: string, fn: (...a: any[]) => void) => any;
     };

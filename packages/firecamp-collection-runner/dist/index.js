@@ -79,10 +79,22 @@ class Runner {
   async executeRequest(requestId) {
     const { requests } = this.collection;
     const request = requests.find((r) => r.__ref.id == requestId);
+    this.emitter.emit("beforeRequest" /* BeforeRequest */, {
+      name: request.__met.name,
+      url: request.url.raw,
+      method: request.method.toUpperCase(),
+      path: "",
+      //TODO: prepare path from the root
+      id: request.__ref.id
+    });
     const response = await this.options.executeRequest(request);
+    this.emitter.emit("request" /* Request */, {
+      id: request.__ref.id,
+      response
+    });
     return { request, response };
   }
-  async startExecution() {
+  async start() {
     try {
       const { value: requestId, done } = this.requestOrdersForExecution.values().next();
       if (!done) {
@@ -91,37 +103,17 @@ class Runner {
         this.testResults.push(res);
         this.executedRequestQueue.add(requestId);
         this.requestOrdersForExecution.delete(requestId);
-        await this.startExecution();
+        await this.start();
       }
     } catch (error) {
       console.error(`Error while running the collection:`, error);
     }
   }
-  _emit(evt) {
-    const { collection } = this.collection;
-    switch (evt) {
-      case "start" /* Start */:
-        this.emitter.emit(evt, {
-          name: collection.name,
-          id: collection.__ref.id
-        });
-        break;
-      case "beforeRequest" /* BeforeRequest */:
-        this.emitter.emit(evt);
-        break;
-      case "request" /* Request */:
-        this.emitter.emit(evt);
-        break;
-      case "done" /* Done */:
-        this.emitter.emit(evt, 558899);
-        break;
-    }
-  }
-  on() {
+  exposeOnlyOn() {
     return {
       on: (evt, fn) => {
         this.emitter.on(evt, fn);
-        return this.on();
+        return this.exposeOnlyOn();
       }
     };
   }
@@ -133,11 +125,15 @@ class Runner {
     }
     this.prepareRequestExecutionOrder();
     setTimeout(async () => {
-      this._emit("start" /* Start */);
-      await this.startExecution();
-      this._emit("done" /* Done */);
+      const { collection } = this.collection;
+      this.emitter.emit("start" /* Start */, {
+        name: collection.name,
+        id: collection.__ref.id
+      });
+      await this.start();
+      this.emitter.emit("done" /* Done */);
     });
-    return this.on();
+    return this.exposeOnlyOn();
   }
 }
 export {
