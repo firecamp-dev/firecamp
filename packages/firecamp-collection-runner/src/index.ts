@@ -80,7 +80,7 @@ export default class Runner {
 
         /** emit 'beforeRequest' event just before request execution start */
         this.emitter.emit(ERunnerEvents.BeforeRequest, {
-            name: request.__met.name,
+            name: request.__meta.name,
             url: request.url.raw,
             method: request.method.toUpperCase(),
             path: '', //TODO: prepare path from the root

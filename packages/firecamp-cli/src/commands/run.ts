@@ -57,7 +57,7 @@ export default class Run extends Command {
           .on(ERunnerEvents.Start, this.logJson)
           .on(ERunnerEvents.BeforeRequest, this.logJson)
           .on(ERunnerEvents.Request, this.logJson)
-          .on(ERunnerEvents.Done, this.logJson)
+          .on(ERunnerEvents.Done, console.log)
       })
       .then(testResults => {
         // console.log(testResults)

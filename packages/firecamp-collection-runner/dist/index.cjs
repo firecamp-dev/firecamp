@@ -80,7 +80,7 @@ class Runner {
     const { requests } = this.collection;
     const request = requests.find((r) => r.__ref.id == requestId);
     this.emitter.emit("beforeRequest" /* BeforeRequest */, {
-      name: request.__met.name,
+      name: request.__meta.name,
       url: request.url.raw,
       method: request.method.toUpperCase(),
       path: "",
