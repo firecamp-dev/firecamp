@@ -1,5 +1,12 @@
 import { TId } from "@firecamp/types";
 
+export enum ERunnerEvents {
+    Start = 'start',
+    BeforeRequest = 'beforeRequest',
+    Request = 'request',
+    Done = 'done'
+}
+
 export default class Runner {
 
     private collection: any;
