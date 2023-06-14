@@ -53,7 +53,7 @@ export default class Run extends Command {
           }
         })
 
-        runner.run().on('start', this.logJson);
+        return runner.run().on('start', this.logJson).on('done', console.log).emit('done', 77888);
       })
       .then(testResults => {
         // console.log(testResults)

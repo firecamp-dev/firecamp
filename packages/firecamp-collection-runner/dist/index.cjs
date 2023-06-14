@@ -97,12 +97,33 @@ class Runner {
       console.error(`Error while running the collection:`, error);
     }
   }
-  _emit() {
+  _emit(evt) {
     const { collection } = this.collection;
-    this.emitter.emit("start", {
-      name: collection.name,
-      id: collection.__ref.id
-    });
+    switch (evt) {
+      case "start" /* Start */:
+        this.emitter.emit(evt, {
+          name: collection.name,
+          id: collection.__ref.id
+        });
+        break;
+      case "beforeRequest" /* BeforeRequest */:
+        this.emitter.emit(evt);
+        break;
+      case "request" /* Request */:
+        this.emitter.emit(evt);
+        break;
+      case "done" /* Done */:
+        this.emitter.emit(evt, 558899);
+        break;
+    }
+  }
+  on() {
+    return {
+      on: (evt, fn) => {
+        this.emitter.on(evt, fn);
+        return this.on();
+      }
+    };
   }
   run() {
     try {
@@ -111,10 +132,12 @@ class Runner {
       throw e;
     }
     this.prepareRequestExecutionOrder();
-    setTimeout(() => {
-      this._emit();
+    setTimeout(async () => {
+      this._emit("start" /* Start */);
+      await this.startExecution();
+      this._emit("done" /* Done */);
     });
-    return this.emitter;
+    return this.on();
   }
 }
 

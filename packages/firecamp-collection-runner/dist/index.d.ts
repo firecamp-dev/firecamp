@@ -1,5 +1,3 @@
-import EventEmitter from 'eventemitter3';
-
 declare enum ERunnerEvents {
     Start = "start",
     BeforeRequest = "beforeRequest",
@@ -30,7 +28,10 @@ declare class Runner {
     private executeRequest;
     private startExecution;
     private _emit;
-    run(): EventEmitter<string | symbol, any>;
+    private on;
+    run(): {
+        on: (evt: string, fn: (...a: any[]) => void) => any;
+    };
 }
 
 export { ERunnerEvents, Runner as default };

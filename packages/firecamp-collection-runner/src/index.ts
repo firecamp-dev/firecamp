@@ -16,8 +16,7 @@ export default class Runner {
     private executedRequestQueue: Set<TId>;
     private currentRequestInExecution: TId;
     private testResults: any = [];
-    private emitter: EventEmitter
-    public on;
+    private emitter: EventEmitter;
     constructor(collection, options) {
         this.collection = collection;
         this.options = options;
@@ -25,7 +24,6 @@ export default class Runner {
         this.executedRequestQueue = new Set();
         this.currentRequestInExecution = '';
         this.emitter = new EventEmitter();
-        this.on = this.emitter.on
     }
 
     /**
@@ -104,12 +102,36 @@ export default class Runner {
 
     }
 
-    private _emit() {
+    private _emit(evt: ERunnerEvents, payload?: any) {
         const { collection } = this.collection;
-        this.emitter.emit('start', {
-            name: collection.name,
-            id: collection.__ref.id
-        })
+
+        switch (evt) {
+            case ERunnerEvents.Start:
+                this.emitter.emit(evt, {
+                    name: collection.name,
+                    id: collection.__ref.id
+                });
+                break;
+            case ERunnerEvents.BeforeRequest:
+                this.emitter.emit(evt);
+                break;
+            case ERunnerEvents.Request:
+                this.emitter.emit(evt);
+                break;
+            case ERunnerEvents.Done:
+                this.emitter.emit(evt, 558899);
+                break;
+        }
+
+    }
+
+    private exposeOnlyOn() {
+        return {
+            on: (evt: string, fn: (...a) => void) => {
+                this.emitter.on(evt, fn)
+                return this.exposeOnlyOn()
+            }
+        }
     }
 
     run() {
@@ -117,14 +139,14 @@ export default class Runner {
         try { this.validate() } catch (e) { throw e }
         this.prepareRequestExecutionOrder();
 
-        // start collection runner
-        setTimeout(() => {
-            this._emit()
+        setTimeout(async () => {
+            this._emit(ERunnerEvents.Start);
+            await this.startExecution();
+            this._emit(ERunnerEvents.Done);
         })
-        // await this.startExecution();
         // stop collection runner
 
         // return this.testResults;
-        return { on: this.on }
+        return this.exposeOnlyOn()
     }
 }
