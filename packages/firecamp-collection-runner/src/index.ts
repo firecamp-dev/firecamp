@@ -77,11 +77,28 @@ export default class Runner {
     private async executeRequest(requestId: TId) {
         const { requests } = this.collection;
         const request = requests.find(r => r.__ref.id == requestId);
+
+        /** emit 'beforeRequest' event just before request execution start */
+        this.emitter.emit(ERunnerEvents.BeforeRequest, {
+            name: request.__met.name,
+            url: request.url.raw,
+            method: request.method.toUpperCase(),
+            path: '', //TODO: prepare path from the root
+            id: request.__ref.id
+        });
+
         const response = await this.options.executeRequest(request);
+
+        /** emit 'request' event on request execution completion */
+        this.emitter.emit(ERunnerEvents.Request, {
+            id: request.__ref.id,
+            response
+        });
+
         return { request, response };
     }
 
-    private async startExecution() {
+    private async start() {
 
         try {
             const { value: requestId, done } = this.requestOrdersForExecution.values().next();
@@ -91,36 +108,13 @@ export default class Runner {
                 this.testResults.push(res);
                 this.executedRequestQueue.add(requestId);
                 this.requestOrdersForExecution.delete(requestId);
-                await this.startExecution();
+                await this.start();
             }
 
         }
         catch (error) {
             console.error(`Error while running the collection:`, error);
-            // await this.startExecution(); // Retry fetching info for the remaining IDs even if an error occurred
-        }
-
-    }
-
-    private _emit(evt: ERunnerEvents, payload?: any) {
-        const { collection } = this.collection;
-
-        switch (evt) {
-            case ERunnerEvents.Start:
-                this.emitter.emit(evt, {
-                    name: collection.name,
-                    id: collection.__ref.id
-                });
-                break;
-            case ERunnerEvents.BeforeRequest:
-                this.emitter.emit(evt);
-                break;
-            case ERunnerEvents.Request:
-                this.emitter.emit(evt);
-                break;
-            case ERunnerEvents.Done:
-                this.emitter.emit(evt, 558899);
-                break;
+            // await this.start(); // Retry fetching info for the remaining IDs even if an error occurred
         }
 
     }
@@ -140,11 +134,20 @@ export default class Runner {
         this.prepareRequestExecutionOrder();
 
         setTimeout(async () => {
-            this._emit(ERunnerEvents.Start);
-            await this.startExecution();
-            this._emit(ERunnerEvents.Done);
-        })
-        // stop collection runner
+
+            const { collection } = this.collection;
+
+            /** emit 'start' event on runner start */
+            this.emitter.emit(ERunnerEvents.Start, {
+                name: collection.name,
+                id: collection.__ref.id
+            });
+
+            await this.start();
+
+            /** emit 'done' event once runner iterations are completed */
+            this.emitter.emit(ERunnerEvents.Done);
+        });
 
         // return this.testResults;
         return this.exposeOnlyOn()
