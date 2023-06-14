@@ -98,10 +98,13 @@ export default class Runner {
         return { request, response };
     }
 
+    i = 0;
     private async start() {
 
         try {
             const { value: requestId, done } = this.requestOrdersForExecution.values().next();
+            if (this.i > 0) return
+            this.i = this.i + 1
             if (!done) {
                 this.currentRequestInExecution = requestId;
                 const res = await this.executeRequest(requestId);

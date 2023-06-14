@@ -21,6 +21,7 @@ class Runner {
     __publicField(this, "currentRequestInExecution");
     __publicField(this, "testResults", []);
     __publicField(this, "emitter");
+    __publicField(this, "i", 0);
     this.collection = collection;
     this.options = options;
     this.requestOrdersForExecution = /* @__PURE__ */ new Set();
@@ -97,6 +98,9 @@ class Runner {
   async start() {
     try {
       const { value: requestId, done } = this.requestOrdersForExecution.values().next();
+      if (this.i > 0)
+        return;
+      this.i = this.i + 1;
       if (!done) {
         this.currentRequestInExecution = requestId;
         const res = await this.executeRequest(requestId);

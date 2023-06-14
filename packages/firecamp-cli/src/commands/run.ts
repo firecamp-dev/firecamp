@@ -1,12 +1,13 @@
 import { Args, Command, Flags } from '@oclif/core'
 import { loadJsonFile } from 'load-json-file';
 import figlet from 'figlet'
+//@ts-ignore https://github.com/egoist/tsup/issues/760
 import Runner, { ERunnerEvents } from '@firecamp/collection-runner'
 import _RestExecutor from '@firecamp/rest-executor';
 //@ts-ignore //TODO: rest-executor is commonjs lib while runner is esm. we'll move all lib in esm in future
 const RestExecutor = _RestExecutor.default
-import { tasks } from './../helper/reporter.js'
-
+import Reporter from './../helper/reporter.js'
+import { delay } from 'listr2'
 /**
  * Run command example
  * ./bin/dev run ../../test/data/FirecampRestEchoServer.firecamp_collection.json
@@ -49,15 +50,29 @@ export default class Run extends Command {
         const runner = new Runner(collection, {
           executeRequest: (request: any) => {
             const executor = new RestExecutor();
-            return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+            return reporter.runTask({ name: request.__meta.name }, () => {
+              return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+            })
           }
         })
+        const reporter = new Reporter();
 
         return runner.run()
-          .on(ERunnerEvents.Start, this.logJson)
-          .on(ERunnerEvents.BeforeRequest, this.logJson)
-          .on(ERunnerEvents.Request, this.logJson)
-          .on(ERunnerEvents.Done, console.log)
+          .on(ERunnerEvents.Start, () => { })
+          .on(ERunnerEvents.BeforeRequest, (request: any) => {
+            // console.log(request)
+
+            console.log(1111)
+            // reporter.addTask(request)
+          })
+          .on(ERunnerEvents.Request, async () => {
+
+            // await delay(500)
+            console.log(2222)
+            // const tasks =  reporter.getTasks()
+            // console.log(tasks, tasks.tasks)
+          })
+        // .on(ERunnerEvents.Done, console.log)
       })
       .then(testResults => {
         // console.log(testResults)

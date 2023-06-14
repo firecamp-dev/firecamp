@@ -26,6 +26,7 @@ declare class Runner {
      */
     private prepareRequestExecutionOrder;
     private executeRequest;
+    i: number;
     private start;
     private exposeOnlyOn;
     run(): {
