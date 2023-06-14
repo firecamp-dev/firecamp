@@ -4,6 +4,14 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
+import EventEmitter from "eventemitter3";
+var ERunnerEvents = /* @__PURE__ */ ((ERunnerEvents2) => {
+  ERunnerEvents2["Start"] = "start";
+  ERunnerEvents2["BeforeRequest"] = "beforeRequest";
+  ERunnerEvents2["Request"] = "request";
+  ERunnerEvents2["Done"] = "done";
+  return ERunnerEvents2;
+})(ERunnerEvents || {});
 class Runner {
   constructor(collection, options) {
     __publicField(this, "collection");
@@ -12,11 +20,13 @@ class Runner {
     __publicField(this, "executedRequestQueue");
     __publicField(this, "currentRequestInExecution");
     __publicField(this, "testResults", []);
+    __publicField(this, "emitter");
     this.collection = collection;
     this.options = options;
     this.requestOrdersForExecution = /* @__PURE__ */ new Set();
     this.executedRequestQueue = /* @__PURE__ */ new Set();
     this.currentRequestInExecution = "";
+    this.emitter = new EventEmitter();
   }
   /**
    * validate that the collection format is valid
@@ -87,17 +97,27 @@ class Runner {
       console.error(`Error while running the collection:`, error);
     }
   }
-  async run() {
+  _emit() {
+    const { collection } = this.collection;
+    this.emitter.emit("start", {
+      name: collection.name,
+      id: collection.__ref.id
+    });
+  }
+  run() {
     try {
       this.validate();
     } catch (e) {
       throw e;
     }
     this.prepareRequestExecutionOrder();
-    await this.startExecution();
-    return this.testResults;
+    setTimeout(() => {
+      this._emit();
+    });
+    return this.emitter;
   }
 }
 export {
+  ERunnerEvents,
   Runner as default
 };

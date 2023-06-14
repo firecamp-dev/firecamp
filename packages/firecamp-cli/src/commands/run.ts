@@ -1,7 +1,7 @@
 import { Args, Command, Flags } from '@oclif/core'
 import { loadJsonFile } from 'load-json-file';
 import figlet from 'figlet'
-import Runner from '@firecamp/collection-runner'
+import Runner, { ERunnerEvents } from '@firecamp/collection-runner'
 import _RestExecutor from '@firecamp/rest-executor';
 //@ts-ignore //TODO: rest-executor is commonjs lib while runner is esm. we'll move all lib in esm in future
 const RestExecutor = _RestExecutor.default
@@ -52,10 +52,11 @@ export default class Run extends Command {
             return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
           }
         })
-        return runner.run();
+
+        runner.run().on('start', this.logJson);
       })
       .then(testResults => {
-        console.log(testResults)
+        // console.log(testResults)
         // this.logJson(testResults)
       })
       .catch(e => {

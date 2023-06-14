@@ -1,9 +1,17 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var __defProp = Object.defineProperty;
+"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var __defProp = Object.defineProperty;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
+var _eventemitter3 = require('eventemitter3'); var _eventemitter32 = _interopRequireDefault(_eventemitter3);
+var ERunnerEvents = /* @__PURE__ */ ((ERunnerEvents2) => {
+  ERunnerEvents2["Start"] = "start";
+  ERunnerEvents2["BeforeRequest"] = "beforeRequest";
+  ERunnerEvents2["Request"] = "request";
+  ERunnerEvents2["Done"] = "done";
+  return ERunnerEvents2;
+})(ERunnerEvents || {});
 class Runner {
   constructor(collection, options) {
     __publicField(this, "collection");
@@ -12,11 +20,13 @@ class Runner {
     __publicField(this, "executedRequestQueue");
     __publicField(this, "currentRequestInExecution");
     __publicField(this, "testResults", []);
+    __publicField(this, "emitter");
     this.collection = collection;
     this.options = options;
     this.requestOrdersForExecution = /* @__PURE__ */ new Set();
     this.executedRequestQueue = /* @__PURE__ */ new Set();
     this.currentRequestInExecution = "";
+    this.emitter = new (0, _eventemitter32.default)();
   }
   /**
    * validate that the collection format is valid
@@ -87,17 +97,27 @@ class Runner {
       console.error(`Error while running the collection:`, error);
     }
   }
-  async run() {
+  _emit() {
+    const { collection } = this.collection;
+    this.emitter.emit("start", {
+      name: collection.name,
+      id: collection.__ref.id
+    });
+  }
+  run() {
     try {
       this.validate();
     } catch (e) {
       throw e;
     }
     this.prepareRequestExecutionOrder();
-    await this.startExecution();
-    return this.testResults;
+    setTimeout(() => {
+      this._emit();
+    });
+    return this.emitter;
   }
 }
 
 
-exports.default = Runner;
+
+exports.ERunnerEvents = ERunnerEvents; exports.default = Runner;

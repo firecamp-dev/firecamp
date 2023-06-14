@@ -1,3 +1,11 @@
+import EventEmitter from 'eventemitter3';
+
+declare enum ERunnerEvents {
+    Start = "start",
+    BeforeRequest = "beforeRequest",
+    Request = "request",
+    Done = "done"
+}
 declare class Runner {
     private collection;
     private options;
@@ -5,6 +13,7 @@ declare class Runner {
     private executedRequestQueue;
     private currentRequestInExecution;
     private testResults;
+    private emitter;
     constructor(collection: any, options: any);
     /**
      * validate that the collection format is valid
@@ -20,7 +29,8 @@ declare class Runner {
     private prepareRequestExecutionOrder;
     private executeRequest;
     private startExecution;
-    run(): Promise<any>;
+    private _emit;
+    run(): EventEmitter<string | symbol, any>;
 }
 
-export { Runner as default };
+export { ERunnerEvents, Runner as default };

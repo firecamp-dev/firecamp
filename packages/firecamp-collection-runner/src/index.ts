@@ -1,3 +1,4 @@
+import EventEmitter from 'eventemitter3';
 import { TId } from "@firecamp/types";
 
 export enum ERunnerEvents {
@@ -15,12 +16,16 @@ export default class Runner {
     private executedRequestQueue: Set<TId>;
     private currentRequestInExecution: TId;
     private testResults: any = [];
+    private emitter: EventEmitter
+    public on;
     constructor(collection, options) {
         this.collection = collection;
         this.options = options;
         this.requestOrdersForExecution = new Set();
         this.executedRequestQueue = new Set();
         this.currentRequestInExecution = '';
+        this.emitter = new EventEmitter();
+        this.on = this.emitter.on
     }
 
     /**
@@ -99,15 +104,27 @@ export default class Runner {
 
     }
 
-    async run() {
+    private _emit() {
+        const { collection } = this.collection;
+        this.emitter.emit('start', {
+            name: collection.name,
+            id: collection.__ref.id
+        })
+    }
+
+    run() {
 
         try { this.validate() } catch (e) { throw e }
         this.prepareRequestExecutionOrder();
 
         // start collection runner
-        await this.startExecution();
+        setTimeout(() => {
+            this._emit()
+        })
+        // await this.startExecution();
         // stop collection runner
 
-        return this.testResults;
+        // return this.testResults;
+        return { on: this.on }
     }
 }
