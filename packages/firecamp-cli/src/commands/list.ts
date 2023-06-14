@@ -89,23 +89,23 @@ class MyMainClass {
         )
 
         this.logger.log(ListrLogLevels.STARTED, 'This will run all the tasks in a queue and clear the queue afterwards.')
-        await this.tasks.runAll()
+        // await this.tasks.runAll()
 
         this.logger.log(ListrLogLevels.STARTED, 'You can use listr directly without importing it.')
         this.logger.log(ListrLogLevels.STARTED, 'It will use the options set on the manager so you dont have to initialize it with options everytime.')
 
-        try {
-            await this.tasks.run([
-                {
-                    title: 'I will survive, dont worry',
-                    task: (): void => {
-                        throw new Error('This will not crash since exitOnError is set to false eventhough default setting in Listr is false.')
-                    }
-                }
-            ])
-        } catch (e: any) {
-            this.logger.log(ListrLogLevels.FAILED, e)
-        }
+        // try {
+        //     await this.tasks.run([
+        //         {
+        //             title: 'I will survive, dont worry',
+        //             task: (): void => {
+        //                 throw new Error('This will not crash since exitOnError is set to false eventhough default setting in Listr is false.')
+        //             }
+        //         }
+        //     ])
+        // } catch (e: any) {
+        //     this.logger.log(ListrLogLevels.FAILED, e)
+        // }
 
         this.logger.log(ListrLogLevels.STARTED, 'Access the errors on the last run as in a similar way.')
         this.logger.log(ListrLogLevels.OUTPUT, this.tasks.errors)
@@ -113,20 +113,20 @@ class MyMainClass {
         this.logger.log(ListrLogLevels.STARTED, 'You can also access Listr directly in the same way.')
         this.logger.log(ListrLogLevels.STARTED, 'It is not the same manager instance, just a jumper function.')
 
-        try {
-            await this.tasks
-                .newListr([
-                    {
-                        title: 'I will die now, goodbye my friends.',
-                        task: (): void => {
-                            throw new Error('This will not crash since exitOnError is set to false eventhough default setting in Listr is false.')
-                        }
-                    }
-                ])
-                .run()
-        } catch (e: any) {
-            this.logger.log(ListrLogLevels.FAILED, e)
-        }
+        // try {
+        //     await this.tasks
+        //         .newListr([
+        //             {
+        //                 title: 'I will die now, goodbye my friends.',
+        //                 task: (): void => {
+        //                     throw new Error('This will not crash since exitOnError is set to false eventhough default setting in Listr is false.')
+        //                 }
+        //             }
+        //         ])
+        //         .run()
+        // } catch (e: any) {
+        //     this.logger.log(ListrLogLevels.FAILED, e)
+        // }
 
         this.logger.log(ListrLogLevels.STARTED, 'You can inject context directly to main instance.')
         this.tasks.ctx = { injected: true }

@@ -2,6 +2,7 @@ import { Args, Command, Flags } from '@oclif/core'
 import { loadJsonFile } from 'load-json-file';
 import figlet from 'figlet'
 import Runner from '@firecamp/collection-runner'
+import { tasks } from './../helper/reporter.js'
 
 /**
  * Run command example
@@ -33,6 +34,9 @@ export default class Run extends Command {
       return
     }
     this.log(figlet.textSync("Firecamp"))
+
+
+    tasks.run()
 
     return
 

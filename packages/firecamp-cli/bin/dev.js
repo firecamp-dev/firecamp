@@ -1,4 +1,4 @@
-#!/usr/bin/env ts-node-esm
+#!/usr/bin/env ts-node
 
 /* eslint-disable node/shebang */
 import oclif from "@oclif/core";
