@@ -4,8 +4,6 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import _RestExecutor from "@firecamp/rest-executor";
-const RestExecutor = _RestExecutor.default;
 class Runner {
   constructor(collection, options) {
     __publicField(this, "collection");
@@ -70,9 +68,8 @@ class Runner {
   }
   async executeRequest(requestId) {
     const { requests } = this.collection;
-    const executor = new RestExecutor();
     const request = requests.find((r) => r.__ref.id == requestId);
-    const response = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+    const response = await this.options.executeRequest(request);
     return { request, response };
   }
   async startExecution() {

@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "@firecamp/collection-runner": "workspace:*",
+    "@firecamp/rest-executor": "^1.0.18",
     "@oclif/core": "^2.8.5",
     "@oclif/plugin-help": "^5.2.9",
     "@oclif/plugin-plugins": "^2.4.7",

@@ -1,8 +1,4 @@
 import { TId } from "@firecamp/types";
-import _RestExecutor from '@firecamp/rest-executor';
-//@ts-ignore //TODO: rest-executor is commonjs lib while runner is esm. we'll move all lib in esm in future
-const RestExecutor = _RestExecutor.default
-
 
 export default class Runner {
 
@@ -70,9 +66,8 @@ export default class Runner {
 
     private async executeRequest(requestId: TId) {
         const { requests } = this.collection;
-        const executor = new RestExecutor();
         const request = requests.find(r => r.__ref.id == requestId);
-        const response = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+        const response = await this.options.executeRequest(request);
         return { request, response };
     }
 
