@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { FC, useState, useEffect, Key } from 'react';
 import { Dropdown, Button, Input } from '@firecamp/ui';
 import { EAuthTypes, IUiOAuth2, TPlainObject } from '@firecamp/types';

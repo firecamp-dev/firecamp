@@ -31,6 +31,7 @@ const config: Config = {
     '@firecamp/rest-executor/dist/esm':
       '<rootDir>/../firecamp-rest-executor/dist/esm/index.d.ts',
   },
+  setupFilesAfterEnv: ['<rootDir>/__mocks__/testSetupFile.ts'],
 };
 
 export default config;
