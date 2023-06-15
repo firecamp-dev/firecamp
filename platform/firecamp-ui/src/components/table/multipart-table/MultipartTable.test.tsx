@@ -73,7 +73,7 @@ describe('Table : ', () => {
 
     // initial - icon title should be IconTextSize & text field is of SingleLineEditor
     let svgIconWrapperDiv = MultipartInputElement.lastElementChild;
-    expect(svgIconWrapperDiv).toHaveClass('absolute cursor-pointer');
+    expect(svgIconWrapperDiv).toHaveClass('cursor-pointer ml-auto pr-1 h-4');
 
     let svgIcon = svgIconWrapperDiv.firstElementChild as HTMLElement;
     expect(svgIcon.textContent).toBe('IconTextSize');
@@ -91,7 +91,7 @@ describe('Table : ', () => {
 
     let selectedFileTextWrapper = MultipartInputElement.children[1];
     expect(selectedFileTextWrapper).toHaveClass(
-      'cursor-pointer text-left text-sm text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre'
+      'cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre'
     );
     expect(selectedFileTextWrapper.textContent).toBe('select file');
   });
