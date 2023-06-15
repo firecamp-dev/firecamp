@@ -7,7 +7,6 @@ import _RestExecutor from '@firecamp/rest-executor';
 //@ts-ignore //TODO: rest-executor is commonjs lib while runner is esm. we'll move all lib in esm in future
 const RestExecutor = _RestExecutor.default
 import Reporter from './../helper/reporter.js'
-import { delay } from 'listr2'
 /**
  * Run command example
  * ./bin/dev run ../../test/data/FirecampRestEchoServer.firecamp_collection.json
@@ -67,7 +66,6 @@ export default class Run extends Command {
           })
           .on(ERunnerEvents.Request, async () => {
 
-            // await delay(500)
             console.log(2222)
             // const tasks =  reporter.getTasks()
             // console.log(tasks, tasks.tasks)
