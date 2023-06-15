@@ -26,8 +26,8 @@ export default class Reporter {
                 symbol: testResult.failed == 0 ? c.green(figures.tick) : c.red(figures.cross)
             });
             tests.map((t: any) => {
-                if (t.isPassed) this.logTest(t.name)
-                else this.logTest(t.name, true)
+                if (t.isPassed) this.logTest(t)
+                else this.logTest(t, true)
             })
             // console.log(testResult)
         }
@@ -49,11 +49,16 @@ export default class Reporter {
   ${c.dim(method.toUpperCase() + ' ' + url)}`
     }
 
-    logTest(title: string, failed = false) {
+    logTest(test: any, failed = false) {
+        const { name, error } = test
         const log = !failed
-            ? `${c.green('   ' + figures.tick)} ${c.dim(title)}`
-            : `${c.red('   ' + figures.cross)} ${c.red().dim(title)}`
+            ? `${c.green('   ' + figures.tick)} ${c.dim(name)}`
+            : `${c.red('   ' + figures.cross)} ${c.red().dim(name)}`
         console.log(log)
+
+        if (error)
+            console.log(`       `, c.dim(error.message))
+        // throw new Error(error)
     }
 
 }
