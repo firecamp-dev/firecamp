@@ -1,6 +1,14 @@
 import EventEmitter from 'eventemitter3';
 import { TId } from "@firecamp/types";
 
+const delay = async (ts: number): Promise<void> => {
+    return new Promise((rs) => {
+        setTimeout(() => {
+            rs()
+        }, ts)
+    })
+}
+
 export enum ERunnerEvents {
     Start = 'start',
     BeforeRequest = 'beforeRequest',
@@ -87,6 +95,7 @@ export default class Runner {
             id: request.__ref.id
         });
 
+        await delay(500);
         const response = await this.options.executeRequest(request);
 
         /** emit 'request' event on request execution completion */
@@ -103,7 +112,7 @@ export default class Runner {
 
         try {
             const { value: requestId, done } = this.requestOrdersForExecution.values().next();
-            if (this.i > 0) return
+            // if (this.i > 0) return
             this.i = this.i + 1
             if (!done) {
                 this.currentRequestInExecution = requestId;

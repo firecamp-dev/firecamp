@@ -12,8 +12,8 @@ importers:
         specifier: workspace:*
         version: link:../firecamp-collection-runner
       '@firecamp/rest-executor':
-        specifier: ^1.0.18
-        version: 1.0.18(@firecamp/scripts@0.0.5)
+        specifier: ^1.0.19
+        version: 1.0.19(@firecamp/scripts@0.0.5)
       '@oclif/core':
         specifier: ^2.8.5
         version: 2.8.5(@types/node@16.18.35)(typescript@4.9.5)
@@ -26,18 +26,21 @@ importers:
       boxen:
         specifier: ^7.1.0
         version: 7.1.0
-      chalk:
-        specifier: ^4.1.2
-        version: 4.1.2
       cli-table3:
         specifier: ^0.6.3
         version: 0.6.3
       figlet:
         specifier: ^1.6.0
         version: 1.6.0
+      figures:
+        specifier: ^5.0.0
+        version: 5.0.0
       fs-extra:
         specifier: ^11.1.1
         version: 11.1.1
+      kleur:
+        specifier: ^4.1.5
+        version: 4.1.5
       load-json-file:
         specifier: ^7.0.1
         version: 7.0.1
@@ -929,8 +932,8 @@ packages:
       - supports-color
     dev: true
 
-  /@firecamp/rest-executor@1.0.18(@firecamp/scripts@0.0.5):
-    resolution: {integrity: sha512-7wTFSgb97L08h45AQX+Sgo0HNaI1ttzXOOXwt6q/SkPiWlHUuLLIY5Juja5qGIepUQOhy8QUO77cO2qfRStqEA==}
+  /@firecamp/rest-executor@1.0.19(@firecamp/scripts@0.0.5):
+    resolution: {integrity: sha512-mXJmos8a0T4t2tv1hSRRbxTr47TL4XmjeYlTZQltRgvOTMvTsd3JH53wz44EuZtzAQLPVLEp6OoITEWjS0SUug==}
     engines: {node: '>=10'}
     peerDependencies:
       '@firecamp/scripts': '*'
@@ -968,7 +971,7 @@ packages:
       '@hapi/joi': 17.1.1
       ajv: 8.12.0
       axios: 0.27.2
-      browser-or-node: 2.0.0
+      browser-or-node: 2.1.1
       chai: 4.3.7
       chai-http: 4.4.0
       form-data: 4.0.0
@@ -3041,6 +3044,10 @@ packages:
     resolution: {integrity: sha512-3Lrks/Okgof+/cRguUNG+qRXSeq79SO3hY4QrXJayJofwJwHiGC0qi99uDjsfTwULUFSr1OGVsBkdIkygKjTUA==}
     dev: false
 
+  /browser-or-node@2.1.1:
+    resolution: {integrity: sha512-8CVjaLJGuSKMVTxJ2DpBl5XnlNDiT4cQFeuCJJrvJmts9YrTZDizTX7PjC2s6W4x+MBGZeEY6dGMrF04/6Hgqg==}
+    dev: false
+
   /browser-stdout@1.3.1:
     resolution: {integrity: sha512-qhAVI1+Av2X7qelOfAIYwXONood6XlZE/fXaBSmW/T5SzLAmCgzi+eiWE7fUvbHaeNBQH13UftjpXxsfLkMpgw==}
 
@@ -3076,7 +3083,7 @@ packages:
     resolution: {integrity: sha512-xq+q3SRMOxGivLhBNaUdC64hDTQwejJ+H0T/NB1XMtTVEwNTrfFF3gAxiyW0Bu/xWEGhjVKgUcMhCrUy2+uCWg==}
     dependencies:
       base64-js: 1.5.1
-      ieee754: 1.1.13
+      ieee754: 1.2.1
       isarray: 1.0.0
     dev: true
 
@@ -4410,6 +4417,11 @@ packages:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
 
+  /escape-string-regexp@5.0.0:
+    resolution: {integrity: sha512-/veY75JbMK4j1yjvuUxuVsiS/hr/4iHs9FTT6cgTexxdE0Ly/glccBAkloH/DofkjRbZU3bnoj38mOmhkZ0lHw==}
+    engines: {node: '>=12'}
+    dev: false
+
   /eslint-config-oclif-typescript@1.0.3(eslint@7.32.0)(typescript@4.9.5):
     resolution: {integrity: sha512-TeJKXWBQ3uKMtzgz++UFNWpe1WCx8mfqRuzZy1LirREgRlVv656SkVG4gNZat5rRNIQgfDmTS+YebxK02kfylA==}
     engines: {node: '>=12.0.0'}
@@ -5026,6 +5038,14 @@ packages:
     dependencies:
       escape-string-regexp: 1.0.5
     dev: true
+
+  /figures@5.0.0:
+    resolution: {integrity: sha512-ej8ksPF4x6e5wvK9yevct0UCXh8TTFlWGVLlgjZuoBH1HwjIfKE/IdL5mq89sFA7zELi1VhKpmtDnrs7zWyeyg==}
+    engines: {node: '>=14'}
+    dependencies:
+      escape-string-regexp: 5.0.0
+      is-unicode-supported: 1.3.0
+    dev: false
 
   /file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
@@ -6819,6 +6839,11 @@ packages:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
     dev: true
+
+  /kleur@4.1.5:
+    resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
+    engines: {node: '>=6'}
+    dev: false
 
   /leven@3.1.0:
     resolution: {integrity: sha512-qsda+H8jTaUaN/x5vzW2rzc+8Rw4TAQ/4KjB46IwK5VH+IlVeeeje/EoZRpiXvIqjFgK84QffqPztGI3VBLG1A==}

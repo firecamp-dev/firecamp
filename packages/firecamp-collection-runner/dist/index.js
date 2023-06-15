@@ -5,6 +5,13 @@ var __publicField = (obj, key, value) => {
   return value;
 };
 import EventEmitter from "eventemitter3";
+const delay = async (ts) => {
+  return new Promise((rs) => {
+    setTimeout(() => {
+      rs();
+    }, ts);
+  });
+};
 var ERunnerEvents = /* @__PURE__ */ ((ERunnerEvents2) => {
   ERunnerEvents2["Start"] = "start";
   ERunnerEvents2["BeforeRequest"] = "beforeRequest";
@@ -88,6 +95,7 @@ class Runner {
       //TODO: prepare path from the root
       id: request.__ref.id
     });
+    await delay(500);
     const response = await this.options.executeRequest(request);
     this.emitter.emit("request" /* Request */, {
       id: request.__ref.id,
@@ -98,8 +106,6 @@ class Runner {
   async start() {
     try {
       const { value: requestId, done } = this.requestOrdersForExecution.values().next();
-      if (this.i > 0)
-        return;
       this.i = this.i + 1;
       if (!done) {
         this.currentRequestInExecution = requestId;

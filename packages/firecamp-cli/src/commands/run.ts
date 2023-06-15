@@ -49,9 +49,7 @@ export default class Run extends Command {
         const runner = new Runner(collection, {
           executeRequest: (request: any) => {
             const executor = new RestExecutor();
-            return reporter.runTask({ name: request.__meta.name }, () => {
-              return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
-            })
+            return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
           }
         })
         const reporter = new Reporter();
@@ -60,15 +58,11 @@ export default class Run extends Command {
           .on(ERunnerEvents.Start, () => { })
           .on(ERunnerEvents.BeforeRequest, (request: any) => {
             // console.log(request)
-
-            console.log(1111)
-            // reporter.addTask(request)
+            return reporter.startRequest(request)
           })
-          .on(ERunnerEvents.Request, async () => {
+          .on(ERunnerEvents.Request, async (result: any) => {
 
-            console.log(2222)
-            // const tasks =  reporter.getTasks()
-            // console.log(tasks, tasks.tasks)
+            reporter.done(result)
           })
         // .on(ERunnerEvents.Done, console.log)
       })
