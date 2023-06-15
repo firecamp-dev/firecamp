@@ -33,7 +33,7 @@ describe("Help & Support component", () => {
 
         const allLink = screen.getAllByRole('link');
         expect(allLink[0]).toHaveAttribute('href', 'https://firecamp.io/docs/');
-        expect(allLink[1]).toHaveAttribute('href', 'https://github.com/firecamp-io/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[http]%20Title%20or%20Feature%20request');
+        expect(allLink[1]).toHaveAttribute('href', 'https://github.com/firecampdev/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[http]%20Title%20or%20Feature%20request');
         expect(allLink[2]).toHaveAttribute('href', 'https://discord.com/invite/8hRaqhK');
         
     });
@@ -50,7 +50,7 @@ describe("Help & Support component", () => {
         render(<Help {...HelpComponentArgs} />);
 
         const allLink = screen.getAllByRole('link');
-        expect(allLink[1]).toHaveAttribute('href', `https://github.com/firecamp-io/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${HelpComponentArgs.client}]%20Title%20or%20Feature%20request`);
+        expect(allLink[1]).toHaveAttribute('href', `https://github.com/firecampdev/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${HelpComponentArgs.client}]%20Title%20or%20Feature%20request`);
         expect(allLink[1]).toHaveClass('text-appForegroundInActive');
 
     });
