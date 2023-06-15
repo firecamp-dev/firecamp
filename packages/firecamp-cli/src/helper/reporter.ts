@@ -30,6 +30,9 @@ export default class Reporter {
                 else this.logTest(t, true)
             })
             // console.log(testResult)
+
+            this.logResponseMeta(result.response.response)
+
         }
     }
 
@@ -40,8 +43,8 @@ export default class Reporter {
     }
 
     _title() {
-        const { method = '', name = '', url } = this.request
-        const title = `${name} ${c.dim().cyan('(./folder/path)')}`;
+        const { method = '', name = '', url, path } = this.request
+        const title = `${name} ${c.dim().cyan(`(${path})`)}`;
         return title;
 
         // title with url
@@ -57,8 +60,20 @@ export default class Reporter {
         console.log(log)
 
         if (error)
-            console.log(`       `, c.dim(error.message))
+            console.log(`       `, c.italic().dim(error.message))
         // throw new Error(error)
+    }
+
+    logResponseMeta(response: any) {
+        const { code, status, responseTime, responseSize } = response
+
+        console.log(c.dim('   ----------------'))
+        console.log(
+            `   `,
+            c.dim(`${code} ${status}`),
+            c.dim(`${responseTime}ms`),
+            c.dim(`${responseSize}B`)
+        )
     }
 
 }

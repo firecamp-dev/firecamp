@@ -85,14 +85,13 @@ class Runner {
     }
   }
   async executeRequest(requestId) {
-    const { requests } = this.collection;
+    const { folders, requests } = this.collection;
     const request = requests.find((r) => r.__ref.id == requestId);
     this.emitter.emit("beforeRequest" /* BeforeRequest */, {
       name: request.__meta.name,
       url: request.url.raw,
       method: request.method.toUpperCase(),
-      path: "",
-      //TODO: prepare path from the root
+      path: fetchRequestPath(folders, request),
       id: request.__ref.id
     });
     await delay(500);
@@ -146,6 +145,17 @@ class Runner {
     return this.exposeOnlyOn();
   }
 }
+const fetchRequestPath = (folders, request) => {
+  const requestPath = [];
+  const requestFolderId = request.__ref.folderId;
+  let currentFolder = folders.find((folder) => folder.__ref.id === requestFolderId);
+  while (currentFolder) {
+    requestPath.unshift(currentFolder.name);
+    const parentFolderId = currentFolder.__ref.folderId;
+    currentFolder = folders.find((folder) => folder.__ref.id === parentFolderId);
+  }
+  return `./${requestPath.join("/")}`;
+};
 
 
 
