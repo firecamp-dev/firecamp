@@ -1,6 +1,6 @@
-// @ts-nocheck
 import { FC, useState, useEffect, Key } from 'react';
 import { Dropdown, Button, Input } from '@firecamp/ui';
+// @ts-ignore
 import { EAuthTypes, IUiOAuth2, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
@@ -15,11 +15,13 @@ const OAuth2: FC<IOAuth2Comp> = ({
   const { activeGrantType, grantTypes } = auth;
   const grantTypesOptions = authUiFormState[OAuth2].grantTypes;
   const grantTypesPayloads = authUiFormState[OAuth2].grantTypesPayload;
+  // @ts-ignore
   const inputList = grantTypesPayloads?.[activeGrantType].inputList;
-  const advancedInputList =
-    grantTypesPayloads?.[activeGrantType].advancedInputList;
+  // @ts-ignore
+  const advancedInputList = grantTypesPayloads?.[activeGrantType].advancedInputList;
 
   const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
+    // @ts-ignore
     inputList.reduce((p, n) => {
       return { ...p, [n.id]: false };
     }, {})
