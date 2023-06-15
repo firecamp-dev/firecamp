@@ -4,8 +4,21 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import _RestExecutor from "@firecamp/rest-executor";
-const RestExecutor = _RestExecutor.default;
+import EventEmitter from "eventemitter3";
+const delay = async (ts) => {
+  return new Promise((rs) => {
+    setTimeout(() => {
+      rs();
+    }, ts);
+  });
+};
+var ERunnerEvents = /* @__PURE__ */ ((ERunnerEvents2) => {
+  ERunnerEvents2["Start"] = "start";
+  ERunnerEvents2["BeforeRequest"] = "beforeRequest";
+  ERunnerEvents2["Request"] = "request";
+  ERunnerEvents2["Done"] = "done";
+  return ERunnerEvents2;
+})(ERunnerEvents || {});
 class Runner {
   constructor(collection, options) {
     __publicField(this, "collection");
@@ -14,11 +27,14 @@ class Runner {
     __publicField(this, "executedRequestQueue");
     __publicField(this, "currentRequestInExecution");
     __publicField(this, "testResults", []);
+    __publicField(this, "emitter");
+    __publicField(this, "i", 0);
     this.collection = collection;
     this.options = options;
     this.requestOrdersForExecution = /* @__PURE__ */ new Set();
     this.executedRequestQueue = /* @__PURE__ */ new Set();
     this.currentRequestInExecution = "";
+    this.emitter = new EventEmitter();
   }
   /**
    * validate that the collection format is valid
@@ -69,38 +85,78 @@ class Runner {
     }
   }
   async executeRequest(requestId) {
-    const { requests } = this.collection;
-    const executor = new RestExecutor();
+    const { folders, requests } = this.collection;
     const request = requests.find((r) => r.__ref.id == requestId);
-    const response = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+    this.emitter.emit("beforeRequest" /* BeforeRequest */, {
+      name: request.__meta.name,
+      url: request.url.raw,
+      method: request.method.toUpperCase(),
+      path: fetchRequestPath(folders, request),
+      id: request.__ref.id
+    });
+    await delay(500);
+    const response = await this.options.executeRequest(request);
+    this.emitter.emit("request" /* Request */, {
+      id: request.__ref.id,
+      response
+    });
     return { request, response };
   }
-  async startExecution() {
+  async start() {
     try {
       const { value: requestId, done } = this.requestOrdersForExecution.values().next();
+      this.i = this.i + 1;
       if (!done) {
         this.currentRequestInExecution = requestId;
         const res = await this.executeRequest(requestId);
         this.testResults.push(res);
         this.executedRequestQueue.add(requestId);
         this.requestOrdersForExecution.delete(requestId);
-        await this.startExecution();
+        await this.start();
       }
     } catch (error) {
       console.error(`Error while running the collection:`, error);
     }
   }
-  async run() {
+  exposeOnlyOn() {
+    return {
+      on: (evt, fn) => {
+        this.emitter.on(evt, fn);
+        return this.exposeOnlyOn();
+      }
+    };
+  }
+  run() {
     try {
       this.validate();
     } catch (e) {
       throw e;
     }
     this.prepareRequestExecutionOrder();
-    await this.startExecution();
-    return this.testResults;
+    setTimeout(async () => {
+      const { collection } = this.collection;
+      this.emitter.emit("start" /* Start */, {
+        name: collection.name,
+        id: collection.__ref.id
+      });
+      await this.start();
+      this.emitter.emit("done" /* Done */);
+    });
+    return this.exposeOnlyOn();
   }
 }
+const fetchRequestPath = (folders, request) => {
+  const requestPath = [];
+  const requestFolderId = request.__ref.folderId;
+  let currentFolder = folders.find((folder) => folder.__ref.id === requestFolderId);
+  while (currentFolder) {
+    requestPath.unshift(currentFolder.name);
+    const parentFolderId = currentFolder.__ref.folderId;
+    currentFolder = folders.find((folder) => folder.__ref.id === parentFolderId);
+  }
+  return `./${requestPath.join("/")}`;
+};
 export {
+  ERunnerEvents,
   Runner as default
 };

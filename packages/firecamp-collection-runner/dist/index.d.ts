@@ -1,3 +1,9 @@
+declare enum ERunnerEvents {
+    Start = "start",
+    BeforeRequest = "beforeRequest",
+    Request = "request",
+    Done = "done"
+}
 declare class Runner {
     private collection;
     private options;
@@ -5,6 +11,7 @@ declare class Runner {
     private executedRequestQueue;
     private currentRequestInExecution;
     private testResults;
+    private emitter;
     constructor(collection: any, options: any);
     /**
      * validate that the collection format is valid
@@ -19,8 +26,12 @@ declare class Runner {
      */
     private prepareRequestExecutionOrder;
     private executeRequest;
-    private startExecution;
-    run(): Promise<any>;
+    i: number;
+    private start;
+    private exposeOnlyOn;
+    run(): {
+        on: (evt: string, fn: (...a: any[]) => void) => any;
+    };
 }
 
-export { Runner as default };
+export { ERunnerEvents, Runner as default };

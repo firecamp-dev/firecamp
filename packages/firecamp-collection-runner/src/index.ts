@@ -1,8 +1,20 @@
+import EventEmitter from 'eventemitter3';
 import { TId } from "@firecamp/types";
-import _RestExecutor from '@firecamp/rest-executor';
-//@ts-ignore //TODO: rest-executor is commonjs lib while runner is esm. we'll move all lib in esm in future
-const RestExecutor = _RestExecutor.default
 
+const delay = async (ts: number): Promise<void> => {
+    return new Promise((rs) => {
+        setTimeout(() => {
+            rs()
+        }, ts)
+    })
+}
+
+export enum ERunnerEvents {
+    Start = 'start',
+    BeforeRequest = 'beforeRequest',
+    Request = 'request',
+    Done = 'done'
+}
 
 export default class Runner {
 
@@ -12,12 +24,14 @@ export default class Runner {
     private executedRequestQueue: Set<TId>;
     private currentRequestInExecution: TId;
     private testResults: any = [];
+    private emitter: EventEmitter;
     constructor(collection, options) {
         this.collection = collection;
         this.options = options;
         this.requestOrdersForExecution = new Set();
         this.executedRequestQueue = new Set();
         this.currentRequestInExecution = '';
+        this.emitter = new EventEmitter();
     }
 
     /**
@@ -69,43 +83,98 @@ export default class Runner {
     }
 
     private async executeRequest(requestId: TId) {
-        const { requests } = this.collection;
-        const executor = new RestExecutor();
+        const { folders, requests } = this.collection;
         const request = requests.find(r => r.__ref.id == requestId);
-        const response = await executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+
+        /** emit 'beforeRequest' event just before request execution start */
+        this.emitter.emit(ERunnerEvents.BeforeRequest, {
+            name: request.__meta.name,
+            url: request.url.raw,
+            method: request.method.toUpperCase(),
+            path: fetchRequestPath(folders, request),
+            id: request.__ref.id
+        });
+
+        await delay(500);
+        const response = await this.options.executeRequest(request);
+
+        /** emit 'request' event on request execution completion */
+        this.emitter.emit(ERunnerEvents.Request, {
+            id: request.__ref.id,
+            response
+        });
+
         return { request, response };
     }
 
-    private async startExecution() {
+    i = 0;
+    private async start() {
 
         try {
             const { value: requestId, done } = this.requestOrdersForExecution.values().next();
+            // if (this.i > 0) return
+            this.i = this.i + 1
             if (!done) {
                 this.currentRequestInExecution = requestId;
                 const res = await this.executeRequest(requestId);
                 this.testResults.push(res);
                 this.executedRequestQueue.add(requestId);
                 this.requestOrdersForExecution.delete(requestId);
-                await this.startExecution();
+                await this.start();
             }
 
         }
         catch (error) {
             console.error(`Error while running the collection:`, error);
-            // await this.startExecution(); // Retry fetching info for the remaining IDs even if an error occurred
+            // await this.start(); // Retry fetching info for the remaining IDs even if an error occurred
         }
 
     }
 
-    async run() {
+    private exposeOnlyOn() {
+        return {
+            on: (evt: string, fn: (...a) => void) => {
+                this.emitter.on(evt, fn)
+                return this.exposeOnlyOn()
+            }
+        }
+    }
+
+    run() {
 
         try { this.validate() } catch (e) { throw e }
         this.prepareRequestExecutionOrder();
 
-        // start collection runner
-        await this.startExecution();
-        // stop collection runner
+        setTimeout(async () => {
 
-        return this.testResults;
+            const { collection } = this.collection;
+
+            /** emit 'start' event on runner start */
+            this.emitter.emit(ERunnerEvents.Start, {
+                name: collection.name,
+                id: collection.__ref.id
+            });
+
+            await this.start();
+
+            /** emit 'done' event once runner iterations are completed */
+            this.emitter.emit(ERunnerEvents.Done);
+        });
+
+        // return this.testResults;
+        return this.exposeOnlyOn()
     }
+}
+
+
+const fetchRequestPath = (folders, request) => {
+    const requestPath = [];
+    const requestFolderId = request.__ref.folderId;
+    let currentFolder = folders.find(folder => folder.__ref.id === requestFolderId);
+    while (currentFolder) {
+        requestPath.unshift(currentFolder.name); // add the folder name at the beginning of the path
+        const parentFolderId = currentFolder.__ref.folderId;
+        currentFolder = folders.find(folder => folder.__ref.id === parentFolderId);
+    }
+    return `./${requestPath.join('/')}`;
 }

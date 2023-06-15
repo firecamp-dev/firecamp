@@ -26,11 +26,11 @@
     "version": "standard-version"
   },
   "dependencies": {
-    "@firecamp/rest-executor": "^1.0.18",
     "@firecamp/types": "^0.2.2",
     "@firecamp/url": "0.0.20",
     "@firecamp/utils": "^0.0.24",
     "browser-or-node": "^2.0.0",
+    "eventemitter3": "^5.0.1",
     "nanoid": "3.3.4"
   },
   "devDependencies": {

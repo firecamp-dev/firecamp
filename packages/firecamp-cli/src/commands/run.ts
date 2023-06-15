@@ -1,7 +1,12 @@
 import { Args, Command, Flags } from '@oclif/core'
 import { loadJsonFile } from 'load-json-file';
-import Runner from '@firecamp/collection-runner'
-
+import figlet from 'figlet'
+//@ts-ignore https://github.com/egoist/tsup/issues/760
+import Runner, { ERunnerEvents } from '@firecamp/collection-runner'
+import _RestExecutor from '@firecamp/rest-executor';
+//@ts-ignore //TODO: rest-executor is commonjs lib while runner is esm. we'll move all lib in esm in future
+const RestExecutor = _RestExecutor.default
+import Reporter from './../helper/reporter.js'
 /**
  * Run command example
  * ./bin/dev run ../../test/data/FirecampRestEchoServer.firecamp_collection.json
@@ -31,17 +36,38 @@ export default class Run extends Command {
       this.logToStderr('error: The collection path is missing')
       return
     }
-    // const __dirname = dirname(fileURLToPath(file));
-    // const _fp = path.join(__dirname, file)
+    this.log(figlet.textSync("Firecamp"))
+
+
+    // tasks.run()
+    // return
+
     const _filepath = new URL(`../../${file}`, import.meta.url).pathname
     loadJsonFile(_filepath)
       .then(collection => {
         // this.logJson(collection);
-        const runner = new Runner(collection, {})
-        return runner.run();
+        const runner = new Runner(collection, {
+          executeRequest: (request: any) => {
+            const executor = new RestExecutor();
+            return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+          }
+        })
+        const reporter = new Reporter();
+
+        return runner.run()
+          .on(ERunnerEvents.Start, () => { })
+          .on(ERunnerEvents.BeforeRequest, (request: any) => {
+            // console.log(request)
+            return reporter.startRequest(request)
+          })
+          .on(ERunnerEvents.Request, async (result: any) => {
+
+            reporter.done(result)
+          })
+        // .on(ERunnerEvents.Done, console.log)
       })
       .then(testResults => {
-        console.log(testResults)
+        // console.log(testResults)
         // this.logJson(testResults)
       })
       .catch(e => {
