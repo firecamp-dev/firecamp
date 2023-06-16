@@ -118,6 +118,59 @@ export const DropDownv2Example = () => {
   );
 };
 
+export const DropDownSmoothAnimationExample = () => {
+  const [selected, setSelected] = useState('API style');
+
+  return (
+    <div className='flex justify-center items-center'>
+    <DropDownV2
+      classes={{ 
+          rounded: true,
+          animate: true,
+          options: 'w-36 bg-popoverBackground',
+          header:
+            '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
+          headerListItem:
+            'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+      }}
+      handleRenderer={() => (
+        <Button
+          id={'button'}
+          text={selected}
+          primary
+          sm
+          className="rounded p-2"
+          uppercase={true}
+          withCaret={true}
+        />
+      )}
+      options={[
+        {
+          id: '1',
+          name: 'Rest',
+          disabled: false,
+        },
+        {
+          id: '2',
+          name: 'GraphQL',
+          disabled: false,
+          showSeparator: true,
+        },
+        {
+          id: '3',
+          name: 'Socket.io',
+        },
+        {
+          id: '4',
+          name: 'Websocket',
+        },
+      ]}
+      onSelect={(value: any) => setSelected(value.name)}
+    />
+    </div>
+  );
+};
+
 export const BodyTabExample = () => {
   const [selected, setSelected] = useState('');
 

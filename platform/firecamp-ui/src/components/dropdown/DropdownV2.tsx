@@ -32,6 +32,7 @@ const DropDownV2 = ({
 }: IDropdownV2) => {
   classes = {
     rounded: false,
+    animate: false,
     shadow: false,
     trigger: '',
     options: '',
@@ -67,7 +68,8 @@ const DropDownV2 = ({
               <DropdownMenu.Portal>
                 <DropdownMenu.SubContent
                   className={cx(
-                    "data-[side='bottom']:animate-slideUpAndFade",
+                    {"data-[side='bottom']:animate-slideUpAndFade": !classes.animate},
+                    {"data-[side='bottom']:animate-slideDownAndFade": classes.animate},
                     { [DEFAULT_STYLES.roundedContainer]: classes.rounded },
                     { [DEFAULT_STYLES.squaredContainer]: !classes.rounded },
                     { [DEFAULT_STYLES.shadowContainer]: classes.shadow },
@@ -140,7 +142,8 @@ const DropDownV2 = ({
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           className={cx(
-            "data-[side='bottom']:animate-slideUpAndFade",
+            {"data-[side='bottom']:animate-slideUpAndFade": !classes.animate},
+            {"data-[side='bottom']:animate-slideDownAndFade": classes.animate},        
             { [DEFAULT_STYLES.roundedContainer]: classes.rounded },
             { [DEFAULT_STYLES.squaredContainer]: !classes.rounded },
             { [DEFAULT_STYLES.shadowContainer]: classes.shadow },

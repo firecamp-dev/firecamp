@@ -5,6 +5,7 @@ export interface IDropdownV2 {
   classes?: {
     rounded?: boolean;
     shadow?: boolean;
+    animate?: boolean;
     trigger?: string;
     options?: string;
     item?: string;

@@ -1256,6 +1256,21 @@ video {
 .transform-none {
   transform: none;
 }
+@keyframes slideDownAndFade {
+
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slideDownAndFade {
+  animation: slideDownAndFade 200ms ease-in-out;
+}
 @keyframes slideUpAndFade {
 
   from {
@@ -2435,6 +2450,21 @@ video {
 }
 .group:hover .group-hover\:h-auto {
   height: auto;
+}
+@keyframes slideDownAndFade {
+
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.data-\[side\=\'bottom\'\]\:animate-slideDownAndFade[data-side='bottom'] {
+  animation: slideDownAndFade 200ms ease-in-out;
 }
 @keyframes slideUpAndFade {
 
