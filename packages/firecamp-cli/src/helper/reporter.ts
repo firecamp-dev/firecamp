@@ -2,6 +2,7 @@ import ora, { Ora } from 'ora';
 import c from 'kleur';
 import figures from 'figures';
 import Table from 'cli-table3';
+import prettyMs from 'pretty-ms';
 
 export default class Reporter {
 
@@ -82,7 +83,7 @@ export default class Reporter {
     }
 
     logResult(summary: any) {
-        const { result: { } } = summary
+        const { result: { total, pass, fail, duration } } = summary
 
         // const _header = (h: string) => c.magenta(h);
         var table = new Table({
@@ -102,10 +103,10 @@ export default class Reporter {
         this.newLine();
         table.push(
             [c.dim('Total Requests'), 28],
-            [c.dim('Total Time'), 5004],
-            [c.dim('Tests'), 8],
-            [c.green('Pass Tests'), 2],
-            [c.red('Fail Tests'), 1]
+            [c.dim('Total run duration'), prettyMs(duration)],
+            [c.dim('Tests'), total],
+            [c.green('Pass Tests'), pass],
+            [c.red('Fail Tests'), fail]
         );
 
         console.log(table.toString());
