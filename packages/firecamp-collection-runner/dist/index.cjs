@@ -28,6 +28,13 @@ class Runner {
     __publicField(this, "currentRequestInExecution");
     __publicField(this, "testResults", []);
     __publicField(this, "emitter");
+    __publicField(this, "result", {
+      total: 0,
+      pass: 0,
+      fail: 0,
+      skip: 0
+    });
+    __publicField(this, "duration", 0);
     __publicField(this, "i", 0);
     this.collection = collection;
     this.options = options;
@@ -84,6 +91,9 @@ class Runner {
       rootRequestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
     }
   }
+  updateResult(response) {
+    console.log(response.testResult);
+  }
   async executeRequest(requestId) {
     const { folders, requests } = this.collection;
     const request = requests.find((r) => r.__ref.id == requestId);
@@ -96,6 +106,7 @@ class Runner {
     });
     await delay(500);
     const response = await this.options.executeRequest(request);
+    this.updateResult(response);
     this.emitter.emit("request" /* Request */, {
       id: request.__ref.id,
       response
@@ -105,6 +116,8 @@ class Runner {
   async start() {
     try {
       const { value: requestId, done } = this.requestOrdersForExecution.values().next();
+      if (this.i > 0)
+        return;
       this.i = this.i + 1;
       if (!done) {
         this.currentRequestInExecution = requestId;

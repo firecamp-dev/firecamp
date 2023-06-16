@@ -25,6 +25,14 @@ export default class Runner {
     private currentRequestInExecution: TId;
     private testResults: any = [];
     private emitter: EventEmitter;
+    private result = {
+        total: 0,
+        pass: 0,
+        fail: 0,
+        skip: 0,
+        duration: 0
+    }
+
     constructor(collection, options) {
         this.collection = collection;
         this.options = options;
@@ -82,6 +90,15 @@ export default class Runner {
         }
     }
 
+    updateResult(response: any = {}) {
+        const { testResult: { total, passed, failed } = {
+            total: 0, passed: 0, failed: 0
+        } } = response
+        if (Number.isInteger(total)) this.result.total += total;
+        if (Number.isInteger(passed)) this.result.pass += passed;
+        if (Number.isInteger(failed)) this.result.fail += failed;
+    }
+
     private async executeRequest(requestId: TId) {
         const { folders, requests } = this.collection;
         const request = requests.find(r => r.__ref.id == requestId);
@@ -97,7 +114,7 @@ export default class Runner {
 
         await delay(500);
         const response = await this.options.executeRequest(request);
-
+        this.updateResult(response)
         /** emit 'request' event on request execution completion */
         this.emitter.emit(ERunnerEvents.Request, {
             id: request.__ref.id,
@@ -112,7 +129,7 @@ export default class Runner {
 
         try {
             const { value: requestId, done } = this.requestOrdersForExecution.values().next();
-            // if (this.i > 0) return
+            if (this.i > 0) return
             this.i = this.i + 1
             if (!done) {
                 this.currentRequestInExecution = requestId;
@@ -149,6 +166,7 @@ export default class Runner {
 
             const { collection } = this.collection;
 
+            const startTs: number = new Date().valueOf();
             /** emit 'start' event on runner start */
             this.emitter.emit(ERunnerEvents.Start, {
                 name: collection.name,
@@ -158,7 +176,12 @@ export default class Runner {
             await this.start();
 
             /** emit 'done' event once runner iterations are completed */
-            this.emitter.emit(ERunnerEvents.Done);
+            this.result.duration = new Date().valueOf() - startTs;
+            this.emitter.emit(ERunnerEvents.Done, {
+                result: {
+                    ...this.result,
+                }
+            });
         });
 
         // return this.testResults;
