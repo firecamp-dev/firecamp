@@ -7,7 +7,7 @@ import Runner, { ERunnerEvents } from '@firecamp/collection-runner'
 import _RestExecutor from '@firecamp/rest-executor';
 //@ts-ignore //TODO: rest-executor is commonjs lib while runner is esm. we'll move all lib in esm in future
 const RestExecutor = _RestExecutor.default
-import CliReporter from '../reporters/cli.js'
+import CliReporter from '../../reporters/cli.js'
 /**
  * Run command example
  * ./bin/dev run ../../test/data/FirecampRestEchoServer.firecamp_collection.json
@@ -43,7 +43,7 @@ export default class Run extends Command {
     // tasks.run()
     // return
 
-    const _filepath = new URL(`../../${file}`, import.meta.url).pathname
+    const _filepath = new URL(`../../../${file}`, import.meta.url).pathname
     loadJsonFile(_filepath)
       .then(collection => {
         // this.logJson(collection);
