@@ -13,7 +13,6 @@ declare class Runner {
     private testResults;
     private emitter;
     private result;
-    private duration;
     constructor(collection: any, options: any);
     /**
      * validate that the collection format is valid
@@ -27,7 +26,7 @@ declare class Runner {
      * prepare an Set of request execution order
      */
     private prepareRequestExecutionOrder;
-    updateResult(response: any): void;
+    updateResult(response?: any): void;
     private executeRequest;
     i: number;
     private start;

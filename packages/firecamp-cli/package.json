@@ -23,7 +23,6 @@
     "@oclif/core": "^2.8.5",
     "@oclif/plugin-help": "^5.2.9",
     "@oclif/plugin-plugins": "^2.4.7",
-    "boxen": "^7.1.0",
     "cli-table3": "^0.6.3",
     "figlet": "^1.6.0",
     "figures": "^5.0.0",

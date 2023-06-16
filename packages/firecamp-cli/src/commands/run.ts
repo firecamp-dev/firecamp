@@ -58,13 +58,14 @@ export default class Run extends Command {
           .on(ERunnerEvents.Start, () => { })
           .on(ERunnerEvents.BeforeRequest, (request: any) => {
             // console.log(request)
-            return reporter.startRequest(request)
+            reporter.onBeforeRequest(request)
           })
-          .on(ERunnerEvents.Request, async (result: any) => {
-
-            reporter.done(result)
+          .on(ERunnerEvents.Request, (result: any) => {
+            reporter.onRequest(result)
           })
-        // .on(ERunnerEvents.Done, console.log)
+          .on(ERunnerEvents.Done, (result: any) => {
+            reporter.onDone(result)
+          });
       })
       .then(testResults => {
         // console.log(testResults)

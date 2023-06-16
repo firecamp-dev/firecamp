@@ -32,9 +32,9 @@ class Runner {
       total: 0,
       pass: 0,
       fail: 0,
-      skip: 0
+      skip: 0,
+      duration: 0
     });
-    __publicField(this, "duration", 0);
     __publicField(this, "i", 0);
     this.collection = collection;
     this.options = options;
@@ -91,8 +91,18 @@ class Runner {
       rootRequestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
     }
   }
-  updateResult(response) {
-    console.log(response.testResult);
+  updateResult(response = {}) {
+    const { testResult: { total, passed, failed } = {
+      total: 0,
+      passed: 0,
+      failed: 0
+    } } = response;
+    if (Number.isInteger(total))
+      this.result.total += total;
+    if (Number.isInteger(passed))
+      this.result.pass += passed;
+    if (Number.isInteger(failed))
+      this.result.fail += failed;
   }
   async executeRequest(requestId) {
     const { folders, requests } = this.collection;
@@ -148,12 +158,18 @@ class Runner {
     this.prepareRequestExecutionOrder();
     setTimeout(async () => {
       const { collection } = this.collection;
+      const startTs = (/* @__PURE__ */ new Date()).valueOf();
       this.emitter.emit("start" /* Start */, {
         name: collection.name,
         id: collection.__ref.id
       });
       await this.start();
-      this.emitter.emit("done" /* Done */);
+      this.result.duration = (/* @__PURE__ */ new Date()).valueOf() - startTs;
+      this.emitter.emit("done" /* Done */, {
+        result: {
+          ...this.result
+        }
+      });
     });
     return this.exposeOnlyOn();
   }
