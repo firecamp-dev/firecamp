@@ -6,7 +6,7 @@ import Runner, { ERunnerEvents } from '@firecamp/collection-runner'
 import _RestExecutor from '@firecamp/rest-executor';
 //@ts-ignore //TODO: rest-executor is commonjs lib while runner is esm. we'll move all lib in esm in future
 const RestExecutor = _RestExecutor.default
-import Reporter from './../helper/reporter.js'
+import CliReporter from '../reporters/cli.js'
 /**
  * Run command example
  * ./bin/dev run ../../test/data/FirecampRestEchoServer.firecamp_collection.json
@@ -52,20 +52,10 @@ export default class Run extends Command {
             return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
           }
         })
-        const reporter = new Reporter();
 
-        return runner.run()
-          .on(ERunnerEvents.Start, () => { })
-          .on(ERunnerEvents.BeforeRequest, (request: any) => {
-            // console.log(request)
-            reporter.onBeforeRequest(request)
-          })
-          .on(ERunnerEvents.Request, (result: any) => {
-            reporter.onRequest(result)
-          })
-          .on(ERunnerEvents.Done, (result: any) => {
-            reporter.onDone(result)
-          });
+
+        const emitter = runner.run()
+        new CliReporter(emitter);
       })
       .then(testResults => {
         // console.log(testResults)

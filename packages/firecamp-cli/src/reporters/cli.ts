@@ -1,3 +1,5 @@
+
+import { ERunnerEvents } from '@firecamp/collection-runner';
 import ora, { Ora } from 'ora';
 import c from 'kleur';
 import figures from 'figures';
@@ -8,14 +10,28 @@ export default class Reporter {
 
     private request: any;
     private spinner: Ora = ora();
-    init() {
+    constructor(emitter: any) {
+        emitter
+            .on(ERunnerEvents.Start, () => { })
+            .on(ERunnerEvents.BeforeRequest, (request: any) => {
+                // console.log(request)
+                this.onBeforeRequest(request)
+            })
+            .on(ERunnerEvents.Request, (result: any) => {
+                this.onRequest(result)
+            })
+            .on(ERunnerEvents.Done, (result: any) => {
+                this.onDone(result)
+            });
+    }
+    initSpinner() {
         this.spinner = ora()
         this.newLine();
     }
 
     onBeforeRequest(request: any) {
         // console.log(request)
-        this.init()
+        this.initSpinner()
         this.request = request
         this.spinner.start(this._title())
     }
@@ -32,9 +48,7 @@ export default class Reporter {
                 else this.logTest(t, true)
             })
             // console.log(testResult)
-
             this.logResponseMeta(result.response.response)
-
         }
     }
 
@@ -51,7 +65,7 @@ export default class Reporter {
     _title() {
         const { method = '', name = '', url, path } = this.request
         const title = `${name} ${c.dim().cyan(`(${path})`)}`;
-        return title;
+        // return title;
 
         // title with url
         return `${title}
