@@ -1,5 +1,6 @@
 import { Args, Command, Flags } from '@oclif/core'
 import { loadJsonFile } from 'load-json-file';
+import c from 'kleur';
 import figlet from 'figlet'
 //@ts-ignore https://github.com/egoist/tsup/issues/760
 import Runner, { ERunnerEvents } from '@firecamp/collection-runner'
@@ -36,7 +37,7 @@ export default class Run extends Command {
       this.logToStderr('error: The collection path is missing')
       return
     }
-    this.log(figlet.textSync("Firecamp"))
+    this.log(c.gray(figlet.textSync("Firecamp")))
 
 
     // tasks.run()
