@@ -16,10 +16,21 @@ export enum ERunnerEvents {
     Done = 'done'
 }
 
+interface IRunnerOptions {
+    executeRequest: (request: any) => Promise<any>;
+    environment?: TId | string;
+    globals?: TId | string;
+    iterationCount?: number;
+    iterationData?: string;
+    delayRequest?: number;
+    timeout?: number;
+    timeoutRequest?: number;
+}
+
 export default class Runner {
 
     private collection: any;
-    private options: any;
+    private options: IRunnerOptions;
     private requestOrdersForExecution: Set<TId>;
     private executedRequestQueue: Set<TId>;
     private currentRequestInExecution: TId;
@@ -33,13 +44,33 @@ export default class Runner {
         duration: 0
     }
 
-    constructor(collection, options) {
+    constructor(collection, options: IRunnerOptions) {
         this.collection = collection;
         this.options = options;
         this.requestOrdersForExecution = new Set();
         this.executedRequestQueue = new Set();
         this.currentRequestInExecution = '';
         this.emitter = new EventEmitter();
+        this.assignDefaultOptions();
+    }
+
+    private assignDefaultOptions() {
+        const { iterationCount, delayRequest, timeout, timeoutRequest } = this.options;
+        if (!this.options.hasOwnProperty('iterationCount')) this.options.iterationCount = 1;
+        if (!this.options.hasOwnProperty('delayRequest')) this.options.delayRequest = 0;
+        if (!this.options.hasOwnProperty('timeout')) this.options.timeout = 0;
+        if (!this.options.hasOwnProperty('timeoutRequest')) this.options.timeoutRequest = 0;
+
+
+        if (typeof this.options.iterationCount != 'number')
+            throw new Error('--iteration-count is invalid', { cause: 'invalidOption' })
+        if (typeof this.options.delayRequest != 'number')
+            throw new Error('--delay-request is invalid', { cause: 'invalidOption' })
+        if (typeof this.options.timeout != 'number')
+            throw new Error('--timeout is invalid', { cause: 'invalidOption' })
+        if (typeof this.options.timeoutRequest != 'number')
+            throw new Error('--timeout-request is invalid', { cause: 'invalidOption' })
+
     }
 
     /**
