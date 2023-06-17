@@ -1,8 +1,20 @@
+import { TId } from '@firecamp/types';
+
 declare enum ERunnerEvents {
     Start = "start",
     BeforeRequest = "beforeRequest",
     Request = "request",
     Done = "done"
+}
+interface IRunnerOptions {
+    executeRequest: (request: any) => Promise<any>;
+    environment?: TId | string;
+    globals?: TId | string;
+    iterationCount?: number;
+    iterationData?: string;
+    delayRequest?: number;
+    timeout?: number;
+    timeoutRequest?: number;
 }
 declare class Runner {
     private collection;
@@ -13,7 +25,8 @@ declare class Runner {
     private testResults;
     private emitter;
     private result;
-    constructor(collection: any, options: any);
+    constructor(collection: any, options: IRunnerOptions);
+    private assignDefaultOptions;
     /**
      * validate that the collection format is valid
      * TODO: late we need to add the zod or json schema here for strong validation
@@ -26,7 +39,7 @@ declare class Runner {
      * prepare an Set of request execution order
      */
     private prepareRequestExecutionOrder;
-    updateResult(response?: any): void;
+    private updateResult;
     private executeRequest;
     i: number;
     private start;

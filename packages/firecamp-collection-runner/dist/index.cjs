@@ -42,6 +42,26 @@ class Runner {
     this.executedRequestQueue = /* @__PURE__ */ new Set();
     this.currentRequestInExecution = "";
     this.emitter = new (0, _eventemitter32.default)();
+    this.validate();
+    this.assignDefaultOptions();
+  }
+  assignDefaultOptions() {
+    if (!this.options.hasOwnProperty("iterationCount"))
+      this.options.iterationCount = 2;
+    if (!this.options.hasOwnProperty("delayRequest"))
+      this.options.delayRequest = 0;
+    if (!this.options.hasOwnProperty("timeout"))
+      this.options.timeout = 0;
+    if (!this.options.hasOwnProperty("timeoutRequest"))
+      this.options.timeoutRequest = 0;
+    if (typeof this.options.iterationCount != "number")
+      throw new Error("--iteration-count is invalid", { cause: "invalidOption" });
+    if (typeof this.options.delayRequest != "number")
+      throw new Error("--delay-request is invalid", { cause: "invalidOption" });
+    if (typeof this.options.timeout != "number")
+      throw new Error("--timeout is invalid", { cause: "invalidOption" });
+    if (typeof this.options.timeoutRequest != "number")
+      throw new Error("--timeout-request is invalid", { cause: "invalidOption" });
   }
   /**
    * validate that the collection format is valid
@@ -114,7 +134,7 @@ class Runner {
       path: fetchRequestPath(folders, request),
       id: request.__ref.id
     });
-    await delay(500);
+    await delay(this.options.delayRequest);
     const response = await this.options.executeRequest(request);
     this.updateResult(response);
     this.emitter.emit("request" /* Request */, {
@@ -126,8 +146,6 @@ class Runner {
   async start() {
     try {
       const { value: requestId, done } = this.requestOrdersForExecution.values().next();
-      if (this.i > 0)
-        return;
       this.i = this.i + 1;
       if (!done) {
         this.currentRequestInExecution = requestId;
@@ -150,11 +168,6 @@ class Runner {
     };
   }
   run() {
-    try {
-      this.validate();
-    } catch (e) {
-      throw e;
-    }
     this.prepareRequestExecutionOrder();
     setTimeout(async () => {
       const { collection } = this.collection;
@@ -163,7 +176,10 @@ class Runner {
         name: collection.name,
         id: collection.__ref.id
       });
-      await this.start();
+      for (let i = 0; i < this.options.iterationCount; i++) {
+        await this.start();
+        console.log(i, "----");
+      }
       this.result.duration = (/* @__PURE__ */ new Date()).valueOf() - startTs;
       this.emitter.emit("done" /* Done */, {
         result: {

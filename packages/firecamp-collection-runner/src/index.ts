@@ -56,7 +56,7 @@ export default class Runner {
     }
 
     private assignDefaultOptions() {
-        if (!this.options.hasOwnProperty('iterationCount')) this.options.iterationCount = 1;
+        if (!this.options.hasOwnProperty('iterationCount')) this.options.iterationCount = 2;
         if (!this.options.hasOwnProperty('delayRequest')) this.options.delayRequest = 0;
         if (!this.options.hasOwnProperty('timeout')) this.options.timeout = 0;
         if (!this.options.hasOwnProperty('timeoutRequest')) this.options.timeoutRequest = 0;
@@ -143,7 +143,7 @@ export default class Runner {
             id: request.__ref.id
         });
 
-        await delay(500);
+        await delay(this.options.delayRequest);
         const response = await this.options.executeRequest(request);
         this.updateResult(response)
         /** emit 'request' event on request execution completion */
@@ -151,16 +151,14 @@ export default class Runner {
             id: request.__ref.id,
             response
         });
-
         return { request, response };
     }
 
     i = 0;
     private async start() {
-
         try {
             const { value: requestId, done } = this.requestOrdersForExecution.values().next();
-            if (this.i > 0) return
+            // if (this.i > 0) return
             this.i = this.i + 1
             if (!done) {
                 this.currentRequestInExecution = requestId;
@@ -203,7 +201,10 @@ export default class Runner {
                 id: collection.__ref.id
             });
 
-            await this.start();
+            for (let i = 0; i < this.options.iterationCount; i++) {
+                await this.start();
+                console.log(i, '----')
+            }
 
             /** emit 'done' event once runner iterations are completed */
             this.result.duration = new Date().valueOf() - startTs;

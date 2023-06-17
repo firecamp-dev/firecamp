@@ -15,7 +15,6 @@ export default class Reporter {
         emitter
             .on(ERunnerEvents.Start, () => { })
             .on(ERunnerEvents.BeforeRequest, (request: any) => {
-                // console.log(request)
                 this.onBeforeRequest(request)
             })
             .on(ERunnerEvents.Request, (result: any) => {
