@@ -51,11 +51,11 @@ export default class Runner {
         this.executedRequestQueue = new Set();
         this.currentRequestInExecution = '';
         this.emitter = new EventEmitter();
+        this.validate();
         this.assignDefaultOptions();
     }
 
     private assignDefaultOptions() {
-        const { iterationCount, delayRequest, timeout, timeoutRequest } = this.options;
         if (!this.options.hasOwnProperty('iterationCount')) this.options.iterationCount = 1;
         if (!this.options.hasOwnProperty('delayRequest')) this.options.delayRequest = 0;
         if (!this.options.hasOwnProperty('timeout')) this.options.timeout = 0;
@@ -121,7 +121,7 @@ export default class Runner {
         }
     }
 
-    updateResult(response: any = {}) {
+    private updateResult(response: any = {}) {
         const { testResult: { total, passed, failed } = {
             total: 0, passed: 0, failed: 0
         } } = response
@@ -190,7 +190,6 @@ export default class Runner {
 
     run() {
 
-        try { this.validate() } catch (e) { throw e }
         this.prepareRequestExecutionOrder();
 
         setTimeout(async () => {
