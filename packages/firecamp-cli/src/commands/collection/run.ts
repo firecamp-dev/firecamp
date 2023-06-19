@@ -39,10 +39,6 @@ export default class Run extends Command {
     }
     this.log(c.gray(figlet.textSync("Firecamp")))
 
-
-    // tasks.run()
-    // return
-
     const _filepath = new URL(`../../../${file}`, import.meta.url).pathname
     loadJsonFile(_filepath)
       .then(collection => {
@@ -53,7 +49,6 @@ export default class Run extends Command {
             return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
           }
         })
-
 
         const emitter = runner.run()
         // console.log(emitter)
