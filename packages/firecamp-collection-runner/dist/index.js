@@ -82,6 +82,15 @@ class Runner {
       throw new Error("The collection's request items format is invalid");
     return true;
   }
+  getFolderIds() {
+    const { collection, folders } = this.collection;
+    console.log(folders.length);
+    const folderMap = new Map(folders.map((folder) => [folder.__ref.id, folder]));
+    const traverseFolders = (order) => order.flatMap(
+      (folderId) => folderMap.has(folderId) ? [folderId, ...traverseFolders([folderMap.get(folderId).__ref.folderId])] : []
+    );
+    return traverseFolders(collection.__meta.fOrders);
+  }
   /**
    * prepare an Set of request execution order
    */

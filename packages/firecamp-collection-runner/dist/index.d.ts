@@ -35,6 +35,7 @@ declare class Runner {
      * @returns boolean
      */
     private validate;
+    getFolderIds(): any;
     /**
      * prepare an Set of request execution order
      */
