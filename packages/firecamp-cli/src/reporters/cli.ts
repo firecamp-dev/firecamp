@@ -19,7 +19,7 @@ export default class Reporter {
             })
             .on(ERunnerEvents.BeforeIteration, (it: any) => {
                 if (it.total > 1) {
-                    this.log(c.gray().dim(`Iteration ${it.current}`));
+                    this.log(c.gray().dim().underline(`Iteration ${it.current}/${it.total}`));
                     this.newLine();
                 }
             })

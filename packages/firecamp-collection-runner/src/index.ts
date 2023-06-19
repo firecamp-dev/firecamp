@@ -20,7 +20,7 @@ export enum ERunnerEvents {
     Done = 'done'
 }
 
-interface IRunnerOptions {
+export interface IRunnerOptions {
     executeRequest: (request: any) => Promise<any>;
     environment?: TId | string;
     globals?: TId | string;
