@@ -59,7 +59,7 @@ const initApp = async () => {
 
   //1/ check if user is logged in or not
   const wrsId = localStorage.getItem('workspace');
-  if (!socketId) return AppService.modals.openSignIn();
+  if (!socketId) return;
   CloudApiGlobal.setGlobalHeaders({
     [ECloudApiHeaders.WorkspaceId]: wrsId,
   });
