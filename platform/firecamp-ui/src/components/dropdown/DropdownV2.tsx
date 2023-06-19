@@ -8,12 +8,12 @@ import { IDropdownV2, IOptionsV2 } from './interfaces/Dropdownv2.interfaces';
 const DEFAULT_STYLES = {
   disabled: 'opacity-50',
   roundedContainer: 'rounded bg-appBackground border border-appForeground',
-  squaredContainer: 'border border-focusBorder focus-visible:!shadow-none',
+  squaredContainer: 'border border-appBorder focus-visible:!shadow-none', //border-focusBorder
   shadowContainer:
     '!shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
   nestedOptionTrigger: 'flex items-center',
-  optionItem: 'flex items-center text-appForeground px-2',
-  separator: 'my-1 bg-appForeground opacity-50',
+  optionItem: 'flex items-center text-appForeground px-2 py-px',
+  separator: 'my-1 bg-appBorder',
 };
 
 enum LIST_ITEM_HIERARCHY {
@@ -23,6 +23,7 @@ enum LIST_ITEM_HIERARCHY {
 }
 // DropDownV2 is used in InviteNonOrgMembers, InviteOrgMembers Popup
 const DropDownV2 = ({
+  onOpenChange = () => {},
   showOptionArrow = false,
   handleRenderer,
   options,
@@ -130,7 +131,7 @@ const DropDownV2 = ({
   };
 
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root onOpenChange={onOpenChange}>
       <DropdownMenu.Trigger
         className={cx({ [DEFAULT_STYLES.disabled]: disabled })}
         disabled={disabled}

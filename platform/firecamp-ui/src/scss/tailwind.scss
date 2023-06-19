@@ -990,6 +990,9 @@ video {
 .mt-8 {
   margin-top: 2rem;
 }
+.mt-\[3px\] {
+  margin-top: 3px;
+}
 .mt-\[50\%\] {
   margin-top: 50%;
 }
@@ -1812,6 +1815,10 @@ video {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+.py-px {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 .\!pb-0 {
   padding-bottom: 0px !important;
 }
@@ -2008,6 +2015,9 @@ video {
 }
 .leading-7 {
   line-height: 1.75rem;
+}
+.\!text-activityBarInactiveForeground {
+  color: var(--activityBar-foreground-inactive) !important;
 }
 .\!text-appForegroundActive {
   color: var(--app-foreground-active) !important;

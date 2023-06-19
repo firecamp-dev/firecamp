@@ -33,6 +33,10 @@ export interface IDropdownV2 {
    * To disable the selection option
    */
   disabled?: boolean;
+  /**
+   * To get the options visibility status
+   */
+  onOpenChange?: (open: boolean) => void;
 }
 export interface IOptionsV2 {
   /**

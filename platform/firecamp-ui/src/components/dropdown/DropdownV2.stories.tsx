@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { VscLibrary } from '@react-icons/all-files/vsc/VscLibrary';
+import { VscServerEnvironment } from '@react-icons/all-files/vsc/VscServerEnvironment';
+import { VscCloudDownload } from '@react-icons/all-files/vsc/VscCloudDownload';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
@@ -122,9 +125,9 @@ export const DropDownSmoothAnimationExample = () => {
   const [selected, setSelected] = useState('API style');
 
   return (
-    <div className='flex justify-center items-center'>
-    <DropDownV2
-      classes={{ 
+    <div className="flex justify-center items-center">
+      <DropDownV2
+        classes={{
           rounded: true,
           animate: true,
           options: 'w-36 bg-popoverBackground',
@@ -132,41 +135,41 @@ export const DropDownSmoothAnimationExample = () => {
             '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
           headerListItem:
             'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-      }}
-      handleRenderer={() => (
-        <Button
-          id={'button'}
-          text={selected}
-          primary
-          sm
-          className="rounded p-2"
-          uppercase={true}
-          withCaret={true}
-        />
-      )}
-      options={[
-        {
-          id: '1',
-          name: 'Rest',
-          disabled: false,
-        },
-        {
-          id: '2',
-          name: 'GraphQL',
-          disabled: false,
-          showSeparator: true,
-        },
-        {
-          id: '3',
-          name: 'Socket.io',
-        },
-        {
-          id: '4',
-          name: 'Websocket',
-        },
-      ]}
-      onSelect={(value: any) => setSelected(value.name)}
-    />
+        }}
+        handleRenderer={() => (
+          <Button
+            id={'button'}
+            text={selected}
+            primary
+            sm
+            className="rounded p-2"
+            uppercase={true}
+            withCaret={true}
+          />
+        )}
+        options={[
+          {
+            id: '1',
+            name: 'Rest',
+            disabled: false,
+          },
+          {
+            id: '2',
+            name: 'GraphQL',
+            disabled: false,
+            showSeparator: true,
+          },
+          {
+            id: '3',
+            name: 'Socket.io',
+          },
+          {
+            id: '4',
+            name: 'Websocket',
+          },
+        ]}
+        onSelect={(value: any) => setSelected(value.name)}
+      />
     </div>
   );
 };
@@ -265,20 +268,27 @@ export const CreateMenuExample = () => {
             disabled: true,
             headerList: [
               {
-                id: 'request',
-                name: 'Request',
+                id: 'Request',
+                name: 'REQUEST',
+                prefix: () => <VscAdd className="mr-2" size={10} />,
               },
               {
-                id: 'collection',
-                name: 'Collection',
+                id: 'Collection',
+                name: 'COLLECTION',
+                prefix: () => <VscLibrary className="mr-2" size={10} />,
+                postfix: () => (
+                  <VscChevronRight size={10} className={'ml-auto'} />
+                ),
               },
               {
-                id: 'environment',
-                name: 'Environment',
+                id: 'Environment',
+                name: 'ENVIRONMENT',
+                prefix: () => <VscServerEnvironment className="mr-2" size={10} />,
               },
               {
-                id: 'importCollection',
-                name: 'Import Collection',
+                id: 'ImportCollection',
+                name: 'IMPORT COLLECTION',
+                prefix: () => <VscCloudDownload className="mr-2" size={10} />,
                 showSeparator: true,
               },
             ],
@@ -288,18 +298,22 @@ export const CreateMenuExample = () => {
             name: 'Create New (By Admin)',
             disabled: true,
             headerList: [
+              { id: 'Workspace', name: 'WORKSPACE' },
+              { id: 'Organization', name: 'ORGANIZATION' },
               {
-                id: 'workspace',
-                name: 'Workspace',
+                id: 'InviteMembers',
+                name: 'INVITE MEMBERS',
+                showSeparator: true,
               },
-              {
-                id: 'organization',
-                name: 'Organization',
-              },
-              {
-                id: 'inviteMembers',
-                name: 'Invite Members',
-              },
+            ],
+          },
+          {
+            id: 'SwitchHeader',
+            name: 'SWITCH',
+            disabled: true,
+            headerList: [
+              { id: 'SwitchOrg', name: 'SWITCH ORGANIZATION' },
+              { id: 'SwitchWorkspace', name: 'SWITCH WORKSPACE' },
             ],
           },
         ] as IOptionsV2[]
@@ -309,9 +323,9 @@ export const CreateMenuExample = () => {
         rounded: false,
         options: 'w-[200px] bg-popoverBackground !pb-2',
         header:
-          '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans ',
+          '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans !text-activityBarInactiveForeground !opacity-100	',
         headerListItem:
-          '!px-5 text-sm uppercase hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+          '!px-5 text-sm uppercase hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none cursor-pointer',
       }}
     />
   );
