@@ -21,8 +21,8 @@ export default class Run extends Command {
 
   static flags = {
     'iteration-count': Flags.string({ char: 'n', description: 'Set the number of iterations for the collection run' }),
-    'iteration-data': Flags.string({ char: 'd', description: 'Provide the data file to be used for iterations. (should be JSON or CSV) file to use for iterations JSON or CSV' }),
-    // 'delay-request': Flags.integer({ description: 'Set the extent of delay between requests in milliseconds (default: 0)' }),
+    // 'iteration-data': Flags.string({ char: 'd', description: 'Provide the data file to be used for iterations. (should be JSON or CSV) file to use for iterations JSON or CSV' }),
+    'delay-request': Flags.integer({ description: 'Set the extent of delay between requests in milliseconds (default: 0)' }),
     // timeout: Flags.integer({ description: 'Set a timeout for collection run in milliseconds (default: 0)' }),
     // 'timeout-request': Flags.integer({ description: 'Set a timeout for requests in milliseconds (default: 0)' }),
   }

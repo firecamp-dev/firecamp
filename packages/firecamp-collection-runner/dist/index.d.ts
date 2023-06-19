@@ -41,6 +41,7 @@ declare class Runner {
     private updateResult;
     private runRequest;
     private runFolder;
+    private runRootRequests;
     private runIteration;
     run(): {
         on: (evt: string, fn: (...a: any[]) => void) => any;
@@ -48,4 +49,4 @@ declare class Runner {
     private exposeOnlyOn;
 }
 
-export { ERunnerEvents, Runner as default };
+export { ERunnerEvents, IRunnerOptions, Runner as default };

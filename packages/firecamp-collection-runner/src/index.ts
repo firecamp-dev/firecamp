@@ -139,6 +139,8 @@ export default class Runner {
 
     private async runFolder(folderId: TId) {
         const folder = this.collection.folders.find(f => f.__ref.id == folderId);
+        const requestIds = folder.__meta.rOrders || [];
+        if (!requestIds.length) return;
 
         /** emit 'beforeFolder' event just before folder execution start */
         this.emitter.emit(ERunnerEvents.BeforeFolder, {
@@ -147,7 +149,6 @@ export default class Runner {
         });
 
         try {
-            const requestIds = folder.__meta.rOrders || [];
             for (let i = 0; i < requestIds.length; i++) {
                 const res = await this.runRequest(requestIds[i]);
                 this.testResults.push(res);
@@ -164,6 +165,32 @@ export default class Runner {
         });
     }
 
+    private async runRootRequests() {
+
+        const { collection } = this.collection;
+        const requestIds = collection.__meta.rOrders || [];
+        if (!requestIds.length) return;
+        this.emitter.emit(ERunnerEvents.BeforeFolder, {
+            name: './',
+            id: collection.__ref.id
+        });
+
+        try {
+            for (let i = 0; i < requestIds.length; i++) {
+                const res = await this.runRequest(requestIds[i]);
+                this.testResults.push(res);
+            }
+        }
+        catch (e) {
+            console.error(`Error while running the collection:`, e);
+            // await this.runIteration(); // Retry fetching info for the remaining IDs even if an error occurred
+        }
+
+        this.emitter.emit(ERunnerEvents.Folder, {
+            id: collection.__ref.id
+        });
+    }
+
     private async runIteration() {
 
         try {
@@ -176,6 +203,7 @@ export default class Runner {
                 }
             }
             await next();
+            await this.runRootRequests();
         }
         catch (e) {
             console.error(`Error while running the collection:`, e);

@@ -125,12 +125,14 @@ class Runner {
   }
   async runFolder(folderId) {
     const folder = this.collection.folders.find((f) => f.__ref.id == folderId);
+    const requestIds = folder.__meta.rOrders || [];
+    if (!requestIds.length)
+      return;
     this.emitter.emit("beforeFolder" /* BeforeFolder */, {
       name: folder.name,
       id: folder.__ref.id
     });
     try {
-      const requestIds = folder.__meta.rOrders || [];
       for (let i = 0; i < requestIds.length; i++) {
         const res = await this.runRequest(requestIds[i]);
         this.testResults.push(res);
@@ -140,6 +142,27 @@ class Runner {
     }
     this.emitter.emit("folder" /* Folder */, {
       id: folder.__ref.id
+    });
+  }
+  async runRootRequests() {
+    const { collection } = this.collection;
+    const requestIds = collection.__meta.rOrders || [];
+    if (!requestIds.length)
+      return;
+    this.emitter.emit("beforeFolder" /* BeforeFolder */, {
+      name: "./",
+      id: collection.__ref.id
+    });
+    try {
+      for (let i = 0; i < requestIds.length; i++) {
+        const res = await this.runRequest(requestIds[i]);
+        this.testResults.push(res);
+      }
+    } catch (e) {
+      console.error(`Error while running the collection:`, e);
+    }
+    this.emitter.emit("folder" /* Folder */, {
+      id: collection.__ref.id
     });
   }
   async runIteration() {
@@ -153,6 +176,7 @@ class Runner {
         }
       };
       await next();
+      await this.runRootRequests();
     } catch (e) {
       console.error(`Error while running the collection:`, e);
     }
