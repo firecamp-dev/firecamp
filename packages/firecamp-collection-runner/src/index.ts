@@ -13,6 +13,10 @@ export enum ERunnerEvents {
     Start = 'start',
     BeforeRequest = 'beforeRequest',
     Request = 'request',
+    BeforeFolder = 'beforeFolder',
+    Folder = 'folder',
+    BeforeIteration = 'beforeIteration',
+    Iteration = 'iteration',
     Done = 'done'
 }
 
@@ -31,9 +35,7 @@ export default class Runner {
 
     private collection: any;
     private options: IRunnerOptions;
-    private requestOrdersForExecution: Set<TId>;
-    private executedRequestQueue: Set<TId>;
-    private currentRequestInExecution: TId;
+    private folderRunSequence: Set<TId>;
     private testResults: any = [];
     private emitter: EventEmitter;
     private result = {
@@ -47,16 +49,15 @@ export default class Runner {
     constructor(collection, options: IRunnerOptions) {
         this.collection = collection;
         this.options = options;
-        this.requestOrdersForExecution = new Set();
-        this.executedRequestQueue = new Set();
-        this.currentRequestInExecution = '';
+        this.folderRunSequence = new Set();
         this.emitter = new EventEmitter();
         this.validate();
         this.assignDefaultOptions();
+        this.prepareFolderRunSequence();
     }
 
     private assignDefaultOptions() {
-        if (!this.options.hasOwnProperty('iterationCount')) this.options.iterationCount = 2;
+        if (!this.options.hasOwnProperty('iterationCount')) this.options.iterationCount = 1;
         if (!this.options.hasOwnProperty('delayRequest')) this.options.delayRequest = 0;
         if (!this.options.hasOwnProperty('timeout')) this.options.timeout = 0;
         if (!this.options.hasOwnProperty('timeoutRequest')) this.options.timeoutRequest = 0;
@@ -89,9 +90,8 @@ export default class Runner {
         return true;
     }
 
-    getFolderIds() {
+    private prepareFolderRunSequence() {
         const { collection, folders } = this.collection
-        console.log(folders.length)
         const folderMap = new Map(folders.map(folder => [folder.__ref.id, folder]));
         const traverseFolders = (order) =>
             order.flatMap(folderId =>
@@ -100,40 +100,8 @@ export default class Runner {
                     ? [folderId, ...traverseFolders([folderMap.get(folderId).__ref.folderId])]
                     : []
             );
-        return traverseFolders(collection.__meta.fOrders);
-    }
-
-
-    /**
-     * prepare an Set of request execution order
-     */
-    private prepareRequestExecutionOrder() {
-        const { collection, folders } = this.collection
-        const { __meta: { fOrders: rootFolderIds = [], rOrders: rootRequestIds = [] } } = collection
-
-        const extractRequestIdsFromFolder = (fId: TId, requestIds: TId[] = []) => {
-            const folder = folders.find(f => f.__ref.id == fId);
-            if (!folder) return requestIds;
-            if (folder.__meta.fOrders?.length) {
-                const rIds = folder.__meta.fOrders.map(fId => extractRequestIdsFromFolder(fId, requestIds))
-                requestIds = [...requestIds, ...rIds]
-            }
-            if (folder.__meta.rOrders?.length) {
-                requestIds = [...requestIds, ...folder.__meta.rOrders]
-            }
-            return requestIds;
-        }
-
-        if (Array.isArray(rootFolderIds)) {
-            rootFolderIds.map(fId => {
-                const requestIds = extractRequestIdsFromFolder(fId)
-                // console.log(requestIds, fId)
-                requestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
-            });
-        }
-        if (Array.isArray(rootRequestIds)) {
-            rootRequestIds.forEach(this.requestOrdersForExecution.add, this.requestOrdersForExecution);
-        }
+        const ids = traverseFolders(collection.__meta.fOrders);
+        ids.forEach(this.folderRunSequence.add, this.folderRunSequence);
     }
 
     private updateResult(response: any = {}) {
@@ -145,7 +113,7 @@ export default class Runner {
         if (Number.isInteger(failed)) this.result.fail += failed;
     }
 
-    private async executeRequest(requestId: TId) {
+    private async runRequest(requestId: TId) {
         const { folders, requests } = this.collection;
         const request = requests.find(r => r.__ref.id == requestId);
 
@@ -169,46 +137,56 @@ export default class Runner {
         return { request, response };
     }
 
-    i = 0;
-    private async start() {
+    private async runFolder(folderId: TId) {
+        const folder = this.collection.folders.find(f => f.__ref.id == folderId);
+
+        /** emit 'beforeFolder' event just before folder execution start */
+        this.emitter.emit(ERunnerEvents.BeforeFolder, {
+            name: folder.name,
+            id: folder.__ref.id
+        });
+
         try {
-            const { value: requestId, done } = this.requestOrdersForExecution.values().next();
-            // if (this.i > 0) return
-            this.i = this.i + 1
-            if (!done) {
-                this.currentRequestInExecution = requestId;
-                const res = await this.executeRequest(requestId);
+            const requestIds = folder.__meta.rOrders || [];
+            for (let i = 0; i < requestIds.length; i++) {
+                const res = await this.runRequest(requestIds[i]);
                 this.testResults.push(res);
-                this.executedRequestQueue.add(requestId);
-                this.requestOrdersForExecution.delete(requestId);
-                await this.start();
             }
-
         }
-        catch (error) {
-            console.error(`Error while running the collection:`, error);
-            // await this.start(); // Retry fetching info for the remaining IDs even if an error occurred
+        catch (e) {
+            console.error(`Error while running the collection:`, e);
+            // await this.runIteration(); // Retry fetching info for the remaining IDs even if an error occurred
         }
 
+        /** emit 'folder' event on folder run completion */
+        this.emitter.emit(ERunnerEvents.Folder, {
+            id: folder.__ref.id
+        });
     }
 
-    private exposeOnlyOn() {
-        return {
-            on: (evt: string, fn: (...a) => void) => {
-                this.emitter.on(evt, fn)
-                return this.exposeOnlyOn()
+    private async runIteration() {
+
+        try {
+            const folderSet = this.folderRunSequence.values();
+            const next = async () => {
+                const { value: folderId, done } = folderSet.next();
+                if (!done) {
+                    await this.runFolder(folderId);
+                    await next();
+                }
             }
+            await next();
+        }
+        catch (e) {
+            console.error(`Error while running the collection:`, e);
         }
     }
 
     run() {
 
-        this.prepareRequestExecutionOrder();
-
         setTimeout(async () => {
 
             const { collection } = this.collection;
-
             const startTs: number = new Date().valueOf();
             /** emit 'start' event on runner start */
             this.emitter.emit(ERunnerEvents.Start, {
@@ -217,8 +195,19 @@ export default class Runner {
             });
 
             for (let i = 0; i < this.options.iterationCount; i++) {
-                await this.start();
-                console.log(i, '----')
+                /** emit 'beforeIteration' event just before iteration start */
+                this.emitter.emit(ERunnerEvents.BeforeIteration, {
+                    current: i + 1,
+                    total: this.options.iterationCount
+                });
+
+                await this.runIteration();
+
+                /** emit 'iteration' event just after the iteration complete */
+                this.emitter.emit(ERunnerEvents.Iteration, {
+                    current: i + 1,
+                    total: this.options.iterationCount
+                });
             }
 
             /** emit 'done' event once runner iterations are completed */
@@ -230,8 +219,16 @@ export default class Runner {
             });
         });
 
-        // return this.testResults;
         return this.exposeOnlyOn()
+    }
+
+    private exposeOnlyOn() {
+        return {
+            on: (evt: string, fn: (...a) => void) => {
+                this.emitter.on(evt, fn)
+                return this.exposeOnlyOn()
+            }
+        }
     }
 }
 

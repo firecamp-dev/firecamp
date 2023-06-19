@@ -13,7 +13,25 @@ export default class Reporter {
     constructor(emitter: any) {
         this.spinner = ora();
         emitter
-            .on(ERunnerEvents.Start, () => { })
+            .on(ERunnerEvents.Start, (col: any) => {
+                this.log(figures.squareCenter, c.bold(col.name))
+                this.newLine();
+            })
+            .on(ERunnerEvents.BeforeIteration, (it: any) => {
+                if (it.total > 1) {
+                    this.log(c.gray().dim(`Iteration ${it.current}`));
+                    this.newLine();
+                }
+            })
+            .on(ERunnerEvents.Iteration, () => {
+                this.newLine();
+            })
+            .on(ERunnerEvents.BeforeFolder, (folder: any) => {
+                this.log(figures.triangleRight, c.bold(folder.name));
+            })
+            .on(ERunnerEvents.Folder, (folder: any) => {
+                this.newLine();
+            })
             .on(ERunnerEvents.BeforeRequest, (request: any) => {
                 this.onBeforeRequest(request)
             })
@@ -26,7 +44,7 @@ export default class Reporter {
     }
     initSpinner() {
         this.spinner = ora()
-        this.newLine();
+        // this.newLine();
     }
 
     onBeforeRequest(request: any) {
@@ -51,16 +69,18 @@ export default class Reporter {
             })
             // console.log(testResult)
         }
+        this.newLine();
     }
 
     onDone(result: any) {
+        this.newLine();
         this.logResult(result)
     }
 
     newLine(n: number = 1) {
         if (n > 10) n = 5
         if (n < 0) n = 1;
-        Array.from({ length: n }).forEach(() => console.log(''))
+        Array.from({ length: n }).forEach(() => this.log(''))
     }
 
     _title() {
@@ -87,10 +107,10 @@ export default class Reporter {
         const log = !failed
             ? `${c.green('  ' + figures.tick)} ${c.gray(name)}`
             : `${c.red('  ' + figures.cross)} ${c.gray(name)}`
-        console.log(log)
+        this.log(log)
 
         if (error)
-            console.log(`       `, c.italic().gray().dim(error.message))
+            this.log(`       `, c.italic().gray().dim(error.message))
         // throw new Error(error)
     }
 
@@ -112,7 +132,6 @@ export default class Reporter {
 
         });
 
-        this.newLine();
         table.push(
             [c.dim('Total Requests'), 28],
             [c.dim('Total run duration'), prettyMs(duration)],
@@ -121,7 +140,11 @@ export default class Reporter {
             [c.red('Fail Tests'), fail]
         );
 
-        console.log(table.toString());
+        this.log(table.toString());
+    }
+
+    log(...l: any[]) {
+        console.log(...l)
     }
 
 }

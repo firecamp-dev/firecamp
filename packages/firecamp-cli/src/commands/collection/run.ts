@@ -55,9 +55,9 @@ export default class Run extends Command {
         })
 
 
-        const emitter = runner.getFolderIds()
-        console.log(emitter)
-        // new CliReporter(emitter);
+        const emitter = runner.run()
+        // console.log(emitter)
+        new CliReporter(emitter);
       })
       .then(testResults => {
         // console.log(testResults)

@@ -4,6 +4,10 @@ declare enum ERunnerEvents {
     Start = "start",
     BeforeRequest = "beforeRequest",
     Request = "request",
+    BeforeFolder = "beforeFolder",
+    Folder = "folder",
+    BeforeIteration = "beforeIteration",
+    Iteration = "iteration",
     Done = "done"
 }
 interface IRunnerOptions {
@@ -19,9 +23,7 @@ interface IRunnerOptions {
 declare class Runner {
     private collection;
     private options;
-    private requestOrdersForExecution;
-    private executedRequestQueue;
-    private currentRequestInExecution;
+    private folderRunSequence;
     private testResults;
     private emitter;
     private result;
@@ -35,19 +37,15 @@ declare class Runner {
      * @returns boolean
      */
     private validate;
-    getFolderIds(): any;
-    /**
-     * prepare an Set of request execution order
-     */
-    private prepareRequestExecutionOrder;
+    private prepareFolderRunSequence;
     private updateResult;
-    private executeRequest;
-    i: number;
-    private start;
-    private exposeOnlyOn;
+    private runRequest;
+    private runFolder;
+    private runIteration;
     run(): {
         on: (evt: string, fn: (...a: any[]) => void) => any;
     };
+    private exposeOnlyOn;
 }
 
 export { ERunnerEvents, Runner as default };
