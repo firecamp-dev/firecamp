@@ -2,16 +2,15 @@ import { useEffect, useState } from 'react';
 
 // Hold the app environment
 const env = process.env.NODE_ENV;
-const clientId = 1234; //TODO set the clientId here
 
 export default () => {
   let [isCrispLoaded, setCrispLoadedFlag] = useState<boolean>(false);
 
   useEffect(() => {
     if (env === 'production') {
-      if (!isCrispLoaded && clientId) {
+      if (!isCrispLoaded) {
         window.$crisp = [];
-        window.CRISP_TOKEN_ID = clientId;
+        // window.CRISP_TOKEN_ID = clientId;
         window.CRISP_WEBSITE_ID = process.env.CRISP_FIRECAMP_DEV;
         (() => {
           const d = document;
