@@ -100,6 +100,7 @@ const Tabs: FC<ITabs> = ({
           <div
             className="flex border-b border-tabBorder items-start"
             style={{ height: height }}
+            data-testid={'tabs-item-container'}
           >
             {sortedList.map((tab, i) => {
               return (

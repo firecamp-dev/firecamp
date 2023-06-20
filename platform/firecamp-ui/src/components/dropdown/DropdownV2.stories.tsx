@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
@@ -8,6 +9,16 @@ import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
 import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
+import { FcIconGetSquare } from '@firecamp/ui';
+
+import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
+import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
+import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
+import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
+import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
+import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
+import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
+import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
 import DropDownV2 from './DropdownV2';
 import { IOptionsV2 } from './interfaces/Dropdownv2.interfaces';
@@ -118,6 +129,59 @@ export const DropDownv2Example = () => {
   );
 };
 
+export const DropDownSmoothAnimationExample = () => {
+  const [selected, setSelected] = useState('API style');
+
+  return (
+    <div className="flex justify-center items-center">
+      <DropDownV2
+        classes={{
+          rounded: true,
+          animate: true,
+          options: 'w-36 bg-popoverBackground',
+          header:
+            '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
+          optionListItem:
+            'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+        }}
+        handleRenderer={() => (
+          <Button
+            id={'button'}
+            text={selected}
+            primary
+            sm
+            className="rounded p-2"
+            uppercase={true}
+            withCaret={true}
+          />
+        )}
+        options={[
+          {
+            id: '1',
+            name: 'Rest',
+            disabled: false,
+          },
+          {
+            id: '2',
+            name: 'GraphQL',
+            disabled: false,
+            showSeparator: true,
+          },
+          {
+            id: '3',
+            name: 'Socket.io',
+          },
+          {
+            id: '4',
+            name: 'Websocket',
+          },
+        ]}
+        onSelect={(value: any) => setSelected(value.name)}
+      />
+    </div>
+  );
+};
+
 export const BodyTabExample = () => {
   const [selected, setSelected] = useState('');
 
@@ -140,7 +204,7 @@ export const BodyTabExample = () => {
             id: 'FormAndQueryHeader',
             name: 'Form and query',
             disabled: true,
-            headerList: [
+            options: [
               {
                 id: 'multipart',
                 name: 'Multipart',
@@ -159,7 +223,7 @@ export const BodyTabExample = () => {
             id: 'RawHeader',
             name: 'Raw',
             disabled: true,
-            headerList: [
+            options: [
               {
                 id: 'json',
                 name: 'Json',
@@ -182,7 +246,7 @@ export const BodyTabExample = () => {
         options: 'w-36 bg-popoverBackground',
         header:
           '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
-        headerListItem:
+        optionListItem:
           'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
       }}
     />
@@ -210,22 +274,38 @@ export const CreateMenuExample = () => {
             id: 'CreateNewHeader',
             name: 'Create New',
             disabled: true,
-            headerList: [
+            options: [
               {
-                id: 'request',
+                id: 'Request',
                 name: 'Request',
+                prefix: () => <FcIconGetSquare className="mr-2" size={16} />,
+                postfix: () => (
+                  <span className="ml-auto text-inputPlaceholder pl-2">⌘K</span>
+                ),
               },
               {
-                id: 'collection',
+                id: 'Collection',
                 name: 'Collection',
+                prefix: () => <VscFolder className="mr-2" size={16} />,
+                postfix: () => (
+                  <VscChevronRight size={14} className={'ml-auto'} />
+                ),
               },
               {
-                id: 'environment',
+                id: 'Environment',
                 name: 'Environment',
+                prefix: () => <RiBracesLine className="mr-2" size={16} />,
+                postfix: () => (
+                  <span className="ml-auto text-inputPlaceholder pl-2">⌘E</span>
+                ),
               },
               {
-                id: 'importCollection',
+                id: 'ImportCollection',
                 name: 'Import Collection',
+                prefix: () => <VscArrowDown className="mr-2" size={16} />,
+                postfix: () => (
+                  <span className="ml-auto text-inputPlaceholder pl-2">⌘C</span>
+                ),
                 showSeparator: true,
               },
             ],
@@ -234,18 +314,44 @@ export const CreateMenuExample = () => {
             id: 'CreateNewByAdminHeader',
             name: 'Create New (By Admin)',
             disabled: true,
-            headerList: [
+            options: [
               {
-                id: 'workspace',
+                id: 'Workspace',
                 name: 'Workspace',
+                prefix: () => <VscWindow className="mr-2" size={16} />,
               },
               {
-                id: 'organization',
+                id: 'Organization',
                 name: 'Organization',
+                prefix: () => <VscOrganization className="mr-2" size={16} />,
+                postfix: () => (
+                  <span className="ml-auto text-inputPlaceholder pl-2">⌘O</span>
+                ),
               },
               {
-                id: 'inviteMembers',
+                id: 'InviteMembers',
                 name: 'Invite Members',
+                showSeparator: true,
+                prefix: () => <AiOutlineUserAdd className="mr-2" size={16} />,
+              },
+            ],
+          },
+          {
+            id: 'SwitchHeader',
+            name: 'SWITCH',
+            disabled: true,
+            options: [
+              {
+                id: 'SwitchOrg',
+                name: 'Switch Organization',
+                prefix: () => (
+                  <AiOutlineUserSwitch className="mr-2" size={16} />
+                ),
+              },
+              {
+                id: 'SwitchWorkspace',
+                name: 'Switch Workspace',
+                prefix: () => <VscMultipleWindows className="mr-2" size={16} />,
               },
             ],
           },
@@ -254,11 +360,11 @@ export const CreateMenuExample = () => {
       onSelect={(value: any) => setSelected(value.name)}
       classes={{
         rounded: false,
-        options: 'w-[200px] bg-popoverBackground !pb-2',
+        options: 'w-[220px] bg-popoverBackground !pb-2',
         header:
-          '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans ',
-        headerListItem:
-          '!px-5 text-sm uppercase hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+          '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans !text-activityBarInactiveForeground !opacity-100	',
+        optionListItem:
+          '!px-5 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none cursor-pointer',
       }}
     />
   );
@@ -455,7 +561,7 @@ export const StatusBarExample = () => {
                     </div>
                   </>
                 ),
-                headerList: [
+                options: [
                   {
                     id: 'sign_in',
                     name: 'Sign in',
@@ -485,7 +591,7 @@ export const StatusBarExample = () => {
                 'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
               header:
                 'flex items-center text-appForeground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
-              headerListItem:
+              optionListItem:
                 '!py-1 !px-3 text-sm leading-6 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
             }}
           />
@@ -512,7 +618,7 @@ export const StatusBarExample = () => {
                     </div>
                   </>
                 ),
-                headerList: [
+                options: [
                   {
                     id: 'workspace_mgmt',
                     name: 'Workspace Management',
@@ -562,7 +668,7 @@ export const StatusBarExample = () => {
                 'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
               header:
                 'flex items-center text-appForeground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
-              headerListItem:
+              optionListItem:
                 '!py-1 !px-3 text-sm leading-6 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
             }}
           />

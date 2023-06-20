@@ -13,7 +13,7 @@ type TSnippetGroup = {
 
 const SnippetPanel: FC<IProps> = ({
   snippets = [],
-  onAddScript = (snippet = '') => {},
+  onAddScript = (snippet) => {},
 }) => {
   if (!snippets?.length) return <></>;
   // console.log({ snippets });

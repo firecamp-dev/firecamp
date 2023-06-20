@@ -38,8 +38,6 @@ const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
         td: 'text-appForegroundInActive',
       }}
       rows={headers}
-      onChange={() => {}}
-      onMount={() => {}}
     />
   );
   return (

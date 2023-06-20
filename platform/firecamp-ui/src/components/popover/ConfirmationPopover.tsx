@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useState, useEffect } from 'react';
-import { Button, Popover } from '@firecamp/ui';
+import { Button, EPopoverPosition, Popover } from '@firecamp/ui';
 import classnames from 'classnames';
 
 import { IConfirmationPopover } from './interfaces/ConfirmationPopover.interfaces';
@@ -11,7 +11,7 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
   handler = {},
   title = '',
   message = '',
-  position = 'bottom',
+  position = EPopoverPosition.Bottom,
   _meta: {
     showDefaultHandler = false,
     showDeleteIcon = true,
