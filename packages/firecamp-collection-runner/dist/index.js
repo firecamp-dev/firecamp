@@ -2,7 +2,7 @@ import {
   __publicField
 } from "./chunk-XXPGZHWZ.js";
 import EventEmitter from "eventemitter3";
-import { ERunnerEvents } from "./types";
+import { ERunnerEvents } from "./types.js";
 const delay = async (ts) => {
   return new Promise((rs) => {
     setTimeout(() => {
@@ -243,6 +243,7 @@ const fetchRequestPath = (folders, request) => {
   }
   return `./${requestPath.join("/")}`;
 };
+export * from "./types.js";
 export {
   Runner as default
 };

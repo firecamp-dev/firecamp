@@ -1,8 +1,8 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }
+"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _createStarExport(obj) { Object.keys(obj) .filter((key) => key !== "default" && key !== "__esModule") .forEach((key) => { if (exports.hasOwnProperty(key)) { return; } Object.defineProperty(exports, key, {enumerable: true, configurable: true, get: () => obj[key]}); }); } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }
 
 var _chunk3OSFNS7Zcjs = require('./chunk-3OSFNS7Z.cjs');
 var _eventemitter3 = require('eventemitter3'); var _eventemitter32 = _interopRequireDefault(_eventemitter3);
-var _types = require('./types');
+var _typesjs = require('./types.js'); _createStarExport(_typesjs);
 const delay = async (ts) => {
   return new Promise((rs) => {
     setTimeout(() => {
@@ -123,7 +123,7 @@ class Runner {
   async runRequest(requestId) {
     const { folders, requests } = this.collection;
     const request = requests.find((r) => r.__ref.id == requestId);
-    this.emitter.emit(_types.ERunnerEvents.BeforeRequest, {
+    this.emitter.emit(_typesjs.ERunnerEvents.BeforeRequest, {
       name: request.__meta.name,
       url: request.url.raw,
       method: request.method.toUpperCase(),
@@ -133,7 +133,7 @@ class Runner {
     await delay(this.options.delayRequest);
     const response = await this.options.executeRequest(request);
     this.updateResponseStatistics(response);
-    this.emitter.emit(_types.ERunnerEvents.Request, {
+    this.emitter.emit(_typesjs.ERunnerEvents.Request, {
       id: request.__ref.id,
       response
     });
@@ -145,7 +145,7 @@ class Runner {
     const requestIds = folder.__meta.rOrders || [];
     if (!requestIds.length)
       return;
-    this.emitter.emit(_types.ERunnerEvents.BeforeFolder, {
+    this.emitter.emit(_typesjs.ERunnerEvents.BeforeFolder, {
       name: folder.name,
       id: folder.__ref.id
     });
@@ -157,7 +157,7 @@ class Runner {
     } catch (e) {
       console.error(`Error while running the collection:`, e);
     }
-    this.emitter.emit(_types.ERunnerEvents.Folder, {
+    this.emitter.emit(_typesjs.ERunnerEvents.Folder, {
       id: folder.__ref.id
     });
   }
@@ -166,7 +166,7 @@ class Runner {
     const requestIds = collection.__meta.rOrders || [];
     if (!requestIds.length)
       return;
-    this.emitter.emit(_types.ERunnerEvents.BeforeFolder, {
+    this.emitter.emit(_typesjs.ERunnerEvents.BeforeFolder, {
       name: "./",
       id: collection.__ref.id
     });
@@ -178,7 +178,7 @@ class Runner {
     } catch (e) {
       console.error(`Error while running the collection:`, e);
     }
-    this.emitter.emit(_types.ERunnerEvents.Folder, {
+    this.emitter.emit(_typesjs.ERunnerEvents.Folder, {
       id: collection.__ref.id
     });
   }
@@ -202,24 +202,24 @@ class Runner {
     setTimeout(async () => {
       const { collection } = this.collection;
       this.runStatistics.timings.started = (/* @__PURE__ */ new Date()).valueOf();
-      this.emitter.emit(_types.ERunnerEvents.Start, {
+      this.emitter.emit(_typesjs.ERunnerEvents.Start, {
         name: collection.name,
         id: collection.__ref.id
       });
       for (let i = 0; i < this.options.iterationCount; i++) {
-        this.emitter.emit(_types.ERunnerEvents.BeforeIteration, {
+        this.emitter.emit(_typesjs.ERunnerEvents.BeforeIteration, {
           current: i + 1,
           total: this.options.iterationCount
         });
         await this.runIteration();
-        this.emitter.emit(_types.ERunnerEvents.Iteration, {
+        this.emitter.emit(_typesjs.ERunnerEvents.Iteration, {
           current: i + 1,
           total: this.options.iterationCount
         });
         this.runStatistics.stats.iteration.total += 1;
       }
       this.runStatistics.timings.runDuration = (/* @__PURE__ */ new Date()).valueOf() - this.runStatistics.timings.started;
-      this.emitter.emit(_types.ERunnerEvents.Done, this.runStatistics);
+      this.emitter.emit(_typesjs.ERunnerEvents.Done, this.runStatistics);
     });
     return this.exposeOnlyOn();
   }
@@ -243,6 +243,7 @@ const fetchRequestPath = (folders, request) => {
   }
   return `./${requestPath.join("/")}`;
 };
+
 
 
 exports.default = Runner;

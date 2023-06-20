@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import { TId } from "@firecamp/types";
-import { ERunnerEvents, IRunStatistics, IRunnerOptions } from './types';
+import { ERunnerEvents, IRunStatistics, IRunnerOptions } from './types.js';
 
 const delay = async (ts: number): Promise<void> => {
     return new Promise((rs) => {
@@ -280,3 +280,5 @@ const fetchRequestPath = (folders, request) => {
     }
     return `./${requestPath.join('/')}`;
 }
+
+export * from './types.js'

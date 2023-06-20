@@ -1,4 +1,5 @@
 import { IRunnerOptions } from './types.js';
+export { ERunnerEvents, IRunStatistics } from './types.js';
 import '@firecamp/types';
 
 declare class Runner {
@@ -30,4 +31,4 @@ declare class Runner {
     private exposeOnlyOn;
 }
 
-export { Runner as default };
+export { IRunnerOptions, Runner as default };

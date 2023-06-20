@@ -115,7 +115,7 @@ export default class Reporter {
     }
 
     logResult(summary: any) {
-        const { result: { total, pass, fail, duration } } = summary
+        const { stats, timings } = summary
 
         // const _header = (h: string) => c.magenta(h);
         var table = new Table({
@@ -133,11 +133,11 @@ export default class Reporter {
         });
 
         table.push(
-            [c.dim('Total Requests'), 28],
-            [c.dim('Total run duration'), prettyMs(duration)],
-            [c.dim('Tests'), total],
-            [c.green('Pass Tests'), pass],
-            [c.red('Fail Tests'), fail]
+            [c.dim('Total Requests'), stats.requests.total],
+            [c.dim('Total run duration'), prettyMs(timings.runDuration)],
+            [c.dim('Tests'), stats.tests.total],
+            [c.green('Pass Tests'), stats.tests.total - stats.tests.total],
+            [c.red('Fail Tests'), stats.tests.total]
         );
 
         this.log(table.toString());
