@@ -305,7 +305,7 @@ export default class RestExecutor implements IRestExecutor {
             error,
           });
         }
-        console.log(errors, 'scriptErrors...');
+        // console.log(errors, 'scriptErrors...');
         return {
           response,
           variables: { globals, environment, collectionVariables },
