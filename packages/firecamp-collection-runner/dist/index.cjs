@@ -19,7 +19,7 @@ class Runner {
     _chunk3OSFNS7Zcjs.__publicField.call(void 0, this, "emitter");
     _chunk3OSFNS7Zcjs.__publicField.call(void 0, this, "runStatistics", {
       stats: {
-        iteration: { failed: 0, total: 0 },
+        iterations: { failed: 0, total: 0 },
         requests: { failed: 0, total: 0 },
         tests: { failed: 0, total: 0 }
       },
@@ -91,16 +91,13 @@ class Runner {
   }
   updateResponseStatistics(response) {
     const {
-      testResult: { total, passed, failed } = { total: 0, passed: 0, failed: 0 },
-      code,
-      status,
-      responseSize,
-      responseTime
+      testResult,
+      response: { code, status, responseSize, responseTime }
     } = response;
-    if (Number.isInteger(total))
-      this.runStatistics.stats.tests.total += total;
-    if (Number.isInteger(failed))
-      this.runStatistics.stats.tests.failed += failed;
+    if (Number.isInteger(testResult.total))
+      this.runStatistics.stats.tests.total += testResult.total;
+    if (Number.isInteger(testResult.failed))
+      this.runStatistics.stats.tests.failed += testResult.failed;
     if (Number.isInteger(responseSize))
       this.runStatistics.transfers.responseTotal += responseSize;
     if (Number.isInteger(responseTime)) {
@@ -216,7 +213,7 @@ class Runner {
           current: i + 1,
           total: this.options.iterationCount
         });
-        this.runStatistics.stats.iteration.total += 1;
+        this.runStatistics.stats.iterations.total += 1;
       }
       this.runStatistics.timings.runDuration = (/* @__PURE__ */ new Date()).valueOf() - this.runStatistics.timings.started;
       this.emitter.emit(_typesjs.ERunnerEvents.Done, this.runStatistics);

@@ -19,7 +19,7 @@ export default class Runner {
     private emitter: EventEmitter;
     private runStatistics: IRunStatistics = {
         stats: {
-            iteration: { failed: 0, total: 0 },
+            iterations: { failed: 0, total: 0 },
             requests: { failed: 0, total: 0 },
             tests: { failed: 0, total: 0 },
         },
@@ -96,12 +96,13 @@ export default class Runner {
 
     private updateResponseStatistics(response: any) {
         const {
-            testResult: { total, passed, failed } = { total: 0, passed: 0, failed: 0 },
-            code, status, responseSize, responseTime } = response;
+            testResult,
+            response: { code, status, responseSize, responseTime }
+        } = response;
 
-        if (Number.isInteger(total)) this.runStatistics.stats.tests.total += total;
+        if (Number.isInteger(testResult.total)) this.runStatistics.stats.tests.total += testResult.total;
         // if (Number.isInteger(passed)) this.runStatistics.stats.tests.pass += passed;
-        if (Number.isInteger(failed)) this.runStatistics.stats.tests.failed += failed;
+        if (Number.isInteger(testResult.failed)) this.runStatistics.stats.tests.failed += testResult.failed;
         if (Number.isInteger(responseSize)) this.runStatistics.transfers.responseTotal += responseSize
 
         if (Number.isInteger(responseTime)) {
@@ -247,7 +248,7 @@ export default class Runner {
                     current: i + 1,
                     total: this.options.iterationCount
                 });
-                this.runStatistics.stats.iteration.total += 1;
+                this.runStatistics.stats.iterations.total += 1;
             }
 
             /** emit 'done' event once runner iterations are completed */

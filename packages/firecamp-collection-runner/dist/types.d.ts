@@ -27,7 +27,7 @@ type TStats = {
 interface IRunStatistics {
     /** stats contains the meta information of every components of run, every component will have 'total' and 'failed' count refs */
     stats: {
-        iteration: TStats;
+        iterations: TStats;
         requests: TStats;
         tests: TStats;
     };

@@ -1,9 +1,10 @@
-import { ERunnerEvents } from '@firecamp/collection-runner';
 import ora, { Ora } from 'ora';
 import c from 'kleur';
 import figures from 'figures';
 import Table from 'cli-table3';
 import prettyMs from 'pretty-ms';
+import prettyBytes from 'pretty-bytes';
+import { ERunnerEvents } from '@firecamp/collection-runner';
 
 export default class Reporter {
 
@@ -73,7 +74,6 @@ export default class Reporter {
     }
 
     onDone(result: any) {
-        this.newLine();
         this.logResult(result)
     }
 
@@ -98,7 +98,7 @@ export default class Reporter {
 
     _responseMeta() {
         const { code, status, responseTime, responseSize } = this.response
-        const line = `[${code + ' ' + status}, ${responseSize}B, ${prettyMs(responseTime)}]`;
+        const line = `[${code + ' ' + status}, ${prettyBytes(responseSize)}, ${prettyMs(responseTime)}]`;
         return c.dim(line)
     }
 
@@ -115,31 +115,29 @@ export default class Reporter {
     }
 
     logResult(summary: any) {
-        const { stats, timings } = summary
-
-        // const _header = (h: string) => c.magenta(h);
-        var table = new Table({
-            // head: [
-            //     _header('method'),
-            //     _header('api'),
-            //     _header('status'),
-            //     _header('pass'),
-            //     _header('fail')
-            // ],
-            // colWidths: [100, 400, 200, 150, 150 ],
-            // wordWrap: true,
-            // chars: { 'mid': '', 'left-mid': '', 'mid-mid': '', 'right-mid': '' }
-
-        });
-
+        const { stats: { iterations, requests, tests }, timings, transfers } = summary;
+        const _header = (h: string) => c.magenta(h);
+        var table = new Table();
         table.push(
-            [c.dim('Total Requests'), stats.requests.total],
-            [c.dim('Total run duration'), prettyMs(timings.runDuration)],
-            [c.dim('Tests'), stats.tests.total],
-            [c.green('Pass Tests'), stats.tests.total - stats.tests.total],
-            [c.red('Fail Tests'), stats.tests.total]
+            ['', { hAlign: 'right', content: _header('executed') }, { hAlign: 'right', content: _header('failed') }],
+            [
+                { hAlign: 'right', content: c[iterations.failed ? 'red' : 'gray']('iterations') },
+                { hAlign: 'right', content: iterations.total },
+                { hAlign: 'right', content: c[iterations.failed ? 'red' : 'gray'](iterations.failed) }],
+            [
+                { hAlign: 'right', content: c[requests.failed ? 'red' : 'gray']('requests') },
+                { hAlign: 'right', content: requests.total },
+                { hAlign: 'right', content: c[requests.failed ? 'red' : 'gray'](requests.failed) }
+            ],
+            [
+                { hAlign: 'right', content: c[tests.failed ? 'red' : 'gray']('tests') },
+                { hAlign: 'right', content: tests.total },
+                { hAlign: 'right', content: c[tests.failed ? 'red' : 'gray'](tests.failed) }
+            ],
+            [{ colSpan: 3, content: `total run duration: ${prettyMs(timings.runDuration)}` }],
+            [{ colSpan: 3, content: `total data received: ${prettyBytes(transfers.responseTotal)} (approx)` }],
+            [{ colSpan: 3, content: `average response time: ${prettyMs(timings.responseAvg)} [min: ${prettyMs(timings.responseMin)}, max: ${prettyMs(timings.responseMax)}]` }],
         );
-
         this.log(table.toString());
     }
 
