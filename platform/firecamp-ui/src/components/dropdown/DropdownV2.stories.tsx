@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { VscLibrary } from '@react-icons/all-files/vsc/VscLibrary';
-import { VscServerEnvironment } from '@react-icons/all-files/vsc/VscServerEnvironment';
-import { VscCloudDownload } from '@react-icons/all-files/vsc/VscCloudDownload';
+
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
@@ -11,6 +9,16 @@ import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
 import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
+import { FcIconGetSquare } from '@firecamp/ui';
+
+import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
+import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
+import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
+import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
+import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
+import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
+import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
+import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
 import DropDownV2 from './DropdownV2';
 import { IOptionsV2 } from './interfaces/Dropdownv2.interfaces';
@@ -270,13 +278,15 @@ export const CreateMenuExample = () => {
               {
                 id: 'Request',
                 name: 'Request',
-                prefix: () => <VscAdd className="mr-2" size={14} />,
-                postfix: () => <span className="ml-auto text-inputPlaceholder pl-2">⌘K</span>,
+                prefix: () => <FcIconGetSquare className="mr-2" size={16} />,
+                postfix: () => (
+                  <span className="ml-auto text-inputPlaceholder pl-2">⌘K</span>
+                ),
               },
               {
                 id: 'Collection',
                 name: 'Collection',
-                prefix: () => <VscLibrary className="mr-2" size={14} />,
+                prefix: () => <VscFolder className="mr-2" size={16} />,
                 postfix: () => (
                   <VscChevronRight size={14} className={'ml-auto'} />
                 ),
@@ -284,16 +294,18 @@ export const CreateMenuExample = () => {
               {
                 id: 'Environment',
                 name: 'Environment',
-                prefix: () => (
-                  <VscServerEnvironment className="mr-2" size={14} />
+                prefix: () => <RiBracesLine className="mr-2" size={16} />,
+                postfix: () => (
+                  <span className="ml-auto text-inputPlaceholder pl-2">⌘E</span>
                 ),
-                postfix: () => <span className="ml-auto text-inputPlaceholder pl-2">⌘E</span>,
               },
               {
                 id: 'ImportCollection',
                 name: 'Import Collection',
-                prefix: () => <VscCloudDownload className="mr-2" size={14} />,
-                postfix: () => <span className="ml-auto text-inputPlaceholder pl-2">⌘C</span>,
+                prefix: () => <VscArrowDown className="mr-2" size={16} />,
+                postfix: () => (
+                  <span className="ml-auto text-inputPlaceholder pl-2">⌘C</span>
+                ),
                 showSeparator: true,
               },
             ],
@@ -306,19 +318,21 @@ export const CreateMenuExample = () => {
               {
                 id: 'Workspace',
                 name: 'Workspace',
-                prefix: () => <VscLibrary className="mr-2" size={14} />,
+                prefix: () => <VscWindow className="mr-2" size={16} />,
               },
               {
                 id: 'Organization',
                 name: 'Organization',
-                prefix: () => <VscAdd className="mr-2" size={14} />,
-                postfix: () => <span className="ml-auto text-inputPlaceholder pl-2">⌘O</span>,
+                prefix: () => <VscOrganization className="mr-2" size={16} />,
+                postfix: () => (
+                  <span className="ml-auto text-inputPlaceholder pl-2">⌘O</span>
+                ),
               },
               {
                 id: 'InviteMembers',
                 name: 'Invite Members',
                 showSeparator: true,
-                prefix: () => <VscServerEnvironment className="mr-2" size={14} />,
+                prefix: () => <AiOutlineUserAdd className="mr-2" size={16} />,
               },
             ],
           },
@@ -327,8 +341,18 @@ export const CreateMenuExample = () => {
             name: 'SWITCH',
             disabled: true,
             options: [
-              { id: 'SwitchOrg', name: 'Switch Organization' },
-              { id: 'SwitchWorkspace', name: 'Switch Workspace' },
+              {
+                id: 'SwitchOrg',
+                name: 'Switch Organization',
+                prefix: () => (
+                  <AiOutlineUserSwitch className="mr-2" size={16} />
+                ),
+              },
+              {
+                id: 'SwitchWorkspace',
+                name: 'Switch Workspace',
+                prefix: () => <VscMultipleWindows className="mr-2" size={16} />,
+              },
             ],
           },
         ] as IOptionsV2[]
