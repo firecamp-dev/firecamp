@@ -269,26 +269,31 @@ export const CreateMenuExample = () => {
             headerList: [
               {
                 id: 'Request',
-                name: 'REQUEST',
-                prefix: () => <VscAdd className="mr-2" size={10} />,
+                name: 'Request',
+                prefix: () => <VscAdd className="mr-2" size={14} />,
+                postfix: () => <span className="ml-auto text-inputPlaceholder pl-2">⌘K</span>,
               },
               {
                 id: 'Collection',
-                name: 'COLLECTION',
-                prefix: () => <VscLibrary className="mr-2" size={10} />,
+                name: 'Collection',
+                prefix: () => <VscLibrary className="mr-2" size={14} />,
                 postfix: () => (
-                  <VscChevronRight size={10} className={'ml-auto'} />
+                  <VscChevronRight size={14} className={'ml-auto'} />
                 ),
               },
               {
                 id: 'Environment',
-                name: 'ENVIRONMENT',
-                prefix: () => <VscServerEnvironment className="mr-2" size={10} />,
+                name: 'Environment',
+                prefix: () => (
+                  <VscServerEnvironment className="mr-2" size={14} />
+                ),
+                postfix: () => <span className="ml-auto text-inputPlaceholder pl-2">⌘E</span>,
               },
               {
                 id: 'ImportCollection',
-                name: 'IMPORT COLLECTION',
-                prefix: () => <VscCloudDownload className="mr-2" size={10} />,
+                name: 'Import Collection',
+                prefix: () => <VscCloudDownload className="mr-2" size={14} />,
+                postfix: () => <span className="ml-auto text-inputPlaceholder pl-2">⌘C</span>,
                 showSeparator: true,
               },
             ],
@@ -298,12 +303,22 @@ export const CreateMenuExample = () => {
             name: 'Create New (By Admin)',
             disabled: true,
             headerList: [
-              { id: 'Workspace', name: 'WORKSPACE' },
-              { id: 'Organization', name: 'ORGANIZATION' },
+              {
+                id: 'Workspace',
+                name: 'Workspace',
+                prefix: () => <VscLibrary className="mr-2" size={14} />,
+              },
+              {
+                id: 'Organization',
+                name: 'Organization',
+                prefix: () => <VscAdd className="mr-2" size={14} />,
+                postfix: () => <span className="ml-auto text-inputPlaceholder pl-2">⌘O</span>,
+              },
               {
                 id: 'InviteMembers',
-                name: 'INVITE MEMBERS',
+                name: 'Invite Members',
                 showSeparator: true,
+                prefix: () => <VscServerEnvironment className="mr-2" size={14} />,
               },
             ],
           },
@@ -312,8 +327,8 @@ export const CreateMenuExample = () => {
             name: 'SWITCH',
             disabled: true,
             headerList: [
-              { id: 'SwitchOrg', name: 'SWITCH ORGANIZATION' },
-              { id: 'SwitchWorkspace', name: 'SWITCH WORKSPACE' },
+              { id: 'SwitchOrg', name: 'Switch Organization' },
+              { id: 'SwitchWorkspace', name: 'Switch Workspace' },
             ],
           },
         ] as IOptionsV2[]
@@ -321,11 +336,11 @@ export const CreateMenuExample = () => {
       onSelect={(value: any) => setSelected(value.name)}
       classes={{
         rounded: false,
-        options: 'w-[200px] bg-popoverBackground !pb-2',
+        options: 'w-[220px] bg-popoverBackground !pb-2',
         header:
           '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans !text-activityBarInactiveForeground !opacity-100	',
         headerListItem:
-          '!px-5 text-sm uppercase hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none cursor-pointer',
+          '!px-5 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none cursor-pointer',
       }}
     />
   );

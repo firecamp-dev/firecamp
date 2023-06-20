@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import classnames from 'classnames';
+import { VscServerEnvironment } from '@react-icons/all-files/vsc/VscServerEnvironment';
 import { Button, DropdownV2 } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
 import { useWorkspaceStore } from '../../store/workspace';
@@ -57,6 +58,72 @@ const options = [
     ],
   },
 ];
+const optionsWithIcons = [
+  {
+    id: 'CreateNewHeader',
+    name: 'Create New',
+    disabled: true,
+    headerList: [
+      {
+        id: EMenuOptions.Request,
+        name: 'Request',
+        prefix: () => <VscServerEnvironment className="mr-2" size={14} />,
+        postfix: () => (
+          <span className="ml-auto text-inputPlaceholder pl-2">⌘K</span>
+        ),
+      },
+      {
+        id: EMenuOptions.Collection,
+        name: 'Collection',
+        prefix: () => <VscServerEnvironment className="mr-2" size={14} />,
+        postfix: () => (
+          <span className="ml-auto text-inputPlaceholder pl-2">⌘C</span>
+        ),
+      },
+      {
+        id: EMenuOptions.Environment,
+        name: 'Environment',
+        prefix: () => <VscServerEnvironment className="mr-2" size={14} />,
+        postfix: () => (
+          <span className="ml-auto text-inputPlaceholder pl-2">⌘E</span>
+        ),
+      },
+      {
+        id: EMenuOptions.ImportCollection,
+        name: 'Import Collection',
+        showSeparator: true,
+        prefix: () => <VscServerEnvironment className="mr-2" size={14} />,
+        postfix: () => (
+          <span className="ml-auto text-inputPlaceholder pl-2">⌘E</span>
+        ),
+      },
+    ],
+  },
+  {
+    id: 'CreateNewByAdminHeader',
+    name: 'Create New (By Admin)',
+    disabled: true,
+    headerList: [
+      { id: EMenuOptions.Workspace, name: 'Workspace' },
+      { id: EMenuOptions.Organization, name: 'Organization' },
+      {
+        id: EMenuOptions.InviteMembers,
+        name: 'Invite Members',
+        showSeparator: true,
+      },
+    ],
+  },
+  {
+    id: 'SwitchHeader',
+    name: 'SWITCH',
+    disabled: true,
+    headerList: [
+      { id: EMenuOptions.SwitchOrg, name: 'Switch Organization' },
+      { id: EMenuOptions.SwitchWorkspace, name: 'Switch Workspace' },
+    ],
+  },
+];
+
 const GlobalCreateDD = ({}) => {
   const [isOpen, toggleOpen] = useState(false);
   const { open } = useTabStore.getState();
@@ -100,7 +167,7 @@ const GlobalCreateDD = ({}) => {
         handleRenderer={() => (
           <Button
             text={'Create'}
-            className={classnames({'open': isOpen})}
+            className={classnames({ open: isOpen })}
             primary
             withCaret
             transparent
@@ -117,7 +184,7 @@ const GlobalCreateDD = ({}) => {
           header:
             '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans !text-activityBarInactiveForeground !opacity-100	',
           headerListItem:
-            '!px-5 text-sm uppercase hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none cursor-pointer',
+            '!px-5 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none cursor-pointer',
         }}
       />
     </div>
