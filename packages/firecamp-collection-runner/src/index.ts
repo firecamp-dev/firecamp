@@ -1,5 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import { TId } from "@firecamp/types";
+import { ERunnerEvents, IRunStatistics, IRunnerOptions } from './types';
 
 const delay = async (ts: number): Promise<void> => {
     return new Promise((rs) => {
@@ -9,28 +10,6 @@ const delay = async (ts: number): Promise<void> => {
     })
 }
 
-export enum ERunnerEvents {
-    Start = 'start',
-    BeforeRequest = 'beforeRequest',
-    Request = 'request',
-    BeforeFolder = 'beforeFolder',
-    Folder = 'folder',
-    BeforeIteration = 'beforeIteration',
-    Iteration = 'iteration',
-    Done = 'done'
-}
-
-export interface IRunnerOptions {
-    executeRequest: (request: any) => Promise<any>;
-    environment?: TId | string;
-    globals?: TId | string;
-    iterationCount?: number;
-    iterationData?: string;
-    delayRequest?: number;
-    timeout?: number;
-    timeoutRequest?: number;
-}
-
 export default class Runner {
 
     private collection: any;
@@ -38,12 +17,21 @@ export default class Runner {
     private folderRunSequence: Set<TId>;
     private testResults: any = [];
     private emitter: EventEmitter;
-    private result = {
-        total: 0,
-        pass: 0,
-        fail: 0,
-        skip: 0,
-        duration: 0
+    private runStatistics: IRunStatistics = {
+        stats: {
+            iteration: { failed: 0, total: 0 },
+            requests: { failed: 0, total: 0 },
+            tests: { failed: 0, total: 0 },
+        },
+        timings: {
+            runDuration: 0,
+            responseAverage: 0,
+            responseMax: 0,
+            responseMin: 0,
+        },
+        transfers: {
+            responseTotal: 0
+        }
     }
 
     constructor(collection, options: IRunnerOptions) {
@@ -104,13 +92,15 @@ export default class Runner {
         ids.forEach(this.folderRunSequence.add, this.folderRunSequence);
     }
 
-    private updateResult(response: any = {}) {
-        const { testResult: { total, passed, failed } = {
-            total: 0, passed: 0, failed: 0
-        } } = response
-        if (Number.isInteger(total)) this.result.total += total;
-        if (Number.isInteger(passed)) this.result.pass += passed;
-        if (Number.isInteger(failed)) this.result.fail += failed;
+    private updateResponseStatistics(response: any) {
+        const {
+            testResult: { total, passed, failed } = { total: 0, passed: 0, failed: 0 },
+            code, status, responseSize, responseTime } = response;
+
+        if (Number.isInteger(total)) this.runStatistics.stats.tests.total += total;
+        // if (Number.isInteger(passed)) this.runStatistics.stats.tests.pass += passed;
+        if (Number.isInteger(failed)) this.runStatistics.stats.tests.failed += failed;
+        if (Number.isInteger(responseSize)) this.runStatistics.transfers.responseTotal += responseSize
     }
 
     private async runRequest(requestId: TId) {
@@ -128,12 +118,14 @@ export default class Runner {
 
         await delay(this.options.delayRequest);
         const response = await this.options.executeRequest(request);
-        this.updateResult(response)
+        this.updateResponseStatistics(response);
+
         /** emit 'request' event on request execution completion */
         this.emitter.emit(ERunnerEvents.Request, {
             id: request.__ref.id,
             response
         });
+        this.runStatistics.stats.requests.total += 1
         return { request, response };
     }
 
@@ -236,15 +228,12 @@ export default class Runner {
                     current: i + 1,
                     total: this.options.iterationCount
                 });
+                this.runStatistics.stats.iteration.total += 1;
             }
 
             /** emit 'done' event once runner iterations are completed */
-            this.result.duration = new Date().valueOf() - startTs;
-            this.emitter.emit(ERunnerEvents.Done, {
-                result: {
-                    ...this.result,
-                }
-            });
+            this.runStatistics.timings.runDuration = new Date().valueOf() - startTs;
+            this.emitter.emit(ERunnerEvents.Done, this.runStatistics);
         });
 
         return this.exposeOnlyOn()

@@ -1,32 +1,13 @@
-import { TId } from '@firecamp/types';
+import { IRunnerOptions } from './types.js';
+import '@firecamp/types';
 
-declare enum ERunnerEvents {
-    Start = "start",
-    BeforeRequest = "beforeRequest",
-    Request = "request",
-    BeforeFolder = "beforeFolder",
-    Folder = "folder",
-    BeforeIteration = "beforeIteration",
-    Iteration = "iteration",
-    Done = "done"
-}
-interface IRunnerOptions {
-    executeRequest: (request: any) => Promise<any>;
-    environment?: TId | string;
-    globals?: TId | string;
-    iterationCount?: number;
-    iterationData?: string;
-    delayRequest?: number;
-    timeout?: number;
-    timeoutRequest?: number;
-}
 declare class Runner {
     private collection;
     private options;
     private folderRunSequence;
     private testResults;
     private emitter;
-    private result;
+    private runStatistics;
     constructor(collection: any, options: IRunnerOptions);
     private assignDefaultOptions;
     /**
@@ -38,7 +19,7 @@ declare class Runner {
      */
     private validate;
     private prepareFolderRunSequence;
-    private updateResult;
+    private updateResponseStatistics;
     private runRequest;
     private runFolder;
     private runRootRequests;
@@ -49,4 +30,4 @@ declare class Runner {
     private exposeOnlyOn;
 }
 
-export { ERunnerEvents, IRunnerOptions, Runner as default };
+export { Runner as default };

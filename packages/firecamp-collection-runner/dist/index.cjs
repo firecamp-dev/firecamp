@@ -1,10 +1,8 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => {
-  __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
-  return value;
-};
+"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; } function _optionalChain(ops) { let lastAccessLHS = undefined; let value = ops[0]; let i = 1; while (i < ops.length) { const op = ops[i]; const fn = ops[i + 1]; i += 2; if ((op === 'optionalAccess' || op === 'optionalCall') && value == null) { return undefined; } if (op === 'access' || op === 'optionalAccess') { lastAccessLHS = value; value = fn(value); } else if (op === 'call' || op === 'optionalCall') { value = fn((...args) => value.call(lastAccessLHS, ...args)); lastAccessLHS = undefined; } } return value; }
+
+var _chunk3OSFNS7Zcjs = require('./chunk-3OSFNS7Z.cjs');
 var _eventemitter3 = require('eventemitter3'); var _eventemitter32 = _interopRequireDefault(_eventemitter3);
+var _types = require('./types');
 const delay = async (ts) => {
   return new Promise((rs) => {
     setTimeout(() => {
@@ -12,30 +10,28 @@ const delay = async (ts) => {
     }, ts);
   });
 };
-var ERunnerEvents = /* @__PURE__ */ ((ERunnerEvents2) => {
-  ERunnerEvents2["Start"] = "start";
-  ERunnerEvents2["BeforeRequest"] = "beforeRequest";
-  ERunnerEvents2["Request"] = "request";
-  ERunnerEvents2["BeforeFolder"] = "beforeFolder";
-  ERunnerEvents2["Folder"] = "folder";
-  ERunnerEvents2["BeforeIteration"] = "beforeIteration";
-  ERunnerEvents2["Iteration"] = "iteration";
-  ERunnerEvents2["Done"] = "done";
-  return ERunnerEvents2;
-})(ERunnerEvents || {});
 class Runner {
   constructor(collection, options) {
-    __publicField(this, "collection");
-    __publicField(this, "options");
-    __publicField(this, "folderRunSequence");
-    __publicField(this, "testResults", []);
-    __publicField(this, "emitter");
-    __publicField(this, "result", {
-      total: 0,
-      pass: 0,
-      fail: 0,
-      skip: 0,
-      duration: 0
+    _chunk3OSFNS7Zcjs.__publicField.call(void 0, this, "collection");
+    _chunk3OSFNS7Zcjs.__publicField.call(void 0, this, "options");
+    _chunk3OSFNS7Zcjs.__publicField.call(void 0, this, "folderRunSequence");
+    _chunk3OSFNS7Zcjs.__publicField.call(void 0, this, "testResults", []);
+    _chunk3OSFNS7Zcjs.__publicField.call(void 0, this, "emitter");
+    _chunk3OSFNS7Zcjs.__publicField.call(void 0, this, "runStatistics", {
+      stats: {
+        iteration: { failed: 0, total: 0 },
+        requests: { failed: 0, total: 0 },
+        tests: { failed: 0, total: 0 }
+      },
+      timings: {
+        runDuration: 0,
+        responseAverage: 0,
+        responseMax: 0,
+        responseMin: 0
+      },
+      transfers: {
+        responseTotal: 0
+      }
     });
     this.collection = collection;
     this.options = options;
@@ -91,23 +87,25 @@ class Runner {
     const ids = traverseFolders(collection.__meta.fOrders);
     ids.forEach(this.folderRunSequence.add, this.folderRunSequence);
   }
-  updateResult(response = {}) {
-    const { testResult: { total, passed, failed } = {
-      total: 0,
-      passed: 0,
-      failed: 0
-    } } = response;
+  updateResponseStatistics(response) {
+    const {
+      testResult: { total, passed, failed } = { total: 0, passed: 0, failed: 0 },
+      code,
+      status,
+      responseSize,
+      responseTime
+    } = response;
     if (Number.isInteger(total))
-      this.result.total += total;
-    if (Number.isInteger(passed))
-      this.result.pass += passed;
+      this.runStatistics.stats.tests.total += total;
     if (Number.isInteger(failed))
-      this.result.fail += failed;
+      this.runStatistics.stats.tests.failed += failed;
+    if (Number.isInteger(responseSize))
+      this.runStatistics.transfers.responseTotal += responseSize;
   }
   async runRequest(requestId) {
     const { folders, requests } = this.collection;
     const request = requests.find((r) => r.__ref.id == requestId);
-    this.emitter.emit("beforeRequest" /* BeforeRequest */, {
+    this.emitter.emit(_types.ERunnerEvents.BeforeRequest, {
       name: request.__meta.name,
       url: request.url.raw,
       method: request.method.toUpperCase(),
@@ -116,11 +114,12 @@ class Runner {
     });
     await delay(this.options.delayRequest);
     const response = await this.options.executeRequest(request);
-    this.updateResult(response);
-    this.emitter.emit("request" /* Request */, {
+    this.updateResponseStatistics(response);
+    this.emitter.emit(_types.ERunnerEvents.Request, {
       id: request.__ref.id,
       response
     });
+    this.runStatistics.stats.requests.total += 1;
     return { request, response };
   }
   async runFolder(folderId) {
@@ -128,7 +127,7 @@ class Runner {
     const requestIds = folder.__meta.rOrders || [];
     if (!requestIds.length)
       return;
-    this.emitter.emit("beforeFolder" /* BeforeFolder */, {
+    this.emitter.emit(_types.ERunnerEvents.BeforeFolder, {
       name: folder.name,
       id: folder.__ref.id
     });
@@ -140,7 +139,7 @@ class Runner {
     } catch (e) {
       console.error(`Error while running the collection:`, e);
     }
-    this.emitter.emit("folder" /* Folder */, {
+    this.emitter.emit(_types.ERunnerEvents.Folder, {
       id: folder.__ref.id
     });
   }
@@ -149,7 +148,7 @@ class Runner {
     const requestIds = collection.__meta.rOrders || [];
     if (!requestIds.length)
       return;
-    this.emitter.emit("beforeFolder" /* BeforeFolder */, {
+    this.emitter.emit(_types.ERunnerEvents.BeforeFolder, {
       name: "./",
       id: collection.__ref.id
     });
@@ -161,7 +160,7 @@ class Runner {
     } catch (e) {
       console.error(`Error while running the collection:`, e);
     }
-    this.emitter.emit("folder" /* Folder */, {
+    this.emitter.emit(_types.ERunnerEvents.Folder, {
       id: collection.__ref.id
     });
   }
@@ -185,27 +184,24 @@ class Runner {
     setTimeout(async () => {
       const { collection } = this.collection;
       const startTs = (/* @__PURE__ */ new Date()).valueOf();
-      this.emitter.emit("start" /* Start */, {
+      this.emitter.emit(_types.ERunnerEvents.Start, {
         name: collection.name,
         id: collection.__ref.id
       });
       for (let i = 0; i < this.options.iterationCount; i++) {
-        this.emitter.emit("beforeIteration" /* BeforeIteration */, {
+        this.emitter.emit(_types.ERunnerEvents.BeforeIteration, {
           current: i + 1,
           total: this.options.iterationCount
         });
         await this.runIteration();
-        this.emitter.emit("iteration" /* Iteration */, {
+        this.emitter.emit(_types.ERunnerEvents.Iteration, {
           current: i + 1,
           total: this.options.iterationCount
         });
+        this.runStatistics.stats.iteration.total += 1;
       }
-      this.result.duration = (/* @__PURE__ */ new Date()).valueOf() - startTs;
-      this.emitter.emit("done" /* Done */, {
-        result: {
-          ...this.result
-        }
-      });
+      this.runStatistics.timings.runDuration = (/* @__PURE__ */ new Date()).valueOf() - startTs;
+      this.emitter.emit(_types.ERunnerEvents.Done, this.runStatistics);
     });
     return this.exposeOnlyOn();
   }
@@ -231,5 +227,4 @@ const fetchRequestPath = (folders, request) => {
 };
 
 
-
-exports.ERunnerEvents = ERunnerEvents; exports.default = Runner;
+exports.default = Runner;
