@@ -32,14 +32,18 @@ interface IRunStatistics {
         tests: TStats;
     };
     timings: {
+        /** run start time */
+        started: number;
         /** total time of the run */
         runDuration: number;
         /** average response time of the run */
-        responseAverage: number;
-        /** miminum response time of the run */
+        responseAvg: number;
+        /** minimum response time of the run */
         responseMin: number;
         /** maximum response time of the run */
         responseMax: number;
+        /** total response time of all requests */
+        responseTotal: number;
     };
     transfers: {
         /** total response data received in run */

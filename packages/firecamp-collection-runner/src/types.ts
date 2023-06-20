@@ -35,17 +35,23 @@ export interface IRunStatistics {
     },
     timings: {
 
+        /** run start time */
+        started: number;
+
         /** total time of the run */
         runDuration: number,
 
         /** average response time of the run */
-        responseAverage: number,
+        responseAvg: number,
 
-        /** miminum response time of the run */
+        /** minimum response time of the run */
         responseMin: number,
 
         /** maximum response time of the run */
         responseMax: number,
+
+        /** total response time of all requests */
+        responseTotal: number;
 
         /** standard deviation of response time of the run */
         // responseSd: number,

@@ -24,10 +24,12 @@ export default class Runner {
             tests: { failed: 0, total: 0 },
         },
         timings: {
+            started: 0,
             runDuration: 0,
-            responseAverage: 0,
-            responseMax: 0,
             responseMin: 0,
+            responseMax: 0,
+            responseAvg: 0,
+            responseTotal: 0,
         },
         transfers: {
             responseTotal: 0
@@ -101,6 +103,23 @@ export default class Runner {
         // if (Number.isInteger(passed)) this.runStatistics.stats.tests.pass += passed;
         if (Number.isInteger(failed)) this.runStatistics.stats.tests.failed += failed;
         if (Number.isInteger(responseSize)) this.runStatistics.transfers.responseTotal += responseSize
+
+        if (Number.isInteger(responseTime)) {
+            const {
+                stats: { requests },
+                timings: { responseMin, responseMax }
+            } = this.runStatistics
+            if (responseMin == 0) this.runStatistics.timings.responseMin = responseTime;
+            else if (responseTime < responseMin) this.runStatistics.timings.responseMin = responseTime;
+
+            if (responseMax == 0) this.runStatistics.timings.responseMax = responseTime;
+            else if (responseTime > responseMax) this.runStatistics.timings.responseMax = responseTime;
+
+            this.runStatistics.timings.responseTotal += responseTime;
+            this.runStatistics.timings.responseAvg = (
+                this.runStatistics.timings.responseTotal / requests.total
+            )
+        }
     }
 
     private async runRequest(requestId: TId) {
@@ -207,7 +226,7 @@ export default class Runner {
         setTimeout(async () => {
 
             const { collection } = this.collection;
-            const startTs: number = new Date().valueOf();
+            this.runStatistics.timings.started = new Date().valueOf();
             /** emit 'start' event on runner start */
             this.emitter.emit(ERunnerEvents.Start, {
                 name: collection.name,
@@ -232,7 +251,7 @@ export default class Runner {
             }
 
             /** emit 'done' event once runner iterations are completed */
-            this.runStatistics.timings.runDuration = new Date().valueOf() - startTs;
+            this.runStatistics.timings.runDuration = new Date().valueOf() - this.runStatistics.timings.started;
             this.emitter.emit(ERunnerEvents.Done, this.runStatistics);
         });
 

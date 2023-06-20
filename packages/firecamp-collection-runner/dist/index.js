@@ -24,10 +24,12 @@ class Runner {
         tests: { failed: 0, total: 0 }
       },
       timings: {
+        started: 0,
         runDuration: 0,
-        responseAverage: 0,
+        responseMin: 0,
         responseMax: 0,
-        responseMin: 0
+        responseAvg: 0,
+        responseTotal: 0
       },
       transfers: {
         responseTotal: 0
@@ -101,6 +103,22 @@ class Runner {
       this.runStatistics.stats.tests.failed += failed;
     if (Number.isInteger(responseSize))
       this.runStatistics.transfers.responseTotal += responseSize;
+    if (Number.isInteger(responseTime)) {
+      const {
+        stats: { requests },
+        timings: { responseMin, responseMax }
+      } = this.runStatistics;
+      if (responseMin == 0)
+        this.runStatistics.timings.responseMin = responseTime;
+      else if (responseTime < responseMin)
+        this.runStatistics.timings.responseMin = responseTime;
+      if (responseMax == 0)
+        this.runStatistics.timings.responseMax = responseTime;
+      else if (responseTime > responseMax)
+        this.runStatistics.timings.responseMax = responseTime;
+      this.runStatistics.timings.responseTotal += responseTime;
+      this.runStatistics.timings.responseAvg = this.runStatistics.timings.responseTotal / requests.total;
+    }
   }
   async runRequest(requestId) {
     const { folders, requests } = this.collection;
@@ -183,7 +201,7 @@ class Runner {
   run() {
     setTimeout(async () => {
       const { collection } = this.collection;
-      const startTs = (/* @__PURE__ */ new Date()).valueOf();
+      this.runStatistics.timings.started = (/* @__PURE__ */ new Date()).valueOf();
       this.emitter.emit(ERunnerEvents.Start, {
         name: collection.name,
         id: collection.__ref.id
@@ -200,7 +218,7 @@ class Runner {
         });
         this.runStatistics.stats.iteration.total += 1;
       }
-      this.runStatistics.timings.runDuration = (/* @__PURE__ */ new Date()).valueOf() - startTs;
+      this.runStatistics.timings.runDuration = (/* @__PURE__ */ new Date()).valueOf() - this.runStatistics.timings.started;
       this.emitter.emit(ERunnerEvents.Done, this.runStatistics);
     });
     return this.exposeOnlyOn();
