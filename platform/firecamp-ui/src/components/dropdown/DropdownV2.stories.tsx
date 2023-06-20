@@ -133,7 +133,7 @@ export const DropDownSmoothAnimationExample = () => {
           options: 'w-36 bg-popoverBackground',
           header:
             '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
-          headerListItem:
+          optionListItem:
             'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
         }}
         handleRenderer={() => (
@@ -196,7 +196,7 @@ export const BodyTabExample = () => {
             id: 'FormAndQueryHeader',
             name: 'Form and query',
             disabled: true,
-            headerList: [
+            options: [
               {
                 id: 'multipart',
                 name: 'Multipart',
@@ -215,7 +215,7 @@ export const BodyTabExample = () => {
             id: 'RawHeader',
             name: 'Raw',
             disabled: true,
-            headerList: [
+            options: [
               {
                 id: 'json',
                 name: 'Json',
@@ -238,7 +238,7 @@ export const BodyTabExample = () => {
         options: 'w-36 bg-popoverBackground',
         header:
           '!pb-1 !pt-3 uppercase !text-xs font-medium leading-3 font-sans ',
-        headerListItem:
+        optionListItem:
           'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
       }}
     />
@@ -266,7 +266,7 @@ export const CreateMenuExample = () => {
             id: 'CreateNewHeader',
             name: 'Create New',
             disabled: true,
-            headerList: [
+            options: [
               {
                 id: 'Request',
                 name: 'Request',
@@ -302,7 +302,7 @@ export const CreateMenuExample = () => {
             id: 'CreateNewByAdminHeader',
             name: 'Create New (By Admin)',
             disabled: true,
-            headerList: [
+            options: [
               {
                 id: 'Workspace',
                 name: 'Workspace',
@@ -326,7 +326,7 @@ export const CreateMenuExample = () => {
             id: 'SwitchHeader',
             name: 'SWITCH',
             disabled: true,
-            headerList: [
+            options: [
               { id: 'SwitchOrg', name: 'Switch Organization' },
               { id: 'SwitchWorkspace', name: 'Switch Workspace' },
             ],
@@ -339,7 +339,7 @@ export const CreateMenuExample = () => {
         options: 'w-[220px] bg-popoverBackground !pb-2',
         header:
           '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans !text-activityBarInactiveForeground !opacity-100	',
-        headerListItem:
+        optionListItem:
           '!px-5 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none cursor-pointer',
       }}
     />
@@ -537,7 +537,7 @@ export const StatusBarExample = () => {
                     </div>
                   </>
                 ),
-                headerList: [
+                options: [
                   {
                     id: 'sign_in',
                     name: 'Sign in',
@@ -567,7 +567,7 @@ export const StatusBarExample = () => {
                 'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
               header:
                 'flex items-center text-appForeground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
-              headerListItem:
+              optionListItem:
                 '!py-1 !px-3 text-sm leading-6 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
             }}
           />
@@ -594,7 +594,7 @@ export const StatusBarExample = () => {
                     </div>
                   </>
                 ),
-                headerList: [
+                options: [
                   {
                     id: 'workspace_mgmt',
                     name: 'Workspace Management',
@@ -644,7 +644,7 @@ export const StatusBarExample = () => {
                 'ml-1 w-fit !pb-2 -mt-1 bg-popoverBackground !shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
               header:
                 'flex items-center text-appForeground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
-              headerListItem:
+              optionListItem:
                 '!py-1 !px-3 text-sm leading-6 text-appForeground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
             }}
           />

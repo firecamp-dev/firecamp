@@ -40,7 +40,7 @@ const DropDownV2 = ({
     item: '',
     listItem: '',
     header: '',
-    headerListItem: '',
+    optionListItem: '',
     ...classes,
   };
 
@@ -96,9 +96,9 @@ const DropDownV2 = ({
             <DropdownMenu.Item
               className={cx(
                 [DEFAULT_STYLES.optionItem],
-                { [classes.header]: !_array.isEmpty(item.headerList) },
+                { [classes.header]: !_array.isEmpty(item.options) },
                 {
-                  [classes.headerListItem]:
+                  [classes.optionListItem]:
                     order === LIST_ITEM_HIERARCHY.HEADER_LIST_ITEM,
                 },
                 { [classes.item]: order === LIST_ITEM_HIERARCHY.LIST_ITEM },
@@ -119,9 +119,9 @@ const DropDownV2 = ({
             </DropdownMenu.Item>
             {item.showSeparator && <Separator />}
 
-            {item.headerList &&
+            {item.options &&
               renderMenuItems(
-                item.headerList,
+                item.options,
                 LIST_ITEM_HIERARCHY.HEADER_LIST_ITEM
               )}
           </Fragment>

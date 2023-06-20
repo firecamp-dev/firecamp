@@ -11,7 +11,7 @@ export interface IDropdownV2 {
     item?: string;
     listItem?: string;
     header?: string;
-    headerListItem?: string;
+    optionListItem?: string;
   };
   /**
    * To display arrow shown at the begin of container
@@ -46,7 +46,7 @@ export interface IOptionsV2 {
   /**
    * Option items to display below header
    */
-  headerList?: Array<IOptionsV2>;
+  options?: Array<IOptionsV2>;
   /**
    * to display a separator line at the bottom of current option item
    */
