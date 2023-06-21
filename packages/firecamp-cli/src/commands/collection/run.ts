@@ -20,6 +20,8 @@ export default class Run extends Command {
   ]
 
   static flags = {
+    'environment': Flags.string({ char: 'e', description: 'Provide a path to a Firecamp Environment file' }),
+    'globals': Flags.string({ char: 'g', description: 'Provide a path to a Firecamp Globals file' }),
     'iteration-count': Flags.string({ char: 'n', description: 'Set the number of iterations for the collection run' }),
     // 'iteration-data': Flags.string({ char: 'd', description: 'Provide the data file to be used for iterations. (should be JSON or CSV) file to use for iterations JSON or CSV' }),
     'delay-request': Flags.integer({ description: 'Set the extent of delay between requests in milliseconds (default: 0)' }),
@@ -39,6 +41,8 @@ export default class Run extends Command {
       return
     }
     const {
+      environment,
+      globals,
       "iteration-count": iterationCount,
       "iteration-data": iterationData,
       timeout,
@@ -48,15 +52,40 @@ export default class Run extends Command {
 
     this.log(c.gray(figlet.textSync("Firecamp")))
 
-    const _filepath = new URL(`../../../${path}`, import.meta.url).pathname
-    loadJsonFile(_filepath)
+    // const _filepath = new URL(`../../../${path}`, import.meta.url).pathname
+    loadJsonFile(path)
       .then(collection => {
+
+        let envObj = { value: [] };
+        let globalObj = { value: [] };
+        if (environment) {
+          try {
+            envObj = await loadJsonFile(environment)
+          } catch (e) {
+            this.logToStderr('Error: could not load environment')
+            this.logToStderr(`    `, e.message)
+            process.exit(1);
+          }
+        }
+
+        if (globals) {
+          try {
+            globalObj = await loadJsonFile(globals)
+          } catch (e) {
+            this.logToStderr('Error: could not load globals')
+            this.logToStderr(`    `, e.message)
+            process.exit(1);
+          }
+        }
+
         // this.logJson(collection);
         const options: IRunnerOptions = {
           executeRequest: (request: any) => {
             const executor = new RestExecutor();
             return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
-          }
+          },
+          environment: envObj,
+          globals: globalObj
         }
         if (iterationCount) options.iterationCount = +iterationCount;
         if (iterationData) options.iterationData = iterationData;
@@ -69,9 +98,13 @@ export default class Run extends Command {
         new CliReporter(emitter);
       })
       .catch(e => {
-        console.error(e)
-        if (e.code == 'ENOENT') this.logToStderr(`error: file not exist at ${_filepath}`)
-        else this.logToStderr('error: The collection file is not valid')
+        // console.error(e)
+        if (e.code == 'ENOENT') {
+          this.logToStderr(`Error: could not load collection file`)
+          this.logToStderr(`    `, e.message)
+        }
+        else this.logToStderr('Error: The collection file is not valid');
+        process.exit(1);
       })
   }
 }
