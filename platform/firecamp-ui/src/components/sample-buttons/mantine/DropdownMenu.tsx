@@ -3,19 +3,17 @@ import { Menu } from '@mantine/core';
 const DropdownMenu = ({
   options = [],
   handleRenderer,
-  classNames= {}
+  classNames = {},
 }: {
   options: any[];
   handleRenderer: () => JSX.Element;
-  classNames?: {}
+  classNames?: {};
 }) => {
-  console.log(`options`, options);
+
   return (
-    <Menu shadow="md" width={200} classNames={{...classNames}}>
+    <Menu shadow="md" width={200} classNames={classNames}>
       <Menu.Target>
-        <span className='inline-block'>
-            {handleRenderer()}
-            </span>
+        <span className="inline-block">{handleRenderer()}</span>
       </Menu.Target>
 
       <Menu.Dropdown>

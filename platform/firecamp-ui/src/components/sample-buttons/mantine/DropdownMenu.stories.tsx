@@ -24,71 +24,66 @@ const options = [
   {
     id: 'CreateNewHeader',
     name: 'Create New',
-    disabled: true,
     isLabel: true,
   },
   {
     id: EMenuOptions.Request,
     name: 'Request',
-    prefix: () => <FcIconGetSquare className="mr-2" size={16} />,
-    postfix: () => (
-      <span className="ml-auto text-inputPlaceholder pl-2">⌘K</span>
-    ),
+    prefix: () => <FcIconGetSquare size={16} />,
+    postfix: () => <span className="text-inputPlaceholder">⌘K</span>,
   },
   {
     id: EMenuOptions.Collection,
     name: 'Collection',
-    prefix: () => <VscFolder className="mr-2" size={16} />,
+    prefix: () => <VscFolder size={16} />,
   },
   {
     id: EMenuOptions.Environment,
     name: 'Environment',
-    prefix: () => <RiBracesLine className="mr-2" size={16} />,
+    prefix: () => <RiBracesLine size={16} />,
   },
   {
     id: EMenuOptions.ImportCollection,
     name: 'Import Collection',
     showSeparator: true,
-    prefix: () => <VscArrowDown className="mr-2" size={16} />,
+    prefix: () => <VscArrowDown size={16} />,
   },
   {
     id: 'CreateNewByAdminHeader',
     name: 'Create New (By Admin)',
-    disabled: true,
     isLabel: true,
   },
 
   {
     id: EMenuOptions.Workspace,
     name: 'Workspace',
-    prefix: () => <VscWindow className="mr-2" size={16} />,
+    prefix: () => <VscWindow size={16} />,
   },
   {
     id: EMenuOptions.Organization,
     name: 'Organization',
-    prefix: () => <VscOrganization className="mr-2" size={16} />,
+    prefix: () => <VscOrganization size={16} />,
   },
   {
     id: EMenuOptions.InviteMembers,
     name: 'Invite Members',
     showSeparator: true,
-    prefix: () => <AiOutlineUserAdd className="mr-2" size={16} />,
+    prefix: () => <AiOutlineUserAdd size={16} />,
   },
   {
     id: 'SwitchHeader',
     name: 'SWITCH',
-    disabled: true,
     isLabel: true,
   },
   {
     id: EMenuOptions.SwitchOrg,
     name: 'Switch Organization',
-    prefix: () => <AiOutlineUserSwitch className="mr-2" size={16} />,
+    prefix: () => <AiOutlineUserSwitch size={16} />,
   },
   {
     id: EMenuOptions.SwitchWorkspace,
     name: 'Switch Workspace',
-    prefix: () => <VscMultipleWindows className="mr-2" size={16} />,
+    prefix: () => <VscMultipleWindows size={16} />,
   },
 ];
 
@@ -108,7 +103,9 @@ Example.args = {
     <Button text={'Create'} primary withCaret transparent ghost xs />
   ),
   classNames: {
-    label: 'text-activityBarInactiveForeground',
-    item: 'text-appForeground',
+    dropdown: 'p-0 border border-appBorder bg-popoverBackground !rounded-none',
+    label:
+      'text-activityBarInactiveForeground !pb-1 !pt-3 !px-5 uppercase text-xs font-medium leading-3 font-sans',
+    item: 'text-appForeground !px-5 py-px text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 cursor-pointer font-sans',
   },
 };
