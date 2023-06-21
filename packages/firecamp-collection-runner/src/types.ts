@@ -13,8 +13,8 @@ export enum ERunnerEvents {
 
 export interface IRunnerOptions {
     executeRequest: (request: any) => Promise<any>;
-    environment?: TId | string;
-    globals?: TId | string;
+    environment?: TId | any;
+    globals?: TId | any;
     iterationCount?: number;
     iterationData?: string;
     delayRequest?: number;

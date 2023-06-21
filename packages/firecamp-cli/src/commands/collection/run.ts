@@ -37,7 +37,7 @@ export default class Run extends Command {
     const { args, flags } = await this.parse(Run)
     const { path } = args
     if (!path) {
-      this.logToStderr('error: The collection path is missing')
+      this.logError('The collection path is missing')
       return
     }
     const {
@@ -50,31 +50,25 @@ export default class Run extends Command {
       "timeout-request": timeoutRequest,
     } = flags;
 
-    this.log(c.gray(figlet.textSync("Firecamp")))
-
     // const _filepath = new URL(`../../../${path}`, import.meta.url).pathname
     loadJsonFile(path)
-      .then(collection => {
+      .then(async (collection) => {
 
         let envObj = { value: [] };
         let globalObj = { value: [] };
         if (environment) {
           try {
             envObj = await loadJsonFile(environment)
-          } catch (e) {
-            this.logToStderr('Error: could not load environment')
-            this.logToStderr(`    `, e.message)
-            process.exit(1);
+          } catch (e: any) {
+            this.logError('could not load environment', e, 1)
           }
         }
 
         if (globals) {
           try {
             globalObj = await loadJsonFile(globals)
-          } catch (e) {
-            this.logToStderr('Error: could not load globals')
-            this.logToStderr(`    `, e.message)
-            process.exit(1);
+          } catch (e: any) {
+            this.logError('could not load globals', e);
           }
         }
 
@@ -93,18 +87,22 @@ export default class Run extends Command {
         if (delayRequest) options.delayRequest = +delayRequest;
         if (timeoutRequest) options.timeoutRequest = +timeoutRequest;
 
+        this.log(c.gray(figlet.textSync("Firecamp")));
+
         const runner = new Runner(collection, options);
         const emitter = runner.run()
         new CliReporter(emitter);
       })
       .catch(e => {
         // console.error(e)
-        if (e.code == 'ENOENT') {
-          this.logToStderr(`Error: could not load collection file`)
-          this.logToStderr(`    `, e.message)
-        }
-        else this.logToStderr('Error: The collection file is not valid');
-        process.exit(1);
+        if (e.code == 'ENOENT') this.logError(`Error: could not load collection file`, e, 1);
+        else this.logError('The collection file is not valid', null, 1);
       })
+  }
+
+  logError(title: string, e?: any, exitCode?: number) {
+    if (title) this.logToStderr(`${c.red('Error')}: ${title}`);
+    if (e?.message) this.logToStderr(`    `, e.message);
+    if (Number.isInteger(exitCode)) process.exit(exitCode);
   }
 }
