@@ -73,12 +73,9 @@ export default class Run extends Command {
         }
         // this.logJson(collection);
         const options: IRunnerOptions = {
-          executeRequest: (request: any) => {
-            const executor = new RestExecutor();
-            return executor.send(request, { collectionVariables: [], environment: envObj.values, globals: globalObj.values });
-          },
-          environment: envObj.values,
-          globals: globalObj.values
+          getExecutor: () => new RestExecutor(),
+          environment: envObj.values || [],
+          globals: globalObj.values || []
         }
         if (iterationCount) options.iterationCount = +iterationCount;
         if (iterationData) options.iterationData = iterationData;

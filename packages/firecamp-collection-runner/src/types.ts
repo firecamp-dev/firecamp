@@ -1,4 +1,4 @@
-import { TId, TVariable, IVariableGroup } from "@firecamp/types";
+import { TId, TVariable } from "@firecamp/types";
 
 export enum ERunnerEvents {
     Start = 'start',
@@ -12,7 +12,7 @@ export enum ERunnerEvents {
 }
 
 export interface IRunnerOptions {
-    executeRequest: (request: any) => Promise<any>;
+    getExecutor: () => any;
     environment?: TId | TVariable[];
     globals?: TId | TVariable[];
     iterationCount?: number;

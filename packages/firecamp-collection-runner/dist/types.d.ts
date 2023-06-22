@@ -11,7 +11,7 @@ declare enum ERunnerEvents {
     Done = "done"
 }
 interface IRunnerOptions {
-    executeRequest: (request: any) => Promise<any>;
+    getExecutor: () => any;
     environment?: TId | TVariable[];
     globals?: TId | TVariable[];
     iterationCount?: number;

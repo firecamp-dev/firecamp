@@ -137,7 +137,10 @@ export default class Runner {
         });
 
         await delay(this.options.delayRequest);
-        const response = await this.options.executeRequest(request);
+        const { globals, environment } = this.options;
+        const executor = this.options.getExecutor()
+        const response = await executor.send(request, { collectionVariables: [], environment, globals });;
+
         this.updateResponseStatistics(response);
 
         /** emit 'request' event on request execution completion */
