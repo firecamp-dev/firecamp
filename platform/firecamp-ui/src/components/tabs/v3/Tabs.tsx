@@ -158,7 +158,7 @@ const Tabs: FC<ITabs> = forwardRef(
           className,
           'flex',
           'text-base',
-          '!border-tabBorder',
+          '!border-tab-border',
           '!border-t-transparent'
         )}
         id={id}
@@ -171,9 +171,9 @@ const Tabs: FC<ITabs> = forwardRef(
           transparent
           noWrap
         >
-          <div className="border-b border-tabBorder" style={{ height: height }}>
+          <div className="border-b border-tab-border" style={{ height: height }}>
             <div
-              className="flex border-b border-tabBorder items-start"
+              className="flex border-b border-tab-border items-start"
               style={{ height: height }}
             >
               {state.orders.map((tabId, i) => {
@@ -188,24 +188,24 @@ const Tabs: FC<ITabs> = forwardRef(
                     name={tab.name}
                     height={height}
                     className={cx(
-                      'last-of-type:border-r-tabBorder border-r border-l border-tabBorder border-b-tabBorder border-b relative cursor-pointer first:border-l-0',
+                      'last-of-type:border-r-tab-border border-r border-l border-tab-border border-b-tab-border border-b relative cursor-pointer first:border-l-0',
                       {
                         'border-r-transparent border-l-transparent':
                           tabId !== state.activeTab,
                       },
                       {
-                        "active text-tabForeground before:block before:content-[''] before:absolute before:bg-primaryColor before:h-0.5 before:-top-px before:-inset-x-px after:block after:content-[''] after:absolute after:bg-statusBarBackground2 after:h-px after:-bottom-px after:inset-x-0 border-r-tabBorder border-l-tabBorder":
+                        "active text-tab-foreground before:block before:content-[''] before:absolute before:bg-primaryColor before:h-0.5 before:-top-px before:-inset-x-px after:block after:content-[''] after:absolute after:bg-statusBar-background-active after:h-px after:-bottom-px after:inset-x-0 border-r-tab-border border-l-tab-border":
                           tabId == state.activeTab,
                       },
                       {
-                        " after:block text-tabForegroundInactive after:content-[''] after:absolute after:h-px after:w-0.5 after:-left-0.5 after:-bottom-px after:border-t after:border-tabBorder":
+                        " after:block text-tab-foreground-inactive after:content-[''] after:absolute after:h-px after:w-0.5 after:-left-0.5 after:-bottom-px after:border-t after:border-tab-border":
                           tabId != state.activeTab,
                       },
                       {
-                        'border-r-tabBorder border-l-tabBorder': withDivider,
+                        'border-r-tab-border border-l-tab-border': withDivider,
                       },
                       {
-                        ' after:!bg-statusBarBackground2':
+                        ' after:!bg-statusBar-background-active':
                           // i == 0 &&
                           tabId == state.activeTab,
                       },
@@ -213,15 +213,15 @@ const Tabs: FC<ITabs> = forwardRef(
                         'flex-1 text-center': equalWidth,
                       },
                       {
-                        'after:!bg-tabActiveBackground':
+                        'after:!bg-tab-background-active':
                           tabsVersion == 1 && tabId == state.activeTab,
                       },
                       {
-                        'after:!bg-statusBarBackground2':
+                        'after:!bg-statusBar-background-active':
                           tabsVersion == 2 && tabId == state.activeTab,
                       },
                       { 'bg-transparent text-base': tabsVersion == 1 },
-                      { 'bg-tabBackground2 text-sm': tabsVersion == 2 }
+                      { 'bg-tab-background-activeColor text-sm': tabsVersion == 2 }
                     )}
                     draggable={reOrderable}
                     tabVersion={tabsVersion}
@@ -265,9 +265,9 @@ const PreComponent: FC<Partial<ITabs>> = ({ preComp, tabsVersion }) => {
   return (
     <div
       className={cx(
-        'flex items-center pr-2 border-b border-tabBorder',
-        { 'bg-tabBackground': tabsVersion == 1 },
-        { 'bg-tabBackground2': tabsVersion == 2 }
+        'flex items-center pr-2 border-b border-tab-border',
+        { 'bg-tab-background': tabsVersion == 1 },
+        { 'bg-tab-background-activeColor': tabsVersion == 2 }
       )}
     >
       {preComp}
@@ -280,9 +280,9 @@ const SuffixComponent: FC<Partial<ITabs>> = ({ suffixComp, tabsVersion }) => {
   return (
     <div
       className={cx(
-        'flex-1 flex pl-1 items-center pr-2 border-b border-tabBorder',
+        'flex-1 flex pl-1 items-center pr-2 border-b border-tab-border',
         { 'bg-transparent': tabsVersion == 1 }
-        // { 'bg-tabBackground2': tabsVersion == 2 }
+        // { 'bg-tab-background-activeColor': tabsVersion == 2 }
       )}
     >
       {suffixComp}
@@ -295,9 +295,9 @@ const PostComponent: FC<Partial<ITabs>> = ({ postComp, tabsVersion }) => {
   return (
     <div
       className={cx(
-        'flex items-center pr-2 border-b border-tabBorder ',
+        'flex items-center pr-2 border-b border-tab-border ',
         { 'bg-transparent': tabsVersion == 1 }
-        // { 'bg-tabBackground2': tabsVersion == 2 }
+        // { 'bg-tab-background-activeColor': tabsVersion == 2 }
       )}
     >
       {postComp}

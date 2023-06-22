@@ -278,7 +278,7 @@ const FirecampEditor: FC<IFirecampEditor> = ({
             name="Copy"
             onClick={_controlFns.copy}
             className={
-              'ic-duplicat_1 p-1 flex items-center border-appForeground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-appForeground'
+              'ic-duplicat_1 p-1 flex items-center border-app-foreground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-app-foreground'
             }
           />
         );
@@ -290,7 +290,7 @@ const FirecampEditor: FC<IFirecampEditor> = ({
             isActionDone={isFolded}
             onClick={_controlFns.fold}
             className={
-              'flex items-center border-appForeground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-appForeground ic-text-fold'
+              'flex items-center border-app-foreground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-app-foreground ic-text-fold'
             }
           />
         );
@@ -302,7 +302,7 @@ const FirecampEditor: FC<IFirecampEditor> = ({
             isActionDone={isWrapped}
             onClick={_controlFns.wrap}
             className={
-              'flex items-center border-appForeground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-appForeground ic-wrap_text'
+              'flex items-center border-app-foreground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-app-foreground ic-wrap_text'
             }
           />
         );
@@ -313,7 +313,7 @@ const FirecampEditor: FC<IFirecampEditor> = ({
             name="Clear"
             onClick={_controlFns.clear}
             className={
-              'flex items-center border-appForeground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-appForeground icv2-clear-icon'
+              'flex items-center border-app-foreground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-app-foreground icv2-clear-icon'
             }
           />
         );
@@ -324,7 +324,7 @@ const FirecampEditor: FC<IFirecampEditor> = ({
             name="Prettify"
             onClick={_controlFns.prettify}
             className={
-              'flex items-center border-appForeground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-appForeground icv2-snippets-icon'
+              'flex items-center border-app-foreground border justify-center bg-focus4 mb-1 rounded-3xl h-7 w-7 hover:bg-focusColor hover:text-app-foreground icv2-snippets-icon'
             }
           />
         );

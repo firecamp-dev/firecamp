@@ -24,7 +24,7 @@ const SnippetPanel: FC<IProps> = ({
           <div key={`${i}-popup`}>
             {snippet?.name.length ? (
               <div className="bg-focus1 px-2">
-                <div className="text-base leading-7 font-semibold text-appForeground">
+                <div className="text-base leading-7 font-semibold text-app-foreground">
                   {snippet.name}
                 </div>
               </div>

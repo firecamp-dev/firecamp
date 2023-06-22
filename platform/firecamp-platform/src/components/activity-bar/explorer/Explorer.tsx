@@ -470,13 +470,13 @@ const Explorer: FC<any> = () => {
           <div className="flex flex-col mt-8 p-4 items-center justify-center mt-2">
             <div className="fc-sidebar-noproject-icon text-5xl opacity-20 mb-2"></div>
             {!!searchString ? (
-              <div className="text-sm text-appForegroundInActive text-center mb-1">
+              <div className="text-sm text-app-foreground-inactive text-center mb-1">
                 <span className="text-base block mb-2">No search found...</span>
                 Your search is not found within this workspace.
               </div>
             ) : (
-              <div className="text-sm text-appForegroundInActive text-center mb-1">
-                <span className="text-appForeground text-base block mb-2">
+              <div className="text-sm text-app-foreground-inactive text-center mb-1">
+                <span className="text-app-foreground text-base block mb-2">
                   Create your first API collection!
                 </span>
                 You don't have any API collection in this workspace.

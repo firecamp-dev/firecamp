@@ -25,8 +25,8 @@ const TabItem = (tabData: {
     <div
       className={classnames(
         { selected: isActive == true },
-        { 'border-primaryColor text-appForegroundActive': isActive == true },
-        { 'border-transparent text-appForegroundInActive': isActive == false },
+        { 'border-primaryColor text-app-foreground-active': isActive == true },
+        { 'border-transparent text-app-foreground-inactive': isActive == false },
         'mx-2 border-b-2 flex cursor-pointer'
       )}
       onClick={() => onSelect(tab.id)}

@@ -34,14 +34,14 @@ const FileInput: FC<IFileInput> = ({
         onChange={_onSelectFile}
       />
       {(!path || !path.length) && name && name.length ? (
-        <div className="text-base text-appForegroundInActive">{name}</div> /*this path is not visible when upload file */
+        <div className="text-base text-app-foreground-inactive">{name}</div> /*this path is not visible when upload file */
       ) : (
         ''
       )}
       {!path || !path.length ? (
         <label
           htmlFor="file_path"
-          className=" bg-focus3 p-2 rounded-sm mb-2 text-appForeground px-2 py-1 w-fit cursor-pointer flex flex-row items-center"
+          className=" bg-focus3 p-2 rounded-sm mb-2 text-app-foreground px-2 py-1 w-fit cursor-pointer flex flex-row items-center"
           onClick={_onClick}
         >
 

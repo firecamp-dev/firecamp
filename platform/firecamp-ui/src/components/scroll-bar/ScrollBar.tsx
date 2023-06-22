@@ -36,7 +36,7 @@ const ScrollBar = ({
       className={cx(
         'flex flex-col select-none touch-none p-0.5 ',
         {
-          'bg-activityBarBorder hover:bg-focus2': !transparent,
+          'bg-activityBar-border hover:bg-focus2': !transparent,
         },
         {
           'p-0 bg-transparent': transparent,
@@ -59,7 +59,7 @@ const ScrollBar = ({
       className={cx(
         'flex select-none touch-none p-0.5',
         {
-          'bg-activityBarBorder hover:bg-focus2': !transparent,
+          'bg-activityBar-border hover:bg-focus2': !transparent,
         },
         {
           'p-0 bg-transparent': transparent,

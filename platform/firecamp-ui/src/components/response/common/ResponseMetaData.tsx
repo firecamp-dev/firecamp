@@ -11,7 +11,7 @@ const ResponseMetaData: FC<any> = ({
 
   return (
     <div className="flex flex-1 cursor-pointer">
-      <div className="ml-auto flex text-appForegroundInActive text-sm leading-5">
+      <div className="ml-auto flex text-app-foreground-inactive text-sm leading-5">
         <ResStatus
           code={code}
           status={status}

@@ -74,7 +74,7 @@ const ImportTab = ({ tab, platformContext: context }) => {
       <Container className="h-full with-divider">
         <Container className="with-divider">
           <Container.Header>
-            <TabHeader className="height-ex-small bg-statusBarBackground2 !pl-3 !pr-3">
+            <TabHeader className="height-ex-small bg-statusBar-background-active !pl-3 !pr-3">
               <TabHeader.Left>
                 <div className="user-select flex text-base font-semibold">
                   Import Collection
@@ -92,7 +92,7 @@ const ImportTab = ({ tab, platformContext: context }) => {
               }}
             />
             <Row flex={1} overflow="auto" className="with-divider h-full">
-              <div className="m-6 border border-appBorder flex-1 overflow-hidden">
+              <div className="m-6 border border-app-border flex-1 overflow-hidden">
                 {state.activeTab == ETabTypes.ImportRaw ? (
                   <ImportRaw
                     raw={state.raw}

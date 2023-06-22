@@ -1460,13 +1460,13 @@ video {
 .\!border-none {
   border-style: none !important;
 }
-.\!border-appBorder {
+.\!border-app-border {
   border-color: var(--app-border) !important;
 }
 .\!border-danger {
   border-color: var(--error) !important;
 }
-.\!border-inputBorder {
+.\!border-input-border {
   border-color: var(--input-border) !important;
 }
 .\!border-primaryColor {
@@ -1475,28 +1475,28 @@ video {
 .\!border-secondaryColor {
   border-color: var(--app-secondary) !important;
 }
-.\!border-statusBarBorder {
+.\!border-statusBar-border {
   border-color: var(--statusBar-border) !important;
 }
-.\!border-tabBorder {
+.\!border-tab-border {
   border-color: var(--tab-border) !important;
 }
 .\!border-transparent {
   border-color: #ffffff00 !important;
 }
-.border-activityBarBorder {
+.border-activityBar-border {
   border-color: var(--activityBar-border);
 }
-.border-appBackground {
+.border-app-background {
   border-color: var(--app-background);
 }
-.border-appBorder {
+.border-app-border {
   border-color: var(--app-border);
 }
-.border-appForeground {
+.border-app-foreground {
   border-color: var(--app-foreground);
 }
-.border-appForegroundInActive {
+.border-app-foreground-inactive {
   border-color: var(--app-foreground-inactive);
 }
 .border-error {
@@ -1508,10 +1508,10 @@ video {
 .border-info {
   border-color: var(--info);
 }
-.border-inputBorder {
+.border-input-border {
   border-color: var(--input-border);
 }
-.border-modalBorder {
+.border-modal-border {
   border-color: var(--modal-border);
 }
 .border-primaryColor {
@@ -1520,7 +1520,7 @@ video {
 .border-success {
   border-color: var(--success);
 }
-.border-tabBorder {
+.border-tab-border {
   border-color: var(--tab-border);
 }
 .border-transparent {
@@ -1529,46 +1529,46 @@ video {
 .border-warning {
   border-color: var(--warning);
 }
-.\!border-b-popoverBackground {
+.\!border-b-popover-background {
   border-bottom-color: var(--popover-background) !important;
 }
 .\!border-b-transparent {
   border-bottom-color: #ffffff00 !important;
 }
-.\!border-l-popoverBackground {
+.\!border-l-popover-background {
   border-left-color: var(--popover-background) !important;
 }
 .\!border-l-transparent {
   border-left-color: #ffffff00 !important;
 }
-.\!border-r-popoverBackground {
+.\!border-r-popover-background {
   border-right-color: var(--popover-background) !important;
 }
-.\!border-t-popoverBackground {
+.\!border-t-popover-background {
   border-top-color: var(--popover-background) !important;
 }
 .\!border-t-transparent {
   border-top-color: #ffffff00 !important;
 }
-.border-b-tabBorder {
+.border-b-tab-border {
   border-bottom-color: var(--tab-border);
 }
-.border-l-tabBorder {
+.border-l-tab-border {
   border-left-color: var(--tab-border);
 }
 .border-l-transparent {
   border-left-color: #ffffff00;
 }
-.border-r-appBorder {
+.border-r-app-border {
   border-right-color: var(--app-border);
 }
-.border-r-tabBorder {
+.border-r-tab-border {
   border-right-color: var(--tab-border);
 }
 .border-r-transparent {
   border-right-color: #ffffff00;
 }
-.\!bg-appBackground2 {
+.\!bg-app-background-secondary {
   background-color: var(--app-background-secondary) !important;
 }
 .\!bg-focus2 {
@@ -1577,34 +1577,34 @@ video {
 .\!bg-focusColor {
   background-color: #ffffff1a !important;
 }
-.\!bg-statusBarBackground2 {
+.\!bg-statusBar-background-active {
   background-color: var(--statusBar-background-active) !important;
 }
-.\!bg-tabActiveBackground {
+.\!bg-tab-background-active {
   background-color: var(--tab-background-active) !important;
 }
-.bg-activityBarActiveBackground {
-  background-color: var(--activityBar-background-active);
-}
-.bg-activityBarBackground {
+.bg-activityBar-background {
   background-color: var(--activityBar-background);
 }
-.bg-activityBarBorder {
+.bg-activityBar-background-active {
+  background-color: var(--activityBar-background-active);
+}
+.bg-activityBar-border {
   background-color: var(--activityBar-border);
 }
-.bg-appBackground {
+.bg-app-background {
   background-color: var(--app-background);
 }
-.bg-appBackground2 {
+.bg-app-background-secondary {
   background-color: var(--app-background-secondary);
 }
-.bg-appBorder {
+.bg-app-border {
   background-color: var(--app-border);
 }
-.bg-appForeground {
+.bg-app-foreground {
   background-color: var(--app-foreground);
 }
-.bg-appForegroundInActive {
+.bg-app-foreground-inactive {
   background-color: var(--app-foreground-inactive);
 }
 .bg-danger {
@@ -1631,38 +1631,38 @@ video {
 .bg-info {
   background-color: var(--info);
 }
-.bg-inputBackground {
+.bg-input-background {
   background-color: var(--input-background);
 }
-.bg-modalBackground {
+.bg-modal-background {
   background-color: var(--modal-background);
 }
-.bg-popoverBackground {
+.bg-popover-background {
   background-color: var(--popover-background);
 }
 .bg-primaryColor {
   background-color: var(--app-primary);
 }
-.bg-primaryColorText {
+.bg-primaryColor-text {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 .bg-secondaryColor {
   background-color: var(--app-secondary);
 }
-.bg-statusBarBackground {
+.bg-statusBar-background {
   background-color: var(--statusBar-background);
 }
-.bg-statusBarBackground2 {
+.bg-statusBar-background-active {
   background-color: var(--statusBar-background-active);
 }
 .bg-success {
   background-color: var(--success);
 }
-.bg-tabBackground {
+.bg-tab-background {
   background-color: var(--tab-background);
 }
-.bg-tabBackground2 {
+.bg-tab-background-activeColor {
   background-color: var(--tab-background-activeColor);
 }
 .bg-transparent {
@@ -2022,13 +2022,13 @@ video {
 .leading-7 {
   line-height: 1.75rem;
 }
-.\!text-activityBarInactiveForeground {
+.\!text-activityBar-foreground-inactive {
   color: var(--activityBar-foreground-inactive) !important;
 }
-.\!text-appForegroundActive {
+.\!text-app-foreground-active {
   color: var(--app-foreground-active) !important;
 }
-.\!text-appForegroundInActive {
+.\!text-app-foreground-inactive {
   color: var(--app-foreground-inactive) !important;
 }
 .\!text-info {
@@ -2040,19 +2040,19 @@ video {
 .\!text-primaryColor {
   color: var(--app-primary) !important;
 }
-.text-activityBarForeground {
+.text-activityBar-foreground {
   color: var(--activityBar-foreground);
 }
-.text-activityBarInactiveForeground {
+.text-activityBar-foreground-inactive {
   color: var(--activityBar-foreground-inactive);
 }
-.text-appForeground {
+.text-app-foreground {
   color: var(--app-foreground);
 }
-.text-appForegroundActive {
+.text-app-foreground-active {
   color: var(--app-foreground-active);
 }
-.text-appForegroundInActive {
+.text-app-foreground-inactive {
   color: var(--app-foreground-inactive);
 }
 .text-danger {
@@ -2067,45 +2067,45 @@ video {
 .text-info {
   color: var(--info);
 }
-.text-inputPlaceholder {
+.text-input-placeholder {
   color: var(--input-placeholder);
 }
-.text-inputText {
+.text-input-text {
   color: var(--input-text);
 }
 .text-link {
   color: var(--link);
 }
-.text-modalActiveForeground {
+.text-modal-foreground-active {
   color: var(--modal-foreground-active);
 }
-.text-popoverForeground {
+.text-popover-foreground {
   color: var(--popover-foreground);
 }
 .text-primaryColor {
   color: var(--app-primary);
 }
-.text-primaryColorText {
+.text-primaryColor-text {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .text-rest {
   color: var(--req-link);
 }
-.text-secondaryColorText {
+.text-secondaryColor-text {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-.text-statusBarForeground {
+.text-statusBar-foreground {
   color: var(--statusBar-foreground);
 }
 .text-success {
   color: var(--success);
 }
-.text-tabForeground {
+.text-tab-foreground {
   color: var(--tab-foreground);
 }
-.text-tabForegroundInactive {
+.text-tab-foreground-inactive {
   color: var(--tab-foreground-inactive);
 }
 .text-transparent {
@@ -2117,10 +2117,10 @@ video {
 .underline {
   text-decoration-line: underline;
 }
-.placeholder-inputPlaceholder::-moz-placeholder {
+.placeholder-input-placeholder::-moz-placeholder {
   color: var(--input-placeholder);
 }
-.placeholder-inputPlaceholder::placeholder {
+.placeholder-input-placeholder::placeholder {
   color: var(--input-placeholder);
 }
 .\!opacity-100 {
@@ -2150,7 +2150,7 @@ video {
 .opacity-80 {
   opacity: 0.8;
 }
-.\!shadow-popoverBoxshadow {
+.\!shadow-popover-shadow {
   --tw-shadow: var(--popover-shadow) !important;
   --tw-shadow-colored: var(--popover-shadow) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -2165,7 +2165,7 @@ video {
   --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
-.\!shadow-popoverBoxshadow {
+.\!shadow-popover-shadow {
   --tw-shadow-color: var(--popover-shadow) !important;
   --tw-shadow: var(--tw-shadow-colored) !important;
 }
@@ -2245,7 +2245,7 @@ video {
   content: var(--tw-content);
   width: 0.125rem;
 }
-.before\:bg-activityBarActiveBorder::before {
+.before\:bg-activityBar-border-active::before {
   content: var(--tw-content);
   background-color: var(--activityBar-border-active);
 }
@@ -2318,19 +2318,19 @@ video {
   content: var(--tw-content);
   border-top-width: 1px;
 }
-.after\:border-tabBorder::after {
+.after\:border-tab-border::after {
   content: var(--tw-content);
   border-color: var(--tab-border);
 }
-.after\:\!bg-statusBarBackground2::after {
+.after\:\!bg-statusBar-background-active::after {
   content: var(--tw-content);
   background-color: var(--statusBar-background-active) !important;
 }
-.after\:\!bg-tabActiveBackground::after {
+.after\:\!bg-tab-background-active::after {
   content: var(--tw-content);
   background-color: var(--tab-background-active) !important;
 }
-.after\:bg-statusBarBackground2::after {
+.after\:bg-statusBar-background-active::after {
   content: var(--tw-content);
   background-color: var(--statusBar-background-active);
 }
@@ -2363,7 +2363,7 @@ video {
 .last\:border-b-0:last-child {
   border-bottom-width: 0px;
 }
-.last-of-type\:border-r-tabBorder:last-of-type {
+.last-of-type\:border-r-tab-border:last-of-type {
   border-right-color: var(--tab-border);
 }
 .hover\:border-focusBorder:hover {
@@ -2390,13 +2390,13 @@ video {
 .hover\:bg-focusColor:hover {
   background-color: #ffffff1a;
 }
-.hover\:bg-inputFocusBackground:hover {
+.hover\:bg-input-background-focus:hover {
   background-color: var(--input-background-focus);
 }
 .hover\:bg-primaryColor:hover {
   background-color: var(--app-primary);
 }
-.hover\:bg-tabHoverBackground:hover {
+.hover\:bg-tab-background-hover:hover {
   background-color: var(--tab-background-hover);
 }
 .hover\:pr-1:hover {
@@ -2405,26 +2405,26 @@ video {
 .hover\:\!text-link:hover {
   color: var(--link) !important;
 }
-.hover\:text-activityBarForeground:hover {
+.hover\:text-activityBar-foreground:hover {
   color: var(--activityBar-foreground);
 }
-.hover\:text-appForeground:hover {
+.hover\:text-app-foreground:hover {
   color: var(--app-foreground);
 }
-.hover\:text-appForegroundActive:hover {
+.hover\:text-app-foreground-active:hover {
   color: var(--app-foreground-active);
 }
-.hover\:text-modalActiveForeground:hover {
+.hover\:text-modal-foreground-active:hover {
   color: var(--modal-foreground-active);
 }
 .hover\:text-primaryColor:hover {
   color: var(--app-primary);
 }
-.hover\:text-primaryColorText:hover {
+.hover\:text-primaryColor-text:hover {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-.hover\:text-statusBarForegroundActive:hover {
+.hover\:text-statusBar-foreground-active:hover {
   color: var(--statusBar-foreground-active);
 }
 .hover\:underline:hover {
@@ -2440,10 +2440,10 @@ video {
 .focus\:\!border-none:focus {
   border-style: none !important;
 }
-.focus\:\!bg-primaryColorOpacity:focus {
+.focus\:\!bg-primaryColor-withOpacity:focus {
   background-color: var(--app-primary-withOpacity) !important;
 }
-.focus\:bg-inputFocusBackground:focus {
+.focus\:bg-input-background-focus:focus {
   background-color: var(--input-background-focus);
 }
 .focus-visible\:\!border-none:focus-visible {
@@ -2457,7 +2457,7 @@ video {
   --tw-shadow-colored: 0 0 #0000 !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
-.focus-visible\:\!shadow-popoverBoxshadow:focus-visible {
+.focus-visible\:\!shadow-popover-shadow:focus-visible {
   --tw-shadow: var(--popover-shadow) !important;
   --tw-shadow-colored: var(--popover-shadow) !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
@@ -2647,11 +2647,11 @@ tr:focus-visible{
 .popover-boxshadow{
   box-shadow: var(--popover-shadow);
 }  
-*.bg-appBackground2
+*.bg-app-background-secondary
 ,
-*.bg-appBackground2
+*.bg-app-background-secondary
  .fc-col,
-*.bg-appBackground2
+*.bg-app-background-secondary
 .fc-col {
     background: var(--app-background-secondary)
 }
@@ -2840,7 +2840,7 @@ tr:focus-visible{
   position: absolute;
   left: 0px;
   width: 32px !important;
-  border-left: 1px solid var(--appBorder);
+  border-left: 1px solid var(--app-border);
 }
 .fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-left {
   position: absolute;

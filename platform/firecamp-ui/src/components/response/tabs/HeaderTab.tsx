@@ -35,7 +35,7 @@ const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
       ]}
       classes={{
         table: '!m-0 !min-w-full',
-        td: 'text-appForegroundInActive',
+        td: 'text-app-foreground-inactive',
       }}
       rows={headers}
     />

@@ -102,7 +102,7 @@ const ReqStatusBar = ({}) => {
     <>
       <StatusBar className="fc-statusbar large">
         {/* <StatusBar.PrimaryRegion> */}
-        <div className="flex items-center whitespace-pre overflow-hidden text-ellipsis text-appForegroundInActive">
+        <div className="flex items-center whitespace-pre overflow-hidden text-ellipsis text-app-foreground-inactive">
           {/* root */}
           {/* <VscChevronRight /> */}
           ./{playground.request.name}
@@ -124,7 +124,7 @@ const ReqStatusBar = ({}) => {
             <Dropdown.Options
               options={plgOperations || []}
               // displayKey="name"
-              className={'without-arrow width-full bg-appBackground2'}
+              className={'without-arrow width-full bg-app-background-secondary'}
               emptyMessage="No queries"
               onSelect={onSelectOperation}
             ></Dropdown.Options>

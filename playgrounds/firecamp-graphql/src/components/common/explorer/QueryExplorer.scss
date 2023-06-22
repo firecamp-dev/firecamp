@@ -22,7 +22,7 @@
 .graphiql-explorer-graphql-arguments input[type=text] {
 	min-width: 60px;
 	padding-left: 4px;
-	background: var(--inputBackground);
+	background: var(--input-background);
 	color: var(--inputForground)
 }
 
@@ -53,7 +53,7 @@
 }
 
 .graphiql-operation-title-bar>span>input:first-child {
-	background: var(--inputBackground);
+	background: var(--input-background);
 	color: var(--inputForground) !important;
 	pointer-events: none
 }
@@ -84,9 +84,9 @@
 }
 
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div {
-	border-bottom: 1px solid var(--appBorder) !important;
-	background: var(--appBackground);
-	color: var(--appForeground) !important;
+	border-bottom: 1px solid var(--app-border) !important;
+	background: var(--app-background);
+	color: var(--app-foreground) !important;
 	margin-bottom: 0px !important;
 	padding-bottom: 0px !important
 }
@@ -98,7 +98,7 @@
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div>div:first-child {
 	padding: 5px 10px;
 	padding-bottom: 5px !important;
-	border-bottom: 1px solid var(--appBorder);
+	border-bottom: 1px solid var(--app-border);
 	background: var(--sidebarBackground);
 	font-family: "Lato", sans-serif !important;
 	font-size: 13px !important
@@ -111,7 +111,7 @@
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root div>div.graphiql-explorer-node span>input,
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root div>div.graphiql-explorer-node+div span>input {
 	margin-right: 8px;
-	background-color: var(--appBackground)
+	background-color: var(--app-background)
 }
 
 .GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div>div.graphiql-explorer-node>span>span,

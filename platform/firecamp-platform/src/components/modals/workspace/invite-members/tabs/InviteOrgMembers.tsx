@@ -45,7 +45,7 @@ const InviteOrgMembers: FC<IProps> = ({
   const _role = RoleOptions.find((r) => r.id == member.role);
   return (
     <Container className="gap-2">
-      <Container.Header className="text-base font-semibold leading-3 text-appForegroundInActive p-6">
+      <Container.Header className="text-base font-semibold leading-3 text-app-foreground-inactive p-6">
         Invite your team colleagues to join the workspace.
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem] h-80">
@@ -59,7 +59,7 @@ const InviteOrgMembers: FC<IProps> = ({
                 <Button
                   text={member.name || 'Select member'}
                   className={cx(
-                    'hover:!bg-focus1 border border-appBorder justify-between'
+                    'hover:!bg-focus1 border border-app-border justify-between'
                     // { 'border-error': !member.name }
                   )}
                   disabled={members.length === 0}
@@ -74,7 +74,7 @@ const InviteOrgMembers: FC<IProps> = ({
             )}
             classes={{
               trigger: 'block',
-              options: 'w-[32rem] bg-popoverBackground z-[1000] -mt-1',
+              options: 'w-[32rem] bg-popover-background z-[1000] -mt-1',
               item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
             }}
             options={members}
@@ -87,7 +87,7 @@ const InviteOrgMembers: FC<IProps> = ({
               <Button
                 text={_role.name || 'Select role'}
                 className={cx(
-                  'hover:!bg-focus1 border border-appBorder justify-between'
+                  'hover:!bg-focus1 border border-app-border justify-between'
                 )}
                 withCaret
                 transparent
@@ -99,7 +99,7 @@ const InviteOrgMembers: FC<IProps> = ({
             options={RoleOptions}
             classes={{
               trigger: 'block',
-              options: 'w-[32rem] bg-popoverBackground z-[1000] -mt-1',
+              options: 'w-[32rem] bg-popover-background z-[1000] -mt-1',
               item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
             }}
             onSelect={({ name, id }) => onChange({ ...member, role: id })}

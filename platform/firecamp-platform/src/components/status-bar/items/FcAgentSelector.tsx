@@ -41,14 +41,14 @@ const FcAgentSelector: FC<any> = () => {
     <Popover
       content={
         <div className="p-6 w-96">
-          <div className="text-base text-appForeground mb-4">
+          <div className="text-base text-app-foreground mb-4">
             Select Firecamp Agent
           </div>
 
           {/* TODO: Enable auto select option in future, temporarily commenting it. */}
-          {/* <div className="mb-4 text-base text-appForeground flex items-start">
+          {/* <div className="mb-4 text-base text-app-foreground flex items-start">
               <div className="mr-2 font-semibold">Auto Select
-                <span className="block text-appForegroundInActive font-normal leading-5 mt-1">Firecamp will automatically select the best agent for your request</span>
+                <span className="block text-app-foreground-inactive font-normal leading-5 mt-1">Firecamp will automatically select the best agent for your request</span>
               </div>
               <div>
               <SwitchButton checked={false} onChange={()=> {}}/>
@@ -120,7 +120,7 @@ const AgentItem: FC<IAgentItem> = ({
 }) => {
   return (
     <div
-      className={cx(className, 'text-base text-appForeground flex items-start')}
+      className={cx(className, 'text-base text-app-foreground flex items-start')}
     >
       <div className="pt-half" onClick={onSelect}>
         <Checkbox isChecked={isSelected} id={name} disabled={disabled} />
@@ -130,7 +130,7 @@ const AgentItem: FC<IAgentItem> = ({
           {name}
         </label>
         <span
-          className="block text-appForegroundInActive font-normal leading-5 mt-1"
+          className="block text-app-foreground-inactive font-normal leading-5 mt-1"
           dangerouslySetInnerHTML={{ __html: description }}
         />
 

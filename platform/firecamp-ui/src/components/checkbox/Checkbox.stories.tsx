@@ -11,7 +11,7 @@ export default {
     }
 };
 
-const Template = (args) => <div className="bg-activityBarActiveBackground text-activityBarForeground"><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /></div>;
+const Template = (args) => <div className="bg-activityBar-background-active text-activityBar-foreground"><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /><Checkbox {...args} /></div>;
 
 export const CheckBoxPrimary = Template.bind({});
 CheckBoxPrimary.args = { label: 'CheckBoxPrimary', color: 'primary', labelPlacing: 'right', isChecked: false };

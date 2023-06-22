@@ -24,7 +24,7 @@ const Request = () => {
 
   return (
     <Column overflow="hidden">
-      <Container className="with-divider border-r border-appBorder">
+      <Container className="with-divider border-r border-app-border">
         <Container.Header>
           <ReqStatusbar />
         </Container.Header>

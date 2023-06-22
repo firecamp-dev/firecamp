@@ -141,7 +141,7 @@ const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
             </span>,
             row.__meta.type !== isEventFromSystem ? (
               <div
-                className="font-xs text-appForegroundInActive whitespace-pre"
+                className="font-xs text-app-foreground-inactive whitespace-pre"
                 key={'event-id'}
               >
                 {row.__ref.id || ''}
@@ -154,7 +154,7 @@ const Header: FC<any> = ({ row = {}, emitterArg = {}, postComponent }) => {
           <></>
         )}
       </TabHeader.Left>
-      <TabHeader.Right className="font-xs text-appForegroundInActive whitespace-pre">
+      <TabHeader.Right className="font-xs text-app-foreground-inactive whitespace-pre">
         {/* <span className="font-sm">
           {emitterArg?.__meta?.length
             ? `Length: ${emitterArg?.__meta.length}`

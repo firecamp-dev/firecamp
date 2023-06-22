@@ -8,11 +8,11 @@ import { click } from "../../../__mocks__/eventMock";
 const Template = (args: any) => {
     const [isOpen, toggleOpen] = useState(true);
 
-    return <div className="bg-appBackground h-screen w-screen block">
+    return <div className="bg-app-background h-screen w-screen block">
         <Button text={isOpen ? "Close Modal" : "Open Modal"} onClick={() => toggleOpen(true)} data-testid={'togglePreview'} />
         <Modal {...args} isOpen={isOpen} onClose={() => toggleOpen(false)}>
             <Modal.Header>
-                <div className="text-modalActiveForeground text-lg mb-6">Modal Header</div>
+                <div className="text-modal-foreground-active text-lg mb-6">Modal Header</div>
             </Modal.Header>
             <Modal.Body >
                 <div>
@@ -37,7 +37,7 @@ describe("Modal component", () => {
         const ModalContainer = screen.queryByTestId('root');
         const ModalContainerDiv = ModalContainer.querySelector('#modal-container-div');
 
-        expect(ModalContainerDiv).toHaveClass('max-w-screen-md min-w-screen-md bg-modalBackground text-appForeground w-full relative z-9999 max-h-modal flex fc-modal-wrapper');
+        expect(ModalContainerDiv).toHaveClass('max-w-screen-md min-w-screen-md bg-modal-background text-app-foreground w-full relative z-9999 max-h-modal flex fc-modal-wrapper');
         expect(ModalContainerDiv.childElementCount).toBe(3);
     
     });

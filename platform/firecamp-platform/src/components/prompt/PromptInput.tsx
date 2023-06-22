@@ -89,7 +89,7 @@ export const PromptInput: FC<IPromptInput> = ({
       <Modal.Body>
         <ProgressBar active={state.isExecuting} />
         <div className="px-2 py-4">
-          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
             {header || `THIS IS A HEADER PLACE`}
           </label>
           <div className="mt-4">

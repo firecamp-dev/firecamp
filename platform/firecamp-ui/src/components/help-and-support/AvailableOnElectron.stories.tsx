@@ -8,7 +8,7 @@ export default {
     }
 };
 
-const Template = (args) =><div className="bg-activityBarBackground h-96 w-full relative"> <AvailableOnElectron {...args} /></div>;
+const Template = (args) =><div className="bg-activityBar-background h-96 w-full relative"> <AvailableOnElectron {...args} /></div>;
 
 export const AvailableOnElectronDemo = Template.bind({});
 AvailableOnElectronDemo.args = {name: 'Sample UI', link: '#' , linkText:"desktop app"};

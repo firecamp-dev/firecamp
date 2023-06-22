@@ -89,7 +89,7 @@ const BasicTable = ({
         // return (
         //   <input
         //     value={cellValue}
-        //     className="bg-transparent text-base text-appForeground font-sans"
+        //     className="bg-transparent text-base text-app-foreground font-sans"
         //     onChange={(e: any) => onChange(column.key, e.target.value, e)}
         //   />
         // );
@@ -117,7 +117,7 @@ const BasicTable = ({
             // loading={
             //   <input
             //     value={cellValue}
-            //     className="bg-transparent text-base text-appForeground font-sans"
+            //     className="bg-transparent text-base text-app-foreground font-sans"
             //     readOnly
             //   />
             // }
@@ -129,7 +129,7 @@ const BasicTable = ({
         return (
           <Input
             value={cellValue}
-            className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px] font-sans"
+            className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 pt-0 h-[21px] font-sans"
             wrapperClassName="!mb-0"
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
           />

@@ -254,7 +254,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
   return (
     <div className="fc-input-wrapper">
       {placeholder && !value ? (
-        <div className="absolute top-0 left-0 text-inputPlaceholder text-lg leading-5	">
+        <div className="absolute top-0 left-0 text-input-placeholder text-lg leading-5	">
           {placeholder}
         </div>
       ) : (

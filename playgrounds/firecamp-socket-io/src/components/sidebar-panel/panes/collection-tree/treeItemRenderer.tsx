@@ -144,13 +144,13 @@ export default {
         >
           {context.isExpanded && item.isFolder && (
             <span
-              className="rct-tree-line absolute top-5 bottom-0 border-r border-appForegroundInActive z-10 opacity-50"
+              className="rct-tree-line absolute top-5 bottom-0 border-r border-app-foreground-inactive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
             ></span>
           )}
           <span
             className={cx(
-              'rct-tree-line horizontal absolute top-3 h-px bg-appForegroundInActive z-10 w-2 opacity-50',
+              'rct-tree-line horizontal absolute top-3 h-px bg-app-foreground-inactive z-10 w-2 opacity-50',
               { '!top-4': item.data.__ref.isRequest }
             )}
             style={{ left: `${renderDepthOffset * 2 - 3}px` }}
@@ -181,7 +181,7 @@ export default {
                 {/* <div className="bg-focus2- text-sm text-ellipsis">
                   {item.data.__meta?.label} Firecamp Label
                 </div> */}
-                <div className="text-sm appForegroundInActive">
+                <div className="text-sm app-foreground-inactive">
                   {previewText || ''}
                 </div>
               </div>
@@ -191,7 +191,7 @@ export default {
             {item.data.__ref.isItem ? (
               <Button
                 text={'Open'}
-                className="hover:!bg-focus2 ml-1 !text-appForegroundInActive"
+                className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive"
                 {...context.interactiveElementProps}
                 onClick={(e) => {
                   // e.preventDefault();

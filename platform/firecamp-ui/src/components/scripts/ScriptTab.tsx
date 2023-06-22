@@ -32,7 +32,7 @@ const ScriptTab: FC<IProps> = ({
   return (
     <Container>
       <Container.Body className="flex flex-col">
-        <TabHeader className="bg-statusBarBackground2">
+        <TabHeader className="bg-statusBar-background-active">
           <div className="text-sm">
             Pre-request script are written in Javascript and are run before the
             request is sent.
@@ -73,7 +73,7 @@ const ScriptTab: FC<IProps> = ({
             minWidth={100}
             maxWidth={400}
             width={240}
-            className="border-l border-appBorder"
+            className="border-l border-app-border"
           >
             <Column className="overflow-auto visible-scrollbar">
               <HelpPopUp

@@ -11,10 +11,10 @@ import {
 const GraphQLBody = ({ body, onChange }) => {
   const { query = '', variables = '' } = body;
   return (
-    <Container className="border-t border-appBorder">
+    <Container className="border-t border-app-border">
       <Container.Body className="flex flex-col">
         <Column flex={1}>
-          <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
+          <TabHeader className="bg-statusBar-background-active text-sm font-semibold !h-6">
             <TabHeader.Left>Query</TabHeader.Left>
           </TabHeader>
           <div className="flex-1">
@@ -26,7 +26,7 @@ const GraphQLBody = ({ body, onChange }) => {
         </Column>
         <Resizable top={true} minHeight={100} maxHeight={500} height={320}>
           <Column flex={1}>
-            <TabHeader className="bg-statusBarBackground2 text-sm font-semibold !h-6">
+            <TabHeader className="bg-statusBar-background-active text-sm font-semibold !h-6">
               <TabHeader.Left>Query variables</TabHeader.Left>
             </TabHeader>
             <Editor

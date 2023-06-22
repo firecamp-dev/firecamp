@@ -34,7 +34,7 @@ const CopyButton: FC<ICopyButton> = ({
      {text && showText ? text : ''}
      {animation && showCopied ? <span className="absolute -left-2 -top-2 text-sm">Copied!</span> : ''}
      
-      <FaCopy fontSize={12} onClick={_onClickCopy} className="align-baseline text-appForegroundInActive" title='IconCopy'/>
+      <FaCopy fontSize={12} onClick={_onClickCopy} className="align-baseline text-app-foreground-inactive" title='IconCopy'/>
      
    </div>
  );

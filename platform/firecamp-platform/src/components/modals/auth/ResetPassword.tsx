@@ -141,7 +141,7 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
       </Modal.Body>
       <Modal.Footer>
         <div className="flex-col">
-          <div className="text-sm mt-6 text-center text-appForegroundInActive">
+          <div className="text-sm mt-6 text-center text-app-foreground-inactive">
             Not have an account?
             <a
               href="#"
@@ -156,7 +156,7 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               Sign Up
             </a>
           </div>
-          <div className="text-sm mt-2 text-center text-appForegroundInActive">
+          <div className="text-sm mt-2 text-center text-app-foreground-inactive">
             Already have an account?
             <a
               href="#"

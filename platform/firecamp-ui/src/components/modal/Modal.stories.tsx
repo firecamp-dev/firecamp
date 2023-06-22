@@ -20,7 +20,7 @@ export default {
 const Template = (args: any) => {
     const [isOpen, toggleOpen] = useState(true);
 
-    return <div className="bg-appBackground h-screen w-screen block">
+    return <div className="bg-app-background h-screen w-screen block">
         <Button text="Open Modal" onClick={() => toggleOpen(true)} />
         <Modal {...args} isOpen={isOpen} onClose={() => toggleOpen(false)}>
             <Modal.Header >
@@ -56,7 +56,7 @@ SignUpDemo.args = {
 
 const SignUpHeader = () => {
     return (
-        <div className="text-modalActiveForeground text-lg text-center mb-6">sign in to your firecamp account</div>
+        <div className="text-modal-foreground-active text-lg text-center mb-6">sign in to your firecamp account</div>
     )
 }
 
@@ -65,10 +65,10 @@ const SignUpBody = () => {
         <div>
             <div className="" >
                 <div className="text-center w-full mb-5">new to firecamp? <a className="text-primaryColor cursor-pointer">sign up</a></div>
-                <a href="#" className="text-appForeground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <VscGithub size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">github</span></a>
-                <a href="#" className="text-appForeground flex items-center justify-center bg-focusColor !border-appBorder border p-1.5 hover:bg-inputFocusBackground hover:border-transparent hover:text-modalActiveForeground mb-6"> <GrGoogle size={20} className="mr-2" /> continue with <span className="text-modalActiveForeground ml-2">google</span></a>
+                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-input-background-focus hover:border-transparent hover:text-modal-foreground-active mb-6"> <VscGithub size={20} className="mr-2" /> continue with <span className="text-modal-foreground-active ml-2">github</span></a>
+                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-input-background-focus hover:border-transparent hover:text-modal-foreground-active mb-6"> <GrGoogle size={20} className="mr-2" /> continue with <span className="text-modal-foreground-active ml-2">google</span></a>
             </div>
-            <hr className="border-modalBorder -ml-8 -mr-8 mb-6" />
+            <hr className="border-modal-border -ml-8 -mr-8 mb-6" />
             <div className="">
                 <FormField label="Username or E-mail" >
                     <Input
@@ -80,7 +80,7 @@ const SignUpBody = () => {
                     <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
                 </FormField>
                 <Button primary={true} text="sign in" fullWidth={true} md={true} />
-                <a className="cursor-pointer text-appForeground block pb-6 text-right text-sm -mt-4">Already have an account? Sign In</a>
+                <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm -mt-4">Already have an account? Sign In</a>
             </div>
         </div>
     )
@@ -89,14 +89,14 @@ const SignUpBody = () => {
 const SignUpFooter = () => {
     return (
         <div className="text-sm mt-6">
-            By moving forward, you acknowledge that you have read and accept the <a className="text-modalActiveForeground cursor-pointer">Terms of Service</a> and <a className="text-modalActiveForeground">Privacy Policy.</a>
+            By moving forward, you acknowledge that you have read and accept the <a className="text-modal-foreground-active cursor-pointer">Terms of Service</a> and <a className="text-modal-foreground-active">Privacy Policy.</a>
         </div>
     )
 }
 
 const ModalHeader = () => {
     return (
-        <div className="text-modalActiveForeground text-lg mb-6">Modal Header</div>
+        <div className="text-modal-foreground-active text-lg mb-6">Modal Header</div>
     )
 }
 

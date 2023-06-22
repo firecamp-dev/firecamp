@@ -169,7 +169,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
     <RootContainer className="h-full w-full">
       <Container className="h-full with-divider">
         <Container.Header>
-          <TabHeader className="height-ex-small bg-statusBarBackground2 !pl-3 !pr-3">
+          <TabHeader className="height-ex-small bg-statusBar-background-active !pl-3 !pr-3">
             <TabHeader.Left>
               <VscJson size={18} />
               <div className="fc-urlbar-path flex text-base">

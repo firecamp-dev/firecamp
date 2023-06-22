@@ -39,7 +39,7 @@ describe("Checkbox component : ", () => {
 
         //validating styles of the checkbox preview of border & icon
         let checkIconBorderSpan = CheckboxInputDivWrapper.getElementsByTagName("span")[0];
-        expect(checkIconBorderSpan).toHaveClass("border w-4 h-4 border-appForeground");
+        expect(checkIconBorderSpan).toHaveClass("border w-4 h-4 border-app-foreground");
         expect(screen.queryByText("IconCheck")).toBeNull();
 
         //validating the change in checkbox input on click event

@@ -8,7 +8,7 @@ export default {
     }
 };
 
-const Template = (args: IHelp) =><div className="bg-activityBarBackground h-96 w-full relative"> <Help {...args} /></div>;
+const Template = (args: IHelp) =><div className="bg-activityBar-background h-96 w-full relative"> <Help {...args} /></div>;
 
 export const HelpDemo = Template.bind({});
 HelpDemo.args = {docLink: 'https://firecamp.io/'};
