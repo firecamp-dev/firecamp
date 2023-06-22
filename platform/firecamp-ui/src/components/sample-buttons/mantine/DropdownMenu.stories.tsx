@@ -103,9 +103,9 @@ Example.args = {
     <Button text={'Create'} primary withCaret transparent ghost xs />
   ),
   classNames: {
-    dropdown: 'p-0 border border-appBorder bg-popoverBackground !rounded-none',
-    label:
-      'text-activityBarInactiveForeground !pb-1 !pt-3 !px-5 uppercase text-xs font-medium leading-3 font-sans',
-    item: 'text-appForeground !px-5 py-px text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 cursor-pointer font-sans',
+    dropdown: 'px-0 pt-0 pb-2',
+    label: 'px-5 pt-3 pb-1 uppercase font-medium text-xs leading-3 ',
+    item: 'px-5 py-px text-sm leading-6',
   },
+  onSelect: (value: any) => console.log(`selected item :`, value),
 };

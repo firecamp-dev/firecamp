@@ -11,7 +11,8 @@ import Menu from './header/Menu';
 import { platformEmitter as emitter } from '../../services/platform-emitter';
 import { EPlatformTabs } from '../../services/platform-emitter/events';
 import { ITabStore, useTabStore } from '../../store/tab';
-import GlobalCreateDD from '../common/GlobalCreate';
+// import GlobalCreateDD from '../common/GlobalCreate';
+import GlobalCreatev2 from '../common/GlobalCreateDDv2';
 import platformContext from '../../services/platform-context';
 import PreComp from './header/PreComp';
 import { ETabEntityTypes } from './types';
@@ -139,7 +140,8 @@ const TabHeaderContainer = () => {
         </Column>
         <div className="-mb-96 pb-96 flex">
           <EnvironmentSelector />
-          <GlobalCreateDD />
+          {/* <GlobalCreateDD /> */}
+          <GlobalCreatev2 />
         </div>
       </Row>
     </Column>

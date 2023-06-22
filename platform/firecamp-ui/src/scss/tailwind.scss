@@ -1412,6 +1412,9 @@ video {
 .rounded-full {
   border-radius: 9999px;
 }
+.rounded-none {
+  border-radius: 0px;
+}
 .rounded-sm {
   border-radius: 0.125rem;
 }
@@ -1781,6 +1784,10 @@ video {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
 .px-6 {
   padding-left: 1.5rem;
   padding-right: 1.5rem;
@@ -1872,6 +1879,9 @@ video {
 }
 .pb-1 {
   padding-bottom: 0.25rem;
+}
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 .pb-3 {
   padding-bottom: 0.75rem;
@@ -2386,6 +2396,9 @@ video {
 }
 .hover\:\!bg-focusColor:hover {
   background-color: #ffffff1a !important;
+}
+.hover\:bg-focus1:hover {
+  background-color: var(--focus-level-1);
 }
 .hover\:bg-focus2:hover {
   background-color: var(--focus-level-2);
