@@ -54,8 +54,8 @@ export default class Run extends Command {
     loadJsonFile(path)
       .then(async (collection) => {
 
-        let envObj = { value: [] };
-        let globalObj = { value: [] };
+        let envObj = { values: [] };
+        let globalObj = { values: [] };
         if (environment) {
           try {
             envObj = await loadJsonFile(environment)
@@ -71,15 +71,14 @@ export default class Run extends Command {
             this.logError('could not load globals', e);
           }
         }
-
         // this.logJson(collection);
         const options: IRunnerOptions = {
           executeRequest: (request: any) => {
             const executor = new RestExecutor();
-            return executor.send(request, { collectionVariables: [], environment: [], globals: [] });
+            return executor.send(request, { collectionVariables: [], environment: envObj.values, globals: globalObj.values });
           },
-          environment: envObj,
-          globals: globalObj
+          environment: envObj.values,
+          globals: globalObj.values
         }
         if (iterationCount) options.iterationCount = +iterationCount;
         if (iterationData) options.iterationData = iterationData;
