@@ -26,20 +26,20 @@ const DropdownMenu = ({
       </Menu.Target>
 
       <Menu.Dropdown
-        className={'border border-appBorder bg-popoverBackground rounded-none'}
+        className={'border border-app-border bg-popover-background rounded-none'}
       >
         {options.map((item, i) => {
           return (
             <Fragment key={`menu-item-${i}`}>
               {item.isLabel ? (
                 <Menu.Label
-                  className="text-activityBarInactiveForeground font-sans"
+                  className="text-activityBar-foreground-inactive font-sans"
                 >
                   {item.name}
                 </Menu.Label>
               ) : (
                 <Menu.Item
-                  className="cursor-pointer text-appForeground font-sans hover:bg-focus1 focus-visible:!shadow-none"
+                  className="cursor-pointer text-app-foreground font-sans hover:bg-focus1 focus-visible:!shadow-none"
                   icon={typeof item.prefix === 'function' && item.prefix()}
                   rightSection={
                     typeof item.postfix === 'function' && item.postfix()
@@ -53,7 +53,7 @@ const DropdownMenu = ({
               {item.showSeparator ? (
                 <Menu.Divider
                   key={`menu-divider-${i}`}
-                  className={'bg-appBorder'}
+                  className={'bg-app-border'}
                 />
               ) : (
                 <></>

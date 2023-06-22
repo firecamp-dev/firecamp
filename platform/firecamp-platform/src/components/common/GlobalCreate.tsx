@@ -157,7 +157,7 @@ const GlobalCreateDD = ({}) => {
         classes={{
           animate: true,
           rounded: false,
-          options: 'w-[200px] bg-popover-background !pb-2 mt-[3px]',
+          options: 'w-[200px] bg-popover-background !pb-2 mt-[3px] z-30',
           header:
             '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans !text-activityBar-foreground-inactive !opacity-100	',
           optionListItem:
