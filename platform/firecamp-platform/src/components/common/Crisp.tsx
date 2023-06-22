@@ -42,6 +42,7 @@ export default () => {
         setCrispLoadedFlag(true);
       }
       window.$crisp.push(['safe', true]);
+      window.$crisp.push(["do", "session:reset"]);
     }
   }, []);
   return <></>;
