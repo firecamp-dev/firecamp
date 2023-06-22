@@ -55,7 +55,7 @@ const Checkbox: FC<ICheckbox> = ({
             readOnly={true}
             id={id}
           />
-          <span className={cx("border w-4 h-4",{'border-primaryColor': isChecked},{'border-appForeground': !isChecked})}></span>
+          <span className={cx("border w-4 h-4",{'border-primaryColor': isChecked},{'border-app-foreground': !isChecked})}></span>
           {isChecked ? (
             <VscCheck
               size={12}

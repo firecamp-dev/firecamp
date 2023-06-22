@@ -78,7 +78,7 @@ export function FormWithCheckBox() {
     updateCheckBoxItem(item => ({ ...item, isChecked: !item.isChecked }))
   };
 
-  return (<form className="fc-form grid max-w-sm bg-appBackground2" onSubmit={handleSubmit(onSubmit, onErrors)}>
+  return (<form className="fc-form grid max-w-sm bg-app-background-secondary" onSubmit={handleSubmit(onSubmit, onErrors)}>
     <br />
     <Inputv2
       wrapperClassName="fc-input"

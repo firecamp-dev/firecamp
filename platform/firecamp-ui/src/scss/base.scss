@@ -213,7 +213,7 @@
 }
 
 body{
-  @apply bg-appBackground text-appForeground;
+  @apply bg-app-background text-app-foreground;
 }
 
 body{
@@ -349,11 +349,11 @@ tr:focus-visible{
 .popover-boxshadow{
   box-shadow: var(--popover-shadow);
 }  
-*.bg-appBackground2
+*.bg-app-background-secondary
 ,
-*.bg-appBackground2
+*.bg-app-background-secondary
  .fc-col,
-*.bg-appBackground2
+*.bg-app-background-secondary
 .fc-col {
     background: var(--app-background-secondary)
 }
@@ -542,7 +542,7 @@ tr:focus-visible{
   position: absolute;
   left: 0px;
   width: 32px !important;
-  border-left: 1px solid var(--appBorder);
+  border-left: 1px solid var(--app-border);
 }
 .fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-left {
   position: absolute;

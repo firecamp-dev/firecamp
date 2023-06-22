@@ -144,7 +144,7 @@ const Options: FC<IOptions> = ({
                 key={`option-header-${oi}`}
                 className={
                   headerClassName ||
-                  `!pb-1 !pt-3 !px-5 !text-xs text-activityBarInactiveForeground font-medium relative font-sans leading-3`
+                  `!pb-1 !pt-3 !px-5 !text-xs text-activityBar-foreground-inactive font-medium relative font-sans leading-3`
                 }
               >
                 {headerMeta?.prefix ? headerMeta.prefix() : ''}

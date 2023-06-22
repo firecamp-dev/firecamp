@@ -104,7 +104,7 @@ export const LayoutWithSingleColumn = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
     <Row className="bg-focus1 border border-dashed" flex={1} >
       <Column className="bg-focus4 mx-2 my-3" flex={1}>
@@ -125,7 +125,7 @@ export const LayoutWithMultipleColumn = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
     <Row className="bg-focus1 border border-dashed" flex={1} >
       <Column className="bg-focus4 mx-2 my-3" flex={1}>
@@ -141,7 +141,7 @@ export const LayoutWithMultipleRowOverflowCol = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
     <Row className="bg-focus1 border border-dashed overflow-auto" flex={1} >
       <Column className="bg-focus2 mx-2 my-3 visible-scrollbar" flex={1} >
@@ -160,7 +160,7 @@ export const LayoutWithMultipleRowColumn = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
     <Row className="bg-focus1 border border-dashed" flex={1} >
 
@@ -191,7 +191,7 @@ export const LayoutWithNestedColumn = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
     <Row className="bg-focus1 border border-dashed" flex={1} >
       <Column className="bg-focus4 mx-2 my-3" flex={1}>
@@ -202,7 +202,7 @@ export const LayoutWithNestedColumn = () => (
         <RootContainer
           flex={1}
           overflow="auto"
-          className={`h-full w-full bg-appBackground2 text-appForeground border border-appBackground`}
+          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-app-background`}
         >
           <Row className="bg-focus1 border border-dashed" flex={1} >
             <Column className="bg-focus4 mx-2 my-3" flex={1}>
@@ -225,7 +225,7 @@ export const Layout_App = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
     <Row className="bg-focus1 border border-dashed" flex={1} >
       <Column className="bg-focus4 mx-2 my-3" flex={1}>
@@ -238,7 +238,7 @@ export const Layout_Graph_QL = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
     <Row className="bg-focus1 border border-dashed" >
       <Column className="bg-focus4 mx-2 my-3" flex={1}>
@@ -264,7 +264,7 @@ export const Layout_HTTP = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
 
     <Row className="bg-focus1 border border-dashed" >
@@ -279,7 +279,7 @@ export const Layout_HTTP = () => (
         <RootContainer
           flex={1}
           overflow="auto"
-          className={`h-full w-full bg-appBackground2 text-appForeground border border-appBackground`}
+          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-app-background`}
         >
           <Row className="bg-focus1 border border-dashed" >
             <Column className="bg-focus2 mx-2 my-3" flex={1} >
@@ -306,7 +306,7 @@ export const Layout_Web_Socket = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
 
     <Row className="bg-focus1 border border-dashed" >
@@ -322,7 +322,7 @@ export const Layout_Web_Socket = () => (
         <RootContainer
           flex={1}
           overflow="auto"
-          className={`h-full w-full bg-appBackground2 text-appForeground border border-appBackground`}
+          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-app-background`}
         >
           <Row className="bg-focus1 border border-dashed" flex={1} >
             <Column className="bg-focus4 mx-2 my-3" flex={1}>
@@ -345,7 +345,7 @@ export const Layout_Socket_IO = () => (
   <RootContainer
     flex={1}
     overflow="auto"
-    className={`h-screen w-screen bg-appBackground2 text-appForeground border border-appBackground`}
+    className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-app-background`}
   >
 
     <Row className="bg-focus1 border border-dashed" >
@@ -363,7 +363,7 @@ export const Layout_Socket_IO = () => (
         <RootContainer
           flex={1}
           overflow="auto"
-          className={`h-full w-full bg-appBackground2 text-appForeground border border-appBackground`}
+          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-app-background`}
         >
           <Row className="bg-focus1 border border-dashed" flex={1} >
             <Column className="bg-focus4 mx-2 my-3" flex={1}>

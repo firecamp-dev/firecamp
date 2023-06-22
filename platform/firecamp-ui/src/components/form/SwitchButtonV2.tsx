@@ -19,7 +19,7 @@ const SwitchButtonV2: FC<ISwitchButton> = ({
       onCheckedChange={onChange}
       className={cx(
         'rounded-2xl shadow-md',
-        { 'bg-appForeground': !checked },
+        { 'bg-app-foreground': !checked },
         { 'bg-primaryColor': checked },
         { 'w-5 h-[10px]': xs },
         { 'w-10 h-5': sm },
@@ -31,7 +31,7 @@ const SwitchButtonV2: FC<ISwitchButton> = ({
     >
       <Switch.Thumb
         className={cx(
-          'block bg-appBackground rounded-2xl  duration-100	',
+          'block bg-app-background rounded-2xl  duration-100	',
           { 'w-2 h-2': xs },
           { 'w-4 h-4': sm },
           { 'h-6 w-6': md },

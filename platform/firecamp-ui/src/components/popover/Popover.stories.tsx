@@ -9,7 +9,7 @@ export default {
 const Template = () => {
 
     return (
-        <div className='bg-appBackground h-screen w-screen text-appForeground p-8'>
+        <div className='bg-app-background h-screen w-screen text-app-foreground p-8'>
             <Popover id={1} key={1} content={<Content text={"Hi! I'm popover content. Here's my position"} />}>
                 <Popover.Handler>
                     <div className='inline'>Click</div>

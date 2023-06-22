@@ -117,7 +117,7 @@ export default {
         >
           {context.isExpanded && item.isFolder && (
             <span
-              className="rct-tree-line absolute top-4 bottom-0 border-r border-appForegroundInActive z-10"
+              className="rct-tree-line absolute top-4 bottom-0 border-r border-app-foreground-inactive z-10"
               style={{ paddingLeft: `${renderDepthOffset}px` }}
             ></span>
           )}

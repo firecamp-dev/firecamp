@@ -22,7 +22,7 @@ const StatusBar: FC<IStatusBar>
             <div
                 tabIndex={1}
                 id={id}
-                className={classnames(className, "bg-statusBarBackground text-statusBarForeground !border-statusBarBorder text-base flex leading-6")}>
+                className={classnames(className, "bg-statusBar-background text-statusBar-foreground !border-statusBar-border text-base flex leading-6")}>
                 {children}
             </div>
         );

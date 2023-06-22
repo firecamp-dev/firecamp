@@ -13,7 +13,7 @@ const AvailableOnElectron: FC<IAvailableOnElectron> = ({
   linkText = 'desktop app'
 }) => {
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-appForeground">
+    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-app-foreground">
       {' '}
       <div className="p-2 max-w-md">
        {name && name.length ? name : 'This'} is a desktop specific feature,

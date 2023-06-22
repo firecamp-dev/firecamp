@@ -58,13 +58,13 @@ const Input = React.forwardRef(
     return (
       <div
         className={cx(
-          'relative items-center text-inputText text-sm w-full mb-5',
+          'relative items-center text-input-text text-sm w-full mb-5',
           wrapperClassName
         )}
       >
         {label !== '' && (
           <label
-            className="text-appForeground text-sm mb-1 block"
+            className="text-app-foreground text-sm mb-1 block"
             htmlFor={label}
           >
             {label}
@@ -76,8 +76,8 @@ const Input = React.forwardRef(
               'absolute flex items-center top-2',
               { 'left-3': hasIconLeft },
               { 'right-3': hasIconRight },
-              { 'text-inputText': value != '' },
-              { 'text-inputPlaceholder': value == '' }
+              { 'text-input-text': value != '' },
+              { 'text-input-placeholder': value == '' }
             )}
           ></span>
         )}
@@ -93,7 +93,7 @@ const Input = React.forwardRef(
               name={name}
               type={type}
               className={cx(
-                'border !border-inputBorder rounded-sm p-2 leading-5 outline-none placeholder-inputPlaceholder text-base focus:bg-inputFocusBackground w-full bg-inputBackground',
+                'border !border-input-border rounded-sm p-2 leading-5 outline-none placeholder-input-placeholder text-base focus:bg-input-background-focus w-full bg-input-background',
                 { '!pl-9': hasIconLeft },
                 { '!pr-9': hasIconRight },
                 className
@@ -125,7 +125,7 @@ const Input = React.forwardRef(
           <div>
             <SingleLineEditor
               id={id}
-              className={cx('border px-2 py-1 border-inputBorder', className)}
+              className={cx('border px-2 py-1 border-input-border', className)}
               autoFocus={autoFocus}
               type={type == 'number' ? 'number' : 'text'}
               value={value}
@@ -160,7 +160,7 @@ const ErrorMessage: FC<{ error: string | JSX.Element }> = ({ error }) => {
 
 const Note = ({ note = '' }) => {
   return (
-    <div className="text-xs text-appForeground  flex items-center">
+    <div className="text-xs text-app-foreground  flex items-center">
       <VscInfo />
       {note}
     </div>

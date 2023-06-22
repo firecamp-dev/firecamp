@@ -1,8 +1,8 @@
 //to access tailwind.scss styles everywhere in project
 import '../src/scss/tailwind.scss';
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import { withTests } from '@storybook/addon-jest';
-import { addDecorator } from "@storybook/react";
+import { addDecorator } from '@storybook/react';
 import cx from 'classnames';
 import results from '../.jest-test-results.json';
 
@@ -23,26 +23,27 @@ export const decorators = [
 
 //adding globally theme-selection
 addDecorator((story) => {
-  return <div>
-    <StoryTheme initialClassName="sb-main-padded sb-show-main"/>
-    {story()}
+  return (
+    <div>
+      <StoryTheme initialClassName="sb-main-padded sb-show-main" />
+      {story()}
     </div>
-})
+  );
+});
 
+const StoryTheme = ({ initialClassName = '' }) => {
+  const STORY_THEME = {
+    mode: {
+      Light: 'light',
+      Dark: 'dark',
+    },
+    color: {
+      Green: 'green',
+      Orange: 'orange',
+    },
+  };
 
-const StoryTheme = ({initialClassName = ""}) => {
-const STORY_THEME = {
-  mode: {
-  Light: 'light',
-  Dark: 'dark',
-  },
-  color: {
-  Green : 'green',
-  Orange : 'orange',
-  }
-}
-
-    const themes = [
+  const themes = [
     {
       className: 'themeBG light-green',
       value: {
@@ -81,15 +82,14 @@ const STORY_THEME = {
     },
   ];
 
-  const [theme, updateTheme] = useState(themes[0].value)
+  const [theme, updateTheme] = useState(themes[0].value);
 
-  
   useEffect(() => {
     try {
       // Set app body theme
-      document.body.className = `${initialClassName} theme-${theme?.mode || 'light'} primary-${
-        theme?.color || 'orange'
-      }`;
+      document.body.className = `${initialClassName} theme-${
+        theme?.mode || 'light'
+      } primary-${theme?.color || 'orange'}`;
     } catch (error) {
       console.log({ error });
     }
@@ -105,7 +105,7 @@ const STORY_THEME = {
 
   return (
     <div className="flex flex-row justify-end items-center p-2 mb-2 ">
-      <div className="block text-base uppercase font-semibold text-appForegroundInActive mb-1 mr-2">
+      <div className="block text-base uppercase font-semibold text-app-foreground-inactive mb-1 mr-2">
         Themes
       </div>
       <div className="flex">
@@ -132,5 +132,4 @@ const STORY_THEME = {
       </div>
     </div>
   );
-
-}
+};

@@ -18,7 +18,7 @@ const StatusBarContainer: FC<any> = ({ className = '' }) => {
       <StatusBar.PrimaryRegion id={'firecamp-status-bar-primary-region'}>
         <div
           tabIndex={1}
-          className="bg-primaryColor text-primaryColorText w-fit px-3 flex items-center"
+          className="bg-primaryColor text-primaryColor-text w-fit px-3 flex items-center"
           id={'status-bar-firecamp-version'}
           data-tip={`Firecamp`}
         >

@@ -119,7 +119,7 @@ const Th: FC<TTh> = ({
 
   return (
     <th
-      className={cx('p-1 border border-appBorder', className)}
+      className={cx('p-1 border border-app-border', className)}
       style={style}
       {...additionalProp}
     >
@@ -138,7 +138,7 @@ const Td: FC<TTd<any>> = ({
   return (
     <td
       className={cx(
-        'relative border-b border-l first:border-l-0 border-appBorder',
+        'relative border-b border-l first:border-l-0 border-app-border',
         className
       )}
       style={{ ...style, height: '30px' }}

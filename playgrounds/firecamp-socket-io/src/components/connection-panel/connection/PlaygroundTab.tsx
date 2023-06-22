@@ -67,7 +67,7 @@ const EmitterPlayground = () => {
       <div className="px-2 flex-1 flex flex-col">
         <TabHeader className="height-small !px-0">
           <TabHeader.Left>
-            <span className="text-appForeground text-sm block">
+            <span className="text-app-foreground text-sm block">
               Add Arguments
             </span>
           </TabHeader.Left>
@@ -87,7 +87,7 @@ const EmitterPlayground = () => {
             />
           </TabHeader.Right>
         </TabHeader>
-        <div className="border border-appBorder flex-1 flex flex-col">
+        <div className="border border-app-border flex-1 flex flex-col">
           <EmitterArgTabs
             activeArgIndex={activeArgIndex}
             totalTabs={plgEmitter.value?.length}

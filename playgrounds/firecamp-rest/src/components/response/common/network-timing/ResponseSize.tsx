@@ -50,7 +50,7 @@ const Size = ({ sizes = [], index = 0 }) => {
 
   return (
     <Container className="with-divider">
-      <Container.Header className="bg-appBackground2">
+      <Container.Header className="bg-app-background-secondary">
         <TabHeader
           id={`${totalSize.curlParameter}-size`}
           className="height-ex-small  fc-network-header"
@@ -64,7 +64,7 @@ const Size = ({ sizes = [], index = 0 }) => {
           </TabHeader.Right>
         </TabHeader>
       </Container.Header>
-      <Container.Body className="border-b border-appBorder">
+      <Container.Body className="border-b border-app-border">
         {sizes && Array.isArray(sizes)
           ? (sizes || [])
               .filter(

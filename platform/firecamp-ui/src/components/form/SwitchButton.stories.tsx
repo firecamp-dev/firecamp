@@ -10,7 +10,7 @@ export default {
 };
 
 const Template = (args: ISwitchButton) => (
-  <div className="bg-activityBarActiveBackground p-4 w-96">
+  <div className="bg-activityBar-background-active p-4 w-96">
     <SwitchButton {...args} />
   </div>
 );

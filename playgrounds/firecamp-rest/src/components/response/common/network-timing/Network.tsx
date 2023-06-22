@@ -22,7 +22,7 @@ const Network = ({ times = [], network = [] }) => {
       <Container className="with-divider">
         <Container.Header>
           <Container className="with-divider">
-            <Container.Header className="bg-appBackground2">
+            <Container.Header className="bg-app-background-secondary">
               <TabHeader className="height-ex-small fc-network-header">
                 <TabHeader.Left>Network</TabHeader.Left>
               </TabHeader>
@@ -54,7 +54,7 @@ const Network = ({ times = [], network = [] }) => {
         </Container.Header>
         <Container.Body>
           <Container className="with-divider">
-            <Container.Header className="bg-appBackground2">
+            <Container.Header className="bg-app-background-secondary">
               <TabHeader className="height-ex-small fc-network-header">
                 <TabHeader.Left>Event</TabHeader.Left>
                 <TabHeader.Right>Time</TabHeader.Right>

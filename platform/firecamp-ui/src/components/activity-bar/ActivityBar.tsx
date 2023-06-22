@@ -19,7 +19,7 @@ const ActivityBar: FC<IActivityBar>
     children
   }) => {
     return (
-      <div tabIndex={1} id={id} className={cx('activitybar focus-outer2 w-12 bg-activityBarBackground text-activityBarForeground flex flex-col  border-r border-activityBarBorder', className)} style={style}>
+      <div tabIndex={1} id={id} className={cx('activitybar focus-outer2 w-12 bg-activityBar-background text-activityBar-foreground flex flex-col  border-r border-activityBar-border', className)} style={style}>
         {children || ''}
       </div>
     );

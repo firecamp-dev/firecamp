@@ -34,11 +34,11 @@ const TextArea: FC<ITextArea> = ({
 
   return (
     <div className='flex flex-col mb-3 relative'>
-      {label != '' ? <label className={classNames(labelClassName,'text-appForeground text-sm mb-1 block')}>{label}</label> : ''}
+      {label != '' ? <label className={classNames(labelClassName,'text-app-foreground text-sm mb-1 block')}>{label}</label> : ''}
       <div className="relative">
       <textarea
         name={name}
-        className={classNames(className,'!border-inputBorder focus:bg-inputFocusBackground text-base p-2 text-inputText border resize-none rounded-sm bg-inputBackground w-full')}
+        className={classNames(className,'!border-input-border focus:bg-input-background-focus text-base p-2 text-input-text border resize-none rounded-sm bg-input-background w-full')}
         placeholder={placeholder}
         {...valueProps}
         onChange={onChange}
@@ -52,7 +52,7 @@ const TextArea: FC<ITextArea> = ({
                 { 'right-2': hasIconRight })}>{icon}</span>
                 </div>
       {note != '' ? (
-        <div className="text-xs flex items-center justify-start text-appForeground">
+        <div className="text-xs flex items-center justify-start text-app-foreground">
         <VscInfo size={14} className='pr-1' />
           {note}
         </div>

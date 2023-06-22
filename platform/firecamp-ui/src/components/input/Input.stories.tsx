@@ -16,7 +16,7 @@ export default {
   }
 };
 
-const Template = (args) => <div className="bg-activityBarBackground p-4 w-96"> <Input {...args} /></div>;
+const Template = (args) => <div className="bg-activityBar-background p-4 w-96"> <Input {...args} /></div>;
 
 export const InputDemo = Template.bind({});
 InputDemo.args = { placeholder: 'Sample Button', value: '' };

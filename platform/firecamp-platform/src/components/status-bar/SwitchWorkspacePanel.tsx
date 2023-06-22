@@ -9,14 +9,14 @@ const SwitchWorkspacePanel: FC<any> = ({ className = '' }) => {
 
   if (!isPanelOpen) return <></>;
   return (
-    <div className="absolute left-0 right-0 bottom-6 bg-appBackground2 p-4 border-t border-appBorder">
+    <div className="absolute left-0 right-0 bottom-6 bg-app-background-secondary p-4 border-t border-app-border">
       <VscClose
         size={20}
         strokeWidth={1}
         className="absolute right-3 top-3 cursor-pointer"
         onClick={() => togglePanel(!isPanelOpen)}
       />
-      <div className=" text-base font-bold text-appForegroundActive mb-3">
+      <div className=" text-base font-bold text-app-foreground-active mb-3">
         Organization workspace
       </div>
       <div className="mb-4 w-60">
@@ -48,13 +48,13 @@ export default SwitchWorkspacePanel;
 
 const WorkspaceCard: FC<any> = () => {
   return (
-    <div className="workpsace-card relative flex cursor-pointer flex-col border border-appBorder ml-2 mr-2 first:ml-0 last:mr-0">
-      <div className="border-b border-appBorder flex flex-row p-2 pb-4">
+    <div className="workpsace-card relative flex cursor-pointer flex-col border border-app-border ml-2 mr-2 first:ml-0 last:mr-0">
+      <div className="border-b border-app-border flex flex-row p-2 pb-4">
         <div>
-          <span className="block text-base text-appForeground font-semibold whitespace-pre leading-5">
+          <span className="block text-base text-app-foreground font-semibold whitespace-pre leading-5">
             16 Pixel
           </span>
-          <span className="block text-sm text-appForegroundInActive font-normal leading-3">
+          <span className="block text-sm text-app-foreground-inactive font-normal leading-3">
             Workspace
           </span>
         </div>
@@ -69,7 +69,7 @@ const WorkspaceCard: FC<any> = () => {
             <div
               data-tip="Tooltip text"
               data-for="1"
-              className="w-6 h-6 border border-appForegroundInActive text-appForeground bg-appBorder text-xs flex justify-center items-center rounded-full -ml-2"
+              className="w-6 h-6 border border-app-foreground-inactive text-app-foreground bg-app-border text-xs flex justify-center items-center rounded-full -ml-2"
             >
               M
             </div>
@@ -78,7 +78,7 @@ const WorkspaceCard: FC<any> = () => {
             <div
               data-tip="Tooltip text"
               data-for="2"
-              className="w-6 h-6 border border-appForegroundInActive text-appForeground bg-appBorder text-xs flex justify-center items-center rounded-full -ml-2"
+              className="w-6 h-6 border border-app-foreground-inactive text-app-foreground bg-app-border text-xs flex justify-center items-center rounded-full -ml-2"
             >
               M
             </div>
@@ -87,7 +87,7 @@ const WorkspaceCard: FC<any> = () => {
             <div
               data-tip="Tooltip text"
               data-for="3"
-              className="w-6 h-6 border border-appForegroundInActive text-appForeground bg-appBorder text-xs flex justify-center items-center rounded-full -ml-2"
+              className="w-6 h-6 border border-app-foreground-inactive text-app-foreground bg-app-border text-xs flex justify-center items-center rounded-full -ml-2"
             >
               M
             </div>
@@ -96,7 +96,7 @@ const WorkspaceCard: FC<any> = () => {
             <div
               data-tip="Tooltip text"
               data-for="4"
-              className="w-6 h-6 border border-appForegroundInActive text-appForeground bg-appBorder text-xs flex justify-center items-center rounded-full -ml-2"
+              className="w-6 h-6 border border-app-foreground-inactive text-app-foreground bg-app-border text-xs flex justify-center items-center rounded-full -ml-2"
             >
               M
             </div>
@@ -104,7 +104,7 @@ const WorkspaceCard: FC<any> = () => {
           <div
             data-tip="Tooltip text"
             data-for="5"
-            className="w-6 h-6 border border-appForeground text-primaryColorText bg-primaryColor text-xs flex justify-center items-center rounded-full -ml-2"
+            className="w-6 h-6 border border-app-foreground text-primaryColor-text bg-primaryColor text-xs flex justify-center items-center rounded-full -ml-2"
           >
             +25
           </div>

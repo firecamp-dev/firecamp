@@ -96,7 +96,7 @@ describe("Input component: ", () => {
         expect(InputElement).toBeInTheDocument();
 
         //Input element default styles
-        expect(InputElement).toHaveClass('border !border-inputBorder rounded-sm p-2 leading-5 outline-none placeholder-inputPlaceholder text-base focus:bg-inputFocusBackground w-full bg-inputBackground');
+        expect(InputElement).toHaveClass('border !border-input-border rounded-sm p-2 leading-5 outline-none placeholder-input-placeholder text-base focus:bg-input-background-focus w-full bg-input-background');
 
         //Input element wrapper div with default styles
         expect(InputElement.parentElement).toHaveClass('w-full relative');
@@ -126,7 +126,7 @@ describe("Input component: ", () => {
         let InputWrapper = container.firstElementChild;
 
         //validate input component div wrapper styles
-        expect(InputWrapper).toHaveClass('relative items-center text-inputText text-sm w-full mb-5 ' + wrapperClassName);
+        expect(InputWrapper).toHaveClass('relative items-center text-input-text text-sm w-full mb-5 ' + wrapperClassName);
 
         //Input element exists
         let InputElement = screen.getByRole('textbox');
@@ -135,7 +135,7 @@ describe("Input component: ", () => {
         //validate the label text & its styles
         let labelElement = InputWrapper.firstElementChild;
         expect(labelElement.textContent).toBe(InputProps.label);
-        expect(labelElement.className).toBe("text-appForeground text-sm mb-1 block");
+        expect(labelElement.className).toBe("text-app-foreground text-sm mb-1 block");
 
     });
 
@@ -192,7 +192,7 @@ describe("Input component: ", () => {
 
         //validate the note message to be rendered along with defined styles & info icon
         let NoteElement = InputElement.parentElement.lastElementChild;
-        expect(NoteElement).toHaveClass("text-xs text-appForeground  flex items-center")
+        expect(NoteElement).toHaveClass("text-xs text-app-foreground  flex items-center")
         expect(NoteElement.textContent).toBe('info-icon' + NoteMessage);
     });
 

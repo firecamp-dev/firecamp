@@ -41,7 +41,7 @@ const Help: FC<IHelp> = ({ docLink = '', client = 'http' }) => {
       case HELPDESK_TYPES.DOCUMENTATION:
         return (
           <a
-            className="text-appForegroundInActive"
+            className="text-app-foreground-inactive"
             href={docLink || 'https://firecamp.io/docs/'}
             target={'_blank'}
           >
@@ -52,7 +52,7 @@ const Help: FC<IHelp> = ({ docLink = '', client = 'http' }) => {
       case HELPDESK_TYPES.GITHUB:
         return (
           <a
-            className="text-appForegroundInActive"
+            className="text-app-foreground-inactive"
             href={
               client
                 ? `https://github.com/firecampdev/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${client}]%20Title%20or%20Feature%20request`
@@ -69,7 +69,7 @@ const Help: FC<IHelp> = ({ docLink = '', client = 'http' }) => {
       case HELPDESK_TYPES.JOIN_DISCORD:
         return (
           <a
-            className="text-appForegroundInActive"
+            className="text-app-foreground-inactive"
             href={helpDesks[type] ? helpDesks[type].link : ''}
             target={'_blank'}
           >
@@ -83,11 +83,11 @@ const Help: FC<IHelp> = ({ docLink = '', client = 'http' }) => {
   };
 
   return (
-    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-appForeground">
+    <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-app-foreground">
       <div className="flex flex-col opacity-50">
         {Object.values(helpDesks).map((help, index) => {
           return (
-            <div className=" text-appForegroundInActive flex items-center mb-2 text-xl" key={`help-${client}-${index}`}>
+            <div className=" text-app-foreground-inactive flex items-center mb-2 text-xl" key={`help-${client}-${index}`}>
               <div className="pr-1 flex items-center justify-center">
                 {help.image}
               </div>

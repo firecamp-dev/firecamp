@@ -33,8 +33,8 @@ const SignIn: FC<IModal> = () => {
           />
         </div>
         {/* <div className="mb-8 mt-8 flex justify-center items-center">
-          <hr className="border-t border-appBorder w-full" />
-          <span className="text-xs text-appForegroundInActive bg-modalBackground absolute px-1">OR</span>
+          <hr className="border-t border-app-border w-full" />
+          <span className="text-xs text-app-foreground-inactive bg-modal-background absolute px-1">OR</span>
         </div> */}
         <div className="flex-col">
           <div className="text-sm mt-6 text-center">
@@ -52,7 +52,7 @@ const SignIn: FC<IModal> = () => {
               Sign Up
             </a>
           </div>
-          <div className="text-sm mt-6 text-center text-appForegroundInActive">
+          <div className="text-sm mt-6 text-center text-app-foreground-inactive">
             By moving forward, you acknowledge that you have read and accept the
             <a
               href="https://firecamp.io/legals/privacy-policy/"

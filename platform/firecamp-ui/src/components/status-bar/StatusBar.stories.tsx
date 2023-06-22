@@ -10,9 +10,9 @@ export default {
     secondaryRegion: () => {
         return (
             <div className="flex items-center">
-                <a className="flex items-center pr-2 " href="#" ><VscTwitter size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
-                <a className="flex items-center pr-2" href="#" ><VscGithubInverted size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
-                <a className="flex items-center pr-2" href="#" ><VscFile size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
+                <a className="flex items-center pr-2 " href="#" ><VscTwitter size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
+                <a className="flex items-center pr-2" href="#" ><VscGithubInverted size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
+                <a className="flex items-center pr-2" href="#" ><VscFile size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
             </div>
         )
     }
@@ -36,9 +36,9 @@ StatusBarDemo.args = {
     secondaryRegion: () => {
         return (
             <div className="flex items-center">
-                <a className="flex items-center pr-2 " href="#" ><VscTwitter size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
-                <a className="flex items-center pr-2" href="#" ><VscGithubInverted size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
-                <a className="flex items-center pr-2" href="#" ><VscFile size={12} className="text-statusBarForeground hover:text-statusBarForegroundActive" /></a>
+                <a className="flex items-center pr-2 " href="#" ><VscTwitter size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
+                <a className="flex items-center pr-2" href="#" ><VscGithubInverted size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
+                <a className="flex items-center pr-2" href="#" ><VscFile size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
             </div>
         )
     }

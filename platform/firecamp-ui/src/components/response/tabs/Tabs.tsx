@@ -139,7 +139,7 @@ export default Tabs;
 const ScriptErrors = ({ errors = [] }) => {
   console.log(errors, 'erros..... errors');
   return (
-    <div className=' w-full bg-appBackground'>
+    <div className=' w-full bg-app-background'>
       {errors.map((e, i) => (
         <ScriptErrorTable error={e} key={i} />
       ))}
@@ -155,19 +155,19 @@ const ScriptErrorTable: FC<any> = ({ error }) => {
     <div>
       <div className="bg-focus4 p-1 text-base font-semibold">{type} script error</div>
       <div className="table w-full  border-collapse ">
-        <div className="table-row  bg-appBackground2">
-          <div className="table-cell border border-appBorder p-1 text-sm font-semibold">
+        <div className="table-row  bg-app-background-secondary">
+          <div className="table-cell border border-app-border p-1 text-sm font-semibold">
             type
           </div>
-          <div className="table-cell border border-appBorder  p-1 text-sm text-appForegroundInActive">
+          <div className="table-cell border border-app-border  p-1 text-sm text-app-foreground-inactive">
             {name}
           </div>
         </div>
-        <div className="table-row bg-appBackground2">
-          <div className="table-cell border border-appBorder p-1 text-sm font-semibold">
+        <div className="table-row bg-app-background-secondary">
+          <div className="table-cell border border-app-border p-1 text-sm font-semibold">
             message
           </div>
-          <div className="table-cell border border-appBorder  p-1 text-sm text-appForegroundInActive">
+          <div className="table-cell border border-app-border  p-1 text-sm text-app-foreground-inactive">
             {message}
           </div>
         </div>

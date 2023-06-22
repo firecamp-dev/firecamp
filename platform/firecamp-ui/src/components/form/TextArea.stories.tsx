@@ -9,7 +9,7 @@ export default {
     }
 };
 
-const Template = (args) => <div className="bg-activityBarActiveBackground p-4 w-96"><TextArea {...args} /></div>;
+const Template = (args) => <div className="bg-activityBar-background-active p-4 w-96"><TextArea {...args} /></div>;
 
 export const TextAreaDemo = Template.bind({});
 TextAreaDemo.args = {name: 'textarea',label: 'textarea', className:'', placeholder: 'Sample Button', value: '',minHeight: '200px'};

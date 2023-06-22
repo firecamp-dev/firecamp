@@ -25,7 +25,7 @@ const Pane: FC<IPane> & {
         const [_expanded, toggle] = useState(expanded);
         const _toggle = ()=>toggle(!_expanded)
         const rendererProps = { toggle: _toggle, expanded: _expanded };
-        return (<div style={{height: height}} className={cx("pane  flex flex-col overflow-auto", { 'expanded border-b border-appBorder !overflow-hidden': _expanded },{'custom-height' : (height != '')}, className)} tabIndex={1}>
+        return (<div style={{height: height}} className={cx("pane  flex flex-col overflow-auto", { 'expanded border-b border-app-border !overflow-hidden': _expanded },{'custom-height' : (height != '')}, className)} tabIndex={1}>
             <Pane.Header
                 className={headerClassName}
                 toggle={_toggle}
@@ -55,7 +55,7 @@ const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, className, expande
         toggle()
     }
     return (
-        <div className={cx("pane-header cursor-pointer border-b border-appBorder px-2 py-1", className)} 
+        <div className={cx("pane-header cursor-pointer border-b border-app-border px-2 py-1", className)} 
              tabIndex={1}
              onClick={onToggle}>
             {

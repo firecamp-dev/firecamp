@@ -30,7 +30,7 @@ const PlainTable = ({
       case 'description':
         return (
           <div
-            className={`bg-transparent text-base text-appForeground font-sans px-2 select-text ${classes?.td}`}
+            className={`bg-transparent text-base text-app-foreground font-sans px-2 select-text ${classes?.td}`}
           >
             {cellValue}
           </div>

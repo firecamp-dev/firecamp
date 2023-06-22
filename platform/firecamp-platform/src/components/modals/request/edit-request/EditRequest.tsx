@@ -86,7 +86,7 @@ const EditRequest: FC<IModal> = ({
       <Modal.Header className="with-divider">
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium display-block">
           {/* Update Request Info */}
-          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mt-2">
+          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mt-2">
             Update Request Info
           </label>
         </div>
@@ -127,7 +127,7 @@ const EditRequest: FC<IModal> = ({
         </div>
       </Modal.Body>
 
-      <Modal.Footer className="!py-3 border-t border-appBorder">
+      <Modal.Footer className="!py-3 border-t border-app-border">
         <TabHeader className="px-6">
           <TabHeader.Right>
             <Button

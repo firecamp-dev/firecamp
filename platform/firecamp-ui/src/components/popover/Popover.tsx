@@ -71,14 +71,14 @@ const Popover: FC<IPopover> & {
               arrowStyle={{ opacity: 1 }}
               className='popover-arrow-container'
               arrowClassName={classNames('popover-arrow',
-                { '!border-b-popoverBackground': (position == 'bottom') },
-                { '!border-t-popoverBackground': (position == 'top') },
-                { '!border-l-popoverBackground': (position == 'left') },
-                { '!border-r-popoverBackground': (position == 'right') }
+                { '!border-b-popover-background': (position == 'bottom') },
+                { '!border-t-popover-background': (position == 'top') },
+                { '!border-l-popover-background': (position == 'left') },
+                { '!border-r-popover-background': (position == 'right') }
               )}
             >
               <div
-                className={classNames('bg-popoverBackground text-popoverForeground text-left text-sm popover-boxshadow rounded-sm', className)}
+                className={classNames('bg-popover-background text-popover-foreground text-left text-sm popover-boxshadow rounded-sm', className)}
               >
                 {content || ''}
               </div>

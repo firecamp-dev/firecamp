@@ -64,7 +64,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
           onSelect={({ name, id }) => onChange({ role: id })}
         />
         <RolesCallout role={_role.id} />
-        <div className="text-sm font-semibold leading-3 text-appForegroundInActive">
+        <div className="text-sm font-semibold leading-3 text-app-foreground-inactive">
           Use comma separated name and email. use multiple lines to invite in
           bulk.
           <Popover
@@ -82,7 +82,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
         <Editor
-          className="border border-appBorder !h-48"
+          className="border border-app-border !h-48"
           placeholder="Alice, alice@mail.com"
           value={value}
           onChange={(e) => onChange({ value: e.target.value })}
@@ -97,7 +97,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
             please review below error
             {error.map((e, i) => (
               <li key={i}>
-                <span className="text-appForeground">
+                <span className="text-app-foreground">
                   {e.message}
                   {i + 1 !== error.length ? ', ' : ''}
                 </span>
@@ -146,7 +146,7 @@ const RoleDD: FC<{
   return (
     <div className="flex items-center pb-3">
       <div>
-        <label className="text-base text-appForeground">
+        <label className="text-base text-app-foreground">
           Invite members as{' '}
         </label>
 
@@ -162,7 +162,7 @@ const RoleDD: FC<{
             />
           )}
           classes={{
-            options: 'w-36 bg-popoverBackground z-[1000]',
+            options: 'w-36 bg-popover-background z-[1000]',
             item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
           }}
           options={RoleOptions}

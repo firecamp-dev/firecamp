@@ -15,7 +15,7 @@ const FormField: FC<IFormField> = ({
 
     return (
         <div id={id} className={cx(className, 'pb-6')}>
-            {label != '' ? (<label className="text-appForeground text-sm mb-1 block">{label}</label>) : ''}
+            {label != '' ? (<label className="text-app-foreground text-sm mb-1 block">{label}</label>) : ''}
             {children}
             {error && <span className="absolute text-sm text-error">{error}</span>}
         </div>

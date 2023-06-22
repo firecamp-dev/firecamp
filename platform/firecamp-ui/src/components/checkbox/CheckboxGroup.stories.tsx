@@ -11,7 +11,7 @@ export default {
 };
 
 const Template = (args) =>
-    <div className="bg-activityBarActiveBackground text-activityBarForeground">
+    <div className="bg-activityBar-background-active text-activityBar-foreground">
         <CheckboxGroup {...args} />
     </div>;
 

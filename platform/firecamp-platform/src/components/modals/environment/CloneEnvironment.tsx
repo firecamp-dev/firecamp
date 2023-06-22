@@ -118,7 +118,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       <Modal.Body>
         <ProgressBar active={isRequesting} />
         <div className="flex items-center justify-center h-full w-full">
-          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2 text-center">
+          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2 text-center">
             Fetching...
           </label>
         </div>
@@ -139,24 +139,24 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
           <div className="">
             <div className="items-center mb-4">
               <label
-                className="text-appForeground text-sm block mb-1"
+                className="text-app-foreground text-sm block mb-1"
                 htmlFor="envBane"
               >
                 Collection Name
               </label>
-              <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
+              <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive w-full relative mb-2">
                 {collection?.name}
               </label>
             </div>
 
             <div className="items-center mb-4">
               <label
-                className="text-appForeground text-sm block mb-1"
+                className="text-app-foreground text-sm block mb-1"
                 htmlFor="envBane"
               >
                 Environment Name
               </label>
-              <label className="text-sm font-semibold leading-3 block text-appForegroundInActive w-full relative mb-2">
+              <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive w-full relative mb-2">
                 {env.name}
               </label>
             </div>
@@ -178,16 +178,16 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
 
           {/* <div className="">
             <label
-              className="text-appForeground text-sm mb-1 block"
+              className="text-app-foreground text-sm mb-1 block"
               htmlFor="variables"
             >
               Visibility
             </label>
-            <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+            <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
               {env.__meta.visibility == 2 ? 'Private' : 'Public'}
             </label>
 
-            <span className="text-sm font-normal text-appForegroundInActive block mt-1">
+            <span className="text-sm font-normal text-app-foreground-inactive block mt-1">
               {env.__meta.visibility == 2
                 ? 'This environment is private and will only be accessible to you'
                 : 'This environment is public and will be accessible to all members of the workspace'}
@@ -196,12 +196,12 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
 
           <div className="mt-4">
             <label
-              className="text-appForeground text-sm mb-1 block"
+              className="text-app-foreground text-sm mb-1 block"
               htmlFor="variables"
             >
               Variables
             </label>
-            <span className="text-sm font-normal text-appForegroundInActive block mt-1">
+            <span className="text-sm font-normal text-app-foreground-inactive block mt-1">
               Variables will be valid JSON in key-value pair. ex.{' '}
               {`{ "host": "https://myapi.com" }`}
             </span>
@@ -213,10 +213,10 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               disabled={true}
               height={'280px'}
               monacoOptions={{
-                extraEditorClassName: `border border-inputBorder rounded-sm p-2 leading-5 
-                  outline-none placeholder-inputPlaceholder 
-                  text-base focus:bg-inputFocusBackground w-full
-                  bg-inputBackground`,
+                extraEditorClassName: `border border-input-border rounded-sm p-2 leading-5 
+                  outline-none placeholder-input-placeholder 
+                  text-base focus:bg-input-background-focus w-full
+                  bg-input-background`,
                 fontSize: '14px',
                 height: '250px',
                 wordWrap: 'off',

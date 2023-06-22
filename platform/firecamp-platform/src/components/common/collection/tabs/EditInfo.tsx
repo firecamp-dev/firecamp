@@ -37,7 +37,7 @@ const EditInfo: FC<IProps> = ({
     <Container className="with-divider h-full">
       <Container.Body className="padding-wrapper">
         <div className="p-6 flex-1 flex flex-col">
-          <label className="text-sm font-semibold leading-3 block text-appForegroundInActive uppercase w-full relative mb-2">
+          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
             {`UPDATE ${
               entityType === 'collection' ? 'COLLECTION' : 'FOLDER'
             } INFO`}

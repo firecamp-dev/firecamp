@@ -52,13 +52,13 @@ const SwitchWorkspace: FC<IModal> = ({
             <>
               <div className="p-4">
                 <div className="text-sm">
-                  <label className="font-semibold text-appForegroundInActive block">
+                  <label className="font-semibold text-app-foreground-inactive block">
                     {switchingOrg?.name}
                   </label>
-                  <label className="font-semibold text-appForeground uppercase block">
+                  <label className="font-semibold text-app-foreground uppercase block">
                     Please select workspace to switch
                   </label>
-                  <span className="block font-normal text-appForegroundInActive">
+                  <span className="block font-normal text-app-foreground-inactive">
                     A workspace lets you organize and collaborate on APIs .
                   </span>
                 </div>
@@ -104,13 +104,13 @@ const WorkspaceCard = ({ workspace, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="card relative flex items-center p-3 mb-2 text-base border border-appBorder cursor-pointer hover:border-focusBorder  after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
+      className="card relative flex items-center p-3 mb-2 text-base border border-app-border cursor-pointer hover:border-focusBorder  after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
     >
       <div className="z-10 w-full">
-        <div className="flex border-b border-appBorder items-center">
+        <div className="flex border-b border-app-border items-center">
           <div className="font-semibold flex-1 text-base">
             {workspace.name}
-            <span className="text-appForegroundInActive font-normal block text-xs uppercase">
+            <span className="text-app-foreground-inactive font-normal block text-xs uppercase">
               Workspace
             </span>
           </div>
@@ -121,16 +121,16 @@ const WorkspaceCard = ({ workspace, onClick }) => {
         {/* <div className="flex mt-2">
           <div className="flex-1 text-base">
             Members-
-            <span className="text-appForegroundInActive text-sm">
+            <span className="text-app-foreground-inactive text-sm">
               {workspace?.members?.length}
             </span>
           </div> */}
         {/* <div className="ml-auto">
             <div className="flex text-xs">
-              <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-appBorder -ml-1">1</div>
-              <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-appBorder -ml-1">2</div>
-              <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-appBorder -ml-1">3</div>
-              <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-appBorder -ml-1">25+</div>
+              <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-app-border -ml-1">1</div>
+              <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-app-border -ml-1">2</div>
+              <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-app-border -ml-1">3</div>
+              <div className="w-6 h-6 flex justify-center items-center border rounded-full bg-app-border -ml-1">25+</div>
             </div>
           </div> */}
         {/* </div> */}
@@ -143,10 +143,10 @@ const NoWrsFoundMessage = ({ close = () => {} }) => {
   return (
     <div className="p-8 flex flex-col justify-center items-center">
       <div className="text-sm max-w-xs mx-auto text-center px-10">
-        <label className="font-semibold text-appForeground uppercase">
+        <label className="font-semibold text-app-foreground uppercase">
           No Workspaces Found
         </label>
-        <span className="block font-normal text-appForegroundInActive">
+        <span className="block font-normal text-app-foreground-inactive">
           You're not belonging to any workspaces of this organization.
         </span>
       </div>
@@ -159,7 +159,7 @@ const FetchingWrs = () => {
   return (
     <div className="p-8 flex flex-col justify-center items-center">
       <div className="text-sm max-w-xs mx-auto text-center px-10">
-        <label className="font-semibold text-appForeground uppercase">
+        <label className="font-semibold text-app-foreground uppercase">
           Fetching Your Workspaces ...
         </label>
       </div>

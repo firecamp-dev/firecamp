@@ -82,10 +82,10 @@ const Logs = () => {
 
   // console.log('selectedRow', selectedRow);
   return (
-    <Column flex={1} className="h-full bg-appBackground2" overflow="auto">
+    <Column flex={1} className="h-full bg-app-background-secondary" overflow="auto">
       <Container>
         <Container.Header>
-          <TabHeader className="height-small border-b border-appBorder">
+          <TabHeader className="height-small border-b border-app-border">
             <TabHeader.Left>
               <label className="m-0 text-sm font-bold whitespace-pre">
                 Event Logs

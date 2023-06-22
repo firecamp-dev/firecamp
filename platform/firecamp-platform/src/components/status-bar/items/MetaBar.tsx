@@ -29,7 +29,7 @@ const MetaBar: FC<any> = () => {
         >
           <VscComment
             size={16}
-            className="text-statusBarForeground hover:text-statusBarForegroundActive"
+            className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             onClick={toggleChat}
           />
         </a>
@@ -44,7 +44,7 @@ const MetaBar: FC<any> = () => {
       >
         <VscGithubInverted
           size={16}
-          className="text-statusBarForeground hover:text-statusBarForegroundActive"
+          className="text-statusBar-foreground hover:text-statusBar-foreground-active"
         />
       </a>
       <a
@@ -57,7 +57,7 @@ const MetaBar: FC<any> = () => {
       >
         <VscTwitter
           size={16}
-          className="text-statusBarForeground hover:text-statusBarForegroundActive"
+          className="text-statusBar-foreground hover:text-statusBar-foreground-active"
         />
       </a>
 
@@ -70,7 +70,7 @@ const MetaBar: FC<any> = () => {
       >
         <VscFile
           size={16}
-          className="text-statusBarForeground hover:text-statusBarForegroundActive"
+          className="text-statusBar-foreground hover:text-statusBar-foreground-active"
         />
       </a>
       <a
@@ -82,7 +82,7 @@ const MetaBar: FC<any> = () => {
       >
         <SiDiscord
           size={16}
-          className="text-statusBarForeground hover:text-statusBarForegroundActive"
+          className="text-statusBar-foreground hover:text-statusBar-foreground-active"
         />
       </a>
     </div>

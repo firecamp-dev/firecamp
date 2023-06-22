@@ -30,7 +30,7 @@ const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
 
   return (
     <Container.Header>
-      <StatusBar className="bg-statusBarBackground2 px-1">
+      <StatusBar className="bg-statusBar-background-active px-1">
         <StatusBar.PrimaryRegion>
           <div data-tip={path} className="collection-path">
             {`./${emitterPath}`}
@@ -144,7 +144,7 @@ const ShortcutsInfo = ({ tabId }) => {
       positions={[EPopoverPosition.Right]}
       content={
         <div>
-          <div className="text-sm font-bold mb-1 text-appForegroundActive opacity-70 px-2 pt-2 border-b border-appBorder">
+          <div className="text-sm font-bold mb-1 text-app-foreground-active opacity-70 px-2 pt-2 border-b border-app-border">
             Shortcuts
           </div>
           {_renderKeyboardShortcutInfo()}

@@ -7,13 +7,13 @@ import { IDropdownV2, IOptionsV2 } from './interfaces/Dropdownv2.interfaces';
 
 const DEFAULT_STYLES = {
   disabled: 'opacity-50',
-  roundedContainer: 'rounded bg-appBackground border border-appForeground',
-  squaredContainer: 'border border-appBorder focus-visible:!shadow-none', //border-focusBorder
+  roundedContainer: 'rounded bg-app-background border border-app-foreground',
+  squaredContainer: 'border border-app-border focus-visible:!shadow-none',
   shadowContainer:
-    '!shadow-popoverBoxshadow focus-visible:!shadow-popoverBoxshadow',
+    '!shadow-popover-shadow focus-visible:!shadow-popover-shadow',
   nestedOptionTrigger: 'flex items-center',
-  optionItem: 'flex items-center text-appForeground px-2 py-px',
-  separator: 'my-1 bg-appBorder',
+  optionItem: 'flex items-center text-app-foreground px-2 py-px',
+  separator: 'my-1 bg-app-border',
 };
 
 enum LIST_ITEM_HIERARCHY {

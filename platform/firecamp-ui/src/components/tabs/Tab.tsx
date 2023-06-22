@@ -137,12 +137,12 @@ const Tab: FC<ITab> = ({
       className={cx(
         { modified: state == 'modified' },
         { 'border-r': borderMeta?.right },
-        {'after:!bg-statusBarBackground2': hasStatusbar && isActive } ,
-        {'after:!bg-tabActiveBackground': !hasStatusbar && isActive },
+        {'after:!bg-statusBar-background-active': hasStatusbar && isActive } ,
+        {'after:!bg-tab-background-active': !hasStatusbar && isActive },
         'fc-tab',
         'flex',
         'items-center',
-        'border-tabBorder',
+        'border-tab-border',
         'relative',
         'w-fit',
         'whitespace-pre',
@@ -156,12 +156,12 @@ const Tab: FC<ITab> = ({
       <div
         className={cx(
           { 'active': isActive },
-          { 'bg-tabBackground2': tabVersion == 2 },
-          { 'bg-statusBarBackground2': tabVersion == 2 && isActive },
-          {'!bg-tabActiveBackground': !hasStatusbar && isActive },
-          {'!bg-statusBarBackground2': hasStatusbar && isActive },
+          { 'bg-tab-background-activeColor': tabVersion == 2 },
+          { 'bg-statusBar-background-active': tabVersion == 2 && isActive },
+          {'!bg-tab-background-active': !hasStatusbar && isActive },
+          {'!bg-statusBar-background-active': hasStatusbar && isActive },
           'fc-tab',
-          'hover:bg-tabHoverBackground',
+          'hover:bg-tab-background-hover',
           'flex',
           'items-center',
           'px-2',
@@ -170,7 +170,7 @@ const Tab: FC<ITab> = ({
           'w-full',
           'whitespace-pre',
           'relative',
-          { 'bg-tabBackground': tabVersion == 1 },
+          { 'bg-tab-background': tabVersion == 1 },
         )}
       >
         <TopBorderPlacement

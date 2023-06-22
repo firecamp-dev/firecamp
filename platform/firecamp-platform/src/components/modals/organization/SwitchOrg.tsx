@@ -43,10 +43,10 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             <>
               <div className="p-4">
                 <div className="text-sm">
-                  <label className="font-semibold text-appForeground uppercase">
+                  <label className="font-semibold text-app-foreground uppercase">
                     Please select organization to switch
                   </label>
-                  <span className="block font-normal text-appForegroundInActive">
+                  <span className="block font-normal text-app-foreground-inactive">
                     Here is the list of organizations you belong to, after
                     selecting any one of them you'll be asked to choose the
                     workspace of that organization.
@@ -56,7 +56,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               <div className="pl-4 pb-4 pr-2  overflow-auto visible-scrollbar h-80 mr-2">
                 {orgs.map((org, i) => (
                   <div
-                    className="card relative flex items-center p-2 mb-2 text-base font-semibold border border-appBorder cursor-pointer hover:border-focusBorder after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
+                    className="card relative flex items-center p-2 mb-2 text-base font-semibold border border-app-border cursor-pointer hover:border-focusBorder after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
                     key={org.__ref.id}
                   >
                     <a
@@ -103,10 +103,10 @@ const NoOrgFoundMessage = () => {
   return (
     <div className="p-8 flex flex-col justify-center items-center">
       <div className="text-sm max-w-xs mx-auto text-center px-10">
-        <label className="font-semibold text-appForeground uppercase">
+        <label className="font-semibold text-app-foreground uppercase">
           No Organization Found
         </label>
-        <span className="block font-normal text-appForegroundInActive">
+        <span className="block font-normal text-app-foreground-inactive">
           You're not belonging to any organization yet.If you wish then you can
           create a new organization.
         </span>
@@ -125,7 +125,7 @@ const FetchingOrgs = () => {
   return (
     <div className="p-8 flex flex-col justify-center items-center">
       <div className="text-sm max-w-xs mx-auto text-center px-10">
-        <label className="font-semibold text-appForeground uppercase">
+        <label className="font-semibold text-app-foreground uppercase">
           Fetching Your Organizations...
         </label>
       </div>
