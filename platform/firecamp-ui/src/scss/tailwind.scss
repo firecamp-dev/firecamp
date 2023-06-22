@@ -990,6 +990,9 @@ video {
 .mt-8 {
   margin-top: 2rem;
 }
+.mt-\[3px\] {
+  margin-top: 3px;
+}
 .mt-\[50\%\] {
   margin-top: 50%;
 }
@@ -1060,9 +1063,6 @@ video {
 .h-2 {
   height: 0.5rem;
 }
-.h-28 {
-  height: 7rem;
-}
 .h-32 {
   height: 8rem;
 }
@@ -1096,11 +1096,17 @@ video {
 .h-\[200px\] {
   height: 200px;
 }
+.h-\[21px\] {
+  height: 21px;
+}
 .h-\[30px\] {
   height: 30px;
 }
 .h-\[50vh\] {
   height: 50vh;
+}
+.h-\[70vh\] {
+  height: 70vh;
 }
 .h-fit {
   height: -moz-fit-content;
@@ -1187,6 +1193,9 @@ video {
 .w-\[200px\] {
   width: 200px;
 }
+.w-\[220px\] {
+  width: 220px;
+}
 .w-\[32rem\] {
   width: 32rem;
 }
@@ -1252,6 +1261,21 @@ video {
 }
 .transform-none {
   transform: none;
+}
+@keyframes slideDownAndFade {
+
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-slideDownAndFade {
+  animation: slideDownAndFade 200ms ease-in-out;
 }
 @keyframes slideUpAndFade {
 
@@ -1432,6 +1456,9 @@ video {
 }
 .border-dashed {
   border-style: dashed;
+}
+.\!border-none {
+  border-style: none !important;
 }
 .\!border-app-border {
   border-color: var(--app-border) !important;
@@ -1791,6 +1818,10 @@ video {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
 }
+.py-px {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 .\!pb-0 {
   padding-bottom: 0px !important;
 }
@@ -1862,6 +1893,9 @@ video {
 }
 .pl-12 {
   padding-left: 3rem;
+}
+.pl-2 {
+  padding-left: 0.5rem;
 }
 .pl-3 {
   padding-left: 0.75rem;
@@ -1987,6 +2021,9 @@ video {
 }
 .leading-7 {
   line-height: 1.75rem;
+}
+.\!text-activityBar-foreground-inactive {
+  color: var(--activityBar-foreground-inactive) !important;
 }
 .\!text-app-foreground-active {
   color: var(--app-foreground-active) !important;
@@ -2400,11 +2437,17 @@ video {
   content: var(--tw-content);
   background-color: var(--focus-border);
 }
+.focus\:\!border-none:focus {
+  border-style: none !important;
+}
 .focus\:\!bg-primaryColor-withOpacity:focus {
   background-color: var(--app-primary-withOpacity) !important;
 }
 .focus\:bg-input-background-focus:focus {
   background-color: var(--input-background-focus);
+}
+.focus-visible\:\!border-none:focus-visible {
+  border-style: none !important;
 }
 .focus-visible\:\!bg-focus1:focus-visible {
   background-color: var(--focus-level-1) !important;
@@ -2423,6 +2466,21 @@ video {
 }
 .group:hover .group-hover\:h-auto {
   height: auto;
+}
+@keyframes slideDownAndFade {
+
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.data-\[side\=\'bottom\'\]\:animate-slideDownAndFade[data-side='bottom'] {
+  animation: slideDownAndFade 200ms ease-in-out;
 }
 @keyframes slideUpAndFade {
 

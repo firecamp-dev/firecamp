@@ -5,12 +5,13 @@ export interface IDropdownV2 {
   classes?: {
     rounded?: boolean;
     shadow?: boolean;
+    animate?: boolean;
     trigger?: string;
     options?: string;
     item?: string;
     listItem?: string;
     header?: string;
-    headerListItem?: string;
+    optionListItem?: string;
   };
   /**
    * To display arrow shown at the begin of container
@@ -32,6 +33,10 @@ export interface IDropdownV2 {
    * To disable the selection option
    */
   disabled?: boolean;
+  /**
+   * To get the options visibility status
+   */
+  onOpenChange?: (open: boolean) => void;
 }
 export interface IOptionsV2 {
   /**
@@ -41,7 +46,7 @@ export interface IOptionsV2 {
   /**
    * Option items to display below header
    */
-  headerList?: Array<IOptionsV2>;
+  options?: Array<IOptionsV2>;
   /**
    * to display a separator line at the bottom of current option item
    */

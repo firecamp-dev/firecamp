@@ -33,7 +33,8 @@
 .pane-body .rct-tree-root
 {
     height: calc( 100% - 2px);
-    overflow: auto;
+    // overflow: auto;
+    overflow: visible;
 }
 .rct-tree-root::-webkit-scrollbar{
     width: 0px;

@@ -33,7 +33,7 @@ const RoleOptions = [
     id: 'RoleHeader',
     name: 'SELECT ROLE',
     disabled: true,
-    headerList: [
+    options: [
       {
         id: EUserRolesWorkspace.Owner,
         name: 'Owner',
@@ -197,7 +197,7 @@ const RoleDD: FC<{
   role: number;
   onSelect: (role: { name: string; id: number }) => void;
 }> = ({ role, onSelect }) => {
-  const _role = RoleOptions[0].headerList.find((r) => r.id == role);
+  const _role = RoleOptions[0].options.find((r) => r.id == role);
   if (!_role) return <></>;
 
   return (
@@ -217,7 +217,7 @@ const RoleDD: FC<{
         options: 'w-36 bg-popover-background z-[1000]',
         header:
           '!pb-1 !pt-3 !px-5 !text-xs text-activityBar-foreground-inactive font-medium relative font-sans leading-3',
-        headerListItem:
+        optionListItem:
           'py-1 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-4 focus-visible:!shadow-none',
       }}
       options={RoleOptions}

@@ -8,12 +8,12 @@ import { IDropdownV2, IOptionsV2 } from './interfaces/Dropdownv2.interfaces';
 const DEFAULT_STYLES = {
   disabled: 'opacity-50',
   roundedContainer: 'rounded bg-app-background border border-app-foreground',
-  squaredContainer: 'border border-focusBorder focus-visible:!shadow-none',
+  squaredContainer: 'border border-app-border focus-visible:!shadow-none',
   shadowContainer:
     '!shadow-popover-shadow focus-visible:!shadow-popover-shadow',
   nestedOptionTrigger: 'flex items-center',
-  optionItem: 'flex items-center text-app-foreground px-2',
-  separator: 'my-1 bg-app-foreground opacity-50',
+  optionItem: 'flex items-center text-app-foreground px-2 py-px',
+  separator: 'my-1 bg-app-border',
 };
 
 enum LIST_ITEM_HIERARCHY {
@@ -23,6 +23,7 @@ enum LIST_ITEM_HIERARCHY {
 }
 // DropDownV2 is used in InviteNonOrgMembers, InviteOrgMembers Popup
 const DropDownV2 = ({
+  onOpenChange = () => {},
   showOptionArrow = false,
   handleRenderer,
   options,
@@ -32,13 +33,14 @@ const DropDownV2 = ({
 }: IDropdownV2) => {
   classes = {
     rounded: false,
+    animate: false,
     shadow: false,
     trigger: '',
     options: '',
     item: '',
     listItem: '',
     header: '',
-    headerListItem: '',
+    optionListItem: '',
     ...classes,
   };
 
@@ -67,7 +69,8 @@ const DropDownV2 = ({
               <DropdownMenu.Portal>
                 <DropdownMenu.SubContent
                   className={cx(
-                    "data-[side='bottom']:animate-slideUpAndFade",
+                    {"data-[side='bottom']:animate-slideUpAndFade": !classes.animate},
+                    {"data-[side='bottom']:animate-slideDownAndFade": classes.animate},
                     { [DEFAULT_STYLES.roundedContainer]: classes.rounded },
                     { [DEFAULT_STYLES.squaredContainer]: !classes.rounded },
                     { [DEFAULT_STYLES.shadowContainer]: classes.shadow },
@@ -93,9 +96,9 @@ const DropDownV2 = ({
             <DropdownMenu.Item
               className={cx(
                 [DEFAULT_STYLES.optionItem],
-                { [classes.header]: !_array.isEmpty(item.headerList) },
+                { [classes.header]: !_array.isEmpty(item.options) },
                 {
-                  [classes.headerListItem]:
+                  [classes.optionListItem]:
                     order === LIST_ITEM_HIERARCHY.HEADER_LIST_ITEM,
                 },
                 { [classes.item]: order === LIST_ITEM_HIERARCHY.LIST_ITEM },
@@ -116,9 +119,9 @@ const DropDownV2 = ({
             </DropdownMenu.Item>
             {item.showSeparator && <Separator />}
 
-            {item.headerList &&
+            {item.options &&
               renderMenuItems(
-                item.headerList,
+                item.options,
                 LIST_ITEM_HIERARCHY.HEADER_LIST_ITEM
               )}
           </Fragment>
@@ -128,7 +131,7 @@ const DropDownV2 = ({
   };
 
   return (
-    <DropdownMenu.Root>
+    <DropdownMenu.Root onOpenChange={onOpenChange}>
       <DropdownMenu.Trigger
         className={cx({ [DEFAULT_STYLES.disabled]: disabled })}
         disabled={disabled}
@@ -140,7 +143,8 @@ const DropDownV2 = ({
       <DropdownMenu.Portal>
         <DropdownMenu.Content
           className={cx(
-            "data-[side='bottom']:animate-slideUpAndFade",
+            {"data-[side='bottom']:animate-slideUpAndFade": !classes.animate},
+            {"data-[side='bottom']:animate-slideDownAndFade": classes.animate},        
             { [DEFAULT_STYLES.roundedContainer]: classes.rounded },
             { [DEFAULT_STYLES.squaredContainer]: !classes.rounded },
             { [DEFAULT_STYLES.shadowContainer]: classes.shadow },

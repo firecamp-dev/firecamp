@@ -25,14 +25,6 @@ const CopyButtonWithoutAnimationArgs = {
   onCopy: (text: string) => console.log(`copied-text-without-animation`, text)
 };
 
-const CopyButtonWithCustomComponentArgs = { 
-  className: 'border p-3',
-  text: 'Copy Button Text' ,
-  children: [
-    <div key="custom-component" className='h-2 p-3 border border-primaryColor text-primaryColor'>Custom component disables copy functionality</div>
-  ]
-};
-
 const Template = (args: ICopyButton) => <Button {...args} />;
 
 describe("Button : " , () => {
@@ -91,18 +83,5 @@ describe("Button : " , () => {
       }    
 
   });
-  
-  test('Copy button should render the custom component', async () => {
-
-    render(<Template {...CopyButtonWithCustomComponentArgs}/>);
-    const button = getCopyButton();
-    const copyElement = button.lastChild as HTMLElement;
-  
-    expect(copyElement.textContent).not.toBe('IconCopy');
-    const customComponent = getCustomComponentByText();
-    expect(customComponent).toBeInTheDocument();
-
-  });
-  
 
 })

@@ -19,6 +19,9 @@ const config: Config = {
   },
   transformIgnorePatterns: [`/node_modules/(?!${esModules})`],
   moduleNameMapper: {
+    '^uuid$': require.resolve('uuid'),
+    '@react-icons/all-files/lib/esm':
+      '<rootDir>/../../node_modules/@react-icons/all-files',
     '\\.(css|sass|scss)$': '<rootDir>/__mocks__/styleMock.ts',
     '\\.(txt)$': '<rootDir>/../../node_modules/raw-loader',
     '^nanoid(/(.*)|$)': 'nanoid$1',
@@ -27,8 +30,8 @@ const config: Config = {
       '<rootDir>/../../node_modules/@monaco-editor/react',
     '@firecamp/rest-executor/dist/esm':
       '<rootDir>/../firecamp-rest-executor/dist/esm/index.d.ts',
-    // "@firecamp/rest-executor/dist/esm": "<rootDir>/../firecamp-rest-executor/dist/esm/script-runner/snippets/index"
   },
+  setupFilesAfterEnv: ['<rootDir>/__mocks__/testSetupFile.ts'],
 };
 
 export default config;

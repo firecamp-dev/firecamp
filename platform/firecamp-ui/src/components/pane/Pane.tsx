@@ -47,7 +47,7 @@ const Pane: FC<IPane> & {
         </div>);
     };
 
-const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, actions, className, expanded, toggle }) => {
+const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, className, expanded, toggle }) => {
 
     const actionDomRef = useRef<HTMLDivElement>();
     const onToggle = (e: any)=> {

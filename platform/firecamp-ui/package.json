@@ -33,7 +33,8 @@
     "build:tailwind": "postcss src/scss/base.scss -o src/scss/tailwind.scss",
     "chromatic": "npx chromatic --project-token=4db217014cde004",
     "build": "cross-env BABEL_ENV=production babel src -d dist && tsc && pnpm copy-files",
-    "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.scss\" \"src/**/*.css\" dist/"
+    "copy-files": "copyfiles -u 1 \"src/**/*.sass\" \"src/**/*.scss\" \"src/**/*.css\" dist/",
+    "storybook:deploy": "pnpm chromatic --project-token=$(grep 'FIRECAMP_STORYBOOK_DEPLOY' ../../.env | cut -d '=' -f 2)"
   },
   "bugs": {
     "url": "https://github.com/firecamp-io/firecamp/issues"

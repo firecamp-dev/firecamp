@@ -104,6 +104,7 @@ exports.env = {
   AppFormat: JSON.stringify(process.env.AppFormat),
   SENTRY_DSN: JSON.stringify(process.env.SENTRY_DSN),
   CRISP_WEBSITE_ID: JSON.stringify(process.env.CRISP_WEBSITE_ID),
+  CRISP_FIRECAMP_DEV: JSON.stringify(process.env.CRISP_FIRECAMP_DEV),
   GOOGLE_OAUTH2_CLIENT_ID: JSON.stringify(process.env.GOOGLE_OAUTH2_CLIENT_ID),
   GOOGLE_OAUTH2_REDIRECT_URI: JSON.stringify(
     process.env.GOOGLE_OAUTH2_REDIRECT_URI

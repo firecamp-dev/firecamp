@@ -70,7 +70,7 @@ describe("Tabs component : ", () => {
         expect(TabsContainer).toHaveAttribute('id', 'tabs-container')
 
         //tab default styles
-        const TabListScroller = TabsContainer.firstElementChild.firstElementChild.firstElementChild;
+        const TabListScroller = screen.getByTestId('tabs-item-container');
         expect(TabListScroller).toHaveClass('flex border-b border-tab-border items-start');
         expect(TabListScroller).toHaveStyle(`height: ${TabArgs.height}px`);
 

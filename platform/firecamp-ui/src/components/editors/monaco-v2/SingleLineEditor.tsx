@@ -165,8 +165,8 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
             }
           } else {
             // if suggestion widget is opened then ignore onEnter custom event
-            const contentWidget =
-              editor._contentWidgets['editor.widget.suggestWidget'];
+            //@ts-ignore
+            const contentWidget = editor._contentWidgets['editor.widget.suggestWidget'];
             let isWidgetOpened = !!contentWidget; // note: some times (first render) it's value is undefined
             if (contentWidget) isWidgetOpened = !contentWidget.widget._hidden;
             // console.log(isWidgetOpened, 'isWidgetOpened');
