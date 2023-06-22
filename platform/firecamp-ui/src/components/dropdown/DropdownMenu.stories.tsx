@@ -6,8 +6,7 @@ import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
-import { Button, FcIconGetSquare } from '@firecamp/ui';
-import DropdownMenu from './DropdownMenu';
+import { Button, FcIconGetSquare, DropdownMenu } from '@firecamp/ui';
 
 enum EMenuOptions {
   Request = 'request',
@@ -88,7 +87,7 @@ const options = [
 ];
 
 export default {
-  title: 'Sample/DropdownMenu',
+  title: 'UI-Kit/Dropdown/MantineDDMenu',
   component: DropdownMenu,
 };
 

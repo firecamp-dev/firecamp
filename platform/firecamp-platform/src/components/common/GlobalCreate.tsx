@@ -10,7 +10,7 @@ import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwit
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
-import { Button, DropdownV2, FcIconGetSquare } from '@firecamp/ui';
+import { Button, DropdownMenu, FcIconGetSquare } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
 import { useWorkspaceStore } from '../../store/workspace';
 import { useTabStore } from '../../store/tab';
@@ -27,77 +27,71 @@ enum EMenuOptions {
   SwitchOrg = 'switch-org',
   SwitchWorkspace = 'switch-workspace',
 }
+
 const options = [
   {
     id: 'CreateNewHeader',
     name: 'Create New',
-    disabled: true,
-    options: [
-      {
-        id: EMenuOptions.Request,
-        name: 'Request',
-        prefix: () => <FcIconGetSquare className="mr-2" size={16} />,
-        // postfix: () => (
-        //   <span className="ml-auto text-inputPlaceholder pl-2">⌘K</span>
-        // ),
-      },
-      {
-        id: EMenuOptions.Collection,
-        name: 'Collection',
-        prefix: () => <VscFolder className="mr-2" size={16} />,
-      },
-      {
-        id: EMenuOptions.Environment,
-        name: 'Environment',
-        prefix: () => <RiBracesLine className="mr-2" size={16} />,
-      },
-      {
-        id: EMenuOptions.ImportCollection,
-        name: 'Import Collection',
-        showSeparator: true,
-        prefix: () => <VscArrowDown className="mr-2" size={16} />,
-      },
-    ],
+    isLabel: true,
+  },
+  {
+    id: EMenuOptions.Request,
+    name: 'Request',
+    prefix: () => <FcIconGetSquare size={16} />,
+  },
+  {
+    id: EMenuOptions.Collection,
+    name: 'Collection',
+    prefix: () => <VscFolder size={16} />,
+  },
+  {
+    id: EMenuOptions.Environment,
+    name: 'Environment',
+    prefix: () => <RiBracesLine size={16} />,
+  },
+
+  {
+    id: EMenuOptions.ImportCollection,
+    name: 'Import Collection',
+    showSeparator: true,
+    prefix: () => <VscArrowDown size={16} />,
   },
   {
     id: 'CreateNewByAdminHeader',
     name: 'Create New (By Admin)',
-    disabled: true,
-    options: [
-      {
-        id: EMenuOptions.Workspace,
-        name: 'Workspace',
-        prefix: () => <VscWindow className="mr-2" size={16} />,
-      },
-      {
-        id: EMenuOptions.Organization,
-        name: 'Organization',
-        prefix: () => <VscOrganization className="mr-2" size={16} />,
-      },
-      {
-        id: EMenuOptions.InviteMembers,
-        name: 'Invite Members',
-        showSeparator: true,
-        prefix: () => <AiOutlineUserAdd className="mr-2" size={16} />,
-      },
-    ],
+    isLabel: true,
+  },
+
+  {
+    id: EMenuOptions.Workspace,
+    name: 'Workspace',
+    prefix: () => <VscWindow size={16} />,
+  },
+  {
+    id: EMenuOptions.Organization,
+    name: 'Organization',
+    prefix: () => <VscOrganization size={16} />,
+  },
+  {
+    id: EMenuOptions.InviteMembers,
+    name: 'Invite Members',
+    showSeparator: true,
+    prefix: () => <AiOutlineUserAdd size={16} />,
   },
   {
     id: 'SwitchHeader',
     name: 'SWITCH',
-    disabled: true,
-    options: [
-      {
-        id: EMenuOptions.SwitchOrg,
-        name: 'Switch Organization',
-        prefix: () => <AiOutlineUserSwitch className="mr-2" size={16} />,
-      },
-      {
-        id: EMenuOptions.SwitchWorkspace,
-        name: 'Switch Workspace',
-        prefix: () => <VscMultipleWindows className="mr-2" size={16} />,
-      },
-    ],
+    isLabel: true,
+  },
+  {
+    id: EMenuOptions.SwitchOrg,
+    name: 'Switch Organization',
+    prefix: () => <AiOutlineUserSwitch size={16} />,
+  },
+  {
+    id: EMenuOptions.SwitchWorkspace,
+    name: 'Switch Workspace',
+    prefix: () => <VscMultipleWindows size={16} />,
   },
 ];
 
@@ -139,7 +133,7 @@ const GlobalCreateDD = ({}) => {
 
   return (
     <div className="border-l border-b border-tab-border flex items-center pl-1">
-      <DropdownV2
+      <DropdownMenu
         onOpenChange={(v) => toggleOpen(v)}
         handleRenderer={() => (
           <Button
@@ -154,14 +148,10 @@ const GlobalCreateDD = ({}) => {
         )}
         options={options}
         onSelect={onSelect}
-        classes={{
-          animate: true,
-          rounded: false,
-          options: 'w-[200px] bg-popover-background !pb-2 mt-[3px] z-30',
-          header:
-            '!pb-1 !pt-3 !px-5 uppercase !text-xs font-medium leading-3 font-sans !text-activityBar-foreground-inactive !opacity-100	',
-          optionListItem:
-            '!px-5 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none cursor-pointer',
+        classNames={{
+          dropdown: 'px-0 pt-0 pb-2 right-3',
+          label: 'px-5 pt-3 pb-1 uppercase font-medium text-xs leading-3 ',
+          item: 'px-5 py-px text-sm leading-6',
         }}
       />
     </div>

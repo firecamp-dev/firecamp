@@ -1,18 +1,13 @@
-import { Fragment } from 'react';
+import { Fragment, FC } from 'react';
 import { Menu } from '@mantine/core';
+import { IDropdownMenu } from './interfaces/DropdownMenu.interfaces';
 
-const DropdownMenu = ({
+const DropdownMenu: FC<IDropdownMenu> =({
   options = [],
   handleRenderer,
   classNames = {},
   onSelect = () => {},
   onOpenChange = () => {},
-}: {
-  options: any[];
-  handleRenderer: () => JSX.Element;
-  classNames?: {};
-  onSelect: (option?: any) => void;
-  onOpenChange?: (open: boolean) => void;
 }) => {
   return (
     <Menu
