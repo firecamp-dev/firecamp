@@ -1,9 +1,9 @@
 import { FC, useState } from 'react';
-import { Dropdown, Button } from '@firecamp/ui';
+import cx from 'classnames';
+import { DropdownMenu, Button } from '@firecamp/ui';
 
 const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
   id = '',
-  className = '',
   dropdownOptions = ['GET', 'POST'],
   selectedOption = '',
   toolTip = '',
@@ -16,36 +16,29 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
     })
   );
 
-  // Update options
-  // useEffect(() => {
-  //   let updatedOptions = dropdownOptions?.map((o) => {
-  //     return { name: o };
-  //   });
-  //   if (!updatedOptions != options) setOptions(updatedOptions);
-  // }, [dropdownOptions]);
-
   return (
-    <Dropdown
-      id={id}
-      className={className}
-      isOpen={isDropDownOpen}
-      selected={selectedOption || ''}
-      onToggle={toggleDropDown}
-    >
-      <Dropdown.Handler>
-        <Button
-          text={selectedOption}
-          tooltip={!isDropDownOpen && toolTip ? toolTip : ''}
-          secondary
-          withCaret
-          sm
-        />
-      </Dropdown.Handler>
-      <Dropdown.Options
-        options={options}
-        onSelect={(element) => onSelectItem(element?.name)}
+    <DropdownMenu
+    id={id}
+    onOpenChange={(v) => toggleDropDown(v)}
+    handleRenderer={() => (
+      <Button
+        text={selectedOption}
+        className={cx({ open: isDropDownOpen })}
+        tooltip={!isDropDownOpen && toolTip ? toolTip : ''}
+        secondary
+        withCaret
+        sm
       />
-    </Dropdown>
+    )}
+    selected={selectedOption || ''}
+    options={options}
+    onSelect={(element) => onSelectItem(element?.name)}
+    width={70}
+    classNames={{
+      dropdown: 'pt-0 pb-2 -mt-2',
+      item: '!text-sm !py-1 !px-2 !leading-[18px]'
+    }}
+  />
   );
 };
 
@@ -56,11 +49,6 @@ interface IHttpMethodDropDown {
    * Dropdown unique id
    */
   id: string;
-
-  /**
-   * Custom styling class name
-   */
-  className?: string;
 
   /**
    * Dropdown options

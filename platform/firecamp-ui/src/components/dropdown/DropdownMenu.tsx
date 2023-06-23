@@ -1,8 +1,19 @@
 import { Fragment, FC } from 'react';
+import cx from 'classnames';
 import { Menu } from '@mantine/core';
 import { IDropdownMenu } from './interfaces/DropdownMenu.interfaces';
 
-const DropdownMenu: FC<IDropdownMenu> =({
+enum EDefaultStyles {
+  dropdown = 'border border-app-border bg-popover-background rounded-none px-0 ',
+  label = 'text-activityBar-foreground-inactive font-default px-5 pt-3 pb-1 font-medium text-xs leading-3 ',
+  item = 'cursor-pointer text-app-foreground hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
+  divider = 'bg-app-border',
+}
+
+const DropdownMenu: FC<IDropdownMenu> = ({
+  id = '',
+  selected = '',
+  width = 200,
   options = [],
   handleRenderer,
   classNames = {},
@@ -11,8 +22,9 @@ const DropdownMenu: FC<IDropdownMenu> =({
 }) => {
   return (
     <Menu
+      id={id}
       shadow="md"
-      width={200}
+      width={width}
       classNames={classNames}
       onChange={onOpenChange}
     >
@@ -20,21 +32,17 @@ const DropdownMenu: FC<IDropdownMenu> =({
         <span className="inline-block">{handleRenderer()}</span>
       </Menu.Target>
 
-      <Menu.Dropdown
-        className={'border border-app-border bg-popover-background rounded-none'}
-      >
+      <Menu.Dropdown className={EDefaultStyles.dropdown}>
         {options.map((item, i) => {
           return (
             <Fragment key={`menu-item-${i}`}>
               {item.isLabel ? (
-                <Menu.Label
-                  className="text-activityBar-foreground-inactive font-sans"
-                >
+                <Menu.Label className={EDefaultStyles.label}>
                   {item.name}
                 </Menu.Label>
               ) : (
                 <Menu.Item
-                  className="cursor-pointer text-app-foreground font-sans hover:bg-focus1 focus-visible:!shadow-none"
+                  className={cx(EDefaultStyles.item, {'font-bold': selected === item.name})}
                   icon={typeof item.prefix === 'function' && item.prefix()}
                   rightSection={
                     typeof item.postfix === 'function' && item.postfix()
@@ -48,7 +56,7 @@ const DropdownMenu: FC<IDropdownMenu> =({
               {item.showSeparator ? (
                 <Menu.Divider
                   key={`menu-divider-${i}`}
-                  className={'bg-app-border'}
+                  className={EDefaultStyles.divider}
                 />
               ) : (
                 <></>

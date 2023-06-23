@@ -1,5 +1,17 @@
 export interface IDropdownMenu {
   /**
+   * Add id to the dropdown wrapper
+   */
+  id?: string;
+  /**
+   * used to highlight (via bold font) the selected option name from the list
+   */
+  selected?: string;
+  /**
+   * Define the width for the dropdown
+   */
+  width?: number;
+  /**
    * Classnames object ( component Styles API )
    */
   classNames?: {};

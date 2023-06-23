@@ -129,6 +129,7 @@ module.exports = {
         xl: '18px',
       },
       fontFamily: {
+        default: ['Lato', 'sans-serif'],
         sans: ['sans-serif'],
         serif: ['ui-serif'],
         mono: ['ui-monospace'],
