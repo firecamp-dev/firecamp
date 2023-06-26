@@ -1,12 +1,10 @@
-import { useState } from 'react';
-import cx from 'classnames';
 import { VscNewFile } from '@react-icons/all-files/vsc/VscNewFile';
 import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
 import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import { Dropdown } from '@firecamp/ui';
+import { DropdownMenu } from '@firecamp/ui';
 import { Regex } from '../../../../constants';
 import platformContext from '../../../../services/platform-context';
 import { useExplorerStore } from '../../../../store/explorer';
@@ -32,13 +30,10 @@ const CollectionMenu = ({
     deleteFolder,
     deleteRequest,
   } = useExplorerStore.getState();
-  let [isMenuOpened, toggleMenu] = useState(false);
 
   const renameMenu = {
     prefix: () => (
-      <div className={cx('mr-1 text-lg')}>
         <VscEdit size={14} />
-      </div>
     ),
     name: 'Rename',
     onClick: (e) => {
@@ -48,9 +43,7 @@ const CollectionMenu = ({
 
   const addFolderMenu = {
     prefix: () => (
-      <div className={cx('mr-1 text-lg')}>
         <VscNewFolder size={14} />
-      </div>
     ),
     name: 'Add Folder',
     onClick: () => {
@@ -102,9 +95,7 @@ const CollectionMenu = ({
 
   const addRequestMenu = {
     prefix: () => (
-      <div className={cx('mr-1 text-lg')}>
         <VscNewFile size={14} />
-      </div>
     ),
     name: 'Add Request',
     onClick: () => {},
@@ -114,9 +105,7 @@ const CollectionMenu = ({
 
   const viewDetailMenu = {
     prefix: () => (
-      <div className={cx('mr-1 text-lg')}>
         <VscSettingsGear size={14} />
-      </div>
     ),
     name: 'View Details',
     onClick: () => {
@@ -130,9 +119,7 @@ const CollectionMenu = ({
 
   const deleteMenu = {
     prefix: () => (
-      <div className={cx('mr-1 text-lg')}>
         <VscTrash size={14} />
-      </div>
     ),
     name: 'Delete',
     onClick: () => {
@@ -167,21 +154,17 @@ const CollectionMenu = ({
   ];
   const requestMenu = [renameMenu, deleteMenu];
   return (
-    <>
-      <Dropdown
-        isOpen={isMenuOpened}
-        detach={false}
-        onToggle={(value) => toggleMenu(value)}
-      >
-        <Dropdown.Handler className="transparent without-border without-padding fc-button">
-          <VscEllipsis />
-        </Dropdown.Handler>
-        <Dropdown.Options
-          className="bg-main"
-          options={menuType == EMenuType.Request ? requestMenu : commonMenu}
-        />
-      </Dropdown>
-    </>
+      <DropdownMenu
+        handleRenderer={() => <VscEllipsis className='cursor-pointer' />}
+        options={menuType == EMenuType.Request ? requestMenu : commonMenu}
+        width={144}
+        onSelect={(value) => value.onClick()}
+        classNames={{
+          dropdown:
+            'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder !visible',
+          item: '!px-2 !py-1 !text-sm !leading-[18px]',
+        }}
+      />
   );
 };
 

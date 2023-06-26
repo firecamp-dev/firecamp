@@ -1,24 +1,28 @@
 import { useState } from 'react';
-import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
-import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
+import { MantineProvider } from '@mantine/core';
+
 import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
-import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
-import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
-import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
+import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
-import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
+import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
+import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
+import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
+import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
+import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
+import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
+import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
+import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
+import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
+import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
 import { Button, FcIconGetSquare, DropdownMenu } from '@firecamp/ui';
-import { MantineProvider } from '@mantine/core';
 import StatusBar from '../status-bar/StatusBar';
 
 enum EMenuOptions {
@@ -32,72 +36,6 @@ enum EMenuOptions {
   SwitchOrg = 'switch-org',
   SwitchWorkspace = 'switch-workspace',
 }
-const options = [
-  {
-    id: 'CreateNewHeader',
-    name: 'Create New',
-    isLabel: true,
-  },
-  {
-    id: EMenuOptions.Request,
-    name: 'Request',
-    prefix: () => <FcIconGetSquare size={18} />,
-    postfix: () => <span className="text-inputPlaceholder">⌘K</span>,
-  },
-  {
-    id: EMenuOptions.Collection,
-    name: 'Collection',
-    prefix: () => <VscFolder size={18} />,
-  },
-  {
-    id: EMenuOptions.Environment,
-    name: 'Environment',
-    prefix: () => <RiBracesLine size={18} />,
-  },
-  {
-    id: EMenuOptions.ImportCollection,
-    name: 'Import Collection',
-    showSeparator: true,
-    prefix: () => <VscArrowDown size={18} />,
-  },
-  {
-    id: 'CreateNewByAdminHeader',
-    name: 'Create New (By Admin)',
-    isLabel: true,
-  },
-
-  {
-    id: EMenuOptions.Workspace,
-    name: 'Workspace',
-    prefix: () => <VscWindow size={18} />,
-  },
-  {
-    id: EMenuOptions.Organization,
-    name: 'Organization',
-    prefix: () => <VscOrganization size={18} />,
-  },
-  {
-    id: EMenuOptions.InviteMembers,
-    name: 'Invite Members',
-    showSeparator: true,
-    prefix: () => <AiOutlineUserAdd size={18} />,
-  },
-  {
-    id: 'SwitchHeader',
-    name: 'SWITCH',
-    isLabel: true,
-  },
-  {
-    id: EMenuOptions.SwitchOrg,
-    name: 'Switch Organization',
-    prefix: () => <AiOutlineUserSwitch size={18} />,
-  },
-  {
-    id: EMenuOptions.SwitchWorkspace,
-    name: 'Switch Workspace',
-    prefix: () => <VscMultipleWindows size={18} />,
-  },
-];
 
 export default {
   title: 'UI-Kit/Dropdown/MantineDDMenu',
@@ -107,7 +45,6 @@ export default {
 const Template = ({ ...args }: any) => {
   return <DropdownMenu {...args} />;
   // return  <MantineProvider theme={{
-  // fontFamily: 'Open Sansis',
   // components: {
   //   Menu: {
   //     styles: {
@@ -124,7 +61,72 @@ const Template = ({ ...args }: any) => {
 
 export const Example = Template.bind({});
 Example.args = {
-  options,
+  options: [
+    {
+      id: 'CreateNewHeader',
+      name: 'Create New',
+      isLabel: true,
+    },
+    {
+      id: EMenuOptions.Request,
+      name: 'Request',
+      prefix: () => <FcIconGetSquare size={18} />,
+      postfix: () => <span className="text-inputPlaceholder">⌘K</span>,
+    },
+    {
+      id: EMenuOptions.Collection,
+      name: 'Collection',
+      prefix: () => <VscFolder size={18} />,
+    },
+    {
+      id: EMenuOptions.Environment,
+      name: 'Environment',
+      prefix: () => <RiBracesLine size={18} />,
+    },
+    {
+      id: EMenuOptions.ImportCollection,
+      name: 'Import Collection',
+      showSeparator: true,
+      prefix: () => <VscArrowDown size={18} />,
+    },
+    {
+      id: 'CreateNewByAdminHeader',
+      name: 'Create New (By Admin)',
+      isLabel: true,
+    },
+
+    {
+      id: EMenuOptions.Workspace,
+      name: 'Workspace',
+      prefix: () => <VscWindow size={18} />,
+    },
+    {
+      id: EMenuOptions.Organization,
+      name: 'Organization',
+      prefix: () => <VscOrganization size={18} />,
+    },
+    {
+      id: EMenuOptions.InviteMembers,
+      name: 'Invite Members',
+      showSeparator: true,
+      prefix: () => <AiOutlineUserAdd size={18} />,
+    },
+    {
+      id: 'SwitchHeader',
+      name: 'SWITCH',
+      isLabel: true,
+    },
+    {
+      id: EMenuOptions.SwitchOrg,
+      name: 'Switch Organization',
+      prefix: () => <AiOutlineUserSwitch size={18} />,
+    },
+    {
+      id: EMenuOptions.SwitchWorkspace,
+      name: 'Switch Workspace',
+      prefix: () => <VscMultipleWindows size={18} />,
+    },
+  ],
   handleRenderer: () => (
     <Button text={'Create'} primary withCaret transparent ghost xs />
   ),
@@ -151,7 +153,72 @@ export const GlobalCreate = () => {
           primary
         />
       )}
-      options={options}
+      options={[
+        {
+          id: 'CreateNewHeader',
+          name: 'Create New',
+          isLabel: true,
+        },
+        {
+          id: EMenuOptions.Request,
+          name: 'Request',
+          prefix: () => <FcIconGetSquare size={18} />,
+          postfix: () => <span className="text-inputPlaceholder">⌘K</span>,
+        },
+        {
+          id: EMenuOptions.Collection,
+          name: 'Collection',
+          prefix: () => <VscFolder size={18} />,
+        },
+        {
+          id: EMenuOptions.Environment,
+          name: 'Environment',
+          prefix: () => <RiBracesLine size={18} />,
+        },
+        {
+          id: EMenuOptions.ImportCollection,
+          name: 'Import Collection',
+          showSeparator: true,
+          prefix: () => <VscArrowDown size={18} />,
+        },
+        {
+          id: 'CreateNewByAdminHeader',
+          name: 'Create New (By Admin)',
+          isLabel: true,
+        },
+
+        {
+          id: EMenuOptions.Workspace,
+          name: 'Workspace',
+          prefix: () => <VscWindow size={18} />,
+        },
+        {
+          id: EMenuOptions.Organization,
+          name: 'Organization',
+          prefix: () => <VscOrganization size={18} />,
+        },
+        {
+          id: EMenuOptions.InviteMembers,
+          name: 'Invite Members',
+          showSeparator: true,
+          prefix: () => <AiOutlineUserAdd size={18} />,
+        },
+        {
+          id: 'SwitchHeader',
+          name: 'SWITCH',
+          isLabel: true,
+        },
+        {
+          id: EMenuOptions.SwitchOrg,
+          name: 'Switch Organization',
+          prefix: () => <AiOutlineUserSwitch size={18} />,
+        },
+        {
+          id: EMenuOptions.SwitchWorkspace,
+          name: 'Switch Workspace',
+          prefix: () => <VscMultipleWindows size={18} />,
+        },
+      ]}
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
         dropdown: 'pt-0 pb-2 -ml-[2px]',
@@ -595,5 +662,31 @@ export const FooterStatusBar = () => {
         </div>
       </StatusBar.SecondaryRegion>
     </StatusBar>
+  );
+};
+
+export const SidebarCollectionOption = () => {
+  const [selected, setSelected] = useState('MyQuery');
+  return (
+    <DropdownMenu
+      handleRenderer={() => <VscEllipsis className='cursor-pointer'/>}
+      options={[
+        {
+          prefix: () => <VscEdit size={14} />,
+          name: 'Rename',
+        },
+        {
+          prefix: () => <VscTrash size={14} />,
+          name: 'Delete',
+        },
+      ]}
+      width={144}
+      onSelect={(value: any) => setSelected(value.name)}
+      classNames={{
+        dropdown:
+          'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder',
+        item: '!px-2 !py-1 !text-sm !leading-[18px]',
+      }}
+    />
   );
 };
