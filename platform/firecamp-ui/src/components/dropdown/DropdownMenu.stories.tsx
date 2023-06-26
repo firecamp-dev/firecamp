@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import cx from 'classnames';
 import { MantineProvider } from '@mantine/core';
 
 import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
@@ -669,7 +670,7 @@ export const SidebarCollectionOption = () => {
   const [selected, setSelected] = useState('MyQuery');
   return (
     <DropdownMenu
-      handleRenderer={() => <VscEllipsis className='cursor-pointer'/>}
+      handleRenderer={() => <VscEllipsis className="cursor-pointer" />}
       options={[
         {
           prefix: () => <VscEdit size={14} />,
@@ -686,6 +687,58 @@ export const SidebarCollectionOption = () => {
         dropdown:
           'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder',
         item: '!px-2 !py-1 !text-sm !leading-[18px]',
+      }}
+    />
+  );
+};
+
+export const EnvCollectionOption = () => {
+  const [isOpen, toggleOpen] = useState(false);
+  const [selected, setSelected] = useState('No Environment');
+  return (
+    <DropdownMenu
+      onOpenChange={(v) => toggleOpen(v)}
+      handleRenderer={() => (
+        <Button
+          text={selected}
+          className={cx('!text-info', {
+            open: isOpen,
+          })}
+          withCaret
+          transparent
+          ghost
+          xs
+        />
+      )}
+      selected={selected || ''}
+      options={[
+        {
+          name: 'Select Environment',
+          isLabel: true,
+        },
+        {
+          id: null,
+          name: 'No Environment',
+        },
+        {
+          id: 'VWB-N5kGUZisROfbKwyHo',
+          name: 'testing',
+          showSeparator: true,
+        },
+        {
+          name: 'Create New',
+          isLabel: true,
+        },
+        {
+          id: 'fc-new-environment',
+          name: 'Create New Environment',
+        },
+      ]}
+      onSelect={(v) => setSelected(v.name)}
+      classNames={{
+        dropdown: '!pt-0 !pb-2 border-focusBorder',
+        label: 'uppercase font-sans',
+        item: '!py-1 !text-sm !leading-[18px]',
       }}
     />
   );
