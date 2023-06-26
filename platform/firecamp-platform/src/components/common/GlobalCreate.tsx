@@ -37,24 +37,24 @@ const options = [
   {
     id: EMenuOptions.Request,
     name: 'Request',
-    prefix: () => <FcIconGetSquare size={16} />,
+    prefix: () => <FcIconGetSquare size={18} />,
   },
   {
     id: EMenuOptions.Collection,
     name: 'Collection',
-    prefix: () => <VscFolder size={16} />,
+    prefix: () => <VscFolder size={18} />,
   },
   {
     id: EMenuOptions.Environment,
     name: 'Environment',
-    prefix: () => <RiBracesLine size={16} />,
+    prefix: () => <RiBracesLine size={18} />,
   },
 
   {
     id: EMenuOptions.ImportCollection,
     name: 'Import Collection',
     showSeparator: true,
-    prefix: () => <VscArrowDown size={16} />,
+    prefix: () => <VscArrowDown size={18} />,
   },
   {
     id: 'CreateNewByAdminHeader',
@@ -65,18 +65,18 @@ const options = [
   {
     id: EMenuOptions.Workspace,
     name: 'Workspace',
-    prefix: () => <VscWindow size={16} />,
+    prefix: () => <VscWindow size={18} />,
   },
   {
     id: EMenuOptions.Organization,
     name: 'Organization',
-    prefix: () => <VscOrganization size={16} />,
+    prefix: () => <VscOrganization size={18} />,
   },
   {
     id: EMenuOptions.InviteMembers,
     name: 'Invite Members',
     showSeparator: true,
-    prefix: () => <AiOutlineUserAdd size={16} />,
+    prefix: () => <AiOutlineUserAdd size={18} />,
   },
   {
     id: 'SwitchHeader',
@@ -86,12 +86,12 @@ const options = [
   {
     id: EMenuOptions.SwitchOrg,
     name: 'Switch Organization',
-    prefix: () => <AiOutlineUserSwitch size={16} />,
+    prefix: () => <AiOutlineUserSwitch size={18} />,
   },
   {
     id: EMenuOptions.SwitchWorkspace,
     name: 'Switch Workspace',
-    prefix: () => <VscMultipleWindows size={16} />,
+    prefix: () => <VscMultipleWindows size={18} />,
   },
 ];
 
@@ -149,9 +149,8 @@ const GlobalCreateDD = ({}) => {
         options={options}
         onSelect={onSelect}
         classNames={{
-          dropdown: 'px-0 pt-0 pb-2 right-3',
-          label: 'px-5 pt-3 pb-1 uppercase font-medium text-xs leading-3 ',
-          item: 'px-5 py-px text-sm leading-6',
+          dropdown: 'pt-0 pb-2 -ml-[2px]',
+          label: 'uppercase',
         }}
       />
     </div>
