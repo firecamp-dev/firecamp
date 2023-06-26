@@ -6,7 +6,7 @@ import { IDropdownMenu } from './interfaces/DropdownMenu.interfaces';
 enum EDefaultStyles {
   dropdown = 'border border-app-border bg-popover-background rounded-none px-0 ',
   label = 'text-activityBar-foreground-inactive font-default px-5 pt-3 pb-1 font-medium text-xs leading-3 ',
-  item = 'cursor-pointer text-app-foreground hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
+  item = 'cursor-pointer text-app-foreground hover:rounded-none hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
   divider = 'bg-app-border',
 }
 
@@ -39,6 +39,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
               {item.isLabel ? (
                 <Menu.Label className={EDefaultStyles.label}>
                   {item.name}
+                  {typeof item.postfix === 'function' && item.postfix()}
                 </Menu.Label>
               ) : (
                 <Menu.Item
