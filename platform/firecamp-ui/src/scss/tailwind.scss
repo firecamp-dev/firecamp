@@ -2419,9 +2419,6 @@ video {
 .last-of-type\:border-r-tab-border:last-of-type {
   border-right-color: var(--tab-border);
 }
-.hover\:rounded-none:hover {
-  border-radius: 0px;
-}
 .hover\:border-focusBorder:hover {
   border-color: var(--focus-border);
 }
