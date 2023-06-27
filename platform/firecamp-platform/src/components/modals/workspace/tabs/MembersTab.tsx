@@ -3,7 +3,7 @@ import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import {
   Button,
   Container,
-  DropdownV2,
+  DropdownMenu,
   PrimitiveTable,
   ProgressBar,
   TTableApi,
@@ -32,21 +32,19 @@ const RoleOptions = [
   {
     id: 'RoleHeader',
     name: 'SELECT ROLE',
-    disabled: true,
-    options: [
-      {
-        id: EUserRolesWorkspace.Owner,
-        name: 'Owner',
-      },
-      {
-        id: EUserRolesWorkspace.Admin,
-        name: 'Admin',
-      },
-      {
-        id: EUserRolesWorkspace.Collaborator,
-        name: 'Collaborator',
-      },
-    ],
+    isLabel: true,
+  },
+  {
+    id: EUserRolesWorkspace.Owner,
+    name: 'Owner',
+  },
+  {
+    id: EUserRolesWorkspace.Admin,
+    name: 'Admin',
+  },
+  {
+    id: EUserRolesWorkspace.Collaborator,
+    name: 'Collaborator',
   },
 ];
 
@@ -166,6 +164,9 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
       <Container.Body className="pt-2 visible-scrollbar">
         <ProgressBar active={isFetchingMembers} className={'top-auto'} />
         <PrimitiveTable
+          classes={{
+            container: 'h-full',
+          }}
           columns={columns}
           rows={[]}
           showDefaultEmptyRows={false}
@@ -197,11 +198,11 @@ const RoleDD: FC<{
   role: number;
   onSelect: (role: { name: string; id: number }) => void;
 }> = ({ role, onSelect }) => {
-  const _role = RoleOptions[0].options.find((r) => r.id == role);
+  const _role = RoleOptions.find((r) => r.id == role);
   if (!_role) return <></>;
 
   return (
-    <DropdownV2
+    <DropdownMenu
       handleRenderer={() => (
         <Button
           text={_role.name}
@@ -212,16 +213,15 @@ const RoleDD: FC<{
           sm
         />
       )}
-      disabled={role === EUserRolesWorkspace.Owner}
-      classes={{
-        options: 'w-36 bg-popover-background z-[1000]',
-        header:
-          '!pb-1 !pt-3 !px-5 !text-xs text-activityBar-foreground-inactive font-medium relative font-sans leading-3',
-        optionListItem:
-          'py-1 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-4 focus-visible:!shadow-none',
+      classNames={{
+        dropdown: '!py-0',
+        label: 'uppercase font-sans !text-start',
+        item: '!px-2 !text-sm !leading-[18px]',
       }}
       options={RoleOptions}
       onSelect={onSelect}
+      width={144}
+      disabled={role === EUserRolesWorkspace.Owner}
     />
   );
 };

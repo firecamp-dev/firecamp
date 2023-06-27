@@ -8,6 +8,7 @@ enum EDefaultStyles {
   label = 'text-activityBar-foreground-inactive font-default px-5 pt-3 pb-1 font-medium text-xs leading-3 ',
   item = 'cursor-pointer text-app-foreground !rounded-none hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
   divider = 'bg-app-border',
+  disabled = 'opacity-50 cursor-default',
 }
 
 const DropdownMenu: FC<IDropdownMenu> = ({
@@ -19,6 +20,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
   classNames = {},
   onSelect = () => {},
   onOpenChange = () => {},
+  disabled = false,
 }) => {
   return (
     <Menu
@@ -27,12 +29,24 @@ const DropdownMenu: FC<IDropdownMenu> = ({
       width={width}
       classNames={classNames}
       onChange={onOpenChange}
+      disabled={disabled}
     >
       <Menu.Target>
-        <span className="inline-block">{handleRenderer()}</span>
+        <span
+          className={cx(
+            { 'inline-block': !classNames.trigger },
+            { [EDefaultStyles.disabled]: disabled }
+          )}
+        >
+          {handleRenderer()}
+        </span>
       </Menu.Target>
 
-      <Menu.Dropdown className={EDefaultStyles.dropdown}>
+      <Menu.Dropdown
+        className={cx(EDefaultStyles.dropdown, {
+          'd-none border-0': options.length === 0,
+        })}
+      >
         {options.map((item, i) => {
           return (
             <Fragment key={`menu-item-${i}`}>
@@ -43,7 +57,9 @@ const DropdownMenu: FC<IDropdownMenu> = ({
                 </Menu.Label>
               ) : (
                 <Menu.Item
-                  className={cx(EDefaultStyles.item, {'font-bold': selected === item.name})}
+                  className={cx(EDefaultStyles.item, {
+                    'font-bold': selected === item.name,
+                  })}
                   icon={typeof item.prefix === 'function' && item.prefix()}
                   rightSection={
                     typeof item.postfix === 'function' && item.postfix()

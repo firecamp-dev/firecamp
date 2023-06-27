@@ -743,3 +743,53 @@ export const EnvCollectionOption = () => {
     />
   );
 };
+
+export const MemberRoleSelection = () => {
+  const [selected, setSelected] = useState('Owner');
+  const [btnDisable, setBtnDisable] = useState(false);
+
+  return (
+    <div className="flex justify-between">
+      <DropdownMenu
+        handleRenderer={() => (
+          <Button
+            text={selected}
+            className="hover:!bg-focus1"
+            withCaret
+            transparent
+            ghost
+            sm
+          />
+        )}
+        classNames={{
+          dropdown: '!py-0',
+          label: 'uppercase font-sans !text-start',
+          item: '!px-2 !text-sm !leading-[18px]',
+        }}
+        options={[
+          { name: 'SELECT ROLE', isLabel: true },
+          {
+            name: 'Owner',
+          },
+          {
+            name: 'Admin',
+          },
+          {
+            name: 'Collaborator',
+          },
+        ]}
+        onSelect={(v) => setSelected(v.name)}
+        width={144}
+        disabled={btnDisable}
+      />
+      <Button
+        text={
+          btnDisable
+            ? 'Enable Dropdown Selection'
+            : 'Disable Dropdown Selection'
+        }
+        onClick={() => setBtnDisable((v) => !v)}
+      />
+    </div>
+  );
+};

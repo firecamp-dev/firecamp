@@ -800,9 +800,6 @@ video {
 .z-50 {
   z-index: 50;
 }
-.z-\[1000\] {
-  z-index: 1000;
-}
 .float-right {
   float: right;
 }
@@ -1762,6 +1759,10 @@ video {
   padding-top: 0.75rem !important;
   padding-bottom: 0.75rem !important;
 }
+.\!py-px {
+  padding-top: 1px !important;
+  padding-bottom: 1px !important;
+}
 .px-0 {
   padding-left: 0px;
   padding-right: 0px;
@@ -1976,6 +1977,9 @@ video {
 }
 .text-right {
   text-align: right;
+}
+.\!text-start {
+  text-align: start !important;
 }
 .align-baseline {
   vertical-align: baseline;

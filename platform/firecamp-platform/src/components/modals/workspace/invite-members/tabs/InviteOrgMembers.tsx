@@ -2,10 +2,10 @@ import { FC, useCallback, useState } from 'react';
 import cx from 'classnames';
 import {
   Button,
-  DropdownV2,
   Container,
   FormField,
   ProgressBar,
+  DropdownMenu,
 } from '@firecamp/ui';
 import RolesCallout from '../RolesCallout';
 import { _array, _misc } from '@firecamp/utils';
@@ -37,7 +37,10 @@ const InviteOrgMembers: FC<IProps> = ({
   const sendInvitation = useCallback(() => {
     if (!member.id || !member.email || !member.role) return;
     setInvitingFlag(true);
-    inviteOrgMembers([{id: member.id, name: member.name, email: member.email}], member.role).finally(() => {
+    inviteOrgMembers(
+      [{ id: member.id, name: member.name, email: member.email }],
+      member.role
+    ).finally(() => {
       setInvitingFlag(false);
     });
   }, [member]);
@@ -53,7 +56,7 @@ const InviteOrgMembers: FC<IProps> = ({
           label="Invite member from your organization"
           className="relative"
         >
-          <DropdownV2
+          <DropdownMenu
             handleRenderer={() => (
               <div className="relative">
                 <Button
@@ -72,17 +75,18 @@ const InviteOrgMembers: FC<IProps> = ({
                 <ProgressBar className="top-auto" active={isFetchingMembers} />
               </div>
             )}
-            classes={{
-              trigger: 'block',
-              options: 'w-[32rem] bg-popover-background z-[1000] -mt-1',
-              item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-            }}
             options={members}
             onSelect={(m) => onChange({ ...member, ...m })}
+            classNames={{
+              trigger: 'block',
+              dropdown: '-mt-2 !py-0',
+              item: '!px-4 !py-px !text-sm !leading-6',
+            }}
+            width={512}
           />
         </FormField>
         <FormField label="Assign role for selected member">
-          <DropdownV2
+          <DropdownMenu
             handleRenderer={() => (
               <Button
                 text={_role.name || 'Select role'}
@@ -97,12 +101,13 @@ const InviteOrgMembers: FC<IProps> = ({
               />
             )}
             options={RoleOptions}
-            classes={{
+            classNames={{
               trigger: 'block',
-              options: 'w-[32rem] bg-popover-background z-[1000] -mt-1',
-              item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
+              dropdown: '-mt-2 !py-0',
+              item: '!px-4 !py-px !text-sm !leading-6',
             }}
             onSelect={({ name, id }) => onChange({ ...member, role: id })}
+            width={512}
           />
         </FormField>
         <RolesCallout role={_role.id} />

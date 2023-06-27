@@ -14,7 +14,17 @@ export interface IDropdownMenu {
   /**
    * Classnames object ( component Styles API )
    */
-  classNames?: {};
+  classNames?: {
+    trigger?: string;
+    dropdown?: string;
+    label?: string;
+    item?: string;
+    divider?: string;
+  };
+  /**
+   * to disable the dropdown selection
+   */
+  disabled?: boolean;
   /**
    * Element to be shown to preview the dropdown
    */
