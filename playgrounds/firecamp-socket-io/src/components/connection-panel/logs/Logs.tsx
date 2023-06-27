@@ -8,9 +8,9 @@ import {
   CopyButton,
   Column,
   Row,
-  Dropdown,
   Button,
   Resizable,
+  DropdownMenu,
 } from '@firecamp/ui';
 import LogTable from './log-table/LogTable';
 import LogPreview from './log-table/LogPreview';
@@ -90,7 +90,11 @@ const Logs = () => {
   };
 
   return (
-    <Column flex={1} className="h-full bg-app-background-secondary" overflow="auto">
+    <Column
+      flex={1}
+      className="h-full bg-app-background-secondary"
+      overflow="auto"
+    >
       <Row className="with-divider h-full" flex={1}>
         <Column overflow="auto" className="h-full">
           <Container>
@@ -108,13 +112,8 @@ const Logs = () => {
                   <div className="flex items-center">
                     {/* <label className="m-0 text-base font-bold">Type</label> */}
                     {logs?.length ? (
-                      <Dropdown
-                        selected={typeFilter || 'select log type'}
-                        className="fc-dropdown-fixwidth"
-                      >
-                        <Dropdown.Handler
-                          id={`websocket-response-log-${tabId}-filter-event`}
-                        >
+                      <DropdownMenu
+                        handleRenderer={() => (
                           <Button
                             text={typeFilter || 'select log type'}
                             tooltip={
@@ -125,14 +124,18 @@ const Logs = () => {
                             ghost
                             sm
                           />
-                        </Dropdown.Handler>
-                        <Dropdown.Options
-                          options={Object.keys(logTypes)?.map((o) => ({
-                            name: o,
-                          }))}
-                          onSelect={(type) => _onFilter(type?.name)}
-                        />
-                      </Dropdown>
+                        )}
+                        options={Object.keys(logTypes)?.map((o) => ({
+                          name: o,
+                        }))}
+                        onSelect={(type) => _onFilter(type?.name)}
+                        selected={typeFilter || 'select log type'}
+                        classNames={{
+                          dropdown: 'border-focusBorder !py-0 -mt-2',
+                          item: '!text-sm !leading-[18px] !px-2 !py-1',
+                        }}
+                        width={144}
+                      />
                     ) : (
                       <></>
                     )}

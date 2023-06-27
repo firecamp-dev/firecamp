@@ -70,7 +70,7 @@ const Digest: FC<IDigest> = ({
         );
       })}
 
-      <label className="fc-form-field-group m-5">
+      <label className="fc-form-field-group">
         Advanced
         <span>optional</span>
       </label>

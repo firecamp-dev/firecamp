@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import shallow from 'zustand/shallow';
+import cx from 'classnames';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import { Button, Dropdown, StatusBar, ToolBar } from '@firecamp/ui';
+import {
+  Button,
+  Dropdown,
+  DropdownMenu,
+  StatusBar,
+  ToolBar,
+} from '@firecamp/ui';
 import EditPlaygroundName from './EditPlaygroundName';
 import { IStore, useStore } from '../../../../../store';
 import { isValid } from '../../../../../services/GraphQLservice';
@@ -111,24 +118,30 @@ const ReqStatusBar = ({}) => {
           </ToolBar>
         </div>
         <div className="flex ml-auto mr-1">
-          <Dropdown isOpen={isOpen} detach={false} onToggle={toggleOpen}>
-            <Dropdown.Handler>
+          <DropdownMenu
+            handleRenderer={() => (
               <Button
                 text={currentOps?.name || ''}
                 xs
                 secondary
                 withCaret={true}
-                className="!rounded-br-none !rounded-tr-none"
+                className={cx('!rounded-br-none !rounded-tr-none', {
+                  open: isOpen,
+                })}
               />
-            </Dropdown.Handler>
-            <Dropdown.Options
-              options={plgOperations || []}
-              // displayKey="name"
-              className={'without-arrow width-full bg-app-background-secondary'}
-              emptyMessage="No queries"
-              onSelect={onSelectOperation}
-            ></Dropdown.Options>
-          </Dropdown>
+            )}
+            options={plgOperations || []}
+            onSelect={onSelectOperation}
+            onOpenChange={(v) => toggleOpen(v)}
+            classNames={{
+              dropdown: 'border-focusBorder !py-0 -mt-2',
+              item: '!text-sm !leading-6 !px-2 !py-1',
+            }}
+            width={144}
+            menuProps={{
+              position: 'bottom-start',
+            }}
+          />{' '}
           <Button
             text=""
             primary

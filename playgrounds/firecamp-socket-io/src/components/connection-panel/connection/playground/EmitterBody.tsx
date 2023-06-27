@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import cx from 'classnames';
 import {
   Editor,
   Input,
@@ -6,10 +7,10 @@ import {
   Container,
   QuickSelection,
   Checkbox,
-  Dropdown,
   Button,
   EditorControlBar,
   TabHeader,
+  DropdownMenu,
 } from '@firecamp/ui';
 import {
   EArgumentBodyType,
@@ -213,26 +214,31 @@ export default EmitterBody;
 const ArgTypesDD = ({ activeArgType, changeArgType }) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
   return (
-    <Dropdown
-      selected={activeArgType}
-      isOpen={isBodyTypeDDOpen}
-      onToggle={() => toggleBodyTypeDD(!isBodyTypeDDOpen)}
-    >
-      <Dropdown.Handler>
+    <DropdownMenu
+      handleRenderer={() => (
         <Button
           text={activeArgType.name}
+          className={cx({ open: isBodyTypeDDOpen })}
           transparent
           withCaret
           primary
           ghost
           sm
         />
-      </Dropdown.Handler>
-      <Dropdown.Options
-        options={ArgTypes}
-        onSelect={(argType) => changeArgType(argType.id)}
-      />
-    </Dropdown>
+      )}
+      options={ArgTypes}
+      onSelect={(argType) => changeArgType(argType.id)}
+      onOpenChange={(v) => toggleBodyTypeDD(v)}
+      selected={activeArgType.name}
+      classNames={{
+        dropdown: 'border-focusBorder !py-0 -mt-[10px]',
+        item: '!text-sm !leading-[18px] !px-2 !py-1',
+      }}
+      width={144}
+      menuProps={{
+        position: 'bottom-start',
+      }}
+    />
   );
 };
 

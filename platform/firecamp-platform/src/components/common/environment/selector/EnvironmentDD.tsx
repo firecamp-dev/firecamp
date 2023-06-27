@@ -49,10 +49,6 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
         showSeparator: true,
       },
     ],
-    {
-      name: 'Create New',
-      isLabel: true,
-    },
     { id: 'fc-new-environment', name: 'Create New Environment' },
   ];
 

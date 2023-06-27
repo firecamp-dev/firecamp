@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Button from '../buttons/Button';
-import DropDownV2 from '../dropdown/DropdownV2';
+import DropdownMenu from '../dropdown/DropdownMenu';
 import Input from '../input/Input';
 import FormField from './FormField';
 import { IFormField } from './interfaces/FormField.interfaces';
@@ -35,7 +35,7 @@ const DropdownElement = () => {
   const [selected, setSelected] = useState('API style');
 
   return (
-    <DropDownV2
+    <DropdownMenu
       handleRenderer={() => (
         <Button
           id={'button'}
@@ -67,7 +67,6 @@ const DropdownElement = () => {
         },
       ]}
       onSelect={(value) => setSelected(value.name)}
-      showOptionArrow={true}
     />
   );
 };

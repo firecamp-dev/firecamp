@@ -38,7 +38,9 @@ const DropdownMenu: FC<IDropdownMenu> = ({
         <span
           className={cx(
             { 'inline-block': !classNames.trigger },
-            { [EDefaultStyles.disabled]: disabled }
+            { 'block': classNames.trigger },
+            { [EDefaultStyles.disabled]: disabled },
+            classNames.trigger
           )}
         >
           {handleRenderer()}

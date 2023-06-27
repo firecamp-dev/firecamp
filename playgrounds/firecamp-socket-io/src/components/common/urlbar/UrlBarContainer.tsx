@@ -1,7 +1,8 @@
 import { FC, useState } from 'react';
+import cx from 'classnames';
 import shallow from 'zustand/shallow';
 import _url from '@firecamp/url';
-import { Url, Button, Dropdown } from '@firecamp/ui';
+import { Url, Button, DropdownMenu } from '@firecamp/ui';
 import ConnectionButton from '../connection/ConnectButton';
 import { SIOVersionOptions } from '../../../constants';
 import { IStore, useStore } from '../../../store';
@@ -91,25 +92,35 @@ export default UrlBarContainer;
 
 const SIOVersionDropDown: FC<any> = ({
   id = '',
-  className = '',
   options = [{ name: '', version: '' }],
   selectedOption = { name: '', version: '' },
   onSelectItem = (option) => {},
 }) => {
   const [isDropDownOpen, toggleDropDown] = useState(false);
   return (
-    <Dropdown
-      id={id}
-      className={className}
-      isOpen={isDropDownOpen}
-      selected={selectedOption}
-      onToggle={toggleDropDown}
-    >
-      <Dropdown.Handler>
-        <Button text={selectedOption.name} secondary withCaret sm />
-      </Dropdown.Handler>
-      <Dropdown.Options options={options} onSelect={(o) => onSelectItem(o)} />
-    </Dropdown>
+    <div className="flex">
+      <DropdownMenu
+        id={id}
+        onOpenChange={(v) => toggleDropDown(v)}
+        handleRenderer={() => (
+          <Button
+            text={selectedOption.name}
+            className={cx({ open: isDropDownOpen })}
+            secondary
+            withCaret
+            sm
+          />
+        )}
+        selected={selectedOption}
+        options={options}
+        onSelect={(o) => onSelectItem(o)}
+        width={120}
+        classNames={{
+          dropdown: 'pt-0 -mt-2 border-focusBorder',
+          item: '!text-sm !py-1 !px-2 !leading-[18px]',
+        }}
+      />
+    </div>
   );
 };
 
