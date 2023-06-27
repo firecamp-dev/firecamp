@@ -1,14 +1,15 @@
 import { FC, useState, useEffect } from 'react';
 import shallow from 'zustand/shallow';
+import cx from 'classnames';
 import {
   Container,
-  Dropdown,
   Editor,
   BasicTable,
   Button,
   StatusBar,
   MultipartTable,
   EditorControlBar,
+  DropdownMenu,
 } from '@firecamp/ui';
 import { ERestBodyTypes } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
@@ -61,18 +62,16 @@ const BodyTab: FC<any> = () => {
   const _prepareRestBodyTypesOptions = () => {
     const isEmptyAPIBody = isRestBodyEmpty(body || {});
     // console.log({ isEmptyAPIBody });
-    const updatedBodyTypes = Object.values(bodyTypesDDValues);
+    let updatedBodyTypes = Object.values(bodyTypesDDValues);
+
     if (isEmptyAPIBody) {
-      updatedBodyTypes.map((type, i) => {
-        return Object.assign(type, {
-          list: type.list.map((l) => {
-            // if (isEmptyAPIBody[l.id] === undefined) isEmptyAPIBody[l.id] = true;
-            return Object.assign(l, {
-              dotIndicator: false,
-            });
-          }),
-        });
-      });
+      updatedBodyTypes = updatedBodyTypes.reduce((optionList, item) => {
+        let listItem = item;
+        if (!item.isLabel) {
+          listItem = Object.assign({}, item, { dotIndicator: false });
+        }
+        return [...optionList, listItem];
+      }, []);
     }
     return updatedBodyTypes;
   };
@@ -160,14 +159,12 @@ const BodyTypeDropDown: FC<any> = ({
 
   useEffect(() => {
     setOptions(fetchOptions());
-    // console.log(fetchOptions(), 'fetch options');
   }, []);
 
   /**
    * On toggle open body types dropdown menu
    */
-  const _onToggleOpen = () => {
-    const isDropdownOpen = !isOpen;
+  const _onToggleOpen = (isDropdownOpen) => {
     toggle(isDropdownOpen);
     /**
      * If dropdown is toggled as open then and then only call parent (prop) function 'onToggle'.
@@ -179,28 +176,28 @@ const BodyTypeDropDown: FC<any> = ({
   };
 
   return (
-    <Dropdown
-      detach={false}
-      isOpen={isOpen}
-      onToggle={_onToggleOpen}
-      selected={selectedOption || 'None'}
-    >
-      <Dropdown.Handler>
+    <DropdownMenu
+      onOpenChange={(v) => _onToggleOpen(v)}
+      handleRenderer={() => (
         <Button
           text={selectedOption || 'None'}
-          className="font-bold"
+          className={cx('font-bold', { open: isOpen })}
           withCaret
           transparent
           ghost
           xs
           primary
         />
-      </Dropdown.Handler>
-      <Dropdown.Options
-        options={options}
-        onSelect={(selected) => onSelect(selected)}
-        className="type-2"
-      />
-    </Dropdown>
+      )}
+      selected={selectedOption || 'None'}
+      options={options}
+      onSelect={(selected) => onSelect(selected)}
+      width={144}
+      classNames={{
+        dropdown: 'pt-0 pb-2 -mt-2 border-focusBorder',
+        label: 'uppercase pl-2 font-sans text-xs',
+        item: '!px-4	!text-sm !leading-6',
+      }}
+    />
   );
 };

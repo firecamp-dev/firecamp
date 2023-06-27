@@ -1,6 +1,7 @@
 import { Fragment, FC } from 'react';
 import cx from 'classnames';
 import { Menu } from '@mantine/core';
+import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
 import { IDropdownMenu } from './interfaces/DropdownMenu.interfaces';
 
 enum EDefaultStyles {
@@ -9,7 +10,7 @@ enum EDefaultStyles {
   item = 'cursor-pointer text-app-foreground !rounded-none hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
   divider = 'bg-app-border',
   disabled = 'opacity-50 cursor-default',
-  disabledItem = '!text-activityBar-foreground-inactive !cursor-default'
+  disabledItem = '!text-activityBar-foreground-inactive !cursor-default',
 }
 
 const DropdownMenu: FC<IDropdownMenu> = ({
@@ -22,7 +23,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
   onSelect = () => {},
   onOpenChange = () => {},
   disabled = false,
-  menuProps = {}
+  menuProps = {},
 }) => {
   return (
     <Menu
@@ -38,7 +39,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
         <span
           className={cx(
             { 'inline-block': !classNames.trigger },
-            { 'block': classNames.trigger },
+            { block: classNames.trigger },
             { [EDefaultStyles.disabled]: disabled },
             classNames.trigger
           )}
@@ -62,14 +63,28 @@ const DropdownMenu: FC<IDropdownMenu> = ({
                 </Menu.Label>
               ) : (
                 <Menu.Item
-                  className={cx(EDefaultStyles.item, {
-                    'font-bold': selected === item.name,
-                  },{
-                    [EDefaultStyles.disabledItem]: item.disabled,
-                  })}
+                  className={cx(
+                    EDefaultStyles.item,
+                    {
+                      'font-bold': selected === item.name,
+                    },
+                    {
+                      [EDefaultStyles.disabledItem]: item.disabled,
+                    }
+                  )}
                   icon={typeof item.prefix === 'function' && item.prefix()}
                   rightSection={
-                    typeof item.postfix === 'function' && item.postfix()
+                    <>
+                      {item?.dotIndicator === true && (
+                        <span>
+                          <VscCircleFilled
+                            size={12}
+                            className="text-primaryColor"
+                          />
+                        </span>
+                      )}
+                      {typeof item.postfix === 'function' && item.postfix()}
+                    </>
                   }
                   onClick={() => !item.disabled && onSelect(item)}
                 >

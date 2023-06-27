@@ -68,6 +68,10 @@ export interface IOptions {
    */
   disabled?: boolean;
   /**
+   * to display the item with an dot indicator
+   */
+  dotIndicator?: boolean;
+  /**
    * to perform action based on selection
    */
   onSelect?: (option?: any, event?: any) => any;
