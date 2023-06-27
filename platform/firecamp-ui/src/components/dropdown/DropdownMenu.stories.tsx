@@ -559,7 +559,7 @@ export const FooterStatusBar = () => {
             width={150}
             onSelect={(value) => setUserSelected(value.name)}
             classNames={{
-              dropdown: '!pt-0 mt-2',
+              dropdown: '!pt-0 mt-2 min-w-fit	border-focusBorder',
               label:
                 'flex items-center text-app-foreground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
               item: '!text-sm !py-1 !px-3 !leading-6',

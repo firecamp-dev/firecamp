@@ -9,6 +9,7 @@ enum EDefaultStyles {
   item = 'cursor-pointer text-app-foreground !rounded-none hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
   divider = 'bg-app-border',
   disabled = 'opacity-50 cursor-default',
+  disabledItem = '!text-activityBar-foreground-inactive !cursor-default'
 }
 
 const DropdownMenu: FC<IDropdownMenu> = ({
@@ -59,12 +60,14 @@ const DropdownMenu: FC<IDropdownMenu> = ({
                 <Menu.Item
                   className={cx(EDefaultStyles.item, {
                     'font-bold': selected === item.name,
+                  },{
+                    [EDefaultStyles.disabledItem]: item.disabled,
                   })}
                   icon={typeof item.prefix === 'function' && item.prefix()}
                   rightSection={
                     typeof item.postfix === 'function' && item.postfix()
                   }
-                  onClick={() => onSelect(item)}
+                  onClick={() => !item.disabled && onSelect(item)}
                 >
                   {item.name}
                 </Menu.Item>

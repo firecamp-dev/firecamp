@@ -60,6 +60,10 @@ export interface IOptions {
    */
   isLabel?: boolean;
   /**
+   * to display the option item as disabled
+   */
+  disabled?: boolean;
+  /**
    * to perform action based on selection
    */
   onSelect?: (option?: any, event?: any) => any;

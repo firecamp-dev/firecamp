@@ -1228,6 +1228,10 @@ video {
 .\!min-w-full {
   min-width: 100% !important;
 }
+.min-w-fit {
+  min-width: -moz-fit-content;
+  min-width: fit-content;
+}
 .min-w-full {
   min-width: 100%;
 }
@@ -1297,6 +1301,9 @@ video {
 }
 .animate-slideUpAndFade {
   animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.\!cursor-default {
+  cursor: default !important;
 }
 .cursor-default {
   cursor: default;
