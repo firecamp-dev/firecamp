@@ -22,6 +22,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
   onSelect = () => {},
   onOpenChange = () => {},
   disabled = false,
+  menuProps = {}
 }) => {
   return (
     <Menu
@@ -31,6 +32,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
       classNames={classNames}
       onChange={onOpenChange}
       disabled={disabled}
+      {...menuProps}
     >
       <Menu.Target>
         <span

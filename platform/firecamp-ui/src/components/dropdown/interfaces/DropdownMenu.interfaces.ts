@@ -22,6 +22,10 @@ export interface IDropdownMenu {
     divider?: string;
   };
   /**
+   * to define the any styles for the dropdown
+   */
+  menuProps?: any;
+  /**
    * to disable the dropdown selection
    */
   disabled?: boolean;

@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Dropdown, Input } from '@firecamp/ui';
+import { DropdownMenu, Input } from '@firecamp/ui';
 import { EAuthTypes, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
@@ -80,21 +80,27 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
       })}
       <div className="form-group">
         <label>Algorithm</label>
-        <Dropdown
-          selected={auth[Hawk]['algorithm'] || 'SHA256'} //default "SHA256
-        >
-          <Dropdown.Handler>
+        <DropdownMenu
+          handleRenderer={() => (
             <div className={'select-box-title'}>
               {auth[Hawk]['algorithm'] || 'SHA256'}
             </div>
-          </Dropdown.Handler>
-          <Dropdown.Options
-            options={algorithmList}
-            onSelect={(method) => {
-              _setAlgorithm(method);
-            }}
-          />
-        </Dropdown>
+          )}
+          options={algorithmList}
+          onSelect={(method) => {
+            _setAlgorithm(method);
+          }}
+          selected={auth[Hawk]['algorithm'] || 'SHA256'} //default "SHA256
+          classNames={{
+            trigger: 'mb-[10px]',
+            dropdown: 'border-focusBorder !py-0 -mt-[10px]',
+            item: '!text-sm !leading-[18px] !px-2 !py-1',
+          }}
+          width={144}
+          menuProps={{
+            position: 'bottom-start',
+          }}
+        />
       </div>
     </form>
   );

@@ -15,9 +15,9 @@ import {
 import {
   AvailableOnElectron,
   Notes,
-  Dropdown,
   Button,
   Container,
+  DropdownMenu,
 } from '@firecamp/ui';
 
 import {
@@ -164,17 +164,10 @@ Github </a>, <a href="https://twitter.com/firecampdev" target="_blank">Twitter</
 export default AuthPanel;
 
 const AuthTypesDD: FC<any> = ({ types, name, onSelect }) => {
-  const [isOpen, toggleDD] = useState(false);
-
   return (
     <div className="tab-pane-body-header flex items-center px-3 py-1 relative z-10">
-      <Dropdown
-        isOpen={isOpen}
-        // style={{ width: '115px' }}
-        selected={name || ''}
-        onToggle={() => toggleDD(!isOpen)}
-      >
-        <Dropdown.Handler>
+      <DropdownMenu
+        handleRenderer={() => (
           <Button
             text={name || ''}
             className="font-bold"
@@ -184,9 +177,16 @@ const AuthTypesDD: FC<any> = ({ types, name, onSelect }) => {
             ghost
             xs
           />
-        </Dropdown.Handler>
-        <Dropdown.Options options={types} onSelect={onSelect} />
-      </Dropdown>
+        )}
+        options={types}
+        onSelect={onSelect}
+        selected={name || ''}
+        classNames={{
+          dropdown: 'border-focusBorder !py-0',
+          item: '!text-sm !leading-[18px] !px-2 !py-1',
+        }}
+        width={144}
+      />
     </div>
   );
 };

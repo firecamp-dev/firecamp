@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Button, Dropdown, Input } from '@firecamp/ui';
+import { Button, DropdownMenu, Input } from '@firecamp/ui';
 import { IAuthDigest, EAuthTypes, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
@@ -77,19 +77,31 @@ const Digest: FC<IDigest> = ({
       <div className="form-group">
         <label>Algorithm:</label>
 
-        <Dropdown
+        <DropdownMenu
+          handleRenderer={() => (
+            <Button
+              text={auth['algorithm'] || 'MD5'}
+              secondary
+              withCaret
+              sm
+              className="mb-2"
+            />
+          )}
+          options={algorithmList}
+          onSelect={(algorithm) => {
+            _onSelectAlgorithm(algorithm?.name);
+          }}
           selected={auth['algorithm'] || 'MD5'} //defalut "MD5"
-        >
-          <Dropdown.Handler>
-            <Button text={auth['algorithm'] || 'MD5'} secondary withCaret sm />
-          </Dropdown.Handler>
-          <Dropdown.Options
-            options={algorithmList}
-            onSelect={(algorithm) => {
-              _onSelectAlgorithm(algorithm?.name);
-            }}
-          />
-        </Dropdown>
+          classNames={{
+            trigger: 'mb-[10px]',
+            dropdown: 'border-focusBorder !py-0 -mt-[10px]',
+            item: '!text-sm !leading-[18px] !px-2 !py-1',
+          }}
+          width={144}
+          menuProps={{
+            position: 'bottom-start',
+          }}
+        />
       </div>
       {(advancedInputList || []).map((input, i) => {
         return (
