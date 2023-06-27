@@ -4,14 +4,24 @@ Thank you for considering contributing to firecamp.io! To ensure smooth collabor
 
 ## Commit Guidelines
 
-- We encourage using either the learna or commitzen format for your commit messages.
+- We encourage [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) format for your commit messages.
 - Keep your commit messages concise, clear, and descriptive.
 - Make sure to include a brief summary of the changes made in the commit.
 
+```
+The commit message should be structured as follows:
+
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+
+```
 Example Commit Message:
 
 ```
-feat: Add new authentication module
+feat(auth): Add new authentication module
 
 ```
 
@@ -24,72 +34,18 @@ feat: Add new authentication module
 5. Push your branch to your forked repository.
 6. Create a pull request (PR) from your branch to the main firecamp.io repository.
 7. Provide a clear and concise title for your pull request, summarizing the changes made.
-8. In the PR description, provide a detailed explanation of the problem you solved or the feature you added. If applicable, include relevant screenshots or a video showcasing the changes.
+8. In the PR description, provide a brief explanation of the problem you solved or the feature you added. If applicable, include relevant screenshots or a video showcasing the changes and link the issue id.
 9. Tag your PR with one or more relevant labels from the following options: `graphql`, `ui`, `documentation`, `rest`, `backend`, or any other appropriate labels.
 
-Example branch name
-```
-auth-module
-```
-
-Example PR title
-```
-feat: Add new authentication module
-
-```
-
-Example PR description
-
-```
-## Description
-This pull request adds a new authentication module to improve user security and access control.
-
-## Changes Made
-- Implemented JWT-based authentication
-- Added user registration and login endpoints
-- Enhanced password encryption and storage
-
-## Screenshots
-![Screenshot 1](/images/screenshot1.png)
-![Screenshot 2](/images/screenshot2.png)
-
-Fixes #123
-
-```
 
 ## Issue Creation
 
 1. Before creating a new issue, search the issue tracker to ensure it doesn't already exist.
-2. Create a new issue if it hasn't been reported yet.
-3. Give the issue a descriptive title, summarizing the problem or feature request concisely.
+2. Create a new issue if it hasn't been reported yet
+3. Follow the relevant issue/bug template   
 4. In the issue description, provide clear steps to reproduce the problem or describe the desired feature in detail. If relevant, include a screenshot or a video to aid understanding.
 5. Tag the issue with appropriate labels to categorize it correctly.
 
-Example issue title
-
-```
-Bug: Invalid characters in username field
-
-```
-
-Example issue description
-```
-## Issue Description
-When a user enters special characters in the username field during registration, the application throws an error and fails to save the user.
-
-## Steps to Reproduce
-1. Go to the registration page.
-2. Enter a username with special characters (e.g., "john@doe").
-3. Click the Submit button.
-
-Expected: User should be registered successfully.
-Actual: An error message is displayed, and the user is not saved.
-
-## Screenshots
-![Screenshot 1](/images/screenshot1.png)
-
-
-```
 
 ## General Community Guidelines
 
