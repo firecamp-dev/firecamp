@@ -58,7 +58,11 @@ export interface IOptions {
   /**
    * to display the option name
    */
-  name?: string;
+  name: string;
+  /**
+   * to display the tooltip text
+   */
+  title?: string;
   /**
    * to display the option item as Label
    */

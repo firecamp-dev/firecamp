@@ -72,6 +72,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
                       [EDefaultStyles.disabledItem]: item.disabled,
                     }
                   )}
+                  title={item.title}
                   icon={typeof item.prefix === 'function' && item.prefix()}
                   rightSection={
                     <>

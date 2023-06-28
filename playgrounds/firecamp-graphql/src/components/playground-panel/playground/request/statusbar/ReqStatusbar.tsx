@@ -134,7 +134,7 @@ const ReqStatusBar = ({}) => {
             onSelect={onSelectOperation}
             onOpenChange={(v) => toggleOpen(v)}
             classNames={{
-              dropdown: 'border-focusBorder !py-0 -mt-2',
+              dropdown: 'border-focusBorder !py-0 -mt-2 min-w-fit',
               item: '!text-sm !leading-6 !px-2 !py-1',
             }}
             width={144}

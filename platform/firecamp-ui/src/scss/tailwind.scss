@@ -1234,6 +1234,9 @@ video {
 .\!min-w-full {
   min-width: 100% !important;
 }
+.min-w-\[9rem\] {
+  min-width: 9rem;
+}
 .min-w-fit {
   min-width: -moz-fit-content;
   min-width: fit-content;
