@@ -42,7 +42,11 @@ export default () => {
         setCrispLoadedFlag(true);
       }
       window.$crisp.push(['safe', true]);
-      window.$crisp.push(["do", "session:reset"]);
+      const resetSession = localStorage.getItem('resetCrispSession');
+      if(resetSession != '1') {
+        localStorage.setItem('resetCrispSession', '1');
+       `window.$crisp.push(["do", "session:reset"]);
+      }
     }
   }, []);
   return <></>;
