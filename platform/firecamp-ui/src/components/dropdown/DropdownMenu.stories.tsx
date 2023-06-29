@@ -282,8 +282,8 @@ export const HTTPMethod = () => {
       width={70}
       classNames={{
         dropdown: 'pt-0 pb-2 -mt-2',
-        item: '!text-sm !py-1 !px-2 !leading-[18px]',
       }}
+      sm
     />
   );
 };
@@ -349,14 +349,15 @@ export const BodyTab = () => {
           id: 'none',
         },
       ]}
-      width={144}
       selected={selected}
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
         dropdown: 'pt-0 pb-2 -mt-2',
-        label: 'uppercase pl-2 font-sans text-xs',
-        item: '!px-4	!text-sm !leading-6',
+        label: 'uppercase pl-2 font-sans',
+        item: '!px-4',
       }}
+      width={144}
+      sm
     />
   );
 };
@@ -399,13 +400,13 @@ export const EmitterBody = () => {
           name: 'No body',
         },
       ]}
-      width={144}
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
         dropdown:
           'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder',
-        item: '!px-2 !py-1 !text-sm !leading-[18px]',
       }}
+      width={144}
+      sm
     />
   );
 };
@@ -440,12 +441,12 @@ export const Logs = () => {
         },
       ]}
       onSelect={(value: any) => setSelected(value.name)}
-      width={144}
       classNames={{
         dropdown:
           'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] -mt-2 !py-0',
-        item: '!pl-2 !py-1 !pr-1 !text-sm !leading-4',
       }}
+      width={144}
+      sm
     />
   );
 };
@@ -475,13 +476,13 @@ export const RequestStatusBar = () => {
             name: 'MyQuery1',
           },
         ]}
-        width={144}
         onSelect={(value: any) => setSelected(value.name)}
         classNames={{
           dropdown:
             'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] -mt-2 !py-0',
-          item: '!pl-2 !py-1 !pr-1 !text-sm !leading-4',
         }}
+        width={144}
+        sm
       />
       <Button
         text=""
@@ -556,14 +557,15 @@ export const FooterStatusBar = () => {
                 ),
               },
             ]}
-            width={150}
             onSelect={(value) => setUserSelected(value.name)}
             classNames={{
               dropdown: '!pt-0 mt-2 min-w-fit	border-focusBorder',
               label:
                 'flex items-center text-app-foreground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
-              item: '!text-sm !py-1 !px-3 !leading-6',
+              item: '!py-1 !px-3',
             }}
+            width={150}
+            sm
           />
           <VscChevronRight size={14} className="mt-0.5" />
 
@@ -630,13 +632,14 @@ export const FooterStatusBar = () => {
               },
             ]}
             onSelect={(value) => setSelected(value.name)}
-            width={180}
             classNames={{
               dropdown: '!pt-0 mt-2',
               label:
                 'flex items-center text-app-foreground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
-              item: '!text-sm !py-1 !px-3 !leading-6',
+              item: '!py-1 !px-3',
             }}
+            width={180}
+            sm
           />
         </div>
       </StatusBar.PrimaryRegion>
@@ -681,13 +684,13 @@ export const SidebarCollectionOption = () => {
           name: 'Delete',
         },
       ]}
-      width={144}
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
         dropdown:
           'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder',
-        item: '!px-2 !py-1 !text-sm !leading-[18px]',
       }}
+      width={144}
+      sm
     />
   );
 };
@@ -738,8 +741,9 @@ export const EnvCollectionOption = () => {
       classNames={{
         dropdown: '!pt-0 !pb-2 border-focusBorder',
         label: 'uppercase font-sans',
-        item: '!py-1 !text-sm !leading-[18px]',
+        item: '!px-5',
       }}
+      sm
     />
   );
 };
@@ -764,8 +768,8 @@ export const MemberRoleSelection = () => {
         classNames={{
           dropdown: '!py-0',
           label: 'uppercase font-sans !text-start',
-          item: '!px-2 !text-sm !leading-[18px]',
         }}
+        sm
         options={[
           { name: 'SELECT ROLE', isLabel: true },
           {

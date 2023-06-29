@@ -31,17 +31,17 @@ enum EMenuOptions {
 const options = [
   {
     id: EMenuOptions.Request,
-    name: 'Request',
+    name: 'New Request',
     prefix: () => <FcIconGetSquare size={18} />,
   },
   {
     id: EMenuOptions.Collection,
-    name: 'Collection',
+    name: 'New Collection',
     prefix: () => <VscFolder size={18} />,
   },
   {
     id: EMenuOptions.Environment,
-    name: 'Environment',
+    name: 'New Environment',
     prefix: () => <RiBracesLine size={18} />,
   },
 
@@ -53,12 +53,12 @@ const options = [
   },
   {
     id: EMenuOptions.Workspace,
-    name: 'Workspace',
+    name: 'New Workspace',
     prefix: () => <VscWindow size={18} />,
   },
   {
     id: EMenuOptions.Organization,
-    name: 'Organization',
+    name: 'New Organization',
     prefix: () => <VscOrganization size={18} />,
   },
   {

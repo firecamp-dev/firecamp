@@ -1,3 +1,5 @@
+import type { MenuProps } from '@mantine/core';
+
 export interface IDropdownMenu {
   /**
    * Add id to the dropdown wrapper
@@ -26,9 +28,9 @@ export interface IDropdownMenu {
     divider?: string;
   };
   /**
-   * to define the any styles for the dropdown
+   * to add any additional mantine menu props
    */
-  menuProps?: any;
+  menuProps?: MenuProps;
   /**
    * to disable the dropdown selection
    */
