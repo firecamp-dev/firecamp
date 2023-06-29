@@ -30,11 +30,6 @@ const columns = [
 
 const RoleOptions = [
   {
-    id: 'RoleHeader',
-    name: 'SELECT ROLE',
-    isLabel: true,
-  },
-  {
     id: EUserRolesWorkspace.Owner,
     name: 'Owner',
   },
@@ -213,15 +208,11 @@ const RoleDD: FC<{
           sm
         />
       )}
-      classNames={{
-        dropdown: '!py-0',
-        label: 'uppercase font-sans !text-start',
-        item: '!px-2 !text-sm !leading-[18px]',
-      }}
       options={RoleOptions}
       onSelect={onSelect}
-      width={144}
       disabled={role === EUserRolesWorkspace.Owner}
+      width={115}
+      sm
     />
   );
 };

@@ -34,11 +34,11 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
       selected={selectedOption || ''}
       options={options}
       onSelect={(element) => onSelectItem(element?.name)}
-      width={70}
       classNames={{
-        dropdown: 'pt-0 pb-2 -mt-2',
-        item: '!text-sm !py-1 !px-2 !leading-[18px]',
+        dropdown: '-mt-2',
       }}
+      width={70}
+      sm
     />
   );
 };

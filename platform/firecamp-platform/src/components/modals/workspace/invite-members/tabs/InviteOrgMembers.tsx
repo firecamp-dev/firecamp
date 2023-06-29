@@ -79,10 +79,11 @@ const InviteOrgMembers: FC<IProps> = ({
             onSelect={(m) => onChange({ ...member, ...m })}
             classNames={{
               trigger: 'block',
-              dropdown: '-mt-2 !py-0',
-              item: '!px-4 !py-px !text-sm !leading-6',
+              dropdown: '-mt-2',
+              item: '!px-4',
             }}
             width={512}
+            sm
           />
         </FormField>
         <FormField label="Assign role for selected member">
@@ -103,11 +104,12 @@ const InviteOrgMembers: FC<IProps> = ({
             options={RoleOptions}
             classNames={{
               trigger: 'block',
-              dropdown: '-mt-2 !py-0',
-              item: '!px-4 !py-px !text-sm !leading-6',
+              dropdown: '-mt-2',
+              item: '!px-4',
             }}
             onSelect={({ name, id }) => onChange({ ...member, role: id })}
             width={512}
+            sm
           />
         </FormField>
         <RolesCallout role={_role.id} />

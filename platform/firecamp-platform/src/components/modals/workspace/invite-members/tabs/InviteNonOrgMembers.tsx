@@ -160,12 +160,10 @@ const RoleDD: FC<{
               sm
             />
           )}
-          width={144}
-          classNames={{
-            item: '!px-4 !text-sm !leading-6',
-          }}
           options={RoleOptions}
           onSelect={_onSelect}
+          width={100}
+          sm
         />
       </div>
 

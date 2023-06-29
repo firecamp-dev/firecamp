@@ -83,12 +83,12 @@ const OAuth2: FC<IOAuth2Comp> = ({
           classNames={{
             trigger: 'mb-[10px]',
             dropdown: 'border-focusBorder !py-0 -mt-[10px]',
-            item: '!text-sm !leading-[18px] !px-2 !py-1',
           }}
-          width={144}
           menuProps={{
             position: 'bottom-start',
           }}
+          width={120}
+          sm
         />
       </div>
       {inputList.map((input: { [key: string]: string }, i: number) => {

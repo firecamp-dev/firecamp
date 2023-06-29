@@ -162,8 +162,8 @@ const CollectionMenu = ({
         classNames={{
           dropdown:
             'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder !visible',
-          item: '!px-2 !py-1 !text-sm !leading-[18px]',
         }}
+        sm
       />
   );
 };

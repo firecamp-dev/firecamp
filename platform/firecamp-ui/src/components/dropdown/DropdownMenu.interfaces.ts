@@ -12,6 +12,10 @@ export interface IDropdownMenu {
    */
   width?: number;
   /**
+   * to update the item classname
+   */
+  sm?: boolean;
+  /**
    * Classnames object ( component Styles API )
    */
   classNames?: {

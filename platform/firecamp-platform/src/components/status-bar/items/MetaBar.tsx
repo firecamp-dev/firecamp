@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { BiSupport } from '@react-icons/all-files/bi/BiSupport';
+import { IoHelpBuoyOutline } from '@react-icons/all-files/io5/IoHelpBuoyOutline';
 import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
@@ -90,28 +90,15 @@ const MetaBar: FC<any> = () => {
   return (
     <div className="flex items-center cursor-pointer pr-2">
       <DropdownMenu
-        handleRenderer={() => <BiSupport size={16} />}
+        handleRenderer={() => <IoHelpBuoyOutline size={16} />}
         options={process.env.NODE_ENV !== 'production' ? allOptions : options}
         onSelect={(v) => v.onClick()}
         classNames={{
           dropdown: 'border-focusBorder',
         }}
+        width={160}
+        sm
       />
-
-      {process.env.NODE_ENV === 'production' ? (
-        <a
-          className="flex items-center mr-2 cursor-pointer"
-          data-tip="Chat Support"
-        >
-          <VscComment
-            size={16}
-            className="text-statusBar-foreground hover:text-statusBar-foreground-active"
-            onClick={toggleChat}
-          />
-        </a>
-      ) : (
-        <></>
-      )}
     </div>
   );
 };

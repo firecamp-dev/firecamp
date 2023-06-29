@@ -114,11 +114,11 @@ const SIOVersionDropDown: FC<any> = ({
         selected={selectedOption}
         options={options}
         onSelect={(o) => onSelectItem(o)}
-        width={120}
         classNames={{
-          dropdown: 'pt-0 -mt-2 border-focusBorder',
-          item: '!text-sm !py-1 !px-2 !leading-[18px]',
+          dropdown: '-mt-2 border-focusBorder',
         }}
+        width={140}
+        sm
       />
     </div>
   );

@@ -182,10 +182,10 @@ const AuthTypesDD: FC<any> = ({ types, name, onSelect }) => {
         onSelect={onSelect}
         selected={name || ''}
         classNames={{
-          dropdown: 'border-focusBorder !py-0',
-          item: '!text-sm !leading-[18px] !px-2 !py-1',
+          dropdown: 'border-focusBorder',
         }}
-        width={144}
+        width={80}
+        sm
       />
     </div>
   );

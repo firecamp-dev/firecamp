@@ -192,12 +192,13 @@ const BodyTypeDropDown: FC<any> = ({
       selected={selectedOption || 'None'}
       options={options}
       onSelect={(selected) => onSelect(selected)}
-      width={144}
       classNames={{
-        dropdown: 'pt-0 pb-2 -mt-2 border-focusBorder',
-        label: 'uppercase pl-2 font-sans text-xs',
-        item: '!px-4	!text-sm !leading-6',
+        dropdown: '-mt-2 border-focusBorder',
+        label: 'uppercase pl-2 font-sans',
+        item: '!px-4',
       }}
+      width={144}
+      sm
     />
   );
 };

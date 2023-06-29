@@ -95,12 +95,12 @@ const Digest: FC<IDigest> = ({
           classNames={{
             trigger: 'mb-[10px]',
             dropdown: 'border-focusBorder !py-0 -mt-[10px]',
-            item: '!text-sm !leading-[18px] !px-2 !py-1',
           }}
-          width={144}
           menuProps={{
             position: 'bottom-start',
           }}
+          width={100}
+          sm
         />
       </div>
       {(advancedInputList || []).map((input, i) => {

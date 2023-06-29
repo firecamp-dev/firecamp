@@ -30,11 +30,6 @@ enum EMenuOptions {
 
 const options = [
   {
-    id: 'CreateNewHeader',
-    name: 'Create New',
-    isLabel: true,
-  },
-  {
     id: EMenuOptions.Request,
     name: 'Request',
     prefix: () => <FcIconGetSquare size={18} />,
@@ -57,12 +52,6 @@ const options = [
     prefix: () => <VscArrowDown size={18} />,
   },
   {
-    id: 'CreateNewByAdminHeader',
-    name: 'Create New (By Admin)',
-    isLabel: true,
-  },
-
-  {
     id: EMenuOptions.Workspace,
     name: 'Workspace',
     prefix: () => <VscWindow size={18} />,
@@ -77,11 +66,6 @@ const options = [
     name: 'Invite Members',
     showSeparator: true,
     prefix: () => <AiOutlineUserAdd size={18} />,
-  },
-  {
-    id: 'SwitchHeader',
-    name: 'SWITCH',
-    isLabel: true,
   },
   {
     id: EMenuOptions.SwitchOrg,
@@ -149,8 +133,7 @@ const GlobalCreateDD = ({}) => {
         options={options}
         onSelect={onSelect}
         classNames={{
-          dropdown: 'pt-0 pb-2 -ml-[2px]',
-          label: 'uppercase',
+          dropdown: '-ml-[2px]',
         }}
       />
     </div>

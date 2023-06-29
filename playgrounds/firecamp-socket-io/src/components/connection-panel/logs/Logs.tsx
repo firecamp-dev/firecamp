@@ -131,10 +131,10 @@ const Logs = () => {
                         onSelect={(type) => _onFilter(type?.name)}
                         selected={typeFilter || 'select log type'}
                         classNames={{
-                          dropdown: 'border-focusBorder !py-0 -mt-2',
-                          item: '!text-sm !leading-[18px] !px-2 !py-1',
+                          dropdown: 'border-focusBorder -mt-2',
                         }}
                         width={144}
+                        sm
                       />
                     ) : (
                       <></>

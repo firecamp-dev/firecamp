@@ -180,13 +180,14 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
       )}
       options={isGuest ? guestOptions : userOptions}
       onSelect={(v) => v.onClick()}
-      width={150}
       classNames={{
         dropdown: '!pt-0 mt-2 min-w-fit	border-focusBorder',
         label:
           '!capitalize flex items-center text-app-foreground !pt-[0.2rem] !pb-2 !px-3 !block !text-base leading-6 !bg-focus2 ',
-        item: '!text-sm !py-1 !px-3 !leading-6',
+        item: '!py-1 !px-3',
       }}
+      width={150}
+      sm
     />
   );
 };
@@ -269,13 +270,14 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       )}
       options={options}
       onSelect={(v) => v.onClick()}
-      width={150}
       classNames={{
         dropdown: '!pt-0 mt-2 min-w-fit	border-focusBorder',
         label:
           '!capitalize flex items-center text-app-foreground !pt-[0.2rem] !pb-2 !px-3 !block !text-base leading-6 !bg-focus2 ',
-        item: '!text-sm !py-1 !px-3 !leading-6',
+        item: '!py-1 !px-3',
       }}
+      width={150}
+      sm
     />
   );
 };
@@ -346,13 +348,14 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       )}
       options={options}
       onSelect={(v) => v.onClick()}
-      width={140}
       classNames={{
         dropdown: '!pt-0 mt-2 min-w-fit	border-focusBorder',
         label:
           '!capitalize flex items-center text-app-foreground !pt-[0.2rem] !pb-2 !px-3 !block !text-base leading-6 !bg-focus2 ',
-        item: '!text-sm !py-1 !px-3 !leading-6',
+        item: '!py-1 !px-3',
       }}
+      width={140}
+      sm
     />
   );
 };

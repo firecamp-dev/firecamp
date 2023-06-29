@@ -77,17 +77,18 @@ const Menu: FC = () => {
           <VscEllipsis size={20} strokeWidth={1} />
         </span>
       )}
-      width={200}
       options={tabMenus}
       onSelect={(v) => v.onClick()}
       classNames={{
-        dropdown: '!pt-0 uppercase -ml-2 border-focusBorder',
-        label: 'font-sans',
-        item: '!text-sm !py-1 !leading-6',
+        dropdown: '!pb-1 -ml-2 border-focusBorder',
+        label: 'uppercase font-sans',
+        item: '!px-5'
       }}
       menuProps={{
         position: 'right',
       }}
+      width={200}
+      sm
     />
   );
 };
