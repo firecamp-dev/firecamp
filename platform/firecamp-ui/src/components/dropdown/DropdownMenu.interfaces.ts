@@ -14,7 +14,7 @@ export interface IDropdownMenu {
    */
   width?: number;
   /**
-   * to update the item classname
+   * Sets the styling for menu items to a smaller size, including the text size and padding.
    */
   sm?: boolean;
   /**
