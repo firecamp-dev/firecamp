@@ -231,7 +231,7 @@ const ArgTypesDD = ({ activeArgType, changeArgType }) => {
       onOpenChange={(v) => toggleBodyTypeDD(v)}
       selected={activeArgType.name}
       classNames={{
-        dropdown: 'border-focusBorder -mt-[10px]',
+        dropdown: '-mt-[10px]',
       }}
       menuProps={{
         position: 'bottom-start',

@@ -74,7 +74,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
       options={options}
       onSelect={_onSelectEnv}
       classNames={{
-        dropdown: '!pb-1 border-focusBorder',
+        dropdown: '!pb-1',
         label: 'uppercase font-sans',
         item: '!px-5',
       }}

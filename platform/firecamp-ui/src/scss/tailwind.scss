@@ -698,9 +698,6 @@ video {
     max-width: 1536px;
   }
 }
-.\!visible {
-  visibility: visible !important;
-}
 .visible {
   visibility: visible;
 }
@@ -1879,9 +1876,6 @@ video {
 .\!pl-9 {
   padding-left: 2.25rem !important;
 }
-.\!pr-1 {
-  padding-right: 0.25rem !important;
-}
 .\!pr-3 {
   padding-right: 0.75rem !important;
 }
@@ -2057,12 +2051,6 @@ video {
 }
 .italic {
   font-style: italic;
-}
-.\!leading-4 {
-  line-height: 1rem !important;
-}
-.\!leading-6 {
-  line-height: 1.5rem !important;
 }
 .\!leading-\[18px\] {
   line-height: 18px !important;
@@ -2434,6 +2422,9 @@ video {
 }
 .last-of-type\:border-r-tab-border:last-of-type {
   border-right-color: var(--tab-border);
+}
+.hover\:visible:hover {
+  visibility: visible;
 }
 .hover\:border-focusBorder:hover {
   border-color: var(--focus-border);
