@@ -1,3 +1,5 @@
+import type { MenuProps } from '@mantine/core';
+
 export interface IDropdownMenu {
   /**
    * Add id to the dropdown wrapper
@@ -12,9 +14,27 @@ export interface IDropdownMenu {
    */
   width?: number;
   /**
+   * Sets the styling for menu items to a smaller size, including the text size and padding.
+   */
+  sm?: boolean;
+  /**
    * Classnames object ( component Styles API )
    */
-  classNames?: {};
+  classNames?: {
+    trigger?: string;
+    dropdown?: string;
+    label?: string;
+    item?: string;
+    divider?: string;
+  };
+  /**
+   * to add any additional mantine menu props
+   */
+  menuProps?: MenuProps;
+  /**
+   * to disable the dropdown selection
+   */
+  disabled?: boolean;
   /**
    * Element to be shown to preview the dropdown
    */
@@ -44,11 +64,23 @@ export interface IOptions {
   /**
    * to display the option name
    */
-  name?: string;
+  name: string;
+  /**
+   * to display the tooltip text
+   */
+  title?: string;
   /**
    * to display the option item as Label
    */
   isLabel?: boolean;
+  /**
+   * to display the option item as disabled
+   */
+  disabled?: boolean;
+  /**
+   * to display the item with an dot indicator
+   */
+  dotIndicator?: boolean;
   /**
    * to perform action based on selection
    */

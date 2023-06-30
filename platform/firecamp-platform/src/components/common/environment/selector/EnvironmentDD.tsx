@@ -2,7 +2,7 @@ import { FC, useState, useMemo, useEffect, memo } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import { Dropdown, Button } from '@firecamp/ui';
+import { Button, DropdownMenu } from '@firecamp/ui';
 import { TId } from '@firecamp/types';
 import Helper from './Helper';
 import { useEnvStore } from '../../../../store/environment';
@@ -39,46 +39,47 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
 
   const options = [
     {
-      header: 'Select Environment',
-      list: menu.options,
+      name: 'Select Environment',
+      isLabel: true,
     },
-    {
-      header: 'Create New',
-      list: [{ id: 'fc-new-environment', name: 'Create New Environment' }],
-    },
+    ...[
+      ...menu.options.slice(0, -1),
+      {
+        ...menu.options.at(-1),
+        showSeparator: true,
+      },
+    ],
+    { id: 'fc-new-environment', name: 'Create New Environment' },
   ];
 
   if (!menu?.selected) return <></>;
   const title = `${menu.selected.name}`;
 
   return (
-    <Dropdown
-      detach={false}
-      isOpen={isOpen}
-      onToggle={() => toggleOpen(!isOpen)}
-      selected={menu?.selected?.name || ''}
-    >
-      <Dropdown.Handler>
+    <DropdownMenu
+      onOpenChange={(v) => toggleOpen(v)}
+      handleRenderer={() => (
         <Button
           text={title}
-          className={cx(
-            // { '!text-primaryColor': true }
-            { '!text-info': true }
-          )}
+          className={cx('!text-info', {
+            open: isOpen,
+          })}
           withCaret
           transparent
           ghost
           xs
         />
-      </Dropdown.Handler>
-      <Dropdown.Options
-        options={options}
-        onSelect={_onSelectEnv}
-        headerMeta={{ applyUpperCase: true }}
-        hasDivider={true}
-        className="type-1"
-      />
-    </Dropdown>
+      )}
+      selected={menu?.selected?.name || ''}
+      options={options}
+      onSelect={_onSelectEnv}
+      classNames={{
+        dropdown: '!pb-1 border-focusBorder',
+        label: 'uppercase font-sans',
+        item: '!px-5',
+      }}
+      sm
+    />
   );
 };
 export default memo(EnvironmentDD, (n, p) => !isEqual(n, p));

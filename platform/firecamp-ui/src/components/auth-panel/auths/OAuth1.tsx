@@ -1,5 +1,10 @@
 import { FC, useState } from 'react';
-import { Button, Dropdown, Input, CheckboxInGrid } from '@firecamp/ui';
+import {
+  Button,
+  Input,
+  CheckboxInGrid,
+  DropdownMenu,
+} from '@firecamp/ui';
 import { IOAuth1, EAuthTypes, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
@@ -72,24 +77,30 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
       </label>
       <div className="form-group">
         <label>Signature Method:</label>
-        <Dropdown
-          selected={auth['signatureMethod'] || 'HMAC-SHA1'} //defalut "HMAC-SHA1"
-        >
-          <Dropdown.Handler>
+        <DropdownMenu
+          handleRenderer={() => (
             <Button
               text={auth['signatureMethod'] || 'HMAC-SHA1'}
               secondary
               withCaret
               sm
             />
-          </Dropdown.Handler>
-          <Dropdown.Options
-            options={signatureMethodList}
-            onSelect={(method) => {
-              _onSelectSignatureMethod(method?.name);
-            }}
-          />
-        </Dropdown>
+          )}
+          options={signatureMethodList}
+          onSelect={(method) => {
+            _onSelectSignatureMethod(method?.name);
+          }}
+          selected={auth['signatureMethod'] || 'HMAC-SHA1'} //defalut "HMAC-SHA1"
+          classNames={{
+            trigger: 'mb-[10px]',
+            dropdown: 'border-focusBorder !py-0 -mt-[10px]',
+          }}
+          menuProps={{
+            position: 'bottom-start',
+          }}
+          width={120}
+          sm
+        />
       </div>
       {/* {auth?.['signatureMethod'] === 'RSA-SHA1' ? (
       <Input

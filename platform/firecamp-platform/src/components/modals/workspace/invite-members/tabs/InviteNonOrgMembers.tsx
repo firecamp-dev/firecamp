@@ -1,7 +1,7 @@
 import { FC, useCallback, useState } from 'react';
 import {
   Button,
-  DropdownV2,
+  DropdownMenu,
   Editor,
   Notes,
   Container,
@@ -149,8 +149,7 @@ const RoleDD: FC<{
         <label className="text-base text-app-foreground">
           Invite members as{' '}
         </label>
-
-        <DropdownV2
+        <DropdownMenu
           handleRenderer={() => (
             <Button
               text={role.name}
@@ -161,12 +160,10 @@ const RoleDD: FC<{
               sm
             />
           )}
-          classes={{
-            options: 'w-36 bg-popover-background z-[1000]',
-            item: 'px-4 text-sm hover:!bg-focus1 focus-visible:!bg-focus1 leading-6 focus-visible:!shadow-none',
-          }}
           options={RoleOptions}
           onSelect={_onSelect}
+          width={100}
+          sm
         />
       </div>
 

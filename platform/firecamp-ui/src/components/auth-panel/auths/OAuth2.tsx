@@ -1,5 +1,5 @@
 import { FC, useState, useEffect, Key } from 'react';
-import { Dropdown, Button, Input } from '@firecamp/ui';
+import { Button, Input, DropdownMenu } from '@firecamp/ui';
 // @ts-ignore
 import { EAuthTypes, IUiOAuth2, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
@@ -63,12 +63,8 @@ const OAuth2: FC<IOAuth2Comp> = ({
     <form className="fc-form grid" onSubmit={_handleSubmit}>
       <div className="form-group">
         <label>Grant Type:</label>
-        <Dropdown
-          selected={
-            grantTypesOptions.find((t) => t.id === activeGrantType) || ''
-          }
-        >
-          <Dropdown.Handler>
+        <DropdownMenu
+          handleRenderer={() => (
             <Button
               text={
                 grantTypesOptions.find((t) => t.id === activeGrantType)?.name ||
@@ -78,12 +74,22 @@ const OAuth2: FC<IOAuth2Comp> = ({
               withCaret
               sm
             />
-          </Dropdown.Handler>
-          <Dropdown.Options
-            options={grantTypesOptions}
-            onSelect={(element) => _onSelectGrantType(element)}
-          />
-        </Dropdown>
+          )}
+          options={grantTypesOptions}
+          onSelect={(element) => _onSelectGrantType(element)}
+          selected={
+            grantTypesOptions.find((t) => t.id === activeGrantType)?.name || ''
+          }
+          classNames={{
+            trigger: 'mb-[10px]',
+            dropdown: 'border-focusBorder !py-0 -mt-[10px]',
+          }}
+          menuProps={{
+            position: 'bottom-start',
+          }}
+          width={120}
+          sm
+        />
       </div>
       {inputList.map((input: { [key: string]: string }, i: number) => {
         let errorMsg = '';

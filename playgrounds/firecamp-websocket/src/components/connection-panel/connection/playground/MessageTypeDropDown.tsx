@@ -1,4 +1,5 @@
-import { Button, Dropdown } from '@firecamp/ui';
+import { Button, DropdownMenu } from '@firecamp/ui';
+import cx from 'classnames';
 
 const MessageTypeDropDown = ({
   options,
@@ -8,28 +9,34 @@ const MessageTypeDropDown = ({
   onSelect,
 }) => {
   return (
-    <Dropdown
-      isOpen={isOpen}
-      selected={selectedOption.name || ''}
-      onToggle={onToggle}
-    >
-      <Dropdown.Handler>
+    <DropdownMenu
+      handleRenderer={() => (
         <div className="flex text-sm items-center">
           {' '}
           Message as
           <Button
             text={selectedOption.name || ''}
+            className={cx("ml-1", { open: isOpen })}
             withCaret
             primary
             transparent
             ghost
             xs
-            className="ml-1"
           />
         </div>
-      </Dropdown.Handler>
-      <Dropdown.Options options={options} onSelect={onSelect} />
-    </Dropdown>
+      )}
+      options={options} onSelect={onSelect}
+      onOpenChange={(v) => onToggle(v)}
+      selected={selectedOption.name || ''}
+      classNames={{
+        dropdown: 'border-focusBorder -mt-1',
+      }}
+      menuProps={{
+        position: 'bottom-start',
+      }}
+      width={144}
+      sm
+    />
   );
 };
 

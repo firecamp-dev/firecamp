@@ -12,56 +12,53 @@ export const bodyTypeNames = {
 };
 
 // dropdown values for body types
-export const bodyTypesDDValues = {
-  formAndQuery: {
-    header: 'Form and query',
-    list: [
-      {
-        name: bodyTypeNames[ERestBodyTypes.FormData],
-        id: ERestBodyTypes.FormData,
-      },
-      {
-        name: bodyTypeNames[ERestBodyTypes.UrlEncoded],
-        id: ERestBodyTypes.UrlEncoded,
-      },
-      {
-        name: bodyTypeNames[ERestBodyTypes.GraphQL],
-        id: ERestBodyTypes.GraphQL,
-      },
-    ],
+export const bodyTypesDDValues = [
+  {
+    name: 'Form and query',
+    isLabel: true,
   },
-  raw: {
-    header: 'Raw',
-    list: [
-      {
-        name: bodyTypeNames[ERestBodyTypes.Json],
-        id: ERestBodyTypes.Json,
-      },
-      {
-        name: bodyTypeNames[ERestBodyTypes.Xml],
-        id: ERestBodyTypes.Xml,
-      },
-      {
-        name: bodyTypeNames[ERestBodyTypes.Text],
-        id: ERestBodyTypes.Text,
-      },
-    ],
+  {
+    name: bodyTypeNames[ERestBodyTypes.FormData],
+    id: ERestBodyTypes.FormData,
   },
-  other: {
-    header: 'Others',
-    list: [
-      {
-        name: bodyTypeNames[ERestBodyTypes.Binary],
-        id: ERestBodyTypes.Binary,
-      },
-      {
-        name: 'None',
-        id: ERestBodyTypes.None,
-        isEmpty: true,
-      },
-    ],
+  {
+    name: bodyTypeNames[ERestBodyTypes.UrlEncoded],
+    id: ERestBodyTypes.UrlEncoded,
   },
-};
+  {
+    name: bodyTypeNames[ERestBodyTypes.GraphQL],
+    id: ERestBodyTypes.GraphQL,
+  },
+  {
+    name: 'Raw',
+    isLabel: true,
+  },
+  {
+    name: bodyTypeNames[ERestBodyTypes.Json],
+    id: ERestBodyTypes.Json,
+  },
+  {
+    name: bodyTypeNames[ERestBodyTypes.Xml],
+    id: ERestBodyTypes.Xml,
+  },
+  {
+    name: bodyTypeNames[ERestBodyTypes.Text],
+    id: ERestBodyTypes.Text,
+  },
+  {
+    name: 'Others',
+    isLabel: true,
+  },
+  {
+    name: bodyTypeNames[ERestBodyTypes.Binary],
+    id: ERestBodyTypes.Binary,
+  },
+  {
+    name: 'None',
+    id: ERestBodyTypes.None,
+    isEmpty: true,
+  },
+];
 
 // empty body state
 export const RuntimeBodies = {

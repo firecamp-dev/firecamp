@@ -1,13 +1,17 @@
 import { Fragment, FC } from 'react';
 import cx from 'classnames';
 import { Menu } from '@mantine/core';
-import { IDropdownMenu } from './interfaces/DropdownMenu.interfaces';
+import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
+import { IDropdownMenu } from './DropdownMenu.interfaces';
 
 enum EDefaultStyles {
   dropdown = 'border border-app-border bg-popover-background rounded-none px-0 ',
   label = 'text-activityBar-foreground-inactive font-default px-5 pt-3 pb-1 font-medium text-xs leading-3 ',
-  item = 'cursor-pointer text-app-foreground hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
+  item = 'cursor-pointer text-app-foreground !rounded-none hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
+  itemSmall = 'cursor-pointer text-app-foreground !rounded-none hover:bg-focus1 focus-visible:!shadow-none font-default px-2 py-px text-sm leading-6', //'!px-2 !py-1 !text-sm !leading-[18px]',
   divider = 'bg-app-border',
+  disabled = 'opacity-50 cursor-default',
+  disabledItem = '!text-activityBar-foreground-inactive !cursor-default',
 }
 
 const DropdownMenu: FC<IDropdownMenu> = ({
@@ -19,6 +23,9 @@ const DropdownMenu: FC<IDropdownMenu> = ({
   classNames = {},
   onSelect = () => {},
   onOpenChange = () => {},
+  disabled = false,
+  menuProps = {},
+  sm = false
 }) => {
   return (
     <Menu
@@ -27,27 +34,69 @@ const DropdownMenu: FC<IDropdownMenu> = ({
       width={width}
       classNames={classNames}
       onChange={onOpenChange}
+      disabled={disabled}
+      {...menuProps}
     >
       <Menu.Target>
-        <span className="inline-block">{handleRenderer()}</span>
+        <span
+          className={cx(
+            { 'inline-block': !classNames.trigger },
+            { block: classNames.trigger },
+            { [EDefaultStyles.disabled]: disabled },
+            classNames.trigger
+          )}
+        >
+          {handleRenderer()}
+        </span>
       </Menu.Target>
 
-      <Menu.Dropdown className={EDefaultStyles.dropdown}>
+      <Menu.Dropdown
+        className={cx(EDefaultStyles.dropdown,
+          { "py-0" : sm},
+           {
+          'd-none border-0': options.length === 0,
+        })}
+      >
         {options.map((item, i) => {
           return (
             <Fragment key={`menu-item-${i}`}>
               {item.isLabel ? (
                 <Menu.Label className={EDefaultStyles.label}>
                   {item.name}
+                  {typeof item.postfix === 'function' && item.postfix()}
                 </Menu.Label>
               ) : (
                 <Menu.Item
-                  className={cx(EDefaultStyles.item, {'font-bold': selected === item.name})}
+                  className={cx(
+                    {
+                      [EDefaultStyles.item]: !sm
+                    },
+                    {
+                      [EDefaultStyles.itemSmall]: sm
+                    },
+                    {
+                      'font-bold': selected === item.name,
+                    },
+                    {
+                      [EDefaultStyles.disabledItem]: item.disabled,
+                    }
+                  )}
+                  title={item.title}
                   icon={typeof item.prefix === 'function' && item.prefix()}
                   rightSection={
-                    typeof item.postfix === 'function' && item.postfix()
+                    <>
+                      {item?.dotIndicator === true && (
+                        <span>
+                          <VscCircleFilled
+                            size={12}
+                            className="text-primaryColor"
+                          />
+                        </span>
+                      )}
+                      {typeof item.postfix === 'function' && item.postfix()}
+                    </>
                   }
-                  onClick={() => onSelect(item)}
+                  onClick={() => !item.disabled && onSelect(item)}
                 >
                   {item.name}
                 </Menu.Item>
