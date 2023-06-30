@@ -93,9 +93,6 @@ const MetaBar: FC<any> = () => {
         handleRenderer={() => <IoHelpBuoyOutline size={16} />}
         options={process.env.NODE_ENV !== 'production' ? allOptions : options}
         onSelect={(v) => v.onClick()}
-        classNames={{
-          dropdown: 'border-focusBorder',
-        }}
         width={160}
         sm
       />

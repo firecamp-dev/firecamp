@@ -154,6 +154,7 @@ const CollectionMenu = ({
   ];
   const requestMenu = [renameMenu, deleteMenu];
   return (
+    <div>
       <DropdownMenu
         handleRenderer={() => <VscEllipsis className='cursor-pointer' />}
         options={menuType == EMenuType.Request ? requestMenu : commonMenu}
@@ -161,10 +162,11 @@ const CollectionMenu = ({
         onSelect={(value) => value.onClick()}
         classNames={{
           dropdown:
-            'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder !visible',
+            'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)]',
         }}
         sm
       />
+      </div>
   );
 };
 

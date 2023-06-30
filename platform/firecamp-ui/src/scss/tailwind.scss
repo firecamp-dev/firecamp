@@ -698,9 +698,6 @@ video {
     max-width: 1536px;
   }
 }
-.\!visible {
-  visibility: visible !important;
-}
 .visible {
   visibility: visible;
 }
@@ -1402,6 +1399,9 @@ video {
 .\!overflow-y-auto {
   overflow-y: auto !important;
 }
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1879,9 +1879,6 @@ video {
 .\!pl-9 {
   padding-left: 2.25rem !important;
 }
-.\!pr-1 {
-  padding-right: 0.25rem !important;
-}
 .\!pr-3 {
   padding-right: 0.75rem !important;
 }
@@ -2057,12 +2054,6 @@ video {
 }
 .italic {
   font-style: italic;
-}
-.\!leading-4 {
-  line-height: 1rem !important;
-}
-.\!leading-6 {
-  line-height: 1.5rem !important;
 }
 .\!leading-\[18px\] {
   line-height: 18px !important;

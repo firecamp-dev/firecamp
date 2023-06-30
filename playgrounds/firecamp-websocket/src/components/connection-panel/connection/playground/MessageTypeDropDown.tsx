@@ -29,7 +29,7 @@ const MessageTypeDropDown = ({
       onOpenChange={(v) => onToggle(v)}
       selected={selectedOption.name || ''}
       classNames={{
-        dropdown: 'border-focusBorder -mt-1',
+        dropdown: '-mt-1',
       }}
       menuProps={{
         position: 'bottom-start',

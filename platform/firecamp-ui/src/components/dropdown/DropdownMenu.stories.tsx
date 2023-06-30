@@ -403,7 +403,7 @@ export const EmitterBody = () => {
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
         dropdown:
-          'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder',
+          'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] ',
       }}
       width={144}
       sm
@@ -559,7 +559,7 @@ export const FooterStatusBar = () => {
             ]}
             onSelect={(value) => setUserSelected(value.name)}
             classNames={{
-              dropdown: '!pt-0 mt-2 min-w-fit	border-focusBorder',
+              dropdown: '!pt-0 mt-2 min-w-fit	',
               label:
                 'flex items-center text-app-foreground px-2 !pt-[0.2rem] !pb-2 !px-3 !block !text-base font-medium leading-6 !opacity-100 !bg-focus2 ',
               item: '!py-1 !px-3',
@@ -687,7 +687,7 @@ export const SidebarCollectionOption = () => {
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
         dropdown:
-          'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] border-focusBorder',
+          'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)]',
       }}
       width={144}
       sm
@@ -739,7 +739,7 @@ export const EnvCollectionOption = () => {
       ]}
       onSelect={(v) => setSelected(v.name)}
       classNames={{
-        dropdown: '!pt-0 !pb-2 border-focusBorder',
+        dropdown: '!pt-0 !pb-2 ',
         label: 'uppercase font-sans',
         item: '!px-5',
       }}
