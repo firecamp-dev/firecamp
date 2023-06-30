@@ -1399,6 +1399,9 @@ video {
 .\!overflow-y-auto {
   overflow-y: auto !important;
 }
+.overflow-y-scroll {
+  overflow-y: scroll;
+}
 .truncate {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2422,9 +2425,6 @@ video {
 }
 .last-of-type\:border-r-tab-border:last-of-type {
   border-right-color: var(--tab-border);
-}
-.hover\:visible:hover {
-  visibility: visible;
 }
 .hover\:border-focusBorder:hover {
   border-color: var(--focus-border);
