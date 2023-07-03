@@ -1,8 +1,8 @@
-import { FC, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import {
   Button,
   DropdownMenu,
-  Notes,
   Container,
   Popover,
   ScrollBar,
@@ -62,14 +62,46 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
   return (
     <Container className="gap-2 invisible-scrollbar">
       <Container.Header>
-        <RoleDD
-          role={_role}
-          onSelect={({ name, id }) => onChange({ role: id })}
-        />
-        <RolesCallout role={_role.id} />
+        <div className={'pb-6'}>
+          <div className="relative flex">
+            <label className="text-app-foreground text-sm mb-1 block">
+              Invite members as
+            </label>
+            <Popover content={<RolesCallout role={_role.id} />}>
+              <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ">
+                <VscInfo size={16} />
+              </Popover.Handler>
+            </Popover>
+          </div>
+
+          <DropdownMenu
+            handleRenderer={() => (
+              <Button
+                text={_role.name || 'Select role'}
+                className={
+                  'hover:!bg-focus1 border border-app-border justify-between'
+                }
+                withCaret
+                transparent
+                fullWidth
+                ghost
+                md
+              />
+            )}
+            options={RoleOptions}
+            classNames={{
+              trigger: 'block',
+              dropdown: '-mt-2',
+              item: '!px-4',
+            }}
+            onSelect={({ name, id }) => onChange({ role: id })}
+            width={512}
+            sm
+          />
+        </div>
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
-        <ScrollBar className="!h-48 mr-1" transparent fullWidth>
+        <ScrollBar className="!h-72 mr-1" transparent fullWidth>
           <InviteUsersForm
             error={error}
             usersList={usersList}
@@ -103,49 +135,6 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
 };
 
 export default InviteNonOrgMembers;
-
-const RoleDD: FC<{
-  role: { name: string; id: number };
-  onSelect: (role: { name: string; id: number }) => void;
-}> = ({ role, onSelect }) => {
-  const _onSelect = (option) => {
-    onSelect({ name: option.name, id: option.id });
-  };
-  // const roleText = role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator';
-  return (
-    <div className="flex items-center pb-3">
-      <div>
-        <label className="text-base text-app-foreground">
-          Invite members as{' '}
-        </label>
-        <DropdownMenu
-          handleRenderer={() => (
-            <Button
-              text={role.name}
-              className="font-bold hover:!bg-focus1"
-              withCaret
-              transparent
-              ghost
-              sm
-            />
-          )}
-          options={RoleOptions}
-          onSelect={_onSelect}
-          width={100}
-          sm
-        />
-      </div>
-
-      <a
-        href="#"
-        className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ml-auto"
-        target="_blank"
-      >
-        learn more about roles
-      </a>
-    </div>
-  );
-};
 
 interface IMemberParseResult {
   success: IMember[];

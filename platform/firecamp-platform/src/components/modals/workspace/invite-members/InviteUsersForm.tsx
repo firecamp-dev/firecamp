@@ -61,14 +61,17 @@ const InviteUsersForm = ({ usersList, onChange, error }) => {
             />
           </FormField>
           <span
-            className={cx(
-              'p-1.5 h-fit cursor-pointer text-secondaryColor-text rounded',
-              { 'bg-primaryColor': index === 0 },
-              { 'bg-error': index !== 0 }
-            )}
+            className={cx('p-2 h-fit cursor-pointer rounded', {
+              'hover:bg-primaryColor text-primaryColor hover:text-secondaryColor-text':
+                index === 0,
+            })}
             onClick={() => _handleAction(index === 0, index)}
           >
-            {index === 0 ? <VscAdd size={24} /> : <VscClose size={24} />}
+            {index === 0 ? (
+              <VscAdd size={20} />
+            ) : (
+              <VscClose size={20} className="text-error" />
+            )}
           </span>
           {error[index]?.message.length > 0 ? (
             <div

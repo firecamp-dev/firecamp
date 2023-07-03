@@ -1053,6 +1053,9 @@ video {
 .\!h-6 {
   height: 1.5rem !important;
 }
+.\!h-72 {
+  height: 18rem !important;
+}
 .\!h-80 {
   height: 20rem !important;
 }
@@ -1926,9 +1929,6 @@ video {
 .pb-2 {
   padding-bottom: 0.5rem;
 }
-.pb-3 {
-  padding-bottom: 0.75rem;
-}
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -2501,6 +2501,10 @@ video {
   color: var(--app-primary);
 }
 .hover\:text-primaryColor-text:hover {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.hover\:text-secondaryColor-text:hover {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
