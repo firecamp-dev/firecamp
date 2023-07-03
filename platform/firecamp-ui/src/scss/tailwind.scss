@@ -966,6 +966,9 @@ video {
 .mr-2 {
   margin-right: 0.5rem;
 }
+.mr-2\.5 {
+  margin-right: 0.625rem;
+}
 .mr-3 {
   margin-right: 0.75rem;
 }
@@ -1265,6 +1268,9 @@ video {
 .flex-none {
   flex: none;
 }
+.grow {
+  flex-grow: 1;
+}
 .border-collapse {
   border-collapse: collapse;
 }
@@ -1380,6 +1386,9 @@ video {
 }
 .gap-2 {
   gap: 0.5rem;
+}
+.gap-4 {
+  gap: 1rem;
 }
 .overflow-auto {
   overflow: auto;
@@ -1835,6 +1844,10 @@ video {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+.py-2\.5 {
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
 .py-20 {
   padding-top: 5rem;
   padding-bottom: 5rem;
@@ -1850,6 +1863,10 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+.py-\[15px\] {
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 .py-px {
   padding-top: 1px;

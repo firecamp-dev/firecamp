@@ -52,7 +52,8 @@ const DropdownMenu: FC<IDropdownMenu> = ({
 
       <Menu.Dropdown
         className={cx(EDefaultStyles.dropdown,
-          { "py-0" : sm},
+          { 'py-2.5': sm },
+          { 'py-[15px]': !sm },
            {
           'd-none border-0': options.length === 0,
         })}

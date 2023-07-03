@@ -18,8 +18,14 @@ const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
   const [nonOrgTabState, setNonOrgTabState] = useState<{
     role: EUserRolesWorkspace;
-    value: string;
-  }>({ role: EUserRolesWorkspace.Collaborator, value: '' });
+    usersList: Array<{
+      name: string;
+      email: string;
+    }>;
+  }>({
+    role: EUserRolesWorkspace.Collaborator,
+    usersList: [{ name: '', email: '' }],
+  });
   const [orgTabState, setOrgTabState] = useState<{
     id: string;
     name: string;

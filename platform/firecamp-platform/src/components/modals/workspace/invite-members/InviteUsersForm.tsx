@@ -1,0 +1,90 @@
+import cx from 'classnames';
+import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { VscClose } from '@react-icons/all-files/vsc/VscClose';
+import { FormField, Input } from '@firecamp/ui';
+
+const InviteUsersForm = ({ usersList, onChange, error }) => {
+  const _handleNameChange = (e, position) => {
+    const newState = [...usersList];
+    newState[position] = {
+      ...newState[position],
+      name: e.target.value,
+    };
+    onChange(newState);
+  };
+
+  const _handleEmailChange = (e, position) => {
+    const newState = [...usersList];
+    newState[position] = {
+      ...newState[position],
+      email: e.target.value,
+    };
+    onChange(newState);
+  };
+
+  const _handleAction = (addAction, position) => {
+    if (addAction) {
+      onChange([
+        ...usersList,
+        {
+          name: '',
+          email: '',
+        },
+      ]);
+    } else {
+      onChange([
+        ...usersList.slice(0, position),
+        ...usersList.slice(position + 1),
+      ]);
+    }
+  };
+
+  return (
+    <div className="mr-2.5">
+      {usersList.map((detail, index) => (
+        <div
+          className="relative flex justify-center gap-4"
+          key={`user-detail-${index}`}
+        >
+          <FormField label="" className="!p-0 grow">
+            <Input
+              placeholder="alice"
+              value={detail.name}
+              onChange={(e) => _handleNameChange(e, index)}
+            />
+          </FormField>
+          <FormField label="" className="!p-0 grow">
+            <Input
+              placeholder="alice@mail.com"
+              value={detail.email}
+              onChange={(e) => _handleEmailChange(e, index)}
+            />
+          </FormField>
+          <span
+            className={cx(
+              'p-1.5 h-fit cursor-pointer text-secondaryColor-text rounded',
+              { 'bg-primaryColor': index === 0 },
+              { 'bg-error': index !== 0 }
+            )}
+            onClick={() => _handleAction(index === 0, index)}
+          >
+            {index === 0 ? <VscAdd size={24} /> : <VscClose size={24} />}
+          </span>
+          {error[index]?.message.length > 0 ? (
+            <div
+              className={cx(
+                'text-sm font-light text-error absolute left-0 bottom-0'
+              )}
+            >
+              {error[index].message}
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default InviteUsersForm;
