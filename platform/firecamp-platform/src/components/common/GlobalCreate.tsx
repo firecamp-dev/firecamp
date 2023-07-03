@@ -32,50 +32,50 @@ const options = [
   {
     id: EMenuOptions.Request,
     name: 'New request',
-    prefix: () => <FcIconGetSquare size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <FcIconGetSquare size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.Collection,
     name: 'New collection',
-    prefix: () => <VscFolder size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <VscFolder size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.Environment,
     name: 'New environment',
-    prefix: () => <RiBracesLine size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <RiBracesLine size={16} className='text-app-foreground-active' />,
   },
 
   {
     id: EMenuOptions.ImportCollection,
     name: 'Import collection',
     showSeparator: true,
-    prefix: () => <VscArrowDown size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <VscArrowDown size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.Workspace,
     name: 'New workspace',
-    prefix: () => <VscWindow size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <VscWindow size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.Organization,
     name: 'New organization',
-    prefix: () => <VscOrganization size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <VscOrganization size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.InviteMembers,
     name: 'Invite members',
     showSeparator: true,
-    prefix: () => <AiOutlineUserAdd size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <AiOutlineUserAdd size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.SwitchOrg,
     name: 'Switch organization',
-    prefix: () => <AiOutlineUserSwitch size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <AiOutlineUserSwitch size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.SwitchWorkspace,
     name: 'Switch workspace',
-    prefix: () => <VscMultipleWindows size={16} className='text-app-foreground-inactive' />,
+    prefix: () => <VscMultipleWindows size={16} className='text-app-foreground-active' />,
   },
 ];
 

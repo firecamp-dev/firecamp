@@ -50,7 +50,10 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
       setInvitingFlag(false);
     } else {
       inviteNonOrgMembers({ role, members: success }).finally(() => {
+        //reset error & user listing after invite is sent
         setInvitingFlag(false);
+        setError([]);
+        onChange({ usersList: [{ name: '', email: '' }] });
       });
     }
   }, [usersList, role]);
