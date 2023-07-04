@@ -9,7 +9,7 @@ enum EDefaultStyles {
   label = 'text-activityBar-foreground-inactive font-default px-5 pt-3 pb-1 font-medium text-xs leading-3 ',
   item = 'cursor-pointer text-app-foreground !rounded-none hover:bg-focus1 focus-visible:!shadow-none font-default px-5 py-0 text-base leading-7',
   itemSmall = 'cursor-pointer text-app-foreground !rounded-none hover:bg-focus1 focus-visible:!shadow-none font-default px-2 py-px text-sm leading-6', //'!px-2 !py-1 !text-sm !leading-[18px]',
-  divider = 'bg-app-border',
+  divider = 'bg-app-border border-app-border',
   disabled = 'opacity-50 cursor-default',
   disabledItem = '!text-activityBar-foreground-inactive !cursor-default',
 }
@@ -52,7 +52,8 @@ const DropdownMenu: FC<IDropdownMenu> = ({
 
       <Menu.Dropdown
         className={cx(EDefaultStyles.dropdown,
-          { "py-0" : sm},
+          { 'py-2.5': sm },
+          { 'py-[15px]': !sm },
            {
           'd-none border-0': options.length === 0,
         })}

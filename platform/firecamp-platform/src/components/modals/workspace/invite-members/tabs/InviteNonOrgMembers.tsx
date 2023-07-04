@@ -1,14 +1,14 @@
-import { FC, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
+import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import {
   Button,
   DropdownMenu,
-  Editor,
-  Notes,
   Container,
   Popover,
+  ScrollBar,
 } from '@firecamp/ui';
 import RolesCallout from '../RolesCallout';
-import { EEditorLanguage } from '@firecamp/types';
+import InviteUsersForm from '../InviteUsersForm';
 import { _array, _misc } from '@firecamp/utils';
 import { Regex } from '../../../../../constants';
 import { EUserRolesWorkspace } from '../../../../../types';
@@ -23,6 +23,7 @@ interface IMemberDetailError {
   name: string;
   email: string;
   message: string;
+  index: number;
 }
 
 const RoleOptions = [
@@ -40,73 +41,73 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
   const { inviteNonOrgMembers } = useWorkspaceStore.getState();
   const [error, setError] = useState<IMemberDetailError[]>([]);
   const [isInvitingMembers, setInvitingFlag] = useState(false);
-  const { value, role } = state;
+  const { usersList, role } = state;
 
   const inviteMembers = useCallback(() => {
-    const { success, error } = parseMembersFromEditorValue(value);
-    console.log(success, error);
+    const { success, error } = validateMembersDetail(usersList);
     if (error?.length) {
       setError(error);
       setInvitingFlag(false);
     } else {
       inviteNonOrgMembers({ role, members: success }).finally(() => {
+        //reset error & user listing after invite is sent
         setInvitingFlag(false);
+        setError([]);
+        onChange({ usersList: [{ name: '', email: '' }] });
       });
     }
-  }, [value, role]);
+  }, [usersList, role]);
 
   const _role = RoleOptions.find((r) => r.id == role);
   return (
     <Container className="gap-2 invisible-scrollbar">
       <Container.Header>
-        <RoleDD
-          role={_role}
-          onSelect={({ name, id }) => onChange({ role: id })}
-        />
-        <RolesCallout role={_role.id} />
-        <div className="text-sm font-semibold leading-3 text-app-foreground-inactive">
-          Use comma separated name and email. use multiple lines to invite in
-          bulk.
-          <Popover
-            content={
-              <Notes
-                description={`Alice, alice@me.com <br> Bobr, bobr@me.com <br>`}
+        <div className={'pb-6'}>
+          <div className="relative flex">
+            <label className="text-app-foreground text-sm mb-1 block">
+              Invite members as
+            </label>
+            <Popover content={<RolesCallout role={_role.id} />}>
+              <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ">
+                <VscInfo size={16} />
+              </Popover.Handler>
+            </Popover>
+          </div>
+
+          <DropdownMenu
+            handleRenderer={() => (
+              <Button
+                text={_role.name || 'Select role'}
+                className={
+                  'hover:!bg-focus1 border border-app-border justify-between'
+                }
+                withCaret
+                transparent
+                fullWidth
+                ghost
+                md
               />
-            }
-          >
-            <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ">
-              See Example
-            </Popover.Handler>
-          </Popover>
+            )}
+            options={RoleOptions}
+            classNames={{
+              trigger: 'block',
+              dropdown: '-mt-2',
+              item: '!px-4',
+            }}
+            onSelect={({ name, id }) => onChange({ role: id })}
+            width={512}
+            sm
+          />
         </div>
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
-        <Editor
-          className="border border-app-border !h-48"
-          placeholder="Alice, alice@mail.com"
-          value={value}
-          onChange={(e) => onChange({ value: e.target.value })}
-          language={EEditorLanguage.Text}
-          monacoOptions={{
-            fontFamily: 'inter, System-ui',
-          }}
-        />
-
-        {error?.length ? (
-          <ul className="text-error border px-2 py-1 text-base">
-            please review below error
-            {error.map((e, i) => (
-              <li key={i}>
-                <span className="text-app-foreground">
-                  {e.message}
-                  {i + 1 !== error.length ? ', ' : ''}
-                </span>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <></>
-        )}
+        <ScrollBar className="!h-72 mr-1" transparent fullWidth>
+          <InviteUsersForm
+            error={error}
+            usersList={usersList}
+            onChange={(list) => onChange({ usersList: list })}
+          />
+        </ScrollBar>
       </Container.Body>
       <Container.Footer className="flex items-center">
         <a
@@ -135,85 +136,47 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
 
 export default InviteNonOrgMembers;
 
-const RoleDD: FC<{
-  role: { name: string; id: number };
-  onSelect: (role: { name: string; id: number }) => void;
-}> = ({ role, onSelect }) => {
-  const _onSelect = (option) => {
-    onSelect({ name: option.name, id: option.id });
-  };
-  // const roleText = role == EUserRolesWorkspace.Admin ? 'Admin' : 'Collaborator';
-  return (
-    <div className="flex items-center pb-3">
-      <div>
-        <label className="text-base text-app-foreground">
-          Invite members as{' '}
-        </label>
-        <DropdownMenu
-          handleRenderer={() => (
-            <Button
-              text={role.name}
-              className="font-bold hover:!bg-focus1"
-              withCaret
-              transparent
-              ghost
-              sm
-            />
-          )}
-          options={RoleOptions}
-          onSelect={_onSelect}
-          width={100}
-          sm
-        />
-      </div>
-
-      <a
-        href="#"
-        className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ml-auto"
-        target="_blank"
-      >
-        learn more about roles
-      </a>
-    </div>
-  );
-};
-
 interface IMemberParseResult {
   success: IMember[];
   error: IMemberDetailError[];
 }
 
-const parseMembersFromEditorValue = (value: string): IMemberParseResult => {
-  const inputLines = value.split('\n');
+const validateMembersDetail = (
+  list: Array<{ name: string; email: string }>
+): IMemberParseResult => {
   const successResult: IMember[] = [];
   const errorResult: IMemberDetailError[] = [];
   const successEmails: Set<string> = new Set();
 
-  inputLines.forEach((line, index) => {
-    const [name, email] = line.split(',').map((s) => s.trim());
+  list.forEach((member, index) => {
+    const { name, email } = {
+      name: member.name.trim(),
+      email: member.email.trim(),
+    };
     const emailValid = isValidEmail(email);
 
     if (name.length === 0 || !emailValid) {
-      let errorIndex = index + 1,
+      let errorIndex = index,
         nameError = '',
         emailError = '';
 
       if (name.length === 0) {
-        nameError = `please add name ${emailValid ? '' : ' & '} `;
+        nameError = `Please add name ${emailValid ? '' : ' & '} `;
         if (!emailValid)
           emailError = email?.length > 0 ? ' check email address ' : ' email ';
       } else {
         if (!emailValid)
           emailError =
             email?.length > 0
-              ? ' please check email address '
-              : ' please add email address';
+              ? ' Please check email address '
+              : ' Please add email address';
       }
 
       errorResult.push({
+        index: errorIndex,
         name,
         email,
-        message: `Line ${errorIndex} : ${nameError} ${emailError} `,
+        message: `${nameError} ${emailError} `,
       });
       return;
     }
@@ -229,7 +192,5 @@ const parseMembersFromEditorValue = (value: string): IMemberParseResult => {
 };
 
 const isValidEmail = (email: string): boolean => {
-  // TODO: use standard email validation regex here
-  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return Regex.Email.test(email);
 };
