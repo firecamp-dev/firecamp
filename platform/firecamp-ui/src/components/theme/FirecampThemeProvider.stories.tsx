@@ -21,6 +21,7 @@ export const Example = ({ ...args }: any) => {
             Mantine Button
           </div>
           <MantineButton>Button example</MantineButton>
+          <MantineButton disabled>Button example</MantineButton>
         </div>
         <br />
         <div className="flex flex-row justify-start items-center p-2 mb-2 ">

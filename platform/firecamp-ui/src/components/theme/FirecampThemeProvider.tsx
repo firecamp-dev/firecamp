@@ -33,7 +33,7 @@ const secondaryColor: ColorType = [
 ];
 
 const darkModeColor: ColorType = [
-  '#D48332', //text color
+  '#fff', //text color
   '#acaebf',
   '#8c8fa3',
   '#666980',
@@ -90,12 +90,21 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
         fontFamily: " 'Lato', 'sans-serif' ",
         components: {
           Button: {
-            styles: {
+            styles: (theme, params, { variant }) => ({
               root: {
                 fontFamily: 'sans-serif',
                 fontWeight: 'normal',
+
+                '&:disabled, &[data-disabled]': {
+                  backgroundColor:
+                    theme.colors[theme.primaryColor][
+                      theme.colorScheme === 'light' ? 6 : 8
+                    ],
+                  color: theme.colors.dark[0],
+                  opacity: 0.5,
+                },
               },
-            },
+            }),
           },
         },
       }}
