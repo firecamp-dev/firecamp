@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import { MantineProvider, Button as MantineButton } from '@mantine/core';
 
 import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
@@ -44,93 +43,6 @@ export default {
 };
 
 const Template = ({ ...args }: any) => <DropdownMenu {...args} />;
-
-export const MantineProviderExample = () => {
-  return (
-    <MantineProvider
-      theme={{
-        components: {
-          Menu: {
-            styles: {
-              dropdown: {
-                borderWidth: '1px',
-                borderColor: 'var(--app-border)',
-                backgroundColor: 'var(--popover-background)',
-                paddingLeft: '0px',
-                paddingRight: '0px',
-                color: 'var(--app-foreground)',
-              },
-            },
-          },
-        },
-      }}
-      withGlobalStyles
-    >
-      <DropdownMenu
-        options={[
-          {
-            id: EMenuOptions.Request,
-            name: 'Request',
-            prefix: () => <FcIconGetSquare size={18} />,
-            postfix: () => <span className="text-inputPlaceholder">⌘K</span>,
-          },
-          {
-            id: EMenuOptions.Collection,
-            name: 'Collection',
-            prefix: () => <VscFolder size={18} />,
-          },
-          {
-            id: EMenuOptions.Environment,
-            name: 'Environment',
-            prefix: () => <RiBracesLine size={18} />,
-          },
-          {
-            id: EMenuOptions.ImportCollection,
-            name: 'Import Collection',
-            showSeparator: true,
-            prefix: () => <VscArrowDown size={18} />,
-          },
-
-          {
-            id: EMenuOptions.Workspace,
-            name: 'Workspace',
-            prefix: () => <VscWindow size={18} />,
-          },
-          {
-            id: EMenuOptions.Organization,
-            name: 'Organization',
-            prefix: () => <VscOrganization size={18} />,
-          },
-          {
-            id: EMenuOptions.InviteMembers,
-            name: 'Invite Members',
-            showSeparator: true,
-            prefix: () => <AiOutlineUserAdd size={18} />,
-          },
-          {
-            id: EMenuOptions.SwitchOrg,
-            name: 'Switch Organization',
-            prefix: () => <AiOutlineUserSwitch size={18} />,
-          },
-          {
-            id: EMenuOptions.SwitchWorkspace,
-            name: 'Switch Workspace',
-            prefix: () => <VscMultipleWindows size={18} />,
-          },
-        ]}
-        handleRenderer={() => (
-          <MantineButton variant="subtle" size="sm" compact>
-            Create
-          </MantineButton>
-        )}
-        classNames={{
-          dropdown: '-ml-[2px]',
-        }}
-        onSelect={(value: any) => console.log(`selected item :`, value)}
-      />
-    </MantineProvider>
-  );
-};
 
 export const Example = Template.bind({});
 Example.args = {

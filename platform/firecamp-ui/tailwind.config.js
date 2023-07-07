@@ -140,6 +140,8 @@ module.exports = {
     },
   },
   plugins: [],
+  // disabled preflight to prevent the resetcss styles from impacting mantine components.
+  //  @ref: https://github.com/mantinedev/mantine/discussions/1672#discussioncomment-5922089
   corePlugins: {
     preflight: false,
   },
