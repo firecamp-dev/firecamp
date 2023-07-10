@@ -1,23 +1,27 @@
-![FirecampCoverImage](.github/github-cover.png)
 
+![FirecampCoverImage](.github/github-cover.png)
 
 [![Firecamp Discord](https://badgen.net/discord/members/8hRaqhK)](https://discord.gg/8hRaqhK)
 [![Twitter: Firecamp](https://img.shields.io/twitter/follow/firecampdev.svg?style=social)](https://twitter.com/firecampdev)
 
-# Firecamp is a Multi-protocol API development platform, for developers.
+# Firecamp
+DX-focused API development platform.
 
-💚 VSCode-driven Developer Experience
+- 💚 VSCode-driven Developer Experience=
+- :high_brightness: Multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs.
+- :satellite: Collaborate on API collection across the team
+- 🏗️ Build APIs faster without switching between tools and apps.
+  
+Try it now 🏕️ https://firecamp.dev
 
-:high_brightness: End to End testing of Rest, GraphQL, Websocket and SocketIO APIs
+## Getting the most of Firecamp
 
-:satellite: Collaborate on API collection across the team
+Read the Firecamp doc for in-depth walk-throughs on functionality. Join our Discord Server if you need help, want to chat, or are thinking of a new feature. We're here.
+- [Documentation](https://firecamp.io/docs)
+- [Discord community](https://discord.gg/8hRaqhK)
+- [Twitter updates](https://twitter.com/FirecampDev)
 
-🏗️ Build APIs faster without switching between tools and apps. 
-
-## Firecamp application
-🏕️ https://firecamp.dev
-
-## Features 
+## What Firecamp Offers?
 Firecamp offers you a broad range of features that will help you build APIs faster than ever.
 
 |   	|  	  |    	|
@@ -44,7 +48,7 @@ Debug bidirectional connection visually with WebSocket GUI client more precisely
 Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
 
 ## Roadmap 
-  Here is the Firecamp development roadmap.
+  Here is the Firecamp development roadmap. Very soon It'll be listed on Github projects for better project management.
 - **AI: Cutting-edge AI-powered capabilities**
 - **Firecamp CLI:** developer-friendly CLI tool
 - **Test Runner:** An advanced API test runner
@@ -55,11 +59,6 @@ Monitor each emitter’s and listener’s events visually over a bi-directional 
 - **Documentation:** Enhanced API documentation
 - **CI/CD:** Seamless integration with CI/CD workflows
 - Undisclosed Platform Phase-2
-
-## Getting the most of Firecamp
-📙 [Documentation](https://firecamp.io/docs)
-
-See the Firecamp doc for in-depth walk-throughs on functionality. Join our [Discord server](https://discord.gg/8hRaqhK) if you need help, want to chat, or are thinking of a new feature. We're here.
 
 ## Philosophy
 The decentralization of tools, processes, and people creates friction in API development workflow and frustration across the team. Developers are constantly switching between tools, searching for information, and wasting time due to inefficient tools.
