@@ -28,19 +28,20 @@ Firecamp offers you a broad range of features that will help you build APIs fast
 | ![feat-1](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Documentation** <br/> Publish a beautiful API documentation for your team and community | ![feat-2](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **Firecamp Web** <br/> Get quick access to web platform https://firecamp.dev 	| ![feat-3](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **Desktop Apps** <br/> Get Desktop app for your preferred OS/platform| 
 ||||
 
-## Dedicated GUI playground for each API protocol
+## API Playgrounds
+There is a dedicated GUI playground for each API protocol you would be using for your stack.
 
-:cherry_blossom: **HTTP playground**
-  > It's the lightweight, IntelliSense, and next-generation testing client to give the most delightful collaborative experience while building APIs in a team.
+### :maple_leaf: **Rest Playground**
+It's the lightweight, IntelliSense, and next-generation testing client to give the most delightful collaborative experience while building APIs in a team.
 
-:sunflower: **GraphQL playground**
-  > Perform GraphQL operations with a seamless experience. Prepare, Share, and Export your Query Collection collaboratively with your team.
+### :cherry_blossom: **GraphQL Playground**
+Perform GraphQL operations with a seamless experience. Prepare, Share, and Export your Query Collection collaboratively with your team.
 
-:hibiscus: **WebSocket playground**
-  > Debug bidirectional connection visually with WebSocket GUI client more precisely now. The only GUI client to test, debug, and visualize real-time or event-driven messages collaboratively.
+### :hibiscus: **WebSocket Playground**
+Debug bidirectional connection visually with WebSocket GUI client more precisely now. The only GUI client to test, debug, and visualize real-time or event-driven messages collaboratively.
 
-:maple_leaf: **SocketIo playground**
-  > Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
+### :sunflower: **SocketIo Playground**
+Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
 
 ## Roadmap 
 - Firecamp CLI
