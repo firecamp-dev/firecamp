@@ -1,29 +1,3 @@
-<table>
-  <tr>
-    <td>
-      <img  width="24px" height="24px" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWZvbGRlciI+PHBhdGggZD0iTTQgMjBoMTZhMiAyIDAgMCAwIDItMlY4YTIgMiAwIDAgMC0yLTJoLTcuOTNhMiAyIDAgMCAxLTEuNjYtLjlsLS44Mi0xLjJBMiAyIDAgMCAwIDcuOTMgM0g0YTIgMiAwIDAgMC0yIDJ2MTNjMCAxLjEuOSAyIDIgMloiLz48L3N2Zz4=">
-      <div><b>API Collection</b></div>
-      <sm>Manage the API collection</sm>
-    </td>
-    <td>API Playgrounds</td>
-    <td>API Collaboration</td>
-  </tr>
-  <tr>
-    <td>API Documentation</td>
-    <td>API Test Runner</td>
-    <td>CLI & CI/CD</td>
-  </tr>
-</table>
-
-|   	|   	|   	|
-|---	|:---:	|---	|
-| ![folder](https://github.com/FirecampDev/Firecamp/assets/5078921/53b0875e-20c2-42b0-b58c-01f6e4a678dd)  	|   	![folder (1)](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Collection** <br/> Manage Collection|   	|
-|   	|   	|   	|
-
-
-
-
-
 ![FirecampCoverImage](.github/github-cover.png)
 
 
@@ -44,22 +18,20 @@
 🏕️ https://firecamp.dev
 
 ## Features 
-We give you a broad range of features that will help you build APIs faster than ever.
+Firecamp offers you a broad range of features that will help you build APIs faster than ever.
 
-- **Account**:  Create your Firecamp account with Github, Google, and Email and sync your data across devices and the cloud.
-
-- **Collection**: Collect and organise your APIs through the “collection and folder” feature.
-
-- **Workspace and team collaboration**: Firecamp allows you to create personal and team workspaces according to your needs. You can create a team workspace and collaborate with unlimited team members for better API development flow.
-
-- **Environment variables**: You can create environment variables to access and reuse values in the request, collection and workspace.
-
-- **Setting** : The setting will help you save your account information, local theme and other information.
+|   	|  	  |    	|
+|:---:|:---:|:---:|
+| ![feat-1](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Collection** <br/> Manage Collection of APIs to collaborate within team| ![feat-2](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Playgrounds** <br/> Get instant playgrounds for your APIs. Rest, GraphQL, and more. 	| ![feat-3](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Collaboration** <br/> Collaborate with your team at centralize shared workspace.| 
+| ![feat-1](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Authentication** <br/> Test and Debug your auth endpoints with a range of supported auths| ![feat-2](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Scripts** <br/> Interpret the API with pre-request and tests scripts 	| ![feat-3](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **Dynamic Variables** <br/> Set values in variables to reuse in whole platform dynamically| 
+| ![feat-1](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Workspaces** <br/> Create multiple workspaces for better team collaboration| ![feat-2](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **CLI & CI/CD** <br/> Run API Collection Tests in terminal or set in CI/CD pipeline 	| ![feat-3](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Test Runner** <br/> Run the API Collection visually within the platform | 
+| ![feat-1](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **API Documentation** <br/> Publish a beautiful API documentation for your team and community | ![feat-2](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **Firecamp Web** <br/> Get quick access to web platform https://firecamp.dev 	| ![feat-3](https://github.com/FirecampDev/Firecamp/assets/5078921/34604995-b884-42a0-833e-cd8345b4add5) <br/> **Desktop Apps** <br/> Get Desktop app for your preferred OS/platform| 
+||||
 
 ## Dedicated GUI playground for each API protocol
 
 :cherry_blossom: **HTTP playground**
-  > It's the light-weight, IntelliSense, and the next-generation testing client to give the most delightful collaborative experience while building APIs in a team.
+  > It's the lightweight, IntelliSense, and next-generation testing client to give the most delightful collaborative experience while building APIs in a team.
 
 :sunflower: **GraphQL playground**
   > Perform GraphQL operations with a seamless experience. Prepare, Share, and Export your Query Collection collaboratively with your team.
@@ -68,7 +40,7 @@ We give you a broad range of features that will help you build APIs faster than 
   > Debug bidirectional connection visually with WebSocket GUI client more precisely now. The only GUI client to test, debug, and visualize real-time or event-driven messages collaboratively.
 
 :maple_leaf: **SocketIo playground**
-  > Monitor each emitters’ and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
+  > Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
 
 ## Roadmap 
 - Firecamp CLI
