@@ -7,6 +7,8 @@
 # Firecamp
 DX-focused API development platform.
 
+Firecamp is a DX-first API development platform that helps developers design, develop, test, and document their APIs effortlessly. With a user-friendly interface and a range of powerful features, Firecamp streamlines the API development workflow and enhances collaboration among team members.
+
 - 💚 VSCode-driven Developer Experience=
 - :high_brightness: Multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs.
 - :satellite: Collaborate on API collection across the team
@@ -14,7 +16,12 @@ DX-focused API development platform.
   
 Try it now 🏕️ https://firecamp.dev
 
-## Getting the most of Firecamp
+## Getting started with Firecamp
+To get started with Firecamp, follow these steps:
+
+1. Sign in to Firecamp at https://firecamp.dev
+2. Explore the [documentation](https://firecamp.io/docs) to understand the various features and capabilities of Firecamp.
+3. Start developing, and testing your APIs using Firecamp.
 
 Read the Firecamp doc for in-depth walk-throughs on functionality. Join our Discord Server if you need help, want to chat, or are thinking of a new feature. We're here.
 - [Documentation](https://firecamp.io/docs)
