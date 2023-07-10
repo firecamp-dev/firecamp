@@ -44,12 +44,17 @@ Debug bidirectional connection visually with WebSocket GUI client more precisely
 Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
 
 ## Roadmap 
-- Firecamp CLI
-- API Test Runner
-- Proxy
-- SSL
-- History
-- AI
+  Here is the Firecamp development roadmap.
+- **AI: Cutting-edge AI-powered capabilities**
+- **Firecamp CLI:** developer-friendly CLI tool
+- **Test Runner:** An advanced API test runner
+- **Proxy:** A versatile built-in proxy
+- **SSL:** Robust SSL support
+- **History:** Seamless history tracking
+- **DX:** Improved developer experience
+- **Documentation:** Enhanced API documentation
+- **CI/CD:** Seamless integration with CI/CD workflows
+- Undisclosed Platform Phase-2
 
 ## Getting the most of Firecamp
 📙 [Documentation](https://firecamp.io/docs)
@@ -57,13 +62,13 @@ Monitor each emitter’s and listener’s events visually over a bi-directional 
 See the Firecamp doc for in-depth walk-throughs on functionality. Join our [Discord server](https://discord.gg/8hRaqhK) if you need help, want to chat, or are thinking of a new feature. We're here.
 
 ## Philosophy
-The decentralization of tools, processes and people creates friction in API development workflow and frustration across the team. Developers are constantly switching between tools, searching for information, and wasting time due to inefficient tools.
+The decentralization of tools, processes, and people creates friction in API development workflow and frustration across the team. Developers are constantly switching between tools, searching for information, and wasting time due to inefficient tools.
 We believe that the existing solution lacks both world-class experience and the simplicity needed to build APIs faster. This leads to a decrease in developer productivity, slow release times, and poor team collaboration.
 We are bringing the VS code philosophy to Firecamp to solve this critical problem. Our mission is to build the most extensible, minimal and best developer experience API platform where developers feel most productive while building APIs.
 
 ## What's cool about this?
 
-Firecamp is Multi-protocol API platform, which offers end-to-end testing and development of Rest, GraphQL, WebSocket, and many other APIs.
+Firecamp is a Multi-protocol API platform, which offers end-to-end testing and development of Rest, GraphQL, WebSocket, and many other APIs.
 We support major API specifications and protocols, which allows for seamless API testing, API documentation, and smoother collaboration between backend, frontend, and mobile teams.
 
 ## What's Next? 
