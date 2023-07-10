@@ -20,13 +20,11 @@ Try it now 🏕️ https://firecamp.dev
 To get started with Firecamp, follow these steps:
 
 1. Sign in to Firecamp at https://firecamp.dev
-2. Explore the [documentation](https://firecamp.io/docs) to understand the various features and capabilities of Firecamp.
+2. Follow the [Getting Started](https://firecamp.io/docs) guide from the documentation.
 3. Start developing, and testing your APIs using Firecamp.
 
-Read the Firecamp doc for in-depth walk-throughs on functionality. Join our Discord Server if you need help, want to chat, or are thinking of a new feature. We're here.
-- [Documentation](https://firecamp.io/docs)
-- [Discord community](https://discord.gg/8hRaqhK)
-- [Twitter updates](https://twitter.com/FirecampDev)
+Read the Firecamp doc for in-depth walk-throughs on functionality to understand the various features and capabilities of Firecamp. 
+
 
 ## What Firecamp Offers?
 Firecamp offers you a broad range of features that will help you build APIs faster than ever.
@@ -63,6 +61,18 @@ Monitor each emitter’s and listener’s events visually over a bi-directional 
 
 ### :five: What's next? 
 please [let us know](https://github.com/FirecampDev/Firecamp/issues/new?assignees=&labels=&projects=&template=general_report.md&title=)
+
+## Community and Support
+
+For community support, you can join the Firecamp community on [Discord](https://discord.gg/8hRaqhK). You can also check out the [Firecamp Blog](https://firecamp.io/blog) for the latest updates, tutorials, and articles.
+
+Here are helpful links for Firecamp
+- [Documentation](https://firecamp.io/docs)
+- [Discord community](https://discord.gg/8hRaqhK)
+- [Twitter updates](https://twitter.com/FirecampDev)
+
+If you encounter any bugs, issues, or have suggestions, please open an issue on the [Firecamp GitHub repository](https://github.com/FirecampDev/Firecamp). We appreciate your contributions to make Firecamp even better.
+
 
 ## Roadmap 
   Here is the Firecamp development roadmap. Very soon It'll be listed on Github projects for better project management.
