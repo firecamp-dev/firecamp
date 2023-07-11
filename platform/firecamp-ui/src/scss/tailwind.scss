@@ -25,7 +25,7 @@
     --app-foreground: #cccccc;
     --app-foreground-active: #fff;
     --app-foreground-inactive: #777777;
-    --app-primary: #D48332;
+    --app-primary: var(--mantine-color-primary-color-8);
     --app-primary-withOpacity: #d483328a;
     --app-secondary: #3c3c3c;
     --app-border: #414141;
@@ -103,16 +103,13 @@
 	  --cm-string: #b5cea8;
 
   }
-  .theme-light.primary-green,.theme-dark.primary-green{
-    --app-primary: #2daf57 !important;
-  }
   .theme-light{
 
     --app-background: #fafbfc;
     --app-foreground: #333333;
     --app-foreground-active: #222;
     --app-foreground-inactive: #3333338f;
-    --app-primary: #D48332;
+    --app-primary: var(--mantine-color-primary-color-6);
     --app-secondary: #3c3c3c;
     --app-border: #d0d0d1;
     --app-focus: #5E8FED;

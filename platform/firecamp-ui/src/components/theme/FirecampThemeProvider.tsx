@@ -99,6 +99,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
           },
         },
       }}
+      withCSSVariables
       withGlobalStyles
       withNormalizeCSS
       {...props}

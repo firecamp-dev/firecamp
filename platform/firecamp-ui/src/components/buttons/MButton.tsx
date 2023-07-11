@@ -45,7 +45,7 @@ const useStyles = createStyles((theme) => ({
 // TODO: update withCaret prop usage by providing rightIcon={<VscTriangleDown size={12} />}
 // TODO: update tooltip prop usage by providing title={tooltip}
 // TODO: update iconLeft,iconRight,icon prop usage by providing leftIcon={<Icon/> & rightIcon={<Icon/>
-// TODO: update all sizes props [xs, sm, md, lg] according to mantine props
+// TODO: update all sizes props [xs, sm, md, lg] according to mantine props - adding compact prop for xs
 // TODO: should keep primary prompt ??
 enum EVariant {
   danger = 'danger', //custom variant
@@ -56,9 +56,9 @@ enum EVariant {
 }
 enum ESize {
   xs = 'xs',
-  sm = 'xs',
-  md = 'sm',
-  lg = 'md',
+  sm = 'sm',
+  md = 'md',
+  lg = 'lg',
 }
 
 const Button: FC<IButton> = ({
@@ -94,7 +94,7 @@ const Button: FC<IButton> = ({
     (transparent && EVariant.transparent) ||
     variant;
 
-  // default size if not passed is md
+  // default size if not passed is sm
   const customSize =
     (xs && ESize.xs) ||
     (sm && ESize.sm) ||
@@ -105,6 +105,7 @@ const Button: FC<IButton> = ({
   return (
     <MantineButton
       size={customSize}
+      compact={xs}
       variant={customVariant}
       classNames={{
         ...classNames,
