@@ -6,8 +6,7 @@ import {
   IFirecampThemeProvider,
 } from './FirecampThemeProvider.interfaces';
 
-const primaryColor: ColorType = 
-[
+const primaryColor: ColorType = [
   '#EEE8E2',
   '#E1D3C5',
   '#D6C0A9',
@@ -38,7 +37,7 @@ const darkModeColor: ColorType = [
   '#acaebf',
   '#8c8fa3',
   '#666980',
-  '#4d4f66',
+  '#4d4f66', // for disabled value
   '#34354a',
   '#3c3c3c', // same color for both light & dark theme variant //'#2b2c3d'
   '#2d2c2c', //body background color
@@ -95,19 +94,6 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
               root: {
                 fontFamily: 'sans-serif',
                 fontWeight: 'normal',
-
-                backgroundColor:
-                  variant === 'white' ? theme.colors.dark[6] : undefined,
-                color: variant === 'white' ? theme.colors.dark[0] : undefined,
-
-                '&:disabled, &[data-disabled]': {
-                  backgroundColor:
-                    theme.colors[theme.primaryColor][
-                      theme.colorScheme === 'light' ? 6 : 8
-                    ],
-                  color: theme.colors.dark[0],
-                  opacity: 0.5,
-                },
               },
             }),
           },

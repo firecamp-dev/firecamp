@@ -1,8 +1,10 @@
+import { FC, ReactNode } from 'react';
 import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+
 import MButton from './MButton';
 import { IButton } from './MButton.interfaces';
 import * as ButtonStories from './Button.stories';
-import { FC, Fragment, ReactNode } from 'react';
 
 export default {
   title: 'UI-Kit/MButton',
@@ -73,8 +75,6 @@ FullWidthButton.args = {
 export const TransparentButton = Template.bind({});
 TransparentButton.args = {
   text: 'Transparent Button',
-  primary: true,
-  md: true,
   transparent: true,
   previewBtn: (
     <ButtonStories.TransparentButton
@@ -97,8 +97,7 @@ ButtonIcon.args = {
   text: 'Sample Button...',
   primary: true,
   md: true,
-  icon: <VscMenu title="Account" size={16} className="z-20" />,
-  iconLeft: true,
+  leftIcon: <VscMenu title="Account" size={16} className="z-20" />,
   previewBtn: <ButtonStories.ButtonIcon {...ButtonStories.ButtonIcon.args} />,
 };
 
@@ -107,7 +106,7 @@ CaretButton.args = {
   text: 'Button with caret icon',
   primary: true,
   md: true,
-  withCaret: true,
+  rightIcon: <VscTriangleDown size={12} />,
   previewBtn: <ButtonStories.CaretButton {...ButtonStories.CaretButton.args} />,
 };
 
@@ -116,7 +115,7 @@ ButtonWithToolTip.args = {
   text: 'Button with tooltip',
   primary: true,
   md: true,
-  tooltip: 'tooltiptext',
+  title: 'tooltiptext',
   previewBtn: (
     <ButtonStories.ButtonWithToolTip
       {...ButtonStories.ButtonWithToolTip.args}
@@ -150,26 +149,60 @@ ButtonWithUpperCaseText.args = {
   ),
 };
 
-export const ButtonVariant = TemplateWithVariant.bind({});
-ButtonVariant.args = {
-  variant: [
-    { text: 'Primary Button', primary: true, md: true },
-    { text: 'Secondary Button', secondary: true, md: true },
-    { text: 'Danger Button', danger: true, md: true },
-    { text: 'Ghost Button', ghost: true, md: true },
-    { text: 'Transparent Button', transparent: true, md: true },
-  ],
+export const ButtonVariant = () => {
+  return (
+    <div className="flex gap-2">
+      <TemplateWithVariant
+        variant={[
+          { text: 'Primary Button', primary: true, md: true },
+          { text: 'Secondary Button', secondary: true, md: true },
+          { text: 'Danger Button', danger: true, md: true },
+          { text: 'Ghost Button', ghost: true, md: true },
+          { text: 'Transparent Button', transparent: true, md: true },
+        ]}
+      />
+      <TemplateWithVariant
+        variant={[
+          { text: 'Primary Button', primary: true, md: true, disabled: true },
+          {
+            text: 'Secondary Button',
+            secondary: true,
+            md: true,
+            disabled: true,
+          },
+          { text: 'Danger Button', danger: true, md: true, disabled: true },
+          { text: 'Ghost Button', ghost: true, md: true, disabled: true },
+          {
+            text: 'Transparent Button',
+            transparent: true,
+            md: true,
+            disabled: true,
+          },
+        ]}
+      />
+    </div>
+  );
 };
 
-export const ButtonSizes = TemplateWithVariant.bind({});
-ButtonSizes.args = {
-  variant: [
-    { text: 'xs', size: 'xs' },
-    { text: 'sm', size: 'sm' },
-    { text: 'md', size: 'md' },
-    { text: 'lg', size: 'lg' },
-    { text: 'xl', size: 'xl' },
-  ],
+export const ButtonSizes = () => {
+  return (
+    <div className="flex gap-2">
+      <div className="flex flex-col gap-2">
+        {[
+          { text: 'xs', xs: true, compact: true },
+          { text: 'sm', sm: true },
+          { text: 'md', md: true },
+          { text: 'lg', lg: true },
+          { text: 'xl', size: 'xl' },
+        ].map((args, index) => (
+          <div key={index}>
+            <MButton {...args} />
+          </div>
+        ))}
+      </div>
+      <ButtonStories.ButtonSizes {...ButtonStories.ButtonSizes.args} />
+    </div>
+  );
 };
 
 export const ButtonIconPosition = TemplateWithVariant.bind({});
@@ -179,15 +212,13 @@ ButtonIconPosition.args = {
       text: 'Sample Button (with left icon)',
       primary: true,
       md: true,
-      icon: <VscMenu title="Account" size={16} className="z-20" />,
-      iconLeft: true,
+      leftIcon: <VscMenu title="Account" size={16} className="z-20" />,
     },
     {
       text: 'Sample Button (with right icon)',
       primary: true,
       md: true,
-      icon: <VscMenu title="Account" size={16} className="z-20" />,
-      iconRight: true,
+      rightIcon: <VscMenu title="Account" size={16} className="z-20" />,
     },
   ],
 };

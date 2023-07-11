@@ -20,7 +20,7 @@ const FirecampThemeSelector = ({ theme, updateCurrentTheme }: any) => {
   const _setTheme = (t: EFirecampThemeVariant) => {
     try {
       // Set app body theme - for matching tailwind theme
-      document.body.className = `sb-main-padded sb-show-main" theme-${
+      document.body.className = `sb-main-padded sb-show-main theme-${
         t.split('-')[0]
       } primary-${t.split('-')[1] === 'secondary' ? 'green' : 'orange'}`;
     } catch (error) {
