@@ -72,7 +72,7 @@ const Menu: FC = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <span className="w-9 h-full border-r border-tab-border bg-tab-background-activeColor flex items-center justify-center cursor-pointer">
           <VscEllipsis size={20} strokeWidth={1} />
         </span>

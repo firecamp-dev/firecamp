@@ -75,7 +75,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
           </div>
 
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <Button
                 text={_role.name || 'Select role'}
                 className={

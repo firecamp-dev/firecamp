@@ -19,7 +19,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
   selected = '',
   width = 200,
   options = [],
-  handleRenderer,
+  handler,
   classNames = {},
   onSelect = () => {},
   onOpenChange = () => {},
@@ -46,7 +46,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
             classNames.trigger
           )}
         >
-          {handleRenderer()}
+          {handler()}
         </span>
       </Menu.Target>
 

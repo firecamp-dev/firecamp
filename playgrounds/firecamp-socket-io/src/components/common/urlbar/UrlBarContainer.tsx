@@ -102,7 +102,7 @@ const SIOVersionDropDown: FC<any> = ({
       <DropdownMenu
         id={id}
         onOpenChange={(v) => toggleDropDown(v)}
-        handleRenderer={() => (
+        handler={() => (
           <Button
             text={selectedOption.name}
             className={cx({ open: isDropDownOpen })}

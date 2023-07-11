@@ -78,7 +78,7 @@ const Digest: FC<IDigest> = ({
         <label>Algorithm:</label>
 
         <DropdownMenu
-          handleRenderer={() => (
+          handler={() => (
             <Button
               text={auth['algorithm'] || 'MD5'}
               secondary

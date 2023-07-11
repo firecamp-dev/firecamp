@@ -119,7 +119,7 @@ const GlobalCreateDD = ({}) => {
     <div className="border-l border-b border-tab-border flex items-center pl-1">
       <DropdownMenu
         onOpenChange={(v) => toggleOpen(v)}
-        handleRenderer={() => (
+        handler={() => (
           <Button
             text={'Create'}
             className={classnames({ open: isOpen })}

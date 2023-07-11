@@ -10,7 +10,7 @@ const TypedArrayViewDropDown = ({
 }) => {
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selectedOption.name}
           className={cx({ open: isOpen })}

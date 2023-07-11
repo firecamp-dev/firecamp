@@ -38,7 +38,7 @@ export interface IDropdownMenu {
   /**
    * Element to be shown to preview the dropdown
    */
-  handleRenderer: () => JSX.Element;
+  handler: () => JSX.Element;
   /**
    * list of options
    */

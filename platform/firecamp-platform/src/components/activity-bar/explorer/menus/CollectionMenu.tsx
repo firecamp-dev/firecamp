@@ -156,7 +156,7 @@ const CollectionMenu = ({
   return (
     <div>
       <DropdownMenu
-        handleRenderer={() => <VscEllipsis className='cursor-pointer' />}
+        handler={() => <VscEllipsis className='cursor-pointer' />}
         options={menuType == EMenuType.Request ? requestMenu : commonMenu}
         width={144}
         onSelect={(value) => value.onClick()}

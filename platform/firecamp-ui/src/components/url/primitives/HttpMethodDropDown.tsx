@@ -20,7 +20,7 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
     <DropdownMenu
     id={id}
     onOpenChange={(v) => toggleDropDown(v)}
-    handleRenderer={() => (
+    handler={() => (
       <Button
         text={selectedOption}
         className={cx({ open: isDropDownOpen })}

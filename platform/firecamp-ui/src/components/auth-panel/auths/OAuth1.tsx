@@ -78,7 +78,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
       <div className="form-group">
         <label>Signature Method:</label>
         <DropdownMenu
-          handleRenderer={() => (
+          handler={() => (
             <Button
               text={auth['signatureMethod'] || 'HMAC-SHA1'}
               secondary

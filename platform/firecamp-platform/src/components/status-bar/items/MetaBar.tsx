@@ -90,7 +90,7 @@ const MetaBar: FC<any> = () => {
   return (
     <div className="flex items-center cursor-pointer pr-2">
       <DropdownMenu
-        handleRenderer={() => <IoHelpBuoyOutline size={16} />}
+        handler={() => <IoHelpBuoyOutline size={16} />}
         options={process.env.NODE_ENV !== 'production' ? allOptions : options}
         onSelect={(v) => v.onClick()}
         width={160}

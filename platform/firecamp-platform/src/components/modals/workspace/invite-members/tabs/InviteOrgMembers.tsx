@@ -57,7 +57,7 @@ const InviteOrgMembers: FC<IProps> = ({
           className="relative"
         >
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <div className="relative">
                 <Button
                   text={member.name || 'Select member'}
@@ -88,7 +88,7 @@ const InviteOrgMembers: FC<IProps> = ({
         </FormField>
         <FormField label="Assign role for selected member">
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <Button
                 text={_role.name || 'Select role'}
                 className={cx(

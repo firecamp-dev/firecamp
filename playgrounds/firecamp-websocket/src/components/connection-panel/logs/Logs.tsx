@@ -103,7 +103,7 @@ const Logs = () => {
                   </label>
                   <div className="flex items-center">
                     <DropdownMenu
-                      handleRenderer={() => (
+                      handler={() => (
                         <Button
                           text={typeFilter || 'select log type'}
                           tooltip={

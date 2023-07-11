@@ -36,7 +36,7 @@ const DropdownElement = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           id={'button'}
           text={selected}

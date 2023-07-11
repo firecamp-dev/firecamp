@@ -178,7 +178,7 @@ const BodyTypeDropDown: FC<any> = ({
   return (
     <DropdownMenu
       onOpenChange={(v) => _onToggleOpen(v)}
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selectedOption || 'None'}
           className={cx('font-bold', { open: isOpen })}

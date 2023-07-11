@@ -198,7 +198,7 @@ const RoleDD: FC<{
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={_role.name}
           className="hover:!bg-focus1"

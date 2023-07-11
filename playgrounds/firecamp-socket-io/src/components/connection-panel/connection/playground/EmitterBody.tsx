@@ -215,7 +215,7 @@ const ArgTypesDD = ({ activeArgType, changeArgType }) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={activeArgType.name}
           className={cx({ open: isBodyTypeDDOpen })}

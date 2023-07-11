@@ -97,7 +97,7 @@ Example.args = {
       prefix: () => <VscMultipleWindows size={18} />,
     },
   ],
-  handleRenderer: () => (
+  handler: () => (
     <Button text={'Create'} primary withCaret transparent ghost xs />
   ),
   classNames: {
@@ -111,7 +111,7 @@ export const GlobalCreate = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selected || 'Create'}
           className="font-bold hover:!bg-focus1"
@@ -202,7 +202,7 @@ export const HTTPMethod = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => <Button text={selected} secondary withCaret sm />}
+      handler={() => <Button text={selected} secondary withCaret sm />}
       selected={selected}
       options={[
         {
@@ -261,7 +261,7 @@ export const BodyTab = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selected || 'None'}
           className="font-bold hover:!bg-focus1"
@@ -335,7 +335,7 @@ export const EmitterBody = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selected || 'No Body'}
           className="hover:!bg-focus1"
@@ -383,7 +383,7 @@ export const Logs = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           className="w-36 text-base"
           text={selected || 'select log type'}
@@ -424,7 +424,7 @@ export const RequestStatusBar = () => {
   return (
     <div className="flex ml-auto mr-1">
       <DropdownMenu
-        handleRenderer={() => (
+        handler={() => (
           <Button
             text={selected}
             secondary
@@ -484,7 +484,7 @@ export const FooterStatusBar = () => {
           <VscAccount size={16} className="mr-1" />
 
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <span className="pl-1 cursor-pointer">{userSelected}</span>
             )}
             options={[
@@ -537,7 +537,7 @@ export const FooterStatusBar = () => {
           <VscChevronRight size={14} className="mt-0.5" />
 
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <span className="pl-1 cursor-pointer">{selected}</span>
             )}
             options={[
@@ -640,7 +640,7 @@ export const SidebarCollectionOption = () => {
   const [selected, setSelected] = useState('MyQuery');
   return (
     <DropdownMenu
-      handleRenderer={() => <VscEllipsis className="cursor-pointer" />}
+      handler={() => <VscEllipsis className="cursor-pointer" />}
       options={[
         {
           prefix: () => <VscEdit size={14} />,
@@ -667,7 +667,7 @@ export const EnvCollectionOption = () => {
   return (
     <DropdownMenu
       onOpenChange={(v) => toggleOpen(v)}
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selected}
           className={cx('!text-info', {
@@ -721,7 +721,7 @@ export const MemberRoleSelection = () => {
   return (
     <div className="flex justify-between">
       <DropdownMenu
-        handleRenderer={() => (
+        handler={() => (
           <Button
             text={selected}
             className="hover:!bg-focus1"

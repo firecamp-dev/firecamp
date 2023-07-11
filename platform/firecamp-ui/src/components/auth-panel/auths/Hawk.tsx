@@ -81,7 +81,7 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
       <div className="form-group">
         <label>Algorithm</label>
         <DropdownMenu
-          handleRenderer={() => (
+          handler={() => (
             <div className={'select-box-title'}>
               {auth[Hawk]['algorithm'] || 'SHA256'}
             </div>

@@ -113,7 +113,7 @@ const Logs = () => {
                     {/* <label className="m-0 text-base font-bold">Type</label> */}
                     {logs?.length ? (
                       <DropdownMenu
-                        handleRenderer={() => (
+                        handler={() => (
                           <Button
                             text={typeFilter || 'select log type'}
                             tooltip={

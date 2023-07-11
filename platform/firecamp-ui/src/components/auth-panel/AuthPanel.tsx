@@ -167,7 +167,7 @@ const AuthTypesDD: FC<any> = ({ types, name, onSelect }) => {
   return (
     <div className="tab-pane-body-header flex items-center px-3 py-1 relative z-10">
       <DropdownMenu
-        handleRenderer={() => (
+        handler={() => (
           <Button
             text={name || ''}
             className="font-bold"

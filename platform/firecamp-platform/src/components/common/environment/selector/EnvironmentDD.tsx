@@ -58,7 +58,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
   return (
     <DropdownMenu
       onOpenChange={(v) => toggleOpen(v)}
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={title}
           className={cx('!text-info', {

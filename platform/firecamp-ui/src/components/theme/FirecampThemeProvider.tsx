@@ -6,30 +6,31 @@ import {
   IFirecampThemeProvider,
 } from './FirecampThemeProvider.interfaces';
 
-const primaryColor: ColorType = [
-  '#fff4e6',
-  '#ffe8cc',
-  '#ffd8a8',
-  '#ffc078',
-  '#ffa94d',
-  '#ff922b',
-  '#fd7e14', // light theme color index
-  '#f76707',
-  '#e8590c', // dark theme color index
-  '#d9480f',
+const primaryColor: ColorType = 
+[
+  '#EEE8E2',
+  '#E1D3C5',
+  '#D6C0A9',
+  '#D0AE8D',
+  '#CD9F70',
+  '#CE9052',
+  '#D48332', // light theme color index
+  '#B87634',
+  '#9D6A37', // dark theme color index
+  '#875F38',
 ];
 
 const secondaryColor: ColorType = [
-  '#ebfbee',
-  '#d3f9d8',
-  '#b2f2bb',
-  '#8ce99a',
-  '#69db7c',
-  '#51cf66',
-  '#40c057', // light theme color index
-  '#37b24d',
-  '#2f9e44', // dark theme color index
-  '#2b8a3e',
+  '#B4D1BE',
+  '#9CC7A9',
+  '#83BF96',
+  '#6ABB84',
+  '#50BA72',
+  '#3CB663',
+  '#2DAF57', // light theme color index
+  '#319551',
+  '#32804B', // dark theme color index
+  '#326E46',
 ];
 
 const darkModeColor: ColorType = [
@@ -39,7 +40,7 @@ const darkModeColor: ColorType = [
   '#666980',
   '#4d4f66',
   '#34354a',
-  '#2b2c3d',
+  '#3c3c3c', // same color for both light & dark theme variant //'#2b2c3d'
   '#2d2c2c', //body background color
   '#0c0d21',
   '#01010a',
@@ -94,6 +95,10 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
               root: {
                 fontFamily: 'sans-serif',
                 fontWeight: 'normal',
+
+                backgroundColor:
+                  variant === 'white' ? theme.colors.dark[6] : undefined,
+                color: variant === 'white' ? theme.colors.dark[0] : undefined,
 
                 '&:disabled, &[data-disabled]': {
                   backgroundColor:

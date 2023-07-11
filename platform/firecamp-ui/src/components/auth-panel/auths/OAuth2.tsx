@@ -64,7 +64,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
       <div className="form-group">
         <label>Grant Type:</label>
         <DropdownMenu
-          handleRenderer={() => (
+          handler={() => (
             <Button
               text={
                 grantTypesOptions.find((t) => t.id === activeGrantType)?.name ||

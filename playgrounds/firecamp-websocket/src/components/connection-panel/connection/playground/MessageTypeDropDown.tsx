@@ -10,7 +10,7 @@ const MessageTypeDropDown = ({
 }) => {
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <div className="flex text-sm items-center">
           {' '}
           Message as

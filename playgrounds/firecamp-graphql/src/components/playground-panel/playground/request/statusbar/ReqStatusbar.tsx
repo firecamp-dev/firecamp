@@ -119,7 +119,7 @@ const ReqStatusBar = ({}) => {
         </div>
         <div className="flex ml-auto mr-1">
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <Button
                 text={currentOps?.name || ''}
                 xs
