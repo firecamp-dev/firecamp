@@ -194,6 +194,7 @@ export default {
                 console.log(1234)
               }}/> */}
 
+            {/* //TODO: find & check usage */}
             {item.data.__ref.isEnvironment ? (
               <Button
                 text={'Clone'}

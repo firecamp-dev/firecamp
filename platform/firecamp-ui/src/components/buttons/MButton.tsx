@@ -39,6 +39,13 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: 'transparent',
     borderColor: theme.colors[theme.primaryColor][6],
   },
+  withoutBorderVariant: {
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    ':hover': {
+      backgroundColor: 'transparent',
+    },
+  },
 }));
 
 // props need to update wherever Button is used
@@ -72,6 +79,7 @@ const Button: FC<IButton> = ({
   secondary = false,
   danger = false,
   transparent = false,
+  withoutBorder = false,
 
   xs = false,
   sm = false,
@@ -105,12 +113,13 @@ const Button: FC<IButton> = ({
   return (
     <MantineButton
       size={customSize}
-      compact={xs}
       variant={customVariant}
       classNames={{
         ...classNames,
         root: cx(
+          'flex',
           classNames.root,
+          { [classes.withoutBorderVariant]: withoutBorder },
           { [classes.dangerVariant]: danger },
           { [classes.secondaryVariant]: customVariant === EVariant.secondary }
         ),

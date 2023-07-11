@@ -15,7 +15,13 @@ type btnType = IButton & { previewBtn?: ReactNode };
 const Template: FC<btnType> = ({ previewBtn, ...args }) => (
   <>
     <div className="flex gap-2">
-      <MButton {...args} /> {previewBtn}
+      <MButton
+        {...args}
+        onClick={() => {
+          console.log(`button clicked`);
+        }}
+      />{' '}
+      {previewBtn}
     </div>
     <div></div>
   </>
@@ -90,6 +96,16 @@ GhostButton.args = {
   md: true,
   ghost: true,
   previewBtn: <ButtonStories.GhostButton {...ButtonStories.GhostButton.args} />,
+};
+
+export const TransparentButtonWithoutBorder = Template.bind({});
+TransparentButtonWithoutBorder.args = {
+  text: 'Transparent Button Without Border',
+  rightIcon: <VscTriangleDown size={12} className={'transform rotate-180'} />,
+  transparent: true,
+  withoutBorder: true,
+  compact: true,
+  xs: true,
 };
 
 export const ButtonIcon = Template.bind({});
@@ -189,6 +205,7 @@ export const ButtonSizes = () => {
     <div className="flex gap-2">
       <div className="flex flex-col gap-2">
         {[
+          { text: 'xs', xs: true, compact: true },
           { text: 'xs', xs: true },
           { text: 'sm', sm: true },
           { text: 'md', md: true },

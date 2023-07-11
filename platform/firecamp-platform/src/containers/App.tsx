@@ -6,9 +6,9 @@ import 'awesome-notifications/dist/style.css';
 // Todo: put it on above css order after reviewing the @firecamp/ui css implementation
 import '../sass/_index.sass';
 
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Row, RootContainer, EditorApi } from '@firecamp/ui';
+import { Row, RootContainer, EditorApi, FirecampThemeProvider } from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
@@ -22,6 +22,7 @@ import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 import RealtimeEventManager from '../components/common/realtime/Realtime';
 import platformContext from '../services/platform-context';
+import { EFirecampThemeVariant } from '@firecamp/ui/src/components/theme/FirecampThemeProvider.interfaces';
 
 // Initialise Firecamp languages settings
 EditorApi.init();
@@ -44,6 +45,7 @@ const App: FC<any> = () => {
       else alert('I am unmounting');
     };
   }, []);
+  const [theme, updateTheme] = useState(EFirecampThemeVariant.LightSecondary);
 
   return (
     <ErrorBoundary
@@ -52,6 +54,7 @@ const App: FC<any> = () => {
         console.log({ error });
       }}
     >
+      <FirecampThemeProvider themeVariant={theme}>
       <RootContainer
         flex={1}
         overflow="auto"
@@ -67,7 +70,7 @@ const App: FC<any> = () => {
         <EnvSidebarContainer />
         <StatusBarContainer className="border-t focus-outer2" />
       </RootContainer>
-
+      </FirecampThemeProvider>
       <Crisp />
       <Analytics />
     </ErrorBoundary>

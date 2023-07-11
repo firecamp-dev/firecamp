@@ -9,6 +9,7 @@ import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 
 import { Button, DropdownMenu, FcIconGetSquare } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
@@ -122,11 +123,10 @@ const GlobalCreateDD = ({}) => {
         handler={() => (
           <Button
             text={'Create'}
-            className={classnames({ open: isOpen })}
-            primary
-            withCaret
+            rightIcon={<VscTriangleDown size={12} className={classnames({'transform rotate-180': isOpen})}/>}
+            withoutBorder
             transparent
-            ghost
+            compact
             xs
           />
         )}

@@ -190,18 +190,20 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
               onClick={update}
               disabled={!hasChange}
               primary
-              sm
+              xs
             />
 
             {runtimeEnv.__meta?.isGlobal ? (
               <></>
             ) : (
               <Button
-                className="ml-2"
+                classNames={{
+                  root: 'ml-2',
+                }}
                 text="Delete"
                 onClick={_delete}
                 secondary
-                sm
+                xs
               />
             )}
           </Row>

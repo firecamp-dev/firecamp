@@ -103,6 +103,9 @@
 	  --cm-string: #b5cea8;
 
   }
+  .theme-light.primary-green,.theme-dark.primary-green{
+    --app-primary: #2daf57 !important;
+  }
   .theme-light{
 
     --app-background: #fafbfc;
@@ -1090,6 +1093,11 @@
 }
 .border-collapse{
    border-collapse: collapse;
+
+}
+.rotate-180{
+   --tw-rotate: 180deg;
+   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 
 }
 .rotate-90{
@@ -2363,6 +2371,10 @@
 .outline-none{
    outline: 2px solid transparent;
    outline-offset: 2px;
+
+}
+.outline{
+   outline-style: solid;
 
 }
 .blur{

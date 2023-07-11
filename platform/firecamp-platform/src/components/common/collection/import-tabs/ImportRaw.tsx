@@ -35,7 +35,7 @@ const ImportRaw: FC<IProps> = ({
               onClick={importCollection}
               disabled={isImporting}
               primary
-              sm
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

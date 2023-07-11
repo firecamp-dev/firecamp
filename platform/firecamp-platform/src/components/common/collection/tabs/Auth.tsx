@@ -180,7 +180,7 @@ const Auth: FC<IAuthSettingUi> = ({
               }
               onClick={_onUpdate}
               primary
-              sm
+              xs
             />
           </TabHeader.Right>
         </TabHeader>
