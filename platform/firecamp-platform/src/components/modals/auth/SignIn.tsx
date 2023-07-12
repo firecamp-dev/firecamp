@@ -24,12 +24,12 @@ const SignIn: FC<IModal> = () => {
           <GithubGoogleAuth />
           <Button
             text="Continue with Email"
-            icon={<VscAccount size={18} />}
-            className="!w-full mb-5"
+            leftIcon={<VscAccount size={18} />}
+            className="mb-5"
             onClick={() => platformContext.app.modals.openSignInWithEmail()}
-            transparent
-            iconLeft
-            md
+            outline
+            fullWidth
+            sm
           />
         </div>
         {/* <div className="mb-8 mt-8 flex justify-center items-center">

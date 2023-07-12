@@ -4,9 +4,6 @@ export interface IButton extends ButtonProps {
   /** button text to show */
   text?: string;
 
-  /** text uppercase*/
-  uppercase?: boolean;
-
   /** primary button */
   primary?: boolean;
   /** ghost button */
@@ -17,8 +14,7 @@ export interface IButton extends ButtonProps {
   danger?: boolean;
   /**  transparent button */
   transparent?: boolean;
-  /** to create a transparent button without border & background transparent on hover */
-  withoutBorder?: boolean;
+  outline?: boolean;
 
   /** extra small size */
   xs?: boolean;

@@ -129,12 +129,13 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
                   : ''
               }
             />
+            {/* TODO: check preview */}
             <Button
               text={isRequesting ? `Resetting password...` : 'Reset Password'}
               onClick={handleSubmit(_onSubmit)}
-              fullWidth={true}
+              fullWidth
               primary
-              md
+              sm
             />
           </form>
         </div>

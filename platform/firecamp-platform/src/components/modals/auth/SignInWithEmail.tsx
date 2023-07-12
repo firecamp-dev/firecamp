@@ -154,11 +154,12 @@ const SignInWithEmail: FC<IModal> = () => {
               </a>
             </div>
             <Button
+              type="submit"
               text={isRequesting ? `Singing...` : `Sign in`}
               onClick={handleSubmit(_onSignIn)}
-              fullWidth={true}
+              fullWidth
               primary
-              md
+              sm
             />
           </form>
         </div>

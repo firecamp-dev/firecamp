@@ -124,8 +124,8 @@ const GlobalCreateDD = ({}) => {
           <Button
             text={'Create'}
             rightIcon={<VscTriangleDown size={12} className={classnames({'transform rotate-180': isOpen})}/>}
-            withoutBorder
             transparent
+            primary
             compact
             xs
           />

@@ -8,7 +8,12 @@ import '../sass/_index.sass';
 
 import { FC, useEffect, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Row, RootContainer, EditorApi, FirecampThemeProvider } from '@firecamp/ui';
+import {
+  Row,
+  RootContainer,
+  EditorApi,
+  FirecampThemeProvider,
+} from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
@@ -23,6 +28,7 @@ import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 import RealtimeEventManager from '../components/common/realtime/Realtime';
 import platformContext from '../services/platform-context';
 import { EFirecampThemeVariant } from '@firecamp/ui/src/components/theme/FirecampThemeProvider.interfaces';
+import FirecampThemeSelector from '@firecamp/ui/src/components/theme/FirecampThemeSelector';
 
 // Initialise Firecamp languages settings
 EditorApi.init();
@@ -45,7 +51,7 @@ const App: FC<any> = () => {
       else alert('I am unmounting');
     };
   }, []);
-  const [theme, updateTheme] = useState(EFirecampThemeVariant.LightSecondary);
+  const [theme, updateTheme] = useState(EFirecampThemeVariant.LightPrimary);
 
   return (
     <ErrorBoundary
@@ -55,21 +61,26 @@ const App: FC<any> = () => {
       }}
     >
       <FirecampThemeProvider themeVariant={theme}>
-      <RootContainer
-        flex={1}
-        overflow="auto"
-        className="h-screen w-screen bg-app-background text-app-foreground"
-      >
-        <Row flex={1}>
-          <SidebarContainer />
-          <TabsContainer />
-        </Row>
+        <RootContainer
+          flex={1}
+          overflow="auto"
+          className="h-screen w-screen bg-app-background text-app-foreground"
+        >
+          <Row flex={1}>
+            <SidebarContainer />
+            <TabsContainer />
+          </Row>
+          <FirecampThemeSelector
+            theme={theme}
+            updateCurrentTheme={updateTheme}
+          />
 
-        <RealtimeEventManager />
-        <ModalContainer />
-        <EnvSidebarContainer />
-        <StatusBarContainer className="border-t focus-outer2" />
-      </RootContainer>
+          <RealtimeEventManager />
+          <ModalContainer />
+          <EnvSidebarContainer />
+
+          <StatusBarContainer className="border-t focus-outer2" />
+        </RootContainer>
       </FirecampThemeProvider>
       <Crisp />
       <Analytics />

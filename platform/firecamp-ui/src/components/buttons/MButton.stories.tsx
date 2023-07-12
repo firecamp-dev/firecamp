@@ -41,7 +41,7 @@ const TemplateWithVariant = ({ variant }: { variant: btnType[] }) => (
 export const PrimaryButton = Template.bind({});
 PrimaryButton.args = {
   text: 'Primary Button',
-  md: true,
+  sm: true,
   previewBtn: (
     <ButtonStories.PrimaryButton {...ButtonStories.PrimaryButton.args} />
   ),
@@ -51,7 +51,7 @@ export const SecondaryButton = Template.bind({});
 SecondaryButton.args = {
   text: 'Secondary Button',
   secondary: true,
-  md: true,
+  sm: true,
   previewBtn: (
     <ButtonStories.SecondaryButton {...ButtonStories.SecondaryButton.args} />
   ),
@@ -61,7 +61,7 @@ export const DangerButton = Template.bind({});
 DangerButton.args = {
   text: 'Danger Button',
   danger: true,
-  md: true,
+  sm: true,
   previewBtn: (
     <ButtonStories.DangerButton {...ButtonStories.DangerButton.args} />
   ),
@@ -71,7 +71,7 @@ export const FullWidthButton = Template.bind({});
 FullWidthButton.args = {
   text: 'FullWidth Button',
   primary: true,
-  md: true,
+  sm: true,
   fullWidth: true,
   previewBtn: (
     <ButtonStories.FullWidthButton {...ButtonStories.FullWidthButton.args} />
@@ -93,7 +93,7 @@ export const GhostButton = Template.bind({});
 GhostButton.args = {
   text: 'Ghost Button',
   primary: true,
-  md: true,
+  sm: true,
   ghost: true,
   previewBtn: <ButtonStories.GhostButton {...ButtonStories.GhostButton.args} />,
 };
@@ -112,7 +112,7 @@ export const ButtonIcon = Template.bind({});
 ButtonIcon.args = {
   text: 'Sample Button...',
   primary: true,
-  md: true,
+  sm: true,
   leftIcon: <VscMenu title="Account" size={16} className="z-20" />,
   previewBtn: <ButtonStories.ButtonIcon {...ButtonStories.ButtonIcon.args} />,
 };
@@ -121,7 +121,7 @@ export const CaretButton = Template.bind({});
 CaretButton.args = {
   text: 'Button with caret icon',
   primary: true,
-  md: true,
+  sm: true,
   rightIcon: <VscTriangleDown size={12} />,
   previewBtn: <ButtonStories.CaretButton {...ButtonStories.CaretButton.args} />,
 };
@@ -130,7 +130,7 @@ export const ButtonWithToolTip = Template.bind({});
 ButtonWithToolTip.args = {
   text: 'Button with tooltip',
   primary: true,
-  md: true,
+  sm: true,
   title: 'tooltiptext',
   previewBtn: (
     <ButtonStories.ButtonWithToolTip
@@ -143,7 +143,7 @@ export const ButtonWithAdditionalDomProp = Template.bind({});
 ButtonWithAdditionalDomProp.args = {
   text: 'Additional Button Prop',
   primary: true,
-  md: true,
+  sm: true,
   'test-id': 'testing-mantine-btn',
   previewBtn: (
     <ButtonStories.ButtonWithAdditionalDomProp
@@ -156,7 +156,7 @@ export const ButtonWithUpperCaseText = Template.bind({});
 ButtonWithUpperCaseText.args = {
   text: 'Button with uppercase text',
   primary: true,
-  md: true,
+  sm: true,
   uppercase: true,
   previewBtn: (
     <ButtonStories.ButtonWithUpperCaseText
@@ -175,6 +175,8 @@ export const ButtonVariant = () => {
           { text: 'Danger Button', danger: true, md: true },
           { text: 'Ghost Button', ghost: true, md: true },
           { text: 'Transparent Button', transparent: true, md: true },
+          { text: 'Outlined Button', outline: true, primary: true,sm: true },
+          { text: 'Outlined Button', outline: true, sm: true },
         ]}
       />
       <TemplateWithVariant
@@ -194,6 +196,8 @@ export const ButtonVariant = () => {
             md: true,
             disabled: true,
           },
+          { text: 'Outlined Button', outline: true, primary: true, sm: true, disabled: true, },
+          { text: 'Outlined Button', outline: true, sm: true, disabled: true, },
         ]}
       />
     </div>

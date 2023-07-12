@@ -83,9 +83,9 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             <Button
               text={isRequesting ? `Sending...` : `Send`}
               onClick={handleSubmit(_onSubmit)}
-              fullWidth={true}
+              fullWidth
               primary
-              md
+              sm
             />
           </form>
         </div>

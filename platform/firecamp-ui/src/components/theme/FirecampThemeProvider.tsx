@@ -9,11 +9,11 @@ import {
 const primaryColor: ColorType = [
   '#EEE8E2',
   '#E1D3C5',
-  '#D6C0A9',
+  '#D6C0A9', // dark mode color index [in ghost variant]
   '#D0AE8D',
   '#CD9F70',
   '#CE9052',
-  '#D48332', // light theme color index
+  '#D48332', // light theme bgcolor index
   '#B87634',
   '#9D6A37', // dark theme color index
   '#875F38',
@@ -22,7 +22,7 @@ const primaryColor: ColorType = [
 const secondaryColor: ColorType = [
   '#B4D1BE',
   '#9CC7A9',
-  '#83BF96',
+  '#83BF96', // dark mode color index [in ghost variant]
   '#6ABB84',
   '#50BA72',
   '#3CB663',
@@ -33,16 +33,29 @@ const secondaryColor: ColorType = [
 ];
 
 const darkModeColor: ColorType = [
-  '#fff', //text color
+  '#d5d7e0',
   '#acaebf',
   '#8c8fa3',
   '#666980',
   '#4d4f66', // for disabled value
   '#34354a',
-  '#3c3c3c', // same color for both light & dark theme variant //'#2b2c3d'
-  '#2d2c2c', //body background color
+  '#2b2c3d', // same color for both light & dark theme variant 
+  '#1d1e30', //body background color
   '#0c0d21',
   '#01010a',
+];
+
+const grayColor: ColorType = [
+  '#CCCCCC',
+  '#616161',
+  '#585858',
+  '#505050',
+  '#494949',
+  '#424242', //outline-dark
+  '#3C3C3C', //outline-light
+  '#363636',
+  '#313131',
+  '#2C2C2C',
 ];
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
@@ -85,6 +98,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
         colors: {
           'primary-color': themeColor,
           dark: darkModeColor,
+          gray: grayColor,
         },
         primaryColor: 'primary-color',
         fontFamily: " 'Lato', 'sans-serif' ",

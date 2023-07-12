@@ -71,7 +71,6 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
               className={cx({ 'transform rotate-180': isOpen })}
             />
           }
-          withoutBorder
           transparent
           compact
           xs

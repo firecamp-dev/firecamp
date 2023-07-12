@@ -3,45 +3,61 @@ import { Button as MantineButton, createStyles } from '@mantine/core';
 import { IButton } from './MButton.interfaces';
 
 // custom styles for variants
-const useStyles = createStyles((theme) => ({
-  dangerVariant: {
-    color: theme.white,
-    backgroundColor: theme.colors.red[theme.colorScheme === 'light' ? 6 : 8],
-    ':hover': {
-      backgroundColor: theme.colors.red[theme.colorScheme === 'light' ? 7 : 9],
+const useStyles = createStyles((theme, { variant, color }: IButton) => ({
+  root: {
+    display: 'flex',
+    ...(variant === 'outline'
+      ? {
+          color:
+            color === 'primaryColor'
+              ? theme.colors[theme.primaryColor][
+                  theme.colorScheme === 'light' ? 6 : 8
+                ]
+              : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+          borderColor:
+            color === 'primaryColor'
+              ? theme.colors[theme.primaryColor][
+                  theme.colorScheme === 'light' ? 6 : 8
+                ]
+              : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+        }
+      : {}),
+    '&:disabled, &[data-disabled]': {
+      color:
+        variant === 'filled'
+          ? theme.white
+          : color === 'primaryColor'
+          ? theme.colors[theme.primaryColor][
+              theme.colorScheme === 'light' ? 6 : 8
+            ]
+          : theme.colors[color][theme.colorScheme === 'light' ? 6 : 8],
+      backgroundColor:
+        variant === 'filled'
+          ? color === 'primaryColor'
+            ? theme.colors[theme.primaryColor][
+                theme.colorScheme === 'light' ? 6 : 8
+              ]
+            : theme.colors[color][theme.colorScheme === 'light' ? 6 : 8]
+          : 'transparent',
+      ...(variant === 'outline'
+        ? {
+            color:
+              color === 'primaryColor'
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+            borderColor:
+              color === 'primaryColor'
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+          }
+        : {}),
     },
   },
-  dangerButton: {
-    color: theme.white,
-    backgroundColor: theme.colors.red[6],
-  },
-  ghostButton: {
-    color: theme.colors[theme.primaryColor][6],
-    backgroundColor: 'transparent',
-  },
-  primaryButton: {
-    color: theme.white,
-    backgroundColor: theme.colors[theme.primaryColor][6],
-  },
-  secondaryVariant: {
-    backgroundColor: theme.colors.dark[6],
-    color: theme.colors.dark[0],
-    ':hover': {
-      backgroundColor: theme.colors.dark[7],
-    },
-  },
-  secondaryButton: {
-    color: theme.colors.dark[0],
-    backgroundColor: theme.colors.dark[6],
-  },
-  transparentButton: {
-    color: theme.colors[theme.primaryColor][6],
-    backgroundColor: 'transparent',
-    borderColor: theme.colors[theme.primaryColor][6],
-  },
-  withoutBorderVariant: {
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
+  transparent: {
     ':hover': {
       backgroundColor: 'transparent',
     },
@@ -53,13 +69,11 @@ const useStyles = createStyles((theme) => ({
 // TODO: update tooltip prop usage by providing title={tooltip}
 // TODO: update iconLeft,iconRight,icon prop usage by providing leftIcon={<Icon/> & rightIcon={<Icon/>
 // TODO: update all sizes props [xs, sm, md, lg] according to mantine props - adding compact prop for xs
-// TODO: should keep primary prompt ??
+// TODO: discuss should keep primary prompt ?? currently used with outline prop
 enum EVariant {
-  danger = 'danger', //custom variant
   primary = 'filled',
   ghost = 'subtle',
-  secondary = 'white',
-  transparent = 'outline',
+  outline = 'outline',
 }
 enum ESize {
   xs = 'xs',
@@ -79,7 +93,7 @@ const Button: FC<IButton> = ({
   secondary = false,
   danger = false,
   transparent = false,
-  withoutBorder = false,
+  outline = false,
 
   xs = false,
   sm = false,
@@ -87,19 +101,13 @@ const Button: FC<IButton> = ({
   lg = false,
 
   text,
-  uppercase = false,
-
   ...props
 }) => {
-  const { classes, cx } = useStyles();
-
   // default variant if not passed is primary
   const customVariant =
-    (danger && EVariant.primary) ||
-    (ghost && EVariant.ghost) ||
-    (primary && EVariant.primary) ||
-    (secondary && EVariant.secondary) ||
-    (transparent && EVariant.transparent) ||
+    ((danger || secondary) && EVariant.primary) ||
+    ((ghost || transparent) && EVariant.ghost) ||
+    (outline && EVariant.outline) ||
     variant;
 
   // default size if not passed is sm
@@ -110,42 +118,30 @@ const Button: FC<IButton> = ({
     (lg && ESize.lg) ||
     size;
 
+  // default size if not passed is sm
+  const customColor = danger
+    ? 'red'
+    : secondary || (outline && !primary)
+    ? 'gray'
+    : 'primaryColor';
+  const { classes, cx } = useStyles({
+    variant: customVariant ?? 'filled',
+    color: customColor,
+  });
+
   return (
     <MantineButton
       size={customSize}
       variant={customVariant}
+      color={customColor}
       classNames={{
         ...classNames,
         root: cx(
-          'flex',
           classNames.root,
-          { [classes.withoutBorderVariant]: withoutBorder },
-          { [classes.dangerVariant]: danger },
-          { [classes.secondaryVariant]: customVariant === EVariant.secondary }
+          classes.root,
+          { [classes.transparent]: transparent },
+          { 'justify-center': props.fullWidth }
         ),
-        label: cx(classNames.label, { uppercase: uppercase }),
-      }}
-      styles={{
-        root: {
-          '&:disabled, &[data-disabled]': cx(
-            {
-              [classes.dangerButton]: danger,
-            },
-            {
-              [classes.ghostButton]: customVariant === EVariant.ghost,
-            },
-            {
-              [classes.primaryButton]: customVariant === EVariant.primary,
-            },
-            {
-              [classes.secondaryButton]: customVariant === EVariant.secondary,
-            },
-            {
-              [classes.transparentButton]:
-                customVariant === EVariant.transparent,
-            }
-          ),
-        },
       }}
       {...props}
     >
@@ -154,3 +150,8 @@ const Button: FC<IButton> = ({
   );
 };
 export default Button;
+
+// possible variants
+// root: '!text-info',
+// root: 'hover:!bg-focusColor !text-app-foreground-inactive'
+// className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive !py-0"
