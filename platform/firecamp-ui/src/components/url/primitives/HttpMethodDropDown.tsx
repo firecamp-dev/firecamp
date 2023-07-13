@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { DropdownMenu, Button } from '@firecamp/ui';
 
 const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
@@ -23,11 +24,15 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
     handler={() => (
       <Button
         text={selectedOption}
-        className={cx({ open: isDropDownOpen })}
-        tooltip={!isDropDownOpen && toolTip ? toolTip : ''}
+        title={!isDropDownOpen && toolTip ? toolTip : ''}
+        rightIcon={
+          <VscTriangleDown
+            size={12}
+            className={cx({ 'transform rotate-180': isDropDownOpen })}
+          />
+        }
         secondary
-        withCaret
-        sm
+        xs
       />
     )}
     selected={selectedOption || ''}

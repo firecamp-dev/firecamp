@@ -64,17 +64,15 @@ const EditInfoTab: FC<any> = ({
           <Button
             text="Cancel"
             onClick={(e) => close(e)}
-            transparent
-            secondary
             ghost
-            sm
+            xs
           />
           <Button
             text={isRequesting ? 'Updating...' : 'Update'}
             onClick={onSubmit}
             disabled={isRequesting}
             primary
-            sm
+            xs
           />
         </TabHeader.Right>
       </TabHeader>

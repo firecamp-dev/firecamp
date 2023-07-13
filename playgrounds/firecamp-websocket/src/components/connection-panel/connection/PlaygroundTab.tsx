@@ -269,7 +269,8 @@ const PlaygroundTab = () => {
                 text={'+ New Message'}
                 onClick={_addNewMessage}
                 ghost
-                sm
+                compact
+                xs
               />
             ) : (
               <></>
@@ -322,10 +323,10 @@ const PlaygroundTab = () => {
             {showSaveButton ? (
               <Button
                 text="Save"
-                icon={<VscFile size={12} className="ml-1" />}
+                rightIcon={<VscFile size={12} />}
                 onClick={_saveMessage}
                 secondary
-                iconRight
+                compact
                 xs
               />
             ) : (
@@ -333,10 +334,10 @@ const PlaygroundTab = () => {
             )}
             <Button
               text="Send"
-              icon={<IoSendSharp size={12} className="ml-1" />}
+              rightIcon={<IoSendSharp size={12} />}
               onClick={_onSendMessage}
-              iconRight
               primary
+              compact
               xs
             />
           </TabHeader.Right>

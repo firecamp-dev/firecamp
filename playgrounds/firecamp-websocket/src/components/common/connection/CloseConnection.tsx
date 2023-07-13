@@ -128,7 +128,7 @@ const CloseConnection = ({
                   />
                 </div>
                 <div className="flex justify-end">
-                  <Button text="Close WS" primary sm onClick={_onClose} />
+                  <Button text="Close WS" primary xs onClick={_onClose} />
                 </div>
               </form>
             </div>
@@ -145,9 +145,7 @@ const CloseConnection = ({
           text={'Connected'}
           onClick={closeManually === false ? onClose : () => {}}
           primary
-          sm={sm}
-          xs={xs}
-          iconLeft
+          xs
         />
       </Popover.Handler>
     </Popover>

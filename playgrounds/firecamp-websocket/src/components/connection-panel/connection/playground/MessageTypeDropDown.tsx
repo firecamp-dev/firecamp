@@ -1,5 +1,6 @@
-import { Button, DropdownMenu } from '@firecamp/ui';
 import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { Button, DropdownMenu } from '@firecamp/ui';
 
 const MessageTypeDropDown = ({
   options,
@@ -11,21 +12,27 @@ const MessageTypeDropDown = ({
   return (
     <DropdownMenu
       handler={() => (
-        <div className="flex text-sm items-center">
+        <div className="flex text-sm items-center flex-wrap">
           {' '}
           Message as
           <Button
             text={selectedOption.name || ''}
-            className={cx("ml-1", { open: isOpen })}
-            withCaret
+            classNames={{ root: 'ml-1' }}
+            rightIcon={
+              <VscTriangleDown
+                size={12}
+                className={cx({ 'transform rotate-180': isOpen })}
+              />
+            }
             primary
-            transparent
             ghost
+            compact
             xs
           />
         </div>
       )}
-      options={options} onSelect={onSelect}
+      options={options}
+      onSelect={onSelect}
       onOpenChange={(v) => onToggle(v)}
       selected={selectedOption.name || ''}
       classNames={{

@@ -5,8 +5,7 @@ import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EEditorLanguage } from '@firecamp/types';
-import { Input } from '@firecamp/ui';
-import Button from '../../buttons/Button';
+import { Input, Button } from '@firecamp/ui';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from '../primitive/Table';
@@ -184,15 +183,13 @@ const BasicTable = ({
           <Button
             onClick={() => apiRef.current.addRow()}
             text="Add Row"
-            className="small transparent font-light without-border with-padding with-icon-left"
-            icon={<VscAdd size={16} />}
+            leftIcon={<VscAdd size={16} />}
             disabled={
               options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
             }
-            transparent
             primary
-            ghost
-            sm
+            transparent
+            xs
           />
         </div>
       )}

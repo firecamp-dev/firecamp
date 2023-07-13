@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import _url from '@firecamp/url';
 import { Url, Button, DropdownMenu } from '@firecamp/ui';
 import ConnectionButton from '../connection/ConnectButton';
@@ -105,10 +106,14 @@ const SIOVersionDropDown: FC<any> = ({
         handler={() => (
           <Button
             text={selectedOption.name}
-            className={cx({ open: isDropDownOpen })}
+            rightIcon={
+              <VscTriangleDown
+                size={12}
+                className={cx({ 'transform rotate-180': isDropDownOpen })}
+              />
+            }
             secondary
-            withCaret
-            sm
+            xs
           />
         )}
         selected={selectedOption}
@@ -152,7 +157,7 @@ const PrefixButtons = () => {
         disabled={false} // isSaveBtnDisabled
         onClick={_onSave}
         secondary
-        sm
+        xs
       />
     </>
   );

@@ -1,6 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import shallow from 'zustand/shallow';
 import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Container,
   Editor,
@@ -181,12 +182,17 @@ const BodyTypeDropDown: FC<any> = ({
       handler={() => (
         <Button
           text={selectedOption || 'None'}
-          className={cx('font-bold', { open: isOpen })}
-          withCaret
-          transparent
-          ghost
-          xs
+          classNames={{ root: 'font-bold' }}
+          rightIcon={
+            <VscTriangleDown
+              size={12}
+              className={cx({ 'transform rotate-180': isOpen })}
+            />
+          }
           primary
+          ghost
+          compact
+          xs
         />
       )}
       selected={selectedOption || 'None'}

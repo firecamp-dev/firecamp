@@ -82,13 +82,15 @@ const BulkEditTable: FC<IBulkEditTable> = ({
         <TabHeader.Right>
           <Button
             text={mode === modes.Table ? 'Bulk Edit' : 'Key-Value Edit'}
-            // color="secondary"
-            className="mt-1"
-            secondary
-            sm
+            classNames={{
+              root: 'mt-1'
+            }}
             onClick={() => {
               setMode(mode === modes.Table ? modes.Raw : modes.Table);
             }}
+            secondary
+            compact
+            xs
           />
         </TabHeader.Right>
       </TabHeader>

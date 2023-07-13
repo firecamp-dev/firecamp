@@ -25,6 +25,10 @@ export interface IButton extends ButtonProps {
   /** large size */
   lg?: boolean;
 
+  /** identifier for button */
+  id?: string;
+  /** show tooltip on button hover */
+  title?: string;
   /** optional click handler */
   onClick?: (event: any) => any | Promise<any> | Promise<void>;
 }

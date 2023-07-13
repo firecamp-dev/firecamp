@@ -1,5 +1,7 @@
 import { memo, useEffect, useRef, useState } from 'react';
+import cx from 'classnames';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import shallow from 'zustand/shallow';
 import {
   Container,
@@ -36,6 +38,7 @@ const Logs = () => {
   const logTableApiRef = useRef(null);
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
+  const [isDropDownOpen, toggleDropDown] = useState(false);
 
   useEffect(() => {
     const getFilteredLogsByMeta = (logs = [], filter) => {
@@ -103,16 +106,24 @@ const Logs = () => {
                   </label>
                   <div className="flex items-center">
                     <DropdownMenu
+                      onOpenChange={(v) => toggleDropDown(v)}
                       handler={() => (
                         <Button
                           text={typeFilter || 'select log type'}
-                          tooltip={
+                          title={
                             typeFilter ? `Log type: ${typeFilter || ''}` : ''
                           }
-                          transparent
-                          withCaret
+                          rightIcon={
+                            <VscTriangleDown
+                              size={12}
+                              className={cx({
+                                'transform rotate-180': isDropDownOpen,
+                              })}
+                            />
+                          }
                           ghost
-                          sm
+                          compact
+                          xs
                         />
                       )}
                       options={Object.keys(logTypes).map((o) => ({

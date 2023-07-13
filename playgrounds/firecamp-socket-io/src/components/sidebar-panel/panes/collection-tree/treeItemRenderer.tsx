@@ -191,7 +191,6 @@ export default {
             {item.data.__ref.isItem ? (
               <Button
                 text={'Open'}
-                className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive"
                 {...context.interactiveElementProps}
                 onClick={(e) => {
                   // e.preventDefault();
@@ -199,9 +198,8 @@ export default {
                   context.focusItem(item.data.__ref.id);
                   openEmitterInPlg(item.data.__ref.id);
                 }}
-                transparent
-                secondary
                 ghost
+                compact
                 xs
               />
             ) : (

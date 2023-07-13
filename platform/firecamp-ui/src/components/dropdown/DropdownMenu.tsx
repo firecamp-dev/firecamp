@@ -33,7 +33,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
       shadow="md"
       width={width}
       classNames={classNames}
-      onChange={(v) => options.length === 0 ? {} : onOpenChange(v)}
+      onChange={(v) => disabled || options.length === 0 ? {} : onOpenChange(v)}
       disabled={disabled}
       {...menuProps}
     >

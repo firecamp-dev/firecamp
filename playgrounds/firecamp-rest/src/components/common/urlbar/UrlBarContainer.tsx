@@ -141,7 +141,7 @@ const PrefixButtons = () => {
         text={isRequestRunning === true ? `Cancel` : `Send`}
         onClick={_onExecute}
         primary
-        sm
+        xs
       />
       <Button
         id={`save-request-${tabId}`}
@@ -149,7 +149,7 @@ const PrefixButtons = () => {
         onClick={_onSave}
         disabled={false} //isSaveBtnDisabled
         secondary
-        sm
+        xs
       />
     </>
   );

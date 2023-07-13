@@ -1,5 +1,7 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import cx from 'classnames';
 import {
   Button,
   Container,
@@ -193,19 +195,25 @@ const RoleDD: FC<{
   role: number;
   onSelect: (role: { name: string; id: number }) => void;
 }> = ({ role, onSelect }) => {
+  const [isOpen, toggleOpen] = useState(false);
+
   const _role = RoleOptions.find((r) => r.id == role);
   if (!_role) return <></>;
 
   return (
     <DropdownMenu
+      onOpenChange={(v) => toggleOpen(v)}
       handler={() => (
         <Button
           text={_role.name}
-          className="hover:!bg-focus1"
-          withCaret
-          transparent
+          rightIcon={
+            <VscTriangleDown
+              size={12}
+              className={cx({ 'transform rotate-180': isOpen })}
+            />
+          }
           ghost
-          sm
+          xs
         />
       )}
       options={RoleOptions}

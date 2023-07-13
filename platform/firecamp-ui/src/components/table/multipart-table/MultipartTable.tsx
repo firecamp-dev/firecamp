@@ -7,22 +7,29 @@ import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EEditorLanguage } from '@firecamp/types';
-import { Input } from '@firecamp/ui';
+import { Input, Button } from '@firecamp/ui';
 
-import Button from '../../buttons/Button';
 import Checkbox from '../../checkbox/Checkbox';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from '../primitive/Table';
-import { ITableRows, TRenderCell, TTableApi } from '../primitive/table.interfaces';
+import {
+  ITableRows,
+  TRenderCell,
+  TTableApi,
+} from '../primitive/table.interfaces';
 
-import { IMultipartTable, IMultiPartInput, ERowType } from './MultipartTable.interfaces';
+import {
+  IMultipartTable,
+  IMultiPartInput,
+  ERowType,
+} from './MultipartTable.interfaces';
 
 const MultipartTable = ({
   rows = [],
   options = {},
   onChange = (rs: ITableRows) => {},
   onMount = (api: TTableApi) => {},
-}: IMultipartTable<any> ) => {
+}: IMultipartTable<any>) => {
   const apiRef = useRef<TTableApi>();
 
   const _columns = [
@@ -75,7 +82,6 @@ const MultipartTable = ({
         break;
       case 'key':
       case 'value':
-
         if (column.id == 'value') {
           return (
             <MultiPartInput
@@ -125,17 +131,17 @@ const MultipartTable = ({
         );
 
         break;
-        case 'description':
-          return (
-            <Input
-              value={cellValue}
-              className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px] font-sans"
-              wrapperClassName="!mb-0"
-              onChange={(e: any) => onChange(column.key, e.target.value, e)}
-            />
-          );
-          break;
-          
+      case 'description':
+        return (
+          <Input
+            value={cellValue}
+            className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px] font-sans"
+            wrapperClassName="!mb-0"
+            onChange={(e: any) => onChange(column.key, e.target.value, e)}
+          />
+        );
+        break;
+
       case 'remove':
         if (!options.allowRowRemove) return <></>;
         return (
@@ -182,12 +188,10 @@ const MultipartTable = ({
         <Button
           onClick={() => apiRef.current.addRow()}
           text="Add Row"
-          className="small transparent font-light without-border with-padding with-ic-left"
-          icon={<VscAdd size={16} />}
+          leftIcon={<VscAdd size={16} />}
           primary
-          sm
           transparent
-          ghost
+          xs
         />
       </div>
     </>
@@ -201,7 +205,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     row,
     value,
     onChange = (e = { target: { value: '' } }) => {},
-    onChangeFile = (e = { target: { file: null } as any}) => {},
+    onChangeFile = (e = { target: { file: null } as any }) => {},
     onChangeRowType = () => {},
     options,
   }) => {
@@ -288,9 +292,9 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
         )}
         <div className="cursor-pointer ml-auto pr-1 h-4">
           {type == 'text' ? (
-            <VscTextSize onClick={_changeType} title='IconTextSize' />
+            <VscTextSize onClick={_changeType} title="IconTextSize" />
           ) : (
-            <VscFile onClick={_changeType} title='IconFile' />
+            <VscFile onClick={_changeType} title="IconFile" />
           )}
         </div>
       </div>

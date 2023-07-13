@@ -95,6 +95,10 @@ const useStyles = createStyles(
           : {}),
       },
     },
+    leftIcon: {
+      paddingLeft: 'calc(0.875rem  / 1.5)',
+      paddingRight: 'calc(0.875rem  / 1.5)',
+    },
   })
 );
 
@@ -168,8 +172,18 @@ const Button: FC<IButton> = ({
       color={customColor}
       classNames={{
         ...classNames,
-        root: cx(classNames.root, classes.root, {
-          'justify-center': props.fullWidth,
+        root: cx(
+          classNames.root,
+          classes.root,
+          {
+            'justify-center': props.fullWidth,
+          },
+          {
+            [classes.leftIcon]: !text,
+          }
+        ),
+        leftIcon: cx(classNames.leftIcon, {
+          'mr-0': !text,
         }),
       }}
       {...props}
@@ -184,3 +198,4 @@ export default Button;
 // root: '!text-info',
 // root: 'hover:!bg-focusColor !text-app-foreground-inactive'
 // className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive !py-0"
+// ghost button: using bg-focus1 on hover

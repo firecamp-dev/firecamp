@@ -65,18 +65,14 @@ const HeaderTab: FC<{ headers: IHeader[] }> = ({ headers = [] }) => {
             <Button
               text="copy text"
               onClick={(e) => _copyAsText(headers)}
-              transparent
-              secondary
               ghost
-              sm
+              xs
             />
             <Button
               text="copy json"
               onClick={(e) => _copyAsJson(headers)}
-              transparent
-              secondary
               ghost
-              sm
+              xs
             />
           </div> */}
         </div>

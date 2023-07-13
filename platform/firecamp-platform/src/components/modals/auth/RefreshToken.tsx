@@ -136,7 +136,6 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
             />
           </div>
 
-          {/* TODO: check preview */}
           <Button
             text="Sign in"
             onClick={handleSubmit(_onSubmit)}

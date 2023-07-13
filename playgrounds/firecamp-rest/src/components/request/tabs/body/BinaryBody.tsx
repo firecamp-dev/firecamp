@@ -68,6 +68,7 @@ const BinaryTab = ({ body, onChange }) => {
     <Container>
       <Container.Body className="flex items-center justify-center">
         <FileDrop onDrop={_onDropFile}>
+          {/* TODO: check preview */}
           {fileName && !errorMsg ? (
             <div style={{ fontSize: '17px' }} onClick={_onButtonClick}>
               {fileName}
@@ -75,12 +76,11 @@ const BinaryTab = ({ body, onChange }) => {
           ) : (
             <Button
               onClick={_onButtonClick}
-              icon={<AiOutlineUpload className="mr-2" size={16} />}
+              leftIcon={<AiOutlineUpload className="mr-2" size={16} />}
               text="Drop File Here"
               disabled={isButtonDisabled}
               secondary
-              iconLeft
-              sm
+              xs
             />
           )}
 

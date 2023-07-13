@@ -1,4 +1,6 @@
 import { FC, useState, useEffect, Key } from 'react';
+import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { Button, Input, DropdownMenu } from '@firecamp/ui';
 // @ts-ignore
 import { EAuthTypes, IUiOAuth2, TPlainObject } from '@firecamp/types';
@@ -20,6 +22,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
   // @ts-ignore
   const advancedInputList = grantTypesPayloads?.[activeGrantType].advancedInputList;
 
+  const [isOpen, toggleOpen] = useState(false);
   const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
     // @ts-ignore
     inputList.reduce((p, n) => {
@@ -64,15 +67,21 @@ const OAuth2: FC<IOAuth2Comp> = ({
       <div className="form-group">
         <label>Grant Type:</label>
         <DropdownMenu
+          onOpenChange={(v) => toggleOpen(v)}
           handler={() => (
             <Button
               text={
                 grantTypesOptions.find((t) => t.id === activeGrantType)?.name ||
                 ''
               }
+              rightIcon={
+                <VscTriangleDown
+                  size={12}
+                  className={cx({ 'transform rotate-180': isOpen })}
+                />
+              }
               secondary
-              withCaret
-              sm
+              xs
             />
           )}
           options={grantTypesOptions}
@@ -137,6 +146,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
           text="Fetch Token"
           onClick={() => _fetchTokenOnChangeOAuth2()}
           primary
+          sm
         />
       </div>
 

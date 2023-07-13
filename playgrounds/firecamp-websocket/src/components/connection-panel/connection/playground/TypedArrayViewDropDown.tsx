@@ -1,6 +1,10 @@
-import { Button, DropdownMenu } from '@firecamp/ui';
 import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { Button, DropdownMenu } from '@firecamp/ui';
 
+{
+  /* TODO: check preview */
+}
 const TypedArrayViewDropDown = ({
   options,
   selectedOption,
@@ -13,12 +17,16 @@ const TypedArrayViewDropDown = ({
       handler={() => (
         <Button
           text={selectedOption.name}
-          className={cx({ open: isOpen })}
-          transparent
-          withCaret
+          rightIcon={
+            <VscTriangleDown
+              size={12}
+              className={cx({ 'transform rotate-180': isOpen })}
+            />
+          }
           primary
-          sm
           ghost
+          compact
+          xs
         />
       )}
       options={options}

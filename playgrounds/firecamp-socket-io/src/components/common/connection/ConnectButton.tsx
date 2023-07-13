@@ -25,22 +25,19 @@ const ConnectionButton = () => {
                 : 'Disconnect'
             }
             onClick={disconnect}
-            iconLeft
             primary
-            sm
+            xs
           />
         );
         break;
       case EConnectionState.Closing:
-        return <Button text="Connect" onClick={connect} iconLeft primary sm />;
+        return <Button text="Connect" onClick={connect} primary xs />;
         break;
       case EConnectionState.Closed:
-        return (
-          <Button text="Disconnected" onClick={connect} iconLeft primary sm />
-        );
+        return <Button text="Disconnected" onClick={connect} primary xs />;
         break;
       default:
-        return <Button text="Connect" onClick={connect} iconLeft primary sm />;
+        return <Button text="Connect" onClick={connect} primary xs />;
     }
   };
 

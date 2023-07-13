@@ -128,13 +128,12 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
       <Modal.Footer className="!pt-4">
         <TabHeader className="!px-0">
           <TabHeader.Right>
+            {/* TODO: check preview */}
             <Button
               text={texts?.btnCancel || `Cancel`}
               onClick={_close}
-              sm
-              secondary
-              transparent
               ghost
+              xs
             />
             <Button
               text={
@@ -143,7 +142,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
               onClick={_onClickOk}
               disabled={state.isExecuting}
               primary
-              sm
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

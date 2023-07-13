@@ -79,10 +79,10 @@ const EmitterPlayground = () => {
             />
             <Button
               text="Send"
-              icon={<IoSendSharp size={12} className="ml-1" />}
+              rightIcon={<IoSendSharp size={12} />}
               onClick={() => emit(plgEmitter)}
-              iconRight
               primary
+              compact
               xs
             />
           </TabHeader.Right>

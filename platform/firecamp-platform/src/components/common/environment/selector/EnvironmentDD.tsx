@@ -18,10 +18,11 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
     shallow
   );
   const { createEnvironmentPrompt } = platformContext.platform;
+  const [isOpen, toggleOpen] = useState(false);
   useEffect(() => {
     // console.log('env selector rendering the first time');
   }, []);
-  const [isOpen, toggleOpen] = useState(false);
+
   const menu = useMemo(
     () => Helper.generate.environmentsDD(environments, activeEnvId),
     [environments, activeEnvId]

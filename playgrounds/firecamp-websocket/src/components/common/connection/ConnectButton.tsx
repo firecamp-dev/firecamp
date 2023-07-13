@@ -38,15 +38,13 @@ const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
             onClick={(_) => {
               disconnect();
             }}
-            iconLeft
             primary
-            sm={sm}
-            xs={xs}
+            xs
           />
         );
         break;
       case EConnectionState.Closing:
-        return <Button text="Connect" primary xs iconLeft />;
+        return <Button text="Connect" primary xs />;
         break;
       case EConnectionState.Closed:
         return (
@@ -54,9 +52,7 @@ const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
             text="Disconnected"
             onClick={(_) => connect()}
             primary
-            sm={sm}
-            xs={xs}
-            iconLeft
+            xs            
           />
         );
         break;
@@ -65,10 +61,8 @@ const ConnectButton: FC<{ sm?: boolean; xs?: boolean }> = (props) => {
           <Button
             text="Connect"
             onClick={(_) => connect()}
-            iconLeft
             primary
-            sm={sm}
-            xs={xs}
+            xs
           />
         );
     }

@@ -67,7 +67,6 @@ const UrlBarContainer = () => {
       prefixComponent={
         <HttpMethodDropDown
           id={tabId}
-          className={'select-box'} //TODO: check this class is needed or not
           dropdownOptions={methods}
           selectedOption={(method || '').toUpperCase()}
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
@@ -103,20 +102,19 @@ const PrefixButtons = () => {
     <>
       <Button
         onClick={() => toggleDoc(true)}
-        icon={<FaFile fontSize={16} />}
+        leftIcon={<FaFile fontSize={16} />}
         id={`open-schema-doc-${tabId}`}
-        tooltip={'open schema doc'}
+        title={'open schema doc'}
         secondary
-        sm
+        xs
       />
       <Button
-        icon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
+        leftIcon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
         onClick={fetchIntrospectionSchema}
         id={`refresh-schema-${tabId}`}
-        tooltip={'refresh schema'}
-        iconLeft
+        title={'refresh schema'}
         primary
-        sm
+        xs
       />
       <Button
         id={`save-request-${tabId}`}
@@ -124,7 +122,7 @@ const PrefixButtons = () => {
         onClick={() => save(tabId)}
         disabled={false} //isSaveBtnDisabled
         secondary
-        sm
+        xs
       />
     </>
   );

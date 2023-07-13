@@ -1,5 +1,7 @@
 import { FC, useState } from 'react';
-import { Button, DropdownMenu, Input } from '@firecamp/ui';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import cx from 'classnames';
+ import { Button, DropdownMenu, Input } from '@firecamp/ui';
 import { IAuthDigest, EAuthTypes, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
@@ -14,7 +16,7 @@ const Digest: FC<IDigest> = ({
   const algorithmList = (authUiFormState[Digest].algorithmList || []).map(
     (i) => ({ name: i })
   );
-
+  const [isOpen, toggleOpen] = useState(false);
   const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
     inputList.reduce((p, n) => {
       return { ...p, [n.id]: false };
@@ -78,13 +80,21 @@ const Digest: FC<IDigest> = ({
         <label>Algorithm:</label>
 
         <DropdownMenu
+          onOpenChange={(v) => toggleOpen(v)}
           handler={() => (
             <Button
               text={auth['algorithm'] || 'MD5'}
+              classNames={{
+                root: 'mb-2'
+              }}
+              rightIcon={
+                <VscTriangleDown
+                  size={12}
+                  className={cx({ 'transform rotate-180': isOpen })}
+                />
+              }
               secondary
-              withCaret
-              sm
-              className="mb-2"
+              xs
             />
           )}
           options={algorithmList}
