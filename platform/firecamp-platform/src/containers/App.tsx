@@ -6,7 +6,7 @@ import 'awesome-notifications/dist/style.css';
 // Todo: put it on above css order after reviewing the @firecamp/ui css implementation
 import '../sass/_index.sass';
 
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import {
   Row,
@@ -27,8 +27,6 @@ import { EnvSidebarContainer } from '../components/sidebar';
 import ErrorPopup from '../components/common/error-boundary/ErrorPopup';
 import RealtimeEventManager from '../components/common/realtime/Realtime';
 import platformContext from '../services/platform-context';
-import { EFirecampThemeVariant } from '@firecamp/ui/src/components/theme/FirecampThemeProvider.interfaces';
-import FirecampThemeSelector from '@firecamp/ui/src/components/theme/FirecampThemeSelector';
 
 // Initialise Firecamp languages settings
 EditorApi.init();
@@ -51,7 +49,6 @@ const App: FC<any> = () => {
       else alert('I am unmounting');
     };
   }, []);
-  const [theme, updateTheme] = useState(EFirecampThemeVariant.LightPrimary);
 
   return (
     <ErrorBoundary
@@ -60,7 +57,7 @@ const App: FC<any> = () => {
         console.log({ error });
       }}
     >
-      <FirecampThemeProvider themeVariant={theme}>
+      <FirecampThemeProvider>
         <RootContainer
           flex={1}
           overflow="auto"
@@ -70,10 +67,6 @@ const App: FC<any> = () => {
             <SidebarContainer />
             <TabsContainer />
           </Row>
-          <FirecampThemeSelector
-            theme={theme}
-            updateCurrentTheme={updateTheme}
-          />
 
           <RealtimeEventManager />
           <ModalContainer />

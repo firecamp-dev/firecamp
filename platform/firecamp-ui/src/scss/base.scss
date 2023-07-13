@@ -68,7 +68,7 @@
     --statusBar-background: var(--app-background);
     --statusBar-foreground: var(--app-foreground);
     --statusBar-foreground-active: var(--app-foreground-active);
-    --statusBar-border:  var(--mantine-color-dark-3);/* .1 */
+    --statusBar-border: var(--mantine-color-dark-3);/* .1 */
     --statusBar-background-active: var(--mantine-color-gray-9);
 
     --input-border: var(--app-border);
@@ -113,7 +113,7 @@
 	  --ace-variable: #70AFD3;
 	  --ace-string: #E69B6F;
 	  --ace-constant: #a31515;
-	  --selected: #ffffff17;
+	  --selected: var(--mantine-color-dark-9); /* .2*/
 	  --cm-string: #b5cea8;
 
   }
@@ -201,7 +201,7 @@
 	  --ace-variable: #70AFD3;
 	  --ace-string: #E69B6F;
 	  --ace-constant: #a31515;
-	  --selected: #00000017;
+	  --selected: var(--mantine-color-dark-9); /* .3*/ 
 	  --cm-string: #098658;
     
   }

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { ColorScheme, MantineProvider } from '@mantine/core';
+import { ColorScheme, ColorSchemeProvider, MantineProvider } from '@mantine/core';
 import {
   EFirecampThemeVariant,
   ColorType,
@@ -37,17 +37,17 @@ const defaultDarkColor: ColorType = [
   '#A6A7AB', // #9e9d9d
   '#909296', // #9C9C9C
   '#5c5f66', // #777777 //.1 #7777773d // .2 #57606a;
-  '#373A40', // #3c3c3c //.1 #414141 
+  '#373A40', // #3c3c3c //.1 #414141
   '#2C2E33', // #2d2c2c //.1 #333333 //.2 #2e2e30
   '#25262b', // #262626 //.1 #2b2b2b // .2 #2a2a2a // .3 #24292f;
   '#1A1B1E', // #1B1A1A //.1 1A191C
   '#141517',
-  '#101113', // rgba(0, 0, 0, 0.36) //.1 #00000059
+  '#101113', // rgba(0, 0, 0, 0.36) //.1 #00000059 //.2 ffffff17 // .3 #00000017;
 ];
 const defaultGrayColor: ColorType = [
   '#f8f9fa', //#fafbfc;
   '#f1f3f5', // #f3f4f5 // .1 #f5f5f5;
-  '#e9ecef',  //#ececec;
+  '#e9ecef', //#ececec;
   '#dee2e6', //dddddd
   '#ced4da', //#cccccc //.1(similar to #ffffff80) //.2(similar to #ffffff66) // .3 #d0d0d1
   '#adb5bd', //#b1b1b1
@@ -58,7 +58,7 @@ const defaultGrayColor: ColorType = [
 ];
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
-  themeVariant,
+  themeVariant = EFirecampThemeVariant.LightPrimary,
   children,
   ...props
 }) => {
@@ -91,34 +91,36 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
   };
 
   return (
-    <MantineProvider
-      theme={{
-        colorScheme,
-        colors: {
-          'primary-color': themeColor,
-          dark: defaultDarkColor,
-          gray: defaultGrayColor,
-        },
-        primaryColor: 'primary-color',
-        fontFamily: " 'Lato', 'sans-serif' ",
-        components: {
-          Button: {
-            styles: (theme, params, { variant }) => ({
-              root: {
-                fontFamily: 'sans-serif',
-                fontWeight: 'normal',
-              },
-            }),
+    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={(c: ColorScheme | EFirecampThemeVariant) => updateTheme(c as EFirecampThemeVariant)}>
+      <MantineProvider
+        theme={{
+          colorScheme,
+          colors: {
+            'primary-color': themeColor,
+            dark: defaultDarkColor,
+            gray: defaultGrayColor,
           },
-        },
-      }}
-      withCSSVariables
-      withGlobalStyles
-      withNormalizeCSS
-      {...props}
-    >
-      {children}
-    </MantineProvider>
+          primaryColor: 'primary-color',
+          fontFamily: " 'Lato', 'sans-serif' ",
+          components: {
+            Button: {
+              styles: (theme, params, { variant }) => ({
+                root: {
+                  fontFamily: 'sans-serif',
+                  fontWeight: 'normal',
+                },
+              }),
+            },
+          },
+        }}
+        withCSSVariables
+        withGlobalStyles
+        withNormalizeCSS
+        {...props}
+      >
+        {children}
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 };
 
