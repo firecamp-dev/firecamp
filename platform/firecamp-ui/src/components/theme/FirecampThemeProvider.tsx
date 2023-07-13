@@ -32,30 +32,29 @@ const secondaryColor: ColorType = [
   '#326E46',
 ];
 
-const darkModeColor: ColorType = [
-  '#d5d7e0',
-  '#acaebf',
-  '#8c8fa3',
-  '#666980',
-  '#4d4f66', // for disabled value
-  '#34354a',
-  '#2b2c3d', // same color for both light & dark theme variant 
-  '#1d1e30', //body background color
-  '#0c0d21',
-  '#01010a',
+const defaultDarkColor: ColorType = [
+  '#C1C2C5', //#bbb
+  '#A6A7AB', // #9e9d9d
+  '#909296', // #9C9C9C
+  '#5c5f66', // #777777 //.1 #7777773d // .2 #57606a;
+  '#373A40', // #3c3c3c //.1 #414141 
+  '#2C2E33', // #2d2c2c //.1 #333333 //.2 #2e2e30
+  '#25262b', // #262626 //.1 #2b2b2b // .2 #2a2a2a // .3 #24292f;
+  '#1A1B1E', // #1B1A1A //.1 1A191C
+  '#141517',
+  '#101113', // rgba(0, 0, 0, 0.36) //.1 #00000059
 ];
-
-const grayColor: ColorType = [
-  '#CCCCCC',
-  '#616161',
-  '#585858',
-  '#505050',
-  '#494949',
-  '#424242', //outline-dark
-  '#3C3C3C', //outline-light
-  '#363636',
-  '#313131',
-  '#2C2C2C',
+const defaultGrayColor: ColorType = [
+  '#f8f9fa', //#fafbfc;
+  '#f1f3f5', // #f3f4f5 // .1 #f5f5f5;
+  '#e9ecef',  //#ececec;
+  '#dee2e6', //dddddd
+  '#ced4da', //#cccccc //.1(similar to #ffffff80) //.2(similar to #ffffff66) // .3 #d0d0d1
+  '#adb5bd', //#b1b1b1
+  '#868e96', //#808080
+  '#495057',
+  '#343a40',
+  '#212529', // #252526 //.1 #222/#222222
 ];
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
@@ -97,8 +96,8 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
         colorScheme,
         colors: {
           'primary-color': themeColor,
-          dark: darkModeColor,
-          gray: grayColor,
+          dark: defaultDarkColor,
+          gray: defaultGrayColor,
         },
         primaryColor: 'primary-color',
         fontFamily: " 'Lato', 'sans-serif' ",

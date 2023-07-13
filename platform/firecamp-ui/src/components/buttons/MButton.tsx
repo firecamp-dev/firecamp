@@ -22,6 +22,16 @@ const useStyles = createStyles((theme, { variant, color }: IButton) => ({
               : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
         }
       : {}),
+    // same color for both light/dark color variant
+    ...(variant === 'filled' && color === 'dark'
+      ? {
+          color: theme.white,
+          backgroundColor: theme.colors.dark[4],
+          ':hover': {
+            backgroundColor: theme.colors.dark[5],
+          },
+        }
+      : {}),
     '&:disabled, &[data-disabled]': {
       color:
         variant === 'filled'
@@ -53,6 +63,12 @@ const useStyles = createStyles((theme, { variant, color }: IButton) => ({
                     theme.colorScheme === 'light' ? 6 : 8
                   ]
                 : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+          }
+        : {}),
+      ...(variant === 'filled' && color === 'dark'
+        ? {
+            color: theme.white,
+            backgroundColor: theme.colors.dark[4],
           }
         : {}),
     },
@@ -122,7 +138,7 @@ const Button: FC<IButton> = ({
   const customColor = danger
     ? 'red'
     : secondary || (outline && !primary)
-    ? 'gray'
+    ? 'dark'
     : 'primaryColor';
   const { classes, cx } = useStyles({
     variant: customVariant ?? 'filled',

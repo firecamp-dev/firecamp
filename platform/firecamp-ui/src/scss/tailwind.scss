@@ -21,60 +21,60 @@
     --req-socketio: #91BD5E;
     --link: #0068bc;
 
-    --app-background: #1B1A1A;
-    --app-foreground: #cccccc;
-    --app-foreground-active: #fff;
-    --app-foreground-inactive: #777777;
+    --app-background:  var(--mantine-color-dark-7);
+    --app-foreground: var(--mantine-color-gray-4);
+    --app-foreground-active: var(--mantine-color-white);
+    --app-foreground-inactive: var(--mantine-color-dark-3);
     --app-primary: var(--mantine-color-primary-color-8);
     --app-primary-withOpacity: #d483328a;
-    --app-secondary: #3c3c3c;
-    --app-border: #414141;
+    --app-secondary: var(--mantine-color-dark-4);
+    --app-border: var(--mantine-color-dark-4);/* .1 */
     --app-focus: #5E8FED;
     --app-error: #f00;
-    --app-overlay: #b1b1b1;
-    --app-background-secondary: #252526;
+    --app-overlay: var(--mantine-color-gray-5);
+    --app-background-secondary: var(--mantine-color-gray-9);
 
     --tab-background: var(--app-background);
-    --tab-foreground: #bbb;
-    --tab-foreground-inactive: #ffffff80;
+    --tab-foreground:  var(--mantine-color-dark-0);
+    --tab-foreground-inactive: var(--mantine-color-gray-4);/* .1 */
     --tab-border: var(--app-border);
-    --tab-background-hover: #1B1A1A;
+    --tab-background-hover:  var(--mantine-color-dark-7);
     --tab-background-active: var(--statusBar-background-active);
-    --tab-background-activeColor: #2d2c2c;
+    --tab-background-activeColor: var(--mantine-color-dark-5);
 
-    --activityBar-background: #333333;
-    --activityBar-foreground: #FFFFFF;
-    --activityBar-foreground-inactive: #ffffff66;
+    --activityBar-background: var(--mantine-color-dark-5);/* .1 */
+    --activityBar-foreground: var(--mantine-color-white);
+    --activityBar-foreground-inactive: var(--mantine-color-gray-4);/* .2 */
     --activityBar-background-active: var(--focus-level-2);
     --activityBar-border-active: var(--app-primary);
-    --activityBar-border: #333333;
-    --activityBarBadge-foreground: #FFFFFF;
+    --activityBar-border: var(--mantine-color-dark-5);/* .1 */
+    --activityBarBadge-foreground: var(--mantine-color-white);
     --activityBarBadge-background: #09A1ED;
 
     --statusBar-background: var(--app-background);
     --statusBar-foreground: var(--app-foreground);
     --statusBar-foreground-active: var(--app-foreground-active);
-    --statusBar-border: #7777773d;
-    --statusBar-background-active: #252526;
+    --statusBar-border:  var(--mantine-color-dark-3);/* .1 */
+    --statusBar-background-active: var(--mantine-color-gray-9);
 
     --input-border: var(--app-border);
-    --input-placeholder: #777777;
-    --input-text: #FFFFFF;
-    --input-background-focus: #1A191C;
+    --input-placeholder: var(--mantine-color-dark-3);
+    --input-text: var(--mantine-color-white);
+    --input-background-focus: var(--mantine-color-dark-7);/* .1 */
     --input-background: var(--app-background);
 
-    --popover-background: #2e2e30;
+    --popover-background: var(--mantine-color-dark-5);/* .2 */
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
-    --popover-shadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
+    --popover-shadow: var(--mantine-color-dark-9) 0px 0px 8px 2px;
 
     --focus-border: #007acc;
 
-    --modal-background: #262626;
-    --modal-foreground: #9C9C9C;
-    --modal-foreground-active: #FFFFFF;
-    --modal-shadow: #00000059;
-    --modal-border: #2b2b2b;
+    --modal-background: var(--mantine-color-dark-6);
+    --modal-foreground: var(--mantine-color-dark-2);
+    --modal-foreground-active: var(--mantine-color-white);
+    --modal-shadow: var(--mantine-color-dark-9);
+    --modal-border: var(--mantine-color-dark-6) // .1
 
     --error: #ed4849;
     --warning: #fcc04f;
@@ -87,15 +87,15 @@
     --focus-level-3: rgba(var(--color), 0.14);
     --focus-level-4: rgba(var(--color), 0.18);
 
-    --collection-text: #cccccc;
+    --collection-text: var(--mantine-color-gray-4);
 
     --cm-property: #ce9178;
 	  --cm-keyword: #9cdcfe;
 	  --cm-def: #b5cea8;
 	  --cm-attribute: #9cdcfe;
 	  --cm-number: #ab843b;
-	  --cm-punctuation: #9e9d9d;
-	  --cm-ws: #9e9d9d;
+	  --cm-punctuation: var(--mantine-color-dark-1);
+	  --cm-ws: var(--mantine-color-dark-1);
 	  --ace-variable: #70AFD3;
 	  --ace-string: #E69B6F;
 	  --ace-constant: #a31515;
@@ -108,61 +108,61 @@
   }
   .theme-light{
 
-    --app-background: #fafbfc;
-    --app-foreground: #333333;
-    --app-foreground-active: #222;
+    --app-background: var(--mantine-color-gray-0);
+    --app-foreground: var(--mantine-color-dark-5);/* .1 */
+    --app-foreground-active: var(--mantine-color-gray-9); /* .1*/
     --app-foreground-inactive: #3333338f;
     --app-primary: var(--mantine-color-primary-color-6);
-    --app-secondary: #3c3c3c;
-    --app-border: #d0d0d1;
+    --app-secondary: var(--mantine-color-dark-4);
+    --app-border:  var(--mantine-color-gray-4); /* .3*/
     --app-focus: #5E8FED;
     --app-error: #f00;
-    --app-overlay: #2a2a2a;
-    --app-background-secondary: #f3f4f5;
+    --app-overlay: var(--mantine-color-dark-6); /* .2*/ 
+    --app-background-secondary: var(--mantine-color-gray-1);
 
-    --tab-background: #fafbfc;
-    --tab-foreground: #24292f;
-    --tab-foreground-inactive: #333333;
+    --tab-background: var(--mantine-color-gray-0);
+    --tab-foreground: var(--mantine-color-dark-6);/* .3 */
+    --tab-foreground-inactive: var(--mantine-color-dark-5);/* .1 */
     --tab-border: var(--app-border);
-    --tab-background-hover: #fafbfc;
-    --tab-background-active: #fafbfc;
-    --tab-background-activeColor: #f5f5f5;
+    --tab-background-hover: var(--mantine-color-gray-0);
+    --tab-background-active: var(--mantine-color-gray-0);
+    --tab-background-activeColor: var(--mantine-color-gray-1); /* .1*/
 
-    --activityBar-background: #f5f5f5;
-    --activityBar-foreground: #24292f;
-    --activityBar-foreground-inactive: #57606a;
+    --activityBar-background: var(--mantine-color-gray-1); /* .1*/
+    --activityBar-foreground: var(--mantine-color-dark-6);/* .3 */
+    --activityBar-foreground-inactive: var(--mantine-color-dark-3);/* .2 */
     --activityBar-background-active: var(--focus-level-2);
     --activityBar-border-active: var(--app-primary);
     
-    --activityBar-border: #dddddd;
-    --activityBarBadge-foreground: #FFFFFF;
+    --activityBar-border: var(--mantine-color-gray-3);
+    --activityBarBadge-foreground: var(--mantine-color-white);
     --activityBarBadge-background: #09A1ED;
 
     --statusBar-background: var(--app-background);
     --statusBar-foreground: var(--app-foreground);
     --statusBar-foreground-active: var(--app-foreground-active);
     --statusBar-border: var(--app-border);
-    --statusBar-background-active: #ececec;
+    --statusBar-background-active: var(--mantine-color-gray-2);
 
     --input-border: var(--app-border);
-    --input-placeholder: #808080;
-    --input-text: #222222;
-    --input-background-focus: #ffffff;
+    --input-placeholder: var(--mantine-color-gray-6);
+    --input-text: var(--mantine-color-gray-9);
+    --input-background-focus: var(--mantine-color-white);
     --input-background: rgba(var(--color), 0.06);
 
-    --popover-background: #ffffff;
+    --popover-background: var(--mantine-color-white);
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
-    --popover-shadow: rgba(0, 0, 0, 0.36) 0px 0px 8px 2px;
+    --popover-shadow: var(--mantine-color-dark-9) 0px 0px 8px 2px;
     
 
     --focus-border: #007acc;
 
-    --modal-background: #f5f5f5;
-    --modal-foreground: #2a2a2a;
-    --modal-foreground-active: #222222;
+    --modal-background: var(--mantine-color-gray-1); /* .1*/
+    --modal-foreground: var(--mantine-color-dark-6); /* .2 */
+    --modal-foreground-active: var(--mantine-color-gray-9);
     --modal-shadow: #afafaf59;
-    --modal-border: #dddddd;
+    --modal-border: var(--mantine-color-gray-3);
 
     --error: #ed4849;
     --warning: #fcc04f;
@@ -175,15 +175,15 @@
     --focus-level-3: rgba(var(--color), 0.14);
     --focus-level-4: rgba(var(--color), 0.18);
 
-    --collection-text: #333333;
+    --collection-text:  var(--mantine-color-dark-5);/* .1 */
 
     --cm-property: #0451a5;
 	  --cm-keyword: #a31515;
   	--cm-def: #098658;
 	  --cm-attribute: #a31515;
   	--cm-number: #ab843b;
-	  --cm-punctuation: #9e9d9d;
-	  --cm-ws: #9e9d9d;
+	  --cm-punctuation: var(--mantine-color-dark-1);
+	  --cm-ws: var(--mantine-color-dark-1);
 	  --ace-variable: #70AFD3;
 	  --ace-string: #E69B6F;
 	  --ace-constant: #a31515;
@@ -2993,11 +2993,11 @@ tr:focus-visible{
 }
 
 .fc-theme > .themeBG.light-green {
-  background: linear-gradient(to right, #fafbfc 14px, #2daf57 15px);
+  background: linear-gradient(to right, var(--mantine-color-gray-0) 14px, #2daf57 15px);
 }
 
 .fc-theme > .themeBG.light-orange {
-  background: linear-gradient(to right, #fafbfc 14px, #d37b1b 15px);
+  background: linear-gradient(to right, var(--mantine-color-gray-0) 14px, #d37b1b 15px);
 }
 
 .fc-theme > .themeBG.dark-green {
