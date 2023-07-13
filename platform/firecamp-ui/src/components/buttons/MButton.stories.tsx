@@ -41,6 +41,7 @@ const TemplateWithVariant = ({ variant }: { variant: btnType[] }) => (
 export const PrimaryButton = Template.bind({});
 PrimaryButton.args = {
   text: 'Primary Button',
+  primary: true,
   sm: true,
   previewBtn: (
     <ButtonStories.PrimaryButton {...ButtonStories.PrimaryButton.args} />
@@ -88,6 +89,17 @@ TransparentButton.args = {
     />
   ),
 };
+export const TransparentButtonWithBorder = Template.bind({});
+TransparentButtonWithBorder.args = {
+  text: 'Transparent Button',
+  outline: true,
+  primary: true,
+  previewBtn: (
+    <ButtonStories.TransparentButton
+      {...ButtonStories.TransparentButton.args}
+    />
+  ),
+};
 
 export const GhostButton = Template.bind({});
 GhostButton.args = {
@@ -96,16 +108,6 @@ GhostButton.args = {
   sm: true,
   ghost: true,
   previewBtn: <ButtonStories.GhostButton {...ButtonStories.GhostButton.args} />,
-};
-
-export const TransparentButtonWithoutBorder = Template.bind({});
-TransparentButtonWithoutBorder.args = {
-  text: 'Transparent Button Without Border',
-  rightIcon: <VscTriangleDown size={12} className={'transform rotate-180'} />,
-  transparent: true,
-  withoutBorder: true,
-  compact: true,
-  xs: true,
 };
 
 export const ButtonIcon = Template.bind({});
@@ -174,9 +176,16 @@ export const ButtonVariant = () => {
           { text: 'Secondary Button', secondary: true, md: true },
           { text: 'Danger Button', danger: true, md: true },
           { text: 'Ghost Button', ghost: true, md: true },
+          { text: 'Ghost Button', primary: true, ghost: true, md: true },
           { text: 'Transparent Button', transparent: true, md: true },
-          { text: 'Outlined Button', outline: true, primary: true,sm: true },
+          {
+            text: 'Transparent Button',
+            primary: true,
+            transparent: true,
+            md: true,
+          },
           { text: 'Outlined Button', outline: true, sm: true },
+          { text: 'Outlined Button', outline: true, primary: true, sm: true },
         ]}
       />
       <TemplateWithVariant
@@ -191,13 +200,33 @@ export const ButtonVariant = () => {
           { text: 'Danger Button', danger: true, md: true, disabled: true },
           { text: 'Ghost Button', ghost: true, md: true, disabled: true },
           {
+            text: 'Ghost Button',
+            primary: true,
+            ghost: true,
+            md: true,
+            disabled: true,
+          },
+          {
             text: 'Transparent Button',
             transparent: true,
             md: true,
             disabled: true,
           },
-          { text: 'Outlined Button', outline: true, primary: true, sm: true, disabled: true, },
-          { text: 'Outlined Button', outline: true, sm: true, disabled: true, },
+          {
+            text: 'Transparent Button',
+            primary: true,
+            transparent: true,
+            md: true,
+            disabled: true,
+          },
+          { text: 'Outlined Button', outline: true, sm: true, disabled: true },
+          {
+            text: 'Outlined Button',
+            outline: true,
+            primary: true,
+            sm: true,
+            disabled: true,
+          },
         ]}
       />
     </div>
@@ -209,12 +238,12 @@ export const ButtonSizes = () => {
     <div className="flex gap-2">
       <div className="flex flex-col gap-2">
         {[
-          { text: 'xs', xs: true, compact: true },
-          { text: 'xs', xs: true },
-          { text: 'sm', sm: true },
-          { text: 'md', md: true },
-          { text: 'lg', lg: true },
-          { text: 'xl', size: 'xl' },
+          { text: 'xs', xs: true, compact: true, primary: true },
+          { text: 'xs', xs: true, primary: true },
+          { text: 'sm', sm: true, primary: true },
+          { text: 'md', md: true, primary: true },
+          { text: 'lg', lg: true, primary: true },
+          { text: 'xl', size: 'xl', primary: true },
         ].map((args, index) => (
           <div key={index}>
             <MButton {...args} />

@@ -3,89 +3,106 @@ import { Button as MantineButton, createStyles } from '@mantine/core';
 import { IButton } from './MButton.interfaces';
 
 // custom styles for variants
-const useStyles = createStyles((theme, { variant, color }: IButton) => ({
-  root: {
-    display: 'flex',
-    ...(variant === 'outline'
-      ? {
-          color:
-            color === 'primaryColor'
-              ? theme.colors[theme.primaryColor][
-                  theme.colorScheme === 'light' ? 6 : 8
-                ]
-              : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-          borderColor:
-            color === 'primaryColor'
-              ? theme.colors[theme.primaryColor][
-                  theme.colorScheme === 'light' ? 6 : 8
-                ]
-              : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-        }
-      : {}),
-    // same color for both light/dark color variant
-    ...(variant === 'filled' && color === 'dark'
-      ? {
-          color: theme.white,
-          backgroundColor: theme.colors.dark[4],
-          ':hover': {
-            backgroundColor: theme.colors.dark[5],
-          },
-        }
-      : {}),
-    '&:disabled, &[data-disabled]': {
-      color:
-        variant === 'filled'
-          ? theme.white
-          : color === 'primaryColor'
-          ? theme.colors[theme.primaryColor][
-              theme.colorScheme === 'light' ? 6 : 8
-            ]
-          : theme.colors[color][theme.colorScheme === 'light' ? 6 : 8],
-      backgroundColor:
-        variant === 'filled'
-          ? color === 'primaryColor'
-            ? theme.colors[theme.primaryColor][
-                theme.colorScheme === 'light' ? 6 : 8
-              ]
-            : theme.colors[color][theme.colorScheme === 'light' ? 6 : 8]
-          : 'transparent',
-      ...(variant === 'outline'
+const useStyles = createStyles(
+  (theme, { variant, color, primary, secondary, transparent }: IButton) => ({
+    root: {
+      display: 'flex',
+      ...(transparent
         ? {
-            color:
-              color === 'primaryColor'
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
-            borderColor:
-              color === 'primaryColor'
-                ? theme.colors[theme.primaryColor][
-                    theme.colorScheme === 'light' ? 6 : 8
-                  ]
-                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+            ':hover': {
+              backgroundColor: 'transparent',
+            },
           }
         : {}),
-      ...(variant === 'filled' && color === 'dark'
+      ...(variant === 'outline'
+        ? {
+            color: primary
+              ? theme.colors[theme.primaryColor][
+                  theme.colorScheme === 'light' ? 6 : 8
+                ]
+              : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+            borderColor: primary
+              ? theme.colors[theme.primaryColor][
+                  theme.colorScheme === 'light' ? 6 : 8
+                ]
+              : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][4],
+            // [
+            //     theme.colorScheme === 'light' ? 6 : 0
+            //   ],
+            ':hover': {
+              backgroundColor: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 7 : 9
+                  ]
+                : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][
+                    theme.colorScheme === 'light' ? 3 : 5
+                  ],
+            },
+          }
+        : {}),
+      // same color for both light/dark color variant
+      ...(secondary
         ? {
             color: theme.white,
             backgroundColor: theme.colors.dark[4],
+            ':hover': {
+              backgroundColor: theme.colors.dark[5],
+            },
           }
         : {}),
+      '&:disabled, &[data-disabled]': {
+        ...(transparent || ['subtle'].includes(variant)
+          ? {
+              color: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+              backgroundColor: 'transparent',
+            }
+          : {}),
+        ...(variant === 'filled'
+          ? {
+              color: theme.white,
+              backgroundColor: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 8],
+            }
+          : {}),
+        ...(variant === 'outline'
+          ? {
+              color: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+              borderColor: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[
+                    theme.colorScheme === 'light' ? 'gray' : color
+                  ][4],
+            }
+          : {}),
+        ...(secondary
+          ? {
+              color: theme.white,
+              backgroundColor: theme.colors.dark[4],
+            }
+          : {}),
+      },
     },
-  },
-  transparent: {
-    ':hover': {
-      backgroundColor: 'transparent',
-    },
-  },
-}));
+  })
+);
 
 // props need to update wherever Button is used
 // TODO: update withCaret prop usage by providing rightIcon={<VscTriangleDown size={12} />}
 // TODO: update tooltip prop usage by providing title={tooltip}
 // TODO: update iconLeft,iconRight,icon prop usage by providing leftIcon={<Icon/> & rightIcon={<Icon/>
 // TODO: update all sizes props [xs, sm, md, lg] according to mantine props - adding compact prop for xs
-// TODO: discuss should keep primary prompt ?? currently used with outline prop
 enum EVariant {
   primary = 'filled',
   ghost = 'subtle',
@@ -135,14 +152,13 @@ const Button: FC<IButton> = ({
     size;
 
   // default size if not passed is sm
-  const customColor = danger
-    ? 'red'
-    : secondary || (outline && !primary)
-    ? 'dark'
-    : 'primaryColor';
+  const customColor = danger ? 'red' : primary ? 'primaryColor' : 'dark';
   const { classes, cx } = useStyles({
     variant: customVariant ?? 'filled',
     color: customColor,
+    primary,
+    secondary,
+    transparent,
   });
 
   return (
@@ -152,12 +168,9 @@ const Button: FC<IButton> = ({
       color={customColor}
       classNames={{
         ...classNames,
-        root: cx(
-          classNames.root,
-          classes.root,
-          { [classes.transparent]: transparent },
-          { 'justify-center': props.fullWidth }
-        ),
+        root: cx(classNames.root, classes.root, {
+          'justify-center': props.fullWidth,
+        }),
       }}
       {...props}
     >

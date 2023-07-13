@@ -33,7 +33,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
       shadow="md"
       width={width}
       classNames={classNames}
-      onChange={onOpenChange}
+      onChange={(v) => options.length === 0 ? {} : onOpenChange(v)}
       disabled={disabled}
       {...menuProps}
     >
@@ -55,7 +55,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
           { 'py-2.5': sm },
           { 'py-[15px]': !sm },
            {
-          'd-none border-0': options.length === 0,
+          'hidden border-0': options.length === 0,
         })}
       >
         {options.map((item, i) => {

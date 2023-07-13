@@ -4,7 +4,7 @@ export interface IButton extends ButtonProps {
   /** button text to show */
   text?: string;
 
-  /** primary button */
+  /** to update the preview of button with custom primaryColor */
   primary?: boolean;
   /** ghost button */
   ghost?: boolean;

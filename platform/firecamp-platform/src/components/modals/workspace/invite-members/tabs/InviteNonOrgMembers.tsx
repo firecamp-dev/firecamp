@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
 import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import cx from 'classnames';
 import {
   Button,
   DropdownMenu,
@@ -41,6 +43,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
   const { inviteNonOrgMembers } = useWorkspaceStore.getState();
   const [error, setError] = useState<IMemberDetailError[]>([]);
   const [isInvitingMembers, setInvitingFlag] = useState(false);
+  const [isOpen, toggleOpen] = useState(false);
   const { usersList, role } = state;
 
   const inviteMembers = useCallback(() => {
@@ -68,24 +71,29 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
               Invite members as
             </label>
             <Popover content={<RolesCallout role={_role.id} />}>
-              <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ">
+              <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ml-1">
                 <VscInfo size={16} />
               </Popover.Handler>
             </Popover>
           </div>
 
           <DropdownMenu
+            onOpenChange={(v) => toggleOpen(v)}
             handler={() => (
               <Button
                 text={_role.name || 'Select role'}
-                className={
-                  'hover:!bg-focus1 border border-app-border justify-between'
+                classNames={{
+                  inner: 'flex justify-between w-full',
+                }}
+                rightIcon={
+                  <VscTriangleDown
+                    size={12}
+                    className={cx({ 'transform rotate-180': isOpen })}
+                  />
                 }
-                withCaret
-                transparent
+                outline
                 fullWidth
-                ghost
-                md
+                sm
               />
             )}
             options={RoleOptions}
@@ -122,12 +130,14 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
           Open Workspace Management
         </a>
         <Button
-          className="ml-auto"
           text={isInvitingMembers ? 'Sending invitation...' : 'Send Invitation'}
+          classNames={{
+            root: 'ml-auto',
+          }}
           disabled={isInvitingMembers}
           onClick={inviteMembers}
           primary
-          sm
+          xs
         />
       </Container.Footer>
     </Container>

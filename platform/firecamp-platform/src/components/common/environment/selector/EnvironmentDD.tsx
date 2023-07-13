@@ -72,6 +72,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
             />
           }
           transparent
+          primary
           compact
           xs
         />
