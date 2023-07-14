@@ -154,9 +154,11 @@ export default {
                 e.stopPropagation()
                 openEnv(item.index);
               }}/> */}
-            {/* TODO: check preview */}
             <Button
               text={'Open'}
+              classNames={{
+                root:'hover:!bg-focus2 ml-1 !text-app-foreground-inactive'
+              }}
               {...context.interactiveElementProps}
               onClick={(e) => {
                 e.preventDefault();

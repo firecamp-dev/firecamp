@@ -128,7 +128,6 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
       <Modal.Footer className="!pt-4">
         <TabHeader className="!px-0">
           <TabHeader.Right>
-            {/* TODO: check preview */}
             <Button
               text={texts?.btnCancel || `Cancel`}
               onClick={_close}

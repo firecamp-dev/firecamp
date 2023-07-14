@@ -20,31 +20,31 @@
 
    
 
-    --req-get: #66BB6A;
-    --req-post: #DF962B;
-    --req-put: #26C6DA;
-    --req-delete: #EF5350;
-    --req-patch: #5C6BC0;
-    --req-head: #AB47BC;
-    --req-options: #EC407A;
-    --req-purge: #DBB542;
-    --req-link: #42A5F5;
-    --req-unlink: #26A69A;
-    --req-graphql: #E535AB;
-    --req-websocket: #FF7043;
-    --req-socketio: #91BD5E;
-    --link: #0068bc;
+    --req-get: var(--mantine-color-green-5);
+    --req-post: var(--mantine-color-orange-5);
+    --req-put: var(--mantine-color-cyan-5);
+    --req-delete: var(--mantine-color-red-6);
+    --req-patch: var(--mantine-color-indigo-8);
+    --req-head: var(--mantine-color-grape-7);
+    --req-options: var(--mantine-color-pink-6);
+    --req-purge:  var(--mantine-color-orange-4);
+    --req-link: var(--mantine-color-blue-4);
+    --req-unlink: var(--mantine-color-cyan-7);
+    --req-graphql: var(--mantine-color-pink-6);
+    --req-websocket: var(--mantine-color-red-6);
+    --req-socketio: var(--mantine-color-lime-4);
+    --link: var(--mantine-color-blue-8);
 
     --app-background:  var(--mantine-color-dark-7);
     --app-foreground: var(--mantine-color-gray-4);
     --app-foreground-active: var(--mantine-color-white);
     --app-foreground-inactive: var(--mantine-color-dark-3);
     --app-primary: var(--mantine-color-primary-color-8);
-    --app-primary-withOpacity: #d483328a;
+    --app-primary-withOpacity: var(--mantine-color-primary-color-9);
     --app-secondary: var(--mantine-color-dark-4);
     --app-border: var(--mantine-color-dark-4);/* .1 */
-    --app-focus: #5E8FED;
-    --app-error: #f00;
+    --app-focus: var(--mantine-color-indigo-5);
+    --app-error: var(--mantine-color-red-8);
     --app-overlay: var(--mantine-color-gray-5);
     --app-background-secondary: var(--mantine-color-gray-9);
 
@@ -63,7 +63,7 @@
     --activityBar-border-active: var(--app-primary);
     --activityBar-border: var(--mantine-color-dark-5);/* .1 */
     --activityBarBadge-foreground: var(--mantine-color-white);
-    --activityBarBadge-background: #09A1ED;
+    --activityBarBadge-background: var(--mantine-color-blue-6);
 
     --statusBar-background: var(--app-background);
     --statusBar-foreground: var(--app-foreground);
@@ -82,7 +82,7 @@
     --popover-border: transparent;
     --popover-shadow: var(--mantine-color-dark-9) 0px 0px 8px 2px;
 
-    --focus-border: #007acc;
+    --focus-border: var(--mantine-color-blue-8);
 
     --modal-background: var(--mantine-color-dark-6);
     --modal-foreground: var(--mantine-color-dark-2);
@@ -90,10 +90,10 @@
     --modal-shadow: var(--mantine-color-dark-9);
     --modal-border: var(--mantine-color-dark-6) // .1
 
-    --error: #ed4849;
-    --warning: #fcc04f;
-    --info: #0794ff;
-    --success: #4bb101;
+    --error: var(--mantine-color-red-7);
+    --warning:  var(--mantine-color-orange-4);
+    --info: var(--mantine-color-blue-6);
+    --success: var(--mantine-color-lime-8);
 
     --color: 128,128,128;
     --focus-level-1: rgba(var(--color), 0.06);
@@ -103,34 +103,34 @@
 
     --collection-text: var(--mantine-color-gray-4);
 
-    --cm-property: #ce9178;
-	  --cm-keyword: #9cdcfe;
-	  --cm-def: #b5cea8;
-	  --cm-attribute: #9cdcfe;
-	  --cm-number: #ab843b;
+    --cm-property: var(--mantine-color-red-4);
+	  --cm-keyword: var(--mantine-color-blue-2);
+	  --cm-def: var(--mantine-color-dark-0);
+	  --cm-attribute: var(--mantine-color-blue-2);
+	  --cm-number: var(--mantine-color-orange-5);
 	  --cm-punctuation: var(--mantine-color-dark-1);
 	  --cm-ws: var(--mantine-color-dark-1);
-	  --ace-variable: #70AFD3;
-	  --ace-string: #E69B6F;
-	  --ace-constant: #a31515;
+	  --ace-variable: var(--mantine-color-blue-3);
+	  --ace-string: var(--mantine-color-orange-3);
+	  --ace-constant: var(--mantine-color-red-9);
 	  --selected: var(--mantine-color-dark-9); /* .2*/
-	  --cm-string: #b5cea8;
+	  --cm-string: var(--mantine-color-dark-0);
 
   }
   .theme-light.primary-green,.theme-dark.primary-green{
-    --app-primary: #2daf57 !important;
+    --app-primary: var(--mantine-color-green-7) !important;
   }
   .theme-light{
 
     --app-background: var(--mantine-color-gray-0);
     --app-foreground: var(--mantine-color-dark-5);/* .1 */
     --app-foreground-active: var(--mantine-color-gray-9); /* .1*/
-    --app-foreground-inactive: #3333338f;
+    --app-foreground-inactive: var(--mantine-color-dark-4);
     --app-primary: var(--mantine-color-primary-color-6);
     --app-secondary: var(--mantine-color-dark-4);
     --app-border:  var(--mantine-color-gray-4); /* .3*/
-    --app-focus: #5E8FED;
-    --app-error: #f00;
+    --app-focus: var(--mantine-color-indigo-5);
+    --app-error: var(--mantine-color-red-8);
     --app-overlay: var(--mantine-color-dark-6); /* .2*/ 
     --app-background-secondary: var(--mantine-color-gray-1);
 
@@ -150,7 +150,7 @@
     
     --activityBar-border: var(--mantine-color-gray-3);
     --activityBarBadge-foreground: var(--mantine-color-white);
-    --activityBarBadge-background: #09A1ED;
+    --activityBarBadge-background: var(--mantine-color-blue-6);
 
     --statusBar-background: var(--app-background);
     --statusBar-foreground: var(--app-foreground);
@@ -170,18 +170,18 @@
     --popover-shadow: var(--mantine-color-dark-9) 0px 0px 8px 2px;
     
 
-    --focus-border: #007acc;
+    --focus-border: var(--mantine-color-blue-8);
 
     --modal-background: var(--mantine-color-gray-1); /* .1*/
     --modal-foreground: var(--mantine-color-dark-6); /* .2 */
     --modal-foreground-active: var(--mantine-color-gray-9);
-    --modal-shadow: #afafaf59;
+    --modal-shadow: var(--mantine-color-dark-1);
     --modal-border: var(--mantine-color-gray-3);
 
-    --error: #ed4849;
-    --warning: #fcc04f;
-    --info: #0794ff;
-    --success: #4bb101;
+    --error: var(--mantine-color-red-7);
+    --warning:  var(--mantine-color-orange-4);
+    --info: var(--mantine-color-blue-6);
+    --success: var(--mantine-color-lime-8);
 
     --color: 86,88,105;
     --focus-level-1: rgba(var(--color), 0.06);
@@ -191,18 +191,18 @@
 
     --collection-text:  var(--mantine-color-dark-5);/* .1 */
 
-    --cm-property: #0451a5;
-	  --cm-keyword: #a31515;
-  	--cm-def: #098658;
-	  --cm-attribute: #a31515;
-  	--cm-number: #ab843b;
+    --cm-property: var(--mantine-color-blue-9);
+	  --cm-keyword: var(--mantine-color-red-9);
+  	--cm-def: var(--mantine-color-teal-9);
+	  --cm-attribute: var(--mantine-color-red-9);
+    --cm-number:  var(--mantine-color-orange-5);
 	  --cm-punctuation: var(--mantine-color-dark-1);
 	  --cm-ws: var(--mantine-color-dark-1);
-	  --ace-variable: #70AFD3;
-	  --ace-string: #E69B6F;
-	  --ace-constant: #a31515;
+	  --ace-variable: var(--mantine-color-blue-3);
+    --ace-string: var(--mantine-color-orange-3);
+	  --ace-constant: var(--mantine-color-red-9);
 	  --selected: var(--mantine-color-dark-9); /* .3*/ 
-	  --cm-string: #098658;
+	  --cm-string: var(--mantine-color-teal-9);
     
   }
 
@@ -383,19 +383,19 @@ tr:focus-visible{
 }
 
 .fc-theme > .themeBG.light-green {
-  background: linear-gradient(to right, var(--mantine-color-gray-0) 14px, #2daf57 15px);
+  background: linear-gradient(to right, var(--mantine-color-gray-0) 14px, var(--mantine-color-green-7) 15px);
 }
 
 .fc-theme > .themeBG.light-orange {
-  background: linear-gradient(to right, var(--mantine-color-gray-0) 14px, #d37b1b 15px);
+  background: linear-gradient(to right, var(--mantine-color-gray-0) 14px, var(--mantine-color-yellow-9) 15px);
 }
 
 .fc-theme > .themeBG.dark-green {
-  background: linear-gradient(to right, #1e1e1e 14px, #2daf57 15px);
+  background: linear-gradient(to right, var(--mantine-color-dark-7) 14px, var(--mantine-color-green-7) 15px);
 }
 
 .fc-theme > .themeBG.dark-orange {
-  background: linear-gradient(to right, #1e1e1e 14px, #d37b1b 15px);
+  background: linear-gradient(to right, var(--mantine-color-dark-7) 14px, var(--mantine-color-yellow-9) 15px);
 }
 
 .fc-theme:hover > .themeBG, .fc-theme.active > .themeBG {

@@ -229,12 +229,9 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
         <div className="p-4">
           <TabHeader className="!p-0">
             <TabHeader.Right>
-              {/* TODO: check preview */}
               <Button
                 text="Cancel"
                 onClick={(e) => onClose()}
-                secondary
-                transparent
                 ghost
                 xs
               />

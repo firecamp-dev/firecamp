@@ -152,13 +152,13 @@ export default {
             </span>
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
-            {/* TODO: check preview */}
+
             {item.data.__ref.isItem ? (
               <Button
                 text={'Open'}
-                // classNames={{
-                //   root: 'hover:!bg-focus2 ml-1 !text-app-foreground-inactive'
-                // }}
+                classNames={{
+                  root: 'hover:!bg-focus2 ml-1 !text-app-foreground-inactive'
+                }}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();

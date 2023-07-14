@@ -67,7 +67,6 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
           </div>
           <div className="flex justify-end">
             <div className="ml-auto flex">
-              {/* TODO: check preview */}
               <Button
                 text={cancelButtonText || 'Cancel'}
                 classNames={{
@@ -82,8 +81,6 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
 
               <Button
                 text={confirmButtonText || 'Delete'}
-                // color="primary-alt"
-                // className="small fc-button"
                 onClick={() => {
                   onConfirm();
                   _toggleOpen(!isOpen);
@@ -103,7 +100,6 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
         ) : showDeleteIcon === true ? (
           <Button
             id={`confirm-popover-handler-${id}`}
-            text=""
             className="small square"
             secondary
             sm

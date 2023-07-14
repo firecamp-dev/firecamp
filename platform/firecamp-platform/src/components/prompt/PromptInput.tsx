@@ -113,7 +113,6 @@ export const PromptInput: FC<IPromptInput> = ({
                 ghost
                 xs
               />
-              {/* TODO: check preview */}
               <Button
                 text={
                   state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
