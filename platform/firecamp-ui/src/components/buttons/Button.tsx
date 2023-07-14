@@ -7,6 +7,8 @@ const useStyles = createStyles(
   (theme, { variant, color, primary, secondary, transparent }: IButton) => ({
     root: {
       display: 'flex',
+      fontFamily: 'sans-serif',
+      fontWeight: 'normal',
       ...(transparent
         ? {
             ':hover': {
@@ -26,10 +28,8 @@ const useStyles = createStyles(
                   theme.colorScheme === 'light' ? 6 : 8
                 ]
               : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][4],
-            // [
-            //     theme.colorScheme === 'light' ? 6 : 0
-            //   ],
             ':hover': {
+              ...(primary ? { color: theme.white } : {}),
               backgroundColor: primary
                 ? theme.colors[theme.primaryColor][
                     theme.colorScheme === 'light' ? 7 : 9

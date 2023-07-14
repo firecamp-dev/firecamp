@@ -71,8 +71,8 @@ TransparentButton.args = {
   text: 'Transparent Button',
   transparent: true,
 };
-export const TransparentButtonWithBorder = Template.bind({});
-TransparentButtonWithBorder.args = {
+export const OutlineButton = Template.bind({});
+OutlineButton.args = {
   text: 'Transparent Button',
   outline: true,
   primary: true,

@@ -49,7 +49,6 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
 
   return (
     <div className="GraphQL-content-body-request-body-query-editor-container-save">
-      {/* TODO: check preview */}
       {!!value ? (
         <ConfirmationPopover
           id={`reset-playground-${tabId}`}

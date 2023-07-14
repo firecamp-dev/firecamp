@@ -94,13 +94,12 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
       }
     >
       <Popover.Handler tooltip={tooltip}>
-        {/* TODO: check preview */}
         {handler ? (
           handler
         ) : showDeleteIcon === true ? (
           <Button
             id={`confirm-popover-handler-${id}`}
-            className="small square"
+            classNames={{ root: 'small square' }}
             secondary
             sm
           />
