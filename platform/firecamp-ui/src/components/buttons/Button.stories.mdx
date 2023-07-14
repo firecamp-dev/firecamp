@@ -1,5 +1,4 @@
 import { Meta, Story } from '@storybook/addon-docs';
-import LinkTo from '@storybook/addon-links/react';
 import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
 import Button from './Button';
 
@@ -7,43 +6,43 @@ import Button from './Button';
 
 ## **Button**
 
-- Button consists of sub elements like:
-  - icon
-  - text
-  - caret icon at the end
+- Button component extended with Mantine Button
 
 #### **Component Usage**:
 
-Button consists of props for various sizes :
+The button component offers convenient shorthand props for specifying different sizes:
 
-| Prop | Preview                            |
-| ---- | ---------------------------------- |
-| xs   | <Button xs text="Button" primary/> |
-| sm   | <Button sm text="Button" primary/> |
-| md   | <Button md text="Button" primary/> |
-| lg   | <Button lg text="Button" primary/> |
+| Prop    | Description                                                  |
+| ------- | ------------------------------------------------------------ |
+| compact | used with xs prop to reduces vertical and horizontal spacing |
+| xs      | for small button size                                        |
+| sm      | for default button size                                      |
+| md      | for medium button size                                       |
+| lg      | for large button size                                        |
 
 Button has different placement for icons :
 
-| Prop      | Preview                                                                                  |
-| --------- | ---------------------------------------------------------------------------------------- |
-| iconLeft  | <Button md text="Button" primary iconLeft icon={<VscMenu title="Account" size={16}/>} /> |
-|           | <Button md text="" primary icon={<VscMenu title="Account" size={16}/>}/>                 |
-| iconRight | <Button md text="Button" primary iconRight icon={<VscMenu title="Account" size={16}/>}/> |
+| Prop      | Description                                                                     |
+| --------- | ------------------------------------------------------------------------------- |
+| leftIcon  | to render the icon at the left side of button                                   |
+|           | to render the icon at center but make sure to not provide text or children prop |
+| rightIcon | to render the icon at the right side of button                                  |
+
+Button Color Variants :
+
+| Prop    | Description                                               |
+| ------- | --------------------------------------------------------- |
+| -       | default color for button [dark]                           |
+| primary | primary color for button [primaryColor] provided in theme |
 
 Button versions :
 
-| Prop        | Preview                                                  |
-| ----------- | -------------------------------------------------------- |
-| primary     | <Button md text="Button" primary />                      |
-| secondary   | <Button md text="Button" secondary/>                     |
-| danger      | <Button md text="Button" danger transparent/>            |
-| disabled    | <Button md text="Button" primary disabled />             |
-| withCaret   | <Button md text="Button" primary withCaret/>             |
-| transparent | <Button md text="Button" primary withCaret transparent/> |
-| ghost       | <Button md text="Button" primary ghost/>                 |
-
-- #### **Examples**:
-- <LinkTo kind="ui-kit-button--button-demo" className="!text-primaryColor">
-    More Button Example
-  </LinkTo>
+| Prop        | Description                                                   |
+| ----------- | ------------------------------------------------------------- |
+| -           | default button (with filled variant)                          |
+| secondary   | button having same color in both theme (with filled variant)  |
+| danger      | button having red color (with filled variant)                 |
+| disabled    | disabled button with 50% opacity with available color         |
+| transparent | custom transparent variant                                    |
+| outline     | custom transparent variant with border (with outline variant) |
+| ghost       | button (with subtle variant)                                  |

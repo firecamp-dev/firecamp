@@ -40,12 +40,11 @@ const DropdownElement = () => {
         <Button
           id={'button'}
           text={selected}
-          transparent
-          sm
-          className="rounded p-2"
+          classNames={{ root: 'rounded p-2' }}
           uppercase={true}
-          withCaret={true}
+          transparent
           fullWidth
+          xs
         />
       )}
       options={[

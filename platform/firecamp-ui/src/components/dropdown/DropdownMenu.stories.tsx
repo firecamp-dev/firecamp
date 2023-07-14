@@ -19,6 +19,7 @@ import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
@@ -97,9 +98,7 @@ Example.args = {
       prefix: () => <VscMultipleWindows size={18} />,
     },
   ],
-  handler: () => (
-    <Button text={'Create'} primary withCaret transparent ghost xs />
-  ),
+  handler: () => <Button text={'Create'} primary ghost xs />,
   classNames: {
     dropdown: '-ml-[2px]',
   },
@@ -114,12 +113,11 @@ export const GlobalCreate = () => {
       handler={() => (
         <Button
           text={selected || 'Create'}
-          className="font-bold hover:!bg-focus1"
-          withCaret
-          transparent
-          ghost
-          xs
+          classNames={{ root: 'font-bold hover:!bg-focus1' }}
           primary
+          ghost
+          compact
+          xs
         />
       )}
       options={[
@@ -202,7 +200,7 @@ export const HTTPMethod = () => {
 
   return (
     <DropdownMenu
-      handler={() => <Button text={selected} secondary withCaret sm />}
+      handler={() => <Button text={selected} secondary xs />}
       selected={selected}
       options={[
         {
@@ -264,10 +262,9 @@ export const BodyTab = () => {
       handler={() => (
         <Button
           text={selected || 'None'}
-          className="font-bold hover:!bg-focus1"
-          withCaret
-          transparent
+          classNames={{ root: 'font-bold hover:!bg-focus1' }}
           ghost
+          compact
           xs
           primary
         />
@@ -338,12 +335,11 @@ export const EmitterBody = () => {
       handler={() => (
         <Button
           text={selected || 'No Body'}
-          className="hover:!bg-focus1"
-          withCaret
-          transparent
-          ghost
-          xs
+          classNames={{ root: 'hover:!bg-focus1' }}
           primary
+          ghost
+          compact
+          xs
         />
       )}
       options={[
@@ -385,12 +381,11 @@ export const Logs = () => {
     <DropdownMenu
       handler={() => (
         <Button
-          className="w-36 text-base"
+          classNames={{ root: 'w-36 text-base' }}
           text={selected || 'select log type'}
-          tooltip={selected ? `Log type: ${selected || ''}` : ''}
+          title={selected ? `Log type: ${selected || ''}` : ''}
           secondary
-          withCaret
-          sm
+          xs
         />
       )}
       options={[
@@ -428,9 +423,9 @@ export const RequestStatusBar = () => {
           <Button
             text={selected}
             secondary
-            withCaret
+            compact
             xs
-            className="leading-6 !rounded-br-none !rounded-tr-none"
+            classNames={{ root: 'leading-6 !rounded-br-none !rounded-tr-none' }}
           />
         )}
         options={[
@@ -452,13 +447,12 @@ export const RequestStatusBar = () => {
         sm
       />
       <Button
-        text=""
-        primary
-        sm
-        icon={<IoSendSharp />}
-        iconLeft
+        leftIcon={<IoSendSharp />}
         onClick={() => {}}
-        className="!rounded-bl-none !rounded-tl-none"
+        classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
+        primary
+        compact
+        xs
       />
     </div>
   );
@@ -670,12 +664,15 @@ export const EnvCollectionOption = () => {
       handler={() => (
         <Button
           text={selected}
-          className={cx('!text-info', {
-            open: isOpen,
-          })}
-          withCaret
-          transparent
+          classNames={{ root: '!text-info' }}
+          rightIcon={
+            <VscTriangleDown
+              size={12}
+              className={cx({ 'transform rotate-180': isOpen })}
+            />
+          }
           ghost
+          compact
           xs
         />
       )}
@@ -724,11 +721,9 @@ export const MemberRoleSelection = () => {
         handler={() => (
           <Button
             text={selected}
-            className="hover:!bg-focus1"
-            withCaret
-            transparent
+            classNames={{ root: 'hover:!bg-focus1' }}
             ghost
-            sm
+            xs
           />
         )}
         classNames={{

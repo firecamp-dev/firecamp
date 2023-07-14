@@ -79,7 +79,7 @@ const SignUpBody = () => {
                 <FormField label="password">
                     <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
                 </FormField>
-                <Button primary={true} text="sign in" fullWidth={true} md={true} />
+                <Button text="sign in" fullWidth primary sm/>
                 <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm -mt-4">Already have an account? Sign In</a>
             </div>
         </div>

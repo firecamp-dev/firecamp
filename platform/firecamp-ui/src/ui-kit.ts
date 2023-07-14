@@ -1,4 +1,4 @@
-export { default as Button } from './components/buttons/MButton';
+export { default as Button } from './components/buttons/Button';
 export { default as SampleButton } from './components/sample-buttons/Button';
 export { default as CopyButton } from './components/buttons/CopyButton';
 

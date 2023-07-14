@@ -62,7 +62,7 @@ const SignUpBody = () => {
                     <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
                 </FormField>
                 <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm">Forgot Password?</a>
-                <Button primary={true} text="sign in" fullWidth={true} md={true} />
+                <Button text="sign in" fullWidth primary sm/>
             </div>
             <hr className="border-modal-border -ml-8 -mr-8 mb-6 mt-6" />
             <div className="">

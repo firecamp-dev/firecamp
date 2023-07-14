@@ -1,77 +1,196 @@
-import { FC } from "react";
-import cx from 'classnames';
-import { VscTriangleDown } from "@react-icons/all-files/vsc/VscTriangleDown"
+import { FC } from 'react';
+import { Button as MantineButton, createStyles } from '@mantine/core';
+import { IButton } from './Button.interfaces';
 
-import { IButton } from "./interfaces/Button.interfaces";
+// custom styles for variants
+const useStyles = createStyles(
+  (theme, { variant, color, primary, secondary, transparent }: IButton) => ({
+    root: {
+      display: 'flex',
+      ...(transparent
+        ? {
+            ':hover': {
+              backgroundColor: 'transparent',
+            },
+          }
+        : {}),
+      ...(variant === 'outline'
+        ? {
+            color: primary
+              ? theme.colors[theme.primaryColor][
+                  theme.colorScheme === 'light' ? 6 : 8
+                ]
+              : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+            borderColor: primary
+              ? theme.colors[theme.primaryColor][
+                  theme.colorScheme === 'light' ? 6 : 8
+                ]
+              : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][4],
+            // [
+            //     theme.colorScheme === 'light' ? 6 : 0
+            //   ],
+            ':hover': {
+              backgroundColor: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 7 : 9
+                  ]
+                : theme.colors[theme.colorScheme === 'light' ? 'gray' : color][
+                    theme.colorScheme === 'light' ? 3 : 5
+                  ],
+            },
+          }
+        : {}),
+      // same color for both light/dark color variant
+      ...(secondary
+        ? {
+            color: theme.white,
+            backgroundColor: theme.colors.dark[4],
+            ':hover': {
+              backgroundColor: theme.colors.dark[5],
+            },
+          }
+        : {}),
+      '&:disabled, &[data-disabled]': {
+        ...(transparent || ['subtle'].includes(variant)
+          ? {
+              color: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+              backgroundColor: 'transparent',
+            }
+          : {}),
+        ...(variant === 'filled'
+          ? {
+              color: theme.white,
+              backgroundColor: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 8],
+            }
+          : {}),
+        ...(variant === 'outline'
+          ? {
+              color: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[color][theme.colorScheme === 'light' ? 6 : 0],
+              borderColor: primary
+                ? theme.colors[theme.primaryColor][
+                    theme.colorScheme === 'light' ? 6 : 8
+                  ]
+                : theme.colors[
+                    theme.colorScheme === 'light' ? 'gray' : color
+                  ][4],
+            }
+          : {}),
+        ...(secondary
+          ? {
+              color: theme.white,
+              backgroundColor: theme.colors.dark[4],
+            }
+          : {}),
+      },
+    },
+    leftIcon: {
+      paddingLeft: 'calc(0.875rem  / 1.5)',
+      paddingRight: 'calc(0.875rem  / 1.5)',
+    },
+  })
+);
+
+enum EVariant {
+  primary = 'filled',
+  ghost = 'subtle',
+  outline = 'outline',
+}
+enum ESize {
+  xs = 'xs',
+  sm = 'sm',
+  md = 'md',
+  lg = 'lg',
+}
 
 const Button: FC<IButton> = ({
-    id = '',
-    className = '',
-    text = '',
-    icon = '',
-    transparent = false,
-    ghost = false,
+  children,
+  classNames = {},
+  size,
+  variant,
 
-    primary, secondary, danger,
-    xs, sm, md, lg,
-    iconLeft, iconRight,
+  primary = false,
+  ghost = false,
+  secondary = false,
+  danger = false,
+  transparent = false,
+  outline = false,
 
-    fullWidth = false,
-    uppercase = false,
-    onClick = () => { },
-    withCaret = false,
-    tooltip = '',
-    ...domProps
+  xs = false,
+  sm = false,
+  md = false,
+  lg = false,
+
+  text,
+  ...props
 }) => {
+  // default variant if not passed is primary
+  const customVariant =
+    ((danger || secondary) && EVariant.primary) ||
+    ((ghost || transparent) && EVariant.ghost) ||
+    (outline && EVariant.outline) ||
+    variant;
 
-    return (
-        <button
-            tabIndex={1}
-            key={id}
-            id={id}
-            title={tooltip}
-            className={cx(
-                'text-center whitespace-pre cursor-pointer active:--animate-wiggle relative flex items-center rounded-sm justify-center ',
-                {
-                    'w-full': fullWidth,
-                    'uppercase': uppercase,
-                    'w-max': !fullWidth,
-                    'border': !ghost,
-                    'text-sm py-0 px-1 leading-5': xs,
-                    'text-sm py-1 px-2': sm,
-                    'text-base py-2 px-4': md,
-                    'text-lg py-3 px-6': lg,
-                    'text-primaryColor-text bg-primaryColor !border-primaryColor': primary && !transparent,
-                    'text-secondaryColor-text bg-secondaryColor !border-secondaryColor': secondary && !transparent,
-                    'text-secondaryColor-text bg-danger !border-danger': danger && !transparent,
-                    'text-primaryColor !border-primaryColor hover:bg-primaryColor': primary && transparent,
-                    'hover:text-primaryColor-text': primary && transparent && !ghost,
-                    'text-app-foreground !border-secondaryColor': secondary && transparent,
-                    'text-danger !border-danger': danger && transparent,
-                    'bg-transparent': transparent == true,
-                    'flex-row': iconLeft,
-                    'flex-row-reverse': iconRight,
-                    'hover:!bg-focusColor': ghost,
-                    'cursor-default': !!domProps?.disabled
-                },
-                className
-            )}
-            onClick={onClick}
-            {...domProps}
-        >
-            { icon }
-            {text ? (
-                <span className={cx(
-                    { 'ml-1': iconLeft && sm },
-                    { 'mr-1': iconRight && sm },
-                    { 'ml-3': iconLeft && md },
-                    { 'mr-3': iconRight && md },
-                    { 'ml-4': iconLeft && lg },
-                    { 'mr-4': iconRight && lg },
-                )}>{text}</span>) : ''}
+  // default size if not passed is sm
+  const customSize =
+    (xs && ESize.xs) ||
+    (sm && ESize.sm) ||
+    (md && ESize.md) ||
+    (lg && ESize.lg) ||
+    size;
 
-            {withCaret == true ? (<VscTriangleDown className='ml-2 toggle-arrow' size={12} />) : ('')}
-        </button>
-    );
+  // default size if not passed is sm
+  const customColor = danger ? 'red' : primary ? 'primaryColor' : 'dark';
+  const { classes, cx } = useStyles({
+    variant: customVariant ?? 'filled',
+    color: customColor,
+    primary,
+    secondary,
+    transparent,
+  });
+
+  return (
+    <MantineButton
+      size={customSize}
+      variant={customVariant}
+      color={customColor}
+      classNames={{
+        ...classNames,
+        root: cx(
+          classNames.root,
+          classes.root,
+          {
+            'justify-center': props.fullWidth,
+          },
+          {
+            [classes.leftIcon]: !text,
+          }
+        ),
+        leftIcon: cx(classNames.leftIcon, {
+          'mr-0': !text,
+        }),
+      }}
+      {...props}
+    >
+      {text ?? children}
+    </MantineButton>
+  );
 };
 export default Button;
+
+// possible variants
+// root: '!text-info',
+// root: 'hover:!bg-focusColor !text-app-foreground-inactive'
+// className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive !py-0"
+// ghost button: using bg-focus1 on hover

@@ -1,6 +1,6 @@
 import { useMantineColorScheme } from '@mantine/core';
 import DropdownMenu from '../dropdown/DropdownMenu';
-import Button from '../buttons/MButton';
+import Button from '../buttons/Button';
 import { EFirecampThemeVariant } from './FirecampThemeProvider.interfaces';
 
 const ThemeOptions = [
