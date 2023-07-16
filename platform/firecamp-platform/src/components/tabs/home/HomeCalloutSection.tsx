@@ -31,7 +31,7 @@ const CalloutSection = () => {
       <CalloutBox
         title={"You're using Firecamp as Guest"}
         description={`You can test various requests and experience the power of API platform. However, to take advantage of all features, sign up for a full account. You'll be able to create collections, save requests, and collaborate with your team. Sign in now to unleash the full potential of API Campsite!`}
-        actionText={'sign in to firecamp'}
+        actionText={'Sign In or Sign Up in Firecamp'}
         action={() => platformContext.app.modals.openSignIn()}
       />
     );
