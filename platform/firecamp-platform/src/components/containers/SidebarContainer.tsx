@@ -33,6 +33,7 @@ const compositeBarItems = [
       <Files
         // data-tip={`Collections (${scPrefix} ⇧ C)`}
         // title="Collections Explorer"
+        strokeWidth={1.5}
         data-for={EActivityBarItems.Explorer}
         tabIndex={-1}
       />
@@ -46,6 +47,7 @@ const compositeBarItems = [
       <Braces
         // data-tip={`Environment (${scPrefix} ⇧ E)`}
         // title="Environment"
+        strokeWidth={1.5}
         data-for={EActivityBarItems.Environment}
         tabIndex={-1}
       />

@@ -1,10 +1,6 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
-import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
-// import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
+import { RotateCw, Folder, FolderPlus, ArrowDown } from 'lucide-react';
 import {
   InteractionMode,
   Tree,
@@ -326,7 +322,7 @@ const Explorer: FC<any> = () => {
             return (
               <ToolBar>
                 <div>
-                  <VscRefresh
+                  <RotateCw strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={() => {
@@ -335,22 +331,19 @@ const Explorer: FC<any> = () => {
                   />
                 </div>
                 <div>
-                  <VscNewFolder
+                  <FolderPlus strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={createCollectionPrompt}
                   />
                 </div>
                 <div>
-                  <VscArrowDown
+                  <ArrowDown strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={openImportTab}
                   />
                 </div>
-                {/* <div>
-                  <VscFileSymlinkFile className="cursor-pointer" size={16} />
-                </div> */}
               </ToolBar>
             );
           }}
@@ -359,7 +352,7 @@ const Explorer: FC<any> = () => {
               return (
                 <div className="items-center">
                   <Empty
-                    icon={<VscFolder size="40" />}
+                    icon={<Folder strokeWidth={1.5} size={40} />}
                     title="Create a new Collection"
                     message="This workspace doesn't have any collections, you can create the first collection."
                   />
