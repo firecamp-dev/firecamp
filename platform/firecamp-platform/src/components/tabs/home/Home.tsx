@@ -42,7 +42,7 @@ const Home: FC<any> = () => {
 
   const greetingsTo = isGuest
     ? 'Friend'
-    : user?.name?.split(' ')[0] || 'Friend';
+    : user?.name?.split(' ')[0] || user.username || 'Friend';
   return (
     <Container className="px-14 py-20" overflow="visible">
       <Container.Header>
