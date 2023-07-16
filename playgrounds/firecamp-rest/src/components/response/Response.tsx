@@ -23,7 +23,7 @@ const Response: FC<any> = () => {
       testResult={testResult}
       scriptErrors={scriptErrors}
       isRequestRunning={isRequestRunning}
-      docLink={'https://doc.firecamp.io/http/a/sending-your-first-request/'}
+      docLink={'https://firecamp.io/docs/rest/introduction'}
       client={'Rest'}
     />
   );
