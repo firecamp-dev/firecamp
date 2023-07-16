@@ -1,9 +1,8 @@
 import { FC } from "react";
-import { VscGithubInverted } from "@react-icons/all-files/vsc/VscGithubInverted";
-import { VscFile } from "@react-icons/all-files/vsc/VscFile";
+import { File, Github } from 'lucide-react';
 import { SiDiscord } from '@react-icons/all-files/si/SiDiscord';
 
-import {IHelp} from './interfaces/Help.interfaces'
+import { IHelp } from './interfaces/Help.interfaces'
 
 const HELPDESK_TYPES = {
   DOCUMENTATION: 'documentation',
@@ -16,19 +15,19 @@ const helpDesks = {
     id: HELPDESK_TYPES.DOCUMENTATION,
     name: 'Documentation',
     link: 'https://firecamp.io/docs/',
-    image: <VscFile size={24} /> 
+    image: <File size={24} strokeWidth={1.5} />
   },
   [HELPDESK_TYPES.GITHUB]: {
     id: HELPDESK_TYPES.GITHUB,
     name: 'GitHub',
     link: 'https://github.com/firecampdev/firecamp/issues/new',
-    image:  <VscGithubInverted size={24} />
+    image: <Github size={24} strokeWidth={1.5} />
   },
   [HELPDESK_TYPES.JOIN_DISCORD]: {
     id: HELPDESK_TYPES.JOIN_DISCORD,
     name: 'Join Discord',
     link: 'https://discord.com/invite/8hRaqhK',
-    image:  <SiDiscord size={24} />
+    image: <SiDiscord size={24} />
   }
 };
 
@@ -57,8 +56,8 @@ const Help: FC<IHelp> = ({ docLink = '', client = 'http' }) => {
               client
                 ? `https://github.com/firecampdev/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${client}]%20Title%20or%20Feature%20request`
                 : helpDesks[type]
-                ? helpDesks[type].link
-                : ''
+                  ? helpDesks[type].link
+                  : ''
             }
             target={'_blank'}
           >
