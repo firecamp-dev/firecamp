@@ -1,13 +1,7 @@
 import { FC, useState, Fragment } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
 import cx from 'classnames';
-import { VscFiles } from '@react-icons/all-files/vsc/VscFiles';
-import { VscHistory } from '@react-icons/all-files/vsc/VscHistory';
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
-import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
-import { VscLock } from '@react-icons/all-files/vsc/VscLock';
-import { BiCookie } from '@react-icons/all-files/bi/BiCookie';
-import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
+import { Files, Braces, History, UserCircle2, Settings } from 'lucide-react';
 import { ActivityBar, Column, Resizable } from '@firecamp/ui';
 
 import Explorer from '../activity-bar/explorer/Explorer';
@@ -36,9 +30,9 @@ const compositeBarItems = [
   {
     id: EActivityBarItems.Explorer,
     icon: (
-      <VscFiles
+      <Files
         // data-tip={`Collections (${scPrefix} ⇧ C)`}
-        title="Collections Explorer"
+        // title="Collections Explorer"
         data-for={EActivityBarItems.Explorer}
         tabIndex={-1}
       />
@@ -49,9 +43,9 @@ const compositeBarItems = [
   {
     id: EActivityBarItems.Environment,
     icon: (
-      <RiBracesLine
+      <Braces
         // data-tip={`Environment (${scPrefix} ⇧ E)`}
-        title="Environment"
+        // title="Environment"
         data-for={EActivityBarItems.Environment}
         tabIndex={-1}
       />
@@ -62,9 +56,10 @@ const compositeBarItems = [
   {
     id: EActivityBarItems.History,
     icon: (
-      <VscHistory
+      <History
         // data-tip={`History (${scPrefix} ⇧ H)`}
-        title="History"
+        // title="History"
+        strokeWidth={1.5}
         data-for={EActivityBarItems.History}
         tabIndex={-1}
       />
@@ -78,7 +73,7 @@ const actionBarItems = [
   // {
   //   id: EActivityBarItems.SslNProxy,
   //   icon: (
-  //     <VscLock
+  //     <Lock
   //       data-tip={`SSL and proxy (${scPrefix} ⇧ P)`}
   //       data-for={EActivityBarItems.SslNProxy}
   //       tabIndex={-1}
@@ -90,7 +85,7 @@ const actionBarItems = [
   // {
   //   id: EActivityBarItems.Cookie,
   //   icon: (
-  //     <BiCookie
+  //     <Cookie
   //       data-tip={`Cookie (${scPrefix} ⇧ O)`}
   //       data-for={EActivityBarItems.Cookie}
   //       tabIndex={-1}
@@ -102,7 +97,8 @@ const actionBarItems = [
   {
     id: EActivityBarItems.User,
     icon: (
-      <VscAccount
+      <UserCircle2
+        strokeWidth={1.5}
         data-tip={`User (${scPrefix} ⇧ U)`}
         data-for={EActivityBarItems.User}
         tabIndex={-1}
@@ -114,7 +110,7 @@ const actionBarItems = [
   {
     id: EActivityBarItems.Settings,
     icon: (
-      <VscSettingsGear
+      <Settings
         data-tip={`Settings (${scPrefix} ⇧ /)`}
         data-for={EActivityBarItems.Settings}
         tabIndex={-1}
