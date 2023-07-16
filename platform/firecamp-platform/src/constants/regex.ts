@@ -10,8 +10,8 @@ export const Regex = {
    * characters range between 6 to 20
    */
   Username: /^[a-zA-Z0-9\_]{6,20}$/,
-  WorkspaceName: /^[a-zA-Z0-9\_]{6,20}$/, // same as username
-  OrgName: /^[a-zA-Z0-9\_]{6,20}$/, // same as username
+  WorkspaceName: /^[a-zA-Z0-9\_]{6,20}$/,
+  OrgName: /^[a-zA-Z0-9\_]{4,20}$/,
 
   /**
    * don't allow any special character
