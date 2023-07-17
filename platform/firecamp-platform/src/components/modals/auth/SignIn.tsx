@@ -25,7 +25,7 @@ const SignIn: FC<IModal> = () => {
           <Button
             text="Continue with Email"
             leftIcon={<VscAccount size={18} />}
-            className="mb-5"
+            classNames={{root: "mb-5"}}
             onClick={() => platformContext.app.modals.openSignInWithEmail()}
             outline
             fullWidth

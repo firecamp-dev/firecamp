@@ -9,6 +9,8 @@ import {
   ColorType,
   IFirecampThemeProvider,
 } from './FirecampThemeProvider.interfaces';
+import { EEditorTheme } from '@firecamp/types';
+import { EditorApi } from '@firecamp/ui';
 
 const primaryColor: ColorType = [
   '#EEE8E2',
@@ -67,7 +69,9 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
   ...props
 }) => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
-  const [themeColor, updatethemeColor] = useState<ColorType>(primaryColor);
+  const [themeColor, updatethemeColor] = useState<EFirecampThemeVariant>(
+    EFirecampThemeVariant.LightPrimary
+  );
 
   useEffect(() => {
     updateTheme(themeVariant);
@@ -75,15 +79,10 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
 
   // update theme colorScheme & primaryColor
   const updateTheme = (color: EFirecampThemeVariant) => {
-    updatethemeColor(
-      [
-        EFirecampThemeVariant.LightPrimary,
-        EFirecampThemeVariant.DarkPrimary,
-      ].includes(color)
-        ? primaryColor
-        : secondaryColor
-    );
+    // update the primary color
+    updatethemeColor(color);
 
+    // update the color schema
     setColorScheme(
       [
         EFirecampThemeVariant.LightPrimary,
@@ -92,11 +91,22 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
         ? 'light'
         : 'dark'
     );
+
+    // update the monaco editor theme
+    const editorTheme = [
+      EFirecampThemeVariant.LightPrimary,
+      EFirecampThemeVariant.LightSecondary,
+    ].includes(color)
+      ? EEditorTheme.Lite
+      : EEditorTheme.Dark;
+
+    localStorage.setItem('editorTheme', editorTheme);
+    EditorApi.setEditorTheme(editorTheme);
   };
 
   return (
-    <ColorSchemeProvider
-      colorScheme={colorScheme}
+    //@ts-ignore
+    <ColorSchemeProvider colorScheme={themeColor}
       toggleColorScheme={(c: ColorScheme | EFirecampThemeVariant) =>
         updateTheme(c as EFirecampThemeVariant)
       }
@@ -105,7 +115,12 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
         theme={{
           colorScheme,
           colors: {
-            'primary-color': themeColor,
+            'primary-color': [
+              EFirecampThemeVariant.LightPrimary,
+              EFirecampThemeVariant.DarkPrimary,
+            ].includes(themeColor)
+              ? primaryColor
+              : secondaryColor,
             dark: defaultDarkColor,
             gray: defaultGrayColor,
           },

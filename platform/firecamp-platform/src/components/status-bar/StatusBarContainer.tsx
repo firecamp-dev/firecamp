@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { EFirecampAgent } from '@firecamp/types';
-import { StatusBar, FirecampThemeSelector } from '@firecamp/ui';
+import { StatusBar } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 
 import SwitchWorkspacePanel from './SwitchWorkspacePanel';
@@ -28,7 +28,6 @@ const StatusBarContainer: FC<any> = ({ className = '' }) => {
         <DDMenuContainer />
       </StatusBar.PrimaryRegion>
       <StatusBar.SecondaryRegion id={'firecamp-status-bar-secondary-region'}>
-        <FirecampThemeSelector/>
         {firecampAgent === EFirecampAgent.Web && (
           <div className="pr-3">
             <FcAgentSelector />

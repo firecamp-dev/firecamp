@@ -2,7 +2,13 @@ import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
 import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
-import { Container, EditorApi, Row, Column, FcLogo } from '@firecamp/ui';
+import {
+  Container,
+  Row,
+  Column,
+  FcLogo,
+  FirecampThemeSelector,
+} from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
   FcIconGetSquare,
@@ -131,110 +137,12 @@ const RequestItem: FC<IRequestItem> = ({
 };
 
 const Theme: FC<any> = () => {
-  const themes = [
-    {
-      className: 'themeBG light-green',
-      value: {
-        name: 'theme-light primary-green',
-        class: 'theme-light primary-green',
-        mode: EThemeMode.Light,
-        color: EThemeColor.Green,
-      },
-    },
-    {
-      className: 'themeBG light-orange',
-      value: {
-        name: 'theme-light primary-orange',
-        class: 'theme-light primary-orange',
-        mode: EThemeMode.Light,
-        color: EThemeColor.Orange,
-      },
-    },
-    {
-      className: 'themeBG dark-green',
-      value: {
-        name: 'theme-dark primary-green',
-        class: 'theme-dark primary-green',
-        mode: EThemeMode.Dark,
-        color: EThemeColor.Green,
-      },
-    },
-    {
-      className: 'themeBG dark-orange',
-      value: {
-        name: 'theme-dark primary-orange',
-        class: 'theme-dark primary-orange',
-        mode: EThemeMode.Dark,
-        color: EThemeColor.Orange,
-      },
-    },
-  ];
-
-  const { theme, updateTheme } = usePlatformStore(
-    (s) => ({ theme: s.theme, updateTheme: s.updateTheme }),
-    shallow
-  );
-
-  useEffect(() => {
-    try {
-      // Set app body theme
-      document.body.className = `theme-${theme?.mode || 'light'} primary-${
-        theme?.color || 'orange'
-      }`;
-
-      const editorTheme =
-        theme?.mode == EThemeMode.Dark ? EEditorTheme.Dark : EEditorTheme.Lite;
-      console.log(editorTheme, 'editorTheme');
-
-      console.log(editorTheme);
-      localStorage.setItem('editorTheme', editorTheme);
-      EditorApi.setEditorTheme(editorTheme);
-    } catch (error) {
-      console.log({ error });
-    }
-  }, [theme || {}]);
-
-  const _setTheme = (theme) => {
-    try {
-      //Set theme in Preference
-      updateTheme(theme);
-
-      //Set monaco editor theme
-      theme?.value?.mode == EThemeMode.Dark
-        ? EEditorTheme.Dark
-        : EEditorTheme.Lite;
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   return (
-    <div className="fc-theme-wrapper">
+    <div className='mb-6'>
       <div className="block text-base uppercase font-semibold text-app-foreground-inactive mb-6">
         Themes
       </div>
-      <div className="flex">
-        {themes.map((th, index) => {
-          return (
-            <div
-              className={cx(
-                {
-                  active:
-                    theme?.color === th?.value?.color &&
-                    theme?.mode === th?.value?.mode,
-                },
-                'fc-theme'
-              )}
-              key={index}
-              onClick={(e) => {
-                _setTheme(th.value);
-              }}
-            >
-              <div className={th.className}></div>
-            </div>
-          );
-        })}
-      </div>
+      <FirecampThemeSelector />
     </div>
   );
 };
