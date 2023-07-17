@@ -68,8 +68,8 @@ const WorkspaceManagement: FC<IModal> = ({
   const onUpdate = () => {
     if (isRequesting) return;
     const name = wrs.name.trim();
-    if (!name || name.length < 3) {
-      setError({ name: 'The workspace name must have minimum 4 characters' });
+    if (!name || name.length < 6) {
+      setError({ name: 'The workspace name must have minimum 6 characters' });
       return;
     }
     const _wrs = { name, description: wrs?.description?.trim() };
