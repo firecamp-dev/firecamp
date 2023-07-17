@@ -108,7 +108,7 @@ const SignUp: FC<IModal> = () => {
               onKeyDown={_onKeyDown}
               error={
                 errors?.username
-                  ? errors?.username?.message || 'Invalid username'
+                  ? errors?.username?.message || 'Please enter username'
                   : ''
               }
               wrapperClassName="!mb-2"
@@ -128,7 +128,7 @@ const SignUp: FC<IModal> = () => {
               useformRef={form}
               onKeyDown={_onKeyDown}
               error={
-                errors?.email ? errors?.email?.message || 'Invalid email' : ''
+                errors?.email ? errors?.email?.message || 'Please enter valid username or password' : ''
               }
               wrapperClassName="!mb-2"
             />
@@ -158,7 +158,7 @@ const SignUp: FC<IModal> = () => {
               onKeyDown={_onKeyDown}
               error={
                 errors?.password
-                  ? errors?.password?.message || 'Invalid password'
+                  ? errors?.password?.message || 'Please enter valid password'
                   : ''
               }
             />

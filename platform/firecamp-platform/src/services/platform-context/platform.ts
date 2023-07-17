@@ -26,10 +26,10 @@ const platform = {
         texts: { btnOking: 'Creating...' },
         value: '',
         validator: (val) => {
-          if (!val || val.length < 4) {
+          if (!val || val.length < 6) {
             return {
               isValid: false,
-              message: 'The workspace name must have minimum 4 characters.',
+              message: 'The workspace name must have minimum 6 characters.',
             };
           }
           const isValid = Regex.WorkspaceName.test(val);

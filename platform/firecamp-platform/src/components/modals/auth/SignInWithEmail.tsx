@@ -103,7 +103,7 @@ const SignInWithEmail: FC<IModal> = () => {
               onKeyDown={_onKeyDown}
               error={
                 errors?.username
-                  ? errors?.username?.message || 'Invalid username'
+                  ? errors?.username?.message || 'Please enter valid username or email'
                   : ''
               }
               wrapperClassName="!mb-2"
@@ -134,7 +134,7 @@ const SignInWithEmail: FC<IModal> = () => {
               onKeyDown={_onKeyDown}
               error={
                 errors?.password
-                  ? errors?.password?.message || 'Invalid password'
+                  ? errors?.password?.message || 'Please enter valid password'
                   : ''
               }
               wrapperClassName="!mb-2"
