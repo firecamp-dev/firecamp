@@ -54,13 +54,10 @@ const TabsSuffixComp = () => {
   return (
     <Button
       text="add playground"
-      icon={<VscAdd className="mr-2" size={12} />}
+      leftIcon={<VscAdd size={12} />}
       onClick={() => addPlayground()}
       transparent
-      secondary
-      iconLeft
-      ghost
-      sm
+      xs
     />
   );
 };

@@ -44,7 +44,6 @@ export const DropDownv2Example = () => {
           sm
           className="rounded p-2"
           uppercase={true}
-          withCaret={true}
         />
       )}
       options={[
@@ -152,7 +151,6 @@ export const DropDownSmoothAnimationExample = () => {
             sm
             className="rounded p-2"
             uppercase={true}
-            withCaret={true}
           />
         )}
         options={[
@@ -191,7 +189,6 @@ export const BodyTabExample = () => {
         <Button
           text={selected || 'No Body'}
           className="font-bold hover:!bg-focus1"
-          withCaret
           transparent
           ghost
           xs
@@ -261,7 +258,6 @@ export const CreateMenuExample = () => {
         <Button
           text={selected || 'Create'}
           className="font-bold hover:!bg-focus1"
-          withCaret
           transparent
           ghost
           xs
@@ -379,7 +375,6 @@ export const EmitterBodyExample = () => {
         <Button
           text={selected || 'No Body'}
           className="font-bold hover:!bg-focus1"
-          withCaret
           transparent
           ghost
           xs
@@ -442,9 +437,8 @@ export const LogsExample = () => {
         <Button
           className="w-36 text-base"
           text={selected || 'select log type'}
-          tooltip={selected ? `Log type: ${selected || ''}` : ''}
+          title={selected ? `Log type: ${selected || ''}` : ''}
           secondary
-          withCaret
           sm
         />
       )}
@@ -484,7 +478,6 @@ export const ReqStatusBarExample = () => {
           <Button
             text={selected}
             secondary
-            withCaret
             xs
             className="leading-6 !rounded-br-none !rounded-tr-none"
           />
@@ -512,8 +505,7 @@ export const ReqStatusBarExample = () => {
         text=""
         primary
         sm
-        icon={<IoSendSharp />}
-        iconLeft
+        leftIcon={<IoSendSharp />}
         onClick={() => {}}
         className="!rounded-bl-none !rounded-tl-none"
       />

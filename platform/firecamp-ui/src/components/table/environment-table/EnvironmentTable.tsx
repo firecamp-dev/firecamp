@@ -6,7 +6,8 @@ import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EEditorLanguage } from '@firecamp/types';
-import Button from '../../buttons/Button';
+import { Button } from '@firecamp/ui';
+
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from '../primitive/Table';
 import {
@@ -152,16 +153,14 @@ const EnvironmentTable = ({
       <div className="">
         <Button
           text="Add Row"
-          className="small transparent font-light without-border with-padding with-icon-left"
           onClick={() => apiRef.current.addRow()}
-          icon={<VscAdd size={16} />}
+          leftIcon={<VscAdd size={16} />}
           disabled={
             options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
           }
-          transparent
           primary
-          ghost
-          sm
+          transparent
+          xs
         />
       </div>
     </>

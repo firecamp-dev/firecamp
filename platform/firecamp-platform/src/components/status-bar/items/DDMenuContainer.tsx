@@ -175,7 +175,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <span className="pl-1 cursor-pointer">{title}</span>
       )}
       options={isGuest ? guestOptions : userOptions}
@@ -265,7 +265,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <span className="pl-1 cursor-pointer">{title}</span>
       )}
       options={options}
@@ -343,7 +343,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <span className="pl-1 cursor-pointer">{title}</span>
       )}
       options={options}

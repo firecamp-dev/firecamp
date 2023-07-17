@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 // import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import shallow from 'zustand/shallow';
+import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Container,
   TabHeader,
@@ -46,6 +48,7 @@ const Logs = () => {
   const logTableApiRef = useRef(null);
   const [tableHeight, setTableHeight] = useState(465);
   const [selectedRow, setSelectedRow] = useState();
+  const [isDropDownOpen, toggleDropDown] = useState(false);
 
   useEffect(() => {
     const getFilteredLogsByMeta = (logs = [], filter) => {
@@ -113,16 +116,24 @@ const Logs = () => {
                     {/* <label className="m-0 text-base font-bold">Type</label> */}
                     {logs?.length ? (
                       <DropdownMenu
-                        handleRenderer={() => (
+                        onOpenChange={(v) => toggleDropDown(v)}
+                        handler={() => (
                           <Button
                             text={typeFilter || 'select log type'}
-                            tooltip={
+                            title={
                               typeFilter ? `Log type: ${typeFilter || ''}` : ''
                             }
-                            transparent
-                            withCaret
+                            rightIcon={
+                              <VscTriangleDown
+                                size={12}
+                                className={cx({
+                                  'transform rotate-180': isDropDownOpen,
+                                })}
+                              />
+                            }
                             ghost
-                            sm
+                            compact
+                            xs
                           />
                         )}
                         options={Object.keys(logTypes)?.map((o) => ({

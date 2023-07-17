@@ -56,20 +56,13 @@ const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
       <Modal.Footer className="!py-3 border-t border-app-border ">
         <TabHeader>
           <TabHeader.Right>
+            <Button text="Cancel" onClick={(e) => onClose(e)} ghost xs />
             <Button
-              text="Cancel"
-              secondary
-              transparent={true}
-              sm
-              onClick={(e) => onClose(e)}
-              ghost={true}
-            />
-            <Button
-              text={true ? 'Creating...' : 'Create'}
-              primary
-              sm
+              text={false ? 'Creating...' : 'Create'}
               onClick={() => {}}
               disabled={false}
+              primary
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

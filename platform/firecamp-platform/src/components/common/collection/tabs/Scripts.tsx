@@ -45,7 +45,7 @@ const Scripts: FC<IProps> = ({
               onClick={() => onUpdate(scripts)}
               disabled={!isScriptChanged || isRequesting}
               primary
-              sm
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

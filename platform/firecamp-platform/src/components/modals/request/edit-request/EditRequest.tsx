@@ -130,20 +130,13 @@ const EditRequest: FC<IModal> = ({
       <Modal.Footer className="!py-3 border-t border-app-border">
         <TabHeader className="px-6">
           <TabHeader.Right>
-            <Button
-              text="Cancel"
-              onClick={(e) => onClose()}
-              transparent
-              secondary
-              ghost
-              sm
-            />
+            <Button text="Cancel" onClick={(e) => onClose()} ghost xs />
             <Button
               text={isRequesting ? 'Updating...' : 'Update'}
               onClick={onUpdate}
               disabled={isRequesting}
               primary
-              sm
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

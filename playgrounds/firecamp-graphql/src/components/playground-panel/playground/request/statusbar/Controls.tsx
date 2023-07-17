@@ -57,13 +57,14 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
           handler={
             <Button
               id={`confirm-popover-handler-reset-playground-${tabId}`}
-              secondary
-              sm // TODO: add class for exsmall
+              text="Reset"
               onClick={() =>
                 isQueryDirty ? _toggleResetConfirmPopover(true) : _onReset()
               }
               disabled={!value ? true : false}
-              text="Reset"
+              secondary
+              compact
+              xs
             />
           }
           _meta={{
@@ -79,12 +80,13 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
       {!!value ? (
         <Button
           id={`prettify-${tabId}`}
-          secondary
-          sm // TODO: add class for exsmall
           onClick={(_) => prettifyQuery(value)}
           disabled={!value ? true : false}
           text="Prettify"
           // tooltip={ getOS() === 'MacOS' ? 'shift + ⌘ + P' : 'shift + ctrl + P' } //todo: look thos type error
+          secondary
+          compact
+          xs
         />
       ) : (
         ''
@@ -92,11 +94,12 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
       {!!value && isQueryDirty ? (
         <Button
           id={`save-to-collection-${tabId}`}
-          secondary
-          sm // TODO: add class for exsmall
           onClick={(_) => _onSaveToCollection()}
           text="Save to collection"
           disabled={!value ? true : false}
+          secondary
+          compact
+          xs
         />
       ) : (
         ''

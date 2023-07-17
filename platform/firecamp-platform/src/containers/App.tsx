@@ -8,7 +8,12 @@ import '../sass/_index.sass';
 
 import { FC, useEffect } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import { Row, RootContainer, EditorApi } from '@firecamp/ui';
+import {
+  Row,
+  RootContainer,
+  EditorApi,
+  FirecampThemeProvider,
+} from '@firecamp/ui';
 import { EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
@@ -52,22 +57,24 @@ const App: FC<any> = () => {
         console.log({ error });
       }}
     >
-      <RootContainer
-        flex={1}
-        overflow="auto"
-        className="h-screen w-screen bg-app-background text-app-foreground"
-      >
-        <Row flex={1}>
-          <SidebarContainer />
-          <TabsContainer />
-        </Row>
+      <FirecampThemeProvider>
+        <RootContainer
+          flex={1}
+          overflow="auto"
+          className="h-screen w-screen bg-app-background text-app-foreground"
+        >
+          <Row flex={1}>
+            <SidebarContainer />
+            <TabsContainer />
+          </Row>
 
-        <RealtimeEventManager />
-        <ModalContainer />
-        <EnvSidebarContainer />
-        <StatusBarContainer className="border-t focus-outer2" />
-      </RootContainer>
+          <RealtimeEventManager />
+          <ModalContainer />
+          <EnvSidebarContainer />
 
+          <StatusBarContainer className="border-t focus-outer2" />
+        </RootContainer>
+      </FirecampThemeProvider>
       <Crisp />
       <Analytics />
     </ErrorBoundary>

@@ -133,3 +133,6 @@ export type { EAlertType } from './components/alert/Alert.interface';
 export { default as Empty } from './components/empty/Empty';
 
 export { default as Loader } from './components/loader/Loader';
+
+export { default as FirecampThemeProvider } from './components/theme/FirecampThemeProvider';
+export { default as FirecampThemeSelector } from './components/theme/FirecampThemeSelector';

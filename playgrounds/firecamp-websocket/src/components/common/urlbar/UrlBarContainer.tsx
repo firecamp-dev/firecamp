@@ -45,7 +45,7 @@ const UrlBarContainer = () => {
           requestType: __meta.type,
         });
       }}
-      prefixComponent={<Button text={'WebSocket'} secondary sm />}
+      prefixComponent={<Button text={'WebSocket'} secondary xs />}
       suffixComponent={<PrefixButtons />}
     />
   );
@@ -82,7 +82,7 @@ const PrefixButtons = () => {
         disabled={false} //isSaveBtnDisabled
         onClick={_onSave}
         secondary
-        sm
+        xs
       />
     </>
   );

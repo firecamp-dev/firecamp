@@ -1,10 +1,7 @@
 import { FC, useState } from 'react';
-import {
-  Button,
-  Input,
-  CheckboxInGrid,
-  DropdownMenu,
-} from '@firecamp/ui';
+import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { Button, Input, CheckboxInGrid, DropdownMenu } from '@firecamp/ui';
 import { IOAuth1, EAuthTypes, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
@@ -17,6 +14,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
   const inputList = authUiFormState[OAuth1].inputList;
   const advancedInputList = authUiFormState[OAuth1].advancedInputList;
 
+  const [isOpen, toggleOpen] = useState(false);
   const [dirtyInputs, setDirtyInputs] = useState<TPlainObject>(
     inputList.reduce((p, n) => {
       return { ...p, [n.id]: false };
@@ -78,12 +76,18 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
       <div className="form-group">
         <label>Signature Method:</label>
         <DropdownMenu
-          handleRenderer={() => (
+          onOpenChange={(v) => toggleOpen(v)}
+          handler={() => (
             <Button
               text={auth['signatureMethod'] || 'HMAC-SHA1'}
+              rightIcon={
+                <VscTriangleDown
+                  size={12}
+                  className={cx({ 'transform rotate-180': isOpen })}
+                />
+              }
               secondary
-              withCaret
-              sm
+              xs
             />
           )}
           options={signatureMethodList}

@@ -60,7 +60,7 @@ const AuthTab = ({
               }}
               disabled={!isAuthChanged || isRequesting}
               primary
-              sm
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

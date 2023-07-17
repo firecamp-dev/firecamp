@@ -79,7 +79,7 @@ const FcAgentSelector: FC<any> = () => {
                     text="Download Firecamp Extension"
                     className="!w-full !min-w-full mt-2 mb-4"
                     primary
-                    md
+                    sm
                   />
                 ) : <></>
             } */}

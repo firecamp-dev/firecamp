@@ -78,7 +78,7 @@ const DropDownDemo = (args: any) => {
     return (
         <Dropdown selected={selected} id={DropDownDemoArgs.containerId}>
             <Dropdown.Handler id={DropDownDemoArgs.handlerId}>
-                <Button text={selected} uppercase={true} withCaret={true} />
+                <Button text={selected} uppercase />
             </Dropdown.Handler>
             <Dropdown.Options
                 hasDivider={true}

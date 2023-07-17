@@ -18,7 +18,7 @@ const Template = (args) => {
   return (
     <Dropdown selected={selected}>
       <Dropdown.Handler>
-        <Button text={selected} color='primary' size='sm' uppercase={true} withCaret={true} />
+        <Button text={selected} primary xs uppercase />
       </Dropdown.Handler>
       <Dropdown.Options
         hasHeader={true}

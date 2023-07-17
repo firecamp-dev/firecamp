@@ -55,14 +55,13 @@ const ConfirmationModal: FC<IConfirm> = ({
                 text={texts?.btnCancel || `Cancel`}
                 onClick={_close}
                 secondary
-                sm
+                xs
               />
               <Button
                 text={texts?.btnConfirm || 'Confirm'}
                 onClick={_onConfirm}
-                disabled={false}
                 primary
-                sm
+                xs
               />
             </TabHeader.Right>
           </TabHeader>

@@ -72,9 +72,8 @@ const PaneBody = () => {
                       onClick={() => {
                         toggleAllListeners(false);
                       }}
-                      transparent
-                      secondary
                       ghost
+                      compact
                       xs
                     />
                     <Button
@@ -83,9 +82,8 @@ const PaneBody = () => {
                       onClick={() => {
                         toggleAllListeners(true);
                       }}
-                      transparent
-                      secondary
                       ghost
+                      compact
                       xs
                     />
                   </TabHeader.Right>
@@ -145,7 +143,7 @@ const AddListener = () => {
         <Button
           key={'listener-add-button'}
           text="Add"
-          className="!rounded-bl-none !rounded-tl-none"
+          classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
           onClick={_onAddListener}
           secondary
           xs

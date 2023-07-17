@@ -137,11 +137,10 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
           </div>
 
           <Button
-            color="primary"
             text="Sign in"
-            fullWidth={true}
-            size="md"
             onClick={handleSubmit(_onSubmit)}
+            fullWidth
+            sm
           />
         </form>
       </div>

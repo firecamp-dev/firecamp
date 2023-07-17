@@ -2,6 +2,7 @@ import { useState } from 'react';
 import shallow from 'zustand/shallow';
 import cx from 'classnames';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Button,
   Dropdown,
@@ -119,15 +120,21 @@ const ReqStatusBar = ({}) => {
         </div>
         <div className="flex ml-auto mr-1">
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <Button
                 text={currentOps?.name || ''}
-                xs
+                classNames={{
+                  root: '!rounded-br-none !rounded-tr-none',
+                }}
+                rightIcon={
+                  <VscTriangleDown
+                    size={12}
+                    className={cx({ 'transform rotate-180': isOpen })}
+                  />
+                }
                 secondary
-                withCaret={true}
-                className={cx('!rounded-br-none !rounded-tr-none', {
-                  open: isOpen,
-                })}
+                compact
+                xs
               />
             )}
             options={plgOperations || []}
@@ -143,15 +150,16 @@ const ReqStatusBar = ({}) => {
             sm
           />
           <Button
-            text=""
-            primary
-            sm
             // TODO: add class opacity and square
-            icon={<IoSendSharp />}
+            leftIcon={<IoSendSharp />}
             onClick={_execute}
-            className="!rounded-bl-none !rounded-tl-none"
-            iconLeft
+            classNames={{
+              root: '!rounded-bl-none !rounded-tl-none',
+            }}
             // disabled={_object.isEmpty(getPlaygroundQueries())}
+            primary
+            compact
+            xs
           />
         </div>
         {/* </StatusBar.PrimaryRegion> */}
@@ -163,22 +171,18 @@ const ReqStatusBar = ({}) => {
             <>
               <Button
                 text="Undo changes"
-                className="!border-0 hover:!bg-focus2"
                 onClick={() =>
                   undoPlaygroundChanges(playground.request?.__ref.id)
                 }
-                secondary
-                transparent
                 ghost
+                compact
                 xs
               />
               <Button
                 text="Save changes"
-                className="!border-0 hover:!bg-focus2"
                 onClick={(e) => updateItem()}
-                secondary
-                transparent
                 ghost
+                compact
                 xs
               />
             </>
@@ -188,11 +192,9 @@ const ReqStatusBar = ({}) => {
           {!playgroundMeta.isSaved ? (
             <Button
               text="Save playground"
-              className="!border-0 hover:!bg-focus2"
               onClick={_savePlg}
-              transparent
-              secondary
               ghost
+              compact
               xs
             />
           ) : (

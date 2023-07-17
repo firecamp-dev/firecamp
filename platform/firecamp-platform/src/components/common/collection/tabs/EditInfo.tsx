@@ -86,7 +86,7 @@ const EditInfo: FC<IProps> = ({
               transparent
               secondary
               ghost
-              sm
+              xs
             /> */}
             <Button
               text={isRequesting ? 'Updating Info...' : 'Update Info'}
@@ -95,7 +95,7 @@ const EditInfo: FC<IProps> = ({
                 (!isNameChanged && !isDescriptionChanged) || isRequesting
               }
               primary
-              sm
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

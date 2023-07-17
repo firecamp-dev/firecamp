@@ -150,7 +150,7 @@ const NoWrsFoundMessage = ({ close = () => {} }) => {
           You're not belonging to any workspaces of this organization.
         </span>
       </div>
-      <Button text="Close" sm primary onClick={close} />
+      <Button text="Close" onClick={close} primary xs />
     </div>
   );
 };

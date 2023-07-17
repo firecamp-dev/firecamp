@@ -1,11 +1,5 @@
 import { FC } from 'react';
-
-import { IoHelpBuoyOutline } from '@react-icons/all-files/io5/IoHelpBuoyOutline';
-import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
-import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
-import { VscComment } from '@react-icons/all-files/vsc/VscComment';
-
+import { Twitter, Github, LifeBuoy, File, MessageSquare } from 'lucide-react';
 import { SiDiscord } from '@react-icons/all-files/si/SiDiscord';
 import { _misc } from '@firecamp/utils';
 import { DropdownMenu } from '@firecamp/ui';
@@ -39,7 +33,7 @@ const MetaBar: FC<any> = () => {
       title: 'Documentation',
       onClick: () => window.open('https://firecamp.io/docs', '_blank'),
       prefix: () => (
-        <VscFile
+        <File
           size={16}
           className="text-statusBar-foreground hover:text-statusBar-foreground-active"
         />
@@ -51,7 +45,7 @@ const MetaBar: FC<any> = () => {
       onClick: () =>
         window.open('https://github.com/firecampdev/firecamp', '_blank'),
       prefix: () => (
-        <VscGithubInverted
+        <Github
           size={16}
           className="text-statusBar-foreground hover:text-statusBar-foreground-active"
         />
@@ -66,7 +60,7 @@ const MetaBar: FC<any> = () => {
           '_blank'
         ),
       prefix: () => (
-        <VscTwitter
+        <Twitter
           size={16}
           className="text-statusBar-foreground hover:text-statusBar-foreground-active"
         />
@@ -78,7 +72,7 @@ const MetaBar: FC<any> = () => {
       name: 'Chat',
       onClick: () => toggleChat(),
       prefix: () => (
-        <VscComment
+        <MessageSquare strokeWidth={1.5}
           size={16}
           className="text-statusBar-foreground hover:text-statusBar-foreground-active"
         />
@@ -90,8 +84,8 @@ const MetaBar: FC<any> = () => {
   return (
     <div className="flex items-center cursor-pointer pr-2">
       <DropdownMenu
-        handleRenderer={() => <IoHelpBuoyOutline size={16} />}
-        options={process.env.NODE_ENV !== 'production' ? allOptions : options}
+        handler={() => <LifeBuoy strokeWidth={1.5} size={16} />}
+        options={process.env.NODE_ENV === 'production' ? allOptions : options}
         onSelect={(v) => v.onClick()}
         width={160}
         sm

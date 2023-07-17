@@ -110,10 +110,8 @@ export const PromptInput: FC<IPromptInput> = ({
               <Button
                 text={texts?.btnCancel || `Cancel`}
                 onClick={_close}
-                secondary
-                transparent
                 ghost
-                sm
+                xs
               />
               <Button
                 text={
@@ -122,7 +120,7 @@ export const PromptInput: FC<IPromptInput> = ({
                 onClick={_onClickOk}
                 disabled={state.isExecuting}
                 primary
-                sm
+                xs
               />
             </TabHeader.Right>
           </TabHeader>

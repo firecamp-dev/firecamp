@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import { MantineProvider } from '@mantine/core';
 
 import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
@@ -20,6 +19,7 @@ import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
 import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
@@ -43,31 +43,11 @@ export default {
   component: DropdownMenu,
 };
 
-const Template = ({ ...args }: any) => {
-  return <DropdownMenu {...args} />;
-  // return  <MantineProvider theme={{
-  // components: {
-  //   Menu: {
-  //     styles: {
-  //       dropdown: {
-  //         border: '1px solid red'
-  //       }
-  //     }
-  //   }
-  // }
-  // }} withGlobalStyles withNormalizeCSS>
-  //   <DropdownMenu {...args} />
-  // </MantineProvider>
-};
+const Template = ({ ...args }: any) => <DropdownMenu {...args} />;
 
 export const Example = Template.bind({});
 Example.args = {
   options: [
-    {
-      id: 'CreateNewHeader',
-      name: 'Create New',
-      isLabel: true,
-    },
     {
       id: EMenuOptions.Request,
       name: 'Request',
@@ -90,11 +70,6 @@ Example.args = {
       showSeparator: true,
       prefix: () => <VscArrowDown size={18} />,
     },
-    {
-      id: 'CreateNewByAdminHeader',
-      name: 'Create New (By Admin)',
-      isLabel: true,
-    },
 
     {
       id: EMenuOptions.Workspace,
@@ -113,11 +88,6 @@ Example.args = {
       prefix: () => <AiOutlineUserAdd size={18} />,
     },
     {
-      id: 'SwitchHeader',
-      name: 'SWITCH',
-      isLabel: true,
-    },
-    {
       id: EMenuOptions.SwitchOrg,
       name: 'Switch Organization',
       prefix: () => <AiOutlineUserSwitch size={18} />,
@@ -128,12 +98,9 @@ Example.args = {
       prefix: () => <VscMultipleWindows size={18} />,
     },
   ],
-  handleRenderer: () => (
-    <Button text={'Create'} primary withCaret transparent ghost xs />
-  ),
+  handler: () => <Button text={'Create'} primary ghost xs />,
   classNames: {
-    dropdown: 'pt-0 pb-2 -ml-[2px]',
-    label: 'uppercase',
+    dropdown: '-ml-[2px]',
   },
   onSelect: (value: any) => console.log(`selected item :`, value),
 };
@@ -143,15 +110,14 @@ export const GlobalCreate = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selected || 'Create'}
-          className="font-bold hover:!bg-focus1"
-          withCaret
-          transparent
-          ghost
-          xs
+          classNames={{ root: 'font-bold hover:!bg-focus1' }}
           primary
+          ghost
+          compact
+          xs
         />
       )}
       options={[
@@ -234,7 +200,7 @@ export const HTTPMethod = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => <Button text={selected} secondary withCaret sm />}
+      handler={() => <Button text={selected} secondary xs />}
       selected={selected}
       options={[
         {
@@ -293,13 +259,12 @@ export const BodyTab = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selected || 'None'}
-          className="font-bold hover:!bg-focus1"
-          withCaret
-          transparent
+          classNames={{ root: 'font-bold hover:!bg-focus1' }}
           ghost
+          compact
           xs
           primary
         />
@@ -367,15 +332,14 @@ export const EmitterBody = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selected || 'No Body'}
-          className="hover:!bg-focus1"
-          withCaret
-          transparent
-          ghost
-          xs
+          classNames={{ root: 'hover:!bg-focus1' }}
           primary
+          ghost
+          compact
+          xs
         />
       )}
       options={[
@@ -402,8 +366,7 @@ export const EmitterBody = () => {
       ]}
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
-        dropdown:
-          'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] ',
+        dropdown: 'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)] ',
       }}
       width={144}
       sm
@@ -416,14 +379,13 @@ export const Logs = () => {
 
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
-          className="w-36 text-base"
+          classNames={{ root: 'w-36 text-base' }}
           text={selected || 'select log type'}
-          tooltip={selected ? `Log type: ${selected || ''}` : ''}
+          title={selected ? `Log type: ${selected || ''}` : ''}
           secondary
-          withCaret
-          sm
+          xs
         />
       )}
       options={[
@@ -457,13 +419,13 @@ export const RequestStatusBar = () => {
   return (
     <div className="flex ml-auto mr-1">
       <DropdownMenu
-        handleRenderer={() => (
+        handler={() => (
           <Button
             text={selected}
             secondary
-            withCaret
+            compact
             xs
-            className="leading-6 !rounded-br-none !rounded-tr-none"
+            classNames={{ root: 'leading-6 !rounded-br-none !rounded-tr-none' }}
           />
         )}
         options={[
@@ -485,13 +447,12 @@ export const RequestStatusBar = () => {
         sm
       />
       <Button
-        text=""
-        primary
-        sm
-        icon={<IoSendSharp />}
-        iconLeft
+        leftIcon={<IoSendSharp />}
         onClick={() => {}}
-        className="!rounded-bl-none !rounded-tl-none"
+        classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
+        primary
+        compact
+        xs
       />
     </div>
   );
@@ -517,7 +478,7 @@ export const FooterStatusBar = () => {
           <VscAccount size={16} className="mr-1" />
 
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <span className="pl-1 cursor-pointer">{userSelected}</span>
             )}
             options={[
@@ -570,7 +531,7 @@ export const FooterStatusBar = () => {
           <VscChevronRight size={14} className="mt-0.5" />
 
           <DropdownMenu
-            handleRenderer={() => (
+            handler={() => (
               <span className="pl-1 cursor-pointer">{selected}</span>
             )}
             options={[
@@ -673,7 +634,7 @@ export const SidebarCollectionOption = () => {
   const [selected, setSelected] = useState('MyQuery');
   return (
     <DropdownMenu
-      handleRenderer={() => <VscEllipsis className="cursor-pointer" />}
+      handler={() => <VscEllipsis className="cursor-pointer" />}
       options={[
         {
           prefix: () => <VscEdit size={14} />,
@@ -686,8 +647,7 @@ export const SidebarCollectionOption = () => {
       ]}
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
-        dropdown:
-          'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)]',
+        dropdown: 'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)]',
       }}
       width={144}
       sm
@@ -701,15 +661,18 @@ export const EnvCollectionOption = () => {
   return (
     <DropdownMenu
       onOpenChange={(v) => toggleOpen(v)}
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={selected}
-          className={cx('!text-info', {
-            open: isOpen,
-          })}
-          withCaret
-          transparent
+          classNames={{ root: '!text-info' }}
+          rightIcon={
+            <VscTriangleDown
+              size={12}
+              className={cx({ 'transform rotate-180': isOpen })}
+            />
+          }
           ghost
+          compact
           xs
         />
       )}
@@ -755,14 +718,12 @@ export const MemberRoleSelection = () => {
   return (
     <div className="flex justify-between">
       <DropdownMenu
-        handleRenderer={() => (
+        handler={() => (
           <Button
             text={selected}
-            className="hover:!bg-focus1"
-            withCaret
-            transparent
+            classNames={{ root: 'hover:!bg-focus1' }}
             ghost
-            sm
+            xs
           />
         )}
         classNames={{

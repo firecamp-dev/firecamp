@@ -75,12 +75,11 @@ const BinaryTab = ({ body, onChange }) => {
           ) : (
             <Button
               onClick={_onButtonClick}
-              icon={<AiOutlineUpload className="mr-2" size={16} />}
+              leftIcon={<AiOutlineUpload size={16} />}
               text="Drop File Here"
               disabled={isButtonDisabled}
               secondary
-              iconLeft
-              sm
+              xs
             />
           )}
 

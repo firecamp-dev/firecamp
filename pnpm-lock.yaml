@@ -7,16 +7,74 @@ settings:
 importers:
 
   .:
+    specifiers:
+      '@babel/core': ^7.17.8
+      '@babel/eslint-parser': ^7.18.9
+      '@babel/plugin-proposal-export-default-from': ^7.10.4
+      '@babel/plugin-transform-arrow-functions': ^7.10.4
+      '@babel/plugin-transform-runtime': ^7.10.5
+      '@babel/preset-env': ^7.16.11
+      '@babel/preset-react': ^7.16.7
+      '@babel/preset-typescript': ^7.16.7
+      '@babel/register': ^7.0.0
+      '@react-icons/all-files': ^4.1.0
+      babel-eslint: ^10.1.0
+      babel-loader: ^9.1.0
+      babel-plugin-add-module-exports: ^1.0.4
+      babel-plugin-transform-remove-console: ^6.9.4
+      babel-preset-react-optimize: ^1.0.1
+      chai: ^3.5.0
+      circular-dependency-plugin: ^5.2.0
+      colors: 1.4.0
+      compression-webpack-plugin: ^10.0.0
+      copy-webpack-plugin: ^11.0.0
+      copyfiles: ^2.4.1
+      cross-env: ^7.0.3
+      css-loader: ^6.7.1
+      css-modules-require-hook: ^4.2.3
+      dotenv: ^16.0.1
+      dotenv-vault-core: ^0.7.0
+      eslint: ^8.29.0
+      eslint-config-airbnb: ^19.0.4
+      eslint-plugin-import: ^2.22.0
+      eslint-plugin-jest: ^27.2.1
+      eslint-plugin-jsx: ^0.1.0
+      eslint-plugin-jsx-a11y: ^6.3.1
+      eslint-plugin-react: ^7.20.5
+      file-loader: ^6.2.0
+      html-webpack-plugin: ^5.5.0
+      husky: ^8.0.1
+      ignore-loader: ^0.1.2
+      jest-css-modules: ^2.1.0
+      jest-css-modules-transform: ^4.4.2
+      lint-staged: ^13.1.2
+      lucide-react: ^0.260.0
+      node-polyfill-webpack-plugin: ^2.0.0
+      postcss-loader: ^7.0.2
+      prettier: ^2.6.2
+      react-addons-test-utils: ^15.0.2
+      rimraf: ^5.0.0
+      sass: ^1.51.0
+      sass-loader: ^13.2.0
+      semver: ^7.3.5
+      shelljs: ^0.8.5
+      style-loader: ^3.3.1
+      ts-loader: ^9.2.8
+      ts-node: ^10.9.1
+      typescript: ^5.0.2
+      webpack: ^5.71.0
+      webpack-bundle-analyzer: ^4.5.0
+      webpack-cli: ^5.0.1
+      webpack-dev-server: ^4.9.3
+      webpack-hot-middleware: ^2.25.1
+      webpack-html-plugin: ^0.1.1
+      webpack-httpolyglot-server: ^0.3.0
+      worker-loader: ^3.0.8
     dependencies:
-      '@react-icons/all-files':
-        specifier: ^4.1.0
-        version: 4.1.0(react@17.0.2)
-      dotenv:
-        specifier: ^16.0.1
-        version: 16.0.3
-      dotenv-vault-core:
-        specifier: ^0.7.0
-        version: 0.7.0
+      '@react-icons/all-files': 4.1.0_react@17.0.2
+      dotenv: 16.0.3
+      dotenv-vault-core: 0.7.0
+      lucide-react: 0.260.0_react@17.0.2
     devDependencies:
       '@babel/core':
         specifier: ^7.17.8
@@ -16916,7 +16974,15 @@ packages:
     engines: {node: 14 || >=16.14}
     dev: true
 
-  /lunr@2.3.9:
+  /lucide-react/0.260.0_react@17.0.2:
+    resolution: {integrity: sha512-xN6wuhUlcXeS4GsxZpd2DZp+m1jEZPckuCr90nQAXKRNl63GZ4KshIcGmqJEUqEygmv8Rf99MhcwF3DqBqQ9Dg==}
+    peerDependencies:
+      react: ^16.5.1 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 17.0.2
+    dev: false
+
+  /lunr/2.3.9:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
     dev: true
 

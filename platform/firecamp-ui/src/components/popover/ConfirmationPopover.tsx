@@ -69,25 +69,24 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
             <div className="ml-auto flex">
               <Button
                 text={cancelButtonText || 'Cancel'}
-                secondary
-                sm
-                // className="small fc-button"
+                classNames={{
+                  root: 'mr-2',
+                }}
                 onClick={() => {
                   _toggleOpen(!isOpen);
                 }}
-                className="mr-2"
+                secondary
+                xs
               />
 
               <Button
                 text={confirmButtonText || 'Delete'}
-                // color="primary-alt"
-                // className="small fc-button"
-                primary
-                sm
                 onClick={() => {
                   onConfirm();
                   _toggleOpen(!isOpen);
                 }}
+                primary
+                xs
               />
             </div>
           </div>
@@ -100,9 +99,9 @@ const ConfirmationPopover: FC<IConfirmationPopover> = ({
         ) : showDeleteIcon === true ? (
           <Button
             id={`confirm-popover-handler-${id}`}
-            text=""
-            className="small square"
+            classNames={{ root: 'small square' }}
             secondary
+            sm
           />
         ) : showDefaultHandler === true ? (
           <DefaultHandler text={defaultHandlerText} />
@@ -122,7 +121,7 @@ const DefaultHandler = ({ text = '' }) => {
       // color="secondary"
       // className="btn-secondary btn btn-small"
       secondary
-      sm
+      xs
       text={text || 'Delete'}
     />
   );

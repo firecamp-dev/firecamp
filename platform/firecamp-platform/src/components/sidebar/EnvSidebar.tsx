@@ -117,7 +117,7 @@ const EnvPreviewTable: FC<any> = ({
           <></>
         )}
         <div className="flex items-center ml-auto">
-          {envId ? <Button text="Open" onClick={onOpen} secondary xs /> : <></>}
+          {envId ? <Button text="Open" onClick={onOpen} secondary compact xs /> : <></>}
           {/* <VscEdit className="table-action ml-2 cursor-pointer" /> */}
         </div>
       </div>

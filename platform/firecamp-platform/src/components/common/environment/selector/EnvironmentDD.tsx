@@ -2,6 +2,7 @@ import { FC, useState, useMemo, useEffect, memo } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { Button, DropdownMenu } from '@firecamp/ui';
 import { TId } from '@firecamp/types';
 import Helper from './Helper';
@@ -17,10 +18,11 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
     shallow
   );
   const { createEnvironmentPrompt } = platformContext.platform;
+  const [isOpen, toggleOpen] = useState(false);
   useEffect(() => {
     // console.log('env selector rendering the first time');
   }, []);
-  const [isOpen, toggleOpen] = useState(false);
+
   const menu = useMemo(
     () => Helper.generate.environmentsDD(environments, activeEnvId),
     [environments, activeEnvId]
@@ -58,15 +60,21 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
   return (
     <DropdownMenu
       onOpenChange={(v) => toggleOpen(v)}
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={title}
-          className={cx('!text-info', {
-            open: isOpen,
-          })}
-          withCaret
+          classNames={{
+            root: '!text-info',
+          }}
+          rightIcon={
+            <VscTriangleDown
+              size={12}
+              className={cx({ 'transform rotate-180': isOpen })}
+            />
+          }
           transparent
-          ghost
+          primary
+          compact
           xs
         />
       )}

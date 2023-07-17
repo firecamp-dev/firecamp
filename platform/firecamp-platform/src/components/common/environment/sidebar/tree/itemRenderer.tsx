@@ -194,10 +194,12 @@ export default {
                 console.log(1234)
               }}/> */}
 
-            {item.data.__ref.isEnvironment ? (
+            { item.data.__ref.isEnvironment ? (
               <Button
                 text={'Clone'}
-                className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive !py-0"
+                classNames={{
+                  root:'hover:!bg-focus2 ml-1 !text-app-foreground-inactive'
+                }}
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
@@ -209,10 +211,9 @@ export default {
                         item.data.__ref.id
                       );
                 }}
-                transparent
-                secondary
                 ghost
-                sm
+                compact
+                xs
               />
             ) : (
               <></>

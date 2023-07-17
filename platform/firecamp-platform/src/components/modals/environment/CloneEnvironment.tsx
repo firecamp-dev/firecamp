@@ -232,17 +232,15 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
               <Button
                 text="Cancel"
                 onClick={(e) => onClose()}
-                secondary
-                transparent
                 ghost
-                sm
+                xs
               />
               <Button
                 text={isRequesting ? 'Cloning...' : 'Clone Environment'}
                 onClick={onCreate}
                 disabled={isRequesting}
                 primary
-                sm
+                xs
               />
             </TabHeader.Right>
           </TabHeader>

@@ -164,11 +164,12 @@ const SignUp: FC<IModal> = () => {
             />
 
             <Button
+              type="submit"
               text={isRequesting ? 'Signing up...' : 'Sign up'}
               onClick={handleSubmit(_onSignUp)}
-              fullWidth={true}
+              fullWidth
               primary
-              md
+              sm
             />
           </form>
         </div>

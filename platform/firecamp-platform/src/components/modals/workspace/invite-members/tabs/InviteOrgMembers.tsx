@@ -1,5 +1,6 @@
 import { FC, useCallback, useState } from 'react';
 import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Button,
   Container,
@@ -32,6 +33,8 @@ const InviteOrgMembers: FC<IProps> = ({
 }) => {
   const { inviteOrgMembers } = useWorkspaceStore.getState();
   const [isInvitingMembers, setInvitingFlag] = useState(false);
+  const [isOpen, toggleOpen] = useState(false);
+  const [rolePreview, toggleRolePreview] = useState(false);
 
   // send new / existing member invitation
   const sendInvitation = useCallback(() => {
@@ -57,20 +60,24 @@ const InviteOrgMembers: FC<IProps> = ({
           className="relative"
         >
           <DropdownMenu
-            handleRenderer={() => (
+            onOpenChange={(v) => toggleOpen(v)}
+            handler={() => (
               <div className="relative">
                 <Button
                   text={member.name || 'Select member'}
-                  className={cx(
-                    'hover:!bg-focus1 border border-app-border justify-between'
-                    // { 'border-error': !member.name }
-                  )}
+                  classNames={{
+                    inner: 'flex justify-between w-full',
+                  }}
+                  rightIcon={
+                    <VscTriangleDown
+                      size={12}
+                      className={cx({ 'transform rotate-180': isOpen })}
+                    />
+                  }
                   disabled={members.length === 0}
-                  transparent
-                  withCaret
+                  outline
                   fullWidth
-                  ghost
-                  md
+                  sm
                 />
                 <ProgressBar className="top-auto" active={isFetchingMembers} />
               </div>
@@ -88,17 +95,22 @@ const InviteOrgMembers: FC<IProps> = ({
         </FormField>
         <FormField label="Assign role for selected member">
           <DropdownMenu
-            handleRenderer={() => (
+            onOpenChange={(v) => toggleRolePreview(v)}
+            handler={() => (
               <Button
                 text={_role.name || 'Select role'}
-                className={cx(
-                  'hover:!bg-focus1 border border-app-border justify-between'
-                )}
-                withCaret
-                transparent
+                classNames={{
+                  inner: 'flex justify-between w-full',
+                }}
+                rightIcon={
+                  <VscTriangleDown
+                    size={12}
+                    className={cx({ 'transform rotate-180': rolePreview })}
+                  />
+                }
+                outline
                 fullWidth
-                ghost
-                md
+                sm
               />
             )}
             options={RoleOptions}
@@ -127,12 +139,14 @@ const InviteOrgMembers: FC<IProps> = ({
           Open Workspace Management
         </a>
         <Button
-          className="ml-auto inline"
           text={'Send Invitation'}
           disabled={!member.name || !member.role || isInvitingMembers}
           onClick={sendInvitation}
+          classNames={{
+            root: 'ml-auto inline',
+          }}
           primary
-          sm
+          xs
         />
       </Container.Footer>
     </Container>

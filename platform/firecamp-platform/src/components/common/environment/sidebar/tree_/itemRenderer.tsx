@@ -163,7 +163,9 @@ export default {
 
             <Button
               text={'Open'}
-              className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive !py-0"
+              classNames={{
+                root: 'hover:!bg-focusColor !text-app-foreground-inactive',
+              }}
               {...context.interactiveElementProps}
               onClick={(e) => {
                 // e.preventDefault();
@@ -171,10 +173,9 @@ export default {
                 context.focusItem(item.data.__ref.id);
                 openEnv(item.data);
               }}
-              transparent
-              secondary
+              compact
               ghost
-              sm
+              xs
             />
 
             {item.data.__ref.isEnvironment ? (

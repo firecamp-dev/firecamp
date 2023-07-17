@@ -24,7 +24,7 @@ const Variables: FC<IProps> = ({
               onClick={() => onUpdate(entity.variables)}
               disabled={!isVarsChanged || isRequesting}
               primary
-              sm
+              xs
             />
           </TabHeader.Right>
         </TabHeader>

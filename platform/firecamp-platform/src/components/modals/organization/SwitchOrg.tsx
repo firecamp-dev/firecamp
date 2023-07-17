@@ -113,9 +113,9 @@ const NoOrgFoundMessage = () => {
       </div>
       <Button
         text="Create Organization"
-        sm
-        primary
         onClick={() => platformContext.platform.createOrganizationPrompt()}
+        primary
+        xs
       />
     </div>
   );

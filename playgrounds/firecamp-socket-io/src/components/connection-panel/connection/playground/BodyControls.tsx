@@ -49,9 +49,9 @@ const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
               key="new_msg_button"
               text={'+ New Emitter'}
               onClick={resetPlaygroundEmitter}
-              transparent
               ghost
-              sm
+              compact
+              xs
             />
           ) : (
             <></>
@@ -63,6 +63,7 @@ const BodyControls = ({ tabId = '', path = '', addNewEmitter = () => {} }) => {
               text={isEmitterSaved ? 'Save Emitter Changes' : 'Save Emitter'}
               onClick={saveEmitter}
               secondary
+              compact
               xs
             />
           ) : (

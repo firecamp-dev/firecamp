@@ -178,8 +178,8 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
               <VscEdit size={12} onClick={rename} className="pointer" />
             </TabHeader.Left>
             <TabHeader.Right>
-              {/* <Button text="Save" primary sm /> */}
-              {/* <Button text="Delete" secondary sm disabled={false} /> */}
+              {/* <Button text="Save" primary xs /> */}
+              {/* <Button text="Delete" secondary xs disabled={false} /> */}
             </TabHeader.Right>
           </TabHeader>
         </Container.Header>
@@ -190,18 +190,20 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
               onClick={update}
               disabled={!hasChange}
               primary
-              sm
+              xs
             />
 
             {runtimeEnv.__meta?.isGlobal ? (
               <></>
             ) : (
               <Button
-                className="ml-2"
+                classNames={{
+                  root: 'ml-2',
+                }}
                 text="Delete"
                 onClick={_delete}
                 secondary
-                sm
+                xs
               />
             )}
           </Row>

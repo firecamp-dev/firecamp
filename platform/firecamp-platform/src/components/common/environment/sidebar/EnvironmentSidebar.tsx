@@ -225,22 +225,24 @@ const Globals = () => {
       { id: env.__ref.id, type: ETabEntityTypes.Environment }
     );
   };
+
   return (
     <div className="rct-tree-item-li focus:rct-tree-item-li-focused border-b border-app-border">
       <div className="px-2 mt-5 mb-1 rct-tree-item-title-container focus:rct-tree-item-title-container-focused hover:rct-tree-item-title-container-focused !opacity-100 cursor-pointer">
-        <VscJson className="flex-none" size={18} opacity={1} />
+        <VscJson className="flex-none my-0.5" size={18} opacity={1} />
         <span className="w-full overflow-hidden text-ellipsis items-center block pl-1 text-base">
           {globalEnv?.name}
         </span>
         <div className="flex ml-auto rct-tree-item-li-action items-center">
           <Button
             text={'Open'}
-            className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive !py-0"
             onClick={() => openEnv(globalEnv)}
-            transparent
-            secondary
+            classNames={{
+              root: 'hover:!bg-focusColor !text-app-foreground-inactive'
+            }}
             ghost
-            sm
+            compact
+            xs
           />
         </div>
       </div>

@@ -1,10 +1,6 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
-import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
-// import { VscFileSymlinkFile } from '@react-icons/all-files/vsc/VscFileSymlinkFile';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
+import { RotateCw, Folder, FolderPlus, ArrowDown } from 'lucide-react';
 import {
   InteractionMode,
   Tree,
@@ -326,7 +322,7 @@ const Explorer: FC<any> = () => {
             return (
               <ToolBar>
                 <div>
-                  <VscRefresh
+                  <RotateCw strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={() => {
@@ -335,22 +331,19 @@ const Explorer: FC<any> = () => {
                   />
                 </div>
                 <div>
-                  <VscNewFolder
+                  <FolderPlus strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={createCollectionPrompt}
                   />
                 </div>
                 <div>
-                  <VscArrowDown
+                  <ArrowDown strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={openImportTab}
                   />
                 </div>
-                {/* <div>
-                  <VscFileSymlinkFile className="cursor-pointer" size={16} />
-                </div> */}
               </ToolBar>
             );
           }}
@@ -359,16 +352,16 @@ const Explorer: FC<any> = () => {
               return (
                 <div className="items-center">
                   <Empty
-                    icon={<VscFolder size="40" />}
+                    icon={<Folder strokeWidth={1.5} size={40} />}
                     title="Create a new Collection"
                     message="This workspace doesn't have any collections, you can create the first collection."
                   />
                   <Button
                     text="Create Collection"
-                    className="mx-auto mb-6"
+                    classNames={{ root: 'mx-auto mb-6' }}
                     onClick={createCollectionPrompt}
                     primary
-                    sm
+                    xs
                   />
                 </div>
               );
@@ -376,85 +369,87 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
-              <ScrollBar transparent fullHeight>
-                <UncontrolledTreeEnvironment
-                  ref={explorerTreeRef}
-                  keyboardBindings={{
-                    // primaryAction: ['f3'],
-                    renameItem: ['enter', 'f2'],
-                    abortRenameItem: ['esc'],
-                  }}
-                  // dataProvider={new StaticTreeDataProvider(items, (item, data) => ({ ...item, data }))}
-                  dataProvider={dataProvider.current}
-                  defaultInteractionMode={{
-                    mode: 'custom',
-                    extends: InteractionMode.ClickItemToExpand,
-                    createInteractiveElementProps: (
-                      item,
-                      treeId,
-                      actions,
-                      renderFlags
-                    ) => ({
-                      /**
-                       * 1. avoid multi select
-                       * 2. (will not work as isFocused is always true, ignore for now) focus on first click and select item if it's focused (second click)
-                       * 3. if has children then toggle expand/collapse
-                       */
-                      onClick: (e) => {
-                        //avoid multi select
-                        // console.log(item, actions, renderFlags);
-                        if (item.isFolder) actions.toggleExpandedState();
-                        if (!renderFlags.isFocused) actions.focusItem();
-                        else actions.selectItem();
-                      },
-                      onFocus: (e) => {
-                        actions.focusItem();
-                      },
-                    }),
-                  }}
-                  getItemTitle={(item) => item.data?.name}
-                  viewState={{}}
-                  // renderItemTitle={({ title }) => <span>{title}</span>}
-                  renderItemArrow={treeRenderer.renderItemArrow}
-                  // renderItemTitle={treeRenderer.renderItemTitle}
-                  renderItem={(props) =>
-                    treeRenderer.renderItem({ ...props, treeRef })
-                  }
-                  // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
-                  // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
+                <ScrollBar transparent fullHeight>
+                  <UncontrolledTreeEnvironment
+                    ref={explorerTreeRef}
+                    keyboardBindings={{
+                      // primaryAction: ['f3'],
+                      renameItem: ['enter', 'f2'],
+                      abortRenameItem: ['esc'],
+                    }}
+                    // dataProvider={new StaticTreeDataProvider(items, (item, data) => ({ ...item, data }))}
+                    dataProvider={dataProvider.current}
+                    defaultInteractionMode={{
+                      mode: 'custom',
+                      extends: InteractionMode.ClickItemToExpand,
+                      createInteractiveElementProps: (
+                        item,
+                        treeId,
+                        actions,
+                        renderFlags
+                      ) => ({
+                        /**
+                         * 1. avoid multi select
+                         * 2. (will not work as isFocused is always true, ignore for now) focus on first click and select item if it's focused (second click)
+                         * 3. if has children then toggle expand/collapse
+                         */
+                        onClick: (e) => {
+                          //avoid multi select
+                          // console.log(item, actions, renderFlags);
+                          if (item.isFolder) actions.toggleExpandedState();
+                          if (!renderFlags.isFocused) actions.focusItem();
+                          else actions.selectItem();
+                        },
+                        onFocus: (e) => {
+                          actions.focusItem();
+                        },
+                      }),
+                    }}
+                    getItemTitle={(item) => item.data?.name}
+                    viewState={{}}
+                    // renderItemTitle={({ title }) => <span>{title}</span>}
+                    renderItemArrow={treeRenderer.renderItemArrow}
+                    // renderItemTitle={treeRenderer.renderItemTitle}
+                    renderItem={(props) =>
+                      treeRenderer.renderItem({ ...props, treeRef })
+                    }
+                    // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
+                    // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
 
-                  canRename={true}
-                  canReorderItems={true}
-                  canDragAndDrop={true}
-                  canDropOnFolder={true}
-                  canDropOnNonFolder={true}
-                  canDrag={(items) => {
-                    return true;
-                  }}
-                  canDropAt={(items, target) => canDropAt(items[0], target)}
-                  onStartRenamingItem={(a) => {
-                    console.log(a, 'onStartRenamingItem');
-                  }}
-                  onRenameItem={_onRenameItem}
-                  // onPrimaryAction={console.log}
-                  onSelectItems={_onNodeSelect}
-                  onRegisterTree={(...a) => console.log(a, 'on register tree')}
-                  onDrop={onDrop}
-                  onMissingItems={(itemIds) => {
-                    // console.log(itemIds, "onMissingItems")
-                  }}
-                  onMissingChildren={(itemIds) => {
-                    // console.log(itemIds, "onMissingChildren")
-                  }}
-                >
-                  <Tree
-                    treeId="collections-explorer"
-                    rootItem="root"
-                    treeLabel="Collections Explorer"
-                    ref={treeRef}
-                  />
-                </UncontrolledTreeEnvironment>
-              </ScrollBar>
+                    canRename={true}
+                    canReorderItems={true}
+                    canDragAndDrop={true}
+                    canDropOnFolder={true}
+                    canDropOnNonFolder={true}
+                    canDrag={(items) => {
+                      return true;
+                    }}
+                    canDropAt={(items, target) => canDropAt(items[0], target)}
+                    onStartRenamingItem={(a) => {
+                      console.log(a, 'onStartRenamingItem');
+                    }}
+                    onRenameItem={_onRenameItem}
+                    // onPrimaryAction={console.log}
+                    onSelectItems={_onNodeSelect}
+                    onRegisterTree={(...a) =>
+                      console.log(a, 'on register tree')
+                    }
+                    onDrop={onDrop}
+                    onMissingItems={(itemIds) => {
+                      // console.log(itemIds, "onMissingItems")
+                    }}
+                    onMissingChildren={(itemIds) => {
+                      // console.log(itemIds, "onMissingChildren")
+                    }}
+                  >
+                    <Tree
+                      treeId="collections-explorer"
+                      rootItem="root"
+                      treeLabel="Collections Explorer"
+                      ref={treeRef}
+                    />
+                  </UncontrolledTreeEnvironment>
+                </ScrollBar>
               </>
             );
           }}

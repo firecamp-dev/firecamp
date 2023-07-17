@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import cx from 'classnames';
+import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Editor,
   Input,
@@ -215,15 +216,19 @@ const ArgTypesDD = ({ activeArgType, changeArgType }) => {
   const [isBodyTypeDDOpen, toggleBodyTypeDD] = useState(false);
   return (
     <DropdownMenu
-      handleRenderer={() => (
+      handler={() => (
         <Button
           text={activeArgType.name}
-          className={cx({ open: isBodyTypeDDOpen })}
-          transparent
-          withCaret
+          rightIcon={
+            <VscTriangleDown
+              size={12}
+              className={cx({ 'transform rotate-180': isBodyTypeDDOpen })}
+            />
+          }
           primary
           ghost
-          sm
+          compact
+          xs
         />
       )}
       options={ArgTypes}
