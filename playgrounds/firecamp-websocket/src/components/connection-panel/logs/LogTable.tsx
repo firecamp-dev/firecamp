@@ -1,8 +1,9 @@
 import { memo } from 'react';
 import isEqual from 'react-fast-compare';
-import { LogTable as LTable } from '@firecamp/ui';
+import { LogTable as LTable, useFirecampStyle } from '@firecamp/ui';
 
 const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
+  const { classes } = useFirecampStyle();
   return (
     <LTable
       classes={{
@@ -12,7 +13,7 @@ const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
         thead: 'sticky top-0 !bg-app-background-secondary z-10',
         container: 'h-full !overflow-y-auto -mt-px visible-scrollbar thick',
         theadTr: '!border-0 !bg-app-background-secondary',
-        tr: 'hover:!bg-focus1 focus:!bg-primaryColor-withOpacity  !border-0',
+        tr: classes.backgroundWithOpacity
       }}
       rows={[]}
       titleRenderer={(log) => log?.value?.value || log?.title}

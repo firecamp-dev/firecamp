@@ -3,6 +3,7 @@ import {
   ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
+  createStyles,
 } from '@mantine/core';
 import {
   EFirecampThemeVariant,
@@ -24,6 +25,14 @@ const primaryColor: ColorType = [
   '#9D6A37',
   '#875F38',
 ];
+export const useFirecampStyle = createStyles((theme) => ({
+  backgroundWithOpacity: {
+    '&:focus': {
+      backgroundColor: theme.fn.rgba(primaryColor[6], 0.54),
+      borderWidth: '0px',
+    },
+  },
+}));
 
 const secondaryColor: ColorType = [
   '#B4D1BE',

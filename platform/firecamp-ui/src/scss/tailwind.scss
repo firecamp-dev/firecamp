@@ -26,7 +26,6 @@
     --app-foreground-active: var(--mantine-color-white);
     --app-foreground-inactive: var(--mantine-color-dark-3);
     --app-primary: var(--mantine-color-primary-color-8);
-    --app-primary-withOpacity: var(--mantine-color-primary-color-9);
     --app-secondary: var(--mantine-color-dark-4);
     --app-border: var(--mantine-color-dark-4);/* .1 */
     --app-focus: var(--mantine-color-indigo-5);
@@ -2735,10 +2734,6 @@
 }
 .focus\:\!border-none:focus{
    border-style: none !important;
-
-}
-.focus\:\!bg-primaryColor-withOpacity:focus{
-   background-color: var(--app-primary-withOpacity) !important;
 
 }
 .focus\:bg-input-background-focus:focus{
