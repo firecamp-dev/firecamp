@@ -121,6 +121,7 @@ const Tabs: FC<IResTabs> = ({
               status={status}
             />
           )}
+          className='bg-tab-background'
         />
       </Container.Header>
       <Container.Body className="flex flex-col">
