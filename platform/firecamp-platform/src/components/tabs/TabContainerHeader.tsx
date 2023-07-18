@@ -154,10 +154,14 @@ const HomeTabIcon = ({ isActive, onClick }) => {
       tabIndex={1}
       className={classnames(
         {
-          'active text-tab-foreground !border-b-transparent':
+          'active text-tab-foreground !border-b-transparent bg-statusBar-background-active':
             isActive,
         },
-        'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b bg-tab-background-activeColor text-tab-foreground-inactive border-r border-tab-border flex-none'
+        {
+          'text-tab-foreground-inactive bg-tab-background-activeColor ':
+            !isActive,
+        },
+        'w-10 h-9 px-2 flex items-center justify-center cursor-pointer border-b border-r border-tab-border flex-none hover:bg-tab-background-hover'
       )}
       onClick={onClick}
     >
