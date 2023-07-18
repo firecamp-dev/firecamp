@@ -4,11 +4,13 @@ import { IButton } from './Button.interfaces';
 
 // custom styles for variants
 const useStyles = createStyles(
-  (theme, { variant, color, primary, secondary, transparent }: IButton) => ({
+  (theme, { variant, color, primary, secondary, transparent, animate }: IButton) => ({
     root: {
       display: 'flex',
       fontFamily: 'sans-serif',
       fontWeight: 'normal',
+      
+      ...(!animate ? { ':active': { transform: 'none' } }: {}),
       ...(transparent
         ? {
             ':hover': {
@@ -133,6 +135,7 @@ const Button: FC<IButton> = ({
   lg = false,
 
   text,
+  animate = true,
   ...props
 }) => {
   // default variant if not passed is primary
@@ -158,6 +161,7 @@ const Button: FC<IButton> = ({
     primary,
     secondary,
     transparent,
+    animate
   });
 
   return (

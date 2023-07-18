@@ -132,6 +132,7 @@ const ReqStatusBar = ({}) => {
                     className={cx({ 'transform rotate-180': isOpen })}
                   />
                 }
+                animate={false}
                 secondary
                 compact
                 xs
@@ -157,6 +158,7 @@ const ReqStatusBar = ({}) => {
               root: '!rounded-bl-none !rounded-tl-none',
             }}
             // disabled={_object.isEmpty(getPlaygroundQueries())}
+            animate={false}
             primary
             compact
             xs

@@ -25,14 +25,6 @@ const primaryColor: ColorType = [
   '#9D6A37',
   '#875F38',
 ];
-export const useFirecampStyle = createStyles((theme) => ({
-  backgroundWithOpacity: {
-    '&:focus': {
-      backgroundColor: theme.fn.rgba(primaryColor[6], 0.54),
-      borderWidth: '0px',
-    },
-  },
-}));
 
 const secondaryColor: ColorType = [
   '#B4D1BE',
@@ -71,6 +63,15 @@ const defaultGrayColor: ColorType = [
   '#343a40',
   '#212529',
 ];
+
+export const useFirecampStyle = createStyles((theme) => ({
+  backgroundWithOpacity: {
+    '&:focus': {
+      backgroundColor: theme.fn.rgba(primaryColor[6], 0.54),
+      borderWidth: '0px',
+    },
+  },
+}));
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
   themeVariant = EFirecampThemeVariant.LightPrimary,
