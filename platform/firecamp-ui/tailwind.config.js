@@ -74,7 +74,6 @@ module.exports = {
       focusColor: '#ffffff1a',
 
       primaryColor: 'var(--app-primary)',
-      'primaryColor-withOpacity': 'var(--app-primary-withOpacity)',
       'primaryColor-text': '#ffffff',
       secondaryColor: 'var(--app-secondary)',
       'secondaryColor-text': '#ffffff',

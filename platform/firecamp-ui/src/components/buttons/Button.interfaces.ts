@@ -31,4 +31,7 @@ export interface IButton extends ButtonProps {
   title?: string;
   /** optional click handler */
   onClick?: (event: any) => any | Promise<any> | Promise<void>;
+
+  /** to disable the button click animation which is enabled by default*/
+  animate?: boolean;
 }

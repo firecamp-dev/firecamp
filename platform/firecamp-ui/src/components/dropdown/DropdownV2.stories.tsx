@@ -505,6 +505,7 @@ export const ReqStatusBarExample = () => {
         text=""
         primary
         sm
+        animate={false}
         leftIcon={<IoSendSharp />}
         onClick={() => {}}
         className="!rounded-bl-none !rounded-tl-none"
