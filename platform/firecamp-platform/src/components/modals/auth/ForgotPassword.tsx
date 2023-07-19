@@ -51,7 +51,7 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
   return (
     <>
-      <Modal.Header>
+      <Modal.Body>
         <img className="mx-auto w-12 mb-6" src={'img/mail-send.png'} />
         <div className="text-xl mb-2 w-full text-center font-semibold">
           Enter your Email Address
@@ -59,8 +59,6 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
         <div className="text-sm text-app-foreground-inactive max-w-xs mx-auto mb-6 text-center px-16">
           You’ll get the password recovery token in your inbox.
         </div>
-      </Modal.Header>
-      <Modal.Body>
         <div className="">
           <form onSubmit={handleSubmit(_onSubmit)}>
             <Input
@@ -91,7 +89,7 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <div className="text-sm mt-6">
+        <div className="text-sm mt-6 w-fit">
           <a
             className="text-base text-center block"
             href="#"

@@ -81,7 +81,7 @@ const Menu: FC = () => {
       onSelect={(v) => v.onClick()}
       classNames={{
         dropdown: '!pt-0 -ml-2 border-focusBorder',
-        label: 'uppercase font-sans',
+        label: 'uppercase',
         item: '!px-5'
       }}
       menuProps={{

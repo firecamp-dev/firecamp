@@ -25,7 +25,7 @@ const SignIn: FC<IModal> = () => {
           <Button
             text="Continue with Email"
             leftIcon={<VscAccount size={18} />}
-            classNames={{root: "mb-5"}}
+            classNames={{ root: 'mb-5' }}
             onClick={() => platformContext.app.modals.openSignInWithEmail()}
             outline
             fullWidth
@@ -36,13 +36,13 @@ const SignIn: FC<IModal> = () => {
           <hr className="border-t border-app-border w-full" />
           <span className="text-xs text-app-foreground-inactive bg-modal-background absolute px-1">OR</span>
         </div> */}
-        <div className="flex-col">
+        <div className="pt-px">
           <div className="text-sm mt-6 text-center">
             Not have an account?
             <a
               href="#"
               id="sign-up"
-              className="font-bold underline"
+              className="font-bold underline px-1"
               onClick={(e) => {
                 if (e) e.preventDefault();
                 platformContext.app.modals.openSignUp();
@@ -57,7 +57,7 @@ const SignIn: FC<IModal> = () => {
             <a
               href="https://firecamp.io/legals/privacy-policy/"
               tabIndex={1}
-              className="font-bold underline"
+              className="font-bold underline px-1"
               target={'_blank'}
             >
               Term of Service
@@ -66,7 +66,7 @@ const SignIn: FC<IModal> = () => {
             <a
               href="https://firecamp.io/legals/privacy-policy/"
               tabIndex={1}
-              className="font-bold underline"
+              className="font-bold underline px-1"
               target={'_blank'}
             >
               Privacy Policy

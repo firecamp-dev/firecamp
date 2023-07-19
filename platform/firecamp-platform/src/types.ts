@@ -80,11 +80,13 @@ export const EPlatformModalDefaultProps = {
   [EPlatformModalTypes.CloneEnvironment]: { height: '750px', width: '500px' },
 
   // auth
-  [EPlatformModalTypes.SignIn]: { width: '440px', className: 'p-4' },
-  [EPlatformModalTypes.SignInWithEmail]: { width: '440px', className: 'p-4' },
-  [EPlatformModalTypes.SignUp]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.SignIn]: {
+    size: 440,
+  },
+  [EPlatformModalTypes.SignInWithEmail]: { size: 440 },
+  [EPlatformModalTypes.SignUp]: { size: 440 },
   [EPlatformModalTypes.RefreshToken]: { modalConfig: { closeOnEsc: false } },
-  [EPlatformModalTypes.ForgotPassword]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.ForgotPassword]: { size: 440 },
   [EPlatformModalTypes.ResetPassword]: { width: '440px', className: 'p-4' },
 
   // user

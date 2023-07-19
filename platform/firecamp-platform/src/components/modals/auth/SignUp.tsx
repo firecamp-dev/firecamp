@@ -80,7 +80,7 @@ const SignUp: FC<IModal> = () => {
         <div className="">
           <GithubGoogleAuth />
         </div>
-        <div className="mb-6 mt-6 flex justify-center items-center">
+        <div className="relative mb-6 mt-6 flex justify-center items-center">
           <hr className="border-t border-app-border w-full" />
           <span className="text-xs text-app-foreground-inactive bg-modal-background absolute px-1">
             OR
@@ -181,7 +181,7 @@ const SignUp: FC<IModal> = () => {
             <a
               href="#"
               id="signup"
-              className="font-bold underline"
+              className="font-bold underline px-1"
               onClick={(e) => {
                 if (e) e.preventDefault();
                 platformContext.app.modals.openSignIn();
@@ -197,7 +197,7 @@ const SignUp: FC<IModal> = () => {
             <a
               href="https://firecamp.io/legals/privacy-policy/"
               tabIndex={1}
-              className="font-bold underline"
+              className="font-bold underline px-1"
               target={'_blank'}
             >
               Term of Service
@@ -206,7 +206,7 @@ const SignUp: FC<IModal> = () => {
             <a
               href="https://firecamp.io/legals/privacy-policy/"
               tabIndex={1}
-              className="font-bold underline"
+              className="font-bold underline px-1"
               target={'_blank'}
             >
               Privacy Policy
