@@ -13,7 +13,7 @@ import {
 import { _env, _array, _object, _table } from '@firecamp/utils';
 import __url from '@firecamp/url';
 import parseBody from './helpers/body';
-import { IRestExecutor } from './types';
+import { IRestExecutor, TRestExecutionResponse } from './types';
 
 //@ts-ignore //TODO: research in depth about url esm module, it's import value in console is { default: {...}, __esModule: true }
 const _url = __url.default || __url;
@@ -145,7 +145,10 @@ export default class RestExecutor implements IRestExecutor {
     return axiosRequest;
   }
 
-  async send(fcRequest: IRest, variables: IVariableGroup) {
+  async send(
+    fcRequest: IRest,
+    variables: IVariableGroup
+  ): Promise<TRestExecutionResponse> {
     // console.log(fcRequest, variables, 2000000);
     if (_object.isEmpty(fcRequest)) {
       const message: string = 'invalid request payload';
