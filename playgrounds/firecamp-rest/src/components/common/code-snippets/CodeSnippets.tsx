@@ -106,17 +106,16 @@ const CodeSnippets = ({ tabId = '' }) => {
     <Modal
       opened={isCodeSnippetOpen}
       onClose={() => toggleOpenCodeSnippet()}
-      // height="80vh"
-      // width="768px"
       size={768}
-      title="Rest code snippet"
-    >
-      {/* <Modal.Header className="border-app-border border-b">
+      classNames={{
+        content: 'h-[80vh]'
+      }}
+      title={
         <div className="text-modal-foreground-active text-lg px-6 py-3 ">
           {'Rest code snippet'}
         </div>
-      </Modal.Header> */}
-      <Modal.Body>
+      }
+    >
         <Container>
           <Container.Header className="z-20">
             <Tabs
@@ -193,7 +192,6 @@ const CodeSnippets = ({ tabId = '' }) => {
             </div>
           </Container.Body>
         </Container>
-      </Modal.Body>
     </Modal>
   );
 };

@@ -57,11 +57,7 @@ const Modal: FC<IModal> = ({
     opened,
     onClose: () => {},
   });
-  console.log(`modal-props...`, classNames, props, {
-    ...classNames,
-    content: cx('invisible-scrollbar', classNames.content, classes.content),
-    header: cx(classNames.header, classes.header),
-  });
+
   return (
     <MantineModal
       opened={opened}

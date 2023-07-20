@@ -81,12 +81,13 @@ export const PromptInput: FC<IPromptInput> = ({
 
   return (
     <Modal
-      isOpen={state.isOpen}
+      opened={state.isOpen}
       onClose={_close}
-      className="min-h-0"
-      width={'400px'}
+      size={400}
+      classNames={{
+        content: 'min-h-0'
+      }}
     >
-      <Modal.Body>
         <ProgressBar active={state.isExecuting} />
         <div className="px-2 py-4">
           <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
@@ -125,7 +126,7 @@ export const PromptInput: FC<IPromptInput> = ({
             </TabHeader.Right>
           </TabHeader>
         </div>
-      </Modal.Body>
+
     </Modal>
   );
 };
