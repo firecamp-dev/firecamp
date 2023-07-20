@@ -13,17 +13,13 @@ import { useUserStore } from '../../../store/user';
 /**
  * RefreshToken component for user to autenticate.
  */
-const RefreshToken: FC<IModal> = ({ onClose = () => {} }) => {
+const RefreshToken: FC<IModal> = ({ opened, onClose = () => {} }) => {
   return (
-    <>
-      <Modal.Body>
-        <Header />
-        <Body onClose={onClose} />
-      </Modal.Body>
-      <Modal.Footer>
-        <Footer />
-      </Modal.Footer>
-    </>
+    <Modal opened={opened} onClose={onClose} closeOnEscape={false}>
+      <Header />
+      <Body onClose={onClose} />
+      <Footer />
+    </Modal>
   );
 };
 

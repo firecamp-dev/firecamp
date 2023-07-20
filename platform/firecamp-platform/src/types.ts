@@ -94,12 +94,6 @@ export const EPlatformModalDefaultProps = {
   // auth
 
   [EPlatformModalTypes.SignUp]: { size: 440 },
-  [EPlatformModalTypes.RefreshToken]: { closeOnEscape: false },
-  [EPlatformModalTypes.ForgotPassword]: { size: 440 },
-  [EPlatformModalTypes.ResetPassword]: {
-    size: 440,
-    classNames: { content: 'p-4' },
-  },
 
   // user
   [EPlatformModalTypes.UserProfile]: {},

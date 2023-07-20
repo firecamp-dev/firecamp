@@ -10,7 +10,7 @@ import platformContext from '../../../services/platform-context';
 /**
  * User Sign up
  */
-const SignUp: FC<IModal> = () => {
+const SignUp: FC<IModal> = ({ opened, onClose }) => {
   const [showPassword, toggleShowPassword] = useState(false);
   const [isRequesting, setFlagIsRequesting] = useState(false);
 
@@ -68,154 +68,155 @@ const SignUp: FC<IModal> = () => {
   const _onKeyDown = (e) => e.key === 'Enter' && handleSubmit(_onSignUp);
 
   return (
-    <>
-      <Modal.Body>
-        {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
-        <div className="mb-3">
-          <FcLogo className="mx-auto w-14" size={80} />
-        </div>
-        <div className="text-xl mb-4 w-full text-center font-semibold">
-          Create a firecamp account
-        </div>
-        <div className="">
-          <GithubGoogleAuth />
-        </div>
-        <div className="relative mb-6 mt-6 flex justify-center items-center">
-          <hr className="border-t border-app-border w-full" />
-          <span className="text-xs text-app-foreground-inactive bg-modal-background absolute px-1">
-            OR
-          </span>
-        </div>
-        <div className="text-sm text-app-foreground-inactive max-w-sm mx-auto mb-6 text-center">
-          Give us some of your information to get free access to Firecamp
-        </div>
-        <div className="">
-          <form onSubmit={handleSubmit(_onSignUp)}>
-            <Input
-              placeholder="Enter Username"
-              key={'username'}
-              name={'username'}
-              id={'username'}
-              label="Username"
-              type="text"
-              registerMeta={{
-                required: true,
-                maxLength: 50,
-                minLength: 1,
-                pattern: /^[0-9a-zA-Z ]+$/,
-              }}
-              useformRef={form}
-              onKeyDown={_onKeyDown}
-              error={
-                errors?.username
-                  ? errors?.username?.message || 'Please enter username'
-                  : ''
-              }
-              wrapperClassName="!mb-2"
-            />
-            <Input
-              placeholder="Enter your email"
-              key={'email'}
-              name={'email'}
-              id={'email'}
-              label="Email"
-              registerMeta={{
-                required: true,
-                maxLength: 50,
-                minLength: 1,
-                pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
-              }}
-              useformRef={form}
-              onKeyDown={_onKeyDown}
-              error={
-                errors?.email ? errors?.email?.message || 'Please enter valid username or password' : ''
-              }
-              wrapperClassName="!mb-2"
-            />
-            <Input
-              placeholder="Enter password"
-              key={'password'}
-              name={'password'}
-              id={'password'}
-              type={showPassword ? 'text' : 'password'}
-              label="Password"
-              registerMeta={{
-                required: true,
-                maxLength: 50,
-                minLength: 8,
-              }}
-              iconPosition="right"
-              icon={
-                <VscEye
-                  title="password"
-                  size={16}
-                  onClick={() => {
-                    toggleShowPassword(!showPassword);
-                  }}
-                />
-              }
-              useformRef={form}
-              onKeyDown={_onKeyDown}
-              error={
-                errors?.password
-                  ? errors?.password?.message || 'Please enter valid password'
-                  : ''
-              }
-            />
+    <Modal opened={opened} onClose={onClose} size={440}>
+      {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
+      <div className="-mt-4">
+        <FcLogo className="mx-auto w-14" size={80} />
+      </div>
+      <div className="text-xl mb-2 w-full text-center font-semibold">
+        Create a firecamp account
+      </div>
+      <div className="">
+        <GithubGoogleAuth />
+      </div>
+      <div className="relative my-3 flex justify-center items-center">
+        <hr className="border-t border-app-border w-full" />
+        <span className="text-xs text-app-foreground-inactive bg-modal-background absolute px-1">
+          OR
+        </span>
+      </div>
+      <div className="text-sm text-app-foreground-inactive max-w-sm mx-auto mb-3 text-center">
+        Give us some of your information to get free access to Firecamp
+      </div>
+      <div className="">
+        <form onSubmit={handleSubmit(_onSignUp)}>
+          <Input
+            placeholder="Enter Username"
+            key={'username'}
+            name={'username'}
+            id={'username'}
+            label="Username"
+            type="text"
+            registerMeta={{
+              required: true,
+              maxLength: 50,
+              minLength: 1,
+              pattern: /^[0-9a-zA-Z ]+$/,
+            }}
+            useformRef={form}
+            onKeyDown={_onKeyDown}
+            error={
+              errors?.username
+                ? errors?.username?.message || 'Please enter username'
+                : ''
+            }
+            wrapperClassName="!mb-2"
+          />
+          <Input
+            placeholder="Enter your email"
+            key={'email'}
+            name={'email'}
+            id={'email'}
+            label="Email"
+            registerMeta={{
+              required: true,
+              maxLength: 50,
+              minLength: 1,
+              pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
+            }}
+            useformRef={form}
+            onKeyDown={_onKeyDown}
+            error={
+              errors?.email
+                ? errors?.email?.message ||
+                  'Please enter valid username or password'
+                : ''
+            }
+            wrapperClassName="!mb-2"
+          />
+          <Input
+            placeholder="Enter password"
+            key={'password'}
+            name={'password'}
+            id={'password'}
+            type={showPassword ? 'text' : 'password'}
+            label="Password"
+            registerMeta={{
+              required: true,
+              maxLength: 50,
+              minLength: 8,
+            }}
+            iconPosition="right"
+            icon={
+              <VscEye
+                title="password"
+                size={16}
+                onClick={() => {
+                  toggleShowPassword(!showPassword);
+                }}
+              />
+            }
+            useformRef={form}
+            onKeyDown={_onKeyDown}
+            error={
+              errors?.password
+                ? errors?.password?.message || 'Please enter valid password'
+                : ''
+            }
+            wrapperClassName="!mb-3"
+          />
 
-            <Button
-              type="submit"
-              text={isRequesting ? 'Signing up...' : 'Sign up'}
-              onClick={handleSubmit(_onSignUp)}
-              fullWidth
-              primary
-              sm
-            />
-          </form>
+          <Button
+            type="submit"
+            text={isRequesting ? 'Signing up...' : 'Sign up'}
+            onClick={handleSubmit(_onSignUp)}
+            fullWidth
+            primary
+            sm
+          />
+        </form>
+      </div>
+
+      <div className="flex-col">
+        <div className="text-sm mt-3 text-center">
+          Already have an account
+          <a
+            href="#"
+            id="signup"
+            className="font-bold underline px-1"
+            onClick={(e) => {
+              if (e) e.preventDefault();
+              platformContext.app.modals.openSignIn();
+            }}
+            tabIndex={1}
+          >
+            {' '}
+            Sign In
+          </a>
         </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <div className="flex-col">
-          <div className="text-sm mt-6 text-center">
-            Already have an account
-            <a
-              href="#"
-              id="signup"
-              className="font-bold underline px-1"
-              onClick={(e) => {
-                if (e) e.preventDefault();
-                platformContext.app.modals.openSignIn();
-              }}
-              tabIndex={1}
-            >
-              {' '}
-              Sign In
-            </a>
-          </div>
-          <div className="text-sm mt-6 text-center text-app-foreground-inactive">
-            By moving forward, you acknowledge that you have read and accept the
-            <a
-              href="https://firecamp.io/legals/privacy-policy/"
-              tabIndex={1}
-              className="font-bold underline px-1"
-              target={'_blank'}
-            >
-              Term of Service
-            </a>
-            and
-            <a
-              href="https://firecamp.io/legals/privacy-policy/"
-              tabIndex={1}
-              className="font-bold underline px-1"
-              target={'_blank'}
-            >
-              Privacy Policy
-            </a>
-            .
-          </div>
+        <div className="text-sm mt-3 text-center text-app-foreground-inactive">
+          By moving forward, you acknowledge that you have read and accept the
+          <a
+            href="https://firecamp.io/legals/privacy-policy/"
+            tabIndex={1}
+            className="font-bold underline px-1"
+            target={'_blank'}
+          >
+            Term of Service
+          </a>
+          and
+          <a
+            href="https://firecamp.io/legals/privacy-policy/"
+            tabIndex={1}
+            className="font-bold underline px-1"
+            target={'_blank'}
+          >
+            Privacy Policy
+          </a>
+          .
         </div>
-      </Modal.Footer>
-    </>
+      </div>
+    </Modal>
   );
 };
 
