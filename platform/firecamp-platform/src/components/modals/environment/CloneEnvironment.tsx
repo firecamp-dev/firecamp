@@ -128,11 +128,11 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
 
   return (
     <>
-      <Modal.Header className="with-divider">
+      {/* <Modal.Header className="with-divider">
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
           Clone Environment
         </div>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body>
         <ProgressBar active={isRequesting} />
         <div className="p-4">
@@ -229,12 +229,7 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
         <div className="p-4">
           <TabHeader className="!p-0">
             <TabHeader.Right>
-              <Button
-                text="Cancel"
-                onClick={(e) => onClose()}
-                ghost
-                xs
-              />
+              <Button text="Cancel" onClick={(e) => onClose()} ghost xs />
               <Button
                 text={isRequesting ? 'Cloning...' : 'Clone Environment'}
                 onClick={onCreate}

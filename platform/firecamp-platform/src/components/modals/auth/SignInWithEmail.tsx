@@ -80,7 +80,7 @@ const SignInWithEmail: FC<IModal> = () => {
             OR
           </span>
         </div>
-        <div className="text-sm text-app-foreground-inactive max-w-xs mx-auto mb-6 text-center px-16">
+        <div className="text-sm text-app-foreground-inactive max-w-sm mx-auto mb-6 text-center">
           Welcome back! enter your email and password below to sign in.
         </div>
         <div className="">

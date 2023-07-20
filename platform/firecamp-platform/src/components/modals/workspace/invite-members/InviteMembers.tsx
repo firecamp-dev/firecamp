@@ -87,11 +87,11 @@ const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
   return (
     <>
-      <Modal.Header className="border-b border-app-border">
+      {/* <Modal.Header className="border-b border-app-border">
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
           Invite Members To Join The Workspace
         </div>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body scrollbar={false}>
         <div className="p-4 h-fit flex flex-col">
           <SecondaryTab

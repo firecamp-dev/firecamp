@@ -1,6 +1,6 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { ScrollBar } from '@firecamp/ui';
-import { Modal as MantineModal } from '@mantine/core';
+import { Modal as MantineModal, ScrollArea } from '@mantine/core';
 import { ModalProps } from '@mantine/core';
 import { createStyles } from '@mantine/core';
 interface IModal extends ModalProps {
@@ -23,7 +23,7 @@ interface IFooter {
 }
 
 // custom styles for variants
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles((theme, { title }: IModal) => ({
   // root: {
 
   // },
@@ -51,7 +51,16 @@ const useStyles = createStyles((theme) => ({
         : theme.colors.gray[4],
     paddingRight: '1rem',
     paddingTop: '1rem',
-    paddingBottom: '0px',
+    paddingBottom: !!title ? '1rem' : '0px',
+    ...(!!title
+      ? {
+          borderBottom: `1px solid ${
+            theme.colorScheme === 'light'
+              ? theme.colors.gray[4]
+              : theme.colors.dark[4]
+          }`,
+        }
+      : {}),
   },
   body: {
     padding: '1rem',
@@ -70,11 +79,15 @@ const Modal: FC<IModal> & {
   children = <></>,
   ...props
 }) => {
-  console.log(`modal-size...`, props);
-  const { classes, cx, theme } = useStyles();
+  // console.log(`modal-props...`, props);
+  const { classes, cx, theme } = useStyles({
+    title: props.title,
+    opened: isOpen || opened,
+    onClose: () => {},
+  });
   return (
     <MantineModal
-      opened={isOpen}
+      opened={isOpen || opened}
       onClose={() => onClose()}
       id={id}
       centered
@@ -82,8 +95,17 @@ const Modal: FC<IModal> & {
         ...classNames,
         content: cx('invisible-scrollbar', classNames.content, classes.content),
         header: cx(classNames.header, classes.header),
+        // body: 'invisible-scrollbar '
       }}
-      // scrollAreaComponent={ScrollArea.Autosize}
+      // styles={{
+      // body: {
+      //   display: 'flex',
+      //   flexDirection: 'column',
+      //   minHeight: '400px',
+      //   maxHeight: '90vh',
+      // }
+      // }}
+      scrollAreaComponent={ScrollArea.Autosize}
       closeButtonProps={{
         bg:
           theme.colorScheme === 'light'
@@ -97,8 +119,13 @@ const Modal: FC<IModal> & {
   );
 };
 let Body: FC<IBody> = ({ children = '' }) => {
+  return <div className="p-4">{children}</div>;
   return (
-    <ScrollBar className="p-4 pt-0" transparent fullHeight>
+    <ScrollBar
+      className="p-4 pt-0 flex-1 overflow-y-auto max-h-48"
+      transparent
+      fullHeight
+    >
       {/* provide static height to display the scrollbar */}
       <>{children}</>
     </ScrollBar>
@@ -107,7 +134,7 @@ let Body: FC<IBody> = ({ children = '' }) => {
 
 const Footer: FC<IFooter> = ({ id = '', children = '', className = '' }) => {
   return (
-    <div className={className} id={id}>
+    <div className={className ?? 'p-4 pt-0'} id={id}>
       {children}
     </div>
   );

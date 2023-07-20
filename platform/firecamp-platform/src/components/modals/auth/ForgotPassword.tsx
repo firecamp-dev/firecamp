@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Modal, Button, Input, IModal } from '@firecamp/ui';
+import { Mail } from 'lucide-react';
 import _auth from '../../../services/auth';
 import platformContext from '../../../services/platform-context';
 /**
@@ -52,7 +53,7 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   return (
     <>
       <Modal.Body>
-        <img className="mx-auto w-12 mb-6" src={'img/mail-send.png'} />
+        <Mail size="48" className="mb-6 mx-auto text-activityBar-foreground-inactive" />
         <div className="text-xl mb-2 w-full text-center font-semibold">
           Enter your Email Address
         </div>
@@ -89,7 +90,7 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <div className="text-sm mt-6 w-fit">
+        <div className="text-sm">
           <a
             className="text-base text-center block"
             href="#"

@@ -83,14 +83,13 @@ const EditRequest: FC<IModal> = ({
 
   return (
     <>
-      <Modal.Header className="with-divider">
+      {/* <Modal.Header className="with-divider">
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium display-block">
-          {/* Update Request Info */}
           <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mt-2">
             Update Request Info
           </label>
         </div>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body>
         <ProgressBar active={isRequesting} />
         <div className="p-6 !pb-0">

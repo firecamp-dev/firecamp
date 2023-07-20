@@ -82,8 +82,18 @@ export const ModalContainer = () => {
 
   const modalProps = EPlatformModalDefaultProps[currentOpenModal];
   // console.log(modalProps, '.....');
+  const MODAL_TITLE = {
+    [EPlatformModalTypes.OrgManagement]: 'Organization Management',
+    [EPlatformModalTypes.WorkspaceManagement]: 'Workspace Management',
+    [EPlatformModalTypes.SwitchOrg]: 'Switch Organization',
+    [EPlatformModalTypes.CloneEnvironment]: 'Clone Environment',
+    [EPlatformModalTypes.EditRequest]: 'Update Request Info',
+    [EPlatformModalTypes.SwitchWorkspace]: 'Switch Workspace',
+    [EPlatformModalTypes.InviteMembers]: 'Invite Members To Join The Workspace',
+  }
+
   return (
-    <Modal isOpen={isOpen} onClose={close} {...modalProps}>
+    <Modal isOpen={isOpen} onClose={close} title={MODAL_TITLE[currentOpenModal]} {...modalProps}>
       {renderModal(currentOpenModal)}
     </Modal>
   );

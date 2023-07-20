@@ -105,11 +105,11 @@ const WorkspaceManagement: FC<IModal> = ({
 
   return (
     <>
-      <Modal.Header className="with-divider">
+      {/* <Modal.Header className="with-divider">
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
           Workspace Management
         </div>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body>
         <ProgressBar active={isRequesting} />
         <Container>

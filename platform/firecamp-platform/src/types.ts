@@ -58,26 +58,38 @@ export enum EPlatformModalTypes {
 
 export const EPlatformModalDefaultProps = {
   // organization
-  [EPlatformModalTypes.OrgManagement]: { height: '80vh', width: '600px' },
-  [EPlatformModalTypes.SwitchOrg]: { width: '440px', className: 'p-0 !pb-6' },
+  [EPlatformModalTypes.OrgManagement]: {
+    size: 600,
+    classNames: { content: 'h-[80vh]' },
+  },
+  //  { height: '80vh', width: '600px' },
+  [EPlatformModalTypes.SwitchOrg]: {
+    size: 440,
+    classNames: { content: 'p-0 !pb-6' },
+  },
+  // { width: '440px', className: 'p-0 !pb-6' },
 
   // workspace
-  [EPlatformModalTypes.WorkspaceManagement]: {
-    height: '650px',
-    width: '550px',
-  },
-  [EPlatformModalTypes.InviteMembers]: { height: '700px' },
+  [EPlatformModalTypes.WorkspaceManagement]: { size: 550 },
+  // {
+  //   height: '650px',
+  //   width: '550px',
+  // },
+  [EPlatformModalTypes.InviteMembers]: {},
+  // { height: '700px' },
   [EPlatformModalTypes.SwitchWorkspace]: {
-    width: '440px',
-    className: 'p-0 !pb-6',
+    size: 440,
+    classNames: { content: 'p-0 !pb-6' },
   },
 
   // request
-  [EPlatformModalTypes.EditRequest]: { height: '600px', width: '450px' },
+  [EPlatformModalTypes.EditRequest]: { size: 450 },
+  // { height: '600px', width: '450px' },
 
   // environment
 
-  [EPlatformModalTypes.CloneEnvironment]: { height: '750px', width: '500px' },
+  [EPlatformModalTypes.CloneEnvironment]: { size: 500 },
+  // { height: '750px', width: '500px' },
 
   // auth
   [EPlatformModalTypes.SignIn]: {
@@ -85,9 +97,12 @@ export const EPlatformModalDefaultProps = {
   },
   [EPlatformModalTypes.SignInWithEmail]: { size: 440 },
   [EPlatformModalTypes.SignUp]: { size: 440 },
-  [EPlatformModalTypes.RefreshToken]: { modalConfig: { closeOnEsc: false } },
+  [EPlatformModalTypes.RefreshToken]: { closeOnEscape: false },
   [EPlatformModalTypes.ForgotPassword]: { size: 440 },
-  [EPlatformModalTypes.ResetPassword]: { width: '440px', className: 'p-4' },
+  [EPlatformModalTypes.ResetPassword]: {
+    size: 440,
+    classNames: { content: 'p-4' },
+  },
 
   // user
   [EPlatformModalTypes.UserProfile]: {},

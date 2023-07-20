@@ -16,10 +16,8 @@ import { useUserStore } from '../../../store/user';
 const RefreshToken: FC<IModal> = ({ onClose = () => {} }) => {
   return (
     <>
-      <Modal.Header>
-        <Header />
-      </Modal.Header>
       <Modal.Body>
+        <Header />
         <Body onClose={onClose} />
       </Modal.Body>
       <Modal.Footer>

@@ -86,7 +86,7 @@ const SignUp: FC<IModal> = () => {
             OR
           </span>
         </div>
-        <div className="text-sm text-app-foreground-inactive max-w-xs mx-auto mb-6 text-center px-16">
+        <div className="text-sm text-app-foreground-inactive max-w-sm mx-auto mb-6 text-center">
           Give us some of your information to get free access to Firecamp
         </div>
         <div className="">

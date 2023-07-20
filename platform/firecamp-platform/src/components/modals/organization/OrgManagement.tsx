@@ -39,11 +39,11 @@ const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
   return (
     <>
-      <Modal.Header>
+      {/* <Modal.Header>
         <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium  border-b border-app-border ">
           Organization Management
         </div>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body>
         <SecondaryTab
           className="flex items-center p-4 pb-0"

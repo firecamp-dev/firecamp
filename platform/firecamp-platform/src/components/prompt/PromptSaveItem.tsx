@@ -96,12 +96,15 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
       className="p-6"
     >
       <ProgressBar active={state.isExecuting} />
-      <Modal.Header>
+      {/* <Modal.Header>
         <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
           {header || `THIS IS A HEADER PLACE`}
         </label>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body>
+      <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
+          {header || `THIS IS A HEADER PLACE`}
+        </label>
         <div>
           <div className="mt-4">
             <Input

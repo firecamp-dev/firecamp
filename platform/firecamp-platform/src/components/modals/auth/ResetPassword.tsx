@@ -55,13 +55,13 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
   return (
     <>
-      <Modal.Header>
-        <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} />
-        <div className="text-xl mb-6 w-full text-center font-semibold">
-          Reset Password
-        </div>
-      </Modal.Header>
       <Modal.Body>
+        <>
+          <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} />
+          <div className="text-xl mb-6 w-full text-center font-semibold">
+            Reset Password
+          </div>
+        </>
         <div className="">
           <form onSubmit={handleSubmit(_onSubmit)}>
             <Input
@@ -130,7 +130,7 @@ const ResetPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
               }
             />
             <Button
-              type='submit'
+              type="submit"
               text={isRequesting ? `Resetting password...` : 'Reset Password'}
               onClick={handleSubmit(_onSubmit)}
               fullWidth

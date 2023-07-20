@@ -104,16 +104,18 @@ const CodeSnippets = ({ tabId = '' }) => {
 
   return (
     <Modal
-      isOpen={isCodeSnippetOpen}
+      opened={isCodeSnippetOpen}
       onClose={() => toggleOpenCodeSnippet()}
-      height="80vh"
-      width="768px"
+      // height="80vh"
+      // width="768px"
+      size={768}
+      title="Rest code snippet"
     >
-      <Modal.Header className="border-app-border border-b">
+      {/* <Modal.Header className="border-app-border border-b">
         <div className="text-modal-foreground-active text-lg px-6 py-3 ">
           {'Rest code snippet'}
         </div>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body>
         <Container>
           <Container.Header className="z-20">

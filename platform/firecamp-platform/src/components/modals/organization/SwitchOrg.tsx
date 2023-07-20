@@ -84,11 +84,11 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
 
   return (
     <>
-      <Modal.Header className="with-divider">
+      {/* <Modal.Header className="with-divider">
         <div className="text-lg leading-5 p-4 flex items-center font-medium">
           Switch Organization
         </div>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body>
         <ProgressBar active={isFetchingOrgs} />
         {renderBody(isFetchingOrgs)}

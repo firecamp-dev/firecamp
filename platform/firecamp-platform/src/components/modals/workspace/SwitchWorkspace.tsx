@@ -84,11 +84,11 @@ const SwitchWorkspace: FC<IModal> = ({
 
   return (
     <>
-      <Modal.Header className="with-divider">
+      {/* <Modal.Header className="with-divider">
         <div className="text-lg leading-5 p-4 flex items-center font-medium">
           Switch Workspace
         </div>
-      </Modal.Header>
+      </Modal.Header> */}
       <Modal.Body>
         <ProgressBar active={isFetchingWrs} />
         {renderBody(isFetchingWrs)}
