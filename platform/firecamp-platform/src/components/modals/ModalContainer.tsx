@@ -1,11 +1,10 @@
 import shallow from 'zustand/shallow';
-import { Modal } from '@firecamp/ui';
 // import SSLnProxyManager from '../modals/ssl-proxy-manager/SSLnProxyManager';
 // import AuthContainer from '../common/auth/AuthContainer';
 // import CookieManager from '../modals/cookie-manager/CookieManager';
 // import RefreshToken from '../common/auth/RefreshToken';
 import { useModalStore } from '../../store/modal';
-import { EPlatformModalDefaultProps, EPlatformModalTypes } from '../../types';
+import { EPlatformModalTypes } from '../../types';
 import ForgotPassword from './auth/ForgotPassword';
 import RefreshToken from './auth/RefreshToken';
 import ResetPassword from './auth/ResetPassword';
@@ -38,25 +37,25 @@ export const ModalContainer = () => {
 
       // Organization
       case EPlatformModalTypes.OrgManagement:
-        return <OrgManagement isOpen={isOpen} onClose={close} />;
+        return <OrgManagement opened={isOpen} onClose={close} />;
       case EPlatformModalTypes.SwitchOrg:
-        return <SwitchOrg isOpen={isOpen} onClose={close} />;
+        return <SwitchOrg opened={isOpen} onClose={close} />;
 
       // Workspace
       case EPlatformModalTypes.InviteMembers:
-        return <InviteMembers isOpen={isOpen} onClose={close} />;
+        return <InviteMembers opened={isOpen} onClose={close} />;
       case EPlatformModalTypes.WorkspaceManagement:
-        return <WorkspaceManagement isOpen={isOpen} onClose={close} />;
+        return <WorkspaceManagement opened={isOpen} onClose={close} />;
       case EPlatformModalTypes.SwitchWorkspace:
-        return <SwitchWorkspace isOpen={isOpen} onClose={close} />;
+        return <SwitchWorkspace opened={isOpen} onClose={close} />;
 
       // Request
       case EPlatformModalTypes.EditRequest:
-        return <EditRequest onClose={close} />;
+        return <EditRequest opened={isOpen} onClose={close} />;
 
       // Environment
       case EPlatformModalTypes.CloneEnvironment:
-        return <CloneEnvironment onClose={close} />;
+        return <CloneEnvironment opened={isOpen} onClose={close} />;
 
       // User
       // case EPlatformModalTypes.UserProfile: return <UserProfile isOpen={isOpen} onClose={close} />;
@@ -78,10 +77,6 @@ export const ModalContainer = () => {
         return <></>;
     }
   };
-  // return renderModal(currentOpenModal);
-
-  const modalProps = EPlatformModalDefaultProps[currentOpenModal];
-  // console.log(modalProps, '.....');
 
   return (
     <>
@@ -89,65 +84,4 @@ export const ModalContainer = () => {
     </>
   );
 
-  const modalType = currentOpenModal;
-  return (
-    <Modal isOpen={isOpen} onClose={close} {...modalProps}>
-      <>
-        {/* Organization */}
-        <OrgManagement
-          isOpen={modalType == EPlatformModalTypes.OrgManagement && isOpen}
-          onClose={close}
-        />
-        <SwitchOrg
-          isOpen={modalType == EPlatformModalTypes.SwitchOrg && isOpen}
-          onClose={close}
-        />
-
-        {/* Workspace */}
-        <InviteMembers
-          isOpen={modalType == EPlatformModalTypes.InviteMembers && isOpen}
-          onClose={close}
-        />
-        <WorkspaceManagement
-          isOpen={
-            modalType == EPlatformModalTypes.WorkspaceManagement && isOpen
-          }
-          onClose={close}
-        />
-        <SwitchWorkspace
-          isOpen={modalType == EPlatformModalTypes.SwitchWorkspace && isOpen}
-          onClose={close}
-        />
-
-        {/* User */}
-        {/* <UserProfile isOpen={modalType == EPlatformModalTypes.UserProfile && isOpen} onClose={close} />; */}
-
-        {/* Auth */}
-        <SignIn
-          isOpen={modalType == EPlatformModalTypes.SignIn && isOpen}
-          onClose={close}
-        />
-        <SignInWithEmail
-          isOpen={modalType == EPlatformModalTypes.SignInWithEmail && isOpen}
-          onClose={close}
-        />
-        <SignUp
-          isOpen={modalType == EPlatformModalTypes.SignUp && isOpen}
-          onClose={close}
-        />
-        <ForgotPassword
-          isOpen={modalType == EPlatformModalTypes.ForgotPassword && isOpen}
-          onClose={close}
-        />
-        <ResetPassword
-          isOpen={modalType == EPlatformModalTypes.ResetPassword && isOpen}
-          onClose={close}
-        />
-        <RefreshToken
-          isOpen={modalType == EPlatformModalTypes.RefreshToken && isOpen}
-          onClose={close}
-        />
-      </>
-    </Modal>
-  );
 };

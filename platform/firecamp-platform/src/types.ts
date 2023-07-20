@@ -56,55 +56,6 @@ export enum EPlatformModalTypes {
   SslNProxy = 'sslNProxy',
 }
 
-export const EPlatformModalDefaultProps = {
-  // organization
-  [EPlatformModalTypes.OrgManagement]: {
-    size: 600,
-    classNames: { content: 'h-[80vh]' },
-  },
-  //  { height: '80vh', width: '600px' },
-  [EPlatformModalTypes.SwitchOrg]: {
-    size: 440,
-    classNames: { content: 'p-0 !pb-6' },
-  },
-  // { width: '440px', className: 'p-0 !pb-6' },
-
-  // workspace
-  [EPlatformModalTypes.WorkspaceManagement]: { size: 550 },
-  // {
-  //   height: '650px',
-  //   width: '550px',
-  // },
-  [EPlatformModalTypes.InviteMembers]: {},
-  // { height: '700px' },
-  [EPlatformModalTypes.SwitchWorkspace]: {
-    size: 440,
-    classNames: { content: 'p-0 !pb-6' },
-  },
-
-  // request
-  [EPlatformModalTypes.EditRequest]: { size: 450 },
-  // { height: '600px', width: '450px' },
-
-  // environment
-
-  [EPlatformModalTypes.CloneEnvironment]: { size: 500 },
-  // { height: '750px', width: '500px' },
-
-  // auth
-
-  [EPlatformModalTypes.SignUp]: { size: 440 },
-
-  // user
-  [EPlatformModalTypes.UserProfile]: {},
-
-  // cookie
-  [EPlatformModalTypes.CookieManager]: {},
-
-  // ssl & proxy
-  [EPlatformModalTypes.SslNProxy]: {},
-};
-
 export enum ECloudApiHeaders {
   Authorization = 'Authorization',
   SocketId = 'X-Socket-Id',

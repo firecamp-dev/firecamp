@@ -5,7 +5,7 @@ import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { usePlatformStore } from '../../../store/platform';
 import platformContext from '../../../services/platform-context';
 
-const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
+const SwitchOrg: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const { setSwitchingOrg } = usePlatformStore((s) => ({
     setSwitchingOrg: s.setSwitchingOrg,
   }));
@@ -13,7 +13,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   const [orgs, setOrgs] = useState([]);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!opened) return;
     setFetchOrgFlag(true);
     Rest.organization
       .getMyOrganizations()
@@ -41,7 +41,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
         else
           return (
             <>
-              <div className="p-4">
+              <div className="py-4">
                 <div className="text-sm">
                   <label className="font-semibold text-app-foreground uppercase">
                     Please select organization to switch
@@ -53,7 +53,7 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
                   </span>
                 </div>
               </div>
-              <div className="pl-4 pb-4 pr-2  overflow-auto visible-scrollbar h-80 mr-2">
+              <div className="pb-4 overflow-auto visible-scrollbar h-80">
                 {orgs.map((org, i) => (
                   <div
                     className="card relative flex items-center p-2 mb-2 text-base font-semibold border border-app-border cursor-pointer hover:border-focusBorder after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
@@ -83,17 +83,20 @@ const SwitchOrg: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   };
 
   return (
-    <>
-      {/* <Modal.Header className="with-divider">
-        <div className="text-lg leading-5 p-4 flex items-center font-medium">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      size={440}
+      classNames={{ content: '!pb-6' }}
+      title={
+        <div className="text-lg leading-5 px-4 flex items-center font-medium">
           Switch Organization
         </div>
-      </Modal.Header> */}
-      <Modal.Body>
-        <ProgressBar active={isFetchingOrgs} />
-        {renderBody(isFetchingOrgs)}
-      </Modal.Body>
-    </>
+      }
+    >
+      <ProgressBar active={isFetchingOrgs} />
+      {renderBody(isFetchingOrgs)}
+    </Modal>
   );
 };
 

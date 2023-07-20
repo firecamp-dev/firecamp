@@ -24,10 +24,8 @@ type TModalMeta = {
 };
 
 const EditRequest: FC<IModal> = ({
-  isOpen = false,
+  opened = false,
   onClose = () => {},
-  height = '732px',
-  width = '500px',
 }) => {
   const { name, description, requestId, requestType, collectionId, folderId } =
     useModalStore.getState().__meta as TModalMeta;
@@ -82,17 +80,25 @@ const EditRequest: FC<IModal> = ({
   };
 
   return (
-    <>
-      {/* <Modal.Header className="with-divider">
-        <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium display-block">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      size={450}
+      title={
+        <div className="text-lg leading-5 px-6 flex items-center font-medium display-block">
           <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mt-2">
             Update Request Info
           </label>
         </div>
-      </Modal.Header> */}
-      <Modal.Body>
+      }
+      classNames={{
+        content: 'h-[600px]',
+        body: 'p-0',
+      }}
+    >
+      <>
         <ProgressBar active={isRequesting} />
-        <div className="p-6 !pb-0">
+        <div className="p-6 !pb-0 mx-4 ">
           <div className="">
             <Input
               autoFocus={true}
@@ -124,9 +130,9 @@ const EditRequest: FC<IModal> = ({
             // icon={<VscEdit />}
           />
         </div>
-      </Modal.Body>
+      </>
 
-      <Modal.Footer className="!py-3 border-t border-app-border">
+      <div className="!py-3 border-t border-app-border">
         <TabHeader className="px-6">
           <TabHeader.Right>
             <Button text="Cancel" onClick={(e) => onClose()} ghost xs />
@@ -139,8 +145,8 @@ const EditRequest: FC<IModal> = ({
             />
           </TabHeader.Right>
         </TabHeader>
-      </Modal.Footer>
-    </>
+      </div>
+    </Modal>
   );
 };
 

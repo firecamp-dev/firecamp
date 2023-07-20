@@ -505,6 +505,11 @@
    margin-right: 0.5rem;
 
 }
+.mx-4{
+   margin-left: 1rem;
+   margin-right: 1rem;
+
+}
 .mx-auto{
    margin-left: auto;
    margin-right: auto;
@@ -904,12 +909,32 @@
    height: 30px;
 
 }
+.h-\[450px\]{
+   height: 450px;
+
+}
+.h-\[480px\]{
+   height: 480px;
+
+}
 .h-\[50vh\]{
    height: 50vh;
 
 }
+.h-\[600px\]{
+   height: 600px;
+
+}
+.h-\[700px\]{
+   height: 700px;
+
+}
 .h-\[70vh\]{
    height: 70vh;
+
+}
+.h-\[750px\]{
+   height: 750px;
 
 }
 .h-\[80vh\]{
@@ -1266,6 +1291,10 @@
 }
 .gap-2{
    gap: 0.5rem;
+
+}
+.gap-3{
+   gap: 0.75rem;
 
 }
 .gap-4{

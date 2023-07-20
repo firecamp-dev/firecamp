@@ -15,6 +15,7 @@ const useStyles = createStyles((theme, { title }: IModal) => ({
         ? theme.colors.dark[5]
         : theme.colors.gray[4],
     maxWidth: '48rem',
+    minHeight: '400px'
   },
   header: {
     backgroundColor: 'transparent',
@@ -39,6 +40,7 @@ const useStyles = createStyles((theme, { title }: IModal) => ({
     paddingLeft: '2rem',
     paddingRight: '2rem',
     paddingBottom: '2rem',
+    position: 'relative'
   },
 }));
 

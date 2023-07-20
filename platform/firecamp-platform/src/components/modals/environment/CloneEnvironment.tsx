@@ -24,7 +24,7 @@ type TModalMeta = {
   envId: string;
 };
 
-const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
+const CloneEnvironment: FC<IModal> = ({ opened, onClose = () => {} }) => {
   const { open: openTab } = useTabStore.getState();
   const { explorer } = useExplorerStore.getState();
   const { collections } = explorer;
@@ -113,70 +113,80 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
       });
   };
 
-  if (isFetching) {
-    return (
-      <Modal.Body>
-        <ProgressBar active={isRequesting} />
-        <div className="flex items-center justify-center h-full w-full">
-          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2 text-center">
-            Fetching...
-          </label>
-        </div>
-      </Modal.Body>
-    );
-  }
-
   return (
-    <>
-      {/* <Modal.Header className="with-divider">
-        <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
-          Clone Environment
-        </div>
-      </Modal.Header> */}
-      <Modal.Body>
-        <ProgressBar active={isRequesting} />
-        <div className="p-4">
-          <div className="">
-            <div className="items-center mb-4">
-              <label
-                className="text-app-foreground text-sm block mb-1"
-                htmlFor="envBane"
-              >
-                Collection Name
-              </label>
-              <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive w-full relative mb-2">
-                {collection?.name}
-              </label>
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      size={500}
+      classNames={{
+        content: 'h-[750px]'
+      }}
+      title={
+        !isFetching ? (
+          <>
+            <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
+              Clone Environment
             </div>
-
-            <div className="items-center mb-4">
-              <label
-                className="text-app-foreground text-sm block mb-1"
-                htmlFor="envBane"
-              >
-                Environment Name
-              </label>
-              <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive w-full relative mb-2">
-                {env.name}
-              </label>
-            </div>
-
-            <Input
-              autoFocus={true}
-              label="Enter New Name For Cloned Environment"
-              placeholder="new name for cloned environment"
-              name={'name'}
-              value={name}
-              onChange={onChangeName}
-              onKeyDown={() => {}}
-              onBlur={() => {}}
-              error={error.name}
-              // iconPosition="right"
-              // icon={<VscEdit />}
-            />
+          </>
+        ) : (
+          <></>
+        )
+      }
+    >
+      {isFetching ? (
+        <>
+          <ProgressBar active={isRequesting} />
+          <div className="flex items-center justify-center h-full w-full">
+            <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2 text-center">
+              Fetching...
+            </label>
           </div>
+        </>
+      ) : (
+        <>
+          <ProgressBar active={isRequesting} />
+          <div className="p-4">
+            <div className="">
+              <div className="items-center mb-4">
+                <label
+                  className="text-app-foreground text-sm block mb-1"
+                  htmlFor="envBane"
+                >
+                  Collection Name
+                </label>
+                <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive w-full relative mb-2">
+                  {collection?.name}
+                </label>
+              </div>
 
-          {/* <div className="">
+              <div className="items-center mb-4">
+                <label
+                  className="text-app-foreground text-sm block mb-1"
+                  htmlFor="envBane"
+                >
+                  Environment Name
+                </label>
+                <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive w-full relative mb-2">
+                  {env.name}
+                </label>
+              </div>
+
+              <Input
+                autoFocus={true}
+                label="Enter New Name For Cloned Environment"
+                placeholder="new name for cloned environment"
+                name={'name'}
+                value={name}
+                onChange={onChangeName}
+                onKeyDown={() => {}}
+                onBlur={() => {}}
+                error={error.name}
+                // iconPosition="right"
+                // icon={<VscEdit />}
+              />
+            </div>
+
+            {/* <div className="">
             <label
               className="text-app-foreground text-sm mb-1 block"
               htmlFor="variables"
@@ -194,54 +204,55 @@ const CloneEnvironment: FC<IModal> = ({ onClose = () => {} }) => {
             </span>
           </div> */}
 
-          <div className="mt-4">
-            <label
-              className="text-app-foreground text-sm mb-1 block"
-              htmlFor="variables"
-            >
-              Variables
-            </label>
-            <span className="text-sm font-normal text-app-foreground-inactive block mt-1">
-              Variables will be valid JSON in key-value pair. ex.{' '}
-              {`{ "host": "https://myapi.com" }`}
-            </span>
-            <Editor
-              language={EEditorLanguage.Json}
-              value={env.variables}
-              onChange={() => {}}
-              readOnly={true}
-              disabled={true}
-              height={'280px'}
-              monacoOptions={{
-                extraEditorClassName: `border border-input-border rounded-sm p-2 leading-5 
+            <div className="mt-4">
+              <label
+                className="text-app-foreground text-sm mb-1 block"
+                htmlFor="variables"
+              >
+                Variables
+              </label>
+              <span className="text-sm font-normal text-app-foreground-inactive block mt-1">
+                Variables will be valid JSON in key-value pair. ex.{' '}
+                {`{ "host": "https://myapi.com" }`}
+              </span>
+              <Editor
+                language={EEditorLanguage.Json}
+                value={env.variables}
+                onChange={() => {}}
+                readOnly={true}
+                disabled={true}
+                height={'280px'}
+                monacoOptions={{
+                  extraEditorClassName: `border border-input-border rounded-sm p-2 leading-5 
                   outline-none placeholder-input-placeholder 
                   text-base focus:bg-input-background-focus w-full
                   bg-input-background`,
-                fontSize: '14px',
-                height: '250px',
-                wordWrap: 'off',
-                readOnly: true,
-              }}
-              className="!h-80"
-            />
-          </div>
-        </div>
-        <div className="p-4">
-          <TabHeader className="!p-0">
-            <TabHeader.Right>
-              <Button text="Cancel" onClick={(e) => onClose()} ghost xs />
-              <Button
-                text={isRequesting ? 'Cloning...' : 'Clone Environment'}
-                onClick={onCreate}
-                disabled={isRequesting}
-                primary
-                xs
+                  fontSize: '14px',
+                  height: '250px',
+                  wordWrap: 'off',
+                  readOnly: true,
+                }}
+                className="!h-80"
               />
-            </TabHeader.Right>
-          </TabHeader>
-        </div>
-      </Modal.Body>
-    </>
+            </div>
+          </div>
+          <div className="p-4">
+            <TabHeader className="!p-0">
+              <TabHeader.Right>
+                <Button text="Cancel" onClick={(e) => onClose()} ghost xs />
+                <Button
+                  text={isRequesting ? 'Cloning...' : 'Clone Environment'}
+                  onClick={onCreate}
+                  disabled={isRequesting}
+                  primary
+                  xs
+                />
+              </TabHeader.Right>
+            </TabHeader>
+          </div>
+        </>
+      )}
+    </Modal>
   );
 };
 

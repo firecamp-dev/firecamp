@@ -6,7 +6,7 @@ import { usePlatformStore } from '../../../store/platform';
 import './workspace.scss';
 
 const SwitchWorkspace: FC<IModal> = ({
-  isOpen = false,
+  opened = false,
   onClose = () => {},
 }) => {
   const { switchingOrg, unsetSwitchingOrg } = usePlatformStore((s) => ({
@@ -17,7 +17,7 @@ const SwitchWorkspace: FC<IModal> = ({
   const [workspaces, setWorkspaces] = useState([]);
 
   useEffect(() => {
-    if (!isOpen) return () => {};
+    if (!opened) return () => {};
     const orgId = localStorage.getItem('switchToOrg');
     setFetchWrsFlag(true);
     Rest.organization
@@ -50,7 +50,7 @@ const SwitchWorkspace: FC<IModal> = ({
         else
           return (
             <>
-              <div className="p-4">
+              <div className="py-4 ">
                 <div className="text-sm">
                   <label className="font-semibold text-app-foreground-inactive block">
                     {switchingOrg?.name}
@@ -63,7 +63,7 @@ const SwitchWorkspace: FC<IModal> = ({
                   </span>
                 </div>
               </div>
-              <div className="pl-4 pb-4 pr-2 overflow-auto visible-scrollbar h-80 mr-2">
+              <div className="pb-4 overflow-auto visible-scrollbar h-80 mr-1">
                 {workspaces.map((w) => (
                   <WorkspaceCard
                     key={w.__ref.id}
@@ -83,18 +83,21 @@ const SwitchWorkspace: FC<IModal> = ({
   };
 
   return (
-    <>
-      {/* <Modal.Header className="with-divider">
-        <div className="text-lg leading-5 p-4 flex items-center font-medium">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      size={440}
+      title={
+        <div className="text-lg leading-5 flex items-center font-medium">
           Switch Workspace
         </div>
-      </Modal.Header> */}
-      <Modal.Body>
+      }
+    >
+      <>
         <ProgressBar active={isFetchingWrs} />
         {renderBody(isFetchingWrs)}
-      </Modal.Body>
-      <Modal.Footer></Modal.Footer>
-    </>
+      </>
+    </Modal>
   );
 };
 
