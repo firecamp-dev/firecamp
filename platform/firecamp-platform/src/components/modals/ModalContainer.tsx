@@ -63,9 +63,9 @@ export const ModalContainer = () => {
 
       // Auth
       case EPlatformModalTypes.SignIn:
-        return <SignIn isOpen={isOpen} onClose={close} />;
+        return <SignIn opened={isOpen} onClose={close} />;
       case EPlatformModalTypes.SignInWithEmail:
-        return <SignInWithEmail isOpen={isOpen} onClose={close} />;
+        return <SignInWithEmail opened={isOpen} onClose={close} />;
       case EPlatformModalTypes.SignUp:
         return <SignUp isOpen={isOpen} onClose={close} />;
       case EPlatformModalTypes.ForgotPassword:
@@ -92,6 +92,9 @@ export const ModalContainer = () => {
     [EPlatformModalTypes.InviteMembers]: 'Invite Members To Join The Workspace',
   }
 
+  if([EPlatformModalTypes.SignInWithEmail].includes(currentOpenModal)){
+    return renderModal(currentOpenModal)
+  }
   return (
     <Modal isOpen={isOpen} onClose={close} title={MODAL_TITLE[currentOpenModal]} {...modalProps}>
       {renderModal(currentOpenModal)}

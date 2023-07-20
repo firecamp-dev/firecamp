@@ -1,32 +1,10 @@
 import { FC } from 'react';
-import { ScrollBar } from '@firecamp/ui';
 import { Modal as MantineModal, ScrollArea } from '@mantine/core';
-import { ModalProps } from '@mantine/core';
 import { createStyles } from '@mantine/core';
-interface IModal extends ModalProps {
-  /**
-   * Is modal open or not
-   */
-  isOpen?: boolean;
-}
-interface IBody {
-  id?: string;
-  children?: any;
-  className?: string;
-  scrollbar?: boolean;
-}
-
-interface IFooter {
-  id?: string;
-  children?: any;
-  className?: string;
-}
+import { IModal } from './Modal.interface';
 
 // custom styles for variants
 const useStyles = createStyles((theme, { title }: IModal) => ({
-  // root: {
-
-  // },
   content: {
     backgroundColor:
       theme.colorScheme === 'light'
@@ -37,11 +15,6 @@ const useStyles = createStyles((theme, { title }: IModal) => ({
         ? theme.colors.dark[5]
         : theme.colors.gray[4],
     maxWidth: '48rem',
-    // padding: '1rem',
-
-    // width: '100%',
-    // maxHeight: '90vh',
-    // minHeight: '400px'
   },
   header: {
     backgroundColor: 'transparent',
@@ -63,48 +36,42 @@ const useStyles = createStyles((theme, { title }: IModal) => ({
       : {}),
   },
   body: {
-    padding: '1rem',
+    paddingLeft: '2rem',
+    paddingRight: '2rem',
+    paddingBottom: '2rem',
   },
 }));
 
-const Modal: FC<IModal> & {
-  Body: FC<IBody>;
-  Footer: FC<IFooter>;
-} = ({
+const Modal: FC<IModal> = ({
   id = '',
-  isOpen = false,
   opened = false,
   classNames = {},
   onClose = () => {},
   children = <></>,
   ...props
 }) => {
-  // console.log(`modal-props...`, props);
   const { classes, cx, theme } = useStyles({
     title: props.title,
-    opened: isOpen || opened,
+    opened,
     onClose: () => {},
+  });
+  console.log(`modal-props...`, classNames, props, {
+    ...classNames,
+    content: cx('invisible-scrollbar', classNames.content, classes.content),
+    header: cx(classNames.header, classes.header),
   });
   return (
     <MantineModal
-      opened={isOpen || opened}
+      opened={opened}
       onClose={() => onClose()}
       id={id}
       centered
       classNames={{
         ...classNames,
-        content: cx('invisible-scrollbar', classNames.content, classes.content),
-        header: cx(classNames.header, classes.header),
-        // body: 'invisible-scrollbar '
+        content: cx('invisible-scrollbar', classes.content, classNames.content),
+        header: cx(classes.header, classNames.header),
+        body: cx(classes.body, classNames.body),
       }}
-      // styles={{
-      // body: {
-      //   display: 'flex',
-      //   flexDirection: 'column',
-      //   minHeight: '400px',
-      //   maxHeight: '90vh',
-      // }
-      // }}
       scrollAreaComponent={ScrollArea.Autosize}
       closeButtonProps={{
         bg:
@@ -118,28 +85,5 @@ const Modal: FC<IModal> & {
     </MantineModal>
   );
 };
-let Body: FC<IBody> = ({ children = '' }) => {
-  return <div className="p-4">{children}</div>;
-  return (
-    <ScrollBar
-      className="p-4 pt-0 flex-1 overflow-y-auto max-h-48"
-      transparent
-      fullHeight
-    >
-      {/* provide static height to display the scrollbar */}
-      <>{children}</>
-    </ScrollBar>
-  );
-};
 
-const Footer: FC<IFooter> = ({ id = '', children = '', className = '' }) => {
-  return (
-    <div className={className ?? 'p-4 pt-0'} id={id}>
-      {children}
-    </div>
-  );
-};
-
-Modal.Body = Body;
-Modal.Footer = Footer;
 export default Modal;

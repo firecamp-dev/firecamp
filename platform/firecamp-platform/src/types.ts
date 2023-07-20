@@ -92,10 +92,7 @@ export const EPlatformModalDefaultProps = {
   // { height: '750px', width: '500px' },
 
   // auth
-  [EPlatformModalTypes.SignIn]: {
-    size: 440,
-  },
-  [EPlatformModalTypes.SignInWithEmail]: { size: 440 },
+
   [EPlatformModalTypes.SignUp]: { size: 440 },
   [EPlatformModalTypes.RefreshToken]: { closeOnEscape: false },
   [EPlatformModalTypes.ForgotPassword]: { size: 440 },
