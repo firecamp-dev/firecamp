@@ -94,7 +94,8 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
       onClose={_close}
       size={400}
       classNames={{
-        content: 'p-6'
+        header: 'border-0 px-6 pt-6',
+        
       }}
       title={
         <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
@@ -104,10 +105,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
     >
       <ProgressBar active={state.isExecuting} />
       <>
-        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
-          {header || `THIS IS A HEADER PLACE`}
-        </label>
-        <div>
+        <div className='h-[340px]'>
           <div className="mt-4">
             <Input
               autoFocus={true}

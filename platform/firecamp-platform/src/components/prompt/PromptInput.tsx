@@ -85,48 +85,51 @@ export const PromptInput: FC<IPromptInput> = ({
       onClose={_close}
       size={400}
       classNames={{
-        content: 'min-h-0'
+        header: 'border-0',
+        body: 'px-6',
+        content: 'min-h-0',
       }}
+      title={
+        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative px-2">
+          {header || `THIS IS A HEADER PLACE`}
+        </label>
+      }
     >
-        <ProgressBar active={state.isExecuting} />
-        <div className="px-2 py-4">
-          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
-            {header || `THIS IS A HEADER PLACE`}
-          </label>
-          <div className="mt-4">
-            <Input
-              autoFocus={true}
-              label={label}
-              placeholder={placeholder}
-              name={'promptInput'}
-              value={state.value}
-              onChange={_onChangeValue}
-              onKeyDown={_onKeyDown}
-              onBlur={() => {}}
-              error={state.error}
-            />
-          </div>
-          <TabHeader className="!px-0">
-            <TabHeader.Right>
-              <Button
-                text={texts?.btnCancel || `Cancel`}
-                onClick={_close}
-                ghost
-                xs
-              />
-              <Button
-                text={
-                  state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
-                }
-                onClick={_onClickOk}
-                disabled={state.isExecuting}
-                primary
-                xs
-              />
-            </TabHeader.Right>
-          </TabHeader>
+      <ProgressBar active={state.isExecuting} />
+      <div className="">
+        <div className="">
+          <Input
+            autoFocus={true}
+            label={label}
+            placeholder={placeholder}
+            name={'promptInput'}
+            value={state.value}
+            onChange={_onChangeValue}
+            onKeyDown={_onKeyDown}
+            onBlur={() => {}}
+            error={state.error}
+          />
         </div>
-
+        <TabHeader className="!px-0">
+          <TabHeader.Right>
+            <Button
+              text={texts?.btnCancel || `Cancel`}
+              onClick={_close}
+              ghost
+              xs
+            />
+            <Button
+              text={
+                state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
+              }
+              onClick={_onClickOk}
+              disabled={state.isExecuting}
+              primary
+              xs
+            />
+          </TabHeader.Right>
+        </TabHeader>
+      </div>
     </Modal>
   );
 };
