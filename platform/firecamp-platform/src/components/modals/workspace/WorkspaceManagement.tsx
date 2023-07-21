@@ -18,7 +18,7 @@ enum ETabTypes {
   Members = 'members',
 }
 const WorkspaceManagement: FC<IModal> = ({
-  isOpen = false,
+  opened = false,
   onClose = () => {},
 }) => {
   let { workspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
@@ -104,18 +104,25 @@ const WorkspaceManagement: FC<IModal> = ({
   };
 
   return (
-    <>
-      <Modal.Header className="with-divider">
-        <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={
+        <div className="text-lg leading-5 px-2 flex items-center font-medium">
           Workspace Management
         </div>
-      </Modal.Header>
-      <Modal.Body>
+      }
+      size={550}
+      classNames={{
+        body: '!p-4 h-[450px]'
+      }}
+    >
+      <>
         <ProgressBar active={isRequesting} />
         <Container>
           <Container.Header>
             <SecondaryTab
-              className="flex items-center !pt-3 w-full"
+              className="flex items-center w-full"
               list={tabs}
               activeTab={activeTab}
               onSelect={(tabId: ETabTypes) => setActiveTab(tabId)}
@@ -123,8 +130,8 @@ const WorkspaceManagement: FC<IModal> = ({
           </Container.Header>
           <Container.Body>{renderTab(activeTab)}</Container.Body>
         </Container>
-      </Modal.Body>
-    </>
+      </>
+    </Modal>
   );
 };
 

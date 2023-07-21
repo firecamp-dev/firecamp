@@ -84,7 +84,6 @@
     "react-ga": "^3.1.2",
     "react-hook-form": "^6.8.1",
     "react-hotkeys-hook": "^3.3.1",
-    "react-responsive-modal": "^6.2.0",
     "redux": "^3.2.1",
     "xml-js": "^1.6.9",
     "xmljson": "^0.2.0",

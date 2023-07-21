@@ -200,7 +200,7 @@ const BodyTypeDropDown: FC<any> = ({
       onSelect={(selected) => onSelect(selected)}
       classNames={{
         dropdown: '!pt-0 -mt-2',
-        label: 'uppercase pl-2 font-sans',
+        label: 'uppercase pl-2  ',
         item: '!px-4',
       }}
       width={144}

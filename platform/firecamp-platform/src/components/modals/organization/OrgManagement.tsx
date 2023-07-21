@@ -11,7 +11,7 @@ import {
 import { _misc } from '@firecamp/utils';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 
-const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
+const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   // let { create, checkNameAvailability } = useWorkspaceStore((s: IWorkspaceStore)=>({
   //   create: s.create,
   //   checkNameAvailability: s.checkNameAvailability
@@ -38,13 +38,20 @@ const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   };
 
   return (
-    <>
-      <Modal.Header>
-        <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium  border-b border-app-border ">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      size={600}
+      classNames={{
+        body: 'h-[80vh]',
+      }}
+      title={
+        <div className="text-lg leading-5 px-6 flex items-center font-medium">
           Organization Management
         </div>
-      </Modal.Header>
-      <Modal.Body>
+      }
+    >
+      <>
         <SecondaryTab
           className="flex items-center p-4 pb-0"
           list={tabs}
@@ -52,8 +59,8 @@ const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
           onSelect={setActiveTab}
         />
         {renderTab(activeTab)}
-      </Modal.Body>
-      <Modal.Footer className="!py-3 border-t border-app-border ">
+      </>
+      <div className="!py-3 border-t border-app-border ">
         <TabHeader>
           <TabHeader.Right>
             <Button text="Cancel" onClick={(e) => onClose(e)} ghost xs />
@@ -66,8 +73,8 @@ const OrgManagement: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             />
           </TabHeader.Right>
         </TabHeader>
-      </Modal.Footer>
-    </>
+      </div>
+    </Modal>
   );
 };
 export default OrgManagement;
@@ -79,11 +86,11 @@ const EditInfoTab: FC<any> = () => {
   });
 
   return (
-    <div className="p-6">
+    <div className="px-6 py-3">
       <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
         ADD NEW WORKSPACE INFO
       </label>
-      <div className="mt-8">
+      <div className="mt-4">
         <Input
           autoFocus={true}
           label="Name"

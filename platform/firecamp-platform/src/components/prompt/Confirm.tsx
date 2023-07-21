@@ -38,35 +38,39 @@ const ConfirmationModal: FC<IConfirm> = ({
 
   return (
     <Modal
-      isOpen={state.isOpen}
+      opened={state.isOpen}
       onClose={_close}
-      width={'400px'}
-      className="min-h-0"
+      size={400}
+      classNames={{
+        header: 'border-0',
+        body: 'px-6',
+        content: 'min-h-0',
+      }}
+      title={
+        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative px-2">
+          {`CONFIRMATION Required.`}
+        </label>
+      }
     >
-      <Modal.Body>
-        <div className="px-2 py-4">
-          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
-            {`CONFIRMATION Required.`}
-          </label>
-          <div className="my-4">{title}</div>
-          <TabHeader className="!px-0">
-            <TabHeader.Right>
-              <Button
-                text={texts?.btnCancel || `Cancel`}
-                onClick={_close}
-                secondary
-                xs
-              />
-              <Button
-                text={texts?.btnConfirm || 'Confirm'}
-                onClick={_onConfirm}
-                primary
-                xs
-              />
-            </TabHeader.Right>
-          </TabHeader>
-        </div>
-      </Modal.Body>
+      <div>
+        <div className="mb-4">{title}</div>
+        <TabHeader className="!px-0">
+          <TabHeader.Right>
+            <Button
+              text={texts?.btnCancel || `Cancel`}
+              onClick={_close}
+              secondary
+              xs
+            />
+            <Button
+              text={texts?.btnConfirm || 'Confirm'}
+              onClick={_onConfirm}
+              primary
+              xs
+            />
+          </TabHeader.Right>
+        </TabHeader>
+      </div>
     </Modal>
   );
 };

@@ -1,118 +1,113 @@
-import { useState } from "react";
-import { VscGithub } from "@react-icons/all-files/vsc/VscGithub";
-import { VscLock } from "@react-icons/all-files/vsc/VscLock";
-import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
-import { GrGoogle } from "@react-icons/all-files/gr/GrGoogle";
+import { useState } from 'react';
+import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
+import { VscLock } from '@react-icons/all-files/vsc/VscLock';
+import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 
-import { default as Modal } from './Modal';
-import { default as Button } from '../buttons/Button';
-import { default as FormField } from '../form/FormField';
-import { default as Input } from '../input/Input';
+import { Modal, Button, FormField, Input, IModal } from '@firecamp/ui';
 
 export default {
-    title: "UI-Kit/Modal",
-    component: Modal,
-    argTypes: {
-        className: ""
-    }
+  title: 'UI-Kit/Modal',
+  component: Modal,
+  argTypes: {
+    className: '',
+  },
 };
 
-const Template = (args: any) => {
-    const [isOpen, toggleOpen] = useState(true);
+const Template = ({ opened, ...args }: IModal) => {
+  const [isOpen, openModal] = useState(opened);
 
-    return <div className="bg-app-background h-screen w-screen block">
-        <Button text="Open Modal" onClick={() => toggleOpen(true)} />
-        <Modal {...args} isOpen={isOpen} onClose={() => toggleOpen(false)}>
-            <Modal.Header >
-                {args?.header() || ''}
-            </Modal.Header>
-            <Modal.Body >
-                {args?.body() || ''}
-            </Modal.Body>
-            <Modal.Footer >
-                {args?.footer() || ''}
-            </Modal.Footer>
-        </Modal>
+  return (
+    <div>
+      <Button text="Open Modal" onClick={() => openModal(true)} />
+      <Modal opened={isOpen} onClose={() => openModal(false)} {...args} />
     </div>
+  );
 };
 
 export const ModalDemo = Template.bind({});
-
 ModalDemo.args = {
-    className: 'test',
-    header: () => <ModalHeader />,
-    body: () => <ModalBody />,
-    footer: () => <ModalFooter />
+  opened: true,
+  title: <div>SignIn to Firecamp</div>,
+  children: <FormPreview />,
 };
 
-export const SignUpDemo = Template.bind({});
-
-SignUpDemo.args = {
-    className: 'test',
-    header: () => <SignUpHeader />,
-    body: () => <SignUpBody />,
-    footer: () => <SignUpFooter />
+export const ModalTitleWithoutBorder = Template.bind({});
+ModalTitleWithoutBorder.args = {
+  opened: true,
+  title: <div>SignIn to Firecamp</div>,
+  classNames: {
+    header: 'border-0',
+  },
+  children: <FormPreview />,
+};
+export const ModalContentOverflow = Template.bind({});
+ModalContentOverflow.args = {
+  opened: true,
+  title: <div>SignIn to Firecamp</div>,
+  children: (
+    <>
+      <FormPreview overflowContent />
+      <FormPreview overflowContent />
+    </>
+  ),
 };
 
-const SignUpHeader = () => {
-    return (
-        <div className="text-modal-foreground-active text-lg text-center mb-6">sign in to your firecamp account</div>
-    )
-}
-
-const SignUpBody = () => {
-    return (
-        <div>
-            <div className="" >
-                <div className="text-center w-full mb-5">new to firecamp? <a className="text-primaryColor cursor-pointer">sign up</a></div>
-                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-input-background-focus hover:border-transparent hover:text-modal-foreground-active mb-6"> <VscGithub size={20} className="mr-2" /> continue with <span className="text-modal-foreground-active ml-2">github</span></a>
-                <a href="#" className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-input-background-focus hover:border-transparent hover:text-modal-foreground-active mb-6"> <GrGoogle size={20} className="mr-2" /> continue with <span className="text-modal-foreground-active ml-2">google</span></a>
-            </div>
-            <hr className="border-modal-border -ml-8 -mr-8 mb-6" />
-            <div className="">
-                <FormField label="Username or E-mail" >
-                    <Input
-                        placeholder='Username or E-mail'
-                        iconPosition='left'
-                        icon={<VscAccount title="Account" size={16} />} />
-                </FormField>
-                <FormField label="password">
-                    <Input placeholder='password' iconPosition='left' icon={<VscLock title="Account" size={16} />} />
-                </FormField>
-                <Button text="sign in" fullWidth primary sm/>
-                <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm -mt-4">Already have an account? Sign In</a>
-            </div>
+function FormPreview({ overflowContent = false }) {
+  return (
+    <div className="pt-6">
+      <div>
+        <div className="">
+          <a
+            href="#"
+            className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-input-background-focus hover:border-transparent hover:text-modal-foreground-active mb-6"
+          >
+            {' '}
+            <VscGithub size={20} className="mr-2" /> continue with{' '}
+            <span className="text-modal-foreground-active ml-2">github</span>
+          </a>
         </div>
-    )
-}
 
-const SignUpFooter = () => {
-    return (
-        <div className="text-sm mt-6">
-            By moving forward, you acknowledge that you have read and accept the <a className="text-modal-foreground-active cursor-pointer">Terms of Service</a> and <a className="text-modal-foreground-active">Privacy Policy.</a>
+        <div className="relative my-4 flex justify-center items-center">
+          <hr className="border-t border-app-border w-full" />
+          <span className="text-xs text-app-foreground-inactive bg-modal-background absolute px-1">
+            OR
+          </span>
         </div>
-    )
-}
-
-const ModalHeader = () => {
-    return (
-        <div className="text-modal-foreground-active text-lg mb-6">Modal Header</div>
-    )
-}
-
-const ModalBody = () => {
-    return (
-        <div>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        <div className="">
+          <div className="text-center w-full text-sm mb-5">
+            Sign in again to continue
+          </div>
+          <FormField label="Username or E-mail">
+            <Input
+              value="dnishchit@gmail.com"
+              iconPosition="left"
+              icon={<VscAccount title="Account" size={16} />}
+            />
+          </FormField>
+          <FormField label="password">
+            <Input
+              placeholder="password"
+              iconPosition="left"
+              icon={<VscLock title="Account" size={16} />}
+            />
+          </FormField>
+          <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm">
+            Forgot Password?
+          </a>
+          <Button text="sign in" fullWidth primary sm />
         </div>
-    )
-}
+      </div>
 
-const ModalFooter = () => {
-    return (
-        <div className="text-sm mt-6">
-            Modal Footer
-        </div>
-    )
+      {overflowContent ? (
+        <>
+          <hr className="border-modal-border -ml-8 -mr-8 mb-6 mt-6" />
+          <div className="text-sm mt-6">
+            <div className="text-center">SignOut Forcefully</div>
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
+    </div>
+  );
 }

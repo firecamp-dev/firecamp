@@ -1,101 +1,93 @@
 import { FC } from 'react';
-import cx from 'classnames';
-import { VscClose } from '@react-icons/all-files/vsc/VscClose';
-import ResponsiveModal from 'react-responsive-modal';
-import 'react-responsive-modal/styles.css';
-import './Modal.scss';
+import { Modal as MantineModal, ModalProps, ScrollArea } from '@mantine/core';
+import { createStyles } from '@mantine/core';
 
-import { Container, Row } from '../../ui-kit';
+export interface IModal extends ModalProps {}
 
-import { IModal, IHeader, IBody, IFooter } from './interfaces/Modal.interface';
+// custom styles for variants
+const useStyles = createStyles((theme, { title }: IModal) => ({
+  content: {
+    borderRadius: '0px',
+    backgroundColor:
+      theme.colorScheme === 'light'
+        ? theme.colors.gray[1]
+        : theme.colors.dark[6],
+    color:
+      theme.colorScheme === 'light'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[4],
+    maxWidth: '48rem',
+    minHeight: '400px',
+  },
+  header: {
+    backgroundColor: 'transparent',
+    color:
+      theme.colorScheme === 'light'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[4],
+    paddingRight: '1rem',
+    paddingTop: '1rem',
+    paddingBottom: !!title ? '1rem' : '0px',
+    ...(!!title
+      ? {
+          borderBottom: `1px solid ${
+            theme.colorScheme === 'light'
+              ? theme.colors.gray[4]
+              : theme.colors.dark[4]
+          }`,
+          backgroundColor:
+          theme.colorScheme === 'light'
+            ? theme.colors.gray[1]
+            : theme.colors.dark[6],
+        }
+      : {}),
+  },
+  body: {
+    paddingLeft: '2rem',
+    paddingRight: '2rem',
+    paddingBottom: '2rem',
+    position: 'relative',
+  },
+}));
 
-const Modal: FC<IModal> & {
-  Header: FC<IHeader>;
-  Body: FC<IBody>;
-  Footer: FC<IFooter>;
-} = ({
+const Modal: FC<IModal> = ({
   id = '',
-  showCloseIcon = true,
-  isOpen = false,
-  className = '',
-  modalClass = '',
-  modalConfig = {},
+  opened = false,
+  classNames = {},
   onClose = () => {},
-  children = '',
-  height,
-  width,
+  children = <></>,
+  ...props
 }) => {
-  return (
-    <ResponsiveModal
-      open={isOpen}
-      onClose={() => {
-        onClose();
-      }}
-      center
-      closeIcon={<VscClose size={20} className="cursor-pointer z-50" />}
-      {...modalConfig}
-    >
-      <div
-        className={cx(
-          className,
-          'max-w-screen-md min-w-screen-md bg-modal-background text-app-foreground w-full relative z-9999 max-h-modal flex fc-modal-wrapper h-full'
-        )}
-        style={{ height: height, width: width }}
-        id={id}
-      >
-        {/* {showCloseIcon ? (
-            <VscClose
-              size={20}
-              className="absolute top-3 right-3 cursor-pointer z-50"
-              onClick={(e) => {
-                onClose();
-              }}
-            />
-          ) : <></>} */}
-        {children}
-      </div>
-    </ResponsiveModal>
-  );
-};
+  const { classes, cx, theme } = useStyles({
+    title: props.title,
+    opened,
+    onClose: () => {},
+  });
 
-// `id`: is not being updated on the element
-let Header: FC<IHeader> = ({ id = '', children = '', className = '' }) => {
   return (
-    <Container.Header className={className || ''} id={id}>
-      {children}
-    </Container.Header>
-  );
-};
-
-// `id`: is not being updated on the element
-let Body: FC<IBody> = ({
-  id = '',
-  children = '',
-  className = '',
-  scrollbar = true,
-}) => {
-  return (
-    <Container.Body
-      className={cx(className, 'flex flex-col overflow-auto thin !p-4', {
-        'visible-scrollbar': scrollbar,
-      })}
+    <MantineModal
+      opened={opened}
+      onClose={() => onClose()}
       id={id}
+      centered
+      classNames={{
+        ...classNames,
+        content: cx('invisible-scrollbar', classes.content, classNames.content),
+        header: cx(classes.header, classNames.header),
+        body: cx(classes.body, classNames.body),
+      }}
+      scrollAreaComponent={ScrollArea.Autosize}
+      closeButtonProps={{
+        bg:
+          theme.colorScheme === 'light'
+            ? theme.colors.gray[1]
+            : theme.colors.dark[6],
+      }}
+      {...props}
     >
       {children}
-    </Container.Body>
+    </MantineModal>
   );
 };
-
-let Footer: FC<IFooter> = ({ id = '', children = '', className = '' }) => {
-  return (
-    <Container.Footer className={className || 'flex'} id={id}>
-      <Row className="w-full with-divider">{children}</Row>
-    </Container.Footer>
-  );
-};
-
-Modal.Header = Header;
-Modal.Body = Body;
-Modal.Footer = Footer;
 
 export default Modal;

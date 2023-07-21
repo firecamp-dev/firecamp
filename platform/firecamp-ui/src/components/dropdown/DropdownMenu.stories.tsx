@@ -318,7 +318,7 @@ export const BodyTab = () => {
       onSelect={(value: any) => setSelected(value.name)}
       classNames={{
         dropdown: 'pt-0 pb-2 -mt-2',
-        label: 'uppercase pl-2 font-sans',
+        label: 'uppercase pl-2',
         item: '!px-4',
       }}
       width={144}
@@ -703,7 +703,7 @@ export const EnvCollectionOption = () => {
       onSelect={(v) => setSelected(v.name)}
       classNames={{
         dropdown: '!pt-0 !pb-2 ',
-        label: 'uppercase font-sans',
+        label: 'uppercase  ',
         item: '!px-5',
       }}
       sm
@@ -728,7 +728,7 @@ export const MemberRoleSelection = () => {
         )}
         classNames={{
           dropdown: '!py-0',
-          label: 'uppercase font-sans !text-start',
+          label: 'uppercase   !text-start',
         }}
         sm
         options={[

@@ -12,7 +12,7 @@ enum EInviteMemberTabs {
   OrgMembers = 'orgMembers',
 }
 
-const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
+const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const [isFetchingMembers, setIsFetchingMembers] = useState(false);
   const [orgMembers, setOrgMembers] = useState([]);
 
@@ -86,14 +86,21 @@ const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   }, [activeTab]);
 
   return (
-    <>
-      <Modal.Header className="border-b border-app-border">
-        <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      size={576}
+      classNames={{
+        content: 'h-[700px]',
+        body: 'h-[480px]'
+      }}
+      title={
+        <div className="text-lg leading-5 px-1 flex items-center font-medium">
           Invite Members To Join The Workspace
         </div>
-      </Modal.Header>
-      <Modal.Body scrollbar={false}>
-        <div className="p-4 h-fit flex flex-col">
+      }
+    >
+        <div className="!pt-4 h-fit flex flex-col">
           <SecondaryTab
             className="flex items-center pb-6 -ml-2"
             list={tabs}
@@ -114,8 +121,7 @@ const InviteMembers: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
             />
           )}
         </div>
-      </Modal.Body>
-    </>
+    </Modal>
   );
 };
 export default InviteMembers;

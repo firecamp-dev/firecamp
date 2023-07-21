@@ -50,7 +50,7 @@ const InviteOrgMembers: FC<IProps> = ({
 
   const _role = RoleOptions.find((r) => r.id == member.role);
   return (
-    <Container className="gap-2">
+    <Container className="gap-3">
       <Container.Header className="text-base font-semibold leading-3 text-app-foreground-inactive p-6">
         Invite your team colleagues to join the workspace.
       </Container.Header>
