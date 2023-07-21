@@ -85,7 +85,7 @@ export const PromptInput: FC<IPromptInput> = ({
       onClose={_close}
       size={400}
       classNames={{
-        header: 'border-0',
+        header: 'border-0 pb-0',
         body: 'px-6',
         content: 'min-h-0',
       }}
@@ -96,7 +96,7 @@ export const PromptInput: FC<IPromptInput> = ({
       }
     >
       <ProgressBar active={state.isExecuting} />
-      <div className="">
+      <div className="pt-4">
         <div className="">
           <Input
             autoFocus={true}

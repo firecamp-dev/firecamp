@@ -29,8 +29,8 @@ export { default as Input } from './components/input/Input';
 export { default as FileInput } from './components/input/FileInput';
 
 // Modal
-export { default as Modal } from './components/modal/Modalv2';
-export type { IModal } from './components/modal/Modalv2';
+export { default as Modal } from './components/modal/Modal';
+export type { IModal } from './components/modal/Modal';
 
 export { default as SplitView } from './components/split-view/SplitView';
 

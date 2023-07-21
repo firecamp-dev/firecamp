@@ -123,6 +123,18 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
     >
       <MantineProvider
         theme={{
+          // TODO: add preflight css in globalstyles to prevent any styling issue
+          globalStyles: (theme) => ({
+            'button,input,optgroup,select,textarea': {
+              fontFamily: 'inherit',
+              fontSize: '100%',
+              fontWeight: 'inherit',
+              lineHeight: 'inherit',
+              color: 'inherit',
+              margin: 0,
+              padding: 0,
+            },
+          }),
           colorScheme,
           colors: {
             'primary-color': [

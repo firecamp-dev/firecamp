@@ -94,7 +94,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
       onClose={_close}
       size={400}
       classNames={{
-        header: 'border-0 px-6 pt-6',
+        header: 'border-0 px-6 pt-6 pb-0',
         
       }}
       title={
@@ -105,7 +105,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
     >
       <ProgressBar active={state.isExecuting} />
       <>
-        <div className='h-[340px]'>
+        <div className='h-[340px] pt-4'>
           <div className="mt-4">
             <Input
               autoFocus={true}
