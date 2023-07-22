@@ -90,19 +90,22 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
   texts = { ..._texts, ...texts };
   return (
     <Modal
-      isOpen={state.isOpen}
+      opened={state.isOpen}
       onClose={_close}
-      width={'400px'}
-      className="p-6"
-    >
-      <ProgressBar active={state.isExecuting} />
-      <Modal.Header>
+      size={400}
+      classNames={{
+        header: 'border-0 px-6 pt-6 pb-0',
+        
+      }}
+      title={
         <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
           {header || `THIS IS A HEADER PLACE`}
         </label>
-      </Modal.Header>
-      <Modal.Body>
-        <div>
+      }
+    >
+      <ProgressBar active={state.isExecuting} />
+      <>
+        <div className='h-[340px] pt-4'>
           <div className="mt-4">
             <Input
               autoFocus={true}
@@ -124,8 +127,8 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
             collection={collection}
           />
         </div>
-      </Modal.Body>
-      <Modal.Footer className="!pt-4">
+      </>
+      <div className="!pt-4">
         <TabHeader className="!px-0">
           <TabHeader.Right>
             <Button
@@ -145,7 +148,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
             />
           </TabHeader.Right>
         </TabHeader>
-      </Modal.Footer>
+      </div>
     </Modal>
   );
 };

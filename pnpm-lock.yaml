@@ -7,74 +7,19 @@ settings:
 importers:
 
   .:
-    specifiers:
-      '@babel/core': ^7.17.8
-      '@babel/eslint-parser': ^7.18.9
-      '@babel/plugin-proposal-export-default-from': ^7.10.4
-      '@babel/plugin-transform-arrow-functions': ^7.10.4
-      '@babel/plugin-transform-runtime': ^7.10.5
-      '@babel/preset-env': ^7.16.11
-      '@babel/preset-react': ^7.16.7
-      '@babel/preset-typescript': ^7.16.7
-      '@babel/register': ^7.0.0
-      '@react-icons/all-files': ^4.1.0
-      babel-eslint: ^10.1.0
-      babel-loader: ^9.1.0
-      babel-plugin-add-module-exports: ^1.0.4
-      babel-plugin-transform-remove-console: ^6.9.4
-      babel-preset-react-optimize: ^1.0.1
-      chai: ^3.5.0
-      circular-dependency-plugin: ^5.2.0
-      colors: 1.4.0
-      compression-webpack-plugin: ^10.0.0
-      copy-webpack-plugin: ^11.0.0
-      copyfiles: ^2.4.1
-      cross-env: ^7.0.3
-      css-loader: ^6.7.1
-      css-modules-require-hook: ^4.2.3
-      dotenv: ^16.0.1
-      dotenv-vault-core: ^0.7.0
-      eslint: ^8.29.0
-      eslint-config-airbnb: ^19.0.4
-      eslint-plugin-import: ^2.22.0
-      eslint-plugin-jest: ^27.2.1
-      eslint-plugin-jsx: ^0.1.0
-      eslint-plugin-jsx-a11y: ^6.3.1
-      eslint-plugin-react: ^7.20.5
-      file-loader: ^6.2.0
-      html-webpack-plugin: ^5.5.0
-      husky: ^8.0.1
-      ignore-loader: ^0.1.2
-      jest-css-modules: ^2.1.0
-      jest-css-modules-transform: ^4.4.2
-      lint-staged: ^13.1.2
-      lucide-react: ^0.260.0
-      node-polyfill-webpack-plugin: ^2.0.0
-      postcss-loader: ^7.0.2
-      prettier: ^2.6.2
-      react-addons-test-utils: ^15.0.2
-      rimraf: ^5.0.0
-      sass: ^1.51.0
-      sass-loader: ^13.2.0
-      semver: ^7.3.5
-      shelljs: ^0.8.5
-      style-loader: ^3.3.1
-      ts-loader: ^9.2.8
-      ts-node: ^10.9.1
-      typescript: ^5.0.2
-      webpack: ^5.71.0
-      webpack-bundle-analyzer: ^4.5.0
-      webpack-cli: ^5.0.1
-      webpack-dev-server: ^4.9.3
-      webpack-hot-middleware: ^2.25.1
-      webpack-html-plugin: ^0.1.1
-      webpack-httpolyglot-server: ^0.3.0
-      worker-loader: ^3.0.8
     dependencies:
-      '@react-icons/all-files': 4.1.0_react@17.0.2
-      dotenv: 16.0.3
-      dotenv-vault-core: 0.7.0
-      lucide-react: 0.260.0_react@17.0.2
+      '@react-icons/all-files':
+        specifier: ^4.1.0
+        version: 4.1.0(react@17.0.2)
+      dotenv:
+        specifier: ^16.0.1
+        version: 16.0.3
+      dotenv-vault-core:
+        specifier: ^0.7.0
+        version: 0.7.0
+      lucide-react:
+        specifier: ^0.260.0
+        version: 0.260.0(react@17.0.2)
     devDependencies:
       '@babel/core':
         specifier: ^7.17.8
@@ -634,9 +579,6 @@ importers:
       react-hotkeys-hook:
         specifier: ^3.3.1
         version: 3.4.7(react-dom@17.0.2)(react@17.0.2)
-      react-responsive-modal:
-        specifier: ^6.2.0
-        version: 6.4.1(react-dom@17.0.2)(react@17.0.2)
       redux:
         specifier: ^3.2.1
         version: 3.7.2
@@ -737,9 +679,6 @@ importers:
       react-reflex:
         specifier: ^4.0.3
         version: 4.0.9(react-dom@17.0.2)(react@17.0.2)
-      react-responsive-modal:
-        specifier: ^6.2.0
-        version: 6.4.1(react-dom@17.0.2)(react@17.0.2)
       react-table:
         specifier: 7.8.0
         version: 7.8.0(react@17.0.2)
@@ -3221,23 +3160,6 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
-
-  /@bedrock-layout/use-forwarded-ref@1.6.1(react@17.0.2):
-    resolution: {integrity: sha512-GD9A9AFLzFNjr7k6fgerSqxfwDWl+wsPS11PErOKe1zkVz0y7RGC9gzlOiX/JrgpyB3NFHWIuGtoOQqifJQQpw==}
-    peerDependencies:
-      react: ^16.8 || ^17 || ^18
-    dependencies:
-      '@bedrock-layout/use-stateful-ref': 1.4.1(react@17.0.2)
-      react: 17.0.2
-    dev: false
-
-  /@bedrock-layout/use-stateful-ref@1.4.1(react@17.0.2):
-    resolution: {integrity: sha512-4eKO2KdQEXcR5LI4QcxqlJykJUDQJWDeWYAukIn6sRQYoabcfI5kDl61PUi6FR6o8VFgQ8IEP7HleKqWlSe8SQ==}
-    peerDependencies:
-      react: ^16.8 || ^17 || ^18
-    dependencies:
-      react: 17.0.2
-    dev: false
 
   /@cnakazawa/watch@1.0.4:
     resolution: {integrity: sha512-v9kIhKwjeZThiWrLmj0y17CWoyddASLj9O2yvbZkbvw/N3rWOYy9zkV66ursAoVr0mV15bL8g0c4QZUE6cdDoQ==}
@@ -9277,10 +9199,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /body-scroll-lock@3.1.5:
-    resolution: {integrity: sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==}
-    dev: false
-
   /bonjour-service@1.1.0:
     resolution: {integrity: sha512-LVRinRB3k1/K0XzZ2p58COnWvkQknIY6sf0zF2rpErvcJXpMBttEPQSxK+HEXSS9VmpZlDoDnQWv8ftJT20B0Q==}
     dependencies:
@@ -15111,7 +15029,7 @@ packages:
       jest: ^26.0.1 || ^27.0.0
     dependencies:
       '@types/chrome': 0.0.114
-      jest: 28.1.3(@types/node@18.11.18)(ts-node@10.9.1)
+      jest: 28.1.3(@types/node@18.15.11)(ts-node@10.9.1)
     dev: true
 
   /jest-circus@28.1.3:
@@ -15395,7 +15313,7 @@ packages:
       pretty-format: 28.1.3
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.9.1(@types/node@18.11.18)(typescript@4.9.4)
+      ts-node: 10.9.1(@types/node@18.15.11)(typescript@4.9.4)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -16974,7 +16892,7 @@ packages:
     engines: {node: 14 || >=16.14}
     dev: true
 
-  /lucide-react/0.260.0_react@17.0.2:
+  /lucide-react@0.260.0(react@17.0.2):
     resolution: {integrity: sha512-xN6wuhUlcXeS4GsxZpd2DZp+m1jEZPckuCr90nQAXKRNl63GZ4KshIcGmqJEUqEygmv8Rf99MhcwF3DqBqQ9Dg==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
@@ -16982,7 +16900,7 @@ packages:
       react: 17.0.2
     dev: false
 
-  /lunr/2.3.9:
+  /lunr@2.3.9:
     resolution: {integrity: sha512-zTU3DaZaF3Rt9rhN3uBMGQD3dD2/vFQqnvZCDv4dl5iOzq2IZQqTxu90r4E5J+nP70J3ilqVCrbho2eWaeW8Ow==}
     dev: true
 
@@ -19606,19 +19524,6 @@ packages:
       tslib: 2.4.1
       use-callback-ref: 1.3.0(@types/react@17.0.53)(react@17.0.2)
       use-sidecar: 1.1.2(@types/react@17.0.53)(react@17.0.2)
-    dev: false
-
-  /react-responsive-modal@6.4.1(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-WVSo4S5Gq7jCzhTbggOxfejnwRLzBGmCdb6DuGoCLUinlaly6l867tJCbxuW96rpcirxSHJ9oPE8TE4TFk3y4Q==}
-    peerDependencies:
-      react: ^16.8.0 || ^17 || ^18
-      react-dom: ^16.8.0 || ^17 || ^18
-    dependencies:
-      '@bedrock-layout/use-forwarded-ref': 1.6.1(react@17.0.2)
-      body-scroll-lock: 3.1.5
-      classnames: 2.3.2
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
     dev: false
 
   /react-sizeme@3.0.2:

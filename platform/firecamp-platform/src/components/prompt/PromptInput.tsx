@@ -81,51 +81,55 @@ export const PromptInput: FC<IPromptInput> = ({
 
   return (
     <Modal
-      isOpen={state.isOpen}
+      opened={state.isOpen}
       onClose={_close}
-      className="min-h-0"
-      width={'400px'}
+      size={400}
+      classNames={{
+        header: 'border-0 pb-0',
+        body: 'px-6',
+        content: 'min-h-0',
+      }}
+      title={
+        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative px-2">
+          {header || `THIS IS A HEADER PLACE`}
+        </label>
+      }
     >
-      <Modal.Body>
-        <ProgressBar active={state.isExecuting} />
-        <div className="px-2 py-4">
-          <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
-            {header || `THIS IS A HEADER PLACE`}
-          </label>
-          <div className="mt-4">
-            <Input
-              autoFocus={true}
-              label={label}
-              placeholder={placeholder}
-              name={'promptInput'}
-              value={state.value}
-              onChange={_onChangeValue}
-              onKeyDown={_onKeyDown}
-              onBlur={() => {}}
-              error={state.error}
-            />
-          </div>
-          <TabHeader className="!px-0">
-            <TabHeader.Right>
-              <Button
-                text={texts?.btnCancel || `Cancel`}
-                onClick={_close}
-                ghost
-                xs
-              />
-              <Button
-                text={
-                  state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
-                }
-                onClick={_onClickOk}
-                disabled={state.isExecuting}
-                primary
-                xs
-              />
-            </TabHeader.Right>
-          </TabHeader>
+      <ProgressBar active={state.isExecuting} />
+      <div className="pt-4">
+        <div className="">
+          <Input
+            autoFocus={true}
+            label={label}
+            placeholder={placeholder}
+            name={'promptInput'}
+            value={state.value}
+            onChange={_onChangeValue}
+            onKeyDown={_onKeyDown}
+            onBlur={() => {}}
+            error={state.error}
+          />
         </div>
-      </Modal.Body>
+        <TabHeader className="!px-0">
+          <TabHeader.Right>
+            <Button
+              text={texts?.btnCancel || `Cancel`}
+              onClick={_close}
+              ghost
+              xs
+            />
+            <Button
+              text={
+                state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
+              }
+              onClick={_onClickOk}
+              disabled={state.isExecuting}
+              primary
+              xs
+            />
+          </TabHeader.Right>
+        </TabHeader>
+      </div>
     </Modal>
   );
 };

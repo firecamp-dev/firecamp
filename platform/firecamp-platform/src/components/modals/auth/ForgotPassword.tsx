@@ -1,12 +1,13 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Modal, Button, Input, IModal } from '@firecamp/ui';
+import { Mail } from 'lucide-react';
 import _auth from '../../../services/auth';
 import platformContext from '../../../services/platform-context';
 /**
  * ForgotPassword component
  */
-const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
+const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
   const form = useForm();
   let { handleSubmit, errors } = form;
@@ -50,63 +51,61 @@ const ForgotPassword: FC<IModal> = ({ isOpen = false, onClose = () => {} }) => {
   const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);
 
   return (
-    <>
-      <Modal.Header>
-        <img className="mx-auto w-12 mb-6" src={'img/mail-send.png'} />
-        <div className="text-xl mb-2 w-full text-center font-semibold">
-          Enter your Email Address
-        </div>
-        <div className="text-sm text-app-foreground-inactive max-w-xs mx-auto mb-6 text-center px-16">
-          You’ll get the password recovery token in your inbox.
-        </div>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="">
-          <form onSubmit={handleSubmit(_onSubmit)}>
-            <Input
-              placeholder="Enter E-mail"
-              key={'email'}
-              name={'email'}
-              label="Email"
-              registerMeta={{
-                required: true,
-                maxLength: 50,
-                minLength: 1,
-                pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
-              }}
-              useformRef={form}
-              onKeyDown={_onKeyDown}
-              error={
-                errors?.email ? errors?.email?.message || 'Invalid email' : ''
-              }
-            />
-            <Button
-              text={isRequesting ? `Sending...` : `Send`}
-              onClick={handleSubmit(_onSubmit)}
-              fullWidth
-              primary
-              sm
-            />
-          </form>
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <div className="text-sm mt-6">
-          <a
-            className="text-base text-center block"
-            href="#"
-            id="forgotPasswordToken"
-            onClick={(e) => {
-              if (e) e.preventDefault();
-              platformContext.app.modals.openResetPassword();
+    <Modal opened={opened} onClose={onClose} size={440}>
+      <Mail
+        size="48"
+        className="mb-6 mx-auto text-activityBar-foreground-inactive"
+      />
+      <div className="text-xl mb-2 w-full text-center font-semibold">
+        Enter your Email Address
+      </div>
+      <div className="text-sm text-app-foreground-inactive max-w-xs mx-auto mb-6 text-center px-16">
+        You’ll get the password recovery token in your inbox.
+      </div>
+      <div className="">
+        <form onSubmit={handleSubmit(_onSubmit)}>
+          <Input
+            placeholder="Enter E-mail"
+            key={'email'}
+            name={'email'}
+            label="Email"
+            registerMeta={{
+              required: true,
+              maxLength: 50,
+              minLength: 1,
+              pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
             }}
-            tabIndex={1}
-          >
-            Already have a token?
-          </a>
-        </div>
-      </Modal.Footer>
-    </>
+            useformRef={form}
+            onKeyDown={_onKeyDown}
+            error={
+              errors?.email ? errors?.email?.message || 'Invalid email' : ''
+            }
+          />
+          <Button
+            text={isRequesting ? `Sending...` : `Send`}
+            onClick={handleSubmit(_onSubmit)}
+            fullWidth
+            primary
+            sm
+          />
+        </form>
+      </div>
+
+      <div className="text-sm p-4">
+        <a
+          className="text-base text-center block"
+          href="#"
+          id="forgotPasswordToken"
+          onClick={(e) => {
+            if (e) e.preventDefault();
+            platformContext.app.modals.openResetPassword();
+          }}
+          tabIndex={1}
+        >
+          Already have a token?
+        </a>
+      </div>
+    </Modal>
   );
 };
 

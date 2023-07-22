@@ -56,47 +56,6 @@ export enum EPlatformModalTypes {
   SslNProxy = 'sslNProxy',
 }
 
-export const EPlatformModalDefaultProps = {
-  // organization
-  [EPlatformModalTypes.OrgManagement]: { height: '80vh', width: '600px' },
-  [EPlatformModalTypes.SwitchOrg]: { width: '440px', className: 'p-0 !pb-6' },
-
-  // workspace
-  [EPlatformModalTypes.WorkspaceManagement]: {
-    height: '650px',
-    width: '550px',
-  },
-  [EPlatformModalTypes.InviteMembers]: { height: '700px' },
-  [EPlatformModalTypes.SwitchWorkspace]: {
-    width: '440px',
-    className: 'p-0 !pb-6',
-  },
-
-  // request
-  [EPlatformModalTypes.EditRequest]: { height: '600px', width: '450px' },
-
-  // environment
-
-  [EPlatformModalTypes.CloneEnvironment]: { height: '750px', width: '500px' },
-
-  // auth
-  [EPlatformModalTypes.SignIn]: { width: '440px', className: 'p-4' },
-  [EPlatformModalTypes.SignInWithEmail]: { width: '440px', className: 'p-4' },
-  [EPlatformModalTypes.SignUp]: { width: '440px', className: 'p-4' },
-  [EPlatformModalTypes.RefreshToken]: { modalConfig: { closeOnEsc: false } },
-  [EPlatformModalTypes.ForgotPassword]: { width: '440px', className: 'p-4' },
-  [EPlatformModalTypes.ResetPassword]: { width: '440px', className: 'p-4' },
-
-  // user
-  [EPlatformModalTypes.UserProfile]: {},
-
-  // cookie
-  [EPlatformModalTypes.CookieManager]: {},
-
-  // ssl & proxy
-  [EPlatformModalTypes.SslNProxy]: {},
-};
-
 export enum ECloudApiHeaders {
   Authorization = 'Authorization',
   SocketId = 'X-Socket-Id',

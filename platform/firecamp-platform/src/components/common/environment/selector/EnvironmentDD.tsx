@@ -83,7 +83,7 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
       onSelect={_onSelectEnv}
       classNames={{
         dropdown: '!pt-0',
-        label: 'uppercase font-sans',
+        label: 'uppercase',
         item: '!px-5',
       }}
       sm

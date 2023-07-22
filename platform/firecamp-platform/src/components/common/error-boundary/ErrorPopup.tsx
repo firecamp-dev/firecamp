@@ -23,10 +23,8 @@ const ErrorPopup: FC<FallbackProps> = ({ error }) => {
 
   return (
     <Modal
-      isOpen={isOpen}
-      modalConfig={{
-        styles: bg,
-      }}
+      opened={isOpen}
+      styles={{ content: bg.modal }}
       onClose={_onClose}
       className="fc-error-popup"
     >

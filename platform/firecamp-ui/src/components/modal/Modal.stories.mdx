@@ -7,43 +7,12 @@ import LinkTo from '@storybook/addon-links/react';
 
 Modal : To create modals
 
-- Consists of sub-section like :
-  - header
+- Consists of section like :
+  - header (includes title)
   - body
-  - footer
-- Any of the section can be used individually as well.
 
 #### **Component Usage**:
 
-Use `Modal` as wrapper to use single/multiple sub sections <br/>
-Modal is created using `react-responsive-modal`
-
-| Component    | Description                                                    |
-| ------------ | -------------------------------------------------------------- |
-| Modal        | Wrapper for which takes height & width of its parent component |
-| Modal.Header | section for the header having height of its content            |
-| Modal.Body   | section for the body having the height of its content          |
-| Modal.Footer | section for the footer having height of its content            |
-
-#### **Best Practices**:
-
-Do:
-
-```
-<Modal>
-    <Modal.Header>
-		Header Section
-    </Modal.Header>
-    <Modal.Body>
-		<component> Body Section </component>
-    </Modal.Body>
-    <Modal.Footer>
-		Footer Section
-    </Modal.Footer>
-</Modal>
-```
-
-- #### **Examples**:
-- <LinkTo kind="ui-kit-modal--modal-demo" className="!text-primaryColor">
-    Modal Examples
-  </LinkTo>
+- The Modal component is implemented using MantineModal. 
+- It shares the same prop usage as described in the documentation for MantineModal.
+- It is essential to supply values for the "opened" prop and the "onClose" prop to control the modal's visibility and handle the close event, respectively.

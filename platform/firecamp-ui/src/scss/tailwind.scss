@@ -454,10 +454,6 @@
    z-index: 30;
 
 }
-.z-50{
-   z-index: 50;
-
-}
 .float-right{
    float: right;
 
@@ -505,6 +501,11 @@
    margin-right: 0.5rem;
 
 }
+.mx-4{
+   margin-left: 1rem;
+   margin-right: 1rem;
+
+}
 .mx-auto{
    margin-left: auto;
    margin-right: auto;
@@ -541,6 +542,10 @@
 }
 .\!mb-2{
    margin-bottom: 0.5rem !important;
+
+}
+.\!mb-3{
+   margin-bottom: 0.75rem !important;
 
 }
 .\!ml-auto{
@@ -727,6 +732,10 @@
    margin-top: 0.5rem;
 
 }
+.mt-3{
+   margin-top: 0.75rem;
+
+}
 .mt-4{
    margin-top: 1rem;
 
@@ -797,6 +806,10 @@
 }
 .contents{
    display: contents;
+
+}
+.list-item{
+   display: list-item;
 
 }
 .hidden{
@@ -896,12 +909,40 @@
    height: 30px;
 
 }
+.h-\[340px\]{
+   height: 340px;
+
+}
+.h-\[450px\]{
+   height: 450px;
+
+}
+.h-\[480px\]{
+   height: 480px;
+
+}
 .h-\[50vh\]{
    height: 50vh;
 
 }
+.h-\[600px\]{
+   height: 600px;
+
+}
+.h-\[700px\]{
+   height: 700px;
+
+}
 .h-\[70vh\]{
    height: 70vh;
+
+}
+.h-\[750px\]{
+   height: 750px;
+
+}
+.h-\[80vh\]{
+   height: 80vh;
 
 }
 .h-fit{
@@ -1254,6 +1295,10 @@
 }
 .gap-2{
    gap: 0.5rem;
+
+}
+.gap-3{
+   gap: 0.75rem;
 
 }
 .gap-4{
@@ -2043,8 +2088,20 @@
    padding-top: 0.75rem;
 
 }
+.pt-4{
+   padding-top: 1rem;
+
+}
 .pt-5{
    padding-top: 1.25rem;
+
+}
+.pt-6{
+   padding-top: 1.5rem;
+
+}
+.pt-px{
+   padding-top: 1px;
 
 }
 .text-left{
@@ -2811,8 +2868,6 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Lato:wght@100&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap');
-/* added custom preflight css to prevent default button styles as it affects the mantine button component preview */
-@import url('./preflight.css');
 
 body{
    background-color: var(--app-background);

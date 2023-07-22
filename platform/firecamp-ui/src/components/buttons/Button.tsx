@@ -7,7 +7,6 @@ const useStyles = createStyles(
   (theme, { variant, color, primary, secondary, transparent, animate }: IButton) => ({
     root: {
       display: 'flex',
-      fontFamily: 'sans-serif',
       fontWeight: 'normal',
       
       ...(!animate ? { ':active': { transform: 'none' } }: {}),
