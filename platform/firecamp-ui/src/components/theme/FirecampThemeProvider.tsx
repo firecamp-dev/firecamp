@@ -5,6 +5,7 @@ import {
   MantineProvider,
   createStyles,
 } from '@mantine/core';
+import { ModalsProvider } from '@mantine/modals';
 import {
   EFirecampThemeVariant,
   ColorType,
@@ -451,7 +452,9 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
         withNormalizeCSS
         {...props}
       >
-        {children}
+        <ModalsProvider>
+          {children}
+        </ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
