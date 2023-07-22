@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { Button, Input, Modal, ProgressBar, TabHeader } from '@firecamp/ui';
+import { Button, Input, ProgressBar, TabHeader } from '@firecamp/ui';
 import { IPromptInput } from './types';
 
 const _texts: IPromptInput['texts'] = {
@@ -9,7 +9,6 @@ const _texts: IPromptInput['texts'] = {
 };
 
 export const PromptInput: FC<IPromptInput> = ({
-  header,
   label = 'Name',
   placeholder,
   texts,
@@ -80,21 +79,7 @@ export const PromptInput: FC<IPromptInput> = ({
   texts = { ..._texts, ...texts };
 
   return (
-    <Modal
-      opened={state.isOpen}
-      onClose={_close}
-      size={400}
-      classNames={{
-        header: 'border-0 pb-0',
-        body: 'px-6',
-        content: 'min-h-0',
-      }}
-      title={
-        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative px-2">
-          {header || `THIS IS A HEADER PLACE`}
-        </label>
-      }
-    >
+    <>
       <ProgressBar active={state.isExecuting} />
       <div className="pt-4">
         <div className="">
@@ -106,7 +91,7 @@ export const PromptInput: FC<IPromptInput> = ({
             value={state.value}
             onChange={_onChangeValue}
             onKeyDown={_onKeyDown}
-            onBlur={() => {}}
+            onBlur={() => { }}
             error={state.error}
           />
         </div>
@@ -130,6 +115,6 @@ export const PromptInput: FC<IPromptInput> = ({
           </TabHeader.Right>
         </TabHeader>
       </div>
-    </Modal>
+    </>
   );
 };

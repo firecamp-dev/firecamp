@@ -118,7 +118,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
   const rename = () => {
     context.window
       .promptInput({
-        header: 'Rename Environment',
+        title: 'Rename Environment',
         label: 'Environment Name',
         placeholder: '',
         texts: { btnOk: 'Rename', btnOking: 'Renaming...' },
