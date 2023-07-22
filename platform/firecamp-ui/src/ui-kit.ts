@@ -32,6 +32,10 @@ export { default as FileInput } from './components/input/FileInput';
 export { default as Modal } from './components/modal/Modal';
 export type { IModal } from './components/modal/Modal';
 
+// Drawer
+export { default as Drawer } from './components/drawer/Drawer';
+export type { IDrawer } from './components/drawer/Drawer';
+
 export { default as SplitView } from './components/split-view/SplitView';
 
 export { default as Tabs } from './components/tabs/Tabs';
