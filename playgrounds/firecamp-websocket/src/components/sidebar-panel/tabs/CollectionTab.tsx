@@ -67,10 +67,8 @@ const Collection = ({ openCreateFolderPrompt }) => {
   const _deleteFolder = (id: string) => {
     context.window
       .confirm({
-        title: 'Are you sure to delete the Folder?',
-        texts: {
-          btnConfirm: 'Yes, delete it.',
-        },
+        message: 'Are you sure to delete the Folder?',
+        labels: { confirm: 'Yes, delete it.', },
       })
       .then((yes) => {
         if (yes) deleteFolder(id);
@@ -80,10 +78,8 @@ const Collection = ({ openCreateFolderPrompt }) => {
   const deleteMsg = (msgId: string) => {
     context.window
       .confirm({
-        title: 'Are you sure to delete the message?',
-        texts: {
-          btnConfirm: 'Yes, delete it.',
-        },
+        message: 'Are you sure to delete the message?',
+        labels: { confirm: 'Yes, delete it.', },
       })
       .then((yes) => {
         if (yes) deleteItem(msgId);

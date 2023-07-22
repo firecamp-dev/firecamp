@@ -98,11 +98,9 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 
     context.window
       .confirm({
-        title:
+        message:
           'The current emitter has unsaved changes. Do you want to continue without saving them?',
-        texts: {
-          btnConfirm: 'Yes, open it.',
-        },
+        labels: { confirm: 'Yes, open it.' },
       })
       .then((s) => {
         openEmitterInPlg();
@@ -284,11 +282,9 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
     else {
       context.window
         .confirm({
-          title:
+          message:
             'The current emitter has unsaved changes. Do you want to continue without saving them?',
-          texts: {
-            btnConfirm: 'Yes, reset it.',
-          },
+          labels: { confirm: 'Yes, reset it.' },
         })
         .then((s) => {
           resetPlg();

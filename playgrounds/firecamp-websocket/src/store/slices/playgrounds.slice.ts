@@ -129,11 +129,9 @@ const createPlaygroundsSlice: TStoreSlice<IPlaygroundSlice> = (
 
     context.window
       .confirm({
-        title:
+        message:
           'The current message has unsaved changes. Do you want to continue without saving them?',
-        texts: {
-          btnConfirm: 'Yes, open it.',
-        },
+        labels: { confirm: 'Yes, open it.' },
       })
       .then((s) => {
         openMsgInPlg();
