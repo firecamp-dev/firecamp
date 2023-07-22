@@ -1,106 +1,57 @@
-import { FC, useState } from 'react';
-import { Button, Modal, TabHeader } from '@firecamp/ui';
+import { FC } from 'react';
+import { Button, TabHeader } from '@firecamp/ui';
 
-const _texts: IConfirm['texts'] = {
-  btnConfirm: 'Create',
-  btnCancel: 'Cancel',
+const _labels: IConfirm['labels'] = {
+  confirm: 'Create',
+  cancel: 'Cancel',
 };
 
 const ConfirmationModal: FC<IConfirm> = ({
-  title = '',
   message = '',
-  texts = {
-    btnCancel: 'Cancel',
-    btnConfirm: 'Confirm',
-  },
-  onConfirm = () => {},
-  onCancel = () => {},
-  onClose = () => {},
-  onResolve,
+  labels = { confirm: 'Confirm', cancel: 'Cancel' },
+  onConfirm = () => { },
+  onCancel = () => { },
 }) => {
-  const [state, setState] = useState({
-    isOpen: true,
-  });
-  const _close = (e) => {
-    if (e) e.preventDefault();
-    setState((s) => ({ ...s, isOpen: false }));
-    setTimeout(() => {
-      onClose(e);
-    }, 500);
-  };
-  const _onConfirm = (e) => {
-    if (e) e.preventDefault();
-    onConfirm();
-    _close(false);
-    onResolve && onResolve("I am confirming that It'll work perfectly.");
-  };
-  texts = { ..._texts, ...texts };
 
+  const l = { ..._labels, ...labels };
   return (
-    <Modal
-      opened={state.isOpen}
-      onClose={_close}
-      size={400}
-      classNames={{
-        header: 'border-0',
-        body: 'px-6',
-        content: 'min-h-0',
-      }}
-      title={
-        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative px-2">
-          {`CONFIRMATION Required.`}
-        </label>
-      }
-    >
-      <div>
-        <div className="mb-4">{title}</div>
-        <TabHeader className="!px-0">
-          <TabHeader.Right>
-            <Button
-              text={texts?.btnCancel || `Cancel`}
-              onClick={_close}
-              secondary
-              xs
-            />
-            <Button
-              text={texts?.btnConfirm || 'Confirm'}
-              onClick={_onConfirm}
-              primary
-              xs
-            />
-          </TabHeader.Right>
-        </TabHeader>
-      </div>
-    </Modal>
+    <div>
+      <div className="mb-4">{message}</div>
+      <TabHeader className="!px-0">
+        <TabHeader.Right>
+          <Button
+            text={l?.cancel || `Cancel`}
+            onClick={() => onCancel()}
+            secondary
+            xs
+          />
+          <Button
+            text={l?.confirm || 'Confirm'}
+            onClick={() => onConfirm()}
+            primary
+            xs
+          />
+        </TabHeader.Right>
+      </TabHeader>
+    </div>
   );
 };
 
 export default ConfirmationModal;
 
 export interface IConfirm {
-  /** title for the confirmation popup */
-  title: string;
-
-  /** the confirmation messsage texts */
+  /** message for the confirmation popup */
   message: string;
 
-  /** btn texts */
-  texts?: {
-    btnConfirm?: string;
-    btnCancel?: string;
-  };
+  /** btn labels */
+  labels?: { confirm?: string; cancel?: string; };
 
   /** show a specific note in eye caching note box */
   note?: string;
 
-  /** callback fucntion on successfull confirmation */
+  /** callback function on successful confirmation */
   onConfirm: () => any;
 
-  /** callback fucntion on rejected confirmation */
+  /** callback function on rejected confirmation */
   onCancel: () => any;
-
-  /** callback fn on close the confirmation */
-  onClose: Function;
-
-  onResolve: (res: any) => void;
 }

@@ -33,7 +33,7 @@ const CollectionMenu = ({
 
   const renameMenu = {
     prefix: () => (
-        <VscEdit size={14} />
+      <VscEdit size={14} />
     ),
     name: 'Rename',
     onClick: (e) => {
@@ -43,7 +43,7 @@ const CollectionMenu = ({
 
   const addFolderMenu = {
     prefix: () => (
-        <VscNewFolder size={14} />
+      <VscNewFolder size={14} />
     ),
     name: 'Add Folder',
     onClick: () => {
@@ -95,17 +95,17 @@ const CollectionMenu = ({
 
   const addRequestMenu = {
     prefix: () => (
-        <VscNewFile size={14} />
+      <VscNewFile size={14} />
     ),
     name: 'Add Request',
-    onClick: () => {},
+    onClick: () => { },
   };
 
-  const openEnv = (env) => {};
+  const openEnv = (env) => { };
 
   const viewDetailMenu = {
     prefix: () => (
-        <VscSettingsGear size={14} />
+      <VscSettingsGear size={14} />
     ),
     name: 'View Details',
     onClick: () => {
@@ -119,16 +119,14 @@ const CollectionMenu = ({
 
   const deleteMenu = {
     prefix: () => (
-        <VscTrash size={14} />
+      <VscTrash size={14} />
     ),
     name: 'Delete',
     onClick: () => {
       platformContext.window
         .confirm({
-          title: `Are you sure to delete the ${menuType}?`,
-          texts: {
-            btnConfirm: 'Yes, delete it.',
-          },
+          message: `Are you sure to delete the ${menuType}?`,
+          labels: { confirm: 'Yes, delete it.' },
         })
         .then((isConfirmed) => {
           if (isConfirmed) {
@@ -166,7 +164,7 @@ const CollectionMenu = ({
         }}
         sm
       />
-      </div>
+    </div>
   );
 };
 

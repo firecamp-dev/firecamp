@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom';
-import Confirm from '../../components/prompt/Confirm';
+import { modals, IModal } from '@firecamp/ui';
+import Confirm, { IConfirm } from '../../components/prompt/Confirm';
 import { PromptInput } from '../../components/prompt/PromptInput';
 import { PromptSaveItem } from '../../components/prompt/PromptSaveItem';
 import { IPromptInput, IPromptSaveItem } from '../../components/prompt/types';
@@ -54,16 +55,36 @@ const promptSaveItem: TOpenPromptSaveItem = (props) => {
   });
 };
 
-const confirm = (props: any) => {
-  const confirmContainer = document.createElement('div');
-  const onClose = () => {
-    ReactDOM.unmountComponentAtNode(confirmContainer);
-  };
+
+
+const confirm = (props: IModal & IConfirm) => {
+
   return new Promise((rs, rj) => {
-    ReactDOM.render(
-      <Confirm {...props} onClose={onClose} onResolve={(bool) => rs(bool)} />,
-      confirmContainer
-    );
+    modals.open({
+      title: (
+        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative px-2">
+          {`Confirmation Required.`}
+        </label>
+      ),
+      children: (
+        <Confirm
+          {...props}
+          onCancel={() => {
+            props?.onCancel?.();
+            modals.closeAll()
+          }}
+          onConfirm={() => {
+            props?.onConfirm?.();
+            rs(true)
+          }} />
+      ),
+      size: 400,
+      classNames: {
+        header: 'border-0',
+        body: 'px-6',
+        content: 'min-h-0',
+      },
+    });
   });
 };
 

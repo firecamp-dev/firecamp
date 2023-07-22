@@ -65,11 +65,10 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
 
   const onRemoveMember = (row) => {
     platformContext.window.confirm({
-      title: `You're sure to remove ${row.name} from the workspace?`,
-      message: '',
-      texts: {
-        btnCancel: 'Cancel',
-        btnConfirm: 'Yes, remove the member.',
+      message: `You're sure to remove ${row.name} from the workspace?`,
+      labels: {
+        cancel: 'Cancel',
+        confirm: 'Yes, remove the member.',
       },
       onConfirm: () => {
         Rest.workspace
@@ -85,19 +84,16 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
               e.response?.data.message || e.message
             );
           });
-      },
-      onCancel: () => {},
-      onClose: () => {},
+      }
     });
   };
 
   const onChangeRole = (row) => {
     platformContext.window.confirm({
-      title: `Please confirm, You're assigning  ${row.role.name} role to ${row.name}, right?`,
-      message: '',
-      texts: {
-        btnCancel: 'Cancel',
-        btnConfirm: 'Yes, change the role.',
+      message: `Please confirm, You're assigning  ${row.role.name} role to ${row.name}, right?`,
+      labels: {
+        cancel: 'Cancel',
+        confirm: 'Yes, change the role.',
       },
       onConfirm: () => {
         Rest.workspace
@@ -114,8 +110,6 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
             );
           });
       },
-      onCancel: () => {},
-      onClose: () => {},
     });
   };
 

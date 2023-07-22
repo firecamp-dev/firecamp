@@ -66,9 +66,9 @@ const Collection = () => {
   const deletePlg = (plgId: string) => {
     context.window
       .confirm({
-        title: 'Are you sure to delete the playground?',
-        texts: {
-          btnConfirm: 'Yes, delete it.',
+        message: 'Are you sure to delete the playground?',
+        labels: {
+          confirm: 'Yes, delete it.',
         },
       })
       .then((s) => {

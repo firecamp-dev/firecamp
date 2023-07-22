@@ -56,8 +56,8 @@ const EnvironmentCollection = () => {
   const openEnv = (env) => {
     openTab(env, { id: env.__ref.id, type: ETabEntityTypes.Environment });
   };
-  const openCreateColEnv = () => {};
-  const deleteEnv = () => {};
+  const openCreateColEnv = () => { };
+  const deleteEnv = () => { };
 
   if (!envTdpInstance) return <></>;
   return (
@@ -135,15 +135,13 @@ const CollectionScopedEnvCollection = () => {
     });
   };
 
-  const openCreateColEnv = () => {};
+  const openCreateColEnv = () => { };
 
   const deleteEnv = (envId: string) => {
     platformContext.window
       .confirm({
-        title: 'Are you sure to delete the environment?',
-        texts: {
-          btnConfirm: 'Yes, delete it.',
-        },
+        message: 'Are you sure to delete the environment?',
+        labels: { confirm: 'Yes, delete it.' },
       })
       .then(() => {
         deleteEnvironment(envId)

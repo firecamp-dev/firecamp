@@ -31,6 +31,7 @@ export { default as FileInput } from './components/input/FileInput';
 // Modal
 export { default as Modal } from './components/modal/Modal';
 export type { IModal } from './components/modal/Modal';
+export * from './components/modal/modal.service';
 
 // Drawer
 export { default as Drawer } from './components/drawer/Drawer';
