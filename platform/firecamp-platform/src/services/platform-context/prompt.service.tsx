@@ -71,11 +71,12 @@ const confirm = (props: IModal & IConfirm) => {
           {...props}
           onCancel={() => {
             props?.onCancel?.();
-            modals.closeAll()
+            modals.closeAll();
           }}
           onConfirm={() => {
             props?.onConfirm?.();
-            rs(true)
+            rs(true);
+            modals.closeAll();
           }} />
       ),
       size: 400,
