@@ -261,7 +261,7 @@ const request: IPlatformRequestService = {
   createRequestFolderPrompt: async (folder, tabId) => {
     return platformContext.window
       .promptInput({
-        header: 'Create A New Folder',
+        title: 'Create A New Folder',
         label: 'Folder Name',
         placeholder: '',
         texts: { btnOking: 'Creating...' },

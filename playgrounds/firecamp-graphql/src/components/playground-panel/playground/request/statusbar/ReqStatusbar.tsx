@@ -14,7 +14,7 @@ import EditPlaygroundName from './EditPlaygroundName';
 import { IStore, useStore } from '../../../../../store';
 import { isValid } from '../../../../../services/GraphQLservice';
 
-const ReqStatusBar = ({}) => {
+const ReqStatusBar = ({ }) => {
   const {
     context,
     isRequestSaved,
@@ -65,7 +65,7 @@ const ReqStatusBar = ({}) => {
     const plgName = getPlgNameSuggestion();
     context.window
       .promptInput({
-        header: 'SAVE PLAYGROUND',
+        title: 'SAVE PLAYGROUND',
         value: plgName,
         validator: (value) => {
           const name = value.trim();

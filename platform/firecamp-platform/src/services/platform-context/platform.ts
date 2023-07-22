@@ -20,7 +20,7 @@ const platform = {
     }
     platformContext.window
       .promptInput({
-        header: 'Create New Workspace',
+        title: 'Create New Workspace',
         label: 'Workspace Name',
         placeholder: 'type workspace name',
         texts: { btnOking: 'Creating...' },
@@ -75,7 +75,7 @@ const platform = {
     }
     platformContext.window
       .promptInput({
-        header: 'Create your own organization',
+        title: 'Create your own organization',
         label: 'Organization Name',
         placeholder: 'type org name',
         texts: { btnOking: 'Creating...' },
@@ -129,7 +129,7 @@ const platform = {
     }
     platformContext.window
       .promptInput({
-        header: 'Create New Collection',
+        title: 'Create New Collection',
         label: 'Collection Name',
         placeholder: 'type collection name',
         texts: { btnOking: 'Creating...' },
@@ -169,7 +169,7 @@ const platform = {
     const { createEnvironment } = useEnvStore.getState();
     platformContext.window
       .promptInput({
-        header: 'Create New Environment',
+        title: 'Create New Environment',
         label: 'Environment Name',
         placeholder: 'type environment name',
         texts: { btnOking: 'Creating...' },

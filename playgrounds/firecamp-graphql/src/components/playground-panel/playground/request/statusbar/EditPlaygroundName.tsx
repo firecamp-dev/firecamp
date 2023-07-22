@@ -19,7 +19,7 @@ const EditPlaygroundName: FC<any> = ({}) => {
     if (!isRequestSaved) return;
     context.window
       .promptInput({
-        header: 'Update Playground Info',
+        title: 'Update Playground Info',
         value: playground.request?.name,
         texts: { btnOk: 'Update' },
         validator: (value) => {

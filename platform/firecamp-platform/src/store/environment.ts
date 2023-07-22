@@ -305,7 +305,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
     const state = get();
     return platformContext.window
       .promptInput({
-        header: 'Delete Environment',
+        title: 'Delete Environment',
         label: `Please enter the name \`${env.name}\``,
         placeholder: '',
         texts: { btnOk: 'Delete', btnOking: 'Deleting...' },
