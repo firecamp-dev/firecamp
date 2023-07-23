@@ -21,13 +21,13 @@ const EditPlaygroundName: FC<any> = ({}) => {
       .promptInput({
         title: 'Update Playground Info',
         value: playground.request?.name,
-        texts: { btnOk: 'Update' },
+        btnLabels: { ok: 'Update' },
         validator: (value) => {
           const name = value.trim();
           if (!name) {
             return {
               isValid: false,
-              message: 'The playground name is reuquired',
+              message: 'The playground name is required',
             };
           } else if (name?.length <= 3) {
             return {

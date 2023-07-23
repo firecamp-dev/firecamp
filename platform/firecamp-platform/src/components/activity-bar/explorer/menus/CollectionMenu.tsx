@@ -56,7 +56,7 @@ const CollectionMenu = ({
           title: 'Create New Folder',
           label: 'Folder Name',
           placeholder: 'type folder name',
-          texts: { btnOking: 'Creating...' },
+          btnLabels: { oking: 'Creating...' },
           value: '',
           validator: (val) => {
             if (!val || val.length < 3) {

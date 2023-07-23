@@ -2,16 +2,16 @@ import { FC, useState } from 'react';
 import { Button, Input, ProgressBar, TabHeader } from '@firecamp/ui';
 import { IPromptInput } from './types';
 
-const _texts: IPromptInput['texts'] = {
-  btnOk: 'Create',
-  btnOking: 'Creating...',
-  btnCancel: 'Cancel',
+const _btnLabels: IPromptInput['btnLabels'] = {
+  ok: 'Create',
+  oking: 'Creating...',
+  cancel: 'Cancel',
 };
 
 export const PromptInput: FC<IPromptInput> = ({
   label = 'Name',
   placeholder,
-  texts,
+  btnLabels,
   value,
   onClose,
   validator,
@@ -76,7 +76,8 @@ export const PromptInput: FC<IPromptInput> = ({
       _onClickOk(e);
     }
   };
-  texts = { ..._texts, ...texts };
+
+  const l = { ..._btnLabels, ...btnLabels };
 
   return (
     <>
@@ -98,14 +99,14 @@ export const PromptInput: FC<IPromptInput> = ({
         <TabHeader className="!px-0">
           <TabHeader.Right>
             <Button
-              text={texts?.btnCancel || `Cancel`}
+              text={l?.cancel || `Cancel`}
               onClick={_close}
               ghost
               xs
             />
             <Button
               text={
-                state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
+                state.isExecuting ? l?.oking : l?.ok || 'Create'
               }
               onClick={_onClickOk}
               disabled={state.isExecuting}
