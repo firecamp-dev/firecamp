@@ -1,5 +1,4 @@
-import ReactDOM from 'react-dom';
-import { modals, IModal } from '@firecamp/ui';
+import { modals } from '@firecamp/ui';
 import Confirm, { IConfirm } from '../../components/prompt/Confirm';
 import { PromptInput } from '../../components/prompt/PromptInput';
 import { PromptSaveItem } from '../../components/prompt/PromptSaveItem';
@@ -8,13 +7,12 @@ import { IPromptInput, IPromptSaveItem } from '../../components/prompt/types';
 type TPropKeys =
   | 'label'
   | 'placeholder'
-  | 'texts'
+  | 'btnLabels'
   | 'value'
   | 'validator'
   | 'executor'
   | 'onError';
-type TPromptInputOpenProps = Pick<IPromptInput, TPropKeys>;
-type TOpenPromptInput = (props: TPromptInputOpenProps & IModal) => Promise<any>;
+type TOpenPromptInput = (props: Pick<IPromptInput, TPropKeys> & { title: string }) => Promise<any>;
 const promptInput: TOpenPromptInput = (props) => {
 
   return new Promise((rs, rj) => {
@@ -45,30 +43,39 @@ const promptInput: TOpenPromptInput = (props) => {
   });
 };
 
-type TPromptSaveItemProps = Pick<IPromptSaveItem, TPropKeys | 'collection'>;
-type TOpenPromptSaveItem = (props: TPromptSaveItemProps) => Promise<any>;
+type TOpenPromptSaveItem = (props: Pick<IPromptSaveItem, TPropKeys | 'collection'> & { title: string }) => Promise<any>;
 const promptSaveItem: TOpenPromptSaveItem = (props) => {
-  // @ts-ignore
-  const promptContainer = document.createElement('div');
-  const onClose = () => {
-    ReactDOM.unmountComponentAtNode(promptContainer);
-  };
+
   return new Promise((rs, rj) => {
-    ReactDOM.render(
-      <PromptSaveItem
-        {...props}
-        collection={props.collection}
-        onClose={onClose}
-        onResolve={(res) => rs(res)} //resolve for executor
-      />,
-      promptContainer
-    );
+    modals.open({
+      title: (
+        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
+          {props.title || `THIS IS A HEADER PLACE`}
+        </label>
+      ),
+      children: (
+        <PromptSaveItem
+          {...props}
+          btnLabels={props.btnLabels || { ok: 'Save', cancel: 'Cancel' }}
+          collection={props.collection}
+          onClose={() => modals.closeAll()}
+          onResolve={(res) => {
+            rs(res)
+            modals.closeAll();
+          }}  //resolve for executor
+        />
+      ),
+      size: 400,
+      classNames: {
+        header: 'border-0 px-6 pt-6 pb-0',
+      }
+    });
   });
 };
 
 
-
-const confirm = (props: IModal & IConfirm) => {
+type TConfirmApi = (props: Omit<IConfirm, 'opened' | 'onClose'>) => Promise<boolean>
+const confirm: TConfirmApi = (props) => {
 
   return new Promise((rs, rj) => {
     modals.open({
@@ -79,7 +86,8 @@ const confirm = (props: IModal & IConfirm) => {
       ),
       children: (
         <Confirm
-          {...props}
+          message={props.message}
+          labels={props.labels || { confirm: 'Confirm', cancel: 'Cancel' }}
           onCancel={() => {
             props?.onCancel?.();
             modals.closeAll();

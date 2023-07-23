@@ -121,7 +121,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         title: 'Rename Environment',
         label: 'Environment Name',
         placeholder: '',
-        texts: { btnOk: 'Rename', btnOking: 'Renaming...' },
+        btnLabels: { ok: 'Rename', oking: 'Renaming...' },
         value: runtimeEnv.name,
         validator: (val) => {
           if (val == runtimeEnv.name) {

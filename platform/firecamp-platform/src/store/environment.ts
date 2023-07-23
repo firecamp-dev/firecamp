@@ -308,7 +308,7 @@ export const useEnvStore = create<IEnvironmentStore>((set, get) => ({
         title: 'Delete Environment',
         label: `Please enter the name \`${env.name}\``,
         placeholder: '',
-        texts: { btnOk: 'Delete', btnOking: 'Deleting...' },
+        btnLabels: { ok: 'Delete', oking: 'Deleting...' },
         value: '',
         executor: (name) => {
           if (name === env.name) {

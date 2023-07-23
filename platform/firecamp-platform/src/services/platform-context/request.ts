@@ -157,8 +157,8 @@ const request: IPlatformRequestService = {
     // console.log(workspace, 132456789);
     if (isNew === true) {
       return promptSaveItem({
-        header: 'Save Request',
-        texts: { btnOk: 'Save', btnOking: 'Saving...' },
+        title: 'Save Request',
+        btnLabels: { ok: 'Save', oking: 'Saving...' },
         collection: {
           items: [...collections, ...folders],
           rootOrders: workspace.__meta.cOrders,
@@ -264,7 +264,7 @@ const request: IPlatformRequestService = {
         title: 'Create A New Folder',
         label: 'Folder Name',
         placeholder: '',
-        texts: { btnOking: 'Creating...' },
+        btnLabels: { oking: 'Creating...' },
         value: folder.name,
         validator: (val) => {
           if (!val || val.length < 3) {
@@ -313,10 +313,10 @@ const request: IPlatformRequestService = {
   createRequestItemPrompt: async (item, collection, { header, label }) => {
     return platformContext.window
       .promptSaveItem({
-        header: header || 'Save WebSocket Message',
+        title: header || 'Save WebSocket Message',
         label: label || 'Message Title',
         placeholder: '',
-        texts: { btnOk: 'Save', btnOking: 'Saving...' },
+        btnLabels: { ok: 'Save', oking: 'Saving...' },
         value: '',
         collection,
         executor: ({ value, itemId }) => {

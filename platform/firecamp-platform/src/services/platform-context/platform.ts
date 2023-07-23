@@ -23,7 +23,7 @@ const platform = {
         title: 'Create New Workspace',
         label: 'Workspace Name',
         placeholder: 'type workspace name',
-        texts: { btnOking: 'Creating...' },
+        btnLabels: { oking: 'Creating...' },
         value: '',
         validator: (val) => {
           if (!val || val.length < 6) {
@@ -55,9 +55,9 @@ const platform = {
           'The workspace is created successfully.'
         );
         confirm({
-          title: 'Do you want to switch to the newly created workspace?',
-          texts: {
-            btnConfirm: 'Yes, switch to the workspace.',
+          message: 'Do you want to switch to the newly created workspace?',
+          labels: {
+            confirm: 'Yes, switch to the workspace.',
           },
         }).then((isConfirmed) => {
           if (isConfirmed) {
@@ -78,7 +78,7 @@ const platform = {
         title: 'Create your own organization',
         label: 'Organization Name',
         placeholder: 'type org name',
-        texts: { btnOking: 'Creating...' },
+        btnLabels: { oking: 'Creating...' },
         value: '',
         validator: (val) => {
           if (!val || val.length < 4) {
@@ -109,9 +109,9 @@ const platform = {
           'The organization is created successfully with default workspace named `Main Workspace`'
         );
         confirm({
-          title: 'Do you want to switch to the newly created workspace?',
-          texts: {
-            btnConfirm: 'Yes, switch to the workspace.',
+          message: 'Do you want to switch to the newly created workspace?',
+          labels: {
+            confirm: 'Yes, switch to the workspace.',
           },
         }).then((isConfirmed) => {
           if (isConfirmed) {
@@ -132,7 +132,7 @@ const platform = {
         title: 'Create New Collection',
         label: 'Collection Name',
         placeholder: 'type collection name',
-        texts: { btnOking: 'Creating...' },
+        btnLabels: { oking: 'Creating...' },
         value: '',
         validator: (val) => {
           if (!val || val.length < 4) {
@@ -172,7 +172,7 @@ const platform = {
         title: 'Create New Environment',
         label: 'Environment Name',
         placeholder: 'type environment name',
-        texts: { btnOking: 'Creating...' },
+        btnLabels: { oking: 'Creating...' },
         value: '',
         validator: (val) => {
           if (!val || val.length < 3) {

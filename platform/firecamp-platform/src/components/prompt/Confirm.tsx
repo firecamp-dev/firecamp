@@ -8,7 +8,7 @@ const _labels: IConfirm['labels'] = {
 
 const ConfirmationModal: FC<IConfirm> = ({
   message = '',
-  labels = { confirm: 'Confirm', cancel: 'Cancel' },
+  labels,
   onConfirm = () => { },
   onCancel = () => { },
 }) => {
@@ -50,8 +50,8 @@ export interface IConfirm {
   note?: string;
 
   /** callback function on successful confirmation */
-  onConfirm: () => any;
+  onConfirm?: () => any;
 
   /** callback function on rejected confirmation */
-  onCancel: () => any;
+  onCancel?: () => any;
 }

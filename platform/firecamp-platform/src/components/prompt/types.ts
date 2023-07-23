@@ -3,10 +3,10 @@ import { TId } from '@firecamp/types';
 export interface IPromptInput {
   label?: string;
   placeholder?: string;
-  texts?: {
-    btnOk?: string;
-    btnOking?: string;
-    btnCancel?: string;
+  btnLabels?: {
+    ok?: string;
+    oking?: string;
+    cancel?: string;
   };
   value: string;
   onClose: Function;

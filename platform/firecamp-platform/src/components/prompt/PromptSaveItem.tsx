@@ -3,7 +3,6 @@ import {
   Button,
   Container,
   Input,
-  Modal,
   ProgressBar,
   TabHeader,
 } from '@firecamp/ui';
@@ -13,17 +12,16 @@ import treeRenderer from './tree/itemRenderer';
 import { IPromptSaveItem } from './types';
 import { itemPathFinder } from '@firecamp/utils/dist/misc';
 
-const _texts: IPromptSaveItem['texts'] = {
-  btnOk: 'Create',
-  btnOking: 'Creating...',
-  btnCancel: 'Cancel',
+const _btnLabels: IPromptSaveItem['btnLabels'] = {
+  ok: 'Create',
+  oking: 'Creating...',
+  cancel: 'Cancel',
 };
 
 export const PromptSaveItem: FC<IPromptSaveItem> = ({
-  header,
   label = 'Name',
   placeholder,
-  texts,
+  btnLabels,
   value,
   collection,
   onClose,
@@ -33,18 +31,11 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
   onError,
 }) => {
   const [state, setState] = useState({
-    isOpen: true,
     isExecuting: false,
     inputValue: value,
     itemId: '',
     error: '',
   });
-  const _close = (e) => {
-    setState((s) => ({ ...s, isOpen: false }));
-    setTimeout(() => {
-      onClose(e);
-    }, 500);
-  };
   const _onChangeValue = (e) => {
     const { value } = e.target;
     setState((s) => ({ ...s, inputValue: value, error: '' }));
@@ -67,7 +58,8 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
           .then((res) => {
             onResolve(res);
             // finally close the prompt on success
-            setState((s) => ({ ...s, isOpen: false, isExecuting: false }));
+            setState((s) => ({ ...s, isExecuting: false }));
+            onClose();
           })
           .catch((e) => {
             if (typeof onError == 'function') {
@@ -87,22 +79,9 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
       }
     }
   };
-  texts = { ..._texts, ...texts };
+  const l = { ..._btnLabels, ...btnLabels };
   return (
-    <Modal
-      opened={state.isOpen}
-      onClose={_close}
-      size={400}
-      classNames={{
-        header: 'border-0 px-6 pt-6 pb-0',
-        
-      }}
-      title={
-        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
-          {header || `THIS IS A HEADER PLACE`}
-        </label>
-      }
-    >
+    <>
       <ProgressBar active={state.isExecuting} />
       <>
         <div className='h-[340px] pt-4'>
@@ -111,11 +90,11 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
               autoFocus={true}
               label={label}
               placeholder={placeholder}
-              name={'prompInput'}
+              name={'promptInput'}
               value={state.inputValue}
               onChange={_onChangeValue}
-              onKeyDown={() => {}}
-              onBlur={() => {}}
+              onKeyDown={() => { }}
+              onBlur={() => { }}
               error={state.error}
             />
           </div>
@@ -132,14 +111,14 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
         <TabHeader className="!px-0">
           <TabHeader.Right>
             <Button
-              text={texts?.btnCancel || `Cancel`}
-              onClick={_close}
+              text={l?.cancel || `Cancel`}
+              onClick={() => onClose()}
               ghost
               xs
             />
             <Button
               text={
-                state.isExecuting ? texts?.btnOking : texts?.btnOk || 'Create'
+                state.isExecuting ? l?.oking : l?.ok || 'Create'
               }
               onClick={_onClickOk}
               disabled={state.isExecuting}
@@ -149,7 +128,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
           </TabHeader.Right>
         </TabHeader>
       </div>
-    </Modal>
+    </>
   );
 };
 
@@ -192,8 +171,8 @@ const PathSelector: FC<{
             renderItemArrow={treeRenderer.renderItemArrow}
             // renderItemTitle={treeRenderer.renderItemTitle}
             renderItem={treeRenderer.renderItem}
-            // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
-            // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
+          // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
+          // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
           >
             <Tree
               treeId="selector-save-item"
