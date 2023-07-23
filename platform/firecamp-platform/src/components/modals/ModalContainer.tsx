@@ -20,7 +20,7 @@ import CloneEnvironment from './environment/CloneEnvironment';
 import EditRequest from './request/edit-request/EditRequest';
 
 export const ModalContainer = () => {
-  let { currentOpenModal, isOpen, close } = useModalStore(
+  const { currentOpenModal, isOpen, close } = useModalStore(
     (s) => ({
       currentOpenModal: s.currentOpenModalType,
       isOpen: s.isOpen,
@@ -78,10 +78,5 @@ export const ModalContainer = () => {
     }
   };
 
-  return (
-    <>
-      {renderModal(currentOpenModal)}
-    </>
-  );
-
+  return renderModal(currentOpenModal);
 };

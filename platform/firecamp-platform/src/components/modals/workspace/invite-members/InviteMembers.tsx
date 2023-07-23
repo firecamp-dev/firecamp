@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Modal, IModal, SecondaryTab } from '@firecamp/ui';
+import { Drawer, IModal, SecondaryTab } from '@firecamp/ui';
 import { _array, _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import InviteNonOrgMembers from './tabs/InviteNonOrgMembers';
@@ -86,7 +86,7 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   }, [activeTab]);
 
   return (
-    <Modal
+    <Drawer
       opened={opened}
       onClose={onClose}
       size={576}
@@ -121,7 +121,7 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
             />
           )}
         </div>
-    </Modal>
+    </Drawer>
   );
 };
 export default InviteMembers;

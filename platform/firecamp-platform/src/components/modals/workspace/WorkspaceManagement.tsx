@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import {
   Container,
+  Drawer,
   Modal,
   IModal,
   SecondaryTab,
@@ -104,7 +105,7 @@ const WorkspaceManagement: FC<IModal> = ({
   };
 
   return (
-    <Modal
+    <Drawer
       opened={opened}
       onClose={onClose}
       title={
@@ -131,7 +132,7 @@ const WorkspaceManagement: FC<IModal> = ({
           <Container.Body>{renderTab(activeTab)}</Container.Body>
         </Container>
       </>
-    </Modal>
+    </Drawer>
   );
 };
 
