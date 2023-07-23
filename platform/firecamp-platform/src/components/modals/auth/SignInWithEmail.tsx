@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Modal, IModal, Button, Input, FcLogo } from '@firecamp/ui';
+import { Drawer, IModal, Button, Input, FcLogo } from '@firecamp/ui';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
@@ -62,7 +62,7 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
   };
 
   return (
-    <Modal opened={opened} onClose={onClose} size={440}>
+    <Drawer opened={opened} onClose={onClose} size={440}>
       <div className="mb-2">
         <FcLogo className="mx-auto w-14" size={80} />
       </div>
@@ -203,7 +203,7 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
           .
         </div>
       </div>
-    </Modal>
+    </Drawer>
   );
 };
 

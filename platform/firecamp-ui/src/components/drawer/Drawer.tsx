@@ -64,9 +64,9 @@ const Drawer: FC<IDrawer> = ({
 
     return (
         <MantineDrawer
+            id={id}
             opened={opened}
             onClose={() => onClose()}
-            id={id}
             classNames={{
                 ...classNames,
                 content: cx('invisible-scrollbar', classes.content, classNames.content),
@@ -80,6 +80,8 @@ const Drawer: FC<IDrawer> = ({
                         ? theme.colors.gray[1]
                         : theme.colors.dark[6],
             }}
+            transitionProps={{ duration: 150, timingFunction: 'linear' }}
+            overlayProps={{ opacity: 0.5, blur: 4 }}
             {...props}
         >
             {children}

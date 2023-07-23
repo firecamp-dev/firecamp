@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Modal, IModal, Button, Input, FcLogo } from '@firecamp/ui';
+import { Drawer, IModal, Button, Input, FcLogo } from '@firecamp/ui';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 
 import _auth from '../../../services/auth';
@@ -68,7 +68,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
   const _onKeyDown = (e) => e.key === 'Enter' && handleSubmit(_onSignUp);
 
   return (
-    <Modal opened={opened} onClose={onClose} size={440}>
+    <Drawer opened={opened} onClose={onClose} size={440}>
       {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
       <div className="-mt-4">
         <FcLogo className="mx-auto w-14" size={80} />
@@ -216,7 +216,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
           .
         </div>
       </div>
-    </Modal>
+    </Drawer>
   );
 };
 

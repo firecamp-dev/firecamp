@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Modal, Button, Input, IModal } from '@firecamp/ui';
+import { Drawer, Button, Input, IModal } from '@firecamp/ui';
 import { Mail } from 'lucide-react';
 import _auth from '../../../services/auth';
 import platformContext from '../../../services/platform-context';
@@ -51,7 +51,7 @@ const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);
 
   return (
-    <Modal opened={opened} onClose={onClose} size={440}>
+    <Drawer opened={opened} onClose={onClose} size={440}>
       <Mail
         size="48"
         className="mb-6 mx-auto text-activityBar-foreground-inactive"
@@ -105,7 +105,7 @@ const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
           Already have a token?
         </a>
       </div>
-    </Modal>
+    </Drawer>
   );
 };
 
