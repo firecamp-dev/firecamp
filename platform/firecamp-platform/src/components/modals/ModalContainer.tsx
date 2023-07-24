@@ -18,6 +18,7 @@ import WorkspaceManagement from './workspace/WorkspaceManagement';
 import SwitchWorkspace from './workspace/SwitchWorkspace';
 import CloneEnvironment from './environment/CloneEnvironment';
 import EditRequest from './request/edit-request/EditRequest';
+import ProfileManagement from './profile/ProfileManagement';
 
 export const ModalContainer = () => {
   const { currentOpenModal, isOpen, close } = useModalStore(
@@ -58,7 +59,8 @@ export const ModalContainer = () => {
         return <CloneEnvironment opened={isOpen} onClose={close} />;
 
       // User
-      // case EPlatformModalTypes.UserProfile: return <UserProfile isOpen={isOpen} onClose={close} />;
+      case EPlatformModalTypes.UserProfile: 
+        return <ProfileManagement opened={isOpen} onClose={close} />;
 
       // Auth
       case EPlatformModalTypes.SignIn:
