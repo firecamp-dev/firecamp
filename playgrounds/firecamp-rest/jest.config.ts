@@ -10,6 +10,7 @@ const config: Config.InitialOptions = {
   transform: {
     '^.+\\.(ts|tsx)$': 'ts-jest',
   },
+  transformIgnorePatterns: ['/node_modules/(?!graphql-language-service)(.*)'],
   collectCoverageFrom: [
     '**/*.{js,jsx,ts,tsx}',
     '!**/*.d.ts',

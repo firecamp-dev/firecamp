@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "REST API Client for Firecamp",
   "main": "src/index.ts",
-  "license": "",
+  "license": "AGPLv3",
+  "private": true,
   "keywords": [],
   "scripts": {
     "build": "pnpm clean && run-p 'build:*' && pnpm copy-files",
@@ -23,7 +24,6 @@
     "diff-integration-tests": "mkdir -p diff && rm -rf diff/test && cp -r test diff/test && rm -rf diff/test/test-*/.git && cd diff && git init --quiet && git add -A && git commit --quiet --no-verify --allow-empty -m 'WIP' && echo '\\n\\nCommitted most recent integration test output in the \"diff\" directory. Review the changes with \"cd diff && git diff HEAD\" or your preferred git diff viewer.'",
     "watch:build": "tsc -p tsconfig.json -w",
     "doc": "run-s doc:html && open-cli build/docs/index.html",
-  
     "version": "standard-version",
     "reset-hard": "git clean -dfx && git reset --hard && npm i",
     "prepare-release": "run-s reset-hard test cov:check doc:html version doc:publish"
