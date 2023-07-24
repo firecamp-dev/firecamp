@@ -92,7 +92,6 @@ const EditRequest: FC<IModal> = ({
         </div>
       }
       classNames={{
-        content: 'h-[600px]',
         body: 'p-0',
       }}
     >

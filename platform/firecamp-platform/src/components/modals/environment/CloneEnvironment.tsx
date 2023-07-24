@@ -118,9 +118,6 @@ const CloneEnvironment: FC<IModal> = ({ opened, onClose = () => {} }) => {
       opened={opened}
       onClose={onClose}
       size={500}
-      classNames={{
-        content: 'h-[750px]'
-      }}
       title={
         !isFetching ? (
           <>

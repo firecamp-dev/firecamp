@@ -24,7 +24,11 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
     }>;
   }>({
     role: EUserRolesWorkspace.Collaborator,
-    usersList: [{ name: '', email: '' }],
+    usersList: [
+      { name: '', email: '' },
+      { name: '', email: '' },
+      { name: '', email: '' },
+    ],
   });
   const [orgTabState, setOrgTabState] = useState<{
     id: string;
@@ -90,10 +94,6 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
       opened={opened}
       onClose={onClose}
       size={576}
-      classNames={{
-        content: 'h-[700px]',
-        body: 'h-[480px]'
-      }}
       title={
         <div className="text-lg leading-5 px-1 flex items-center font-medium">
           Invite Members To Join The Workspace

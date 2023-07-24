@@ -107,9 +107,6 @@ const CodeSnippets = ({ tabId = '' }) => {
       opened={isCodeSnippetOpen}
       onClose={() => toggleOpenCodeSnippet()}
       size={768}
-      classNames={{
-        content: 'h-[80vh]'
-      }}
       title={
         <div className="text-modal-foreground-active text-lg px-6 py-3 ">
           {'Rest code snippet'}
