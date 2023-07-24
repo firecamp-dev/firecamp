@@ -127,17 +127,19 @@ const InviteOrgMembers: FC<IProps> = ({
         <RolesCallout role={_role.id} />
       </Container.Body>
       <Container.Footer className="flex items-center">
-        <a
-          className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
-          target="_blank"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
+        <Button
+          onClick={() => {
             platformContext.app.modals.openWorkspaceManagement();
           }}
-        >
-          Open Workspace Management
-        </a>
+          // classNames={{
+          //   root: '!text-link hover:!text-link hover:underline'
+          // }}
+          text='Open Workspace Management'
+          ghost
+          xs
+        />
+          
+        
         <Button
           text={'Send Invitation'}
           disabled={!member.name || !member.role || isInvitingMembers}

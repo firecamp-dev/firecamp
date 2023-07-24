@@ -151,8 +151,8 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
   };
 
   return (
-    <Container className="gap-2">
-      <Container.Body className="pt-2 visible-scrollbar">
+    <Container className="gap-2 pt-2">
+      <Container.Body className="visible-scrollbar">
         <ProgressBar active={isFetchingMembers} className={'top-auto'} />
         <PrimitiveTable
           classes={{
@@ -167,7 +167,7 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
           onMount={(api) => (tableApi.current = api)}
         />
       </Container.Body>
-      <Container.Footer className="flex items-center">
+      <Container.Footer className="px-3 h-[34px] flex items-center">
         <a
           className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
           target="_blank"

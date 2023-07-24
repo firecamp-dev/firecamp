@@ -115,7 +115,7 @@ const WorkspaceManagement: FC<IModal> = ({
       }
       size={550}
       classNames={{
-        body: '!p-4'
+        body: '!p-4 h-[90vh]',
       }}
     >
       <>

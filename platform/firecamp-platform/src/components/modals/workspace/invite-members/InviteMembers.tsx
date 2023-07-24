@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Drawer, IModal, SecondaryTab } from '@firecamp/ui';
+import { Container, Drawer, IModal, SecondaryTab } from '@firecamp/ui';
 import { _array, _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import InviteNonOrgMembers from './tabs/InviteNonOrgMembers';
@@ -99,14 +99,20 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
           Invite Members To Join The Workspace
         </div>
       }
+      classNames={{
+        body: 'pb-4 h-[90vh]',
+      }}
     >
-        <div className="!pt-4 h-fit flex flex-col">
+      <Container>
+        <Container.Header className='!pt-4'>
           <SecondaryTab
             className="flex items-center pb-6 -ml-2"
             list={tabs}
             activeTab={activeTab}
             onSelect={(tabId: EInviteMemberTabs) => setActiveTab(tabId)}
           />
+          </Container.Header>
+          <Container.Body>
           {activeTab == EInviteMemberTabs.NewMembers ? (
             <InviteNonOrgMembers
               state={nonOrgTabState}
@@ -120,7 +126,8 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
               onChange={changeOrgTabState}
             />
           )}
-        </div>
+        </Container.Body>
+        </Container>
     </Drawer>
   );
 };

@@ -123,6 +123,9 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
             platformContext.app.modals.openWorkspaceManagement();
           }}
           text='Open Workspace Management'
+          // classNames={{
+          //   root: '!text-link hover:!text-link hover:underline'
+          // }}
           ghost
           xs
         />
