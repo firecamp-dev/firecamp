@@ -24,6 +24,7 @@ const ChangePassword = () => {
     if (isRequesting) return;
 
     setFlagIsRequesting(true);
+    // TODO: make api call
     // await Rest.auth
     //   .resetPassword({...payload})
     //   .then((res) => {
