@@ -36,7 +36,7 @@ const promptInput: TOpenPromptInput = (props) => {
       size: 400,
       classNames: {
         header: 'border-0 pb-0',
-        body: 'px-6',
+        body: 'px-6 relative',
         content: 'min-h-0',
       }
     });
@@ -68,6 +68,7 @@ const promptSaveItem: TOpenPromptSaveItem = (props) => {
       size: 400,
       classNames: {
         header: 'border-0 px-6 pt-6 pb-0',
+        body: 'relative'
       }
     });
   });
@@ -101,7 +102,7 @@ const confirm: TConfirmApi = (props) => {
       size: 400,
       classNames: {
         header: 'border-0',
-        body: 'px-6',
+        body: 'px-6 relative',
         content: 'min-h-0',
       },
     });
