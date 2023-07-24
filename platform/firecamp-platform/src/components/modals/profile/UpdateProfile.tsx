@@ -4,18 +4,20 @@ import { Button, Input } from '@firecamp/ui';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import { Rest } from '@firecamp/cloud-apis';
 import platformContext from '../../../services/platform-context';
+import { useUserStore } from '../../../store/user';
 
 /**
  * Update Profile component
  */
 const UpdateProfile = () => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
-  const [oldPassword, toggleOldPassword] = useState(false);
-  const [showPassword, toggleShowPassword] = useState(false);
-  const [confirmPassword, toggleConfirmPassword] = useState(false);
-
+  
   const form = useForm();
   let { handleSubmit, errors } = form;
+
+  const {user} = useUserStore(s => ({
+    user: s.user
+  }))
 
   const _onSubmit = async (payload: {
     name: string;
@@ -23,7 +25,9 @@ const UpdateProfile = () => {
     if (isRequesting) return;
     let { name } = payload;
 
-    // setFlagIsRequesting(true);
+    
+    setFlagIsRequesting(true);
+    // TODO: make api call
     // await Rest.auth
     //   .resetPassword({ token, new_password: password })
     //   .then((res) => {
@@ -73,12 +77,21 @@ const UpdateProfile = () => {
         />
 
         <Input
+          placeholder="Enter Username"
+          key={'username'}
+          name={'username'}
+          label="Username"
+          value={user.username}
+          disabled
+        />
+
+        <Input
           placeholder="Enter email"
           key={'email'}
           name={'email'}
           label="Email"
-          useformRef={form}
-          onKeyDown={_onKeyDown}
+          value={user.email}
+          disabled
         />
 
         <Button
