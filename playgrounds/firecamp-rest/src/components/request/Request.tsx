@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import shallow from 'zustand/shallow';
 import { useHotkeys } from 'react-hotkeys-hook';
 import {
   preScriptSnippets,
@@ -20,8 +19,8 @@ import HeadersTab from './tabs/HeadersTab';
 import AuthTab from './tabs/AuthTab';
 import ParamsTab from './tabs/ParamsTab';
 import ConfigTab from './tabs/ConfigTab';
-import { IStore, useStore } from '../../store';
 import { ERequestPanelTabs } from '../../types';
+import useRequestFacade from './useFacade';
 
 const Request = () => {
   useHotkeys(`cmd+h`, (k, e) => console.log('This is the cmd+h', k, e));
@@ -33,18 +32,7 @@ const Request = () => {
     changeScripts,
     changeUiActiveTab,
     toggleOpenCodeSnippet,
-  } = useStore(
-    (s: IStore) => ({
-      tabId: s.runtime.tabId,
-      preScripts: s.request.preScripts,
-      postScripts: s.request.postScripts,
-      requestPanel: s.ui.requestPanel,
-      changeScripts: s.changeScripts,
-      changeUiActiveTab: s.changeUiActiveTab,
-      toggleOpenCodeSnippet: s.toggleOpenCodeSnippet,
-    }),
-    shallow
-  );
+  } = useRequestFacade();
   if (!tabId) return <></>;
   const { activeTab } = requestPanel;
   const tabs = useMemo(
@@ -153,25 +141,25 @@ const Request = () => {
             onSelect={(tab: string) => {
               changeUiActiveTab(tab);
             }}
-            /* tabsClassName={
-            'tabs-with-bottom-border-left-section  scrollable invisible-scrollbar'
-          }
-          navItemClassName={
-            activeTab === 'body' ? ' primary-tab-with-attached-statusbar' : ''
-          } */
-            // postComp={() => (
-            //   <Button
-            //     icon={<VscCode className="mr-2" size={12} />}
-            //     // TODO: Add class for tabs-with-bottom-border-right-section
-            //     onClick={_toggleCodeSnippet}
-            //     text="Code"
-            //     transparent
-            //     secondary
-            //     iconLeft
-            //     ghost
-            //     sm
-            //   />
-            // )}
+          /* tabsClassName={
+          'tabs-with-bottom-border-left-section  scrollable invisible-scrollbar'
+        }
+        navItemClassName={
+          activeTab === 'body' ? ' primary-tab-with-attached-statusbar' : ''
+        } */
+          // postComp={() => (
+          //   <Button
+          //     icon={<VscCode className="mr-2" size={12} />}
+          //     // TODO: Add class for tabs-with-bottom-border-right-section
+          //     onClick={_toggleCodeSnippet}
+          //     text="Code"
+          //     transparent
+          //     secondary
+          //     iconLeft
+          //     ghost
+          //     sm
+          //   />
+          // )}
           />
         </Container.Header>
         <Container.Body

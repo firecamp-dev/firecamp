@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from 'react';
-import shallow from 'zustand/shallow';
 import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
@@ -19,7 +18,7 @@ import BinaryBody from './body/BinaryBody';
 import NoBodyTab from './body/NoBodyTab';
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
-import { IStore, useStore } from '../../../store';
+import { useRequestBodyFacade } from '../useFacade';
 
 const BodyTab: FC<any> = () => {
   const {
@@ -27,16 +26,8 @@ const BodyTab: FC<any> = () => {
     body,
     changeBodyValue,
     changeBodyType,
-  } = useStore(
-    (s: IStore) => ({
-      // request: s.request,
-      body: s.request.body,
-      changeBodyValue: s.changeBodyValue,
-      changeBodyType: s.changeBodyType,
-      changeHeaders: s.changeHeaders,
-    }),
-    shallow
-  );
+  } = useRequestBodyFacade();
+
   const [editor, setEditor] = useState(null);
 
   // console.log(body, 'body...');
