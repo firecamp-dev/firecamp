@@ -68,7 +68,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
   const _onKeyDown = (e) => e.key === 'Enter' && handleSubmit(_onSignUp);
 
   return (
-    <Drawer opened={opened} onClose={onClose} size={440}>
+    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
       {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
       <div className="-mt-4">
         <FcLogo className="mx-auto w-14" size={80} />
