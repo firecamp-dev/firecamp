@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Container, Drawer, IModal, SecondaryTab } from '@firecamp/ui';
+import { Container, Drawer, IModal, Notes, SecondaryTab } from '@firecamp/ui';
 import { _array, _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import InviteNonOrgMembers from './tabs/InviteNonOrgMembers';
@@ -104,31 +104,54 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
       }}
     >
       <Container>
-        <Container.Header className='!pt-4'>
-          <SecondaryTab
-            className="flex items-center pb-6 -ml-2"
-            list={tabs}
-            activeTab={activeTab}
-            onSelect={(tabId: EInviteMemberTabs) => setActiveTab(tabId)}
-          />
-          </Container.Header>
-          <Container.Body>
-          {activeTab == EInviteMemberTabs.NewMembers ? (
-            <InviteNonOrgMembers
-              state={nonOrgTabState}
-              onChange={changeNonOrgTabState}
-            />
-          ) : (
-            <InviteOrgMembers
-              state={orgTabState}
-              members={orgMembers}
-              isFetchingMembers={isFetchingMembers}
-              onChange={changeOrgTabState}
-            />
-          )}
-        </Container.Body>
-        </Container>
+        {/* TODO: add validation for personal workspace */}
+        {true ? (
+          <Container.Body className="mt-8">
+            <InviteNotAllowed />
+          </Container.Body>
+        ) : (
+          <>
+            <Container.Header className="!pt-4">
+              <SecondaryTab
+                className="flex items-center pb-6 -ml-2"
+                list={tabs}
+                activeTab={activeTab}
+                onSelect={(tabId: EInviteMemberTabs) => setActiveTab(tabId)}
+              />
+            </Container.Header>
+            <Container.Body>
+              <InviteNotAllowed />
+              {activeTab == EInviteMemberTabs.NewMembers ? (
+                <InviteNonOrgMembers
+                  state={nonOrgTabState}
+                  onChange={changeNonOrgTabState}
+                />
+              ) : (
+                <InviteOrgMembers
+                  state={orgTabState}
+                  members={orgMembers}
+                  isFetchingMembers={isFetchingMembers}
+                  onChange={changeOrgTabState}
+                />
+              )}
+            </Container.Body>
+          </>
+        )}
+      </Container>
     </Drawer>
   );
 };
 export default InviteMembers;
+
+const InviteNotAllowed = () => {
+  return (
+    <Notes
+      title={
+        'Inviting users to your personal workspace is currently unavailable.'
+      }
+      description={`But don't worry! <br/>
+        You can still collaborate effectively by taking the first step to create an organization. 🤝 <br/>
+        Start working together seamlessly and efficiently with your team in no time!`}
+    />
+  );
+};

@@ -51,7 +51,7 @@ const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);
 
   return (
-    <Drawer opened={opened} onClose={onClose} size={440}>
+    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
       <Mail
         size="48"
         className="mb-6 mx-auto text-activityBar-foreground-inactive"
