@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { ChevronDown } from 'lucide-react';
 import cx from 'classnames';
 import {
   Button,
@@ -161,14 +161,14 @@ const RoleDD: FC<{
         <Button
           text={_role.name}
           rightIcon={
-            <VscTriangleDown
+            <ChevronDown
               size={12}
               className={cx({ 'transform rotate-180': isOpen })}
             />
           }
+          compact
           ghost
           sm
-          compact
         />
       )}
       options={RoleOptions}
