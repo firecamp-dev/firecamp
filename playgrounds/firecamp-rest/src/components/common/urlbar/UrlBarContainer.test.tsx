@@ -1,5 +1,4 @@
 import { render, screen } from "@testing-library/react"
-
 import UrlBarContainer from "./UrlBarContainer"
 import useUrlBarFacade from "./useUrlBarFacade"
 
