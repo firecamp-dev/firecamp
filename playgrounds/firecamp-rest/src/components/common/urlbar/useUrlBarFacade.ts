@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { IStore, useStore } from '../../../store';
 
 const useUrlBarFacade = () => {
@@ -23,7 +23,6 @@ const useUrlBarFacade = () => {
 export default useUrlBarFacade;
 
 export const useUrlBarPrefixButtonsFacade = () => {
-
   return useStore(
     (s: IStore) => ({
       tabId: s.runtime.tabId,
@@ -36,4 +35,4 @@ export const useUrlBarPrefixButtonsFacade = () => {
     }),
     shallow
   );
-}
+};

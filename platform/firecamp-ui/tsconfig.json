@@ -20,7 +20,8 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "noImplicitAny": true,
-    "module": "es6"
+    "module": "es6",
+    "types": ["src/components/scripts/interfaces/raw-loader.d.ts"]
   },
   "include": [
     "src",
