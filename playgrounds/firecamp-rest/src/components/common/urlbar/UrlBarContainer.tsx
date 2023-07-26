@@ -112,6 +112,7 @@ const PrefixButtons = () => {
     <>
       <Button
         text={isRequestRunning === true ? `Cancel` : `Send`}
+        title="Send Request"
         onClick={_onExecute}
         primary
         xs
@@ -119,6 +120,7 @@ const PrefixButtons = () => {
       <Button
         id={`save-request-${tabId}`}
         text={isUpdatingRequest ? 'Saving...' : 'Save'}
+        title="Save Request"
         onClick={_onSave}
         disabled={false} //isSaveBtnDisabled
         secondary

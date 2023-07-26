@@ -24,7 +24,7 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
     handler={() => (
       <Button
         text={selectedOption}
-        title={!isDropDownOpen && toolTip ? toolTip : ''}
+        title={'HTTP Method'}
         rightIcon={
           <VscTriangleDown
             size={12}
