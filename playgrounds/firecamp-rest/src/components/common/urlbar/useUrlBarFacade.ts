@@ -22,7 +22,7 @@ const useUrlBarFacade = () => {
 };
 export default useUrlBarFacade;
 
-export const useUrlBarPrefixButtonsFacade = () => {
+export const useUrlBarSuffixButtonsFacade = () => {
   return useStore(
     (s: IStore) => ({
       tabId: s.runtime.tabId,

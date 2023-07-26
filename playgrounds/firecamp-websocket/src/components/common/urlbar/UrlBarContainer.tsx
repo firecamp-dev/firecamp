@@ -46,13 +46,13 @@ const UrlBarContainer = () => {
         });
       }}
       prefixComponent={<Button text={'WebSocket'} secondary xs />}
-      suffixComponent={<PrefixButtons />}
+      suffixComponent={<SuffixButtons />}
     />
   );
 };
 export default UrlBarContainer;
 
-const PrefixButtons = () => {
+const SuffixButtons = () => {
   const { tabId, isUpdatingRequest, save } = useStore(
     (s: IStore) => ({
       tabId: s.runtime.tabId,

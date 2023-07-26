@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react"
 import UrlBarContainer from "./UrlBarContainer"
-import useUrlBarFacade, { useUrlBarPrefixButtonsFacade } from "./useUrlBarFacade"
+import useUrlBarFacade, { useUrlBarSuffixButtonsFacade } from "./useUrlBarFacade"
 
 jest.mock("./useUrlBarFacade", () => {
   const originalModule = jest.requireActual('./useUrlBarFacade');
@@ -8,7 +8,7 @@ jest.mock("./useUrlBarFacade", () => {
     __esModule: true,
     ...originalModule,
     default: jest.fn(),
-    useUrlBarPrefixButtonsFacade: jest.fn(),
+    useUrlBarSuffixButtonsFacade: jest.fn(),
   };
 });
 
@@ -33,7 +33,7 @@ describe("UrlBarContainer render", () => {
     //@ts-ignore
     useUrlBarFacade.mockImplementationOnce(() => (a));
     //@ts-ignore
-    useUrlBarPrefixButtonsFacade.mockImplementationOnce(() => (b))
+    useUrlBarSuffixButtonsFacade.mockImplementationOnce(() => (b))
   }
   test("should have default ui: path, copy button, method dropdown, url value, send and save buttons", () => {
     prepareStore({

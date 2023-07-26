@@ -72,14 +72,14 @@ const UrlBarContainer = () => {
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
       }
-      suffixComponent={<PrefixButtons />}
+      suffixComponent={<SuffixButtons />}
     />
   );
 };
 
 export default UrlBarContainer;
 
-const PrefixButtons = () => {
+const SuffixButtons = () => {
   const {
     tabId,
     isUpdatingRequest,

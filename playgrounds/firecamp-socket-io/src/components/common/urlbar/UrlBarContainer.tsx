@@ -84,7 +84,7 @@ const UrlBarContainer = () => {
           onSelectItem={(v) => changeConfig('version', v.version)}
         />
       }
-      suffixComponent={<PrefixButtons />}
+      suffixComponent={<SuffixButtons />}
     />
   );
 };
@@ -129,7 +129,7 @@ const SIOVersionDropDown: FC<any> = ({
   );
 };
 
-const PrefixButtons = () => {
+const SuffixButtons = () => {
   const { tabId, isUpdatingRequest, save } = useStore(
     (s: IStore) => ({
       tabId: s.runtime.tabId,

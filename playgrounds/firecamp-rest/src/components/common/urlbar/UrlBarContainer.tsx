@@ -2,7 +2,7 @@ import _cloneDeep from 'lodash/cloneDeep';
 import { Url, HttpMethodDropDown, Button } from '@firecamp/ui';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
-import useUrlBarFacade, { useUrlBarPrefixButtonsFacade } from './useUrlBarFacade';
+import useUrlBarFacade, { useUrlBarSuffixButtonsFacade } from './useUrlBarFacade';
 
 const methods = Object.values(EHttpMethod);
 const UrlBarContainer = () => {
@@ -75,14 +75,14 @@ const UrlBarContainer = () => {
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
       }
-      suffixComponent={<PrefixButtons />}
+      suffixComponent={<SuffixButtons />}
     />
   );
 };
 
 export default UrlBarContainer;
 
-const PrefixButtons = () => {
+const SuffixButtons = () => {
   const {
     tabId,
     isRequestRunning,
@@ -91,7 +91,7 @@ const PrefixButtons = () => {
     // requestHasChanges,
     execute,
     save,
-  } = useUrlBarPrefixButtonsFacade();
+  } = useUrlBarSuffixButtonsFacade();
 
   const _onSave = async () => {
     try {
