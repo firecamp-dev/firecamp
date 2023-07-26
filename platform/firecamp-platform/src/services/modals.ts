@@ -78,6 +78,12 @@ const modalService = {
     open(EPlatformModalTypes.SwitchOrg);
   },
 
+  openAllInvitation: () => {
+    const { isGuest } = useUserStore.getState();
+    if (isGuest) return modalService.openSignIn();
+    open(EPlatformModalTypes.AllInvitation);
+  },
+
   // Cookie, Ssl, Proxy
   openCookieManager: () => {
     const { isGuest } = useUserStore.getState();

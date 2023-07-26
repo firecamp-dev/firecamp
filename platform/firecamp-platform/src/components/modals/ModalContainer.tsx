@@ -19,6 +19,7 @@ import SwitchWorkspace from './workspace/SwitchWorkspace';
 import CloneEnvironment from './environment/CloneEnvironment';
 import EditRequest from './request/edit-request/EditRequest';
 import ProfileManagement from './profile/ProfileManagement';
+import AllInvitation from './invitation/AllInvitation';
 
 export const ModalContainer = () => {
   const { currentOpenModal, isOpen, close } = useModalStore(
@@ -75,6 +76,8 @@ export const ModalContainer = () => {
         return <ResetPassword opened={isOpen} onClose={close} />;
       case EPlatformModalTypes.RefreshToken:
         return <RefreshToken opened={isOpen} onClose={close} />;
+      case EPlatformModalTypes.AllInvitation:
+        return <AllInvitation opened={isOpen} onClose={close} />;
       default:
         return <></>;
     }

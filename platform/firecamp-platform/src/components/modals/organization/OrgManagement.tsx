@@ -2,21 +2,27 @@ import { FC, useEffect, useState } from 'react';
 import { Rest } from '@firecamp/cloud-apis';
 import { _misc } from '@firecamp/utils';
 import { IModal, SecondaryTab, Drawer } from '@firecamp/ui';
+import EditOrganization from './tabs/EditOrganization';
 import Members from './tabs/Members';
 import BillingTab from './tabs/Billing';
 import Workspaces from './tabs/Workspaces';
 import { usePlatformStore } from '../../../store/platform';
+import platformContext from '../../../services/platform-context';
 
 enum ETabTypes {
+  Overview = 'overview',
   Workspaces = 'workspaces',
   Members = 'members',
   Billing = 'billing',
 }
 const tabs = [
+  { name: 'Overview', id: ETabTypes.Overview },
   { name: 'Workspaces', id: ETabTypes.Workspaces },
   { name: 'Members', id: ETabTypes.Members },
   { name: 'Billing', id: ETabTypes.Billing },
 ];
+
+// add new tab - Overview : display organisation details (name, description - editable)
 
 // to convert date into readable date
 export const getFormalDate = (convertDate: string) => {
@@ -32,14 +38,18 @@ export const getFormalDate = (convertDate: string) => {
 };
 
 const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
+  const { organization } = usePlatformStore((s) => ({
+    organization: s.organization,
+  }));
+
   const [activeTab, setActiveTab] = useState<string>(tabs[0].id);
   const [isFetching, setIsFetching] = useState(false);
   const [workspaces, updateWorkspaces] = useState([]);
   const [members, updateMembers] = useState([]);
 
-  const { organization } = usePlatformStore((s) => ({
-    organization: s.organization,
-  }));
+  const [org, setOrg] = useState(organization);
+  const [error, setError] = useState({ name: '' });
+  const [isRequesting, setIsRequesting] = useState(false);
 
   // getting organization's workspaces / members listing once
   useEffect(() => {
@@ -66,8 +76,54 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
     }
   }, [activeTab]);
 
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    if (error.name) setError({ name: '' });
+    setOrg((o) => ({ ...o, [name]: value }));
+  };
+
+  const onUpdate = () => {
+    if (isRequesting) return;
+    const name = org.name.trim();
+    if (!name || name.length < 6) {
+      setError({
+        name: 'The organization name must have minimum 6 characters',
+      });
+      return;
+    }
+    const _org = { name, description: org?.description?.trim() };
+
+    // TODO: add organization update api
+    setIsRequesting(true);
+    // Rest.organization
+    // .updateOrganisationDetail(_org)
+    // .then(() => {
+    platformContext.app.notify.success(
+      "The organization's detail has been changed successfully."
+    );
+    // })
+    // .catch((e) => {
+    // platformContext.app.notify.alert(
+    // e.response?.data.message || e.message
+    // );
+    // })
+    // .finally(() => {
+    //   setIsRequesting(false);
+    // });
+  };
+
   const renderTab = (tabId: string) => {
     switch (tabId) {
+      case ETabTypes.Overview:
+        return (
+          <EditOrganization
+            organization={organization}
+            error={error}
+            isRequesting={isRequesting}
+            onSubmit={onUpdate}
+            onChange={onChange}
+          />
+        );
       case ETabTypes.Workspaces:
         return <Workspaces workspaces={workspaces} isFetching={isFetching} />;
       case ETabTypes.Members:

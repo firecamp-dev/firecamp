@@ -10,6 +10,7 @@ import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwit
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { AlignCenter, MailOpen } from 'lucide-react';
 
 import { Button, DropdownMenu, FcIconGetSquare } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
@@ -27,6 +28,7 @@ enum EMenuOptions {
   InviteMembers = 'invite-members',
   SwitchOrg = 'switch-org',
   SwitchWorkspace = 'switch-workspace',
+  AllInvitation = 'all-invitation'
 }
 
 const options = [
@@ -77,6 +79,12 @@ const options = [
     id: EMenuOptions.SwitchWorkspace,
     name: 'Switch workspace',
     prefix: () => <VscMultipleWindows size={16} className='text-app-foreground-active' />,
+    showSeparator: true,
+  },
+  {
+    id: EMenuOptions.AllInvitation,
+    name: 'View invitation',
+    prefix: () => <MailOpen size={16} className='text-app-foreground-active' />
   },
 ];
 
@@ -113,6 +121,9 @@ const GlobalCreateDD = ({}) => {
       case EMenuOptions.SwitchWorkspace:
         platformContext.app.modals.openSwitchWorkspace();
         break;
+      case EMenuOptions.AllInvitation:
+        platformContext.app.modals.openAllInvitation();
+        break;
     }
   };
 
@@ -122,7 +133,7 @@ const GlobalCreateDD = ({}) => {
         onOpenChange={(v) => toggleOpen(v)}
         handler={() => (
           <Button
-            text={'Create'}
+            leftIcon={<AlignCenter size={20}/>}
             rightIcon={<VscTriangleDown size={12} className={classnames({'transform rotate-180': isOpen})}/>}
             transparent
             primary
