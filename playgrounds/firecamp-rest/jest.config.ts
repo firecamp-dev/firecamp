@@ -39,6 +39,6 @@ const config: Config.InitialOptions = {
   verbose: true,
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  setupFilesAfterEnv: ['./src/setup-jest.ts'],
+  setupFilesAfterEnv: ['./src/setup-jest.tsx'],
 };
 export default config;
