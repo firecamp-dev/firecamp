@@ -25,6 +25,7 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
       <Button
         text={selectedOption}
         title={'HTTP Method'}
+        data-testid="http-method-label"
         rightIcon={
           <VscTriangleDown
             size={12}
