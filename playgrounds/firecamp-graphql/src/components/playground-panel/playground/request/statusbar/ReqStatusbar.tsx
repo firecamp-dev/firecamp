@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import cx from 'classnames';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';

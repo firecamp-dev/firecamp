@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { DropdownMenu } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';

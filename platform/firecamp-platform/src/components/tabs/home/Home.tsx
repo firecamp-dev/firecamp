@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import {
   Container,

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Button } from '@firecamp/ui';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import CloseConnection from './CloseConnection';
 import { EConnectionState } from '../../../types';
 import { IStore, useStore } from '../../../store';

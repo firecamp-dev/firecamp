@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import _url from '@firecamp/url';
 import { Button, Url } from '@firecamp/ui';
 import ConnectButton from '../connection/ConnectButton';

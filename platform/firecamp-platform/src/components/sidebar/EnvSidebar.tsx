@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import classnames from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import {
   Resizable,
   Container,

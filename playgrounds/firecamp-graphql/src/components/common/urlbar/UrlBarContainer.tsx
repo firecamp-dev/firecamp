@@ -1,6 +1,6 @@
 import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import { FaFile } from '@react-icons/all-files/fa/FaFile';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { Button, Url, HttpMethodDropDown } from '@firecamp/ui';

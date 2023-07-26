@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { IStore, useStore } from '../../../../../store';
 
 const EditPlaygroundName: FC<any> = ({}) => {

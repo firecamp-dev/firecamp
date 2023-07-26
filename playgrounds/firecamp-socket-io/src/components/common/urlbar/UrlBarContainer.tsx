@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import cx from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import _url from '@firecamp/url';
 import { Url, Button, DropdownMenu } from '@firecamp/ui';

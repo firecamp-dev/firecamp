@@ -3,7 +3,7 @@ import _compact from 'lodash/compact';
 import isEqual from 'react-fast-compare';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import {
   FileInput,
   Container,

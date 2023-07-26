@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Response as ResponsePanel } from '@firecamp/ui';
 import { IStore, useStore } from '../../../../store';
 
