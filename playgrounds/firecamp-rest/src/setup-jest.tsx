@@ -8,9 +8,15 @@ jest.mock('@monaco-editor/react', () => {
         data-auto={props.wrapperClassName}
         onChange={(e) => props.onChange(e.target.value)}
         value={props.value}
-        data-testId="url-editor"
+        data-testId="single-line-editor"
       ></textarea>
     );
   });
   return FakeEditor;
 });
+
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}));

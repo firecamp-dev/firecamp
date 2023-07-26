@@ -27,9 +27,9 @@ describe("UrlBarContainer render", () => {
     });
     render(<UrlBarContainer />);
 
-    const urlEditor = screen.getByTestId("url-editor");
-    expect(urlEditor).toBeInTheDocument();
-    expect(urlEditor).toHaveTextContent('https://firecamp.io');
+    const urlInput = screen.getByTestId("single-line-editor");
+    expect(urlInput).toBeInTheDocument();
+    expect(urlInput).toHaveTextContent('https://firecamp.io');
 
     const reqPath = screen.getByTestId("request-path");
     expect(reqPath).toBeInTheDocument();

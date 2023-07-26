@@ -75,7 +75,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
       <TabHeader className="-mb-2">
         {title && (
           <TabHeader.Left>
-            <span className="">{title}</span>
+            <span className="" data-testid="table-title">{title}</span>
           </TabHeader.Left>
         )}
 
@@ -85,6 +85,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
             classNames={{
               root: 'mt-1'
             }}
+            data-testid="bulk-edit-button"
             onClick={() => {
               setMode(mode === modes.Table ? modes.Raw : modes.Table);
             }}
