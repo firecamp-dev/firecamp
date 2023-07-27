@@ -6,13 +6,6 @@ import platformContext from '../../../services/platform-context';
 import { IInvite } from './InvitationCard.interface';
 import { Rest } from '@firecamp/cloud-apis';
 
-// const cinvite = {
-//   inviterName: 'Nishchit14',
-//   orgName: 'Firecamp',
-//   workspaceName: 'testing',
-//   role: 2,
-//   token: 'firecamp-token',
-// };
 const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
   const [list, updateList] = useState<Array<IInvite> | []>([]);
   const [inviteId, updateInviteId] = useState('');
@@ -34,8 +27,8 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
       .finally(() => setIsFetching(false));
   }, []);
 
-  const switchToWrs = async (wrs: any) => {
-    await platformContext.app.switchWorkspace(wrs);
+  const switchToWrs = async (wrs: any, org: any) => {
+    await platformContext.app.switchWorkspace(wrs, org);
     platformContext.app.modals.close();
   };
 
@@ -48,20 +41,18 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
     Rest.invitation
       .accept(invite.token)
       .then((res) => res.data)
-      .then(({ error, message }) => {
+      .then(({ error, message, org,
+        workspace }) => {
         if (!error) {
           platformContext.app.notify.success(
-            'You have successfully joined the invitation',
-            { label: { success: 'Updated Invitation' } }
+            'You have successfully joined the invitation'
           );
-
-          // TODO: check for workspace details for switchToWrs(workspace)..
 
           platformContext.window.confirm({
             message:
               'Congratulations on joining the invitation! Are you interested in switching workspaces and start collaboration?',
             labels: { confirm: 'Yes, switch workspace.' },
-            onConfirm: () => switchToWrs(invite),
+            onConfirm: () => switchToWrs(workspace,org),
             onCancel: () => {
               setIsRequesting(false);
               updateInviteId('');
@@ -74,9 +65,7 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
             ...list.slice(Index + 1),
           ]);
         } else {
-          platformContext.app.notify.alert(message, {
-            label: { alert: 'Updated Invitation' },
-          });
+          platformContext.app.notify.alert(message);
         }
       })
       .catch((e) => {
