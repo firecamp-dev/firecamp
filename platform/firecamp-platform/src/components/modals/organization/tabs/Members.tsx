@@ -6,7 +6,6 @@ import {
   Container,
   DropdownMenu,
   PrimitiveTable,
-  ProgressBar,
   TTableApi,
 } from '@firecamp/ui';
 import { _array } from '@firecamp/utils';
@@ -101,15 +100,10 @@ const Members = ({
               ]);
 
               platformContext.app.notify.success(
-                "The member's role has been changed successfully.",
-                {
-                  labels: { success: 'Role Updated' },
-                }
+                "The member's role has been changed successfully."
               );
             } else {
-              platformContext.app.notify.alert(message, {
-                labels: { alert: 'Role Updated' },
-              });
+              platformContext.app.notify.alert(message);
             }
           })
           .catch((e) => {
@@ -148,7 +142,6 @@ const Members = ({
   return (
     <Container className="gap-2 pt-2 !h-[80vh]">
       <Container.Body>
-        <ProgressBar active={isFetching} className={'top-auto'} />
         <PrimitiveTable
           classes={{
             container: 'h-full',

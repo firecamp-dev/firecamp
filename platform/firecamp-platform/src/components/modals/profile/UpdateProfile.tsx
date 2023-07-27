@@ -26,7 +26,7 @@ const UpdateProfile = () => {
 
   const _onSubmit = async (payload: { name: string }) => {
     let { name } = payload;
-    if (isRequesting || user.name !== name) return;
+    if (isRequesting || user.name === name) return;
     
 
     setFlagIsRequesting(true);

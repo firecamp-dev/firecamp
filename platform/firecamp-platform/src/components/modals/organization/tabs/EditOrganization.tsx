@@ -7,8 +7,8 @@ const EditOrganization: FC<any> = ({
   isRequesting,
   onSubmit,
   onChange,
-  close,
-  disabled
+  enableReset = true,
+  disabled = false
 }) => {
   return (
     <Container className="py-6 px-3 flex-1 flex flex-col h-full">
@@ -47,11 +47,12 @@ const EditOrganization: FC<any> = ({
         <TabHeader className="!px-0">
           <TabHeader.Left></TabHeader.Left>
           <TabHeader.Right>
-            <Button text="Cancel" onClick={(e) => close(e)} ghost xs />
+
+            {/* {enableReset ? <Button text="Undo" onClick={(e) => onChange(e, true)} ghost xs /> : <></>} */}
             <Button
               text={isRequesting ? 'Updating...' : 'Update'}
               onClick={onSubmit}
-              disabled={isRequesting || disabled}
+              disabled={isRequesting || disabled  || !enableReset}
               primary
               xs
             />

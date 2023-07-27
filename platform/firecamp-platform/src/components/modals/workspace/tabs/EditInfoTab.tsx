@@ -8,8 +8,8 @@ const EditInfoTab: FC<any> = ({
   isRequesting,
   onSubmit,
   onChange,
-  close,
-  disabled
+  disabled = false,
+  enableReset = false,
 }) => {
   return (
     <Container className="pt-3 px-3 flex-1 flex flex-col h-full">
@@ -66,11 +66,12 @@ const EditInfoTab: FC<any> = ({
             </a>
           </TabHeader.Left>
           <TabHeader.Right>
-            <Button text="Cancel" onClick={(e) => close(e)} ghost xs />
+            {/* TODO: update details */}
+            {/* {enableReset ? <Button text="Undo" onClick={(e) => onChange(e, true)} ghost xs /> : <></>} */}
             <Button
               text={isRequesting ? 'Updating...' : 'Update'}
               onClick={onSubmit}
-              disabled={isRequesting || disabled}
+              disabled={isRequesting || disabled || !enableReset}
               primary
               xs
             />

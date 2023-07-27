@@ -2,7 +2,6 @@ import { FC, useEffect, useRef } from 'react';
 import {
   Container,
   PrimitiveTable,
-  ProgressBar,
   TTableApi,
 } from '@firecamp/ui';
 import { _array } from '@firecamp/utils';
@@ -68,7 +67,6 @@ const Workspaces: FC<{workspaces: Array<any>, isFetching: boolean}> = ({ workspa
   return (
     <Container className="gap-2 pt-2 !h-[80vh]">
       <Container.Body>
-        <ProgressBar active={isFetching} className={'top-auto'} />
         <PrimitiveTable
           classes={{
             container: 'h-full',

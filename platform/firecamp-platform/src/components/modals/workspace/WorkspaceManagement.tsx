@@ -22,8 +22,9 @@ const WorkspaceManagement: FC<IModal> = ({
   opened = false,
   onClose = () => {},
 }) => {
-  let { workspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
+  let { workspace, setWorkspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
     workspace: s.workspace,
+    setWorkspace: s.setWorkspace,
   }));
 
   const [wrs, setWrs] = useState(workspace);
@@ -60,32 +61,50 @@ const WorkspaceManagement: FC<IModal> = ({
     }
   }, [activeTab]);
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    if (error.name) setError({ name: '' });
-    setWrs((w) => ({ ...w, [name]: value }));
+  const onChange = (e, reset) => {
+    if(reset){
+      if (error.name) setError({ name: '' });
+      setWrs(workspace);
+    }else{
+      const { name, value } = e.target;
+      if (error.name) setError({ name: '' });
+      setWrs((w) => ({ ...w, [name]: value }));
+    }
+    
   };
 
   const onUpdate = () => {
     if (isRequesting) return;
     const name = wrs.name.trim();
+    const description = wrs.description?.trim();
+
     if (!name || name.length < 6) {
       setError({ name: 'The workspace name must have minimum 6 characters' });
       return;
     }
 
-    const _wrs: { name: string; description?: string } = { name };
-    if (wrs?.description?.trim().length > 0) {
-      _wrs.description = wrs?.description?.trim();
+    if(workspace.name === wrs.name && workspace.description === wrs.description) return ;
+
+    const _wrs: { name?: string; description?: string } = {};
+    if (workspace.name !== name) {
+      _wrs.name = name;
+    }
+    if (workspace.description !== description) {
+      _wrs.description = description;
     }
 
     setIsRequesting(true);
     Rest.workspace
       .update(workspace.__ref.id, _wrs)
-      .then(() => {
-        platformContext.app.notify.success(
-          "The workspace's detail has been changed successfully."
-        );
+      .then(({ error, message }) => {
+        if (!error) {
+          platformContext.app.notify.success(
+            "The workspace's detail has been changed successfully."
+          );
+          setWorkspace({ ...workspace, ..._wrs });
+        } else {
+          platformContext.app.notify.alert(message);
+        }
       })
       .catch((e) => {
         platformContext.app.notify.alert(e.response?.data.message || e.message);
@@ -105,9 +124,12 @@ const WorkspaceManagement: FC<IModal> = ({
             error={error}
             isRequesting={isRequesting}
             onChange={onChange}
-            close={onClose}
             onSubmit={onUpdate}
-            disabled={true} // only allowed for owner & admin
+            enableReset={
+              workspace.name !== wrs.name ||
+              workspace.description !== wrs.description
+            }
+            // disabled={true} // TODO: only allowed for owner & admin
           />
         );
       case 'members':
