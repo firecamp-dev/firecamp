@@ -86,7 +86,7 @@ const InviteOrgMembers: FC<IProps> = ({
             onSelect={(m) => onChange({ ...member, ...m })}
             classNames={{
               trigger: 'block',
-              dropdown: '-mt-2 overflow-y-scroll invisible-scrollbar h-[200px]',
+              dropdown: '-mt-2 overflow-y-scroll invisible-scrollbar max-h-[200px]',
               item: '!px-4',
             }}
             width={512}

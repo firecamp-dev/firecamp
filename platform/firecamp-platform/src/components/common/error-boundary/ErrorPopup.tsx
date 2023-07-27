@@ -5,12 +5,6 @@ import { Modal } from '@firecamp/ui';
 import './ErrorPopup.sass';
 
 const ErrorPopup: FC<FallbackProps> = ({ error }) => {
-  const bg = {
-    modal: {
-      background: '#c84a1782',
-      color: '#e3dfdf',
-    },
-  };
 
   let [isOpen, toggleOpen] = useState(true);
 
@@ -24,7 +18,6 @@ const ErrorPopup: FC<FallbackProps> = ({ error }) => {
   return (
     <Modal
       opened={isOpen}
-      styles={{ content: bg.modal }}
       onClose={_onClose}
       className="fc-error-popup"
     >

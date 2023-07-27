@@ -48,6 +48,7 @@ export enum EPlatformModalTypes {
 
   // user
   UserProfile = 'userProfile',
+  AllInvitation = 'allInvitation',
 
   // cookie
   CookieManager = 'cookieManager',

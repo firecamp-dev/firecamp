@@ -112,6 +112,7 @@ const SIOVersionDropDown: FC<any> = ({
                 className={cx({ 'transform rotate-180': isDropDownOpen })}
               />
             }
+            animate={false}
             secondary
             xs
           />
