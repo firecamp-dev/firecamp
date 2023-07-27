@@ -1,26 +1,35 @@
 import { FC, useEffect, useState } from 'react';
 import { _array } from '@firecamp/utils';
-import { Container, Drawer, IModal } from '@firecamp/ui';
+import { Container, Drawer, IModal, ProgressBar } from '@firecamp/ui';
 import InvitationCard from './InvitationCard';
 import platformContext from '../../../services/platform-context';
 import { IInvite } from './InvitationCard.interface';
 import { Rest } from '@firecamp/cloud-apis';
 
+// const cinvite = {
+//   inviterName: 'Nishchit14',
+//   orgName: 'Firecamp',
+//   workspaceName: 'testing',
+//   role: 2,
+//   token: 'firecamp-token',
+// };
 const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
   const [list, updateList] = useState<Array<IInvite> | []>([]);
   const [inviteId, updateInviteId] = useState('');
   const [isRequesting, setIsRequesting] = useState(false);
   const [isFetching, setIsFetching] = useState(false);
 
-  // todo add invitation listing logic
   useEffect(() => {
     setIsFetching(true);
 
     Rest.invitation
       .getMyPendingInvitations()
       .then((res) => res.data)
-      .then((list) => {
-        updateList(list);
+      .then((res) => {
+        const { error } = res;
+        if (!error) {
+          updateList(list);
+        }
       })
       .finally(() => setIsFetching(false));
   }, []);
@@ -91,23 +100,28 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
       }
     >
       <Container className="py-4">
-        <Container.Body>
-          {!_array.isEmpty(list) ? (
-            list.map((invite, index) => (
-              <InvitationCard
-                key={index}
-                inviterName={invite.inviterName}
-                orgName={invite.orgName}
-                workspaceName={invite.workspaceName}
-                role={invite.role}
-                disabled={inviteId.length > 0 && inviteId === invite.token}
-                onAccept={() => _handleInvitation(invite)}
-              />
-            ))
-          ) : (
-            <NoInvitationFound />
-          )}
-        </Container.Body>
+        <ProgressBar active={isFetching} />
+        {!isFetching ? (
+          <Container.Body>
+            {!_array.isEmpty(list) ? (
+              list.map((invite, index) => (
+                <InvitationCard
+                  key={index}
+                  inviterName={invite.inviterName}
+                  orgName={invite.orgName}
+                  workspaceName={invite.workspaceName}
+                  role={invite.role}
+                  disabled={inviteId.length > 0 && inviteId === invite.token}
+                  onAccept={() => _handleInvitation(invite)}
+                />
+              ))
+            ) : (
+              <NoInvitationFound />
+            )}
+          </Container.Body>
+        ) : (
+          <></>
+        )}
       </Container>
     </Drawer>
   );

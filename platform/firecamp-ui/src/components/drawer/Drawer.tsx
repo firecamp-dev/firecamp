@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { Drawer as MantineDrawer, DrawerProps, ScrollArea, createStyles } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 
 export interface IDrawer extends DrawerProps { }
 

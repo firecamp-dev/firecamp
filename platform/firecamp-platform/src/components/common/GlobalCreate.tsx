@@ -1,16 +1,11 @@
 import { useState } from 'react';
 import classnames from 'classnames';
 
-import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
-import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
-import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { AlignCenter, MailOpen } from 'lucide-react';
+import { Triangle, MailOpen, FolderClosed, Braces, ArrowDown, AppWindow, UserPlus2 } from 'lucide-react';
 
 import { Button, DropdownMenu, FcIconGetSquare } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
@@ -40,24 +35,24 @@ const options = [
   {
     id: EMenuOptions.Collection,
     name: 'New collection',
-    prefix: () => <VscFolder size={16} className='text-app-foreground-active' />,
+    prefix: () => <FolderClosed size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.Environment,
     name: 'New environment',
-    prefix: () => <RiBracesLine size={16} className='text-app-foreground-active' />,
+    prefix: () => <Braces size={16} className='text-app-foreground-active' />,
   },
 
   {
     id: EMenuOptions.ImportCollection,
     name: 'Import collection',
     showSeparator: true,
-    prefix: () => <VscArrowDown size={16} className='text-app-foreground-active' />,
+    prefix: () => <ArrowDown size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.Workspace,
     name: 'New workspace',
-    prefix: () => <VscWindow size={16} className='text-app-foreground-active' />,
+    prefix: () => <AppWindow size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.Organization,
@@ -68,7 +63,7 @@ const options = [
     id: EMenuOptions.InviteMembers,
     name: 'Invite members',
     showSeparator: true,
-    prefix: () => <AiOutlineUserAdd size={16} className='text-app-foreground-active' />,
+    prefix: () => <UserPlus2 size={16} className='text-app-foreground-active' />,
   },
   {
     id: EMenuOptions.SwitchOrg,
@@ -133,7 +128,7 @@ const GlobalCreateDD = ({}) => {
         onOpenChange={(v) => toggleOpen(v)}
         handler={() => (
           <Button
-            leftIcon={<AlignCenter size={20}/>}
+            leftIcon={<Triangle size={20}/>}
             rightIcon={<VscTriangleDown size={12} className={classnames({'transform rotate-180': isOpen})}/>}
             animate={false}
             transparent

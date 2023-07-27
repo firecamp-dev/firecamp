@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Button } from '@firecamp/ui';
+import { Button, TabHeader } from '@firecamp/ui';
 import { EUserRolesWorkspace } from '../../../types';
 import { IInvitationCard } from './InvitationCard.interface';
 
@@ -35,28 +35,28 @@ const InvitationCard: FC<IInvitationCard> = ({
 
   return (
     <div className="bg-app-background p-4 shadow-sm rounded border mb-4">
-      <div className="flex gap-4 justify-between">
-        <p className="text-gray-500 text-sm font-normal w-4/5">
-          <span className="font-semibold">{inviterName}</span>
-          <span> has invited you to collaborate on the </span>
-          <span className="font-semibold">{orgName}</span>
-          <span>/</span>
-          <span className="font-semibold">{workspaceName}</span>
-          <span> as </span>
-          <span className="font-semibold">{userRole?.name}</span>
-        </p>
-        <div className="inline-flex w-fit gap-1">
+      {/* <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative py-4">
+        NEW INVITATION
+      </label> */}
+      <div className="my-4">
+        <span className="font-semibold">{inviterName}</span>
+        <span> has invited you to collaborate on the </span>
+        <span className="font-semibold">{orgName}</span>
+        <span>/</span>
+        <span className="font-semibold">{workspaceName}</span>
+        <span> as </span>
+        <span className="font-semibold">{userRole?.name}</span>
+      </div>
+      <TabHeader className="!px-0">
+        <TabHeader.Right>
           <Button
-            text={'Accept'}
+            text={'Accept Invitation'}
             onClick={() => onAccept()}
-            disabled={disabled}
-            loading={disabled}
             primary
-            compact
             xs
           />
-        </div>
-      </div>
+        </TabHeader.Right>
+      </TabHeader>
     </div>
   );
 };
