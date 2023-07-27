@@ -22,8 +22,6 @@ const tabs = [
   { name: 'Billing', id: ETabTypes.Billing },
 ];
 
-// add new tab - Overview : display organisation details (name, description - editable)
-
 // to convert date into readable date
 export const getFormalDate = (convertDate: string) => {
   let date = new Date(convertDate);
@@ -50,6 +48,8 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const [org, setOrg] = useState(organization);
   const [error, setError] = useState({ name: '' });
   const [isRequesting, setIsRequesting] = useState(false);
+
+  // console.log(`organization--`, organization);
 
   // getting organization's workspaces / members listing once
   useEffect(() => {
@@ -91,25 +91,27 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
       });
       return;
     }
-    const _org = { name, description: org?.description?.trim() };
+    const _org: { name: string; description?: string } = { name };
+    if (org?.description?.trim().length > 0) {
+      _org.description = org?.description?.trim();
+    }
 
-    // TODO: add organization update api
     setIsRequesting(true);
-    // Rest.organization
-    // .updateOrganisationDetail(_org)
-    // .then(() => {
-    platformContext.app.notify.success(
-      "The organization's detail has been changed successfully."
-    );
-    // })
-    // .catch((e) => {
-    // platformContext.app.notify.alert(
-    // e.response?.data.message || e.message
-    // );
-    // })
-    // .finally(() => {
-    //   setIsRequesting(false);
-    // });
+    Rest.organization
+      .update(organization.__ref.id, _org)
+      .then((res) => res.data)
+      .then((res) => {
+        // console.log(`details.. updated`, res);
+        platformContext.app.notify.success(
+          "The organization's detail has been changed successfully."
+        );
+      })
+      .catch((e) => {
+        platformContext.app.notify.alert(e.response?.data.message || e.message);
+      })
+      .finally(() => {
+        setIsRequesting(false);
+      });
   };
 
   const renderTab = (tabId: string) => {
@@ -122,12 +124,20 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
             isRequesting={isRequesting}
             onSubmit={onUpdate}
             onChange={onChange}
+            disabled={true} // only allowed for owner
           />
         );
       case ETabTypes.Workspaces:
         return <Workspaces workspaces={workspaces} isFetching={isFetching} />;
       case ETabTypes.Members:
-        return <Members members={members} updateMembers={updateMembers} isFetching={isFetching} organizationId={organization.__ref.id}/>;
+        return (
+          <Members
+            members={members}
+            updateMembers={updateMembers}
+            isFetching={isFetching}
+            organizationId={organization.__ref.id}
+          />
+        );
       case ETabTypes.Billing:
         return <BillingTab />;
       default:

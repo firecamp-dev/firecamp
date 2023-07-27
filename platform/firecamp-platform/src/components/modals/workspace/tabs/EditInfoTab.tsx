@@ -9,6 +9,7 @@ const EditInfoTab: FC<any> = ({
   onSubmit,
   onChange,
   close,
+  disabled
 }) => {
   return (
     <Container className="pt-3 px-3 flex-1 flex flex-col h-full">
@@ -69,7 +70,7 @@ const EditInfoTab: FC<any> = ({
             <Button
               text={isRequesting ? 'Updating...' : 'Update'}
               onClick={onSubmit}
-              disabled={isRequesting}
+              disabled={isRequesting || disabled}
               primary
               xs
             />

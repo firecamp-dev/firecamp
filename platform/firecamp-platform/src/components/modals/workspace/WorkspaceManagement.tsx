@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import {
   Container,
   Drawer,
-  Modal,
   IModal,
   SecondaryTab,
   ProgressBar,
@@ -12,6 +11,7 @@ import { Rest } from '@firecamp/cloud-apis';
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';
 import EditInfoTab from './tabs/EditInfoTab';
 import MembersTab from './tabs/MembersTab';
+import platformContext from '../../../services/platform-context';
 import './workspace.scss';
 
 enum ETabTypes {
@@ -73,9 +73,26 @@ const WorkspaceManagement: FC<IModal> = ({
       setError({ name: 'The workspace name must have minimum 6 characters' });
       return;
     }
-    const _wrs = { name, description: wrs?.description?.trim() };
 
-    // TODO: workspace  update API call
+    const _wrs: { name: string; description?: string } = { name };
+    if (wrs?.description?.trim().length > 0) {
+      _wrs.description = wrs?.description?.trim();
+    }
+
+    setIsRequesting(true);
+    Rest.workspace
+      .update(workspace.__ref.id, _wrs)
+      .then(() => {
+        platformContext.app.notify.success(
+          "The workspace's detail has been changed successfully."
+        );
+      })
+      .catch((e) => {
+        platformContext.app.notify.alert(e.response?.data.message || e.message);
+      })
+      .finally(() => {
+        setIsRequesting(false);
+      });
   };
 
   const renderTab = (tabId: string) => {
@@ -90,6 +107,7 @@ const WorkspaceManagement: FC<IModal> = ({
             onChange={onChange}
             close={onClose}
             onSubmit={onUpdate}
+            disabled={true} // only allowed for owner & admin
           />
         );
       case 'members':

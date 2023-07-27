@@ -1,7 +1,6 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button, Input } from '@firecamp/ui';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import { Rest } from '@firecamp/cloud-apis';
 import platformContext from '../../../services/platform-context';
 import { useUserStore } from '../../../store/user';
@@ -13,15 +12,22 @@ const UpdateProfile = () => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
 
   const form = useForm();
-  let { handleSubmit, errors } = form;
+  let { handleSubmit, errors, setValue } = form;
 
-  const { user } = useUserStore((s) => ({
+  const { user, setUser } = useUserStore((s) => ({
     user: s.user,
+    setUser: s.setUser
   }));
 
+  // set the initial value for the form
+  useEffect(() => {
+    setValue("name", user.name);
+  },[user]);
+
   const _onSubmit = async (payload: { name: string }) => {
-    if (isRequesting) return;
     let { name } = payload;
+    if (isRequesting || user.name !== name) return;
+    
 
     setFlagIsRequesting(true);
 
@@ -31,15 +37,12 @@ const UpdateProfile = () => {
       .then(({ error, message }) => {
         if (!error) {
           platformContext.app.notify.success(
-            message ?? `Your profile details are updated`,
-            {
-              labels: { success: 'Update profile' },
-            }
+            `Your profile details are updated`
           );
+          // update the user store
+          setUser({...user, name})
         } else {
-          platformContext.app.notify.alert(message, {
-            labels: { alert: 'Update profile' },
-          });
+          platformContext.app.notify.alert(message);
         }
       })
       .catch((e) => {

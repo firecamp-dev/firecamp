@@ -8,6 +8,7 @@ const EditOrganization: FC<any> = ({
   onSubmit,
   onChange,
   close,
+  disabled
 }) => {
   return (
     <Container className="py-6 px-3 flex-1 flex flex-col h-full">
@@ -50,7 +51,7 @@ const EditOrganization: FC<any> = ({
             <Button
               text={isRequesting ? 'Updating...' : 'Update'}
               onClick={onSubmit}
-              disabled={isRequesting}
+              disabled={isRequesting || disabled}
               primary
               xs
             />

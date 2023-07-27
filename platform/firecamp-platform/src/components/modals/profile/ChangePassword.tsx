@@ -34,15 +34,10 @@ const ChangePassword = () => {
       .then(({ error, message }) => {
         if (!error) {
           reset({ currentPassword: '', newPassword: '', confirmPassword: '' });
-          platformContext.app.notify.success(message, {
-            labels: { success: 'Change password' },
-          });
+          platformContext.app.notify.success(message);
         } else {
           platformContext.app.notify.alert(
-            message ?? `Failed to change password!`,
-            {
-              labels: { alert: 'Change password' },
-            }
+            message ?? `Failed to change password!`
           );
         }
       })
