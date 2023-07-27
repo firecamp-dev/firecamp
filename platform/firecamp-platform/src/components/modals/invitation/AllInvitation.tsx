@@ -1,23 +1,34 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { _array } from '@firecamp/utils';
 import { Container, Drawer, IModal } from '@firecamp/ui';
 import InvitationCard from './InvitationCard';
 import platformContext from '../../../services/platform-context';
 import { IInvite } from './InvitationCard.interface';
-
-// TODO: remove dummy data
-// const cinvite = {
-//   inviterName: 'Nishchit14',
-//   orgName: 'Firecamp',
-//   workspaceName: 'testing',
-//   role: 2,
-//   token: 'firecamp-token',
-// };
+import { Rest } from '@firecamp/cloud-apis';
 
 const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
   const [list, updateList] = useState<Array<IInvite> | []>([]);
   const [inviteId, updateInviteId] = useState('');
   const [isRequesting, setIsRequesting] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+
+  // todo add invitation listing logic
+  useEffect(() => {
+    setIsFetching(true);
+
+    Rest.invitation
+      .getMyPendingInvitations()
+      .then((res) => res.data)
+      .then((list) => {
+        updateList(list);
+      })
+      .finally(() => setIsFetching(false));
+  }, []);
+
+  const switchToWrs = async (wrs: any) => {
+    await platformContext.app.switchWorkspace(wrs);
+    platformContext.app.modals.close();
+  };
 
   const _handleInvitation = async (invite: IInvite) => {
     if (isRequesting) return;
@@ -25,39 +36,47 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
     setIsRequesting(true);
     updateInviteId(invite.token);
 
-    //TODO: update invitation api
+    Rest.invitation
+      .accept(invite.token)
+      .then((res) => res.data)
+      .then(({ error, message }) => {
+        if (!error) {
+          platformContext.app.notify.success(
+            'You have successfully joined the invitation',
+            { label: { success: 'Updated Invitation' } }
+          );
 
-    // Rest.user
-    //   .updateInvitation(invite.token)
-    //   .then(() => {
-    //     platformContext.app.notify.success(
-    //       'You have successfully joined the invitation'
-    //     );
+          // TODO: check for workspace details for switchToWrs(workspace)..
 
-    platformContext.window.confirm({
-      message:
-        'Congratulations on joining the invitation! Are you interested in switching workspaces and start collaboration?',
-      labels: { confirm: 'Yes, switch workspace.' },
-      onConfirm: () => {
-        platformContext.app.modals.openSwitchWorkspace();
-      },
-      onCancel: () => {
+          platformContext.window.confirm({
+            message:
+              'Congratulations on joining the invitation! Are you interested in switching workspaces and start collaboration?',
+            labels: { confirm: 'Yes, switch workspace.' },
+            onConfirm: () => switchToWrs(invite),
+            onCancel: () => {
+              setIsRequesting(false);
+              updateInviteId('');
+            },
+          });
+
+          let Index = list.findIndex((i) => i.token === invite.token);
+          updateList((list) => [
+            ...list.slice(0, Index),
+            ...list.slice(Index + 1),
+          ]);
+        } else {
+          platformContext.app.notify.alert(message, {
+            label: { alert: 'Updated Invitation' },
+          });
+        }
+      })
+      .catch((e) => {
+        platformContext.app.notify.alert(e.response?.data.message || e.message);
+      })
+      .finally(() => {
         setIsRequesting(false);
         updateInviteId('');
-      },
-    });
-
-    let Index = list.findIndex((i) => i.token === invite.token);
-    updateList((list) => [...list.slice(0, Index), ...list.slice(Index + 1)]);
-
-    //   })
-    //   .catch((e) => {
-    //     platformContext.app.notify.alert(e.response?.data.message || e.message);
-    //   })
-    //   .finally(() => {
-    //     setIsRequesting(false);
-    //     updateInviteId('');
-    //   });
+      });
   };
 
   return (

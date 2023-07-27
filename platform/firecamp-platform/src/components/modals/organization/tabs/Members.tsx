@@ -55,7 +55,12 @@ const RoleOptions = [
   },
 ];
 
-const Members = ({ members = [], isFetching = false }) => {
+const Members = ({
+  organizationId = '',
+  members = [],
+  updateMembers,
+  isFetching = false,
+}) => {
   const tableApi = useRef<TTableApi>(null);
 
   useEffect(() => {
@@ -80,21 +85,38 @@ const Members = ({ members = [], isFetching = false }) => {
         confirm: 'Yes, change the role.',
       },
       onConfirm: () => {
-        //TODO: add role update api
+        Rest.organization
+          .changeMemberRole(organizationId, row.id, row.role.id)
+          .then((res) => res.data)
+          .then(({ error, message }) => {
+            if (!error) {
+              tableApi.current.setRow({ ...row, role: row.role.id });
 
-        // Rest.workspace
-        // .changeMemberRole(workspace.__ref.id, row.id, row.role.id)
-        // .then(() => {
-        tableApi.current.setRow({ ...row, role: row.role.id });
-        platformContext.app.notify.success(
-          "The member's role has been changed successfully."
-        );
-        // })
-        // .catch((e) => {
-        // platformContext.app.notify.alert(
-        // e.response?.data.message || e.message
-        // );
-        // });
+              // update the member listing after update
+              let Index = members.findIndex((m) => m.id == row.id);
+              updateMembers([
+                ...members.slice(0, Index),
+                { ...members[Index], role: row.role.id },
+                ...members.slice(Index + 1),
+              ]);
+
+              platformContext.app.notify.success(
+                "The member's role has been changed successfully.",
+                {
+                  labels: { success: 'Role Updated' },
+                }
+              );
+            } else {
+              platformContext.app.notify.alert(message, {
+                labels: { alert: 'Role Updated' },
+              });
+            }
+          })
+          .catch((e) => {
+            platformContext.app.notify.alert(
+              e.response?.data.message || e.message
+            );
+          });
       },
     });
   };

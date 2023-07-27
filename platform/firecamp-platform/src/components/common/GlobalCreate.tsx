@@ -135,6 +135,7 @@ const GlobalCreateDD = ({}) => {
           <Button
             leftIcon={<AlignCenter size={20}/>}
             rightIcon={<VscTriangleDown size={12} className={classnames({'transform rotate-180': isOpen})}/>}
+            animate={false}
             transparent
             primary
             compact

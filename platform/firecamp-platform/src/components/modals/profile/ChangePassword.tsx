@@ -15,7 +15,7 @@ const ChangePassword = () => {
   const [confirmPassword, toggleConfirmPassword] = useState(false);
 
   const form = useForm();
-  const { handleSubmit, errors, getValues } = form;
+  const { handleSubmit, errors, getValues, reset } = form;
 
   const _onSubmit = async (payload: {
     currentPassword: string;
@@ -24,32 +24,39 @@ const ChangePassword = () => {
     if (isRequesting) return;
 
     setFlagIsRequesting(true);
-    // TODO: make api call
-    // await Rest.auth
-    //   .resetPassword({...payload})
-    //   .then((res) => {
-    //     if ([200, 201].includes(res?.status)) {
-    //       platformContext.app.notify.success(res.data?.message, {
-    //         labels: { success: 'Reset password' },
-    //       });
-    //       platformContext.app.modals.openSignIn();
-    //     } else {
-    //       platformContext.app.notify.alert(`Failed to reset password!`, {
-    //         labels: { alert: 'Reset password' },
-    //       });
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     platformContext.app.notify.alert(
-    //       e?.response?.data?.message || e.message,
-    //       {
-    //         labels: { alert: 'error!' },
-    //       }
-    //     );
-    //   })
-    //   .finally(() => {
-    //     setFlagIsRequesting(false);
-    //   });
+
+    await Rest.user
+      .changePassword({
+        currentPassword: payload.currentPassword,
+        newPassword: payload.newPassword,
+      })
+      .then((res) => res.data)
+      .then(({ error, message }) => {
+        if (!error) {
+          reset({ currentPassword: '', newPassword: '', confirmPassword: '' });
+          platformContext.app.notify.success(message, {
+            labels: { success: 'Change password' },
+          });
+        } else {
+          platformContext.app.notify.alert(
+            message ?? `Failed to change password!`,
+            {
+              labels: { alert: 'Change password' },
+            }
+          );
+        }
+      })
+      .catch((e) => {
+        platformContext.app.notify.alert(
+          e?.response?.data?.message || e.message,
+          {
+            labels: { alert: 'error!' },
+          }
+        );
+      })
+      .finally(() => {
+        setFlagIsRequesting(false);
+      });
   };
 
   const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);

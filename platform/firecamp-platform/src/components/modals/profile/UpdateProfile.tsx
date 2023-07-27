@@ -11,48 +11,48 @@ import { useUserStore } from '../../../store/user';
  */
 const UpdateProfile = () => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
-  
+
   const form = useForm();
   let { handleSubmit, errors } = form;
 
-  const {user} = useUserStore(s => ({
-    user: s.user
-  }))
+  const { user } = useUserStore((s) => ({
+    user: s.user,
+  }));
 
-  const _onSubmit = async (payload: {
-    name: string;
-  }) => {
+  const _onSubmit = async (payload: { name: string }) => {
     if (isRequesting) return;
     let { name } = payload;
 
-    
     setFlagIsRequesting(true);
-    // TODO: make api call
-    // await Rest.auth
-    //   .resetPassword({ token, new_password: password })
-    //   .then((res) => {
-    //     if ([200, 201].includes(res?.status)) {
-    //       platformContext.app.notify.success(res.data?.message, {
-    //         labels: { success: 'Reset password' },
-    //       });
-    //       platformContext.app.modals.openSignIn();
-    //     } else {
-    //       platformContext.app.notify.alert(`Failed to reset password!`, {
-    //         labels: { alert: 'Reset password' },
-    //       });
-    //     }
-    //   })
-    //   .catch((e) => {
-    //     platformContext.app.notify.alert(
-    //       e?.response?.data?.message || e.message,
-    //       {
-    //         labels: { alert: 'error!' },
-    //       }
-    //     );
-    //   })
-    //   .finally(() => {
-    //     setFlagIsRequesting(false);
-    //   });
+
+    await Rest.user
+      .updateProfile({ name })
+      .then((res) => res.data)
+      .then(({ error, message }) => {
+        if (!error) {
+          platformContext.app.notify.success(
+            message ?? `Your profile details are updated`,
+            {
+              labels: { success: 'Update profile' },
+            }
+          );
+        } else {
+          platformContext.app.notify.alert(message, {
+            labels: { alert: 'Update profile' },
+          });
+        }
+      })
+      .catch((e) => {
+        platformContext.app.notify.alert(
+          e?.response?.data?.message || e.message,
+          {
+            labels: { alert: 'error!' },
+          }
+        );
+      })
+      .finally(() => {
+        setFlagIsRequesting(false);
+      });
   };
 
   const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);

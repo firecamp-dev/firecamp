@@ -127,7 +127,7 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
       case ETabTypes.Workspaces:
         return <Workspaces workspaces={workspaces} isFetching={isFetching} />;
       case ETabTypes.Members:
-        return <Members members={members} isFetching={isFetching} />;
+        return <Members members={members} updateMembers={updateMembers} isFetching={isFetching} organizationId={organization.__ref.id}/>;
       case ETabTypes.Billing:
         return <BillingTab />;
       default:
