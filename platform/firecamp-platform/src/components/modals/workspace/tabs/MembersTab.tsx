@@ -84,7 +84,7 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
               e.response?.data.message || e.message
             );
           });
-      }
+      },
     });
   };
 
@@ -168,17 +168,14 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
         />
       </Container.Body>
       <Container.Footer className="px-3 h-[34px] flex items-center">
-        <a
-          className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
-          target="_blank"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
+        <Button
+          onClick={() => {
             platformContext.app.modals.openInviteMembers();
           }}
-        >
-          Invite New Members
-        </a>
+          text="Invite New Members"
+          ghost
+          xs
+        />
       </Container.Footer>
     </Container>
   );

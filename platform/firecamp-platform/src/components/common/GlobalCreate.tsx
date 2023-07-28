@@ -84,7 +84,6 @@ const options = [
 ];
 
 const GlobalCreateDD = ({}) => {
-  const [isOpen, toggleOpen] = useState(false);
   const { open } = useTabStore.getState();
   const onSelect = (option) => {
     switch (option.id) {
@@ -125,11 +124,9 @@ const GlobalCreateDD = ({}) => {
   return (
     <div className="border-l border-b border-tab-border flex items-center pl-1">
       <DropdownMenu
-        onOpenChange={(v) => toggleOpen(v)}
         handler={() => (
           <Button
             leftIcon={<Triangle size={20}/>}
-            rightIcon={<VscTriangleDown size={12} className={classnames({'transform rotate-180': isOpen})}/>}
             animate={false}
             transparent
             primary
