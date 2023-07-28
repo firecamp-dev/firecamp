@@ -13,6 +13,7 @@ import EditInfoTab from './tabs/EditInfoTab';
 import MembersTab from './tabs/MembersTab';
 import platformContext from '../../../services/platform-context';
 import './workspace.scss';
+import { Regex } from '../../../constants';
 
 enum ETabTypes {
   Edit = 'edit',
@@ -20,7 +21,7 @@ enum ETabTypes {
 }
 const WorkspaceManagement: FC<IModal> = ({
   opened = false,
-  onClose = () => {},
+  onClose = () => { },
 }) => {
   let { workspace, setWorkspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
     workspace: s.workspace,
@@ -62,15 +63,15 @@ const WorkspaceManagement: FC<IModal> = ({
   }, [activeTab]);
 
   const onChange = (e, reset) => {
-    if(reset){
+    if (reset) {
       if (error.name) setError({ name: '' });
       setWrs(workspace);
-    }else{
+    } else {
       const { name, value } = e.target;
       if (error.name) setError({ name: '' });
       setWrs((w) => ({ ...w, [name]: value }));
     }
-    
+
   };
 
   const onUpdate = () => {
@@ -83,7 +84,13 @@ const WorkspaceManagement: FC<IModal> = ({
       return;
     }
 
-    if(workspace.name === wrs.name && workspace.description === wrs.description) return ;
+    const isValid = Regex.WorkspaceName.test(name);
+    if (!isValid) {
+      setError({ name: 'The workspace name must not contain any spaces or special characters.' });
+      return;
+    }
+
+    if (workspace.name === wrs.name && workspace.description === wrs.description) return;
 
     const _wrs: { name?: string; description?: string } = {};
     if (workspace.name !== name) {
@@ -129,7 +136,7 @@ const WorkspaceManagement: FC<IModal> = ({
               workspace.name !== wrs.name ||
               workspace.description !== wrs.description
             }
-            // disabled={true} // TODO: only allowed for owner & admin
+          // disabled={true} // TODO: only allowed for owner & admin
           />
         );
       case 'members':
