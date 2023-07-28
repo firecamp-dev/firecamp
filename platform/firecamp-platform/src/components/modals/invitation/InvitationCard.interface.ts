@@ -9,4 +9,5 @@ export interface IInvite {
 export type IInvitationCard = IInvite & {
   disabled: boolean;
   onAccept: () => void;
+  isRequesting: boolean;
 };

@@ -47,6 +47,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
   const { usersList, role } = state;
 
   const inviteMembers = useCallback(() => {
+    setInvitingFlag(true);
     const { success, error } = validateMembersDetail(usersList);
     if (error?.length) {
       setError(error);
