@@ -103,7 +103,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
               minLength: 1,
               pattern: {
                 value: /^[0-9a-zA-Z ]+$/,
-                message: "Username cannot contain special characters"
+                message: "The username should not have any special characters"
               },
             }}
             useformRef={form}
