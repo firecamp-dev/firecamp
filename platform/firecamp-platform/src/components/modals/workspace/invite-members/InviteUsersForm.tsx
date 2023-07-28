@@ -2,6 +2,7 @@ import cx from 'classnames';
 import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import { FormField, Input } from '@firecamp/ui';
+import { _array } from '@firecamp/utils';
 
 const InviteUsersForm = ({ usersList, onChange, error }) => {
   const _handleNameChange = (e, position) => {
@@ -73,14 +74,8 @@ const InviteUsersForm = ({ usersList, onChange, error }) => {
               <VscClose size={20} className="text-error" />
             )}
           </span>
-          {error[index]?.message.length > 0 ? (
-            <div
-              className={cx(
-                'text-sm font-light text-error absolute left-0 bottom-0'
-              )}
-            >
-              {error[index].message}
-            </div>
+          {!_array.isEmpty(error) ? (
+            <Error error={error} index={index} />
           ) : (
             <></>
           )}
@@ -91,3 +86,17 @@ const InviteUsersForm = ({ usersList, onChange, error }) => {
 };
 
 export default InviteUsersForm;
+
+const Error = ({ error, index }) => {
+  let errorObject = error.find((m) => m.index === index);
+
+  if (errorObject?.message.length > 0)
+    return (
+      <div
+        className={cx('text-sm font-light text-error absolute left-0 bottom-0')}
+      >
+        {errorObject.message}
+      </div>
+    );
+  return <></>;
+};

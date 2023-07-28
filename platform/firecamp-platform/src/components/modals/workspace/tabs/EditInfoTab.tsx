@@ -53,17 +53,14 @@ const EditInfoTab: FC<any> = ({
       <Container.Footer>
         <TabHeader className="!px-0">
           <TabHeader.Left>
-            <a
-              className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
-              target="_blank"
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
+            <Button
+              onClick={() => {
                 platformContext.app.modals.openInviteMembers();
               }}
-            >
-              Invite New Members
-            </a>
+              text="Invite New Members"
+              ghost
+              xs
+            />
           </TabHeader.Left>
           <TabHeader.Right>
             {/* TODO: update details */}

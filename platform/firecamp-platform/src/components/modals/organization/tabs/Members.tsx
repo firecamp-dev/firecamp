@@ -30,13 +30,13 @@ const columns = [
     width: '100px',
     fixedWidth: true,
   },
-  {
-    id: 'joinedAt',
-    name: 'Joined Date',
-    key: 'joinedAt',
-    width: '130px',
-    fixedWidth: true,
-  },
+  // {
+  //   id: 'joinedAt',
+  //   name: 'Joined Date',
+  //   key: 'joinedAt',
+  //   width: '130px',
+  //   fixedWidth: true,
+  // },
 ];
 
 const RoleOptions = [

@@ -1,6 +1,6 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Modal, IModal, Button, Input } from '@firecamp/ui';
+import { Button, Input } from '@firecamp/ui';
 import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import { Rest } from '@firecamp/cloud-apis';
 import platformContext from '../../../services/platform-context';
