@@ -8,6 +8,7 @@ import BillingTab from './tabs/Billing';
 import Workspaces from './tabs/Workspaces';
 import { usePlatformStore } from '../../../store/platform';
 import platformContext from '../../../services/platform-context';
+import { Regex } from '../../../constants';
 
 enum ETabTypes {
   Overview = 'overview',
@@ -35,7 +36,7 @@ export const getFormalDate = (convertDate: string) => {
   return dateString;
 };
 
-const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
+const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => { } }) => {
   const { organization, setOrg } = usePlatformStore((s) => ({
     organization: s.organization,
     setOrg: s.setOrg,
@@ -90,12 +91,20 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
     if (isRequesting) return;
     const name = org.name.trim();
     const description = org.description?.trim();
-    if (!name || name.length < 6) {
+    if (!name || name.length < 4) {
       setError({
-        name: 'The organization name must have minimum 6 characters',
+        name: 'The organization name must have minimum 4 characters',
       });
       return;
     }
+    const isValid = Regex.OrgName.test(name);
+    if (!isValid) {
+      setError({
+        name: 'The org name must not contain any spaces or special characters.',
+      });
+      return;
+    }
+
     if (
       organization.name === org.name &&
       organization.description === org.description
@@ -146,7 +155,7 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
               organization.name !== org.name ||
               organization.description !== org.description
             }
-            // disabled={true} // TODO: only allow owner
+          // disabled={true} // TODO: only allow owner
           />
         );
       case ETabTypes.Workspaces:
