@@ -41,8 +41,9 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
     Rest.invitation
       .accept(invite.token)
       .then((res) => res.data)
-      .then(({ error, message, org, workspace }) => {
-        if (!error) {
+      .then(({ flag, data, message }) => {
+        if (flag) {
+          const { org, workspace } = data;
           platformContext.app.notify.success(
             'You have successfully joined the invitation'
           );

@@ -14,14 +14,16 @@ import MembersTab from './tabs/MembersTab';
 import platformContext from '../../../services/platform-context';
 import './workspace.scss';
 import { Regex } from '../../../constants';
+import PendingInviteMembersTab from './tabs/PendingInviteMembersTab';
 
 enum ETabTypes {
   Edit = 'edit',
   Members = 'members',
+  PendingInvitation = 'pending_invitation',
 }
 const WorkspaceManagement: FC<IModal> = ({
   opened = false,
-  onClose = () => { },
+  onClose = () => {},
 }) => {
   let { workspace, setWorkspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
     workspace: s.workspace,
@@ -31,6 +33,7 @@ const WorkspaceManagement: FC<IModal> = ({
   const [wrs, setWrs] = useState(workspace);
   const [isRequesting, setIsRequesting] = useState(false);
   const [wrsMembers, setWrsMembers] = useState([]);
+  const [wrsInviteMembers, setWrsInviteMembers] = useState([]);
   const [isFetchingMembers, setIsFetchingMembers] = useState(false);
   const [error, setError] = useState({ name: '' });
   const [activeTab, setActiveTab] = useState<ETabTypes>(ETabTypes.Edit);
@@ -38,16 +41,22 @@ const WorkspaceManagement: FC<IModal> = ({
   const tabs = [
     { name: 'Edit', id: ETabTypes.Edit },
     { name: 'Members', id: ETabTypes.Members },
+    { name: 'Pending Invitation', id: ETabTypes.PendingInvitation },
   ];
 
   /** fetch wrs members to be shown on second tab activated, only fetch once */
   useEffect(() => {
-    if (activeTab === ETabTypes.Members && wrsMembers.length === 0) {
+    if (
+      [ETabTypes.Members, ETabTypes.PendingInvitation].includes(activeTab) &&
+      activeTab === ETabTypes.Members
+        ? wrsMembers.length === 0
+        : wrsInviteMembers.length === 0
+    ) {
       setIsFetchingMembers(true);
       Rest.workspace
         .getMembers(workspace.__ref.id)
         .then((res) => res.data)
-        .then(({ members = [], invited }) => {
+        .then(({ members = [], invited = [] }) => {
           const memberList = members.map((m, i) => {
             return {
               id: m.__ref?.id ?? i,
@@ -56,7 +65,16 @@ const WorkspaceManagement: FC<IModal> = ({
               role: m.role,
             };
           });
+          const invitedMemberList = invited.map((m, i) => {
+            return {
+              id: m.__ref?.id ?? i,
+              name: m.name || m.username,
+              email: m.email,
+              role: m.role,
+            };
+          });
           setWrsMembers(memberList);
+          setWrsInviteMembers(invitedMemberList);
         })
         .finally(() => setIsFetchingMembers(false));
     }
@@ -71,7 +89,6 @@ const WorkspaceManagement: FC<IModal> = ({
       if (error.name) setError({ name: '' });
       setWrs((w) => ({ ...w, [name]: value }));
     }
-
   };
 
   const onUpdate = () => {
@@ -86,11 +103,17 @@ const WorkspaceManagement: FC<IModal> = ({
 
     const isValid = Regex.WorkspaceName.test(name);
     if (!isValid) {
-      setError({ name: 'The workspace name must not contain any spaces or special characters.' });
+      setError({
+        name: 'The workspace name must not contain any spaces or special characters.',
+      });
       return;
     }
 
-    if (workspace.name === wrs.name && workspace.description === wrs.description) return;
+    if (
+      workspace.name === wrs.name &&
+      workspace.description === wrs.description
+    )
+      return;
 
     const _wrs: { name?: string; description?: string } = {};
     if (workspace.name !== name) {
@@ -124,7 +147,7 @@ const WorkspaceManagement: FC<IModal> = ({
   const renderTab = (tabId: string) => {
     // console.log(wrs, "wrs....")
     switch (tabId) {
-      case 'edit':
+      case ETabTypes.Edit:
         return (
           <EditInfoTab
             workspace={wrs}
@@ -136,13 +159,20 @@ const WorkspaceManagement: FC<IModal> = ({
               workspace.name !== wrs.name ||
               workspace.description !== wrs.description
             }
-          // disabled={true} // TODO: only allowed for owner & admin
+            // disabled={true} // TODO: only allowed for owner & admin
           />
         );
-      case 'members':
+      case ETabTypes.Members:
         return (
           <MembersTab
             members={wrsMembers}
+            isFetchingMembers={isFetchingMembers}
+          />
+        );
+      case ETabTypes.PendingInvitation:
+        return (
+          <PendingInviteMembersTab
+            members={wrsInviteMembers}
             isFetchingMembers={isFetchingMembers}
           />
         );
