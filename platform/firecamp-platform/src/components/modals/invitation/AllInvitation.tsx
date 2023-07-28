@@ -21,7 +21,7 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
       .then((res) => {
         const { error } = res;
         if (!error) {
-          updateList(list);
+          updateList(res);
         }
       })
       .finally(() => setIsFetching(false));
@@ -41,8 +41,7 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
     Rest.invitation
       .accept(invite.token)
       .then((res) => res.data)
-      .then(({ error, message, org,
-        workspace }) => {
+      .then(({ error, message, org, workspace }) => {
         if (!error) {
           platformContext.app.notify.success(
             'You have successfully joined the invitation'
@@ -52,7 +51,7 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
             message:
               'Congratulations on joining the invitation! Are you interested in switching workspaces and start collaboration?',
             labels: { confirm: 'Yes, switch workspace.' },
-            onConfirm: () => switchToWrs(workspace,org),
+            onConfirm: () => switchToWrs(workspace, org),
             onCancel: () => {
               setIsRequesting(false);
               updateInviteId('');
@@ -100,6 +99,7 @@ const AllInvitation: FC<IModal> = ({ opened, onClose }) => {
                   orgName={invite.orgName}
                   workspaceName={invite.workspaceName}
                   role={invite.role}
+                  isRequesting={isRequesting}
                   disabled={inviteId.length > 0 && inviteId === invite.token}
                   onAccept={() => _handleInvitation(invite)}
                 />

@@ -27,7 +27,8 @@ const InvitationCard: FC<IInvitationCard> = ({
   workspaceName,
   orgName,
   role,
-  disabled,
+  disabled = false,
+  isRequesting = false,
   onAccept,
 }) => {
   const userRole = RoleOptions.find((r) => r.id == role);
@@ -50,7 +51,8 @@ const InvitationCard: FC<IInvitationCard> = ({
       <TabHeader className="!px-0">
         <TabHeader.Right>
           <Button
-            text={'Accept Invitation'}
+            text={isRequesting ? 'Accepting...': 'Accept Invitation'}
+            disabled={disabled}
             onClick={() => onAccept()}
             primary
             xs
