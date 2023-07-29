@@ -27,7 +27,7 @@ const columns = [
     width: '180px',
   },
   { id: 'role', name: 'Role', key: 'role', width: '115px', fixedWidth: true },
-  { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
+  // { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
 ];
 
 const RoleOptions = [
@@ -135,17 +135,17 @@ const PendingInviteMembersTab = ({ members = [], isFetchingMembers = false }) =>
           </div>
         );
         break;
-      case 'action':
-        return (
-          <div className="px-2">
-            <VscTrash
-              size={14}
-              className="text-error cursor-pointer"
-              onClick={() => onRemoveMember(row)}
-            />
-          </div>
-        );
-        break;
+      // case 'action':
+      //   return (
+      //     <div className="px-2">
+      //       <VscTrash
+      //         size={14}
+      //         className="text-error cursor-pointer"
+      //         onClick={() => onRemoveMember(row)}
+      //       />
+      //     </div>
+      //   );
+      //   break;
       default:
         return column.key;
     }
