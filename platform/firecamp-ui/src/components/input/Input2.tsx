@@ -1,0 +1,76 @@
+import { createStyles } from '@mantine/core';
+import { TextInput } from '@mantine/core';
+import { ForwardedRef, forwardRef } from 'react';
+import { IInput } from './interfaces/input2.interfaces';
+
+const useStyles = createStyles((theme) => ({
+  root: {
+    fontFamily: 'inherit',
+    marginBottom: '1.25rem'
+  },
+  label: {
+    fontSize: '0.75rem',
+    color:
+      theme.colorScheme === 'light'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[4],
+  },
+  input: {
+    // padding: '0.5rem',
+    // backgroundColor: theme.colorScheme === 'light' ? theme.colors.gray[0]: theme.colors.dark[7],
+    border: `0.063rem solid ${
+      theme.colorScheme === 'light'
+        ? theme.colors.gray[4]
+        : theme.colors.dark[4]
+    }`,
+    outline: '2px solid transparent',
+    '::placeholder': {
+      color:
+        theme.colorScheme === 'light'
+          ? theme.colors.gray[6]
+          : theme.colors.dark[3],
+    },
+    ':focus': {
+      border: `0.063rem solid ${theme.colors.blue[8]}`,
+    },
+  },
+  error: {
+    fontWeight: 300,
+    color: theme.colors.red[7],
+  },
+}));
+
+const Input = forwardRef(
+  (
+    { useformRef, defaultValue, value, registerMeta, ...props }: IInput,
+    ref: ForwardedRef<HTMLInputElement>
+  ) => {
+    const { classes } = useStyles();
+
+    /**
+     * HACK: manage input props to manage { useForm } from 'react-hook-form'
+     * If useformRef is been passed then use useformRef as reference
+     * Else, use value as useformRef uses reference instead value
+     */
+    let inputMeta = {};
+    if (useformRef?.register) {
+      inputMeta = { ref: useformRef?.register?.(registerMeta) };
+    } else {
+      if (defaultValue === undefined) inputMeta = { value };
+      else inputMeta = { defaultValue };
+    }
+
+    return (
+      <TextInput
+        classNames={classes}
+        radius={'xs'}
+        variant="filled"
+        ref={ref}
+        {...props}
+        {...inputMeta}
+      />
+    );
+  }
+);
+
+export default Input;

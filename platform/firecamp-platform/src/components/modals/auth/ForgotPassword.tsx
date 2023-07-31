@@ -9,7 +9,7 @@ import platformContext from '../../../services/platform-context';
  */
 const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
-  const form = useForm();
+  const form = useForm({ mode: 'onBlur' });
   let { handleSubmit, errors } = form;
 
   const _onSubmit = async (payload: { email: string }) => {
@@ -51,7 +51,12 @@ const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);
 
   return (
-    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
+    <Drawer
+      opened={opened}
+      onClose={onClose}
+      size={440}
+      classNames={{ body: 'mt-[10vh]' }}
+    >
       <Mail
         size="48"
         className="mb-6 mx-auto text-activityBar-foreground-inactive"
@@ -70,16 +75,23 @@ const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
             name={'email'}
             label="Email"
             registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 1,
-              pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
+              required: 'Email required error',
+              maxLength: {
+                value: 50,
+                message: 'Email cannot exceed 50 characters',
+              },
+              minLength: {
+                value: 1,
+                message: 'Invalid email',
+              },
+              pattern: {
+                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
+                message: 'Invalid email',
+              },
             }}
             useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.email ? errors?.email?.message || 'Invalid email' : ''
-            }
+            error={errors.email?.message}
           />
           <Button
             text={isRequesting ? `Sending...` : `Send`}
