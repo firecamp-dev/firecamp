@@ -3,6 +3,8 @@ export const Regex = {
   Email: new RegExp(
     "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
   ),
+  SignupEmail: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
+  SignupUsername: /^[0-9a-zA-Z ]+$/,
 
   /**
    * allow alphanumeric and underscore

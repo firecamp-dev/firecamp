@@ -18,26 +18,25 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
   const form = useForm({
     initialValues: { username: '', email: '', password: '' },
 
-    // functions will be used to validate values at corresponding key
     validate: {
-      // 1 - 50 characters
       username: (value) =>
-        value.length < 6 || value.length > 20
-          ? 'Please enter username within 6 - 20 letter'
-          : !Regex.Username.test(value)
+        value.length < 1 || value.length > 50
+          ? 'Please enter a username between 1 and 50 characters.'
+          : !Regex.SignupUsername.test(value)
           ? 'The username should not have any special characters'
           : null,
-      // required: true, maxLength: 50, minLength: 1, pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
-      email: (value) => (Regex.Email.test(value) ? null : 'Invalid email'),
-      // required: true, maxLength: 50, minLength: 8
+      email: (value) =>
+        !Regex.SignupEmail.test(value)
+          ? 'Please enter a valid email address.'
+          : null,
       password: (value) =>
         value.length < 8 || value.length > 50
-          ? 'Please enter valid password'
+          ? 'Please enter a password between 8 and 50 characters.'
           : null,
     },
   });
 
-  const { onSubmit, getInputProps, errors } = form;
+  const { onSubmit, getInputProps } = form;
 
   const _onSignUp = async (payload: {
     username: string;
@@ -124,8 +123,9 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             id={'username'}
             label="Username"
             type="text"
+            data-autofocus
             onKeyDown={_onKeyDown}
-            classNames={{root: '!mb-4'}}
+            classNames={{ root: '!mb-4' }}
             {...getInputProps('username')}
           />
           <Input
@@ -135,7 +135,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             id={'email'}
             label="Email"
             onKeyDown={_onKeyDown}
-            classNames={{root: '!mb-4'}}
+            classNames={{ root: '!mb-4' }}
             {...getInputProps('email')}
           />
           <Input
@@ -155,7 +155,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
               />
             }
             onKeyDown={_onKeyDown}
-            classNames={{root: '!mb-4'}}
+            classNames={{ root: '!mb-4' }}
             {...getInputProps('password')}
           />
 

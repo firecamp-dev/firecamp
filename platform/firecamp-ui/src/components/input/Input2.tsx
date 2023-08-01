@@ -30,8 +30,11 @@ const useStyles = createStyles((theme) => ({
           ? theme.colors.gray[6]
           : theme.colors.dark[3],
     },
-    ':focus': {
+    '&:focus': {
       border: `0.063rem solid ${theme.colors.blue[8]}`,
+    },
+    '&[data-invalid]': {
+      color: 'inherit',
     },
   },
   error: {
@@ -42,10 +45,7 @@ const useStyles = createStyles((theme) => ({
 
 const Input = forwardRef(
   (
-    {
-      classNames = {},
-      ...props
-    }: IInput,
+    { classNames = {}, ...props }: IInput,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const { cx, classes } = useStyles();
