@@ -89,6 +89,7 @@
     "@firecamp/ui": "workspace:*",
     "@firecamp/utils": "^0.0.24",
     "@mantine/core": "^6.0.14",
+    "@mantine/form": "^6.0.17",
     "@mantine/hooks": "^6.0.14",
     "@mantine/modals": "^6.0.17",
     "@monaco-editor/react": "4.4.5",

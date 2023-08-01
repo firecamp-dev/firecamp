@@ -42,14 +42,23 @@ const useStyles = createStyles((theme) => ({
 
 const Input = forwardRef(
   (
-    props: IInput,
+    {
+      classNames = {},
+      ...props
+    }: IInput,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
-    const { classes } = useStyles();
+    const { cx, classes } = useStyles();
 
     return (
       <TextInput
-        classNames={classes}
+        classNames={{
+          ...classNames,
+          root: cx(classes.root, classNames.root),
+          label: cx(classes.label, classNames.label),
+          input: cx(classes.input, classNames.input),
+          error: cx(classes.error, classNames.error),
+        }}
         radius={'xs'}
         variant="filled"
         ref={ref}
