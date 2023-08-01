@@ -6,7 +6,7 @@ import { IInput } from './interfaces/input2.interfaces';
 const useStyles = createStyles((theme) => ({
   root: {
     fontFamily: 'inherit',
-    marginBottom: '1.25rem'
+    marginBottom: '1.25rem',
   },
   label: {
     fontSize: '0.75rem',
@@ -42,23 +42,10 @@ const useStyles = createStyles((theme) => ({
 
 const Input = forwardRef(
   (
-    { useformRef, defaultValue, value, registerMeta, ...props }: IInput,
+    props: IInput,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     const { classes } = useStyles();
-
-    /**
-     * HACK: manage input props to manage { useForm } from 'react-hook-form'
-     * If useformRef is been passed then use useformRef as reference
-     * Else, use value as useformRef uses reference instead value
-     */
-    let inputMeta = {};
-    if (useformRef?.register) {
-      inputMeta = { ref: useformRef?.register?.(registerMeta) };
-    } else {
-      if (defaultValue === undefined) inputMeta = { value };
-      else inputMeta = { defaultValue };
-    }
 
     return (
       <TextInput
@@ -67,7 +54,6 @@ const Input = forwardRef(
         variant="filled"
         ref={ref}
         {...props}
-        {...inputMeta}
       />
     );
   }

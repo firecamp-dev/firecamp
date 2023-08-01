@@ -9,7 +9,7 @@ import platformContext from '../../../services/platform-context';
  */
 const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
-  const form = useForm({ mode: 'onBlur' });
+  const form = useForm();
   let { handleSubmit, errors } = form;
 
   const _onSubmit = async (payload: { email: string }) => {
@@ -75,23 +75,15 @@ const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
             name={'email'}
             label="Email"
             registerMeta={{
-              required: 'Email required error',
-              maxLength: {
-                value: 50,
-                message: 'Email cannot exceed 50 characters',
-              },
-              minLength: {
-                value: 1,
-                message: 'Invalid email',
-              },
-              pattern: {
-                value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
-                message: 'Invalid email',
-              },
+              required: true,
+              maxLength: 50,
+              minLength: 1,
+              pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
             }}
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={errors.email?.message}
+            error={
+              errors?.email ? errors?.email?.message || 'Invalid email' : ''
+            }
           />
           <Button
             text={isRequesting ? `Sending...` : `Send`}
