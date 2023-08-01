@@ -1,21 +1,37 @@
 import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm } from '@mantine/form';
+import { Eye, EyeOff } from 'lucide-react';
 import { Drawer, IModal, Button, Input, FcLogo } from '@firecamp/ui';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
+
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
 import { EProvider } from '../../../services/auth/types';
 import platformContext from '../../../services/platform-context';
+import { Regex } from '../../../constants';
 
 /** User Sign in */
 const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
-  const form = useForm();
   const [isRequesting, setFlagIsRequesting] = useState(false);
   const [showPassword, toggleShowPassword] = useState(false);
-  const {
-    handleSubmit,
-    formState: { errors },
-  } = form;
+
+  const form = useForm({
+    initialValues: { username: '', password: '' },
+
+    validate: {
+      username: (value) =>
+        value.length < 6 || value.length > 50
+          ? 'Please enter a username between 6 and 50 characters.'
+          : !Regex.EmailOrUsername.test(value)
+          ? 'Please enter valid username or email'
+          : null,
+      password: (value) =>
+        value.length < 8 || value.length > 50
+          ? 'Please enter a password between 8 and 50 characters.'
+          : null,
+    },
+  });
+
+  const { onSubmit, getInputProps } = form;
 
   const _onSignIn = async (
     payload: { username: string; password: string },
@@ -45,8 +61,6 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
             labels: { alert: 'error!' },
           }
         );
-      })
-      .finally(() => {
         setFlagIsRequesting(false);
       });
   };
@@ -54,7 +68,7 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
   const _onKeyDown = (e) => {
     try {
       if (e.key === 'Enter') {
-        handleSubmit(_onSignIn);
+        onSubmit(_onSignIn);
       }
     } catch (error) {
       console.log({ error });
@@ -62,7 +76,12 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
   };
 
   return (
-    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
+    <Drawer
+      opened={opened}
+      onClose={onClose}
+      size={440}
+      classNames={{ body: 'mt-[10vh]' }}
+    >
       <div className="mb-2">
         <FcLogo className="mx-auto w-14" size={80} />
       </div>
@@ -82,7 +101,7 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
           Welcome back! enter your email and password below to sign in.
         </div> */}
       <div className="">
-        <form onSubmit={handleSubmit(_onSignIn)}>
+        <form onSubmit={onSubmit(_onSignIn)}>
           <Input
             placeholder="Enter Username"
             key={'username'}
@@ -90,22 +109,10 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
             id={'username'}
             label="Email or Username"
             type="text"
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 1,
-              pattern:
-                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+|^[0-9a-zA-Z ]+$/,
-            }}
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.username
-                ? errors?.username?.message ||
-                  'Please enter valid username or email'
-                : ''
-            }
-            wrapperClassName="!mb-2"
+            data-autofocus
+            classNames={{ root: '!mb-2' }}
+            {...getInputProps('username')}
           />
           <Input
             placeholder="Enter password"
@@ -114,29 +121,17 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
             id={'password'}
             type={showPassword ? 'text' : 'password'}
             label="Password"
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 8,
-            }}
-            iconPosition="right"
-            icon={
-              <VscEye
-                title="password"
-                size={16}
-                onClick={() => {
-                  toggleShowPassword(!showPassword);
-                }}
-              />
+            rightSection={
+              <div
+                className="cursor-pointer"
+                onClick={() => toggleShowPassword(!showPassword)}
+              >
+                {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+              </div>
             }
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.password
-                ? errors?.password?.message || 'Please enter valid password'
-                : ''
-            }
-            wrapperClassName="!mb-2"
+            classNames={{ root: '!mb-2' }}
+            {...getInputProps('password')}
           />
           <div className="flex justify-end">
             <a
@@ -155,7 +150,7 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
           <Button
             type="submit"
             text={isRequesting ? `Signing in...` : `Sign in`}
-            onClick={handleSubmit(_onSignIn)}
+            onClick={onSubmit(_onSignIn)}
             fullWidth
             primary
             sm
