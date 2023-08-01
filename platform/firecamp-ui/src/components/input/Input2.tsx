@@ -16,8 +16,11 @@ const useStyles = createStyles((theme) => ({
         : theme.colors.gray[4],
   },
   input: {
-    // padding: '0.5rem',
-    // backgroundColor: theme.colorScheme === 'light' ? theme.colors.gray[0]: theme.colors.dark[7],
+    padding: '0.5rem',
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[2],
     border: `0.063rem solid ${
       theme.colorScheme === 'light'
         ? theme.colors.gray[4]

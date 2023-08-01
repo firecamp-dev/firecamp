@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { useForm } from '@mantine/form';
 import { Drawer, IModal, Button, Input, FcLogo } from '@firecamp/ui';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
+import { Eye, EyeOff } from 'lucide-react';
 
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
@@ -20,15 +20,13 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
 
     validate: {
       username: (value) =>
-        value.length < 1 || value.length > 50
-          ? 'Please enter a username between 1 and 50 characters.'
-          : !Regex.SignupUsername.test(value)
+        value.length < 6 || value.length > 20
+          ? 'Please enter a username between 6 and 20 characters.'
+          : !Regex.Username.test(value)
           ? 'The username should not have any special characters'
           : null,
       email: (value) =>
-        !Regex.SignupEmail.test(value)
-          ? 'Please enter a valid email address.'
-          : null,
+        !Regex.Email.test(value) ? 'Please enter a valid email address.' : null,
       password: (value) =>
         value.length < 8 || value.length > 50
           ? 'Please enter a password between 8 and 50 characters.'
@@ -46,18 +44,6 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
     if (isRequesting) return;
     const { username, email, password } = payload;
     const _username = username.trim();
-    if (_username.length < 6) {
-      platformContext.app.notify.alert(
-        `Username must have minimum 6 characters`
-      );
-      return;
-    }
-    if (/^[a-zA-Z0-9\_]{6,20}$/.test(_username) == false) {
-      platformContext.app.notify.alert(
-        `The username name must not be containing any spaces or special characters. The range should be from 6 to 20 characters`
-      );
-      return;
-    }
     const _email = email.trim();
 
     setFlagIsRequesting(true);
@@ -146,13 +132,12 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             type={showPassword ? 'text' : 'password'}
             label="Password"
             rightSection={
-              <VscEye
-                title="password"
-                size={16}
-                onClick={() => {
-                  toggleShowPassword(!showPassword);
-                }}
-              />
+              <div
+                className="cursor-pointer"
+                onClick={() => toggleShowPassword(!showPassword)}
+              >
+                {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+              </div>
             }
             onKeyDown={_onKeyDown}
             classNames={{ root: '!mb-4' }}
