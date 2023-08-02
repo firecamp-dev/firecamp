@@ -1,14 +1,8 @@
 import { FC } from 'react';
 import { useForm } from '@mantine/form';
 import { Info } from 'lucide-react';
-import {
-  Button,
-  Container,
-  Input,
-  TabHeader,
-  TextAreav2,
-} from '@firecamp/ui';
 import { IOrganization } from '@firecamp/types';
+import { Button, Container, Input, TabHeader, TextAreav2 } from '@firecamp/ui';
 import { Regex } from '../../../../constants';
 
 interface IEditOrganization {
@@ -46,8 +40,9 @@ const EditOrganization: FC<IEditOrganization> = ({
   };
 
   const enableReset =
-    values.name !== organization.name ||
-    values.description !== organization.description;
+    !disabled &&
+    (values.name !== organization.name ||
+      values.description !== organization.description);
 
   return (
     <Container className="py-6 px-3 flex-1 flex flex-col h-full">
@@ -60,8 +55,7 @@ const EditOrganization: FC<IEditOrganization> = ({
             label="Name"
             placeholder="Organization name"
             name={'name'}
-            onKeyDown={() => {}}
-            onBlur={() => {}}
+            disabled={disabled}
             data-autofocus={!disabled}
             classNames={{ root: '!mb-3' }}
             {...getInputProps('name')}
@@ -72,6 +66,7 @@ const EditOrganization: FC<IEditOrganization> = ({
             label="Description (optional)"
             placeholder="Description"
             name={'description'}
+            disabled={disabled}
             {...getInputProps('description')}
           />
           <div className="text-xs flex items-center justify-start text-app-foreground">

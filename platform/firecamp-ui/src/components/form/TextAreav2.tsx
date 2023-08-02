@@ -33,6 +33,13 @@ const useStyles = createStyles((theme) => ({
           ? theme.colors.gray[6]
           : theme.colors.dark[3],
     },
+    '&:disabled, &[data-disabled]': {
+      backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[2],
+      color: 'inherit',
+    },
     '&:focus': {
       border: `0.063rem solid ${theme.colors.blue[8]}`,
     },
