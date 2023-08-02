@@ -30,9 +30,6 @@ const config = merge(base, {
       React: 'react',
     }),
     new webpack.IgnorePlugin({ resourceRegExp: /[^/]+\/[\S]+.prod$/ }),
-    new webpack.DefinePlugin({
-      'process.env': env,
-    }),
     // new CompressionPlugin(),
   ],
 });
