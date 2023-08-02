@@ -1,6 +1,15 @@
 import type { MenuProps } from '@mantine/core';
+import { ReactNode } from 'react';
 
 export interface IDropdownMenu {
+  /**
+   * Add the custom header for options
+   */
+  header?: ReactNode;
+  /**
+   * Add the custom footer for options
+   */
+  footer?: ReactNode;
   /**
    * Add id to the dropdown wrapper
    */
