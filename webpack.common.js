@@ -2,7 +2,6 @@
 require('dotenv').config();
 /* eslint-disable no-console */
 require('dotenv-vault-core').config();
-const TerserPlugin = require('terser-webpack-plugin');
 
 console.log(process.env.FIRECAMP_API_HOST, 'FIRECAMP_API_HOST'); // for debugging purposes. remove when ready.
 
@@ -29,13 +28,6 @@ const common = {
     ),
   },
   optimization: {
-    nodeEnv: process.env.NODE_ENV,
-    minimize: true,
-    minimizer: [
-      new TerserPlugin({
-        parallel: 2,
-      }),
-    ],
     runtimeChunk: 'single',
     splitChunks: {
       // name: 'vendor',

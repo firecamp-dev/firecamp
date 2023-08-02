@@ -13,6 +13,9 @@ module.exports = merge(base, {
   mode: 'development',
   devtool: 'cheap-module-source-map',
   output: { clean: true },
+  optimization: {
+    nodeEnv: 'development'
+  },
   devServer: {
     //server: 'https',
     static: path.join(__dirname, './build/development'),

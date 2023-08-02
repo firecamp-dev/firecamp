@@ -2,6 +2,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
+const TerserPlugin = require('terser-webpack-plugin');
 // const CompressionPlugin = require('compression-webpack-plugin');
 const base = require('./webpack.common');
 
@@ -14,6 +15,15 @@ const config = merge(base, {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
     path: path.join(__dirname, `./build/${nodeEnv}`),
+  },
+  optimization: {
+    nodeEnv: 'production',
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: 2,
+      }),
+    ],
   },
   plugins: [
     new webpack.ProvidePlugin({
