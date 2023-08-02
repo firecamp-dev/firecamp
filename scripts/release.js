@@ -36,10 +36,8 @@ if (
   process.exit();
 }
 
-const preBuildCliCommands = async () => {
-  // pre conditions can be validated here
-  return Promise.resolve();
-};
+// pre conditions can be validated here
+const preBuildCliCommands = async () => Promise.resolve();
 
 if ([Environment.Production, Environment.Staging].includes(env)) {
   try {

@@ -3,10 +3,11 @@ require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
 require('shelljs/global');
-const { Environment, AppFormat } = require('./constants');
-const build = require('../webpack.prod');
+const { Environment } = require('./constants');
 
 const env = process.env.NODE_ENV;
+const build =
+  env === 'production' ? require('../webpack.prod') : require('../webpack.dev');
 
 module.exports = async () => {
   try {
