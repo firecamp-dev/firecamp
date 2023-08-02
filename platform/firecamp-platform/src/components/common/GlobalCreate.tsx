@@ -1,11 +1,15 @@
-import { useState } from 'react';
-import classnames from 'classnames';
-
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
-import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { Triangle, MailOpen, FolderClosed, Braces, ArrowDown, AppWindow, UserPlus2 } from 'lucide-react';
+import {
+  Triangle,
+  MailOpen,
+  FolderClosed,
+  Braces,
+  ArrowDown,
+  AppWindow,
+  UserPlus2,
+} from 'lucide-react';
 
 import { Button, DropdownMenu, FcIconGetSquare } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
@@ -23,63 +27,79 @@ enum EMenuOptions {
   InviteMembers = 'invite-members',
   SwitchOrg = 'switch-org',
   SwitchWorkspace = 'switch-workspace',
-  AllInvitation = 'all-invitation'
+  AllInvitation = 'all-invitation',
 }
 
 const options = [
   {
     id: EMenuOptions.Request,
     name: 'New request',
-    prefix: () => <FcIconGetSquare size={16} className='text-app-foreground-active' />,
+    prefix: () => (
+      <FcIconGetSquare size={16} className="text-app-foreground-active" />
+    ),
   },
   {
     id: EMenuOptions.Collection,
     name: 'New collection',
-    prefix: () => <FolderClosed size={16} className='text-app-foreground-active' />,
+    prefix: () => (
+      <FolderClosed size={16} className="text-app-foreground-active" />
+    ),
   },
   {
     id: EMenuOptions.Environment,
     name: 'New environment',
-    prefix: () => <Braces size={16} className='text-app-foreground-active' />,
+    prefix: () => <Braces size={16} className="text-app-foreground-active" />,
   },
 
   {
     id: EMenuOptions.ImportCollection,
     name: 'Import collection',
     showSeparator: true,
-    prefix: () => <ArrowDown size={16} className='text-app-foreground-active' />,
+    prefix: () => (
+      <ArrowDown size={16} className="text-app-foreground-active" />
+    ),
   },
   {
     id: EMenuOptions.Workspace,
     name: 'New workspace',
-    prefix: () => <AppWindow size={16} className='text-app-foreground-active' />,
+    prefix: () => (
+      <AppWindow size={16} className="text-app-foreground-active" />
+    ),
   },
   {
     id: EMenuOptions.Organization,
     name: 'New organization',
-    prefix: () => <VscOrganization size={16} className='text-app-foreground-active' />,
+    prefix: () => (
+      <VscOrganization size={16} className="text-app-foreground-active" />
+    ),
   },
   {
     id: EMenuOptions.InviteMembers,
     name: 'Invite members',
     showSeparator: true,
-    prefix: () => <UserPlus2 size={16} className='text-app-foreground-active' />,
+    prefix: () => (
+      <UserPlus2 size={16} className="text-app-foreground-active" />
+    ),
   },
   {
     id: EMenuOptions.SwitchOrg,
     name: 'Switch organization',
-    prefix: () => <AiOutlineUserSwitch size={16} className='text-app-foreground-active' />,
+    prefix: () => (
+      <AiOutlineUserSwitch size={16} className="text-app-foreground-active" />
+    ),
   },
   {
     id: EMenuOptions.SwitchWorkspace,
     name: 'Switch workspace',
-    prefix: () => <VscMultipleWindows size={16} className='text-app-foreground-active' />,
+    prefix: () => (
+      <VscMultipleWindows size={16} className="text-app-foreground-active" />
+    ),
     showSeparator: true,
   },
   {
     id: EMenuOptions.AllInvitation,
     name: 'View invitation',
-    prefix: () => <MailOpen size={16} className='text-app-foreground-active' />
+    prefix: () => <MailOpen size={16} className="text-app-foreground-active" />,
   },
 ];
 
@@ -126,7 +146,7 @@ const GlobalCreateDD = ({}) => {
       <DropdownMenu
         handler={() => (
           <Button
-            leftIcon={<Triangle size={20}/>}
+            leftIcon={<Triangle size={20} />}
             animate={false}
             transparent
             primary
@@ -135,6 +155,7 @@ const GlobalCreateDD = ({}) => {
           />
         )}
         options={options}
+        footer={<div className='text-center'>{process.env.APP_VERSION}</div>}
         onSelect={onSelect}
         classNames={{
           dropdown: '-ml-[2px]',

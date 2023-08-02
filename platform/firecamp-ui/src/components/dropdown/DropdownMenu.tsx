@@ -12,12 +12,16 @@ enum EDefaultStyles {
   divider = 'bg-app-border border-app-border',
   disabled = 'opacity-50 cursor-default',
   disabledItem = '!text-activityBar-foreground-inactive !cursor-default',
+  header = 'text-app-foreground p-0 text-base leading-6',
+  footer = 'text-activityBar-foreground-inactive px-5 py-2 text-sm leading-3',
 }
 
 const DropdownMenu: FC<IDropdownMenu> = ({
   id = '',
   selected = '',
   width = 200,
+  header,
+  footer,
   options = [],
   handler,
   classNames = {},
@@ -25,7 +29,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
   onOpenChange = () => {},
   disabled = false,
   menuProps = {},
-  sm = false
+  sm = false,
 }) => {
   return (
     <Menu
@@ -33,7 +37,9 @@ const DropdownMenu: FC<IDropdownMenu> = ({
       shadow="md"
       width={width}
       classNames={classNames}
-      onChange={(v) => disabled || options.length === 0 ? {} : onOpenChange(v)}
+      onChange={(v) =>
+        disabled || options.length === 0 ? {} : onOpenChange(v)
+      }
       disabled={disabled}
       {...menuProps}
     >
@@ -51,13 +57,21 @@ const DropdownMenu: FC<IDropdownMenu> = ({
       </Menu.Target>
 
       <Menu.Dropdown
-        className={cx(EDefaultStyles.dropdown,
+        className={cx(
+          EDefaultStyles.dropdown,
           { 'py-2.5': sm },
           { 'py-[15px]': !sm },
-           {
-          'hidden border-0': options.length === 0,
-        })}
+          {
+            'hidden border-0': options.length === 0,
+          }
+        )}
       >
+        {!!header ? (
+          <Menu.Label className={EDefaultStyles.header}>{header}</Menu.Label>
+        ) : (
+          <></>
+        )}
+
         {options.map((item, i) => {
           return (
             <Fragment key={`menu-item-${i}`}>
@@ -70,10 +84,10 @@ const DropdownMenu: FC<IDropdownMenu> = ({
                 <Menu.Item
                   className={cx(
                     {
-                      [EDefaultStyles.item]: !sm
+                      [EDefaultStyles.item]: !sm,
                     },
                     {
-                      [EDefaultStyles.itemSmall]: sm
+                      [EDefaultStyles.itemSmall]: sm,
                     },
                     {
                       'font-bold': selected === item.name,
@@ -114,6 +128,11 @@ const DropdownMenu: FC<IDropdownMenu> = ({
             </Fragment>
           );
         })}
+        {!!footer ? (
+          <Menu.Label className={EDefaultStyles.footer}>{footer}</Menu.Label>
+        ) : (
+          <></>
+        )}
       </Menu.Dropdown>
     </Menu>
   );
