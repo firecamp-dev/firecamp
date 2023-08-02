@@ -14,7 +14,7 @@ module.exports = merge(base, {
   devtool: 'cheap-module-source-map',
   output: { clean: true },
   optimization: {
-    nodeEnv: 'development'
+    nodeEnv: 'development',
   },
   devServer: {
     //server: 'https',
@@ -34,6 +34,6 @@ module.exports = merge(base, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.IgnorePlugin({ resourceRegExp: /[^/]+\/[\S]+.dev$/ }),
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
   ],
 });

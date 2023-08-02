@@ -125,6 +125,7 @@ const plugins = [
     filename: 'index.html',
     template: 'templates/index.html',
     favicon: 'templates/favicon.png',
+    hash: true,
   }),
   new HtmlWebpackPlugin({
     inject: true,
