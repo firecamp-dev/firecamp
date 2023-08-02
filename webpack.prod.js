@@ -23,8 +23,8 @@ const config = merge(base, {
     new webpack.DefinePlugin({
       'process.env': env,
     }),
-    new CompressionPlugin(),
-  ]
+    // new CompressionPlugin(),
+  ],
 });
 
 module.exports = () =>
