@@ -6,8 +6,9 @@ require('shelljs/global');
 const { Environment } = require('./constants');
 
 const env = process.env.NODE_ENV;
-const build =
-  env === 'production' ? require('../webpack.prod') : require('../webpack.dev');
+const isProdOrStage =
+  env === Environment.Production || env === Environment.Staging;
+const build = isProdOrStage ? require('../webpack.prod') : () => {};
 
 module.exports = async () => {
   try {
