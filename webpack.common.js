@@ -2,6 +2,7 @@
 require('dotenv').config();
 /* eslint-disable no-console */
 require('dotenv-vault-core').config();
+
 console.log(process.env.FIRECAMP_API_HOST, 'FIRECAMP_API_HOST'); // for debugging purposes. remove when ready.
 
 const webpack = require('webpack');
@@ -10,13 +11,12 @@ const path = require('path');
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const { Environment } = require('./scripts/constants');
 
 const env = process.env.NODE_ENV;
 
 const metadata = require('./package.json');
 
-exports.common = {
+const common = {
   entry: {
     index: path.join(
       __dirname,
@@ -28,8 +28,6 @@ exports.common = {
     ),
   },
   optimization: {
-    nodeEnv: process.env.NODE_ENV,
-    minimize: true,
     runtimeChunk: 'single',
     splitChunks: {
       // name: 'vendor',
@@ -82,7 +80,7 @@ exports.common = {
 
 const outputPath = `${__dirname}/build/${env}`;
 const publicPath = '';
-exports.output = {
+const output = {
   globalObject: 'this',
   filename: '[name].bundle.js',
   chunkFilename: '[name].bundle.js',
@@ -91,9 +89,8 @@ exports.output = {
 };
 
 // exports.output.path = path.join(__dirname, `./build/${env}`);
-if (env === Environment.Development) exports.output.clean = true;
 
-exports.env = {
+const _env = {
   NODE_ENV: JSON.stringify(process.env.NODE_ENV),
   FIRECAMP_API_HOST: JSON.stringify(process.env.FIRECAMP_API_HOST),
   FIRECAMP_CLOUD_AGENT: JSON.stringify(process.env.FIRECAMP_CLOUD_AGENT),
@@ -121,13 +118,14 @@ exports.env = {
   ),
 };
 
-exports.plugins = [
+const plugins = [
   new HtmlWebpackPlugin({
     inject: true,
     chunks: ['index'],
     filename: 'index.html',
     template: 'templates/index.html',
     favicon: 'templates/favicon.png',
+    hash: true,
   }),
   new HtmlWebpackPlugin({
     inject: true,
@@ -156,10 +154,46 @@ exports.plugins = [
   //   publicPath: '/js',
   //   filename: '[name].worker.bundle.js',
   //   languages: ['javascript', 'html', 'typescript', 'json'],
-  // }),
+  // }),11
+  new webpack.DefinePlugin({
+    'process.env': {
+      ..._env,
+      FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(
+        process.env.FIRECAMP_EXTENSION_AGENT_ID
+      ),
+    },
+  }),
 ];
 
-exports.rules = [
+const rules = [
+  {
+    test: /\.(ts|js)x?$/,
+    exclude: /node_modules/,
+    loader: 'babel-loader',
+    options: {
+      cacheDirectory: true,
+      presets: [
+        '@babel/preset-env',
+        [
+          '@babel/preset-react',
+          {
+            runtime: 'automatic',
+          },
+        ],
+        '@babel/preset-typescript',
+      ],
+      plugins: [
+        [
+          '@babel/plugin-transform-runtime',
+          {
+            regenerator: true,
+          },
+        ],
+        ['@babel/plugin-proposal-export-default-from'],
+        'add-module-exports',
+      ],
+    },
+  },
   { test: /\.flow$/, loader: 'ignore-loader' },
   {
     test: /\.css$/,
@@ -195,3 +229,12 @@ exports.rules = [
     },
   },
 ];
+
+module.exports = {
+  ...common,
+  mode: 'development',
+  devtool: 'eval-cheap-module-source-map',
+  output,
+  plugins,
+  module: { rules },
+};

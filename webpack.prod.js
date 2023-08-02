@@ -1,12 +1,14 @@
 /* eslint-disable no-console */
 const path = require('path');
 const webpack = require('webpack');
-const CompressionPlugin = require('compression-webpack-plugin');
-const { common, env, plugins, rules } = require('./webpack.config');
+const { merge } = require('webpack-merge');
+const TerserPlugin = require('terser-webpack-plugin');
+// const CompressionPlugin = require('compression-webpack-plugin');
+const base = require('./webpack.common');
 
 const nodeEnv = process.env.NODE_ENV;
-const config = {
-  ...common,
+
+const config = merge(base, {
   mode: 'production',
   output: {
     globalObject: 'this',
@@ -14,51 +16,23 @@ const config = {
     chunkFilename: '[name].bundle.js',
     path: path.join(__dirname, `./build/${nodeEnv}`),
   },
+  optimization: {
+    nodeEnv: 'production',
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        parallel: 2,
+      }),
+    ],
+  },
   plugins: [
-    ...plugins,
     new webpack.ProvidePlugin({
       React: 'react',
     }),
     new webpack.IgnorePlugin({ resourceRegExp: /[^/]+\/[\S]+.prod$/ }),
-    new webpack.DefinePlugin({
-      'process.env': env,
-    }),
-    new CompressionPlugin(),
+    // new CompressionPlugin(),
   ],
-  module: {
-    rules: [
-      ...rules,
-      {
-        test: /\.(ts|js)x?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            '@babel/preset-env',
-            [
-              '@babel/preset-react',
-              {
-                runtime: 'automatic',
-              },
-            ],
-            '@babel/preset-typescript',
-          ],
-          plugins: [
-            [
-              '@babel/plugin-transform-runtime',
-              {
-                regenerator: true,
-              },
-            ],
-            ['@babel/plugin-proposal-export-default-from'],
-            'add-module-exports',
-            ['transform-remove-console', { exclude: ['info'] }],
-          ],
-        },
-      },
-    ],
-  },
-};
+});
 
 module.exports = () =>
   new Promise((resolve, reject) => {

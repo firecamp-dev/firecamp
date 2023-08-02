@@ -116,7 +116,8 @@ const initApp = async () => {
       } catch (e) {
         console.log(e, 'error while connecting the socket');
       }
-    });
+    })
+    .catch(console.log);
 };
 const initUser = (user: any) => {
   const { setUser } = useUserStore.getState();

@@ -98,9 +98,22 @@ Example.args = {
       prefix: () => <VscMultipleWindows size={18} />,
     },
   ],
+  header:
+    <div className="!capitalize !pt-[0.2rem] !pb-2 !px-3 !block !bg-focus2 ">
+      Header title
+      <br />
+      <div
+        className={
+          'text-sm font-light leading-3 text-app-foreground-inactive'
+        }
+      >
+        User
+      </div>
+    </div>,
+  footer: <div className='text-center'>3.0.0</div>,
   handler: () => <Button text={'Create'} primary ghost xs />,
   classNames: {
-    dropdown: '-ml-[2px]',
+    dropdown: '-ml-[2px] pt-0',
   },
   onSelect: (value: any) => console.log(`selected item :`, value),
 };
