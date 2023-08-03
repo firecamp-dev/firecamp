@@ -8,7 +8,7 @@
 
 // import Button from '../buttons/Button';
 // import Inputv2 from './Inputv2';
-// import { IInput2 } from './interfaces/input.interfaces';
+// import { IInput } from './interfaces/input.interfaces';
 
 // const InputProps = {
 //   placeholder: 'Enter E-mail',
@@ -83,7 +83,7 @@
 //   );
 // }
 
-// const InputElementTemplate = (args: IInput2 = {}) => {
+// const InputElementTemplate = (args: IInput = {}) => {
 //   const [inputValue, updateInputValue] = useState('');
 
 //   return (

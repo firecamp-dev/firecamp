@@ -26,7 +26,7 @@ export { default as Resizable } from './components/grid/Resizable';
 export * from './components/icons';
 
 // Input
-export { default as Input } from './components/input/Input2';
+export { default as Input } from './components/input/Input';
 export { default as FileInput } from './components/input/FileInput';
 
 // Modal

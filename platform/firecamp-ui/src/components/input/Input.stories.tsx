@@ -1,7 +1,7 @@
 import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
 import { useForm } from '@mantine/form';
 import { Button, Input } from '@firecamp/ui';
-import { IInput } from './interfaces/input2.interfaces';
+import { IInput } from './interfaces/input.interfaces';
 
 export default {
   title: 'UI-Kit/Input',
