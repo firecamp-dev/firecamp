@@ -9,7 +9,7 @@
     "boot": "pnpm install --shamefully-hoist",
     "bootstrap": "pnpm install --shamefully-hoist",
     "dev": "run-p build:workspace  webpack:dev",
-    "build": "run-p validate:release build:workspace webpack:prod",
+    "build": "run-s validate:release build:workspace webpack:prod",
     "build:workspace": "pnpm --filter=@firecamp/scripts --filter=@firecamp/rest-executor --filter=@firecamp/ws-executor --filter=@firecamp/socket.io-executor build",
     "webpack:dev": "webpack serve --config ./webpack.dev.js",
     "webpack:prod": "webpack --config ./webpack.prod.js",
