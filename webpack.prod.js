@@ -10,14 +10,15 @@ const nodeEnv = process.env.NODE_ENV;
 const config = merge(base, {
   mode: 'production',
   output: {
+    clean: true,
     globalObject: 'this',
-    filename: '[name].bundle.js',
-    chunkFilename: '[name].bundle.js',
+    filename: '[name].min.js',
+    chunkFilename: '[name].min.js',
     path: path.join(__dirname, `./build/${nodeEnv}`),
   },
   optimization: {
     nodeEnv: 'production',
-    minimize: true,
+    // minimize: true,
     minimizer: [
       new TerserPlugin({
         parallel: 4,
@@ -29,9 +30,7 @@ const config = merge(base, {
     ],
   },
   plugins: [
-    new webpack.ProvidePlugin({
-      React: 'react',
-    }),
+    new webpack.ProvidePlugin({ React: 'react' }),
     new webpack.IgnorePlugin({ resourceRegExp: /[^/]+\/[\S]+.prod$/ }),
     // new CompressionPlugin(),
   ],
