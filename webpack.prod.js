@@ -22,6 +22,9 @@ const config = merge(base, {
       new TerserPlugin({
         parallel: 4,
         minify: TerserPlugin.esbuildMinify,
+        // terserOptions: {
+        //   sourceMap: 'external',
+        // },
       }),
     ],
   },

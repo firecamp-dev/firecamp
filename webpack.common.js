@@ -232,8 +232,6 @@ const rules = [
 
 module.exports = {
   ...common,
-  mode: 'development',
-  devtool: 'eval-cheap-module-source-map',
   output,
   plugins,
   module: { rules },
