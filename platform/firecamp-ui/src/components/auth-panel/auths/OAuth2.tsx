@@ -1,9 +1,9 @@
 import { FC, useState, useEffect, Key } from 'react';
 import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { Button, Input, DropdownMenu } from '@firecamp/ui';
+import { Button, DropdownMenu, SingleLineEditor } from '@firecamp/ui';
 // @ts-ignore
-import { EAuthTypes, IUiOAuth2, TPlainObject } from '@firecamp/types';
+import { EAuthTypes, EEditorLanguage, IUiOAuth2, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
 
@@ -109,18 +109,36 @@ const OAuth2: FC<IOAuth2Comp> = ({
           errorMsg = `${input.name} can not be empty`;
         }
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            autoFocus={i === 0}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            name={input.id}
-            value={grantTypes[activeGrantType]?.[input.id] || ''}
-            error={errorMsg}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={i === 0}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                name={input.id}
+                value={grantTypes[activeGrantType]?.[input.id] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+              />
+              {!!errorMsg && (
+                <div className={'font-light text-error block absolute'}>
+                  {errorMsg}
+                </div>
+              )}
+            </div>
+          </div>
         );
       })}
       <label className="fc-form-field-group m-5">
@@ -129,15 +147,30 @@ const OAuth2: FC<IOAuth2Comp> = ({
       </label>
       {advancedInputList.map((input: { name: string; id: string }, i: Key) => {
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            value={grantTypes[activeGrantType]?.[input.id] || ''}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                name={input.id}
+                value={grantTypes[activeGrantType]?.[input.id] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+              />
+            </div>
+          </div>
         );
       })}
 
@@ -150,14 +183,27 @@ const OAuth2: FC<IOAuth2Comp> = ({
         />
       </div>
 
-      <Input
+      <div
+        className={'relative items-center text-input-text text-sm w-full mb-5'}
         key={'oauth2LastToken'}
-        label={'Fetched Token'}
-        type={'text'}
-        value={oauth2LastToken || ''}
-        disabled={true}
-        isEditor
-      />
+      >
+        <label
+          className="text-app-foreground mb-1 block !pb-4"
+          htmlFor={'Fetched Token'}
+        >
+          {'Fetched Token'}
+        </label>
+        <div className="!pb-4">
+          <SingleLineEditor
+            className={'border px-2 py-1 border-input-border'}
+            type={'text'}
+            value={oauth2LastToken || ''}
+            disabled={true}
+            height="21px"
+            language={EEditorLanguage.FcText}
+          />
+        </div>
+      </div>
     </form>
   );
 };

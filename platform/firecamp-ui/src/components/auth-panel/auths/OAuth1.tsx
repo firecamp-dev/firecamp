@@ -1,8 +1,18 @@
 import { FC, useState } from 'react';
 import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { Button, Input, CheckboxInGrid, DropdownMenu } from '@firecamp/ui';
-import { IOAuth1, EAuthTypes, TPlainObject } from '@firecamp/types';
+import {
+  Button,
+  CheckboxInGrid,
+  DropdownMenu,
+  SingleLineEditor,
+} from '@firecamp/ui';
+import {
+  IOAuth1,
+  EAuthTypes,
+  TPlainObject,
+  EEditorLanguage,
+} from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
 
@@ -55,18 +65,36 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            autoFocus={i === 0}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            name={input.id}
-            value={auth?.[input.id as keyof IOAuth1] || ''}
-            error={errorMsg}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={i === 0}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                name={input.id}
+                value={auth?.[input.id as keyof IOAuth1] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+              />
+              {!!errorMsg && (
+                <div className={'font-light text-error block absolute'}>
+                  {errorMsg}
+                </div>
+              )}
+            </div>
+          </div>
         );
       })}
       <label className="fc-form-field-group">
@@ -107,32 +135,61 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
         />
       </div>
       {/* {auth?.['signatureMethod'] === 'RSA-SHA1' ? (
-      <Input
-        key={'privateKey'}
-        label="Private Key"
-        type="text"
-        placeholder="Private Key"
-        name={'privateKey'}
-        value={auth?.['privateKey'] || ''}
-        onChange={(e) => _handleChange(e, 'privateKey')}
-        isEditor={true}
-      />
-    ) : (
-      ''
-    )} */}
+        <div
+          className={
+            'relative items-center text-input-text text-sm w-full mb-5'
+          }
+          key={'privateKey'}
+        >
+          <label
+            className="text-app-foreground mb-1 block !pb-4"
+            htmlFor={'Private Key'}
+          >
+            Private Key
+          </label>
+          <div className="!pb-4">
+            <SingleLineEditor
+              className={'border px-2 py-1 border-input-border'}
+              type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+              name={privateKey}
+              value={auth?.['privateKey'] || ''}
+              onChange={(e) => _handleChange(e, 'privateKey')}
+              height="21px"
+              language={EEditorLanguage.FcText}
+            />
+          </div>
+        </div>
+      ) : (
+        ''
+      )} */}
 
       {advancedInputList.map((input, i) => {
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            name={input.id}
-            value={auth?.[input.id as keyof IOAuth1] || ''}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={i === 0}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                name={input.id}
+                value={auth?.[input.id as keyof IOAuth1] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+              />
+            </div>
+          </div>
         );
       })}
     </form>

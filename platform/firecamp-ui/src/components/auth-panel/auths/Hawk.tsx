@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
-import { DropdownMenu, Input } from '@firecamp/ui';
-import { EAuthTypes, TPlainObject } from '@firecamp/types';
+import { DropdownMenu, SingleLineEditor } from '@firecamp/ui';
+import { EAuthTypes, EEditorLanguage, TPlainObject } from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
 
@@ -46,18 +46,36 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            autoFocus={i === 0}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            name={input.id}
-            value={auth?.[input.id] || ''}
-            error={errorMsg}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={i === 0}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                name={input.id}
+                value={auth?.[input.id] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+              />
+              {!!errorMsg && (
+                <div className={'font-light text-error block absolute'}>
+                  {errorMsg}
+                </div>
+              )}
+            </div>
+          </div>
         );
       })}
       <label className="fc-form-field-group">
@@ -66,16 +84,30 @@ const Hawk: FC<IHawk> = ({ auth = {}, onChange = () => {} }) => {
       </label>
       {advancedInputList.map((input, i) => {
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            name={input.id}
-            value={auth?.[input.id] || ''}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                name={input.id}
+                value={auth?.[input.id] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+              />
+            </div>
+          </div>
         );
       })}
       <div className="form-group">

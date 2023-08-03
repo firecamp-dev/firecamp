@@ -3,7 +3,6 @@ import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Editor,
-  Input,
   FileInput,
   Container,
   QuickSelection,
@@ -12,6 +11,7 @@ import {
   EditorControlBar,
   TabHeader,
   DropdownMenu,
+  SingleLineEditor,
 } from '@firecamp/ui';
 import {
   EArgumentBodyType,
@@ -167,18 +167,28 @@ const EmitterBody = ({
         );
       case EArgumentBodyType.Number:
         return (
-          <Input
-            autoFocus={true}
-            type={'number'}
-            name={'number'}
-            value={argument.body.toString()}
-            isEditor={true}
-            min={0}
-            onChange={(e) => {
-              if (e) e.preventDefault();
-              changeArgValue(e.target.value);
-            }}
-          />
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
+          >
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={true}
+                type={'number'}
+                name={'number'}
+                value={argument.body.toString()}
+                onChange={(e) => {
+                  if (e) e.preventDefault();
+                  changeArgValue(e.target.value);
+                }}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                // min={0}
+              />
+            </div>
+          </div>
         );
       default:
         return <></>;

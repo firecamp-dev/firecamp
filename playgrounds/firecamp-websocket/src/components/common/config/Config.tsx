@@ -1,5 +1,10 @@
-import { Input, Container, TabHeader, CheckboxInGrid } from '@firecamp/ui';
-import { EFirecampAgent } from '@firecamp/types';
+import {
+  Container,
+  TabHeader,
+  CheckboxInGrid,
+  SingleLineEditor,
+} from '@firecamp/ui';
+import { EEditorLanguage, EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import { EWebsocketConfigKeys } from '../../../types';
 
@@ -167,24 +172,39 @@ const Config = ({ config = {} }) => {
         }
 
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={`${name}-${index}`}
-            autoFocus={false}
-            name={name}
-            type={type}
-            label={label}
-            placeholder={placeholder || ''}
-            disabled={isDisabled}
-            value={value}
-            onChange={(e: any) => {
-              if (e) {
-                e.preventDefault();
-                const { name, value } = e.target;
-                _onChange(name, value);
-              }
-            }}
-            isEditor={true}
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={label}
+            >
+              {label}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={false}
+                name={name}
+                type={type}
+                disabled={isDisabled}
+                value={value}
+                onChange={(e: any) => {
+                  if (e) {
+                    e.preventDefault();
+                    const { name, value } = e.target;
+                    _onChange(name, value);
+                  }
+                }}
+                // placeholder={placeholder || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+              />
+            </div>
+          </div>
         );
         break;
       case INPUT_TYPES.boolean:

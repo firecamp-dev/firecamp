@@ -1,8 +1,13 @@
 import { FC, useState } from 'react';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import cx from 'classnames';
- import { Button, DropdownMenu, Input } from '@firecamp/ui';
-import { IAuthDigest, EAuthTypes, TPlainObject } from '@firecamp/types';
+import { Button, DropdownMenu, SingleLineEditor } from '@firecamp/ui';
+import {
+  IAuthDigest,
+  EAuthTypes,
+  TPlainObject,
+  EEditorLanguage,
+} from '@firecamp/types';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
 
@@ -56,19 +61,36 @@ const Digest: FC<IDigest> = ({
           errorMsg = `${input.name} can not be empty`;
         }
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            autoFocus={i === 0}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            name={input.name}
-            value={auth?.[input.id as keyof IAuthDigest] || ''}
-            error={errorMsg}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
-            // onKeyDown={_onKeyDown}
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={i === 0}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                name={input.name}
+                value={auth?.[input.id as keyof IAuthDigest] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+              />
+              {!!errorMsg && (
+                <div className={'font-light text-error block absolute'}>
+                  {errorMsg}
+                </div>
+              )}
+            </div>
+          </div>
         );
       })}
 
@@ -85,7 +107,7 @@ const Digest: FC<IDigest> = ({
             <Button
               text={auth['algorithm'] || 'MD5'}
               classNames={{
-                root: 'mb-2'
+                root: 'mb-2',
               }}
               rightIcon={
                 <VscTriangleDown
@@ -115,18 +137,31 @@ const Digest: FC<IDigest> = ({
       </div>
       {(advancedInputList || []).map((input, i) => {
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            name={input.id}
-            value={auth?.[input.id as keyof IAuthDigest] || ''}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
-            disabled={input.id === 'qop'}
-            // onKeyDown={_onKeyDown}
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                name={input.id}
+                value={auth?.[input.id as keyof IAuthDigest] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+                disabled={input.id === 'qop'}
+              />
+            </div>
+          </div>
         );
       })}
     </form>

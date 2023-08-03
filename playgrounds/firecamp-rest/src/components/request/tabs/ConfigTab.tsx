@@ -1,7 +1,12 @@
 import shallow from 'zustand/shallow';
-import { Container, CheckboxInGrid, Input } from '@firecamp/ui';
+import {
+  Container,
+  CheckboxInGrid,
+  SingleLineEditor,
+} from '@firecamp/ui';
 import { useStore } from '../../../store';
 import { ERestConfigKeys } from '../../../types';
+import { EEditorLanguage } from '@firecamp/types';
 
 const { MaxRedirects, FollowLocation, RejectUnauthorized, RequestTimeout } =
   ERestConfigKeys;
@@ -44,17 +49,32 @@ const ConfigTab = () => {
     <Container>
       <Container.Body>
         <form className="fc-form grid p-4" onSubmit={_handleSubmit}>
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={RequestTimeout}
-            autoFocus={false}
-            label={'Request timeout'}
-            type={'number'}
-            name={RequestTimeout}
-            placeholder={'Request timeout'}
-            value={`${config[RequestTimeout]}`}
-            onChange={(e) => _handleChange(e)}
-            isEditor={true}
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={'Request timeout'}
+            >
+              {'Request timeout'}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={false}
+                type={'number'}
+                name={RequestTimeout}
+                // placeholder={'Request timeout'}
+                value={`${config[RequestTimeout]}`}
+                onChange={(e) => _handleChange(e)}
+                height="21px"
+                language={EEditorLanguage.FcText}
+              />
+            </div>
+          </div>
           <CheckboxInGrid
             className="fc-input-wrapper"
             isChecked={config[RejectUnauthorized]}
@@ -71,22 +91,37 @@ const ConfigTab = () => {
             label="Follow location"
             onToggleCheck={() => _onToggleCheckBox(FollowLocation)}
           />
-          <Input
-            key={MaxRedirects}
-            autoFocus={false}
-            label={'Max redirects'}
-            type={'number'}
-            name={MaxRedirects}
-            placeholder={'Default: -1, unlimited'}
-            value={
-              config[MaxRedirects] === undefined
-                ? '-1'
-                : `${config[MaxRedirects]}`
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
             }
-            onChange={(e) => _handleChange(e)}
-            disabled={config[FollowLocation] !== true}
-            isEditor={true}
-          />
+            key={MaxRedirects}
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={'Max redirects'}
+            >
+              {'Max redirects'}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={false}
+                type={'number'}
+                name={MaxRedirects}
+                // placeholder={'Default: -1, unlimited'}
+                value={
+                  config[MaxRedirects] === undefined
+                    ? '-1'
+                    : `${config[MaxRedirects]}`
+                }
+                onChange={(e) => _handleChange(e)}
+                disabled={config[FollowLocation] !== true}
+                height="21px"
+                language={EEditorLanguage.FcText}
+              />
+            </div>
+          </div>
         </form>
       </Container.Body>
     </Container>

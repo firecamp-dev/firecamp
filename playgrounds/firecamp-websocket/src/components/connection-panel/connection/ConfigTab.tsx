@@ -1,5 +1,10 @@
-import { Input, Container, Notes, CheckboxInGrid } from '@firecamp/ui';
-import { EFirecampAgent } from '@firecamp/types';
+import {
+  Container,
+  Notes,
+  CheckboxInGrid,
+  SingleLineEditor,
+} from '@firecamp/ui';
+import { EEditorLanguage, EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 
 enum EInputTypes {
@@ -50,24 +55,39 @@ const Config = ({ config = {}, onUpdate }) => {
       case EInputTypes.Number:
         // console.log(`config["ping"] `, config["ping"]);
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={`${name}-${index}`}
-            autoFocus={false}
-            name={name}
-            type={type}
-            label={label}
-            placeholder={placeholder || ''}
-            disabled={!isElectron || config['ping'] === false}
-            value={config[name]}
-            onChange={(e) => {
-              if (e) {
-                e.preventDefault();
-                let { name, value } = e.target;
-                _onChange(name, value);
-              }
-            }}
-            isEditor={true}
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={label}
+            >
+              {label}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={false}
+                name={name}
+                type={type}
+                // placeholder={placeholder || ''}
+                disabled={!isElectron || config['ping'] === false}
+                value={config[name]}
+                onChange={(e) => {
+                  if (e) {
+                    e.preventDefault();
+                    let { name, value } = e.target;
+                    _onChange(name, value);
+                  }
+                }}
+                height="21px"
+                language={EEditorLanguage.FcText}
+              />
+            </div>
+          </div>
         );
         break;
       case EInputTypes.Boolean:
