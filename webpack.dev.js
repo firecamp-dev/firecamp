@@ -1,13 +1,10 @@
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const base = require('./webpack.common');
 
-const withReport = process.env.npm_config_withReport;
+// const withReport = process.env.npm_config_withReport;
 
 module.exports = merge(base, {
   mode: 'development',
@@ -34,6 +31,6 @@ module.exports = merge(base, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.IgnorePlugin({ resourceRegExp: /[^/]+\/[\S]+.dev$/ }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 });
