@@ -180,7 +180,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
             <div className="!pb-4">
               <SingleLineEditor
                 className={'border px-2 py-1 border-input-border'}
-                autoFocus={i === 0}
+                // autoFocus={i === 0}
                 type={setInputType(input.id) == 'number' ? 'number' : 'text'}
                 name={input.id}
                 value={auth?.[input.id as keyof IOAuth1] || ''}

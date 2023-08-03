@@ -59,7 +59,7 @@ withDescriptionText.args = {
   description: 'Description Text',
 };
 
-export function TemplateWithReactHookForm() {
+export function TemplateWithMantineHookForm() {
   const { onSubmit, getInputProps } = useForm({
     initialValues: {
       email: '',
