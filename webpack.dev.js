@@ -1,20 +1,35 @@
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const TerserPlugin = require('terser-webpack-plugin');
 const base = require('./webpack.common');
 
-const withReport = process.env.npm_config_withReport;
+// const withReport = process.env.npm_config_withReport;
+const nodeEnv = process.env.NODE_ENV;
 
 module.exports = merge(base, {
   mode: 'development',
   devtool: 'cheap-module-source-map',
-  output: { clean: true },
+  output: {
+    clean: true,
+    globalObject: 'this',
+    filename: '[name].dev.js',
+    chunkFilename: '[name].dev.js',
+    path: `${__dirname}/build/${nodeEnv}`,
+    publicPath: '',
+  },
   optimization: {
     nodeEnv: 'development',
+    minimizer: [
+      new TerserPlugin({
+        parallel: 4,
+        minify: TerserPlugin.esbuildMinify,
+        // terserOptions: {
+        //   sourceMap: 'external',
+        // },
+      }),
+    ],
   },
   devServer: {
     //server: 'https',
@@ -34,6 +49,6 @@ module.exports = merge(base, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.IgnorePlugin({ resourceRegExp: /[^/]+\/[\S]+.dev$/ }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 });
