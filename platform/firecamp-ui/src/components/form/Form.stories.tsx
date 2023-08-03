@@ -1,59 +1,57 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Checkbox, Button } from '../../ui-kit';
-import Inputv2 from '../input/Inputv2';
+import { useForm } from '@mantine/form';
+import { Checkbox, Button, Input } from '../../ui-kit';
 
 export default {
   title: 'UI-Kit/Forms',
 };
 
 export function ForgetPasswordForm() {
-  const { register, handleSubmit, errors } = useForm();
+  const { onSubmit, getInputProps } = useForm({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validate: {
+      email: (value) =>
+        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/.test(value)
+          ? 'Please enter a valid email address.'
+          : null,
+      password: (value) =>
+        value.length < 8 || value.length > 50
+          ? 'Please enter a password between 8 and 50 characters.'
+          : null,
+    },
+  });
 
-  const onSubmit = (data: { [k: string]: any }) =>
+  const _onSubmit = (data: { [k: string]: any }) =>
     console.log(`on-form-submit`, data);
   const onErrors = (errors: { [k: string]: any }) =>
     console.log('on-form-error', errors);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onErrors)}>
-      <Inputv2
+    <form onSubmit={onSubmit(_onSubmit, onErrors)}>
+      <Input
         placeholder="Enter E-mail"
         name={'email'}
         label="Email"
         id="user-email"
-        ref={register({
-          required: {
-            value: true,
-            message: 'Email is required',
-          },
-          maxLength: 50,
-          minLength: 5,
-          pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
-        })}
         autoFocus={true}
-        error={errors?.email ? errors?.email?.message || 'Invalid email' : ''}
+        {...getInputProps('email')}
       />
-      <Inputv2
+      <Input
         type="password"
         id="user-password"
         label="Password"
         placeholder="Enter Password"
         name="password"
-        ref={register({ required: true, minLength: 6 })}
-        error={
-          errors?.password
-            ? errors.password.type === 'required'
-              ? 'Password is required.'
-              : 'Password should be at-least 6 characters.'
-            : ''
-        }
+        {...getInputProps('password')}
       />
       <div className="form-control">
         <Button
           type="submit"
           text={`Submit`}
-          onClick={() => handleSubmit(onSubmit, onErrors)}
+          onClick={() => onSubmit(_onSubmit, onErrors)}
           fullWidth
           primary
           sm
@@ -72,9 +70,16 @@ export function FormWithCheckBox() {
     disabled: false,
   });
 
-  const { register, handleSubmit, errors } = useForm();
+  const { onSubmit, getInputProps } = useForm({
+    initialValues: {
+      namespace: '',
+    },
+    validate: {
+      namespace: (value) => (!value ? 'Value is required' : null),
+    },
+  });
 
-  const onSubmit = (data: { [k: string]: any }) =>
+  const _onSubmit = (data: { [k: string]: any }) =>
     console.log(`on-form-submit`, { ...data, polling: checkBoxItem.isChecked });
   const onErrors = (errors: { [k: string]: any }) =>
     console.log('on-form-error', errors);
@@ -86,18 +91,17 @@ export function FormWithCheckBox() {
   return (
     <form
       className="fc-form grid max-w-sm bg-app-background-secondary"
-      onSubmit={handleSubmit(onSubmit, onErrors)}
+      onSubmit={onSubmit(_onSubmit, onErrors)}
     >
       <br />
-      <Inputv2
-        wrapperClassName="fc-input"
+      <Input
+        classNames={{
+          root: 'fc-input',
+        }}
         autoFocus={false}
         name={'namespace'}
         label={'Namespace'}
-        ref={register({
-          required: { value: true, message: 'Value is required' },
-        })}
-        error={errors?.namespace ? errors.namespace.message : ''}
+        {...getInputProps('namespace')}
       />
       <Checkbox
         isChecked={checkBoxItem.isChecked || false}
@@ -113,7 +117,7 @@ export function FormWithCheckBox() {
         <Button
           type="submit"
           text={`Submit`}
-          onClick={() => handleSubmit(onSubmit, onErrors)}
+          onClick={() => onSubmit(_onSubmit, onErrors)}
           fullWidth
           primary
           sm

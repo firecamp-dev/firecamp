@@ -77,20 +77,18 @@ function FormPreview({ overflowContent = false }) {
           <div className="text-center w-full text-sm mb-5">
             Sign in again to continue
           </div>
-          <FormField label="Username or E-mail">
-            <Input
-              value="dnishchit@gmail.com"
-              iconPosition="left"
-              icon={<VscAccount title="Account" size={16} />}
-            />
-          </FormField>
-          <FormField label="password">
-            <Input
-              placeholder="password"
-              iconPosition="left"
-              icon={<VscLock title="Account" size={16} />}
-            />
-          </FormField>
+
+          <Input
+            label="Username or E-mail"
+            value="dnishchit@gmail.com"
+            icon={<VscAccount title="Account" size={16} />}
+          />
+
+          <Input
+            label="password"
+            placeholder="password"
+            icon={<VscLock title="Account" size={16} />}
+          />
           <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm">
             Forgot Password?
           </a>

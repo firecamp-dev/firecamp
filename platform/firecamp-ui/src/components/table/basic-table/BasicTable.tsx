@@ -128,8 +128,11 @@ const BasicTable = ({
         return (
           <Input
             value={cellValue}
-            className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 pt-0 h-[21px] font-sans"
-            wrapperClassName="!mb-0"
+            classNames={{
+              root: '!mb-0',
+              input:
+                'bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 pt-0 h-[21px]',
+            }}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
           />
         );

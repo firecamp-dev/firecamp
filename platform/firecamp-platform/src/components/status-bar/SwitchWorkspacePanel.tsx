@@ -23,7 +23,6 @@ const SwitchWorkspacePanel: FC<any> = ({ className = '' }) => {
         <Input
           placeholder="Search"
           icon={<VscSearch title="Account" size={16} />}
-          iconPosition="left"
         />
       </div>
       <div className="workspace-wrapper flex overflow-auto flex-nowrap custom-scrollbar">

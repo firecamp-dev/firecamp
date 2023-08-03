@@ -128,28 +128,32 @@ const AddListener = () => {
   };
 
   return (
-    <Input
-      autoFocus={true}
-      type="text"
-      name="status"
-      id="status"
-      placeholder="Listener name"
-      className="!rounded-br-none !rounded-tr-none !p-1"
-      value={listenerName}
-      onChange={_handleInputChange}
-      onKeyDown={_handleKeyDown}
-      wrapperClassName="!mb-0 p-2"
-      postComponents={[
-        <Button
-          key={'listener-add-button'}
-          text="Add"
-          classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
-          onClick={_onAddListener}
-          secondary
-          xs
-        />,
-      ]}
-    />
+    <div className="flex items-center p-2">
+      <Input
+        autoFocus={true}
+        type="text"
+        name="status"
+        id="status"
+        placeholder="Listener name"
+        value={listenerName}
+        onChange={_handleInputChange}
+        onKeyDown={_handleKeyDown}
+        classNames={{
+          root: '!mb-0 w-full !rounded-br-none !rounded-tr-none',
+        }}
+        size="xs"
+      />
+
+      <Button
+        key={'listener-add-button'}
+        text="Add"
+        classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
+        onClick={_onAddListener}
+        animate={false}
+        secondary
+        xs
+      />
+    </div>
   );
 };
 

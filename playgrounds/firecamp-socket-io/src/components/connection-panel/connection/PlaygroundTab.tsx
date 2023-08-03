@@ -55,9 +55,10 @@ const EmitterPlayground = () => {
           autoFocus={true}
           placeholder="Type emitter name"
           label="Type Emitter Name"
-          className="border-0"
-          wrapperClassName="!mb-0"
-          // ref={}
+          classNames={{
+            root: '!mb-0',
+            input: 'border-0'
+          }}
           onChange={(e) => {
             if (e) e.preventDefault();
             changePlgEmitterName(e.target.value);
