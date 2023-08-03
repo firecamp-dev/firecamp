@@ -8,10 +8,10 @@ const path = require('path');
 // const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const metadata = require('./package.json');
 
-const env = process.env.NODE_ENV;
-
+const NodeEnv = process.env.NODE_ENV;
 console.log(process.env.FIRECAMP_API_HOST, 'FIRECAMP_API_HOST'); // for debugging purposes. remove when ready.
 
 const plugins = [
@@ -83,6 +83,14 @@ const plugins = [
         process.env.GOOGLE_ANALYTICS_ELECTRON_ID
       ),
     },
+  }),
+  new CopyPlugin({
+    patterns: [
+      {
+        from: `${__dirname}/platform/firecamp-platform/public/assets`,
+        to: `${__dirname}/build/${NodeEnv}`,
+      },
+    ],
   }),
 ];
 
@@ -177,6 +185,7 @@ module.exports = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
+          // eslint-disable-next-line no-unused-vars
           name(module) {
             return 'vender';
 

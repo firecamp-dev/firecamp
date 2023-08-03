@@ -7,7 +7,7 @@ const base = require('./webpack.common');
 
 const nodeEnv = process.env.NODE_ENV;
 
-const config = merge(base, {
+module.exports = merge(base, {
   mode: 'production',
   output: {
     clean: true,
@@ -35,28 +35,3 @@ const config = merge(base, {
     // new CompressionPlugin(),
   ],
 });
-
-module.exports = () =>
-  new Promise((resolve, reject) => {
-    // eslint-disable-next-line no-console
-    console.log('[Webpack Build]');
-    // eslint-disable-next-line no-console
-    console.log('-'.repeat(80));
-
-    const compiler = webpack(config);
-
-    compiler.run((err, stats) => {
-      if (err) {
-        console.error(err.stack || err);
-        if (err.details) console.error(err.details);
-        reject(err.stack || err.details || err);
-      }
-      const info = stats.toJson();
-      if (stats.hasErrors()) {
-        console.error(info.errors);
-        reject(info.errors);
-      }
-      if (stats.hasWarnings()) console.warn(info.warnings);
-      resolve();
-    });
-  });

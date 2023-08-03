@@ -6,6 +6,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 const base = require('./webpack.common');
 
 // const withReport = process.env.npm_config_withReport;
+const nodeEnv = process.env.NODE_ENV;
 
 module.exports = merge(base, {
   mode: 'development',
@@ -15,7 +16,7 @@ module.exports = merge(base, {
     globalObject: 'this',
     filename: '[name].dev.js',
     chunkFilename: '[name].dev.js',
-    path: `${__dirname}/build/${env}`,
+    path: `${__dirname}/build/${nodeEnv}`,
     publicPath: '',
   },
   optimization: {
