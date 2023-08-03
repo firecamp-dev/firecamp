@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
@@ -21,7 +20,8 @@ const config = merge(base, {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-        parallel: 2,
+        parallel: 4,
+        minify: TerserPlugin.esbuildMinify,
       }),
     ],
   },
@@ -36,7 +36,9 @@ const config = merge(base, {
 
 module.exports = () =>
   new Promise((resolve, reject) => {
+    // eslint-disable-next-line no-console
     console.log('[Webpack Build]');
+    // eslint-disable-next-line no-console
     console.log('-'.repeat(80));
 
     const compiler = webpack(config);
@@ -44,25 +46,15 @@ module.exports = () =>
     compiler.run((err, stats) => {
       if (err) {
         console.error(err.stack || err);
-        if (err.details) {
-          console.error(err.details);
-        }
-
+        if (err.details) console.error(err.details);
         reject(err.stack || err.details || err);
       }
-
       const info = stats.toJson();
-
       if (stats.hasErrors()) {
         console.error(info.errors);
-
         reject(info.errors);
       }
-
-      if (stats.hasWarnings()) {
-        console.warn(info.warnings);
-      }
-
+      if (stats.hasWarnings()) console.warn(info.warnings);
       resolve();
     });
   });
