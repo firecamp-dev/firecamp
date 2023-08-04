@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { FolderClosed, Plus } from 'lucide-react';
+import { ChevronRight, FolderClosed, LogIn, Plus, UserCircle2 } from 'lucide-react';
 
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
-import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
 import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
 import { FcIconGetSquare } from '@firecamp/ui';
 
@@ -57,7 +54,7 @@ export const DropDownv2Example = () => {
           disabled: false,
           showSeparator: true,
           prefix: () => <Plus className="mr-2" size={10} />,
-          postfix: () => <VscChevronRight size={10} className={'ml-auto'} />,
+          postfix: () => <ChevronRight size={10} className={'ml-auto'} />,
           list: [
             {
               id: '2.1',
@@ -69,7 +66,7 @@ export const DropDownv2Example = () => {
               name: 'Firecamp 2.2',
               disabled: false,
               postfix: () => (
-                <VscChevronRight size={10} className={'ml-auto'} />
+                <ChevronRight size={10} className={'ml-auto'} />
               ),
               list: [
                 {
@@ -110,7 +107,7 @@ export const DropDownv2Example = () => {
         {
           id: '4',
           name: 'Websocket',
-          postfix: () => <VscChevronRight size={10} className={'ml-auto'} />,
+          postfix: () => <ChevronRight size={10} className={'ml-auto'} />,
           disabled: true,
           list: [
             {
@@ -283,7 +280,7 @@ export const CreateMenuExample = () => {
                 name: 'Collection',
                 prefix: () => <FolderClosed className="mr-2" size={16} />,
                 postfix: () => (
-                  <VscChevronRight size={14} className={'ml-auto'} />
+                  <ChevronRight size={14} className={'ml-auto'} />
                 ),
               },
               {
@@ -530,7 +527,7 @@ export const StatusBarExample = () => {
           <span className="pl-1">Firecamp</span>
         </div>
         <div className="bg-focus3 flex items-center px-3">
-          <VscAccount size={16} className="mr-1" />
+          <UserCircle2 size={16} className="mr-1" />
 
           <DropDownV2
             handleRenderer={() => (
@@ -559,7 +556,7 @@ export const StatusBarExample = () => {
                     name: 'Sign in',
                     postfix: () => (
                       <div className={'ml-2 leading-3 text-primaryColor'}>
-                        <VscSignIn size={20} />
+                        <LogIn size={20} />
                       </div>
                     ),
                   },
@@ -568,7 +565,7 @@ export const StatusBarExample = () => {
                     name: 'Create an account',
                     postfix: () => (
                       <div className={'ml-2 leading-3 text-primaryColor'}>
-                        <VscAccount size={20} />
+                        <UserCircle2 size={20} />
                       </div>
                     ),
                   },
@@ -587,7 +584,7 @@ export const StatusBarExample = () => {
                 '!py-1 !px-3 text-sm leading-6 text-app-foreground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
             }}
           />
-          <VscChevronRight size={14} className="mt-0.5" />
+          <ChevronRight size={14} className="mt-0.5" />
 
           <DropDownV2
             handleRenderer={() => (

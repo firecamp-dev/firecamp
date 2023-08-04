@@ -1,8 +1,7 @@
 import { FC } from 'react';
-import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
-import { Pencil } from 'lucide-react';
+import { Pencil, X } from 'lucide-react';
 import {
   Resizable,
   Container,
@@ -52,7 +51,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
             className="ml-auto flex-none text-base flex justify-center items-center cursor-pointer"
             onClick={toggleEnvSidebar}
           >
-            <VscClose size={16} />
+            <X size={16} />
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col overflow-visible">

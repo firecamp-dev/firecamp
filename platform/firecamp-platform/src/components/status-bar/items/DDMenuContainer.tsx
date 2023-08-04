@@ -1,13 +1,9 @@
 import { FC } from 'react';
 import shallow from 'zustand/shallow';
-import { Plus } from 'lucide-react';
+import { ChevronRight, LogIn, LogOut, Plus, UserCircle2 } from 'lucide-react';
 import { DropdownMenu } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
-import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
-import { VscSignOut } from '@react-icons/all-files/vsc/VscSignOut';
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 // import { CgFormatSlash } from '@react-icons/all-files/cg/CgFormatSlash';
 import { useWorkspaceStore } from '../../../store/workspace';
 import { useUserStore } from '../../../store/user';
@@ -40,21 +36,21 @@ const DDMenuContainer = () => {
 
   return (
     <div className="bg-focus3 flex items-center px-3">
-      <VscAccount size={16} className="mr-1" />
+      <UserCircle2 size={16} className="mr-1" />
       <UserDDMenus title={user.username} isGuest={isGuest} />
       {/* <CgFormatSlash size={20} className="" /> */}
-      <VscChevronRight size={14} className="mt-0.5" />
+      <ChevronRight size={14} className="mt-0.5" />
       {scope == EPlatformScope.Organization ? (
         <>
           <OrgDDMenus title={organization?.name} />
-          <VscChevronRight size={14} className="mt-0.5" />
+          <ChevronRight size={14} className="mt-0.5" />
           {/* <CgFormatSlash size={20} className="" /> */}
         </>
       ) : (
         <></>
       )}
 
-      {/* <VscChevronRight size={14} className="mx-2 mt-0.5" /> */}
+      {/* <ChevronRight size={14} className="mx-2 mt-0.5" /> */}
       <WorkspaceDDMenus title={workspace.name} disabled={!!isGuest} />
     </div>
   );
@@ -69,7 +65,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
       name: 'Sign in',
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
-          <VscSignIn size={20} />
+          <LogIn size={20} />
         </div>
       ),
       onClick: () => platformContext.app.modals.openSignIn(),
@@ -78,7 +74,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
       name: 'Create an account',
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
-          <VscAccount size={20} />
+          <UserCircle2 size={20} />
         </div>
       ),
       onClick: () => platformContext.app.modals.openSignUp(),
@@ -90,7 +86,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
       name: 'User Profile',
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
-          <VscAccount size={14} />
+          <UserCircle2 size={14} />
         </div>
       ),
       onClick: () => {
@@ -136,7 +132,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
       name: 'Sign out',
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
-          <VscSignOut size={14} />
+          <LogOut size={14} />
         </div>
       ),
       onClick: () => platformContext.app.logout(),

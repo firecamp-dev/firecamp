@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import cx from 'classnames';
-import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
+import { Info } from 'lucide-react';
 import { EFirecampAgent } from '@firecamp/types';
 import shallow from 'zustand/shallow';
 import {
@@ -99,7 +99,7 @@ const FcAgentSelector: FC<any> = () => {
           className="flex items-center"
           onClick={() => checkExtAgentInstalled()}
         >
-          <VscInfo size={14} className="mr-1 text-primaryColor" />
+          <Info size={14} className="mr-1 text-primaryColor" />
           {agentNamesMap[agent]}
         </div>
       </Popover.Handler>

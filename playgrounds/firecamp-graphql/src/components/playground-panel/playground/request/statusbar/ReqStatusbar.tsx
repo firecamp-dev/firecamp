@@ -3,6 +3,7 @@ import shallow from 'zustand/shallow';
 import cx from 'classnames';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { ChevronRight } from 'lucide-react';
 import {
   Button,
   Dropdown,
@@ -112,7 +113,7 @@ const ReqStatusBar = ({ }) => {
         {/* <StatusBar.PrimaryRegion> */}
         <div className="flex items-center whitespace-pre overflow-hidden text-ellipsis text-app-foreground-inactive">
           {/* root */}
-          {/* <VscChevronRight /> */}
+          {/* <ChevronRight /> */}
           ./{playground.request.name}
           <ToolBar className="ml-2 visible">
             {playgroundMeta.isSaved ? <EditPlaygroundName /> : <></>}

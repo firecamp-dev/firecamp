@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import classNames from 'classnames';
-import { FolderOpen, FolderClosed } from 'lucide-react';
+import { Braces, FolderOpen, FolderClosed } from 'lucide-react';
 
-import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { EHttpMethod, ERequestTypes } from '@firecamp/types';
 import {
   FcIconGraphQL,
@@ -51,7 +50,7 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
     case ETabEntityTypes.Environment:
       return (
         <div className="environment text-xs font-bold w-5 tab-icon">
-          <VscJson size={16} />
+          <Braces size={16} />
         </div>
       );
     case ETabEntityTypes.Collection:

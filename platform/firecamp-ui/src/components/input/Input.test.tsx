@@ -4,7 +4,7 @@
 
 // import { useRef, useState } from 'react';
 // import { useForm } from 'react-hook-form';
-// import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
+// import { Menu } from 'lucide-react';
 
 // import Button from '../buttons/Button';
 // import Inputv2 from './Inputv2';
@@ -158,7 +158,7 @@
 //   test('should render with icon & validate its placement', async () => {
 //     let { unmount } = render(
 //       <InputElementTemplate
-//         icon={<VscMenu title="menu-icon" size={16} />}
+//         icon={<Menu title="menu-icon" size={16} />}
 //         label={''}
 //       />
 //     );
@@ -179,7 +179,7 @@
 
 //     render(
 //       <InputElementTemplate
-//         icon={<VscMenu title="menu-icon" size={16} />}
+//         icon={<Menu title="menu-icon" size={16} />}
 //         iconPosition="right"
 //         label={''}
 //       />

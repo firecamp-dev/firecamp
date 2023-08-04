@@ -1,4 +1,4 @@
-import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
+import { Menu } from 'lucide-react';
 import { useForm } from '@mantine/form';
 import { Button, Input } from '@firecamp/ui';
 import { IInput } from './interfaces/input.interfaces';
@@ -25,28 +25,28 @@ export const withIcon = Template.bind({});
 withIcon.args = {
   placeholder: 'Sample Button',
   value: '',
-  icon: <VscMenu title="Account" size={16} />,
+  icon: <Menu size={16} />,
 };
 
 export const withIconRight = Template.bind({});
 withIconRight.args = {
   placeholder: 'Sample Button',
   value: '',
-  rightSection: <VscMenu title="Account" size={16} />,
+  rightSection: <Menu size={16} />,
 };
 
 export const withText = Template.bind({});
 withText.args = {
   placeholder: 'Sample Button',
   value: 'Sample Text',
-  rightSection: <VscMenu title="Account" size={16} />,
+  rightSection: <Menu size={16} />,
 };
 
 export const withErrorText = Template.bind({});
 withErrorText.args = {
   placeholder: 'Sample Button',
   defaultValue: 'Sample Text',
-  rightSection: <VscMenu title="Account" size={16} />,
+  rightSection: <Menu size={16} />,
   error: 'Error Message',
 };
 
@@ -55,7 +55,7 @@ withDescriptionText.args = {
   placeholder: 'Sample Button',
   defaultValue: 'Sample Text',
   label: 'Label',
-  rightSection: <VscMenu title="Account" size={16} />,
+  rightSection: <Menu size={16} />,
   description: 'Description Text',
 };
 

@@ -2,9 +2,8 @@ import { memo, useEffect, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { Pencil } from 'lucide-react'; 
+import { Braces, Pencil } from 'lucide-react'; 
 
-import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import {
   RootContainer,
   Container,
@@ -172,7 +171,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
         <Container.Header>
           <TabHeader className="height-ex-small bg-statusBar-background-active !pl-3 !pr-3">
             <TabHeader.Left>
-              <VscJson size={18} />
+              <Braces size={18} />
               <div className="fc-urlbar-path flex text-base">
                 {runtimeEnv.name}
               </div>

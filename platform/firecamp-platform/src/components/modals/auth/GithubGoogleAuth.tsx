@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
-import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
+
+import { Github } from 'lucide-react';
 // import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
 
 import _auth from '../../../services/auth';
@@ -114,7 +115,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
       /> */}
       <Button
         text="Continue with Github"
-        leftIcon={<VscGithub size={18} />}
+        leftIcon={<Github size={18} />}
         classNames={{ root: 'mb-5' }}
         onClick={_githubOAuth}
         outline
@@ -126,7 +127,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
         className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-input-background-focus hover:border-transparent hover:text-modal-foreground-active mb-6"
         onClick={_githubOAuth}
       >
-        <VscGithub size={20} className="mr-2" />
+        <Github size={20} className="mr-2" />
         continue with{' '}
         <span className="text-modal-foreground-active ml-1">github</span>
       </a>

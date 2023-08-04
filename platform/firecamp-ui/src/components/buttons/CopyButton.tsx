@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import cx from 'classnames';
-
-import { FaCopy } from '@react-icons/all-files/fa/FaCopy';
+import { Copy } from 'lucide-react';
 import { ICopyButton } from "./interfaces/CopyButton.interfaces"
 import { _clipboard } from '@firecamp/utils'
 
@@ -34,7 +33,7 @@ const CopyButton: FC<ICopyButton> = ({
      {text && showText ? text : ''}
      {animation && showCopied ? <span className="absolute -left-2 -top-2 text-sm">Copied!</span> : ''}
      
-      <FaCopy fontSize={12} onClick={_onClickCopy} className="align-baseline text-app-foreground-inactive" title='IconCopy'/>
+      <Copy size={12} onClick={_onClickCopy} className="align-baseline text-app-foreground-inactive"/>
      
    </div>
  );

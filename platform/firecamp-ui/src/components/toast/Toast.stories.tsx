@@ -1,5 +1,4 @@
 import Toast from './Toast';
-import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
 
 export default {
   title: "UI-Kit/ComingSoon/Toast",

@@ -1,6 +1,6 @@
 import { default as Tab } from './Tab';
 import { ITab } from './interfaces/Tab.interface';
-import { VscJson } from "@react-icons/all-files/vsc/VscJson";
+import { Braces } from 'lucide-react';
 import { IoNotificationsOutline } from '@react-icons/all-files/io5/IoNotificationsOutline';
 export default {
     title: "UI-Kit/Tab",
@@ -26,14 +26,14 @@ const Template = (args: ITab) =>
 export const TabDefault = Template.bind({});
 TabDefault.args = {
     title: 'Sample Tab',
-    postComp: () => <VscJson title="Account" size={16} />,
+    postComp: () => <Braces title="Account" size={16} />,
     state: 'default'
 };
 
 export const TabActiveBottomBorder = Template.bind({});
 TabActiveBottomBorder.args = {
     title: 'Sample Tab',
-    preComp: () => <VscJson title="Account" size={16} />,
+    preComp: () => <Braces title="Account" size={16} />,
     state: 'default',
     borderMeta: {
         placementForActive: 'bottom',
@@ -45,7 +45,7 @@ TabActiveBottomBorder.args = {
 export const TabActiveTopBorder = Template.bind({});
 TabActiveTopBorder.args = {
     title: 'Sample Tab',
-    preComp: () => <VscJson title="Account" size={16} />,
+    preComp: () => <Braces title="Account" size={16} />,
     state: 'default',
     borderMeta: {
         placementForActive: 'top',
@@ -57,7 +57,7 @@ TabActiveTopBorder.args = {
 export const TabActiveWORightborder = Template.bind({});
 TabActiveWORightborder.args = {
     title: 'Sample Tab',
-    preComp: () => <VscJson title="Account" size={16} />,
+    preComp: () => <Braces title="Account" size={16} />,
     state: 'default',
     borderMeta: {
         placementForActive: 'top',
@@ -67,10 +67,10 @@ TabActiveWORightborder.args = {
 };
 
 export const TabPreview = Template.bind({});
-TabPreview.args = { title: 'Sample Tab', preComp: () => <VscJson title="Account" size={16} />, state: 'default', ispreview: true };
+TabPreview.args = { title: 'Sample Tab', preComp: () => <Braces size={16} />, state: 'default', ispreview: true };
 
 export const TabModified = Template.bind({});
-TabModified.args = { title: 'Sample Tab', preComp: () => <VscJson title="Account" size={16} />, state: 'modified' };
+TabModified.args = { title: 'Sample Tab', preComp: () => <Braces size={16} />, state: 'modified' };
 
 export const TabWithIcon = Template.bind({});
 TabWithIcon.args = { id: 'body',

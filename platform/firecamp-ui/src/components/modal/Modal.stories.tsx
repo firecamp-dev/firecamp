@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
-import { VscLock } from '@react-icons/all-files/vsc/VscLock';
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
+import { Github, Lock, UserCircle2 } from 'lucide-react';
 
 import { Modal, Button, FormField, Input, IModal } from '@firecamp/ui';
 
@@ -62,7 +60,7 @@ function FormPreview({ overflowContent = false }) {
             className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-input-background-focus hover:border-transparent hover:text-modal-foreground-active mb-6"
           >
             {' '}
-            <VscGithub size={20} className="mr-2" /> continue with{' '}
+            <Github size={20} className="mr-2" /> continue with{' '}
             <span className="text-modal-foreground-active ml-2">github</span>
           </a>
         </div>
@@ -81,13 +79,13 @@ function FormPreview({ overflowContent = false }) {
           <Input
             label="Username or E-mail"
             value="dnishchit@gmail.com"
-            icon={<VscAccount title="Account" size={16} />}
+            icon={<UserCircle2 size={16} />}
           />
 
           <Input
             label="password"
             placeholder="password"
-            icon={<VscLock title="Account" size={16} />}
+            icon={<Lock size={16} />}
           />
           <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm">
             Forgot Password?

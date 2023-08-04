@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import { FolderClosed, MoreHorizontal, Pencil, Plus, Trash2 } from 'lucide-react';
+import { ChevronRight, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, Trash2, UserCircle2 } from 'lucide-react';
 import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
-import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
@@ -483,7 +480,7 @@ export const FooterStatusBar = () => {
           <span className="pl-1">Firecamp</span>
         </div>
         <div className="bg-focus3 flex items-center px-3">
-          <VscAccount size={16} className="mr-1" />
+          <UserCircle2 size={16} className="mr-1" />
 
           <DropdownMenu
             handler={() => (
@@ -512,7 +509,7 @@ export const FooterStatusBar = () => {
                 name: 'Sign in',
                 postfix: () => (
                   <div className={'ml-2 leading-3 text-primaryColor'}>
-                    <VscSignIn size={20} />
+                    <LogIn size={20} />
                   </div>
                 ),
               },
@@ -521,7 +518,7 @@ export const FooterStatusBar = () => {
                 name: 'Create an account',
                 postfix: () => (
                   <div className={'ml-2 leading-3 text-primaryColor'}>
-                    <VscAccount size={20} />
+                    <UserCircle2 size={20} />
                   </div>
                 ),
               },
@@ -536,7 +533,7 @@ export const FooterStatusBar = () => {
             width={150}
             sm
           />
-          <VscChevronRight size={14} className="mt-0.5" />
+          <ChevronRight size={14} className="mt-0.5" />
 
           <DropdownMenu
             handler={() => (

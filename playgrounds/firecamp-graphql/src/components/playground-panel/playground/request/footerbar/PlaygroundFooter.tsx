@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { Container, Resizable, SecondaryTab } from '@firecamp/ui';
-import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 
 import Variables from './Variables';
 import Files from './Files';
@@ -74,7 +74,7 @@ const PlaygroundFooter = () => {
 const CollapsedButton = ({ toggleFooter }) => {
   return (
     <div className="btn-collapse" onClick={() => toggleFooter()}>
-      <VscChevronDown size="20" />
+      <ChevronDown size="20" />
     </div>
   );
 };

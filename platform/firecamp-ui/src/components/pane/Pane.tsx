@@ -1,9 +1,7 @@
 import React, { FC, useRef, useState } from "react";
 import { IPane, IHeader, IBody } from "./interfaces/Pane.interfaces";
 import cx from 'classnames';
-
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 import './Pane.scss';
 
 
@@ -60,8 +58,8 @@ const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, className, expande
              onClick={onToggle}>
             {
                 expanded
-                    ? <VscChevronDown size={16} className="mr-1" />
-                        : <VscChevronRight size={16} className="mr-1" />
+                    ? <ChevronDown size={16} className="mr-1" />
+                        : <ChevronRight size={16} className="mr-1" />
                     
             }
             <div className='pane-title whitespace-pre text-sm'>

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import shallow from 'zustand/shallow';
 import cx from 'classnames';

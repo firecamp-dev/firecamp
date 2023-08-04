@@ -1,6 +1,6 @@
 import { useEffect, FC } from 'react';
 import cx from 'classnames';
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
+import { UserCircle2 } from 'lucide-react';
 // import ReactTooltip from 'react-tooltip';
 
 const ActionItem: FC<IActionItem> = ({
@@ -36,7 +36,7 @@ const ActionItem: FC<IActionItem> = ({
       {!!icon ? (
         icon
       ) : (
-        <VscAccount
+        <UserCircle2
           /*title="Account"
               size={24}*/
           tabIndex={-1}

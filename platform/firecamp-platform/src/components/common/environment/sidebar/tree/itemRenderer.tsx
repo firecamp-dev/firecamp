@@ -1,14 +1,9 @@
 import cx from 'classnames';
-import { Trash2 } from 'lucide-react';
-// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-// import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
-// import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
+import { Braces, Lock, Trash2 } from 'lucide-react';
 import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { VscLock } from '@react-icons/all-files/vsc/VscLock';
 import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
 import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
-import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { Button } from '@firecamp/ui';
 
 export default {
@@ -46,11 +41,11 @@ export default {
       return (
         <>
           {/* {item.data.__meta.visibility == 2 ? (
-            <VscLock className=" flex-none" size={18} opacity={1} />
+            <Lock className=" flex-none" size={18} opacity={1} />
           ) : (
             <></>
           )} */}
-          <VscJson className=" flex-none" size={18} opacity={1} />
+          <Braces className=" flex-none" size={18} opacity={1} />
         </>
       );
     } else {
@@ -187,7 +182,7 @@ export default {
             </span>
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center">
-            {/* <VscJson size={14} className="ml-1" onClick={(e)=> {
+            {/* <Braces size={14} className="ml-1" onClick={(e)=> {
                 e.preventDefault()
                 e.stopPropagation()
                 openEnv(item.index);

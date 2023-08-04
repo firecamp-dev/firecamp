@@ -1,7 +1,5 @@
 import cx from 'classnames';
-import { Trash2 } from 'lucide-react';
-// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-// import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
+import { Braces, ChevronDown, ChevronRight, Trash2 } from 'lucide-react';
 // import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { Button, FcIconGraphQL, ToolBar } from '@firecamp/ui';
 
@@ -14,9 +12,9 @@ export default {
     );
     // return item.isFolder ? (
     //   context.isExpanded ? (
-    //     <VscChevronDown size={20} />
+    //     <ChevronDown size={20} />
     //   ) : (
-    //     <VscChevronRight size={20} />
+    //     <ChevronRight size={20} />
     //   )
     // ) : null;
   },
@@ -149,7 +147,7 @@ export default {
             </span>
           </InteractiveComponent>
           <div className="flex ml-auto rct-tree-item-li-action items-center absolute right-0">
-            {/* <VscJson size={14} className="ml-1" onClick={(e)=> {
+            {/* <Braces size={14} className="ml-1" onClick={(e)=> {
                 e.preventDefault()
                 e.stopPropagation()
                 openEnv(item.index);
