@@ -1,1 +1,1 @@
-# firecamp-echo-server-v2
+# Firecamp Echo Server
