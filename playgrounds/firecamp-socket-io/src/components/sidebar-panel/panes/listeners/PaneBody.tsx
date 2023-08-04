@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import shallow from 'zustand/shallow';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { Trash2 } from 'lucide-react';
 import {
   Input,
   Container,
@@ -175,7 +175,7 @@ const Listener = ({ listener, isActive }) => {
         {name}
       </div>
 
-      <VscTrash
+      <Trash2
         className="h-0 ml-1 group-hover:h-auto cursor-pointer"
         onClick={() => {
           deleteListener(listener);

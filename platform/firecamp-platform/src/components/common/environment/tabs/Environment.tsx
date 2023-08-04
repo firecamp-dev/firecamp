@@ -2,7 +2,8 @@ import { memo, useEffect, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
 import _cloneDeep from 'lodash/cloneDeep';
 import _cleanDeep from 'clean-deep';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
+import { Pencil } from 'lucide-react'; 
+
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import {
   RootContainer,
@@ -175,7 +176,7 @@ const EnvironmentTab = ({ tab, platformContext: context }) => {
               <div className="fc-urlbar-path flex text-base">
                 {runtimeEnv.name}
               </div>
-              <VscEdit size={12} onClick={rename} className="pointer" />
+              <Pencil size={12} onClick={rename} className="pointer" />
             </TabHeader.Left>
             <TabHeader.Right>
               {/* <Button text="Save" primary xs /> */}

@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import cx from 'classnames';
+import { Trash2 } from 'lucide-react';
 import {
   Button,
   Container,
@@ -137,7 +137,7 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
       case 'action':
         return (
           <div className="px-2">
-            <VscTrash
+            <Trash2
               size={14}
               className="text-error cursor-pointer"
               onClick={() => onRemoveMember(row)}

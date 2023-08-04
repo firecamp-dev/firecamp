@@ -1,6 +1,6 @@
 import shallow from 'zustand/shallow';
 import { Column } from '@firecamp/ui';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
+import { Eye } from 'lucide-react';
 import EnvironmentDD from './EnvironmentDD';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
@@ -38,7 +38,7 @@ const EnvironmentSelector = () => {
           className="cursor-pointer ml-1 text-base !text-info"
           onClick={() => toggleEnvSidebar()}
         >
-          <VscEye size={14} />
+          <Eye size={14} />
         </span>
       </div>
     </Column>

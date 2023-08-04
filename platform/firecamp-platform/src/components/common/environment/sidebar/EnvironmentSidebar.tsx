@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { Plus } from 'lucide-react';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { Notes, Button } from '@firecamp/ui';
 import { EEnvironmentScope } from '@firecamp/types';
@@ -71,7 +71,7 @@ const EnvironmentCollection = () => {
         return (
           <ToolBar>
             <div>
-              <VscAdd
+              <Plus
                 className="cursor-pointer"
                 size={16}
                 onClick={() => createEnvironmentPrompt()}

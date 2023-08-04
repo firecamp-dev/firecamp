@@ -1,10 +1,9 @@
 import { useRef, memo } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
+import { Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EEditorLanguage } from '@firecamp/types';
 import { Button } from '@firecamp/ui';
 
@@ -112,7 +111,7 @@ const EnvironmentTable = ({
         if (!options.allowRowRemove) return <></>;
         return (
           <div className="px-2 flex">
-            <VscTrash
+            <Trash2
               size={14}
               className="text-error cursor-pointer"
               onClick={(e) => tableApi?.removeRow(row.id)}
@@ -154,7 +153,7 @@ const EnvironmentTable = ({
         <Button
           text="Add Row"
           onClick={() => apiRef.current.addRow()}
-          leftIcon={<VscAdd size={16} />}
+          leftIcon={<Plus size={16} />}
           disabled={
             options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
           }

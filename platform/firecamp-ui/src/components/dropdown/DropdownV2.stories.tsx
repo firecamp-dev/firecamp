@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { FolderClosed, Plus } from 'lucide-react';
 
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
@@ -13,7 +13,6 @@ import { FcIconGetSquare } from '@firecamp/ui';
 
 import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
 import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
@@ -57,7 +56,7 @@ export const DropDownv2Example = () => {
           name: 'GraphQL',
           disabled: false,
           showSeparator: true,
-          prefix: () => <VscAdd className="mr-2" size={10} />,
+          prefix: () => <Plus className="mr-2" size={10} />,
           postfix: () => <VscChevronRight size={10} className={'ml-auto'} />,
           list: [
             {
@@ -282,7 +281,7 @@ export const CreateMenuExample = () => {
               {
                 id: 'Collection',
                 name: 'Collection',
-                prefix: () => <VscFolder className="mr-2" size={16} />,
+                prefix: () => <FolderClosed className="mr-2" size={16} />,
                 postfix: () => (
                   <VscChevronRight size={14} className={'ml-auto'} />
                 ),
@@ -617,7 +616,7 @@ export const StatusBarExample = () => {
                     name: 'Workspace Management',
                     postfix: () => (
                       <div className={'ml-2 leading-3'}>
-                        <VscAdd size={14} strokeWidth={1.5} />
+                        <Plus size={14} strokeWidth={1.5} />
                       </div>
                     ),
                   },
@@ -626,7 +625,7 @@ export const StatusBarExample = () => {
                     name: 'Invite Members',
                     postfix: () => (
                       <div className={'ml-2 leading-3'}>
-                        <VscAdd size={14} strokeWidth={1.5} />
+                        <Plus size={14} strokeWidth={1.5} />
                       </div>
                     ),
                   },

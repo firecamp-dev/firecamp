@@ -1,24 +1,19 @@
 import { useState } from 'react';
 import cx from 'classnames';
-
+import { FolderClosed, MoreHorizontal, Pencil, Plus, Trash2 } from 'lucide-react';
 import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
-import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 import { VscFile } from '@react-icons/all-files/vsc/VscFile';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
@@ -57,7 +52,7 @@ Example.args = {
     {
       id: EMenuOptions.Collection,
       name: 'Collection',
-      prefix: () => <VscFolder size={18} />,
+      prefix: () => <FolderClosed size={18} />,
     },
     {
       id: EMenuOptions.Environment,
@@ -148,7 +143,7 @@ export const GlobalCreate = () => {
         {
           id: EMenuOptions.Collection,
           name: 'Collection',
-          prefix: () => <VscFolder size={18} />,
+          prefix: () => <FolderClosed size={18} />,
         },
         {
           id: EMenuOptions.Environment,
@@ -571,7 +566,7 @@ export const FooterStatusBar = () => {
                 name: 'Workspace Management',
                 postfix: () => (
                   <div className={'ml-2 leading-3'}>
-                    <VscAdd size={14} strokeWidth={1.5} />
+                    <Plus size={14} strokeWidth={1.5} />
                   </div>
                 ),
               },
@@ -580,7 +575,7 @@ export const FooterStatusBar = () => {
                 name: 'Invite Members',
                 postfix: () => (
                   <div className={'ml-2 leading-3'}>
-                    <VscAdd size={14} strokeWidth={1.5} />
+                    <Plus size={14} strokeWidth={1.5} />
                   </div>
                 ),
               },
@@ -647,14 +642,14 @@ export const SidebarCollectionOption = () => {
   const [selected, setSelected] = useState('MyQuery');
   return (
     <DropdownMenu
-      handler={() => <VscEllipsis className="cursor-pointer" />}
+      handler={() => <MoreHorizontal className="cursor-pointer" />}
       options={[
         {
-          prefix: () => <VscEdit size={14} />,
+          prefix: () => <Pencil size={14} />,
           name: 'Rename',
         },
         {
-          prefix: () => <VscTrash size={14} />,
+          prefix: () => <Trash2 size={14} />,
           name: 'Delete',
         },
       ]}

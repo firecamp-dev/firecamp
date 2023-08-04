@@ -9,7 +9,7 @@ import {
   useEffect,
 } from 'react';
 import cx from 'classnames';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { Plus } from 'lucide-react';
 import { TId } from '@firecamp/types';
 import { ScrollBar } from '@firecamp/ui';
 
@@ -246,7 +246,7 @@ const Tabs: FC<ITabs> = forwardRef(
                     }
                   }}
                 >
-                  <VscAdd className="flex" size={16} />
+                  <Plus className="flex" size={16} />
                 </div>
               )}
             </div>

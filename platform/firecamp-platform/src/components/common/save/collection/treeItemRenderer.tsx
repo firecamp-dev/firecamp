@@ -1,8 +1,7 @@
 import cx from 'classnames';
 import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
-import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
+import { FolderOpen, FolderClosed } from 'lucide-react';
 
 export default {
   renderItemArrow: ({ item, context }) => {
@@ -17,11 +16,11 @@ export default {
       return context.isExpanded ? (
         <>
           <VscChevronDown size={20} />
-          <VscFolderOpened size={20} />
+          <FolderOpen size={20} />
         </>
       ) : (
         <>
-          <VscChevronRight size={20} /> <VscFolder size={20} />
+          <VscChevronRight size={20} /> <FolderClosed size={20} />
         </>
       );
     } else {

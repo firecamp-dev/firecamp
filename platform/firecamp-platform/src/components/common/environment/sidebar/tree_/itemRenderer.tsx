@@ -1,4 +1,5 @@
 import cx from 'classnames';
+import { Trash2 } from 'lucide-react';
 // import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 // import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
 // import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
@@ -9,7 +10,6 @@ import cx from 'classnames';
 // import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
 import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { Button } from '@firecamp/ui';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 
 export default {
   renderItemArrow: ({ item, context }) => {
@@ -179,7 +179,7 @@ export default {
             />
 
             {item.data.__ref.isEnvironment ? (
-              <VscTrash
+              <Trash2
                 className="ml-1 cursor-pointer"
                 size={14}
                 onClick={() => {

@@ -1,9 +1,4 @@
-import { VscNewFile } from '@react-icons/all-files/vsc/VscNewFile';
-import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
-import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
-import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { FilePlus2, FolderPlus, MoreHorizontal, Pencil, Settings, Trash2 } from 'lucide-react';
 import { DropdownMenu } from '@firecamp/ui';
 import { Regex } from '../../../../constants';
 import platformContext from '../../../../services/platform-context';
@@ -33,7 +28,7 @@ const CollectionMenu = ({
 
   const renameMenu = {
     prefix: () => (
-      <VscEdit size={14} />
+      <Pencil size={14} />
     ),
     name: 'Rename',
     onClick: (e) => {
@@ -43,7 +38,7 @@ const CollectionMenu = ({
 
   const addFolderMenu = {
     prefix: () => (
-      <VscNewFolder size={14} />
+      <FolderPlus size={14} />
     ),
     name: 'Add Folder',
     onClick: () => {
@@ -95,7 +90,7 @@ const CollectionMenu = ({
 
   const addRequestMenu = {
     prefix: () => (
-      <VscNewFile size={14} />
+      <FilePlus2 size={14} />
     ),
     name: 'Add Request',
     onClick: () => { },
@@ -105,7 +100,7 @@ const CollectionMenu = ({
 
   const viewDetailMenu = {
     prefix: () => (
-      <VscSettingsGear size={14} />
+      <Settings size={14} />
     ),
     name: 'View Details',
     onClick: () => {
@@ -119,7 +114,7 @@ const CollectionMenu = ({
 
   const deleteMenu = {
     prefix: () => (
-      <VscTrash size={14} />
+      <Trash2 size={14} />
     ),
     name: 'Delete',
     onClick: () => {
@@ -154,7 +149,7 @@ const CollectionMenu = ({
   return (
     <div>
       <DropdownMenu
-        handler={() => <VscEllipsis className='cursor-pointer' />}
+        handler={() => <MoreHorizontal className='cursor-pointer' />}
         options={menuType == EMenuType.Request ? requestMenu : commonMenu}
         width={144}
         onSelect={(value) => value.onClick()}

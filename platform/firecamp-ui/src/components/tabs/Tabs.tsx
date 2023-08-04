@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import cx from 'classnames';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { Plus } from 'lucide-react';
 import { ScrollBar } from '@firecamp/ui';
 import Tab from './Tab';
 import { ITabs } from './interfaces/Tabs.interfaces';
@@ -172,7 +172,7 @@ const Tabs: FC<ITabs> = ({
                   }
                 }}
               >
-                <VscAdd className="flex" size={16} title="IconAdd" />
+                <Plus className="flex" size={16} />
               </div>
             )}
           </div>

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import cx from 'classnames';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
+import { Pencil } from 'lucide-react';
 import {
   CopyButton,
   Column,
@@ -29,7 +29,7 @@ const UrlBar: FC<IUrlBar> & {
             <span>{nodePath || ''}</span>
             <ToolBar className="ml-4 visible">
               {showEditIcon ? (
-                <VscEdit size={16} onClick={onEditClick} />
+                <Pencil size={16} onClick={onEditClick} />
               ) : (
                 <></>
               )}

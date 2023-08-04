@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import shallow from 'zustand/shallow';
+import { Plus } from 'lucide-react';
 import { DropdownMenu } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
 import { VscSignOut } from '@react-icons/all-files/vsc/VscSignOut';
 import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
@@ -101,7 +101,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
       name: 'Create new organization',
       postfix: () => (
         <div className={'ml-2'}>
-          <VscAdd size={14} />
+          <Plus size={14} />
         </div>
       ),
       onClick: () => {
@@ -181,7 +181,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       disabled,
       postfix: () => (
         <div className={'ml-2'}>
-          <VscAdd size={14} strokeWidth={1.5} />
+          <Plus size={14} strokeWidth={1.5} />
         </div>
       ),
       onClick: () => {
@@ -193,7 +193,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       disabled,
       postfix: () => (
         <div className={'ml-2'}>
-          <VscAdd size={14} strokeWidth={1.5} />
+          <Plus size={14} strokeWidth={1.5} />
         </div>
       ),
       onClick: () => {
@@ -264,7 +264,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       disabled,
       postfix: () => (
         <div className={'ml-2'}>
-          <VscAdd size={14} strokeWidth={1.5} />
+          <Plus size={14} strokeWidth={1.5} />
         </div>
       ),
       onClick: () => {
@@ -276,7 +276,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       disabled,
       postfix: () => (
         <div className={'ml-2'}>
-          <VscAdd size={14} strokeWidth={1.5} />
+          <Plus size={14} strokeWidth={1.5} />
         </div>
       ),
       onClick: () => {

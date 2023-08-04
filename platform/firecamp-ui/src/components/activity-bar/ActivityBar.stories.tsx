@@ -1,7 +1,7 @@
+import { Settings } from 'lucide-react';
 import { VscFiles } from "@react-icons/all-files/vsc/VscFiles";
 import { VscHistory } from "@react-icons/all-files/vsc/VscHistory";
 import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
-import { VscSettingsGear } from "@react-icons/all-files/vsc/VscSettingsGear";
 import ActivityBar from './ActivityBar';
 
 export default {
@@ -25,7 +25,7 @@ const compositeBar = [
 
 const actionBar = [
   { id: '4', icon: <VscAccount data-tip={'User (⇧⌘U)'} data-for={'4'} />, text: 'User (⇧⌘U)', active: false },
-  { id: '5', icon: <VscSettingsGear data-tip={'Settings (⇧⌘/)'} data-for={'5'} />, text: 'Settings (⇧⌘/)', active: false }
+  { id: '5', icon: <Settings data-tip={'Settings (⇧⌘/)'} data-for={'5'} />, text: 'Settings (⇧⌘/)', active: false }
 ];
 
 const TemplateContainer = (args: any) => {
