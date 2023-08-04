@@ -1,44 +1,9 @@
-.vscode/*
-**/.DS_Store
-*-debug.log
-*-error.log
-/.idea
-/.nyc_output
-/dist
-/lib
-/package-lock.json
-/tmp
-/yarn.lock
-node_modules
-node_modules
-npm-debug.log
-.DS_Store
-
-build/
-cypress/screenshots
-cypress/videos
-
-*.zip
-*.crx
-*.pem
-update.xml
-.idea
-package-lock.json
-*.lock
-
-pnpm-lock.yaml
-
-!packages-executors/http-executor/src/src/cacert.pem
-!platform/firecamp-ui/src/declarations.d.ts
-
-.jest-test-results.json
-
 # Logs
+logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-yarn-error.log
 lerna-debug.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
@@ -103,6 +68,10 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
+# dotenv environment variables file
+.env
+.env.test
+
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
@@ -133,5 +102,3 @@ dist
 
 # TernJS port file
 .tern-port
-
-oclif.manifest.json
