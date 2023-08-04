@@ -47,6 +47,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
   const { usersList, role } = state;
 
   const inviteMembers = useCallback(() => {
+    setInvitingFlag(true);
     const { success, error } = validateMembersDetail(usersList);
     if (error?.length) {
       setError(error);
@@ -118,17 +119,17 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
         </ScrollBar>
       </Container.Body>
       <Container.Footer className="flex items-center">
-        <a
-          className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
-          target="_blank"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
+        <Button
+          onClick={() => {
             platformContext.app.modals.openWorkspaceManagement();
           }}
-        >
-          Open Workspace Management
-        </a>
+          text='Open Workspace Management'
+          // classNames={{
+          //   root: '!text-link hover:!text-link hover:underline'
+          // }}
+          ghost
+          xs
+        />
         <Button
           text={isInvitingMembers ? 'Sending invitation...' : 'Send Invitation'}
           classNames={{

@@ -1,21 +1,12 @@
 /* eslint-disable no-console */
 require('dotenv-vault-core').config();
 const { red, yellow } = require('colors');
-const semver = require('semver');
+// const semver = require('semver');
 require('shelljs/global');
-const build = require('./build');
 const { version } = require('../package.json');
-const { Environment, AppFormat } = require('./constants');
+const { Environment } = require('./constants');
 
 const env = process.env.NODE_ENV;
-const helper = {
-  buildWebApp: async () => {
-    process.env.NODE_OPTIONS = '--max-old-space-size=4096';
-    await build();
-  },
-};
-
-// set app version in the environment
 process.env.APP_VERSION = version;
 
 // check FIRECAMP_API_HOST env. variable value does not contains invalid value
@@ -33,20 +24,5 @@ if (
       process.env.FIRECAMP_API_HOST
     )})`
   );
-  process.exit();
-}
-
-const preBuildCliCommands = async () => {
-  // pre conditions can be validated here
-  return Promise.resolve();
-};
-
-if ([Environment.Production, Environment.Staging].includes(env)) {
-  try {
-    preBuildCliCommands().then(async () => {
-      await helper.buildWebApp();
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  process.exit(1);
 }

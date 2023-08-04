@@ -1,33 +1,42 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { ChevronDown } from 'lucide-react';
 import cx from 'classnames';
 import {
   Button,
   Container,
   DropdownMenu,
   PrimitiveTable,
-  ProgressBar,
   TTableApi,
 } from '@firecamp/ui';
 import { _array } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import platformContext from '../../../../services/platform-context';
-import { useWorkspaceStore } from '../../../../store/workspace';
 import { EUserRolesWorkspace } from '../../../../types';
+import { getFormalDate } from '../OrgManagement';
 
 const columns = [
   { id: 'index', name: 'No.', key: 'index', width: '35px', fixedWidth: true },
-  { id: 'name', name: 'Name', key: 'name', width: '100px' },
   {
-    id: 'email',
-    name: 'Email',
-    key: 'email',
+    id: 'name',
+    name: 'Name',
+    key: 'name',
+    width: '100px',
     resizeWithContainer: true,
-    width: '180px',
   },
-  { id: 'role', name: 'Role', key: 'role', width: '115px', fixedWidth: true },
-  { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
+  {
+    id: 'role',
+    name: 'Role',
+    key: 'role',
+    width: '100px',
+    fixedWidth: true,
+  },
+  // {
+  //   id: 'joinedAt',
+  //   name: 'Joined Date',
+  //   key: 'joinedAt',
+  //   width: '130px',
+  //   fixedWidth: true,
+  // },
 ];
 
 const RoleOptions = [
@@ -45,8 +54,12 @@ const RoleOptions = [
   },
 ];
 
-const MembersTab = ({ members = [], isFetchingMembers = false }) => {
-  const workspace = useWorkspaceStore.getState().workspace;
+const Members = ({
+  organizationId = '',
+  members = [],
+  updateMembers,
+  isFetching = false,
+}) => {
   const tableApi = useRef<TTableApi>(null);
 
   useEffect(() => {
@@ -54,39 +67,14 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
       const memberList = members.map((m, i) => {
         return {
           id: m.id,
-          name: m.name || m.username,
-          email: m.email,
+          name: m.username,
           role: m.role,
+          joinedAt: getFormalDate(m.__ref.joinedAt),
         };
       });
       tableApi.current.initialize(memberList);
     }
   }, [members]);
-
-  const onRemoveMember = (row) => {
-    platformContext.window.confirm({
-      message: `You're sure to remove ${row.name} from the workspace?`,
-      labels: {
-        cancel: 'Cancel',
-        confirm: 'Yes, remove the member.',
-      },
-      onConfirm: () => {
-        Rest.workspace
-          .removeMember(workspace.__ref.id, row.id)
-          .then(() => {
-            tableApi.current.removeRow(row.id);
-            platformContext.app.notify.success(
-              'The member has been removed successfully.'
-            );
-          })
-          .catch((e) => {
-            platformContext.app.notify.alert(
-              e.response?.data.message || e.message
-            );
-          });
-      },
-    });
-  };
 
   const onChangeRole = (row) => {
     platformContext.window.confirm({
@@ -96,13 +84,27 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
         confirm: 'Yes, change the role.',
       },
       onConfirm: () => {
-        Rest.workspace
-          .changeMemberRole(workspace.__ref.id, row.id, row.role.id)
-          .then(() => {
-            tableApi.current.setRow({ ...row, role: row.role.id });
-            platformContext.app.notify.success(
-              "The member's role has been changed successfully."
-            );
+        Rest.organization
+          .changeMemberRole(organizationId, row.id, row.role.id)
+          .then((res) => res.data)
+          .then(({ error, message }) => {
+            if (!error) {
+              tableApi.current.setRow({ ...row, role: row.role.id });
+
+              // update the member listing after update
+              let Index = members.findIndex((m) => m.id == row.id);
+              updateMembers([
+                ...members.slice(0, Index),
+                { ...members[Index], role: row.role.id },
+                ...members.slice(Index + 1),
+              ]);
+
+              platformContext.app.notify.success(
+                "The member's role has been changed successfully."
+              );
+            } else {
+              platformContext.app.notify.alert(message);
+            }
           })
           .catch((e) => {
             platformContext.app.notify.alert(
@@ -116,13 +118,11 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
   const renderCell = (column, cellValue, rowIndex, row, tableApi, onChange) => {
     switch (column.id) {
       case 'index':
-        return <div className="px-2"> {rowIndex + 1} </div>;
+        return <div className="px-2 text-base"> {rowIndex + 1} </div>;
         break;
       case 'name':
-        return <div className="p-1">{cellValue}</div>;
-        break;
-      case 'email':
-        return <div className="p-1">{cellValue}</div>;
+      case 'joinedAt':
+        return <div className="p-1 text-base">{cellValue}</div>;
         break;
       case 'role':
         return (
@@ -134,26 +134,14 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
           </div>
         );
         break;
-      case 'action':
-        return (
-          <div className="px-2">
-            <VscTrash
-              size={14}
-              className="text-error cursor-pointer"
-              onClick={() => onRemoveMember(row)}
-            />
-          </div>
-        );
-        break;
       default:
-        return column.key;
+        return <></>;
     }
   };
 
   return (
-    <Container className="gap-2 pt-2">
-      <Container.Body className="visible-scrollbar">
-        <ProgressBar active={isFetchingMembers} className={'top-auto'} />
+    <Container className="gap-2 pt-2 !h-[80vh]">
+      <Container.Body>
         <PrimitiveTable
           classes={{
             container: 'h-full',
@@ -167,20 +155,10 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
           onMount={(api) => (tableApi.current = api)}
         />
       </Container.Body>
-      <Container.Footer className="px-3 h-[34px] flex items-center">
-        <Button
-          onClick={() => {
-            platformContext.app.modals.openInviteMembers();
-          }}
-          text="Invite New Members"
-          ghost
-          xs
-        />
-      </Container.Footer>
     </Container>
   );
 };
-export default MembersTab;
+export default Members;
 
 const RoleDD: FC<{
   role: number;
@@ -198,13 +176,14 @@ const RoleDD: FC<{
         <Button
           text={_role.name}
           rightIcon={
-            <VscTriangleDown
+            <ChevronDown
               size={12}
               className={cx({ 'transform rotate-180': isOpen })}
             />
           }
+          compact
           ghost
-          xs
+          sm
         />
       )}
       options={RoleOptions}

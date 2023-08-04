@@ -86,7 +86,7 @@ const InviteOrgMembers: FC<IProps> = ({
             onSelect={(m) => onChange({ ...member, ...m })}
             classNames={{
               trigger: 'block',
-              dropdown: '-mt-2 overflow-y-scroll invisible-scrollbar h-[200px]',
+              dropdown: '-mt-2 overflow-y-scroll invisible-scrollbar max-h-[200px]',
               item: '!px-4',
             }}
             width={512}
@@ -127,17 +127,19 @@ const InviteOrgMembers: FC<IProps> = ({
         <RolesCallout role={_role.id} />
       </Container.Body>
       <Container.Footer className="flex items-center">
-        <a
-          className="!text-link hover:!text-link hover:underline cursor-pointer text-sm px-2 pl-0"
-          target="_blank"
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
+        <Button
+          onClick={() => {
             platformContext.app.modals.openWorkspaceManagement();
           }}
-        >
-          Open Workspace Management
-        </a>
+          // classNames={{
+          //   root: '!text-link hover:!text-link hover:underline'
+          // }}
+          text='Open Workspace Management'
+          ghost
+          xs
+        />
+          
+        
         <Button
           text={'Send Invitation'}
           disabled={!member.name || !member.role || isInvitingMembers}

@@ -27,7 +27,7 @@ const columns = [
     width: '180px',
   },
   { id: 'role', name: 'Role', key: 'role', width: '115px', fixedWidth: true },
-  { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
+  // { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
 ];
 
 const RoleOptions = [
@@ -45,7 +45,7 @@ const RoleOptions = [
   },
 ];
 
-const MembersTab = ({ members = [], isFetchingMembers = false }) => {
+const PendingInviteMembersTab = ({ members = [], isFetchingMembers = false }) => {
   const workspace = useWorkspaceStore.getState().workspace;
   const tableApi = useRef<TTableApi>(null);
 
@@ -64,6 +64,7 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
   }, [members]);
 
   const onRemoveMember = (row) => {
+
     platformContext.window.confirm({
       message: `You're sure to remove ${row.name} from the workspace?`,
       labels: {
@@ -134,17 +135,17 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
           </div>
         );
         break;
-      case 'action':
-        return (
-          <div className="px-2">
-            <VscTrash
-              size={14}
-              className="text-error cursor-pointer"
-              onClick={() => onRemoveMember(row)}
-            />
-          </div>
-        );
-        break;
+      // case 'action':
+      //   return (
+      //     <div className="px-2">
+      //       <VscTrash
+      //         size={14}
+      //         className="text-error cursor-pointer"
+      //         onClick={() => onRemoveMember(row)}
+      //       />
+      //     </div>
+      //   );
+      //   break;
       default:
         return column.key;
     }
@@ -180,7 +181,7 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
     </Container>
   );
 };
-export default MembersTab;
+export default PendingInviteMembersTab;
 
 const RoleDD: FC<{
   role: number;
@@ -203,13 +204,14 @@ const RoleDD: FC<{
               className={cx({ 'transform rotate-180': isOpen })}
             />
           }
+          disabled
           ghost
           xs
         />
       )}
       options={RoleOptions}
       onSelect={onSelect}
-      disabled={role === EUserRolesWorkspace.Owner}
+      disabled={true}
       width={115}
       sm
     />

@@ -62,7 +62,7 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
   };
 
   return (
-    <Drawer opened={opened} onClose={onClose} size={440}>
+    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
       <div className="mb-2">
         <FcLogo className="mx-auto w-14" size={80} />
       </div>

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Drawer, IModal, SecondaryTab } from '@firecamp/ui';
+import { Container, Drawer, IModal, Notes, SecondaryTab } from '@firecamp/ui';
 import { _array, _misc } from '@firecamp/utils';
 import { Rest } from '@firecamp/cloud-apis';
 import InviteNonOrgMembers from './tabs/InviteNonOrgMembers';
@@ -13,6 +13,11 @@ enum EInviteMemberTabs {
 }
 
 const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
+  const { scope, organization } = usePlatformStore(s => ({
+    scope: s.scope,
+    organization: s.organization
+  }));
+
   const [isFetchingMembers, setIsFetchingMembers] = useState(false);
   const [orgMembers, setOrgMembers] = useState([]);
 
@@ -24,7 +29,11 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
     }>;
   }>({
     role: EUserRolesWorkspace.Collaborator,
-    usersList: [{ name: '', email: '' }],
+    usersList: [
+      { name: '', email: '' },
+      { name: '', email: '' },
+      { name: '', email: '' },
+    ],
   });
   const [orgTabState, setOrgTabState] = useState<{
     id: string;
@@ -57,7 +66,7 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   /** fetch org members to be invited on second tab activated, only fetch once */
   useEffect(() => {
     if (activeTab === EInviteMemberTabs.OrgMembers && orgMembers.length === 0) {
-      const { scope, organization } = usePlatformStore.getState();
+      
       if (scope == EPlatformScope.Person) return;
       setIsFetchingMembers(true);
       Rest.organization
@@ -90,38 +99,62 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
       opened={opened}
       onClose={onClose}
       size={576}
-      classNames={{
-        content: 'h-[700px]',
-        body: 'h-[480px]'
-      }}
       title={
         <div className="text-lg leading-5 px-1 flex items-center font-medium">
           Invite Members To Join The Workspace
         </div>
       }
+      classNames={{
+        body: 'pb-4 h-[90vh]',
+      }}
     >
-        <div className="!pt-4 h-fit flex flex-col">
-          <SecondaryTab
-            className="flex items-center pb-6 -ml-2"
-            list={tabs}
-            activeTab={activeTab}
-            onSelect={(tabId: EInviteMemberTabs) => setActiveTab(tabId)}
-          />
-          {activeTab == EInviteMemberTabs.NewMembers ? (
-            <InviteNonOrgMembers
-              state={nonOrgTabState}
-              onChange={changeNonOrgTabState}
-            />
-          ) : (
-            <InviteOrgMembers
-              state={orgTabState}
-              members={orgMembers}
-              isFetchingMembers={isFetchingMembers}
-              onChange={changeOrgTabState}
-            />
-          )}
-        </div>
+      <Container>
+        {(scope == EPlatformScope.Person) ? (
+          <Container.Body className="mt-8">
+            <InviteNotAllowed />
+          </Container.Body>
+        ) : (
+          <>
+            <Container.Header className="!pt-4">
+              <SecondaryTab
+                className="flex items-center pb-6 -ml-2"
+                list={tabs}
+                activeTab={activeTab}
+                onSelect={(tabId: EInviteMemberTabs) => setActiveTab(tabId)}
+              />
+            </Container.Header>
+            <Container.Body>
+              {activeTab == EInviteMemberTabs.NewMembers ? (
+                <InviteNonOrgMembers
+                  state={nonOrgTabState}
+                  onChange={changeNonOrgTabState}
+                />
+              ) : (
+                <InviteOrgMembers
+                  state={orgTabState}
+                  members={orgMembers}
+                  isFetchingMembers={isFetchingMembers}
+                  onChange={changeOrgTabState}
+                />
+              )}
+            </Container.Body>
+          </>
+        )}
+      </Container>
     </Drawer>
   );
 };
 export default InviteMembers;
+
+const InviteNotAllowed = () => {
+  return (
+    <Notes
+      title={
+        'Inviting users to your personal workspace is currently unavailable.'
+      }
+      description={`But don't worry! <br/>
+        You can still collaborate effectively by taking the first step to create an organization. 🤝 <br/>
+        Start working together seamlessly and efficiently with your team in no time!`}
+    />
+  );
+};

@@ -68,7 +68,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
   const _onKeyDown = (e) => e.key === 'Enter' && handleSubmit(_onSignUp);
 
   return (
-    <Drawer opened={opened} onClose={onClose} size={440}>
+    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
       {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
       <div className="-mt-4">
         <FcLogo className="mx-auto w-14" size={80} />
@@ -101,7 +101,10 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
               required: true,
               maxLength: 50,
               minLength: 1,
-              pattern: /^[0-9a-zA-Z ]+$/,
+              pattern: {
+                value: /^[0-9a-zA-Z ]+$/,
+                message: "The username should not have any special characters"
+              },
             }}
             useformRef={form}
             onKeyDown={_onKeyDown}
@@ -110,7 +113,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
                 ? errors?.username?.message || 'Please enter username'
                 : ''
             }
-            wrapperClassName="!mb-2"
+            wrapperClassName="!mb-4"
           />
           <Input
             placeholder="Enter your email"
@@ -132,7 +135,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
                   'Please enter valid username or password'
                 : ''
             }
-            wrapperClassName="!mb-2"
+            wrapperClassName="!mb-4"
           />
           <Input
             placeholder="Enter password"
@@ -163,7 +166,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
                 ? errors?.password?.message || 'Please enter valid password'
                 : ''
             }
-            wrapperClassName="!mb-3"
+            wrapperClassName="!mb-4"
           />
 
           <Button

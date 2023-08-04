@@ -106,8 +106,6 @@ const BodyTab: FC<any> = () => {
         return <BinaryBody body={body || {}} onChange={changeBodyValue} />;
       case ERestBodyTypes.GraphQL:
         return <GraphQLBody body={body || {}} onChange={changeBodyValue} />;
-      case ERestBodyTypes.None:
-        return <NoBodyTab selectBodyType={_selectBodyType} />;
       default:
         return <></>;
     }

@@ -1,36 +1,32 @@
 import { FC } from 'react';
 import { Button, Container, Input, TabHeader, TextArea } from '@firecamp/ui';
-import platformContext from '../../../../services/platform-context';
 
-const EditInfoTab: FC<any> = ({
-  workspace,
+const EditOrganization: FC<any> = ({
+  organization,
   error,
   isRequesting,
   onSubmit,
   onChange,
-  disabled = false,
-  enableReset = false,
+  enableReset = true,
+  disabled = false
 }) => {
   return (
-    <Container className="pt-3 px-3 flex-1 flex flex-col h-full">
+    <Container className="py-6 px-3 flex-1 flex flex-col h-full">
       <Container.Body>
-        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
-          UPDATE WORKSPACE INFO
+        <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-4">
+          UPDATE ORGANIZATION INFO
         </label>
         <div>
           <Input
             autoFocus={true}
             label="Name"
-            placeholder="Workspace name"
+            placeholder="Organization name"
             name={'name'}
-            defaultValue={workspace.name || ''}
+            defaultValue={organization.name || ''}
             onChange={onChange}
             onKeyDown={() => {}}
             onBlur={() => {}}
             error={error.name}
-            // error={error.name}
-            // iconPosition="right"
-            // icon={<VscEdit />}
             wrapperClassName="!mb-3"
           />
         </div>
@@ -43,32 +39,20 @@ const EditInfoTab: FC<any> = ({
           placeholder="Description"
           note="Markdown supported in description"
           name={'description'}
-          defaultValue={workspace.description || ''}
+          defaultValue={organization.description || ''}
           onChange={onChange}
-          // disabled={true}
-          // iconPosition="right"
-          // icon={<VscEdit />}
         />
       </Container.Body>
       <Container.Footer>
         <TabHeader className="!px-0">
-          <TabHeader.Left>
-            <Button
-              onClick={() => {
-                platformContext.app.modals.openInviteMembers();
-              }}
-              text="Invite New Members"
-              ghost
-              xs
-            />
-          </TabHeader.Left>
+          <TabHeader.Left></TabHeader.Left>
           <TabHeader.Right>
-            {/* TODO: update details */}
+
             {/* {enableReset ? <Button text="Undo" onClick={(e) => onChange(e, true)} ghost xs /> : <></>} */}
             <Button
               text={isRequesting ? 'Updating...' : 'Update'}
               onClick={onSubmit}
-              disabled={isRequesting || disabled || !enableReset}
+              disabled={isRequesting || disabled  || !enableReset}
               primary
               xs
             />
@@ -78,4 +62,4 @@ const EditInfoTab: FC<any> = ({
     </Container>
   );
 };
-export default EditInfoTab;
+export default EditOrganization;

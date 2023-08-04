@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from 'react';
 import {
   Container,
   Drawer,
-  Modal,
   IModal,
   SecondaryTab,
   ProgressBar,
@@ -12,23 +11,29 @@ import { Rest } from '@firecamp/cloud-apis';
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';
 import EditInfoTab from './tabs/EditInfoTab';
 import MembersTab from './tabs/MembersTab';
+import platformContext from '../../../services/platform-context';
 import './workspace.scss';
+import { Regex } from '../../../constants';
+import PendingInviteMembersTab from './tabs/PendingInviteMembersTab';
 
 enum ETabTypes {
   Edit = 'edit',
   Members = 'members',
+  PendingInvitation = 'pending_invitation',
 }
 const WorkspaceManagement: FC<IModal> = ({
   opened = false,
   onClose = () => {},
 }) => {
-  let { workspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
+  let { workspace, setWorkspace } = useWorkspaceStore((s: IWorkspaceStore) => ({
     workspace: s.workspace,
+    setWorkspace: s.setWorkspace,
   }));
 
   const [wrs, setWrs] = useState(workspace);
   const [isRequesting, setIsRequesting] = useState(false);
   const [wrsMembers, setWrsMembers] = useState([]);
+  const [wrsInviteMembers, setWrsInviteMembers] = useState([]);
   const [isFetchingMembers, setIsFetchingMembers] = useState(false);
   const [error, setError] = useState({ name: '' });
   const [activeTab, setActiveTab] = useState<ETabTypes>(ETabTypes.Edit);
@@ -36,16 +41,22 @@ const WorkspaceManagement: FC<IModal> = ({
   const tabs = [
     { name: 'Edit', id: ETabTypes.Edit },
     { name: 'Members', id: ETabTypes.Members },
+    { name: 'Pending Invitation', id: ETabTypes.PendingInvitation },
   ];
 
   /** fetch wrs members to be shown on second tab activated, only fetch once */
   useEffect(() => {
-    if (activeTab === ETabTypes.Members && wrsMembers.length === 0) {
+    if (
+      [ETabTypes.Members, ETabTypes.PendingInvitation].includes(activeTab) &&
+      activeTab === ETabTypes.Members
+        ? wrsMembers.length === 0
+        : wrsInviteMembers.length === 0
+    ) {
       setIsFetchingMembers(true);
       Rest.workspace
         .getMembers(workspace.__ref.id)
         .then((res) => res.data)
-        .then(({ members = [], invited }) => {
+        .then(({ members = [], invited = [] }) => {
           const memberList = members.map((m, i) => {
             return {
               id: m.__ref?.id ?? i,
@@ -54,48 +65,114 @@ const WorkspaceManagement: FC<IModal> = ({
               role: m.role,
             };
           });
+          const invitedMemberList = invited.map((m, i) => {
+            return {
+              id: m.__ref?.id ?? i,
+              name: m.name || m.username,
+              email: m.email,
+              role: m.role,
+            };
+          });
           setWrsMembers(memberList);
+          setWrsInviteMembers(invitedMemberList);
         })
         .finally(() => setIsFetchingMembers(false));
     }
   }, [activeTab]);
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    if (error.name) setError({ name: '' });
-    setWrs((w) => ({ ...w, [name]: value }));
+  const onChange = (e, reset) => {
+    if (reset) {
+      if (error.name) setError({ name: '' });
+      setWrs(workspace);
+    } else {
+      const { name, value } = e.target;
+      if (error.name) setError({ name: '' });
+      setWrs((w) => ({ ...w, [name]: value }));
+    }
   };
 
   const onUpdate = () => {
     if (isRequesting) return;
     const name = wrs.name.trim();
+    const description = wrs.description?.trim();
+
     if (!name || name.length < 6) {
       setError({ name: 'The workspace name must have minimum 6 characters' });
       return;
     }
-    const _wrs = { name, description: wrs?.description?.trim() };
 
-    // TODO: workspace  update API call
+    const isValid = Regex.WorkspaceName.test(name);
+    if (!isValid) {
+      setError({
+        name: 'The workspace name must not contain any spaces or special characters.',
+      });
+      return;
+    }
+
+    if (
+      workspace.name === wrs.name &&
+      workspace.description === wrs.description
+    )
+      return;
+
+    const _wrs: { name?: string; description?: string } = {};
+    if (workspace.name !== name) {
+      _wrs.name = name;
+    }
+    if (workspace.description !== description) {
+      _wrs.description = description;
+    }
+
+    setIsRequesting(true);
+    Rest.workspace
+      .update(workspace.__ref.id, _wrs)
+      .then(({ error, message }) => {
+        if (!error) {
+          platformContext.app.notify.success(
+            "The workspace's detail has been changed successfully."
+          );
+          setWorkspace({ ...workspace, ..._wrs });
+        } else {
+          platformContext.app.notify.alert(message);
+        }
+      })
+      .catch((e) => {
+        platformContext.app.notify.alert(e.response?.data.message || e.message);
+      })
+      .finally(() => {
+        setIsRequesting(false);
+      });
   };
 
   const renderTab = (tabId: string) => {
     // console.log(wrs, "wrs....")
     switch (tabId) {
-      case 'edit':
+      case ETabTypes.Edit:
         return (
           <EditInfoTab
             workspace={wrs}
             error={error}
             isRequesting={isRequesting}
             onChange={onChange}
-            close={onClose}
             onSubmit={onUpdate}
+            enableReset={
+              workspace.name !== wrs.name ||
+              workspace.description !== wrs.description
+            }
+            // disabled={true} // TODO: only allowed for owner & admin
           />
         );
-      case 'members':
+      case ETabTypes.Members:
         return (
           <MembersTab
             members={wrsMembers}
+            isFetchingMembers={isFetchingMembers}
+          />
+        );
+      case ETabTypes.PendingInvitation:
+        return (
+          <PendingInviteMembersTab
+            members={wrsInviteMembers}
             isFetchingMembers={isFetchingMembers}
           />
         );
@@ -115,7 +192,7 @@ const WorkspaceManagement: FC<IModal> = ({
       }
       size={550}
       classNames={{
-        body: '!p-4 h-[450px]'
+        body: '!p-4 h-[90vh]',
       }}
     >
       <>

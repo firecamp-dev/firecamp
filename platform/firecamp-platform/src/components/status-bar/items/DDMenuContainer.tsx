@@ -66,22 +66,6 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
 }) => {
   const guestOptions = [
     {
-      name: title,
-      isLabel: true,
-      postfix: () => (
-        <>
-          <br />
-          <div
-            className={
-              'text-sm font-light leading-3 text-app-foreground-inactive'
-            }
-          >
-            User
-          </div>
-        </>
-      ),
-    },
-    {
       name: 'Sign in',
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
@@ -103,29 +87,15 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
 
   const userOptions = [
     {
-      name: title,
-      isLabel: true,
-      postfix: () => (
-        <>
-          <br />
-          <div
-            className={
-              'text-sm font-light leading-3 text-app-foreground-inactive'
-            }
-          >
-            User
-          </div>
-        </>
-      ),
-    },
-    // TODO: add the onClick action
-    {
       name: 'User Profile',
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
           <VscAccount size={14} />
         </div>
       ),
+      onClick: () => {
+        platformContext.app.modals.openUserProfile();
+      },
     },
     {
       name: 'Create new organization',
@@ -175,15 +145,24 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
 
   return (
     <DropdownMenu
-      handler={() => (
-        <span className="pl-1 cursor-pointer">{title}</span>
-      )}
+      handler={() => <span className="pl-1 cursor-pointer">{title}</span>}
       options={isGuest ? guestOptions : userOptions}
+      header={
+        <div className="!capitalize !pt-[0.2rem] !pb-2 !px-3 !block !bg-focus2 ">
+          {title}
+          <br />
+          <div
+            className={
+              'text-sm font-light leading-3 text-app-foreground-inactive'
+            }
+          >
+            User
+          </div>
+        </div>
+      }
       onSelect={(v) => v.onClick()}
       classNames={{
         dropdown: '!pt-0 mt-2 min-w-fit',
-        label:
-          '!capitalize flex items-center text-app-foreground !pt-[0.2rem] !pb-2 !px-3 !block !text-base leading-6 !bg-focus2 ',
         item: '!py-1 !px-3',
       }}
       width={150}
@@ -197,22 +176,6 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
   disabled = false,
 }) => {
   const options = [
-    {
-      name: title,
-      isLabel: true,
-      postfix: () => (
-        <>
-          <br />
-          <div
-            className={
-              'text-sm font-light leading-3 text-app-foreground-inactive'
-            }
-          >
-            Workspace
-          </div>
-        </>
-      ),
-    },
     {
       name: 'Workspace Management',
       disabled,
@@ -265,15 +228,24 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
 
   return (
     <DropdownMenu
-      handler={() => (
-        <span className="pl-1 cursor-pointer">{title}</span>
-      )}
+      handler={() => <span className="pl-1 cursor-pointer">{title}</span>}
       options={options}
+      header={
+        <div className="!capitalize !pt-[0.2rem] !pb-2 !px-3 !block !bg-focus2 ">
+          {title}
+          <br />
+          <div
+            className={
+              'text-sm font-light leading-3 text-app-foreground-inactive'
+            }
+          >
+            Workspace
+          </div>
+        </div>
+      }
       onSelect={(v) => v.onClick()}
       classNames={{
         dropdown: '!pt-0 mt-2 min-w-fit',
-        label:
-          '!capitalize flex items-center text-app-foreground !pt-[0.2rem] !pb-2 !px-3 !block !text-base leading-6 !bg-focus2 ',
         item: '!py-1 !px-3',
       }}
       width={150}
@@ -287,22 +259,6 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
   disabled = false,
 }) => {
   const options = [
-    {
-      name: title,
-      isLabel: true,
-      postfix: () => (
-        <>
-          <br />
-          <div
-            className={
-              'text-sm font-light leading-3 text-app-foreground-inactive'
-            }
-          >
-            Organization
-          </div>
-        </>
-      ),
-    },
     {
       name: 'Org Management',
       disabled,
@@ -343,15 +299,24 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
 
   return (
     <DropdownMenu
-      handler={() => (
-        <span className="pl-1 cursor-pointer">{title}</span>
-      )}
+      handler={() => <span className="pl-1 cursor-pointer">{title}</span>}
       options={options}
+      header={
+        <div className="!capitalize !pt-[0.2rem] !pb-2 !px-3 !block !bg-focus2 ">
+          {title}
+          <br />
+          <div
+            className={
+              'text-sm font-light leading-3 text-app-foreground-inactive'
+            }
+          >
+            Organization
+          </div>
+        </div>
+      }
       onSelect={(v) => v.onClick()}
       classNames={{
         dropdown: '!pt-0 mt-2 min-w-fit',
-        label:
-          '!capitalize flex items-center text-app-foreground !pt-[0.2rem] !pb-2 !px-3 !block !text-base leading-6 !bg-focus2 ',
         item: '!py-1 !px-3',
       }}
       width={140}

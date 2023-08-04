@@ -5,18 +5,19 @@ export const Regex = {
   ),
 
   /**
-   * allow alphanumeric and underscore
+   * allow alphanumeric and single hyphen
    * don't allow spaces and special characters
    * characters range between 6 to 20
+   * @ref: https://github.com/shinnn/github-username-regex/blob/master/index.js
    */
-  Username: /^[a-zA-Z0-9\_]{6,20}$/,
-  WorkspaceName: /^[a-zA-Z0-9\_]{6,20}$/,
-  OrgName: /^[a-zA-Z0-9\_]{4,20}$/,
+  Username: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){5,19}$/i,
+  WorkspaceName: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){5,19}$/i,
+  OrgName: /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){3,19}$/i,
 
   /**
    * don't allow any special character
    * @ref:  https://stackoverflow.com/a/23127284
-   * allows: colName, colName_, _colNmae, col_name
+   * allows: colName, colName_, _colName, col_name
    * not allow" colName. , colName?, colName/@ or any special character in the name
    * TODO: add character range
    */

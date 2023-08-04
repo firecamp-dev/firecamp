@@ -1,18 +1,36 @@
-// imports environment
-require('dotenv').config();
-
 const path = require('path');
 const webpack = require('webpack');
-const BundleAnalyzerPlugin =
-  require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-const { common, env, plugins, rules, output } = require('./webpack.config');
+const { merge } = require('webpack-merge');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const TerserPlugin = require('terser-webpack-plugin');
+const base = require('./webpack.common');
 
-const withReport = process.env.npm_config_withReport;
+// const withReport = process.env.npm_config_withReport;
+const nodeEnv = process.env.NODE_ENV;
 
-module.exports = {
-  ...common,
+module.exports = merge(base, {
   mode: 'development',
-  devtool: 'eval-cheap-module-source-map',
+  devtool: 'cheap-module-source-map',
+  output: {
+    clean: true,
+    globalObject: 'this',
+    filename: '[name].dev.js',
+    chunkFilename: '[name].dev.js',
+    path: `${__dirname}/build/${nodeEnv}`,
+    publicPath: '',
+  },
+  optimization: {
+    nodeEnv: 'development',
+    minimizer: [
+      new TerserPlugin({
+        parallel: 4,
+        minify: TerserPlugin.esbuildMinify,
+        // terserOptions: {
+        //   sourceMap: 'external',
+        // },
+      }),
+    ],
+  },
   devServer: {
     //server: 'https',
     static: path.join(__dirname, './build/development'),
@@ -28,51 +46,9 @@ module.exports = {
         'X-Requested-With, content-type, Authorization',
     },
   },
-  output,
   plugins: [
-    ...plugins,
     new webpack.HotModuleReplacementPlugin(),
     new webpack.IgnorePlugin({ resourceRegExp: /[^/]+\/[\S]+.dev$/ }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        ...env,
-        FIRECAMP_EXTENSION_AGENT_ID: JSON.stringify(
-          process.env.FIRECAMP_EXTENSION_AGENT_ID
-        ),
-      },
-    }),
     // new BundleAnalyzerPlugin(),
   ],
-  module: {
-    rules: [
-      ...rules,
-      {
-        test: /\.(ts|js)x?$/,
-        exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: [
-            '@babel/preset-env',
-            [
-              '@babel/preset-react',
-              {
-                runtime: 'automatic',
-              },
-            ],
-            '@babel/preset-typescript',
-          ],
-          plugins: [
-            [
-              '@babel/plugin-transform-runtime',
-              {
-                regenerator: true,
-              },
-            ],
-            ['@babel/plugin-proposal-export-default-from'],
-            'add-module-exports',
-          ],
-        },
-      },
-    ],
-  },
-};
+});
