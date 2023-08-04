@@ -1,3 +1,6 @@
+# 🎯 Full Open Source launch planned to happen on 15th Aug 🎯
+
+<br/>
 
 ![FirecampCoverImage](.github/github-cover.png)
 
