@@ -1,4 +1,4 @@
-# 🎯 Full Open Source launch planned to happen on 15th Aug 🎯
+# 🎯 Full Open Source launch planned on 15th Aug 🎯
 
 <br/>
 
