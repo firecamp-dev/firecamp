@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-import { FolderPlus } from 'lucide-react';
-import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
+import { FolderPlus, RotateCw } from 'lucide-react';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
@@ -20,7 +19,7 @@ const CollectionPane = () => {
         return (
           <ToolBar>
             <div className="action">
-              {/* <VscRefresh size={14} className="mr-2 cursor-pointer" /> */}
+              {/* <RotateCw size={14} className="mr-2 cursor-pointer" /> */}
             </div>
             <div>
               <FolderPlus

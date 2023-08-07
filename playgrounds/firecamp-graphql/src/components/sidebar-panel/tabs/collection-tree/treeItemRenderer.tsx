@@ -1,6 +1,5 @@
 import cx from 'classnames';
 import { Braces, ChevronDown, ChevronRight, Trash2 } from 'lucide-react';
-// import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
 import { Button, FcIconGraphQL, ToolBar } from '@firecamp/ui';
 
 export default {

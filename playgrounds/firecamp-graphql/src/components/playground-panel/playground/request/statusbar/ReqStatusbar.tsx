@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import shallow from 'zustand/shallow';
 import cx from 'classnames';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, SendHorizonal } from 'lucide-react';
 import {
   Button,
   Dropdown,
@@ -153,7 +152,7 @@ const ReqStatusBar = ({ }) => {
           />
           <Button
             // TODO: add class opacity and square
-            leftIcon={<IoSendSharp />}
+            leftIcon={<SendHorizonal size={12}/>}
             onClick={_execute}
             classNames={{
               root: '!rounded-bl-none !rounded-tl-none',

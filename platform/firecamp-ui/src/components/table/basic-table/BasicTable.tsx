@@ -1,8 +1,7 @@
 import { useRef } from 'react';
 import cx from 'classnames';
-import { Plus, Trash2 } from 'lucide-react';
+import { GripVertical, Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
-import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { EEditorLanguage } from '@firecamp/types';
 import { Input, Button } from '@firecamp/ui';
 import Checkbox from '../../checkbox/Checkbox';
@@ -66,7 +65,7 @@ const BasicTable = ({
                 }}
                 data-testid="row-sorter"
               >
-                <GrDrag opacity={0.3} />
+                <GripVertical opacity={0.3} size={16} />
               </span>
             )}
 

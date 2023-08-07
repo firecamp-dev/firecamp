@@ -1,8 +1,7 @@
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-
+import { Twitter } from 'lucide-react';
 import { default as StatusBar } from './StatusBar';
-import { VscTwitter } from "@react-icons/all-files/vsc/VscTwitter";
 
 const Template = (args: any = {}) => {
     return <StatusBar {...args.StatusBar} >
@@ -22,7 +21,7 @@ describe("StatusBar component", () => {
         let { container } = render(<Template
             StatusBar={{ id: "status-bar-wrapper", className: "className" }}
             PrimaryRegion={{ id: "status-bar-primary-region-id", children: 'My workspace' }}
-            SecondaryRegion={{ id: "status-bar-secondary-region-id", children: <VscTwitter title="twitter-icon" /> }}
+            SecondaryRegion={{ id: "status-bar-secondary-region-id", children: <Twitter title="twitter-icon" /> }}
         />);
         let StatusBarWrapper = container.firstElementChild;
         let PrimaryRegion = StatusBarWrapper.firstElementChild;

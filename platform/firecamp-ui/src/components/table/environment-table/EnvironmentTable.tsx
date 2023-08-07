@@ -1,9 +1,8 @@
 import { useRef, memo } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
-import { Plus, Trash2 } from 'lucide-react';
+import { GripVertical, Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
-import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { EEditorLanguage } from '@firecamp/types';
 import { Button } from '@firecamp/ui';
 
@@ -71,7 +70,7 @@ const EnvironmentTable = ({
                 }}
                 data-testid="row-sorter"
               >
-                <GrDrag opacity={0.3} />
+                <GripVertical opacity={0.3} size={16} />
               </span>
             )}
           </div>

@@ -1,5 +1,4 @@
-import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
-import { FaFile } from '@react-icons/all-files/fa/FaFile';
+import { File, RotateCw } from 'lucide-react';
 import shallow from 'zustand/shallow';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
@@ -102,14 +101,14 @@ const PrefixButtons = () => {
     <>
       <Button
         onClick={() => toggleDoc(true)}
-        leftIcon={<FaFile fontSize={16} />}
+        leftIcon={<File size={18} />}
         id={`open-schema-doc-${tabId}`}
         title={'open schema doc'}
         secondary
         xs
       />
       <Button
-        leftIcon={<VscRefresh fontSize={18} strokeWidth={0.5} />}
+        leftIcon={<RotateCw size={18} />}
         onClick={fetchIntrospectionSchema}
         id={`refresh-schema-${tabId}`}
         title={'refresh schema'}

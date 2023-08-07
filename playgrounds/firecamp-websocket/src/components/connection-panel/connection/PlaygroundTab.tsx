@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import _compact from 'lodash/compact';
 import isEqual from 'react-fast-compare';
-import { File } from 'lucide-react';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
+import { File, SendHorizonal } from 'lucide-react';
 import shallow from 'zustand/shallow';
 import {
   FileInput,
@@ -334,7 +333,7 @@ const PlaygroundTab = () => {
             )}
             <Button
               text="Send"
-              rightIcon={<IoSendSharp size={12} />}
+              rightIcon={<SendHorizonal size={12} />}
               onClick={_onSendMessage}
               primary
               compact

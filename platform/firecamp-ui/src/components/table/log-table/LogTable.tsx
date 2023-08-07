@@ -1,7 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { _array } from '@firecamp/utils';
-import { VscArrowUp } from '@react-icons/all-files/vsc/VscArrowUp';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
+import { ArrowDown, ArrowUp } from 'lucide-react';
 import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
 import Table from '../primitive/FlatTable';
 import {
@@ -65,9 +64,9 @@ const LogTable = ({
     switch (column.id) {
       case 'type':
         if (__meta.type == 'r') {
-          return <VscArrowDown size={18} />;
+          return <ArrowDown size={18} />;
         } else if (__meta.type == 's') {
-          return <VscArrowUp size={18} />;
+          return <ArrowUp size={18} />;
         } else if (__meta.type == 'sys') {
           return <VscCircleFilled size={18} />;
         }

@@ -1,8 +1,7 @@
 import React, { FC, memo, useEffect, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import { File, Plus, Trash2 } from 'lucide-react';
+import { File, GripVertical, Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
-import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';
 import { EEditorLanguage } from '@firecamp/types';
 import { Input, Button } from '@firecamp/ui';
@@ -65,7 +64,7 @@ const MultipartTable = ({
               }}
               className="flex"
             >
-              <GrDrag opacity={0.3} />
+              <GripVertical opacity={0.3} size={16}/>
             </span>
 
             <Checkbox

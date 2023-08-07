@@ -1,7 +1,6 @@
 //@ts-nocheck
 import {default as Tab} from './Tab';
-import { Braces } from 'lucide-react';
-import { VscEllipsis } from "@react-icons/all-files/vsc/VscEllipsis";
+import { Braces, MoreHorizontal } from 'lucide-react';
 import { VscDiff } from "@react-icons/all-files/vsc/VscDiff";
 
 export default {
@@ -43,7 +42,7 @@ export const TabListFinal = (args) =>
                         <VscDiff size={16}  />
                     </div>
                     <div className="flex items-center h-full px-1  mr-1">
-                        <VscEllipsis size={16}  />
+                        <MoreHorizontal size={16}  />
                     </div>
                 </div>
             </div>

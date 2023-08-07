@@ -1,6 +1,5 @@
 import { default as StatusBar } from './StatusBar';
-import { File } from 'lucide-react';
-import { VscTwitter } from "@react-icons/all-files/vsc/VscTwitter";
+import { File, Twitter } from 'lucide-react';
 import { VscGithubInverted } from "@react-icons/all-files/vsc/VscGithubInverted";
 
 export default {
@@ -9,7 +8,7 @@ export default {
     secondaryRegion: () => {
         return (
             <div className="flex items-center">
-                <a className="flex items-center pr-2 " href="#" ><VscTwitter size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
+                <a className="flex items-center pr-2 " href="#" ><Twitter size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
                 <a className="flex items-center pr-2" href="#" ><VscGithubInverted size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
                 <a className="flex items-center pr-2" href="#" ><File size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
             </div>
@@ -35,7 +34,7 @@ StatusBarDemo.args = {
     secondaryRegion: () => {
         return (
             <div className="flex items-center">
-                <a className="flex items-center pr-2 " href="#" ><VscTwitter size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
+                <a className="flex items-center pr-2 " href="#" ><Twitter size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
                 <a className="flex items-center pr-2" href="#" ><VscGithubInverted size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
                 <a className="flex items-center pr-2" href="#" ><File size={12} className="text-statusBar-foreground hover:text-statusBar-foreground-active" /></a>
             </div>

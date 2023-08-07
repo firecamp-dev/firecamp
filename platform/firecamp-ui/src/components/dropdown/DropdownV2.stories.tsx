@@ -1,18 +1,13 @@
 import { useState } from 'react';
-import { ChevronRight, File, FolderClosed, LogIn, Plus, UserCircle2, UserPlus2 } from 'lucide-react';
+import { AppWindow, ArrowDown, Braces, ChevronRight, File, FolderClosed, LogIn, Plus, SendHorizonal, Twitter, UserCircle2, UserPlus2 } from 'lucide-react';
 
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
-import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
 import { FcIconGetSquare } from '@firecamp/ui';
 
-import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
-import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
 import DropDownV2 from './DropdownV2';
 import { IOptionsV2 } from './interfaces/Dropdownv2.interfaces';
@@ -284,7 +279,7 @@ export const CreateMenuExample = () => {
               {
                 id: 'Environment',
                 name: 'Environment',
-                prefix: () => <RiBracesLine className="mr-2" size={16} />,
+                prefix: () => <Braces className="mr-2" size={16} />,
                 postfix: () => (
                   <span className="ml-auto text-inputPlaceholder pl-2">⌘E</span>
                 ),
@@ -292,7 +287,7 @@ export const CreateMenuExample = () => {
               {
                 id: 'ImportCollection',
                 name: 'Import Collection',
-                prefix: () => <VscArrowDown className="mr-2" size={16} />,
+                prefix: () => <ArrowDown className="mr-2" size={16} />,
                 postfix: () => (
                   <span className="ml-auto text-inputPlaceholder pl-2">⌘C</span>
                 ),
@@ -308,7 +303,7 @@ export const CreateMenuExample = () => {
               {
                 id: 'Workspace',
                 name: 'Workspace',
-                prefix: () => <VscWindow className="mr-2" size={16} />,
+                prefix: () => <AppWindow className="mr-2" size={16} />,
               },
               {
                 id: 'Organization',
@@ -500,7 +495,7 @@ export const ReqStatusBarExample = () => {
         primary
         sm
         animate={false}
-        leftIcon={<IoSendSharp />}
+        leftIcon={<SendHorizonal />}
         onClick={() => {}}
         className="!rounded-bl-none !rounded-tl-none"
       />
@@ -664,7 +659,7 @@ export const StatusBarExample = () => {
       <StatusBar.SecondaryRegion>
         <div className="flex items-center">
           <a className="flex items-center pr-2 " href="#">
-            <VscTwitter
+            <Twitter
               size={12}
               className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />

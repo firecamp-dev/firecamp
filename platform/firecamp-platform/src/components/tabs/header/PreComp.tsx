@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import classNames from 'classnames';
-import { Braces, FolderOpen, FolderClosed } from 'lucide-react';
+import { ArrowDown, Braces, FolderOpen, FolderClosed } from 'lucide-react';
 
 import { EHttpMethod, ERequestTypes } from '@firecamp/types';
 import {
@@ -9,7 +9,6 @@ import {
   FcIconWebSocket,
 } from '@firecamp/ui';
 import { ETabEntityTypes } from '../types';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 
 const PreComp: FC<{ entity: any; entityType: string }> = ({
   entity,
@@ -68,7 +67,7 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
     case ETabEntityTypes.Import:
       return (
         <div className="text-xs font-bold w-5 tab-icon">
-          <VscArrowDown size={16} />
+          <ArrowDown size={16} />
         </div>
       );
     default:

@@ -1,17 +1,12 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import { ChevronRight, File, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, Trash2, UserCircle2, UserPlus2 } from 'lucide-react';
+import { AppWindow, ArrowDown, Braces, ChevronRight, File, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, SendHorizonal, Twitter, Trash2, UserCircle2, UserPlus2 } from 'lucide-react';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
-import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
 import { Button, FcIconGetSquare, DropdownMenu } from '@firecamp/ui';
 import StatusBar from '../status-bar/StatusBar';
@@ -52,19 +47,19 @@ Example.args = {
     {
       id: EMenuOptions.Environment,
       name: 'Environment',
-      prefix: () => <RiBracesLine size={18} />,
+      prefix: () => <Braces size={18} />,
     },
     {
       id: EMenuOptions.ImportCollection,
       name: 'Import Collection',
       showSeparator: true,
-      prefix: () => <VscArrowDown size={18} />,
+      prefix: () => <ArrowDown size={18} />,
     },
 
     {
       id: EMenuOptions.Workspace,
       name: 'Workspace',
-      prefix: () => <VscWindow size={18} />,
+      prefix: () => <AppWindow size={18} />,
     },
     {
       id: EMenuOptions.Organization,
@@ -143,13 +138,13 @@ export const GlobalCreate = () => {
         {
           id: EMenuOptions.Environment,
           name: 'Environment',
-          prefix: () => <RiBracesLine size={18} />,
+          prefix: () => <Braces size={18} />,
         },
         {
           id: EMenuOptions.ImportCollection,
           name: 'Import Collection',
           showSeparator: true,
-          prefix: () => <VscArrowDown size={18} />,
+          prefix: () => <ArrowDown size={18} />,
         },
         {
           id: 'CreateNewByAdminHeader',
@@ -160,7 +155,7 @@ export const GlobalCreate = () => {
         {
           id: EMenuOptions.Workspace,
           name: 'Workspace',
-          prefix: () => <VscWindow size={18} />,
+          prefix: () => <AppWindow size={18} />,
         },
         {
           id: EMenuOptions.Organization,
@@ -450,7 +445,7 @@ export const RequestStatusBar = () => {
         sm
       />
       <Button
-        leftIcon={<IoSendSharp />}
+        leftIcon={<SendHorizonal />}
         onClick={() => {}}
         classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
         primary
@@ -610,7 +605,7 @@ export const FooterStatusBar = () => {
       <StatusBar.SecondaryRegion>
         <div className="flex items-center">
           <a className="flex items-center pr-2 " href="#">
-            <VscTwitter
+            <Twitter
               size={12}
               className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />
