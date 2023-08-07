@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { AppWindow, ArrowDown, Braces, ChevronRight, File, FolderClosed, LogIn, Plus, SendHorizonal, Twitter, UserCircle2, UserPlus2 } from 'lucide-react';
+import { AppWindow, ArrowDown, Braces, Building, ChevronRight, File, FolderClosed, LogIn, Plus, SendHorizonal, Twitter, UserCircle2, UserPlus2 } from 'lucide-react';
 
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { FcIconGetSquare } from '@firecamp/ui';
 
-import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 
@@ -308,7 +307,7 @@ export const CreateMenuExample = () => {
               {
                 id: 'Organization',
                 name: 'Organization',
-                prefix: () => <VscOrganization className="mr-2" size={16} />,
+                prefix: () => <Building className="mr-2" size={16} />,
                 postfix: () => (
                   <span className="ml-auto text-inputPlaceholder pl-2">⌘O</span>
                 ),

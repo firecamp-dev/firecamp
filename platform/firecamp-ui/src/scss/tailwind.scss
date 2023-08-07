@@ -1603,6 +1603,10 @@
    background-color: var(--tab-background-active) !important;
 
 }
+.\!bg-transparent{
+   background-color: #ffffff00 !important;
+
+}
 .bg-activityBar-background{
    background-color: var(--activityBar-background);
 
@@ -2122,6 +2126,10 @@
 }
 .align-baseline{
    vertical-align: baseline;
+
+}
+.align-middle{
+   vertical-align: middle;
 
 }
 .font-default{

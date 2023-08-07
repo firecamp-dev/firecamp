@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
-import { Copy, ChevronsDownUp } from 'lucide-react';
-import { VscWordWrap } from '@react-icons/all-files/vsc/VscWordWrap';
+import { Copy, ChevronsDownUp, WrapText } from 'lucide-react';
 import { ToolBar, FcVscWand } from '@firecamp/ui';
 import { _clipboard } from '@firecamp/utils';
 
@@ -23,9 +22,9 @@ const EditorControlBar: FC<any> = ({ editor, language = 'json' }) => {
         />
       </div>
       <div>
-        <VscWordWrap
+        <WrapText
           size={16}
-          title={'Wrap'}
+          // title={'Wrap'}
           onClick={() => {
             editor.updateOptions({
               wordWrap: isWrapped ? 'off' : 'on',

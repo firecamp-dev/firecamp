@@ -1,10 +1,9 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import { AppWindow, ArrowDown, Braces, ChevronRight, File, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, SendHorizonal, Twitter, Trash2, UserCircle2, UserPlus2 } from 'lucide-react';
+import { AppWindow, ArrowDown, Braces, Building, ChevronRight, File, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, SendHorizonal, Twitter, Trash2, UserCircle2, UserPlus2 } from 'lucide-react';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
-import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 
@@ -64,7 +63,7 @@ Example.args = {
     {
       id: EMenuOptions.Organization,
       name: 'Organization',
-      prefix: () => <VscOrganization size={18} />,
+      prefix: () => <Building size={18} />,
     },
     {
       id: EMenuOptions.InviteMembers,
@@ -160,7 +159,7 @@ export const GlobalCreate = () => {
         {
           id: EMenuOptions.Organization,
           name: 'Organization',
-          prefix: () => <VscOrganization size={18} />,
+          prefix: () => <Building size={18} />,
         },
         {
           id: EMenuOptions.InviteMembers,
