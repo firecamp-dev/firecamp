@@ -1,10 +1,9 @@
 import React, { FC, memo, useEffect, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
-import { Plus, Trash2 } from 'lucide-react';
+import { File, Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
 import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { EEditorLanguage } from '@firecamp/types';
 import { Input, Button } from '@firecamp/ui';
 
@@ -295,7 +294,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} title="IconTextSize" />
           ) : (
-            <VscFile onClick={_changeType} title="IconFile" />
+            <File onClick={_changeType}/>
           )}
         </div>
       </div>

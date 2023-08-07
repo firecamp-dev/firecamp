@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import { ChevronRight, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, Trash2, UserCircle2 } from 'lucide-react';
-import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
+import { ChevronRight, File, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, Trash2, UserCircle2, UserPlus2 } from 'lucide-react';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
 import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
@@ -77,7 +75,7 @@ Example.args = {
       id: EMenuOptions.InviteMembers,
       name: 'Invite Members',
       showSeparator: true,
-      prefix: () => <AiOutlineUserAdd size={18} />,
+      prefix: () => <UserPlus2 size={18} />,
     },
     {
       id: EMenuOptions.SwitchOrg,
@@ -173,7 +171,7 @@ export const GlobalCreate = () => {
           id: EMenuOptions.InviteMembers,
           name: 'Invite Members',
           showSeparator: true,
-          prefix: () => <AiOutlineUserAdd size={18} />,
+          prefix: () => <UserPlus2 size={18} />,
         },
         {
           id: 'SwitchHeader',
@@ -624,7 +622,7 @@ export const FooterStatusBar = () => {
             />
           </a>
           <a className="flex items-center pr-2" href="#">
-            <VscFile
+            <File
               size={12}
               className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />

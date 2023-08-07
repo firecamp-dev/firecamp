@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { ChevronRight, FolderClosed, LogIn, Plus, UserCircle2 } from 'lucide-react';
+import { ChevronRight, File, FolderClosed, LogIn, Plus, UserCircle2, UserPlus2 } from 'lucide-react';
 
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
@@ -11,7 +10,6 @@ import { FcIconGetSquare } from '@firecamp/ui';
 import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
 import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
-import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
@@ -324,7 +322,7 @@ export const CreateMenuExample = () => {
                 id: 'InviteMembers',
                 name: 'Invite Members',
                 showSeparator: true,
-                prefix: () => <AiOutlineUserAdd className="mr-2" size={16} />,
+                prefix: () => <UserPlus2 className="mr-2" size={16} />,
               },
             ],
           },
@@ -678,7 +676,7 @@ export const StatusBarExample = () => {
             />
           </a>
           <a className="flex items-center pr-2" href="#">
-            <VscFile
+            <File
               size={12}
               className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />

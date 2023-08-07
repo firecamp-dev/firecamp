@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import _compact from 'lodash/compact';
 import isEqual from 'react-fast-compare';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
+import { File } from 'lucide-react';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import shallow from 'zustand/shallow';
 import {
@@ -323,7 +323,7 @@ const PlaygroundTab = () => {
             {showSaveButton ? (
               <Button
                 text="Save"
-                rightIcon={<VscFile size={12} />}
+                rightIcon={<File size={12} />}
                 onClick={_saveMessage}
                 secondary
                 compact

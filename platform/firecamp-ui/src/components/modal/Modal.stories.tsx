@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Github, Lock, UserCircle2 } from 'lucide-react';
+import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
+import { Lock, UserCircle2 } from 'lucide-react';
 
 import { Modal, Button, FormField, Input, IModal } from '@firecamp/ui';
 
@@ -60,7 +61,7 @@ function FormPreview({ overflowContent = false }) {
             className="text-app-foreground flex items-center justify-center bg-focusColor !border-app-border border p-1.5 hover:bg-input-background-focus hover:border-transparent hover:text-modal-foreground-active mb-6"
           >
             {' '}
-            <Github size={20} className="mr-2" /> continue with{' '}
+            <VscGithub size={20} className="mr-2" /> continue with{' '}
             <span className="text-modal-foreground-active ml-2">github</span>
           </a>
         </div>
