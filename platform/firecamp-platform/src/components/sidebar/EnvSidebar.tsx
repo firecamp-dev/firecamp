@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { VscClose } from '@react-icons/all-files/vsc/VscClose';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
+import { Pencil, X } from 'lucide-react';
 import {
   Resizable,
   Container,
@@ -11,7 +11,6 @@ import {
   PlainTable,
 } from '@firecamp/ui';
 import { useEnvStore, IEnvironmentStore } from '../../store/environment';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
 import { useTabStore } from '../../store/tab';
 import { ETabEntityTypes } from '../tabs/types';
 
@@ -52,7 +51,7 @@ const EnvSidebar: FC<any> = ({ expanded }) => {
             className="ml-auto flex-none text-base flex justify-center items-center cursor-pointer"
             onClick={toggleEnvSidebar}
           >
-            <VscClose size={16} />
+            <X size={16} />
           </div>
         </Container.Header>
         <Container.Body className="flex flex-col overflow-visible">
@@ -118,7 +117,7 @@ const EnvPreviewTable: FC<any> = ({
         )}
         <div className="flex items-center ml-auto">
           {envId ? <Button text="Open" onClick={onOpen} secondary compact xs /> : <></>}
-          {/* <VscEdit className="table-action ml-2 cursor-pointer" /> */}
+          {/* <Pencil className="table-action ml-2 cursor-pointer" /> */}
         </div>
       </div>
       <div className="flex-1 overflow-auto visible-scrollbar">

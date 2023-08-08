@@ -1,6 +1,11 @@
 import { FC, useState } from 'react';
-import { Input } from '@firecamp/ui';
-import { IAuthBasic, EAuthTypes, TPlainObject } from '@firecamp/types';
+import {
+  IAuthBasic,
+  EAuthTypes,
+  TPlainObject,
+  EEditorLanguage,
+} from '@firecamp/types';
+import { SingleLineEditor } from '@firecamp/ui';
 import { authUiFormState } from '../constants';
 import { setInputType } from '../service';
 
@@ -36,18 +41,35 @@ const Basic: FC<IBasic> = ({ auth, onChange = () => {} }) => {
           errorMsg = `${input.name} can not be empty`;
         }
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={i}
-            autoFocus={i === 0}
-            label={input.name}
-            type={setInputType(input.id)}
-            placeholder={input.name}
-            value={auth?.[input.id as keyof IAuthBasic] || ''}
-            error={errorMsg}
-            onChange={(e) => _handleChange(e, input.id)}
-            isEditor={true}
-            /*onKeyDown={_onKeyDown}*/
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={input.name}
+            >
+              {input.name}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={i === 0}
+                type={setInputType(input.id) == 'number' ? 'number' : 'text'}
+                value={auth?.[input.id as keyof IAuthBasic] || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e, input.id)}
+              />
+              {!!errorMsg && (
+                <div className={'font-light text-error block absolute'}>
+                  {errorMsg}
+                </div>
+              )}
+            </div>
+          </div>
         );
       })}
     </form>

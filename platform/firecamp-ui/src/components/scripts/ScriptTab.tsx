@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { VscLinkExternal } from '@react-icons/all-files/vsc/VscLinkExternal';
+import { ExternalLink } from 'lucide-react';
 import {
   Container,
   Editor,
@@ -42,7 +42,7 @@ const ScriptTab: FC<IProps> = ({
               className="underline inline items-center cursor-pointer"
             >
               pre-request scripts
-              <VscLinkExternal className="inline ml-1" size={12} />
+              <ExternalLink className="inline ml-1" size={12} />
             </a> */}
           </div>
         </TabHeader>

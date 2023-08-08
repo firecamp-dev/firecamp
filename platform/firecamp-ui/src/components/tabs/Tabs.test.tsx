@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { VscJson } from "@react-icons/all-files/vsc/VscJson";
+import { Braces } from 'lucide-react';
 
 import Tabs from "./Tabs";
 import TabsV3 from "./v3/Tabs";
@@ -14,7 +14,7 @@ const TAB_LIST = [
     {
         id: 'body',
         name: 'Body',
-        icon: <VscJson />
+        icon: <Braces />
     }, {
         id: 'auth',
         name: 'Auth'

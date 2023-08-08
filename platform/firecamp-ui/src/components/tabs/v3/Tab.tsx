@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import cx from 'classnames';
-import { VscClose } from '@react-icons/all-files/vsc/VscClose';
+import { X } from 'lucide-react';
 import { VscCircleFilled } from '@react-icons/all-files/vsc/VscCircleFilled';
 
 import { EActiveBorderPosition, ITab } from './Tab.interface';
@@ -46,7 +46,7 @@ const CloseIconPlacement = ({
         </div>
       ) : (
         <div className="fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor">
-          <VscClose size={14} onClick={(e) => onClick(e)} />
+          <X size={14} onClick={(e) => onClick(e)} />
         </div>
       )}
     </div>

@@ -1,6 +1,5 @@
 import cx from 'classnames';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { VscClose } from '@react-icons/all-files/vsc/VscClose';
+import { Plus, X } from 'lucide-react';
 import { FormField, Input } from '@firecamp/ui';
 import { _array } from '@firecamp/utils';
 
@@ -69,9 +68,9 @@ const InviteUsersForm = ({ usersList, onChange, error }) => {
             onClick={() => _handleAction(index === 0, index)}
           >
             {index === 0 ? (
-              <VscAdd size={20} />
+              <Plus size={20} />
             ) : (
-              <VscClose size={20} className="text-error" />
+              <X size={20} className="text-error" />
             )}
           </span>
           {!_array.isEmpty(error) ? (

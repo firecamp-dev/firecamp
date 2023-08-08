@@ -1,16 +1,26 @@
 import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm } from '@mantine/form';
 import { Drawer, Button, Input, IModal } from '@firecamp/ui';
 import { Mail } from 'lucide-react';
 import _auth from '../../../services/auth';
 import platformContext from '../../../services/platform-context';
+import { Regex } from '../../../constants';
+
 /**
  * ForgotPassword component
  */
 const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
-  const form = useForm();
-  let { handleSubmit, errors } = form;
+
+  const form = useForm({
+    initialValues: { email: '' },
+
+    validate: {
+      email: (value) =>
+        !Regex.Email.test(value) ? 'Please enter a valid email address.' : null,
+    },
+  });
+  const { onSubmit, getInputProps } = form;
 
   const _onSubmit = async (payload: { email: string }) => {
     if (isRequesting) return;
@@ -48,10 +58,15 @@ const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
       });
   };
 
-  const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);
+  const _onKeyDown = (e: any) => e.key === 'Enter' && onSubmit(_onSubmit);
 
   return (
-    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
+    <Drawer
+      opened={opened}
+      onClose={onClose}
+      size={440}
+      classNames={{ body: 'mt-[10vh]' }}
+    >
       <Mail
         size="48"
         className="mb-6 mx-auto text-activityBar-foreground-inactive"
@@ -63,27 +78,19 @@ const ForgotPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
         You’ll get the password recovery token in your inbox.
       </div>
       <div className="">
-        <form onSubmit={handleSubmit(_onSubmit)}>
+        <form onSubmit={onSubmit(_onSubmit)}>
           <Input
             placeholder="Enter E-mail"
             key={'email'}
             name={'email'}
             label="Email"
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 1,
-              pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
-            }}
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.email ? errors?.email?.message || 'Invalid email' : ''
-            }
+            data-autofocus
+            {...getInputProps('email')}
           />
           <Button
             text={isRequesting ? `Sending...` : `Send`}
-            onClick={handleSubmit(_onSubmit)}
+            onClick={onSubmit(_onSubmit)}
             fullWidth
             primary
             sm

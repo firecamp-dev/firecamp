@@ -1,7 +1,4 @@
-import { VscFiles } from "@react-icons/all-files/vsc/VscFiles";
-import { VscHistory } from "@react-icons/all-files/vsc/VscHistory";
-import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
-import { VscSettingsGear } from "@react-icons/all-files/vsc/VscSettingsGear";
+import { Files, History, Settings, UserCircle2 } from 'lucide-react';
 import ActivityBar from './ActivityBar';
 
 export default {
@@ -18,14 +15,14 @@ export default {
 };
 
 const compositeBar = [
-  { id: '1', icon: <VscFiles data-tip={'Explorer (⇧⌘P)'} data-for={'1'} />, text: 'Explorer (⇧⌘P)', active: false },
-  { id: '2', icon: <VscAccount data-tip={'Environment (⇧⌘E)'} data-for={'2'} />, text: 'Environment (⇧⌘E)', active: true },
-  { id: '3', icon: <VscHistory data-tip={'History (⇧⌘H)'} data-for={'3'} />, text: 'History (⇧⌘H)', active: false }
+  { id: '1', icon: <Files data-tip={'Explorer (⇧⌘P)'} data-for={'1'} />, text: 'Explorer (⇧⌘P)', active: false },
+  { id: '2', icon: <UserCircle2 data-tip={'Environment (⇧⌘E)'} data-for={'2'} />, text: 'Environment (⇧⌘E)', active: true },
+  { id: '3', icon: <History data-tip={'History (⇧⌘H)'} data-for={'3'} />, text: 'History (⇧⌘H)', active: false }
 ];
 
 const actionBar = [
-  { id: '4', icon: <VscAccount data-tip={'User (⇧⌘U)'} data-for={'4'} />, text: 'User (⇧⌘U)', active: false },
-  { id: '5', icon: <VscSettingsGear data-tip={'Settings (⇧⌘/)'} data-for={'5'} />, text: 'Settings (⇧⌘/)', active: false }
+  { id: '4', icon: <UserCircle2 data-tip={'User (⇧⌘U)'} data-for={'4'} />, text: 'User (⇧⌘U)', active: false },
+  { id: '5', icon: <Settings data-tip={'Settings (⇧⌘/)'} data-for={'5'} />, text: 'Settings (⇧⌘/)', active: false }
 ];
 
 const TemplateContainer = (args: any) => {

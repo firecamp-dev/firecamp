@@ -1,10 +1,6 @@
 import { FC } from "react";
 import cx from 'classnames';
-
-import { VscCheck } from "@react-icons/all-files/vsc/VscCheck";
-import { VscInfo } from "@react-icons/all-files/vsc/VscInfo";
-import { VscWarning } from "@react-icons/all-files/vsc/VscWarning";
-import { VscError } from "@react-icons/all-files/vsc/VscError";
+import { AlertTriangle, Check, Info, XCircle } from 'lucide-react';
 
 import { IAlert, EAlertType } from "./Alert.interface";
 import './Alert.scss';
@@ -30,10 +26,10 @@ const Alert: FC<IAlert> = ({
                 { "text-success border-success": success },
                 { "text-transparent border-transparent": !error && !success && !warning && !info },
                 { "border" : withBorder})}>
-                    { error ? <VscError /> : "" }
-                    { info ? <VscInfo /> : "" }
-                    { warning ? <VscWarning /> : "" }
-                    { success ? <VscCheck /> : "" }
+                    { error ? <XCircle /> : "" }
+                    { info ? <Info /> : "" }
+                    { warning ? <AlertTriangle /> : "" }
+                    { success ? <Check /> : "" }
                     <span className="ml-1">{text}</span>
                     <div className={
                         cx(

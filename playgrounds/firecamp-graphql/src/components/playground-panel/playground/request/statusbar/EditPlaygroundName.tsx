@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
+import { Pencil } from 'lucide-react';
 import shallow from 'zustand/shallow';
 import { IStore, useStore } from '../../../../../store';
 
@@ -46,6 +46,6 @@ const EditPlaygroundName: FC<any> = ({}) => {
         // console.log(res)
       });
   };
-  return <VscEdit size={12} onClick={_rename} />;
+  return <Pencil size={12} onClick={_rename} />;
 };
 export default EditPlaygroundName;

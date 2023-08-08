@@ -1,11 +1,12 @@
 import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm } from '@mantine/form';
 import { Drawer, IModal, Button, Input, FcLogo } from '@firecamp/ui';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
+import { Eye, EyeOff } from 'lucide-react';
 
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
 import platformContext from '../../../services/platform-context';
+import { Regex } from '../../../constants';
 
 /**
  * User Sign up
@@ -14,8 +15,26 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
   const [showPassword, toggleShowPassword] = useState(false);
   const [isRequesting, setFlagIsRequesting] = useState(false);
 
-  const form = useForm();
-  const { handleSubmit, errors } = form;
+  const form = useForm({
+    initialValues: { username: '', email: '', password: '' },
+
+    validate: {
+      username: (value) =>
+        value.length < 6 || value.length > 20
+          ? 'Please enter a username between 6 and 20 characters.'
+          : !Regex.Username.test(value)
+          ? 'The username should not have any special characters'
+          : null,
+      email: (value) =>
+        !Regex.Email.test(value) ? 'Please enter a valid email address.' : null,
+      password: (value) =>
+        value.length < 8 || value.length > 50
+          ? 'Please enter a password between 8 and 50 characters.'
+          : null,
+    },
+  });
+
+  const { onSubmit, getInputProps } = form;
 
   const _onSignUp = async (payload: {
     username: string;
@@ -25,18 +44,6 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
     if (isRequesting) return;
     const { username, email, password } = payload;
     const _username = username.trim();
-    if (_username.length < 6) {
-      platformContext.app.notify.alert(
-        `Username must have minimum 6 characters`
-      );
-      return;
-    }
-    if (/^[a-zA-Z0-9\_]{6,20}$/.test(_username) == false) {
-      platformContext.app.notify.alert(
-        `The username name must not be containing any spaces or special characters. The range should be from 6 to 20 characters`
-      );
-      return;
-    }
     const _email = email.trim();
 
     setFlagIsRequesting(true);
@@ -65,10 +72,15 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
       });
   };
 
-  const _onKeyDown = (e) => e.key === 'Enter' && handleSubmit(_onSignUp);
+  const _onKeyDown = (e) => e.key === 'Enter' && onSubmit(_onSignUp);
 
   return (
-    <Drawer opened={opened} onClose={onClose} size={440} classNames={{body: 'mt-[10vh]'}}>
+    <Drawer
+      opened={opened}
+      onClose={onClose}
+      size={440}
+      classNames={{ body: 'mt-[10vh]' }}
+    >
       {/* <img className="mx-auto w-12 mb-6" src={'img/firecamp-logo.svg'} /> */}
       <div className="-mt-4">
         <FcLogo className="mx-auto w-14" size={80} />
@@ -89,7 +101,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
         Give us some of your information to get free access to Firecamp
       </div>
       <div className="">
-        <form onSubmit={handleSubmit(_onSignUp)}>
+        <form onSubmit={onSubmit(_onSignUp)}>
           <Input
             placeholder="Enter Username"
             key={'username'}
@@ -97,23 +109,10 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             id={'username'}
             label="Username"
             type="text"
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 1,
-              pattern: {
-                value: /^[0-9a-zA-Z ]+$/,
-                message: "The username should not have any special characters"
-              },
-            }}
-            useformRef={form}
+            data-autofocus
             onKeyDown={_onKeyDown}
-            error={
-              errors?.username
-                ? errors?.username?.message || 'Please enter username'
-                : ''
-            }
-            wrapperClassName="!mb-4"
+            classNames={{ root: '!mb-4' }}
+            {...getInputProps('username')}
           />
           <Input
             placeholder="Enter your email"
@@ -121,21 +120,9 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             name={'email'}
             id={'email'}
             label="Email"
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 1,
-              pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
-            }}
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.email
-                ? errors?.email?.message ||
-                  'Please enter valid username or password'
-                : ''
-            }
-            wrapperClassName="!mb-4"
+            classNames={{ root: '!mb-4' }}
+            {...getInputProps('email')}
           />
           <Input
             placeholder="Enter password"
@@ -144,35 +131,23 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             id={'password'}
             type={showPassword ? 'text' : 'password'}
             label="Password"
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 8,
-            }}
-            iconPosition="right"
-            icon={
-              <VscEye
-                title="password"
-                size={16}
-                onClick={() => {
-                  toggleShowPassword(!showPassword);
-                }}
-              />
+            rightSection={
+              <div
+                className="cursor-pointer"
+                onClick={() => toggleShowPassword(!showPassword)}
+              >
+                {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+              </div>
             }
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.password
-                ? errors?.password?.message || 'Please enter valid password'
-                : ''
-            }
-            wrapperClassName="!mb-4"
+            classNames={{ root: '!mb-4' }}
+            {...getInputProps('password')}
           />
 
           <Button
             type="submit"
             text={isRequesting ? 'Signing up...' : 'Sign up'}
-            onClick={handleSubmit(_onSignUp)}
+            onClick={onSubmit(_onSignUp)}
             fullWidth
             primary
             sm

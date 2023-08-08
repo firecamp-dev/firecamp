@@ -1,6 +1,6 @@
 import { FC } from "react";
 import classNames from 'classnames';
-import { VscInfo } from '@react-icons/all-files/vsc/VscInfo'
+import { Info } from 'lucide-react';
 
 import {ITextArea} from "./interfaces/TextArea.interfaces"
 
@@ -53,7 +53,7 @@ const TextArea: FC<ITextArea> = ({
                 </div>
       {note != '' ? (
         <div className="text-xs flex items-center justify-start text-app-foreground">
-        <VscInfo size={14} className='pr-1' />
+        <Info size={14} className='pr-1' />
           {note}
         </div>
       ) : (

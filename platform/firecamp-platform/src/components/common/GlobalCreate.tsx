@@ -1,13 +1,13 @@
-import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import {
-  Triangle,
-  MailOpen,
-  FolderClosed,
-  Braces,
   ArrowDown,
   AppWindow,
+  Braces,
+  Building,
+  FolderClosed,
+  MailOpen,
+  Triangle,
   UserPlus2,
 } from 'lucide-react';
 
@@ -70,7 +70,7 @@ const options = [
     id: EMenuOptions.Organization,
     name: 'New organization',
     prefix: () => (
-      <VscOrganization size={16} className="text-app-foreground-active" />
+      <Building size={16} className="text-app-foreground-active" />
     ),
   },
   {

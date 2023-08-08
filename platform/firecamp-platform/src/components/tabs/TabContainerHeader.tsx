@@ -1,8 +1,7 @@
 import { useEffect, memo, useRef } from 'react';
 import classnames from 'classnames';
 import shallow from 'zustand/shallow';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { VscHome } from '@react-icons/all-files/vsc/VscHome';
+import { Home, Plus } from 'lucide-react';
 import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { TId } from '@firecamp/types';
@@ -121,7 +120,7 @@ const TabHeaderContainer = () => {
                     onClick={(e) => openNewTab()}
                   >
                     <a>
-                      <VscAdd size={16} />
+                      <Plus size={16} />
                     </a>
                   </div>
                   <Menu />
@@ -161,7 +160,7 @@ const HomeTabIcon = ({ isActive, onClick }) => {
       )}
       onClick={onClick}
     >
-      <VscHome size={20} />
+      <Home size={20} />
     </div>
   );
 };

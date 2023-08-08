@@ -62,6 +62,7 @@
     "@firecamp/url": "0.0.20",
     "@firecamp/utils": "^0.0.24",
     "@firecamp/websocket": "workspace:*",
+    "@mantine/form": "^6.0.17",
     "@sentry/browser": "7.28.1",
     "@sentry/tracing": "7.28.1",
     "awesome-notifications": "3.1.3",

@@ -1,6 +1,6 @@
 import { FC, useEffect, useRef } from 'react';
 import shallow from 'zustand/shallow';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { Braces, Plus } from 'lucide-react';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { Notes, Button } from '@firecamp/ui';
 import { EEnvironmentScope } from '@firecamp/types';
@@ -9,7 +9,6 @@ import treeRenderer from './tree/itemRenderer';
 import treeRenderer_ from './tree_/itemRenderer';
 import platformContext from '../../../../services/platform-context';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
-import { VscJson } from '@react-icons/all-files/vsc/VscJson';
 import { ETabEntityTypes } from '../../../tabs/types';
 import { useTabStore } from '../../../../store/tab';
 
@@ -71,7 +70,7 @@ const EnvironmentCollection = () => {
         return (
           <ToolBar>
             <div>
-              <VscAdd
+              <Plus
                 className="cursor-pointer"
                 size={16}
                 onClick={() => createEnvironmentPrompt()}
@@ -227,7 +226,7 @@ const Globals = () => {
   return (
     <div className="rct-tree-item-li focus:rct-tree-item-li-focused border-b border-app-border">
       <div className="px-2 mt-5 mb-1 rct-tree-item-title-container focus:rct-tree-item-title-container-focused hover:rct-tree-item-title-container-focused !opacity-100 cursor-pointer">
-        <VscJson className="flex-none my-0.5" size={18} opacity={1} />
+        <Braces className="flex-none my-0.5" size={18} opacity={1} />
         <span className="w-full overflow-hidden text-ellipsis items-center block pl-1 text-base">
           {globalEnv?.name}
         </span>

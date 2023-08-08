@@ -398,10 +398,6 @@
    left: 0.5rem;
 
 }
-.left-3{
-   left: 0.75rem;
-
-}
 .right-0{
    right: 0px;
 
@@ -1607,6 +1603,10 @@
    background-color: var(--tab-background-active) !important;
 
 }
+.\!bg-transparent{
+   background-color: #ffffff00 !important;
+
+}
 .bg-activityBar-background{
    background-color: var(--activityBar-background);
 
@@ -1952,6 +1952,10 @@
    padding-bottom: 0.75rem !important;
 
 }
+.\!pb-4{
+   padding-bottom: 1rem !important;
+
+}
 .\!pb-6{
    padding-bottom: 1.5rem !important;
 
@@ -1970,10 +1974,6 @@
 }
 .\!pr-3{
    padding-right: 0.75rem !important;
-
-}
-.\!pr-9{
-   padding-right: 2.25rem !important;
 
 }
 .\!pt-0{
@@ -2126,6 +2126,10 @@
 }
 .align-baseline{
    vertical-align: baseline;
+
+}
+.align-middle{
+   vertical-align: middle;
 
 }
 .font-default{

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
-import { VscInfo } from '@react-icons/all-files/vsc/VscInfo';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import cx from 'classnames';
+import { Info } from 'lucide-react';
 import {
   Button,
   DropdownMenu,
@@ -73,7 +73,7 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
             </label>
             <Popover content={<RolesCallout role={_role.id} />}>
               <Popover.Handler className="!text-link hover:!text-link hover:underline cursor-pointer text-sm ml-1">
-                <VscInfo size={16} />
+                <Info size={16} />
               </Popover.Handler>
             </Popover>
           </div>

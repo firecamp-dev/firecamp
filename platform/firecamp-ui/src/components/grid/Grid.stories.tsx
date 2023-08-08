@@ -1,8 +1,8 @@
 //@ts-nocheck
+import { UserCircle2 } from 'lucide-react';
 import Row from './Row';
 import Column from './Column';
 import RootContainer from './RootContainer';
-import { VscAccount } from "@react-icons/all-files/vsc/VscAccount";
 
 export default {
   title: "UI-Kit/Grid/Layout",
@@ -14,7 +14,7 @@ export default {
   }
 };
 
-const TemplateContainer = (args) => <RootContainer {...args}> <VscAccount title="Account" size={30} /> Account </RootContainer>;
+const TemplateContainer = (args) => <RootContainer {...args}> <UserCircle2 title="Account" size={30} /> Account </RootContainer>;
 const TemplateRow = (args) => <Row {...args} />;
 const TemplateCol = (args) => <Column {...args} />;
 

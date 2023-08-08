@@ -2,7 +2,7 @@ import _compact from 'lodash/compact';
 import _cloneDeep from 'lodash/cloneDeep';
 import _merge from 'lodash/merge';
 import shallow from 'zustand/shallow';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
+import { SendHorizonal } from 'lucide-react';
 import { Container, Input, Button, TabHeader, Checkbox } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import BodyControls from './playground/BodyControls';
@@ -55,9 +55,10 @@ const EmitterPlayground = () => {
           autoFocus={true}
           placeholder="Type emitter name"
           label="Type Emitter Name"
-          className="border-0"
-          wrapperClassName="!mb-0"
-          // ref={}
+          classNames={{
+            root: '!mb-0',
+            input: 'border-0'
+          }}
           onChange={(e) => {
             if (e) e.preventDefault();
             changePlgEmitterName(e.target.value);
@@ -79,7 +80,7 @@ const EmitterPlayground = () => {
             />
             <Button
               text="Send"
-              rightIcon={<IoSendSharp size={12} />}
+              rightIcon={<SendHorizonal size={12} />}
               onClick={() => emit(plgEmitter)}
               primary
               compact

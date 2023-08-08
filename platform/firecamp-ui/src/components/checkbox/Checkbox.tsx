@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import cx from 'classnames';
-import { VscCheck } from '@react-icons/all-files/vsc/VscCheck';
+import { Check } from 'lucide-react';
 import { ICheckbox } from './interfaces/Checkbox.interfaces';
 import './Checkbox.scss';
 
@@ -57,9 +57,8 @@ const Checkbox: FC<ICheckbox> = ({
           />
           <span className={cx("border w-4 h-4",{'border-primaryColor': isChecked},{'border-app-foreground': !isChecked})}></span>
           {isChecked ? (
-            <VscCheck
+            <Check
               size={12}
-              title={"IconCheck"}
               className="text-primaryColor absolute"
             />
           ) : (

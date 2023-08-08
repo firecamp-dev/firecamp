@@ -1,4 +1,10 @@
-import { Container, CheckboxGroup, CheckboxInGrid, Input } from '@firecamp/ui';
+import {
+  Container,
+  CheckboxGroup,
+  CheckboxInGrid,
+  SingleLineEditor,
+} from '@firecamp/ui';
+import { EEditorLanguage } from '@firecamp/types';
 import { IStore, useStore } from '../../../store';
 import shallow from 'zustand/shallow';
 
@@ -110,25 +116,40 @@ const ConfigTab = ({ id = '' }) => {
         }
         // console.log(`name`, name, type);
         return (
-          <Input
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
             key={`${name}-${index}`}
-            autoFocus={false}
-            name={name}
-            type={type}
-            label={label}
-            placeholder={placeholder || ''}
-            disabled={isDisabled}
-            value={connection[name] || ''}
-            onChange={(e) => {
-              if (e) {
-                e.preventDefault();
-                let { name, value } = e.target;
-                _onChange(name, value);
-              }
-            }}
-            // min={type === EInputTypes.number ? 0 : ''}
-            isEditor={true}
-          />
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={label}
+            >
+              {label}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border'}
+                autoFocus={false}
+                name={name}
+                type={type}
+                // placeholder={placeholder || ''}
+                disabled={isDisabled}
+                value={connection[name] || ''}
+                onChange={(e) => {
+                  if (e) {
+                    e.preventDefault();
+                    let { name, value } = e.target;
+                    _onChange(name, value);
+                  }
+                }}
+                // min={type === EInputTypes.number ? 0 : ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+              />
+            </div>
+          </div>
         );
         break;
 

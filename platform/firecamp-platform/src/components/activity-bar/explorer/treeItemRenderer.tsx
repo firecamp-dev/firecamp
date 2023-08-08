@@ -1,10 +1,7 @@
 import cx from 'classnames';
-// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-// import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
+import { FolderOpen, FolderClosed } from 'lucide-react';
 import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
 import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
 import CollectionMenu from './menus/CollectionMenu';
@@ -24,9 +21,7 @@ export default {
         case ERequestTypes.Rest:
           const text = method.toUpperCase();
           return (
-            <div className={cx(text, 'collection_leaf-node-type')}>
-              {text}
-            </div>
+            <div className={cx(text, 'collection_leaf-node-type')}>{text}</div>
           );
         case ERequestTypes.GraphQL:
           return <FcIconGraphQL className="text-graphql" size={24} />;
@@ -40,7 +35,6 @@ export default {
     } else if (item.data?.__ref?.isCollection) {
       return context.isExpanded ? (
         <>
-          {/* <VscChevronDown className="mr-1" size={20}/> */}
           <VscTriangleDown
             className="mr-1 flex-none"
             size={12}
@@ -54,7 +48,6 @@ export default {
         </>
       ) : (
         <>
-          {/* <VscChevronRight className="mr-1" size={20}/> */}
           <VscTriangleRight
             className="mr-1 flex-none"
             size={12}
@@ -70,27 +63,21 @@ export default {
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <>
-          {/* <VscChevronDown className="mr-1" size={20} opacity={'0.8'}/> */}
           <VscTriangleDown
             className="mr-1 flex-none"
             size={12}
             opacity={'0.6'}
           />
-          <VscFolderOpened
-            className="mr-1 flex-none"
-            size={16}
-            opacity={'0.8'}
-          />
+          <FolderOpen className="mr-1 flex-none" size={16} opacity={'0.8'} />
         </>
       ) : (
         <>
-          {/* <VscChevronRight className="mr-1" size={20} opacity={'0.8'}/> */}
           <VscTriangleRight
             className="mr-1 flex-none"
             size={12}
             opacity={'0.6'}
           />
-          <VscFolder
+          <FolderClosed
             className="mr-1 opacity-80 flex-none"
             size={16}
             opacity={'0.8'}

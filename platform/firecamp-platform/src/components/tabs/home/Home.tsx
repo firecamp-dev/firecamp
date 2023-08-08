@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
+import { ArrowDown } from 'lucide-react';
 import {
   Container,
   Row,
@@ -96,7 +96,7 @@ const Home: FC<any> = () => {
                 <hr className="pb-4" />
                 <RequestItem
                   label="Import Collection"
-                  icon={<VscArrowDown size={16} />}
+                  icon={<ArrowDown size={16} />}
                   openRequest={openImportTab}
                 />
               </div>

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
-import { VscLock } from '@react-icons/all-files/vsc/VscLock';
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
+import { Lock, UserCircle2 } from 'lucide-react';
 
 import { Modal, Button, FormField, Input, IModal } from '@firecamp/ui';
 
@@ -77,20 +76,18 @@ function FormPreview({ overflowContent = false }) {
           <div className="text-center w-full text-sm mb-5">
             Sign in again to continue
           </div>
-          <FormField label="Username or E-mail">
-            <Input
-              value="dnishchit@gmail.com"
-              iconPosition="left"
-              icon={<VscAccount title="Account" size={16} />}
-            />
-          </FormField>
-          <FormField label="password">
-            <Input
-              placeholder="password"
-              iconPosition="left"
-              icon={<VscLock title="Account" size={16} />}
-            />
-          </FormField>
+
+          <Input
+            label="Username or E-mail"
+            value="dnishchit@gmail.com"
+            icon={<UserCircle2 size={16} />}
+          />
+
+          <Input
+            label="password"
+            placeholder="password"
+            icon={<Lock size={16} />}
+          />
           <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm">
             Forgot Password?
           </a>

@@ -1,24 +1,12 @@
 import { useState } from 'react';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { AppWindow, ArrowDown, Braces, Building, ChevronRight, File, FolderClosed, LogIn, Plus, SendHorizonal, Twitter, UserCircle2, UserPlus2 } from 'lucide-react';
 
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
-import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
-import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
 import { FcIconGetSquare } from '@firecamp/ui';
 
-import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
-import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
-import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
-import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
 import DropDownV2 from './DropdownV2';
 import { IOptionsV2 } from './interfaces/Dropdownv2.interfaces';
@@ -57,8 +45,8 @@ export const DropDownv2Example = () => {
           name: 'GraphQL',
           disabled: false,
           showSeparator: true,
-          prefix: () => <VscAdd className="mr-2" size={10} />,
-          postfix: () => <VscChevronRight size={10} className={'ml-auto'} />,
+          prefix: () => <Plus className="mr-2" size={10} />,
+          postfix: () => <ChevronRight size={10} className={'ml-auto'} />,
           list: [
             {
               id: '2.1',
@@ -70,7 +58,7 @@ export const DropDownv2Example = () => {
               name: 'Firecamp 2.2',
               disabled: false,
               postfix: () => (
-                <VscChevronRight size={10} className={'ml-auto'} />
+                <ChevronRight size={10} className={'ml-auto'} />
               ),
               list: [
                 {
@@ -111,7 +99,7 @@ export const DropDownv2Example = () => {
         {
           id: '4',
           name: 'Websocket',
-          postfix: () => <VscChevronRight size={10} className={'ml-auto'} />,
+          postfix: () => <ChevronRight size={10} className={'ml-auto'} />,
           disabled: true,
           list: [
             {
@@ -282,15 +270,15 @@ export const CreateMenuExample = () => {
               {
                 id: 'Collection',
                 name: 'Collection',
-                prefix: () => <VscFolder className="mr-2" size={16} />,
+                prefix: () => <FolderClosed className="mr-2" size={16} />,
                 postfix: () => (
-                  <VscChevronRight size={14} className={'ml-auto'} />
+                  <ChevronRight size={14} className={'ml-auto'} />
                 ),
               },
               {
                 id: 'Environment',
                 name: 'Environment',
-                prefix: () => <RiBracesLine className="mr-2" size={16} />,
+                prefix: () => <Braces className="mr-2" size={16} />,
                 postfix: () => (
                   <span className="ml-auto text-inputPlaceholder pl-2">⌘E</span>
                 ),
@@ -298,7 +286,7 @@ export const CreateMenuExample = () => {
               {
                 id: 'ImportCollection',
                 name: 'Import Collection',
-                prefix: () => <VscArrowDown className="mr-2" size={16} />,
+                prefix: () => <ArrowDown className="mr-2" size={16} />,
                 postfix: () => (
                   <span className="ml-auto text-inputPlaceholder pl-2">⌘C</span>
                 ),
@@ -314,12 +302,12 @@ export const CreateMenuExample = () => {
               {
                 id: 'Workspace',
                 name: 'Workspace',
-                prefix: () => <VscWindow className="mr-2" size={16} />,
+                prefix: () => <AppWindow className="mr-2" size={16} />,
               },
               {
                 id: 'Organization',
                 name: 'Organization',
-                prefix: () => <VscOrganization className="mr-2" size={16} />,
+                prefix: () => <Building className="mr-2" size={16} />,
                 postfix: () => (
                   <span className="ml-auto text-inputPlaceholder pl-2">⌘O</span>
                 ),
@@ -328,7 +316,7 @@ export const CreateMenuExample = () => {
                 id: 'InviteMembers',
                 name: 'Invite Members',
                 showSeparator: true,
-                prefix: () => <AiOutlineUserAdd className="mr-2" size={16} />,
+                prefix: () => <UserPlus2 className="mr-2" size={16} />,
               },
             ],
           },
@@ -506,7 +494,7 @@ export const ReqStatusBarExample = () => {
         primary
         sm
         animate={false}
-        leftIcon={<IoSendSharp />}
+        leftIcon={<SendHorizonal />}
         onClick={() => {}}
         className="!rounded-bl-none !rounded-tl-none"
       />
@@ -531,7 +519,7 @@ export const StatusBarExample = () => {
           <span className="pl-1">Firecamp</span>
         </div>
         <div className="bg-focus3 flex items-center px-3">
-          <VscAccount size={16} className="mr-1" />
+          <UserCircle2 size={16} className="mr-1" />
 
           <DropDownV2
             handleRenderer={() => (
@@ -560,7 +548,7 @@ export const StatusBarExample = () => {
                     name: 'Sign in',
                     postfix: () => (
                       <div className={'ml-2 leading-3 text-primaryColor'}>
-                        <VscSignIn size={20} />
+                        <LogIn size={20} />
                       </div>
                     ),
                   },
@@ -569,7 +557,7 @@ export const StatusBarExample = () => {
                     name: 'Create an account',
                     postfix: () => (
                       <div className={'ml-2 leading-3 text-primaryColor'}>
-                        <VscAccount size={20} />
+                        <UserCircle2 size={20} />
                       </div>
                     ),
                   },
@@ -588,7 +576,7 @@ export const StatusBarExample = () => {
                 '!py-1 !px-3 text-sm leading-6 text-app-foreground hover:!bg-focus1 focus-visible:!bg-focus1 focus-visible:!shadow-none justify-between',
             }}
           />
-          <VscChevronRight size={14} className="mt-0.5" />
+          <ChevronRight size={14} className="mt-0.5" />
 
           <DropDownV2
             handleRenderer={() => (
@@ -617,7 +605,7 @@ export const StatusBarExample = () => {
                     name: 'Workspace Management',
                     postfix: () => (
                       <div className={'ml-2 leading-3'}>
-                        <VscAdd size={14} strokeWidth={1.5} />
+                        <Plus size={14} strokeWidth={1.5} />
                       </div>
                     ),
                   },
@@ -626,7 +614,7 @@ export const StatusBarExample = () => {
                     name: 'Invite Members',
                     postfix: () => (
                       <div className={'ml-2 leading-3'}>
-                        <VscAdd size={14} strokeWidth={1.5} />
+                        <Plus size={14} strokeWidth={1.5} />
                       </div>
                     ),
                   },
@@ -670,7 +658,7 @@ export const StatusBarExample = () => {
       <StatusBar.SecondaryRegion>
         <div className="flex items-center">
           <a className="flex items-center pr-2 " href="#">
-            <VscTwitter
+            <Twitter
               size={12}
               className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />
@@ -682,7 +670,7 @@ export const StatusBarExample = () => {
             />
           </a>
           <a className="flex items-center pr-2" href="#">
-            <VscFile
+            <File
               size={12}
               className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />

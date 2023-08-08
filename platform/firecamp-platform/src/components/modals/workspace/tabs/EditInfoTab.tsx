@@ -1,54 +1,80 @@
 import { FC } from 'react';
-import { Button, Container, Input, TabHeader, TextArea } from '@firecamp/ui';
+import { useForm } from '@mantine/form';
+import { Info } from 'lucide-react';
+import { IWorkspace } from '@firecamp/types';
+import { Button, Container, Input, TabHeader, TextAreav2 } from '@firecamp/ui';
 import platformContext from '../../../../services/platform-context';
+import { Regex } from '../../../../constants';
 
-const EditInfoTab: FC<any> = ({
+interface IEditInfoTab {
+  workspace: Partial<IWorkspace>;
+  isRequesting: boolean;
+  handleSubmit: (v: Partial<IWorkspace>) => void;
+  disabled?: boolean;
+}
+const EditInfoTab: FC<IEditInfoTab> = ({
   workspace,
-  error,
-  isRequesting,
-  onSubmit,
-  onChange,
+  isRequesting = false,
+  handleSubmit,
   disabled = false,
-  enableReset = false,
 }) => {
+  const { onSubmit, getInputProps, values, setValues } = useForm({
+    initialValues: {
+      name: workspace.name,
+      description: workspace.description,
+    },
+    validate: {
+      name: (value) =>
+        !value.length || value.length < 6
+          ? 'The workspace name must have minimum 6 characters'
+          : !Regex.WorkspaceName.test(value)
+          ? 'The workspace name must not contain any spaces or special characters.'
+          : null,
+    },
+  });
+
+  const handleReset = () => {
+    setValues({
+      name: workspace.name,
+      description: workspace.description,
+    });
+  };
+
+  const enableReset =
+    !disabled &&
+    (values.name !== workspace.name ||
+      values.description !== workspace.description);
+
   return (
     <Container className="pt-3 px-3 flex-1 flex flex-col h-full">
       <Container.Body>
         <label className="text-sm font-semibold leading-3 block text-app-foreground-inactive uppercase w-full relative mb-2">
           UPDATE WORKSPACE INFO
         </label>
-        <div>
+        <form onSubmit={onSubmit(handleSubmit)}>
           <Input
-            autoFocus={true}
             label="Name"
             placeholder="Workspace name"
             name={'name'}
-            defaultValue={workspace.name || ''}
-            onChange={onChange}
-            onKeyDown={() => {}}
-            onBlur={() => {}}
-            error={error.name}
-            // error={error.name}
-            // iconPosition="right"
-            // icon={<VscEdit />}
-            wrapperClassName="!mb-3"
+            disabled={disabled}
+            data-autofocus={!disabled}
+            classNames={{ root: '!mb-3' }}
+            {...getInputProps('name')}
           />
-        </div>
 
-        <TextArea
-          type="text"
-          minHeight="240px"
-          label="Description (optional)"
-          labelClassName="fc-input-label"
-          placeholder="Description"
-          note="Markdown supported in description"
-          name={'description'}
-          defaultValue={workspace.description || ''}
-          onChange={onChange}
-          // disabled={true}
-          // iconPosition="right"
-          // icon={<VscEdit />}
-        />
+          <TextAreav2
+            minRows={10}
+            label="Description (optional)"
+            placeholder="Description"
+            name={'description'}
+            disabled={disabled}
+            {...getInputProps('description')}
+          />
+          <div className="text-xs flex items-center justify-start text-app-foreground">
+            <Info size={14} className="pr-1" />
+            Markdown supported in description
+          </div>
+        </form>
       </Container.Body>
       <Container.Footer>
         <TabHeader className="!px-0">
@@ -63,11 +89,14 @@ const EditInfoTab: FC<any> = ({
             />
           </TabHeader.Left>
           <TabHeader.Right>
-            {/* TODO: update details */}
-            {/* {enableReset ? <Button text="Undo" onClick={(e) => onChange(e, true)} ghost xs /> : <></>} */}
+            {enableReset ? (
+              <Button text="Undo" onClick={() => handleReset()} ghost xs />
+            ) : (
+              <></>
+            )}
             <Button
               text={isRequesting ? 'Updating...' : 'Update'}
-              onClick={onSubmit}
+              onClick={onSubmit(handleSubmit)}
               disabled={isRequesting || disabled || !enableReset}
               primary
               xs

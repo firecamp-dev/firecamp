@@ -107,7 +107,7 @@
     "@react-icons/all-files": "^4.1.0",
     "dotenv": "^16.0.1",
     "dotenv-vault-core": "^0.7.0",
-    "lucide-react": "^0.260.0"
+    "lucide-react": "^0.264.0"
   },
   "engines": {
     "node": ">=16",

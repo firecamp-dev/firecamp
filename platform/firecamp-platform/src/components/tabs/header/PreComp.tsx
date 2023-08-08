@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import classNames from 'classnames';
-import { VscJson } from '@react-icons/all-files/vsc/VscJson';
+import { ArrowDown, Braces, FolderOpen, FolderClosed } from 'lucide-react';
+
 import { EHttpMethod, ERequestTypes } from '@firecamp/types';
 import {
   FcIconGraphQL,
@@ -8,9 +9,6 @@ import {
   FcIconWebSocket,
 } from '@firecamp/ui';
 import { ETabEntityTypes } from '../types';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
-import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
 
 const PreComp: FC<{ entity: any; entityType: string }> = ({
   entity,
@@ -51,25 +49,25 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
     case ETabEntityTypes.Environment:
       return (
         <div className="environment text-xs font-bold w-5 tab-icon">
-          <VscJson size={16} />
+          <Braces size={16} />
         </div>
       );
     case ETabEntityTypes.Collection:
       return (
         <div className="collection text-xs font-bold w-5 tab-icon">
-          <VscFolder size={16} />
+          <FolderClosed size={16} />
         </div>
       );
     case ETabEntityTypes.Folder:
       return (
         <div className="folder text-xs font-bold w-5 tab-icon">
-          <VscFolderOpened size={16} />
+          <FolderOpen size={16} />
         </div>
       );
     case ETabEntityTypes.Import:
       return (
         <div className="text-xs font-bold w-5 tab-icon">
-          <VscArrowDown size={16} />
+          <ArrowDown size={16} />
         </div>
       );
     default:

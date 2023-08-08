@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm } from '@mantine/form';
 import { Button, Input } from '@firecamp/ui';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
+import { Eye, EyeOff } from 'lucide-react';
 import { Rest } from '@firecamp/cloud-apis';
 import platformContext from '../../../services/platform-context';
 
@@ -14,10 +14,38 @@ const ChangePassword = () => {
   const [showPassword, toggleShowPassword] = useState(false);
   const [confirmPassword, toggleConfirmPassword] = useState(false);
 
-  const form = useForm();
-  const { handleSubmit, errors, getValues, reset } = form;
+  const { onSubmit, getInputProps, reset } = useForm({
+    initialValues: {
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+    validate: {
+      currentPassword: (value) =>
+        !value.length
+          ? 'Please enter your current password'
+          : value.length < 8
+          ? 'Password should be at least 8 character'
+          : value.length > 50
+          ? 'Password should not exceed 50 character'
+          : null,
+      newPassword: (value) =>
+        !value.length
+          ? 'Please enter your current password'
+          : value.length < 8
+          ? 'Password should be at least 8 character'
+          : value.length > 50
+          ? 'Password should not exceed 50 character'
+          : null,
+      confirmPassword: (value, { newPassword }) =>
+        value !== newPassword ? 'Passwords should match' : null,
+    },
+  });
 
-  const _onSubmit = async (payload: {
+  const _handleSubmit = async ({
+    currentPassword,
+    newPassword,
+  }: {
     currentPassword: string;
     newPassword: string;
   }) => {
@@ -27,13 +55,13 @@ const ChangePassword = () => {
 
     await Rest.user
       .changePassword({
-        currentPassword: payload.currentPassword,
-        newPassword: payload.newPassword,
+        currentPassword,
+        newPassword,
       })
       .then((res) => res.data)
       .then(({ error, message }) => {
         if (!error) {
-          reset({ currentPassword: '', newPassword: '', confirmPassword: '' });
+          reset();
           platformContext.app.notify.success(message);
         } else {
           platformContext.app.notify.alert(
@@ -54,118 +82,66 @@ const ChangePassword = () => {
       });
   };
 
-  const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);
+  const _onKeyDown = (e: any) => e.key === 'Enter' && onSubmit(_handleSubmit);
 
   return (
     <>
-      <form onSubmit={handleSubmit(_onSubmit)} className="mx-2 mt-4">
+      <form onSubmit={onSubmit(_handleSubmit)} className="mx-2 mt-4">
         <Input
           placeholder="Enter old password"
-          key={'currentPassword'}
           name={'currentPassword'}
           type={oldPassword ? 'text' : 'password'}
           label="Old Password"
-          iconPosition="right"
-          icon={
-            <VscEye
-              title="password"
-              size={16}
-              onClick={() => {
-                toggleOldPassword(!oldPassword);
-              }}
-            />
-          }
-          registerMeta={{
-            required: 'Please enter your current password',
-            minLength: {
-              value: 8,
-              message: 'Password should be at least 8 character',
-            },
-            maxLength: {
-              value: 50,
-              message: 'Password should not exceed 50 character',
-            },
-          }}
-          useformRef={form}
           onKeyDown={_onKeyDown}
-          error={
-            errors?.currentPassword
-              ? errors?.currentPassword?.message || 'Invalid password'
-              : ''
+          rightSection={
+            <div
+              className="cursor-pointer"
+              onClick={() => toggleOldPassword(!oldPassword)}
+            >
+              {oldPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+            </div>
           }
+          data-autofocus
+          {...getInputProps('currentPassword')}
         />
 
         <Input
           placeholder="Enter new password"
-          key={'newPassword'}
           name={'newPassword'}
           type={showPassword ? 'text' : 'password'}
           label="New Password"
-          iconPosition="right"
-          icon={
-            <VscEye
-              title="password"
-              size={16}
-              onClick={() => {
-                toggleShowPassword(!showPassword);
-              }}
-            />
-          }
-          registerMeta={{
-            required: 'Please enter your new password',
-            minLength: {
-              value: 8,
-              message: 'Password should be at least 8 character',
-            },
-            maxLength: {
-              value: 50,
-              message: 'Password should not exceed 50 character',
-            },
-          }}
-          useformRef={form}
           onKeyDown={_onKeyDown}
-          error={
-            errors?.newPassword
-              ? errors?.newPassword?.message || 'Invalid password'
-              : ''
+          rightSection={
+            <div
+              className="cursor-pointer"
+              onClick={() => toggleShowPassword(!showPassword)}
+            >
+              {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+            </div>
           }
+          {...getInputProps('newPassword')}
         />
 
         <Input
           placeholder="Enter password again"
-          key={'confirmPassword'}
           name={'confirmPassword'}
           type={confirmPassword ? 'text' : 'password'}
           label="Confirm Password"
-          iconPosition="right"
-          icon={
-            <VscEye
-              title="password"
-              size={16}
-              onClick={() => {
-                toggleConfirmPassword(!confirmPassword);
-              }}
-            />
-          }
-          registerMeta={{
-            required: 'Please enter password again',
-            validate: (value) => {
-              const { newPassword } = getValues();
-              return newPassword === value || 'Passwords should match';
-            },
-          }}
-          useformRef={form}
           onKeyDown={_onKeyDown}
-          error={
-            errors?.confirmPassword
-              ? errors?.confirmPassword?.message || 'Invalid password'
-              : ''
+          rightSection={
+            <div
+              className="cursor-pointer"
+              onClick={() => toggleConfirmPassword(!confirmPassword)}
+            >
+              {confirmPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+            </div>
           }
+          {...getInputProps('confirmPassword')}
         />
         <Button
           type="submit"
           text={isRequesting ? 'Updating Password...' : 'Update Password'}
-          onClick={handleSubmit(_onSubmit)}
+          onClick={onSubmit(_handleSubmit)}
           fullWidth
           primary
           sm

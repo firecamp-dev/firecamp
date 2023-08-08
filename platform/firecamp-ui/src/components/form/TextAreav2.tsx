@@ -1,12 +1,12 @@
-import { createStyles } from '@mantine/core';
-import { TextInput } from '@mantine/core';
-import { ForwardedRef, forwardRef } from 'react';
-import { IInput } from './interfaces/input.interfaces';
+import { FC } from 'react';
+import { Textarea, TextareaProps, createStyles } from '@mantine/core';
+
+interface ITextArea extends TextareaProps {}
 
 const useStyles = createStyles((theme) => ({
   root: {
     fontFamily: 'inherit',
-    marginBottom: '1.25rem',
+    marginBottom: '0.5rem',
   },
   label: {
     fontSize: '0.75rem',
@@ -53,29 +53,26 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const Input = forwardRef(
-  (
-    { classNames = {}, ...props }: IInput,
-    ref: ForwardedRef<HTMLInputElement>
-  ) => {
-    const { cx, classes } = useStyles();
+/**
+ * TextArea form element
+ */
+const TextArea: FC<ITextArea> = ({ classNames = {}, ...props }) => {
+  const { cx, classes } = useStyles();
 
-    return (
-      <TextInput
-        classNames={{
-          ...classNames,
-          root: cx(classes.root, classNames.root),
-          label: cx(classes.label, classNames.label),
-          input: cx(classes.input, classNames.input),
-          error: cx(classes.error, classNames.error),
-        }}
-        radius={'xs'}
-        variant="filled"
-        ref={ref}
-        {...props}
-      />
-    );
-  }
-);
+  return (
+    <Textarea
+      classNames={{
+        ...classNames,
+        root: cx(classes.root, classNames.root),
+        label: cx(classes.label, classNames.label),
+        input: cx(classes.input, classNames.input),
+        error: cx(classes.error, classNames.error),
+      }}
+      radius={'xs'}
+      variant="filled"
+      {...props}
+    />
+  );
+};
 
-export default Input;
+export default TextArea;

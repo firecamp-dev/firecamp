@@ -2,7 +2,7 @@
 
 // import { render, screen } from '@testing-library/react';
 // import '@testing-library/jest-dom';
-// import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
+// import { Menu } from 'lucide-react';
 // import Button from './Button';
 // import { IButton } from './interfaces/Button.interfaces';
 
@@ -181,14 +181,14 @@
 //           text: 'Sample Button (with left icon)',
 //           primary: true,
 //           md: true,
-//           icon: <VscMenu title="Account" size={16} className="z-20" />,
+//           icon: <Menu title="Account" size={16} className="z-20" />,
 //           iconLeft: true,
 //         },
 //         {
 //           text: 'Sample Button (with right icon)',
 //           primary: true,
 //           md: true,
-//           icon: <VscMenu title="Account" size={16} className="z-20" />,
+//           icon: <Menu title="Account" size={16} className="z-20" />,
 //           iconRight: true,
 //         },
 //       ],

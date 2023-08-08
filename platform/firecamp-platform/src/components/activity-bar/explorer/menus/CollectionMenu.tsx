@@ -1,9 +1,11 @@
-import { VscNewFile } from '@react-icons/all-files/vsc/VscNewFile';
-import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
-import { VscSettingsGear } from '@react-icons/all-files/vsc/VscSettingsGear';
-import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import {
+  FilePlus2,
+  FolderPlus,
+  MoreHorizontal,
+  Pencil,
+  Settings,
+  Trash2,
+} from 'lucide-react';
 import { DropdownMenu } from '@firecamp/ui';
 import { Regex } from '../../../../constants';
 import platformContext from '../../../../services/platform-context';
@@ -32,9 +34,7 @@ const CollectionMenu = ({
   } = useExplorerStore.getState();
 
   const renameMenu = {
-    prefix: () => (
-      <VscEdit size={14} />
-    ),
+    prefix: () => <Pencil size={14} />,
     name: 'Rename',
     onClick: (e) => {
       startRenaming();
@@ -42,9 +42,7 @@ const CollectionMenu = ({
   };
 
   const addFolderMenu = {
-    prefix: () => (
-      <VscNewFolder size={14} />
-    ),
+    prefix: () => <FolderPlus size={14} />,
     name: 'Add Folder',
     onClick: () => {
       console.log(collectionId, folderId);
@@ -94,19 +92,15 @@ const CollectionMenu = ({
   };
 
   const addRequestMenu = {
-    prefix: () => (
-      <VscNewFile size={14} />
-    ),
+    prefix: () => <FilePlus2 size={14} />,
     name: 'Add Request',
-    onClick: () => { },
+    onClick: () => {},
   };
 
-  const openEnv = (env) => { };
+  const openEnv = (env) => {};
 
   const viewDetailMenu = {
-    prefix: () => (
-      <VscSettingsGear size={14} />
-    ),
+    prefix: () => <Settings size={14} />,
     name: 'View Details',
     onClick: () => {
       if (menuType == EMenuType.Collection) {
@@ -118,9 +112,7 @@ const CollectionMenu = ({
   };
 
   const deleteMenu = {
-    prefix: () => (
-      <VscTrash size={14} />
-    ),
+    prefix: () => <Trash2 size={14} />,
     name: 'Delete',
     onClick: () => {
       platformContext.window
@@ -154,13 +146,13 @@ const CollectionMenu = ({
   return (
     <div>
       <DropdownMenu
-        handler={() => <VscEllipsis className='cursor-pointer' />}
+        handler={() => <MoreHorizontal className="cursor-pointer " size={14} />}
         options={menuType == EMenuType.Request ? requestMenu : commonMenu}
         width={144}
         onSelect={(value) => value.onClick()}
         classNames={{
-          dropdown:
-            'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)]',
+          dropdown: 'shadow-modal-shadow shadow-[0_0_8px_2px_rgba(0,0,0,0.3)]',
+          trigger: 'align-middle',
         }}
         sm
       />

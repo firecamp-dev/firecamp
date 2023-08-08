@@ -1,7 +1,6 @@
 import { useRef, memo } from 'react';
 import isEqual from 'react-fast-compare';
 import { _array } from '@firecamp/utils';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import Table from '../primitive/Table';
 import {
   ITableRows,

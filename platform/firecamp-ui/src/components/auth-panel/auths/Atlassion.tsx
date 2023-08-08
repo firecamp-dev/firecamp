@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Input } from '@firecamp/ui';
+import { EEditorLanguage } from '@firecamp/types';
+import { SingleLineEditor } from '@firecamp/ui';
 
 const Atlassion = () => {
   const initialState = {
@@ -83,7 +84,7 @@ const Atlassion = () => {
     });
   };
 
-  const _onKeyDown = ({ key }:{key: string}) => {
+  const _onKeyDown = ({ key }: { key: string }) => {
     if (key == 'Enter') {
       setState(initialState);
     }
@@ -91,25 +92,38 @@ const Atlassion = () => {
 
   return (
     <form className="fc-form grid">
-        {(inputList || []).map((input, i) => {
-          const { id, labelFor, label, type, placeholder, value } = input;
-          return (
-            <Input
-              key={i}
-              autoFocus={i === 0}
-              label={label}
-              type={type}
-              placeholder={placeholder}
-              name={id}
-              isEditor={true}
-              value={value || ''}
-              className="fc-input"
-              onChange={(e) => _handleChange(e)}
-              onKeyDown={_onKeyDown}
-            />
-          );
-        })}
-      </form>
+      {(inputList || []).map((input, i) => {
+        const { id, labelFor, label, type, placeholder, value } = input;
+        return (
+          <div
+            className={
+              'relative items-center text-input-text text-sm w-full mb-5'
+            }
+            key={i}
+          >
+            <label
+              className="text-app-foreground mb-1 block !pb-4"
+              htmlFor={label}
+            >
+              {label}
+            </label>
+            <div className="!pb-4">
+              <SingleLineEditor
+                className={'border px-2 py-1 border-input-border fc-input'}
+                autoFocus={i === 0}
+                type={type == 'number' ? 'number' : 'text'}
+                name={id}
+                value={value || ''}
+                height="21px"
+                language={EEditorLanguage.FcText}
+                onChange={(e) => _handleChange(e)}
+                // onKeyDown={_onKeyDown}
+              />
+            </div>
+          </div>
+        );
+      })}
+    </form>
   );
 };
 

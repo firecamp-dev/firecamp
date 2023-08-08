@@ -1,27 +1,11 @@
 import { useState } from 'react';
 import cx from 'classnames';
-
-import { AiOutlineUserAdd } from '@react-icons/all-files/ai/AiOutlineUserAdd';
+import { AppWindow, ArrowDown, Braces, Building, ChevronRight, File, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, SendHorizonal, Twitter, Trash2, UserCircle2, UserPlus2 } from 'lucide-react';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
-import { RiBracesLine } from '@react-icons/all-files/ri/RiBracesLine';
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscEdit } from '@react-icons/all-files/vsc/VscEdit';
-import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
-import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
-import { VscSignIn } from '@react-icons/all-files/vsc/VscSignIn';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { VscTwitter } from '@react-icons/all-files/vsc/VscTwitter';
-import { VscWindow } from '@react-icons/all-files/vsc/VscWindow';
 
 import { Button, FcIconGetSquare, DropdownMenu } from '@firecamp/ui';
 import StatusBar from '../status-bar/StatusBar';
@@ -57,35 +41,35 @@ Example.args = {
     {
       id: EMenuOptions.Collection,
       name: 'Collection',
-      prefix: () => <VscFolder size={18} />,
+      prefix: () => <FolderClosed size={18} />,
     },
     {
       id: EMenuOptions.Environment,
       name: 'Environment',
-      prefix: () => <RiBracesLine size={18} />,
+      prefix: () => <Braces size={18} />,
     },
     {
       id: EMenuOptions.ImportCollection,
       name: 'Import Collection',
       showSeparator: true,
-      prefix: () => <VscArrowDown size={18} />,
+      prefix: () => <ArrowDown size={18} />,
     },
 
     {
       id: EMenuOptions.Workspace,
       name: 'Workspace',
-      prefix: () => <VscWindow size={18} />,
+      prefix: () => <AppWindow size={18} />,
     },
     {
       id: EMenuOptions.Organization,
       name: 'Organization',
-      prefix: () => <VscOrganization size={18} />,
+      prefix: () => <Building size={18} />,
     },
     {
       id: EMenuOptions.InviteMembers,
       name: 'Invite Members',
       showSeparator: true,
-      prefix: () => <AiOutlineUserAdd size={18} />,
+      prefix: () => <UserPlus2 size={18} />,
     },
     {
       id: EMenuOptions.SwitchOrg,
@@ -148,18 +132,18 @@ export const GlobalCreate = () => {
         {
           id: EMenuOptions.Collection,
           name: 'Collection',
-          prefix: () => <VscFolder size={18} />,
+          prefix: () => <FolderClosed size={18} />,
         },
         {
           id: EMenuOptions.Environment,
           name: 'Environment',
-          prefix: () => <RiBracesLine size={18} />,
+          prefix: () => <Braces size={18} />,
         },
         {
           id: EMenuOptions.ImportCollection,
           name: 'Import Collection',
           showSeparator: true,
-          prefix: () => <VscArrowDown size={18} />,
+          prefix: () => <ArrowDown size={18} />,
         },
         {
           id: 'CreateNewByAdminHeader',
@@ -170,18 +154,18 @@ export const GlobalCreate = () => {
         {
           id: EMenuOptions.Workspace,
           name: 'Workspace',
-          prefix: () => <VscWindow size={18} />,
+          prefix: () => <AppWindow size={18} />,
         },
         {
           id: EMenuOptions.Organization,
           name: 'Organization',
-          prefix: () => <VscOrganization size={18} />,
+          prefix: () => <Building size={18} />,
         },
         {
           id: EMenuOptions.InviteMembers,
           name: 'Invite Members',
           showSeparator: true,
-          prefix: () => <AiOutlineUserAdd size={18} />,
+          prefix: () => <UserPlus2 size={18} />,
         },
         {
           id: 'SwitchHeader',
@@ -460,7 +444,7 @@ export const RequestStatusBar = () => {
         sm
       />
       <Button
-        leftIcon={<IoSendSharp />}
+        leftIcon={<SendHorizonal />}
         onClick={() => {}}
         classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
         primary
@@ -488,7 +472,7 @@ export const FooterStatusBar = () => {
           <span className="pl-1">Firecamp</span>
         </div>
         <div className="bg-focus3 flex items-center px-3">
-          <VscAccount size={16} className="mr-1" />
+          <UserCircle2 size={16} className="mr-1" />
 
           <DropdownMenu
             handler={() => (
@@ -517,7 +501,7 @@ export const FooterStatusBar = () => {
                 name: 'Sign in',
                 postfix: () => (
                   <div className={'ml-2 leading-3 text-primaryColor'}>
-                    <VscSignIn size={20} />
+                    <LogIn size={20} />
                   </div>
                 ),
               },
@@ -526,7 +510,7 @@ export const FooterStatusBar = () => {
                 name: 'Create an account',
                 postfix: () => (
                   <div className={'ml-2 leading-3 text-primaryColor'}>
-                    <VscAccount size={20} />
+                    <UserCircle2 size={20} />
                   </div>
                 ),
               },
@@ -541,7 +525,7 @@ export const FooterStatusBar = () => {
             width={150}
             sm
           />
-          <VscChevronRight size={14} className="mt-0.5" />
+          <ChevronRight size={14} className="mt-0.5" />
 
           <DropdownMenu
             handler={() => (
@@ -571,7 +555,7 @@ export const FooterStatusBar = () => {
                 name: 'Workspace Management',
                 postfix: () => (
                   <div className={'ml-2 leading-3'}>
-                    <VscAdd size={14} strokeWidth={1.5} />
+                    <Plus size={14} strokeWidth={1.5} />
                   </div>
                 ),
               },
@@ -580,7 +564,7 @@ export const FooterStatusBar = () => {
                 name: 'Invite Members',
                 postfix: () => (
                   <div className={'ml-2 leading-3'}>
-                    <VscAdd size={14} strokeWidth={1.5} />
+                    <Plus size={14} strokeWidth={1.5} />
                   </div>
                 ),
               },
@@ -620,7 +604,7 @@ export const FooterStatusBar = () => {
       <StatusBar.SecondaryRegion>
         <div className="flex items-center">
           <a className="flex items-center pr-2 " href="#">
-            <VscTwitter
+            <Twitter
               size={12}
               className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />
@@ -632,7 +616,7 @@ export const FooterStatusBar = () => {
             />
           </a>
           <a className="flex items-center pr-2" href="#">
-            <VscFile
+            <File
               size={12}
               className="text-statusBar-foreground hover:text-statusBar-foreground-active"
             />
@@ -647,14 +631,14 @@ export const SidebarCollectionOption = () => {
   const [selected, setSelected] = useState('MyQuery');
   return (
     <DropdownMenu
-      handler={() => <VscEllipsis className="cursor-pointer" />}
+      handler={() => <MoreHorizontal className="cursor-pointer" />}
       options={[
         {
-          prefix: () => <VscEdit size={14} />,
+          prefix: () => <Pencil size={14} />,
           name: 'Rename',
         },
         {
-          prefix: () => <VscTrash size={14} />,
+          prefix: () => <Trash2 size={14} />,
           name: 'Delete',
         },
       ]}

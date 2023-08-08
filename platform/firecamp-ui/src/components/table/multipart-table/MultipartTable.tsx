@@ -1,11 +1,8 @@
 import React, { FC, memo, useEffect, useRef, useState } from 'react';
 import isEqual from 'react-fast-compare';
+import { File, GripVertical, Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
-import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
 import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { VscFile } from '@react-icons/all-files/vsc/VscFile';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EEditorLanguage } from '@firecamp/types';
 import { Input, Button } from '@firecamp/ui';
 
@@ -67,7 +64,7 @@ const MultipartTable = ({
               }}
               className="flex"
             >
-              <GrDrag opacity={0.3} />
+              <GripVertical opacity={0.3} size={16}/>
             </span>
 
             <Checkbox
@@ -135,8 +132,10 @@ const MultipartTable = ({
         return (
           <Input
             value={cellValue}
-            className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px] font-sans"
-            wrapperClassName="!mb-0"
+            classNames={{
+              root: '!mb-0',
+              input:'bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px]'
+            }}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
           />
         );
@@ -146,7 +145,7 @@ const MultipartTable = ({
         if (!options.allowRowRemove) return <></>;
         return (
           <div className="px-2 flex">
-            <VscTrash
+            <Trash2
               size={14}
               className="text-error cursor-pointer"
               onClick={(e) => tableApi?.removeRow(row.id)}
@@ -188,7 +187,7 @@ const MultipartTable = ({
         <Button
           onClick={() => apiRef.current.addRow()}
           text="Add Row"
-          leftIcon={<VscAdd size={16} />}
+          leftIcon={<Plus size={16} />}
           primary
           transparent
           xs
@@ -294,7 +293,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} title="IconTextSize" />
           ) : (
-            <VscFile onClick={_changeType} title="IconFile" />
+            <File onClick={_changeType}/>
           )}
         </div>
       </div>
