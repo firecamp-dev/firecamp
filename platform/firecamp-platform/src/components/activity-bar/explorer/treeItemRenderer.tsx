@@ -15,26 +15,27 @@ import { ERequestTypes } from '@firecamp/types';
 export default {
   renderItemArrow: ({ item, context }) => {
     // console.log(item, 'arrow context');
+
     if (item.data?.__ref?.isRequest) {
       const { type = null, method = '' } = item.data?.__meta;
       switch (type) {
         case ERequestTypes.Rest:
           const text = method.toUpperCase();
           return (
-            <div className={cx(text, 'collection_leaf-node-type')}>{text}</div>
+            <div className={cx(text, 'collection_leaf-node-type', 'cursor-pointer')} {...context.arrowProps}>{text}</div>
           );
         case ERequestTypes.GraphQL:
-          return <FcIconGraphQL className="text-graphql" size={24} />;
+          return <FcIconGraphQL className="text-graphql cursor-pointer" size={24}  {...context.arrowProps} />;
         case ERequestTypes.WebSocket:
-          return <FcIconWebSocket className="" size={24} />;
+          return <FcIconWebSocket className="cursor-pointer" size={24} {...context.arrowProps} />;
         case ERequestTypes.SocketIO:
-          return <FcIconSocketIoSquare className="" size={24} />;
+          return <FcIconSocketIoSquare className="cursor-pointer" size={24} {...context.arrowProps} />;
         default:
           return <></>;
       }
     } else if (item.data?.__ref?.isCollection) {
       return context.isExpanded ? (
-        <>
+        <div className='cursor-pointer flex items-center' {...context.arrowProps}>
           <VscTriangleDown
             className="mr-1 flex-none"
             size={12}
@@ -45,9 +46,9 @@ export default {
             size={16}
             opacity={'0.6'}
           />
-        </>
+        </div>
       ) : (
-        <>
+        <div className='cursor-pointer flex items-center' {...context.arrowProps}>
           <VscTriangleRight
             className="mr-1 flex-none"
             size={12}
@@ -58,20 +59,20 @@ export default {
             size={16}
             opacity={'0.6'}
           />
-        </>
+        </div>
       );
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
-        <>
+        <div className='cursor-pointer flex items-center' {...context.arrowProps}>
           <VscTriangleDown
             className="mr-1 flex-none"
             size={12}
             opacity={'0.6'}
           />
           <FolderOpen className="mr-1 flex-none" size={16} opacity={'0.8'} />
-        </>
+        </div>
       ) : (
-        <>
+        <div className='cursor-pointer flex items-center' {...context.arrowProps}>
           <VscTriangleRight
             className="mr-1 flex-none"
             size={12}
@@ -82,15 +83,16 @@ export default {
             size={16}
             opacity={'0.8'}
           />
-        </>
+        </div>
       );
     } else {
       return <></>;
     }
+
   },
 
   renderItemTitle: ({ title, context, info }) => {
-    console.log(title, 'title...');
+    // console.log(title, 'title...');
     if (!info.isSearching || !context.isSearchMatching) {
       return <>{title}</>;
     } else {
@@ -151,9 +153,8 @@ export default {
         <div
           {...(context.itemContainerWithoutChildrenProps as any)}
           style={{
-            paddingLeft: `${
-              (depth + 1) * renderDepthOffset + depth * renderDepthOffset
-            }px`,
+            paddingLeft: `${(depth + 1) * renderDepthOffset + depth * renderDepthOffset
+              }px`,
           }}
           className={cx(
             'pr-2',
@@ -241,8 +242,8 @@ export default {
               item.data?.__ref.isFolder
                 ? 'folder'
                 : item.data?.__ref.isCollection
-                ? 'collection'
-                : 'request'
+                  ? 'collection'
+                  : 'request'
             }
           />
         </div>
