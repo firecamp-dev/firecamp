@@ -39,12 +39,12 @@ export default {
           <VscTriangleDown
             className="mr-1 flex-none"
             size={12}
-            opacity={'0.6'}
+            opacity={'0.8'}
           />
           <AiTwotoneFolderOpen
             className="mr-1 flex-none"
             size={16}
-            opacity={'0.6'}
+            opacity={'0.8'}
           />
         </div>
       ) : (
@@ -52,12 +52,12 @@ export default {
           <VscTriangleRight
             className="mr-1 flex-none"
             size={12}
-            opacity={'0.6'}
+            opacity={'0.8'}
           />
           <AiTwotoneFolder
             className="mr-1 flex-none"
             size={16}
-            opacity={'0.6'}
+            opacity={'0.8'}
           />
         </div>
       );
@@ -67,7 +67,7 @@ export default {
           <VscTriangleDown
             className="mr-1 flex-none"
             size={12}
-            opacity={'0.6'}
+            opacity={'0.8'}
           />
           <FolderOpen className="mr-1 flex-none" size={16} opacity={'0.8'} />
         </div>
@@ -76,7 +76,7 @@ export default {
           <VscTriangleRight
             className="mr-1 flex-none"
             size={12}
-            opacity={'0.6'}
+            opacity={'0.8'}
           />
           <FolderClosed
             className="mr-1 opacity-80 flex-none"

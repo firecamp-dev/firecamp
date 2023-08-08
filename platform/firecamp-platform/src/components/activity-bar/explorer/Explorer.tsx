@@ -397,8 +397,8 @@ const Explorer: FC<any> = () => {
                     renderItem={(props) =>
                       treeRenderer.renderItem({ ...props, treeRef })
                     }
-                    renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
-                    renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
+                    // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
+                    // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
                     canRename
                     canReorderItems
                     canDragAndDrop
