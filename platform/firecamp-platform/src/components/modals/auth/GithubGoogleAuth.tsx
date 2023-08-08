@@ -117,7 +117,7 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
       <Button
         text="Continue with Github"
         leftIcon={<VscGithub size={18} />}
-        classNames={{ root: 'mb-5' }}
+        classNames={{ root: 'mb-5', inner: 'ml-[30%]' }}
         onClick={_githubOAuth}
         outline
         fullWidth

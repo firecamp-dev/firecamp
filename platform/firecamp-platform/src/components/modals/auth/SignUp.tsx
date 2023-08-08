@@ -175,7 +175,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
         <div className="text-sm mt-3 text-center text-app-foreground-inactive">
           By moving forward, you acknowledge that you have read and accept the
           <a
-            href="https://firecamp.io/legals/privacy-policy/"
+            href="https://firecamp.io/legal/privacy-policy/"
             tabIndex={1}
             className="font-bold underline px-1"
             target={'_blank'}
@@ -184,7 +184,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
           </a>
           and
           <a
-            href="https://firecamp.io/legals/privacy-policy/"
+            href="https://firecamp.io/legal/privacy-policy/"
             tabIndex={1}
             className="font-bold underline px-1"
             target={'_blank'}
