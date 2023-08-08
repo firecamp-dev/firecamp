@@ -82,6 +82,7 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
               id: m.__ref.id,
               name: m.name || m.username || m.email,
               email: m.email,
+              postfix: () => <span className='ml-1'> - {m.email}</span>
             };
           });
           setOrgMembers(members);

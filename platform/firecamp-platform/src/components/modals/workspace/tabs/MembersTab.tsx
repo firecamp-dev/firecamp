@@ -31,10 +31,10 @@ const columns = [
 ];
 
 const RoleOptions = [
-  {
-    id: EUserRolesWorkspace.Owner,
-    name: 'Owner',
-  },
+  // {
+  //   id: EUserRolesWorkspace.Owner,
+  //   name: 'Owner',
+  // },
   {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
@@ -126,17 +126,21 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
         break;
       case 'role':
         return (
-          <div className="p-1 text-center">
-            <RoleDD
-              role={row.role}
-              onSelect={(role) => onChangeRole({ ...row, role })}
-            />
+          <div className="p-1 text-sm text-center">
+            {row.role === EUserRolesWorkspace.Owner ? (
+              <div className="px-4">Owner</div>
+            ) : (
+              <RoleDD
+                role={row.role}
+                onSelect={(role) => onChangeRole({ ...row, role })}
+              />
+            )}
           </div>
         );
         break;
       case 'action':
         return (
-          <div className="px-2">
+          <div className={cx("px-2", {"hidden": row.role === EUserRolesWorkspace.Owner})}>
             <Trash2
               size={14}
               className="text-error cursor-pointer"

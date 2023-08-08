@@ -48,14 +48,14 @@ const InviteUsersForm = ({ usersList, onChange, error }) => {
         >
           <FormField label="" className="!p-0 grow">
             <Input
-              placeholder="alice"
+              placeholder="Name"
               value={detail.name}
               onChange={(e) => _handleNameChange(e, index)}
             />
           </FormField>
           <FormField label="" className="!p-0 grow">
             <Input
-              placeholder="alice@mail.com"
+              placeholder="name@email.com"
               value={detail.email}
               onChange={(e) => _handleEmailChange(e, index)}
             />
