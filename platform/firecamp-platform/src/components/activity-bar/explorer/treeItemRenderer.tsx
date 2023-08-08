@@ -22,20 +22,20 @@ export default {
         case ERequestTypes.Rest:
           const text = method.toUpperCase();
           return (
-            <div className={cx(text, 'collection_leaf-node-type', 'cursor-pointer')} {...context.arrowProps}>{text}</div>
+            <div className={cx(text, 'collection_leaf-node-type')} {...context.arrowProps}>{text}</div>
           );
         case ERequestTypes.GraphQL:
-          return <FcIconGraphQL className="text-graphql cursor-pointer" size={24}  {...context.arrowProps} />;
+          return <FcIconGraphQL className="text-graphql" size={24}  {...context.arrowProps} />;
         case ERequestTypes.WebSocket:
-          return <FcIconWebSocket className="cursor-pointer" size={24} {...context.arrowProps} />;
+          return <FcIconWebSocket className="" size={24} {...context.arrowProps} />;
         case ERequestTypes.SocketIO:
-          return <FcIconSocketIoSquare className="cursor-pointer" size={24} {...context.arrowProps} />;
+          return <FcIconSocketIoSquare className="" size={24} {...context.arrowProps} />;
         default:
           return <></>;
       }
     } else if (item.data?.__ref?.isCollection) {
       return context.isExpanded ? (
-        <div className='cursor-pointer flex items-center' {...context.arrowProps}>
+        <div className='flex items-center' {...context.arrowProps}>
           <VscTriangleDown
             className="mr-1 flex-none"
             size={12}
@@ -48,7 +48,7 @@ export default {
           />
         </div>
       ) : (
-        <div className='cursor-pointer flex items-center' {...context.arrowProps}>
+        <div className='flex items-center' {...context.arrowProps}>
           <VscTriangleRight
             className="mr-1 flex-none"
             size={12}
@@ -63,7 +63,7 @@ export default {
       );
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
-        <div className='cursor-pointer flex items-center' {...context.arrowProps}>
+        <div className='flex items-center' {...context.arrowProps}>
           <VscTriangleDown
             className="mr-1 flex-none"
             size={12}
@@ -72,7 +72,7 @@ export default {
           <FolderOpen className="mr-1 flex-none" size={16} opacity={'0.8'} />
         </div>
       ) : (
-        <div className='cursor-pointer flex items-center' {...context.arrowProps}>
+        <div className='flex items-center' {...context.arrowProps}>
           <VscTriangleRight
             className="mr-1 flex-none"
             size={12}
@@ -192,7 +192,7 @@ export default {
             )}
             style={{ left: `${renderDepthOffset * 2 - 3}px` }}
           ></span>
-          {arrow}
+
           <InteractiveComponent
             type={type}
             {...(context.interactiveElementProps as any)}
@@ -206,6 +206,7 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
+            {arrow}
             <span
               className={cx(
                 'pr-2',
