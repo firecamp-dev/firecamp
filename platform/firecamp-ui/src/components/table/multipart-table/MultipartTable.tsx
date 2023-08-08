@@ -64,7 +64,7 @@ const MultipartTable = ({
               }}
               className="flex"
             >
-              <GripVertical opacity={0.3} size={16}/>
+              <GripVertical opacity={0.3} size={16} />
             </span>
 
             <Checkbox
@@ -134,7 +134,8 @@ const MultipartTable = ({
             value={cellValue}
             classNames={{
               root: '!mb-0',
-              input:'bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px]'
+              input:
+                '!bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px] min-h-0',
             }}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
           />
@@ -293,7 +294,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} title="IconTextSize" />
           ) : (
-            <File onClick={_changeType}/>
+            <File onClick={_changeType} size={16}/>
           )}
         </div>
       </div>

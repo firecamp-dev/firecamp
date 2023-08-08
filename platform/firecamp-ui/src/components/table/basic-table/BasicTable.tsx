@@ -129,7 +129,7 @@ const BasicTable = ({
             classNames={{
               root: '!mb-0',
               input:
-                'bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 pt-0 h-[21px]',
+                '!bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 pt-0 h-[21px] min-h-0',
             }}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
           />
