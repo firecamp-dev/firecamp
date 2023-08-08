@@ -75,6 +75,10 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
     }
   };
 
+  const onInputChange = ({ target: { name, value } }) => {
+    form.setFieldValue(name, value.trim());
+  };
+
   return (
     <Drawer
       opened={opened}
@@ -113,6 +117,7 @@ const SignInWithEmail: FC<IModal> = ({ opened, onClose }) => {
             data-autofocus
             classNames={{ root: '!mb-2' }}
             {...getInputProps('username')}
+            onChange={onInputChange}
           />
           <Input
             placeholder="Enter password"

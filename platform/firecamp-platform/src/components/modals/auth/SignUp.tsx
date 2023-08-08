@@ -72,6 +72,10 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
       });
   };
 
+  const onInputChange = ({ target: { name, value } }) => {
+    form.setFieldValue(name, value.trim());
+  };
+
   const _onKeyDown = (e) => e.key === 'Enter' && onSubmit(_onSignUp);
 
   return (
@@ -113,6 +117,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             onKeyDown={_onKeyDown}
             classNames={{ root: '!mb-4' }}
             {...getInputProps('username')}
+            onChange={onInputChange}
           />
           <Input
             placeholder="Enter your email"
@@ -123,6 +128,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             onKeyDown={_onKeyDown}
             classNames={{ root: '!mb-4' }}
             {...getInputProps('email')}
+            onChange={onInputChange}
           />
           <Input
             placeholder="Enter password"
