@@ -115,7 +115,7 @@ const AuthPanel: FC<IProps> = ({
               type="info"
               title="Coming soon!!"
               description={`Firecamp team is building this feature and it’ll be releasing very soon. Keep us watching on <span>  <a href="https://github.com/firecampdev/firecamp/releases" target="_blank">
-Github </a>, <a href="https://twitter.com/firecampdev" target="_blank">Twitter</a>, <a href="https://discord.com/invite/8hRaqhK" target="_blank"> Discord</a> </span>.`}
+GitHub </a>, <a href="https://twitter.com/firecampdev" target="_blank">Twitter</a>, <a href="https://discord.com/invite/8hRaqhK" target="_blank"> Discord</a> </span>.`}
             />
           </div>
         );

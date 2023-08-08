@@ -74,20 +74,19 @@ const PendingInviteMembersTab = ({
         confirm: 'Yes, remove the invitation.',
       },
       onConfirm: () => {
-        //TODO- update the api
-        // Rest.workspace
-        //   .removeMember(workspace.__ref.id, row.id)
-        //   .then(() => {
-        tableApi.current.removeRow(row.id);
-        //   platformContext.app.notify.success(
-        //     'The invitation has been removed successfully.'
-        //   );
-        // })
-        // .catch((e) => {
-        //   platformContext.app.notify.alert(
-        //     e.response?.data.message || e.message
-        //   );
-        // });
+        Rest.invitation
+          .cancelInvitation(row.id)
+          .then(() => {
+            tableApi.current.removeRow(row.id);
+            platformContext.app.notify.success(
+              'The user invitation has been removed successfully.'
+            );
+          })
+          .catch((e) => {
+            platformContext.app.notify.alert(
+              e.response?.data.message || e.message
+            );
+          });
       },
     });
   };

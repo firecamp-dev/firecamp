@@ -149,7 +149,7 @@ const HomeTabIcon = ({ isActive, onClick }) => {
       tabIndex={1}
       className={classnames(
         {
-          'active text-tab-foreground !border-b-transparent bg-statusBar-background-active':  //bg-tab-background':
+          'active text-tab-foreground !border-b-transparent bg-tab-background':
             isActive,
         },
         {
@@ -160,7 +160,7 @@ const HomeTabIcon = ({ isActive, onClick }) => {
       )}
       onClick={onClick}
     >
-      <Home size={18} opacity={0.8} />
+      <Home size={18} strokeWidth={1.5} />
     </div>
   );
 };

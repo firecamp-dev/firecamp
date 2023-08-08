@@ -1,6 +1,18 @@
 import { FC } from 'react';
 import { GenIcon, IconBaseProps } from '@react-icons/all-files/lib/esm';
+import { Burger, BurgerProps, useMantineTheme } from '@mantine/core';
 
+const BurgerIcon = (props: BurgerProps) => {
+  const theme = useMantineTheme();
+  return (
+    <Burger
+      {...props}
+      color={
+        theme.colors[theme.primaryColor][theme.colorScheme === 'light' ? 6 : 8]
+      }
+    />
+  );
+};
 const FcIconGraphQL: FC<IconBaseProps> = (props) => {
   return GenIcon({
     tag: 'svg',
@@ -226,6 +238,7 @@ const FcLogo: FC<IconBaseProps> = (props) => {
 };
 
 export {
+  BurgerIcon,
   FcIconGraphQL,
   FcIconSocketIo,
   FcIconSocketIoSquare,
