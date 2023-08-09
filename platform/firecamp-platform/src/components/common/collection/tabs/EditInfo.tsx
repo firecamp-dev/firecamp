@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
-import { Input, TextArea, TabHeader, Button, Container } from '@firecamp/ui';
+import { Info } from 'lucide-react';
+import { Input, TabHeader, Button, Container, TextArea } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';
 import { ICollection, IFolder } from '@firecamp/types';
 
@@ -62,19 +63,17 @@ const EditInfo: FC<IProps> = ({
           </div>
 
           <TextArea
-            type="text"
-            minHeight="200px"
+            minRows={8}
             label="Description (optional)"
-            labelClassName="fc-input-label"
             placeholder="Description"
-            note="Markdown supported in description"
             name={'description'}
             defaultValue={description || ''}
             onChange={_handleChange}
-            // disabled={true}
-            // iconPosition="right"
-            // icon={<VscEdit />}
           />
+          <div className="mb-3 text-xs flex items-center justify-start text-app-foreground">
+            <Info size={14} className="pr-1" />
+            Markdown supported in description
+          </div>
         </div>
       </Container.Body>
       <Container.Footer className="py-3">

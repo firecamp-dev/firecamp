@@ -1,12 +1,13 @@
 import { FC, useState } from 'react';
+import { Info } from 'lucide-react';
 import {
   Input,
-  TextArea,
   TabHeader,
   Button,
   Modal,
   IModal,
   ProgressBar,
+  TextArea,
 } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { ERequestTypes, TId } from '@firecamp/types';
@@ -23,10 +24,7 @@ type TModalMeta = {
   folderId?: TId;
 };
 
-const EditRequest: FC<IModal> = ({
-  opened = false,
-  onClose = () => {},
-}) => {
+const EditRequest: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const { name, description, requestId, requestType, collectionId, folderId } =
     useModalStore.getState().__meta as TModalMeta;
   const [request, setRequest] = useState({
@@ -100,7 +98,6 @@ const EditRequest: FC<IModal> = ({
         <div className="p-6 !pb-0 mx-4 ">
           <div className="">
             <Input
-              autoFocus={true}
               label="Name"
               placeholder="Request name"
               name={'name'}
@@ -109,25 +106,23 @@ const EditRequest: FC<IModal> = ({
               onKeyDown={() => {}}
               onBlur={() => {}}
               error={error.name}
+              data-autofocus
               // iconPosition="right"
               // icon={<VscEdit />}
             />
           </div>
-
           <TextArea
-            type="text"
-            minHeight="200px"
+            minRows={8}
             label="Description (optional)"
-            labelClassName="fc-input-label"
             placeholder="Description"
-            note="Markdown supported in description"
             name={'description'}
             value={request.description}
             onChange={onChange}
-            // disabled={true}
-            // iconPosition="right"
-            // icon={<VscEdit />}
           />
+          <div className="mb-3 text-xs flex items-center justify-start text-app-foreground">
+            <Info size={14} className="pr-1" />
+            Markdown supported in description
+          </div>
         </div>
       </>
 
