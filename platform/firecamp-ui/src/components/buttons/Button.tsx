@@ -174,7 +174,7 @@ const Button: FC<IButton> = ({
           classNames.root,
           classes.root,
           {
-            'justify-center': props.fullWidth,
+            'justify-center': props.fullWidth && !props.leftIcon,
           },
           {
             [classes.leftIcon]: !text,

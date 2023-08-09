@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { ChevronDown, ChevronRight, FolderOpen, FolderClosed } from 'lucide-react';
+import { ChevronDown, ChevronRight, FolderOpen, Folder } from 'lucide-react';
 
 export default {
   renderItemArrow: ({ item, context }) => {
@@ -18,7 +18,7 @@ export default {
         </>
       ) : (
         <>
-          <ChevronRight size={20} /> <FolderClosed size={20} />
+          <ChevronRight size={20} /> <Folder size={20} />
         </>
       );
     } else {

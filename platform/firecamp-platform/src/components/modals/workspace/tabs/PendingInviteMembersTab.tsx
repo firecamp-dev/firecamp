@@ -27,7 +27,7 @@ const columns = [
     width: '180px',
   },
   { id: 'role', name: 'Role', key: 'role', width: '115px', fixedWidth: true },
-  // { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
+  { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
 ];
 
 const RoleOptions = [
@@ -45,7 +45,10 @@ const RoleOptions = [
   },
 ];
 
-const PendingInviteMembersTab = ({ members = [], isFetchingMembers = false }) => {
+const PendingInviteMembersTab = ({
+  members = [],
+  isFetchingMembers = false,
+}) => {
   const workspace = useWorkspaceStore.getState().workspace;
   const tableApi = useRef<TTableApi>(null);
 
@@ -64,20 +67,19 @@ const PendingInviteMembersTab = ({ members = [], isFetchingMembers = false }) =>
   }, [members]);
 
   const onRemoveMember = (row) => {
-
     platformContext.window.confirm({
-      message: `You're sure to remove ${row.name} from the workspace?`,
+      message: `You're sure to remove invitation of ${row.name} from the workspace?`,
       labels: {
         cancel: 'Cancel',
-        confirm: 'Yes, remove the member.',
+        confirm: 'Yes, remove the invitation.',
       },
       onConfirm: () => {
-        Rest.workspace
-          .removeMember(workspace.__ref.id, row.id)
+        Rest.invitation
+          .cancelInvitation(row.id)
           .then(() => {
             tableApi.current.removeRow(row.id);
             platformContext.app.notify.success(
-              'The member has been removed successfully.'
+              'The user invitation has been removed successfully.'
             );
           })
           .catch((e) => {
@@ -135,17 +137,17 @@ const PendingInviteMembersTab = ({ members = [], isFetchingMembers = false }) =>
           </div>
         );
         break;
-      // case 'action':
-      //   return (
-      //     <div className="px-2">
-      //       <Trash2
-      //         size={14}
-      //         className="text-error cursor-pointer"
-      //         onClick={() => onRemoveMember(row)}
-      //       />
-      //     </div>
-      //   );
-      //   break;
+      case 'action':
+        return (
+          <div className="px-2">
+            <Trash2
+              size={14}
+              className="text-error cursor-pointer"
+              onClick={() => onRemoveMember(row)}
+            />
+          </div>
+        );
+        break;
       default:
         return column.key;
     }

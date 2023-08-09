@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { FolderOpen, FolderClosed } from 'lucide-react';
+import { FolderOpen, Folder } from 'lucide-react';
 import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
@@ -78,10 +78,10 @@ export default {
             size={12}
             opacity={'0.8'}
           />
-          <FolderClosed
-            className="mr-1 opacity-80 flex-none"
+          <Folder
+            className="mr-1 flex-none"
             size={16}
-            opacity={'0.8'}
+            opacity={0.8}
           />
         </div>
       );

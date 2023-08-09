@@ -35,6 +35,7 @@ export interface IDropdownMenu {
     label?: string;
     item?: string;
     divider?: string;
+    itemRightSection?: string;
   };
   /**
    * to add any additional mantine menu props

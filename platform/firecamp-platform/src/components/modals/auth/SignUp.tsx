@@ -72,6 +72,10 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
       });
   };
 
+  const onInputChange = ({ target: { name, value } }) => {
+    form.setFieldValue(name, value.trim());
+  };
+
   const _onKeyDown = (e) => e.key === 'Enter' && onSubmit(_onSignUp);
 
   return (
@@ -113,6 +117,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             onKeyDown={_onKeyDown}
             classNames={{ root: '!mb-4' }}
             {...getInputProps('username')}
+            onChange={onInputChange}
           />
           <Input
             placeholder="Enter your email"
@@ -123,6 +128,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
             onKeyDown={_onKeyDown}
             classNames={{ root: '!mb-4' }}
             {...getInputProps('email')}
+            onChange={onInputChange}
           />
           <Input
             placeholder="Enter password"
@@ -175,7 +181,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
         <div className="text-sm mt-3 text-center text-app-foreground-inactive">
           By moving forward, you acknowledge that you have read and accept the
           <a
-            href="https://firecamp.io/legals/privacy-policy/"
+            href="https://firecamp.io/legal/privacy-policy/"
             tabIndex={1}
             className="font-bold underline px-1"
             target={'_blank'}
@@ -184,7 +190,7 @@ const SignUp: FC<IModal> = ({ opened, onClose }) => {
           </a>
           and
           <a
-            href="https://firecamp.io/legals/privacy-policy/"
+            href="https://firecamp.io/legal/privacy-policy/"
             tabIndex={1}
             className="font-bold underline px-1"
             target={'_blank'}
