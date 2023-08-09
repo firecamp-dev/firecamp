@@ -152,9 +152,9 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
 
             html: {
               lineHeight: 1.5 /* 1 */,
-              '-webkit-text-size-adjust': '100%' /* 2 */,
-              '-moz-tab-size': 4 /* 3 */,
-              '-o-tab-size': 4,
+              WebkitTextSizeAdjust: '100%' /* 2 */,
+              MozTabSize: 4 /* 3 */,
+              OTabSize: 4,
               tabSize: 4 /* 3 */,
               fontFamily: 'sans-serif' /* 4 */,
               fontFeatureSettings: 'normal' /* 5 */,
@@ -322,15 +322,15 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
             2. Correct the outline style in Safari.
             */
             '[type="search"]': {
-              '-webkit-appearance': 'textfield' /* 1 */,
-              'outline-offset': '-2px' /* 2 */,
+              WebkitAppearance: 'textfield' /* 1 */,
+              outlineOffset: '-2px' /* 2 */,
             },
 
             /*
             Remove the inner padding in Chrome and Safari on macOS.
             */
             '::-webkit-search-decoration': {
-              '-webkit-appearance': 'none',
+              WebkitAppearance: 'none',
             },
 
             /*
@@ -338,7 +338,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
             2. Change font properties to `inherit` in Safari.
             */
             '::-webkit-file-upload-button': {
-              '-webkit-appearance': 'button' /* 1 */,
+              WebkitAppearance: 'button' /* 1 */,
               font: 'inherit' /* 2 */,
             },
 
