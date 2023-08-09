@@ -363,37 +363,35 @@ const Explorer: FC<any> = () => {
                       renameItem: ['enter', 'f2'],
                       abortRenameItem: ['esc'],
                     }}
-                    // dataProvider={new StaticTreeDataProvider(items, (item, data) => ({ ...item, data }))}
                     dataProvider={dataProvider.current}
-                    defaultInteractionMode={{
-                      mode: 'custom',
-                      extends: InteractionMode.ClickItemToExpand,
-                      createInteractiveElementProps: (
-                        item,
-                        treeId,
-                        actions,
-                        renderFlags
-                      ) => ({
-                        /**
-                         * 1. avoid multi select
-                         * 2. (will not work as isFocused is always true, ignore for now) focus on first click and select item if it's focused (second click)
-                         * 3. if has children then toggle expand/collapse
-                         */
-                        onClick: (e) => {
-                          //avoid multi select
-                          // console.log(item, actions, renderFlags);
-                          if (item.isFolder) actions.toggleExpandedState();
-                          if (!renderFlags.isFocused) actions.focusItem();
-                          else actions.selectItem();
-                        },
-                        onFocus: (e) => {
-                          actions.focusItem();
-                        },
-                      }),
-                    }}
+                    // defaultInteractionMode={{
+                    //   mode: 'custom',
+                    //   extends: InteractionMode.ClickArrowToExpand,
+                    //   createInteractiveElementProps: (
+                    //     item,
+                    //     treeId,
+                    //     actions,
+                    //     renderFlags
+                    //   ) => ({
+                    //     /**
+                    //      * 1. avoid multi select
+                    //      * 2. (will not work as isFocused is always true, ignore for now) focus on first click and select item if it's focused (second click)
+                    //      * 3. if has children then toggle expand/collapse
+                    //      */
+                    //     onClick: (e) => {
+                    //       //avoid multi select
+                    //       // console.log(item, actions, renderFlags);
+                    //       if (item.isFolder) actions.toggleExpandedState();
+                    //       if (!renderFlags.isFocused) actions.focusItem();
+                    //       else actions.selectItem();
+                    //     },
+                    //     onFocus: (e) => {
+                    //       actions.focusItem();
+                    //     },
+                    //   }),
+                    // }}
                     getItemTitle={(item) => item.data?.name}
                     viewState={{}}
-                    // renderItemTitle={({ title }) => <span>{title}</span>}
                     renderItemArrow={treeRenderer.renderItemArrow}
                     // renderItemTitle={treeRenderer.renderItemTitle}
                     renderItem={(props) =>
@@ -401,12 +399,11 @@ const Explorer: FC<any> = () => {
                     }
                     // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
                     // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
-
-                    canRename={true}
-                    canReorderItems={true}
-                    canDragAndDrop={true}
-                    canDropOnFolder={true}
-                    canDropOnNonFolder={true}
+                    canRename
+                    canReorderItems
+                    canDragAndDrop
+                    canDropOnFolder
+                    canDropOnNonFolder
                     canDrag={(items) => {
                       return true;
                     }}
