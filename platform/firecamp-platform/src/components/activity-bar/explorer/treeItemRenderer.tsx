@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { FolderOpen, FolderClosed, ChevronRight, ChevronDown } from 'lucide-react';
+import { FolderOpen, Folder, ChevronRight, ChevronDown } from 'lucide-react';
 import CollectionMenu from './menus/CollectionMenu';
 import {
   FcIconGraphQL,
@@ -48,7 +48,7 @@ export default {
       ) : (
         <div className='flex items-center' {...context.arrowProps}>
           <ChevronRight className="mr-1 flex-none" size={16} opacity={0.8} />
-          <FolderClosed className="mr-1 flex-none" size={16} opacity={0.6} />
+          <Folder className="mr-1 flex-none" size={16} opacity={0.6} />
         </div>
       );
     } else {
