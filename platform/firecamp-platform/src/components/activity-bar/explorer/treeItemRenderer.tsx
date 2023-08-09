@@ -1,9 +1,5 @@
 import cx from 'classnames';
-import { FolderOpen, Folder } from 'lucide-react';
-import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
-import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
-import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
+import { FolderOpen, Folder, ChevronRight, ChevronDown } from 'lucide-react';
 import CollectionMenu from './menus/CollectionMenu';
 import {
   FcIconGraphQL,
@@ -36,53 +32,23 @@ export default {
     } else if (item.data?.__ref?.isCollection) {
       return context.isExpanded ? (
         <div className='flex items-center' {...context.arrowProps}>
-          <VscTriangleDown
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.8'}
-          />
-          <AiTwotoneFolderOpen
-            className="mr-1 flex-none"
-            size={16}
-            opacity={'0.8'}
-          />
+          <ChevronDown className="mr-1 flex-none" size={16} opacity={0.8} />
         </div>
       ) : (
         <div className='flex items-center' {...context.arrowProps}>
-          <VscTriangleRight
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.8'}
-          />
-          <AiTwotoneFolder
-            className="mr-1 flex-none"
-            size={16}
-            opacity={'0.8'}
-          />
+          <ChevronRight className="mr-1 flex-none" size={16} opacity={0.8} />
         </div>
       );
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <div className='flex items-center' {...context.arrowProps}>
-          <VscTriangleDown
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.8'}
-          />
-          <FolderOpen className="mr-1 flex-none" size={16} opacity={'0.8'} />
+          <ChevronDown className="mr-1 flex-none" size={16} opacity={0.8} />
+          <FolderOpen className="mr-1 flex-none" size={16} opacity={0.6} />
         </div>
       ) : (
         <div className='flex items-center' {...context.arrowProps}>
-          <VscTriangleRight
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.8'}
-          />
-          <Folder
-            className="mr-1 flex-none"
-            size={16}
-            opacity={0.8}
-          />
+          <ChevronRight className="mr-1 flex-none" size={16} opacity={0.8} />
+          <Folder className="mr-1 flex-none" size={16} opacity={0.6} />
         </div>
       );
     } else {
@@ -182,15 +148,15 @@ export default {
           {context.isExpanded && item.isFolder && (
             <span
               className="rct-tree-line absolute top-5 bottom-0 border-r border-app-foreground-inactive z-10 opacity-50"
-              style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
+              style={{ paddingLeft: `${renderDepthOffset + 3}px` }}
             ></span>
           )}
           <span
             className={cx(
               'rct-tree-line horizontal absolute top-3 h-px bg-app-foreground-inactive z-10 w-2 opacity-50',
-              { '!top-4': item.data?.__ref.isRequest }
+              { '!top-auto': item.data?.__ref.isRequest }
             )}
-            style={{ left: `${renderDepthOffset * 2 - 3}px` }}
+            style={{ left: `${renderDepthOffset * 2 + 3}px` }}
           ></span>
 
           <InteractiveComponent

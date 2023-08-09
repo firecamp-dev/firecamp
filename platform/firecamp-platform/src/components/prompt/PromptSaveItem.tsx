@@ -87,7 +87,6 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
         <div className='h-[340px] pt-4'>
           <div className="mt-4">
             <Input
-              autoFocus={true}
               label={label}
               placeholder={placeholder}
               name={'promptInput'}
@@ -96,6 +95,7 @@ export const PromptSaveItem: FC<IPromptSaveItem> = ({
               onKeyDown={() => { }}
               onBlur={() => { }}
               error={state.error}
+              data-autofocus
             />
           </div>
           <PathSelector

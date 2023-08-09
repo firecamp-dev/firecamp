@@ -6,12 +6,12 @@ import {
   AppWindow,
   Braces,
   Building,
-  FolderClosed,
+  Folder,
   MailOpen,
   UserPlus2,
 } from 'lucide-react';
 
-import { DropdownMenu, FcIconGetSquare, BurgerIcon } from '@firecamp/ui';
+import { DropdownMenu, FcHttp, BurgerIcon } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
 import { useWorkspaceStore } from '../../store/workspace';
 import { useTabStore } from '../../store/tab';
@@ -35,14 +35,14 @@ const options = [
     id: EMenuOptions.Request,
     name: 'New request',
     prefix: () => (
-      <FcIconGetSquare size={16} className="text-app-foreground-active" />
+      <FcHttp size={16} className="text-app-foreground-active" />
     ),
   },
   {
     id: EMenuOptions.Collection,
     name: 'New collection',
     prefix: () => (
-      <FolderClosed size={16} className="text-app-foreground-active" />
+      <Folder size={16} className="text-app-foreground-active" />
     ),
   },
   {
