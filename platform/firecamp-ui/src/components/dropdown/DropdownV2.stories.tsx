@@ -620,7 +620,7 @@ export const StatusBarExample = () => {
                   },
                   {
                     id: 'switch_workspace',
-                    name: 'Switch to Workspace',
+                    name: 'Switch Workspace',
 
                     postfix: () => (
                       <div className={'ml-2 leading-3 text-primaryColor'}>
@@ -630,7 +630,7 @@ export const StatusBarExample = () => {
                   },
                   {
                     id: 'switch_org',
-                    name: 'Switch to Org',
+                    name: 'Switch Org',
 
                     postfix: () => (
                       <div className={'ml-2 leading-3 text-primaryColor'}>
