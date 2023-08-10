@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import cx from 'classnames';
 import { Plus } from 'lucide-react';
-import { ScrollBar } from '@firecamp/ui';
+import { ScrollArea } from '@firecamp/ui';
 import Tab from './Tab';
 import { ITabs } from './interfaces/Tabs.interfaces';
 
@@ -91,7 +91,7 @@ const Tabs: FC<ITabs> = ({
         </div>
       )}
 
-      <ScrollBar classNames={{
+      <ScrollArea classNames={{
         root: !suffixComp ? 'flex-1': ''
       }}
       >
@@ -179,7 +179,7 @@ const Tabs: FC<ITabs> = ({
           </div>
           {/* </SimpleBar> */}
         </div>
-      </ScrollBar>
+      </ScrollArea>
 
       {suffixComp && (
         <div

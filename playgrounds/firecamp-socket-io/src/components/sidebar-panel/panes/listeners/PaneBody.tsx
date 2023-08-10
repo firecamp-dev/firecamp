@@ -8,7 +8,7 @@ import {
   Button,
   Column,
   SwitchButtonV2,
-  ScrollBar,
+  ScrollArea,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
 
@@ -46,7 +46,7 @@ const PaneBody = () => {
             </Container.Body> */}
 
             <Container.Body>
-              <ScrollBar>
+              <ScrollArea>
                 <>
                   {listeners.map((listener, index) => {
                     return (
@@ -58,7 +58,7 @@ const PaneBody = () => {
                     );
                   })}
                 </>
-              </ScrollBar>
+              </ScrollArea>
             </Container.Body>
 
             {listeners?.length > 1 ? (

@@ -11,7 +11,7 @@ import {
 import cx from 'classnames';
 import { Plus } from 'lucide-react';
 import { TId } from '@firecamp/types';
-import { ScrollBar } from '@firecamp/ui';
+import { ScrollArea } from '@firecamp/ui';
 
 import Tab from './Tab';
 import { ITabs } from './Tabs.interface';
@@ -166,7 +166,7 @@ const Tabs: FC<ITabs> = forwardRef(
       >
         <PreComponent preComp={preComp} tabsVersion={tabsVersion} />
 
-        <ScrollBar classNames={{
+        <ScrollArea classNames={{
           root: !suffixComp ? 'flex-1': ''
         }}
         >
@@ -250,7 +250,7 @@ const Tabs: FC<ITabs> = forwardRef(
               )}
             </div>
           </div>
-        </ScrollBar>
+        </ScrollArea>
 
         <SuffixComponent suffixComp={suffixComp} tabsVersion={tabsVersion} />
         <PostComponent postComp={postComp} />
