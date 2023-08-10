@@ -103,7 +103,7 @@ export default {
       // context.startRenamingItem() //this api is not working here: https://github.com/lukasbach/react-complex-tree/issues/83
     };
 
-    const renderDepthOffset = 8;
+    const renderDepthOffset = 7;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
     // TODO have only root li component create all the classes
@@ -153,7 +153,7 @@ export default {
           {context.isExpanded && item.isFolder && (
             <span
               className="rct-tree-line absolute top-5 bottom-0 border-r border-app-foreground-inactive z-10 opacity-50"
-              style={{ paddingLeft: `${renderDepthOffset + 3}px` }}
+              style={{ paddingLeft: `${renderDepthOffset + 5}px` }}
             ></span>
           )}
           <span
@@ -161,7 +161,7 @@ export default {
               'rct-tree-line horizontal absolute top-3 h-px bg-app-foreground-inactive z-10 w-2 opacity-50',
               { '!top-auto': item.data?.__ref.isRequest }
             )}
-            style={{ left: `${renderDepthOffset * 2 + 4}px` }}
+            style={{ left: `${renderDepthOffset * 2 + 6}px` }}
           ></span>
 
           <InteractiveComponent

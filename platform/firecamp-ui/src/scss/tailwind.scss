@@ -77,7 +77,7 @@
     --info: var(--mantine-color-blue-6);
     --success: var(--mantine-color-lime-8);
 
-    --color: 128, 128, 128;
+    --color: var(--mantine-color-gray-6);
     --focus-level-1: rgba(var(--color), 0.06);
     --focus-level-2: rgba(var(--color), 0.1);
     --focus-level-3: rgba(var(--color), 0.14);
@@ -163,7 +163,7 @@
     --info: var(--mantine-color-blue-6);
     --success: var(--mantine-color-lime-8);
 
-    --color: 86, 88, 105;
+    --color: var(--mantine-color-dark-3);
     --focus-level-1: rgba(var(--color), 0.06);
     --focus-level-2: rgba(var(--color), 0.1);
     --focus-level-3: rgba(var(--color), 0.14);
@@ -436,6 +436,10 @@
     margin-left: 0.5rem;
     margin-right: 0.5rem;
 }
+.mx-3 {
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+}
 .mx-4 {
     margin-left: 1rem;
     margin-right: 1rem;
@@ -689,9 +693,6 @@
 .\!h-6 {
     height: 1.5rem !important;
 }
-.\!h-72 {
-    height: 18rem !important;
-}
 .\!h-80 {
     height: 20rem !important;
 }
@@ -747,9 +748,6 @@
 .h-\[10px\] {
     height: 10px;
 }
-.h-\[200px\] {
-    height: 200px;
-}
 .h-\[21px\] {
     height: 21px;
 }
@@ -761,9 +759,6 @@
 }
 .h-\[34px\] {
     height: 34px;
-}
-.h-\[50vh\] {
-    height: 50vh;
 }
 .h-\[70vh\] {
     height: 70vh;
@@ -858,9 +853,6 @@
 }
 .w-96 {
     width: 24rem;
-}
-.w-\[200px\] {
-    width: 200px;
 }
 .w-\[220px\] {
     width: 220px;
@@ -980,21 +972,10 @@
 .cursor-pointer {
     cursor: pointer;
 }
-.touch-none {
-    touch-action: none;
-}
-.select-none {
-    -webkit-user-select: none;
-       -moz-user-select: none;
-            user-select: none;
-}
 .select-text {
     -webkit-user-select: text;
        -moz-user-select: text;
             user-select: text;
-}
-.resize-none {
-    resize: none;
 }
 .resize {
     resize: both;
@@ -1283,9 +1264,6 @@
 .bg-activityBar-background-active {
     background-color: var(--activityBar-background-active);
 }
-.bg-activityBar-border {
-    background-color: var(--activityBar-border);
-}
 .bg-app-background {
     background-color: var(--app-background);
 }
@@ -1337,10 +1315,6 @@
 .bg-primaryColor {
     background-color: var(--app-primary);
 }
-.bg-primaryColor-text {
-    --tw-bg-opacity: 1;
-    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
 .bg-secondaryColor {
     background-color: var(--app-secondary);
 }
@@ -1376,9 +1350,6 @@
 }
 .p-0 {
     padding: 0px;
-}
-.p-0\.5 {
-    padding: 0.125rem;
 }
 .p-1 {
     padding: 0.25rem;
@@ -1947,9 +1918,6 @@
 .duration-100 {
     transition-duration: 100ms;
 }
-.ease-out {
-    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-}
 .before\:absolute::before {
     content: var(--tw-content);
     position: absolute;
@@ -2250,9 +2218,6 @@
 }
 .data-\[side\=\'bottom\'\]\:animate-slideUpAndFade[data-side='bottom'] {
     animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-.\[\&\>div\]\:\!block>div {
-    display: block !important;
 }
 
 @import url(../components/split-view/SplitView.scss);
