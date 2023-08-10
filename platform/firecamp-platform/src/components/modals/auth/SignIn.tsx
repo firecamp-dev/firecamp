@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { UserCircle2 } from 'lucide-react';
+import { Mail } from 'lucide-react';
 import { Drawer, IModal, Button, FcLogo } from '@firecamp/ui';
 
 import _auth from '../../../services/auth';
@@ -23,7 +23,7 @@ const SignIn: FC<IModal> = ({ opened, onClose }) => {
         <GithubGoogleAuth />
         <Button
           text="Sign In with Email"
-          leftIcon={<UserCircle2 size={18} />}
+          leftIcon={<Mail size={18} />}
           classNames={{ 
             root: 'mb-5',
             inner: 'ml-[30%]'
