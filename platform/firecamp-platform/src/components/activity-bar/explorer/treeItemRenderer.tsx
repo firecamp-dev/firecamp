@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { FolderOpen, Folder, ChevronRight, ChevronDown } from 'lucide-react';
+import { FolderOpen, FolderClosed, ChevronRight, ChevronDown } from 'lucide-react';
 import CollectionMenu from './menus/CollectionMenu';
 import {
   FcIconGraphQL,
