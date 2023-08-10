@@ -32,23 +32,23 @@ export default {
     } else if (item.data?.__ref?.isCollection) {
       return context.isExpanded ? (
         <div className='flex items-center' {...context.arrowProps}>
-          <ChevronDown className="mr-1 flex-none" size={16} opacity={0.8} />
+          <ChevronDown className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
         </div>
       ) : (
         <div className='flex items-center' {...context.arrowProps}>
-          <ChevronRight className="mr-1 flex-none" size={16} opacity={0.8} />
+          <ChevronRight className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
         </div>
       );
     } else if (item.data?.__ref?.isFolder) {
       return context.isExpanded ? (
         <div className='flex items-center' {...context.arrowProps}>
-          <ChevronDown className="mr-1 flex-none" size={16} opacity={0.8} />
-          <FolderOpen className="mr-1 flex-none" size={16} opacity={0.6} />
+          <ChevronDown className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+          <FolderOpen className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
         </div>
       ) : (
         <div className='flex items-center' {...context.arrowProps}>
-          <ChevronRight className="mr-1 flex-none" size={16} opacity={0.8} />
-          <FolderClosed className="mr-1 flex-none" size={16} opacity={0.6} />
+          <ChevronRight className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+          <FolderClosed className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
         </div>
       );
     } else {
