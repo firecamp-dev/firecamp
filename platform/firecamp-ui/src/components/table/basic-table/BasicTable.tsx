@@ -141,7 +141,7 @@ const BasicTable = ({
           <div className="px-2 flex">
             <Trash2
               size={14}
-              className="text-error cursor-pointer"
+              className="text-primaryColor cursor-pointer"
               onClick={(e) => tableApi?.removeRow(row.id)}
             />
           </div>

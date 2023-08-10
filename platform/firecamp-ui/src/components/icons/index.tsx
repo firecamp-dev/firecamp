@@ -7,9 +7,10 @@ const BurgerIcon = (props: BurgerProps) => {
   return (
     <Burger
       {...props}
-      color={
-        theme.colors[theme.primaryColor][theme.colorScheme === 'light' ? 6 : 8]
-      }
+      color={theme.colors.dark[4]}
+      // color={
+      //   theme.colors[theme.primaryColor][theme.colorScheme === 'light' ? 6 : 8]
+      // }
     />
   );
 };

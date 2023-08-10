@@ -150,7 +150,7 @@ const GlobalCreateDD = ({}) => {
         footer={<div className="mt-1">v{process.env.APP_VERSION}</div>}
         onSelect={onSelect}
         classNames={{
-          dropdown: '-mt-1 -ml-[2px] pb-0',
+          dropdown: '-ml-[2px] pb-0', //-mt-1
         }}
       />
     </div>

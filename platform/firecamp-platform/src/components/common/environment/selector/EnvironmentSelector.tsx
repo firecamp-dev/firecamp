@@ -23,16 +23,18 @@ const EnvironmentSelector = () => {
 
   if (isGuest === true)
     return (
-      <Button
-        text="Sign In"
-        transparent
-        primary
-        classNames={{
-          root: 'rounded-none border-0 border-tab-border border-b border-l w-fit text-sm',
-        }}
-        animate={false}
-        onClick={() => platformContext.app.modals.openSignIn()}
-      />
+      <div className="flex items-center hover:bg-primaryColor">
+        <Button
+          text="Sign In"
+          transparent
+          primary
+          classNames={{
+            root: 'rounded-none border-0 border-tab-border border-b border-l  hover:text-secondaryColor-text',
+          }}
+          animate={false}
+          onClick={() => platformContext.app.modals.openSignIn()}
+        />
+      </div>
     );
   return (
     <Column
