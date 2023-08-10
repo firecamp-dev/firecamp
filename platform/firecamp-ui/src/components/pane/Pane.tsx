@@ -3,8 +3,6 @@ import { IPane, IHeader, IBody } from "./interfaces/Pane.interfaces";
 import cx from 'classnames';
 import { ChevronDown, ChevronRight } from 'lucide-react';
 import './Pane.scss';
-
-
 import ToolBar from "../ToolBar/ToolBar";
 
 const Pane: FC<IPane> & {
@@ -15,53 +13,44 @@ const Pane: FC<IPane> & {
     className,
     headerClassName,
     bodyClassName,
-    height='',
+    height = '',
     headerTitleRenderer = () => <></>,
     headerActionRenderer = () => <></>,
     bodyRenderer = () => <></>,
 }) => {
         const [_expanded, toggle] = useState(expanded);
-        const _toggle = ()=>toggle(!_expanded)
+        const _toggle = () => toggle(!_expanded)
         const rendererProps = { toggle: _toggle, expanded: _expanded };
-        return (<div style={{height: height}} className={cx("pane  flex flex-col overflow-auto", { 'expanded border-b border-app-border !overflow-hidden': _expanded },{'custom-height' : (height != '')}, className)} tabIndex={1}>
+        return (<div style={{ height: height }} className={cx("pane  flex flex-col overflow-auto", { 'expanded -border-b border-app-border !overflow-hidden': _expanded }, { 'custom-height': (height != '') }, className)} tabIndex={1}>
             <Pane.Header
                 className={headerClassName}
                 toggle={_toggle}
                 expanded={_expanded}
                 titleRenderer={headerTitleRenderer}
                 actionRenderer={headerActionRenderer}
-              />
-               {
+            />
+            {
                 _expanded
                     ? <Pane.Body className={bodyClassName}>
-                    { bodyRenderer(rendererProps) }
-                </Pane.Body>
-                        : ""
-                    
-                }
-              {
-                
-              }
+                        {bodyRenderer(rendererProps)}
+                    </Pane.Body>
+                    : ""
+            }
         </div>);
     };
 
 const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, className, expanded, toggle }) => {
 
     const actionDomRef = useRef<HTMLDivElement>();
-    const onToggle = (e: any)=> {
-        if(actionDomRef.current.contains(e.target)) return;
+    const onToggle = (e: any) => {
+        if (actionDomRef.current.contains(e.target)) return;
         toggle()
     }
     return (
-        <div className={cx("pane-header cursor-pointer border-b border-app-border px-2 py-1", className)} 
-             tabIndex={1}
-             onClick={onToggle}>
-            {
-                expanded
-                    ? <ChevronDown size={16} className="mr-1" />
-                        : <ChevronRight size={16} className="mr-1" />
-                    
-            }
+        <div className={cx("pane-header cursor-pointer border-y border-app-border px-2 py-1", className)}
+            tabIndex={1}
+            onClick={onToggle}>
+            {expanded ? <ChevronDown size={16} className="mr-1" /> : <ChevronRight size={16} className="mr-1" />}
             <div className='pane-title whitespace-pre text-sm'>
                 {titleRenderer()}
             </div>
