@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import cx from 'classnames';
-import { AppWindow, ArrowDown, Braces, Building, ChevronRight, File, FolderClosed, LogIn, MoreHorizontal, Pencil, Plus, SendHorizonal, Twitter, Trash2, UserCircle2, UserPlus2 } from 'lucide-react';
+import { AppWindow, ArrowDown, Braces, Building, ChevronRight, File, Folder, LogIn, MoreHorizontal, Pencil, Plus, SendHorizonal, Twitter, Trash2, UserCircle2, UserPlus2 } from 'lucide-react';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 
-import { Button, FcIconGetSquare, DropdownMenu } from '@firecamp/ui';
+import { Button, FcHttp, DropdownMenu } from '@firecamp/ui';
 import StatusBar from '../status-bar/StatusBar';
 
 enum EMenuOptions {
@@ -35,13 +35,13 @@ Example.args = {
     {
       id: EMenuOptions.Request,
       name: 'Request',
-      prefix: () => <FcIconGetSquare size={18} />,
+      prefix: () => <FcHttp size={18} />,
       postfix: () => <span className="text-inputPlaceholder">⌘K</span>,
     },
     {
       id: EMenuOptions.Collection,
       name: 'Collection',
-      prefix: () => <FolderClosed size={18} />,
+      prefix: () => <Folder size={18} />,
     },
     {
       id: EMenuOptions.Environment,
@@ -126,13 +126,13 @@ export const GlobalCreate = () => {
         {
           id: EMenuOptions.Request,
           name: 'Request',
-          prefix: () => <FcIconGetSquare size={18} />,
+          prefix: () => <FcHttp size={18} />,
           postfix: () => <span className="text-inputPlaceholder">⌘K</span>,
         },
         {
           id: EMenuOptions.Collection,
           name: 'Collection',
-          prefix: () => <FolderClosed size={18} />,
+          prefix: () => <Folder size={18} />,
         },
         {
           id: EMenuOptions.Environment,

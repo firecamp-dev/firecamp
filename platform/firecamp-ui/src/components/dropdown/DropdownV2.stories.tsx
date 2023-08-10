@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { AppWindow, ArrowDown, Braces, Building, ChevronRight, File, FolderClosed, LogIn, Plus, SendHorizonal, Twitter, UserCircle2, UserPlus2 } from 'lucide-react';
+import { AppWindow, ArrowDown, Braces, Building, ChevronRight, File, Folder, LogIn, Plus, SendHorizonal, Twitter, UserCircle2, UserPlus2 } from 'lucide-react';
 
 import { VscGithubInverted } from '@react-icons/all-files/vsc/VscGithubInverted';
 import { VscRemote } from '@react-icons/all-files/vsc/VscRemote';
-import { FcIconGetSquare } from '@firecamp/ui';
+import { FcHttp } from '@firecamp/ui';
 
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
@@ -262,7 +262,7 @@ export const CreateMenuExample = () => {
               {
                 id: 'Request',
                 name: 'Request',
-                prefix: () => <FcIconGetSquare className="mr-2" size={16} />,
+                prefix: () => <FcHttp className="mr-2" size={16} />,
                 postfix: () => (
                   <span className="ml-auto text-inputPlaceholder pl-2">⌘K</span>
                 ),
@@ -270,7 +270,7 @@ export const CreateMenuExample = () => {
               {
                 id: 'Collection',
                 name: 'Collection',
-                prefix: () => <FolderClosed className="mr-2" size={16} />,
+                prefix: () => <Folder className="mr-2" size={16} />,
                 postfix: () => (
                   <ChevronRight size={14} className={'ml-auto'} />
                 ),

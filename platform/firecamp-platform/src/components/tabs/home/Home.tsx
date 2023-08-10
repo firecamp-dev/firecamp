@@ -11,7 +11,7 @@ import {
 } from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
-  FcIconGetSquare,
+  FcHttp,
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
@@ -73,7 +73,7 @@ const Home: FC<any> = () => {
               <div className="flex-col border-b border-app-border w-fit flex-none">
                 <RequestItem
                   label="Create Rest API"
-                  icon={<FcIconGetSquare size={24} />}
+                  icon={<FcHttp size={24} />}
                   openRequest={() => _openTab(ERequestTypes.Rest)}
                 />
                 <RequestItem

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useForm } from '@mantine/form';
 import { Info } from 'lucide-react';
 import { IOrganization } from '@firecamp/types';
-import { Button, Container, Input, TabHeader, TextAreav2 } from '@firecamp/ui';
+import { Button, Container, Input, TabHeader, TextArea } from '@firecamp/ui';
 import { Regex } from '../../../../constants';
 
 interface IEditOrganization {
@@ -61,7 +61,7 @@ const EditOrganization: FC<IEditOrganization> = ({
             {...getInputProps('name')}
           />
 
-          <TextAreav2
+          <TextArea
             minRows={10}
             label="Description (optional)"
             placeholder="Description"

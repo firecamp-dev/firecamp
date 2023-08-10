@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import classNames from 'classnames';
-import { ArrowDown, Braces, FolderOpen, FolderClosed } from 'lucide-react';
+import { ArrowDown, Braces, FolderOpen, Folder } from 'lucide-react';
 
 import { EHttpMethod, ERequestTypes } from '@firecamp/types';
 import {
@@ -55,7 +55,7 @@ const PreComp: FC<{ entity: any; entityType: string }> = ({
     case ETabEntityTypes.Collection:
       return (
         <div className="collection text-xs font-bold w-5 tab-icon">
-          <FolderClosed size={16} />
+          <Folder size={16} />
         </div>
       );
     case ETabEntityTypes.Folder:

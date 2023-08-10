@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { useForm } from '@mantine/form';
 import { Info } from 'lucide-react';
 import { IWorkspace } from '@firecamp/types';
-import { Button, Container, Input, TabHeader, TextAreav2 } from '@firecamp/ui';
+import { Button, Container, Input, TabHeader, TextArea } from '@firecamp/ui';
 import platformContext from '../../../../services/platform-context';
 import { Regex } from '../../../../constants';
 
@@ -62,7 +62,7 @@ const EditInfoTab: FC<IEditInfoTab> = ({
             {...getInputProps('name')}
           />
 
-          <TextAreav2
+          <TextArea
             minRows={10}
             label="Description (optional)"
             placeholder="Description"
