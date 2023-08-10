@@ -8,6 +8,29 @@ import {
 } from '@firecamp/ui';
 import { ERequestTypes } from '@firecamp/types';
 
+const CollectionCloseIcon = (props) => (
+  <div className='flex items-center' {...props} >
+    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const CollectionOpenIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const FolderOpenIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <FolderOpen className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const FolderCloseIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <FolderClosed className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div >
+);
+
 export default {
   renderItemArrow: ({ item, context }) => {
     // console.log(item, 'arrow context');
@@ -30,27 +53,9 @@ export default {
           return <></>;
       }
     } else if (item.data?.__ref?.isCollection) {
-      return context.isExpanded ? (
-        <div className='flex items-center' {...context.arrowProps}>
-          <ChevronDown className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
-        </div>
-      ) : (
-        <div className='flex items-center' {...context.arrowProps}>
-          <ChevronRight className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
-        </div>
-      );
+      return context.isExpanded ? <CollectionOpenIcon {...context.arrowProps} /> : <CollectionCloseIcon {...context.arrowProps} />;
     } else if (item.data?.__ref?.isFolder) {
-      return context.isExpanded ? (
-        <div className='flex items-center' {...context.arrowProps}>
-          <ChevronDown className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
-          <FolderOpen className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
-        </div>
-      ) : (
-        <div className='flex items-center' {...context.arrowProps}>
-          <ChevronRight className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
-          <FolderClosed className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
-        </div>
-      );
+      return context.isExpanded ? <FolderOpenIcon {...context.arrowProps} /> : <FolderCloseIcon {...context.arrowProps} />
     } else {
       return <></>;
     }
