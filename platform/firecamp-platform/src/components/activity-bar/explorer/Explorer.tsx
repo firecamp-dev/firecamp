@@ -75,8 +75,12 @@ const Explorer: FC<any> = () => {
     )
   );
 
+  /** if mouse down then do not open the request in tab. example dragging item should not fire onSelect */
+  const isMouseDown = useRef(false);
   //effect: register and unregister treeDataProvider instance
   useEffect(() => {
+    document.body.onmousedown = () => isMouseDown.current = true;
+    document.body.onmouseup = () => isMouseDown.current = false
     registerTDP(dataProvider.current);
     return unRegisterTDP;
   }, []);
@@ -134,24 +138,27 @@ const Explorer: FC<any> = () => {
   const _onNodeSelect = (nodeIndexes: TreeItemIndex[]) => {
     // console.log({ nodeIndexes });
     // return
-
-    let nodeIndex = nodeIndexes[0];
-    let nodeItem = [...collections, ...folders, ...requests].find(
-      (c) => c.__ref.id == nodeIndex
-    );
-    // console.log({ nodeItem });
-    if (
-      nodeItem &&
-      [
-        ERequestTypes.Rest,
-        ERequestTypes.GraphQL,
-        ERequestTypes.SocketIO,
-        ERequestTypes.WebSocket,
-      ].includes(nodeItem.__meta.type)
-    ) {
+    setTimeout(() => {
+      // if item is being dragging then do not open it in new tab
+      if (isMouseDown.current) return;
+      let nodeIndex = nodeIndexes[0];
+      let nodeItem = [...collections, ...folders, ...requests].find(
+        (c) => c.__ref.id == nodeIndex
+      );
       // console.log({ nodeItem });
-      _openReqInTab(nodeItem);
-    }
+      if (
+        nodeItem &&
+        [
+          ERequestTypes.Rest,
+          ERequestTypes.GraphQL,
+          ERequestTypes.SocketIO,
+          ERequestTypes.WebSocket,
+        ].includes(nodeItem.__meta.type)
+      ) {
+        // console.log({ nodeItem });
+        _openReqInTab(nodeItem);
+      }
+    }, 10)
   };
 
   const canDropAt = useCallback(
