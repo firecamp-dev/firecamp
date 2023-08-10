@@ -105,7 +105,7 @@ const UserDDMenus: FC<{ title: string; isGuest: boolean }> = ({
       },
     },
     {
-      name: 'Switch to organization',
+      name: 'Switch Organization',
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
           <VscRemote size={14} />
@@ -197,7 +197,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       },
     },
     {
-      name: 'Switch to Workspace',
+      name: 'Switch Workspace',
       disabled,
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
@@ -209,7 +209,7 @@ const WorkspaceDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       },
     },
     {
-      name: 'Switch to Org',
+      name: 'Switch Org',
       disabled,
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>
@@ -280,7 +280,7 @@ const OrgDDMenus: FC<{ title: string; disabled?: boolean }> = ({
       },
     },
     {
-      name: 'Switch to Org',
+      name: 'Switch Org',
       disabled,
       postfix: () => (
         <div className={'ml-2 text-primaryColor'}>

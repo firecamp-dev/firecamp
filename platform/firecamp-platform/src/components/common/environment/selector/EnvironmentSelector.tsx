@@ -1,9 +1,10 @@
 import shallow from 'zustand/shallow';
-import { Column } from '@firecamp/ui';
+import { Button, Column } from '@firecamp/ui';
 import { Eye } from 'lucide-react';
 import EnvironmentDD from './EnvironmentDD';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
+import platformContext from '../../../../services/platform-context';
 
 const EnvironmentSelector = () => {
   const { toggleEnvSidebar, setActiveEnv } = useEnvStore(
@@ -20,7 +21,19 @@ const EnvironmentSelector = () => {
     shallow
   );
 
-  if (isGuest === true) return <></>;
+  if (isGuest === true)
+    return (
+      <Button
+        text="Sign In"
+        transparent
+        primary
+        classNames={{
+          root: 'rounded-none border-0 border-tab-border border-b border-l w-fit text-sm',
+        }}
+        animate={false}
+        onClick={() => platformContext.app.modals.openSignIn()}
+      />
+    );
   return (
     <Column
       overflow="visible"

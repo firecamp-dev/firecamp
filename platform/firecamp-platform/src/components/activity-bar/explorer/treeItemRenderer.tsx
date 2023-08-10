@@ -1,5 +1,5 @@
 import cx from 'classnames';
-import { FolderOpen, Folder, ChevronRight, ChevronDown } from 'lucide-react';
+import { FolderOpen, FolderClosed, ChevronRight, ChevronDown } from 'lucide-react';
 import CollectionMenu from './menus/CollectionMenu';
 import {
   FcIconGraphQL,
@@ -7,6 +7,29 @@ import {
   FcIconWebSocket,
 } from '@firecamp/ui';
 import { ERequestTypes } from '@firecamp/types';
+
+const CollectionCloseIcon = (props) => (
+  <div className='flex items-center' {...props} >
+    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const CollectionOpenIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const FolderOpenIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <FolderOpen className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const FolderCloseIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <FolderClosed className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div >
+);
 
 export default {
   renderItemArrow: ({ item, context }) => {
@@ -30,27 +53,9 @@ export default {
           return <></>;
       }
     } else if (item.data?.__ref?.isCollection) {
-      return context.isExpanded ? (
-        <div className='flex items-center' {...context.arrowProps}>
-          <ChevronDown className="mr-1 flex-none" size={16} opacity={0.8} />
-        </div>
-      ) : (
-        <div className='flex items-center' {...context.arrowProps}>
-          <ChevronRight className="mr-1 flex-none" size={16} opacity={0.8} />
-        </div>
-      );
+      return context.isExpanded ? <CollectionOpenIcon {...context.arrowProps} /> : <CollectionCloseIcon {...context.arrowProps} />;
     } else if (item.data?.__ref?.isFolder) {
-      return context.isExpanded ? (
-        <div className='flex items-center' {...context.arrowProps}>
-          <ChevronDown className="mr-1 flex-none" size={16} opacity={0.8} />
-          <FolderOpen className="mr-1 flex-none" size={16} opacity={0.6} />
-        </div>
-      ) : (
-        <div className='flex items-center' {...context.arrowProps}>
-          <ChevronRight className="mr-1 flex-none" size={16} opacity={0.8} />
-          <Folder className="mr-1 flex-none" size={16} opacity={0.6} />
-        </div>
-      );
+      return context.isExpanded ? <FolderOpenIcon {...context.arrowProps} /> : <FolderCloseIcon {...context.arrowProps} />
     } else {
       return <></>;
     }
@@ -98,7 +103,7 @@ export default {
       // context.startRenamingItem() //this api is not working here: https://github.com/lukasbach/react-complex-tree/issues/83
     };
 
-    const renderDepthOffset = 8;
+    const renderDepthOffset = 7;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
     // TODO have only root li component create all the classes
@@ -148,7 +153,7 @@ export default {
           {context.isExpanded && item.isFolder && (
             <span
               className="rct-tree-line absolute top-5 bottom-0 border-r border-app-foreground-inactive z-10 opacity-50"
-              style={{ paddingLeft: `${renderDepthOffset + 3}px` }}
+              style={{ paddingLeft: `${renderDepthOffset + 5}px` }}
             ></span>
           )}
           <span
@@ -156,7 +161,7 @@ export default {
               'rct-tree-line horizontal absolute top-3 h-px bg-app-foreground-inactive z-10 w-2 opacity-50',
               { '!top-auto': item.data?.__ref.isRequest }
             )}
-            style={{ left: `${renderDepthOffset * 2 + 4}px` }}
+            style={{ left: `${renderDepthOffset * 2 + 6}px` }}
           ></span>
 
           <InteractiveComponent

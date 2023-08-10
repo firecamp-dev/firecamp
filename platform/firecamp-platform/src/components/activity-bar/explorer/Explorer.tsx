@@ -16,7 +16,7 @@ import {
   ToolBar,
   Empty,
   Button,
-  ScrollBar,
+  ScrollArea,
 } from '@firecamp/ui';
 import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
@@ -308,7 +308,8 @@ const Explorer: FC<any> = () => {
             return (
               <ToolBar>
                 <div>
-                  <RotateCw strokeWidth={1.5}
+                  <RotateCw
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={() => {
@@ -317,14 +318,16 @@ const Explorer: FC<any> = () => {
                   />
                 </div>
                 <div>
-                  <FolderPlus strokeWidth={1.5}
+                  <FolderPlus
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={createCollectionPrompt}
                   />
                 </div>
                 <div>
-                  <ArrowDown strokeWidth={1.5}
+                  <ArrowDown
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={openImportTab}
@@ -355,7 +358,7 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
-                <ScrollBar transparent fullHeight>
+                <ScrollArea>
                   <UncontrolledTreeEnvironment
                     ref={explorerTreeRef}
                     keyboardBindings={{
@@ -432,7 +435,7 @@ const Explorer: FC<any> = () => {
                       ref={treeRef}
                     />
                   </UncontrolledTreeEnvironment>
-                </ScrollBar>
+                </ScrollArea>
               </>
             );
           }}

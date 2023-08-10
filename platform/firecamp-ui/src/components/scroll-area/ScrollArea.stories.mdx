@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+
+<Meta title="UI-Kit/ScrollArea/Overview" />
+
+## **ScrollArea**
+
+The ScrollArea component allows you to display a custom scrollbar instead of the default browser scrollbar. It extends the functionality of the Mantine ScrollArea component.
+
+#### **Component Usage**:
+
+- Wrap your content with the `ScrollArea` component to enable the custom scrollbar.
+- Provide a maximum width/height to the parent component to trigger the appearance of the scrollbar when content overflows.
+- Alternatively, you can provide the `w` (width) and `h` (height) props directly to the `ScrollArea` component.
+- If you wish to display only the vertical scrollbar, ensure that the child contents do not overflow along the horizontal axis.
+
+#### **References**:
+
+For an example of ScrollArea usage, you can refer to the following demo:
+
+<LinkTo kind="ui-kit-scrollarea--demo" className="!text-primaryColor">
+  Refer Example
+</LinkTo>

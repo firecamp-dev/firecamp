@@ -8,7 +8,7 @@ import {
   Button,
   Column,
   SwitchButtonV2,
-  ScrollBar,
+  ScrollArea,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
 
@@ -45,9 +45,8 @@ const PaneBody = () => {
               </div>
             </Container.Body> */}
 
-            {/* with radix scrollbar */}
             <Container.Body>
-              <ScrollBar fullHeight>
+              <ScrollArea>
                 <>
                   {listeners.map((listener, index) => {
                     return (
@@ -59,7 +58,7 @@ const PaneBody = () => {
                     );
                   })}
                 </>
-              </ScrollBar>
+              </ScrollArea>
             </Container.Body>
 
             {listeners?.length > 1 ? (
@@ -176,6 +175,7 @@ const Listener = ({ listener, isActive }) => {
       </div>
 
       <Trash2
+        size={14}
         className="h-0 ml-1 group-hover:h-auto cursor-pointer"
         onClick={() => {
           deleteListener(listener);

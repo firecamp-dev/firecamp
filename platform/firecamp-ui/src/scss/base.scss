@@ -89,7 +89,7 @@
     --info: var(--mantine-color-blue-6);
     --success: var(--mantine-color-lime-8);
 
-    --color: 128, 128, 128;
+    --color: var(--mantine-color-gray-6);
     --focus-level-1: rgba(var(--color), 0.06);
     --focus-level-2: rgba(var(--color), 0.1);
     --focus-level-3: rgba(var(--color), 0.14);
@@ -175,7 +175,7 @@
     --info: var(--mantine-color-blue-6);
     --success: var(--mantine-color-lime-8);
 
-    --color: 86, 88, 105;
+    --color: var(--mantine-color-dark-3);
     --focus-level-1: rgba(var(--color), 0.06);
     --focus-level-2: rgba(var(--color), 0.1);
     --focus-level-3: rgba(var(--color), 0.14);

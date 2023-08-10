@@ -34,16 +34,12 @@ const options = [
   {
     id: EMenuOptions.Request,
     name: 'New request',
-    prefix: () => (
-      <FcHttp size={16} className="text-app-foreground-active" />
-    ),
+    prefix: () => <FcHttp size={16} className="text-app-foreground-active" />,
   },
   {
     id: EMenuOptions.Collection,
     name: 'New collection',
-    prefix: () => (
-      <Folder size={16} className="text-app-foreground-active" />
-    ),
+    prefix: () => <Folder size={16} className="text-app-foreground-active" />,
   },
   {
     id: EMenuOptions.Environment,
@@ -145,7 +141,11 @@ const GlobalCreateDD = ({}) => {
     <div className="border-l border-b border-tab-border flex items-center">
       <DropdownMenu
         onOpenChange={(v) => toggleOpen(v)}
-        handler={() => <BurgerIcon opened={isOpen} size={'sm'} className='mx-2 pt-0' />}
+        handler={() => (
+          <span className="border border-app-border flex items-center justify-center mx-3 rounded">
+            <BurgerIcon opened={isOpen} size={'xs'} />
+          </span>
+        )}
         options={options}
         footer={<div className="mt-1">v{process.env.APP_VERSION}</div>}
         onSelect={onSelect}

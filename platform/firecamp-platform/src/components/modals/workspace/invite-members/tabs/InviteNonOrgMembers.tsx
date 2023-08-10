@@ -7,7 +7,7 @@ import {
   DropdownMenu,
   Container,
   Popover,
-  ScrollBar,
+  ScrollArea,
 } from '@firecamp/ui';
 import RolesCallout from '../RolesCallout';
 import InviteUsersForm from '../InviteUsersForm';
@@ -110,13 +110,13 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
         </div>
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
-        <ScrollBar className="!h-72 mr-1" transparent fullWidth>
+        <ScrollArea>
           <InviteUsersForm
             error={error}
             usersList={usersList}
             onChange={(list) => onChange({ usersList: list })}
           />
-        </ScrollBar>
+        </ScrollArea>
       </Container.Body>
       <Container.Footer className="flex items-center">
         <Button
