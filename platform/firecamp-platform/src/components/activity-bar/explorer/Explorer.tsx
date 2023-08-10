@@ -358,7 +358,6 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
-                {/* Todo: check usage */}
                 <ScrollBar>
                   <UncontrolledTreeEnvironment
                     ref={explorerTreeRef}

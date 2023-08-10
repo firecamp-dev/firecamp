@@ -91,8 +91,9 @@ const Tabs: FC<ITabs> = ({
         </div>
       )}
 
-      <ScrollBar
-      // className={cx({ 'flex-1 ': !suffixComp })}
+      <ScrollBar classNames={{
+        root: !suffixComp ? 'flex-1': ''
+      }}
       >
         <div className="border-b border-tab-border" style={{ height: height }}>
           <div

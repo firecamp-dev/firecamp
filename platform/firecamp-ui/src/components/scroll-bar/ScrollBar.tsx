@@ -3,7 +3,7 @@ import {
   ScrollArea as MantineScrollArea,
   ScrollAreaProps,
 } from '@mantine/core';
-
+import cx from 'classnames';
 // const ScrollBar_ = ({
 //   children = <></>,
 //   className = '',
@@ -85,14 +85,20 @@ import {
 // );
 
 export interface IScrollArea extends ScrollAreaProps {}
-const ScrollArea: FC<IScrollArea> = ({ children, ...props }) => {
+const ScrollArea: FC<IScrollArea> = ({
+  classNames = {},
+  children,
+  ...props
+}) => {
   return (
     <MantineScrollArea
       type="hover"
       scrollbarSize={8}
       {...props}
       classNames={{
-        root: 'whitespace-nowrap',
+        ...classNames,
+        root: cx('h-full whitespace-nowrap', classNames.root),
+        viewport: cx('[&>div]:!block', classNames.viewport),
       }}
     >
       {children}

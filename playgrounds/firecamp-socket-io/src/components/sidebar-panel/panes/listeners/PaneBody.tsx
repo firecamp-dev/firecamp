@@ -45,9 +45,7 @@ const PaneBody = () => {
               </div>
             </Container.Body> */}
 
-            {/* with radix scrollbar */}
             <Container.Body>
-              {/* Todo: check usage */}
               <ScrollBar>
                 <>
                   {listeners.map((listener, index) => {
@@ -177,6 +175,7 @@ const Listener = ({ listener, isActive }) => {
       </div>
 
       <Trash2
+        size={14}
         className="h-0 ml-1 group-hover:h-auto cursor-pointer"
         onClick={() => {
           deleteListener(listener);
