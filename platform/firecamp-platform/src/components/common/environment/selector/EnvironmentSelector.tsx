@@ -28,7 +28,7 @@ const EnvironmentSelector = () => {
         transparent
         primary
         classNames={{
-          root: 'rounded-none border-0 border-tab-border border-b border-l w-fit',
+          root: 'rounded-none border-0 border-tab-border border-b border-l w-fit text-sm',
         }}
         animate={false}
         onClick={() => platformContext.app.modals.openSignIn()}
