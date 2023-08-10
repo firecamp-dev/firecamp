@@ -161,55 +161,59 @@ const Explorer: FC<any> = () => {
     }, 10)
   };
 
+  const shouldIDropTheCollection = useCallback((item: any, target: any): boolean => {
+
+    const { childIndex, targetType, depth, parentItem } = target;
+    const index = workspace.__meta.cOrders.indexOf(item.__ref.id);
+    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index, [index - 1, index, index + 1].includes(childIndex));
+
+    /** collection can only reorder at depth 0 */
+    if (typeof childIndex != 'number') return false;
+    else if ([index - 1, index, index + 1].includes(childIndex)) return false;
+    else if (targetType == 'between-items' && depth == 0 && parentItem == 'root') return true;
+    else return false;
+  }, [workspace.__meta.cOrders, collections]);
+
+  const shouldIDropTheFolder = useCallback((target: any): boolean => {
+    const { targetType, depth, parentItem } = target;
+    /** folder can be dropped on collection */
+    if (targetType == 'item' && depth == 0 && parentItem == 'root') return true;
+
+    const parentCollection = collections.find((i) => i.__ref.id == parentItem);
+    const parentFolder = folders.find((i) => i.__ref.id == parentItem);
+
+    /**folders can be drop on collection and folder or reorder within the same depth/level */
+    if (parentCollection || parentFolder) return true;
+    return false;
+  }, [collections, folders]);
+
+  const shouldIDropTheRequest = useCallback((target: any): boolean => {
+    const { targetType, depth, parentItem } = target;
+    /** request can be dropped on collection */
+    if (targetType == 'item' && depth == 0 && parentItem == 'root') return true;
+
+    const parentCollection = collections.find((i) => i.__ref.id == parentItem);
+    const parentFolder = folders.find((i) => i.__ref.id == parentItem);
+
+    /** request can be drop on collection and folder or reorder within the same depth/level */
+    if (parentCollection || parentFolder) return true;
+
+    return false;
+  }, [collections, folders]);
+
   const canDropAt = useCallback(
     (item, target) => {
       const itemPayload = item.data;
       const isItemCollection = itemPayload.__ref.isCollection;
       const isItemFolder = itemPayload.__ref.isFolder;
       const isItemRequest = itemPayload.__ref.isRequest;
-      const { targetType, depth, parentItem } = target;
-
-      // return true
 
       // console.clear();
-      // console.log(itemPayload, isItemCollection, target, "can drop at ...");
 
-      /** collection can only reorder at depth 0 */
-      if (
-        isItemCollection &&
-        targetType == 'between-items' &&
-        depth == 0 &&
-        parentItem == 'root'
-      ) {
-        return true;
-      }
-
-      /** folder and request can be dropped on collection */
-      if (
-        (isItemFolder || isItemRequest) &&
-        targetType == 'item' &&
-        depth == 0 &&
-        parentItem == 'root'
-      ) {
-        return true;
-      }
-
-      const parentCollection = collections.find(
-        (i) => i.__ref.id == parentItem
-      );
-      const parentFolder = folders.find((i) => i.__ref.id == parentItem);
-
-      /** request and folders can be drop on collection and folder or reorder within the same depth/level */
-      if (
-        (parentCollection || parentFolder) &&
-        (isItemFolder || isItemRequest)
-      ) {
-        return true;
-      }
-
-      // console.log(false, "you can not drag")
+      if (isItemCollection) return shouldIDropTheCollection(itemPayload, target);
+      if (isItemFolder) return shouldIDropTheFolder(target);
+      if (isItemRequest) return shouldIDropTheRequest(target);
       return false;
-      // return target.targetType === 'between-items' ? target.parentItem.startsWith('A') : target.targetItem.startsWith('A')
     },
     [collections, folders]
   );
