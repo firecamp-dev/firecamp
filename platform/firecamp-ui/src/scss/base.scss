@@ -852,25 +852,6 @@ tr:focus-visible {
 /*--------table temporary css starts ------------*/
 
 /*--------table 2 css starts------------*/
-.fc-table-2 {
-  font-size: 14px;
-  border: 1px solid var(--app-border);
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.fc-table-2 .td,
-.fc-table-2 .th {
-  border: 1px solid var(--app-border);
-  padding: 6px 8px;
-}
-
-.fc-table-2 .th {
-  padding: 4px 8px;
-  font-weight: 800;
-  background: var(--focus-level-2);
-}
-
 .primary-table .mtk1,
 .primary-table th {
   color: var(--tab-foreground-inactive) !important;

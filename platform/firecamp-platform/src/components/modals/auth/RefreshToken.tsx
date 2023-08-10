@@ -29,7 +29,7 @@ const RefreshToken: FC<IModal> = ({ opened, onClose = () => {} }) => {
 const Header: FC<any> = () => {
   return (
     <div>
-      <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} />
+      {/* <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} /> */}
       <div className="text-xl mb-6 w-full text-center font-semibold">
         Reset Password
       </div>

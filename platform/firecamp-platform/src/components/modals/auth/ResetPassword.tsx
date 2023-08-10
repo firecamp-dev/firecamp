@@ -76,7 +76,7 @@ const ResetPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   return (
     <Modal opened={opened} onClose={onClose} size={440}>
       <>
-        <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} />
+        {/* <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} /> */}
         <div className="text-xl mb-6 w-full text-center font-semibold">
           Reset Password
         </div>
