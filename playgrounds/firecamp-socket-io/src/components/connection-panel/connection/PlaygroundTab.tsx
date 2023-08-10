@@ -1,7 +1,7 @@
 import _compact from 'lodash/compact';
 import _cloneDeep from 'lodash/cloneDeep';
 import _merge from 'lodash/merge';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { Container, Input, Button, TabHeader, Checkbox } from '@firecamp/ui';
 import { _object } from '@firecamp/utils';

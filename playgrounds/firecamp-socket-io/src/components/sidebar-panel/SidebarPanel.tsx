@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Container, Column, Resizable } from '@firecamp/ui';
 import CollectionTab from './panes/collection-tree/CollectionPane';
 import { useStore, IStore } from '../../store';

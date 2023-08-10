@@ -1,8 +1,7 @@
 import _compact from 'lodash/compact';
-import shallow from 'zustand/shallow';
 import { EAuthTypes } from '@firecamp/types';
 import { AuthPanel } from '@firecamp/ui';
-import { IStore, useStore } from '../../../store';
+import { useRequestAuthFacade } from '../useFacade';
 
 const AuthTab = () => {
   const {
@@ -12,17 +11,7 @@ const AuthTab = () => {
     resetAuthHeaders,
     changeAuth,
     changeAuthType,
-  } = useStore(
-    (s: IStore) => ({
-      auth: s.request.auth,
-      runtimeAuths: s.runtime.auths,
-      oauth2LastFetchedToken: s.runtime.oauth2LastFetchedToken,
-      resetAuthHeaders: s.resetAuthHeaders,
-      changeAuthType: s.changeAuthType,
-      changeAuth: s.changeAuth,
-    }),
-    shallow
-  );
+  } = useRequestAuthFacade()
 
   console.log({ auth });
   const { value, type } = auth;
@@ -48,7 +37,7 @@ const AuthTab = () => {
     // console.log({ updates });
   };
 
-  const _onSelectInheritAuth = () => {};
+  const _onSelectInheritAuth = () => { };
   const _fetchTokenOnChangeOAuth2 = () => {
     resetAuthHeaders(EAuthTypes.OAuth2);
   };

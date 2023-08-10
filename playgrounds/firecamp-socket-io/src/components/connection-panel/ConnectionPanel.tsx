@@ -1,6 +1,6 @@
 import { useState, memo, useMemo } from 'react';
 import cx from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Column, Resizable, Tabs, Row } from '@firecamp/ui';
 import ConfigTab from './connection/ConfigTab';
 import HeadersTab from './connection/HeadersTab';

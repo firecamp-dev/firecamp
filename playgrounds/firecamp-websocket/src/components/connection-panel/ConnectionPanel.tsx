@@ -1,6 +1,6 @@
 import { useState, useEffect, memo, useMemo } from 'react';
 import classnames from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import {
   Container,
   Column,

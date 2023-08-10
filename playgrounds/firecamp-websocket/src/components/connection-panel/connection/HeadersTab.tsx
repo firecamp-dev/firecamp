@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { EEditorLanguage } from '@firecamp/types';
 import { BulkEditTable } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';

@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 // import SSLnProxyManager from '../modals/ssl-proxy-manager/SSLnProxyManager';
 // import AuthContainer from '../common/auth/AuthContainer';
 // import CookieManager from '../modals/cookie-manager/CookieManager';

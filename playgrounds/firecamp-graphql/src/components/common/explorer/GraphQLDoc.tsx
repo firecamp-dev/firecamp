@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { buildClientSchema } from 'graphql';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { _object } from '@firecamp/utils';
 import { DocExplorer } from '../doc-explorer/DocExplorer';
 import { useStore } from '../../../store';

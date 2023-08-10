@@ -2,7 +2,7 @@ import { memo, useEffect, useRef, useState } from 'react';
 import cx from 'classnames';
 import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import {
   Container,
   Column,

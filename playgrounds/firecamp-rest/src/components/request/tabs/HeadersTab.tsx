@@ -1,19 +1,10 @@
 import { useEffect } from 'react';
-import shallow from 'zustand/shallow';
 import { EEditorLanguage } from '@firecamp/types';
 import { BulkEditTable, Container, BasicTable, TabHeader } from '@firecamp/ui';
-import { IStore, useStore } from '../../../store';
+import { useRequestHeadersFacade } from '../useFacade';
 
 const HeadersTab = () => {
-  const { headers, authHeaders, runtime, changeHeaders } = useStore(
-    (s: IStore) => ({
-      headers: s.request.headers,
-      authHeaders: s.runtime.authHeaders,
-      runtime: s.runtime,
-      changeHeaders: s.changeHeaders,
-    }),
-    shallow
-  );
+  const { headers, authHeaders, changeHeaders } = useRequestHeadersFacade();
 
   useEffect(() => {
     console.log('1. re-rendering the header tabs');
@@ -37,7 +28,7 @@ const HeadersTab = () => {
             },
           }}
           onChange={(data) => onHeaderChange(data)}
-          onMount={() => {}}
+          onMount={() => { }}
         />
 
         {authHeaders?.length ? (
@@ -69,7 +60,7 @@ const HeadersTab = () => {
                   value: EEditorLanguage.HeaderValue,
                 },
               }}
-              onChange={() => {}}
+              onChange={() => { }}
             />
           </div>
         ) : (

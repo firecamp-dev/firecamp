@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import _cleanDeep from 'clean-deep';
 import _cloneDeep from 'lodash/cloneDeep';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { _object } from '@firecamp/utils';
 import {
   Container,

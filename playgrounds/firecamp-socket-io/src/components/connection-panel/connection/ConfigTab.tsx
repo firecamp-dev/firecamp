@@ -1,6 +1,6 @@
 import { Container, CheckboxGroup, CheckboxInGrid, Input } from '@firecamp/ui';
 import { IStore, useStore } from '../../../store';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 
 enum EInputTypes {
   Text = 'text',

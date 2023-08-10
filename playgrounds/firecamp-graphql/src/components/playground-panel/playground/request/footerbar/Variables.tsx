@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Editor } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import { IStore, useStore } from '../../../../../store';
