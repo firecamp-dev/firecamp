@@ -11,8 +11,8 @@ export default {
 
 export const Demo = () => (
   <ScrollBar
-    className=" rounded shadow-md bg-primaryColor-text w-[200px] h-[200px]"
-    noWrap
+    w={200}
+    h={200}
   >
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
@@ -54,7 +54,6 @@ export const Demo = () => (
 
 export const VerticalScroll = () => (
   <ScrollBar
-    className="rounded shadow-md bg-primaryColor-text h-[200px]"
   >
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
@@ -96,8 +95,6 @@ export const VerticalScroll = () => (
 
 export const HorizontalScroll = () => (
   <ScrollBar
-    className="rounded shadow-md bg-primaryColor-text h-[50vh]"
-    noWrap
   >
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
@@ -117,9 +114,7 @@ export const HorizontalScroll = () => (
 );
 
 export const ScrollBarWithModal = () => (
-  <ScrollBar
-    className="rounded shadow-md bg-primaryColor-text h-[200px]"
-  >
+  <ScrollBar h={200}>
     <div style={{ padding: '15px 20px' }}>
       <ForgetPasswordForm />
       <br />
@@ -128,11 +123,7 @@ export const ScrollBarWithModal = () => (
 );
 
 export const VSCodeExample = () => (
-  <ScrollBar
-    className=" rounded shadow-md bg-primaryColor-text w-[200px] h-[200px]"
-    transparent
-    noWrap
-  >
+  <ScrollBar w={200} h={200}>
     <div style={{ padding: '15px 20px' }}>
       <div className="text-lg font-medium">Content Heading</div>
       <hr />
@@ -174,9 +165,6 @@ export const VSCodeExample = () => (
 export const RequestTabExample = () => (
   <div className="p-3 border">
     <ScrollBar
-      className="shadow-md bg-primaryColor-text w-[200px]"
-      transparent
-      noWrap
     >
       <Tabs
         list={[

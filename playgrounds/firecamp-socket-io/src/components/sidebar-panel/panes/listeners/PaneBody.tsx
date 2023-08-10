@@ -47,7 +47,8 @@ const PaneBody = () => {
 
             {/* with radix scrollbar */}
             <Container.Body>
-              <ScrollBar fullHeight>
+              {/* Todo: check usage */}
+              <ScrollBar>
                 <>
                   {listeners.map((listener, index) => {
                     return (

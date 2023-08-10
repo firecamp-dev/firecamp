@@ -110,7 +110,8 @@ const InviteNonOrgMembers = ({ state, onChange }) => {
         </div>
       </Container.Header>
       <Container.Body className="invisible-scrollbar w-[32rem]">
-        <ScrollBar className="!h-72 mr-1" transparent fullWidth>
+        {/* Todo: check usage */}
+        <ScrollBar>
           <InviteUsersForm
             error={error}
             usersList={usersList}

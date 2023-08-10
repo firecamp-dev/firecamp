@@ -167,9 +167,7 @@ const Tabs: FC<ITabs> = forwardRef(
         <PreComponent preComp={preComp} tabsVersion={tabsVersion} />
 
         <ScrollBar
-          className={cx({ 'flex-1': !suffixComp })}
-          transparent
-          noWrap
+          // className={cx({ 'flex-1': !suffixComp })}
         >
           <div className="border-b border-tab-border" style={{ height: height }}>
             <div

@@ -92,9 +92,7 @@ const Tabs: FC<ITabs> = ({
       )}
 
       <ScrollBar
-        className={cx({ 'flex-1 ': !suffixComp })}
-        transparent
-        noWrap
+      // className={cx({ 'flex-1 ': !suffixComp })}
       >
         <div className="border-b border-tab-border" style={{ height: height }}>
           <div
@@ -138,7 +136,9 @@ const Tabs: FC<ITabs> = ({
                     },
 
                     { 'bg-transparent text-base': tabsVersion == 1 },
-                    { 'bg-tab-background-activeColor text-sm': tabsVersion == 2 }
+                    {
+                      'bg-tab-background-activeColor text-sm': tabsVersion == 2,
+                    }
                   )}
                   onReorder={onReorder}
                   name={tab?.name || ''}

@@ -308,7 +308,8 @@ const Explorer: FC<any> = () => {
             return (
               <ToolBar>
                 <div>
-                  <RotateCw strokeWidth={1.5}
+                  <RotateCw
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={() => {
@@ -317,14 +318,16 @@ const Explorer: FC<any> = () => {
                   />
                 </div>
                 <div>
-                  <FolderPlus strokeWidth={1.5}
+                  <FolderPlus
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={createCollectionPrompt}
                   />
                 </div>
                 <div>
-                  <ArrowDown strokeWidth={1.5}
+                  <ArrowDown
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={openImportTab}
@@ -355,7 +358,8 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
-                <ScrollBar transparent fullHeight>
+                {/* Todo: check usage */}
+                <ScrollBar>
                   <UncontrolledTreeEnvironment
                     ref={explorerTreeRef}
                     keyboardBindings={{
