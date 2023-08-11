@@ -63,7 +63,8 @@ const Members = ({
       const memberList = members.map((m, i) => {
         return {
           id: m.id,
-          name: m.username,
+          email: m.email,
+          name: m.name || m.username,
           role: m.role,
           joinedAt: getFormalDate(m.__ref.joinedAt),
         };
@@ -117,6 +118,8 @@ const Members = ({
         return <div className="px-2 text-base"> {rowIndex + 1} </div>;
         break;
       case 'name':
+        return <div className="p-1 text-base">{`${cellValue} - ${row.email}`}</div>;
+        break;
       case 'joinedAt':
         return <div className="p-1 text-base">{cellValue}</div>;
         break;
