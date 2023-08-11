@@ -31,10 +31,6 @@ const columns = [
 ];
 
 const RoleOptions = [
-  // {
-  //   id: EUserRolesWorkspace.Owner,
-  //   name: 'Owner',
-  // },
   {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
@@ -128,7 +124,7 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
         return (
           <div className="p-1 text-sm text-center">
             {row.role === EUserRolesWorkspace.Owner ? (
-              <div className="px-4">Owner</div>
+              <div className="px-4 text-selected-text">Owner</div>
             ) : (
               <RoleDD
                 role={row.role}

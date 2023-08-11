@@ -38,6 +38,8 @@ module.exports = {
       'tab-background-hover': 'var(--tab-background-hover)',
       'tab-background-active': 'var(--tab-background-active)',
 
+      'selected-text': 'var(--selected)',
+
       'statusBar-background': 'var(--statusBar-background)',
       'statusBar-background-active': 'var(--statusBar-background-active)',
       'statusBar-border': 'var(--statusBar-border)',

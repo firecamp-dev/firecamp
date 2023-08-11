@@ -77,7 +77,7 @@
     --info: var(--mantine-color-blue-6);
     --success: var(--mantine-color-lime-8);
 
-    --color: var(--mantine-color-gray-6);
+    --color:  128, 128, 128; /* var(--mantine-color-gray-6) */;
     --focus-level-1: rgba(var(--color), 0.06);
     --focus-level-2: rgba(var(--color), 0.1);
     --focus-level-3: rgba(var(--color), 0.14);
@@ -160,7 +160,7 @@
     --info: var(--mantine-color-blue-6);
     --success: var(--mantine-color-lime-8);
 
-    --color: var(--mantine-color-dark-3);
+    --color: 86, 88, 105; /* var(--mantine-color-dark-3); */
     --focus-level-1: rgba(var(--color), 0.06);
     --focus-level-2: rgba(var(--color), 0.1);
     --focus-level-3: rgba(var(--color), 0.14);
@@ -1160,6 +1160,9 @@
 .border-activityBar-border {
     border-color: var(--activityBar-border);
 }
+.border-activityBar-foreground-inactive {
+    border-color: var(--activityBar-foreground-inactive);
+}
 .border-app-background {
     border-color: var(--app-background);
 }
@@ -1261,6 +1264,9 @@
 }
 .bg-activityBar-background-active {
     background-color: var(--activityBar-background-active);
+}
+.bg-activityBar-foreground-inactive {
+    background-color: var(--activityBar-foreground-inactive);
 }
 .bg-app-background {
     background-color: var(--app-background);
@@ -1801,6 +1807,9 @@
 .text-secondaryColor-text {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.text-selected-text {
+    color: var(--selected);
 }
 .text-statusBar-foreground {
     color: var(--statusBar-foreground);

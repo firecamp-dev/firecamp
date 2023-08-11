@@ -96,17 +96,17 @@ const BasicTable = ({
             language={
               options?.languages?.[column.key] || EEditorLanguage.FcText
             }
-            className="without-border px-2"
-            style={{
-              position: 'absolute',
-              width: '100%',
-              top: '2px',
-              overflow: 'hidden',
-              padding: '0px 4px',
-            }}
+            className="without-border px-1"
+            // style={{
+            //   position: 'absolute',
+            //   width: '100%',
+            //   top: '2px',
+            //   overflow: 'hidden',
+            //   padding: '0px 4px',
+            // }}
             type="text"
             value={cellValue}
-            height={21}
+            height={18}
             onChange={(e) => {
               onChange(column.key, e.target.value, e);
             }}
@@ -129,7 +129,7 @@ const BasicTable = ({
             classNames={{
               root: '!mb-0',
               input:
-                '!bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 pt-0 h-[21px] min-h-0',
+                '!bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 h-[21px] min-h-0',
             }}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
           />
