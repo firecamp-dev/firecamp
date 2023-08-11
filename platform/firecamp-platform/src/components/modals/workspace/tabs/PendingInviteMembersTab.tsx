@@ -32,10 +32,6 @@ const columns = [
 
 const RoleOptions = [
   {
-    id: EUserRolesWorkspace.Owner,
-    name: 'Owner',
-  },
-  {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
   },
@@ -130,10 +126,14 @@ const PendingInviteMembersTab = ({
       case 'role':
         return (
           <div className="p-1 text-center">
-            <RoleDD
-              role={row.role}
-              onSelect={(role) => onChangeRole({ ...row, role })}
-            />
+            {row.role === EUserRolesWorkspace.Owner ? (
+              <div className="px-4 text-sm text-selected-text">Owner</div>
+            ) : (
+              <RoleDD
+                role={row.role}
+                onSelect={(role) => onChangeRole({ ...row, role })}
+              />
+            )}
           </div>
         );
         break;

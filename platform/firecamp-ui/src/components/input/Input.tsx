@@ -26,6 +26,7 @@ const useStyles = createStyles((theme) => ({
         ? theme.colors.gray[4]
         : theme.colors.dark[4]
     }`,
+    color: theme.colorScheme === 'light' ? theme.colors.dark[5] : theme.colors.gray[4],
     outline: '2px solid transparent',
     '::placeholder': {
       color:
