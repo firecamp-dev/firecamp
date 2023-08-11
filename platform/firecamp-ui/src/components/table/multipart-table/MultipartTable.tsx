@@ -103,17 +103,17 @@ const MultipartTable = ({
           <SingleLineEditor
             // path={`${rowIndex}_${column.id}`}
             language={EEditorLanguage.HeaderKey}
-            className="without-border px-2"
-            style={{
-              position: 'absolute',
-              width: '100%',
-              top: '2px',
-              overflow: 'hidden',
-              padding: '0px 4px',
-            }}
+            className="without-border px-1"
+            // style={{
+            //   position: 'absolute',
+            //   width: '100%',
+            //   top: '2px',
+            //   overflow: 'hidden',
+            //   padding: '0px 4px',
+            // }}
             type="text"
             value={cellValue}
-            height={21}
+            height={18}
             disabled={options.disabledColumns.includes(column.key)}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
             // loading={<>{cellValue}</>}
@@ -135,7 +135,7 @@ const MultipartTable = ({
             classNames={{
               root: '!mb-0',
               input:
-                '!bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 pt-0 h-[21px] min-h-0',
+                '!bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tabForegroundInactive px-1 h-[21px] min-h-0',
             }}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
           />
@@ -253,16 +253,16 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
           <SingleLineEditor
             key={`${row.id}`}
             language={EEditorLanguage.HeaderKey}
-            className="without-border px-2"
-            style={{
-              position: 'absolute',
-              width: 'calc(100% - 20px)',
-              top: '2px',
-              overflow: 'hidden',
-              padding: '0px 4px',
-            }}
+            className="without-border px-1 w-full"
+            // style={{
+            //   position: 'absolute',
+            //   width: 'calc(100% - 20px)',
+            //   top: '2px',
+            //   overflow: 'hidden',
+            //   padding: '0px 4px',
+            // }}
             type="text"
-            height={21}
+            height={18}
             // value={cellValue}
             value={typeof value === 'string' ? value : ''}
             disabled={options.disabledColumns.includes('value')}
