@@ -487,8 +487,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/firecamp-agent-manager
       '@firecamp/cloud-apis':
-        specifier: 0.2.10
-        version: 0.2.10
+        specifier: 0.2.11
+        version: 0.2.11
       '@firecamp/cookie-manager':
         specifier: ^0.0.0
         version: link:../../packages/firecamp-cookie-manager
@@ -3731,8 +3731,8 @@ packages:
       - supports-color
     dev: true
 
-  /@firecamp/cloud-apis@0.2.10:
-    resolution: {integrity: sha512-aWTxsmfUygfa0Tv9TaRUhbNPTP9I6CVjJhrY9kLJwdtzRcbg5jW7oqnD1HEl0662pwPyYJ1weC3XOo2/cJJ+JQ==}
+  /@firecamp/cloud-apis@0.2.11:
+    resolution: {integrity: sha512-t3VYuQiMChC2ZYFluw9a1pXfPtG7VhMdr64hY96OsQBWapRX3ClmiZPUpRgxytOhRUlZH3P1fgtp2T3aMAQQKg==}
     engines: {node: '>=10'}
     dependencies:
       axios: 0.21.4
@@ -7508,7 +7508,7 @@ packages:
   /@types/testing-library__jest-dom@5.14.5:
     resolution: {integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==}
     dependencies:
-      '@types/jest': 29.5.0
+      '@types/jest': 29.2.4
     dev: true
 
   /@types/tough-cookie@4.0.2:
