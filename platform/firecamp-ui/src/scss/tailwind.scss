@@ -77,7 +77,7 @@
     --info: var(--mantine-color-blue-6);
     --success: var(--mantine-color-lime-8);
 
-    --color: var(--mantine-color-gray-6);
+    --color:  128, 128, 128; /* var(--mantine-color-gray-6) */;
     --focus-level-1: rgba(var(--color), 0.06);
     --focus-level-2: rgba(var(--color), 0.1);
     --focus-level-3: rgba(var(--color), 0.14);
@@ -160,7 +160,7 @@
     --info: var(--mantine-color-blue-6);
     --success: var(--mantine-color-lime-8);
 
-    --color: var(--mantine-color-dark-3);
+    --color: 86, 88, 105; /* var(--mantine-color-dark-3); */
     --focus-level-1: rgba(var(--color), 0.06);
     --focus-level-2: rgba(var(--color), 0.1);
     --focus-level-3: rgba(var(--color), 0.14);
@@ -1106,9 +1106,6 @@
     border-top-width: 1px;
     border-bottom-width: 1px;
 }
-.\!border-b-0 {
-    border-bottom-width: 0px !important;
-}
 .border-b {
     border-bottom-width: 1px;
 }
@@ -1804,6 +1801,9 @@
 .text-secondaryColor-text {
     --tw-text-opacity: 1;
     color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.text-selected-text {
+    color: var(--selected);
 }
 .text-statusBar-foreground {
     color: var(--statusBar-foreground);
