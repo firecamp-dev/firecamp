@@ -129,9 +129,6 @@ const DARK_THEME_VAR = {
   '--cm-number': '#ab843b',
   '--cm-punctuation': '#9e9d9d',
   '--cm-ws': '#9e9d9d',
-  '--ace-variable': '#70AFD3',
-  '--ace-string': '#E69B6F',
-  '--ace-constant': '#a31515',
   '--selected': '#ffffff17',
   '--cm-string': '#b5cea8',
 };
@@ -211,9 +208,6 @@ const LIGHT_THEME_VAR = {
   '--cm-number': '#ab843b',
   '--cm-punctuation': '#9e9d9d',
   '--cm-ws': '#9e9d9d',
-  '--ace-variable': '#70AFD3',
-  '--ace-string': '#E69B6F',
-  '--ace-constant': '#a31515',
   '--selected': '#00000017',
   '--cm-string': '#098658',
 };

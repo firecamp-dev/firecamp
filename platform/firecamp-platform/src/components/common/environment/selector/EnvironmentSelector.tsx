@@ -1,6 +1,6 @@
 import shallow from 'zustand/shallow';
 import { Button, Column } from '@firecamp/ui';
-import { Eye } from 'lucide-react';
+import { Table } from 'lucide-react';
 import EnvironmentDD from './EnvironmentDD';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
@@ -53,7 +53,7 @@ const EnvironmentSelector = () => {
           className="cursor-pointer ml-1 text-base !text-info"
           onClick={() => toggleEnvSidebar()}
         >
-          <Eye size={14} />
+          <Table size={16} strokeWidth="1.5" strokeLinecap='square' strokeLinejoin='miter' />
         </span>
       </div>
     </Column>

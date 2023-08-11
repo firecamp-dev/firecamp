@@ -2,14 +2,15 @@ import { FC, useState, useMemo, useEffect, memo } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
 import shallow from 'zustand/shallow';
-import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { ChevronDown } from 'lucide-react';
 import { Button, DropdownMenu } from '@firecamp/ui';
 import { TId } from '@firecamp/types';
 import Helper from './Helper';
 import { useEnvStore } from '../../../../store/environment';
 import platformContext from '../../../../services/platform-context';
 
-const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
+
+const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => { } }) => {
   const { environments, activeEnvId } = useEnvStore(
     (s) => ({
       environments: s.environments,
@@ -67,8 +68,8 @@ const EnvironmentDD: FC<IEnvironmentDD> = ({ onChange = () => {} }) => {
             root: '!text-info',
           }}
           rightIcon={
-            <VscTriangleDown
-              size={12}
+            <ChevronDown
+              size={16}
               className={cx({ 'transform rotate-180': isOpen })}
             />
           }

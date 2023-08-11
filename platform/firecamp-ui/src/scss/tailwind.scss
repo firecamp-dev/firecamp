@@ -24,7 +24,7 @@
     --app-foreground-inactive: var(--mantine-color-dark-3);
     --app-primary: var(--mantine-color-primary-color-8);
     --app-secondary: var(--mantine-color-dark-4);
-    --app-border: var(--mantine-color-dark-4); /* .1 */
+    --app-border: var(--mantine-color-dark-5); /* .1 */
     --app-focus: var(--mantine-color-indigo-5);
     --app-error: var(--mantine-color-red-8);
     --app-overlay: var(--mantine-color-gray-5);
@@ -50,7 +50,7 @@
     --statusBar-background: var(--app-background);
     --statusBar-foreground: var(--app-foreground);
     --statusBar-foreground-active: var(--app-foreground-active);
-    --statusBar-border: var(--mantine-color-dark-3); /* .1 */
+    --statusBar-border: var(--mantine-color-dark-5); /* .1 */
     --statusBar-background-active: var(--mantine-color-gray-9);
 
     --input-border: var(--app-border);
@@ -92,9 +92,6 @@
     --cm-number: var(--mantine-color-orange-5);
     --cm-punctuation: var(--mantine-color-dark-1);
     --cm-ws: var(--mantine-color-dark-1);
-    --ace-variable: var(--mantine-color-blue-3);
-    --ace-string: var(--mantine-color-orange-3);
-    --ace-constant: var(--mantine-color-red-9);
     --selected: var(--mantine-color-dark-9); /* .2*/
     --cm-string: var(--mantine-color-dark-0);
   }
@@ -178,9 +175,6 @@
     --cm-number: var(--mantine-color-orange-5);
     --cm-punctuation: var(--mantine-color-dark-1);
     --cm-ws: var(--mantine-color-dark-1);
-    --ace-variable: var(--mantine-color-blue-3);
-    --ace-string: var(--mantine-color-orange-3);
-    --ace-constant: var(--mantine-color-red-9);
     --selected: var(--mantine-color-dark-9); /* .3*/
     --cm-string: var(--mantine-color-teal-9);
   }
@@ -1107,6 +1101,13 @@
 }
 .border-0 {
     border-width: 0px;
+}
+.border-y {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+.\!border-b-0 {
+    border-bottom-width: 0px !important;
 }
 .border-b {
     border-bottom-width: 1px;
@@ -2299,7 +2300,7 @@ tr:focus-visible {
 }
 
 .focus-outer2:focus {
-  box-shadow: inset 0px 0px 0px 2px var(--focus-border) !important;
+  box-shadow: inset 0px 0px 0px 1px var(--focus-border) !important;
   outline: none;
 }
 .fc-error {
@@ -2730,41 +2731,6 @@ tr:focus-visible {
 
 /*-------editor css starts---------*/
 
-.ace_editor {
-  background-color: var(--editor-background) !important;
-  color: var(--app-foreground);
-  min-height: 100%;
-  box-shadow: none !important;
-}
-
-.ace_gutter .ace_gutter-active-line {
-  background-color: var(--focus-level-1) !important;
-}
-
-.ace_marker-layer .ace_active-line {
-  background-color: var(--focus-level-1) !important;
-}
-
-.ace_gutter {
-  background-color: transparent !important;
-  color: var(--app-foreground) !important;
-}
-
-.ace-kuroir .ace_cursor {
-  color: var(--app-foreground) !important;
-}
-
-.ace_gutter-layer {
-  min-height: 100% !important;
-}
-body .ace_editor .ace_scrollbar {
-  display: block;
-}
-
-.fc-modal .ace_editor {
-  background-color: inherit !important;
-}
-
 .CodeMirror {
   background-color: var(--app-background) !important;
   height: 100% !important;
@@ -2860,21 +2826,7 @@ body .ace_editor .ace_scrollbar {
   background: var(--selected) !important;
 }
 
-.ace_variable {
-  color: var(--ace-variable) !important;
-}
-
-.ace_string {
-  color: var(--ace-string) !important;
-}
-
-.ace_constant {
-  color: var(--ace-constant) !important;
-}
-
-.cm-punctuation,
-.ace_paren,
-.ace_line {
+.cm-punctuation {
   color: var(--cm-punctuation);
 }
 
@@ -2937,25 +2889,6 @@ body .ace_editor .ace_scrollbar {
 /*--------table temporary css starts ------------*/
 
 /*--------table 2 css starts------------*/
-.fc-table-2 {
-  font-size: 14px;
-  border: 1px solid var(--app-border);
-  border-collapse: collapse;
-  width: 100%;
-}
-
-.fc-table-2 .td,
-.fc-table-2 .th {
-  border: 1px solid var(--app-border);
-  padding: 6px 8px;
-}
-
-.fc-table-2 .th {
-  padding: 4px 8px;
-  font-weight: 800;
-  background: var(--focus-level-2);
-}
-
 .primary-table .mtk1,
 .primary-table th {
   color: var(--tab-foreground-inactive) !important;
