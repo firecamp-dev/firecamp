@@ -10,24 +10,24 @@ import { ERequestTypes } from '@firecamp/types';
 
 const CollectionCloseIcon = (props) => (
   <div className='flex items-center' {...props} >
-    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
   </div>
 );
 const CollectionOpenIcon = (props) => (
   <div className='flex items-center' {...props}>
-    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
   </div>
 );
 const FolderOpenIcon = (props) => (
   <div className='flex items-center' {...props}>
-    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
-    <FolderOpen className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
+    <FolderOpen className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
   </div>
 );
 const FolderCloseIcon = (props) => (
   <div className='flex items-center' {...props}>
-    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
-    <FolderClosed className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
+    <FolderClosed className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' strokeWidth="1" />
   </div >
 );
 
@@ -41,7 +41,7 @@ export default {
         case ERequestTypes.Rest:
           const text = method.toUpperCase();
           return (
-            <div className={cx(text, 'collection_leaf-node-type')} {...context.arrowProps}>{text}</div>
+            <div className={cx(text, 'collection_leaf-node-type', 'm-r-4')} {...context.arrowProps}>{text}</div>
           );
         case ERequestTypes.GraphQL:
           return <FcIconGraphQL className="text-graphql" size={24}  {...context.arrowProps} />;
@@ -177,7 +177,7 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
-            {arrow}
+            <div>{arrow}</div>
             <span
               className={cx(
                 'pr-2',
