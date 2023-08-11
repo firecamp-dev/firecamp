@@ -1160,6 +1160,9 @@
 .border-activityBar-border {
     border-color: var(--activityBar-border);
 }
+.border-activityBar-foreground-inactive {
+    border-color: var(--activityBar-foreground-inactive);
+}
 .border-app-background {
     border-color: var(--app-background);
 }
@@ -1261,6 +1264,9 @@
 }
 .bg-activityBar-background-active {
     background-color: var(--activityBar-background-active);
+}
+.bg-activityBar-foreground-inactive {
+    background-color: var(--activityBar-foreground-inactive);
 }
 .bg-app-background {
     background-color: var(--app-background);

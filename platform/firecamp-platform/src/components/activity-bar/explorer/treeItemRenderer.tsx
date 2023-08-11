@@ -152,13 +152,13 @@ export default {
         >
           {context.isExpanded && item.isFolder && (
             <span
-              className="rct-tree-line absolute top-5 bottom-0 border-r border-app-foreground-inactive z-10 opacity-50"
+              className="rct-tree-line absolute top-5 bottom-0 border-r border-activityBar-foreground-inactive z-10 opacity-50"
               style={{ paddingLeft: `${renderDepthOffset + 5}px` }}
             ></span>
           )}
           <span
             className={cx(
-              'rct-tree-line horizontal absolute top-3 h-px bg-app-foreground-inactive z-10 w-2 opacity-50',
+              'rct-tree-line horizontal absolute top-3 h-px bg-activityBar-foreground-inactive z-10 w-2 opacity-50',
               { '!top-auto': item.data?.__ref.isRequest }
             )}
             style={{ left: `${renderDepthOffset * 2 + 6}px` }}
