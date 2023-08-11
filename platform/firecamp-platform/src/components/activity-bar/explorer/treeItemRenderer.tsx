@@ -161,7 +161,7 @@ export default {
               'rct-tree-line horizontal absolute top-3 h-px bg-activityBar-foreground-inactive z-10 w-2 opacity-50',
               { '!top-auto': item.data?.__ref.isRequest }
             )}
-            style={{ left: `${renderDepthOffset * 2 + 6}px` }}
+            style={{ left: `${20 + (depth-1) * 14}px` }}
           ></span>
 
           <InteractiveComponent
