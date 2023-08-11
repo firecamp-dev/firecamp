@@ -5,7 +5,6 @@ import {
   TreeItem,
   TreeItemIndex,
 } from '@firecamp/ui/src/tree';
-import { useExplorerStore } from '../../../store/explorer';
 
 enum ETreeEventTypes {
   itemChanged = 'itemChanged',
@@ -96,15 +95,8 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
     itemId: TreeItemIndex,
     newChildren: TreeItemIndex[]
   ): Promise<void> {
-    // this.items[itemId].children = newChildren;
-
-    const {
-      changeWorkspaceMetaOrders,
-    } = useExplorerStore.getState();
-
     if (itemId == 'root') {
       this.rootOrders = newChildren;
-      changeWorkspaceMetaOrders(newChildren as string[]);
     } else {
       // split new children into fOrders and rOrders
       const { fOrders, rOrders } = newChildren.reduce(
@@ -118,24 +110,16 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
         },
         { fOrders: [], rOrders: [] }
       );
-
       this.items = this.items.map((i) => {
         if (i.__ref.id == itemId) {
-          if (i.__ref.isCollection)
-            if (i.__ref.isFolder)
-              // changeCollectionMetaOrders(itemId as string, {
-              //   fOrders,
-              //   rOrders,
-              // });
-              // changeFolderMetaOrders(itemId as string, { fOrders, rOrders });
-              return { ...i, __meta: { ...i.__meta, fOrders, rOrders } };
+          return { ...i, __meta: { ...i.__meta, fOrders, rOrders } };
         }
         return i;
       });
     }
-    setTimeout(() => {
-      this.emitter.emit(ETreeEventTypes.itemChanged, [itemId]);
-    });
+    // setTimeout(() => {
+    this.emitter.emit(ETreeEventTypes.itemChanged, [itemId]);
+    // });
     return Promise.resolve();
   }
 

@@ -46,14 +46,13 @@ const Explorer: FC<any> = () => {
     updateFolder,
     // moveRequest,
     // moveFolder,
+    changeWorkspaceMetaOrders,
     changeCollectionChildrenPosition,
     changeFolderChildrenPosition,
     // deleteCollection,
     // deleteFolder,
     // deleteRequest,
   } = useExplorerFacade();
-
-  const { isProgressing, collections, folders, requests } = explorer;
 
   const {
     // explorer: { collections, folders, requests },
@@ -62,6 +61,8 @@ const Explorer: FC<any> = () => {
   } = useExplorerStore.getState();
   const { open: openTab } = useTabStore.getState();
   const { openImportTab } = useWorkspaceStore.getState();
+
+  const { isProgressing, collections, folders, requests } = explorer;
 
   // console.log(explorer, "explorer")
 
@@ -165,11 +166,11 @@ const Explorer: FC<any> = () => {
 
     const { childIndex, targetType, depth, parentItem } = target;
     const index = workspace.__meta.cOrders.indexOf(item.__ref.id);
-    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index, [index - 1, index, index + 1].includes(childIndex));
+    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index, [index, index + 1].includes(childIndex));
 
     /** collection can only reorder at depth 0 */
     if (typeof childIndex != 'number') return false;
-    else if ([index - 1, index, index + 1].includes(childIndex)) return false;
+    else if ([undefined, index, index + 1].includes(childIndex)) return false;
     else if (targetType == 'between-items' && depth == 0 && parentItem == 'root') return true;
     else return false;
   }, [workspace.__meta.cOrders, collections]);
@@ -234,18 +235,25 @@ const Explorer: FC<any> = () => {
     const item = items[0].data;
     const { childIndex = 0, depth, parentItem, targetItem } = target;
 
-    if (item.__ref.isCollection) return;
+    const isItemCollection = item.__ref.isCollection;
+    const isItemFolder = item.__ref.isFolder;
+    const isItemRequest = item.__ref.isRequest;
 
     /**
      * item is reordering within same parent
      * item is being reordered in collection or in folder or moving across folder but within collection
-     *
-     * 1. no target means item is not being dropped onto folder
+     * 1. collection is being reordered at root
+     * 2. no target means item is not being dropped onto folder
      *    1.1 either it is being reordering within collection
      *    1.2 either it is being reordering within folder
      *    1.3 either it is being moved to folder but dropped in-between items
      */
     if (!targetItem) {
+      if (isItemCollection) {
+        console.log("The collection reorders", childIndex, depth, parentItem);
+        changeWorkspaceMetaOrders(item.__ref.id, childIndex - 1)
+        return;
+      }
       const moveToParent =
         collections.find((i) => i.__ref.id == parentItem) ||
         folders.find((i) => i.__ref.id == parentItem);

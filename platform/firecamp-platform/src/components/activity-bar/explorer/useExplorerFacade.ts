@@ -10,6 +10,7 @@ const useExplorerFacade = () => {
       updateFolder: s.updateFolder,
       // moveRequest: s.moveRequest,
       // moveFolder: s.moveFolder,
+      changeWorkspaceMetaOrders: s.changeWorkspaceMetaOrders,
       changeCollectionChildrenPosition: s.changeCollectionChildrenPosition,
       changeFolderChildrenPosition: s.changeFolderChildrenPosition,
       // deleteCollection: s.deleteCollection,
