@@ -173,7 +173,7 @@ const Explorer: FC<any> = () => {
     else return false;
   }, [workspace.__meta.cOrders, collections]);
 
-  const shouldIDropTheFolder = useCallback((target: any): boolean => {
+  const shouldIDropTheFolder = useCallback((item: any, target: any): boolean => {
     const { targetType, depth, parentItem } = target;
     /** folder can be dropped on collection */
     if (targetType == 'item' && depth == 0 && parentItem == 'root') return true;
@@ -181,7 +181,7 @@ const Explorer: FC<any> = () => {
     const parentCollection = collections.find((i) => i.__ref.id == parentItem);
     const parentFolder = folders.find((i) => i.__ref.id == parentItem);
 
-    /**folders can be drop on collection and folder or reorder within the same depth/level */
+    /**folders can be drop on collection/folder or reorder within the same depth/level */
     if (parentCollection || parentFolder) return true;
     return false;
   }, [collections, folders]);
@@ -210,7 +210,7 @@ const Explorer: FC<any> = () => {
       // console.clear();
 
       if (isItemCollection) return shouldIDropTheCollection(itemPayload, target);
-      if (isItemFolder) return shouldIDropTheFolder(target);
+      if (isItemFolder) return shouldIDropTheFolder(itemPayload, target);
       if (isItemRequest) return shouldIDropTheRequest(target);
       return false;
     },
@@ -274,6 +274,27 @@ const Explorer: FC<any> = () => {
     );
   }, [folders]);
 
+  const itemDropOnCollectionOrFolder = useCallback((targetItem: string, itemType: 'request' | 'folder', item: any) => {
+    console.log('itemDropOnCollectionOrFolder');
+    const moveTo: { collectionId: string; folderId?: string } = {
+      collectionId: '',
+    };
+    const _targetCol = collections.find((i) => i.__ref.id == targetItem);
+    if (_targetCol) {
+      console.log('item drop on collection');
+      moveTo.collectionId = _targetCol.__ref.id;
+    }
+    else {
+      console.log('item drop on folder');
+      const _targetFolder = folders.find((i) => i.__ref.id == targetItem);
+      if (_targetFolder) {
+        moveTo.collectionId = _targetFolder.__ref.collectionId;
+        moveTo.folderId = _targetFolder.__ref.id;
+      }
+    }
+    _moveItem(item, moveTo, itemType);
+  }, [collections, folders]);
+
   const onDrop = (items, target) => {
     console.log(items, target, 'onDrop');
     const item = items[0].data;
@@ -298,6 +319,7 @@ const Explorer: FC<any> = () => {
         reorderCollections(childIndex, item);
         return;
       }
+      // else if
       const moveToParent =
         collections.find((i) => i.__ref.id == parentItem) ||
         folders.find((i) => i.__ref.id == parentItem);
@@ -305,7 +327,7 @@ const Explorer: FC<any> = () => {
       if (isParentFolder) {
         if (item.__ref.folderId == moveToParent.__ref.id) {
           // reorder within folders
-          console.log('reorder within folders'); //, explorerTreeRef);
+          console.log('reorder within folders');
           reorderWithinFolder(childIndex, item);
         } else {
           // TODO: move item to folder within collection
@@ -325,25 +347,10 @@ const Explorer: FC<any> = () => {
       }
     } else {
       /**
-       * if both exists then item is moving to collection/folder
-       * Item is being dropped on item, here it'll be dropped on folder or collection
+       * if targetItem exists then item is being moved/dropped to collection/folder
+       * item is being dropped on item, here it'll be dropped on folder or collection
        */
-
-      const moveTo: { collectionId: string; folderId?: string } = {
-        collectionId: '',
-      };
-      const _targetCollection = collections.find(
-        (i) => i.__ref.id == targetItem
-      );
-      if (_targetCollection) moveTo.collectionId = _targetCollection.__ref.id;
-      else {
-        const _targetFolder = folders.find((i) => i.__ref.id == targetItem);
-        if (_targetFolder) {
-          moveTo.collectionId = _targetFolder.__ref.collectionId;
-          moveTo.folderId = _targetFolder.__ref.id;
-        }
-      }
-      _moveItem(item, moveTo, item.__ref.isFolder ? 'folder' : 'request');
+      itemDropOnCollectionOrFolder(targetItem, isItemRequest ? 'request' : 'folder', item);
     }
   };
 
