@@ -113,6 +113,7 @@ export const useExplorerStore = create<IWorkspaceStore>(
       const state = get();
       const { collections, folders, requests } = state.explorer;
       const { workspace } = useWorkspaceStore.getState();
+      console.log(workspace.__meta.cOrders, 'workspace.__meta.cOrders');
       instance.init(collections, folders, requests, workspace.__meta.cOrders);
       set((s) => {
         return { explorer: { ...s.explorer, tdpInstance: instance } };

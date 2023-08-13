@@ -95,6 +95,7 @@ export class CollectionExplorerProvider<T = any> implements TreeDataProvider {
     itemId: TreeItemIndex,
     newChildren: TreeItemIndex[]
   ): Promise<void> {
+    // console.log(itemId, 'itemId', newChildren);
     if (itemId == 'root') {
       this.rootOrders = newChildren;
     } else {

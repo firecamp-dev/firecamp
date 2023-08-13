@@ -166,12 +166,10 @@ const Explorer: FC<any> = () => {
 
     const { childIndex, targetType, depth, parentItem } = target;
     const index = workspace.__meta.cOrders.indexOf(item.__ref.id);
-    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index, [index, index + 1].includes(childIndex));
-
+    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index);
+    // if (index == dropIndex) return false;
     /** collection can only reorder at depth 0 */
-    if (typeof childIndex != 'number') return false;
-    else if ([undefined, index, index + 1].includes(childIndex)) return false;
-    else if (targetType == 'between-items' && depth == 0 && parentItem == 'root') return true;
+    if (targetType == 'between-items' && depth == 0 && parentItem == 'root') return true;
     else return false;
   }, [workspace.__meta.cOrders, collections]);
 
@@ -230,6 +228,15 @@ const Explorer: FC<any> = () => {
     }
   };
 
+  const reorderCollections = useCallback((childIndex: number, collection: any) => {
+    const index = workspace.__meta.cOrders.indexOf(collection.__ref.id);
+    if (index < 0) return;
+    // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
+    const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
+    if (dropIndex == index) return;
+    changeWorkspaceMetaOrders(collection.__ref.id, dropIndex)
+  }, [workspace.__meta.cOrders]);
+
   const onDrop = (items, target) => {
     console.log(items, target, 'onDrop');
     const item = items[0].data;
@@ -250,8 +257,8 @@ const Explorer: FC<any> = () => {
      */
     if (!targetItem) {
       if (isItemCollection) {
-        console.log("The collection reorders", childIndex, depth, parentItem);
-        changeWorkspaceMetaOrders(item.__ref.id, childIndex - 1)
+        // console.log("The collection reorders", childIndex, depth, parentItem);
+        reorderCollections(childIndex, item);
         return;
       }
       const moveToParent =
