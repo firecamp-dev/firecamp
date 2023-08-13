@@ -237,11 +237,13 @@ const Explorer: FC<any> = () => {
     changeWorkspaceMetaOrders(collection.__ref.id, dropIndex)
   }, [workspace.__meta.cOrders]);
 
-  const reorderFolders = useCallback((childIndex: number, item: any) => {
+  const reorderWithinCollection = useCallback((childIndex: number, item: any) => {
+    const itemType = item.__ref.isRequest ? 'request' : 'folder'
     const collection = collections.find(c => c.__ref.id == item.__ref.collectionId);
     if (!collection) return;
-    const index = collection.__meta.fOrders.indexOf(item.__ref.id);
+    const index = collection.__meta[itemType == 'request' ? 'rOrders' : 'fOrders'].indexOf(item.__ref.id);
     if (index < 0) return;
+
     // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
     const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
     if (dropIndex == index) return;
@@ -249,9 +251,28 @@ const Explorer: FC<any> = () => {
       item.__ref.collectionId,
       item.__ref.id,
       dropIndex,
-      'folder'
+      itemType
     );
   }, [collections]);
+
+  const reorderWithinFolder = useCallback((childIndex: number, item: any) => {
+    const itemType = item.__ref.isRequest ? 'request' : 'folder'
+    const folder = folders.find(c => c.__ref.id == item.__ref.folderId);
+    if (!folder) return;
+    const index = folder.__meta[itemType == 'request' ? 'rOrders' : 'fOrders'].indexOf(item.__ref.id);
+    if (index < 0) return;
+
+    // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
+    const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
+    if (dropIndex == index) return;
+
+    changeFolderChildrenPosition(
+      item.__ref.folderId,
+      item.__ref.id,
+      dropIndex,
+      itemType
+    );
+  }, [folders]);
 
   const onDrop = (items, target) => {
     console.log(items, target, 'onDrop');
@@ -285,13 +306,7 @@ const Explorer: FC<any> = () => {
         if (item.__ref.folderId == moveToParent.__ref.id) {
           // reorder within folders
           console.log('reorder within folders'); //, explorerTreeRef);
-          // changeFolderChildrenPosition(
-          //   moveToParent.__ref.id,
-          //   item.__ref.id,
-          //   childIndex,
-          //   item.__ref.isRequest ? 'request' : 'folder'
-          // );
-          reorderFolders(childIndex, item);
+          reorderWithinFolder(childIndex, item);
         } else {
           // TODO: move item to folder within collection
           console.log('move item to folder within collection', explorerTreeRef);
@@ -305,13 +320,7 @@ const Explorer: FC<any> = () => {
         } else {
           // reorder within collection
           console.log('reorder within collection');
-          reorderFolders(childIndex, item);
-          // changeCollectionChildrenPosition(
-          //   parentItem,
-          //   item.__ref.id,
-          //   childIndex,
-          //   item.__ref.isRequest ? 'request' : 'folder'
-          // );
+          reorderWithinCollection(childIndex, item);
         }
       }
     } else {
