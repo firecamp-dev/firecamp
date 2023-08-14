@@ -191,9 +191,3 @@ const Button: FC<IButton> = ({
   );
 };
 export default Button;
-
-// possible variants
-// root: '!text-info',
-// root: 'hover:!bg-focusColor !text-app-foreground-inactive'
-// className="hover:!bg-focus2 ml-1 !text-app-foreground-inactive !py-0"
-// ghost button: using bg-focus1 on hover

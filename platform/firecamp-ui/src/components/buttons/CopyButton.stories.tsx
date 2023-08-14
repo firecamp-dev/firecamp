@@ -1,5 +1,5 @@
 import Button from './CopyButton';
-import { ICopyButton } from "./interfaces/CopyButton.interfaces"
+import { ICopyButton } from "./CopyButton.interfaces"
 
 export default {
   title: "UI-Kit/CopyButton",

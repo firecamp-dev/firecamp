@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { Copy } from 'lucide-react';
 import { _clipboard } from '@firecamp/utils';
 import Button from './Button';
-import { ICopyButton } from './interfaces/CopyButton.interfaces';
+import { ICopyButton } from './CopyButton.interfaces';
 
 const CopyButton: FC<ICopyButton> = ({
   id = '',
