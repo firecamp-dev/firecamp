@@ -8,7 +8,7 @@ jest.mock('@monaco-editor/react', () => {
         data-auto={props.wrapperClassName}
         onChange={(e) => props.onChange(e.target.value)}
         value={props.value}
-        data-testId="single-line-editor"
+        data-testid="single-line-editor"
       ></textarea>
     );
   });

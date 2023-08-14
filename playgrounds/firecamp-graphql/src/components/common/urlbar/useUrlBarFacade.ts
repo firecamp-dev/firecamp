@@ -21,3 +21,16 @@ const useUrlBarFacade = () => {
 };
 
 export default useUrlBarFacade;
+
+export const useUrlBarSuffixButtonsFacade = () => {
+  return useStore(
+    (s: IStore) => ({
+      tabId: s.runtime.tabId,
+      isUpdatingRequest: s.ui.isUpdatingRequest,
+      fetchIntrospectionSchema: s.fetchIntrospectionSchema,
+      toggleDoc: s.toggleDoc,
+      save: s.save,
+    }),
+    shallow
+  );
+};

@@ -1,9 +1,8 @@
 import { File, RotateCw } from 'lucide-react';
-import { shallow } from 'zustand/shallow';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { Button, Url, HttpMethodDropDown } from '@firecamp/ui';
-import { IStore, useStore } from '../../../store';
+import useUrlBarFacade, { useUrlBarSuffixButtonsFacade } from './useUrlBarFacade';
 
 const methods = Object.values(EHttpMethod);
 
@@ -20,22 +19,7 @@ const UrlBarContainer = () => {
     changeUrl,
     changeMethod,
     fetchIntrospectionSchema,
-  } = useStore(
-    (s: IStore) => ({
-      tabId: s.runtime.tabId,
-      url: s.request.url,
-      method: s.request.method,
-      __meta: s.request.__meta,
-      __ref: s.request.__ref,
-      requestPath: s.runtime.requestPath,
-      isRequestSaved: s.runtime.isRequestSaved,
-      context: s.context,
-      changeUrl: s.changeUrl,
-      changeMethod: s.changeMethod,
-      fetchIntrospectionSchema: s.fetchIntrospectionSchema,
-    }),
-    shallow
-  );
+  } = useUrlBarFacade();
 
   const _handleUrlChange = (e) => {
     e.preventDefault();
@@ -85,38 +69,33 @@ const SuffixButtons = () => {
     fetchIntrospectionSchema,
     toggleDoc,
     save,
-  } = useStore(
-    (s: IStore) => ({
-      tabId: s.runtime.tabId,
-      isUpdatingRequest: s.ui.isUpdatingRequest,
-      fetchIntrospectionSchema: s.fetchIntrospectionSchema,
-      toggleDoc: s.toggleDoc,
-      save: s.save,
-    }),
-    shallow
-  );
+  } = useUrlBarSuffixButtonsFacade();
 
   // const isSaveBtnDisabled = isRequestSaved ? !requestHasChanges : false;
   return (
     <>
       <Button
-        onClick={() => toggleDoc(true)}
-        leftIcon={<File size={18} />}
         id={`open-schema-doc-${tabId}`}
         title={'open schema doc'}
+        data-testid="open-graphql-schema-doc"
+        onClick={() => toggleDoc(true)}
+        leftIcon={<File size={18} />}
         secondary
         xs
       />
       <Button
-        leftIcon={<RotateCw size={18} />}
-        onClick={fetchIntrospectionSchema}
         id={`refresh-schema-${tabId}`}
         title={'refresh schema'}
+        data-testid="refresh-graphql-schema"
+        leftIcon={<RotateCw size={18} />}
+        onClick={fetchIntrospectionSchema}
         primary
         xs
       />
       <Button
         id={`save-request-${tabId}`}
+        data-testid="save-request"
+        title={'Save Request'}
         text={isUpdatingRequest ? 'Saving...' : 'Save'}
         onClick={() => save(tabId)}
         disabled={false} //isSaveBtnDisabled
