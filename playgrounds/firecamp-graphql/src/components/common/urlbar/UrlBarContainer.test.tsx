@@ -57,26 +57,26 @@ describe("UrlBarContainer render", () => {
     expect(saveBtn).toHaveTextContent('Save');
   });
 
-  // test("should have POST method selected", () => {
-  //   prepareStore({
-  //     url: { raw: "https://firecamp.io" },
-  //     method: "POST"
-  //   });
-  //   render(<UrlBarContainer />);
-  //   const methodBtn = screen.getByTestId("http-method-label")
-  //   expect(methodBtn).toBeInTheDocument();
-  //   expect(methodBtn).toHaveAttribute('title', 'HTTP Method');
-  //   expect(methodBtn).toHaveTextContent('POST');
-  // });
+  test("should have POST method selected", () => {
+    prepareStore({
+      url: { raw: "https://firecamp.io" },
+      method: "POST"
+    });
+    render(<UrlBarContainer />);
+    const methodBtn = screen.getByTestId("http-method-label")
+    expect(methodBtn).toBeInTheDocument();
+    expect(methodBtn).toHaveAttribute('title', 'HTTP Method');
+    expect(methodBtn).toHaveTextContent('POST');
+  });
 
-  // test("should have request path shown", () => {
-  //   prepareStore({
-  //     url: { raw: "https://firecamp.io" },
-  //     requestPath: { path: "Firecamp Collection > Create Request" }
-  //   });
-  //   render(<UrlBarContainer />);
-  //   const reqPath = screen.getByTestId("request-path")
-  //   expect(reqPath).toBeInTheDocument();
-  //   expect(reqPath).toHaveTextContent('Firecamp Collection > Create Request');
-  // });
+  test("should have request path shown", () => {
+    prepareStore({
+      url: { raw: "https://firecamp.io" },
+      requestPath: { path: "Firecamp Collection > Create Request" }
+    });
+    render(<UrlBarContainer />);
+    const reqPath = screen.getByTestId("request-path")
+    expect(reqPath).toBeInTheDocument();
+    expect(reqPath).toHaveTextContent('Firecamp Collection > Create Request');
+  });
 })
