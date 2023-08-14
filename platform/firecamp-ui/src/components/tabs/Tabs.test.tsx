@@ -8,7 +8,10 @@ import TabsV3 from "./v3/Tabs";
 import { ITabs } from "./interfaces/Tabs.interfaces";
 import { TId } from "@firecamp/types";
 import { click, dragAndDrop } from "../../../__mocks__/eventMock";
+import ResizeObserver from "../../../__mocks__/ResizeObserver";
 import { ITab } from "./v3/Tab.interface";
+
+window.ResizeObserver = ResizeObserver;
 
 const TAB_LIST = [
     {
@@ -151,7 +154,7 @@ describe("Tabs component : ", () => {
             addTabIconMeta={{ id: 'add-tab-icon-id', show: true, onClick: () => clicked = true }}
         />);
 
-        let addIconContainer = screen.getByTitle('IconAdd').parentElement.parentElement;
+        let addIconContainer = screen.getByTestId('add-icon').parentElement;
         expect(addIconContainer).toHaveClass('px-2 cursor-pointer h-8 flex items-center justify-center');
         expect(addIconContainer.getAttribute('id')).toBe('add-tab-icon-id');
         click(addIconContainer);
@@ -163,7 +166,7 @@ describe("Tabs component : ", () => {
         render(<Template {...TabArgs}
             addTabIconMeta={{ id: 'add-tab-icon-id', show: true, disabled: true, onClick: () => clicked = true }}
         />);
-        addIconContainer = screen.getByTitle('IconAdd').parentElement.parentElement;
+        addIconContainer = screen.getByTestId('add-icon').parentElement;
         click(addIconContainer);
         expect(clicked).toBeFalsy();
 
@@ -175,8 +178,8 @@ describe("Tabs component : ", () => {
             closeTabIconMeta={{ show: true, onClick: () => clicked = true }}
         />);
 
-        let closeTabContainer = screen.getAllByTitle('IconClose');
-        expect(closeTabContainer[0].parentElement.parentElement).toHaveClass('fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor');
+        let closeTabContainer = screen.getAllByTestId('close-icon');
+        expect(closeTabContainer[0].parentElement.parentElement).toHaveClass('fc-tab-action flex items-center pl-1 -mr-1');
         // screen.debug(closeTabContainer[0].parentElement.parentElement);
 
         const SecondTab = closeTabContainer[1];
@@ -189,7 +192,7 @@ describe("Tabs component : ", () => {
         render(<Template {...TabArgs}
             closeTabIconMeta={{ show: true, disabled: true, onClick: () => clicked = true }}
         />);
-        closeTabContainer = screen.getAllByTitle('IconClose');
+        closeTabContainer = screen.getAllByTestId('close-icon');
 
         click(closeTabContainer[1]);
         expect(clicked).toBeFalsy();

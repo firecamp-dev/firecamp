@@ -49,7 +49,7 @@ describe("Checkbox component : ", () => {
             expect(CheckboxInput.checked).toBeTruthy();
             expect(checkIconBorderSpan).toHaveClass("border w-4 h-4 border-primaryColor");
 
-            let checkIconVisible = screen.getByText("IconCheck");
+            let checkIconVisible = screen.getByTestId("check-icon");
             expect(checkIconVisible).toBeInTheDocument();
         });
 

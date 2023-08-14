@@ -48,7 +48,7 @@ const CloseIconPlacement = ({
         </div>
       ) : (
         <div className="fc-tab-action-close flex items-center h-4 w-4 rounded-sm cursor-pointer hover:bg-focusColor">
-          <X size={14} onClick={(e) => onClick(e)} />
+          <X size={14} onClick={(e) => onClick(e)} data-testid="close-icon"/>
         </div>
       )}
     </div>

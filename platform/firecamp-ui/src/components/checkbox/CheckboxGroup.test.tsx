@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "@testing-library/jest-dom";
-import { getByRole, getByText, render, screen, waitFor } from "@testing-library/react";
+import { getByRole, getByTestId, getByText, render, screen, waitFor } from "@testing-library/react";
 import { click } from "../../../__mocks__/eventMock";
 // import { CheckboxGroup } from "@firecamp/ui";
 import CheckboxGroup from './CheckboxGroup';
@@ -86,7 +86,7 @@ describe("Checkbox component : ", () => {
 
             expect(CheckboxInput.checked).toBeTruthy();
 
-            let checkIconVisible = getByText(lastCheckbox, "IconCheck");
+            let checkIconVisible = getByTestId(lastCheckbox, "check-icon");
             expect(checkIconVisible).toBeInTheDocument();
         });
 

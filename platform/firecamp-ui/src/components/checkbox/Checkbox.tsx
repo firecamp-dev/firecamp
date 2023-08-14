@@ -60,6 +60,7 @@ const Checkbox: FC<ICheckbox> = ({
             <Check
               size={12}
               className="text-primaryColor absolute"
+              data-testid="check-icon"
             />
           ) : (
             ''

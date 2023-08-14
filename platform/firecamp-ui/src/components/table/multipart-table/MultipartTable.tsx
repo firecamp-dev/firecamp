@@ -294,7 +294,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} title="IconTextSize" />
           ) : (
-            <File onClick={_changeType} size={16}/>
+            <File onClick={_changeType} size={16} data-testid="file-icon"/>
           )}
         </div>
       </div>

@@ -173,7 +173,7 @@ const Tabs: FC<ITabs> = ({
                   }
                 }}
               >
-                <Plus className="flex" size={16} />
+                <Plus className="flex" size={16} data-testid="add-icon"/>
               </div>
             )}
           </div>

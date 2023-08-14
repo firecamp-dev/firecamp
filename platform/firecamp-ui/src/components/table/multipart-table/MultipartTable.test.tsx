@@ -1,11 +1,5 @@
 import { FC } from 'react';
-import {
-  render,
-  screen,
-  waitFor,
-  waitForElementToBeRemoved,
-  within,
-} from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import MultipartTable from './MultipartTable';
@@ -40,7 +34,6 @@ describe('Table : ', () => {
   const getRenderedTableRow = async () =>
     within(getTableBody()[1]).findAllByRole('row');
 
-  //discuss add test cases similar to basic table - ?
   test('Table should render', () => {
     mountTableComponent();
 
@@ -79,12 +72,15 @@ describe('Table : ', () => {
     expect(svgIcon.textContent).toBe('IconTextSize');
 
     let textFieldWrapperDiv = MultipartInputElement.firstElementChild;
-    expect(textFieldWrapperDiv).toHaveClass('without-border px-2');
+    expect(textFieldWrapperDiv).toHaveClass('without-border px-1 w-full');
 
     click(svgIcon);
 
     // later - icon title should be IconFile & text field is of input type
-    expect(svgIconWrapperDiv.querySelector('svg').textContent).toBe('IconFile');
+    expect(
+      svgIconWrapperDiv.contains(screen.getByTestId('file-icon'))
+    ).toBeTruthy();
+
     let fileSelectionInputField = MultipartInputElement.children[0];
     expect(fileSelectionInputField).toHaveAttribute('type', 'file');
     expect(fileSelectionInputField).toHaveClass('fc-file-input hidden');

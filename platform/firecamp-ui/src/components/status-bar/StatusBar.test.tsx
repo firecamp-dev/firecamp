@@ -21,7 +21,7 @@ describe("StatusBar component", () => {
         let { container } = render(<Template
             StatusBar={{ id: "status-bar-wrapper", className: "className" }}
             PrimaryRegion={{ id: "status-bar-primary-region-id", children: 'My workspace' }}
-            SecondaryRegion={{ id: "status-bar-secondary-region-id", children: <Twitter title="twitter-icon" /> }}
+            SecondaryRegion={{ id: "status-bar-secondary-region-id", children: <Twitter data-testid="twitter-icon" /> }}
         />);
         let StatusBarWrapper = container.firstElementChild;
         let PrimaryRegion = StatusBarWrapper.firstElementChild;
@@ -42,7 +42,7 @@ describe("StatusBar component", () => {
         //validate secondary region props
         expect(SecondaryRegion.id).toBe("status-bar-secondary-region-id");
         expect(SecondaryRegion).toHaveClass('ml-auto flex items-center');
-        expect(screen.getByText('twitter-icon')).toBeInTheDocument();
+        expect(screen.getByTestId('twitter-icon')).toBeInTheDocument();
 
     });
 
