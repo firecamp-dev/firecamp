@@ -1,11 +1,12 @@
 {
   "name": "@firecamp/rest",
   "version": "0.0.0",
-  "description": "REST API Client for Firecamp",
+  "description": "Rest Playground, Firecamp",
   "main": "src/index.ts",
   "license": "AGPLv3",
   "private": true,
   "keywords": [],
+  "type": "module",
   "scripts": {
     "build": "pnpm clean && run-p 'build:*' && pnpm copy-files",
     "build:main": "tsc -p tsconfig.json",
@@ -96,7 +97,6 @@
   "resolutions": {
     "codemirror-graphql/graphql": "^15.6.0"
   },
-  "type": "module",
   "files": [
     "build/main",
     "build/module",

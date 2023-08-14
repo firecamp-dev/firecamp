@@ -1,10 +1,11 @@
 {
   "name": "@firecamp/graphql",
   "version": "0.0.0",
-  "description": "URL utility to manage request's url",
+  "description": "GraphQL Playground, Firecamp",
   "main": "src/index.ts",
   "license": "",
   "keywords": [],
+  "type": "module",
   "scripts": {
     "build": "pnpm clean && run-p 'build:*' && pnpm copy-files",
     "build:main": "tsc -p tsconfig.json",
