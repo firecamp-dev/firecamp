@@ -16,7 +16,7 @@ const Template = (args: ICopyButton) => <Button {...args} />;
 
 export const CopyButtonWithText = Template.bind({});
 CopyButtonWithText.args = { 
-  className: 'border p-3',
+  className: 'border px-3',
   text: 'Copy Button Text' ,
   showText: true,
   onCopy: (text : string) => console.log(`copied-text`, text)
@@ -24,7 +24,7 @@ CopyButtonWithText.args = {
 
 export const CopyButtonWithoutText = Template.bind({});
 CopyButtonWithoutText.args = { 
-  className: 'border p-3 bg-app-background-secondary',
+  className: 'border px-3 bg-app-background-secondary',
   text: 'Copy Button Text' ,
   showText: false,
   showCopied: true,
@@ -33,7 +33,7 @@ CopyButtonWithoutText.args = {
 
 export const CopyButtonWithoutAnimation = Template.bind({});
 CopyButtonWithoutAnimation.args = { 
-  className: 'border p-3',
+  className: 'border px-3',
   text: 'Copy Button Text' ,
   showText: true,
   animation: false,

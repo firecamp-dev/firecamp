@@ -30,12 +30,17 @@ const CopyButton: FC<ICopyButton> = ({
   return (
     <Button
       leftIcon={
-        <Copy size={12} onClick={_onClickCopy} className="align-baseline" />
+        <Copy
+          size={12}
+          onClick={_onClickCopy}
+          className="align-baseline"
+          data-testid="copy-icon"
+        />
       }
       text={showText ? text : ''}
       rightIcon={
         animation && showCopied ? (
-          <span className="text-sm ">Copied!</span>
+          <span className="text-sm">Copied!</span>
         ) : (
           <></>
         )

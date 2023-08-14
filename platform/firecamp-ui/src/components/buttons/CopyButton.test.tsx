@@ -1,87 +1,79 @@
-import {render, screen, waitFor} from "@testing-library/react";
-import "@testing-library/jest-dom";
+import { render, screen, waitFor } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
-import Button from './CopyButton';
-import { click } from "../../../__mocks__/eventMock";
-import { ICopyButton } from "./interfaces/CopyButton.interfaces";
+import CopyButton from './CopyButton';
+import { click } from '../../../__mocks__/eventMock';
 
-const CopyButtonWithTextPreviewArgs = { 
-  className: 'border p-3',
-  text: 'Copy Button Text' ,
-  showText: true,
-  onCopy: (text: string) => console.log(`copied-text`, text)
-}
-const CopyButtonWithoutTextPreviewArgs = { 
-  className: 'border p-3',
-  text: 'Copy Button Text' ,
-  showText: false,
-  onCopy: (text: string) => console.log(`copied-text`, text)
-};
-const CopyButtonWithoutAnimationArgs = { 
-  className: 'border p-3',
-  text: 'Copy Button Text' ,
-  showText: true,
-  animation: false,
-  onCopy: (text: string) => console.log(`copied-text-without-animation`, text)
-};
-
-const Template = (args: ICopyButton) => <Button {...args} />;
-
-describe("Button : " , () => {
-
-  const mountCopyButtonWithTextComponent = () => render(<Template {...CopyButtonWithTextPreviewArgs}/>);
-  
-  const getCopyButton = () => screen.getByTestId('copy-button');
-  const getCopyAnimation = () => screen.queryByText(/Copied/i);
-  const getCustomComponentByText = () => screen.queryByText(/Custom component disables copy functionality/i);
-
-  test('Copy button should render with a preview of text to be copied', () => {
-    mountCopyButtonWithTextComponent();
-    const button = screen.getByTestId('copy-button');
-    expect(button).toHaveClass('fc-copy bg-gray-800');
-    expect(button).toHaveTextContent(CopyButtonWithTextPreviewArgs.text);
+describe('Copy Button: ', () => {
+  it('renders copy icon only & validate default styles', () => {
+    render(
+      <CopyButton
+        text="Copy Button Text"
+        onCopy={(text: string) => {
+          console.log(`copied-text`, text);
+        }}
+      />
+    );
+    const Button = screen.getByTestId('copy-button');
+    expect(Button).toHaveClass(
+      '!bg-transparent fc-copy bg-gray-800 text-app-foreground-inactive'
+    );
+    expect(screen.getByTestId('copy-icon')).toBeInTheDocument();
+    expect(screen.getByTestId('copy-icon')).toHaveClass('align-baseline');
+    expect(screen.queryByText('Copy Button Text')).not.toBeInTheDocument();
   });
-  
-  test('Copy button should render without a preview of text to be copied', () => {
-    render(<Template {...CopyButtonWithoutTextPreviewArgs}/>);
-    const button = screen.getByTestId('copy-button');
-    
-    expect(button).toBeInTheDocument();
-    expect(button).not.toHaveTextContent(CopyButtonWithoutTextPreviewArgs.text);
+
+  it('renders text preview with copy icon', () => {
+    render(
+      <CopyButton
+        text="Copy Button Text"
+        showText={true}
+        onCopy={(text: string) => {
+          console.log(`copied-text`, text);
+        }}
+      />
+    );
+    expect(screen.getByText('Copy Button Text')).toBeInTheDocument();
   });
-  
-  test('Copy button should render the copied text as animation on click event', async () => {
-  
-    mountCopyButtonWithTextComponent();
-    const button = getCopyButton();
-    const copyElement = button.lastChild as HTMLElement;
-  
-    expect(copyElement.textContent).toBe('IconCopy');
+
+  it('renders the "Copied!" text as animation on click event', async () => {
+    render(
+      <CopyButton
+        text="Copy Button Text"
+        showText={true}
+        onCopy={(text: string) => {
+          console.log(`copied-text`, text);
+        }}
+      />
+    );
+
+    let copyElement = screen.getByTestId('copy-icon');
     click(copyElement);
-    await waitFor(() => getCopyButton());
-    const animationExist = await getCopyAnimation();
-    
-    expect(animationExist).toBeInTheDocument();
 
+    await waitFor(() => screen.getByTestId('copy-button'));
+
+    const copyActionText = screen.queryByText(/Copied/i);
+    expect(copyActionText).toBeInTheDocument();
+    expect(copyActionText).toHaveClass('text-sm');
   });
-  
-  test('Copy button should render the copy text without animation on click event', async () => {
-  
-    render(<Template {...CopyButtonWithoutAnimationArgs}/>);
-    const button = getCopyButton();
-    const copyElement = button.lastChild as HTMLElement;
-  
-    expect(copyElement.textContent).toBe('IconCopy');
+
+  it('renders the button without animation on click event', async () => {
+    render(
+      <CopyButton
+        text="Copy Button Text"
+        showText={true}
+        animation={false}
+        onCopy={(text: string) => {
+          console.log(`copied-text`, text);
+        }}
+      />
+    );
+
+    let copyElement = screen.getByTestId('copy-icon');
     click(copyElement);
-    await waitFor(() => getCopyButton());
-    const animationExist = await getCopyAnimation();
-    
-      if(CopyButtonWithoutAnimationArgs.animation){
-        expect(animationExist).toBeInTheDocument();  
-      }else{
-        expect(animationExist).toBeNull();  
-      }    
 
+    await waitFor(() => screen.getByTestId('copy-button'));
+
+    expect(screen.queryByText(/Copied/i)).not.toBeInTheDocument();
   });
-
-})
+});
