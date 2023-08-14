@@ -10,7 +10,7 @@ import {
   getOperationNames,
   getPlaygroundName,
   prettifyQueryString,
-} from '../../services/GraphQLservice';
+} from '../../services/graphql.service';
 import { TStoreSlice } from '../store.type';
 
 export interface IPlaygroundRequest
