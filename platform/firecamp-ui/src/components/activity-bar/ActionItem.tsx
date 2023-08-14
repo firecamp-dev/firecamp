@@ -1,4 +1,4 @@
-import { useEffect, FC } from 'react';
+import { FC } from 'react';
 import cx from 'classnames';
 import { UserCircle2 } from 'lucide-react';
 // import ReactTooltip from 'react-tooltip';

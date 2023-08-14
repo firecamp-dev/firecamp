@@ -12,7 +12,7 @@ import {
 } from '@firecamp/ui';
 import EditPlaygroundName from './EditPlaygroundName';
 import { IStore, useStore } from '../../../../../store';
-import { isValid } from '../../../../../services/GraphQLservice';
+import { isValid } from '../../../../../services/graphql.service';
 
 const ReqStatusBar = ({ }) => {
   const {

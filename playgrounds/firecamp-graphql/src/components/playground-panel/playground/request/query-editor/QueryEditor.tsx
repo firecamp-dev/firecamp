@@ -50,7 +50,7 @@ import '../sass/CM-Main.css';
 
 import getQueryFacts, {
   getCurrentOperation,
-} from '../../../../../services/GraphQLservice';
+} from '../../../../../services/graphql.service';
 import Controls from '../statusbar/Controls';
 import { useStore } from '../../../../../store';
 import { EQueryTypes } from '../../../../../types';

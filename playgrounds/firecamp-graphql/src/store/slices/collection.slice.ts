@@ -6,7 +6,7 @@ import {
   TId,
   ERequestTypes,
 } from '@firecamp/types';
-import { getOperationNames } from '../../services/GraphQLservice';
+import { getOperationNames } from '../../services/graphql.service';
 import { TStoreSlice } from '../store.type';
 import { TreeDataProvider } from '../../components/sidebar-panel/tabs/collection-tree/TreeDataProvider';
 

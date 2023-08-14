@@ -1,4 +1,4 @@
-import { FC, Key, ReactChild, ReactFragment, ReactPortal } from 'react';
+import { FC, ReactChild, ReactFragment, ReactPortal } from 'react';
 import classnames from 'classnames';
 import { IQuickSelection } from './interfaces/QuickSelection.interface';
 

@@ -26,7 +26,7 @@ const UrlBar: FC<IUrlBar> & {
       <div className="fc-statusbar">
         {!!nodePath ? (
           <div className="fc-urlbar-path flex">
-            <span data-testId="request-path">{nodePath}</span>
+            <span data-testid="request-path">{nodePath}</span>
             <ToolBar className="ml-4 visible">
               {showEditIcon ? (
                 <Pencil size={16} onClick={onEditClick} />

@@ -54,7 +54,7 @@ const CloseIconPlacement = ({
     </div>
   );
 
-const ReorderType = 'tab';
+// const ReorderType = 'tab';
 
 const Tab: FC<ITab> = ({
   id = '',

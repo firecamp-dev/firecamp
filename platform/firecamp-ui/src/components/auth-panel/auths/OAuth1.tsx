@@ -3,7 +3,7 @@ import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
   Button,
-  CheckboxInGrid,
+  // CheckboxInGrid,
   DropdownMenu,
   SingleLineEditor,
 } from '@firecamp/ui';
