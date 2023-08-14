@@ -217,17 +217,6 @@ const Explorer: FC<any> = () => {
     [collections, folders]
   );
 
-  const _moveItem = (item, moveTo, itemType: 'request' | 'folder') => {
-    if (itemType == 'folder') {
-      // moveFolder(item.__ref.id, moveTo);
-      console.log('moving the folder');
-    } else if (itemType == 'request') {
-      // moveRequest(item.__ref.id, moveTo);
-      console.log('moving the request');
-    } else {
-    }
-  };
-
   const reorderCollections = useCallback((childIndex: number, collection: any) => {
     const index = workspace.__meta.cOrders.indexOf(collection.__ref.id);
     if (index < 0) return;
@@ -276,9 +265,11 @@ const Explorer: FC<any> = () => {
 
   const itemDropOnCollectionOrFolder = useCallback((targetItem: string, itemType: 'request' | 'folder', item: any) => {
     console.log('itemDropOnCollectionOrFolder');
+    if (!targetItem) return;
     const moveTo: { collectionId: string; folderId?: string } = {
       collectionId: '',
     };
+
     const _targetCol = collections.find((i) => i.__ref.id == targetItem);
     if (_targetCol) {
       console.log('item drop on collection');
@@ -295,13 +286,25 @@ const Explorer: FC<any> = () => {
     _moveItem(item, moveTo, itemType);
   }, [collections, folders]);
 
+  const _moveItem = (item, moveTo, itemType: 'request' | 'folder') => {
+    if (itemType == 'folder') {
+      // moveFolder(item.__ref.id, moveTo);
+      console.log('moving the folder');
+    } else if (itemType == 'request') {
+      // moveRequest(item.__ref.id, moveTo);
+      console.log('moving the request');
+    } else {
+    }
+  };
+
+
   const onDrop = (items, target) => {
     console.log(items, target, 'onDrop');
     const item = items[0].data;
     const { childIndex = 0, depth, parentItem, targetItem } = target;
 
     const isItemCollection = item.__ref.isCollection;
-    const isItemFolder = item.__ref.isFolder;
+    // const isItemFolder = item.__ref.isFolder;
     const isItemRequest = item.__ref.isRequest;
 
     /**
@@ -331,14 +334,14 @@ const Explorer: FC<any> = () => {
           reorderWithinFolder(childIndex, item);
         } else {
           // TODO: move item to folder within collection
-          console.log('move item to folder within collection', explorerTreeRef);
-          // _moveItem()
+          console.log('move item to folder within collection', childIndex, explorerTreeRef);
+          itemDropOnCollectionOrFolder(moveToParent.__ref.id, isItemRequest ? 'request' : 'folder', item);
         }
       } else {
         if (item.__ref.folderId) {
           // TODO: moving item to collection root
-          console.log('move item to collection root', explorerTreeRef);
-          // _moveItem()
+          console.log('move item to collection root', childIndex, explorerTreeRef);
+          itemDropOnCollectionOrFolder(item.__ref.collectionId, isItemRequest ? 'request' : 'folder', item);
         } else {
           // reorder within collection
           console.log('reorder within collection');
