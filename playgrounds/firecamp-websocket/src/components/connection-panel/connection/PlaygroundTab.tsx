@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import _compact from 'lodash/compact';
 import isEqual from 'react-fast-compare';
 import { File, SendHorizonal } from 'lucide-react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import {
   FileInput,
   Container,

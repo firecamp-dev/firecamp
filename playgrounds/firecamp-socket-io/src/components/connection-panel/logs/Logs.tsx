@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Ban } from 'lucide-react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {

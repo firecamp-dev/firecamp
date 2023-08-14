@@ -1,6 +1,6 @@
 import { useEffect, memo, useRef } from 'react';
 import classnames from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Home, Plus } from 'lucide-react';
 import { Column, Row, TabsV3 as Tabs } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';

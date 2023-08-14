@@ -1,7 +1,7 @@
 import { FC, useState, useMemo, useEffect, memo } from 'react';
 import isEqual from 'react-fast-compare';
 import cx from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { ChevronDown } from 'lucide-react';
 import { Button, DropdownMenu } from '@firecamp/ui';
 import { TId } from '@firecamp/types';

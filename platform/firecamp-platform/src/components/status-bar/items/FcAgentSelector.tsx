@@ -2,7 +2,7 @@ import { FC } from 'react';
 import cx from 'classnames';
 import { Info } from 'lucide-react';
 import { EFirecampAgent } from '@firecamp/types';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import {
   Popover,
   Button,

@@ -1,5 +1,5 @@
 import { File, RotateCw } from 'lucide-react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
 import { Button, Url, HttpMethodDropDown } from '@firecamp/ui';
@@ -71,14 +71,14 @@ const UrlBarContainer = () => {
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
       }
-      suffixComponent={<PrefixButtons />}
+      suffixComponent={<SuffixButtons />}
     />
   );
 };
 
 export default UrlBarContainer;
 
-const PrefixButtons = () => {
+const SuffixButtons = () => {
   const {
     tabId,
     isUpdatingRequest,

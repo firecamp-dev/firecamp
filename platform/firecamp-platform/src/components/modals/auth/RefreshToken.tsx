@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { useForm } from '@mantine/form';
 import { Lock } from 'lucide-react';
 import { Modal, IModal, Button, Input } from '@firecamp/ui';
@@ -13,7 +13,7 @@ import { useUserStore } from '../../../store/user';
 /**
  * RefreshToken component for user to autenticate.
  */
-const RefreshToken: FC<IModal> = ({ opened, onClose = () => {} }) => {
+const RefreshToken: FC<IModal> = ({ opened, onClose = () => { } }) => {
   return (
     <Modal opened={opened} onClose={onClose} closeOnEscape={false}>
       <Header />
@@ -40,7 +40,7 @@ const Header: FC<any> = () => {
 /**
  * Body component for RefreshToken modal contains all main functionalities to signUp
  */
-const Body: FC<any> = ({ onClose = () => {} }) => {
+const Body: FC<any> = ({ onClose = () => { } }) => {
   const { user } = useUserStore(
     (s) => ({
       user: s.user,
@@ -59,7 +59,7 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
           : null,
     },
   });
-  const { onSubmit, getInputProps} = form;
+  const { onSubmit, getInputProps } = form;
 
   let [errorMsg, setErrorMsg] = useState('');
 

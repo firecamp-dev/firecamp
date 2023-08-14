@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Button, Column } from '@firecamp/ui';
 import { Table } from 'lucide-react';
 import EnvironmentDD from './EnvironmentDD';

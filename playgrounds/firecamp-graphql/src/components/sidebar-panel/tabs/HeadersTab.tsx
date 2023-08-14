@@ -1,6 +1,6 @@
 import { EEditorLanguage } from '@firecamp/types';
 import { BulkEditTable } from '@firecamp/ui';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { IStore, useStore } from '../../../store';
 
 const HeadersTab = () => {

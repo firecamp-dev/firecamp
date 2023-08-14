@@ -1,5 +1,5 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { RotateCw, Folder, FolderPlus, ArrowDown } from 'lucide-react';
 import {
   InteractionMode,

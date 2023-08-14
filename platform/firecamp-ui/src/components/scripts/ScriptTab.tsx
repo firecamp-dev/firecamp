@@ -10,8 +10,8 @@ import {
   TabHeader,
 } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
-//@ts-ignore
-import ScriptDefs from './interfaces/Scripts.d.txt?raw';
+
+import ScriptDefs from '!!raw-loader!./interfaces/Scripts.d';
 import HelpPopUp from './SnippetPopup';
 
 const ScriptTab: FC<IProps> = ({

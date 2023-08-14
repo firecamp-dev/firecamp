@@ -1,21 +1,17 @@
-import shallow from 'zustand/shallow';
 import {
   Container,
   CheckboxInGrid,
   SingleLineEditor,
 } from '@firecamp/ui';
-import { useStore } from '../../../store';
-import { ERestConfigKeys } from '../../../types';
 import { EEditorLanguage } from '@firecamp/types';
+import { ERestConfigKeys } from '../../../types';
+import { useRequestConfigFacade } from '../useFacade';
 
 const { MaxRedirects, FollowLocation, RejectUnauthorized, RequestTimeout } =
   ERestConfigKeys;
 
 const ConfigTab = () => {
-  const [config, changeConfig] = useStore(
-    (s: any) => [s.request.config, s.changeConfig],
-    shallow
-  );
+  const [config, changeConfig] = useRequestConfigFacade()
 
   const _handleChange = (e) => {
     e.preventDefault();

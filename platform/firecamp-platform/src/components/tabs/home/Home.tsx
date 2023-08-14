@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { ArrowDown } from 'lucide-react';
 import {
   Container,
@@ -119,7 +119,7 @@ const RequestItem: FC<IRequestItem> = ({
   label,
   icon,
   hasInvertIcon = false, //TODO : removed classname
-  openRequest = () => {},
+  openRequest = () => { },
 }) => {
   return (
     <div

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import classnames from 'classnames';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Pencil, X } from 'lucide-react';
 import {
   Resizable,

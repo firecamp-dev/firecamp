@@ -1,5 +1,4 @@
 import { FC, useState, useEffect } from 'react';
-import shallow from 'zustand/shallow';
 import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import {
@@ -12,14 +11,14 @@ import {
   EditorControlBar,
   DropdownMenu,
 } from '@firecamp/ui';
-import { ERestBodyTypes } from '@firecamp/types';
+import { ERestBodyTypes, TFormDataBody, TUrlEncodedBody } from '@firecamp/types';
 import { _array } from '@firecamp/utils';
 import GraphQLBody from './body/GraphQLBody';
 import BinaryBody from './body/BinaryBody';
 import NoBodyTab from './body/NoBodyTab';
 import { isRestBodyEmpty } from '../../../services/request.service';
 import { bodyTypesDDValues, bodyTypeNames } from '../../../constants';
-import { IStore, useStore } from '../../../store';
+import { useRequestBodyFacade } from '../useFacade';
 
 const BodyTab: FC<any> = () => {
   const {
@@ -27,16 +26,8 @@ const BodyTab: FC<any> = () => {
     body,
     changeBodyValue,
     changeBodyType,
-  } = useStore(
-    (s: IStore) => ({
-      // request: s.request,
-      body: s.request.body,
-      changeBodyValue: s.changeBodyValue,
-      changeBodyType: s.changeBodyType,
-      changeHeaders: s.changeHeaders,
-    }),
-    shallow
-  );
+  } = useRequestBodyFacade();
+
   const [editor, setEditor] = useState(null);
 
   // console.log(body, 'body...');
@@ -61,7 +52,7 @@ const BodyTab: FC<any> = () => {
    * purpose: add '*' for non-empty body types (body having non-empty values) to indicate empty and non-empty body.
    */
   const _prepareRestBodyTypesOptions = () => {
-    const isEmptyAPIBody = isRestBodyEmpty(body || {});
+    const isEmptyAPIBody = isRestBodyEmpty(body || { type: ERestBodyTypes.None, value: '' });
     // console.log({ isEmptyAPIBody });
     let updatedBodyTypes = Object.values(bodyTypesDDValues);
 
@@ -84,7 +75,7 @@ const BodyTab: FC<any> = () => {
         return <NoBodyTab selectBodyType={_selectBodyType} />;
       case ERestBodyTypes.FormData:
         return (
-          <MultipartTable onChange={changeBodyValue} rows={body.value || []} />
+          <MultipartTable onChange={changeBodyValue} rows={body.value as TFormDataBody || []} />
         );
         break;
       case ERestBodyTypes.UrlEncoded:
@@ -92,13 +83,13 @@ const BodyTab: FC<any> = () => {
           <BasicTable
             title=""
             onChange={changeBodyValue}
-            rows={body.value || []}
+            rows={body.value as TUrlEncodedBody || []}
           />
         );
         break;
       case ERestBodyTypes.Json:
       case ERestBodyTypes.Xml:
-      case 'application/text':
+      // case 'application/text':
       case ERestBodyTypes.Text:
         return (
           <Editor

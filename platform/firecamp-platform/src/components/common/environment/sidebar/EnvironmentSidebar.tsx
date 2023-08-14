@@ -1,5 +1,5 @@
 import { FC, useEffect, useRef } from 'react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Braces, Plus } from 'lucide-react';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { Notes, Button } from '@firecamp/ui';

@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Plus } from 'lucide-react';
 import { Button, Container, Tabs } from '@firecamp/ui';
 import Playground from './playground/Playground';

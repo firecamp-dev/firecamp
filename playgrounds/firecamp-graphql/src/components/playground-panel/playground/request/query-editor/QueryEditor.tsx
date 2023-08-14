@@ -1,6 +1,6 @@
 import { useRef, useEffect } from 'react';
 import MD from 'markdown-it';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import _upperFirst from 'lodash/upperFirst';
 // import { parse as GraphQLParse } from "graphql";

@@ -1,12 +1,12 @@
 import _cloneDeep from 'lodash/cloneDeep';
-import shallow from 'zustand/shallow';
 import { Url, HttpMethodDropDown, Button } from '@firecamp/ui';
 import { EHttpMethod } from '@firecamp/types';
 import _url from '@firecamp/url';
-import { IStore, useStore } from '../../../store';
+import useUrlBarFacade, { useUrlBarSuffixButtonsFacade } from './useUrlBarFacade';
 
 const methods = Object.values(EHttpMethod);
 const UrlBarContainer = () => {
+
   const {
     tabId,
     url,
@@ -20,23 +20,7 @@ const UrlBarContainer = () => {
     changeMethod,
     execute,
     setRequestFromCurl,
-  } = useStore(
-    (s: IStore) => ({
-      tabId: s.runtime.tabId,
-      url: s.request.url,
-      method: s.request.method,
-      __meta: s.request.__meta,
-      __ref: s.request.__ref,
-      requestPath: s.runtime.requestPath,
-      isRequestSaved: s.runtime.isRequestSaved,
-      context: s.context,
-      changeUrl: s.changeUrl,
-      changeMethod: s.changeMethod,
-      execute: s.execute,
-      setRequestFromCurl: s.setRequestFromCurl,
-    }),
-    shallow
-  );
+  } = useUrlBarFacade();
 
   const _handleUrlChange = (e: {
     preventDefault: () => void;
@@ -61,7 +45,7 @@ const UrlBarContainer = () => {
   const _onExecute = async () => {
     try {
       execute();
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
@@ -91,34 +75,23 @@ const UrlBarContainer = () => {
           onSelectItem={(m: EHttpMethod) => changeMethod(m)}
         />
       }
-      suffixComponent={<PrefixButtons />}
+      suffixComponent={<SuffixButtons />}
     />
   );
 };
 
 export default UrlBarContainer;
 
-const PrefixButtons = () => {
+const SuffixButtons = () => {
   const {
     tabId,
     isRequestRunning,
-    isRequestSaved,
+    // isRequestSaved,
     isUpdatingRequest,
-    requestHasChanges,
+    // requestHasChanges,
     execute,
     save,
-  } = useStore(
-    (s: IStore) => ({
-      tabId: s.runtime.tabId,
-      isRequestRunning: s.runtime.isRequestRunning,
-      isRequestSaved: s.runtime.isRequestSaved,
-      isUpdatingRequest: s.ui.isUpdatingRequest,
-      requestHasChanges: s.requestHasChanges,
-      execute: s.execute,
-      save: s.save,
-    }),
-    shallow
-  );
+  } = useUrlBarSuffixButtonsFacade();
 
   const _onSave = async () => {
     try {
@@ -131,7 +104,7 @@ const PrefixButtons = () => {
   const _onExecute = async () => {
     try {
       execute();
-    } catch (error) {}
+    } catch (error) { }
   };
 
   // const isSaveBtnDisabled = isRequestSaved ? !requestHasChanges : false;
@@ -139,6 +112,8 @@ const PrefixButtons = () => {
     <>
       <Button
         text={isRequestRunning === true ? `Cancel` : `Send`}
+        title="Send Request"
+        data-testId="send-request"
         onClick={_onExecute}
         primary
         xs
@@ -146,6 +121,8 @@ const PrefixButtons = () => {
       <Button
         id={`save-request-${tabId}`}
         text={isUpdatingRequest ? 'Saving...' : 'Save'}
+        title="Save Request"
+        data-testId="save-request"
         onClick={_onSave}
         disabled={false} //isSaveBtnDisabled
         secondary

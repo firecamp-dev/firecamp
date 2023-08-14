@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Pencil } from 'lucide-react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { IStore, useStore } from '../../../../../store';
 
 const EditPlaygroundName: FC<any> = ({}) => {

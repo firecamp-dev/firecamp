@@ -1,4 +1,4 @@
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import platformContext from '../../../services/platform-context';
 import { EPlatformScope, usePlatformStore } from '../../../store/platform';
 import { useWorkspaceStore } from '../../../store/workspace';

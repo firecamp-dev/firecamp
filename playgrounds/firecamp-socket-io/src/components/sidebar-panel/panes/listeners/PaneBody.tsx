@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { Trash2 } from 'lucide-react';
 import {
   Input,

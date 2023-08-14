@@ -1,21 +1,11 @@
 import { useRef } from 'react';
 import { Container, BulkEditTable, TTableApi, BasicTable } from '@firecamp/ui';
 import { _array } from '@firecamp/utils';
-import shallow from 'zustand/shallow';
-import { IStore, useStore } from '../../../store';
+import { useRequestParamsFacade } from '../useFacade';
 
 const ParamsTab = () => {
   const tableApi = useRef<TTableApi>();
-  const { queryParams, pathParams, changeQueryParams, changePathParams } =
-    useStore(
-      (s: IStore) => ({
-        queryParams: s.request.url?.queryParams || [],
-        pathParams: s.request.url?.pathParams || [],
-        changeQueryParams: s.changeQueryParams,
-        changePathParams: s.changePathParams,
-      }),
-      shallow
-    );
+  const { queryParams, pathParams, changeQueryParams, changePathParams } = useRequestParamsFacade();
 
   // useEffect(() => {
   // const tRows = tableApi.current.getRows();

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 import { ChevronRight, LogIn, LogOut, Plus, UserCircle2 } from 'lucide-react';
 import { DropdownMenu } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';

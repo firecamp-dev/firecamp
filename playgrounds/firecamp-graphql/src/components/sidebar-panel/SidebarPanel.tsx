@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { Container, Column, Resizable, Tabs } from '@firecamp/ui';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 
 import ExplorerTab from './tabs/ExplorerTab';
 import CollectionTab from './tabs/CollectionTab';

@@ -6,7 +6,7 @@ import {
 } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import { IStore, useStore } from '../../../store';
-import shallow from 'zustand/shallow';
+import { shallow } from 'zustand/shallow';
 
 enum EInputTypes {
   Text = 'text',

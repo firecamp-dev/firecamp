@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Pane, ToolBar, Empty } from '@firecamp/ui';
-import shallow from 'zustand/shallow';
-import { RotateCw } from 'lucide-react';
+import { shallow } from 'zustand/shallow';
+// import { RotateCw } from 'lucide-react';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import treeRenderer from './collection-tree/treeItemRenderer';
 import { IStore, useStore, useStoreApi } from '../../../store';
