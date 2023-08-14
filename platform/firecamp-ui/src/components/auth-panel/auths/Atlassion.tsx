@@ -84,16 +84,20 @@ const Atlassion = () => {
     });
   };
 
-  const _onKeyDown = ({ key }: { key: string }) => {
-    if (key == 'Enter') {
-      setState(initialState);
-    }
-  };
+  // const _onKeyDown = ({ key }: { key: string }) => {
+  //   if (key == 'Enter') {
+  //     setState(initialState);
+  //   }
+  // };
 
   return (
     <form className="fc-form grid">
       {(inputList || []).map((input, i) => {
-        const { id, labelFor, label, type, placeholder, value } = input;
+        const { id,
+          // labelFor, 
+          label, type,
+          // placeholder,
+          value } = input;
         return (
           <div
             className={
@@ -117,7 +121,7 @@ const Atlassion = () => {
                 height="21px"
                 language={EEditorLanguage.FcText}
                 onChange={(e) => _handleChange(e)}
-                // onKeyDown={_onKeyDown}
+              // onKeyDown={_onKeyDown}
               />
             </div>
           </div>

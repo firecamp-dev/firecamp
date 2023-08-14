@@ -29,7 +29,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
       return { ...p, [n.id]: false };
     }, {})
   );
-  const [isDDOpen, toggleDD] = useState(false);
+  // const [isDDOpen, toggleDD] = useState(false);
 
   useEffect(() => {
     setDirtyInputs({}); //TODO: check this later
