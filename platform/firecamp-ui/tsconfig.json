@@ -20,12 +20,11 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "noImplicitAny": true,
-    "module": "es6",
-    "types": ["src/components/scripts/interfaces/raw-loader.d.ts"]
+    "module": "es6"
   },
   "include": [
     "src",
-    "src/components/scripts",
+    "src/components/scripts/interfaces",
   ],
   "exclude": [
     "node_modules",
