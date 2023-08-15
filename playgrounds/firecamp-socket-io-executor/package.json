@@ -2,7 +2,7 @@
   "name": "@firecamp/socket.io-executor",
   "version": "0.0.0",
   "description": "Socket.io request executor for desktop and browser environment",
-  "repository": "https://github.com/firecamp-io/firecamp/packages/executors/http-executor",
+  "repository": "https://github.com/firecamp-dev/firecamp/packages/executors/http-executor",
   "license": "",
   "keywords": [],
   "scripts": {

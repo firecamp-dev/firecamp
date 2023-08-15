@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "Sandbox environment to run JS",
   "main": "src/index.ts",
-  "repository": "https://github.com/firecamp-io/firecamp/packages-misc/url",
+  "repository": "https://github.com/firecamp-dev/firecamp/packages-misc/url",
   "license": "",
   "keywords": [],
   "scripts": {

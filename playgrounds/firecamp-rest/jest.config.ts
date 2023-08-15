@@ -28,7 +28,7 @@ const config: Config.InitialOptions = {
     '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
       '<rootDir>/__mocks__/fileMock.js',
     '\\.(css|scss|sass|less)$': 'identity-obj-proxy',
-    '!!raw-loader!./interfaces/Scripts.d': 'identity-obj-proxy', //@note keep the raw-loader.d.ts at types/
+    '!!raw-loader!./interfaces/scripts.d': 'identity-obj-proxy', //@note keep the raw-loader.d.ts at types/
     '^uuid$': 'uuid',
     '^nanoid$': 'nanoid',
     '@react-icons': 'identity-obj-proxy',

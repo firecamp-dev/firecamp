@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/firecamp-io/firecamp.git"
+    "url": "git+https://github.com/firecamp-dev/firecamp.git"
   },
   "scripts": {
     "test:generate-output": "jest --json --outputFile=.jest-test-results.json || true",
@@ -37,7 +37,7 @@
     "storybook:deploy": "pnpm chromatic --project-token=$(grep 'FIRECAMP_STORYBOOK_DEPLOY' ../../.env | cut -d '=' -f 2)"
   },
   "bugs": {
-    "url": "https://github.com/firecamp-io/firecamp/issues"
+    "url": "https://github.com/firecamp-dev/firecamp/issues"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.0",

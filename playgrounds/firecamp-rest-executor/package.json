@@ -2,7 +2,7 @@
   "name": "@firecamp/rest-executor",
   "version": "1.0.19",
   "description": "REST request executor",
-  "repository": "https://github.com/firecamp-io/firecamp/packages-executors/rest-executor",
+  "repository": "https://github.com/firecamp-dev/firecamp/packages-executors/rest-executor",
   "keywords": [],
   "main": "dist/index.js",
   "module": "dist/index.mjs",

@@ -2,7 +2,7 @@
   "name": "@firecamp/agent-manager",
   "version": "0.0.1",
   "description": "REST request agent manager",
-  "repository": "https://github.com/firecamp-io/firecamp",
+  "repository": "https://github.com/firecamp-dev/firecamp",
   "license": "",
   "keywords": [],
   "main": "src/index.ts",
