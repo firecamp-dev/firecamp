@@ -82,7 +82,7 @@
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.3.1",
     "ts-jest": "^29.0.3",
-    "typescript": "^4.3.5"
+    "typescript": "^5.0.2"
   },
   "dependencies": {
     "@firecamp/types": "^0.2.2",
