@@ -1,17 +1,17 @@
-import { VscOrganization } from '@react-icons/all-files/vsc/VscOrganization';
+import { useState } from 'react';
 import { AiOutlineUserSwitch } from '@react-icons/all-files/ai/AiOutlineUserSwitch';
 import { VscMultipleWindows } from '@react-icons/all-files/vsc/VscMultipleWindows';
 import {
-  Triangle,
-  MailOpen,
-  FolderClosed,
-  Braces,
   ArrowDown,
   AppWindow,
+  Braces,
+  Building,
+  Folder,
+  MailOpen,
   UserPlus2,
 } from 'lucide-react';
 
-import { Button, DropdownMenu, FcIconGetSquare } from '@firecamp/ui';
+import { DropdownMenu, FcHttp, BurgerIcon } from '@firecamp/ui';
 import platformContext from '../../services/platform-context';
 import { useWorkspaceStore } from '../../store/workspace';
 import { useTabStore } from '../../store/tab';
@@ -34,16 +34,12 @@ const options = [
   {
     id: EMenuOptions.Request,
     name: 'New request',
-    prefix: () => (
-      <FcIconGetSquare size={16} className="text-app-foreground-active" />
-    ),
+    prefix: () => <FcHttp size={16} className="text-app-foreground-active" />,
   },
   {
     id: EMenuOptions.Collection,
     name: 'New collection',
-    prefix: () => (
-      <FolderClosed size={16} className="text-app-foreground-active" />
-    ),
+    prefix: () => <Folder size={16} className="text-app-foreground-active" />,
   },
   {
     id: EMenuOptions.Environment,
@@ -69,9 +65,7 @@ const options = [
   {
     id: EMenuOptions.Organization,
     name: 'New organization',
-    prefix: () => (
-      <VscOrganization size={16} className="text-app-foreground-active" />
-    ),
+    prefix: () => <Building size={16} className="text-app-foreground-active" />,
   },
   {
     id: EMenuOptions.InviteMembers,
@@ -105,6 +99,8 @@ const options = [
 
 const GlobalCreateDD = ({}) => {
   const { open } = useTabStore.getState();
+  const [isOpen, toggleOpen] = useState(false);
+
   const onSelect = (option) => {
     switch (option.id) {
       case EMenuOptions.Request:
@@ -142,23 +138,19 @@ const GlobalCreateDD = ({}) => {
   };
 
   return (
-    <div className="border-l border-b border-tab-border flex items-center pl-1">
+    <div className="border-l border-b border-tab-border flex items-center">
       <DropdownMenu
+        onOpenChange={(v) => toggleOpen(v)}
         handler={() => (
-          <Button
-            leftIcon={<Triangle size={20} />}
-            animate={false}
-            transparent
-            primary
-            compact
-            xs
-          />
+          <span className="border border-app-border flex items-center justify-center mx-3 rounded">
+            <BurgerIcon opened={isOpen} size={'xs'} />
+          </span>
         )}
         options={options}
         footer={<div className="mt-1">v{process.env.APP_VERSION}</div>}
         onSelect={onSelect}
         classNames={{
-          dropdown: '-ml-[2px] pb-0',
+          dropdown: '-ml-[2px] pb-0', //-mt-1
         }}
       />
     </div>

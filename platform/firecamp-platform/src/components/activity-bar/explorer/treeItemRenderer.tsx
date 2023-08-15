@@ -1,12 +1,5 @@
 import cx from 'classnames';
-// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-// import { VscChevronDown } from '@react-icons/all-files/vsc/VscChevronDown';
-import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
-import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
-import { AiTwotoneFolder } from '@react-icons/all-files/ai/AiTwotoneFolder';
-import { AiTwotoneFolderOpen } from '@react-icons/all-files/ai/AiTwotoneFolderOpen';
+import { FolderOpen, FolderClosed, ChevronRight, ChevronDown } from 'lucide-react';
 import CollectionMenu from './menus/CollectionMenu';
 import {
   FcIconGraphQL,
@@ -15,95 +8,62 @@ import {
 } from '@firecamp/ui';
 import { ERequestTypes } from '@firecamp/types';
 
+const CollectionCloseIcon = (props) => (
+  <div className='flex items-center' {...props} >
+    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const CollectionOpenIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const FolderOpenIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronDown className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <FolderOpen className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div>
+);
+const FolderCloseIcon = (props) => (
+  <div className='flex items-center' {...props}>
+    <ChevronRight className="mr-1 flex-none" size={18} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+    <FolderClosed className="mr-1 flex-none" size={16} strokeLinecap='square' strokeLinejoin='miter' opacity={0.6} />
+  </div >
+);
+
 export default {
   renderItemArrow: ({ item, context }) => {
     // console.log(item, 'arrow context');
+
     if (item.data?.__ref?.isRequest) {
       const { type = null, method = '' } = item.data?.__meta;
       switch (type) {
         case ERequestTypes.Rest:
           const text = method.toUpperCase();
           return (
-            <div className={cx(text, 'collection_leaf-node-type')}>
-              {text}
-            </div>
+            <div className={cx(text, 'collection_leaf-node-type')} {...context.arrowProps}>{text}</div>
           );
         case ERequestTypes.GraphQL:
-          return <FcIconGraphQL className="text-graphql" size={24} />;
+          return <FcIconGraphQL className="text-graphql" size={24}  {...context.arrowProps} />;
         case ERequestTypes.WebSocket:
-          return <FcIconWebSocket className="" size={24} />;
+          return <FcIconWebSocket className="" size={24} {...context.arrowProps} />;
         case ERequestTypes.SocketIO:
-          return <FcIconSocketIoSquare className="" size={24} />;
+          return <FcIconSocketIoSquare className="" size={24} {...context.arrowProps} />;
         default:
           return <></>;
       }
     } else if (item.data?.__ref?.isCollection) {
-      return context.isExpanded ? (
-        <>
-          {/* <VscChevronDown className="mr-1" size={20}/> */}
-          <VscTriangleDown
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.6'}
-          />
-          <AiTwotoneFolderOpen
-            className="mr-1 flex-none"
-            size={16}
-            opacity={'0.6'}
-          />
-        </>
-      ) : (
-        <>
-          {/* <VscChevronRight className="mr-1" size={20}/> */}
-          <VscTriangleRight
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.6'}
-          />
-          <AiTwotoneFolder
-            className="mr-1 flex-none"
-            size={16}
-            opacity={'0.6'}
-          />
-        </>
-      );
+      return context.isExpanded ? <CollectionOpenIcon {...context.arrowProps} /> : <CollectionCloseIcon {...context.arrowProps} />;
     } else if (item.data?.__ref?.isFolder) {
-      return context.isExpanded ? (
-        <>
-          {/* <VscChevronDown className="mr-1" size={20} opacity={'0.8'}/> */}
-          <VscTriangleDown
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.6'}
-          />
-          <VscFolderOpened
-            className="mr-1 flex-none"
-            size={16}
-            opacity={'0.8'}
-          />
-        </>
-      ) : (
-        <>
-          {/* <VscChevronRight className="mr-1" size={20} opacity={'0.8'}/> */}
-          <VscTriangleRight
-            className="mr-1 flex-none"
-            size={12}
-            opacity={'0.6'}
-          />
-          <VscFolder
-            className="mr-1 opacity-80 flex-none"
-            size={16}
-            opacity={'0.8'}
-          />
-        </>
-      );
+      return context.isExpanded ? <FolderOpenIcon {...context.arrowProps} /> : <FolderCloseIcon {...context.arrowProps} />
     } else {
       return <></>;
     }
+
   },
 
   renderItemTitle: ({ title, context, info }) => {
-    console.log(title, 'title...');
+    // console.log(title, 'title...');
     if (!info.isSearching || !context.isSearchMatching) {
       return <>{title}</>;
     } else {
@@ -143,7 +103,7 @@ export default {
       // context.startRenamingItem() //this api is not working here: https://github.com/lukasbach/react-complex-tree/issues/83
     };
 
-    const renderDepthOffset = 8;
+    const renderDepthOffset = 7;
     const InteractiveComponent = context.isRenaming ? 'div' : 'button';
     const type = context.isRenaming ? undefined : 'button';
     // TODO have only root li component create all the classes
@@ -164,9 +124,8 @@ export default {
         <div
           {...(context.itemContainerWithoutChildrenProps as any)}
           style={{
-            paddingLeft: `${
-              (depth + 1) * renderDepthOffset + depth * renderDepthOffset
-            }px`,
+            paddingLeft: `${(depth + 1) * renderDepthOffset + depth * renderDepthOffset
+              }px`,
           }}
           className={cx(
             'pr-2',
@@ -193,18 +152,18 @@ export default {
         >
           {context.isExpanded && item.isFolder && (
             <span
-              className="rct-tree-line absolute top-5 bottom-0 border-r border-app-foreground-inactive z-10 opacity-50"
-              style={{ paddingLeft: `${renderDepthOffset - 3}px` }}
+              className="rct-tree-line absolute top-5 bottom-0 border-r border-activityBar-foreground-inactive z-10 opacity-50"
+              style={{ paddingLeft: `${renderDepthOffset + 5}px` }}
             ></span>
           )}
           <span
             className={cx(
-              'rct-tree-line horizontal absolute top-3 h-px bg-app-foreground-inactive z-10 w-2 opacity-50',
-              { '!top-4': item.data?.__ref.isRequest }
+              'rct-tree-line horizontal absolute top-3 h-px bg-activityBar-foreground-inactive z-10 w-2 opacity-50',
+              { '!top-auto': item.data?.__ref.isRequest }
             )}
-            style={{ left: `${renderDepthOffset * 2 - 3}px` }}
+            style={{ left: `${20 + (depth-1) * 14}px` }}
           ></span>
-          {arrow}
+
           <InteractiveComponent
             type={type}
             {...(context.interactiveElementProps as any)}
@@ -218,6 +177,7 @@ export default {
               { 'rct-tree-item-button-search-match': context.isSearchMatching }
             )}
           >
+            {arrow}
             <span
               className={cx(
                 'pr-2',
@@ -254,8 +214,8 @@ export default {
               item.data?.__ref.isFolder
                 ? 'folder'
                 : item.data?.__ref.isCollection
-                ? 'collection'
-                : 'request'
+                  ? 'collection'
+                  : 'request'
             }
           />
         </div>

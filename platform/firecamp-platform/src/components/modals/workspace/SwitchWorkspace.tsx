@@ -110,7 +110,7 @@ const WorkspaceCard = ({ workspace, onClick }) => {
       className="card relative flex items-center p-3 mb-2 text-base border border-app-border cursor-pointer hover:border-focusBorder  after:absolute after:top-0 after:left-0 after:bottom-0 after:right-0 hover:after:bg-focusBorder after:opacity-10 "
     >
       <div className="z-10 w-full">
-        <div className="flex border-b border-app-border items-center">
+        <div className="flex items-center">
           <div className="font-semibold flex-1 text-base">
             {workspace.name}
             <span className="text-app-foreground-inactive font-normal block text-xs uppercase">

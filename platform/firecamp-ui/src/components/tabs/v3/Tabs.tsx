@@ -9,9 +9,9 @@ import {
   useEffect,
 } from 'react';
 import cx from 'classnames';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
+import { Plus } from 'lucide-react';
 import { TId } from '@firecamp/types';
-import { ScrollBar } from '@firecamp/ui';
+import { ScrollArea } from '@firecamp/ui';
 
 import Tab from './Tab';
 import { ITabs } from './Tabs.interface';
@@ -166,10 +166,9 @@ const Tabs: FC<ITabs> = forwardRef(
       >
         <PreComponent preComp={preComp} tabsVersion={tabsVersion} />
 
-        <ScrollBar
-          className={cx({ 'flex-1': !suffixComp })}
-          transparent
-          noWrap
+        <ScrollArea classNames={{
+          root: !suffixComp ? 'flex-1': ''
+        }}
         >
           <div className="border-b border-tab-border" style={{ height: height }}>
             <div
@@ -246,12 +245,12 @@ const Tabs: FC<ITabs> = forwardRef(
                     }
                   }}
                 >
-                  <VscAdd className="flex" size={16} />
+                  <Plus className="flex" size={16} />
                 </div>
               )}
             </div>
           </div>
-        </ScrollBar>
+        </ScrollArea>
 
         <SuffixComponent suffixComp={suffixComp} tabsVersion={tabsVersion} />
         <PostComponent postComp={postComp} />

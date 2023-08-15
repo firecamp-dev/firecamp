@@ -1,6 +1,5 @@
 import { FC, useState } from 'react';
-import { VscSearch } from '@react-icons/all-files/vsc/VscSearch';
-import { VscClose } from '@react-icons/all-files/vsc/VscClose';
+import { Search, X } from 'lucide-react';
 import { Button, Input } from '@firecamp/ui';
 import './SwitchWorkspacePanel.scss';
 
@@ -10,7 +9,7 @@ const SwitchWorkspacePanel: FC<any> = ({ className = '' }) => {
   if (!isPanelOpen) return <></>;
   return (
     <div className="absolute left-0 right-0 bottom-6 bg-app-background-secondary p-4 border-t border-app-border">
-      <VscClose
+      <X
         size={20}
         strokeWidth={1}
         className="absolute right-3 top-3 cursor-pointer"
@@ -22,8 +21,7 @@ const SwitchWorkspacePanel: FC<any> = ({ className = '' }) => {
       <div className="mb-4 w-60">
         <Input
           placeholder="Search"
-          icon={<VscSearch title="Account" size={16} />}
-          iconPosition="left"
+          icon={<Search size={16} />}
         />
       </div>
       <div className="workspace-wrapper flex overflow-auto flex-nowrap custom-scrollbar">

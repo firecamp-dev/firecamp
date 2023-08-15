@@ -6,9 +6,8 @@ import {
     ReflexContainer,
     ReflexSplitter,
     ReflexElement
-} from 'react-reflex'
-import { VscChevronRight } from "@react-icons/all-files/vsc/VscChevronRight";
-import { VscChevronLeft } from "@react-icons/all-files/vsc/VscChevronLeft";
+} from 'react-reflex';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import 'react-reflex/styles.css'
 
@@ -89,7 +88,7 @@ const SplitViewItem = forwardRef((props, ref) => {
                             <div className="pane-content bg-activityBar-background h-full flex justify-center" ref={innerRef}>
                                 <button onClick={_ => { }}
                                     className="pane-content bg-activityBar-background h-full text-activityBar-foreground flex align-center flex-col items-center">
-                                    <VscChevronRight
+                                    <ChevronRight
                                         title="Account"
                                         size={16}
                                     />
@@ -140,8 +139,8 @@ const SplitViewItem = forwardRef((props, ref) => {
                         return (
                             <div className="pane-content bg-primaryColor h-full flex justify-center" ref={innerRef}>
                                 <button onClick={_ => { }} className="pane-content bg-primaryColor h-full text-primaryColor-text flex align-center flex-col items-center">
-                                    <VscChevronLeft
-                                        title="Account"
+                                    <ChevronLeft
+                                        // title="Account"
                                         size={16}
                                     />
                                 </button>

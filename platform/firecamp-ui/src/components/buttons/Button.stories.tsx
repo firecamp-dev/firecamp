@@ -1,5 +1,5 @@
 import { FC, ReactNode } from 'react';
-import { VscMenu } from '@react-icons/all-files/vsc/VscMenu';
+import { Menu } from 'lucide-react';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 
 import Button from './Button';
@@ -91,7 +91,7 @@ ButtonIcon.args = {
   text: 'Sample Button...',
   primary: true,
   sm: true,
-  leftIcon: <VscMenu title="Account" size={16} className="z-20" />,
+  leftIcon: <Menu size={16} className="z-20" />,
 };
 
 export const CaretButton = Template.bind({});
@@ -220,13 +220,13 @@ ButtonIconPosition.args = {
       text: 'Sample Button (with left icon)',
       primary: true,
       md: true,
-      leftIcon: <VscMenu title="Account" size={16} className="z-20" />,
+      leftIcon: <Menu size={16} className="z-20" />,
     },
     {
       text: 'Sample Button (with right icon)',
       primary: true,
       md: true,
-      rightIcon: <VscMenu title="Account" size={16} className="z-20" />,
+      rightIcon: <Menu size={16} className="z-20" />,
     },
   ],
 };

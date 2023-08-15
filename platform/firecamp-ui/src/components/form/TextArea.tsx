@@ -1,65 +1,77 @@
-import { FC } from "react";
-import classNames from 'classnames';
-import { VscInfo } from '@react-icons/all-files/vsc/VscInfo'
+import { FC } from 'react';
+import { Textarea, TextareaProps, createStyles } from '@mantine/core';
 
-import {ITextArea} from "./interfaces/TextArea.interfaces"
+export interface ITextArea extends TextareaProps {}
+
+const useStyles = createStyles((theme) => ({
+  root: {
+    fontFamily: 'inherit',
+    marginBottom: '0.5rem',
+  },
+  label: {
+    fontSize: '0.75rem',
+    color:
+      theme.colorScheme === 'light'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[4],
+  },
+  input: {
+    padding: '0.5rem',
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[2],
+    border: `0.063rem solid ${
+      theme.colorScheme === 'light'
+        ? theme.colors.gray[4]
+        : theme.colors.dark[4]
+    }`,
+    outline: '2px solid transparent',
+    '::placeholder': {
+      color:
+        theme.colorScheme === 'light'
+          ? theme.colors.gray[6]
+          : theme.colors.dark[3],
+    },
+    '&:disabled, &[data-disabled]': {
+      backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[2],
+      color: 'inherit',
+    },
+    '&:focus': {
+      border: `0.063rem solid ${theme.colors.blue[8]}`,
+    },
+    '&[data-invalid]': {
+      color: 'inherit',
+    },
+  },
+  error: {
+    fontWeight: 300,
+    color: theme.colors.red[7],
+  },
+}));
 
 /**
  * TextArea form element
  */
-const TextArea: FC<ITextArea> = ({
-  name = '',
-  className = '',
-  placeholder = '',
-  value = '',
-  defaultValue,
-  label = '',
-  labelClassName = '',
-  note = '',
-  minHeight = '',
-  disabled= false,
-  icon = '',
-  iconPosition = 'left',
-  onChange = () => { },
-  ...restProps
-}) => {
-
-
-  let hasIconLeft = icon && iconPosition == "left";
-  let hasIconRight = icon && iconPosition == "right";
-
-  const valueProps: { value?: string, defaultValue?: string } = {};
-  if(value) valueProps.value = value;
-  else valueProps.defaultValue = defaultValue;
+const TextArea: FC<ITextArea> = ({ classNames = {}, ...props }) => {
+  const { cx, classes } = useStyles();
 
   return (
-    <div className='flex flex-col mb-3 relative'>
-      {label != '' ? <label className={classNames(labelClassName,'text-app-foreground text-sm mb-1 block')}>{label}</label> : ''}
-      <div className="relative">
-      <textarea
-        name={name}
-        className={classNames(className,'!border-input-border focus:bg-input-background-focus text-base p-2 text-input-text border resize-none rounded-sm bg-input-background w-full')}
-        placeholder={placeholder}
-        {...valueProps}
-        onChange={onChange}
-        style={{ minHeight }}
-        disabled={disabled}
-        {...restProps}
-        tabIndex={1}
-      ></textarea>
-      <span className={classNames("absolute top-3 cursor-pointer",
-                { 'left-2': hasIconLeft },
-                { 'right-2': hasIconRight })}>{icon}</span>
-                </div>
-      {note != '' ? (
-        <div className="text-xs flex items-center justify-start text-app-foreground">
-        <VscInfo size={14} className='pr-1' />
-          {note}
-        </div>
-      ) : (
-        ''
-      )}
-    </div>
+    <Textarea
+      classNames={{
+        ...classNames,
+        root: cx(classes.root, classNames.root),
+        label: cx(classes.label, classNames.label),
+        input: cx(classes.input, classNames.input),
+        error: cx(classes.error, classNames.error),
+      }}
+      radius={'xs'}
+      variant="filled"
+      {...props}
+    />
   );
 };
 

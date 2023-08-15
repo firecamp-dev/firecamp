@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import cx from 'classnames';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { ScrollBar } from '@firecamp/ui';
+import { Plus } from 'lucide-react';
+import { ScrollArea } from '@firecamp/ui';
 import Tab from './Tab';
 import { ITabs } from './interfaces/Tabs.interfaces';
 
@@ -91,10 +91,9 @@ const Tabs: FC<ITabs> = ({
         </div>
       )}
 
-      <ScrollBar
-        className={cx({ 'flex-1 ': !suffixComp })}
-        transparent
-        noWrap
+      <ScrollArea classNames={{
+        root: !suffixComp ? 'flex-1': ''
+      }}
       >
         <div className="border-b border-tab-border" style={{ height: height }}>
           <div
@@ -138,7 +137,9 @@ const Tabs: FC<ITabs> = ({
                     },
 
                     { 'bg-transparent text-base': tabsVersion == 1 },
-                    { 'bg-tab-background-activeColor text-sm': tabsVersion == 2 }
+                    {
+                      'bg-tab-background-activeColor text-sm': tabsVersion == 2,
+                    }
                   )}
                   onReorder={onReorder}
                   name={tab?.name || ''}
@@ -172,13 +173,13 @@ const Tabs: FC<ITabs> = ({
                   }
                 }}
               >
-                <VscAdd className="flex" size={16} title="IconAdd" />
+                <Plus className="flex" size={16} data-testid="add-icon"/>
               </div>
             )}
           </div>
           {/* </SimpleBar> */}
         </div>
-      </ScrollBar>
+      </ScrollArea>
 
       {suffixComp && (
         <div

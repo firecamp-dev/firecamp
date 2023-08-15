@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import cx from 'classnames';
+import { Trash2 } from 'lucide-react';
 import {
   Button,
   Container,
@@ -31,10 +31,6 @@ const columns = [
 ];
 
 const RoleOptions = [
-  {
-    id: EUserRolesWorkspace.Owner,
-    name: 'Owner',
-  },
   {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
@@ -126,18 +122,22 @@ const MembersTab = ({ members = [], isFetchingMembers = false }) => {
         break;
       case 'role':
         return (
-          <div className="p-1 text-center">
-            <RoleDD
-              role={row.role}
-              onSelect={(role) => onChangeRole({ ...row, role })}
-            />
+          <div className="p-1 text-sm text-center">
+            {row.role === EUserRolesWorkspace.Owner ? (
+              <div className="px-4 text-selected-text">Owner</div>
+            ) : (
+              <RoleDD
+                role={row.role}
+                onSelect={(role) => onChangeRole({ ...row, role })}
+              />
+            )}
           </div>
         );
         break;
       case 'action':
         return (
-          <div className="px-2">
-            <VscTrash
+          <div className={cx("px-2", {"hidden": row.role === EUserRolesWorkspace.Owner})}>
+            <Trash2
               size={14}
               className="text-error cursor-pointer"
               onClick={() => onRemoveMember(row)}

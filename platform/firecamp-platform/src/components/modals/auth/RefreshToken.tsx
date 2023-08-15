@@ -1,8 +1,8 @@
 import { FC, useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import { useForm } from 'react-hook-form';
+import { useForm } from '@mantine/form';
+import { Lock } from 'lucide-react';
 import { Modal, IModal, Button, Input } from '@firecamp/ui';
-import { VscLock } from '@react-icons/all-files/vsc/VscLock';
 
 import GithubGoogleAuth from './GithubGoogleAuth';
 import _auth from '../../../services/auth';
@@ -13,7 +13,7 @@ import { useUserStore } from '../../../store/user';
 /**
  * RefreshToken component for user to autenticate.
  */
-const RefreshToken: FC<IModal> = ({ opened, onClose = () => {} }) => {
+const RefreshToken: FC<IModal> = ({ opened, onClose = () => { } }) => {
   return (
     <Modal opened={opened} onClose={onClose} closeOnEscape={false}>
       <Header />
@@ -29,7 +29,7 @@ const RefreshToken: FC<IModal> = ({ opened, onClose = () => {} }) => {
 const Header: FC<any> = () => {
   return (
     <div>
-      <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} />
+      {/* <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} /> */}
       <div className="text-xl mb-6 w-full text-center font-semibold">
         Reset Password
       </div>
@@ -40,7 +40,7 @@ const Header: FC<any> = () => {
 /**
  * Body component for RefreshToken modal contains all main functionalities to signUp
  */
-const Body: FC<any> = ({ onClose = () => {} }) => {
+const Body: FC<any> = ({ onClose = () => { } }) => {
   const { user } = useUserStore(
     (s) => ({
       user: s.user,
@@ -48,9 +48,18 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
     shallow
   );
 
-  // Hook to handle form inputs
-  const form = useForm();
-  let { handleSubmit, errors } = form;
+
+  const form = useForm({
+    initialValues: { password: '' },
+
+    validate: {
+      password: (value) =>
+        value.length < 8 || value.length > 50
+          ? 'Please enter a password between 8 and 50 characters.'
+          : null,
+    },
+  });
+  const { onSubmit, getInputProps } = form;
 
   let [errorMsg, setErrorMsg] = useState('');
 
@@ -81,7 +90,7 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
   let _onKeyDown = (e) => {
     try {
       if (e.key === 'Enter') {
-        handleSubmit(_onSubmit);
+        onSubmit(_onSubmit);
       }
     } catch (error) {
       console.log({ error });
@@ -102,7 +111,7 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
       </div>
       <hr className="border-modal-border -ml-8 -mr-8 mb-6" />
       <div className="">
-        <form onSubmit={handleSubmit(_onSubmit)}>
+        <form onSubmit={onSubmit(_onSubmit)}>
           <div className="fc-input-label flex align-center  text-app-foreground-inactive ">
             {/* // TODO: icon: add info icon */}
             <span>{user.email || ''}</span>
@@ -113,26 +122,15 @@ const Body: FC<any> = ({ onClose = () => {} }) => {
               key={'password'}
               name={'password'}
               type={'password'}
-              iconPosition="left"
-              icon={<VscLock title="Account" size={16} />}
-              registerMeta={{
-                required: true,
-                maxLength: 50,
-                minLength: 8,
-              }}
-              useformRef={form}
+              icon={<Lock size={16} />}
               onKeyDown={_onKeyDown}
-              error={
-                errors?.password
-                  ? errors?.password?.message || 'Invalid password'
-                  : ''
-              }
+              {...getInputProps('password')}
             />
           </div>
 
           <Button
             text="Sign in"
-            onClick={handleSubmit(_onSubmit)}
+            onClick={onSubmit(_onSubmit)}
             fullWidth
             sm
           />

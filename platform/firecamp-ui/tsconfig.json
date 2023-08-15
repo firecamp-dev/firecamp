@@ -25,7 +25,7 @@
   },
   "include": [
     "src",
-    "src/components/scripts",
+    "src/components/scripts/interfaces",
   ],
   "exclude": [
     "node_modules",

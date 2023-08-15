@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import cx from 'classnames';
 import { shallow } from 'zustand/shallow';
-import { VscArrowDown } from '@react-icons/all-files/vsc/VscArrowDown';
+import { ArrowDown } from 'lucide-react';
 import {
   Container,
   Row,
@@ -11,7 +11,7 @@ import {
 } from '@firecamp/ui';
 import { ERequestTypes, EEditorTheme } from '@firecamp/types';
 import {
-  FcIconGetSquare,
+  FcHttp,
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
@@ -73,7 +73,7 @@ const Home: FC<any> = () => {
               <div className="flex-col border-b border-app-border w-fit flex-none">
                 <RequestItem
                   label="Create Rest API"
-                  icon={<FcIconGetSquare size={50} />}
+                  icon={<FcHttp size={24} />}
                   openRequest={() => _openTab(ERequestTypes.Rest)}
                 />
                 <RequestItem
@@ -96,7 +96,7 @@ const Home: FC<any> = () => {
                 <hr className="pb-4" />
                 <RequestItem
                   label="Import Collection"
-                  icon={<VscArrowDown size={16} />}
+                  icon={<ArrowDown size={16} />}
                   openRequest={openImportTab}
                 />
               </div>
@@ -119,7 +119,7 @@ const RequestItem: FC<IRequestItem> = ({
   label,
   icon,
   hasInvertIcon = false, //TODO : removed classname
-  openRequest = () => {},
+  openRequest = () => { },
 }) => {
   return (
     <div

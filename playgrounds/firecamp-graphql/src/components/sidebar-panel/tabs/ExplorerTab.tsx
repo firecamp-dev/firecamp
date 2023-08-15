@@ -1,5 +1,5 @@
+import { RotateCw } from 'lucide-react';
 import { Button, Container, ProgressBar } from '@firecamp/ui';
-import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
 import QueryExplorer from '../../common/explorer/QueryExplorer';
 import { IStore, useStore } from '../../../store';
 import { EQueryTypes } from '../../../types';
@@ -34,7 +34,7 @@ const ExplorerTab = () => {
         <div className="flex pane-header px-2 py-1">
           <div className="ml-auto flex">
             <div>
-              <VscRefresh
+              <RotateCw
                 size={14}
                 className="cursor-pointer"
                 onClick={fetchIntrospectionSchema}

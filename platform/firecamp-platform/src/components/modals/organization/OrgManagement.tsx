@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import { Rest } from '@firecamp/cloud-apis';
 import { _misc } from '@firecamp/utils';
+import { IOrganization } from '@firecamp/types';
 import { IModal, SecondaryTab, Drawer, ProgressBar } from '@firecamp/ui';
 import EditOrganization from './tabs/EditOrganization';
 import Members from './tabs/Members';
@@ -8,7 +9,6 @@ import BillingTab from './tabs/Billing';
 import Workspaces from './tabs/Workspaces';
 import { usePlatformStore } from '../../../store/platform';
 import platformContext from '../../../services/platform-context';
-import { Regex } from '../../../constants';
 
 enum ETabTypes {
   Overview = 'overview',
@@ -36,7 +36,7 @@ export const getFormalDate = (convertDate: string) => {
   return dateString;
 };
 
-const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => { } }) => {
+const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const { organization, setOrg } = usePlatformStore((s) => ({
     organization: s.organization,
     setOrg: s.setOrg,
@@ -47,8 +47,6 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => { } }) => {
   const [workspaces, updateWorkspaces] = useState([]);
   const [members, updateMembers] = useState([]);
 
-  const [org, updOrg] = useState(organization);
-  const [error, setError] = useState({ name: '' });
   const [isRequesting, setIsRequesting] = useState(false);
 
   // getting organization's workspaces / members listing once
@@ -76,47 +74,17 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => { } }) => {
     }
   }, [activeTab]);
 
-  const onChange = (e, reset) => {
-    if (reset) {
-      updOrg(organization);
-      if (error.name) setError({ name: '' });
-    } else {
-      const { name, value } = e.target;
-      if (error.name) setError({ name: '' });
-      updOrg((o) => ({ ...o, [name]: value }));
-    }
-  };
-
-  const onUpdate = () => {
+  const onUpdate = ({ name, description }) => {
     if (isRequesting) return;
-    const name = org.name.trim();
-    const description = org.description?.trim();
-    if (!name || name.length < 4) {
-      setError({
-        name: 'The organization name must have minimum 4 characters',
-      });
-      return;
-    }
-    const isValid = Regex.OrgName.test(name);
-    if (!isValid) {
-      setError({
-        name: 'The org name must not contain any spaces or special characters.',
-      });
-      return;
-    }
+    const _name = name.trim();
+    const _description = description?.trim();
 
-    if (
-      organization.name === org.name &&
-      organization.description === org.description
-    )
-      return;
-
-    const _org: { name?: string; description?: string } = {};
-    if (organization.name !== name) {
-      _org.name = name;
+    const _org: Partial<IOrganization> = {};
+    if (organization.name !== _name) {
+      _org.name = _name;
     }
-    if (organization.description !== description) {
-      _org.description = description;
+    if (organization.description !== _description) {
+      _org.description = _description;
     }
 
     setIsRequesting(true);
@@ -128,7 +96,7 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => { } }) => {
           platformContext.app.notify.success(
             "The organization's detail has been updated successfully."
           );
-          setOrg({ ...organization, ..._org });
+          setOrg({ ...organization, ..._org } as IOrganization);
         } else {
           platformContext.app.notify.alert(message);
         }
@@ -146,16 +114,10 @@ const OrgManagement: FC<IModal> = ({ opened = false, onClose = () => { } }) => {
       case ETabTypes.Overview:
         return (
           <EditOrganization
-            organization={org}
-            error={error}
+            organization={organization}
             isRequesting={isRequesting}
-            onSubmit={onUpdate}
-            onChange={onChange}
-            enableReset={
-              organization.name !== org.name ||
-              organization.description !== org.description
-            }
-          // disabled={true} // TODO: only allow owner
+            handleSubmit={onUpdate}
+            disabled={false} // TODO: only allow owner
           />
         );
       case ETabTypes.Workspaces:

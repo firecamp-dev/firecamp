@@ -1,6 +1,6 @@
 import { FC } from "react";
-import MD from 'markdown-it';
-const md = new MD();
+// import MD from 'markdown-it';
+// const md = new MD();
 
 import { Controlled as CodeMirror } from 'react-codemirror2';
 

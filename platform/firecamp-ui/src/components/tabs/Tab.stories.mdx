@@ -1,7 +1,7 @@
 import { Meta } from '@storybook/addon-docs';
 import LinkTo from '@storybook/addon-links/react';
+import { Bell } from 'lucide-react';
 import Tab from './Tab';
-import { IoNotificationsOutline } from '@react-icons/all-files/io5/IoNotificationsOutline';
 
 <Meta title="UI-Kit/Tab/Overview" />
 
@@ -23,7 +23,7 @@ View for single tab in list.
 | --------- | ------------------------------------------------------------------------------ |
 | active    | <Tab name='Sample Tab' isActive/>                                              |
 | count     | <Tab name='Sample Tab' count="5"/>                                             |
-| with icon | <Tab name='Sample Tab' count="5" preComp={() => <IoNotificationsOutline />} /> |
+| with icon | <Tab name='Sample Tab' count="5" preComp={() => <Bell size={24}/>} /> |
 
 #### **References**:
 

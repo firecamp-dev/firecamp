@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
+import { ChevronRight } from 'lucide-react';
 import { Modal, Button, ProgressBar, IModal } from '@firecamp/ui';
 import { Rest } from '@firecamp/cloud-apis';
-import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
 import { usePlatformStore } from '../../../store/platform';
 import platformContext from '../../../services/platform-context';
 
@@ -70,7 +70,7 @@ const SwitchOrg: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
                       {' '}
                       {`${i + 1}. ${org.name}`}{' '}
                     </a>
-                    <VscChevronRight
+                    <ChevronRight
                       size={14}
                       className=" border-focusBorder action"
                     />

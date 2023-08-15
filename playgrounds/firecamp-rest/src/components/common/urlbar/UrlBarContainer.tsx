@@ -113,7 +113,7 @@ const SuffixButtons = () => {
       <Button
         text={isRequestRunning === true ? `Cancel` : `Send`}
         title="Send Request"
-        data-testId="send-request"
+        data-testid="send-request"
         onClick={_onExecute}
         primary
         xs
@@ -122,7 +122,7 @@ const SuffixButtons = () => {
         id={`save-request-${tabId}`}
         text={isUpdatingRequest ? 'Saving...' : 'Save'}
         title="Save Request"
-        data-testId="save-request"
+        data-testi00-d="save-request"
         onClick={_onSave}
         disabled={false} //isSaveBtnDisabled
         secondary

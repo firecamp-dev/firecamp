@@ -1,7 +1,5 @@
 import { FC, useState } from 'react';
-import { MdContentCopy } from '@react-icons/all-files/md/MdContentCopy';
-import { VscWordWrap } from '@react-icons/all-files/vsc/VscWordWrap';
-import { VscFold } from '@react-icons/all-files/vsc/VscFold';
+import { Copy, ChevronsDownUp, WrapText } from 'lucide-react';
 import { ToolBar, FcVscWand } from '@firecamp/ui';
 import { _clipboard } from '@firecamp/utils';
 
@@ -12,9 +10,8 @@ const EditorControlBar: FC<any> = ({ editor, language = 'json' }) => {
   return (
     <ToolBar>
       <div>
-        <MdContentCopy
+        <Copy
           size={14}
-          title={'Copy'}
           onClick={() => {
             let text = editor.getValue();
             if (!text) return;
@@ -25,9 +22,9 @@ const EditorControlBar: FC<any> = ({ editor, language = 'json' }) => {
         />
       </div>
       <div>
-        <VscWordWrap
+        <WrapText
           size={16}
-          title={'Wrap'}
+          // title={'Wrap'}
           onClick={() => {
             editor.updateOptions({
               wordWrap: isWrapped ? 'off' : 'on',
@@ -37,9 +34,9 @@ const EditorControlBar: FC<any> = ({ editor, language = 'json' }) => {
         />
       </div>
       <div>
-        <VscFold
+        <ChevronsDownUp
           size={16}
-          title={'Fold'}
+          // title={'Fold'}
           onClick={() => {
             if (isFolded) {
               editor.trigger('unfold', 'editor.unfoldAll');

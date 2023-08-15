@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import cx from 'classnames';
+import { Trash2 } from 'lucide-react';
 import {
   Button,
   Container,
@@ -27,14 +27,10 @@ const columns = [
     width: '180px',
   },
   { id: 'role', name: 'Role', key: 'role', width: '115px', fixedWidth: true },
-  // { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
+  { id: 'action', name: '', key: '', width: '35px', fixedWidth: true },
 ];
 
 const RoleOptions = [
-  {
-    id: EUserRolesWorkspace.Owner,
-    name: 'Owner',
-  },
   {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
@@ -45,7 +41,10 @@ const RoleOptions = [
   },
 ];
 
-const PendingInviteMembersTab = ({ members = [], isFetchingMembers = false }) => {
+const PendingInviteMembersTab = ({
+  members = [],
+  isFetchingMembers = false,
+}) => {
   const workspace = useWorkspaceStore.getState().workspace;
   const tableApi = useRef<TTableApi>(null);
 
@@ -64,20 +63,19 @@ const PendingInviteMembersTab = ({ members = [], isFetchingMembers = false }) =>
   }, [members]);
 
   const onRemoveMember = (row) => {
-
     platformContext.window.confirm({
-      message: `You're sure to remove ${row.name} from the workspace?`,
+      message: `You're sure to remove invitation of ${row.name} from the workspace?`,
       labels: {
         cancel: 'Cancel',
-        confirm: 'Yes, remove the member.',
+        confirm: 'Yes, remove the invitation.',
       },
       onConfirm: () => {
-        Rest.workspace
-          .removeMember(workspace.__ref.id, row.id)
+        Rest.invitation
+          .cancelInvitation(row.id)
           .then(() => {
             tableApi.current.removeRow(row.id);
             platformContext.app.notify.success(
-              'The member has been removed successfully.'
+              'The user invitation has been removed successfully.'
             );
           })
           .catch((e) => {
@@ -128,24 +126,28 @@ const PendingInviteMembersTab = ({ members = [], isFetchingMembers = false }) =>
       case 'role':
         return (
           <div className="p-1 text-center">
-            <RoleDD
-              role={row.role}
-              onSelect={(role) => onChangeRole({ ...row, role })}
+            {row.role === EUserRolesWorkspace.Owner ? (
+              <div className="px-4 text-sm text-selected-text">Owner</div>
+            ) : (
+              <RoleDD
+                role={row.role}
+                onSelect={(role) => onChangeRole({ ...row, role })}
+              />
+            )}
+          </div>
+        );
+        break;
+      case 'action':
+        return (
+          <div className="px-2">
+            <Trash2
+              size={14}
+              className="text-error cursor-pointer"
+              onClick={() => onRemoveMember(row)}
             />
           </div>
         );
         break;
-      // case 'action':
-      //   return (
-      //     <div className="px-2">
-      //       <VscTrash
-      //         size={14}
-      //         className="text-error cursor-pointer"
-      //         onClick={() => onRemoveMember(row)}
-      //       />
-      //     </div>
-      //   );
-      //   break;
       default:
         return column.key;
     }

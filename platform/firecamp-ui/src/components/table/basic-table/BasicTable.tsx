@@ -1,9 +1,7 @@
 import { useRef } from 'react';
 import cx from 'classnames';
+import { GripVertical, Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
-import { GrDrag } from '@react-icons/all-files/gr/GrDrag';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
 import { EEditorLanguage } from '@firecamp/types';
 import { Input, Button } from '@firecamp/ui';
 import Checkbox from '../../checkbox/Checkbox';
@@ -67,7 +65,7 @@ const BasicTable = ({
                 }}
                 data-testid="row-sorter"
               >
-                <GrDrag opacity={0.3} />
+                <GripVertical opacity={0.3} size={16} />
               </span>
             )}
 
@@ -98,17 +96,17 @@ const BasicTable = ({
             language={
               options?.languages?.[column.key] || EEditorLanguage.FcText
             }
-            className="without-border px-2"
-            style={{
-              position: 'absolute',
-              width: '100%',
-              top: '2px',
-              overflow: 'hidden',
-              padding: '0px 4px',
-            }}
+            className="without-border px-1"
+            // style={{
+            //   position: 'absolute',
+            //   width: '100%',
+            //   top: '2px',
+            //   overflow: 'hidden',
+            //   padding: '0px 4px',
+            // }}
             type="text"
             value={cellValue}
-            height={21}
+            height={18}
             onChange={(e) => {
               onChange(column.key, e.target.value, e);
             }}
@@ -128,8 +126,11 @@ const BasicTable = ({
         return (
           <Input
             value={cellValue}
-            className="bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 pt-0 h-[21px] font-sans"
-            wrapperClassName="!mb-0"
+            classNames={{
+              root: '!mb-0',
+              input:
+                '!bg-transparent !border-none focus:!border-none focus-visible:!border-none text-base text-tab-foreground-inactive px-1 h-[21px] min-h-0',
+            }}
             onChange={(e: any) => onChange(column.key, e.target.value, e)}
           />
         );
@@ -138,9 +139,9 @@ const BasicTable = ({
         if (!options.allowRowRemove) return <></>;
         return (
           <div className="px-2 flex">
-            <VscTrash
+            <Trash2
               size={14}
-              className="text-error cursor-pointer"
+              className="text-primaryColor cursor-pointer"
               onClick={(e) => tableApi?.removeRow(row.id)}
             />
           </div>
@@ -183,7 +184,7 @@ const BasicTable = ({
           <Button
             onClick={() => apiRef.current.addRow()}
             text="Add Row"
-            leftIcon={<VscAdd size={16} />}
+            leftIcon={<Plus size={16} />}
             disabled={
               options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
             }

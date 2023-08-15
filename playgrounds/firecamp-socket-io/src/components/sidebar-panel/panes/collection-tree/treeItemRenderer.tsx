@@ -1,10 +1,7 @@
 import cx from 'classnames';
+import { FolderOpen, Folder, Plus, Trash2 } from 'lucide-react';
 import { VscTriangleRight } from '@react-icons/all-files/vsc/VscTriangleRight';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
-import { VscFolderOpened } from '@react-icons/all-files/vsc/VscFolderOpened';
-import { VscFolder } from '@react-icons/all-files/vsc/VscFolder';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { Button } from '@firecamp/ui';
 import { ISocketIOEmitter } from '@firecamp/types';
 
@@ -22,7 +19,7 @@ export default {
             size={12}
             opacity={'0.6'}
           />
-          <VscFolderOpened
+          <FolderOpen
             className="mr-1 flex-none"
             size={16}
             opacity={'0.8'}
@@ -35,10 +32,10 @@ export default {
             size={12}
             opacity={'0.6'}
           />
-          <VscFolder
-            className="mr-1 opacity-80 flex-none"
+          <Folder
+            className="mr-1 flex-none"
             size={16}
-            opacity={'0.8'}
+            opacity={0.8}
           />
         </>
       );
@@ -206,7 +203,7 @@ export default {
               <></>
             )}
             {item.data.__ref.isFolder ? (
-              <VscAdd
+              <Plus
                 className="ml-1 cursor-pointer"
                 tabIndex={2}
                 size={14}
@@ -218,7 +215,7 @@ export default {
               <></>
             )}
 
-            <VscTrash
+            <Trash2
               className="ml-1 cursor-pointer"
               size={14}
               onClick={() => {

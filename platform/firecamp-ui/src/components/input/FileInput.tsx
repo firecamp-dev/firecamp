@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { FC, useRef } from 'react';
-import {VscArrowRight} from '@react-icons/all-files/vsc/VscArrowRight';
+import { ArrowRight } from 'lucide-react';
 
 import { IFileInput } from "./interfaces/FileInput.interfaces";
 
@@ -46,7 +46,7 @@ const FileInput: FC<IFileInput> = ({
         >
 
           <span className='pr-1 text-base'>{ButtonText}</span>
-          <VscArrowRight size={12} />
+          <ArrowRight size={12} />
         </label>
       ) : (
         <div onClick={_onClick} className="fc-input-file-name ">

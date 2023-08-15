@@ -41,10 +41,6 @@ const columns = [
 
 const RoleOptions = [
   {
-    id: EUserRolesWorkspace.Owner,
-    name: 'Owner',
-  },
-  {
     id: EUserRolesWorkspace.Admin,
     name: 'Admin',
   },
@@ -67,7 +63,8 @@ const Members = ({
       const memberList = members.map((m, i) => {
         return {
           id: m.id,
-          name: m.username,
+          email: m.email,
+          name: m.name || m.username,
           role: m.role,
           joinedAt: getFormalDate(m.__ref.joinedAt),
         };
@@ -121,16 +118,22 @@ const Members = ({
         return <div className="px-2 text-base"> {rowIndex + 1} </div>;
         break;
       case 'name':
+        return <div className="p-1 text-base">{`${cellValue} - ${row.email}`}</div>;
+        break;
       case 'joinedAt':
         return <div className="p-1 text-base">{cellValue}</div>;
         break;
       case 'role':
         return (
           <div className="p-1 text-center">
-            <RoleDD
-              role={row.role}
-              onSelect={(role) => onChangeRole({ ...row, role })}
-            />
+            {row.role === EUserRolesWorkspace.Owner ? (
+              <div className="px-4 text-base text-selected-text">Owner</div>
+            ) : (
+              <RoleDD
+                role={row.role}
+                onSelect={(role) => onChangeRole({ ...row, role })}
+              />
+            )}
           </div>
         );
         break;

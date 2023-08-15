@@ -1,7 +1,7 @@
 import { FC, useState, useEffect } from 'react';
 import _compact from 'lodash/compact';
 import cx from 'classnames';
-import isEqual from 'react-fast-compare';
+// import isEqual from 'react-fast-compare';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
 import { _misc, _object } from '@firecamp/utils';
 import {
@@ -30,7 +30,7 @@ import {
   Digest,
   // Hawk,
   Netrc,
-  Ntlm,
+  // Ntlm,
   OAuth1,
   OAuth2,
   NoAuth,
@@ -42,11 +42,11 @@ const AuthPanel: FC<IProps> = ({
   value,
   activeAuthType = EAuthTypes.None,
   allowInherit = true,
-  onChangeAuthType = () => {},
-  onChangeAuthValue = () => {},
-  onChangeOAuth2Value = () => {},
-  fetchTokenOnChangeOAuth2 = (authPayload: any) => {},
-  fetchInheritedAuth = () => {},
+  onChangeAuthType = () => { },
+  onChangeAuthValue = () => { },
+  onChangeOAuth2Value = () => { },
+  fetchTokenOnChangeOAuth2 = (authPayload: any) => { },
+  fetchInheritedAuth = () => { },
   oauth2LastToken = '',
 }) => {
   const _authTypeList = allowInherit
@@ -115,7 +115,7 @@ const AuthPanel: FC<IProps> = ({
               type="info"
               title="Coming soon!!"
               description={`Firecamp team is building this feature and it’ll be releasing very soon. Keep us watching on <span>  <a href="https://github.com/firecampdev/firecamp/releases" target="_blank">
-Github </a>, <a href="https://twitter.com/firecampdev" target="_blank">Twitter</a>, <a href="https://discord.com/invite/8hRaqhK" target="_blank"> Discord</a> </span>.`}
+GitHub </a>, <a href="https://twitter.com/firecampdev" target="_blank">Twitter</a>, <a href="https://discord.com/invite/8hRaqhK" target="_blank"> Discord</a> </span>.`}
             />
           </div>
         );
@@ -174,7 +174,7 @@ const AuthTypesDD: FC<any> = ({ types, name, onSelect }) => {
         handler={() => (
           <Button
             text={name || ''}
-            classNames={{root: "font-bold"}}
+            classNames={{ root: "font-bold" }}
             rightIcon={
               <VscTriangleDown
                 size={12}

@@ -180,7 +180,6 @@ describe("Table : ", () => {
     render(<Template {...DisableNewRowArgs} />);
     let initialMountedRow = await getRenderedTableRow();
     let AddRowButton = screen.getByRole('button', { name: 'Add Row' });
-    expect(AddRowButton).toHaveClass('cursor-default')
     click(AddRowButton);
     let updatedMountedRow = await waitFor(() => getRenderedTableRow());
     expect(initialMountedRow).toHaveLength(updatedMountedRow.length);

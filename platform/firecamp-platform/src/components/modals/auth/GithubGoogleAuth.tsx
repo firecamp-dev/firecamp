@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+
 import { VscGithub } from '@react-icons/all-files/vsc/VscGithub';
 // import { GrGoogle } from '@react-icons/all-files/gr/GrGoogle';
 
@@ -113,9 +114,9 @@ const GithubGoogleAuth: FC<IGithubGoogleAuth> = ({ onClose }) => {
         sm
       /> */}
       <Button
-        text="Continue with Github"
+        text="Continue with GitHub"
         leftIcon={<VscGithub size={18} />}
-        classNames={{ root: 'mb-5' }}
+        classNames={{ root: 'mb-5', inner: 'ml-[30%]' }}
         onClick={_githubOAuth}
         outline
         fullWidth

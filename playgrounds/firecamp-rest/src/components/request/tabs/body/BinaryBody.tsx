@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { AiOutlineUpload } from '@react-icons/all-files/ai/AiOutlineUpload';
+import { Upload } from 'lucide-react';
 import { FileDrop } from 'react-file-drop';
 import { Container, Button } from '@firecamp/ui';
 
@@ -75,7 +75,7 @@ const BinaryTab = ({ body, onChange }) => {
           ) : (
             <Button
               onClick={_onButtonClick}
-              leftIcon={<AiOutlineUpload size={16} />}
+              leftIcon={<Upload size={16} />}
               text="Drop File Here"
               disabled={isButtonDisabled}
               secondary

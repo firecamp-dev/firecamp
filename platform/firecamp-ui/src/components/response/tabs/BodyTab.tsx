@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { XCircle } from 'lucide-react';
 import {
   SecondaryTab,
   Container,
@@ -8,7 +9,6 @@ import {
 } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
 import { IHeader, TId, TPlainObject } from '@firecamp/types';
-import { IoMdCloseCircle } from '@react-icons/all-files/io/IoMdCloseCircle';
 
 enum EActiveTab {
   Json = 'json',
@@ -184,7 +184,7 @@ const CorsError = () => {
   return (
     <div className="p-3">
       <div className="text-error flex items-center text-base font-semibold mb-2 mt-1">
-        <IoMdCloseCircle className="mr-1" />
+        <XCircle className="mr-1" />
         <span>Unable to reach server</span>
       </div>
       <div className="text-base text-app-foreground-inactive">

@@ -16,7 +16,7 @@ import {
   ToolBar,
   Empty,
   Button,
-  ScrollBar,
+  ScrollArea,
 } from '@firecamp/ui';
 import { CollectionExplorerProvider } from './treeDataProvider';
 import treeRenderer from './treeItemRenderer';
@@ -75,8 +75,12 @@ const Explorer: FC<any> = () => {
     )
   );
 
+  /** if mouse down then do not open the request in tab. example dragging item should not fire onSelect */
+  const isMouseDown = useRef(false);
   //effect: register and unregister treeDataProvider instance
   useEffect(() => {
+    document.body.onmousedown = () => isMouseDown.current = true;
+    document.body.onmouseup = () => isMouseDown.current = false
     registerTDP(dataProvider.current);
     return unRegisterTDP;
   }, []);
@@ -134,25 +138,68 @@ const Explorer: FC<any> = () => {
   const _onNodeSelect = (nodeIndexes: TreeItemIndex[]) => {
     // console.log({ nodeIndexes });
     // return
-
-    let nodeIndex = nodeIndexes[0];
-    let nodeItem = [...collections, ...folders, ...requests].find(
-      (c) => c.__ref.id == nodeIndex
-    );
-    // console.log({ nodeItem });
-    if (
-      nodeItem &&
-      [
-        ERequestTypes.Rest,
-        ERequestTypes.GraphQL,
-        ERequestTypes.SocketIO,
-        ERequestTypes.WebSocket,
-      ].includes(nodeItem.__meta.type)
-    ) {
+    setTimeout(() => {
+      // if item is being dragging then do not open it in new tab
+      if (isMouseDown.current) return;
+      let nodeIndex = nodeIndexes[0];
+      let nodeItem = [...collections, ...folders, ...requests].find(
+        (c) => c.__ref.id == nodeIndex
+      );
       // console.log({ nodeItem });
-      _openReqInTab(nodeItem);
-    }
+      if (
+        nodeItem &&
+        [
+          ERequestTypes.Rest,
+          ERequestTypes.GraphQL,
+          ERequestTypes.SocketIO,
+          ERequestTypes.WebSocket,
+        ].includes(nodeItem.__meta.type)
+      ) {
+        // console.log({ nodeItem });
+        _openReqInTab(nodeItem);
+      }
+    }, 10)
   };
+
+  const shouldIDropTheCollection = useCallback((item: any, target: any): boolean => {
+
+    const { childIndex, targetType, depth, parentItem } = target;
+    const index = workspace.__meta.cOrders.indexOf(item.__ref.id);
+    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index, [index - 1, index, index + 1].includes(childIndex));
+
+    /** collection can only reorder at depth 0 */
+    if (typeof childIndex != 'number') return false;
+    else if ([index - 1, index, index + 1].includes(childIndex)) return false;
+    else if (targetType == 'between-items' && depth == 0 && parentItem == 'root') return true;
+    else return false;
+  }, [workspace.__meta.cOrders, collections]);
+
+  const shouldIDropTheFolder = useCallback((target: any): boolean => {
+    const { targetType, depth, parentItem } = target;
+    /** folder can be dropped on collection */
+    if (targetType == 'item' && depth == 0 && parentItem == 'root') return true;
+
+    const parentCollection = collections.find((i) => i.__ref.id == parentItem);
+    const parentFolder = folders.find((i) => i.__ref.id == parentItem);
+
+    /**folders can be drop on collection and folder or reorder within the same depth/level */
+    if (parentCollection || parentFolder) return true;
+    return false;
+  }, [collections, folders]);
+
+  const shouldIDropTheRequest = useCallback((target: any): boolean => {
+    const { targetType, depth, parentItem } = target;
+    /** request can be dropped on collection */
+    if (targetType == 'item' && depth == 0 && parentItem == 'root') return true;
+
+    const parentCollection = collections.find((i) => i.__ref.id == parentItem);
+    const parentFolder = folders.find((i) => i.__ref.id == parentItem);
+
+    /** request can be drop on collection and folder or reorder within the same depth/level */
+    if (parentCollection || parentFolder) return true;
+
+    return false;
+  }, [collections, folders]);
 
   const canDropAt = useCallback(
     (item, target) => {
@@ -160,49 +207,13 @@ const Explorer: FC<any> = () => {
       const isItemCollection = itemPayload.__ref.isCollection;
       const isItemFolder = itemPayload.__ref.isFolder;
       const isItemRequest = itemPayload.__ref.isRequest;
-      const { targetType, depth, parentItem } = target;
-
-      // return true
 
       // console.clear();
-      // console.log(itemPayload, isItemCollection, target, "can drop at ...");
 
-      /** collection can only reorder at depth 0 */
-      if (
-        isItemCollection &&
-        targetType == 'between-items' &&
-        depth == 0 &&
-        parentItem == 'root'
-      ) {
-        return true;
-      }
-
-      /** folder and request can be dropped on collection */
-      if (
-        (isItemFolder || isItemRequest) &&
-        targetType == 'item' &&
-        depth == 0 &&
-        parentItem == 'root'
-      ) {
-        return true;
-      }
-
-      const parentCollection = collections.find(
-        (i) => i.__ref.id == parentItem
-      );
-      const parentFolder = folders.find((i) => i.__ref.id == parentItem);
-
-      /** request and folders can be drop on collection and folder or reorder within the same depth/level */
-      if (
-        (parentCollection || parentFolder) &&
-        (isItemFolder || isItemRequest)
-      ) {
-        return true;
-      }
-
-      // console.log(false, "you can not drag")
+      if (isItemCollection) return shouldIDropTheCollection(itemPayload, target);
+      if (isItemFolder) return shouldIDropTheFolder(target);
+      if (isItemRequest) return shouldIDropTheRequest(target);
       return false;
-      // return target.targetType === 'between-items' ? target.parentItem.startsWith('A') : target.targetItem.startsWith('A')
     },
     [collections, folders]
   );
@@ -308,7 +319,8 @@ const Explorer: FC<any> = () => {
             return (
               <ToolBar>
                 <div>
-                  <RotateCw strokeWidth={1.5}
+                  <RotateCw
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={() => {
@@ -317,14 +329,16 @@ const Explorer: FC<any> = () => {
                   />
                 </div>
                 <div>
-                  <FolderPlus strokeWidth={1.5}
+                  <FolderPlus
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={createCollectionPrompt}
                   />
                 </div>
                 <div>
-                  <ArrowDown strokeWidth={1.5}
+                  <ArrowDown
+                    strokeWidth={1.5}
                     className="cursor-pointer"
                     size={16}
                     onClick={openImportTab}
@@ -355,7 +369,7 @@ const Explorer: FC<any> = () => {
 
             return (
               <>
-                <ScrollBar transparent fullHeight>
+                <ScrollArea>
                   <UncontrolledTreeEnvironment
                     ref={explorerTreeRef}
                     keyboardBindings={{
@@ -363,37 +377,35 @@ const Explorer: FC<any> = () => {
                       renameItem: ['enter', 'f2'],
                       abortRenameItem: ['esc'],
                     }}
-                    // dataProvider={new StaticTreeDataProvider(items, (item, data) => ({ ...item, data }))}
                     dataProvider={dataProvider.current}
-                    defaultInteractionMode={{
-                      mode: 'custom',
-                      extends: InteractionMode.ClickItemToExpand,
-                      createInteractiveElementProps: (
-                        item,
-                        treeId,
-                        actions,
-                        renderFlags
-                      ) => ({
-                        /**
-                         * 1. avoid multi select
-                         * 2. (will not work as isFocused is always true, ignore for now) focus on first click and select item if it's focused (second click)
-                         * 3. if has children then toggle expand/collapse
-                         */
-                        onClick: (e) => {
-                          //avoid multi select
-                          // console.log(item, actions, renderFlags);
-                          if (item.isFolder) actions.toggleExpandedState();
-                          if (!renderFlags.isFocused) actions.focusItem();
-                          else actions.selectItem();
-                        },
-                        onFocus: (e) => {
-                          actions.focusItem();
-                        },
-                      }),
-                    }}
+                    // defaultInteractionMode={{
+                    //   mode: 'custom',
+                    //   extends: InteractionMode.ClickArrowToExpand,
+                    //   createInteractiveElementProps: (
+                    //     item,
+                    //     treeId,
+                    //     actions,
+                    //     renderFlags
+                    //   ) => ({
+                    //     /**
+                    //      * 1. avoid multi select
+                    //      * 2. (will not work as isFocused is always true, ignore for now) focus on first click and select item if it's focused (second click)
+                    //      * 3. if has children then toggle expand/collapse
+                    //      */
+                    //     onClick: (e) => {
+                    //       //avoid multi select
+                    //       // console.log(item, actions, renderFlags);
+                    //       if (item.isFolder) actions.toggleExpandedState();
+                    //       if (!renderFlags.isFocused) actions.focusItem();
+                    //       else actions.selectItem();
+                    //     },
+                    //     onFocus: (e) => {
+                    //       actions.focusItem();
+                    //     },
+                    //   }),
+                    // }}
                     getItemTitle={(item) => item.data?.name}
                     viewState={{}}
-                    // renderItemTitle={({ title }) => <span>{title}</span>}
                     renderItemArrow={treeRenderer.renderItemArrow}
                     // renderItemTitle={treeRenderer.renderItemTitle}
                     renderItem={(props) =>
@@ -401,12 +413,11 @@ const Explorer: FC<any> = () => {
                     }
                     // renderTreeContainer={({ children, containerProps }) => <div {...containerProps}>{children}</div>}
                     // renderItemsContainer={({ children, containerProps }) => <ul {...containerProps}>{children}</ul>}
-
-                    canRename={true}
-                    canReorderItems={true}
-                    canDragAndDrop={true}
-                    canDropOnFolder={true}
-                    canDropOnNonFolder={true}
+                    canRename
+                    canReorderItems
+                    canDragAndDrop
+                    canDropOnFolder
+                    canDropOnNonFolder
                     canDrag={(items) => {
                       return true;
                     }}
@@ -435,7 +446,7 @@ const Explorer: FC<any> = () => {
                       ref={treeRef}
                     />
                   </UncontrolledTreeEnvironment>
-                </ScrollBar>
+                </ScrollArea>
               </>
             );
           }}

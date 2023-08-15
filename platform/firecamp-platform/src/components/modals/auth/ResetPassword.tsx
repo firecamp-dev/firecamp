@@ -1,9 +1,10 @@
 import { FC, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm } from '@mantine/form';
+import { Eye, EyeOff } from 'lucide-react';
 import { Modal, IModal, Button, Input } from '@firecamp/ui';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
 import { Rest } from '@firecamp/cloud-apis';
 import platformContext from '../../../services/platform-context';
+import { Regex } from '../../../constants';
 
 /**
  * ResetPassword component
@@ -12,8 +13,27 @@ const ResetPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   const [isRequesting, setFlagIsRequesting] = useState(false);
   const [showPassword, toggleShowPassword] = useState(false);
 
-  const form = useForm();
-  let { handleSubmit, errors } = form;
+  const form = useForm({
+    initialValues: { token: '', email: '', password: '' },
+    validate: {
+      token: (value) =>
+        value.length < 4 || value.length > 50
+          ? 'Please enter a token value between 4 and 50 characters.'
+          : null,
+      email: (value) =>
+        value.length > 50
+          ? 'Please enter a valid email address with a maximum of 50 characters.'
+          : !Regex.Email.test(value)
+          ? 'Please enter a valid email address.'
+          : null,
+      password: (value) =>
+        value.length < 8 || value.length > 50
+          ? 'Please enter a password between 8 and 50 characters.'
+          : null,
+    },
+  });
+
+  const { onSubmit, getInputProps } = form;
 
   const _onSubmit = async (payload: {
     token: string;
@@ -51,35 +71,27 @@ const ResetPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
       });
   };
 
-  const _onKeyDown = (e: any) => e.key === 'Enter' && handleSubmit(_onSubmit);
+  const _onKeyDown = (e: any) => e.key === 'Enter' && onSubmit(_onSubmit);
 
   return (
     <Modal opened={opened} onClose={onClose} size={440}>
       <>
-        <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} />
+        {/* <img className="mx-auto w-12 mb-6" src={'img/reset-icon.png'} /> */}
         <div className="text-xl mb-6 w-full text-center font-semibold">
           Reset Password
         </div>
       </>
       <div className="">
-        <form onSubmit={handleSubmit(_onSubmit)}>
+        <form onSubmit={onSubmit(_onSubmit)}>
           <Input
             placeholder="Enter E-mail"
             key={'email'}
             name={'email'}
             label="Email"
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 1,
-              pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/,
-            }}
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.email ? errors?.email?.message || 'Invalid email' : ''
-            }
-            wrapperClassName="!mb-2"
+            data-autofocus
+            classNames={{ root: '!mb-2' }}
+            {...getInputProps('email')}
           />
           <Input
             placeholder="Enter Token"
@@ -87,17 +99,9 @@ const ResetPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
             name={'token'}
             label="Token"
             type="text"
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 4,
-            }}
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.token ? errors?.token?.message || 'Invalid token' : ''
-            }
-            wrapperClassName="!mb-2"
+            classNames={{ root: '!mb-2' }}
+            {...getInputProps('token')}
           />
           <Input
             placeholder="Enter password"
@@ -105,33 +109,21 @@ const ResetPassword: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
             name={'password'}
             type={showPassword ? 'text' : 'password'}
             label="Password"
-            iconPosition="right"
-            icon={
-              <VscEye
-                title="password"
-                size={16}
-                onClick={() => {
-                  toggleShowPassword(!showPassword);
-                }}
-              />
+            rightSection={
+              <div
+                className="cursor-pointer"
+                onClick={() => toggleShowPassword(!showPassword)}
+              >
+                {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+              </div>
             }
-            registerMeta={{
-              required: true,
-              maxLength: 50,
-              minLength: 8,
-            }}
-            useformRef={form}
             onKeyDown={_onKeyDown}
-            error={
-              errors?.password
-                ? errors?.password?.message || 'Invalid password'
-                : ''
-            }
+            {...getInputProps('password')}
           />
           <Button
             type="submit"
             text={isRequesting ? `Resetting password...` : 'Reset Password'}
-            onClick={handleSubmit(_onSubmit)}
+            onClick={onSubmit(_onSubmit)}
             fullWidth
             primary
             sm

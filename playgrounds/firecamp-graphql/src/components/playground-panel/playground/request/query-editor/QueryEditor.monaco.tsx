@@ -5,7 +5,7 @@ import { Container, Column, Editor } from '@firecamp/ui';
 import { _table } from '@firecamp/utils';
 import getQueryFacts, {
   getCurrentOperation,
-} from '../../../../../services/GraphQLservice';
+} from '../../../../../services/graphql.service';
 import { EQueryTypes } from '../../../../../types';
 
 const QueryEditorMonaco = ({ isQueryDirty, toggleQueryDirty }) => {

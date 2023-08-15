@@ -1,24 +1,15 @@
 import { FC, useState } from 'react';
-import { VscLinkExternal } from '@react-icons/all-files/vsc/VscLinkExternal';
-import {
-  Container,
-  Editor,
-  Resizable,
-  Row,
-  Column,
-  Notes,
-  TabHeader,
-} from '@firecamp/ui';
+import { ExternalLink } from 'lucide-react';
+import { Container, Editor, Resizable, Row, Column, Notes, TabHeader } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
-
-import ScriptDefs from '!!raw-loader!./interfaces/Scripts.d';
 import HelpPopUp from './SnippetPopup';
+import ScriptDefs from '!!raw-loader!./interfaces/scripts.d';
 
 const ScriptTab: FC<IProps> = ({
   id = '',
   script,
   snippets,
-  onChangeScript = (value) => {},
+  onChangeScript = (value) => { },
 }) => {
   const [editorDOM, setEditorDOM] = useState(null);
   const _onAddScriptFromSnippet = async (script: string[]) => {
@@ -42,7 +33,7 @@ const ScriptTab: FC<IProps> = ({
               className="underline inline items-center cursor-pointer"
             >
               pre-request scripts
-              <VscLinkExternal className="inline ml-1" size={12} />
+              <ExternalLink className="inline ml-1" size={12} />
             </a> */}
           </div>
         </TabHeader>

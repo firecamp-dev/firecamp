@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { shallow } from 'zustand/shallow';
-import { VscNewFolder } from '@react-icons/all-files/vsc/VscNewFolder';
-import { VscRefresh } from '@react-icons/all-files/vsc/VscRefresh';
+import { FolderPlus, RotateCw } from 'lucide-react';
 import { Tree, UncontrolledTreeEnvironment } from '@firecamp/ui/src/tree';
 import { Pane, ToolBar, Empty } from '@firecamp/ui';
 import treeRenderer from './collection-tree/treeItemRenderer';
@@ -20,10 +19,10 @@ const CollectionTab = () => {
         return (
           <ToolBar>
             <div className="action">
-              {/* <VscRefresh size={14} className="cursor-pointer" /> */}
+              {/* <RotateCw size={14} className="cursor-pointer" /> */}
             </div>
             <div>
-              <VscNewFolder
+              <FolderPlus
                 size={14}
                 className="cursor-pointer"
                 onClick={() => promptCreateFolder()}

@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-// import { VscChevronRight } from '@react-icons/all-files/vsc/VscChevronRight';
-import { VscCircleSlash } from '@react-icons/all-files/vsc/VscCircleSlash';
+import { Ban } from 'lucide-react';
 import { shallow } from 'zustand/shallow';
 import cx from 'classnames';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
@@ -153,9 +152,10 @@ const Logs = () => {
                   </div>
                   <div className="flex">
                     {logs?.length ? (
-                      <VscCircleSlash
+                      <Ban
+                        size={16}
                         className="cursor-pointer"
-                        title="clear logs"
+                        // title="clear logs"
                         onClick={_onClearAllMessages}
                       />
                     ) : (

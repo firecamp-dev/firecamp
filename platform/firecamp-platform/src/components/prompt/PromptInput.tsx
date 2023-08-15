@@ -85,7 +85,6 @@ export const PromptInput: FC<IPromptInput> = ({
       <div className="pt-4">
         <div className="">
           <Input
-            autoFocus={true}
             label={label}
             placeholder={placeholder}
             name={'promptInput'}
@@ -94,6 +93,7 @@ export const PromptInput: FC<IPromptInput> = ({
             onKeyDown={_onKeyDown}
             onBlur={() => { }}
             error={state.error}
+            data-autofocus
           />
         </div>
         <TabHeader className="!px-0">

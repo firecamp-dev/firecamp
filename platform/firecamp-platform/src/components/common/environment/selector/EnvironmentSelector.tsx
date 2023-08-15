@@ -1,9 +1,10 @@
 import { shallow } from 'zustand/shallow';
-import { Column } from '@firecamp/ui';
-import { VscEye } from '@react-icons/all-files/vsc/VscEye';
+import { Button, Column } from '@firecamp/ui';
+import { Table } from 'lucide-react';
 import EnvironmentDD from './EnvironmentDD';
 import { IEnvironmentStore, useEnvStore } from '../../../../store/environment';
 import { IUserStore, useUserStore } from '../../../../store/user';
+import platformContext from '../../../../services/platform-context';
 
 const EnvironmentSelector = () => {
   const { toggleEnvSidebar, setActiveEnv } = useEnvStore(
@@ -20,7 +21,21 @@ const EnvironmentSelector = () => {
     shallow
   );
 
-  if (isGuest === true) return <></>;
+  if (isGuest === true)
+    return (
+      <div className="flex items-center hover:bg-primaryColor">
+        <Button
+          text="Sign In"
+          transparent
+          primary
+          classNames={{
+            root: 'rounded-none border-0 border-tab-border border-b border-l  hover:text-secondaryColor-text',
+          }}
+          animate={false}
+          onClick={() => platformContext.app.modals.openSignIn()}
+        />
+      </div>
+    );
   return (
     <Column
       overflow="visible"
@@ -38,7 +53,7 @@ const EnvironmentSelector = () => {
           className="cursor-pointer ml-1 text-base !text-info"
           onClick={() => toggleEnvSidebar()}
         >
-          <VscEye size={14} />
+          <Table size={16} strokeWidth="1.5" strokeLinecap='square' strokeLinejoin='miter' />
         </span>
       </div>
     </Column>

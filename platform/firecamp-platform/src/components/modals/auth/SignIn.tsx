@@ -1,6 +1,6 @@
 import { FC } from 'react';
+import { Mail } from 'lucide-react';
 import { Drawer, IModal, Button, FcLogo } from '@firecamp/ui';
-import { VscAccount } from '@react-icons/all-files/vsc/VscAccount';
 
 import _auth from '../../../services/auth';
 import GithubGoogleAuth from './GithubGoogleAuth';
@@ -22,9 +22,12 @@ const SignIn: FC<IModal> = ({ opened, onClose }) => {
       <div className="">
         <GithubGoogleAuth />
         <Button
-          text="Continue with Email"
-          leftIcon={<VscAccount size={18} />}
-          classNames={{ root: 'mb-5' }}
+          text="Sign In with Email"
+          leftIcon={<Mail size={18} />}
+          classNames={{ 
+            root: 'mb-5',
+            inner: 'ml-[30%]'
+           }}
           onClick={() => platformContext.app.modals.openSignInWithEmail()}
           outline
           fullWidth
@@ -54,7 +57,7 @@ const SignIn: FC<IModal> = ({ opened, onClose }) => {
         <div className="text-sm mt-6 text-center text-app-foreground-inactive">
           By moving forward, you acknowledge that you have read and accept the
           <a
-            href="https://firecamp.io/legals/privacy-policy/"
+            href="https://firecamp.io/legal/privacy-policy/"
             tabIndex={1}
             className="font-bold underline px-1"
             target={'_blank'}
@@ -63,7 +66,7 @@ const SignIn: FC<IModal> = ({ opened, onClose }) => {
           </a>
           and
           <a
-            href="https://firecamp.io/legals/privacy-policy/"
+            href="https://firecamp.io/legal/privacy-policy/"
             tabIndex={1}
             className="font-bold underline px-1"
             target={'_blank'}

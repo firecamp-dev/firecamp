@@ -1,6 +1,6 @@
 //@ts-nocheck
 import { FC } from "react";
-import { VscMenu } from "@react-icons/all-files/vsc/VscMenu";
+import { Menu as MenuIcon } from 'lucide-react';
 import {
     Menu,
     MenuItem,
@@ -24,7 +24,7 @@ const MenuBar: FC<IMenuBar> = ({
             align='start'
             menuButton={
                 <MenuButton>
-                    <VscMenu
+                    <MenuIcon
                         title="Account"
                         size={40}
                         height={40}

@@ -1,4 +1,5 @@
 import { FC, useEffect, useState } from 'react';
+import { IWorkspace } from '@firecamp/types';
 import {
   Container,
   Drawer,
@@ -11,10 +12,9 @@ import { Rest } from '@firecamp/cloud-apis';
 import { useWorkspaceStore, IWorkspaceStore } from '../../../store/workspace';
 import EditInfoTab from './tabs/EditInfoTab';
 import MembersTab from './tabs/MembersTab';
+import PendingInviteMembersTab from './tabs/PendingInviteMembersTab';
 import platformContext from '../../../services/platform-context';
 import './workspace.scss';
-import { Regex } from '../../../constants';
-import PendingInviteMembersTab from './tabs/PendingInviteMembersTab';
 
 enum ETabTypes {
   Edit = 'edit',
@@ -30,12 +30,10 @@ const WorkspaceManagement: FC<IModal> = ({
     setWorkspace: s.setWorkspace,
   }));
 
-  const [wrs, setWrs] = useState(workspace);
   const [isRequesting, setIsRequesting] = useState(false);
   const [wrsMembers, setWrsMembers] = useState([]);
   const [wrsInviteMembers, setWrsInviteMembers] = useState([]);
   const [isFetchingMembers, setIsFetchingMembers] = useState(false);
-  const [error, setError] = useState({ name: '' });
   const [activeTab, setActiveTab] = useState<ETabTypes>(ETabTypes.Edit);
 
   const tabs = [
@@ -80,58 +78,29 @@ const WorkspaceManagement: FC<IModal> = ({
     }
   }, [activeTab]);
 
-  const onChange = (e, reset) => {
-    if (reset) {
-      if (error.name) setError({ name: '' });
-      setWrs(workspace);
-    } else {
-      const { name, value } = e.target;
-      if (error.name) setError({ name: '' });
-      setWrs((w) => ({ ...w, [name]: value }));
-    }
-  };
-
-  const onUpdate = () => {
+  const onUpdate = ({ name, description }) => {
     if (isRequesting) return;
-    const name = wrs.name.trim();
-    const description = wrs.description?.trim();
+    const _name = name.trim();
+    const _description = description?.trim();
 
-    if (!name || name.length < 6) {
-      setError({ name: 'The workspace name must have minimum 6 characters' });
-      return;
+    const _wrs: Partial<IWorkspace> = {};
+    if (workspace.name !== _name) {
+      _wrs.name = _name;
     }
-
-    const isValid = Regex.WorkspaceName.test(name);
-    if (!isValid) {
-      setError({
-        name: 'The workspace name must not contain any spaces or special characters.',
-      });
-      return;
-    }
-
-    if (
-      workspace.name === wrs.name &&
-      workspace.description === wrs.description
-    )
-      return;
-
-    const _wrs: { name?: string; description?: string } = {};
-    if (workspace.name !== name) {
-      _wrs.name = name;
-    }
-    if (workspace.description !== description) {
-      _wrs.description = description;
+    if (workspace.description !== _description) {
+      _wrs.description = _description;
     }
 
     setIsRequesting(true);
     Rest.workspace
       .update(workspace.__ref.id, _wrs)
+      .then((res) => res.data)
       .then(({ error, message }) => {
         if (!error) {
           platformContext.app.notify.success(
             "The workspace's detail has been changed successfully."
           );
-          setWorkspace({ ...workspace, ..._wrs });
+          setWorkspace({ ...workspace, ..._wrs } as IWorkspace);
         } else {
           platformContext.app.notify.alert(message);
         }
@@ -145,21 +114,14 @@ const WorkspaceManagement: FC<IModal> = ({
   };
 
   const renderTab = (tabId: string) => {
-    // console.log(wrs, "wrs....")
     switch (tabId) {
       case ETabTypes.Edit:
         return (
           <EditInfoTab
-            workspace={wrs}
-            error={error}
+            workspace={workspace}
             isRequesting={isRequesting}
-            onChange={onChange}
-            onSubmit={onUpdate}
-            enableReset={
-              workspace.name !== wrs.name ||
-              workspace.description !== wrs.description
-            }
-            // disabled={true} // TODO: only allowed for owner & admin
+            handleSubmit={onUpdate}
+            disabled={false} // TODO: only allowed for owner & admin
           />
         );
       case ETabTypes.Members:

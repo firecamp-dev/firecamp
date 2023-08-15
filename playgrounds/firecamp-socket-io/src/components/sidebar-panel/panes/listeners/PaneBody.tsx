@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { shallow } from 'zustand/shallow';
-import { VscTrash } from '@react-icons/all-files/vsc/VscTrash';
+import { Trash2 } from 'lucide-react';
 import {
   Input,
   Container,
@@ -8,7 +8,7 @@ import {
   Button,
   Column,
   SwitchButtonV2,
-  ScrollBar,
+  ScrollArea,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
 
@@ -45,9 +45,8 @@ const PaneBody = () => {
               </div>
             </Container.Body> */}
 
-            {/* with radix scrollbar */}
             <Container.Body>
-              <ScrollBar fullHeight>
+              <ScrollArea>
                 <>
                   {listeners.map((listener, index) => {
                     return (
@@ -59,7 +58,7 @@ const PaneBody = () => {
                     );
                   })}
                 </>
-              </ScrollBar>
+              </ScrollArea>
             </Container.Body>
 
             {listeners?.length > 1 ? (
@@ -128,28 +127,32 @@ const AddListener = () => {
   };
 
   return (
-    <Input
-      autoFocus={true}
-      type="text"
-      name="status"
-      id="status"
-      placeholder="Listener name"
-      className="!rounded-br-none !rounded-tr-none !p-1"
-      value={listenerName}
-      onChange={_handleInputChange}
-      onKeyDown={_handleKeyDown}
-      wrapperClassName="!mb-0 p-2"
-      postComponents={[
-        <Button
-          key={'listener-add-button'}
-          text="Add"
-          classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
-          onClick={_onAddListener}
-          secondary
-          xs
-        />,
-      ]}
-    />
+    <div className="flex items-center p-2">
+      <Input
+        autoFocus={true}
+        type="text"
+        name="status"
+        id="status"
+        placeholder="Listener name"
+        value={listenerName}
+        onChange={_handleInputChange}
+        onKeyDown={_handleKeyDown}
+        classNames={{
+          root: '!mb-0 w-full !rounded-br-none !rounded-tr-none',
+        }}
+        size="xs"
+      />
+
+      <Button
+        key={'listener-add-button'}
+        text="Add"
+        classNames={{ root: '!rounded-bl-none !rounded-tl-none' }}
+        onClick={_onAddListener}
+        animate={false}
+        secondary
+        xs
+      />
+    </div>
   );
 };
 
@@ -171,7 +174,8 @@ const Listener = ({ listener, isActive }) => {
         {name}
       </div>
 
-      <VscTrash
+      <Trash2
+        size={14}
         className="h-0 ml-1 group-hover:h-auto cursor-pointer"
         onClick={() => {
           deleteListener(listener);

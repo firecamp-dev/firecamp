@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { shallow } from 'zustand/shallow';
 import cx from 'classnames';
-import { IoSendSharp } from '@react-icons/all-files/io5/IoSendSharp';
 import { VscTriangleDown } from '@react-icons/all-files/vsc/VscTriangleDown';
+import { ChevronRight, SendHorizonal } from 'lucide-react';
 import {
   Button,
   Dropdown,
@@ -12,7 +12,7 @@ import {
 } from '@firecamp/ui';
 import EditPlaygroundName from './EditPlaygroundName';
 import { IStore, useStore } from '../../../../../store';
-import { isValid } from '../../../../../services/GraphQLservice';
+import { isValid } from '../../../../../services/graphql.service';
 
 const ReqStatusBar = ({ }) => {
   const {
@@ -112,7 +112,7 @@ const ReqStatusBar = ({ }) => {
         {/* <StatusBar.PrimaryRegion> */}
         <div className="flex items-center whitespace-pre overflow-hidden text-ellipsis text-app-foreground-inactive">
           {/* root */}
-          {/* <VscChevronRight /> */}
+          {/* <ChevronRight /> */}
           ./{playground.request.name}
           <ToolBar className="ml-2 visible">
             {playgroundMeta.isSaved ? <EditPlaygroundName /> : <></>}
@@ -152,7 +152,7 @@ const ReqStatusBar = ({ }) => {
           />
           <Button
             // TODO: add class opacity and square
-            leftIcon={<IoSendSharp />}
+            leftIcon={<SendHorizonal size={12}/>}
             onClick={_execute}
             classNames={{
               root: '!rounded-bl-none !rounded-tl-none',

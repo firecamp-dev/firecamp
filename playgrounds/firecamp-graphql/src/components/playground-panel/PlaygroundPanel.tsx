@@ -1,5 +1,5 @@
-import { VscAdd } from '@react-icons/all-files/vsc/VscAdd';
 import { shallow } from 'zustand/shallow';
+import { Plus } from 'lucide-react';
 import { Button, Container, Tabs } from '@firecamp/ui';
 import Playground from './playground/Playground';
 import { useStore, IStore, useStoreApi } from '../../store';
@@ -54,7 +54,7 @@ const TabsSuffixComp = () => {
   return (
     <Button
       text="add playground"
-      leftIcon={<VscAdd size={12} />}
+      leftIcon={<Plus size={12} />}
       onClick={() => addPlayground()}
       transparent
       xs

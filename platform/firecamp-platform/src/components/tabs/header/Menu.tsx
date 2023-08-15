@@ -1,10 +1,10 @@
 import { FC } from 'react';
+import { MoreHorizontal } from 'lucide-react';
 import { ERequestTypes } from '@firecamp/types';
 import { DropdownMenu } from '@firecamp/ui';
 import { _misc } from '@firecamp/utils';
-import { VscEllipsis } from '@react-icons/all-files/vsc/VscEllipsis';
 import {
-  FcIconGetSquare,
+  FcHttp,
   FcIconGraphQL,
   FcIconSocketIoSquare,
   FcIconWebSocket,
@@ -25,7 +25,7 @@ const Menu: FC = () => {
       name: 'Rest',
       prefix: () => (
         <div className={'dropdown-icon'}>
-          <FcIconGetSquare className="text-rest" size={24} />
+          <FcHttp className="text-rest" size={24} />
         </div>
       ),
       onClick: () => {
@@ -74,7 +74,7 @@ const Menu: FC = () => {
     <DropdownMenu
       handler={() => (
         <span className="w-9 h-full border-r border-tab-border bg-tab-background-activeColor flex items-center justify-center cursor-pointer">
-          <VscEllipsis size={20} strokeWidth={1} />
+          <MoreHorizontal size={20} strokeWidth={1} />
         </span>
       )}
       options={tabMenus}
