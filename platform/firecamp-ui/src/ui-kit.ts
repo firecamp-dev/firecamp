@@ -1,12 +1,10 @@
 export { default as Button } from './components/buttons/Button';
-export { default as SampleButton } from './components/sample-buttons/Button';
 export { default as CopyButton } from './components/buttons/CopyButton';
 
 export { default as Checkbox } from './components/checkbox/Checkbox';
 export { default as CheckboxGroup } from './components/checkbox/CheckboxGroup';
 
 export { default as Dropdown } from './components/dropdown/Dropdown';
-export { default as DropdownV2 } from './components/dropdown/DropdownV2';
 export { default as DropdownMenu } from './components/dropdown/DropdownMenu';
 export { default as ScrollArea } from './components/scroll-area/ScrollArea';
 
