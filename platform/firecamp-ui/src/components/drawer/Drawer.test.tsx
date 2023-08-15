@@ -1,39 +1,39 @@
 import '@testing-library/jest-dom';
 import { screen, render, fireEvent } from '@testing-library/react';
-import Modal from './Modal';
+import Drawer from './Drawer';
 import ResizeObserver from '../../../__mocks__/ResizeObserver';
 
 window.ResizeObserver = ResizeObserver;
 
-describe('Modal: ', () => {
-  it('renders modal component', () => {
+describe('Drawer: ', () => {
+  it('renders drawer component', () => {
     render(
-      <Modal opened={true} onClose={() => {}} title="Modal Title">
-        Modal Container
-      </Modal>
+      <Drawer opened={true} onClose={() => {}} title="Drawer Title">
+        Drawer Container
+      </Drawer>
     );
-    expect(screen.getByText('Modal Container')).toBeInTheDocument();
+    expect(screen.getByText('Drawer Container')).toBeInTheDocument();
   });
 
-  it('should not renders modal component', () => {
+  it('should not renders drawer component', () => {
     render(
-      <Modal opened={false} onClose={() => {}} title="Modal Title">
-        Modal Container
-      </Modal>
+      <Drawer opened={false} onClose={() => {}} title="Drawer Title">
+        Drawer Container
+      </Drawer>
     );
-    expect(screen.queryByText('Modal Container')).toBeFalsy();
+    expect(screen.queryByText('Drawer Container')).toBeFalsy();
   });
 
   it('renders custom styles', () => {
-    render(<Modal opened onClose={() => {}} />);
+    render(<Drawer opened onClose={() => {}} />);
 
     const contentElement = screen.queryByRole('dialog');
     expect(contentElement).toHaveClass('invisible-scrollbar');
   });
 
-  it('calls onClose when modal is closed', () => {
+  it('calls onClose when drawer is closed', () => {
     const mockOnClose = jest.fn();
-    render(<Modal opened onClose={mockOnClose} />);
+    render(<Drawer opened onClose={mockOnClose} />);
 
     const headerElement = screen.queryByRole('dialog').firstElementChild;
     const closeButton = headerElement.querySelector('button');
