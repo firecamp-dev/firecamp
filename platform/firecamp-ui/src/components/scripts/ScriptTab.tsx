@@ -3,7 +3,7 @@ import { ExternalLink } from 'lucide-react';
 import { Container, Editor, Resizable, Row, Column, Notes, TabHeader } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
 import HelpPopUp from './SnippetPopup';
-import ScriptDefs from '!!raw-loader!./interfaces/scripts.d';
+import ScriptDefs from '!!raw-loader!./interfaces/scripts.d.ts';
 
 const ScriptTab: FC<IProps> = ({
   id = '',
