@@ -41,6 +41,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
         disabled || options.length === 0 ? {} : onOpenChange(v)
       }
       disabled={disabled}
+      data-testid="dropdown-menu"
       {...menuProps}
     >
       <Menu.Target>
