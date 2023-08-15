@@ -1,0 +1,63 @@
+.pane-header:hover .action {
+    visibility: visible;
+}
+.pane:not(.expanded.custom-height){
+    height: 29px !important;
+    flex: none;
+    max-height: 29px;
+    transition: max-height 0.15s ease-out;
+    
+}
+.pane.expanded {
+    flex: inherit;
+    min-height: 100px;
+    max-height: 100vh !important;
+    transition: max-height 0.25s ease-in;
+}
+.pane.expanded:not(.custom-height){
+    height: 100% !important;
+    flex: 1;
+}
+.pane>.pane-body{
+    min-height: 160px;
+    height: inherit;
+}
+.rct-tree-root::-webkit-scrollbar{
+    background: transparent;
+    width: 0px;
+    display: block;
+}
+.rct-tree-root::-webkit-scrollbar-thumb{
+    background: var(--focus-level-4) !important;
+}
+.pane-body .rct-tree-root
+{
+    height: calc( 100% - 2px);
+    // overflow: auto;
+    overflow: visible;
+}
+.rct-tree-root::-webkit-scrollbar{
+    width: 0px;
+    height: 8px;
+}
+.pane-body:hover .rct-tree-root::-webkit-scrollbar,.rct-tree-root:hover::-webkit-scrollbar{
+    width: 8px;
+}
+
+/*------pane header css starts ---------*/
+.pane-header{
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+  
+.pane .toolbar {
+    visibility: hidden;
+}
+.expanded.pane:hover .pane-header .toolbar,.expanded.pane:focus .pane-header .toolbar,.expanded.pane:focus-visible .pane-header .toolbar,.expanded .pane-header:hover .toolbar,.expanded .pane-header:focus .toolbar,.expanded .pane-header:focus-visible .toolbar{
+    visibility: visible;
+}
+
+
+  
+  /*------pane header css end ---------*/  

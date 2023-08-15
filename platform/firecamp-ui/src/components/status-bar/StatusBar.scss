@@ -1,0 +1,79 @@
+/*---statusbar old css start ------------*/
+.fc-statusbar {
+	background: var(--statusBar-background-active);
+	color: var(--app-foreground);
+	display: flex;
+	font-size: 12px;
+	line-height: 24px;
+	align-items: center;
+	height: 24px
+}
+.fc-statusbar.large{
+  height: 31px;
+}
+
+.fc-statusbar>* {
+	margin-right: 8px
+}
+
+.fc-statusbar>*:first-child {
+	margin-left: 8px
+}
+
+.fc-statusbar-left {
+	display: flex;
+	margin-right: auto;
+	align-items: center
+}
+
+.fc-statusbar-right {
+	display: flex;
+	margin-left: auto;
+	align-items: center;
+}
+
+.fc-statusbar-left>* {
+	margin-right: 8px;
+}
+
+.fc-statusbar-right>* {
+	margin-left: 8px;
+}
+
+.fc-statusbar-right>*:first-child {
+	margin-left: 8px;
+}
+
+.fc-statusbar .fc-secondary-tab-v2 {
+	padding: 0px;
+}
+
+.fc-statusbar .keywords-list-item {
+	padding-left: 0px !important;
+	padding-right: 0px !important
+}
+
+.fc-statusbar .selected.keywords-list-item {
+	background: transparent !important;
+}
+
+.primary-tab-with-attached-statusbar.active.nav-item {
+	background: var(--app-background-2) !important;
+	border-bottom-color: var(--app-foreground) !important;
+}
+
+.fc-statusbar+.fc-urlbar-wrapper {
+	padding: 8px !important;
+	height: 44px !important;
+}
+
+.fc-statusbar .fc-urlbar-path {
+	margin-top: 0px;
+	overflow: visible;
+	line-height: 22px;
+	height: 20px;
+}
+.fc-urlbar-path>span{
+	line-height: 18px;
+}
+/*---statusbar old css end---------------*/

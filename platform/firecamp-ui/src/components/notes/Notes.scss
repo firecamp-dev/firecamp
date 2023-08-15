@@ -1,0 +1,36 @@
+
+.fc-common-notes.info {
+    border-color: var(--info);
+  }
+  .fc-common-notes.warning{
+    border-color: var(--warning)
+  }
+  
+  .fc-common-notes.success{
+    border-color: var(--success)
+  }
+  
+  .fc-common-notes.danger{
+    border-color: var(--error)
+  }
+  .fc-common-notes.info .icon>span {
+    color: var(--info);
+  }
+  .fc-common-notes.warning .icon>span{
+    color: var(--warning)
+  }
+  
+  .fc-common-notes.success .icon>span{
+    color: var(--success)
+  }
+  
+  .fc-common-notes.danger .icon>span{
+    color: var(--error)
+  }
+  
+  .fc-common-notes .description span {
+    font-weight: 500;
+    color: var(--app-foreground);
+  }
+  
+  

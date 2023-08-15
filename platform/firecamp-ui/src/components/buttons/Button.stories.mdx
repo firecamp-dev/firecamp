@@ -1,0 +1,47 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import Button from './Button';
+
+<Meta title="UI-Kit/Button/Overview" />
+
+## **Button**
+
+- Button component extended with Mantine Button
+
+#### **Component Usage**:
+
+The button component offers convenient shorthand props for specifying different sizes:
+
+| Prop    | Description                                                  |
+| ------- | ------------------------------------------------------------ |
+| compact | used with xs prop to reduces vertical and horizontal spacing |
+| xs      | for small button size                                        |
+| sm      | for default button size                                      |
+| md      | for medium button size                                       |
+| lg      | for large button size                                        |
+
+Button has different placement for icons :
+
+| Prop      | Description                                                                     |
+| --------- | ------------------------------------------------------------------------------- |
+| leftIcon  | to render the icon at the left side of button                                   |
+|           | to render the icon at center but make sure to not provide text or children prop |
+| rightIcon | to render the icon at the right side of button                                  |
+
+Button Color Variants :
+
+| Prop    | Description                                               |
+| ------- | --------------------------------------------------------- |
+| -       | default color for button [dark]                           |
+| primary | primary color for button [primaryColor] provided in theme |
+
+Button versions :
+
+| Prop        | Description                                                   |
+| ----------- | ------------------------------------------------------------- |
+| -           | default button (with filled variant)                          |
+| secondary   | button having same color in both theme (with filled variant)  |
+| danger      | button having red color (with filled variant)                 |
+| disabled    | disabled button with 50% opacity with available color         |
+| transparent | custom transparent variant                                    |
+| outline     | custom transparent variant with border (with outline variant) |
+| ghost       | button (with subtle variant)                                  |

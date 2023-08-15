@@ -1,0 +1,14 @@
+.idea/*
+.nyc_output
+.vscode
+build
+node_modules
+test
+src/**.js
+coverage
+*.log
+!src/declarations.d.ts
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

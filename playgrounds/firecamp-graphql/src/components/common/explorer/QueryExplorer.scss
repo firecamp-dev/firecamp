@@ -1,0 +1,203 @@
+.graphiql-explorer-root {
+	font-family: var(--font-family) !important;
+	font-size: 15px !important;
+	margin-left: 15px !important
+}
+
+.docExplorerWrap {
+	overflow: auto !important
+}
+
+#explorer-uncheck-box {
+	border: 1px solid #ccc !important
+}
+
+.toolbar-button,
+.doc-explorer-title-bar,
+.variable-editor-title,
+.graphiql-explorer-actions {
+	display: none !important
+}
+
+.graphiql-explorer-graphql-arguments input[type=text] {
+	min-width: 60px;
+	padding-left: 4px;
+	background: var(--input-background);
+	color: var(--inputForground)
+}
+
+.graphiql-explorer-field-view {
+	color: var(--appForegroundlight) !important
+}
+
+.graphiql-explorer-node>span>span>svg {
+	fill: var(--appForegroundlight) !important
+}
+
+.graphiql-operation-title-bar {
+	color: var(--appPrimary) !important
+}
+
+.graphiql-operation-title-bar>span {
+	flex: 1
+}
+
+.graphiql-explorer-header-action {
+	display: flex;
+	align-items: center
+}
+
+.graphiql-operation-title-bar>span>input {
+	width: 160px !important;
+	margin-left: 8px
+}
+
+.graphiql-operation-title-bar>span>input:first-child {
+	background: var(--input-background);
+	color: var(--inputForground) !important;
+	pointer-events: none
+}
+
+.graphiql-explorer-node svg#si-ionic-android-checkbox-outline-blank {
+	fill: var(--appForegroundlight) !important
+}
+
+.graphiql-explorer-node svg#si-ionic-android-checkbox-outline {
+	fill: var(--app-primary) !important
+}
+
+.graphiql-operation-title-bar>input {
+	width: 60% !important;
+	color: #1658a8 !important
+}
+
+.tab-pane.active.GraphQL-explorer .historyPaneWrap {
+	max-width: 100% !important
+}
+
+.tab-pane.active.GraphQL-explorer .historyPaneWrap>.history-title-bar {
+	display: none
+}
+
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root {
+	padding: 0px !important
+}
+
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div {
+	border-bottom: 1px solid var(--app-border) !important;
+	background: var(--app-background);
+	color: var(--app-foreground) !important;
+	margin-bottom: 0px !important;
+	padding-bottom: 0px !important
+}
+
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div>div {
+	color: inherit !important
+}
+
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div>div:first-child {
+	padding: 5px 10px;
+	padding-bottom: 5px !important;
+	border-bottom: 1px solid var(--app-border);
+	background: var(--sidebarBackground);
+	font-family: "Lato", sans-serif !important;
+	font-size: 13px !important
+}
+
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div>div.graphiql-explorer-node {
+	padding: 2px 10px
+}
+
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root div>div.graphiql-explorer-node span>input,
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root div>div.graphiql-explorer-node+div span>input {
+	margin-right: 8px;
+	background-color: var(--app-background)
+}
+
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root>div>div.graphiql-explorer-node>span>span,
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root div>div.graphiql-explorer-node span>span,
+.GraphQL-explorer .historyPaneWrap>.history-contents>.graphiql-explorer-root div>div.graphiql-explorer-node+div span>span {
+	color: var(--appForegroundlight) !important;
+	font-family: "Lato", sans-serif !important;
+	font-size: 13px !important;
+	line-height: 24px
+}
+
+.GraphQL-explorer .historyPaneWrap>.history-contents .graphiql-explorer-root>div>div {
+	padding: 0px 10px
+}
+
+.graphql-explorer {}
+
+.graphql-explorer .docExplorerWrap {
+    min-width: 100% !important;
+    width: 100% !important;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-title-bar {
+    display: none;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-contents {
+    margin-right: 0px !important;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-contents .graphiql-explorer-root {
+    padding: 0px !important;
+    margin-left: 0px !important;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-contents .graphiql-explorer-root .graphiql-operation-title-bar {
+    padding: 5px 10px;
+    padding-bottom: 5px !important;
+    font-family: "Lato",sans-serif !important;
+    font-size: 13px !important;
+    border-bottom: 1px solid var(--app-border) !important;
+    background: var(--focus-level-2);
+    display: flex;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-contents .graphiql-explorer-root .graphiql-operation-title-bar>span {
+    flex: 1;
+    background: transparent;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-contents .graphiql-explorer-root .graphiql-operation-title-bar>span>input {
+    width: 100% !important;
+    margin-left: 4px;
+    background: transparent;
+	color: var(--app-primary) !important;
+	border-bottom: 0px !important;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-contents .graphiql-explorer-root 
+ .graphiql-explorer-node {
+    padding: 2px 10px;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-contents .graphiql-explorer-root .graphiql-explorer-node span.graphiql-explorer-field-view {
+    color: var(--app-foreground) !important;
+    opacity: 0.8;
+}
+
+.graphql-explorer .docExplorerWrap .doc-explorer-contents .graphiql-explorer-root>div:last-child {
+    height: 0px !important;
+    min-height: 0px !important;
+}
+
+.graphiql-explorer-graphql-arguments>div>span {
+    display: flex;
+    align-items: center;
+}
+.graphiql-explorer-graphql-arguments>div {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+.graphiql-explorer-graphql-arguments>div>div>div>span {
+    display: flex;
+    align-items: center;
+}
+.graphiql-explorer-root>div {
+    overflow: inherit !important;
+}

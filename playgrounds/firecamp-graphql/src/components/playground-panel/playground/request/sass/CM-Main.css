@@ -1,0 +1,125 @@
+.CodeMirror {
+
+  /*background: #f7f5f5;*/
+  background: #051724;
+  height: 900px;
+  font-size: 14px;
+}
+
+.CodeMirror-gutters {
+  background: #051724;
+  border-right: none;
+}
+
+.CodeMirror-cursor {
+  border-left: 1px solid #4e4a4a;
+  border-right: none;
+  width: 0;
+}
+
+.CodeMirror pre {
+  /*font-size: inherit !important;*/
+  font-size: 14px !important;
+}
+
+.CodeMirror pre.CodeMirror-placeholder {
+  color: #999;
+}
+
+.CodeMirror-foldmarker {
+  text-shadow: none !important
+}
+
+
+/* Comment */
+.cm-comment {
+  color: #999;
+}
+
+/* Punctuation */
+.cm-punctuation {
+  color: #555;
+}
+
+/* Keyword */
+.cm-keyword {
+  color: #9a5925;
+}
+
+/* OperationName, FragmentName */
+.cm-def {
+  color: #D2054E;
+}
+
+/* FieldName */
+.cm-property {
+  /*color: #1F61A0;*/
+  color: #3b9bcd;
+}
+
+/* FieldAlias */
+.cm-qualifier {
+  color: #1C92A9;
+}
+
+/* ArgumentName and ObjectFieldName */
+.cm-attribute {
+  color: #8B2BB9;
+}
+
+/* Number */
+.cm-number {
+  color: #2882F9;
+}
+
+/* String */
+.cm-string {
+  /*color: #D64292;*/
+  color: #4d7622;
+}
+
+/* Boolean */
+.cm-builtin {
+  color: #D47509;
+}
+
+/* EnumValue */
+.cm-string-2 {
+  color: #0B7FC7;
+}
+
+/* Variable */
+.cm-variable {
+  color: #397D13;
+}
+
+/* Directive */
+.cm-meta {
+  color: #B33086;
+}
+
+/* Type */
+.cm-atom {
+  color: #CA9800;
+}
+
+
+
+/* This is just for testing, remove it later */
+.query-editor__line-widget {
+    background: #ccc;
+    width: fit-content;
+    padding: 0 5px;
+    cursor: pointer;
+    margin-left: 2px;
+}
+/*  widget buttons css starts */
+
+.graphql-playground__line-widget {
+  font-size: 11px;
+  background: #ccc;
+  width: fit-content;
+  padding: 0 5px;
+  cursor: pointer;
+  margin-left: 2px;
+}

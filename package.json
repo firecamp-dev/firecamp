@@ -1,0 +1,125 @@
+{
+  "name": "firecamp",
+  "version": "3.2.1",
+  "private": true,
+  "description": "Universal API testing and collaboration platform",
+  "main": "packages/firecamp-desktop-app/dist/services/Main",
+  "homepage": "./dev",
+  "scripts": {
+    "boot": "pnpm install --shamefully-hoist",
+    "bootstrap": "pnpm install --shamefully-hoist",
+    "dev": "run-p build:workspace  webpack:dev",
+    "build": "run-s validate:release build:workspace webpack:prod",
+    "build:workspace": "pnpm --filter=@firecamp/scripts --filter=@firecamp/rest-executor --filter=@firecamp/ws-executor --filter=@firecamp/socket.io-executor build",
+    "webpack:dev": "webpack serve --config ./webpack.dev.js",
+    "webpack:prod": "webpack --config ./webpack.prod.js",
+    "validate:release": "node scripts/release",
+    "release:web": "pnpm build",
+    "lint": "eslint packages/firecamp-rest/src/**/*.{ts|tsx} packages/*.js packages-clients/*.js scripts webpack/*.js",
+    "test": "jest",
+    "prettify": "prettier --write \"platform/firecamp-platform/src/**/*.(ts|tsx)\" \"packages/firecamp-rest/src/**/*.(ts|tsx)\" \"packages/firecamp-graphql/src/**/*.(ts|tsx)\"",
+    "precommit": "lint-staged",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "pnpm prettify",
+      "git add ."
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/firecampdev/firecamp.git"
+  },
+  "keywords": [
+    "api",
+    "rest-api",
+    "firecamp",
+    "api platform"
+  ],
+  "author": "Nishchit <dnishchit@gmail.com>",
+  "license": "",
+  "snap": true,
+  "devDependencies": {
+    "@babel/core": "^7.17.8",
+    "@babel/eslint-parser": "^7.18.9",
+    "@babel/plugin-proposal-export-default-from": "^7.10.4",
+    "@babel/plugin-transform-arrow-functions": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.10.5",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@babel/register": "^7.0.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^9.1.0",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "babel-preset-react-optimize": "^1.0.1",
+    "chai": "^3.5.0",
+    "circular-dependency-plugin": "^5.2.0",
+    "colors": "1.4.0",
+    "compression-webpack-plugin": "^10.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^6.7.1",
+    "css-modules-require-hook": "^4.2.3",
+    "eslint": "^8.29.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^27.2.1",
+    "eslint-plugin-jsx": "^0.1.0",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-react": "^7.20.5",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.1",
+    "ignore-loader": "^0.1.2",
+    "jest-css-modules": "^2.1.0",
+    "jest-css-modules-transform": "^4.4.2",
+    "lint-staged": "^13.1.2",
+    "node-polyfill-webpack-plugin": "^2.0.0",
+    "npm-run-all": "^4.1.5",
+    "postcss-loader": "^7.0.2",
+    "prettier": "^2.6.2",
+    "react-addons-test-utils": "^15.0.2",
+    "rimraf": "^5.0.0",
+    "sass": "^1.51.0",
+    "sass-loader": "^13.2.0",
+    "semver": "^7.3.5",
+    "shelljs": "^0.8.5",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.9",
+    "ts-loader": "^9.2.8",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.2",
+    "webpack": "^5.71.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-server": "^4.9.3",
+    "webpack-hot-middleware": "^2.25.1",
+    "webpack-html-plugin": "^0.1.1",
+    "webpack-httpolyglot-server": "^0.3.0",
+    "webpack-merge": "^5.9.0",
+    "worker-loader": "^3.0.8"
+  },
+  "dependencies": {
+    "@react-icons/all-files": "^4.1.0",
+    "dotenv": "^16.0.1",
+    "dotenv-vault-core": "^0.7.0",
+    "lucide-react": "^0.264.0"
+  },
+  "engines": {
+    "node": ">=16",
+    "pnpm": ">=7"
+  },
+  "bugs": {
+    "url": "https://github.com/firecampdev/firecamp/issues"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css)$": "./node_modules/jest-css-modules",
+      ".+\\.(css|styl|less|sass|scss)$": "./node_modules/jest-css-modules-transform"
+    }
+  }
+}

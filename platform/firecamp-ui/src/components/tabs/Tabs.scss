@@ -1,0 +1,75 @@
+.tab-content>.tab-pane{
+ 
+    height: 100%;
+    width: 100%; 
+}
+  
+.tab-content>.tab-pane {
+    display: none;
+}
+  
+.tab-content>.active{
+    display: block;
+}
+.fc-tab-main .fc-tab{
+	min-width: 100px !important;
+    flex: none !important;
+}
+
+.fc-tab .fc-tab-action{
+    visibility: hidden
+}
+  
+.fc-tab:hover .fc-tab-action,.fc-tab.active .fc-tab-action  {
+    visibility: visible;
+}
+  
+.fc-tabs {
+    min-width: calc(80vw - 270px);
+    overflow-x: auto;
+}
+.fc-tabs .fc-h-screen{
+    max-height: calc(100vh - 25px) !important;
+}
+
+.tabs-with-bottom-border .active.nav-item:before{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    right: 0px;
+    background: var(--appPrimary);
+    height: 1px;
+    content: ' ';
+    width: 100%;
+    border-top: 0px !important;
+}
+ 
+.tab-bar::-webkit-scrollbar{
+    display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar{
+    width: 4px !important;
+    height: 4px !important;
+}
+ 
+.custom-scrollbar:hover::-webkit-scrollbar-thumb,.doc-explorer-contents:hover::-webkit-scrollbar-thumb
+{
+  background-color: var(--focus-level-4) !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb,.doc-explorer-contents::-webkit-scrollbar-thumb
+{
+  background-color: transparent !important;
+}
+
+.custom-scrollbar {
+    margin-bottom: -4px;
+    overflow-x: scroll;
+    overflow-y: hidden;
+}
+@-moz-document url-prefix() {
+    .custom-scrollbar {
+        padding-bottom: 4px;
+    }
+  }

@@ -1,0 +1,60 @@
+.fc-switch 
+    color: var(--appPrimaryForeground)
+    font-size: 10px
+
+    .toggleWrapper
+        overflow: visible
+        padding: 0px
+        display: flex
+        align-items: center
+
+    .toggle
+        background-color: var(--appPrimary)
+        width: 30px
+        height: 14px
+        cursor: pointer
+        display: inline-block
+        position: relative
+        transition: background-color 200ms cubic-bezier(0.445, 0.05, 0.55, 0.95)
+        margin-bottom: 0px
+        border-radius: 0px
+
+    .toggle__handler 
+        top: 0px
+        left: 4px
+        width: 8px
+        height: 8px
+        background-color: var(--appPrimaryForeground)
+        border-radius: 0px
+        display: inline-block
+        position: relative
+        z-index: 1
+        border-radius: 0px
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3)
+        transition: all 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55)
+        transform: none
+        background-size: 24px
+        background-position: center
+        background-repeat: no-repeat
+
+    input:checked + .toggle
+        background: var(--app-background)
+
+    input:checked + .toggle .toggle__handler
+        transform: translate3d(14px, 0, 0) rotate(0)
+
+    input:checked + .toggle span.toggle-text__off
+        visibility: visible
+
+    input:checked + .toggle span.toggle-text__on
+        visibility: hidden
+
+.fc-switch.rounded
+    .toggle
+        border-radius: 20px
+
+    .toggle__handler  
+        border-radius: 20px  
+
+.theme-light .fc-switch input:checked + .toggle 
+    background: var(--appSecondry)

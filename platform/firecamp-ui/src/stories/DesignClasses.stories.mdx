@@ -1,0 +1,167 @@
+import { Meta, ColorPalette, ColorItem } from '@storybook/addon-docs';
+
+<Meta title="Design/Design Css Classes" />
+
+## **CSS Classes:**
+
+- We have defined specific classes listed below:
+
+
+| Classname [general]                                                                                           | Description                                                                              |
+| ------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| .theme-light.primary-green,.theme-dark.primary-green                                                          | to update the app primary color                                                          |
+| .theme-dark .drag-icon                                                                                        | to invert the icon color in dark theme                                                   |
+| .icon                                                                                                         | to add font family `icomoon`                                                             |
+| a,a:hover                                                                                                     | to inherit the text color                                                                |
+| button:disabled,button[disabled]                                                                              | to update opacity for all disabled button using pseudo class selector                    |
+| hr                                                                                                            | to update the app border color in horizontal line                                        |
+| .fullscreen                                                                                                   | to update the height to 100%                                                             |
+| .fc-h-screen                                                                                                  | to update the height to the content with more importance to full screen height           |
+| .fc-h-full                                                                                                    | to update the height to 100% with more importance                                        |
+| .max-h-screen-third                                                                                           | to update the max height upto 1/3 of the screen height                                   |
+| .explorer-wrapper                                                                                             | to update the max height for the wrapper div                                             |
+| \*:focus-visible                                                                                              | to add box shadow & remove outline on every element with focus-visible                   |
+| \*:focus                                                                                                      | to remove outline on every element with focus                                            |
+| ::placeholder                                                                                                 | to update the input placeholder color & set the opacity                                  |
+| input:focus,input:focus-visible textarea:focus,textarea:focus-visible                                         | to remove the box shadow & update the border color in input in textarea                  |
+| .focus-outer:focus                                                                                            | to remove the outline & update the box shadow color (used in Pane & TabContainerHeader ) |
+| .focus-outer-tab:focus                                                                                        | to remove the outline & update the box shadow color                                      |
+| .focus-outer2:focus                                                                                           | to remove the outline & update the box shadow color with 2px                             |
+| .fc-error                                                                                                     | to update the text size, color and add margin bottom                                     |
+| .pt-half                                                                                                      | to update padding top to 2px                                                             |
+| .react-tiny-popover-container                                                                                 | to update the z-index as 9999 with more importance                                       |
+| .z-9999                                                                                                       | to update the z-index as 9999                                                            |
+| .action                                                                                                       | to update the visibility as hidden                                                       |
+| .hide-action:hover .action                                                                                    | to update the visibility as visible on hover action on parent element                    |
+| .popover-boxshadow                                                                                            | to update the box shadow color                                                           |
+| .GET:not(.tab-icon)                                                                                           | to update the text color for sidebar request method                                      |
+| .POST:not(.tab-icon)                                                                                          | to update the text color for sidebar request method                                      |
+| .PUT:not(.tab-icon)                                                                                           | to update the text color for sidebar request method                                      |
+| .DELETE:not(.tab-icon)                                                                                        | to update the text color for sidebar request method                                      |
+| .PATCH:not(.tab-icon)                                                                                         | to update the text color for sidebar request method                                      |
+| .HEAD:not(.tab-icon)                                                                                          | to update the text color for sidebar request method                                      |
+| .OPTIONS:not(.tab-icon)                                                                                       | to update the text color for sidebar request method                                      |
+| .PURGE:not(.tab-icon)                                                                                         | to update the text color for sidebar request method                                      |
+| .LINK:not(.tab-icon)                                                                                          | to update the text color for sidebar request method                                      |
+| .UNLINK:not(.tab-icon)                                                                                        | to update the text color for sidebar request method                                      |
+| .GRAPHQL:not(.tab-icon)                                                                                       | to update the text color for sidebar request method                                      |
+| .WEBSOCKET:not(.tab-icon)                                                                                     | to update the text color for sidebar request method                                      |
+| .SOCKETIO:not(.tab-icon)                                                                                      | to update the text color for sidebar request method                                      |
+| \*.bg-app-background-secondary, \*.bg-app-background-secondary .fc-col, \*.bg-app-background-secondary.fc-col                               | to update the background color with app secondary color                                  |
+| .fc-empty                                                                                                     | to update the styles for empty container                                                 |
+| .fc-empty-center                                                                                              | to update the styles for empty container aligned center                                  |
+| .fc-empty.center-block                                                                                        | to update the display as flex                                                            |
+| .request-tab-wrapper                                                                                          | to update the width                                                                      |
+| .fc-urlbar-path,.fc-tab-panel-info > span,.fc-history-req-list-item-url-text,.collection_leaf-node-name       | to update the text for user selection                                                    |
+| .expandable-right-pane                                                                                        | to add the transform propertyy for right pane                                            |
+| .expandable-right-pane.expanded                                                                               | to update the tranformation of scaleX property                                           |
+| .dropzone-wrapper > .dropzone                                                                                 | to update the display for dropzone                                                       |
+
+| Classname [themes preview]                              | Description                                                                    |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| .fc-theme                                               | to update the styles in preview element of available themes                    |
+| .fc-theme > .themeBG                                    | to update the styles & opacity for each theme parent element                   |
+| .fc-theme > .themeBG.light-green                        | to update the preview background color with light theme & green primary color  |
+| .fc-theme > .themeBG.light-orange                       | to update the preview background color with light theme & orange primary color |
+| .fc-theme > .themeBG.dark-green                         | to update the preview background color with dark theme & green primary color   |
+| .fc-theme > .themeBG.dark-orange                        | to update the preview background color with dark theme & orange primary color  |
+| .fc-theme:hover > .themeBG, .fc-theme.active > .themeBG | to update the preview background opacity to full in case of active/hover theme |
+| .active.fc-theme                                        | to update the preview of theme border color in active theme                    |
+
+| Classname [form]                                                    | Description                                                        |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| .fc-form label                                                      | to set the size of all form label                                  |
+| .fc-form .row>label                                                 | to update the padding right for label in row parent                |
+| .grid.fc-form > div > label                                         | to update the styles for label exisitng within grid parent element |
+| .fc-form-field-group                                                | to update the preview for label text                               |
+| .fc-form-field-group span                                           | to update the preview for span text wrapped in label element       |
+| .fc-form input,.fc-form select                                      | to set the styles for form input & select element                  |
+| .fc-form textarea, .fc-form textarea:hover, .fc-form textarea:focus | to set the styles for form textarea and on focus & hover state     |
+
+| Classname [table]                                                                       | Description                                                                   |
+| --------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| .fc-form.grid                                                                           | to update the display of wrapper div as table                                 |
+| .fc-form.with-padding                                                                   | to add the padding to the table                                               |
+| .fc-form.grid>div                                                                       | to update the first div (header) & set display as table-row                   |
+| .fc-form.grid>div>label,.fc-form.grid>div>div                                           | to update styles for nested divs' of table header & set display as table cell |
+| tr:focus-visible                                                                        | to remove the box shadow on table row focus visible                           |
+| --                                                                                      | --                                                                            |
+| .fc-table-2                                                                             | to update the initial styles for the table version 2                          |
+| .fc-table-2 .td,.fc-table-2 .th                                                         | to update the border & padding in table rows                                  |
+| .fc-table-2 .th                                                                         | to update the background and font weight for table header                     |
+| .primary-table .mtk1,.primary-table th                                                  | to update the color for primary table header                                  |
+| .table-cell .table-action                                                               | to update the visibility of element in table cell as hidden                   |
+| .table-cell:hover .table-action                                                         | to update the visibility of element in table cell as visible on hover         |
+| .table.border-0 .table-row:first-child .table-cell                                      | to remove the border top                                                      |
+| .table.border-0 .table-row:last-child .table-cell                                       | to remove the border bottom                                                   |
+| .table.border-0 .table-row .table-cell:first-child                                      | to remove the border left                                                     |
+| .table.border-0 .table-row .table-cell:last-child                                       | to remove the border right                                                    |
+| --                                                                                      | --                                                                            |
+| .response-headers-table,.response-cookies-table                                         | to update display propterty as table                                          |
+| .response-headers-table>div,.response-cookies-table>div                                 | to update the first div (header) & set display as table-row                   |
+| .response-headers-table>div>div,.response-cookies-table>div>div                         | to update styles for nested divs' of table header & set display as table cell |
+| .response-headers-table>div:first-child,.response-cookies-table>div:first-child         | to update the column background color & heading as bold                       |
+| .response-headers-table>div:first-child>div,.response-cookies-table>div:first-child>div | to update the border top as transparent                                       |
+| .response-headers-table>div>div:first-child,.response-cookies-table>div>div:first-child | to update the border left as transparent                                      |
+
+| Classname [button] Review descriptions                                                                                     | Description                                                                |
+| -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| .btn-collapse                                                                                                              | to update the button cursor as pointer                                     |
+| .collapsed .btn-collapse                                                                                                   | to update the button transformation                                        |
+| .fc-collapsed .fc-btn-collapse                                                                                             | to update the display as block with more importance & reset the transform  |
+| .fc-collapsed .fc-btn-collapse>span                                                                                        | to update the margin for the span element (showing icon) nested            |
+| .fc-btn-collapse                                                                                                           | to update the styles for collapsing button                                 |
+| .fc-btn-collapse.v2                                                                                                        | to update the styles for collapsing button in v2                           |
+| .fc-collapsed                                                                                                              | to update the width to 0px & remove the border                             |
+| .fc-collapsed > .fc-collapse-btn-v3                                                                                        | to update the visibility of button in v3 [duplicate]                       |
+| .fc-collapsed > \*:not(.fc-collapse-btn),.fc-collapsed.fc-collapsed-v3 > \*:not(.fc-collapse-btn-v3)                       | to update the display as none in case button is not collapsing [duplicate] |
+| .fc-tab-panel-header.fc-collapse-btn-v3                                                                                    | to update styles for collapsable button in tab panel header in v3          |
+| .fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-left                                                        | to update position of left sub-component in button within tab header       |
+| .fc-tab-panel-header.fc-collapse-btn-v3 > .fc-tab-panel-header-right                                                       | to update the position & styles of right sub-component within tab header   |
+| .fc-collapsable > .fc-collapse-btn-v3                                                                                      | to update the display property as none for v3                              |
+| .fc-collapsed-v3                                                                                                           | to update the width for collapsed v3 resizable element                     |
+| .fc-col-resizer.fc-collapsed.fc-collapsed-v3.fc-collapsable.left                                                           | to update border left propterty for left sub-component                     |
+| .fc-collapsed > .fc-collapse-btn, .fc-collapsed ~ div .fc-collapse-btn                                                     | to transform the button rotation to 180deg                                 |
+| .fc-collapsed > .fc-collapse-btn.fc-collapse-btn-v2, .fc-collapsed ~ div .fc-collapse-btn.fc-collapse-btn-v2               | to transform the button rotation to 0deg with more importance              |
+| .fc-collapsed > .fc-collapse-btn.fc-collapse-btn-v2 > span, .fc-collapsed ~ div .fc-collapse-btn.fc-collapse-btn-v2 > span | to transform the button rotation to 180deg                                 |
+| .fc-collapse-btn-v2.fc-collapse-btn>span.ic-caret:before                                                                   | to transform the button's caret icon rotation to 180deg                    |
+| .fc-collapse-btn                                                                                                           | to position the button as absolute                                         |
+| .collapsed                                                                                                                 | to update the height of button as fit content                              |
+| .collapsed>.fc-row>.fc-collapsable, .collapsed>.fc-collapsable                                                             | to update the display as none                                              |
+
+| Classname [scrollbar]                                                                          | Description                                                                                      |
+| ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| .doc-explorer-contents::-webkit-scrollbar                                                      | to set the width & height as 0px and add transition for width update                             |
+| .doc-explorer-contents:hover::-webkit-scrollbar                                                | to update the width & height on hover                                                            |
+| .doc-explorer-contents:hover::-webkit-scrollbar:hover                                          | to update the width on hover of scrollbar                                                        |
+| .visible-scrollbar::-webkit-scrollbar-thumb                                                    | to update the background color for scrollbar with more importance                                |
+| ::-webkit-scrollbar-track                                                                      | to update the scrollbar track with transparent background                                        |
+| ::-webkit-scrollbar-thumb                                                                      | to update the background color for scrollbar handle with more importance & set the border radius |
+| .scrollbar-thin ::-webkit-scrollbar                                                            | to update the width & height and display for entire scrollbar                                    |
+| .scrollbar-thin ::-webkit-scrollbar-track                                                      | to update the scrollbar track with transparent background                                        |
+| .scrollbar-thin ::-webkit-scrollbar-thumb                                                      | to update the background color for scrollbar handle with more importance & set the border radius |
+| .invisible-scrollbar::-webkit-scrollbar, .invisible-scrollbar > div::-webkit-scrollbar         | to update the display as none                                                                    |
+| .visible-scrollbar::-webkit-scrollbar, .visible-scrollbar > div::-webkit-scrollbar             | to set the width & height as 0px and display as block                                            |
+| .visible-scrollbar:hover::-webkit-scrollbar, .visible-scrollbar > div:hover::-webkit-scrollbar | to update the width & height on hover                                                            |
+| .visible-scrollbar.thick::-webkit-scrollbar                                                    | to update the scrollbar width as thick                                                           |
+| .visible-scrollbar.thin::-webkit-scrollbar                                                     | to update the scrollbar width as thin                                                            |
+| .visible-scrollbar.thin:hover::-webkit-scrollbar                                               | to update the display of scrollbar on hover                                                      |
+| .visible-scrollbar ::-webkit-scrollbar-track                                                   | to update the scrollbar track with transparent background                                        |
+| .visible-scrollbar ::-webkit-scrollbar-thumb                                                   | to update the background color for scrollbar handle with more importance & set the border radius |
+
+| Classname [editor]                     | Description                                                           |
+| -------------------------------------- | --------------------------------------------------------------------- |
+| .CodeMirror                            | to update height & background color for the code text editor          |
+| .CodeMirror-gutters                    | to update the background color for codemirror-gutters                 |
+| .CodeMirror pre                        | to update the font property for pre element nested in codemirror      |
+| .react-codemirror2 [TCE]               | to update the height as 100%                                          |
+| .CodeMirror-sizer                      | to update the left margin with more importance                        |
+| .CodeMirror-selected                   | to update the background color for selected view with more importance |
+| .cm-property                           | to update the color from design variable with more importance         |
+| .cm-keyword                            | to update the color from design variable with more importance         |
+| .cm-def                                | to update the color from design variable with more importance         |
+| .cm-attribute                          | to update the color from design variable with more importance         |
+| .cm-number                             | to update the color from design variable with more importance         |
+| .cm-string                             | to update the color from design variable with more importance         |
+| .cm-punctuation                        | to update the color from design variable with more importance         |
+| .cm-ws                                 | to update the color from design variable with more importance         |

@@ -1,0 +1,47 @@
+// https://vicvijayakumar.com/blog/eslint-airbnb-style-guide-prettier
+{
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false
+  },
+  "extends": "airbnb",
+  "globals": {
+    "chrome": true
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "shelljs": true
+  },
+  "rules": {
+    "react/forbid-prop-types": 0,
+    "react/prefer-stateless-function": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "jsx-a11y/no-static-element-interactions": 0,
+    "jsx-a11y/label-has-for": 0,
+    "consistent-return": 0,
+    "comma-dangle": 0,
+    "spaced-comment": 0,
+    "global-require": 0,
+    "quotes": [2, "single"],
+    "semi": "off",
+    "no-param-reassign": "off",
+    "no-underscore-dangle": "off",
+    "arrow-parens": "off",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "object-curly-newline": "off",
+    "operator-linebreak": "off",
+    "no-restricted-syntax":"off",
+    "indent":"off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
+    "no-continue":"off",
+    "nonblock-statement-body-position":"off",
+    "curly":"off",
+    "class-methods-use-this": "off",
+    "prefer-promise-reject-errors": "off"
+  },
+  "settings": {
+    "import/core-modules": ["electron"]
+  },
+  "plugins": ["react", "jsx"]
+}

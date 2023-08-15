@@ -1,7 +1,3 @@
-# 🎯 Full Open Source launch planned on 15th Aug 🎯
-
-<br/>
-
 ![FirecampCoverImage](.github/github-cover.png)
 
 [![Firecamp Discord](https://badgen.net/discord/members/8hRaqhK)](https://discord.gg/8hRaqhK)

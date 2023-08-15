@@ -1,0 +1,35 @@
+
+/*----toolbar css starts---------*/
+.toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  .toolbar>* {
+    margin-left: 2px;
+    padding: 1px;
+    cursor: pointer;
+  }
+  
+  .toolbar>*:hover {
+    background: var(--focus-level-3);
+  }
+  
+  .fc-statusbar:hover .toolbar,.fc-statusbar:focus .toolbar,.fc-statusbar:focus-visible .toolbar{
+    visibility: visible;
+  }
+  .fc-statusbar .toolbar.visible{
+    visibility: visible;
+  }
+
+  .fc-statusbar .toolbar.visible .hidden{
+    visibility: hidden;
+  }
+
+  .fc-statusbar:hover .toolbar.visible .hidden,.fc-statusbar:focus .toolbar.visible .hidden,.fc-statusbar:focus-visible .toolbar.visible .hidden{
+    visibility: visible;
+    display: block;
+  }
+  /*----toolbar css ends---------*/

@@ -1,0 +1,328 @@
+.firecamp-doc-explorer .doc-explorer {
+    background: var(--app-background-secondary);
+    height: 100%;
+    width: 500px;
+    position: absolute;
+    right: 0;
+    display: block;
+    border-left: 1px solid var(--app-border);
+    z-index: 30;
+    top: 0px;
+}
+.doc-explorer-contents{
+    overflow-y: auto !important;
+    margin-right: 8px !important;
+}
+.firecamp-doc-explorer .doc-explorer-contents{
+    overflow-y: auto !important;
+}
+.firecamp-doc-explorer .doc-explorer-title-bar,
+.firecamp-doc-explorer .history-title-bar {
+    cursor: default;
+    display: flex !important;
+    height: 32px;
+    line-height: 14px;
+    position: relative;
+    user-select: none;
+    background: var(--focus-1);
+}
+
+.firecamp-doc-explorer .doc-explorer-title,
+.firecamp-doc-explorer .history-title {
+    flex: 1;
+    font-weight: bold;
+    overflow-x: hidden;
+    padding: 8px 0 8px 8px;
+    text-align: left;
+    text-overflow: ellipsis;
+    user-select: text;
+    white-space: nowrap;
+}
+
+.docExplorerHide {
+    border: 0px;
+    background: transparent;
+}
+
+.firecamp-doc-explorer .doc-explorer-back {
+    color: #3B5998;
+    cursor: pointer;
+    margin: -7px 0 -6px -8px;
+    overflow-x: hidden;
+    padding: 17px 12px 16px 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background: 0;
+    border: 0;
+    line-height: 14px;
+}
+
+.doc-explorer-narrow .doc-explorer-back {
+    width: 0;
+}
+
+.firecamp-doc-explorer .doc-explorer-back:before {
+    border-left: 2px solid #3B5998;
+    border-top: 2px solid #3B5998;
+    content: '';
+    display: inline-block;
+    height: 9px;
+    margin: 0 3px -1px 0;
+    position: relative;
+    transform: rotate(-45deg);
+    width: 9px;
+}
+
+.firecamp-doc-explorer .doc-explorer-rhs {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.firecamp-doc-explorer .doc-explorer-contents,
+.firecamp-doc-explorer .history-contents {
+    background-color: var(--app-background-secondary);
+    border-top: 1px solid var(--app-border);
+    bottom: 0;
+    left: 0;
+    overflow-y: auto;
+    padding: 20px 15px;
+    position: absolute;
+    right: 0;
+    top: 31px;
+}
+
+.firecamp-doc-explorer .doc-explorer-contents {
+    min-width: 300px;
+}
+
+.firecamp-doc-explorer .doc-type-description p:first-child ,
+.firecamp-doc-explorer .doc-type-description blockquote:first-child {
+    margin-top: 0;
+}
+
+.firecamp-doc-explorer .doc-explorer-contents a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.firecamp-doc-explorer .doc-explorer-contents a:hover {
+    text-decoration: underline;
+}
+
+.firecamp-doc-explorer .doc-value-description > :first-child {
+    margin-top: 4px;
+}
+
+.firecamp-doc-explorer .doc-value-description > :last-child {
+    margin-bottom: 4px;
+}
+
+.firecamp-doc-explorer .doc-type-description code,
+.firecamp-doc-explorer .doc-type-description pre,
+.firecamp-doc-explorer .doc-category code,
+.firecamp-doc-explorer .doc-category pre {
+    --saf-0: rgba(var(--sk_foreground_low,29,28,29),0.13);
+    font-size: 12px;
+    line-height: 1.50001;
+    font-variant-ligatures: none;
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: normal;
+    -webkit-tab-size: 4;
+    -moz-tab-size: 4;
+    tab-size: 4;
+}
+
+.firecamp-doc-explorer .doc-type-description code,
+.firecamp-doc-explorer .doc-category code {
+    padding: 2px 3px 1px;
+    border: 1px solid var(--saf-0);
+    border-radius: 3px;
+    background-color: rgba(var(--sk_foreground_min,29,28,29),.04);
+    color: #e01e5a;
+    background-color: white;
+}
+
+.firecamp-doc-explorer .doc-category {
+    margin: 20px 0;
+}
+
+.firecamp-doc-explorer .doc-category-title {
+    border-bottom: 1px solid var(--app-border);
+    color: var(--app-foreground);
+    cursor: default;
+    font-size: 14px;
+    font-variant: small-caps;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin: 0 -15px 10px 0;
+    padding: 10px 0;
+    user-select: none;
+}
+
+.firecamp-doc-explorer .doc-category-item {
+    margin: 12px 0;
+    color: var(--app-foreground);
+}
+
+.firecamp-doc-explorer .keyword {
+    color: #B11A04;
+}
+
+.firecamp-doc-explorer .type-name {
+    color: #CA9800;
+}
+
+.firecamp-doc-explorer .field-name {
+    color: #1F61A0;
+}
+
+.firecamp-doc-explorer .field-short-description {
+    color: var(--app-foreground);
+    margin-left: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.firecamp-doc-explorer .enum-value {
+    color: #0B7FC7;
+}
+
+.firecamp-doc-explorer .arg-name {
+    color: #8B2BB9;
+}
+
+.firecamp-doc-explorer .arg {
+    display: block;
+    margin-left: 1em;
+}
+
+.firecamp-doc-explorer .arg:first-child:last-child,
+.firecamp-doc-explorer .arg:first-child:nth-last-child(2),
+.firecamp-doc-explorer .arg:first-child:nth-last-child(2) ~ .arg {
+    display: inherit;
+    margin: inherit;
+}
+
+.firecamp-doc-explorer .arg:first-child:nth-last-child(2):after {
+    content: ', ';
+}
+
+.firecamp-doc-explorer .arg-default-value {
+    color: #43A047;
+}
+
+.firecamp-doc-explorer .doc-deprecation {
+    background: #fffae8;
+    box-shadow: inset 0 0 1px #bfb063;
+    color: var(--app-foreground);
+    line-height: 16px;
+    margin: 8px -8px;
+    max-height: 80px;
+    overflow: hidden;
+    padding: 8px;
+    border-radius: 3px;
+}
+
+.firecamp-doc-explorer .doc-deprecation:before {
+    content: 'Deprecated:';
+    color: #c79b2e;
+    cursor: default;
+    display: block;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    line-height: 1;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    user-select: none;
+}
+
+.firecamp-doc-explorer .doc-deprecation > :first-child {
+    margin-top: 0;
+}
+
+.firecamp-doc-explorer .doc-deprecation > :last-child {
+    margin-bottom: 0;
+}
+
+.firecamp-doc-explorer .show-btn {
+    -webkit-appearance: initial;
+    display: block;
+    border-radius: 3px;
+    border: solid 1px var(--app-border);
+    text-align: center;
+    padding: 8px 12px 10px;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--focus-1);
+    color: var(--app-foreground);
+    cursor: pointer;
+}
+
+.firecamp-doc-explorer .search-box {
+    display: block;
+    font-size: 14px;
+    margin: -15px -15px 12px 0;
+    position: relative;
+}
+
+.firecamp-doc-explorer .search-box-icon {
+    cursor: pointer;
+    display: block;
+    font-size: 24px;
+    position: absolute;
+    top: 16px;
+    left: 10px;
+    transform: rotate(-45deg);
+    user-select: none;
+}
+
+.firecamp-doc-explorer .search-box .search-box-clear {
+    background-color: var(--focus-3);
+    border-radius: 12px;
+    color: var(--app-foreground);
+    cursor: pointer;
+    font-size: 11px;
+    padding: 1px 5px 2px;
+    position: absolute;
+    right: 3px;
+    top: 8px;
+    user-select: none;
+    border: 0;
+}
+
+.firecamp-doc-explorer .search-box .search-box-clear:hover {
+    background-color: var(--app-background);
+}
+
+.firecamp-doc-explorer .search-box > input {
+    border: none;
+    box-sizing: border-box;
+    font-size: 14px;
+    outline: none;
+    padding: 8px 24px 6px 34px;
+    width: calc(100% - 16px);
+    margin-top: 16px;
+    background-color: var(--input-background-focus);
+    color: var(--inputFocus-foreground);
+    border: 1px solid var(--input-border);
+}
+
+.firecamp-doc-explorer .error-container {
+    font-weight: bold;
+    left: 0;
+    letter-spacing: 1px;
+    opacity: 0.5;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    text-transform: uppercase;
+    top: 50%;
+    transform: translate(0, -50%);
+}

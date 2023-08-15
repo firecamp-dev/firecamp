@@ -134,4 +134,21 @@ dist
 # TernJS port file
 .tern-port
 
+.yarn/**
+.yarnrc
+!.yarn/releases
+!.yarn/releases/*
+
+# Declaration files
+*.d.ts
+
+# dotenv environment variables file
+.env
+.env.test
+.env.production
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
+
 oclif.manifest.json

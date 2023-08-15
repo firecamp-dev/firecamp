@@ -1,0 +1,11 @@
+.git/
+.gitignore
+
+src
+node_module
+
+README.md
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

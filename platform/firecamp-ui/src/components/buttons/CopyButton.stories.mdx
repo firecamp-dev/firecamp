@@ -1,0 +1,31 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+import Button from './CopyButton';
+
+<Meta title="UI-Kit/CopyButton/Overview" />
+
+## **Copy Button**
+
+- Copy button can be used with
+  - text
+
+#### **Component Usage**
+
+- We can add text next to the copy button icon
+- We can show/hide text preview `copied` based on click event
+
+Copy Button Preview
+
+| Version   | Preview                                      |
+| --------- | -------------------------------------------- |
+| default   | <Button showText={false}/>                   |
+| with text | <Button text="Copy Button" showText={true}/> |
+
+#### **Examples**:
+
+- <LinkTo
+    kind="ui-kit-copybutton--copy-button-with-text-preview"
+    className="!text-primaryColor"
+  >
+    Copy Button Example
+  </LinkTo>
