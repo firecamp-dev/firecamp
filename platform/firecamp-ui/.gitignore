@@ -1,3 +1,4 @@
 dist
 storybook-static
 .jest-test-results.json
+!src/components/scripts/**/*.d.ts
