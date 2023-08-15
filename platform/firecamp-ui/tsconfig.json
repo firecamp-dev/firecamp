@@ -21,7 +21,7 @@
     "jsx": "react-jsx",
     "noImplicitAny": true,
     "module": "es6",
-    "types": ["src/components/scripts/interfaces/raw-loader.d.ts"],
+    "types": ["src/components/scripts/interfaces/raw-loader.d.ts", "jest"],
   },
   "include": [
     "src",
