@@ -77,7 +77,7 @@ export interface IWorkspaceStore {
   deleteRequest: (rId: TId) => void;
 
   // change orders
-  changeWorkspaceMetaOrders: (orders: TId[]) => Promise<any>;
+  changeWorkspaceMetaOrders: (itemId: TId, position: number) => Promise<any>;
   changeCollectionChildrenPosition: (
     colId: TId,
     itemId: TId,
@@ -113,6 +113,7 @@ export const useExplorerStore = create<IWorkspaceStore>(
       const state = get();
       const { collections, folders, requests } = state.explorer;
       const { workspace } = useWorkspaceStore.getState();
+      console.log(workspace.__meta.cOrders, 'workspace.__meta.cOrders');
       instance.init(collections, folders, requests, workspace.__meta.cOrders);
       set((s) => {
         return { explorer: { ...s.explorer, tdpInstance: instance } };
@@ -575,16 +576,17 @@ export const useExplorerStore = create<IWorkspaceStore>(
     },
 
     /** change collection orders in workspace */
-    changeWorkspaceMetaOrders: async (orders) => {
+    changeWorkspaceMetaOrders: async (itemId, position) => {
       const state = get();
       const { workspace, setWorkspace } = useWorkspaceStore.getState();
       state.toggleProgressBar(true);
       const res = await Rest.workspace
-        .changeMetaOrders(workspace.__ref.id, orders)
-        .then(() => {
+        .changeMetaOrders(workspace.__ref.id, itemId, position)
+        .then((r) => r.data)
+        .then(({ cOrders }) => {
           setWorkspace({
             ...workspace,
-            __meta: { ...workspace.__meta, cOrders: orders },
+            __meta: { ...workspace.__meta, cOrders },
           } as IWorkspace);
         })
         .catch((e) => {
@@ -611,18 +613,19 @@ export const useExplorerStore = create<IWorkspaceStore>(
       state.toggleProgressBar(true);
       const res = await Rest.collection
         .changeChildrenPosition(colId, itemId, position, itemType)
-        .then(() => {
-          // set((s) => {
-          //   const { collections } = s.explorer;
-          //   collections.map((c) => {
-          //     if (c.__ref.id == colId) {
-          //       if (Array.isArray(fOrders)) c.__meta.fOrders = fOrders;
-          //       if (Array.isArray(rOrders)) c.__meta.rOrders = rOrders;
-          //     }
-          //     return c;
-          //   });
-          //   return { explorer: { ...s.explorer, collections } };
-          // });
+        .then((r) => r.data)
+        .then(({ fOrders, rOrders }) => {
+          set((s) => {
+            const { collections } = s.explorer;
+            collections.map((c) => {
+              if (c.__ref.id == colId) {
+                if (Array.isArray(fOrders)) c.__meta.fOrders = fOrders;
+                if (Array.isArray(rOrders)) c.__meta.rOrders = rOrders;
+              }
+              return c;
+            });
+            return { explorer: { ...s.explorer, collections } };
+          });
         })
         .catch((e) => {
           if (e.message == 'Network Error') {
@@ -638,23 +641,24 @@ export const useExplorerStore = create<IWorkspaceStore>(
     },
 
     /** change folder and requests orders in folder */
-    changeFolderChildrenPosition: async (colId, itemId, position, itemType) => {
+    changeFolderChildrenPosition: async (folId, itemId, position, itemType) => {
       const state = get();
       state.toggleProgressBar(true);
       const res = await Rest.folder
-        .changeChildrenPosition(colId, itemId, position, itemType)
-        .then(() => {
-          // set((s) => {
-          //   const { folders } = s.explorer;
-          //   folders.map((f) => {
-          //     if (f.__ref.id == id) {
-          //       if (Array.isArray(fOrders)) f.__meta.fOrders = fOrders;
-          //       if (Array.isArray(rOrders)) f.__meta.rOrders = rOrders;
-          //     }
-          //     return f;
-          //   });
-          //   return { explorer: { ...s.explorer, folders } };
-          // });
+        .changeChildrenPosition(folId, itemId, position, itemType)
+        .then((r) => r.data)
+        .then(({ fOrders, rOrders }) => {
+          set((s) => {
+            const { folders } = s.explorer;
+            folders.map((f) => {
+              if (f.__ref.id == folId) {
+                if (Array.isArray(fOrders)) f.__meta.fOrders = fOrders;
+                if (Array.isArray(rOrders)) f.__meta.rOrders = rOrders;
+              }
+              return f;
+            });
+            return { explorer: { ...s.explorer, folders } };
+          });
         })
         .catch((e) => {
           if (e.message == 'Network Error') {

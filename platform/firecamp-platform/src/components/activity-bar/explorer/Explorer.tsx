@@ -46,14 +46,13 @@ const Explorer: FC<any> = () => {
     updateFolder,
     // moveRequest,
     // moveFolder,
+    changeWorkspaceMetaOrders,
     changeCollectionChildrenPosition,
     changeFolderChildrenPosition,
     // deleteCollection,
     // deleteFolder,
     // deleteRequest,
   } = useExplorerFacade();
-
-  const { isProgressing, collections, folders, requests } = explorer;
 
   const {
     // explorer: { collections, folders, requests },
@@ -62,6 +61,8 @@ const Explorer: FC<any> = () => {
   } = useExplorerStore.getState();
   const { open: openTab } = useTabStore.getState();
   const { openImportTab } = useWorkspaceStore.getState();
+
+  const { isProgressing, collections, folders, requests } = explorer;
 
   // console.log(explorer, "explorer")
 
@@ -165,16 +166,14 @@ const Explorer: FC<any> = () => {
 
     const { childIndex, targetType, depth, parentItem } = target;
     const index = workspace.__meta.cOrders.indexOf(item.__ref.id);
-    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index, [index - 1, index, index + 1].includes(childIndex));
-
+    console.log(workspace.__meta.cOrders, item.__ref, target, childIndex, index);
+    // if (index == dropIndex) return false;
     /** collection can only reorder at depth 0 */
-    if (typeof childIndex != 'number') return false;
-    else if ([index - 1, index, index + 1].includes(childIndex)) return false;
-    else if (targetType == 'between-items' && depth == 0 && parentItem == 'root') return true;
+    if (targetType == 'between-items' && depth == 0 && parentItem == 'root') return true;
     else return false;
   }, [workspace.__meta.cOrders, collections]);
 
-  const shouldIDropTheFolder = useCallback((target: any): boolean => {
+  const shouldIDropTheFolder = useCallback((item: any, target: any): boolean => {
     const { targetType, depth, parentItem } = target;
     /** folder can be dropped on collection */
     if (targetType == 'item' && depth == 0 && parentItem == 'root') return true;
@@ -182,7 +181,7 @@ const Explorer: FC<any> = () => {
     const parentCollection = collections.find((i) => i.__ref.id == parentItem);
     const parentFolder = folders.find((i) => i.__ref.id == parentItem);
 
-    /**folders can be drop on collection and folder or reorder within the same depth/level */
+    /**folders can be drop on collection/folder or reorder within the same depth/level */
     if (parentCollection || parentFolder) return true;
     return false;
   }, [collections, folders]);
@@ -211,12 +210,81 @@ const Explorer: FC<any> = () => {
       // console.clear();
 
       if (isItemCollection) return shouldIDropTheCollection(itemPayload, target);
-      if (isItemFolder) return shouldIDropTheFolder(target);
+      if (isItemFolder) return shouldIDropTheFolder(itemPayload, target);
       if (isItemRequest) return shouldIDropTheRequest(target);
       return false;
     },
     [collections, folders]
   );
+
+  const reorderCollections = useCallback((childIndex: number, collection: any) => {
+    const index = workspace.__meta.cOrders.indexOf(collection.__ref.id);
+    if (index < 0) return;
+    // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
+    const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
+    if (dropIndex == index) return;
+    changeWorkspaceMetaOrders(collection.__ref.id, dropIndex)
+  }, [workspace.__meta.cOrders]);
+
+  const reorderWithinCollection = useCallback((childIndex: number, item: any) => {
+    const itemType = item.__ref.isRequest ? 'request' : 'folder'
+    const collection = collections.find(c => c.__ref.id == item.__ref.collectionId);
+    if (!collection) return;
+    const index = collection.__meta[itemType == 'request' ? 'rOrders' : 'fOrders'].indexOf(item.__ref.id);
+    if (index < 0) return;
+
+    // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
+    const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
+    if (dropIndex == index) return;
+    changeCollectionChildrenPosition(
+      item.__ref.collectionId,
+      item.__ref.id,
+      dropIndex,
+      itemType
+    );
+  }, [collections]);
+
+  const reorderWithinFolder = useCallback((childIndex: number, item: any) => {
+    const itemType = item.__ref.isRequest ? 'request' : 'folder'
+    const folder = folders.find(c => c.__ref.id == item.__ref.folderId);
+    if (!folder) return;
+    const index = folder.__meta[itemType == 'request' ? 'rOrders' : 'fOrders'].indexOf(item.__ref.id);
+    if (index < 0) return;
+
+    // if item moving-down then minus one index because itself will removed from current index and subsequent items will go upward
+    const dropIndex = childIndex > index ? childIndex - 1 : childIndex;
+    if (dropIndex == index) return;
+
+    changeFolderChildrenPosition(
+      item.__ref.folderId,
+      item.__ref.id,
+      dropIndex,
+      itemType
+    );
+  }, [folders]);
+
+  const itemDropOnCollectionOrFolder = useCallback((targetItem: string, itemType: 'request' | 'folder', item: any) => {
+    console.log('itemDropOnCollectionOrFolder');
+    if (!targetItem) return;
+    const moveTo: { collectionId: string; folderId?: string } = {
+      collectionId: '',
+    };
+
+    const _targetCol = collections.find((i) => i.__ref.id == targetItem);
+    if (_targetCol) {
+      console.log('item drop on collection');
+      moveTo.collectionId = _targetCol.__ref.id;
+    }
+    else {
+      console.log('item drop on folder');
+      const _targetFolder = folders.find((i) => i.__ref.id == targetItem);
+      if (_targetFolder) {
+        moveTo.collectionId = _targetFolder.__ref.collectionId;
+        moveTo.folderId = _targetFolder.__ref.id;
+      }
+    }
+    _moveItem(item, moveTo, itemType);
+  }, [collections, folders]);
 
   const _moveItem = (item, moveTo, itemType: 'request' | 'folder') => {
     if (itemType == 'folder') {
@@ -229,23 +297,32 @@ const Explorer: FC<any> = () => {
     }
   };
 
+
   const onDrop = (items, target) => {
     console.log(items, target, 'onDrop');
     const item = items[0].data;
     const { childIndex = 0, depth, parentItem, targetItem } = target;
 
-    if (item.__ref.isCollection) return;
+    const isItemCollection = item.__ref.isCollection;
+    // const isItemFolder = item.__ref.isFolder;
+    const isItemRequest = item.__ref.isRequest;
 
     /**
      * item is reordering within same parent
      * item is being reordered in collection or in folder or moving across folder but within collection
-     *
-     * 1. no target means item is not being dropped onto folder
+     * 1. collection is being reordered at root
+     * 2. no target means item is not being dropped onto folder
      *    1.1 either it is being reordering within collection
      *    1.2 either it is being reordering within folder
      *    1.3 either it is being moved to folder but dropped in-between items
      */
     if (!targetItem) {
+      if (isItemCollection) {
+        // console.log("The collection reorders", childIndex, depth, parentItem);
+        reorderCollections(childIndex, item);
+        return;
+      }
+      // else if
       const moveToParent =
         collections.find((i) => i.__ref.id == parentItem) ||
         folders.find((i) => i.__ref.id == parentItem);
@@ -253,55 +330,30 @@ const Explorer: FC<any> = () => {
       if (isParentFolder) {
         if (item.__ref.folderId == moveToParent.__ref.id) {
           // reorder within folders
-          console.log('reorder within folders'); //, explorerTreeRef);
-          changeFolderChildrenPosition(
-            moveToParent.__ref.id,
-            item.__ref.id,
-            childIndex,
-            item.__ref.isRequest ? 'request' : 'folder'
-          );
+          console.log('reorder within folders');
+          reorderWithinFolder(childIndex, item);
         } else {
           // TODO: move item to folder within collection
-          console.log('move item to folder within collection', explorerTreeRef);
-          // _moveItem()
+          console.log('move item to folder within collection', childIndex, explorerTreeRef);
+          itemDropOnCollectionOrFolder(moveToParent.__ref.id, isItemRequest ? 'request' : 'folder', item);
         }
       } else {
         if (item.__ref.folderId) {
           // TODO: moving item to collection root
-          console.log('move item to collection root', explorerTreeRef);
-          // _moveItem()
+          console.log('move item to collection root', childIndex, explorerTreeRef);
+          itemDropOnCollectionOrFolder(item.__ref.collectionId, isItemRequest ? 'request' : 'folder', item);
         } else {
           // reorder within collection
           console.log('reorder within collection');
-          changeCollectionChildrenPosition(
-            parentItem,
-            item.__ref.id,
-            childIndex,
-            item.__ref.isRequest ? 'request' : 'folder'
-          );
+          reorderWithinCollection(childIndex, item);
         }
       }
     } else {
       /**
-       * if both exists then item is moving to collection/folder
-       * Item is being dropped on item, here it'll be dropped on folder or collection
+       * if targetItem exists then item is being moved/dropped to collection/folder
+       * item is being dropped on item, here it'll be dropped on folder or collection
        */
-
-      const moveTo: { collectionId: string; folderId?: string } = {
-        collectionId: '',
-      };
-      const _targetCollection = collections.find(
-        (i) => i.__ref.id == targetItem
-      );
-      if (_targetCollection) moveTo.collectionId = _targetCollection.__ref.id;
-      else {
-        const _targetFolder = folders.find((i) => i.__ref.id == targetItem);
-        if (_targetFolder) {
-          moveTo.collectionId = _targetFolder.__ref.collectionId;
-          moveTo.folderId = _targetFolder.__ref.id;
-        }
-      }
-      _moveItem(item, moveTo, item.__ref.isFolder ? 'folder' : 'request');
+      itemDropOnCollectionOrFolder(targetItem, isItemRequest ? 'request' : 'folder', item);
     }
   };
 
