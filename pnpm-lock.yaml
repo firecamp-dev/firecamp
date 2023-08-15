@@ -929,8 +929,8 @@ importers:
         specifier: ^6.0.17
         version: 6.0.17(@mantine/core@6.0.14)(@mantine/hooks@6.0.14)(react-dom@17.0.2)(react@17.0.2)
       '@monaco-editor/react':
-        specifier: 4.4.5
-        version: 4.4.5(monaco-editor@0.34.1)(react-dom@17.0.2)(react@17.0.2)
+        specifier: 4.5.1
+        version: 4.5.1(monaco-editor@0.34.1)(react-dom@17.0.2)(react@17.0.2)
       '@radix-ui/react-dropdown-menu':
         specifier: ^2.0.1
         version: 2.0.1(@types/react@17.0.53)(react-dom@17.0.2)(react@17.0.2)
@@ -4137,7 +4137,7 @@ packages:
       '@firecamp/url': 0.0.20
       '@firecamp/utils': 0.0.15
       nanoid: 3.3.4
-      parse-curl: github.com/firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0
+      parse-curl: git@github.com+firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0
     dev: false
 
   /@firecamp/types@0.1.14:
@@ -4557,7 +4557,7 @@ packages:
       jest-changed-files: 29.2.0
       jest-config: 29.3.1(@types/node@16.18.40)(ts-node@10.9.1)
       jest-haste-map: 29.3.1
-      jest-message-util: 29.5.0
+      jest-message-util: 29.6.2
       jest-regex-util: 29.2.0
       jest-resolve: 29.3.1
       jest-resolve-dependencies: 29.3.1
@@ -4726,7 +4726,7 @@ packages:
       '@jest/types': 29.6.1
       '@sinonjs/fake-timers': 9.1.2
       '@types/node': 16.18.40
-      jest-message-util: 29.5.0
+      jest-message-util: 29.6.2
       jest-mock: 29.3.1
       jest-util: 29.6.2
     dev: true
@@ -5135,7 +5135,7 @@ packages:
     resolution: {integrity: sha512-bPYfw8V65v17m2Od1cv44FH+SiKW7w2Xu7trhcdTLUmSv85rfKsP+qXSjO4KGJr4dtPSzl/gvslZBXctf1qGEA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dependencies:
-      '@jest/schemas': 29.4.3
+      '@jest/schemas': 29.6.0
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
       '@types/node': 16.18.40
@@ -5347,8 +5347,8 @@ packages:
     resolution: {integrity: sha512-H1rQc1ZOHANWBvPcW+JpGwr+juXSxM8Q8YCkm3GhZd8REu1fHR3z99CErO1p9pkcfcxZnMdIZdIsXkOHY0NilA==}
     dev: true
 
-  /@monaco-editor/loader@1.3.2(monaco-editor@0.34.1):
-    resolution: {integrity: sha512-BTDbpHl3e47r3AAtpfVFTlAi7WXv4UQ/xZmz8atKl4q7epQV5e7+JbigFDViWF71VBi4IIBdcWP57Hj+OWuc9g==}
+  /@monaco-editor/loader@1.3.3(monaco-editor@0.34.1):
+    resolution: {integrity: sha512-6KKF4CTzcJiS8BJwtxtfyYt9shBiEv32ateQ9T4UVogwn4HM/uPo9iJd2Dmbkpz8CM6Y0PDUpjnZzCwC+eYo2Q==}
     peerDependencies:
       monaco-editor: '>= 0.21.0 < 1'
     dependencies:
@@ -5356,16 +5356,15 @@ packages:
       state-local: 1.0.7
     dev: false
 
-  /@monaco-editor/react@4.4.5(monaco-editor@0.34.1)(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-IImtzU7sRc66OOaQVCG+5PFHkSWnnhrUWGBuH6zNmH2h0YgmAhcjHZQc/6MY9JWEbUtVF1WPBMJ9u1XuFbRrVA==}
+  /@monaco-editor/react@4.5.1(monaco-editor@0.34.1)(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-NNDFdP+2HojtNhCkRfE6/D6ro6pBNihaOzMbGK84lNWzRu+CfBjwzGt4jmnqimLuqp5yE5viHS2vi+QOAnD5FQ==}
     peerDependencies:
       monaco-editor: '>= 0.25.0 < 1'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      '@monaco-editor/loader': 1.3.2(monaco-editor@0.34.1)
+      '@monaco-editor/loader': 1.3.3(monaco-editor@0.34.1)
       monaco-editor: 0.34.1
-      prop-types: 15.8.1
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
     dev: false
@@ -13906,6 +13905,7 @@ packages:
 
   /encoding@0.1.13:
     resolution: {integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==}
+    requiresBuild: true
     dependencies:
       iconv-lite: 0.6.3
     dev: true
@@ -29843,8 +29843,8 @@ packages:
     resolution: {integrity: sha512-V50KMwwzqJV0NpZIZFwfOD5/lyny3WlSzRiXgA0G7VUnRlqttta1L6UQIHzd6EuBY/cHGfwTIck7w1yH6Q5zUw==}
     dev: true
 
-  github.com/firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0:
-    resolution: {tarball: https://codeload.github.com/firecamp-forks/parse-curl.js/tar.gz/366e62aebfb88b5974b223c1f4c5b456cefab0a0}
+  git@github.com+firecamp-forks/parse-curl.js/366e62aebfb88b5974b223c1f4c5b456cefab0a0:
+    resolution: {commit: 366e62aebfb88b5974b223c1f4c5b456cefab0a0, repo: git@github.com:firecamp-forks/parse-curl.js.git, type: git}
     name: parse-curl
     version: 0.2.6
     dependencies:
