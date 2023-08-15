@@ -1,24 +1,15 @@
 import { FC, useState } from 'react';
 import { ExternalLink } from 'lucide-react';
-import {
-  Container,
-  Editor,
-  Resizable,
-  Row,
-  Column,
-  Notes,
-  TabHeader,
-} from '@firecamp/ui';
+import { Container, Editor, Resizable, Row, Column, Notes, TabHeader } from '@firecamp/ui';
 import { EEditorLanguage } from '@firecamp/types';
-
-import ScriptDefs from '!!raw-loader!./interfaces/Scripts.d';
 import HelpPopUp from './SnippetPopup';
+import ScriptDefs from '!!raw-loader!./interfaces/Scripts.d';
 
 const ScriptTab: FC<IProps> = ({
   id = '',
   script,
   snippets,
-  onChangeScript = (value) => {},
+  onChangeScript = (value) => { },
 }) => {
   const [editorDOM, setEditorDOM] = useState(null);
   const _onAddScriptFromSnippet = async (script: string[]) => {
