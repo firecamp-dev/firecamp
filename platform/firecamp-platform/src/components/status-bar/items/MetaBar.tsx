@@ -43,7 +43,7 @@ const MetaBar: FC<any> = () => {
       name: 'GitHub',
       title: 'GitHub',
       onClick: () =>
-        window.open('https://github.com/firecampdev/firecamp', '_blank'),
+        window.open('https://github.com/firecamp-dev/firecamp', '_blank'),
       prefix: () => (
         <Github
           size={16}

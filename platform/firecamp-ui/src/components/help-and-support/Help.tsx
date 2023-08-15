@@ -20,7 +20,7 @@ const helpDesks = {
   [HELPDESK_TYPES.GITHUB]: {
     id: HELPDESK_TYPES.GITHUB,
     name: 'GitHub',
-    link: 'https://github.com/firecampdev/firecamp/issues/new',
+    link: 'https://github.com/firecamp-dev/firecamp/issues/new',
     image: <Github size={24} strokeWidth={1.5} />
   },
   [HELPDESK_TYPES.JOIN_DISCORD]: {
@@ -54,7 +54,7 @@ const Help: FC<IHelp> = ({ docLink = '', client = 'http' }) => {
             className="text-app-foreground-inactive"
             href={
               client
-                ? `https://github.com/firecampdev/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${client}]%20Title%20or%20Feature%20request`
+                ? `https://github.com/firecamp-dev/firecamp/issues/new?assignees=&labels=&template=bug_report.md&title=[${client}]%20Title%20or%20Feature%20request`
                 : helpDesks[type]
                   ? helpDesks[type].link
                   : ''

@@ -65,7 +65,7 @@ EXAMPLES
   hello friend from oclif! (./src/commands/hello/index.ts)
 ```
 
-_See code: [dist/commands/hello/index.ts](https://github.com/FirecampDev/firecamp-cli/blob/v0.0.0/dist/commands/hello/index.ts)_
+_See code: [dist/commands/hello/index.ts](https://github.com/firecamp-dev/firecamp-cli/blob/v0.0.0/dist/commands/hello/index.ts)_
 
 ## `firecamp hello world`
 

@@ -60,7 +60,7 @@ Monitor each emitter’s and listener’s events visually over a bi-directional 
 [Learn more](https://firecamp.io/docs/socket-io/introduction)
 
 ### :five: What's next? 
-please [let us know](https://github.com/FirecampDev/Firecamp/issues/new?assignees=&labels=&projects=&template=general_report.md&title=)
+please [let us know](https://github.com/firecamp-dev/Firecamp/issues/new?assignees=&labels=&projects=&template=general_report.md&title=)
 
 ## Community and Support
 
@@ -71,7 +71,7 @@ Here are helpful links for Firecamp
 - [Discord community](https://discord.gg/8hRaqhK)
 - [Twitter updates](https://twitter.com/FirecampDev)
 
-If you encounter any bugs, issues, or have suggestions, please open an issue on the [Firecamp GitHub repository](https://github.com/FirecampDev/Firecamp). We appreciate your contributions to make Firecamp even better.
+If you encounter any bugs, issues, or have suggestions, please open an issue on the [Firecamp GitHub repository](https://github.com/firecamp-dev/Firecamp). We appreciate your contributions to make Firecamp even better.
 
 
 ## Roadmap 

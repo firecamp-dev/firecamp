@@ -7,7 +7,7 @@
     "firecamp": "./bin/run.js"
   },
   "type": "module",
-  "homepage": "https://github.com/FirecampDev/Firecamp",
+  "homepage": "https://github.com/firecamp-dev/Firecamp",
   "license": "",
   "exports": "./dist/index.js",
   "repository": "FirecampDev/Firecamp",
@@ -79,7 +79,7 @@
   "engines": {
     "node": ">=16"
   },
-  "bugs": "https://github.com/FirecampDev/Firecamp/issues",
+  "bugs": "https://github.com/firecamp-dev/Firecamp/issues",
   "keywords": [
     "oclif"
   ],

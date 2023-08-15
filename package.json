@@ -2,7 +2,7 @@
   "name": "firecamp",
   "version": "3.2.1",
   "private": true,
-  "description": "Universal API testing and collaboration platform",
+  "description": "DX-first API devtool",
   "main": "packages/firecamp-desktop-app/dist/services/Main",
   "homepage": "./dev",
   "scripts": {
@@ -29,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/firecampdev/firecamp.git"
+    "url": "git+https://github.com/firecamp-dev/firecamp.git"
   },
   "keywords": [
     "api",
@@ -114,7 +114,7 @@
     "pnpm": ">=7"
   },
   "bugs": {
-    "url": "https://github.com/firecampdev/firecamp/issues"
+    "url": "https://github.com/firecamp-dev/firecamp/issues"
   },
   "jest": {
     "moduleNameMapper": {
