@@ -73,13 +73,13 @@ const ConfigTab = () => {
           </div>
           <CheckboxInGrid
             className="fc-input-wrapper"
-            isChecked={config[RejectUnauthorized]}
+            checked={config[RejectUnauthorized]}
             label="Reject Unauthorized"
             onToggleCheck={() => _onToggleCheckBox(RejectUnauthorized)}
           />
           <CheckboxInGrid
             className="fc-input-wrapper"
-            isChecked={
+            checked={
               config[FollowLocation] === undefined
                 ? true
                 : config[FollowLocation]

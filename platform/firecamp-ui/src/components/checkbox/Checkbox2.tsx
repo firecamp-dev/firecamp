@@ -23,47 +23,60 @@ export interface ICheckbox extends CheckboxProps {
   showLabel?: boolean;
 }
 
-const useStyles = createStyles((theme, { primary }: Partial<ICheckbox>) => ({
-  disabled: {
-    opacity: '50% !important',
-    '&:checked': {
-      borderColor: primary
-        ? theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 8 : 6]
-        : 'initial',
-    },
-    borderColor: 'initial',
-  },
-  input: {
-    borderRadius: '0px',
-    borderColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.gray[4]
-        : theme.colors.dark[5],
-    backgroundColor: 'transparent !important',
-  },
-  icon: {
-    ...(primary
-      ? {
-          color: `${
-            theme.colors[theme.primaryColor][
+const useStyles = createStyles(
+  (theme, { primary, labelPosition }: Partial<ICheckbox>) => ({
+    disabled: {
+      opacity: '50% !important',
+      '&:checked': {
+        borderColor: primary
+          ? theme.colors[theme.primaryColor][
               theme.colorScheme === 'dark' ? 8 : 6
             ]
-          } !important`,
-        }
-      : {
-          color: `${
-            theme.colorScheme === 'dark'
-              ? theme.colors.gray[4]
-              : theme.colors.dark[5]
-          } !important`,
-        }),
-  },
-  label: {
-    color: `${
-      theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.dark[5]
-    }  !important`,
-  },
-}));
+          : 'initial',
+      },
+      borderColor: 'initial !important',
+    },
+    input: {
+      borderRadius: '0px',
+      borderColor:
+        theme.colorScheme === 'dark'
+          ? theme.colors.gray[4]
+          : theme.colors.dark[5],
+      backgroundColor: 'transparent !important',
+    },
+    icon: {
+      ...(primary
+        ? {
+            color: `${
+              theme.colors[theme.primaryColor][
+                theme.colorScheme === 'dark' ? 8 : 6
+              ]
+            } !important`,
+          }
+        : {
+            color: `${
+              theme.colorScheme === 'dark'
+                ? theme.colors.gray[4]
+                : theme.colors.dark[5]
+            } !important`,
+          }),
+    },
+    label: {
+      ...(labelPosition === 'left'
+        ? {
+            paddingRight: '0.5rem',
+          }
+        : {
+            paddingLeft: '0.5rem',
+          }),
+      color: `${
+        theme.colorScheme === 'dark'
+          ? theme.colors.gray[4]
+          : theme.colors.dark[5]
+      }  !important`,
+    },
+  })
+);
 
 const Checkbox: FC<ICheckbox> = ({
   color,
@@ -74,9 +87,10 @@ const Checkbox: FC<ICheckbox> = ({
   disabled = false,
   onToggleCheck = (l, v) => {},
   showLabel = true,
+  labelPosition,
   ...props
 }) => {
-  const { classes, cx, theme } = useStyles({ primary: primary });
+  const { classes, cx, theme } = useStyles({ primary, labelPosition });
   const customColor = primary
     ? 'primaryColor'
     : theme.colorScheme === 'dark'
@@ -91,6 +105,7 @@ const Checkbox: FC<ICheckbox> = ({
       label={showLabel ? label : ''}
       disabled={disabled}
       checked={checked}
+      labelPosition={labelPosition}
       classNames={{
         ...classNames,
         input: cx(classes.input, classNames.input, {

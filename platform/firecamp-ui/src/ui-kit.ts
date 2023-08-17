@@ -1,8 +1,8 @@
 export { default as Button } from './components/buttons/Button';
 export { default as CopyButton } from './components/buttons/CopyButton';
 
-export { default as Checkbox } from './components/checkbox/Checkbox';
-export { default as Checkbox2 } from './components/checkbox/Checkbox2';
+export { default as Checkbox } from './components/checkbox/Checkbox2';
+export type { ICheckbox } from './components/checkbox/Checkbox2';
 export { default as CheckboxGroup } from './components/checkbox/CheckboxGroup';
 
 export { default as Dropdown } from './components/dropdown/Dropdown';

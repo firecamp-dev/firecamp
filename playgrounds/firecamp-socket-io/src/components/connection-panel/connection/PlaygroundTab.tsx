@@ -74,7 +74,7 @@ const EmitterPlayground = () => {
           </TabHeader.Left>
           <TabHeader.Right>
             <Checkbox
-              isChecked={plgEmitter.__meta.ack}
+              checked={plgEmitter.__meta.ack}
               label="Ack"
               onToggleCheck={(label, val) => changePlgEmitterAck(val)}
             />

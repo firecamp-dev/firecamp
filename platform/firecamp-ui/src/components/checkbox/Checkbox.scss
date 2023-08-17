@@ -8,23 +8,4 @@
     align-items: center;
     padding-bottom: 12px !important;
 }
-.fc-custom-checkbox input:checked ~ svg {
-    display: block !important;
-}
-  
-.fc-custom-checkbox>.primary input:checked ~ svg {
-    color: var(--app-primary) !important;
-}
-.fc-custom-checkbox>.secondary input:checked ~ svg {
-    color: var(--app-secondary) !important;
-}
-.fc-custom-checkbox>.primary input:checked ~ span {
-    border-color: var(--app-primary) !important;
-}
-.fc-custom-checkbox>.secondary input:checked ~ span {
-    border-color: var(--app-primary) !important;
-}
-.fc-form.with-padding label.fc-custom-checkbox>span {
-    min-width: 72px;
-  }
   

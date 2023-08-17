@@ -123,7 +123,7 @@ const AgentItem: FC<IAgentItem> = ({
       className={cx(className, 'text-base text-app-foreground flex items-start')}
     >
       <div className="pt-half" onClick={onSelect}>
-        <Checkbox isChecked={isSelected} id={name} disabled={disabled} />
+        <Checkbox checked={isSelected} id={name} disabled={disabled} classNames={{root: 'mr-2'}}/>
       </div>
       <div className="font-semibold ml-2">
         <label className="cursor-pointer" htmlFor={name}>

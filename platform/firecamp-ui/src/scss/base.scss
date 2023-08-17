@@ -222,9 +222,6 @@ body {
 .theme-dark .drag-icon {
   filter: invert(1);
 }
-.icon {
-  font-family: 'icomoon' !important;
-}
 
 a,
 a:hover {
@@ -427,7 +424,7 @@ tr:focus-visible {
   white-space: nowrap !important;
 }
 
-.fc-form input,
+.fc-form input:not([type="checkbox"]),
 .fc-form select {
   border-radius: 0px !important;
   resize: none;
