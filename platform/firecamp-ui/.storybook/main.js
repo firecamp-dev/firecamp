@@ -76,4 +76,12 @@ module.exports = {
 
     return config;
   },
+  /**
+   * TODO: remove after storybook migration to v7
+   * @ref: https://github.com/storybookjs/storybook/issues/21642#issuecomment-1474350363
+   */
+
+  typescript: {
+    reactDocgen: false,
+  },
 };

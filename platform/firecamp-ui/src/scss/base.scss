@@ -251,8 +251,8 @@ hr {
   color: var(--input-placeholder) !important;
   opacity: 1;
 }
-input:focus,
-input:focus-visible textarea:focus,
+input:not([type="checkbox"]):focus,
+input:not([type="checkbox"]):focus-visible textarea:focus,
 textarea:focus-visible {
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
