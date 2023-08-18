@@ -4,16 +4,19 @@
 [![Twitter: Firecamp](https://img.shields.io/twitter/follow/firecampdev.svg?style=social)](https://twitter.com/firecampdev)
 
 # Firecamp
-DX-focused API development platform.
+dx-first api devtool
 
-Firecamp is a DX-first API development platform that helps developers design, develop, test, and document their APIs effortlessly. With a user-friendly interface and a range of powerful features, Firecamp streamlines the API development workflow and enhances collaboration among team members.
+Firecamp is a dx-first API development platform that helps developers design, develop, test, and document their APIs effortlessly. With a user-friendly interface and a range of powerful features, it streamlines the API development workflow and enhances collaboration among team members.
 
-- 💚 VSCode-driven Developer Experience
-- :high_brightness: Multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs.
-- :satellite: Collaborate on API collection across the team
-- 🏗️ Build APIs faster without switching between tools and apps.
+ ➝ best-in-class developer experience inspired by vscode dx.
+ 
+ ➯ multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs.
+
+➾ collaborate on api collections across the workspace and team
+
+ ➤ build apis faster without switching between tools and apps. documentation, cli, ci/cd under one roof
   
-Try it now 🏕️ https://firecamp.dev
+live at https://firecamp.dev
 
 ## Getting started with Firecamp
 To get started with Firecamp, follow these steps:
