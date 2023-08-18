@@ -7,7 +7,7 @@ import {
   TabHeader,
   Button,
   Column,
-  SwitchButtonV2,
+  Switch,
   ScrollArea,
 } from '@firecamp/ui';
 import { IStore, useStore, useStoreApi } from '../../../../store';
@@ -181,11 +181,11 @@ const Listener = ({ listener, isActive }) => {
           deleteListener(listener);
         }}
       />
-      <SwitchButtonV2
-        xs
+      <Switch
+        xxs
         checked={isActive}
-        onChange={(v) => toggleListener(v, listener)}
-        className="ml-1"
+        onToggleCheck={(v) => toggleListener(v, listener)}
+        classNames={{ root: 'ml-1' }}
       />
     </div>
   );
