@@ -42,8 +42,10 @@ Firecamp offers you a broad range of features that will help you build APIs fast
 | :runner:           | **10. Desktop Apps** <br/> Get the Desktop app for your preferred OS/platform | `in-progress` |
 | :runner:           | **11. API Test Runner** <br/> Run the API Collection visually within the platform | `in-progress` |
 | :runner:           | **12. API Documentation** <br/> Publish beautiful API documentation for your team and community  | `in-progress` |
-|                    | **13. SSL** <br/> Use custom SSL certificates to test out the SSL secured API endpoints | `planned` |
-|                    | **14. Proxy** <br/> Setup proxy while running requests from Firecamp | `planned` |
+| :dart:             | **13. SSL** <br/> Use custom SSL certificates to test out the SSL-secured API endpoints | `planned` |
+| :dart:             | **14. Proxy** <br/> Setup proxy while running requests from Firecamp | `planned` |
+| :dart:             | **15. Artificial Intelligence** <br/> Cutting-edge AI-powered capabilities | `planned` |
+| :dart:             | **16. History** <br/> Seamless history tracking | `planned` |
 
 ## API Playgrounds
 There is a dedicated GUI playground for each API protocol you would be using for your stack.
@@ -76,21 +78,7 @@ Here are helpful links for Firecamp
 - [Discord community](https://discord.gg/8hRaqhK)
 - [Twitter updates](https://twitter.com/FirecampDev)
 
-If you encounter any bugs, issues, or have suggestions, please open an issue on the [Firecamp GitHub repository](https://github.com/firecamp-dev/Firecamp). We appreciate your contributions to make Firecamp even better.
-
-
-## Roadmap 
-  Here is the Firecamp development roadmap. Very soon It'll be listed on Github projects for better project management.
-- **AI: Cutting-edge AI-powered capabilities**
-- **Firecamp CLI:** developer-friendly CLI tool
-- **Test Runner:** An advanced API test runner
-- **Proxy:** A versatile built-in proxy
-- **SSL:** Robust SSL support
-- **History:** Seamless history tracking
-- **DX:** Improved developer experience
-- **Documentation:** Enhanced API documentation
-- **CI/CD:** Seamless integration with CI/CD workflows
-- Undisclosed Platform Phase-2
+If you encounter any bugs, or issues, or have suggestions, please open an issue on the [Firecamp GitHub repository](https://github.com/firecamp-dev/Firecamp). We appreciate your contributions to make Firecamp even better.
 
 ## Philosophy
 The decentralization of tools, processes, and people creates friction in API development workflow and frustration across the team. Developers are constantly switching between tools, searching for information, and wasting time due to inefficient tools.
