@@ -28,22 +28,22 @@ Read the Firecamp doc for in-depth walk-throughs on functionality to understand 
 ## What Firecamp Offers?
 Firecamp offers you a broad range of features that will help you build APIs faster than ever.
 
-|     | <div style="width:290px">Roadmap</div> |
-|:---:|:---|
-| :white_check_mark: | [**1. API Collection**](https://firecamp.io/docs/platform/collection) <br/> Manage Collection of APIs to collaborate within team |
-| :white_check_mark: | [**2. API Playgrounds**](https://firecamp.io/docs/rest/introduction) <br/> Get instant playgrounds for your APIs. Rest, GraphQL, and more. 	|
-| :white_check_mark: | [**3. API Collaboration**](https://firecamp.io/docs/collaboration/getting-started) <br/> Collaborate with your team at a centralized shared workspace.| 
-| :white_check_mark: | [**4. API Authentication**](https://firecamp.io/docs/platform/authentication) <br/> Test and Debug your auth endpoints with a range of supported auths| 
-| :white_check_mark: | [**5. API Scripts**](https://firecamp.io/docs/platform/scripts) <br/> Interpret the API with pre-request and tests scripts 	|
-| :white_check_mark: | [**6. Dynamic Variables**](https://firecamp.io/docs/platform/environment) <br/> Set values in variables to reuse in whole platform dynamically| 
-| :white_check_mark: | [**7. API Workspaces**](https://firecamp.io/docs/collaboration/creating-workspace) <br/> Create multiple workspaces for better team collaboration | 
-| :white_check_mark: | [**8. CLI & CI/CD**](https://firecamp.io/docs/cli/getting-started) <br/> Run API Collection Tests in the terminal or set in CI/CD pipeline 	|
-|                    | **9. API Test Runner** <br/> Run the API Collection visually within the platform `Status: in-progress` |
-|                    | **10. API Documentation** <br/> Publish beautiful API documentation for your team and community  `Status: in-progress` |
-| :white_check_mark: | [**11. Firecamp Web**](https://firecamp.dev) <br/> Get quick access to web platform 	|
-|                    | **12. Desktop Apps** <br/> Get the Desktop app for your preferred OS/platform `Status: Planned` |
-|                    | **13. SSL** <br/> Use custom SSL certificates to test out the SSL secured API endpoints`Status: Planned` |
-|                    | **14. Proxy** <br/> Setup proxy while running requests from Firecamp `Status: Planned`|
+|     | <div style="width:290px">Roadmap</div> | Status |
+| :---: | :--- | :--- |
+| :white_check_mark: | [**1. API Collection**](https://firecamp.io/docs/platform/collection) <br/> Manage Collection of APIs to collaborate within team | `completed` |
+| :white_check_mark: | [**2. API Playgrounds**](https://firecamp.io/docs/rest/introduction) <br/> Get instant playgrounds for your APIs. Rest, GraphQL, and more. 	| `completed` |
+| :white_check_mark: | [**3. API Collaboration**](https://firecamp.io/docs/collaboration/getting-started) <br/> Collaborate with your team at a centralized shared workspace. | `completed` |
+| :white_check_mark: | [**4. API Authentication**](https://firecamp.io/docs/platform/authentication) <br/> Test and Debug your auth endpoints with a range of supported auths | `completed` |
+| :white_check_mark: | [**5. API Scripts**](https://firecamp.io/docs/platform/scripts) <br/> Interpret the API with pre-request and tests scripts 	| `completed` |
+| :white_check_mark: | [**6. Dynamic Variables**](https://firecamp.io/docs/platform/environment) <br/> Set values in variables to reuse in whole platform dynamically | `completed` |
+| :white_check_mark: | [**7. API Workspaces**](https://firecamp.io/docs/collaboration/creating-workspace) <br/> Create multiple workspaces for better team collaboration | `completed` |
+| :white_check_mark: | [**8. CLI & CI/CD**](https://firecamp.io/docs/cli/getting-started) <br/> Run API Collection Tests in the terminal or set in CI/CD pipeline 	| `preview` |
+| :white_check_mark: | [**9. Firecamp Web**](https://firecamp.dev) <br/> Get quick access to web platform 	| `completed` |
+| :runner:           | **10. Desktop Apps** <br/> Get the Desktop app for your preferred OS/platform | `in-progress` |
+| :runner:           | **11. API Test Runner** <br/> Run the API Collection visually within the platform | `in-progress` |
+| :runner:           | **12. API Documentation** <br/> Publish beautiful API documentation for your team and community  | `in-progress` |
+|                    | **13. SSL** <br/> Use custom SSL certificates to test out the SSL secured API endpoints | `planned` |
+|                    | **14. Proxy** <br/> Setup proxy while running requests from Firecamp | `planned` |
 
 ## API Playgrounds
 There is a dedicated GUI playground for each API protocol you would be using for your stack.
