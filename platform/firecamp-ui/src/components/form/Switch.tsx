@@ -97,6 +97,7 @@ const Switch: FC<ISwitch> = ({
         track: cx('shadow-md', classes.track, classNames.track),
         trackLabel: cx(classes.trackLabel, classNames.trackLabel),
       }}
+      data-testid="switch"
       {...props}
     />
   );
