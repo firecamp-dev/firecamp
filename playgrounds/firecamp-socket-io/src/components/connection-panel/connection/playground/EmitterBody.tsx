@@ -148,16 +148,16 @@ const EmitterBody = ({
       //   );
       case EArgumentBodyType.Boolean:
         return (
-          <div className="flex p-2">
+          <div className="flex p-2 gap-2">
             <Checkbox
-              isChecked={argument.body === true}
+              checked={argument.body === true}
               label="True"
               onToggleCheck={(_) => {
                 changeArgValue(true);
               }}
             />
             <Checkbox
-              isChecked={argument.body === false}
+              checked={argument.body === false}
               label="False"
               onToggleCheck={(_) => {
                 changeArgValue(false);

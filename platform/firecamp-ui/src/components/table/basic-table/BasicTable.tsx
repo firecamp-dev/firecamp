@@ -3,8 +3,7 @@ import cx from 'classnames';
 import { GripVertical, Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
 import { EEditorLanguage } from '@firecamp/types';
-import { Input, Button } from '@firecamp/ui';
-import Checkbox from '../../checkbox/Checkbox';
+import { Button, Checkbox, Input } from '@firecamp/ui';
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from '../primitive/Table';
 import {
@@ -70,10 +69,11 @@ const BasicTable = ({
             )}
 
             <Checkbox
-              isChecked={!cellValue}
+              checked={!cellValue}
               onToggleCheck={(label, val: boolean) => {
                 onChange(column.key, !val);
               }}
+              classNames={{ root: 'pr-2' }}
               disabled={options.disabledColumns.includes(column.key)}
             />
           </div>

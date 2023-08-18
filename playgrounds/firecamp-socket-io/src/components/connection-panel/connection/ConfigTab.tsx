@@ -157,7 +157,7 @@ const ConfigTab = ({ id = '' }) => {
         return (
           <CheckboxInGrid
             key={`${name}-${index}`}
-            isChecked={connection[name] || false}
+            checked={connection[name] || false}
             label={label}
             className="fc-input-wrapper"
             onToggleCheck={(_) => _onChange(name, !connection[name])}

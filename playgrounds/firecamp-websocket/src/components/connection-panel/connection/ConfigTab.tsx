@@ -95,7 +95,7 @@ const Config = ({ config = {}, onUpdate }) => {
         return (
           <CheckboxInGrid
             key={`${name}-${index}`}
-            isChecked={config[name] || false}
+            checked={config[name] || false}
             label={label}
             className="fc-input-wrapper"
             onToggleCheck={() => _onChange(name, !config[name])}

@@ -1,122 +1,125 @@
 import { FC } from 'react';
-import cx from 'classnames';
-import { Check } from 'lucide-react';
-import { ICheckbox } from './interfaces/Checkbox.interfaces';
-import './Checkbox.scss';
+import {
+  Checkbox as MantineCheckbox,
+  CheckboxProps,
+  createStyles,
+} from '@mantine/core';
+
+export interface ICheckbox extends CheckboxProps {
+  /**
+   * enabled by default & update color as primary color
+   */
+  primary?: boolean;
+  /**
+   * updated function for onChange handler
+   * @param l : label value
+   * @param v : status of checked
+   * @returns
+   */
+  onToggleCheck?: (l: any, v: boolean) => void;
+  /**
+   * enabled by default, used for updating visibility of label
+   */
+  showLabel?: boolean;
+}
+
+const useStyles = createStyles(
+  (theme, { primary, labelPosition }: Partial<ICheckbox>) => ({
+    disabled: {
+      opacity: '50% !important',
+      '&:checked': {
+        borderColor: primary
+          ? theme.colors[theme.primaryColor][
+              theme.colorScheme === 'dark' ? 8 : 6
+            ]
+          : 'initial',
+      },
+      borderColor: 'initial !important',
+    },
+    input: {
+      borderRadius: '0px',
+      borderColor:
+        theme.colorScheme === 'dark'
+          ? theme.colors.gray[4]
+          : theme.colors.dark[5],
+      backgroundColor: 'transparent !important',
+    },
+    icon: {
+      ...(primary
+        ? {
+            color: `${
+              theme.colors[theme.primaryColor][
+                theme.colorScheme === 'dark' ? 8 : 6
+              ]
+            } !important`,
+          }
+        : {
+            color: `${
+              theme.colorScheme === 'dark'
+                ? theme.colors.gray[4]
+                : theme.colors.dark[5]
+            } !important`,
+          }),
+    },
+    label: {
+      ...(labelPosition === 'left'
+        ? {
+            paddingRight: '0.5rem',
+          }
+        : {
+            paddingLeft: '0.5rem',
+          }),
+      color: `${
+        theme.colorScheme === 'dark'
+          ? theme.colors.gray[4]
+          : theme.colors.dark[5]
+      }  !important`,
+    },
+  })
+);
 
 const Checkbox: FC<ICheckbox> = ({
-  id = '',
-  onToggleCheck = (l, v) => {},
-  isChecked = false,
-  label = '',
-  tabIndex = 0,
-  labelPlacing = 'right',
-  className = '',
+  color,
+  label,
+  classNames = {},
+  primary = true,
+  checked = false,
   disabled = false,
-  note = '',
-  color = 'primary',
+  onToggleCheck = (l, v) => {},
   showLabel = true,
+  labelPosition,
+  ...props
 }) => {
-  return (
-    <div className={cx(className, 'flex')} tabIndex={tabIndex}>
-      <label
-        className={cx('fc-custom-checkbox !flex items-center mb-0 ', {
-          'w-4': !showLabel,
-        })}
-        onClick={(e) => {
-          if (e) {
-            e.preventDefault();
-          }
-          if (!disabled) {
-            onToggleCheck(label, !isChecked);
-          }
-        }}
-        tabIndex={-1}
-      >
-        {showLabel && labelPlacing === 'left' ? (
-          <span className="text-sm mr-2"> {label}</span>
-        ) : (
-          ''
-        )}
+  const { classes, cx, theme } = useStyles({ primary, labelPosition });
+  const customColor = primary
+    ? 'primaryColor'
+    : theme.colorScheme === 'dark'
+    ? 'gray'
+    : 'dark';
 
-        <div
-          className={cx(
-            'flex justify-center items-center cursor-pointer relative',
-            color,
-            {'opacity-50 cursor-default': disabled}
-          )}
-          tabIndex={-1}
-        >
-          <input
-            type="checkbox"
-            role="checkbox"
-            className="hidden"
-            checked={isChecked}
-            readOnly={true}
-            id={id}
-          />
-          <span className={cx("border w-4 h-4",{'border-primaryColor': isChecked},{'border-app-foreground': !isChecked})}></span>
-          {isChecked ? (
-            <Check
-              size={12}
-              className="text-primaryColor absolute"
-              data-testid="check-icon"
-            />
-          ) : (
-            ''
-          )}
-        </div>
-        {showLabel && labelPlacing === 'right' ? (
-          <span className="text-sm ml-2 cursor-pointer"> {label}</span>
-        ) : (
-          ''
-        )}
-      </label>
-      {!!note ? (
-        <div className="fc-input-note">
-          <span className="icv2-info-icon" />
-          {note}
-        </div>
-      ) : (
-        ''
-      )}
-    </div>
+  return (
+    <MantineCheckbox
+      color={customColor}
+      size={'xs'}
+      radius={'xs'}
+      label={showLabel ? label : ''}
+      disabled={disabled}
+      checked={checked}
+      labelPosition={labelPosition}
+      classNames={{
+        ...classNames,
+        input: cx(classes.input, classNames.input, {
+          [classes.disabled]: disabled,
+        }),
+        icon: cx(classes.icon, classNames.icon, {
+          [classes.disabled]: disabled && checked,
+        }),
+        label: cx(classes.label, classNames.label),
+      }}
+      onChange={(e) => onToggleCheck(label, e.target.checked)}
+      data-testid="checkbox"
+      {...props}
+    />
   );
 };
 export default Checkbox;
-
-/**
- * Checkbox in table formate (grid)
- */
-const CheckboxInGrid: FC<ICheckbox> = ({
-  id = '',
-  onToggleCheck = (l, v) => {},
-  isChecked = false,
-  label = '',
-  tabIndex = 0, //-1
-  className = '',
-  disabled = false,
-  note = '',
-  color = 'primary',
-}) => {
-  return (
-    <div>
-      <label htmlFor={`${id}`} className="checkbox-in-grid">
-        {label}
-      </label>
-      <Checkbox
-        key={`checkbox-in-grid-${id}`}
-        id={id}
-        onToggleCheck={onToggleCheck}
-        isChecked={isChecked}
-        tabIndex={tabIndex}
-        className={className}
-        disabled={disabled}
-        note={note}
-        color={color}
-      />
-    </div>
-  );
-};
-
-export { CheckboxInGrid };

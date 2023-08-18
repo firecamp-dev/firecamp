@@ -1,4 +1,4 @@
-import Checkbox from './Checkbox';
+import {Checkbox} from '@firecamp/ui';
 
 const CheckboxGroup = ({
   onToggleCheck = (v: {[k: string]: any}) => {},
@@ -15,14 +15,14 @@ const CheckboxGroup = ({
             return (
               <Checkbox
                 key={index}
-                isChecked={checkbox.isChecked || false}
+                checked={checkbox.isChecked || false}
                 label={checkbox.label || ''}
                 showLabel={checkbox.showLabel || false}
                 disabled={checkbox.disabled || false}
                 onToggleCheck={() =>
                   onToggleCheck({ [checkbox.id]: !checkbox.isChecked })
                 }
-                className="mr-2"
+                classNames={{root:"mr-2"}}
               />
             );
           })}

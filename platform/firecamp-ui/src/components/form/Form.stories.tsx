@@ -103,16 +103,16 @@ export function FormWithCheckBox() {
         label={'Namespace'}
         {...getInputProps('namespace')}
       />
-      <Checkbox
-        isChecked={checkBoxItem.isChecked || false}
-        label={checkBoxItem.label || ''}
-        showLabel={checkBoxItem.showLabel || false}
-        disabled={checkBoxItem.disabled || false}
-        onToggleCheck={_handleCheckBoxAction}
-        className="mr-2 mb-2"
-        labelPlacing="left"
-      />
-
+      <div>
+        <label>{checkBoxItem.label || ''}</label>
+        <Checkbox
+          checked={checkBoxItem.isChecked || false}
+          disabled={checkBoxItem.disabled || false}
+          onToggleCheck={_handleCheckBoxAction}
+          classNames={{ root: 'mr-2 mb-2' }}
+          labelPosition="left"
+        />
+      </div>
       <div className="form-control">
         <Button
           type="submit"
