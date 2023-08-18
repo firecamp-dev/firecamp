@@ -8,17 +8,19 @@ dx-first api devtool
 
 Firecamp is a dx-first API development platform that helps developers design, develop, test, and document their APIs effortlessly. With a user-friendly interface and a range of powerful features, it streamlines the API development workflow and enhances collaboration among team members.
 
- ➝ best-in-class developer experience inspired by vscode dx.
+ ➠ best-in-class developer experience inspired by vscode dx.
  
- ➯ multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs.
+ ➠ multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs.
 
-➾ collaborate on api collections across the workspace and team
+ ➠ collaborate on api collections across the workspace and team
 
- ➤ build apis faster without switching between tools and apps. documentation, cli, ci/cd under one roof
+ ➠ build apis faster without switching between tools and apps. documentation, cli, ci/cd under one roof
   
 live at https://firecamp.dev
 
-## Getting started with Firecamp
+----
+
+### Getting started with Firecamp
 To get started with Firecamp, follow these steps:
 
 1. Sign in to Firecamp at https://firecamp.dev
@@ -28,7 +30,7 @@ To get started with Firecamp, follow these steps:
 Read the Firecamp doc for in-depth walk-throughs on functionality to understand the various features and capabilities of Firecamp. 
 
 
-## What Firecamp Offers?
+### What Firecamp Offers?
 Firecamp offers you a broad range of features that will help you build APIs faster than ever.
 
 |     | <div style="width:290px">Roadmap</div> | Status |
@@ -50,29 +52,29 @@ Firecamp offers you a broad range of features that will help you build APIs fast
 | :dart:             | **15. Artificial Intelligence** <br/> Cutting-edge AI-powered capabilities | `planned` |
 | :dart:             | **16. History** <br/> Seamless history tracking | `planned` |
 
-## API Playgrounds
+### API Playgrounds
 There is a dedicated GUI playground for each API protocol you would be using for your stack.
 
-### 1. **Rest Playground**
+#### 1. **Rest Playground**
 It's the lightweight, IntelliSense, and next-generation testing client to give the most delightful collaborative experience while building APIs in a team.
 → [Learn more](https://firecamp.io/docs/rest/introduction)
 
-### 2. **GraphQL Playground**
+#### 2. **GraphQL Playground**
 Perform GraphQL operations with a seamless experience. Prepare, Share, and Export your Query Collection collaboratively with your team.
 → [Learn more](https://firecamp.io/docs/graphql/introduction)
 
-### 3. **WebSocket Playground**
+#### 3. **WebSocket Playground**
 Debug bidirectional connection visually with WebSocket GUI client more precisely now. The only GUI client to test, debug, and visualize real-time or event-driven messages collaboratively.
 → [Learn more](https://firecamp.io/docs/websocket/introduction)
 
-### 4. **Socket.io Playground**
+#### 4. **Socket.io Playground**
 Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
 → [Learn more](https://firecamp.io/docs/socket-io/introduction)
 
-### 5. What's next? 
+#### 5. What's next? 
 → please [let us know](https://github.com/firecamp-dev/Firecamp/issues/new?assignees=&labels=&projects=&template=general_report.md&title=)
 
-## Community and Support
+### Community and Support
 
 For community support, you can join the Firecamp community on [Discord](https://discord.gg/8hRaqhK). You can also check out the [Firecamp Blog](https://firecamp.io/blog) for the latest updates, tutorials, and articles.
 
@@ -81,25 +83,25 @@ Here are helpful links for Firecamp
 - [Discord community](https://discord.gg/8hRaqhK)
 - [Twitter updates](https://twitter.com/FirecampDev)
 
-If you encounter any bugs, or issues, or have suggestions, please open an issue on the [Firecamp GitHub repository](https://github.com/firecamp-dev/Firecamp). We appreciate your contributions to make Firecamp even better.
+If you encounter any bugs, or issues, or have suggestions, please open an issue on the [Firecamp GitHub repository](https://github.com/firecamp-dev/Firecamp). We appreciate your contributions to making Firecamp even better.
 
-## Philosophy
+### Philosophy
 The decentralization of tools, processes, and people creates friction in API development workflow and frustration across the team. Developers are constantly switching between tools, searching for information, and wasting time due to inefficient tools.
 We believe that the existing solution lacks both world-class experience and the simplicity needed to build APIs faster. This leads to a decrease in developer productivity, slow release times, and poor team collaboration.
 We are bringing the VS code philosophy to Firecamp to solve this critical problem. Our mission is to build the most extensible, minimal and best developer experience API platform where developers feel most productive while building APIs.
 
-## What's cool about this?
+### What's cool about this?
 
 Firecamp is a Multi-protocol API platform, which offers end-to-end testing and development of Rest, GraphQL, WebSocket, and many other APIs.
 We support major API specifications and protocols, which allows for seamless API testing, API documentation, and smoother collaboration between backend, frontend, and mobile teams.
 
-## Internet Mentions
+### Internet Mentions
 1. https://dev.to/firecampdev/lightweight-postman-alternative-introducing-firecamp-3066
 2. https://www.asyncapi.com/blog/socketio-automatic-docs
 3. https://twitter.com/Nishchit14/status/1679523569091633153
    
 
-## Contributors
+### Contributors
 
 <a href="https://github.com/firecamp-dev/firecamp/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=firecamp-dev/firecamp" />
