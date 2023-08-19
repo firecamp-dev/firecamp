@@ -55,24 +55,13 @@ Firecamp offers you a broad range of features that will help you build APIs fast
 ### API Playgrounds
 There is a dedicated GUI playground for each API protocol you would be using for your stack.
 
-#### 1. **Rest Playground**
-It's the lightweight, IntelliSense, and next-generation testing client to give the most delightful collaborative experience while building APIs in a team.
-→ [Learn more](https://firecamp.io/docs/rest/introduction)
-
-#### 2. **GraphQL Playground**
-Perform GraphQL operations with a seamless experience. Prepare, Share, and Export your Query Collection collaboratively with your team.
-→ [Learn more](https://firecamp.io/docs/graphql/introduction)
-
-#### 3. **WebSocket Playground**
-Debug bidirectional connection visually with WebSocket GUI client more precisely now. The only GUI client to test, debug, and visualize real-time or event-driven messages collaboratively.
-→ [Learn more](https://firecamp.io/docs/websocket/introduction)
-
-#### 4. **Socket.io Playground**
-Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.
-→ [Learn more](https://firecamp.io/docs/socket-io/introduction)
-
-#### 5. What's next? 
-→ please [let us know](https://github.com/firecamp-dev/Firecamp/issues/new?assignees=&labels=&projects=&template=general_report.md&title=)
+|       |        | 
+| :---  |  :--- |
+| :white_check_mark: | [**1. Rest Playground**](https://firecamp.io/docs/rest/introduction) <br/> It's the lightweight, IntelliSense, and next-generation testing client to give the most delightful collaborative experience while building APIs in a team. |
+| :white_check_mark: | [**2. GraphQL Playground**](https://firecamp.io/docs/graphql/introduction) <br/> Perform GraphQL operations with a seamless experience. Prepare, Share, and | :white_check_mark:   | Export your Query Collection collaboratively with your team.|
+| :white_check_mark: | [**3. WebSocket Playground**](https://firecamp.io/docs/websocket/introduction) <br/> Debug bidirectional connection visually with WebSocket GUI client more precisely now. The only GUI client to test, debug, and visualize real-time or event-driven messages collaboratively. |
+| :white_check_mark: | [**4. Socket.io Playground**](https://firecamp.io/docs/socket-io/introduction) <br/> Monitor each emitter’s and listener’s events visually over a bi-directional SocketIO connection. It enables you to collaborate with the team over a SocketIO event-driven API build.| |
+| 🎯 | **5. What's next?**  <br/> → please [let us know](https://github.com/firecamp-dev/Firecamp/issues/new?assignees=&labels=&projects=&template=general_report.md&title=) |
 
 ### Community and Support
 
