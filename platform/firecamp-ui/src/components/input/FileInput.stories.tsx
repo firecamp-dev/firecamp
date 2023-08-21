@@ -5,7 +5,12 @@ export default {
   component: FileInput,
 };
 
-const Template = (args: IFileInput) => <FileInput {...args} />;
+const Template = (args: IFileInput) => (
+  <FileInput
+    onChange={(file: File) => console.log(`selected-file`, file)}
+    {...args}
+  />
+);
 
 export const FileInputDemo = Template.bind({});
 FileInputDemo.args = { placeholder: 'Select File' };

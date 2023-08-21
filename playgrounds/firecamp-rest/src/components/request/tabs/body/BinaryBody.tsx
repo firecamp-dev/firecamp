@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Upload } from 'lucide-react';
 import { FileDrop } from 'react-file-drop';
-import { Container, Button } from '@firecamp/ui';
+import { Container, Button, FileInput } from '@firecamp/ui';
 
 const BinaryTab = ({ body, onChange }) => {
-  const inputEle = useRef(null);
+
   const [fileName, setFileName] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [isButtonDisabled, setButtonDisabled] = useState(false);
@@ -22,10 +22,6 @@ const BinaryTab = ({ body, onChange }) => {
     setButtonDisabled(false);
     _setFileName();
   }, [body]);
-
-  const _onButtonClick = () => {
-    inputEle.current.click();
-  };
 
   const _onDropFile = async (files, event) => {
     console.log('files[0]', files[0]);
@@ -45,15 +41,12 @@ const BinaryTab = ({ body, onChange }) => {
     }
   };
 
-  const _onSelectFile = async (e) => {
-    let target = e.target;
-    console.log(e, target.files[0]);
-    if (!target || !target.files[0]) {
+  const _onSelectFile = async (file) => {
+    if (!file) {
       setErrorMsg('File not found!');
       setFileName('');
       setButtonDisabled(true);
     } else {
-      const file = target.files[0];
       setFileName(file.name);
 
       // let text = await _readFile(file).then((r) => r);
@@ -68,30 +61,30 @@ const BinaryTab = ({ body, onChange }) => {
     <Container>
       <Container.Body className="flex items-center justify-center">
         <FileDrop onDrop={_onDropFile}>
-          {fileName && !errorMsg ? (
-            <div style={{ fontSize: '17px' }} onClick={_onButtonClick}>
-              {fileName}
-            </div>
-          ) : (
-            <Button
-              onClick={_onButtonClick}
-              leftIcon={<Upload size={16} />}
-              text="Drop File Here"
-              disabled={isButtonDisabled}
-              secondary
-              xs
-            />
-          )}
-
-          <input
-            style={{ display: 'none' }}
-            ref={inputEle}
-            id="file"
-            accept="text"
-            type="file"
+          <FileInput
+            placeholder={'Drop File Here'}
+            disabled={isButtonDisabled}
             onChange={_onSelectFile}
+            accept='text'
+            error={
+              errorMsg ? <div className="fc-error">{errorMsg}</div> : undefined
+            }
+            value={
+              fileName && !errorMsg ? ({ name: fileName } as File) : undefined
+            }
+            {...(!(fileName && !errorMsg)
+              ? {
+                  secondary: true,
+                  icon: <Upload size={16} />,
+                  iconWidth: 40,
+                  size: 'xs',
+                }
+              : {
+                  size: 'md',
+                })}
           />
-          {errorMsg ? <div className="fc-error">{errorMsg}</div> : <></>}
+
+          
         </FileDrop>
       </Container.Body>
     </Container>
