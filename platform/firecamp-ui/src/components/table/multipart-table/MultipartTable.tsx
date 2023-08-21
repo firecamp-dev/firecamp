@@ -4,7 +4,7 @@ import { File, GripVertical, Plus, Trash2 } from 'lucide-react';
 import { _array } from '@firecamp/utils';
 import { VscTextSize } from '@react-icons/all-files/vsc/VscTextSize';
 import { EEditorLanguage } from '@firecamp/types';
-import { Button, Checkbox, Input } from '@firecamp/ui';
+import { Button, Checkbox, FileInput, Input } from '@firecamp/ui';
 
 import SingleLineEditor from '../../editors/monaco-v2/SingleLineEditor';
 import Table from '../primitive/Table';
@@ -57,11 +57,11 @@ const MultipartTable = ({
         return (
           <div style={{ display: 'flex' }}>
             <span
+              className="flex drag-icon"
               draggable={true}
               onDragStart={(e) => {
                 handleDrag(row);
               }}
-              className="flex"
             >
               <GripVertical opacity={0.3} size={16} />
             </span>
@@ -208,7 +208,6 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
     onChangeRowType = () => {},
     options,
   }) => {
-    const inputFileRef = useRef(null);
     const [type, setType] = useState(row.type || ERowType.Text);
 
     // useEffect(() => {
@@ -224,9 +223,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
       onChange({ target: { value } });
     };
 
-    const _onChangeFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-      // console.log(e.target.files, 'e...');
-      const file = e.target.files[0];
+    const _onChangeFileInput = (file: File) => {
       onChangeFile({ target: { file } }); // It'll always be a single file
     };
 
@@ -237,10 +234,6 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
       }
       setType(newType);
       onChangeRowType(newType);
-    };
-
-    const _onClick = () => {
-      if (inputFileRef.current) inputFileRef.current.click();
     };
 
     // console.log(`type`, type);
@@ -268,32 +261,19 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
             onChange={(e) => _onChangeTextInput(e)}
           />
         ) : (
-          <>
-            <input
-              key={`${row.id}-multipart-input`}
-              name="select-file"
-              ref={inputFileRef}
-              id="file"
-              accept="text"
-              type="file"
-              onChange={_onChangeFileInput}
-              className="fc-file-input hidden"
-            />
-
-            <div
-              key={`${row.id}-file-type`}
-              className="cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre w-full mr-1"
-              onClick={_onClick}
-            >
-              {row?.file?.name ? `file: ${row?.file?.name}` : 'select file'}
-            </div>
-          </>
+          <FileInput
+            placeholder={
+              row?.file?.name ? `file: ${row?.file?.name}` : 'select file'
+            }
+            accept="text"
+            onChange={(file) => _onChangeFileInput(file)}
+          />
         )}
         <div className="cursor-pointer ml-auto pr-1 h-4">
           {type == 'text' ? (
             <VscTextSize onClick={_changeType} title="IconTextSize" />
           ) : (
-            <File onClick={_changeType} size={16} data-testid="file-icon"/>
+            <File onClick={_changeType} size={16} data-testid="file-icon" />
           )}
         </div>
       </div>

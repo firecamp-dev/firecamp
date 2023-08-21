@@ -29,6 +29,7 @@ export * from './components/icons';
 // Input
 export { default as Input } from './components/input/Input';
 export { default as FileInput } from './components/input/FileInput';
+export type { IFileInput } from './components/input/interfaces/FileInput.interfaces';
 
 // Modal
 export { default as Modal } from './components/modal/Modal';

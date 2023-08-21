@@ -1,17 +1,17 @@
-//@ts-nocheck
-import FileInput from './FileInput';
+import { FileInput, IFileInput } from '@firecamp/ui';
 
 export default {
-    title: "UI-Kit/Input",
-    component: FileInput,
-    argTypes: {
-        placeholder: "Firecamp",
-        value: "Firecamp value"
-    }
+  title: 'UI-Kit/Input',
+  component: FileInput,
 };
 
-const Template = (args) =><div className="bg-activityBar-background p-4 w-96"> <FileInput {...args} /></div>;
+const Template = (args: IFileInput) => <FileInput {...args} />;
 
 export const FileInputDemo = Template.bind({});
-FileInputDemo.args = {placeholder: 'Sample Button', value: ''};
+FileInputDemo.args = { placeholder: 'Select File' };
 
+export const FileSelectedDemo = Template.bind({});
+FileSelectedDemo.args = {
+  placeholder: 'Select File',
+  value: { name: 'filename' },
+};

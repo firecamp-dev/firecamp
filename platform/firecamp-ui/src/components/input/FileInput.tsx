@@ -1,60 +1,57 @@
-//@ts-nocheck
-import { FC, useRef } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { FC } from 'react';
+import {
+  FileInputProps,
+  FileInput as MantineFileInput,
+  createStyles,
+} from '@mantine/core';
+import { IFileInput } from './interfaces/FileInput.interfaces';
 
-import { IFileInput } from "./interfaces/FileInput.interfaces";
+const useStyles = createStyles((theme) => ({
+  input: {
+    border: 'none',
+    background: 'transparent',
+    paddingLeft: '4px',
+    paddingRight: '16px',
+    minHeight: 'auto',
+    lineHeight: '21px',
+    whiteSpace: 'pre',
+  },
+  placeholder: {
+    color: `${
+      theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.dark[5]
+    } !important`,
+  },
+}));
 
-/**
- * File input component to select file as input
- */
-const FileInput: FC<IFileInput> = ({
-  ButtonText = 'Select',
-  path = '',
-  name = '',
-  onSelectFile = () => { }
-}) => {
-  const inputEle = useRef(null);
-
-  let _onSelectFile = e => {
-    onSelectFile(e);
-  };
-
-  const _onClick = () => {
-    inputEle.current.click();
-  };
-  return (
-    <div className="w-fit w-max">
-      <input
-        name="select"
-        style={{ display: 'none' }}
-        ref={inputEle}
-        id="file"
-        accept="text"
-        type="file"
-        onChange={_onSelectFile}
-      />
-      {(!path || !path.length) && name && name.length ? (
-        <div className="text-base text-app-foreground-inactive">{name}</div> /*this path is not visible when upload file */
-      ) : (
-        ''
-      )}
-      {!path || !path.length ? (
-        <label
-          htmlFor="file_path"
-          className=" bg-focus3 p-2 rounded-sm mb-2 text-app-foreground px-2 py-1 w-fit cursor-pointer flex flex-row items-center"
-          onClick={_onClick}
-        >
-
-          <span className='pr-1 text-base'>{ButtonText}</span>
-          <ArrowRight size={12} />
-        </label>
-      ) : (
-        <div onClick={_onClick} className="fc-input-file-name ">
-          {path}
-        </div>
-      )}
-    </div>
-  );
+const Value = ({ file }: { file: File }) => {
+  return <span>file: {file.name}</span>;
 };
 
+const ValueComponent: FileInputProps['valueComponent'] = ({ value }) => {
+  if (Array.isArray(value)) {
+    return (
+      <>
+        {value.map((file, index) => (
+          <Value file={file} key={index} />
+        ))}
+      </>
+    );
+  }
+
+  return <Value file={value} />;
+};
+
+const FileInput: FC<IFileInput> = ({ classNames = {}, ...props }) => {
+  const { classes, cx } = useStyles();
+  return (
+    <MantineFileInput
+      classNames={{
+        input: cx(classes.input, classNames.input),
+        placeholder: cx(classes.placeholder, classNames.placeholder),
+      }}
+      {...props}
+      valueComponent={ValueComponent}
+    />
+  );
+};
 export default FileInput;
