@@ -100,6 +100,7 @@ const FileInput: FC<IFileInput> = ({
   return (
     <MantineFileInput
       classNames={{
+        ...classNames,
         root: cx(classes.root, classNames.root),
         icon: cx(classes.icon, classNames.icon),
         input: cx(classes.input, classNames.input),
