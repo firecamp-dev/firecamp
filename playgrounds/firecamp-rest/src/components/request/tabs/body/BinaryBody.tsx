@@ -65,7 +65,6 @@ const BinaryTab = ({ body, onChange }) => {
             placeholder={'Drop File Here'}
             disabled={isButtonDisabled}
             onChange={_onSelectFile}
-            accept="text/*"
             error={
               errorMsg ? <div className="fc-error">{errorMsg}</div> : undefined
             }

@@ -30,8 +30,8 @@ const MultipartTable = ({
 
   const _columns = [
     { id: 'select', key: 'disable', name: '', width: '40px', fixedWidth: true },
-    { id: 'key', key: 'key', name: 'Key', width: '100px' },
-    { id: 'value', key: 'value', name: 'Value', width: '100px' },
+    { id: 'key', key: 'key', name: 'Key', width: '150px' },
+    { id: 'value', key: 'value', name: 'Value', width: '200px' },
     {
       id: 'description',
       key: 'description',
@@ -265,7 +265,6 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
             placeholder={
               row?.file?.name ? `file: ${row?.file?.name}` : 'select file'
             }
-            accept="text/*"
             onChange={(file) => _onChangeFileInput(file)}
           />
         )}
