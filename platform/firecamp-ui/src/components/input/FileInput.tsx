@@ -21,7 +21,12 @@ const useStyles = createStyles((theme, { secondary }: IFileInput) => ({
             backgroundColor: theme.colors.dark[5],
           },
         }
-      : {}),
+      : {
+          color:
+            theme.colorScheme === 'dark'
+              ? theme.colors.gray[4]
+              : theme.colors.dark[5],
+        }),
     '&:disabled, &[data-disabled]': {
       ...(secondary
         ? {
@@ -48,7 +53,6 @@ const useStyles = createStyles((theme, { secondary }: IFileInput) => ({
         }),
   },
   icon: {
-    // '&[data-invalid]': {
     ...(secondary
       ? {
           color: `${theme.white} !important`,
@@ -56,7 +60,6 @@ const useStyles = createStyles((theme, { secondary }: IFileInput) => ({
           paddingRight: 'calc(0.875rem  / 1.5)',
         }
       : {}),
-    // },
   },
   placeholder: {
     color: `${
@@ -71,8 +74,7 @@ const useStyles = createStyles((theme, { secondary }: IFileInput) => ({
 }));
 
 const Value = ({ file }: { file: File }) => {
-  return <span className='text-app-foreground'>{file.name}</span>;
-  // return <span>file: {file.name}</span>;
+  return <span>file: {file.name}</span>;
 };
 
 const ValueComponent: FileInputProps['valueComponent'] = ({ value }) => {

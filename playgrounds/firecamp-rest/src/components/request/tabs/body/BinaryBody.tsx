@@ -65,26 +65,24 @@ const BinaryTab = ({ body, onChange }) => {
             placeholder={'Drop File Here'}
             disabled={isButtonDisabled}
             onChange={_onSelectFile}
-            accept='text'
+            accept="text/*"
             error={
               errorMsg ? <div className="fc-error">{errorMsg}</div> : undefined
             }
             value={
               fileName && !errorMsg ? ({ name: fileName } as File) : undefined
             }
-            {...(!(fileName && !errorMsg)
+            {...((fileName && !errorMsg)
               ? {
+                size: 'md',
+              } : {
                   secondary: true,
                   icon: <Upload size={16} />,
                   iconWidth: 40,
                   size: 'xs',
                 }
-              : {
-                  size: 'md',
-                })}
+              )}
           />
-
-          
         </FileDrop>
       </Container.Body>
     </Container>

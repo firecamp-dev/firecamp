@@ -265,7 +265,7 @@ const MultiPartInput: FC<IMultiPartInput> = memo(
             placeholder={
               row?.file?.name ? `file: ${row?.file?.name}` : 'select file'
             }
-            accept="text"
+            accept="text/*"
             onChange={(file) => _onChangeFileInput(file)}
           />
         )}
