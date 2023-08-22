@@ -5,33 +5,33 @@ import { Container, Button, FileInput } from '@firecamp/ui';
 
 const BinaryTab = ({ body, onChange }) => {
 
-  const [fileName, setFileName] = useState('');
+  const [file, setFile] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [isButtonDisabled, setButtonDisabled] = useState(false);
 
   useEffect(() => {
-    // console.log("file body--> component did mount");
+    // console.log("file body--> component did mount", file, body);
 
-    const _setFileName = async () => {
+    const _checkFileName = async () => {
       const text: string = body?.value?.name || '';
-      if (fileName !== text) {
-        setFileName(text);
+      if (file?.name !== text) {
+        setFile(body.value);
       }
     };
     setErrorMsg('');
     setButtonDisabled(false);
-    _setFileName();
+    _checkFileName();
   }, [body]);
 
   const _onDropFile = async (files, event) => {
     console.log('files[0]', files[0]);
     if (!files || !files[0]) {
       setErrorMsg('File not found!');
-      setFileName('');
+      setFile(null);
       setButtonDisabled(true);
     } else {
       const file = files[0];
-      setFileName(file.name);
+      setFile(file);
 
       // console.log("r", text);
       // _import(raw_text);
@@ -44,10 +44,10 @@ const BinaryTab = ({ body, onChange }) => {
   const _onSelectFile = async (file) => {
     if (!file) {
       setErrorMsg('File not found!');
-      setFileName('');
+      setFile(null);
       setButtonDisabled(true);
     } else {
-      setFileName(file.name);
+      setFile(file);
 
       // let text = await _readFile(file).then((r) => r);
 
@@ -70,9 +70,9 @@ const BinaryTab = ({ body, onChange }) => {
               errorMsg ? <div className="fc-error">{errorMsg}</div> : undefined
             }
             value={
-              fileName && !errorMsg ? ({ name: fileName } as File) : undefined
+              file && !errorMsg ? file : undefined
             }
-            {...((fileName && !errorMsg)
+            {...((file && !errorMsg)
               ? {
                 size: 'md',
               } : {

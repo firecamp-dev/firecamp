@@ -10,6 +10,7 @@ export default {
 const Template = (args: IFileInput) => {
   return (
     <FileInput
+      classNames={{ root: 'w-fit' }}
       onChange={(file: File) => console.log(`selected-file`, file)}
       {...args}
     />
@@ -37,6 +38,7 @@ export const FileUploadExample = () => {
   const [file, updateFile] = useState(null);
   return (
     <FileInput
+      classNames={{ root: 'w-fit' }}
       onChange={(selectedFile: File) => {
         updateFile(selectedFile);
       }}
