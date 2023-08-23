@@ -1,50 +1,48 @@
 # Contributing to firecamp.dev
 
-Thank you for showing an interest in contributing to firecamp.dev! All kinds of contributions are valuable to us. Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
+Thank you for showing an interest in contributing to firecamp.dev! All kinds of contributions are valuable to us. Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are greatly appreciated.
 
 In this guide, we will cover how you can quickly onboard and make your first contribution.
 
 > Before jumping into a PR be sure to search [existing PRs](https://github.com/firecamp-dev/firecamp/pulls) or [issues](https://github.com/firecamp-dev/firecamp/issues) for an open or closed item that relates to your submission.
 
 ## Developing
-The development branch is main. This is the branch that all pull requests should be made against. The changes on the main branch are tagged into a release periodically.
+The development branch is main. This is the branch where all pull requests should be made against. The changes on the main branch are tagged into a release periodically.
 
 To develop locally:
 
 1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your own GitHub account and then [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device.
+
 2. Create a new branch:
-   `git checkout -b feat/MY_BRANCH_NAME`
+   
+   ```
+   git checkout -b feat/MY_BRANCH_NAME
+   ```
+   > Use a descriptive and meaningful name for the branch that reflects the purpose of your contribution.
+   
 3. Set up your `.env` file:
    - Duplicate .env.example to .env. 
-   `cp .env.example .env`
+   ```
+      cp .env.example .env
+   ```
+
 4. Install pnpm:
-   `npm install -g pnpm` or [via brew, curl or wget](https://pnpm.io/installation)
-5. Start developing and watch for code changes:
-    `pnpm dev`
 
-### Pull Request Workflow
+    ```
+    npm install -g pnpm
+   ``` 
+   > or install [via brew, curl, or wget](https://pnpm.io/installation)
+  
+5. Install the dependencies with:
+   ```
+   pnpm i
+   ```
+   
+6. Start developing and watch for code changes:
 
-1. Create a new branch for your changes. Use a descriptive and meaningful name for the branch that reflects the purpose of your contribution.
-2. Make your changes in the branch, following the project's coding style and guidelines.
-3. Commit your changes with appropriate messages, adhering to the commit guidelines mentioned above.
-4. Push your branch to your forked repository.
-5. Create a pull request (PR) from your branch to the main firecamp.dev repository.
-6. Provide a clear and concise title for your pull request, summarizing the changes made.
-7. In the PR description, provide a brief explanation of the problem you solved or the feature you added. If applicable, include relevant screenshots or a video showcasing the changes and link the issue id.
-8. Tag your PR with one or more relevant labels from the following options: `graphql`, `ui`, `documentation`, `rest`, `backend`, or any other appropriate labels.
-
-
-
-## Building
-More info on how to build app coming soon.
-
-## Testing
-More info on how to add new tests coming soon.
-
-## Linting
-More info on how to lint coming soon.
-
-
+   ```
+   pnpm dev
+   ```
 
 ## Commit Guidelines
 
@@ -66,8 +64,27 @@ Example Commit Message:
 
 ```
 feat(auth): Add new authentication module
-
 ```
+
+## Building
+More info on how to build the app coming soon.
+
+## Testing
+More info on how to add new tests coming soon.
+
+## Linting
+More info on how to lint coming soon.
+
+## Pull Request Workflow
+
+1. Make your changes in the branch, following the project's coding style and guidelines.
+2. Commit your changes with appropriate messages, adhering to the commit guidelines mentioned above.
+3. Push your branch to your forked repository.
+4. Create a pull request (PR) from your branch to the main firecamp.dev repository.
+5. Provide a clear and concise title for your pull request, summarizing the changes made.
+6. In the PR description, provide a brief explanation of the problem you solved or the feature you added. If applicable, include relevant screenshots or a video showcasing the changes and link the issue id.
+7. Tag your PR with one or more relevant labels from the following options: `graphql`, `ui`, `documentation`, `rest`, `backend`, or any other appropriate labels.
+
 
 
 
