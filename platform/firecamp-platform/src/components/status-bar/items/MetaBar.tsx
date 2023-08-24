@@ -82,9 +82,9 @@ const MetaBar: FC<any> = () => {
   ];
 
   return (
-    <div className="flex items-center cursor-pointer pr-2">
+    <div className="flex items-center cursor-pointer border-l border-app-border px-2">
       <DropdownMenu
-        handler={() => <LifeBuoy strokeWidth={1.5} size={16} />}
+        handler={() => <LifeBuoy strokeWidth={1.5} size={16} height={24}/>}
         options={process.env.NODE_ENV === 'production' ? allOptions : options}
         onSelect={(v) => v.onClick()}
         width={160}

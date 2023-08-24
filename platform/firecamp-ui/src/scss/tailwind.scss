@@ -33,7 +33,7 @@
     --tab-background: var(--app-background);
     --tab-foreground: var(--mantine-color-dark-0);
     --tab-foreground-inactive: var(--mantine-color-gray-4); /* .1 */
-    --tab-border: var(--app-border);
+    --tab-border: var(--mantine-color-dark-4);
     --tab-background-hover: var(--mantine-color-dark-7);
     --tab-background-active: var(--statusBar-background-active);
     --tab-background-activeColor: var(--mantine-color-dark-5);
@@ -525,9 +525,6 @@
 .-mt-px {
     margin-top: -1px;
 }
-.mb-0 {
-    margin-bottom: 0px;
-}
 .mb-1 {
     margin-bottom: 0.25rem;
 }
@@ -644,9 +641,6 @@
 }
 .inline {
     display: inline;
-}
-.\!flex {
-    display: flex !important;
 }
 .flex {
     display: flex;
