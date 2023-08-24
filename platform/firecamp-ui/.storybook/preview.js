@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { withTests } from '@storybook/addon-jest';
-import { addDecorator } from '@storybook/react';
 
 //to access tailwind.scss styles everywhere in project
 import '../src/scss/tailwind.scss';
@@ -10,32 +9,34 @@ import FirecampThemeSelector from '../src/components/theme/FirecampThemeSelector
 import FirecampThemeProvider from '../src/components/theme/FirecampThemeProvider';
 import { EFirecampThemeVariant } from '../src/components/theme/FirecampThemeProvider.interfaces';
 
-export const parameters = {
-  actions: { argTypesRegex: '^on[A-Z].*' },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+const preview = {
+  parameters: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
+    controls: {
+      matchers: {
+        color: /(background|color)$/i,
+        date: /Date$/,
+      },
     },
   },
 };
+
 export const decorators = [
   withTests({
     results,
   }),
+  //adding globally theme-selection
+  (story) => {
+    const [theme, updateTheme] = useState(EFirecampThemeVariant.LightSecondary);
+
+    return (
+      <FirecampThemeProvider themeVariant={theme}>
+        <StoryTheme theme={theme} updateTheme={updateTheme} />
+        {story()}
+      </FirecampThemeProvider>
+    );
+  },
 ];
-
-//adding globally theme-selection
-addDecorator((story) => {
-  const [theme, updateTheme] = useState(EFirecampThemeVariant.LightSecondary);
-
-  return (
-    <FirecampThemeProvider themeVariant={theme}>
-      <StoryTheme theme={theme} updateTheme={updateTheme} />
-      {story()}
-    </FirecampThemeProvider>
-  );
-});
 
 const StoryTheme = ({ theme, updateTheme }) => {
   return (
@@ -44,3 +45,5 @@ const StoryTheme = ({ theme, updateTheme }) => {
     </div>
   );
 };
+
+export default preview;
