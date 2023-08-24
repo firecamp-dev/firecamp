@@ -35,7 +35,9 @@ const StatusBarContainer: FC<any> = ({ className = '' }) => {
         )}
         <MetaBar />
         <div className="">
-          <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/firecamp-dev/firecamp?style=for-the-badge&logo=github&label=Star%20Us&color=%23ddd&cacheSeconds=300" />
+          <a href='https://github.com/firecamp-dev/firecamp' target='_blank'>
+            <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/firecamp-dev/firecamp?style=for-the-badge&logo=github&label=Star%20Us&color=%23ddd&cacheSeconds=300" />
+          </a>
         </div>
       </StatusBar.SecondaryRegion>
     </StatusBar>
