@@ -11,10 +11,10 @@ dx-first api devtool
 
 Firecamp is a dx-first API development platform that helps developers design, develop, test, and document their APIs effortlessly. With a user-friendly interface and a range of powerful features, it streamlines the API development workflow and enhances collaboration among team members.
 
-🌈  best-in-class developer experience inspired by vscode dx. <br/>
-📡 multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs. <br/>
-👐 collaborate on api collections across the workspace and team <br/>
-⛺ build apis faster without switching between tools and apps. documentation, cli, ci/cd under one roof <br/>
+- 🌈  best-in-class developer experience inspired by vscode dx. <br/>
+- 📡 multi-protocol testing capabilities with Rest, GraphQL, Websocket, and SocketIO APIs. <br/>
+- 👐 collaborate on api collections across the workspace and team <br/>
+- ⛺ build apis faster without switching between tools and apps. documentation, cli, ci/cd under one roof <br/>
   
 
 👉 live at https://firecamp.dev
@@ -33,7 +33,7 @@ To get started with Firecamp, follow these steps:
 Read the Firecamp doc for in-depth walk-throughs on functionality to understand the various features and capabilities of Firecamp. 
 
 
-### 🔬 What Firecamp Offers? 
+### 🔬 Features
 
 Firecamp offers you a broad range of features that will help you build APIs faster than ever.
 
@@ -81,8 +81,6 @@ There is a dedicated GUI playground for each API protocol you would be using for
 
 1. [**Rest Playground**](https://firecamp.io/docs/rest/introduction) 
   It's the lightweight, IntelliSense, and next-generation testing client to give the most delightful collaborative experience while building APIs in a team. 
-
-  ![alt text](https://user-images.githubusercontent.com/5078921/262089548-1ef25fd3-bf97-4bd0-b440-7c1f4ef3eb22.png)
 
 2. [**GraphQL Playground**](https://firecamp.io/docs/graphql/introduction) 
   Perform GraphQL operations with a seamless experience. Prepare, Share, and Export your Query Collection collaboratively with your team.
