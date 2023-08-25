@@ -1,4 +1,4 @@
-earl
+
 
 ![FirecampCoverImage](.github/github-cover.png)
 
