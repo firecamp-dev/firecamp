@@ -150,5 +150,6 @@ dist
 .flaskenv*
 !.env.project
 !.env.vault
+!.env.example
 
 oclif.manifest.json
