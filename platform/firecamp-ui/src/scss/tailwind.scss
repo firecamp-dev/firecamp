@@ -62,7 +62,7 @@
     --popover-background: var(--mantine-color-dark-5); /* .2 */
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
-    --popover-shadow: var(--mantine-color-dark-9) 0px 0px 8px 2px;
+    --popover-shadow: var(--mantine-color-dark-9) 0px 8px 6px -6px;
 
     --focus-border: var(--mantine-color-blue-8);
 
@@ -145,7 +145,7 @@
     --popover-background: var(--mantine-color-white);
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
-    --popover-shadow: var(--mantine-color-dark-9) 0px 0px 8px 2px;
+    --popover-shadow: var(--mantine-color-dark-9) 0px 8px 6px -6px;
 
     --focus-border: var(--mantine-color-blue-8);
 
@@ -799,6 +799,9 @@
 }
 .w-20 {
     width: 5rem;
+}
+.w-28 {
+    width: 7rem;
 }
 .w-32 {
     width: 8rem;
@@ -2215,8 +2218,8 @@ hr {
   color: var(--input-placeholder) !important;
   opacity: 1;
 }
-input:not([type="checkbox"]):focus,
-input:not([type="checkbox"]):focus-visible textarea:focus,
+input:focus,
+input:focus-visible textarea:focus,
 textarea:focus-visible {
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
