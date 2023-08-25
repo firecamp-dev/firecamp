@@ -59,6 +59,8 @@
     --input-background-focus: var(--mantine-color-dark-7); /* .1 */
     --input-background: var(--app-background);
 
+    --heading-color: var(--mantine-color-gray-5);
+
     --popover-background: var(--mantine-color-dark-5); /* .2 */
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
@@ -135,6 +137,8 @@
     --statusBar-foreground-active: var(--app-foreground-active);
     --statusBar-border: var(--app-border);
     --statusBar-background-active: var(--mantine-color-gray-2);
+
+    --heading-color: var(--mantine-color-dark-4);
 
     --input-border: var(--app-border);
     --input-placeholder: var(--mantine-color-gray-6);
@@ -1734,6 +1738,9 @@
 .text-graphql {
     color: var(--req-graphql);
 }
+.text-heading-color {
+    color: var(--heading-color);
+}
 .text-info {
     color: var(--info);
 }
@@ -2827,9 +2834,11 @@ tr:focus-visible {
 /*--------table temporary css starts ------------*/
 
 /*--------table 2 css starts------------*/
-.primary-table .mtk1,
-.primary-table th {
+.primary-table .mtk1 {
   color: var(--tab-foreground-inactive) !important;
+}
+.primary-table th {
+  color: var(--heading-color) !important;
 }
 
 .table-cell .table-action {

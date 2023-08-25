@@ -75,6 +75,7 @@ module.exports = {
       focusBorder: 'var(--focus-border)',
       focusColor: '#ffffff1a',
 
+      'heading-color': 'var(--heading-color)',
       primaryColor: 'var(--app-primary)',
       'primaryColor-text': '#ffffff',
       secondaryColor: 'var(--app-secondary)',
