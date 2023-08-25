@@ -15,6 +15,8 @@ Firecamp is a dx-first API development platform that helps developers design, de
   
 live at https://firecamp.dev
 
+![firecamp-cover (12)](https://github.com/firecamp-dev/firecamp/assets/5078921/1ef25fd3-bf97-4bd0-b440-7c1f4ef3eb22)
+
 ----
 
 ### Getting started with Firecamp
