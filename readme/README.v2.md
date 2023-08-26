@@ -17,10 +17,10 @@ Firecamp is a dx-first API development platform that helps developers design, de
 - ⛺ build apis faster without switching between tools and apps. documentation, cli, ci/cd under one roof <br/>
   
 
-
 👉 live at https://firecamp.dev
 
-![firecamp-cover](https://github.com/firecamp-dev/firecamp/assets/5078921/1ef25fd3-bf97-4bd0-b440-7c1f4ef3eb22)
+![alt text](https://user-images.githubusercontent.com/5078921/262089548-1ef25fd3-bf97-4bd0-b440-7c1f4ef3eb22.png)
+
 
 
 ### 🚀 Getting started with Firecamp
