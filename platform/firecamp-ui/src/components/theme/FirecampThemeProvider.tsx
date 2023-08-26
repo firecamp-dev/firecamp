@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import {
   ColorScheme,
   ColorSchemeProvider,
@@ -75,21 +75,28 @@ export const useFirecampStyle = createStyles((theme) => ({
 }));
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
-  themeVariant = EFirecampThemeVariant.LightPrimary,
+themeVariant = EFirecampThemeVariant.LightPrimary,
   children,
   ...props
 }) => {
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+    const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
   const [themeColor, updatethemeColor] = useState<EFirecampThemeVariant>(
     EFirecampThemeVariant.LightPrimary
   );
-
+  const [isLocalStorageColorSchemeAssigned,setIsLocalStorageColorSchemeAssigned] = useState(true); // Track if colorScheme has been selected from localStorage only upon refresh
   useEffect(() => {
     updateTheme(themeVariant);
   }, [themeVariant]);
 
   // update theme colorScheme & primaryColor
   const updateTheme = (color: EFirecampThemeVariant) => {
+    //If colorScheme Exists in LocalStorage And First Time Assinging A a color scheme after loading 
+    const storedValue = localStorage.getItem("colorScheme");
+      if (isLocalStorageColorSchemeAssigned && storedValue) {
+        color = Object.values(EFirecampThemeVariant).find(value => value === storedValue);
+        setIsLocalStorageColorSchemeAssigned(false)
+      }
+  
     // update the primary color
     updatethemeColor(color);
 
@@ -110,8 +117,9 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
     ].includes(color)
       ? EEditorTheme.Lite
       : EEditorTheme.Dark;
-
+        
     localStorage.setItem('editorTheme', editorTheme);
+    localStorage.setItem("colorScheme",color)
     EditorApi.setEditorTheme(editorTheme);
   };
 
