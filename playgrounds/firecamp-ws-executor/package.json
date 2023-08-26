@@ -9,7 +9,7 @@
   "license": "",
   "keywords": [],
   "scripts": {
-    "build": "run-p 'build:*'",
+    "build": "run-p \"build:*\"",
     "build:main": "tsc -p tsconfig.esm.json && tsc -p tsconfig.cjs.json",
     "clean": "rimraf dist/",
     "fix": "run-s fix:*",
