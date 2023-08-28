@@ -1,10 +1,7 @@
-// import Row from './Row';
-// import Column from './Column';
-// import RootContainer from './RootContainer';
-
-import GridLayout, { IGridLayout } from './GridLayout';
+import GridLayout from './GridLayout';
 import FlexLayout from './FlexLayout';
 import ContainerLayout from './ContainerLayout';
+import ScrollArea from '../scroll-area/ScrollArea';
 
 export default {
   title: 'UI-Kit/GridLayout',
@@ -89,13 +86,54 @@ export const LayoutWithMultipleRowOverflowCol = () => (
   <GridLayout
     className={`h-screen w-screen bg-app-background-secondary text-app-foreground border border-solid`}
   >
-    <FlexLayout className="bg-focus1 border border-dashed overflow-auto" flex>
-      <ContainerLayout
-        className="bg-focus2 mx-2 my-3 visible-scrollbar overflow-auto"
-        flex
-      >
+    <FlexLayout className="bg-focus1 border border-dashed" overflow flex>
+      <ContainerLayout className="bg-focus2 mx-2 my-3" overflow flex>
         1st Row - 1st Column
-        <OverflowDivWithDummyText />
+        <ScrollArea
+          classNames={{
+            root: 'whitespace-normal',
+          }}
+        >
+          <OverflowDivWithDummyText />
+          <br />
+          <hr />
+          <br />
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum Lorem Ipsum is simply dummy text of
+          the printing and typesetting industry. Lorem Ipsum has been the
+          industry's standard dummy text ever since the 1500s, when an unknown
+          printer took a galley of type and scrambled it to make a type specimen
+          book. It has survived not only five centuries, but also the leap into
+          electronic typesetting, remaining essentially unchanged. It was
+          popularised in the 1960s with the release of Letraset sheets
+          containing Lorem Ipsum passages, and more recently with desktop
+          publishing software like Aldus PageMaker including versions of Lorem
+          Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged. It was popularised in the 1960s with
+          the release of Letraset sheets containing Lorem Ipsum passages, and
+          more recently with desktop publishing software like Aldus PageMaker
+          including versions of Lorem Ipsum Lorem Ipsum is simply dummy text of
+          the printing and typesetting industry. Lorem Ipsum has been the
+          industry's standard dummy text ever since the 1500s, when an unknown
+          printer took a galley of type and scrambled it to make a type specimen
+          book. It has survived not only five centuries, but also the leap into
+          electronic typesetting, remaining essentially unchanged. It was
+          popularised in the 1960s with the release of Letraset sheets
+          containing Lorem Ipsum passages, and more recently with desktop
+          publishing software like Aldus PageMaker including versions of Lorem
+          Ipsum
+        </ScrollArea>
       </ContainerLayout>
     </FlexLayout>
     <FlexLayout className="bg-focus1 border border-dashed" flex>
@@ -117,7 +155,12 @@ export const LayoutWithMultipleRowColumn = () => (
         1st Row - 2nd Column
       </ContainerLayout>
     </FlexLayout>
-    <FlexLayout className="bg-focus1 border border-dashed p-4" gap={16} flex>
+    <FlexLayout
+      className="bg-focus1 border border-dashed p-4 "
+      gap={16}
+      overflow
+      flex
+    >
       <ContainerLayout className="bg-focus4" flex>
         2nd Row - 1st Column
       </ContainerLayout>
@@ -208,23 +251,25 @@ export const Layout_HTTP = () => (
         1st Row - 1st Column (Header)
       </ContainerLayout>
     </FlexLayout>
-    <FlexLayout className="bg-focus1 border border-dashed p-4" flex gap={16}>
-      <ContainerLayout className="bg-focus4 overflow-auto" flex>
+    <FlexLayout
+      className="bg-focus1 border border-dashed p-4"
+      overflow
+      flex
+      gap={16}
+    >
+      <ContainerLayout className="bg-focus4" flex>
         {' '}
         <GridLayout
-          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-solid overflow-auto`}
+          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-solid `}
         >
-          <FlexLayout
-            className="bg-focus1 border border-dashed overflow-auto"
-            flex
-          >
+          <FlexLayout className="bg-focus1 border border-dashed" overflow flex>
             <ContainerLayout
-              className="bg-focus2 mx-2 my-3 visible-scrollbar overflow-auto"
+              className="bg-focus2 mx-2 my-3 visible-scrollbar "
+              overflow
               flex
             >
               2nd Row - 1st Column
-              {/* TODO CHECK OVERFLOWING CONTENT */}
-              {/* <OverflowDivWithDummyText /> */}
+              <OverflowDivWithDummyText />
             </ContainerLayout>
           </FlexLayout>
           <FlexLayout className="bg-focus1 border border-dashed" flex>
@@ -251,32 +296,21 @@ export const Layout_Web_Socket = () => (
       </ContainerLayout>
     </FlexLayout>
     <FlexLayout className="bg-focus1 border border-dashed p-4" flex gap={16}>
-      <ContainerLayout className="bg-focus4 overflow-auto" flex>
-        {' '}
+      <ContainerLayout className="bg-focus4" flex>
         <GridLayout
-          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-solid overflow-auto`}
+          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-solid`}
         >
-          <FlexLayout
-            className="bg-focus1 border border-dashed overflow-auto"
-            flex
-          >
-            <ContainerLayout
-              className="bg-focus2 mx-2 my-3 visible-scrollbar overflow-auto"
-              flex
-            >
+          <FlexLayout className="bg-focus1 border border-dashed " flex>
+            <ContainerLayout className="bg-focus2 mx-2 my-3" flex>
               2nd Row - 1st Column - 1
             </ContainerLayout>
-            <ContainerLayout
-              className="bg-focus2 mx-2 my-3 visible-scrollbar overflow-auto"
-              flex
-            >
+            <ContainerLayout className="bg-focus2 mx-2 my-3" flex>
               2nd Row - 1st Column - 2
             </ContainerLayout>
           </FlexLayout>
         </GridLayout>
       </ContainerLayout>
       <ContainerLayout className="bg-focus4" flex>
-        {' '}
         2nd Row - 2nd Column
       </ContainerLayout>
     </FlexLayout>
@@ -293,26 +327,21 @@ export const Layout_Socket_IO = () => (
     </FlexLayout>
     <FlexLayout className="bg-focus1 border border-dashed p-4" flex gap={16}>
       <ContainerLayout className="bg-focus4" flex>
-        {' '}
         2nd Row - 1st Column
       </ContainerLayout>
-      <ContainerLayout className="bg-focus4 overflow-auto" flex>
-        {' '}
+      <ContainerLayout className="bg-focus4" flex>
         <GridLayout
-          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-solid overflow-auto`}
+          className={`h-full w-full bg-app-background-secondary text-app-foreground border border-solid`}
         >
-          <FlexLayout
-            className="bg-focus1 border border-dashed overflow-auto"
-            flex
-          >
+          <FlexLayout className="bg-focus1 border border-dashed" flex>
             <ContainerLayout
-              className="bg-focus2 mx-2 my-3 visible-scrollbar overflow-auto"
+              className="bg-focus2 mx-2 my-3 visible-scrollbar"
               flex
             >
               2nd Row - 2nd Column - 1
             </ContainerLayout>
             <ContainerLayout
-              className="bg-focus2 mx-2 my-3 visible-scrollbar overflow-auto"
+              className="bg-focus2 mx-2 my-3 visible-scrollbar "
               flex
             >
               2nd Row - 2nd Column - 2

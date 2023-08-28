@@ -11,13 +11,15 @@ To create the layout for page in proper structure for easy maintenance.
 
 We are using flex based Row [FlexLayout] - Columns [ContainerLayout] layout. <br/>
 
-| (Row) Classname | Usage                                   |
-| --------------- | --------------------------------------- |
-| flex            | for row fill all available parent space |
+| (Row) Classname | Usage                                                                       |
+| --------------- | --------------------------------------------------------------------------- |
+| flex            | [true] the row expand to occupy all the available space within its parent.  |
+|                 | [false - default] to adjust its own size based on the size of its contents. |
 
-| (Column) Prop | Usage                                             |
-| ------------- | ------------------------------------------------- |
-| flex          | for column to fill all available parent row space |
+| (Column) Prop | Usage                                                                                     |
+| ------------- | ----------------------------------------------------------------------------------------- |
+| flex          | [true] to occupy all the available space within its parent (when used within FlexLayout). |
+|               | [false - default] to adjust its own size based on its contents.                           |
 
 #### **Component Related**:
 
@@ -29,6 +31,7 @@ We are using flex based Row [FlexLayout] - Columns [ContainerLayout] layout. <br
 
 #### **Best Practices**:
 
+- Use `<GridLayout></GridLayout>` as wrapper
 - Always nest `<ContainerLayout></ContainerLayout>` in `<FlexLayout></FlexLayout>`
 
 Do:
