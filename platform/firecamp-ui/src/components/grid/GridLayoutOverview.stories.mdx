@@ -1,0 +1,103 @@
+import { Meta } from '@storybook/addon-docs';
+import LinkTo from '@storybook/addon-links/react';
+
+<Meta title="UI-Kit/GridLayout/Overview" />
+
+## **Grid Layout**
+
+To create the layout for page in proper structure for easy maintenance.
+
+#### **Component Usage**:
+
+We are using flex based Row [FlexLayout] - Columns [ContainerLayout] layout. <br/>
+
+| (Row) Classname | Usage                                   |
+| --------------- | --------------------------------------- |
+| flex            | for row fill all available parent space |
+
+| (Column) Prop | Usage                                             |
+| ------------- | ------------------------------------------------- |
+| flex          | for column to fill all available parent row space |
+
+#### **Component Related**:
+
+> Layout is created with : GridLayout, FlexLayout, ContainerLayout.
+
+#### **Component Dependencies**:
+
+- Use tailwind classes for flex to generate any layout you want.
+
+#### **Best Practices**:
+
+- Always nest `<ContainerLayout></ContainerLayout>` in `<FlexLayout></FlexLayout>`
+
+Do:
+
+```
+<GridLayout>
+	<FlexLayout>
+		<ContainerLayout>
+		Loream ipsum unde omnis iste natus error sit voluptatem accusantium.
+		</ContainerLayout>
+		<ContainerLayout>
+			<FlexLayout>
+				<ContainerLayout>
+					Loream ipsum unde omnis iste natus error sit.
+				</ContainerLayout>
+      			<ContainerLayout>
+					Loream ipsum unde omnis iste natus error sit.
+				</ContainerLayout>
+			</FlexLayout>
+		</ContainerLayout>
+	</FlexLayout>
+</GridLayout>
+```
+
+Avoid:
+
+```
+<FlexLayout>
+  <FlexLayout>
+    Do not nest unnecessary Rows
+  </FlexLayout>
+</FlexLayout>
+```
+
+```
+<FlexLayout>
+	<ContainerLayout>
+		<ContainerLayout>
+			Do not nest unnecessary Rows
+		</ContainerLayout>
+	<ContainerLayout>
+</FlexLayout>
+```
+
+```
+<FlexLayout>
+	Do not place any component directly in Row, use Column inside a Row.
+</FlexLayout>
+```
+
+#### **Examples**:
+
+- <LinkTo
+    kind="ui-kit-grid--layout-with-nested-column"
+    className="!text-primaryColor"
+  >
+    Nested Column Example
+  </LinkTo>
+
+#### **References**:
+
+- <a
+    className="!text-primaryColor"
+    href="https://tailwindcss.com/docs/flex"
+    target="_blank"
+  >
+    Tailwind Flex
+  </a>
+
+#### **Future Improvements:**
+
+- Can add prop scrollbar for visibility
