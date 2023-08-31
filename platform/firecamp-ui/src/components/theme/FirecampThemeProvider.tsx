@@ -75,60 +75,64 @@ export const useFirecampStyle = createStyles((theme) => ({
 }));
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
-themeVariant = EFirecampThemeVariant.LightPrimary,
+  themeVariant,
   children,
   ...props
 }) => {
-    const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
-  const [themeColor, updatethemeColor] = useState<EFirecampThemeVariant>(
-    EFirecampThemeVariant.LightPrimary
-  );
-  const [isLocalStorageColorSchemeAssigned,setIsLocalStorageColorSchemeAssigned] = useState(true); // Track if colorScheme has been selected from localStorage only upon refresh
-  useEffect(() => {
-    updateTheme(themeVariant);
-  }, [themeVariant]);
 
-  // update theme colorScheme & primaryColor
-  const updateTheme = (color: EFirecampThemeVariant) => {
-    //If colorScheme Exists in LocalStorage And First Time Assinging A a color scheme after loading 
-    const storedValue = localStorage.getItem("colorScheme");
-      if (isLocalStorageColorSchemeAssigned && storedValue) {
-        color = Object.values(EFirecampThemeVariant).find(value => value === storedValue);
-        setIsLocalStorageColorSchemeAssigned(false)
-      }
-  
-    // update the primary color
-    updatethemeColor(color);
+  const _initialize = () => {
+    // on first time load set theme from local storage, if not found then set default
+    let themeStored = localStorage.getItem('theme') as EFirecampThemeVariant;
+    if (!Object.values(EFirecampThemeVariant).includes(themeStored)) {
+      themeStored = EFirecampThemeVariant.LightPrimary
+    }
+    return themeStored;
+  }
+
+  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+  const [theme, setTheme] = useState<EFirecampThemeVariant>(_initialize);
+
+  // update theme
+  const updateTheme = (theme: EFirecampThemeVariant) => {
 
     // update the color schema
     setColorScheme(
       [
         EFirecampThemeVariant.LightPrimary,
         EFirecampThemeVariant.LightSecondary,
-      ].includes(color)
+      ].includes(theme)
         ? 'light'
         : 'dark'
     );
 
+    // save in local storage
+    localStorage.setItem("theme", theme);
+
+    // update theme
+    setTheme(theme);
+
+    updateMonacoEditorTheme(theme)
+  };
+
+  const updateMonacoEditorTheme = (theme: EFirecampThemeVariant) => {
     // update the monaco editor theme
     const editorTheme = [
       EFirecampThemeVariant.LightPrimary,
       EFirecampThemeVariant.LightSecondary,
-    ].includes(color)
+    ].includes(theme)
       ? EEditorTheme.Lite
       : EEditorTheme.Dark;
-        
+
     localStorage.setItem('editorTheme', editorTheme);
-    localStorage.setItem("colorScheme",color)
     EditorApi.setEditorTheme(editorTheme);
-  };
+  }
 
   return (
     //@ts-ignore
-    <ColorSchemeProvider colorScheme={themeColor}
-      toggleColorScheme={(c: ColorScheme | EFirecampThemeVariant) =>
-        updateTheme(c as EFirecampThemeVariant)
-      }
+    <ColorSchemeProvider colorScheme={theme}
+      toggleColorScheme={(c: ColorScheme | EFirecampThemeVariant) => {
+        updateTheme(c as EFirecampThemeVariant);
+      }}
     >
       <MantineProvider
         theme={{
@@ -446,7 +450,7 @@ themeVariant = EFirecampThemeVariant.LightPrimary,
             'primary-color': [
               EFirecampThemeVariant.LightPrimary,
               EFirecampThemeVariant.DarkPrimary,
-            ].includes(themeColor)
+            ].includes(theme)
               ? primaryColor
               : secondaryColor,
             dark: defaultDarkColor,
