@@ -35,9 +35,9 @@ const FirecampThemeSelector = () => {
   const _setTheme = (t: any) => {
     try {
       // Set app body theme - for matching tailwind theme
-      document.body.className = `theme-${t.split('-')[0] || 'light'} primary-${
-        t.split('-')[1] || 'orange'
-      }`;
+      const themeMode = t.split('-')[0] || 'light';
+      const themeColor = t.split('-')[1] === 'primary' ? 'orange' : 'green';
+      document.body.className = `theme-${themeMode} primary-${themeColor}`;
     } catch (error) {
       console.log({ error });
     }
@@ -47,6 +47,7 @@ const FirecampThemeSelector = () => {
   const activeTheme = ThemeOptions.find(
     (t) => t.value === (colorScheme as EFirecampThemeVariant)
   );
+  if (!activeTheme) return <></>;
   return (
     <DropdownMenu
       onOpenChange={(v) => toggleOpen(v)}
