@@ -963,6 +963,11 @@
        -moz-user-select: text;
             user-select: text;
 }
+.select-auto {
+    -webkit-user-select: auto;
+       -moz-user-select: auto;
+            user-select: auto;
+}
 .resize {
     resize: both;
 }
