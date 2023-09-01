@@ -18,6 +18,4 @@ export enum EFirecampThemeVariant {
   DarkSecondary = 'dark-secondary',
 }
 export type ColorType = Tuple<string, 10>;
-export interface IFirecampThemeProvider extends MantineProviderProps {
-  themeVariant?: EFirecampThemeVariant;
-}
+export interface IFirecampThemeProvider extends MantineProviderProps {}
