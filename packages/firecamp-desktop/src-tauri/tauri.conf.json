@@ -2,7 +2,7 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devPath": "https://firecamp.dev",
+    "devPath": "https://localhost:3000",
     "distDir": "../dist",
     "withGlobalTauri": false
   },

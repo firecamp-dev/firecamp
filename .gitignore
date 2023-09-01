@@ -21,6 +21,7 @@ cypress/videos
 *.zip
 *.crx
 *.pem
+!x-dev-certs/**/*.pem
 update.xml
 .idea
 package-lock.json
