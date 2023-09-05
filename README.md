@@ -14,6 +14,14 @@
    <a href="https://github.com/firecamp-dev/firecamp/pulse"><img src="https://img.shields.io/github/commit-activity/m/firecamp-dev/firecamp" alt="Commits-per-month"></a>
 </p>
 
+<br/>
+
+> **🚧 We're currently working on the desktop application which can be found on the [feat/62-desktop](https://github.com/firecamp-dev/firecamp/tree/feat/62-desktop) branch.**
+>
+> **[Read more 👀](https://github.com/firecamp-dev/firecamp/issues/62)**
+
+<br/>
+
 <p align="center">
   <a href="https://firecamp.dev">
   <img alt ="firecamp-cover" src="https://github.com/firecamp-dev/firecamp/assets/5078921/1ef25fd3-bf97-4bd0-b440-7c1f4ef3eb22"/>
