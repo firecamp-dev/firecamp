@@ -1,3 +1,5 @@
+<br/><br/>
+
 <p align="center">
 <a href="https://firecamp.dev">
   <img src="https://github.com/firecamp-dev/firecamp/blob/main/.github/logo.svg" alt="Firecamp Logo" width="70">
@@ -8,10 +10,19 @@
 <p align="center"><b>dx-first open-source api devtool</b></p>
 
 <p align="center">
-<a href="https://discord.gg/8hRaqhK">
-<img alt="Discord online members" src="https://badgen.net/discord/members/8hRaqhK?color=5865F2&label=Discord&style=for-the-badge" />
-</a>
+   <a href="https://discord.gg/8hRaqhK"><img alt="Discord online members" src="https://badgen.net/discord/members/8hRaqhK?color=5865F2&label=Discord&style=for-the-badge" /></a>
+   <a href="https://github.com/firecamp-dev/firecamp/stargazers"><img src="https://img.shields.io/github/stars/firecamp-dev/firecamp" alt="Github Stars"></a>
+   <a href="https://github.com/firecamp-dev/firecamp/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-AGPLv3-purple" alt="License"></a>
+   <a href="https://github.com/firecamp-dev/firecamp/pulse"><img src="https://img.shields.io/github/commit-activity/m/firecamp-dev/firecamp" alt="Commits-per-month"></a>
 </p>
+
+<br/>
+
+> **🚧 We're currently working on the desktop application which can be found on the [feat/62-desktop](https://github.com/firecamp-dev/firecamp/tree/feat/62-desktop) branch.**
+>
+> **[Read more 👀](https://github.com/firecamp-dev/firecamp/issues/62)**
+
+<br/>
 
 <p align="center">
   <a href="https://firecamp.dev">
