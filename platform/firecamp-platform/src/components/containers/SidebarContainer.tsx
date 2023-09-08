@@ -281,10 +281,10 @@ const SidebarContainer: FC<any> = () => {
       </ActivityBar>
       {activeItem ? (
         <Resizable
-          width={'250'}
+          width={'265'}
           height="100%"
           right={true}
-          minWidth={'250'}
+          minWidth={'265'}
           maxWidth={'600'}
           className={cx({ closed: false })}
         >

@@ -11,6 +11,7 @@ const Pane: FC<IPane> & {
 } = ({
     expanded = false,
     className,
+    hideBorder = false,
     headerClassName,
     bodyClassName,
     height = '',
@@ -28,6 +29,7 @@ const Pane: FC<IPane> & {
                 expanded={_expanded}
                 titleRenderer={headerTitleRenderer}
                 actionRenderer={headerActionRenderer}
+                hideBorder={hideBorder}
             />
             {
                 _expanded
@@ -39,7 +41,7 @@ const Pane: FC<IPane> & {
         </div>);
     };
 
-const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, className, expanded, toggle }) => {
+const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, className, expanded, toggle, hideBorder }) => {
 
     const actionDomRef = useRef<HTMLDivElement>();
     const onToggle = (e: any) => {
@@ -47,7 +49,10 @@ const Header: FC<IHeader> = ({ titleRenderer, actionRenderer, className, expande
         toggle()
     }
     return (
-        <div className={cx("pane-header cursor-pointer border-y border-app-border px-2 py-1", className)}
+        <div className={cx("pane-header cursor-pointer border-app-border px-2 py-1", 
+        { 'border-y': !hideBorder }, 
+        { 'border-b': hideBorder && expanded }, 
+        className)}
             tabIndex={1}
             onClick={onToggle}>
             {expanded ? <ChevronDown size={16} className="mr-1" /> : <ChevronRight size={16} className="mr-1" />}
