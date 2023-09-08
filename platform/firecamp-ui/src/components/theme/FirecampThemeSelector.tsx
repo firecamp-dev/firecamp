@@ -33,14 +33,6 @@ const FirecampThemeSelector = () => {
   }, [colorScheme]);
 
   const _setTheme = (t: any) => {
-    try {
-      // Set app body theme - for matching tailwind theme
-      const themeMode = t.split('-')[0] || 'light';
-      const themeColor = t.split('-')[1] === 'primary' ? 'orange' : 'green';
-      document.body.className = `theme-${themeMode} primary-${themeColor}`;
-    } catch (error) {
-      console.log({ error });
-    }
     toggleColorScheme(t);
   };
 

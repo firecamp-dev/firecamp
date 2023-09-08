@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import {
   ColorScheme,
   ColorSchemeProvider,
@@ -79,22 +79,20 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
   children,
   ...props
 }) => {
-
   const _initialize = () => {
     // on first time load set theme from local storage, if not found then set default
     let themeStored = localStorage.getItem('theme') as EFirecampThemeVariant;
     if (!Object.values(EFirecampThemeVariant).includes(themeStored)) {
-      themeStored = EFirecampThemeVariant.LightPrimary
+      themeStored = EFirecampThemeVariant.LightPrimary;
     }
     return themeStored;
-  }
+  };
 
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
   const [theme, setTheme] = useState<EFirecampThemeVariant>(_initialize);
 
   // update theme
   const updateTheme = (theme: EFirecampThemeVariant) => {
-
     // update the color schema
     setColorScheme(
       [
@@ -106,12 +104,12 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
     );
 
     // save in local storage
-    localStorage.setItem("theme", theme);
+    localStorage.setItem('theme', theme);
 
     // update theme
     setTheme(theme);
 
-    updateMonacoEditorTheme(theme)
+    updateMonacoEditorTheme(theme);
   };
 
   const updateMonacoEditorTheme = (theme: EFirecampThemeVariant) => {
@@ -125,7 +123,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
 
     localStorage.setItem('editorTheme', editorTheme);
     EditorApi.setEditorTheme(editorTheme);
-  }
+  };
 
   return (
     //@ts-ignore
@@ -137,7 +135,219 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
       <MantineProvider
         theme={{
           // added custom preflight css to prevent default button styles as it affects the mantine button component preview
-          globalStyles: (theme) => ({
+          globalStyles: (globalTheme) => ({
+            ':root': {
+              '--font-family': '"Lato", sans-serif !important',
+
+              // common root variables
+              '--req-get': 'var(--mantine-color-green-7)',
+              '--req-post': 'var(--mantine-color-orange-7)',
+              '--req-put': 'var(--mantine-color-cyan-7)',
+              '--req-delete': 'var(--mantine-color-red-7)',
+              '--req-patch': 'var(--mantine-color-indigo-7)',
+              '--req-head': 'var(--mantine-color-grape-7)',
+              '--req-options': 'var(--mantine-color-pink-7)',
+              '--req-purge': 'var(--mantine-color-orange-7)',
+              '--req-link': 'var(--mantine-color-blue-7)',
+              '--req-unlink': 'var(--mantine-color-cyan-7)',
+              '--req-graphql': 'var(--mantine-color-pink-6)',
+              '--req-websocket': 'var(--mantine-color-red-6)',
+              '--req-socketio': 'var(--mantine-color-lime-4)',
+              '--link': 'var(--mantine-color-blue-8)',
+
+              '--error': ' var(--mantine-color-red-7)',
+              '--warning': ' var(--mantine-color-orange-4)',
+              '--info': ' var(--mantine-color-blue-6)',
+              '--success': ' var(--mantine-color-lime-8)',
+
+              '--focus-level-1': ' rgba(var(--color), 0.06)',
+              '--focus-level-2': ' rgba(var(--color), 0.1)',
+              '--focus-level-3': ' rgba(var(--color), 0.14)',
+              '--focus-level-4': ' rgba(var(--color), 0.18)',
+
+              ...(globalTheme.colorScheme === 'dark'
+                ? {
+                    '--app-background': ' var(--mantine-color-dark-7)',
+                    '--app-foreground': ' var(--mantine-color-gray-4)',
+                    '--app-foreground-active': ' var(--mantine-color-white)',
+                    '--app-foreground-inactive': ' var(--mantine-color-dark-3)',
+                    '--app-primary': ' var(--mantine-color-primary-color-8)',
+                    '--app-secondary': ' var(--mantine-color-dark-4)',
+                    '--app-border': ' var(--mantine-color-dark-5)',
+                    '--app-focus': ' var(--mantine-color-indigo-5)',
+                    '--app-error': ' var(--mantine-color-red-8)',
+                    '--app-overlay': ' var(--mantine-color-gray-5)',
+                    '--app-background-secondary':
+                      ' var(--mantine-color-gray-9)',
+
+                    '--tab-background': ' var(--app-background)',
+                    '--tab-foreground': ' var(--mantine-color-dark-0)',
+                    '--tab-foreground-inactive': ' var(--mantine-color-gray-4)',
+                    '--tab-border': ' var(--mantine-color-dark-4)',
+                    '--tab-background-hover': ' var(--mantine-color-dark-7)',
+                    '--tab-background-active':
+                      ' var(--statusBar-background-active)',
+                    '--tab-background-activeColor':
+                      ' var(--mantine-color-dark-5)',
+
+                    '--activityBar-background': ' var(--mantine-color-dark-5)',
+                    '--activityBar-foreground': ' var(--mantine-color-white)',
+                    '--activityBar-foreground-inactive':
+                      ' var(--mantine-color-gray-4)',
+                    '--activityBar-background-active': ' var(--focus-level-2)',
+                    '--activityBar-border-active': ' var(--app-primary)',
+                    '--activityBar-border': ' var(--mantine-color-dark-5)',
+                    '--activityBarBadge-foreground':
+                      ' var(--mantine-color-white)',
+                    '--activityBarBadge-background':
+                      ' var(--mantine-color-blue-6)',
+
+                    '--statusBar-background': ' var(--app-background)',
+                    '--statusBar-foreground': ' var(--app-foreground)',
+                    '--statusBar-foreground-active':
+                      ' var(--app-foreground-active)',
+                    '--statusBar-border': ' var(--mantine-color-dark-5)',
+                    '--statusBar-background-active':
+                      ' var(--mantine-color-gray-9)',
+
+                    '--input-border': ' var(--app-border)',
+                    '--input-placeholder': ' var(--mantine-color-dark-3)',
+                    '--input-text': ' var(--mantine-color-white)',
+                    '--input-background-focus': ' var(--mantine-color-dark-7)',
+                    '--input-background': ' var(--app-background)',
+
+                    '--popover-background': ' var(--mantine-color-dark-5)',
+                    '--popover-foreground': ' var(--app-foreground)',
+                    '--popover-border': ' transparent',
+                    '--popover-shadow':
+                      ' var(--mantine-color-dark-9) 0px 0px 8px 2px',
+
+                    '--focus-border': ' var(--mantine-color-blue-8)',
+
+                    '--modal-background': ' var(--mantine-color-dark-6)',
+                    '--modal-foreground': ' var(--mantine-color-dark-2)',
+                    '--modal-foreground-active': ' var(--mantine-color-white)',
+                    '--modal-shadow': ' var(--mantine-color-dark-9)',
+                    '--modal-border': ' var(--mantine-color-dark-6)',
+
+                    '--color':
+                      '  128, 128, 128' /* var(--mantine-color-gray-6) */,
+
+                    '--collection-text': ' var(--mantine-color-gray-4)',
+
+                    '--cm-property': ' var(--mantine-color-red-4)',
+                    '--cm-keyword': ' var(--mantine-color-blue-2)',
+                    '--cm-def': ' var(--mantine-color-dark-0)',
+                    '--cm-attribute': ' var(--mantine-color-blue-2)',
+                    '--cm-number': ' var(--mantine-color-orange-5)',
+                    '--cm-punctuation': ' var(--mantine-color-dark-1)',
+                    '--cm-ws': ' var(--mantine-color-dark-1)',
+                    '--selected': ' var(--mantine-color-dark-9)',
+                    '--cm-string': ' var(--mantine-color-dark-0)',
+                  }
+                : {
+                    '--app-background': 'var(--mantine-color-gray-0)',
+                    '--app-foreground': 'var(--mantine-color-dark-5)',
+                    '--app-foreground-active': 'var(--mantine-color-gray-9)',
+                    '--app-foreground-inactive': 'var(--mantine-color-dark-4)',
+                    '--app-primary': 'var(--mantine-color-primary-color-6)',
+                    '--app-secondary': 'var(--mantine-color-dark-4)',
+                    '--app-border': ' var(--mantine-color-gray-4)',
+                    '--app-focus': 'var(--mantine-color-indigo-5)',
+                    '--app-error': 'var(--mantine-color-red-8)',
+                    '--app-overlay': 'var(--mantine-color-dark-6)',
+                    '--app-background-secondary': 'var(--mantine-color-gray-1)',
+
+                    '--tab-background': ' var(--mantine-color-gray-0)',
+                    '--tab-foreground': 'var(--mantine-color-dark-6)',
+                    '--tab-foreground-inactive': 'var(--mantine-color-dark-5)',
+                    '--tab-border': 'var(--app-border)',
+                    '--tab-background-hover': 'var(--mantine-color-gray-0)',
+                    '--tab-background-active': 'var(--mantine-color-gray-0)',
+                    '--tab-background-activeColor':
+                      'var(--mantine-color-gray-1)',
+
+                    '--activityBar-background': 'var(--mantine-color-gray-1)',
+                    '--activityBar-foreground': 'var(--mantine-color-dark-6)',
+                    '--activityBar-foreground-inactive':
+                      'var(--mantine-color-dark-3)',
+                    '--activityBar-background-active': 'var(--focus-level-2)',
+                    '--activityBar-border-active': 'var(--app-primary)',
+                    '--activityBar-border': 'var(--mantine-color-gray-3)',
+                    '--activityBarBadge-foreground':
+                      'var(--mantine-color-white)',
+                    '--activityBarBadge-background':
+                      'var(--mantine-color-blue-6)',
+
+                    '--statusBar-background': 'var(--app-background)',
+                    '--statusBar-foreground': 'var(--app-foreground)',
+                    '--statusBar-foreground-active':
+                      'var(--app-foreground-active)',
+                    '--statusBar-border': 'var(--app-border)',
+                    '--statusBar-background-active':
+                      'var(--mantine-color-gray-2)',
+
+                    '--input-border': 'var(--app-border)',
+                    '--input-placeholder': 'var(--mantine-color-gray-6)',
+                    '--input-text': 'var(--mantine-color-gray-9)',
+                    '--input-background-focus': 'var(--mantine-color-white)',
+                    '--input-background': 'rgba(var(--color), 0.06)',
+
+                    '--popover-background': 'var(--mantine-color-white)',
+                    '--popover-foreground': 'var(--app-foreground)',
+                    '--popover-border': 'transparent',
+                    '--popover-shadow':
+                      'var(--mantine-color-dark-9) 0px 0px 8px 2px',
+
+                    '--focus-border': 'var(--mantine-color-blue-8)',
+
+                    '--modal-background': 'var(--mantine-color-gray-1)',
+                    '--modal-foreground': 'var(--mantine-color-dark-6)',
+                    '--modal-foreground-active': 'var(--mantine-color-gray-9)',
+                    '--modal-shadow': 'var(--mantine-color-dark-1)',
+                    '--modal-border': 'var(--mantine-color-gray-3)',
+
+                    '--color': '86, 88, 105',
+
+                    '--collection-text': 'var(--mantine-color-dark-5)',
+
+                    '--cm-property': 'var(--mantine-color-blue-9)',
+                    '--cm-keyword': 'var(--mantine-color-red-9)',
+                    '--cm-def': 'var(--mantine-color-teal-9)',
+                    '--cm-attribute': 'var(--mantine-color-red-9)',
+                    '--cm-number': 'var(--mantine-color-orange-5)',
+                    '--cm-punctuation': 'var(--mantine-color-dark-1)',
+                    '--cm-ws': 'var(--mantine-color-dark-1)',
+                    '--selected': 'var(--mantine-color-dark-9)',
+                    '--cm-string': 'var(--mantine-color-teal-9)',
+                  }),
+
+              ...([
+                EFirecampThemeVariant.LightSecondary,
+                EFirecampThemeVariant.DarkSecondary,
+              ].includes(theme)
+                ? {
+                    '--app-primary': 'var(--mantine-color-green-7) !important',
+                  }
+                : {}),
+            },
+
+            // tailwind class based theme styles
+            ...(globalTheme.colorScheme === 'dark'
+              ? {
+                  '.invert img': {
+                    filter: 'invert(0.8)',
+                  },
+                  '.drag-icon': {
+                    filter: 'invert(1)',
+                  },
+                }
+              : {
+                  '.invert img': {
+                    filter: 'invert(0)',
+                  },
+                }),
+
             /*
             1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
             2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
@@ -464,9 +674,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
         withNormalizeCSS
         {...props}
       >
-        <ModalsProvider>
-          {children}
-        </ModalsProvider>
+        <ModalsProvider>{children}</ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );
