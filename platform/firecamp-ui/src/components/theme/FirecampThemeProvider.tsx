@@ -75,52 +75,64 @@ export const useFirecampStyle = createStyles((theme) => ({
 }));
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
-  themeVariant = EFirecampThemeVariant.LightPrimary,
+  themeVariant,
   children,
   ...props
 }) => {
+
+  const _initialize = () => {
+    // on first time load set theme from local storage, if not found then set default
+    let themeStored = localStorage.getItem('theme') as EFirecampThemeVariant;
+    if (!Object.values(EFirecampThemeVariant).includes(themeStored)) {
+      themeStored = EFirecampThemeVariant.LightPrimary
+    }
+    return themeStored;
+  }
+
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
-  const [themeColor, updatethemeColor] = useState<EFirecampThemeVariant>(
-    EFirecampThemeVariant.LightPrimary
-  );
+  const [theme, setTheme] = useState<EFirecampThemeVariant>(_initialize);
 
-  useEffect(() => {
-    updateTheme(themeVariant);
-  }, [themeVariant]);
-
-  // update theme colorScheme & primaryColor
-  const updateTheme = (color: EFirecampThemeVariant) => {
-    // update the primary color
-    updatethemeColor(color);
+  // update theme
+  const updateTheme = (theme: EFirecampThemeVariant) => {
 
     // update the color schema
     setColorScheme(
       [
         EFirecampThemeVariant.LightPrimary,
         EFirecampThemeVariant.LightSecondary,
-      ].includes(color)
+      ].includes(theme)
         ? 'light'
         : 'dark'
     );
 
+    // save in local storage
+    localStorage.setItem("theme", theme);
+
+    // update theme
+    setTheme(theme);
+
+    updateMonacoEditorTheme(theme)
+  };
+
+  const updateMonacoEditorTheme = (theme: EFirecampThemeVariant) => {
     // update the monaco editor theme
     const editorTheme = [
       EFirecampThemeVariant.LightPrimary,
       EFirecampThemeVariant.LightSecondary,
-    ].includes(color)
+    ].includes(theme)
       ? EEditorTheme.Lite
       : EEditorTheme.Dark;
 
     localStorage.setItem('editorTheme', editorTheme);
     EditorApi.setEditorTheme(editorTheme);
-  };
+  }
 
   return (
     //@ts-ignore
-    <ColorSchemeProvider colorScheme={themeColor}
-      toggleColorScheme={(c: ColorScheme | EFirecampThemeVariant) =>
-        updateTheme(c as EFirecampThemeVariant)
-      }
+    <ColorSchemeProvider colorScheme={theme}
+      toggleColorScheme={(c: ColorScheme | EFirecampThemeVariant) => {
+        updateTheme(c as EFirecampThemeVariant);
+      }}
     >
       <MantineProvider
         theme={{
@@ -438,7 +450,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
             'primary-color': [
               EFirecampThemeVariant.LightPrimary,
               EFirecampThemeVariant.DarkPrimary,
-            ].includes(themeColor)
+            ].includes(theme)
               ? primaryColor
               : secondaryColor,
             dark: defaultDarkColor,

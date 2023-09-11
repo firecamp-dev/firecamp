@@ -29,11 +29,16 @@ const StatusBarContainer: FC<any> = ({ className = '' }) => {
       </StatusBar.PrimaryRegion>
       <StatusBar.SecondaryRegion id={'firecamp-status-bar-secondary-region'}>
         {firecampAgent === EFirecampAgent.Web && (
-          <div className="pr-3">
+          <div className="px-2 border-l border-app-border">
             <FcAgentSelector />
           </div>
         )}
         <MetaBar />
+        <div className="">
+          <a href='https://github.com/firecamp-dev/firecamp' target='_blank'>
+            <img className='h-6' alt="GitHub Repo stars" src="https://img.shields.io/github/stars/firecamp-dev/firecamp?style=for-the-badge&logo=github&label=Star%20Us&color=%23ddd&cacheSeconds=300" />
+          </a>
+        </div>
       </StatusBar.SecondaryRegion>
     </StatusBar>
   );

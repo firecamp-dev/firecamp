@@ -121,7 +121,7 @@ const CloneEnvironment: FC<IModal> = ({ opened, onClose = () => {} }) => {
       title={
         !isFetching ? (
           <>
-            <div className="text-lg leading-5 px-6 py-4 flex items-center font-medium">
+            <div className="text-lg leading-5 flex items-center font-medium">
               Clone Environment
             </div>
           </>
@@ -142,7 +142,7 @@ const CloneEnvironment: FC<IModal> = ({ opened, onClose = () => {} }) => {
       ) : (
         <>
           <ProgressBar active={isRequesting} />
-          <div className="p-4">
+          <div className="pt-4">
             <div className="">
               <div className="items-center mb-4">
                 <label
@@ -233,7 +233,7 @@ const CloneEnvironment: FC<IModal> = ({ opened, onClose = () => {} }) => {
               />
             </div>
           </div>
-          <div className="p-4">
+          <div className="">
             <TabHeader className="!p-0">
               <TabHeader.Right>
                 <Button text="Cancel" onClick={(e) => onClose()} ghost xs />
