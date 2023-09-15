@@ -27,10 +27,18 @@ const ThemeOptions = [
 const FirecampThemeSelector = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [isOpen, toggleOpen] = useState(false);
+  const [activeTheme, updateActiveTheme] = useState<{
+    name: string;
+    value: EFirecampThemeVariant;
+  }>();
 
-  const activeTheme = ThemeOptions.find(
-    (t) => t.value === (colorScheme as EFirecampThemeVariant)
-  );
+  useEffect(() => {
+    const activeThemeOption = ThemeOptions.find(
+      (t) => t.value === (colorScheme as EFirecampThemeVariant)
+    );
+    updateActiveTheme(activeThemeOption);
+  }, [colorScheme]);
+
   if (!activeTheme) return <></>;
   return (
     <DropdownMenu
