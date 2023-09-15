@@ -75,26 +75,38 @@ export const useFirecampStyle = createStyles((theme) => ({
 }));
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
-  themeVariant,
   children,
   ...props
 }) => {
-
   const _initialize = () => {
     // on first time load set theme from local storage, if not found then set default
     let themeStored = localStorage.getItem('theme') as EFirecampThemeVariant;
     if (!Object.values(EFirecampThemeVariant).includes(themeStored)) {
-      themeStored = EFirecampThemeVariant.LightPrimary
+      themeStored = EFirecampThemeVariant.LightPrimary;
     }
     return themeStored;
-  }
+  };
+  const _initializeColorScheme = () => {
+    // on first time load set theme from local storage, if not found then set default
+    let themeColor = (
+      [
+        EFirecampThemeVariant.DarkPrimary,
+        EFirecampThemeVariant.DarkSecondary,
+      ].includes(localStorage.getItem('theme') as EFirecampThemeVariant)
+        ? 'dark'
+        : 'light'
+    ) as ColorScheme;
 
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+    return themeColor;
+  };
+
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(
+    _initializeColorScheme
+  );
   const [theme, setTheme] = useState<EFirecampThemeVariant>(_initialize);
 
   // update theme
   const updateTheme = (theme: EFirecampThemeVariant) => {
-
     // update the color schema
     setColorScheme(
       [
@@ -106,12 +118,12 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
     );
 
     // save in local storage
-    localStorage.setItem("theme", theme);
+    localStorage.setItem('theme', theme);
 
     // update theme
     setTheme(theme);
 
-    updateMonacoEditorTheme(theme)
+    updateMonacoEditorTheme(theme);
   };
 
   const updateMonacoEditorTheme = (theme: EFirecampThemeVariant) => {
@@ -125,7 +137,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
 
     localStorage.setItem('editorTheme', editorTheme);
     EditorApi.setEditorTheme(editorTheme);
-  }
+  };
 
   return (
     //@ts-ignore
@@ -464,9 +476,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
         withNormalizeCSS
         {...props}
       >
-        <ModalsProvider>
-          {children}
-        </ModalsProvider>
+        <ModalsProvider>{children}</ModalsProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );

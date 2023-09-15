@@ -71,10 +71,12 @@
     --input-background-focus: var(--mantine-color-dark-7); /* .1 */
     --input-background: var(--app-background);
 
+    --heading-color: var(--mantine-color-gray-5);
+
     --popover-background: var(--mantine-color-dark-5); /* .2 */
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
-    --popover-shadow: var(--mantine-color-dark-9) 0px 0px 8px 2px;
+    --popover-shadow: var(--mantine-color-dark-9) 0px 8px 6px -6px;
 
     --focus-border: var(--mantine-color-blue-8);
 
@@ -148,6 +150,8 @@
     --statusBar-border: var(--app-border);
     --statusBar-background-active: var(--mantine-color-gray-2);
 
+    --heading-color: var(--mantine-color-dark-4);
+
     --input-border: var(--app-border);
     --input-placeholder: var(--mantine-color-gray-6);
     --input-text: var(--mantine-color-gray-9);
@@ -157,7 +161,7 @@
     --popover-background: var(--mantine-color-white);
     --popover-foreground: var(--app-foreground);
     --popover-border: transparent;
-    --popover-shadow: var(--mantine-color-dark-9) 0px 0px 8px 2px;
+    --popover-shadow: var(--mantine-color-dark-9) 0px 8px 6px -6px;
 
     --focus-border: var(--mantine-color-blue-8);
 
@@ -248,8 +252,8 @@ hr {
   color: var(--input-placeholder) !important;
   opacity: 1;
 }
-input:not([type="checkbox"]):focus,
-input:not([type="checkbox"]):focus-visible textarea:focus,
+input:focus,
+input:focus-visible textarea:focus,
 textarea:focus-visible {
   box-shadow: none !important;
   border: 1px solid var(--focus-border) !important;
@@ -849,9 +853,11 @@ tr:focus-visible {
 /*--------table temporary css starts ------------*/
 
 /*--------table 2 css starts------------*/
-.primary-table .mtk1,
-.primary-table th {
+.primary-table .mtk1 {
   color: var(--tab-foreground-inactive) !important;
+}
+.primary-table th {
+  color: var(--heading-color) !important;
 }
 
 .table-cell .table-action {
