@@ -75,7 +75,7 @@ const BulkEditTable: FC<IBulkEditTable> = ({
       <TabHeader className="-mb-2">
         {title && (
           <TabHeader.Left>
-            <span className="" data-testid="table-title">{title}</span>
+            <span className="text-heading-color" data-testid="table-title">{title}</span>
           </TabHeader.Left>
         )}
 

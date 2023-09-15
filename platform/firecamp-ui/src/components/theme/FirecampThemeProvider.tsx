@@ -75,7 +75,6 @@ export const useFirecampStyle = createStyles((theme) => ({
 }));
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
-  themeVariant,
   children,
   ...props
 }) => {
@@ -87,8 +86,23 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
     }
     return themeStored;
   };
+  const _initializeColorScheme = () => {
+    // on first time load set theme from local storage, if not found then set default
+    let themeColor = (
+      [
+        EFirecampThemeVariant.DarkPrimary,
+        EFirecampThemeVariant.DarkSecondary,
+      ].includes(localStorage.getItem('theme') as EFirecampThemeVariant)
+        ? 'dark'
+        : 'light'
+    ) as ColorScheme;
 
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+    return themeColor;
+  };
+
+  const [colorScheme, setColorScheme] = useState<ColorScheme>(
+    _initializeColorScheme
+  );
   const [theme, setTheme] = useState<EFirecampThemeVariant>(_initialize);
 
   // update theme
@@ -220,7 +234,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
                     '--popover-foreground': ' var(--app-foreground)',
                     '--popover-border': ' transparent',
                     '--popover-shadow':
-                      ' var(--mantine-color-dark-9) 0px 0px 8px 2px',
+                      ' var(--mantine-color-dark-9) 0px 8px 6px -6px',
 
                     '--focus-border': ' var(--mantine-color-blue-8)',
 
@@ -229,6 +243,8 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
                     '--modal-foreground-active': ' var(--mantine-color-white)',
                     '--modal-shadow': ' var(--mantine-color-dark-9)',
                     '--modal-border': ' var(--mantine-color-dark-6)',
+
+                    '--heading-color': 'var(--mantine-color-gray-5)',
 
                     '--color':
                       '  128, 128, 128' /* var(--mantine-color-gray-6) */,
@@ -297,7 +313,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
                     '--popover-foreground': 'var(--app-foreground)',
                     '--popover-border': 'transparent',
                     '--popover-shadow':
-                      'var(--mantine-color-dark-9) 0px 0px 8px 2px',
+                      'var(--mantine-color-dark-9) 0px 8px 6px -6px',
 
                     '--focus-border': 'var(--mantine-color-blue-8)',
 
@@ -306,6 +322,8 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
                     '--modal-foreground-active': 'var(--mantine-color-gray-9)',
                     '--modal-shadow': 'var(--mantine-color-dark-1)',
                     '--modal-border': 'var(--mantine-color-gray-3)',
+
+                    '--heading-color': 'var(--mantine-color-dark-4)',
 
                     '--color': '86, 88, 105',
 

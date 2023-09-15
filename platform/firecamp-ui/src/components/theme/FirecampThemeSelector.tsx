@@ -28,14 +28,6 @@ const FirecampThemeSelector = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const [isOpen, toggleOpen] = useState(false);
 
-  useEffect(() => {
-    _setTheme(colorScheme);
-  }, [colorScheme]);
-
-  const _setTheme = (t: any) => {
-    toggleColorScheme(t);
-  };
-
   const activeTheme = ThemeOptions.find(
     (t) => t.value === (colorScheme as EFirecampThemeVariant)
   );
@@ -62,7 +54,7 @@ const FirecampThemeSelector = () => {
         />
       )}
       options={ThemeOptions}
-      onSelect={(t) => _setTheme(t.value)}
+      onSelect={(t) => toggleColorScheme(t.value)}
       width={220}
       classNames={{
         dropdown: 'mt-2',
