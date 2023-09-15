@@ -24,7 +24,7 @@ export interface ICheckbox extends CheckboxProps {
 }
 
 const useStyles = createStyles(
-  (theme, { primary, labelPosition }: Partial<ICheckbox>) => ({
+  (theme, { primary, checked, labelPosition }: Partial<ICheckbox>) => ({
     disabled: {
       opacity: '50% !important',
       '&:checked': {
@@ -43,6 +43,23 @@ const useStyles = createStyles(
           ? theme.colors.gray[4]
           : theme.colors.dark[5],
       backgroundColor: 'transparent !important',
+      '&:focus': {
+        ...(checked && primary
+          ? {
+              borderColor: `${
+                theme.colors[theme.primaryColor][
+                  theme.colorScheme === 'dark' ? 8 : 6
+                ]
+              } !important`,
+            }
+          : {
+              borderColor: `${
+                theme.colorScheme === 'dark'
+                  ? theme.colors.gray[4]
+                  : theme.colors.dark[5]
+              } !important`,
+            }),
+      },
     },
     icon: {
       ...(primary
@@ -90,7 +107,7 @@ const Checkbox: FC<ICheckbox> = ({
   labelPosition,
   ...props
 }) => {
-  const { classes, cx, theme } = useStyles({ primary, labelPosition });
+  const { classes, cx, theme } = useStyles({ primary, checked, labelPosition });
   const customColor = primary
     ? 'primaryColor'
     : theme.colorScheme === 'dark'

@@ -6,6 +6,7 @@ const ListenerPane = () => {
   return (
     <Pane
       expanded={true}
+      hideBorder={true}
       bodyClassName={'!p-0'}
       headerTitleRenderer={() => {
         return <span>LISTENERS</span>;
