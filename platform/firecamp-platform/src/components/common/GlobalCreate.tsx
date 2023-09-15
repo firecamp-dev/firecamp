@@ -142,7 +142,7 @@ const GlobalCreateDD = ({}) => {
       <DropdownMenu
         onOpenChange={(v) => toggleOpen(v)}
         handler={() => (
-          <span className="border border-app-border flex items-center justify-center mx-3 rounded">
+          <span className="border border-tab-border flex items-center justify-center mx-3 rounded">
             <BurgerIcon opened={isOpen} size={'xs'} />
           </span>
         )}
