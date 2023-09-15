@@ -39,6 +39,11 @@ export interface IPane {
    * to apply any custom height to the container component
    */
   height?: string;
+
+  /**
+   * to hide the border at bottom of header
+   */
+  hideBorder?: boolean;
 }
 
 export interface IHeader {
@@ -62,6 +67,11 @@ export interface IHeader {
   }) => JSX.Element;
 
   className?: string;
+
+  /**
+   * to hide the border at bottom of header
+   */
+  hideBorder?: boolean;
 }
 
 export interface IBody {

@@ -370,13 +370,13 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   return (
     <>
       {placeholder && !value ? (
-        <div className="absolute top-0 left-0 text-input-placeholder text-lg leading-5	">
+        <div className="select-auto absolute top-0 left-0 text-input-placeholder text-lg leading-5	">
           {placeholder}
         </div>
       ) : (
         <></>
       )}
-      <div className={cx(className, { 'opacity-50': disabled })} style={style}>
+      <div className={cx('select-auto', className, { 'opacity-50': disabled })} style={style}>
         <MonacoEditor
           language={language}
           defaultValue={value}

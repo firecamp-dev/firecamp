@@ -41,7 +41,6 @@ const FirecampThemeSelector = () => {
     } catch (error) {
       console.log({ error });
     }
-    toggleColorScheme(t);
   };
 
   const activeTheme = ThemeOptions.find(
@@ -70,7 +69,7 @@ const FirecampThemeSelector = () => {
         />
       )}
       options={ThemeOptions}
-      onSelect={(t) => _setTheme(t.value)}
+      onSelect={(t) => toggleColorScheme(t.value)}
       width={220}
       classNames={{
         dropdown: 'mt-2',
