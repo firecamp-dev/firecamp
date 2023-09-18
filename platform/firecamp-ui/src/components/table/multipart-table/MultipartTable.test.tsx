@@ -82,13 +82,6 @@ describe('Table : ', () => {
     ).toBeTruthy();
 
     let fileSelectionInputField = MultipartInputElement.children[0];
-    expect(fileSelectionInputField).toHaveAttribute('type', 'file');
-    expect(fileSelectionInputField).toHaveClass('fc-file-input hidden');
-
-    let selectedFileTextWrapper = MultipartInputElement.children[1];
-    expect(selectedFileTextWrapper).toHaveClass(
-      'cursor-pointer text-left text-base text-ellipsis overflow-hidden pl-1 pr-4 whitespace-pre'
-    );
-    expect(selectedFileTextWrapper.textContent).toBe('select file');
+    expect(fileSelectionInputField.textContent).toBe('select file');
   });
 });

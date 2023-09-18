@@ -7,7 +7,7 @@ import {
   Popover,
   Button,
   Checkbox,
-  // SwitchButton,
+  // Switch,
 } from '@firecamp/ui';
 import { IPlatformStore, usePlatformStore } from '../../../store/platform';
 
@@ -52,7 +52,7 @@ const FcAgentSelector: FC<any> = () => {
                 <span className="block text-app-foreground-inactive font-normal leading-5 mt-1">Firecamp will automatically select the best agent for your request</span>
               </div>
               <div>
-              <SwitchButton checked={false} onChange={()=> {}}/>
+              <Switch checked={false} onToggleCheck={()=> {}}/>
               </div>
             </div> */}
           <hr />

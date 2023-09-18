@@ -11,8 +11,10 @@ export { default as DropdownMenu } from './components/dropdown/DropdownMenu';
 export { default as ScrollArea } from './components/scroll-area/ScrollArea';
 
 export { default as FormField } from './components/form/FormField';
-export { default as SwitchButton } from './components/form/SwitchButton';
-export { default as SwitchButtonV2 } from './components/form/SwitchButtonV2';
+
+export { default as Switch } from './components/form/Switch';
+export type { ISwitch } from './components/form/Switch';
+
 export { default as TextArea } from './components/form/TextArea';
 
 export { default as Row } from './components/grid/Row';
@@ -27,6 +29,7 @@ export * from './components/icons';
 // Input
 export { default as Input } from './components/input/Input';
 export { default as FileInput } from './components/input/FileInput';
+export type { IFileInput } from './components/input/interfaces/FileInput.interfaces';
 
 // Modal
 export { default as Modal } from './components/modal/Modal';
