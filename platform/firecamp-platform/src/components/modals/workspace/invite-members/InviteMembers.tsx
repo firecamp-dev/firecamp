@@ -13,9 +13,9 @@ enum EInviteMemberTabs {
 }
 
 const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
-  const { scope, organization } = usePlatformStore(s => ({
+  const { scope, organization } = usePlatformStore((s) => ({
     scope: s.scope,
-    organization: s.organization
+    organization: s.organization,
   }));
 
   const [isFetchingMembers, setIsFetchingMembers] = useState(false);
@@ -66,7 +66,6 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
   /** fetch org members to be invited on second tab activated, only fetch once */
   useEffect(() => {
     if (activeTab === EInviteMemberTabs.OrgMembers && orgMembers.length === 0) {
-      
       if (scope == EPlatformScope.Person) return;
       setIsFetchingMembers(true);
       Rest.organization
@@ -82,7 +81,7 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
               id: m.__ref.id,
               name: m.name || m.username || m.email,
               email: m.email,
-              postfix: () => <span className='ml-1'> - {m.email}</span>
+              postfix: () => <span className="ml-1"> - {m.email}</span>,
             };
           });
           setOrgMembers(members);
@@ -110,7 +109,7 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
       }}
     >
       <Container>
-        {(scope == EPlatformScope.Person) ? (
+        {scope == EPlatformScope.Person ? (
           <Container.Body className="mt-8">
             <InviteNotAllowed />
           </Container.Body>

@@ -19,10 +19,7 @@ const SwitchWorkspacePanel: FC<any> = ({ className = '' }) => {
         Organization workspace
       </div>
       <div className="mb-4 w-60">
-        <Input
-          placeholder="Search"
-          icon={<Search size={16} />}
-        />
+        <Input placeholder="Search" icon={<Search size={16} />} />
       </div>
       <div className="workspace-wrapper flex overflow-auto flex-nowrap custom-scrollbar">
         <WorkspaceCard />

@@ -86,9 +86,10 @@ const InviteOrgMembers: FC<IProps> = ({
             onSelect={(m) => onChange({ ...member, ...m })}
             classNames={{
               trigger: 'block',
-              dropdown: '-mt-2 overflow-y-scroll invisible-scrollbar max-h-[200px]',
+              dropdown:
+                '-mt-2 overflow-y-scroll invisible-scrollbar max-h-[200px]',
               item: '!px-4 whitespace-nowrap',
-              itemRightSection: 'w-full'
+              itemRightSection: 'w-full',
             }}
             width={512}
             sm
@@ -135,12 +136,11 @@ const InviteOrgMembers: FC<IProps> = ({
           // classNames={{
           //   root: '!text-link hover:!text-link hover:underline'
           // }}
-          text='Open Workspace Management'
+          text="Open Workspace Management"
           ghost
           xs
         />
-          
-        
+
         <Button
           text={'Send Invitation'}
           disabled={!member.name || !member.role || isInvitingMembers}

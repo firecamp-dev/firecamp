@@ -189,11 +189,11 @@ export default {
                 console.log(1234)
               }}/> */}
 
-            { item.data.__ref.isEnvironment ? (
+            {item.data.__ref.isEnvironment ? (
               <Button
                 text={'Clone'}
                 classNames={{
-                  root:'hover:!bg-focus2 ml-1 !text-app-foreground-inactive'
+                  root: 'hover:!bg-focus2 ml-1 !text-app-foreground-inactive',
                 }}
                 onClick={(e) => {
                   e.preventDefault();

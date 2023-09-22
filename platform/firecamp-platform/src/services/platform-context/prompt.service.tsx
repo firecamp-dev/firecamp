@@ -12,9 +12,10 @@ type TPropKeys =
   | 'validator'
   | 'executor'
   | 'onError';
-type TOpenPromptInput = (props: Pick<IPromptInput, TPropKeys> & { title: string }) => Promise<any>;
+type TOpenPromptInput = (
+  props: Pick<IPromptInput, TPropKeys> & { title: string }
+) => Promise<any>;
 const promptInput: TOpenPromptInput = (props) => {
-
   return new Promise((rs, rj) => {
     modals.open({
       title: (
@@ -38,14 +39,15 @@ const promptInput: TOpenPromptInput = (props) => {
         header: 'border-0 pb-0',
         body: 'px-6 relative',
         content: 'min-h-0',
-      }
+      },
     });
   });
 };
 
-type TOpenPromptSaveItem = (props: Pick<IPromptSaveItem, TPropKeys | 'collection'> & { title: string }) => Promise<any>;
+type TOpenPromptSaveItem = (
+  props: Pick<IPromptSaveItem, TPropKeys | 'collection'> & { title: string }
+) => Promise<any>;
 const promptSaveItem: TOpenPromptSaveItem = (props) => {
-
   return new Promise((rs, rj) => {
     modals.open({
       title: (
@@ -60,24 +62,24 @@ const promptSaveItem: TOpenPromptSaveItem = (props) => {
           collection={props.collection}
           onClose={() => modals.closeAll()}
           onResolve={(res) => {
-            rs(res)
+            rs(res);
             modals.closeAll();
-          }}  //resolve for executor
+          }} //resolve for executor
         />
       ),
       size: 400,
       classNames: {
         header: 'border-0 px-6 pt-6 pb-0',
-        body: 'relative'
-      }
+        body: 'relative',
+      },
     });
   });
 };
 
-
-type TConfirmApi = (props: Omit<IConfirm, 'opened' | 'onClose'>) => Promise<boolean>
+type TConfirmApi = (
+  props: Omit<IConfirm, 'opened' | 'onClose'>
+) => Promise<boolean>;
 const confirm: TConfirmApi = (props) => {
-
   return new Promise((rs, rj) => {
     modals.open({
       title: (
@@ -97,7 +99,8 @@ const confirm: TConfirmApi = (props) => {
             props?.onConfirm?.();
             rs(true);
             modals.closeAll();
-          }} />
+          }}
+        />
       ),
       size: 400,
       classNames: {

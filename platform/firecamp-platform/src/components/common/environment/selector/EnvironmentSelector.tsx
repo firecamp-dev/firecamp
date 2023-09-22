@@ -53,7 +53,12 @@ const EnvironmentSelector = () => {
           className="cursor-pointer ml-1 text-base !text-info"
           onClick={() => toggleEnvSidebar()}
         >
-          <Table size={16} strokeWidth="1.5" strokeLinecap='square' strokeLinejoin='miter' />
+          <Table
+            size={16}
+            strokeWidth="1.5"
+            strokeLinecap="square"
+            strokeLinejoin="miter"
+          />
         </span>
       </div>
     </Column>
