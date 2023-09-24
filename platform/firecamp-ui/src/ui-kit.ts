@@ -4,7 +4,6 @@ export { default as CopyButton } from './components/buttons/CopyButton';
 export { default as Checkbox } from './components/checkbox/Checkbox';
 export type { ICheckbox } from './components/checkbox/Checkbox';
 export { default as CheckboxGroup } from './components/checkbox/CheckboxGroup';
-export { default as CheckboxInGrid } from './components/checkbox/CheckboxInGrid';
 
 export { default as Dropdown } from './components/dropdown/Dropdown';
 export { default as DropdownMenu } from './components/dropdown/DropdownMenu';

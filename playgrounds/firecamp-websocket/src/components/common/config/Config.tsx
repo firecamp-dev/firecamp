@@ -1,9 +1,4 @@
-import {
-  Container,
-  TabHeader,
-  CheckboxInGrid,
-  SingleLineEditor,
-} from '@firecamp/ui';
+import { Container, TabHeader, SingleLineEditor, Checkbox } from '@firecamp/ui';
 import { EEditorLanguage, EFirecampAgent } from '@firecamp/types';
 import { _misc } from '@firecamp/utils';
 import { EWebsocketConfigKeys } from '../../../types';
@@ -209,13 +204,14 @@ const Config = ({ config = {} }) => {
         break;
       case INPUT_TYPES.boolean:
         return (
-          <CheckboxInGrid
-            key={`${name}-${index}`}
-            label={label}
-            checked={config[name] || false}
-            className="fc-input-wrapper"
-            onToggleCheck={() => _onChange(name, !config[name])}
-          />
+          <div key={`${name}-${index}`}>
+            <label className="checkbox-in-grid">{label}</label>
+            <Checkbox
+              checked={config[name] || false}
+              classNames={{ root: 'fc-input-wrapper' }}
+              onToggleCheck={() => _onChange(name, !config[name])}
+            />
+          </div>
         );
         break;
       default:
