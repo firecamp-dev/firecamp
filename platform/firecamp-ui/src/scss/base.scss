@@ -10,199 +10,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap');
 
-@layer base {
-  :root {
-    /*-- font-family: 'Open Sans', sans-serif !important;--*/
-    font-family: 'Lato', sans-serif !important;
-
-    --req-get: var(--mantine-color-green-7);
-    --req-post: var(--mantine-color-orange-7);
-    --req-put: var(--mantine-color-cyan-7);
-    --req-delete: var(--mantine-color-red-7);
-    --req-patch: var(--mantine-color-indigo-7);
-    --req-head: var(--mantine-color-grape-7);
-    --req-options: var(--mantine-color-pink-7);
-    --req-purge: var(--mantine-color-orange-7);
-    --req-link: var(--mantine-color-blue-7);
-    --req-unlink: var(--mantine-color-cyan-7);
-    --req-graphql: var(--mantine-color-pink-6);
-    --req-websocket: var(--mantine-color-red-6);
-    --req-socketio: var(--mantine-color-lime-4);
-    --link: var(--mantine-color-blue-8);
-
-    --app-background: var(--mantine-color-dark-7);
-    --app-foreground: var(--mantine-color-gray-4);
-    --app-foreground-active: var(--mantine-color-white);
-    --app-foreground-inactive: var(--mantine-color-dark-3);
-    --app-primary: var(--mantine-color-primary-color-8);
-    --app-secondary: var(--mantine-color-dark-4);
-    --app-border: var(--mantine-color-dark-5); /* .1 */
-    --app-focus: var(--mantine-color-indigo-5);
-    --app-error: var(--mantine-color-red-8);
-    --app-overlay: var(--mantine-color-gray-5);
-    --app-background-secondary: var(--mantine-color-gray-9);
-
-    --tab-background: var(--app-background);
-    --tab-foreground: var(--mantine-color-dark-0);
-    --tab-foreground-inactive: var(--mantine-color-gray-4); /* .1 */
-    --tab-border: var(--mantine-color-dark-4);
-    --tab-background-hover: var(--mantine-color-dark-7);
-    --tab-background-active: var(--statusBar-background-active);
-    --tab-background-activeColor: var(--mantine-color-dark-5);
-
-    --activityBar-background: var(--mantine-color-dark-5); /* .1 */
-    --activityBar-foreground: var(--mantine-color-white);
-    --activityBar-foreground-inactive: var(--mantine-color-gray-4); /* .2 */
-    --activityBar-background-active: var(--focus-level-2);
-    --activityBar-border-active: var(--app-primary);
-    --activityBar-border: var(--mantine-color-dark-5); /* .1 */
-    --activityBarBadge-foreground: var(--mantine-color-white);
-    --activityBarBadge-background: var(--mantine-color-blue-6);
-
-    --statusBar-background: var(--app-background);
-    --statusBar-foreground: var(--app-foreground);
-    --statusBar-foreground-active: var(--app-foreground-active);
-    --statusBar-border: var(--mantine-color-dark-5); /* .1 */
-    --statusBar-background-active: var(--mantine-color-gray-9);
-
-    --input-border: var(--app-border);
-    --input-placeholder: var(--mantine-color-dark-3);
-    --input-text: var(--mantine-color-white);
-    --input-background-focus: var(--mantine-color-dark-7); /* .1 */
-    --input-background: var(--app-background);
-
-    --heading-color: var(--mantine-color-gray-5);
-
-    --popover-background: var(--mantine-color-dark-5); /* .2 */
-    --popover-foreground: var(--app-foreground);
-    --popover-border: transparent;
-    --popover-shadow: var(--mantine-color-dark-9) 0px 8px 6px -6px;
-
-    --focus-border: var(--mantine-color-blue-8);
-
-    --modal-background: var(--mantine-color-dark-6);
-    --modal-foreground: var(--mantine-color-dark-2);
-    --modal-foreground-active: var(--mantine-color-white);
-    --modal-shadow: var(--mantine-color-dark-9);
-    --modal-border: var(--mantine-color-dark-6);
-
-    --error: var(--mantine-color-red-7);
-    --warning: var(--mantine-color-orange-4);
-    --info: var(--mantine-color-blue-6);
-    --success: var(--mantine-color-lime-8);
-
-    --color:  128, 128, 128; /* var(--mantine-color-gray-6) */;
-    --focus-level-1: rgba(var(--color), 0.06);
-    --focus-level-2: rgba(var(--color), 0.1);
-    --focus-level-3: rgba(var(--color), 0.14);
-    --focus-level-4: rgba(var(--color), 0.18);
-
-    --collection-text: var(--mantine-color-gray-4);
-
-    --cm-property: var(--mantine-color-red-4);
-    --cm-keyword: var(--mantine-color-blue-2);
-    --cm-def: var(--mantine-color-dark-0);
-    --cm-attribute: var(--mantine-color-blue-2);
-    --cm-number: var(--mantine-color-orange-5);
-    --cm-punctuation: var(--mantine-color-dark-1);
-    --cm-ws: var(--mantine-color-dark-1);
-    --selected: var(--mantine-color-dark-9); /* .2*/
-    --cm-string: var(--mantine-color-dark-0);
-  }
-  .theme-light.primary-green,
-  .theme-dark.primary-green {
-    --app-primary: var(--mantine-color-green-7) !important;
-  }
-  .theme-light {
-    --app-background: var(--mantine-color-gray-0);
-    --app-foreground: var(--mantine-color-dark-5); /* .1 */
-    --app-foreground-active: var(--mantine-color-gray-9); /* .1*/
-    --app-foreground-inactive: var(--mantine-color-dark-4);
-    --app-primary: var(--mantine-color-primary-color-6);
-    --app-secondary: var(--mantine-color-dark-4);
-    --app-border: var(--mantine-color-gray-4); /* .3*/
-    --app-focus: var(--mantine-color-indigo-5);
-    --app-error: var(--mantine-color-red-8);
-    --app-overlay: var(--mantine-color-dark-6); /* .2*/
-    --app-background-secondary: var(--mantine-color-gray-1);
-
-    --tab-background: var(--mantine-color-gray-0);
-    --tab-foreground: var(--mantine-color-dark-6); /* .3 */
-    --tab-foreground-inactive: var(--mantine-color-dark-5); /* .1 */
-    --tab-border: var(--app-border);
-    --tab-background-hover: var(--mantine-color-gray-0);
-    --tab-background-active: var(--mantine-color-gray-0);
-    --tab-background-activeColor: var(--mantine-color-gray-1); /* .1*/
-
-    --activityBar-background: var(--mantine-color-gray-1); /* .1*/
-    --activityBar-foreground: var(--mantine-color-dark-6); /* .3 */
-    --activityBar-foreground-inactive: var(--mantine-color-dark-3); /* .2 */
-    --activityBar-background-active: var(--focus-level-2);
-    --activityBar-border-active: var(--app-primary);
-
-    --activityBar-border: var(--mantine-color-gray-3);
-    --activityBarBadge-foreground: var(--mantine-color-white);
-    --activityBarBadge-background: var(--mantine-color-blue-6);
-
-    --statusBar-background: var(--app-background);
-    --statusBar-foreground: var(--app-foreground);
-    --statusBar-foreground-active: var(--app-foreground-active);
-    --statusBar-border: var(--app-border);
-    --statusBar-background-active: var(--mantine-color-gray-2);
-
-    --heading-color: var(--mantine-color-dark-4);
-
-    --input-border: var(--app-border);
-    --input-placeholder: var(--mantine-color-gray-6);
-    --input-text: var(--mantine-color-gray-9);
-    --input-background-focus: var(--mantine-color-white);
-    --input-background: rgba(var(--color), 0.06);
-
-    --popover-background: var(--mantine-color-white);
-    --popover-foreground: var(--app-foreground);
-    --popover-border: transparent;
-    --popover-shadow: var(--mantine-color-dark-9) 0px 8px 6px -6px;
-
-    --focus-border: var(--mantine-color-blue-8);
-
-    --modal-background: var(--mantine-color-gray-1); /* .1*/
-    --modal-foreground: var(--mantine-color-dark-6); /* .2 */
-    --modal-foreground-active: var(--mantine-color-gray-9);
-    --modal-shadow: var(--mantine-color-dark-1);
-    --modal-border: var(--mantine-color-gray-3);
-
-    --error: var(--mantine-color-red-7);
-    --warning: var(--mantine-color-orange-4);
-    --info: var(--mantine-color-blue-6);
-    --success: var(--mantine-color-lime-8);
-
-    --color: 86, 88, 105; /* var(--mantine-color-dark-3); */
-    --focus-level-1: rgba(var(--color), 0.06);
-    --focus-level-2: rgba(var(--color), 0.1);
-    --focus-level-3: rgba(var(--color), 0.14);
-    --focus-level-4: rgba(var(--color), 0.18);
-
-    --collection-text: var(--mantine-color-dark-5); /* .1 */
-
-    --cm-property: var(--mantine-color-blue-9);
-    --cm-keyword: var(--mantine-color-red-9);
-    --cm-def: var(--mantine-color-teal-9);
-    --cm-attribute: var(--mantine-color-red-9);
-    --cm-number: var(--mantine-color-orange-5);
-    --cm-punctuation: var(--mantine-color-dark-1);
-    --cm-ws: var(--mantine-color-dark-1);
-    --selected: var(--mantine-color-dark-9); /* .3*/
-    --cm-string: var(--mantine-color-teal-9);
-  }
-
-  .invert img {
-    filter: invert(0.8);
-  }
-  .theme-light .invert img {
-    filter: invert(0);
-  }
-}
-
 body {
   @apply bg-app-background text-app-foreground;
 }
@@ -221,10 +28,6 @@ body {
   color: var(--app-foreground);
   font-weight: 400;
   font-family: var(--font-family);
-}
-
-.theme-dark .drag-icon {
-  filter: invert(1);
 }
 
 a,
@@ -655,7 +458,7 @@ tr:focus-visible {
   background: transparent;
 }
 .scrollbar-thin ::-webkit-scrollbar-thumb {
-  background: var(--focus-leve-2) !important;
+  background: var(--focus-level-2) !important;
   border-radius: 10px;
 }
 .invisible-scrollbar::-webkit-scrollbar,
@@ -691,7 +494,7 @@ tr:focus-visible {
   background: transparent;
 }
 .visible-scrollbar ::-webkit-scrollbar-thumb {
-  background: var(--focus-leve-2) !important;
+  background: var(--focus-level-2) !important;
   border-radius: 10px;
 }
 
