@@ -44,8 +44,8 @@ const Explorer: FC<any> = () => {
     fetchExplorer,
     updateCollection,
     updateFolder,
-    // moveRequest,
-    // moveFolder,
+    moveRequest,
+    moveFolder,
     changeWorkspaceMetaOrders,
     changeCollectionChildrenPosition,
     changeFolderChildrenPosition,
@@ -263,10 +263,11 @@ const Explorer: FC<any> = () => {
     );
   }, [folders]);
 
-  const itemDropOnCollectionOrFolder = useCallback((targetItem: string, itemType: 'request' | 'folder', item: any) => {
+  const itemDropOnCollectionOrFolder = useCallback((targetItem: string, itemType: 'request' | 'folder', item: any, position: number) => {
     console.log('itemDropOnCollectionOrFolder');
     if (!targetItem) return;
-    const moveTo: { collectionId: string; folderId?: string } = {
+    const moveTo: { position: number, collectionId: string; folderId?: string } = {
+      position,
       collectionId: '',
     };
 
@@ -288,11 +289,12 @@ const Explorer: FC<any> = () => {
 
   const _moveItem = (item, moveTo, itemType: 'request' | 'folder') => {
     if (itemType == 'folder') {
-      // moveFolder(item.__ref.id, moveTo);
+      moveFolder(item.__ref.id, moveTo);
       console.log('moving the folder');
     } else if (itemType == 'request') {
-      // moveRequest(item.__ref.id, moveTo);
-      console.log('moving the request');
+      moveRequest(item.__ref.id, moveTo);
+      if (item.__ref.collectionId == moveTo.collectionId) console.log('moving the request within same collection', item, moveTo)
+      else console.log('moving the request to other collection', item, moveTo);
     } else {
     }
   };
@@ -335,13 +337,13 @@ const Explorer: FC<any> = () => {
         } else {
           // TODO: move item to folder within collection
           console.log('move item to folder within collection', childIndex, explorerTreeRef);
-          itemDropOnCollectionOrFolder(moveToParent.__ref.id, isItemRequest ? 'request' : 'folder', item);
+          itemDropOnCollectionOrFolder(moveToParent.__ref.id, isItemRequest ? 'request' : 'folder', item, childIndex);
         }
       } else {
         if (item.__ref.folderId) {
           // TODO: moving item to collection root
           console.log('move item to collection root', childIndex, explorerTreeRef);
-          itemDropOnCollectionOrFolder(item.__ref.collectionId, isItemRequest ? 'request' : 'folder', item);
+          itemDropOnCollectionOrFolder(item.__ref.collectionId, isItemRequest ? 'request' : 'folder', item, childIndex);
         } else {
           // reorder within collection
           console.log('reorder within collection');
@@ -353,7 +355,7 @@ const Explorer: FC<any> = () => {
        * if targetItem exists then item is being moved/dropped to collection/folder
        * item is being dropped on item, here it'll be dropped on folder or collection
        */
-      itemDropOnCollectionOrFolder(targetItem, isItemRequest ? 'request' : 'folder', item);
+      itemDropOnCollectionOrFolder(targetItem, isItemRequest ? 'request' : 'folder', item, childIndex);
     }
   };
 
