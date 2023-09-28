@@ -12,7 +12,7 @@ export interface ISecondaryTab {
      */
     activeTab?: string;
     /**
-     * Boolean value if you wnat to set tab background transpetant or not
+     * Boolean value if you wnat to set tab background transparent or not
      */
     isBgTransparent?: boolean;
     /**
