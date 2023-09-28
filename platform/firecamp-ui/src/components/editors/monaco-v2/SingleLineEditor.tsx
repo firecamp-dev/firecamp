@@ -354,7 +354,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
   value = type === 'number' ? '' + value : value;
   /**
    * 1. Check if number or not, if number then convert to string and show
-   * 2. Convert multiline string in to single line
+   * 2. Convert multiline string into single line
    */
   //  value = value.replace(/[\n\r]/g, '');
 
