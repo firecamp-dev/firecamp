@@ -212,7 +212,7 @@ export default OAuth2;
 interface IOAuth2Comp {
   auth: IUiOAuth2;
 
-  /** update auth value for auth tyoe OAuth2 */
+  /** update auth value for auth type OAuth2 */
   onChangeOAuth2Value: (key: string, updates: any) => void;
 
   /** OAuth2 previous/ last fetched token */
