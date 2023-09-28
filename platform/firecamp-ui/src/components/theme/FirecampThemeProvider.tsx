@@ -325,7 +325,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
 
                     '--heading-color': 'var(--mantine-color-dark-4)',
 
-                    '--color': '86, 88, 105',
+                    '--color': '86, 88, 105'  /* var(--mantine-color-dark-3) */,
 
                     '--collection-text': 'var(--mantine-color-dark-5)',
 
