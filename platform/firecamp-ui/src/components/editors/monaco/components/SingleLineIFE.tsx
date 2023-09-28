@@ -42,7 +42,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
   }, []);
 
   useEffect(() => {
-    // console.log("I am rednding too often....");
+    // console.log("I am rendering too often....");
   });
 
   let _onMount = (edt: any, monaco: any) => {
