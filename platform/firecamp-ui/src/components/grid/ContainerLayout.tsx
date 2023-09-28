@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import { Container, ContainerProps, createStyles } from '@mantine/core';
 
 const useStyles = createStyles(() => ({
@@ -23,7 +24,7 @@ const ContainerLayout: FC<IContainerLayout> = ({
   className = '',
   ...props
 }) => {
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
   return (
     <Container
       className={cx('invisible-scrollbar', { 'flex-1': flex }, {'overflow-auto': overflow}, classes.root, className)}

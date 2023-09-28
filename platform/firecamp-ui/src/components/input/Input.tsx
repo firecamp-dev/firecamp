@@ -1,6 +1,7 @@
+import { ForwardedRef, forwardRef } from 'react';
+import cx from 'classnames';
 import { createStyles } from '@mantine/core';
 import { TextInput } from '@mantine/core';
-import { ForwardedRef, forwardRef } from 'react';
 import { IInput } from './interfaces/input.interfaces';
 
 const useStyles = createStyles((theme) => ({
@@ -59,7 +60,7 @@ const Input = forwardRef(
     { classNames = {}, ...props }: IInput,
     ref: ForwardedRef<HTMLInputElement>
   ) => {
-    const { cx, classes } = useStyles();
+    const { classes } = useStyles();
 
     return (
       <TextInput

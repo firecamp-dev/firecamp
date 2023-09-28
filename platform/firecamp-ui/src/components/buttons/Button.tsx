@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import { Button as MantineButton, createStyles } from '@mantine/core';
 import { IButton } from './Button.interfaces';
 
@@ -154,7 +155,7 @@ const Button: FC<IButton> = ({
 
   // default size if not passed is sm
   const customColor = danger ? 'red' : primary ? 'primaryColor' : 'dark';
-  const { classes, cx } = useStyles({
+  const { classes } = useStyles({
     variant: customVariant ?? 'filled',
     color: customColor,
     primary,

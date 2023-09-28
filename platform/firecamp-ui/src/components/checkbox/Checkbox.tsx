@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import {
   Checkbox as MantineCheckbox,
   CheckboxProps,
@@ -107,7 +108,7 @@ const Checkbox: FC<ICheckbox> = ({
   labelPosition,
   ...props
 }) => {
-  const { classes, cx, theme } = useStyles({ primary, checked, labelPosition });
+  const { classes, theme } = useStyles({ primary, checked, labelPosition });
   const customColor = primary
     ? 'primaryColor'
     : theme.colorScheme === 'dark'

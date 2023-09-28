@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import { Textarea, TextareaProps, createStyles } from '@mantine/core';
 
 export interface ITextArea extends TextareaProps {}
@@ -57,7 +58,7 @@ const useStyles = createStyles((theme) => ({
  * TextArea form element
  */
 const TextArea: FC<ITextArea> = ({ classNames = {}, ...props }) => {
-  const { cx, classes } = useStyles();
+  const { classes } = useStyles();
 
   return (
     <Textarea

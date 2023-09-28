@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import { Drawer as MantineDrawer, DrawerProps, ScrollArea, createStyles } from '@mantine/core';
 
 export interface IDrawer extends DrawerProps { }
@@ -55,7 +56,7 @@ const Drawer: FC<IDrawer> = ({
     children = <></>,
     ...props
 }) => {
-    const { classes, cx, theme } = useStyles({
+    const { classes, theme } = useStyles({
         title: props.title,
         opened,
         onClose: () => { },

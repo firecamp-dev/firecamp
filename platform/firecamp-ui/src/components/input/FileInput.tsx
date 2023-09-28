@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import {
   FileInputProps,
   FileInput as MantineFileInput,
@@ -96,7 +97,7 @@ const FileInput: FC<IFileInput> = ({
   secondary = false,
   ...props
 }) => {
-  const { classes, cx } = useStyles({ secondary });
+  const { classes } = useStyles({ secondary });
   return (
     <MantineFileInput
       classNames={{

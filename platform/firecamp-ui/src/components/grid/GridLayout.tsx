@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import { createStyles } from '@mantine/core';
 import FlexLayout, { IFlexLayout } from './FlexLayout';
 
@@ -17,7 +18,7 @@ const GridLayout: FC<IGridLayout> = ({
   className = '',
   ...props
 }) => {
-  const { cx, classes } = useStyles();
+  const {  classes } = useStyles();
   // return <SimpleGrid className={cx(classes.root, className)} {...props}>{children}</SimpleGrid>;
   return (
     <FlexLayout direction={'column'} className={cx(classes.root, className)} {...props}>

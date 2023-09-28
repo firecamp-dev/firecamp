@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import { Modal as MantineModal, ModalProps, ScrollArea } from '@mantine/core';
 import { createStyles } from '@mantine/core';
 
@@ -58,7 +59,7 @@ const Modal: FC<IModal> = ({
   children = <></>,
   ...props
 }) => {
-  const { classes, cx, theme } = useStyles({
+  const { classes, theme } = useStyles({
     title: props.title,
     opened,
     onClose: () => {},

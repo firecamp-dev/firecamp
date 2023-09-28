@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import {
   ScrollArea as MantineScrollArea,
   ScrollAreaProps,
@@ -47,7 +48,7 @@ const ScrollArea: FC<IScrollArea> = ({
   children,
   ...props
 }) => {
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
   return (
     <MantineScrollArea
       type="hover"

@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import cx from 'classnames';
 import {
   Switch as MantineSwitch,
   SwitchProps,
@@ -85,7 +86,7 @@ const Switch: FC<ISwitch> = ({
   onToggleCheck,
   ...props
 }) => {
-  const { classes, cx } = useStyles({ xxs });
+  const { classes } = useStyles({ xxs });
   return (
     <MantineSwitch
       radius={'lg'}
