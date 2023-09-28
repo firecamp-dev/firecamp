@@ -106,7 +106,7 @@ const InviteMembers: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
         </div>
       }
       classNames={{
-        body: 'pb-4 h-[90vh]',
+        body: '!pb-4 h-[90vh]',
       }}
     >
       <Container>

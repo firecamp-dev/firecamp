@@ -1,12 +1,7 @@
 import { FC } from 'react';
 import cx from 'classnames';
-import { Container, ContainerProps, createStyles } from '@mantine/core';
+import { Container, ContainerProps } from '@mantine/core';
 
-const useStyles = createStyles(() => ({
-  root: {
-    padding: '0px',
-  },
-}));
 export interface IContainerLayout extends ContainerProps {
   /**
    * to use the container wrapped in flex layout
@@ -24,10 +19,14 @@ const ContainerLayout: FC<IContainerLayout> = ({
   className = '',
   ...props
 }) => {
-  const { classes } = useStyles();
   return (
     <Container
-      className={cx('invisible-scrollbar', { 'flex-1': flex }, {'overflow-auto': overflow}, classes.root, className)}
+      className={cx(
+        'invisible-scrollbar p-0',
+        { 'flex-1': flex },
+        { 'overflow-auto': overflow },
+        className
+      )}
       fluid
       {...props}
     >
