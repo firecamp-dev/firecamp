@@ -154,7 +154,7 @@ const Options: FC<IOptions> = ({
                 {headerMeta?.postfix ? headerMeta.postfix() : ''}
               </MenuHeader>,
 
-              // Oprion list, show empty mes
+              // Option list, show empty mes
               option?.list?.length
                 ? option?.list?.map((item, i) => {
                     return (
