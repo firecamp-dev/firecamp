@@ -149,7 +149,7 @@ module.exports = {
     preflight: false,
   },
   safelist: [
-    "data-[side='bottom']:animate-slideDownAndFade",
-    "data-[side='bottom']:animate-slideUpAndFade",
+    "data-[position='bottom']:animate-slideDownAndFade",
+    "data-[position='top']:animate-slideUpAndFade",
   ],
 };

@@ -587,6 +587,9 @@
 .min-h-0{
   min-height: 0px;
 }
+.min-h-\[400px\]{
+  min-height: 400px;
+}
 .\!w-auto{
   width: auto !important;
 }
@@ -672,6 +675,9 @@
 }
 .min-w-full{
   min-width: 100%;
+}
+.max-w-3xl{
+  max-width: 48rem;
 }
 .max-w-full{
   max-width: 100%;
@@ -1337,6 +1343,9 @@
 .pb-6{
   padding-bottom: 1.5rem;
 }
+.pb-8{
+  padding-bottom: 2rem;
+}
 .pb-80{
   padding-bottom: 20rem;
 }
@@ -1958,7 +1967,7 @@
     transform: translateY(0);
   }
 }
-.data-\[side\=\'bottom\'\]\:animate-slideDownAndFade[data-side='bottom']{
+.data-\[position\=\'bottom\'\]\:animate-slideDownAndFade[data-position='bottom']{
   animation: slideDownAndFade 200ms ease-in-out;
 }
 @keyframes slideUpAndFade{
@@ -1971,7 +1980,7 @@
     transform: translateY(0);
   }
 }
-.data-\[side\=\'bottom\'\]\:animate-slideUpAndFade[data-side='bottom']{
+.data-\[position\=\'top\'\]\:animate-slideUpAndFade[data-position='top']{
   animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 .\[\&\>div\]\:\!block>div{

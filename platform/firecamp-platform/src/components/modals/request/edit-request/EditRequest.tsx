@@ -90,7 +90,7 @@ const EditRequest: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
         </div>
       }
       classNames={{
-        body: 'p-0',
+        body: '!p-0',
       }}
     >
       <>
