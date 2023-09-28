@@ -1,6 +1,6 @@
 export interface IHelp {
     /**
-     * Feature documenation link
+     * Feature documentation link
      */
      docLink? : string
     /**
