@@ -79,7 +79,7 @@ const WebSocket = ({ tab, platformContext }) => {
         const requestId = tab.entity?.__ref?.id;
         const isRequestSaved = !!requestId;
         // prepare a minimal request payload
-        let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the reuqest to prepare minimal request for tab
+        let _request = { collection: { folders: [], items: [] } }; // initialise will normalize the request to prepare minimal request for tab
 
         if (isRequestSaved === true) {
           toggleFetchingReqFlag(true);
