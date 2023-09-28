@@ -182,7 +182,7 @@ const Listener = ({ listener, isActive }) => {
         }}
       />
       <Switch
-        xxs
+        size="xxs"
         checked={isActive}
         onToggleCheck={(v) => toggleListener(v, listener)}
         classNames={{ root: 'ml-1' }}
