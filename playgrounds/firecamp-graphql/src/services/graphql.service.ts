@@ -123,8 +123,8 @@ export const getPlaygroundName = (value: string) => {
   };
   return ops.reduce((p, n) => {
     console.log(p, 1213);
-    const separetor = p ? '___' : '';
-    return `${p}${separetor}${opsMap[n.operation]}_${n?.name.value || 'Query'}`;
+    const separator = p ? '___' : '';
+    return `${p}${separator}${opsMap[n.operation]}_${n?.name.value || 'Query'}`;
   }, '');
 };
 
