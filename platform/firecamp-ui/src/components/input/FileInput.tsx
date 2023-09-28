@@ -38,7 +38,7 @@ const FileInput: FC<IFileInput> = ({
         input: cx(
           ' !border-transparent',
           {
-            '!text-secondaryColor-text bg-secondaryColor min-h-[30px] px-2.5 data-[disabled=true]:!text-secondaryColor-text data-[disabled=true]:bg-secondaryColor':
+            '!text-secondaryColor-text bg-secondaryColor hover:bg-secondaryColor-hover min-h-[30px] px-2.5 data-[disabled=true]:!text-secondaryColor-text data-[disabled=true]:bg-secondaryColor':
               secondary,
           },
           {
@@ -50,7 +50,7 @@ const FileInput: FC<IFileInput> = ({
         placeholder: cx(
           { '!text-app-foreground ': !secondary },
           {
-            '!text-secondaryColor-text bg-secondaryColor': secondary,
+            '!text-secondaryColor-text bg-secondaryColor ': secondary,
           },
           classNames.placeholder
         ),

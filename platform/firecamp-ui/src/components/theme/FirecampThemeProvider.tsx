@@ -171,6 +171,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
               '--focus-level-4': ' rgba(var(--color), 0.18)',
 
               '--app-primary-focus': globalTheme.fn.rgba(globalTheme.colors[globalTheme.primaryColor][6], 0.54),
+              '--app-secondary-hover': 'var(--mantine-color-dark-5)',
 
               ...(globalTheme.colorScheme === 'dark'
                 ? {

@@ -82,6 +82,7 @@ module.exports = {
       'primaryColor-text': '#ffffff',
       secondaryColor: 'var(--app-secondary)',
       'secondaryColor-text': '#ffffff',
+      'secondaryColor-hover': 'var(--app-secondary-hover)',
 
       transparent: '#ffffff00',
 
