@@ -11,7 +11,7 @@ import { useUserStore } from '../../../store/user';
 // TODO: add isSubmitted to check and prevent multiple click on submit button
 
 /**
- * RefreshToken component for user to autenticate.
+ * RefreshToken component for user to authenticate.
  */
 const RefreshToken: FC<IModal> = ({ opened, onClose = () => { } }) => {
   return (
