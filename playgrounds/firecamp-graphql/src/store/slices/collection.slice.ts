@@ -17,7 +17,7 @@ interface ICollection {
   folders?: Partial<IRequestFolder & { __ref: { isFolder?: boolean } }>[];
   /**
    * incase the number on each action/event happens within collection
-   * react component will not re-render when tdpInstance will change in store, at that time update __manualUpdates to re-render the compoenent
+   * react component will not re-render when tdpInstance will change in store, at that time update __manualUpdates to re-render the component
    */
   __manualUpdates?: number;
 }
