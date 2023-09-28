@@ -65,15 +65,6 @@ const defaultGrayColor: ColorType = [
   '#212529',
 ];
 
-export const useFirecampStyle = createStyles((theme) => ({
-  backgroundWithOpacity: {
-    '&:focus': {
-      backgroundColor: theme.fn.rgba(primaryColor[6], 0.54),
-      borderWidth: '0px',
-    },
-  },
-}));
-
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
   children,
   ...props
@@ -178,6 +169,8 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
               '--focus-level-2': ' rgba(var(--color), 0.1)',
               '--focus-level-3': ' rgba(var(--color), 0.14)',
               '--focus-level-4': ' rgba(var(--color), 0.18)',
+
+              '--app-primary-focus': globalTheme.fn.rgba(globalTheme.colors[globalTheme.primaryColor][6], 0.54),
 
               ...(globalTheme.colorScheme === 'dark'
                 ? {
