@@ -13,6 +13,7 @@ module.exports = {
   ],
   theme: {
     colors: {
+      inherit: 'inherit',
       'app-background': 'var(--app-background)',
       'app-background-secondary': 'var(--app-background-secondary)',
       'app-foreground': 'var(--app-foreground)',

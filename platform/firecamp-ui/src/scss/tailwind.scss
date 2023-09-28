@@ -1672,6 +1672,12 @@
 .outline{
   outline-style: solid;
 }
+.outline-2{
+  outline-width: 2px;
+}
+.outline-transparent{
+  outline-color: #ffffff00;
+}
 .blur{
   --tw-blur: blur(8px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -1692,6 +1698,12 @@
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+.placeholder\:text-input-placeholder::-moz-placeholder{
+  color: var(--input-placeholder);
+}
+.placeholder\:text-input-placeholder::placeholder{
+  color: var(--input-placeholder);
 }
 .before\:absolute::before{
   content: var(--tw-content);
@@ -1954,6 +1966,12 @@
   --tw-shadow-colored: 0 0 #0000 !important;
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow) !important;
 }
+.disabled\:bg-input-background:disabled{
+  background-color: var(--input-background);
+}
+.disabled\:text-inherit:disabled{
+  color: inherit;
+}
 .group:hover .group-hover\:h-auto{
   height: auto;
 }
@@ -1982,6 +2000,15 @@
 }
 .data-\[position\=\'top\'\]\:animate-slideUpAndFade[data-position='top']{
   animation: slideUpAndFade 400ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.data-\[disabled\=true\]\:bg-input-background[data-disabled=true]{
+  background-color: var(--input-background);
+}
+.data-\[disabled\=true\]\:text-inherit[data-disabled=true]{
+  color: inherit;
+}
+.data-\[invalid\=true\]\:text-inherit[data-invalid=true]{
+  color: inherit;
 }
 .\[\&\>div\]\:\!block>div{
   display: block !important;

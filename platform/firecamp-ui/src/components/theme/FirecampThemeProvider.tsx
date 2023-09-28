@@ -221,7 +221,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
                     '--input-placeholder': ' var(--mantine-color-dark-3)',
                     '--input-text': ' var(--mantine-color-white)',
                     '--input-background-focus': ' var(--mantine-color-dark-7)',
-                    '--input-background': ' var(--app-background)',
+                    '--input-background': ' var(--mantine-color-dark-5)',
 
                     '--popover-background': ' var(--mantine-color-dark-5)',
                     '--popover-foreground': ' var(--app-foreground)',
@@ -300,7 +300,7 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
                     '--input-placeholder': 'var(--mantine-color-gray-6)',
                     '--input-text': 'var(--mantine-color-gray-9)',
                     '--input-background-focus': 'var(--mantine-color-white)',
-                    '--input-background': 'rgba(var(--color), 0.06)',
+                    '--input-background': ' var(--mantine-color-gray-2)',
 
                     '--popover-background': 'var(--mantine-color-white)',
                     '--popover-foreground': 'var(--app-foreground)',
