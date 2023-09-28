@@ -351,6 +351,9 @@
 .mb-2{
   margin-bottom: 0.5rem;
 }
+.mb-28{
+  margin-bottom: 7rem;
+}
 .mb-3{
   margin-bottom: 0.75rem;
 }
@@ -508,11 +511,20 @@
 .h-1{
   height: 0.25rem;
 }
+.h-1\.5{
+  height: 0.375rem;
+}
 .h-10{
   height: 2.5rem;
 }
 .h-12{
   height: 3rem;
+}
+.h-2{
+  height: 0.5rem;
+}
+.h-2\.5{
+  height: 0.625rem;
 }
 .h-32{
   height: 8rem;
@@ -602,6 +614,12 @@
 .\!w-full{
   width: 100% !important;
 }
+.w-1{
+  width: 0.25rem;
+}
+.w-1\.5{
+  width: 0.375rem;
+}
 .w-10{
   width: 2.5rem;
 }
@@ -671,6 +689,12 @@
 }
 .\!min-w-full{
   min-width: 100% !important;
+}
+.min-w-\[20px\]{
+  min-width: 20px;
+}
+.min-w-\[224px\]{
+  min-width: 224px;
 }
 .min-w-\[9rem\]{
   min-width: 9rem;
@@ -936,11 +960,20 @@
 .border-none{
   border-style: none;
 }
+.\!border-app-background{
+  border-color: var(--app-background) !important;
+}
 .\!border-app-border{
   border-color: var(--app-border) !important;
 }
+.\!border-inherit{
+  border-color: inherit !important;
+}
 .\!border-input-border{
   border-color: var(--input-border) !important;
+}
+.\!border-primaryColor{
+  border-color: var(--app-primary) !important;
 }
 .\!border-statusBar-border{
   border-color: var(--statusBar-border) !important;
@@ -1073,6 +1106,9 @@
 }
 .bg-app-border{
   background-color: var(--app-border);
+}
+.bg-app-foreground{
+  background-color: var(--app-foreground);
 }
 .bg-app-foreground-inactive{
   background-color: var(--app-foreground-inactive);
@@ -1404,6 +1440,10 @@
 .pr-4{
   padding-right: 1rem;
 }
+.ps-12{
+  -webkit-padding-start: 3rem;
+          padding-inline-start: 3rem;
+}
 .pt-0{
   padding-top: 0px;
 }
@@ -1472,6 +1512,9 @@
   font-size: 3rem;
   line-height: 1;
 }
+.text-\[10px\]{
+  font-size: 10px;
+}
 .text-base{
   font-size: 14px;
 }
@@ -1525,6 +1568,9 @@
 }
 .leading-7{
   line-height: 1.75rem;
+}
+.leading-\[10px\]{
+  line-height: 10px;
 }
 .leading-\[21px\]{
   line-height: 21px;
@@ -1901,6 +1947,15 @@
 .last-of-type\:border-r-tab-border:last-of-type{
   border-right-color: var(--tab-border);
 }
+.checked\:border-app-foreground:checked{
+  border-color: var(--app-foreground);
+}
+.checked\:border-inherit:checked{
+  border-color: inherit;
+}
+.checked\:border-primaryColor:checked{
+  border-color: var(--app-primary);
+}
 .hover\:border-focusBorder:hover{
   border-color: var(--focus-border);
 }
@@ -1984,6 +2039,12 @@
 .focus\:\!border-none:focus{
   border-style: none !important;
 }
+.focus\:\!border-app-foreground:focus{
+  border-color: var(--app-foreground) !important;
+}
+.focus\:\!border-primaryColor:focus{
+  border-color: var(--app-primary) !important;
+}
 .focus\:bg-input-background-focus:focus{
   background-color: var(--input-background-focus);
 }
@@ -2003,6 +2064,25 @@
 }
 .group:hover .group-hover\:h-auto{
   height: auto;
+}
+.peer:checked ~ .peer-checked\:left-\[calc\(100\%-7px\)\]{
+  left: calc(100% - 7px);
+}
+.peer:checked ~ .peer-checked\:mb-0{
+  margin-bottom: 0px;
+}
+.peer:checked ~ .peer-checked\:mr-28{
+  margin-right: 7rem;
+}
+.peer:checked ~ .peer-checked\:border-primaryColor{
+  border-color: var(--app-primary);
+}
+.peer:checked ~ .peer-checked\:border-secondaryColor-text{
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
+}
+.peer:checked ~ .peer-checked\:bg-primaryColor{
+  background-color: var(--app-primary);
 }
 @keyframes slideDownAndFade{
   from{
