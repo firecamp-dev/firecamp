@@ -587,8 +587,14 @@
 .min-h-0{
   min-height: 0px;
 }
+.min-h-\[30px\]{
+  min-height: 30px;
+}
 .min-h-\[400px\]{
   min-height: 400px;
+}
+.min-h-\[auto\]{
+  min-height: auto;
 }
 .\!w-auto{
   width: auto !important;
@@ -927,6 +933,9 @@
 .\!border-none{
   border-style: none !important;
 }
+.border-none{
+  border-style: none;
+}
 .\!border-app-border{
   border-color: var(--app-border) !important;
 }
@@ -1104,6 +1113,9 @@
 .bg-primaryColor-focus{
   background-color: var(--app-primary-focus);
 }
+.bg-secondaryColor{
+  background-color: var(--app-secondary);
+}
 .bg-statusBar-background{
   background-color: var(--statusBar-background);
 }
@@ -1224,6 +1236,10 @@
 .px-2{
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+}
+.px-2\.5{
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
 }
 .px-3{
   padding-left: 0.75rem;
@@ -1510,8 +1526,14 @@
 .leading-7{
   line-height: 1.75rem;
 }
+.leading-\[21px\]{
+  line-height: 21px;
+}
 .\!text-activityBar-foreground-inactive{
   color: var(--activityBar-foreground-inactive) !important;
+}
+.\!text-app-foreground{
+  color: var(--app-foreground) !important;
 }
 .\!text-app-foreground-active{
   color: var(--app-foreground-active) !important;
@@ -1527,6 +1549,10 @@
 }
 .\!text-primaryColor{
   color: var(--app-primary) !important;
+}
+.\!text-secondaryColor-text{
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 .text-activityBar-foreground{
   color: var(--activityBar-foreground);
@@ -2003,6 +2029,13 @@
 }
 .data-\[disabled\=true\]\:bg-input-background[data-disabled=true]{
   background-color: var(--input-background);
+}
+.data-\[disabled\=true\]\:bg-secondaryColor[data-disabled=true]{
+  background-color: var(--app-secondary);
+}
+.data-\[disabled\=true\]\:\!text-secondaryColor-text[data-disabled=true]{
+  --tw-text-opacity: 1 !important;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
 }
 .data-\[disabled\=true\]\:text-inherit[data-disabled=true]{
   color: inherit;
