@@ -61,7 +61,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
           dirtyInputs[input.id] &&
           !auth?.[input.id as keyof IOAuth1]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div

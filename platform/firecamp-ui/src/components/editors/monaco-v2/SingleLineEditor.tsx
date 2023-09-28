@@ -308,7 +308,7 @@ const SingleLineEditor: FC<IEditor & TSLEditor> = ({
     scrollbar: {
       horizontal: 'hidden',
       vertical: 'hidden',
-      // avoid can not scroll page when hover monaco
+      // avoid cannot scroll page when hover monaco
       alwaysConsumeMouseWheel: false,
     },
     // disable `Find`

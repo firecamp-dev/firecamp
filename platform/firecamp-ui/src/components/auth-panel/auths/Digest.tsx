@@ -58,7 +58,7 @@ const Digest: FC<IDigest> = ({
           dirtyInputs[input.id] &&
           !auth?.[input.id as keyof IAuthDigest]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div

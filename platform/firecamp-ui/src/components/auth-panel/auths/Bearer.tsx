@@ -36,7 +36,7 @@ const Bearer: FC<IBearer> = ({ auth, onChange = () => {} }) => {
           dirtyInputs[input.id] &&
           !auth?.[input.id as keyof IAuthBearer]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div

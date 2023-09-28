@@ -106,7 +106,7 @@ const OAuth2: FC<IOAuth2Comp> = ({
           dirtyInputs[input.id] &&
           !grantTypes[activeGrantType][input.id]?.length
         ) {
-          errorMsg = `${input.name} can not be empty`;
+          errorMsg = `${input.name} cannot be empty`;
         }
         return (
           <div
