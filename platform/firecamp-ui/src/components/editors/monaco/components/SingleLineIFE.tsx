@@ -85,7 +85,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
         et.setSelection(range);
         et.focus();
       } else {
-        //todo:  this is experimental, if no Editor ref found then blur it naturaly with Browser DOM API
+        //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
         document.activeElement.blur();
         document.activeElement.blur();
         document.activeElement.blur();
@@ -149,7 +149,7 @@ const SingleLineIFE: FC<ISingleLineIFE> = ({
             et.setSelection(range);
             et.focus();
           } else {
-            //todo:  this is experimental, if no Editor ref found then blur it naturaly with Browser DOM API
+            //todo:  this is experimental, if no Editor ref found then blur it naturally with Browser DOM API
             document.activeElement.blur();
             document.activeElement.blur();
             document.activeElement.blur();
