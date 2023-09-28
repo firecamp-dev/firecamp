@@ -138,7 +138,7 @@ const Tabs: FC<IResTabs> = ({
 export default Tabs;
 
 const ScriptErrors = ({ errors = [] }) => {
-  console.log(errors, 'erros..... errors');
+  console.log(errors, 'errors..... errors');
   return (
     <div className=' w-full bg-app-background'>
       {errors.map((e, i) => (
