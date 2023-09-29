@@ -126,16 +126,15 @@ const ReqStatusBar = ({ }) => {
                 classNames={{
                   root: '!rounded-br-none !rounded-tr-none',
                 }}
-                rightIcon={
+                rightSection={
                   <VscTriangleDown
                     size={12}
                     className={cx({ 'transform rotate-180': isOpen })}
                   />
                 }
                 animate={false}
+                size='compact-xs'
                 secondary
-                compact
-                xs
               />
             )}
             options={plgOperations || []}
@@ -152,16 +151,15 @@ const ReqStatusBar = ({ }) => {
           />
           <Button
             // TODO: add class opacity and square
-            leftIcon={<SendHorizonal size={12}/>}
+            leftSection={<SendHorizonal size={12}/>}
             onClick={_execute}
             classNames={{
               root: '!rounded-bl-none !rounded-tl-none',
             }}
             // disabled={_object.isEmpty(getPlaygroundQueries())}
             animate={false}
+            size='compact-xs'
             primary
-            compact
-            xs
           />
         </div>
         {/* </StatusBar.PrimaryRegion> */}
@@ -176,16 +174,15 @@ const ReqStatusBar = ({ }) => {
                 onClick={() =>
                   undoPlaygroundChanges(playground.request?.__ref.id)
                 }
+                size='compact-xs'
                 ghost
-                compact
-                xs
+                
               />
               <Button
                 text="Save changes"
                 onClick={(e) => updateItem()}
+                size='compact-xs'
                 ghost
-                compact
-                xs
               />
             </>
           ) : (
@@ -195,9 +192,8 @@ const ReqStatusBar = ({ }) => {
             <Button
               text="Save playground"
               onClick={_savePlg}
+              size='compact-xs'
               ghost
-              compact
-              xs
             />
           ) : (
             <></>

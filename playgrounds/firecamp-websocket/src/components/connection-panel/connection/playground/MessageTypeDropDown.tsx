@@ -18,7 +18,7 @@ const MessageTypeDropDown = ({
           <Button
             text={selectedOption.name || ''}
             classNames={{ root: 'ml-1' }}
-            rightIcon={
+            rightSection={
               <VscTriangleDown
                 size={12}
                 className={cx({ 'transform rotate-180': isOpen })}
@@ -26,8 +26,7 @@ const MessageTypeDropDown = ({
             }
             primary
             ghost
-            compact
-            xs
+            size='compact-xs'
           />
         </div>
       )}

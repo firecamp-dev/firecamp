@@ -195,9 +195,8 @@ export default {
                   context.focusItem(item.data.__ref.id);
                   openEmitterInPlg(item.data.__ref.id);
                 }}
+                size='compact-xs'
                 ghost
-                compact
-                xs
               />
             ) : (
               <></>

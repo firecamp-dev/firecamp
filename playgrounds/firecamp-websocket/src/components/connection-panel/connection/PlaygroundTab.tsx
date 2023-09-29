@@ -266,9 +266,8 @@ const PlaygroundTab = () => {
                 key="newMsgButton"
                 text={'+ New Message'}
                 onClick={_addNewMessage}
+                size='compact-xs'
                 ghost
-                compact
-                xs
               />
             ) : (
               <></>
@@ -321,22 +320,20 @@ const PlaygroundTab = () => {
             {showSaveButton ? (
               <Button
                 text="Save"
-                rightIcon={<File size={12} />}
+                rightSection={<File size={12} />}
                 onClick={_saveMessage}
+                size='compact-xs'
                 secondary
-                compact
-                xs
               />
             ) : (
               <></>
             )}
             <Button
               text="Send"
-              rightIcon={<SendHorizonal size={12} />}
+              rightSection={<SendHorizonal size={12} />}
               onClick={_onSendMessage}
+              size='compact-xs'
               primary
-              compact
-              xs
             />
           </TabHeader.Right>
         </TabHeader>

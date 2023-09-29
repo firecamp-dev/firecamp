@@ -62,9 +62,8 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
                 isQueryDirty ? _toggleResetConfirmPopover(true) : _onReset()
               }
               disabled={!value ? true : false}
+              size='compact-xs'
               secondary
-              compact
-              xs
             />
           }
           _meta={{
@@ -85,8 +84,7 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
           text="Prettify"
           // tooltip={ getOS() === 'MacOS' ? 'shift + ⌘ + P' : 'shift + ctrl + P' } //todo: look thos type error
           secondary
-          compact
-          xs
+          size='compact-xs'
         />
       ) : (
         ''
@@ -98,8 +96,7 @@ const Controls = ({ isQueryDirty, toggleQueryDirty }) => {
           text="Save to collection"
           disabled={!value ? true : false}
           secondary
-          compact
-          xs
+          size='compact-xs'
         />
       ) : (
         ''

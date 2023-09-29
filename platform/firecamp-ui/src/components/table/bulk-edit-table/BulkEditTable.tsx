@@ -89,9 +89,8 @@ const BulkEditTable: FC<IBulkEditTable> = ({
             onClick={() => {
               setMode(mode === modes.Table ? modes.Raw : modes.Table);
             }}
+            size='compact-xs'
             secondary
-            compact
-            xs
           />
         </TabHeader.Right>
       </TabHeader>

@@ -50,7 +50,7 @@ const FirecampThemeSelector = () => {
             root: 'w-[220px]',
             inner: 'flex justify-between w-full',
           }}
-          rightIcon={
+          rightSection={
             <VscTriangleDown
               size={12}
               className={cx({ 'transform rotate-180': isOpen })}

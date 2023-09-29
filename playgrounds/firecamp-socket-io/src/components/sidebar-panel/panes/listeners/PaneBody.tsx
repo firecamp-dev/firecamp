@@ -71,9 +71,8 @@ const PaneBody = () => {
                       onClick={() => {
                         toggleAllListeners(false);
                       }}
+                      size='compact-xs'
                       ghost
-                      compact
-                      xs
                     />
                     <Button
                       key={`listener-on-all-${tabId}`}
@@ -81,9 +80,8 @@ const PaneBody = () => {
                       onClick={() => {
                         toggleAllListeners(true);
                       }}
+                      size='compact-xs'
                       ghost
-                      compact
-                      xs
                     />
                   </TabHeader.Right>
                 </TabHeader>

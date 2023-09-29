@@ -228,16 +228,15 @@ const ArgTypesDD = ({ activeArgType, changeArgType }) => {
       handler={() => (
         <Button
           text={activeArgType.name}
-          rightIcon={
+          rightSection={
             <VscTriangleDown
               size={12}
               className={cx({ 'transform rotate-180': isBodyTypeDDOpen })}
             />
           }
+          size='compact-xs'
           primary
           ghost
-          compact
-          xs
         />
       )}
       options={ArgTypes}

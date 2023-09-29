@@ -162,8 +162,7 @@ export default {
                   openPlg(item.data.__ref.id);
                 }}
                 ghost
-                compact
-                xs
+                size='compact-xs'
               />
             ) : (
               <></>

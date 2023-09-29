@@ -113,7 +113,7 @@ const Logs = () => {
                           title={
                             typeFilter ? `Log type: ${typeFilter || ''}` : ''
                           }
-                          rightIcon={
+                          rightSection={
                             <VscTriangleDown
                               size={12}
                               className={cx({
@@ -121,9 +121,8 @@ const Logs = () => {
                               })}
                             />
                           }
+                          size='compact-xs'
                           ghost
-                          compact
-                          xs
                         />
                       )}
                       options={Object.keys(logTypes).map((o) => ({

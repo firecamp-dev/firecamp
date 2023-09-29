@@ -163,9 +163,8 @@ export default {
                 context.focusItem(item.data.__ref.id);
                 openPlg(item.data.__ref.id);
               }}
+              size='compact-xs'
               ghost
-              compact
-              xs
             />
 
             <Trash2

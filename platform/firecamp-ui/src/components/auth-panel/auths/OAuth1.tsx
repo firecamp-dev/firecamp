@@ -107,7 +107,7 @@ const OAuth1: FC<IOAuth1Comp> = ({ auth, onChange = () => {} }) => {
           handler={() => (
             <Button
               text={auth['signatureMethod'] || 'HMAC-SHA1'}
-              rightIcon={
+              rightSection={
                 <VscTriangleDown
                   size={12}
                   className={cx({ 'transform rotate-180': isOpen })}

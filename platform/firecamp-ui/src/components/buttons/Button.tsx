@@ -131,13 +131,13 @@ const Button: FC<IButton> = ({
               props.disabled && customVariant === EVariant.outline && !primary,
           },
           {
-            'justify-center': props.fullWidth && !props.leftIcon,
+            'justify-center': props.fullWidth && !props.leftSection,
           },
           {
             [EDefaultStyles.leftIcon]: !text,
           }
         ),
-        leftIcon: cx(classNames.leftIcon, {
+        section: cx(classNames.section, {
           'mr-0': !text,
         }),
       }}

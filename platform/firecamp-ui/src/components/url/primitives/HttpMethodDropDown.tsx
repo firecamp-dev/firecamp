@@ -26,7 +26,7 @@ const HttpMethodDropDown: FC<IHttpMethodDropDown> = ({
         text={selectedOption}
         title={'HTTP Method'}
         data-testid="http-method-label"
-        rightIcon={
+        rightSection={
           <VscTriangleDown
             size={12}
             className={cx({ 'transform rotate-180': isDropDownOpen })}

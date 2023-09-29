@@ -172,16 +172,15 @@ const BodyTypeDropDown: FC<any> = ({
         <Button
           text={selectedOption || 'None'}
           classNames={{ root: 'font-bold' }}
-          rightIcon={
+          rightSection={
             <VscTriangleDown
               size={12}
               className={cx({ 'transform rotate-180': isOpen })}
             />
           }
+          size='compact-xs'
           primary
           ghost
-          compact
-          xs
         />
       )}
       selected={selectedOption || 'None'}

@@ -152,7 +152,7 @@ const EnvironmentTable = ({
         <Button
           text="Add Row"
           onClick={() => apiRef.current.addRow()}
-          leftIcon={<Plus size={16} />}
+          leftSection={<Plus size={16} />}
           disabled={
             options.hasOwnProperty('allowRowAdd') && !options.allowRowAdd
           }

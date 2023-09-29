@@ -57,7 +57,7 @@ const WorkspaceCard: FC<any> = () => {
           </span>
         </div>
         <div className="ml-auto workpsace-card-action">
-          <Button text="Switch" primary xs compact transparent />
+          <Button text="Switch" size='compact-xs' primary transparent />
         </div>
       </div>
       <div className="flex flex-row p-2">

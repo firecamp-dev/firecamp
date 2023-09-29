@@ -109,7 +109,7 @@ const Digest: FC<IDigest> = ({
               classNames={{
                 root: 'mb-2',
               }}
-              rightIcon={
+              rightSection={
                 <VscTriangleDown
                   size={12}
                   className={cx({ 'transform rotate-180': isOpen })}

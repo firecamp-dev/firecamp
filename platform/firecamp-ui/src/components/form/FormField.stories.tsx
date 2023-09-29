@@ -41,7 +41,7 @@ const DropdownElement = () => {
           id={'button'}
           text={selected}
           classNames={{ root: 'rounded p-2' }}
-          uppercase={true}
+          tt={'uppercase'}
           transparent
           fullWidth
           xs

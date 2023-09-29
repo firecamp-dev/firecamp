@@ -238,8 +238,7 @@ const Globals = () => {
               root: 'hover:!bg-focusColor !text-app-foreground-inactive'
             }}
             ghost
-            compact
-            xs
+            size='compact-xs'
           />
         </div>
       </div>
