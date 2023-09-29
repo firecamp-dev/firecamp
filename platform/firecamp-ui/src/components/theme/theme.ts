@@ -1,4 +1,4 @@
-import { CSSVariablesResolver } from '@mantine/core';
+import { CSSVariablesResolver, lighten } from '@mantine/core';
 import { ColorType } from './FirecampThemeProvider.interfaces';
 
 export const primaryColor: ColorType = [
@@ -82,13 +82,6 @@ export const resolver: CSSVariablesResolver = (theme) => ({
     '--focus-level-3': ' rgba(var(--color), 0.14)',
     '--focus-level-4': ' rgba(var(--color), 0.18)',
 
-    '--app-primary-focus': ' rgba(var(--app-primary), 0.18)',
-
-    // TODO update focus color
-    // '--app-primary-focus': theme.fn.rgba(
-    //   theme.colors[theme.primaryColor][6],
-    //   0.54
-    // ),
     '--app-secondary-hover': 'var(--mantine-color-dark-5)',
   },
   light: {
@@ -97,6 +90,7 @@ export const resolver: CSSVariablesResolver = (theme) => ({
     '--app-foreground-active': 'var(--mantine-color-gray-9)',
     '--app-foreground-inactive': 'var(--mantine-color-dark-4)',
     '--app-primary': 'var(--mantine-color-primary-color-6)',
+    '--app-primary-focus': lighten(theme.colors[theme.primaryColor][6], 0.5),
     '--app-primary-hover': 'var(--mantine-color-primary-color-7)',
     '--app-secondary': 'var(--mantine-color-dark-4)',
     '--app-border': ' var(--mantine-color-gray-4)',
@@ -169,6 +163,7 @@ export const resolver: CSSVariablesResolver = (theme) => ({
     '--app-foreground-active': ' var(--mantine-color-white)',
     '--app-foreground-inactive': ' var(--mantine-color-dark-3)',
     '--app-primary': ' var(--mantine-color-primary-color-8)',
+    '--app-primary-focus': lighten(theme.colors[theme.primaryColor][9], 0.1),
     '--app-primary-hover': 'var(--mantine-color-primary-color-9)',
     '--app-secondary': ' var(--mantine-color-dark-4)',
     '--app-border': ' var(--mantine-color-dark-5)',

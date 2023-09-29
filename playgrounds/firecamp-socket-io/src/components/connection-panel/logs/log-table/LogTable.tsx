@@ -13,7 +13,7 @@ const LogTable = ({ onLoad, onFocusRow = (r) => {} }) => {
         thead: 'sticky top-0 !bg-app-background-secondary z-10',
         container: 'h-full !overflow-y-auto -mt-px visible-scrollbar thick',
         theadTr: '!border-0 !bg-app-background-secondary',
-        tr: 'border-0 bg-primaryColor-focus',
+        tr: 'border-0 focus:bg-primaryColor-focus',
       }}
       rows={[]}
       options={{ hiddenColumns: ['length'] }}

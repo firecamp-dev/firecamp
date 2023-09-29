@@ -1119,9 +1119,6 @@
 .bg-primaryColor{
   background-color: var(--app-primary);
 }
-.bg-primaryColor-focus{
-  background-color: var(--app-primary-focus);
-}
 .bg-secondaryColor{
   background-color: var(--app-secondary);
 }
@@ -2015,6 +2012,9 @@
 }
 .focus\:bg-input-background-focus:focus{
   background-color: var(--input-background-focus);
+}
+.focus\:bg-primaryColor-focus:focus{
+  background-color: var(--app-primary-focus);
 }
 .focus-visible\:\!border-none:focus-visible{
   border-style: none !important;
