@@ -1,7 +1,26 @@
 import { FC } from 'react';
 import cx from 'classnames';
-import { Button as MantineButton, createStyles } from '@mantine/core';
+import { Button as MantineButton } from '@mantine/core';
 import { IButton } from './Button.interfaces';
+
+enum EDefaultStyles {
+  leftIcon = 'px-2.5',
+  root = 'flex font-normal',
+  preventButtonAnimation = 'active:transform-none',
+  transparentButton = 'hover:bg-transparent',
+  // same color for both light/dark color variant
+  secondaryButton = 'text-secondaryColor-text bg-secondaryColor hover:bg-secondaryColor-hover',
+  outlineVariantDefault = 'text-tab-foreground border-tab-border hover:bg-activityBar-border',
+  outlineVariantPrimary = 'text-primaryColor border-primaryColor hover:bg-primaryColor-hover hover:text-secondaryColor-text',
+  // custom classes when button is disabled
+  disabledFilledVariantPrimary = 'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-primaryColor',
+  disabledFilledVariantSecondary = 'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-secondaryColor',
+  disabledFilledVariantDanger = 'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-error',
+  disabledSubtleVariantDefault = 'data-[disabled=true]:text-tab-foreground data-[disabled=true]:bg-transparent',
+  disabledSubtleVariantPrimary = 'data-[disabled=true]:text-primaryColor data-[disabled=true]:bg-transparent',
+  disabledOutlineVariantDefault = 'data-[disabled=true]:text-tab-foreground data-[disabled=true]:border-tab-border data-[disabled=true]:bg-transparent',
+  disabledOutlineVariantPrimary = 'data-[disabled=true]:text-primaryColor data-[disabled=true]:border-primaryColor data-[disabled=true]:bg-transparent',
+}
 
 enum EVariant {
   primary = 'filled',
@@ -64,62 +83,58 @@ const Button: FC<IButton> = ({
         ...classNames,
         root: cx(
           classNames.root,
-          'flex font-normal',
-          { 'active:transform-none': !animate },
-          { 'hover:bg-transparent': transparent },
-
-          // same color for both light/dark color variant
+          EDefaultStyles.root,
+          { [EDefaultStyles.preventButtonAnimation]: !animate },
+          { [EDefaultStyles.transparentButton]: transparent },
           {
-            'text-secondaryColor-text bg-secondaryColor hover:bg-secondaryColor-hover':
-              secondary,
-          },
-
-          {
-            'text-primaryColor border-primaryColor hover:bg-primaryColor-hover hover:text-secondaryColor-text':
-              customVariant === 'outline' && primary,
+            [EDefaultStyles.secondaryButton]: secondary,
           },
           {
-            'text-tab-foreground border-tab-border hover:bg-activityBar-border':
-              customVariant === 'outline' && customColor === 'dark',
+            [EDefaultStyles.outlineVariantPrimary]:
+              customVariant === EVariant.outline && primary,
+          },
+          {
+            [EDefaultStyles.outlineVariantDefault]:
+              customVariant === EVariant.outline && customColor === 'dark',
           },
           // custom disabled classes when button is disabled
           {
-            'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-primaryColor':
+            [EDefaultStyles.disabledFilledVariantPrimary]:
               props.disabled && customVariant === EVariant.primary && primary,
           },
           {
-            'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-secondaryColor':
+            [EDefaultStyles.disabledFilledVariantSecondary]:
               props.disabled && secondary,
           },
           {
-            'data-[disabled=true]:text-secondaryColor-text data-[disabled=true]:bg-error':
+            [EDefaultStyles.disabledFilledVariantDanger]:
               props.disabled && danger,
           },
           {
-            'data-[disabled=true]:text-primaryColor data-[disabled=true]:bg-transparent':
+            [EDefaultStyles.disabledSubtleVariantPrimary]:
               props.disabled &&
               (transparent || customVariant === EVariant.ghost) &&
               primary,
           },
           {
-            'data-[disabled=true]:text-tab-foreground data-[disabled=true]:bg-transparent':
+            [EDefaultStyles.disabledSubtleVariantDefault]:
               props.disabled &&
               (transparent || customVariant === EVariant.ghost) &&
               !primary,
           },
           {
-            'data-[disabled=true]:text-primaryColor data-[disabled=true]:border-primaryColor data-[disabled=true]:bg-transparent':
+            [EDefaultStyles.disabledOutlineVariantPrimary]:
               props.disabled && customVariant === EVariant.outline && primary,
           },
           {
-            'data-[disabled=true]:text-tab-foreground data-[disabled=true]:border-tab-border data-[disabled=true]:bg-transparent':
+            [EDefaultStyles.disabledOutlineVariantDefault]:
               props.disabled && customVariant === EVariant.outline && !primary,
           },
           {
             'justify-center': props.fullWidth && !props.leftIcon,
           },
           {
-            'px-2.5': !text,
+            [EDefaultStyles.leftIcon]: !text,
           }
         ),
         leftIcon: cx(classNames.leftIcon, {

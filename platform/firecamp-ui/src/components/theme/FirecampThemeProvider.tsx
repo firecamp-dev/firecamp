@@ -3,7 +3,6 @@ import {
   ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
-  createStyles,
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
 import {
