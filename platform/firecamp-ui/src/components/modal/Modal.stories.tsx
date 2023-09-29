@@ -80,13 +80,13 @@ function FormPreview({ overflowContent = false }) {
           <Input
             label="Username or E-mail"
             value="dnishchit@gmail.com"
-            icon={<UserCircle2 size={16} />}
+            leftSection={<UserCircle2 size={16} />}
           />
 
           <Input
             label="password"
             placeholder="password"
-            icon={<Lock size={16} />}
+            leftSection={<Lock size={16} />}
           />
           <a className="cursor-pointer text-app-foreground block pb-6 text-right text-sm">
             Forgot Password?

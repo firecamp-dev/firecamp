@@ -107,8 +107,7 @@ const EditRequest: FC<IModal> = ({ opened = false, onClose = () => {} }) => {
               onBlur={() => {}}
               error={error.name}
               data-autofocus
-              // iconPosition="right"
-              // icon={<VscEdit />}
+              // rightSection={<VscEdit />}
             />
           </div>
           <TextArea

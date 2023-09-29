@@ -25,7 +25,7 @@ export const withIcon = Template.bind({});
 withIcon.args = {
   placeholder: 'Sample Button',
   value: '',
-  icon: <Menu size={16} />,
+  leftSection: <Menu size={16} />,
 };
 
 export const withIconRight = Template.bind({});

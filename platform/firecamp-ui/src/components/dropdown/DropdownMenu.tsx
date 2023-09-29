@@ -98,7 +98,7 @@ const DropdownMenu: FC<IDropdownMenu> = ({
                     }
                   )}
                   title={item.title}
-                  icon={typeof item.prefix === 'function' && item.prefix()}
+                  leftSection={typeof item.prefix === 'function' && item.prefix()}
                   rightSection={
                     <>
                       {item?.dotIndicator === true && (
