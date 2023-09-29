@@ -3,41 +3,35 @@ import cx from 'classnames';
 import {
   Switch as MantineSwitch,
   SwitchProps,
-  // PartialVarsResolver,
-  // SwitchFactory,
+  PartialVarsResolver,
+  SwitchFactory,
 } from '@mantine/core';
 
 export interface ISwitch extends SwitchProps {
   onToggleCheck: (v: boolean) => void;
 }
 
-// TODO: uncomment below code usage after mantine/core v7 updated
+const varsResolver: PartialVarsResolver<SwitchFactory> = (theme, props) => {
+  if (props.size === 'xxs') {
+    return {
+      root: {
+        '--switch-height': '10px',
+        '--switch-width': '20px',
+        '--switch-thumb-size': '6px',
+        '--switch-track-label-padding': '2px',
+        '--switch-label-font-size': '10px',
+      },
+    };
+  }
 
-// const varsResolver: PartialVarsResolver<SwitchFactory> = (theme, props) => {
-//   if (props.size === 'xxs') {
-//     return {
-//       root: {
-//         '--switch-height': '10px',
-//         '--switch-width': '20px',
-//         '--switch-thumb-size': '6px',
-//         '--switch-track-label-padding': '2px',
-//         '--switch-label-font-size': '10px',
-//       },
-//     };
-//   }
-
-//   return { root: {} };
-// };
-const Switch: FC<ISwitch> = ({
-  classNames = {},
-  onToggleCheck,
-  ...props
-}) => {
+  return { root: {} };
+};
+const Switch: FC<ISwitch> = ({ classNames = {}, onToggleCheck, ...props }) => {
   return (
     <MantineSwitch
       radius={'lg'}
       onChange={(e) => onToggleCheck(e.target.checked)}
-      // vars={varsResolver}
+      vars={varsResolver}
       classNames={{
         ...classNames,
         labelWrapper: cx(classNames.labelWrapper),

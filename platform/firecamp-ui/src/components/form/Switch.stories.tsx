@@ -33,13 +33,13 @@ export const SwitchSizes = () => {
         <Switch
           checked={false}
           onToggleCheck={() => {}}
-          xxs
+          size='xxs'
           classNames={{ root: 'w-40' }}
         />
         <Switch
           checked={true}
           onToggleCheck={() => {}}
-          xxs
+          size='xxs'
           classNames={{ root: 'w-40' }}
         />
       </div>

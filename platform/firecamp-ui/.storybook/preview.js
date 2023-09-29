@@ -4,7 +4,7 @@ import { addDecorator } from '@storybook/react';
 
 // make sure to import css scripts in order 1. preflight, 2. mantine Core, 3. tailwind styles
 import '../src/scss/preflight.css';
-// import "@mantine/core/styles.css";
+import '@mantine/core/styles.css';
 import '../src/scss/tailwind.scss';
 
 import results from '../.jest-test-results.json';

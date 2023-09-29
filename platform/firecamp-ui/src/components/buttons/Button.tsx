@@ -72,7 +72,7 @@ const Button: FC<IButton> = ({
     size;
 
   // default size if not passed is sm
-  const customColor = danger ? 'red' : primary ? 'primaryColor' : 'dark';
+  const customColor = danger ? 'red' : primary ? 'primary-color' : 'dark';
 
   return (
     <MantineButton
