@@ -1,20 +1,36 @@
 import { FC, useState } from 'react';
 import {
-  // ColorScheme,
-  // ColorSchemeProvider,
   MantineProvider,
   createTheme,
   mergeThemeOverrides,
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals';
-import {
-  EFirecampThemeVariant,
-  ColorType,
-  IFirecampThemeProvider,
-} from './FirecampThemeProvider.interfaces';
+
 import { EEditorTheme } from '@firecamp/types';
 import { EditorApi } from '@firecamp/ui';
+import { FCThemeVariantProvider } from './FirecampThemeVariantProvider';
+import {
+  EFirecampThemeVariant,
+  IFirecampThemeProvider,
+} from './FirecampThemeProvider.interfaces';
 import { primaryColor, resolver, secondaryColor } from './theme';
+
+const defaultTheme = createTheme({
+  fontFamily: " 'Lato', 'sans-serif' ",
+  primaryColor: 'primary-color',
+});
+const primaryTheme = createTheme({
+  colors: {
+    'primary-color': primaryColor,
+  },
+});
+const secondaryTheme = createTheme({
+  colors: {
+    'primary-color': secondaryColor,
+  },
+});
+const defaultPrimaryTheme = mergeThemeOverrides(defaultTheme, primaryTheme);
+const defaultSecondaryTheme = mergeThemeOverrides(defaultTheme, secondaryTheme);
 
 const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
   children,
@@ -28,37 +44,11 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
     }
     return themeStored;
   };
-  // const _initializeColorScheme = () => {
-  //   // on first time load set theme from local storage, if not found then set default
-  //   let themeColor = (
-  //     [
-  //       EFirecampThemeVariant.DarkPrimary,
-  //       EFirecampThemeVariant.DarkSecondary,
-  //     ].includes(localStorage.getItem('theme') as EFirecampThemeVariant)
-  //       ? 'dark'
-  //       : 'light'
-  //   ) as ColorScheme;
 
-  //   return themeColor;
-  // };
-
-  // const [colorScheme, setColorScheme] = useState<ColorScheme>(
-  //   _initializeColorScheme
-  // );
   const [theme, setTheme] = useState<EFirecampThemeVariant>(_initialize);
 
   // update theme
   const updateTheme = (theme: EFirecampThemeVariant) => {
-    // update the color schema
-    // setColorScheme(
-    //   [
-    //     EFirecampThemeVariant.LightPrimary,
-    //     EFirecampThemeVariant.LightSecondary,
-    //   ].includes(theme)
-    //     ? 'light'
-    //     : 'dark'
-    // );
-
     // save in local storage
     localStorage.setItem('theme', theme);
 
@@ -81,76 +71,27 @@ const FirecampThemeProvider: FC<IFirecampThemeProvider> = ({
     EditorApi.setEditorTheme(editorTheme);
   };
 
-  // TODO global styles to add
-
-  // globalStyles: (globalTheme) => ({
-  //   ':root': {
-  //     ...([
-  //       EFirecampThemeVariant.LightSecondary,
-  //       EFirecampThemeVariant.DarkSecondary,
-  //     ].includes(theme)
-  //       ? {
-  //           '--app-primary': 'var(--mantine-color-green-7) !important',
-  //         }
-  //       : {}),
-  //   },
-
-  //   // tailwind class based theme styles
-  //   ...(globalTheme.colorScheme === 'dark'
-  //     ? {
-  //         '.invert img': {
-  //           filter: 'invert(0.8)',
-  //         },
-  //         '.drag-icon': {
-  //           filter: 'invert(1)',
-  //         },
-  //       }
-  //     : {
-  //         '.invert img': {
-  //           filter: 'invert(0)',
-  //         },
-  //       }),
-
-  const defaultTheme = createTheme({
-    fontFamily: " 'Lato', 'sans-serif' ",
-    primaryColor: 'primary-color',
-  });
-  const primaryTheme = createTheme({
-    colors: {
-      'primary-color': primaryColor,
-    },
-  });
-  const secondaryTheme = createTheme({
-    colors: {
-      'primary-color': secondaryColor,
-    },
-  });
-  const defaultPrimaryTheme = mergeThemeOverrides(defaultTheme, primaryTheme);
-  const defaultSecondaryTheme = mergeThemeOverrides(
-    defaultTheme,
-    secondaryTheme
-  );
-
   return (
-    <MantineProvider
-      theme={defaultPrimaryTheme}
-      cssVariablesResolver={resolver}
-      // withCSSVariables
-      // withGlobalStyles
-      // withNormalizeCSS
-      {...props}
+    <FCThemeVariantProvider
+      value={theme}
+      setValue={(v: EFirecampThemeVariant) => updateTheme(v)}
     >
-      <ModalsProvider>{children}</ModalsProvider>
-    </MantineProvider>
+      <MantineProvider
+        theme={
+          [
+            EFirecampThemeVariant.LightPrimary,
+            EFirecampThemeVariant.DarkPrimary,
+          ].includes(theme)
+            ? defaultPrimaryTheme
+            : defaultSecondaryTheme
+        }
+        cssVariablesResolver={resolver}
+        {...props}
+      >
+        <ModalsProvider>{children}</ModalsProvider>
+      </MantineProvider>
+    </FCThemeVariantProvider>
   );
-
-  // //@ts-ignore
-  // <ColorSchemeProvider colorScheme={theme}
-  // toggleColorScheme={(c: ColorScheme | EFirecampThemeVariant) => {
-  //   updateTheme(c as EFirecampThemeVariant);
-  // }}
-  // >
-  // </ColorSchemeProvider>
 };
 
 export default FirecampThemeProvider;

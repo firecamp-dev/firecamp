@@ -44,7 +44,10 @@ const Checkbox: FC<ICheckbox> = ({
         ...classNames,
         input: cx(
           'rounded-none	border-app-foreground !bg-transparent',
-          { 'focus:!border-primaryColor': checked && primary },
+          {
+            'checked:border-primaryColor focus:!border-primaryColor':
+              checked && primary,
+          },
           {
             'focus:!border-app-foreground checked:border-app-foreground': !(
               checked && primary

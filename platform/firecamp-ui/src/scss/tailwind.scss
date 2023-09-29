@@ -480,9 +480,6 @@
 .contents{
   display: contents;
 }
-.list-item{
-  display: list-item;
-}
 .hidden{
   display: none;
 }
@@ -1071,9 +1068,6 @@
 .bg-activityBar-background-active{
   background-color: var(--activityBar-background-active);
 }
-.bg-activityBar-border{
-  background-color: var(--activityBar-border);
-}
 .bg-activityBar-foreground-inactive{
   background-color: var(--activityBar-foreground-inactive);
 }
@@ -1130,9 +1124,6 @@
 }
 .bg-secondaryColor{
   background-color: var(--app-secondary);
-}
-.bg-secondaryColor-hover{
-  background-color: var(--app-secondary-hover);
 }
 .bg-statusBar-background{
   background-color: var(--statusBar-background);
@@ -1505,6 +1496,9 @@
 .text-xs{
   font-size: 10px;
 }
+.\!font-bold{
+  font-weight: 700 !important;
+}
 .font-bold{
   font-weight: 700;
 }
@@ -1724,10 +1718,6 @@
 }
 .blur{
   --tw-blur: blur(8px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-.invert{
-  --tw-invert: invert(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .filter{

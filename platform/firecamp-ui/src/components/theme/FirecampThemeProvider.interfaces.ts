@@ -19,3 +19,8 @@ export enum EFirecampThemeVariant {
 }
 export type ColorType = MantineColorsTuple;
 export interface IFirecampThemeProvider extends MantineProviderProps {}
+
+export interface IFCThemeVariantProvider {
+  value: EFirecampThemeVariant;
+  setValue: (newValue: EFirecampThemeVariant) => void;
+}
