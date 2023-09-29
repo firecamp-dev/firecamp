@@ -123,7 +123,7 @@ ButtonWithUpperCaseText.args = {
   text: 'Button with uppercase text',
   primary: true,
   sm: true,
-  uppercase: true,
+  tt: 'uppercase'
 };
 
 export const ButtonVariant = () => {
